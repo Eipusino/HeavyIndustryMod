@@ -1,0 +1,72 @@
+package heavyindustry.gen;
+
+import arc.audio.*;
+import arc.files.*;
+
+import static heavyindustry.core.HeavyIndustryMod.*;
+
+public final class HISounds {
+    public static Sound
+            ct1 = new Sound(),
+            dbz1 = new Sound(),
+            dd1 = new Sound(),
+            fj = new Sound(),
+            jg1 = new Sound(),
+            flak = new Sound(),
+            flak2 = new Sound(),
+            shock = new Sound(),
+            launch = new Sound(),
+            gauss = new Sound(),
+            radar = new Sound(),
+            fissure = new Sound(),
+            blaster = new Sound(),
+            hugeShoot = new Sound(),
+            hugeBlast = new Sound(),
+            largeBeam = new Sound(),
+            metalPipe = new Sound(),
+            metalWalk = new Sound(),
+            alert2 = new Sound(),
+            hammer = new Sound(),
+            coolingFan = new Sound(),
+            hailRain = new Sound(),
+            bigHailstoneHit = new Sound(),
+            giantHailstoneHit = new Sound();
+
+    /** HISounds should not be instantiated. */
+    private HISounds() {}
+
+    public static void load() {
+        ct1 = new Sound(ogg("ct1"));
+        dbz1 = new Sound(ogg("dbz1"));
+        dd1 = new Sound(ogg("dd1"));
+        fj = new Sound(ogg("fj"));
+        jg1 = new Sound(ogg("jg1"));
+        flak = new Sound(mp3("flak"));
+        flak2 = new Sound(ogg("flak2"));
+        launch = new Sound(ogg("launch"));
+        shock = new Sound(ogg("shock"));
+        gauss = new Sound(ogg("gauss"));
+        radar = new Sound(mp3("radar"));
+        fissure = new Sound(ogg("fissure"));
+        blaster = new Sound(ogg("blaster"));
+        hugeShoot = new Sound(ogg("hugeShoot"));
+        hugeBlast = new Sound(ogg("hugeBlast"));
+        largeBeam = new Sound(ogg("largeBeam"));
+        metalPipe = new Sound(ogg("metalPipe"));
+        metalWalk = new Sound(ogg("metalWalk"));
+        alert2 = new Sound(ogg("alert2"));
+        hammer = new Sound(ogg("hammer"));
+        coolingFan = new Sound(ogg("coolingFan"));
+        hailRain = new Sound(ogg("hailRain"));
+        bigHailstoneHit = new Sound(ogg("bigHailstoneHit"));
+        giantHailstoneHit = new Sound(ogg("giantHailstoneHit"));
+    }
+
+    public static Fi ogg(String name) {
+        return internalTree.child("sounds/" + name+ ".ogg");
+    }
+
+    public static Fi mp3(String name) {
+        return internalTree.child("sounds/" + name+ ".mp3");
+    }
+}

@@ -1,0 +1,112 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    ext{
+        //the build number that this mod is made for
+        isWindows = System.getProperty("os.name").toLowerCase().contains("windows")
+        sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
+    id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlinVersion"
+    id 'java'
+}
+
+version '1.0'
+
+sourceSets.main.java.srcDir('src')
+
+repositories{
+    mavenCentral()
+    maven{ url "https://raw.githubusercontent.com/Zelaux/MindustryRepo/master/repository" }
+    maven{ url 'https://www.jitpack.io' }
+}
+
+java{
+    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+
+allprojects{
+    tasks.withType(JavaCompile) {
+        options.compilerArgs.addAll(['--release', '8'])
+    }
+}
+
+dependencies{
+    implementation "org.jetbrains:annotations:24.0.1"
+    implementation "commons-io:commons-io:2.9.0"
+
+    compileOnly files("libs/mindustry.jar")
+
+    annotationProcessor files("libs/jabel.jar")
+}
+
+configurations.all{
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == 'com.github.Anuken.Arc') {
+            details.useVersion "$mindustryVersion"
+        }
+    }
+}
+
+task jarAndroid{
+    dependsOn "jar"
+
+    doLast{
+        if (!sdkRoot || !new File(sdkRoot).exists()) throw new GradleException("No valid Android SDK found. Ensure that ANDROID_HOME is set to your Android SDK directory.");
+
+        def platformRoot = new File("$sdkRoot/platforms/").listFiles().sort().reverse().find{ f -> new File(f, "android.jar").exists()}
+
+        if (!platformRoot) throw new GradleException("No android.jar found. Ensure that you have an Android platform installed.")
+
+        //collect dependencies needed for desugaring
+        def dependencies = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File(platformRoot, "android.jar")]).collect{ "--classpath $it.path" }.join(" ")
+
+        def d8 = isWindows ? "d8.bat" : "d8"
+
+        //dex and desugar files - this requires d8 in your PATH
+        "$d8 $dependencies --min-api 14 --output ${project.archivesBaseName}Android.jar ${project.archivesBaseName}Desktop.jar"
+                .execute(null, new File("$buildDir/libs")).waitForProcessOutput(System.out, System.err)
+    }
+}
+
+jar{
+    archiveFileName = "${base.archivesBaseName}Desktop.jar"
+    duplicatesStrategy = 'exclude'
+
+    from{
+        configurations.runtimeClasspath.collect{ it.isDirectory() ? it : zipTree(it) }
+    }
+
+    from(rootDir) {
+        include "mod.json"
+    }
+
+    from("assets/") {
+        include "**"
+    }
+}
+
+task deploy(type: Jar) {
+    dependsOn jarAndroid
+    dependsOn jar
+    archiveFileName = "${base.archivesBaseName}.jar"
+
+    from{ [zipTree("$buildDir/libs/${project.archivesBaseName}Desktop.jar"), zipTree("$buildDir/libs/${project.archivesBaseName}Android.jar")] }
+
+    doLast{
+        delete{
+            delete "$buildDir/libs/${project.archivesBaseName}Desktop.jar"
+            delete "$buildDir/libs/${project.archivesBaseName}Android.jar"
+        }
+    }
+}
