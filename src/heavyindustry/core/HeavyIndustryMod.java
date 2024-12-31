@@ -37,7 +37,6 @@ import mindustry.ui.fragments.*;
 import java.time.*;
 import java.time.format.*;
 import java.util.*;
-import java.util.stream.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -308,14 +307,30 @@ public final class HeavyIndustryMod extends Mod {
         return fd.equals("0401");
     }
 
-    public static String list(Object... arg) {
-        String str = Arrays.stream(arg).map(Object::toString).collect(Collectors.joining(", "));
-        return "[" + str + "]";
-    }
+    public static String list(boolean wrapper, @Nullable Object... arg) {
+        if (arg == null) {
+            return "null";
+        }
 
-    public static String list2(Object... arg) {
-        String str = Arrays.stream(arg).map(Object::toString).collect(Collectors.joining("\", \""));
-        return "[" + str + "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append(wrapper ? "[\"" : "[");
+
+        for (int i = 0; i < arg.length; i++) {
+            if (arg[i] == null) {
+                sb.append("null");
+            } else if (arg[i] instanceof Object[] arr) {
+                sb.append(list(false, arr));
+            } else {
+                sb.append(arg[i].toString());
+            }
+
+            if (i < arg.length - 1) {
+                sb.append(wrapper ? "\", \"" : ", ");
+            }
+        }
+
+        sb.append(wrapper ? "\"]" : "]");
+        return sb.toString();
     }
 
     static class HIMenuFragment {

@@ -28,8 +28,6 @@ import mindustry.world.consumers.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 
-import java.util.*;
-
 import static mindustry.Vars.*;
 
 /**
@@ -54,6 +52,8 @@ public class MultiCrafter extends Block {
     public boolean useLiquidTable = true;
     /** How many formulas can be displayed at most once. */
     public int maxList = 4;
+
+    protected Formula defFor = new Formula();
 
     public MultiCrafter(String name) {
         super(name);
@@ -82,6 +82,9 @@ public class MultiCrafter extends Block {
 
     @Override
     public void init() {
+        defFor.owner = this;
+        defFor.init();
+
         for (Formula product : products) {
             product.owner = this;
             product.init();
@@ -185,7 +188,7 @@ public class MultiCrafter extends Block {
     }
 
     public class MultiCrafterBuild extends Building {
-        public Formula formula = products.any() ? products.get(0) : null;
+        public Formula formula = products.any() ? products.get(0) : defFor;
         public float progress;
         public float totalProgress;
         public float warmup;
@@ -656,6 +659,13 @@ public class MultiCrafter extends Block {
 
         public float updateEffectChance = 0.05f;
 
+        //The block must be HeatBlock, otherwise the following variables are invalid.
+        public float heatOutput = 0f;
+        public float heatRequirement = 0f;
+        public float warmupRate = 0.15f;
+
+        public float maxHeatEfficiency = 1f;
+
         public Effect updateEffect = Fx.none;
         public Effect craftEffect = Fx.none;
 
@@ -786,34 +796,6 @@ public class MultiCrafter extends Block {
                 consPower = (ConsumePower) consume;
             }
             consumeBuilder.add(consume);
-        }
-
-        @Override
-        public String toString() {
-            return "Formula{" +
-                    "consumers=" + Arrays.toString(consumers) +
-                    ", optionalConsumers=" + Arrays.toString(optionalConsumers) +
-                    ", nonOptionalConsumers=" + Arrays.toString(nonOptionalConsumers) +
-                    ", updateConsumers=" + Arrays.toString(updateConsumers) +
-                    ", consPower=" + consPower +
-                    ", craftTime=" + craftTime +
-                    ", hasConsumers=" + hasConsumers +
-                    ", outputItems=" + Arrays.toString(outputItems) +
-                    ", outputLiquids=" + Arrays.toString(outputLiquids) +
-                    ", liquidOutputDirections=" + Arrays.toString(liquidOutputDirections) +
-                    ", ignoreLiquidFullness=" + ignoreLiquidFullness +
-                    ", dumpExtraLiquid=" + dumpExtraLiquid +
-                    ", warmupSpeed=" + warmupSpeed +
-                    ", updateEffectChance=" + updateEffectChance +
-                    ", updateEffect=" + updateEffect +
-                    ", craftEffect=" + craftEffect +
-                    ", drawer=" + drawer +
-                    ", itemFilter=" + itemFilter +
-                    ", liquidFilter=" + liquidFilter +
-                    ", owner=" + owner +
-                    ", consumeBuilder=" + consumeBuilder +
-                    ", barMap=" + barMap +
-                    '}';
         }
     }
 }

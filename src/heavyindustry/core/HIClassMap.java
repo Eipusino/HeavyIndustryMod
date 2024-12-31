@@ -231,6 +231,8 @@ final class HIClassMap {
         classes.put("ThermalHeaterBuild", ThermalHeater.ThermalHeaterBuild.class);
         classes.put("HeatDriver", HeatDriver.class);
         classes.put("HeatDriverBuild", HeatDriver.HeatDriverBuild.class);
+        classes.put("HeatMultiCrafter", HeatMultiCrafter.class);
+        classes.put("HeatMultiCrafterBuild", HeatMultiCrafter.HeatMultiCrafterBuild.class);
         classes.put("MultiLiquidBridge", MultiLiquidBridge.class);
         classes.put("MultiLiquidBridgeBuild", MultiLiquidBridge.MultiLiquidBridgeBuild.class);
         classes.put("SortLiquidRouter", SortLiquidRouter.class);
