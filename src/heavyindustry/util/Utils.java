@@ -13,8 +13,10 @@ import arc.scene.ui.*;
 import arc.scene.ui.ImageButton.*;
 import arc.struct.*;
 import arc.util.*;
+import arc.util.pooling.*;
 import arc.util.pooling.Pool.*;
 import heavyindustry.content.*;
+import heavyindustry.gen.*;
 import heavyindustry.struct.*;
 import mindustry.content.*;
 import mindustry.core.*;
@@ -713,13 +715,61 @@ public final class Utils {
         Seq<Tile> tSeq = ableToSpawn(type, x, y, range);
 
         rand.setSeed(seed);
-        for(int i = 0; i < num; i++){
+        for (int i = 0; i < num; i++) {
             Tile[] positions = tSeq.shrink();
-            if(positions.length < num)return false;
+            if (positions.length < num) return false;
             spawnPoints.add(new Vec2().set(positions[rand.nextInt(positions.length)]));
         }
 
         return true;
+    }
+
+    public static boolean spawnUnit(Team team, float x, float y, float angle, float spawnRange, float spawnReloadTime, float spawnDelay, UnitType type, int spawnNum, Cons<Spawner> modifier) {
+        if (type == null) return false;
+        clearTmp();
+        Seq<Vec2> vectorSeq = new Seq<>();
+
+        if (!ableToSpawnPoints(vectorSeq, type, x, y, spawnRange, spawnNum, rand.nextLong())) return false;
+
+        int i = 0;
+        for (Vec2 s : vectorSeq) {
+            Spawner spawner = Pools.obtain(Spawner.class, Spawner::new);
+            spawner.init(type, team, s, angle, spawnReloadTime + i * spawnDelay);
+            modifier.get(spawner);
+            if (!net.client()) spawner.add();
+            i++;
+        }
+        return true;
+    }
+
+    public static boolean spawnUnit(Team team, float x, float y, float angle, float spawnRange, float spawnReloadTime, float spawnDelay, UnitType type, int spawnNum) {
+        return spawnUnit(team, x, y, angle, spawnRange, spawnReloadTime, spawnDelay, type, spawnNum, t -> {});
+    }
+
+    public static boolean spawnUnit(Team team, float x, float y, float angle, float spawnRange, float spawnReloadTime, float spawnDelay, UnitType type, int spawnNum, StatusEffect statusEffect, float statusDuration) {
+        return spawnUnit(team, x, y, angle, spawnRange, spawnReloadTime, spawnDelay, type, spawnNum, s -> {
+            s.setStatus(statusEffect, statusDuration);
+        });
+    }
+
+    public static boolean spawnUnit(Team team, float x, float y, float angle, float spawnRange, float spawnReloadTime, float spawnDelay, UnitType type, int spawnNum, StatusEffect statusEffect, float statusDuration, double frag) {
+        return spawnUnit(team, x, y, angle, spawnRange, spawnReloadTime, spawnDelay, type, spawnNum, s -> {
+            s.setStatus(statusEffect, statusDuration);
+            s.flagToApply = frag;
+        });
+    }
+
+    public static void spawnSingleUnit(Team team, float x, float y, float angle, float delay, UnitType type) {
+        Spawner spawner = Pools.obtain(Spawner.class, Spawner::new);
+        spawner.init(type, team, v1.set(x, y), angle, delay);
+        if (!net.client()) spawner.add();
+    }
+
+    public static void spawnSingleUnit(Team team, float x, float y, float angle, float delay, UnitType type, Cons<Spawner> modifier) {
+        Spawner spawner = Pools.obtain(Spawner.class, Spawner::new);
+        spawner.init(type, team, v1.set(x, y), angle, delay);
+        modifier.get(spawner);
+        if (!net.client()) spawner.add();
     }
 
     public static <T extends QuadTreeObject> Seq<T> getObjects(QuadTree<T> tree) {

@@ -2,6 +2,7 @@ package heavyindustry.gen;
 
 import arc.audio.*;
 import arc.files.*;
+import mindustry.*;
 
 import static heavyindustry.core.HeavyIndustryMod.*;
 
@@ -15,6 +16,7 @@ public final class HISounds {
             flak = new Sound(),
             flak2 = new Sound(),
             shock = new Sound(),
+            jumpIn = new Sound(),
             launch = new Sound(),
             gauss = new Sound(),
             radar = new Sound(),
@@ -45,6 +47,7 @@ public final class HISounds {
         flak2 = new Sound(ogg("flak2"));
         launch = new Sound(ogg("launch"));
         shock = new Sound(ogg("shock"));
+        jumpIn = new Sound(ogg("jumpIn"));
         gauss = new Sound(ogg("gauss"));
         radar = new Sound(mp3("radar"));
         fissure = new Sound(ogg("fissure"));
@@ -60,6 +63,12 @@ public final class HISounds {
         hailRain = new Sound(ogg("hailRain"));
         bigHailstoneHit = new Sound(ogg("bigHailstoneHit"));
         giantHailstoneHit = new Sound(ogg("giantHailstoneHit"));
+    }
+
+    public static void alertLoop() {
+        if (!Vars.headless) {
+            Vars.control.sound.loop(alert2, 2f);
+        }
     }
 
     public static Fi ogg(String name) {

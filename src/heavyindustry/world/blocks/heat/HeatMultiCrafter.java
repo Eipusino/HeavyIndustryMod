@@ -7,6 +7,11 @@ import mindustry.graphics.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.heat.*;
 
+/**
+ * Why is the heat separated separately? Mainly to avoid various strange small problems.
+ *
+ * @author Eipusino
+ */
 public class HeatMultiCrafter extends MultiCrafter {
     protected boolean consumeHeat, outputHeat;
 

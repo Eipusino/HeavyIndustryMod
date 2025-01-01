@@ -53,5 +53,6 @@ public final class EntityRegister {
         r("PesterUnit", PesterUnit.class, PesterUnit::new);
         r("NucleoidUnit", NucleoidUnit.class, NucleoidUnit::new);
         r("UltFire", UltFire.class, UltFire::new);
+        r("Spawner", Spawner.class, Spawner::new);
     }
 }

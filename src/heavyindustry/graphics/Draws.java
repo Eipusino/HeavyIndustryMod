@@ -1298,21 +1298,21 @@ public final class Draws {
 
         public static void load() {
             sinShader = new MathShader(1, 2,
-                    "y - sin(x*arg0 + arg1)",
-                    "sqrt(1.0 + pow(arg0*cos(x*arg0 + arg1), 2.0))",
+                    "y - sin(x * arg0 + arg1)",
+                    "sqrt(1.0 + pow(arg0 * cos(x * arg0 + arg1), 2.0))",
                     "float", "float"
             );
 
             ovalShader = new MathShader(
-                    "x*x*arg0 + y*y*arg1 - arg2",
-                    "sqrt(4.0*pow(arg0*x, 2.0) + 4.0*pow(arg1*y, 2.0))",
+                    "x * x * arg0 + y * y * arg1 - arg2",
+                    "sqrt(4.0 * pow(arg0 * x, 2.0) + 4.0 * pow(arg1 * y, 2.0))",
                     "float", "float", "float"
             );
 
             curveCircle = new MathShader(
                     "float arctan = arg2 * atan(y / x);\nfloat costan = cos(arctan);", 2, 2,
                     "x * x + y * y - arg0 - arg1 * sin(arctan)",
-                    "sqrt(pow((x * costan + 2.0 * y * y * y + 2.0 * x * x * y)/(x * x + y * y), 2.0) + pow((2.0 * x * x * x + 2.0 * x * y * y + arg1 * arg2 * y * costan) / (x * x + y * y), 2.0))",
+                    "sqrt(pow((x * costan + 2.0 * y * y * y + 2.0 * x * x * y) / (x * x + y * y), 2.0) + pow((2.0 * x * x * x + 2.0 * x * y * y + arg1 * arg2 * y * costan) / (x * x + y * y), 2.0))",
                     "float", "float", "float"
             );
         }
@@ -1444,7 +1444,7 @@ public final class Draws {
                     %perVar%
                 
                     float gradMod = %gradMod%;
-                    float alpha = dispersion * gradMod / (abs(%fx%) + dispersion*gradMod);
+                    float alpha = dispersion * gradMod / (abs(%fx%) + dispersion * gradMod);
                 
                     alpha = max(min((alpha - minThreshold)/(maxThreshold - minThreshold), 1.0), 0.0) * mixed.a;
                 

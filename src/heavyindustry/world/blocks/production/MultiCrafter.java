@@ -31,7 +31,7 @@ import mindustry.world.meta.*;
 import static mindustry.Vars.*;
 
 /**
- * MultiCrafter, Not currently supporting heat.
+ * MultiCrafter. The heat version is in {@link heavyindustry.world.blocks.heat.HeatMultiCrafter}.
  * <p>Although Kotlin is really fun, it is still comfortable to write in Java.
  *
  * @author Eipusino
@@ -52,8 +52,6 @@ public class MultiCrafter extends Block {
     public boolean useLiquidTable = true;
     /** How many formulas can be displayed at most once. */
     public int maxList = 4;
-
-    protected Formula defFor = new Formula();
 
     public MultiCrafter(String name) {
         super(name);
@@ -82,9 +80,6 @@ public class MultiCrafter extends Block {
 
     @Override
     public void init() {
-        defFor.owner = this;
-        defFor.init();
-
         for (Formula product : products) {
             product.owner = this;
             product.init();
@@ -188,7 +183,7 @@ public class MultiCrafter extends Block {
     }
 
     public class MultiCrafterBuild extends Building {
-        public Formula formula = products.any() ? products.get(0) : defFor;
+        public Formula formula = products.any() ? products.get(0) : null;
         public float progress;
         public float totalProgress;
         public float warmup;
@@ -791,9 +786,9 @@ public class MultiCrafter extends Block {
         }
 
         public <T extends Consume> void consume(T consume) {
-            if (consume instanceof ConsumePower) {
+            if (consume instanceof ConsumePower cons) {
                 consumeBuilder.removeAll(b -> b instanceof ConsumePower);
-                consPower = (ConsumePower) consume;
+                consPower = cons;
             }
             consumeBuilder.add(consume);
         }
