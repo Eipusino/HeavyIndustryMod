@@ -15,6 +15,7 @@ import arc.util.*;
 import arc.util.io.*;
 import heavyindustry.ui.*;
 import mindustry.content.*;
+import mindustry.core.*;
 import mindustry.ctype.*;
 import mindustry.entities.*;
 import mindustry.entities.units.*;
@@ -31,11 +32,10 @@ import mindustry.world.meta.*;
 import static mindustry.Vars.*;
 
 /**
- * MultiCrafter. The heat version is in {@link heavyindustry.world.blocks.heat.HeatMultiCrafter}.
- * <p>Although Kotlin is really fun, it is still comfortable to write in Java.
+ * The version that supports heat is available in {@link heavyindustry.world.blocks.heat.HeatMultiCrafter }.
+ * <p>f**k, This thing has been fixed for a century, but the bug hasn't been completely fixed.
  *
  * @author Eipusino
- * @author guiY
  */
 public class MultiCrafter extends Block {
     /** Recipe {@link Formula}. */
@@ -59,6 +59,7 @@ public class MultiCrafter extends Block {
         update = true;
         solid = true;
         hasItems = true;
+        consumesPower = false;
         ambientSound = Sounds.machine;
         sync = true;
         ambientSoundVolume = 0.03f;
@@ -92,9 +93,14 @@ public class MultiCrafter extends Block {
             }
             if (product.consPower != null) {
                 hasPower = true;
-                consume(new ConsumePowerDynamic(b -> b instanceof MultiCrafterBuild mb ? mb.formulaPower() : 0));
+                consumesPower = true;
+            }
+            if (product.powerProduction > 0) {
+                hasPower = true;
+                outputsPower = true;
             }
         }
+        if (consumesPower) consumePowerDynamic(b -> b instanceof MultiCrafterBuild tile ? tile.formulaPower() : 0);
 
         super.init();
 
@@ -103,16 +109,22 @@ public class MultiCrafter extends Block {
 
     @Override
     public void setBars() {
-        super.setBars();
-        removeBar("items");
-        removeBar("liquid");
-        removeBar("power");
+        addBar("health", entity -> new Bar("stat.health", Pal.health, entity::healthf).blink(Color.white));
+
         if (consPower != null) {
-            addBar("power", (MultiCrafterBuild e) -> new Bar(
-                    () -> Core.bundle.format("bar.hi-fall-mti-power", Strings.autoFixed(e.getInputPower(), 2)),
+            boolean buffered = consPower.buffered;
+            float capacity = consPower.capacity;
+
+            addBar("power", entity -> new Bar(
+                    () -> buffered ? Core.bundle.format("bar.poweramount", Float.isNaN(entity.power.status * capacity) ? "<ERROR>" : UI.formatAmount((int) (entity.power.status * capacity))) :
+                            Core.bundle.get("bar.power"),
                     () -> Pal.powerBar,
-                    () -> Mathf.zero(consPower.requestedPower(e)) && e.power.graph.getPowerProduced() + e.power.graph.getBatteryStored() > 0f ? 1f : e.power.status)
+                    () -> Mathf.zero(consPower.requestedPower(entity)) && entity.power.graph.getPowerProduced() + entity.power.graph.getBatteryStored() > 0f ? 1f : entity.power.status)
             );
+        }
+
+        if (unitCapModifier != 0) {
+            stats.add(Stat.maxUnits, (unitCapModifier < 0 ? "-" : "+") + Math.abs(unitCapModifier));
         }
     }
 
@@ -122,29 +134,24 @@ public class MultiCrafter extends Block {
         stats.add(Stat.output, table -> {
             table.row();
 
-            for (int i = 0; i < products.size; i++) {
-                Formula p = products.get(i);
-                int j = i + 1;
+            for (Formula p : products) {
                 table.table(Styles.grayPanel, info -> {
                     info.left().defaults().left();
-                    info.add("[accent]formula[]" + j + ":").row();
                     Stats stat = new Stats();
                     stat.timePeriod = p.craftTime;
                     if (p.hasConsumers)
-                        for (Consume c : p.consumers) {
+                        for (Consume c : p.consumers)
                             c.display(stat);
-                        }
-                    if ((hasItems && itemCapacity > 0) || p.outputItems.length > 0) {
+
+                    if ((hasItems && itemCapacity > 0) || p.outputItems.length > 0)
                         stat.add(Stat.productionTime, p.craftTime / 60f, StatUnit.seconds);
-                    }
 
-                    if (p.outputItems.length > 0) {
+                    if (p.outputItems.length > 0)
                         stat.add(Stat.output, StatValues.items(p.craftTime, p.outputItems));
-                    }
 
-                    if (p.outputLiquids.length > 0) {
+                    if (p.outputLiquids.length > 0)
                         stat.add(Stat.output, StatValues.liquids(1f, p.outputLiquids));
-                    }
+
                     info.table(t -> UIUtils.statTurnTable(stat, t)).pad(8).left();
                 }).growX().left().pad(10);
                 table.row();
@@ -222,16 +229,18 @@ public class MultiCrafter extends Block {
         }
 
         public float formulaPower() {
-            if (formula == null) return 0;
+            if (formula == null) return 0f;
 
             ConsumePower consumePower = formula.consPower;
-            if (consumePower == null) return 0;
+            if (consumePower == null) return 0f;
 
             return consumePower.usage;
+
         }
 
-        public float getInputPower() {
-            return formulaPower() * 60 * efficiency() * optionalEfficiency() * potentialEfficiency();
+        @Override
+        public float getPowerProduction() {
+            return formula != null ? formula.powerProduction : 0f;
         }
 
         @Override
@@ -369,9 +378,8 @@ public class MultiCrafter extends Block {
         @Override
         public void consume() {
             if (formula == null) return;
-            Consume[] c = formula.consumers;
 
-            for (Consume cons : c) {
+            for (Consume cons : formula.consumers) {
                 cons.trigger(this);
             }
         }
@@ -394,8 +402,8 @@ public class MultiCrafter extends Block {
 
         protected void rebuild(Table table) {
             table.clear();
-            Consume[] consumes = formula.consumers;
-            for (Consume cons : consumes) {
+
+            for (Consume cons : formula.consumers) {
                 if (!cons.optional || !cons.booster) {
                     cons.build(this, table);
                 }
@@ -427,6 +435,7 @@ public class MultiCrafter extends Block {
         public void displayBars(Table table) {
             super.displayBars(table);
             if (formula == null) return;
+
             Formula[] lastFormula = {formula};
             table.update(() -> {
                 if (lastFormula[0] != formula) {
@@ -440,15 +449,17 @@ public class MultiCrafter extends Block {
         protected void rebuildBar(Table table) {
             table.clear();
 
-            for (Func<Building, Bar> bar : block.listBars()) {
+            for (var bar : block.listBars()) {
                 Bar result = bar.get(this);
                 if (result != null) {
                     table.add(result).growX();
                     table.row();
                 }
             }
+
             if (formula == null || formula.barMap.isEmpty()) return;
-            for (Func<Building, Bar> bar : formula.listBars()) {
+
+            for (var bar : formula.listBars()) {
                 Bar result = bar.get(this);
                 if (result == null) continue;
                 table.add(result).growX();
@@ -464,53 +475,57 @@ public class MultiCrafter extends Block {
         @Override
         public void updateConsumption() {
             if (formula == null) return;
-            if (formula.hasConsumers && !cheating()) {
-                if (!enabled) {
-                    potentialEfficiency = efficiency = optionalEfficiency = 0;
-                } else {
-                    boolean update = shouldConsume() && productionValid();
-                    float minEfficiency = 1f;
-                    efficiency = optionalEfficiency = 1f;
-                    Consume[] consumes = formula.nonOptionalConsumers;
-                    int length = consumes.length;
 
-                    int i;
-                    Consume cons;
-                    for (i = 0; i < length; i++) {
-                        cons = consumes[i];
-                        minEfficiency = Math.min(minEfficiency, cons.efficiency(this));
-                    }
-
-                    consumes = formula.optionalConsumers;
-                    length = consumes.length;
-
-                    for (i = 0; i < length; i++) {
-                        cons = consumes[i];
-                        optionalEfficiency = Math.min(optionalEfficiency, cons.efficiency(this));
-                    }
-
-                    efficiency = minEfficiency;
-                    optionalEfficiency = Math.min(optionalEfficiency, minEfficiency);
-                    potentialEfficiency = efficiency;
-                    if (!update) {
-                        efficiency = optionalEfficiency = 0f;
-                    }
-
-                    updateEfficiencyMultiplier();
-                    if (update && efficiency > 0f) {
-                        consumes = formula.updateConsumers;
-                        length = consumes.length;
-
-                        for (i = 0; i < length; i++) {
-                            cons = consumes[i];
-                            cons.update(this);
-                        }
-                    }
-                }
-            } else {
+            //everything is valid when cheating
+            if (!formula.hasConsumers || cheating()) {
                 potentialEfficiency = enabled && productionValid() ? 1f : 0f;
                 efficiency = optionalEfficiency = shouldConsume() ? potentialEfficiency : 0f;
                 updateEfficiencyMultiplier();
+                return;
+            }
+
+            //disabled -> nothing works
+            if (!enabled) {
+                potentialEfficiency = efficiency = optionalEfficiency = 0f;
+                return;
+            }
+
+            boolean update = shouldConsume() && productionValid();
+
+            float minEfficiency = 1f;
+
+            //assume efficiency is 1 for the calculations below
+            efficiency = optionalEfficiency = 1f;
+
+            //first pass: get the minimum efficiency of any consumer
+            for (var cons : formula.nonOptionalConsumers) {
+                minEfficiency = Math.min(minEfficiency, cons.efficiency(this));
+            }
+
+            //same for optionals
+            for (var cons : formula.optionalConsumers) {
+                optionalEfficiency = Math.min(optionalEfficiency, cons.efficiency(this));
+            }
+
+            //efficiency is now this minimum value
+            efficiency = minEfficiency;
+            optionalEfficiency = Math.min(optionalEfficiency, minEfficiency);
+
+            //assign "potential"
+            potentialEfficiency = efficiency;
+
+            //no updating means zero efficiency
+            if (!update) {
+                efficiency = optionalEfficiency = 0f;
+            }
+
+            updateEfficiencyMultiplier();
+
+            //second pass: update every consumer based on efficiency
+            if (update && efficiency > 0) {
+                for (var cons : formula.updateConsumers) {
+                    cons.update(this);
+                }
             }
         }
 
@@ -653,6 +668,8 @@ public class MultiCrafter extends Block {
         public float warmupSpeed = 0.02f;
 
         public float updateEffectChance = 0.05f;
+
+        public float powerProduction = 0f;
 
         //The block must be HeatBlock, otherwise the following variables are invalid.
         public float heatOutput = 0f;

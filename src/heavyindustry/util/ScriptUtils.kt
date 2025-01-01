@@ -201,6 +201,11 @@ class ScriptUtils internal constructor() {
                 if (coolantMultiplier > 0.0001f) block.coolantMultiplier = coolantMultiplier
             }
         }
+
+        @JvmStatic
+        fun coolant(block: Block?, v: Float) {
+            coolant(block, v, 0f)
+        }
     }
 }
 

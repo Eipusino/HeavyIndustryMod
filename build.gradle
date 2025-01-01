@@ -44,7 +44,6 @@ allprojects{
 dependencies{
     implementation "org.jetbrains:annotations:24.0.1"
     implementation "org.ow2.asm:asm:$asmVersion"
-    implementation "commons-io:commons-io:$commonsIoVersion"
 
     compileOnly files("libs/mindustry.jar")
 

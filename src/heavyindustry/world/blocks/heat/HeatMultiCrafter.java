@@ -40,6 +40,7 @@ public class HeatMultiCrafter extends MultiCrafter {
     @Override
     public void setBars() {
         super.setBars();
+
         if (outputHeat) addBar("heatoutput", (HeatMultiCrafterBuild tile) -> new Bar("bar.heat", Pal.lightOrange, () -> tile.formula != null ? tile.heat / tile.formula.heatOutput : 0));
         if (consumeHeat) addBar("heatconsume", (HeatMultiCrafterBuild tile) -> new Bar(
                 () -> Core.bundle.format("bar.heatpercent", tile.heatRequirement, tile.formula != null ? Math.min((tile.heatRequirement / tile.formula.heatRequirement * 100), tile.formula.maxHeatEfficiency) : 0),

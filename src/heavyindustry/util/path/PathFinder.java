@@ -1,6 +1,6 @@
-package heavyindustry.files;
+package heavyindustry.util.path;
 
-import heavyindustry.files.PathFindFunc.*;
+import heavyindustry.util.path.PathFindFunc.*;
 
 /**
  * The base class, subclass, or interface of the basic path searcher requires the use of one or several algorithms to implement the path search method.
@@ -12,7 +12,7 @@ public interface PathFinder<V> {
      * <p>The element iterated from the object returned by this method is the child node connected to the point, for example:
      * <pre>{@code
      * /---\   /---\   /---\
-     * | A |-> | B |-->| E |
+     * | A |-->| B |-->| E |
      * \---/   \---/   \---/
      *  | |
      *  | \----n---\   /---\

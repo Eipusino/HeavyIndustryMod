@@ -18,7 +18,6 @@ public class BitWordList {
 
         wordLen = b.value;
         wordMask = (short) ~(~1 << (b.value - 1));
-
     }
 
     /** Sets these bits to have the same bits as another. Both sets should have the same length. */
@@ -140,7 +139,6 @@ public class BitWordList {
 
         return nonZeroLength() == other.nonZeroLength();
     }
-
 
     /**
      * for one bit use {@link arc.struct.Bits}

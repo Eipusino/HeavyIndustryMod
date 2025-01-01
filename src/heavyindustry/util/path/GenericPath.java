@@ -1,4 +1,4 @@
-package heavyindustry.files;
+package heavyindustry.util.path;
 
 import java.util.*;
 

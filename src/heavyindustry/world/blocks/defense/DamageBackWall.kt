@@ -30,8 +30,8 @@ open class DamageBackWall(name: String) : Wall(name) {
         stats.add(Stat("damage-back-threshold", StatCat.function), max, StatUnit.none)
         stats.add(Stat("damage-back", StatCat.function), max * damageMulti, StatUnit.none)
         stats.add(Stat("damage-back-reload", StatCat.function), reload / 60, StatUnit.seconds)
-        //stats.add(Stat("damageBackAir", StatCat.function), air, StatUnit.none)
-        //stats.add(Stat("damageBackGround", StatCat.function), ground, StatUnit.none)
+        stats.add(Stat("damage-back-air", StatCat.function), "$air", StatUnit.none)
+        stats.add(Stat("damage-back-ground", StatCat.function), "$ground", StatUnit.none)
     }
 
     override fun setBars() {

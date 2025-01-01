@@ -38,12 +38,12 @@ public abstract class BaseEntity implements Drawc {
 
     @Override
     public boolean isLocal() {
-        return this instanceof Unitc && ((Unitc) this).controller() == player;
+        return this instanceof Unitc unit && unit.controller() == player;
     }
 
     @Override
     public boolean isRemote() {
-        return this instanceof Unitc && ((Unitc) this).isPlayer() && !isLocal();
+        return this instanceof Unitc unit && unit.isPlayer() && !isLocal();
     }
 
     @Override

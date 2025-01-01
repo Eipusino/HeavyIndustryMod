@@ -141,8 +141,6 @@ final class HIClassMap {
         classes.put("StaticNodeBuild", StaticNode.StaticNodeBuild.class);
         classes.put("EffectZone", EffectZone.class);
         classes.put("EffectZoneBuild", EffectZone.EffectZoneBuild.class);
-        classes.put("ShieldProjector", ShieldProjector.class);
-        classes.put("ShieldProjector", ShieldProjector.ShieldBuild.class);
         classes.put("AssignOverdrive", AssignOverdrive.class);
         classes.put("AssignOverdriveBuild", AssignOverdrive.AssignOverdriveBuild.class);
         classes.put("AdjustableOverdrive", AdjustableOverdrive.class);

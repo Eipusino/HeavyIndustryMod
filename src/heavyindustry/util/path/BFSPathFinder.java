@@ -1,4 +1,4 @@
-package heavyindustry.files;
+package heavyindustry.util.path;
 
 /**
  * The preliminary implementation of pathfinding based on breadth first search requires the provision of necessary container entry points to implement this interface.

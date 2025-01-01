@@ -1,4 +1,4 @@
-package heavyindustry.files;
+package heavyindustry.util.path;
 
 /** Saved the callback function types used during path search, which are used to construct transitive functions for lambda. */
 public class PathFindFunc {

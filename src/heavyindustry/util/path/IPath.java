@@ -1,4 +1,4 @@
-package heavyindustry.files;
+package heavyindustry.util.path;
 
 /**
  * The basic interface of the path storage type should be assigned corresponding functions to the class, and the iterable interface has been extended.

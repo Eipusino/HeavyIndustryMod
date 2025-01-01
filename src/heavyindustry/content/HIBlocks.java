@@ -115,7 +115,7 @@ public final class HIBlocks {
             //production-erekir
             ventHeater, chemicalSiliconSmelter, largeElectricHeater, liquidFuelHeater, heatDriver, largeOxidationChamber, largeSurgeCrucible, largeCarbideCrucible, nanocoreConstructorErekir, nanocorePrinterErekir, uraniumFuser, chromiumFuser,
             //defense
-            lighthouse, mendDome, sectorStructureMender, assignOverdrive, ballisticProjector, largeShieldGenerator, paralysisMine, detonator, bombLauncher,
+            lighthouse, mendDome, sectorStructureMender, assignOverdrive, largeShieldGenerator, paralysisMine, detonator, bombLauncher,
             //defense-erekir
             largeRadar,
             //storage
@@ -2314,29 +2314,6 @@ public final class HIBlocks {
             consumeItem(Items.phaseFabric).boost();
             squareSprite = false;
         }};
-        ballisticProjector = new ShieldProjector("ballistic-projector") {{
-            requirements(Category.effect, BuildVisibility.sandboxOnly, with(Items.lead, 325, Items.titanium, 225, Items.thorium, 125, Items.surgeAlloy, 75));
-            size = 4;
-            sides = 4;
-            radius = 64.5f;
-            phaseRadiusBoost = 27.5f;
-            height = 8f * tilesize;
-            phaseHeightBoost = 4f * tilesize;
-            shieldHealth = 3600f;
-            phaseShieldBoost = 2000f;
-            shieldCharge = 700f;
-            phaseShieldCharge = 400f;
-            chargeTime = 450f;
-            cooldownBrokenBase *= 2f;
-            hideDetails = false;
-            consumePower(7f);
-            itemConsumer = consumeItem(Items.phaseFabric, 1).boost();
-        }
-            @Override
-            protected TextureRegion[] icons() {
-                return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
-            }
-        };
         largeShieldGenerator = new ForceProjector("large-shield-generator") {{
             requirements(Category.effect, with(Items.silicon, 120, Items.lead, 250, Items.graphite, 180, Items.plastanium, 150, Items.phaseFabric, 40, HIItems.chromium, 60));
             size = 4;
