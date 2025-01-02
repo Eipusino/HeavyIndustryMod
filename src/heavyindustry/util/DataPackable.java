@@ -14,7 +14,7 @@ import java.io.*;
  * <pre>{@code
  * //Declare a packable type
  * public class GltfData implements DataPackable {
- *     private final static long typeID = 1587541965784324577L;
+ *     private static final long typeID = 1587541965784324577L;
  *
  *     static {
  *         DataPackable.assignType(typeID, args -> new GltfData());

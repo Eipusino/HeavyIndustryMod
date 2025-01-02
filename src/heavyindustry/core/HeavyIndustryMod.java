@@ -23,7 +23,6 @@ import heavyindustry.net.*;
 import heavyindustry.ui.*;
 import heavyindustry.ui.dialogs.*;
 import heavyindustry.util.*;
-import kotlin.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.game.EventType.*;
@@ -64,10 +63,6 @@ public final class HeavyIndustryMod extends Mod {
     public static InputAggregator inputAggregator;
 
     private static LoadedMod mod;
-
-    static {
-        Log.infoTag("Kotlin", "Version: " + KotlinVersion.CURRENT);
-    }
 
     public HeavyIndustryMod() {
         Log.info("Loaded HeavyIndustry Mod constructor.");
@@ -338,6 +333,8 @@ public final class HeavyIndustryMod extends Mod {
         static final Vec2 vec2 = new Vec2();
 
         static String title = "oh no";
+
+        HIMenuFragment() {}
 
         static void build(Group parent) {
             parent.fill((x, y, w, h) -> {

@@ -8,7 +8,7 @@ import mindustry.world.meta.*;
 import static mindustry.Vars.*;
 
 public class AdaptiveSource extends PowerSource {
-    protected short itemPerSec;
+    public short itemsPerSecond;
 
     public float heatOutput = 1000f;
 
@@ -49,7 +49,7 @@ public class AdaptiveSource extends PowerSource {
             if (proximity.isEmpty()) return;
 
             counter += edelta();
-            float limit = 60f / itemPerSec;
+            float limit = 60f / itemsPerSecond;
 
             while (counter >= limit) {
                 for (Item item : content.items()) {

@@ -61,9 +61,77 @@ public final class Utils {
 
     public static final Rand rand = new Rand(0);
 
-    /** Kotlin is rarely used in certain situations. */
-    public static final Class<Integer> IC = Integer.class;
-    public static final Class<int[]> IAC = int[].class;
+    public static final String[] packages = {
+            "heavyindustry",
+            "heavyindustry.ai",
+            "heavyindustry.content",
+            "heavyindustry.core",
+            "heavyindustry.entities",
+            "heavyindustry.entities.abilities",
+            "heavyindustry.entities.bullet",
+            "heavyindustry.entities.effect",
+            "heavyindustry.entities.part",
+            "heavyindustry.entities.pattern",
+            "heavyindustry.files",
+            "heavyindustry.func",
+            "heavyindustry.game",
+            "heavyindustry.gen",
+            "heavyindustry.graphics",
+            "heavyindustry.graphics.g2d",
+            "heavyindustry.graphics.g3d",
+            "heavyindustry.graphics.g3d.model",
+            "heavyindustry.graphics.g3d.model.obj",
+            "heavyindustry.graphics.g3d.model.obj.mtl",
+            "heavyindustry.graphics.g3d.model.obj.obj",
+            "heavyindustry.graphics.g3d.render",
+            "heavyindustry.input",
+            "heavyindustry.io",
+            "heavyindustry.maps",
+            "heavyindustry.maps.planets",
+            "heavyindustry.math",
+            "heavyindustry.math.gravity",
+            "heavyindustry.mod",
+            "heavyindustry.net",
+            "heavyindustry.struct",
+            "heavyindustry.type",
+            "heavyindustry.type.unit",
+            "heavyindustry.type.weapons",
+            "heavyindustry.type.weather",
+            "heavyindustry.ui",
+            "heavyindustry.ui.components",
+            "heavyindustry.ui.defaults",
+            "heavyindustry.ui.dialogs",
+            "heavyindustry.ui.elements",
+            "heavyindustry.ui.fragment",
+            "heavyindustry.ui.listeners",
+            "heavyindustry.ui.tooltips",
+            "heavyindustry.util",
+            "heavyindustry.util.path",
+            "heavyindustry.world",
+            "heavyindustry.world.blocks",
+            //"heavyindustry.world.blocks.campaign",
+            "heavyindustry.world.blocks.defense",
+            "heavyindustry.world.blocks.defense.turrets",
+            "heavyindustry.world.blocks.distribution",
+            "heavyindustry.world.blocks.environment",
+            "heavyindustry.world.blocks.heat",
+            "heavyindustry.world.blocks.liquid",
+            "heavyindustry.world.blocks.logic",
+            "heavyindustry.world.blocks.payload",
+            "heavyindustry.world.blocks.power",
+            "heavyindustry.world.blocks.production",
+            "heavyindustry.world.blocks.sandbox",
+            "heavyindustry.world.blocks.storage",
+            "heavyindustry.world.blocks.units",
+            "heavyindustry.world.components",
+            "heavyindustry.world.consumers",
+            "heavyindustry.world.draw",
+            "heavyindustry.world.lightning",
+            "heavyindustry.world.lightning.generator",
+            "heavyindustry.world.meta",
+            "heavyindustry.world.particle",
+            "heavyindustry.world.particle.model"
+    };
 
     public static Seq<UnlockableContent> donorItems = new Seq<>();
     public static Seq<UnlockableContent> developerItems = new Seq<>();
@@ -181,16 +249,6 @@ public final class Utils {
         }
     }
 
-    /** Kotlin specific ternary expression method. */
-    @Contract(value = "true, _, _ -> param2; false, _, _ -> param3", pure = true)
-    public static <T> T eq(boolean a, T b, T c) {
-        return a ? b : c;
-    }
-
-    public static <T> T eq(T a, T b) {
-        return eq(a != null, a, b);
-    }
-
     /** {@link Tile#relativeTo(int, int)} does not account for building rotation. */
     public static int relativeDirection(Building from, Building to) {
         if (from == null || to == null) return -1;
@@ -232,13 +290,13 @@ public final class Utils {
         return py + r * (float) Math.sin(angle * Math.PI / 180);
     }
 
-    public static float posx(float x, float length, float angle) {
+    public static float posX(float x, float length, float angle) {
         float a = (float) ((Math.PI * angle) / 180);
         float cos = (float) Math.cos(a);
         return x + length * cos;
     }
 
-    public static float posy(float y, float length, float angle) {
+    public static float posY(float y, float length, float angle) {
         float a = (float) ((Math.PI * angle) / 180);
         float sin = (float) Math.sin(a);
         return y + length * sin;

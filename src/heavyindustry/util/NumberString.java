@@ -35,10 +35,7 @@ public final class NumberString {
         String[] arr = Double.toString(number / base).split("\\.");
         int realRetain = Math.min(retain, arr[1].length());
 
-        StringBuilder end = new StringBuilder();
-        for (int i = 0; i < retain - realRetain; i++) {
-            end.append("0");
-        }
+        String end = "0".repeat(Math.max(0, retain - realRetain));
 
         return (isNegative ? "-" : "") + arr[0] + (retain == 0 ? "" : "." + arr[1].substring(0, realRetain) + end);
     }
@@ -69,10 +66,7 @@ public final class NumberString {
         String[] arr = Double.toString(number / base).split("\\.");
         int realRetain = Math.min(retain, arr[1].length());
 
-        StringBuilder end = new StringBuilder();
-        for (int i = 0; i < retain - realRetain; i++) {
-            end.append("0");
-        }
+        String end = "0".repeat(Math.max(0, retain - realRetain));
 
         return (isNegative ? "-" : "") + arr[0] + (retain == 0 ? "" : "." + arr[1].substring(0, realRetain) + end + byteUnit[index]);
     }

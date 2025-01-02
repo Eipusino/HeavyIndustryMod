@@ -12,7 +12,7 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 
 public class MultiBarrelWeapon extends Weapon {
-    protected final static Vec2 tv = new Vec2();
+    protected static final Vec2 tv = new Vec2();
 
     public int barrels = 2;
     public float barrelSpacing = 6f;

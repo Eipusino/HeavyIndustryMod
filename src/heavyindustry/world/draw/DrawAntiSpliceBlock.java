@@ -16,7 +16,7 @@ import static heavyindustry.util.Utils.*;
 
 @SuppressWarnings("unchecked")
 public class DrawAntiSpliceBlock<E extends Building> extends DrawBlock {
-    protected final static String[] splices = {"right", "right-top", "top", "left-top", "left", "left-bot", "bot", "right-bot"};
+    protected static final String[] splices = {"right", "right-top", "top", "left-top", "left", "left-bot", "bot", "right-bot"};
 
     public TextureRegion[] drawRegions = new TextureRegion[256];//Space for time, don't use this type too much.
     public Boolf2<BuildPlan, BuildPlan> planSplicer = (plan, other) -> false;

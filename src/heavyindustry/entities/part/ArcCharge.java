@@ -16,7 +16,7 @@ import static mindustry.Vars.*;
 
 public class ArcCharge extends DrawPart {
     protected static final Rand rand = new Rand();
-    protected final static Vec2 tr = new Vec2(), tr2 = new Vec2();
+    protected static final Vec2 tr = new Vec2(), tr2 = new Vec2();
     public float size = 13.75f;
     public Color color;
     public PartProgress progress;

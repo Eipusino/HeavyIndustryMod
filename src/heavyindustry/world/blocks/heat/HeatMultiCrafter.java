@@ -2,6 +2,7 @@ package heavyindustry.world.blocks.heat;
 
 import arc.*;
 import arc.math.*;
+import arc.util.io.*;
 import heavyindustry.world.blocks.production.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
@@ -95,6 +96,20 @@ public class HeatMultiCrafter extends MultiCrafter {
         @Override
         public float heatRequirement() {
             return formula != null ? formula.heatRequirement : 0f;
+        }
+
+        @Override
+        public void write(Writes write) {
+            super.write(write);
+            write.f(heat);
+            write.f(heatRequirement);
+        }
+
+        @Override
+        public void read(Reads read, byte revision) {
+            super.read(read, revision);
+            heat = read.f();
+            heatRequirement = read.f();
         }
     }
 }

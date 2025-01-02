@@ -140,7 +140,7 @@ public final class HIBlocks {
             //turret-erekir
             rupture,
             //sandbox
-            reinforcedItemSource, reinforcedLiquidSource, reinforcedPowerSource, reinforcedPayloadSource, randomSource,
+            reinforcedItemSource, reinforcedLiquidSource, reinforcedPowerSource, reinforcedPayloadSource, adaptiveSource,
             omniNode, ultraAssignOverdrive,
             teamChanger, barrierProjector, invincibleWall, invincibleWallLarge, invincibleWallHuge, invincibleWallGigantic,
             mustDieTurret, oneShotTurret, pointTurret,
@@ -3834,9 +3834,14 @@ public final class HIBlocks {
             placeableLiquid = true;
             floating = true;
         }};
-        randomSource = new AdaptiveSource("random-source") {{
+        adaptiveSource = new AdaptiveSource("adaptive-source") {{
             requirements(Category.distribution, BuildVisibility.sandboxOnly, with());
             health = 1000;
+            liquidCapacity = 100f;
+            laserRange = 200f;
+            maxNodes = 500;
+            itemsPerSecond = 2000;
+            autolink = drawRange = false;
         }};
         omniNode = new NodeBridge("omni-node") {{
             requirements(Category.distribution, BuildVisibility.sandboxOnly, with());
@@ -4085,7 +4090,6 @@ public final class HIBlocks {
                 };
                 fragBullets = 6;
                 lifetime = 110;
-                destructible2 = false;
             }
                 @Override
                 public void hitTile(Bullet b, Building build, float x, float y, float initialHealth, boolean direct) {
@@ -4118,6 +4122,15 @@ public final class HIBlocks {
                         Drawf.tri(b.x, b.y, 8 * b.fout(), 16, b.rotation());
                         Drawf.tri(b.x, b.y, 8 * b.fout(), 30 * Math.min(1, b.time / 8 * 0.8f + 0.2f), b.rotation() - 180);
                     }
+                }
+            };
+            buildType = () -> new PlatformTurretBuild() {
+                @Override
+                public void damage(float damage) {}
+
+                @Override
+                public float handleDamage(float amount) {
+                    return 0;
                 }
             };
         }};
@@ -4160,7 +4173,15 @@ public final class HIBlocks {
             };
             coolant = consumeCoolant(0.6f);
             coolantMultiplier = 10f;
-            destructible2 = false;
+            buildType = () -> new PlatformTurretBuild() {
+                @Override
+                public void damage(float damage) {}
+
+                @Override
+                public float handleDamage(float amount) {
+                    return 0;
+                }
+            };
         }};
         pointTurret = new PlatformTurret("point-turret") {{
             requirements(Category.turret, BuildVisibility.sandboxOnly, with());
@@ -4221,6 +4242,14 @@ public final class HIBlocks {
             coolantMultiplier = 10f;
             buildType = () -> new PlatformTurretBuild() {
                 @Override
+                public void damage(float damage) {}
+
+                @Override
+                public float handleDamage(float amount) {
+                    return 0;
+                }
+
+                @Override
                 protected void shoot(BulletType type) {
                     if (isControlled() || logicShooting) {
                         super.shoot(type);
@@ -4253,7 +4282,6 @@ public final class HIBlocks {
                     }
                 }
             };
-            destructible2 = false;
         }};
         nextWave = new Block("next-wave") {{
             requirements(Category.effect, BuildVisibility.sandboxOnly, with());
