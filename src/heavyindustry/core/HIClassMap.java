@@ -329,8 +329,8 @@ final class HIClassMap {
         classes.put("TurretCoreBuild", TurretCoreBlock.TurretCoreBuild.class);
         classes.put("CoreStorageBlock", CoreStorageBlock.class);
         classes.put("CoreStorageBuild", CoreStorageBlock.CoreStorageBuild.class);
-        classes.put("RandomSource", RandomSource.class);
-        classes.put("RandomSourceBuild", RandomSource.RandomSourceBuild.class);
+        classes.put("AdaptiveSource", AdaptiveSource.class);
+        classes.put("AdaptiveSourceBuild", AdaptiveSource.AdaptiveSourceBuild.class);
         classes.put("SpaceUnloader", SpaceUnloader.class);
         classes.put("SpaceUnloaderBuild", SpaceUnloader.SpaceUnloaderBuild.class);
         classes.put("ResourcesDispatchingCenter", ResourcesDispatchingCenter.class);

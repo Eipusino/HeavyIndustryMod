@@ -1852,26 +1852,28 @@ public final class HIBlocks {
             requirements(Category.crafting, with(Items.titanium, 250, Items.graphite, 210, Items.plastanium, 90, Items.silicon, 80));
             health = 1800;
             size = 4;
-            itemCapacity = 40;
-            liquidCapacity = 120f;
+            itemCapacity = 60;
+            liquidCapacity = 360f;
+            hasItems = true;
             hasLiquids = true;
+            outputsLiquid = true;
             products.add(new Formula() {{
                 outputItems = ItemStack.with(Items.graphite, 4);
-                craftTime = 7.5f;
-                consumeItem(Items.coal, 8);
-                consumeLiquid(Liquids.water, 1.6f);
-                consumePower(7.5f);
-            }}, new Formula() {{
-                outputLiquids = LiquidStack.with(Liquids.oil, 1.6f);
                 craftTime = 15f;
+                consumeItem(Items.coal, 8);
+                consumeLiquid(Liquids.water, 0.8f);
+                consumePower(3f);
+            }}, new Formula() {{
+                outputLiquids = LiquidStack.with(Liquids.oil, 0.8f);
+                craftTime = 30f;
                 consumeItem(Items.sporePod, 4);
-                consumePower(7.5f);
+                consumePower(2.8f);
             }}, new Formula() {{
                 outputItems = ItemStack.with(Items.plastanium, 1);
-                craftTime = 7.5f;
+                craftTime = 15f;
                 consumeItem(Items.titanium, 2);
-                consumeLiquid(Liquids.oil, 2f);
-                consumePower(7.5f);
+                consumeLiquid(Liquids.oil, 1f);
+                consumePower(7f);
             }});
             drawer = new DrawMulti(new DrawDefault(), new DrawRegion("-rotator", 1.125f, true));
         }};
@@ -3832,7 +3834,7 @@ public final class HIBlocks {
             placeableLiquid = true;
             floating = true;
         }};
-        randomSource = new RandomSource("random-source") {{
+        randomSource = new AdaptiveSource("random-source") {{
             requirements(Category.distribution, BuildVisibility.sandboxOnly, with());
             health = 1000;
         }};

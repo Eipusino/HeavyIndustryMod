@@ -5,24 +5,21 @@ package heavyindustry.util
 import arc.func.*
 import arc.struct.*
 import heavyindustry.util.Utils.*
-import mindustry.*
 import mindustry.content.TechTree.*
 import mindustry.ctype.*
 import mindustry.game.Objectives.*
 import mindustry.type.*
-import mindustry.world.Block
+import mindustry.world.*
 import mindustry.world.blocks.defense.turrets.*
-import rhino.*
-import rhino.Function
 
 /**
  * Kotlin's utility class.
  *
  * @author Eipusino
  */
-class ScriptUtils internal constructor() {
+class KUtils internal constructor() {
     companion object {
-        @JvmField internal val packages: Seq<String> = Seq.with(
+        @JvmField val packages: Array<String> = arrayOf(
             "heavyindustry",
             "heavyindustry.ai",
             "heavyindustry.content",
@@ -92,54 +89,6 @@ class ScriptUtils internal constructor() {
             "heavyindustry.world.particle",
             "heavyindustry.world.particle.model"
         )
-
-        @JvmStatic
-        fun getClass(name: String): NativeJavaClass {
-            return NativeJavaClass(Vars.mods.scripts.scope, Vars.mods.mainLoader().loadClass(name))
-        }
-
-        @JvmStatic
-        internal fun importDefaults(scope: ImporterTopLevel) {
-            for (pack in packages) {
-                importPackage(scope, pack)
-            }
-        }
-
-        @JvmStatic
-        fun importPackage(scope: ImporterTopLevel, packageName: String) {
-            val p = NativeJavaPackage(packageName, Vars.mods.mainLoader())
-            p.parentScope = scope
-
-            scope.importPackage(p)
-        }
-
-        @JvmStatic
-        fun importPackage(scope: ImporterTopLevel, pack: Package) {
-            importPackage(scope, pack.name)
-        }
-
-        @JvmStatic
-        fun importClass(scope: ImporterTopLevel, canonical: String) {
-            importClass(scope, ReflectUtils.findClass(canonical))
-        }
-
-        @JvmStatic
-        fun importClass(scope: ImporterTopLevel, type: Class<*>?) {
-            val nat = NativeJavaClass(scope, type)
-            nat.parentScope = scope
-
-            scope.importClass(nat)
-        }
-
-        @JvmStatic
-        fun compileFunc(scope: Scriptable, sourceName: String, source: String): Function {
-            return compileFunc(scope, sourceName, source, 1)
-        }
-
-        @JvmStatic
-        fun compileFunc(scope: Scriptable, sourceName: String, source: String, lineNum: Int): Function {
-            return Vars.mods.getScripts().context.compileFunction(scope, source, sourceName, lineNum)
-        }
 
         /**
          * Adding TechNode without throw exception.

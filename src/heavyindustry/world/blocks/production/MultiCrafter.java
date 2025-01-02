@@ -32,8 +32,14 @@ import mindustry.world.meta.*;
 import static mindustry.Vars.*;
 
 /**
- * The version that supports heat is available in {@link heavyindustry.world.blocks.heat.HeatMultiCrafter }.
- * <p>f**k, This thing has been fixed for a century, but the bug hasn't been completely fixed.
+ * MultiCrafter， You can freely choose to change the production formula.
+ * <p>The version that supports heat is available in {@link heavyindustry.world.blocks.heat.HeatMultiCrafter }.
+ * <p>We currently do not support JSON minimalist format parsing, which is too cumbersome to write.
+ *
+ * @apiNote Example usage {@link heavyindustry.content.HIBlocks#corkscrewCompressor }.
+ *
+ * @see heavyindustry.world.blocks.production.MultiCrafter.Formula
+ * @see heavyindustry.world.blocks.heat.HeatMultiCrafter
  *
  * @author Eipusino
  */
@@ -100,7 +106,7 @@ public class MultiCrafter extends Block {
                 outputsPower = true;
             }
         }
-        if (consumesPower) consumePowerDynamic(b -> b instanceof MultiCrafterBuild tile ? tile.formulaPower() : 0);
+        if (hasPower && consumesPower) consumePowerDynamic(b -> b instanceof MultiCrafterBuild tile ? tile.formulaPower() : 0);
 
         super.init();
 
@@ -480,6 +486,7 @@ public class MultiCrafter extends Block {
             if (!formula.hasConsumers || cheating()) {
                 potentialEfficiency = enabled && productionValid() ? 1f : 0f;
                 efficiency = optionalEfficiency = shouldConsume() ? potentialEfficiency : 0f;
+                shouldConsumePower = true;
                 updateEfficiencyMultiplier();
                 return;
             }
@@ -487,6 +494,7 @@ public class MultiCrafter extends Block {
             //disabled -> nothing works
             if (!enabled) {
                 potentialEfficiency = efficiency = optionalEfficiency = 0f;
+                shouldConsumePower = true;
                 return;
             }
 
@@ -496,10 +504,17 @@ public class MultiCrafter extends Block {
 
             //assume efficiency is 1 for the calculations below
             efficiency = optionalEfficiency = 1f;
+            shouldConsumePower = true;
 
             //first pass: get the minimum efficiency of any consumer
             for (var cons : formula.nonOptionalConsumers) {
-                minEfficiency = Math.min(minEfficiency, cons.efficiency(this));
+                float result = cons.efficiency(this);
+
+                if (cons != consPower && result <= 0.0000001f) {
+                    shouldConsumePower = false;
+                }
+
+                minEfficiency = Math.min(minEfficiency, result);
             }
 
             //same for optionals
@@ -728,10 +743,10 @@ public class MultiCrafter extends Block {
         }
 
         public void addLiquidBar(Liquid liquid) {
-            addBar("liquid-" + liquid.name, entity -> !liquid.unlockedNow() ? null : new Bar(
+            addBar("liquid-" + liquid.name, build -> !liquid.unlockedNow() ? null : new Bar(
                     () -> liquid.localizedName,
                     liquid::barColor,
-                    () -> entity.liquids.get(liquid) / owner.liquidCapacity
+                    () -> build.liquids.get(liquid) / owner.liquidCapacity
             ));
         }
 

@@ -183,7 +183,7 @@ public final class HITechTree {
         vanillaNode(pyratiteMixer, () -> node(largePyratiteMixer, Seq.with(new SectorComplete(facility32m)), () -> {}));
         vanillaNode(blastMixer, () -> node(largeBlastMixer, () -> {}));
         vanillaNode(cultivator, () -> node(largeCultivator, Seq.with(new SectorComplete(taintedWoods)), () -> {}));
-        vanillaNode(plastaniumCompressor, () -> node(largePlastaniumCompressor, Seq.with(new SectorComplete(facility32m)), () -> {}));
+        vanillaNode(plastaniumCompressor, () -> node(largePlastaniumCompressor, Seq.with(new SectorComplete(facility32m)), () -> node(corkscrewCompressor, () -> {})));
         vanillaNode(surgeSmelter, () -> node(largeSurgeSmelter, () -> {}));
         vanillaNode(siliconCrucible, () -> node(blastSiliconSmelter, () -> {}));
         vanillaNode(siliconSmelter, () -> node(nanocoreConstructor, Seq.with(new SectorComplete(impact0078)), () -> node(nanocorePrinter, () -> {})));

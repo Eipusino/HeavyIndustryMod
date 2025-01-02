@@ -3,6 +3,7 @@ package heavyindustry.math;
 import arc.func.*;
 import arc.math.*;
 import arc.math.geom.*;
+import heavyindustry.func.*;
 
 public final class Mathm {
     private static final int aSinBits = 14; //16KB. Adjust for accuracy.
@@ -267,7 +268,7 @@ public final class Mathm {
         return 1f - 1f / (t + 1);
     }
 
-    public static void randLenVectors(long seed, int amount, float in, float inRandMin, float inRandMax, float lengthRand, FloatFloatf length, UParticleConsumer cons) {
+    public static void randLenVectors(long seed, int amount, float in, float inRandMin, float inRandMax, float lengthRand, FloatFloatf length, Floatc3 cons) {
         seedr.setSeed(seed);
         for (int i = 0; i < amount; i++) {
             float r = seedr.random(inRandMin, inRandMax);
@@ -294,9 +295,5 @@ public final class Mathm {
 
     public static float atan(float tan) {
         return round(Mathf.radiansToDegrees * Math.atan(tan));
-    }
-
-    public interface UParticleConsumer {
-        void get(float x, float y, float fin);
     }
 }

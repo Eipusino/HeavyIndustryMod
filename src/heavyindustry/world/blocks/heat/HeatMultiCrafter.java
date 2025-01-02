@@ -9,6 +9,7 @@ import mindustry.world.blocks.heat.*;
 
 /**
  * Why is the heat separated separately? Mainly to avoid various strange small problems.
+ * <p>At present, there is no testing. If there are any bugs, please make sure to report them to the author.
  *
  * @author Eipusino
  */

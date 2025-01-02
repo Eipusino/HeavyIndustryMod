@@ -496,7 +496,7 @@ public final class UIUtils {
         button.removeListener(button.getClickListener());
 
         try {
-            ReflectUtils.set(Button.class, button, "clickListener", newListener);
+            Reflect.set(Button.class, button, "clickListener", newListener);
         } catch (Exception ignored) {}
         button.addListener(newListener);
     }

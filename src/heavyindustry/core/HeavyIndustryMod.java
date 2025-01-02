@@ -76,7 +76,7 @@ public final class HeavyIndustryMod extends Mod {
 
         Events.on(ClientLoadEvent.class, e -> {
             try {
-                ReflectUtils.set(MenuFragment.class, ui.menufrag, "renderer", new HIMenuRenderer());
+                Reflect.set(MenuFragment.class, ui.menufrag, "renderer", new HIMenuRenderer());
             } catch (Exception ex) {
                 Log.err("Failed to replace renderer", ex);
             }
