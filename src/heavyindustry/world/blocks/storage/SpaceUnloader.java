@@ -118,11 +118,11 @@ public class SpaceUnloader extends StorageBlock {
                 });
             });
         super.init();
-        Events.on(EventType.BlockBuildEndEvent.class, e -> {
-            if (!e.breaking) {
+        Events.on(EventType.BlockBuildEndEvent.class, event -> {
+            if (!event.breaking) {
                 suGroup.each(cen -> {
                     if (cen instanceof SpaceUnloaderBuild sub)
-                        sub.tryResumeDeadLink(e.tile.pos());
+                        sub.tryResumeDeadLink(event.tile.pos());
                 });
             }
         });

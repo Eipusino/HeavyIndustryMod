@@ -34,6 +34,7 @@ import static mindustry.Vars.*;
 
 /**
  * Defines the {@linkplain Effect visual effects} this mod offers.
+ * <p>Why not import static xxx.xDraw. *? Because this may reduce the readability of the code.
  *
  * @author Eipusino
  */
@@ -283,7 +284,7 @@ public final class HIFx {
                 for (int index = 0; index < type.engines.size; index++) {
                     UnitType.UnitEngine engine = type.engines.get(index);
 
-                    if(Angles.angleDist(engine.rotation, -90) > 75) return;
+                    if (Angles.angleDist(engine.rotation, -90) > 75) return;
                     float ang = Mathf.slerp(engine.rotation, -90, 0.75f);
 
                     //noinspection SuspiciousNameCombination

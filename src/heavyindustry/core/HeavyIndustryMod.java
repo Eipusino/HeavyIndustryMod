@@ -23,6 +23,7 @@ import heavyindustry.net.*;
 import heavyindustry.ui.*;
 import heavyindustry.ui.dialogs.*;
 import heavyindustry.util.*;
+import heavyindustry.util.handler.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.game.EventType.*;
@@ -62,6 +63,11 @@ public final class HeavyIndustryMod extends Mod {
     /** Modules present in both servers and clients. */
     public static InputAggregator inputAggregator;
 
+    public static AccessibleHelper accessibleHelper;
+    public static ClassHandlerFactory classesFactory;
+    public static FieldAccessHelper fieldAccessHelper;
+    public static MethodInvokeHelper methodInvokeHelper;
+
     private static LoadedMod mod;
 
     public HeavyIndustryMod() {
@@ -69,11 +75,11 @@ public final class HeavyIndustryMod extends Mod {
 
         HIClassMap.load();
 
-        Events.on(ClientLoadEvent.class, e -> {
+        Events.on(ClientLoadEvent.class, event -> {
             try {
                 Reflect.set(MenuFragment.class, ui.menufrag, "renderer", new HIMenuRenderer());
-            } catch (Exception ex) {
-                Log.err("Failed to replace renderer", ex);
+            } catch (Exception e) {
+                Log.err("Failed to replace renderer", e);
             }
 
             HIIcon.load();
@@ -133,7 +139,7 @@ public final class HeavyIndustryMod extends Mod {
 
         app.post(() -> mod = mods.getMod(HeavyIndustryMod.class));
 
-        Events.on(FileTreeInitEvent.class, e -> {
+        Events.on(FileTreeInitEvent.class, event -> {
             if (!headless) {
                 HISounds.load();
                 app.post(() -> {
@@ -146,13 +152,13 @@ public final class HeavyIndustryMod extends Mod {
             }
         });
 
-        Events.on(MusicRegisterEvent.class, e -> {
+        Events.on(MusicRegisterEvent.class, event -> {
             if (!headless) {
                 HIMusics.load();
             }
         });
 
-        Events.on(DisposeEvent.class, e -> {
+        Events.on(DisposeEvent.class, event -> {
             if (!headless)
                 HIShaders.dispose();
         });
@@ -204,7 +210,7 @@ public final class HeavyIndustryMod extends Mod {
         if (mods.getMod("extra-utilities") == null && isAprilFoolsDay()) {
             HIOverride.loadAprilFoolsDay();
             if (ui != null)
-                Events.on(ClientLoadEvent.class, e -> Time.runTask(10f, () -> {
+                Events.on(ClientLoadEvent.class, event -> Time.runTask(10f, () -> {
                     BaseDialog dialog = new BaseDialog(bundle.get("hi-name")) {
                         int con = 0;
                         float bx, by;

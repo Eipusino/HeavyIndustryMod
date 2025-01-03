@@ -8,7 +8,7 @@ import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
 import arc.util.io.*;
-import heavyindustry.gen.*;
+import heavyindustry.world.blocks.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.io.*;

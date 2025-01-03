@@ -87,15 +87,21 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 
     @Override
     public void add() {
-        super.add();
+        if (added) return;
+        Groups.all.add(this);
+        Groups.draw.add(this);
         Groups.sync.add(this);
 
         HIFx.spawnWave.at(x, y, drawSize * 1.1f, team.color);
+
+        added = true;
     }
 
     @Override
     public void remove() {
-        super.remove();
+        if (!added) return;
+        Groups.draw.remove(this);
+        Groups.all.remove(this);
         Groups.sync.remove(this);
 
         if (Vars.net.client()) {
@@ -103,6 +109,8 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
         }
 
         if (soundLoop != null) soundLoop.update(x, y, false);
+
+        added = false;
     }
 
     @Override
@@ -285,7 +293,8 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 
         type = TypeIO.readUnitType(read);
         team = TypeIO.readTeam(read);
-        if (commandPos != null) commandPos = TypeIO.readVec2(read);
+        Vec2 v = TypeIO.readVec2(read);
+        if (commandPos != null) commandPos = v;
         else commandPos = new Vec2(Float.NaN, Float.NaN);
 
         afterSync();

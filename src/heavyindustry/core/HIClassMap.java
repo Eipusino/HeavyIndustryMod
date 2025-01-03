@@ -288,6 +288,8 @@ final class HIClassMap {
         classes.put("MultiCrafter", MultiCrafter.class);
         classes.put("MultiCrafterBuild", MultiCrafter.MultiCrafterBuild.class);
         classes.put("Formula", MultiCrafter.Formula.class);
+        classes.put("LinkCrafter", LinkCrafter.class);
+        classes.put("LinkCrafterBuild", LinkCrafter.LinkCrafterBuild.class);
         classes.put("SporeFarm", SporeFarm.class);
         classes.put("SporeFarmBuild", SporeFarm.SporeFarmBuild.class);
         classes.put("DrawerDrill", DrawerDrill.class);

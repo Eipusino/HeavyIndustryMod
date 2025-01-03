@@ -16,7 +16,7 @@ public class ExtraEffect {
     private static final IntMap<VapourizeEffectState> vapourizeMap = new IntMap<>();
 
     static {
-        Events.on(WorldLoadEvent.class, e -> {
+        Events.on(WorldLoadEvent.class, event -> {
             vapourizeQueue.clear();
             buildQMap.clear();
             vapourizeMap.clear();

@@ -23,20 +23,20 @@ public final class WorldRegister {
     }
 
     public static void load() {
-        Events.on(ResetEvent.class, e -> {
+        Events.on(ResetEvent.class, event -> {
             commandableBuilds.clear();
 
             worldLoaded = true;
         });
 
-        Events.on(WorldLoadEvent.class, e -> {
+        Events.on(WorldLoadEvent.class, event -> {
             app.post(() -> {
                 worldLoaded = false;
             });
         });
 
-        Events.on(StateChangeEvent.class, e -> {
-            if (e.to == GameState.State.menu) {
+        Events.on(StateChangeEvent.class, event -> {
+            if (event.to == GameState.State.menu) {
                 worldLoaded = true;
             }
         });

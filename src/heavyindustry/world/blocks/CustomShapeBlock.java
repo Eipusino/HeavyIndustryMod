@@ -46,8 +46,8 @@ public class CustomShapeBlock extends Block {
 
     public CustomShapeBlock(String name) {
         super(name);
-        this.destructible = true;
-        this.update = true;
+        destructible = true;
+        update = true;
     }
 
     @Override
@@ -108,7 +108,6 @@ public class CustomShapeBlock extends Block {
 
     @Override
     public void drawPlan(BuildPlan plan, Eachable<BuildPlan> list, boolean valid, float alpha) {
-
         super.drawPlan(plan, list, valid, alpha);
         eachNearByValid(plan.tile(), null, Vars.player.team(), plan.rotation, (dx, dy, bool) -> {
             Drawf.selected(dx, dy, this, bool ? Pal.accent : Pal.remove);
@@ -189,7 +188,7 @@ public class CustomShapeBlock extends Block {
 
         @Override
         public void remove() {
-            boolean wasAdded = this.added;
+            boolean wasAdded = added;
             if (removingSubs) return;
             super.remove();
             if (wasAdded && !added) {

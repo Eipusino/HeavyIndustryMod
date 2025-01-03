@@ -111,11 +111,11 @@ public class ResourcesDispatchingCenter extends StorageBlock {
                 });
             });
         super.init();
-        Events.on(EventType.BlockBuildEndEvent.class, (e -> {
-            if (!e.breaking) {
+        Events.on(EventType.BlockBuildEndEvent.class, (event -> {
+            if (!event.breaking) {
                 rdcGroup.each(cen -> {
                     if (cen instanceof ResourcesDispatchingCenterBuild rdc)
-                        rdc.tryResumeDeadLink(e.tile.pos());
+                        rdc.tryResumeDeadLink(event.tile.pos());
                 });
             }
         }));

@@ -32,7 +32,7 @@ import static mindustry.Vars.*;
 @SuppressWarnings("unchecked")
 public final class HIBullets {
     public static BulletType
-            basicMissile, boidMissle, sapArtilleryFrag, continuousSapLaser,
+            basicMissile, boidMissile, sapArtilleryFrag, continuousSapLaser,
             ancientArtilleryProjectile,
             hitter, ncBlackHole, nuBlackHole, executor,
             ultFireball, basicSkyFrag, annMissile, vastBulletStrafeLaser, vastBulletAccel, vastBulletLightningBall,
@@ -85,7 +85,7 @@ public final class HIBullets {
             status = StatusEffects.sapped;
             statusDuration = 60f * 10;
         }};
-        boidMissle = new BoidBulletType(2.7f, 30) {{
+        boidMissile = new BoidBulletType(2.7f, 30) {{
             damage = 50;
             homingPower = 0.02f;
             lifetime = 500f;

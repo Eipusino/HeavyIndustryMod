@@ -26,8 +26,8 @@ public class LaserRuler extends Block {
     protected static Tile lastTaped;
 
     static {
-        Events.on(EventType.TapEvent.class, e -> {
-            lastTaped = e.tile;
+        Events.on(EventType.TapEvent.class, event -> {
+            lastTaped = event.tile;
             Building selectedTile = Vars.control.input.config.getSelected();
             if (selectedTile instanceof LaserRulerBuild build) {
                 if (build.tile == lastTaped) {

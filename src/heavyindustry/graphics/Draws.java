@@ -1410,7 +1410,7 @@ public final class Draws {
                 varying vec4 v_color;
                 varying vec2 v_texCoords;
                 
-                void main(){
+                void main() {
                     gl_Position = u_projTrans * a_position;
                     v_texCoords = a_texCoord0;
                     v_color = a_color;

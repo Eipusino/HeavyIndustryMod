@@ -9,6 +9,7 @@ import arc.util.*;
 import arc.util.io.*;
 import heavyindustry.gen.*;
 import heavyindustry.graphics.*;
+import heavyindustry.world.blocks.*;
 import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.entities.bullet.*;
