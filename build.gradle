@@ -25,12 +25,8 @@ ext {
 
 dependencies {
     implementation "org.jetbrains:annotations:24.0.1"
-    implementation "org.ow2.asm:asm:$asmVersion"
-
-    compileOnly "com.jakewharton.android.repackaged:dalvik-dx:9.0.0_r3"
 
     compileOnly files("libs/mindustry.jar")
-    compileOnly files("libs/android.jar")
 }
 
 configurations.all {
@@ -57,7 +53,7 @@ task jarAndroid {
         def d8 = isWindows ? "d8.bat" : "d8"
 
         //dex and desugar files - this requires d8 in your PATH
-        "$d8 $dependencies --min-api 26 --output ${project.archivesBaseName}Android.jar ${project.archivesBaseName}Desktop.jar"
+        "$d8 $dependencies --min-api 14 --output ${project.archivesBaseName}Android.jar ${project.archivesBaseName}Desktop.jar"
                 .execute(null, new File("$buildDir/libs")).waitForProcessOutput(System.out, System.err)
     }
 }

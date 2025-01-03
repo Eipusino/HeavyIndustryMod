@@ -17,7 +17,6 @@ import arc.struct.*;
 import arc.util.*;
 import heavyindustry.ui.dialogs.*;
 import heavyindustry.ui.fragment.*;
-import heavyindustry.util.*;
 import mindustry.core.*;
 import mindustry.ctype.*;
 import mindustry.gen.*;

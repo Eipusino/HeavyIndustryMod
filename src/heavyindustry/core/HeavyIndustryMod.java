@@ -23,7 +23,6 @@ import heavyindustry.net.*;
 import heavyindustry.ui.*;
 import heavyindustry.ui.dialogs.*;
 import heavyindustry.util.*;
-import heavyindustry.util.handler.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.game.EventType.*;
@@ -62,11 +61,6 @@ public final class HeavyIndustryMod extends Mod {
 
     /** Modules present in both servers and clients. */
     public static InputAggregator inputAggregator;
-
-    public static AccessibleHelper accessibleHelper;
-    public static ClassHandlerFactory classesFactory;
-    public static FieldAccessHelper fieldAccessHelper;
-    public static MethodInvokeHelper methodInvokeHelper;
 
     private static LoadedMod mod;
 
