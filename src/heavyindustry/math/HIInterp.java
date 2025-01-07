@@ -3,6 +3,7 @@ package heavyindustry.math;
 import arc.math.*;
 import arc.math.Interp.*;
 
+/** @since 1.0.1 */
 public final class HIInterp {
     public static final Interp
             upThenFastDown = x -> 1.0115f * (1.833f * (0.9991f * x - 1.1f) + 0.2f / (0.9991f * x - 1.1f) + 2.2f),

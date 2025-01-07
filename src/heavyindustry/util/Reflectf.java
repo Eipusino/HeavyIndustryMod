@@ -233,7 +233,7 @@ public final class Reflectf {
             StackTraceElement[] trace = thread.getStackTrace();
             return Class.forName(trace[3].getClassName(), false, mods.mainLoader());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return null;
         }
     }
 }

@@ -84,7 +84,7 @@ public interface MultiBlock extends Senseable, Comparable<Content> {
             };
 
             Tile t = world.tile(tile.x + xr, tile.y + yr);
-            Call.setTile(t, HIBlocks.placeholderEntity[s - 1], tile.team(), 0);
+            t.setBlock(HIBlocks.placeholderEntity[s - 1], tile.team(), 0);
             PlaceholderBlock.PlaceholderBuild b = (PlaceholderBlock.PlaceholderBuild) t.build;
             b.updateLink(tile);
         }
@@ -116,7 +116,7 @@ public interface MultiBlock extends Senseable, Comparable<Content> {
             };
 
             Tile t = world.tile(tile.x + xr, tile.y + yr);
-            Call.setTile(t, HIBlocks.linkEntity[s - 1], team, 0);
+            t.setBlock(HIBlocks.linkEntity[s - 1], team, 0);
             LinkBlock.LinkBuild b = (LinkBlock.LinkBuild) t.build;
             b.updateLink(building);
             out.add(b);
@@ -150,7 +150,7 @@ public interface MultiBlock extends Senseable, Comparable<Content> {
             };
 
             Tile t = world.tile(tile.x + xr, tile.y + yr);
-            Call.removeTile(t);
+            t.remove();
         }
     }
 }

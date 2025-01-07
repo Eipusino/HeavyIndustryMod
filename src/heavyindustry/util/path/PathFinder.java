@@ -5,6 +5,8 @@ import heavyindustry.util.path.PathFindFunc.*;
 /**
  * The base class, subclass, or interface of the basic path searcher requires the use of one or several algorithms to implement the path search method.
  * In this model, the vertices and the vertices they point to are represented as a directed graph.
+ *
+ * @since 1.0.5
  */
 public interface PathFinder<V> {
     /**

@@ -3,6 +3,8 @@ package heavyindustry.util.path;
 /**
  * The preliminary implementation of pathfinding based on breadth first search requires the provision of necessary container entry points to implement this interface.
  * <p>This search<strong> has no weight value</strong>, and the generated path should be the equal shortest path. Generally, the path found in a graph without weights must be the optimal solution or one of the optimal solutions.
+ *
+ * @since 1.0.5
  */
 public interface BFSPathFinder<V> extends PathFinder<V> {
     /** Reset search state or (and) temporary cache, including resetting already traversed vertices and edges. */
@@ -57,13 +59,13 @@ public interface BFSPathFinder<V> extends PathFinder<V> {
 
     /**
      * Create a path object that should be able to return a blank path during implementation.
-     * You may also need to implement the {@link IPath} interface and return its instance, or use the default implementation {@link GenericPath} directly.
+     * You may also need to implement the {@link Pathc} interface and return its instance, or use the default implementation {@link GenericPath} directly.
      *
      * @return An empty path
-     * @see IPath
+     * @see Pathc
      * @see GenericPath
      */
-    IPath<V> createPath();
+    Pathc<V> createPath();
 
     /**
      * A standard BFS pathfinding implementation typically finds the shortest or one of the shortest paths in an unweighted graph.
@@ -87,7 +89,7 @@ public interface BFSPathFinder<V> extends PathFinder<V> {
 
             if (isDestination(origin, next)) {
                 PathPointer<V> tracePointer = pointer;
-                IPath<V> path = createPath();
+                Pathc<V> path = createPath();
                 path.addFirst(pointer.self);
 
                 while ((tracePointer = tracePointer.previous) != null) {

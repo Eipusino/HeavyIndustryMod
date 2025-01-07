@@ -5,7 +5,7 @@ import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.geom.*;
 import arc.util.*;
-import mindustry.game.*;
+import mindustry.game.EventType.*;
 import mindustry.graphics.g3d.*;
 import mindustry.type.*;
 
@@ -34,7 +34,7 @@ public class HIPlanetRenderer extends PlanetRenderer {
         projector.proj(cam.combined);
         batch.proj(cam.combined);
 
-        Events.fire(EventType.Trigger.universeDrawBegin);
+        Events.fire(Trigger.universeDrawBegin);
 
         //begin bloom
         bloom.resize(w, h);
@@ -56,7 +56,7 @@ public class HIPlanetRenderer extends PlanetRenderer {
             cam.update();
         }
 
-        Events.fire(EventType.Trigger.universeDraw);
+        Events.fire(Trigger.universeDraw);
 
         Planet solarSystem = params.planet.solarSystem;
         renderPlanet(solarSystem, params);
@@ -64,7 +64,7 @@ public class HIPlanetRenderer extends PlanetRenderer {
 
         bloom.render();
 
-        Events.fire(EventType.Trigger.universeDrawEnd);
+        Events.fire(Trigger.universeDrawEnd);
 
         Gl.enable(Gl.blend);
 

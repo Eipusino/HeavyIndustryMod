@@ -237,6 +237,8 @@ final class HIClassMap {
         classes.put("LiquidMassDriver", LiquidMassDriver.class);
         classes.put("LiquidMassDriverBuild", LiquidMassDriver.LiquidMassDriverBuild.class);
         classes.put("LiquidBulletData", LiquidMassDriver.LiquidBulletData.class);
+        classes.put("LabelMessageBlock", LabelMessageBlock.class);
+        classes.put("LabelMessageBuild", LabelMessageBlock.LabelMessageBuild.class);
         classes.put("LaserRuler", LaserRuler.class);
         classes.put("LaserRulerBuild", LaserRuler.LaserRulerBuild.class);
         classes.put("CopyMemoryBlock", CopyMemoryBlock.class);
@@ -253,8 +255,12 @@ final class HIClassMap {
         classes.put("DerivativeUnitFactoryBuild", DerivativeUnitFactory.DerivativeUnitFactoryBuild.class);
         classes.put("SelectableReconstructor", SelectableReconstructor.class);
         classes.put("SelectableReconstructorBuild", SelectableReconstructor.SelectableReconstructorBuild.class);
+        classes.put("JumpGate", JumpGate.class);
+        classes.put("JumpGateBuild", JumpGate.JumpGateBuild.class);
         classes.put("UnitBoost", UnitBoost.class);
         classes.put("UnitBoostBuild", UnitBoost.UnitBoostBuild.class);
+        classes.put("UnitIniter", UnitIniter.class);
+        classes.put("UnitIniterBuild", UnitIniter.UnitIniterBuild.class);
         classes.put("PayloadSourcef", PayloadSourcef.class);
         classes.put("PayloadSourceBuildf", PayloadSourcef.PayloadSourceBuildf.class);
         classes.put("WindGenerator", WindGenerator.class);
@@ -316,6 +322,10 @@ final class HIClassMap {
         classes.put("TurretCoreBuild", TurretCoreBlock.TurretCoreBuild.class);
         classes.put("CoreStorageBlock", CoreStorageBlock.class);
         classes.put("CoreStorageBuild", CoreStorageBlock.CoreStorageBuild.class);
+        classes.put("CoreUnloader", CoreUnloader.class);
+        classes.put("CoreUnloaderBuild", CoreUnloader.CoreUnloaderBuild.class);
+        classes.put("ResourceUnloader", ResourceUnloader.class);
+        classes.put("ResourceUnloaderBuild", ResourceUnloader.ResourceUnloaderBuild.class);
         classes.put("AdaptiveSource", AdaptiveSource.class);
         classes.put("AdaptiveSourceBuild", AdaptiveSource.AdaptiveSourceBuild.class);
         classes.put("SpaceUnloader", SpaceUnloader.class);

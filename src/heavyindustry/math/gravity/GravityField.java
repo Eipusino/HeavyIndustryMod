@@ -8,6 +8,8 @@ import arc.util.*;
 /**
  * A container for simulating the gravitational field,
  * which records some behaviors of the gravitational field
+ *
+ * @since 1.0.4
  */
 public class GravityField {
     public static final float GRAV_CONST = 0.667259f;

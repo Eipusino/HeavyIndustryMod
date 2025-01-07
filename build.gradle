@@ -25,6 +25,10 @@ ext {
 
 dependencies {
     implementation "org.jetbrains:annotations:24.0.1"
+    implementation "org.commonmark:commonmark:$commonmarkVersion"
+    implementation "org.commonmark:commonmark-ext-gfm-tables:$commonmarkVersion"
+    implementation "org.commonmark:commonmark-ext-gfm-strikethrough:$commonmarkVersion"
+    implementation "org.commonmark:commonmark-ext-ins:$commonmarkVersion"
 
     compileOnly files("libs/mindustry.jar")
 }

@@ -5,6 +5,7 @@ import arc.math.*;
 import arc.math.geom.*;
 import heavyindustry.func.*;
 
+/** @since 1.0.4 */
 public final class Mathm {
     private static final int aSinBits = 14; //16KB. Adjust for accuracy.
     private static final int aSinMask = ~(-1 << aSinBits);

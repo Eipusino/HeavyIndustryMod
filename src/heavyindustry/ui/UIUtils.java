@@ -1,5 +1,6 @@
 package heavyindustry.ui;
 
+import arc.*;
 import arc.audio.*;
 import arc.func.*;
 import arc.graphics.*;
@@ -52,6 +53,10 @@ public final class UIUtils {
 
     public static String format(float value) {
         return df.format(value);
+    }
+
+    public static String judge(boolean value) {
+        return value ? "[heal]" + Core.bundle.get("yes") + "[]" : "[#ff7b69]" + Core.bundle.get("no") + "[]";
     }
 
     public static void init() {

@@ -4,38 +4,57 @@ import arc.func.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.gen.*;
+import mindustry.type.*;
 
-import static heavyindustry.core.HeavyIndustryMod.*;
-
+/**
+ * Each Entity class requires an independent {@link Entityc#classId()} in order to be saved properly in the map.
+ * <p>This class provides a method to register the Entity class of a module into {@link EntityMapping}.
+ *
+ * @since 1.0.6
+ */
 public final class EntityRegister {
     private static final ObjectIntMap<Class<? extends Entityc>> ids = new ObjectIntMap<>();
 
-    private static final ObjectMap<String, Prov<? extends Entityc>> map = new ObjectMap<>();
+    private static volatile int last = 0;
 
     /** EntityRegister should not be instantiated. */
     private EntityRegister() {}
 
-    public static <T extends Entityc> Prov<T> get(Class<T> type) {
-        return get(type.getCanonicalName());
-    }
+    public static <T extends Entityc> void put(Class<T> type, Prov<T> prov) {
+        synchronized (EntityRegister.class) {
+            if (ids.containsKey(type) || EntityMapping.nameMap.containsKey(type.getSimpleName())) return;
 
-    @SuppressWarnings("unchecked")
-    public static <T extends Entityc> Prov<T> get(String name) {
-        return (Prov<T>) map.get(name);
-    }
+            for (; last < EntityMapping.idMap.length; last++) {
+                if (EntityMapping.idMap[last] == null) {
+                    EntityMapping.idMap[last] = prov;
+                    ids.put(type, last);
 
-    public static <T extends Entityc> void r(String name, Class<T> type, Prov<? extends T> prov) {
-        map.put(name, prov);
-        ids.put(type, EntityMapping.register(name, prov));
-    }
+                    EntityMapping.nameMap.put(type.getSimpleName(), prov);
+                    EntityMapping.nameMap.put(Strings.camelToKebab(type.getSimpleName()), prov);
 
-    public static <T, E extends Entityc> T content(String name, Class<E> type, Func<String, ? extends T> create) {
-        if (type.getName().startsWith("mindustry.gen.")) {
-            EntityMapping.nameMap.put(name(name), Structs.find(EntityMapping.idMap, p -> p != null && p.get().getClass().equals(type)));
-        } else {
-            EntityMapping.nameMap.put(name(name), get(type));
+                    return;
+                }
+            }
+
+            throw new IndexOutOfBoundsException("In case you used up all 256 class ids; use the same code for ~250 units you idiot.");
         }
-        return create.get(name);
+    }
+
+    public static <T extends Entityc> void put(String name, Class<T> type, Prov<T> prov) {
+        put(type, prov);
+        EntityMapping.nameMap.put(name, prov);
+
+        int id = getId(type);
+        if (id != -1) {
+            EntityMapping.customIdMap.put(id, name);
+        }
+    }
+
+    /** @deprecated Why not use 'constructor = UnitEntity::create' directly? */
+    @Deprecated(since = "1.0.6")
+    public static <T extends Unit> void put(UnitType unit, Class<T> type, Prov<T> prov) {
+        put(unit.name, type, prov);
+        unit.constructor = prov;
     }
 
     public static int getId(Class<? extends Entityc> type) {
@@ -43,16 +62,17 @@ public final class EntityRegister {
     }
 
     public static void load() {
-        r("PayloadLegsUnit", PayloadLegsUnit.class, PayloadLegsUnit::new);
-        r("BuildingTetherPayloadLegsUnit", BuildingTetherPayloadLegsUnit.class, BuildingTetherPayloadLegsUnit::new);
-        r("OrnitopterUnit", OrnitopterUnit.class, OrnitopterUnit::new);
-        r("CopterUnit", CopterUnit.class, CopterUnit::new);
-        r("SentryUnit", SentryUnit.class, SentryUnit::new);
-        r("SwordUnit", SwordUnit.class, SwordUnit::new);
-        r("EnergyUnit", EnergyUnit.class, EnergyUnit::new);
-        r("PesterUnit", PesterUnit.class, PesterUnit::new);
-        r("NucleoidUnit", NucleoidUnit.class, NucleoidUnit::new);
-        r("UltFire", UltFire.class, UltFire::new);
-        r("Spawner", Spawner.class, Spawner::new);
+        put("PayloadLegsUnit", PayloadLegsUnit.class, PayloadLegsUnit::new);
+        put("BuildingTetherPayloadLegsUnit", BuildingTetherPayloadLegsUnit.class, BuildingTetherPayloadLegsUnit::new);
+        put("OrnitopterUnit", OrnitopterUnit.class, OrnitopterUnit::new);
+        put("CopterUnit", CopterUnit.class, CopterUnit::new);
+        put("SentryUnit", SentryUnit.class, SentryUnit::new);
+        put("SwordUnit", SwordUnit.class, SwordUnit::new);
+        put("EnergyUnit", EnergyUnit.class, EnergyUnit::new);
+        put("PesterUnit", PesterUnit.class, PesterUnit::new);
+        put("NucleoidUnit", NucleoidUnit.class, NucleoidUnit::new);
+        put("UltFire", UltFire.class, UltFire::new);
+        put("Spawner", Spawner.class, Spawner::new);
+        put("VapourizeEffectState", VapourizeEffectState.class, VapourizeEffectState::new);
     }
 }

@@ -5,9 +5,10 @@ import arc.util.*;
 
 /** Use for jar internal navigation. */
 public class InternalFileTree {
-    public Class<?> anchorClass;
+    public final Class<?> anchorClass;
 
-    public ZipFi root;
+    public final ZipFi root;
+    public final Fi path;
 
     /** @param owner navigation anchor */
     public InternalFileTree(Class<?> owner) {
@@ -17,13 +18,14 @@ public class InternalFileTree {
         classPath = classPath.substring(classPath.indexOf(":") + 2);
         String jarPath = (OS.isLinux ? "/" : "") + classPath.substring(0, classPath.indexOf("!"));
 
-        root = new ZipFi(new Fi(jarPath));
+        path = new Fi(jarPath);
+        root = new ZipFi(path);
     }
 
     public Fi child(String name) {
         Fi out = root;
         for (String s : name.split("/")) {
-            if (!"".equals(s))
+            if (!s.isEmpty())
                 out = out.child(s);
         }
         return out;

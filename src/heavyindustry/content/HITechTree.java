@@ -1,17 +1,12 @@
 package heavyindustry.content;
 
-import arc.func.*;
 import arc.struct.*;
-import arc.util.*;
 import heavyindustry.core.*;
 import mindustry.content.*;
 import mindustry.content.TechTree.*;
 import mindustry.ctype.*;
 import mindustry.game.Objectives.*;
 import mindustry.type.*;
-
-import java.lang.reflect.*;
-import java.util.*;
 
 import static heavyindustry.content.HIBlocks.*;
 import static heavyindustry.content.HISectorPresets.*;
@@ -183,7 +178,7 @@ public final class HITechTree {
         vanillaNode(pyratiteMixer, () -> node(largePyratiteMixer, Seq.with(new SectorComplete(facility32m)), () -> {}));
         vanillaNode(blastMixer, () -> node(largeBlastMixer, () -> {}));
         vanillaNode(cultivator, () -> node(largeCultivator, Seq.with(new SectorComplete(taintedWoods)), () -> {}));
-        vanillaNode(plastaniumCompressor, () -> node(largePlastaniumCompressor, Seq.with(new SectorComplete(facility32m)), () -> node(corkscrewCompressor, () -> {})));
+        vanillaNode(plastaniumCompressor, () -> node(largePlastaniumCompressor, Seq.with(new SectorComplete(facility32m)), () -> node(ironcladCompressor, () -> {})));
         vanillaNode(surgeSmelter, () -> node(largeSurgeSmelter, () -> {}));
         vanillaNode(siliconCrucible, () -> node(blastSiliconSmelter, () -> {}));
         vanillaNode(siliconSmelter, () -> node(nanocoreConstructor, Seq.with(new SectorComplete(impact0078)), () -> node(nanocorePrinter, () -> {})));
@@ -330,46 +325,6 @@ public final class HITechTree {
 
     public static void nodeProduce(UnlockableContent content, Runnable children) {
         nodeProduce(content, new Seq<>(), children);
-    }
-
-    /**
-     * Needs for adding new content into existed TechTrees.
-     * In Runnable you can use methods from {@link TechTree}
-     */
-    public static final class TechTreeContext {
-        private static Cons<TechNode> contextSetter;
-
-        private TechTreeContext() {}
-
-        /** @param context parent node. */
-        public static void contextNode(TechNode context, Runnable children) {
-            Objects.requireNonNull(context, "techNode cannot be null");
-            initContextField();
-
-            TechNode prev = TechTree.context();
-            contextSetter.get(context);
-            children.run();
-            contextSetter.get(prev);
-        }
-
-        /** @param contextContent parent content. */
-        public static void contextNode(UnlockableContent contextContent, Runnable children) {
-            Objects.requireNonNull(contextContent, "contextContent cannot be null");
-            TechNode techNode = contextContent.techNode;
-            Objects.requireNonNull(techNode, "contextContent.techNode cannot be null");
-            contextNode(techNode, children);
-        }
-
-        private static void initContextField() {
-            if (contextSetter != null) return;
-            try {
-                Field contextField = TechTree.class.getDeclaredField("context");
-                contextField.setAccessible(true);
-                contextSetter = context -> Reflect.set(null, contextField, context);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
     }
 
     public static final class AddToResearch {

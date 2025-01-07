@@ -1,6 +1,5 @@
 package heavyindustry.util;
 
-import arc.*;
 import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
@@ -17,7 +16,6 @@ import arc.util.pooling.*;
 import arc.util.pooling.Pool.*;
 import heavyindustry.content.*;
 import heavyindustry.gen.*;
-import heavyindustry.struct.*;
 import mindustry.content.*;
 import mindustry.core.*;
 import mindustry.ctype.*;
@@ -26,7 +24,6 @@ import mindustry.entities.bullet.*;
 import mindustry.entities.pattern.*;
 import mindustry.entities.units.*;
 import mindustry.game.*;
-import mindustry.game.EventType.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.world.*;
@@ -61,7 +58,7 @@ public final class Utils {
 
     public static final Rand rand = new Rand(0);
 
-    public static final String[] packages = {
+    public static final String[] PACKAGES = {
             "heavyindustry",
             "heavyindustry.ai",
             "heavyindustry.content",
@@ -143,7 +140,6 @@ public final class Utils {
     private static final Vec2 tV = new Vec2(), tV2 = new Vec2(), tV3 = new Vec2();
     private static final IntSet collidedBlocks = new IntSet();
     private static final Rect rect = new Rect(), hitRect = new Rect();
-    private static final BoolGrid collideLineCollided = new BoolGrid();
     private static final IntSeq buildIdSeq = new IntSeq();
     private static final Seq<Tile> tiles = new Seq<>();
     private static final Seq<Unit> units = new Seq<>();
@@ -154,10 +150,6 @@ public final class Utils {
 
     /** Utils should not be instantiated. */
     private Utils() {}
-
-    public static void init() {
-        Events.on(WorldLoadEvent.class, event -> collideLineCollided.resize(world.width(), world.height()));
-    }
 
     public static void loadItems() {
         for (UnlockableContent c : donorItems) {

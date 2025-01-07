@@ -8,6 +8,7 @@ import mindustry.gen.*;
 import static arc.Core.*;
 import static mindustry.Vars.*;
 
+/** @since 1.0.5 */
 public final class Math3d {
     public static final float horiToVerti = 1f / 48f;
 

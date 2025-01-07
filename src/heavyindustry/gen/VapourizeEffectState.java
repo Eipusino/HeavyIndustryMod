@@ -20,12 +20,17 @@ public class VapourizeEffectState extends EffectState {
         lifetime = 50f;
     }
 
-    public VapourizeEffectState(float x, float y, Unit parent, Entityc influence) {
+    public VapourizeEffectState(float a, float b, Unit par, Entityc inf) {
         this();
-        this.x = x;
-        this.y = y;
-        this.parent = parent;
-        this.influence = influence;
+        x = a;
+        y = b;
+        parent = par;
+        influence = inf;
+    }
+
+    @Override
+    public int classId() {
+        return EntityRegister.getId(VapourizeEffectState.class);
     }
 
     @Override
@@ -51,8 +56,7 @@ public class VapourizeEffectState extends EffectState {
 
     @Override
     public float clipSize() {
-        if (parent instanceof Hitboxc hit) return hit.hitSize() * 2f;
-        else return super.clipSize();
+        return parent instanceof Hitboxc hit ? hit.hitSize() * 2f : super.clipSize();
     }
 
     @Override

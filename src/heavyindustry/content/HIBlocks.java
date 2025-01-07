@@ -111,7 +111,7 @@ public final class HIBlocks {
             smartBeamNode, beamDiode, beamInsulator, reinforcedPowerAnalyzer, liquidConsumeGenerator,
             //production
             largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, sporeFarm, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
-            nanocoreConstructor, nanocorePrinter, nanocoreActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, corkscrewCompressor,
+            nanocoreConstructor, nanocorePrinter, nanocoreActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, ironcladCompressor,
             uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilSedimentationTank,
             //production-erekir
             ventHeater, chemicalSiliconSmelter, largeElectricHeater, liquidFuelHeater, heatDriver, largeOxidationChamber, largeSurgeCrucible, largeCarbideCrucible, nanocoreConstructorErekir, nanocorePrinterErekir, uraniumFuser, chromiumFuser,
@@ -132,7 +132,7 @@ public final class HIBlocks {
             //unit-erekir
             largeUnitRepairTower, seniorAssemblerModule,
             //logic
-            matrixProcessor, hugeLogicDisplay, buffrerdMemoryCell, buffrerdMemoryBank, heatSink, heatFan, heatSinkLarge, laserRuler,
+            matrixProcessor, hugeLogicDisplay, buffrerdMemoryCell, buffrerdMemoryBank, heatSink, heatFan, heatSinkLarge, laserRuler, labelMessage,
             //turret
             dissipation, rocketLauncher, largeRocketLauncher, rocketSilo,
             dragonBreath, breakthrough, cloudbreaker, minigun,
@@ -141,6 +141,7 @@ public final class HIBlocks {
             //turret-erekir
             rupture,
             //sandbox
+            unitIniter,
             reinforcedItemSource, reinforcedLiquidSource, reinforcedPowerSource, reinforcedPayloadSource, adaptiveSource,
             omniNode, ultraAssignOverdrive,
             teamChanger, barrierProjector, invincibleWall, invincibleWallLarge, invincibleWallHuge, invincibleWallGigantic,
@@ -1869,34 +1870,48 @@ public final class HIBlocks {
             consumePower(1.5f);
             squareSprite = false;
         }};
-        corkscrewCompressor = new MultiCrafter("corkscrew-compressor") {{
+        ironcladCompressor = new MultiCrafter("ironclad-compressor") {{
             requirements(Category.crafting, with(Items.titanium, 250, Items.graphite, 210, Items.plastanium, 90, Items.silicon, 80));
             health = 1800;
-            size = 4;
+            size = 3;
             itemCapacity = 60;
             liquidCapacity = 360f;
             hasItems = true;
             hasLiquids = true;
             outputsLiquid = true;
+            useBlockDrawer = false;
             products.add(new Formula() {{
-                outputItems = ItemStack.with(Items.graphite, 4);
+                outputItems = ItemStack.with(Items.graphite, 5);
                 craftTime = 15f;
                 consumeItem(Items.coal, 8);
                 consumeLiquid(Liquids.water, 0.8f);
                 consumePower(3f);
+                drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawDefault(), new DrawRegion("-top-graphite"));
             }}, new Formula() {{
                 outputLiquids = LiquidStack.with(Liquids.oil, 0.8f);
                 craftTime = 30f;
                 consumeItem(Items.sporePod, 4);
                 consumePower(2.8f);
+                drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawDefault(), new DrawCircles() {{
+                    color = Color.valueOf("1d201f").a(0.24f);
+                    strokeMax = 2.5f;
+                    radius = 30f * 0.25f;
+                    amount = 4;
+                }}, new DrawLiquidTile() {{
+                    drawLiquid = Liquids.oil;
+                    padding = 34 * 0.25f;
+                }}, new DrawRegion("-top-spore"));
             }}, new Formula() {{
                 outputItems = ItemStack.with(Items.plastanium, 1);
                 craftTime = 15f;
                 consumeItem(Items.titanium, 2);
                 consumeLiquid(Liquids.oil, 1f);
                 consumePower(7f);
+                drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawDefault(), new DrawRegion("-top-plast"), new DrawFade() {{
+                    suffix = "-top-plast-top";
+                }});
             }});
-            drawer = new DrawMulti(new DrawDefault(), new DrawRegion("-rotator", 1.125f, true));
+            squareSprite = false;
         }};
         uraniumSynthesizer = new GenericCrafter("uranium-synthesizer") {{
             requirements(Category.crafting, with(Items.graphite, 50, Items.silicon, 40, Items.plastanium, 30, Items.phaseFabric, 15));
@@ -2630,6 +2645,7 @@ public final class HIBlocks {
             requirements(Category.logic, with(Items.lead, 15, Items.silicon, 25, Items.metaglass, 5));
             size = 1;
         }};
+        labelMessage = new LabelMessageBlock("label-message");
         //turret
         dissipation = new PointDefenseTurret("dissipation") {{
             requirements(Category.turret, with(Items.silicon, 220, HIItems.chromium, 80, Items.phaseFabric, 40, Items.plastanium, 60));
@@ -3824,6 +3840,7 @@ public final class HIBlocks {
             squareSprite = false;
         }};
         //sandbox
+        unitIniter = new UnitIniter("unit-initer");
         reinforcedItemSource = new ItemSource("reinforced-item-source") {{
             requirements(Category.distribution, BuildVisibility.sandboxOnly, with());
             health = 1000;
@@ -3936,8 +3953,8 @@ public final class HIBlocks {
 
                 @Override
                 public void configured(Unit builder, Object value) {
-                    if (builder != null && builder.isPlayer() && value instanceof Integer v) {
-                        Team t = Team.get(v);
+                    if (builder != null && builder.isPlayer() && value instanceof Number number) {
+                        Team t = Team.get(number.intValue());
                         builder.team = t;
                         builder.getPlayer().team(t);
 

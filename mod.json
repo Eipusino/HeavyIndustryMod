@@ -4,8 +4,8 @@
     "author": "Eipusino",
     "subtitle": "Heavy Industry Java Mod",
     "main": "heavyindustry.core.HeavyIndustryMod",
-    "description": "Warning: This mod currently only supports clients above version be25465. Please do not download this mod for clients above version v146!\nThe desktop platform must ensure that the Java version is 16 or 17.\n\nInstall for fresh and revised mindustry experience.\nPlease note:\nThis Mod is a Java class Mod, therefore it does not support running on the iOS platform.\nTry not to mix with other Mods as much as possible to avoid unknown issues in the game.",
-    "version": "1.1.0.5-build",
+    "description": "Warning: This mod currently only supports clients above version be25465. Please do not download this mod for clients above version v146!\nThe desktop platform must ensure that the Java version is 16 or 17.\nMindustry no longer supports stable running on Java8, so you should never use Java8 no matter what.\n\nInstall for fresh and revised mindustry experience.\nPlease note:\nThis Mod is a Java class Mod, therefore it does not support running on the iOS platform.\nTry not to mix with other Mods as much as possible to avoid unknown issues in the game.",
+    "version": "1.0.6-alpha",
     "java": true,
-    "minGameVersion": 146.0
+    "minGameVersion": 147.0
 }

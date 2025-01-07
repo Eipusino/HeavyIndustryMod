@@ -15,24 +15,24 @@ public final class ModGetter {
     private ModGetter() {}
 
     /**
-     * Pass in a file and check if it is a mod file. If it is, return the mod's meta file. If not, throw {@link IllegalArgumentException}
+     * Pass in a file and check if it is a mod file. If it is, return the mod's meta file. If not, throw {@link IllegalStateException}
      *
      * @param modFile Check the file, which can be a directory
      * @return The main meta file of this mod
-     * @throws IllegalArgumentException If this file is not a mod
+     * @throws IllegalStateException If this file is not a mod
      */
-    public static Fi checkModFormat(Fi modFile) throws IllegalArgumentException {
+    public static Fi checkModFormat(Fi modFile) throws IllegalStateException {
         try {
             if (!(modFile instanceof ZipFi) && !modFile.isDirectory()) modFile = new ZipFi(modFile);
         } catch (Exception e) {
-            throw new IllegalArgumentException("file was not a valid zipped file");
+            throw new IllegalStateException("file was not a valid zipped file");
         }
 
         Fi meta = modFile.child("mod.json").exists() ? modFile.child("mod.json") :
                 modFile.child("mod.hjson").exists() ? modFile.child("mod.hjson") :
                         modFile.child("plugin.json").exists() ? modFile.child("plugin.json") : modFile.child("plugin.hjson");
 
-        if (!meta.exists()) throw new IllegalArgumentException("mod format error: mod meta was not found");
+        if (!meta.exists()) throw new IllegalStateException("mod format error: mod meta was not found");
 
         return meta;
     }
@@ -47,7 +47,7 @@ public final class ModGetter {
         try {
             checkModFormat(modFile);
             return true;
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalStateException e) {
             return false;
         }
     }
@@ -61,7 +61,7 @@ public final class ModGetter {
                 if (filter.get(file, info)) {
                     result.add(new ModInfo(file));
                 }
-            } catch (IllegalArgumentException ignored) {}
+            } catch (IllegalStateException ignored) {}
         }
 
         return result;

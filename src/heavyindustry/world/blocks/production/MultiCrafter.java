@@ -36,12 +36,11 @@ import static mindustry.Vars.*;
  * <p>The version that supports heat is available in {@link heavyindustry.world.blocks.heat.HeatMultiCrafter }.
  * <p>We currently do not support JSON minimalist format parsing, which is too cumbersome to write.
  *
- * @apiNote Example usage {@link heavyindustry.content.HIBlocks#corkscrewCompressor }.
- *
+ * @author Eipusino
+ * @apiNote Example usage {@link heavyindustry.content.HIBlocks#ironcladCompressor }.
  * @see heavyindustry.world.blocks.production.MultiCrafter.Formula
  * @see heavyindustry.world.blocks.heat.HeatMultiCrafter
- *
- * @author Eipusino
+ * @since 1.0.6
  */
 public class MultiCrafter extends Block {
     /** Recipe {@link Formula}. */
@@ -556,14 +555,14 @@ public class MultiCrafter extends Block {
                 rtc.clearChildren();
                 if (hasDoubleOutput) {
                     for (int i = 0; i < rotationIcon.length; i++) {
-                        ImageButton button = new ImageButton();
-                        int I = i;
-                        button.table(img -> img.image(rotationIcon[I]).color(Color.white).size(40).pad(10f));
+                        var button = new ImageButton();
+                        int fi = i;
+                        button.table(img -> img.image(rotationIcon[fi]).color(Color.white).size(40).pad(10f));
                         button.changed(() -> {
-                            configs[0] = I;
+                            configs[0] = fi;
                             configure(configs);
                         });
-                        button.update(() -> button.setChecked(rotation == I));
+                        button.update(() -> button.setChecked(rotation == fi));
                         button.setStyle(Styles.clearNoneTogglei);
                         rtc.add(button).tooltip(String.valueOf(i * 90));
                     }
@@ -571,7 +570,7 @@ public class MultiCrafter extends Block {
 
                 cont.clearChildren();
                 for (Formula f : products) {
-                    ImageButton button = new ImageButton();
+                    var button = new ImageButton();
                     button.table(info -> {
                         info.left();
                         info.table(from -> {
@@ -626,11 +625,8 @@ public class MultiCrafter extends Block {
 
         @Override
         public double sense(LAccess sensor) {
-            if (sensor == LAccess.progress) {
-                return progress();
-            } else {
-                return super.sense(sensor);
-            }
+            if (sensor == LAccess.progress) return progress;
+            return super.sense(sensor);
         }
 
         @Override
@@ -667,26 +663,32 @@ public class MultiCrafter extends Block {
     }
 
     public static class Formula {
+        /** Array of consumers used by this block. Only populated after init(). */
         public Consume[] consumers = {}, optionalConsumers = {}, nonOptionalConsumers = {}, updateConsumers = {};
-        public ConsumePower consPower = null;
+        /** The single power consumer, if applicable. */
+        public @Nullable ConsumePower consPower = null;
 
         public float craftTime = 60f;
+        /** Set to true if this formula has any consumers in its array. */
         public boolean hasConsumers = false;
 
         public ItemStack[] outputItems = {};
         public LiquidStack[] outputLiquids = {};
 
+        /** Liquid output directions, specified in the same order as outputLiquids. Use -1 to dump in every direction. Rotations are relative to block. */
         public int[] liquidOutputDirections = {-1};
         public boolean ignoreLiquidFullness = false;
+        /** if true, crafters with multiple liquid outputs will dump excess when there's still space for at least one liquid type */
         public boolean dumpExtraLiquid = true;
 
         public float warmupSpeed = 0.02f;
 
         public float updateEffectChance = 0.05f;
 
+        /** The amount of power produced per tick in case of an efficiency of 1.0, which represents 100%. */
         public float powerProduction = 0f;
 
-        //The block must be HeatBlock, otherwise the following variables are invalid.
+        /** The block must be HeatBlock, otherwise the following variables are invalid. */
         public float heatOutput = 0f;
         public float heatRequirement = 0f;
         public float warmupRate = 0.15f;
@@ -698,12 +700,15 @@ public class MultiCrafter extends Block {
 
         public DrawBlock drawer = new DrawDefault();
 
+        /** Consumption filters. */
         public ObjectMap<Item, Boolean> itemFilter = new ObjectMap<>();
         public ObjectMap<Liquid, Boolean> liquidFilter = new ObjectMap<>();
 
         protected MultiCrafter owner = null;
 
+        /** List for building up consumption before init(). */
         protected Seq<Consume> consumeBuilder = new Seq<>();
+        /** Map of bars by name. */
         protected OrderedMap<String, Func<Building, Bar>> barMap = new OrderedMap<>();
 
         public void init() {

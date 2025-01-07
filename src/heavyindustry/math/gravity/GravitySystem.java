@@ -2,7 +2,11 @@ package heavyindustry.math.gravity;
 
 import arc.math.geom.*;
 
-/** Gravity system interface, processing unit for gravity operations. */
+/**
+ * Gravity system interface, processing unit for gravity operations.
+ *
+ * @since 1.0.4
+ */
 public interface GravitySystem {
     /** The gravitational field excited by the system. */
     GravityField field();

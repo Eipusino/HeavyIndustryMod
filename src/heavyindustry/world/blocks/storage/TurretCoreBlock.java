@@ -29,8 +29,8 @@ public class TurretCoreBlock extends CoreBlock {
         public BuildPayload payload = new BuildPayload(turret, Team.derelict);
 
         @Override
-        public void update() {
-            super.update();
+        public void updateTile() {
+            super.updateTile();
             if (payload.build.team != team) {
                 payload.build.team = team;
             }

@@ -2,8 +2,13 @@ package heavyindustry.util.path;
 
 import java.util.*;
 
-/** Universal path implementation based on {@link LinkedList}, which can meet the storage requirements of general path information. */
-public class GenericPath<V> implements IPath<V> {
+/**
+ * Universal path implementation based on {@link LinkedList},
+ * which can meet the storage requirements of general path information.
+ *
+ * @since 1.0.5
+ */
+public class GenericPath<V> implements Pathc<V> {
     private final LinkedList<V> path = new LinkedList<>();
 
     @Override

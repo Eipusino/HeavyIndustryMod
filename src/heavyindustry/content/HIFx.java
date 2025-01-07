@@ -2817,6 +2817,90 @@ public final class HIFx {
         });
     }
 
+    /** Refer to {@link HIFx#burstCloud(float, float, int, float, Color)} */
+    public static Effect burstCloud(Color color) {
+        return burstCloud(15, color);
+    }
+
+    /** Refer to {@link HIFx#burstCloud(float, float, int, float, Color)} */
+    public static Effect burstCloud(float size, Color color) {
+        return burstCloud(size, 22, 160, color);
+    }
+
+    /** Refer to {@link HIFx#burstCloud(float, float, int, float, Color)} */
+    public static Effect burstCloud(float size, int amount, float spreadRad, Color color) {
+        return burstCloud(size, size * 6, amount, spreadRad, color);
+    }
+
+    /**
+     * Based on old Fx.impactCloud
+     *
+     * @param size [15]
+     * @param lifetime [120]
+     * @param amount [22]
+     * @param spreadRad [160]
+     */
+    public static Effect burstCloud(float size, float lifetime, int amount, float spreadRad, Color color) {
+        return new Effect(lifetime, 400f, e ->
+                Angles.randLenVectors(e.id, amount, e.finpow() * spreadRad, (x, y) -> {
+                    float rad = e.fout() * size;
+                    Draw.alpha(0.8f * e.fout());
+                    Draw.color(color, Color.gray, e.fout());
+                    Fill.circle(e.x + x, e.y + y, rad);
+                }));
+    }
+
+    public static Effect crucibleSmoke(Color color) {
+        return crucibleSmoke(160, color);
+    }
+
+    public static Effect crucibleSmoke(float lifetime, Color color) {
+        return crucibleSmoke(lifetime, 2, color);
+    }
+
+    /**
+     * {@link Fx#surgeCruciSmoke}
+     *
+     * @param lifetime How long does the effect lasts | 160
+     * @param particleRad Particle Size | 2
+     * @param color particle color
+     */
+    public static Effect crucibleSmoke(float lifetime, float particleRad, Color color) {
+        return new Effect(lifetime, e -> {
+            Draw.color(color);
+            Draw.alpha(0.45f);
+
+            rand.setSeed(e.id);
+            for (int i = 0; i < 3; i++) {
+                float len = rand.random(3f, 9f);
+                float rot = rand.range(40f) + e.rotation;
+
+                e.scaled(e.lifetime * rand.random(0.3f, 1f), b -> {
+                    v7.trns(rot, len * b.finpow());
+                    Fill.circle(e.x + v7.x, e.y + v7.y, particleRad * b.fslope() + (particleRad / 10));
+                });
+            }
+        });
+    }
+
+    /**
+     * Steam Cloud used for steam effects on various buildings
+     *
+     * @param smokeSize How big is the smoke 'puff' also adjusts the amount of 'puff'
+     * @param color The color of the smoke/puff
+     */
+    public static Effect cloudPuff(float smokeSize, Color color) {
+        float smokeSizeLfMult = 12f;
+        return new Effect(smokeSize * smokeSizeLfMult, smokeSize * smokeSizeLfMult * 2.85f, e -> {
+            Draw.color(Tmp.c1.set(color).mul(1.1f));
+            Angles.randLenVectors(e.id, (int) (6 * smokeSize), 12f * e.finpow() * smokeSize / 8, (x, y) -> {
+                Draw.alpha(0.45f * e.fout());
+                Fill.circle(e.x + x, e.y + y, e.fout() * 3f + 0.1f);
+                Draw.reset();
+            });
+        }).layer(Layer.blockOver);
+    }
+
     public interface EffectParam {
         void draw(long id, float x, float y, float rot, float fin);
     }

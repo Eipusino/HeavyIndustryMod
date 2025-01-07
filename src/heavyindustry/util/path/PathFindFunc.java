@@ -5,7 +5,7 @@ public class PathFindFunc {
     /** Path receiver function, used to pass the endpoint and path object to the function for callback when searching for a path. */
     public interface PathAcceptor<V> {
         /** The callback function entry receives a vertex and a path object, representing the endpoint and path information of the path, respectively. */
-        void accept(V destination, IPath<V> path);
+        void accept(V destination, Pathc<V> path);
     }
 
     /** Vertex receiver function, used to pass vertex objects to the function for callback when searching for paths. */

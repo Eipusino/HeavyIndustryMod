@@ -197,7 +197,7 @@ public class ResourcesDispatchingCenter extends StorageBlock {
         }
     }
 
-    public class ResourcesDispatchingCenterBuild extends StorageBlock.StorageBuild {
+    public class ResourcesDispatchingCenterBuild extends StorageBuild {
         public Interval timer = new Interval(6);
         public IntSeq links = new IntSeq();
         public IntSeq deadLinks = new IntSeq(100);

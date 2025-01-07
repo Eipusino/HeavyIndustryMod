@@ -2,6 +2,7 @@ package heavyindustry.mod;
 
 import arc.files.*;
 import arc.util.serialization.*;
+import heavyindustry.util.*;
 
 public class ModInfo {
     public final String name;
@@ -10,11 +11,11 @@ public class ModInfo {
 
     public ModInfo(Fi modFile) {
         if (modFile instanceof ZipFi)
-            throw new IllegalArgumentException("given file is a zip file object, please use file object!");
+            throw new IllegalStateException("given file is a zip file object, please use file object!");
         Fi modMeta;
         try {
             modMeta = ModGetter.checkModFormat(modFile);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalStateException e) {
             throw new RuntimeException(e);
         }
         Jval info = Jval.read(modMeta.reader());

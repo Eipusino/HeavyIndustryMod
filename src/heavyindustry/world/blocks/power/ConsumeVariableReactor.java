@@ -24,9 +24,7 @@ public class ConsumeVariableReactor extends VariableReactor {
         public float consumeItemTimer;
 
         @Override
-        public void update() {
-            super.update();
-
+        public void updateTile() {
             heat = calculateHeat(sideHeat);
             productionEfficiency = efficiency;
             warmup = Mathf.lerpDelta(warmup, productionEfficiency > 0 ? 1f : 0f, warmupSpeed);

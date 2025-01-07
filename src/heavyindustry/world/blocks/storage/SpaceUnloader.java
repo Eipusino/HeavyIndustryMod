@@ -247,7 +247,7 @@ public class SpaceUnloader extends StorageBlock {
         /**
          * Move a certain location to 'headLink' and perform position correction when rebuilding the building at the specified location.
          *
-         * @param pos 位置
+         * @param pos position
          */
         public void deadLink(int pos) {
             if (Vars.net.client()) {

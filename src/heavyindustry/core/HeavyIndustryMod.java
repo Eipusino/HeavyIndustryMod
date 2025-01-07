@@ -76,12 +76,10 @@ public final class HeavyIndustryMod extends Mod {
                 Log.err("Failed to replace renderer", e);
             }
 
-            HIIcon.load();
-
             String close = bundle.get("close");
 
-            dialog: {
-                if (settings.getBool("hi-closed-dialog") || isAprilFoolsDay()) break dialog;
+            dia: {
+                if (settings.getBool("hi-closed-dialog") || isAprilFoolsDay()) break dia;
 
                 FLabel label = new FLabel(bundle.get("hi-author") + author);
                 BaseDialog dialog = new BaseDialog(bundle.get("hi-name")) {{
@@ -104,8 +102,8 @@ public final class HeavyIndustryMod extends Mod {
                 }};
                 dialog.show();
             }
-            mulModDialog: {
-                if (settings.getBool("hi-closed-multiple-mods")) break mulModDialog;
+            mul: {
+                if (settings.getBool("hi-closed-multiple-mods")) break mul;
 
                 boolean announces = true;
 
@@ -115,7 +113,7 @@ public final class HeavyIndustryMod extends Mod {
                         break;
                     }
 
-                if (announces) break mulModDialog;
+                if (announces) break mul;
                 BaseDialog dialog = new BaseDialog("oh-no") {
                     float time = 300f;
                     boolean canClose;
@@ -146,18 +144,20 @@ public final class HeavyIndustryMod extends Mod {
             }
         });
 
+        Events.on(ContentInitEvent.class, event -> {
+            if (!headless)
+                HIIcon.load();
+        });
+
         Events.on(MusicRegisterEvent.class, event -> {
-            if (!headless) {
+            if (!headless)
                 HIMusics.load();
-            }
         });
 
         Events.on(DisposeEvent.class, event -> {
             if (!headless)
                 HIShaders.dispose();
         });
-
-        Utils.init();
     }
 
     @Override

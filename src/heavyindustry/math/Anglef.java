@@ -2,6 +2,7 @@ package heavyindustry.math;
 
 import arc.math.*;
 
+/** @since 1.0.4 */
 public final class Anglef {
     private Anglef() {}
 
