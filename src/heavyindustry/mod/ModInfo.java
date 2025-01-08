@@ -2,12 +2,14 @@ package heavyindustry.mod;
 
 import arc.files.*;
 import arc.util.serialization.*;
-import heavyindustry.util.*;
 
 public class ModInfo {
     public final String name;
     public final String version;
+    public final boolean plugin;
+
     public final Fi file;
+    public final Jval info;
 
     public ModInfo(Fi modFile) {
         if (modFile instanceof ZipFi)
@@ -18,9 +20,24 @@ public class ModInfo {
         } catch (IllegalStateException e) {
             throw new RuntimeException(e);
         }
-        Jval info = Jval.read(modMeta.reader());
+        info = Jval.read(modMeta.reader());
         file = modFile;
         name = info.get("name").asString();
         version = info.get("version").asString();
+
+        boolean plu = false;
+        if (info.has("plugin")) {
+            plu = info.get("plugin").asBool();
+        }
+        plugin = plu;
+    }
+
+    @Override
+    public String toString() {
+        return "ModInfo{" +
+                "name='" + name + '\'' +
+                ", version='" + version + '\'' +
+                ", plugin=" + plugin +
+                '}';
     }
 }

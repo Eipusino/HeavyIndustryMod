@@ -348,6 +348,7 @@ final class HIClassMap {
         classes.put("DrawRotator", DrawRotator.class);
         classes.put("DrawScanLine", DrawScanLine.class);
         classes.put("DrawFrame", DrawFrame.class);
+        classes.put("DrawAnim", DrawAnim.class);
         classes.put("DrawExpandPlasma", DrawExpandPlasma.class);
         classes.put("DrawSpecConstruct", DrawSpecConstruct.class);
         classes.put("DrawAntiSpliceBlock", DrawAntiSpliceBlock.class);

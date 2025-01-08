@@ -130,6 +130,9 @@ public final class Utils {
             "heavyindustry.world.particle.model"
     };
 
+    public static final Class<Integer> IC = Integer.class;
+    public static final Class<int[]> IAC = int[].class;
+
     public static Seq<UnlockableContent> donorItems = new Seq<>();
     public static Seq<UnlockableContent> developerItems = new Seq<>();
 

@@ -1,4 +1,24 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+buildscript {
+    ext {
+        //windows sucks
+        isWindows = System.getProperty("os.name").toLowerCase().contains("windows")
+        sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    }
+}
+
 plugins {
+    id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
+    id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlinVersion"
     id 'java'
 }
 
@@ -17,12 +37,6 @@ java {
     sourceCompatibility = JavaVersion.VERSION_16
 }
 
-ext {
-    //windows sucks
-    isWindows = System.getProperty("os.name").toLowerCase().contains("windows")
-    sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
-}
-
 dependencies {
     implementation "org.jetbrains:annotations:24.0.1"
     implementation "org.commonmark:commonmark:$commonmarkVersion"
@@ -30,15 +44,11 @@ dependencies {
     implementation "org.commonmark:commonmark-ext-gfm-strikethrough:$commonmarkVersion"
     implementation "org.commonmark:commonmark-ext-ins:$commonmarkVersion"
 
-    compileOnly files("libs/mindustry.jar")
+    compileOnly files("libs/mindustry-25485.jar")
 }
 
-configurations.all {
-    resolutionStrategy.eachDependency { details ->
-        if (details.requested.group == 'com.github.Anuken.Arc') {
-            details.useVersion "$mindustryVersion"
-        }
-    }
+tasks.withType(KotlinCompile).configureEach {
+    kotlinOptions.jvmTarget = 16
 }
 
 task jarAndroid {

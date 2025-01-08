@@ -23,7 +23,7 @@ public class DrawSpecConstruct extends DrawBlock {
 
     public int size = 1;
 
-    public TextureRegion[] stageRegions;
+    public TextureRegion[] regions;
 
     public DrawSpecConstruct() {}
 
@@ -38,19 +38,18 @@ public class DrawSpecConstruct extends DrawBlock {
 
     @Override
     public void draw(Building build) {
-        int stage = (int) (build.progress() * stageRegions.length);
-        float stageProgress = (build.progress() * stageRegions.length) % 1f;
+        int stage = (int) (build.progress() * regions.length);
+        float stageProgress = (build.progress() * regions.length) % 1f;
 
         for (int i = 0; i < stage; i++) {
-            Draw.rect(stageRegions[i], build.x, build.y);
+            Draw.rect(regions[i], build.x, build.y);
         }
 
-        Draw.draw(Layer.blockOver, () -> Drawn.construct(build, stageRegions[stage], constructColor1, constructColor2, 0f, stageProgress, build.warmup() * build.efficiency(), build.totalProgress() * 1.6f));
+        Draw.draw(Layer.blockOver, () -> Drawn.construct(build, regions[stage], constructColor1, constructColor2, 0f, stageProgress, build.warmup() * build.efficiency(), build.totalProgress() * 1.6f));
     }
 
     @Override
     public void load(Block block) {
-        super.load(block);
-        stageRegions = split(block.name + "-construct", Math.abs(size) * 32, 0);
+        regions = split(block.name + "-construct", (size > 0 ? size : block.size) * 32, 0);
     }
 }

@@ -95,7 +95,7 @@ public final class HIBlocks {
             //drill
             titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, beamDrill, groundPenetratingDetector, groundPenetratingDrill,
             //drill-erekir
-            largeCliffCrusher, heavyPlasmaBore, minerPoint, minerCenter,
+            heavyPlasmaBore, minerPoint, minerCenter,
             //distribution
             invertedJunction, itemLiquidJunction, multiSorter, plastaniumRouter, plastaniumBridge, stackHelper, chromiumEfficientConveyor, chromiumArmorConveyor, chromiumTubeConveyor, chromiumTubeDistributor, chromiumStackConveyor, chromiumStackRouter, chromiumStackBridge, chromiumJunction, chromiumRouter, chromiumItemBridge,
             phaseItemNode, rapidDirectionalUnloader,
@@ -857,19 +857,6 @@ public final class HIBlocks {
             consumeLiquid(Liquids.water, 0.2f).boost();
         }};
         //drill-erekir
-        largeCliffCrusher = new WallCrafter("large-cliff-crusher") {{
-            requirements(Category.production, with(Items.graphite, 80, Items.silicon, 30, Items.beryllium, 60, Items.tungsten, 25));
-            health = 860;
-            size = 3;
-            itemCapacity = 20;
-            drillTime = 75;
-            attribute = Attribute.sand;
-            output = Items.sand;
-            fogRadius = 3;
-            ambientSound = Sounds.drill;
-            ambientSoundVolume = 0.1f;
-            consumePower(54f / 60f);
-        }};
         heavyPlasmaBore = new BeamDrill("heavy-plasma-bore") {{
             requirements(Category.production, with(Items.silicon, 300, Items.oxide, 150, Items.beryllium, 350, Items.tungsten, 250, Items.carbide, 100));
             itemCapacity = 30;

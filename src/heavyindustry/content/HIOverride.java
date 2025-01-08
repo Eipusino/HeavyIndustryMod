@@ -79,10 +79,6 @@ public final class HIOverride {
         //Blocks-Liquid-Erekir
         Blocks.reinforcedLiquidRouter.liquidCapacity = 40f;
         //Blocks-Drill-Erekir
-        ObjectFloatMap<Item> bur = new ObjectFloatMap<>();
-        for (Item item : content.items()) {
-            bur.put(item, hard(item));
-        }
         ((BeamDrill) Blocks.largePlasmaBore).drillMultipliers.put(Items.beryllium, 1.5f);
         ((BeamDrill) Blocks.largePlasmaBore).drillMultipliers.put(Items.graphite, 1.5f);
         //Blocks-Power
@@ -97,6 +93,7 @@ public final class HIOverride {
         Blocks.disassembler.removeConsumers(c -> c instanceof ConsumeItems);
         ((Separator) Blocks.disassembler).results = ItemStack.with(Items.copper, 1, Items.lead, 1, Items.graphite, 1, Items.titanium, 1, Items.thorium, 1);
         //Blocks-Production-Erekir
+        Blocks.largeCliffCrusher.requirements = ItemStack.with(Items.silicon, 80, Items.thorium, 60, Items.oxide, 20, Items.beryllium, 100, Items.tungsten, 50);
         Blocks.oxidationChamber.canOverdrive = true;
         Blocks.heatReactor.buildVisibility = BuildVisibility.shown;
         ((AttributeCrafter) Blocks.ventCondenser).maxBoost = 3f;
@@ -393,13 +390,6 @@ public final class HIOverride {
             if (b == null) continue;
             if (replaceWater && b.cacheLayer == CacheLayer.water) {
                 b.cacheLayer = HICacheLayer.dalani;
-                continue;
-            }
-            if (b instanceof BurstDrill bu) {
-                bu.drillMultipliers.putAll(bur);
-                if (bu == Blocks.impactDrill || bu == Blocks.eruptionDrill) {
-                    bu.drillMultipliers.remove(Items.thorium, 1);
-                }
             }
         }
     }
@@ -489,18 +479,5 @@ public final class HIOverride {
                 }
             }
         }
-    }
-
-    static float hard(Item item) {
-        return switch (item.hardness) {
-            case 0 -> 4f;
-            case 1 -> 3.5f;
-            case 2 -> 3f;
-            case 3 -> 2.5f;
-            case 4 -> 2f;
-            case 5 -> 1.5f;
-            case 6 -> 1f;
-            default -> 0.5f;
-        };
     }
 }

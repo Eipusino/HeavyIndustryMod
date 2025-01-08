@@ -23,6 +23,7 @@ import heavyindustry.net.*;
 import heavyindustry.ui.*;
 import heavyindustry.ui.dialogs.*;
 import heavyindustry.util.*;
+import kotlin.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.game.EventType.*;
@@ -63,6 +64,21 @@ public final class HeavyIndustryMod extends Mod {
     public static InputAggregator inputAggregator;
 
     private static LoadedMod mod;
+    private static ModInfo modInfo;
+    private static final boolean plugin;
+
+    static {
+        Log.infoTag("Kotlin", "Version: " + KotlinVersion.CURRENT);
+
+        boolean plu = false;
+        try {
+            modInfo = new ModInfo(internalTree.path);
+            plu = modInfo.plugin;
+        } catch (Exception e) {
+            Log.err("ModInfo initialization error.", e);
+        }
+        plugin = plu;
+    }
 
     public HeavyIndustryMod() {
         Log.info("Loaded HeavyIndustry Mod constructor.");
@@ -70,6 +86,7 @@ public final class HeavyIndustryMod extends Mod {
         HIClassMap.load();
 
         Events.on(ClientLoadEvent.class, event -> {
+            if (plugin) return;
             try {
                 Reflect.set(MenuFragment.class, ui.menufrag, "renderer", new HIMenuRenderer());
             } catch (Exception e) {
@@ -167,6 +184,8 @@ public final class HeavyIndustryMod extends Mod {
         EntityRegister.load();
         WorldRegister.load();
 
+        if (plugin) return;
+
         HITeams.load();
         HIItems.load();
         HIStatusEffects.load();
@@ -188,6 +207,13 @@ public final class HeavyIndustryMod extends Mod {
 
     @Override
     public void init() {
+        try {
+            ModAPIKt.init();
+        } catch (Exception e) {
+            Log.err("js initial error, stack trace: ", e);
+        }
+        Log.info(ModAPIKt.INIT_JS);
+
         if (!headless) {
             //Set up screen sampler.
             ScreenSampler.setup();
@@ -198,10 +224,11 @@ public final class HeavyIndustryMod extends Mod {
 
         settings.defaults("hi-closed-dialog", false);
         settings.defaults("hi-closed-multiple-mods", false);
+        settings.defaults("hi-floating-text", true);
         settings.defaults("hi-animated-shields", true);
         settings.defaults("hi-replace-water-surface", true);
 
-        if (mods.getMod("extra-utilities") == null && isAprilFoolsDay()) {
+        if (!plugin && mods.getMod("extra-utilities") == null && isAprilFoolsDay()) {
             HIOverride.loadAprilFoolsDay();
             if (ui != null)
                 Events.on(ClientLoadEvent.class, event -> Time.runTask(10f, () -> {
@@ -233,6 +260,12 @@ public final class HeavyIndustryMod extends Mod {
                 }));
         }
 
+        if (plugin && mod() != null) {
+            mod.meta.hidden = true;
+            mod.meta.name = modName + "-plugin";
+            mod.meta.displayName = bundle.get("hi-name") + " Plugin";
+        }
+
         if (ui != null) {
             if (ui.settings != null) {
                 //add heavy-industry settings
@@ -240,6 +273,7 @@ public final class HeavyIndustryMod extends Mod {
                     t.checkPref("hi-closed-dialog", false);
                     t.checkPref("hi-closed-multiple-mods", false);
                     t.checkPref("hi-replace-water-surface", true);
+                    t.checkPref("hi-floating-text", true);
                     t.checkPref("hi-animated-shields", true);
                     t.checkPref("hi-serpulo-sector-invasion", true);
                     t.checkPref("hi-developer-mode", false);
@@ -256,14 +290,14 @@ public final class HeavyIndustryMod extends Mod {
             });
         }
 
-        setString: {
+        set: {
             String massage = bundle.get("hi-random-massage");
             String[] massageSplit = massage.split("&");
 
-            if (ui == null || mods.getMod("extra-utilities") != null) break setString;
+            if (ui == null || mods.getMod("extra-utilities") != null || !settings.getBool("hi-floating-text")) break set;
 
-            HIMenuFragment.title = massageSplit[Mathf.random(massageSplit.length - 1)];
-            HIMenuFragment.build(ui.menuGroup);
+            var fl = new FloatingText(massageSplit[Mathf.random(massageSplit.length - 1)]);
+            fl.build(ui.menuGroup);
         }
     }
 
@@ -278,6 +312,14 @@ public final class HeavyIndustryMod extends Mod {
     public static LoadedMod mod() {
         if (mod == null) mod = mods.getMod(modName);
         return mod;
+    }
+
+    public static ModInfo modInfo() {
+        return modInfo;
+    }
+
+    public static boolean plugin() {
+        return plugin;
     }
 
     public static void resetSaves(Planet planet) {
@@ -328,29 +370,31 @@ public final class HeavyIndustryMod extends Mod {
         return sb.toString();
     }
 
-    static class HIMenuFragment {
-        static final Mat setMat = new Mat(), reMat = new Mat();
-        static final Vec2 vec2 = new Vec2();
+    public static final class FloatingText {
+        private static final Mat setMat = new Mat(), reMat = new Mat();
+        private static final Vec2 vec2 = new Vec2();
 
-        static String title = "oh no";
+        public final String title;
 
-        HIMenuFragment() {}
+        public FloatingText(String v) {
+            title = v;
+        }
 
-        static void build(Group parent) {
+        public void build(Group parent) {
             parent.fill((x, y, w, h) -> {
                 TextureRegion logo = atlas.find("logo");
                 float width = graphics.getWidth(), height = graphics.getHeight() - scene.marginTop;
-                float logoscl = Scl.scl(1) * logo.scale;
-                float logow = Math.min(logo.width * logoscl, graphics.getWidth() - Scl.scl(20));
-                float logoh = logow * (float) logo.height / logo.width;
+                float logoScl = Scl.scl(1) * logo.scale;
+                float logoW = Math.min(logo.width * logoScl, graphics.getWidth() - Scl.scl(20));
+                float logoH = logoW * (float) logo.height / logo.width;
 
                 float fx = (int) (width / 2f);
-                float fy = (int) (height - 6 - logoh) + logoh / 2 - (graphics.isPortrait() ? Scl.scl(30f) : 0f);
+                float fy = (int) (height - 6 - logoH) + logoH / 2 - (graphics.isPortrait() ? Scl.scl(30f) : 0f);
                 if (settings.getBool("macnotch")) {
                     fy -= Scl.scl(macNotchHeight);
                 }
 
-                float ex = fx + logow / 3 - Scl.scl(1f), ey = fy - logoh / 3f - Scl.scl(2f);
+                float ex = fx + logoW / 3 - Scl.scl(1f), ey = fy - logoH / 3f - Scl.scl(2f);
                 float ang = 12 + Mathf.sin(Time.time, 8, 2f);
 
                 float dst = Mathf.dst(ex, ey, 0, 0);

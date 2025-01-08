@@ -1,6 +1,5 @@
-package heavyindustry.func;
+package heavyindustry.func
 
-@SuppressWarnings("unchecked")
-public interface VariableFunc<T, R> {
-    R apply(T... args);
+interface VariableFunc<T, R> {
+    fun apply(vararg args: T): R
 }
