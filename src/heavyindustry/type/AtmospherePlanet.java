@@ -3,12 +3,11 @@ package heavyindustry.type;
 import arc.graphics.*;
 import arc.graphics.Texture.*;
 import arc.graphics.g3d.*;
-import arc.graphics.gl.*;
 import arc.math.geom.*;
 import arc.util.*;
 import heavyindustry.graphics.*;
+import heavyindustry.graphics.gl.*;
 import mindustry.graphics.*;
-import mindustry.graphics.Shaders.*;
 import mindustry.graphics.g3d.*;
 import mindustry.type.*;
 
@@ -17,15 +16,17 @@ import static mindustry.Vars.*;
 
 /**
  * Just a regular planet, but with a fixed atmosphere shader at the little cost of performance.
+ *
+ * @since 1.0.6
  */
-public class BetterPlanet extends Planet {
-    public @Nullable FrameBuffer depthBuffer;
+public class AtmospherePlanet extends Planet {
+    public @Nullable DepthFrameBuffer buffer;
 
-    public BetterPlanet(String name, Planet parent, float radius) {
+    public AtmospherePlanet(String name, Planet parent, float radius) {
         super(name, parent, radius);
     }
 
-    public BetterPlanet(String name, Planet parent, float radius, int sectorSize) {
+    public AtmospherePlanet(String name, Planet parent, float radius, int sectorSize) {
         super(name, parent, radius, sectorSize);
     }
 
@@ -33,8 +34,8 @@ public class BetterPlanet extends Planet {
     public void load() {
         super.load();
         if (!headless) {
-            depthBuffer = new FrameBuffer(graphics.getWidth(), graphics.getHeight(), true);
-            depthBuffer.getTexture().setFilter(TextureFilter.nearest);
+            buffer = new DepthFrameBuffer(graphics.getWidth(), graphics.getHeight(), true);
+            buffer.getTexture().setFilter(TextureFilter.nearest);
         }
     }
 
@@ -69,8 +70,8 @@ public class BetterPlanet extends Planet {
         public void render(PlanetParams params, Mat3D projection, Mat3D transform) {
             if (params.alwaysDrawAtmosphere || settings.getBool("atmosphere")) {
                 var depth = HIShaders.depth;
-                depthBuffer.resize(graphics.getWidth(), graphics.getHeight());
-                depthBuffer.begin(Tmp.c1.set(0xffffff00));
+                buffer.resize(graphics.getWidth(), graphics.getHeight());
+                buffer.begin(Tmp.c1.set(0xffffff00));
                 Blending.disabled.apply();
 
                 depth.camera = renderer.planets.cam;
@@ -81,11 +82,11 @@ public class BetterPlanet extends Planet {
                 mesh.render(depth, Gl.triangles);
 
                 Blending.normal.apply();
-                depthBuffer.end();
+                buffer.end();
             }
 
-            PlanetShader shader = Shaders.planet;
-            shader.planet = BetterPlanet.this;
+            var shader = Shaders.planet;
+            shader.planet = AtmospherePlanet.this;
             shader.lightDir.set(solarSystem.position).sub(position).rotate(Vec3.Y, getRotation()).nor();
             shader.ambientColor.set(solarSystem.lightColor);
             shader.bind();

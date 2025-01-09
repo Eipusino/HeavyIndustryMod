@@ -32,7 +32,7 @@ public final class HIPlanets {
      * <p>Remember not to execute it a second time, I did not take any precautionary measures.
      */
     public static void load() {
-        kepler = new BetterPlanet("kepler", sun, 1f, 3) {{
+        kepler = new AtmospherePlanet("kepler", sun, 1f, 3) {{
             orbitRadius = 40f;
             atmosphereRadIn = 0f;
             atmosphereRadOut = 0.3f;
@@ -150,7 +150,7 @@ public final class HIPlanets {
                 return new Texture(HeavyIndustryMod.internalTree.child("sprites/planets/kepler/rings/" + name));
             }
         };
-        gliese = new BetterPlanet("gliese", sun, 1f, 3) {{
+        gliese = new AtmospherePlanet("gliese", sun, 1f, 3) {{
             Vec3 ringPos = new Vec3(0,1,0).rotate(Vec3.X, 35);
 
             generator = new GliesePlanetGenerator() {{

@@ -8,6 +8,7 @@ import arc.graphics.g3d.*;
 import arc.graphics.gl.*;
 import arc.math.geom.*;
 import arc.util.*;
+import heavyindustry.graphics.gl.*;
 import heavyindustry.type.*;
 import mindustry.*;
 import mindustry.type.*;
@@ -23,6 +24,7 @@ import static mindustry.Vars.*;
  */
 public final class HIShaders {
     public static DepthShader depth;
+    public static DepthScreenspaceShader depthScreenspace;
     public static DepthAtmosphereShader depthAtmosphere;
     public static AlphaShader alphaShader;
     public static HISurfaceShader dalani, brine, nanofluid, boundWater, pit, waterPit;
@@ -42,6 +44,7 @@ public final class HIShaders {
         Shader.prependVertexCode = Shader.prependFragmentCode = "";
 
         depth = new DepthShader();
+        depthScreenspace = new DepthScreenspaceShader();
         depthAtmosphere = new DepthAtmosphereShader();
 
         alphaShader = new AlphaShader();
@@ -96,6 +99,40 @@ public final class HIShaders {
         return internalTree.child("shaders/" + name + ".vert");
     }
 
+    /** Specialized mesh shader to capture fragment depths. */
+    public static final class DepthShader extends Shader {
+        public Camera3D camera;
+
+        /** This class only requires one instance. Please use {@link HIShaders#depth}. */
+        private DepthShader() {
+            super(mv("depth"), mf("depth"));
+        }
+
+        @Override
+        public void apply() {
+            setUniformf("u_camPos", camera.position);
+            setUniformf("u_camRange", camera.near, camera.far - camera.near);
+        }
+    }
+
+    public static final class DepthScreenspaceShader extends Shader {
+        public DepthFrameBuffer buffer;
+
+        /** This class only requires one instance. Please use {@link HIShaders#depthScreenspace}. */
+        private DepthScreenspaceShader() {
+            super(mv("depth-screenspace"), mf("depth-screenspace"));
+        }
+
+        @Override
+        public void apply() {
+            buffer.getTexture().bind(1);
+            buffer.getDepthTexture().bind(0);
+
+            setUniformi("u_color", 1);
+            setUniformi("u_depth", 0);
+        }
+    }
+
     /**
      * An atmosphere shader that incorporates the planet shape in a form of depth texture. Better quality, but at the little
      * cost of performance.
@@ -104,7 +141,7 @@ public final class HIShaders {
         private static final Mat3D mat = new Mat3D();
 
         public Camera3D camera;
-        public BetterPlanet planet;
+        public AtmospherePlanet planet;
 
         /** This class only requires one instance. Please use {@link HIShaders#depthAtmosphere}. */
         private DepthAtmosphereShader() {
@@ -126,25 +163,9 @@ public final class HIShaders {
             setUniformf("u_innerRadius", planet.radius + planet.atmosphereRadIn);
             setUniformf("u_outerRadius", planet.radius + planet.atmosphereRadOut);
 
-            planet.depthBuffer.getTexture().bind(0);
+            planet.buffer.getTexture().bind(0);
             setUniformi("u_topology", 0);
             setUniformf("u_viewport", graphics.getWidth(), graphics.getHeight());
-        }
-    }
-
-    /** Specialized mesh shader to capture fragment depths. */
-    public static final class DepthShader extends Shader {
-        public Camera3D camera;
-
-        /** This class only requires one instance. Please use {@link HIShaders#depth}. */
-        private DepthShader() {
-            super(mv("depth"), mf("depth"));
-        }
-
-        @Override
-        public void apply() {
-            setUniformf("u_camPos", camera.position);
-            setUniformf("u_camRange", camera.near, camera.far - camera.near);
         }
     }
 
@@ -184,6 +205,7 @@ public final class HIShaders {
         public Texture texture = atlas.white().texture;
         public float scl = 4f;
 
+        /** This class only requires one instance. Please use {@link HIShaders#tiler}. */
         public Tiler() {
             super(dv("screenspace"), mf("tiler"));
         }

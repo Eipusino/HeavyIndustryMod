@@ -114,7 +114,7 @@ final class HIClassMap {
         classes.put("MultiBarrelWeapon", MultiBarrelWeapon.class);
         classes.put("PointDefenceMultiBarrelWeapon", PointDefenceMultiBarrelWeapon.class);
         //types-planet
-        classes.put("BetterPlanet", BetterPlanet.class);
+        classes.put("AtmospherePlanet", AtmospherePlanet.class);
         //types-sector
         classes.put("ExtraSectorPreset", ExtraSectorPreset.class);
         //types-weather
