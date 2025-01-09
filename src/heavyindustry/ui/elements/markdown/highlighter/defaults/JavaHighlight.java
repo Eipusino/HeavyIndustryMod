@@ -4,7 +4,7 @@ import heavyindustry.ui.elements.markdown.highlighter.*;
 
 import java.util.regex.*;
 
-import static heavyindustry.ui.elements.markdown.highlighter.Scope.Default.*;
+import static heavyindustry.ui.elements.markdown.highlighter.Scopec.Default.*;
 
 public class JavaHighlight extends DefaultLangDSL {
     static Capture modifiersCapture() {

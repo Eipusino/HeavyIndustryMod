@@ -15,7 +15,7 @@ import mindustry.graphics.*;
  * A storage container for a single lightning bolt, which stores the start time and vertex information of the lightning bolt.
  * There are a large number of such instances, which should be reused.
  */
-public class Lightning implements Poolable {
+public class Lightningf implements Poolable {
     private static final Vec2 last = new Vec2(), self = new Vec2(), next = new Vec2();
 
     public final Seq<LightningVertex> vertices = new Seq<>();
@@ -54,14 +54,14 @@ public class Lightning implements Poolable {
 
     boolean enclosed;
 
-    private Lightning() {}
+    private Lightningf() {}
 
-    public static Lightning create(LightningGenerator generator, float width, float lifeTime, Interp lerp, float time, Cons2<LightningVertex, LightningVertex> trigger) {
+    public static Lightningf create(LightningGenerator generator, float width, float lifeTime, Interp lerp, float time, Cons2<LightningVertex, LightningVertex> trigger) {
         return create(generator, width, lifeTime, lifeTime, lerp, time, true, false, trigger);
     }
 
-    public static Lightning create(LightningGenerator generator, float width, float lifeTime, float fadeTime, Interp lerp, float time, boolean fade, boolean backFade, Cons2<LightningVertex, LightningVertex> trigger) {
-        Lightning result = Pools.obtain(Lightning.class, Lightning::new);
+    public static Lightningf create(LightningGenerator generator, float width, float lifeTime, float fadeTime, Interp lerp, float time, boolean fade, boolean backFade, Cons2<LightningVertex, LightningVertex> trigger) {
+        Lightningf result = Pools.obtain(Lightningf.class, Lightningf::new);
         result.width = width;
         result.time = time;
         result.startTime = Time.time;

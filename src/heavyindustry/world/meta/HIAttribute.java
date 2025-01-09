@@ -9,6 +9,6 @@ public final class HIAttribute {
     public static final Attribute
             arkycite = add("arkycite");
 
-    /** HIAttribute should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIAttribute() {}
 }

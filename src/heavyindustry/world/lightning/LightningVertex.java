@@ -17,7 +17,7 @@ public class LightningVertex implements Poolable {
     public boolean valid;
     public float progress;
 
-    public Lightning branchOther;
+    public Lightningf branchOther;
 
     protected void draw(float x, float y) {
         if (branchOther != null) branchOther.draw(x, y);

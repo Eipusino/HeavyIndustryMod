@@ -15,7 +15,7 @@ import static arc.graphics.g2d.Lines.*;
 public final class Drawm {
     private static final Vec2 vec1 = new Vec2(), vec2 = new Vec2(), vec3 = new Vec2(), vec4 = new Vec2();
 
-    /** Drawm should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private Drawm() {}
 
     /** Draws an ellipse. */
@@ -34,7 +34,7 @@ public final class Drawm {
         }
     }
 
-    /** Generates all team regions for this block. Call #getTeamRegion(Block) afterward to get the region. */
+    /** Generates all team regions for this block. Call #getTeamRegion(Blockf) afterward to get the region. */
     public static void generateTeamRegion(MultiPacker packer, Block b) {
         PixmapRegion teamr = Core.atlas.getPixmap(b.name + "-team");
 

@@ -27,7 +27,7 @@ import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public final class HIStatValues {
-    /** HIStatValues should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIStatValues() {}
 
     public static <T extends UnlockableContent> StatValue ammo(ObjectMap<T, BulletType[]> map) {

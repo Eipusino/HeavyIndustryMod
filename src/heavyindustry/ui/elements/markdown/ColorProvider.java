@@ -10,7 +10,7 @@ public class ColorProvider {
     public Color defaultColor = Color.white;
 
     /** Get the color assigned to the scope in the specified language. */
-    public Color getColor(String language, Scope scope) {
+    public Color getColor(String language, Scopec scope) {
         ColorMap map = languages.get(language);
 
         if (map == null) return defaultColor;
@@ -32,10 +32,10 @@ public class ColorProvider {
     }
 
     public static class ColorMap {
-        private final Map<Scope, Color> colorMap = new HashMap<>();
+        private final Map<Scopec, Color> colorMap = new HashMap<>();
 
-        public ColorMap put(Color color, Scope... scopes) {
-            for (Scope scope : scopes) {
+        public ColorMap put(Color color, Scopec... scopes) {
+            for (Scopec scope : scopes) {
                 colorMap.put(scope, color);
             }
             return this;

@@ -17,7 +17,7 @@ public final class HISectorPresets {
             //erekir
             ;
 
-    /** HISectorPresets should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HISectorPresets() {}
 
     /**

@@ -26,7 +26,7 @@ public class DrawPartsParticle extends ParticleModel {
     }
 
     @Override
-    public void draw(Particle p) {
+    public void draw(Particlef p) {
         float z = Draw.z();
         Draw.z(layer);
 

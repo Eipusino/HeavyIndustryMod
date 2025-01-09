@@ -10,7 +10,7 @@ public final class NumberStrify {
             "B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"
     };
 
-    /** NumberStrify should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private NumberStrify() {}
 
     /**

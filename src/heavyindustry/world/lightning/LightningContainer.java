@@ -11,11 +11,11 @@ import heavyindustry.world.lightning.generator.*;
 import java.util.*;
 
 /**
- * Lightning container, using a lightning generator to generate lightning, processed and drawn by the container,
+ * Lightningf container, using a lightning generator to generate lightning, processed and drawn by the container,
  * usually used for storing a type of lightning in the same container.
  */
-public class LightningContainer implements Iterable<Lightning> {
-    protected final Seq<Lightning> lightnings = new Seq<>();
+public class LightningContainer implements Iterable<Lightningf> {
+    protected final Seq<Lightningf> lightnings = new Seq<>();
     /**
      * The time required for lightning to occur from generation to complete appearance will be evenly distributed among each lightning segment, with fps being the current frame rate.
      * But if this value is 0, lightning will appear immediately.
@@ -37,9 +37,9 @@ public class LightningContainer implements Iterable<Lightning> {
     /** The attenuation transformer of lightning receives the value of the duration of lightning existence. */
     public Interp lerp = Interp.pow2Out;
     /** The callback function called when creating a lightning branch is generally used to define the sub container properties of the lightning branch. */
-    public Cons<Lightning> branchCreated;
+    public Cons<Lightningf> branchCreated;
     /**
-     * Lightning vertex trigger, triggered when a lightning node has arrived,
+     * Lightningf vertex trigger, triggered when a lightning node has arrived,
      * passes in the previous vertex and this vertex.
      */
     public Cons2<LightningVertex, LightningVertex> trigger;
@@ -50,22 +50,22 @@ public class LightningContainer implements Iterable<Lightning> {
     /** Create a new lightning bolt in the container using the provided lightning generator. */
     public void create(LightningGenerator generator) {
         generator.branched(branchCreated);
-        Lightning lightning = Lightning.create(generator, Mathf.random(minWidth, maxWidth), lifeTime, fadeTime > 0 ? fadeTime : lifeTime, lerp, time, fade, backFade, trigger);
+        Lightningf lightning = Lightningf.create(generator, Mathf.random(minWidth, maxWidth), lifeTime, fadeTime > 0 ? fadeTime : lifeTime, lerp, time, fade, backFade, trigger);
         lightning.headClose = headClose;
         lightning.endClose = endClose;
         lightnings.add(lightning);
     }
 
     @Override
-    public Iterator<Lightning> iterator() {
+    public Iterator<Lightningf> iterator() {
         return lightnings.iterator();
     }
 
     /** Update the status of all sub lightning in the current container once. */
     public void update() {
-        Iterator<Lightning> itr = lightnings.iterator();
+        Iterator<Lightningf> itr = lightnings.iterator();
         while (itr.hasNext()) {
-            Lightning lightning = itr.next();
+            Lightningf lightning = itr.next();
             clipSize = Math.max(clipSize, lightning.clipSize);
 
             float progress = (Time.time - lightning.startTime) / lifeTime;
@@ -87,7 +87,7 @@ public class LightningContainer implements Iterable<Lightning> {
      * @param y Draw the origin y-coordinate of lightning
      */
     public void draw(float x, float y) {
-        for (Lightning lightning : lightnings) {
+        for (Lightningf lightning : lightnings) {
             lightning.draw(x, y);
         }
     }
@@ -96,7 +96,7 @@ public class LightningContainer implements Iterable<Lightning> {
         return clipSize;
     }
 
-    /** Lightning branch container, used to draw branch lightning, recursively draws all sub-branches. */
+    /** Lightningf branch container, used to draw branch lightning, recursively draws all sub-branches. */
     public static class PoolLightningContainer extends LightningContainer implements Poolable {
         public static PoolLightningContainer create(float lifeTime, float minWidth, float maxWidth) {
             PoolLightningContainer result = Pools.obtain(PoolLightningContainer.class, PoolLightningContainer::new);
@@ -118,7 +118,7 @@ public class LightningContainer implements Iterable<Lightning> {
             branchCreated = null;
             trigger = null;
 
-            for (Lightning lightning : lightnings) {
+            for (Lightningf lightning : lightnings) {
                 Pools.free(lightning);
             }
             lightnings.clear();

@@ -9,6 +9,6 @@ public final class HIBuildVisibility {
             campaignOrSandboxOnly = new BuildVisibility(() -> state == null || state.isCampaign() || state.rules.infiniteResources),
             techDsAvailable = new BuildVisibility(() -> state == null || state.rules.infiniteResources || player == null);
 
-    /** HIBuildVisibility should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIBuildVisibility() {}
 }

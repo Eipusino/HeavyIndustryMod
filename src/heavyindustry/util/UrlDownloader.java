@@ -13,7 +13,7 @@ import java.io.*;
 public final class UrlDownloader {
     private static final OrderedMap<String, String> urlReplacers = new OrderedMap<>();
 
-    /** UrlDownloader should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private UrlDownloader() {}
 
     public static void setMirror(String source, String to) {

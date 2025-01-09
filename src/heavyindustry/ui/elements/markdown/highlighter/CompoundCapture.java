@@ -31,7 +31,7 @@ public class CompoundCapture extends Capture {
     }
 
     @Override
-    public int match(MatcherContext context, Token token) throws TokenMatcher.MatchFailed {
+    public int match(MatcherContext context, Tokenf token) throws TokenMatcher.MatchFailed {
         lens.clear();
         off.clear();
         cap.clear();
@@ -45,7 +45,7 @@ public class CompoundCapture extends Capture {
                 else break;
             }
 
-            Token curr = context.getTokenInContext(token.getIndexInContext(context) + off);
+            Tokenf curr = context.getTokenInContext(token.getIndexInContext(context) + off);
 
             List<Capture> capt = new ArrayList<>();
             for (Capture c : captures) capt.add(c.create());
@@ -70,7 +70,7 @@ public class CompoundCapture extends Capture {
     }
 
     @Override
-    public void applyScope(MatcherContext context, Token token, int matchedLen) {
+    public void applyScope(MatcherContext context, Tokenf token, int matchedLen) {
         int max = context.getTokensCountInContext();
         for (int i = 0; i < off.size(); i++) {
             if (token.getIndexInContext(context) + off.get(i) >= max) break;

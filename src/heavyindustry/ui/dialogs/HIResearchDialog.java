@@ -34,7 +34,7 @@ import java.util.*;
 import static mindustry.Vars.*;
 import static mindustry.gen.Tex.*;
 
-public final class HIResearchDialog extends BaseDialog {
+public class HIResearchDialog extends BaseDialog {
     public static boolean debugShowRequirements = false;
 
     public final float nodeSize = Scl.scl(60f);
@@ -47,11 +47,15 @@ public final class HIResearchDialog extends BaseDialog {
 
     public ItemSeq items;
 
-    private boolean showTechSelect;
+    protected boolean showTechSelect;
 
     public HIResearchDialog() {
         super("");
 
+        init();
+    }
+
+    protected void init() {
         titleTable.remove();
         titleTable.clear();
         titleTable.top();
@@ -109,20 +113,20 @@ public final class HIResearchDialog extends BaseDialog {
 
             items = new ItemSeq() {
                 final ObjectMap<Sector, ItemSeq> cache = new ObjectMap<>();
-            {
-                for (Planet planet : content.planets()) {
-                    for (Sector sector : planet.sectors) {
-                        if (sector.hasBase()) {
-                            ItemSeq cached = sector.items();
-                            cache.put(sector, cached);
-                            cached.each((item, amount) -> {
-                                values[item.id] += Math.max(amount, 0);
-                                total += Math.max(amount, 0);
-                            });
+                {
+                    for (Planet planet : content.planets()) {
+                        for (Sector sector : planet.sectors) {
+                            if (sector.hasBase()) {
+                                ItemSeq cached = sector.items();
+                                cache.put(sector, cached);
+                                cached.each((item, amount) -> {
+                                    values[item.id] += Math.max(amount, 0);
+                                    total += Math.max(amount, 0);
+                                });
+                            }
                         }
                     }
                 }
-            }
                 @Override
                 public void add(Item item, int amount) {
                     if (amount < 0) {
@@ -242,7 +246,7 @@ public final class HIResearchDialog extends BaseDialog {
         treeLayout();
     }
 
-    void treeLayout() {
+    protected void treeLayout() {
         float spacing = 20f;
         LayoutNode node = new LayoutNode(root, null);
         LayoutNode[] children = node.children;
@@ -284,14 +288,14 @@ public final class HIResearchDialog extends BaseDialog {
         bounds.y += nodeSize * 1.5f;
     }
 
-    void shift(LayoutNode[] children, float amount) {
+    protected void shift(LayoutNode[] children, float amount) {
         for (LayoutNode node : children) {
             node.y += amount;
             if (node.children != null && node.children.length > 0) shift(node.children, amount);
         }
     }
 
-    void copyInfo(LayoutNode node) {
+    protected void copyInfo(LayoutNode node) {
         node.node.x = node.x;
         node.node.y = node.y;
         if (node.children != null) {
@@ -301,7 +305,7 @@ public final class HIResearchDialog extends BaseDialog {
         }
     }
 
-    void checkNodes(TechTreeNode node) {
+    protected void checkNodes(TechTreeNode node) {
         boolean locked = locked(node.node);
         if (!locked && (node.parent == null || node.parent.visible)) node.visible = true;
         node.selectable = selectable(node.node);
@@ -313,18 +317,18 @@ public final class HIResearchDialog extends BaseDialog {
         itemDisplay.rebuild(items);
     }
 
-    boolean selectable(TechNode node) {
+    protected boolean selectable(TechNode node) {
         return node.content.unlocked() || !node.objectives.contains(i -> !i.complete());
     }
 
-    boolean locked(TechNode node) {
+    protected boolean locked(TechNode node) {
         return node.content.locked();
     }
 
-    class LayoutNode extends TreeNode<LayoutNode> {
-        final TechTreeNode node;
+    protected class LayoutNode extends TreeNode<LayoutNode> {
+        protected final TechTreeNode node;
 
-        LayoutNode(TechTreeNode nod, LayoutNode par) {
+        protected LayoutNode(TechTreeNode nod, LayoutNode par) {
             node = nod;
             parent = par;
             width = height = nodeSize;
@@ -436,7 +440,7 @@ public final class HIResearchDialog extends BaseDialog {
             released(() -> moved = false);
         }
 
-        void clamp() {
+        protected void clamp() {
             float pad = nodeSize;
 
             float ox = width / 2f, oy = height / 2f;
@@ -448,7 +452,7 @@ public final class HIResearchDialog extends BaseDialog {
             panY = ry - bounds.y - oy;
         }
 
-        boolean canSpend(TechNode node) {
+        protected boolean canSpend(TechNode node) {
             if (!selectable(node)) return false;
 
             if (node.parent != null) {
@@ -466,7 +470,7 @@ public final class HIResearchDialog extends BaseDialog {
             return node.content.locked();
         }
 
-        void spend(TechNode node) {
+        protected void spend(TechNode node) {
             boolean complete = true;
 
             boolean[] shine = new boolean[node.requirements.length];
@@ -501,7 +505,7 @@ public final class HIResearchDialog extends BaseDialog {
             itemDisplay.rebuild(items, usedShine);
         }
 
-        void unlock(TechNode node) {
+        protected void unlock(TechNode node) {
             node.content.unlock();
 
             TechNode parent = node.parent;
@@ -519,11 +523,11 @@ public final class HIResearchDialog extends BaseDialog {
             Events.fire(new ResearchEvent(node.content));
         }
 
-        void rebuild() {
+        protected void rebuild() {
             rebuild(null);
         }
 
-        void rebuild(@Nullable boolean[] shine) {
+        protected void rebuild(@Nullable boolean[] shine) {
             ImageButton button = hoverNode;
 
             infoTable.remove();

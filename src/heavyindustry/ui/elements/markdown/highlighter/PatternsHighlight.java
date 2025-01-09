@@ -59,14 +59,14 @@ public class PatternsHighlight implements LanguageHighlight<MatcherContext>, Nam
         for (TokenMatcher tokenMatcher : matchers.values()) {
             list.add(tokenMatcher.create());
         }
-        res.pushBlock(new Block(null, list));
+        res.pushBlock(new Blockf(null, list));
 
         res.inRawContext = true;
         List<TokenMatcher> raw = new ArrayList<>();
         for (TokenMatcher tokenMatcher : rawContextMatchers.values()) {
             raw.add(tokenMatcher.create());
         }
-        res.pushBlock(new Block(null, raw));
+        res.pushBlock(new Blockf(null, raw));
 
         res.inRawContext = false;
         return res;
@@ -77,23 +77,23 @@ public class PatternsHighlight implements LanguageHighlight<MatcherContext>, Nam
         splitMatcher(rawTokenMatcher, text,
                 str -> splitMatcher(tokensSplit, str,
                         t -> {
-                            Token token = new Token(t);
-                            token.scope = Scope.Default.COMMENT;
+                            Tokenf token = new Tokenf(t);
+                            token.scope = Scopec.Default.COMMENT;
                             context.putTokenRaw(token);
                         },
                         t -> splitMatcher(symbolMatcher, t, sym -> {
-                            Token newToken = new Token(sym);
+                            Tokenf newToken = new Tokenf(sym);
                             context.putTokenRaw(newToken);
                         })
                 ),
                 str -> splitMatcher(tokensSplit, str,
                         t -> {
-                            Token token = new Token(t);
-                            token.scope = Scope.Default.SPACE;
+                            Tokenf token = new Tokenf(t);
+                            token.scope = Scopec.Default.SPACE;
                             context.putTokenRaw(token);
                         },
                         t -> splitMatcher(symbolMatcher, t, sym -> {
-                            Token newToken = new Token(sym);
+                            Tokenf newToken = new Tokenf(sym);
                             context.putToken(newToken);
                         })
                 )
@@ -127,9 +127,9 @@ public class PatternsHighlight implements LanguageHighlight<MatcherContext>, Nam
     }
 
     @Override
-    public int flowScope(MatcherContext context, Token token) {
-        Block block = context.peekBlock();
-        Scope scope = block.scope();
+    public int flowScope(MatcherContext context, Tokenf token) {
+        Blockf block = context.peekBlock();
+        Scopec scope = block.scope();
         if (scope != null) token.scope = scope;
 
         List<TokenMatcher> mats = block.matchers();

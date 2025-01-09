@@ -3,14 +3,14 @@ package heavyindustry.ui.elements.markdown.highlighter;
 import java.util.*;
 
 public class TokensContext {
-    protected final List<Token> tokens = new ArrayList<>();
-    protected final List<Token> rawTokens = new ArrayList<>();
+    protected final List<Tokenf> tokens = new ArrayList<>();
+    protected final List<Tokenf> rawTokens = new ArrayList<>();
 
     public boolean inRawContext;
 
     private int cursor;
 
-    public Token getTokenInContext(int index) {
+    public Tokenf getTokenInContext(int index) {
         return inRawContext ? getTokenRaw(index) : getToken(index);
     }
 
@@ -18,15 +18,15 @@ public class TokensContext {
         return inRawContext ? getTokenCountRaw() : getTokenCount();
     }
 
-    public List<Token> getTokens() {
+    public List<Tokenf> getTokens() {
         return Collections.unmodifiableList(tokens);
     }
 
-    public List<Token> getTokensRaw() {
+    public List<Tokenf> getTokensRaw() {
         return Collections.unmodifiableList(rawTokens);
     }
 
-    public void putToken(Token tokens) {
+    public void putToken(Tokenf tokens) {
         tokens.index = this.tokens.size();
         tokens.rawIndex = this.rawTokens.size();
 
@@ -34,12 +34,12 @@ public class TokensContext {
         this.rawTokens.add(tokens);
     }
 
-    public void putTokenRaw(Token tokens) {
+    public void putTokenRaw(Tokenf tokens) {
         tokens.rawIndex = rawTokens.size();
         rawTokens.add(tokens);
     }
 
-    protected Token getToken(int index) {
+    protected Tokenf getToken(int index) {
         return tokens.get(index);
     }
 
@@ -47,7 +47,7 @@ public class TokensContext {
         return tokens.size();
     }
 
-    protected Token getTokenRaw(int index) {
+    protected Tokenf getTokenRaw(int index) {
         return rawTokens.get(index);
     }
 
@@ -56,7 +56,7 @@ public class TokensContext {
     }
 
     public void applyScopes(ScopeHandler handler) {
-        for (Token token : getTokensRaw()) {
+        for (Tokenf token : getTokensRaw()) {
             if (token.scope != null) token.scope.apply(token, handler);
         }
     }

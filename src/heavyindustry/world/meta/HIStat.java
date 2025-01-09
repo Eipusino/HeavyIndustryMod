@@ -18,6 +18,6 @@ public final class HIStat {
             fieldStrength = new Stat("hi-field-strength", StatCat.function),
             albedo = new Stat("hi-albedo", StatCat.function);
 
-    /** HIStat should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIStat() {}
 }

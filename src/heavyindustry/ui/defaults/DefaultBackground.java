@@ -14,6 +14,7 @@ public final class DefaultBackground {
     private static final Lazy<Drawable> black6 = new Lazy<>(() ->
             new TextureRegionDrawable(Core.atlas.white()).tint(0, 0, 0, 0.6f));
 
+    /** Don't let anyone instantiate this class. */
     private DefaultBackground() {}
 
     public static Drawable white() {
@@ -37,31 +38,31 @@ class Lazy<T> {
     private static final Object UNINITIALIZED_VALUE = new Object();
     private final Object lock = new Object();
     private Prov<T> initializer;
-    private Object _value = UNINITIALIZED_VALUE;
+    private Object value = UNINITIALIZED_VALUE;
 
-    Lazy(Prov<T> initializer) {
-        this.initializer = initializer;
+    Lazy(Prov<T> ini) {
+        initializer = ini;
     }
 
-    public void set(T value) {
-        _value = value;
+    public void set(T val) {
+        value = val;
     }
 
     @SuppressWarnings("unchecked")
     public T get() {
-        Object _v1 = _value;
+        Object _v1 = value;
         if (_v1 != UNINITIALIZED_VALUE) {
             //noinspection unchecked
             return (T) _v1;
         }
         synchronized (lock) {
-            Object _v2 = _value;
+            Object _v2 = value;
             if (_v2 != UNINITIALIZED_VALUE) {
                 //noinspection unchecked
                 return (T) _v2;
             }
             T typedValue = initializer.get();
-            _value = typedValue;
+            value = typedValue;
             initializer = null;
             return typedValue;
         }

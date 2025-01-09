@@ -9,17 +9,17 @@ public class SizeVelRelatedParticle extends ParticleModel {
     public Interp sizeInterp = Interp.linear;
 
     @Override
-    public boolean isFinal(Particle p) {
+    public boolean isFinal(Particlef p) {
         return p.speed.len() <= finalThreshold;
     }
 
     @Override
-    public float currSize(Particle p) {
+    public float currSize(Particlef p) {
         return p.defSize * sizeInterp.apply(Mathf.clamp(p.speed.len() / p.defSpeed));
     }
 
     @Override
-    public boolean isFaded(Particle p, Particle.Cloud cloud) {
+    public boolean isFaded(Particlef p, Particlef.Cloud cloud) {
         return cloud.size < fadeThreshold;
     }
 }

@@ -76,13 +76,13 @@ public final class SpriteUtils {
 
     public static Rand rand = new Rand();
 
-    static int[][] joinschkdirs = {
+    static final int[][] joinsChkDirs = {
             {-1, 1}, {0, 1}, {1, 1},
             {-1, 0}, {1, 0},
             {-1, -1}, {0, -1}, {1, -1},
     };
 
-    public static int[] joinsMap = {//not sure how to format this.
+    public static final int[] joinsMap = {//not sure how to format this.
             39, 39, 27, 27, 39, 39, 27, 27, 38, 38, 17, 26, 38, 38, 17, 26, 36,
             36, 16, 16, 36, 36, 24, 24, 37, 37, 41, 21, 37, 37, 43, 25, 39,
             39, 27, 27, 39, 39, 27, 27, 38, 38, 17, 26, 38, 38, 17, 26, 36,
@@ -128,7 +128,7 @@ public final class SpriteUtils {
         }
     }
 
-    /** SpriteUtils should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private SpriteUtils() {}
 
     public static TextureRegion[] jSplit(String name, int tileWidth, int tileHeight) {
@@ -239,9 +239,9 @@ public final class SpriteUtils {
         int index = 0, ax, ay;
         T t;
 
-        for (int i = 0; i < joinschkdirs.length; i++) {
-            ax = joinschkdirs[i][0] + x;
-            ay = joinschkdirs[i][1] + y;
+        for (int i = 0; i < joinsChkDirs.length; i++) {
+            ax = joinsChkDirs[i][0] + x;
+            ay = joinsChkDirs[i][1] + y;
             t = null;
 
             if (ax >= 0 && ay >= 0 && ax < map.length && ay < map[0].length) {

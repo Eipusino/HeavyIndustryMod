@@ -20,7 +20,7 @@ public class BlockCapture extends Capture {
     }
 
     @Override
-    public int match(MatcherContext context, Token token) throws TokenMatcher.MatchFailed {
+    public int match(MatcherContext context, Tokenf token) throws TokenMatcher.MatchFailed {
         if (list == null) {
             list = new ArrayList<>();
             for (TokenMatcher child : children) {
@@ -32,14 +32,14 @@ public class BlockCapture extends Capture {
 
         MatcherContext subContext = context.subContext();
         subContext.forwardCursor(len);
-        subContext.pushBlock(new Block(null, list));
+        subContext.pushBlock(new Blockf(null, list));
 
         c:
         while (subContext.currCursor() < subContext.getTokensCountInContext()) {
-            Token curr = subContext.getTokenInContext(subContext.currCursor());
+            Tokenf curr = subContext.getTokenInContext(subContext.currCursor());
 
-            Block block = subContext.peekBlock();
-            Scope scope = block.scope();
+            Blockf block = subContext.peekBlock();
+            Scopec scope = block.scope();
 
             List<TokenMatcher> mats = block.matchers();
             mats.sort(TokenMatcher::compareTo);
@@ -73,7 +73,7 @@ public class BlockCapture extends Capture {
     }
 
     @Override
-    public void applyScope(MatcherContext context, Token token, int matchedLen) {
+    public void applyScope(MatcherContext context, Tokenf token, int matchedLen) {
     }
 
     @Override

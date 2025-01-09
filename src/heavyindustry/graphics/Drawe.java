@@ -12,7 +12,7 @@ import mindustry.graphics.*;
 public final class Drawe {
     private static final float[] vertices = new float[24];
 
-    /** Drawe should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private Drawe() {}
 
     public static void quad(TextureRegion region, float x1, float y1, float c1, float x2, float y2, float c2, float x3, float y3, float c3, float x4, float y4, float c4) {

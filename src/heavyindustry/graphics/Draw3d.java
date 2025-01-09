@@ -39,7 +39,7 @@ public final class Draw3d {
 
     static float[] vertices = new float[3 * 2 * 4];
 
-    /** Draw3d should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private Draw3d() {}
 
     public static void init() {

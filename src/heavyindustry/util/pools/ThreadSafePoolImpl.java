@@ -1,21 +1,20 @@
-package heavyindustry.util;
+package heavyindustry.util.pools;
 
 import arc.func.*;
-import arc.util.pooling.*;
 
-public class PoolImpl<T> extends Pool<T> {
+public class ThreadSafePoolImpl<T> extends ThreadSafePool<T> {
     public final Prov<T> provider;
 
-    public PoolImpl(Prov<T> provider) {
+    public ThreadSafePoolImpl(Prov<T> provider) {
         this.provider = provider;
     }
 
-    public PoolImpl(int initialCapacity, Prov<T> provider) {
+    public ThreadSafePoolImpl(int initialCapacity, Prov<T> provider) {
         super(initialCapacity);
         this.provider = provider;
     }
 
-    public PoolImpl(int initialCapacity, int max, Prov<T> provider) {
+    public ThreadSafePoolImpl(int initialCapacity, int max, Prov<T> provider) {
         super(initialCapacity, max);
         this.provider = provider;
     }

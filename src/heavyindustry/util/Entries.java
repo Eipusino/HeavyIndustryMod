@@ -2,7 +2,11 @@ package heavyindustry.util;
 
 import arc.struct.*;
 
+@SuppressWarnings("unused")
 public class Entries {
+    /** Don't let anyone instantiate this class. */
+    private Entries() {}
+
     public static IntFloatMap.Entry intFloatEntry(int key, float value) {
         IntFloatMap.Entry entry = new IntFloatMap.Entry();
         entry.key = key;

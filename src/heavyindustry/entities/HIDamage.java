@@ -36,7 +36,7 @@ public final class HIDamage {
     private static float tmpFloat;
     private static boolean check;
 
-    /** HIDamage should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIDamage() {}
 
     public static void trueEachBlock(float wx, float wy, float range, Cons<Building> cons) {

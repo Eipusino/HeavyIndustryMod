@@ -6,7 +6,7 @@ import java.util.regex.*;
 
 public class RegexCapture extends Capture {
     private final Pattern pattern;
-    private final Scope scope;
+    private final Scopec scope;
 
     private final int minMatch;
     private final int maxMatch;
@@ -19,15 +19,15 @@ public class RegexCapture extends Capture {
         this(matches, null, pattern);
     }
 
-    public RegexCapture(Scope scope, Pattern pattern) {
+    public RegexCapture(Scopec scope, Pattern pattern) {
         this(1, scope, pattern);
     }
 
-    public RegexCapture(int matches, Scope scope, Pattern pattern) {
+    public RegexCapture(int matches, Scopec scope, Pattern pattern) {
         this(matches, matches, scope, pattern);
     }
 
-    public RegexCapture(int minMatch, int maxMatch, Scope scope, Pattern pattern) {
+    public RegexCapture(int minMatch, int maxMatch, Scopec scope, Pattern pattern) {
         this.scope = scope;
         this.pattern = pattern;
         this.minMatch = minMatch;
@@ -35,12 +35,12 @@ public class RegexCapture extends Capture {
     }
 
     @Override
-    public int match(MatcherContext context, Token token) throws MatchFailed {
+    public int match(MatcherContext context, Tokenf token) throws MatchFailed {
         int off = 0;
 
         int max = Math.min(maxMatch, context.getTokensCountInContext());
         while (off < max) {
-            Token curr = context.getTokenInContext(token.getIndexInContext(context) + off);
+            Tokenf curr = context.getTokenInContext(token.getIndexInContext(context) + off);
             if (!pattern.matcher(curr.text).matches()) {
                 if (off < minMatch) throw MatchFailed.INSTANCE;
                 else break;
@@ -55,7 +55,7 @@ public class RegexCapture extends Capture {
     }
 
     @Override
-    public void applyScope(MatcherContext context, Token token, int matchedLen) {
+    public void applyScope(MatcherContext context, Tokenf token, int matchedLen) {
         if (scope == null) return;
 
         for (int i = 0; i < matchedLen; i++) {

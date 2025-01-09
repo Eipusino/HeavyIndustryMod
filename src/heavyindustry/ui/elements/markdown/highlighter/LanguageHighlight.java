@@ -7,5 +7,5 @@ public interface LanguageHighlight<C extends TokensContext> {
 
     void splitTokens(TokensContext context, String text);
 
-    int flowScope(C context, Token token);
+    int flowScope(C context, Tokenf token);
 }

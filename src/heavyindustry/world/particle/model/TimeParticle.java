@@ -13,12 +13,12 @@ public class TimeParticle extends ParticleModel {
     public boolean speedRelated;
 
     @Override
-    public void init(Particle particle) {
+    public void init(Particlef particle) {
         particle.setVar(BEGIN, Time.time);
     }
 
     @Override
-    public void update(Particle p) {
+    public void update(Particlef p) {
         float lifeTime = p.getVar(LIFE_TIME, () -> Mathf.random(defLifeMin, defLifeMax));
         float time = Time.time - p.getVar(BEGIN, 0f);
 
@@ -31,12 +31,12 @@ public class TimeParticle extends ParticleModel {
     }
 
     @Override
-    public float currSize(Particle p) {
+    public float currSize(Particlef p) {
         return p.defSize * p.getVar(PROGRESS, 0f);
     }
 
     @Override
-    public boolean isFinal(Particle p) {
+    public boolean isFinal(Particlef p) {
         return p.getVar(PROGRESS, 0f) <= 0f;
     }
 }

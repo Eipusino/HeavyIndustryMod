@@ -56,7 +56,7 @@ public final class Draws {
         });
     }
 
-    /** Draws should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private Draws() {}
 
     public static int nextTaskId() {

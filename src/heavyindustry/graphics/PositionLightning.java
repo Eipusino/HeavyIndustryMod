@@ -18,7 +18,7 @@ import mindustry.gen.*;
 import static mindustry.Vars.*;
 
 /**
- * Provide methods that can generate Position to Position Lightning.<p>
+ * Provide methods that can generate Position to Position Lightningf.<p>
  * {@code Tmp} <b>var</b> is available.<p>
  * Completely independent class.<p>
  *
@@ -55,7 +55,7 @@ public final class PositionLightning {
     /** Used for range spawn, make the lightning more random and has smoother spacing. */
     public static float trueHitChance = 1;
 
-    /** PositionLightning should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private PositionLightning() {}
 
     /** [0, 1] */
@@ -68,7 +68,7 @@ public final class PositionLightning {
         trueHitChance = 1;
     }
 
-    /** Lightning's randX. Modify it if needed. */
+    /** Lightningf's randX. Modify it if needed. */
     private static float getBoltRandomRange() {
         return Mathf.random(1f, 7f);
     }

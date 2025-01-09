@@ -14,7 +14,6 @@ import heavyindustry.entities.effect.*;
 import heavyindustry.gen.*;
 import heavyindustry.graphics.*;
 import heavyindustry.util.*;
-import heavyindustry.world.blocks.*;
 import heavyindustry.world.blocks.defense.*;
 import heavyindustry.world.blocks.defense.turrets.*;
 import heavyindustry.world.blocks.distribution.*;
@@ -148,12 +147,7 @@ public final class HIBlocks {
             mustDieTurret, oneShotTurret, pointTurret,
             nextWave;
 
-    //blocks that are never supposed to used by player.
-    //Do not add inner-block entities to the game, they will simply crash. Internal use only.
-    public static LinkBlock[] linkEntity;
-    public static PlaceholderBlock[] placeholderEntity;
-
-    /** HIBlocks should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIBlocks() {}
 
     /**
@@ -161,21 +155,6 @@ public final class HIBlocks {
      * <p>Remember not to execute it a second time, I did not take any precautionary measures.
      */
     public static void load() {
-        //inner-block
-        linkEntity = new LinkBlock[8];
-        placeholderEntity = new PlaceholderBlock[8];
-        for (int i = 0; i < linkEntity.length; i++) {
-            int s = i + 1;
-            linkEntity[i] = new LinkBlock("link-entity-" + s) {{
-                size = s;
-            }};
-        }
-        for (int i = 0; i < placeholderEntity.length; i++) {
-            int s = i + 1;
-            placeholderEntity[i] = new PlaceholderBlock("placeholder-entity-" + s) {{
-                size = s;
-            }};
-        }
         //environment
         cliff = new Clifff("cliff");
         darkPanel7 = new Floor("dark-panel-7", 0);

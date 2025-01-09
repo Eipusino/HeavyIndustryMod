@@ -48,7 +48,7 @@ public final class UIUtils {
     private static long lastToast;
     private static Table pTable = new Table(), floatTable = new Table();
 
-    /** UIUtils should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private UIUtils() {}
 
     public static String format(float value) {
@@ -66,6 +66,7 @@ public final class UIUtils {
 
     /** Based on {@link UI#formatAmount(long)} but for floats. */
     public static String formatAmount(float number) {
+        if (Float.isNaN(number)) return "nan";
         if (number == Float.MAX_VALUE) return "infinite";
         if (number == Float.MIN_VALUE) return "-infinite";
 

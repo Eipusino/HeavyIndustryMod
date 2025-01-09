@@ -4,6 +4,7 @@ import java.io.*;
 
 /** mirror from kotlin.jvm.internal.Ref */
 public final class Ref {
+    /** Don't let anyone instantiate this class. */
     private Ref() {}
 
     public static final class ObjectRef<T> implements Serializable {

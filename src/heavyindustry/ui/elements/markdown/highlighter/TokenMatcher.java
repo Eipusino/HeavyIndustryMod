@@ -3,9 +3,9 @@ package heavyindustry.ui.elements.markdown.highlighter;
 import java.util.*;
 
 public interface TokenMatcher extends Comparable<TokenMatcher> {
-    int match(MatcherContext context, Token token) throws MatchFailed;
+    int match(MatcherContext context, Tokenf token) throws MatchFailed;
 
-    void apply(MatcherContext context, Token token);
+    void apply(MatcherContext context, Tokenf token);
 
     TokenMatcher create();
 

@@ -16,6 +16,7 @@ public final class Fields {
     public static String tooBigNumberKey = "too-big-number";
     public static String numberOutOfRange = "number-out-of-range";
 
+    /** Don't let anyone instantiate this class. */
     private Fields() {}
 
     /**

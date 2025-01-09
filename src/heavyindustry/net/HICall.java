@@ -11,6 +11,7 @@ import static heavyindustry.core.HeavyIndustryMod.*;
 import static mindustry.Vars.*;
 
 public final class HICall {
+    /** Don't let anyone instantiate this class. */
     private HICall() {}
 
     public static void init() {

@@ -28,7 +28,6 @@ import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.blocks.defense.turrets.*;
-import mindustry.world.blocks.environment.*;
 import mindustry.world.draw.*;
 import org.jetbrains.annotations.*;
 
@@ -58,7 +57,7 @@ public final class Utils {
 
     public static final Rand rand = new Rand(0);
 
-    public static final String[] PACKAGES = {
+    public static final String[] packages = {
             "heavyindustry",
             "heavyindustry.ai",
             "heavyindustry.content",
@@ -99,11 +98,17 @@ public final class Utils {
             "heavyindustry.ui.defaults",
             "heavyindustry.ui.dialogs",
             "heavyindustry.ui.elements",
+            "heavyindustry.ui.elements.markdown",
+            "heavyindustry.ui.elements.markdown.elemdraw",
+            "heavyindustry.ui.elements.markdown.extensions",
+            "heavyindustry.ui.elements.markdown.highlighter",
+            "heavyindustry.ui.elements.markdown.highlighter.defaults",
             "heavyindustry.ui.fragment",
             "heavyindustry.ui.listeners",
             "heavyindustry.ui.tooltips",
             "heavyindustry.util",
             "heavyindustry.util.path",
+            "heavyindustry.util.pools",
             "heavyindustry.world",
             "heavyindustry.world.blocks",
             //"heavyindustry.world.blocks.campaign",
@@ -137,9 +142,8 @@ public final class Utils {
     public static Seq<UnlockableContent> developerItems = new Seq<>();
 
     private static Tile tileParma;
-    private static Floor floorParma;
     private static Posc result;
-    private static float cdist;
+    private static float cDist;
     private static final Vec2 tV = new Vec2(), tV2 = new Vec2(), tV3 = new Vec2();
     private static final IntSet collidedBlocks = new IntSet();
     private static final Rect rect = new Rect(), hitRect = new Rect();
@@ -149,9 +153,8 @@ public final class Utils {
     private static final Seq<Hit> hitEffects = new Seq<>();
     private static Building tmpBuilding;
     private static Unit tmpUnit;
-    private static boolean hit, hitB;
 
-    /** Utils should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private Utils() {}
 
     public static void loadItems() {
@@ -695,7 +698,6 @@ public final class Utils {
 
     private static void clearTmp() {
         tileParma = null;
-        floorParma = null;
         buildIdSeq.clear();
         tiles.clear();
     }
@@ -854,13 +856,13 @@ public final class Utils {
 
     public static Bullet nearestBullet(float x, float y, float range, Boolf<Bullet> boolf) {
         result = null;
-        cdist = range;
+        cDist = range;
         Tmp.r1.setCentered(x, y, range * 2);
         Groups.bullet.intersect(Tmp.r1.x, Tmp.r1.y, Tmp.r1.width, Tmp.r1.height, b -> {
             float dst = b.dst(x, y);
-            if (boolf.get(b) && b.within(x, y, range + b.hitSize) && (result == null || dst < cdist)) {
+            if (boolf.get(b) && b.within(x, y, range + b.hitSize) && (result == null || dst < cDist)) {
                 result = b;
-                cdist = dst;
+                cDist = dst;
             }
         });
 

@@ -3,17 +3,17 @@ package heavyindustry.ui.elements.markdown.highlighter;
 import java.util.*;
 
 public class MatcherContext extends TokensContext {
-    private final Stack<Block> blockStack = new Stack<>();
-    private final Stack<Block> rawContextBlockStack = new Stack<>();
+    private final Stack<Blockf> blockStack = new Stack<>();
+    private final Stack<Blockf> rawContextBlockStack = new Stack<>();
 
     private int currentIndex = 0;
 
-    public void pushBlock(Block block) {
+    public void pushBlock(Blockf block) {
         (inRawContext ? rawContextBlockStack : blockStack).push(block);
     }
 
-    public Block peekBlock() {
-        Stack<Block> stack = inRawContext ? rawContextBlockStack : blockStack;
+    public Blockf peekBlock() {
+        Stack<Blockf> stack = inRawContext ? rawContextBlockStack : blockStack;
         return stack.isEmpty() ? null : stack.peek();
     }
 

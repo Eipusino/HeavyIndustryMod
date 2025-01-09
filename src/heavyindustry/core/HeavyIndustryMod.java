@@ -1,3 +1,16 @@
+/*
+	Copyright (c) sk7725 2020
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 package heavyindustry.core;
 
 import arc.*;
@@ -175,6 +188,8 @@ public final class HeavyIndustryMod extends Mod {
             if (!headless)
                 HIShaders.dispose();
         });
+
+        app.post(ModJS::init);
     }
 
     @Override
@@ -202,18 +217,11 @@ public final class HeavyIndustryMod extends Mod {
         Utils.loadItems();
 
         //Load the content of the accessory module.
-        ModJS.loadMods();
+        ModJS.load();
     }
 
     @Override
     public void init() {
-        try {
-            ModAPIKt.init();
-        } catch (Exception e) {
-            Log.err("js initial error, stack trace: ", e);
-        }
-        Log.info(ModAPIKt.INIT_JS);
-
         if (!headless) {
             //Set up screen sampler.
             ScreenSampler.setup();
@@ -370,9 +378,9 @@ public final class HeavyIndustryMod extends Mod {
         return sb.toString();
     }
 
-    public static final class FloatingText {
-        private static final Mat setMat = new Mat(), reMat = new Mat();
-        private static final Vec2 vec2 = new Vec2();
+    public static class FloatingText {
+        protected static final Mat setMat = new Mat(), reMat = new Mat();
+        protected static final Vec2 vec2 = new Vec2();
 
         public final String title;
 

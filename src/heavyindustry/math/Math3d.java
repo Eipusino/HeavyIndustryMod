@@ -15,7 +15,7 @@ public final class Math3d {
     static final Vec2 vec = new Vec2(), vresult = new Vec2();
     static final Vec3 axis = new Vec3(), rim = new Vec3();
 
-    /** Math3d should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private Math3d() {}
 
     /**

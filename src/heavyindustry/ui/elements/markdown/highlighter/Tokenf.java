@@ -1,15 +1,15 @@
 package heavyindustry.ui.elements.markdown.highlighter;
 
-public class Token {
+public class Tokenf {
     public final String text;
 
-    public Scope scope;
+    public Scopec scope;
     public Object data;
 
     public int index;
     public int rawIndex;
 
-    public Token(String text) {
+    public Tokenf(String text) {
         this.text = text;
     }
 

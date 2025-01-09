@@ -3,6 +3,7 @@ package heavyindustry.util;
 import arc.util.*;
 
 public final class Stringf {
+    /** Don't let anyone instantiate this class. */
     private Stringf() {}
 
     public static boolean canParseLong(String s) {

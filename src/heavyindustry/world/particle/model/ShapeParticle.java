@@ -15,7 +15,7 @@ public class ShapeParticle extends ParticleModel {
     public float layer = Layer.effect;
 
     @Override
-    public void draw(Particle p) {
+    public void draw(Particlef p) {
         float l = Draw.z();
         Draw.z(layer);
 

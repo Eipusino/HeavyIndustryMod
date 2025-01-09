@@ -10,12 +10,12 @@ public class ParticleModel {
      *
      * @param x     The x-coordinate at the time of particle creation
      * @param y     The y-coordinate at the time of particle creation
-     * @param color Particle Color
+     * @param color Particlef Color
      * @param sx    The x-component of the initial velocity of particle motion
      * @param sy    The y-component of the initial velocity of particle motion
-     * @param size  Particle size
+     * @param size  Particlef size
      */
-    public Particle create(float x, float y, Color color, float sx, float sy, float size) {
+    public Particlef create(float x, float y, Color color, float sx, float sy, float size) {
         return create(x, y, color, sx, sy, size, Layer.effect);
     }
 
@@ -25,12 +25,12 @@ public class ParticleModel {
      * @param parent The parent particle to which the particle belongs
      * @param x      The x-coordinate at the time of particle creation
      * @param y      The y-coordinate at the time of particle creation
-     * @param color  Particle Color
+     * @param color  Particlef Color
      * @param sx     The x-component of the initial velocity of particle motion
      * @param sy     The y-component of the initial velocity of particle motion
-     * @param size   Particle size
+     * @param size   Particlef size
      */
-    public Particle create(Particle parent, float x, float y, Color color, float sx, float sy, float size) {
+    public Particlef create(Particlef parent, float x, float y, Color color, float sx, float sy, float size) {
         return create(parent, x, y, color, sx, sy, size, Layer.effect);
     }
 
@@ -39,13 +39,13 @@ public class ParticleModel {
      *
      * @param x     The x-coordinate at the time of particle creation
      * @param y     The y-coordinate at the time of particle creation
-     * @param color Particle Color
+     * @param color Particlef Color
      * @param sx    The x-component of the initial velocity of particle motion
      * @param sy    The y-component of the initial velocity of particle motion
-     * @param size  Particle size
+     * @param size  Particlef size
      * @param layer The layer where the particles are located is only used in the drawing process
      */
-    public Particle create(float x, float y, Color color, float sx, float sy, float size, float layer) {
+    public Particlef create(float x, float y, Color color, float sx, float sy, float size, float layer) {
         return create(null, x, y, color, sx, sy, size, layer);
     }
 
@@ -55,14 +55,14 @@ public class ParticleModel {
      * @param parent The parent particle to which the particle belongs
      * @param x      The x-coordinate at the time of particle creation
      * @param y      The y-coordinate at the time of particle creation
-     * @param color  Particle Color
+     * @param color  Particlef Color
      * @param sx     The x-component of the initial velocity of particle motion
      * @param sy     The y-component of the initial velocity of particle motion
-     * @param size   Particle size
+     * @param size   Particlef size
      * @param layer  The layer where the particles are located is only used in the drawing process
      */
-    public Particle create(Particle parent, float x, float y, Color color, float sx, float sy, float size, float layer) {
-        Particle ent = Pools.obtain(Particle.class, Particle::new);
+    public Particlef create(Particlef parent, float x, float y, Color color, float sx, float sy, float size, float layer) {
+        Particlef ent = Pools.obtain(Particlef.class, Particlef::new);
         ent.parent = parent;
         ent.x = x;
         ent.y = y;
@@ -80,31 +80,31 @@ public class ParticleModel {
         return ent;
     }
 
-    public void draw(Particle p) {}
+    public void draw(Particlef p) {}
 
-    public void updateTrail(Particle p, Particle.Cloud c) {}
+    public void updateTrail(Particlef p, Particlef.Cloud c) {}
 
-    public void update(Particle p) {}
+    public void update(Particlef p) {}
 
-    public void deflect(Particle p) {}
+    public void deflect(Particlef p) {}
 
-    public void drawTrail(Particle c) {}
+    public void drawTrail(Particlef c) {}
 
-    public void init(Particle particle) {}
+    public void init(Particlef particle) {}
 
-    public boolean isFinal(Particle p) {
+    public boolean isFinal(Particlef p) {
         return false;
     }
 
-    public Color trailColor(Particle p) {
+    public Color trailColor(Particlef p) {
         return null;
     }
 
-    public float currSize(Particle p) {
+    public float currSize(Particlef p) {
         return p.defSize;
     }
 
-    public boolean isFaded(Particle p, Particle.Cloud cloud) {
+    public boolean isFaded(Particlef p, Particlef.Cloud cloud) {
         return false;
     }
 }

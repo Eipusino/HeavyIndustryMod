@@ -28,6 +28,6 @@ public final class HIInterp {
 
     public static final PowOut pow25Out = new PowOut(25);
 
-    /** HIInterp should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIInterp() {}
 }

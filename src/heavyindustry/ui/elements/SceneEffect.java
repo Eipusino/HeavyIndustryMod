@@ -38,7 +38,7 @@ public final class SceneEffect extends Element implements Poolable {
     public float time;
     public Object data;
 
-    /** SceneEffect should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private SceneEffect() {}
 
     /** @see SceneEffect#showOnStage(Effect, float, float, float, Color, Object) */

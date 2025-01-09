@@ -26,7 +26,7 @@ public class Highlighter {
             context.resetCursor();
             int max = context.getTokensCountInContext();
             while (context.currCursor() < max) {
-                Token token = context.getTokenInContext(context.currCursor());
+                Tokenf token = context.getTokenInContext(context.currCursor());
 
                 int step = highlight.flowScope(context, token);
 
@@ -37,7 +37,7 @@ public class Highlighter {
 
         context.getTokensRaw().forEach(e -> {
             if (e.scope == null) {
-                e.scope = Scope.Default.NONE;
+                e.scope = Scopec.Default.NONE;
             }
         });
 

@@ -8,7 +8,7 @@ import heavyindustry.core.*;
 public final class HITextures {
     public static Texture smooth, particle, darker, armor;
 
-    /** HITextures should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HITextures() {}
 
     public static void init() {

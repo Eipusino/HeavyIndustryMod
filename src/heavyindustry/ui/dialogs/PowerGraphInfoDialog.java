@@ -36,6 +36,10 @@ public class PowerGraphInfoDialog extends BaseDialog {
     public PowerGraphInfoDialog() {
         super("@hi-power-info-title");
 
+        init();
+    }
+
+    protected void init() {
         cont.table(modes -> {
             modes.button("@hi-power-info-producer", Styles.togglet, () -> {
                 currType = PowerInfoType.producer;

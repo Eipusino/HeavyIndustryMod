@@ -8,7 +8,7 @@ import static mindustry.Vars.*;
 
 @SuppressWarnings({"unchecked", "unused"})
 public final class Reflectf {
-    /** Reflectf should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private Reflectf() {}
 
     public static <T> T get(Object object, String type, String name) {
@@ -111,8 +111,12 @@ public final class Reflectf {
         return type;
     }
 
-    public static Class<?> findClass(String name) throws ClassNotFoundException {
-        return Class.forName(name, true, mods.mainLoader());
+    public static Class<?> findClass(String name) {
+        try {
+            return Class.forName(name, true, mods.mainLoader());
+        } catch (ClassNotFoundException | NoClassDefFoundError e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /** A utility function to find a field without throwing exceptions. */

@@ -11,7 +11,7 @@ public class TrailFadeParticle extends ParticleModel {
     public boolean linear = false;
 
     @Override
-    public void updateTrail(Particle p, Particle.Cloud c) {
+    public void updateTrail(Particlef p, Particlef.Cloud c) {
         c.size = linear ? Mathf.approachDelta(c.size, 0, trailFade) : Mathf.lerpDelta(c.size, 0, trailFade);
         if (fadeColor != null) c.color.lerp(fadeColor, colorLerpSpeed);
     }

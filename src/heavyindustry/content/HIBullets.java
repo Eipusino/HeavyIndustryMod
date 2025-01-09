@@ -40,7 +40,7 @@ public final class HIBullets {
             arc9000frag, arc9000, arc9000hyper,
             collapseFrag, collapse;
 
-    /** HIBullets should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIBullets() {}
 
     /**

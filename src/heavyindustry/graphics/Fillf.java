@@ -12,7 +12,7 @@ public final class Fillf {
     private static final FloatSeq floats = new FloatSeq(20);
     private static final DonutEllipseDraw donutEllipseDraw = new DonutEllipseDraw();
 
-    /** Fillf should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private Fillf() {}
 
     //region ellipse

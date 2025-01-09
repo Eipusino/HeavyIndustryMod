@@ -4,7 +4,7 @@ import arc.graphics.*;
 import mindustry.game.*;
 
 public final class HITeams {
-    /** HITeams should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HITeams() {}
 
     public static void load() {

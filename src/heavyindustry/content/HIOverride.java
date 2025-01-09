@@ -39,7 +39,7 @@ import static mindustry.type.ItemStack.*;
  * @author Eipusino
  */
 public final class HIOverride {
-    /** HIOverride should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIOverride() {}
 
     /**

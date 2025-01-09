@@ -45,20 +45,20 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
      * Note that any generator object can be passed in, please do not create a new generator.
      */
     public Func2<LightningVertex, Float, LightningGenerator> branchMaker;
-    public Cons<Lightning> branchCreated;
+    public Cons<Lightningf> branchCreated;
     public Floatp2<LightningVertex, LightningVertex> blockNow;
 
-    protected Lightning curr;
+    protected Lightningf curr;
     protected LightningVertex last;
     protected boolean isEnding;
 
     private float offsetX, offsetY;
 
-    public void setCurrentGen(Lightning curr) {
+    public void setCurrentGen(Lightningf curr) {
         this.curr = curr;
     }
 
-    public void branched(Cons<Lightning> branchCreated) {
+    public void branched(Cons<Lightningf> branchCreated) {
         this.branchCreated = branchCreated;
     }
 
@@ -71,7 +71,7 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
         gen.setOffset(vertex.x, vertex.y);
         Floatp2<LightningVertex, LightningVertex> old = gen.blockNow;
         gen.blockNow = (l, v) -> old != null ? old.get(l, v) : blockNow != null ? blockNow.get(l, v) : -1;
-        vertex.branchOther = Lightning.create(gen, curr.width * strength, curr.lifeTime, curr.fadeTime, curr.lerp, curr.time, curr.fade, curr.backFade, curr.trigger);
+        vertex.branchOther = Lightningf.create(gen, curr.width * strength, curr.lifeTime, curr.fadeTime, curr.lerp, curr.time, curr.fade, curr.backFade, curr.trigger);
         gen.blockNow = old;
         gen.resetOffset();
 

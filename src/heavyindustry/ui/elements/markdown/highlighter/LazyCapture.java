@@ -12,14 +12,14 @@ public class LazyCapture extends Capture {
     }
 
     @Override
-    public int match(MatcherContext context, Token token) throws TokenMatcher.MatchFailed {
+    public int match(MatcherContext context, Tokenf token) throws TokenMatcher.MatchFailed {
         if (capture == null) capture = captureProv.get();
 
         return capture.match(context, token);
     }
 
     @Override
-    public void applyScope(MatcherContext context, Token token, int matchedLen) {
+    public void applyScope(MatcherContext context, Tokenf token, int matchedLen) {
         if (capture == null) capture = captureProv.get();
 
         capture.applyScope(context, token, matchedLen);

@@ -56,7 +56,7 @@ public final class Drawn {
         }
     }
 
-    /** Drawn should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private Drawn() {}
 
     public static void drawSnow(float x, float y, float rad, float rot, Color color) {

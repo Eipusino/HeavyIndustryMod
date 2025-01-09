@@ -17,6 +17,7 @@ import static heavyindustry.core.HeavyIndustryMod.*;
 import static heavyindustry.util.StructUtils.*;
 
 public final class HITrails {
+    /** Don't let anyone instantiate this class. */
     private HITrails() {}
 
     public static TexturedTrail singlePhantasmal(String name, int length, TrailAttrib... attributes) {

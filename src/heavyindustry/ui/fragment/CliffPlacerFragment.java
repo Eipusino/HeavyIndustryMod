@@ -13,6 +13,7 @@ import static mindustry.Vars.*;
 public final class CliffPlacerFragment extends Table {
     Table layout;
 
+    /** Don't let anyone instantiate this class. */
     public CliffPlacerFragment() {
         setFillParent(true);
         visible(() -> ui.hudfrag.shown && state.isEditor() && state.isPlaying() && control.input.commandMode);

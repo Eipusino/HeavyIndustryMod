@@ -15,7 +15,7 @@ public final class StructUtils {
     private static final Object[] emptyArray = new Object[0];
     private static final Empty<?> empty = new Empty<>();
 
-    /** StructUtils should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private StructUtils() {}
 
     @SuppressWarnings("unchecked")

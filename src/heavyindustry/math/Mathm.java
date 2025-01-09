@@ -26,7 +26,7 @@ public final class Mathm {
         aSinTable[index(0.5f)] = Mathf.pi + Mathf.halfPi + radFull;
     }
 
-    /** Mathm should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private Mathm() {}
 
     /** @return whether x,y is inside the square with radius d centered at cx, cy. */

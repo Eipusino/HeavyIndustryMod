@@ -23,7 +23,7 @@ import static heavyindustry.core.HeavyIndustryMod.*;
 public final class HIWeathers {
     public static Weather wind, blizzard, hailStone, stoneStorm;
 
-    /** HIWeathers should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIWeathers() {}
 
     /**

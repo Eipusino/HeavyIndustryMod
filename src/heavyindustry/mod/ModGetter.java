@@ -11,7 +11,7 @@ public final class ModGetter {
     /** Mod folder location. */
     public static final Fi modDirectory = Core.settings.getDataDirectory().child("mods");
 
-    /** ModGetter should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private ModGetter() {}
 
     /**

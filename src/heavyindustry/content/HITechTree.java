@@ -23,7 +23,7 @@ import static mindustry.content.UnitTypes.*;
 public final class HITechTree {
     public static TechNode context = null;
 
-    /** HITechTree should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HITechTree() {}
 
     /**
@@ -324,59 +324,5 @@ public final class HITechTree {
 
     public static void nodeProduce(UnlockableContent content, Runnable children) {
         nodeProduce(content, new Seq<>(), children);
-    }
-
-    public static final class AddToResearch {
-        private AddToResearch() {}
-
-        /**
-         * Adding TechNode without throw exception.
-         *
-         * @param content mod content
-         * @param researchName vanilla content name
-         * @param customRequirements research resources
-         * @param objectives research needs
-         */
-        public static void addToResearch(UnlockableContent content, String researchName, ItemStack[] customRequirements, Seq<Objective> objectives) {
-            if (content == null || researchName == null) return;
-
-            TechNode lastNode = TechTree.all.find(t -> t.content == content);
-            if (lastNode != null) {
-                lastNode.remove();
-            }
-
-            TechNode node = new TechNode(null, content, customRequirements != null ? customRequirements : content.researchRequirements());
-            if (objectives != null && objectives.any()) {
-                node.objectives.addAll(objectives);
-            }
-
-            if (node.parent != null) {
-                node.parent.children.remove(node);
-            }
-
-            // find parent node.
-            TechNode parent = TechTree.all.find(t -> t.content.name.contains(researchName));
-
-            if (parent == null) return;
-
-            // add this node to the parent
-            if (!parent.children.contains(node)) {
-                parent.children.add(node);
-            }
-            // reparent the node
-            node.parent = parent;
-        }
-
-        public static void addToResearch(UnlockableContent content, String researchName, Seq<Objective> objectives) {
-            addToResearch(content, researchName, ItemStack.empty, objectives);
-        }
-
-        public static void addToResearch(UnlockableContent content, String researchName, ItemStack[] customRequirements) {
-            addToResearch(content, researchName, customRequirements, Seq.with());
-        }
-
-        public static void addToResearch(UnlockableContent content, String researchName) {
-            addToResearch(content, researchName, ItemStack.empty, Seq.with());
-        }
     }
 }

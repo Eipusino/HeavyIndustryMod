@@ -1,4 +1,4 @@
-package heavyindustry.util;
+package heavyindustry.util.pools;
 
 import arc.func.Prov;
 import arc.struct.ObjectMap;
@@ -11,6 +11,7 @@ public final class ThreadSafePools {
     private static final Object poolCreateLock = new Object();
     private static final Object poolSetLock = new Object();
 
+    /** Don't let anyone instantiate this class. */
     private ThreadSafePools() {}
 
     /**

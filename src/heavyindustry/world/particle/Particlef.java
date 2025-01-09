@@ -11,7 +11,7 @@ import arc.util.pooling.*;
 import arc.util.pooling.Pool.*;
 import heavyindustry.struct.*;
 import heavyindustry.world.components.*;
-import heavyindustry.world.particle.Particle.*;
+import heavyindustry.world.particle.Particlef.*;
 import mindustry.entities.*;
 import mindustry.gen.*;
 
@@ -23,9 +23,9 @@ import java.util.*;
  * Typically, this particle has an upper limit on its quantity and should be safe in performance under normal circumstances.
  * Comes with controllable trailing.
  */
-public class Particle extends Decal implements ExtraVariableComp, Iterable<Cloud> {
-    protected static final ObjectSet<Particle> all = new ObjectSet<>();
-    protected static final Seq<Particle> temp = new Seq<>();
+public class Particlef extends Decal implements ExtraVariableComp, Iterable<Cloud> {
+    protected static final ObjectSet<Particlef> all = new ObjectSet<>();
+    protected static final Seq<Particlef> temp = new Seq<>();
 
     /**
      * The maximum number of coexisting particles,
@@ -37,8 +37,8 @@ public class Particle extends Decal implements ExtraVariableComp, Iterable<Cloud
 
     public Map<String, Object> extraVar = new CollectionObjectMap<>();
     public int maxCloudCounts = -1;
-    public Particle parent;
-    /** Particle velocity, vector. */
+    public Particlef parent;
+    /** Particlef velocity, vector. */
     public Vec2 speed = new Vec2();
     /** The current size of the particle. */
     public float size;
@@ -58,9 +58,9 @@ public class Particle extends Decal implements ExtraVariableComp, Iterable<Cloud
         return all.size;
     }
 
-    public static Seq<Particle> get(Boolf<Particle> filter) {
+    public static Seq<Particlef> get(Boolf<Particlef> filter) {
         temp.clear();
-        for (Particle particle : all) {
+        for (Particlef particle : all) {
             if (filter.get(particle)) temp.add(particle);
         }
         return temp;

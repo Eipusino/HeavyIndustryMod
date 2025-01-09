@@ -7,7 +7,7 @@ import mindustry.graphics.*;
 import static arc.Core.*;
 
 public final class Outliner {
-    /** Outliner should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private Outliner() {}
 
     /** Outlines a given textureRegion. Run in createIcons. */

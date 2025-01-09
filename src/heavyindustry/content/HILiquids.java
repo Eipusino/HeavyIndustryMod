@@ -19,7 +19,7 @@ public final class HILiquids {
     public static Liquid
             brine, methane, nanofluid, nitratedOil;
 
-    /** HILiquids should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HILiquids() {}
 
     /**

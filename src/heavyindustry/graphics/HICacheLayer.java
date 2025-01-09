@@ -15,7 +15,7 @@ import static mindustry.Vars.*;
 public final class HICacheLayer {
     public static ShaderLayer dalani, brine, nanofluid, armor, pit, waterPit;
 
-    /** HICacheLayer should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HICacheLayer() {}
 
     /** Loads the cache layers. */

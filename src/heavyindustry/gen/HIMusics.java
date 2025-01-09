@@ -12,6 +12,7 @@ import static mindustry.Vars.*;
 public final class HIMusics {
     private static final ObjectMap<String, Seq<Music>> musicSets = new ObjectMap<>();
 
+    /** Don't let anyone instantiate this class. */
     private HIMusics() {}
 
     public static void load() {}

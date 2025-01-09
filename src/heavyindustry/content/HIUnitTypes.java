@@ -65,7 +65,7 @@ public final class HIUnitTypes {
             //boss
             vast;
 
-    /** HIUnitTypes should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIUnitTypes() {}
 
     /**

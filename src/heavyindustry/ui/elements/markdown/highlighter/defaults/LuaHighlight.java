@@ -4,9 +4,9 @@ import heavyindustry.ui.elements.markdown.highlighter.*;
 
 import java.util.regex.*;
 
-import static heavyindustry.ui.elements.markdown.highlighter.Scope.Default.RainbowSeparator;
-import static heavyindustry.ui.elements.markdown.highlighter.Scope.Default.*;
-import static heavyindustry.ui.elements.markdown.highlighter.Scope.LuaScope.*;
+import static heavyindustry.ui.elements.markdown.highlighter.Scopec.Default.RainbowSeparator;
+import static heavyindustry.ui.elements.markdown.highlighter.Scopec.Default.*;
+import static heavyindustry.ui.elements.markdown.highlighter.Scopec.LuaScope.*;
 
 /**
  * LuaHighlight

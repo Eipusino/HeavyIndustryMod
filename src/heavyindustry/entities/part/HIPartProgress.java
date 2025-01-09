@@ -7,6 +7,6 @@ public final class HIPartProgress {
             recoilWarmup = p -> Math.max(0, p.warmup - p.recoil),
             recoilWarmupSep = p -> p.warmup - p.recoil;
 
-    /** HIPartProgress should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIPartProgress() {}
 }

@@ -6,7 +6,7 @@ import static heavyindustry.ui.elements.markdown.highlighter.SerialMatcher.*;
 
 public class BlockMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
     private final Map<String, TokenMatcher> children = new LinkedHashMap<>();
-    private Scope scope;
+    private Scopec scope;
     private int priority = 0;
     private List<Capture> beginCaptures;
     private List<Capture> endCaptures;
@@ -17,7 +17,7 @@ public class BlockMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
         return create(null, beginCaptures, endCaptures);
     }
 
-    public static BlockMatcher create(Scope scope, List<Capture> beginCaptures, List<Capture> endCaptures) {
+    public static BlockMatcher create(Scopec scope, List<Capture> beginCaptures, List<Capture> endCaptures) {
         return create(0, scope, beginCaptures, endCaptures);
     }
 
@@ -25,7 +25,7 @@ public class BlockMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
         return create(priority, null, beginCaptures, endCaptures);
     }
 
-    public static BlockMatcher create(int priority, Scope scope, List<Capture> beginCaptures, List<Capture> endCaptures) {
+    public static BlockMatcher create(int priority, Scopec scope, List<Capture> beginCaptures, List<Capture> endCaptures) {
         BlockMatcher res = new BlockMatcher();
         res.scope = scope;
         res.priority = priority;
@@ -44,17 +44,17 @@ public class BlockMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
     }
 
     @Override
-    public int match(MatcherContext context, Token token) throws MatchFailed {
+    public int match(MatcherContext context, Tokenf token) throws MatchFailed {
         return matchCapture(beginCaptures, beginLens, context, token);
     }
 
     @Override
-    public void apply(MatcherContext context, Token token) {
+    public void apply(MatcherContext context, Tokenf token) {
         applyCapture(scope, beginCaptures, beginLens, context, token);
 
         List<TokenMatcher> matchers = new ArrayList<>(children.values());
         matchers.add(new InnerBlockMatcher());
-        context.pushBlock(new Block(scope, this, matchers));
+        context.pushBlock(new Blockf(scope, this, matchers));
     }
 
     @Override
@@ -87,12 +87,12 @@ public class BlockMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
 
     private class InnerBlockMatcher implements TokenMatcher {
         @Override
-        public int match(MatcherContext context, Token token) throws MatchFailed {
+        public int match(MatcherContext context, Tokenf token) throws MatchFailed {
             return matchCapture(endCaptures, endLens, context, token);
         }
 
         @Override
-        public void apply(MatcherContext context, Token token) {
+        public void apply(MatcherContext context, Tokenf token) {
             applyCapture(scope, endCaptures, endLens, context, token);
             context.popBlock();
         }

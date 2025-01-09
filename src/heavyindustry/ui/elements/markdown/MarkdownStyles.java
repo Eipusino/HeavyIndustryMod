@@ -16,9 +16,9 @@ import mindustry.ui.*;
 
 import java.io.*;
 
-import static heavyindustry.ui.elements.markdown.highlighter.Scope.Default.RainbowSeparator;
-import static heavyindustry.ui.elements.markdown.highlighter.Scope.Default.*;
-import static heavyindustry.ui.elements.markdown.highlighter.Scope.LuaScope.*;
+import static heavyindustry.ui.elements.markdown.highlighter.Scopec.Default.RainbowSeparator;
+import static heavyindustry.ui.elements.markdown.highlighter.Scopec.Default.*;
+import static heavyindustry.ui.elements.markdown.highlighter.Scopec.LuaScope.*;
 import static heavyindustry.ui.elements.markdown.highlighter.StandardLanguages.*;
 import static mindustry.gen.Tex.*;
 

@@ -24,7 +24,7 @@ import static mindustry.content.Planets.*;
 public final class HIPlanets {
     public static Planet kepler, gliese;
 
-    /** HIPlanets should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIPlanets() {}
 
     /**

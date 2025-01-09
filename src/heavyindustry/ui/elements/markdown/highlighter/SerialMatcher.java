@@ -29,7 +29,7 @@ public class SerialMatcher implements TokenMatcher {
         return res;
     }
 
-    public static int matchCapture(List<Capture> captures, int[] lens, MatcherContext context, Token token) throws MatchFailed {
+    public static int matchCapture(List<Capture> captures, int[] lens, MatcherContext context, Tokenf token) throws MatchFailed {
         Arrays.fill(lens, 0);
 
         int off = 0;
@@ -38,7 +38,7 @@ public class SerialMatcher implements TokenMatcher {
             if (token.getIndexInContext(context) + off >= max) break;
 
             Capture capture = captures.get(i);
-            Token curr = context.getTokenInContext(token.getIndexInContext(context) + off);
+            Tokenf curr = context.getTokenInContext(token.getIndexInContext(context) + off);
 
             try {
                 int len = capture.match(context, curr);
@@ -55,7 +55,7 @@ public class SerialMatcher implements TokenMatcher {
         return off;
     }
 
-    public static int matchCapture(List<Capture> captures, Capture endCapture, Runnable ended, int[] lens, MatcherContext context, Token token) throws MatchFailed {
+    public static int matchCapture(List<Capture> captures, Capture endCapture, Runnable ended, int[] lens, MatcherContext context, Tokenf token) throws MatchFailed {
         Arrays.fill(lens, 0);
 
         int off = 0;
@@ -64,7 +64,7 @@ public class SerialMatcher implements TokenMatcher {
             if (token.getIndexInContext(context) + off >= max) break;
 
             Capture capture = captures.get(i);
-            Token curr = context.getTokenInContext(token.getIndexInContext(context) + off);
+            Tokenf curr = context.getTokenInContext(token.getIndexInContext(context) + off);
 
             if (endCapture != null) try {
                 int len = endCapture.match(context, curr);
@@ -90,11 +90,11 @@ public class SerialMatcher implements TokenMatcher {
         return off;
     }
 
-    public static void applyCapture(List<Capture> captures, int[] lens, MatcherContext context, Token token) {
+    public static void applyCapture(List<Capture> captures, int[] lens, MatcherContext context, Tokenf token) {
         applyCapture(null, captures, lens, context, token);
     }
 
-    public static void applyCapture(Scope altScope, List<Capture> captures, int[] lens, MatcherContext context, Token token) {
+    public static void applyCapture(Scopec altScope, List<Capture> captures, int[] lens, MatcherContext context, Tokenf token) {
         int off = 0;
         for (int i = 0; i < captures.size(); i++) {
             if (altScope != null) {
@@ -112,12 +112,12 @@ public class SerialMatcher implements TokenMatcher {
     }
 
     @Override
-    public int match(MatcherContext context, Token token) throws MatchFailed {
+    public int match(MatcherContext context, Tokenf token) throws MatchFailed {
         return SerialMatcher.matchCapture(captures, lens, context, token);
     }
 
     @Override
-    public void apply(MatcherContext context, Token token) {
+    public void apply(MatcherContext context, Tokenf token) {
         SerialMatcher.applyCapture(captures, lens, context, token);
     }
 

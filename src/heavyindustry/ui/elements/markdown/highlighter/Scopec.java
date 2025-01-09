@@ -2,10 +2,10 @@ package heavyindustry.ui.elements.markdown.highlighter;
 
 import java.util.*;
 
-public interface Scope {
-    void apply(Token token, ScopeHandler handler);
+public interface Scopec {
+    void apply(Tokenf token, ScopeHandler handler);
 
-    enum Default implements Scope {
+    enum Default implements Scopec {
         //internal special
         NONE,
         SPACE,
@@ -31,12 +31,12 @@ public interface Scope {
         ANNOTATION;
 
         @Override
-        public void apply(Token token, ScopeHandler handler) {
+        public void apply(Tokenf token, ScopeHandler handler) {
             handler.applyScope(token, this);
         }
     }
 
-    enum LuaScope implements Scope {
+    enum LuaScope implements Scopec {
         LOCAL_VARS,
         TABLE_VARS,
         KEYWORD_BODY,
@@ -48,16 +48,16 @@ public interface Scope {
         ;
 
         @Override
-        public void apply(Token token, ScopeHandler handler) {
+        public void apply(Tokenf token, ScopeHandler handler) {
             handler.applyScope(token, this);
         }
     }
 
-    class RainbowSeparator implements Scope {
+    class RainbowSeparator implements Scopec {
         public int depth;
-        public Scope type;
+        public Scopec type;
 
-        public RainbowSeparator(int depth, Scope type) {
+        public RainbowSeparator(int depth, Scopec type) {
             this.depth = depth;
             this.type = type;
         }
@@ -76,7 +76,7 @@ public interface Scope {
         }
 
         @Override
-        public void apply(Token token, ScopeHandler handler) {
+        public void apply(Tokenf token, ScopeHandler handler) {
             handler.applyScope(token, this);
         }
 

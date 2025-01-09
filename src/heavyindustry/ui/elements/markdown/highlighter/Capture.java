@@ -14,9 +14,9 @@ public abstract class Capture {
         return this;
     }
 
-    public abstract int match(MatcherContext context, Token token) throws TokenMatcher.MatchFailed;
+    public abstract int match(MatcherContext context, Tokenf token) throws TokenMatcher.MatchFailed;
 
-    public abstract void applyScope(MatcherContext context, Token token, int matchedLen);
+    public abstract void applyScope(MatcherContext context, Tokenf token, int matchedLen);
 
     public abstract Capture create();
 }

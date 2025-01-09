@@ -17,7 +17,7 @@ public final class EntityRegister {
 
     private static volatile int last = 0;
 
-    /** EntityRegister should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private EntityRegister() {}
 
     public static <T extends Entityc> void put(Class<T> type, Prov<T> prov) {

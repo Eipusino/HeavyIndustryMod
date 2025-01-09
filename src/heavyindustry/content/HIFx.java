@@ -2130,7 +2130,7 @@ public final class HIFx {
                 });
             }).followParent(true);
 
-    /** HIFx should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIFx() {}
 
     public static Effect impactExplode(float size, float lifeTime) {
@@ -2862,7 +2862,7 @@ public final class HIFx {
      * {@link Fx#surgeCruciSmoke}
      *
      * @param lifetime How long does the effect lasts | 160
-     * @param particleRad Particle Size | 2
+     * @param particleRad Particlef Size | 2
      * @param color particle color
      */
     public static Effect crucibleSmoke(float lifetime, float particleRad, Color color) {

@@ -9,7 +9,7 @@ import java.io.*;
  * require me to write a class for it.
  */
 public final class IOUtils {
-    /** IOUtils should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private IOUtils() {}
 
     public static void ioErr(UnsafeRunnable run, String message) throws IOException {

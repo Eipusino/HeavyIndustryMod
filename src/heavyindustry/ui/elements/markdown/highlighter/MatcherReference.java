@@ -39,12 +39,12 @@ public class MatcherReference implements TokenMatcher, MatcherGroup {
     }
 
     @Override
-    public int match(MatcherContext context, Token token) throws MatchFailed {
+    public int match(MatcherContext context, Tokenf token) throws MatchFailed {
         throw MatchFailed.INSTANCE;
     }
 
     @Override
-    public void apply(MatcherContext context, Token token) {
+    public void apply(MatcherContext context, Tokenf token) {
     }
 
     @Override

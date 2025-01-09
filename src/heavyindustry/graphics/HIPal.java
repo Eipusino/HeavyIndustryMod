@@ -48,6 +48,6 @@ public final class HIPal {
             outline = Pal.darkerMetal,
             heat = new Color(1f, 0.22f, 0.22f, 0.8f);
 
-    /** HIPal should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIPal() {}
 }

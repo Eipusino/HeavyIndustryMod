@@ -4,6 +4,7 @@ import arc.math.*;
 
 /** @since 1.0.4 */
 public final class Anglef {
+    /** Don't let anyone instantiate this class. */
     private Anglef() {}
 
     public static float moveLerpToward(float angle, float to, float speed) {

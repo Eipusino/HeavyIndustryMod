@@ -11,28 +11,28 @@ public class MultiParticleModel extends ParticleModel {
     }
 
     @Override
-    public void draw(Particle p) {
+    public void draw(Particlef p) {
         for (ParticleModel model : models) {
             model.draw(p);
         }
     }
 
     @Override
-    public void drawTrail(Particle c) {
+    public void drawTrail(Particlef c) {
         for (ParticleModel model : models) {
             model.drawTrail(c);
         }
     }
 
     @Override
-    public void updateTrail(Particle p, Particle.Cloud c) {
+    public void updateTrail(Particlef p, Particlef.Cloud c) {
         for (ParticleModel model : models) {
             model.updateTrail(p, c);
         }
     }
 
     @Override
-    public void update(Particle p) {
+    public void update(Particlef p) {
         for (ParticleModel model : models) {
             if (model == null) break;
             model.update(p);
@@ -40,14 +40,14 @@ public class MultiParticleModel extends ParticleModel {
     }
 
     @Override
-    public void init(Particle p) {
+    public void init(Particlef p) {
         for (ParticleModel model : models) {
             model.init(p);
         }
     }
 
     @Override
-    public Color trailColor(Particle p) {
+    public Color trailColor(Particlef p) {
         Tmp.c1.set(p.color);
         for (ParticleModel model : models) {
             Color c = model.trailColor(p);
@@ -58,14 +58,14 @@ public class MultiParticleModel extends ParticleModel {
     }
 
     @Override
-    public void deflect(Particle p) {
+    public void deflect(Particlef p) {
         for (ParticleModel model : models) {
             model.deflect(p);
         }
     }
 
     @Override
-    public boolean isFinal(Particle p) {
+    public boolean isFinal(Particlef p) {
         for (ParticleModel model : models) {
             if (model.isFinal(p)) return true;
         }
@@ -73,7 +73,7 @@ public class MultiParticleModel extends ParticleModel {
     }
 
     @Override
-    public boolean isFaded(Particle p, Particle.Cloud cloud) {
+    public boolean isFaded(Particlef p, Particlef.Cloud cloud) {
         for (ParticleModel model : models) {
             if (model.isFaded(p, cloud)) return true;
         }
@@ -81,7 +81,7 @@ public class MultiParticleModel extends ParticleModel {
     }
 
     @Override
-    public float currSize(Particle p) {
+    public float currSize(Particlef p) {
         float res = Float.MAX_VALUE;
 
         for (ParticleModel model : models) {

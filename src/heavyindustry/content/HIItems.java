@@ -15,7 +15,7 @@ public final class HIItems {
             nanocore, nanocoreErekir,
             uranium, chromium, heavyAlloy;
 
-    /** HIItems should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIItems() {}
 
     /**

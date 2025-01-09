@@ -33,7 +33,7 @@ public final class HIShaders {
     public static Tiler tiler;
     public static PlanetTextureShader planetTextureShader;
 
-    /** HIShaders should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIShaders() {}
 
     /** Loads the shaders. */

@@ -15,7 +15,7 @@ public final class WorldRegister {
 
     public static boolean worldLoaded = false;
 
-    /** WorldRegister should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private WorldRegister() {}
 
     public static void postAfterLoad(Runnable runnable) {

@@ -13,7 +13,7 @@ public final class HIIcon {
             //small
             resetIconSmall, timeIconSmall;
 
-    /** HIIcon should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIIcon() {}
 
     public static void load() {

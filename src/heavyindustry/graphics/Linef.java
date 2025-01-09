@@ -15,7 +15,7 @@ public final class Linef {
             0, 0
     };
 
-    /** Linef should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private Linef() {}
 
     public static void arc(float x, float y, float radius, float finion) {

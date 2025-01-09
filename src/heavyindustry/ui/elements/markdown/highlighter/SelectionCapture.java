@@ -25,7 +25,7 @@ public class SelectionCapture extends Capture {
     }
 
     @Override
-    public int match(MatcherContext context, Token token) throws TokenMatcher.MatchFailed {
+    public int match(MatcherContext context, Tokenf token) throws TokenMatcher.MatchFailed {
         hitLens.clear();
         hits.clear();
 
@@ -40,7 +40,7 @@ public class SelectionCapture extends Capture {
             Capture hit = null;
             for (Capture capture : captures) {
                 Capture capt = capture.create();
-                Token curr = context.getTokenInContext(token.getIndexInContext(context) + off);
+                Tokenf curr = context.getTokenInContext(token.getIndexInContext(context) + off);
 
                 try {
                     int len = capt.match(context, curr);
@@ -65,11 +65,11 @@ public class SelectionCapture extends Capture {
     }
 
     @Override
-    public void applyScope(MatcherContext context, Token token, int matchedLen) {
+    public void applyScope(MatcherContext context, Tokenf token, int matchedLen) {
         int off = 0;
         new Object();
         for (int i = 0; i < hits.size(); i++) {
-            Token curr = context.getTokenInContext(token.getIndexInContext(context) + off);
+            Tokenf curr = context.getTokenInContext(token.getIndexInContext(context) + off);
             hits.get(i).applyScope(context, curr, hitLens.get(i));
             off += hitLens.get(i);
         }

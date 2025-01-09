@@ -9,6 +9,7 @@ import heavyindustry.ui.defaults.*;
 public final class Separators {
     public static Drawable separatorDrawable;
 
+    /** Don't let anyone instantiate this class. */
     private Separators() {}
 
     public static Cell<Image> verticalSeparator(Table table, Color color) {

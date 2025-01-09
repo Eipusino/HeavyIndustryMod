@@ -6,7 +6,7 @@ import java.util.*;
 
 public class TokenCapture extends Capture {
     private final Set<String> tokens;
-    private final Scope scope;
+    private final Scopec scope;
 
     private final int minMatch;
     private final int maxMatch;
@@ -15,7 +15,7 @@ public class TokenCapture extends Capture {
         this(1, null, tokens);
     }
 
-    public TokenCapture(Scope scope, String... tokens) {
+    public TokenCapture(Scopec scope, String... tokens) {
         this(1, scope, tokens);
     }
 
@@ -23,11 +23,11 @@ public class TokenCapture extends Capture {
         this(matches, matches, null, tokens);
     }
 
-    public TokenCapture(int matches, Scope scope, String... tokens) {
+    public TokenCapture(int matches, Scopec scope, String... tokens) {
         this(matches, matches, scope, tokens);
     }
 
-    public TokenCapture(int minMatch, int maxMatch, Scope scope, String... tokens) {
+    public TokenCapture(int minMatch, int maxMatch, Scopec scope, String... tokens) {
         this.minMatch = minMatch;
         this.maxMatch = maxMatch;
         this.scope = scope;
@@ -35,12 +35,12 @@ public class TokenCapture extends Capture {
     }
 
     @Override
-    public int match(MatcherContext context, Token token) throws MatchFailed {
+    public int match(MatcherContext context, Tokenf token) throws MatchFailed {
         int off = 0;
 
         int max = Math.min(maxMatch, context.getTokensCountInContext());
         while (off < max) {
-            Token curr = context.getTokenInContext(token.getIndexInContext(context) + off);
+            Tokenf curr = context.getTokenInContext(token.getIndexInContext(context) + off);
             if (!tokens.contains(curr.text)) {
                 if (off < minMatch) throw MatchFailed.INSTANCE;
                 else break;
@@ -53,7 +53,7 @@ public class TokenCapture extends Capture {
     }
 
     @Override
-    public void applyScope(MatcherContext context, Token token, int matchedLen) {
+    public void applyScope(MatcherContext context, Tokenf token, int matchedLen) {
         if (scope == null) return;
 
         for (int i = 0; i < matchedLen; i++) {
