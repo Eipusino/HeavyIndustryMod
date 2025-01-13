@@ -9,8 +9,8 @@ public class Tokenf {
     public int index;
     public int rawIndex;
 
-    public Tokenf(String text) {
-        this.text = text;
+    public Tokenf(String tex) {
+        text = tex;
     }
 
     @Override

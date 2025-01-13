@@ -3,12 +3,12 @@ package heavyindustry.ui.elements.markdown.highlighter;
 import java.util.*;
 
 public class SelectionCapture extends Capture {
-    private final int minMatch;
-    private final int maxMatch;
-    private final List<Capture> captures;
+    protected final int minMatch;
+    protected final int maxMatch;
+    protected final List<Capture> captures;
 
-    private final List<Capture> hits = new ArrayList<>();
-    private final List<Integer> hitLens = new ArrayList<>();
+    protected final List<Capture> hits = new ArrayList<>();
+    protected final List<Integer> hitLens = new ArrayList<>();
 
     public SelectionCapture(Capture... captures) {
         this(1, captures);
@@ -18,10 +18,10 @@ public class SelectionCapture extends Capture {
         this(matches, matches, captures);
     }
 
-    public SelectionCapture(int minMatch, int maxMatch, Capture... captures) {
-        this.minMatch = minMatch;
-        this.maxMatch = maxMatch;
-        this.captures = Arrays.asList(captures);
+    public SelectionCapture(int min, int max, Capture... cap) {
+        minMatch = min;
+        maxMatch = max;
+        captures = Arrays.asList(cap);
     }
 
     @Override
@@ -51,8 +51,7 @@ public class SelectionCapture extends Capture {
                     hit = capt;
 
                     break;
-                } catch (TokenMatcher.MatchFailed ignored) {
-                }
+                } catch (TokenMatcher.MatchFailed ignored) {}
             }
 
             if (hit == null) {

@@ -50,12 +50,6 @@ public class MarkdownStyles {
         defaultMD = temp;
     }
 
-    /** @deprecated Please use makeDefault */
-    @Deprecated
-    public static MarkdownStyle defaultMD(Font mono) {
-        return makeDefault(mono);
-    }
-
     public static MarkdownStyle makeDefault(Font mono) {
         return new MarkdownStyle() {{
             font = subFont = Fonts.def;

@@ -11,8 +11,7 @@ public class DrawLine extends DrawObj {
     Color color;
 
     //use get
-    DrawLine() {
-    }
+    DrawLine() {}
 
     public static DrawLine get(Markdown owner, Color color, float offX, float offY, float width) {
         DrawLine res = Pools.obtain(DrawLine.class, DrawLine::new);

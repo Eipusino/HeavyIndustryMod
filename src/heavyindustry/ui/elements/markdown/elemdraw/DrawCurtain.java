@@ -15,8 +15,7 @@ public class DrawCurtain extends DrawObj implements ActivityDrawer {
     Image image;
 
     //use get
-    DrawCurtain() {
-    }
+    DrawCurtain() {}
 
     public static DrawCurtain get(Markdown owner, Drawable drawable, float offX, float offY, float width, float height) {
         DrawCurtain res = Pools.obtain(DrawCurtain.class, DrawCurtain::new);

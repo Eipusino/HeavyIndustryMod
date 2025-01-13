@@ -11,8 +11,7 @@ public class DrawHr extends DrawObj {
     Color color;
 
     //use get
-    DrawHr() {
-    }
+    DrawHr() {}
 
     public static DrawHr get(Markdown owner, Color color, float offY) {
         DrawHr res = Pools.obtain(DrawHr.class, DrawHr::new);

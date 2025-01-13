@@ -4,7 +4,6 @@ import arc.graphics.g2d.*;
 import mindustry.world.*;
 import mindustry.world.blocks.environment.*;
 
-import static heavyindustry.util.SpriteUtils.*;
 import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 

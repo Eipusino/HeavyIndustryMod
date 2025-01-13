@@ -17,6 +17,7 @@ public class ShaderTextureRegion extends TextureRegion {
 
     private final Cons2<Shader, Object[]> shaderPrepare;
     private final FrameBuffer frameBuffer = new FrameBuffer();
+
     public Texture original;
     /** Texture update frequency, in frames. */
     public int frequency = 5;

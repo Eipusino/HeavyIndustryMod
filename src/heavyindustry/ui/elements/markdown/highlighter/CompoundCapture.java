@@ -11,22 +11,22 @@ public class CompoundCapture extends Capture {
     private final List<Integer> off = new ArrayList<>();
     private Capture endCapture;
 
-    public CompoundCapture(Capture... captures) {
-        this(1, captures);
+    public CompoundCapture(Capture... cap) {
+        this(1, cap);
     }
 
-    public CompoundCapture(int matches, Capture... captures) {
-        this(matches, matches, captures);
+    public CompoundCapture(int mat, Capture... cap) {
+        this(mat, mat, cap);
     }
 
-    public CompoundCapture(int minMatch, int maxMatch, Capture... captures) {
-        this.minMatch = minMatch;
-        this.maxMatch = maxMatch;
-        this.captures = Arrays.asList(captures);
+    public CompoundCapture(int min, int max, Capture... cap) {
+        minMatch = min;
+        maxMatch = max;
+        captures = Arrays.asList(cap);
     }
 
-    public CompoundCapture setEndCapture(Capture endCapture) {
-        this.endCapture = endCapture;
+    public CompoundCapture setEndCapture(Capture end) {
+        endCapture = end;
         return this;
     }
 
@@ -37,15 +37,15 @@ public class CompoundCapture extends Capture {
         cap.clear();
 
         boolean[] ended = new boolean[1];
-        int off = 0;
+        int of = 0;
         int max = context.getTokensCountInContext();
         for (int i = 0; i < maxMatch; i++) {
-            if (token.getIndexInContext(context) + off >= max) {
+            if (token.getIndexInContext(context) + of >= max) {
                 if (i < minMatch) throw TokenMatcher.MatchFailed.INSTANCE;
                 else break;
             }
 
-            Tokenf curr = context.getTokenInContext(token.getIndexInContext(context) + off);
+            Tokenf curr = context.getTokenInContext(token.getIndexInContext(context) + of);
 
             List<Capture> capt = new ArrayList<>();
             for (Capture c : captures) capt.add(c.create());
@@ -56,9 +56,9 @@ public class CompoundCapture extends Capture {
                 ended[0] = false;
                 int l = SerialMatcher.matchCapture(capt, endCapture, () -> ended[0] = true, len, context, curr);
                 lens.add(len);
-                this.off.add(off);
+                off.add(of);
                 if (ended[0] && endCapture != null && endCapture.matchOnly) break;
-                off += l;
+                of += l;
                 if (ended[0]) break;
             } catch (TokenMatcher.MatchFailed e) {
                 if (i < minMatch) throw e;
@@ -66,11 +66,11 @@ public class CompoundCapture extends Capture {
             }
         }
 
-        return off;
+        return of;
     }
 
     @Override
-    public void applyScope(MatcherContext context, Tokenf token, int matchedLen) {
+    public void applyScope(MatcherContext context, Tokenf token, int len) {
         int max = context.getTokensCountInContext();
         for (int i = 0; i < off.size(); i++) {
             if (token.getIndexInContext(context) + off.get(i) >= max) break;

@@ -1877,7 +1877,6 @@ public final class HIBlocks {
                     suffix = "-top-plast-top";
                 }});
             }});
-            squareSprite = false;
         }};
         uraniumSynthesizer = new GenericCrafter("uranium-synthesizer") {{
             requirements(Category.crafting, with(Items.graphite, 50, Items.silicon, 40, Items.plastanium, 30, Items.phaseFabric, 15));

@@ -44,8 +44,7 @@ public interface Scopec {
         KEYWORD_VAR1,
         KEYWORD_VAR2,
         KEYWORD_SELF,
-        KEYWORD_FUNCTION,
-        ;
+        KEYWORD_FUNCTION;
 
         @Override
         public void apply(Tokenf token, ScopeHandler handler) {
@@ -57,9 +56,9 @@ public interface Scopec {
         public int depth;
         public Scopec type;
 
-        public RainbowSeparator(int depth, Scopec type) {
-            this.depth = depth;
-            this.type = type;
+        public RainbowSeparator(int dep, Scopec typ) {
+            depth = dep;
+            type = typ;
         }
 
         @Override

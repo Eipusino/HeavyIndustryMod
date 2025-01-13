@@ -6,7 +6,10 @@ import arc.input.*;
 import arc.scene.*;
 import arc.scene.event.*;
 
-public class Listeners {
+public final class Listeners {
+    /** Don't let anyone instantiate this class. */
+    private Listeners() {}
+
     /** Invoke action on clicked element on screen */
     public static void onScreenClick(Cons<Element> action) {
         Core.scene.addListener(new ClickListener() {
@@ -29,7 +32,6 @@ public class Listeners {
      * @param removeIfRemoved marks remove listener after invocation or not
      */
     public static void onScreenClick(Element element, Action action, boolean removeIfRemoved) {
-
         Core.scene.addListener(new ClickOnOtherListener(() -> {
             if (element.getScene() != null) {
                 element.addAction(action);
@@ -42,9 +44,9 @@ public class Listeners {
         public Boolp shouldRemove;
         public HitChecker hitChecker;
 
-        public ClickOnOtherListener(Boolp shouldRemove, HitChecker hitChecker) {
-            this.shouldRemove = shouldRemove;
-            this.hitChecker = hitChecker;
+        public ClickOnOtherListener(Boolp should, HitChecker hit) {
+            shouldRemove = should;
+            hitChecker = hit;
         }
 
         @Override

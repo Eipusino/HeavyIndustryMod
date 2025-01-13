@@ -11,8 +11,7 @@ public class DrawBoard extends DrawObj {
     int lay;
 
     //use get
-    DrawBoard() {
-    }
+    DrawBoard() {}
 
     public static DrawBoard get(Markdown owner, Drawable drawable, int layer, float height, float offX, float offY) {
         DrawBoard res = Pools.obtain(DrawBoard.class, DrawBoard::new);

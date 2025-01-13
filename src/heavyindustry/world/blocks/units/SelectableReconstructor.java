@@ -88,9 +88,9 @@ public class SelectableReconstructor extends Reconstructor {
     public static class DynamicUnitPlan extends UnitPlan {
         public UnitType resultUnit;
 
-        public DynamicUnitPlan(UnitType unit, UnitType resultUnit, float time, ItemStack[] requirements) {
+        public DynamicUnitPlan(UnitType unit, UnitType result, float time, ItemStack[] requirements) {
             super(unit, time, requirements);
-            this.resultUnit = resultUnit;
+            resultUnit = result;
         }
     }
 
@@ -109,7 +109,7 @@ public class SelectableReconstructor extends Reconstructor {
         }
 
         @Override
-        public Object config() {
+        public Integer config() {
             return currentPlan;
         }
 
@@ -133,7 +133,7 @@ public class SelectableReconstructor extends Reconstructor {
         public void updateTile() {
             boolean valid = false;
             if (payload != null && currentPlan != -1) {
-                DynamicUnitPlan Plan = plans.get(currentPlan);
+                var Plan = plans.get(currentPlan);
                 if (Plan.unit != payload.unit.type) {
                     moveOutPayload();
                 } else if (moveInPayload()) {
@@ -183,9 +183,9 @@ public class SelectableReconstructor extends Reconstructor {
         }
 
         @Override
-        public boolean acceptPayload(Building source, Payload payload) {
+        public boolean acceptPayload(Building sou, Payload pay) {
             if (currentPlan == -1) return false;
-            if (this.payload == null && (enabled || source == this) && relativeTo(source) != rotation && payload instanceof UnitPayload unit) {
+            if (payload == null && (enabled || sou == this) && relativeTo(sou) != rotation && pay instanceof UnitPayload unit) {
                 UnitType upgrade = plans.get(currentPlan).unit;
                 if (upgrade != null) {
                     if (!upgrade.unlockedNowHost() && !team.isAI()) {

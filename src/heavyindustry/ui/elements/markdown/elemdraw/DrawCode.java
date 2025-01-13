@@ -13,8 +13,7 @@ public class DrawCode extends DrawObj implements ActivityDrawer {
     Label label;
 
     //use get
-    DrawCode() {
-    }
+    DrawCode() {}
 
     public static DrawCode get(Markdown owner, String language, String code, Font textFont, float ox, float oy, ScrollPane.ScrollPaneStyle paneStyle) {
         DrawCode res = Pools.obtain(DrawCode.class, DrawCode::new);

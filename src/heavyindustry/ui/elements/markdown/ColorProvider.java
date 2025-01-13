@@ -6,7 +6,7 @@ import heavyindustry.ui.elements.markdown.highlighter.*;
 import java.util.*;
 
 public class ColorProvider {
-    private final Map<String, ColorMap> languages = new HashMap<>();
+    protected final Map<String, ColorMap> languages = new HashMap<>();
     public Color defaultColor = Color.white;
 
     /** Get the color assigned to the scope in the specified language. */

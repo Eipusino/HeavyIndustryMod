@@ -12,7 +12,6 @@ import mindustry.world.*;
 import mindustry.world.draw.*;
 
 import static arc.Core.*;
-import static heavyindustry.util.SpriteUtils.*;
 import static heavyindustry.util.Utils.*;
 
 @SuppressWarnings("unchecked")

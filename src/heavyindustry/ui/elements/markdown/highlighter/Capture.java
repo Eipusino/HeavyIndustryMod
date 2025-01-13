@@ -4,13 +4,13 @@ public abstract class Capture {
     public boolean matchOnly = false;
     public boolean optional = false;
 
-    public Capture setMatchOnly(boolean matchOnly) {
-        this.matchOnly = matchOnly;
+    public Capture setMatchOnly(boolean mat) {
+        matchOnly = mat;
         return this;
     }
 
-    public Capture setOptional(boolean optional) {
-        this.optional = optional;
+    public Capture setOptional(boolean opt) {
+        optional = opt;
         return this;
     }
 

@@ -5,11 +5,14 @@ import arc.scene.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
 import heavyindustry.ui.defaults.*;
-import heavyindustry.util.Ref.*;
+import kotlin.jvm.internal.Ref.*;
 
-public class Tooltipf {
+public final class Tooltipf {
     public static Cons2<String, Table> defaultTooltipTable = (text, table) ->
             table.background(DefaultBackground.black6()).margin(4f).add(text);
+
+    /** Don't let anyone instantiate this class. */
+    private Tooltipf() {}
 
     public static <T extends Element> Cell<T> mutableTooltip(Table table, T element, ObjectRef<String> tooltipText) {
         return table.add(element).tooltip(it ->

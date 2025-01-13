@@ -6,9 +6,7 @@ package heavyindustry.util;
  * @since 1.0.5
  */
 public final class NumberStrify {
-    private static final String[] byteUnit = {
-            "B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"
-    };
+    private static final String[] byteUnit = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"};
 
     /** Don't let anyone instantiate this class. */
     private NumberStrify() {}

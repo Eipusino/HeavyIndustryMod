@@ -1,6 +1,7 @@
 package heavyindustry.ui.elements.markdown.extensions;
 
 import heavyindustry.ui.elements.markdown.*;
+import heavyindustry.ui.elements.markdown.MDLayoutRenderer.*;
 import heavyindustry.ui.elements.markdown.elemdraw.*;
 import org.commonmark.*;
 import org.commonmark.node.*;
@@ -8,9 +9,8 @@ import org.commonmark.parser.*;
 
 import java.util.*;
 
-public class CurtainExtension implements Parser.ParserExtension, MDLayoutRenderer.DrawRendererExtension {
-    private CurtainExtension() {
-    }
+public class CurtainExtension implements Parser.ParserExtension, DrawRendererExtension {
+    private CurtainExtension() {}
 
     public static Extension create() {
         return new CurtainExtension();
@@ -22,7 +22,7 @@ public class CurtainExtension implements Parser.ParserExtension, MDLayoutRendere
     }
 
     @Override
-    public void extend(MDLayoutRenderer.Builder rendererBuilder) {
+    public void extend(Builder rendererBuilder) {
         rendererBuilder.nodeRendererFactory(CurtainRenderer::new);
     }
 

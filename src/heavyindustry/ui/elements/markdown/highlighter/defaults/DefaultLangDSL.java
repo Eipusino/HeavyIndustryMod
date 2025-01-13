@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public abstract class DefaultLangDSL {
-    @SuppressWarnings("unchecked")
+    @SafeVarargs
     protected static <T> List<T> of(T... elements) {
         return Arrays.asList(elements);
     }

@@ -10,7 +10,6 @@ import mindustry.type.*;
 import mindustry.world.*;
 
 import static arc.Core.*;
-import static heavyindustry.util.SpriteUtils.*;
 import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 

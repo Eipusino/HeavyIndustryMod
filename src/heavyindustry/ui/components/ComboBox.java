@@ -14,7 +14,7 @@ import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
 import heavyindustry.ui.listeners.Listeners.*;
-import heavyindustry.util.Ref.*;
+import kotlin.jvm.internal.Ref.*;
 
 public class ComboBox extends Table {
     private final Table mySelectionTable = new Table() {{

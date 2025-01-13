@@ -96,7 +96,12 @@ public class PayloadSourcef extends PayloadSource {
             ItemSelection.buildTable(PayloadSourcef.this, table,
                     content.blocks().select(PayloadSourcef.this::canProduce).<UnlockableContent>as()
                             .add(content.units().select(PayloadSourcef.this::canProduce).as()),
-                    () -> (UnlockableContent) config(), this::configure, false, selectionRows, selectionColumns);
+                    this::config, this::configure, false, selectionRows, selectionColumns);
+        }
+
+        @Override
+        public UnlockableContent config() {
+            return unit == null ? configBlock : unit;
         }
 
         @Override
@@ -108,9 +113,8 @@ public class PayloadSourcef extends PayloadSource {
         @Override
         public void configured(Unit builder, Object value) {
             super.configured(builder, value);
-            if (!(value instanceof Integer v)) return;
-            if (builder != null && builder.isPlayer()) {
-                Team team = Team.get(v);
+            if (value instanceof Number v && builder != null && builder.isPlayer()) {
+                Team team = Team.get(v.intValue());
                 builder.team = team;
                 builder.getPlayer().team(team);
 

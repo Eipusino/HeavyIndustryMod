@@ -19,13 +19,13 @@ public class PatternsHighlight implements LanguageHighlight<MatcherContext>, Nam
     }
 
     public PatternsHighlight addPattern(String patternName, TokenMatcher matcher) {
-        this.matchers.put(patternName, matcher.create());
+        matchers.put(patternName, matcher.create());
 
         return this;
     }
 
     public PatternsHighlight addRawContextPattern(String patternName, TokenMatcher matcher) {
-        this.rawContextMatchers.put(patternName, matcher.create());
+        rawContextMatchers.put(patternName, matcher.create());
 
         return this;
     }
@@ -141,8 +141,7 @@ public class PatternsHighlight implements LanguageHighlight<MatcherContext>, Nam
                 matcher.apply(context, token);
 
                 return n;
-            } catch (TokenMatcher.MatchFailed ignored) {
-            }
+            } catch (TokenMatcher.MatchFailed ignored) {}
         }
 
         return 1;

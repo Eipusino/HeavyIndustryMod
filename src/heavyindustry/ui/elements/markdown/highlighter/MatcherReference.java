@@ -9,28 +9,28 @@ public class MatcherReference implements TokenMatcher, MatcherGroup {
     private final NameIndexer<TokenMatcher> nameIndexer;
     private final String[] patternNames;
 
-    public MatcherReference(NameIndexer<TokenMatcher> map, String... patternNames) {
-        this.priority = 0;
-        this.nameIndexer = map;
-        this.patternNames = patternNames;
+    public MatcherReference(NameIndexer<TokenMatcher> map, String... names) {
+        priority = 0;
+        nameIndexer = map;
+        patternNames = names;
     }
 
     public MatcherReference(NameIndexer<TokenMatcher> map) {
-        this.priority = 0;
-        this.nameIndexer = map;
-        this.patternNames = null;
+        priority = 0;
+        nameIndexer = map;
+        patternNames = null;
     }
 
-    public MatcherReference(int priority, NameIndexer<TokenMatcher> map, String... patternNames) {
-        this.priority = priority;
-        this.nameIndexer = map;
-        this.patternNames = patternNames;
+    public MatcherReference(int pri, NameIndexer<TokenMatcher> map, String... names) {
+        priority = pri;
+        nameIndexer = map;
+        patternNames = names;
     }
 
-    public MatcherReference(int priority, NameIndexer<TokenMatcher> map) {
-        this.priority = priority;
-        this.nameIndexer = map;
-        this.patternNames = null;
+    public MatcherReference(int pri, NameIndexer<TokenMatcher> map) {
+        priority = pri;
+        nameIndexer = map;
+        patternNames = null;
     }
 
     @Override

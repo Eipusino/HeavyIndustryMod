@@ -9,7 +9,7 @@ import mindustry.gen.*;
 import mindustry.world.*;
 
 import static arc.Core.*;
-import static heavyindustry.util.SpriteUtils.*;
+import static heavyindustry.util.Utils.*;
 
 @SuppressWarnings("unchecked")
 public class DrawPayloadFactory<E extends Building> extends DrawDirSpliceBlock<E> {

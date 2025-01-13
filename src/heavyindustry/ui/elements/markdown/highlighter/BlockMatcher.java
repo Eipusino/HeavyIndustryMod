@@ -69,7 +69,6 @@ public class BlockMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
         return priority;
     }
 
-    @SuppressWarnings("DuplicatedCode")
     @Override
     public List<TokenMatcher> indexes(String... names) {
         List<TokenMatcher> list = new ArrayList<>();

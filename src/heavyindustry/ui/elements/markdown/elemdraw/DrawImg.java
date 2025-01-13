@@ -14,8 +14,7 @@ public class DrawImg extends DrawObj {
     TextureRegion region;
 
     //use get
-    DrawImg() {
-    }
+    DrawImg() {}
 
     public static DrawImg get(Markdown owner, TextureRegion region, String title, float offY, Font titleFont, Color titleColor) {
         DrawImg res = Pools.obtain(DrawImg.class, DrawImg::new);

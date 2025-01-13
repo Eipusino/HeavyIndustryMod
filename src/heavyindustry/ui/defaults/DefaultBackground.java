@@ -50,16 +50,17 @@ class Lazy<T> {
 
     @SuppressWarnings("unchecked")
     public T get() {
-        Object _v1 = value;
-        if (_v1 != UNINITIALIZED_VALUE) {
+        Object v1 = value;
+        if (v1 != UNINITIALIZED_VALUE) {
             //noinspection unchecked
-            return (T) _v1;
+            return (T) v1;
         }
+
         synchronized (lock) {
-            Object _v2 = value;
-            if (_v2 != UNINITIALIZED_VALUE) {
+            Object v2 = value;
+            if (v2 != UNINITIALIZED_VALUE) {
                 //noinspection unchecked
-                return (T) _v2;
+                return (T) v2;
             }
             T typedValue = initializer.get();
             value = typedValue;

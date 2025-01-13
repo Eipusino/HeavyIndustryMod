@@ -10,11 +10,15 @@ import mindustry.ui.*;
 
 import static mindustry.Vars.*;
 
-public final class CliffPlacerFragment extends Table {
-    Table layout;
+public class CliffPlacerFragment extends Table {
+    protected Table layout;
 
     /** Don't let anyone instantiate this class. */
     public CliffPlacerFragment() {
+        init();
+    }
+
+    protected void init() {
         setFillParent(true);
         visible(() -> ui.hudfrag.shown && state.isEditor() && state.isPlaying() && control.input.commandMode);
         touchable(() -> visible ? Touchable.enabled : Touchable.disabled);

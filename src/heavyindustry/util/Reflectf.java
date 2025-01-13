@@ -11,7 +11,7 @@ public final class Reflectf {
     /** Don't let anyone instantiate this class. */
     private Reflectf() {}
 
-    public static <T> T get(Object object, String type, String name) {
+    public static <T> T getField(Object object, String type, String name) {
         try {
             Field field = object.getClass().getClassLoader().loadClass(type).getDeclaredField(name);
             field.setAccessible(true);
@@ -22,23 +22,41 @@ public final class Reflectf {
         }
     }
 
-    public static String[] findFields(Object obj) {
-        if (obj == null)
+    public static void setField(Object object, String type, String name, Object value) {
+        try {
+            Field field = object.getClass().getClassLoader().loadClass(type).getDeclaredField(name);
+            field.setAccessible(true);
+            field.set(object, value);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String[] findFieldNames(Object object, String spilt, String def) {
+        if (object == null)
             return new String[0];
 
-        var fields = obj.getClass().getDeclaredFields();
-        var fieldValues = new Seq<>();
+        var fields = object.getClass().getDeclaredFields();
+        var fieldValues = new Seq<String>();
 
         for (Field field : fields) {
             field.setAccessible(true);
             try {
-                Object value = field.get(obj);
-                fieldValues.add(field.getName() + ": " + value);
+                Object value = field.get(object);
+                fieldValues.add(field.getName() + spilt + value);
             } catch (Exception e) {
-                fieldValues.add(field.getName() + ": " + "???");
+                fieldValues.add(field.getName() + spilt + def);
             }
         }
         return fieldValues.toArray(String.class);
+    }
+
+    public static String[] findFieldNames(Object object, String a) {
+        return findFieldNames(object, a, "???");
+    }
+
+    public static String[] findFieldNames(Object object) {
+        return findFieldNames(object, ": ");
     }
 
     public static Class<?> box(Class<?> type) {
@@ -114,6 +132,15 @@ public final class Reflectf {
     public static Class<?> findClass(String name) {
         try {
             return Class.forName(name, true, mods.mainLoader());
+        } catch (ClassNotFoundException | NoClassDefFoundError e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /** Search for class based on class names without throwing exceptions. */
+    public static Class<?> forClass(String name) {
+        try {
+            return Class.forName(name);
         } catch (ClassNotFoundException | NoClassDefFoundError e) {
             throw new RuntimeException(e);
         }

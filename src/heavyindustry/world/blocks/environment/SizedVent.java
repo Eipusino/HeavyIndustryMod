@@ -9,7 +9,7 @@ import mindustry.entities.*;
 import mindustry.world.*;
 import mindustry.world.blocks.environment.*;
 
-import static heavyindustry.util.StructUtils.*;
+import static heavyindustry.util.Structf.*;
 import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 

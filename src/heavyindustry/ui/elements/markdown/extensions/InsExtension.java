@@ -11,8 +11,7 @@ import org.commonmark.parser.*;
 import java.util.*;
 
 public class InsExtension implements Parser.ParserExtension, MDLayoutRenderer.DrawRendererExtension {
-    private InsExtension() {
-    }
+    private InsExtension() {}
 
     public static Extension create() {
         return new InsExtension();

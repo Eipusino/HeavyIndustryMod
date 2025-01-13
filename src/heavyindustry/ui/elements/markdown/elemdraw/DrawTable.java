@@ -13,8 +13,7 @@ public class DrawTable extends DrawObj implements ActivityDrawer {
     ScrollPane pane;
 
     //use get
-    DrawTable() {
-    }
+    DrawTable() {}
 
     public static DrawTable get(Markdown owner, Table table, float ox, float oy) {
         DrawTable res = Pools.obtain(DrawTable.class, DrawTable::new);

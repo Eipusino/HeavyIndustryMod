@@ -4,7 +4,7 @@ import arc.math.*;
 import arc.util.*;
 import mindustry.entities.pattern.*;
 
-public class ShootHelixF extends ShootHelix {
+public class ShootHelixf extends ShootHelix {
     public boolean flip = false;
     public float rotSpeedOffset = 0;
     public float rotSpeedBegin = 1;

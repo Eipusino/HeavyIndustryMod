@@ -7,16 +7,16 @@ public class Blockf {
     private final TokenMatcher ownerMatcher;
     private final List<TokenMatcher> matchers;
 
-    public Blockf(Scopec scope, List<TokenMatcher> matchers) {
-        this.scope = scope;
-        this.ownerMatcher = null;
-        this.matchers = matchers;
+    public Blockf(Scopec sco, List<TokenMatcher> mat) {
+        scope = sco;
+        ownerMatcher = null;
+        matchers = mat;
     }
 
-    public Blockf(Scopec scope, TokenMatcher currMatcher, List<TokenMatcher> matchers) {
-        this.scope = scope;
-        this.ownerMatcher = currMatcher;
-        this.matchers = matchers;
+    public Blockf(Scopec sco, TokenMatcher cur, List<TokenMatcher> mat) {
+        scope = sco;
+        ownerMatcher = cur;
+        matchers = mat;
     }
 
     public Scopec scope() {

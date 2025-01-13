@@ -11,8 +11,7 @@ import org.commonmark.parser.*;
 import java.util.*;
 
 public class StrikethroughExtension implements Parser.ParserExtension, MDLayoutRenderer.DrawRendererExtension {
-    private StrikethroughExtension() {
-    }
+    private StrikethroughExtension() {}
 
     public static Extension create() {
         return new StrikethroughExtension();

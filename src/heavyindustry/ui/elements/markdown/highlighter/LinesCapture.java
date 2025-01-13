@@ -7,18 +7,18 @@ public class LinesCapture extends Capture {
     private final Scopec scope;
 
     public LinesCapture() {
-        this.scope = null;
-        this.lineSep = Pattern.compile("\\r\\n|\\r|\\n");
+        scope = null;
+        lineSep = Pattern.compile("\\r\\n|\\r|\\n");
     }
 
-    public LinesCapture(Scopec scope) {
-        this.scope = scope;
-        this.lineSep = Pattern.compile("\\r\\n|\\r|\\n");
+    public LinesCapture(Scopec sco) {
+        scope = sco;
+        lineSep = Pattern.compile("\\r\\n|\\r|\\n");
     }
 
-    public LinesCapture(Scopec scope, Pattern lineSep) {
-        this.lineSep = lineSep;
-        this.scope = scope;
+    public LinesCapture(Scopec sco, Pattern line) {
+        lineSep = line;
+        scope = sco;
     }
 
     @Override

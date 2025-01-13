@@ -14,7 +14,7 @@ import mindustry.graphics.*;
 
 import static arc.Core.*;
 import static heavyindustry.core.HeavyIndustryMod.*;
-import static heavyindustry.util.StructUtils.*;
+import static heavyindustry.util.Structf.*;
 
 public final class HITrails {
     /** Don't let anyone instantiate this class. */

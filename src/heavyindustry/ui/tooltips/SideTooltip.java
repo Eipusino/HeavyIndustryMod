@@ -13,10 +13,10 @@ public class SideTooltip extends Tooltip {
     public final int align;
     public final int invertedAlign;
 
-    public SideTooltip(int align, Cons<Table> contents) {
+    public SideTooltip(int ali, Cons<Table> contents) {
         super(contents);
-        this.align = align;
-        invertedAlign = UIUtils.invertAlign(align);
+        align = ali;
+        invertedAlign = UIUtils.invertAlign(ali);
     }
 
     @Override

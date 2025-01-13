@@ -21,13 +21,13 @@ public final class HIMusics {
      * Loads a set of music tracks from a specified base path.
      *
      * @param basePath   Base path for the music files.
-     * @param trackNames Array of track names to load.
+     * @param tracks Array of track names to load.
      */
-    public static void loadMusicSet(String basePath, String[] trackNames) {
-        for (String track : trackNames) {
+    public static void loadMusicSet(String basePath, String[] tracks) {
+        for (String track : tracks) {
             try {
                 Music music = tree.loadMusic(basePath + track);
-                HIMusics.class.getField(track).set(null, music);
+                Reflect.set(HIMusics.class, track, music);
             } catch (Exception e) {
                 Log.err("Failed to load music: " + track, e);
             }

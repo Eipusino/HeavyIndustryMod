@@ -5,6 +5,7 @@ import arc.util.io.*;
 import heavyindustry.input.InputAggregator.*;
 
 public class HITypeIO {
+    /** Don't let anyone instantiate this class. */
     private HITypeIO() {}
 
     public static void writeStrings(Writes write, Seq<String> array) {

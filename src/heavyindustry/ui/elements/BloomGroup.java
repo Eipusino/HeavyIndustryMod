@@ -15,11 +15,13 @@ import static arc.Core.*;
  * However, this container supports cutting inside, so it should be covered above the cutting element and the clip of this container should be set to true.
  */
 public class BloomGroup extends Group {
-    private final Bloom bloom = new Bloom(true);
+    protected final Bloom bloom = new Bloom(true);
+
     public boolean bloomEnabled = settings.getBool("bloom", true);
     public float bloomIntensity = settings.getInt("bloomintensity", 6) / 4f + 1f;
     public int bloomBlur = settings.getInt("bloomblur", 1);
-    private boolean clip = false;
+
+    protected boolean clip = false;
 
     /** @see arc.scene.ui.layout.Table#getClip() */
     public boolean getClip() {
@@ -27,8 +29,8 @@ public class BloomGroup extends Group {
     }
 
     /** @see arc.scene.ui.layout.Table#setClip(boolean) */
-    public void setClip(boolean clip) {
-        this.clip = clip;
+    public void setClip(boolean cli) {
+        clip = cli;
     }
 
     @Override

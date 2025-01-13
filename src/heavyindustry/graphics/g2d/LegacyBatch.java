@@ -3,7 +3,7 @@ package heavyindustry.graphics.g2d;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 
-public abstract class BaseBatch extends Batch {
+public abstract class LegacyBatch extends Batch {
     protected final Color color = new Color(1, 1, 1, 1);
     protected final Color mixColor = Color.clear;
 
@@ -12,8 +12,8 @@ public abstract class BaseBatch extends Batch {
     protected boolean sortAscending = true;
 
     @Override
-    protected void z(float z) {
-        this.z = sortAscending ? z : -z;
+    protected void z(float v) {
+        z = sortAscending ? v : -v;
     }
 
     /** Sets the sorting order. The batch must be flushed for this to take effect properly. */
@@ -37,7 +37,7 @@ public abstract class BaseBatch extends Batch {
 
     @Override
     protected void setPackedColor(float packedColor) {
-        this.color.abgr8888(packedColor);
+        color.abgr8888(packedColor);
         super.setPackedColor(packedColor);
     }
 
@@ -57,7 +57,7 @@ public abstract class BaseBatch extends Batch {
 
     @Override
     protected void setPackedMixColor(float packedColor) {
-        this.mixColor.abgr8888(packedColor);
+        mixColor.abgr8888(packedColor);
         super.setPackedMixColor(packedColor);
     }
 

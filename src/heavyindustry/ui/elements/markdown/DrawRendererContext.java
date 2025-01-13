@@ -18,8 +18,8 @@ import org.commonmark.node.*;
 public abstract class DrawRendererContext {
     public final Markdown element;
 
-    private final Seq<DrawObj> drawObjs = new Seq<>();
-    private final ObjectMap<Node, TextureRegion> imgCache = new ObjectMap<>();
+    protected final Seq<DrawObj> drawObjs = new Seq<>();
+    protected final ObjectMap<Node, TextureRegion> imgCache = new ObjectMap<>();
 
     public boolean prefSizeCalculating;
 

@@ -23,6 +23,7 @@ import arc.scene.*;
 import arc.scene.event.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
+import arc.util.serialization.*;
 import heavyindustry.content.*;
 import heavyindustry.files.*;
 import heavyindustry.game.*;
@@ -76,21 +77,22 @@ public final class HeavyIndustryMod extends Mod {
     /** Modules present in both servers and clients. */
     public static InputAggregator inputAggregator;
 
+    /** Using it is usually risky, so if you want to index files within the mod, please use {@link InternalFileTree}. */
     private static LoadedMod mod;
-    private static ModInfo modInfo;
-    private static final boolean plugin;
+    private static Jval modJson;
+
+    public static final boolean plugin;
 
     static {
         Log.infoTag("Kotlin", "Version: " + KotlinVersion.CURRENT);
 
-        boolean plu = false;
-        try {
-            modInfo = new ModInfo(internalTree.path);
-            plu = modInfo.plugin;
+        try {//Just to prevent terrifying things from happening with a very low probability.
+            modJson = Jval.read(internalTree.child("mod.json").reader());
         } catch (Exception e) {
-            Log.err("ModInfo initialization error.", e);
+            Log.err("Reading mod.json failed.", e);
         }
-        plugin = plu;
+
+        plugin = modJson != null && modJson.has("plugin") && modJson.isBoolean() && modJson.get("plugin").asBool();
     }
 
     public HeavyIndustryMod() {
@@ -100,6 +102,7 @@ public final class HeavyIndustryMod extends Mod {
 
         Events.on(ClientLoadEvent.class, event -> {
             if (plugin) return;
+
             try {
                 Reflect.set(MenuFragment.class, ui.menufrag, "renderer", new HIMenuRenderer());
             } catch (Exception e) {
@@ -109,7 +112,7 @@ public final class HeavyIndustryMod extends Mod {
             String close = bundle.get("close");
 
             dia: {
-                if (settings.getBool("hi-closed-dialog") || isAprilFoolsDay()) break dia;
+                if (headless || settings.getBool("hi-closed-dialog") || isAprilFoolsDay()) break dia;
 
                 FLabel label = new FLabel(bundle.get("hi-author") + author);
                 BaseDialog dialog = new BaseDialog(bundle.get("hi-name")) {{
@@ -121,7 +124,7 @@ public final class HeavyIndustryMod extends Mod {
                         }
                     }).size(210f, 64f);
                     cont.pane(t -> {
-                        t.image(atlas.find(modName + "-cover")).left().size(600f, 310f).pad(3f).row();
+                        t.image(atlas.find(name("cover"))).left().size(600f, 310f).pad(3f).row();
                         t.add(bundle.get("hi-version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
                         t.add(label).left().row();
                         t.add(bundle.get("hi-class")).left().growX().wrap().pad(4).labelAlign(Align.left).row();
@@ -133,7 +136,7 @@ public final class HeavyIndustryMod extends Mod {
                 dialog.show();
             }
             mul: {
-                if (settings.getBool("hi-closed-multiple-mods")) break mul;
+                if (headless || settings.getBool("hi-closed-multiple-mods")) break mul;
 
                 boolean announces = true;
 
@@ -163,6 +166,7 @@ public final class HeavyIndustryMod extends Mod {
 
         Events.on(FileTreeInitEvent.class, event -> {
             if (!headless) {
+                HIFonts.load();
                 HISounds.load();
                 app.post(() -> {
                     HIShaders.init();
@@ -227,6 +231,7 @@ public final class HeavyIndustryMod extends Mod {
             ScreenSampler.setup();
             Draw3d.init();
 
+            HIStyles.load();
             UIUtils.init();
         }
 
@@ -236,7 +241,7 @@ public final class HeavyIndustryMod extends Mod {
         settings.defaults("hi-animated-shields", true);
         settings.defaults("hi-replace-water-surface", true);
 
-        if (!plugin && mods.getMod("extra-utilities") == null && isAprilFoolsDay()) {
+        if (!headless && !plugin && mods.getMod("extra-utilities") == null && isAprilFoolsDay()) {
             HIOverride.loadAprilFoolsDay();
             if (ui != null)
                 Events.on(ClientLoadEvent.class, event -> Time.runTask(10f, () -> {
@@ -268,7 +273,7 @@ public final class HeavyIndustryMod extends Mod {
                 }));
         }
 
-        if (plugin && mod() != null) {
+        if (plugin && mod() != null) {//Don't ask, the mod has already crashed due to this before.
             mod.meta.hidden = true;
             mod.meta.name = modName + "-plugin";
             mod.meta.displayName = bundle.get("hi-name") + " Plugin";
@@ -288,9 +293,10 @@ public final class HeavyIndustryMod extends Mod {
                 });
             }
 
-            //Replace the original technology tree
-            HIResearchDialog dialog = new HIResearchDialog();
-            ResearchDialog research = ui.research;
+            //Replace the original technology ResearchDialog
+            //This is a rather foolish approach, but there is nothing we can do about it.
+            var dialog = new HIResearchDialog();
+            var research = ui.research;
             research.shown(() -> {
                 dialog.show();
                 Objects.requireNonNull(research);
@@ -302,7 +308,7 @@ public final class HeavyIndustryMod extends Mod {
             String massage = bundle.get("hi-random-massage");
             String[] massageSplit = massage.split("&");
 
-            if (ui == null || mods.getMod("extra-utilities") != null || !settings.getBool("hi-floating-text")) break set;
+            if (headless || ui == null || mods.getMod("extra-utilities") != null || !settings.getBool("hi-floating-text")) break set;
 
             var fl = new FloatingText(massageSplit[Mathf.random(massageSplit.length - 1)]);
             fl.build(ui.menuGroup);
@@ -322,14 +328,6 @@ public final class HeavyIndustryMod extends Mod {
         return mod;
     }
 
-    public static ModInfo modInfo() {
-        return modInfo;
-    }
-
-    public static boolean plugin() {
-        return plugin;
-    }
-
     public static void resetSaves(Planet planet) {
         planet.sectors.each(sector -> {
             if (sector.hasSave()) {
@@ -346,36 +344,10 @@ public final class HeavyIndustryMod extends Mod {
     }
 
     public static boolean isAprilFoolsDay() {
-        LocalDate date = LocalDate.now();
-        DateTimeFormatter sdf = DateTimeFormatter.ofPattern("MMdd");
+        var date = LocalDate.now();
+        var sdf = DateTimeFormatter.ofPattern("MMdd");
         String fd = sdf.format(date);
         return fd.equals("0401");
-    }
-
-    public static String list(boolean wrapper, @Nullable Object... arg) {
-        if (arg == null) {
-            return "null";
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append(wrapper ? "[\"" : "[");
-
-        for (int i = 0; i < arg.length; i++) {
-            if (arg[i] == null) {
-                sb.append("null");
-            } else if (arg[i] instanceof Object[] arr) {
-                sb.append(list(false, arr));
-            } else {
-                sb.append(arg[i].toString());
-            }
-
-            if (i < arg.length - 1) {
-                sb.append(wrapper ? "\", \"" : ", ");
-            }
-        }
-
-        sb.append(wrapper ? "\"]" : "]");
-        return sb.toString();
     }
 
     public static class FloatingText {

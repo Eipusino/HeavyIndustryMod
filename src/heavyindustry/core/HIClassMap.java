@@ -94,7 +94,7 @@ final class HIClassMap {
         classes.put("ConstructPart", ConstructPart.class);
         classes.put("CustomPart", CustomPart.class);
         //patterns
-        classes.put("ShootHelixF", ShootHelixF.class);
+        classes.put("ShootHelixf", ShootHelixf.class);
         //types-unit
         classes.put("AncientUnitType", AncientUnitType.class);
         classes.put("CopterUnitType", CopterUnitType.class);
@@ -148,8 +148,6 @@ final class HIClassMap {
         classes.put("RegenWallBuild", RegenWall.RegenWallBuild.class);
         classes.put("ShapedWall", ShapedWall.class);
         classes.put("ShapedWallBuild", ShapedWall.ShapedWallBuild.class);
-        classes.put("ShapedWallf", ShapedWallf.class);
-        classes.put("ShapeWallBuildF", ShapedWallf.ShapedWallBuildf.class);
         classes.put("LaserWall", LaserWall.class);
         classes.put("LaserWallBuild", LaserWall.LaserWallBuild.class);
         classes.put("AparajitoWall", AparajitoWall.class);
@@ -255,6 +253,7 @@ final class HIClassMap {
         classes.put("DerivativeUnitFactoryBuild", DerivativeUnitFactory.DerivativeUnitFactoryBuild.class);
         classes.put("SelectableReconstructor", SelectableReconstructor.class);
         classes.put("SelectableReconstructorBuild", SelectableReconstructor.SelectableReconstructorBuild.class);
+        classes.put("DynamicUnitPlan", SelectableReconstructor.DynamicUnitPlan.class);
         classes.put("JumpGate", JumpGate.class);
         classes.put("JumpGateBuild", JumpGate.JumpGateBuild.class);
         classes.put("UnitBoost", UnitBoost.class);

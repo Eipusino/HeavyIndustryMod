@@ -9,7 +9,7 @@ import arc.scene.ui.layout.*;
 import arc.scene.utils.*;
 import arc.util.*;
 import heavyindustry.ui.defaults.*;
-import heavyindustry.util.Ref.*;
+import kotlin.jvm.internal.Ref.*;
 
 /** Custom fields */
 public final class Fields {

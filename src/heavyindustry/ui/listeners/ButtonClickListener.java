@@ -11,8 +11,8 @@ import arc.scene.ui.*;
 public class ButtonClickListener extends ClickListener {
     public Button buttonObject;
 
-    public ButtonClickListener(Button buttonObject) {
-        this.buttonObject = buttonObject;
+    public ButtonClickListener(Button button) {
+        buttonObject = button;
     }
 
     @Override

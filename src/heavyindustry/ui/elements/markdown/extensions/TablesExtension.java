@@ -13,8 +13,7 @@ import org.commonmark.parser.*;
 import java.util.*;
 
 public class TablesExtension implements Parser.ParserExtension, MDLayoutRenderer.DrawRendererExtension {
-    private TablesExtension() {
-    }
+    private TablesExtension() {}
 
     public static Extension create() {
         return new TablesExtension();

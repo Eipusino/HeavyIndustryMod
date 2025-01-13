@@ -11,7 +11,6 @@ import mindustry.gen.*;
 import mindustry.world.blocks.defense.*;
 import mindustry.world.meta.*;
 
-import static heavyindustry.util.SpriteUtils.*;
 import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 

@@ -14,6 +14,7 @@ public class InternalFileTree {
     public InternalFileTree(Class<?> owner) {
         anchorClass = owner;
 
+        //noinspection DataFlowIssue
         String classPath = owner.getResource("").getFile().replaceAll("%20", " ");
         classPath = classPath.substring(classPath.indexOf(":") + 2);
         String jarPath = (OS.isLinux ? "/" : "") + classPath.substring(0, classPath.indexOf("!"));

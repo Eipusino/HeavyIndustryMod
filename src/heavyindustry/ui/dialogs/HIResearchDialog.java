@@ -34,6 +34,11 @@ import java.util.*;
 import static mindustry.Vars.*;
 import static mindustry.gen.Tex.*;
 
+/**
+ * Strongly condemn Anuke's UI, all of which are private and subclasses are basically unable to be rewritten or modified!!!
+ *
+ * @since 1.0.2
+ */
 public class HIResearchDialog extends BaseDialog {
     public static boolean debugShowRequirements = false;
 
@@ -113,20 +118,20 @@ public class HIResearchDialog extends BaseDialog {
 
             items = new ItemSeq() {
                 final ObjectMap<Sector, ItemSeq> cache = new ObjectMap<>();
-                {
-                    for (Planet planet : content.planets()) {
-                        for (Sector sector : planet.sectors) {
-                            if (sector.hasBase()) {
-                                ItemSeq cached = sector.items();
-                                cache.put(sector, cached);
-                                cached.each((item, amount) -> {
-                                    values[item.id] += Math.max(amount, 0);
-                                    total += Math.max(amount, 0);
-                                });
-                            }
+            {
+                for (Planet planet : content.planets()) {
+                    for (Sector sector : planet.sectors) {
+                        if (sector.hasBase()) {
+                            ItemSeq cached = sector.items();
+                            cache.put(sector, cached);
+                            cached.each((item, amount) -> {
+                                values[item.id] += Math.max(amount, 0);
+                                total += Math.max(amount, 0);
+                            });
                         }
                     }
                 }
+            }
                 @Override
                 public void add(Item item, int amount) {
                     if (amount < 0) {

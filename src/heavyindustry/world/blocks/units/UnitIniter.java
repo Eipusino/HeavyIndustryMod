@@ -22,7 +22,7 @@ import mindustry.world.meta.*;
 import static mindustry.Vars.*;
 
 public class UnitIniter extends Block {
-    protected static String divKey = "@@@";
+    protected static final String divKey = "@@@";
 
     public float spawnRange = 4;
 
@@ -159,9 +159,10 @@ public class UnitIniter extends Block {
         }
 
         public void addUnit() {
-            Utils.spawnUnit(team, x, y, angle, spawnRange, delay, 0, toSpawnType, 1);
-            kill();
-            addUnit = true;
+            if (Utils.spawnUnit(team, x, y, angle, spawnRange, delay, 0, toSpawnType, 1)) {
+                kill();
+                addUnit = true;
+            }
         }
     }
 }

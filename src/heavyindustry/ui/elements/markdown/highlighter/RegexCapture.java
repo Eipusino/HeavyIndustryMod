@@ -11,27 +11,27 @@ public class RegexCapture extends Capture {
     private final int minMatch;
     private final int maxMatch;
 
-    public RegexCapture(Pattern pattern) {
-        this(1, null, pattern);
+    public RegexCapture(Pattern pat) {
+        this(1, null, pat);
     }
 
-    public RegexCapture(int matches, Pattern pattern) {
-        this(matches, null, pattern);
+    public RegexCapture(int mat, Pattern pat) {
+        this(mat, null, pat);
     }
 
-    public RegexCapture(Scopec scope, Pattern pattern) {
-        this(1, scope, pattern);
+    public RegexCapture(Scopec sco, Pattern pat) {
+        this(1, sco, pat);
     }
 
-    public RegexCapture(int matches, Scopec scope, Pattern pattern) {
-        this(matches, matches, scope, pattern);
+    public RegexCapture(int mat, Scopec scope, Pattern pat) {
+        this(mat, mat, scope, pat);
     }
 
-    public RegexCapture(int minMatch, int maxMatch, Scopec scope, Pattern pattern) {
-        this.scope = scope;
-        this.pattern = pattern;
-        this.minMatch = minMatch;
-        this.maxMatch = maxMatch;
+    public RegexCapture(int min, int max, Scopec sco, Pattern pat) {
+        scope = sco;
+        pattern = pat;
+        minMatch = min;
+        maxMatch = max;
     }
 
     @Override

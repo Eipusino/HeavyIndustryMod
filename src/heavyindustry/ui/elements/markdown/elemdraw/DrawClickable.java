@@ -13,9 +13,7 @@ public class DrawClickable extends DrawStr implements ActivityDrawer {
     TextButton openUrl;
 
     //use get
-    private DrawClickable() {
-        super();
-    }
+    DrawClickable() {}
 
     public static DrawClickable get(Markdown owner, String str, Font strFont, Runnable clicked, Tooltip tooltip, Color color, float ox, float oy, float scl) {
         DrawClickable res = Pools.obtain(DrawClickable.class, DrawClickable::new);

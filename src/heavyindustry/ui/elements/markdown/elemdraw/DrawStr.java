@@ -19,8 +19,7 @@ public class DrawStr extends DrawObj {
     private GlyphLayout layout;
 
     //use get
-    DrawStr() {
-    }
+    DrawStr() {}
 
     public static DrawStr get(Markdown owner, String str, Font font, Color color, float ox, float oy, float scl, Drawable background) {
         DrawStr res = Pools.obtain(DrawStr.class, DrawStr::new);

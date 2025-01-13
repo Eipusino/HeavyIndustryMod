@@ -46,11 +46,6 @@ public class Markdown extends Group {
     private Node node;
     private MarkdownStyle style;
 
-    @Deprecated
-    public Markdown(String md, Font mono) {
-        this(md, MarkdownStyles.defaultMD(mono));
-    }
-
     public Markdown(String md, MarkdownStyle style) {
         this(Collections.emptyList(), md, style);
     }

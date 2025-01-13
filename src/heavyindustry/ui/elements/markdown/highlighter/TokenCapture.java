@@ -11,27 +11,27 @@ public class TokenCapture extends Capture {
     private final int minMatch;
     private final int maxMatch;
 
-    public TokenCapture(String... tokens) {
-        this(1, null, tokens);
+    public TokenCapture(String... tok) {
+        this(1, null, tok);
     }
 
-    public TokenCapture(Scopec scope, String... tokens) {
-        this(1, scope, tokens);
+    public TokenCapture(Scopec sco, String... tok) {
+        this(1, sco, tok);
     }
 
-    public TokenCapture(int matches, String... tokens) {
-        this(matches, matches, null, tokens);
+    public TokenCapture(int mat, String... tok) {
+        this(mat, mat, null, tok);
     }
 
-    public TokenCapture(int matches, Scopec scope, String... tokens) {
-        this(matches, matches, scope, tokens);
+    public TokenCapture(int mat, Scopec sco, String... tok) {
+        this(mat, mat, sco, tok);
     }
 
-    public TokenCapture(int minMatch, int maxMatch, Scopec scope, String... tokens) {
-        this.minMatch = minMatch;
-        this.maxMatch = maxMatch;
-        this.scope = scope;
-        this.tokens = new HashSet<>(Arrays.asList(tokens));
+    public TokenCapture(int min, int max, Scopec sco, String... tok) {
+        minMatch = min;
+        maxMatch = max;
+        scope = sco;
+        tokens = new HashSet<>(Arrays.asList(tok));
     }
 
     @Override

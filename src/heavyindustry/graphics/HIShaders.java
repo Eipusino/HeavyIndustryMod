@@ -27,7 +27,7 @@ public final class HIShaders {
     public static DepthScreenspaceShader depthScreenspace;
     public static DepthAtmosphereShader depthAtmosphere;
     public static AlphaShader alphaShader;
-    public static HISurfaceShader dalani, brine, nanofluid, boundWater, pit, waterPit;
+    public static SurfaceShaderf brine, nanofluid, boundWater, pit, waterPit;
     public static MaskShader alphaMask;
     public static WaveShader wave;
     public static MirrorFieldShader mirrorField;
@@ -49,10 +49,9 @@ public final class HIShaders {
 
         alphaShader = new AlphaShader();
 
-        dalani = new HISurfaceShader("dalani");
-        brine = new HISurfaceShader("brine");
-        nanofluid = new HISurfaceShader("nanofluid");
-        boundWater = new HISurfaceShader("boundwater");
+        brine = new SurfaceShaderf("brine");
+        nanofluid = new SurfaceShaderf("nanofluid");
+        boundWater = new SurfaceShaderf("boundwater");
         pit = new PitShader("pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
         waterPit = new PitShader("water-pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
 
@@ -71,7 +70,6 @@ public final class HIShaders {
     }
 
     public static void dispose() {
-        dalani.dispose();
         brine.dispose();
         nanofluid.dispose();
         boundWater.dispose();
@@ -319,7 +317,7 @@ public final class HIShaders {
     }
 
     /** SurfaceShader but uses a mod fragment asset. */
-    public static class PitShader extends HISurfaceShader {
+    public static class PitShader extends SurfaceShaderf {
         protected TextureRegion topLayer, bottomLayer, truss;
         protected String topLayerName, bottomLayerName, trussName;
 
@@ -362,10 +360,10 @@ public final class HIShaders {
         }
     }
 
-    public static class HISurfaceShader extends Shader {
+    public static class SurfaceShaderf extends Shader {
         Texture noiseTex;
 
-        public HISurfaceShader(String fragment) {
+        public SurfaceShaderf(String fragment) {
             super(dv("screenspace"), mf(fragment));
             loadNoise();
         }

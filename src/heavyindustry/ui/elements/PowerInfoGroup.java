@@ -15,6 +15,10 @@ import static heavyindustry.ui.UIUtils.*;
 
 public class PowerInfoGroup extends Table {
     public PowerInfoGroup(Seq<Building> buildings, PowerInfoType type, boolean isOpen, InfoToggled toggled) {
+        init(buildings, type, isOpen, toggled);
+    }
+
+    protected void init(Seq<Building> buildings, PowerInfoType type, boolean isOpen, InfoToggled toggled) {
         top();
 
         Table collT = new Table();

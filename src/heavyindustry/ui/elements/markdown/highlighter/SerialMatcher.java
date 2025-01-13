@@ -8,8 +8,7 @@ public class SerialMatcher implements TokenMatcher {
 
     private int[] lens;
 
-    private SerialMatcher() {
-    }
+    private SerialMatcher() {}
 
     public static SerialMatcher create(Capture... captures) {
         SerialMatcher res = new SerialMatcher();

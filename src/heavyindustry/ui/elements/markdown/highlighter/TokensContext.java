@@ -26,12 +26,12 @@ public class TokensContext {
         return Collections.unmodifiableList(rawTokens);
     }
 
-    public void putToken(Tokenf tokens) {
-        tokens.index = this.tokens.size();
-        tokens.rawIndex = this.rawTokens.size();
+    public void putToken(Tokenf tok) {
+        tok.index = tokens.size();
+        tok.rawIndex = rawTokens.size();
 
-        this.tokens.add(tokens);
-        this.rawTokens.add(tokens);
+        tokens.add(tok);
+        rawTokens.add(tok);
     }
 
     public void putTokenRaw(Tokenf tokens) {

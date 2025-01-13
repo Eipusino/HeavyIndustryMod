@@ -385,13 +385,6 @@ public final class HIOverride {
         //planet
         Planets.serpulo.allowSectorInvasion = settings.getBool("hi-serpulo-sector-invasion");
         //other
-        boolean replaceWater = settings.getBool("hi-replace-water-surface");
-        for (Block b : content.blocks()) {
-            if (b == null) continue;
-            if (replaceWater && b.cacheLayer == CacheLayer.water) {
-                b.cacheLayer = HICacheLayer.dalani;
-            }
-        }
     }
 
     /** special changes on April Fool's Day. */

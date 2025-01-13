@@ -9,9 +9,9 @@ public class BlockCapture extends Capture {
     private final List<TokenMatcher> children = new ArrayList<>();
     private List<TokenMatcher> list;
 
-    public BlockCapture(Capture beginCapture, Capture endCapture) {
-        this.beginCapture = beginCapture;
-        this.endCapture = endCapture;
+    public BlockCapture(Capture begin, Capture end) {
+        beginCapture = begin;
+        endCapture = end;
     }
 
     public BlockCapture addChildPatterns(TokenMatcher... matchers) {
@@ -65,16 +65,14 @@ public class BlockCapture extends Capture {
                 len += endLen;
 
                 break;
-            } catch (TokenMatcher.MatchFailed ignored) {
-            }
+            } catch (TokenMatcher.MatchFailed ignored) {}
         }
 
         return len;
     }
 
     @Override
-    public void applyScope(MatcherContext context, Tokenf token, int matchedLen) {
-    }
+    public void applyScope(MatcherContext context, Tokenf token, int matchedLen) {}
 
     @Override
     public Capture create() {

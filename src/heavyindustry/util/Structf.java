@@ -11,12 +11,12 @@ import java.util.*;
  *
  * @author Eipusino
  */
-public final class StructUtils {
+public final class Structf {
     private static final Object[] emptyArray = new Object[0];
     private static final Empty<?> empty = new Empty<>();
 
     /** Don't let anyone instantiate this class. */
-    private StructUtils() {}
+    private Structf() {}
 
     @SuppressWarnings("unchecked")
     public static <T> Empty<T> empty() {
