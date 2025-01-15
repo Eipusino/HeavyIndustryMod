@@ -22,8 +22,16 @@ import mindustry.world.draw.*;
 
 import static mindustry.Vars.*;
 
+/**
+ * Basic Commandable Block.
+ * <p>This is an abstract class, you should not use it directly.
+ *
+ * @see BombLauncher
+ * @see AirRaider
+ * @since 1.0.4
+ */
 public abstract class CommandableBlock extends Block {
-    protected static final Seq<CommandableBlockBuild> participantsTmp = new Seq<>();
+    protected static final Seq<CommandableBuild> participantsTmp = new Seq<>();
     public DrawBlock drawer = new DrawDefault();
     public float warmupSpeed = 0.02f;
     public float warmupFallSpeed = 0.0075f;
@@ -37,8 +45,8 @@ public abstract class CommandableBlock extends Block {
         timers = 4;
         update = sync = configurable = solid = true;
 
-        config(Vec2.class, CommandableBlockBuild::commandAll);
-        config(Point2.class, (CommandableBlockBuild tile, Point2 point) -> {
+        config(Vec2.class, CommandableBuild::commandAll);
+        config(Point2.class, (CommandableBuild tile, Point2 point) -> {
             tile.setTarget(point);
             commandPos = point.pack();
         });
@@ -69,7 +77,7 @@ public abstract class CommandableBlock extends Block {
         return equals(other);
     }
 
-    public abstract class CommandableBlockBuild extends Building implements Ranged {
+    public abstract class CommandableBuild extends Building implements Ranged {
         protected final Vec2 targetVec = new Vec2().set(this);
         protected final Vec2 lastConfirmedTarget = new Vec2();
 
@@ -423,7 +431,7 @@ public abstract class CommandableBlock extends Block {
 
         @Override
         public boolean inFogTo(Team viewer) {
-            return this.team != viewer && !fogControl.isVisible(viewer, this.x, this.y);
+            return team != viewer && !fogControl.isVisible(viewer, x, y);
         }
 
         @Override

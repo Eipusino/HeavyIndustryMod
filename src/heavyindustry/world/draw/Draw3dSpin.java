@@ -78,9 +78,9 @@ public class Draw3dSpin extends DrawBlock {
     public TextureRegion baseRegion, rotorRegion;
     public String baseSuffix, rotorSuffix;
 
-    public Draw3dSpin(String baseSuffix, String rotorSuffix) {
-        this.baseSuffix = baseSuffix;
-        this.rotorSuffix = rotorSuffix;
+    public Draw3dSpin(String base, String rotor) {
+        baseSuffix = base;
+        rotorSuffix = rotor;
     }
 
     public static void draw(Runnable run) {

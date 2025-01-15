@@ -27,10 +27,7 @@ public final class HIPlanets {
     /** Don't let anyone instantiate this class. */
     private HIPlanets() {}
 
-    /**
-     * Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}.
-     * <p>Remember not to execute it a second time, I did not take any precautionary measures.
-     */
+    /** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
     public static void load() {
         kepler = new AtmospherePlanet("kepler", sun, 1f, 3) {{
             orbitRadius = 40f;

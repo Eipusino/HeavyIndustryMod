@@ -11,7 +11,7 @@ import static arc.Core.*;
 public final class WorldRegister {
     public static final Seq<Runnable> afterLoad = new Seq<>();
 
-    public static final Seq<CommandableBlockBuild> commandableBuilds = new Seq<>();
+    public static final Seq<CommandableBuild> commandableBuilds = new Seq<>();
 
     public static boolean worldLoaded = false;
 

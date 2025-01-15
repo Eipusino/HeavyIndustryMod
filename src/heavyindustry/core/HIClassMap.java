@@ -31,7 +31,7 @@ import static mindustry.mod.ClassMap.*;
 
 /** Generated class. Maps simple class names to concrete classes. For use in JSON attached mods. */
 final class HIClassMap {
-    /** HIClassMap should not be instantiated. */
+    /** Don't let anyone instantiate this class. */
     private HIClassMap() {}
 
     static void load() {

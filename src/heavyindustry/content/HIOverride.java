@@ -93,7 +93,6 @@ public final class HIOverride {
         Blocks.disassembler.removeConsumers(c -> c instanceof ConsumeItems);
         ((Separator) Blocks.disassembler).results = ItemStack.with(Items.copper, 1, Items.lead, 1, Items.graphite, 1, Items.titanium, 1, Items.thorium, 1);
         //Blocks-Production-Erekir
-        Blocks.largeCliffCrusher.requirements = ItemStack.with(Items.silicon, 80, Items.thorium, 60, Items.oxide, 20, Items.beryllium, 100, Items.tungsten, 50);
         Blocks.oxidationChamber.canOverdrive = true;
         Blocks.heatReactor.buildVisibility = BuildVisibility.shown;
         ((AttributeCrafter) Blocks.ventCondenser).maxBoost = 3f;

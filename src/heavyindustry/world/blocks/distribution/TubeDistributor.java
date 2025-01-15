@@ -2,6 +2,7 @@ package heavyindustry.world.blocks.distribution;
 
 import arc.graphics.g2d.*;
 import arc.util.*;
+import mindustry.*;
 import mindustry.content.*;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
@@ -34,7 +35,10 @@ public class TubeDistributor extends Router {
 
     @Override
     public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list) {
-        Draw.rect(region, plan.drawx(), plan.drawy(), plan.rotation * 90f);
+        Draw.rect(bottomRegion, plan.drawx(), plan.drawy());
+        Draw.rect(rotatorRegion, plan.drawx(), plan.drawy());
+        Draw.rect(topRegion, plan.drawx(), plan.drawy());
+        Draw.rect(plan.rotation > 1 ? lockedRegion2 : lockedRegion1, plan.drawx(), plan.drawy(), plan.rotation * 90);
     }
 
     @Override
@@ -56,36 +60,49 @@ public class TubeDistributor extends Router {
             }
 
             if (lastItem != null) {
-                time += 1f / speed * delta();
-
                 Building target = getTileTarget(lastItem, lastInput, false);
 
-                if (target == null && time >= 0.7f) {
-                    rot = lastRot;
-                    time = 0.7f;
+                if (blockValidInDirection(targetAngle())) {
+                    if (target != null || time < 1f) {
+                        time += 1f / speed * delta();
+                        if (time > 1f) time = 1f;
+                    }
+                } else if (time < 0.4f) {
+                    time += 0.4f / speed * delta();
+                    if (time > 0.4f) time = 0.4f;
                 }
 
-                if (target != null && (time >= 1f)) {
+                if (target != null && time >= 1f) {
                     getTileTarget(lastItem, lastInput, true);
                     target.handleItem(this, lastItem);
                     items.remove(lastItem, 1);
                     lastItem = null;
+                    time = 0f;
                 }
 
                 if (lastInput != null && lastItem != null) {
                     int sa = sourceAngle(), ta = targetAngle();
-
-                    angle = (sa == 0) ? (ta == 2 ? 1 : (ta == 0 || ta == 3) ? -1 : 1) :
-                            (sa == 2) ? (ta == 0 || ta == 1) ? -1 : 1 :
-                                    (sa == 1) ? (ta == 0 || ta == 3) ? -1 : 1 :
-                                            (ta == 0 || ta == 1) ? 1 : -1;
+                    angle = computeAngle(sa, ta);
                 }
 
-                if (items.total() > 0 && !state.isPaused()) {
+                if (items.total() > 0 && !Vars.state.isPaused() && (!(time >= 1f) && (blockValidInDirection(targetAngle())))
+                        || (!blockValidInDirection(targetAngle()) && !(time >= 0.4f))) {
                     lastRot = rot;
                     rot += speed * angle * delta();
                 }
             }
+        }
+
+        protected float computeAngle(int sa, int ta) {
+            return (sa == 0) ? ((ta == 2) ? 1 : ((ta == 0 || ta == 3) ? -1 : 1)) :
+                    (sa == 2) ? ((ta == 0 || ta == 1) ? -1 : 1) :
+                            (sa == 1) ? ((ta == 0 || ta == 3) ? -1 : 1) :
+                                    ((ta == 0 || ta == 1) ? 1 : -1);
+        }
+
+        public boolean blockValidInDirection(int direction) {
+            Tile targetTile = tile.nearby(direction);
+            return targetTile != null && (targetTile.block().hasItems || targetTile.block().acceptsItems);
         }
 
         @Override
@@ -121,6 +138,7 @@ public class TubeDistributor extends Router {
         }
 
         public int targetAngle() {
+            if (lastItem == null) return lastTargetAngle;
             Building target = getTileTarget(lastItem, lastInput, false);
             if (target != null) {
                 for (int targetAngle = 0; targetAngle < 4; targetAngle++) {

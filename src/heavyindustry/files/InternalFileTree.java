@@ -8,7 +8,7 @@ public class InternalFileTree {
     public final Class<?> anchorClass;
 
     public final ZipFi root;
-    public final Fi path;
+    public final Fi file;
 
     /** @param owner navigation anchor */
     public InternalFileTree(Class<?> owner) {
@@ -19,8 +19,8 @@ public class InternalFileTree {
         classPath = classPath.substring(classPath.indexOf(":") + 2);
         String jarPath = (OS.isLinux ? "/" : "") + classPath.substring(0, classPath.indexOf("!"));
 
-        path = new Fi(jarPath);
-        root = new ZipFi(path);
+        file = new Fi(jarPath);
+        root = new ZipFi(file);
     }
 
     public Fi child(String name) {

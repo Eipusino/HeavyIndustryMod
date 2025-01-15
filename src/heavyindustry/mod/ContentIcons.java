@@ -8,8 +8,12 @@ import mindustry.gen.*;
 
 import java.lang.reflect.*;
 
-/** Text icon mapping */
-@Deprecated(forRemoval = true)
+/**
+ * Text icon mapping.
+ *
+ * @deprecated deprecated
+ */
+@Deprecated(since = "1.0.6", forRemoval = true)
 public class ContentIcons {
     private final static ObjectMap<ContentType, ObjectMap<MappableContent, Character>> iconMap = new ObjectMap<>();
 

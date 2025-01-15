@@ -10,11 +10,11 @@ import arc.util.*;
 
 import java.io.*;
 
-public final class UrlDownloader {
+public final class URLDownloader {
     private static final OrderedMap<String, String> urlReplacers = new OrderedMap<>();
 
     /** Don't let anyone instantiate this class. */
-    private UrlDownloader() {}
+    private URLDownloader() {}
 
     public static void setMirror(String source, String to) {
         urlReplacers.put(source, to);

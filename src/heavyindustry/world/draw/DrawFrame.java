@@ -7,6 +7,7 @@ import mindustry.world.*;
 import mindustry.world.draw.*;
 
 import static arc.Core.*;
+import static heavyindustry.util.Utils.*;
 
 @SuppressWarnings("unchecked")
 public class DrawFrame<E extends Building> extends DrawBlock {
@@ -17,6 +18,10 @@ public class DrawFrame<E extends Building> extends DrawBlock {
     public Floatf<E> rotation = e -> 0;
 
     public TextureRegion[] regions;
+    public TextureRegion icon;
+
+    public int size = 1;
+    public boolean split = false;
 
     @Override
     public void draw(Building build) {
@@ -27,14 +32,19 @@ public class DrawFrame<E extends Building> extends DrawBlock {
 
     @Override
     public TextureRegion[] icons(Block block) {
-        return new TextureRegion[]{regions[0]};
+        return new TextureRegion[]{icon};
     }
 
     @Override
     public void load(Block block) {
-        regions = new TextureRegion[frames];
-        for (int i = 0; i < frames; i++) {
-            regions[i] = atlas.find(block.name + "-frame" + i);
+        if (split) {
+            regions = split(block.name + "-frame", (size > 0 ? size : block.size) * 32, 0);
+        } else {
+            regions = new TextureRegion[frames];
+            for (int i = 0; i < frames; i++) {
+                regions[i] = atlas.find(block.name + "-frame-" + i);
+            }
         }
+        icon = atlas.find(block.name + "-frame-icon");
     }
 }

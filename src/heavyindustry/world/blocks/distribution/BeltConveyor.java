@@ -18,6 +18,7 @@ import static mindustry.Vars.*;
  * <p>This Type only sprites 3 textures to handle!
  *
  * @author Eipusino
+ * @since 1.0.4
  */
 public class BeltConveyor extends Conveyor {
     public TextureRegion[][] conveyorAtlas, edgeAtlas;

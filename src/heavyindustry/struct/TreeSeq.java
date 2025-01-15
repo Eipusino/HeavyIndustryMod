@@ -19,9 +19,9 @@ public class TreeSeq<T> implements Iterable<T> {
 
     TreeSet<LinkedList<T>> set;
 
-    public TreeSeq(Comparator<T> cmp) {
-        comparator = cmp;
-        set = new TreeSet<>((a, b) -> cmp.compare(a.getFirst(), b.getFirst()));
+    public TreeSeq(Comparator<T> comp) {
+        comparator = comp;
+        set = new TreeSet<>((a, b) -> comp.compare(a.getFirst(), b.getFirst()));
     }
 
     public TreeSeq() {

@@ -19,6 +19,7 @@ import heavyindustry.entities.part.*;
 import heavyindustry.gen.*;
 import heavyindustry.graphics.*;
 import heavyindustry.math.*;
+import heavyindustry.util.*;
 import heavyindustry.world.meta.*;
 import mindustry.*;
 import mindustry.ai.*;
@@ -60,15 +61,15 @@ import java.lang.reflect.*;
 import static mindustry.Vars.*;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
-class ContentParserf {
+public class ContentParserf {
     private static final boolean ignoreUnknownFields = true;
     private static final ContentType[] typesToSearch = {ContentType.block, ContentType.item, ContentType.unit, ContentType.liquid, ContentType.planet};
 
     ObjectMap<Class<?>, ContentType> contentTypes = new ObjectMap<>();
     ObjectSet<Class<?>> implicitNullable = ObjectSet.with(TextureRegion.class, TextureRegion[].class, TextureRegion[][].class, TextureRegion[][][].class);
-    Seq<ParseListener> listeners = new Seq<>();
+    Seq<ParseListenerf> listeners = new Seq<>();
     LoadedMod currentMod;
-    ObjectMap<Class<?>, FieldParser> classParsers = new ObjectMap<>() {{
+    ObjectMap<Class<?>, FieldParserf> classParsers = new ObjectMap<>() {{
         put(Effect.class, (type, data) -> {
             if (data.isString()) {
                 return modField(Fx.class, HIFx.class, data);
@@ -230,7 +231,7 @@ class ContentParserf {
                         JsonValue op = val.has("operation") ? val.get("operation") :
                                 val.has("op") ? val.get("op") : null;
 
-                        base = parseProgressOp(base, op.asString(), val);
+                        base = parseProgressOp(base, op == null ? "" : op.asString(), val);
                         i++;
                     }
                 }
@@ -379,7 +380,7 @@ class ContentParserf {
             case "pester" -> PesterUnit::create;
             case "nucleoid" -> NucleoidUnit::create;
             case "crawl" -> CrawlUnit::create;
-            default -> throw new RuntimeException("Invalid unit type: '" + value + "'. Must be 'flying/mech/legs/naval/payload/missile/tether/crawl'.");
+            default -> throw new RuntimeException("Invalid unit type: '" + value + "'. Must be 'flying/mech/legs/naval/payload/missile/tether/legs-tether/coptre/ornitopter/sentry/pester/nucleoid/crawl'.");
         };
     }
 
@@ -487,8 +488,8 @@ class ContentParserf {
         return getString(value, "type");
     }
 
-    private final ObjectMap<ContentType, TypeParser<?>> parsers = ObjectMap.of(
-            ContentType.block, (TypeParser<Block>) (mod, name, value) -> {
+    private final ObjectMap<ContentType, TypeParserf<?>> parsers = ObjectMap.of(
+            ContentType.block, (TypeParserf<Block>) (mod, name, value) -> {
                 readBundle(ContentType.block, name, value);
 
                 Block block;
@@ -561,7 +562,7 @@ class ContentParserf {
 
                 return block;
             },
-            ContentType.unit, (TypeParser<UnitType>) (mod, name, value) -> {
+            ContentType.unit, (TypeParserf<UnitType>) (mod, name, value) -> {
                 readBundle(ContentType.unit, name, value);
 
                 UnitType unit;
@@ -592,7 +593,7 @@ class ContentParserf {
                     if (value.has("requirements")) {
                         JsonValue rec = value.remove("requirements");
 
-                        UnitReq req = parser.readValue(UnitReq.class, rec);
+                        UnitReqf req = parser.readValue(UnitReqf.class, rec);
 
                         if (req.block instanceof Reconstructor r) {
                             if (req.previous != null) {
@@ -633,7 +634,7 @@ class ContentParserf {
 
                 return unit;
             },
-            ContentType.weather, (TypeParser<Weather>) (mod, name, value) -> {
+            ContentType.weather, (TypeParserf<Weather>) (mod, name, value) -> {
                 Weather item;
                 if (locate(ContentType.weather, name) != null) {
                     item = locate(ContentType.weather, name);
@@ -648,7 +649,7 @@ class ContentParserf {
                 return item;
             },
             ContentType.item, parser(ContentType.item, Item::new),
-            ContentType.liquid, (TypeParser<Liquid>) (mod, name, value) -> {
+            ContentType.liquid, (TypeParserf<Liquid>) (mod, name, value) -> {
                 Liquid liquid;
                 if (locate(ContentType.liquid, name) != null) {
                     liquid = locate(ContentType.liquid, name);
@@ -663,7 +664,7 @@ class ContentParserf {
                 return liquid;
             },
             ContentType.status, parser(ContentType.status, StatusEffect::new),
-            ContentType.sector, (TypeParser<SectorPreset>) (mod, name, value) -> {
+            ContentType.sector, (TypeParserf<SectorPreset>) (mod, name, value) -> {
                 if (value.isString()) {
                     return locate(ContentType.sector, name);
                 }
@@ -689,7 +690,7 @@ class ContentParserf {
                 });
                 return out;
             },
-            ContentType.planet, (TypeParser<Planet>) (mod, name, value) -> {
+            ContentType.planet, (TypeParserf<Planet>) (mod, name, value) -> {
                 if (value.isString()) return locate(ContentType.planet, name);
 
                 Planet parent = locate(ContentType.planet, value.getString("parent", ""));
@@ -732,7 +733,7 @@ class ContentParserf {
                 read(() -> readFields(planet, value));
                 return planet;
             },
-            ContentType.team, (TypeParser<TeamEntry>) (mod, name, value) -> {
+            ContentType.team, (TypeParserf<TeamEntry>) (mod, name, value) -> {
                 TeamEntry entry;
                 Team team;
                 if (value.has("team")) {
@@ -762,7 +763,7 @@ class ContentParserf {
         return (T) c;
     }
 
-    private <T extends Content> TypeParser<T> parser(ContentType type, Func<String, T> constructor) {
+    private <T extends Content> TypeParserf<T> parser(ContentType type, Func<String, T> constructor) {
         return (mod, name, value) -> {
             T item;
             if (locate(type, name) != null) {
@@ -1267,17 +1268,17 @@ class ContentParserf {
         if ((base == null || base.isEmpty()) && def != null) return def;
 
         //return mapped class if found in the global map
-        var out = ClassMap.classes.get(!base.isEmpty() && Character.isLowerCase(base.charAt(0)) ? Strings.capitalize(base) : base);
+        var out = ClassMap.classes.get(base != null && !base.isEmpty() && Character.isLowerCase(base.charAt(0)) ? Strings.capitalize(base) : base);
         if (out != null) return (Class<T>) out;
 
         //try to resolve it as a raw class name
-        if (base.indexOf('.') != -1) {
+        if (base != null && base.indexOf('.') != -1) {
             try {
-                return (Class<T>) Class.forName(base);
+                return Reflectf.forClass(base);
             } catch (Exception ignored) {
                 //try to use mod class loader
                 try {
-                    return (Class<T>) Class.forName(base, true, mods.mainLoader());
+                    return Reflectf.forClass(base, true, mods.mainLoader());
                 } catch (Exception ignore) {}
             }
         }
@@ -1289,24 +1290,24 @@ class ContentParserf {
         throw new IllegalArgumentException("Type not found: " + base);
     }
 
-    private interface FieldParser {
+    private interface FieldParserf {
         Object parse(Class<?> type, JsonValue value) throws Exception;
     }
 
-    private interface TypeParser<T extends Content> {
+    private interface TypeParserf<T extends Content> {
         T parse(String mod, String name, JsonValue value) throws Exception;
     }
 
-    public interface ParseListener {
+    public interface ParseListenerf {
         void parsed(Class<?> type, JsonValue jsonData, Object result);
     }
 
     //intermediate class for parsing
-    static class UnitReq {
+    static class UnitReqf {
         public Block block;
         public ItemStack[] requirements = {};
-        @Nullable
-        public UnitType previous;
+
+        public @Nullable UnitType previous;
         public float time = 60f * 10f;
     }
 }

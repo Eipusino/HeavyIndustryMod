@@ -13,6 +13,7 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        classpath files("libs/mindustry-25485.jar")
     }
 }
 
@@ -39,6 +40,7 @@ java {
 
 dependencies {
     implementation "org.jetbrains:annotations:24.0.1"
+    implementation "org.tomlj:tomlj:1.1.1"
     implementation "org.commonmark:commonmark:$commonmarkVersion"
     implementation "org.commonmark:commonmark-ext-gfm-tables:$commonmarkVersion"
     implementation "org.commonmark:commonmark-ext-gfm-strikethrough:$commonmarkVersion"

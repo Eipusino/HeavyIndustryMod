@@ -32,23 +32,23 @@ public final class Reflectf {
         }
     }
 
-    public static String[] findFieldNames(Object object, String spilt, String def) {
+    public static String[] findFieldNames(Object object, String split, String def) {
         if (object == null)
             return new String[0];
 
         var fields = object.getClass().getDeclaredFields();
-        var fieldValues = new Seq<String>();
+        var values = new Seq<String>();
 
         for (Field field : fields) {
             field.setAccessible(true);
             try {
                 Object value = field.get(object);
-                fieldValues.add(field.getName() + spilt + value);
+                values.add(field.getName() + split + value);
             } catch (Exception e) {
-                fieldValues.add(field.getName() + spilt + def);
+                values.add(field.getName() + split + def);
             }
         }
-        return fieldValues.toArray(String.class);
+        return values.toArray(String.class);
     }
 
     public static String[] findFieldNames(Object object, String a) {
@@ -138,9 +138,17 @@ public final class Reflectf {
     }
 
     /** Search for class based on class names without throwing exceptions. */
-    public static Class<?> forClass(String name) {
+    public static <T> Class<T> forClass(String name) {
         try {
-            return Class.forName(name);
+            return (Class<T>) Class.forName(name);
+        } catch (ClassNotFoundException | NoClassDefFoundError e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> Class<T> forClass(String name, boolean initialize, ClassLoader loader) {
+        try {
+            return (Class<T>) Class.forName(name, initialize, loader);
         } catch (ClassNotFoundException | NoClassDefFoundError e) {
             throw new RuntimeException(e);
         }
@@ -156,6 +164,10 @@ public final class Reflectf {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static Field findField(Class<?> type, String field) {
+        return findField(type, field, true);
     }
 
     /** Sets a field of a model without throwing exceptions. */

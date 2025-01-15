@@ -23,6 +23,14 @@ import static arc.Core.*;
 import static heavyindustry.ui.UIUtils.*;
 import static mindustry.Vars.*;
 
+/**
+ * Basic Commandable Attacker Block.
+ * <p>This is an abstract class, you should not use it directly.
+ *
+ * @see BombLauncher
+ * @see AirRaider
+ * @since 1.0.4
+ */
 public abstract class CommandableAttackerBlock extends CommandableBlock {
     public float spread = 120f;
     public float prepareDelay = 60f;
@@ -66,7 +74,7 @@ public abstract class CommandableAttackerBlock extends CommandableBlock {
         ));
     }
 
-    public abstract class CommandableAttackerBlockBuild extends CommandableBlockBuild {
+    public abstract class CommandableAttackerBlockBuild extends CommandableBuild {
         @Override
         public boolean isCharging() {
             return efficiency > 0 && reload < reloadTime * storage && !initiateConfigure;
@@ -152,15 +160,15 @@ public abstract class CommandableAttackerBlock extends CommandableBlock {
 
             Drawf.dashCircle(x, y, range, team.color);
 
-            Seq<CommandableBlockBuild> builds = new Seq<>();
-            for (CommandableBlockBuild build : WorldRegister.commandableBuilds) {
+            Seq<CommandableBuild> builds = new Seq<>();
+            for (CommandableBuild build : WorldRegister.commandableBuilds) {
                 if (build != this && build != null && build.team == team && sameGroup(build.block()) && build.canCommand(targetVec)) {
                     builds.add(build);
                     Drawn.posSquareLink(Pal.gray, 3, 4, false, build.x, build.y, targetVec.x, targetVec.y);
                 }
             }
 
-            for (CommandableBlockBuild build : builds) {
+            for (CommandableBuild build : builds) {
                 Drawn.posSquareLink(Pal.heal, 1, 2, false, build.x, build.y, targetVec.x, targetVec.y);
             }
 
@@ -174,10 +182,11 @@ public abstract class CommandableAttackerBlock extends CommandableBlock {
                 Drawn.overlayText(bundle.format("hi-participants", builds.size), targetVec.x, targetVec.y, tilesize * 2f, Pal.accent, true);
         }
 
+        @Override
         public void commandAll(Vec2 pos) {
             participantsTmp.clear();
 
-            for (CommandableBlockBuild build : WorldRegister.commandableBuilds) {
+            for (CommandableBuild build : WorldRegister.commandableBuilds) {
                 if (build.team == team && sameGroup(build.block()) && build.canCommand(pos)) {
                     build.command(pos);
                     participantsTmp.add(build);

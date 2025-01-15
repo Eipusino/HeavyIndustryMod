@@ -10,7 +10,6 @@ import mindustry.ui.*;
 
 public class ItemImage extends Stack {
     public ItemImage(TextureRegion region, int amount) {
-
         add(new Table(o -> {
             o.left();
             o.add(new Image(region)).size(32f).scaling(Scaling.fit);

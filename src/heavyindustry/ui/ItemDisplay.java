@@ -25,8 +25,8 @@ public class ItemDisplay extends Table {
         amount = am;
     }
 
-    public ItemDisplay(Item item, int amount) {
-        this(item, amount, true);
+    public ItemDisplay(Item it, int am) {
+        this(it, am, true);
     }
 
     /** Displays the item with a "/sec" qualifier based on the time period, in ticks. */

@@ -150,10 +150,7 @@ public final class HIBlocks {
     /** Don't let anyone instantiate this class. */
     private HIBlocks() {}
 
-    /**
-     * Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}.
-     * <p>Remember not to execute it a second time, I did not take any precautionary measures.
-     */
+    /** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
     public static void load() {
         //environment
         cliff = new Clifff("cliff");

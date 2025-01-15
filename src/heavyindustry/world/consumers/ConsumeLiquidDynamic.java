@@ -31,7 +31,6 @@ public class ConsumeLiquidDynamic<T extends Building> extends Consume {
                     rebuild(tile, cont);
                     current[0] = liquids.get((T) tile);
                 }
-
             });
             rebuild(tile, cont);
         });

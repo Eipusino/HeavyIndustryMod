@@ -50,8 +50,8 @@ public final class EntityRegister {
         }
     }
 
-    /** @deprecated Why not use 'constructor = UnitEntity::create' directly? */
-    @Deprecated(since = "1.0.6")
+    /** @deprecated Why not use {@code constructor = UnitEntity::create} directly? */
+    @Deprecated(since = "1.0.6", forRemoval = true)
     public static <T extends Unit> void put(UnitType unit, Class<T> type, Prov<T> prov) {
         put(unit.name, type, prov);
         unit.constructor = prov;

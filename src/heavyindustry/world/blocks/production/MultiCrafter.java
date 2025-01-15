@@ -33,13 +33,12 @@ import static mindustry.Vars.*;
 
 /**
  * MultiCrafter， You can freely choose to change the production formula.
- * <p>The version that supports heat is available in {@link heavyindustry.world.blocks.heat.HeatMultiCrafter }.
  * <p>We currently do not support JSON minimalist format parsing, which is too cumbersome to write.
  *
  * @author Eipusino
  * @apiNote Example usage {@link heavyindustry.content.HIBlocks#ironcladCompressor }.
- * @see heavyindustry.world.blocks.production.MultiCrafter.Formula
- * @see heavyindustry.world.blocks.heat.HeatMultiCrafter
+ * @see heavyindustry.world.blocks.production.MultiCrafter.Formula products type
+ * @see heavyindustry.world.blocks.heat.HeatMultiCrafter heat version
  * @since 1.0.6
  */
 public class MultiCrafter extends Block {

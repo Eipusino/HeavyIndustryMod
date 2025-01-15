@@ -43,10 +43,10 @@ import static mindustry.Vars.*;
  * @author Eipusino
  */
 public final class Utils {
-    public static final TextureRegion[] EMP_REGIONS = new TextureRegion[0];
+    public static final TextureRegion[] empRegions = new TextureRegion[0];
 
-    private static final String DONOR = bundle.get("hi-donor-item");
-    private static final String DEVELOPER = bundle.get("hi-developer-item");
+    private static final String donor = bundle.get("hi-donor-item");
+    private static final String developer = bundle.get("hi-developer-item");
 
     public static Color
             c1 = new Color(), c2 = new Color(), c3 = new Color(), c4 = new Color(), c5 = new Color(),
@@ -181,6 +181,7 @@ public final class Utils {
             "heavyindustry.util",
             "heavyindustry.util.path",
             "heavyindustry.util.pools",
+            "heavyindustry.util.unsafe",
             "heavyindustry.world",
             "heavyindustry.world.blocks",
             //"heavyindustry.world.blocks.campaign",
@@ -210,10 +211,10 @@ public final class Utils {
     /** Kotlin is used in a few scenarios. */
     public static final Class<Boolean> BOOLEAN_CLASS = Boolean.class;
 
-    public static final Class<byte[]> BYTE_ARRAY_CLASS = byte[].class;
+    public static final Class<byte[]> BYTE_CLASS_A = byte[].class;
 
     public static final Class<Integer> INTEGER_CLASS = Integer.class;
-    public static final Class<int[]> INTEGER_ARRAY_CLASS = int[].class;
+    public static final Class<int[]> INTEGER_CLASS_A = int[].class;
 
     public static final Class<String> STRING_CLASS = String.class;
 
@@ -238,18 +239,21 @@ public final class Utils {
 
     public static void loadItems() {
         for (UnlockableContent c : donorItems) {
-            c.description = (c.description == null ? DONOR : c.description + "\n" + DONOR);
+            c.description = (c.description == null ? donor : c.description + "\n" + donor);
         }
         for (UnlockableContent c : developerItems) {
-            c.description = (c.description == null ? DEVELOPER : c.description + "\n" + DEVELOPER);
+            c.description = (c.description == null ? developer : c.description + "\n" + developer);
         }
     }
 
     @Contract(pure = true)
     public static int reverse(int rotation) {
         return switch (rotation) {
-            case 0 -> 2; case 2 -> 0; case 1 -> 3; case 3 -> 1;
-            default -> throw new IllegalStateException("Unexpected value: " + rotation);
+            case 0 -> 2;
+            case 2 -> 0;
+            case 1 -> 3;
+            case 3 -> 1;
+            default -> -1;
         };
     }
 
@@ -817,13 +821,13 @@ public final class Utils {
 
         units.clear();
 
-        Units.nearbyEnemies(team, rect, unit -> {
-            if (unit.checkTarget(hitter.type.collidesAir, hitter.type.collidesGround)) {
-                units.add(unit);
+        Units.nearbyEnemies(team, rect, u -> {
+            if (u.checkTarget(hitter.type.collidesAir, hitter.type.collidesGround)) {
+                units.add(u);
             }
         });
 
-        units.sort(unit -> unit.dst2(hitter));
+        units.sort(u -> u.dst2(hitter));
         units.each(cons);
     }
 
@@ -912,9 +916,9 @@ public final class Utils {
         Seq<Boolf<Tile>> seq = new Seq<>(3);
 
         seq.add(
-                tile -> world.getQuadBounds(Tmp.r1).contains(tile.getBounds(Tmp.r2)),
-                tile -> tile.floor().isLiquid && !tile.cblock().solid && !tile.floor().solid && !tile.overlay().solid && !tile.block().solidifes,
-                tile -> !tile.floor().isDeep() && !tile.cblock().solid && !tile.floor().solid && !tile.overlay().solid && !tile.block().solidifes
+                t -> world.getQuadBounds(Tmp.r1).contains(t.getBounds(Tmp.r2)),
+                t -> t.floor().isLiquid && !t.cblock().solid && !t.floor().solid && !t.overlay().solid && !t.block().solidifes,
+                t -> !t.floor().isDeep() && !t.cblock().solid && !t.floor().solid && !t.overlay().solid && !t.block().solidifes
         );
 
         return seq;
@@ -1131,10 +1135,10 @@ public final class Utils {
 
         tmpUnit = null;
 
-        Units.nearbyEnemies(hitter.team, rect, e -> {
-            if ((tmpUnit != null && e.dst2(x, y) > tmpUnit.dst2(x, y)) || !e.checkTarget(hitter.type.collidesAir, hitter.type.collidesGround)) return;
+        Units.nearbyEnemies(hitter.team, rect, u -> {
+            if ((tmpUnit != null && u.dst2(x, y) > tmpUnit.dst2(x, y)) || !u.checkTarget(hitter.type.collidesAir, hitter.type.collidesGround)) return;
 
-            e.hitbox(hitRect);
+            u.hitbox(hitRect);
             Rect other = hitRect;
             other.y -= expand;
             other.x -= expand;
@@ -1144,7 +1148,7 @@ public final class Utils {
             Vec2 vec = Geometry.raycastRect(x, y, x2, y2, other);
 
             if (vec != null) {
-                tmpUnit = e;
+                tmpUnit = u;
             }
         });
 

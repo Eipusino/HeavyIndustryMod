@@ -10,6 +10,7 @@ import arc.struct.*;
 import arc.util.pooling.*;
 import heavyindustry.ui.elements.markdown.extensions.*;
 import heavyindustry.ui.elements.markdown.highlighter.*;
+import heavyindustry.util.*;
 import org.commonmark.*;
 import org.commonmark.node.*;
 import org.commonmark.parser.*;
@@ -143,7 +144,7 @@ public class Markdown extends Group {
         calculatePrefSize(true);
 
         drawObjs.addAll(rendererContext.renderResult());
-        drawObjs.sort((a, b) -> a.priority() - b.priority());
+        drawObjs.sort(UtilsKt.comparing(DrawObj::priority));
 
         clearChildren();
         for (DrawObj obj : drawObjs) {

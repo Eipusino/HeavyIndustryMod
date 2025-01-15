@@ -38,7 +38,7 @@ public class DrawEdgeLinkBits<T extends Building> extends DrawBlock {
         if (layer > 0) Draw.z(layer);
         for (int dir = 0; dir < 4; dir++) {
             Point2[] arr = DirEdges.get(build.block.size, dir);
-            byte[] linkBits = this.compLinked.get((T) build);
+            byte[] linkBits = compLinked.get((T) build);
             for (int i = 0; i < arr.length; i++) {
                 if ((linkBits[dir] & 1 << i) == 0) continue;
                 float dx = 0, dy = 0;

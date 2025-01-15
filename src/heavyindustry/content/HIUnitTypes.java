@@ -68,10 +68,7 @@ public final class HIUnitTypes {
     /** Don't let anyone instantiate this class. */
     private HIUnitTypes() {}
 
-    /**
-     * Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}.
-     * <p>Remember not to execute it a second time, I did not take any precautionary measures.
-     */
+    /** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
     public static void load() {
         //vanilla-tank
         vanguard = new UnitType("vanguard") {{

@@ -83,7 +83,6 @@ public class DrawDirSpliceBlock<E extends Building> extends DrawBlock {
         Draw.rect(regions[spliceBits.get((E) build)], build.x, build.y);
         if (layerRec) Draw.z(z);
         else Draw.z(z + 0.0001f);
-
     }
 
     @Override

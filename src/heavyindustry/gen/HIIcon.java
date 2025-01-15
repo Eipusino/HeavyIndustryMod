@@ -11,7 +11,10 @@ public final class HIIcon {
             holdIcon, matrixIcon, nuclearIcon, programIcon, publicInfoIcon, reactionIcon, showInfosIcon, showRangeIcon, soundsIcon,
             startIcon, telegramIcon, timeIcon, translateIcon, unShowInfosIcon,
             //small
-            resetIconSmall, timeIconSmall;
+            resetIconSmall, timeIconSmall,
+            //animdustry
+            alphaChan, alphaChanHit, crawlerChan, crawlerChanHit, zenithChan, zenithChanHit, monoChan, monoChanHit, oxynoeChan, oxynoeChanHit, octChan, octChanHit,
+            seiChan, seiChanHit, quadChan, quadChanHit, boulderChan, boulderChanHit;
 
     /** Don't let anyone instantiate this class. */
     private HIIcon() {}
@@ -43,6 +46,25 @@ public final class HIIcon {
         //small
         resetIconSmall = getModDrawable("reset-icon-small");
         timeIconSmall = getModDrawable("time-icon-small");
+        //animdustry
+        alphaChan = getModDrawable("alpha-chan");
+        alphaChanHit = getModDrawable("alpha-chan-hit");
+        crawlerChan = getModDrawable("crawler-chan");
+        crawlerChanHit = getModDrawable("crawler-chan-hit");
+        zenithChan = getModDrawable("zenith-chan");
+        zenithChanHit = getModDrawable("zenith-chan-hit");
+        monoChan = getModDrawable("mono-chan");
+        monoChanHit = getModDrawable("mono-chan-hit");
+        oxynoeChan = getModDrawable("oxynoe-chan");
+        oxynoeChanHit = getModDrawable("oxynoe-chan-hit");
+        octChan = getModDrawable("oct-chan");
+        octChanHit = getModDrawable("oct-chan-hit");
+        seiChan = getModDrawable("sei-chan");
+        seiChanHit = getModDrawable("sei-chan-hit");
+        quadChan = getModDrawable("quad-chan");
+        quadChanHit = getModDrawable("quad-chan-hit");
+        boulderChan = getModDrawable("boulder-chan");
+        boulderChanHit = getModDrawable("boulder-chan-hit");
     }
 
     public static <T extends Drawable> T getModDrawable(String name) {

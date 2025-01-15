@@ -1,16 +1,3 @@
-/*
-	Copyright (c) sk7725 2020
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
 package heavyindustry.core;
 
 import arc.*;
@@ -63,36 +50,26 @@ import static mindustry.Vars.*;
 public final class HeavyIndustryMod extends Mod {
     /** Commonly used static read-only String. do not change unless you know what you're doing. */
     public static final String modName = "heavy-industry";
-
-    /** Omitting longer mod names is generally used to load mod sprites. */
-    public static String name(String add) {
-        return modName + "-" + add;
-    }
-
-    private static final String linkGitHub = "https://github.com/Eipusino/HeavyIndustryMod", author = "Eipusino";
-
     /** jar internal navigation. */
     public static final InternalFileTree internalTree = new InternalFileTree(HeavyIndustryMod.class);
 
     /** Modules present in both servers and clients. */
     public static InputAggregator inputAggregator;
 
+    private static final String linkGitHub = "https://github.com/Eipusino/HeavyIndustryMod", author = "Eipusino";
     /** Using it is usually risky, so if you want to index files within the mod, please use {@link InternalFileTree}. */
     private static LoadedMod mod;
-    private static Jval modJson;
+    private static final Jval modJson;
 
     public static final boolean plugin;
 
     static {
         Log.infoTag("Kotlin", "Version: " + KotlinVersion.CURRENT);
 
-        try {//Just to prevent terrifying things from happening with a very low probability.
-            modJson = Jval.read(internalTree.child("mod.json").reader());
-        } catch (Exception e) {
-            Log.err("Reading mod.json failed.", e);
-        }
-
+        modJson = LoadMod.getMeta(internalTree.root);
         plugin = modJson != null && modJson.has("plugin") && modJson.isBoolean() && modJson.get("plugin").asBool();
+
+        LoadMod.blacklistedMods();
     }
 
     public HeavyIndustryMod() {
@@ -222,6 +199,12 @@ public final class HeavyIndustryMod extends Mod {
 
         //Load the content of the accessory module.
         ModJS.load();
+
+        try {
+            LoadMod.loadContent();
+        } catch (Throwable e) {
+            Log.err("The mod parser encountered an unknown exception. Please report this error to the author", e);
+        }
     }
 
     @Override
@@ -313,6 +296,11 @@ public final class HeavyIndustryMod extends Mod {
             var fl = new FloatingText(massageSplit[Mathf.random(massageSplit.length - 1)]);
             fl.build(ui.menuGroup);
         }
+    }
+
+    /** Omitting longer mod names is generally used to load mod sprites. */
+    public static String name(String add) {
+        return modName + "-" + add;
     }
 
     public static boolean isHeavyIndustry(@Nullable Content content) {

@@ -26,10 +26,7 @@ public final class HITechTree {
     /** Don't let anyone instantiate this class. */
     private HITechTree() {}
 
-    /**
-     * Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}.
-     * <p>Remember not to execute it a second time, I did not take any precautionary measures.
-     */
+    /** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
     public static void load() {
         //items,liquids
         vanillaNode(Liquids.water, () -> nodeProduce(HILiquids.brine, () -> {}));

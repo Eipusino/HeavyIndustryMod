@@ -31,8 +31,8 @@ public class DrawRegionDynamic<E extends Building> extends DrawBlock {
 
     public boolean makeIcon = false;
 
-    public DrawRegionDynamic(String suffix) {
-        this.suffix = suffix;
+    public DrawRegionDynamic(String suf) {
+        suffix = suf;
     }
 
     public DrawRegionDynamic() {}
@@ -68,7 +68,7 @@ public class DrawRegionDynamic<E extends Building> extends DrawBlock {
 
     @Override
     public TextureRegion[] icons(Block block) {
-        return makeIcon ? new TextureRegion[]{region} : Utils.EMP_REGIONS;
+        return makeIcon ? new TextureRegion[]{region} : Utils.empRegions;
     }
 
     @Override
