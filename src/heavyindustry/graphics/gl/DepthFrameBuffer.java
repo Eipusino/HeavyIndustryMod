@@ -50,18 +50,18 @@ public class DepthFrameBuffer extends FrameBuffer {
     }
 
     @Override
-    protected void create(Format format, int width, int height, boolean hasDepth, boolean hasStencil) {
+    protected void create(Format form, int width, int height, boolean hasDep, boolean hasSte) {
         width = Math.max(width, 2);
         height = Math.max(height, 2);
-        this.format = format;
+        format = form;
 
         var builder = new FrameBufferBuilder(width, height);
-        builder.addBasicColorTextureAttachment(format);
-        if (hasDepth) builder.addDepthTextureAttachment(Gl.depthComponent, Gl.floatV);
-        if (hasStencil) builder.addStencilTextureAttachment(Gl.stencilIndex8, Gl.unsignedByte);
+        builder.addBasicColorTextureAttachment(form);
+        if (hasDep) builder.addDepthTextureAttachment(Gl.depthComponent, Gl.floatV);
+        if (hasSte) builder.addStencilTextureAttachment(Gl.stencilIndex8, Gl.unsignedByte);
 
-        this.hasDepth = hasDepth;
-        this.hasStencil = hasStencil;
+        hasDepth = hasDep;
+        hasStencil = hasSte;
         bufferBuilder = builder;
         build();
     }

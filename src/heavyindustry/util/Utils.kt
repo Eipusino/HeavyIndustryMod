@@ -23,10 +23,15 @@ fun <T> nop(a: T?, b: Cons<T>) {
     if (a != null) b.get(a)
 }
 
-inline fun <reified T> ine(a: Any, b: T): T = if (a is T) a else b
+inline fun <reified T> inq(a: Any, b: T): T = if (a is T) a else b
 
 inline fun <reified T> ins(a: Any?, b: Cons<T>) {
     if (a is T) b.get(a)
+}
+
+fun <T> apt(create: T, cons: Cons<T>): T {
+    cons.get(create)
+    return create
 }
 
 /**
@@ -39,10 +44,10 @@ inline fun <reified T> ins(a: Any?, b: Cons<T>) {
  * @param requirements research resources
  * @param objectives research needs
  */
-fun addToResearch(children: UnlockableContent?, content: UnlockableContent?, requirements: Array<ItemStack?>?, objectives: Seq<Objective?>?) {
+fun addToResearch(children: UnlockableContent?, content: UnlockableContent?, requirements: Array<ItemStack>?, objectives: Seq<Objective>?) {
     if (children == null || content == null) return
 
-    val lastNode = all.find { t: TechNode -> t.content === children }
+    val lastNode = all.find { t -> t.content === children }
     lastNode?.remove()
 
     val node = TechNode(null, children, requirements ?: children.researchRequirements())
@@ -55,7 +60,7 @@ fun addToResearch(children: UnlockableContent?, content: UnlockableContent?, req
     }
 
     // find parent node.
-    val parent = all.find { t: TechNode -> t.content === content }
+    val parent = all.find { t -> t.content === content }
 
     if (parent == null) return
 
@@ -67,9 +72,9 @@ fun addToResearch(children: UnlockableContent?, content: UnlockableContent?, req
     node.parent = parent
 }
 
-fun addToResearch(children: UnlockableContent?, content: UnlockableContent?, objectives: Seq<Objective?>?) = addToResearch(children, content, ItemStack.empty, objectives)
+fun addToResearch(children: UnlockableContent?, content: UnlockableContent?, objectives: Seq<Objective>?) = addToResearch(children, content, ItemStack.empty, objectives)
 
-fun addToResearch(children: UnlockableContent?, content: UnlockableContent?, requirements: Array<ItemStack?>?) = addToResearch(children, content, requirements, Seq.with())
+fun addToResearch(children: UnlockableContent?, content: UnlockableContent?, requirements: Array<ItemStack>?) = addToResearch(children, content, requirements, Seq.with())
 
 fun addToResearch(children: UnlockableContent?, content: UnlockableContent?) = addToResearch(children, content, ItemStack.empty, Seq.with())
 
@@ -85,4 +90,8 @@ fun getClass(name: String): NativeJavaClass {
 
 fun <T> comparing(comparable: Comparable<T>): Comparator<T> {
     return compareBy { comparable }
+}
+
+fun isAllDigits(key: String?): Boolean {
+    return key != null && key.matches("\\d+".toRegex())
 }

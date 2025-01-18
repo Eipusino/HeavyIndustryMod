@@ -8,7 +8,7 @@ import mindustry.gen.*;
 
 import static mindustry.Vars.*;
 
-public class CopterUnit extends UnitEntity implements Copterc {
+public class CopterUnit extends Unitf implements Copterc {
     protected transient RotorMount[] rotors = {};
     protected transient float rotorSpeedScl = 1f;
 

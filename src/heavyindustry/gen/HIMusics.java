@@ -8,9 +8,11 @@ import static mindustry.Vars.*;
 
 /**
  * Manages music, including vanilla and custom tracks.
+ *
+ * @since 1.0.2
  */
 public final class HIMusics {
-    private static final ObjectMap<String, Seq<Music>> musicSets = new ObjectMap<>();
+    private static final ObjectMap<String, Music[]> musicSets = new ObjectMap<>();
 
     /** Don't let anyone instantiate this class. */
     private HIMusics() {}
@@ -40,8 +42,8 @@ public final class HIMusics {
      * @param target Target sequence to store the mixed music.
      */
     public static void mixMusicSets(String vanillaSetName, String modSetName, Seq<Music> target) {
-        Seq<Music> vanillaSet = musicSets.get(vanillaSetName);
-        Seq<Music> modSet = musicSets.get(modSetName);
+        Music[] vanillaSet = musicSets.get(vanillaSetName);
+        Music[] modSet = musicSets.get(modSetName);
         if (vanillaSet != null && modSet != null) {
             target.clear();
             target.addAll(vanillaSet);
@@ -56,7 +58,7 @@ public final class HIMusics {
      * @param target  Target sequence to update.
      */
     public static void setMusicSet(String setName, Seq<Music> target) {
-        Seq<Music> set = musicSets.get(setName);
+        Music[] set = musicSets.get(setName);
         if (set != null) {
             target.set(set);
         }

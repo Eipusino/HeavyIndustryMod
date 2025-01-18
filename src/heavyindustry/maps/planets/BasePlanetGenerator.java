@@ -15,30 +15,25 @@ public abstract class BasePlanetGenerator extends PlanetGenerator {
 
     protected final int seed = lastSeed++;
 
-    public Block[][] arr;
+    public Block[][] arr = {};
     public float scl = 0.f;
     public float waterOffset = 0.f;
-    public BaseGenerator basegen = new BaseGenerator();
     public float water = 0.f;
-    protected ObjectMap<Block, Block> dec;
+    protected ObjectMap<Block, Block> dec = new ObjectMap<>();
 
-    protected ObjectMap<Block, Block> tars;
+    protected ObjectMap<Block, Block> tars = new ObjectMap<>();
 
-    public BasePlanetGenerator() {
-        dec = new ObjectMap<>();
-        tars = new ObjectMap<>();
-        arr = new Block[0][0];
-    }
+    public BasePlanetGenerator() {}
 
     public Color getColor(Vec3 position) {
-        Block block = this.getBlock(position);
+        Block block = getBlock(position);
 
         Tmp.c1.set(block.mapColor).a = 1 - block.albedo;
         return Tmp.c1;
     }
 
     public Block getBlock(Vec3 pos) {
-        float height = this.rawHeight(pos);
+        float height = rawHeight(pos);
 
         Tmp.v31.set(pos);
         pos = Tmp.v33.set(pos).scl(scl);
@@ -70,12 +65,12 @@ public abstract class BasePlanetGenerator extends PlanetGenerator {
     }
 
     public float getHeight(Vec3 position) {
-        float height = this.rawHeight(position);
+        float height = rawHeight(position);
         return Math.max(height, water);
     }
 
     public void genTile(Vec3 position, TileGen tile) {
-        tile.floor = this.getBlock(position);
+        tile.floor = getBlock(position);
         tile.block = tile.floor.asFloor().wall;
 
         if (Ridged.noise3d(seed, position.x, position.y, position.z, 22) > 0.32) {

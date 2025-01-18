@@ -24,7 +24,7 @@ import mindustry.world.meta.*;
 
 import static mindustry.Vars.*;
 
-public class PesterUnit extends UnitEntity implements Pesterc {
+public class PesterUnit extends Unitf implements Pesterc {
     public static final ObjectIntMap<Healthc> checked = new ObjectIntMap<>();
 
     public static Building tmpBuilding = null;

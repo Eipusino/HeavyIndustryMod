@@ -8,13 +8,13 @@ import arc.util.serialization.*;
 import java.io.*;
 
 /**
- * Used to package an object, objects implementing this interface can customize the behavior of serializing data into a byte stream, as referenced in {@link java.io.Serializable},
+ * Used to package an object, objects implementing this interface can customize the behavior of serializing data into a byte stream, as referenced in {@link Serializable},
  * but this is usually faster than Java serialization because we often do not need to pass the complete information of an object.
  * <p>Here is a use case:
  * <pre>{@code
  * //Declare a packable type
  * public class GltfData implements DataPackable {
- *     private static final long typeID = 1587541965784324577L;
+ *     private static final long typeID = 1587541965784324577l;
  *
  *     static {
  *         DataPackable.assignType(typeID, args -> new GltfData());

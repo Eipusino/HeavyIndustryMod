@@ -61,13 +61,13 @@ public final class HeavyIndustryMod extends Mod {
     private static LoadedMod mod;
     private static final Jval modJson;
 
-    public static final boolean plugin;
+    public static final boolean isPlugin;
 
     static {
         Log.infoTag("Kotlin", "Version: " + KotlinVersion.CURRENT);
 
         modJson = LoadMod.getMeta(internalTree.root);
-        plugin = modJson != null && modJson.has("plugin") && modJson.isBoolean() && modJson.get("plugin").asBool();
+        isPlugin = modJson != null && modJson.has("plugin") && modJson.isBoolean() && modJson.get("plugin").asBool();
 
         LoadMod.blacklistedMods();
     }
@@ -78,7 +78,7 @@ public final class HeavyIndustryMod extends Mod {
         HIClassMap.load();
 
         Events.on(ClientLoadEvent.class, event -> {
-            if (plugin) return;
+            if (isPlugin) return;
 
             try {
                 Reflect.set(MenuFragment.class, ui.menufrag, "renderer", new HIMenuRenderer());
@@ -180,7 +180,7 @@ public final class HeavyIndustryMod extends Mod {
         EntityRegister.load();
         WorldRegister.load();
 
-        if (plugin) return;
+        if (isPlugin) return;
 
         HITeams.load();
         HIItems.load();
@@ -199,12 +199,7 @@ public final class HeavyIndustryMod extends Mod {
 
         //Load the content of the accessory module.
         ModJS.load();
-
-        try {
-            LoadMod.loadContent();
-        } catch (Throwable e) {
-            Log.err("The mod parser encountered an unknown exception. Please report this error to the author", e);
-        }
+        LoadMod.loadContent();
     }
 
     @Override
@@ -224,8 +219,9 @@ public final class HeavyIndustryMod extends Mod {
         settings.defaults("hi-animated-shields", true);
         settings.defaults("hi-replace-water-surface", true);
 
-        if (!headless && !plugin && mods.getMod("extra-utilities") == null && isAprilFoolsDay()) {
+        if (!headless && !isPlugin && mods.locateMod("extra-utilities") == null && isAprilFoolsDay()) {
             HIOverride.loadAprilFoolsDay();
+
             if (ui != null)
                 Events.on(ClientLoadEvent.class, event -> Time.runTask(10f, () -> {
                     BaseDialog dialog = new BaseDialog(bundle.get("hi-name")) {
@@ -256,7 +252,7 @@ public final class HeavyIndustryMod extends Mod {
                 }));
         }
 
-        if (plugin && mod() != null) {//Don't ask, the mod has already crashed due to this before.
+        if (isPlugin && mod() != null) {//Don't ask, the mod has already crashed due to this before.
             mod.meta.hidden = true;
             mod.meta.name = modName + "-plugin";
             mod.meta.displayName = bundle.get("hi-name") + " Plugin";
@@ -291,7 +287,7 @@ public final class HeavyIndustryMod extends Mod {
             String massage = bundle.get("hi-random-massage");
             String[] massageSplit = massage.split("&");
 
-            if (headless || ui == null || mods.getMod("extra-utilities") != null || !settings.getBool("hi-floating-text")) break set;
+            if (headless || ui == null || mods.locateMod("extra-utilities") != null || !settings.getBool("hi-floating-text")) break set;
 
             var fl = new FloatingText(massageSplit[Mathf.random(massageSplit.length - 1)]);
             fl.build(ui.menuGroup);

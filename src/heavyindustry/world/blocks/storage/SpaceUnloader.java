@@ -258,7 +258,7 @@ public class SpaceUnloader extends StorageBlock {
             }
             deadLinks.add(pos);
             if (deadLinks.size >= 100) {
-                // 太多了就清掉一些
+                //If there's too much, just clear some
                 deadLinks.removeRange(0, 50);
             }
         }

@@ -18,7 +18,7 @@ import mindustry.type.*;
 
 import static mindustry.Vars.*;
 
-public class SwordUnitType extends UnitType {
+public class SwordUnitType extends UnitTypef {
     public float travelSpeed = -1f, curveRnd = -1f;
 
     //Hit stuff

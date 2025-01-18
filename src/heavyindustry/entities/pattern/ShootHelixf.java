@@ -14,12 +14,12 @@ public class ShootHelixf extends ShootHelix {
         for (int i = 0; i < shots; i++) {
             if (flip) {
                 for (int sign : Mathf.signs) {
-                    int fi = i;
-                    handler.shoot(0, 0, 0, firstShotDelay + shotDelay * i, b -> b.moveRelative(0f, Mathf.sin(b.time * (rotSpeedOffset * fi + rotSpeedBegin) + offset * ((float) fi / shots), scl, mag * sign)));
+                    int j = i;
+                    handler.shoot(0, 0, 0, firstShotDelay + shotDelay * i, b -> b.moveRelative(0f, Mathf.sin(b.time * (rotSpeedOffset * j + rotSpeedBegin) + offset * ((float) j / shots), scl, mag * sign)));
                 }
             } else {
-                int fi = i;
-                handler.shoot(0, 0, 0, firstShotDelay + shotDelay * i, b -> b.moveRelative(0f, Mathf.sin(b.time * (rotSpeedOffset * fi + rotSpeedBegin) + offset * ((float) fi / shots), scl, mag)));
+                int j = i;
+                handler.shoot(0, 0, 0, firstShotDelay + shotDelay * i, b -> b.moveRelative(0f, Mathf.sin(b.time * (rotSpeedOffset * j + rotSpeedBegin) + offset * ((float) j / shots), scl, mag)));
             }
         }
     }

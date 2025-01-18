@@ -8,7 +8,7 @@ import mindustry.content.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 
-public class OrnitopterUnit extends UnitEntity implements Ornitopterc {
+public class OrnitopterUnit extends Unitf implements Ornitopterc {
     public BladeMount[] blades;
     public float bladeMoveSpeedScl = 1f;
     public long drawSeed = 0;

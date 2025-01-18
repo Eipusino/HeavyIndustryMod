@@ -50,7 +50,6 @@ public final class Fields {
     }
 
     //region ranged number fields
-
     public static Cell<TextField> rangedNumberField(Table table, @Nullable String name, int defaultValue, int minValue, int maxValue, Intc consumer) {
         return rangedNumberField(table, name == null ? null : () -> Core.bundle.get(name), defaultValue, minValue, maxValue, consumer);
     }

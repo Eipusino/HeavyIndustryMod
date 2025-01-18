@@ -18,7 +18,6 @@ import kotlin.jvm.internal.Ref.*;
 
 public class ComboBox extends Table {
     private final Table mySelectionTable = new Table() {{
-
         Core.scene.addListener(new ClickOnOtherListener(() -> {
             if (hasParent()) {
                 remove();
@@ -35,11 +34,9 @@ public class ComboBox extends Table {
     private int selectedItem = 0;
 
     public ComboBox() {
-        add(myField = new TextField() {
-            {
-                setDisabled(true);
-            }
-
+        add(myField = new TextField() {{
+            setDisabled(true);
+        }
             @Override
             public float getPrefWidth() {
                 return mySelectionTable.getPrefWidth();
@@ -64,7 +61,6 @@ public class ComboBox extends Table {
                 float x2 = centerX + size / 4f;
                 float y2 = centerY + size / 4f;
 
-//                ComboBox.this.getBackground().
                 Draw.color(color);
                 Fill.tri(x0, y0, x1, y1, x2, y2);
             }
@@ -98,7 +94,6 @@ public class ComboBox extends Table {
     private void showSelectionTable() {
         if (mySelectionTable.hasParent()) {
             hideSelectionTable();
-//            return;
         }
 
         mySelectionTable.update(() -> {
@@ -136,9 +131,7 @@ public class ComboBox extends Table {
         if (item != null) myField.setText(item.text);
 
         super.act(delta);
-
     }
-
 
     private void rebuildItems() {
         mySelectionTable.clearChildren();
@@ -190,7 +183,6 @@ public class ComboBox extends Table {
         for (ComboBoxItemSelectListener listener : listeners) {
             listener.listen(oldItem, newItem);
         }
-
     }
 
     @Nullable
@@ -201,7 +193,6 @@ public class ComboBox extends Table {
     public void addItemListener(ComboBoxItemSelectListener listener) {
         listeners.add(listener);
     }
-
 
     public interface ComboBoxItemSelectListener {
         void listen(@Nullable ComboBoxItem old, ComboBoxItem newItem);
@@ -217,7 +208,6 @@ public class ComboBox extends Table {
             this(Core.scene.getStyle(ComboBoxItemStyle.class));
         }
 
-
         public ComboBoxItem(String text) {
             this(text, Core.scene.getStyle(ComboBoxItemStyle.class));
         }
@@ -231,10 +221,10 @@ public class ComboBox extends Table {
             this(image, text, new ComboBoxItemStyle(Core.scene.getStyle(ComboBoxItemStyle.class)));
         }
 
-        public ComboBoxItem(Drawable image, String text, ComboBoxItemStyle style) {
+        public ComboBoxItem(Drawable image, String string, ComboBoxItemStyle style) {
             this(style);
             style.image = image;
-            this.text = text;
+            text = string;
         }
 
         public ComboBoxItem(ComboBoxItemStyle style) {
@@ -247,15 +237,13 @@ public class ComboBox extends Table {
             public Color backgroundColor = new Color();
             public ButtonStyle buttonStyle;
 
-            public ComboBoxItemStyle() {
-
-            }
+            public ComboBoxItemStyle() {}
 
             public ComboBoxItemStyle(ComboBoxItemStyle style) {
-                this.font = style.font;
-                this.image = style.image;
-                this.backgroundColor = style.backgroundColor;
-                this.buttonStyle = style.buttonStyle;
+                font = style.font;
+                image = style.image;
+                backgroundColor = style.backgroundColor;
+                buttonStyle = style.buttonStyle;
             }
         }
     }

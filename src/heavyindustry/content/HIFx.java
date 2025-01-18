@@ -1424,9 +1424,9 @@ public final class HIFx {
                 for (int i = 0; i < 4; i++) {
                     rand.setSeed(e.id * 2L + i);
                     float lenScl = rand.random(0.4f, 1f);
-                    int fi = i;
+                    int j = i;
                     e.scaled(e.lifetime * lenScl, b -> {
-                        Angles.randLenVectors(b.id + fi - 1, b.fin(Interp.pow10Out), (int) (2.9f * intensity), 22f * intensity, (x, y, in, out) -> {
+                        Angles.randLenVectors(b.id + j - 1, b.fin(Interp.pow10Out), (int) (2.9f * intensity), 22f * intensity, (x, y, in, out) -> {
                             float fout = b.fout(Interp.pow5Out) * rand.random(0.5f, 1f);
                             float rad = fout * ((2f + intensity) * 2.35f);
 
@@ -2383,8 +2383,8 @@ public final class HIFx {
             for (int i = 0; i < 4; i++) {
                 rand.setSeed(((long) e.id << 1) + i);
                 float lenScl = rand.random(0.4f, 1f);
-                int fi = i;
-                e.scaled(e.lifetime * lenScl, eIn -> Angles.randLenVectors(eIn.id + fi - 1, eIn.fin(Interp.pow10Out), (int) (intensity / 2.5f), 8f * intensity, (x, y, in, out) -> {
+                int j = i;
+                e.scaled(e.lifetime * lenScl, eIn -> Angles.randLenVectors(eIn.id + j - 1, eIn.fin(Interp.pow10Out), (int) (intensity / 2.5f), 8f * intensity, (x, y, in, out) -> {
                     float fout = eIn.fout(Interp.pow5Out) * rand.random(0.5f, 1f);
                     Fill.circle(eIn.x + x, eIn.y + y, fout * ((2f + intensity) * 1.8f));
                 }));

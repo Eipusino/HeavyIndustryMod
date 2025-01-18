@@ -3,10 +3,10 @@ package heavyindustry.type;
 import arc.graphics.*;
 import arc.graphics.Texture.*;
 import arc.graphics.g3d.*;
+import arc.graphics.gl.*;
 import arc.math.geom.*;
 import arc.util.*;
 import heavyindustry.graphics.*;
-import heavyindustry.graphics.gl.*;
 import mindustry.graphics.*;
 import mindustry.graphics.g3d.*;
 import mindustry.type.*;
@@ -20,7 +20,7 @@ import static mindustry.Vars.*;
  * @since 1.0.6
  */
 public class AtmospherePlanet extends Planet {
-    public @Nullable DepthFrameBuffer buffer;
+    public @Nullable FrameBuffer buffer;
 
     public AtmospherePlanet(String name, Planet parent, float radius) {
         super(name, parent, radius);
@@ -34,7 +34,7 @@ public class AtmospherePlanet extends Planet {
     public void load() {
         super.load();
         if (!headless) {
-            buffer = new DepthFrameBuffer(graphics.getWidth(), graphics.getHeight(), true);
+            buffer = new FrameBuffer(graphics.getWidth(), graphics.getHeight(), true);
             buffer.getTexture().setFilter(TextureFilter.nearest);
         }
     }

@@ -1369,8 +1369,8 @@ public final class HIBullets {
                 float damageMulti = b.damageMultiplier();
                 Team team = b.team;
                 for (int i = 0; i < splashDamageRadius / (tilesize * 3.5f); i++) {
-                    int finalI = i;
-                    Time.run(i * despawnEffect.lifetime / (splashDamageRadius / (tilesize * 2)), () -> Damage.damage(team, vec.x, vec.y, tilesize * (finalI + 6), splashDamage * damageMulti, true));
+                    int j = i;
+                    Time.run(i * despawnEffect.lifetime / (splashDamageRadius / (tilesize * 2)), () -> Damage.damage(team, vec.x, vec.y, tilesize * (j + 6), splashDamage * damageMulti, true));
                 }
 
                 float rad = 120;

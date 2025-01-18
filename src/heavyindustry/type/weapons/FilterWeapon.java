@@ -45,11 +45,11 @@ public class FilterWeapon extends Weapon {
         t.row();
         t.table(Styles.grayPanel, weapon -> {
             for (int i = 0; i < bullets.length; i++) {
-                int finalI = i;
+                int j = i;
                 weapon.table(Tex.underline, b -> {
                     b.left();
-                    if (iconRegions[finalI].found()) b.image(iconRegions[finalI]).padRight(10).center();
-                    StatValues.ammo(ObjectMap.of(u, bullets[finalI])).display(b.add(new Table()).get());
+                    if (iconRegions[j].found()) b.image(iconRegions[j]).padRight(10).center();
+                    StatValues.ammo(ObjectMap.of(u, bullets[j])).display(b.add(new Table()).get());
                 }).growX().row();
             }
         }).margin(10f);

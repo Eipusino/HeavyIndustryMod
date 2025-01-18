@@ -142,6 +142,8 @@ final class HIClassMap {
         classes.put("AssignOverdriveBuild", AssignOverdrive.AssignOverdriveBuild.class);
         classes.put("AdjustableOverdrive", AdjustableOverdrive.class);
         classes.put("AdjustableOverdriveBuild", AdjustableOverdrive.AdjustableOverdriveBuild.class);
+        classes.put("BatteryWall", BatteryWall.class);
+        classes.put("BatteryWallBuild", BatteryWall.BatteryWallBuild.class);
         classes.put("InsulationWall", InsulationWall.class);
         classes.put("InsulationWallBuild", InsulationWall.InsulationWallBuild.class);
         classes.put("RegenWall", RegenWall.class);
@@ -210,6 +212,8 @@ final class HIClassMap {
         classes.put("StackHelperBuild", StackHelper.StackHelperBuild.class);
         classes.put("StackBridge", StackBridge.class);
         classes.put("StackBridgeBuild", StackBridge.StackBridgeBuild.class);
+        classes.put("LaserMassDriver", LaserMassDriver.class);
+        classes.put("LaserMassDriverBuilding", LaserMassDriver.LaserMassDriverBuilding.class);
         classes.put("TubeLiquidBridge", TubeLiquidBridge.class);
         classes.put("TubeLiquidBridgeBuild", TubeLiquidBridge.TubeLiquidBridgeBuild.class);
         classes.put("FuelHeater", FuelHeater.class);

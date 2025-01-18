@@ -8,7 +8,6 @@ import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
 import arc.util.io.*;
-import heavyindustry.content.*;
 import heavyindustry.entities.*;
 import heavyindustry.world.meta.*;
 import mindustry.content.*;
@@ -58,36 +57,35 @@ public class StaticNode extends Block {
         noUpdateDisabled = false;
         swapDiagonalPlacement = true;
 
-        config(Integer.class, (entity, value) -> {
-            IntSeq links = ((StaticNodeBuild) entity).links;
-            StaticNodeBuild other = (StaticNodeBuild) world.build(value);
-            boolean contains = links.contains(value), valid = other != null;
+        config(Integer.class, (StaticNodeBuild entity, Integer value) -> {
+            IntSeq links = entity.links;
+            Building other = world.build(value);
+            boolean contains = links.contains(value);
 
             // (t) = target, (b) = base
             if (contains) {
                 //unlink
                 links.removeValue(value);
-                if (valid) other.links.removeValue(entity.pos());
-            } else if (linkValid(entity, other) && valid && links.size < maxNodes) {
+                if (other instanceof StaticNodeBuild node) node.links.removeValue(entity.pos());
+            } else if (linkValid(entity, other) && other instanceof StaticNodeBuild node && links.size < maxNodes) {
                 //add other to self
-                if (!links.contains(other.pos())) {
-                    links.add(other.pos());
+                if (!links.contains(node.pos())) {
+                    links.add(node.pos());
                 }
 
                 //add self to other
-                if (other.team == entity.team) {
-                    if (!other.links.contains(entity.pos())) {
-                        other.links.add(entity.pos());
+                if (node.team == entity.team) {
+                    if (!node.links.contains(entity.pos())) {
+                        node.links.add(entity.pos());
                     }
                 }
             }
         });
 
-        config(Point2[].class, (tile, value) -> {
-            StaticNodeBuild t = (StaticNodeBuild) tile;
-            t.links.clear();
+        config(Point2[].class, (StaticNodeBuild tile, Point2[] value) -> {
+			tile.links.clear();
 
-            IntSeq old = new IntSeq(t.links);
+            IntSeq old = new IntSeq(tile.links);
 
             //clear old
             for (int i = 0; i < old.size; i++) {
@@ -142,8 +140,8 @@ public class StaticNode extends Block {
     public void load() {
         super.load();
 
-        laser = Core.atlas.find(name + "-laser", "prog-mats-static-laser");
-        laserEnd = Core.atlas.find(name + "-laser-end", "prog-mats-static-laser-end");
+        laser = Core.atlas.find(name + "-laser", "hi-static-laser");
+        laserEnd = Core.atlas.find(name + "-laser-end", "hi-static-laser-end");
     }
 
     @Override
@@ -152,7 +150,7 @@ public class StaticNode extends Block {
         addBar("connections", (StaticNodeBuild entity) -> new Bar(
                 () -> Core.bundle.format("bar.powerlines", entity.links.size, maxNodes),
                 () -> entity.team.color,
-                () -> (float) entity.links.size / (float) maxNodes
+                () -> (float) (entity.links.size / maxNodes)
         ));
     }
 

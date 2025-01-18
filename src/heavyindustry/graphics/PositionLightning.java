@@ -18,16 +18,16 @@ import mindustry.gen.*;
 import static mindustry.Vars.*;
 
 /**
- * Provide methods that can generate Position to Position Lightningf.<p>
- * {@code Tmp} <b>var</b> is available.<p>
- * Completely independent class.<p>
+ * Provide methods that can generate Position to Position Lightningf.
+ * <p>{@code Tmp} <b>var</b> is available.
+ * <p>Completely independent class.
  *
  * @author Yuria
- * @implNote The method implements the generation of random lightning effect <b>from point to point</b> and complete certain action at <b>target point</b> through {@link Cons}.<p>
+ * @implNote The method implements the generation of random lightning effect <b>from point to point</b> and complete certain action at <b>target point</b> through {@link Cons}.
  * @apiNote <li> {@code hitPointMovement} {@link Cons} used to run specific action at the target point.
  * <li> {@code WIDTH}: {@value WIDTH} used to control the stroke of the lightning.
  * <li> {@code RANGE_RAND}: {@value RANGE_RAND} used to control the base xRand range of every part of the lightning.
- * <li> {@code ROT_DST}: {@value ROT_DST} used to control the length of every part of the lightning.<p>
+ * <li> {@code ROT_DST}: {@value ROT_DST} used to control the length of every part of the lightning.
  * @see Position
  * @see Vec2
  * @see Geometry

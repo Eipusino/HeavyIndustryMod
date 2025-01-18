@@ -17,11 +17,10 @@ import mindustry.entities.abilities.*;
 import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
-import mindustry.type.unit.*;
 import mindustry.ui.*;
 import mindustry.world.meta.*;
 
-public class SentryUnitType extends ErekirUnitType {
+public class SentryUnitType extends UnitTypef {
     public float startElevation = 0.5f, riseSpeed = -1f;
     public float anchorDrag = 0.15f;
     public float pullScale = 0.01f, anchorPullScale = 0.003f;
@@ -32,6 +31,8 @@ public class SentryUnitType extends ErekirUnitType {
 
     public SentryUnitType(String name) {
         super(name);
+        erekir();
+
         aiController = SentryAI::new;
 
         speed = accel = 0f;

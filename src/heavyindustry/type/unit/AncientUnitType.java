@@ -5,30 +5,17 @@ import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.util.*;
 import heavyindustry.graphics.*;
-import heavyindustry.world.meta.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 
-import static arc.Core.*;
-
-public class AncientUnitType extends UnitType {
-    public float damageMultiplier = 1f;
-
+public class AncientUnitType extends UnitTypef {
     public AncientUnitType(String name) {
         super(name);
 
         outlineColor = Pal.darkOutline;
         healColor = HIPal.ancientLightMid;
         lightColor = HIPal.ancientLightMid;
-    }
-
-    @Override
-    public void setStats() {
-        super.setStats();
-        if (damageMultiplier < 1f) {
-            stats.add(HIStat.damageReduction, bundle.format("hi-sin", Strings.autoFixed((1f - damageMultiplier) * 100, 2)));
-        }
     }
 
     public void addEngine(float x, float y, float relativeRot, float rad, boolean flipAdd) {

@@ -71,10 +71,6 @@ public class MultiBar extends Bar {
         });
     }
 
-    public Bar blink(Color color) {
-        return this;
-    }
-
     @Override
     public void draw() {
         if (barParts != null && barParts.size > 0) {

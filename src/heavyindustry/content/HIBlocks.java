@@ -73,7 +73,7 @@ import static mindustry.type.ItemStack.*;
 public final class HIBlocks {
     public static Block
             //environment
-            cliff,
+            cliff, cliffHelper,
             darkPanel7, darkPanel8, darkPanel9, darkPanel10, darkPanel11, darkPanelDamaged,
             stoneVent, basaltVent, shaleVent, basaltWall, basaltGraphiticWall, basaltPyratiticWall, snowySand, snowySandWall, arkyciteSand, arkyciteSandWall, arkyciteSandBoulder, darksandBoulder,
             concreteBlank, concreteFill, concreteNumber, concreteStripe, concrete, stoneFullTiles, stoneFull, stoneHalf, stoneTiles, concreteWall, pit, waterPit,
@@ -154,6 +154,7 @@ public final class HIBlocks {
     public static void load() {
         //environment
         cliff = new Clifff("cliff");
+        cliffHelper = new CliffHelper("cliff-helper");
         darkPanel7 = new Floor("dark-panel-7", 0);
         darkPanel8 = new Floor("dark-panel-8", 0);
         darkPanel9 = new Floor("dark-panel-9", 0);
@@ -1320,8 +1321,8 @@ public final class HIBlocks {
                 for (int i = 0; i < 5; i++) {
                     Fx.rand.setSeed(b.id * 2l + i);
                     float lenScl = Fx.rand.random(0.25f, 1f);
-                    int fi = i;
-                    b.scaled(b.lifetime * lenScl, e -> Angles.randLenVectors(e.id + fi - 1, e.fin(Interp.pow10Out), (int) (2.8f * intensity), 25f * intensity, (x, y, in, out) -> {
+                    int j = i;
+                    b.scaled(b.lifetime * lenScl, e -> Angles.randLenVectors(e.id + j - 1, e.fin(Interp.pow10Out), (int) (2.8f * intensity), 25f * intensity, (x, y, in, out) -> {
                         float fout = e.fout(Interp.pow5Out) * Fx.rand.random(0.5f, 1f);
                         float rad = fout * ((2f + intensity) * 2.35f);
 
@@ -2509,8 +2510,8 @@ public final class HIBlocks {
                 tile.progress = 0f;
                 tile.payload = null;
             });
-            config(UnitType.class, (UnitFactoryBuild tile, UnitType val) -> {
-                tile.currentPlan = plans.indexOf(p -> p.unit == val);
+            config(UnitType.class, (UnitFactoryBuild tile, UnitType unit) -> {
+                tile.currentPlan = plans.indexOf(p -> p.unit == unit);
                 tile.progress = 0f;
                 tile.payload = null;
             });
@@ -3646,7 +3647,7 @@ public final class HIBlocks {
             consumeLiquid(HILiquids.nanofluid, 12f / 60f);
         }};
         evilSpirits = new ItemTurret("evil-spirits") {{
-            requirements(Category.turret, with(Items.copper, 400, Items.graphite, 380, Items.plastanium, 200, HIItems.uranium, 120, Items.surgeAlloy, 290));
+            requirements(Category.turret, with(Items.copper, 400, Items.graphite, 400, Items.plastanium, 200, HIItems.uranium, 220, Items.surgeAlloy, 280));
             ammo(Items.graphite, new BasicBulletType(7.5f, 90f) {{
                 hitSize = 5f;
                 width = 16.8f;
@@ -3700,7 +3701,7 @@ public final class HIBlocks {
             health = 5500;
             armor = 12f;
             range = 320f;
-            reload = 6f;
+            reload = 8f;
             coolantMultiplier = 0.5f;
             inaccuracy = 3f;
             shoot = new ShootAlternate(12f) {{
@@ -3717,7 +3718,7 @@ public final class HIBlocks {
         }};
         //turrets-erekir
         rupture = new ItemTurret("rupture") {{
-            requirements(Category.turret, with(Items.graphite, 360, Items.silicon, 250, Items.beryllium, 380, Items.tungsten, 180, Items.oxide, 45));
+            requirements(Category.turret, with(Items.graphite, 350, Items.silicon, 250, Items.beryllium, 400, Items.tungsten, 200, Items.oxide, 50));
             ammo(Items.beryllium, new BasicBulletType(12f, 72f) {{
                 buildingDamageMultiplier = 0.33f;
                 ammoMultiplier = 3f;
@@ -3751,23 +3752,45 @@ public final class HIBlocks {
                 hitEffect = despawnEffect = Fx.hitBulletColor;
                 smokeEffect = Fx.shootBigSmoke;
                 shootEffect = new MultiEffect(Fx.shootSmallColor, Fx.colorSpark);
-            }}, Items.thorium, new BasicBulletType(15f, 126.3f) {{
+            }}, Items.carbide, new BasicBulletType(16f, 367.9f) {{
                 buildingDamageMultiplier = 0.33f;
                 ammoMultiplier = 5f;
+                reloadMultiplier = 0.2f;
                 knockback = 1.5f;
-                lifetime = 17.84f;
-                rangeChange = 44f;
+                lifetime = 20.97f;
+                rangeChange = 46f;
                 width = 14f;
                 height = 22.5f;
                 pierce = pierceBuilding = true;
                 pierceCap = 5;
-                hitColor = backColor = trailColor = Pal.thoriumPink;
+                hitColor = backColor = trailColor = HIPal.carbideShot;
                 frontColor = Color.white;
                 trailLength = 11;
                 trailWidth = 2.4f;
+                trailEffect = Fx.disperseTrail;
+                trailInterval = 2f;
                 hitEffect = despawnEffect = Fx.hitBulletColor;
                 smokeEffect = Fx.shootBigSmoke;
                 shootEffect = new MultiEffect(Fx.shootSmallColor, Fx.colorSpark);
+                trailRotation = true;
+                fragBullets = 3;
+                fragRandomSpread = 0f;
+                fragSpread = 25f;
+                fragVelocityMin = 1f;
+                fragBullet = new BasicBulletType(8.7f, 245f) {{
+                    width = 10f;
+                    height = 15f;
+                    lifetime = 8.55f;
+                    pierce = pierceBuilding = true;
+                    pierceCap = 2;
+                    hitColor = backColor = trailColor = HIPal.carbideShot;
+                    frontColor = Color.white;
+                    trailLength = 11;
+                    trailWidth = 1.9f;
+                    hitEffect = despawnEffect = Fx.hitBulletColor;
+                    smokeEffect = Fx.shootBigSmoke;
+                    buildingDamageMultiplier = 0.22f;
+                }};
             }});
             health = 2330;
             size = 4;
@@ -3794,11 +3817,12 @@ public final class HIBlocks {
             shootY = 0f;
             ammoUseEffect = Fx.none;
             inaccuracy = rotateSpeed = shake = 1f;
-            maxAmmo = 24;
+            maxAmmo = 60;
             ammoPerShot = 2;
             recoilTime = 22f;
             recoil = 3f;
             coolant = consume(new ConsumeLiquid(Liquids.water, 0.5f));
+            buildCostMultiplier = 0.8f;
             squareSprite = false;
         }};
         //sandbox

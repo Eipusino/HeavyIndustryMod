@@ -13,7 +13,7 @@ import java.lang.reflect.*;
  *
  * @deprecated deprecated
  */
-@Deprecated(since = "1.0.6", forRemoval = true)
+@Deprecated(since = "1.0.6")
 public class ContentIcons {
     private final static ObjectMap<ContentType, ObjectMap<MappableContent, Character>> iconMap = new ObjectMap<>();
 

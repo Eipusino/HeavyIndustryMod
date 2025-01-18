@@ -11,6 +11,7 @@ public final class HIPal {
     /** Static read-only palettes that are used throughout the mod. */
     public static final Color
             miku = Color.valueOf("39c5bb"),
+            carbideShot = Color.valueOf("ab8ec5"),
             nanocoreGreen = HIItems.nanocore.color,
             nanocoreErekirOrange = HIItems.nanocoreErekir.color,
             uraniumGrey = HIItems.uranium.color,

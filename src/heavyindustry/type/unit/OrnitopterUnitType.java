@@ -10,10 +10,9 @@ import heavyindustry.graphics.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.io.*;
-import mindustry.type.*;
 import mindustry.world.meta.*;
 
-public class OrnitopterUnitType extends UnitType {
+public class OrnitopterUnitType extends UnitTypef {
     public final Seq<Blade> blades = new Seq<>();
 
     public float bladeDeathMoveSlowdown = 0.01f, fallDriftScl = 60f;

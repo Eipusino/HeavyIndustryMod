@@ -16,6 +16,7 @@ import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
+import heavyindustry.core.*;
 import heavyindustry.ui.dialogs.*;
 import heavyindustry.ui.fragment.*;
 import mindustry.core.*;
@@ -43,7 +44,7 @@ public final class UIUtils {
     private static final Vec2 ctrlVec = new Vec2();
     private static final DecimalFormat df = new DecimalFormat("######0.0");
     private static final Vec2 point = new Vec2(-1, -1);
-    private static final Table starter = new Table(Tex.paneSolid) {};
+    private static final Table starter = new Table(Tex.paneSolid);
 
     private static long lastToast;
     private static Table pTable = new Table(), floatTable = new Table();
@@ -61,7 +62,9 @@ public final class UIUtils {
 
     public static void init() {
         powerInfoDialog = new PowerGraphInfoDialog();
-        cliffPlacerFragment = new CliffPlacerFragment().build(ui.hudGroup);
+
+        if (!HeavyIndustryMod.isPlugin)
+            cliffPlacerFragment = new CliffPlacerFragment().build(ui.hudGroup);
     }
 
     /** Based on {@link UI#formatAmount(long)} but for floats. */
@@ -72,10 +75,10 @@ public final class UIUtils {
 
         float mag = Math.abs(number);
         String sign = number < 0 ? "-" : "";
-        if (mag >= 1_000_000_000f) {
-            return sign + Strings.fixed(mag / 1_000_000_000f, 2) + "[gray]" + UI.billions + "[]";
-        } else if (mag >= 1_000_000f) {
-            return sign + Strings.fixed(mag / 1_000_000f, 2) + "[gray]" + UI.millions + "[]";
+        if (mag >= 1000000000f) {
+            return sign + Strings.fixed(mag / 1000000000f, 2) + "[gray]" + UI.billions + "[]";
+        } else if (mag >= 1000000f) {
+            return sign + Strings.fixed(mag / 1000000f, 2) + "[gray]" + UI.millions + "[]";
         } else if (mag >= 1000f) {
             return sign + Strings.fixed(mag / 1000f, 2) + "[gray]" + UI.thousands + "[]";
         } else {

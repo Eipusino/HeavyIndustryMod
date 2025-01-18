@@ -36,7 +36,7 @@ public final class EntityRegister {
                 }
             }
 
-            throw new IndexOutOfBoundsException("In case you used up all 256 class ids; use the same code for ~250 units you idiot.");
+            throw new IndexOutOfBoundsException("In case you used up all 256 class ids; use the same code for ~200 units you idiot.");
         }
     }
 
@@ -62,6 +62,14 @@ public final class EntityRegister {
     }
 
     public static void load() {
+        put("Unitf", Unitf.class, Unitf::new);
+        put("MechUnitf", MechUnitf.class, MechUnitf::new);
+        put("LegsUnitf", LegsUnitf.class, LegsUnitf::new);
+        put("PayloadUnitf", PayloadUnitf.class, PayloadUnitf::new);
+        put("TankUnitf", TankUnitf.class, TankUnitf::new);
+        put("BuildingTetherPayloadUnitf", BuildingTetherPayloadUnitf.class, BuildingTetherPayloadUnitf::new);
+        put("UnitWaterMovef", UnitWaterMovef.class, UnitWaterMovef::new);
+        put("TimedKillUnitf", TimedKillUnitf.class, TimedKillUnitf::new);
         put("PayloadLegsUnit", PayloadLegsUnit.class, PayloadLegsUnit::new);
         put("BuildingTetherPayloadLegsUnit", BuildingTetherPayloadLegsUnit.class, BuildingTetherPayloadLegsUnit::new);
         put("OrnitopterUnit", OrnitopterUnit.class, OrnitopterUnit::new);

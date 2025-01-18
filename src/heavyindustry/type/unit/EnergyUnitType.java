@@ -1,6 +1,7 @@
 package heavyindustry.type.unit;
 
 import arc.*;
+import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;

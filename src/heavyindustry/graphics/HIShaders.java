@@ -101,7 +101,7 @@ public final class HIShaders {
     public static final class DepthShader extends Shader {
         public Camera3D camera;
 
-        /** This class only requires one instance. Please use {@link HIShaders#depth}. */
+        /** This class only requires one instance. Please use {@link #depth}. */
         private DepthShader() {
             super(mv("depth"), mf("depth"));
         }
@@ -116,7 +116,7 @@ public final class HIShaders {
     public static final class DepthScreenspaceShader extends Shader {
         public DepthFrameBuffer buffer;
 
-        /** This class only requires one instance. Please use {@link HIShaders#depthScreenspace}. */
+        /** This class only requires one instance. Please use {@link #depthScreenspace}. */
         private DepthScreenspaceShader() {
             super(mv("depth-screenspace"), mf("depth-screenspace"));
         }
@@ -141,7 +141,7 @@ public final class HIShaders {
         public Camera3D camera;
         public AtmospherePlanet planet;
 
-        /** This class only requires one instance. Please use {@link HIShaders#depthAtmosphere}. */
+        /** This class only requires one instance. Please use {@link #depthAtmosphere}. */
         private DepthAtmosphereShader() {
             super(mv("depth-atmosphere"), mf("depth-atmosphere"));
         }
@@ -174,7 +174,7 @@ public final class HIShaders {
         public float alpha = 1f;
         public Planet planet;
 
-        /** This class only requires one instance. Please use {@link HIShaders#planetTextureShader}. */
+        /** This class only requires one instance. Please use {@link #planetTextureShader}. */
         private PlanetTextureShader() {
             super(mv("circle-mesh"), mf("circle-mesh"));
         }
@@ -203,7 +203,7 @@ public final class HIShaders {
         public Texture texture = atlas.white().texture;
         public float scl = 4f;
 
-        /** This class only requires one instance. Please use {@link HIShaders#tiler}. */
+        /** This class only requires one instance. Please use {@link #tiler}. */
         public Tiler() {
             super(dv("screenspace"), mf("tiler"));
         }
@@ -224,7 +224,7 @@ public final class HIShaders {
     public static final class AlphaShader extends Shader {
         public float alpha = 1f;
 
-        /** This class only requires one instance. Please use {@link HIShaders#alphaShader}. */
+        /** This class only requires one instance. Please use {@link #alphaShader}. */
         private AlphaShader() {
             super(dv("screenspace"), mf("postalpha"));
         }
@@ -243,7 +243,7 @@ public final class HIShaders {
         public float minThreshold = 0.6f;
         public float waveScl = 0.2f;
 
-        /** This class only requires one instance. Please use {@link HIShaders#wave}. */
+        /** This class only requires one instance. Please use {@link #wave}. */
         private WaveShader() {
             super(dv("screenspace"), mf("wave"));
         }
@@ -275,7 +275,7 @@ public final class HIShaders {
         public float waveScl = 0.03f;
         public float sideLen = 10;
 
-        /** This class only requires one instance. Please use {@link HIShaders#mirrorField}. */
+        /** This class only requires one instance. Please use {@link #mirrorField}. */
         private MirrorFieldShader() {
             super(dv("screenspace"), mf("mirrorfield"));
         }
@@ -302,7 +302,7 @@ public final class HIShaders {
     public static final class MaskShader extends Shader {
         public Texture texture;
 
-        /** This class only requires one instance. Please use {@link HIShaders#alphaMask}. */
+        /** This class only requires one instance. Please use {@link #alphaMask}. */
         private MaskShader() {
             super(dv("screenspace"), mf("alphamask"));
         }

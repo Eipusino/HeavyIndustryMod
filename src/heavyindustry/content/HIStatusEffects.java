@@ -112,7 +112,6 @@ public final class HIStatusEffects {
     public static class LoadStatusEffect extends StatusEffect {
         public LoadStatusEffect(String name) {
             super(name);
-            outline = true;
         }
 
         @Override

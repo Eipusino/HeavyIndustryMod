@@ -8,7 +8,7 @@ import mindustry.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 
-public class SentryUnit extends TimedKillUnit implements Sentryc {
+public class SentryUnit extends TimedKillUnitf implements Sentryc {
     public Vec2 anchorVel = new Vec2();
     public float anchorX, anchorY, anchorRot;
     public float anchorDrag;

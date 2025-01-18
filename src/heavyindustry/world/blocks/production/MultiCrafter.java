@@ -32,7 +32,7 @@ import mindustry.world.meta.*;
 import static mindustry.Vars.*;
 
 /**
- * MultiCrafter， You can freely choose to change the production formula.
+ * MultiCrafter. You can freely choose to change the production formula.
  * <p>We currently do not support JSON minimalist format parsing, which is too cumbersome to write.
  *
  * @author Eipusino
@@ -555,13 +555,13 @@ public class MultiCrafter extends Block {
                 if (hasDoubleOutput) {
                     for (int i = 0; i < rotationIcon.length; i++) {
                         var button = new ImageButton();
-                        int fi = i;
-                        button.table(img -> img.image(rotationIcon[fi]).color(Color.white).size(40).pad(10f));
+                        int j = i;
+                        button.table(img -> img.image(rotationIcon[j]).color(Color.white).size(40).pad(10f));
                         button.changed(() -> {
-                            configs[0] = fi;
+                            configs[0] = j;
                             configure(configs);
                         });
-                        button.update(() -> button.setChecked(rotation == fi));
+                        button.update(() -> button.setChecked(rotation == j));
                         button.setStyle(Styles.clearNoneTogglei);
                         rtc.add(button).tooltip(String.valueOf(i * 90));
                     }

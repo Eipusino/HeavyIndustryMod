@@ -47,7 +47,7 @@ public class JumpGate extends Block {
     protected static final Vec2 linkVec = new Vec2();
     protected static final Point2 point = new Point2();
     protected static int lastSelectedInt = 0;
-    protected static int selectID = 0, selectNum = 1;
+    protected static int selectId = 0, selectNum = 1;
 
     public final IntMap<UnitSet> calls = new IntMap<>();
     public int maxSpawnPerOne = 15;
@@ -590,7 +590,7 @@ public class JumpGate extends Block {
                                 IntMap.Entry<UnitSet> entry = tmpSetSeq.get(i);
                                 UnitSet set = entry.value;
                                 if (hideSet(set.type)) continue;
-                                int finalI = i;
+                                int j = i;
                                 table.table(Tex.whiteui, in -> {
                                     in.marginLeft(6).marginRight(6);
 
@@ -600,14 +600,14 @@ public class JumpGate extends Block {
                                                 if (hasConsume(set, planSpawnNum)) in.color.set(Pal.accent);
                                                 else in.color.set(Pal.ammo);
                                             } else in.color.set(Pal.lightishGray);
-                                        } else if (selectID == entry.key) {
+                                        } else if (selectId == entry.key) {
                                             in.color.set(Pal.accent).lerp(Pal.gray, 0.5f);
                                         } else in.color.set(Pal.gray);
                                     });
 
                                     in.button(new TextureRegionDrawable(set.type.fullIcon), Styles.emptyi, LEN, () -> {
-                                        selectID = entry.key;
-                                        lastSelectedInt = finalI;
+                                        selectId = entry.key;
+                                        lastSelectedInt = j;
                                     }).padRight(OFFSET * 2).padLeft(4f);
                                     in.add(set.type.localizedName).left().fill();
                                     in.table(ta -> {
@@ -635,7 +635,7 @@ public class JumpGate extends Block {
                         t.table(t1 -> {
                             t1.button("@back", Icon.left, Styles.cleart, this::hide).marginLeft(OFFSET).growX().height(LEN);
                             t1.button("@cancel", Icon.cancel, Styles.cleart, () -> configure(IntSeq.with(1, 0, 0))).marginLeft(OFFSET).growX().height(LEN);
-                            t1.button("@confirm", Icon.cancel, Styles.cleart, () -> configure(IntSeq.with(1, selectID, selectNum))).marginLeft(OFFSET).growX().height(LEN);
+                            t1.button("@confirm", Icon.cancel, Styles.cleart, () -> configure(IntSeq.with(1, selectId, selectNum))).marginLeft(OFFSET).growX().height(LEN);
                         }).growX().fillY();
                     }).grow().row();
 
@@ -644,21 +644,21 @@ public class JumpGate extends Block {
 
                     keyDown(c -> {
                         if (c == KeyCode.backspace) configure(IntSeq.with(1, 0, 0));
-                        if (c == KeyCode.enter) configure(IntSeq.with(1, selectID, selectNum));
+                        if (c == KeyCode.enter) configure(IntSeq.with(1, selectId, selectNum));
 
                         if (c == KeyCode.down) {
                             if (lastSelectedInt < tmpSetSeq.size - 1) {
-                                selectID = tmpSetSeq.get(++lastSelectedInt).key;
+                                selectId = tmpSetSeq.get(++lastSelectedInt).key;
                             } else {
-                                selectID = tmpSetSeq.get(lastSelectedInt = 0).key;
+                                selectId = tmpSetSeq.get(lastSelectedInt = 0).key;
                             }
                         }
 
                         if (c == KeyCode.up) {
                             if (lastSelectedInt > 0) {
-                                selectID = tmpSetSeq.get(--lastSelectedInt).key;
+                                selectId = tmpSetSeq.get(--lastSelectedInt).key;
                             } else {
-                                selectID = tmpSetSeq.get(lastSelectedInt = tmpSetSeq.size - 1).key;
+                                selectId = tmpSetSeq.get(lastSelectedInt = tmpSetSeq.size - 1).key;
                             }
                         }
 
@@ -743,7 +743,7 @@ public class JumpGate extends Block {
             if (!calls.keys().toArray().contains(set)) {
                 if (isCalling()) {
                     if (getSet() != null) {
-                        Building target = team.data().hasCore() ? team.core() : self();
+                        Building target = team.data().hasCore() ? team.core() : this;
 
                         for (ItemStack stack : ItemStack.mult(getSet().dynamicRequirements(team), buildingSpawnNum * (costTime(getSet(), true) - buildProgress) / costTime(getSet(), true))) {
                             realItems().add(stack.item, Math.min(stack.amount, target.getMaximumAccepted(stack.item) - realItems().get(stack.item)));

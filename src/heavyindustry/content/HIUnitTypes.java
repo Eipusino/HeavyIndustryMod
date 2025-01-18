@@ -32,7 +32,6 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.type.ammo.*;
-import mindustry.type.unit.*;
 import mindustry.type.weapons.*;
 import mindustry.world.meta.*;
 
@@ -46,7 +45,7 @@ import static mindustry.Vars.*;
  * @author Eipusino
  */
 public final class HIUnitTypes {
-    public static UnitType
+    public static UnitTypef
             //vanilla-tank
             vanguard, striker, counterattack, crush, destruction, purgatory,
             //vanilla-copter
@@ -71,8 +70,8 @@ public final class HIUnitTypes {
     /** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
     public static void load() {
         //vanilla-tank
-        vanguard = new UnitType("vanguard") {{
-            constructor = TankUnit::create;
+        vanguard = new UnitTypef("vanguard") {{
+            constructor = TankUnitf::create;
             squareShape = true;
             omniMovement = false;
             rotateMoveFirst = false;
@@ -110,8 +109,8 @@ public final class HIUnitTypes {
                 }};
             }});
         }};
-        striker = new UnitType("striker") {{
-            constructor = TankUnit::create;
+        striker = new UnitTypef("striker") {{
+            constructor = TankUnitf::create;
             squareShape = true;
             omniMovement = false;
             rotateMoveFirst = false;
@@ -142,8 +141,8 @@ public final class HIUnitTypes {
                 bullet = Bullets.placeholder;
             }});
         }};
-        counterattack = new UnitType("counterattack") {{
-            constructor = TankUnit::create;
+        counterattack = new UnitTypef("counterattack") {{
+            constructor = TankUnitf::create;
             treadFrames = 8;
             treadPullOffset = 8;
             treadRects = new Rect[]{new Rect(-45f, -45f, 24f, 88f)};
@@ -187,8 +186,8 @@ public final class HIUnitTypes {
                 bullet = Bullets.placeholder;
             }});
         }};
-        crush = new UnitType("crush") {{
-            constructor = TankUnit::create;
+        crush = new UnitTypef("crush") {{
+            constructor = TankUnitf::create;
             squareShape = true;
             omniMovement = false;
             rotateMoveFirst = false;
@@ -229,8 +228,8 @@ public final class HIUnitTypes {
                 bullet = Bullets.placeholder;
             }});
         }};
-        destruction = new UnitType("destruction") {{
-            constructor = TankUnit::create;
+        destruction = new UnitTypef("destruction") {{
+            constructor = TankUnitf::create;
             squareShape = true;
             omniMovement = false;
             rotateMoveFirst = false;
@@ -273,8 +272,8 @@ public final class HIUnitTypes {
                 }});
             }});
         }};
-        purgatory = new UnitType("purgatory") {{
-            constructor = TankUnit::create;
+        purgatory = new UnitTypef("purgatory") {{
+            constructor = TankUnitf::create;
             squareShape = true;
             omniMovement = false;
             rotateMoveFirst = false;
@@ -751,8 +750,8 @@ public final class HIUnitTypes {
             hideDetails = false;
         }};
         //vanilla-tier6
-        suzerain = new UnitType("suzerain") {{
-            constructor = MechUnit::create;
+        suzerain = new UnitTypef("suzerain") {{
+            constructor = MechUnitf::create;
             speed = 0.4f;
             hitSize = 40f;
             rotateSpeed = 1.65f;
@@ -854,8 +853,8 @@ public final class HIUnitTypes {
                 }};
             }});
         }};
-        supernova = new UnitType("supernova") {{
-            constructor = LegsUnit::create;
+        supernova = new UnitTypef("supernova") {{
+            constructor = LegsUnitf::create;
             hitSize = 41f;
             health = 59000f;
             armor = 32f;
@@ -979,8 +978,8 @@ public final class HIUnitTypes {
                 }};
             }});
         }};
-        cancer = new UnitType("cancer") {{
-            constructor = LegsUnitLegacyToxopid::create;
+        cancer = new UnitTypef("cancer") {{
+            constructor = LegsUnitf::create;
             speed = 0.5f;
             hitSize = 33f;
             health = 54000f;
@@ -1094,8 +1093,8 @@ public final class HIUnitTypes {
                 }};
             }});
         }};
-        sunlit = new UnitType("sunlit") {{
-            constructor = UnitEntity::create;
+        sunlit = new UnitTypef("sunlit") {{
+            constructor = Unitf::create;
             speed = 0.55f;
             accel = 0.04f;
             drag = 0.04f;
@@ -1193,8 +1192,8 @@ public final class HIUnitTypes {
                 }};
             }});
         }};
-        windstorm = new UnitType("windstorm") {{
-            constructor = PayloadUnit::create;
+        windstorm = new UnitTypef("windstorm") {{
+            constructor = PayloadUnitf::create;
             aiController = HealingDefenderAI::new;
             armor = 41f;
             health = 61000f;
@@ -1250,8 +1249,8 @@ public final class HIUnitTypes {
                 bullet = Bullets.placeholder;
             }});
         }};
-        mosasaur = new UnitType("mosasaur") {{
-            constructor = UnitWaterMove::create;
+        mosasaur = new UnitTypef("mosasaur") {{
+            constructor = UnitWaterMovef::create;
             trailLength = 70;
             waveTrailX = 25f;
             waveTrailY = -32f;
@@ -1405,8 +1404,8 @@ public final class HIUnitTypes {
                 }};
             }});
         }};
-        killerWhale = new UnitType("killer-whale") {{
-            constructor = UnitWaterMove::create;
+        killerWhale = new UnitTypef("killer-whale") {{
+            constructor = UnitWaterMovef::create;
             armor = 48f;
             drag = 0.2f;
             speed = 0.7f;
@@ -1606,8 +1605,10 @@ public final class HIUnitTypes {
             });
         }};
         //vanilla-tier6-erekir
-        dominate = new TankUnitType("dominate") {{
-            constructor = TankUnit::create;
+        dominate = new UnitTypef("dominate") {{
+            erekir();
+            tank();
+            constructor = TankUnitf::create;
             hitSize = 57f;
             treadPullOffset = 1;
             speed = 0.48f;
@@ -1770,8 +1771,9 @@ public final class HIUnitTypes {
                 outline = false;
             }});
         }};
-        oracle = new ErekirUnitType("oracle") {{
-            constructor = LegsUnit::create;
+        oracle = new UnitTypef("oracle") {{
+            erekir();
+            constructor = LegsUnitf::create;
             drag = 0.1f;
             speed = 0.9f;
             hitSize = 50f;
@@ -1823,7 +1825,7 @@ public final class HIUnitTypes {
                 shoot.shots = 1;
                 heatColor = Color.red;
                 for (int i = 0; i < 5; i++) {
-                    int fi = i;
+                    int j = i;
                     parts.add(new RegionPart("-blade") {{
                         under = true;
                         layerOffset = -0.001f;
@@ -1831,11 +1833,11 @@ public final class HIUnitTypes {
                         heatProgress = PartProgress.heat.add(0.2f).min(PartProgress.warmup);
                         progress = PartProgress.warmup.blend(PartProgress.reload, 0.1f);
                         x = 13.5f / 4f;
-                        y = 10f / 4f - fi * 2f;
-                        moveY = 1f - fi * 1f;
-                        moveX = fi * 0.3f;
-                        moveRot = -45f - fi * 17f;
-                        moves.add(new PartMove(PartProgress.reload.inv().mul(1.8f).inv().curve(fi / 5f, 0.2f), 0f, 0f, 36f));
+                        y = 10f / 4f - j * 2f;
+                        moveY = 1f - j * 1f;
+                        moveX = j * 0.3f;
+                        moveRot = -45f - j * 17f;
+                        moves.add(new PartMove(PartProgress.reload.inv().mul(1.8f).inv().curve(j / 5f, 0.2f), 0f, 0f, 36f));
                     }});
                 }
                 bullet = new TrailFadeBulletType(7f, 360f) {{
@@ -1970,8 +1972,9 @@ public final class HIUnitTypes {
                 }};
             }});
         }};
-        havoc = new ErekirUnitType("havoc") {{
-            constructor = PayloadUnit::create;
+        havoc = new UnitTypef("havoc") {{
+            erekir();
+            constructor = PayloadUnitf::create;
             aiController = FlyingFollowAI::new;
             envDisabled = 0;
             lowAltitude = false;
@@ -2078,8 +2081,9 @@ public final class HIUnitTypes {
             setEnginesMirror(new UnitEngine(95f / 4f, -56f / 4, 5f, 330f), new UnitEngine(89f / 4, -95f / 4, 4f, 315f));
         }};
         //miner-erekir
-        miner = new ErekirUnitType("miner") {{
-            constructor = BuildingTetherPayloadUnit::create;
+        miner = new UnitTypef("miner") {{
+            erekir();
+            constructor = BuildingTetherPayloadUnitf::create;
             defaultCommand = UnitCommand.mineCommand;
             controller = u -> new MinerPointAI();
             flying = true;
@@ -2111,8 +2115,9 @@ public final class HIUnitTypes {
             targetPriority = -2;
             setEnginesMirror(new UnitEngine(24 / 4f, -24 / 4f, 2.3f, 315f));
         }};
-        largeMiner = new ErekirUnitType("large-miner") {{
-            constructor = BuildingTetherPayloadUnit::create;
+        largeMiner = new UnitTypef("large-miner") {{
+            erekir();
+            constructor = BuildingTetherPayloadUnitf::create;
             defaultCommand = UnitCommand.mineCommand;
             controller = u -> new MinerPointAI();
             flying = true;
@@ -2145,7 +2150,8 @@ public final class HIUnitTypes {
             targetPriority = -2;
             setEnginesMirror(new UnitEngine(40 / 4f, -40 / 4f, 3f, 315f));
         }};
-        legsMiner = new ErekirUnitType("legs-miner") {{
+        legsMiner = new UnitTypef("legs-miner") {{
+            erekir();
             constructor = BuildingTetherPayloadLegsUnit::create;
             isEnemy = false;
             allowedInPayloads = false;
@@ -2183,8 +2189,9 @@ public final class HIUnitTypes {
             }});
         }};
         //other
-        armoredCarrierVehicle = new UnitType("armored-carrier-vehicle") {{
-            constructor = TankUnit::create;
+        armoredCarrierVehicle = new UnitTypef("armored-carrier-vehicle") {{
+            tank();
+            constructor = TankUnitf::create;
             healFlash = false;
             treadFrames = 16;
             treadPullOffset = 8;
@@ -2208,7 +2215,7 @@ public final class HIUnitTypes {
             fogRadius = 30f;
             deathExplosionEffect = new MultiEffect(HIFx.explodeImpWave);
         }};
-        pioneer = new UnitType("pioneer") {{
+        pioneer = new UnitTypef("pioneer") {{
             constructor = PayloadLegsUnit::create;
             drag = 0.1f;
             speed = 0.62f;
@@ -2260,8 +2267,8 @@ public final class HIUnitTypes {
                 }};
             }});
         }};
-        vulture = new UnitType("vulture") {{
-            constructor = UnitEntity::create;
+        vulture = new UnitTypef("vulture") {{
+            constructor = Unitf::create;
             aiController = SurroundAI::new;
             weapons.add(new Weapon() {{
                 top = false;
@@ -2322,8 +2329,8 @@ public final class HIUnitTypes {
             armor = 10.5f;
             flying = true;
         }};
-        burner = new UnitType("burner") {{
-            constructor = MechUnit::create;
+        burner = new UnitTypef("burner") {{
+            constructor = MechUnitf::create;
             speed = 0.36f;
             hitSize = 24f;
             rotateSpeed = 2.1f;
@@ -2386,8 +2393,8 @@ public final class HIUnitTypes {
                 }
             });
         }};
-        shadowBlade = new UnitType("shadow-blade") {{
-            constructor = MechUnit::create;
+        shadowBlade = new UnitTypef("shadow-blade") {{
+            constructor = MechUnitf::create;
             speed = 0.36f;
             hitSize = 24f;
             rotateSpeed = 2.1f;
@@ -2499,8 +2506,8 @@ public final class HIUnitTypes {
                 }
             });
         }};
-        artilleryFirePioneer = new UnitType("artillery-fire-pioneer") {{
-            constructor = UnitEntity::create;
+        artilleryFirePioneer = new UnitTypef("artillery-fire-pioneer") {{
+            constructor = Unitf::create;
             hitSize = 28f;
             speed = 1.1f;
             accel = 0.05f;
@@ -2585,8 +2592,9 @@ public final class HIUnitTypes {
             });
         }};
         //elite
-        tiger = new UnitType("tiger") {{
-            constructor = MechUnit::create;
+        tiger = new UnitTypef("tiger") {{
+            constructor = MechUnitf::create;
+            damageMultiplier = 0.9f;
             drawShields = false;
             engineOffset = 18f;
             engineSize = 9f;
@@ -2796,15 +2804,14 @@ public final class HIUnitTypes {
             }});
             hideDetails = false;
         }};
-        thunder = new UnitType("thunder") {{
-            constructor = TankUnit::create;
+        thunder = new UnitTypef("thunder") {{
+            tank();
+            constructor = TankUnitf::create;
+            damageMultiplier = 0.7f;
             health = 72500f;
             armor = 115f;
             rotateSpeed = 1f;
             speed = 0.66f;
-            squareShape = true;
-            omniMovement = false;
-            rotateMoveFirst = true;
             envDisabled = Env.none;
             hitSize = 47f;
             accel = 0.25f;
@@ -2891,13 +2898,13 @@ public final class HIUnitTypes {
                     }
                 };
                 for (int i = 1; i <= 3; i++) {
-                    int fi = i;
+                    int j = i;
                     parts.add(new RegionPart("-blade") {{
-                        progress = PartProgress.warmup.delay((3 - fi) * 0.3f).blend(PartProgress.reload, 0.3f);
+                        progress = PartProgress.warmup.delay((3 - j) * 0.3f).blend(PartProgress.reload, 0.3f);
                         heatProgress = PartProgress.heat.add(0.3f).min(PartProgress.warmup);
                         mirror = true;
                         under = true;
-                        moveRot = -40f * fi;
+                        moveRot = -40f * j;
                         moveX = 3f;
                         layerOffset = -0.002f;
                         x = 11 / 4f;
@@ -2976,6 +2983,7 @@ public final class HIUnitTypes {
             hideDetails = false;
         }};
         vast = new EnergyUnitType("vast") {{
+            envDisabled = Env.none;
             constructor = EnergyUnit::create;
             damageMultiplier = 0.3f;
             clipSize = 260f;

@@ -17,14 +17,14 @@ import mindustry.world.*;
 import static mindustry.Vars.*;
 
 public class HIMenuRenderer extends MenuRenderer {
-    private final int viewWidth = !mobile ? 100 : 60;
-    private final MenuSlide[] menus = {MenuSlides.stone, MenuSlides.grass};
+    protected int viewWidth = !mobile ? 100 : 60;
+    protected MenuSlide[] menus = {MenuSlides.stone, MenuSlides.grass};
 
     public float slideDuration = 60 * 40, transitionTime = 120, scrollSpeed = 1;
 
-    private float time;
-    private int width = !mobile ? 100 : 60, height = !mobile ? 50 : 40;
-    private int index = 0;
+    protected float time;
+    protected int width = !mobile ? 100 : 60, height = !mobile ? 50 : 40;
+    protected int index = 0;
 
     public HIMenuRenderer() {
         width += (int) Math.ceil((slideDuration * scrollSpeed) / 60) + 5;
@@ -35,10 +35,10 @@ public class HIMenuRenderer extends MenuRenderer {
     public void unityGenerate() {
         // shuffle the menus
         for (int i = menus.length - 1; i >= 0; i--) {
-            int ii = (int) Mathf.randomSeed(Time.nanos(), i);
+            int j = (int) Mathf.randomSeed(Time.nanos(), i);
             MenuSlide temp = menus[i];
-            menus[i] = menus[ii];
-            menus[ii] = temp;
+            menus[i] = menus[j];
+            menus[j] = temp;
         }
 
         Time.mark();
@@ -72,7 +72,7 @@ public class HIMenuRenderer extends MenuRenderer {
     }
 
     public static class MenuSlide implements Disposable {
-        private static Rand rand = new Rand();
+        protected static final Rand rand = new Rand();
 
         static {
             rand.setSeed(Time.millis());
@@ -107,8 +107,6 @@ public class HIMenuRenderer extends MenuRenderer {
             return rand.nextInt();
         }
 
-        ;
-
         public void generateWorld(int width, int height) {
             this.width = width;
             this.height = height;
@@ -132,8 +130,6 @@ public class HIMenuRenderer extends MenuRenderer {
             Log.info("Generated in " + Time.elapsed());
             cache();
         }
-
-        ;
 
         protected void generate(Tiles tiles) {
             for (int x = 0; x < tiles.width; x++) {
@@ -203,8 +199,6 @@ public class HIMenuRenderer extends MenuRenderer {
             Core.batch = prev;
         }
 
-        ;
-
         public void render(float time, float duration, int viewWidth, int viewHeight) {
             float movement = ((width - viewWidth) * tilesize) / duration;
             float scaling = Math.max(Scl.scl(4f), Math.max(Core.graphics.getWidth() / ((viewWidth - 1f) * tilesize), Core.graphics.getHeight() / ((viewHeight - 1f) * tilesize)));
@@ -249,8 +243,6 @@ public class HIMenuRenderer extends MenuRenderer {
             Draw.color();
         }
 
-        ;
-
         @Override
         public void dispose() {
             batch.dispose();
@@ -260,8 +252,7 @@ public class HIMenuRenderer extends MenuRenderer {
 
     public static class MenuSlides {
         public static MenuSlide
-
-                stone = new MenuSlide(false) {
+        stone = new MenuSlide(false) {
             @Override
             protected void generate(Tiles tiles) {
                 boolean tech = Mathf.chance(0.25);

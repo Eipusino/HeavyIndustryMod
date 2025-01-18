@@ -15,7 +15,6 @@ import java.util.*;
 
 import static heavyindustry.ui.elements.markdown.Markdown.*;
 
-@SuppressWarnings("deprecation")
 public class BaseDrawRenderer extends AbstractVisitor implements NodeRenderer {
     public static final HashSet<Class<? extends Node>> TypeSet = new HashSet<>(Arrays.asList(
             Document.class,
@@ -42,8 +41,8 @@ public class BaseDrawRenderer extends AbstractVisitor implements NodeRenderer {
 
     protected final DrawRendererContext context;
 
-    public BaseDrawRenderer(DrawRendererContext context) {
-        this.context = context;
+    public BaseDrawRenderer(DrawRendererContext cont) {
+        context = cont;
     }
 
     protected static TextureRegion downloadImg(String url, TextureRegion errDef) {
@@ -186,7 +185,8 @@ public class BaseDrawRenderer extends AbstractVisitor implements NodeRenderer {
         Color lastColor = context.currFontColor;
         context.currFont = style.emFont;
         context.currFontColor = style.emColor;
-        //rendOff[0] -= currFont.getSpaceXadvance()/2; //只在这里有半个多余的空格长度，原因不明，手动回退
+        //rendOff[0] -= currFont.getSpaceXadvance()/2;
+        //There is only half an extra space length here, the reason is unknown, manual rollback is required
         super.visit(emphasis);
         context.currFont = last;
         context.currFontColor = lastColor;
@@ -331,12 +331,12 @@ public class BaseDrawRenderer extends AbstractVisitor implements NodeRenderer {
             protected void visitChildren(Node parent) {
                 Node node = parent.getFirstChild();
 
-                int begin = orderedList.getStartNumber();
+                int begin = orderedList.getMarkerStartNumber();
                 while (node != null) {
                     Node next = node.getNext();
                     context.row();
                     context.lastText = context.makeStr(
-                            Integer.toString(begin++) + orderedList.getDelimiter() + " ",
+							begin++ + orderedList.getMarkerDelimiter() + " ",
                             context.currFont,
                             context.currFontColor
                     );

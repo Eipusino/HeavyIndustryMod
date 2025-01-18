@@ -20,8 +20,8 @@ public class GravityField {
     private final ObjectSet<GravityField> otherFields = new ObjectSet<>();
     private final ObjectMap<GravityField, Vec2> bufferAccelerations = new ObjectMap<>();
 
-    public GravityField(GravitySystem system) {
-        this.system = system;
+    public GravityField(GravitySystem sys) {
+        system = sys;
     }
 
     /**

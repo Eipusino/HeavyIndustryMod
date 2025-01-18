@@ -4,7 +4,7 @@ import arc.files.*;
 import arc.struct.*;
 import arc.util.*;
 import arc.util.serialization.*;
-import heavyindustry.mod.ContentParserf.*;
+import heavyindustry.mod.ExtraContentParser.*;
 import mindustry.*;
 import mindustry.ctype.*;
 import mindustry.mod.*;
@@ -17,13 +17,13 @@ import java.util.*;
 public final class LoadMod {
     public static final String[] metaFiles = {"mod.json", "mod.hjson", "plugin.json", "plugin.hjson"};
 
-    private static final ContentParserf parser = new ContentParserf();
+    private static final ExtraContentParser parser = new ExtraContentParser();
     /**
      * The following mods have stolen other mod textures or engaged in even worse behavior. If
      * attempting to use reflection to remove elements from {@code blacklistedMods} to play HeavyIndustry
      * Mod, this itself contradicts the author's advocacy of protecting individual labor achievements.
      */
-    private static final ObjectSet<String> blacklistedMods = ObjectSet.with("\u7d2b\u94a2\u5de5\u4e1a", "venus-industry", "mfxiao2");
+    private static final ObjectSet<String> blacklistedMods = ObjectSet.with("mfxiao2");
 
     /** Don't let anyone instantiate this class. */
     private LoadMod() {}
@@ -104,7 +104,7 @@ public final class LoadMod {
     }
 
     /** Adds a listener for parsed JSON objects. */
-    public static void addParseListener(ParseListenerf hook){
+    public static void addParseListener(ExtraParseListener hook){
         parser.listeners.add(hook);
     }
 

@@ -14,7 +14,7 @@ import mindustry.gen.*;
 
 import static mindustry.Vars.*;
 
-public class SwordUnit extends UnitEntity implements Swordc {
+public class SwordUnit extends Unitf implements Swordc {
     public IntSeq collided = new IntSeq();
     public float lastBaseX = Float.NEGATIVE_INFINITY, lastBaseY;
     public int orbitPos;

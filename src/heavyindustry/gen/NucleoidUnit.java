@@ -15,7 +15,7 @@ import mindustry.type.*;
 import static arc.Core.*;
 import static heavyindustry.core.HeavyIndustryMod.*;
 
-public class NucleoidUnit extends UnitEntity implements Nucleoidc {
+public class NucleoidUnit extends Unitf implements Nucleoidc {
     public float recentDamage = 0f;
     public float reinforcementsReload = 0f;
 
@@ -97,7 +97,7 @@ public class NucleoidUnit extends UnitEntity implements Nucleoidc {
     @Override
     public void rawDamage(float amount) {
         if (type instanceof NucleoidUnitType nType) {
-            boolean hadShields = shield > 1e-4f;
+            boolean hadShields = shield > 0.0001f;
             if (hadShields) {
                 shieldAlpha = 1f;
             }
@@ -120,7 +120,7 @@ public class NucleoidUnit extends UnitEntity implements Nucleoidc {
                     kill();
                 }
 
-                if (hadShields && shield <= 1e-4f) {
+                if (hadShields && shield <= 0.0001f) {
                     Fx.unitShieldBreak.at(x, y, 0f, team.color, this);
                 }
             }

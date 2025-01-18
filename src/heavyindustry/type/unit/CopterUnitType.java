@@ -6,10 +6,8 @@ import arc.math.*;
 import arc.struct.*;
 import heavyindustry.gen.*;
 import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
 
-public class CopterUnitType extends UnitType {
+public class CopterUnitType extends UnitTypef {
     public final Seq<Rotor> rotors = new Seq<>(2);
     public float rotorDeathSlowdown = 0.01f;
     public float fallRotateSpeed = 2.5f;
