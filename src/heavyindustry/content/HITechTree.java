@@ -80,10 +80,7 @@ public final class HITechTree {
             node(largeWaterExtractor, () -> {});
             node(slagExtractor, () -> {});
         });
-        vanillaNode(blastDrill, () -> {
-            node(groundPenetratingDetector, () -> node(groundPenetratingDrill, () -> {}));
-            node(beamDrill, Seq.with(new SectorComplete(impact0078)), () -> {});
-        });
+        vanillaNode(blastDrill, () -> node(beamDrill, Seq.with(new SectorComplete(impact0078)), () -> {}));
         vanillaNode(oilExtractor, () -> node(oilRig, () -> {}));
         //drill-erekir
         vanillaNode(impactDrill, () -> node(minerPoint, Seq.with(new Research(electrolyzer)), () -> node(minerCenter, Seq.with(new Research(atmosphericConcentrator)), () -> {})));

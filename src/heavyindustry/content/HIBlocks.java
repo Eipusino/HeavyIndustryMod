@@ -84,7 +84,7 @@ public final class HIBlocks {
             corruptedMoss, corruptedSporeMoss, corruptedSporeRocks, corruptedSporePine, corruptedSporeFern, corruptedSporePlant, corruptedSporeTree,
             mycelium, myceliumSpore, myceliumShrubs, myceliumPine,
             softRareEarth, patternRareEarth, softRareEarthWall,
-            oreUranium, oreChromium, oreUraniumDeeq, oreChromiumDeeq,
+            oreUranium, oreChromium,
             //wall
             copperWallHuge, copperWallGigantic, titaniumWallHuge, titaniumWallGigantic, armoredWall, armoredWallLarge, armoredWallHuge, armoredWallGigantic,
             uraniumWall, uraniumWallLarge, chromiumWall, chromiumWallLarge, chromiumDoor, chromiumDoorLarge, heavyAlloyWall, heavyAlloyWallLarge, nanoCompositeWall, nanoCompositeWallLarge, shapedWall,
@@ -92,7 +92,7 @@ public final class HIBlocks {
             berylliumWallHuge, berylliumWallGigantic, tungstenWallHuge, tungstenWallGigantic, blastDoorLarge, blastDoorHuge, reinforcedSurgeWallHuge, reinforcedSurgeWallGigantic, carbideWallHuge, carbideWallGigantic, shieldedWallLarge, shieldedWallHuge,
             aparajito, aparajitoLarge,
             //drill
-            titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, beamDrill, groundPenetratingDetector, groundPenetratingDrill,
+            titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, beamDrill,
             //drill-erekir
             heavyPlasmaBore, minerPoint, minerCenter,
             //distribution
@@ -444,25 +444,13 @@ public final class HIBlocks {
             variants = 3;
             oreDefault = true;
             oreThreshold = 0.89f;
-            oreScale = 11;
+            oreScale = 33;
         }};
         oreChromium = new OreBlock("ore-chromium", HIItems.chromium) {{
             variants = 3;
             oreDefault = true;
             oreThreshold = 0.9f;
-            oreScale = 10;
-        }};
-        oreUraniumDeeq = new UndergroundOreBlock("ore-uranium-deep", HIItems.uranium) {{
-            variants = 3;
-            oreDefault = true;
-            oreThreshold = 0.89f;
-            oreScale = 27;
-        }};
-        oreChromiumDeeq = new UndergroundOreBlock("ore-chromium-deep", HIItems.chromium) {{
-            variants = 3;
-            oreDefault = true;
-            oreThreshold = 0.9f;
-            oreScale = 26;
+            oreScale = 32;
         }};
         //wall
         copperWallHuge = new Wall("copper-wall-huge") {{
@@ -817,22 +805,6 @@ public final class HIBlocks {
                 return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
             }
         };
-        groundPenetratingDetector = new OreDetector("ground-penetrating-detector") {{
-            requirements(Category.production, with(Items.copper, 100, Items.lead, 120, Items.silicon, 80, Items.titanium, 50));
-            health = 960;
-            size = 3;
-            squareSprite = false;
-            consumePower(0.5f);
-        }};
-        groundPenetratingDrill = new UndergroundDrill("ground-penetrating-drill") {{
-            requirements(Category.production, with(Items.lead, 100, Items.graphite, 110, Items.silicon, 90, Items.plastanium, 60, Items.surgeAlloy, 30));
-            size = 3;
-            tier = 8;
-            drillTime = 210f;
-            hardnessDrillMultiplier = 12f;
-            consumePower(2f);
-            consumeLiquid(Liquids.water, 0.2f).boost();
-        }};
         //drill-erekir
         heavyPlasmaBore = new BeamDrill("heavy-plasma-bore") {{
             requirements(Category.production, with(Items.silicon, 300, Items.oxide, 150, Items.beryllium, 350, Items.tungsten, 250, Items.carbide, 100));
