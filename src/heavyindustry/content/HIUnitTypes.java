@@ -2807,8 +2807,8 @@ public final class HIUnitTypes {
         thunder = new UnitTypef("thunder") {{
             tank();
             constructor = TankUnitf::create;
-            damageMultiplier = 0.7f;
-            health = 72500f;
+            damageMultiplier = 0.5f;
+            health = 62500f;
             armor = 115f;
             rotateSpeed = 1f;
             speed = 0.66f;
@@ -2985,15 +2985,15 @@ public final class HIUnitTypes {
         vast = new EnergyUnitType("vast") {{
             envDisabled = Env.none;
             constructor = EnergyUnit::create;
-            damageMultiplier = 0.3f;
+            damageMultiplier = 0.2f;
             clipSize = 260f;
             engineLayer = Layer.effect;
             engineOffset = 5f;
             deathExplosionEffect = Fx.none;
             deathSound = Sounds.plasmaboom;
             trailScl = 3f;
-            Seq<StatusEffect> statusEffects = Seq.with(StatusEffects.none, StatusEffects.boss, StatusEffects.invincible);
-            immunities = ObjectSet.with(content.statusEffects().select(s -> s != null && !statusEffects.contains(s)));
+            Seq<StatusEffect> seq = Seq.with(StatusEffects.none, StatusEffects.boss, StatusEffects.invincible);
+            immunities = ObjectSet.with(content.statusEffects().select(s -> s != null && !seq.contains(s)));
             armor = 8f;
             hitSize = 45;
             speed = 1.5f;

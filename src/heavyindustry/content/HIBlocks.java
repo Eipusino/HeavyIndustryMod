@@ -75,7 +75,7 @@ public final class HIBlocks {
             //environment
             cliff, cliffHelper,
             darkPanel7, darkPanel8, darkPanel9, darkPanel10, darkPanel11, darkPanelDamaged,
-            stoneVent, basaltVent, shaleVent, basaltWall, basaltGraphiticWall, basaltPyratiticWall, snowySand, snowySandWall, arkyciteSand, arkyciteSandWall, arkyciteSandBoulder, darksandBoulder,
+            stoneVent, basaltVent, shaleVent, basaltSpikes, basaltWall, basaltGraphiticWall, basaltPyratiticWall, snowySand, snowySandWall, arkyciteSand, arkyciteSandWall, arkyciteSandBoulder, darksandBoulder,
             concreteBlank, concreteFill, concreteNumber, concreteStripe, concrete, stoneFullTiles, stoneFull, stoneHalf, stoneTiles, concreteWall, pit, waterPit,
             brine, nanofluid,
             metalFloorWater, metalFloorWater2, metalFloorWater3, metalFloorWater4, metalFloorWater5, metalFloorDamagedWater,
@@ -143,7 +143,7 @@ public final class HIBlocks {
             unitIniter,
             reinforcedItemSource, reinforcedLiquidSource, reinforcedPowerSource, reinforcedPayloadSource, adaptiveSource,
             omniNode, ultraAssignOverdrive,
-            teamChanger, barrierProjector, invincibleWall, invincibleWallLarge, invincibleWallHuge, invincibleWallGigantic,
+            teamChanger, barrierProjector, nihility, invincibleWall, invincibleWallLarge, invincibleWallHuge, invincibleWallGigantic,
             mustDieTurret, oneShotTurret, pointTurret,
             nextWave;
 
@@ -176,10 +176,13 @@ public final class HIBlocks {
             parent = blendGroup = Blocks.shale;
             attributes.set(Attribute.steam, 1f);
         }};
+        basaltSpikes = new Floor("basalt-spikes", 4) {{
+            attributes.set(Attribute.water, 0.7f);
+        }};
         basaltWall = new StaticWall("basalt-wall") {{
             variants = 3;
             attributes.set(Attribute.sand, 0.7f);
-            Blocks.basalt.asFloor().wall = Blocks.hotrock.asFloor().wall = Blocks.magmarock.asFloor().wall = this;
+            basaltSpikes.asFloor().wall = Blocks.basalt.asFloor().wall = Blocks.hotrock.asFloor().wall = Blocks.magmarock.asFloor().wall = this;
         }};
         basaltGraphiticWall = new StaticWall("basalt-graphitic-wall") {{
             itemDrop = Items.graphite;
@@ -254,7 +257,6 @@ public final class HIBlocks {
             }
         };
         pit = new Floor("pit", 0) {{
-            buildVisibility = BuildVisibility.editorOnly;
             cacheLayer = HICacheLayer.pit;
             placeableOn = false;
             canShadow = false;
@@ -265,7 +267,6 @@ public final class HIBlocks {
             }
         };
         waterPit = new Floor("water-pit", 0) {{
-            buildVisibility = BuildVisibility.editorOnly;
             cacheLayer = HICacheLayer.waterPit;
             isLiquid = true;
             drownTime = 20f;
@@ -274,6 +275,7 @@ public final class HIBlocks {
             status = StatusEffects.wet;
             statusDuration = 120f;
             liquidDrop = Liquids.water;
+            placeableOn = false;
             canShadow = false;
         }
             @Override
@@ -3724,7 +3726,7 @@ public final class HIBlocks {
                 hitEffect = despawnEffect = Fx.hitBulletColor;
                 smokeEffect = Fx.shootBigSmoke;
                 shootEffect = new MultiEffect(Fx.shootSmallColor, Fx.colorSpark);
-            }}, Items.carbide, new BasicBulletType(16f, 367.9f) {{
+            }}, Items.carbide, new BasicBulletType(16f, 347.9f) {{
                 buildingDamageMultiplier = 0.33f;
                 ammoMultiplier = 5f;
                 reloadMultiplier = 0.2f;
@@ -3749,7 +3751,7 @@ public final class HIBlocks {
                 fragRandomSpread = 0f;
                 fragSpread = 25f;
                 fragVelocityMin = 1f;
-                fragBullet = new BasicBulletType(8.7f, 245f) {{
+                fragBullet = new BasicBulletType(8.7f, 235.6f) {{
                     width = 10f;
                     height = 15f;
                     lifetime = 8.55f;
@@ -3955,6 +3957,7 @@ public final class HIBlocks {
         };
         barrierProjector = new BaseShield("barrier-projector") {{
             requirements(Category.effect, BuildVisibility.sandboxOnly, with());
+            health = 1000;
             size = 2;
             hasPower = false;
             radius = 300f;
@@ -3967,6 +3970,80 @@ public final class HIBlocks {
                     return 0f;
                 }
             };
+        }};
+        nihility = new ForceProjector("nihility") {{
+            requirements(Category.effect, BuildVisibility.sandboxOnly, with());
+            health = 1000;
+            size = 2;
+            hasPower = false;
+            radius = 220f;
+            buildType = () -> new ForceBuild() {
+                @Override
+                public void updateTile() {
+                    boolean phaseValid = itemConsumer != null && itemConsumer.efficiency(this) > 0;
+
+                    phaseHeat = Mathf.lerpDelta(phaseHeat, Mathf.num(phaseValid), 0.1f);
+
+                    radscl = Mathf.lerpDelta(radscl, broken ? 0f : warmup, 0.05f);
+
+                    if (phaseValid && !broken && timer(timerUse, phaseUseTime) && efficiency > 0) {
+                        consume();
+                    }
+
+                    if (Mathf.chanceDelta(buildup / shieldHealth * 0.1f)) {
+                        Fx.reactorsmoke.at(x + Mathf.range(tilesize / 2), y + Mathf.range(tilesize / 2));
+                    }
+
+                    warmup = Mathf.lerpDelta(warmup, efficiency, 0.1f);
+
+                    if (buildup > 0f) {
+                        float scale = !broken ? cooldownNormal : cooldownBrokenBase;
+
+                        if (coolantConsumer != null) {
+                            if (coolantConsumer.efficiency(this) > 0f) {
+                                coolantConsumer.update(this);
+                                scale *= (cooldownLiquid * (1f + (liquids.current().heatCapacity - 0.4f) * 0.9f));
+                            }
+                        }
+
+                        buildup -= delta() * scale;
+                    }
+
+                    if (broken && buildup <= 0f) {
+                        broken = false;
+                    }
+
+                    if (buildup >= shieldHealth + phaseShieldBoost && !broken) {
+                        broken = true;
+                        buildup = shieldHealth;
+                        Fx.shieldBreak.at(x, y, realRadius(), team.color);
+                    }
+
+                    if (hit > 0f) {
+                        hit -= 1f / 5f * Time.delta;
+                    }
+
+                    float realRadius = realRadius();
+
+                    if (realRadius > 0 && !broken) {
+                        Groups.unit.intersect(x - realRadius, y - realRadius, realRadius * 2f, realRadius * 2f, trait -> {
+                            if (trait.team != team
+                                    && Intersector.isInsideHexagon(x, y, realRadius() * 2f, trait.x, trait.y)) {
+                                trait.remove();
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void damage(float damage) {}
+
+                @Override
+                public float handleDamage(float amount) {
+                    return 0f;
+                }
+            };
+            itemConsumer = consumeItem(Items.phaseFabric).boost();
         }};
         invincibleWall = new IndestructibleWall("invincible-wall") {{
             requirements(Category.defense, BuildVisibility.sandboxOnly, with());

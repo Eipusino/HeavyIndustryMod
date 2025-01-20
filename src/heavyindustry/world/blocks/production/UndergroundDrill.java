@@ -29,9 +29,9 @@ public class UndergroundDrill extends Drill {
     }
 
     protected static StatValue drillAble(float drillTime, float drillMultiplier, float size, ObjectFloatMap<Item> multipliers, Boolf<Block> filter) {
-        return table -> {
-            table.row();
-            table.table(c -> {
+        return t -> {
+            t.row();
+            t.table(c -> {
                 int i = 0;
                 for (Block block : content.blocks()) {
                     if (!(block instanceof UndergroundOreBlock uo) || !filter.get(block)) continue;
@@ -50,7 +50,7 @@ public class UndergroundDrill extends Drill {
                     }).growX().pad(5);
                     if (++i % 2 == 0) c.row();
                 }
-            }).growX().colspan(table.getColumns());
+            }).growX().colspan(t.getColumns());
         };
     }
 

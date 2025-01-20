@@ -11,6 +11,7 @@ import heavyindustry.type.unit.*;
 import heavyindustry.type.weapons.*;
 import heavyindustry.type.weather.*;
 import heavyindustry.world.blocks.*;
+import heavyindustry.world.blocks.campaign.*;
 import heavyindustry.world.blocks.defense.*;
 import heavyindustry.world.blocks.defense.turrets.*;
 import heavyindustry.world.blocks.distribution.*;
@@ -36,6 +37,7 @@ final class HIClassMap {
 
     static void load() {
         //ai
+        classes.put("NullAI", NullAI.class);
         classes.put("HealingDefenderAI", HealingDefenderAI.class);
         classes.put("SentryAI", SentryAI.class);
         classes.put("SniperAI", SniperAI.class);
@@ -90,12 +92,19 @@ final class HIClassMap {
         //effects
         classes.put("WrapperEffect", WrapperEffect.class);
         //parts
+        classes.put("AimPart", AimPart.class);
+        classes.put("BowHalo", BowHalo.class);
+        classes.put("PartBow", PartBow.class);
+        classes.put("RunningLight", RunningLight.class);
+        classes.put("ArcCharge", ArcCharge.class);
         classes.put("HIDrawPart", HIPartProgress.class);
         classes.put("ConstructPart", ConstructPart.class);
         classes.put("CustomPart", CustomPart.class);
+        classes.put("RangeCirclePart", RangeCirclePart.class);
         //patterns
         classes.put("ShootHelixf", ShootHelixf.class);
         //types-unit
+        classes.put("UnitTypef", UnitTypef.class);
         classes.put("AncientUnitType", AncientUnitType.class);
         classes.put("CopterUnitType", CopterUnitType.class);
         classes.put("EnergyUnitType", EnergyUnitType.class);
@@ -104,6 +113,7 @@ final class HIClassMap {
         classes.put("PesterUnitType", PesterUnitType.class);
         classes.put("SentryUnitType", SentryUnitType.class);
         classes.put("SwordUnitType", SwordUnitType.class);
+        classes.put("TractorBeamUnitType", TractorBeamUnitType.class);
         //types-weapon
         classes.put("AcceleratingWeapon", AcceleratingWeapon.class);
         classes.put("BoostWeapon", BoostWeapon.class);
@@ -194,8 +204,14 @@ final class HIClassMap {
         classes.put("TubeDistributorBuild", TubeDistributor.TubeDistributorBuild.class);
         classes.put("CoveredRouter", CoveredRouter.class);
         classes.put("CoveredRouterBuild", CoveredRouter.CoveredRouterBuild.class);
+        classes.put("RotatorRouter", RotatorRouter.class);
+        classes.put("RotatorRouterBuild", RotatorRouter.RotatorRouterBuild.class);
         classes.put("DuctJunction", DuctJunction.class);
         classes.put("DuctJunctionBuild", DuctJunction.DuctJunctionBuild.class);
+        classes.put("DuctNode", DuctNode.class);
+        classes.put("DuctNodeBuild", DuctNode.DuctNodeBuild.class);
+        classes.put("HeavyDuct", HeavyDuct.class);
+        classes.put("HeavyDuctBuild", HeavyDuct.HeavyDuctBuild.class);
         classes.put("InvertedJunction", InvertedJunction.class);
         classes.put("InvertedJunctionBuild", InvertedJunction.InvertedJunctionBuild.class);
         classes.put("MultiJunction", MultiJunction.class);
@@ -236,6 +252,8 @@ final class HIClassMap {
         classes.put("LiquidUnloaderBuild", LiquidUnloader.LiquidUnloaderBuild.class);
         classes.put("LiquidDirectionalUnloader", LiquidDirectionalUnloader.class);
         classes.put("LiquidDirectionalUnloaderBuild", LiquidDirectionalUnloader.LiquidDirectionalUnloaderBuild.class);
+        classes.put("BurstPump", BurstPump.class);
+        classes.put("BurstPumpBuild", BurstPump.BurstPumpBuild.class);
         classes.put("LiquidMassDriver", LiquidMassDriver.class);
         classes.put("LiquidMassDriverBuild", LiquidMassDriver.LiquidMassDriverBuild.class);
         classes.put("LiquidBulletData", LiquidMassDriver.LiquidBulletData.class);
@@ -249,6 +267,14 @@ final class HIClassMap {
         classes.put("ProcessorCoolerBuild", ProcessorCooler.ProcessorCoolerBuild.class);
         classes.put("ProcessorFan", ProcessorFan.class);
         classes.put("ProcessorFanBuild", ProcessorFan.ProcessorFanBuild.class);
+        classes.put("MoreGenericCrafter", MoreGenericCrafter.class);
+        classes.put("MoreGenericCrafterBuild", MoreGenericCrafter.MoreGenericCrafterBuild.class);
+        classes.put("PayloadDuct", PayloadDuct.class);
+        classes.put("PayloadDuctBuild", PayloadDuct.PayloadDuctBuild.class);
+        classes.put("PayloadDuctRouter", PayloadDuctRouter.class);
+        classes.put("PayloadDuctRouterBuild", PayloadDuctRouter.PayloadDuctRouterBuild.class);
+        classes.put("PayloadBuffer", PayloadBuffer.class);
+        classes.put("PayloadBufferBuild", PayloadBuffer.PayloadBufferBuild.class);
         classes.put("PayloadJunction", PayloadJunction.class);
         classes.put("PayloadJunctionBuild", PayloadJunction.PayloadJunctionBuild.class);
         classes.put("PayloadRail", PayloadRail.class);
@@ -258,6 +284,8 @@ final class HIClassMap {
         classes.put("SelectableReconstructor", SelectableReconstructor.class);
         classes.put("SelectableReconstructorBuild", SelectableReconstructor.SelectableReconstructorBuild.class);
         classes.put("DynamicUnitPlan", SelectableReconstructor.DynamicUnitPlan.class);
+        classes.put("MechPad", MechPad.class);
+        classes.put("MechPadBuild", MechPad.MechPadBuild.class);
         classes.put("JumpGate", JumpGate.class);
         classes.put("JumpGateBuild", JumpGate.JumpGateBuild.class);
         classes.put("UnitBoost", UnitBoost.class);
@@ -301,6 +329,10 @@ final class HIClassMap {
         classes.put("SporeFarmBuild", SporeFarm.SporeFarmBuild.class);
         classes.put("DrawerDrill", DrawerDrill.class);
         classes.put("DrawerDrillBuild", DrawerDrill.DrawerDrillBuild.class);
+        classes.put("DrawerBurstDrill", DrawerBurstDrill.class);
+        classes.put("DrawerBurstDrillBuild", DrawerBurstDrill.DrawerBurstDrillBuild.class);
+        classes.put("HeatDrill", HeatDrill.class);
+        classes.put("HeatDrillBuild", HeatDrill.HeatDrillBuild.class);
         classes.put("HeatProducerDrill", HeatProducerDrill.class);
         classes.put("HeatProducerDrillBuild", HeatProducerDrill.HeatProducerDrillBuild.class);
         classes.put("LaserBeamDrill", LaserBeamDrill.class);
@@ -333,15 +365,17 @@ final class HIClassMap {
         classes.put("SpaceUnloaderBuild", SpaceUnloader.SpaceUnloaderBuild.class);
         classes.put("ResourcesDispatchingCenter", ResourcesDispatchingCenter.class);
         classes.put("ResourcesDispatchingCenterBuild", ResourcesDispatchingCenter.ResourcesDispatchingCenterBuild.class);
+        classes.put("CaptureBlock", CaptureBlock.class);
+        classes.put("CaptureBuild", CaptureBlock.CaptureBuild.class);
         //consume
         classes.put("ConsumeLiquidDynamic", ConsumeLiquidDynamic.class);
-        //part
-        classes.put("AimPart", AimPart.class);
-        classes.put("BowHalo", BowHalo.class);
-        classes.put("PartBow", PartBow.class);
-        classes.put("RunningLight", RunningLight.class);
-        classes.put("ArcCharge", ArcCharge.class);
         //draw
+        classes.put("DrawZSet", DrawZSet.class);
+        classes.put("DrawTeam", DrawTeam.class);
+        classes.put("DrawHalfSpinner", DrawHalfSpinner.class);
+        classes.put("DrawWeaveColor", DrawWeaveColor.class);
+        classes.put("MultiDrawBlock", MultiDrawBlock.class);
+        classes.put("MultiDrawFlame", MultiDrawFlame.class);
         classes.put("Draw3dSpin", Draw3dSpin.class);
         classes.put("DrawFactories", DrawFactories.class);
         classes.put("DrawPowerLight", DrawPowerLight.class);

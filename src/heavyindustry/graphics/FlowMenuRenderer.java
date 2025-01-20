@@ -1,4 +1,4 @@
-package heavyindustry.graphics.g3d;
+package heavyindustry.graphics;
 
 import arc.*;
 import arc.graphics.*;
@@ -16,7 +16,7 @@ import mindustry.world.*;
 
 import static mindustry.Vars.*;
 
-public class HIMenuRenderer extends MenuRenderer {
+public class FlowMenuRenderer extends MenuRenderer {
     protected int viewWidth = !mobile ? 100 : 60;
     protected MenuSlide[] menus = {MenuSlides.stone, MenuSlides.grass};
 
@@ -26,7 +26,7 @@ public class HIMenuRenderer extends MenuRenderer {
     protected int width = !mobile ? 100 : 60, height = !mobile ? 50 : 40;
     protected int index = 0;
 
-    public HIMenuRenderer() {
+    public FlowMenuRenderer() {
         width += (int) Math.ceil((slideDuration * scrollSpeed) / 60) + 5;
         unityGenerate();
     }
@@ -89,7 +89,7 @@ public class HIMenuRenderer extends MenuRenderer {
         protected int seed;
 
         public MenuSlide(boolean dark) {
-            this.doDark = dark;
+            doDark = dark;
         }
 
         protected static void setTile(int x, int y, Block wall, Block overlay, Block floor) {

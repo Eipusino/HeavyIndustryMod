@@ -11,9 +11,6 @@ import mindustry.world.meta.*;
 public class HeatProducerDrill extends DrawerDrill {
     public float heatOutput = 5f;
 
-    public boolean needHeatDissipation = false;
-    public float heatDamage = 1f;
-
     public HeatProducerDrill(String name) {
         super(name);
         drawer = new DrawMulti(new DrawDefault(), new DrawHeatOutput());
@@ -42,8 +39,6 @@ public class HeatProducerDrill extends DrawerDrill {
         public void updateTile() {
             super.updateTile();
             heat = lastDrillSpeed == 0 ? Mathf.approachDelta(heat, 0f, 0.3f * delta()) : Mathf.approachDelta(heat, heatOutput, 0.3f * delta());
-
-            if (heat == heatOutput && needHeatDissipation && !nearbyHeatConsumers()) damage(heatDamage);
         }
 
         @Override
@@ -54,10 +49,6 @@ public class HeatProducerDrill extends DrawerDrill {
         @Override
         public float heat() {
             return heat;
-        }
-
-        public boolean nearbyHeatConsumers() {
-            return proximity.contains(b -> b instanceof HeatConsumer);
         }
 
         @Override

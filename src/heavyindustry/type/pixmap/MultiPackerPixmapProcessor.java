@@ -9,8 +9,10 @@ import arc.struct.*;
 import mindustry.graphics.*;
 import mindustry.graphics.MultiPacker.*;
 
-public class MultiPackerPixmapProcessor {
+public final class MultiPackerPixmapProcessor {
     private static final ObjectMap<MultiPacker, PixmapProcessor> map = new ObjectMap<>();
+
+    private MultiPackerPixmapProcessor() {}
 
     public static PixmapProcessor get(MultiPacker packer) {
         return map.get(packer, () -> new PixmapProcessor() {

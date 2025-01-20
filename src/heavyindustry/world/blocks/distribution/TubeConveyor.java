@@ -20,7 +20,7 @@ import static mindustry.Vars.*;
  */
 public class TubeConveyor extends BeltConveyor {
     public static final float itemSpace = 0.4f;
-    public static final int[][] tiles = new int[][]{
+    public static final byte[][] tiles = {
             {},
             {0, 2}, {1, 3}, {0, 1},
             {0, 2}, {0, 2}, {1, 2},
@@ -101,7 +101,7 @@ public class TubeConveyor extends BeltConveyor {
 
         public boolean isEnd(int i) {
             Building b = nearby(i);
-            return (!valid(i) && (b == null ? null : b.block) != this.block) || (b instanceof ConveyorBuild && ((b.rotation + 2) % 4 == rotation || (b.front() != this && back() == b)));
+            return (!valid(i) && (b == null ? null : b.block) != block) || (b instanceof ConveyorBuild && ((b.rotation + 2) % 4 == rotation || (b.front() != this && back() == b)));
         }
 
         @Override
@@ -141,8 +141,8 @@ public class TubeConveyor extends BeltConveyor {
 
             Draw.z(Layer.block - 0.15f);
             Draw.rect(topRegion[0][tiling], x, y, 0);
-            int[] placementID = tiles[tiling];
-            for (int i : placementID) {
+            byte[] placementID = tiles[tiling];
+            for (byte i : placementID) {
                 if (isEnd(i)) {
                     int id = i == 0 || i == 3 ? 1 : 0;
                     Draw.rect(capRegion[id], x, y, i == 0 || i == 2 ? 0 : -90);

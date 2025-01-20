@@ -17,7 +17,6 @@ import heavyindustry.game.*;
 import heavyindustry.gen.*;
 import heavyindustry.graphics.Draws.*;
 import heavyindustry.graphics.*;
-import heavyindustry.graphics.g3d.*;
 import heavyindustry.input.*;
 import heavyindustry.mod.*;
 import heavyindustry.net.*;
@@ -59,8 +58,8 @@ public final class HeavyIndustryMod extends Mod {
     private static final String linkGitHub = "https://github.com/Eipusino/HeavyIndustryMod", author = "Eipusino";
     /** Using it is usually risky, so if you want to index files within the mod, please use {@link InternalFileTree}. */
     private static LoadedMod mod;
-    private static final Jval modJson;
 
+    public static final Jval modJson;
     public static final boolean isPlugin;
 
     static {
@@ -81,7 +80,7 @@ public final class HeavyIndustryMod extends Mod {
             if (isPlugin) return;
 
             try {
-                Reflect.set(MenuFragment.class, ui.menufrag, "renderer", new HIMenuRenderer());
+                Reflect.set(MenuFragment.class, ui.menufrag, "renderer", new FlowMenuRenderer());
             } catch (Exception e) {
                 Log.err("Failed to replace renderer", e);
             }

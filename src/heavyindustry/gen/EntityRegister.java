@@ -72,6 +72,8 @@ public final class EntityRegister {
         put("TimedKillUnitf", TimedKillUnitf.class, TimedKillUnitf::new);
         put("PayloadLegsUnit", PayloadLegsUnit.class, PayloadLegsUnit::new);
         put("BuildingTetherPayloadLegsUnit", BuildingTetherPayloadLegsUnit.class, BuildingTetherPayloadLegsUnit::new);
+        put("CrawlUnitf", CrawlUnitf.class, CrawlUnitf::new);
+        put("TractorBeamUnit", TractorBeamUnit.class, TractorBeamUnit::new);
         put("OrnitopterUnit", OrnitopterUnit.class, OrnitopterUnit::new);
         put("CopterUnit", CopterUnit.class, CopterUnit::new);
         put("SentryUnit", SentryUnit.class, SentryUnit::new);

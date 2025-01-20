@@ -5,10 +5,14 @@ import arc.math.*;
 import java.util.*;
 
 public class BoolGrid {
-    boolean[] array;
+    boolean[] array = {};
     int width, height;
 
     public BoolGrid() {}
+
+    public BoolGrid(int newWidth, int newHeight) {
+        resize(newWidth, newHeight);
+    }
 
     @Deprecated(since = "1.0.5")
     public void updateSize(int newWidth, int newHeight) {

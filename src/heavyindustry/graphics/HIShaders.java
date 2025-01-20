@@ -7,6 +7,7 @@ import arc.graphics.g2d.*;
 import arc.graphics.g3d.*;
 import arc.graphics.gl.*;
 import arc.math.geom.*;
+import arc.scene.ui.layout.*;
 import arc.util.*;
 import heavyindustry.graphics.gl.*;
 import heavyindustry.type.*;
@@ -28,6 +29,7 @@ public final class HIShaders {
     public static DepthAtmosphereShader depthAtmosphere;
     public static AlphaShader alphaShader;
     public static SurfaceShaderf brine, nanofluid, boundWater, pit, waterPit;
+    public static Shader chromatic;
     public static MaskShader alphaMask;
     public static WaveShader wave;
     public static MirrorFieldShader mirrorField;
@@ -55,11 +57,13 @@ public final class HIShaders {
         pit = new PitShader("pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
         waterPit = new PitShader("water-pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
 
+        chromatic = new ChromaticAberrationShader();
+
         alphaMask = new MaskShader();
         mirrorField = new MirrorFieldShader();
         wave = new WaveShader();
-        baseShader = new Shader(dv("screenspace"), mf("distbase"));
-        passThrough = new Shader(dv("screenspace"), mf("pass-through"));
+        baseShader = new Shader(defVert("screenspace"), modFrag("distbase"));
+        passThrough = new Shader(defVert("screenspace"), modFrag("pass-through"));
 
         tiler = new Tiler();
 
@@ -81,19 +85,19 @@ public final class HIShaders {
      * @param name The shader file name, e.g. {@code my-shader.frag}.
      * @return The shader file, located inside {@code shaders/}.
      */
-    public static Fi df(String name) {
+    public static Fi defFrag(String name) {
         return files.internal("shaders/" + name + ".frag");
     }
 
-    public static Fi dv(String name) {
+    public static Fi defVert(String name) {
         return files.internal("shaders/" + name + ".vert");
     }
 
-    public static Fi mf(String name) {
+    public static Fi modFrag(String name) {
         return internalTree.child("shaders/" + name + ".frag");
     }
 
-    public static Fi mv(String name) {
+    public static Fi modVert(String name) {
         return internalTree.child("shaders/" + name + ".vert");
     }
 
@@ -103,7 +107,7 @@ public final class HIShaders {
 
         /** This class only requires one instance. Please use {@link #depth}. */
         private DepthShader() {
-            super(mv("depth"), mf("depth"));
+            super(modVert("depth"), modFrag("depth"));
         }
 
         @Override
@@ -118,7 +122,7 @@ public final class HIShaders {
 
         /** This class only requires one instance. Please use {@link #depthScreenspace}. */
         private DepthScreenspaceShader() {
-            super(mv("depth-screenspace"), mf("depth-screenspace"));
+            super(modVert("depth-screenspace"), modFrag("depth-screenspace"));
         }
 
         @Override
@@ -143,7 +147,7 @@ public final class HIShaders {
 
         /** This class only requires one instance. Please use {@link #depthAtmosphere}. */
         private DepthAtmosphereShader() {
-            super(mv("depth-atmosphere"), mf("depth-atmosphere"));
+            super(modVert("depth-atmosphere"), modFrag("depth-atmosphere"));
         }
 
         @Override
@@ -176,7 +180,7 @@ public final class HIShaders {
 
         /** This class only requires one instance. Please use {@link #planetTextureShader}. */
         private PlanetTextureShader() {
-            super(mv("circle-mesh"), mf("circle-mesh"));
+            super(modVert("circle-mesh"), modFrag("circle-mesh"));
         }
 
         @Override
@@ -205,7 +209,7 @@ public final class HIShaders {
 
         /** This class only requires one instance. Please use {@link #tiler}. */
         public Tiler() {
-            super(dv("screenspace"), mf("tiler"));
+            super(defVert("screenspace"), modFrag("tiler"));
         }
 
         @Override
@@ -226,7 +230,7 @@ public final class HIShaders {
 
         /** This class only requires one instance. Please use {@link #alphaShader}. */
         private AlphaShader() {
-            super(dv("screenspace"), mf("postalpha"));
+            super(defVert("screenspace"), modFrag("postalpha"));
         }
 
         @Override
@@ -245,7 +249,7 @@ public final class HIShaders {
 
         /** This class only requires one instance. Please use {@link #wave}. */
         private WaveShader() {
-            super(dv("screenspace"), mf("wave"));
+            super(defVert("screenspace"), modFrag("wave"));
         }
 
         @Override
@@ -277,7 +281,7 @@ public final class HIShaders {
 
         /** This class only requires one instance. Please use {@link #mirrorField}. */
         private MirrorFieldShader() {
-            super(dv("screenspace"), mf("mirrorfield"));
+            super(defVert("screenspace"), modFrag("mirrorfield"));
         }
 
         @Override
@@ -304,7 +308,7 @@ public final class HIShaders {
 
         /** This class only requires one instance. Please use {@link #alphaMask}. */
         private MaskShader() {
-            super(dv("screenspace"), mf("alphamask"));
+            super(defVert("screenspace"), modFrag("alphamask"));
         }
 
         @Override
@@ -313,6 +317,22 @@ public final class HIShaders {
             setUniformi("u_mask", 0);
 
             texture.bind(1);
+        }
+    }
+
+    public static class ChromaticAberrationShader extends Shader {
+        public ChromaticAberrationShader() {
+            super(defVert("screenspace"), modFrag("aberration"));
+        }
+
+        @Override
+        public void apply() {
+            setUniformf("u_dp", Scl.scl(1f));
+            setUniformf("u_time", Time.time / Scl.scl(1f));
+            setUniformf("u_offset",
+                    camera.position.x - camera.width / 2,
+                    camera.position.y - camera.height / 2);
+            setUniformf("u_texsize", camera.width, camera.height);
         }
     }
 
@@ -364,7 +384,7 @@ public final class HIShaders {
         Texture noiseTex;
 
         public SurfaceShaderf(String fragment) {
-            super(dv("screenspace"), mf(fragment));
+            super(defVert("screenspace"), modFrag(fragment));
             loadNoise();
         }
 

@@ -13,10 +13,9 @@ import mindustry.world.*;
 import static mindustry.Vars.*;
 
 public class AdjustableOverdrive extends Block {
-    protected static final float MAX = 100000f, MIN = 1f;
+    protected static final float MAX = 100000f, MIN = 1f, INIT_MASK = 1000000f;
 
-    protected static final float[] COMMAND_MAP = {1f, 10f, 100f, 1000f};
-    protected static final float INIT_MASK = 1000000f;
+    protected static final float[] commandMap = {1f, 10f, 100f, 1000f};
 
     public TextureRegion topRegion;
 
@@ -63,10 +62,10 @@ public class AdjustableOverdrive extends Block {
                 if (in > INIT_MASK) {
                     speedTo = in - INIT_MASK;
                 } else if (in >= 100) {
-                    speedTo = Math.max(MIN, speedTo - COMMAND_MAP[in - 100]);
+                    speedTo = Math.max(MIN, speedTo - commandMap[in - 100]);
                     lastNumber = speedTo;
                 } else {
-                    speedTo = Math.min(MAX, speedTo + COMMAND_MAP[in]);
+                    speedTo = Math.min(MAX, speedTo + commandMap[in]);
                     lastNumber = speedTo;
                 }
             }

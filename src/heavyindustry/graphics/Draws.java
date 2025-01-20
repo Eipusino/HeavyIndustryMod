@@ -917,7 +917,7 @@ public final class Draws {
         boolean capturing, disposed;
 
         public Distortion() {
-            distortion = new Shader(dv("screenspace"), mf("distortion"));
+            distortion = new Shader(defVert("screenspace"), modFrag("distortion"));
 
             buffer = new FrameBuffer();
 

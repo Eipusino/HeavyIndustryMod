@@ -804,4 +804,13 @@ public final class Drawn {
     public static void cross(float x, float y, float size, float angle) {
         cross(x, y, size, size, angle);
     }
+
+    public static void drawHalfSpin(TextureRegion region, float x, float y, float r) {
+        float a = Draw.getColor().a;
+        r = Mathf.mod(r, 180f);
+        Draw.rect(region, x, y, r);
+        Draw.alpha(r / 180f*a);
+        Draw.rect(region, x, y, r - 180f);
+        Draw.alpha(a);
+    }
 }

@@ -32,7 +32,9 @@ import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.draw.*;
 import org.jetbrains.annotations.*;
 
+import java.text.*;
 import java.util.*;
+import java.util.regex.*;
 
 import static arc.Core.*;
 import static heavyindustry.core.HeavyIndustryMod.*;
@@ -134,6 +136,7 @@ public final class Utils {
     public static final String[] packages = {
             "heavyindustry",
             "heavyindustry.ai",
+            "heavyindustry.audio",
             "heavyindustry.content",
             "heavyindustry.core",
             "heavyindustry.entities",
@@ -186,7 +189,7 @@ public final class Utils {
             "heavyindustry.util.pools",
             "heavyindustry.world",
             "heavyindustry.world.blocks",
-            //"heavyindustry.world.blocks.campaign",
+            "heavyindustry.world.blocks.campaign",
             "heavyindustry.world.blocks.defense",
             "heavyindustry.world.blocks.defense.turrets",
             "heavyindustry.world.blocks.distribution",
@@ -210,15 +213,23 @@ public final class Utils {
             "heavyindustry.world.particle.model"
     };
 
-    /** Kotlin is used in a few scenarios. */
-    public static final Class<Boolean> BOOLEAN_CLASS = Boolean.class;
+    // Kotlin is used in a few scenarios.
+    // In the config(Class<T>type, Cons2<E, T>config) method,
+    // if the type parameter is assigned to a class of type kotlin,
+    // the method will not have any effect, and I don't know why.
 
+    public static final Class<Boolean> BOOLEAN_CLASS = Boolean.class;
+    public static final Class<boolean[]> BOOLEAN_CLASS_A = boolean[].class;
+
+    public static final Class<Byte> BYTE_CLASS = Byte.class;
     public static final Class<byte[]> BYTE_CLASS_A = byte[].class;
 
     public static final Class<Integer> INTEGER_CLASS = Integer.class;
     public static final Class<int[]> INTEGER_CLASS_A = int[].class;
+    public static final Class<int[][]> INTEGER_CLASS_AA = int[][].class;
 
     public static final Class<String> STRING_CLASS = String.class;
+    public static final Class<String[]> STRING_CLASS_A = String[].class;
 
     public static final Seq<UnlockableContent> donorItems = new Seq<>();
     public static final Seq<UnlockableContent> developerItems = new Seq<>();
@@ -228,7 +239,7 @@ public final class Utils {
     private static Tile tileParma;
     private static Posc result;
     private static float cDist;
-    private static final Vec2 tV = new Vec2(), tV2 = new Vec2(), tV3 = new Vec2();
+    private static final Vec2 v11 = new Vec2(), v12 = new Vec2(), v13 = new Vec2();
     private static final IntSet collidedBlocks = new IntSet();
     private static final Rect rect = new Rect(), hitRect = new Rect();
     private static final IntSeq buildIdSeq = new IntSeq();
@@ -238,7 +249,7 @@ public final class Utils {
     private static final IntSet collided = new IntSet(), collided2 = new IntSet();
     private static Building tmpBuilding;
     private static Unit tmpUnit;
-    private static final BasicPool<Hit> hpool = new BasicPool<>(Hit::new);
+    private static final BasicPool<Hit> hPool = new BasicPool<>(Hit::new);
 
 	/** Don't let anyone instantiate this class. */
     private Utils() {}
@@ -419,30 +430,30 @@ public final class Utils {
         return -1;
     }
 
-    public static String list(boolean wrapper, Object... arg) {
-        if (arg == null) {
-            return "null";
-        }
+    /** Determine whether the string is composed entirely of numbers. */
+    public static boolean isNumeric4(String key) {
+        return key != null && key.chars().allMatch(Character::isDigit);
+    }
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(wrapper ? "[\"" : "[");
+    /** Determine whether the string is composed of {@code Number} and {@code . }. */
+    public static boolean isNumeric(String key) {
+        if (Objects.isNull(key)) return false;
 
-        for (int i = 0; i < arg.length; i++) {
-            if (arg[i] == null) {
-                sb.append("null");
-            } else if (arg[i] instanceof Object[] arr) {
-                sb.append(list(false, arr));
+        Pattern pattern = Pattern.compile("[0-9]*");
+        if (key.indexOf(".") > 0) {//Determine if there is a decimal point
+            if (key.indexOf(".") == key.lastIndexOf(".") && key.split("\\.").length == 2) { //Determine if there is only one decimal point
+                return pattern.matcher(key.replace(".", "")).matches();
             } else {
-                sb.append(arg[i].toString());
+                return false;
             }
-
-            if (i < arg.length - 1) {
-                sb.append(wrapper ? "\", \"" : ", ");
-            }
+        } else {
+            return pattern.matcher(key).matches();
         }
+    }
 
-        sb.append(wrapper ? "\"]" : "]");
-        return sb.toString();
+    /** Return a float to save a string of x digits. */
+    public static String decimalFormat(float value, int i) {
+        return new DecimalFormat("#0." + "0".repeat(Math.max(0, i))).format(value);
     }
 
     public static DrawBlock base() {
@@ -531,9 +542,9 @@ public final class Utils {
     public static Seq<BulletType> bulletTypes() {//use item
         Seq<BulletType> bullets = new Seq<>();
         for (Turret t : turrets()) {
-            if (t instanceof ItemTurret it) {
-                for (Item i : it.ammoTypes.keys()) {
-                    BulletType b = it.ammoTypes.get(i);
+            if (t instanceof ItemTurret turret) {
+                for (Item item : turret.ammoTypes.keys()) {
+                    BulletType b = turret.ammoTypes.get(item);
                     if (t.shoot.shots == 1 || b instanceof PointBulletType || b instanceof ArtilleryBulletType) {
                         bullets.add(b);
                     } else {
@@ -597,13 +608,13 @@ public final class Utils {
 
     public static void liquid(ObjectMap<Integer, Cons<Liquid>> cons, String name, Color color, float exp, float fla, float htc, float vis, float temp) {
         for (int i = 1; i < 10; i++) {
-            int index = i;
-            Liquid liquid = new Liquid(name + index, color) {{
-                explosiveness = exp * index;
-                flammability = fla * index;
-                heatCapacity = htc * index;
-                viscosity = vis * index;
-                temperature = temp / index;
+            int j = i;
+            Liquid liquid = new Liquid(name + j, color) {{
+                explosiveness = exp * j;
+                flammability = fla * j;
+                heatCapacity = htc * j;
+                viscosity = vis * j;
+                temperature = temp / j;
             }};
             if (cons != null && cons.size > 0 && cons.containsKey(i)) {
                 cons.get(i).get(liquid);
@@ -617,14 +628,14 @@ public final class Utils {
 
     public static void item(ObjectMap<Integer, Cons<Item>> cons, String name, Color color, float exp, float fla, float cos, float radio, float chg, float health) {
         for (int i = 1; i < 10; i++) {
-            int index = i;
-            Item item = new Item(name + index, color) {{
-                explosiveness = exp * index;
-                flammability = fla * index;
-                cost = cos * index;
-                radioactivity = radio * index;
-                charge = chg * index;
-                healthScaling = health * index;
+            int j = i;
+            Item item = new Item(name + j, color) {{
+                explosiveness = exp * j;
+                flammability = fla * j;
+                cost = cos * j;
+                radioactivity = radio * j;
+                charge = chg * j;
+                healthScaling = health * j;
             }};
             if (cons != null && cons.size > 0 && cons.containsKey(i)) {
                 cons.get(i).get(item);
@@ -756,7 +767,7 @@ public final class Utils {
         if (laser) length = findLaserLength(hitter, angle, length);
 
         collidedBlocks.clear();
-        tV.trnsExact(angle, length);
+        v11.trnsExact(angle, length);
 
         Intc2 collider = (cx, cy) -> {
             Building tile = world.build(cx, cy);
@@ -778,14 +789,14 @@ public final class Utils {
         };
 
         if (hitter.type.collidesGround) {
-            tV2.set(x, y);
-            tV3.set(tV2).add(tV);
-            World.raycastEachWorld(x, y, tV3.x, tV3.y, (cx, cy) -> {
+            v12.set(x, y);
+            v13.set(v12).add(v11);
+            World.raycastEachWorld(x, y, v13.x, v13.y, (cx, cy) -> {
                 collider.get(cx, cy);
 
                 for (Point2 p : Geometry.d4) {
                     Tile other = world.tile(p.x + cx, p.y + cy);
-                    if (other != null && (large || Intersector.intersectSegmentRectangle(tV2, tV3, other.getBounds(Tmp.r1)))) {
+                    if (other != null && (large || Intersector.intersectSegmentRectangle(v12, v13, other.getBounds(Tmp.r1)))) {
                         collider.get(cx + p.x, cy + p.y);
                     }
                 }
@@ -793,8 +804,8 @@ public final class Utils {
             });
         }
 
-        rect.setPosition(x, y).setSize(tV.x, tV.y);
-        float x2 = tV.x + x, y2 = tV.y + y;
+        rect.setPosition(x, y).setSize(v11.x, v11.y);
+        float x2 = v11.x + x, y2 = v11.y + y;
 
         if (rect.width < 0) {
             rect.x += rect.width;
@@ -1104,12 +1115,12 @@ public final class Utils {
      * There's an issue with the one in 126.2, which I fixed in a pr. This can be removed after the next Mindustry release.
      */
     public static Healthc linecast(Bullet hitter, float x, float y, float angle, float length) {
-        tV.trns(angle, length);
+        v11.trns(angle, length);
 
         tmpBuilding = null;
 
         if (hitter.type.collidesGround) {
-            World.raycastEachWorld(x, y, x + tV.x, y + tV.y, (cx, cy) -> {
+            World.raycastEachWorld(x, y, x + v11.x, y + v11.y, (cx, cy) -> {
                 Building tile = world.build(cx, cy);
                 if (tile != null && tile.team != hitter.team) {
                     tmpBuilding = tile;
@@ -1119,8 +1130,8 @@ public final class Utils {
             });
         }
 
-        rect.setPosition(x, y).setSize(tV.x, tV.y);
-        float x2 = tV.x + x, y2 = tV.y + y;
+        rect.setPosition(x, y).setSize(v11.x, v11.y);
+        float x2 = v11.x + x, y2 = v11.y + y;
 
         if (rect.width < 0) {
             rect.x += rect.width;
@@ -1298,7 +1309,7 @@ public final class Utils {
 
     public static float hitLaser(Team team, float width, float x1, float y1, float x2, float y2, Boolf<Healthc> within, Boolf<Healthc> stop, LineHitHandler<Healthc> cons) {
         hseq.removeAll(h -> {
-            hpool.free(h);
+            hPool.free(h);
             return true;
         });
 		float ll = Mathf.dst(x1, y1, x2, y2);
@@ -1308,7 +1319,7 @@ public final class Utils {
                 if (data.unitTree != null) {
                     intersectLine(data.unitTree, width, x1, y1, x2, y2, (t, x, y) -> {
                         if (within != null && !within.get(t)) return;
-                        Hit h = hpool.obtain();
+                        Hit h = hPool.obtain();
                         h.entity = t;
                         h.x = x;
                         h.y = y;
@@ -1318,7 +1329,7 @@ public final class Utils {
                 if (data.buildingTree != null) {
                     intersectLine(data.buildingTree, width, x1, y1, x2, y2, (t, x, y) -> {
                         if (within != null && !within.get(t)) return;
-                        Hit h = hpool.obtain();
+                        Hit h = hPool.obtain();
                         h.entity = t;
                         h.x = x;
                         h.y = y;
@@ -1542,9 +1553,9 @@ public final class Utils {
     public static class ExtendedPosition implements Position {
         public float x, y;
 
-        public ExtendedPosition set(float x, float y) {
-            this.x = x;
-            this.y = y;
+        public ExtendedPosition set(float dx, float dy) {
+            x = dx;
+            y = dy;
             return this;
         }
 
@@ -1559,11 +1570,11 @@ public final class Utils {
         }
     }
 
-    public interface LineHitHandler<T>{
+    public interface LineHitHandler<T> {
         void get(T t, float x, float y);
     }
 
-    public interface QuadTreeHandler{
+    public interface QuadTreeHandler {
         boolean get(Rect rect, boolean tree);
     }
 }

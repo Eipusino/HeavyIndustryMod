@@ -3,6 +3,12 @@ package heavyindustry.graphics.g2d;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 
+/**
+ * APIs that were removed in previous versions. Of course, no matter what, continuing to use it is not a good idea.
+ * <p>Subsequent versions will consider marking as {@link Deprecated}.
+ *
+ * @since 1.0.6
+ */
 public abstract class LegacyBatch extends Batch {
     protected final Color color = new Color(1, 1, 1, 1);
     protected final Color mixColor = Color.clear;

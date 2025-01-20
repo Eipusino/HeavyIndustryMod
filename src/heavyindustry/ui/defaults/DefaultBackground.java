@@ -52,14 +52,12 @@ class Lazy<T> {
     public T get() {
         Object v1 = value;
         if (v1 != UNINITIALIZED_VALUE) {
-            //noinspection unchecked
             return (T) v1;
         }
 
         synchronized (lock) {
             Object v2 = value;
             if (v2 != UNINITIALIZED_VALUE) {
-                //noinspection unchecked
                 return (T) v2;
             }
             T typedValue = initializer.get();

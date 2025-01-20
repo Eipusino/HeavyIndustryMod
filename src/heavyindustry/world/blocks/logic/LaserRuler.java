@@ -9,7 +9,6 @@ import arc.struct.*;
 import arc.util.*;
 import arc.util.io.*;
 import heavyindustry.graphics.*;
-import mindustry.*;
 import mindustry.content.*;
 import mindustry.core.*;
 import mindustry.entities.*;
@@ -28,7 +27,7 @@ public class LaserRuler extends Block {
     static {
         Events.on(EventType.TapEvent.class, event -> {
             lastTaped = event.tile;
-            Building selectedTile = Vars.control.input.config.getSelected();
+            Building selectedTile = control.input.config.getSelected();
             if (selectedTile instanceof LaserRulerBuild build) {
                 if (build.tile == lastTaped) {
                     build.configure(null);
@@ -75,12 +74,12 @@ public class LaserRuler extends Block {
             Tile target = targetTile();
             xtiles.clear();
             World.raycast(tile.x, tile.y, target.x, tile.y, (x, y) -> {
-                xtiles.add(Vars.world.tile(x, y));
+                xtiles.add(world.tile(x, y));
                 return false;
             });
             ytiles.clear();
             World.raycast(target.x, tile.y, target.x, target.y, (x, y) -> {
-                ytiles.add(Vars.world.tile(x, y));
+                ytiles.add(world.tile(x, y));
                 return false;
             });
         }
@@ -169,7 +168,7 @@ public class LaserRuler extends Block {
         }
 
         protected Tile targetTile() {
-            return validTarget(target) ? Vars.world.tile(target) : null;
+            return validTarget(target) ? world.tile(target) : null;
         }
 
         @Override
@@ -188,13 +187,13 @@ public class LaserRuler extends Block {
         }
 
         protected boolean validTarget(int pos) {
-            if (pos == -1 || Vars.world.tile(pos) == null) return false;
-            return Vars.world.tile(pos).x == tile.x || Vars.world.tile(pos).y == tile.y || laserRuler;
+            if (pos == -1 || world.tile(pos) == null) return false;
+            return world.tile(pos).x == tile.x || world.tile(pos).y == tile.y || laserRuler;
         }
 
         protected float dstToTarget() {
             if (!validTarget(target)) return -1;
-            Tile ti = Vars.world.tile(target);
+            Tile ti = world.tile(target);
             return Mathf.dst(ti.worldx(), ti.worldy(), tile.worldx(), tile.worldy()) - 8f;
         }
 
@@ -204,9 +203,9 @@ public class LaserRuler extends Block {
                 rebuildTiles();
                 deselect();
             } else {
-                Fx.unitCapKill.at(Vars.world.tile(tar));
+                Fx.unitCapKill.at(world.tile(tar));
             }
-            selectTile.at(Vars.world.tile(tar));
+            selectTile.at(world.tile(tar));
         }
 
         @Override

@@ -10,6 +10,7 @@ import heavyindustry.graphics.g3d.*;
 import heavyindustry.maps.ColorPass.*;
 import heavyindustry.maps.*;
 import heavyindustry.maps.HeightPass.*;
+import heavyindustry.maps.HeightPass.MultiHeight.*;
 import heavyindustry.maps.planets.*;
 import heavyindustry.type.*;
 import mindustry.content.*;
@@ -22,13 +23,38 @@ import static mindustry.content.Planets.*;
 
 /** Defines the {@linkplain Planet planets} and other celestial objects this mod offers. */
 public final class HIPlanets {
-    public static Planet kepler, gliese;
+    public static Planet serilia, kepler, gliese;
 
     /** Don't let anyone instantiate this class. */
     private HIPlanets() {}
 
     /** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
     public static void load() {
+        serilia = new Planet("serilia", sun, 33f, 3) {{
+            bloom = true;
+            drawOrbit = false;
+            orbitRadius = 1000f;
+            lightColor = Color.valueOf("ff5738");
+
+            meshLoader = () -> new SunMesh(
+                    this, 7,
+                    5, 0.3, 1.7, 1.2, 1,
+                    1.1f,
+                    Color.valueOf("ff5738"),
+                    Color.valueOf("ff8d4c"),
+                    Color.valueOf("ff3b38"),
+                    Color.valueOf("ff3b38"),
+                    Color.valueOf("ff5738"),
+                    Color.valueOf("ff3b38"),
+                    Color.valueOf("ff3b38"),
+                    Color.valueOf("ff5738"),
+                    Color.valueOf("ff5738"),
+                    Color.valueOf("ff8d4c"),
+                    Color.valueOf("ffe371"),
+                    Color.valueOf("ffb671"),
+                    Color.valueOf("ffb671")
+            );
+        }};
         kepler = new AtmospherePlanet("kepler", sun, 1f, 3) {{
             orbitRadius = 40f;
             atmosphereRadIn = 0f;
@@ -59,7 +85,7 @@ public final class HIPlanets {
                         interp = Interp.exp10In;
                     }});
                 }
-                heights.add(new MultiHeight(mountains, MultiHeight.MixType.max, MultiHeight.Operation.add), new ClampHeight(0f, 0.8f));
+                heights.add(new MultiHeight(mountains, MixType.max, Operation.add), new ClampHeight(0f, 0.8f));
                 colors.addAll(
                         new NoiseColorPass() {{
                             scale = 1.5;
@@ -175,7 +201,7 @@ public final class HIPlanets {
                         interp = Interp.exp10In;
                     }});
                 }
-                heights.add(new MultiHeight(mountains, MultiHeight.MixType.max, MultiHeight.Operation.add));
+                heights.add(new MultiHeight(mountains, MixType.max, Operation.add));
                 heights.add(new ClampHeight(0f, 0.95f));
                 colors.addAll(
                         new NoiseColorPass() {{

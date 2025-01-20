@@ -180,12 +180,11 @@ public class TubeItemBridge extends ItemBridge {
                     Vec2 offVec = Tmp.v1.trns(tile.angleTo(other) + 90f, offset, offset);
                     if (!positionsValid(tile.x, tile.y, Mathf.ceil(other.x + offVec.x), Mathf.ceil(other.y + offVec.y)))
                         break check;
-                    TubeItemBridge block = (TubeItemBridge) tile.block();
                     boolean connected = false;
                     if (other.build instanceof ItemBridgeBuild) {
                         connected = other.build.<ItemBridgeBuild>as().link == tile.pos();
                     }
-                    return ((block.connectFilter.get(other.build)) || !(tile.block() instanceof ItemBridge) && other.block() == this) &&
+                    return ((tile.block() instanceof TubeItemBridge bridge && bridge.connectFilter.get(other.build)) || !(tile.block() instanceof ItemBridge) && other.block() == this) &&
                             b2 &&
                             (other.team() == tile.team() || other.block() != this) &&
 
@@ -262,6 +261,7 @@ public class TubeItemBridge extends ItemBridge {
             super.updateTile();
         }
 
+        @Override
         public void draw() {
             drawBase();
 

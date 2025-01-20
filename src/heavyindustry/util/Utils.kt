@@ -91,7 +91,3 @@ fun getClass(name: String): NativeJavaClass {
 fun <T> comparing(comparable: Comparable<T>): Comparator<T> {
     return compareBy { comparable }
 }
-
-fun isAllDigits(key: String?): Boolean {
-    return key != null && key.matches("\\d+".toRegex())
-}
