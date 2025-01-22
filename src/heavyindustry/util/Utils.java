@@ -16,6 +16,7 @@ import arc.util.pooling.*;
 import arc.util.pooling.Pool.*;
 import heavyindustry.content.*;
 import heavyindustry.gen.*;
+import heavyindustry.graphics.*;
 import mindustry.content.*;
 import mindustry.core.*;
 import mindustry.ctype.*;
@@ -37,7 +38,7 @@ import java.util.*;
 import java.util.regex.*;
 
 import static arc.Core.*;
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
 /**
@@ -166,6 +167,8 @@ public final class Utils {
             "heavyindustry.math.gravity",
             "heavyindustry.mod",
             "heavyindustry.net",
+            //"heavyindustry.scene",
+            "heavyindustry.scene.ui",
             "heavyindustry.struct",
             "heavyindustry.type",
             "heavyindustry.type.unit",
@@ -212,24 +215,6 @@ public final class Utils {
             "heavyindustry.world.particle",
             "heavyindustry.world.particle.model"
     };
-
-    // Kotlin is used in a few scenarios.
-    // In the config(Class<T>type, Cons2<E, T>config) method,
-    // if the type parameter is assigned to a class of type kotlin,
-    // the method will not have any effect, and I don't know why.
-
-    public static final Class<Boolean> BOOLEAN_CLASS = Boolean.class;
-    public static final Class<boolean[]> BOOLEAN_CLASS_A = boolean[].class;
-
-    public static final Class<Byte> BYTE_CLASS = Byte.class;
-    public static final Class<byte[]> BYTE_CLASS_A = byte[].class;
-
-    public static final Class<Integer> INTEGER_CLASS = Integer.class;
-    public static final Class<int[]> INTEGER_CLASS_A = int[].class;
-    public static final Class<int[][]> INTEGER_CLASS_AA = int[][].class;
-
-    public static final Class<String> STRING_CLASS = String.class;
-    public static final Class<String[]> STRING_CLASS_A = String[].class;
 
     public static final Seq<UnlockableContent> donorItems = new Seq<>();
     public static final Seq<UnlockableContent> developerItems = new Seq<>();
@@ -353,6 +338,38 @@ public final class Utils {
         return res;
     }
 
+    public static int[] sort(int[] arr) {
+		for (int i = 1; i < arr.length; i++) {
+            int tmp = arr[i];
+
+            int j = i;
+            while (j > 0 && tmp < arr[j - 1]) {
+                arr[j] = arr[j - 1];
+                j--;
+            }
+
+            if (j != i) {
+                arr[j] = tmp;
+            }
+        }
+        return arr;
+    }
+
+    public static void shellSort(int[] arr) {
+        int temp;
+        for (int step = arr.length / 2; step >= 1; step /= 2) {
+            for (int i = step; i < arr.length; i++) {
+                temp = arr[i];
+                int j = i - step;
+                while (j >= 0 && arr[j] > temp) {
+                    arr[j + step] = arr[j];
+                    j -= step;
+                }
+                arr[j + step] = temp;
+            }
+        }
+    }
+
     /** reads every single pixel on a textureRegion from bottom left to top right. */
     public static void readTexturePixels(PixmapRegion pixmap, Intc2 cons) {
         for (int j = 0; j < pixmap.height; j++) {
@@ -456,12 +473,115 @@ public final class Utils {
         return new DecimalFormat("#0." + "0".repeat(Math.max(0, i))).format(value);
     }
 
+    public static int compareBool(boolean x, boolean y) {
+        return Boolean.compare(x, y);
+    }
+
+    public static int compareInt(int x, int y) {
+        return Integer.compare(x, y);
+    }
+
+    public static int compareFloat(float x, float y) {
+        return Float.compare(x, y);
+    }
+
+    public static Vec2 vecSetLine(Vec2 vec, Vec2 pos, float rotation, float length) {
+        vec.setLength(length).setAngle(rotation).add(pos);
+        return vec;
+    }
+
+    public static Vec2 vecSetLine(Vec2 vec, float x, float y, float rotation, float length) {
+        vec.setLength(length).setAngle(rotation).add(x, y);
+        return vec;
+    }
+
+    public static void quadHelper(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+        Fill.quad(x1, y1, x2, y2, x3, y3, x4, y4);
+        debugDots(new float[]{x1, y1, x2, y2, x3, y3, x4, y4});
+    }
+
+    public static void quadHelper(TextureRegion region, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+        Fill.quad(region, x1, y1, x2, y2, x3, y3, x4, y4);
+        debugDots(new float[]{x1, y1, x2, y2, x3, y3, x4, y4});
+    }
+
+    public static void quadHelper(TextureRegion region, Vec2 v1, Vec2 v2, Vec2 v3, Vec2 v4) {
+        quadHelper(region, v1.x, v1.y, v2.x, v2.y, v3.x, v3.y, v4.x, v4.y);
+    }
+
+    public static void quadHelper(Vec2 v1, Vec2 v2, Vec2 v3, Vec2 v4) {
+        quadHelper(v1.x, v1.y, v2.x, v2.y, v3.x, v3.y, v4.x, v4.y);
+    }
+
+    public void drawSkyLines(float x, float y, int lineCount, float radius, float height, float rot) {
+        for (int i = 0; i < lineCount; i++) {
+            Tmp.v1.set(1f, 1f); //line start
+            Tmp.v2.set(camera.position);
+
+            Vec2 tv = vecSetLine(Tmp.v1, x, y, i * (360f / lineCount) + rot, radius);
+
+            Lines.lineAngle(tv.x, tv.y, Tmp.v2.sub(tv.x, tv.y).angle() + 180f, Tmp.v2.dst(0f, 0f) * height);
+        }
+    }
+
+    public Vec2 parallax(float x, float y, float height) {
+        return parallax(x, y, height, false);
+    }
+
+    public Vec2 parallax(float x, float y, float height, boolean ignoreCamDst) { //todo shadows
+        Tmp.v1.set(1f, 1f);
+        Tmp.v2.set(camera.position);
+
+        return vecSetLine(Tmp.v1, x, y, Tmp.v2.sub(x, y).angle() + 180f, ignoreCamDst ? height : height * Tmp.v2.dst(0f, 0f));
+    }
+
+    public void drawFace(float x1, float y1, float x2, float y2, TextureRegion tex) {
+        Tmp.v1.set(parallax(x1, y1, 100f));
+        Tmp.v2.set(parallax(x2, y2, 100f));
+
+        quadHelper(x1, y1, x2, y2, Tmp.v1.x, Tmp.v1.y, Tmp.v2.x, Tmp.v2.y);
+    }
+
+    public void drawOmegaUltraGigaChadDeathRay(float x, float y, float radius, float height, float upScl) {
+        Tmp.v1.set(parallax(x, y, height, false));
+        Tmp.v2.set(camera.position);
+
+        Fill.poly(x, y, 48, radius);
+        //Fill.poly(Tmp.v1.x, Tmp.v1.y, 48, radius * upScl);
+
+        Vec2 tv3 = vecSetLine(Tmp.v3, x, y, Tmp.v2.sub(x, y).angle() - 90f, radius);
+        Tmp.v2.set(camera.position);
+        Vec2 tv4 = vecSetLine(Tmp.v4, x, y, Tmp.v2.sub(x, y).angle() + 90f, radius);
+        Tmp.v2.set(camera.position);
+        Vec2 tv5 = vecSetLine(Tmp.v5, Tmp.v1, Tmp.v2.sub(x, y).angle() + 90f, radius * upScl);
+        Tmp.v2.set(camera.position);
+        Vec2 tv6 = vecSetLine(Tmp.v6, Tmp.v1, Tmp.v2.sub(x, y).angle() - 90f, radius * upScl);
+
+        quadHelper(tv3.x, tv3.y, tv4.x, tv4.y, tv5.x, tv5.y, tv6.x, tv6.y);
+    }
+
+    public static void debugDots(Vec2[] points) {
+        for (int i = 0; i < points.length; i++) {
+            Draw.color(HIPal.spectrum[i], 0.5f);
+            Fill.poly(points[i].x, points[i].y, 12, 2f);
+        }
+        Draw.color();
+    }
+
+    public static void debugDots(float[] points) {
+        for (int i = 0; i < points.length; i += 2) {
+            Draw.color(HIPal.spectrum[i / 2], 0.5f);
+            Fill.poly(points[i], points[i + 1], 12, 2f);
+        }
+        Draw.color();
+    }
+
     public static DrawBlock base() {
         return base(0f);
     }
 
     public static DrawBlock base(float rotatorSpeed) {
-        return new DrawMulti(new DrawRegion("-rotator", rotatorSpeed), new DrawDefault(), new DrawRegion("-top"));
+        return new DrawMulti(new DrawRegion("-rotator", rotatorSpeed, rotatorSpeed > 0f), new DrawDefault(), new DrawRegion("-top"));
     }
 
     @Contract(value = "_, _ -> new", pure = true)
@@ -1114,7 +1234,7 @@ public final class Utils {
      * @return the first encountered model.
      * There's an issue with the one in 126.2, which I fixed in a pr. This can be removed after the next Mindustry release.
      */
-    public static Healthc linecast(Bullet hitter, float x, float y, float angle, float length) {
+    public static Healthc lineCast(Bullet hitter, float x, float y, float angle, float length) {
         v11.trns(angle, length);
 
         tmpBuilding = null;

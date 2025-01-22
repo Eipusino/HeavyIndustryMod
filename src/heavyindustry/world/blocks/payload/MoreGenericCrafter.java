@@ -6,6 +6,7 @@ import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
+import arc.util.io.*;
 import heavyindustry.ui.*;
 import mindustry.content.*;
 import mindustry.entities.*;
@@ -292,6 +293,37 @@ public class MoreGenericCrafter extends PayloadBlock {
 		@Override
 		public void handlePayload(Building source, Payload payload) {
 			super.handlePayload(source, payload);
+		}
+
+		@Override
+		public float progress() {
+			return progress;
+		}
+
+		@Override
+		public float totalProgress() {
+			return totalProgress;
+		}
+
+		@Override
+		public float warmup() {
+			return warmup;
+		}
+
+		@Override
+		public void write(Writes write) {
+			super.write(write);
+			write.f(progress);
+			write.f(totalProgress);
+			write.f(warmup);
+		}
+
+		@Override
+		public void read(Reads read, byte revision) {
+			super.read(read, revision);
+			progress = read.f();
+			totalProgress = read.f();
+			warmup = read.f();
 		}
 	}
 }

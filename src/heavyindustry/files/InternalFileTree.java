@@ -3,7 +3,12 @@ package heavyindustry.files;
 import arc.files.*;
 import arc.util.*;
 
-/** Use for jar internal navigation. */
+/**
+ * Use for jar internal navigation.
+ * <p>Replace {@code Vars.mods.getMod(mod).root} with a more secure method of obtaining the jar root directory based on the class path as internal navigation for the jar.
+ *
+ * @since 1.0.6
+ */
 public class InternalFileTree {
     public final Class<?> anchorClass;
 

@@ -12,7 +12,6 @@ import arc.scene.ui.layout.*;
 import arc.util.*;
 import arc.util.serialization.*;
 import heavyindustry.content.*;
-import heavyindustry.files.*;
 import heavyindustry.game.*;
 import heavyindustry.gen.*;
 import heavyindustry.graphics.Draws.*;
@@ -24,12 +23,10 @@ import heavyindustry.ui.*;
 import heavyindustry.ui.dialogs.*;
 import heavyindustry.util.*;
 import kotlin.*;
-import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.game.EventType.*;
 import mindustry.mod.*;
 import mindustry.mod.Mods.*;
-import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.ui.dialogs.*;
 import mindustry.ui.fragments.*;
@@ -39,6 +36,7 @@ import java.time.format.*;
 import java.util.*;
 
 import static arc.Core.*;
+import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
 /**
@@ -47,16 +45,7 @@ import static mindustry.Vars.*;
  * @author Eipusino
  */
 public final class HeavyIndustryMod extends Mod {
-    /** Commonly used static read-only String. do not change unless you know what you're doing. */
-    public static final String modName = "heavy-industry";
-    /** jar internal navigation. */
-    public static final InternalFileTree internalTree = new InternalFileTree(HeavyIndustryMod.class);
-
-    /** Modules present in both servers and clients. */
-    public static InputAggregator inputAggregator;
-
     private static final String linkGitHub = "https://github.com/Eipusino/HeavyIndustryMod", author = "Eipusino";
-    /** Using it is usually risky, so if you want to index files within the mod, please use {@link InternalFileTree}. */
     private static LoadedMod mod;
 
     public static final Jval modJson;
@@ -68,7 +57,7 @@ public final class HeavyIndustryMod extends Mod {
         modJson = LoadMod.getMeta(internalTree.root);
         isPlugin = modJson != null && modJson.has("plugin") && modJson.isBoolean() && modJson.get("plugin").asBool();
 
-        LoadMod.blacklistedMods();
+        LoadMod.addBlacklistedMods();
     }
 
     public HeavyIndustryMod() {
@@ -79,11 +68,7 @@ public final class HeavyIndustryMod extends Mod {
         Events.on(ClientLoadEvent.class, event -> {
             if (isPlugin) return;
 
-            try {
-                Reflect.set(MenuFragment.class, ui.menufrag, "renderer", new FlowMenuRenderer());
-            } catch (Exception e) {
-                Log.err("Failed to replace renderer", e);
-            }
+            SafeRef.set(MenuFragment.class, ui.menufrag, "renderer", new FlowMenuRenderer());
 
             String close = bundle.get("close");
 
@@ -138,7 +123,7 @@ public final class HeavyIndustryMod extends Mod {
             }
         });
 
-        app.post(() -> mod = mods.getMod(HeavyIndustryMod.class));
+        app.post(() -> mod = mods.getMod(getClass()));
 
         Events.on(FileTreeInitEvent.class, event -> {
             if (!headless) {
@@ -152,11 +137,6 @@ public final class HeavyIndustryMod extends Mod {
                     inputAggregator = new InputAggregator();
                 });
             }
-        });
-
-        Events.on(ContentInitEvent.class, event -> {
-            if (!headless)
-                HIIcon.load();
         });
 
         Events.on(MusicRegisterEvent.class, event -> {
@@ -204,11 +184,13 @@ public final class HeavyIndustryMod extends Mod {
     @Override
     public void init() {
         if (!headless) {
+            HIIcon.load();
+
             //Set up screen sampler.
             ScreenSampler.setup();
             Draw3d.init();
 
-            HIStyles.load();
+            HIStyles.init();
             UIUtils.init();
         }
 
@@ -251,7 +233,7 @@ public final class HeavyIndustryMod extends Mod {
                 }));
         }
 
-        if (isPlugin && mod() != null) {//Don't ask, the mod has already crashed due to this before.
+        if (isPlugin && mod() != null) {//Don't ask, the mod has already crashed due to this before. fuck! fuck! fuck! fuck!
             mod.meta.hidden = true;
             mod.meta.name = modName + "-plugin";
             mod.meta.displayName = bundle.get("hi-name") + " Plugin";
@@ -293,11 +275,6 @@ public final class HeavyIndustryMod extends Mod {
         }
     }
 
-    /** Omitting longer mod names is generally used to load mod sprites. */
-    public static String name(String add) {
-        return modName + "-" + add;
-    }
-
     public static boolean isHeavyIndustry(@Nullable Content content) {
         return content != null && isHeavyIndustry(content.minfo.mod);
     }
@@ -309,21 +286,6 @@ public final class HeavyIndustryMod extends Mod {
     public static LoadedMod mod() {
         if (mod == null) mod = mods.getMod(modName);
         return mod;
-    }
-
-    public static void resetSaves(Planet planet) {
-        planet.sectors.each(sector -> {
-            if (sector.hasSave()) {
-                sector.save.delete();
-                sector.save = null;
-            }
-        });
-    }
-
-    public static void resetTree(TechTree.TechNode root) {
-        root.reset();
-        root.content.clearUnlock();
-        root.children.each(HeavyIndustryMod::resetTree);
     }
 
     public static boolean isAprilFoolsDay() {

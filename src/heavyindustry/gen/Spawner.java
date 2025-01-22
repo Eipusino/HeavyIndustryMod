@@ -26,7 +26,7 @@ import mindustry.ui.*;
 import java.nio.*;
 
 import static arc.Core.*;
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
 public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {

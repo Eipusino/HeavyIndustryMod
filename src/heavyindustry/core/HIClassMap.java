@@ -107,6 +107,7 @@ final class HIClassMap {
         classes.put("UnitTypef", UnitTypef.class);
         classes.put("AncientUnitType", AncientUnitType.class);
         classes.put("CopterUnitType", CopterUnitType.class);
+        classes.put("DoubleLegMechUnitType", DoubleLegMechUnitType.class);
         classes.put("EnergyUnitType", EnergyUnitType.class);
         classes.put("NucleoidUnitType", NucleoidUnitType.class);
         classes.put("OrnitopterUnitType", OrnitopterUnitType.class);
@@ -292,6 +293,8 @@ final class HIClassMap {
         classes.put("UnitBoostBuild", UnitBoost.UnitBoostBuild.class);
         classes.put("UnitIniter", UnitIniter.class);
         classes.put("UnitIniterBuild", UnitIniter.UnitIniterBuild.class);
+        classes.put("IndestructibleUnitFactory", IndestructibleUnitFactory.class);
+        classes.put("IndestructibleUnitFactoryBuild", IndestructibleUnitFactory.IndestructibleUnitFactoryBuild.class);
         classes.put("PayloadSourcef", PayloadSourcef.class);
         classes.put("PayloadSourceBuildf", PayloadSourcef.PayloadSourceBuildf.class);
         classes.put("WindGenerator", WindGenerator.class);
@@ -312,6 +315,8 @@ final class HIClassMap {
         classes.put("SpaceGeneratorBuild", SpaceGenerator.SpaceGeneratorBuild.class);
         classes.put("HyperGenerator", HyperGenerator.class);
         classes.put("HyperGeneratorBuild", HyperGenerator.HyperGeneratorBuild.class);
+        classes.put("ConfigIncinerator", ConfigIncinerator.class);
+        classes.put("ConfigIncineratorBuild", ConfigIncinerator.ConfigIncineratorBuild.class);
         classes.put("GeneratorCrafter", GeneratorCrafter.class);
         classes.put("GeneratorCrafterBuild", GeneratorCrafter.GeneratorCrafterBuild.class);
         classes.put("AttributeGenerator", AttributeGenerator.class);

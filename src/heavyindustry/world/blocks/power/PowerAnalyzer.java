@@ -14,7 +14,7 @@ import mindustry.world.blocks.power.*;
 import mindustry.world.meta.*;
 
 import static arc.Core.*;
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
 public class PowerAnalyzer extends PowerBlock {

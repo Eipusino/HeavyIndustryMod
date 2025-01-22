@@ -4,7 +4,7 @@ import arc.audio.*;
 import arc.files.*;
 import mindustry.*;
 
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 
 public final class HISounds {
     public static Sound

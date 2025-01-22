@@ -6,7 +6,7 @@ import arc.graphics.g2d.TextureAtlas.*;
 import arc.graphics.g2d.*;
 import arc.struct.*;
 import arc.util.*;
-import heavyindustry.core.*;
+import heavyindustry.*;
 
 import java.util.*;
 
@@ -16,7 +16,7 @@ public final class FileTree {
 	private static final ObjectSet<String> filter = ObjectSet.with("heavyindustry", "kotlin", "org", "META-INF");
 
 	static {
-		for (Fi it : HeavyIndustryMod.internalTree.root.list()) {
+		for (Fi it : HIVars.internalTree.root.list()) {
 			if (!filter.contains(it.name())) {
 				loop(it);
 			}
@@ -60,7 +60,7 @@ public final class FileTree {
 	}
 
 	public static Texture texture(String name) {
-		Fi fi = get(name == null ? "error" : name + ".png");
-		return new Texture(fi == null ? HeavyIndustryMod.internalTree.root.child("sprites-override/effects/error.png") : fi);
+		Fi fi = get((name == null ? "error" : name) + ".png");
+		return new Texture(fi == null ? HIVars.internalTree.child("sprites-override/effects/error.png") : fi);
 	}
 }

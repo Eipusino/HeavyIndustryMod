@@ -10,7 +10,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.world.*;
 
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 

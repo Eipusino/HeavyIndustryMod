@@ -1,14 +1,12 @@
 package heavyindustry.util;
 
-import java.io.*;
-
 /**
  * An {@code Failed} is a subclass of {@code Throwable}
  *
  * @since 1.0.6
  */
 public class Failed extends Throwable {
-    @Serial
+    @java.io.Serial
     private static final long serialVersionUID = 4104817001324229777l;
 
     /**

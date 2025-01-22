@@ -10,7 +10,7 @@ import mindustry.graphics.*;
 import mindustry.world.blocks.production.*;
 
 import static arc.Core.*;
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 
 public class LaserBeamDrill extends Drill {
     protected static final Rand rand = new Rand();

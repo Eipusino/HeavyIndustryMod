@@ -7,7 +7,7 @@ import heavyindustry.input.InputAggregator.*;
 import mindustry.gen.*;
 import mindustry.net.*;
 
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
 public final class HICall {

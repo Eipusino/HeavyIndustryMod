@@ -11,6 +11,7 @@ import arc.util.io.*;
 import heavyindustry.type.*;
 import heavyindustry.type.formloaders.*;
 import heavyindustry.type.formloaders.SpriteShapeLoader.ChunkProcessor.*;
+import heavyindustry.util.*;
 import mindustry.*;
 import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
@@ -140,7 +141,7 @@ public class CustomShapeBlock extends Block {
     }
 
     protected void setTile(Tile nearby, Block block, Building build) {
-        Reflect.set(nearby, blockField, block);
+        SafeRef.set(nearby, blockField, block);
         nearby.build = build;
         Events.fire(tileChangeEvent.set(nearby));
         tileChangeEvent.set(null);

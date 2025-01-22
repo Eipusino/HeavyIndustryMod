@@ -15,16 +15,16 @@ import static mindustry.Vars.*;
 public final class HIFonts {
     public static Font consolas, inconsoiata, jetbrainsmono;
 
+    public static final String loaderSuffix = ".heavyindustry.gen";
+
     /** Don't let anyone instantiate this class. */
     private HIFonts() {}
 
     public static void load() {
-        String fontSuffix = ".heavyindustry.gen";
-
-        assets.setLoader(FreeTypeFontGenerator.class, fontSuffix, new FreeTypeFontGeneratorLoader(tree) {
+        assets.setLoader(FreeTypeFontGenerator.class, loaderSuffix, new FreeTypeFontGeneratorLoader(tree) {
             @Override
             public FreeTypeFontGenerator load(AssetManager assetManager, String fileName, Fi file, FreeTypeFontGeneratorParameters parameter) {
-                return new FreeTypeFontGenerator(resolve(fileName.substring(0, fileName.length() - fontSuffix.length())));
+                return new FreeTypeFontGenerator(resolve(fileName.substring(0, fileName.length() - loaderSuffix.length())));
             }
         });
 
@@ -34,13 +34,13 @@ public final class HIFonts {
                 if (parameter == null)
                     throw new IllegalArgumentException("FreetypeFontParameter must be set in AssetManager#load to point at a TTF file!");
                 return manager
-                        .get(parameter.fontFileName + fontSuffix, FreeTypeFontGenerator.class)
+                        .get(parameter.fontFileName + loaderSuffix, FreeTypeFontGenerator.class)
                         .generateFont(parameter.fontParameters);
             }
 
             @Override
             public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, FreeTypeFontLoaderParameter parameter) {
-                return Seq.with(new AssetDescriptor<>(parameter.fontFileName + fontSuffix, FreeTypeFontGenerator.class));
+                return Seq.with(new AssetDescriptor<>(parameter.fontFileName + loaderSuffix, FreeTypeFontGenerator.class));
             }
         });
 

@@ -29,7 +29,7 @@ import mindustry.world.*;
 import java.util.*;
 
 import static arc.Core.*;
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
 /**

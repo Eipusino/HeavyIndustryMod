@@ -59,7 +59,7 @@ import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 
 import static arc.Core.*;
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 import static mindustry.type.ItemStack.*;
 
@@ -177,7 +177,7 @@ public final class HIBlocks {
             attributes.set(Attribute.steam, 1f);
         }};
         basaltSpikes = new Floor("basalt-spikes", 4) {{
-            attributes.set(Attribute.water, 0.7f);
+            attributes.set(Attribute.water, -0.3f);
         }};
         basaltWall = new StaticWall("basalt-wall") {{
             variants = 3;

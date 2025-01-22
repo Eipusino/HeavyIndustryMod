@@ -18,7 +18,7 @@ import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 
 import static arc.Core.*;
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
 public class HeatDriver extends Block {
@@ -161,8 +161,8 @@ public class HeatDriver extends Block {
             lLine = atlas.find(block.name + "-l-outline");
             rPart = atlas.find(block.name + "-r");
             rLine = atlas.find(block.name + "-r-outline");
-            effect = atlas.find(block.name + "-effect", modName + "-heat-driver-effect");
-            arrow = atlas.find(block.name + "-arrow", modName + "-heat-driver-arrow");
+            effect = atlas.find(block.name + "-effect", name("heat-driver-effect"));
+            arrow = atlas.find(block.name + "-arrow", name("heat-driver-arrow"));
             preview = atlas.find(block.name + "-preview");
         }
 

@@ -19,8 +19,10 @@ import arc.util.*;
 import heavyindustry.core.*;
 import heavyindustry.ui.dialogs.*;
 import heavyindustry.ui.fragment.*;
+import heavyindustry.util.*;
 import mindustry.core.*;
 import mindustry.ctype.*;
+import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
@@ -68,13 +70,13 @@ public final class UIUtils {
     }
 
     /** Based on {@link UI#formatAmount(long)} but for floats. */
-    public static String formatAmount(float number) {
-        if (Float.isNaN(number)) return "nan";
-        if (number == Float.MAX_VALUE) return "infinite";
-        if (number == Float.MIN_VALUE) return "-infinite";
+    public static String formatAmount(float num) {
+        if (Float.isNaN(num)) return "nan";
+        if (num == Float.MAX_VALUE) return "infinite";
+        if (num == Float.MIN_VALUE) return "-infinite";
 
-        float mag = Math.abs(number);
-        String sign = number < 0 ? "-" : "";
+        float mag = Math.abs(num);
+        String sign = num < 0 ? "-" : "";
         if (mag >= 1000000000f) {
             return sign + Strings.fixed(mag / 1000000000f, 2) + "[gray]" + UI.billions + "[]";
         } else if (mag >= 1000000f) {
@@ -84,6 +86,34 @@ public final class UIUtils {
         } else {
             return sign + Strings.fixed(mag, 2);
         }
+    }
+
+    public static String round(float num) {
+        if (num >= 1000000000f) {
+            return Strings.autoFixed(num / 1000000000f, 1) + UI.billions;
+        } else if (num >= 1000000f) {
+            return Strings.autoFixed(num / 1000000f, 1) + UI.millions;
+        } else if (num >= 1000f) {
+            return Strings.autoFixed(num / 1000f, 1) + UI.thousands;
+        } else {
+            return num + "";
+        }
+    }
+
+    public static int countSpawns(SpawnGroup group) {
+        if (group.spawn != -1)
+            return 1; //If the group has a set spawn pos, assume it's a valid position and count it as 1 spawn.
+
+        //Otherwise count all.
+        if (group.type.flying)
+            return spawner.countFlyerSpawns();
+
+        return spawner.countGroundSpawns();
+    }
+
+    public static boolean hasMouse() {
+        Element e = scene.hit(input.mouseX(), input.mouseY(), false);
+        return e != null && !e.fillParent;
     }
 
     public static void collapseTextToTable(Table t, String text) {
@@ -503,9 +533,7 @@ public final class UIUtils {
     public static void replaceClickListener(Button button, ClickListener newListener) {
         button.removeListener(button.getClickListener());
 
-        try {
-            Reflect.set(Button.class, button, "clickListener", newListener);
-        } catch (Exception ignored) {}
+        SafeRef.set(Button.class, button, "clickListener", newListener);
         button.addListener(newListener);
     }
 }

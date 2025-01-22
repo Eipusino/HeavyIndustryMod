@@ -5,6 +5,7 @@ import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
+import heavyindustry.*;
 import heavyindustry.core.*;
 import heavyindustry.graphics.g3d.*;
 import heavyindustry.maps.ColorPass.*;
@@ -19,8 +20,6 @@ import mindustry.graphics.g3d.*;
 import mindustry.type.*;
 import mindustry.world.meta.*;
 
-import static mindustry.content.Planets.*;
-
 /** Defines the {@linkplain Planet planets} and other celestial objects this mod offers. */
 public final class HIPlanets {
     public static Planet serilia, kepler, gliese;
@@ -30,7 +29,7 @@ public final class HIPlanets {
 
     /** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
     public static void load() {
-        serilia = new Planet("serilia", sun, 33f, 3) {{
+        serilia = new Planet("serilia", Planets.sun, 33f, 3) {{
             bloom = true;
             drawOrbit = false;
             orbitRadius = 1000f;
@@ -55,7 +54,7 @@ public final class HIPlanets {
                     Color.valueOf("ffb671")
             );
         }};
-        kepler = new AtmospherePlanet("kepler", sun, 1f, 3) {{
+        kepler = new AtmospherePlanet("kepler", Planets.sun, 1f, 3) {{
             orbitRadius = 40f;
             atmosphereRadIn = 0f;
             atmosphereRadOut = 0.3f;
@@ -159,21 +158,17 @@ public final class HIPlanets {
                     new AtmosphereHexMesh(7),
                     new HexMesh(this, 7),
 
-                    new CircleMesh(circle("ring4.png"), this, 80, 2.55f, 2.6f, ringPos),
-                    new CircleMesh(circle("ring3.png"), this, 80, 2.2f, 2.5f, ringPos),
-                    new CircleMesh(circle("ring2.png"), this, 80, 1.9f, 2.1f, ringPos),
-                    new CircleMesh(circle("ring1.png"), this, 80, 1.8f, 1.85f, ringPos)
+                    new CircleMesh(rings("ring4"), this, 80, 2.55f, 2.6f, ringPos),
+                    new CircleMesh(rings("ring3"), this, 80, 2.2f, 2.5f, ringPos),
+                    new CircleMesh(rings("ring2"), this, 80, 1.9f, 2.1f, ringPos),
+                    new CircleMesh(rings("ring1"), this, 80, 1.8f, 1.85f, ringPos)
             );
             cloudMeshLoader = () -> new MultiMesh(
                     new HexSkyMesh(this, 6, -0.5f, 0.14f, 6, Blocks.water.mapColor.cpy().a(0.2f), 2, 0.42f, 1f, 0.6f),
                     new HexSkyMesh(this, 1, 0.6f, 0.15f, 6, Blocks.water.mapColor.cpy().a(0.2f), 2, 0.42f, 1.2f, 0.5f)
             );
-        }
-            Texture circle(String name) {
-                return new Texture(HeavyIndustryMod.internalTree.child("sprites/planets/kepler/rings/" + name));
-            }
-        };
-        gliese = new AtmospherePlanet("gliese", sun, 1f, 3) {{
+        }};
+        gliese = new AtmospherePlanet("gliese", Planets.sun, 1f, 3) {{
             Vec3 ringPos = new Vec3(0,1,0).rotate(Vec3.X, 35);
 
             generator = new GliesePlanetGenerator() {{
@@ -273,9 +268,9 @@ public final class HIPlanets {
             meshLoader = () -> new MultiMesh(
                     new HexMesh(this, 7),
 
-                    new CircleMesh(circle("ring1.png"), this, 80, 2.55f, 2.6f, ringPos),
-                    new CircleMesh(circle("ring3.png"), this,80, 2.2f, 2.5f, ringPos),
-                    new CircleMesh(circle("ring3.png"), this,80, 1.9f, 2.1f, ringPos)
+                    new CircleMesh(rings("ring5"), this, 80, 2.55f, 2.6f, ringPos),
+                    new CircleMesh(rings("ring7"), this,80, 2.2f, 2.5f, ringPos),
+                    new CircleMesh(rings("ring7"), this,80, 1.9f, 2.1f, ringPos)
             );
             cloudMeshLoader = () -> new MultiMesh(
                     new HexSkyMesh(this, 11, 0.15f, 0.13f, 6, new Color().set(Color.gray).mul(0.9f).a(0.55f), 2, 0.45f, 0.9f, 0.38f),
@@ -304,10 +299,10 @@ public final class HIPlanets {
             startSector = 15;
             alwaysUnlocked = true;
             landCloudColor = Color.blue.cpy().a(0.5f);
-        }
-            Texture circle(String name) {
-                return new Texture(HeavyIndustryMod.internalTree.child("sprites/planets/gliese/rings/" + name));
-            }
-        };
+        }};
+    }
+
+    public static Texture rings(String name) {
+        return new Texture(HIVars.internalTree.child("sprites/planets/rings/" + name + ".png"));
     }
 }

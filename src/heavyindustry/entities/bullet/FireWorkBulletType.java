@@ -13,7 +13,7 @@ import mindustry.entities.effect.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 
 /** Draw the effect of bullet fireworks. Although its memory usage may be slightly high. */
 public class FireWorkBulletType extends BulletType {

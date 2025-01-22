@@ -17,8 +17,7 @@ import mindustry.graphics.*;
 import mindustry.ui.*;
 
 import static arc.Core.*;
-import static arc.math.geom.Mat3D.*;
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
 public final class Drawn {
@@ -651,9 +650,9 @@ public final class Drawn {
     }
 
     public static void mulVec(float[] mat, Vec3 vec) {
-        float x = vec.x * mat[M00] + vec.y * mat[M01] + vec.z * mat[M02] + mat[M03];
-        float y = vec.x * mat[M10] + vec.y * mat[M11] + vec.z * mat[M12] + mat[M13];
-        float z = vec.x * mat[M20] + vec.y * mat[M21] + vec.z * mat[M22] + mat[M23];
+        float x = vec.x * mat[Mat3D.M00] + vec.y * mat[Mat3D.M01] + vec.z * mat[Mat3D.M02] + mat[Mat3D.M03];
+        float y = vec.x * mat[Mat3D.M10] + vec.y * mat[Mat3D.M11] + vec.z * mat[Mat3D.M12] + mat[Mat3D.M13];
+        float z = vec.x * mat[Mat3D.M20] + vec.y * mat[Mat3D.M21] + vec.z * mat[Mat3D.M22] + mat[Mat3D.M23];
         vec.x = x;
         vec.y = y;
         vec.z = z;

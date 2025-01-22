@@ -13,7 +13,7 @@ import mindustry.type.*;
 import mindustry.type.weather.*;
 import mindustry.world.meta.*;
 
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 
 /**
  * Defines the {@linkplain Weather weather} this mod offers.

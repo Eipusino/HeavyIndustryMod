@@ -3,8 +3,11 @@ package heavyindustry.world.blocks.payload;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
+import arc.util.*;
+import arc.util.io.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
+import mindustry.io.*;
 import mindustry.world.blocks.payloads.*;
 
 import static heavyindustry.util.Utils.*;
@@ -31,8 +34,8 @@ public class PayloadDuct extends PayloadBlock {
 
 	public class PayloadDuctBuild extends PayloadBlockBuild<Payload> {
 		public int tiling = 0;
-		boolean out = false;
-		Building next;
+		protected boolean out = false;
+		protected @Nullable Building next;
 
 		@Override
 		public void updateTile() {
@@ -41,7 +44,9 @@ public class PayloadDuct extends PayloadBlock {
 
 			if (out) {
 				moveOutPayload();
-			} else if (moveInPayload()) out = true;
+			} else if (moveInPayload()) {
+				out = true;
+			}
 		}
 
 		@Override
@@ -94,6 +99,20 @@ public class PayloadDuct extends PayloadBlock {
 
 			Draw.z(35.1f);
 			//Draw.rect(regionLayers[1][tiling], x, y, 0f);
+		}
+
+		@Override
+		public void write(Writes write) {
+			super.write(write);
+			TypeIO.writeBuilding(write, next);
+			write.bool(out);
+		}
+
+		@Override
+		public void read(Reads read, byte revision) {
+			super.read(read, revision);
+			next = TypeIO.readBuilding(read);
+			out = read.bool();
 		}
 	}
 }

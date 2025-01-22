@@ -5,6 +5,7 @@ import arc.struct.*;
 import arc.util.*;
 import arc.util.serialization.*;
 import heavyindustry.mod.ExtraContentParser.*;
+import heavyindustry.util.*;
 import mindustry.*;
 import mindustry.ctype.*;
 import mindustry.mod.*;
@@ -23,7 +24,7 @@ public final class LoadMod {
      * attempting to use reflection to remove elements from {@code blacklistedMods} to play HeavyIndustry
      * Mod, this itself contradicts the author's advocacy of protecting individual labor achievements.
      */
-    private static final ObjectSet<String> blacklistedMods = ObjectSet.with("mfxiao2");
+    private static final String[] blacklistedMods = {"\u949b\u94c5\u5de5\u4e1a", "mfxiao2"};
 
     /** Don't let anyone instantiate this class. */
     private LoadMod() {}
@@ -109,13 +110,9 @@ public final class LoadMod {
     }
 
     /** Add {@link #blacklistedMods} to the {@code Mods.blacklistedMods} list. */
-    public static void blacklistedMods() {
-        try {
-            ObjectSet<String> bm = Reflect.get(Mods.class, "blacklistedMods");
-            bm.addAll(blacklistedMods);
-        } catch (Exception e) {
-            Log.err(e);
-        }
+    public static void addBlacklistedMods() {
+        ObjectSet<String> bm = SafeRef.get(Mods.class, "blacklistedMods");
+        if (bm != null) bm.addAll(blacklistedMods);
     }
 
     /**

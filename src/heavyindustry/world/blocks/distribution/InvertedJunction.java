@@ -14,7 +14,7 @@ import mindustry.ui.*;
 import mindustry.world.blocks.distribution.*;
 
 import static arc.Core.*;
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 
@@ -134,7 +134,7 @@ public class InvertedJunction extends Junction {
         }
 
         @Override
-        public Object config() {
+        public Integer config() {
             return loc;
         }
 

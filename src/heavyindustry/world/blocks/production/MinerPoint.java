@@ -391,7 +391,7 @@ public class MinerPoint extends Block {
         }
 
         @Override
-        public Object config() {
+        public Integer config() {
             return sort;
         }
 

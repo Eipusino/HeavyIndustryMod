@@ -14,7 +14,7 @@ import mindustry.graphics.*;
 import mindustry.world.*;
 import mindustry.world.meta.*;
 
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 

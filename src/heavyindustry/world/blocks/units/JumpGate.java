@@ -16,7 +16,6 @@ import arc.struct.*;
 import arc.util.*;
 import arc.util.io.*;
 import heavyindustry.content.*;
-import heavyindustry.core.*;
 import heavyindustry.graphics.*;
 import heavyindustry.ui.*;
 import heavyindustry.util.*;
@@ -38,6 +37,7 @@ import mindustry.world.modules.*;
 
 import java.util.*;
 
+import static heavyindustry.HIVars.*;
 import static heavyindustry.ui.UIUtils.*;
 import static mindustry.Vars.*;
 
@@ -241,8 +241,8 @@ public class JumpGate extends Block {
     @Override
     public void load() {
         super.load();
-        pointerRegion = Core.atlas.find(HeavyIndustryMod.name("jump-gate-pointer"));
-        arrowRegion = Core.atlas.find(HeavyIndustryMod.name("jump-gate-arrow"));
+        pointerRegion = Core.atlas.find(name("jump-gate-pointer"));
+        arrowRegion = Core.atlas.find(name("jump-gate-arrow"));
     }
 
     public static class UnitSet implements Comparable<UnitSet> {

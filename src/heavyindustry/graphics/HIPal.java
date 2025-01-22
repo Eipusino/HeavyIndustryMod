@@ -8,6 +8,8 @@ import mindustry.graphics.*;
 import static arc.graphics.Color.*;
 
 public final class HIPal {
+    public static final Color[] spectrum = {Color.red, Color.coral, Color.yellow, Color.lime, Color.green, Color.teal, Color.blue, Color.purple, Color.magenta};
+
     /** Static read-only palettes that are used throughout the mod. */
     public static final Color
             miku = Color.valueOf("39c5bb"),

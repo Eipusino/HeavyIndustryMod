@@ -3,8 +3,11 @@
 package heavyindustry.util
 
 import arc.func.*
+import arc.graphics.*
+import arc.graphics.g2d.*
+import arc.graphics.g2d.TextureAtlas.*
 import arc.struct.*
-import heavyindustry.core.*
+import heavyindustry.*
 import mindustry.*
 import mindustry.content.TechTree.*
 import mindustry.ctype.*
@@ -17,16 +20,35 @@ import java.net.*
 //Java/JS calling method: UtilsKt.addToResearch(children, content...);
 //Warning: Methods with <reified T> cannot be called outside of Kotlin.
 
+//Blank single pixel texture, commonly used as a placeholder and to prevent null pointer anomalies in Kotlin.
+val whiteRegion: TextureRegion = AtlasRegion(TextureRegion(Texture(HIVars.internalTree.child("sprites/white.png"))))
+
 fun <T> eq(a: Boolean, b: T, c: T): T = if (a) b else c
 
 fun <T> nop(a: T?, b: Cons<T>) {
     if (a != null) b.get(a)
 }
 
+fun <T, N> nop2(a: T?, b: N?, c: Cons2<T, N>) {
+    if (a != null && b != null) c.get(a, b)
+}
+
+fun <T, N, P> nop3(a: T?, b: N?, c: P?, d: Cons3<T, N, P>) {
+    if (a != null && b != null && c != null) d.get(a, b, c)
+}
+
+fun <T, N, P, E> nop4(a: T?, b: N?, c: P?, d: E?, e: Cons4<T, N, P, E>) {
+    if (a != null && b != null && c != null && d != null) e.get(a, b, c, d)
+}
+
 inline fun <reified T> inq(a: Any, b: T): T = if (a is T) a else b
 
 inline fun <reified T> ins(a: Any?, b: Cons<T>) {
     if (a is T) b.get(a)
+}
+
+inline fun <reified T, reified N> ins2(a: Any?, b: Any?, c: Cons2<T, N>) {
+    if (a is T && b is N) c.get(a, b)
 }
 
 fun <T> apt(create: T, cons: Cons<T>): T {
@@ -44,7 +66,7 @@ fun <T> apt(create: T, cons: Cons<T>): T {
  * @param requirements research resources
  * @param objectives research needs
  */
-fun addToResearch(children: UnlockableContent?, content: UnlockableContent?, requirements: Array<ItemStack>?, objectives: Seq<Objective>?) {
+fun research(children: UnlockableContent?, content: UnlockableContent?, requirements: Array<ItemStack>?, objectives: Seq<Objective>?) {
     if (children == null || content == null) return
 
     val lastNode = all.find { t -> t.content === children }
@@ -72,11 +94,11 @@ fun addToResearch(children: UnlockableContent?, content: UnlockableContent?, req
     node.parent = parent
 }
 
-fun addToResearch(children: UnlockableContent?, content: UnlockableContent?, objectives: Seq<Objective>?) = addToResearch(children, content, ItemStack.empty, objectives)
+fun research(children: UnlockableContent?, content: UnlockableContent?, objectives: Seq<Objective>?) = research(children, content, ItemStack.empty, objectives)
 
-fun addToResearch(children: UnlockableContent?, content: UnlockableContent?, requirements: Array<ItemStack>?) = addToResearch(children, content, requirements, Seq.with())
+fun research(children: UnlockableContent?, content: UnlockableContent?, requirements: Array<ItemStack>?) = research(children, content, requirements, Seq.with())
 
-fun addToResearch(children: UnlockableContent?, content: UnlockableContent?) = addToResearch(children, content, ItemStack.empty, Seq.with())
+fun research(children: UnlockableContent?, content: UnlockableContent?) = research(children, content, ItemStack.empty, Seq.with())
 
 /**
  * I don't know if this is usable, JS is really abstract.
@@ -85,9 +107,10 @@ fun addToResearch(children: UnlockableContent?, content: UnlockableContent?) = a
  * @return js-xor native java class
  */
 fun getClass(name: String): NativeJavaClass {
-    return NativeJavaClass(Vars.mods.scripts.scope, URLClassLoader(arrayOf(HeavyIndustryMod.internalTree.file.file().toURI().toURL()), Vars.mods.mainLoader()).loadClass(name))
+    return NativeJavaClass(Vars.mods.scripts.scope, URLClassLoader(arrayOf(HIVars.internalTree.file.file().toURI().toURL()), Vars.mods.mainLoader()).loadClass(name))
 }
 
+/** Replace `Comparator.comparing(keyExtractor)` to curb the issue of [NoClassDefFoundError] on the Android platform. */
 fun <T> comparing(comparable: Comparable<T>): Comparator<T> {
     return compareBy { comparable }
 }

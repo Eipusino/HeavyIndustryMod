@@ -13,7 +13,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 
 import static arc.Core.*;
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 import static heavyindustry.util.Structf.*;
 
 public final class HITrails {

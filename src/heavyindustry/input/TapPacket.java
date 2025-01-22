@@ -10,7 +10,7 @@ import mindustry.gen.*;
 import mindustry.io.*;
 import mindustry.net.*;
 
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
 public class TapPacket extends Packet {

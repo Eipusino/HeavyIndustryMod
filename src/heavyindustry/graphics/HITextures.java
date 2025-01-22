@@ -3,7 +3,8 @@ package heavyindustry.graphics;
 import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.Texture.*;
-import heavyindustry.core.*;
+
+import static heavyindustry.HIVars.*;
 
 public final class HITextures {
     public static Texture smooth, particle, darker, armor;
@@ -31,7 +32,7 @@ public final class HITextures {
     }
 
     public static Texture loadTexture(String name, Cons<Texture> modifier) {
-        Texture tex = new Texture(HeavyIndustryMod.internalTree.child("sprites").child(name + (name.endsWith(".png") ? "" : ".png")));
+        Texture tex = new Texture(internalTree.child("sprites").child(name + (name.endsWith(".png") ? "" : ".png")));
         modifier.get(tex);
 
         return tex;

@@ -71,7 +71,7 @@ public final class ModJS {
     }
 
     public static void importClass(ImporterTopLevel scope, String canonical) {
-        importClass(scope, Reflectf.findClass(canonical));
+        importClass(scope, ExtraRef.findClass(canonical));
     }
 
     public static void importClass(ImporterTopLevel scope, Class<?> type) {
@@ -91,7 +91,7 @@ public final class ModJS {
 
     @SuppressWarnings("unchecked")
     public static <T> Func<Object[], T> requireType(Function func, Context context, Scriptable scope, Class<T> returnType) {
-        Class<?> type = Reflectf.box(returnType);
+        Class<?> type = ExtraRef.box(returnType);
         return args -> {
             Object res = func.call(context, scope, scope, args);
             if (type == void.class || type == Void.class) return null;

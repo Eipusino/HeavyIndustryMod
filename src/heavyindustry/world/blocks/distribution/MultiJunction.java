@@ -48,12 +48,11 @@ public class MultiJunction extends LiquidJunction {
             for (int i = 0; i < 4; i++) {
                 if (buffer.indexes[i] > 0) {
                     if (buffer.indexes[i] > capacity) buffer.indexes[i] = capacity;
-                    long l = buffer.buffers[i][0];
-                    float time = BufferItem.time(l);
+                    long buf = buffer.buffers[i][0];
+                    float time = BufferItem.time(buf);
 
                     if (Time.time >= time + speed / timeScale || Time.time < time) {
-
-                        Item item = content.item(BufferItem.item(l));
+                        Item item = content.item(BufferItem.item(buf));
                         Building dest = nearby(i);
 
                         //skip blocks that don't want the item, keep waiting until they do

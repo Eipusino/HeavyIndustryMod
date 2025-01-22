@@ -1,7 +1,6 @@
 package heavyindustry.type.unit;
 
 import arc.*;
-import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -15,7 +14,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 
 import static arc.Core.*;
-import static heavyindustry.core.HeavyIndustryMod.*;
+import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
 public class EnergyUnitType extends AncientUnitType {

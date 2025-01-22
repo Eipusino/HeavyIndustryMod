@@ -20,6 +20,7 @@ import heavyindustry.gen.*;
 import heavyindustry.graphics.*;
 import heavyindustry.math.*;
 import heavyindustry.util.*;
+import heavyindustry.util.SafeRef.*;
 import heavyindustry.world.meta.*;
 import mindustry.*;
 import mindustry.ai.*;
@@ -420,7 +421,7 @@ public class ExtraContentParser {
                         if (!str.isString())
                             throw new SerializationException("Integer bitfield values must all be strings. Found: " + str);
                         String field = str.asString();
-                        value |= Reflect.<Integer>get(Env.class, field);
+                        value |= NumRef.getInt(Env.class, field);
                     }
 
                     return (T) (Integer) value;
@@ -1274,11 +1275,11 @@ public class ExtraContentParser {
         //try to resolve it as a raw class name
         if (base != null && base.indexOf('.') != -1) {
             try {
-                return Reflectf.forClass(base);
+                return ExtraRef.forClass(base);
             } catch (Exception ignored) {
                 //try to use mod class loader
                 try {
-                    return Reflectf.forClass(base, true, mods.mainLoader());
+                    return ExtraRef.forClass(base, true, mods.mainLoader());
                 } catch (Exception ignore) {}
             }
         }
