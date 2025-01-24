@@ -3,9 +3,6 @@
 package heavyindustry.util
 
 import arc.func.*
-import arc.graphics.*
-import arc.graphics.g2d.*
-import arc.graphics.g2d.TextureAtlas.*
 import arc.struct.*
 import heavyindustry.*
 import mindustry.*
@@ -20,10 +17,9 @@ import java.net.*
 //Java/JS calling method: UtilsKt.addToResearch(children, content...);
 //Warning: Methods with <reified T> cannot be called outside of Kotlin.
 
-//Blank single pixel texture, commonly used as a placeholder and to prevent null pointer anomalies in Kotlin.
-val whiteRegion: TextureRegion = AtlasRegion(TextureRegion(Texture(HIVars.internalTree.child("sprites/white.png"))))
-
 fun <T> eq(a: Boolean, b: T, c: T): T = if (a) b else c
+
+fun <T> noc(a: T?, b: T): T = a ?: b
 
 fun <T> nop(a: T?, b: Cons<T>) {
     if (a != null) b.get(a)
@@ -33,11 +29,11 @@ fun <T, N> nop2(a: T?, b: N?, c: Cons2<T, N>) {
     if (a != null && b != null) c.get(a, b)
 }
 
-fun <T, N, P> nop3(a: T?, b: N?, c: P?, d: Cons3<T, N, P>) {
+fun <T, N, R> nop3(a: T?, b: N?, c: R?, d: Cons3<T, N, R>) {
     if (a != null && b != null && c != null) d.get(a, b, c)
 }
 
-fun <T, N, P, E> nop4(a: T?, b: N?, c: P?, d: E?, e: Cons4<T, N, P, E>) {
+fun <T, N, R, P> nop4(a: T?, b: N?, c: R?, d: P?, e: Cons4<T, N, R, P>) {
     if (a != null && b != null && c != null && d != null) e.get(a, b, c, d)
 }
 
@@ -113,4 +109,16 @@ fun getClass(name: String): NativeJavaClass {
 /** Replace `Comparator.comparing(keyExtractor)` to curb the issue of [NoClassDefFoundError] on the Android platform. */
 fun <T> comparing(comparable: Comparable<T>): Comparator<T> {
     return compareBy { comparable }
+}
+
+fun random(to: Float): Float {
+    return random(0f, to)
+}
+
+fun random(from: Float, to: Float): Float {
+    return (Math.random() * (to - from)).toFloat() + from
+}
+
+fun <T> randomFromArray(array: Array<T>): T {
+    return array[random(array.size.toFloat()).toInt()]
 }

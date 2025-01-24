@@ -13,7 +13,7 @@ import static mindustry.Vars.*;
  * @author Eipusino
  */
 public final class HICacheLayer {
-    public static ShaderLayer brine, nanofluid, armor, pit, waterPit;
+    public static ShaderLayer brine, nanoFluid, armor, pit, waterPit;
 
     /** Don't let anyone instantiate this class. */
     private HICacheLayer() {}
@@ -21,7 +21,7 @@ public final class HICacheLayer {
     /** Loads the cache layers. */
     public static void init() {
         brine = new ShaderLayer(HIShaders.brine);
-        nanofluid = new ShaderLayer(HIShaders.nanofluid);
+        nanoFluid = new ShaderLayer(HIShaders.nanoFluid);
         pit = new ShaderLayer(HIShaders.pit);
         waterPit = new ShaderLayer(HIShaders.waterPit);
 
@@ -46,6 +46,6 @@ public final class HICacheLayer {
             }
         };
 
-        CacheLayer.add(brine, nanofluid, armor, pit, waterPit);
+        CacheLayer.add(brine, nanoFluid, armor, pit, waterPit);
     }
 }

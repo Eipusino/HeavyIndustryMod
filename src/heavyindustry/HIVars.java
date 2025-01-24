@@ -1,6 +1,9 @@
 package heavyindustry;
 
 import arc.*;
+import arc.graphics.*;
+import arc.graphics.g2d.*;
+import arc.graphics.g2d.TextureAtlas.*;
 import heavyindustry.core.*;
 import heavyindustry.files.*;
 import heavyindustry.input.*;
@@ -23,6 +26,9 @@ public final class HIVars {
 	public static float pressTimer = 30f;
 	public static float longPress = 30f;
 	public static float iconSize = 40f, buttonSize = 24f, sliderWidth = 140f, fieldWidth = 80f;
+
+	/** Blank single pixel texture, commonly used as a placeholder and to prevent null pointer anomalies in Kotlin. */
+	public static TextureRegion whiteRegion = new AtlasRegion(new TextureRegion(new Texture(internalTree.child("sprites/white.png"))));
 
 	/** Don't let anyone instantiate this class. */
 	private HIVars() {}

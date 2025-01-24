@@ -45,7 +45,7 @@ public final class PositionLightning {
     /** Spawns Nothing at the hit point. */
     public static final Cons<Position> none = p -> {};
     /** Lighting Effect Lifetime. */
-    public static final float lifetime = Fx.chainLightning.lifetime;
+    public static final float lifetime = 20f;
     /** Lighting Effect Default Width, apply it manually. */
     public static final float WIDTH = 2.5f;
     /** Lighting Effect X-Rand. */

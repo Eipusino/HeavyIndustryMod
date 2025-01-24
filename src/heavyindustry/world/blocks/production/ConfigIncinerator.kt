@@ -15,7 +15,7 @@ open class ConfigIncinerator(name: String) : Incinerator(name) {
     @JvmField var choice = arrayOf<TextureRegion>()
 
     init {
-        config(Int::class.javaObjectType) { tile: ConfigIncineratorBuild, value: Int ->
+        config(Int::class.javaObjectType) { tile: ConfigIncineratorBuild, value ->
             tile.configRecord = value
         }
     }
@@ -57,11 +57,11 @@ open class ConfigIncinerator(name: String) : Incinerator(name) {
             }
         }
 
-        override fun acceptItem(source: Building?, item: Item): Boolean {
+        override fun acceptItem(source: Building, item: Item): Boolean {
             return heat > 0.5f && consItem
         }
 
-        override fun acceptLiquid(source: Building?, liquid: Liquid): Boolean {
+        override fun acceptLiquid(source: Building, liquid: Liquid): Boolean {
             return heat > 0.5f && consLiquid
         }
 

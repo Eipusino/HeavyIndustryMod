@@ -7,11 +7,12 @@ import static heavyindustry.HIVars.*;
 
 public final class HIIcon {
     public static Drawable
-            keplerIcon, aboutIcon, artistIcon, configureIcon, contributeIcon, databaseIcon, debuggingIcon, defaultShowIcon, gasesIcon,
-            holdIcon, matrixIcon, nuclearIcon, programIcon, publicInfoIcon, reactionIcon, showInfosIcon, showRangeIcon, soundsIcon,
-            startIcon, telegramIcon, timeIcon, translateIcon, unShowInfosIcon,
+            keplerIcon, aboutIcon, artistIcon, configureIcon, contributeIcon, databaseIcon, debuggingIcon, defaultShowIcon, fullSwordIcon, gasesIcon,
+            holdIcon, matrixIcon, nuclearIcon, programIcon, publicInfoIcon, reactionIcon, showInfosIcon, showRangeIcon, musicsIcon,
+            soundsIcon, sounds2Icon, startIcon, telegramIcon, timeIcon, translateIcon, unShowInfosIcon,
             //small
             resetIconSmall, timeIconSmall,
+            //
             //animdustry
             alphaChan, alphaChanHit, crawlerChan, crawlerChanHit, zenithChan, zenithChanHit, monoChan, monoChanHit, oxynoeChan, oxynoeChanHit, octChan, octChanHit,
             seiChan, seiChanHit, quadChan, quadChanHit, boulderChan, boulderChanHit;
@@ -28,6 +29,7 @@ public final class HIIcon {
         databaseIcon = modDrawable("database-icon");
         debuggingIcon = modDrawable("debugging-icon");
         defaultShowIcon = modDrawable("default-show-icon");
+        fullSwordIcon = modDrawable("full-sword-icon");
         gasesIcon = modDrawable("gases-icon");
         holdIcon = modDrawable("hold-icon");
         matrixIcon = modDrawable("matrix-icon");
@@ -37,7 +39,9 @@ public final class HIIcon {
         reactionIcon = modDrawable("reaction-icon");
         showInfosIcon = modDrawable("show-infos-icon");
         showRangeIcon = modDrawable("show-range-icon");
+        musicsIcon = modDrawable("musics-icon");
         soundsIcon = modDrawable("sounds-icon");
+        sounds2Icon = modDrawable("sounds-2-icon");
         startIcon = modDrawable("start-icon");
         telegramIcon = modDrawable("telegram-icon");
         timeIcon = modDrawable("time-icon");

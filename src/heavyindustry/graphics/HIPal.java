@@ -14,8 +14,8 @@ public final class HIPal {
     public static final Color
             miku = Color.valueOf("39c5bb"),
             carbideShot = Color.valueOf("ab8ec5"),
-            nanocoreGreen = HIItems.nanocore.color,
-            nanocoreErekirOrange = HIItems.nanocoreErekir.color,
+            nanoCoreGreen = HIItems.nanoCore.color,
+            nanoCoreErekirOrange = HIItems.nanoCoreErekir.color,
             uraniumGrey = HIItems.uranium.color,
             chromiumGrey = HIItems.chromium.color,
             brightSteelBlue = Color.valueOf("b0c4de"),

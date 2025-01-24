@@ -25,13 +25,12 @@ import static mindustry.Vars.*;
 
 /**
  * Basic Commandable Attacker Block.
- * <p>This is an abstract class, you should not use it directly.
  *
  * @see BombLauncher
  * @see AirRaider
  * @since 1.0.4
  */
-public abstract class CommandableAttackerBlock extends CommandableBlock {
+public class CommandableAttackerBlock extends CommandableBlock {
     public float spread = 120f;
     public float prepareDelay = 60f;
     public int storage = 1;

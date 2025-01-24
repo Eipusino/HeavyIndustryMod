@@ -33,22 +33,21 @@ import static mindustry.Vars.*;
 
 /**
  * MultiCrafter. You can freely choose to change the production formula.
- * <p>We currently do not support JSON minimalist format parsing, which is too cumbersome to write.
  *
  * @author Eipusino
  * @apiNote Example usage {@link heavyindustry.content.HIBlocks#ironcladCompressor }.
- * @see heavyindustry.world.blocks.production.MultiCrafter.Formula products type
+ * @see CraftPlan craftPlan type
  * @see heavyindustry.world.blocks.heat.HeatMultiCrafter heat version
  * @since 1.0.6
  */
 public class MultiCrafter extends Block {
-    /** Recipe {@link Formula}. */
-    public Seq<Formula> products = new Seq<>();
+    /** Recipe {@link CraftPlan}. */
+    public Seq<CraftPlan> craftPlans = new Seq<>();
     /** If {@link MultiCrafter#useBlockDrawer} is false, use the drawer in the recipe for the block. */
     public DrawBlock drawer = new DrawDefault();
     /** Do you want to use the {@link MultiCrafter#drawer} inside the block itself. */
     public boolean useBlockDrawer = true;
-    /** Whether multiple liquid outputs require different directions, please refer to {@link Formula#liquidOutputDirections} to determine the value of this parameter. */
+    /** Whether multiple liquid outputs require different directions, please refer to {@link CraftPlan#liquidOutputDirections} to determine the value of this parameter. */
     public boolean hasDoubleOutput = false;
     /** Automatically add bar to liquid. */
     public boolean autoAddBar = true;
@@ -78,28 +77,28 @@ public class MultiCrafter extends Block {
 
             tile.rotation = in[0];
 
-            if (products.isEmpty() || in[1] == -1) tile.formula = null;
-            tile.formula = products.get(in[1]);
+            if (craftPlans.isEmpty() || in[1] == -1) tile.craftPlan = null;
+            tile.craftPlan = craftPlans.get(in[1]);
         });
     }
 
     @Override
     public void init() {
-        for (Formula product : products) {
-            product.owner = this;
-            product.init();
-            if (product.outputLiquids.length > 0) {
+        for (CraftPlan craftPlan : craftPlans) {
+            craftPlan.owner = this;
+            craftPlan.init();
+            if (craftPlan.outputLiquids.length > 0) {
                 hasLiquids = true;
                 outputsLiquid = true;
             }
-            if (product.outputItems.length > 0) {
+            if (craftPlan.outputItems.length > 0) {
                 hasItems = true;
             }
-            if (product.consPower != null) {
+            if (craftPlan.consPower != null) {
                 hasPower = true;
                 consumesPower = true;
             }
-            if (product.powerProduction > 0) {
+            if (craftPlan.powerProduction > 0) {
                 hasPower = true;
                 outputsPower = true;
             }
@@ -108,7 +107,7 @@ public class MultiCrafter extends Block {
 
         super.init();
 
-        hasConsumers = products.any();
+        hasConsumers = craftPlans.any();
     }
 
     @Override
@@ -138,23 +137,23 @@ public class MultiCrafter extends Block {
         stats.add(Stat.output, table -> {
             table.row();
 
-            for (Formula p : products) {
+            for (CraftPlan craftPlan : craftPlans) {
                 table.table(Styles.grayPanel, info -> {
                     info.left().defaults().left();
                     Stats stat = new Stats();
-                    stat.timePeriod = p.craftTime;
-                    if (p.hasConsumers)
-                        for (Consume c : p.consumers)
+                    stat.timePeriod = craftPlan.craftTime;
+                    if (craftPlan.hasConsumers)
+                        for (Consume c : craftPlan.consumers)
                             c.display(stat);
 
-                    if ((hasItems && itemCapacity > 0) || p.outputItems.length > 0)
-                        stat.add(Stat.productionTime, p.craftTime / 60f, StatUnit.seconds);
+                    if ((hasItems && itemCapacity > 0) || craftPlan.outputItems.length > 0)
+                        stat.add(Stat.productionTime, craftPlan.craftTime / 60f, StatUnit.seconds);
 
-                    if (p.outputItems.length > 0)
-                        stat.add(Stat.output, StatValues.items(p.craftTime, p.outputItems));
+                    if (craftPlan.outputItems.length > 0)
+                        stat.add(Stat.output, StatValues.items(craftPlan.craftTime, craftPlan.outputItems));
 
-                    if (p.outputLiquids.length > 0)
-                        stat.add(Stat.output, StatValues.liquids(1f, p.outputLiquids));
+                    if (craftPlan.outputLiquids.length > 0)
+                        stat.add(Stat.output, StatValues.liquids(1f, craftPlan.outputLiquids));
 
                     info.table(t -> UIUtils.statTurnTable(stat, t)).pad(8).left();
                 }).growX().left().pad(10);
@@ -169,7 +168,7 @@ public class MultiCrafter extends Block {
         if (useBlockDrawer) {
             drawer.load(this);
         } else {
-            for (Formula p : products) {
+            for (CraftPlan p : craftPlans) {
                 p.drawer.load(this);
             }
         }
@@ -180,8 +179,8 @@ public class MultiCrafter extends Block {
         if (useBlockDrawer) {
             drawer.drawPlan(this, plan, list);
         } else {
-            if (products.any()) {
-                products.get(0).drawer.drawPlan(this, plan, list);
+            if (craftPlans.any()) {
+                craftPlans.get(0).drawer.drawPlan(this, plan, list);
             } else {
                 super.drawPlanRegion(plan, list);
             }
@@ -190,11 +189,11 @@ public class MultiCrafter extends Block {
 
     @Override
     protected TextureRegion[] icons() {
-        return useBlockDrawer ? drawer.icons(this) : products.any() ? products.get(0).drawer.icons(this) : super.icons();
+        return useBlockDrawer ? drawer.icons(this) : craftPlans.any() ? craftPlans.get(0).drawer.icons(this) : super.icons();
     }
 
     public class MultiCrafterBuild extends Building {
-        public Formula formula = products.any() ? products.get(0) : null;
+        public CraftPlan craftPlan = craftPlans.any() ? craftPlans.get(0) : null;
         public float progress;
         public float totalProgress;
         public float warmup;
@@ -206,16 +205,16 @@ public class MultiCrafter extends Block {
 
         @Override
         public void draw() {
-            if (formula == null || useBlockDrawer) {
+            if (craftPlan == null || useBlockDrawer) {
                 drawer.draw(this);
             } else {
-                formula.drawer.draw(this);
+                craftPlan.drawer.draw(this);
             }
         }
 
         @Override
         public void drawStatus() {
-            if (block.enableDrawStatus && formula != null && formula.hasConsumers) {
+            if (block.enableDrawStatus && craftPlan != null && craftPlan.hasConsumers) {
                 float multiplier = block.size > 1 ? 1 : 0.64f;
                 float brcX = x + (block.size * 8) / 2f - 8f * multiplier / 2f;
                 float brcY = y - (block.size * 8) / 2f + 8f * multiplier / 2f;
@@ -233,9 +232,9 @@ public class MultiCrafter extends Block {
         }
 
         public float formulaPower() {
-            if (formula == null) return 0f;
+            if (craftPlan == null) return 0f;
 
-            ConsumePower consumePower = formula.consPower;
+            ConsumePower consumePower = craftPlan.consPower;
             if (consumePower == null) return 0f;
 
             return consumePower.usage;
@@ -244,7 +243,7 @@ public class MultiCrafter extends Block {
 
         @Override
         public float getPowerProduction() {
-            return formula != null ? formula.powerProduction : 0f;
+            return craftPlan != null ? craftPlan.powerProduction : 0f;
         }
 
         @Override
@@ -254,32 +253,32 @@ public class MultiCrafter extends Block {
                 lastRotation = rotation;
             }
 
-            if (formula == null) return;
+            if (craftPlan == null) return;
             if (efficiency > 0) {
-                progress += getProgressIncrease(formula.craftTime, formula);
-                warmup = Mathf.approachDelta(warmup, warmupTarget(), formula.warmupSpeed);
+                progress += getProgressIncrease(craftPlan.craftTime, craftPlan);
+                warmup = Mathf.approachDelta(warmup, warmupTarget(), craftPlan.warmupSpeed);
 
-                if (formula.outputLiquids.length > 0) {
+                if (craftPlan.outputLiquids.length > 0) {
                     float inc = getProgressIncrease(1f);
-                    for (LiquidStack output : formula.outputLiquids) {
+                    for (LiquidStack output : craftPlan.outputLiquids) {
                         handleLiquid(this, output.liquid, Math.min(output.amount * inc, liquidCapacity - liquids.get(output.liquid)));
                     }
                 }
 
-                if (wasVisible && Mathf.chanceDelta(formula.updateEffectChance)) {
-                    formula.updateEffect.at(x + Mathf.range(size * 4f), y + Mathf.range(size * 4));
+                if (wasVisible && Mathf.chanceDelta(craftPlan.updateEffectChance)) {
+                    craftPlan.updateEffect.at(x + Mathf.range(size * 4f), y + Mathf.range(size * 4));
                 }
             } else {
-                warmup = Mathf.approachDelta(warmup, 0f, formula.warmupSpeed);
+                warmup = Mathf.approachDelta(warmup, 0f, craftPlan.warmupSpeed);
             }
 
             totalProgress += warmup * Time.delta;
 
             if (progress >= 1f) {
-                craft(formula);
+                craft(craftPlan);
             }
 
-            dumpOutputs(formula);
+            dumpOutputs(craftPlan);
         }
 
         @Override
@@ -292,68 +291,68 @@ public class MultiCrafter extends Block {
             return progress;
         }
 
-        public float getProgressIncrease(float baseTime, Formula formula) {
-            if (formula.ignoreLiquidFullness) {
+        public float getProgressIncrease(float baseTime, CraftPlan craftPlan) {
+            if (craftPlan.ignoreLiquidFullness) {
                 return super.getProgressIncrease(baseTime);
             }
 
             float scaling = 1f, max = 1f;
-            if (formula.outputLiquids.length > 0) {
+            if (craftPlan.outputLiquids.length > 0) {
                 max = 0f;
-                for (LiquidStack output : formula.outputLiquids) {
+                for (LiquidStack output : craftPlan.outputLiquids) {
                     float value = (liquidCapacity - liquids.get(output.liquid)) / (output.amount * edelta());
                     scaling = Math.min(scaling, value);
                     max = Math.max(max, value);
                 }
             }
 
-            return super.getProgressIncrease(baseTime) * (formula.dumpExtraLiquid ? Math.min(max, 1f) : scaling);
+            return super.getProgressIncrease(baseTime) * (craftPlan.dumpExtraLiquid ? Math.min(max, 1f) : scaling);
         }
 
-        public void craft(Formula formula) {
+        public void craft(CraftPlan craftPlan) {
             consume();
 
-            for (ItemStack output : formula.outputItems) {
+            for (ItemStack output : craftPlan.outputItems) {
                 for (int i = 0; i < output.amount; i++) {
                     offload(output.item);
                 }
             }
 
             if (wasVisible) {
-                formula.craftEffect.at(x, y);
+                craftPlan.craftEffect.at(x, y);
             }
             progress %= 1f;
         }
 
-        public void dumpOutputs(Formula formula) {
-            if (formula.outputItems.length > 0 && timer(timerDump, dumpTime / timeScale)) {
-                for (ItemStack output : formula.outputItems) {
+        public void dumpOutputs(CraftPlan craftPlan) {
+            if (craftPlan.outputItems.length > 0 && timer(timerDump, dumpTime / timeScale)) {
+                for (ItemStack output : craftPlan.outputItems) {
                     dump(output.item);
                 }
             }
 
-            if (formula.outputLiquids.length > 0) {
-                for (int i = 0; i < formula.outputLiquids.length; i++) {
-                    int dir = formula.liquidOutputDirections.length > i ? formula.liquidOutputDirections[i] : -1;
+            if (craftPlan.outputLiquids.length > 0) {
+                for (int i = 0; i < craftPlan.outputLiquids.length; i++) {
+                    int dir = craftPlan.liquidOutputDirections.length > i ? craftPlan.liquidOutputDirections[i] : -1;
 
-                    dumpLiquid(formula.outputLiquids[i].liquid, 2f, dir);
+                    dumpLiquid(craftPlan.outputLiquids[i].liquid, 2f, dir);
                 }
             }
         }
 
         @Override
         public boolean shouldConsume() {
-            if (formula == null) return false;
-            for (ItemStack output : formula.outputItems) {
+            if (craftPlan == null) return false;
+            for (ItemStack output : craftPlan.outputItems) {
                 if (items.get(output.item) + output.amount > itemCapacity) {
                     return false;
                 }
             }
-            if (formula.outputLiquids.length > 0 && !formula.ignoreLiquidFullness) {
+            if (craftPlan.outputLiquids.length > 0 && !craftPlan.ignoreLiquidFullness) {
                 boolean allFull = true;
-                for (LiquidStack output : formula.outputLiquids) {
+                for (LiquidStack output : craftPlan.outputLiquids) {
                     if (liquids.get(output.liquid) >= liquidCapacity - 0.001f) {
-                        if (!formula.dumpExtraLiquid) {
+                        if (!craftPlan.dumpExtraLiquid) {
                             return false;
                         }
                     } else {
@@ -369,35 +368,35 @@ public class MultiCrafter extends Block {
 
         @Override
         public boolean acceptItem(Building source, Item item) {
-            if (formula == null) return false;
-            return formula.getConsumeItem(item) && items.get(item) < itemCapacity;
+            if (craftPlan == null) return false;
+            return craftPlan.getConsumeItem(item) && items.get(item) < itemCapacity;
         }
 
         @Override
         public boolean acceptLiquid(Building source, Liquid liquid) {
-            if (formula == null) return false;
-            return block.hasLiquids && formula.getConsumeLiquid(liquid);
+            if (craftPlan == null) return false;
+            return block.hasLiquids && craftPlan.getConsumeLiquid(liquid);
         }
 
         @Override
         public void consume() {
-            if (formula == null) return;
+            if (craftPlan == null) return;
 
-            for (Consume cons : formula.consumers) {
+            for (Consume cons : craftPlan.consumers) {
                 cons.trigger(this);
             }
         }
 
         @Override
         public void displayConsumption(Table table) {
-            if (formula == null) return;
+            if (craftPlan == null) return;
             table.left();
-            Formula[] lastFormula = {formula};
+            CraftPlan[] lastCraftPlan = {craftPlan};
             table.table(t -> {
                 table.update(() -> {
-                    if (lastFormula[0] != formula) {
+                    if (lastCraftPlan[0] != craftPlan) {
                         rebuild(t);
-                        lastFormula[0] = formula;
+                        lastCraftPlan[0] = craftPlan;
                     }
                 });
                 rebuild(t);
@@ -407,7 +406,7 @@ public class MultiCrafter extends Block {
         protected void rebuild(Table table) {
             table.clear();
 
-            for (Consume cons : formula.consumers) {
+            for (Consume cons : craftPlan.consumers) {
                 if (!cons.optional || !cons.booster) {
                     cons.build(this, table);
                 }
@@ -417,15 +416,15 @@ public class MultiCrafter extends Block {
         @Override
         public void drawSelect() {
             super.drawSelect();
-            if (formula == null || !useLiquidTable) return;
+            if (craftPlan == null || !useLiquidTable) return;
 
-            if (formula.outputLiquids.length > 0) {
-                for (int i = 0; i < formula.outputLiquids.length; i++) {
-                    int dir = formula.liquidOutputDirections.length > i ? formula.liquidOutputDirections[i] : -1;
+            if (craftPlan.outputLiquids.length > 0) {
+                for (int i = 0; i < craftPlan.outputLiquids.length; i++) {
+                    int dir = craftPlan.liquidOutputDirections.length > i ? craftPlan.liquidOutputDirections[i] : -1;
 
                     if (dir != -1) {
                         Draw.rect(
-                                formula.outputLiquids[i].liquid.fullIcon,
+                                craftPlan.outputLiquids[i].liquid.fullIcon,
                                 x + Geometry.d4x(dir + rotation) * (size * tilesize / 2f + 4),
                                 y + Geometry.d4y(dir + rotation) * (size * tilesize / 2f + 4),
                                 8f, 8f
@@ -438,13 +437,13 @@ public class MultiCrafter extends Block {
         @Override
         public void displayBars(Table table) {
             super.displayBars(table);
-            if (formula == null) return;
+            if (craftPlan == null) return;
 
-            Formula[] lastFormula = {formula};
+            CraftPlan[] lastCraftPlan = {craftPlan};
             table.update(() -> {
-                if (lastFormula[0] != formula) {
+                if (lastCraftPlan[0] != craftPlan) {
                     rebuildBar(table);
-                    lastFormula[0] = formula;
+                    lastCraftPlan[0] = craftPlan;
                 }
             });
             rebuildBar(table);
@@ -461,9 +460,9 @@ public class MultiCrafter extends Block {
                 }
             }
 
-            if (formula == null || formula.barMap.isEmpty()) return;
+            if (craftPlan == null || craftPlan.barMap.isEmpty()) return;
 
-            for (var bar : formula.listBars()) {
+            for (var bar : craftPlan.listBars()) {
                 Bar result = bar.get(this);
                 if (result == null) continue;
                 table.add(result).growX();
@@ -478,10 +477,10 @@ public class MultiCrafter extends Block {
 
         @Override
         public void updateConsumption() {
-            if (formula == null) return;
+            if (craftPlan == null) return;
 
             //everything is valid when cheating
-            if (!formula.hasConsumers || cheating()) {
+            if (!craftPlan.hasConsumers || cheating()) {
                 potentialEfficiency = enabled && productionValid() ? 1f : 0f;
                 efficiency = optionalEfficiency = shouldConsume() ? potentialEfficiency : 0f;
                 shouldConsumePower = true;
@@ -505,7 +504,7 @@ public class MultiCrafter extends Block {
             shouldConsumePower = true;
 
             //first pass: get the minimum efficiency of any consumer
-            for (var cons : formula.nonOptionalConsumers) {
+            for (var cons : craftPlan.nonOptionalConsumers) {
                 float result = cons.efficiency(this);
 
                 if (cons != consPower && result <= 0.0000001f) {
@@ -516,7 +515,7 @@ public class MultiCrafter extends Block {
             }
 
             //same for optionals
-            for (var cons : formula.optionalConsumers) {
+            for (var cons : craftPlan.optionalConsumers) {
                 optionalEfficiency = Math.min(optionalEfficiency, cons.efficiency(this));
             }
 
@@ -536,7 +535,7 @@ public class MultiCrafter extends Block {
 
             //second pass: update every consumer based on efficiency
             if (update && efficiency > 0) {
-                for (var cons : formula.updateConsumers) {
+                for (var cons : craftPlan.updateConsumers) {
                     cons.update(this);
                 }
             }
@@ -568,36 +567,36 @@ public class MultiCrafter extends Block {
                 }
 
                 cont.clearChildren();
-                for (Formula f : products) {
+                for (CraftPlan craftPlan : craftPlans) {
                     var button = new ImageButton();
                     button.table(info -> {
                         info.left();
                         info.table(from -> {
                             Stats stat = new Stats();
-                            stat.timePeriod = f.craftTime;
-                            if (f.hasConsumers)
-                                for (Consume c : f.consumers) {
+                            stat.timePeriod = craftPlan.craftTime;
+                            if (craftPlan.hasConsumers)
+                                for (Consume c : craftPlan.consumers) {
                                     c.display(stat);
                                 }
                             UIUtils.statToTable(stat, from);
                         }).left().pad(6);
                         info.row();
                         info.table(to -> {
-                            if (f.outputItems.length > 0) {
-                                StatValues.items(f.craftTime, f.outputItems).display(to);
+                            if (craftPlan.outputItems.length > 0) {
+                                StatValues.items(craftPlan.craftTime, craftPlan.outputItems).display(to);
                             }
 
-                            if (f.outputLiquids.length > 0) {
-                                StatValues.liquids(1f, f.outputLiquids).display(to);
+                            if (craftPlan.outputLiquids.length > 0) {
+                                StatValues.liquids(1f, craftPlan.outputLiquids).display(to);
                             }
                         }).left().pad(6);
                     }).grow().left().pad(5);
                     button.setStyle(Styles.clearNoneTogglei);
                     button.changed(() -> {
-                        configs[1] = products.indexOf(f);
+                        configs[1] = craftPlans.indexOf(craftPlan);
                         configure(configs);
                     });
-                    button.update(() -> button.setChecked(formula == f));
+                    button.update(() -> button.setChecked(this.craftPlan == craftPlan));
                     cont.add(button);
                     cont.row();
                 }
@@ -645,7 +644,7 @@ public class MultiCrafter extends Block {
             write.f(progress);
             write.f(warmup);
             write.i(lastRotation);
-            write.i(formula == null || !products.contains(formula) ? -1 : products.indexOf(formula));
+            write.i(craftPlan == null || !craftPlans.contains(craftPlan) ? -1 : craftPlans.indexOf(craftPlan));
         }
 
         @Override
@@ -655,13 +654,13 @@ public class MultiCrafter extends Block {
             warmup = read.f();
             lastRotation = read.i();
             int i = read.i();
-            formula = i == -1 ? null : products.get(i);
+            craftPlan = i == -1 ? null : craftPlans.get(i);
             configs[0] = rotation;
             configs[1] = i;
         }
     }
 
-    public static class Formula {
+    public static class CraftPlan {
         /** Array of consumers used by this block. Only populated after init(). */
         public Consume[] consumers = {}, optionalConsumers = {}, nonOptionalConsumers = {}, updateConsumers = {};
         /** The single power consumer, if applicable. */

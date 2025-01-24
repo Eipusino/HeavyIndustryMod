@@ -1,0 +1,13 @@
+By downloading HeavyIndustry, you allow me to give you the information that:
+
+- This is NOT a finished project, and will stay that way for a long time.
+- There is NO campaign content NOR any storyline content. Those will not be added for a long time. Storyline work can take a while.
+- Crashes, even if rare, will occur. Feel free reporting them. But {slow}{shake}BY GOD{reset} please check if the issue you had was already reported.
+(https://github.com/Eipusino/HeavyIndustryMod)
+
+That is all I have to say. Enjoy the mess!
+
+- Eipusino, project author
+
+
+...running version [accent]-ver-[], -type- build. Move along.

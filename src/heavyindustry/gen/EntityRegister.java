@@ -36,7 +36,7 @@ public final class EntityRegister {
                 }
             }
 
-            throw new IndexOutOfBoundsException("In case you used up all 256 class ids; use the same code for ~200 units you idiot.");
+            throw new IllegalArgumentException("In case you used up all 256 class ids; use the same code for ~200 units you idiot.");
         }
     }
 

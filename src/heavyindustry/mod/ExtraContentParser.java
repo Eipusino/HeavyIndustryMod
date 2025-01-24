@@ -20,7 +20,8 @@ import heavyindustry.gen.*;
 import heavyindustry.graphics.*;
 import heavyindustry.math.*;
 import heavyindustry.util.*;
-import heavyindustry.util.SafeRef.*;
+import heavyindustry.world.blocks.production.*;
+import heavyindustry.world.blocks.production.MultiCrafter.*;
 import heavyindustry.world.meta.*;
 import mindustry.*;
 import mindustry.ai.*;
@@ -421,7 +422,7 @@ public class ExtraContentParser {
                         if (!str.isString())
                             throw new SerializationException("Integer bitfield values must all be strings. Found: " + str);
                         String field = str.asString();
-                        value |= NumRef.getInt(Env.class, field);
+                        value |= Reflect.<Integer>get(Env.class, field);
                     }
 
                     return (T) (Integer) value;
@@ -509,7 +510,80 @@ public class ExtraContentParser {
                 currentContent = block;
 
                 read(() -> {
-                    if (value.has("consumes") && value.get("consumes").isObject()) {
+                    if (block instanceof MultiCrafter multi && value.has("craftPlans") && value.get("craftPlans").isArray()) {
+                        for (JsonValue child : value.get("craftPlans")) {
+                            CraftPlan craftPlan = new CraftPlan();
+                            switch (child.name) {
+                                case "item" -> craftPlan.consumeItem(find(ContentType.item, child.asString()));
+                                case "itemCharged" -> craftPlan.consume((Consume) parser.readValue(ConsumeItemCharged.class, child));
+                                case "itemFlammable" -> craftPlan.consume((Consume) parser.readValue(ConsumeItemFlammable.class, child));
+                                case "itemRadioactive" -> craftPlan.consume((Consume) parser.readValue(ConsumeItemRadioactive.class, child));
+                                case "itemExplosive" -> craftPlan.consume((Consume) parser.readValue(ConsumeItemExplosive.class, child));
+                                case "itemList" -> craftPlan.consume((Consume) parser.readValue(ConsumeItemList.class, child));
+                                case "itemExplode" -> craftPlan.consume((Consume) parser.readValue(ConsumeItemExplode.class, child));
+                                case "items" -> craftPlan.consume(child.isArray() ? new ConsumeItems(parser.readValue(ItemStack[].class, child)) : parser.readValue(ConsumeItems.class, child));
+                                case "liquidFlammable" -> craftPlan.consume((Consume) parser.readValue(ConsumeLiquidFlammable.class, child));
+                                case "liquid" -> craftPlan.consume((Consume) parser.readValue(ConsumeLiquid.class, child));
+                                case "liquids" -> craftPlan.consume(child.isArray() ? new ConsumeLiquids(parser.readValue(LiquidStack[].class, child)) : parser.readValue(ConsumeLiquids.class, child));
+                                case "coolant" -> craftPlan.consume((Consume) parser.readValue(ConsumeCoolant.class, child));
+                                case "power" -> {
+                                    if (child.isNumber()) {
+                                        craftPlan.consumePower(child.asFloat());
+                                    } else {
+                                        craftPlan.consume((Consume) parser.readValue(ConsumePower.class, child));
+                                    }
+                                }
+                                default -> throw new IllegalArgumentException("Unknown consumption type: '" + child.name + "' for block '" + block.name + "'.");
+                            }
+                            if (child.has("outputItems") && child.get("outputItems").isArray()) {
+                                craftPlan.outputItems = parser.readValue(ItemStack[].class, child.get("outputItems"));
+                            }
+                            if (child.has("outputLiquids") && child.get("outputLiquids").isArray()) {
+                                craftPlan.outputLiquids = parser.readValue(LiquidStack[].class, child.get("outputLiquids"));
+                            }
+                            if (child.has("craftTime") && child.get("craftTime").isNumber()) {
+                                craftPlan.craftTime = parser.readValue(Float.class, child.get("craftTime"));
+                            }
+                            if (child.has("craftEffect") && child.get("craftEffect").isObject()) {
+                                craftPlan.craftEffect = parser.readValue(Effect.class, child.get("craftEffect"));
+                            }
+                            if (child.has("updateEffect") && child.get("updateEffect").isObject()) {
+                                craftPlan.updateEffect = parser.readValue(Effect.class, child.get("updateEffect"));
+                            }
+                            if (child.has("drawer") && child.get("drawer").isObject()) {
+                                craftPlan.drawer = parser.readValue(DrawBlock.class, child.get("drawer"));
+                            }
+                            if (child.has("ignoreLiquidFullness") && child.get("ignoreLiquidFullness").isBoolean()) {
+                                craftPlan.ignoreLiquidFullness = parser.readValue(Boolean.class, child.get("ignoreLiquidFullness"));
+                            }
+                            if (child.has("dumpExtraLiquid") && child.get("dumpExtraLiquid").isBoolean()) {
+                                craftPlan.dumpExtraLiquid = parser.readValue(Boolean.class, child.get("dumpExtraLiquid"));
+                            }
+                            if (child.has("warmupSpeed") && child.get("warmupSpeed").isNumber()) {
+                                craftPlan.warmupSpeed = parser.readValue(Float.class, child.get("warmupSpeed"));
+                            }
+                            if (child.has("updateEffectChance") && child.get("updateEffectChance").isNumber()) {
+                                craftPlan.updateEffectChance = parser.readValue(Float.class, child.get("updateEffectChance"));
+                            }
+                            if (child.has("powerProduction") && child.get("powerProduction").isNumber()) {
+                                craftPlan.powerProduction = parser.readValue(Float.class, child.get("powerProduction"));
+                            }
+                            if (child.has("heatOutput") && child.get("heatOutput").isNumber()) {
+                                craftPlan.heatOutput = parser.readValue(Float.class, child.get("heatOutput"));
+                            }
+                            if (child.has("heatRequirement") && child.get("heatRequirement").isNumber()) {
+                                craftPlan.heatRequirement = parser.readValue(Float.class, child.get("heatRequirement"));
+                            }
+                            if (child.has("warmupRate") && child.get("warmupRate").isNumber()) {
+                                craftPlan.warmupRate = parser.readValue(Float.class, child.get("warmupRate"));
+                            }
+                            if (child.has("maxHeatEfficiency") && child.get("maxHeatEfficiency").isNumber()) {
+                                craftPlan.maxHeatEfficiency = parser.readValue(Float.class, child.get("maxHeatEfficiency"));
+                            }
+                            multi.craftPlans.add(craftPlan);
+                        }
+                        value.remove("craftPlans");
+                    } else if (value.has("consumes") && value.get("consumes").isObject()) {
                         for (JsonValue child : value.get("consumes")) {
                             switch (child.name) {
                                 case "remove" -> {
@@ -1275,11 +1349,11 @@ public class ExtraContentParser {
         //try to resolve it as a raw class name
         if (base != null && base.indexOf('.') != -1) {
             try {
-                return ExtraRef.forClass(base);
+                return Reflectf.forClass(base);
             } catch (Exception ignored) {
                 //try to use mod class loader
                 try {
-                    return ExtraRef.forClass(base, true, mods.mainLoader());
+                    return Reflectf.forClass(base, true, mods.mainLoader());
                 } catch (Exception ignore) {}
             }
         }

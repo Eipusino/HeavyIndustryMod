@@ -40,16 +40,20 @@ import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
 /**
- * Main entry point of the mod. Handles startup things like content loading, entity registering, and utility bindings.
+ * Main entry point of the mod. Handles startup things like content loading, entity registering, and utility
+ * bindings.
+ * <p><strong>Until the issue with Mindustry's MultiDex Mod is resolved, I will try to minimize the amount of
+ * code in the mod as much as possible, which means it is unlikely to have too many built-in utilities.</strong>
  *
  * @author Eipusino
  */
 public final class HeavyIndustryMod extends Mod {
-    private static final String linkGitHub = "https://github.com/Eipusino/HeavyIndustryMod", author = "Eipusino";
-    private static LoadedMod mod;
+    public static final String linkGitHub = "https://github.com/Eipusino/HeavyIndustryMod", author = "Eipusino";
 
     public static final Jval modJson;
     public static final boolean isPlugin;
+
+    private static LoadedMod mod;
 
     static {
         Log.infoTag("Kotlin", "Version: " + KotlinVersion.CURRENT);
@@ -68,7 +72,11 @@ public final class HeavyIndustryMod extends Mod {
         Events.on(ClientLoadEvent.class, event -> {
             if (isPlugin) return;
 
-            SafeRef.set(MenuFragment.class, ui.menufrag, "renderer", new FlowMenuRenderer());
+            try {
+                Reflect.set(MenuFragment.class, ui.menufrag, "renderer", new FlowMenuRenderer());
+            } catch (Exception e) {
+                Log.err("Failed to replace renderer", e);
+            }
 
             String close = bundle.get("close");
 
@@ -159,20 +167,20 @@ public final class HeavyIndustryMod extends Mod {
         EntityRegister.load();
         WorldRegister.load();
 
-        if (isPlugin) return;
-
-        HITeams.load();
-        HIItems.load();
-        HIStatusEffects.load();
-        HILiquids.load();
-        HIBullets.load();
-        HIUnitTypes.load();
-        HIBlocks.load();
-        HIWeathers.load();
-        HIOverride.load();
-        HIPlanets.load();
-        HISectorPresets.load();
-        HITechTree.load();
+        if (!isPlugin) {
+            HITeams.load();
+            HIItems.load();
+            HIStatusEffects.load();
+            HILiquids.load();
+            HIBullets.load();
+            HIUnitTypes.load();
+            HIBlocks.load();
+            HIWeathers.load();
+            HIOverride.load();
+            HIPlanets.load();
+            HISectorPresets.load();
+            HITechTree.load();
+        }
 
         Utils.loadItems();
 
@@ -193,6 +201,8 @@ public final class HeavyIndustryMod extends Mod {
             HIStyles.init();
             UIUtils.init();
         }
+
+        IconLoader.loadIcons(internalTree.child("other/icons.properties"));
 
         settings.defaults("hi-closed-dialog", false);
         settings.defaults("hi-closed-multiple-mods", false);
@@ -256,11 +266,10 @@ public final class HeavyIndustryMod extends Mod {
             //Replace the original technology ResearchDialog
             //This is a rather foolish approach, but there is nothing we can do about it.
             var dialog = new HIResearchDialog();
-            var research = ui.research;
-            research.shown(() -> {
+            ui.research.shown(() -> {
                 dialog.show();
-                Objects.requireNonNull(research);
-                Time.runTask(1f, research::hide);
+                Objects.requireNonNull(ui.research);
+                Time.runTask(1f, ui.research::hide);
             });
         }
 

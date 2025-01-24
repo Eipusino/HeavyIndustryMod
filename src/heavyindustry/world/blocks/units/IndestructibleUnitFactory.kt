@@ -18,6 +18,8 @@ import mindustry.world.*
 import mindustry.world.blocks.units.*
 
 open class IndestructibleUnitFactory(name: String) : UnitFactory(name) {
+    @JvmField var consItems = ItemStack.empty
+
     init {
         hasPower = false
         targetable = false
@@ -43,7 +45,7 @@ open class IndestructibleUnitFactory(name: String) : UnitFactory(name) {
 
     override fun init() {
         plans = Vars.content.getBy<UnitType>(ContentType.unit)
-            .map { unitType -> UnitPlan(unitType, 1f, ItemStack.with(Items.copper, 1)) }
+            .map { unit -> UnitPlan(unit, 1f, consItems) }
             .retainAll { plan -> !plan.unit.isHidden }
         super.init()
         itemCapacity = 1
@@ -60,15 +62,13 @@ open class IndestructibleUnitFactory(name: String) : UnitFactory(name) {
         }
 
         override fun buildConfiguration(table: Table) {
-            val tmp = ImageButton()
-            val g = ButtonGroup(tmp)
-            g.remove(tmp)
+            val group = ButtonGroup<ImageButton>()
             val cont = Table()
             cont.defaults().size(40f)
             var i = 0
             PayloadSourcef.teams.forEach { t ->
                 val button = cont.button(Tex.whiteui, Styles.clearTogglei, 24f, {
-                }).group(g).get()
+                }).group(group).get()
                 button.changed { targetTeam = eq(button.isChecked, t, null) }
                 ins(Tex.whiteui) { w: TextureRegionDrawable ->
                     button.style.imageUp = w.tint(t.color.r, t.color.g, t.color.b, t.color.a)

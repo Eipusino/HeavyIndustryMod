@@ -1,11 +1,15 @@
 package heavyindustry.entities;
 
+import arc.*;
+import arc.audio.*;
 import arc.func.*;
+import arc.graphics.*;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
 import arc.util.pooling.*;
+import heavyindustry.content.*;
 import mindustry.ai.types.*;
 import mindustry.core.*;
 import mindustry.entities.*;
@@ -20,6 +24,8 @@ import mindustry.world.*;
 import static mindustry.Vars.*;
 
 public final class HIDamage {
+    public static final Seq<Unit> list = new Seq<>();
+
     private static final UnitDamageEvent bulletDamageEvent = new UnitDamageEvent();
     private static final Rect rect = new Rect(), hitrect = new Rect();
     private static final Vec2 tr = new Vec2(), seg1 = new Vec2(), seg2 = new Vec2();
@@ -38,6 +44,78 @@ public final class HIDamage {
 
     /** Don't let anyone instantiate this class. */
     private HIDamage() {}
+
+    public static void chain(Position origin, @Nullable Position targetPos, Team team, Unit current, IntSeq collided, Sound hitSound, Effect hitEffect, float power, float initialPower, float width, float distanceDamageFalloff, float pierceDamageFactor, int branches, float segmentLength, float arc, Color color) {
+        current.damage(power);
+        hitSound.at(current.x, current.y, Mathf.random(0.8f, 1.1f));
+        //Scales down width based on percent of power left
+        float w = width * power / (initialPower);
+
+        HIFx.chainLightning.at(current.x, current.y, 0, color, new HIFx.VisualLightningHolder() {
+            @Override
+            public Vec2 start() {
+                return new Vec2(origin.getX(), origin.getY());
+            }
+
+            @Override
+            public Vec2 end() {
+                return new Vec2(current.x, current.y);
+            }
+
+            @Override
+            public float width() {
+                return w;
+            }
+
+            @Override
+            public float segLength() {
+                return segmentLength;
+            }
+
+            @Override
+            public float arc() {
+                return arc;
+            }
+        });
+        hitEffect.at(current.x, current.y, 0, color);
+        if (!current.dead) collided.add(current.id);
+
+        float effectiveRange = power / distanceDamageFalloff;
+
+        final float newPower = power * (pierceDamageFactor == 0 ? 1 : pierceDamageFactor);
+
+        boolean derelict = team.id == Team.derelict.id;
+        int teamID = team.id;
+
+        Position tPos = targetPos == null ? current : targetPos;
+
+        Time.run(15, () -> {
+            Seq<Unit> units = Groups.unit.intersect(current.x - effectiveRange, current.y - effectiveRange, effectiveRange * 2, effectiveRange * 2);
+            units.sort(u -> u.dst(tPos));
+            if (units.contains(current)) units.remove(current);
+            list.clear();
+            for (int i = 0; i < Math.min(branches, units.size); i++) {
+                Unit unit = units.get(i);
+                if (collided.contains(unit.id) || !derelict && unit.team.id == teamID) continue;
+                float dst = unit.dst(current);
+                if (dst > effectiveRange) break;
+                list.add(unit);
+            }
+            if (list.size == 0) return;
+            float numberMultiplier = 1.0f / list.size;
+
+            list.each(u -> {
+                float newDamage = power - distanceDamageFalloff * current.dst(u);
+                Log.info(Core.bundle.format("Old power was: {0}, while new one is {1}", power, newPower));
+                if (newPower < 0) return;
+                chain(current, u, collided, hitSound, hitEffect, newDamage * numberMultiplier, initialPower, width, distanceDamageFalloff, pierceDamageFactor, branches, segmentLength, arc, color);
+            });
+        });
+    }
+
+    public static void chain(Position origin, Unit current, IntSeq collided, Sound hitSound, Effect hitEffect, float power, float initialPower, float width, float distanceDamageFalloff, float pierceDamageFactor, int branches, float segmentLength, float arc, Color color) {
+        chain(origin, null, Team.derelict, current, collided, hitSound, hitEffect, power, initialPower, width, distanceDamageFalloff, pierceDamageFactor, branches, segmentLength, arc, color);
+    }
 
     public static void trueEachBlock(float wx, float wy, float range, Cons<Building> cons) {
         collidedBlocks.clear();

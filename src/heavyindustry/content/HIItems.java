@@ -12,7 +12,7 @@ import mindustry.type.*;
 public final class HIItems {
     public static Item
             stone, salt, rareEarth,
-            nanocore, nanocoreErekir,
+            nanoCore, nanoCoreErekir,
             uranium, chromium, heavyAlloy;
 
     /** Don't let anyone instantiate this class. */
@@ -35,11 +35,11 @@ public final class HIItems {
             buildable = false;
             lowPriority = true;
         }};
-        nanocore = new Item("nanocore", Color.valueOf("6aa95e")) {{
+        nanoCore = new Item("nano-core", Color.valueOf("6aa95e")) {{
             cost = -0.75f;
             hardness = 6;
         }};
-        nanocoreErekir = new Item("nanocore-erekir", Color.valueOf("d06b53")) {{
+        nanoCoreErekir = new Item("nano-core-erekir", Color.valueOf("d06b53")) {{
             cost = -0.75f;
             hardness = 6;
         }};

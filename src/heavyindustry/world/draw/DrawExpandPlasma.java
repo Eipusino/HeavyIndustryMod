@@ -38,6 +38,6 @@ public class DrawExpandPlasma extends DrawPlasma {
 
     @Override
     public TextureRegion[] icons(Block block) {
-        return Utils.empRegions;
+        return new TextureRegion[]{block.region};
     }
 }

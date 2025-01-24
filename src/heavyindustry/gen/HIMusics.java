@@ -2,7 +2,7 @@ package heavyindustry.gen;
 
 import arc.audio.*;
 import arc.struct.*;
-import heavyindustry.util.*;
+import arc.util.*;
 
 import static mindustry.Vars.*;
 
@@ -28,7 +28,11 @@ public final class HIMusics {
     public static void loadMusicSet(String basePath, String[] tracks) {
         for (String track : tracks) {
             Music music = tree.loadMusic(basePath + track);
-            SafeRef.set(HIMusics.class, track, music);
+            try {
+                HIMusics.class.getField(track).set(null, music);
+            } catch (Exception e) {
+                Log.err("Failed to load music: " + track, e);
+            }
         }
     }
 

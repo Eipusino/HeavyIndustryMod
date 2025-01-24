@@ -37,7 +37,7 @@ public final class HITechTree {
             nodeProduce(HIItems.rareEarth, () -> {});
             nodeProduce(HIItems.salt, () -> {});
         });
-        vanillaNode(Items.silicon, () -> nodeProduce(HIItems.nanocore, () -> nodeProduce(HILiquids.nanofluid, () -> {})));
+        vanillaNode(Items.silicon, () -> nodeProduce(HIItems.nanoCore, () -> nodeProduce(HILiquids.nanoFluid, () -> {})));
         vanillaNode(Items.thorium, () -> nodeProduce(HIItems.uranium, () -> nodeProduce(HIItems.chromium, () -> {})));
         vanillaNode(Items.surgeAlloy, () -> nodeProduce(HIItems.heavyAlloy, () -> {}));
         //items,liquids-erekir
@@ -45,7 +45,7 @@ public final class HITechTree {
             nodeProduce(HIItems.uranium, () -> {});
             nodeProduce(HIItems.chromium, () -> {});
         });
-        vanillaNode(Items.oxide, () -> nodeProduce(HIItems.nanocoreErekir, () -> {}));
+        vanillaNode(Items.oxide, () -> nodeProduce(HIItems.nanoCoreErekir, () -> {}));
         //wall
         vanillaNode(copperWall, () -> node(armoredWall, () -> node(armoredWallLarge, () -> node(armoredWallHuge, () -> node(armoredWallGigantic, () -> {})))));
         vanillaNode(copperWallLarge, () -> node(copperWallHuge, () -> node(copperWallGigantic, () -> {})));
@@ -140,7 +140,7 @@ public final class HITechTree {
         vanillaNode(powerNode, () -> node(smartPowerNode, () -> node(powerAnalyzer, () -> {})));
         vanillaNode(powerNodeLarge, () -> node(powerNodeHuge, () -> node(powerNodePhase, () -> {})));
         vanillaNode(thoriumReactor, () -> node(uraniumReactor, () -> {}));
-        vanillaNode(impactReactor, () -> node(hypermagneticReactor, () -> {}));
+        vanillaNode(impactReactor, () -> node(hyperMagneticReactor, () -> {}));
         vanillaNode(batteryLarge, () -> {
             node(hugeBattery, () -> {});
             node(armoredCoatedBattery, () -> {});
@@ -166,7 +166,7 @@ public final class HITechTree {
         vanillaNode(disassembler, () -> node(metalAnalyzer, Seq.with(new OnSector(desolateRift)), () -> {}));
         vanillaNode(cryofluidMixer, () -> {
             node(largeCryofluidMixer, Seq.with(new SectorComplete(impact0078)), () -> {});
-            node(nanocoreActivator, () -> {});
+            node(nanoCoreActivator, () -> {});
         });
         vanillaNode(pyratiteMixer, () -> node(largePyratiteMixer, Seq.with(new SectorComplete(facility32m)), () -> {}));
         vanillaNode(blastMixer, () -> node(largeBlastMixer, () -> {}));
@@ -174,14 +174,14 @@ public final class HITechTree {
         vanillaNode(plastaniumCompressor, () -> node(largePlastaniumCompressor, Seq.with(new SectorComplete(facility32m)), () -> node(ironcladCompressor, () -> {})));
         vanillaNode(surgeSmelter, () -> node(largeSurgeSmelter, () -> {}));
         vanillaNode(siliconCrucible, () -> node(blastSiliconSmelter, () -> {}));
-        vanillaNode(siliconSmelter, () -> node(nanocoreConstructor, Seq.with(new SectorComplete(impact0078)), () -> node(nanocorePrinter, () -> {})));
+        vanillaNode(siliconSmelter, () -> node(nanoCoreConstructor, Seq.with(new SectorComplete(impact0078)), () -> node(nanoCorePrinter, () -> {})));
         vanillaNode(sporePress, () -> node(nitrificationReactor, () -> node(nitratedOilSedimentationTank, () -> {})));
         vanillaNode(phaseWeaver, () -> node(largePhaseWeaver, () -> node(phaseFusionInstrument, () -> {})));
         //production-erekir
         vanillaNode(siliconArcFurnace, () -> {
             node(chemicalSiliconSmelter, ItemStack.with(Items.graphite, 2800, Items.silicon, 1000, Items.tungsten, 2400, Items.oxide, 50), () -> {});
             node(ventHeater, () -> {});
-            node(nanocoreConstructorErekir, Seq.with(new OnSector(crossroads)), () -> node(nanocorePrinterErekir, Seq.with(new OnSector(origin)), () -> {}));
+            node(nanoCoreConstructorErekir, Seq.with(new OnSector(crossroads)), () -> node(nanoCorePrinterErekir, Seq.with(new OnSector(origin)), () -> {}));
         });
         vanillaNode(heatRedirector, () -> node(heatDriver, () -> {}));
         vanillaNode(electricHeater, () -> {

@@ -28,11 +28,11 @@ public class HeatMultiCrafter extends MultiCrafter {
 
     @Override
     public void init() {
-        for (Formula product : products) {
-            if (product.heatOutput > 0f) {
+        for (CraftPlan craftPlan : craftPlans) {
+            if (craftPlan.heatOutput > 0f) {
                 outputHeat = true;
             }
-            if (product.heatRequirement > 0f) {
+            if (craftPlan.heatRequirement > 0f) {
                 consumeHeat = true;
             }
         }
@@ -43,11 +43,11 @@ public class HeatMultiCrafter extends MultiCrafter {
     public void setBars() {
         super.setBars();
 
-        if (outputHeat) addBar("heatoutput", (HeatMultiCrafterBuild tile) -> new Bar("bar.heat", Pal.lightOrange, () -> tile.formula != null ? tile.heat / tile.formula.heatOutput : 0));
+        if (outputHeat) addBar("heatoutput", (HeatMultiCrafterBuild tile) -> new Bar("bar.heat", Pal.lightOrange, () -> tile.craftPlan != null ? tile.heat / tile.craftPlan.heatOutput : 0));
         if (consumeHeat) addBar("heatconsume", (HeatMultiCrafterBuild tile) -> new Bar(
-                () -> Core.bundle.format("bar.heatpercent", tile.heatRequirement, tile.formula != null ? Math.min((tile.heatRequirement / tile.formula.heatRequirement * 100), tile.formula.maxHeatEfficiency) : 0),
+                () -> Core.bundle.format("bar.heatpercent", tile.heatRequirement, tile.craftPlan != null ? Math.min((tile.heatRequirement / tile.craftPlan.heatRequirement * 100), tile.craftPlan.maxHeatEfficiency) : 0),
                 () -> Pal.lightOrange,
-                () -> tile.formula != null ? tile.heatRequirement / tile.formula.heatRequirement : 0)
+                () -> tile.craftPlan != null ? tile.heatRequirement / tile.craftPlan.heatRequirement : 0)
         );
     }
 
@@ -59,11 +59,11 @@ public class HeatMultiCrafter extends MultiCrafter {
         @Override
         public void updateTile() {
             super.updateTile();
-            if (formula == null) return;
+            if (craftPlan == null) return;
 
-            heat = Mathf.approachDelta(heat, formula.heatOutput * efficiency, formula.warmupRate * delta());
+            heat = Mathf.approachDelta(heat, craftPlan.heatOutput * efficiency, craftPlan.warmupRate * delta());
 
-            if (formula.heatRequirement > 0) {
+            if (craftPlan.heatRequirement > 0) {
                 heatRequirement = calculateHeat(sideHeat);
             }
         }
@@ -71,10 +71,10 @@ public class HeatMultiCrafter extends MultiCrafter {
         @Override
         public void updateEfficiencyMultiplier() {
             super.updateEfficiencyMultiplier();
-            if (formula == null) return;
+            if (craftPlan == null) return;
 
-            if (formula.heatRequirement > 0) {
-                efficiency *= Math.min(Math.max(heatRequirement / formula.heatRequirement, cheating() ? formula.maxHeatEfficiency : 0f), formula.maxHeatEfficiency);
+            if (craftPlan.heatRequirement > 0) {
+                efficiency *= Math.min(Math.max(heatRequirement / craftPlan.heatRequirement, cheating() ? craftPlan.maxHeatEfficiency : 0f), craftPlan.maxHeatEfficiency);
             }
         }
 
@@ -85,7 +85,7 @@ public class HeatMultiCrafter extends MultiCrafter {
 
         @Override
         public float heatFrac() {
-            return formula != null ? heat / formula.heatOutput : 0f;
+            return craftPlan != null ? heat / craftPlan.heatOutput : 0f;
         }
 
         @Override
@@ -95,7 +95,7 @@ public class HeatMultiCrafter extends MultiCrafter {
 
         @Override
         public float heatRequirement() {
-            return formula != null ? formula.heatRequirement : 0f;
+            return craftPlan != null ? craftPlan.heatRequirement : 0f;
         }
 
         @Override

@@ -46,12 +46,8 @@ import static mindustry.Vars.*;
  *
  * @author Eipusino
  */
+@SuppressWarnings("unused")
 public final class Utils {
-    public static final TextureRegion[] empRegions = new TextureRegion[0];
-
-    private static final String donor = bundle.get("hi-donor-item");
-    private static final String developer = bundle.get("hi-developer-item");
-
     public static final Color
             c1 = new Color(), c2 = new Color(), c3 = new Color(), c4 = new Color(), c5 = new Color(),
             c6 = new Color(), c7 = new Color(), c8 = new Color(), c9 = new Color(), c10 = new Color();
@@ -91,7 +87,7 @@ public final class Utils {
 
     public static final int[][] joinsChkDirs = {
             {-1, 1}, {0, 1}, {1, 1},
-            {-1, 0}, {1, 0},
+            {-1, 0}, /*{0, 0}, */{1, 0},
             {-1, -1}, {0, -1}, {1, -1},
     };
 
@@ -190,7 +186,7 @@ public final class Utils {
             "heavyindustry.util",
             "heavyindustry.util.path",
             "heavyindustry.util.pools",
-            "heavyindustry.world",
+            //"heavyindustry.world",
             "heavyindustry.world.blocks",
             "heavyindustry.world.blocks.campaign",
             "heavyindustry.world.blocks.defense",
@@ -209,11 +205,7 @@ public final class Utils {
             "heavyindustry.world.components",
             "heavyindustry.world.consumers",
             "heavyindustry.world.draw",
-            "heavyindustry.world.lightning",
-            "heavyindustry.world.lightning.generator",
             "heavyindustry.world.meta",
-            "heavyindustry.world.particle",
-            "heavyindustry.world.particle.model"
     };
 
     public static final Seq<UnlockableContent> donorItems = new Seq<>();
@@ -231,10 +223,17 @@ public final class Utils {
     private static final Seq<Tile> tiles = new Seq<>();
     private static final Seq<Unit> units = new Seq<>();
     private static final Seq<Hit> hseq = new Seq<>();
+    private static final Seq<ItemStack> rawStacks = new Seq<>();
+    private static final Seq<Item> items = new Seq<>();
     private static final IntSet collided = new IntSet(), collided2 = new IntSet();
     private static Building tmpBuilding;
     private static Unit tmpUnit;
     private static final BasicPool<Hit> hPool = new BasicPool<>(Hit::new);
+
+    private static final IntSeq amounts = new IntSeq();
+
+    private static final String donor = bundle.get("hi-donor-item");
+    private static final String developer = bundle.get("hi-developer-item");
 
 	/** Don't let anyone instantiate this class. */
     private Utils() {}
@@ -259,6 +258,17 @@ public final class Utils {
         };
     }
 
+    /**
+     * Gets multiple regions inside a {@link TextureRegion}.
+     *
+     * @param name       sprite name
+     * @param size       split size, pixels per grid
+     * @param layerCount Total number of segmentation layers
+     * @throws NullPointerException       If the {@code name} is {@code null}.
+     * @throws NegativeArraySizeException If {@code size} or {@code layerCount} is negative.
+     * @apiNote The element returned by this method cannot be used in situations where it will be
+     * forcibly converted to {@link AtlasRegion}.
+     */
     public static TextureRegion[][] splitLayers(String name, int size, int layerCount) {
         TextureRegion[][] layers = new TextureRegion[layerCount][];
 
@@ -268,6 +278,18 @@ public final class Utils {
         return layers;
     }
 
+    /**
+     * Gets multiple regions inside a {@link TextureRegion}.
+     *
+     * @param name sprite name
+     * @param size split size, pixels per grid
+     * @param layer Number of segmentation layers
+     * @return Split sprites by size and layer parameter ratio.
+     * @throws NullPointerException       If the {@code name} is {@code null}.
+     * @throws NegativeArraySizeException If {@code size} or {@code layer} is negative.
+     * @apiNote The element returned by this method cannot be used in situations where it will be
+     * forcibly converted to {@link AtlasRegion}.
+     */
     public static TextureRegion[] split(String name, int size, int layer) {
         TextureRegion textures = atlas.find(name, name("error"));
         int margin = 0;
@@ -283,6 +305,8 @@ public final class Utils {
     /**
      * Gets multiple regions inside a {@link TextureRegion}.
      *
+     * @param name   sprite name
+     * @param size   split size, pixels per grid
      * @param width  The amount of regions horizontally.
      * @param height The amount of regions vertically.
      */
@@ -513,7 +537,7 @@ public final class Utils {
         quadHelper(v1.x, v1.y, v2.x, v2.y, v3.x, v3.y, v4.x, v4.y);
     }
 
-    public void drawSkyLines(float x, float y, int lineCount, float radius, float height, float rot) {
+    public static void drawSkyLines(float x, float y, int lineCount, float radius, float height, float rot) {
         for (int i = 0; i < lineCount; i++) {
             Tmp.v1.set(1f, 1f); //line start
             Tmp.v2.set(camera.position);
@@ -524,25 +548,25 @@ public final class Utils {
         }
     }
 
-    public Vec2 parallax(float x, float y, float height) {
+    public static Vec2 parallax(float x, float y, float height) {
         return parallax(x, y, height, false);
     }
 
-    public Vec2 parallax(float x, float y, float height, boolean ignoreCamDst) { //todo shadows
+    public static Vec2 parallax(float x, float y, float height, boolean ignoreCamDst) { //todo shadows
         Tmp.v1.set(1f, 1f);
         Tmp.v2.set(camera.position);
 
         return vecSetLine(Tmp.v1, x, y, Tmp.v2.sub(x, y).angle() + 180f, ignoreCamDst ? height : height * Tmp.v2.dst(0f, 0f));
     }
 
-    public void drawFace(float x1, float y1, float x2, float y2, TextureRegion tex) {
+    public static void drawFace(float x1, float y1, float x2, float y2, TextureRegion tex) {
         Tmp.v1.set(parallax(x1, y1, 100f));
         Tmp.v2.set(parallax(x2, y2, 100f));
 
         quadHelper(x1, y1, x2, y2, Tmp.v1.x, Tmp.v1.y, Tmp.v2.x, Tmp.v2.y);
     }
 
-    public void drawOmegaUltraGigaChadDeathRay(float x, float y, float radius, float height, float upScl) {
+    public static void drawOmegaUltraGigaChadDeathRay(float x, float y, float radius, float height, float upScl) {
         Tmp.v1.set(parallax(x, y, height, false));
         Tmp.v2.set(camera.position);
 
@@ -582,6 +606,44 @@ public final class Utils {
 
     public static DrawBlock base(float rotatorSpeed) {
         return new DrawMulti(new DrawRegion("-rotator", rotatorSpeed, rotatorSpeed > 0f), new DrawDefault(), new DrawRegion("-top"));
+    }
+
+    /** Research costs for anything that isn't a block or unit */
+    public static ItemStack[] researchRequirements(ItemStack[] requirements, float mul) {
+        ItemStack[] out = new ItemStack[requirements.length];
+        for (int i = 0; i < out.length; i++) {
+            int quantity = 60 + Mathf.round(Mathf.pow(requirements[i].amount, 1.1f) * 20 * mul, 10);
+
+            out[i] = new ItemStack(requirements[i].item, UI.roundAmount(quantity));
+        }
+
+        return out;
+    }
+
+    /** Adds ItemStack arrays together. Combines duplicate items into one stack. */
+    public static ItemStack[] addItemStacks(Seq<ItemStack[]> stacks) {
+        rawStacks.clear();
+        items.clear();
+        amounts.clear();
+        stacks.each(s -> {
+            for (ItemStack stack : s) {
+                rawStacks.add(stack);
+            }
+        });
+        rawStacks.sort(s -> s.item.id);
+        rawStacks.each(s -> {
+            if (!items.contains(s.item)) {
+                items.add(s.item);
+                amounts.add(s.amount);
+            } else {
+                amounts.incr(items.indexOf(s.item), s.amount);
+            }
+        });
+        ItemStack[] result = new ItemStack[items.size];
+        for (int i = 0; i < items.size; i++) {
+            result[i] = new ItemStack(items.get(i), amounts.get(i));
+        }
+        return result;
     }
 
     @Contract(value = "_, _ -> new", pure = true)

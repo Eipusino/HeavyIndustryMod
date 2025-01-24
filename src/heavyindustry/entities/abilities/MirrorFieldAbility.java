@@ -41,21 +41,18 @@ public class MirrorFieldAbility extends BaseMirrorShieldAbility {
 
     @Override
     public MirrorFieldAbility copy() {
-        Cons<MirrorFieldAbility> cons = e -> {
-            for (int i = 0; i < shapes.size; i++) {
-                if (e.shapes.get(i) != null) e.shapes.set(i, shapes.get(i).copy());
-            }
-        };
-
-        try {
-            var res = (MirrorFieldAbility) super.clone();
-            cons.get(res);
-            return res;
-        } catch (Exception e) {
-            var res = new MirrorFieldAbility();
-            cons.get(res);
-            return res;
+        try {//the dumbest behavior of java
+            return copy((MirrorFieldAbility) super.clone());
+        } catch (CloneNotSupportedException e) {
+            return copy(new MirrorFieldAbility());
         }
+    }
+
+    protected MirrorFieldAbility copy(MirrorFieldAbility res) {
+        for (int i = 0; i < shapes.size; i++) {
+            if (res.shapes.get(i) != null) res.shapes.set(i, shapes.get(i).copy());
+        }
+        return res;
     }
 
     @Override
@@ -154,8 +151,7 @@ public class MirrorFieldAbility extends BaseMirrorShieldAbility {
         }
 
         public ShieldShape copy() {
-            try {
-                //fuck java
+            try {//fuck java
                 return (ShieldShape) super.clone();
             } catch (CloneNotSupportedException e) {
                 return new ShieldShape(sides, x, y, radius, angle);

@@ -71,7 +71,7 @@ public class CaptureBlock extends Block {
 
 			players.clear();
 			Groups.player.copy(players);
-			players.retainAll((Player p) -> p.team() != team); //todo ctf mechanics for user made PvP maps? currently lets *all* enemies collectively cap
+			players.retainAll((Player p) -> p.team() != team);//TODO ctf mechanics for user made PvP maps? currently lets *all* enemies collectively cap
 
 			int capturing = 0;
 

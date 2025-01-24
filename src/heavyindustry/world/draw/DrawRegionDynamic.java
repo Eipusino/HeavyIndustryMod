@@ -68,7 +68,7 @@ public class DrawRegionDynamic<E extends Building> extends DrawBlock {
 
     @Override
     public TextureRegion[] icons(Block block) {
-        return makeIcon ? new TextureRegion[]{region} : Utils.empRegions;
+        return makeIcon ? new TextureRegion[]{region} : new TextureRegion[]{block.region};
     }
 
     @Override

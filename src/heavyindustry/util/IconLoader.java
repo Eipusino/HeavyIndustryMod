@@ -15,6 +15,8 @@ public final class IconLoader {
     private IconLoader() {}
 
 	public static void loadIcons(Fi fi) {
+		if (!fi.exists()) return;
+
 		Seq<Font> availableFonts = Seq.with(Fonts.def, Fonts.outline);
 		int fontSize = (int) (Fonts.def.getData().lineHeight / Fonts.def.getData().scaleY);
 
@@ -26,25 +28,26 @@ public final class IconLoader {
 		}
 
 		for (Map.Entry<Object, Object> entry : iconProperties.entrySet()) {
-			String codePointStr = (String) entry.getKey();
-			String[] valueParts = ((String) entry.getValue()).split("\\|");
-			if (valueParts.length < 2) {
-				continue;
-			}
-
-			try {
-				int codePoint = Integer.parseInt(codePointStr);
-				String textureName = valueParts[1];
-				TextureRegion region = Core.atlas.find(textureName);
-
-				Vec2 scaledSize = Scaling.fit.apply(region.width, region.height, fontSize, fontSize);
-				Font.Glyph glyph = constructGlyph(codePoint, region, scaledSize, fontSize);
-
-				for (Font font : availableFonts) {
-					font.getData().setGlyph(codePoint, glyph);
+			if (entry.getKey() instanceof String codePointStr && entry.getValue() instanceof String getValue) {
+				String[] valueParts = getValue.split("\\|");
+				if (valueParts.length < 2) {
+					continue;
 				}
 
-			} catch (Exception ignored) {
+				try {
+					int codePoint = Integer.parseInt(codePointStr);
+					String textureName = valueParts[1];
+					TextureRegion region = Core.atlas.find(textureName);
+
+					Vec2 scaledSize = Scaling.fit.apply(region.width, region.height, fontSize, fontSize);
+					Font.Glyph glyph = constructGlyph(codePoint, region, scaledSize, fontSize);
+
+					for (Font font : availableFonts) {
+						font.getData().setGlyph(codePoint, glyph);
+					}
+				} catch (Exception e) {
+					Log.warn("Analysis exception: " + codePointStr);
+				}
 			}
 		}
 	}

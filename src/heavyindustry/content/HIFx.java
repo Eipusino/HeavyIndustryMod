@@ -1,12 +1,12 @@
 package heavyindustry.content;
 
+import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
-import arc.util.pooling.*;
 import heavyindustry.entities.abilities.*;
 import heavyindustry.entities.bullet.HailStoneBulletType.*;
 import heavyindustry.graphics.*;
@@ -15,9 +15,6 @@ import heavyindustry.graphics.HITrails.*;
 import heavyindustry.math.*;
 import heavyindustry.struct.*;
 import heavyindustry.util.*;
-import heavyindustry.world.lightning.*;
-import heavyindustry.world.lightning.LightningContainer.*;
-import heavyindustry.world.lightning.generator.*;
 import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.entities.effect.*;
@@ -48,6 +45,8 @@ public final class HIFx {
     public static final Vec2 v7 = new Vec2(), v8 = new Vec2(), v9 = new Vec2();
 
     public static final IntMap<Effect> same = new IntMap<>();
+
+    private static float percent = 0;
 
     public static final Effect
             hitOut = new Effect(60, e -> {
@@ -315,7 +314,7 @@ public final class HIFx {
 
                 Fill.circle(e.x, e.y, 2.5f * e.fout());
             }),
-            lightningFade = (new Effect(PositionLightning.lifetime, 1200f, e -> {
+            lightningFade = new Effect(PositionLightning.lifetime, 1200f, e -> {
                 if (!(e.data instanceof Vec2Seq v)) return;
 
                 e.lifetime = v.size() < 2 ? 0 : 1000;
@@ -346,7 +345,7 @@ public final class HIFx {
 
                 Vec2 last = v.tmpVec2(v.size() - 2);
                 Fill.circle(last.x, last.y, Lines.getStroke() / 2);
-            })).layer(Layer.effect - 0.001f),
+            }).layer(Layer.effect - 0.001f),
             techBlueCircleSplash = new Effect(26f, e -> {
                 Draw.color(Pal.techBlue);
                 Angles.randLenVectors(e.id, 4, 3 + 23 * e.fin(), (x, y) -> {
@@ -354,7 +353,7 @@ public final class HIFx {
                     Drawf.light(e.x + x, e.y + y, e.fout() * 3.5f, Pal.techBlue, 0.7f);
                 });
             }),
-            techBlueExplosion = new Effect(40, e -> {
+            techBlueExplosion = new Effect(40f, e -> {
                 Draw.color(Pal.techBlue);
                 e.scaled(20, i -> {
                     Lines.stroke(3f * i.foutpow());
@@ -409,7 +408,7 @@ public final class HIFx {
                 Fill.circle(e.x, e.y, e.fout() * 30);
                 Drawf.light(e.x, e.y, e.fout() * 55f, Pal.techBlue, 0.7f);
             }),
-            largeTechBlueHit = new Effect(50, e -> {
+            largeTechBlueHit = new Effect(50f, e -> {
                 Draw.color(Pal.techBlue);
                 Fill.circle(e.x, e.y, e.fout() * 44);
                 Lines.stroke(e.fout() * 3.2f);
@@ -430,7 +429,7 @@ public final class HIFx {
                 Fill.circle(e.x, e.y, e.fout() * 31);
                 Draw.z(Layer.effect - 0.0001f);
             }).layer(Layer.effect - 0.0001f),
-            mediumTechBlueHit = new Effect(23, e -> {
+            mediumTechBlueHit = new Effect(23f, e -> {
                 Draw.color(Pal.techBlue);
                 Lines.stroke(e.fout() * 2.8f);
                 Lines.circle(e.x, e.y, e.fin() * 60);
@@ -461,7 +460,7 @@ public final class HIFx {
                 Angles.randLenVectors(e.id, 15, 7f + 60f * e.finpow(), (x, y) -> Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), 4f + e.fout() * 16f));
                 Drawf.light(e.x, e.y, e.fout() * 120f, Pal.techBlue, 0.7f);
             }),
-            crossBlast = new Effect(35, 140, e -> {
+            crossBlast = new Effect(35f, 140, e -> {
                 Draw.color(e.color, Color.white, e.fout() * 0.55f);
                 Drawf.light(e.x, e.y, e.fout() * 70, e.color, 0.7f);
 
@@ -478,7 +477,7 @@ public final class HIFx {
                     Drawn.tri(e.x, e.y, 3.5f * (e.fout() * 3f + 1) / 4 * (e.fout(Interp.pow3In) + 0.5f) / 1.5f, (sizeDiv + randL) * Mathf.curve(e.fin(), 0, 0.05f) * e.fout(Interp.pow3), i * 90);
                 }
             }),
-            crossBlast_45 = new Effect(35, 140, e -> {
+            crossBlast_45 = new Effect(35f, 140, e -> {
                 Draw.color(e.color, Color.white, e.fout() * 0.55f);
                 Drawf.light(e.x, e.y, e.fout() * 70, e.color, 0.7f);
 
@@ -511,12 +510,12 @@ public final class HIFx {
 
                 Draw.color(Color.white, e.color, e.fin() / 5 + 0.6f);
                 float circleRad = e.fin(Interp.circleOut) * rad;
-                Lines.stroke(12 * e.fout());
+                Lines.stroke(12f * e.fout());
                 Lines.circle(e.x, e.y, circleRad);
 
                 e.scaled(120f, i -> {
                     Fill.circle(i.x, i.y, rad * i.fout() / 2);
-                    Lines.stroke(18 * i.fout());
+                    Lines.stroke(18f * i.fout());
                     Lines.circle(i.x, i.y, i.fin(Interp.circleOut) * rad * 1.2f);
 
                     Angles.randLenVectors(i.id, (int) (rad / 4), rad / 6, rad * (1 + i.fout(Interp.circleOut)) / 2f, (x, y) -> {
@@ -542,7 +541,7 @@ public final class HIFx {
 
                 Drawf.light(e.x, e.y, rad * e.fout() * 4f * Mathf.curve(e.fin(), 0f, 0.05f), e.color, 0.7f);
             }).layer(Layer.effect + 0.001f),
-            triSpark1 = new Effect(26, e -> {
+            triSpark1 = new Effect(26f, e -> {
                 rand.setSeed(e.id);
                 Draw.color(Pal.techBlue, Color.white, e.fin());
                 Angles.randLenVectors(e.id, 3, 3f + 24f * e.fin(), 5f, (x, y) -> {
@@ -550,12 +549,21 @@ public final class HIFx {
                     Fill.poly(e.x + x, e.y + y, 3, e.fout() * 8f * rand.random(0.8f, 1.2f), e.rotation + randN * e.fin());
                 });
             }),
-            triSpark2 = new Effect(26, e -> {
+            triSpark2 = new Effect(26f, e -> {
                 rand.setSeed(e.id);
                 Draw.color(HIPal.ancient, Color.white, e.fin());
                 Angles.randLenVectors(e.id, 3, 3f + 24f * e.fin(), 5f, (x, y) -> {
                     float randN = rand.random(120f);
                     Fill.poly(e.x + x, e.y + y, 3, e.fout() * 8f * rand.random(0.8f, 1.2f), e.rotation + randN * e.fin());
+                });
+            }),
+            hitEmpColorSpark = new Effect(40f, e -> {
+                Draw.color(e.color);
+                Lines.stroke(e.fout() * 1.6f);
+
+                Angles.randLenVectors(e.id, 18, e.finpow() * 27f, e.rotation, 360f, (x, y) -> {
+                    float ang = Mathf.angle(x, y);
+                    Lines.lineAngle(e.x + x, e.y + y, ang, e.fout() * 6 + 1f);
                 });
             }),
             eruptorBurn = new Effect(30f, e -> {
@@ -923,6 +931,65 @@ public final class HIFx {
                 Angles.randLenVectors(e.id, 4, 4f + e.finpow() * 17f, (x, y) -> {
                     Fill.poly(e.x + x, e.y + y, 3, e.fout() * rand.random(2.5f, 4), rand.random(360));
                 });
+            }),
+            chainLightning = new Effect(15f, 300f, e -> {
+                if (!(e.data instanceof VisualLightningHolder p)) return;
+
+                int seed = e.id;
+                //get the start and ends of the lightning, then the distance between them
+                float tx = Tmp.v1.set(p.start()).x, ty = Tmp.v1.y, dst = Mathf.dst(Tmp.v2.set(p.end()).x, Tmp.v2.y, tx, ty);
+
+                Tmp.v3.set(p.end()).sub(p.start()).nor();
+                float normx = Tmp.v3.x, normy = Tmp.v3.y;
+
+                Fx.rand.setSeed(seed);
+
+                float arcWidth = Fx.rand.range(dst * p.arc());
+
+                seed = e.id - (int) e.time;
+
+                float angle = Tmp.v1.angleTo(Tmp.v2);
+
+                Floatp arcX = () -> Mathf.sinDeg(percent * 180) * arcWidth;
+
+                //range of lightning strike's vary depending on turret
+                float range = p.segLength();
+                int links = Mathf.ceil(dst / p.segLength());
+                float spacing = dst / links;
+
+                Lines.stroke(p.width() * e.fout());
+                Draw.color(Color.white, e.color, e.finpow());
+                Fill.circle(Tmp.v2.x, Tmp.v2.y, p.width() * e.fout() / 2);
+
+                //begin the line
+                Lines.beginLine();
+
+                Lines.linePoint(Tmp.v1.x, Tmp.v1.y);
+                float lastx = Tmp.v1.x, lasty = Tmp.v1.y;
+
+                for (int i = 0; i < links; i++) {
+                    float nx, ny;
+                    if (i == links - 1) {
+                        //line at end
+                        nx = Tmp.v2.x;
+                        ny = Tmp.v2.y;
+                    } else {
+                        float len = (i + 1) * spacing;
+                        Fx.rand.setSeed(seed + i);
+                        Tmp.v3.trns(Fx.rand.random(360), range / 2);
+                        percent = ((float) (i + 1)) / links;
+
+                        nx = tx + normx * len + Tmp.v3.x + Tmp.v4.set(0, arcX.get()).rotate(angle).x;
+                        ny = ty + normy * len + Tmp.v3.y + Tmp.v4.y;
+                    }
+
+                    Drawf.light(lastx, lasty, nx, ny, Lines.getStroke(), Draw.getColor(), Draw.getColor().a);
+                    lastx = nx;
+                    lasty = ny;
+                    Lines.linePoint(nx, ny);
+                }
+
+                Lines.endLine();
             }),
             crit = new Effect(120f, e -> {
                 Tmp.v1.trns(e.rotation + 90f, 0f, 48f * e.fin(Interp.pow2Out));
@@ -1779,94 +1846,6 @@ public final class HIFx {
                     });
                 });
             }),
-            randomLightning = new LightningEffect() {
-                public final RandomGenerator branch = new RandomGenerator();
-
-                public final RandomGenerator generator = new RandomGenerator() {{
-                    branchChance = 0.15f;
-                    branchMaker = (vert, str) -> {
-                        branch.originAngle = vert.angle + Mathf.random(-90, 90);
-
-                        branch.maxLength = 60*str;
-
-                        return branch;
-                    };
-                }};
-            {
-                branch.maxDeflect = 60;
-                lifetime = 60;
-            }
-                @Override
-                public void render(EffectContainer e) {
-                    if (e.data == null) return;
-                    LightningContainer con = e.data();
-                    Draw.color(e.color);
-                    Draw.z(Layer.effect);
-                    if (!state.isPaused()) con.update();
-                    con.draw(e.x, e.y);
-                }
-
-                @Override
-                public LightningContainer createLightning(float x, float y) {
-                    float mao = data instanceof Float f ? f : 90f;
-                    PoolLightningContainer lightning = PoolLightningContainer.create(lifetime, 1.4f, 2.5f);
-
-                    lightning.lerp = Interp.pow2Out;
-                    lightning.time = lifetime/2;
-                    generator.maxLength = Mathf.random(mao / 2, mao);
-                    lightning.create(generator);
-
-                    Time.run(lifetime + 5, () -> Pools.free(lightning));
-                    return lightning;
-                }
-            },
-            spreadLightning = new LightningEffect() {
-                public final RandomGenerator branch = new RandomGenerator() {{
-                    maxDeflect = 50;
-                }};
-
-                public final RandomGenerator generator = new RandomGenerator() {{
-                    maxDeflect = 60;
-                    branchChance = 0.15f;
-                    branchMaker = (vert, str) -> {
-                        branch.originAngle = vert.angle + Mathf.random(-90, 90);
-                        branch.maxLength = 60 * str;
-
-                        return branch;
-                    };
-                }};
-            {
-                lifetime = 45;
-            }
-                @Override
-                public void render(EffectContainer e) {
-                    if (e.data == null) return;
-                    LightningContainer con = e.data();
-                    Draw.color(e.color);
-                    Draw.z(Layer.effect);
-                    Fill.circle(e.x, e.y, 2.5f * e.fout());
-                    Lines.stroke(1 * e.fout());
-                    Lines.circle(e.x, e.y, 6 * e.fout());
-                    if (!state.isPaused()) con.update();
-                    con.draw(e.x, e.y);
-                }
-
-                @Override
-                public LightningContainer createLightning(float x, float y) {
-                    PoolLightningContainer lightning = PoolLightningContainer.create(lifetime, 1.5f,2.6f);
-
-                    lightning.lerp = Interp.pow2Out;
-                    lightning.time = lifetime/2;
-                    int amount = Mathf.random(4, 6);
-                    for (int i = 0; i < amount; i++) {
-                        generator.maxLength = Mathf.random(50, 75);
-                        lightning.create(generator);
-                    }
-
-                    Time.run(lifetime + 5, () -> Pools.free(lightning));
-                    return lightning;
-                }
-            },
             shrinkIceParticleSmall = new Effect(120, e -> {
                 Draw.color(HIPal.winter);
 
@@ -1990,14 +1969,6 @@ public final class HIFx {
 
                 Lines.stroke(8f * e.fout());
                 Lines.square(e.x, e.y, 18 * e.fin(Interp.pow2Out), 45);
-            }),
-            lightningCont = new Effect(200, e -> {
-                if (e.data instanceof LightningContainer cont) {
-                    cont.update();
-
-                    Draw.color(e.color);
-                    cont.draw(e.x, e.y);
-                }
             }),
             colorLaserCharge = new Effect(38f, e -> {
                 Draw.color(e.color);
@@ -2905,42 +2876,15 @@ public final class HIFx {
         void draw(long id, float x, float y, float rot, float fin);
     }
 
-    private static abstract class LightningEffect extends Effect {
-        protected Object data;
+    public interface VisualLightningHolder {
+        Vec2 start();
 
-        public void at(Position pos) {
-            create(pos.getX(), pos.getY(), 0, Color.white, createLightning(pos.getX(), pos.getY()));
-        }
+        Vec2 end();
 
-        public void at(Position pos, boolean parentize) {
-            create(pos.getX(), pos.getY(), 0, Color.white, createLightning(pos.getX(), pos.getY()));
-        }
+        float width();
 
-        public void at(Position pos, float rotation) {
-            create(pos.getX(), pos.getY(), rotation, Color.white, createLightning(pos.getX(), pos.getY()));
-        }
+        float segLength();
 
-        public void at(float x, float y) {
-            create(x, y, 0, Color.white, createLightning(x, y));
-        }
-
-        public void at(float x, float y, float rotation) {
-            create(x, y, rotation, Color.white, createLightning(x, y));
-        }
-
-        public void at(float x, float y, float rotation, Color color) {
-            create(x, y, rotation, color, createLightning(x, y));
-        }
-
-        public void at(float x, float y, Color color) {
-            create(x, y, 0, color, createLightning(x, y));
-        }
-
-        public void at(float x, float y, float rotation, Color color, Object data) {
-            this.data = data;
-            create(x, y, rotation, color, createLightning(x, y));
-        }
-
-        public abstract LightningContainer createLightning(float x, float y);
+        float arc();
     }
 }

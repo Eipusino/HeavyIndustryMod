@@ -5,7 +5,6 @@ import arc.struct.*;
 import arc.util.*;
 import arc.util.serialization.*;
 import heavyindustry.mod.ExtraContentParser.*;
-import heavyindustry.util.*;
 import mindustry.*;
 import mindustry.ctype.*;
 import mindustry.mod.*;
@@ -111,8 +110,12 @@ public final class LoadMod {
 
     /** Add {@link #blacklistedMods} to the {@code Mods.blacklistedMods} list. */
     public static void addBlacklistedMods() {
-        ObjectSet<String> bm = SafeRef.get(Mods.class, "blacklistedMods");
-        if (bm != null) bm.addAll(blacklistedMods);
+        try {
+            ObjectSet<String> bm = Reflect.get(Mods.class, "blacklistedMods");
+            bm.addAll(blacklistedMods);
+        } catch (Exception e) {
+            Log.err(e);
+        }
     }
 
     /**

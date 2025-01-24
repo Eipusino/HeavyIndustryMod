@@ -17,7 +17,7 @@ import mindustry.type.*;
  */
 public final class HILiquids {
     public static Liquid
-            brine, methane, nanofluid, nitratedOil;
+            brine, methane, nanoFluid, nitratedOil;
 
     /** Don't let anyone instantiate this class. */
     private HILiquids() {}
@@ -35,7 +35,7 @@ public final class HILiquids {
             flammability = 1f;
             explosiveness = 1f;
         }};
-        nanofluid = new Liquid("nanofluid", Color.valueOf("7fd489")) {{
+        nanoFluid = new Liquid("nano-fluid", Color.valueOf("7fd489")) {{
             heatCapacity = 1.5f;
             viscosity = 0.8f;
             temperature = 0.3f;

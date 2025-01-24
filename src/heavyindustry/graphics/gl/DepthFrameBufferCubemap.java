@@ -8,7 +8,6 @@ import arc.graphics.Texture.*;
 import arc.graphics.gl.*;
 import arc.struct.*;
 import arc.util.*;
-import heavyindustry.util.SafeRef.*;
 
 import static arc.Core.*;
 
@@ -61,8 +60,8 @@ public class DepthFrameBufferCubemap extends FrameBufferCubemap {
         Gl.bindFramebuffer(Gl.framebuffer, framebufferHandle);
 
         // And here we see one of the most horrendous code ever due to Java's stupid tendency of making everything private for no reason.
-        int width = NumRef.getInt(GLFrameBufferBuilder.class, bufferBuilder, "width");
-        int height = NumRef.getInt(GLFrameBufferBuilder.class, bufferBuilder, "height");
+        int width = Reflect.get(GLFrameBufferBuilder.class, bufferBuilder, "width");
+        int height = Reflect.get(GLFrameBufferBuilder.class, bufferBuilder, "height");
 
         var specs = Reflect.<Seq<FrameBufferTextureAttachmentSpec>>get(GLFrameBufferBuilder.class, bufferBuilder, "textureAttachmentSpecs");
         isMRT = specs.size > 1;
@@ -76,9 +75,9 @@ public class DepthFrameBufferCubemap extends FrameBufferCubemap {
                 if (spec.isColorTexture()) {
                     attachTexture(Gl.colorAttachment0 + colorTextureCounter, texture);
                     colorTextureCounter++;
-                } else if (NumRef.getBool(FrameBufferTextureAttachmentSpec.class, spec, "isDepth")) {
+                } else if (Reflect.get(FrameBufferTextureAttachmentSpec.class, spec, "isDepth")) {
                     attachTexture(Gl.depthAttachment, texture);
-                } else if (NumRef.getBool(FrameBufferTextureAttachmentSpec.class, spec, "isStencil")) {
+                } else if (Reflect.get(FrameBufferTextureAttachmentSpec.class, spec, "isStencil")) {
                     attachTexture(Gl.stencilAttachment, texture);
                 }
             }

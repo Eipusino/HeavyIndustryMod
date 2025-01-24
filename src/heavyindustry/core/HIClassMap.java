@@ -63,6 +63,7 @@ final class HIClassMap {
         classes.put("ArrowBulletType", ArrowBulletType.class);
         classes.put("BoidBulletType", BoidBulletType.class);
         classes.put("ChainBulletType", ChainBulletType.class);
+        classes.put("ChainLightningBulletType", ChainLightningBulletType.class);
         classes.put("CritBulletType", CritBulletType.class);
         classes.put("CtrlMissileBulletType", CtrlMissileBulletType.class);
         classes.put("DelayedPointBulletType", DelayedPointBulletType.class);
@@ -88,6 +89,7 @@ final class HIClassMap {
         classes.put("Shooter", LaserWall.Shooter.class);
         classes.put("StrafeLaserBulletType", StrafeLaserBulletType.class);
         classes.put("ThermoBulletType", ThermoBulletType.class);
+        classes.put("TrailedEnergyBulletType", TrailedEnergyBulletType.class);
         classes.put("TrailFadeBulletType", TrailFadeBulletType.class);
         //effects
         classes.put("WrapperEffect", WrapperEffect.class);
@@ -191,6 +193,8 @@ final class HIClassMap {
         classes.put("MinigunTurretBuild", MinigunTurret.MinigunTurretBuild.class);
         classes.put("PlatformTurret", PlatformTurret.class);
         classes.put("PlatformTurretBuild", PlatformTurret.PlatformTurretBuild.class);
+        classes.put("HackTurret", HackTurret.class);
+        classes.put("HackTurretBuild", HackTurret.HackTurretBuild.class);
         classes.put("DirectionalUnloaderf", DirectionalUnloaderf.class);
         classes.put("DirectionalUnloaderBuildf", DirectionalUnloaderf.DirectionalUnloaderBuildf.class);
         classes.put("BeltConveyor", BeltConveyor.class);
@@ -280,6 +284,8 @@ final class HIClassMap {
         classes.put("PayloadJunctionBuild", PayloadJunction.PayloadJunctionBuild.class);
         classes.put("PayloadRail", PayloadRail.class);
         classes.put("PayloadRailBuild", PayloadRail.PayloadRailBuild.class);
+        classes.put("Collector", Collector.class);
+        classes.put("CollectorBuild", Collector.CollectorBuild.class);
         classes.put("DerivativeUnitFactory", DerivativeUnitFactory.class);
         classes.put("DerivativeUnitFactoryBuild", DerivativeUnitFactory.DerivativeUnitFactoryBuild.class);
         classes.put("SelectableReconstructor", SelectableReconstructor.class);
@@ -321,6 +327,8 @@ final class HIClassMap {
         classes.put("GeneratorCrafterBuild", GeneratorCrafter.GeneratorCrafterBuild.class);
         classes.put("AttributeGenerator", AttributeGenerator.class);
         classes.put("AttributeGeneratorBuild", AttributeGenerator.AttributeGeneratorBuild.class);
+        classes.put("FilterCrafter", FilterCrafter.class);
+        classes.put("FilterCrafterBuild", FilterCrafter.FilterCrafterBuild.class);
         classes.put("GeneratorFracker", GeneratorFracker.class);
         classes.put("GeneratorFrackerBuild", GeneratorFracker.GeneratorFrackerBuild.class);
         classes.put("AccelerationCrafter", AccelerationCrafter.class);
@@ -329,7 +337,7 @@ final class HIClassMap {
         classes.put("FuelCrafterBuild", FuelCrafter.FuelCrafterBuild.class);
         classes.put("MultiCrafter", MultiCrafter.class);
         classes.put("MultiCrafterBuild", MultiCrafter.MultiCrafterBuild.class);
-        classes.put("Formula", MultiCrafter.Formula.class);
+        classes.put("CraftPlan", MultiCrafter.CraftPlan.class);
         classes.put("SporeFarm", SporeFarm.class);
         classes.put("SporeFarmBuild", SporeFarm.SporeFarmBuild.class);
         classes.put("DrawerDrill", DrawerDrill.class);
@@ -344,6 +352,8 @@ final class HIClassMap {
         classes.put("LaserBeamDrillBuild", LaserBeamDrill.LaserBeamDrillBuild.class);
         classes.put("MultiRotatorDrill", MultiRotatorDrill.class);
         classes.put("MultiRotororDrillBuild", MultiRotatorDrill.MultiRotororDrillBuild.class);
+        classes.put("MultiDrill", MultiDrill.class);
+        classes.put("MultiDrillBuild", MultiDrill.MultiDrillBuild.class);
         classes.put("UndergroundDrill", UndergroundDrill.class);
         classes.put("UndergroundDrillBuild", UndergroundDrill.UndergroundDrillBuild.class);
         classes.put("MinerPoint", MinerPoint.class);

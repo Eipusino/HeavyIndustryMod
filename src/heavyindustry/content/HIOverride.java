@@ -116,7 +116,7 @@ public final class HIOverride {
             drag = 0.01f;
             layer = Layer.bullet - 2f;
         }});
-        ((LiquidTurret) Blocks.wave).ammoTypes.put(HILiquids.nanofluid, new LiquidBulletType(HILiquids.nanofluid) {{
+        ((LiquidTurret) Blocks.wave).ammoTypes.put(HILiquids.nanoFluid, new LiquidBulletType(HILiquids.nanoFluid) {{
             drag = 0.01f;
             healPercent = 5f;
             collidesTeam = true;
@@ -150,7 +150,7 @@ public final class HIOverride {
             damage = 0.2f;
             layer = Layer.bullet - 2f;
         }});
-        ((LiquidTurret) Blocks.tsunami).ammoTypes.put(HILiquids.nanofluid, new LiquidBulletType(HILiquids.nanofluid) {{
+        ((LiquidTurret) Blocks.tsunami).ammoTypes.put(HILiquids.nanoFluid, new LiquidBulletType(HILiquids.nanoFluid) {{
             lifetime = 49f;
             speed = 4f;
             knockback = 1.3f;
@@ -369,7 +369,7 @@ public final class HIOverride {
         Liquids.hydrogen.explosiveness = 1.5f;
         Liquids.ozone.flammability = 0f;
         Liquids.ozone.explosiveness = 0f;
-        Liquids.neoplasm.canStayOn.addAll(HILiquids.nanofluid, HILiquids.nitratedOil);
+        Liquids.neoplasm.canStayOn.addAll(HILiquids.nanoFluid, HILiquids.nitratedOil);
         Liquids.neoplasm.capPuddles = true;
         //Items
         Items.graphite.hardness = 2;
@@ -379,8 +379,8 @@ public final class HIOverride {
         Items.surgeAlloy.hardness = 6;
         Items.phaseFabric.hardness = 3;
         Items.carbide.hardness = 6;
-        Items.serpuloItems.addAll(HIItems.rareEarth, HIItems.nanocore, HIItems.chromium, HIItems.uranium, HIItems.heavyAlloy);
-        Items.erekirItems.addAll(HIItems.nanocoreErekir, HIItems.uranium, HIItems.chromium);
+        Items.serpuloItems.addAll(HIItems.rareEarth, HIItems.nanoCore, HIItems.chromium, HIItems.uranium, HIItems.heavyAlloy);
+        Items.erekirItems.addAll(HIItems.nanoCoreErekir, HIItems.uranium, HIItems.chromium);
         //planet
         Planets.serpulo.allowSectorInvasion = settings.getBool("hi-serpulo-sector-invasion");
         //other

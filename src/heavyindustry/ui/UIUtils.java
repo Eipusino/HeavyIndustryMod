@@ -19,7 +19,6 @@ import arc.util.*;
 import heavyindustry.core.*;
 import heavyindustry.ui.dialogs.*;
 import heavyindustry.ui.fragment.*;
-import heavyindustry.util.*;
 import mindustry.core.*;
 import mindustry.ctype.*;
 import mindustry.game.*;
@@ -533,7 +532,7 @@ public final class UIUtils {
     public static void replaceClickListener(Button button, ClickListener newListener) {
         button.removeListener(button.getClickListener());
 
-        SafeRef.set(Button.class, button, "clickListener", newListener);
+        Reflect.set(Button.class, button, "clickListener", newListener);
         button.addListener(newListener);
     }
 }

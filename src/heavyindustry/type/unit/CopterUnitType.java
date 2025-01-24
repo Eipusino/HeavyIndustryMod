@@ -133,7 +133,7 @@ public class CopterUnitType extends UnitTypef {
         }
 
         public Rotor copy() {
-            try {
+            try {//This is definitely the most disgusting, stupid, and insulting design in Java!
                 return (Rotor) super.clone();
             } catch (CloneNotSupportedException e) {
                 return new Rotor("default");

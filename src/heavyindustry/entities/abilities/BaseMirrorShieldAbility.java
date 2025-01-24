@@ -118,7 +118,9 @@ public abstract class BaseMirrorShieldAbility extends Ability implements Collide
 
             breakEffect.at(unit.x, unit.y, unit.rotation(), unit.team.color, this);
             lastBreak = true;
-        } else unit.shield -= Mathf.maxZero(damage - shieldArmor);
+        } else {
+            unit.shield -= Mathf.maxZero(damage - shieldArmor);
+        }
     }
 
     public void doReflect(Unit unit, Bullet bullet) {

@@ -23,9 +23,9 @@ public class AcceleratingWeapon extends Weapon {
 
     @Override
     public void update(Unit unit, WeaponMount mount) {
-        AcceleratingMount aMount = (AcceleratingMount) mount;
+        if (!(mount instanceof AcceleratingMount aMount)) return;
 
-        float r = ((aMount.accel / reload) * unit.reloadMultiplier * Time.delta) * (reload - minReload);
+		float r = ((aMount.accel / reload) * unit.reloadMultiplier * Time.delta) * (reload - minReload);
         if (!alternate || otherSide == -1) {
             mount.reload -= r;
         } else {
