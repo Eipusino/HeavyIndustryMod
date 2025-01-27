@@ -18,7 +18,7 @@ import mindustry.world.blocks.sandbox.*;
 import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 
-public class HeavyDuct extends Duct {
+public class HeavyDuct extends TubeDuct {
 	public TextureRegion[] sheetRegions;
 	public Seq<Block> acceptFrom;
 	public Block junctionReplacement;
@@ -64,7 +64,7 @@ public class HeavyDuct extends Duct {
 	@Override
 	public void handlePlacementLine(Seq<BuildPlan> plans) {}
 
-	public class HeavyDuctBuild extends DuctBuild {
+	public class HeavyDuctBuild extends TubeDuctBuild {
 		public int state = 0;
 		public Building last;
 		public Point2 frontPos, backPos;

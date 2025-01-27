@@ -9,31 +9,31 @@ package heavyindustry.util.path;
  * @since 1.0.5
  */
 public interface Pathc<V> extends Iterable<V> {
-    /**
-     * Insert a vertex from the starting point of the path and use it as the starting point.
-     *
-     * @param next Added vertices
-     */
-    void addFirst(V next);
+	/**
+	 * Insert a vertex from the starting point of the path and use it as the starting point.
+	 *
+	 * @param next Added vertices
+	 */
+	void addFirst(V next);
 
-    /**
-     * Insert a vertex from the endpoint of the path and use it as the starting point.
-     *
-     * @param next Added vertices
-     */
-    void addLast(V next);
+	/**
+	 * Insert a vertex from the endpoint of the path and use it as the starting point.
+	 *
+	 * @param next Added vertices
+	 */
+	void addLast(V next);
 
-    /**
-     * Obtain the starting point of the path, which should correctly return the node at the top of the iteration order.
-     *
-     * @return Vertex located at the starting point position
-     */
-    V origin();
+	/**
+	 * Obtain the starting point of the path, which should correctly return the node at the top of the iteration order.
+	 *
+	 * @return Vertex located at the starting point position
+	 */
+	V origin();
 
-    /**
-     * Obtain the endpoint of the path, which should correctly return the node at the end of the iteration sequence.
-     *
-     * @return Node located at the end position
-     */
-    V destination();
+	/**
+	 * Obtain the endpoint of the path, which should correctly return the node at the end of the iteration sequence.
+	 *
+	 * @return Node located at the end position
+	 */
+	V destination();
 }

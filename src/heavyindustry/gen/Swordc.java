@@ -5,37 +5,37 @@ import heavyindustry.graphics.HITrails.*;
 import mindustry.gen.*;
 
 public interface Swordc extends Unitc {
-    void unitRayCast(float x1, float y1, float x2, float y2);
+	void unitRayCast(float x1, float y1, float x2, float y2);
 
-    void tileRayCast(int x1, int y1, int x2, int y2);
+	void tileRayCast(int x1, int y1, int x2, int y2);
 
-    void clearCollided();
+	void clearCollided();
 
-    boolean hasCollided(int id);
+	boolean hasCollided(int id);
 
-    float damage();
+	float damage();
 
-    IntSeq collided();
+	IntSeq collided();
 
-    float lastBaseX();
+	float lastBaseX();
 
-    float lastBaseY();
+	float lastBaseY();
 
-    int orbitPos();
+	int orbitPos();
 
-    float heat();
+	float heat();
 
-    DriftTrail[] driftTrails();
+	DriftTrail[] driftTrails();
 
-    void collided(IntSeq value);
+	void collided(IntSeq value);
 
-    void lastBaseX(float value);
+	void lastBaseX(float value);
 
-    void lastBaseY(float value);
+	void lastBaseY(float value);
 
-    void orbitPos(int value);
+	void orbitPos(int value);
 
-    void heat(float value);
+	void heat(float value);
 
-    void driftTrails(DriftTrail[] value);
+	void driftTrails(DriftTrail[] value);
 }

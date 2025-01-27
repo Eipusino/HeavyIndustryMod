@@ -102,15 +102,15 @@ public class PayloadBuffer extends PayloadBlock {
 		@Override
 		public void write(Writes write) {
 			super.write(write);
-            TypeIO.writeBuilding(write, next);
-            write.f(payloadUsed);
+			TypeIO.writeBuilding(write, next);
+			write.f(payloadUsed);
 		}
 
 		@Override
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
-            next = TypeIO.readBuilding(read);
-            payloadUsed = read.f();
+			next = TypeIO.readBuilding(read);
+			payloadUsed = read.f();
 		}
 	}
 }

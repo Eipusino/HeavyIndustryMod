@@ -9,26 +9,26 @@ import mindustry.type.*;
 import mindustry.ui.*;
 
 public class ItemImage extends Stack {
-    public ItemImage(TextureRegion region, int amount) {
-        add(new Table(o -> {
-            o.left();
-            o.add(new Image(region)).size(32f).scaling(Scaling.fit);
-        }));
+	public ItemImage(TextureRegion region, int amount) {
+		add(new Table(o -> {
+			o.left();
+			o.add(new Image(region)).size(32f).scaling(Scaling.fit);
+		}));
 
-        if (amount != 0) {
-            add(new Table(t -> {
-                t.left().bottom();
-                t.add(amount >= 1000 ? UI.formatAmount(amount) : amount + "").style(Styles.outlineLabel);
-                t.pack();
-            }));
-        }
-    }
+		if (amount != 0) {
+			add(new Table(t -> {
+				t.left().bottom();
+				t.add(amount >= 1000 ? UI.formatAmount(amount) : amount + "").style(Styles.outlineLabel);
+				t.pack();
+			}));
+		}
+	}
 
-    public ItemImage(ItemStack stack) {
-        this(stack.item.uiIcon, stack.amount);
-    }
+	public ItemImage(ItemStack stack) {
+		this(stack.item.uiIcon, stack.amount);
+	}
 
-    public ItemImage(PayloadStack stack) {
-        this(stack.item.uiIcon, stack.amount);
-    }
+	public ItemImage(PayloadStack stack) {
+		this(stack.item.uiIcon, stack.amount);
+	}
 }

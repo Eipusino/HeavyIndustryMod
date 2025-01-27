@@ -314,7 +314,6 @@ public class MoreGenericCrafter extends PayloadBlock {
 		public void write(Writes write) {
 			super.write(write);
 			write.f(progress);
-			write.f(totalProgress);
 			write.f(warmup);
 		}
 
@@ -322,7 +321,6 @@ public class MoreGenericCrafter extends PayloadBlock {
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
 			progress = read.f();
-			totalProgress = read.f();
 			warmup = read.f();
 		}
 	}

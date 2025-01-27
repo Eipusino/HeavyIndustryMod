@@ -2,17 +2,50 @@ package heavyindustry.util;
 
 import arc.*;
 import arc.graphics.g2d.*;
+import arc.math.geom.*;
 import arc.struct.*;
 
 import java.util.*;
 
+/**
+ * The utility set for split sprite.
+ * <p>This class may be considered for merging into {@link Utils} in future versions.
+ *
+ * @since 1.0.4
+ */
 public final class SpriteUtils {
+	public static final Point2[] orthogonalPos = {
+			new Point2(0, 1),
+			new Point2(1, 0),
+			new Point2(0, -1),
+			new Point2(-1, 0)
+	};
+
+	public static final Point2[][] diagonalPos = {
+			new Point2[]{new Point2(1, 0), new Point2(1, 1), new Point2(0, 1)},
+			new Point2[]{new Point2(1, 0), new Point2(1, -1), new Point2(0, -1)},
+			new Point2[]{new Point2(-1, 0), new Point2(-1, -1), new Point2(0, -1)},
+			new Point2[]{new Point2(-1, 0), new Point2(-1, 1), new Point2(0, 1)}
+	};
+
+	public static final Point2[] proximityPos = {
+			new Point2(0, 1),
+			new Point2(1, 0),
+			new Point2(0, -1),
+			new Point2(-1, 0),
+
+			new Point2(1, 1),
+			new Point2(1, -1),
+			new Point2(-1, -1),
+			new Point2(-1, 1)
+	};
+
 	/*
 		  1
 		4   2
 		  3
 	*/
-	public static final int[] index44 = {
+	public static final int[] index4_4 = {
 			0, 2, 10, 8,
 			4, 6, 14, 12,
 			5, 7, 15, 13,
@@ -24,34 +57,34 @@ public final class SpriteUtils {
 		4   2
 		7 3 6
 	*/
-	public static final int[] index412raw = {
+	public static final int[] index4_12raw = {
 			0, 2, 10, 8, /**/143, 46, 78, 31, /**/38, 111, 110, 76,
 			4, 6, 14, 12, /**/39, 127, 239, 77, /**/55, 95, 175, 207,
 			5, 7, 15, 13, /**/23, 191, 223, 141, /**/63, 255, 240, 205,
 			1, 3, 11, 9, /**/79, 27, 139, 47, /**/19, 155, 159, 137
 	};
 
-	public static final int[] index412 = new int[index412raw.length];
-	public static final IntIntMap index412map = new IntIntMap();
+	public static final int[] index4_12 = new int[index4_12raw.length];
+	public static final IntIntMap index4_12map = new IntIntMap();
 
 	static {
-		Integer[] indices = new Integer[index412raw.length];
-		for (int i = 0; i < index412raw.length; i++) {
+		int[] indices = new int[index4_12raw.length];
+		for (int i = 0; i < index4_12raw.length; i++) {
 			indices[i] = i;
 		}
 
-        Arrays.sort(indices, UtilsKt.comparing(a -> index412raw[a]));
+		Arrays.sort(indices);
 
 		for (int i = 0; i < indices.length; i++) {
-			index412[indices[i]] = i;
+			index4_12[indices[i]] = i;
 		}
 
-		for (int i = 0; i < index412raw.length; i++) {
-			index412map.put(index412raw[i], index412[i]);
+		for (int i = 0; i < index4_12raw.length; i++) {
+			index4_12map.put(index4_12raw[i], index4_12[i]);
 		}
 	}
 
-    private SpriteUtils() {}
+	private SpriteUtils() {}
 
 	public static TextureRegion[] splitIndex(String name, int tileWidth, int tileHeight) {
 		return splitIndex(Core.atlas.find(name), tileWidth, tileHeight);

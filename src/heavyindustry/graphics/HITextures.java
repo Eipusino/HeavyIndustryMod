@@ -7,34 +7,34 @@ import arc.graphics.Texture.*;
 import static heavyindustry.HIVars.*;
 
 public final class HITextures {
-    public static Texture smooth, particle, darker, armor;
+	public static Texture smooth, particle, darker, armor;
 
-    /** Don't let anyone instantiate this class. */
-    private HITextures() {}
+	/** Don't let anyone instantiate this class. */
+	private HITextures() {}
 
-    public static void init() {
-        smooth = loadTexture("smooth-noise", t -> {
-            t.setFilter(TextureFilter.linear);
-            t.setWrap(TextureWrap.repeat);
-        });
-        particle = loadTexture("particle-noise", t -> {
-            t.setFilter(TextureFilter.linear);
-            t.setWrap(TextureWrap.repeat);
-        });
-        darker = loadTexture("darker-noise", t -> {
-            t.setFilter(TextureFilter.linear);
-            t.setWrap(TextureWrap.repeat);
-        });
-        armor = loadTexture("armor", t -> {
-            t.setFilter(TextureFilter.nearest);
-            t.setWrap(TextureWrap.repeat);
-        });
-    }
+	public static void init() {
+		smooth = loadTexture("smooth-noise", t -> {
+			t.setFilter(TextureFilter.linear);
+			t.setWrap(TextureWrap.repeat);
+		});
+		particle = loadTexture("particle-noise", t -> {
+			t.setFilter(TextureFilter.linear);
+			t.setWrap(TextureWrap.repeat);
+		});
+		darker = loadTexture("darker-noise", t -> {
+			t.setFilter(TextureFilter.linear);
+			t.setWrap(TextureWrap.repeat);
+		});
+		armor = loadTexture("armor", t -> {
+			t.setFilter(TextureFilter.nearest);
+			t.setWrap(TextureWrap.repeat);
+		});
+	}
 
-    public static Texture loadTexture(String name, Cons<Texture> modifier) {
-        Texture tex = new Texture(internalTree.child("sprites").child(name + (name.endsWith(".png") ? "" : ".png")));
-        modifier.get(tex);
+	public static Texture loadTexture(String name, Cons<Texture> modifier) {
+		Texture tex = new Texture(internalTree.child("sprites").child(name + (name.endsWith(".png") ? "" : ".png")));
+		modifier.get(tex);
 
-        return tex;
-    }
+		return tex;
+	}
 }

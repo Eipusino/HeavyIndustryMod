@@ -4,11 +4,11 @@ import heavyindustry.type.unit.CopterUnitType.*;
 import mindustry.gen.*;
 
 public interface Copterc extends Unitc {
-    RotorMount[] rotors();
+	RotorMount[] rotors();
 
-    float rotorSpeedScl();
+	float rotorSpeedScl();
 
-    void rotors(RotorMount[] value);
+	void rotors(RotorMount[] value);
 
-    void rotorSpeedScl(float value);
+	void rotorSpeedScl(float value);
 }

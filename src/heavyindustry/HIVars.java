@@ -28,7 +28,7 @@ public final class HIVars {
 	public static float iconSize = 40f, buttonSize = 24f, sliderWidth = 140f, fieldWidth = 80f;
 
 	/** Blank single pixel texture, commonly used as a placeholder and to prevent null pointer anomalies in Kotlin. */
-	public static TextureRegion whiteRegion = new AtlasRegion(new TextureRegion(new Texture(internalTree.child("sprites/white.png"))));
+	public static final TextureRegion whiteRegion = new AtlasRegion(new TextureRegion(new Texture(internalTree.child("sprites/white.png"))));
 
 	/** Don't let anyone instantiate this class. */
 	private HIVars() {}
@@ -39,7 +39,7 @@ public final class HIVars {
 	}
 
 	/** Delta time that is unaffected by time control. */
-	public static float delta() {
+	public static float graphicsDelta() {
 		return Core.graphics.getDeltaTime() * 60f;
 	}
 

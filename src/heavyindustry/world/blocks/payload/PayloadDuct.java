@@ -65,10 +65,10 @@ public class PayloadDuct extends PayloadBlock {
 			}
 		}
 
-        /*public boolean nextDuctMerge(int rotation) {
-            Building the = nearby(Geometry.d4x(rotation), Geometry.d4y(rotation));
-            return Mathf.within(the.x - x, the.y - y, 4f);
-        }*/
+		/*public boolean nextDuctMerge(int rotation) {
+			Building the = nearby(Geometry.d4x(rotation), Geometry.d4y(rotation));
+			return Mathf.within(the.x - x, the.y - y, 4f);
+		}*/
 
 		@Override
 		public void onProximityUpdate() {

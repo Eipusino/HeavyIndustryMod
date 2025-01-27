@@ -5,19 +5,19 @@ import mindustry.gen.*;
 import mindustry.type.*;
 
 public interface Ornitopterc extends Unitc {
-    float bladeMoveSpeedScl();
+	float bladeMoveSpeedScl();
 
-    float driftAngle();
+	float driftAngle();
 
-    long drawSeed();
+	long drawSeed();
 
-    BladeMount[] blades();
+	BladeMount[] blades();
 
-    void bladeMoveSpeedScl(float value);
+	void bladeMoveSpeedScl(float value);
 
-    void blades(BladeMount[] value);
+	void blades(BladeMount[] value);
 
-    void drawSeed(long value);
+	void drawSeed(long value);
 
-    void setBlades(UnitType value);
+	void setBlades(UnitType value);
 }

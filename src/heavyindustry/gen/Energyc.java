@@ -7,27 +7,27 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 
 public interface Energyc extends Unitc {
-    boolean teleportValid(EnergyUnitType eType);
+	boolean teleportValid(EnergyUnitType eType);
 
-    void teleport(float x, float y);
+	void teleport(float x, float y);
 
-    Vec2 lastPos();
+	Vec2 lastPos();
 
-    float reloadValue();
+	float reloadValue();
 
-    float lastHealth();
+	float lastHealth();
 
-    Interval timer();
+	Interval timer();
 
-    Trail[] trails();
+	Trail[] trails();
 
-    void lastPos(Vec2 value);
+	void lastPos(Vec2 value);
 
-    void reloadValue(float value);
+	void reloadValue(float value);
 
-    void lastHealth(float value);
+	void lastHealth(float value);
 
-    void timer(Interval value);
+	void timer(Interval value);
 
-    void trails(Trail[] value);
+	void trails(Trail[] value);
 }

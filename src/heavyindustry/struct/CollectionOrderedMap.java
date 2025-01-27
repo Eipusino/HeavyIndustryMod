@@ -7,28 +7,28 @@ import arc.struct.*;
  * used in places where Java specifications are required and OrderedMap does not create nodes.
  */
 public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
-    public Seq<K> orderedKeys;
+	public Seq<K> orderedKeys;
 
-    public CollectionOrderedMap() {
-        setMap(16, 0.75f);
-    }
+	public CollectionOrderedMap() {
+		setMap(16, 0.75f);
+	}
 
-    public CollectionOrderedMap(int capacity) {
-        setMap(capacity, 0.75f);
-    }
+	public CollectionOrderedMap(int capacity) {
+		setMap(capacity, 0.75f);
+	}
 
-    public CollectionOrderedMap(int capacity, float loadFactor) {
-        setMap(capacity, loadFactor);
-    }
+	public CollectionOrderedMap(int capacity, float loadFactor) {
+		setMap(capacity, loadFactor);
+	}
 
-    public CollectionOrderedMap(ObjectMap<? extends K, ? extends V> map) {
-        setMap(16, 0.75f);
-        this.map.putAll(map);
-    }
+	public CollectionOrderedMap(ObjectMap<? extends K, ? extends V> map) {
+		setMap(16, 0.75f);
+		this.map.putAll(map);
+	}
 
-    @Override
-    protected void setMap(int capacity, float loadFactor) {
-        map = new OrderedMap<>(capacity, loadFactor);
-        orderedKeys = ((OrderedMap<K, V>) map).orderedKeys();
-    }
+	@Override
+	protected void setMap(int capacity, float loadFactor) {
+		map = new OrderedMap<>(capacity, loadFactor);
+		orderedKeys = ((OrderedMap<K, V>) map).orderedKeys();
+	}
 }

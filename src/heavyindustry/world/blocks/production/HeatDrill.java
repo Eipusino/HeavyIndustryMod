@@ -20,11 +20,11 @@ public class HeatDrill extends DrawerDrill {
 	public void setBars() {
 		super.setBars();
 
-		addBar("heat", (HeatDrillBuild entity) ->
-				new Bar(() ->
-						Core.bundle.format("bar.heatpercent", (int) (entity.heat + 0.01f), (int) (entity.efficiencyScale() * 100 + 0.01f)),
-						() -> Pal.lightOrange,
-						() -> entity.heat / heatRequirement));
+		addBar("heat", (HeatDrillBuild entity) -> new Bar(() ->
+				Core.bundle.format("bar.heatpercent", (int) (entity.heat + 0.01f), (int) (entity.efficiencyScale() * 100 + 0.01f)),
+				() -> Pal.lightOrange,
+				() -> entity.heat / heatRequirement)
+		);
 	}
 
 	public class HeatDrillBuild extends DrawerDrillBuild implements HeatConsumer {
@@ -61,7 +61,7 @@ public class HeatDrill extends DrawerDrill {
 		@Override
 		public float timeScale() {
 			float over = Math.max(heat - heatRequirement, 0f);
-			return super.timeScale() * (warmupTarget() + over / heatRequirement * overheatScale);
+			return timeScale * (warmupTarget() + over / heatRequirement * overheatScale);
 		}
 	}
 }

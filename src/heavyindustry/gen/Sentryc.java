@@ -4,23 +4,23 @@ import arc.math.geom.*;
 import mindustry.gen.*;
 
 public interface Sentryc extends TimedKillc {
-    Vec2 anchorVel();
+	Vec2 anchorVel();
 
-    float anchorDrag();
+	float anchorDrag();
 
-    float anchorRot();
+	float anchorRot();
 
-    float anchorX();
+	float anchorX();
 
-    float anchorY();
+	float anchorY();
 
-    void anchorVel(Vec2 value);
+	void anchorVel(Vec2 value);
 
-    void anchorDrag(float value);
+	void anchorDrag(float value);
 
-    void anchorRot(float value);
+	void anchorRot(float value);
 
-    void anchorX(float value);
+	void anchorX(float value);
 
-    void anchorY(float value);
+	void anchorY(float value);
 }

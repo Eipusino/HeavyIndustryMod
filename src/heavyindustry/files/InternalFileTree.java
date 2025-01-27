@@ -10,30 +10,30 @@ import arc.util.*;
  * @since 1.0.6
  */
 public class InternalFileTree {
-    public final Class<?> anchorClass;
+	public final Class<?> anchorClass;
 
-    public final ZipFi root;
-    public final Fi file;
+	public final ZipFi root;
+	public final Fi file;
 
-    /** @param owner navigation anchor */
-    public InternalFileTree(Class<?> owner) {
-        anchorClass = owner;
+	/** @param owner navigation anchor */
+	public InternalFileTree(Class<?> owner) {
+		anchorClass = owner;
 
-        //noinspection DataFlowIssue
-        String classPath = owner.getResource("").getFile().replaceAll("%20", " ");
-        classPath = classPath.substring(classPath.indexOf(":") + 2);
-        String jarPath = (OS.isLinux ? "/" : "") + classPath.substring(0, classPath.indexOf("!"));
+		//noinspection DataFlowIssue
+		String classPath = owner.getResource("").getFile().replaceAll("%20", " ");
+		classPath = classPath.substring(classPath.indexOf(":") + 2);
+		String jarPath = (OS.isLinux ? "/" : "") + classPath.substring(0, classPath.indexOf("!"));
 
-        file = new Fi(jarPath);
-        root = new ZipFi(file);
-    }
+		file = new Fi(jarPath);
+		root = new ZipFi(file);
+	}
 
-    public Fi child(String name) {
-        Fi out = root;
-        for (String s : name.split("/")) {
-            if (!s.isEmpty())
-                out = out.child(s);
-        }
-        return out;
-    }
+	public Fi child(String name) {
+		Fi out = root;
+		for (String s : name.split("/")) {
+			if (!s.isEmpty())
+				out = out.child(s);
+		}
+		return out;
+	}
 }

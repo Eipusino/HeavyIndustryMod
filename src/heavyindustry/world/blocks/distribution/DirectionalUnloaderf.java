@@ -8,22 +8,22 @@ import mindustry.world.blocks.distribution.*;
  * @author Eipusino
  */
 public class DirectionalUnloaderf extends DirectionalUnloader {
-    public DirectionalUnloaderf(String name) {
-        super(name);
-    }
+	public DirectionalUnloaderf(String name) {
+		super(name);
+	}
 
-    public class DirectionalUnloaderBuildf extends DirectionalUnloaderBuild {
-        protected float counter;
+	public class DirectionalUnloaderBuildf extends DirectionalUnloaderBuild {
+		protected float counter;
 
-        @Override
-        public void updateTile() {
-            counter += edelta();
+		@Override
+		public void updateTile() {
+			counter += edelta();
 
-            while (counter >= speed) {
-                unloadTimer = speed;
-                super.updateTile();
-                counter -= speed;
-            }
-        }
-    }
+			while (counter >= speed) {
+				unloadTimer = speed;
+				super.updateTile();
+				counter -= speed;
+			}
+		}
+	}
 }

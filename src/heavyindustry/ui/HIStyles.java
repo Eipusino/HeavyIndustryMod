@@ -19,7 +19,7 @@ public final class HIStyles {
 			buttonCenter, buttonCenterDown, buttonCenterOver, buttonCenterDisabled,
 			buttonRight, buttonRightOver, buttonRightDown,
 			paneBottom;
-    public static TextFieldStyle scriptArea;
+	public static TextFieldStyle scriptArea;
 	public static ButtonStyle right;
 	public static TextButtonStyle round, toggleCentert;
 	public static ImageButtonStyle
@@ -34,7 +34,7 @@ public final class HIStyles {
 			centeri;
 
 	public static HoldImageButtonStyle
-            defaultHoldi,
+			defaultHoldi,
 			modHoldImageStyle,
 
 			tuHoldImageStyle,
@@ -44,7 +44,7 @@ public final class HIStyles {
 	private HIStyles() {}
 
 	public static void init() {
-        //drawable
+		//drawable
 		buttonLeft = modDrawable("button-left");
 		buttonLeftDown = modDrawable("button-left-down");
 		buttonLeftOver = modDrawable("button-left-over");
@@ -56,16 +56,16 @@ public final class HIStyles {
 		buttonRightDown = modDrawable("button-right-down");
 		buttonRightOver = modDrawable("button-right-over");
 		paneBottom = modDrawable("pane-bottom");
-        //style
-        modImageStyle = new ImageButtonStyle(Styles.logici) {{
-            down = Styles.flatDown;
-            over = Styles.flatOver;
-            imageDisabledColor = Color.gray;
-            imageUpColor = Color.white;
-        }};
-        defaultHoldi = new HoldImageButtonStyle(Styles.defaulti);
-        Core.scene.addStyle(HoldImageButtonStyle.class, defaultHoldi);
-        modHoldImageStyle = new HoldImageButtonStyle(modImageStyle);
+		//style
+		modImageStyle = new ImageButtonStyle(Styles.logici) {{
+			down = Styles.flatDown;
+			over = Styles.flatOver;
+			imageDisabledColor = Color.gray;
+			imageUpColor = Color.white;
+		}};
+		defaultHoldi = new HoldImageButtonStyle(Styles.defaulti);
+		Core.scene.addStyle(HoldImageButtonStyle.class, defaultHoldi);
+		modHoldImageStyle = new HoldImageButtonStyle(modImageStyle);
 		//style-2
 		clearToggle = new ImageButtonStyle() {{
 			down = Styles.flatDown;
@@ -73,13 +73,13 @@ public final class HIStyles {
 			up = Styles.black;
 			over = Styles.flatOver;
 		}};
-        //style-3
-        scriptArea = new TextFieldStyle() {{
-            font = HIFonts.inconsoiata;
-            fontColor = Color.white;
-            selection = Tex.selection;
-            cursor = Tex.cursor;
-        }};
+		//style-3
+		scriptArea = new TextFieldStyle() {{
+			font = HIFonts.inconsoiata;
+			fontColor = Color.white;
+			selection = Tex.selection;
+			cursor = Tex.cursor;
+		}};
 		right = new ButtonStyle(Styles.defaultb) {{
 			up = buttonRight;
 			down = buttonRightDown;

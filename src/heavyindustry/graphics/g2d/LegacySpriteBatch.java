@@ -50,7 +50,7 @@ public abstract class LegacySpriteBatch extends LegacyBatch {
 	 * The defaultShader specifies the shader to use. Note that the names for uniforms for this default shader are different than
 	 * the ones expect for shaders set with {@link #setShader(Shader)}.
 	 *
-	 * @param size          The max number of sprites in a single batch. Max of 8191.
+	 * @param size		  The max number of sprites in a single batch. Max of 8191.
 	 * @param defaultShader The default shader to use. This is not owned by the SpriteBatch and must be disposed separately.
 	 */
 	public LegacySpriteBatch(int size, Shader defaultShader) {

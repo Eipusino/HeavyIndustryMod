@@ -5,10 +5,10 @@ import mindustry.world.meta.*;
 import static mindustry.Vars.*;
 
 public final class HIBuildVisibility {
-    public static BuildVisibility
-            campaignOrSandboxOnly = new BuildVisibility(() -> state == null || state.isCampaign() || state.rules.infiniteResources),
-            techDsAvailable = new BuildVisibility(() -> state == null || state.rules.infiniteResources || player == null);
+	public static BuildVisibility
+			campaignOrSandboxOnly = new BuildVisibility(() -> state == null || state.isCampaign() || state.rules.infiniteResources),
+			techDsAvailable = new BuildVisibility(() -> state == null || state.rules.infiniteResources || player == null);
 
-    /** Don't let anyone instantiate this class. */
-    private HIBuildVisibility() {}
+	/** Don't let anyone instantiate this class. */
+	private HIBuildVisibility() {}
 }

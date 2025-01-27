@@ -10,26 +10,26 @@ import heavyindustry.graphics.g3d.render.*;
  * Interface for models.
  **/
 public interface Model extends Disposable {
-    /**
-     * Render model.
-     *
-     * @param renderer renderer that's renders this model
-     **/
-    void render(Renderer3D renderer);
+	/**
+	 * Render model.
+	 *
+	 * @param renderer renderer that's renders this model
+	 **/
+	void render(Renderer3D renderer);
 
-    /** Clone this models. */
-    Model cloneModel();
+	/** Clone this models. */
+	Model cloneModel();
 
 
-    Shader getShader();
+	Shader getShader();
 
-    void setShader(Shader shader);
+	void setShader(Shader shader);
 
-    Mat3D getTransformation();
+	Mat3D getTransformation();
 
-    void setTransformation(Mat3D transformation);
+	void setTransformation(Mat3D transformation);
 
-    Vec3 getTranslation();
+	Vec3 getTranslation();
 
-    void setTranslation(Vec3 translation);
+	void setTranslation(Vec3 translation);
 }

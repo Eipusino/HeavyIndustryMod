@@ -7,9 +7,8 @@ import arc.util.*;
 import mindustry.entities.units.*;
 import mindustry.graphics.*;
 import mindustry.world.*;
-import mindustry.world.blocks.distribution.*;
 
-public class DuctNode extends Duct {
+public class DuctNode extends TubeDuct {
 	public int chainLimit = 2;
 	public TextureRegion topRegion;
 
@@ -41,7 +40,7 @@ public class DuctNode extends Duct {
 		return new TextureRegion[]{region};
 	}
 
-	public class DuctNodeBuild extends DuctBuild {
+	public class DuctNodeBuild extends TubeDuctBuild {
 		public int chainCount, lastChainCount;
 
 		@Override

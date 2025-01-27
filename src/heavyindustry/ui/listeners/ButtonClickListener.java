@@ -9,17 +9,17 @@ import arc.scene.ui.*;
  * {@link Button} uses abstract implementation
  */
 public class ButtonClickListener extends ClickListener {
-    public Button buttonObject;
+	public Button buttonObject;
 
-    public ButtonClickListener(Button button) {
-        buttonObject = button;
-    }
+	public ButtonClickListener(Button button) {
+		buttonObject = button;
+	}
 
-    @Override
-    public void clicked(InputEvent event, float x, float y) {
-        if (buttonObject.isDisabled()) return;
-        buttonObject.setProgrammaticChangeEvents(true);
-        buttonObject.setChecked(!buttonObject.isChecked());
-        buttonObject.setProgrammaticChangeEvents(false);
-    }
+	@Override
+	public void clicked(InputEvent event, float x, float y) {
+		if (buttonObject.isDisabled()) return;
+		buttonObject.setProgrammaticChangeEvents(true);
+		buttonObject.setChecked(!buttonObject.isChecked());
+		buttonObject.setProgrammaticChangeEvents(false);
+	}
 }

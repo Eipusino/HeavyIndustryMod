@@ -13,94 +13,94 @@ import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 
 public class ChainBulletType extends BulletType {
-    protected static final Seq<ChainBulletType> all = new Seq<>();
+	protected static final Seq<ChainBulletType> all = new Seq<>();
 
-    protected static final Seq<Position> points = new Seq<>();
-    protected static final Vec2 tmpVec = new Vec2();
+	protected static final Seq<Position> points = new Seq<>();
+	protected static final Vec2 tmpVec = new Vec2();
 
-    public int maxHit = 12;
-    public float chainRange = 200f;
-    public float length = 200f;
-    public float thick = 2f;
-    public int boltNum = 2;
-    public boolean quietShoot = false;
-    public Cons2<Position, Position> effectController = (f, t) -> {
-        PositionLightning.createEffect(f, t, hitColor, boltNum, thick);
-    };
+	public int maxHit = 12;
+	public float chainRange = 200f;
+	public float length = 200f;
+	public float thick = 2f;
+	public int boltNum = 2;
+	public boolean quietShoot = false;
+	public Cons2<Position, Position> effectController = (f, t) -> {
+		PositionLightning.createEffect(f, t, hitColor, boltNum, thick);
+	};
 
-    public ChainBulletType(float damage) {
-        super(0.01f, damage);
-        despawnEffect = Fx.none;
-        instantDisappear = true;
+	public ChainBulletType(float damage) {
+		super(0.01f, damage);
+		despawnEffect = Fx.none;
+		instantDisappear = true;
 
-        all.add(this);
-    }
+		all.add(this);
+	}
 
-    @Override
-    public void init() {
-        super.init();
+	@Override
+	public void init() {
+		super.init();
 
-        drawSize = Math.max(drawSize, (length + chainRange) * 2f);
-    }
+		drawSize = Math.max(drawSize, (length + chainRange) * 2f);
+	}
 
-    @Override
-    protected float calculateRange() {
-        if (rangeOverride > 0) return rangeOverride;
-        else return chainRange + length;
-    }
+	@Override
+	protected float calculateRange() {
+		if (rangeOverride > 0) return rangeOverride;
+		else return chainRange + length;
+	}
 
-    @Override
-    public void init(Bullet b) {
-        Position target = Damage.linecast(b, b.x, b.y, b.rotation(), length);
-        if (target == null) target = tmpVec.trns(b.rotation(), length).add(b);
+	@Override
+	public void init(Bullet b) {
+		Position target = Damage.linecast(b, b.x, b.y, b.rotation(), length);
+		if (target == null) target = tmpVec.trns(b.rotation(), length).add(b);
 
-        Position confirm = target;
+		Position confirm = target;
 
-        Units.nearbyEnemies(b.team, Tmp.r1.setSize(chainRange).setCenter(confirm.getX(), confirm.getY()), u -> {
-            if (u.checkTarget(collidesAir, collidesGround) && u.targetable(b.team)) points.add(u);
-        });
+		Units.nearbyEnemies(b.team, Tmp.r1.setSize(chainRange).setCenter(confirm.getX(), confirm.getY()), u -> {
+			if (u.checkTarget(collidesAir, collidesGround) && u.targetable(b.team)) points.add(u);
+		});
 
-        if (collidesGround) {
-            Vars.indexer.eachBlock(null, confirm.getX(), confirm.getY(), chainRange, t -> t.team != b.team, points::add);
-        }
+		if (collidesGround) {
+			Vars.indexer.eachBlock(null, confirm.getX(), confirm.getY(), chainRange, t -> t.team != b.team, points::add);
+		}
 
-        if (!quietShoot || !points.isEmpty()) {
-            Utils.shuffle(points);
-            points.truncate(maxHit);
-            points.insert(0, b);
-            points.insert(1, target);
+		if (!quietShoot || !points.isEmpty()) {
+			Utils.shuffle(points);
+			points.truncate(maxHit);
+			points.insert(0, b);
+			points.insert(1, target);
 
-            for (int i = 1; i < points.size; i++) {
-                Position from = points.get(i - 1), to = points.get(i);
-                Position sureTarget = PositionLightning.findInterceptedPoint(from, to, b.team);
-                effectController.get(from, sureTarget);
+			for (int i = 1; i < points.size; i++) {
+				Position from = points.get(i - 1), to = points.get(i);
+				Position sureTarget = PositionLightning.findInterceptedPoint(from, to, b.team);
+				effectController.get(from, sureTarget);
 
-                lightningType.create(b, sureTarget.getX(), sureTarget.getY(), 0).damage(damage);
-                hitEffect.at(sureTarget.getX(), sureTarget.getY(), hitColor);
+				lightningType.create(b, sureTarget.getX(), sureTarget.getY(), 0).damage(damage);
+				hitEffect.at(sureTarget.getX(), sureTarget.getY(), hitColor);
 
-                if (sureTarget instanceof Unit unit) unit.apply(status, statusDuration);
+				if (sureTarget instanceof Unit unit) unit.apply(status, statusDuration);
 
-                if (sureTarget != to) break;
-            }
-        }
+				if (sureTarget != to) break;
+			}
+		}
 
-        points.clear();
-        b.remove();
-        b.vel.setZero();
-    }
+		points.clear();
+		b.remove();
+		b.vel.setZero();
+	}
 
-    @Override
-    public void hit(Bullet b, float x, float y) {}
+	@Override
+	public void hit(Bullet b, float x, float y) {}
 
-    @Override
-    public void hit(Bullet b) {}
+	@Override
+	public void hit(Bullet b) {}
 
-    @Override
-    public void despawned(Bullet b) {}
+	@Override
+	public void despawned(Bullet b) {}
 
-    @Override
-    public void drawLight(Bullet b) {}
+	@Override
+	public void drawLight(Bullet b) {}
 
-    @Override
-    public void handlePierce(Bullet b, float initialHealth, float x, float y) {}
+	@Override
+	public void handlePierce(Bullet b, float initialHealth, float x, float y) {}
 }

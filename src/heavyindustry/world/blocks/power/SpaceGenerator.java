@@ -19,190 +19,191 @@ import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class SpaceGenerator extends PowerGenerator {
-    public int space = 3;
-    public Color validColor = Pal.accent;
-    public Color invalidColor = Pal.remove;
+	public int space = 3;
+	public Color validColor = Pal.accent;
+	public Color invalidColor = Pal.remove;
 
-    public boolean blockedOnlySolid = false;
-    public boolean haveBasicPowerOutput = true;
-    public Attribute attribute;
-    public Color attributeColor = Pal.accent;
-    public Color negativeAttributeColor = Pal.accent;
+	public boolean blockedOnlySolid = false;
+	public boolean haveBasicPowerOutput = true;
+	public Attribute attribute;
+	public Color attributeColor = Pal.accent;
+	public Color negativeAttributeColor = Pal.accent;
 
-    public float efficiencyScale = 1f;
-    public boolean display = true;
-    public Effect outputEffect = Fx.none;
-    public float outputTimer = 30;
-    public Effect tileEffect = Fx.none;
-    public float tileTimer = 30;
+	public float efficiencyScale = 1f;
+	public boolean display = true;
+	public Effect outputEffect = Fx.none;
+	public float outputTimer = 30;
+	public Effect tileEffect = Fx.none;
+	public float tileTimer = 30;
 
-    protected int edgeSpace;
+	protected int edgeSpace;
 
-    public SpaceGenerator(String name) {
-        super(name);
-        flags = EnumSet.of(BlockFlag.generator);
-        envEnabled = Env.any;
+	public SpaceGenerator(String name) {
+		super(name);
+		flags = EnumSet.of(BlockFlag.generator);
+		envEnabled = Env.any;
 
-        powerProduction = 5f / 60f;
-    }
+		powerProduction = 5f / 60f;
+	}
 
-    @Override
-    public void init() {
-        super.init();
-        edgeSpace = space;
-        space = space + size / 2;
-    }
+	@Override
+	public void init() {
+		super.init();
+		edgeSpace = space;
+		space = space + size / 2;
+	}
 
-    public void setStats() {
-        super.setStats();
-        stats.remove(generationType);
-        stats.add(generationType, powerProduction * 60f, StatUnit.powerSecond);
-        if (haveBasicPowerOutput)
-            stats.add(Stat.tiles, HIStatValues.colorString(validColor, bundle.get("stat.hi-valid")));
-        stats.add(Stat.tiles, HIStatValues.colorString(invalidColor, bundle.get("stat.hi-invalid")));
-        if (attribute != null) {
-            stats.add(Stat.tiles, HIStatValues.colorString(attributeColor, bundle.get("stat.hi-attribute")));
-            if (negativeAttributeColor != attributeColor)
-                stats.add(Stat.tiles, HIStatValues.colorString(negativeAttributeColor, bundle.get("stat.hi-negative-attribute")));
-            stats.add(haveBasicPowerOutput ? Stat.affinities : Stat.tiles, attribute, true, efficiencyScale, !display);
-        }
-        stats.add(Stat.range, edgeSpace, StatUnit.blocks);
-    }
+	public void setStats() {
+		super.setStats();
+		stats.remove(generationType);
+		stats.add(generationType, powerProduction * 60f, StatUnit.powerSecond);
+		if (haveBasicPowerOutput)
+			stats.add(Stat.tiles, HIStatValues.colorString(validColor, bundle.get("stat.hi-valid")));
+		stats.add(Stat.tiles, HIStatValues.colorString(invalidColor, bundle.get("stat.hi-invalid")));
+		if (attribute != null) {
+			stats.add(Stat.tiles, HIStatValues.colorString(attributeColor, bundle.get("stat.hi-attribute")));
+			if (negativeAttributeColor != attributeColor)
+				stats.add(Stat.tiles, HIStatValues.colorString(negativeAttributeColor, bundle.get("stat.hi-negative-attribute")));
+			stats.add(haveBasicPowerOutput ? Stat.affinities : Stat.tiles, attribute, true, efficiencyScale, !display);
+		}
+		stats.add(Stat.range, edgeSpace, StatUnit.blocks);
+	}
 
-    public void setBars() {
-        super.setBars();
-        if (hasPower && outputsPower) {
-            addBar("power", (SpaceGeneratorBuild tile) -> new Bar(() ->
-                    bundle.format("bar.poweroutput", Strings.fixed(tile.getPowerProduction() * 60f * tile.timeScale(), 1)),
-                    () -> Pal.powerBar,
-                    () -> tile.productionEfficiency));
-        }
-    }
+	public void setBars() {
+		super.setBars();
+		if (hasPower && outputsPower) {
+			addBar("power", (SpaceGeneratorBuild tile) -> new Bar(() ->
+					bundle.format("bar.poweroutput", Strings.fixed(tile.getPowerProduction() * 60f * tile.timeScale(), 1)),
+					() -> Pal.powerBar,
+					() -> tile.productionEfficiency)
+			);
+		}
+	}
 
-    @Override
-    public void drawPlace(int x, int y, int rotation, boolean valid) {
-        super.drawPlace(x, y, rotation, valid);
-        x *= tilesize;
-        y *= tilesize;
+	@Override
+	public void drawPlace(int x, int y, int rotation, boolean valid) {
+		super.drawPlace(x, y, rotation, valid);
+		x *= tilesize;
+		y *= tilesize;
 
-        Drawf.dashSquare(valid ? Pal.accent : Pal.remove, x, y, (space + (size % 2) / 2f) * tilesize * 2);
-    }
+		Drawf.dashSquare(valid ? Pal.accent : Pal.remove, x, y, (space + (size % 2) / 2f) * tilesize * 2);
+	}
 
-    public class SpaceGeneratorBuild extends GeneratorBuild {
-        public Seq<Tile> tiles = new Seq<>();
-        public Seq<Tile> solids = new Seq<>();
-        public int tileNum = 0;
-        public transient Interval timer = new Interval(6);
+	public class SpaceGeneratorBuild extends GeneratorBuild {
+		public Seq<Tile> tiles = new Seq<>();
+		public Seq<Tile> solids = new Seq<>();
+		public int tileNum = 0;
+		public transient Interval timer = new Interval(6);
 
-        protected float totalProgress;
+		public float totalProgress;
 
-        @Override
-        public void updateTile() {
-            totalProgress += warmup() * delta();
+		@Override
+		public void updateTile() {
+			totalProgress += warmup() * delta();
 
-            if (timer.get(20)) {
-                tileNum = tileEmp();
-            }
+			if (timer.get(20)) {
+				tileNum = tileEmp();
+			}
 
-            if (tileNum > 0) productionEfficiency = Mathf.lerpDelta(productionEfficiency, 1, 0.02f);
-            else productionEfficiency = Mathf.lerpDelta(productionEfficiency, 0, 0.02f);
+			if (tileNum > 0) productionEfficiency = Mathf.lerpDelta(productionEfficiency, 1, 0.02f);
+			else productionEfficiency = Mathf.lerpDelta(productionEfficiency, 0, 0.02f);
 
-            if (Mathf.equal(productionEfficiency, 1f, 0.001f)) {
-                productionEfficiency = 1f;
-            }
+			if (Mathf.equal(productionEfficiency, 1f, 0.001f)) {
+				productionEfficiency = 1f;
+			}
 
-            if (productionEfficiency > 0.05f) {
-                if (outputEffect != Fx.none) {
-                    if (timer.get(2, outputTimer)) {
-                        outputEffect.at(this);
-                    }
-                }
-                if (tileEffect != Fx.none && tiles.any()) {
-                    if (timer.get(3, tileTimer)) {
-                        int i = Mathf.random(tiles.size - 1);
-                        Tile t = tiles.get(i);
-                        if (t != null) tileEffect.at(t);
-                    }
-                }
-            }
-        }
+			if (productionEfficiency > 0.05f) {
+				if (outputEffect != Fx.none) {
+					if (timer.get(2, outputTimer)) {
+						outputEffect.at(this);
+					}
+				}
+				if (tileEffect != Fx.none && tiles.any()) {
+					if (timer.get(3, tileTimer)) {
+						int i = Mathf.random(tiles.size - 1);
+						Tile t = tiles.get(i);
+						if (t != null) tileEffect.at(t);
+					}
+				}
+			}
+		}
 
-        @Override
-        public float getPowerProduction() {
-            if (attribute == null) return productionEfficiency * powerProduction * tileNum;
-            float sum = 0;
-            for (int i = 0; i < tiles.size; i++) {
-                Tile t = tiles.get(i);
-                if (t != null) sum += (1 + t.floor().attributes.get(attribute) * efficiencyScale + attribute.env());
-            }
-            return productionEfficiency * powerProduction * sum;
-        }
+		@Override
+		public float getPowerProduction() {
+			if (attribute == null) return productionEfficiency * powerProduction * tileNum;
+			float sum = 0;
+			for (int i = 0; i < tiles.size; i++) {
+				Tile t = tiles.get(i);
+				if (t != null) sum += (1 + t.floor().attributes.get(attribute) * efficiencyScale + attribute.env());
+			}
+			return productionEfficiency * powerProduction * sum;
+		}
 
-        private int tileEmp() {
-            solids.clear();
+		private int tileEmp() {
+			solids.clear();
 
-            int tr = space;
+			int tr = space;
 
-            int tx = World.toTile(x), ty = World.toTile(y);
-            for (int x = -tr; x <= tr - (size % 2 == 0 ? 1 : 0); x++) {
-                for (int y = -tr; y <= tr - (size % 2 == 0 ? 1 : 0); y++) {
-                    Tile other = world.tile(x + tx, y + ty);
-                    if (other != null) {
-                        tiles.addUnique(other);
-                        if ((blockedOnlySolid && other.block().solid) || (!blockedOnlySolid && other.block() != Blocks.air))
-                            solids.addUnique(other);
-                    }
-                }
-            }
+			int tx = World.toTile(x), ty = World.toTile(y);
+			for (int x = -tr; x <= tr - (size % 2 == 0 ? 1 : 0); x++) {
+				for (int y = -tr; y <= tr - (size % 2 == 0 ? 1 : 0); y++) {
+					Tile other = world.tile(x + tx, y + ty);
+					if (other != null) {
+						tiles.addUnique(other);
+						if ((blockedOnlySolid && other.block().solid) || (!blockedOnlySolid && other.block() != Blocks.air))
+							solids.addUnique(other);
+					}
+				}
+			}
 
-            tiles.removeAll(t -> solids.contains(t) || (!haveBasicPowerOutput && attribute != null && t.floor().attributes.get(attribute) == 0));
+			tiles.removeAll(t -> solids.contains(t) || (!haveBasicPowerOutput && attribute != null && t.floor().attributes.get(attribute) == 0));
 
-            return tiles.size;
-        }
+			return tiles.size;
+		}
 
-        @Override
-        public void drawSelect() {
-            super.drawSelect();
+		@Override
+		public void drawSelect() {
+			super.drawSelect();
 
-            Drawf.dashSquare(Pal.accent, x, y, (space + (size % 2) / 2f) * tilesize * 2);
+			Drawf.dashSquare(Pal.accent, x, y, (space + (size % 2) / 2f) * tilesize * 2);
 
-            Draw.color(invalidColor);
-            Draw.z(Layer.plans + 0.1f);
-            Draw.alpha(0.4f);
+			Draw.color(invalidColor);
+			Draw.z(Layer.plans + 0.1f);
+			Draw.alpha(0.4f);
 
-            for (int i = 0; i < solids.size; i++) {
-                Tile t = solids.get(i);
-                if (t != null) {
-                    Fill.square(t.worldx(), t.worldy(), tilesize / 2f);
-                }
-            }
+			for (int i = 0; i < solids.size; i++) {
+				Tile t = solids.get(i);
+				if (t != null) {
+					Fill.square(t.worldx(), t.worldy(), tilesize / 2f);
+				}
+			}
 
-            for (int i = 0; i < tiles.size; i++) {
-                Tile t = tiles.get(i);
-                if (t != null) {
-                    if (attribute != null && t.floor().attributes.get(attribute) != 0) {
-                        if (t.floor().attributes.get(attribute) > 0) Draw.color(attributeColor);
-                        else Draw.color(negativeAttributeColor);
-                    } else Draw.color(validColor);
-                    Draw.z(Layer.plans + 0.1f);
-                    Draw.alpha(0.4f);
-                    Fill.square(t.worldx(), t.worldy(), tilesize / 2f);
-                }
-            }
-            Draw.reset();
-        }
+			for (int i = 0; i < tiles.size; i++) {
+				Tile t = tiles.get(i);
+				if (t != null) {
+					if (attribute != null && t.floor().attributes.get(attribute) != 0) {
+						if (t.floor().attributes.get(attribute) > 0) Draw.color(attributeColor);
+						else Draw.color(negativeAttributeColor);
+					} else Draw.color(validColor);
+					Draw.z(Layer.plans + 0.1f);
+					Draw.alpha(0.4f);
+					Fill.square(t.worldx(), t.worldy(), tilesize / 2f);
+				}
+			}
+			Draw.reset();
+		}
 
-        @Override
-        public float warmup() {
-            if (!haveBasicPowerOutput) return super.warmup();
-            int rad = size + edgeSpace * 2;
-            int num = rad * rad - size * size;
-            return productionEfficiency * tileNum / num;
-        }
+		@Override
+		public float warmup() {
+			if (!haveBasicPowerOutput) return super.warmup();
+			int rad = size + edgeSpace * 2;
+			int num = rad * rad - size * size;
+			return productionEfficiency * tileNum / num;
+		}
 
-        @Override
-        public float totalProgress() {
-            return totalProgress;
-        }
-    }
+		@Override
+		public float totalProgress() {
+			return totalProgress;
+		}
+	}
 }

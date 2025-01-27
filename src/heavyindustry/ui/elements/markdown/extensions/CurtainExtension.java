@@ -10,46 +10,46 @@ import org.commonmark.parser.*;
 import java.util.*;
 
 public class CurtainExtension implements Parser.ParserExtension, DrawRendererExtension {
-    private CurtainExtension() {}
+	private CurtainExtension() {}
 
-    public static Extension create() {
-        return new CurtainExtension();
-    }
+	public static Extension create() {
+		return new CurtainExtension();
+	}
 
-    @Override
-    public void extend(Parser.Builder parserBuilder) {
-        parserBuilder.customDelimiterProcessor(new CurtainDelimiterProcessor());
-    }
+	@Override
+	public void extend(Parser.Builder parserBuilder) {
+		parserBuilder.customDelimiterProcessor(new CurtainDelimiterProcessor());
+	}
 
-    @Override
-    public void extend(Builder rendererBuilder) {
-        rendererBuilder.nodeRendererFactory(CurtainRenderer::new);
-    }
+	@Override
+	public void extend(Builder rendererBuilder) {
+		rendererBuilder.nodeRendererFactory(CurtainRenderer::new);
+	}
 
-    private static class CurtainRenderer extends LayoutNodeRenderer {
-        public CurtainRenderer(DrawRendererContext context) {
-            super(context);
-        }
+	private static class CurtainRenderer extends LayoutNodeRenderer {
+		public CurtainRenderer(DrawRendererContext context) {
+			super(context);
+		}
 
-        @Override
-        public Set<Class<? extends Node>> getNodeTypes() {
-            return Collections.singleton(Curtain.class);
-        }
+		@Override
+		public Set<Class<? extends Node>> getNodeTypes() {
+			return Collections.singleton(Curtain.class);
+		}
 
-        @Override
-        public void render(Node node) {
-            Markdown.MarkdownStyle style = context.element.getStyle();
-            context.lastText = null;
-            float begin = context.rendOff;
-            context.rendOff += style.curtain.getLeftWidth();
+		@Override
+		public void render(Node node) {
+			Markdown.MarkdownStyle style = context.element.getStyle();
+			context.lastText = null;
+			float begin = context.rendOff;
+			context.rendOff += style.curtain.getLeftWidth();
 
-            visitChildren(node);
+			visitChildren(node);
 
-            context.rendOff += style.curtain.getRightWidth();
-            context.draw(DrawCurtain.get(context.element, style.curtain, begin, context.lastText.offy,
-                    context.lastText.width + style.curtain.getLeftWidth() + style.curtain.getRightWidth(),
-                    context.lastText.height + style.curtain.getTopHeight() + style.curtain.getBottomHeight()
-            ));
-        }
-    }
+			context.rendOff += style.curtain.getRightWidth();
+			context.draw(DrawCurtain.get(context.element, style.curtain, begin, context.lastText.offy,
+					context.lastText.width + style.curtain.getLeftWidth() + style.curtain.getRightWidth(),
+					context.lastText.height + style.curtain.getTopHeight() + style.curtain.getBottomHeight()
+			));
+		}
+	}
 }

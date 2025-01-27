@@ -12,7 +12,7 @@ import java.io.*;
 import java.util.*;
 
 public final class IconLoader {
-    private IconLoader() {}
+	private IconLoader() {}
 
 	public static void loadIcons(Fi fi) {
 		if (!fi.exists()) return;

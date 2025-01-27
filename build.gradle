@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 buildscript {
     ext {
         //windows sucks
@@ -34,8 +32,13 @@ repositories {
 }
 
 java {
-    targetCompatibility = JavaVersion.VERSION_16
-    sourceCompatibility = JavaVersion.VERSION_16
+    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = "UTF-8"
+    options.compilerArgs.addAll(['--release', '8'])
 }
 
 dependencies {
@@ -47,14 +50,8 @@ dependencies {
     implementation "org.commonmark:commonmark-ext-ins:$commonmarkVersion"
 
     compileOnly files("libs/mindustry-25514.jar")
-}
 
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = "UTF-8"
-}
-
-tasks.withType(KotlinCompile).configureEach {
-    kotlinOptions.jvmTarget = 16
+    annotationProcessor files("libs/jabel.jar")
 }
 
 task jarAndroid {

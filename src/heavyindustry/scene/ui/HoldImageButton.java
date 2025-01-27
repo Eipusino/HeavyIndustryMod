@@ -17,8 +17,8 @@ public class HoldImageButton extends ImageButton {
 	private Runnable held = () -> {};
 	private boolean heldAct;
 	private HoldImageButtonStyle style;
-    private boolean repeat = false;
-    private boolean hasReset;
+	private boolean repeat = false;
+	private boolean hasReset;
 
 	public HoldImageButton() {
 		this(Core.scene.getStyle(HoldImageButtonStyle.class));

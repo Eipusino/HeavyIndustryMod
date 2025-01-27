@@ -5,38 +5,38 @@ import mindustry.*;
 import mindustry.gen.*;
 
 public interface LinkGroupc extends Linkablec {
-    default Seq<Building> linkBuilds() {
-        Seq<Building> buildings = new Seq<>();
-        for (int pos : linkGroup().shrink()) {
-            Building b = Vars.world.build(pos);
-            if (linkValid(b)) buildings.add(b);
-            else linkGroup().removeValue(pos);
-        }
-        return buildings;
-    }
+	default Seq<Building> linkBuilds() {
+		Seq<Building> buildings = new Seq<>();
+		for (int pos : linkGroup().shrink()) {
+			Building b = Vars.world.build(pos);
+			if (linkValid(b)) buildings.add(b);
+			else linkGroup().removeValue(pos);
+		}
+		return buildings;
+	}
 
-    IntSeq linkGroup();
+	IntSeq linkGroup();
 
-    void linkGroup(IntSeq seq);
+	void linkGroup(IntSeq seq);
 
-    @Override
-    default void drawLink() {
-        drawLink(linkBuilds());
-    }
+	@Override
+	default void drawLink() {
+		drawLink(linkBuilds());
+	}
 
-    @Override
-    default boolean linkValid() {
-        for (Building b : linkBuilds()) if (!linkValid(b)) return false;
-        return true;
-    }
+	@Override
+	default boolean linkValid() {
+		for (Building b : linkBuilds()) if (!linkValid(b)) return false;
+		return true;
+	}
 
-    @Override
-    default int linkPos() {
-        return pos();
-    }
+	@Override
+	default int linkPos() {
+		return pos();
+	}
 
-    @Override
-    default Building link() {
-        return as();
-    }
+	@Override
+	default Building link() {
+		return as();
+	}
 }

@@ -6,16 +6,16 @@ import arc.files.*;
  * Object data container.
  **/
 public class OBJ {
-    public final Fi file;
+	public final Fi file;
 
-    public Fi mtlFile;
-    public String mtlName;
+	public Fi mtlFile;
+	public String mtlName;
 
-    public float[] vertices;
+	public float[] vertices;
 
-    public String name;
+	public String name;
 
-    public OBJ(Fi file) {
-        this.file = file;
-    }
+	public OBJ(Fi file) {
+		this.file = file;
+	}
 }
