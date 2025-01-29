@@ -23,9 +23,9 @@ public class AcceleratingWeapon extends Weapon {
 
 	@Override
 	public void update(Unit unit, WeaponMount mount) {
-		if (!(mount instanceof AcceleratingMount aMount)) return;
+		if (!(mount instanceof AcceleratingMount amo)) return;
 
-		float r = ((aMount.accel / reload) * unit.reloadMultiplier * Time.delta) * (reload - minReload);
+		float r = ((amo.accel / reload) * unit.reloadMultiplier * Time.delta) * (reload - minReload);
 		if (!alternate || otherSide == -1) {
 			mount.reload -= r;
 		} else {
@@ -33,18 +33,18 @@ public class AcceleratingWeapon extends Weapon {
 			other.reload -= r / 2f;
 			mount.reload -= r / 2f;
 			if (other instanceof AcceleratingMount aM) {
-				float accel = unit.isShooting() && unit.canShoot() ? Math.max(aM.accel, aMount.accel) : Math.min(aM.accel, aMount.accel);
-				float wTime = unit.isShooting() && unit.canShoot() ? Math.max(aM.waitTime, aMount.waitTime) : Math.min(aM.waitTime, aMount.waitTime);
+				float accel = unit.isShooting() && unit.canShoot() ? Math.max(aM.accel, amo.accel) : Math.min(aM.accel, amo.accel);
+				float wTime = unit.isShooting() && unit.canShoot() ? Math.max(aM.waitTime, amo.waitTime) : Math.min(aM.waitTime, amo.waitTime);
 				aM.accel = accel;
 				aM.waitTime = wTime;
-				aMount.accel = accel;
-				aMount.waitTime = wTime;
+				amo.accel = accel;
+				amo.waitTime = wTime;
 			}
 		}
-		if (aMount.waitTime <= 0f) {
-			aMount.accel = Math.max(0f, aMount.accel - (minReload / accelCooldownTime) * Time.delta);
+		if (amo.waitTime <= 0f) {
+			amo.accel = Math.max(0f, amo.accel - (minReload / accelCooldownTime) * Time.delta);
 		} else {
-			aMount.waitTime -= Time.delta;
+			amo.waitTime -= Time.delta;
 		}
 		super.update(unit, mount);
 	}

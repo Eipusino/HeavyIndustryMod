@@ -6,6 +6,7 @@ import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.util.*;
 import heavyindustry.core.*;
+import heavyindustry.graphics.*;
 import heavyindustry.util.*;
 import mindustry.content.*;
 import mindustry.entities.*;
@@ -41,7 +42,7 @@ public final class HIStatusEffects {
 			effect = HIFx.glowParticle;
 		}};
 		regenerating = new LoadStatusEffect("regenerating") {{
-			color = Color.valueOf("97ffa8");
+			color = HIPal.regenerating;
 			damage = -4;
 			effectChance = 0.3f;
 			effect = HIFx.glowParticle;

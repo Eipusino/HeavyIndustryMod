@@ -5,6 +5,8 @@ import mindustry.*;
 
 import java.lang.reflect.*;
 
+import static heavyindustry.util.Collect.*;
+
 /**
  * More expansion of Java reflection functionality.
  *
@@ -16,7 +18,12 @@ public final class Reflectf {
 	/** Don't let anyone instantiate this class. */
 	private Reflectf() {}
 
-	public static <T> T get(Object object, String type, String name) {
+	/**
+	 * @param object object from which the represented field's value is to be extracted
+	 * @param type The standard name of the class where the field is located.
+	 * @param name the name of the field
+	 */
+	public static <T> T gel(Object object, String type, String name) {
 		try {
 			Field field = object.getClass().getClassLoader().loadClass(type).getDeclaredField(name);
 			field.setAccessible(true);
@@ -26,13 +33,103 @@ public final class Reflectf {
 		}
 	}
 
-	public static void set(Object object, String type, String name, Object value) {
+	public static void sel(Object object, String type, String name, Object value) {
 		try {
 			Field field = object.getClass().getClassLoader().loadClass(type).getDeclaredField(name);
 			field.setAccessible(true);
 			field.set(object, value);
 		} catch (Exception e) {
 			Log.err(e);
+		}
+	}
+
+	public static <T> T ged(Class<?> type, String name, T def) {
+		return ged(type, null, name, def);
+	}
+
+	public static <T> T ged(Object object, String name, T def) {
+		return ged(object.getClass(), object, name, def);
+	}
+
+	/**
+	 * Reflect to retrieve fields without throwing exceptions and return default value.
+	 *
+	 * @param type the class from which to obtain the field
+	 * @param object object from which the represented field's value is to be extracted
+	 * @param name the name of the field
+	 * @param def default value. If there is an abnormality in the reflection, return this parameter.
+	 */
+	public static <T> T ged(Class<?> type, Object object, String name, T def) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return (T) field.get(object);
+		} catch (Exception e) {
+			return def;
+		}
+	}
+
+	public static Field getField(Class<?> type, String name) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return field;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static boolean getBool(Object object, String name) {
+		return getBool(object.getClass(), object, name);
+	}
+
+	public static boolean getBool(Class<?> type, String name) {
+		return getBool(type, null, name);
+	}
+
+	public static boolean getBool(Class<?> type, Object object, String name) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return field.getBoolean(object);
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public static int getInt(Object object, String name) {
+		return getInt(object.getClass(), object, name);
+	}
+
+	public static int getInt(Class<?> type, String name) {
+		return getInt(type, null, name);
+	}
+
+	public static int getInt(Class<?> type, Object object, String name) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return field.getInt(object);
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+
+	public static float getFloat(Object object, String name) {
+		return getFloat(object.getClass(), object, name);
+	}
+
+	public static float getFloat(Class<?> type, String name) {
+		return getFloat(type, null, name);
+	}
+
+	public static float getFloat(Class<?> type, Object object, String name) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return field.getFloat(object);
+		} catch (Exception e) {
+			return 0f;
 		}
 	}
 
@@ -86,7 +183,7 @@ public final class Reflectf {
 	}
 
 	public static <T> T newInst(Class<T> type) {
-		return newInst(type, Structs.arr(), Structs.arr());
+		return newInst(type, arrayOf(), arrayOf());
 	}
 
 	/** Reflectively instantiates a type without throwing exceptions. */
@@ -108,7 +205,7 @@ public final class Reflectf {
 		}
 	}
 
-	public static <T> Class<T> forClassDef(String name) {
+	public static <T> Class<T> mainClass(String name) {
 		return forClass(name, true, Vars.mods.mainLoader());
 	}
 

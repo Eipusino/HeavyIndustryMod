@@ -7,7 +7,7 @@ import arc.struct.*
 import arc.util.io.*
 import mindustry.Vars.*
 import mindustry.content.*
-import mindustry.game.*
+import mindustry.game.EventType.*
 import mindustry.gen.*
 import mindustry.graphics.*
 import mindustry.type.*
@@ -23,7 +23,7 @@ open class Collector(name: String) : Block(name) {
 		update = true
 		destructible = true
 
-		Events.on(EventType.UnitDestroyEvent::class.java) { event ->
+		Events.on(UnitDestroyEvent::class.java) { event ->
 			val u = event.unit
 			Geometry.findClosest(u.x, u.y, existing)?.let {
 				if (u.within(it, range)) {
@@ -34,7 +34,7 @@ open class Collector(name: String) : Block(name) {
 			}
 		}
 
-		Events.on(EventType.ResetEvent::class.java) {
+		Events.on(ResetEvent::class.java) {
 			existing.clear()
 		}
 	}

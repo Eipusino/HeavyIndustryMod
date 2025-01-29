@@ -57,9 +57,9 @@ public abstract class BaseEntity implements Drawc {
 	}
 
 	@Override
-	public void set(float x, float y) {
-		this.x = x;
-		this.y = y;
+	public void set(float v1, float v2) {
+		x = v1;
+		y = v2;
 	}
 
 	@Override
@@ -68,8 +68,8 @@ public abstract class BaseEntity implements Drawc {
 	}
 
 	@Override
-	public void trns(float x, float y) {
-		set(this.x + x, this.y + y);
+	public void trns(float v1, float v2) {
+		set(x + v1, y + v2);
 	}
 
 	@Override
@@ -123,8 +123,8 @@ public abstract class BaseEntity implements Drawc {
 	}
 
 	@Override
-	public void x(float x) {
-		this.x = x;
+	public void x(float v) {
+		x = v;
 	}
 
 	@Override
@@ -133,8 +133,8 @@ public abstract class BaseEntity implements Drawc {
 	}
 
 	@Override
-	public void y(float y) {
-		this.y = y;
+	public void y(float v) {
+		y = v;
 	}
 
 	@Override
@@ -176,8 +176,8 @@ public abstract class BaseEntity implements Drawc {
 	}
 
 	@Override
-	public void id(int id) {
-		this.id = id;
+	public void id(int v) {
+		id = v;
 	}
 
 	@Override

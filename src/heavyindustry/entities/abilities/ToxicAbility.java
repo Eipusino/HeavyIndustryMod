@@ -16,14 +16,14 @@ public class ToxicAbility extends Ability {
 
 	public StatusEffect status = StatusEffects.corroded;
 
-	public float i, j = 60f;
+	protected float i, j = 60f;
 
 	public ToxicAbility() {}
 
-	public ToxicAbility(float a, float b, float c) {
-		damage = a;
-		reload = b;
-		range = c;
+	public ToxicAbility(float dmg, float rel, float ran) {
+		damage = dmg;
+		reload = rel;
+		range = ran;
 	}
 
 	@Override

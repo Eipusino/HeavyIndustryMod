@@ -36,7 +36,7 @@ public final class EntityRegister {
 				}
 			}
 
-			Log.warn("In case you used up all 256 class ids; use the same code for ~200 units you idiot.");
+			throw new IllegalStateException("In case you used up all 256 class ids; use the same code for ~200 units you idiot.");
 		}
 	}
 

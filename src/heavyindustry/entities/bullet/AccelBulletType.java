@@ -14,11 +14,11 @@ public class AccelBulletType extends BasicBulletType {
 		super();
 	}
 
-	public AccelBulletType(float velocityBegin, float velocityIncrease, Interp accelInterp, float damage, String bulletSprite) {
-		super(1, damage, bulletSprite);
-		this.velocityBegin = velocityBegin;
-		this.velocityIncrease = velocityIncrease;
-		this.accelInterp = accelInterp;
+	public AccelBulletType(float velBeg, float velInc, Interp accInt, float dmg, String bulSpr) {
+		super(1, dmg, bulSpr);
+		velocityBegin = velBeg;
+		velocityIncrease = velInc;
+		accelInterp = accInt;
 	}
 
 	public AccelBulletType(float speed, float damage, String bulletSprite) {

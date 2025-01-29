@@ -1,4 +1,4 @@
-package heavyindustry.type.formloaders;
+package heavyindustry.type.form;
 
 import arc.graphics.*;
 import heavyindustry.struct.*;

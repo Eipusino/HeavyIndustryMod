@@ -56,17 +56,17 @@ public class JavelinAbility extends Ability {
 
 	protected float timer;
 
-	public JavelinAbility(float damage, float damageInterval, float radius, String suffix) {
-		this.damage = damage;
-		this.damageInterval = damageInterval;
-		this.radius = radius;
-		this.suffix = suffix;
+	public JavelinAbility(float amg, float dmgInt, float rad, String suf) {
+		damage = amg;
+		damageInterval = dmgInt;
+		radius = rad;
+		suffix = suf;
 	}
 
-	public JavelinAbility(float damage, float damageInterval, float radius) {
-		this.damage = damage;
-		this.damageInterval = damageInterval;
-		this.radius = radius;
+	public JavelinAbility(float dmg, float dmgInt, float rad) {
+		damage = dmg;
+		damageInterval = dmgInt;
+		radius = rad;
 	}
 
 	public JavelinAbility() {}

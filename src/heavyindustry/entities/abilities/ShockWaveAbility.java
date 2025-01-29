@@ -48,11 +48,11 @@ public class ShockWaveAbility extends Ability {
 
 	public ShockWaveAbility() {}
 
-	public ShockWaveAbility(float reload, float range, float damage, Color hitColor) {
-		this.reload = reload;
-		this.range = range;
-		this.damage = damage;
-		this.hitColor = hitColor;
+	public ShockWaveAbility(float rel, float ran, float dmg, Color col) {
+		reload = rel;
+		range = ran;
+		damage = dmg;
+		hitColor = col;
 	}
 
 	public ShockWaveAbility status(Object... values) {

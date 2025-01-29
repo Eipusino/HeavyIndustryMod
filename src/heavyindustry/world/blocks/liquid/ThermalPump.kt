@@ -40,9 +40,7 @@ open class ThermalPump(name: String) : LiquidBlock(name) {
 		stats.add(Stat.output, 60f * pumpAmount * size * size, StatUnit.liquidSecond)
 	}
 
-	protected open fun canPump(tile: Tile?): Boolean {
-		return tile != null && tile.floor().liquidDrop != null
-	}
+	protected open fun canPump(tile: Tile?): Boolean = tile != null && tile.floor().liquidDrop != null
 
 	override fun drawPlace(x: Int, y: Int, rotation: Int, valid: Boolean) {
 		super.drawPlace(x, y, rotation, valid)
@@ -90,9 +88,7 @@ open class ThermalPump(name: String) : LiquidBlock(name) {
 		drawer.load(this)
 	}
 
-	override fun icons(): Array<TextureRegion> {
-		return drawer.finalIcons(this)
-	}
+	override fun icons(): Array<TextureRegion> = drawer.finalIcons(this)
 
 	override fun canPlaceOn(tile: Tile, team: Team, rotation: Int): Boolean {
 		if (isMultiblock) {
@@ -156,9 +152,7 @@ open class ThermalPump(name: String) : LiquidBlock(name) {
 			}
 		}
 
-		override fun shouldConsume(): Boolean {
-			return liquidDrop != null && liquids.get(liquidDrop) < liquidCapacity - 0.01f && enabled
-		}
+		override fun shouldConsume(): Boolean = liquidDrop != null && liquids.get(liquidDrop) < liquidCapacity - 0.01f && enabled
 
 		override fun updateTile() {
 			if (efficiency > 0 && liquidDrop != null) {
@@ -184,17 +178,10 @@ open class ThermalPump(name: String) : LiquidBlock(name) {
 			}
 		}
 
+		override fun warmup(): Float = warmup
 
-		override fun warmup(): Float {
-			return warmup
-		}
+		override fun progress(): Float = Mathf.clamp(consTimer / consumeTime)
 
-		override fun progress(): Float {
-			return Mathf.clamp(consTimer / consumeTime)
-		}
-
-		override fun totalProgress(): Float {
-			return totalProgress
-		}
+		override fun totalProgress(): Float = totalProgress
 	}
 }

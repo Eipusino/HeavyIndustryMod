@@ -22,13 +22,13 @@ public class HealAbility extends RepairFieldAbility {
 		this(1f, 1f, 1f);
 	}
 
-	public HealAbility(float amount, float reload, float range, Color applyColor) {
-		this(amount, reload, range);
-		this.applyColor = applyColor;
+	public HealAbility(float amo, float rel, float ran, Color col) {
+		this(amo, rel, ran);
+		applyColor = col;
 	}
 
-	public HealAbility(float amount, float reload, float range) {
-		super(amount, reload, range);
+	public HealAbility(float amo, float rel, float ran) {
+		super(amo, rel, ran);
 
 		healEffect = HIFx.healReceiveCircle;
 		activeEffect = HIFx.healSendCircle;

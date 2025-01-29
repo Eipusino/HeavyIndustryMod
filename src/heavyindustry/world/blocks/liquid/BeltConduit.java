@@ -14,9 +14,6 @@ import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 
 public class BeltConduit extends Conduit {
-	public static final float rotatePad = 6, hpad = rotatePad / 2f / 4f;
-	public static final float[][] rotateOffsets = {{hpad, hpad}, {-hpad, hpad}, {-hpad, -hpad}, {hpad, -hpad}};
-
 	public boolean fireproof = false;
 	public TextureRegion[] topParts, botParts;
 

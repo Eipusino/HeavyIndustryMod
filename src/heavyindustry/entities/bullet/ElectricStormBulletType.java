@@ -20,11 +20,11 @@ public class ElectricStormBulletType extends BulletType {
 	public int maxTarget;
 	public Sound sound = Sounds.spark;
 
-	public ElectricStormBulletType(float damage, Color color, int maxTarget) {
-		this.damage = damage;
-		splashDamage = damage * 10;
-		this.color = color;
-		this.maxTarget = maxTarget;
+	public ElectricStormBulletType(float dmg, Color col, int maxTar) {
+		damage = dmg;
+		splashDamage = dmg * 10;
+		color = col;
+		maxTarget = maxTar;
 		keepVelocity = absorbable = hittable = collides = collidesAir = collidesGround = false;
 		despawnEffect = hitEffect = Fx.none;
 		despawnSound = Sounds.explosionbig;

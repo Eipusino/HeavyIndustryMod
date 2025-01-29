@@ -59,10 +59,39 @@ public final class Utils {
 
 	public static final Rand rand = new Rand(), rand2 = new Rand();
 
-	public static final int[][] joinsChkDirs = {
+	public static final float rotatePad = 6;
+	public static final float rotateHpad = 0.75f;
+
+	public static final float itemSpace = 0.4f;
+
+	public static final float[][] rotateOffsets = new float[][]{
+			{0.75f, 0.75f}, {-0.75f, 0.75f}, {-0.75f, -0.75f}, {0.75f, -0.75f}
+	};
+
+	public static final byte[][] ductArrows = {
+			{1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1},
+			{1, 1, 1, 2, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+			{1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 0, 1, 1, 1},
+			{1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 2, 1, 1, 1}
+	};
+	public static final byte[][] blendIndices = {
+			{0, 0}, {0, 0}, {0, 1}, {1, 3},
+			{0, 0}, {0, 0}, {1, 2}, {2, 3},
+			{0, 1}, {1, 0}, {0, 1}, {2, 0},
+			{1, 1}, {2, 1}, {2, 2}, {3, 0}
+	};
+	public static final byte[][] joinsChkDirs = {
 			{-1, 1}, {0, 1}, {1, 1},
 			{-1, 0}, /*{0, 0}, */{1, 0},
-			{-1, -1}, {0, -1}, {1, -1},
+			{-1, -1}, {0, -1}, {1, -1}
+	};
+	public static final byte[][] tubeTiles = {
+			{},
+			{0, 2}, {1, 3}, {0, 1},
+			{0, 2}, {0, 2}, {1, 2},
+			{0, 1, 2}, {1, 3}, {0, 3},
+			{1, 3}, {0, 1, 3}, {2, 3},
+			{0, 2, 3}, {1, 2, 3}, {0, 1, 2, 3}
 	};
 
 	public static final byte[] joinsMap = {//not sure how to format this.
@@ -104,7 +133,7 @@ public final class Utils {
 	};
 
 	/** Contains all packages within heavy industry. */
-	public static final List<String> packages = Collect.listOf(
+	public static final String[] packages = {
 			"heavyindustry",
 			"heavyindustry.ai",
 			"heavyindustry.audio",
@@ -141,6 +170,9 @@ public final class Utils {
 			"heavyindustry.scene.ui",
 			"heavyindustry.struct",
 			"heavyindustry.type",
+			"heavyindustry.type.ammo",
+			"heavyindustry.type.form",
+			"heavyindustry.type.pixmap",
 			"heavyindustry.type.unit",
 			"heavyindustry.type.weapons",
 			"heavyindustry.type.weather",
@@ -180,7 +212,7 @@ public final class Utils {
 			"heavyindustry.world.consumers",
 			"heavyindustry.world.draw",
 			"heavyindustry.world.meta"
-	);
+	};
 
 	public static final Seq<UnlockableContent> donorItems = new Seq<>();
 	public static final Seq<UnlockableContent> developerItems = new Seq<>();
@@ -200,8 +232,6 @@ public final class Utils {
 	private static final BasicPool<Hit> hPool = new BasicPool<>(Hit::new);
 	private static final IntSeq amounts = new IntSeq();
 	private static final String[] byteUnit = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"};
-	private static final String donor = bundle.get("hi-donor-item");
-	private static final String developer = bundle.get("hi-developer-item");
 	private static Tile tileParma;
 	private static Posc result;
 	private static float cDist;
@@ -209,10 +239,12 @@ public final class Utils {
 	private static Unit tmpUnit;
 
 	/** Don't let anyone instantiate this class. */
-	private Utils() {
-	}
+	private Utils() {}
 
 	public static void loadItems() {
+		String donor = bundle.get("hi-donor-item");
+		String developer = bundle.get("hi-developer-item");
+
 		for (UnlockableContent c : donorItems) {
 			c.description = (c.description == null ? donor : c.description + "\n" + donor);
 		}
@@ -337,20 +369,22 @@ public final class Utils {
 	}
 
 	public static int[] sort(int[] arr) {
-		for (int i = 1; i < arr.length; i++) {
-			int tmp = arr[i];
+		int[] copy = arr.clone();
+
+		for (int i = 1; i < copy.length; i++) {
+			int tmp = copy[i];
 
 			int j = i;
-			while (j > 0 && tmp < arr[j - 1]) {
-				arr[j] = arr[j - 1];
+			while (j > 0 && tmp < copy[j - 1]) {
+				copy[j] = copy[j - 1];
 				j--;
 			}
 
 			if (j != i) {
-				arr[j] = tmp;
+				copy[j] = tmp;
 			}
 		}
-		return arr;
+		return copy;
 	}
 
 	public static void shellSort(int[] arr) {
@@ -374,6 +408,27 @@ public final class Utils {
 			for (int i = 0; i < pixmap.width; i++) {
 				cons.get(pixmap.get(i, j), i + pixmap.width * (pixmap.height - 1 - j));
 			}
+		}
+	}
+
+	public static int getByIndex(IntSet intSet, int index) {
+		if (index < 0 || index >= intSet.size) {
+			throw new IndexOutOfBoundsException();
+		}
+
+		int[] value = {0};
+		int[] counter = {0};
+		intSet.each((item) -> {
+			if (counter[0] == index) {
+				value[0] = item;
+			}
+			counter[0]++;
+		});
+
+		if (counter[0] > index) {
+			return value[0];
+		} else {
+			throw new IllegalArgumentException();
 		}
 	}
 

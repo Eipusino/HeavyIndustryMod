@@ -16,6 +16,15 @@ import mindustry.graphics.*;
 import mindustry.ui.*;
 import mindustry.world.meta.*;
 
+/**
+ * Base mirror shield ability
+ * <p>abstract class, Not directly usable.
+ *
+ * @see CollideBlockerAbility
+ * @see MirrorFieldAbility
+ * @see MirrorArmorAbility
+ * @since 1.0.6
+ */
 public abstract class BaseMirrorShieldAbility extends Ability implements CollideBlockerAbility {
 	public Effect breakEffect = HIFx.mirrorShieldBreak;
 	public Effect reflectEffect = Fx.none;

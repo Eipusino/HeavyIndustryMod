@@ -2,7 +2,6 @@ package heavyindustry.ui.elements.markdown.highlighter.defaults;
 
 import heavyindustry.ui.elements.markdown.highlighter.*;
 
-import java.util.*;
 import java.util.regex.*;
 
 import static heavyindustry.ui.elements.markdown.highlighter.Scopec.Default.*;

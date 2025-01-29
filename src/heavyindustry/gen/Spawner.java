@@ -56,14 +56,14 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 		return drawSize + 500;
 	}
 
-	public Spawner init(UnitType type, Team team, Position pos, float rotation, float lifetime) {
-		this.type = type;
-		this.lifetime = lifetime;
-		this.rotation = rotation;
-		this.team = team;
-		this.drawSize = type.hitSize;
+	public Spawner init(UnitType v1, Team v2, Position v3, float v4, float v5) {
+		type = v1;
+		lifetime = v5;
+		rotation = v4;
+		team = v2;
+		drawSize = v1.hitSize;
 		trailWidth = Mathf.clamp(drawSize / 15f, 1.25f, 4f);
-		set(pos);
+		set(v3);
 
 		return this;
 	}
@@ -128,7 +128,9 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 					trail.update(Tmp.v1.x, Tmp.v1.y, (fout(0.25f) * 2 + 1) / 3);
 				}
 			}
-		} else surviveTime += Time.delta;
+		} else {
+			surviveTime += Time.delta;
+		}
 
 		if (surviveTime > surviveLifetime) remove();
 

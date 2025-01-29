@@ -2600,9 +2600,9 @@ public final class HIUnitTypes {
 			engineSize = 9f;
 			speed = 0.37f;
 			hitSize = 48f;
-			health = 62500f;
+			health = 52500f;
 			buildSpeed = 4f;
-			armor = 86f;
+			armor = 53f;
 			envDisabled = Env.none;
 			ammoType = new PowerAmmoType(3000f);
 			weapons.add(new Weapon(name("tiger-cannon")) {{
@@ -2808,8 +2808,8 @@ public final class HIUnitTypes {
 			tank();
 			constructor = TankUnitf::create;
 			damageMultiplier = 0.5f;
-			health = 62500f;
-			armor = 115f;
+			health = 52500f;
+			armor = 79f;
 			rotateSpeed = 1f;
 			speed = 0.66f;
 			envDisabled = Env.none;
@@ -2985,7 +2985,7 @@ public final class HIUnitTypes {
 		vast = new EnergyUnitType("vast") {{
 			envDisabled = Env.none;
 			constructor = EnergyUnit::create;
-			damageMultiplier = 0.2f;
+			damageMultiplier = 0.3f;
 			clipSize = 260f;
 			engineLayer = Layer.effect;
 			engineOffset = 5f;
@@ -2999,7 +2999,7 @@ public final class HIUnitTypes {
 			speed = 1.5f;
 			accel = 0.07f;
 			drag = 0.075f;
-			health = 42500f;
+			health = 22500f;
 			itemCapacity = 0;
 			rotateSpeed = 6;
 			engineSize = 8f;

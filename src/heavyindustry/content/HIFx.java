@@ -22,6 +22,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
+import mindustry.world.blocks.payloads.*;
 
 import java.util.*;
 
@@ -78,8 +79,8 @@ public final class HIFx {
 						Draw.rect(rg, dx, dy, w * 1.2f * e.finpow(), h * 1.2f * e.finpow());
 						Draw.z(z);
 					}
-        		}
-    		}),
+				}
+			}),
 			shieldDefense = new Effect(20, e -> {
 				Draw.color(e.color);
 				Lines.stroke(e.fslope() * 2.5f);
@@ -2106,7 +2107,21 @@ public final class HIFx {
 					Draw.alpha(1);
 					Lines.poly(e.x + x + offX, e.y + y + offY, 6, 10);
 				});
-			}).followParent(true);
+			}).followParent(true),
+			payloadManufacture = new Effect(60f, e -> {
+				if (!(e.data instanceof Payload payload)) return;
+
+				Draw.alpha(e.fout());
+				Draw.mixcol(Pal.accent, 1f);
+				Draw.rect(payload.icon(), payload.x(), payload.y(), e.rotation);
+			}),
+			payloadManufactureFail = new Effect(60f, e -> {
+				if (!(e.data instanceof Payload payload)) return;
+
+				Draw.alpha(e.fout());
+				Draw.mixcol(Pal.remove, 1f);
+				Draw.rect(payload.icon(), payload.x(), payload.y(), e.rotation);
+			});
 
 	/** Don't let anyone instantiate this class. */
 	private HIFx() {}

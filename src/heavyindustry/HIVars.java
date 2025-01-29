@@ -4,6 +4,7 @@ import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.graphics.g2d.TextureAtlas.*;
+import arc.util.*;
 import heavyindustry.core.*;
 import heavyindustry.files.*;
 import heavyindustry.input.*;

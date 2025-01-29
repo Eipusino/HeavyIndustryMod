@@ -13,29 +13,29 @@ public class CustomShape {
 	BitWordList blocks;
 	int centerX, centerY;
 
-	public CustomShape(int width, int height, int[] blocks) {
-		this(width, height, mapArrayToList(width, height, blocks));
+	public CustomShape(int wid, int hei, int[] blo) {
+		this(wid, hei, mapArrayToList(wid, hei, blo));
 	}
 
-	public CustomShape(int width, int height, BitWordList blocks) {
-		this.blocks = blocks;
-		this.width = width;
-		this.height = height;
+	public CustomShape(int wid, int hei, BitWordList blo) {
+		blocks = blo;
+		width = wid;
+		height = hei;
 		findCenter();
-		int nonNothingAmount = 0;
-		int otherBlocksAmount = 0;
-		for (int i = 0; i < blocks.initialWordsAmount; i++) {
-			BlockType block = BlockType.all[blocks.get(i)];
+		int nonNotAmo = 0;
+		int othBloAmo = 0;
+		for (int i = 0; i < blo.initialWordsAmount; i++) {
+			BlockType block = BlockType.all[blo.get(i)];
 			if (block.isSimpleBlock()) {
-				nonNothingAmount++;
-				otherBlocksAmount++;
+				nonNotAmo++;
+				othBloAmo++;
 			}
 			if (block.isCenterBlock()) {
-				nonNothingAmount++;
+				nonNotAmo++;
 			}
 		}
-		this.nonNothingAmount = nonNothingAmount;
-		this.otherBlocksAmount = otherBlocksAmount;
+		nonNothingAmount = nonNotAmo;
+		otherBlocksAmount = othBloAmo;
 	}
 
 	private static BitWordList mapArrayToList(int width, int height, int[] blocks) {
@@ -55,7 +55,6 @@ public class CustomShape {
 	}
 
 	private void findCenter() {
-
 		int ordinal = BlockType.anchorBlock.ordinal();
 		for (int i = 0; i < blocks.initialWordsAmount; i++) {
 			if (blocks.get(i) == ordinal) {
@@ -113,9 +112,9 @@ public class CustomShape {
 		public final boolean solid;
 		public final boolean center;
 
-		BlockType(boolean solid, boolean center) {
-			this.solid = solid;
-			this.center = center;
+		BlockType(boolean sol, boolean cen) {
+			solid = sol;
+			center = cen;
 		}
 
 		public boolean isVoid() {

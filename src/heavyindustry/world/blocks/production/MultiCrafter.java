@@ -36,8 +36,6 @@ import static mindustry.Vars.*;
  *
  * @author Eipusino
  * @apiNote Example usage {@link heavyindustry.content.HIBlocks#ironcladCompressor }.
- * @see CraftPlan craftPlan type
- * @see heavyindustry.world.blocks.heat.HeatMultiCrafter heat version
  * @since 1.0.6
  */
 public class MultiCrafter extends Block {

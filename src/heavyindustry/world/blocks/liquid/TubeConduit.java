@@ -10,14 +10,6 @@ import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 
 public class TubeConduit extends BeltConduit {
-	public static final float[][] rotateOffsets = new float[][]{{0.75f, 0.75f}, {-0.75f, 0.75f}, {-0.75f, -0.75f}, {0.75f, -0.75f}};
-	public static final byte[][] ductArrows = {
-			{1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1},
-			{1, 1, 1, 2, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-			{1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 0, 1, 1, 1},
-			{1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 2, 1, 1, 1}
-	};
-
 	public TextureRegion[][] regions;
 
 	public TubeConduit(String name) {

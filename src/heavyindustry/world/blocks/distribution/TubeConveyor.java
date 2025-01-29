@@ -19,16 +19,6 @@ import static mindustry.Vars.*;
  * @author Eipusino
  */
 public class TubeConveyor extends BeltConveyor {
-	public static final float itemSpace = 0.4f;
-	public static final byte[][] tiles = {
-			{},
-			{0, 2}, {1, 3}, {0, 1},
-			{0, 2}, {0, 2}, {1, 2},
-			{0, 1, 2}, {1, 3}, {0, 3},
-			{1, 3}, {0, 1, 3}, {2, 3},
-			{0, 2, 3}, {1, 2, 3}, {0, 1, 2, 3}
-	};
-
 	public TextureRegion[][] topRegion;
 	public TextureRegion[] capRegion;
 	public TextureRegion editorRegion;
@@ -56,7 +46,7 @@ public class TubeConveyor extends BeltConveyor {
 
 		if (bits == null) return;
 
-		TextureRegion conveyor = conveyorAtlas[0][bits[0]];
+		TextureRegion conveyor = regions[0][bits[0]];
 		Draw.rect(conveyor, plan.drawx(), plan.drawy(), conveyor.width * bits[1] * conveyor.scl(), conveyor.height * bits[2] * conveyor.scl(), plan.rotation * 90);
 
 		BuildPlan[] directionals = new BuildPlan[4];
@@ -83,7 +73,7 @@ public class TubeConveyor extends BeltConveyor {
 		}
 		mask |= (1 << plan.rotation);
 		Draw.rect(topRegion[0][mask], plan.drawx(), plan.drawy(), 0);
-		for (int i : tiles[mask]) {
+		for (byte i : tubeTiles[mask]) {
 			if (directionals[i] == null || (directionals[i].block instanceof Conveyor ? (directionals[i].rotation + 2) % 4 == plan.rotation : ((plan.rotation == i && !directionals[i].block.acceptsItems) || (plan.rotation != i && !directionals[i].block.outputsItems())))) {
 				int id = i == 0 || i == 3 ? 1 : 0;
 				Draw.rect(capRegion[id], plan.drawx(), plan.drawy(), i == 0 || i == 2 ? 0 : -90);
@@ -115,17 +105,17 @@ public class TubeConveyor extends BeltConveyor {
 					int dir = rotation - i;
 					float rot = i == 0 ? rotation * 90 : (dir) * 90;
 
-					Draw.rect(sliced(conveyorAtlas[frame][0], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * tilesize * 0.75f, y + Geometry.d4y(dir) * tilesize * 0.75f, rot);
+					Draw.rect(sliced(regions[frame][0], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * tilesize * 0.75f, y + Geometry.d4y(dir) * tilesize * 0.75f, rot);
 					Draw.rect(sliced(topRegion[0][1], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * tilesize * 0.75f, y + Geometry.d4y(dir) * tilesize * 0.75f, rot);
 				}
 			}
 
 			Draw.z(Layer.block - 0.25f);
 
-			Draw.rect(conveyorAtlas[frame][blendbits], x, y, tilesize * blendsclx, tilesize * blendscly, rotation * 90);
+			Draw.rect(regions[frame][blendbits], x, y, tilesize * blendsclx, tilesize * blendscly, rotation * 90);
 
 			Draw.z(Layer.block - 0.2f);
-			float layer = Layer.block - 0.2f, wwidth = world.unitWidth(), wheight = world.unitHeight(), scaling = 0.01f;
+			float layer = Layer.block - 0.2f, width = world.unitWidth(), height = world.unitHeight(), scaling = 0.01f;
 
 			for (int i = 0; i < len; i++) {
 				Item item = ids[i];
@@ -135,14 +125,14 @@ public class TubeConveyor extends BeltConveyor {
 				float ix = (x + Tmp.v1.x * ys[i] + Tmp.v2.x), iy = (y + Tmp.v1.y * ys[i] + Tmp.v2.y);
 
 				//keep draw position deterministic.
-				Draw.z(layer + (ix / wwidth + iy / wheight) * scaling);
+				Draw.z(layer + (ix / width + iy / height) * scaling);
 				Draw.rect(item.fullIcon, ix, iy, itemSize, itemSize);
 			}
 
 			Draw.z(Layer.block - 0.15f);
 			Draw.rect(topRegion[0][tiling], x, y, 0);
-			byte[] placementID = tiles[tiling];
-			for (byte i : placementID) {
+			byte[] placementId = tubeTiles[tiling];
+			for (byte i : placementId) {
 				if (isEnd(i)) {
 					int id = i == 0 || i == 3 ? 1 : 0;
 					Draw.rect(capRegion[id], x, y, i == 0 || i == 2 ? 0 : -90);

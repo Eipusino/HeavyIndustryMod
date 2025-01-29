@@ -46,12 +46,12 @@ public class BatteryAbility extends Ability {
 		this(10000f, 100f, 100f, 0f, 0f);
 	}
 
-	public BatteryAbility(float capacity, float shieldRange, float range, float px, float py) {
-		this.capacity = capacity;
-		this.shieldRange = shieldRange;
-		this.range = range;
-		this.px = px;
-		this.py = py;
+	public BatteryAbility(float cap, float rheRan, float ran, float x, float y) {
+		capacity = cap;
+		shieldRange = rheRan;
+		range = ran;
+		px = x;
+		py = y;
 	}
 
 	@Override

@@ -3,6 +3,8 @@
 package heavyindustry.util
 
 import arc.func.*
+import arc.graphics.*
+import arc.math.geom.*
 import arc.struct.*
 import heavyindustry.*
 import mindustry.*
@@ -108,7 +110,7 @@ fun research(children: UnlockableContent?, content: UnlockableContent?) = resear
  * I don't know if this is usable, JS is really abstract.
  *
  * @param name Standard class names, such as `heavyindustry.util.UtilsKt`
- * @return js-xor native java class
+ * @return js native java class
  */
 fun getClass(name: String): NativeJavaClass = NativeJavaClass(Vars.mods.getScripts().scope, URLClassLoader(arrayOf(HIVars.internalTree.file.file().toURI().toURL()), Vars.mods.mainLoader()).loadClass(name))
 
@@ -120,3 +122,26 @@ fun <T> randomFromArray(array: Array<T>): T = array[random(array.size.toFloat())
 
 /** The `java.lang.String#repeat(int)` method cannot be used on Android, so only Kotlin's method can be used. */
 fun repeat(key: String, n: Int): String = key.repeat(n)
+
+fun <K, V> checkKey(map: ObjectMap<K, V>, key: K, def: Prov<V>): V {
+	if (!map.containsKey(key)) map.put(key, def.get())
+	return map.get(key)
+}
+
+fun item(items: Array<ItemStack>, item: Item): Int {
+	for (stack in items)
+		if (stack.item === item) return stack.amount
+	return 0
+}
+
+fun liquid(liquids: Array<LiquidStack>, liquid: Liquid): Float {
+	for (stack in liquids)
+		if (stack.liquid === liquid) return stack.amount
+	return 0f
+}
+
+fun inZone(start: Vec2, size: Vec2, point: Vec2): Boolean = inZone(start.x, start.y, start.x + size.x, start.y + size.y, point.x, point.y)
+
+fun <T : Comparable<T>> inZone(x: T, y: T, x1: T, y1: T, px: T, py: T): Boolean = x < px && y < py && x1 > px && y1 > py
+
+typealias Vec4 = Color

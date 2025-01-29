@@ -10,7 +10,7 @@ import java.util.function.*;
 /**
  * The append variable interface is used to provide dynamic append variables for types,
  * providing operations such as {@code get}, {@code set}, {@code handle} on variables, but non-removable variables.
- * <br>(However, in fact, you can forcibly delete the variable mapping table by calling the {@link ExtraVariableComp#extra()} method,
+ * <br>(However, in fact, you can forcibly delete the variable mapping table by calling the {@link #extra()} method,
  * but this goes against the original design intention of this type.)
  *
  * @apiNote I really hate the encapsulation of raw data types, it is definitely the most disgusting design in Java.

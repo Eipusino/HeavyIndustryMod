@@ -26,7 +26,7 @@ import mindustry.world.blocks.storage.*;
 /**
  * Space extractor, directly extracting resources from remote sources.
  *
- * @author abomb4 2022-12-10 10:16:40
+ * @author abomb4
  */
 public class SpaceUnloader extends StorageBlock {
 	public static final EntityGroup<Building> suGroup = new EntityGroup<>(Building.class, false, false);
@@ -376,7 +376,7 @@ public class SpaceUnloader extends StorageBlock {
 							map.put(item.id, amount);
 							seq.add(item);
 						});
-						for (IntIntMap.Entry entry : map.entries()) {
+						for (var entry : map.entries()) {
 							int id = entry.key;
 							int amount = entry.value;
 							Item item = Vars.content.item(id);

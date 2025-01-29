@@ -422,7 +422,7 @@ public class ExtraContentParser {
 						if (!str.isString())
 							throw new SerializationException("Integer bitfield values must all be strings. Found: " + str);
 						String field = str.asString();
-						value |= Reflect.<Integer>get(Env.class, field);
+						value |= Reflectf.getInt(Env.class, field);
 					}
 
 					return (T) (Integer) value;
@@ -1353,7 +1353,7 @@ public class ExtraContentParser {
 			} catch (Exception ignored) {
 				//try to use mod class loader
 				try {
-					return Reflectf.forClass(base, true, mods.mainLoader());
+					return Reflectf.mainClass(base);
 				} catch (Exception ignore) {}
 			}
 		}

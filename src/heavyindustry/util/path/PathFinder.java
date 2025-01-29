@@ -13,17 +13,17 @@ public interface PathFinder<V> {
 	 * Retrieve the iterable object of other vertices linked to a given vertex, which should correctly provide the other vertices linked to that vertex.
 	 * <p>The element iterated from the object returned by this method is the child node connected to the point, for example:
 	 * <pre>{@code
-	 * /---\   /---\   /---\
-	 * | A |-->| B |-->| E |
-	 * \---/   \---/   \---/
-	 *  | |
-	 *  | \----n---\   /---\
-	 *  v	  | D |-->| F |
-	 * /---\   \---/   \---/
-	 * | C |	 |
-	 * \---/	 |	 /---\
-	 *		   \---->| G |
-	 *				 \---/
+	 * ┌───┐   ┌───┐   ┌───┐
+	 * │ A ├───► B ├───► E │
+	 * └┬─┬┘   └───┘   └───┘
+	 *  │ │
+	 *  │ └────▲───┐   ┌───┐
+	 *  │      │ D ├───► F │
+	 * ┌▼──┐   └─┬─┘   └───┘
+	 * │ C │     │
+	 * └───┘     │     ┌───┐
+	 *           └─────► G │
+	 *                 └───┘
 	 * }</pre>
 	 * The method for node A should be iterable for nodes B, C, and D. Similarly, B can iterate for E, and D can iterate for F and G.
 	 * <p><strong>Note:</strong>This method represents a unidirectional connection with child nodes. If two nodes are connected bidirectionally, they need to be able to iterate over each other.

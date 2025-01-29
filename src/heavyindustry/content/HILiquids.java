@@ -5,6 +5,7 @@ import arc.math.*;
 import heavyindustry.core.*;
 import heavyindustry.entities.effect.*;
 import heavyindustry.graphics.*;
+import heavyindustry.type.*;
 import mindustry.content.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
@@ -16,8 +17,11 @@ import mindustry.type.*;
  * @author Eipusino
  */
 public final class HILiquids {
+	private static final int
+			nanoFluidId = Draws.nextTaskId();
+
 	public static Liquid
-			brine, methane, nanoFluid, nitratedOil;
+			brine, methane, nanoFluid, nitratedOil, originiumFluid;
 
 	/** Don't let anyone instantiate this class. */
 	private HILiquids() {}
@@ -45,11 +49,9 @@ public final class HILiquids {
 			effect = StatusEffects.electrified;
 			coolant = true;
 		}
-			public final int taskId = Draws.nextTaskId();
-
 			@Override
 			public void drawPuddle(Puddle puddle) {
-				Draws.drawTask(taskId, puddle, HIShaders.wave, s -> {
+				Draws.drawTask(nanoFluidId, puddle, HIShaders.wave, s -> {
 					s.waveMix = Pal.heal;
 					s.mixAlpha = 0.2f + Mathf.absin(5, 0.2f);
 					s.waveScl = 0.2f;
@@ -66,6 +68,14 @@ public final class HILiquids {
 			effect = StatusEffects.tarred;
 			canStayOn.add(Liquids.water);
 			coolant = false;
+		}};
+		originiumFluid = new ExtraCellLiquid("originium-fluid", Color.black) {{
+			heatCapacity = 1.5f;
+			flammability = 0.2f;
+			explosiveness = 0.4f;
+			coolant = false;
+			spreadTargets.addAll(Liquids.neoplasm);
+			canStayOn.addAll(Liquids.water, Liquids.cryofluid, Liquids.oil, Liquids.arkycite, Liquids.neoplasm);
 		}};
 	}
 }

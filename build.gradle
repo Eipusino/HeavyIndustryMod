@@ -1,24 +1,26 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 buildscript {
-    ext {
-        //windows sucks
-        isWindows = System.getProperty("os.name").toLowerCase().contains("windows")
-        sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
-    }
+	ext {
+		//windows sucks
+		isWindows = System.getProperty("os.name").toLowerCase().contains("windows")
+		sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
+	}
 
-    repositories {
-        mavenCentral()
-    }
+	repositories {
+		mavenCentral()
+	}
 
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath files("libs/mindustry-25514.jar")
-    }
+	dependencies {
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+		classpath files("libs/mindustry-25514.jar")
+	}
 }
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
-    id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlinVersion"
-    id 'java'
+	id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
+	id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlinVersion"
+	id 'java'
 }
 
 version '1.0'
@@ -26,83 +28,88 @@ version '1.0'
 sourceSets.main.java.srcDir('src')
 
 repositories {
-    mavenCentral()
-    maven { url "https://raw.githubusercontent.com/Zelaux/MindustryRepo/master/repository" }
-    maven { url 'https://www.jitpack.io' }
+	mavenCentral()
+	maven { url "https://raw.githubusercontent.com/Zelaux/MindustryRepo/master/repository" }
+	maven { url 'https://www.jitpack.io' }
 }
 
 java {
-    targetCompatibility = JavaVersion.VERSION_1_8
-    sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_11
+	sourceCompatibility = JavaVersion.VERSION_17
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = "UTF-8"
-    options.compilerArgs.addAll(['--release', '8'])
+	options.encoding = "UTF-8"
+	options.compilerArgs.addAll(['--release', '11'])
+}
+
+tasks.withType(KotlinCompile).configureEach {
+	kotlinOptions.noJdk = false
+	kotlinOptions.jvmTarget = '11'
 }
 
 dependencies {
-    implementation "org.jetbrains:annotations:24.0.1"
-    implementation "org.tomlj:tomlj:1.1.1"
-    implementation "org.commonmark:commonmark:$commonmarkVersion"
-    implementation "org.commonmark:commonmark-ext-gfm-tables:$commonmarkVersion"
-    implementation "org.commonmark:commonmark-ext-gfm-strikethrough:$commonmarkVersion"
-    implementation "org.commonmark:commonmark-ext-ins:$commonmarkVersion"
+	implementation "org.jetbrains:annotations:24.0.1"
+	implementation "org.tomlj:tomlj:1.1.1"
+	implementation "org.commonmark:commonmark:$commonmarkVersion"
+	implementation "org.commonmark:commonmark-ext-gfm-tables:$commonmarkVersion"
+	implementation "org.commonmark:commonmark-ext-gfm-strikethrough:$commonmarkVersion"
+	implementation "org.commonmark:commonmark-ext-ins:$commonmarkVersion"
 
-    compileOnly files("libs/mindustry-25514.jar")
+	compileOnly files("libs/mindustry-25514.jar")
 
-    annotationProcessor files("libs/jabel.jar")
+	annotationProcessor files("libs/jabel.jar")
 }
 
 task jarAndroid {
-    dependsOn "jar"
+	dependsOn "jar"
 
-    doLast {
-        if (!sdkRoot || !new File(sdkRoot).exists()) throw new GradleException("No valid Android SDK found. Ensure that ANDROID_HOME is set to your Android SDK directory.");
+	doLast {
+		if (!sdkRoot || !new File(sdkRoot).exists()) throw new GradleException("No valid Android SDK found. Ensure that ANDROID_HOME is set to your Android SDK directory.");
 
-        def platformRoot = new File("$sdkRoot/platforms/").listFiles().sort().reverse().find { f -> new File(f, "android.jar").exists() }
+		def platformRoot = new File("$sdkRoot/platforms/").listFiles().sort().reverse().find { f -> new File(f, "android.jar").exists() }
 
-        if (!platformRoot) throw new GradleException("No android.jar found. Ensure that you have an Android platform installed.")
+		if (!platformRoot) throw new GradleException("No android.jar found. Ensure that you have an Android platform installed.")
 
-        //collect dependencies needed for desugaring
-        def dependencies = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File(platformRoot, "android.jar")]).collect { "--classpath $it.path" }.join(" ")
+		//collect dependencies needed for desugaring
+		def dependencies = (configurations.compileClasspath.asList() + configurations.runtimeClasspath.asList() + [new File(platformRoot, "android.jar")]).collect { "--classpath $it.path" }.join(" ")
 
-        def d8 = isWindows ? "d8.bat" : "d8"
+		def d8 = isWindows ? "d8.bat" : "d8"
 
-        //dex and desugar files - this requires d8 in your PATH
-        "$d8 $dependencies --min-api 14 --output ${project.archivesBaseName}Android.jar ${project.archivesBaseName}Desktop.jar"
-                .execute(null, new File("$buildDir/libs")).waitForProcessOutput(System.out, System.err)
-    }
+		//dex and desugar files - this requires d8 in your PATH
+		"$d8 $dependencies --min-api 14 --output ${project.archivesBaseName}Android.jar ${project.archivesBaseName}Desktop.jar"
+				.execute(null, new File("$buildDir/libs")).waitForProcessOutput(System.out, System.err)
+	}
 }
 
 jar {
-    archiveFileName = "${base.archivesBaseName}Desktop.jar"
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	archiveFileName = "${base.archivesBaseName}Desktop.jar"
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
+	from {
+		configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+	}
 
-    from(rootDir) {
-        include "mod.json"
-    }
+	from(rootDir) {
+		include "mod.json"
+	}
 
-    from("assets/") {
-        include "**"
-    }
+	from("assets/") {
+		include "**"
+	}
 }
 
 task deploy(type: Jar) {
-    dependsOn jarAndroid
-    dependsOn jar
-    archiveFileName = "${base.archivesBaseName}.jar"
+	dependsOn jarAndroid
+	dependsOn jar
+	archiveFileName = "${base.archivesBaseName}.jar"
 
-    from { [zipTree("$buildDir/libs/${project.archivesBaseName}Desktop.jar"), zipTree("$buildDir/libs/${project.archivesBaseName}Android.jar")] }
+	from { [zipTree("$buildDir/libs/${project.archivesBaseName}Desktop.jar"), zipTree("$buildDir/libs/${project.archivesBaseName}Android.jar")] }
 
-    doLast {
-        delete {
-            delete "$buildDir/libs/${project.archivesBaseName}Desktop.jar"
-            delete "$buildDir/libs/${project.archivesBaseName}Android.jar"
-        }
-    }
+	doLast {
+		delete {
+			delete "$buildDir/libs/${project.archivesBaseName}Desktop.jar"
+			delete "$buildDir/libs/${project.archivesBaseName}Android.jar"
+		}
+	}
 }

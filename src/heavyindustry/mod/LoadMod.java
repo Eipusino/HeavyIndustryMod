@@ -49,9 +49,22 @@ public final class LoadMod {
 		return Jval.read(metaFile.reader());
 	}
 
+	public static Jval getMeta(LoadedMod mod) {
+		if (mod == null) return Jval.NULL;
+		return getMeta(mod.root);
+	}
+
+	public static Jval getMeta(String modName) {
+		return getMeta(Vars.mods.getMod(modName));
+	}
+
+	public static Jval getMeta(Class<? extends Mod> type) {
+		return getMeta(Vars.mods.getMod(type));
+	}
+
 	/**
 	 * Expand the JSON/TOML parser.
-	 * <p>The parsed content is stored in the {@code h_content} folder and does not conflict with {@code toml-parser}.
+	 * <p>The parsed content is stored in the {@code hjstoc} folder and does not conflict with {@code toml-parser}.
 	 *
 	 * @author Alon
 	 * @since 1.0.6
@@ -62,8 +75,8 @@ public final class LoadMod {
 		Seq<LoadRun> runs = new Seq<>();
 
 		for (LoadedMod mod : Vars.mods.orderedMods()) {
-			if (mod.root.child("h_content").exists()) {
-				Fi contentRoot = mod.root.child("h_content");
+			if (mod.root.child("hjstoc").exists()) {
+				Fi contentRoot = mod.root.child("hjstoc");
 				for (ContentType type : ContentType.all) {
 					String lower = type.name().toLowerCase(Locale.ROOT);
 

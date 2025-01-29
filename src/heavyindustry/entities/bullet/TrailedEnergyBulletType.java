@@ -13,6 +13,7 @@ import mindustry.gen.*;
 public class TrailedEnergyBulletType extends AccelBulletType {
 	protected static final Vec2 v1 = new Vec2(), v2 = new Vec2(), v3 = new Vec2();
 	protected static final Rand rand = new Rand();
+
 	public int tracers = 2;
 	public float tracerStroke = 3F;
 	public int tracerFadeOffset = 10;
@@ -30,8 +31,13 @@ public class TrailedEnergyBulletType extends AccelBulletType {
 
 		impact = true;
 	}
+
 	public TrailedEnergyBulletType(float speed, float damage) {
 		this(speed, damage, "bullet");
+	}
+
+	public TrailedEnergyBulletType() {
+		this(1f, 1f);
 	}
 
 	@Override

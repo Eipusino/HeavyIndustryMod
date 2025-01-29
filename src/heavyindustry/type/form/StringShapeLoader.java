@@ -1,4 +1,4 @@
-package heavyindustry.type.formloaders;
+package heavyindustry.type.form;
 
 import heavyindustry.struct.*;
 import heavyindustry.struct.BitWordList.*;

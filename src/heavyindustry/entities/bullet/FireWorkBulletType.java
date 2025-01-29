@@ -29,21 +29,21 @@ public class FireWorkBulletType extends BulletType {
 
 	public @Nullable BulletType fire, textFire = null;
 
-	public FireWorkBulletType(float damage, float speed, String sprite, Color color, float rad) {
-		this.damage = damage;
-		this.speed = speed;
-		this.sprite = sprite;
-		this.color = color;
-		trailColor = color;
+	public FireWorkBulletType(float dmg, float spd, String spr, Color col, float rad) {
+		damage = dmg;
+		speed = spd;
+		sprite = spr;
+		color = col;
+		trailColor = col;
 		trailInterval = 3;
-		splashDamage = damage;
+		splashDamage = dmg;
 		splashDamageRadius = rad;
 		hitEffect = despawnEffect = new ExplosionEffect() {{
 			lifetime = 60f;
 			waveStroke = 5f;
 			waveLife = 8f;
 			waveColor = Color.white;
-			sparkColor = color;
+			sparkColor = col;
 			smokeColor = Pal.darkerGray;
 			waveRad = rad;
 			smokeSize = rad / 8f;
@@ -63,12 +63,12 @@ public class FireWorkBulletType extends BulletType {
 		fire = new ColorFireBulletType(true);
 	}
 
-	public FireWorkBulletType(float damage, float speed, Color color) {
-		this(damage, speed, name("mb-fireworks"), color, 6 * 8);
+	public FireWorkBulletType(float dmg, float spd, Color col) {
+		this(dmg, spd, name("mb-fireworks"), col, 6 * 8);
 	}
 
-	public FireWorkBulletType(float damage, float speed) {
-		this(damage, speed, name("mb-fireworks"), Color.gray, 6 * 8);
+	public FireWorkBulletType(float dmg, float spd) {
+		this(dmg, spd, name("mb-fireworks"), Color.gray, 6 * 8);
 	}
 
 	public FireWorkBulletType() {
@@ -132,12 +132,12 @@ public class FireWorkBulletType extends BulletType {
 		public boolean stop;
 		public float stopFrom = 0.3f, stopTo = 0.6f, rotSpeed = 4f, speedRod = 1f;
 
-		public ColorFireBulletType(boolean stop, float speed, float lifetime) {
-			this.stop = stop;
+		public ColorFireBulletType(boolean stp, float spd, float lif) {
+			stop = stp;
 			damage = 0;
 			collides = false;
-			this.speed = speed;
-			this.lifetime = lifetime;
+			speed = spd;
+			lifetime = lif;
 			trailWidth = 1.7f;
 			trailLength = 6;
 			hitEffect = despawnEffect = Fx.none;
@@ -189,10 +189,10 @@ public class FireWorkBulletType extends BulletType {
 		public String sprite;
 		public float width, height;
 
-		public SpriteBulletType(String sprite, float width, float height) {
-			this.sprite = sprite;
-			this.width = width;
-			this.height = height;
+		public SpriteBulletType(String spr, float wid, float hei) {
+			sprite = spr;
+			width = wid;
+			height = hei;
 			damage = 0;
 			collides = false;
 			speed = 0;

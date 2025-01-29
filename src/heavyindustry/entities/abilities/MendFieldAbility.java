@@ -22,10 +22,10 @@ public class MendFieldAbility extends Ability {
 
 	public MendFieldAbility() {}
 
-	public MendFieldAbility(float a, float b, float c) {
-		range = a;
-		reload = b;
-		healPercent = c;
+	public MendFieldAbility(float ran, float rel, float hel) {
+		range = ran;
+		reload = rel;
+		healPercent = hel;
 	}
 
 	@Override

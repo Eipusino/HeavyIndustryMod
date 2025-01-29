@@ -14,6 +14,7 @@ import mindustry.logic.*;
 import static mindustry.Vars.*;
 
 public interface Linkablec extends Buildingc, Ranged {
+	@Deprecated
 	Seq<Building> tmpSeq = new Seq<>(1);
 
 	@Override

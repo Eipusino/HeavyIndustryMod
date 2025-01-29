@@ -19,7 +19,6 @@ import mindustry.world.*;
 import mindustry.world.blocks.defense.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.blocks.distribution.*;
-import mindustry.world.blocks.environment.*;
 import mindustry.world.blocks.payloads.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.production.*;
@@ -52,7 +51,7 @@ public final class HIOverride {
 		Blocks.stone.playerUnmineable = Blocks.craters.playerUnmineable = Blocks.charr.playerUnmineable = true;
 		Blocks.sandWater.itemDrop = Blocks.darksandWater.itemDrop = Blocks.darksandTaintedWater.itemDrop = Items.sand;
 		Blocks.sandWater.playerUnmineable = Blocks.darksandWater.playerUnmineable = Blocks.darksandTaintedWater.playerUnmineable = true;
-		((Floor) Blocks.deepTaintedWater).liquidMultiplier = 1.5f;
+		Blocks.deepTaintedWater.asFloor().liquidMultiplier = 1.5f;
 		Blocks.oxidationChamber.canOverdrive = Blocks.neoplasiaReactor.canOverdrive = true;
 		Blocks.slag.attributes.set(Attribute.heat, 1f);
 		//Blocks-Environment-Erekir

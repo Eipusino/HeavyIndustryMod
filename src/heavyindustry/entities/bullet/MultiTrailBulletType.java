@@ -17,6 +17,12 @@ public class MultiTrailBulletType extends BulletType {
 	public float offset = 8;
 	public boolean offsetMove = true;
 
+	public MultiTrailBulletType() {}
+
+	public MultiTrailBulletType(float speed, float damage) {
+		super(speed, damage);
+	}
+
 	@Override
 	public void init(Bullet b) {
 		super.init(b);

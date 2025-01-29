@@ -21,10 +21,10 @@ public class CtrlMissileBulletType extends BasicBulletType {
 	public Sound loopSound = Sounds.missileTrail;
 	public float loopSoundVolume = 0.1f;
 
-	public CtrlMissileBulletType(String sprite, float width, float height) {
-		this.sprite = sprite;
-		this.width = width;
-		this.height = height;
+	public CtrlMissileBulletType(String spr, float wid, float hei) {
+		sprite = spr;
+		width = wid;
+		height = hei;
 		homingPower = 2.5f;
 		homingRange = 8 * 8;
 		trailWidth = 3;

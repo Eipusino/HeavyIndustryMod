@@ -12,8 +12,8 @@ import static mindustry.Vars.*;
 
 public class TerritoryFieldAbility extends Ability {
 	public float range;
-	public float healAm;
-	public float damageAm;
+	public float healAmount;
+	public float damageAmount;
 
 	public float reload = 60f * 1.5f;
 
@@ -26,10 +26,10 @@ public class TerritoryFieldAbility extends Ability {
 
 	public TerritoryFieldAbility() {}
 
-	public TerritoryFieldAbility(float range, float healAm, float damageAm) {
-		this.range = range;
-		this.healAm = healAm;
-		this.damageAm = damageAm;
+	public TerritoryFieldAbility(float ran, float helAmo, float dmgAmo) {
+		range = ran;
+		healAmount = helAmo;
+		damageAmount = dmgAmo;
 	}
 
 	@Override
@@ -41,13 +41,13 @@ public class TerritoryFieldAbility extends Ability {
 	public void addStats(Table t) {
 		super.addStats(t);
 		t.add(bundle.format("ability.territory-field-ability-range", range / tilesize));
-		if (healAm > 0) {
+		if (healAmount > 0) {
 			t.row();
-			t.add(bundle.format("ability.territory-field-ability-heal", healAm));
+			t.add(bundle.format("ability.territory-field-ability-heal", healAmount));
 		}
-		if (damageAm > 0) {
+		if (damageAmount > 0) {
 			t.row();
-			t.add(bundle.format("ability.territory-field-ability-damage", damageAm));
+			t.add(bundle.format("ability.territory-field-ability-damage", damageAmount));
 		}
 		if (active) {
 			t.row();
@@ -60,12 +60,12 @@ public class TerritoryFieldAbility extends Ability {
 		Units.nearby(unit.team, unit.x, unit.y, range, u -> {
 			if (u != unit) {
 				u.apply(HIStatusEffects.territoryFieldIncrease, 60);
-				if (healAm > 0 && !u.dead && u.health < u.maxHealth) u.heal((healAm / 60f) * Time.delta);
+				if (healAmount > 0 && !u.dead && u.health < u.maxHealth) u.heal((healAmount / 60f) * Time.delta);
 			}
 		});
 		Units.nearbyEnemies(unit.team, unit.x, unit.y, range, u -> {
 			u.apply(HIStatusEffects.territoryFieldSuppress, 60);
-			if (damageAm > 0 && !u.dead && u.targetable(unit.team)) u.damage((damageAm / 60f) * Time.delta);
+			if (damageAmount > 0 && !u.dead && u.targetable(unit.team)) u.damage((damageAmount / 60f) * Time.delta);
 		});
 
 		if (open) {

@@ -25,8 +25,7 @@ public class StrafeLaserBulletType extends BulletType {
 	public float sideLengthDifference = 10;
 
 	public StrafeLaserBulletType(float speed, float damage) {
-		this.damage = damage;
-		this.speed = speed;
+		super(speed, damage);
 
 		lifetime = 160f;
 

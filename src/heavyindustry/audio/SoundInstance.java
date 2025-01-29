@@ -4,8 +4,9 @@ import arc.*;
 import arc.audio.*;
 
 public class SoundInstance {
-	final Sound sound;
-	int id = -1;
+	public final Sound sound;
+
+	protected int id = -1;
 
 	public SoundInstance(Sound sound) {
 		this.sound = sound;
@@ -33,5 +34,9 @@ public class SoundInstance {
 		Core.audio.protect(id, false);
 		Core.audio.stop(id);
 		id = -1;
+	}
+
+	public int id() {
+		return id;
 	}
 }

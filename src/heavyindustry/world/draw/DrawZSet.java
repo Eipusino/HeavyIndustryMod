@@ -8,7 +8,7 @@ public class DrawZSet extends DrawBlock {
 	public float layer;
 
 	public DrawZSet(float l) {
-        layer = l;
+		layer = l;
 	}
 
 	@Override

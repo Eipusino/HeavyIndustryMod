@@ -9,8 +9,9 @@ import arc.math.geom.*;
 import arc.util.*;
 import arc.util.io.*;
 import heavyindustry.type.*;
-import heavyindustry.type.formloaders.*;
-import heavyindustry.type.formloaders.SpriteShapeLoader.ChunkProcessor.*;
+import heavyindustry.type.form.*;
+import heavyindustry.type.form.SpriteShapeLoader.ChunkProcessor.*;
+import heavyindustry.util.*;
 import mindustry.*;
 import mindustry.entities.units.*;
 import mindustry.game.EventType.*;
@@ -21,22 +22,15 @@ import mindustry.world.*;
 import mindustry.world.blocks.ConstructBlock.*;
 
 import java.lang.reflect.*;
+import java.util.*;
 
 import static mindustry.Vars.*;
 
 public class CustomShapeBlock extends Block {
-	protected static final Field blockField = ((Prov<Field>) () -> {
-		try {
-			Field field = Tile.class.getDeclaredField("block");
-			field.setAccessible(true);
-			return field;
-		} catch (NoSuchFieldException e) {
-			throw new RuntimeException(e);
-		}
-	}).get();
+	protected static final Field blockField = Reflectf.getField(Tile.class, "block");
 	protected static final TileChangeEvent tileChangeEvent = new TileChangeEvent();
 
-	protected final int[] emptySubBuildings = new int[0];
+	protected final int[] emptyInts = new int[0];
 
 	public CustomShape customShape;
 	public Vec2[] worldDrawOffsets = new Vec2[4];
@@ -147,14 +141,13 @@ public class CustomShapeBlock extends Block {
 	}
 
 	public class CustomFormBuild extends Building {
-		protected int[] subBuilding = emptySubBuildings;
+		protected int[] subBuilding = {};
 		protected int prevRotation;
 
 		@Override
 		public void update() {
 			updateRotation(super::update);
 		}
-
 
 		public void innerDraw() {
 			Vec2 worldDrawOffset = worldDrawOffsets[rotation];
@@ -206,7 +199,7 @@ public class CustomShapeBlock extends Block {
 				tileChangeEvent.set(null);
 			}
 			removingSubs = false;
-			subBuilding = emptySubBuildings;
+			subBuilding = emptyInts;
 		}
 
 		protected boolean updateRotation(Runnable callback) {
@@ -240,7 +233,7 @@ public class CustomShapeBlock extends Block {
 
 		protected void initSubBuilds() {
 			Log.info("initSubBuilds @", tile);
-			if (subBuilding != emptySubBuildings) {
+			if (!Arrays.equals(subBuilding, emptyInts)) {
 				removeSub();
 			}
 			subBuilding = new int[customShape.otherBlocksAmount];
@@ -268,7 +261,7 @@ public class CustomShapeBlock extends Block {
 			super.read(read, revision);
 			prevRotation = read.i();
 			int size = read.i();
-			if (subBuilding != emptySubBuildings) {
+			if (!Arrays.equals(subBuilding, emptyInts)) {
 				removeSub();
 			}
 			subBuilding = new int[size];

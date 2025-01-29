@@ -412,7 +412,7 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 							map.put(item.id, amount);
 							seq.add(item);
 						});
-						for (IntIntMap.Entry entry : map.entries()) {
+						for (var entry : map.entries()) {
 							int id = entry.key;
 							int amount = entry.value;
 							Item item = Vars.content.item(id);

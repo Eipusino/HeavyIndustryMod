@@ -104,9 +104,7 @@ open class IndestructibleUnitFactory(name: String) : UnitFactory(name) {
 			super.drawPayload()
 		}
 
-		override fun config(): IntSeq {
-			return IntSeq.with(currentPlan, targetTeam.id)
-		}
+		override fun config(): IntSeq = IntSeq.with(currentPlan, targetTeam.id)
 
 		override fun write(write: Writes) {
 			super.write(write)

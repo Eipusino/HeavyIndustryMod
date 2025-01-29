@@ -8,6 +8,7 @@ import arc.graphics.Texture.*;
 import arc.graphics.gl.*;
 import arc.struct.*;
 import arc.util.*;
+import heavyindustry.util.*;
 
 import static arc.Core.*;
 
@@ -75,9 +76,9 @@ public class DepthFrameBufferCubemap extends FrameBufferCubemap {
 				if (spec.isColorTexture()) {
 					attachTexture(Gl.colorAttachment0 + colorTextureCounter, texture);
 					colorTextureCounter++;
-				} else if (Reflect.get(FrameBufferTextureAttachmentSpec.class, spec, "isDepth")) {
+				} else if (Reflectf.getBool(FrameBufferTextureAttachmentSpec.class, spec, "isDepth")) {
 					attachTexture(Gl.depthAttachment, texture);
-				} else if (Reflect.get(FrameBufferTextureAttachmentSpec.class, spec, "isStencil")) {
+				} else if (Reflectf.getBool(FrameBufferTextureAttachmentSpec.class, spec, "isStencil")) {
 					attachTexture(Gl.stencilAttachment, texture);
 				}
 			}

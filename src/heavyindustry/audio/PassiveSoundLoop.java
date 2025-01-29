@@ -6,22 +6,23 @@ import arc.math.*;
 import arc.util.*;
 
 public class PassiveSoundLoop {
-	private static final float fadeSpeed = 0.075f;
+	protected static final float fadeSpeed = 0.075f;
 
-	private final Sound sound;
-	private int id = -1;
-	private float volume, baseVolume;
-	private boolean played;
-	private float x, y;
-	private float pan;
-	private boolean constant = false, doppler = false;
+	public final Sound sound;
+
+	protected int id = -1;
+	protected float volume, baseVolume;
+	protected boolean played;
+	protected float x, y;
+	protected float pan;
+	protected boolean constant = false, doppler = false;
 
 	public PassiveSoundLoop(Sound sound) {
 		this.sound = sound;
 	}
 
 	public PassiveSoundLoop(Sound sound, boolean constant, boolean doppler) {
-		this.sound = sound;
+		this(sound);
 		this.constant = constant;
 		this.doppler = doppler;
 	}
@@ -98,5 +99,17 @@ public class PassiveSoundLoop {
 			Core.audio.stop(id);
 			id = -1;
 		}
+	}
+
+	public int id() {
+		return id;
+	}
+
+	public float x() {
+		return x;
+	}
+
+	public float y() {
+		return y;
 	}
 }

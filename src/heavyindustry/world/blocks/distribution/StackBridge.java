@@ -13,43 +13,27 @@ import static mindustry.Vars.*;
  * And it can also increase the packaging point of the stack conveyor belt at the output end to the highest speed.
  */
 public class StackBridge extends BufferedItemBridge {
-	protected Item lastItem;
-	protected int amount = 0;
-
 	public StackBridge(String name) {
 		super(name);
 	}
 
 	public class StackBridgeBuild extends BufferedItemBridgeBuild {
-		protected Item getLastItem() {
-			return lastItem;
-		}
-
-		protected void setLastItem(Item v) {
-			lastItem = v;
-		}
-
-		protected int getAmount() {
-			return amount;
-		}
-
-		protected void setAmount(int v) {
-			amount = v;
-		}
+		public Item lastItem;
+		public int amount = 0;
 
 		@Override
 		public void updateTile() {
-			if (getLastItem() == null || !items.has(getLastItem())) {
-				setLastItem(items.first());
+			if (lastItem == null || !items.has(lastItem)) {
+				lastItem = items.first();
 			}
 			super.updateTile();
 		}
 
 		@Override
 		public void updateTransport(Building other) {
-			if (items.total() >= block.itemCapacity && other instanceof StackBridgeBuild ot && ot.team == team && ot.items.total() < block.itemCapacity) {
-				ot.setAmount(items.total());
-				ot.items.add(lastItem, ot.getAmount());
+			if (lastItem != null && items.total() >= block.itemCapacity && other instanceof StackBridgeBuild ot && ot.team == team && ot.items.total() < block.itemCapacity) {
+				ot.amount = items.total();
+				ot.items.add(lastItem, ot.amount);
 				items.clear();
 			}
 		}

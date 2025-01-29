@@ -3,7 +3,6 @@ package heavyindustry.world.blocks.distribution;
 import arc.graphics.g2d.*;
 import arc.math.geom.*;
 import arc.util.*;
-import mindustry.entities.units.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
@@ -51,16 +50,16 @@ public class CoveredConveyor extends BeltConveyor {
 					int dir = rotation - i;
 					float rot = i == 0 ? rotation * 90 : (dir) * 90;
 
-					Draw.rect(sliced(conveyorAtlas[frame][0], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * tilesize * 0.75f, y + Geometry.d4y(dir) * tilesize * 0.75f, rot);
+					Draw.rect(sliced(regions[frame][0], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * tilesize * 0.75f, y + Geometry.d4y(dir) * tilesize * 0.75f, rot);
 				}
 			}
 
 			Draw.z(Layer.block - 0.2f);
 
-			Draw.rect(conveyorAtlas[frame][blendbits], x, y, tilesize * blendsclx, tilesize * blendscly, rotation * 90);
+			Draw.rect(regions[frame][blendbits], x, y, tilesize * blendsclx, tilesize * blendscly, rotation * 90);
 
 			Draw.z(Layer.block - 0.1f);
-			float layer = Layer.block - 0.1f, wwidth = world.unitWidth(), wheight = world.unitHeight(), scaling = 0.01f;
+			float layer = Layer.block - 0.1f, width = world.unitWidth(), height = world.unitHeight(), scaling = 0.01f;
 
 			for (int i = 0; i < len; i++) {
 				Item item = ids[i];
@@ -72,12 +71,12 @@ public class CoveredConveyor extends BeltConveyor {
 						iy = (y + Tmp.v1.y * ys[i] + Tmp.v2.y);
 
 				//keep draw position deterministic.
-				Draw.z(layer + (ix / wwidth + iy / wheight) * scaling);
+				Draw.z(layer + (ix / width + iy / height) * scaling);
 				Draw.rect(item.fullIcon, ix, iy, itemSize, itemSize);
 			}
 
 			Draw.z(Layer.block - 0.08f);
-			Draw.rect(edgeAtlas[(tile.x + tile.y) % 2][blendbits], x, y, tilesize * blendsclx, tilesize * blendscly, rotation * 90);
+			Draw.rect(edgeRegions[(tile.x + tile.y) % 2][blendbits], x, y, tilesize * blendsclx, tilesize * blendscly, rotation * 90);
 
 			if (frontCap) Draw.rect(outputRegion, x, y, rotdeg());
 			if (!backCap) Draw.rect(inputRegion, x, y, rotdeg());

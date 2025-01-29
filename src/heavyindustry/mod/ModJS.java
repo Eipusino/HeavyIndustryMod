@@ -15,18 +15,19 @@ import static heavyindustry.util.Utils.*;
  *
  * @since 1.0.6
  */
+@SuppressWarnings("unused")
 public final class ModJS {
-	public static final Seq<Runnable> runs = new Seq<>();
-	public static final Seq<String> names = new Seq<>();
+	private static final Seq<Runnable> runs = new Seq<>();
+	private static final Seq<String> keys = new Seq<>();
 
 	/** Don't let anyone instantiate this class. */
 	private ModJS() {}
 
 	public static void load() {
 		try {
-			run(runs, names);
+			run();
 			runs.clear();
-			names.clear();
+			keys.clear();
 		} catch (Exception e) {
 			Vars.ui.showException(e);
 			Log.err(e);
@@ -71,7 +72,7 @@ public final class ModJS {
 	}
 
 	public static void importClass(ImporterTopLevel scope, String canonical) {
-		importClass(scope, Reflectf.forClassDef(canonical));
+		importClass(scope, Reflectf.mainClass(canonical));
 	}
 
 	public static void importClass(ImporterTopLevel scope, Class<?> type) {
@@ -103,18 +104,26 @@ public final class ModJS {
 		};
 	}
 
-	private static void run(Seq<Runnable> run, Seq<String> name) {
-		if (name.any()) {
-			for (int i = 0; i < name.size && i < run.size; i++) {
-				Vars.content.setCurrentMod(Vars.mods.locateMod(name.get(i)));
+	public static void add(Runnable run) {
+		runs.add(run);
+	}
+
+	public static void add(String name) {
+		keys.add(name);
+	}
+
+	private static void run() {
+		if (keys.any()) {
+			for (int i = 0; i < keys.size && i < runs.size; i++) {
+				Vars.content.setCurrentMod(Vars.mods.locateMod(keys.get(i)));
 
 				try {
-					require(name.get(i));
+					require(keys.get(i));
 				} catch (NoSuchFieldException | IllegalAccessException e) {
 					Log.err(e);
 				}
 
-				run.get(i).run();
+				runs.get(i).run();
 			}
 
 			Vars.content.setCurrentMod(null);

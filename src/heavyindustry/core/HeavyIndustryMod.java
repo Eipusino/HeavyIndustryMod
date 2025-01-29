@@ -57,8 +57,6 @@ public final class HeavyIndustryMod extends Mod {
 	private static LoadedMod mod;
 
 	static {
-		Log.infoTag("Kotlin", "Version: " + KotlinVersion.CURRENT);
-
 		modJson = LoadMod.getMeta(internalTree.root);
 		isPlugin = modJson != null && modJson.has("plugin") && modJson.isBoolean() && modJson.get("plugin").asBool();
 
@@ -66,6 +64,7 @@ public final class HeavyIndustryMod extends Mod {
 	}
 
 	public HeavyIndustryMod() {
+		Log.infoTag("Kotlin", "Version: " + KotlinVersion.CURRENT);
 		Log.info("Loaded HeavyIndustry Mod constructor.");
 
 		HIClassMap.load();
@@ -102,31 +101,6 @@ public final class HeavyIndustryMod extends Mod {
 						t.add(bundle.get("hi-prompt")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
 						t.add(bundle.get("hi-other")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
 					}).grow().center().maxWidth(600f);
-				}};
-				dialog.show();
-			}
-			mul: {
-				if (headless || settings.getBool("hi-closed-multiple-mods")) break mul;
-
-				boolean announces = true;
-
-				for (LoadedMod mod : mods.orderedMods())
-					if (!modName.equals(mod.meta.name) && !mod.meta.hidden) {
-						announces = false;
-						break;
-					}
-
-				if (announces) break mul;
-				BaseDialog dialog = new BaseDialog("oh-no") {
-					float time = 300f;
-					boolean canClose;
-				{
-					update(() -> canClose = (time -= Time.delta) <= 0f);
-					cont.add(bundle.get("hi-multiple-mods"));
-					buttons.button("", this::hide).update(b -> {
-						b.setDisabled(!canClose);
-						b.setText(canClose ? close : String.format("%s(%ss)", close, Strings.fixed(time / 60f, 1)));
-					}).size(210f, 64f);
 				}};
 				dialog.show();
 			}
@@ -208,10 +182,8 @@ public final class HeavyIndustryMod extends Mod {
 		IconLoader.loadIcons(internalTree.child("other/icons.properties"));
 
 		settings.defaults("hi-closed-dialog", false);
-		settings.defaults("hi-closed-multiple-mods", false);
 		settings.defaults("hi-floating-text", true);
 		settings.defaults("hi-animated-shields", true);
-		settings.defaults("hi-replace-water-surface", true);
 
 		if (!headless && !isPlugin && mods.locateMod("extra-utilities") == null && isAprilFoolsDay()) {
 			HIOverride.loadAprilFoolsDay();
@@ -246,7 +218,7 @@ public final class HeavyIndustryMod extends Mod {
 				}));
 		}
 
-		if (isPlugin && mod() != null) {//Don't ask, the mod has already crashed due to this before. fuck! fuck! fuck! fuck!
+		if (isPlugin && mod() != null) {
 			mod.meta.hidden = true;
 			mod.meta.name = modName + "-plugin";
 			mod.meta.displayName = bundle.get("hi-name") + " Plugin";
@@ -257,8 +229,6 @@ public final class HeavyIndustryMod extends Mod {
 				//add heavy-industry settings
 				ui.settings.addCategory(bundle.format("hi-settings"), HIIcon.reactionIcon, t -> {
 					t.checkPref("hi-closed-dialog", false);
-					t.checkPref("hi-closed-multiple-mods", false);
-					t.checkPref("hi-replace-water-surface", true);
 					t.checkPref("hi-floating-text", true);
 					t.checkPref("hi-animated-shields", true);
 					t.checkPref("hi-serpulo-sector-invasion", true);

@@ -50,7 +50,7 @@ public class SwordUnitType extends UnitTypef {
 		hidden = true;
 		drawCell = false;
 		engineLayer = Layer.effect;
-		outlineColor = HIPal.outline; //Blockf outline color
+		outlineColor = Pal.darkerMetal; //Block outline color
 
 		speed = 8f;
 		rotateSpeed = 3f;

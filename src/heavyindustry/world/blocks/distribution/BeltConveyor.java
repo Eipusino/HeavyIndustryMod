@@ -4,6 +4,7 @@ import arc.graphics.g2d.*;
 import arc.math.geom.*;
 import arc.util.*;
 import mindustry.entities.units.*;
+import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
@@ -21,7 +22,7 @@ import static mindustry.Vars.*;
  * @since 1.0.4
  */
 public class BeltConveyor extends Conveyor {
-	public TextureRegion[][] conveyorAtlas, edgeAtlas;
+	public TextureRegion[][] edgeRegions;
 
 	public BeltConveyor(String name) {
 		super(name);
@@ -29,9 +30,20 @@ public class BeltConveyor extends Conveyor {
 
 	@Override
 	public void load() {
-		super.load();
-		conveyorAtlas = atlas.find(name + "-base").split(32, 32);
-		edgeAtlas = atlas.find(name + "-edge").split(32, 32);
+		region = atlas.find(name);
+
+		customShadowRegion = atlas.find(name + "-shadow");
+
+		//load specific team regions
+		teamRegion = atlas.find(name + "-team");
+
+		teamRegions = new TextureRegion[Team.all.length];
+		for (Team team : Team.all) {
+			teamRegions[team.id] = teamRegion.found() && team.hasPalette ? atlas.find(name + "-team-" + team.name, teamRegion) : teamRegion;
+		}
+
+		regions = atlas.find(name + "-base").split(32, 32);
+		edgeRegions = atlas.find(name + "-edge").split(32, 32);
 	}
 
 	@Override
@@ -40,7 +52,7 @@ public class BeltConveyor extends Conveyor {
 
 		if (bits == null) return;
 
-		TextureRegion conveyor = conveyorAtlas[0][bits[0]], edge = edgeAtlas[0][bits[0]];
+		TextureRegion conveyor = regions[0][bits[0]], edge = edgeRegions[0][bits[0]];
 		for (TextureRegion i : new TextureRegion[]{conveyor, edge}) {
 			Draw.rect(i, plan.drawx(), plan.drawy(), i.width * bits[1] * i.scl(), i.height * bits[2] * i.scl(), plan.rotation * 90);
 		}
@@ -78,18 +90,18 @@ public class BeltConveyor extends Conveyor {
 					int dir = rotation - i;
 					float rot = i == 0 ? rotation * 90 : (dir) * 90;
 
-					Draw.rect(sliced(conveyorAtlas[frame][0], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * tilesize * 0.75f, y + Geometry.d4y(dir) * tilesize * 0.75f, rot);
-					Draw.rect(sliced(edgeAtlas[(tile.x + tile.y) % 2][0], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * tilesize * 0.75f, y + Geometry.d4y(dir) * tilesize * 0.75f, rot);
+					Draw.rect(sliced(regions[frame][0], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * tilesize * 0.75f, y + Geometry.d4y(dir) * tilesize * 0.75f, rot);
+					Draw.rect(sliced(edgeRegions[(tile.x + tile.y) % 2][0], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * tilesize * 0.75f, y + Geometry.d4y(dir) * tilesize * 0.75f, rot);
 				}
 			}
 
 			Draw.z(Layer.block - 0.2f);
 
-			Draw.rect(conveyorAtlas[frame][blendbits], x, y, tilesize * blendsclx, tilesize * blendscly, rotation * 90);
-			Draw.rect(edgeAtlas[(tile.x + tile.y) % 2][blendbits], x, y, tilesize * blendsclx, tilesize * blendscly, rotation * 90);
+			Draw.rect(regions[frame][blendbits], x, y, tilesize * blendsclx, tilesize * blendscly, rotation * 90);
+			Draw.rect(edgeRegions[(tile.x + tile.y) % 2][blendbits], x, y, tilesize * blendsclx, tilesize * blendscly, rotation * 90);
 
 			Draw.z(Layer.block - 0.1f);
-			float layer = Layer.block - 0.1f, wwidth = world.unitWidth(), wheight = world.unitHeight(), scaling = 0.01f;
+			float layer = Layer.block - 0.1f, width = world.unitWidth(), height = world.unitHeight(), scaling = 0.01f;
 
 			for (int i = 0; i < len; i++) {
 				Item item = ids[i];
@@ -99,7 +111,7 @@ public class BeltConveyor extends Conveyor {
 				float ix = (x + Tmp.v1.x * ys[i] + Tmp.v2.x), iy = (y + Tmp.v1.y * ys[i] + Tmp.v2.y);
 
 				//keep draw position deterministic.
-				Draw.z(layer + (ix / wwidth + iy / wheight) * scaling);
+				Draw.z(layer + (ix / width + iy / height) * scaling);
 				Draw.rect(item.fullIcon, ix, iy, itemSize, itemSize);
 			}
 		}
