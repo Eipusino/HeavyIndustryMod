@@ -10,9 +10,9 @@ public class SpriteShapeLoader extends CustomShapeLoader<Pixmap> {
 	public final int chunkSize;
 	public final ChunkProcessor chunkProcessor;
 
-	public SpriteShapeLoader(int a, ChunkProcessor b) {
-		chunkSize = a;
-		chunkProcessor = b;
+	public SpriteShapeLoader(int size, ChunkProcessor processor) {
+		chunkSize = size;
+		chunkProcessor = processor;
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class SpriteShapeLoader extends CustomShapeLoader<Pixmap> {
 	}
 
 	public interface ChunkProcessor {
-		BlockType process(Pixmap p, int x, int y, int s);
+		BlockType process(Pixmap pix, int x, int y, int s);
 
 		class PercentProcessor implements ChunkProcessor {
 			/** [0-1] */
@@ -38,14 +38,14 @@ public class SpriteShapeLoader extends CustomShapeLoader<Pixmap> {
 			public int anchorChunkX;
 			public int anchorChunkY;
 
-			public PercentProcessor(float a, int x, int y) {
-				percent = a;
+			public PercentProcessor(float per, int x, int y) {
+				percent = per;
 				anchorChunkX = x;
 				anchorChunkY = y;
 			}
 
 			@Override
-			public BlockType process(Pixmap p, int x, int y, int s) {
+			public BlockType process(Pixmap pix, int x, int y, int s) {
 				if (x == anchorChunkX && y == anchorChunkY) return BlockType.anchorBlock;
 				int total = s * s;
 				int worldX = x * s;
@@ -53,7 +53,7 @@ public class SpriteShapeLoader extends CustomShapeLoader<Pixmap> {
 				float counter = 0;
 				for (int dx = 0; dx < s; dx++) {
 					for (int dy = 0; dy < s; dy++) {
-						counter += p.getA(worldX + dx, worldY + dy) / 255f;
+						counter += pix.getA(worldX + dx, worldY + dy) / 255f;
 					}
 				}
 				return counter / total > percent ? BlockType.block : BlockType.voidBlock;

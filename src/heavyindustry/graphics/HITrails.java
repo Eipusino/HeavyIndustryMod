@@ -1,5 +1,6 @@
 package heavyindustry.graphics;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.graphics.gl.*;
@@ -12,7 +13,6 @@ import arc.util.pooling.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 
-import static arc.Core.*;
 import static heavyindustry.HIVars.*;
 import static heavyindustry.util.Structf.*;
 
@@ -143,9 +143,9 @@ public final class HITrails {
 		private final Seq<DriftTrailData> points;
 		private float lastX = -1, lastY = -1, lastAngle = -1, lastW = 0f, counter = 0f;
 
-		public DriftTrail(int length) {
-			this.length = length;
-			points = new Seq<>(length);
+		public DriftTrail(int len) {
+			length = len;
+			points = new Seq<>(len);
 		}
 
 		public DriftTrail copy() {
@@ -178,7 +178,7 @@ public final class HITrails {
 
 		public void draw(Color color, float width) {
 			Draw.color(color);
-			float lastAngle = this.lastAngle;
+			float lasAng = lastAngle;
 			float size = width / points.size;
 
 			for (int i = 0; i < points.size - 1; i++) {
@@ -199,7 +199,7 @@ public final class HITrails {
 
 				float z2 = -Angles.angleRad(x1, y1, x2, y2);
 				//end of the trail (i = 0) has the same angle as the next.
-				float z1 = i == 0 ? z2 : lastAngle;
+				float z1 = i == 0 ? z2 : lasAng;
 				if (w1 <= 0.001f || w2 <= 0.001f) continue;
 
 				float
@@ -215,7 +215,7 @@ public final class HITrails {
 						x2 - nx, y2 - ny
 				);
 
-				lastAngle = z2;
+				lasAng = z2;
 			}
 
 			Draw.reset();
@@ -276,10 +276,10 @@ public final class HITrails {
 	public static class DriftTrailData {
 		public float x, y, w, dx, dy;
 
-		public DriftTrailData(float x, float y, float w, Vec2 v) {
-			this.x = x;
-			this.y = y;
-			this.w = w;
+		public DriftTrailData(float vx, float vy, float vw, Vec2 v) {
+			x = vx;
+			y = vy;
+			w = vw;
 			dx = v.x;
 			dy = v.y;
 		}
@@ -485,9 +485,9 @@ public final class HITrails {
 	public static class ShaderTrail extends Trail {
 		public Shader shader;
 
-		public ShaderTrail(int length, Shader shader) {
+		public ShaderTrail(int length, Shader sha) {
 			super(length);
-			this.shader = shader;
+			shader = sha;
 		}
 
 		@Override
@@ -547,19 +547,19 @@ public final class HITrails {
 		public Interp sideFadeInterp = Interp.pow3In;
 		public Interp mixInterp = Interp.pow5In;
 
-		public TexturedTrail(int length, String name, TrailAttrib... attributes) {
+		public TexturedTrail(int length, String nam, TrailAttrib... attributes) {
 			super(length, attributes);
-			this.name = name;
+			name = nam;
 		}
 
-		public TexturedTrail(int length, String name, TrailRotation rot, TrailAttrib... attributes) {
+		public TexturedTrail(int length, String nam, TrailRotation rot, TrailAttrib... attributes) {
 			super(length, rot, attributes);
-			this.name = name;
+			name = nam;
 		}
 
 		@Override
 		protected TexturedTrail copyBlank() {
-			return new TexturedTrail(length, name, rot, copyArray(attributes, TrailAttrib::copy));
+			return new TexturedTrail(length, name, rotation, copyArray(attributes, TrailAttrib::copy));
 		}
 
 		@Override
@@ -582,16 +582,16 @@ public final class HITrails {
 
 		@Override
 		protected void drawSegment(Color color, float width, float[] points, int len, int offset) {
-			if (region == null) region = atlas.find(name, name("trail"));
+			if (region == null) region = Core.atlas.find(name, name("trail"));
 
-			int stride = this.stride;
+			int str = stride;
 			float
 					u = region.u, v = region.v2, u2 = region.u2, v2 = region.v, uh = Mathf.lerp(u, u2, 0.5f),
 					x1 = x(points, offset), y1 = y(points, offset), w1 = width(points, offset), r1 = angle(points, offset), p1 = progress(points, offset),
 					x2, y2, w2, r2, p2;
 
-			if (offset < len - stride) {
-				int next = offset + stride;
+			if (offset < len - str) {
+				int next = offset + str;
 				x2 = x(points, next);
 				y2 = y(points, next);
 				w2 = width(points, next);
@@ -599,7 +599,7 @@ public final class HITrails {
 				p2 = progress(points, next);
 
 				//TODO Should probably interpolate too if it's being shortened.
-				if (offset == 0 && len == length * stride) {
+				if (offset == 0 && len == length * str) {
 					x1 = Mathf.lerp(x1, x2, counter);
 					y1 = Mathf.lerp(y1, y2, counter);
 					w1 = Mathf.lerp(w1, w2, counter);
@@ -611,7 +611,7 @@ public final class HITrails {
 				y2 = lastY;
 				w2 = lastW;
 				r2 = lastAngle;
-				p2 = (float) len / stride / length;
+				p2 = (float) len / str / length;
 			}
 
 			float
@@ -693,7 +693,7 @@ public final class HITrails {
 
 		@Override
 		protected void forceDrawCap(Color color, float width) {
-			if (capRegion == null) capRegion = atlas.find(name + "-cap", name("trail-cap"));
+			if (capRegion == null) capRegion = Core.atlas.find(name + "-cap", name("trail-cap"));
 
 			int len = points.size;
 			float
@@ -780,7 +780,7 @@ public final class HITrails {
 	public static abstract class BaseTrail extends Trail {
 		public final TrailAttrib[] attributes;
 		public final int stride;
-		public TrailRotation rot;
+		public TrailRotation rotation;
 
 		public boolean forceCap;
 		public float baseWidth = 1f;
@@ -792,12 +792,12 @@ public final class HITrails {
 			this(length, BaseTrail::defRotation, attributes);
 		}
 
-		public BaseTrail(int length, TrailRotation rot, TrailAttrib... attributes) {
+		public BaseTrail(int length, TrailRotation rot, TrailAttrib... att) {
 			super(length);
-			this.attributes = attributes;
-			this.rot = rot;
+			attributes = att;
+			rotation = rot;
 
-			stride = baseStride() + sumi(attributes, t -> t.count);
+			stride = baseStride() + sumi(att, t -> t.count);
 			points.items = new float[length * stride];
 
 			lastX = lastY = lastW = lastAngle = Float.NaN;
@@ -870,7 +870,7 @@ public final class HITrails {
 			if (forceCap) forceDrawCap(color, width);
 
 			var items = points.items;
-			for (int i = 0, stride = this.stride; i < len; i += stride) drawSegment(color, width, items, len, i);
+			for (int i = 0, str = stride; i < len; i += str) drawSegment(color, width, items, len, i);
 			Draw.blend();
 		}
 
@@ -889,13 +889,13 @@ public final class HITrails {
 
 		@Override
 		public void shorten() {
-			int count = (int) (counter += Time.delta), stride = this.stride;
+			int count = (int) (counter += Time.delta), str = stride;
 			counter -= count;
 
-			if (count > 0 && points.size >= stride) points.removeRange(0, Math.min(count * stride, points.size) - 1);
+			if (count > 0 && points.size >= str) points.removeRange(0, Math.min(count * str, points.size) - 1);
 
 			var items = points.items;
-			for (int i = 0, len = points.size; i < len; i += stride) {
+			for (int i = 0, len = points.size; i < len; i += str) {
 				int offset = i;
 				eachAttrib((attrib, off) -> attrib.update(this, items, offset, off));
 			}
@@ -909,16 +909,16 @@ public final class HITrails {
 			if (Float.isNaN(lastY)) lastY = headY = y;
 			if (Float.isNaN(lastW)) lastW = headW = width;
 
-			int len = points.size, stride = this.stride;
+			int len = points.size, str = stride;
 			var items = points.items;
 
 			// May be NaN if this is the first `update(x, y, width)`, since there's only one point. That's okay though, since
 			// in most cases nothing can be meaningfully drawn anyway. In case where it changed from NaN to valid, update all
 			// vertices with invalid angles.
-			float angle = rot.get(this, lastX, lastY, lastAngle, x, y);
+			float angle = rotation.get(this, lastX, lastY, lastAngle, x, y);
 			if (!Float.isNaN(angle) && Float.isNaN(lastAngle)) {
 				lastAngle = headAngle = angle;
-				for (int i = 0; i < len && Float.isNaN(angle(items, i)); i += stride) {
+				for (int i = 0; i < len && Float.isNaN(angle(items, i)); i += str) {
 					angle(items, i, angle);
 				}
 			}
@@ -928,7 +928,7 @@ public final class HITrails {
 
 			if (count > 0) {
 				if (len > 0) {
-					int prev = len - stride;
+					int prev = len - str;
 					float f = counter / (count + 1f);
 
 					headX = Mathf.lerp(x, x(items, prev), f);
@@ -942,38 +942,38 @@ public final class HITrails {
 					headAngle = angle;
 				}
 
-				int added = count * stride;
-				if (len > length * stride - added) {
+				int added = count * str;
+				if (len > length * str - added) {
 					points.removeRange(0, added - 1);
 					len = points.size;
 				}
 
 				if (count > 1) {
 					if (len > 0) {
-						int prev = len - stride;
+						int prev = len - str;
 						float fromX = x(items, prev), fromY = y(items, prev), fromW = width(items, prev), fromAngle = angle(items, prev);
 
 						for (int i = 0; i < count; i++) {
 							float f = (i + 1f) / count;
 
 							point(Mathf.lerp(fromX, headX, f), Mathf.lerp(fromY, headY, f), Mathf.lerp(fromW, headW, f), Mathf.slerpRad(fromAngle, headAngle, f), items, len);
-							len += stride;
+							len += str;
 						}
 					} else {
 						for (int i = 0; i < count; i++) {
 							point(headX, headY, headW, headAngle, items, len);
-							len += stride;
+							len += str;
 						}
 					}
 				} else {
 					point(headX, headY, headW, headAngle, items, len);
-					len += stride;
+					len += str;
 				}
 
 				points.size = len;
 			}
 
-			for (int i = 0; i < len; i += stride) {
+			for (int i = 0; i < len; i += str) {
 				int offset = i;
 				eachAttrib((attrib, off) -> attrib.update(this, items, offset, off));
 			}
@@ -991,22 +991,22 @@ public final class HITrails {
 			int len = points.size;
 			if (len == 0) return;
 
-			int stride = this.stride;
+			int str = stride;
 			var items = points.items;
 
 			float max = 0f;
-			for (int i = 0; i < len; i += stride) {
+			for (int i = 0; i < len; i += str) {
 				float x1 = x(items, i), y1 = y(items, i), x2, y2;
-				if (i < len - stride) {
-					x2 = x(items, i + stride);
-					y2 = y(items, i + stride);
+				if (i < len - str) {
+					x2 = x(items, i + str);
+					y2 = y(items, i + str);
 				} else {
 					x2 = lastX;
 					y2 = lastY;
 				}
 
 				//TODO Should probably interpolate too if it's being shortened.
-				if (i == 0 && len == length * stride) {
+				if (i == 0 && len == length * str) {
 					x1 = Mathf.lerp(x1, x2, counter);
 					y1 = Mathf.lerp(y1, y2, counter);
 				}
@@ -1017,8 +1017,8 @@ public final class HITrails {
 				max += dst;
 			}
 
-			float frac = (float) len / stride / length;
-			for (int i = 0; i < len; i += stride) {
+			float frac = (float) len / str / length;
+			for (int i = 0; i < len; i += str) {
 				progress(items, i, (progress(items, i) / max) * frac);
 			}
 		}
@@ -1097,8 +1097,8 @@ public final class HITrails {
 	public static abstract class TrailAttrib {
 		public final int count;
 
-		protected TrailAttrib(int count) {
-			this.count = count;
+		protected TrailAttrib(int cou) {
+			count = cou;
 		}
 
 		public abstract void point(BaseTrail trail, float x, float y, float width, float angle, float[] points, int baseOffset, int offset);

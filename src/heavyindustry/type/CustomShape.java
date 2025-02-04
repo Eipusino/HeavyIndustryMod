@@ -106,9 +106,12 @@ public class CustomShape {
 	}
 
 	public enum BlockType {
-		block(true, false), anchorBlock(true, true),
+		block(true, false),
+		anchorBlock(true, true),
 		voidBlock(false, false);
+
 		public static final BlockType[] all = values();
+
 		public final boolean solid;
 		public final boolean center;
 

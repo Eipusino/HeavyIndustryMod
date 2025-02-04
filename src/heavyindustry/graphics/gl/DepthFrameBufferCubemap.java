@@ -1,5 +1,6 @@
 package heavyindustry.graphics.gl;
 
+import arc.*;
 import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.Cubemap.*;
@@ -10,8 +11,6 @@ import arc.struct.*;
 import arc.util.*;
 import heavyindustry.util.*;
 
-import static arc.Core.*;
-
 /**
  * A cubemap framebuffer that requests depth (and stencil) textures instead of renderbuffers, letting users sample from
  * them. Requires at least GL ES 3.0 to function, since the spec is really dumb and decided to include depth and stencil
@@ -20,8 +19,6 @@ import static arc.Core.*;
  * @since 1.0.6
  */
 public class DepthFrameBufferCubemap extends FrameBufferCubemap {
-	public static final CubemapSide[] sides = CubemapSide.values();
-
 	protected Format format;
 	protected boolean hasDepth, hasStencil;
 
@@ -95,7 +92,7 @@ public class DepthFrameBufferCubemap extends FrameBufferCubemap {
 			}
 
 			buffer.position(0);
-			gl30.glDrawBuffers(colorTextureCounter, buffer);
+			Core.gl30.glDrawBuffers(colorTextureCounter, buffer);
 		}
 
 		for (var texture : textureAttachments) Gl.bindTexture(texture.glTarget, 0);
@@ -170,7 +167,7 @@ public class DepthFrameBufferCubemap extends FrameBufferCubemap {
 	}
 
 	public void eachSide(Cons<CubemapSide> cons) {
-		for (var side : sides) {
+		for (var side : CubemapSide.all) {
 			bindSide(side);
 			cons.get(side);
 		}

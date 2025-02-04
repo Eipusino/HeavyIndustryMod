@@ -121,8 +121,8 @@ public class CopterUnitType extends UnitTypef {
 
 		public int bladeCount = 4;
 
-		public Rotor(String name) {
-			this.name = name;
+		public Rotor(String nam) {
+			name = nam;
 		}
 
 		public void load() {
@@ -136,7 +136,7 @@ public class CopterUnitType extends UnitTypef {
 			try {//This is definitely the most disgusting, stupid, and insulting design in Java!
 				return (Rotor) super.clone();
 			} catch (CloneNotSupportedException e) {
-				return new Rotor("default");
+				throw new RuntimeException("java sucks", e);
 			}
 		}
 	}
@@ -147,8 +147,8 @@ public class CopterUnitType extends UnitTypef {
 		public float rotorRot;
 		public float rotorShadeRot;
 
-		public RotorMount(Rotor rotor) {
-			this.rotor = rotor;
+		public RotorMount(Rotor rot) {
+			rotor = rot;
 		}
 	}
 }

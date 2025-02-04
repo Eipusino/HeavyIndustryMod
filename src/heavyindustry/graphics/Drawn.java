@@ -16,7 +16,6 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
 
-import static arc.Core.*;
 import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
@@ -334,9 +333,9 @@ public final class Drawn {
 			float length = size / 2f + 3 + sin;
 			Tmp.v1.trns(i * 90, -length);
 			Draw.color(Pal.gray);
-			Draw.rect(atlas.find(name("linked-arrow-back")), x + Tmp.v1.x, y + Tmp.v1.y, i * 90);
+			Draw.rect(Core.atlas.find(name("linked-arrow-back")), x + Tmp.v1.x, y + Tmp.v1.y, i * 90);
 			Draw.color(color);
-			Draw.rect(atlas.find(name("linked-arrow")), x + Tmp.v1.x, y + Tmp.v1.y, i * 90);
+			Draw.rect(Core.atlas.find(name("linked-arrow")), x + Tmp.v1.x, y + Tmp.v1.y, i * 90);
 		}
 		Draw.reset();
 	}

@@ -1,10 +1,10 @@
 package heavyindustry.graphics;
 
+import arc.*;
 import arc.graphics.*;
 import mindustry.graphics.*;
 import mindustry.graphics.CacheLayer.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 /**
@@ -30,7 +30,7 @@ public final class HICacheLayer {
 			public void begin() {
 				renderer.blocks.floor.endc();
 				renderer.effectBuffer.begin();
-				graphics.clear(Color.clear);
+				Core.graphics.clear(Color.clear);
 				renderer.blocks.floor.beginc();
 			}
 

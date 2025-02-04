@@ -1,12 +1,12 @@
 package heavyindustry.world.draw;
 
+import arc.*;
 import arc.func.*;
 import arc.graphics.g2d.*;
 import mindustry.gen.*;
 import mindustry.world.*;
 import mindustry.world.draw.*;
 
-import static arc.Core.*;
 import static heavyindustry.util.Utils.*;
 
 @SuppressWarnings("unchecked")
@@ -42,9 +42,9 @@ public class DrawFrame<E extends Building> extends DrawBlock {
 		} else {
 			regions = new TextureRegion[frames];
 			for (int i = 0; i < frames; i++) {
-				regions[i] = atlas.find(block.name + "-frame-" + i);
+				regions[i] = Core.atlas.find(block.name + "-frame-" + i);
 			}
 		}
-		icon = atlas.find(block.name + "-frame-icon");
+		icon = Core.atlas.find(block.name + "-frame-icon");
 	}
 }

@@ -71,7 +71,7 @@ public class LightningLinkerBulletType extends BasicBulletType {
 	public void init() {
 		super.init();
 		if (slopeEffect == null) slopeEffect = new Effect(25, e -> {
-			if (!(e.data instanceof Integer i)) return;
+			int i = e.data instanceof Number n ? n.intValue() : 0;
 			Draw.color(backColor);
 			Angles.randLenVectors(e.id, (int) (size / 8f), size / 4f + size * 2f * e.fin(), (x, y) -> Fill.circle(e.x + x, e.y + y, e.fout() * size / 1.65f));
 			Lines.stroke((i < 0 ? e.fin() : e.fout()) * 3f);

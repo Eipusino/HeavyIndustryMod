@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.defense;
 
+import arc.*;
 import arc.math.geom.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
@@ -19,7 +20,6 @@ import mindustry.logic.*;
 import mindustry.ui.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static heavyindustry.ui.UIUtils.*;
 import static mindustry.Vars.*;
 
@@ -62,12 +62,12 @@ public class CommandableAttackerBlock extends CommandableBlock {
 	public void setBars() {
 		super.setBars();
 		addBar("progress", (CommandableAttackerBlockBuild tile) -> new Bar(
-				() -> bundle.get("bar.progress"),
+				() -> Core.bundle.get("bar.progress"),
 				() -> Pal.power,
 				() -> (tile.reload % reloadTime) / reloadTime
 		));
 		addBar("storage", (CommandableAttackerBlockBuild tile) -> new Bar(
-				() -> bundle.format("bar.capacity", UI.formatAmount(tile.ammo())),
+				() -> Core.bundle.format("bar.capacity", UI.formatAmount(tile.ammo())),
 				() -> Pal.ammo,
 				() -> (float) tile.ammo() / storage
 		));
@@ -178,7 +178,7 @@ public class CommandableAttackerBlock extends CommandableBlock {
 
 			if (canCommand(targetVec)) builds.add(this);
 			if (builds.any())
-				Drawn.overlayText(bundle.format("hi-participants", builds.size), targetVec.x, targetVec.y, tilesize * 2f, Pal.accent, true);
+				Drawn.overlayText(Core.bundle.format("hi-participants", builds.size), targetVec.x, targetVec.y, tilesize * 2f, Pal.accent, true);
 		}
 
 		@Override
@@ -211,7 +211,7 @@ public class CommandableAttackerBlock extends CommandableBlock {
 
 			table.table(Tex.paneSolid, t -> {
 				t.button(Icon.modeAttack, Styles.cleari, () -> configure(targetVec)).size(LEN).disabled(b -> targetVec.epsilonEquals(x, y, 0.1f));
-				t.button(bundle.get("hi-select-target"), Icon.move, Styles.cleart, LEN, () -> UIUtils.selectPos(t, this::configure)).size(LEN * 4, LEN).row();
+				t.button(Core.bundle.get("hi-select-target"), Icon.move, Styles.cleart, LEN, () -> UIUtils.selectPos(t, this::configure)).size(LEN * 4, LEN).row();
 			}).fill();
 		}
 	}

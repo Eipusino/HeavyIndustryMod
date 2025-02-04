@@ -43,7 +43,7 @@ public interface BFSPathFinder<V> extends PathFinder<V> {
 
 	/**
 	 * Read the next vertex from the search queue and pop it out of the queue. If the queue is empty, return null.
-	 * <p>This method, when used with {@link BFSPathFinder#queueAdd(Object)}, should satisfy the stack implementation, <strong>and vertices that are added later should be retrieved first</strong>.
+	 * <p>This method, when used with {@link #queueAdd(Object)}, should satisfy the stack implementation, <strong>and vertices that are added later should be retrieved first</strong>.
 	 *
 	 * @return A vertex at the top of the stack, if there are no vertices, returns null
 	 */
@@ -51,7 +51,7 @@ public interface BFSPathFinder<V> extends PathFinder<V> {
 
 	/**
 	 * Add a vertex to the search queue.
-	 * <p>This method, when used with {@link BFSPathFinder#queueNext()}, should meet the stack implementation, <strong>and vertices that are added later should be retrieved first</strong>.
+	 * <p>This method, when used with {@link #queueNext()}, should meet the stack implementation, <strong>and vertices that are added later should be retrieved first</strong>.
 	 *
 	 * @param next Add the next vertex to the queue
 	 */
@@ -70,7 +70,7 @@ public interface BFSPathFinder<V> extends PathFinder<V> {
 	/**
 	 * A standard BFS pathfinding implementation typically finds the shortest or one of the shortest paths in an unweighted graph.
 	 *
-	 * @see PathFinder#findPath(Object, PathFindFunc.PathAcceptor)
+	 * @see #findPath(Object, PathFindFunc.PathAcceptor)
 	 */
 	@Override
 	default void findPath(V origin, PathFindFunc.PathAcceptor<V> pathConsumer) {

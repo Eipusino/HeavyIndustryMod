@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.liquid;
 
+import arc.*;
 import arc.audio.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -8,6 +9,7 @@ import arc.struct.*;
 import arc.util.*;
 import arc.util.io.*;
 import arc.util.pooling.*;
+import arc.util.pooling.Pool.*;
 import heavyindustry.entities.bullet.*;
 import mindustry.content.*;
 import mindustry.entities.*;
@@ -19,8 +21,6 @@ import mindustry.world.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
-import static arc.util.pooling.Pool.*;
 import static mindustry.Vars.*;
 
 public class LiquidMassDriver extends Block {
@@ -394,11 +394,11 @@ public class LiquidMassDriver extends Block {
 
 		@Override
 		public void load(Block block) {
-			baseRegion = atlas.find(block.name + "-base");
-			regionRegion = atlas.find(block.name + "-region");
-			bottomRegion = atlas.find(block.name + "-bottom");
-			liquidRegion = atlas.find(block.name + "-liquid");
-			topRegion = atlas.find(block.name + "-top");
+			baseRegion = Core.atlas.find(block.name + "-base");
+			regionRegion = Core.atlas.find(block.name + "-region");
+			bottomRegion = Core.atlas.find(block.name + "-bottom");
+			liquidRegion = Core.atlas.find(block.name + "-liquid");
+			topRegion = Core.atlas.find(block.name + "-top");
 		}
 	}
 }

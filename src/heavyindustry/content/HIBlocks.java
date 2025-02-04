@@ -1,5 +1,6 @@
 package heavyindustry.content;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -58,7 +59,6 @@ import mindustry.world.consumers.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 import static mindustry.type.ItemStack.*;
@@ -78,6 +78,7 @@ public final class HIBlocks {
 			stoneVent, basaltVent, shaleVent, basaltSpikes, basaltWall, basaltGraphiticWall, basaltPyratiticWall, snowySand, snowySandWall, arkyciteSand, arkyciteSandWall, arkyciteSandBoulder, darksandBoulder,
 			concreteBlank, concreteFill, concreteNumber, concreteStripe, concrete, stoneFullTiles, stoneFull, stoneHalf, stoneTiles, concreteWall, pit, waterPit,
 			brine, nanoFluid,
+			oldTracks,
 			metalFloorWater, metalFloorWater2, metalFloorWater3, metalFloorWater4, metalFloorWater5, metalFloorDamagedWater,
 			stoneWater, shaleWater, basaltWater, mudWater,
 			overgrownGrass, overgrownShrubs, overgrownPine,
@@ -105,15 +106,17 @@ public final class HIBlocks {
 			//liquid-erekir
 			reinforcedLiquidOverflowValve, reinforcedLiquidUnderflowValve, reinforcedLiquidUnloader, reinforcedLiquidSorter, reinforcedLiquidValve, smallReinforcedPump, largeReinforcedPump,
 			//power
-			smartPowerNode, powerNodePhase, powerNodeHuge, powerAnalyzer, uraniumReactor, hyperMagneticReactor, hugeBattery, armoredCoatedBattery,
+			smartPowerNode, powerNodePhase, powerNodeHuge, powerAnalyzer, lunarPanel, uraniumReactor, hyperMagneticReactor, hugeBattery, armoredCoatedBattery,
 			//power-erekir
 			smartBeamNode, beamDiode, beamInsulator, reinforcedPowerAnalyzer, liquidConsumeGenerator,
 			//production
 			largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, sporeFarm, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
 			nanoCoreConstructor, nanoCorePrinter, nanoCoreActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, ironcladCompressor,
+			originiumHeater,
 			uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilSedimentationTank,
 			//production-erekir
-			ventHeater, chemicalSiliconSmelter, largeElectricHeater, liquidFuelHeater, heatDriver, largeOxidationChamber, largeSurgeCrucible, largeCarbideCrucible, nanoCoreConstructorErekir, nanoCorePrinterErekir, uraniumFuser, chromiumFuser,
+			ventHeater, chemicalSiliconSmelter, largeElectricHeater, liquidFuelHeater, heatDriver, largeOxidationChamber, largeSurgeCrucible, largeCarbideCrucible,
+			nanoCoreConstructorErekir, nanoCorePrinterErekir, uraniumFuser, chromiumFuser,
 			//defense
 			lighthouse, mendDome, sectorStructureMender, assignOverdrive, largeShieldGenerator, paralysisMine, detonator, bombLauncher,
 			//defense-erekir
@@ -312,6 +315,12 @@ public final class HIBlocks {
 			emitLight = true;
 			lightRadius = 30f;
 			lightColor = Color.green.cpy().a(0.19f);
+		}};
+		oldTracks = new Wall("old-tracks") {{
+			requirements(Category.defense, BuildVisibility.sandboxOnly, with(Items.scrap, 12));
+			variants = 3;
+			health = 450;
+			rotate = true;
 		}};
 		metalFloorWater = new Floor("metal-floor-water", 0) {{
 			speedMultiplier = 0.6f;
@@ -772,7 +781,7 @@ public final class HIBlocks {
 			@Override
 			public void load() {
 				super.load();
-				rotatorRegion1 = atlas.find(name + "-rotator1");
+				rotatorRegion1 = Core.atlas.find(name + "-rotator1");
 			}
 
 			@Override
@@ -1272,6 +1281,12 @@ public final class HIBlocks {
 			displayLength = 24f / 4f;
 			hideDetails = false;
 		}};
+		lunarPanel = new LunarGenerator("lunar-panel") {{
+			requirements(Category.power, with(Items.silicon, 15, HIItems.originium, 10, Items.lead, 15));
+			health = 45 * size * size;
+			size = 2;
+			powerProduction = 0.4f;
+		}};
 		uraniumReactor = new NuclearReactor("uranium-reactor") {{
 			requirements(Category.power, with(Items.lead, 400, Items.metaglass, 120, Items.graphite, 350, Items.silicon, 300, HIItems.uranium, 100));
 			size = 3;
@@ -1384,8 +1399,8 @@ public final class HIBlocks {
 			@Override
 			public void load() {
 				super.load();
-				bottomRegion = atlas.find(name + "-bottom");
-				glowRegion = atlas.find(name + "-glow");
+				bottomRegion = Core.atlas.find(name + "-bottom");
+				glowRegion = Core.atlas.find(name + "-glow");
 			}
 
 			@Override
@@ -1414,13 +1429,13 @@ public final class HIBlocks {
 			buildCostMultiplier = 0.6f;
 		}};
 		hugeBattery = new Battery("huge-battery") {{
-			requirements(Category.power, with(Items.lead, 225, Items.graphite, 125, Items.phaseFabric, 80, Items.thorium, 110, Items.plastanium, 100));
+			requirements(Category.power, with(HIItems.purifiedOriginium, 110, Items.graphite, 125, Items.phaseFabric, 80, Items.thorium, 110, Items.plastanium, 100));
 			size = 5;
 			health = 1600;
 			consumePowerBuffered(750000f);
 		}};
 		armoredCoatedBattery = new Battery("armored-coated-battery") {{
-			requirements(Category.power, with(Items.lead, 150, Items.silicon, 180, Items.plastanium, 120, HIItems.chromium, 100, Items.phaseFabric, 50));
+			requirements(Category.power, with(HIItems.purifiedOriginium, 70, Items.silicon, 180, Items.plastanium, 120, HIItems.chromium, 100, Items.phaseFabric, 50));
 			size = 4;
 			health = 8400;
 			armor = 28f;
@@ -1656,7 +1671,7 @@ public final class HIBlocks {
 			consumePower(4f);
 		}};
 		nanoCoreConstructor = new GenericCrafter("nano-core-constructor") {{
-			requirements(Category.crafting, with(Items.copper, 120, Items.lead, 110, Items.titanium, 45, Items.silicon, 35));
+			requirements(Category.crafting, with(Items.copper, 120, Items.titanium, 45, Items.silicon, 35, HIItems.purifiedOriginium, 20));
 			size = 2;
 			itemCapacity = 15;
 			craftTime = 100f;
@@ -1666,10 +1681,10 @@ public final class HIBlocks {
 				constructColor1 = constructColor2 = HIPal.nanoCoreGreen;
 			}}, new DrawDefault());
 			consumePower(2.5f);
-			consumeItems(with(Items.titanium, 2, Items.silicon, 3));
+			consumeItems(with(Items.titanium, 2, Items.silicon, 3, HIItems.purifiedOriginium, 1));
 		}};
 		nanoCorePrinter = new GenericCrafter("nano-core-printer") {{
-			requirements(Category.crafting, with(Items.titanium, 600, Items.silicon, 400, Items.plastanium, 350, Items.surgeAlloy, 250, HIItems.chromium, 200, HIItems.nanoCore, 150));
+			requirements(Category.crafting, with(Items.titanium, 600, Items.silicon, 400, Items.plastanium, 350, Items.surgeAlloy, 250, HIItems.chromium, 200, HIItems.nanoCore, 150, HIItems.purifiedOriginium, 150));
 			size = 4;
 			health = 1500;
 			squareSprite = false;
@@ -1684,7 +1699,7 @@ public final class HIBlocks {
 			}}, new DrawDefault());
 			consumePower(25f);
 			consumeLiquid(Liquids.cryofluid, 6f / 60f);
-			consumeItems(with(Items.titanium, 6, Items.silicon, 9));
+			consumeItems(with(Items.titanium, 6, Items.silicon, 9, HIItems.purifiedOriginium, 3));
 			hideDetails = false;
 		}};
 		nanoCoreActivator = new GenericCrafter("nano-core-activator") {{
@@ -1856,8 +1871,19 @@ public final class HIBlocks {
 				}});
 			}});
 		}};
+		originiumHeater = new HeatProducer("originium-heater") {{
+			requirements(Category.crafting, with(Items.graphite, 50, Items.thorium, 30, HIItems.originium, 15));
+			size = 2;
+			health = 220;
+			drawer = new DrawMulti(new DrawDefault(), new DrawHeatOutput());
+			rotateDraw = false;
+			regionRotated1 = 1;
+			ambientSound = Sounds.hum;
+			consumePower(120f / 60f);
+			heatOutput = 6f;
+		}};
 		uraniumSynthesizer = new GenericCrafter("uranium-synthesizer") {{
-			requirements(Category.crafting, with(Items.graphite, 50, Items.silicon, 40, Items.plastanium, 30, Items.phaseFabric, 15));
+			requirements(Category.crafting, with(Items.graphite, 50, Items.silicon, 40, Items.plastanium, 30, Items.phaseFabric, 15, HIItems.purifiedOriginium, 10));
 			size = 2;
 			health = 350;
 			craftTime = 60;
@@ -1871,7 +1897,7 @@ public final class HIBlocks {
 			consumeItems(with(Items.graphite, 1, Items.thorium, 1));
 		}};
 		chromiumSynthesizer = new GenericCrafter("chromium-synthesizer") {{
-			requirements(Category.crafting, with(Items.metaglass, 30, Items.silicon, 40, Items.plastanium, 50, Items.phaseFabric, 25));
+			requirements(Category.crafting, with(Items.metaglass, 30, Items.silicon, 40, Items.plastanium, 50, Items.phaseFabric, 25, HIItems.purifiedOriginium, 15));
 			size = 3;
 			health = 650;
 			hasLiquids = true;
@@ -1983,7 +2009,7 @@ public final class HIBlocks {
 			size = 4;
 			hasLiquids = true;
 			itemCapacity = 30;
-			liquidCapacity = 20;
+			liquidCapacity = 20f;
 			craftTime = 50;
 			outputItem = new ItemStack(Items.silicon, 8);
 			consumeItems(with(Items.sand, 8));
@@ -1993,13 +2019,13 @@ public final class HIBlocks {
 				midColor = Color.valueOf("97a5f7");
 				flameColor = Color.valueOf("d1e4ff");
 				flameRad = 4.45f;
-				circleSpace = 3;
-				flameRadiusScl = 16;
-				flameRadiusMag = 3;
+				circleSpace = 3f;
+				flameRadiusScl = 16f;
+				flameRadiusMag = 3f;
 				circleStroke = 0.6f;
 				particles = 33;
-				particleLife = 107;
-				particleRad = 16;
+				particleLife = 107f;
+				particleRad = 16f;
 				particleSize = 2.68f;
 				rotateScl = 1.7f;
 			}}, new DrawDefault());
@@ -2081,7 +2107,7 @@ public final class HIBlocks {
 			}}, new DrawHeatRegion("-vents"));
 			consumeItem(Items.silicon, 8);
 			consumeLiquid(Liquids.slag, 80f / 60f);
-			consumePower(1);
+			consumePower(1f);
 		}};
 		largeCarbideCrucible = new HeatCrafter("large-carbide-crucible") {{
 			requirements(Category.crafting, with(Items.thorium, 300, Items.tungsten, 400, Items.oxide, 100, Items.carbide, 60));
@@ -2096,10 +2122,10 @@ public final class HIBlocks {
 			ambientSoundVolume = 1.8f;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawCrucibleFlame(), new DrawDefault(), new DrawHeatInput());
 			consumeItems(with(Items.graphite, 8, Items.tungsten, 5));
-			consumePower(1);
+			consumePower(1f);
 		}};
 		nanoCoreConstructorErekir = new GenericCrafter("nano-core-constructor-erekir") {{
-			requirements(Category.crafting, with(Items.beryllium, 120, Items.tungsten, 100, Items.silicon, 150, Items.oxide, 50));
+			requirements(Category.crafting, with(Items.beryllium, 120, Items.tungsten, 100, Items.silicon, 150, Items.oxide, 50, HIItems.purifiedOriginium, 20));
 			size = 2;
 			itemCapacity = 15;
 			craftTime = 120f;
@@ -2109,11 +2135,11 @@ public final class HIBlocks {
 				constructColor1 = constructColor2 = HIPal.nanoCoreErekirOrange;
 			}}, new DrawDefault());
 			consumePower(2.5f);
-			consumeItems(ItemStack.with(Items.tungsten, 2, Items.silicon, 3));
+			consumeItems(ItemStack.with(Items.tungsten, 2, Items.silicon, 3, HIItems.purifiedOriginium, 1));
 			squareSprite = false;
 		}};
 		nanoCorePrinterErekir = new HeatCrafter("nano-core-printer-erekir") {{
-			requirements(Category.crafting, with(Items.beryllium, 400, Items.tungsten, 300, Items.silicon, 250, Items.oxide, 150, Items.carbide, 50, Items.phaseFabric, 50));
+			requirements(Category.crafting, with(Items.beryllium, 400, Items.tungsten, 300, Items.silicon, 250, Items.oxide, 150, Items.carbide, 50, Items.phaseFabric, 50, HIItems.purifiedOriginium, 120));
 			size = 4;
 			health = 2500;
 			itemCapacity = 40;
@@ -2126,12 +2152,12 @@ public final class HIBlocks {
 			heatRequirement = 8f;
 			maxEfficiency = 4f;
 			consumePower(17.5f);
-			consumeItems(with(Items.tungsten, 6, Items.silicon, 9));
+			consumeItems(with(Items.tungsten, 6, Items.silicon, 9, HIItems.purifiedOriginium, 3));
 			buildCostMultiplier = 0.8f;
 			squareSprite = false;
 		}};
 		uraniumFuser = new HeatCrafter("uranium-fuser") {{
-			requirements(Category.crafting, with(Items.silicon, 120, Items.graphite, 60, Items.tungsten, 100, Items.oxide, 40, Items.surgeAlloy, 60));
+			requirements(Category.crafting, with(Items.silicon, 120, Items.graphite, 60, Items.tungsten, 100, Items.oxide, 40, Items.surgeAlloy, 60, HIItems.purifiedOriginium, 10));
 			size = 3;
 			itemCapacity = 20;
 			heatRequirement = 10f;
@@ -2154,7 +2180,7 @@ public final class HIBlocks {
 			squareSprite = false;
 		}};
 		chromiumFuser = new GenericCrafter("chromium-fuser") {{
-				requirements(Category.crafting, with(Items.silicon, 150, Items.graphite, 120, Items.tungsten, 200, Items.oxide, 180, Items.phaseFabric, 100));
+				requirements(Category.crafting, with(Items.silicon, 150, Items.graphite, 120, Items.tungsten, 200, Items.oxide, 180, Items.phaseFabric, 100, HIItems.purifiedOriginium, 15));
 				size = 3;
 				itemCapacity = 20;
 				craftTime = 35f;
@@ -2227,9 +2253,9 @@ public final class HIBlocks {
 			@Override
 			public void load() {
 				super.load();
-				lightRegion = atlas.find(name + "-light");
-				heatRegion = atlas.find(name + "-light-heat");
-				shadowRegion = atlas.find("circle-shadow");
+				lightRegion = Core.atlas.find(name + "-light");
+				heatRegion = Core.atlas.find(name + "-light-heat");
+				shadowRegion = Core.atlas.find("circle-shadow");
 			}
 		};
 		//defense
@@ -3415,7 +3441,7 @@ public final class HIBlocks {
 			canOverdrive = false;
 		}};
 		judgement = new ContinuousTurret("judgement") {{
-			requirements(Category.turret, with(Items.silicon, 1200, Items.metaglass, 400, Items.plastanium, 800, Items.surgeAlloy, 650, Items.phaseFabric, 550, HIItems.heavyAlloy, 600));
+			requirements(Category.turret, with(Items.silicon, 1200, Items.metaglass, 400, Items.plastanium, 800, Items.surgeAlloy, 650, HIItems.syntheticJade, 350, HIItems.heavyAlloy, 600));
 			shootType = new PointLaserBulletType() {{
 				damage = 100f;
 				hitEffect = HIFx.hitSpark;
@@ -3466,9 +3492,8 @@ public final class HIBlocks {
 						cool = true;
 					}
 
-					if (cool) {
-						b.fdata = Mathf.approachDelta(b.fdata, 0, 1);
-					} else b.fdata = Math.min(b.fdata, chargeReload + lerpReload / 2f + 1f);
+					if (cool) b.fdata = Mathf.approachDelta(b.fdata, 0, 1);
+					else b.fdata = Math.min(b.fdata, chargeReload + lerpReload / 2f + 1f);
 
 					if (charged(b)) {
 						if (!headless && b.timer(3, 3)) {
@@ -4401,8 +4426,8 @@ public final class HIBlocks {
 			buildType = () -> new Building() {
 				@Override
 				public void buildConfiguration(Table table) {
-					table.button(Icon.upOpen, Styles.cleari, () -> configure(0)).size(50).tooltip(bundle.get("hi-next-wave-1"));
-					table.button(Icon.warningSmall, Styles.cleari, () -> configure(1)).size(50).tooltip(bundle.get("hi-next-wave-10"));
+					table.button(Icon.upOpen, Styles.cleari, () -> configure(0)).size(50).tooltip(Core.bundle.get("hi-next-wave-1"));
+					table.button(Icon.warningSmall, Styles.cleari, () -> configure(1)).size(50).tooltip(Core.bundle.get("hi-next-wave-10"));
 				}
 
 				@Override

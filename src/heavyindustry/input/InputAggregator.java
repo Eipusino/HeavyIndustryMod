@@ -13,7 +13,6 @@ import heavyindustry.net.*;
 import mindustry.game.EventType.*;
 import mindustry.gen.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class InputAggregator implements Eachable<String> {
@@ -35,12 +34,12 @@ public class InputAggregator implements Eachable<String> {
 		(handleKeys = handles.orderedKeys()).ordered = false;
 
 		if (!headless) {
-			if (mobile) input.addProcessor(new GestureDetector(new GestureListener() {
+			if (mobile) Core.input.addProcessor(new GestureDetector(new GestureListener() {
 				@Override
 				public boolean tap(float x, float y, int count, KeyCode button) {
 					if (count == 2 && !(
 							state.isMenu() ||
-									scene.hasMouse(x, y) ||
+									Core.scene.hasMouse(x, y) ||
 									control.input.isPlacing() ||
 									control.input.isBreaking() ||
 									control.input.selectedUnit() != null
@@ -55,8 +54,8 @@ public class InputAggregator implements Eachable<String> {
 
 			Events.run(Trigger.update, () -> {
 				//TODO `Keybinds` should have a way to add default bindings.
-				if (!mobile && input.keyTap(KeyCode.altLeft) && !(scene.getKeyboardFocus() instanceof TextField)) {
-					taps.add(tapPool.obtain().set(input.mouseWorld()));
+				if (!mobile && Core.input.keyTap(KeyCode.altLeft) && !(Core.scene.getKeyboardFocus() instanceof TextField)) {
+					taps.add(tapPool.obtain().set(Core.input.mouseWorld()));
 				}
 
 				for (TapHandle handle : handles.values()) handle.enabled = handle.predicate.get();

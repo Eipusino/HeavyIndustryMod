@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.heat;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -17,7 +18,6 @@ import mindustry.world.blocks.heat.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
@@ -57,7 +57,7 @@ public class HeatDriver extends Block {
 	@Override
 	public void setBars() {
 		super.setBars();
-		addBar("heat", (HeatDriverBuild tile) -> new Bar(() -> bundle.format("bar.heatamount", (int) (tile.heat + 0.001f)), () -> Pal.lightOrange, () -> tile.heat / visualMaxHeat));
+		addBar("heat", (HeatDriverBuild tile) -> new Bar(() -> Core.bundle.format("bar.heatamount", (int) (tile.heat + 0.001f)), () -> Pal.lightOrange, () -> tile.heat / visualMaxHeat));
 	}
 
 	@Override
@@ -155,15 +155,15 @@ public class HeatDriver extends Block {
 
 		@Override
 		public void load(Block block) {
-			turretPart = atlas.find(block.name + "-turret");
-			turretLine = atlas.find(block.name + "-turret-outline");
-			lPart = atlas.find(block.name + "-l");
-			lLine = atlas.find(block.name + "-l-outline");
-			rPart = atlas.find(block.name + "-r");
-			rLine = atlas.find(block.name + "-r-outline");
-			effect = atlas.find(block.name + "-effect", name("heat-driver-effect"));
-			arrow = atlas.find(block.name + "-arrow", name("heat-driver-arrow"));
-			preview = atlas.find(block.name + "-preview");
+			turretPart = Core.atlas.find(block.name + "-turret");
+			turretLine = Core.atlas.find(block.name + "-turret-outline");
+			lPart = Core.atlas.find(block.name + "-l");
+			lLine = Core.atlas.find(block.name + "-l-outline");
+			rPart = Core.atlas.find(block.name + "-r");
+			rLine = Core.atlas.find(block.name + "-r-outline");
+			effect = Core.atlas.find(block.name + "-effect", name("heat-driver-effect"));
+			arrow = Core.atlas.find(block.name + "-arrow", name("heat-driver-arrow"));
+			preview = Core.atlas.find(block.name + "-preview");
 		}
 
 		@Override

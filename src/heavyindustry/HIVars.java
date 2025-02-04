@@ -4,7 +4,6 @@ import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.graphics.g2d.TextureAtlas.*;
-import arc.util.*;
 import heavyindustry.core.*;
 import heavyindustry.files.*;
 import heavyindustry.input.*;
@@ -21,15 +20,16 @@ public final class HIVars {
 	public static final String modName = "heavy-industry";
 	/** jar internal navigation. */
 	public static final InternalFileTree internalTree = new InternalFileTree(HeavyIndustryMod.class);
+
 	/** Modules present in both servers and clients. */
 	public static InputAggregator inputAggregator;
+
+	/** Blank single pixel texture, commonly used as a placeholder and to prevent null pointer anomalies in Kotlin. */
+	public static final TextureRegion whiteRegion = new AtlasRegion(new TextureRegion(new Texture(internalTree.child("sprites/white.png"))));
 
 	public static float pressTimer = 30f;
 	public static float longPress = 30f;
 	public static float iconSize = 40f, buttonSize = 24f, sliderWidth = 140f, fieldWidth = 80f;
-
-	/** Blank single pixel texture, commonly used as a placeholder and to prevent null pointer anomalies in Kotlin. */
-	public static final TextureRegion whiteRegion = new AtlasRegion(new TextureRegion(new Texture(internalTree.child("sprites/white.png"))));
 
 	/** Don't let anyone instantiate this class. */
 	private HIVars() {}
@@ -44,6 +44,7 @@ public final class HIVars {
 		return Core.graphics.getDeltaTime() * 60f;
 	}
 
+	/** Clear all occupied sectors of the specified Planet. Use with caution, as this will completely disrupt the player's game progress. */
 	public static void resetSaves(Planet planet) {
 		planet.sectors.each(sector -> {
 			if (sector.hasSave()) {
@@ -53,6 +54,7 @@ public final class HIVars {
 		});
 	}
 
+	/** Clear all tech nodes under the specified root node. Use with caution, as this will completely disrupt the player's game progress. */
 	public static void resetTree(TechTree.TechNode root) {
 		root.reset();
 		root.content.clearUnlock();

@@ -31,11 +31,11 @@ public class PowerTower extends BeamNode {
 		for (int i = 0; i < 4; i++) {
 			int maxLen = range + size / 2;
 			Building dest = null;
-			var dir = Geometry.d4[i];
+			Point2 dir = Geometry.d4[i];
 			int dx = dir.x, dy = dir.y;
 			int offset = size / 2;
 			for (int j = 1 + offset; j <= range + offset; j++) {
-				var other = world.build(x + j * dir.x, y + j * dir.y);
+				Building other = world.build(x + j * dir.x, y + j * dir.y);
 
 				//hit insulated wall
 				if (other != null && other.isInsulated()) {
@@ -68,8 +68,8 @@ public class PowerTower extends BeamNode {
 
 		Drawf.dashSquare(baseColor, x, y, linkRange * tilesize);
 		indexer.eachBlock(player.team(), Tmp.r1.setCentered(x, y, linkRange * tilesize), b -> (b.power != null) && !(b instanceof PowerTowerBuild), t ->
-                Drawf.selected(t, Tmp.c1.set(baseColor).a(Mathf.absin(4f, 1f)))
-        );
+				Drawf.selected(t, Tmp.c1.set(baseColor).a(Mathf.absin(4f, 1f)))
+		);
 	}
 
 	@Override
@@ -95,14 +95,14 @@ public class PowerTower extends BeamNode {
 		@Override
 		public void updateDirections() {
 			for (int i = 0; i < 4; i++) {
-				var prev = links[i];
-				var dir = Geometry.d4[i];
+				Building prev = links[i];
+				Point2 dir = Geometry.d4[i];
 				links[i] = null;
 				dests[i] = null;
 				int offset = size / 2;
 				//find first block with power in range
 				for (int j = 1 + offset; j <= range + offset; j++) {
-					var other = world.build(tile.x + j * dir.x, tile.y + j * dir.y);
+					Building other = world.build(tile.x + j * dir.x, tile.y + j * dir.y);
 
 					//hit insulated wall
 					if (other != null && other.isInsulated()) {
@@ -117,7 +117,7 @@ public class PowerTower extends BeamNode {
 					}
 				}
 
-				var next = links[i];
+				Building next = links[i];
 
 				if (next != prev) {
 					//unlinked, disconnect and reflow
@@ -151,7 +151,7 @@ public class PowerTower extends BeamNode {
 		public void pickedUp() {
 			Arrays.fill(links, null);
 			Arrays.fill(dests, null);
-			for (var build : targets) {
+			for (Building build : targets) {
 				build.power.links.removeValue(pos());
 				power.links.removeValue(build.pos());
 
@@ -172,7 +172,7 @@ public class PowerTower extends BeamNode {
 			//I know this is meaningless and stupid.
 			Seq<Building> newTargets = new Seq<>();
 			indexer.eachBlock(player.team(), Tmp.r1.setCentered(x, y, linkRange * tilesize), b -> (b.power != null) && !(b instanceof PowerTowerBuild), newTargets::add);
-			for (var build : newTargets) {
+			for (Building build : newTargets) {
 				if (!targets.contains(build)) {
 					targets.addUnique(build);
 					power.links.addUnique(build.pos());
@@ -181,7 +181,7 @@ public class PowerTower extends BeamNode {
 					power.graph.addGraph(build.power.graph);
 				}
 			}
-			for (var build : targets) {
+			for (Building build : targets) {
 				if (!newTargets.contains(build)) {
 					build.power.links.removeValue(pos());
 					power.links.removeValue(build.pos());
@@ -230,7 +230,7 @@ public class PowerTower extends BeamNode {
 					int dst = Math.max(Math.abs(dests[i].x - tile.x), Math.abs(dests[i].y - tile.y));
 					//don't draw lasers for adjacent blocks
 					if (dst > 1 + size / 2) {
-						var point = Geometry.d4[i];
+						Point2 point = Geometry.d4[i];
 						float poff = tilesize / 2f;
 						Drawf.laser(laser, laserEnd, x + poff * size * point.x, y + poff * size * point.y, dests[i].worldx() - poff * point.x, dests[i].worldy() - poff * point.y, w);
 					}

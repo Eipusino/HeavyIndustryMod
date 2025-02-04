@@ -10,7 +10,7 @@ import mindustry.entities.*;
 import mindustry.game.EventType.*;
 import mindustry.gen.*;
 
-public class ExtraEffect {
+public final class ExtraEffect {
 	private static final Seq<BuildQueue> vapourizeQueue = new Seq<>(512);
 	private static final IntMap<BuildQueue> buildQMap = new IntMap<>();
 	private static final IntMap<VapourizeEffectState> vapourizeMap = new IntMap<>();
@@ -37,6 +37,8 @@ public class ExtraEffect {
 			});
 		});
 	}
+
+	private ExtraEffect() {}
 
 	public static void addMoltenBlock(Building build) {
 		BuildQueue tmp = buildQMap.get(build.id);
@@ -74,13 +76,13 @@ public class ExtraEffect {
 		Building build;
 		float time;
 
-		public BuildQueue(Building build, float time) {
-			this.build = build;
-			this.time = time;
+		public BuildQueue(Building bul, float tim) {
+			build = bul;
+			time = tim;
 		}
 
-		public BuildQueue(Building build) {
-			this(build, 14.99f);
+		public BuildQueue(Building bul) {
+			this(bul, 14.99f);
 		}
 	}
 }

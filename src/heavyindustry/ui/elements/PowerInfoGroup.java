@@ -1,5 +1,6 @@
 package heavyindustry.ui.elements;
 
+import arc.*;
 import arc.graphics.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
@@ -10,7 +11,6 @@ import mindustry.gen.*;
 import mindustry.world.*;
 import mindustry.world.consumers.*;
 
-import static arc.Core.*;
 import static heavyindustry.ui.UIUtils.*;
 
 public class PowerInfoGroup extends Table {
@@ -63,12 +63,12 @@ public class PowerInfoGroup extends Table {
 		return switch (type) {
 			case producer -> {
 				float produced = building.getPowerProduction() * building.timeScale(); //Assume people don't override delta()
-				yield bundle.format("hi-power-info-persec", "[#98ffa9]+" + formatAmount(produced * 60));
+				yield Core.bundle.format("hi-power-info-persec", "[#98ffa9]+" + formatAmount(produced * 60));
 			}
 			case consumer -> {
 				ConsumePower consumePower = building.block.consPower;
 				float consumed = consumePower.requestedPower(building) * building.timeScale();
-				yield bundle.format("hi-power-info-persec", "[#e55454]-" + formatAmount(consumed * 60));
+				yield Core.bundle.format("hi-power-info-persec", "[#e55454]-" + formatAmount(consumed * 60));
 			}
 			case battery -> {
 				ConsumePower consumePower = building.block.consPower;

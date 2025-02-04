@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.power;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -16,7 +17,6 @@ import mindustry.world.meta.*;
 
 import java.util.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 /**
@@ -52,10 +52,10 @@ public class BeamDiode extends Block {
 	public void load() {
 		super.load();
 
-		arrow = atlas.find(name + "-arrow");
-		laser = atlas.find(name + "-beam", "power-beam");
-		laserEnds[0] = atlas.find(name + "-beam-end-out", "power-beam-end");
-		laserEnds[1] = atlas.find(name + "-beam-end-in", "power-beam-end");
+		arrow = Core.atlas.find(name + "-arrow");
+		laser = Core.atlas.find(name + "-beam", "power-beam");
+		laserEnds[0] = Core.atlas.find(name + "-beam-end-out", "power-beam-end");
+		laserEnds[1] = Core.atlas.find(name + "-beam-end-in", "power-beam-end");
 	}
 
 	@Override

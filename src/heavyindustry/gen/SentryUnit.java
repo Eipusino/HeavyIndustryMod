@@ -32,7 +32,7 @@ public class SentryUnit extends TimedKillUnitf implements Sentryc {
 	public void update() {
 		super.update();
 		if (type instanceof SentryUnitType sType) {
-			if (!Vars.net.client() || this.isLocal()) {
+			if (!Vars.net.client() || isLocal()) {
 				float offset = anchorX;
 				float range = anchorY;
 				anchorX += anchorVel.x * Time.delta; //I'm sure letting the anchors overlap won't be problematic in anyway.

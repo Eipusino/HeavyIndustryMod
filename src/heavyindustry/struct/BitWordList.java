@@ -50,8 +50,8 @@ public class BitWordList {
 		index = (index * wordLen) & 63;
 		number &= wordMask;
 		checkCapacity(wordIndex);
-		bits[wordIndex] &= ~((long) wordMask << index);
-		bits[wordIndex] |= (long) number << index;
+		bits[wordIndex] &= ~(wordMask << index);
+		bits[wordIndex] |= number << index;
 	}
 
 	private void checkCapacity(int len) {
@@ -152,8 +152,10 @@ public class BitWordList {
 
 		public final byte value;
 
-		WordLength(int value) {
-			this.value = (byte) value;
+		WordLength(int v) {
+			value = (byte) v;
 		}
+
+		public static final WordLength[] all = values();
 	}
 }

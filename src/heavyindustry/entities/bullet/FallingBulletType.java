@@ -1,5 +1,6 @@
 package heavyindustry.entities.bullet;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -12,7 +13,6 @@ import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class FallingBulletType extends BulletType {
@@ -51,7 +51,7 @@ public class FallingBulletType extends BulletType {
 	public void load() {
 		super.load();
 
-		region = atlas.find(sprite);
+		region = Core.atlas.find(sprite);
 	}
 
 	@Override

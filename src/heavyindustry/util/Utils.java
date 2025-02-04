@@ -1,5 +1,6 @@
 package heavyindustry.util;
 
+import arc.*;
 import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
@@ -37,16 +38,17 @@ import java.text.*;
 import java.util.*;
 import java.util.regex.*;
 
-import static arc.Core.*;
 import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
 /**
- * Input-output utilities, providing very specific functions that aren't really commonly used, but often enough to require me to write a class for it.
+ * Input-output utilities, providing very specific functions that aren't really commonly used, but often
+ * enough to require me to write a class for it.
+ * <p>This type may have class name conflicts with other dependency libraries, but I am unable to make further
+ * changes.
  *
  * @author Eipusino
  */
-@SuppressWarnings("unused")
 public final class Utils {
 	public static final Color
 			c1 = new Color(), c2 = new Color(), c3 = new Color(), c4 = new Color(), c5 = new Color(),
@@ -85,7 +87,7 @@ public final class Utils {
 			{-1, 0}, /*{0, 0}, */{1, 0},
 			{-1, -1}, {0, -1}, {1, -1}
 	};
-	public static final byte[][] tubeTiles = {
+	public static final byte[][] tubeTileMap = {
 			{},
 			{0, 2}, {1, 3}, {0, 1},
 			{0, 2}, {0, 2}, {1, 2},
@@ -242,14 +244,14 @@ public final class Utils {
 	private Utils() {}
 
 	public static void loadItems() {
-		String donor = bundle.get("hi-donor-item");
-		String developer = bundle.get("hi-developer-item");
+		String donor = Core.bundle.get("hi-donor-item");
+		String developer = Core.bundle.get("hi-developer-item");
 
-		for (UnlockableContent c : donorItems) {
-			c.description = (c.description == null ? donor : c.description + "\n" + donor);
+		for (UnlockableContent cont : donorItems) {
+			cont.description = (cont.description == null ? donor : cont.description + "\n" + donor);
 		}
-		for (UnlockableContent c : developerItems) {
-			c.description = (c.description == null ? developer : c.description + "\n" + developer);
+		for (UnlockableContent cont : developerItems) {
+			cont.description = (cont.description == null ? developer : cont.description + "\n" + developer);
 		}
 	}
 
@@ -267,10 +269,10 @@ public final class Utils {
 	/**
 	 * Gets multiple regions inside a {@link TextureRegion}.
 	 *
-	 * @param name	   sprite name
-	 * @param size	   split size, pixels per grid
+	 * @param name       sprite name
+	 * @param size       split size, pixels per grid
 	 * @param layerCount Total number of segmentation layers
-	 * @throws NullPointerException	   If the {@code name} is {@code null}.
+	 * @throws NullPointerException       If the {@code name} is {@code null}.
 	 * @throws NegativeArraySizeException If {@code size} or {@code layerCount} is negative.
 	 * @apiNote The element returned by this method cannot be used in situations where it will be
 	 * forcibly converted to {@link AtlasRegion}.
@@ -297,7 +299,7 @@ public final class Utils {
 	 * forcibly converted to {@link AtlasRegion}.
 	 */
 	public static TextureRegion[] split(String name, int size, int layer) {
-		TextureRegion textures = atlas.find(name, name("error"));
+		TextureRegion textures = Core.atlas.find(name, name("error"));
 		int margin = 0;
 		int countX = textures.width / size;
 		TextureRegion[] tiles = new TextureRegion[countX];
@@ -317,7 +319,7 @@ public final class Utils {
 	 * @param height The amount of regions vertically.
 	 */
 	public static TextureRegion[] split(String name, int size, int width, int height) {
-		TextureRegion textures = atlas.find(name);
+		TextureRegion textures = Core.atlas.find(name);
 		int textureSize = width * height;
 		TextureRegion[] regions = new TextureRegion[textureSize];
 
@@ -344,7 +346,8 @@ public final class Utils {
 	}
 
 	/**
-	 * Rotate one {@link Pixmap} by a multiple of 90 degrees. This method does not change the original pixmap and returns a copy.
+	 * Rotate one {@link Pixmap} by a multiple of 90 degrees. This method does not change the original pixmap
+	 * and returns a copy.
 	 *
 	 * @param target The target pixmap to be rotated.
 	 * @param rotate Rotation angle coefficient, the actual rotation angle is 90 * rotate.
@@ -366,6 +369,41 @@ public final class Utils {
 		}
 
 		return res;
+	}
+
+	/**
+	 * Performs the given action for each element of the {@code Iterable} been processed or the action throws
+	 * an exception.  Actions are performed in the order of iteration, if that order is specified.  Exceptions
+	 * thrown by the action are relayed to the caller.
+	 * <p>The behavior of this method is unspecified if the action performs side effects that modify the
+	 * underlying source of elements, unless an overriding class has specified a concurrent modification
+	 * policy.
+	 *
+	 * @param iterable Implemented the {@link Iterable} interface object
+	 * @param cons     Constructor
+	 * @implSpec <p>The default implementation behaves as if:
+	 * <pre>{@code
+	 *     for (T t : iterable)
+	 *         cons.get(t);
+	 * }</pre>
+	 * @apiNote This static method replaces the {@code Iterable.forEach} method that is not supported on
+	 * some Android platforms. So why not just use {@code for} directly?
+	 * @since 1.0.6
+	 */
+	public static <T> void each(Iterable<T> iterable, Cons<T> cons) {
+		if (iterable != null) {
+			for (T t : iterable) {
+				cons.get(t);
+			}
+		}
+	}
+
+	public static <T> void each(T[] array, Cons<T> cons) {
+		if (array != null) {
+			for (T t : array) {
+				cons.get(t);
+			}
+		}
 	}
 
 	public static int[] sort(int[] arr) {
@@ -629,7 +667,7 @@ public final class Utils {
 	public static void drawSkyLines(float x, float y, int lineCount, float radius, float height, float rot) {
 		for (int i = 0; i < lineCount; i++) {
 			Tmp.v1.set(1f, 1f); //line start
-			Tmp.v2.set(camera.position);
+			Tmp.v2.set(Core.camera.position);
 
 			Vec2 tv = vecSetLine(Tmp.v1, x, y, i * (360f / lineCount) + rot, radius);
 
@@ -643,7 +681,7 @@ public final class Utils {
 
 	public static Vec2 parallax(float x, float y, float height, boolean ignoreCamDst) { //todo shadows
 		Tmp.v1.set(1f, 1f);
-		Tmp.v2.set(camera.position);
+		Tmp.v2.set(Core.camera.position);
 
 		return vecSetLine(Tmp.v1, x, y, Tmp.v2.sub(x, y).angle() + 180f, ignoreCamDst ? height : height * Tmp.v2.dst(0f, 0f));
 	}
@@ -657,17 +695,17 @@ public final class Utils {
 
 	public static void drawOmegaUltraGigaChadDeathRay(float x, float y, float radius, float height, float upScl) {
 		Tmp.v1.set(parallax(x, y, height, false));
-		Tmp.v2.set(camera.position);
+		Tmp.v2.set(Core.camera.position);
 
 		Fill.poly(x, y, 48, radius);
 		//Fill.poly(Tmp.v1.x, Tmp.v1.y, 48, radius * upScl);
 
 		Vec2 tv3 = vecSetLine(Tmp.v3, x, y, Tmp.v2.sub(x, y).angle() - 90f, radius);
-		Tmp.v2.set(camera.position);
+		Tmp.v2.set(Core.camera.position);
 		Vec2 tv4 = vecSetLine(Tmp.v4, x, y, Tmp.v2.sub(x, y).angle() + 90f, radius);
-		Tmp.v2.set(camera.position);
+		Tmp.v2.set(Core.camera.position);
 		Vec2 tv5 = vecSetLine(Tmp.v5, Tmp.v1, Tmp.v2.sub(x, y).angle() + 90f, radius * upScl);
-		Tmp.v2.set(camera.position);
+		Tmp.v2.set(Core.camera.position);
 		Vec2 tv6 = vecSetLine(Tmp.v6, Tmp.v1, Tmp.v2.sub(x, y).angle() - 90f, radius * upScl);
 
 		quadHelper(tv3.x, tv3.y, tv4.x, tv4.y, tv5.x, tv5.y, tv6.x, tv6.y);
@@ -945,9 +983,9 @@ public final class Utils {
 		for (int i = 1; i < 10; i++) {
 			int j = i;
 			cons.put(i, it -> {
-				PixmapRegion base = atlas.getPixmap(item.uiIcon);
+				PixmapRegion base = Core.atlas.getPixmap(item.uiIcon);
 				Pixmap mix = base.crop();
-				AtlasRegion number = atlas.find(name("number-" + j));
+				AtlasRegion number = Core.atlas.find(name("number-" + j));
 				if (number.found()) {
 					PixmapRegion region = TextureAtlas.blankAtlas().getPixmap(number);
 
@@ -969,9 +1007,9 @@ public final class Utils {
 		for (int i = 1; i < 10; i++) {
 			int j = i;
 			cons.put(i, ld -> {
-				PixmapRegion base = atlas.getPixmap(liquid.uiIcon);
+				PixmapRegion base = Core.atlas.getPixmap(liquid.uiIcon);
 				Pixmap mix = base.crop();
-				AtlasRegion number = atlas.find(name("number-" + j));
+				AtlasRegion number = Core.atlas.find(name("number-" + j));
 				if (number.found()) {
 					PixmapRegion region = TextureAtlas.blankAtlas().getPixmap(number);
 
@@ -1832,10 +1870,10 @@ public final class Utils {
 		}
 	}
 
-	public static class ExtendedPosition implements Position {
+	public static class ExtPos implements Position {
 		public float x, y;
 
-		public ExtendedPosition set(float dx, float dy) {
+		public ExtPos set(float dx, float dy) {
 			x = dx;
 			y = dy;
 			return this;

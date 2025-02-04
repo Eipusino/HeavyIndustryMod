@@ -16,13 +16,13 @@ public class ExtraSectorPreset extends SectorPreset {
 		});
 	}
 
-	public ExtraSectorPreset(String name, Planet planet, int sector, Runnable run) {
-		this(name, planet, sector);
-		scripts.put(this.sector, run);
+	public ExtraSectorPreset(String name, Planet planet, int sec, Runnable run) {
+		this(name, planet, sec);
+		scripts.put(sector, run);
 	}
 
-	public ExtraSectorPreset(String name, Planet planet, int sector) {
-		super(name, planet, sector);
+	public ExtraSectorPreset(String name, Planet planet, int sec) {
+		super(name, planet, sec);
 	}
 
 	/** returns true if a flag is present. */

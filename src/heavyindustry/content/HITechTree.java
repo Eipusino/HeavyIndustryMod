@@ -33,7 +33,7 @@ public final class HITechTree {
 		vanillaNode(Liquids.oil, () -> nodeProduce(HILiquids.nitratedOil, () -> {}));
 		vanillaNode(Liquids.ozone, () -> nodeProduce(HILiquids.methane, () -> {}));
 		vanillaNode(Items.sand, () -> {
-			nodeProduce(HIItems.stone, () -> {});
+			nodeProduce(HIItems.stone, () -> nodeProduce(HIItems.originium, () -> nodeProduce(HIItems.purifiedOriginium, () -> nodeProduce(HIItems.syntheticJade, () -> {}))));
 			nodeProduce(HIItems.rareEarth, () -> {});
 			nodeProduce(HIItems.salt, () -> {});
 		});
@@ -41,6 +41,7 @@ public final class HITechTree {
 		vanillaNode(Items.thorium, () -> nodeProduce(HIItems.uranium, () -> nodeProduce(HIItems.chromium, () -> {})));
 		vanillaNode(Items.surgeAlloy, () -> nodeProduce(HIItems.heavyAlloy, () -> {}));
 		//items,liquids-erekir
+		vanillaNode(Items.beryllium, () -> nodeProduce(HIItems.originium, () -> nodeProduce(HIItems.purifiedOriginium, () -> nodeProduce(HIItems.syntheticJade, () -> {}))));
 		vanillaNode(Items.tungsten, () -> {
 			nodeProduce(HIItems.uranium, () -> {});
 			nodeProduce(HIItems.chromium, () -> {});
@@ -244,10 +245,12 @@ public final class HITechTree {
 		});
 		vanillaNode(scorch, () -> node(dragonBreath, () -> {}));
 		vanillaNode(arc, () -> node(hurricane, () -> {}));
+		vanillaNode(lancer, () -> node(breakthrough, () -> {}));
 		vanillaNode(salvo, () -> {
 			node(spike, () -> node(fissure, () -> {}));
 			node(minigun, () -> {});
 		});
+		vanillaNode(spectre, () -> node(evilSpirits, () -> {}));
 		vanillaNode(meltdown, () -> node(judgement, () -> {}));
 		//turret-erekir
 		vanillaNode(breach, () -> node(rupture, () -> {}));

@@ -1,5 +1,6 @@
 package heavyindustry.entities.abilities;
 
+import arc.*;
 import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
@@ -19,7 +20,6 @@ import mindustry.type.ammo.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.power.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class BatteryAbility extends Ability {
@@ -57,9 +57,9 @@ public class BatteryAbility extends Ability {
 	@Override
 	public void addStats(Table t) {
 		super.addStats(t);
-		t.add(bundle.format("ability.battery-ability-capacity", Strings.autoFixed(capacity, 2)));
+		t.add(Core.bundle.format("ability.battery-ability-capacity", Strings.autoFixed(capacity, 2)));
 		t.row();
-		t.add(bundle.format("ability.battery-ability-range", Strings.autoFixed(range, 2)));
+		t.add(Core.bundle.format("ability.battery-ability-range", Strings.autoFixed(range, 2)));
 	}
 
 	protected void setupColor(float satisfaction) {
@@ -87,7 +87,7 @@ public class BatteryAbility extends Ability {
 
 	@Override
 	public String localized() {
-		return bundle.format("ability.battery-ability", capacity, range / 8);
+		return Core.bundle.format("ability.battery-ability", capacity, range / 8);
 	}
 
 	@Override
@@ -138,7 +138,7 @@ public class BatteryAbility extends Ability {
 
 	@Override
 	public void displayBars(Unit unit, Table bars) {
-		bars.add(new Bar(bundle.format("bar.hi-unit-battery"), Pal.power, () -> amount / capacity)).row();
+		bars.add(new Bar(Core.bundle.format("bar.hi-unit-battery"), Pal.power, () -> amount / capacity)).row();
 	}
 
 	@Override

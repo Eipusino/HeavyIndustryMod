@@ -14,8 +14,8 @@ public class PatternsHighlight implements LanguageHighlight<MatcherContext>, Nam
 	public Pattern rawTokenMatcher;
 	public Pattern symbolMatcher;
 
-	public PatternsHighlight(String language) {
-		this.language = language;
+	public PatternsHighlight(String lang) {
+		language = lang;
 	}
 
 	public PatternsHighlight addPattern(String patternName, TokenMatcher matcher) {

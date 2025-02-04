@@ -98,7 +98,7 @@ public class FlowMenuRenderer extends MenuRenderer {
 			tile.x = (short) x;
 			tile.y = (short) y;
 
-			tile.setFloor(floor.asFloor());
+			tile.setFloor((floor == null ? Blocks.stone : floor).asFloor());
 			tile.setBlock(wall);
 			tile.setOverlay(overlay);
 		}
@@ -107,21 +107,21 @@ public class FlowMenuRenderer extends MenuRenderer {
 			return rand.nextInt();
 		}
 
-		public void generateWorld(int width, int height) {
-			this.width = width;
-			this.height = height;
+		public void generateWorld(int wid, int hei) {
+			width = wid;
+			height = hei;
 			seed = seed();
 
 			Time.mark();
 			world.beginMapLoad();
 
 			// Effectively clear the entire world so generation doesnt overlap.
-			world.tiles = new Tiles(width, height);
+			world.tiles = new Tiles(wid, hei);
 
-			shadows = new FrameBuffer(width, height);
+			shadows = new FrameBuffer(wid, hei);
 
 			if (doDark) {
-				dark = new FrameBuffer(width, height);
+				dark = new FrameBuffer(wid, hei);
 			}
 
 			generate(world.tiles);

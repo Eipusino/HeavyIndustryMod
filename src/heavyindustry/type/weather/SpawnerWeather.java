@@ -1,11 +1,11 @@
 package heavyindustry.type.weather;
 
+import arc.*;
 import arc.math.*;
 import arc.util.*;
 import mindustry.gen.*;
 import mindustry.type.weather.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class SpawnerWeather extends ParticleWeather {
@@ -31,9 +31,9 @@ public class SpawnerWeather extends ParticleWeather {
 	//Spawn only visible area in area camera
 	public void spawnByBounceCam(WeatherState state) {
 		//on based draw weather draw particle
-		Tmp.r1.setCentered(camera.position.x, camera.position.y, graphics.getWidth() / renderer.minScale(), graphics.getHeight() / renderer.minScale());
+		Tmp.r1.setCentered(Core.camera.position.x, Core.camera.position.y, Core.graphics.getWidth() / renderer.minScale(), Core.graphics.getHeight() / renderer.minScale());
 		Tmp.r1.grow(sizeMax * 1.5f);
-		camera.bounds(Tmp.r2);
+		Core.camera.bounds(Tmp.r2);
 		rand.setSeed((long) Time.time);
 
 		float speed = force * state.intensity * Time.delta;

@@ -22,7 +22,7 @@ public class LightLandingAbility extends Ability {
 		damage = dmg;
 	}
 
-    public LightLandingAbility() {}
+	public LightLandingAbility() {}
 
 	@Override
 	public void addStats(Table t) {

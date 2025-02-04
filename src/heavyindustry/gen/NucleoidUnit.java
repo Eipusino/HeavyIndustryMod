@@ -1,5 +1,6 @@
 package heavyindustry.gen;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -8,11 +9,9 @@ import arc.util.io.*;
 import heavyindustry.graphics.*;
 import heavyindustry.type.unit.*;
 import mindustry.content.*;
-import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 
-import static arc.Core.*;
 import static heavyindustry.HIVars.*;
 
 public class NucleoidUnit extends Unitf implements Nucleoidc {
@@ -78,7 +77,7 @@ public class NucleoidUnit extends Unitf implements Nucleoidc {
 			Drawn.circlePercent(x, y, hitSize * 1.15f, reinforcementsReload / nType.reinforcementsSpacing, 0);
 
 			float scl = Interp.pow3Out.apply(Mathf.curve(reinforcementsReload / nType.reinforcementsSpacing, 0.96f, 1f));
-			TextureRegion arrowRegion = atlas.find(name("jump-gate-arrow"));
+			TextureRegion arrowRegion = Core.atlas.find(name("jump-gate-arrow"));
 
 			for (int l : Mathf.signs) {
 				float angle = 90 + 90 * l;

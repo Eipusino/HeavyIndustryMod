@@ -1,5 +1,6 @@
 package heavyindustry.graphics;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.graphics.gl.*;
@@ -8,7 +9,6 @@ import heavyindustry.content.*;
 import mindustry.graphics.*;
 import mindustry.graphics.g3d.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class PlanetMenuRenderer extends MenuRenderer {
@@ -23,7 +23,7 @@ public class PlanetMenuRenderer extends MenuRenderer {
 
 	@Override
 	public void render() {
-		int size = Math.max(graphics.getWidth(), graphics.getHeight());
+		int size = Math.max(Core.graphics.getWidth(), Core.graphics.getHeight());
 
 		if (buffer == null) buffer = new FrameBuffer(size, size);
 
@@ -36,6 +36,6 @@ public class PlanetMenuRenderer extends MenuRenderer {
 
 		buffer.end();
 
-		Draw.rect(Draw.wrap(buffer.getTexture()), (float) graphics.getWidth() / 2, (float) graphics.getHeight() / 2, graphics.getWidth(), graphics.getHeight());
+		Draw.rect(Draw.wrap(buffer.getTexture()), Core.graphics.getWidth() / 2f, Core.graphics.getHeight() / 2f, Core.graphics.getWidth(), Core.graphics.getHeight());
 	}
 }

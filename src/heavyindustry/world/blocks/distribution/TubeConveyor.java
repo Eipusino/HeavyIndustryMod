@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.distribution;
 
+import arc.*;
 import arc.graphics.g2d.*;
 import arc.math.geom.*;
 import arc.util.*;
@@ -9,7 +10,6 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.blocks.distribution.*;
 
-import static arc.Core.*;
 import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 
@@ -32,7 +32,7 @@ public class TubeConveyor extends BeltConveyor {
 		super.load();
 		topRegion = splitLayers(name + "-sheet", 32, 2);
 		capRegion = new TextureRegion[]{topRegion[1][0], topRegion[1][1]};
-		editorRegion = atlas.find(name + "-editor");
+		editorRegion = Core.atlas.find(name + "-editor");
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class TubeConveyor extends BeltConveyor {
 		}
 		mask |= (1 << plan.rotation);
 		Draw.rect(topRegion[0][mask], plan.drawx(), plan.drawy(), 0);
-		for (byte i : tubeTiles[mask]) {
+		for (byte i : tubeTileMap[mask]) {
 			if (directionals[i] == null || (directionals[i].block instanceof Conveyor ? (directionals[i].rotation + 2) % 4 == plan.rotation : ((plan.rotation == i && !directionals[i].block.acceptsItems) || (plan.rotation != i && !directionals[i].block.outputsItems())))) {
 				int id = i == 0 || i == 3 ? 1 : 0;
 				Draw.rect(capRegion[id], plan.drawx(), plan.drawy(), i == 0 || i == 2 ? 0 : -90);
@@ -131,7 +131,7 @@ public class TubeConveyor extends BeltConveyor {
 
 			Draw.z(Layer.block - 0.15f);
 			Draw.rect(topRegion[0][tiling], x, y, 0);
-			byte[] placementId = tubeTiles[tiling];
+			byte[] placementId = tubeTileMap[tiling];
 			for (byte i : placementId) {
 				if (isEnd(i)) {
 					int id = i == 0 || i == 3 ? 1 : 0;

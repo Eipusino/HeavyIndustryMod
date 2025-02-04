@@ -1,5 +1,6 @@
 package heavyindustry.entities.abilities;
 
+import arc.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
 import heavyindustry.content.*;
@@ -7,7 +8,6 @@ import mindustry.entities.*;
 import mindustry.entities.abilities.*;
 import mindustry.gen.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class TerritoryFieldAbility extends Ability {
@@ -34,24 +34,24 @@ public class TerritoryFieldAbility extends Ability {
 
 	@Override
 	public String localized() {
-		return bundle.get("ability.territory-field-ability");
+		return Core.bundle.get("ability.territory-field-ability");
 	}
 
 	@Override
 	public void addStats(Table t) {
 		super.addStats(t);
-		t.add(bundle.format("ability.territory-field-ability-range", range / tilesize));
+		t.add(Core.bundle.format("ability.territory-field-ability-range", range / tilesize));
 		if (healAmount > 0) {
 			t.row();
-			t.add(bundle.format("ability.territory-field-ability-heal", healAmount));
+			t.add(Core.bundle.format("ability.territory-field-ability-heal", healAmount));
 		}
 		if (damageAmount > 0) {
 			t.row();
-			t.add(bundle.format("ability.territory-field-ability-damage", damageAmount));
+			t.add(Core.bundle.format("ability.territory-field-ability-damage", damageAmount));
 		}
 		if (active) {
 			t.row();
-			t.add(bundle.get("ability.territory-field-ability-suppression"));
+			t.add(Core.bundle.get("ability.territory-field-ability-suppression"));
 		}
 	}
 

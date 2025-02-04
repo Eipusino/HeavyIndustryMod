@@ -60,6 +60,7 @@ import mindustry.world.meta.*;
 
 import java.lang.reflect.*;
 
+import static heavyindustry.util.Collect.*;
 import static mindustry.Vars.*;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
@@ -1090,38 +1091,15 @@ public class ExtraContentParser {
 	}
 
 	<T> T make(Class<T> type) {
-		try {
-			Constructor<T> cons = type.getDeclaredConstructor();
-			cons.setAccessible(true);
-			return cons.newInstance();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		return Reflectf.make(type);
 	}
 
 	private <T> T make(Class<T> type, String name) {
-		try {
-			Constructor<T> cons = type.getDeclaredConstructor(String.class);
-			cons.setAccessible(true);
-			return cons.newInstance(name);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		return Reflectf.make(type, arrayOf(String.class), arrayOf(name));
 	}
 
 	private <T> Prov<T> supply(Class<T> type) {
-		try {
-			Constructor<T> cons = type.getDeclaredConstructor();
-			return () -> {
-				try {
-					return cons.newInstance();
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-			};
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		return Reflectf.supply(type);
 	}
 
 	Object field(Class<?> type, JsonValue value) {

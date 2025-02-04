@@ -1,5 +1,6 @@
 package heavyindustry.graphics;
 
+import arc.*;
 import arc.files.*;
 import arc.graphics.*;
 import arc.graphics.Texture.*;
@@ -14,7 +15,6 @@ import heavyindustry.type.*;
 import mindustry.*;
 import mindustry.type.*;
 
-import static arc.Core.*;
 import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
@@ -86,11 +86,11 @@ public final class HIShaders {
 	 * @return The shader file, located inside {@code shaders/}.
 	 */
 	public static Fi defFrag(String name) {
-		return files.internal("shaders/" + name + ".frag");
+		return Core.files.internal("shaders/" + name + ".frag");
 	}
 
 	public static Fi defVert(String name) {
-		return files.internal("shaders/" + name + ".vert");
+		return Core.files.internal("shaders/" + name + ".vert");
 	}
 
 	public static Fi modFrag(String name) {
@@ -167,7 +167,7 @@ public final class HIShaders {
 
 			planet.buffer.getTexture().bind(0);
 			setUniformi("u_topology", 0);
-			setUniformf("u_viewport", graphics.getWidth(), graphics.getHeight());
+			setUniformf("u_viewport", Core.graphics.getWidth(), Core.graphics.getHeight());
 		}
 	}
 
@@ -204,7 +204,7 @@ public final class HIShaders {
 	}
 
 	public static class Tiler extends Shader {
-		public Texture texture = atlas.white().texture;
+		public Texture texture = Core.atlas.white().texture;
 		public float scl = 4f;
 
 		/** This class only requires one instance. Please use {@link #tiler}. */
@@ -214,8 +214,8 @@ public final class HIShaders {
 
 		@Override
 		public void apply() {
-			setUniformf("u_offset", camera.position.x - camera.width / 2, camera.position.y - camera.height / 2);
-			setUniformf("u_texsize", camera.width, camera.height);
+			setUniformf("u_offset", Core.camera.position.x - Core.camera.width / 2, Core.camera.position.y - Core.camera.height / 2);
+			setUniformf("u_texsize", Core.camera.width, Core.camera.height);
 			setUniformf("u_tiletexsize", texture.width / scl, texture.height / scl);
 
 			texture.bind(1);
@@ -254,8 +254,8 @@ public final class HIShaders {
 
 		@Override
 		public void apply() {
-			setUniformf("u_campos", camera.position.x - camera.width / 2, camera.position.y - camera.height / 2);
-			setUniformf("u_resolution", camera.width, camera.height);
+			setUniformf("u_campos", Core.camera.position.x - Core.camera.width / 2, Core.camera.position.y - Core.camera.height / 2);
+			setUniformf("u_resolution", Core.camera.width, Core.camera.height);
 			setUniformf("u_time", Time.time);
 
 			setUniformf("mix_color", waveMix);
@@ -286,8 +286,8 @@ public final class HIShaders {
 
 		@Override
 		public void apply() {
-			setUniformf("u_campos", camera.position.x - camera.width / 2, camera.position.y - camera.height / 2);
-			setUniformf("u_resolution", camera.width, camera.height);
+			setUniformf("u_campos", Core.camera.position.x - Core.camera.width / 2, Core.camera.position.y - Core.camera.height / 2);
+			setUniformf("u_resolution", Core.camera.width, Core.camera.height);
 			setUniformf("u_time", Time.time);
 
 			setUniformf("offset", offset);
@@ -330,9 +330,9 @@ public final class HIShaders {
 			setUniformf("u_dp", Scl.scl(1f));
 			setUniformf("u_time", Time.time / Scl.scl(1f));
 			setUniformf("u_offset",
-					camera.position.x - camera.width / 2,
-					camera.position.y - camera.height / 2);
-			setUniformf("u_texsize", camera.width, camera.height);
+					Core.camera.position.x - Core.camera.width / 2,
+					Core.camera.position.y - Core.camera.height / 2);
+			setUniformf("u_texsize", Core.camera.width, Core.camera.height);
 		}
 	}
 
@@ -350,21 +350,21 @@ public final class HIShaders {
 
 		@Override
 		public void apply() {
-			Texture texture = atlas.find("grass1").texture;
+			Texture texture = Core.atlas.find("grass1").texture;
 			if (topLayer == null)
-				topLayer = atlas.find(topLayerName);
+				topLayer = Core.atlas.find(topLayerName);
 
 			if (bottomLayer == null)
-				bottomLayer = atlas.find(bottomLayerName);
+				bottomLayer = Core.atlas.find(bottomLayerName);
 
 			if (truss == null)
-				truss = atlas.find(trussName);
+				truss = Core.atlas.find(trussName);
 
 			if (noiseTex == null)
-				noiseTex = assets.get("sprites/" + textureName() + ".png", Texture.class);
+				noiseTex = Core.assets.get("sprites/" + textureName() + ".png", Texture.class);
 
-			setUniformf("u_campos", camera.position.x - camera.width / 2, camera.position.y - camera.height / 2);
-			setUniformf("u_resolution", camera.width, camera.height);
+			setUniformf("u_campos", Core.camera.position.x - Core.camera.width / 2, Core.camera.position.y - Core.camera.height / 2);
+			setUniformf("u_resolution", Core.camera.width, Core.camera.height);
 			setUniformf("u_time", Time.time);
 
 			setUniformf("u_toplayer", topLayer.u, topLayer.v, topLayer.u2, topLayer.v2);
@@ -393,7 +393,7 @@ public final class HIShaders {
 		}
 
 		public void loadNoise() {
-			assets.load("sprites/" + textureName() + ".png", Texture.class).loaded = t -> {
+			Core.assets.load("sprites/" + textureName() + ".png", Texture.class).loaded = t -> {
 				t.setFilter(TextureFilter.linear);
 				t.setWrap(TextureWrap.repeat);
 			};
@@ -401,13 +401,13 @@ public final class HIShaders {
 
 		@Override
 		public void apply() {
-			setUniformf("u_campos", camera.position.x - camera.width / 2, camera.position.y - camera.height / 2);
-			setUniformf("u_resolution", camera.width, camera.height);
+			setUniformf("u_campos", Core.camera.position.x - Core.camera.width / 2, Core.camera.position.y - Core.camera.height / 2);
+			setUniformf("u_resolution", Core.camera.width, Core.camera.height);
 			setUniformf("u_time", Time.time);
 
 			if (hasUniform("u_noise")) {
 				if (noiseTex == null) {
-					noiseTex = assets.get("sprites/" + textureName() + ".png", Texture.class);
+					noiseTex = Core.assets.get("sprites/" + textureName() + ".png", Texture.class);
 				}
 
 				noiseTex.bind(1);

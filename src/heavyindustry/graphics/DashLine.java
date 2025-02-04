@@ -33,10 +33,10 @@ public final class DashLine {
 
 			float x11 = pointList.x(0), v11 = pointList.y(0);
 			float x12 = pointList.x(1), y12 = pointList.y(1);
-			float jstroke = stroke / 2f;
+			float jStroke = stroke / 2f;
 
 			float len1 = Mathf.len(x12 - x11, y12 - v11);
-			float diff1x = (x12 - x11) / len1 * jstroke, diff1y = (y12 - v11) / len1 * jstroke;
+			float diff1x = (x12 - x11) / len1 * jStroke, diff1y = (y12 - v11) / len1 * jStroke;
 			floats.add(x11 - diff1x - diff1y, v11 - diff1y + diff1x, x11 - diff1x + diff1y, v11 - diff1y - diff1x);
 
 			for (int i = 0; i < realSize - 2; i++) {
@@ -55,11 +55,11 @@ public final class DashLine {
 				v.set(x2, y2).sub(x1, y1).setLength(stroke).scl(1f / beta).scl(0.5f);
 				if (beta == 0) {
 					v.setZero();
-					float hstroke = stroke / 2f;
+					float hStroke = stroke / 2f;
 					tmp1.set(x2, y2).sub(x1, y1);
 					tmp2.set(x0, y0).sub(x1, y1);
 					float angleDiff = Mathf.mod(tmp1.angle() - tmp2.angle(), 360);
-					float len = hstroke / Mathf.sinDeg(angleDiff / 2f);
+					float len = hStroke / Mathf.sinDeg(angleDiff / 2f);
 
 					tmp1.setLength(len).rotate(90);
 					tmp2.setLength(len).rotate(90);
@@ -75,22 +75,22 @@ public final class DashLine {
 
 			float x21 = pointList.x(-2), y21 = pointList.y(-2);
 			float x22 = pointList.x(-1), y22 = pointList.y(-1);
-			float kstroke = stroke / 2f;
+			float kStroke = stroke / 2f;
 
 			float len2 = Mathf.len(x22 - x21, y22 - y21);
-			float diff2x = (x22 - x21) / len2 * kstroke, diff2y = (y22 - y21) / len2 * kstroke;
+			float diff2x = (x22 - x21) / len2 * kStroke, diff2y = (y22 - y21) / len2 * kStroke;
 			floats.add(x22 + diff2x - diff2y, y22 + diff2y + diff2x, x22 + diff2x + diff2y, y22 + diff2y - diff2x);
 
 			for (int i = 0; i < floats.size / 2 - 2; i += 2) {
-				float x1 = xfloats(i);
-				float y1 = yfloats(i);
-				float x2 = xfloats(i + 1);
-				float y2 = yfloats(i + 1);
+				float x1 = xs(i);
+				float y1 = ys(i);
+				float x2 = xs(i + 1);
+				float y2 = ys(i + 1);
 
-				float x3 = xfloats(i + 2);
-				float y3 = yfloats(i + 2);
-				float x4 = xfloats(i + 3);
-				float y4 = yfloats(i + 3);
+				float x3 = xs(i + 2);
+				float y3 = ys(i + 2);
+				float x4 = xs(i + 3);
+				float y4 = ys(i + 3);
 
 				if (floats.size / 2 == 4) {
 					Fill.quad(x1, y1, x3, y3, x4, y4, x2, y2);
@@ -103,11 +103,11 @@ public final class DashLine {
 		}
 	}
 
-	private static float xfloats(int x) {
+	private static float xs(int x) {
 		return floats.items[Mathf.mod(x * 2, floats.size)];
 	}
 
-	private static float yfloats(int y) {
+	private static float ys(int y) {
 		return floats.items[Mathf.mod(y * 2 + 1, floats.size)];
 	}
 
@@ -158,16 +158,16 @@ public final class DashLine {
 							}
 							float next2x = pointList.x(nextIndex);
 							float next2y = pointList.y(nextIndex);
-							float currentx = pointList.x(nextIndex - 1);
-							float currenty = pointList.y(nextIndex - 1);
-							nextPosition = Tmp.v4.set(next2x, next2y).sub(currentx, currenty);
+							float currentX = pointList.x(nextIndex - 1);
+							float currentY = pointList.y(nextIndex - 1);
+							nextPosition = Tmp.v4.set(next2x, next2y).sub(currentX, currentY);
 							float perfectLen = len * cornerPercent;
 							float nextLen = nextPosition.len();
 							if (nextLen > perfectLen) {
 								nextPosition.setLength(perfectLen);
 								nextLen = perfectLen;
 							}
-							floats.add(currentx + nextPosition.x, currenty + nextPosition.y);
+							floats.add(currentX + nextPosition.x, currentY + nextPosition.y);
 							if (nextLen < perfectLen && cornerPercent > 0.0000001f) {
 								cornerPercent = (perfectLen - nextLen) / len;
 							} else {
@@ -191,20 +191,20 @@ public final class DashLine {
 
 	static class PointList implements Poolable {
 		public float[] cords;
-		public int len;
+		public int length;
 
-		public PointList set(float[] cords, int len) {
-			this.cords = cords;
-			this.len = len;
+		public PointList set(float[] cds, int len) {
+			cords = cds;
+			length = len;
 			return this;
 		}
 
 		public float x(int i) {
-			return cords[Mathf.mod(i * 2, len)];
+			return cords[Mathf.mod(i * 2, length)];
 		}
 
 		public float y(int i) {
-			return cords[Mathf.mod(i * 2 + 1, len)];
+			return cords[Mathf.mod(i * 2 + 1, length)];
 		}
 
 		public void free() {
@@ -214,7 +214,7 @@ public final class DashLine {
 		@Override
 		public void reset() {
 			cords = null;
-			len = -1;
+			length = -1;
 		}
 	}
 }

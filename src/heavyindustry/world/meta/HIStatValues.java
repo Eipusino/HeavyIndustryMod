@@ -1,5 +1,6 @@
 package heavyindustry.world.meta;
 
+import arc.*;
 import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
@@ -24,7 +25,6 @@ import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.blocks.environment.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public final class HIStatValues {
@@ -64,46 +64,46 @@ public final class HIStatValues {
 
 						if (type.damage > 0 && (type.collides || type.splashDamage <= 0)) {
 							if (type.continuousDamage() > 0) {
-								bt.add(bundle.format("bullet.damage", type.continuousDamage()) + StatUnit.perSecond.localized());
+								bt.add(Core.bundle.format("bullet.damage", type.continuousDamage()) + StatUnit.perSecond.localized());
 							} else {
-								bt.add(bundle.format("bullet.damage", type.damage));
+								bt.add(Core.bundle.format("bullet.damage", type.damage));
 							}
 						}
 
 						if (type.buildingDamageMultiplier != 1) {
-							sep(bt, bundle.format("bullet.buildingdamage", (int) (type.buildingDamageMultiplier * 100)));
+							sep(bt, Core.bundle.format("bullet.buildingdamage", (int) (type.buildingDamageMultiplier * 100)));
 						}
 
 						if (type.rangeChange != 0 && !compact) {
-							sep(bt, bundle.format("bullet.range", (type.rangeChange > 0 ? "+" : "-") + Strings.autoFixed(type.rangeChange / tilesize, 1)));
+							sep(bt, Core.bundle.format("bullet.range", (type.rangeChange > 0 ? "+" : "-") + Strings.autoFixed(type.rangeChange / tilesize, 1)));
 						}
 
 						if (type.splashDamage > 0) {
-							sep(bt, bundle.format("bullet.splashdamage", (int) type.splashDamage, Strings.fixed(type.splashDamageRadius / tilesize, 1)));
+							sep(bt, Core.bundle.format("bullet.splashdamage", (int) type.splashDamage, Strings.fixed(type.splashDamageRadius / tilesize, 1)));
 						}
 
 						if (!compact && !Mathf.equal(type.ammoMultiplier, 1f) && type.displayAmmoMultiplier && (!(t instanceof Turret) || ((Turret) t).displayAmmoMultiplier)) {
-							sep(bt, bundle.format("bullet.multiplier", (int) type.ammoMultiplier));
+							sep(bt, Core.bundle.format("bullet.multiplier", (int) type.ammoMultiplier));
 						}
 
 						if (!compact && !Mathf.equal(type.reloadMultiplier, 1f)) {
-							sep(bt, bundle.format("bullet.reload", Strings.autoFixed(type.reloadMultiplier, 2)));
+							sep(bt, Core.bundle.format("bullet.reload", Strings.autoFixed(type.reloadMultiplier, 2)));
 						}
 
 						if (type.knockback > 0) {
-							sep(bt, bundle.format("bullet.knockback", Strings.autoFixed(type.knockback, 2)));
+							sep(bt, Core.bundle.format("bullet.knockback", Strings.autoFixed(type.knockback, 2)));
 						}
 
 						if (type.healPercent > 0f) {
-							sep(bt, bundle.format("bullet.healpercent", Strings.autoFixed(type.healPercent, 2)));
+							sep(bt, Core.bundle.format("bullet.healpercent", Strings.autoFixed(type.healPercent, 2)));
 						}
 
 						if (type.healAmount > 0f) {
-							sep(bt, bundle.format("bullet.healamount", Strings.autoFixed(type.healAmount, 2)));
+							sep(bt, Core.bundle.format("bullet.healamount", Strings.autoFixed(type.healAmount, 2)));
 						}
 
 						if (type.pierce || type.pierceCap != -1) {
-							sep(bt, type.pierceCap == -1 ? "@bullet.infinitepierce" : bundle.format("bullet.pierce", type.pierceCap));
+							sep(bt, type.pierceCap == -1 ? "@bullet.infinitepierce" : Core.bundle.format("bullet.pierce", type.pierceCap));
 						}
 
 						if (type.incendAmount > 0) {
@@ -115,7 +115,7 @@ public final class HIStatValues {
 						}
 
 						if (type.lightning > 0) {
-							sep(bt, bundle.format("bullet.lightning", type.lightning, type.lightningDamage < 0 ? type.damage : type.lightningDamage));
+							sep(bt, Core.bundle.format("bullet.lightning", type.lightning, type.lightningDamage < 0 ? type.damage : type.lightningDamage));
 						}
 
 						if (type.pierceArmor) {
@@ -123,11 +123,11 @@ public final class HIStatValues {
 						}
 
 						if (type.status != StatusEffects.none) {
-							sep(bt, (type.status.minfo.mod == null ? type.status.emoji() : "") + "[stat]" + type.status.localizedName + "[lightgray] ~ [stat]" + ((int) (type.statusDuration / 60f)) + "[lightgray] " + bundle.get("unit.seconds"));
+							sep(bt, (type.status.minfo.mod == null ? type.status.emoji() : "") + "[stat]" + type.status.localizedName + "[lightgray] ~ [stat]" + ((int) (type.statusDuration / 60f)) + "[lightgray] " + Core.bundle.get("unit.seconds"));
 						}
 
 						if (type.fragBullet != null) {
-							sep(bt, bundle.format("bullet.frags", type.fragBullets));
+							sep(bt, Core.bundle.format("bullet.frags", type.fragBullets));
 							bt.row();
 
 							StatValues.ammo(ObjectMap.of(t, type.fragBullet), indent + 1, false).display(bt);
@@ -146,7 +146,7 @@ public final class HIStatValues {
 			table.table(t -> {
 				t.left().defaults().padRight(3).left();
 
-				t.add(bundle.format("bullet.lightning", maxTargets, damage));
+				t.add(Core.bundle.format("bullet.lightning", maxTargets, damage));
 				t.row();
 
 				if (status != StatusEffects.none) {
@@ -182,7 +182,7 @@ public final class HIStatValues {
 				table.row();
 				table.table(c -> {
 					c.image(icon(i)).size(32).scaling(Scaling.fit).padRight(4).left().top();
-					c.add(bundle.get("stat-" + i.name + ".ammo")).padRight(10).left().top();
+					c.add(Core.bundle.get("stat-" + i.name + ".ammo")).padRight(10).left().top();
 					c.background(Tex.underline);
 				}).left();
 				table.row();
@@ -218,7 +218,7 @@ public final class HIStatValues {
 								}
 								if (replace) {
 									bt.row();
-									bt.add(bundle.get("hi-stat-value-replace"));
+									bt.add(Core.bundle.get("hi-stat-value-replace"));
 								}
 							}
 							bt.row();
@@ -248,11 +248,11 @@ public final class HIStatValues {
 				ft.clearChildren();
 				ft.left().defaults().padRight(3).left();
 
-				ft.add(bundle.format("stat.hi-fuel.input", crafter.fuelPerItem));
+				ft.add(Core.bundle.format("stat.hi-fuel.input", crafter.fuelPerItem));
 
-				sep(ft, bundle.format("stat.hi-fuel.use", crafter.fuelPerCraft));
+				sep(ft, Core.bundle.format("stat.hi-fuel.use", crafter.fuelPerCraft));
 
-				sep(ft, bundle.format("stat.hi-fuel.capacity", crafter.fuelCapacity));
+				sep(ft, Core.bundle.format("stat.hi-fuel.capacity", crafter.fuelCapacity));
 
 				if (crafter.attribute != null) {
 					ft.row();
@@ -308,11 +308,11 @@ public final class HIStatValues {
 		return table -> table.table(ht -> {
 			ht.left().defaults().padRight(3).left();
 
-			ht.add(bundle.format("stat.hi-flare-health", health));
+			ht.add(Core.bundle.format("stat.hi-flare-health", health));
 			ht.row();
-			ht.add(bundle.format("stat.hi-flare-attraction", attraction));
+			ht.add(Core.bundle.format("stat.hi-flare-attraction", attraction));
 			ht.row();
-			ht.add(bundle.format("stat.hi-flare-lifetime", (int)(duration / 60f)));
+			ht.add(Core.bundle.format("stat.hi-flare-lifetime", (int)(duration / 60f)));
 		}).padTop(-9f).left().get().background(Tex.underline);
 	}
 
@@ -320,7 +320,7 @@ public final class HIStatValues {
 		return table -> table.table(t -> {
 			t.left().defaults().padRight(3).left();
 
-			t.add(bundle.format("bullet.damage", damage * 60f / reload) + StatUnit.perSecond.localized());
+			t.add(Core.bundle.format("bullet.damage", damage * 60f / reload) + StatUnit.perSecond.localized());
 			t.row();
 
 			if (status != StatusEffects.none) {

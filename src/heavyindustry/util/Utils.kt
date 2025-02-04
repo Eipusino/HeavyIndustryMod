@@ -43,6 +43,18 @@ fun <T, N, R, P> nop4(a: T?, b: N?, c: R?, d: P?, e: Cons4<T, N, R, P>) {
 	if (a != null && b != null && c != null && d != null) e.get(a, b, c, d)
 }
 
+fun <T> nol(a: T?, b: Boolean, c: Cons<T>) {
+	if (a != null && b) c.get(a)
+}
+
+fun <T> nom(a: T?, b: Cons<T>, c: Cons<T?>) {
+	if (a != null) b.get(a) else c.get(a)
+}
+
+fun <T> non(a: T?, b: Boolean, c: Cons<T>, d: Cons<T?>) {
+	if (a != null && b) c.get(a) else d.get(a)
+}
+
 inline fun <reified T> inq(a: Any?, b: T): T = if (a is T) a else b
 
 inline fun <reified T> ins(a: Any?, b: Cons<T>) {

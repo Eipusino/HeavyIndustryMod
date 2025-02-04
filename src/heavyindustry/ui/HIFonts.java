@@ -1,5 +1,6 @@
 package heavyindustry.ui;
 
+import arc.*;
 import arc.assets.*;
 import arc.files.*;
 import arc.freetype.*;
@@ -8,7 +9,6 @@ import arc.freetype.FreetypeFontLoader.*;
 import arc.graphics.g2d.*;
 import arc.struct.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 @SuppressWarnings("rawtypes")
@@ -21,14 +21,14 @@ public final class HIFonts {
 	private HIFonts() {}
 
 	public static void load() {
-		assets.setLoader(FreeTypeFontGenerator.class, loaderSuffix, new FreeTypeFontGeneratorLoader(tree) {
+		Core.assets.setLoader(FreeTypeFontGenerator.class, loaderSuffix, new FreeTypeFontGeneratorLoader(tree) {
 			@Override
 			public FreeTypeFontGenerator load(AssetManager assetManager, String fileName, Fi file, FreeTypeFontGeneratorParameters parameter) {
 				return new FreeTypeFontGenerator(resolve(fileName.substring(0, fileName.length() - loaderSuffix.length())));
 			}
 		});
 
-		assets.setLoader(Font.class, "-heavyindustry", new FreetypeFontLoader(tree) {
+		Core.assets.setLoader(Font.class, "-heavyindustry", new FreetypeFontLoader(tree) {
 			@Override
 			public Font loadSync(AssetManager manager, String fileName, Fi file, FreeTypeFontLoaderParameter parameter) {
 				if (parameter == null)
@@ -44,7 +44,7 @@ public final class HIFonts {
 			}
 		});
 
-		assets.load("consolas-heavyindustry", Font.class, new FreeTypeFontLoaderParameter("fonts/consolas.ttf", new FreeTypeFontParameter() {{
+		Core.assets.load("consolas-heavyindustry", Font.class, new FreeTypeFontLoaderParameter("fonts/consolas.ttf", new FreeTypeFontParameter() {{
 			size = 20;
 			incremental = true;
 			renderCount = 1;
@@ -54,7 +54,7 @@ public final class HIFonts {
 			consolas = f;
 		};
 
-		assets.load("inconsoiata-heavyindustry", Font.class, new FreeTypeFontLoaderParameter("fonts/inconsoiata.ttf", new FreeTypeFontParameter() {{
+		Core.assets.load("inconsoiata-heavyindustry", Font.class, new FreeTypeFontLoaderParameter("fonts/inconsoiata.ttf", new FreeTypeFontParameter() {{
 			size = 20;
 			incremental = true;
 			renderCount = 1;
@@ -64,7 +64,7 @@ public final class HIFonts {
 			inconsoiata = f;
 		};
 
-		assets.load("jetbrainsmono-heavyindustry", Font.class, new FreeTypeFontLoaderParameter("fonts/jetbrainsmono.ttf", new FreeTypeFontParameter() {{
+		Core.assets.load("jetbrainsmono-heavyindustry", Font.class, new FreeTypeFontLoaderParameter("fonts/jetbrainsmono.ttf", new FreeTypeFontParameter() {{
 			size = 22;
 			incremental = true;
 			renderCount = 1;

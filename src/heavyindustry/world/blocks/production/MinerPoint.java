@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.production;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -22,7 +23,6 @@ import mindustry.world.blocks.environment.*;
 import mindustry.world.blocks.storage.CoreBlock.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 /**
@@ -78,7 +78,7 @@ public class MinerPoint extends Block {
 	public void drawPlace(int x, int y, int rotation, boolean valid) {
 		super.drawPlace(x, y, rotation, valid);
 		if (world.tile(x, y) != null && !canPlaceOn(world.tile(x, y), player.team(), rotation)) {
-			drawPlaceText(bundle.get((player.team().core() != null && player.team().core().items.has(requirements, state.rules.buildCostMultiplier)) || state.rules.infiniteResources ? "bar.hi-close" : "bar.noresources"), x, y, valid);
+			drawPlaceText(Core.bundle.get((player.team().core() != null && player.team().core().items.has(requirements, state.rules.buildCostMultiplier)) || state.rules.infiniteResources ? "bar.hi-close" : "bar.noresources"), x, y, valid);
 		}
 		x *= tilesize;
 		y *= tilesize;
@@ -128,7 +128,7 @@ public class MinerPoint extends Block {
 	public void setBars() {
 		super.setBars();
 		addBar("units", (MinerPointBuild tile) -> new Bar(
-				() -> bundle.format("bar.unitcap", Fonts.getUnicodeStr(MinerUnit.name), tile.units.size, dronesCreated),
+				() -> Core.bundle.format("bar.unitcap", Fonts.getUnicodeStr(MinerUnit.name), tile.units.size, dronesCreated),
 				() -> Pal.power,
 				() -> (float) tile.units.size / dronesCreated));
 	}
@@ -298,7 +298,7 @@ public class MinerPoint extends Block {
 
 			Drawf.dashSquare(Pal.accent, x, y, range * tilesize * 2);
 
-			if (settings != null && settings.getBool("eu-show-miner-point")) {
+			if (Core.settings != null && Core.settings.getBool("eu-show-miner-point")) {
 				if (tiles.isEmpty() && !placeInAir) {
 					findOre();
 					if (tiles.isEmpty()) {

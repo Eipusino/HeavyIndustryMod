@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.defense.turrets;
 
+import arc.*;
 import arc.math.*;
 import arc.util.*;
 import mindustry.content.*;
@@ -10,7 +11,6 @@ import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class SpeedupTurret extends PowerTurret {
@@ -34,12 +34,12 @@ public class SpeedupTurret extends PowerTurret {
 	public void setBars() {
 		super.setBars();
 		addBar("liquid", (SpeedupTurretBuild tile) -> new Bar(
-				() -> bundle.get("bar.hi-speed-up"),
+				() -> Core.bundle.get("bar.hi-speed-up"),
 				() -> Pal.techBlue,
 				() -> tile.speedupScl / maxSpeedupScl));
 
 		addBar("overheat", (SpeedupTurretBuild tile) -> new Bar(
-				() -> bundle.get("bar.hi-overheat"),
+				() -> Core.bundle.get("bar.hi-overheat"),
 				() -> tile.requireCompleteCooling ? Pal.redderDust : Pal.powerLight,
 				() -> tile.overheat / overheatTime));
 	}

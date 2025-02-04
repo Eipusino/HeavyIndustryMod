@@ -1,5 +1,6 @@
 package heavyindustry.content;
 
+import arc.*;
 import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
@@ -26,7 +27,6 @@ import mindustry.world.blocks.payloads.*;
 
 import java.util.*;
 
-import static arc.Core.*;
 import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
@@ -101,7 +101,7 @@ public final class HIFx {
 				}
 			}),
 			shuttle = new Effect(70f, 800f, e -> {
-				if (!(e.data instanceof Float len)) return;
+				float len = e.data instanceof Number n ? n.floatValue() : 0f;
 
 				Draw.color(e.color, Color.white, e.fout() * 0.3f);
 				Lines.stroke(e.fout() * 2.2F);
@@ -117,7 +117,7 @@ public final class HIFx {
 				}
 			}),
 			shuttleDark = new Effect(70f, 800f, e -> {
-				if (!(e.data instanceof Float len)) return;
+				float len = e.data instanceof Number n ? n.floatValue() : 0f;
 
 				Draw.color(e.color, Color.white, e.fout() * 0.3f);
 				Lines.stroke(e.fout() * 2.2F);
@@ -145,7 +145,7 @@ public final class HIFx {
 				}
 			}).layer(Layer.effect - 1f),
 			shuttleLerp = new Effect(180f, 800f, e -> {
-				if (!(e.data instanceof Float len)) return;
+				float len = e.data instanceof Number n ? n.floatValue() : 0f;
 				float f = Mathf.curve(e.fin(Interp.pow5In), 0f, 0.07f) * Mathf.curve(e.fout(), 0f, 0.4f);
 
 				Draw.color(e.color);
@@ -219,7 +219,7 @@ public final class HIFx {
 			boolSelector = new Effect(0, 0, e -> {
 			}),
 			spawn = new Effect(100f, e -> {
-				TextureRegion pointerRegion = atlas.find(name("jump-gate-pointer"));
+				TextureRegion pointerRegion = Core.atlas.find(name("jump-gate-pointer"));
 
 				Draw.color(e.color);
 
@@ -853,7 +853,7 @@ public final class HIFx {
 			shareDamage = new Effect(45f, e -> {
 				if (!(e.data instanceof Number n)) return;
 				Draw.color(e.color);
-				Draw.alpha((n).floatValue() * e.fout());
+				Draw.alpha(n.floatValue() * e.fout());
 				Fill.square(e.x, e.y, e.rotation);
 			}),
 			lightningSpark = new Effect(Fx.chainLightning.lifetime, e -> {
@@ -871,7 +871,7 @@ public final class HIFx {
 				e.lifetime = e.rotation;
 
 				Draw.color(e.color);
-				TextureRegion arrowRegion = atlas.find(name("jump-gate-arrow"));
+				TextureRegion arrowRegion = Core.atlas.find(name("jump-gate-arrow"));
 				float scl = Mathf.curve(e.fout(), 0f, 0.1f);
 				Lines.stroke(2 * scl);
 				Lines.line(p.getX(), p.getY(), e.x, e.y);
@@ -890,7 +890,7 @@ public final class HIFx {
 					Lines.spikes(e.x, e.y, e.rotation / i / 1.5f, e.rotation / 12f, 4, -e.time * 1.25f);
 				}
 
-				TextureRegion arrowRegion = atlas.find(name("jump-gate-arrow"));
+				TextureRegion arrowRegion = Core.atlas.find(name("jump-gate-arrow"));
 				float scl = Mathf.curve(e.fout(), 0f, 0.1f);
 
 				for (int l = 0; l < 4; l++) {
@@ -1313,8 +1313,8 @@ public final class HIFx {
 			}),
 			forceField = new Effect(45, e -> {
 				Draw.color(e.color);
-				if (e.data instanceof Float f) {
-					Draw.alpha(f);
+				if (e.data instanceof Number f) {
+					Draw.alpha(f.floatValue());
 				}
 				float endRot = ((int) Math.ceil(e.rotation / 45) + 1) * 45;
 
@@ -2245,7 +2245,7 @@ public final class HIFx {
 			int i = -Mathf.sign(e.rotation);
 			float len = (2f + e.finpow() * 10f) * i;
 			float lr = rot + e.fin() * 20f * i;
-			Draw.rect(atlas.find("casing"), e.x + Angles.trnsx(lr, len) + Mathf.randomSeedRange(e.id + i + 7, 3f * e.fin()), e.y + Angles.trnsy(lr, len) + Mathf.randomSeedRange(e.id + i + 8, 3f * e.fin()), 2f, 3f, rot + e.fin() * 50f * i);
+			Draw.rect(Core.atlas.find("casing"), e.x + Angles.trnsx(lr, len) + Mathf.randomSeedRange(e.id + i + 7, 3f * e.fin()), e.y + Angles.trnsy(lr, len) + Mathf.randomSeedRange(e.id + i + 8, 3f * e.fin()), 2f, 3f, rot + e.fin() * 50f * i);
 		}).layer(Layer.bullet);
 	}
 
@@ -2388,7 +2388,7 @@ public final class HIFx {
 	public static Effect laserEffect(float num) {
 		return new Effect(26f, e -> {
 			Draw.color(Color.white);
-			float length = e.data instanceof Float f ? f : 70f;
+			float length = e.data instanceof Number f ? f.floatValue() : 70f;
 			Angles.randLenVectors(e.id, (int) (length / num), length, e.rotation, 0f, (x, y) -> {
 				Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fout() * 9f);
 				Drawf.light(e.x + x, e.y + y, e.fout(0.25f) * 12f, Color.white, 0.7f);

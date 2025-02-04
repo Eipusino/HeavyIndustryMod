@@ -4,8 +4,6 @@ import arc.*;
 import arc.graphics.g2d.*;
 import arc.scene.*;
 
-import static arc.Core.*;
-
 /**
  * The floodlight effect container is used to filter the elements inside the container, giving them a light effect.
  * The default floodlight parameters come from the game settings.
@@ -17,9 +15,9 @@ import static arc.Core.*;
 public class BloomGroup extends Group {
 	protected final Bloom bloom = new Bloom(true);
 
-	public boolean bloomEnabled = settings.getBool("bloom", true);
-	public float bloomIntensity = settings.getInt("bloomintensity", 6) / 4f + 1f;
-	public int bloomBlur = settings.getInt("bloomblur", 1);
+	public boolean bloomEnabled = Core.settings.getBool("bloom", true);
+	public float bloomIntensity = Core.settings.getInt("bloomintensity", 6) / 4f + 1f;
+	public int bloomBlur = Core.settings.getInt("bloomblur", 1);
 
 	protected boolean clip = false;
 

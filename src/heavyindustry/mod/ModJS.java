@@ -15,7 +15,6 @@ import static heavyindustry.util.Utils.*;
  *
  * @since 1.0.6
  */
-@SuppressWarnings("unused")
 public final class ModJS {
 	private static final Seq<Runnable> runs = new Seq<>();
 	private static final Seq<String> keys = new Seq<>();

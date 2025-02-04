@@ -35,8 +35,8 @@ public class DamageSpawnAbility extends UnitSpawnAbility {
 
 	@Override
 	public void update(Unit unit) {
-        Unit target = Units.closestEnemy(unit.team, unit.x, unit.y, range, u -> !u.dead());
-        Building targetBuild = Units.findEnemyTile(unit.team, unit.x, unit.y, range, t -> !t.dead);
+		Unit target = Units.closestEnemy(unit.team, unit.x, unit.y, range, u -> !u.dead());
+		Building targetBuild = Units.findEnemyTile(unit.team, unit.x, unit.y, range, t -> !t.dead);
 
 		if (target != null && charge == 0) {
 			target.damage(damage);

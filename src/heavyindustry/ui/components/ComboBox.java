@@ -17,21 +17,22 @@ import heavyindustry.ui.listeners.Listeners.*;
 import kotlin.jvm.internal.Ref.*;
 
 public class ComboBox extends Table {
-	private final Table mySelectionTable = new Table() {{
+	protected final Table mySelectionTable = new Table() {{
 		Core.scene.addListener(new ClickOnOtherListener(() -> {
 			if (hasParent()) {
 				remove();
 			}
 			return false;
-		}, it -> ComboBox.this.isAscendantOf(it) || isAscendantOf(it)));
+		}, this::isAscendantOf));
 	}};
 	public Seq<ComboBoxItem> items = new Seq<>();
 	public Seq<ComboBoxItemSelectListener> listeners = new Seq<>();
 
-	private TextField myField;
-	private Button myButton;
-	private int prevSize = 0;
-	private int selectedItem = 0;
+	protected final TextField myField;
+	protected final Button myButton;
+
+	protected int prevSize = 0;
+	protected int selectedItem = 0;
 
 	public ComboBox() {
 		add(myField = new TextField() {{
@@ -67,7 +68,7 @@ public class ComboBox extends Table {
 		});
 	}
 
-	private void toggleSelectionTable() {
+	protected void toggleSelectionTable() {
 		if (mySelectionTable.hasParent()) {
 			hideSelectionTable();
 		} else {
@@ -87,11 +88,11 @@ public class ComboBox extends Table {
 		return item;
 	}
 
-	private void hideSelectionTable() {
+	protected void hideSelectionTable() {
 		mySelectionTable.remove();
 	}
 
-	private void showSelectionTable() {
+	protected void showSelectionTable() {
 		if (mySelectionTable.hasParent()) {
 			hideSelectionTable();
 		}
@@ -133,7 +134,7 @@ public class ComboBox extends Table {
 		super.act(delta);
 	}
 
-	private void rebuildItems() {
+	protected void rebuildItems() {
 		mySelectionTable.clearChildren();
 
 		for (int i = 0; i < items.size; i++) {
@@ -208,13 +209,13 @@ public class ComboBox extends Table {
 			this(Core.scene.getStyle(ComboBoxItemStyle.class));
 		}
 
-		public ComboBoxItem(String text) {
-			this(text, Core.scene.getStyle(ComboBoxItemStyle.class));
+		public ComboBoxItem(String tex) {
+			this(tex, Core.scene.getStyle(ComboBoxItemStyle.class));
 		}
 
-		public ComboBoxItem(String text, ComboBoxItemStyle style) {
-			this(style);
-			this.text = text;
+		public ComboBoxItem(String tex, ComboBoxItemStyle sty) {
+			this(sty);
+			text = tex;
 		}
 
 		public ComboBoxItem(Drawable image, String text) {
@@ -227,8 +228,8 @@ public class ComboBox extends Table {
 			text = string;
 		}
 
-		public ComboBoxItem(ComboBoxItemStyle style) {
-			this.style = style;
+		public ComboBoxItem(ComboBoxItemStyle sty) {
+			style = sty;
 		}
 
 		public static class ComboBoxItemStyle {

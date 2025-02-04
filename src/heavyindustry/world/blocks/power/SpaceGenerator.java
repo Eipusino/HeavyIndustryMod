@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.power;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -15,7 +16,6 @@ import mindustry.world.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class SpaceGenerator extends PowerGenerator {
@@ -58,12 +58,12 @@ public class SpaceGenerator extends PowerGenerator {
 		stats.remove(generationType);
 		stats.add(generationType, powerProduction * 60f, StatUnit.powerSecond);
 		if (haveBasicPowerOutput)
-			stats.add(Stat.tiles, HIStatValues.colorString(validColor, bundle.get("stat.hi-valid")));
-		stats.add(Stat.tiles, HIStatValues.colorString(invalidColor, bundle.get("stat.hi-invalid")));
+			stats.add(Stat.tiles, HIStatValues.colorString(validColor, Core.bundle.get("stat.hi-valid")));
+		stats.add(Stat.tiles, HIStatValues.colorString(invalidColor, Core.bundle.get("stat.hi-invalid")));
 		if (attribute != null) {
-			stats.add(Stat.tiles, HIStatValues.colorString(attributeColor, bundle.get("stat.hi-attribute")));
+			stats.add(Stat.tiles, HIStatValues.colorString(attributeColor, Core.bundle.get("stat.hi-attribute")));
 			if (negativeAttributeColor != attributeColor)
-				stats.add(Stat.tiles, HIStatValues.colorString(negativeAttributeColor, bundle.get("stat.hi-negative-attribute")));
+				stats.add(Stat.tiles, HIStatValues.colorString(negativeAttributeColor, Core.bundle.get("stat.hi-negative-attribute")));
 			stats.add(haveBasicPowerOutput ? Stat.affinities : Stat.tiles, attribute, true, efficiencyScale, !display);
 		}
 		stats.add(Stat.range, edgeSpace, StatUnit.blocks);
@@ -73,7 +73,7 @@ public class SpaceGenerator extends PowerGenerator {
 		super.setBars();
 		if (hasPower && outputsPower) {
 			addBar("power", (SpaceGeneratorBuild tile) -> new Bar(() ->
-					bundle.format("bar.poweroutput", Strings.fixed(tile.getPowerProduction() * 60f * tile.timeScale(), 1)),
+					Core.bundle.format("bar.poweroutput", Strings.fixed(tile.getPowerProduction() * 60f * tile.timeScale(), 1)),
 					() -> Pal.powerBar,
 					() -> tile.productionEfficiency)
 			);

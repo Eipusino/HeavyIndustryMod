@@ -1,6 +1,5 @@
 package heavyindustry.struct;
 
-@SuppressWarnings("unused")
 public class DisjointSetUnion {
 	public final int size;
 

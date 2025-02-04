@@ -53,9 +53,9 @@ public class MultiBarrelWeapon extends Weapon {
 			float
 					rotation = unit.rotation - 90,
 					weaponRotation = rotation + (rotate ? mount.rotation : 0),
-					recoil = -((mount.reload) / reload * this.recoil),
-					wx = unit.x + Angles.trnsx(rotation, x, y) + Angles.trnsx(weaponRotation, 0, recoil),
-					wy = unit.y + Angles.trnsy(rotation, x, y) + Angles.trnsy(weaponRotation, 0, recoil);
+					rec = -((mount.reload) / reload * recoil),
+					wx = unit.x + Angles.trnsx(rotation, x, y) + Angles.trnsx(weaponRotation, 0, rec),
+					wy = unit.y + Angles.trnsy(rotation, x, y) + Angles.trnsy(weaponRotation, 0, rec);
 
 			int barrels = mMount.recoils.length;
 
@@ -91,9 +91,9 @@ public class MultiBarrelWeapon extends Weapon {
 		float
 				rotation = unit.rotation - 90,
 				weaponRotation = rotation + (rotate ? mount.rotation : 0),
-				recoil = -((mount.reload) / reload * this.recoil),
-				wx = unit.x + Angles.trnsx(rotation, x, y) + Angles.trnsx(weaponRotation, 0, recoil),
-				wy = unit.y + Angles.trnsy(rotation, x, y) + Angles.trnsy(weaponRotation, 0, recoil);
+				rec = -((mount.reload) / reload * recoil),
+				wx = unit.x + Angles.trnsx(rotation, x, y) + Angles.trnsx(weaponRotation, 0, rec),
+				wy = unit.y + Angles.trnsy(rotation, x, y) + Angles.trnsy(weaponRotation, 0, rec);
 
 		int barrels = mMount.recoils.length;
 

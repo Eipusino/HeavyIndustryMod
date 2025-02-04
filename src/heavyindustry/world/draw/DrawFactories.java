@@ -1,5 +1,6 @@
 package heavyindustry.world.draw;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -8,8 +9,6 @@ import arc.struct.*;
 import mindustry.gen.*;
 import mindustry.world.*;
 import mindustry.world.draw.*;
-
-import static arc.Core.*;
 
 public class DrawFactories extends DrawDefault {
 	public TextureRegion rotator, rotator2, bottom, liquid, pressor, top;
@@ -47,12 +46,12 @@ public class DrawFactories extends DrawDefault {
 
 	@Override
 	public void load(Block block) {
-		rotator = atlas.find(block.name + "-rotator");
-		rotator2 = atlas.find(block.name + "-rotator2");
-		bottom = atlas.find(block.name + "-bottom");
-		liquid = atlas.find(block.name + "-liquid");
-		pressor = atlas.find(block.name + "-pressor");
-		top = atlas.find(block.name + "-top");
+		rotator = Core.atlas.find(block.name + "-rotator");
+		rotator2 = Core.atlas.find(block.name + "-rotator2");
+		bottom = Core.atlas.find(block.name + "-bottom");
+		liquid = Core.atlas.find(block.name + "-liquid");
+		pressor = Core.atlas.find(block.name + "-pressor");
+		top = Core.atlas.find(block.name + "-top");
 	}
 
 	@Override

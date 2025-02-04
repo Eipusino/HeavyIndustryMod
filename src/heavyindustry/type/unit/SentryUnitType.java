@@ -201,11 +201,11 @@ public class SentryUnitType extends UnitTypef {
 	}
 
 	public static class AnchorEngine extends UnitEngine {
-		public AnchorEngine(float x, float y, float radius, float rotation) {
-			this.x = x;
-			this.y = y;
-			this.radius = radius;
-			this.rotation = rotation;
+		public AnchorEngine(float dx, float dy, float rad, float rot) {
+			x = dx;
+			y = dy;
+			radius = rad;
+			rotation = rot;
 		}
 
 		public AnchorEngine() {}

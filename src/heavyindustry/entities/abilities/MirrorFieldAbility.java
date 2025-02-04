@@ -12,8 +12,6 @@ import heavyindustry.graphics.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 
-import static arc.Core.*;
-
 public class MirrorFieldAbility extends BaseMirrorShieldAbility {
 	public boolean rotation;
 	public Seq<ShieldShape> shapes = new Seq<>(ShieldShape.class);
@@ -125,7 +123,7 @@ public class MirrorFieldAbility extends BaseMirrorShieldAbility {
 
 			Draw.color(unit.team.color, Color.white, Mathf.clamp(alpha));
 
-			if (settings.getBool("hi-animated-shields")) {
+			if (Core.settings.getBool("hi-animated-shields")) {
 				Draw.z(Draws.mirrorField + 0.001f * alpha);
 				Fill.poly(drawX, drawY, sides, radius * scl, rotation + angle + moveOffsetRot);
 			} else {

@@ -13,6 +13,7 @@ import arc.util.*;
  */
 public class GravityField {
 	public static final float GRAV_CONST = 0.667259f;
+
 	private static final Vec2 tmp = new Vec2();
 
 	public final GravitySystem system;

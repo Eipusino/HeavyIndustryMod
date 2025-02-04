@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.distribution;
 
+import arc.*;
 import arc.graphics.g2d.*;
 import arc.math.geom.*;
 import arc.util.*;
@@ -7,7 +8,6 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 
-import static arc.Core.*;
 import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 
@@ -32,8 +32,8 @@ public class CoveredConveyor extends BeltConveyor {
 	@Override
 	public void load() {
 		super.load();
-		inputRegion = atlas.find(name + "-cover-in");
-		outputRegion = atlas.find(name + "-cover-out");
+		inputRegion = Core.atlas.find(name + "-cover-in");
+		outputRegion = Core.atlas.find(name + "-cover-out");
 	}
 
 	public class CoveredConveyorBuild extends BeltConveyorBuild {

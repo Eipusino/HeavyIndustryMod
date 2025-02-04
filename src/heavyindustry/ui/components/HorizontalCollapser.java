@@ -23,23 +23,23 @@ public class HorizontalCollapser extends WidgetGroup {
 		cons.get(table);
 	}
 
-	public HorizontalCollapser(Table table, boolean collapsed) {
-		this.table = table;
-		this.collapsed = collapsed;
+	public HorizontalCollapser(Table tab, boolean col) {
+		table = tab;
+		collapsed = col;
 		setTransform(true);
 
 		updateTouchable();
-		addChild(table);
+		addChild(tab);
 	}
 
-	public HorizontalCollapser setDuration(float seconds) {
-		this.seconds = seconds;
+	public HorizontalCollapser setDuration(float sec) {
+		seconds = sec;
 		return this;
 	}
 
-	public HorizontalCollapser setCollapsed(boolean autoAnimate, Boolp collapsed) {
-		this.collapsedFunc = collapsed;
-		this.autoAnimate = autoAnimate;
+	public HorizontalCollapser setCollapsed(boolean aut, Boolp col) {
+		collapsedFunc = col;
+		autoAnimate = aut;
 		return this;
 	}
 
@@ -52,7 +52,7 @@ public class HorizontalCollapser extends WidgetGroup {
 	}
 
 	public void setCollapsed(boolean collapse, boolean withAnimation) {
-		this.collapsed = collapse;
+		collapsed = collapse;
 		updateTouchable();
 
 		if (table == null) return;
@@ -80,7 +80,7 @@ public class HorizontalCollapser extends WidgetGroup {
 	}
 
 	public HorizontalCollapser setCollapsed(Boolp collapsed) {
-		this.collapsedFunc = collapsed;
+		collapsedFunc = collapsed;
 		return this;
 	}
 
@@ -89,7 +89,7 @@ public class HorizontalCollapser extends WidgetGroup {
 	}
 
 	private void updateTouchable() {
-		this.touchable = collapsed ? Touchable.disabled : Touchable.enabled;
+		touchable = collapsed ? Touchable.disabled : Touchable.enabled;
 	}
 
 	@Override
@@ -149,10 +149,10 @@ public class HorizontalCollapser extends WidgetGroup {
 		return currentWidth;
 	}
 
-	public void setTable(Table table) {
-		this.table = table;
+	public void setTable(Table tab) {
+		table = tab;
 		clearChildren();
-		addChild(table);
+		addChild(tab);
 	}
 
 	@Override

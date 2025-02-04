@@ -54,6 +54,8 @@ final class HIClassMap {
 		classes.put("LightLandingAbility", LightLandingAbility.class);
 		classes.put("LightSpeedAbility", LightSpeedAbility.class);
 		classes.put("MendFieldAbility", MendFieldAbility.class);
+		classes.put("MindControlFieldAbility", MindControlFieldAbility.class);
+		classes.put("MinigunAbility", MinigunAbility.class);
 		classes.put("MirrorArmorAbility", MirrorArmorAbility.class);
 		classes.put("MirrorFieldAbility", MirrorFieldAbility.class);
 		classes.put("RegenerationAbility", RegenerationAbility.class);
@@ -61,6 +63,7 @@ final class HIClassMap {
 		classes.put("SuicideExplosionAbility", SuicideExplosionAbility.class);
 		classes.put("SurroundRegenAbility", SurroundRegenAbility.class);
 		classes.put("SuspiciousAbility", SuspiciousAbility.class);
+		classes.put("SwapHealthAbility", SwapHealthAbility.class);
 		classes.put("TerritoryFieldAbility", TerritoryFieldAbility.class);
 		classes.put("ToxicAbility", ToxicAbility.class);
 		//bullets
@@ -357,6 +360,8 @@ final class HIClassMap {
 		classes.put("SmartBeamNodeBuild", SmartBeamNode.SmartBeamNodeBuild.class);
 		classes.put("SmartPowerNode", SmartPowerNode.class);
 		classes.put("SmartPowerNodeBuild", SmartPowerNode.SmartPowerNodeBuild.class);
+		classes.put("LunarGenerator", LunarGenerator.class);
+		classes.put("LunarGeneratorBuild", LunarGenerator.LunarGeneratorBuild.class);
 		classes.put("ThermalConsumeGenerator", ThermalConsumeGenerator.class);
 		classes.put("ThermalConsumeGeneratorBuild", ThermalConsumeGenerator.ThermalConsumeGeneratorBuild.class);
 		classes.put("ConsumeVariableReactor", ConsumeVariableReactor.class);

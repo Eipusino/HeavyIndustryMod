@@ -10,7 +10,7 @@ import mindustry.graphics.*;
 import mindustry.world.draw.*;
 
 public class DrawScanLine extends DrawBlock implements Cloneable {
-	public float lineLength = 12;
+	//public float lineLength = 12;
 	public float lineStroke = 0.786f;
 	public float scanLength = 16f;
 	public float scanAngle = 0;
@@ -57,8 +57,8 @@ public class DrawScanLine extends DrawBlock implements Cloneable {
 	public DrawScanLine copy() {
 		try {
 			return (DrawScanLine) super.clone();
-		} catch (Exception e) {
-			return new DrawScanLine();
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException("java sucks", e);
 		}
 	}
 }

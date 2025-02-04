@@ -1,5 +1,6 @@
 package heavyindustry.type;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.Texture.*;
 import arc.graphics.g3d.*;
@@ -11,7 +12,6 @@ import mindustry.graphics.*;
 import mindustry.graphics.g3d.*;
 import mindustry.type.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 /**
@@ -34,7 +34,7 @@ public class AtmospherePlanet extends Planet {
 	public void load() {
 		super.load();
 		if (!headless) {
-			buffer = new FrameBuffer(graphics.getWidth(), graphics.getHeight(), true);
+			buffer = new FrameBuffer(Core.graphics.getWidth(), Core.graphics.getHeight(), true);
 			buffer.getTexture().setFilter(TextureFilter.nearest);
 		}
 	}
@@ -68,9 +68,9 @@ public class AtmospherePlanet extends Planet {
 
 		@Override
 		public void render(PlanetParams params, Mat3D projection, Mat3D transform) {
-			if (params.alwaysDrawAtmosphere || settings.getBool("atmosphere")) {
+			if (params.alwaysDrawAtmosphere || Core.settings.getBool("atmosphere")) {
 				var depth = HIShaders.depth;
-				buffer.resize(graphics.getWidth(), graphics.getHeight());
+				buffer.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
 				buffer.begin(Tmp.c1.set(0xffffff00));
 				Blending.disabled.apply();
 

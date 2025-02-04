@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.defense.turrets;
 
+import arc.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
@@ -15,8 +16,6 @@ import mindustry.ui.*;
 import mindustry.ui.dialogs.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
-
-import static arc.Core.*;
 
 public class MultiTractorBeamTurret extends TractorBeamTurret {
 	protected static final float OFFSET = 12f;
@@ -38,7 +37,7 @@ public class MultiTractorBeamTurret extends TractorBeamTurret {
 				t.align(Align.topLeft);
 				t.table(info -> {
 					info.left();
-					info.add("[lightgray]" + bundle.get("content.status.name") + ": ").padRight(OFFSET);
+					info.add("[lightgray]" + Core.bundle.get("content.status.name") + ": ").padRight(OFFSET);
 					info.button(new TextureRegionDrawable(status.uiIcon), Styles.cleari, () -> {
 						new ContentInfoDialog().show(status);
 					}).scaling(Scaling.fit);
@@ -51,8 +50,8 @@ public class MultiTractorBeamTurret extends TractorBeamTurret {
 	@Override
 	public void load() {
 		super.load();
-		laser = atlas.find("parallax-laser");
-		laserEnd = atlas.find("parallax-laser-end");
+		laser = Core.atlas.find("parallax-laser");
+		laserEnd = Core.atlas.find("parallax-laser-end");
 	}
 
 	public class MultiTractorBeamBuild extends TractorBeamBuild {

@@ -1,5 +1,6 @@
 package heavyindustry.util;
 
+import arc.func.*;
 import arc.util.*;
 import mindustry.*;
 
@@ -17,6 +18,54 @@ import static heavyindustry.util.Collect.*;
 public final class Reflectf {
 	/** Don't let anyone instantiate this class. */
 	private Reflectf() {}
+
+	public static Class<?> box(Class<?> type) {
+		if (type == boolean.class) return Boolean.class;
+		if (type == byte.class) return Byte.class;
+		if (type == char.class) return Character.class;
+		if (type == short.class) return Short.class;
+		if (type == int.class) return Integer.class;
+		if (type == float.class) return Float.class;
+		if (type == long.class) return Long.class;
+		if (type == double.class) return Double.class;
+		return type;
+	}
+
+	public static Class<?> unbox(Class<?> type) {
+		if (type == Boolean.class) return boolean.class;
+		if (type == Byte.class) return byte.class;
+		if (type == Character.class) return char.class;
+		if (type == Short.class) return short.class;
+		if (type == Integer.class) return int.class;
+		if (type == Float.class) return float.class;
+		if (type == Long.class) return long.class;
+		if (type == Double.class) return double.class;
+		return type;
+	}
+
+	public static String def(Class<?> type) {
+		String t = unbox(type).getSimpleName();
+		return switch (t) {
+			case "boolean" -> "false";
+			case "byte", "char", "short", "int", "long" -> "0";
+			case "float", "double" -> "0.0";
+			default -> "null";
+		};
+	}
+
+	public static <T> T gef(String type, Object object, String name) {
+		try {
+			Field field = Class.forName(type).getDeclaredField(name);
+			field.setAccessible(true);
+			return (T) field.get(object);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static <T> T gef(String type, String name) {
+		return gef(type, null, name);
+	}
 
 	/**
 	 * @param object object from which the represented field's value is to be extracted
@@ -69,11 +118,71 @@ public final class Reflectf {
 		}
 	}
 
+	public static <T> T invoke(Class<?> type, Object object, String name, Object[] args, Class<?>[] parameterTypes) {
+		try {
+			Method method = type.getDeclaredMethod(name, parameterTypes);
+			method.setAccessible(true);
+			return (T) method.invoke(object, args);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static <T> T invoke(Class<?> type, String name, Object[] args, Class<?>[] parameterTypes) {
+		return invoke(type, null, name, args, parameterTypes);
+	}
+
+	public static <T> T invoke(Class<?> type, String name) {
+		return invoke(type, name, arrayOf(), arrayOf());
+	}
+
+	public static <T> T invoke(Object object, String name, Object[] args, Class<?>[] parameterTypes) {
+		return invoke(object.getClass(), object, name, args, parameterTypes);
+	}
+
+	public static <T> T invoke(Object object, String name) {
+		return invoke(object, name, arrayOf(), arrayOf());
+	}
+
 	public static Field getField(Class<?> type, String name) {
 		try {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			return field;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static Method getMethod(Class<?> type, String name) {
+		return getMethod(type, name, arrayOf());
+	}
+
+	public static Method getMethod(Class<?> type, String name, Class<?>[] parameterTypes) {
+		try {
+			Method method = type.getDeclaredMethod(name, parameterTypes);
+			method.setAccessible(true);
+			return method;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static <T> T invokeMethod(Method method) {
+		return invokeMethod(method, null, arrayOf());
+	}
+
+	public static <T> T invokeMethod(Method method, Object[] object) {
+		return invokeMethod(method, null, object);
+	}
+
+	public static <T> T invokeMethod(Method method, Object object) {
+		return invokeMethod(method, object, arrayOf());
+	}
+
+	public static <T> T invokeMethod(Method method, Object object, Object[] args) {
+		try {
+			return (T) method.invoke(object, args);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -133,46 +242,12 @@ public final class Reflectf {
 		}
 	}
 
-	public static Class<?> box(Class<?> type) {
-		if (type == boolean.class) return Boolean.class;
-		if (type == byte.class) return Byte.class;
-		if (type == char.class) return Character.class;
-		if (type == short.class) return Short.class;
-		if (type == int.class) return Integer.class;
-		if (type == float.class) return Float.class;
-		if (type == long.class) return Long.class;
-		if (type == double.class) return Double.class;
-		return type;
-	}
-
-	public static Class<?> unbox(Class<?> type) {
-		if (type == Boolean.class) return boolean.class;
-		if (type == Byte.class) return byte.class;
-		if (type == Character.class) return char.class;
-		if (type == Short.class) return short.class;
-		if (type == Integer.class) return int.class;
-		if (type == Float.class) return float.class;
-		if (type == Long.class) return long.class;
-		if (type == Double.class) return double.class;
-		return type;
-	}
-
-	public static String def(Class<?> type) {
-		String t = unbox(type).getSimpleName();
-		return switch (t) {
-			case "boolean" -> "false";
-			case "byte", "char", "short", "int", "long" -> "0";
-			case "float", "double" -> "0.0";
-			default -> "null";
-		};
-	}
-
-	public static <T> Constructor<T> cons(Class<T> type, Class<?>... args) {
+	public static <T> Constructor<T> cons(Class<T> type, Class<?>[] args) {
 		return cons(type, true, args);
 	}
 
 	/** A utility function to find a constructor without throwing exceptions. */
-	public static <T> Constructor<T> cons(Class<T> type, boolean access, Class<?>... args) {
+	public static <T> Constructor<T> cons(Class<T> type, boolean access, Class<?>[] args) {
 		try {
 			Constructor<T> cons = type.getDeclaredConstructor(args);
 			if (access) cons.setAccessible(true);
@@ -182,12 +257,12 @@ public final class Reflectf {
 		}
 	}
 
-	public static <T> T newInst(Class<T> type) {
-		return newInst(type, arrayOf(), arrayOf());
+	public static <T> T make(Class<T> type) {
+		return make(type, arrayOf(), arrayOf());
 	}
 
 	/** Reflectively instantiates a type without throwing exceptions. */
-	public static <T> T newInst(Constructor<T> cons, Object... args) {
+	public static <T> T make(Constructor<T> cons, Object[] args) {
 		try {
 			return cons.newInstance(args);
 		} catch (Exception e) {
@@ -195,11 +270,30 @@ public final class Reflectf {
 		}
 	}
 
-	public static <T> T newInst(Class<T> type, Class<?>[] args, Object[] value) {
+	public static <T> T make(Class<T> type, Class<?>[] parameterTypes, Object[] args) {
 		try {
-			Constructor<T> cons = type.getDeclaredConstructor(args);
+			Constructor<T> cons = type.getDeclaredConstructor(parameterTypes);
 			cons.setAccessible(true);
-			return cons.newInstance(value);
+			return cons.newInstance(args);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static <T> Prov<T> supply(Class<T> type) {
+		return supply(type, arrayOf(), arrayOf());
+	}
+
+	public static <T> Prov<T> supply(Class<T> type, Class<?>[] parameterTypes, Object[] args) {
+		try {
+			Constructor<T> cons = type.getDeclaredConstructor(parameterTypes);
+			return () -> {
+				try {
+					return cons.newInstance(args);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			};
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

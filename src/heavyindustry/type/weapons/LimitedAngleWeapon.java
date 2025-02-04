@@ -41,8 +41,8 @@ public class LimitedAngleWeapon extends Weapon {
 				weaponRotation = unit.rotation - 90 + (rotate ? mount.rotation : 0),
 				mountX = unit.x + Angles.trnsx(unit.rotation - 90, x, y),
 				mountY = unit.y + Angles.trnsy(unit.rotation - 90, x, y),
-				bulletX = mountX + Angles.trnsx(weaponRotation, this.shootX, this.shootY),
-				bulletY = mountY + Angles.trnsy(weaponRotation, this.shootX, this.shootY),
+				bulletX = mountX + Angles.trnsx(weaponRotation, shootX, shootY),
+				bulletY = mountY + Angles.trnsy(weaponRotation, shootX, shootY),
 				shootAngle = rotate ? weaponRotation + 90 : Angles.angle(bulletX, bulletY, mount.aimX, mount.aimY) + (unit.rotation - unit.angleTo(mount.aimX, mount.aimY));
 
 		// Find a new target.

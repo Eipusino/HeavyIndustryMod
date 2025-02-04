@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.distribution;
 
+import arc.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
@@ -12,7 +13,6 @@ import mindustry.world.*;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 /**
@@ -36,7 +36,7 @@ public class CoveredRouter extends Router {
 	@Override
 	public void load() {
 		super.load();
-		topRegion = atlas.find(name + "-top");
+		topRegion = Core.atlas.find(name + "-top");
 	}
 
 	@Override

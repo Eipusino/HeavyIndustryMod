@@ -1,5 +1,6 @@
 package heavyindustry.type.weather;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -11,7 +12,6 @@ import mindustry.type.*;
 
 import java.util.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class HailStormWeather extends SpawnerWeather {
@@ -35,7 +35,7 @@ public class HailStormWeather extends SpawnerWeather {
 		super.load();
 
 		for (int i = 0; i < splashes.length; i++) {
-			splashes[i] = atlas.find("splash-" + i);
+			splashes[i] = Core.atlas.find("splash-" + i);
 		}
 	}
 

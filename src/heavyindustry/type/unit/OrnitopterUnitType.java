@@ -148,8 +148,8 @@ public class OrnitopterUnitType extends UnitTypef {
 		public Blade blade;
 		public float bladeRotation;
 
-		public BladeMount(Blade blade) {
-			this.blade = blade;
+		public BladeMount(Blade bla) {
+			blade = bla;
 		}
 	}
 }

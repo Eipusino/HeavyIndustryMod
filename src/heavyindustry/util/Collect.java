@@ -9,7 +9,6 @@ import java.util.*;
  *
  * @since 1.0.6
  */
-@SuppressWarnings("unused")
 public final class Collect {
 	private Collect() {}
 

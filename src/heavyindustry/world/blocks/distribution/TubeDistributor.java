@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.distribution;
 
+import arc.*;
 import arc.graphics.g2d.*;
 import arc.util.*;
 import mindustry.*;
@@ -11,7 +12,6 @@ import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.blocks.distribution.*;
 
-import static arc.Core.*;
 import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 
@@ -26,11 +26,11 @@ public class TubeDistributor extends Router {
 	@Override
 	public void load() {
 		super.load();
-		bottomRegion = atlas.find(name + "-bottom");
-		topRegion = atlas.find(name + "-top");
-		rotatorRegion = atlas.find(name + "-rotator");
-		lockedRegion1 = atlas.find(name + "-locked-side1");
-		lockedRegion2 = atlas.find(name + "-locked-side2");
+		bottomRegion = Core.atlas.find(name + "-bottom");
+		topRegion = Core.atlas.find(name + "-top");
+		rotatorRegion = Core.atlas.find(name + "-rotator");
+		lockedRegion1 = Core.atlas.find(name + "-locked-side1");
+		lockedRegion2 = Core.atlas.find(name + "-locked-side2");
 	}
 
 	@Override

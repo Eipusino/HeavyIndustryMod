@@ -7,8 +7,8 @@ public class LazyCapture extends Capture {
 
 	private Capture capture;
 
-	public LazyCapture(Prov<Capture> captureProv) {
-		this.captureProv = captureProv;
+	public LazyCapture(Prov<Capture> prov) {
+		captureProv = prov;
 	}
 
 	@Override

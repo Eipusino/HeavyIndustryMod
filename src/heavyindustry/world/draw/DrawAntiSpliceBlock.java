@@ -1,5 +1,6 @@
 package heavyindustry.world.draw;
 
+import arc.*;
 import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
@@ -11,7 +12,6 @@ import mindustry.gen.*;
 import mindustry.world.*;
 import mindustry.world.draw.*;
 
-import static arc.Core.*;
 import static heavyindustry.util.Utils.*;
 
 @SuppressWarnings("unchecked")
@@ -32,7 +32,7 @@ public class DrawAntiSpliceBlock<E extends Building> extends DrawBlock {
 
 	@Override
 	public void load(Block block) {
-		icon = atlas.find(block.name + "-icon");
+		icon = Core.atlas.find(block.name + "-icon");
 
 		if (split) {
 			drawRegions = split(block.name + "-sheet", 32, 16, 16);
@@ -41,10 +41,10 @@ public class DrawAntiSpliceBlock<E extends Building> extends DrawBlock {
 			Pixmap[] inner = new Pixmap[4];
 
 			for (int i = 0; i < regions.length; i++) {
-				regions[i] = atlas.getPixmap(block.name + "-" + splices[i]).crop();
+				regions[i] = Core.atlas.getPixmap(block.name + "-" + splices[i]).crop();
 			}
 			for (int i = 0; i < inner.length; i++) {
-				inner[i] = atlas.getPixmap(block.name + "-" + splices[i * 2 + 1] + "-inner").crop();
+				inner[i] = Core.atlas.getPixmap(block.name + "-" + splices[i * 2 + 1] + "-inner").crop();
 			}
 
 			for (int i = 0; i < drawRegions.length; i++) {

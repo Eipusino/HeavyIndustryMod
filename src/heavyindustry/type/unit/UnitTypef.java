@@ -1,5 +1,6 @@
 package heavyindustry.type.unit;
 
+import arc.*;
 import arc.util.*;
 import heavyindustry.world.meta.*;
 import mindustry.content.*;
@@ -7,8 +8,6 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.type.ammo.*;
 import mindustry.world.meta.*;
-
-import static arc.Core.*;
 
 public class UnitTypef extends UnitType {
 	public float damageMultiplier = 1f;
@@ -21,7 +20,7 @@ public class UnitTypef extends UnitType {
 	public void setStats() {
 		super.setStats();
 		if (damageMultiplier < 1f) {
-			stats.add(HIStat.damageReduction, bundle.format("hi-sin", Strings.autoFixed((1f - damageMultiplier) * 100, 2)));
+			stats.add(HIStat.damageReduction, Core.bundle.format("hi-sin", Strings.autoFixed((1f - damageMultiplier) * 100, 2)));
 		}
 	}
 

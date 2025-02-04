@@ -8,6 +8,7 @@ import arc.struct.*
 import arc.util.*
 import arc.util.io.*
 import heavyindustry.*
+import heavyindustry.util.*
 import mindustry.*
 import mindustry.entities.*
 import mindustry.gen.*
@@ -56,9 +57,7 @@ open class HackTurret(name: String) : BaseTurret(name) {
 		stats.add(Stat.damage, 60f * damage, StatUnit.perSecond)
 	}
 
-	override fun icons(): Array<TextureRegion> {
-		return arrayOf(baseRegion, region)
-	}
+	override fun icons(): Array<TextureRegion> = arrayOf(baseRegion, region)
 
 	open inner class HackTurretBuild : BaseTurretBuild() {
 		@JvmField var target: Unit? = null
@@ -68,31 +67,31 @@ open class HackTurret(name: String) : BaseTurret(name) {
 		@JvmField var normalProgress = 0f
 
 		override fun updateTile() {
-			if (validateTarget() && target != null) {
+			non(target, validateTarget(), {
 				if (!Vars.headless) {
 					Vars.control.sound.loop(shootSound, this, shootSoundVolume)
 				}
 
-				val dest = angleTo(target)
+				val dest = angleTo(it)
 				rotation = Angles.moveToward(rotation, dest, rotateSpeed * edelta())
 
-				lastX = target!!.x
-				lastY = target!!.y
+				lastX = it.x
+				lastY = it.y
 
 				if (Angles.within(rotation, dest, shootCone)) {
 					progress += edelta() * damage
-					normalProgress = progress / target!!.maxHealth()
-					if (progress > target!!.maxHealth()) {
-						target!!.team(team())
+					normalProgress = progress / it.maxHealth()
+					if (progress > it.maxHealth()) {
+						it.team(team())
 						reset()
 					}
 				} else {
 					reset()
 				}
-			} else {
+			}, {
 				reset()
 				findTarget()
-			}
+			})
 		}
 
 		open fun findTarget() {

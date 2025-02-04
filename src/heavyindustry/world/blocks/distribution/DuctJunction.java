@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.distribution;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -13,7 +14,6 @@ import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 /**
@@ -51,7 +51,7 @@ public class DuctJunction extends Block {
 	public void load() {
 		super.load();
 
-		bottomRegion = atlas.find(name + "-bottom");
+		bottomRegion = Core.atlas.find(name + "-bottom");
 	}
 
 	@Override

@@ -29,7 +29,6 @@ import static mindustry.Vars.*;
  *
  * @author Eipusino
  */
-@SuppressWarnings("unchecked")
 public final class HIBullets {
 	public static BulletType
 			basicMissile, boidMissile, sapArtilleryFrag, continuousSapLaser,
@@ -281,39 +280,34 @@ public final class HIBullets {
 			@Override
 			public void draw(Bullet b) {
 				if (!(b.data instanceof Seq<?> dat)) return;
-				Seq<Sized> data = (Seq<Sized>) dat;
 
 				Draw.color(lightColor, Color.white, b.fin() * 0.7f);
 				Draw.alpha(b.fin(Interp.pow3Out) * 1.1f);
 				Lines.stroke(2 * b.fout());
-				for (Sized s : data) {
-					if (s instanceof Building) {
-						Fill.square(s.getX(), s.getY(), s.hitSize() / 2);
-					} else {
-						Lines.spikes(s.getX(), s.getY(), s.hitSize() * (0.5f + b.fout() * 2f), s.hitSize() / 2f * b.fslope() + 12 * b.fin(), 4, 45);
-					}
+				for (Object o : dat) {
+					if (o instanceof Sized s)
+						if (s instanceof Building) {
+							Fill.square(s.getX(), s.getY(), s.hitSize() / 2);
+						} else {
+							Lines.spikes(s.getX(), s.getY(), s.hitSize() * (0.5f + b.fout() * 2f), s.hitSize() / 2f * b.fslope() + 12 * b.fin(), 4, 45);
+						}
 				}
 
 				Drawf.light(b.x, b.y, b.fdata, lightColor, 0.3f + b.fin() * 0.8f);
 			}
 
-			public void hitT(Sized target, Entityc o, Team team, float x, float y) {
-				for (int i = 0; i < lightning; i++) {
+			public void hitTile(Sized target, Entityc o, Team team, float x, float y) {
+				for (int i = 0; i < lightning; i++)
 					Lightning.create(team, lightColor, lightningDamage, x, y, Mathf.random(360), lightningLength + Mathf.random(lightningLengthRand));
-				}
 
-				if (target instanceof Unit unit) {
-					if (unit.health > 1000) HIBullets.hitter.create(o, team, x, y, 0);
-				}
+				if (target instanceof Unit unit && unit.health > 1000) HIBullets.hitter.create(o, team, x, y, 0);
 			}
 
 			@Override
 			public void update(Bullet b) {
 				super.update(b);
 
-				if (!(b.data instanceof Seq<?> dat)) return;
-				Seq<Sized> data = (Seq<Sized>) dat;
-				data.remove(d -> d instanceof Healthc h && !h.isValid());
+				if (b.data instanceof Seq<?> dat) dat.remove(d -> d instanceof Healthc h && !h.isValid());
 			}
 
 			@Override
@@ -333,14 +327,16 @@ public final class HIBullets {
 
 				if (!(b.data instanceof Seq<?> dat)) return;
 				Entityc o = b.owner();
-				Seq<Sized> data = (Seq<Sized>) dat;
-				for (Sized s : data) {
-					float size = Math.min(s.hitSize(), 85);
-					Time.run(Mathf.random(44), () -> {
-						if (Mathf.chance(0.32) || data.size < 8)
-							HIFx.shuttle.at(s.getX(), s.getY(), 45, lightColor, Mathf.random(size * 3f, size * 12f));
-						hitT(s, o, b.team, s.getX(), s.getY());
-					});
+
+				for (Object ob : dat) {
+					if (ob instanceof Sized s) {
+						float size = Math.min(s.hitSize(), 85);
+						Time.run(Mathf.random(44), () -> {
+							if (Mathf.chance(0.32) || dat.size < 8)
+								HIFx.shuttle.at(s.getX(), s.getY(), 45, lightColor, Mathf.random(size * 3f, size * 12f));
+							hitTile(s, o, b.team, s.getX(), s.getY());
+						});
+					}
 				}
 
 				createSplashDamage(b, b.x, b.y);
@@ -349,7 +345,7 @@ public final class HIBullets {
 			@Override
 			public void init(Bullet b) {
 				super.init(b);
-				if (!(b.data instanceof Float f)) return;
+				float f = b.data instanceof Number n ? n.floatValue() : 0f;
 
 				Seq<Sized> data = new Seq<>();
 
@@ -382,26 +378,25 @@ public final class HIBullets {
 			@Override
 			public void draw(Bullet b) {
 				if (!(b.data instanceof Seq<?> dat)) return;
-				Seq<Sized> data = (Seq<Sized>) dat;
 
 				Draw.color(lightColor, Color.white, b.fin() * 0.7f);
 				Draw.alpha(b.fin(Interp.pow3Out) * 1.1f);
 				Lines.stroke(2 * b.fout());
-				for (Sized s : data) {
-					if (s instanceof Building) {
-						Fill.square(s.getX(), s.getY(), s.hitSize() / 2);
-					} else {
-						Lines.spikes(s.getX(), s.getY(), s.hitSize() * (0.5f + b.fout() * 2f), s.hitSize() / 2f * b.fslope() + 12 * b.fin(), 4, 45);
-					}
+				for (Object o : dat) {
+					if (o instanceof Sized s)
+						if (s instanceof Building) {
+							Fill.square(s.getX(), s.getY(), s.hitSize() / 2);
+						} else {
+							Lines.spikes(s.getX(), s.getY(), s.hitSize() * (0.5f + b.fout() * 2f), s.hitSize() / 2f * b.fslope() + 12 * b.fin(), 4, 45);
+						}
 				}
 
 				Drawf.light(b.x, b.y, b.fdata, lightColor, 0.3f + b.fin() * 0.8f);
 			}
 
-			public void hitT(Entityc o, Team team, float x, float y) {
-				for (int i = 0; i < lightning; i++) {
+			public void hitTile(Entityc o, Team team, float x, float y) {
+				for (int i = 0; i < lightning; i++)
 					Lightning.create(team, lightColor, lightningDamage, x, y, Mathf.random(360), lightningLength + Mathf.random(lightningLengthRand));
-				}
 
 				HIBullets.hitter.create(o, team, x, y, 0, 3000, 1, 1, null);
 			}
@@ -410,9 +405,7 @@ public final class HIBullets {
 			public void update(Bullet b) {
 				super.update(b);
 
-				if (!(b.data instanceof Seq<?> dat) || b.timer(0, 5)) return;
-				Seq<Sized> data = (Seq<Sized>) dat;
-				data.remove(d -> !((Healthc) d).isValid());
+				if (b.timer(0, 5) && b.data instanceof Seq<?> dat) dat.remove(d -> d instanceof Healthc h && !h.isValid());
 			}
 
 			@Override
@@ -421,15 +414,17 @@ public final class HIBullets {
 
 				if (!(b.data instanceof Seq<?> dat)) return;
 				Entityc o = b.owner();
-				Seq<Sized> data = (Seq<Sized>) dat;
-				for (Sized s : data) {
-					float size = Math.min(s.hitSize(), 75);
-					if (Mathf.chance(0.32) || data.size < 8) {
-						float sd = Mathf.random(size * 3f, size * 12f);
 
-						HIFx.shuttleDark.at(s.getX() + Mathf.range(size), s.getY() + Mathf.range(size), 45, lightColor, sd);
+				for (Object ob : dat) {
+					if (ob instanceof Sized s) {
+						float size = Math.min(s.hitSize(), 75);
+						if (Mathf.chance(0.32) || dat.size < 8) {
+							float sd = Mathf.random(size * 3f, size * 12f);
+
+							HIFx.shuttleDark.at(s.getX() + Mathf.range(size), s.getY() + Mathf.range(size), 45, lightColor, sd);
+						}
+						hitTile(o, b.team, s.getX(), s.getY());
 					}
-					hitT(o, b.team, s.getX(), s.getY());
 				}
 
 				createSplashDamage(b, b.x, b.y);

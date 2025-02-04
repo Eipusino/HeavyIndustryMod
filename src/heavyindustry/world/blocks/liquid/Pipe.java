@@ -14,8 +14,8 @@ import mindustry.world.blocks.*;
 import static heavyindustry.util.Utils.*;
 
 public class Pipe extends MergingLiquidBlock implements Autotiler {
-	public TextureRegion[][] regions;
 	public TextureRegion[] bottomRegions;
+	public TextureRegion[][] regions;
 	public TextureRegion[][][] rotateRegions;
 
 	public Pipe(String name) {

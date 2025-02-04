@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.liquid;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.scene.ui.layout.*;
@@ -11,7 +12,6 @@ import mindustry.world.*;
 import mindustry.world.blocks.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class LiquidDirectionalUnloader extends Block {
@@ -41,9 +41,9 @@ public class LiquidDirectionalUnloader extends Block {
 	@Override
 	public void load() {
 		super.load();
-		arrowRegion = atlas.find(name + "-arrow");
-		centerRegion = atlas.find(name + "-center");
-		topRegion = atlas.find(name + "-top");
+		arrowRegion = Core.atlas.find(name + "-arrow");
+		centerRegion = Core.atlas.find(name + "-center");
+		topRegion = Core.atlas.find(name + "-top");
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class LiquidDirectionalUnloader extends Block {
 		super.setBars();
 		removeBar("liquid");
 		addBar("back", (LiquidDirectionalUnloaderBuild tile) -> new Bar(
-				() -> bundle.get("bar.input"),
+				() -> Core.bundle.get("bar.input"),
 				() -> tile.sortLiquid == null ? Color.black : tile.sortLiquid.color,
 				() -> {
 					if (tile.sortLiquid != null && tile.back() != null && tile.back().block != null && tile.back().block.hasLiquids && tile.back().block.liquidCapacity > 0) {
@@ -60,7 +60,7 @@ public class LiquidDirectionalUnloader extends Block {
 				}
 		));
 		addBar("front", (LiquidDirectionalUnloaderBuild tile) -> new Bar(
-				() -> bundle.get("bar.output"),
+				() -> Core.bundle.get("bar.output"),
 				() -> tile.sortLiquid == null ? Color.black : tile.sortLiquid.color,
 				() -> {
 					if (tile.sortLiquid != null && tile.front() != null && tile.front().block != null && tile.front().block.hasLiquids && tile.front().block.liquidCapacity > 0) {

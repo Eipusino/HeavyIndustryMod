@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.defense;
 
+import arc.*;
 import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
@@ -16,7 +17,6 @@ import mindustry.ui.*;
 import mindustry.world.blocks.defense.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 /**
@@ -51,7 +51,7 @@ public class AssignOverdrive extends OverdriveProjector {
 	@Override
 	public void setBars() {
 		super.setBars();
-		addBar("boost", (AssignOverdriveBuild tile) -> new Bar(() -> bundle.format("bar.boost", (int) (tile.realBoost() * 100)), () -> Pal.accent, () -> tile.realBoost() / (hasBoost ? speedBoost + speedBoostPhase : speedBoost)));
+		addBar("boost", (AssignOverdriveBuild tile) -> new Bar(() -> Core.bundle.format("bar.boost", (int) (tile.realBoost() * 100)), () -> Pal.accent, () -> tile.realBoost() / (hasBoost ? speedBoost + speedBoostPhase : speedBoost)));
 	}
 
 	public class AssignOverdriveBuild extends OverdriveBuild implements LinkGroupc {

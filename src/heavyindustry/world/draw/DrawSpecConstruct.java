@@ -17,18 +17,21 @@ import static heavyindustry.util.Utils.*;
  */
 public class DrawSpecConstruct extends DrawBlock {
 	/** Color of Item Surface Construction. */
-	public Color constructColor1 = Pal.accent;
+	public Color constructColor1;
 	/** The color of the constructed lines. */
-	public Color constructColor2 = Pal.accent;
+	public Color constructColor2;
 
+	/** texture size. {@code i * 32}. */
 	public int size = 1;
 
 	public TextureRegion[] constructRegions;
 
-	public DrawSpecConstruct() {}
+	public DrawSpecConstruct() {
+		this(Pal.accent, Pal.accent);
+	}
 
 	public DrawSpecConstruct(Color color) {
-		constructColor1 = constructColor2 = color;
+		this(color, color);
 	}
 
 	public DrawSpecConstruct(Color color1, Color color2) {

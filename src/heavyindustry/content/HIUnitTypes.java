@@ -1,5 +1,6 @@
 package heavyindustry.content;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -35,7 +36,6 @@ import mindustry.type.ammo.*;
 import mindustry.type.weapons.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
@@ -1598,7 +1598,7 @@ public final class HIUnitTypes {
 			}
 				@Override
 				public void addStats(UnitType u, Table t) {
-					String text = bundle.get("unit.heavy-industry-killer-whale-weapon-1.description");
+					String text = Core.bundle.get("unit.heavy-industry-killer-whale-weapon-1.description");
 					UIUtils.collapseTextToTable(t, text);
 					super.addStats(u, t);
 				}
@@ -2387,7 +2387,7 @@ public final class HIUnitTypes {
 
 				@Override
 				public void addStats(UnitType u, Table t) {
-					String text = bundle.get("unit.heavy-industry-burner-weapon-0.description");
+					String text = Core.bundle.get("unit.heavy-industry-burner-weapon-0.description");
 					UIUtils.collapseTextToTable(t, text);
 					super.addStats(u, t);
 				}
@@ -2500,7 +2500,7 @@ public final class HIUnitTypes {
 			}
 				@Override
 				public void addStats(UnitType u, Table t) {
-					String text = bundle.get("unit.heavy-industry-shadow-blade-weapon-0.description");
+					String text = Core.bundle.get("unit.heavy-industry-shadow-blade-weapon-0.description");
 					UIUtils.collapseTextToTable(t, text);
 					super.addStats(u, t);
 				}
@@ -2690,7 +2690,7 @@ public final class HIUnitTypes {
 			}
 				@Override
 				public void addStats(UnitType u, Table t) {
-					String text = bundle.get("unit.heavy-industry-tiger-weapon-0.description");
+					String text = Core.bundle.get("unit.heavy-industry-tiger-weapon-0.description");
 					UIUtils.collapseTextToTable(t, text);
 					super.addStats(u, t);
 				}
@@ -2913,7 +2913,7 @@ public final class HIUnitTypes {
 			}
 				@Override
 				public void addStats(UnitType u, Table t) {
-					String text = bundle.get("unit.heavy-industry-thunder-weapon-0.description");
+					String text = Core.bundle.get("unit.heavy-industry-thunder-weapon-0.description");
 					UIUtils.collapseTextToTable(t, text);
 					super.addStats(u, t);
 				}
@@ -2965,7 +2965,7 @@ public final class HIUnitTypes {
 			}
 				@Override
 				public void addStats(UnitType u, Table t) {
-					String text = bundle.get("unit.heavy-industry-thunder-weapon-1.description");
+					String text = Core.bundle.get("unit.heavy-industry-thunder-weapon-1.description");
 					UIUtils.collapseTextToTable(t, text);
 					super.addStats(u, t);
 				}

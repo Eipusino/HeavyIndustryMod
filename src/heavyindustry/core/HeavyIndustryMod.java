@@ -36,25 +36,31 @@ import java.time.*;
 import java.time.format.*;
 import java.util.*;
 
-import static arc.Core.*;
 import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
 /**
  * Main entry point of the mod. Handles startup things like content loading, entity registering, and utility
  * bindings.
- * <p><strong>Until the issue with Mindustry's MultiDex Mod is resolved, I will try to minimize the amount of
+ * <p><strong>Until the issue with Mindustry MultiDex Mod is resolved, I will try to minimize the amount of
  * code in the mod as much as possible, which means it is unlikely to have too many built-in utilities.</strong>
  *
  * @author Eipusino
+ * @see heavyindustry.HIVars
  */
 public final class HeavyIndustryMod extends Mod {
-	public static final String linkGitHub = "https://github.com/Eipusino/HeavyIndustryMod", author = "Eipusino";
+	/** The author of this mod. */
+	public static final String author = "Eipusino";
+	/** The GitHub address of this mod. */
+	public static final String linkGitHub = "https://github.com/Eipusino/HeavyIndustryMod";
 
+	/** The meta of this mod. */
 	public static final Jval modJson;
+	/** Is this mod in plugin mode. In this mode, the mod will not load content. */
 	public static final boolean isPlugin;
 
-	private static LoadedMod mod;
+	/** If needed, please call {@link #loaded()} for the LoadedMod of this mod. */
+	private static LoadedMod loaded;
 
 	static {
 		modJson = LoadMod.getMeta(internalTree.root);
@@ -78,41 +84,41 @@ public final class HeavyIndustryMod extends Mod {
 				Log.err("Failed to replace renderer", e);
 			}
 
-			String close = bundle.get("close");
+			String close = Core.bundle.get("close");
 
 			dia: {
-				if (headless || settings.getBool("hi-closed-dialog") || isAprilFoolsDay()) break dia;
+				if (headless || Core.settings.getBool("hi-closed-dialog") || isAprilFoolsDay()) break dia;
 
-				FLabel label = new FLabel(bundle.get("hi-author") + author);
-				BaseDialog dialog = new BaseDialog(bundle.get("hi-name")) {{
+				FLabel label = new FLabel(Core.bundle.get("hi-author") + author);
+				BaseDialog dialog = new BaseDialog(Core.bundle.get("hi-name")) {{
 					buttons.button(close, this::hide).size(210f, 64f);
-					buttons.button((bundle.get("hi-link-github")), () -> {
-						if (!app.openURI(linkGitHub)) {
+					buttons.button((Core.bundle.get("hi-link-github")), () -> {
+						if (!Core.app.openURI(linkGitHub)) {
 							ui.showErrorMessage("@linkfail");
-							app.setClipboardText(linkGitHub);
+							Core.app.setClipboardText(linkGitHub);
 						}
 					}).size(210f, 64f);
 					cont.pane(t -> {
-						t.image(atlas.find(name("cover"))).left().size(600f, 310f).pad(3f).row();
-						t.add(bundle.get("hi-version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
+						t.image(Core.atlas.find(name("cover"))).left().size(600f, 310f).pad(3f).row();
+						t.add(Core.bundle.get("hi-version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 						t.add(label).left().row();
-						t.add(bundle.get("hi-class")).left().growX().wrap().pad(4).labelAlign(Align.left).row();
-						t.add(bundle.get("hi-note")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
-						t.add(bundle.get("hi-prompt")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
-						t.add(bundle.get("hi-other")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
+						t.add(Core.bundle.get("hi-class")).left().growX().wrap().pad(4).labelAlign(Align.left).row();
+						t.add(Core.bundle.get("hi-note")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
+						t.add(Core.bundle.get("hi-prompt")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
+						t.add(Core.bundle.get("hi-other")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
 					}).grow().center().maxWidth(600f);
 				}};
 				dialog.show();
 			}
 		});
 
-		app.post(() -> mod = mods.getMod(getClass()));
+		Core.app.post(() -> loaded = mods.getMod(getClass()));
 
 		Events.on(FileTreeInitEvent.class, event -> {
 			if (!headless) {
 				HIFonts.load();
 				HISounds.load();
-				app.post(() -> {
+				Core.app.post(() -> {
 					HIShaders.init();
 					HITextures.init();
 					HICacheLayer.init();
@@ -132,7 +138,7 @@ public final class HeavyIndustryMod extends Mod {
 				HIShaders.dispose();
 		});
 
-		app.post(ModJS::init);
+		Core.app.post(ModJS::init);
 	}
 
 	@Override
@@ -142,12 +148,13 @@ public final class HeavyIndustryMod extends Mod {
 		EntityRegister.load();
 		WorldRegister.load();
 
+		HIBullets.load();
+
 		if (!isPlugin) {
 			HITeams.load();
 			HIItems.load();
 			HIStatusEffects.load();
 			HILiquids.load();
-			HIBullets.load();
 			HIUnitTypes.load();
 			HIBlocks.load();
 			HIWeathers.load();
@@ -181,22 +188,22 @@ public final class HeavyIndustryMod extends Mod {
 
 		IconLoader.loadIcons(internalTree.child("other/icons.properties"));
 
-		settings.defaults("hi-closed-dialog", false);
-		settings.defaults("hi-floating-text", true);
-		settings.defaults("hi-animated-shields", true);
+		Core.settings.defaults("hi-closed-dialog", false);
+		Core.settings.defaults("hi-floating-text", true);
+		Core.settings.defaults("hi-animated-shields", true);
 
 		if (!headless && !isPlugin && mods.locateMod("extra-utilities") == null && isAprilFoolsDay()) {
 			HIOverride.loadAprilFoolsDay();
 
 			if (ui != null)
 				Events.on(ClientLoadEvent.class, event -> Time.runTask(10f, () -> {
-					BaseDialog dialog = new BaseDialog(bundle.get("hi-name")) {
+					BaseDialog dialog = new BaseDialog(Core.bundle.get("hi-name")) {
 						int con = 0;
 						float bx, by;
 					{
-						cont.add(bundle.get("hi-ap-main"));
+						cont.add(Core.bundle.get("hi-ap-main"));
 						buttons.button("", this::hide).update(b -> {
-							b.setText(con > 0 ? con == 5 ? bundle.get("hi-ap-happy") : bundle.get("hi-ap-click") : bundle.get("hi-ap-ok"));
+							b.setText(con > 0 ? con == 5 ? Core.bundle.get("hi-ap-happy") : Core.bundle.get("hi-ap-click") : Core.bundle.get("hi-ap-ok"));
 							if (con > 0) {
 								b.x = bx;
 								b.y = by;
@@ -218,16 +225,19 @@ public final class HeavyIndustryMod extends Mod {
 				}));
 		}
 
-		if (isPlugin && mod() != null) {
-			mod.meta.hidden = true;
-			mod.meta.name = modName + "-plugin";
-			mod.meta.displayName = bundle.get("hi-name") + " Plugin";
+		if (loaded() != null) {
+			loaded().meta.author = author;
+			if (isPlugin) {
+				loaded().meta.hidden = true;
+				loaded().meta.name = modName + "-plugin";
+				loaded().meta.displayName = Core.bundle.get("hi-name") + " Plugin";
+			}
 		}
 
 		if (ui != null) {
 			if (ui.settings != null) {
 				//add heavy-industry settings
-				ui.settings.addCategory(bundle.format("hi-settings"), HIIcon.reactionIcon, t -> {
+				ui.settings.addCategory(Core.bundle.format("hi-settings"), HIIcon.reactionIcon, t -> {
 					t.checkPref("hi-closed-dialog", false);
 					t.checkPref("hi-floating-text", true);
 					t.checkPref("hi-animated-shields", true);
@@ -247,10 +257,10 @@ public final class HeavyIndustryMod extends Mod {
 		}
 
 		set: {
-			String massage = bundle.get("hi-random-massage");
+			String massage = Core.bundle.get("hi-random-massage");
 			String[] massageSplit = massage.split("&");
 
-			if (headless || ui == null || mods.locateMod("extra-utilities") != null || !settings.getBool("hi-floating-text")) break set;
+			if (headless || ui == null || mods.locateMod("extra-utilities") != null || !Core.settings.getBool("hi-floating-text")) break set;
 
 			var fl = new FloatingText(massageSplit[Mathf.random(massageSplit.length - 1)]);
 			fl.build(ui.menuGroup);
@@ -262,12 +272,12 @@ public final class HeavyIndustryMod extends Mod {
 	}
 
 	public static boolean isHeavyIndustry(@Nullable LoadedMod mod) {
-		return mod != null && mod == mod();
+		return mod != null && mod == loaded();
 	}
 
-	public static LoadedMod mod() {
-		if (mod == null) mod = mods.getMod(modName);
-		return mod;
+	public static LoadedMod loaded() {
+		if (loaded == null) loaded = mods.getMod(modName);
+		return loaded;
 	}
 
 	public static boolean isAprilFoolsDay() {
@@ -289,15 +299,15 @@ public final class HeavyIndustryMod extends Mod {
 
 		public void build(Group parent) {
 			parent.fill((x, y, w, h) -> {
-				TextureRegion logo = atlas.find("logo");
-				float width = graphics.getWidth(), height = graphics.getHeight() - scene.marginTop;
+				TextureRegion logo = Core.atlas.find("logo");
+				float width = Core.graphics.getWidth(), height = Core.graphics.getHeight() - Core.scene.marginTop;
 				float logoScl = Scl.scl(1) * logo.scale;
-				float logoW = Math.min(logo.width * logoScl, graphics.getWidth() - Scl.scl(20));
+				float logoW = Math.min(logo.width * logoScl, Core.graphics.getWidth() - Scl.scl(20));
 				float logoH = logoW * (float) logo.height / logo.width;
 
 				float fx = (int) (width / 2f);
-				float fy = (int) (height - 6 - logoH) + logoH / 2 - (graphics.isPortrait() ? Scl.scl(30f) : 0f);
-				if (settings.getBool("macnotch")) {
+				float fy = (int) (height - 6 - logoH) + logoH / 2 - (Core.graphics.isPortrait() ? Scl.scl(30f) : 0f);
+				if (Core.settings.getBool("macnotch")) {
 					fy -= Scl.scl(macNotchHeight);
 				}
 

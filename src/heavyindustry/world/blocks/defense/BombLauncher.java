@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.defense;
 
+import arc.*;
 import arc.audio.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
@@ -15,7 +16,6 @@ import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class BombLauncher extends CommandableAttackerBlock {
@@ -49,7 +49,7 @@ public class BombLauncher extends CommandableAttackerBlock {
 	@Override
 	public void load() {
 		super.load();
-		bombRegion = atlas.find(name + "-bomb", atlas.find("launchpod"));
+		bombRegion = Core.atlas.find(name + "-bomb", Core.atlas.find("launchpod"));
 	}
 
 	public class BombLauncherBuild extends CommandableAttackerBlockBuild {

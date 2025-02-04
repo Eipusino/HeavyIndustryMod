@@ -3,6 +3,7 @@ package heavyindustry.util;
 import arc.*;
 import arc.files.*;
 import arc.graphics.g2d.*;
+import arc.graphics.g2d.Font.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
@@ -40,7 +41,7 @@ public final class IconLoader {
 					TextureRegion region = Core.atlas.find(textureName);
 
 					Vec2 scaledSize = Scaling.fit.apply(region.width, region.height, fontSize, fontSize);
-					Font.Glyph glyph = constructGlyph(codePoint, region, scaledSize, fontSize);
+					Glyph glyph = constructGlyph(codePoint, region, scaledSize, fontSize);
 
 					for (Font font : availableFonts) {
 						font.getData().setGlyph(codePoint, glyph);
@@ -52,8 +53,8 @@ public final class IconLoader {
 		}
 	}
 
-	private static Font.Glyph constructGlyph(int id, TextureRegion region, Vec2 size, int fontSize) {
-		Font.Glyph glyph = new Font.Glyph();
+	private static Glyph constructGlyph(int id, TextureRegion region, Vec2 size, int fontSize) {
+		Glyph glyph = new Glyph();
 		glyph.id = id;
 		glyph.srcX = 0;
 		glyph.srcY = 0;

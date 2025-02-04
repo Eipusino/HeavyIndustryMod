@@ -46,6 +46,7 @@ public class JumpGate extends Block {
 	protected static final Seq<IntMap.Entry<UnitSet>> tmpSetSeq = new Seq<>();
 	protected static final Vec2 linkVec = new Vec2();
 	protected static final Point2 point = new Point2();
+
 	protected static int lastSelectedInt = 0;
 	protected static int selectId = 0, selectNum = 1;
 

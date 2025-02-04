@@ -40,7 +40,7 @@ public final class HILiquids {
 			explosiveness = 1f;
 		}};
 		nanoFluid = new Liquid("nano-fluid", Color.valueOf("7fd489")) {{
-			heatCapacity = 1.5f;
+			heatCapacity = 1.8f;
 			viscosity = 0.8f;
 			temperature = 0.3f;
 			lightColor = Color.valueOf("7fd489").a(0.3f);

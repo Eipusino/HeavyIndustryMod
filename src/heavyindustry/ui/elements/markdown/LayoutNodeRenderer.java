@@ -6,8 +6,8 @@ import org.commonmark.renderer.*;
 public abstract class LayoutNodeRenderer implements NodeRenderer {
 	protected final DrawRendererContext context;
 
-	public LayoutNodeRenderer(DrawRendererContext context) {
-		this.context = context;
+	public LayoutNodeRenderer(DrawRendererContext cont) {
+		context = cont;
 	}
 
 	protected void visitChildren(Node node) {

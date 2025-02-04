@@ -6,8 +6,6 @@ import heavyindustry.world.blocks.defense.CommandableBlock.*;
 import mindustry.core.*;
 import mindustry.game.EventType.*;
 
-import static arc.Core.*;
-
 public final class WorldRegister {
 	public static final Seq<Runnable> afterLoad = new Seq<>();
 
@@ -30,7 +28,7 @@ public final class WorldRegister {
 		});
 
 		Events.on(WorldLoadEvent.class, event -> {
-			app.post(() -> {
+			Core.app.post(() -> {
 				worldLoaded = false;
 			});
 		});

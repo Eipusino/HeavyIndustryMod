@@ -1,11 +1,10 @@
 package heavyindustry.world.blocks.logic;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import heavyindustry.gen.*;
-
-import static arc.Core.*;
 
 public class ProcessorFan extends ProcessorCooler {
 	public TextureRegion spinnerRegion;
@@ -20,7 +19,7 @@ public class ProcessorFan extends ProcessorCooler {
 	@Override
 	public void load() {
 		super.load();
-		spinnerRegion = atlas.find(name + "-spinner");
+		spinnerRegion = Core.atlas.find(name + "-spinner");
 	}
 
 	@Override

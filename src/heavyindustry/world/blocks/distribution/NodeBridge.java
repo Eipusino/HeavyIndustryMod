@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.distribution;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -10,7 +11,6 @@ import mindustry.world.*;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 /**
@@ -51,8 +51,8 @@ public class NodeBridge extends ItemBridge {
 	@Override
 	public void load() {
 		super.load();
-		laser = atlas.find(name + "-laser", "laser");
-		laserEnd = atlas.find(name + "-laser-end", "laser-end");
+		laser = Core.atlas.find(name + "-laser", "laser");
+		laserEnd = Core.atlas.find(name + "-laser-end", "laser-end");
 	}
 
 	public class NodeBridgeBuild extends ItemBridgeBuild {
@@ -103,7 +103,7 @@ public class NodeBridge extends ItemBridge {
 			Draw.z(Layer.power);
 			Building other = world.build(link);
 			if (other == null) return;
-			float op = settings.getInt("bridgeopacity") / 100f;
+			float op = Core.settings.getInt("bridgeopacity") / 100f;
 			if (Mathf.zero(op)) return;
 
 			Draw.color(Color.white);

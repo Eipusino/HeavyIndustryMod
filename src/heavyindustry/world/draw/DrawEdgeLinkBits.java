@@ -1,5 +1,6 @@
 package heavyindustry.world.draw;
 
+import arc.*;
 import arc.func.*;
 import arc.graphics.g2d.*;
 import arc.math.geom.*;
@@ -10,7 +11,6 @@ import mindustry.gen.*;
 import mindustry.world.*;
 import mindustry.world.draw.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 @SuppressWarnings("unchecked")
@@ -26,7 +26,7 @@ public class DrawEdgeLinkBits<T extends Building> extends DrawBlock {
 	@Override
 	public void load(Block block) {
 		super.load(block);
-		linker = atlas.find(block.name + suffix);
+		linker = Core.atlas.find(block.name + suffix);
 	}
 
 	@Override

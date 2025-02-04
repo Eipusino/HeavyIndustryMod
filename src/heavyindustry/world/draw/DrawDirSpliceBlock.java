@@ -1,5 +1,6 @@
 package heavyindustry.world.draw;
 
+import arc.*;
 import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
@@ -11,7 +12,6 @@ import mindustry.gen.*;
 import mindustry.world.*;
 import mindustry.world.draw.*;
 
-import static arc.Core.*;
 import static heavyindustry.util.Utils.*;
 
 @SuppressWarnings("unchecked")
@@ -36,7 +36,7 @@ public class DrawDirSpliceBlock<E extends Building> extends DrawBlock {
 			Pixmap[] splicers = new Pixmap[4];
 
 			if (simpleSpliceRegion) {
-				PixmapRegion region = atlas.getPixmap(block.name + suffix);
+				PixmapRegion region = Core.atlas.getPixmap(block.name + suffix);
 				Pixmap pixmap = region.crop();
 				for (int i = 0; i < 4; i++) {
 					Pixmap m = i == 1 || i == 2 ? rotatePixmap90(pixmap.flipY(), i) : rotatePixmap90(pixmap, i);
@@ -44,7 +44,7 @@ public class DrawDirSpliceBlock<E extends Building> extends DrawBlock {
 				}
 			} else {
 				for (int i = 0; i < splicers.length; i++) {
-					splicers[i] = atlas.getPixmap(block.name + suffix + "-" + i).crop();
+					splicers[i] = Core.atlas.getPixmap(block.name + suffix + "-" + i).crop();
 				}
 			}
 

@@ -1,10 +1,9 @@
 package heavyindustry.graphics;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import mindustry.graphics.*;
-
-import static arc.Core.*;
 
 public final class Outliner {
 	/** Don't let anyone instantiate this class. */
@@ -13,9 +12,9 @@ public final class Outliner {
 	/** Outlines a given textureRegion. Run in createIcons. */
 	public static void outlineRegion(MultiPacker packer, TextureRegion texture, Color outlineColor, String name, int outlineRadius) {
 		if (texture == null) return;
-		PixmapRegion region = atlas.getPixmap(texture);
+		PixmapRegion region = Core.atlas.getPixmap(texture);
 		Pixmap out = Pixmaps.outline(region, outlineColor, outlineRadius);
-		if (settings.getBool("linear", true)) {
+		if (Core.settings.getBool("linear", true)) {
 			Pixmaps.bleed(out);
 		}
 		packer.add(MultiPacker.PageType.main, name, out);

@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.units;
 
+import arc.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
@@ -23,7 +24,6 @@ import mindustry.world.consumers.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class UnitBoost extends Block {
@@ -52,7 +52,7 @@ public class UnitBoost extends Block {
 		super.setBars();
 
 		addBar("heat", (UnitBoostBuild tile) -> new Bar(
-				() -> bundle.format("bar.heatpercent", (int) (tile.heat + 0.01f), (int) (tile.efficiencyScale() * 100 + 0.01f)),
+				() -> Core.bundle.format("bar.heatpercent", (int) (tile.heat + 0.01f), (int) (tile.efficiencyScale() * 100 + 0.01f)),
 				() -> Pal.lightOrange,
 				() -> tile.heat / heatRequirement));
 	}
@@ -67,7 +67,7 @@ public class UnitBoost extends Block {
 		stats.add(new Stat("rangeboost", StatCat.crafting), (int) (maxRangeBoost * 100f), StatUnit.percent);
 		if (status.length > 0) stats.add(Stat.abilities, t -> {
 			t.row();
-			t.add(bundle.get("hi-stat-value-show-status")).left();
+			t.add(Core.bundle.get("hi-stat-value-show-status")).left();
 			t.row();
 			t.table(Styles.grayPanel, inner -> {
 				inner.left().defaults().left();
@@ -113,7 +113,7 @@ public class UnitBoost extends Block {
 
 	public class UnitBoostBuild extends Building implements HeatConsumer {
 		protected final Seq<Float[]> pos = new Seq<>();
-		protected final Pool<ExtendedPosition> posPool = Pools.get(ExtendedPosition.class, ExtendedPosition::new);
+		protected final Pool<ExtPos> posPool = Pools.get(ExtPos.class, ExtPos::new);
 
 		public float[] sideHeat = new float[4];
 		public float heat = 0f;
@@ -212,7 +212,7 @@ public class UnitBoost extends Block {
 				float ox = pos.get(i)[0], oy = pos.get(i)[1];
 				float ex = pos.get((i + 2) % pos.size)[0], ey = pos.get((i + 2) % pos.size)[1];
 
-				ExtendedPosition og = posPool.obtain().set(ox, oy);
+				ExtPos og = posPool.obtain().set(ox, oy);
 				float dst = og.dst(ex, ey);
 				float angle = og.angleTo(ex, ey);
 				Lines.lineAngle(ox, oy, angle, dst * phaseHeat * ps);
@@ -250,7 +250,7 @@ public class UnitBoost extends Block {
 				float ox = pos.get(i)[0], oy = pos.get(i)[1];
 				float ex = pos.get((i + 1) % pos.size)[0], ey = pos.get((i + 1) % pos.size)[1];
 
-				ExtendedPosition og = posPool.obtain().set(ox, oy);
+				ExtPos og = posPool.obtain().set(ox, oy);
 				float dst = og.dst(ex, ey);
 				float angle = og.angleTo(ex, ey);
 				if (!change1_2) {

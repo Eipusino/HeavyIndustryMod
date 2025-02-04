@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.environment;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -10,7 +11,6 @@ import mindustry.graphics.*;
 import mindustry.world.*;
 import mindustry.world.blocks.environment.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class ArmorFloor extends Floor {
@@ -62,7 +62,7 @@ public class ArmorFloor extends Floor {
 			for (int i = 0; i < variants; i++) {
 				collectedColors.clear();
 
-				PixmapRegion image = atlas.getPixmap(variantRegions[i]);
+				PixmapRegion image = Core.atlas.getPixmap(variantRegions[i]);
 				for (int x = 1; x < image.width; x += scanStep) {
 					for (int y = 1; y < image.height; y += scanStep) {
 						tmpColor.set(image.get(x, y));
@@ -85,7 +85,7 @@ public class ArmorFloor extends Floor {
 		int rx = tile.x / 2 * 2;
 		int ry = tile.y / 2 * 2;
 
-		if (atlas.isFound(large) && eq(rx, ry) && Mathf.randomSeed(Point2.pack(rx, ry)) < 0.5f) {
+		if (Core.atlas.isFound(large) && eq(rx, ry) && Mathf.randomSeed(Point2.pack(rx, ry)) < 0.5f) {
 			Draw.rect(split[tile.x % 2][1 - tile.y % 2], tile.worldx(), tile.worldy());
 		} else {
 			Draw.rect(variantRegions[Mathf.randomSeed(tile.pos(), 0, Math.max(0, variantRegions.length - 1))], tile.worldx(), tile.worldy());
@@ -112,7 +112,7 @@ public class ArmorFloor extends Floor {
 	@Override
 	public void load() {
 		super.load();
-		large = atlas.find(name + "-large");
+		large = Core.atlas.find(name + "-large");
 		split = large.split(32, 32);
 	}
 

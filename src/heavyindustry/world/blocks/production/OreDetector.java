@@ -86,7 +86,6 @@ public class OreDetector extends Block {
 		return drawer.icons(this);
 	}
 
-	@SuppressWarnings("unused")
 	public class OreDetectorBuild extends Building implements Ranged {
 		public boolean showOres = true;
 		public float startTime;

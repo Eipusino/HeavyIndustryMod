@@ -14,7 +14,7 @@ public final class HIItems {
 	public static Item
 			stone, salt, rareEarth,
 			nanoCore, nanoCoreErekir,
-			originium, activatedOriginium,
+			originium, purifiedOriginium, syntheticJade,
 			uranium, chromium, heavyAlloy;
 
 	/** Don't let anyone instantiate this class. */
@@ -49,15 +49,17 @@ public final class HIItems {
 			cost = 1.25f;
 			flammability = 0.2f;
 			explosiveness = 0.3f;
-			radioactivity = 0.15f;
+			radioactivity = 0.1f;
+			hardness = 5;
+		}};
+		purifiedOriginium = new Item("purified-originium", HIPal.coldcolor) {{
+			cost = 1.35f;
+			radioactivity = 0.2f;
 			hardness = 6;
 		}};
-		activatedOriginium = new Item("activated-originium", HIPal.activatedOriginiumBlack) {{
-			cost = 1.15f;
-			flammability = 0.3f;
-			explosiveness = 1.6f;
-			radioactivity = 3f;
-			hardness = 5;
+		syntheticJade = new Item("synthetic-jade", HIPal.heat) {{
+			cost = 1.45f;
+			hardness = 6;
 		}};
 		uranium = new Item("uranium", HIPal.uraniumGrey) {{
 			cost = 3f;

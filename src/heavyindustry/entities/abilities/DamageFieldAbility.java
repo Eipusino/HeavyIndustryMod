@@ -58,7 +58,7 @@ public class DamageFieldAbility extends Ability {
 		}
 	}
 
-    public float timer() {
-        return timer;
-    }
+	public float timer() {
+		return timer;
+	}
 }

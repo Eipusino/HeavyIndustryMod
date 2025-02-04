@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.distribution;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -13,7 +14,6 @@ import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.distribution.*;
 
-import static arc.Core.*;
 import static heavyindustry.HIVars.*;
 import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
@@ -40,11 +40,11 @@ public class InvertedJunction extends Junction {
 	@Override
 	public void load() {
 		super.load();
-		place = atlas.find(placeSprite);
+		place = Core.atlas.find(placeSprite);
 		locs = split(name("junction"), 32, 0);
-		arrow1 = atlas.find(name("arrow-1"));
-		arrow2 = atlas.find(name("arrow-2"));
-		flip = atlas.find(name("flip"));
+		arrow1 = Core.atlas.find(name("arrow-1"));
+		arrow2 = Core.atlas.find(name("arrow-2"));
+		flip = Core.atlas.find(name("flip"));
 	}
 
 	public class InvertedJunctionBuild extends JunctionBuild {
@@ -53,7 +53,7 @@ public class InvertedJunction extends Junction {
 		@Override
 		public void configured(Unit player, Object value) {
 			super.configured(player, value);
-			if (value instanceof Integer in) loc = in;
+			if (value instanceof Number in) loc = in.intValue();
 		}
 
 		@Override

@@ -141,11 +141,15 @@ public abstract class HeightPass {
 		}
 
 		public enum MixType {
-			max, average
+			max, average;
+
+			public static final MixType[] all = values();
 		}
 
 		public enum Operation {
-			add, set, carve
+			add, set, carve;
+
+			public static final Operation[] all = values();
 		}
 	}
 }

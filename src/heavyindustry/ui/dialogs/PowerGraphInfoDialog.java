@@ -1,5 +1,6 @@
 package heavyindustry.ui.dialogs;
 
+import arc.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
@@ -10,7 +11,6 @@ import mindustry.ui.*;
 import mindustry.ui.dialogs.*;
 import mindustry.world.blocks.power.*;
 
-import static arc.Core.*;
 import static heavyindustry.ui.UIUtils.*;
 
 public class PowerGraphInfoDialog extends BaseDialog {
@@ -98,11 +98,11 @@ public class PowerGraphInfoDialog extends BaseDialog {
 
 		return switch (type) {
 			case producer ->
-					bundle.get("hi-power-info-producer") + " - " + bundle.format("hi-power-info-persec", "[#98ffa9]+" + formatAmount(graph.getLastScaledPowerIn() * 60));
+					Core.bundle.get("hi-power-info-producer") + " - " + Core.bundle.format("hi-power-info-persec", "[#98ffa9]+" + formatAmount(graph.getLastScaledPowerIn() * 60));
 			case consumer ->
-					bundle.get("hi-power-info-consumer") + " - " + bundle.format("hi-power-info-persec", "[#e55454]-" + formatAmount(graph.getLastScaledPowerOut() * 60));
+					Core.bundle.get("hi-power-info-consumer") + " - " + Core.bundle.format("hi-power-info-persec", "[#e55454]-" + formatAmount(graph.getLastScaledPowerOut() * 60));
 			case battery ->
-					bundle.get("hi-power-info-battery") + " - [#fbad67]" + formatAmount(graph.getLastPowerStored()) + "[gray]/[]" + formatAmount(graph.getLastCapacity());
+					Core.bundle.get("hi-power-info-battery") + " - [#fbad67]" + formatAmount(graph.getLastPowerStored()) + "[gray]/[]" + formatAmount(graph.getLastCapacity());
 		};
 	}
 
@@ -158,6 +158,8 @@ public class PowerGraphInfoDialog extends BaseDialog {
 	public enum PowerInfoType {
 		producer,
 		consumer,
-		battery
+		battery;
+
+		public static final PowerInfoType[] all = values();
 	}
 }

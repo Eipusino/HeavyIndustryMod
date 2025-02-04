@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.storage;
 
+import arc.*;
 import arc.math.geom.*;
 import arc.util.*;
 import mindustry.game.*;
@@ -11,7 +12,6 @@ import mindustry.world.blocks.storage.CoreBlock.*;
 import mindustry.world.meta.*;
 import mindustry.world.modules.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 /**
@@ -49,7 +49,7 @@ public class CoreStorageBlock extends StorageBlock {
 		super.setBars();
 		removeBar("items");
 		addBar("items", (CoreStorageBuild tile) -> new Bar(
-				() -> bundle.format("bar.items", tile.items.total()),
+				() -> Core.bundle.format("bar.items", tile.items.total()),
 				() -> Pal.items,
 				() -> (float) (tile.items.total() / ((tmpCoreBuild = tile.core()) == null ? Integer.MAX_VALUE : tmpCoreBuild.storageCapacity))));
 	}
@@ -61,7 +61,7 @@ public class CoreStorageBlock extends StorageBlock {
 		if (state.rules.infiniteResources) return;
 
 		if (world.tile(x, y) != null && !canPlaceOn(world.tile(x, y), player.team(), rotation)) {
-			drawPlaceText(bundle.get((player.team().core() != null && player.team().core().items.has(requirements, state.rules.buildCostMultiplier)) || state.rules.infiniteResources ? "bar.hi-close" : "bar.noresources"), x, y, valid);
+			drawPlaceText(Core.bundle.get((player.team().core() != null && player.team().core().items.has(requirements, state.rules.buildCostMultiplier)) || state.rules.infiniteResources ? "bar.hi-close" : "bar.noresources"), x, y, valid);
 		}
 		x *= tilesize;
 		y *= tilesize;

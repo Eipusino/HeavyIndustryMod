@@ -17,8 +17,6 @@ import mindustry.graphics.*;
 import mindustry.world.*;
 import mindustry.world.draw.*;
 
-import static arc.Core.*;
-
 public class Draw3dSpin extends DrawBlock {
 	protected static final Mat3D transformation = new Mat3D();
 	protected static final FloatSeq transformationQueue = new FloatSeq();
@@ -39,7 +37,7 @@ public class Draw3dSpin extends DrawBlock {
 		};
 
 		Events.run(Trigger.draw, () -> {
-			shadowBuffer.resize(graphics.getWidth(), graphics.getHeight());
+			shadowBuffer.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
 			if (runs.isEmpty()) return;
 			Seq<Runnable> buffer = runs.copy();
 			runs.clear();

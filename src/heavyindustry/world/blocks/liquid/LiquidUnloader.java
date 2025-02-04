@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.liquid;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.scene.ui.layout.*;
@@ -13,7 +14,6 @@ import mindustry.world.blocks.*;
 import mindustry.world.blocks.liquid.LiquidBlock.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class LiquidUnloader extends Block {
@@ -43,7 +43,7 @@ public class LiquidUnloader extends Block {
 	@Override
 	public void load() {
 		super.load();
-		centerRegion = atlas.find(name + "-center");
+		centerRegion = Core.atlas.find(name + "-center");
 	}
 
 	@Override

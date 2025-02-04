@@ -44,20 +44,20 @@ public class AncientUnitType extends UnitTypef {
 			super(x, y, radius, rotation);
 		}
 
-		public AncientEngine(float x, float y, float radius, float rotation, float phaseOffset) {
+		public AncientEngine(float x, float y, float radius, float rotation, float phaOff) {
 			this(x, y, radius, rotation);
-			this.phaseOffset = phaseOffset;
+			phaseOffset = phaOff;
 		}
 
-		public AncientEngine(float x, float y, float radius, float rotation, float alphaBase, float sizeSclPlus, float sizeSclMin) {
+		public AncientEngine(float x, float y, float radius, float rotation, float alpBas, float sizSclPlu, float sizSclMin) {
 			this(x, y, radius, rotation);
-			this.alphaBase = alphaBase;
-			this.sizeSclPlus = sizeSclPlus;
-			this.sizeSclMin = sizeSclMin;
+			alphaBase = alpBas;
+			sizeSclPlus = sizSclPlu;
+			sizeSclMin = sizSclMin;
 		}
 
 		public AncientEngine a(float f) {
-			this.alphaBase = f;
+			alphaBase = f;
 			return this;
 		}
 

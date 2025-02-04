@@ -25,7 +25,6 @@ import mindustry.ui.*;
 
 import java.nio.*;
 
-import static arc.Core.*;
 import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
@@ -75,13 +74,13 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 		return this;
 	}
 
-	public Spawner setFlagToApply(double flagToApply) {
-		this.flagToApply = flagToApply;
+	public Spawner setFlagToApply(double flaToApp) {
+		flagToApply = flaToApp;
 		return this;
 	}
 
-	public Spawner setFlagToApply(long flagToApply) {
-		this.flagToApply = Double.longBitsToDouble(flagToApply);
+	public Spawner setFlagToApply(long flaToApp) {
+		flagToApply = Double.longBitsToDouble(flaToApp);
 		return this;
 	}
 
@@ -198,7 +197,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 	public void draw() {
 		if (type.health > 8000 && team != Vars.player.team()) HISounds.alertLoop();
 
-		TextureRegion arrowRegion = atlas.find(name("jump-gate-arrow"));
+		TextureRegion arrowRegion = Core.atlas.find(name("jump-gate-arrow"));
 
 		Drawf.light(x, y, clipSize() * fout(), team.color, 0.7f);
 		Draw.z(Layer.effect - 1f);

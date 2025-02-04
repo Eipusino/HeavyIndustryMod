@@ -16,6 +16,7 @@ import mindustry.entities.part.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
+import mindustry.world.blocks.campaign.*;
 import mindustry.world.blocks.defense.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.blocks.distribution.*;
@@ -28,7 +29,6 @@ import mindustry.world.blocks.units.UnitFactory.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 import static mindustry.type.ItemStack.*;
 
@@ -46,7 +46,7 @@ public final class HIOverride {
 	 * <p>Remember not to execute it a second time, I did not take any precautionary measures.
 	 */
 	public static void load() {
-		//Blocks-Environment
+		//blocks-environment
 		Blocks.stone.itemDrop = Blocks.craters.itemDrop = Blocks.charr.itemDrop = HIItems.stone;
 		Blocks.stone.playerUnmineable = Blocks.craters.playerUnmineable = Blocks.charr.playerUnmineable = true;
 		Blocks.sandWater.itemDrop = Blocks.darksandWater.itemDrop = Blocks.darksandTaintedWater.itemDrop = Items.sand;
@@ -54,11 +54,11 @@ public final class HIOverride {
 		Blocks.deepTaintedWater.asFloor().liquidMultiplier = 1.5f;
 		Blocks.oxidationChamber.canOverdrive = Blocks.neoplasiaReactor.canOverdrive = true;
 		Blocks.slag.attributes.set(Attribute.heat, 1f);
-		//Blocks-Environment-Erekir
+		//blocks-environment-erekir
 		Blocks.yellowStonePlates.attributes.set(Attribute.water, -1f);
 		Blocks.beryllicStone.attributes.set(HIAttribute.arkycite, 0.7f);
 		Blocks.arkyicStone.attributes.set(HIAttribute.arkycite, 1f);
-		//Blocks-Wall
+		//blocks-wall
 		Blocks.copperWall.armor = Blocks.copperWallLarge.armor = 1f;
 		Blocks.titaniumWall.armor = Blocks.titaniumWallLarge.armor = Blocks.plastaniumWall.armor = Blocks.plastaniumWallLarge.armor = 2f;
 		Blocks.thoriumWall.armor = Blocks.thoriumWallLarge.armor = 8f;
@@ -66,32 +66,32 @@ public final class HIOverride {
 		Blocks.surgeWall.armor = Blocks.surgeWallLarge.armor = 12f;
 		((Wall) Blocks.surgeWall).lightningChance = ((Wall) Blocks.surgeWallLarge).lightningChance = 0.1f;
 		((Wall) Blocks.surgeWall).lightningDamage = ((Wall) Blocks.surgeWallLarge).lightningDamage = 25f;
-		//Blocks-Wall-erekir
+		//blocks-wall-erekir
 		((Wall) Blocks.reinforcedSurgeWall).lightningChance = 0.1f;
 		((Wall) Blocks.reinforcedSurgeWallLarge).lightningChance = 0.1f;
-		//Blocks-Distribution
+		//Blocks-distribution
 		((StackConveyor) Blocks.plastaniumConveyor).outputRouter = false;
 		((MassDriver) Blocks.massDriver).reload = 150f;
-		//Blocks-Liquid
+		//blocks-liquid
 		((Pump) Blocks.impulsePump).pumpAmount = 0.3f;
 		Blocks.phaseConduit.liquidCapacity = 16f;
-		//Blocks-Liquid-Erekir
+		//blocks-liquid-erekir
 		Blocks.reinforcedLiquidRouter.liquidCapacity = 40f;
-		//Blocks-Drill-Erekir
+		//Blocks-drill-erekir
 		((BeamDrill) Blocks.largePlasmaBore).drillMultipliers.put(Items.beryllium, 1.5f);
 		((BeamDrill) Blocks.largePlasmaBore).drillMultipliers.put(Items.graphite, 1.5f);
-		//Blocks-Power
+		//blocks-power
 		((SolarGenerator) Blocks.largeSolarPanel).powerProduction = 1.75f;
 		((PowerNode) Blocks.surgeTower).maxNodes = 3;
 		((ConsumeGenerator) Blocks.differentialGenerator).powerProduction = 28f;
 		((NuclearReactor) Blocks.thoriumReactor).powerProduction = 18f;
 		Blocks.impactReactor.liquidCapacity = 80f;
 		Blocks.neoplasiaReactor.canOverdrive = true;
-		//Blocks-Production
+		//blocks-production
 		Blocks.phaseWeaver.itemCapacity = 30;
 		Blocks.disassembler.removeConsumers(c -> c instanceof ConsumeItems);
 		((Separator) Blocks.disassembler).results = ItemStack.with(Items.copper, 1, Items.lead, 1, Items.graphite, 1, Items.titanium, 1, Items.thorium, 1);
-		//Blocks-Production-Erekir
+		//blocks-production-erekir
 		Blocks.oxidationChamber.canOverdrive = true;
 		Blocks.heatReactor.buildVisibility = BuildVisibility.shown;
 		((AttributeCrafter) Blocks.ventCondenser).maxBoost = 3f;
@@ -99,9 +99,9 @@ public final class HIOverride {
 		Blocks.cyanogenSynthesizer.removeConsumers(c -> c instanceof ConsumeLiquidBase);
 		Blocks.cyanogenSynthesizer.consumeLiquid(Liquids.arkycite, 15f / 60f);
 		((HeatCrafter) Blocks.cyanogenSynthesizer).outputLiquid = new LiquidStack(Liquids.cyanogen, 4f / 60f);
-		//Blocks-Defense
+		//blocks-defense
 		Blocks.shockMine.underBullets = true;
-		//Blocks-Storage
+		//blocks-storage
 		Blocks.coreShard.buildVisibility = BuildVisibility.shown;
 		Blocks.coreShard.health *= 2;
 		Blocks.coreShard.armor = 3f;
@@ -110,7 +110,7 @@ public final class HIOverride {
 		Blocks.coreNucleus.health *= 2;
 		Blocks.coreNucleus.armor = 11f;
 		Blocks.reinforcedContainer.itemCapacity = 160;
-		//Blocks-Turret
+		//blocks-turret
 		((LiquidTurret) Blocks.wave).ammoTypes.put(HILiquids.nitratedOil, new LiquidBulletType(HILiquids.nitratedOil) {{
 			drag = 0.01f;
 			layer = Layer.bullet - 2f;
@@ -199,7 +199,7 @@ public final class HIOverride {
 			incendAmount = 1;
 			ammoMultiplier = 1f;
 		}};
-		//Blocks-Turret-Erekir
+		//blocks-turret-erekir
 		Blocks.breach.armor = 2f;
 		Blocks.diffuse.armor = 3f;
 		Blocks.sublimate.armor = 4f;
@@ -244,23 +244,25 @@ public final class HIOverride {
 		Blocks.malign.armor = 19f;
 		((PowerTurret) Blocks.malign).minWarmup = 0.98f;
 		((PowerTurret) Blocks.malign).warmupMaintainTime = 45f;
-		//Blocks-Units
+		//blocks-units
 		((UnitFactory) Blocks.groundFactory).plans.add(new UnitPlan(HIUnitTypes.vanguard, 1200f, with(Items.lead, 25, Items.titanium, 25, Items.silicon, 30)));
 		((UnitFactory) Blocks.airFactory).plans.add(new UnitPlan(HIUnitTypes.caelifera, 1200f, with(Items.lead, 35, Items.titanium, 15, Items.silicon, 30)));
 		((Reconstructor) Blocks.additiveReconstructor).upgrades.add(new UnitType[]{HIUnitTypes.vanguard, HIUnitTypes.striker}, new UnitType[]{HIUnitTypes.caelifera, HIUnitTypes.schistocerca});
 		((Reconstructor) Blocks.multiplicativeReconstructor).upgrades.add(new UnitType[]{HIUnitTypes.striker, HIUnitTypes.counterattack}, new UnitType[]{HIUnitTypes.schistocerca, HIUnitTypes.anthophila});
 		((Reconstructor) Blocks.exponentialReconstructor).upgrades.add(new UnitType[]{HIUnitTypes.counterattack, HIUnitTypes.crush}, new UnitType[]{HIUnitTypes.anthophila, HIUnitTypes.vespula});
 		((Reconstructor) Blocks.tetrativeReconstructor).upgrades.add(new UnitType[]{HIUnitTypes.crush, HIUnitTypes.destruction}, new UnitType[]{HIUnitTypes.vespula, HIUnitTypes.lepidoptera});
-		//Blocks-Units-Erekir
+		//blocks-units-erekir
 		((Constructor) Blocks.constructor).filter = Seq.with();
 		((UnitAssembler) Blocks.tankAssembler).plans.add(new AssemblerUnitPlan(HIUnitTypes.dominate, 60f * 60f * 4f, PayloadStack.list(UnitTypes.precept, 4, HIBlocks.aparajitoLarge, 20)));
 		((UnitAssembler) Blocks.shipAssembler).plans.add(new AssemblerUnitPlan(HIUnitTypes.havoc, 60f * 60f * 4f, PayloadStack.list(UnitTypes.obviate, 4, HIBlocks.aparajitoLarge, 20)));
 		((UnitAssembler) Blocks.mechAssembler).plans.add(new AssemblerUnitPlan(HIUnitTypes.oracle, 60f * 60f * 4f, PayloadStack.list(UnitTypes.anthicus, 4, HIBlocks.aparajitoLarge, 20)));
-		//UnitTypes
+		//blocks-campaign
+		((LandingPad) Blocks.landingPad).consumeLiquidAmount /= 10f;//quite exaggerated water consumption...
+		//unit types
 		UnitTypes.alpha.coreUnitDock = true;
 		UnitTypes.beta.coreUnitDock = true;
 		UnitTypes.gamma.coreUnitDock = true;
-		//UnitTypes-Erekir
+		//unit types-erekir
 		UnitTypes.quell.targetAir = true;
 		UnitTypes.quell.weapons.get(0).bullet = new CtrlMissileBulletType("quell-missile", -1, -1) {{
 			shootEffect = Fx.shootBig;
@@ -362,7 +364,7 @@ public final class HIOverride {
 		UnitTypes.anthicus.weapons.get(0).reload = 120f;
 		UnitTypes.tecta.armor = 11f;
 		UnitTypes.collaris.armor = 15f;
-		//Liquids
+		//liquids
 		Liquids.slag.temperature = 2f;
 		Liquids.hydrogen.flammability = 1.5f;
 		Liquids.hydrogen.explosiveness = 1.5f;
@@ -370,7 +372,7 @@ public final class HIOverride {
 		Liquids.ozone.explosiveness = 0f;
 		Liquids.neoplasm.canStayOn.addAll(HILiquids.nanoFluid, HILiquids.nitratedOil);
 		Liquids.neoplasm.capPuddles = true;
-		//Items
+		//items
 		Items.graphite.hardness = 2;
 		Items.metaglass.hardness = 2;
 		Items.silicon.hardness = 2;
@@ -378,10 +380,10 @@ public final class HIOverride {
 		Items.surgeAlloy.hardness = 6;
 		Items.phaseFabric.hardness = 3;
 		Items.carbide.hardness = 6;
-		Items.serpuloItems.addAll(HIItems.rareEarth, HIItems.nanoCore, HIItems.chromium, HIItems.uranium, HIItems.heavyAlloy);
-		Items.erekirItems.addAll(HIItems.nanoCoreErekir, HIItems.uranium, HIItems.chromium);
+		Items.serpuloItems.addAll(HIItems.rareEarth, HIItems.nanoCore, HIItems.chromium, HIItems.uranium, HIItems.heavyAlloy, HIItems.originium, HIItems.purifiedOriginium, HIItems.syntheticJade);
+		Items.erekirItems.addAll(HIItems.nanoCoreErekir, HIItems.uranium, HIItems.chromium, HIItems.originium, HIItems.purifiedOriginium, HIItems.syntheticJade);
 		//planet
-		Planets.serpulo.allowSectorInvasion = settings.getBool("hi-serpulo-sector-invasion");
+
 		//other
 	}
 

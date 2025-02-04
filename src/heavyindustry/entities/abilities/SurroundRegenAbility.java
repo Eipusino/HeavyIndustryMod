@@ -23,7 +23,7 @@ public class SurroundRegenAbility extends Ability {
 		healRange = helRan;
 	}
 
-    public SurroundRegenAbility() {}
+	public SurroundRegenAbility() {}
 
 	@Override
 	public void addStats(Table t) {

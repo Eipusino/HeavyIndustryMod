@@ -1,19 +1,19 @@
 package heavyindustry.math;
 
+import arc.*;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.util.*;
 import mindustry.gen.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 /** @since 1.0.5 */
 public final class Math3d {
 	public static final float horiToVerti = 1f / 48f;
 
-	static final Vec2 vec = new Vec2(), vresult = new Vec2();
-	static final Vec3 axis = new Vec3(), rim = new Vec3();
+	private static final Vec2 vec = new Vec2(), vresult = new Vec2();
+	private static final Vec3 axis = new Vec3(), rim = new Vec3();
 
 	/** Don't let anyone instantiate this class. */
 	private Math3d() {}
@@ -182,11 +182,11 @@ public final class Math3d {
 	}
 
 	public static float xOffset(float x, float height) {
-		return (x - camera.position.x) * hMul(height);
+		return (x - Core.camera.position.x) * hMul(height);
 	}
 
 	public static float yOffset(float y, float height) {
-		return (y - camera.position.y) * hMul(height);
+		return (y - Core.camera.position.y) * hMul(height);
 	}
 
 	public static float hMul(float height) {
@@ -198,7 +198,7 @@ public final class Math3d {
 	}
 
 	public static float layerOffset(float x, float y) {
-		float max = Math.max(camera.width, camera.height);
-		return -Mathf.dst(x, y, camera.position.x, camera.position.y) / max / 1000f;
+		float max = Math.max(Core.camera.width, Core.camera.height);
+		return -Mathf.dst(x, y, Core.camera.position.x, Core.camera.position.y) / max / 1000f;
 	}
 }

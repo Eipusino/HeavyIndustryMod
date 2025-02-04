@@ -47,8 +47,8 @@ public abstract class DrawRendererContext {
 	/** The color used when drawing the current text is usually used to define the content color of nested blocks */
 	public Color currFontColor;
 
-	protected DrawRendererContext(Markdown element) {
-		this.element = element;
+	protected DrawRendererContext(Markdown elem) {
+		element = elem;
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.defense;
 
+import arc.*;
 import arc.Graphics.*;
 import arc.Graphics.Cursor.*;
 import arc.audio.*;
@@ -14,7 +15,6 @@ import mindustry.gen.*;
 import mindustry.logic.*;
 import mindustry.world.blocks.defense.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 /**
@@ -44,7 +44,7 @@ public class InsulationWall extends Wall {
 	public void load() {
 		super.load();
 
-		openRegion = atlas.find(name + "-open");
+		openRegion = Core.atlas.find(name + "-open");
 	}
 
 	@Override

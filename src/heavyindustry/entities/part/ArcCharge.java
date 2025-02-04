@@ -1,5 +1,6 @@
 package heavyindustry.entities.part;
 
+import arc.*;
 import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
@@ -10,7 +11,6 @@ import heavyindustry.graphics.*;
 import mindustry.entities.part.*;
 import mindustry.graphics.*;
 
-import static arc.Core.*;
 import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
@@ -52,7 +52,7 @@ public class ArcCharge extends DrawPart {
 		Lines.stroke(fin * lightningCircleInScl * 4.5f);
 		Lines.circle(x, y, scl * lightningCircleInScl);
 
-		TextureRegion arrowRegion = atlas.find(name("jump-gate-arrow"));
+		TextureRegion arrowRegion = Core.atlas.find(name("jump-gate-arrow"));
 
 		for (int i = 0; i < 4; i++) {
 			float rot = Time.time + i * 90;
@@ -60,7 +60,7 @@ public class ArcCharge extends DrawPart {
 			Draw.rect(arrowRegion, Tmp.v1.x, Tmp.v1.y, arrowRegion.width * Draw.scl * fin_9, arrowRegion.height * Draw.scl * fin_9, rot + 90);
 		}
 
-		TextureRegion pointerRegion = atlas.find(name("jump-gate-pointer"));
+		TextureRegion pointerRegion = Core.atlas.find(name("jump-gate-pointer"));
 
 		Lines.stroke(fin * lightningCircleOutScl * 4.5f);
 		Lines.circle(x, y, scl * lightningCircleOutScl);

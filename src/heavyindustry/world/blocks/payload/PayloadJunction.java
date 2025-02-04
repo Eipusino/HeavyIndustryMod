@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.payload;
 
+import arc.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
@@ -12,7 +13,6 @@ import mindustry.world.*;
 import mindustry.world.blocks.payloads.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 /**
@@ -24,7 +24,7 @@ public class PayloadJunction extends Block {
 	public float moveTime = 45f;
 	public Interp interp = Interp.pow5;
 	public float payloadLimit = 3f;
-	public TextureRegion topRegion, lightRegion;
+	public TextureRegion topRegion, lightRegion, iconRegion;
 	public TextureRegion[] dLightRegions;
 
 	public PayloadJunction(String name) {
@@ -43,18 +43,19 @@ public class PayloadJunction extends Block {
 	@Override
 	public void load() {
 		super.load();
-		topRegion = atlas.find(name + "-top");
-		lightRegion = atlas.find(name + "-light");
+		topRegion = Core.atlas.find(name + "-top");
+		lightRegion = Core.atlas.find(name + "-light");
+		iconRegion = Core.atlas.find(name + "-icon");
 
-		TextureRegion hLightRegion = atlas.find(name + "-light-h");
+		TextureRegion hLightRegion = Core.atlas.find(name + "-light-h");
 		if (hLightRegion.found()) {
-			dLightRegions = new TextureRegion[]{hLightRegion, atlas.find(name + "-light-v")};
+			dLightRegions = new TextureRegion[]{hLightRegion, Core.atlas.find(name + "-light-v")};
 		}
 	}
 
 	@Override
 	protected TextureRegion[] icons() {
-		return new TextureRegion[]{atlas.find(name + "-icon")};
+		return new TextureRegion[]{iconRegion};
 	}
 
 	@Override

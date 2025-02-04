@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.production;
 
+import arc.*;
 import arc.func.*;
 import arc.math.*;
 import arc.util.io.*;
@@ -7,8 +8,6 @@ import mindustry.graphics.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.production.*;
 import mindustry.world.consumers.*;
-
-import static arc.Core.*;
 
 public class AccelerationCrafter extends GenericCrafter {
 	public float accelerationSpeed = 0.03f, decelerationSpeed = 0.05f;
@@ -24,7 +23,7 @@ public class AccelerationCrafter extends GenericCrafter {
 	public void setBars() {
 		super.setBars();
 
-		addBar("craft-speed", (AcceleratingCrafterBuild tile) -> new Bar(() -> bundle.format("bar.hi-craft-speed", Mathf.round(tile.getDisplaySpeed() * 100f)), () -> Pal.surge, tile::getDisplaySpeed));
+		addBar("craft-speed", (AcceleratingCrafterBuild tile) -> new Bar(() -> Core.bundle.format("bar.hi-craft-speed", Mathf.round(tile.getDisplaySpeed() * 100f)), () -> Pal.surge, tile::getDisplaySpeed));
 	}
 
 	public class AcceleratingCrafterBuild extends GenericCrafterBuild {

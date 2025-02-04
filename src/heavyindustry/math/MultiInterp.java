@@ -7,16 +7,16 @@ public class MultiInterp implements Interp {
 
 	Interp[] interps;
 
-	public MultiInterp(Interp... interps) {
-		this.interps = interps;
+	public MultiInterp(Interp... ints) {
+		interps = ints;
 	}
 
 	@Override
-	public float apply(float v) {
-		for (Interp i : interps) {
-			v = i.apply(v);
+	public float apply(float value) {
+		for (Interp interp : interps) {
+			value = interp.apply(value);
 		}
 
-		return v;
+		return value;
 	}
 }

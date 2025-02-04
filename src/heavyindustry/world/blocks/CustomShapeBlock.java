@@ -22,15 +22,13 @@ import mindustry.world.*;
 import mindustry.world.blocks.ConstructBlock.*;
 
 import java.lang.reflect.*;
-import java.util.*;
 
+import static heavyindustry.util.Collect.*;
 import static mindustry.Vars.*;
 
 public class CustomShapeBlock extends Block {
 	protected static final Field blockField = Reflectf.getField(Tile.class, "block");
 	protected static final TileChangeEvent tileChangeEvent = new TileChangeEvent();
-
-	protected final int[] emptyInts = new int[0];
 
 	public CustomShape customShape;
 	public Vec2[] worldDrawOffsets = new Vec2[4];
@@ -48,13 +46,11 @@ public class CustomShapeBlock extends Block {
 	public void init() {
 		super.init();
 		if (customShape != null) updateClipSizeAndOffset();
-
 	}
 
 	@Override
 	public void load() {
 		super.load();
-
 		if (customShape != null) updateClipSizeAndOffset();
 	}
 
@@ -178,7 +174,6 @@ public class CustomShapeBlock extends Block {
 
 		}
 
-
 		@Override
 		public void remove() {
 			boolean wasAdded = added;
@@ -199,7 +194,7 @@ public class CustomShapeBlock extends Block {
 				tileChangeEvent.set(null);
 			}
 			removingSubs = false;
-			subBuilding = emptyInts;
+			subBuilding = intOf();
 		}
 
 		protected boolean updateRotation(Runnable callback) {
@@ -233,7 +228,7 @@ public class CustomShapeBlock extends Block {
 
 		protected void initSubBuilds() {
 			Log.info("initSubBuilds @", tile);
-			if (!Arrays.equals(subBuilding, emptyInts)) {
+			if (subBuilding.length > 0) {
 				removeSub();
 			}
 			subBuilding = new int[customShape.otherBlocksAmount];
@@ -261,7 +256,7 @@ public class CustomShapeBlock extends Block {
 			super.read(read, revision);
 			prevRotation = read.i();
 			int size = read.i();
-			if (!Arrays.equals(subBuilding, emptyInts)) {
+			if (subBuilding.length > 0) {
 				removeSub();
 			}
 			subBuilding = new int[size];

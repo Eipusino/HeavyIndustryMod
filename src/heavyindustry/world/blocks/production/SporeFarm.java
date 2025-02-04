@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.production;
 
+import arc.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
@@ -9,7 +10,6 @@ import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.world.*;
 
-import static arc.Core.*;
 import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 
@@ -50,7 +50,7 @@ public class SporeFarm extends Block {
 		groundRegions = split(name + "-ground", 32, 0);
 
 		fenceRegions = split(name + "-fence", 32, 12, 4);
-		cageFloor = atlas.find(name + "-floor");
+		cageFloor = Core.atlas.find(name + "-floor");
 	}
 
 	@Override
@@ -64,9 +64,9 @@ public class SporeFarm extends Block {
 		public boolean needsTileUpdate;
 
 		public boolean randomChk() {
-			Tile cTile = world.tile(tileX() + Mathf.range(3), tileY() + Mathf.range(3));
+			Tile ct = world.tile(tileX() + Mathf.range(3), tileY() + Mathf.range(3));
 
-			return cTile != null && cTile.floor().liquidDrop == growthLiquid;
+			return ct != null && ct.floor().liquidDrop == growthLiquid;
 		}
 
 		public void updateTilings() {

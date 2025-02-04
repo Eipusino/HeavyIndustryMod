@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.distribution;
 
+import arc.*;
 import arc.graphics.g2d.*;
 import arc.math.geom.*;
 import arc.util.*;
@@ -11,7 +12,6 @@ import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.blocks.distribution.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 /**
@@ -30,20 +30,20 @@ public class BeltConveyor extends Conveyor {
 
 	@Override
 	public void load() {
-		region = atlas.find(name);
+		region = Core.atlas.find(name);
 
-		customShadowRegion = atlas.find(name + "-shadow");
+		customShadowRegion = Core.atlas.find(name + "-shadow");
 
 		//load specific team regions
-		teamRegion = atlas.find(name + "-team");
+		teamRegion = Core.atlas.find(name + "-team");
 
 		teamRegions = new TextureRegion[Team.all.length];
 		for (Team team : Team.all) {
-			teamRegions[team.id] = teamRegion.found() && team.hasPalette ? atlas.find(name + "-team-" + team.name, teamRegion) : teamRegion;
+			teamRegions[team.id] = teamRegion.found() && team.hasPalette ? Core.atlas.find(name + "-team-" + team.name, teamRegion) : teamRegion;
 		}
 
-		regions = atlas.find(name + "-base").split(32, 32);
-		edgeRegions = atlas.find(name + "-edge").split(32, 32);
+		regions = Core.atlas.find(name + "-base").split(32, 32);
+		edgeRegions = Core.atlas.find(name + "-edge").split(32, 32);
 	}
 
 	@Override

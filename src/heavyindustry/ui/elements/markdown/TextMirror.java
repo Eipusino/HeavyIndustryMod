@@ -12,13 +12,13 @@ public class TextMirror {
 
 	public TextMirror sub;
 
-	TextMirror(String text, Font font, Color fontColor, float offx, float offy, float width, float height) {
-		this.text = text;
-		this.font = font;
-		this.fontColor = fontColor;
-		this.offx = offx;
-		this.offy = offy;
-		this.width = width;
-		this.height = height;
+	TextMirror(String tex, Font fon, Color fonCol, float ofx, float ofy, float wid, float hei) {
+		text = tex;
+		font = fon;
+		fontColor = fonCol;
+		offx = ofx;
+		offy = ofy;
+		width = wid;
+		height = hei;
 	}
 }

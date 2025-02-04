@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.distribution;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -12,7 +13,6 @@ import mindustry.graphics.*;
 import mindustry.world.*;
 import mindustry.world.blocks.distribution.*;
 
-import static arc.Core.*;
 import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 
@@ -25,22 +25,22 @@ public class BeltStackConveyor extends StackConveyor {
 
 	@Override
 	public void load() {
-		region = atlas.find(name);
+		region = Core.atlas.find(name);
 
-		customShadowRegion = atlas.find(name + "-shadow");
+		customShadowRegion = Core.atlas.find(name + "-shadow");
 
 		//load specific team regions
-		teamRegion = atlas.find(name + "-team");
+		teamRegion = Core.atlas.find(name + "-team");
 
 		teamRegions = new TextureRegion[Team.all.length];
 		for (Team team : Team.all) {
-			teamRegions[team.id] = teamRegion.found() && team.hasPalette ? atlas.find(name + "-team-" + team.name, teamRegion) : teamRegion;
+			teamRegions[team.id] = teamRegion.found() && team.hasPalette ? Core.atlas.find(name + "-team-" + team.name, teamRegion) : teamRegion;
 		}
 
-		edgeRegion = atlas.find(name + "-edge");
-		stackRegion = atlas.find(name + "-stack");
-		glowRegion = atlas.find(name + "-glow");
-		edgeGlowRegion = atlas.find(name + "-edge-glow", name + "-glow");
+		edgeRegion = Core.atlas.find(name + "-edge");
+		stackRegion = Core.atlas.find(name + "-stack");
+		glowRegion = Core.atlas.find(name + "-glow");
+		edgeGlowRegion = Core.atlas.find(name + "-edge-glow", name + "-glow");
 
 		regions = split(name + "-sheet", 32, 0);
 	}

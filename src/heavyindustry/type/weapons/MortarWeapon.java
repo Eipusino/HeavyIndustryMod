@@ -37,9 +37,9 @@ public class MortarWeapon extends Weapon {
 		float endIncline = -Mathf.cosDeg(Mathf.lerp(inclineOffset, maxIncline, mMount.incline)) * barrelEndRegion.height;
 		float rotation = unit.rotation - 90f,
 				weaponRotation = rotation + (rotate ? mount.rotation : 0),
-				recoil = -((mount.reload) / reload * this.recoil),
-				wx = unit.x + Angles.trnsx(rotation, x, y) + Angles.trnsx(weaponRotation, 0, recoil),
-				wy = unit.y + Angles.trnsy(rotation, x, y) + Angles.trnsy(weaponRotation, 0, recoil);
+				rec = -((mount.reload) / reload * recoil),
+				wx = unit.x + Angles.trnsx(rotation, x, y) + Angles.trnsx(weaponRotation, 0, rec),
+				wy = unit.y + Angles.trnsy(rotation, x, y) + Angles.trnsy(weaponRotation, 0, rec);
 
 
 		Tmp.v1.trns(weaponRotation - 90f, incline + barrelOffset).add(wx, wy);
@@ -59,16 +59,16 @@ public class MortarWeapon extends Weapon {
 	}
 
 	@Override
-	protected void shoot(Unit unit, WeaponMount mount, float shootX, float shootY, float rotation) {
+	protected void shoot(Unit unit, WeaponMount mount, float shtX, float shtY, float rotation) {
 		MortarMount mMount = (MortarMount) mount;
-		float incline = Mathf.sinDeg(Mathf.lerp(inclineOffset, maxIncline, mMount.incline)) * this.shootY;
+		float incline = Mathf.sinDeg(Mathf.lerp(inclineOffset, maxIncline, mMount.incline)) * shootY;
 		float weaponRotation = unit.rotation - 90 + (rotate ? mount.rotation : 0),
 				mX = unit.x + Angles.trnsx(unit.rotation - 90, x, y),
 				mY = unit.y + Angles.trnsy(unit.rotation - 90, x, y);
 		Tmp.v1.trns(weaponRotation - 90f, -incline + barrelOffset);
-		shootX = mX + Tmp.v1.x;
-		shootY = mY + Tmp.v1.y;
-		super.shoot(unit, mount, shootX, shootY, rotation);
+		shtX = mX + Tmp.v1.x;
+		shtY = mY + Tmp.v1.y;
+		super.shoot(unit, mount, shtX, shtY, rotation);
 	}
 
 	static class MortarMount extends WeaponMount {

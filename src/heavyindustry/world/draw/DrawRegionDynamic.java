@@ -1,17 +1,15 @@
 package heavyindustry.world.draw;
 
+import arc.*;
 import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.util.*;
-import heavyindustry.util.*;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.world.*;
 import mindustry.world.draw.*;
-
-import static arc.Core.*;
 
 @SuppressWarnings("unchecked")
 public class DrawRegionDynamic<E extends Building> extends DrawBlock {
@@ -73,6 +71,6 @@ public class DrawRegionDynamic<E extends Building> extends DrawBlock {
 
 	@Override
 	public void load(Block block) {
-		region = atlas.find(block.name + suffix);
+		region = Core.atlas.find(block.name + suffix);
 	}
 }

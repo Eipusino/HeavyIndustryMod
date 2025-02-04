@@ -14,7 +14,6 @@ import mindustry.graphics.*;
 
 import java.util.*;
 
-import static arc.Core.*;
 import static heavyindustry.graphics.Drawn.*;
 import static heavyindustry.graphics.HIShaders.*;
 
@@ -36,7 +35,7 @@ public final class Draws {
 	static {
 		Events.run(Trigger.draw, () -> {
 			Draw.draw(mirrorField - 0.01f, () -> {
-				effectBuffer.resize(graphics.getWidth(), graphics.getHeight());
+				effectBuffer.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
 				effectBuffer.begin(Color.clear);
 			});
 			Draw.draw(mirrorField + 0.51f, () -> {
@@ -123,7 +122,7 @@ public final class Draws {
 		}
 		FrameBuffer b = buffer;
 		drawTask(taskId, target, shader, e -> {
-			b.resize(graphics.getWidth(), graphics.getHeight());
+			b.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
 			b.begin(Color.clear);
 		}, e -> {
 			b.end();
@@ -153,7 +152,7 @@ public final class Draws {
 			taskBuffer[taskId] = bufferProv.get();
 		}
 		drawTask(taskId, target, shader, e -> {
-			taskBuffer[taskId].resize(graphics.getWidth(), graphics.getHeight());
+			taskBuffer[taskId].resize(Core.graphics.getWidth(), Core.graphics.getHeight());
 			taskBuffer[taskId].begin(Color.clear);
 		}, e -> {
 			taskBuffer[taskId].end();
@@ -229,7 +228,7 @@ public final class Draws {
 
 	public static <T, B extends FrameBuffer> void drawToBuffer(int taskId, B buffer, T target, DrawAcceptor<B> endBuffer, DrawAcceptor<T> draw) {
 		drawTask(taskId, target, buffer, b -> {
-			b.resize(graphics.getWidth(), graphics.getHeight());
+			b.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
 			b.begin(Color.clear);
 		}, b -> {
 			b.end();
@@ -254,9 +253,9 @@ public final class Draws {
 			bloom = blooms[taskId] = new Bloom(true);
 		}
 		drawTask(taskId, obj, bloom, e -> {
-			e.resize(graphics.getWidth(), graphics.getHeight());
-			e.setBloomIntensity(settings.getInt("bloomintensity", 6) / 4f + 1f);
-			e.blurPasses = settings.getInt("bloomblur", 1);
+			e.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
+			e.setBloomIntensity(Core.settings.getInt("bloomintensity", 6) / 4f + 1f);
+			e.blurPasses = Core.settings.getInt("bloomblur", 1);
 			e.capture();
 		}, Bloom::render, draw);
 	}
@@ -278,9 +277,9 @@ public final class Draws {
 		}
 
 		drawTask(taskId, bloom, e -> {
-			e.resize(graphics.getWidth(), graphics.getHeight());
-			e.setBloomIntensity(settings.getInt("bloomintensity", 6) / 4f + 1f);
-			e.blurPasses = settings.getInt("bloomblur", 1);
+			e.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
+			e.setBloomIntensity(Core.settings.getInt("bloomintensity", 6) / 4f + 1f);
+			e.blurPasses = Core.settings.getInt("bloomblur", 1);
 			e.capture();
 		}, Bloom::render, draw);
 	}
@@ -371,7 +370,7 @@ public final class Draws {
 	 */
 	public static <T> void drawBlur(int taskId, T target, Blur blur, DrawAcceptor<T> draw) {
 		drawTask(taskId, target, blur, e -> {
-			e.resize(graphics.getWidth(), graphics.getHeight());
+			e.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
 			e.capture();
 		}, Blur::render, draw);
 	}
@@ -401,7 +400,7 @@ public final class Draws {
 	}
 
 	public static boolean clipDrawable(float x, float y, float clipSize) {
-		camera.bounds(rect);
+		Core.camera.bounds(rect);
 		return rect.overlaps(x - clipSize / 2, y - clipSize / 2, clipSize, clipSize);
 	}
 
@@ -968,7 +967,7 @@ public final class Draws {
 		}
 
 		public void resize() {
-			buffer.resize(graphics.getWidth(), graphics.getHeight());
+			buffer.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
 		}
 
 		public void capture() {
@@ -1191,7 +1190,7 @@ public final class Draws {
 		}
 
 		public void directDraw(Runnable draw) {
-			resize(graphics.getWidth(), graphics.getHeight());
+			resize(Core.graphics.getWidth(), Core.graphics.getHeight());
 			capture();
 			draw.run();
 			render();
@@ -1237,7 +1236,7 @@ public final class Draws {
 				pingpong = buffer; //swap
 			}
 
-			samplerBuffer.resize(graphics.getWidth(), graphics.getHeight());
+			samplerBuffer.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
 			if (legacy) samplerBuffer.begin();
 			else samplerBuffer.begin(Color.clear);
 		}

@@ -12,7 +12,6 @@ import heavyindustry.math.*;
 import mindustry.game.EventType.*;
 import mindustry.graphics.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 /** Draws 2d region with applying {@link Mat3D}. */
@@ -271,11 +270,11 @@ public final class Draw3d {
 	}
 
 	public static float xOffset(float x, float z) {
-		return (x - camera.position.x) * hMul(z);
+		return (x - Core.camera.position.x) * hMul(z);
 	}
 
 	public static float yOffset(float y, float z) {
-		return (y - camera.position.y) * hMul(z);
+		return (y - Core.camera.position.y) * hMul(z);
 	}
 
 	public static float hScale(float z) {
@@ -303,15 +302,15 @@ public final class Draw3d {
 	}
 
 	public static float layerOffset(float x, float y) {
-		float max = Math.max(camera.width, camera.height);
-		return -Mathf.dst(x, y, camera.position.x, camera.position.y) / max / 1000f;
+		float max = Math.max(Core.camera.width, Core.camera.height);
+		return -Mathf.dst(x, y, Core.camera.position.x, Core.camera.position.y) / max / 1000f;
 	}
 
 	public static float layerOffset(float cx, float cy, float tx, float ty) {
 		float angleTo = Angles.angle(cx, cy, tx, ty),
-				angleCam = Angles.angle(cx, cy, camera.position.x, camera.position.y);
+				angleCam = Angles.angle(cx, cy, Core.camera.position.x, Core.camera.position.y);
 		float angleDist = Angles.angleDist(angleTo, angleCam);
-		float max = Math.max(camera.width, camera.height);
+		float max = Math.max(Core.camera.width, Core.camera.height);
 
 		return layerOffset(cx, cy) + Mathf.dst(cx, cy, tx, ty) * Mathf.cosDeg(angleDist) / max / 1000f;
 	}

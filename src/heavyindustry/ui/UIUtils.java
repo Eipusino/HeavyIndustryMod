@@ -31,13 +31,10 @@ import mindustry.world.modules.*;
 
 import java.text.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public final class UIUtils {
-	public static final float LEN = 60f;
-	public static final float OFFSET = 12f;
-	public static final TextArea textArea = headless ? null : new TextArea("");
+	public static final float LEN = 60f, OFFSET = 12f;
 
 	public static PowerGraphInfoDialog powerInfoDialog;
 	public static CliffPlacerFragment cliffPlacerFragment;
@@ -70,8 +67,7 @@ public final class UIUtils {
 
 	/** Based on {@link UI#formatAmount(long)} but for floats. */
 	public static String formatAmount(float num) {
-		if (Float.isNaN(num)) return "nan";
-		if (num == Float.MAX_VALUE) return "infinite";
+		if (Float.isNaN(num) || num == Float.MAX_VALUE) return "infinite";
 		if (num == Float.MIN_VALUE) return "-infinite";
 
 		float mag = Math.abs(num);
@@ -111,7 +107,7 @@ public final class UIUtils {
 	}
 
 	public static boolean hasMouse() {
-		Element e = scene.hit(input.mouseX(), input.mouseY(), false);
+		Element e = Core.scene.hit(Core.input.mouseX(), Core.input.mouseY(), false);
 		return e != null && !e.fillParent;
 	}
 
@@ -123,7 +119,7 @@ public final class UIUtils {
 		coll.setDuration(0.1f);
 		t.row();
 		t.table(st -> {
-			st.add(bundle.get("hi-click-to-show")).center();
+			st.add(Core.bundle.get("hi-click-to-show")).center();
 			st.row();
 			st.button(Icon.downOpen, Styles.emptyi, () -> coll.toggle(true)).update(i -> i.getStyle().imageUp = (!coll.isCollapsed() ? Icon.upOpen : Icon.downOpen)).pad(5).size(8).center();
 		}).left();
@@ -180,11 +176,11 @@ public final class UIUtils {
 			}).pad(10).margin(10).left();
 			log.image(Tex.whiteui, Pal.accent).growY().width(3).pad(4).margin(5).left();
 			log.table(info -> {
-				Label n = info.add(c.localizedName).wrap().fillX().left().maxWidth(graphics.getWidth() / 2f).get();
+				Label n = info.add(c.localizedName).wrap().fillX().left().maxWidth(Core.graphics.getWidth() / 2f).get();
 				info.row();
 				info.image(Tex.whiteui, Pal.accent).left().width(n.getWidth() * 1.3f).height(3f).row();
-				info.add(c.description).wrap().fillX().left().width(graphics.getWidth() / 2f).padTop(10).row();
-				info.image(Tex.whiteui, Pal.accent).left().width(graphics.getWidth() / 2f).height(3f).row();
+				info.add(c.description).wrap().fillX().left().width(Core.graphics.getWidth() / 2f).padTop(10).row();
+				info.image(Tex.whiteui, Pal.accent).left().width(Core.graphics.getWidth() / 2f).height(3f).row();
 			}).left().pad(6);
 		});
 	}
@@ -199,11 +195,11 @@ public final class UIUtils {
 	}
 
 	public static void disableTable() {
-		scene.root.removeChild(starter);
+		Core.scene.root.removeChild(starter);
 	}
 
 	public static void showTable() {
-		scene.root.addChildAt(3, starter);
+		Core.scene.root.addChildAt(3, starter);
 	}
 
 	public static void showInner(Table parent, Table children) {
@@ -262,14 +258,14 @@ public final class UIUtils {
 
 		parentT.touchablility = () -> Touchable.disabled;
 
-		if (!pTable.hasParent()) ctrlVec.set(camera.unproject(input.mouse()));
+		if (!pTable.hasParent()) ctrlVec.set(Core.camera.unproject(Core.input.mouse()));
 
 		if (!pTable.hasParent()) pTable = new Table(Tex.clear) {{
 			update(() -> {
 				if (state.isMenu()) {
 					remove();
 				} else {
-					Vec2 v = camera.project(World.toTile(ctrlVec.x) * tilesize, World.toTile(ctrlVec.y) * tilesize);
+					Vec2 v = Core.camera.project(World.toTile(ctrlVec.x) * tilesize, World.toTile(ctrlVec.y) * tilesize);
 					setPosition(v.x, v.y, 0);
 				}
 			});
@@ -287,9 +283,9 @@ public final class UIUtils {
 			private void drawLines() {
 				Lines.square(x, y, 28, 45);
 				Lines.line(x - OFFSET * 4, y, 0, y);
-				Lines.line(x + OFFSET * 4, y, graphics.getWidth(), y);
+				Lines.line(x + OFFSET * 4, y, Core.graphics.getWidth(), y);
 				Lines.line(x, y - OFFSET * 4, x, 0);
-				Lines.line(x, y + OFFSET * 4, x, graphics.getHeight());
+				Lines.line(x, y + OFFSET * 4, x, Core.graphics.getHeight());
 			}
 		};
 
@@ -303,7 +299,7 @@ public final class UIUtils {
 			addListener(new InputListener() {
 				@Override
 				public boolean touchDown(InputEvent event, float x, float y, int pointer, KeyCode button) {
-					ctrlVec.set(camera.unproject(x, y));
+					ctrlVec.set(Core.camera.unproject(x, y));
 					return false;
 				}
 			});
@@ -317,8 +313,8 @@ public final class UIUtils {
 			floatTable.remove();
 		}).center();
 
-		scene.root.addChildAt(Math.max(parentT.getZIndex() - 1, 0), pTable);
-		scene.root.addChildAt(Math.max(parentT.getZIndex() - 2, 0), floatTable);
+		Core.scene.root.addChildAt(Math.max(parentT.getZIndex() - 1, 0), pTable);
+		Core.scene.root.addChildAt(Math.max(parentT.getZIndex() - 2, 0), floatTable);
 	}
 
 	private static void scheduleToast(Runnable run) {
@@ -363,7 +359,7 @@ public final class UIUtils {
 			table.pack();
 
 			//create container table which will align and move
-			Table container = scene.table();
+			Table container = Core.scene.table();
 			container.top().add(table);
 			container.setTranslation(0, table.getPrefHeight());
 			container.actions(
@@ -391,15 +387,15 @@ public final class UIUtils {
 			}).growY().fillX().padRight(OFFSET);
 		}
 
-		public void init(float width) {
-			setSize(width, starter.getHeight());
-			setPosition(-this.width, starter.originY);
+		public void init(float wid) {
+			setSize(wid, starter.getHeight());
+			setPosition(-width, starter.originY);
 		}
 	}
 
 	public static class LinkTable extends Table {
-		protected static float h = graphics.isPortrait() ? 90f : 80f;
-		protected static float w = graphics.isPortrait() ? 330f : 600f;
+		protected static float h = Core.graphics.isPortrait() ? 90f : 80f;
+		protected static float w = Core.graphics.isPortrait() ? 330f : 600f;
 
 		public LinkTable(Links.LinkEntry link) {
 			background(Tex.underline);
@@ -422,16 +418,16 @@ public final class UIUtils {
 			}).padLeft(OFFSET / 1.5f);
 
 			button(Icon.link, () -> {
-				if (!app.openURI(link.link)) {
+				if (!Core.app.openURI(link.link)) {
 					ui.showErrorMessage("@linkfail");
-					app.setClipboardText(link.link);
+					Core.app.setClipboardText(link.link);
 				}
 			}).size(h);
 		}
 
 		public static void sync() {
-			h = graphics.isPortrait() ? 90f : 80f;
-			w = graphics.isPortrait() ? 300f : 600f;
+			h = Core.graphics.isPortrait() ? 90f : 80f;
+			w = Core.graphics.isPortrait() ? 300f : 600f;
 		}
 	}
 
@@ -466,7 +462,7 @@ public final class UIUtils {
 
 	@Nullable
 	public static Element hovered(Boolf<Element> validator) {
-		Element e = scene.hit(input.mouseX(), input.mouseY(), true);
+		Element e = Core.scene.hit(Core.input.mouseX(), Core.input.mouseY(), true);
 		if (e != null) {
 			while (e != null && !validator.get(e)) {
 				e = e.parent;

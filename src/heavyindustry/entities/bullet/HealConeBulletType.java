@@ -86,7 +86,7 @@ public class HealConeBulletType extends BulletType {
 	public void draw(Bullet b) {
 		float in = b.time < b.lifetime - 10 ? Math.min(1, b.time / 10) : (b.lifetime - b.time) / 10;
 		in = Interp.fastSlow.apply(in);
-		float angleMt = b.data instanceof Float f ? f : 1;
+		float angleMt = b.data instanceof Number f ? f.floatValue() : 1;
 		float range = findRange * in;
 		float angle = findAngle * angleMt * in;
 		Draw.color(Pal.heal);

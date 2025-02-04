@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.payload;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.graphics.gl.*;
@@ -16,7 +17,6 @@ import mindustry.graphics.*;
 import mindustry.world.*;
 import mindustry.world.blocks.payloads.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class PayloadRail extends PayloadBlock {
@@ -108,16 +108,16 @@ public class PayloadRail extends PayloadBlock {
 	@Override
 	public void load() {
 		super.load();
-		railEndRegion = atlas.find(name + "-rail-end");
+		railEndRegion = Core.atlas.find(name + "-rail-end");
 
 		railRegions = new TextureRegion[3];
 		clawRegions = new TextureRegion[3];
 		for (int i = 0; i < 3; i++) {
-			railRegions[i] = atlas.find(name + "-rail-" + i);
-			clawRegions[i] = atlas.find(name + "-claw-" + i);
+			railRegions[i] = Core.atlas.find(name + "-rail-" + i);
+			clawRegions[i] = Core.atlas.find(name + "-claw-" + i);
 		}
 
-		arrowRegion = atlas.find("bridge-arrow");
+		arrowRegion = Core.atlas.find("bridge-arrow");
 	}
 
 	public class PayloadRailBuild extends PayloadBlockBuild<Payload> {

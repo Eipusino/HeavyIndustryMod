@@ -13,7 +13,6 @@ import mindustry.entities.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 
-import static arc.Core.*;
 import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
@@ -90,8 +89,8 @@ public class EnergyUnitType extends AncientUnitType {
 			});
 		if (trailLength < 0) trailLength = (int) bodySize * 4;
 		if (slopeEffect == HIFx.boolSelector) slopeEffect = new Effect(30, b -> {
-			if (!(b.data instanceof Integer)) return;
-			int i = b.data();
+			if (!(b.data instanceof Number n)) return;
+			int i = n.intValue();
 			Draw.color(b.color);
 			Angles.randLenVectors(b.id, (int) (b.rotation / 8f), b.rotation / 4f + b.rotation * 2f * b.fin(), (x, y) -> Fill.circle(b.x + x, b.y + y, b.fout() * b.rotation / 2.25f));
 			Lines.stroke((i < 0 ? b.fin(Interp.pow2InInverse) : b.fout(Interp.pow2Out)) * 2f);
@@ -167,7 +166,7 @@ public class EnergyUnitType extends AncientUnitType {
 		for (int i = 0; i < 4; i++) {
 			float rotation = Time.time * 1.5f + i * 90;
 			Tmp.v1.trns(rotation, bodySize * 1.5f).add(unit);
-			Draw.rect(atlas.find(name("jump-gate-arrow")), Tmp.v1.x, Tmp.v1.y, rotation + 90);
+			Draw.rect(Core.atlas.find(name("jump-gate-arrow")), Tmp.v1.x, Tmp.v1.y, rotation + 90);
 		}
 		Draw.reset();
 	}

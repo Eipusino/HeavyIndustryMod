@@ -51,7 +51,7 @@ public class Clifff extends Block {
 
 	public static void unProcessCliffs() {
 		world.tiles.eachTile(tile -> {
-			if (tile.block() instanceof Clifff && tile.data != 0) {
+			if (HIBlocks.cliffHelper != null && tile.block() instanceof Clifff && tile.data != 0) {
 				if (tile.data <= 4) {
 					tile.nearby(tile.data - 1).setBlock(HIBlocks.cliffHelper);
 				} else if (tile.data <= 8) {

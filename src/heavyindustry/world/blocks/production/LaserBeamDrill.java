@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.production;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -9,7 +10,6 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.world.blocks.production.*;
 
-import static arc.Core.*;
 import static heavyindustry.HIVars.*;
 
 public class LaserBeamDrill extends Drill {
@@ -54,8 +54,8 @@ public class LaserBeamDrill extends Drill {
 	@Override
 	public void load() {
 		super.load();
-		laser = atlas.find(name("mine-laser"), "laser");
-		laserEnd = atlas.find(name("mine-laser-end"), "laser-end");
+		laser = Core.atlas.find(name("mine-laser"), "laser");
+		laserEnd = Core.atlas.find(name("mine-laser-end"), "laser-end");
 	}
 
 	public class LaserBeamDrillBuild extends DrillBuild {

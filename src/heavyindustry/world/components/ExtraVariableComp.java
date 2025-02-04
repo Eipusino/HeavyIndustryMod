@@ -172,7 +172,7 @@ public interface ExtraVariableComp {
 	 * @throws ClassCastException If the variable already exists and is not a boolean wrapper type or atomized reference
 	 * @see ExtraVariableComp#handleVar(String, Function, Object)
 	 */
-	default boolean handleVar(String field, BoolTrans handle, boolean def) {
+	default boolean handleVar(String field, Boolt handle, boolean def) {
 		boolean b;
 		setVar(field, b = handle.get(getVar(field, def)));
 
@@ -245,7 +245,7 @@ public interface ExtraVariableComp {
 	 * @throws ClassCastException If the variable already exists and is not an int wrapper type or atomized reference
 	 * @see ExtraVariableComp#handleVar(String, Function, Object)
 	 */
-	default int handleVar(String field, IntTrans handle, int def) {
+	default int handleVar(String field, Intt handle, int def) {
 		int i;
 		setVar(field, i = handle.get(getVar(field, def)));
 
@@ -318,7 +318,7 @@ public interface ExtraVariableComp {
 	 * @throws ClassCastException If the variable already exists and is not a long wrapper type or atomized reference
 	 * @see ExtraVariableComp#handleVar(String, Function, Object)
 	 */
-	default long handleVar(String field, LongTrans handle, long def) {
+	default long handleVar(String field, Longt handle, long def) {
 		long l;
 		setVar(field, l = handle.get(getVar(field, def)));
 
@@ -391,7 +391,7 @@ public interface ExtraVariableComp {
 	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or a single element float array
 	 * @see ExtraVariableComp#handleVar(String, Function, Object)
 	 */
-	default float handleVar(String field, FloatTrans handle, float def) {
+	default float handleVar(String field, Floatt handle, float def) {
 		float trans;
 		setVar(field, trans = handle.get(getVar(field, def)));
 
@@ -464,7 +464,7 @@ public interface ExtraVariableComp {
 	 * @throws ClassCastException If the variable already exists and is not a double wrapper type or a single element double array
 	 * @see ExtraVariableComp#handleVar(String, Function, Object)
 	 */
-	default double handleVar(String field, DoubleTrans handle, double def) {
+	default double handleVar(String field, Doublet handle, double def) {
 		double d;
 		setVar(field, d = handle.get(getVar(field, def)));
 

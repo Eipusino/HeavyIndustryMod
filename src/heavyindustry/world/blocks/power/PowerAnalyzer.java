@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.power;
 
+import arc.*;
 import arc.Graphics.*;
 import arc.Graphics.Cursor.*;
 import arc.graphics.*;
@@ -13,7 +14,6 @@ import mindustry.graphics.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.meta.*;
 
-import static arc.Core.*;
 import static heavyindustry.HIVars.*;
 import static mindustry.Vars.*;
 
@@ -44,8 +44,8 @@ public class PowerAnalyzer extends PowerBlock {
 	public void load() {
 		super.load();
 
-		topRegion = atlas.find(name + "-top");
-		arrowRegion = atlas.find(name + "-arrow", modName + "-power-analyzer-arrow");
+		topRegion = Core.atlas.find(name + "-top");
+		arrowRegion = Core.atlas.find(name + "-arrow", modName + "-power-analyzer-arrow");
 	}
 
 	@Override
@@ -67,6 +67,8 @@ public class PowerAnalyzer extends PowerBlock {
 	}
 
 	public class PowerAnalyzerBuild extends Building {
+		public PowerAnalyzerBuild() {}
+
 		@Override
 		public void draw() {
 			Draw.rect(region, x, y);

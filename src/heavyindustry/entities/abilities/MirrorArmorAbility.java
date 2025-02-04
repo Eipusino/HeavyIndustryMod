@@ -11,8 +11,6 @@ import heavyindustry.graphics.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 
-import static arc.Core.*;
-
 public class MirrorArmorAbility extends BaseMirrorShieldAbility {
 	protected static final int drawId = Draws.nextTaskId();
 	protected static final int maskId = Draws.nextTaskId();
@@ -45,7 +43,7 @@ public class MirrorArmorAbility extends BaseMirrorShieldAbility {
 
 		float z = Draw.z();
 
-		if (settings.getBool("hi-animated-shields")) {
+		if (Core.settings.getBool("hi-animated-shields")) {
 			Draw.z(Layer.shields - 2f);
 			Draws.drawToBuffer(drawId, drawBuffer, unit, b -> {
 				HIShaders.mirrorField.waveMix = Tmp.c1.set(HIPal.matrixNet);
