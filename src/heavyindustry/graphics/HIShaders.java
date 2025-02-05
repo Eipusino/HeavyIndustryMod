@@ -33,9 +33,15 @@ public final class HIShaders {
 	public static MaskShader alphaMask;
 	public static WaveShader wave;
 	public static MirrorFieldShader mirrorField;
+	public static MaterializeShader materialize;
+	public static VerticalBuildShader vertBuild;
+	public static BlockBuildCenterShader blockBuildCenter;
+	public static TractorConeShader tractorCone;
+	public static DimShader dimShader;
+	public static SmallSpaceShader smallSpaceShader;
 	public static Shader baseShader, passThrough;
-	public static Tiler tiler;
-	public static PlanetTextureShader planetTextureShader;
+	public static TilerShader tiler;
+	public static PlanetTextureShader planetTexture;
 
 	/** Don't let anyone instantiate this class. */
 	private HIShaders() {}
@@ -62,12 +68,20 @@ public final class HIShaders {
 		alphaMask = new MaskShader();
 		mirrorField = new MirrorFieldShader();
 		wave = new WaveShader();
-		baseShader = new Shader(defVert("screenspace"), modFrag("distbase"));
-		passThrough = new Shader(defVert("screenspace"), modFrag("pass-through"));
 
-		tiler = new Tiler();
+		materialize = new MaterializeShader();
+		vertBuild = new VerticalBuildShader();
+		blockBuildCenter = new BlockBuildCenterShader();
+		tractorCone = new TractorConeShader();
+		dimShader = new DimShader();
+		smallSpaceShader = new SmallSpaceShader("small-space");
 
-		planetTextureShader = new PlanetTextureShader();
+		baseShader = new Shader(dsv("screenspace"), msf("dist-base"));
+		passThrough = new Shader(dsv("screenspace"), msf("pass-through"));
+
+		tiler = new TilerShader();
+
+		planetTexture = new PlanetTextureShader();
 
 		Shader.prependVertexCode = prevVert;
 		Shader.prependFragmentCode = prevFrag;
@@ -85,29 +99,29 @@ public final class HIShaders {
 	 * @param name The shader file name, e.g. {@code my-shader.frag}.
 	 * @return The shader file, located inside {@code shaders/}.
 	 */
-	public static Fi defFrag(String name) {
+	public static Fi dsf(String name) {
 		return Core.files.internal("shaders/" + name + ".frag");
 	}
 
-	public static Fi defVert(String name) {
+	public static Fi dsv(String name) {
 		return Core.files.internal("shaders/" + name + ".vert");
 	}
 
-	public static Fi modFrag(String name) {
+	public static Fi msf(String name) {
 		return internalTree.child("shaders/" + name + ".frag");
 	}
 
-	public static Fi modVert(String name) {
+	public static Fi msv(String name) {
 		return internalTree.child("shaders/" + name + ".vert");
 	}
 
 	/** Specialized mesh shader to capture fragment depths. */
-	public static final class DepthShader extends Shader {
+	public static class DepthShader extends Shader {
 		public Camera3D camera;
 
-		/** This class only requires one instance. Please use {@link #depth}. */
-		private DepthShader() {
-			super(modVert("depth"), modFrag("depth"));
+		/** The only instance of this class: {@link #depth}. */
+		DepthShader() {
+			super(msv("depth"), msf("depth"));
 		}
 
 		@Override
@@ -117,12 +131,12 @@ public final class HIShaders {
 		}
 	}
 
-	public static final class DepthScreenspaceShader extends Shader {
+	public static class DepthScreenspaceShader extends Shader {
 		public DepthFrameBuffer buffer;
 
-		/** This class only requires one instance. Please use {@link #depthScreenspace}. */
-		private DepthScreenspaceShader() {
-			super(modVert("depth-screenspace"), modFrag("depth-screenspace"));
+		/** The only instance of this class: {@link #depthScreenspace}. */
+		DepthScreenspaceShader() {
+			super(msv("depth-screenspace"), msf("depth-screenspace"));
 		}
 
 		@Override
@@ -139,15 +153,15 @@ public final class HIShaders {
 	 * An atmosphere shader that incorporates the planet shape in a form of depth texture. Better quality, but at the little
 	 * cost of performance.
 	 */
-	public static final class DepthAtmosphereShader extends Shader {
+	public static class DepthAtmosphereShader extends Shader {
 		private static final Mat3D mat = new Mat3D();
 
 		public Camera3D camera;
 		public AtmospherePlanet planet;
 
-		/** This class only requires one instance. Please use {@link #depthAtmosphere}. */
-		private DepthAtmosphereShader() {
-			super(modVert("depth-atmosphere"), modFrag("depth-atmosphere"));
+		/** The only instance of this class: {@link #depthAtmosphere}. */
+		DepthAtmosphereShader() {
+			super(msv("depth-atmosphere"), msf("depth-atmosphere"));
 		}
 
 		@Override
@@ -171,16 +185,16 @@ public final class HIShaders {
 		}
 	}
 
-	public static final class PlanetTextureShader extends Shader {
+	public static class PlanetTextureShader extends Shader {
 		public Vec3 lightDir = new Vec3(1, 1, 1).nor();
 		public Color ambientColor = Color.white.cpy();
 		public Vec3 camDir = new Vec3();
 		public float alpha = 1f;
 		public Planet planet;
 
-		/** This class only requires one instance. Please use {@link #planetTextureShader}. */
-		private PlanetTextureShader() {
-			super(modVert("circle-mesh"), modFrag("circle-mesh"));
+		/** The only instance of this class: {@link #planetTexture}. */
+		PlanetTextureShader() {
+			super(msv("circle-mesh"), msf("circle-mesh"));
 		}
 
 		@Override
@@ -203,13 +217,13 @@ public final class HIShaders {
 		}
 	}
 
-	public static class Tiler extends Shader {
+	public static class TilerShader extends Shader {
 		public Texture texture = Core.atlas.white().texture;
 		public float scl = 4f;
 
-		/** This class only requires one instance. Please use {@link #tiler}. */
-		public Tiler() {
-			super(defVert("screenspace"), modFrag("tiler"));
+		/** The only instance of this class: {@link #tiler}. */
+		TilerShader() {
+			super(dsv("screenspace"), msf("tiler"));
 		}
 
 		@Override
@@ -225,12 +239,12 @@ public final class HIShaders {
 		}
 	}
 
-	public static final class AlphaShader extends Shader {
+	public static class AlphaShader extends Shader {
 		public float alpha = 1f;
 
-		/** This class only requires one instance. Please use {@link #alphaShader}. */
-		private AlphaShader() {
-			super(defVert("screenspace"), modFrag("postalpha"));
+		/** The only instance of this class: {@link #alphaShader}. */
+		AlphaShader() {
+			super(dsv("screenspace"), msf("post-alpha"));
 		}
 
 		@Override
@@ -239,7 +253,7 @@ public final class HIShaders {
 		}
 	}
 
-	public static final class WaveShader extends Shader {
+	public static class WaveShader extends Shader {
 		public Color waveMix = Color.white;
 		public float mixAlpha = 0.4f;
 		public float mixOmiga = 0.75f;
@@ -247,9 +261,9 @@ public final class HIShaders {
 		public float minThreshold = 0.6f;
 		public float waveScl = 0.2f;
 
-		/** This class only requires one instance. Please use {@link #wave}. */
-		private WaveShader() {
-			super(defVert("screenspace"), modFrag("wave"));
+		/** The only instance of this class: {@link #wave}. */
+		WaveShader() {
+			super(dsv("screenspace"), msf("wave"));
 		}
 
 		@Override
@@ -267,7 +281,7 @@ public final class HIShaders {
 		}
 	}
 
-	public static final class MirrorFieldShader extends Shader {
+	public static class MirrorFieldShader extends Shader {
 		public Color waveMix = Color.white;
 		public Vec2 offset = new Vec2(0, 0);
 		public float stroke = 2;
@@ -279,9 +293,9 @@ public final class HIShaders {
 		public float waveScl = 0.03f;
 		public float sideLen = 10;
 
-		/** This class only requires one instance. Please use {@link #mirrorField}. */
-		private MirrorFieldShader() {
-			super(defVert("screenspace"), modFrag("mirrorfield"));
+		/** The only instance of this class: {@link #mirrorField}. */
+		MirrorFieldShader() {
+			super(dsv("screenspace"), msf("mirror-field"));
 		}
 
 		@Override
@@ -306,9 +320,9 @@ public final class HIShaders {
 	public static final class MaskShader extends Shader {
 		public Texture texture;
 
-		/** This class only requires one instance. Please use {@link #alphaMask}. */
-		private MaskShader() {
-			super(defVert("screenspace"), modFrag("alphamask"));
+		/** The only instance of this class: {@link #alphaMask}. */
+		MaskShader() {
+			super(dsv("screenspace"), msf("alpha-mask"));
 		}
 
 		@Override
@@ -320,9 +334,9 @@ public final class HIShaders {
 		}
 	}
 
-	public static class ChromaticAberrationShader extends Shader {
-		public ChromaticAberrationShader() {
-			super(defVert("screenspace"), modFrag("aberration"));
+	public static final class ChromaticAberrationShader extends Shader {
+		ChromaticAberrationShader() {
+			super(dsv("screenspace"), msf("aberration"));
 		}
 
 		@Override
@@ -333,6 +347,138 @@ public final class HIShaders {
 					Core.camera.position.x - Core.camera.width / 2,
 					Core.camera.position.y - Core.camera.height / 2);
 			setUniformf("u_texsize", Core.camera.width, Core.camera.height);
+		}
+	}
+
+	public static class MaterializeShader extends Shader {
+		public float progress, offset, time;
+		public int shadow;
+		public Color color = new Color();
+		public TextureRegion region;
+
+		MaterializeShader() {
+			super(dsv("default"), msf("materialize"));
+		}
+
+		@Override
+		public void apply() {
+			setUniformf("u_progress", progress);
+			setUniformf("u_offset", offset);
+			setUniformf("u_time", time);
+			setUniformf("u_width", region.width);
+			setUniformf("u_shadow", shadow);
+			setUniformf("u_color", color);
+			setUniformf("u_uv", region.u, region.v);
+			setUniformf("u_uv2", region.u2, region.v2);
+			setUniformf("u_texsize", region.texture.width, region.texture.height);
+		}
+	}
+
+	public static class VerticalBuildShader extends Shader {
+		public float progress, time;
+		public Color color = new Color();
+		public TextureRegion region;
+
+		VerticalBuildShader() {
+			super(dsv("default"), msf("vertical-build"));
+		}
+
+		@Override
+		public void apply() {
+			setUniformf("u_time", time);
+			setUniformf("u_color", color);
+			setUniformf("u_progress", progress);
+			setUniformf("u_uv", region.u, region.v);
+			setUniformf("u_uv2", region.u2, region.v2);
+			setUniformf("u_texsize", region.texture.width, region.texture.height);
+		}
+	}
+
+	public static class BlockBuildCenterShader extends Shader {
+		public float progress;
+		public TextureRegion region;
+		public float time;
+
+		BlockBuildCenterShader() {
+			super(dsv("default"), msf("block-build-center"));
+		}
+
+		@Override
+		public void apply() {
+			setUniformf("u_progress", progress);
+			setUniformf("u_uv", region.u, region.v);
+			setUniformf("u_uv2", region.u2, region.v2);
+			setUniformf("u_time", time);
+			setUniformf("u_texsize", region.texture.width, region.texture.height);
+		}
+	}
+
+	public static class TractorConeShader extends Shader {
+		public float cx, cy;
+		public float time, spacing, thickness;
+
+		TractorConeShader() {
+			super(dsv("screenspace"), msf("tractor-cone"));
+		}
+
+		@Override
+		public void apply() {
+			setUniformf("u_dp", Scl.scl(1f));
+			setUniformf("u_time", time / Scl.scl(1f));
+			setUniformf("u_offset",
+					Core.camera.position.x - Core.camera.width / 2,
+					Core.camera.position.y - Core.camera.height / 2);
+			setUniformf("u_texsize", Core.camera.width, Core.camera.height);
+
+			setUniformf("u_spacing", spacing / Scl.scl(1f));
+			setUniformf("u_thickness", thickness / Scl.scl(1f));
+			setUniformf("u_cx", cx / Scl.scl(1f));
+			setUniformf("u_cy", cy / Scl.scl(1f));
+		}
+
+		public void setCenter(float x, float y) {
+			cx = x;
+			cy = y;
+		}
+	}
+
+	public static class DimShader extends Shader {
+		public float alpha;
+
+		DimShader() {
+			super(dsv("screenspace"), msf("dim"));
+		}
+
+		@Override
+		public void apply() {
+			setUniformf("u_alpha", alpha);
+		}
+	}
+
+	public static class SmallSpaceShader extends Shader {
+		Texture texture;
+
+		SmallSpaceShader(String fragment) {
+			super(dsv("screenspace"), msf(fragment));
+		}
+
+		@Override
+		public void apply() {
+			if (texture == null) {
+				texture = new Texture(internalTree.child("sprites/small-space.png"));
+				texture.setFilter(TextureFilter.linear);
+				texture.setWrap(TextureWrap.repeat);
+			}
+
+			setUniformf("u_campos", Core.camera.position.x, Core.camera.position.y);
+			setUniformf("u_ccampos", Core.camera.position);
+			setUniformf("u_resolution", Core.graphics.getWidth(), Core.graphics.getHeight());
+			setUniformf("u_time", Time.time);
+
+			texture.bind(1);
+			renderer.effectBuffer.getTexture().bind(0);
+
+			setUniformi("u_stars", 1);
 		}
 	}
 
@@ -384,7 +530,7 @@ public final class HIShaders {
 		Texture noiseTex;
 
 		public SurfaceShaderf(String fragment) {
-			super(defVert("screenspace"), modFrag(fragment));
+			super(dsv("screenspace"), msf(fragment));
 			loadNoise();
 		}
 

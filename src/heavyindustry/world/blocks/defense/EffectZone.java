@@ -21,7 +21,7 @@ import static mindustry.Vars.*;
 public class EffectZone extends Block {
 	protected static final Seq<Unit> all = new Seq<>();
 	public final int timerSearch = timers++;
-	/** Ticks between attempt at finding a target. */
+	/** Ticks between an attempt at finding a target. */
 	public float searchInterval = 20;
 	public float reload = 20f;
 	public float range = 10f * 8f;
@@ -30,7 +30,7 @@ public class EffectZone extends Block {
 	public Color
 			baseColor = Pal.lancerLaser,
 			topColor;
-	public float height = 1f;
+	public float height = 64f;
 	public float zoneLayer = -1f, ringLayer = Layer.flyingUnit + 0.5f;
 
 	public Cons<EffectZoneBuild> zoneEffect = tile -> {};
@@ -112,9 +112,10 @@ public class EffectZone extends Block {
 		protected void findUnits() {
 			all.clear();
 			Units.nearby(affectEnemyTeam ? null : team, x, y, range, other -> {
-				if (!other.dead && !(other instanceof Swordc) && (affectOwnTeam && other.team == team || affectEnemyTeam && team != other.team)) {
-					all.add(other);
-				}
+				if (
+						!other.dead && !(other instanceof Swordc) &&
+								(affectOwnTeam && other.team == team || affectEnemyTeam && team != other.team)
+				) all.add(other);
 			});
 		}
 
@@ -156,7 +157,7 @@ public class EffectZone extends Block {
 
 				Lines.stroke(1f, Tmp.c1);
 				Lines.circle(x, y, range);
-				Draw3d.tube(x, y, range, realHeight(), Tmp.c1, Tmp.c2);
+				Fill3d.tube(x, y, range, realHeight(), Tmp.c1, Tmp.c2);
 			}
 
 			Draw.color();

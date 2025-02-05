@@ -27,7 +27,7 @@ public class SporeFarm extends Block {
 	public float speed1 = 0.05f, speed2 = 0.15f, speed3 = 0.45f;
 	/** Production time after growth. */
 	public float dumpTime = 5f;
-	/** If true, nearby floors need to contain growthLiquid in order to grow. */
+	/** If true, nearby floors need to contain growthLiquid to grow. */
 	public boolean hasGrowthLiquid = true;
 	/** The liquid required for growth. (Can it also be slag?) */
 	public Liquid growthLiquid = Liquids.water;

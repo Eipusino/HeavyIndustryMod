@@ -318,6 +318,18 @@ public final class Mathm {
 		}
 	}
 
+	/** A parabolic curve with the opening facing downwards */
+	public static float parabola(float x) {
+		return (-Mathf.sqr(x) + x) * 4f;
+	}
+
+	/** Scale X magnification can also be seen as where the function returns to 0 */
+	public static float parabola(float x, float scale) {
+		if (x > scale) return 0f;
+		x = x * scale;
+		return (-Mathf.sqr(x) + x) * 4f;
+	}
+
 	/**
 	 * Sets a 3x3 matrix to the top left 3x3 corner of the provided 4x4 matrix.
 	 *

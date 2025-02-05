@@ -1116,10 +1116,10 @@ public final class HIBullets {
 				Draw.color(backColor);
 				Fill.circle(b.x, b.y, size);
 
-				Draw.z(HIFx.EFFECT_MASK);
+				Draw.z(HILayer.effectMask);
 				Draw.color(frontColor);
 				Fill.circle(b.x, b.y, size * 0.62f);
-				Draw.z(HIFx.EFFECT_BOTTOM);
+				Draw.z(HILayer.effectBottom);
 				Draw.color(frontColor);
 				Fill.circle(b.x, b.y, size * 0.66f);
 				Draw.z(Layer.bullet);

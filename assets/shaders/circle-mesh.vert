@@ -38,6 +38,6 @@ void main() {
 
 	vec3 norc = (u_ambientColor + specular) * (diffuse + vec3(clamp((dot(a_normal, u_lightdir) + 1.0) / 2.0, 0.0, 1.0)));
 
-	v_col=vec4(u_alpha);
+	v_col = vec4(u_alpha);
 	gl_Position = u_proj * u_trans * vec4(a_position.xyzw);
 }

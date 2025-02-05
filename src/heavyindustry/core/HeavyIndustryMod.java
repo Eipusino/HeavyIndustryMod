@@ -102,7 +102,7 @@ public final class HeavyIndustryMod extends Mod {
 						t.image(Core.atlas.find(name("cover"))).left().size(600f, 310f).pad(3f).row();
 						t.add(Core.bundle.get("hi-version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 						t.add(label).left().row();
-						t.add(Core.bundle.get("hi-class")).left().growX().wrap().pad(4).labelAlign(Align.left).row();
+						t.add(Core.bundle.get("hi-class")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 						t.add(Core.bundle.get("hi-note")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
 						t.add(Core.bundle.get("hi-prompt")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
 						t.add(Core.bundle.get("hi-other")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
@@ -111,8 +111,6 @@ public final class HeavyIndustryMod extends Mod {
 				dialog.show();
 			}
 		});
-
-		Core.app.post(() -> loaded = mods.getMod(getClass()));
 
 		Events.on(FileTreeInitEvent.class, event -> {
 			if (!headless) {
@@ -167,7 +165,6 @@ public final class HeavyIndustryMod extends Mod {
 		Utils.loadItems();
 
 		//Load the content of the accessory module.
-		ModJS.load();
 		LoadMod.loadContent();
 	}
 
@@ -225,12 +222,14 @@ public final class HeavyIndustryMod extends Mod {
 				}));
 		}
 
-		if (loaded() != null) {
-			loaded().meta.author = author;
+		LoadedMod theMod = loaded();
+
+		if (theMod != null) {
+			theMod.meta.author = author;
 			if (isPlugin) {
-				loaded().meta.hidden = true;
-				loaded().meta.name = modName + "-plugin";
-				loaded().meta.displayName = Core.bundle.get("hi-name") + " Plugin";
+				theMod.meta.hidden = true;
+				theMod.meta.name = modName + "-plugin";
+				theMod.meta.displayName = Core.bundle.get("hi-name") + " Plugin";
 			}
 		}
 
@@ -275,6 +274,7 @@ public final class HeavyIndustryMod extends Mod {
 		return mod != null && mod == loaded();
 	}
 
+	/** Safely obtain the {@code LoadedMod} for this mod. */
 	public static LoadedMod loaded() {
 		if (loaded == null) loaded = mods.getMod(modName);
 		return loaded;

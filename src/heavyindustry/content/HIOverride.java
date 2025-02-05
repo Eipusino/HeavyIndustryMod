@@ -257,7 +257,10 @@ public final class HIOverride {
 		((UnitAssembler) Blocks.shipAssembler).plans.add(new AssemblerUnitPlan(HIUnitTypes.havoc, 60f * 60f * 4f, PayloadStack.list(UnitTypes.obviate, 4, HIBlocks.aparajitoLarge, 20)));
 		((UnitAssembler) Blocks.mechAssembler).plans.add(new AssemblerUnitPlan(HIUnitTypes.oracle, 60f * 60f * 4f, PayloadStack.list(UnitTypes.anthicus, 4, HIBlocks.aparajitoLarge, 20)));
 		//blocks-campaign
-		((LandingPad) Blocks.landingPad).consumeLiquidAmount /= 10f;//quite exaggerated water consumption...
+
+		//I can't figure out how this thing consumes so much water...
+		//Anuke's recent mental state has been very poor. I can't figure out how this kind of thing came up with.
+		((LandingPad) Blocks.landingPad).consumeLiquidAmount /= 150f;
 		//unit types
 		UnitTypes.alpha.coreUnitDock = true;
 		UnitTypes.beta.coreUnitDock = true;

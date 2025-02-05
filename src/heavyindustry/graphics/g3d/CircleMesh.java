@@ -62,7 +62,7 @@ public class CircleMesh extends PlanetMesh {
 	}
 
 	private static Shader shader() {
-		return HIShaders.planetTextureShader;
+		return HIShaders.planetTexture;
 	}
 
 	@Override
@@ -88,11 +88,11 @@ public class CircleMesh extends PlanetMesh {
 
 	@Override
 	public void preRender(PlanetParams params) {
-		HIShaders.planetTextureShader.planet = planet;
-		HIShaders.planetTextureShader.lightDir.set(planet.solarSystem.position).sub(planet.position).rotate(Vec3.Y, planet.getRotation()).nor();
-		HIShaders.planetTextureShader.ambientColor.set(planet.solarSystem.lightColor);
+		HIShaders.planetTexture.planet = planet;
+		HIShaders.planetTexture.lightDir.set(planet.solarSystem.position).sub(planet.position).rotate(Vec3.Y, planet.getRotation()).nor();
+		HIShaders.planetTexture.ambientColor.set(planet.solarSystem.lightColor);
 		//TODO better disappearing
-		HIShaders.planetTextureShader.alpha = params.planet == planet ? 1f - params.uiAlpha : 1f;
+		HIShaders.planetTexture.alpha = params.planet == planet ? 1f - params.uiAlpha : 1f;
 	}
 
 	private void setPlanetInfo(String name, Planet planet) {

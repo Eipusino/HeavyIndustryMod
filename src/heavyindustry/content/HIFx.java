@@ -37,12 +37,9 @@ import static mindustry.Vars.*;
  * @author Eipusino
  */
 public final class HIFx {
-	public static final float EFFECT_MASK = Layer.effect + 0.0001f;
-	public static final float EFFECT_BOTTOM = Layer.bullet - 0.11f;
-
 	public static final float lightningAlign = 0.5f;
 
-	public static final Rand rand = new Rand(), rand0 = new Rand(0), rand1 = new Rand(), rand2 = new Rand(), globalEffectRand = new Rand(0);
+	public static final Rand rand = new Rand(), rand0 = new Rand(0), rand1 = new Rand(), rand2 = new Rand();
 	public static final Vec2 v7 = new Vec2(), v8 = new Vec2(), v9 = new Vec2();
 
 	public static final IntMap<Effect> same = new IntMap<>();
@@ -50,7 +47,7 @@ public final class HIFx {
 	private static float percent = 0;
 
 	public static final Effect
-			hitOut = new Effect(60, e -> {
+			hitOut = new Effect(60f, e -> {
 				if (e.data instanceof Unit u) {
 					UnitType type = u.type;
 					if (type != null) {
@@ -133,13 +130,13 @@ public final class HIFx {
 				}
 
 				float len1 = len * 0.66f;
-				Draw.z(EFFECT_MASK);
+				Draw.z(HILayer.effectMask);
 				Draw.color(Color.black);
 				for (int i : Mathf.signs) {
 					Drawn.tri(e.x, e.y, len1 / 17f * fout * (Mathf.absin(0.8f, 0.07f) + 1), len1 * 3f * Interp.swingOut.apply(Mathf.curve(e.fin(), 0, 0.7f)) * (Mathf.absin(0.8f, 0.12f) + 1) * e.fout(0.2f), e.rotation + 90 + i * 90);
 				}
 
-				Draw.z(EFFECT_BOTTOM);
+				Draw.z(HILayer.effectBottom);
 				for (int i : Mathf.signs) {
 					Drawn.tri(e.x, e.y, len1 / 17f * fout * (Mathf.absin(0.8f, 0.07f) + 1), len1 * 3f * Interp.swingOut.apply(Mathf.curve(e.fin(), 0, 0.7f)) * (Mathf.absin(0.8f, 0.12f) + 1) * e.fout(0.2f), e.rotation + 90 + i * 90);
 				}
@@ -380,9 +377,9 @@ public final class HIFx {
 					float dx = e.x + scl * x, dy = e.y + scl * y;
 					Fill.circle(dx, dy, e.fin() * rad);
 					Draw.color(Pal.techBlue);
-					Draw.z(EFFECT_MASK);
+					Draw.z(HILayer.effectMask);
 					Fill.circle(dx, dy, e.fin() * rad / 1.8f);
-					Draw.z(EFFECT_BOTTOM);
+					Draw.z(HILayer.effectBottom);
 					Fill.circle(dx, dy, e.fin() * rad / 1.8f);
 					Draw.z(Layer.effect);
 					Drawf.light(dx, dy, e.fin() * rad * 1.5f, Pal.techBlue, 0.7f);
@@ -393,11 +390,11 @@ public final class HIFx {
 				Fill.circle(e.x, e.y, e.fin() * 32);
 				Lines.stroke(e.fin() * 3.7f);
 				Lines.circle(e.x, e.y, e.fout() * 80);
-				Draw.z(EFFECT_MASK);
+				Draw.z(HILayer.effectMask);
 				Draw.color(Pal.techBlue);
 				Fill.circle(e.x, e.y, e.fin() * 20);
 
-				Draw.z(EFFECT_BOTTOM);
+				Draw.z(HILayer.effectBottom);
 				Draw.color(Pal.techBlue);
 				Fill.circle(e.x, e.y, e.fin() * 22);
 				Drawf.light(e.x, e.y, e.fin() * 35f, Pal.techBlue, 0.7f);
@@ -422,12 +419,12 @@ public final class HIFx {
 					Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fslope() * 14 + 5);
 				});
 
-				Draw.z(EFFECT_MASK);
+				Draw.z(HILayer.effectMask);
 				Draw.color(Pal.techBlue);
 				Fill.circle(e.x, e.y, e.fout() * 30);
 				Drawf.light(e.x, e.y, e.fout() * 80f, Pal.techBlue, 0.7f);
 
-				Draw.z(EFFECT_BOTTOM);
+				Draw.z(HILayer.effectBottom);
 				Fill.circle(e.x, e.y, e.fout() * 31);
 				Draw.z(Layer.effect - 0.0001f);
 			}).layer(Layer.effect - 0.0001f),

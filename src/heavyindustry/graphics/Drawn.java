@@ -807,8 +807,47 @@ public final class Drawn {
 		float a = Draw.getColor().a;
 		r = Mathf.mod(r, 180f);
 		Draw.rect(region, x, y, r);
-		Draw.alpha(r / 180f*a);
+		Draw.alpha(r / 180f * a);
 		Draw.rect(region, x, y, r - 180f);
 		Draw.alpha(a);
+	}
+
+	public static Color teamColor(Teamc entity, Color color) {
+		return color == null ? entity.team().color : color;
+	}
+
+	public static void drawStar(float x, float y, float w, float h, float angleOffset, float centerColor, float edgeColor) {
+		int sides = mul4(Lines.circleVertices(w + h));
+		float space = 360f / sides;
+
+		for (int i = 0; i < sides; i++) {
+			float t1 = i * space, t2 = (i + 1) * space;
+			Tmp.v1.trns(t1, circleStarPoint(t1)).scl(w, h).rotate(angleOffset).add(x, y);
+			Tmp.v2.trns(t2, circleStarPoint(t2)).scl(w, h).rotate(angleOffset).add(x, y);
+			Fill.quad(
+					x, y, centerColor,
+					x, y, centerColor,
+					Tmp.v1.x, Tmp.v1.y, edgeColor,
+					Tmp.v2.x, Tmp.v2.y, edgeColor
+			);
+		}
+	}
+
+	public static void drawStar(float x, float y, float w, float h, float centerColor, float edgeColor) {
+		drawStar(x, y, w, h, 0f, centerColor, edgeColor);
+	}
+
+	public static float circleStarPoint(float theta) {
+		theta = Mathf.mod(theta, 90f);
+		theta *= Mathf.degRad;
+		float b = -2 * Mathf.sqrt2 * Mathf.cos(theta - Mathf.pi / 4f);
+		return (-b - Mathf.sqrt(b * b - 4)) / 2;
+	}
+
+	private static int mul4(int value) {
+		while (value % 4 != 0) {
+			value++;
+		}
+		return value;
 	}
 }

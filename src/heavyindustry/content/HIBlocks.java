@@ -65,7 +65,7 @@ import static mindustry.type.ItemStack.*;
 
 /**
  * Defines the {@linkplain Block blocks} this mod offers.
- * <p>It is now quite large in scale, even approaching the size of vanilla's {@link Blocks}.
+ * <p>It is now quite large in a scale, even approaching the size of vanilla's {@link Blocks}.
  * But I don't want to divide it into multiple classes.
  *
  * @author Eipusino
@@ -1042,7 +1042,7 @@ public final class HIBlocks {
 		//liquid
 		liquidSorter = new SortLiquidRouter("liquid-sorter") {{
 			requirements(Category.liquid, with(Items.graphite, 4, Items.metaglass, 2));
-			liquidCapacity = 20f;
+			liquidCapacity = 200f;
 			liquidPadding = 3f / 4f;
 			underBullets = true;
 			rotate = false;
@@ -1050,7 +1050,7 @@ public final class HIBlocks {
 		}};
 		liquidValve = new SortLiquidRouter("liquid-valve") {{
 			requirements(Category.liquid, with(Items.graphite, 4, Items.metaglass, 2));
-			liquidCapacity = 20f;
+			liquidCapacity = 200f;
 			liquidPadding = 3f / 4f;
 			underBullets = true;
 			configurable = false;
@@ -1076,7 +1076,7 @@ public final class HIBlocks {
 			requirements(Category.liquid, with(Items.metaglass, 2, HIItems.chromium, 2));
 			health = 420;
 			armor = 4f;
-			liquidCapacity = 32;
+			liquidCapacity = 320f;
 			liquidPressure = 3.2f;
 			noSideBlend = true;
 			leaks = false;
@@ -1102,7 +1102,7 @@ public final class HIBlocks {
 							float fx = (x + next.x) / 2f, fy = (y + next.y) / 2f;
 
 							Liquid other = next.liquids.current();
-							// There was flammability logics, removed
+							// There were flammability logics, removed
 							if ((liquid.temperature > 0.7f && other.temperature < 0.55f) || (other.temperature > 0.7f && liquid.temperature < 0.55f)) {
 								liquids.remove(liquid, Math.min(liquids.get(liquid), 0.7f * Time.delta));
 								if (Mathf.chance(0.2f * Time.delta)) {
@@ -1171,7 +1171,7 @@ public final class HIBlocks {
 			squareSprite = false;
 			hasItems = false;
 			hasLiquids = true;
-			liquidCapacity = 32;
+			liquidCapacity = 320;
 			canOverdrive = false;
 			outputsLiquid = true;
 			range = 25;
@@ -1205,7 +1205,7 @@ public final class HIBlocks {
 		}};
 		reinforcedLiquidSorter = new SortLiquidRouter("reinforced-liquid-sorter") {{
 			requirements(Category.liquid, with(Items.silicon, 8, Items.beryllium, 4));
-			liquidCapacity = 40f;
+			liquidCapacity = 400f;
 			liquidPadding = 3f / 4f;
 			researchCostMultiplier = 3;
 			underBullets = true;
@@ -1215,7 +1215,7 @@ public final class HIBlocks {
 		}};
 		reinforcedLiquidValve = new SortLiquidRouter("reinforced-liquid-valve") {{
 			requirements(Category.liquid, with(Items.graphite, 6, Items.beryllium, 6));
-			liquidCapacity = 40f;
+			liquidCapacity = 400f;
 			liquidPadding = 3f / 4f;
 			researchCostMultiplier = 3;
 			underBullets = true;
@@ -1226,7 +1226,7 @@ public final class HIBlocks {
 		smallReinforcedPump = new Pump("small-reinforced-pump") {{
 			requirements(Category.liquid, with(Items.graphite, 35, Items.beryllium, 40));
 			pumpAmount = 15f / 60f;
-			liquidCapacity = 40f;
+			liquidCapacity = 400f;
 			size = 1;
 			squareSprite = false;
 		}};
@@ -1234,7 +1234,7 @@ public final class HIBlocks {
 			requirements(Category.liquid, with(Items.beryllium, 105, Items.thorium, 65, Items.silicon, 50, Items.tungsten, 75));
 			consumeLiquid(Liquids.hydrogen, 3f / 60f);
 			pumpAmount = 240f / 60f / 9f;
-			liquidCapacity = 360f;
+			liquidCapacity = 720f;
 			size = 3;
 			squareSprite = false;
 		}};
@@ -1296,7 +1296,7 @@ public final class HIBlocks {
 			powerProduction = 58f;
 			itemDuration = 360;
 			itemCapacity = 30;
-			liquidCapacity = 60;
+			liquidCapacity = 100;
 			fuelItem = HIItems.uranium;
 			coolantPower = 0.45f;
 			heating = 0.06f;
@@ -3566,7 +3566,7 @@ public final class HIBlocks {
 						tmpColor.lerp(Color.white, 0.86f);
 						Draw.color(tmpColor);
 						Drawn.basicLaser(b.x, b.y, b.aimX, b.aimY, stroke * 0.55f * darkenPartWarmup);
-						Draw.z(HIFx.EFFECT_BOTTOM);
+						Draw.z(HILayer.effectBottom);
 						Drawn.basicLaser(b.x, b.y, b.aimX, b.aimY, stroke * 0.6f * darkenPartWarmup);
 						Draw.z(Layer.bullet);
 					}

@@ -51,7 +51,7 @@ public class MultiCrafter extends Block {
 	public boolean autoAddBar = true;
 	/** Is liquid suspension display used. */
 	public boolean useLiquidTable = true;
-	/** How many formulas can be displayed at most once. */
+	/** How many formulas can be displayed at most once? */
 	public int maxList = 4;
 
 	public MultiCrafter(String name) {
@@ -333,7 +333,7 @@ public class MultiCrafter extends Block {
 				for (int i = 0; i < craftPlan.outputLiquids.length; i++) {
 					int dir = craftPlan.liquidOutputDirections.length > i ? craftPlan.liquidOutputDirections[i] : -1;
 
-					dumpLiquid(craftPlan.outputLiquids[i].liquid, 2f, dir);
+					dumpLiquid(craftPlan.outputLiquids[i].liquid, dir);
 				}
 			}
 		}

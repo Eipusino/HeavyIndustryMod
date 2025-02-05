@@ -204,7 +204,6 @@ public class MoreGenericCrafter extends PayloadBlock {
 			}
 
 			return enabled;
-
 		}
 
 		@Override
@@ -273,7 +272,7 @@ public class MoreGenericCrafter extends PayloadBlock {
 				for (int i = 0; i < outputLiquids.length; i++) {
 					int dir = liquidOutputDirections.length > i ? liquidOutputDirections[i] : -1;
 
-					dumpLiquid(outputLiquids[i].liquid, 2f, dir);
+					dumpLiquid(outputLiquids[i].liquid, dir);
 				}
 			}
 		}

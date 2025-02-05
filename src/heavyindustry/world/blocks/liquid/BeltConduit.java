@@ -87,6 +87,4 @@ public class BeltConduit extends Conduit {
 			Draw.rect(sliced(topParts[bits], slice), x, y, angle);
 		}
 	}
-
-
 }

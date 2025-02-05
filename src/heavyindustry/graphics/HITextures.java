@@ -7,7 +7,7 @@ import arc.graphics.Texture.*;
 import static heavyindustry.HIVars.*;
 
 public final class HITextures {
-	public static Texture smooth, particle, darker, armor;
+	public static Texture smooth, particle, darker, gaussian, median, armor;
 
 	/** Don't let anyone instantiate this class. */
 	private HITextures() {}
@@ -22,6 +22,14 @@ public final class HITextures {
 			t.setWrap(TextureWrap.repeat);
 		});
 		darker = loadTexture("darker-noise", t -> {
+			t.setFilter(TextureFilter.linear);
+			t.setWrap(TextureWrap.repeat);
+		});
+		gaussian = loadTexture("gaussian-noise", t -> {
+			t.setFilter(TextureFilter.linear);
+			t.setWrap(TextureWrap.repeat);
+		});
+		median = loadTexture("median-noise", t -> {
 			t.setFilter(TextureFilter.linear);
 			t.setWrap(TextureWrap.repeat);
 		});

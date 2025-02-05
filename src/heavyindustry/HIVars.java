@@ -19,17 +19,25 @@ public final class HIVars {
 	/** Commonly used static read-only String. do not change unless you know what you're doing. */
 	public static final String modName = "heavy-industry";
 	/** jar internal navigation. */
-	public static final InternalFileTree internalTree = new InternalFileTree(HeavyIndustryMod.class);
+	public static final InternalFileTree internalTree;
 
 	/** Modules present in both servers and clients. */
 	public static InputAggregator inputAggregator;
 
 	/** Blank single pixel texture, commonly used as a placeholder and to prevent null pointer anomalies in Kotlin. */
-	public static final TextureRegion whiteRegion = new AtlasRegion(new TextureRegion(new Texture(internalTree.child("sprites/white.png"))));
+	public static final Texture whiteTexture;
+	public static final TextureRegion whiteRegion;
 
 	public static float pressTimer = 30f;
 	public static float longPress = 30f;
 	public static float iconSize = 40f, buttonSize = 24f, sliderWidth = 140f, fieldWidth = 80f;
+
+	static {
+		internalTree = new InternalFileTree(HeavyIndustryMod.class);
+
+		whiteTexture = new Texture(internalTree.child("sprites/white.png"));
+		whiteRegion = new AtlasRegion(new TextureRegion(whiteTexture));
+	}
 
 	/** Don't let anyone instantiate this class. */
 	private HIVars() {}

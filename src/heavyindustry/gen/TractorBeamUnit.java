@@ -66,7 +66,7 @@ public class TractorBeamUnit extends PayloadUnitf {
 			payPos.approach(movingIn ? unitPos : mouse, Mathf.clamp(payPos.dst(movingIn ? unitPos : mouse) * 0.1f, movingIn ? 2f : 0.1f, movingIn ? 32f : 16f) * Time.delta);
 		} else payPos.set(unitPos);
 
-		beamHeld.update(self(), null);
+		beamHeld.update(this, null);
 		beamHeld.set(payPos.x, payPos.y, beamHeld instanceof BuildPayload ? ((BuildPayload) beamHeld).build.rotation() : rotation);
 		if (beamHeld instanceof BuildPayload && ((BuildPayload) beamHeld).build.health <= 0) { //todo FUCK
 			beamHeld = null;
@@ -89,7 +89,7 @@ public class TractorBeamUnit extends PayloadUnitf {
 			if (Vars.net.client()) {
 				Vars.netClient.clearRemovedEntity(unit.id);
 			}
-			Events.fire(new EventType.PickupEvent(self(), unit));
+			Events.fire(new EventType.PickupEvent(this, unit));
 		}
 	}
 
@@ -102,7 +102,7 @@ public class TractorBeamUnit extends PayloadUnitf {
 			build.afterPickedUp();
 			beamHeld = new BuildPayload(build);
 			Fx.unitPickup.at(build);
-			Events.fire(new EventType.PickupEvent(self(), build));
+			Events.fire(new EventType.PickupEvent(this, build));
 		}
 	}
 
@@ -134,10 +134,10 @@ public class TractorBeamUnit extends PayloadUnitf {
 			return true;
 		}
 
-		if (payload instanceof BuildPayload) {
-			return dropBlock((BuildPayload) payload);
-		} else if (payload instanceof UnitPayload) {
-			return dropUnit((UnitPayload) payload);
+		if (payload instanceof BuildPayload bp) {
+			return dropBlock(bp);
+		} else if (payload instanceof UnitPayload up) {
+			return dropUnit(up);
 		}
 		return false;
 	}
@@ -149,7 +149,7 @@ public class TractorBeamUnit extends PayloadUnitf {
 		Tile on = Vars.world.tile(mouseTileX, mouseTileY);
 		if (on != null && Build.validPlace(payBuild.block, payBuild.team, mouseTileX, mouseTileY, payBuild.rotation, false)) {
 			payload.place(on, payBuild.rotation);
-			Events.fire(new EventType.PayloadDropEvent(self(), payBuild));
+			Events.fire(new EventType.PayloadDropEvent(this, payBuild));
 
 			if (getControllerName() != null) {
 				payload.build.lastAccessed = getControllerName();

@@ -147,16 +147,15 @@ public final class Structf {
 		}
 
 		@Override
-		public void each(Cons<? super T> cons) {
-		}
+		public void each(Cons<? super T> cons) {}
 	}
 
 	public static class Single<T> implements Iterable<T>, Iterator<T>, Eachable<T> {
 		protected final T item;
 		protected boolean done;
 
-		public Single(T item) {
-			this.item = item;
+		public Single(T t) {
+			item = t;
 		}
 
 		@Override
@@ -187,10 +186,10 @@ public final class Structf {
 		protected final int offset, length;
 		protected int index = 0;
 
-		public Iter(T[] array, int offset, int length) {
-			this.array = array;
-			this.offset = offset;
-			this.length = length;
+		public Iter(T[] arr, int off, int len) {
+			array = arr;
+			offset = off;
+			length = len;
 		}
 
 		@Override
@@ -218,9 +217,9 @@ public final class Structf {
 	public static class Chain<T> implements Iterable<T>, Iterator<T>, Eachable<T> {
 		protected final Iterator<T> first, second;
 
-		public Chain(Iterator<T> first, Iterator<T> second) {
-			this.first = first;
-			this.second = second;
+		public Chain(Iterator<T> fir, Iterator<T> sec) {
+			first = fir;
+			second = sec;
 		}
 
 		@Override

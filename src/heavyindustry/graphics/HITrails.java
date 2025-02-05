@@ -270,42 +270,42 @@ public final class HITrails {
 			lastY = y;
 			lastW = width;
 		}
+
+		//I don't want to use a giant FloatSeq, just doesn't look as nice
+		public static class DriftTrailData {
+			public float x, y, w, dx, dy;
+
+			public DriftTrailData(float vx, float vy, float vw, Vec2 v) {
+				x = vx;
+				y = vy;
+				w = vw;
+				dx = v.x;
+				dy = v.y;
+			}
+
+			public void drift() {
+				x += dx * Time.delta;
+				y += dy * Time.delta;
+			}
+		}
 	}
 
-	//I don't want to use a giant FloatSeq, just doesn't look as nice
-	public static class DriftTrailData {
-		public float x, y, w, dx, dy;
+	public static class ZTrail extends Trail {
+		protected float lastZ = 0f;
 
-		public DriftTrailData(float vx, float vy, float vw, Vec2 v) {
-			x = vx;
-			y = vy;
-			w = vw;
-			dx = v.x;
-			dy = v.y;
-		}
-
-		public void drift() {
-			x += dx * Time.delta;
-			y += dy * Time.delta;
-		}
-	}
-
-	public static class HeightTrail extends Trail {
-		protected float lastH = 0f;
-
-		public HeightTrail(int length) {
+		public ZTrail(int length) {
 			super(length);
 			points = new FloatSeq(length * 4);
 		}
 
 		@Override
 		public Trail copy() {
-			HeightTrail out = new HeightTrail(length);
+			ZTrail out = new ZTrail(length);
 			out.points.addAll(points);
 			out.lastX = lastX;
 			out.lastY = lastY;
 			out.lastW = lastW;
-			out.lastH = lastH;
+			out.lastZ = lastZ;
 			return out;
 		}
 
@@ -326,13 +326,17 @@ public final class HITrails {
 
 		public void drawCap(Color color, float width, boolean fade) {
 			if (points.size > 4) {
+				float[] items = points.items;
 				int i = points.size - 4;
-				float x1 = x(i - 4), y1 = y(i - 4),
-						x2 = x(-1), y2 = y(-1),
-						w1 = w(-1), w = w1 * width / (points.size / 4) * i / 4f * 2f;
+				float z1 = items[i - 4 + 3];
+				Vec2 pos1 = Perspective.drawPos(items[i - 4], items[i - 4 + 1], z1);
+				float x1 = pos1.x, y1 = pos1.y;
+				Vec2 pos2 = Perspective.drawPos(lastX, lastY, lastZ);
+				float x2 = pos2.x, y2 = pos2.y;
+				float w1 = Perspective.scale(lastX, lastY, lastZ), w = w1 * width / (points.size / 4) * i / 4f * 2f;
 				if (w1 <= 0.001f) return;
 				if (fade) {
-					Draw.color(Tmp.c1.set(color).mulA(Draw3d.scaleAlpha(lastH)));
+					Draw.color(Tmp.c1.set(color).mulA(Perspective.alpha(lastX, lastY, lastZ)));
 				} else {
 					Draw.color(color);
 				}
@@ -349,41 +353,67 @@ public final class HITrails {
 		public void draw(Color color, float width, boolean fade) {
 			float lastAngle = 0;
 			float[] items = points.items;
-			float size = width / (points.size / 4);
+			float size = width / (int) (points.size / 4);
+			float vz = Perspective.viewportZ();
+			boolean calcLast = true;
 
 			for (int i = 0; i < points.size; i += 4) {
-				float x1 = x(i), y1 = y(i), w1 = w(i), z1 = items[i + 3];
-				float x2, y2, w2, z2;
+				float px1 = items[i], py1 = items[i + 1], z1 = items[i + 3];
+				float z2 = i < points.size - 4 ? items[i + 4 + 3] : lastZ;
+
+				if (z1 > vz && z2 > vz) {
+					calcLast = true;
+					continue;
+				}
+
+				if (z1 > vz) { //Scale to near plane
+					Vec3 pos = Perspective.scaleToViewport(px1, py1, z1);
+					px1 = pos.x;
+					py1 = pos.y;
+					z1 = pos.z;
+				}
+
+				Vec2 pos1 = Perspective.drawPos(px1, py1, z1);
+				float x1 = pos1.x, y1 = pos1.y, w1 = Perspective.scale(items[i], items[i + 1], z1);
+				float px2, py2, x2, y2, w2;
 
 				//last position is always lastX/Y/W
 				if (i < points.size - 4) {
-					x2 = x(i + 4);
-					y2 = y(i + 4);
-					w2 = w(i + 4);
-					z2 = items[i + 4 + 3];
+					px2 = items[i + 4];
+					py2 = items[i + 4 + 1];
 				} else {
-					x2 = x(-1);
-					y2 = y(-1);
-					w2 = w(-1);
-					z2 = lastH;
+					px2 = lastX;
+					py2 = lastY;
 				}
+
+				if (z2 > vz) { //Scale to near plane
+					Vec3 pos = Perspective.scaleToViewport(px2, py2, z2);
+					px2 = pos.x;
+					py2 = pos.y;
+					z2 = pos.z;
+				}
+
+				Vec2 pos2 = Perspective.drawPos(px2, py2, z2);
+				x2 = pos2.x;
+				y2 = pos2.y;
+				w2 = Perspective.scale(px2, py2, z2);
 
 				float a2 = -Angles.angleRad(x1, y1, x2, y2);
 				//end of the trail (i = 0) has the same angle as the next.
-				float a1 = i == 0 ? a2 : lastAngle;
+				float a1 = calcLast ? a2 : lastAngle;
 				if (w1 <= 0.001f || w2 <= 0.001f) continue;
 
 				float
-						cx = Mathf.sin(a1) * i/4f * size * w1,
-						cy = Mathf.cos(a1) * i/4f * size * w1,
-						nx = Mathf.sin(a2) * (i/4f + 1) * size * w2,
-						ny = Mathf.cos(a2) * (i/4f + 1) * size * w2;
+						cx = Mathf.sin(a1) * i / 4f * size * w1,
+						cy = Mathf.cos(a1) * i / 4f * size * w1,
+						nx = Mathf.sin(a2) * (i / 4f + 1) * size * w2,
+						ny = Mathf.cos(a2) * (i / 4f + 1) * size * w2;
 				Tmp.c1.set(color);
 				float c1 = Tmp.c1.toFloatBits(),
 						c2 = Tmp.c1.toFloatBits();
 				if (fade) {
-					c1 = Tmp.c1.set(color).mulA(Draw3d.scaleAlpha(z1)).toFloatBits();
-					c2 = Tmp.c1.set(color).mulA(Draw3d.scaleAlpha(z2)).toFloatBits();
+					c1 = Tmp.c1.set(color).mulA(Perspective.alpha(px1, py1, z1)).toFloatBits();
+					c2 = Tmp.c1.set(color).mulA(Perspective.alpha(px2, py2, z2)).toFloatBits();
 				}
 
 				Fill.quad(
@@ -394,6 +424,7 @@ public final class HITrails {
 				);
 
 				lastAngle = a2;
+				calcLast = false;
 			}
 
 			Draw.color();
@@ -405,7 +436,6 @@ public final class HITrails {
 		}
 
 		/** Removes the last point from the trail at intervals. */
-		@Override
 		public void shorten() {
 			if ((counter += Time.delta) >= 1f) {
 				if (points.size >= 4) {
@@ -436,28 +466,79 @@ public final class HITrails {
 			lastX = x;
 			lastY = y;
 			lastW = width;
-			lastH = height;
+			lastZ = height;
+		}
+	}
+
+	public static class LightTrail extends Trail {
+		private final Color drawColor = new Color();
+		public float lightOpacity;
+
+		public LightTrail(int length, float lightOpacity) {
+			super(length);
+			this.lightOpacity = lightOpacity;
 		}
 
-		public float x(int index) {
-			if (index < 0) return Draw3d.x(lastX, lastH);
-
-			float[] items = points.items;
-			return Draw3d.x(items[index], items[index + 3]);
+		@Override
+		public LightTrail copy() {
+			LightTrail out = new LightTrail(length, lightOpacity);
+			out.points.addAll(points);
+			out.lastX = lastX;
+			out.lastY = lastY;
+			out.lastAngle = lastAngle;
+			return out;
 		}
 
-		public float y(int index) {
-			if (index < 0) return Draw3d.y(lastY, lastH);
-
+		public void draw(Color color, float width, float light) {
+			drawColor.set(color);
+			Draw.color(color);
 			float[] items = points.items;
-			return Draw3d.y(items[index + 1], items[index + 3]);
+			float lastAngle = this.lastAngle;
+			float size = width / (points.size / 3f);
+
+			for (int i = 0; i < points.size; i += 3) {
+				float x1 = items[i], y1 = items[i + 1], w1 = items[i + 2];
+				float x2, y2, w2;
+
+				//last position is always lastX/Y/W
+				if (i < points.size - 3) {
+					x2 = items[i + 3];
+					y2 = items[i + 4];
+					w2 = items[i + 5];
+				} else {
+					x2 = lastX;
+					y2 = lastY;
+					w2 = lastW;
+				}
+
+				float z2 = -Angles.angleRad(x1, y1, x2, y2);
+				//end of the trail (i = 0) has the same angle as the next.
+				float z1 = i == 0 ? z2 : lastAngle;
+				if (w1 <= 0.001f || w2 <= 0.001f) continue;
+
+				float
+						cx = Mathf.sin(z1) * i / 3f * size * w1,
+						cy = Mathf.cos(z1) * i / 3f * size * w1,
+						nx = Mathf.sin(z2) * (i / 3f + 1) * size * w2,
+						ny = Mathf.cos(z2) * (i / 3f + 1) * size * w2;
+
+				Fill.quad(
+						x1 - cx, y1 - cy,
+						x1 + cx, y1 + cy,
+						x2 + nx, y2 + ny,
+						x2 - nx, y2 - ny
+				);
+				Drawf.light(x1, y1, x2, y2, (i / 3f + 1) * size * w2 * 6f, drawColor, light * lightOpacity);
+
+				lastAngle = z2;
+			}
+
+			Draw.reset();
 		}
 
-		public float w(int index) {
-			if (index < 0) return lastW * Draw3d.hScale(lastH);
-
-			float[] items = points.items;
-			return items[index + 2] * Draw3d.hScale(items[index + 3]);
+		@Override
+		public void draw(Color color, float width) {
+			draw(color, width, 1f);
 		}
 	}
 

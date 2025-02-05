@@ -1,7 +1,6 @@
 package heavyindustry.mod;
 
 import arc.func.*;
-import arc.struct.*;
 import arc.util.*;
 import heavyindustry.util.*;
 import mindustry.*;
@@ -16,22 +15,8 @@ import static heavyindustry.util.Utils.*;
  * @since 1.0.6
  */
 public final class ModJS {
-	private static final Seq<Runnable> runs = new Seq<>();
-	private static final Seq<String> keys = new Seq<>();
-
 	/** Don't let anyone instantiate this class. */
 	private ModJS() {}
-
-	public static void load() {
-		try {
-			run();
-			runs.clear();
-			keys.clear();
-		} catch (Exception e) {
-			Vars.ui.showException(e);
-			Log.err(e);
-		}
-	}
 
 	/** Initializes the Mod JS. Main-thread only! */
 	public static void init() {
@@ -48,9 +33,7 @@ public final class ModJS {
 	 *			  another custom scope.
 	 */
 	public static void importDefaults(ImporterTopLevel scope) {
-		for (String pack : packages) {
-			importPackage(scope, pack);
-		}
+		for (String pack : packages) importPackage(scope, pack);
 	}
 
 	/**
@@ -101,48 +84,5 @@ public final class ModJS {
 				throw new IllegalStateException("Incompatible return type: Expected '" + returnType + "', but got '" + res.getClass() + "'!");
 			return (T) type.cast(res);
 		};
-	}
-
-	public static void add(Runnable run) {
-		runs.add(run);
-	}
-
-	public static void add(String name) {
-		keys.add(name);
-	}
-
-	private static void run() {
-		if (keys.any()) {
-			for (int i = 0; i < keys.size && i < runs.size; i++) {
-				Vars.content.setCurrentMod(Vars.mods.locateMod(keys.get(i)));
-
-				try {
-					require(keys.get(i));
-				} catch (NoSuchFieldException | IllegalAccessException e) {
-					Log.err(e);
-				}
-
-				runs.get(i).run();
-			}
-
-			Vars.content.setCurrentMod(null);
-
-			try {
-				require(null);
-			} catch (NoSuchFieldException | IllegalAccessException e) {
-				Log.err(e);
-			}
-		}
-	}
-
-	private static void require(String modName) throws NoSuchFieldException, IllegalAccessException {
-		var obj = Vars.mods.getScripts();
-		var field = obj.getClass().getDeclaredField("currentMod");
-		field.setAccessible(true);
-		if (modName == null) {
-			field.set(obj, null);
-		} else {
-			field.set(obj, Vars.mods.getMod(modName));
-		}
 	}
 }

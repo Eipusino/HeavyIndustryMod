@@ -38,6 +38,7 @@ void main() {
 	vec4 col = vec4(1.0);
 
 	if (length(point - p4) > length(p2 - p4)) {
+
 	} else {
 		float ci = clamp(i, -1.0, 1.0);
 		if (i <= 0.0) {

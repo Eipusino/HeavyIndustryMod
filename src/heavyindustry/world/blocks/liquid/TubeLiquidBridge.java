@@ -154,7 +154,7 @@ public class TubeLiquidBridge extends TubeItemBridge {
 
 		@Override
 		public void doDump() {
-			dumpLiquid(liquids.current(), 1f);
+			dumpLiquid(liquids.current());
 		}
 
 		@Override

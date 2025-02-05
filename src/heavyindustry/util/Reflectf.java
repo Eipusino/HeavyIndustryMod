@@ -154,6 +154,17 @@ public final class Reflectf {
 		}
 	}
 
+	/** Gets a field of a model without throwing exceptions. */
+	public static Field getField(Object object, String name) {
+		try {
+			Field field = object.getClass().getDeclaredField(name);
+			field.setAccessible(true);
+			return field;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static Method getMethod(Class<?> type, String name) {
 		return getMethod(type, name, arrayOf());
 	}
@@ -320,7 +331,7 @@ public final class Reflectf {
 		}
 	}
 
-	public static Class<?> classCaller() {
+	public static Class<?> getCallerClass() {
 		try {
 			Thread thread = Thread.currentThread();
 			StackTraceElement[] trace = thread.getStackTrace();

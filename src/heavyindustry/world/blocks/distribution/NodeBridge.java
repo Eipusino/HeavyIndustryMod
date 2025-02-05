@@ -78,7 +78,7 @@ public class NodeBridge extends ItemBridge {
 		@Override
 		public void doDump() {
 			if (hasItems) super.doDump();
-			if (hasLiquids) dumpLiquid(liquids.current(), 1f);
+			if (hasLiquids) dumpLiquid(liquids.current());
 		}
 
 		@Override

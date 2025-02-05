@@ -101,6 +101,7 @@ final class HIClassMap {
 		classes.put("ThermoBulletType", ThermoBulletType.class);
 		classes.put("TrailedEnergyBulletType", TrailedEnergyBulletType.class);
 		classes.put("TrailFadeBulletType", TrailFadeBulletType.class);
+		classes.put("TreeLightningBulletType", TreeLightningBulletType.class);
 		//effects
 		classes.put("WrapperEffect", WrapperEffect.class);
 		//parts
@@ -291,12 +292,6 @@ final class HIClassMap {
 		classes.put("LiquidMassDriver", LiquidMassDriver.class);
 		classes.put("LiquidMassDriverBuild", LiquidMassDriver.LiquidMassDriverBuild.class);
 		classes.put("LiquidBulletData", LiquidMassDriver.LiquidBulletData.class);
-		classes.put("MergingLiquidBlock", MergingLiquidBlock.class);
-		classes.put("MergingLiquidBuild", MergingLiquidBlock.MergingLiquidBuild.class);
-		classes.put("Pipe", Pipe.class);
-		classes.put("PipeBuild", Pipe.PipeBuild.class);
-		classes.put("PipeBridge", PipeBridge.class);
-		classes.put("PipeBridgeBuild", PipeBridge.PipeBridgeBuild.class);
 		classes.put("LabelMessageBlock", LabelMessageBlock.class);
 		classes.put("LabelMessageBuild", LabelMessageBlock.LabelMessageBuild.class);
 		classes.put("LaserRuler", LaserRuler.class);
