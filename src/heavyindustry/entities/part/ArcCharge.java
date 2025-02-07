@@ -11,7 +11,7 @@ import heavyindustry.graphics.*;
 import mindustry.entities.part.*;
 import mindustry.graphics.*;
 
-import static heavyindustry.HIVars.*;
+import static heavyindustry.Varsf.*;
 import static mindustry.Vars.*;
 
 public class ArcCharge extends DrawPart {

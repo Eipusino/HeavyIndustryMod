@@ -71,11 +71,11 @@ public final class TreeLightning {
 	private TreeLightning() {}
 
 	public static void create(float x, float y, Team team, float damage, int amount, float range) {
-		create(x, y, team, HIPal.surgeYellow, HIPal.surgeYellow, damage, amount, range);
+		create(x, y, team, Palf.surgeYellow, Palf.surgeYellow, damage, amount, range);
 	}
 
 	public static void create(Bullet bullet, float damage, int amount, float range) {
-		create(bullet, HIPal.surgeYellow, HIPal.surgeYellow, damage, amount, range);
+		create(bullet, Palf.surgeYellow, Palf.surgeYellow, damage, amount, range);
 	}
 
 	public static void create(float x, float y, Team team, Color roofColor, Color leafColor, float damage, int amount, float range) {

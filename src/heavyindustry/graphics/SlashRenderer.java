@@ -7,7 +7,6 @@ import arc.math.*;
 import arc.struct.*;
 import arc.util.*;
 
-import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public final class SlashRenderer {
@@ -49,12 +48,12 @@ public final class SlashRenderer {
 	}
 
 	public static void draw() {
-		Draw.draw(HILayer.begin - 0.1f, () -> {
-			buffer.resize(graphics.getWidth(), graphics.getHeight());
+		Draw.draw(Layerf.begin - 0.1f, () -> {
+			buffer.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
 			buffer.begin();
 		});
 
-		Draw.draw(HILayer.end + 1f, () -> {
+		Draw.draw(Layerf.end + 1f, () -> {
 			buffer.end();
 
 			while (slashes.size > maxCount) createShader();
@@ -103,7 +102,7 @@ public final class SlashRenderer {
 		public float[] slashes;
 
 		SlashShader() {
-			super(HIShaders.dsv("screenspace"), HIShaders.msf("slash"));
+			super(Shadersf.dsv("screenspace"), Shadersf.msf("slash"));
 		}
 
 		@Override

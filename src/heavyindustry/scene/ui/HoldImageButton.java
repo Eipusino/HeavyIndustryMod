@@ -14,11 +14,14 @@ import heavyindustry.*;
 public class HoldImageButton extends ImageButton {
 	public Boolp canHold = () -> true;
 
-	private Runnable held = () -> {};
-	private boolean heldAct;
-	private HoldImageButtonStyle style;
-	private boolean repeat = false;
-	private boolean hasReset;
+	protected Runnable held = () -> {};
+	protected boolean heldAct;
+	protected HoldImageButtonStyle style;
+	protected boolean repeat = false;
+	protected boolean hasReset;
+
+	protected Drawable localDrawable = null;
+	protected Color localColor = Color.white;
 
 	public HoldImageButton() {
 		this(Core.scene.getStyle(HoldImageButtonStyle.class));
@@ -112,39 +115,38 @@ public class HoldImageButton extends ImageButton {
 
 	@Override
 	protected void updateImage() {
-		Drawable drawable = null;
 		if (isDisabled() && style.imageDisabled != null) {
-			drawable = style.imageDisabled;
+			localDrawable = style.imageDisabled;
 		} else if (isHeld() && style.imageHeld != null) {
-			drawable = style.imageHeld;
+			localDrawable = style.imageHeld;
 		} else if (isPressed() && style.imageDown != null) {
-			drawable = style.imageDown;
+			localDrawable = style.imageDown;
 		} else if (isChecked() && style.imageChecked != null) {
-			drawable = style.imageCheckedOver != null && isOver() ? style.imageCheckedOver : style.imageChecked;
+			localDrawable = style.imageCheckedOver != null && isOver() ? style.imageCheckedOver : style.imageChecked;
 		} else if (isOver() && style.imageOver != null) {
-			drawable = style.imageOver;
+			localDrawable = style.imageOver;
 		} else if (style.imageUp != null) {
-			drawable = style.imageUp;
+			localDrawable = style.imageUp;
 		}
 
-		Color color = getImage().color;
+		localColor = getImage().color;
 		if (isDisabled() && style.imageDisabledColor != null) {
-			color = style.imageDisabledColor;
+			localColor = style.imageDisabledColor;
 		} else if (isHeld() && style.imageHeldColor != null) {
-			color = style.imageHeldColor;
+			localColor = style.imageHeldColor;
 		} else if (isPressed() && style.imageDownColor != null) {
-			color = style.imageDownColor;
+			localColor = style.imageDownColor;
 		} else if (isChecked() && style.imageCheckedColor != null) {
-			color = style.imageCheckedColor;
+			localColor = style.imageCheckedColor;
 		} else if (isOver() && style.imageOverColor != null) {
-			color = style.imageOverColor;
+			localColor = style.imageOverColor;
 		} else if (style.imageUpColor != null) {
-			color = style.imageUpColor;
+			localColor = style.imageUpColor;
 		}
 
 		Image image = getImage();
-		image.setDrawable(drawable);
-		image.setColor(color);
+		image.setDrawable(localDrawable);
+		image.setColor(localColor);
 	}
 
 	@Override
@@ -152,8 +154,8 @@ public class HoldImageButton extends ImageButton {
 		super.act(delta);
 
 		if (isPressed() && !isDisabled() && canHold.get()) {
-			HIVars.pressTimer += Time.delta;
-			if (HIVars.pressTimer > HIVars.longPress && (repeat || !heldAct)) {
+			Varsf.pressTimer += Time.delta;
+			if (Varsf.pressTimer > Varsf.longPress && (repeat || !heldAct)) {
 				heldAct = true;
 				held.run();
 			}
@@ -161,7 +163,7 @@ public class HoldImageButton extends ImageButton {
 	}
 
 	public boolean isHeld() {
-		return isPressed() && HIVars.pressTimer > HIVars.longPress;
+		return isPressed() && Varsf.pressTimer > Varsf.longPress;
 	}
 
 	public void addReset() {
@@ -169,7 +171,7 @@ public class HoldImageButton extends ImageButton {
 
 		released(() -> {
 			heldAct = false;
-			HIVars.pressTimer = 0;
+			Varsf.pressTimer = 0;
 		});
 
 		hasReset = true;

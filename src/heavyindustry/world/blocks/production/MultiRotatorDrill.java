@@ -13,7 +13,7 @@ import mindustry.entities.units.*;
 import mindustry.graphics.*;
 import mindustry.world.blocks.production.*;
 
-import static heavyindustry.HIVars.*;
+import static heavyindustry.Varsf.*;
 import static mindustry.Vars.*;
 
 public class MultiRotatorDrill extends Drill implements ImageGenerator {

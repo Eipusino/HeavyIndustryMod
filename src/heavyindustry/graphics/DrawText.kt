@@ -2,12 +2,12 @@
 
 package heavyindustry.graphics
 
+import arc.graphics.*
 import arc.graphics.g2d.*
 import arc.math.geom.*
 import arc.scene.ui.layout.*
 import arc.util.*
 import arc.util.pooling.*
-import heavyindustry.util.*
 import mindustry.graphics.*
 import mindustry.ui.*
 
@@ -21,7 +21,7 @@ import mindustry.ui.*
 @JvmOverloads
 fun drawText(
 	pos: Position, text: String,
-	fontScl: Float = 1f, color: Vec4 = Vec4.white, align: Int = Align.center,
+	fontScl: Float = 1f, color: Color = Color.white, align: Int = Align.center,
 	font: Font = Fonts.outline, background: Boolean = false,
 ) {
 	Tmp.v1.set(pos)
@@ -39,7 +39,7 @@ fun drawText(
 		if (Align.isTop(align)) y += height
 		else if (Align.isCenterVertical(align)) y += height / 2
 		if (background) {
-			Draw.color(Vec4.black, 0.3f)
+			Draw.color(Color.black, 0.3f)
 			Fill.rect(x, y - height / 2, width + 2, height + 3)
 			Draw.color()
 		}
@@ -47,7 +47,7 @@ fun drawText(
 	font.draw(text, pos.x, pos.y, 0f, Align.center, false)
 	Draw.reset()
 
-	font.color.set(Vec4.white)
+	font.color.set(Color.white)
 	font.data.setScale(1f)
 	font.setUseIntegerPositions(ints)
 	Draw.z(z)

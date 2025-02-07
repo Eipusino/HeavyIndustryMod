@@ -66,7 +66,7 @@ public class SortLiquidRouter extends LiquidRouter {
 
 		@Override
 		public void buildConfiguration(Table table) {
-			ItemSelection.buildTable(SortLiquidRouter.this, table, content.liquids(), () -> sortLiquid, this::configure);
+			ItemSelection.buildTable(block, table, content.liquids(), () -> sortLiquid, this::configure);
 		}
 
 		@Override

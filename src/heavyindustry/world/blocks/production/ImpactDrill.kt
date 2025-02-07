@@ -38,7 +38,7 @@ open class ImpactDrill(name: String) : Drill(name) {
 			val dx = x * Vars.tilesize + offset - width / 2f - 4f
 			val dy = y * Vars.tilesize + offset + size * Vars.tilesize / 2f + 5
 			val s = Vars.iconSmall / 4f
-			Draw.mixcol(Vec4.darkGray, 1f)
+			Draw.mixcol(Color.darkGray, 1f)
 			Draw.rect(returnItem.fullIcon, dx, dy - 1, s, s)
 			Draw.reset()
 			Draw.rect(returnItem.fullIcon, dx, dy, s, s)

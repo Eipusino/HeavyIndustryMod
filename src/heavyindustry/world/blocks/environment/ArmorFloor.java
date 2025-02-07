@@ -28,7 +28,7 @@ public class ArmorFloor extends Floor {
 		super(name, variants);
 		this.solidReact = solidReact;
 
-		cacheLayer = HICacheLayer.armor;
+		cacheLayer = CacheLayerf.armor;
 		oreDefault = false;
 		needsSurface = false;
 	}

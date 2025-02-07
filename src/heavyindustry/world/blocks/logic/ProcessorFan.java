@@ -12,7 +12,7 @@ public class ProcessorFan extends ProcessorCooler {
 
 	public ProcessorFan(String name) {
 		super(name);
-		ambientSound = HISounds.coolingFan;
+		ambientSound = Soundsf.coolingFan;
 		ambientSoundVolume = 0.5f;
 	}
 

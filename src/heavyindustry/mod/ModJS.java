@@ -43,10 +43,10 @@ public final class ModJS {
 	 */
 	public static void importPackage(ImporterTopLevel scope, String name) {
 		if (scope == null) return;
-		var p = new NativeJavaPackage(name, Vars.mods.mainLoader());
-		p.setParentScope(scope);
+		var pac = new NativeJavaPackage(name, Vars.mods.mainLoader());
+		pac.setParentScope(scope);
 
-		scope.importPackage(p);
+		scope.importPackage(pac);
 	}
 
 	public static void importPackage(ImporterTopLevel scope, Package pack) {

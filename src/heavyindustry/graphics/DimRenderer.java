@@ -210,8 +210,8 @@ public final class DimRenderer {
 		Gl.blendEquationSeparate(Gl.funcAdd, Gl.funcAdd);
 
 		Draw.color();
-		HIShaders.dimShader.alpha = dimAlpha;
-		buffer.blit(HIShaders.dimShader);
+		Shadersf.dimShader.alpha = dimAlpha;
+		buffer.blit(Shadersf.dimShader);
 
 		lights.clear();
 		circleIndex = 0;

@@ -66,7 +66,8 @@ open class IndestructibleUnitFactory(name: String) : UnitFactory(name) {
 			val cont = Table()
 			cont.defaults().size(40f)
 			var i = 0
-			PayloadSourcef.teams.forEach { t ->
+
+			for (t in Utils.baseTeams) {
 				val button = cont.button(Tex.whiteui, Styles.clearTogglei, 24f, {
 				}).group(group).get()
 				button.changed { targetTeam = eq(button.isChecked, t, null) }

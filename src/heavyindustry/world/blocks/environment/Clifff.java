@@ -10,7 +10,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.world.*;
 
-import static heavyindustry.HIVars.*;
+import static heavyindustry.Varsf.*;
 import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 
@@ -51,14 +51,14 @@ public class Clifff extends Block {
 
 	public static void unProcessCliffs() {
 		world.tiles.eachTile(tile -> {
-			if (HIBlocks.cliffHelper != null && tile.block() instanceof Clifff && tile.data != 0) {
+			if (Blocksf.cliffHelper != null && tile.block() instanceof Clifff && tile.data != 0) {
 				if (tile.data <= 4) {
-					tile.nearby(tile.data - 1).setBlock(HIBlocks.cliffHelper);
+					tile.nearby(tile.data - 1).setBlock(Blocksf.cliffHelper);
 				} else if (tile.data <= 8) {
-					tile.nearby(Geometry.d8edge(tile.data - 5)).setBlock(HIBlocks.cliffHelper);
+					tile.nearby(Geometry.d8edge(tile.data - 5)).setBlock(Blocksf.cliffHelper);
 				} else {
-					tile.nearby(Geometry.d4(tile.data - 9)).setBlock(HIBlocks.cliffHelper);
-					tile.nearby(Geometry.d4(tile.data - 8)).setBlock(HIBlocks.cliffHelper);
+					tile.nearby(Geometry.d4(tile.data - 9)).setBlock(Blocksf.cliffHelper);
+					tile.nearby(Geometry.d4(tile.data - 8)).setBlock(Blocksf.cliffHelper);
 				}
 				tile.data = 0;
 			}

@@ -23,7 +23,7 @@ public class ThermalConsumeGenerator extends ThermalGenerator {
 
 	@Override
 	public void setStats() {
-		// man why doesn't vanilla do this ?
+		// man, why doesn't vanilla do this?
 		stats.timePeriod = itemDuration;
 		super.setStats();
 	}

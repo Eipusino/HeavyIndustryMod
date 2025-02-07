@@ -15,8 +15,6 @@ import static heavyindustry.util.Utils.*;
 public class PayloadDuct extends PayloadBlock {
 	public TextureRegion[][] regions;
 
-	public boolean duct = true;
-
 	public PayloadDuct(String name) {
 		super(name);
 		update = true;
@@ -29,7 +27,7 @@ public class PayloadDuct extends PayloadBlock {
 	@Override
 	public void load() {
 		super.load();
-		if (duct) regions = splitLayers(name + "-sheet", Math.max(region.height, region.width), 2);
+		regions = splitLayers(name + "-sheet", Math.max(region.height, region.width), 2);
 	}
 
 	public class PayloadDuctBuild extends PayloadBlockBuild<Payload> {

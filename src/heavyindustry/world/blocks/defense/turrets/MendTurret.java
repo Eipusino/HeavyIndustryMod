@@ -61,10 +61,11 @@ public class MendTurret extends ContinuousTurret {
 									if (angleBoost != 0)
 										bt.add("[lightgray]+ [stat]" + Strings.autoFixed(angleBoost * hc.findAngle, 2) + "[lightgray]°").row();
 									if (amountBoost != 0) {
-										if (hc.percentHeal)
+										if (hc.percentHeal) {
 											bt.add("[lightgray]+ [stat]" + Strings.autoFixed(amountBoost * hc.healPercent, 2) + "[lightgray]" + StatUnit.percent.localized() + Stat.repairSpeed.localized());
-										else
+										} else {
 											bt.add("[lightgray]+ [stat]" + Strings.autoFixed(amountBoost * hc.healAmount, 2) + " [lightgray]" + Stat.repairSpeed.localized());
+										}
 									}
 								}).right().grow().pad(10f).padRight(15f);
 							}).growX().pad(5).padBottom(-5).row();

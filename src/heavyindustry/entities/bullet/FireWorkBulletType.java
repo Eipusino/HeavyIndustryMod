@@ -13,7 +13,7 @@ import mindustry.entities.effect.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 
-import static heavyindustry.HIVars.*;
+import static heavyindustry.Varsf.*;
 
 /** Draw the effect of bullet fireworks. Although its memory usage may be slightly high. */
 public class FireWorkBulletType extends BulletType {
@@ -80,7 +80,7 @@ public class FireWorkBulletType extends BulletType {
 		if (trailLength > 0 && b.trail != null) {
 			float z = Draw.z();
 			Draw.z(z - 0.0001f);
-			b.trail.draw(colorful ? Utils.c5.set(HIPal.rainBowRed).a(0.7f).shiftHue(b.time * 2) : color, trailWidth);
+			b.trail.draw(colorful ? Utils.c5.set(Palf.rainBowRed).a(0.7f).shiftHue(b.time * 2) : color, trailWidth);
 			Draw.z(z);
 		}
 	}
@@ -89,12 +89,12 @@ public class FireWorkBulletType extends BulletType {
 	public void draw(Bullet b) {
 		super.draw(b);
 		if (outline) {
-			Draw.color(colorful ? Utils.c6.set(HIPal.rainBowRed).shiftHue(b.time * 2) : color);
+			Draw.color(colorful ? Utils.c6.set(Palf.rainBowRed).shiftHue(b.time * 2) : color);
 			Draw.rect(Core.atlas.find(sprite), b.x, b.y, width * 1.1f, height * 1.1f, b.rotation() - 90);
 			Draw.color(Color.darkGray);
 			Draw.rect(Core.atlas.find(sprite), b.x, b.y, width * 0.8f, height * 0.8f, b.rotation() - 90);
 		} else {
-			Draw.color(colorful ? Utils.c6.set(HIPal.rainBowRed).shiftHue(b.time * 2) : color);
+			Draw.color(colorful ? Utils.c6.set(Palf.rainBowRed).shiftHue(b.time * 2) : color);
 			Draw.rect(Core.atlas.find(sprite), b.x, b.y, width, height, b.rotation() - 90);
 		}
 		Draw.reset();
@@ -165,7 +165,7 @@ public class FireWorkBulletType extends BulletType {
 		public void draw(Bullet b) {
 			super.draw(b);
 			if (!(b.data instanceof Color)) return;
-			Draw.color(b.data == Color.white ? Utils.c8.set(HIPal.rainBowRed).shiftHue(b.time * 2) : (Color) b.data);
+			Draw.color(b.data == Color.white ? Utils.c8.set(Palf.rainBowRed).shiftHue(b.time * 2) : (Color) b.data);
 			Draw.z(Layer.bullet);
 			for (int i = 0; i < 4; i++) {
 				Drawf.tri(b.x, b.y, 1.6f, 2.2f, b.rotation() + 90 * i);
@@ -179,7 +179,7 @@ public class FireWorkBulletType extends BulletType {
 			if (trailLength > 0 && b.trail != null && b.data instanceof Color data) {
 				float z = Draw.z();
 				Draw.z(z - 0.0001f);
-				b.trail.draw(data == Color.white ? Utils.c9.set(HIPal.rainBowRed).shiftHue(b.time * 2) : data, trailWidth);
+				b.trail.draw(data == Color.white ? Utils.c9.set(Palf.rainBowRed).shiftHue(b.time * 2) : data, trailWidth);
 				Draw.z(z);
 			}
 		}
@@ -212,7 +212,7 @@ public class FireWorkBulletType extends BulletType {
 			super.draw(b);
 			if (!(b.data instanceof Color data)) return;
 			Draw.z(Layer.bullet);
-			Draw.color(data == Color.white ? Utils.c10.set(HIPal.rainBowRed).shiftHue(b.time * 2) : data);
+			Draw.color(data == Color.white ? Utils.c10.set(Palf.rainBowRed).shiftHue(b.time * 2) : data);
 			Draw.rect(Core.atlas.find(sprite), b.x, b.y, width * b.fout(), height * b.fout(), 0);
 		}
 	}

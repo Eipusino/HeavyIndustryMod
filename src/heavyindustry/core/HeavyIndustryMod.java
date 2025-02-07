@@ -11,6 +11,7 @@ import arc.scene.event.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
 import arc.util.serialization.*;
+import heavyindustry.*;
 import heavyindustry.content.*;
 import heavyindustry.game.*;
 import heavyindustry.gen.*;
@@ -36,7 +37,7 @@ import java.time.*;
 import java.time.format.*;
 import java.util.*;
 
-import static heavyindustry.HIVars.*;
+import static heavyindustry.Varsf.*;
 import static mindustry.Vars.*;
 
 /**
@@ -46,7 +47,7 @@ import static mindustry.Vars.*;
  * code in the mod as much as possible, which means it is unlikely to have too many built-in utilities.</strong>
  *
  * @author Eipusino
- * @see heavyindustry.HIVars
+ * @see Varsf
  */
 public final class HeavyIndustryMod extends Mod {
 	/** The author of this mod. */
@@ -59,6 +60,9 @@ public final class HeavyIndustryMod extends Mod {
 	/** Is this mod in plugin mode. In this mode, the mod will not load content. */
 	public static final boolean isPlugin;
 
+	public static HeavyIndustryMod theMod;
+	public static Class<? extends HeavyIndustryMod> theModType;
+
 	/** If needed, please call {@link #loaded()} for the LoadedMod of this mod. */
 	private static LoadedMod loaded;
 
@@ -70,10 +74,13 @@ public final class HeavyIndustryMod extends Mod {
 	}
 
 	public HeavyIndustryMod() {
+		theMod = this;
+		theModType = getClass();
+
 		Log.infoTag("Kotlin", "Version: " + KotlinVersion.CURRENT);
 		Log.info("Loaded HeavyIndustry Mod constructor.");
 
-		HIClassMap.load();
+		ClassMapf.load();
 
 		Events.on(ClientLoadEvent.class, event -> {
 			if (isPlugin) return;
@@ -115,11 +122,11 @@ public final class HeavyIndustryMod extends Mod {
 		Events.on(FileTreeInitEvent.class, event -> {
 			if (!headless) {
 				HIFonts.load();
-				HISounds.load();
+				Soundsf.load();
 				Core.app.post(() -> {
-					HIShaders.init();
-					HITextures.init();
-					HICacheLayer.init();
+					Shadersf.init();
+					Textures.init();
+					CacheLayerf.init();
 
 					inputAggregator = new InputAggregator();
 				});
@@ -128,12 +135,12 @@ public final class HeavyIndustryMod extends Mod {
 
 		Events.on(MusicRegisterEvent.class, event -> {
 			if (!headless)
-				HIMusics.load();
+				Musicsf.load();
 		});
 
 		Events.on(DisposeEvent.class, event -> {
 			if (!headless)
-				HIShaders.dispose();
+				Shadersf.dispose();
 		});
 
 		Core.app.post(ModJS::init);
@@ -146,20 +153,21 @@ public final class HeavyIndustryMod extends Mod {
 		EntityRegister.load();
 		WorldRegister.load();
 
-		HIBullets.load();
+		Bulletsf.load();
 
 		if (!isPlugin) {
-			HITeams.load();
-			HIItems.load();
-			HIStatusEffects.load();
-			HILiquids.load();
-			HIUnitTypes.load();
-			HIBlocks.load();
-			HIWeathers.load();
-			HIOverride.load();
-			HIPlanets.load();
-			HISectorPresets.load();
-			HITechTree.load();
+			Teamsf.load();
+			Itemsf.load();
+			StatusEffectsf.load();
+			Liquidsf.load();
+			UnitTypesf.load();
+			Blocksf.load();
+			Weathersf.load();
+			Overrides.load();
+			OverridesKt.load();
+			Planetsf.load();
+			SectorPresetsf.load();
+			TechTreef.load();
 		}
 
 		Utils.loadItems();
@@ -171,7 +179,7 @@ public final class HeavyIndustryMod extends Mod {
 	@Override
 	public void init() {
 		if (!headless) {
-			HIIcon.load();
+			Iconf.load();
 
 			//Set up screen sampler.
 			ScreenSampler.setup();
@@ -190,7 +198,7 @@ public final class HeavyIndustryMod extends Mod {
 		Core.settings.defaults("hi-animated-shields", true);
 
 		if (!headless && !isPlugin && mods.locateMod("extra-utilities") == null && isAprilFoolsDay()) {
-			HIOverride.loadAprilFoolsDay();
+			Overrides.loadAprilFoolsDay();
 
 			if (ui != null)
 				Events.on(ClientLoadEvent.class, event -> Time.runTask(10f, () -> {
@@ -236,7 +244,7 @@ public final class HeavyIndustryMod extends Mod {
 		if (ui != null) {
 			if (ui.settings != null) {
 				//add heavy-industry settings
-				ui.settings.addCategory(Core.bundle.format("hi-settings"), HIIcon.reactionIcon, t -> {
+				ui.settings.addCategory(Core.bundle.format("hi-settings"), Iconf.reactionIcon, t -> {
 					t.checkPref("hi-closed-dialog", false);
 					t.checkPref("hi-floating-text", true);
 					t.checkPref("hi-animated-shields", true);

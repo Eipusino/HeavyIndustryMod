@@ -25,7 +25,7 @@ import mindustry.ui.*;
 
 import java.nio.*;
 
-import static heavyindustry.HIVars.*;
+import static heavyindustry.Varsf.*;
 import static mindustry.Vars.*;
 
 public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
@@ -91,7 +91,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 		Groups.draw.add(this);
 		Groups.sync.add(this);
 
-		HIFx.spawnWave.at(x, y, drawSize * 1.1f, team.color);
+		Fxf.spawnWave.at(x, y, drawSize * 1.1f, team.color);
 
 		added = true;
 	}
@@ -142,19 +142,19 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 
 	public void effect() {
 		Effect.shake(type.hitSize / 3f, type.hitSize / 4f, toSpawn);
-		HISounds.jumpIn.at(toSpawn.x, toSpawn.y);
+		Soundsf.jumpIn.at(toSpawn.x, toSpawn.y);
 		if (type.flying) {
-			HIFx.jumpTrail.at(toSpawn.x, toSpawn.y, rotation(), team.color, type);
-			toSpawn.apply(StatusEffects.slow, HIFx.jumpTrail.lifetime);
+			Fxf.jumpTrail.at(toSpawn.x, toSpawn.y, rotation(), team.color, type);
+			toSpawn.apply(StatusEffects.slow, Fxf.jumpTrail.lifetime);
 		} else {
-			HIFx.spawn.at(x, y, type.hitSize, team.color);
+			Fxf.spawn.at(x, y, type.hitSize, team.color);
 			Fx.unitSpawn.at(toSpawn.x, toSpawn.y, rotation(), type);
 			Time.run(Fx.unitSpawn.lifetime, () -> {
 				for (int j = 0; j < 3; j++) {
 					Time.run(j * 8, () -> Fx.spawn.at(toSpawn));
 				}
-				HIFx.spawnGround.at(toSpawn.x, toSpawn.y, type.hitSize / tilesize * 3, team.color);
-				HIFx.circle.at(toSpawn.x, toSpawn.y, type.hitSize * 4, team.color);
+				Fxf.spawnGround.at(toSpawn.x, toSpawn.y, type.hitSize / tilesize * 3, team.color);
+				Fxf.circle.at(toSpawn.x, toSpawn.y, type.hitSize * 4, team.color);
 			});
 		}
 
@@ -195,7 +195,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 
 	@Override
 	public void draw() {
-		if (type.health > 8000 && team != Vars.player.team()) HISounds.alertLoop();
+		if (type.health > 8000 && team != Vars.player.team()) Soundsf.alertLoop();
 
 		TextureRegion arrowRegion = Core.atlas.find(name("jump-gate-arrow"));
 

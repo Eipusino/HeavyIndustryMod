@@ -18,7 +18,7 @@ import static mindustry.Vars.*;
 
 public class LiquidUnloader extends Block {
 	public TextureRegion centerRegion;
-	public float speed = 3f;
+	public float speed = 100f;
 
 	public LiquidUnloader(String name) {
 		super(name);
@@ -26,7 +26,6 @@ public class LiquidUnloader extends Block {
 		update = true;
 		solid = true;
 		hasLiquids = true;
-		liquidCapacity = 10f;
 		configurable = true;
 		outputsLiquid = true;
 		saveConfig = true;
@@ -59,9 +58,10 @@ public class LiquidUnloader extends Block {
 	}
 
 	public class LiquidUnloaderBuild extends Building {
-		public Liquid sortLiquid = null;
-		public Liquid lastSort = null;
-		public Building dumpingTo = null;
+		public @Nullable Liquid sortLiquid = null;
+		public @Nullable Liquid lastSort = null;
+		public @Nullable Building dumpingTo = null;
+
 		public float offset = 0f;
 
 		@Override
@@ -105,7 +105,7 @@ public class LiquidUnloader extends Block {
 
 		@Override
 		public void buildConfiguration(Table table) {
-			ItemSelection.buildTable(LiquidUnloader.this, table, content.liquids(), () -> sortLiquid, this::configure);
+			ItemSelection.buildTable(block, table, content.liquids(), () -> sortLiquid, this::configure);
 		}
 
 		@Override

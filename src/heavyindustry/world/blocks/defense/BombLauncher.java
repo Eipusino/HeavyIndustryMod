@@ -21,7 +21,7 @@ import static mindustry.Vars.*;
 public class BombLauncher extends CommandableAttackerBlock {
 	public TextureRegion bombRegion;
 
-	public Sound shootSound = HISounds.launch;
+	public Sound shootSound = Soundsf.launch;
 	public Color baseColor = Pal.command;
 
 	public float bombVelPerTile = 2f;
@@ -42,8 +42,8 @@ public class BombLauncher extends CommandableAttackerBlock {
 	@Override
 	public void init() {
 		super.init();
-		if (bullet.shootEffect == HIFx.boolSelector)
-			bullet.shootEffect = HIFx.square(baseColor, 50f, 6, size * tilesize * 2f, size);
+		if (bullet.shootEffect == Fxf.boolSelector)
+			bullet.shootEffect = Fxf.square(baseColor, 50f, 6, size * tilesize * 2f, size);
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class BombLauncher extends CommandableAttackerBlock {
 			bullet.shootEffect.at(this);
 			bullet.smokeEffect.at(this);
 			shootSound.at(this);
-			Rand rand = HIFx.rand0;
+			Rand rand = Fxf.rand0;
 			rand.setSeed(tileX() + tileY() * 31L + target.hashCode() * 17L);
 			BombEntity bomb = Pools.obtain(BombEntity.class, BombEntity::new);
 			bomb.init(team, 80f, this, target.x + rand.range(spread) + Mathf.range(12f), target.y + rand.range(spread) + Mathf.range(12f), true);

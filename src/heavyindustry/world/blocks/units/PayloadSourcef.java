@@ -4,6 +4,7 @@ import arc.graphics.g2d.*;
 import arc.scene.style.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
+import heavyindustry.util.*;
 import mindustry.ctype.*;
 import mindustry.game.*;
 import mindustry.gen.*;
@@ -78,8 +79,8 @@ public class PayloadSourcef extends PayloadSource {
 			Table cont = new Table();
 			cont.defaults().size(55);
 			int i = 0;
-			for (; i < teams.length; i++) {
-				Team team1 = teams[i];
+			for (; i < Utils.baseTeams.length; i++) {
+				Team team1 = Utils.baseTeams[i];
 				ImageButton button = cont.button(((TextureRegionDrawable) Tex.whiteui).tint(team1.color), Styles.clearTogglei, 35, () -> {
 				}).group(g).get();
 				button.changed(() -> {
@@ -93,7 +94,7 @@ public class PayloadSourcef extends PayloadSource {
 			}
 			table.add(cont).maxHeight(Scl.scl(55 * 2)).left();
 			table.row();
-			ItemSelection.buildTable(PayloadSourcef.this, table,
+			ItemSelection.buildTable(block, table,
 					content.blocks().select(PayloadSourcef.this::canProduce).<UnlockableContent>as()
 							.add(content.units().select(PayloadSourcef.this::canProduce).as()),
 					this::config, this::configure, false, selectionRows, selectionColumns);

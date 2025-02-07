@@ -16,8 +16,7 @@ import static mindustry.Vars.*;
 
 public class LiquidDirectionalUnloader extends Block {
 	public TextureRegion arrowRegion, centerRegion, topRegion;
-
-	public float speed = 10f;
+	public float speed = 200f;
 
 	public LiquidDirectionalUnloader(String name) {
 		super(name);
@@ -115,7 +114,7 @@ public class LiquidDirectionalUnloader extends Block {
 
 		@Override
 		public void buildConfiguration(Table table) {
-			ItemSelection.buildTable(LiquidDirectionalUnloader.this, table, content.liquids(), () -> sortLiquid, this::configure);
+			ItemSelection.buildTable(block, table, content.liquids(), () -> sortLiquid, this::configure);
 		}
 
 		@Override

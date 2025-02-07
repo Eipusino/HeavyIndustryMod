@@ -41,7 +41,7 @@ public class FlameBulletType extends BulletType {
 
 	public FlameBulletType(Color colorBegin, Color colorTo, Color colorEnd, float length, float cone, int number, float lifetime) {
 		this(length, cone, number);
-		shootEffect = HIFx.flameShoot(colorBegin, colorTo, colorEnd, length, cone, number, lifetime);
+		shootEffect = Fxf.flameShoot(colorBegin, colorTo, colorEnd, length, cone, number, lifetime);
 	}
 
 	@Override

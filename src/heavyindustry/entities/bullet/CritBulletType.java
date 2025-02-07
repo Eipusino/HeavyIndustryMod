@@ -4,7 +4,7 @@ import arc.math.*;
 import arc.math.geom.*;
 import arc.util.*;
 import heavyindustry.content.*;
-import heavyindustry.graphics.HITrails.*;
+import heavyindustry.graphics.Trails.*;
 import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.entities.bullet.*;
@@ -17,7 +17,7 @@ public class CritBulletType extends BasicBulletType {
 	protected static Rand critRand = new Rand();
 
 	public float critChance = 0.15f, critMultiplier = 5f;
-	public Effect critEffect = HIFx.crit;
+	public Effect critEffect = Fxf.crit;
 	public boolean bouncing, despawnHitEffects = true;
 
 	public CritBulletType(float speed, float damage, String sprite) {
@@ -28,7 +28,7 @@ public class CritBulletType extends BasicBulletType {
 		ammoMultiplier = 1;
 		shootEffect = Fx.shootBig;
 		smokeEffect = Fx.shootBigSmoke;
-		hitEffect = HIFx.critPierce;
+		hitEffect = Fxf.critPierce;
 		hitColor = Pal.lightOrange;
 		trailLength = 10;
 		trailWidth = -1f;
@@ -119,7 +119,7 @@ public class CritBulletType extends BasicBulletType {
 	@Override
 	public void removed(Bullet b) {
 		if (trailLength > 0 && b.trail instanceof CritTrail trail && b.trail.size() > 0) {
-			HIFx.critTrailFade.at(b.x, b.y, trailWidth, backColor, trail.copy());
+			Fxf.critTrailFade.at(b.x, b.y, trailWidth, backColor, trail.copy());
 		}
 	}
 

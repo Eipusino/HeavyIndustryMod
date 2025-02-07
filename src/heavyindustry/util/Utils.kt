@@ -3,7 +3,6 @@
 package heavyindustry.util
 
 import arc.func.*
-import arc.graphics.*
 import arc.math.geom.*
 import arc.struct.*
 import heavyindustry.*
@@ -124,7 +123,7 @@ fun research(children: UnlockableContent?, content: UnlockableContent?) = resear
  * @param name Standard class names, such as `heavyindustry.util.UtilsKt`
  * @return js native java class
  */
-fun getClass(name: String): NativeJavaClass = NativeJavaClass(Vars.mods.getScripts().scope, URLClassLoader(arrayOf(HIVars.internalTree.file.file().toURI().toURL()), Vars.mods.mainLoader()).loadClass(name))
+fun getClass(name: String): NativeJavaClass = NativeJavaClass(Vars.mods.getScripts().scope, URLClassLoader(arrayOf(Varsf.internalTree.file.file().toURI().toURL()), Vars.mods.mainLoader()).loadClass(name))
 
 fun random(to: Float): Float = random(0f, to)
 
@@ -155,5 +154,3 @@ fun liquid(liquids: Array<LiquidStack>, liquid: Liquid): Float {
 fun inZone(start: Vec2, size: Vec2, point: Vec2): Boolean = inZone(start.x, start.y, start.x + size.x, start.y + size.y, point.x, point.y)
 
 fun <T : Comparable<T>> inZone(x: T, y: T, x1: T, y1: T, px: T, py: T): Boolean = x < px && y < py && x1 > px && y1 > py
-
-typealias Vec4 = Color

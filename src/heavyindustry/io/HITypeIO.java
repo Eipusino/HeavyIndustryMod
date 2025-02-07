@@ -12,7 +12,7 @@ public class HITypeIO {
 
 	public static void writeStrings(Writes write, Seq<String> array) {
 		write.i(array.size);
-		array.each(write::str);
+		for (String s : array) write.str(s);
 	}
 
 	public static Seq<String> readStrings(Reads read) {
@@ -25,7 +25,7 @@ public class HITypeIO {
 
 	public static <T extends Enum<T>> void writeEnums(Writes write, Seq<T> array) {
 		write.i(array.size);
-		array.each(e -> write.b(e.ordinal()));
+		for (T t : array) write.b(t.ordinal());
 	}
 
 	public static <T extends Enum<T>> Seq<T> readEnums(Reads read, FromOrdinal<T> prov) {

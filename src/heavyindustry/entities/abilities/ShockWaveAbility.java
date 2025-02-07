@@ -29,12 +29,12 @@ public class ShockWaveAbility extends Ability {
 
 	public float knockback = 20f;
 
-	public Color hitColor = HIPal.ancientLightMid;
+	public Color hitColor = Palf.ancientLightMid;
 
-	public Sound shootSound = HISounds.shock;
+	public Sound shootSound = Soundsf.shock;
 
-	public Effect shootEffect = HIFx.circleOut;
-	public Effect hitEffect = HIFx.hitSparkLarge;
+	public Effect shootEffect = Fxf.circleOut;
+	public Effect hitEffect = Fxf.hitSparkLarge;
 
 	public float maxSpeed = -1;
 

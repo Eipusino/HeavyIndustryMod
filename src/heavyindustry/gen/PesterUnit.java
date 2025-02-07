@@ -142,7 +142,7 @@ public class PesterUnit extends Unitf implements Pesterc {
 			if (bossTargetSearchReload < 0 && isBoss) {
 				bossTargetSearchReload = pType.checkBossReload;
 
-				bossTarget = Units.bestTarget(team, x, y, pType.bossWeaponRange, e -> true, e -> !(e.block.group == BlockGroup.walls), HIUnitSorts.regionalHPMaximumAll);
+				bossTarget = Units.bestTarget(team, x, y, pType.bossWeaponRange, e -> true, e -> !(e.block.group == BlockGroup.walls), UnitSortsf.regionalHPMaximumAll);
 			}
 
 			if (bossTarget != null) {
@@ -222,7 +222,7 @@ public class PesterUnit extends Unitf implements Pesterc {
 
 	@Override
 	public void shootBossTarget() {
-		HIBullets.ncBlackHole.create(this, team, lastTargetPos.x, lastTargetPos.y, 0, 1, 1, 1, HIBullets.ncBlackHole.splashDamageRadius);
+		Bulletsf.ncBlackHole.create(this, team, lastTargetPos.x, lastTargetPos.y, 0, 1, 1, 1, Bulletsf.ncBlackHole.splashDamageRadius);
 	}
 
 	@Override
@@ -252,8 +252,8 @@ public class PesterUnit extends Unitf implements Pesterc {
 		nextTargets.clear();
 
 		if (!headless && itr > 0) {
-			HISounds.hugeShoot.at(ex, ey);
-			HIFx.crossSpinBlast.at(ex, ey, 0, team.color, this);
+			Soundsf.hugeShoot.at(ex, ey);
+			Fxf.crossSpinBlast.at(ex, ey, 0, team.color, this);
 		}
 
 		if (!headless && isBoss) {
@@ -353,7 +353,7 @@ public class PesterUnit extends Unitf implements Pesterc {
 			}
 
 			Lines.stroke(str / 2.2f);
-			Lines.spikes(lastTargetPos.x, lastTargetPos.y, HIBullets.ncBlackHole.splashDamageRadius, 12 * fade, 30, Time.time * 0.38f);
+			Lines.spikes(lastTargetPos.x, lastTargetPos.y, Bulletsf.ncBlackHole.splashDamageRadius, 12 * fade, 30, Time.time * 0.38f);
 		}
 	}
 

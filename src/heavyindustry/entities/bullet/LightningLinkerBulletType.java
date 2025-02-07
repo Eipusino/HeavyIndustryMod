@@ -50,7 +50,7 @@ public class LightningLinkerBulletType extends BasicBulletType {
 
 		trailWidth = -1;
 
-		liHitEffect = HIFx.lightningHitSmall;
+		liHitEffect = Fxf.lightningHitSmall;
 	}
 
 	public LightningLinkerBulletType() {
@@ -114,7 +114,7 @@ public class LightningLinkerBulletType extends BasicBulletType {
 			PositionLightning.createRandomRange(b, b.team, b, randomGenerateRange, backColor, Mathf.chanceDelta(randomLightningChance), 0, 0, boltWidth, boltNum, randomLightningNum, hitPos -> {
 				randomGenerateSound.at(hitPos, Mathf.random(0.9f, 1.1f));
 				Damage.damage(b.team, hitPos.getX(), hitPos.getY(), splashDamageRadius / 8, splashDamage * b.damageMultiplier() / 8, collidesAir, collidesGround);
-				HIFx.lightningHitLarge.at(hitPos.getX(), hitPos.getY(), lightningColor);
+				Fxf.lightningHitLarge.at(hitPos.getX(), hitPos.getY(), lightningColor);
 
 				hitModifier.get(hitPos);
 			});
@@ -123,7 +123,7 @@ public class LightningLinkerBulletType extends BasicBulletType {
 			for (int i = 0; i < effectLingtning; i++) {
 				Vec2 v = randVec.rnd(effectLightningLength + Mathf.random(effectLightningLengthRand)).add(b).add(Tmp.v1.set(b.vel).scl(Fx.chainLightning.lifetime / 2));
 				Fx.chainLightning.at(b.x, b.y, 12f, backColor, v.cpy());
-				HIFx.lightningHitSmall.at(v.x, v.y, 20f, backColor);
+				Fxf.lightningHitSmall.at(v.x, v.y, 20f, backColor);
 			}
 		}
 	}
@@ -155,7 +155,7 @@ public class LightningLinkerBulletType extends BasicBulletType {
 	public void despawned(Bullet b) {
 		PositionLightning.createRandomRange(b, b.team, b, randomGenerateRange, backColor, Mathf.chanceDelta(randomLightningChance), 0, 0, boltWidth, boltNum, randomLightningNum, hitPos -> {
 			Damage.damage(b.team, hitPos.getX(), hitPos.getY(), splashDamageRadius, splashDamage * b.damageMultiplier(), collidesAir, collidesGround);
-			HIFx.lightningHitLarge.at(hitPos.getX(), hitPos.getY(), lightningColor);
+			Fxf.lightningHitLarge.at(hitPos.getX(), hitPos.getY(), lightningColor);
 			liHitEffect.at(hitPos);
 			for (int j = 0; j < lightning; j++) {
 				Lightning.create(b, lightningColor, lightningDamage < 0f ? damage : lightningDamage, b.x, b.y, b.rotation() + Mathf.range(lightningCone / 2f) + lightningAngle, lightningLength + Mathf.random(lightningLengthRand));

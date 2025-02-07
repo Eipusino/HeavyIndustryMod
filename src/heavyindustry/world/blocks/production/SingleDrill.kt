@@ -14,7 +14,7 @@ open class SingleDrill(name: String) : Drill(name) {
 	@JvmField var requiredItem = Items.copper
 
 	init {
-		drillEffect = HIFx.spark
+		drillEffect = Fxf.spark
 		updateEffect = Fx.none
 		hasLiquids = false
 		drawRim = false

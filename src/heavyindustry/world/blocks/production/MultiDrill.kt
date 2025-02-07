@@ -8,7 +8,6 @@ import arc.math.geom.*
 import arc.struct.*
 import arc.util.*
 import heavyindustry.*
-import heavyindustry.util.*
 import mindustry.*
 import mindustry.content.*
 import mindustry.game.*
@@ -32,11 +31,11 @@ open class MultiDrill(name: String) : Block(name) {
 	@JvmField var updateEffect = Fx.pulverizeRed
 	@JvmField var updateEffectChance = 0.03f
 
-	@JvmField var heatColor = Vec4.valueOf("ff5512")
+	@JvmField var heatColor = Color.valueOf("ff5512")
 
-	@JvmField var rimRegion = HIVars.whiteRegion
-	@JvmField var rotatorRegion = HIVars.whiteRegion
-	@JvmField var topRegion = HIVars.whiteRegion
+	@JvmField var rimRegion = Varsf.whiteRegion
+	@JvmField var rotatorRegion = Varsf.whiteRegion
+	@JvmField var topRegion = Varsf.whiteRegion
 
 	init {
 		update = true
@@ -59,7 +58,7 @@ open class MultiDrill(name: String) : Block(name) {
 		return arrayOf(region, rotatorRegion, topRegion)
 	}
 
-	override fun canPlaceOn(tile: Tile?, team: Team?, rotation: Int): Boolean {
+	override fun canPlaceOn(tile: Tile?, team: Team, rotation: Int): Boolean {
 		if (tile != null) {
 			for (other in tile.getLinkedTilesAs(this, tempTiles)) {
 				if (canMine(other)) {
@@ -86,7 +85,7 @@ open class MultiDrill(name: String) : Block(name) {
 		for (ore in oreCount.keys()) {
 			val dx: Float = x * Vars.tilesize + offset - 16
 			val dy = y * Vars.tilesize + offset + size * Vars.tilesize / 2f
-			Draw.mixcol(Vec4.darkGray, 1f)
+			Draw.mixcol(Color.darkGray, 1f)
 			val itemRegion = ore.fullIcon
 			Draw.rect(itemRegion, dx + off, dy - 1)
 			Draw.reset()
@@ -145,7 +144,7 @@ open class MultiDrill(name: String) : Block(name) {
 			for (ore in ores.keys()) {
 				val dx = x - size * Vars.tilesize / 2f
 				val dy = y + size * Vars.tilesize / 2f
-				Draw.mixcol(Vec4.darkGray, 1f)
+				Draw.mixcol(Color.darkGray, 1f)
 				val itemRegion = ore.fullIcon
 				Draw.rect(itemRegion, dx + off, dy - 1)
 				Draw.reset()

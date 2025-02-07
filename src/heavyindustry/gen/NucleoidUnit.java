@@ -12,7 +12,7 @@ import mindustry.content.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 
-import static heavyindustry.HIVars.*;
+import static heavyindustry.Varsf.*;
 
 public class NucleoidUnit extends Unitf implements Nucleoidc {
 	public float recentDamage = 0f;

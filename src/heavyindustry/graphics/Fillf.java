@@ -4,8 +4,6 @@ import arc.graphics.g2d.*;
 import arc.math.geom.*;
 import arc.struct.*;
 
-import static arc.graphics.g2d.Fill.*;
-
 /** Extended Fill */
 public final class Fillf {
 	private static final Vec2 vector = new Vec2();
@@ -59,7 +57,7 @@ public final class Fillf {
 	}
 
 	private static void flushPoly() {
-		poly(floats);
+		Fill.poly(floats);
 		floats.clear();
 	}
 

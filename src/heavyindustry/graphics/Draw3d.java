@@ -56,7 +56,7 @@ public final class Draw3d {
 					buffer.end();
 					Gl.blendEquationSeparate(Gl.funcAdd, Gl.funcAdd);
 
-					buffer.blit(HIShaders.passThrough);
+					buffer.blit(Shadersf.passThrough);
 				});
 				shadowQueue.clear();
 			}
@@ -65,7 +65,7 @@ public final class Draw3d {
 				bloomQueue.sort(q -> q.layer);
 				Bloom bloom = renderer.bloom;
 				if (bloom != null) {
-					Draw.draw(HILayer.skyBloom, () -> {
+					Draw.draw(Layerf.skyBloom, () -> {
 						bloom.capture();
 						for (QueuedBloom b : bloomQueue) {
 							b.draw.run();

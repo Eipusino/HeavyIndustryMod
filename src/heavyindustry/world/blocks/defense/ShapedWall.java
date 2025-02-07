@@ -157,7 +157,7 @@ public class ShapedWall extends Wall {
 			if (building.health <= 0) {
 				Call.buildDestroyed(building);
 			}
-			HIFx.shareDamage.at(building.x, building.y, building.block.size * tilesize / 2f, team.color, Mathf.clamp(damage / (block.health * 0.1f)));
+			Fxf.shareDamage.at(building.x, building.y, building.block.size * tilesize / 2f, team.color, Mathf.clamp(damage / (block.health * 0.1f)));
 		}
 
 		@Override

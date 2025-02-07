@@ -13,6 +13,7 @@ import arc.struct.*;
 import arc.struct.EnumSet;
 import arc.util.*;
 import arc.util.io.*;
+import heavyindustry.content.*;
 import heavyindustry.ui.*;
 import mindustry.content.*;
 import mindustry.core.*;
@@ -35,11 +36,13 @@ import static mindustry.Vars.*;
  * MultiCrafter. You can freely choose to change the production formula.
  *
  * @author Eipusino
- * @apiNote Example usage {@link heavyindustry.content.HIBlocks#ironcladCompressor }.
+ * @apiNote Example usage {@link Blocksf#ironcladCompressor }.
+ * @see heavyindustry.world.blocks.heat.HeatMultiCrafter heat
+ * @see heavyindustry.world.blocks.payload.PayloadCrafter payload
  * @since 1.0.6
  */
 public class MultiCrafter extends Block {
-	/** Recipe {@link CraftPlan}. */
+	/** PayloadRecipe {@link CraftPlan}. */
 	public Seq<CraftPlan> craftPlans = new Seq<>();
 	/** If {@link MultiCrafter#useBlockDrawer} is false, use the drawer in the recipe for the block. */
 	public DrawBlock drawer = new DrawDefault();
@@ -82,21 +85,21 @@ public class MultiCrafter extends Block {
 
 	@Override
 	public void init() {
-		for (CraftPlan craftPlan : craftPlans) {
-			craftPlan.owner = this;
-			craftPlan.init();
-			if (craftPlan.outputLiquids.length > 0) {
+		for (CraftPlan plan : craftPlans) {
+			plan.owner = this;
+			plan.init();
+			if (plan.outputLiquids.length > 0) {
 				hasLiquids = true;
 				outputsLiquid = true;
 			}
-			if (craftPlan.outputItems.length > 0) {
+			if (plan.outputItems.length > 0) {
 				hasItems = true;
 			}
-			if (craftPlan.consPower != null) {
+			if (plan.consPower != null) {
 				hasPower = true;
 				consumesPower = true;
 			}
-			if (craftPlan.powerProduction > 0) {
+			if (plan.powerProduction > 0) {
 				hasPower = true;
 				outputsPower = true;
 			}
@@ -135,23 +138,23 @@ public class MultiCrafter extends Block {
 		stats.add(Stat.output, table -> {
 			table.row();
 
-			for (CraftPlan craftPlan : craftPlans) {
+			for (CraftPlan plan : craftPlans) {
 				table.table(Styles.grayPanel, info -> {
 					info.left().defaults().left();
 					Stats stat = new Stats();
-					stat.timePeriod = craftPlan.craftTime;
-					if (craftPlan.hasConsumers)
-						for (Consume c : craftPlan.consumers)
+					stat.timePeriod = plan.craftTime;
+					if (plan.hasConsumers)
+						for (Consume c : plan.consumers)
 							c.display(stat);
 
-					if ((hasItems && itemCapacity > 0) || craftPlan.outputItems.length > 0)
-						stat.add(Stat.productionTime, craftPlan.craftTime / 60f, StatUnit.seconds);
+					if ((hasItems && itemCapacity > 0) || plan.outputItems.length > 0)
+						stat.add(Stat.productionTime, plan.craftTime / 60f, StatUnit.seconds);
 
-					if (craftPlan.outputItems.length > 0)
-						stat.add(Stat.output, StatValues.items(craftPlan.craftTime, craftPlan.outputItems));
+					if (plan.outputItems.length > 0)
+						stat.add(Stat.output, StatValues.items(plan.craftTime, plan.outputItems));
 
-					if (craftPlan.outputLiquids.length > 0)
-						stat.add(Stat.output, StatValues.liquids(1f, craftPlan.outputLiquids));
+					if (plan.outputLiquids.length > 0)
+						stat.add(Stat.output, StatValues.liquids(1f, plan.outputLiquids));
 
 					info.table(t -> UIUtils.statTurnTable(stat, t)).pad(8).left();
 				}).growX().left().pad(10);
@@ -166,8 +169,8 @@ public class MultiCrafter extends Block {
 		if (useBlockDrawer) {
 			drawer.load(this);
 		} else {
-			for (CraftPlan p : craftPlans) {
-				p.drawer.load(this);
+			for (CraftPlan plan : craftPlans) {
+				plan.drawer.load(this);
 			}
 		}
 	}
@@ -333,7 +336,7 @@ public class MultiCrafter extends Block {
 				for (int i = 0; i < craftPlan.outputLiquids.length; i++) {
 					int dir = craftPlan.liquidOutputDirections.length > i ? craftPlan.liquidOutputDirections[i] : -1;
 
-					dumpLiquid(craftPlan.outputLiquids[i].liquid, dir);
+					dumpLiquid(craftPlan.outputLiquids[i].liquid, 2f, dir);
 				}
 			}
 		}
@@ -565,36 +568,36 @@ public class MultiCrafter extends Block {
 				}
 
 				cont.clearChildren();
-				for (CraftPlan craftPlan : craftPlans) {
+				for (CraftPlan plan : craftPlans) {
 					var button = new ImageButton();
 					button.table(info -> {
 						info.left();
 						info.table(from -> {
 							Stats stat = new Stats();
-							stat.timePeriod = craftPlan.craftTime;
-							if (craftPlan.hasConsumers)
-								for (Consume c : craftPlan.consumers) {
+							stat.timePeriod = plan.craftTime;
+							if (plan.hasConsumers)
+								for (Consume c : plan.consumers) {
 									c.display(stat);
 								}
 							UIUtils.statToTable(stat, from);
 						}).left().pad(6);
 						info.row();
 						info.table(to -> {
-							if (craftPlan.outputItems.length > 0) {
-								StatValues.items(craftPlan.craftTime, craftPlan.outputItems).display(to);
+							if (plan.outputItems.length > 0) {
+								StatValues.items(plan.craftTime, plan.outputItems).display(to);
 							}
 
-							if (craftPlan.outputLiquids.length > 0) {
-								StatValues.liquids(1f, craftPlan.outputLiquids).display(to);
+							if (plan.outputLiquids.length > 0) {
+								StatValues.liquids(1f, plan.outputLiquids).display(to);
 							}
 						}).left().pad(6);
 					}).grow().left().pad(5);
 					button.setStyle(Styles.clearNoneTogglei);
 					button.changed(() -> {
-						configs[1] = craftPlans.indexOf(craftPlan);
+						configs[1] = craftPlans.indexOf(plan);
 						configure(configs);
 					});
-					button.update(() -> button.setChecked(this.craftPlan == craftPlan));
+					button.update(() -> button.setChecked(craftPlan == plan));
 					cont.add(button);
 					cont.row();
 				}
@@ -702,7 +705,7 @@ public class MultiCrafter extends Block {
 
 		protected MultiCrafter owner = null;
 
-		/** List for building up consumption before init(). */
+		/** List for building-up consumption before init(). */
 		protected Seq<Consume> consumeBuilder = new Seq<>();
 		/** Map of bars by name. */
 		protected OrderedMap<String, Func<Building, Bar>> barMap = new OrderedMap<>();

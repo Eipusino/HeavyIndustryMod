@@ -16,7 +16,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
 
-import static heavyindustry.HIVars.*;
+import static heavyindustry.Varsf.*;
 import static mindustry.Vars.*;
 
 public final class Drawn {
@@ -149,7 +149,7 @@ public final class Drawn {
 	}
 
 	public static void surround(long id, float x, float y, float rad, int num, float innerSize, float outerSize, float interp) {
-		Rand rand = HIFx.rand0;
+		Rand rand = Fxf.rand0;
 
 		rand.setSeed(id);
 		for (int i = 0; i < num; i++) {
@@ -221,7 +221,7 @@ public final class Drawn {
 
 	public static void randFadeLightningEffectScl(float x, float y, float range, float sclMin, float sclMax, float lightningPieceLength, Color color, boolean in) {
 		v6.rnd(range).scl(Mathf.random(sclMin, sclMax)).add(x, y);
-		(in ? HIFx.chainLightningFadeReversed : HIFx.chainLightningFade).at(x, y, lightningPieceLength, color, v6.cpy());
+		(in ? Fxf.chainLightningFadeReversed : Fxf.chainLightningFade).at(x, y, lightningPieceLength, color, v6.cpy());
 	}
 
 	public static void teleportUnitNet(Unit before, float x, float y, float angle, Player player) {
@@ -428,8 +428,8 @@ public final class Drawn {
 				drawSpinSprite(regions, x, y, w, h, r);
 				buffer.end();
 
-				HIShaders.alphaShader.alpha = alpha;
-				buffer.blit(HIShaders.alphaShader);
+				Shadersf.alphaShader.alpha = alpha;
+				buffer.blit(Shadersf.alphaShader);
 			});
 		} else {
 			drawSpinSprite(regions, x, y, w, h, r);
@@ -525,7 +525,7 @@ public final class Drawn {
 		} else {
 			a = 1f - Mathf.clamp(temp / 273.15f);
 			if (a < 0.01f) return;
-			Draw.color(HIPal.coldcolor, a);
+			Draw.color(Palf.coldcolor, a);
 		}
 		Draw.blend(Blending.additive);
 		Draw.rect(reg, x, y, rot);
@@ -842,6 +842,36 @@ public final class Drawn {
 		theta *= Mathf.degRad;
 		float b = -2 * Mathf.sqrt2 * Mathf.cos(theta - Mathf.pi / 4f);
 		return (-b - Mathf.sqrt(b * b - 4)) / 2;
+	}
+
+	public static void blockBuild(float x, float y, TextureRegion region, float rotation, float progress) {
+		blockBuild(x, y, region, Pal.accent, rotation, progress);
+	}
+
+	public static void blockBuild(float x, float y, TextureRegion region, Color color, float rotation, float progress) {
+		Shaders.blockbuild.region = region;
+		Shaders.blockbuild.progress = progress;
+
+		Draw.color(color);
+		Draw.shader(Shaders.blockbuild);
+		Draw.rect(region, x, y, rotation);
+		Draw.shader();
+		Draw.color();
+	}
+
+	public static void blockBuildCenter(float x, float y, TextureRegion region, float rotation, float progress) {
+		blockBuildCenter(x, y, region, Pal.accent, rotation, progress);
+	}
+
+	public static void blockBuildCenter(float x, float y, TextureRegion region, Color color, float rotation, float progress) {
+		Shadersf.blockBuildCenter.region = region;
+		Shadersf.blockBuildCenter.progress = progress;
+
+		Draw.color(color);
+		Draw.shader(Shadersf.blockBuildCenter);
+		Draw.rect(region, x, y, rotation);
+		Draw.shader();
+		Draw.color();
 	}
 
 	private static int mul4(int value) {

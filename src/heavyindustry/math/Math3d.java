@@ -102,7 +102,7 @@ public final class Math3d {
 		float uv = dstvx * dstvx + dstvy * dstvy,
 				ud = dx * dstvx + dy * dstvy;
 
-		// Get quartic components
+		// Get quartic comp
 		float a = -(ba * ba) / 4;
 		float b = -ba * bv;
 		float c = uv - (bv * bv);

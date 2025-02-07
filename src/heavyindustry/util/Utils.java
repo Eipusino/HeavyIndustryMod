@@ -38,7 +38,7 @@ import java.text.*;
 import java.util.*;
 import java.util.regex.*;
 
-import static heavyindustry.HIVars.*;
+import static heavyindustry.Varsf.*;
 import static mindustry.Vars.*;
 
 /**
@@ -179,15 +179,10 @@ public final class Utils {
 			"heavyindustry.type.weapons",
 			"heavyindustry.type.weather",
 			"heavyindustry.ui",
-			"heavyindustry.ui.components",
+			"heavyindustry.ui.comp",
 			"heavyindustry.ui.defaults",
 			"heavyindustry.ui.dialogs",
 			"heavyindustry.ui.elements",
-			"heavyindustry.ui.elements.markdown",
-			"heavyindustry.ui.elements.markdown.elemdraw",
-			"heavyindustry.ui.elements.markdown.extensions",
-			"heavyindustry.ui.elements.markdown.highlighter",
-			"heavyindustry.ui.elements.markdown.highlighter.defaults",
 			"heavyindustry.ui.fragment",
 			"heavyindustry.ui.listeners",
 			"heavyindustry.ui.tooltips",
@@ -210,11 +205,11 @@ public final class Utils {
 			"heavyindustry.world.blocks.sandbox",
 			"heavyindustry.world.blocks.storage",
 			"heavyindustry.world.blocks.units",
-			"heavyindustry.world.components",
 			"heavyindustry.world.consumers",
 			"heavyindustry.world.draw",
 			"heavyindustry.world.meta"
 	};
+	public static final Team[] baseTeams = {Team.derelict, Team.sharded, Team.crux, Team.green, Team.malis, Team.blue};
 
 	public static final Seq<UnlockableContent> donorItems = new Seq<>();
 	public static final Seq<UnlockableContent> developerItems = new Seq<>();
@@ -247,12 +242,10 @@ public final class Utils {
 		String donor = Core.bundle.get("hi-donor-item");
 		String developer = Core.bundle.get("hi-developer-item");
 
-		for (UnlockableContent cont : donorItems) {
+		for (UnlockableContent cont : donorItems)
 			cont.description = (cont.description == null ? donor : cont.description + "\n" + donor);
-		}
-		for (UnlockableContent cont : developerItems) {
+		for (UnlockableContent cont : developerItems)
 			cont.description = (cont.description == null ? developer : cont.description + "\n" + developer);
-		}
 	}
 
 	@Contract(pure = true)
@@ -371,58 +364,21 @@ public final class Utils {
 		return res;
 	}
 
-	/**
-	 * Performs the given action for each element of the {@code Iterable} been processed or the action throws
-	 * an exception.  Actions are performed in the order of iteration, if that order is specified.  Exceptions
-	 * thrown by the action are relayed to the caller.
-	 * <p>The behavior of this method is unspecified if the action performs side effects that modify the
-	 * underlying source of elements, unless an overriding class has specified a concurrent modification
-	 * policy.
-	 *
-	 * @param iterable Implemented the {@link Iterable} interface object
-	 * @param cons     Constructor
-	 * @implSpec <p>The default implementation behaves as if:
-	 * <pre>{@code
-	 *     for (T t : iterable)
-	 *         cons.get(t);
-	 * }</pre>
-	 * @apiNote This static method replaces the {@code Iterable.forEach} method that is not supported on
-	 * some Android platforms. So why not just use {@code for} directly?
-	 * @since 1.0.6
-	 */
-	public static <T> void each(Iterable<T> iterable, Cons<T> cons) {
-		if (iterable != null) {
-			for (T t : iterable) {
-				cons.get(t);
-			}
-		}
-	}
-
-	public static <T> void each(T[] array, Cons<T> cons) {
-		if (array != null) {
-			for (T t : array) {
-				cons.get(t);
-			}
-		}
-	}
-
 	public static int[] sort(int[] arr) {
-		int[] copy = arr.clone();
-
-		for (int i = 1; i < copy.length; i++) {
-			int tmp = copy[i];
+		for (int i = 1; i < arr.length; i++) {
+			int tmp = arr[i];
 
 			int j = i;
-			while (j > 0 && tmp < copy[j - 1]) {
-				copy[j] = copy[j - 1];
+			while (j > 0 && tmp < arr[j - 1]) {
+				arr[j] = arr[j - 1];
 				j--;
 			}
 
 			if (j != i) {
-				copy[j] = tmp;
+				arr[j] = tmp;
 			}
 		}
-		return copy;
+		return arr;
 	}
 
 	public static void shellSort(int[] arr) {
@@ -713,7 +669,7 @@ public final class Utils {
 
 	public static void debugDots(Vec2[] points) {
 		for (int i = 0; i < points.length; i++) {
-			Draw.color(HIPal.spectrum[i], 0.5f);
+			Draw.color(Palf.spectrum[i], 0.5f);
 			Fill.poly(points[i].x, points[i].y, 12, 2f);
 		}
 		Draw.color();
@@ -721,7 +677,7 @@ public final class Utils {
 
 	public static void debugDots(float[] points) {
 		for (int i = 0; i < points.length; i += 2) {
-			Draw.color(HIPal.spectrum[i / 2], 0.5f);
+			Draw.color(Palf.spectrum[i / 2], 0.5f);
 			Fill.poly(points[i], points[i + 1], 12, 2f);
 		}
 		Draw.color();
@@ -1163,7 +1119,7 @@ public final class Utils {
 
 	public static void randFadeLightningEffectScl(float x, float y, float range, float sclMin, float sclMax, float lightningPieceLength, Color color, boolean in) {
 		v1.rnd(range).scl(Mathf.random(sclMin, sclMax)).add(x, y);
-		(in ? HIFx.chainLightningFadeReversed : HIFx.chainLightningFade).at(x, y, lightningPieceLength, color, v1.cpy());
+		(in ? Fxf.chainLightningFadeReversed : Fxf.chainLightningFade).at(x, y, lightningPieceLength, color, v1.cpy());
 	}
 
 	public static Unit teleportUnitNet(Unit before, float x, float y, float angle, Player player) {

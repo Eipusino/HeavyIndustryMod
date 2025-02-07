@@ -27,7 +27,7 @@ public class PositionLightningBulletType extends BulletType {
 		lightning = 3;
 		lightningDamage = damage;
 		lightningLength = lightningLengthRand = 6;
-		hitEffect = shootEffect = smokeEffect = HIFx.boolSelector;
+		hitEffect = shootEffect = smokeEffect = Fxf.boolSelector;
 		despawnEffect = Fx.none;
 	}
 
@@ -35,9 +35,9 @@ public class PositionLightningBulletType extends BulletType {
 	public void init() {
 		super.init();
 		drawSize = Math.max(drawSize, maxRange * 2);
-		if (hitEffect == HIFx.boolSelector) hitEffect = HIFx.lightningHitLarge(lightningColor);
-		if (smokeEffect == HIFx.boolSelector) smokeEffect = Fx.shootBigSmoke;
-		if (shootEffect == HIFx.boolSelector) shootEffect = HIFx.shootLineSmall(lightningColor);
+		if (hitEffect == Fxf.boolSelector) hitEffect = Fxf.lightningHitLarge(lightningColor);
+		if (smokeEffect == Fxf.boolSelector) smokeEffect = Fx.shootBigSmoke;
+		if (shootEffect == Fxf.boolSelector) shootEffect = Fxf.shootLineSmall(lightningColor);
 	}
 
 	public float range() {

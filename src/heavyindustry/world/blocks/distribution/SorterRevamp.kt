@@ -18,8 +18,8 @@ import mindustry.world.blocks.*
 import mindustry.world.meta.*
 
 open class SorterRevamp(name: String) : Block(name) {
-	@JvmField var cross = HIVars.whiteRegion
-	@JvmField var source = HIVars.whiteRegion
+	@JvmField var cross = Varsf.whiteRegion
+	@JvmField var source = Varsf.whiteRegion
 	@JvmField var invert = false
 
 	init {
@@ -117,7 +117,7 @@ open class SorterRevamp(name: String) : Block(name) {
 
 
 		override fun buildConfiguration(table: Table) {
-			ItemSelection.buildTable(this@SorterRevamp, table, Vars.content.items(), { sortItem }, { value: Item? -> configure(value) }, selectionRows, selectionColumns)
+			ItemSelection.buildTable(block, table, Vars.content.items(), { sortItem }, { value: Item? -> configure(value) }, selectionRows, selectionColumns)
 		}
 
 		override fun config(): Item? {

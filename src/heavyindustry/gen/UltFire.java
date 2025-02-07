@@ -14,7 +14,7 @@ import mindustry.graphics.*;
 import mindustry.world.*;
 import mindustry.world.meta.*;
 
-import static heavyindustry.HIVars.*;
+import static heavyindustry.Varsf.*;
 import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 
@@ -135,7 +135,7 @@ public class UltFire extends Fire {
 
 				if (flammability > 0f && (fireballTimer += Time.delta * Mathf.clamp(flammability / 10f, 0f, 1.5f)) >= 40f) {
 					fireballTimer = 0f;
-					HIBullets.ultFireball.createNet(Team.derelict, x, y, Mathf.random(360f), 1f, 1f, 1f);
+					Bulletsf.ultFireball.createNet(Team.derelict, x, y, Mathf.random(360f), 1f, 1f, 1f);
 				}
 
 				if ((damageTimer += Time.delta) >= 40f) {
@@ -146,8 +146,8 @@ public class UltFire extends Fire {
 						entity.damage(25f);
 					}
 
-					Damage.damageUnits(null, tile.worldx(), tile.worldy(), 8f, 15f, (unit) -> !unit.isFlying() && !unit.isImmune(HIStatusEffects.ultFireBurn), (unit) -> {
-						unit.apply(HIStatusEffects.ultFireBurn, 300f);
+					Damage.damageUnits(null, tile.worldx(), tile.worldy(), 8f, 15f, (unit) -> !unit.isFlying() && !unit.isImmune(StatusEffectsf.ultFireBurn), (unit) -> {
+						unit.apply(StatusEffectsf.ultFireBurn, 300f);
 					});
 				}
 			} else {

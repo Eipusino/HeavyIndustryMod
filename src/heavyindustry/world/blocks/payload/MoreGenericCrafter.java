@@ -1,27 +1,34 @@
 package heavyindustry.world.blocks.payload;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
+//import arc.graphics.*;
+//import arc.graphics.g2d.*;
+//import arc.math.*;
+//import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
 import arc.util.io.*;
-import heavyindustry.ui.*;
+//import heavyindustry.ui.*;
 import mindustry.content.*;
 import mindustry.entities.*;
-import mindustry.entities.units.*;
+//import mindustry.entities.units.*;
 import mindustry.gen.*;
-import mindustry.graphics.*;
+//import mindustry.graphics.*;
 import mindustry.type.*;
-import mindustry.ui.*;
+//import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.payloads.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 
-import static mindustry.Vars.*;
+//import static mindustry.Vars.*;
 
+/**
+ * @deprecated Deprecated API, please use {@link PayloadCrafter}
+ *
+ * @since 1.0.6
+ */
+@Deprecated
+@SuppressWarnings("unused")
 public class MoreGenericCrafter extends PayloadBlock {
 	public @Nullable ItemStack[] outputItems;
 	public @Nullable LiquidStack[] outputLiquids;
@@ -52,7 +59,7 @@ public class MoreGenericCrafter extends PayloadBlock {
 		rotate = true;
 	}
 
-	public static StatValue payload(Block pay) {
+	/*public static StatValue payload(Block pay) {
 		return (table) -> {
 			table.add(new ItemImage(pay.uiIcon, 1));
 			table.add(pay.localizedName).padLeft(2f).padRight(5f).color(Color.lightGray).style(Styles.outlineLabel);
@@ -93,8 +100,8 @@ public class MoreGenericCrafter extends PayloadBlock {
 			}
 		}
 
-		addBar("progress", (MoreGenericCrafterBuild entity) -> new Bar("bar.progress", Pal.ammo, () ->
-				(entity.payload == null || entity.payload.block() != outputPayload) ? entity.progress : 1f));
+		addBar("progress", (MoreGenericCrafterBuild tile) -> new Bar("bar.progress", Pal.ammo, () ->
+				(tile.payload == null || tile.payload.block() != outputPayload) ? tile.progress : 1f));
 	}
 
 	@Override
@@ -155,14 +162,15 @@ public class MoreGenericCrafter extends PayloadBlock {
 	@Override
 	public void getRegionsToOutline(Seq<TextureRegion> out) {
 		drawer.getRegionsToOutline(this, out);
-	}
+	}*/
 
+	@Deprecated
 	public class MoreGenericCrafterBuild extends PayloadBlockBuild<BuildPayload> {
 		public float progress;
 		public float totalProgress;
 		public float warmup;
 
-		@Override
+		/*@Override
 		public boolean shouldActiveSound() {
 			return shouldConsume();
 		}
@@ -272,7 +280,7 @@ public class MoreGenericCrafter extends PayloadBlock {
 				for (int i = 0; i < outputLiquids.length; i++) {
 					int dir = liquidOutputDirections.length > i ? liquidOutputDirections[i] : -1;
 
-					dumpLiquid(outputLiquids[i].liquid, dir);
+					dumpLiquid(outputLiquids[i].liquid, 2f, dir);
 				}
 			}
 		}
@@ -292,7 +300,7 @@ public class MoreGenericCrafter extends PayloadBlock {
 		@Override
 		public void handlePayload(Building source, Payload payload) {
 			super.handlePayload(source, payload);
-		}
+		}*/
 
 		@Override
 		public float progress() {

@@ -75,7 +75,7 @@ public class ExtraContentParser {
 	ObjectMap<Class<?>, ExtraFieldParser> classParsers = new ObjectMap<>() {{
 		put(Effect.class, (type, data) -> {
 			if (data.isString()) {
-				return modField(Fx.class, HIFx.class, data);
+				return modField(Fx.class, Fxf.class, data);
 			}
 			if (data.isArray()) {
 				return new MultiEffect(parser.readValue(Effect[].class, data));
@@ -86,10 +86,10 @@ public class ExtraContentParser {
 			readFields(result, data);
 			return result;
 		});
-		put(Sortf.class, (type, data) -> modField(UnitSorts.class, HIUnitSorts.class, data));
+		put(Sortf.class, (type, data) -> modField(UnitSorts.class, UnitSortsf.class, data));
 		put(Interp.class, (type, data) -> modField(Interp.class, HIInterp.class, data));
 		put(Blending.class, (type, data) -> field(Blending.class, data));
-		put(CacheLayer.class, (type, data) -> modField(CacheLayer.class, HICacheLayer.class, data));
+		put(CacheLayer.class, (type, data) -> modField(CacheLayer.class, CacheLayerf.class, data));
 		put(Attribute.class, (type, data) -> {
 			String attr = data.asString();
 			if (Attribute.exists(attr)) return Attribute.get(attr);
@@ -147,7 +147,7 @@ public class ExtraContentParser {
 		});
 		put(BulletType.class, (type, data) -> {
 			if (data.isString()) {
-				return modField(Bullets.class, HIBullets.class, data);
+				return modField(Bullets.class, Bulletsf.class, data);
 			}
 			Class<?> bc = resolve(data.getString("type", ""), BasicBulletType.class);
 			data.remove("type");

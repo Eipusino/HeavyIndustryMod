@@ -43,7 +43,7 @@ public class DetectorCoreBlock extends CoreBlock {
 		super(name);
 		configurable = true;
 		clipSize = radarRange * 2f;
-		loopSound = HISounds.radar;
+		loopSound = Soundsf.radar;
 	}
 
 	@Override

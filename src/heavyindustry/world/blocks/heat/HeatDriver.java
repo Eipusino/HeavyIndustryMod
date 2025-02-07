@@ -18,7 +18,7 @@ import mindustry.world.blocks.heat.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 
-import static heavyindustry.HIVars.*;
+import static heavyindustry.Varsf.*;
 import static mindustry.Vars.*;
 
 public class HeatDriver extends Block {

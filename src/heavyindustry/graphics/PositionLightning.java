@@ -211,9 +211,9 @@ public final class PositionLightning {
 	/** create lightning effect. */
 	public static void createBoltEffect(Color color, float width, Vec2Seq vets) {
 		vets.each(((x, y) -> {
-			if (Mathf.chance(0.0855)) HIFx.lightningSpark.at(x, y, rand.random(2f + width, 4f + width), color);
+			if (Mathf.chance(0.0855)) Fxf.lightningSpark.at(x, y, rand.random(2f + width, 4f + width), color);
 		}));
-		HIFx.posLightning.at((vets.firstTmp().x + vets.peekTmp().x) / 2f, (vets.firstTmp().y + vets.peekTmp().y) / 2f, width, color, vets);
+		Fxf.posLightning.at((vets.firstTmp().x + vets.peekTmp().x) / 2f, (vets.firstTmp().y + vets.peekTmp().y) / 2f, width, color, vets);
 	}
 
 	private static Vec2Seq computeVectors(FloatSeq randomVec, Position from, Position to) {

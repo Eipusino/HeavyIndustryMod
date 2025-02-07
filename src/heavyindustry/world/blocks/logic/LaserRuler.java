@@ -121,7 +121,7 @@ public class LaserRuler extends Block {
 
 			Tile target = targetTile();
 			Color tenColor = Color.red.cpy().lerp(Color.white, 0.5f);
-			Color color = Color.valueOf("877bad");//BF92F8 8A73C6 665C9F
+			Color color = Color.valueOf("877bad");//bf92f8 8a73c6 665c9f
 			drawSelectedTile(target, color);
 			drawRunners.clear();
 			int counter = 0;

@@ -10,8 +10,6 @@ import mindustry.graphics.*;
 import mindustry.graphics.MultiPacker.*;
 import mindustry.world.*;
 
-import static arc.graphics.g2d.Lines.*;
-
 public final class Drawm {
 	private static final Vec2 vec1 = new Vec2(), vec2 = new Vec2(), vec3 = new Vec2(), vec4 = new Vec2();
 
@@ -22,7 +20,7 @@ public final class Drawm {
 	public static void ellipse(float x, float y, float rad, float wScl, float hScl, float rot) {
 		float sides = Lines.circleVertices(rad);
 		float space = 360 / sides;
-		float r1 = rad - getStroke() / 2f, r2 = rad + getStroke() / 2f;
+		float r1 = rad - Lines.getStroke() / 2f, r2 = rad + Lines.getStroke() / 2f;
 
 		for (int i = 0; i < sides; i++) {
 			float a = space * i;
@@ -34,7 +32,7 @@ public final class Drawm {
 		}
 	}
 
-	/** Generates all team regions for this block. Call #getTeamRegion(Blockf) afterward to get the region. */
+	/** Generates all team regions for this block. Call #getTeamRegion(Block) afterward to get the region. */
 	public static void generateTeamRegion(MultiPacker packer, Block b) {
 		PixmapRegion teamr = Core.atlas.getPixmap(b.name + "-team");
 
