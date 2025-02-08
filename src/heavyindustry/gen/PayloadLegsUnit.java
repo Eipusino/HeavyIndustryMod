@@ -143,7 +143,7 @@ public class PayloadLegsUnit extends LegsUnitf implements Payloadc {
 			Vars.netClient.clearRemovedEntity(u.unit.id);
 		}
 
-		//drop off payload on an acceptor if possible
+		//drop off payload on acceptor if possible
 		if (on != null && on.build != null && on.build.team == team && on.build.acceptPayload(on.build, payload)) {
 			Fx.unitDrop.at(on.build);
 			on.build.handlePayload(on.build, payload);

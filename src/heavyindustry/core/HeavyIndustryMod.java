@@ -110,6 +110,7 @@ public final class HeavyIndustryMod extends Mod {
 						t.add(Core.bundle.get("hi-version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 						t.add(label).left().row();
 						t.add(Core.bundle.get("hi-class")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
+						t.add(Core.bundle.get("hi-oh-no")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 						t.add(Core.bundle.get("hi-note")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
 						t.add(Core.bundle.get("hi-prompt")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
 						t.add(Core.bundle.get("hi-other")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
@@ -200,7 +201,7 @@ public final class HeavyIndustryMod extends Mod {
 		if (!headless && !isPlugin && mods.locateMod("extra-utilities") == null && isAprilFoolsDay()) {
 			Overrides.loadAprilFoolsDay();
 
-			if (ui != null)
+			if (ui != null) {
 				Events.on(ClientLoadEvent.class, event -> Time.runTask(10f, () -> {
 					BaseDialog dialog = new BaseDialog(Core.bundle.get("hi-name")) {
 						int con = 0;
@@ -228,6 +229,7 @@ public final class HeavyIndustryMod extends Mod {
 					};
 					dialog.show();
 				}));
+			}
 		}
 
 		LoadedMod theMod = loaded();

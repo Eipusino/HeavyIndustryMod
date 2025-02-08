@@ -37,8 +37,8 @@ public final class Liquidsf {
 			flammability = 1f;
 			explosiveness = 1f;
 		}};
-		nanoFluid = new Liquid("nano-fluid", Palf.nanoCoreBlue) {{
-			heatCapacity = 1.8f;
+		nanoFluid = new Liquid("nano-fluid", Palf.nanoCoreRed) {{
+			heatCapacity = 2.5f;
 			viscosity = 0.8f;
 			temperature = 0.3f;
 			lightColor = color.cpy().a(0.3f);
@@ -50,7 +50,7 @@ public final class Liquidsf {
 			@Override
 			public void drawPuddle(Puddle puddle) {
 				Draws.drawTask(nanoFluidId, puddle, Shadersf.wave, s -> {
-					s.waveMix = Palf.nanoCoreBlueBright;
+					s.waveMix = Palf.nanoCoreRedBright;
 					s.mixAlpha = 0.2f + Mathf.absin(5, 0.2f);
 					s.waveScl = 0.2f;
 					s.maxThreshold = 1f;

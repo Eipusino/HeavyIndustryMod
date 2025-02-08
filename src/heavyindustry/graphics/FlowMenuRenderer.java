@@ -339,7 +339,7 @@ public class FlowMenuRenderer extends MenuRenderer {
 			}
 		},
 
-		warzone = new MenuSlide(true) {
+		warZone = new MenuSlide(true) {
 			@Override
 			protected void generate(Tiles tiles) {
 				for (int x = 0; x < tiles.width; x++) {

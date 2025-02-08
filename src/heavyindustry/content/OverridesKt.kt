@@ -5,25 +5,35 @@ import heavyindustry.util.*
 import mindustry.*
 import mindustry.content.*
 import mindustry.type.*
+import mindustry.world.blocks.power.ConsumeGenerator
 import mindustry.world.blocks.production.*
 
 object OverridesKt {
 	@JvmField val drillMultipliers = ObjectFloatMap<Item>()
-	@JvmField val erekirDrillMultipliers = ObjectFloatMap<Item>()
+	@JvmField val drillMultipliers_e = ObjectFloatMap<Item>()
+
+	@JvmField val itemDurationMultipliers = ObjectFloatMap<Item>()
 
 	@JvmStatic
 	fun load() {
+		itemDurationMultipliers.put(Items.phaseFabric, 15f)
+		itemDurationMultipliers.put(Itemsf.uranium, 1.2f)
+		itemDurationMultipliers.put(Itemsf.originium, 0.8f)
+		itemDurationMultipliers.put(Itemsf.purifiedOriginium, 2.5f)
+
 		for (i in Vars.content.items()) {
 			drillMultipliers.put(i, itemHard(i))
 		}
 		//I am doing this to consider the compatibility of other mods.
-		erekirDrillMultipliers.putAll(drillMultipliers)
-		erekirDrillMultipliers.put(Items.thorium, 1f)
-		erekirDrillMultipliers.put(Itemsf.uranium, 0.9f)
-		erekirDrillMultipliers.put(Itemsf.chromium, 0.8f)
+		drillMultipliers_e.putAll(drillMultipliers)
+		drillMultipliers_e.put(Items.thorium, 1f)
+		drillMultipliers_e.put(Itemsf.uranium, 0.9f)
+		drillMultipliers_e.put(Itemsf.chromium, 0.8f)
 
-		(Blocks.impactDrill as BurstDrill).drillMultipliers.putAll(erekirDrillMultipliers)
-		(Blocks.eruptionDrill as BurstDrill).drillMultipliers.putAll(erekirDrillMultipliers)
+		(Blocks.rtgGenerator as ConsumeGenerator).itemDurationMultipliers.putAll(itemDurationMultipliers)
+
+		(Blocks.impactDrill as BurstDrill).drillMultipliers.putAll(drillMultipliers_e)
+		(Blocks.eruptionDrill as BurstDrill).drillMultipliers.putAll(drillMultipliers_e)
 	}
 
 	@JvmStatic

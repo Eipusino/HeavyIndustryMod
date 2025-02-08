@@ -31,8 +31,7 @@ import static mindustry.Vars.*;
 
 public final class HIStatValues {
 	/** Don't let anyone instantiate this class. */
-	private HIStatValues() {
-	}
+	private HIStatValues() {}
 
 	public static <T extends UnlockableContent> StatValue ammo(ObjectMap<T, BulletType[]> map) {
 		return ammo(map, 0, false);

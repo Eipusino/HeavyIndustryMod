@@ -108,6 +108,7 @@ public final class UnitTypesf {
 					height = 10f;
 				}};
 			}});
+			hidden = true;
 		}};
 		striker = new UnitTypef("striker") {{
 			constructor = TankUnitf::create;
@@ -140,6 +141,7 @@ public final class UnitTypesf {
 				alternate = false;
 				bullet = Bullets.placeholder;
 			}});
+			hidden = true;
 		}};
 		counterattack = new UnitTypef("counterattack") {{
 			constructor = TankUnitf::create;
@@ -185,6 +187,7 @@ public final class UnitTypesf {
 				velocityRnd = 0.1f;
 				bullet = Bullets.placeholder;
 			}});
+			hidden = true;
 		}};
 		crush = new UnitTypef("crush") {{
 			constructor = TankUnitf::create;
@@ -227,6 +230,7 @@ public final class UnitTypesf {
 				alternate = false;
 				bullet = Bullets.placeholder;
 			}});
+			hidden = true;
 		}};
 		destruction = new UnitTypef("destruction") {{
 			constructor = TankUnitf::create;
@@ -271,6 +275,7 @@ public final class UnitTypesf {
 					progress = PartProgress.recoil;
 				}});
 			}});
+			hidden = true;
 		}};
 		purgatory = new UnitTypef("purgatory") {{
 			constructor = TankUnitf::create;
@@ -313,6 +318,7 @@ public final class UnitTypesf {
 				shake = 8f;
 				bullet = Bullets.placeholder;
 			}});
+			hidden = true;
 		}};
 		//vanilla-copter
 		caelifera = new CopterUnitType("caelifera") {{
@@ -2214,6 +2220,7 @@ public final class UnitTypesf {
 			lightRadius = 60f;
 			fogRadius = 30f;
 			deathExplosionEffect = new MultiEffect(Fxf.explodeImpWave);
+			hidden = true;
 		}};
 		pioneer = new UnitTypef("pioneer") {{
 			constructor = PayloadLegsUnit::create;
@@ -2590,6 +2597,7 @@ public final class UnitTypesf {
 					return rangeWeapon;
 				}
 			});
+			hidden = true;
 		}};
 		//elite
 		tiger = new UnitTypef("tiger") {{
@@ -2802,7 +2810,7 @@ public final class UnitTypesf {
 					}};
 				}});
 			}});
-			hideDetails = false;
+			hidden = true;
 		}};
 		thunder = new UnitTypef("thunder") {{
 			tank();
@@ -2980,7 +2988,7 @@ public final class UnitTypesf {
 				shieldArmor = 26f;
 			}});
 			drownTimeMultiplier = 26f;
-			hideDetails = false;
+			hidden = true;
 		}};
 		vast = new EnergyUnitType("vast") {{
 			envDisabled = Env.none;
@@ -3068,7 +3076,7 @@ public final class UnitTypesf {
 					Fxf.crossSpinBlast.at(unit.x, unit.y, unit.rotation, unit.team.color, unit);
 				}
 			});
-			hideDetails = false;
+			hidden = true;
 		}};
 	}
 }

@@ -13,7 +13,7 @@ import mindustry.type.*;
 public final class Itemsf {
 	public static Item
 			stone, salt, rareEarth,
-			nanoCore, reinforcedNanoCore,
+			nanoCore,
 			originium, purifiedOriginium, syntheticJade,
 			uranium, chromium, heavyAlloy;
 
@@ -37,13 +37,9 @@ public final class Itemsf {
 			buildable = false;
 			lowPriority = true;
 		}};
-		nanoCore = new Item("nano-core", Palf.nanoCoreBlue) {{
+		nanoCore = new Item("nano-core", Palf.nanoCoreRed) {{
 			cost = -0.75f;
 			hardness = 6;
-		}};
-		reinforcedNanoCore = new Item("reinforced-nano-core", Palf.reinforcedNanoCoreOrange) {{
-			cost = -0.75f;
-			hardness = 7;
 		}};
 		originium = new Item("originium", Palf.originiumBlack) {{
 			cost = 1.25f;

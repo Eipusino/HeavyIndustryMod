@@ -383,7 +383,7 @@ public final class Overrides {
 		Items.phaseFabric.hardness = 3;
 		Items.carbide.hardness = 6;
 		Items.serpuloItems.addAll(Itemsf.rareEarth, Itemsf.nanoCore, Itemsf.chromium, Itemsf.uranium, Itemsf.heavyAlloy, Itemsf.originium, Itemsf.purifiedOriginium, Itemsf.syntheticJade);
-		Items.erekirItems.addAll(Itemsf.reinforcedNanoCore, Itemsf.uranium, Itemsf.chromium, Itemsf.originium, Itemsf.purifiedOriginium, Itemsf.syntheticJade);
+		Items.erekirItems.addAll(Itemsf.uranium, Itemsf.chromium, Itemsf.originium, Itemsf.purifiedOriginium, Itemsf.syntheticJade);
 		//planet
 
 		//other

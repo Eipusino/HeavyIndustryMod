@@ -104,7 +104,7 @@ public class MultiCrafter extends Block {
 				outputsPower = true;
 			}
 		}
-		if (hasPower && consumesPower) consumePowerDynamic(b -> b instanceof MultiCrafterBuild tile ? tile.formulaPower() : 0);
+		if (hasPower && consumesPower) consumePowerDynamic(b -> ((MultiCrafterBuild) b).formulaPower());
 
 		super.init();
 

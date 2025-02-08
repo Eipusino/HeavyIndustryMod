@@ -1,8 +1,8 @@
 #define HIGHP
 
 //shades of nano-fluid
-#define S1 vec3(55.7, 62.7, 84.6) / 100.0
-#define S2 vec3(65.5, 73.7, 100.0) / 100.0
+#define S1 vec3(97.5, 50.7, 40.1) / 100.0
+#define S2 vec3(100.0, 72.9, 57.3) / 100.0
 #define NSCALE 100.0 / 2.0
 
 uniform sampler2D u_texture;

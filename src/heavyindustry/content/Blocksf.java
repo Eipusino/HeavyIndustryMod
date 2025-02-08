@@ -1681,7 +1681,7 @@ public final class Blocksf {
 			outputItem = new ItemStack(Itemsf.nanoCore, 1);
 			craftEffect = Fx.none;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawSpecConstruct() {{
-				constructColor1 = constructColor2 = Palf.nanoCoreBlue;
+				constructColor1 = constructColor2 = Palf.nanoCoreRed;
 			}}, new DrawDefault());
 			consumePower(2.5f);
 			consumeItems(with(Items.titanium, 2, Items.silicon, 3, Itemsf.purifiedOriginium, 1));
@@ -1698,7 +1698,7 @@ public final class Blocksf {
 			outputItem = new ItemStack(Itemsf.nanoCore, 12);
 			craftEffect = Fx.none;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.cryofluid), new DrawRegion("-mid"), new DrawSpecConstruct() {{
-				constructColor1 = constructColor2 = Palf.nanoCoreBlue;
+				constructColor1 = constructColor2 = Palf.nanoCoreRed;
 			}}, new DrawDefault());
 			consumePower(25f);
 			consumeLiquid(Liquids.cryofluid, 6f / 60f);
@@ -2260,7 +2260,7 @@ public final class Blocksf {
 			optionalUseTime = 3600;
 			optionalMultiplier = 6;
 			effectChance = 0.5f;
-			effect = WrapperEffect.wrap(Fxf.polyParticle, Palf.nanoCoreBlue);
+			effect = WrapperEffect.wrap(Fxf.polyParticle, Palf.nanoCoreRed);
 			drawer = new DrawMulti(new DrawDefault(), new DrawPulseShape() {{
 				layer = 110;
 				stroke = 3f;
@@ -4008,13 +4008,13 @@ public final class Blocksf {
 			buildType = () -> new ForceBuild() {
 				@Override
 				public void updateTile() {
-					boolean phaseValid = itemConsumer != null && itemConsumer.efficiency(this) > 0;
+					boolean phaseValid = itemConsumer != null && itemConsumer.efficiency(this) > 0f;
 
 					phaseHeat = Mathf.lerpDelta(phaseHeat, Mathf.num(phaseValid), 0.1f);
 
 					radscl = Mathf.lerpDelta(radscl, broken ? 0f : warmup, 0.05f);
 
-					if (phaseValid && !broken && timer(timerUse, phaseUseTime) && efficiency > 0) {
+					if (phaseValid && !broken && timer(timerUse, phaseUseTime) && efficiency > 0f) {
 						consume();
 					}
 
@@ -4280,7 +4280,7 @@ public final class Blocksf {
 
 				@Override
 				public float handleDamage(float amount) {
-					return 0;
+					return 0f;
 				}
 			};
 		}};
@@ -4310,7 +4310,7 @@ public final class Blocksf {
 					Angles.randLenVectors(e.id, 8, e.finpow() * 22f, (x, y) -> Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fout() * 4f + 1f));
 				});
 				trailEffect = new Effect(12f, e -> {
-					float fx = Angles.trnsx(e.rotation, 24), fy = Angles.trnsy(e.rotation, 24);
+					float fx = Angles.trnsx(e.rotation, 24f), fy = Angles.trnsy(e.rotation, 24f);
 					Lines.stroke(3f * e.fout(), Pal.spore);
 					Lines.line(e.x, e.y, e.x + fx, e.y + fy);
 
@@ -4347,7 +4347,7 @@ public final class Blocksf {
 
 				@Override
 				public float handleDamage(float amount) {
-					return 0;
+					return 0f;
 				}
 
 				@Override
@@ -4367,17 +4367,17 @@ public final class Blocksf {
 						ammoUseEffect.at(x - Angles.trnsx(rotation, ammoEjectBack), y - Angles.trnsy(rotation, ammoEjectBack), rotation * Mathf.sign(0));
 
 						float angle = Mathf.angle(target.getX() - bulletX, target.getY() - bulletY);
-						Geometry.iterateLine(0, bulletX, bulletY, target.getX(), target.getY(), p.trailSpacing, (x, y) -> p.trailEffect.at(x, y, angle));
+						Geometry.iterateLine(0f, bulletX, bulletY, target.getX(), target.getY(), p.trailSpacing, (x, y) -> p.trailEffect.at(x, y, angle));
 
 						if (shootEffect != null) {
 							shootEffect.at(bulletX, bulletY, angle, Pal.spore);
 						}
-						if (shake > 0) {
+						if (shake > 0f) {
 							Effect.shake(shake, shake, this);
 						}
 						useAmmo();
-						curRecoil = 1;
-						heat = 1;
+						curRecoil = 1f;
+						heat = 1f;
 					} else {
 						super.shoot(type);
 					}
@@ -4396,8 +4396,8 @@ public final class Blocksf {
 			buildType = () -> new Building() {
 				@Override
 				public void buildConfiguration(Table table) {
-					table.button(Icon.upOpen, Styles.cleari, () -> configure(0)).size(50).tooltip(Core.bundle.get("hi-next-wave-1"));
-					table.button(Icon.warningSmall, Styles.cleari, () -> configure(1)).size(50).tooltip(Core.bundle.get("hi-next-wave-10"));
+					table.button(Icon.upOpen, Styles.cleari, () -> configure(0)).size(50f).tooltip(Core.bundle.get("hi-next-wave-1"));
+					table.button(Icon.warningSmall, Styles.cleari, () -> configure(1)).size(50f).tooltip(Core.bundle.get("hi-next-wave-10"));
 				}
 
 				@Override
