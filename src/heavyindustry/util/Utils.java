@@ -396,6 +396,10 @@ public final class Utils {
 		}
 	}
 
+	public static AtlasRegion asAtlas(TextureRegion texture) {
+		return texture instanceof AtlasRegion atlas ? atlas : new AtlasRegion(texture);
+	}
+
 	/** reads every single pixel on a textureRegion from bottom left to top right. */
 	public static void readTexturePixels(PixmapRegion pixmap, Intc2 cons) {
 		for (int j = 0; j < pixmap.height; j++) {

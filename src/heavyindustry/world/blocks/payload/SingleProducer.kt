@@ -19,13 +19,9 @@ open class SingleProducer(name: String) : BlockProducer(name) {
 	open inner class SingleProducerBuild : BlockProducerBuild() {
 		@JvmField var tehRecipe: Block? = null
 
-		override fun recipe(): Block? {
-			return tehRecipe
-		}
+		override fun recipe(): Block? = tehRecipe
 
-		override fun acceptItem(source: Building, item: Item): Boolean {
-			return items[item] < getMaximumAccepted(item)
-		}
+		override fun acceptItem(source: Building, item: Item): Boolean = items[item] < getMaximumAccepted(item)
 
 		override fun getMaximumAccepted(item: Item): Int {
 			if (tehRecipe == null) return 0
@@ -35,9 +31,7 @@ open class SingleProducer(name: String) : BlockProducer(name) {
 			return 0
 		}
 
-		override fun shouldConsume(): Boolean {
-			return super.shouldConsume() && tehRecipe != null
-		}
+		override fun shouldConsume(): Boolean = super.shouldConsume() && tehRecipe != null
 
 		override fun updateTile() {
 			if (tehRecipe == null && produce != null) tehRecipe = produce
@@ -48,7 +42,7 @@ open class SingleProducer(name: String) : BlockProducer(name) {
 			if (produce) {
 				progress += buildSpeed * edelta()
 
-				if (progress >= recipe!!.buildCost) {
+				if (progress >= recipe!!.buildTime) {
 					consume()
 					payload = BuildPayload(recipe, team)
 					payload.block().placeEffect.at(x, y, payload.size() / Vars.tilesize)

@@ -3,6 +3,8 @@
 package heavyindustry.util
 
 import arc.func.*
+import arc.graphics.g2d.TextureAtlas.AtlasRegion
+import arc.graphics.g2d.TextureRegion
 import arc.math.geom.*
 import arc.struct.*
 import heavyindustry.*
@@ -28,18 +30,6 @@ fun <T> noc(a: T?, b: T): T = a ?: b
 
 fun <T> nop(a: T?, b: Cons<T>) {
 	if (a != null) b.get(a)
-}
-
-fun <T, N> nop2(a: T?, b: N?, c: Cons2<T, N>) {
-	if (a != null && b != null) c.get(a, b)
-}
-
-fun <T, N, R> nop3(a: T?, b: N?, c: R?, d: Cons3<T, N, R>) {
-	if (a != null && b != null && c != null) d.get(a, b, c)
-}
-
-fun <T, N, R, P> nop4(a: T?, b: N?, c: R?, d: P?, e: Cons4<T, N, R, P>) {
-	if (a != null && b != null && c != null && d != null) e.get(a, b, c, d)
 }
 
 fun <T> nol(a: T?, b: Boolean, c: Cons<T>) {
@@ -154,3 +144,5 @@ fun liquid(liquids: Array<LiquidStack>, liquid: Liquid): Float {
 fun inZone(start: Vec2, size: Vec2, point: Vec2): Boolean = inZone(start.x, start.y, start.x + size.x, start.y + size.y, point.x, point.y)
 
 fun <T : Comparable<T>> inZone(x: T, y: T, x1: T, y1: T, px: T, py: T): Boolean = x < px && y < py && x1 > px && y1 > py
+
+fun TextureRegion.selfAtlas(): AtlasRegion = if (this is AtlasRegion) this else AtlasRegion(this)
