@@ -143,7 +143,7 @@ final class ClassMapf {
 		classes.put("MultiBarrelWeapon", MultiBarrelWeapon.class);
 		classes.put("PointDefenceMultiBarrelWeapon", PointDefenceMultiBarrelWeapon.class);
 		//types-liquid
-		classes.put("ExtraCellLiquid", ExtraCellLiquid.class);
+		classes.put("MultiCellLiquid", MultiCellLiquid.class);
 		//types-planet
 		classes.put("AtmospherePlanet", AtmospherePlanet.class);
 		//types-sector

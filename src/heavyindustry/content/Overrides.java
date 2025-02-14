@@ -13,6 +13,7 @@ import mindustry.entities.*;
 import mindustry.entities.bullet.*;
 import mindustry.entities.effect.*;
 import mindustry.entities.part.*;
+import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
@@ -231,6 +232,67 @@ public final class Overrides {
 			colors = new Color[]{Color.valueOf("465ab888"), Color.valueOf("66a6d2a0"), Color.valueOf("89e8b6b0"), Color.valueOf("cafcbe"), Color.white};
 			lightColor = hitColor = flareColor = Color.valueOf("89e8b6");
 		}});
+		/*((PowerTurret) Blocks.afflict).shootType = new BasicBulletType(5f, 180f, "large-orb") {{
+			shootEffect = new MultiEffect(Fx.shootTitan, new WaveEffect() {{
+				colorTo = Pal.surge;
+				sizeTo = 26f;
+				lifetime = 14f;
+				strokeFrom = 4f;
+			}});
+			smokeEffect = Fx.shootSmokeTitan;
+			hitColor = Pal.surge;
+			trailEffect = Fx.missileTrail;
+			trailInterval = 3f;
+			trailParam = 4f;
+			pierceCap = 2;
+			buildingDamageMultiplier = 0.5f;
+			fragOnHit = false;
+			lifetime = 80f;
+			width = height = 16f;
+			backColor = Pal.surge;
+			frontColor = Color.white;
+			shrinkX = shrinkY = 0f;
+			trailColor = Pal.surge;
+			trailLength = 12;
+			trailWidth = 2.2f;
+			despawnEffect = hitEffect = new ExplosionEffect() {{
+				waveColor = Pal.surge;
+				smokeColor = Color.gray;
+				sparkColor = Pal.sap;
+				waveStroke = 4f;
+				waveRad = 40f;
+			}};
+			despawnSound = Sounds.dullExplosion;
+			fragBullet = intervalBullet = new BasicBulletType(3f, 35) {{
+				width = 9f;
+				hitSize = 5f;
+				height = 15f;
+				pierce = true;
+				lifetime = 35f;
+				pierceBuilding = true;
+				hitColor = backColor = trailColor = Pal.surge;
+				frontColor = Color.white;
+				trailWidth = 2.1f;
+				trailLength = 5;
+				hitEffect = despawnEffect = new WaveEffect() {{
+					colorFrom = colorTo = Pal.surge;
+					sizeTo = 4f;
+					strokeFrom = 4f;
+					lifetime = 10f;
+				}};
+				buildingDamageMultiplier = 0.3f;
+				homingPower = 0.2f;
+			}};
+			bulletInterval = 3f;
+			intervalRandomSpread = 20f;
+			intervalBullets = 2;
+			intervalAngle = 180f;
+			intervalSpread = 300f;
+			fragBullets = 20;
+			fragVelocityMin = 0.5f;
+			fragVelocityMax = 1.5f;
+			fragLifeMin = 0.5f;
+		}};*/
 		Blocks.titan.armor = 13f;
 		Blocks.titan.researchCost = with(Items.thorium, 4000, Items.silicon, 3000, Items.tungsten, 2500);
 		Blocks.disperse.armor = 9f;

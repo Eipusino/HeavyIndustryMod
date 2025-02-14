@@ -11,9 +11,18 @@ import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.blocks.*;
 
-import static heavyindustry.util.Utils.*;
-
 public class Pipe extends MergingLiquidBlock implements Autotiler {
+	static final float rotatePad = 6;
+	static final float rotateHpad = 0.75f;
+	static final float[][] rotateOffsets = new float[][]{{0.75f, 0.75f}, {-0.75f, 0.75f}, {-0.75f, -0.75f}, {0.75f, -0.75f}};
+
+	static final byte[][] blendIndices = {
+			{0, 0}, {0, 0}, {0, 1}, {1, 3},
+			{0, 0}, {0, 0}, {1, 2}, {2, 3},
+			{0, 1}, {1, 0}, {0, 1}, {2, 0},
+			{1, 1}, {2, 1}, {2, 2}, {3, 0}
+	};
+
 	public TextureRegion[] bottomRegions;
 	public TextureRegion[][] regions;
 	public TextureRegion[][][] rotateRegions;

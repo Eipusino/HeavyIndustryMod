@@ -11,7 +11,6 @@ import mindustry.world.*;
 
 import static heavyindustry.util.Utils.*;
 
-@SuppressWarnings("unchecked")
 public class DrawPayloadFactory<E extends Building> extends DrawDirSpliceBlock<E> {
 	public TextureRegion topRegion, outRegion;
 
@@ -52,6 +51,7 @@ public class DrawPayloadFactory<E extends Building> extends DrawDirSpliceBlock<E
 		Draw.rect(topRegion, plan.drawx(), plan.drawy());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void draw(Building build) {
 		Draw.rect(build.block.region, build.x, build.y);

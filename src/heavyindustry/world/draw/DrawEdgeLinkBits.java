@@ -13,7 +13,6 @@ import mindustry.world.draw.*;
 
 import static mindustry.Vars.*;
 
-@SuppressWarnings("unchecked")
 public class DrawEdgeLinkBits<T extends Building> extends DrawBlock {
 	public static final byte[] EMP = new byte[]{0, 0, 0, 0};
 	public Func<T, byte[]> compLinked = e -> EMP;
@@ -32,6 +31,7 @@ public class DrawEdgeLinkBits<T extends Building> extends DrawBlock {
 	@Override
 	public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list) {}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void draw(Building build) {
 		float z = Draw.z();

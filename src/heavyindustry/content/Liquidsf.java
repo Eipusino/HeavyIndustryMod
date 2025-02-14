@@ -67,7 +67,7 @@ public final class Liquidsf {
 			canStayOn.add(Liquids.water);
 			coolant = false;
 		}};
-		originiumFluid = new ExtraCellLiquid("originium-fluid", Color.black) {{
+		originiumFluid = new MultiCellLiquid("originium-fluid", Color.black) {{
 			heatCapacity = 1.5f;
 			flammability = 0.2f;
 			explosiveness = 0.4f;

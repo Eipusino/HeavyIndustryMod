@@ -71,6 +71,8 @@ public final class HeavyIndustryMod extends Mod {
 		isPlugin = modJson != null && modJson.has("plugin") && modJson.isBoolean() && modJson.get("plugin").asBool();
 
 		LoadMod.addBlacklistedMods();
+
+		//try {Class.forName("heavyindustry.files.FileTree");} catch (Throwable e) {Log.err(e);}
 	}
 
 	public HeavyIndustryMod() {
@@ -165,7 +167,6 @@ public final class HeavyIndustryMod extends Mod {
 			Blocksf.load();
 			Weathersf.load();
 			Overrides.load();
-			OverridesKt.load();
 			Planetsf.load();
 			SectorPresetsf.load();
 			TechTreef.load();

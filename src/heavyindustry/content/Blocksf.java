@@ -3918,19 +3918,17 @@ public final class Blocksf {
 					var g = new ButtonGroup<>();
 					Table cont = new Table();
 					cont.defaults().size(55);
-					int i = 0;
-					for (; i < Utils.baseTeams.length; i++) {
-						Team team1 = Utils.baseTeams[i];
-						ImageButton button = cont.button(((TextureRegionDrawable) Tex.whiteui).tint(team1.color), Styles.clearTogglei, 35, () -> {
+					for (Team bt : Utils.baseTeams) {
+						ImageButton button = cont.button(((TextureRegionDrawable) Tex.whiteui).tint(bt.color), Styles.clearTogglei, 35, () -> {
 						}).group(g).get();
 						button.changed(() -> {
 							if (button.isChecked()) {
 								if (player.team() == team) {
-									configure(team1.id);
+									configure(bt.id);
 								} else deselect();
 							}
 						});
-						button.update(() -> button.setChecked(team == team1));
+						button.update(() -> button.setChecked(team == bt));
 					}
 					var pane = new ScrollPane(cont, Styles.smallPane);
 					pane.setScrollingDisabled(true, false);

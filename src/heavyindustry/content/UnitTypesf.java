@@ -1776,6 +1776,7 @@ public final class UnitTypesf {
 				layer = -1f;
 				outline = false;
 			}});
+			fogRadius = 44f;
 		}};
 		oracle = new UnitTypef("oracle") {{
 			erekir();
@@ -1846,8 +1847,8 @@ public final class UnitTypesf {
 						moves.add(new PartMove(PartProgress.reload.inv().mul(1.8f).inv().curve(j / 5f, 0.2f), 0f, 0f, 36f));
 					}});
 				}
-				bullet = new TrailFadeBulletType(7f, 360f) {{
-					lifetime = 60f;
+				bullet = new TrailFadeBulletType(10f, 360f) {{
+					lifetime = 45f;
 					trailLength = 90;
 					trailWidth = 3.6f;
 					tracers = 2;
@@ -1864,7 +1865,8 @@ public final class UnitTypesf {
 					homingDelay = 5f;
 					hitSound = Sounds.plasmaboom;
 					despawnShake = hitShake = 5f;
-					pierce = pierceArmor = pierceBuilding = true;
+					pierce = pierceArmor = true;
+					pierceCap = 2;
 					lightning = 3;
 					lightningLength = 6;
 					lightningLengthRand = 18;
@@ -1879,7 +1881,7 @@ public final class UnitTypesf {
 					fragLifeMin = 0.3f;
 					fragBullet = new BasicBulletType(5f, 70f) {{
 						pierceCap = 2;
-						pierceBuilding = true;
+						pierce = pierceBuilding = true;
 						homingPower = 0.09f;
 						homingRange = 150f;
 						lifetime = 60f;
@@ -1977,6 +1979,7 @@ public final class UnitTypesf {
 					damage = 96f;
 				}};
 			}});
+			fogRadius = 52f;
 		}};
 		havoc = new UnitTypef("havoc") {{
 			erekir();
@@ -2084,6 +2087,7 @@ public final class UnitTypesf {
 					}});
 				}};
 			}});
+			fogRadius = 56f;
 			setEnginesMirror(new UnitEngine(95f / 4f, -56f / 4, 5f, 330f), new UnitEngine(89f / 4, -95f / 4, 4f, 315f));
 		}};
 		//miner-erekir
@@ -2810,6 +2814,7 @@ public final class UnitTypesf {
 					}};
 				}});
 			}});
+			fogRadius = 72f;
 			hidden = true;
 		}};
 		thunder = new UnitTypef("thunder") {{
@@ -2988,6 +2993,7 @@ public final class UnitTypesf {
 				shieldArmor = 26f;
 			}});
 			drownTimeMultiplier = 26f;
+			fogRadius = 68f;
 			hidden = true;
 		}};
 		vast = new EnergyUnitType("vast") {{
@@ -3076,6 +3082,7 @@ public final class UnitTypesf {
 					Fxf.crossSpinBlast.at(unit.x, unit.y, unit.rotation, unit.team.color, unit);
 				}
 			});
+			fogRadius = 66f;
 			hidden = true;
 		}};
 	}

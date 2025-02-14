@@ -9,7 +9,7 @@ import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
 import heavyindustry.entities.abilities.*;
-import heavyindustry.entities.bullet.HailStoneBulletType.*;
+import heavyindustry.entities.bullet.*;
 import heavyindustry.graphics.*;
 import heavyindustry.graphics.Draws.*;
 import heavyindustry.graphics.Trails.*;
@@ -1083,7 +1083,7 @@ public final class Fxf {
 				Fill.circle(e.x + x, e.y + y + elevation, 12f);
 			})),
 			fellStone = new Effect(120f, e -> {
-				if (!(e.data instanceof HailStoneData data)) return;
+				if (!(e.data instanceof HailStoneBulletType.HailStoneData data)) return;
 
 				v7.trns(Mathf.randomSeed(e.id) * 360, data.fallTime / 2 + Mathf.randomSeed(e.id + 1) * data.fallTime);
 				float scl = Interp.bounceIn.apply(e.fout() - 0.3f);
@@ -1099,7 +1099,7 @@ public final class Fxf {
 				Draw.rect(data.region, x, y + (scl * data.fallTime / 2), rot);
 			}),
 			fellStoneAghanite = new Effect(120f, e -> {
-				if (!(e.data instanceof HailStoneData data)) return;
+				if (!(e.data instanceof HailStoneBulletType.HailStoneData data)) return;
 
 				rand.setSeed(e.id);
 				v7.trns(e.rotation + rand.range(30f), data.fallTime / 2f + rand.random(data.fallTime));
@@ -1116,7 +1116,7 @@ public final class Fxf {
 				Draw.rect(data.region, x, y + (scl * data.fallTime / 2f), rot);
 			}),
 			staticStone = new Effect(250f, e -> {
-				if (!(e.data instanceof HailStoneData data)) return;
+				if (!(e.data instanceof HailStoneBulletType.HailStoneData data)) return;
 
 				Draw.z(Layer.power + 0.1f);
 				Draw.color(e.color);

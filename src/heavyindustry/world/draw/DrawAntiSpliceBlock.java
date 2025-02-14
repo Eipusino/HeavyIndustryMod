@@ -14,7 +14,6 @@ import mindustry.world.draw.*;
 
 import static heavyindustry.util.Utils.*;
 
-@SuppressWarnings("unchecked")
 public class DrawAntiSpliceBlock<E extends Building> extends DrawBlock {
 	protected static final String[] splices = {"right", "right-top", "top", "left-top", "left", "left-bot", "bot", "right-bot"};
 
@@ -81,6 +80,7 @@ public class DrawAntiSpliceBlock<E extends Building> extends DrawBlock {
 		return new TextureRegion(texture);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void draw(Building build) {
 		float z = Draw.z();

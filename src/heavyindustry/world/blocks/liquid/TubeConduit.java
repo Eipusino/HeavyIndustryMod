@@ -10,6 +10,13 @@ import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 
 public class TubeConduit extends BeltConduit {
+	static final byte[][] ductArrows = {
+			{1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1},
+			{1, 1, 1, 2, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+			{1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 0, 1, 1, 1},
+			{1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 2, 1, 1, 1}
+	};
+
 	public TextureRegion[][] regions;
 
 	public TubeConduit(String name) {

@@ -35,7 +35,7 @@ public final class FileTree {
 			}
 		} else {
 			if (files.containsKey(fi.name())) {
-				Log.warn("A file with the same name has appeared: " + fi.name() + " conflicts with " + files.get(fi.name()));
+				Log.warn("included files:" + files.get(fi.name() + ", not included files:" + fi.path()));
 			} else {
 				files.put(fi.name(), fi);
 			}

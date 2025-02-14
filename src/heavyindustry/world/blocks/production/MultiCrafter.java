@@ -703,7 +703,7 @@ public class MultiCrafter extends Block {
 		public ObjectMap<Item, Boolean> itemFilter = new ObjectMap<>();
 		public ObjectMap<Liquid, Boolean> liquidFilter = new ObjectMap<>();
 
-		protected MultiCrafter owner = null;
+		public MultiCrafter owner = null;
 
 		/** List for building-up consumption before init(). */
 		protected Seq<Consume> consumeBuilder = new Seq<>();
@@ -752,10 +752,6 @@ public class MultiCrafter extends Block {
 					liquid::barColor,
 					() -> build.liquids.get(liquid) / owner.liquidCapacity
 			));
-		}
-
-		public MultiCrafter owner() {
-			return owner;
 		}
 
 		@SuppressWarnings("unchecked")

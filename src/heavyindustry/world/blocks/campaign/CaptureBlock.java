@@ -6,6 +6,7 @@ import arc.math.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.ctype.*;
+import mindustry.entities.units.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.world.*;
@@ -33,6 +34,11 @@ public class CaptureBlock extends Block {
 		drawer.load(this);
 	}
 
+	@Override
+	public void drawPlanConfigTop(BuildPlan plan, Eachable<BuildPlan> list) {
+		drawer.drawPlan(this, plan, list);
+	}
+
 	public class CaptureBuild extends Building {
 		protected final Seq<Player> players = new Seq<>();
 		protected final Color teamColor = team().color.cpy();
@@ -41,7 +47,6 @@ public class CaptureBlock extends Block {
 
 		@Override
 		public void updateTile() {
-
 			if (playerCheck()) {
 				warmup = Mathf.approachDelta(warmup, 1, warmupSpeed);
 				progress += capturingFrac * warmup * Time.delta;
@@ -58,13 +63,17 @@ public class CaptureBlock extends Block {
 			totalProgress += Time.delta;
 
 			if (progress >= captureTime) {
-				if (unlocks != null) unlocks.each(UnlockableContent::unlock);
+				if (unlocks != null) {
+					for (UnlockableContent unlock : unlocks) {
+						unlock.unlock();
+					}
+				}
 				kill();
 			}
 		}
 
 		public boolean playerCheck() {
-			if (!(net.active())) {
+			if (!net.active()) {
 				capturingFrac = 1;
 				return player.unit().isEnemy() && player.unit().within(this, captureRadius);
 			}
@@ -80,7 +89,7 @@ public class CaptureBlock extends Block {
 				capturing += unit != null && unit.within(this, captureRadius) ? 1 : 0;
 			}
 
-			capturingFrac = (float) players.size / capturing;
+			capturingFrac = players.size / capturing;
 
 			return capturing > 0;
 		}

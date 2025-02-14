@@ -63,7 +63,6 @@ import java.lang.reflect.*;
 import static heavyindustry.util.Collect.*;
 import static mindustry.Vars.*;
 
-@SuppressWarnings({"unchecked", "rawtypes"})
 public class ExtraContentParser {
 	private static final boolean ignoreUnknownFields = true;
 	private static final ContentType[] typesToSearch = {ContentType.block, ContentType.item, ContentType.unit, ContentType.liquid, ContentType.planet};
@@ -406,6 +405,7 @@ public class ExtraContentParser {
 			return t;
 		}
 
+		@SuppressWarnings({"unchecked", "rawtypes"})
 		private <T> T internalRead(Class<T> type, Class elementType, JsonValue jsonData, Class keyType) {
 			if (type != null) {
 				if (classParsers.containsKey(type)) {
@@ -832,6 +832,7 @@ public class ExtraContentParser {
 			}
 	);
 
+	@SuppressWarnings("unchecked")
 	private <T extends Content> T find(ContentType type, String name) {
 		Content c = Vars.content.getByName(type, name);
 		if (c == null) c = Vars.content.getByName(type, currentMod.name + "-" + name);
@@ -839,6 +840,7 @@ public class ExtraContentParser {
 		return (T) c;
 	}
 
+	@SuppressWarnings("unchecked")
 	private <T extends Content> ExtraTypeParser<T> parser(ContentType type, Func<String, T> constructor) {
 		return (mod, name, value) -> {
 			T item;
@@ -1010,6 +1012,7 @@ public class ExtraContentParser {
 		return first != null ? first : Vars.content.getByName(type, currentMod.name + "-" + name);
 	}
 
+	@SuppressWarnings("unchecked")
 	private <T extends MappableContent> T locateAny(String name) {
 		for (ContentType t : ContentType.all) {
 			var out = locate(t, name);
@@ -1164,6 +1167,7 @@ public class ExtraContentParser {
 		readFields(object, jsonMap);
 	}
 
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	void readFields(Object object, JsonValue jsonMap) {
 		JsonValue research = jsonMap.remove("research");
 
@@ -1301,6 +1305,7 @@ public class ExtraContentParser {
 							}
 							//reparent the node
 							node.parent = parent;
+							node.planet = parent.planet;
 						}
 					} else {
 						Log.warn(unlock.name + " is not a root node, and does not have a `parent: ` property. Ignoring.");
@@ -1316,6 +1321,7 @@ public class ExtraContentParser {
 	}
 
 	/** Tries to resolve a class from the class type map. */
+	@SuppressWarnings("unchecked")
 	<T> Class<T> resolve(String base, Class<T> def) {
 		//no base class specified
 		if ((base == null || base.isEmpty()) && def != null) return def;

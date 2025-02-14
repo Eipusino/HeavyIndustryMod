@@ -11,7 +11,6 @@ import mindustry.graphics.*;
 import mindustry.world.*;
 import mindustry.world.draw.*;
 
-@SuppressWarnings("unchecked")
 public class DrawRegionDynamic<E extends Building> extends DrawBlock {
 	public Floatf<E> rotation = e -> 0;
 	public Floatf<E> alpha = e -> 1;
@@ -35,6 +34,7 @@ public class DrawRegionDynamic<E extends Building> extends DrawBlock {
 
 	public DrawRegionDynamic() {}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void draw(Building build) {
 		E entity = (E) build;

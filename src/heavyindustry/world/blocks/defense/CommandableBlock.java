@@ -32,12 +32,14 @@ import static mindustry.Vars.*;
  */
 public abstract class CommandableBlock extends Block {
 	protected static final Seq<CommandableBuild> participantsTmp = new Seq<>();
+
 	public DrawBlock drawer = new DrawDefault();
 	public float warmupSpeed = 0.02f;
 	public float warmupFallSpeed = 0.0075f;
 	public float range;
 	public float reloadTime = 60;
 	public float configureChargeTime = 60;
+
 	protected int commandPos = -1;
 
 	public CommandableBlock(String name) {
@@ -144,13 +146,9 @@ public abstract class CommandableBlock extends Block {
 			if (efficiency > 0) {
 				warmup = Mathf.lerpDelta(warmup, 1, warmupSpeed);
 				totalProgress += warmup * edelta();
-			} else warmup = Mathf.lerpDelta(warmup, 0, warmupFallSpeed);
-		}
-
-		public void updateShoot() {
-		}
-
-		public void updateControl() {
+			} else {
+				warmup = Mathf.lerpDelta(warmup, 0, warmupFallSpeed);
+			}
 		}
 
 		@Override
@@ -215,7 +213,6 @@ public abstract class CommandableBlock extends Block {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public static class CommandEntity implements Drawc, Timedc, Teamc {
 		public Cons<Teamc> act;
 
@@ -294,11 +291,13 @@ public abstract class CommandableBlock extends Block {
 		@Override
 		public void afterAllRead() {}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public <T extends Entityc> T self() {
 			return (T) this;
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public <T> T as() {
 			return (T) this;

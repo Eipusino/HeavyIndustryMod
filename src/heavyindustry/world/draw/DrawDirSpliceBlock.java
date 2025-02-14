@@ -14,7 +14,6 @@ import mindustry.world.draw.*;
 
 import static heavyindustry.util.Utils.*;
 
-@SuppressWarnings("unchecked")
 public class DrawDirSpliceBlock<E extends Building> extends DrawBlock {
 	public TextureRegion[] regions = new TextureRegion[16];
 	public Intf<E> spliceBits = e -> 0;
@@ -76,6 +75,7 @@ public class DrawDirSpliceBlock<E extends Building> extends DrawBlock {
 		return new TextureRegion(tex);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void draw(Building build) {
 		float z = Draw.z();
