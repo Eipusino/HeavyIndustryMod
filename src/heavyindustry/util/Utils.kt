@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package heavyindustry.util
 
 import arc.func.*
@@ -113,7 +111,7 @@ fun research(children: UnlockableContent?, content: UnlockableContent?) = resear
  * @param name Standard class names, such as `heavyindustry.util.UtilsKt`
  * @return js native java class
  */
-fun getClass(name: String): NativeJavaClass = NativeJavaClass(Vars.mods.getScripts().scope, URLClassLoader(arrayOf(Varsf.internalTree.file.file().toURI().toURL()), Vars.mods.mainLoader()).loadClass(name))
+fun getClass(name: String): NativeJavaClass = NativeJavaClass(Vars.mods.getScripts().scope, URLClassLoader(arrayOf(HVars.internalTree.file.file().toURI().toURL()), Vars.mods.mainLoader()).loadClass(name))
 
 fun random(to: Float): Float = random(0f, to)
 

@@ -36,7 +36,7 @@ import mindustry.type.ammo.*;
 import mindustry.type.weapons.*;
 import mindustry.world.meta.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 import static mindustry.Vars.*;
 
 /**
@@ -44,7 +44,7 @@ import static mindustry.Vars.*;
  *
  * @author Eipusino
  */
-public final class UnitTypesf {
+public final class HUnitTypes {
 	public static UnitTypef
 			//vanilla-tank
 			vanguard, striker, counterattack, crush, destruction, purgatory,
@@ -65,7 +65,7 @@ public final class UnitTypesf {
 			vast;
 
 	/** Don't let anyone instantiate this class. */
-	private UnitTypesf() {}
+	private HUnitTypes() {}
 
 	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
 	public static void load() {
@@ -87,7 +87,7 @@ public final class UnitTypesf {
 			faceTarget = false;
 			abilities.add(new StatusFieldAbility(StatusEffects.overclock, 250f, 300f, 30f) {{
 				applyEffect = Fx.none;
-				activeEffect = Fxf.circle;
+				activeEffect = HFx.circle;
 			}});
 			weapons.add(new Weapon(name("vanguard-weapon")) {{
 				reload = 7.6f;
@@ -213,7 +213,7 @@ public final class UnitTypesf {
 			targetFlags = new BlockFlag[]{BlockFlag.repair, BlockFlag.turret};
 			abilities.add(new StatusFieldAbility(StatusEffects.overclock, 1200f, 1200f, 45f) {{
 				applyEffect = Fx.none;
-				activeEffect = Fxf.circle;
+				activeEffect = HFx.circle;
 			}});
 			weapons.add(new Weapon(name("crush-weapon")) {{
 				reload = 90f;
@@ -771,11 +771,11 @@ public final class UnitTypesf {
 			shadowElevation = 0.1f;
 			groundLayer = 74f;
 			itemCapacity = 200;
-			ammoType = new ItemAmmoType(Itemsf.uranium);
+			ammoType = new ItemAmmoType(HItems.uranium);
 			abilities.add(new TerritoryFieldAbility(20 * 8f, 90f, 210f) {{
 				open = true;
 			}});
-			immunities = ObjectSet.with(StatusEffectsf.territoryFieldSuppress);
+			immunities = ObjectSet.with(HStatusEffects.territoryFieldSuppress);
 			weapons.add(new LimitedAngleWeapon(name("suzerain-mount")) {{
 				x = 20.75f;
 				y = 10f;
@@ -797,7 +797,7 @@ public final class UnitTypesf {
 					homingRange = 90f;
 					weaveMag = 2f;
 					weaveScale = 8f;
-					hitEffect = despawnEffect = Fxf.hitExplosionLarge;
+					hitEffect = despawnEffect = HFx.hitExplosionLarge;
 					status = StatusEffects.blasted;
 					statusDuration = 60f;
 					fragBullets = 5;
@@ -809,7 +809,7 @@ public final class UnitTypesf {
 						width = 12f;
 						toColor = Pal.missileYellow;
 						hitColor = Pal.bulletYellow;
-						hitEffect = Fxf.coloredHitSmall;
+						hitEffect = HFx.coloredHitSmall;
 						serrationLenScl = 5f;
 						serrationSpaceOffset = 45f;
 						serrationSpacing = 5f;
@@ -1059,7 +1059,7 @@ public final class UnitTypesf {
 				rotateSpeed = 1.5f;
 				recoil = 5f;
 				shootSound = Sounds.laserbeam;
-				bullet = Bulletsf.continuousSapLaser;
+				bullet = HBullets.continuousSapLaser;
 			}}, new Weapon(name("cancer-railgun")) {{
 				x = 14.5f;
 				y = -10f;
@@ -1080,7 +1080,7 @@ public final class UnitTypesf {
 					splashDamage = 90f;
 					hitEffect = Fx.sapExplosion;
 					ammoMultiplier = 4f;
-					trailEffect = Fxf.coloredRailgunSmallTrail;
+					trailEffect = HFx.coloredRailgunSmallTrail;
 					lightning = 3;
 					lightningLength = 20;
 					smokeEffect = Fx.shootBigSmoke2;
@@ -1095,7 +1095,7 @@ public final class UnitTypesf {
 					statusDuration = 60f * 10;
 					fragLifeMin = 0.3f;
 					fragBullets = 4;
-					fragBullet = Bulletsf.sapArtilleryFrag;
+					fragBullet = HBullets.sapArtilleryFrag;
 				}};
 			}});
 		}};
@@ -1114,7 +1114,7 @@ public final class UnitTypesf {
 			hitSize = 62f;
 			armor = 45f;
 			targetFlags = new BlockFlag[]{BlockFlag.reactor, BlockFlag.battery, BlockFlag.core, null};
-			ammoType = new ItemAmmoType(Itemsf.uranium);
+			ammoType = new ItemAmmoType(HItems.uranium);
 			itemCapacity = 460;
 			abilities.add(new EnergyFieldAbility(220f, 90f, 192f) {{
 				color = Color.valueOf("ffa665");
@@ -1269,11 +1269,11 @@ public final class UnitTypesf {
 			rotateSpeed = 0.9f;
 			health = 63000f;
 			itemCapacity = 350;
-			ammoType = new ItemAmmoType(Itemsf.uranium);
+			ammoType = new ItemAmmoType(HItems.uranium);
 			abilities.add(new ShieldRegenFieldAbility(100f, 1500f, 60f * 4, 200f), new TerritoryFieldAbility(220, -1, 150) {{
 				active = false;
 			}});
-			immunities = ObjectSet.with(StatusEffectsf.territoryFieldSuppress);
+			immunities = ObjectSet.with(HStatusEffects.territoryFieldSuppress);
 			weapons.addAll(new LimitedAngleWeapon(name("mosasaur-front-cannon")) {{
 				layerOffset = -0.01f;
 				x = 22f;
@@ -1344,7 +1344,7 @@ public final class UnitTypesf {
 				xRand = 2.25f; //TODO use something else instead? -Anuke
 				shootSound = Sounds.missile;
 				angleCone = 135f;
-				bullet = Bulletsf.basicMissile;
+				bullet = HBullets.basicMissile;
 			}}, new PointDefenceMultiBarrelWeapon(name("mosasaur-flak-turret")) {{
 				x = 23f;
 				y = 15f;
@@ -1406,7 +1406,7 @@ public final class UnitTypesf {
 					fragRandomSpread = 20f;
 					fragLifeMin = 0.4f;
 					fragLifeMax = 0.7f;
-					trailEffect = Fxf.coloredArrowTrail;
+					trailEffect = HFx.coloredArrowTrail;
 				}};
 			}});
 		}};
@@ -1568,7 +1568,7 @@ public final class UnitTypesf {
 						super.hitEntity(b, entity, health);
 						if (entity instanceof Unit unit) {
 							if (unit.shield > 0) {
-								Fxf.hitOut.at(unit.x, unit.y, b.rotation(), unit);
+								HFx.hitOut.at(unit.x, unit.y, b.rotation(), unit);
 								unit.health -= damage;
 							}
 						}
@@ -1579,7 +1579,7 @@ public final class UnitTypesf {
 						super.hitTile(b, build, x, y, initialHealth, direct);
 						if (build == null || build.dead) return;
 						if (build.timeScale() > 1) {
-							Fxf.hitOut.at(build.x, build.y, b.rotation(), build);
+							HFx.hitOut.at(build.x, build.y, b.rotation(), build);
 							build.health -= damage;
 						}
 						build.applySlowdown(0.6f, 30);
@@ -1871,10 +1871,10 @@ public final class UnitTypesf {
 					lightningLength = 6;
 					lightningLengthRand = 18;
 					lightningDamage = 40f;
-					smokeEffect = WrapperEffect.wrap(Fxf.hitSparkHuge, hitColor);
-					shootEffect = Fxf.instShoot(backColor, frontColor);
-					despawnEffect = Fxf.lightningHitLarge;
-					hitEffect = new MultiEffect(Fxf.hitSpark(backColor, 75f, 24, 90f, 2f, 12f), Fxf.square45_6_45, Fxf.lineCircleOut(backColor, 18f, 20, 2), Fxf.sharpBlast(backColor, frontColor, 120f, 40f));
+					smokeEffect = WrapperEffect.wrap(HFx.hitSparkHuge, hitColor);
+					shootEffect = HFx.instShoot(backColor, frontColor);
+					despawnEffect = HFx.lightningHitLarge;
+					hitEffect = new MultiEffect(HFx.hitSpark(backColor, 75f, 24, 90f, 2f, 12f), HFx.square45_6_45, HFx.lineCircleOut(backColor, 18f, 20, 2), HFx.sharpBlast(backColor, frontColor, 120f, 40f));
 					fragBullets = 15;
 					fragVelocityMin = 0.5f;
 					fragRandomSpread = 130f;
@@ -2223,7 +2223,7 @@ public final class UnitTypesf {
 			itemOffsetY = 15f;
 			lightRadius = 60f;
 			fogRadius = 30f;
-			deathExplosionEffect = new MultiEffect(Fxf.explodeImpWave);
+			deathExplosionEffect = new MultiEffect(HFx.explodeImpWave);
 			hidden = true;
 		}};
 		pioneer = new UnitTypef("pioneer") {{
@@ -2307,14 +2307,14 @@ public final class UnitTypesf {
 					width = height = 8f;
 					trailChance = 0.2f;
 					trailParam = 1.75f;
-					trailEffect = Fxf.trailToGray;
+					trailEffect = HFx.trailToGray;
 					lifetime = 90f;
 					collidesAir = false;
 					hitSound = Sounds.explosion;
-					hitEffect = Fxf.square45_4_45;
-					shootEffect = Fxf.circleSplash;
+					hitEffect = HFx.square45_4_45;
+					shootEffect = HFx.circleSplash;
 					smokeEffect = Fx.shootBigSmoke;
-					despawnEffect = Fxf.crossBlast(hitColor, 50f);
+					despawnEffect = HFx.crossBlast(hitColor, 50f);
 				}};
 				shootSound = Soundsf.blaster;
 			}});
@@ -2368,7 +2368,7 @@ public final class UnitTypesf {
 				bullet = new FlameBulletType(Pal.techBlue, Pal.techBlue.cpy().lerp(Color.gray, 0.3f), Color.gray, range + 8f, 8, 72, 22f) {{
 					damage = 225f;
 					collidesAir = true;
-					status = StatusEffectsf.ultFireBurn;
+					status = HStatusEffects.ultFireBurn;
 					statusDuration = 60f * 6;
 					ammoMultiplier = 4f;
 				}
@@ -2483,7 +2483,7 @@ public final class UnitTypesf {
 					public void hitEntity(Bullet b, Hitboxc entity, float health) {
 						if (entity instanceof Unit unit && unit.type != null) {
 							if (unit.shield > 0) {
-								Fxf.hitOut.at(unit.x, unit.y, b.rotation(), unit);
+								HFx.hitOut.at(unit.x, unit.y, b.rotation(), unit);
 								unit.health -= damage;
 							}
 							unit.damagePierce(b.damage * (1 + Math.max(unit.type.armor, 0) / 10f));
@@ -2661,16 +2661,16 @@ public final class UnitTypesf {
 					lifetime = 95f;
 					width = 22f;
 					height = 35f;
-					trailEffect = Fxf.trailToGray;
+					trailEffect = HFx.trailToGray;
 					trailParam = 3f;
 					trailChance = 0.35f;
 					hitShake = 7f;
 					hitSound = Sounds.explosion;
-					hitEffect = Fxf.hitSpark(backColor, 75f, 24, 95f, 2.8f, 16);
-					smokeEffect = new MultiEffect(Fxf.hugeSmokeGray, Fxf.circleSplash(backColor, 60f, 8, 60f, 6));
-					shootEffect = Fxf.hitSpark(backColor, 30f, 15, 35f, 1.7f, 8);
-					despawnEffect = Fxf.blast(backColor, 60);
-					fragBullet = Bulletsf.basicSkyFrag;
+					hitEffect = HFx.hitSpark(backColor, 75f, 24, 95f, 2.8f, 16);
+					smokeEffect = new MultiEffect(HFx.hugeSmokeGray, HFx.circleSplash(backColor, 60f, 8, 60f, 6));
+					shootEffect = HFx.hitSpark(backColor, 30f, 15, 35f, 1.7f, 8);
+					despawnEffect = HFx.blast(backColor, 60);
+					fragBullet = HBullets.basicSkyFrag;
 					fragBullets = 5;
 					fragLifeMax = 0.6f;
 					fragLifeMin = 0.2f;
@@ -2724,7 +2724,7 @@ public final class UnitTypesf {
 				}};
 				inaccuracy = 5f;
 				ejectEffect = Fx.none;
-				bullet = Bulletsf.annMissile;
+				bullet = HBullets.annMissile;
 				shootSound = Soundsf.launch;
 			}}, new Weapon() {{
 				x = 26f;
@@ -2759,12 +2759,12 @@ public final class UnitTypesf {
 					splashDamageRadius = 16f;
 					splashDamage = damage * 0.75f;
 					backColor = lightColor = lightningColor = trailColor = hitColor = frontColor = Pal.techBlue;
-					hitEffect = Fxf.circleSplash(backColor, 40f, 4, 40f, 6f);
-					despawnEffect = Fxf.hitSparkLarge;
-					shootEffect = Fxf.shootCircleSmall(backColor);
+					hitEffect = HFx.circleSplash(backColor, 40f, 4, 40f, 6f);
+					despawnEffect = HFx.hitSparkLarge;
+					shootEffect = HFx.shootCircleSmall(backColor);
 					smokeEffect = Fx.shootBigSmoke2;
 					trailChance = 0.6f;
-					trailEffect = Fxf.trailToGray;
+					trailEffect = HFx.trailToGray;
 					hitShake = 3f;
 					hitSound = Sounds.plasmaboom;
 				}};
@@ -2779,8 +2779,8 @@ public final class UnitTypesf {
 					targetInterval = 6f;
 					targetSwitchInterval = 6f;
 					bullet = new BulletType() {{
-						shootEffect = Fxf.shootLineSmall(color);
-						hitEffect = Fxf.lightningHitSmall;
+						shootEffect = HFx.shootLineSmall(color);
+						hitEffect = HFx.lightningHitSmall;
 						hitColor = color;
 						maxRange = 240f;
 						damage = 150f;
@@ -2868,8 +2868,8 @@ public final class UnitTypesf {
 					pierceCap = 5;
 					lightningColor = backColor = trailColor = hitColor = lightColor = Palf.ancient;
 					lightRadius = 70f;
-					shootEffect = new WrapperEffect(Fxf.shootLine(33f, 32), backColor);
-					smokeEffect = Fxf.hugeSmokeLong;
+					shootEffect = new WrapperEffect(HFx.shootLine(33f, 32), backColor);
+					smokeEffect = HFx.hugeSmokeLong;
 					lifetime = 40f;
 					frontColor = Color.white;
 					lightning = 2;
@@ -2894,8 +2894,8 @@ public final class UnitTypesf {
 							Drawn.tri(e.x, e.y, 3f, 30f * Mathf.curve(e.fin(), 0, 0.1f) * e.fout(0.9f), e.rotation + 145f * s);
 						}
 					});
-					hitEffect = new MultiEffect(Fxf.square45_6_45, Fxf.hitSparkLarge);
-					despawnEffect = Fxf.lightningHitLarge;
+					hitEffect = new MultiEffect(HFx.square45_6_45, HFx.hitSparkLarge);
+					despawnEffect = HFx.lightningHitLarge;
 					fragBullet = new EdgeFragBulletType() {{
 						hitColor = trailColor = Palf.ancient;
 					}};
@@ -2953,9 +2953,9 @@ public final class UnitTypesf {
 					pierce = pierceArmor = true;
 					pierceCap = 3;
 					smokeEffect = Fx.shootSmallSmoke;
-					shootEffect = Fxf.shootCircleSmall(backColor);
-					despawnEffect = Fxf.square45_4_45;
-					hitEffect = Fxf.hitSpark;
+					shootEffect = HFx.shootCircleSmall(backColor);
+					despawnEffect = HFx.square45_4_45;
+					hitEffect = HFx.hitSpark;
 					hittable = false;
 				}
 					public final float percent = 0.008f;
@@ -3030,7 +3030,7 @@ public final class UnitTypesf {
 				x = y = shootX = shootY = 0;
 				shootCone = 360;
 				shootSound = Soundsf.blaster;
-				bullet = Bulletsf.vastBulletAccel;
+				bullet = HBullets.vastBulletAccel;
 				shoot = new ShootPattern() {{
 					shots = 15;
 					shotDelay = 3f;
@@ -3056,7 +3056,7 @@ public final class UnitTypesf {
 					spread = 2f;
 					shotDelay = 25;
 				}});
-				bullet = Bulletsf.vastBulletLightningBall;
+				bullet = HBullets.vastBulletLightningBall;
 			}}, new Weapon() {{
 				shootCone = 30f;
 				predictTarget = false;
@@ -3074,12 +3074,12 @@ public final class UnitTypesf {
 				}};
 				shake = 13f;
 				shootSound = Sounds.none;
-				bullet = Bulletsf.vastBulletStrafeLaser;
+				bullet = HBullets.vastBulletStrafeLaser;
 			}
 				@Override
 				protected void shoot(Unit unit, WeaponMount mount, float shootX, float shootY, float rotation) {
 					super.shoot(unit, mount, shootX, shootY, rotation);
-					Fxf.crossSpinBlast.at(unit.x, unit.y, unit.rotation, unit.team.color, unit);
+					HFx.crossSpinBlast.at(unit.x, unit.y, unit.rotation, unit.team.color, unit);
 				}
 			});
 			fogRadius = 66f;

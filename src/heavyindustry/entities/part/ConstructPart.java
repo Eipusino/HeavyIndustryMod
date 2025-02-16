@@ -15,7 +15,7 @@ import mindustry.graphics.*;
 public class ConstructPart extends DrawPart {
 	/** Appended to unit/weapon/block name and drawn. */
 	public String suffix;
-	/** Overrides suffix if set. */
+	/** HOverrides suffix if set. */
 	public @Nullable String name;
 
 	/** Construction progress. */

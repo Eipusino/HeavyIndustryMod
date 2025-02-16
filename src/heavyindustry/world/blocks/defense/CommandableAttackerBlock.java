@@ -139,7 +139,7 @@ public class CommandableAttackerBlock extends CommandableBlock {
 			target = Point2.pack(World.toTile(pos.x), World.toTile(pos.y));
 			initiateConfigure = true;
 
-			Fxf.attackWarningPos.at(lastConfirmedTarget.x, lastConfirmedTarget.y, configureChargeTime, team.color, tile);
+			HFx.attackWarningPos.at(lastConfirmedTarget.x, lastConfirmedTarget.y, configureChargeTime, team.color, tile);
 		}
 
 		/**
@@ -196,7 +196,7 @@ public class CommandableAttackerBlock extends CommandableBlock {
 			if (!headless && participantsTmp.any()) {
 				if (team != player.team())
 					UIUtils.showToast(Icon.warning, "[#ff7b69]Caution: []Attack " + (int) (pos.x / 8) + ", " + (int) (pos.y / 8), Soundsf.alert2);
-				Fxf.attackWarningRange.at(pos.x, pos.y, 80, team.color);
+				HFx.attackWarningRange.at(pos.x, pos.y, 80, team.color);
 			}
 		}
 

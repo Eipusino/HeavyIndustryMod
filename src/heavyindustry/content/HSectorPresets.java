@@ -9,7 +9,7 @@ import mindustry.type.*;
  *
  * @author Eipusino
  */
-public final class SectorPresetsf {
+public final class HSectorPresets {
 	public static SectorPreset
 			//serpulo
 			volcanicArchipelago, ironBridgeCoast, moltenRiftValley, frozenPlateau
@@ -17,7 +17,7 @@ public final class SectorPresetsf {
 			;
 
 	/** Don't let anyone instantiate this class. */
-	private SectorPresetsf() {}
+	private HSectorPresets() {}
 
 	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
 	public static void load() {

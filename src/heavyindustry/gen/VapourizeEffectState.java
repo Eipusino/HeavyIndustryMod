@@ -49,7 +49,7 @@ public class VapourizeEffectState extends EffectState {
 			Tmp.v1.trns(Angles.angle(x, y, temp.x(), temp.y()) + 180f, 65f + Mathf.range(0.3f));
 			Tmp.v1.add(parent);
 			Tmp.v2.trns(Mathf.random(360f), Mathf.random(hitSize / 1.25f));
-			Fxf.vaporation.at(parent.x(), parent.y(), 0f, new Position[]{parent, Tmp.v1.cpy(), Tmp.v2.cpy()});
+			HFx.vaporation.at(parent.x(), parent.y(), 0f, new Position[]{parent, Tmp.v1.cpy(), Tmp.v2.cpy()});
 		}
 		super.update();
 	}

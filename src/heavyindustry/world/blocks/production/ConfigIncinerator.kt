@@ -78,8 +78,8 @@ open class ConfigIncinerator(name: String) : Incinerator(name) {
 		}
 
 		override fun buildConfiguration(table: Table) {
-			table.button(TextureRegionDrawable(choice[eq(consItem, 1, 2)]), HIStyles.clearToggle) { switchItem() }.size(40f).tooltip("switch mode")
-			table.button(TextureRegionDrawable(choice[eq(consLiquid, 3, 4)]), HIStyles.clearToggle) { switchLiquid() }.size(40f).tooltip("switch mode")
+			table.button(TextureRegionDrawable(choice[eq(consItem, 1, 2)]), HStyles.clearToggle) { switchItem() }.size(40f).tooltip("switch mode")
+			table.button(TextureRegionDrawable(choice[eq(consLiquid, 3, 4)]), HStyles.clearToggle) { switchLiquid() }.size(40f).tooltip("switch mode")
 		}
 
 		override fun config(): Int {

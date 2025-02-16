@@ -1,7 +1,8 @@
 package heavyindustry.struct;
 
+import arc.func.*;
+
 import java.util.*;
-import java.util.function.*;
 
 /**
  * An ordered and reconfigurable set based on {@link TreeSet}, adding elements to this set will insert them into positions of appropriate size.
@@ -60,13 +61,13 @@ public class TreeSeq<T> implements Iterable<T> {
 		return size;
 	}
 
-	public boolean removeIf(Function<T, Boolean> boolf) {
+	public boolean removeIf(Func<T, Boolean> boolf) {
 		boolean test = false;
 		TreeItr itr = iterator();
 		T item;
 		while (itr.hasNext()) {
 			item = itr.next();
-			if (boolf.apply(item)) {
+			if (boolf.get(item)) {
 				itr.remove();
 				size--;
 				test = true;

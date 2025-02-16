@@ -3,7 +3,7 @@ package heavyindustry.gen;
 import arc.*;
 import arc.scene.style.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 
 public final class Iconf {
 	public static Drawable

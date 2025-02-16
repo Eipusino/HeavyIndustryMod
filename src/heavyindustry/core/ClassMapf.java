@@ -110,7 +110,7 @@ final class ClassMapf {
 		classes.put("PartBow", PartBow.class);
 		classes.put("RunningLight", RunningLight.class);
 		classes.put("ArcCharge", ArcCharge.class);
-		classes.put("HIDrawPart", HIPartProgress.class);
+		classes.put("HIDrawPart", HPartProgress.class);
 		classes.put("ConstructPart", ConstructPart.class);
 		classes.put("CustomPart", CustomPart.class);
 		classes.put("RangeCirclePart", RangeCirclePart.class);

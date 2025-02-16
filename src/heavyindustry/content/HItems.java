@@ -10,7 +10,7 @@ import mindustry.type.*;
  *
  * @author Eipusino
  */
-public final class Itemsf {
+public final class HItems {
 	public static Item
 			stone, salt, rareEarth,
 			nanoCore,
@@ -18,7 +18,7 @@ public final class Itemsf {
 			uranium, chromium, heavyAlloy;
 
 	/** Don't let anyone instantiate this class. */
-	private Itemsf() {}
+	private HItems() {}
 
 	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
 	public static void load() {

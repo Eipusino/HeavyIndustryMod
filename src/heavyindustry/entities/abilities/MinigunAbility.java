@@ -32,7 +32,7 @@ public class MinigunAbility extends Ability {
 				unit.damage(heatDamage);
 				unit.apply(StatusEffects.burning, 100);
 				dr = 0;
-				Fxf.glowParticle.at(unit.x, unit.y);
+				HFx.glowParticle.at(unit.x, unit.y);
 			} else {
 				dr += 1;
 			}

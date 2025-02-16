@@ -13,23 +13,23 @@ import mindustry.type.*;
 import mindustry.type.weather.*;
 import mindustry.world.meta.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 
 /**
  * Defines the {@linkplain Weather weather} this mod offers.
  *
  * @author Eipusino
  */
-public final class Weathersf {
+public final class HWeathers {
 	public static Weather wind, blizzard, hailStone, stoneStorm;
 
 	/** Don't let anyone instantiate this class. */
-	private Weathersf() {}
+	private HWeathers() {}
 
 	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
 	public static void load() {
 		wind = new EffectWeather("wind") {{
-			weatherFx = Fxf.windTail;
+			weatherFx = HFx.windTail;
 			particleRegion = "particle";
 			sizeMax = 5f;
 			sizeMin = 1f;
@@ -72,31 +72,31 @@ public final class Weathersf {
 						hitEffect = Fx.explosion.layer(Layer.power);
 						hitSound = Soundsf.bigHailstoneHit;
 						hitSoundVolume = 0.2f;
-						despawnEffect = Fxf.staticStone;
+						despawnEffect = HFx.staticStone;
 						splashDamage = 95f;
 						splashDamageRadius = 40f;
 						canCollideFalling = pierce = true;
 						fallingDamage = 120f;
 						fallingRadius = 30f;
 						minDistanceFallingCollide = 15f;
-						hitFallingEffect = Fxf.bigExplosionStone;
+						hitFallingEffect = HFx.bigExplosionStone;
 						hitFallingColor = Color.valueOf("5867ac");
 					}}, 1 / 1600f,
 					new HailStoneBulletType(name("hailstone-middle"), 2) {{
 						hitEffect = Fx.dynamicWave.layer(Layer.power);
-						despawnEffect = Fxf.fellStone;
+						despawnEffect = HFx.fellStone;
 						splashDamage = 10f;
 						splashDamageRadius = 25f;
 						canCollideFalling = true;
 						fallingDamage = 25f;
 						fallingRadius = 15f;
 						minDistanceFallingCollide = 5f;
-						hitFallingEffect = Fxf.explosionStone;
+						hitFallingEffect = HFx.explosionStone;
 						hitFallingColor = Color.valueOf("5867ac");
 					}}, 1 / 12f,
 					new HailStoneBulletType(name("hailstone-small"), 5) {{
 						hitEffect = Fx.none;
-						despawnEffect = Fxf.fellStone;
+						despawnEffect = HFx.fellStone;
 						splashDamage = 0f;
 						splashDamageRadius = 0;
 					}}, 1f
@@ -120,7 +120,7 @@ public final class Weathersf {
 						hitEffect = Fx.explosion.layer(Layer.power);
 						hitSound = Soundsf.bigHailstoneHit;
 						hitSoundVolume = 0.2f;
-						despawnEffect = Fxf.staticStone;
+						despawnEffect = HFx.staticStone;
 						damage = splashDamage = 95f;
 						splashDamageRadius = 40f;
 						canCollideFalling = pierce = true;
@@ -128,13 +128,13 @@ public final class Weathersf {
 						fallingDamage = 120f;
 						fallingRadius = 30f;
 						minDistanceFallingCollide = 15f;
-						hitFallingEffect = Fxf.bigExplosionStone;
+						hitFallingEffect = HFx.bigExplosionStone;
 						hitFallingColor = Color.valueOf("5e9098");
 					}}, 1 / 1600f,
 					new HailStoneBulletType(name("stone-storm-middle"), 2) {{
 						speed = 4f;
 						hitEffect = Fx.none;
-						despawnEffect = Fxf.fellStoneAghanite;
+						despawnEffect = HFx.fellStoneAghanite;
 						damage = splashDamage = 10f;
 						splashDamageRadius = 25f;
 						canCollideFalling = true;
@@ -142,14 +142,14 @@ public final class Weathersf {
 						fallingDamage = 25f;
 						fallingRadius = 15f;
 						minDistanceFallingCollide = 5f;
-						hitFallingEffect = Fxf.explosionStone;
+						hitFallingEffect = HFx.explosionStone;
 						hitFallingColor = Color.valueOf("5e9098");
 					}}, 1 / 12f,
 					new HailStoneBulletType(name("stone-storm-small"), 5) {{
 						speed = 4f;
 						immovable = false;
 						hitEffect = Fx.none;
-						despawnEffect = Fxf.fellStoneAghanite;
+						despawnEffect = HFx.fellStoneAghanite;
 						splashDamage = 0f;
 						splashDamageRadius = 0;
 					}}, 1f

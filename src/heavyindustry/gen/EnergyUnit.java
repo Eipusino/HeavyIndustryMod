@@ -40,11 +40,11 @@ public class EnergyUnit extends Unitf implements Energyc {
 			Fx.trailFade.at(x, y, type.trailScl, team.color, trails[i].copy());
 		}
 
-		Fxf.energyUnitBlast.at(x, y, hitSize * 4, team.color);
+		HFx.energyUnitBlast.at(x, y, hitSize * 4, team.color);
 
 		Vec2 v = new Vec2().set(this);
 
-		for (int i = 0; i < Fxf.energyUnitBlast.lifetime / 6; i++) {
+		for (int i = 0; i < HFx.energyUnitBlast.lifetime / 6; i++) {
 			Time.run(i * 6, () -> {
 				for (int j = 0; j < 3; j++) {
 					Lightning.create(team, team.color, 120f, v.x, v.y, Mathf.random(360), Mathf.random(12, 28));
@@ -161,7 +161,7 @@ public class EnergyUnit extends Unitf implements Energyc {
 
 			lastPos.set(this);
 
-			Rand rand = Fxf.rand1;
+			Rand rand = HFx.rand1;
 			rand.setSeed(id);
 
 			if (!headless) {

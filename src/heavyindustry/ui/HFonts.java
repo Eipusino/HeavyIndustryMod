@@ -12,13 +12,13 @@ import arc.struct.*;
 import static mindustry.Vars.*;
 
 @SuppressWarnings("rawtypes")
-public final class HIFonts {
+public final class HFonts {
 	public static Font consolas, inconsoiata, jetbrainsmono;
 
 	public static final String loaderSuffix = ".heavyindustry.gen";
 
 	/** Don't let anyone instantiate this class. */
-	private HIFonts() {}
+	private HFonts() {}
 
 	public static void load() {
 		Core.assets.setLoader(FreeTypeFontGenerator.class, loaderSuffix, new FreeTypeFontGeneratorLoader(tree) {

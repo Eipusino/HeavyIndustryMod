@@ -71,7 +71,7 @@ public class ChainLightningBulletType extends BulletType {
 		Position aimPos = b.aimTile == null ? b : b.aimTile;
 
 		Seq<Unit> units = Groups.unit.intersect(b.x - range, b.y - range, range * 2, range * 2);
-		Damagef.list.clear();
+		HDamage.list.clear();
 		charges = chainLightning;
 
 		units.sort(u -> u.dst2(aimPos));
@@ -83,12 +83,12 @@ public class ChainLightningBulletType extends BulletType {
 			if (dst > range) break;
 			float dst2 = unit.dst(aimPos);
 			if (dst2 > targetRange) break;
-			Damagef.list.add(unit);
+			HDamage.list.add(unit);
 			charges--;
 		}
 
-		Damagef.list.each(u -> {
-			Damagef.chain(new Vec2(b.x, b.y), u, new IntSeq(), hitSound, hitEffect, b.damage, b.damage, width, distanceDamageFalloff, jumpDamageFactor, branches, segmentLength, arc, lightningColor);
+		HDamage.list.each(u -> {
+			HDamage.chain(new Vec2(b.x, b.y), u, new IntSeq(), hitSound, hitEffect, b.damage, b.damage, width, distanceDamageFalloff, jumpDamageFactor, branches, segmentLength, arc, lightningColor);
 		});
 
 		if (charges <= 0) return;
@@ -115,7 +115,7 @@ public class ChainLightningBulletType extends BulletType {
 
 			build.damage(damage);
 			Tmp.v1.set(build).add(Tmp.v2.set(Mathf.random(build.block.size), Mathf.random(build.block.size)).scl(0.5f));
-			Fxf.chainLightning.at(Tmp.v1.x, Tmp.v1.y, 0, lightningColor, new LightningHolder(b, Tmp.v1));
+			HFx.chainLightning.at(Tmp.v1.x, Tmp.v1.y, 0, lightningColor, new LightningHolder(b, Tmp.v1));
 			hitEffect.at(build.x, build.y);
 			charges--;
 		}
@@ -126,12 +126,12 @@ public class ChainLightningBulletType extends BulletType {
 	public void sparks(Bullet b, Position aimPos) {
 		for (int i = 0; i < charges; i++) {
 			Tmp.v1.setToRandomDirection().scl(targetRange / 2).add(aimPos).sub(b).clamp(0, range).add(b);
-			Fxf.chainLightning.at(Tmp.v1.x, Tmp.v1.y, 0, lightningColor, new LightningHolder(b, Tmp.v1));
+			HFx.chainLightning.at(Tmp.v1.x, Tmp.v1.y, 0, lightningColor, new LightningHolder(b, Tmp.v1));
 			hitEffect.at(Tmp.v1.x, Tmp.v1.y);
 		}
 	}
 
-	public class LightningHolder implements Fxf.VisualLightningHolder {
+	public class LightningHolder implements HFx.VisualLightningHolder {
 		public Vec2 start, end;
 
 		public LightningHolder(Position start, Position end) {

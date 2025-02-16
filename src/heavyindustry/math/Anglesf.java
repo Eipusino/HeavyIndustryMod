@@ -3,9 +3,9 @@ package heavyindustry.math;
 import arc.math.*;
 
 /** @since 1.0.4 */
-public final class Anglef {
+public final class Anglesf {
 	/** Don't let anyone instantiate this class. */
-	private Anglef() {}
+	private Anglesf() {}
 
 	public static float moveLerpToward(float angle, float to, float speed) {
 		if (Math.abs(Angles.angleDist(angle, to)) < speed || angle == to) {

@@ -295,13 +295,13 @@ public class FlowMenuRenderer extends MenuRenderer {
 			protected void generate(Tiles tiles) {
 				for (int x = 0; x < tiles.width; x++) {
 					for (int y = 0; y < tiles.height; y++) {
-						Block floor = Blocksf.concreteNumber;
+						Block floor = HBlocks.concreteNumber;
 						Block wall = Blocks.air;
 
 						if (tiles.get(x, y) == null) {
-							floor = Blocksf.concreteFill;
+							floor = HBlocks.concreteFill;
 							if (Mathf.chance(0.1)) {
-								floor = Blocksf.concreteFill;
+								floor = HBlocks.concreteFill;
 							}
 						}
 
@@ -309,11 +309,11 @@ public class FlowMenuRenderer extends MenuRenderer {
 						c1 = x % 10 == 0;
 						c2 = y % 10 == 0;
 						if (c1 || c2) {
-							floor = Blocksf.concreteStripe;
+							floor = HBlocks.concreteStripe;
 
 							if (c1 && c2) {
-								setTile(x + 1, y + 1, Blocks.air, Blocks.air, Blocksf.concreteNumber);
-								setTile(x + 2, y + 1, Blocks.air, Blocks.air, Blocksf.concreteNumber);
+								setTile(x + 1, y + 1, Blocks.air, Blocks.air, HBlocks.concreteNumber);
+								setTile(x + 2, y + 1, Blocks.air, Blocks.air, HBlocks.concreteNumber);
 							}
 
 							if (Simplex.noise2d(seed + 3, 2, 0.6, 1 / 22.0, x, y) > 0.5) {

@@ -30,8 +30,8 @@ public class HealAbility extends RepairFieldAbility {
 	public HealAbility(float amo, float rel, float ran) {
 		super(amo, rel, ran);
 
-		healEffect = Fxf.healReceiveCircle;
-		activeEffect = Fxf.healSendCircle;
+		healEffect = HFx.healReceiveCircle;
+		activeEffect = HFx.healSendCircle;
 	}
 
 	public void update(Unit unit) {

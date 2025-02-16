@@ -83,10 +83,10 @@ public class MultiBulletTurret extends Turret {
 			}
 		});
 
-		ammoTypes.each((item, type) -> {
-			float rangeChange = type[0].rangeChange;
+		for (var as : ammoTypes) {
+			float rangeChange = as.value[0].rangeChange;
 			placeOverlapRange = Math.max(placeOverlapRange, range + rangeChange + placeOverlapMargin);
-		});
+		}
 
 		super.init();
 	}

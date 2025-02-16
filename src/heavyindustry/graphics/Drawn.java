@@ -16,7 +16,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 import static mindustry.Vars.*;
 
 public final class Drawn {
@@ -149,7 +149,7 @@ public final class Drawn {
 	}
 
 	public static void surround(long id, float x, float y, float rad, int num, float innerSize, float outerSize, float interp) {
-		Rand rand = Fxf.rand0;
+		Rand rand = HFx.rand0;
 
 		rand.setSeed(id);
 		for (int i = 0; i < num; i++) {
@@ -171,7 +171,7 @@ public final class Drawn {
 	}
 
 	public static float rotator_90(float in, float margin) {
-		return 90 * HIInterp.pow10.apply(Mathf.curve(in, margin, 1 - margin));
+		return 90 * HInterps.pow10.apply(Mathf.curve(in, margin, 1 - margin));
 	}
 
 	public static float rotator_90() {
@@ -179,7 +179,7 @@ public final class Drawn {
 	}
 
 	public static float rotator_120(float in, float margin) {
-		return 120 * HIInterp.pow10.apply(Mathf.curve(in, margin, 1 - margin));
+		return 120 * HInterps.pow10.apply(Mathf.curve(in, margin, 1 - margin));
 	}
 
 	public static float rotator_180() {
@@ -221,7 +221,7 @@ public final class Drawn {
 
 	public static void randFadeLightningEffectScl(float x, float y, float range, float sclMin, float sclMax, float lightningPieceLength, Color color, boolean in) {
 		v6.rnd(range).scl(Mathf.random(sclMin, sclMax)).add(x, y);
-		(in ? Fxf.chainLightningFadeReversed : Fxf.chainLightningFade).at(x, y, lightningPieceLength, color, v6.cpy());
+		(in ? HFx.chainLightningFadeReversed : HFx.chainLightningFade).at(x, y, lightningPieceLength, color, v6.cpy());
 	}
 
 	public static void teleportUnitNet(Unit before, float x, float y, float angle, Player player) {

@@ -14,7 +14,7 @@ import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.distribution.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 import static heavyindustry.util.Utils.*;
 import static mindustry.Vars.*;
 

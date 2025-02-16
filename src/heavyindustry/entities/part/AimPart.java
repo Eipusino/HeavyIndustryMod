@@ -8,7 +8,7 @@ import arc.util.*;
 import mindustry.*;
 import mindustry.entities.part.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 
 public class AimPart extends DrawPart {
 	public Color color;

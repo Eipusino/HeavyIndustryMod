@@ -17,7 +17,7 @@ import mindustry.world.blocks.payloads.*;
 import mindustry.world.blocks.units.*;
 import mindustry.world.meta.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 import static mindustry.Vars.*;
 
 public class DerivativeUnitFactory extends UnitFactory {
@@ -76,7 +76,7 @@ public class DerivativeUnitFactory extends UnitFactory {
 
 	public class DerivativeUnitFactoryBuild extends UnitFactoryBuild {
 		protected final Object[] objects = new Object[4];
-		protected final Effect espEffect = Fxf.edessp(24);
+		protected final Effect espEffect = HFx.edessp(24);
 
 		public Vec2 v1 = new Vec2();
 		public Vec2 v2 = new Vec2();

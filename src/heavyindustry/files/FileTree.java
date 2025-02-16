@@ -16,7 +16,7 @@ public final class FileTree {
 	private static final ObjectSet<String> filter = ObjectSet.with("heavyindustry", "kotlin", "org", "META-INF");
 
 	static {
-		for (Fi it : Varsf.internalTree.root.list()) {
+		for (Fi it : HVars.internalTree.root.list()) {
 			if (!filter.contains(it.name())) {
 				loop(it);
 			}
@@ -61,6 +61,6 @@ public final class FileTree {
 
 	public static Texture texture(String name) {
 		Fi fi = get((name == null ? "error" : name) + ".png");
-		return new Texture(fi == null ? Varsf.internalTree.child("sprites-override/effects/error.png") : fi);
+		return new Texture(fi == null ? HVars.internalTree.child("sprites-override/effects/error.png") : fi);
 	}
 }

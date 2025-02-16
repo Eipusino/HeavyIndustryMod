@@ -14,7 +14,7 @@ public class EdgeFragBulletType extends BulletType {
 		hitSize = 3;
 		lifetime = 120;
 		despawnHit = true;
-		hitEffect = Fxf.diamondSpark;
+		hitEffect = HFx.diamondSpark;
 		hitColor = Palf.matrixNet;
 
 		collidesTiles = false;

@@ -10,7 +10,7 @@ import mindustry.gen.*;
 import mindustry.io.*;
 import mindustry.net.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 import static mindustry.Vars.*;
 
 public class TapPacket extends Packet {
@@ -54,7 +54,7 @@ public class TapPacket extends Packet {
 	public void handleServer(NetConnection con) {
 		// On servers, handle the try packet sent from a client and send the result packet to all connected clients.
 		if (con.player == null || con.kicked) return;
-		HICall.tap(con.player, x, y, targets);
+		HCall.tap(con.player, x, y, targets);
 	}
 
 	@Override

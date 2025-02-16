@@ -36,7 +36,7 @@ import static mindustry.Vars.*;
  * MultiCrafter. You can freely choose to change the production formula.
  *
  * @author Eipusino
- * @apiNote Example usage {@link Blocksf#ironcladCompressor }.
+ * @apiNote Example usage {@link HBlocks#ironcladCompressor }.
  * @see heavyindustry.world.blocks.heat.HeatMultiCrafter heat
  * @see heavyindustry.world.blocks.payload.PayloadCrafter payload
  * @since 1.0.6

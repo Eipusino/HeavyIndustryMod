@@ -8,9 +8,9 @@ import mindustry.ctype.*;
 import mindustry.game.Objectives.*;
 import mindustry.type.*;
 
-import static heavyindustry.content.Blocksf.*;
-import static heavyindustry.content.SectorPresetsf.*;
-import static heavyindustry.content.UnitTypesf.*;
+import static heavyindustry.content.HBlocks.*;
+import static heavyindustry.content.HSectorPresets.*;
+import static heavyindustry.content.HUnitTypes.*;
 import static mindustry.content.Blocks.*;
 import static mindustry.content.SectorPresets.*;
 import static mindustry.content.UnitTypes.*;
@@ -20,31 +20,31 @@ import static mindustry.content.UnitTypes.*;
  *
  * @author Eipusino
  */
-public final class TechTreef {
+public final class HTechTree {
 	public static TechNode context = null;
 
 	/** Don't let anyone instantiate this class. */
-	private TechTreef() {}
+	private HTechTree() {}
 
 	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
 	public static void load() {
 		//items,liquids
-		vanillaNode(Liquids.water, () -> nodeProduce(Liquidsf.brine, () -> {}));
-		vanillaNode(Liquids.oil, () -> nodeProduce(Liquidsf.nitratedOil, () -> {}));
-		vanillaNode(Liquids.ozone, () -> nodeProduce(Liquidsf.methane, () -> {}));
+		vanillaNode(Liquids.water, () -> nodeProduce(HLiquids.brine, () -> {}));
+		vanillaNode(Liquids.oil, () -> nodeProduce(HLiquids.nitratedOil, () -> {}));
+		vanillaNode(Liquids.ozone, () -> nodeProduce(HLiquids.methane, () -> {}));
 		vanillaNode(Items.sand, () -> {
-			nodeProduce(Itemsf.stone, () -> nodeProduce(Itemsf.originium, () -> nodeProduce(Itemsf.purifiedOriginium, () -> nodeProduce(Itemsf.syntheticJade, () -> {}))));
-			nodeProduce(Itemsf.rareEarth, () -> {});
-			nodeProduce(Itemsf.salt, () -> {});
+			nodeProduce(HItems.stone, () -> nodeProduce(HItems.originium, () -> nodeProduce(HItems.purifiedOriginium, () -> nodeProduce(HItems.syntheticJade, () -> {}))));
+			nodeProduce(HItems.rareEarth, () -> {});
+			nodeProduce(HItems.salt, () -> {});
 		});
-		vanillaNode(Items.silicon, () -> nodeProduce(Itemsf.nanoCore, () -> nodeProduce(Liquidsf.nanoFluid, () -> {})));
-		vanillaNode(Items.thorium, () -> nodeProduce(Itemsf.uranium, () -> nodeProduce(Itemsf.chromium, () -> {})));
-		vanillaNode(Items.surgeAlloy, () -> nodeProduce(Itemsf.heavyAlloy, () -> {}));
+		vanillaNode(Items.silicon, () -> nodeProduce(HItems.nanoCore, () -> nodeProduce(HLiquids.nanoFluid, () -> {})));
+		vanillaNode(Items.thorium, () -> nodeProduce(HItems.uranium, () -> nodeProduce(HItems.chromium, () -> {})));
+		vanillaNode(Items.surgeAlloy, () -> nodeProduce(HItems.heavyAlloy, () -> {}));
 		//items,liquids-erekir
-		vanillaNode(Items.beryllium, () -> nodeProduce(Itemsf.originium, () -> nodeProduce(Itemsf.purifiedOriginium, () -> nodeProduce(Itemsf.syntheticJade, () -> {}))));
+		vanillaNode(Items.beryllium, () -> nodeProduce(HItems.originium, () -> nodeProduce(HItems.purifiedOriginium, () -> nodeProduce(HItems.syntheticJade, () -> {}))));
 		vanillaNode(Items.tungsten, () -> {
-			nodeProduce(Itemsf.uranium, () -> {});
-			nodeProduce(Itemsf.chromium, () -> {});
+			nodeProduce(HItems.uranium, () -> {});
+			nodeProduce(HItems.chromium, () -> {});
 		});
 		//wall
 		vanillaNode(copperWall, () -> node(armoredWall, () -> node(armoredWallLarge, () -> node(armoredWallHuge, () -> node(armoredWallGigantic, () -> {})))));

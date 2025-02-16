@@ -13,7 +13,7 @@ import mindustry.entities.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 import static mindustry.Vars.*;
 
 public class EnergyUnitType extends AncientUnitType {
@@ -42,7 +42,7 @@ public class EnergyUnitType extends AncientUnitType {
 
 	public Effect teleport = Fx.none;
 	public Effect teleportTrans = Fx.none;
-	public Effect slopeEffect = Fxf.boolSelector;
+	public Effect slopeEffect = HFx.boolSelector;
 
 	public EnergyUnitType(String name) {
 		super(name);
@@ -88,7 +88,7 @@ public class EnergyUnitType extends AncientUnitType {
 				}
 			});
 		if (trailLength < 0) trailLength = (int) bodySize * 4;
-		if (slopeEffect == Fxf.boolSelector) slopeEffect = new Effect(30, b -> {
+		if (slopeEffect == HFx.boolSelector) slopeEffect = new Effect(30, b -> {
 			if (!(b.data instanceof Number n)) return;
 			int i = n.intValue();
 			Draw.color(b.color);

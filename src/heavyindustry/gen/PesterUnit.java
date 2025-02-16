@@ -142,7 +142,7 @@ public class PesterUnit extends Unitf implements Pesterc {
 			if (bossTargetSearchReload < 0 && isBoss) {
 				bossTargetSearchReload = pType.checkBossReload;
 
-				bossTarget = Units.bestTarget(team, x, y, pType.bossWeaponRange, e -> true, e -> !(e.block.group == BlockGroup.walls), UnitSortsf.regionalHPMaximumAll);
+				bossTarget = Units.bestTarget(team, x, y, pType.bossWeaponRange, e -> true, e -> !(e.block.group == BlockGroup.walls), HUnitSorts.regionalHPMaximumAll);
 			}
 
 			if (bossTarget != null) {
@@ -222,7 +222,7 @@ public class PesterUnit extends Unitf implements Pesterc {
 
 	@Override
 	public void shootBossTarget() {
-		Bulletsf.ncBlackHole.create(this, team, lastTargetPos.x, lastTargetPos.y, 0, 1, 1, 1, Bulletsf.ncBlackHole.splashDamageRadius);
+		HBullets.ncBlackHole.create(this, team, lastTargetPos.x, lastTargetPos.y, 0, 1, 1, 1, HBullets.ncBlackHole.splashDamageRadius);
 	}
 
 	@Override
@@ -253,7 +253,7 @@ public class PesterUnit extends Unitf implements Pesterc {
 
 		if (!headless && itr > 0) {
 			Soundsf.hugeShoot.at(ex, ey);
-			Fxf.crossSpinBlast.at(ex, ey, 0, team.color, this);
+			HFx.crossSpinBlast.at(ex, ey, 0, team.color, this);
 		}
 
 		if (!headless && isBoss) {
@@ -297,7 +297,7 @@ public class PesterUnit extends Unitf implements Pesterc {
 			float fin = bossWeaponReload / pType.bossReload, fout = 1 - fin;
 			float fadeS = Mathf.curve(fout, 0.0225f, 0.06f);
 			float fadeS2 = Mathf.curve(fout, 0.09f, 0.185f);
-			float fade = bossWeaponWarmup * Mathf.curve(fout, 0, 0.025f) * HIInterp.bounce5In.apply(fadeS);
+			float fade = bossWeaponWarmup * Mathf.curve(fout, 0, 0.025f) * HInterps.bounce5In.apply(fadeS);
 
 			Tmp.v2.trns(bossWeaponProgress / 17f, Mathf.sin(bossWeaponProgress, 30f, 60f) * fout, Mathf.cos(bossWeaponProgress + 177f, 17f, 35f) * fout);
 			Tmp.v3.set(Mathf.sin(bossWeaponProgress, 30, 15) * fout, Mathf.sin(bossWeaponProgress + Mathf.pi * 0.3f, 43, 12) * fout);
@@ -353,7 +353,7 @@ public class PesterUnit extends Unitf implements Pesterc {
 			}
 
 			Lines.stroke(str / 2.2f);
-			Lines.spikes(lastTargetPos.x, lastTargetPos.y, Bulletsf.ncBlackHole.splashDamageRadius, 12 * fade, 30, Time.time * 0.38f);
+			Lines.spikes(lastTargetPos.x, lastTargetPos.y, HBullets.ncBlackHole.splashDamageRadius, 12 * fade, 30, Time.time * 0.38f);
 		}
 	}
 

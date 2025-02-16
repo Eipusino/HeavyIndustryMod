@@ -60,7 +60,7 @@ public class InputAggregator implements Eachable<String> {
 
 				for (TapHandle handle : handles.values()) handle.enabled = handle.predicate.get();
 				if (taps.any()) {
-					taps.each(tap -> HICall.tap(player, tap.x, tap.y, handleKeys));
+					taps.each(tap -> HCall.tap(player, tap.x, tap.y, handleKeys));
 
 					tapPool.freeAll(taps);
 					taps.clear();

@@ -33,8 +33,8 @@ public class ShockWaveAbility extends Ability {
 
 	public Sound shootSound = Soundsf.shock;
 
-	public Effect shootEffect = Fxf.circleOut;
-	public Effect hitEffect = Fxf.hitSparkLarge;
+	public Effect shootEffect = HFx.circleOut;
+	public Effect hitEffect = HFx.hitSparkLarge;
 
 	public float maxSpeed = -1;
 

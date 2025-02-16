@@ -5,7 +5,8 @@ import heavyindustry.func.*;
 
 import java.util.*;
 import java.util.concurrent.atomic.*;
-import java.util.function.*;
+
+import static heavyindustry.struct.Collectionsf.*;
 
 /**
  * The appended variable interface is used to provide dynamic append variables for types,
@@ -97,9 +98,9 @@ public interface ExtraVariablec {
 	 * @param def   Default value of variable
 	 * @return The updated variable value, which is the return value of the function
 	 */
-	default <T> T handleVar(String field, Function<T, T> cons, T def) {
+	default <T> T handleVar(String field, Func<T, T> cons, T def) {
 		T res;
-		setVar(field, res = cons.apply(getVar(field, def)));
+		setVar(field, res = cons.get(getVar(field, def)));
 
 		return res;
 	}
@@ -174,7 +175,7 @@ public interface ExtraVariablec {
 	 * Use processing functions to handle boolean variable values and update variable values with return values.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a boolean wrapper type or atomized reference
-	 * @see ExtraVariablec#handleVar(String, Function, Object)
+	 * @see ExtraVariablec#handleVar(String, Func, Object)
 	 */
 	default boolean handleVar(String field, Boolt handle, boolean def) {
 		boolean b;
@@ -247,7 +248,7 @@ public interface ExtraVariablec {
 	 * Use processing functions to handle int variable values and update variable values with return values.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not an int wrapper type or atomized reference
-	 * @see ExtraVariablec#handleVar(String, Function, Object)
+	 * @see ExtraVariablec#handleVar(String, Func, Object)
 	 */
 	default int handleVar(String field, Intt handle, int def) {
 		int i;
@@ -320,7 +321,7 @@ public interface ExtraVariablec {
 	 * Use processing functions to handle long variable values and update variable values with return values.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a long wrapper type or atomized reference
-	 * @see ExtraVariablec#handleVar(String, Function, Object)
+	 * @see ExtraVariablec#handleVar(String, Func, Object)
 	 */
 	default long handleVar(String field, Longt handle, long def) {
 		long l;
@@ -343,10 +344,10 @@ public interface ExtraVariablec {
 			a[0] = value;
 			return r;
 		} else if (res instanceof Number n) {
-			extra().put(field, new float[]{value});
+			extra().put(field, floatOf(value));
 			return n.floatValue();
 		} else if (res == null) {
-			extra().put(field, new float[]{value});
+			extra().put(field, floatOf(value));
 			return 0;
 		}
 
@@ -379,7 +380,7 @@ public interface ExtraVariablec {
 		Object res = getVar(field);
 		if (res == null) {
 			float f = initial.get();
-			extra().put(field, new float[]{f});
+			extra().put(field, floatOf(f));
 			return f;
 		}
 
@@ -393,7 +394,7 @@ public interface ExtraVariablec {
 	 * Use processing functions to handle float variable values and update variable values with return values.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or a single element float array
-	 * @see ExtraVariablec#handleVar(String, Function, Object)
+	 * @see ExtraVariablec#handleVar(String, Func, Object)
 	 */
 	default float handleVar(String field, Floatt handle, float def) {
 		float trans;
@@ -416,10 +417,10 @@ public interface ExtraVariablec {
 			a[0] = value;
 			return r;
 		} else if (res instanceof Number n) {
-			extra().put(field, new double[]{value});
+			extra().put(field, doubleOf(value));
 			return n.doubleValue();
 		} else if (res == null) {
-			extra().put(field, new double[]{value});
+			extra().put(field, doubleOf(value));
 			return 0;
 		}
 
@@ -452,7 +453,7 @@ public interface ExtraVariablec {
 		Object res = getVar(field);
 		if (res == null) {
 			double d = initial.get();
-			extra().put(field, new double[]{d});
+			extra().put(field, doubleOf(d));
 			return d;
 		}
 
@@ -466,7 +467,7 @@ public interface ExtraVariablec {
 	 * Use processing functions to handle double variable values and update variable values with return values.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a double wrapper type or a single element double array
-	 * @see ExtraVariablec#handleVar(String, Function, Object)
+	 * @see ExtraVariablec#handleVar(String, Func, Object)
 	 */
 	default double handleVar(String field, Doublet handle, double def) {
 		double d;

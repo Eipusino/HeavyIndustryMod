@@ -27,7 +27,7 @@ public class BatteryAbility extends Ability {
 	public static float rangeS;
 
 	public float capacity, shieldRange, range, px, py;
-	public Effect abilityEffect = Fxf.shieldDefense;
+	public Effect abilityEffect = HFx.shieldDefense;
 
 	protected static Unit paramUnit;
 	protected static final Cons<Bullet> cons = b -> {
@@ -146,7 +146,7 @@ public class BatteryAbility extends Ability {
 		new ElectricStormBulletType(capacity / 100 + amount / 100, Pal.heal, 20 + (int) amount / 1000) {{
 			lifetime = 300;
 			splashDamageRadius = 20 * 8;
-			despawnEffect = hitEffect = Fxf.electricExp(60, 15, splashDamageRadius);
+			despawnEffect = hitEffect = HFx.electricExp(60, 15, splashDamageRadius);
 		}}.create(unit, unit.x, unit.y, 0);
 	}
 }

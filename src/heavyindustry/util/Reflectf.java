@@ -6,7 +6,7 @@ import mindustry.*;
 
 import java.lang.reflect.*;
 
-import static heavyindustry.util.Collect.*;
+import static heavyindustry.struct.Collectionsf.*;
 
 /**
  * More expansion of Java reflection functionality.
@@ -14,7 +14,6 @@ import static heavyindustry.util.Collect.*;
  * @author Eipusino
  * @since 1.0.6
  */
-@SuppressWarnings({"unchecked", "unused"})
 public final class Reflectf {
 	/** Don't let anyone instantiate this class. */
 	private Reflectf() {}
@@ -53,6 +52,7 @@ public final class Reflectf {
 		};
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T> T gef(String type, Object object, String name) {
 		try {
 			Field field = Class.forName(type).getDeclaredField(name);
@@ -72,6 +72,7 @@ public final class Reflectf {
 	 * @param type The standard name of the class where the field is located.
 	 * @param name the name of the field
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> T gel(Object object, String type, String name) {
 		try {
 			Field field = object.getClass().getClassLoader().loadClass(type).getDeclaredField(name);
@@ -108,6 +109,7 @@ public final class Reflectf {
 	 * @param name the name of the field
 	 * @param def default value. If there is an abnormality in the reflection, return this parameter.
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> T ged(Class<?> type, Object object, String name, T def) {
 		try {
 			Field field = type.getDeclaredField(name);
@@ -118,6 +120,7 @@ public final class Reflectf {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T> T invoke(Class<?> type, Object object, String name, Object[] args, Class<?>[] parameterTypes) {
 		try {
 			Method method = type.getDeclaredMethod(name, parameterTypes);
@@ -191,6 +194,7 @@ public final class Reflectf {
 		return invokeMethod(method, object, arrayOf());
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T> T invokeMethod(Method method, Object object, Object[] args) {
 		try {
 			return (T) method.invoke(object, args);
@@ -315,6 +319,7 @@ public final class Reflectf {
 	}
 
 	/** Search for class based on class names without throwing exceptions. */
+	@SuppressWarnings("unchecked")
 	public static <T> Class<T> forClass(String name) {
 		try {
 			return (Class<T>) Class.forName(name);
@@ -323,6 +328,7 @@ public final class Reflectf {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T> Class<T> forClass(String name, boolean initialize, ClassLoader loader) {
 		try {
 			return (Class<T>) Class.forName(name, initialize, loader);

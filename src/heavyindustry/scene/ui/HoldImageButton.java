@@ -154,8 +154,8 @@ public class HoldImageButton extends ImageButton {
 		super.act(delta);
 
 		if (isPressed() && !isDisabled() && canHold.get()) {
-			Varsf.pressTimer += Time.delta;
-			if (Varsf.pressTimer > Varsf.longPress && (repeat || !heldAct)) {
+			HVars.pressTimer += Time.delta;
+			if (HVars.pressTimer > HVars.longPress && (repeat || !heldAct)) {
 				heldAct = true;
 				held.run();
 			}
@@ -163,7 +163,7 @@ public class HoldImageButton extends ImageButton {
 	}
 
 	public boolean isHeld() {
-		return isPressed() && Varsf.pressTimer > Varsf.longPress;
+		return isPressed() && HVars.pressTimer > HVars.longPress;
 	}
 
 	public void addReset() {
@@ -171,7 +171,7 @@ public class HoldImageButton extends ImageButton {
 
 		released(() -> {
 			heldAct = false;
-			Varsf.pressTimer = 0;
+			HVars.pressTimer = 0;
 		});
 
 		hasReset = true;

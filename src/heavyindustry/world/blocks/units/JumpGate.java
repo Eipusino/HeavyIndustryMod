@@ -37,7 +37,7 @@ import mindustry.world.modules.*;
 
 import java.util.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 import static heavyindustry.ui.UIUtils.*;
 import static mindustry.Vars.*;
 
@@ -770,7 +770,7 @@ public class JumpGate extends Block {
 
 			Vec2 target = link();
 
-			Fxf.spawn.at(x, y, Utils.regSize(set.type), team.color, this);
+			HFx.spawn.at(x, y, Utils.regSize(set.type), team.color, this);
 
 			success = Utils.spawnUnit(team, target.x, target.y, angleTo(target), spawnRange, spawnReloadTime, spawnDelay, getType(), buildingSpawnNum, s -> {
 				if (commandPos != null) s.commandPos.set(commandPos);

@@ -13,7 +13,7 @@ import mindustry.ui.*;
 
 import static heavyindustry.gen.Iconf.*;
 
-public final class HIStyles {
+public final class HStyles {
 	public static Drawable
 			buttonLeft, buttonLeftDown, buttonLeftOver,
 			buttonCenter, buttonCenterDown, buttonCenterOver, buttonCenterDisabled,
@@ -41,7 +41,7 @@ public final class HIStyles {
 			teamChanger;
 
 	/** Don't let anyone instantiate this class. */
-	private HIStyles() {}
+	private HStyles() {}
 
 	public static void init() {
 		//drawable
@@ -75,7 +75,7 @@ public final class HIStyles {
 		}};
 		//style-3
 		scriptArea = new TextFieldStyle() {{
-			font = HIFonts.inconsoiata;
+			font = HFonts.inconsoiata;
 			fontColor = Color.white;
 			selection = Tex.selection;
 			cursor = Tex.cursor;

@@ -22,7 +22,7 @@ public class PesterUnitType extends AncientUnitType {
 
 	public float checkRange = 320f;
 
-	public BulletType hitterBullet = Bulletsf.hitter;
+	public BulletType hitterBullet = HBullets.hitter;
 
 	public Effect toBeBlastedEffect = new Effect(shootDelay, e -> {
 		Draw.color(e.color, Color.white, e.fin());

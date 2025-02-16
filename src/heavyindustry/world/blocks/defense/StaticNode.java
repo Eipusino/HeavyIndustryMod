@@ -213,7 +213,7 @@ public class StaticNode extends Block {
 					by = y1 + Tmp.v1.y;
 			float dst = Mathf.dst(bx + Tmp.v3.x, by + Tmp.v3.y, x2 - Tmp.v2.x + Tmp.v3.x, y2 - Tmp.v2.y + Tmp.v3.y);
 
-			boolean hit = Damagef.collideLine(damage, team, shockEffect, status, statusDuration,
+			boolean hit = HDamage.collideLine(damage, team, shockEffect, status, statusDuration,
 					bx + Tmp.v3.x, by + Tmp.v3.y, angle1, dst,
 					hitGround, hitAir
 			);

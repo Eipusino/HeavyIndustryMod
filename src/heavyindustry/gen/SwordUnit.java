@@ -57,7 +57,7 @@ public class SwordUnit extends Unitf implements Swordc {
 			} else {
 				if (driftTrails != null && driftTrails[0].size() > 0) {
 					for (DriftTrail trail : driftTrails) {
-						Fxf.driftTrailFade.at(x, y, type.trailScl, type.trailColor, trail.copy());
+						HFx.driftTrailFade.at(x, y, type.trailScl, type.trailColor, trail.copy());
 						trail.clear();
 					}
 				}
@@ -75,7 +75,7 @@ public class SwordUnit extends Unitf implements Swordc {
 		super.remove();
 		if (driftTrails != null) {
 			for (DriftTrail trail : driftTrails) {
-				if (trail.size() > 0) Fxf.driftTrailFade.at(x, y, type.trailScl, type.trailColor, trail.copy());
+				if (trail.size() > 0) HFx.driftTrailFade.at(x, y, type.trailScl, type.trailColor, trail.copy());
 			}
 		}
 	}

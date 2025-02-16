@@ -13,7 +13,6 @@ import mindustry.entities.*;
 import mindustry.entities.bullet.*;
 import mindustry.entities.effect.*;
 import mindustry.entities.part.*;
-import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
@@ -38,9 +37,9 @@ import static mindustry.type.ItemStack.*;
  *
  * @author Eipusino
  */
-public final class Overrides {
+public final class HOverrides {
 	/** Don't let anyone instantiate this class. */
-	private Overrides() {}
+	private HOverrides() {}
 
 	/**
 	 * Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}.
@@ -48,7 +47,7 @@ public final class Overrides {
 	 */
 	public static void load() {
 		//blocks-environment
-		Blocks.stone.itemDrop = Blocks.craters.itemDrop = Blocks.charr.itemDrop = Itemsf.stone;
+		Blocks.stone.itemDrop = Blocks.craters.itemDrop = Blocks.charr.itemDrop = HItems.stone;
 		Blocks.stone.playerUnmineable = Blocks.craters.playerUnmineable = Blocks.charr.playerUnmineable = true;
 		Blocks.sandWater.itemDrop = Blocks.darksandWater.itemDrop = Blocks.darksandTaintedWater.itemDrop = Items.sand;
 		Blocks.sandWater.playerUnmineable = Blocks.darksandWater.playerUnmineable = Blocks.darksandTaintedWater.playerUnmineable = true;
@@ -111,16 +110,16 @@ public final class Overrides {
 		Blocks.coreNucleus.armor = 11f;
 		Blocks.reinforcedContainer.itemCapacity = 160;
 		//blocks-turret
-		((LiquidTurret) Blocks.wave).ammoTypes.put(Liquidsf.nitratedOil, new LiquidBulletType(Liquidsf.nitratedOil) {{
+		((LiquidTurret) Blocks.wave).ammoTypes.put(HLiquids.nitratedOil, new LiquidBulletType(HLiquids.nitratedOil) {{
 			drag = 0.01f;
 			layer = Layer.bullet - 2f;
 		}});
-		((LiquidTurret) Blocks.wave).ammoTypes.put(Liquidsf.nanoFluid, new LiquidBulletType(Liquidsf.nanoFluid) {{
+		((LiquidTurret) Blocks.wave).ammoTypes.put(HLiquids.nanoFluid, new LiquidBulletType(HLiquids.nanoFluid) {{
 			drag = 0.01f;
 			healPercent = 5f;
 			collidesTeam = true;
 		}});
-		((ItemTurret) Blocks.salvo).ammoTypes.put(Itemsf.uranium, new BasicBulletType(5f, 39, "bullet") {{
+		((ItemTurret) Blocks.salvo).ammoTypes.put(HItems.uranium, new BasicBulletType(5f, 39, "bullet") {{
 			width = 10f;
 			height = 13f;
 			pierceCap = 2;
@@ -130,14 +129,14 @@ public final class Overrides {
 			ammoMultiplier = 4f;
 			lifetime = 50f;
 		}});
-		((ItemTurret) Blocks.fuse).ammoTypes.put(Itemsf.uranium, new ShrapnelBulletType() {{
+		((ItemTurret) Blocks.fuse).ammoTypes.put(HItems.uranium, new ShrapnelBulletType() {{
 			length = 100f;
 			damage = 135f;
 			ammoMultiplier = 6f;
 			toColor = Color.valueOf("a5b2c2");
-			shootEffect = smokeEffect = Fxf.shoot(Palf.uraniumGrey);
+			shootEffect = smokeEffect = HFx.shoot(Palf.uraniumGrey);
 		}});
-		((LiquidTurret) Blocks.tsunami).ammoTypes.put(Liquidsf.nitratedOil, new LiquidBulletType(Liquidsf.nitratedOil) {{
+		((LiquidTurret) Blocks.tsunami).ammoTypes.put(HLiquids.nitratedOil, new LiquidBulletType(HLiquids.nitratedOil) {{
 			lifetime = 49f;
 			speed = 4f;
 			knockback = 1.3f;
@@ -149,7 +148,7 @@ public final class Overrides {
 			damage = 0.2f;
 			layer = Layer.bullet - 2f;
 		}});
-		((LiquidTurret) Blocks.tsunami).ammoTypes.put(Liquidsf.nanoFluid, new LiquidBulletType(Liquidsf.nanoFluid) {{
+		((LiquidTurret) Blocks.tsunami).ammoTypes.put(HLiquids.nanoFluid, new LiquidBulletType(HLiquids.nanoFluid) {{
 			lifetime = 49f;
 			speed = 4f;
 			knockback = 1.3f;
@@ -176,7 +175,7 @@ public final class Overrides {
 			buildingDamageMultiplier = 0.3f;
 		}});
 		((ItemTurret) Blocks.spectre).range = 280f;
-		((ItemTurret) Blocks.spectre).ammoTypes.put(Itemsf.uranium, new BasicBulletType(9f, 105f) {{
+		((ItemTurret) Blocks.spectre).ammoTypes.put(HItems.uranium, new BasicBulletType(9f, 105f) {{
 			hitSize = 5f;
 			width = 16f;
 			height = 23f;
@@ -204,7 +203,7 @@ public final class Overrides {
 		Blocks.diffuse.armor = 3f;
 		Blocks.sublimate.armor = 4f;
 		((ContinuousLiquidTurret) Blocks.sublimate).range = 120f;
-		((ContinuousLiquidTurret) Blocks.sublimate).ammo(Liquidsf.methane, new ContinuousFlameBulletType() {{
+		((ContinuousLiquidTurret) Blocks.sublimate).ammo(HLiquids.methane, new ContinuousFlameBulletType() {{
 			damage = 40f;
 			length = 120f;
 			knockback = 1f;
@@ -306,17 +305,17 @@ public final class Overrides {
 		((PowerTurret) Blocks.malign).minWarmup = 0.98f;
 		((PowerTurret) Blocks.malign).warmupMaintainTime = 45f;
 		//blocks-units
-		((UnitFactory) Blocks.groundFactory).plans.add(new UnitPlan(UnitTypesf.vanguard, 1200f, with(Items.lead, 25, Items.titanium, 25, Items.silicon, 30)));
-		((UnitFactory) Blocks.airFactory).plans.add(new UnitPlan(UnitTypesf.caelifera, 1200f, with(Items.lead, 35, Items.titanium, 15, Items.silicon, 30)));
-		((Reconstructor) Blocks.additiveReconstructor).upgrades.add(new UnitType[]{UnitTypesf.vanguard, UnitTypesf.striker}, new UnitType[]{UnitTypesf.caelifera, UnitTypesf.schistocerca});
-		((Reconstructor) Blocks.multiplicativeReconstructor).upgrades.add(new UnitType[]{UnitTypesf.striker, UnitTypesf.counterattack}, new UnitType[]{UnitTypesf.schistocerca, UnitTypesf.anthophila});
-		((Reconstructor) Blocks.exponentialReconstructor).upgrades.add(new UnitType[]{UnitTypesf.counterattack, UnitTypesf.crush}, new UnitType[]{UnitTypesf.anthophila, UnitTypesf.vespula});
-		((Reconstructor) Blocks.tetrativeReconstructor).upgrades.add(new UnitType[]{UnitTypesf.crush, UnitTypesf.destruction}, new UnitType[]{UnitTypesf.vespula, UnitTypesf.lepidoptera});
+		((UnitFactory) Blocks.groundFactory).plans.add(new UnitPlan(HUnitTypes.vanguard, 1200f, with(Items.lead, 25, Items.titanium, 25, Items.silicon, 30)));
+		((UnitFactory) Blocks.airFactory).plans.add(new UnitPlan(HUnitTypes.caelifera, 1200f, with(Items.lead, 35, Items.titanium, 15, Items.silicon, 30)));
+		((Reconstructor) Blocks.additiveReconstructor).upgrades.add(new UnitType[]{HUnitTypes.vanguard, HUnitTypes.striker}, new UnitType[]{HUnitTypes.caelifera, HUnitTypes.schistocerca});
+		((Reconstructor) Blocks.multiplicativeReconstructor).upgrades.add(new UnitType[]{HUnitTypes.striker, HUnitTypes.counterattack}, new UnitType[]{HUnitTypes.schistocerca, HUnitTypes.anthophila});
+		((Reconstructor) Blocks.exponentialReconstructor).upgrades.add(new UnitType[]{HUnitTypes.counterattack, HUnitTypes.crush}, new UnitType[]{HUnitTypes.anthophila, HUnitTypes.vespula});
+		((Reconstructor) Blocks.tetrativeReconstructor).upgrades.add(new UnitType[]{HUnitTypes.crush, HUnitTypes.destruction}, new UnitType[]{HUnitTypes.vespula, HUnitTypes.lepidoptera});
 		//blocks-units-erekir
 		((Constructor) Blocks.constructor).filter = Seq.with();
-		((UnitAssembler) Blocks.tankAssembler).plans.add(new AssemblerUnitPlan(UnitTypesf.dominate, 60f * 60f * 4f, PayloadStack.list(UnitTypes.precept, 4, Blocksf.aparajitoLarge, 20)));
-		((UnitAssembler) Blocks.shipAssembler).plans.add(new AssemblerUnitPlan(UnitTypesf.havoc, 60f * 60f * 4f, PayloadStack.list(UnitTypes.obviate, 4, Blocksf.aparajitoLarge, 20)));
-		((UnitAssembler) Blocks.mechAssembler).plans.add(new AssemblerUnitPlan(UnitTypesf.oracle, 60f * 60f * 4f, PayloadStack.list(UnitTypes.anthicus, 4, Blocksf.aparajitoLarge, 20)));
+		((UnitAssembler) Blocks.tankAssembler).plans.add(new AssemblerUnitPlan(HUnitTypes.dominate, 60f * 60f * 4f, PayloadStack.list(UnitTypes.precept, 4, HBlocks.aparajitoLarge, 20)));
+		((UnitAssembler) Blocks.shipAssembler).plans.add(new AssemblerUnitPlan(HUnitTypes.havoc, 60f * 60f * 4f, PayloadStack.list(UnitTypes.obviate, 4, HBlocks.aparajitoLarge, 20)));
+		((UnitAssembler) Blocks.mechAssembler).plans.add(new AssemblerUnitPlan(HUnitTypes.oracle, 60f * 60f * 4f, PayloadStack.list(UnitTypes.anthicus, 4, HBlocks.aparajitoLarge, 20)));
 		//blocks-campaign
 
 		//I can't figure out how this thing consumes so much water...
@@ -434,7 +433,7 @@ public final class Overrides {
 		Liquids.hydrogen.explosiveness = 1.5f;
 		Liquids.ozone.flammability = 0f;
 		Liquids.ozone.explosiveness = 0f;
-		Liquids.neoplasm.canStayOn.addAll(Liquidsf.nanoFluid, Liquidsf.nitratedOil);
+		Liquids.neoplasm.canStayOn.addAll(HLiquids.nanoFluid, HLiquids.nitratedOil);
 		Liquids.neoplasm.capPuddles = true;
 		//items
 		Items.graphite.hardness = 2;
@@ -444,8 +443,8 @@ public final class Overrides {
 		Items.surgeAlloy.hardness = 6;
 		Items.phaseFabric.hardness = 3;
 		Items.carbide.hardness = 6;
-		Items.serpuloItems.addAll(Itemsf.rareEarth, Itemsf.nanoCore, Itemsf.chromium, Itemsf.uranium, Itemsf.heavyAlloy, Itemsf.originium, Itemsf.purifiedOriginium, Itemsf.syntheticJade);
-		Items.erekirItems.addAll(Itemsf.uranium, Itemsf.chromium, Itemsf.originium, Itemsf.purifiedOriginium, Itemsf.syntheticJade);
+		Items.serpuloItems.addAll(HItems.rareEarth, HItems.nanoCore, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.originium, HItems.purifiedOriginium, HItems.syntheticJade);
+		Items.erekirItems.addAll(HItems.uranium, HItems.chromium, HItems.originium, HItems.purifiedOriginium, HItems.syntheticJade);
 		//planet
 
 		//other

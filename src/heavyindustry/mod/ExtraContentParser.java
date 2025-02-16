@@ -60,7 +60,7 @@ import mindustry.world.meta.*;
 
 import java.lang.reflect.*;
 
-import static heavyindustry.util.Collect.*;
+import static heavyindustry.struct.Collectionsf.*;
 import static mindustry.Vars.*;
 
 public class ExtraContentParser {
@@ -74,7 +74,7 @@ public class ExtraContentParser {
 	ObjectMap<Class<?>, ExtraFieldParser> classParsers = new ObjectMap<>() {{
 		put(Effect.class, (type, data) -> {
 			if (data.isString()) {
-				return modField(Fx.class, Fxf.class, data);
+				return modField(Fx.class, HFx.class, data);
 			}
 			if (data.isArray()) {
 				return new MultiEffect(parser.readValue(Effect[].class, data));
@@ -85,8 +85,8 @@ public class ExtraContentParser {
 			readFields(result, data);
 			return result;
 		});
-		put(Sortf.class, (type, data) -> modField(UnitSorts.class, UnitSortsf.class, data));
-		put(Interp.class, (type, data) -> modField(Interp.class, HIInterp.class, data));
+		put(Sortf.class, (type, data) -> modField(UnitSorts.class, HUnitSorts.class, data));
+		put(Interp.class, (type, data) -> modField(Interp.class, HInterps.class, data));
 		put(Blending.class, (type, data) -> field(Blending.class, data));
 		put(CacheLayer.class, (type, data) -> modField(CacheLayer.class, CacheLayerf.class, data));
 		put(Attribute.class, (type, data) -> {
@@ -146,7 +146,7 @@ public class ExtraContentParser {
 		});
 		put(BulletType.class, (type, data) -> {
 			if (data.isString()) {
-				return modField(Bullets.class, Bulletsf.class, data);
+				return modField(Bullets.class, HBullets.class, data);
 			}
 			Class<?> bc = resolve(data.getString("type", ""), BasicBulletType.class);
 			data.remove("type");
@@ -204,14 +204,14 @@ public class ExtraContentParser {
 		//TODO this is untested
 		put(PartProgress.class, (type, data) -> {
 			//simple case: it's a string or number constant
-			if (data.isString()) return modField(PartProgress.class, HIPartProgress.class, data.asString());
+			if (data.isString()) return modField(PartProgress.class, HPartProgress.class, data.asString());
 			if (data.isNumber()) return PartProgress.constant(data.asFloat());
 
 			if (!data.has("type")) {
 				throw new RuntimeException("PartProgress object need a 'type' string field. Check the PartProgress class for a list of constants.");
 			}
 
-			PartProgress base = (PartProgress) modField(PartProgress.class, HIPartProgress.class, data.getString("type"));
+			PartProgress base = (PartProgress) modField(PartProgress.class, HPartProgress.class, data.getString("type"));
 
 			JsonValue opval =
 					data.has("operation") ? data.get("operation") :

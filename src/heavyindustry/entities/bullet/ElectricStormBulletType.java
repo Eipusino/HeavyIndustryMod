@@ -33,7 +33,7 @@ public class ElectricStormBulletType extends BulletType {
 
 	@Override
 	public void update(Bullet b) {
-		if (b.time >= b.lifetime - Fxf.chainLightningFade.lifetime) return;
+		if (b.time >= b.lifetime - HFx.chainLightningFade.lifetime) return;
 		float baseRange = splashDamageRadius * 0.1f + splashDamageRadius * 0.9f * b.finpow();
 		if (b.timer.get(lifetime / 15f)) {
 			Seq<Healthc> t = new Seq<>();
@@ -48,7 +48,7 @@ public class ElectricStormBulletType extends BulletType {
 			for (int i = 0; i < t.size; i++) {
 				Healthc hc = t.get(i);
 				if (hc != null) {
-					Fxf.chainLightningFade.at(b.x, b.y, 4, color.cpy().a(0.3f), hc);
+					HFx.chainLightningFade.at(b.x, b.y, 4, color.cpy().a(0.3f), hc);
 					Fx.randLifeSpark.at(hc.getX(), hc.getY(), b.angleTo(hc), color);
 					if (hc instanceof Building bd) {
 						bd.applySlowdown(0, 300);
@@ -84,12 +84,12 @@ public class ElectricStormBulletType extends BulletType {
 		}
 
 		if (b.timer.get(1, 27 * b.foutpow() + 3)) {
-			if (b.time >= b.lifetime - Fxf.chainLightningFade.lifetime) return;
+			if (b.time >= b.lifetime - HFx.chainLightningFade.lifetime) return;
 			for (int i = 0; i < 3; i++) {
 				float a = Mathf.random(360);
 				float x = Utils.dx(b.x, baseRange, a);
 				float y = Utils.dy(b.y, baseRange, a);
-				Fxf.chainLightningFade.at(x, y, 8, color, b);
+				HFx.chainLightningFade.at(x, y, 8, color, b);
 			}
 		}
 	}

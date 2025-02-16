@@ -4,7 +4,7 @@ import arc.math.*;
 import arc.math.Interp.*;
 
 /** @since 1.0.1 */
-public final class HIInterp {
+public final class HInterps {
 	public static final Interp
 			upThenFastDown = x -> 1.0115f * (1.833f * (0.9991f * x - 1.1f) + 0.2f / (0.9991f * x - 1.1f) + 2.2f),
 			artillery = x -> 1 - 2 * (x - 0.5f) * (x - 0.5f),
@@ -29,5 +29,5 @@ public final class HIInterp {
 	public static final PowOut pow25Out = new PowOut(25);
 
 	/** Don't let anyone instantiate this class. */
-	private HIInterp() {}
+	private HInterps() {}
 }

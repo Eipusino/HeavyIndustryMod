@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package heavyindustry.ui.tooltips
 
 import arc.scene.*

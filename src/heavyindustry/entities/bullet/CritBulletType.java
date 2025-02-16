@@ -17,7 +17,7 @@ public class CritBulletType extends BasicBulletType {
 	protected static Rand critRand = new Rand();
 
 	public float critChance = 0.15f, critMultiplier = 5f;
-	public Effect critEffect = Fxf.crit;
+	public Effect critEffect = HFx.crit;
 	public boolean bouncing, despawnHitEffects = true;
 
 	public CritBulletType(float speed, float damage, String sprite) {
@@ -28,7 +28,7 @@ public class CritBulletType extends BasicBulletType {
 		ammoMultiplier = 1;
 		shootEffect = Fx.shootBig;
 		smokeEffect = Fx.shootBigSmoke;
-		hitEffect = Fxf.critPierce;
+		hitEffect = HFx.critPierce;
 		hitColor = Pal.lightOrange;
 		trailLength = 10;
 		trailWidth = -1f;
@@ -119,7 +119,7 @@ public class CritBulletType extends BasicBulletType {
 	@Override
 	public void removed(Bullet b) {
 		if (trailLength > 0 && b.trail instanceof CritTrail trail && b.trail.size() > 0) {
-			Fxf.critTrailFade.at(b.x, b.y, trailWidth, backColor, trail.copy());
+			HFx.critTrailFade.at(b.x, b.y, trailWidth, backColor, trail.copy());
 		}
 	}
 

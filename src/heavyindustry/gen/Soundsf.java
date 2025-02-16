@@ -4,7 +4,7 @@ import arc.audio.*;
 import arc.files.*;
 import mindustry.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 
 public final class Soundsf {
 	public static Sound

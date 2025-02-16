@@ -22,13 +22,13 @@ import static mindustry.content.StatusEffects.*;
  *
  * @author Eipusino
  */
-public final class StatusEffectsf {
+public final class HStatusEffects {
 	public static StatusEffect
 			overheat, regenerating, breached, flamePoint, ultFireBurn,
 			territoryFieldIncrease, territoryFieldSuppress;
 
 	/** Don't let anyone instantiate this class. */
-	private StatusEffectsf() {}
+	private HStatusEffects() {}
 
 	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
 	public static void load() {
@@ -39,13 +39,13 @@ public final class StatusEffectsf {
 			speedMultiplier = 0.5f;
 			damage = 5f;
 			effectChance = 0.35f;
-			effect = Fxf.glowParticle;
+			effect = HFx.glowParticle;
 		}};
 		regenerating = new LoadStatusEffect("regenerating") {{
 			color = Palf.regenerating;
 			damage = -4;
 			effectChance = 0.3f;
-			effect = Fxf.glowParticle;
+			effect = HFx.glowParticle;
 			init(() -> opposite(sapped, slow, breached));
 		}};
 		breached = new LoadStatusEffect("breached") {{
@@ -89,7 +89,7 @@ public final class StatusEffectsf {
 			color = Pal.techBlue;
 			damage = 15f;
 			speedMultiplier = 1.2f;
-			effect = Fxf.ultFireBurn;
+			effect = HFx.ultFireBurn;
 		}};
 		territoryFieldIncrease = new LoadStatusEffect("territory-field-increase") {{
 			color = Color.valueOf("ea8878");

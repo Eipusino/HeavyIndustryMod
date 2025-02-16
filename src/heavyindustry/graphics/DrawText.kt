@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package heavyindustry.graphics
 
 import arc.graphics.*

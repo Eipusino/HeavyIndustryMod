@@ -15,7 +15,7 @@ import heavyindustry.type.*;
 import mindustry.*;
 import mindustry.type.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 import static mindustry.Vars.*;
 
 /**

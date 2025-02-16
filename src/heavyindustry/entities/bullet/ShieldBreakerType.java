@@ -20,7 +20,7 @@ public class ShieldBreakerType extends BasicBulletType {
 		@Override
 		public void despawned(Bullet b) {
 			if (b.absorbed && b.data instanceof Color color) {
-				Fxf.shuttle.at(b.x, b.y, Mathf.random(360f), color, b.damage / tilesize / 2f);
+				HFx.shuttle.at(b.x, b.y, Mathf.random(360f), color, b.damage / tilesize / 2f);
 				Effect.shake(b.damage / 100, b.damage / 100, b);
 				Sounds.plasmaboom.at(b);
 			}

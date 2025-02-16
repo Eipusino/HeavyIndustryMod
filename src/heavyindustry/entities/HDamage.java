@@ -23,7 +23,7 @@ import mindustry.world.*;
 
 import static mindustry.Vars.*;
 
-public final class Damagef {
+public final class HDamage {
 	public static final Seq<Unit> list = new Seq<>();
 
 	private static final UnitDamageEvent bulletDamageEvent = new UnitDamageEvent();
@@ -43,7 +43,7 @@ public final class Damagef {
 	private static boolean check;
 
 	/** Don't let anyone instantiate this class. */
-	private Damagef() {}
+	private HDamage() {}
 
 	public static void chain(Position origin, @Nullable Position targetPos, Team team, Unit current, IntSeq collided, Sound hitSound, Effect hitEffect, float power, float initialPower, float width, float distanceDamageFalloff, float pierceDamageFactor, int branches, float segmentLength, float arc, Color color) {
 		current.damage(power);
@@ -51,7 +51,7 @@ public final class Damagef {
 		//Scales down width based on percent of power left
 		float w = width * power / (initialPower);
 
-		Fxf.chainLightning.at(current.x, current.y, 0, color, new Fxf.VisualLightningHolder() {
+		HFx.chainLightning.at(current.x, current.y, 0, color, new HFx.VisualLightningHolder() {
 			@Override
 			public Vec2 start() {
 				return new Vec2(origin.getX(), origin.getY());
@@ -104,12 +104,12 @@ public final class Damagef {
 			if (list.size == 0) return;
 			float numberMultiplier = 1.0f / list.size;
 
-			list.each(u -> {
+			for (Unit u : list) {
 				float newDamage = power - distanceDamageFalloff * current.dst(u);
 				Log.info(Core.bundle.format("Old power was: {0}, while new one is {1}", power, newPower));
 				if (newPower < 0) return;
 				chain(current, u, collided, hitSound, hitEffect, newDamage * numberMultiplier, initialPower, width, distanceDamageFalloff, pierceDamageFactor, branches, segmentLength, arc, color);
-			});
+			}
 		});
 	}
 

@@ -18,8 +18,8 @@ import mindustry.world.blocks.*
 import mindustry.world.meta.*
 
 open class SorterRevamp(name: String) : Block(name) {
-	@JvmField var cross = Varsf.whiteRegion
-	@JvmField var source = Varsf.whiteRegion
+	@JvmField var cross = HVars.whiteRegion
+	@JvmField var source = HVars.whiteRegion
 	@JvmField var invert = false
 
 	init {

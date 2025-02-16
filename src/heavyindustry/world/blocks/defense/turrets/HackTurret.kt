@@ -19,9 +19,9 @@ import mindustry.world.meta.*
 open class HackTurret(name: String) : BaseTurret(name) {
 	@JvmField val targets = Seq<Unit>()
 
-	@JvmField var baseRegion = Varsf.whiteRegion
-	@JvmField var laser = Varsf.whiteRegion
-	@JvmField var laserEnd = Varsf.whiteRegion
+	@JvmField var baseRegion = HVars.whiteRegion
+	@JvmField var laser = HVars.whiteRegion
+	@JvmField var laserEnd = HVars.whiteRegion
 
 	@JvmField var shootCone = 6f
 	@JvmField var shootLength = 5f

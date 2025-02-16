@@ -7,12 +7,12 @@ import heavyindustry.input.InputAggregator.*;
 import mindustry.gen.*;
 import mindustry.net.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 import static mindustry.Vars.*;
 
-public final class HICall {
+public final class HCall {
 	/** Don't let anyone instantiate this class. */
-	private HICall() {}
+	private HCall() {}
 
 	public static void init() {
 		Net.registerPacket(TapPacket::new);

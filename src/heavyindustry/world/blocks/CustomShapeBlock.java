@@ -23,7 +23,6 @@ import mindustry.world.blocks.ConstructBlock.*;
 
 import java.lang.reflect.*;
 
-import static heavyindustry.util.Collect.*;
 import static mindustry.Vars.*;
 
 public class CustomShapeBlock extends Block {
@@ -194,7 +193,7 @@ public class CustomShapeBlock extends Block {
 				tileChangeEvent.set(null);
 			}
 			removingSubs = false;
-			subBuilding = intOf();
+			subBuilding = new int[0];
 		}
 
 		protected boolean updateRotation(Runnable callback) {

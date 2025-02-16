@@ -14,7 +14,7 @@ import mindustry.world.blocks.Autotiler.*
 import mindustry.world.meta.*
 
 open class OverchargeDuct(name: String) : TubeDuct(name) {
-	@JvmField var glowRegions = Array(5) { Varsf.whiteRegion }
+	@JvmField var glowRegions = Array(5) { HVars.whiteRegion }
 
 	@JvmField var glowAlpha = 1f
 	@JvmField var glowColor = Pal.redLight

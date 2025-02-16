@@ -38,7 +38,7 @@ import java.text.*;
 import java.util.*;
 import java.util.regex.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 import static mindustry.Vars.*;
 
 /**
@@ -114,6 +114,7 @@ public final class Utils {
 			"heavyindustry.ui.listeners",
 			"heavyindustry.ui.tooltips",
 			"heavyindustry.util",
+			"heavyindustry.util.comp",
 			"heavyindustry.util.path",
 			"heavyindustry.util.pools",
 			//"heavyindustry.world",
@@ -1074,7 +1075,7 @@ public final class Utils {
 
 	public static void randFadeLightningEffectScl(float x, float y, float range, float sclMin, float sclMax, float lightningPieceLength, Color color, boolean in) {
 		v1.rnd(range).scl(Mathf.random(sclMin, sclMax)).add(x, y);
-		(in ? Fxf.chainLightningFadeReversed : Fxf.chainLightningFade).at(x, y, lightningPieceLength, color, v1.cpy());
+		(in ? HFx.chainLightningFadeReversed : HFx.chainLightningFade).at(x, y, lightningPieceLength, color, v1.cpy());
 	}
 
 	public static Unit teleportUnitNet(Unit before, float x, float y, float angle, Player player) {

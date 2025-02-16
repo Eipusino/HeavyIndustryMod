@@ -27,7 +27,7 @@ import mindustry.world.blocks.payloads.*;
 
 import java.util.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 import static mindustry.Vars.*;
 
 /**
@@ -36,7 +36,7 @@ import static mindustry.Vars.*;
  *
  * @author Eipusino
  */
-public final class Fxf {
+public final class HFx {
 	public static final float lightningAlign = 0.5f;
 
 	public static final Rand rand = new Rand(), rand0 = new Rand(0), rand1 = new Rand(), rand2 = new Rand();
@@ -2121,7 +2121,7 @@ public final class Fxf {
 			});
 
 	/** Don't let anyone instantiate this class. */
-	private Fxf() {}
+	private HFx() {}
 
 	public static Effect impactExplode(float size, float lifeTime) {
 		return impactExplode(size, lifeTime, false);
@@ -2807,17 +2807,17 @@ public final class Fxf {
 		});
 	}
 
-	/** Refer to {@link Fxf#burstCloud(float, float, int, float, Color)} */
+	/** Refer to {@link HFx#burstCloud(float, float, int, float, Color)} */
 	public static Effect burstCloud(Color color) {
 		return burstCloud(15, color);
 	}
 
-	/** Refer to {@link Fxf#burstCloud(float, float, int, float, Color)} */
+	/** Refer to {@link HFx#burstCloud(float, float, int, float, Color)} */
 	public static Effect burstCloud(float size, Color color) {
 		return burstCloud(size, 22, 160, color);
 	}
 
-	/** Refer to {@link Fxf#burstCloud(float, float, int, float, Color)} */
+	/** Refer to {@link HFx#burstCloud(float, float, int, float, Color)} */
 	public static Effect burstCloud(float size, int amount, float spreadRad, Color color) {
 		return burstCloud(size, size * 6, amount, spreadRad, color);
 	}

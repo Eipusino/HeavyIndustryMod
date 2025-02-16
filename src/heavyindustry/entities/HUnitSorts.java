@@ -11,7 +11,7 @@ import mindustry.world.meta.*;
 
 import java.util.*;
 
-public final class UnitSortsf {
+public final class HUnitSorts {
 	public static final Sortf slowest = (u, x, y) -> u.speed() + Mathf.dst2(u.x, u.y, x, y) / 6400f;
 	public static final Sortf fastest = (u, x, y) -> -u.speed() + Mathf.dst2(u.x, u.y, x, y) / 6400f;
 
@@ -69,7 +69,7 @@ public final class UnitSortsf {
 	}
 
 	/** Don't let anyone instantiate this class. */
-	private UnitSortsf() {}
+	private HUnitSorts() {}
 
 	public static Unit[] closetEnemies(int targets, Teamc team, float range) {
 		return closetEnemies(targets, team, team.x(), team.y(), range);

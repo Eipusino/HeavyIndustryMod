@@ -26,7 +26,7 @@ import mindustry.world.meta.*;
  * @since 1.0.6
  */
 public abstract class BaseMirrorShieldAbility extends Ability implements CollideBlockerAbility {
-	public Effect breakEffect = Fxf.mirrorShieldBreak;
+	public Effect breakEffect = HFx.mirrorShieldBreak;
 	public Effect reflectEffect = Fx.none;
 	public Effect refrectEffect = Fx.absorb;
 

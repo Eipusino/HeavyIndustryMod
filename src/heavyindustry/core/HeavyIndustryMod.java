@@ -37,7 +37,7 @@ import java.time.*;
 import java.time.format.*;
 import java.util.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 import static mindustry.Vars.*;
 
 /**
@@ -47,7 +47,7 @@ import static mindustry.Vars.*;
  * code in the mod as much as possible, which means it is unlikely to have too many built-in utilities.</strong>
  *
  * @author Eipusino
- * @see Varsf
+ * @see HVars
  */
 public final class HeavyIndustryMod extends Mod {
 	/** The author of this mod. */
@@ -124,7 +124,7 @@ public final class HeavyIndustryMod extends Mod {
 
 		Events.on(FileTreeInitEvent.class, event -> {
 			if (!headless) {
-				HIFonts.load();
+				HFonts.load();
 				Soundsf.load();
 				Core.app.post(() -> {
 					Shadersf.init();
@@ -151,25 +151,25 @@ public final class HeavyIndustryMod extends Mod {
 
 	@Override
 	public void loadContent() {
-		HICall.init();
+		HCall.init();
 
 		EntityRegister.load();
 		WorldRegister.load();
 
-		Bulletsf.load();
+		HBullets.load();
 
 		if (!isPlugin) {
 			Teamsf.load();
-			Itemsf.load();
-			StatusEffectsf.load();
-			Liquidsf.load();
-			UnitTypesf.load();
-			Blocksf.load();
-			Weathersf.load();
-			Overrides.load();
-			Planetsf.load();
-			SectorPresetsf.load();
-			TechTreef.load();
+			HItems.load();
+			HStatusEffects.load();
+			HLiquids.load();
+			HUnitTypes.load();
+			HBlocks.load();
+			HWeathers.load();
+			HOverrides.load();
+			HPlanets.load();
+			HSectorPresets.load();
+			HTechTree.load();
 		}
 
 		Utils.loadItems();
@@ -187,7 +187,7 @@ public final class HeavyIndustryMod extends Mod {
 			ScreenSampler.setup();
 			Draw3d.init();
 
-			HIStyles.init();
+			HStyles.init();
 			UIUtils.init();
 		}
 
@@ -200,7 +200,7 @@ public final class HeavyIndustryMod extends Mod {
 		Core.settings.defaults("hi-animated-shields", true);
 
 		if (!headless && !isPlugin && mods.locateMod("extra-utilities") == null && isAprilFoolsDay()) {
-			Overrides.loadAprilFoolsDay();
+			HOverrides.loadAprilFoolsDay();
 
 			if (ui != null) {
 				Events.on(ClientLoadEvent.class, event -> Time.runTask(10f, () -> {

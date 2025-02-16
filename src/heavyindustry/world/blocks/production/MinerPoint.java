@@ -42,7 +42,7 @@ public class MinerPoint extends Block {
 	public boolean alwaysCons = false;
 	public boolean limitSize = true;
 
-	public UnitType MinerUnit = UnitTypesf.miner;
+	public UnitType MinerUnit = HUnitTypes.miner;
 
 	public boolean canPickUp = false;
 

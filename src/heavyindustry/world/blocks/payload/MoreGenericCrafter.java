@@ -28,7 +28,6 @@ import mindustry.world.meta.*;
  * @since 1.0.6
  */
 @Deprecated
-@SuppressWarnings("unused")
 public class MoreGenericCrafter extends PayloadBlock {
 	public @Nullable ItemStack[] outputItems;
 	public @Nullable LiquidStack[] outputLiquids;

@@ -21,11 +21,11 @@ import mindustry.type.*;
 import mindustry.world.meta.*;
 
 /** Defines the {@linkplain Planet planets} and other celestial objects this mod offers. */
-public final class Planetsf {
+public final class HPlanets {
 	public static Planet serilia, kepler, gliese;
 
 	/** Don't let anyone instantiate this class. */
-	private Planetsf() {}
+	private HPlanets() {}
 
 	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
 	public static void load() {
@@ -93,7 +93,7 @@ public final class Planetsf {
 							magnitude = 1.2f;
 							min = 0.3f;
 							max = 0.6f;
-							out = Blocksf.corruptedMoss.mapColor;
+							out = HBlocks.corruptedMoss.mapColor;
 							offset.set(1500f, 300f, -500f);
 						}},
 						new NoiseColorPass() {{
@@ -104,7 +104,7 @@ public final class Planetsf {
 							magnitude = 1.2f;
 							min = 0.1f;
 							max = 0.4f;
-							out = Blocksf.overgrownGrass.mapColor;
+							out = HBlocks.overgrownGrass.mapColor;
 							offset.set(1500f, 300f, -500f);
 						}},
 						new NoiseColorPass() {{
@@ -115,7 +115,7 @@ public final class Planetsf {
 							magnitude = 1.2f;
 							min = 0.1f;
 							max = 0.4f;
-							out = Blocksf.mycelium.mapColor;
+							out = HBlocks.mycelium.mapColor;
 							offset.set(1500f, 300f, -500f);
 						}}
 				);
@@ -217,7 +217,7 @@ public final class Planetsf {
 							magnitude = 1.2f;
 							min = 0f;
 							max = 0.6f;
-							out = Blocksf.stoneHalf.mapColor;
+							out = HBlocks.stoneHalf.mapColor;
 							offset.set(1500f, 0f, 0f);
 						}},
 						new NoiseColorPass() {{
@@ -228,7 +228,7 @@ public final class Planetsf {
 							magnitude = 1.2f;
 							min = 0f;
 							max = 0.35f;
-							out = Blocksf.stoneFull.mapColor;
+							out = HBlocks.stoneFull.mapColor;
 							offset.set(1500f, 0f, 0f);
 						}},
 						new NoiseColorPass() {{
@@ -239,7 +239,7 @@ public final class Planetsf {
 							magnitude = 1f;
 							min = 0f;
 							max = 0.4f;
-							out = Blocksf.stoneFullTiles.mapColor;
+							out = HBlocks.stoneFullTiles.mapColor;
 							offset.set(1500f, 0f, 0f);
 						}},
 						new NoiseColorPass() {{
@@ -250,7 +250,7 @@ public final class Planetsf {
 							magnitude = 6f;
 							min = 0f;
 							max = 0.4f;
-							out = Blocksf.stoneTiles.mapColor;
+							out = HBlocks.stoneTiles.mapColor;
 							offset.set(1500f, 0f, 0f);
 						}},
 						new FlatColorPass() {{
@@ -303,6 +303,6 @@ public final class Planetsf {
 	}
 
 	public static Texture rings(String name) {
-		return new Texture(Varsf.internalTree.child("sprites/planets/rings/" + name + ".png"));
+		return new Texture(HVars.internalTree.child("sprites/planets/rings/" + name + ".png"));
 	}
 }

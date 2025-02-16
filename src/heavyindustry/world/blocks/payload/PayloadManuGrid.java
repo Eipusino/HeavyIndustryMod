@@ -37,7 +37,7 @@ public class PayloadManuGrid extends PayloadBlock {
 	public float ingredientRadius = 4f * Vars.tilesize;
 	public Interp mergeInterp = Interp.pow2In, sizeInterp = a -> 1f - Interp.pow2In.apply(a);
 	public Effect mergeEffect = Fx.producesmoke, loadEffect = Fx.producesmoke,
-			craftEffect = Fxf.payloadManufacture, failEffect = Fxf.payloadManufactureFail;
+			craftEffect = HFx.payloadManufacture, failEffect = HFx.payloadManufactureFail;
 	public Sound craftSound = Sounds.place;
 
 	public TextureRegion stackRegion, stackBottomRegion1, stackBottomRegion2;

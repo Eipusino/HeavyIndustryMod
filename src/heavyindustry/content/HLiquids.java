@@ -15,14 +15,14 @@ import mindustry.type.*;
  *
  * @author Eipusino
  */
-public final class Liquidsf {
+public final class HLiquids {
 	private static final int nanoFluidId = Draws.nextTaskId();
 
 	public static Liquid
 			brine, methane, nanoFluid, nitratedOil, originiumFluid;
 
 	/** Don't let anyone instantiate this class. */
-	private Liquidsf() {}
+	private HLiquids() {}
 
 	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
 	public static void load() {
@@ -43,7 +43,7 @@ public final class Liquidsf {
 			temperature = 0.3f;
 			lightColor = color.cpy().a(0.3f);
 			particleSpacing = 10;
-			particleEffect = WrapperEffect.wrap(Fxf.glowParticle, color);
+			particleEffect = WrapperEffect.wrap(HFx.glowParticle, color);
 			effect = StatusEffects.electrified;
 			coolant = true;
 		}

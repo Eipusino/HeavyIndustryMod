@@ -59,12 +59,12 @@ public class TerritoryFieldAbility extends Ability {
 	public void update(Unit unit) {
 		Units.nearby(unit.team, unit.x, unit.y, range, u -> {
 			if (u != unit) {
-				u.apply(StatusEffectsf.territoryFieldIncrease, 60);
+				u.apply(HStatusEffects.territoryFieldIncrease, 60);
 				if (healAmount > 0 && !u.dead && u.health < u.maxHealth) u.heal((healAmount / 60f) * Time.delta);
 			}
 		});
 		Units.nearbyEnemies(unit.team, unit.x, unit.y, range, u -> {
-			u.apply(StatusEffectsf.territoryFieldSuppress, 60);
+			u.apply(HStatusEffects.territoryFieldSuppress, 60);
 			if (damageAmount > 0 && !u.dead && u.targetable(unit.team)) u.damage((damageAmount / 60f) * Time.delta);
 		});
 

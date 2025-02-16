@@ -13,7 +13,7 @@ import arc.util.pooling.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 import static heavyindustry.util.Structf.*;
 
 public final class Trails {

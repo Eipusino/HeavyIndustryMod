@@ -359,7 +359,9 @@ public class TubeItemBridge extends ItemBridge {
 				configure(-1);
 			}
 			if (orderedMap.containsKey(this)) orderedMap.remove(this);
-			orderedMap.each((other, linked) -> Drawf.select(other.x, other.y, (float) (other.block().size * 8) / 2f + 2f + (linked ? 0f : Mathf.absin(Time.time, 4f, 1f)), linked ? Pal.place : Pal.breakInvalid));
+			for (var ord : orderedMap) {
+				Drawf.select(ord.key.x, ord.key.y, (ord.key.block().size * 8f) / 2f + 2f + (ord.value ? 0f : Mathf.absin(Time.time, 4f, 1f)), ord.value ? Pal.place : Pal.breakInvalid);
+			}
 		}
 
 		@Override

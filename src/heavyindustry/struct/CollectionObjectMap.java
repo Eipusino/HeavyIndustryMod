@@ -3,7 +3,6 @@ package heavyindustry.struct;
 import arc.struct.*;
 
 import java.util.*;
-import java.util.function.*;
 
 /**
  * Implementation of Java Collection Framework Map based on {@link ObjectMap} wrapper,
@@ -14,38 +13,39 @@ public class CollectionObjectMap<K, V> implements Map<K, V> {
 	protected ObjectMap<K, V> map;
 
 	private final Set<K> keys = new AbstractSet<>() {
+		@Override
 		public int size() {
 			return map.size;
 		}
 
+		@Override
 		public void clear() {
 			map.clear();
 		}
 
+		@Override
 		public Iterator<K> iterator() {
 			return map.keys();
 		}
 
+		@Override
 		public boolean contains(Object o) {
 			return containsKey(o);
 		}
 
+		@Override
 		public boolean remove(Object key) {
 			return CollectionObjectMap.this.remove(key) != null;
 		}
 
+		@Override
 		public Object[] toArray() {
 			return map.keys().toSeq().toArray();
 		}
 
+		@Override
 		public <T> T[] toArray(T[] a) {
 			return map.keys().toSeq().toArray(a.getClass().getComponentType());
-		}
-
-		public void forEach(Consumer<? super K> action) {
-			for (K k : this) {
-				action.accept(k);
-			}
 		}
 	};
 
@@ -60,24 +60,24 @@ public class CollectionObjectMap<K, V> implements Map<K, V> {
 			return map.size;
 		}
 
+		@Override
 		public void clear() {
 			CollectionObjectMap.this.clear();
 		}
 
+		@Override
 		public boolean contains(Object o) {
 			return containsValue(o);
 		}
 
+		@Override
 		public Object[] toArray() {
 			return map.values().toSeq().toArray();
 		}
 
+		@Override
 		public <T> T[] toArray(T[] a) {
 			return map.values().toSeq().toArray(a.getClass().getComponentType());
-		}
-
-		public void forEach(Consumer<? super V> action) {
-			map.values().forEach(action);
 		}
 	};
 
@@ -85,40 +85,37 @@ public class CollectionObjectMap<K, V> implements Map<K, V> {
 		private final Itr itr = new Itr();
 		private final Ent ent = new Ent();
 
+		@Override
 		public int size() {
 			return map.size;
 		}
 
+		@Override
 		public void clear() {
 			map.clear();
 		}
 
+		@Override
 		public Iterator<Entry<K, V>> iterator() {
 			itr.entries = map.entries();
 			return itr;
 		}
 
+		@Override
 		public boolean contains(Object o) {
 			if (!(o instanceof Map.Entry<?, ?> e))
 				return false;
 			Object key = e.getKey();
-			return CollectionObjectMap.this.containsKey(key);
+			return containsKey(key);
 		}
 
+		@Override
 		public boolean remove(Object o) {
 			if (o instanceof Map.Entry<?, ?> e) {
 				Object key = e.getKey();
 				return CollectionObjectMap.this.remove(key) != null;
 			}
 			return false;
-		}
-
-		@Override
-		public void forEach(Consumer<? super Entry<K, V>> action) {
-			map.entries().forEach(e -> {
-				ent.entry = e;
-				action.accept(ent);
-			});
 		}
 
 		class Itr implements Iterator<Entry<K, V>> {
@@ -208,21 +205,6 @@ public class CollectionObjectMap<K, V> implements Map<K, V> {
 	}
 
 	@Override
-	public V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
-		Objects.requireNonNull(mappingFunction);
-		V v = get(key);
-		if (v == null) {
-			V newValue;
-			if ((newValue = mappingFunction.apply(key)) != null) {
-				put(key, newValue);
-				return newValue;
-			}
-		}
-
-		return v;
-	}
-
-	@Override
 	public V put(K key, V value) {
 		return map.put(key, value);
 	}
@@ -234,7 +216,9 @@ public class CollectionObjectMap<K, V> implements Map<K, V> {
 
 	@Override
 	public void putAll(Map<? extends K, ? extends V> m) {
-		m.forEach(this::put);
+		for (var set : m.entrySet()) {
+			put(set.getKey(), set.getValue());
+		}
 	}
 
 	@Override

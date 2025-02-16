@@ -4,7 +4,7 @@ import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.Texture.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 
 public final class Textures {
 	public static Texture smooth, particle, darker, gaussian, median, armor;

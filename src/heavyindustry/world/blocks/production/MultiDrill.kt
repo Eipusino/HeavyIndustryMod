@@ -33,9 +33,9 @@ open class MultiDrill(name: String) : Block(name) {
 
 	@JvmField var heatColor = Color.valueOf("ff5512")
 
-	@JvmField var rimRegion = Varsf.whiteRegion
-	@JvmField var rotatorRegion = Varsf.whiteRegion
-	@JvmField var topRegion = Varsf.whiteRegion
+	@JvmField var rimRegion = HVars.whiteRegion
+	@JvmField var rotatorRegion = HVars.whiteRegion
+	@JvmField var topRegion = HVars.whiteRegion
 
 	init {
 		update = true

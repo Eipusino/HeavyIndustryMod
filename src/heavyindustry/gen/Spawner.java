@@ -25,7 +25,7 @@ import mindustry.ui.*;
 
 import java.nio.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 import static mindustry.Vars.*;
 
 public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
@@ -91,7 +91,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 		Groups.draw.add(this);
 		Groups.sync.add(this);
 
-		Fxf.spawnWave.at(x, y, drawSize * 1.1f, team.color);
+		HFx.spawnWave.at(x, y, drawSize * 1.1f, team.color);
 
 		added = true;
 	}
@@ -144,17 +144,17 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 		Effect.shake(type.hitSize / 3f, type.hitSize / 4f, toSpawn);
 		Soundsf.jumpIn.at(toSpawn.x, toSpawn.y);
 		if (type.flying) {
-			Fxf.jumpTrail.at(toSpawn.x, toSpawn.y, rotation(), team.color, type);
-			toSpawn.apply(StatusEffects.slow, Fxf.jumpTrail.lifetime);
+			HFx.jumpTrail.at(toSpawn.x, toSpawn.y, rotation(), team.color, type);
+			toSpawn.apply(StatusEffects.slow, HFx.jumpTrail.lifetime);
 		} else {
-			Fxf.spawn.at(x, y, type.hitSize, team.color);
+			HFx.spawn.at(x, y, type.hitSize, team.color);
 			Fx.unitSpawn.at(toSpawn.x, toSpawn.y, rotation(), type);
 			Time.run(Fx.unitSpawn.lifetime, () -> {
 				for (int j = 0; j < 3; j++) {
 					Time.run(j * 8, () -> Fx.spawn.at(toSpawn));
 				}
-				Fxf.spawnGround.at(toSpawn.x, toSpawn.y, type.hitSize / tilesize * 3, team.color);
-				Fxf.circle.at(toSpawn.x, toSpawn.y, type.hitSize * 4, team.color);
+				HFx.spawnGround.at(toSpawn.x, toSpawn.y, type.hitSize / tilesize * 3, team.color);
+				HFx.circle.at(toSpawn.x, toSpawn.y, type.hitSize * 4, team.color);
 			});
 		}
 

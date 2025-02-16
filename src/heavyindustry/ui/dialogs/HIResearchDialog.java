@@ -139,17 +139,16 @@ public class HIResearchDialog extends BaseDialog {
 						amount = -amount;
 
 						double percentage = (double) amount / get(item);
-						int[] counter = {amount};
-						cache.each((sector, seq) -> {
-							if (counter[0] == 0) return;
+						for (var cac : cache) {
+							if (amount == 0) return;
 
-							int toRemove = Math.min((int) Math.ceil(percentage * seq.get(item)), counter[0]);
+							int toRemove = Math.min((int) Math.ceil(percentage * cac.value.get(item)), amount);
 
-							sector.removeItem(item, toRemove);
-							seq.remove(item, toRemove);
+							cac.key.removeItem(item, toRemove);
+							cac.value.remove(item, toRemove);
 
-							counter[0] -= toRemove;
-						});
+							amount -= toRemove;
+						}
 
 						amount = -amount;
 					}

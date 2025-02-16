@@ -17,7 +17,7 @@ public class PlanetMenuRenderer extends MenuRenderer {
 		camPos.set(0f, -1f, 4f);
 		alwaysDrawAtmosphere = true;
 		drawUi = false;
-		planet = Planetsf.serilia;
+		planet = HPlanets.serilia;
 		zoom = 0.3f;
 	}};
 

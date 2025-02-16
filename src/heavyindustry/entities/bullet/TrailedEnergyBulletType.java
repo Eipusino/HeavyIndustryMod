@@ -49,10 +49,10 @@ public class TrailedEnergyBulletType extends AccelBulletType {
 				if (despawnBlinkTrail || (b.absorbed && hitBlinkTrail)) {
 					PositionLightning.createBoltEffect(hitColor, tracerStroke * 2f, points);
 					Vec2 v = points.firstTmp();
-					Fxf.hitEmpColorSpark.at(v.x, v.y, hitColor);
+					HFx.hitEmpColorSpark.at(v.x, v.y, hitColor);
 				} else {
 					points.add(tracerStroke, tracerFadeOffset);
-					Fxf.lightningFade.at(b.x, b.y, tracerStrokeOffset, hitColor, points);
+					HFx.lightningFade.at(b.x, b.y, tracerStrokeOffset, hitColor, points);
 				}
 			}
 
@@ -80,10 +80,10 @@ public class TrailedEnergyBulletType extends AccelBulletType {
 			if (hitBlinkTrail) {
 				PositionLightning.createBoltEffect(hitColor, tracerStroke * 2f, points);
 				Vec2 v = points.firstTmp();
-				Fxf.hitEmpColorSpark.at(v.x, v.y, hitColor);
+				HFx.hitEmpColorSpark.at(v.x, v.y, hitColor);
 			} else {
 				points.add(tracerStroke, tracerFadeOffset);
-				Fxf.lightningFade.at(b.x, b.y, tracerStrokeOffset, hitColor, points);
+				HFx.lightningFade.at(b.x, b.y, tracerStrokeOffset, hitColor, points);
 			}
 		}
 

@@ -59,7 +59,7 @@ import mindustry.world.consumers.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 
-import static heavyindustry.Varsf.*;
+import static heavyindustry.HVars.*;
 import static mindustry.Vars.*;
 import static mindustry.type.ItemStack.*;
 
@@ -70,7 +70,7 @@ import static mindustry.type.ItemStack.*;
  *
  * @author Eipusino
  */
-public final class Blocksf {
+public final class HBlocks {
 	public static Block
 			//environment
 			cliff, cliffHelper,
@@ -151,7 +151,7 @@ public final class Blocksf {
 			nextWave;
 
 	/** Don't let anyone instantiate this class. */
-	private Blocksf() {}
+	private HBlocks() {}
 
 	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
 	public static void load() {
@@ -281,34 +281,34 @@ public final class Blocksf {
 			}
 		};
 		softRareEarth = new Floor("soft-rare-earth", 3) {{
-			itemDrop = Itemsf.rareEarth;
+			itemDrop = HItems.rareEarth;
 			playerUnmineable = true;
 		}};
 		patternRareEarth = new Floor("pattern-rare-earth", 4) {{
-			itemDrop = Itemsf.rareEarth;
+			itemDrop = HItems.rareEarth;
 			playerUnmineable = true;
 		}};
 		softRareEarthWall = new StaticWall("soft-rare-earth-wall") {{
 			variants = 2;
-			itemDrop = Itemsf.rareEarth;
+			itemDrop = HItems.rareEarth;
 			softRareEarth.asFloor().wall = patternRareEarth.asFloor().wall = this;
 		}};
 		brine = new Floor("pooled-brine", 0) {{
 			drownTime = 200f;
 			speedMultiplier = 0.1f;
 			variants = 0;
-			liquidDrop = Liquidsf.brine;
+			liquidDrop = HLiquids.brine;
 			liquidMultiplier = 1.1f;
 			isLiquid = true;
 			cacheLayer = CacheLayerf.brine;
 			albedo = 1f;
 		}};
 		nanoFluid = new Floor("pooled-nano-fluid", 0) {{
-			status = StatusEffectsf.regenerating;
+			status = HStatusEffects.regenerating;
 			statusDuration = 60f;
 			drownTime = 160f;
 			speedMultiplier = 0.6f;
-			liquidDrop = Liquidsf.nanoFluid;
+			liquidDrop = HLiquids.nanoFluid;
 			isLiquid = true;
 			cacheLayer = CacheLayerf.nanoFluid;
 			liquidMultiplier = 0.5f;
@@ -445,13 +445,13 @@ public final class Blocksf {
 		myceliumPine = new StaticWall("mycelium-pine") {{
 			variants = 2;
 		}};
-		oreUranium = new OreBlock("ore-uranium", Itemsf.uranium) {{
+		oreUranium = new OreBlock("ore-uranium", HItems.uranium) {{
 			variants = 3;
 			oreDefault = true;
 			oreThreshold = 0.89f;
 			oreScale = 33;
 		}};
-		oreChromium = new OreBlock("ore-chromium", Itemsf.chromium) {{
+		oreChromium = new OreBlock("ore-chromium", HItems.chromium) {{
 			variants = 3;
 			oreDefault = true;
 			oreThreshold = 0.9f;
@@ -507,7 +507,7 @@ public final class Blocksf {
 			armor = 5f;
 		}};
 		uraniumWall = new Wall("uranium-wall") {{
-			requirements(Category.defense, with(Itemsf.uranium, 6));
+			requirements(Category.defense, with(HItems.uranium, 6));
 			size = 1;
 			health = 1680;
 			armor = 24f;
@@ -515,7 +515,7 @@ public final class Blocksf {
 			crushDamageMultiplier = 0.8f;
 		}};
 		uraniumWallLarge = new Wall("uranium-wall-large") {{
-			requirements(Category.defense, with(Itemsf.uranium, 24));
+			requirements(Category.defense, with(HItems.uranium, 24));
 			size = 2;
 			health = 6720;
 			armor = 24f;
@@ -523,7 +523,7 @@ public final class Blocksf {
 			crushDamageMultiplier = 0.8f;
 		}};
 		chromiumWall = new Wall("chromium-wall") {{
-			requirements(Category.defense, with(Itemsf.chromium, 6));
+			requirements(Category.defense, with(HItems.chromium, 6));
 			size = 1;
 			health = 1770;
 			armor = 36f;
@@ -531,7 +531,7 @@ public final class Blocksf {
 			crushDamageMultiplier = 0.7f;
 		}};
 		chromiumWallLarge = new Wall("chromium-wall-large") {{
-			requirements(Category.defense, with(Itemsf.chromium, 24));
+			requirements(Category.defense, with(HItems.chromium, 24));
 			size = 2;
 			health = 7080;
 			armor = 36f;
@@ -539,7 +539,7 @@ public final class Blocksf {
 			crushDamageMultiplier = 0.7f;
 		}};
 		chromiumDoor = new AutoDoor("chromium-door") {{
-			requirements(Category.defense, with(Itemsf.chromium, 6, Items.silicon, 4));
+			requirements(Category.defense, with(HItems.chromium, 6, Items.silicon, 4));
 			size = 1;
 			health = 1770;
 			armor = 36f;
@@ -547,7 +547,7 @@ public final class Blocksf {
 			crushDamageMultiplier = 0.7f;
 		}};
 		chromiumDoorLarge = new AutoDoor("chromium-door-large") {{
-			requirements(Category.defense, with(Itemsf.chromium, 24, Items.silicon, 16));
+			requirements(Category.defense, with(HItems.chromium, 24, Items.silicon, 16));
 			size = 2;
 			health = 7080;
 			armor = 36f;
@@ -555,7 +555,7 @@ public final class Blocksf {
 			crushDamageMultiplier = 0.7f;
 		}};
 		heavyAlloyWall = new Wall("heavy-alloy-wall") {{
-			requirements(Category.defense, with(Itemsf.heavyAlloy, 6, Items.metaglass, 3, Items.plastanium, 4));
+			requirements(Category.defense, with(HItems.heavyAlloy, 6, Items.metaglass, 3, Items.plastanium, 4));
 			size = 1;
 			health = 3220;
 			armor = 48f;
@@ -563,7 +563,7 @@ public final class Blocksf {
 			crushDamageMultiplier = 0.5f;
 		}};
 		heavyAlloyWallLarge = new Wall("heavy-alloy-wall-large") {{
-			requirements(Category.defense, with(Itemsf.heavyAlloy, 24, Items.metaglass, 12, Items.plastanium, 16));
+			requirements(Category.defense, with(HItems.heavyAlloy, 24, Items.metaglass, 12, Items.plastanium, 16));
 			size = 2;
 			health = 12880;
 			armor = 48f;
@@ -571,7 +571,7 @@ public final class Blocksf {
 			crushDamageMultiplier = 0.5f;
 		}};
 		nanoCompositeWall = new RegenWall("nano-composite-wall") {{
-			requirements(Category.defense, with(Itemsf.nanoCore, 2, Itemsf.heavyAlloy, 6, Items.metaglass, 1, Items.plastanium, 4));
+			requirements(Category.defense, with(HItems.nanoCore, 2, HItems.heavyAlloy, 6, Items.metaglass, 1, Items.plastanium, 4));
 			size = 1;
 			health = 2680;
 			armor = 42f;
@@ -582,7 +582,7 @@ public final class Blocksf {
 			regenPercent = 0.5f;
 		}};
 		nanoCompositeWallLarge = new RegenWall("nano-composite-wall-large") {{
-			requirements(Category.defense, with(Itemsf.nanoCore, 8, Itemsf.heavyAlloy, 24, Items.metaglass, 4, Items.plastanium, 16));
+			requirements(Category.defense, with(HItems.nanoCore, 8, HItems.heavyAlloy, 24, Items.metaglass, 4, Items.plastanium, 16));
 			size = 2;
 			health = 10720;
 			armor = 42f;
@@ -593,7 +593,7 @@ public final class Blocksf {
 			regenPercent = 0.5f;
 		}};
 		shapedWall = new ShapedWall("shaped-wall") {{
-			requirements(Category.defense, BuildVisibility.sandboxOnly, with(Itemsf.heavyAlloy, 8, Items.phaseFabric, 6));
+			requirements(Category.defense, BuildVisibility.sandboxOnly, with(HItems.heavyAlloy, 8, Items.phaseFabric, 6));
 			health = 3080;
 			armor = 16f;
 			insulated = absorbLasers = true;
@@ -714,7 +714,7 @@ public final class Blocksf {
 			hideDetails = false;
 		}};
 		aparajito = new AparajitoWall("aparajito") {{
-			requirements(Category.defense, with(Itemsf.uranium, 3, Itemsf.chromium, 4, Items.phaseFabric, 2));
+			requirements(Category.defense, with(HItems.uranium, 3, HItems.chromium, 4, Items.phaseFabric, 2));
 			size = 1;
 			health = 2055;
 			armor = 44f;
@@ -722,7 +722,7 @@ public final class Blocksf {
 			buildCostMultiplier = 4f;
 		}};
 		aparajitoLarge = new AparajitoWall("aparajito-large") {{
-			requirements(Category.defense, with(Itemsf.uranium, 12, Itemsf.chromium, 16, Items.phaseFabric, 8));
+			requirements(Category.defense, with(HItems.uranium, 12, HItems.chromium, 16, Items.phaseFabric, 8));
 			size = 2;
 			health = 8220;
 			armor = 44f;
@@ -807,7 +807,7 @@ public final class Blocksf {
 			buildCostMultiplier = 0.8f;
 		}};
 		beamDrill = new LaserBeamDrill("beam-drill") {{
-			requirements(Category.production, with(Items.lead, 160, Items.silicon, 120, Itemsf.chromium, 60, Itemsf.nanoCore, 35, Items.phaseFabric, 25));
+			requirements(Category.production, with(Items.lead, 160, Items.silicon, 120, HItems.chromium, 60, HItems.nanoCore, 35, Items.phaseFabric, 25));
 			size = 4;
 			health = 960;
 			tier = 11;
@@ -856,7 +856,7 @@ public final class Blocksf {
 			tier = 7;
 			size = 4;
 			itemCapacity = 300;
-			MinerUnit = UnitTypesf.largeMiner;
+			MinerUnit = HUnitTypes.largeMiner;
 			consumePower(3);
 			consumeLiquid(Liquids.nitrogen, 9 / 60f);
 			buildCostMultiplier = 0.8f;
@@ -895,14 +895,14 @@ public final class Blocksf {
 			health = 90;
 		}};
 		chromiumEfficientConveyor = new BeltConveyor("chromium-efficient-conveyor") {{
-			requirements(Category.distribution, with(Items.lead, 1, Itemsf.chromium, 1));
+			requirements(Category.distribution, with(Items.lead, 1, HItems.chromium, 1));
 			health = 240;
 			armor = 3f;
 			speed = 0.18f;
 			displayedSpeed = 18;
 		}};
 		chromiumArmorConveyor = new BeltConveyor("chromium-armor-conveyor") {{
-			requirements(Category.distribution, with(Items.metaglass, 1, Items.thorium, 1, Items.plastanium, 1, Itemsf.chromium, 1));
+			requirements(Category.distribution, with(Items.metaglass, 1, Items.thorium, 1, Items.plastanium, 1, HItems.chromium, 1));
 			health = 560;
 			armor = 5f;
 			speed = 0.18f;
@@ -910,7 +910,7 @@ public final class Blocksf {
 			noSideBlend = true;
 		}};
 		chromiumTubeConveyor = new TubeConveyor("chromium-tube-conveyor") {{
-			requirements(Category.distribution, with(Items.metaglass, 2, Items.thorium, 1, Items.plastanium, 1, Itemsf.chromium, 2));
+			requirements(Category.distribution, with(Items.metaglass, 2, Items.thorium, 1, Items.plastanium, 1, HItems.chromium, 2));
 			health = 670;
 			armor = 5f;
 			speed = 0.18f;
@@ -921,7 +921,7 @@ public final class Blocksf {
 			hideDetails = false;
 		}};
 		chromiumTubeDistributor = new TubeDistributor("chromium-tube-distributor") {{
-			requirements(Category.distribution, with(Items.copper, 1, Items.metaglass, 1, Itemsf.chromium, 1));
+			requirements(Category.distribution, with(Items.copper, 1, Items.metaglass, 1, HItems.chromium, 1));
 			health = 450;
 			armor = 4f;
 			speed = 0.18f;
@@ -929,7 +929,7 @@ public final class Blocksf {
 			displayFlow = true;
 		}};
 		chromiumStackConveyor = new BeltStackConveyor("chromium-stack-conveyor") {{
-			requirements(Category.distribution, with(Items.graphite, 1, Items.silicon, 1, Items.plastanium, 1, Itemsf.chromium, 1));
+			requirements(Category.distribution, with(Items.graphite, 1, Items.silicon, 1, Items.plastanium, 1, HItems.chromium, 1));
 			health = 380;
 			armor = 4f;
 			speed = 0.125f;
@@ -937,7 +937,7 @@ public final class Blocksf {
 			outputRouter = false;
 		}};
 		chromiumStackRouter = new StackRouter("chromium-stack-router") {{
-			requirements(Category.distribution, with(Items.graphite, 4, Items.silicon, 5, Items.plastanium, 3, Itemsf.chromium, 1));
+			requirements(Category.distribution, with(Items.graphite, 4, Items.silicon, 5, Items.plastanium, 3, HItems.chromium, 1));
 			health = 380;
 			armor = 4f;
 			speed = 0.125f;
@@ -945,7 +945,7 @@ public final class Blocksf {
 			buildCostMultiplier = 0.8f;
 		}};
 		chromiumStackBridge = new StackBridge("chromium-stack-bridge") {{
-			requirements(Category.distribution, with(Items.lead, 15, Items.silicon, 12, Items.plastanium, 10, Itemsf.chromium, 10));
+			requirements(Category.distribution, with(Items.lead, 15, Items.silicon, 12, Items.plastanium, 10, HItems.chromium, 10));
 			health = 420;
 			armor = 4f;
 			itemCapacity = 20;
@@ -954,7 +954,7 @@ public final class Blocksf {
 			buildCostMultiplier = 0.6f;
 		}};
 		chromiumRouter = new MultiRouter("chromium-router") {{
-			requirements(Category.distribution, with(Items.copper, 3, Itemsf.chromium, 2));
+			requirements(Category.distribution, with(Items.copper, 3, HItems.chromium, 2));
 			health = 420;
 			armor = 4f;
 			speed = 2;
@@ -964,7 +964,7 @@ public final class Blocksf {
 			solid = false;
 		}};
 		chromiumJunction = new MultiJunction("chromium-junction") {{
-			requirements(Category.distribution, with(Items.copper, 2, Itemsf.chromium, 2));
+			requirements(Category.distribution, with(Items.copper, 2, HItems.chromium, 2));
 			health = 420;
 			armor = 4f;
 			speed = 12;
@@ -974,7 +974,7 @@ public final class Blocksf {
 			((TubeConveyor) chromiumTubeConveyor).junctionReplacement = this;
 		}};
 		chromiumItemBridge = new ItemBridge("chromium-item-bridge") {{
-			requirements(Category.distribution, with(Items.graphite, 6, Items.silicon, 8, Items.plastanium, 4, Itemsf.chromium, 3));
+			requirements(Category.distribution, with(Items.graphite, 6, Items.silicon, 8, Items.plastanium, 4, HItems.chromium, 3));
 			health = 420;
 			armor = 4f;
 			hasPower = false;
@@ -988,7 +988,7 @@ public final class Blocksf {
 			((TubeConveyor) chromiumTubeConveyor).bridgeReplacement = this;
 		}};
 		phaseItemNode = new NodeBridge("phase-item-node") {{
-			requirements(Category.distribution, with(Items.lead, 30, Itemsf.chromium, 10, Items.silicon, 15, Items.phaseFabric, 10));
+			requirements(Category.distribution, with(Items.lead, 30, HItems.chromium, 10, Items.silicon, 15, Items.phaseFabric, 10));
 			size = 1;
 			health = 320;
 			armor = 3f;
@@ -999,7 +999,7 @@ public final class Blocksf {
 			consumePower(0.5f);
 		}};
 		rapidDirectionalUnloader = new DirectionalUnloaderf("rapid-directional-unloader") {{
-			requirements(Category.distribution, with(Items.silicon, 40, Items.plastanium, 25, Itemsf.chromium, 15, Items.phaseFabric, 5));
+			requirements(Category.distribution, with(Items.silicon, 40, Items.plastanium, 25, HItems.chromium, 15, Items.phaseFabric, 5));
 			speed = 1f;
 			squareSprite = false;
 			underBullets = true;
@@ -1074,7 +1074,7 @@ public final class Blocksf {
 			liquidCapacity = 60f;
 		}};
 		chromiumArmorConduit = new BeltConduit("chromium-armor-conduit") {{
-			requirements(Category.liquid, with(Items.metaglass, 2, Itemsf.chromium, 2));
+			requirements(Category.liquid, with(Items.metaglass, 2, HItems.chromium, 2));
 			health = 420;
 			armor = 4f;
 			liquidCapacity = 80f;
@@ -1117,7 +1117,7 @@ public final class Blocksf {
 			};
 		}};
 		chromiumLiquidBridge = new LiquidBridge("chromium-liquid-bridge") {{
-			requirements(Category.liquid, with(Items.metaglass, 10, Itemsf.chromium, 6));
+			requirements(Category.liquid, with(Items.metaglass, 10, HItems.chromium, 6));
 			health = 480;
 			armor = 5f;
 			hasPower = false;
@@ -1128,7 +1128,7 @@ public final class Blocksf {
 			((BeltConduit) chromiumArmorConduit).bridgeReplacement = this;
 		}};
 		chromiumArmorLiquidContainer = new LiquidRouter("chromium-armor-liquid-container") {{
-			requirements(Category.liquid, with(Items.metaglass, 15, Itemsf.chromium, 6));
+			requirements(Category.liquid, with(Items.metaglass, 15, HItems.chromium, 6));
 			size = 2;
 			health = 950;
 			armor = 8f;
@@ -1137,7 +1137,7 @@ public final class Blocksf {
 			buildCostMultiplier = 0.8f;
 		}};
 		chromiumArmorLiquidTank = new LiquidRouter("chromium-armor-liquid-tank") {{
-			requirements(Category.liquid, with(Items.metaglass, 40, Itemsf.chromium, 16));
+			requirements(Category.liquid, with(Items.metaglass, 40, HItems.chromium, 16));
 			size = 3;
 			health = 2500;
 			armor = 8f;
@@ -1156,7 +1156,7 @@ public final class Blocksf {
 			consumePower(1.8f);
 		}};
 		turboPump = new Pump("turbo-pump") {{
-			requirements(Category.liquid, with(Items.titanium, 40, Items.thorium, 50, Items.metaglass, 80, Items.silicon, 60, Itemsf.chromium, 30));
+			requirements(Category.liquid, with(Items.titanium, 40, Items.thorium, 50, Items.metaglass, 80, Items.silicon, 60, HItems.chromium, 30));
 			size = 2;
 			consumePower(1.75f);
 			pumpAmount = 0.8f;
@@ -1166,7 +1166,7 @@ public final class Blocksf {
 			buildCostMultiplier = 0.8f;
 		}};
 		phaseLiquidNode = new NodeBridge("phase-liquid-node") {{
-			requirements(Category.liquid, with(Items.metaglass, 20, Itemsf.chromium, 10, Items.silicon, 15, Items.phaseFabric, 10));
+			requirements(Category.liquid, with(Items.metaglass, 20, HItems.chromium, 10, Items.silicon, 15, Items.phaseFabric, 10));
 			size = 1;
 			health = 320;
 			armor = 3f;
@@ -1255,7 +1255,7 @@ public final class Blocksf {
 			laserRange = 22.5f;
 		}};
 		powerNodePhase = new PowerNode("power-node-phase") {{
-			requirements(Category.power, ItemStack.with(Items.plastanium, 5, Itemsf.heavyAlloy, 15, Items.phaseFabric, 10));
+			requirements(Category.power, ItemStack.with(Items.plastanium, 5, HItems.heavyAlloy, 15, Items.phaseFabric, 10));
 			size = 1;
 			health = 2200;
 			armor = 30f;
@@ -1285,13 +1285,13 @@ public final class Blocksf {
 			hideDetails = false;
 		}};
 		lunarPanel = new LunarGenerator("lunar-panel") {{
-			requirements(Category.power, with(Items.silicon, 15, Itemsf.originium, 10, Items.lead, 15));
+			requirements(Category.power, with(Items.silicon, 15, HItems.originium, 10, Items.lead, 15));
 			health = 45 * size * size;
 			size = 2;
 			powerProduction = 0.4f;
 		}};
 		uraniumReactor = new NuclearReactor("uranium-reactor") {{
-			requirements(Category.power, with(Items.lead, 400, Items.metaglass, 120, Items.graphite, 350, Items.silicon, 300, Itemsf.uranium, 100));
+			requirements(Category.power, with(Items.lead, 400, Items.metaglass, 120, Items.graphite, 350, Items.silicon, 300, HItems.uranium, 100));
 			size = 3;
 			health = 1450;
 			armor = 8f;
@@ -1300,7 +1300,7 @@ public final class Blocksf {
 			itemDuration = 360;
 			itemCapacity = 30;
 			liquidCapacity = 100;
-			fuelItem = Itemsf.uranium;
+			fuelItem = HItems.uranium;
 			coolantPower = 0.45f;
 			heating = 0.06f;
 			lightColor = Color.white;
@@ -1349,7 +1349,7 @@ public final class Blocksf {
 			});
 			ambientSound = Sounds.hum;
 			ambientSoundVolume = 0.24f;
-			consumeItem(Itemsf.uranium);
+			consumeItem(HItems.uranium);
 			consumeLiquid(Liquids.cryofluid, heating / coolantPower).update(false);
 		}
 			public final Blending blending = Blending.additive;
@@ -1412,7 +1412,7 @@ public final class Blocksf {
 			}
 		};
 		hyperMagneticReactor = new HyperGenerator("hyper-magnetic-reactor") {{
-			requirements(Category.power, with(Items.titanium, 1200, Items.metaglass, 1300, Items.plastanium, 800, Items.silicon, 1600, Items.phaseFabric, 1200, Itemsf.chromium, 2500, Itemsf.heavyAlloy, 2200));
+			requirements(Category.power, with(Items.titanium, 1200, Items.metaglass, 1300, Items.plastanium, 800, Items.silicon, 1600, Items.phaseFabric, 1200, HItems.chromium, 2500, HItems.heavyAlloy, 2200));
 			size = 6;
 			health = 16500;
 			armor = 22f;
@@ -1428,17 +1428,17 @@ public final class Blocksf {
 			ambientSoundVolume = 0.1f;
 			consumePower(65f);
 			consumeItem(Items.phaseFabric, 1);
-			consumeLiquid(Liquidsf.nanoFluid, 0.25f);
+			consumeLiquid(HLiquids.nanoFluid, 0.25f);
 			buildCostMultiplier = 0.6f;
 		}};
 		hugeBattery = new Battery("huge-battery") {{
-			requirements(Category.power, with(Itemsf.purifiedOriginium, 110, Items.graphite, 125, Items.phaseFabric, 80, Items.thorium, 110, Items.plastanium, 100));
+			requirements(Category.power, with(HItems.purifiedOriginium, 110, Items.graphite, 125, Items.phaseFabric, 80, Items.thorium, 110, Items.plastanium, 100));
 			size = 5;
 			health = 1600;
 			consumePowerBuffered(750000f);
 		}};
 		armoredCoatedBattery = new Battery("armored-coated-battery") {{
-			requirements(Category.power, with(Itemsf.purifiedOriginium, 70, Items.silicon, 180, Items.plastanium, 120, Itemsf.chromium, 100, Items.phaseFabric, 50));
+			requirements(Category.power, with(HItems.purifiedOriginium, 70, Items.silicon, 180, Items.plastanium, 120, HItems.chromium, 100, Items.phaseFabric, 50));
 			size = 4;
 			health = 8400;
 			armor = 28f;
@@ -1524,7 +1524,7 @@ public final class Blocksf {
 			itemCapacity = 20;
 			craftTime = 35f;
 			updateEffect = Fx.pulverizeSmall;
-			craftEffect = Fxf.hugeSmokeGray;
+			craftEffect = HFx.hugeSmokeGray;
 			outputItem = new ItemStack(Items.sand, 3);
 			updateEffect = new Effect(80f, e -> {
 				Fx.rand.setSeed(e.id);
@@ -1674,20 +1674,20 @@ public final class Blocksf {
 			consumePower(4f);
 		}};
 		nanoCoreConstructor = new GenericCrafter("nano-core-constructor") {{
-			requirements(Category.crafting, with(Items.copper, 120, Items.titanium, 45, Items.silicon, 35, Itemsf.purifiedOriginium, 20));
+			requirements(Category.crafting, with(Items.copper, 120, Items.titanium, 45, Items.silicon, 35, HItems.purifiedOriginium, 20));
 			size = 2;
 			itemCapacity = 15;
 			craftTime = 100f;
-			outputItem = new ItemStack(Itemsf.nanoCore, 1);
+			outputItem = new ItemStack(HItems.nanoCore, 1);
 			craftEffect = Fx.none;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawSpecConstruct() {{
 				constructColor1 = constructColor2 = Palf.nanoCoreRed;
 			}}, new DrawDefault());
 			consumePower(2.5f);
-			consumeItems(with(Items.titanium, 2, Items.silicon, 3, Itemsf.purifiedOriginium, 1));
+			consumeItems(with(Items.titanium, 2, Items.silicon, 3, HItems.purifiedOriginium, 1));
 		}};
 		nanoCorePrinter = new GenericCrafter("nano-core-printer") {{
-			requirements(Category.crafting, with(Items.titanium, 600, Items.silicon, 400, Items.plastanium, 350, Items.surgeAlloy, 250, Itemsf.chromium, 200, Itemsf.nanoCore, 150, Itemsf.purifiedOriginium, 150));
+			requirements(Category.crafting, with(Items.titanium, 600, Items.silicon, 400, Items.plastanium, 350, Items.surgeAlloy, 250, HItems.chromium, 200, HItems.nanoCore, 150, HItems.purifiedOriginium, 150));
 			size = 4;
 			health = 1500;
 			squareSprite = false;
@@ -1695,18 +1695,18 @@ public final class Blocksf {
 			itemCapacity = 40;
 			liquidCapacity = 60f;
 			craftTime = 150f;
-			outputItem = new ItemStack(Itemsf.nanoCore, 12);
+			outputItem = new ItemStack(HItems.nanoCore, 12);
 			craftEffect = Fx.none;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.cryofluid), new DrawRegion("-mid"), new DrawSpecConstruct() {{
 				constructColor1 = constructColor2 = Palf.nanoCoreRed;
 			}}, new DrawDefault());
 			consumePower(25f);
 			consumeLiquid(Liquids.cryofluid, 6f / 60f);
-			consumeItems(with(Items.titanium, 6, Items.silicon, 9, Itemsf.purifiedOriginium, 3));
+			consumeItems(with(Items.titanium, 6, Items.silicon, 9, HItems.purifiedOriginium, 3));
 			hideDetails = false;
 		}};
 		nanoCoreActivator = new GenericCrafter("nano-core-activator") {{
-			requirements(Category.crafting, with(Items.titanium, 90, Items.silicon, 80, Itemsf.nanoCore, 30, Items.plastanium, 60));
+			requirements(Category.crafting, with(Items.titanium, 90, Items.silicon, 80, HItems.nanoCore, 30, Items.plastanium, 60));
 			size = 2;
 			health = 360;
 			hasLiquids = outputsLiquid = true;
@@ -1716,14 +1716,14 @@ public final class Blocksf {
 			liquidCapacity = 24f;
 			craftTime = 100f;
 			craftEffect = Fx.smeltsmoke;
-			outputLiquid = new LiquidStack(Liquidsf.nanoFluid, 18f / 60f);
-			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquidsf.nanoFluid), new DrawDefault(), new DrawRegion("-top"), new DrawFrames() {{
+			outputLiquid = new LiquidStack(HLiquids.nanoFluid, 18f / 60f);
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(HLiquids.nanoFluid), new DrawDefault(), new DrawRegion("-top"), new DrawFrames() {{
 				frames = 5;
 				sine = true;
 			}});
-			lightLiquid = Liquidsf.nanoFluid;
+			lightLiquid = HLiquids.nanoFluid;
 			consumePower(3f);
-			consumeItem(Itemsf.nanoCore, 1);
+			consumeItem(HItems.nanoCore, 1);
 		}};
 		largePhaseWeaver = new GenericCrafter("large-phase-weaver") {{
 			requirements(Category.crafting, with(Items.lead, 160, Items.thorium, 100, Items.silicon, 80, Items.plastanium, 50, Items.phaseFabric, 15));
@@ -1731,7 +1731,7 @@ public final class Blocksf {
 			itemCapacity = 40;
 			craftTime = 60f;
 			outputItem = new ItemStack(Items.phaseFabric, 3);
-			updateEffect = Fxf.squareRand(Pal.accent, 5f, 13f);
+			updateEffect = HFx.squareRand(Pal.accent, 5f, 13f);
 			craftEffect = new Effect(25f, e -> {
 				Draw.color(Pal.accent);
 				Angles.randLenVectors(e.id, 4, 24 * e.fout() * e.fout(), (x, y) -> {
@@ -1749,14 +1749,14 @@ public final class Blocksf {
 			consumeItems(with(Items.sand, 15, Items.thorium, 5));
 		}};
 		phaseFusionInstrument = new GenericCrafter("phase-fusion-instrument") {{
-			requirements(Category.crafting, with(Items.silicon, 100, Items.plastanium, 80, Items.phaseFabric, 60, Itemsf.chromium, 80, Itemsf.nanoCore, 40));
+			requirements(Category.crafting, with(Items.silicon, 100, Items.plastanium, 80, Items.phaseFabric, 60, HItems.chromium, 80, HItems.nanoCore, 40));
 			size = 3;
 			itemCapacity = 30;
 			lightRadius /= 2f;
 			craftTime = 80;
-			craftEffect = Fxf.crossBlast(Pal.accent, 45f, 45f);
+			craftEffect = HFx.crossBlast(Pal.accent, 45f, 45f);
 			craftEffect.lifetime *= 1.5f;
-			updateEffect = Fxf.squareRand(Pal.accent, 5f, 15f);
+			updateEffect = HFx.squareRand(Pal.accent, 5f, 15f);
 			outputItem = new ItemStack(Items.phaseFabric, 5);
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawRegion("-bottom-2"), new DrawCrucibleFlame() {{
 				flameColor = Pal.accent;
@@ -1799,7 +1799,7 @@ public final class Blocksf {
 				}
 			});
 			consumePower(9f);
-			consumeItems(with(Itemsf.uranium, 3, Itemsf.rareEarth, 8));
+			consumeItems(with(HItems.uranium, 3, HItems.rareEarth, 8));
 		}};
 		clarifier = new GenericCrafter("clarifier") {{
 			requirements(Category.crafting, with(Items.copper, 60, Items.graphite, 35, Items.metaglass, 30));
@@ -1807,9 +1807,9 @@ public final class Blocksf {
 			hasLiquids = true;
 			liquidCapacity = 90;
 			outputLiquid = new LiquidStack(Liquids.water, 0.35f);
-			outputItem = new ItemStack(Itemsf.salt, 1);
+			outputItem = new ItemStack(HItems.salt, 1);
 			Color color1 = Color.valueOf("85966a"), color2 = Color.valueOf("f1ffdc"), color3 = Color.valueOf("728259");
-			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquidsf.brine, 2), new DrawCultivator() {{
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(HLiquids.brine, 2), new DrawCultivator() {{
 				timeScl = 120;
 				bottomColor = color1;
 				plantColorLight = color2;
@@ -1828,7 +1828,7 @@ public final class Blocksf {
 				alpha = 0.7f;
 				glowScale = 6;
 			}}*/);
-			consumeLiquid(Liquidsf.brine, 0.4f);
+			consumeLiquid(HLiquids.brine, 0.4f);
 			consumePower(1.5f);
 			squareSprite = false;
 		}};
@@ -1875,7 +1875,7 @@ public final class Blocksf {
 			}});
 		}};
 		originiumHeater = new HeatProducer("originium-heater") {{
-			requirements(Category.crafting, with(Items.graphite, 50, Items.thorium, 30, Itemsf.originium, 15));
+			requirements(Category.crafting, with(Items.graphite, 50, Items.thorium, 30, HItems.originium, 15));
 			size = 2;
 			health = 220;
 			drawer = new DrawMulti(new DrawDefault(), new DrawHeatOutput());
@@ -1886,11 +1886,11 @@ public final class Blocksf {
 			heatOutput = 6f;
 		}};
 		uraniumSynthesizer = new GenericCrafter("uranium-synthesizer") {{
-			requirements(Category.crafting, with(Items.graphite, 50, Items.silicon, 40, Items.plastanium, 30, Items.phaseFabric, 15, Itemsf.purifiedOriginium, 10));
+			requirements(Category.crafting, with(Items.graphite, 50, Items.silicon, 40, Items.plastanium, 30, Items.phaseFabric, 15, HItems.purifiedOriginium, 10));
 			size = 2;
 			health = 350;
 			craftTime = 60;
-			outputItem = new ItemStack(Itemsf.uranium, 1);
+			outputItem = new ItemStack(HItems.uranium, 1);
 			craftEffect = Fx.smeltsmoke;
 			drawer = new DrawMulti(new DrawDefault(), new DrawGlowRegion() {{
 				alpha = 1f;
@@ -1900,14 +1900,14 @@ public final class Blocksf {
 			consumeItems(with(Items.graphite, 1, Items.thorium, 1));
 		}};
 		chromiumSynthesizer = new GenericCrafter("chromium-synthesizer") {{
-			requirements(Category.crafting, with(Items.metaglass, 30, Items.silicon, 40, Items.plastanium, 50, Items.phaseFabric, 25, Itemsf.purifiedOriginium, 15));
+			requirements(Category.crafting, with(Items.metaglass, 30, Items.silicon, 40, Items.plastanium, 50, Items.phaseFabric, 25, HItems.purifiedOriginium, 15));
 			size = 3;
 			health = 650;
 			hasLiquids = true;
 			itemCapacity = 20;
 			liquidCapacity = 30f;
 			craftTime = 240f;
-			outputItem = new ItemStack(Itemsf.chromium, 5);
+			outputItem = new ItemStack(HItems.chromium, 5);
 			craftEffect = Fx.smeltsmoke;
 			drawer = new DrawMulti(new DrawDefault(), new DrawLiquidRegion(Liquids.slag), new DrawGlowRegion() {{
 				glowScale = 8;
@@ -1923,23 +1923,23 @@ public final class Blocksf {
 			consumeItem(Items.titanium, 8);
 		}};
 		heavyAlloySmelter = new GenericCrafter("heavy-alloy-smelter") {{
-			requirements(Category.crafting, with(Items.lead, 150, Items.silicon, 80, Itemsf.nanoCore, 12, Items.thorium, 120, Itemsf.chromium, 30, Items.phaseFabric, 20));
+			requirements(Category.crafting, with(Items.lead, 150, Items.silicon, 80, HItems.nanoCore, 12, Items.thorium, 120, HItems.chromium, 30, Items.phaseFabric, 20));
 			size = 3;
 			health = 850;
 			craftTime = 80f;
-			outputItem = new ItemStack(Itemsf.heavyAlloy, 1);
+			outputItem = new ItemStack(HItems.heavyAlloy, 1);
 			craftEffect = Fx.smeltsmoke;
 			drawer = new DrawMulti(new DrawDefault(), new DrawFlame());
 			consumePower(11f);
-			consumeItems(with(Itemsf.uranium, 1, Itemsf.chromium, 1));
+			consumeItems(with(HItems.uranium, 1, HItems.chromium, 1));
 		}};
 		metalAnalyzer = new Separator("metal-analyzer") {{
-			requirements(Category.crafting, with(Items.titanium, 120, Items.silicon, 180, Items.plastanium, 80, Itemsf.nanoCore, 30));
+			requirements(Category.crafting, with(Items.titanium, 120, Items.silicon, 180, Items.plastanium, 80, HItems.nanoCore, 30));
 			size = 3;
 			itemCapacity = 20;
 			liquidCapacity = 30f;
 			craftTime = 20f;
-			results = with(Items.titanium, 2, Items.thorium, 2, Itemsf.uranium, 1, Itemsf.chromium, 1);
+			results = with(Items.titanium, 2, Items.thorium, 2, HItems.uranium, 1, HItems.chromium, 1);
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawPistons() {{
 				sides = 4;
 				sinMag = 3.9f;
@@ -1947,11 +1947,11 @@ public final class Blocksf {
 				angleOffset = 45f;
 			}}, new DrawRegion("-shade"), new DrawDefault(), new DrawLiquidTile(Liquids.water, 39f / 4f), new DrawRegion("-top"));
 			consumePower(3.5f);
-			consumeItem(Itemsf.rareEarth, 1);
+			consumeItem(HItems.rareEarth, 1);
 			consumeLiquid(Liquids.water, 6f / 60f);
 		}};
 		nitrificationReactor = new GenericCrafter("nitrification-reactor") {{
-			requirements(Category.crafting, with(Items.metaglass, 80, Items.silicon, 20, Items.plastanium, 30, Itemsf.chromium, 40));
+			requirements(Category.crafting, with(Items.metaglass, 80, Items.silicon, 20, Items.plastanium, 30, HItems.chromium, 40));
 			size = 2;
 			health = 380;
 			armor = 5f;
@@ -1959,14 +1959,14 @@ public final class Blocksf {
 			itemCapacity = 10;
 			liquidCapacity = 24;
 			craftTime = 60;
-			outputLiquid = new LiquidStack(Liquidsf.nitratedOil, 12f / 60f);
-			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.oil), new DrawLiquidTile(Liquidsf.nitratedOil), new DrawDefault());
+			outputLiquid = new LiquidStack(HLiquids.nitratedOil, 12f / 60f);
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.oil), new DrawLiquidTile(HLiquids.nitratedOil), new DrawDefault());
 			consumePower(5f);
 			consumeLiquid(Liquids.oil, 12f / 60f);
 			consumeItem(Items.sporePod, 1);
 		}};
 		nitratedOilSedimentationTank = new Separator("nitrated-oil-sedimentation-tank") {{
-			requirements(Category.crafting, with(Items.copper, 160, Items.graphite, 120, Items.plastanium, 40, Itemsf.chromium, 60));
+			requirements(Category.crafting, with(Items.copper, 160, Items.graphite, 120, Items.plastanium, 40, HItems.chromium, 60));
 			size = 3;
 			health = 680;
 			armor = 8f;
@@ -1974,11 +1974,11 @@ public final class Blocksf {
 			liquidCapacity = 54;
 			results = with(Items.pyratite, 1, Items.blastCompound, 4);
 			craftTime = 12f;
-			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquidsf.nitratedOil), new DrawDefault());
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(HLiquids.nitratedOil), new DrawDefault());
 			ambientSound = Soundsf.largeBeam;
 			ambientSoundVolume = 0.24f;
 			consumePower(4f);
-			consumeLiquid(Liquidsf.nitratedOil, 36f / 60f);
+			consumeLiquid(HLiquids.nitratedOil, 36f / 60f);
 		}};
 		//production-erekir
 		ventHeater = new ThermalHeater("vent-heater") {{
@@ -2128,14 +2128,14 @@ public final class Blocksf {
 			consumePower(1f);
 		}};
 		uraniumFuser = new HeatCrafter("uranium-fuser") {{
-			requirements(Category.crafting, with(Items.silicon, 120, Items.graphite, 60, Items.tungsten, 100, Items.oxide, 40, Items.surgeAlloy, 60, Itemsf.purifiedOriginium, 10));
+			requirements(Category.crafting, with(Items.silicon, 120, Items.graphite, 60, Items.tungsten, 100, Items.oxide, 40, Items.surgeAlloy, 60, HItems.purifiedOriginium, 10));
 			size = 3;
 			itemCapacity = 20;
 			heatRequirement = 10f;
 			craftTime = 120f;
 			liquidCapacity = 300f;
 			hasLiquids = true;
-			outputItem = new ItemStack(Itemsf.uranium, 1);
+			outputItem = new ItemStack(HItems.uranium, 1);
 			craftEffect = new Effect(50f, e -> {
 				Draw.color(Liquids.slag.color);
 				Draw.alpha(e.fslope() * 0.8f);
@@ -2151,14 +2151,14 @@ public final class Blocksf {
 			squareSprite = false;
 		}};
 		chromiumFuser = new GenericCrafter("chromium-fuser") {{
-				requirements(Category.crafting, with(Items.silicon, 150, Items.graphite, 120, Items.tungsten, 200, Items.oxide, 180, Items.phaseFabric, 100, Itemsf.purifiedOriginium, 15));
+				requirements(Category.crafting, with(Items.silicon, 150, Items.graphite, 120, Items.tungsten, 200, Items.oxide, 180, Items.phaseFabric, 100, HItems.purifiedOriginium, 15));
 				size = 3;
 				itemCapacity = 20;
 				craftTime = 35f;
 				liquidCapacity = 300f;
 				hasLiquids = true;
 				craftEffect = Fx.none;
-				outputItem = new ItemStack(Itemsf.chromium, 1);
+				outputItem = new ItemStack(HItems.chromium, 1);
 				drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.hydrogen, 3f), new DrawDefault(), new DrawHeatInput());
 				consumeItem(Items.tungsten, 1);
 				consumeLiquid(Liquids.hydrogen, 12f / 60f);
@@ -2251,7 +2251,7 @@ public final class Blocksf {
 			consumeItem(Items.phaseFabric, 1).boost();
 		}};
 		sectorStructureMender = new RegenProjector("sector-structure-mender") {{
-			requirements(Category.effect, with(Items.lead, 600, Items.titanium, 400, Items.silicon, 350, Items.plastanium, 250, Items.surgeAlloy, 220, Itemsf.nanoCore, 150));
+			requirements(Category.effect, with(Items.lead, 600, Items.titanium, 400, Items.silicon, 350, Items.plastanium, 250, Items.surgeAlloy, 220, HItems.nanoCore, 150));
 			size = 4;
 			health = 1800;
 			range = 1500;
@@ -2260,7 +2260,7 @@ public final class Blocksf {
 			optionalUseTime = 3600;
 			optionalMultiplier = 6;
 			effectChance = 0.5f;
-			effect = WrapperEffect.wrap(Fxf.polyParticle, Palf.nanoCoreRed);
+			effect = WrapperEffect.wrap(HFx.polyParticle, Palf.nanoCoreRed);
 			drawer = new DrawMulti(new DrawDefault(), new DrawPulseShape() {{
 				layer = 110;
 				stroke = 3f;
@@ -2274,10 +2274,10 @@ public final class Blocksf {
 				color = Palf.regenerating;
 			}});
 			consumePower(20f);
-			consumeItem(Itemsf.nanoCore, 10).boost();
+			consumeItem(HItems.nanoCore, 10).boost();
 		}};
 		assignOverdrive = new AssignOverdrive("assign-overdrive") {{
-			requirements(Category.effect, with(Items.silicon, 150, Items.thorium, 120, Items.plastanium, 100, Items.surgeAlloy, 60, Itemsf.chromium, 80));
+			requirements(Category.effect, with(Items.silicon, 150, Items.thorium, 120, Items.plastanium, 100, Items.surgeAlloy, 60, HItems.chromium, 80));
 			size = 3;
 			range = 240f;
 			phaseRangeBoost = 0f;
@@ -2293,7 +2293,7 @@ public final class Blocksf {
 			squareSprite = false;
 		}};
 		largeShieldGenerator = new ForceProjector("large-shield-generator") {{
-			requirements(Category.effect, with(Items.silicon, 120, Items.lead, 250, Items.graphite, 180, Items.plastanium, 150, Items.phaseFabric, 40, Itemsf.chromium, 60));
+			requirements(Category.effect, with(Items.silicon, 120, Items.lead, 250, Items.graphite, 180, Items.plastanium, 150, Items.phaseFabric, 40, HItems.chromium, 60));
 			size = 4;
 			radius = 220f;
 			shieldHealth = 20000f;
@@ -2337,10 +2337,10 @@ public final class Blocksf {
 			storage = 1;
 			bullet = new EffectBulletType(15f, 100f, 1800f) {{
 				trailChance = 0.25f;
-				trailEffect = Fxf.trailToGray;
+				trailEffect = HFx.trailToGray;
 				trailParam = 1.5f;
-				smokeEffect = Fxf.hugeSmoke;
-				shootEffect = Fxf.boolSelector;
+				smokeEffect = HFx.hugeSmoke;
+				shootEffect = HFx.boolSelector;
 				hittable = false;
 				scaledSplashDamage = true;
 				collidesTiles = collidesGround = collides = true;
@@ -2352,7 +2352,7 @@ public final class Blocksf {
 				splashDamageRadius = 120f;
 				hitShake = despawnShake = 20f;
 				hitSound = despawnSound = Sounds.explosionbig;
-				hitEffect = despawnEffect = new MultiEffect(Fxf.crossBlast(hitColor, splashDamageRadius * 1.25f), Fxf.blast(hitColor, splashDamageRadius * 1.5f));
+				hitEffect = despawnEffect = new MultiEffect(HFx.crossBlast(hitColor, splashDamageRadius * 1.25f), HFx.blast(hitColor, splashDamageRadius * 1.5f));
 			}};
 			reloadTime = 300f;
 			consumePowerCond(6f, BombLauncherBuild::isCharging);
@@ -2397,7 +2397,7 @@ public final class Blocksf {
 			group = BlockGroup.transportation;
 		}};
 		rapidUnloader = new Unloaderf("rapid-unloader") {{
-			requirements(Category.effect, with(Items.silicon, 35, Items.plastanium, 15, Itemsf.nanoCore, 10, Itemsf.chromium, 15));
+			requirements(Category.effect, with(Items.silicon, 35, Items.plastanium, 15, HItems.nanoCore, 10, HItems.chromium, 15));
 			speed = 1f;
 			group = BlockGroup.transportation;
 		}};
@@ -2441,7 +2441,7 @@ public final class Blocksf {
 		}};
 		//unit
 		unitMaintenanceDepot = new RepairTower("unit-maintenance-depot") {{
-			requirements(Category.units, with(Items.thorium, 360, Items.plastanium, 220, Items.surgeAlloy, 160, Items.phaseFabric, 100, Itemsf.nanoCore, 120));
+			requirements(Category.units, with(Items.thorium, 360, Items.plastanium, 220, Items.surgeAlloy, 160, Items.phaseFabric, 100, HItems.nanoCore, 120));
 			size = 4;
 			health = 1200;
 			liquidCapacity = 120f;
@@ -2454,31 +2454,31 @@ public final class Blocksf {
 			glowMag = 0.4f;
 			glowScl = 12f;
 			consumePower(18f);
-			consumeLiquid(Liquidsf.nanoFluid, 0.6f);
+			consumeLiquid(HLiquids.nanoFluid, 0.6f);
 		}};
 		titanReconstructor = new Reconstructor("titan-reconstructor") {{
-			requirements(Category.units, with(Items.lead, 4000, Items.silicon, 3000, Items.plastanium, 1500, Items.surgeAlloy, 1200, Items.phaseFabric, 300, Itemsf.uranium, 600, Itemsf.chromium, 800));
+			requirements(Category.units, with(Items.lead, 4000, Items.silicon, 3000, Items.plastanium, 1500, Items.surgeAlloy, 1200, Items.phaseFabric, 300, HItems.uranium, 600, HItems.chromium, 800));
 			size = 11;
 			liquidCapacity = 360f;
 			scaledHealth = 100f;
 			constructTime = 60f * 60f * 5f;
 			upgrades.addAll(
-					new UnitType[]{UnitTypes.eclipse, UnitTypesf.sunlit},
-					new UnitType[]{UnitTypes.toxopid, UnitTypesf.cancer},
-					new UnitType[]{UnitTypes.reign, UnitTypesf.suzerain},
-					new UnitType[]{UnitTypes.oct, UnitTypesf.windstorm},
-					new UnitType[]{UnitTypes.corvus, UnitTypesf.supernova},
-					new UnitType[]{UnitTypes.omura, UnitTypesf.mosasaur},
-					new UnitType[]{UnitTypes.navanax, UnitTypesf.killerWhale},
-					new UnitType[]{UnitTypesf.destruction, UnitTypesf.purgatory},
-					new UnitType[]{UnitTypesf.lepidoptera, UnitTypesf.mantodea}
+					new UnitType[]{UnitTypes.eclipse, HUnitTypes.sunlit},
+					new UnitType[]{UnitTypes.toxopid, HUnitTypes.cancer},
+					new UnitType[]{UnitTypes.reign, HUnitTypes.suzerain},
+					new UnitType[]{UnitTypes.oct, HUnitTypes.windstorm},
+					new UnitType[]{UnitTypes.corvus, HUnitTypes.supernova},
+					new UnitType[]{UnitTypes.omura, HUnitTypes.mosasaur},
+					new UnitType[]{UnitTypes.navanax, HUnitTypes.killerWhale},
+					new UnitType[]{HUnitTypes.destruction, HUnitTypes.purgatory},
+					new UnitType[]{HUnitTypes.lepidoptera, HUnitTypes.mantodea}
 			);
 			consumePower(35f);
 			consumeLiquid(Liquids.cryofluid, 4f);
-			consumeItems(ItemStack.with(Items.silicon, 1500, Itemsf.nanoCore, 300, Itemsf.uranium, 400, Itemsf.chromium, 500));
+			consumeItems(ItemStack.with(Items.silicon, 1500, HItems.nanoCore, 300, HItems.uranium, 400, HItems.chromium, 500));
 		}};
 		experimentalUnitFactory = new DerivativeUnitFactory("experimental-unit-factory") {{
-			requirements(Category.units, with(Items.silicon, 2500, Items.plastanium, 1000, Items.surgeAlloy, 1200, Itemsf.nanoCore, 800, Items.phaseFabric, 1500, Itemsf.heavyAlloy, 1100));
+			requirements(Category.units, with(Items.silicon, 2500, Items.plastanium, 1000, Items.surgeAlloy, 1200, HItems.nanoCore, 800, Items.phaseFabric, 1500, HItems.heavyAlloy, 1100));
 			size = 5;
 			liquidCapacity = 60f;
 			floating = true;
@@ -2493,7 +2493,7 @@ public final class Blocksf {
 				tile.payload = null;
 			});
 			consumePower(40f);
-			consumeLiquid(Liquidsf.nanoFluid, 0.3f);
+			consumeLiquid(HLiquids.nanoFluid, 0.3f);
 		}
 			@Override
 			public void init() {
@@ -2539,7 +2539,7 @@ public final class Blocksf {
 		}};
 		//logic
 		matrixProcessor = new LogicBlock("matrix-processor") {{
-			requirements(Category.logic, with(Items.lead, 500, Items.silicon, 350, Items.surgeAlloy, 125, Itemsf.nanoCore, 50, Itemsf.chromium, 75));
+			requirements(Category.logic, with(Items.lead, 500, Items.silicon, 350, Items.surgeAlloy, 125, HItems.nanoCore, 50, HItems.chromium, 75));
 			consumeLiquid(Liquids.cryofluid, 0.12f);
 			hasLiquids = true;
 			instructionsPerTick = 100;
@@ -2588,7 +2588,7 @@ public final class Blocksf {
 		labelMessage = new LabelMessageBlock("label-message");
 		//turret
 		dissipation = new PointDefenseTurret("dissipation") {{
-			requirements(Category.turret, with(Items.silicon, 220, Itemsf.chromium, 80, Items.phaseFabric, 40, Items.plastanium, 60));
+			requirements(Category.turret, with(Items.silicon, 220, HItems.chromium, 80, Items.phaseFabric, 40, Items.plastanium, 60));
 			size = 3;
 			hasPower = true;
 			scaledHealth = 250;
@@ -2678,7 +2678,7 @@ public final class Blocksf {
 				ammoMultiplier = 3;
 				shootEffect = new MultiEffect(Fx.shootBig2, Fx.shootPyraFlame, Fx.shootPyraFlame);
 				despawnEffect = Fx.flakExplosion;
-				hitEffect = new MultiEffect(Fxf.explodeImpWaveSmall, Fxf.impactWave);
+				hitEffect = new MultiEffect(HFx.explodeImpWaveSmall, HFx.impactWave);
 			}}, Items.blastCompound, new MissileBulletType(10f, 46f, name("missile")) {{
 				recoil = 1;
 				shrinkY = 0;
@@ -2699,7 +2699,7 @@ public final class Blocksf {
 				ammoMultiplier = 3;
 				shootEffect = new MultiEffect(Fx.shootBig2, Fx.shootPyraFlame, Fx.shootPyraFlame);
 				despawnEffect = Fx.flakExplosion;
-				hitEffect = new MultiEffect(Fxf.explodeImpWave, Fxf.impactWave);
+				hitEffect = new MultiEffect(HFx.explodeImpWave, HFx.impactWave);
 			}});
 			size = 3;
 			health = 350;
@@ -2721,7 +2721,7 @@ public final class Blocksf {
 					moveRot = 0f;
 				}});
 			}};
-			smokeEffect = Fxf.shootSmokeMissileSmall;
+			smokeEffect = HFx.shootSmokeMissileSmall;
 			shoot = new ShootAlternate() {{
 				barrels = 2;
 				spread = 11f;
@@ -2874,7 +2874,7 @@ public final class Blocksf {
 						6f, 0f, -90f
 				};
 			}};
-			ammoUseEffect = Fxf.casing(60f);
+			ammoUseEffect = HFx.casing(60f);
 			canOverdrive = false;
 			shootSound = Soundsf.dd1;
 			consumePowerCond(6f, TurretBuild::isActive);
@@ -2887,7 +2887,7 @@ public final class Blocksf {
 				ammoMultiplier = 4;
 			}}, Items.blastCompound, new FlameBulletType(Items.blastCompound.color.cpy().mul(Pal.lightFlame), Items.blastCompound.color.cpy(), Pal.lightishGray, range + 8, 22, 66, 30) {{
 				damage = 90;
-				status = StatusEffectsf.flamePoint;
+				status = HStatusEffects.flamePoint;
 				statusDuration = 8 * 60f;
 				reloadMultiplier = 0.5f;
 				ammoMultiplier = 4;
@@ -3036,7 +3036,7 @@ public final class Blocksf {
 				pierceCap = 5;
 				critChance = 0.05f;
 				critMultiplier = 4.5f;
-			}}, Itemsf.uranium, new CritBulletType(20f, 360f) {{
+			}}, HItems.uranium, new CritBulletType(20f, 360f) {{
 				lifetime = 25f;
 				rangeChange = 120f;
 				knockback = 4f;
@@ -3060,7 +3060,7 @@ public final class Blocksf {
 					height = 14f;
 					pierceCap = 3;
 					critMultiplier = 3f;
-					critEffect = Fxf.miniCrit;
+					critEffect = HFx.miniCrit;
 				}};
 			}
 				@Override
@@ -3119,7 +3119,7 @@ public final class Blocksf {
 				smokeEffect = Fx.shootBigSmoke;
 				ammoMultiplier = 4f;
 				lifetime = 20f;
-			}}, Itemsf.uranium, new BasicBulletType(17f, 65f) {{
+			}}, HItems.uranium, new BasicBulletType(17f, 65f) {{
 				width = 7f;
 				height = 13f;
 				shootEffect = Fx.shootBig;
@@ -3152,7 +3152,7 @@ public final class Blocksf {
 						4f, 0f, 0f
 				};
 			}};
-			ammoUseEffect = Fxf.casing(32f);
+			ammoUseEffect = HFx.casing(32f);
 		}};
 		spike = new ItemTurret("spike") {{
 			requirements(Category.turret, with(Items.copper, 30, Items.lead, 60, Items.graphite, 40, Items.titanium, 50));
@@ -3177,8 +3177,8 @@ public final class Blocksf {
 				height = 25f;
 				hitColor = backColor = lightColor = trailColor = Items.titanium.color.cpy().lerp(Color.white, 0.1f);
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				hitEffect = Fxf.crossBlast(hitColor, height + width);
-				shootEffect = despawnEffect = Fxf.square(hitColor, 20f, 3, 12f, 2f);
+				hitEffect = HFx.crossBlast(hitColor, height + width);
+				shootEffect = despawnEffect = HFx.square(hitColor, 20f, 3, 12f, 2f);
 				ammoMultiplier = 8;
 			}}, Items.plastanium, new BasicBulletType(5f, 26f) {{
 				width = 8f;
@@ -3191,8 +3191,8 @@ public final class Blocksf {
 					ammoMultiplier = 12;
 					hitColor = backColor = lightColor = trailColor = Items.plastanium.color.cpy().lerp(Color.white, 0.1f);
 					frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-					hitEffect = Fxf.lightningHitSmall(backColor);
-					shootEffect = despawnEffect = Fxf.square45_4_45;
+					hitEffect = HFx.lightningHitSmall(backColor);
+					shootEffect = despawnEffect = HFx.square45_4_45;
 				}};
 				fragAngle = 130f;
 				fragVelocityMax = 1.1f;
@@ -3202,8 +3202,8 @@ public final class Blocksf {
 				ammoMultiplier = 12;
 				hitColor = backColor = lightColor = trailColor = Items.plastanium.color.cpy().lerp(Color.white, 0.1f);
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				hitEffect = Fxf.crossBlast(hitColor, height + width);
-				shootEffect = despawnEffect = Fxf.square(hitColor, 20f, 3, 20f, 2f);
+				hitEffect = HFx.crossBlast(hitColor, height + width);
+				shootEffect = despawnEffect = HFx.square(hitColor, 20f, 3, 20f, 2f);
 			}}, Items.thorium, new BasicBulletType(5f, 38f) {{
 				width = 8f;
 				height = 25f;
@@ -3212,8 +3212,8 @@ public final class Blocksf {
 				ammoMultiplier = 12;
 				lightningColor = hitColor = backColor = lightColor = trailColor = Items.thorium.color.cpy().lerp(Color.white, 0.1f);
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				hitEffect = Fxf.crossBlast(hitColor, height + width);
-				shootEffect = despawnEffect = Fxf.square(hitColor, 20f, 3, 20f, 2f);
+				hitEffect = HFx.crossBlast(hitColor, height + width);
+				shootEffect = despawnEffect = HFx.square(hitColor, 20f, 3, 20f, 2f);
 			}}, Items.pyratite, new BasicBulletType(5f, 18f) {{
 				width = 8f;
 				height = 25f;
@@ -3225,9 +3225,9 @@ public final class Blocksf {
 				ammoMultiplier = 12f;
 				hitColor = backColor = lightColor = trailColor = Items.pyratite.color.cpy().lerp(Color.white, 0.1f);
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				hitEffect = Fxf.crossBlast(hitColor, height + width);
+				hitEffect = HFx.crossBlast(hitColor, height + width);
 				despawnEffect = Fx.blastExplosion;
-				shootEffect = Fxf.square(hitColor, 20f, 3, 20f, 2f);
+				shootEffect = HFx.square(hitColor, 20f, 3, 20f, 2f);
 			}}, Items.blastCompound, new BasicBulletType(5f, 22f) {{
 				width = 8f;
 				height = 25f;
@@ -3238,9 +3238,9 @@ public final class Blocksf {
 				ammoMultiplier = 8;
 				hitColor = backColor = lightColor = trailColor = Items.blastCompound.color.cpy().lerp(Color.white, 0.1f);
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				hitEffect = Fxf.crossBlast(hitColor, height + width);
+				hitEffect = HFx.crossBlast(hitColor, height + width);
 				despawnEffect = Fx.blastExplosion;
-				shootEffect = Fxf.square(hitColor, 20f, 3, 20f, 2f);
+				shootEffect = HFx.square(hitColor, 20f, 3, 20f, 2f);
 			}});
 			limitRange();
 			maxAmmo = 120;
@@ -3257,10 +3257,10 @@ public final class Blocksf {
 				trailLength = 9;
 				trailColor = backColor = hitColor = lightColor = lightningColor = Items.titanium.color;
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				shootEffect = Fxf.square(backColor, 45f, 5, 38, 4);
+				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
 				smokeEffect = Fx.shootBigSmoke;
-				despawnEffect = Fxf.square(backColor, 85f, 5, 52, 5);
-				hitEffect = Fxf.hitSparkLarge;
+				despawnEffect = HFx.square(backColor, 85f, 5, 52, 5);
+				hitEffect = HFx.hitSparkLarge;
 				ammoMultiplier = 4;
 			}}, Items.thorium, new BasicBulletType(8f, 65f) {{
 				lifetime = 48f;
@@ -3271,10 +3271,10 @@ public final class Blocksf {
 				trailLength = 9;
 				trailColor = backColor = hitColor = lightColor = lightningColor = Items.thorium.color;
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				shootEffect = Fxf.square(backColor, 45f, 5, 38, 4);
+				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
 				smokeEffect = Fx.shootBigSmoke;
-				despawnEffect = Fxf.square(backColor, 85f, 5, 52, 5);
-				hitEffect = Fxf.hitSparkLarge;
+				despawnEffect = HFx.square(backColor, 85f, 5, 52, 5);
+				hitEffect = HFx.hitSparkLarge;
 				ammoMultiplier = 4;
 			}}, Items.plastanium, new BasicBulletType(8f, 60f) {{
 				lifetime = 48f;
@@ -3287,10 +3287,10 @@ public final class Blocksf {
 				trailLength = 9;
 				trailColor = backColor = hitColor = lightColor = lightningColor = Pal.plastanium;
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				shootEffect = Fxf.square(backColor, 45f, 5, 38, 4);
+				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
 				smokeEffect = Fx.shootBigSmoke;
-				despawnEffect = Fxf.square(backColor, 85f, 5, 52, 5);
-				hitEffect = Fxf.hitSparkLarge;
+				despawnEffect = HFx.square(backColor, 85f, 5, 52, 5);
+				hitEffect = HFx.hitSparkLarge;
 				ammoMultiplier = 4;
 			}}, Items.pyratite, new BasicBulletType(8f, 40f) {{
 				lifetime = 48f;
@@ -3304,10 +3304,10 @@ public final class Blocksf {
 				status = StatusEffects.burning;
 				trailColor = backColor = hitColor = lightColor = lightningColor = Items.pyratite.color;
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				shootEffect = Fxf.square(backColor, 45f, 5, 38, 4);
+				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
 				smokeEffect = Fx.shootBigSmoke;
-				despawnEffect = Fxf.square(backColor, 85f, 5, 52, 5);
-				hitEffect = Fxf.hitSparkLarge;
+				despawnEffect = HFx.square(backColor, 85f, 5, 52, 5);
+				hitEffect = HFx.hitSparkLarge;
 				ammoMultiplier = 4;
 			}}, Items.blastCompound, new BasicBulletType(8f, 40f) {{
 				lifetime = 48f;
@@ -3321,12 +3321,12 @@ public final class Blocksf {
 				status = StatusEffects.blasted;
 				trailColor = backColor = hitColor = lightColor = lightningColor = Items.blastCompound.color;
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				shootEffect = Fxf.square(backColor, 45f, 5, 38, 4);
+				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
 				smokeEffect = Fx.shootBigSmoke;
-				despawnEffect = Fxf.square(backColor, 85f, 5, 52, 5);
-				hitEffect = Fxf.hitSparkLarge;
+				despawnEffect = HFx.square(backColor, 85f, 5, 52, 5);
+				hitEffect = HFx.hitSparkLarge;
 				ammoMultiplier = 4;
-			}}, Itemsf.chromium, new BasicBulletType(8f, 125f) {{
+			}}, HItems.chromium, new BasicBulletType(8f, 125f) {{
 				lifetime = 48f;
 				width = 8f;
 				height = 42f;
@@ -3336,13 +3336,13 @@ public final class Blocksf {
 				pierceArmor = true;
 				trailWidth = 1.7f;
 				trailLength = 9;
-				status = StatusEffectsf.breached;
+				status = HStatusEffects.breached;
 				trailColor = backColor = hitColor = lightColor = lightningColor = Palf.chromiumGrey;
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				shootEffect = Fxf.square(backColor, 45f, 5, 38, 4);
+				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
 				smokeEffect = Fx.shootBigSmoke;
-				despawnEffect = Fxf.square(backColor, 85f, 5, 52, 5);
-				hitEffect = Fxf.hitSparkLarge;
+				despawnEffect = HFx.square(backColor, 85f, 5, 52, 5);
+				hitEffect = HFx.hitSparkLarge;
 				ammoMultiplier = 4;
 			}}, Items.phaseFabric, new BasicBulletType(8f, 65f) {{
 				lifetime = 48f;
@@ -3353,11 +3353,11 @@ public final class Blocksf {
 				trailLength = 9;
 				trailColor = backColor = hitColor = lightColor = lightningColor = Pal.accent;
 				frontColor = Color.white;
-				shootEffect = Fxf.square(backColor, 45f, 5, 38, 4);
+				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
 				smokeEffect = Fx.shootBigSmoke;
 				splashDamage = damage;
 				splashDamageRadius = 32f;
-				despawnEffect = hitEffect = new MultiEffect(Fxf.circleOut(backColor, splashDamageRadius * 1.25f), Fxf.hitSparkLarge);
+				despawnEffect = hitEffect = new MultiEffect(HFx.circleOut(backColor, splashDamageRadius * 1.25f), HFx.hitSparkLarge);
 				ammoMultiplier = 6;
 				reloadMultiplier = 0.9f;
 				status = StatusEffects.melting;
@@ -3402,7 +3402,7 @@ public final class Blocksf {
 			shootType = new PositionLightningBulletType(50f) {{
 				lightningColor = hitColor = Pal.techBlue;
 				maxRange = rangeOverride = 250f;
-				hitEffect = Fxf.hitSpark;
+				hitEffect = HFx.hitSpark;
 				smokeEffect = Fx.shootBigSmoke2;
 			}};
 			warmupMaintainTime = 120f;
@@ -3412,10 +3412,10 @@ public final class Blocksf {
 			canOverdrive = false;
 		}};
 		judgement = new ContinuousTurret("judgement") {{
-			requirements(Category.turret, with(Items.silicon, 1200, Items.metaglass, 400, Items.plastanium, 800, Items.surgeAlloy, 650, Itemsf.syntheticJade, 350, Itemsf.heavyAlloy, 600));
+			requirements(Category.turret, with(Items.silicon, 1200, Items.metaglass, 400, Items.plastanium, 800, Items.surgeAlloy, 650, HItems.syntheticJade, 350, HItems.heavyAlloy, 600));
 			shootType = new PointLaserBulletType() {{
 				damage = 100f;
-				hitEffect = Fxf.hitSpark;
+				hitEffect = HFx.hitSpark;
 				beamEffect = Fx.none;
 				beamEffectInterval = 0;
 				buildingDamageMultiplier = 0.75f;
@@ -3469,7 +3469,7 @@ public final class Blocksf {
 					if (charged(b)) {
 						if (!headless && b.timer(3, 3)) {
 							PositionLightning.createEffect(b, Tmp.v1.set(b.aimX, b.aimY), getColor(b), 1, 2);
-							if (Mathf.chance(0.25)) Fxf.hitSparkLarge.at(b.x, b.y, tmpColor);
+							if (Mathf.chance(0.25)) HFx.hitSparkLarge.at(b.x, b.y, tmpColor);
 						}
 
 						if (b.timer(4, 2.5f)) {
@@ -3519,7 +3519,7 @@ public final class Blocksf {
 
 					float base = (Time.time / particleLife);
 					for (int i = 0; i < particles; i++) {
-						float fin = (rand.random(1f) + base) % 1f, fout = 1f - fin, fslope = Fxf.fslope(fin);
+						float fin = (rand.random(1f) + base) % 1f, fout = 1f - fin, fslope = HFx.fslope(fin);
 						float len = rand.random(particleLen * 0.7f, particleLen * 1.3f) * Mathf.curve(fin, 0.2f, 0.9f) * (darkenPartWarmup / 2.5f + 1);
 						float centerDeg = rand.random(Mathf.pi);
 
@@ -3621,10 +3621,10 @@ public final class Blocksf {
 			armor = 10f;
 			unitSort = UnitSorts.strongest;
 			consumePower(26f);
-			consumeLiquid(Liquidsf.nanoFluid, 12f / 60f);
+			consumeLiquid(HLiquids.nanoFluid, 12f / 60f);
 		}};
 		evilSpirits = new ItemTurret("evil-spirits") {{
-			requirements(Category.turret, with(Items.copper, 400, Items.graphite, 400, Items.plastanium, 200, Itemsf.uranium, 220, Items.surgeAlloy, 280));
+			requirements(Category.turret, with(Items.copper, 400, Items.graphite, 400, Items.plastanium, 200, HItems.uranium, 220, Items.surgeAlloy, 280));
 			ammo(Items.graphite, new BasicBulletType(7.5f, 82f) {{
 				hitSize = 5f;
 				width = 16.8f;
@@ -3684,7 +3684,7 @@ public final class Blocksf {
 				smokeEffect = Fx.shootBigSmoke;
 				reloadMultiplier = 1.7f;
 				knockback = 0.4f;
-			}}, Itemsf.uranium, new BasicBulletType(9.75f, 146f) {{
+			}}, HItems.uranium, new BasicBulletType(9.75f, 146f) {{
 				rangeChange = 25f;
 				pierce = true;
 				pierceCap = 3;
