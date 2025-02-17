@@ -82,7 +82,7 @@ public final class HeavyIndustryMod extends Mod {
 		Log.infoTag("Kotlin", "Version: " + KotlinVersion.CURRENT);
 		Log.info("Loaded HeavyIndustry Mod constructor.");
 
-		ClassMapf.load();
+		HClassMap.load();
 
 		Events.on(ClientLoadEvent.class, event -> {
 			if (isPlugin) return;
@@ -125,11 +125,11 @@ public final class HeavyIndustryMod extends Mod {
 		Events.on(FileTreeInitEvent.class, event -> {
 			if (!headless) {
 				HFonts.load();
-				Soundsf.load();
+				HSounds.load();
 				Core.app.post(() -> {
-					Shadersf.init();
-					Textures.init();
-					CacheLayerf.init();
+					HShaders.init();
+					HTextures.init();
+					HCacheLayer.init();
 
 					inputAggregator = new InputAggregator();
 				});
@@ -138,12 +138,12 @@ public final class HeavyIndustryMod extends Mod {
 
 		Events.on(MusicRegisterEvent.class, event -> {
 			if (!headless)
-				Musicsf.load();
+				HMusics.load();
 		});
 
 		Events.on(DisposeEvent.class, event -> {
 			if (!headless)
-				Shadersf.dispose();
+				HShaders.dispose();
 		});
 
 		Core.app.post(ModJS::init);
@@ -159,7 +159,7 @@ public final class HeavyIndustryMod extends Mod {
 		HBullets.load();
 
 		if (!isPlugin) {
-			Teamsf.load();
+			HTeams.load();
 			HItems.load();
 			HStatusEffects.load();
 			HLiquids.load();
@@ -181,7 +181,7 @@ public final class HeavyIndustryMod extends Mod {
 	@Override
 	public void init() {
 		if (!headless) {
-			Iconf.load();
+			HIcon.load();
 
 			//Set up screen sampler.
 			ScreenSampler.setup();
@@ -247,7 +247,7 @@ public final class HeavyIndustryMod extends Mod {
 		if (ui != null) {
 			if (ui.settings != null) {
 				//add heavy-industry settings
-				ui.settings.addCategory(Core.bundle.format("hi-settings"), Iconf.reactionIcon, t -> {
+				ui.settings.addCategory(Core.bundle.format("hi-settings"), HIcon.reactionIcon, t -> {
 					t.checkPref("hi-closed-dialog", false);
 					t.checkPref("hi-floating-text", true);
 					t.checkPref("hi-animated-shields", true);

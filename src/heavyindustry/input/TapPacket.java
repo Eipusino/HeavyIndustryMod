@@ -24,12 +24,12 @@ public class TapPacket extends Packet {
 	public void write(Writes write) {
 		if (net.server()) {
 			TypeIO.writeEntity(write, player);
-			HITypeIO.writeTaps(write, results);
+			HTypeIO.writeTaps(write, results);
 		}
 
 		write.f(x);
 		write.f(y);
-		HITypeIO.writeStrings(write, targets);
+		HTypeIO.writeStrings(write, targets);
 	}
 
 	@Override
@@ -42,12 +42,12 @@ public class TapPacket extends Packet {
 		Reads read = READ;
 		if (net.client()) {
 			player = TypeIO.readEntity(read);
-			results = HITypeIO.readTaps(read);
+			results = HTypeIO.readTaps(read);
 		}
 
 		x = read.f();
 		y = read.f();
-		targets = HITypeIO.readStrings(read);
+		targets = HTypeIO.readStrings(read);
 	}
 
 	@Override

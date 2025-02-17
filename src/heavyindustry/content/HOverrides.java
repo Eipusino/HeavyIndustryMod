@@ -134,7 +134,7 @@ public final class HOverrides {
 			damage = 135f;
 			ammoMultiplier = 6f;
 			toColor = Color.valueOf("a5b2c2");
-			shootEffect = smokeEffect = HFx.shoot(Palf.uraniumGrey);
+			shootEffect = smokeEffect = HFx.shoot(HPal.uraniumGrey);
 		}});
 		((LiquidTurret) Blocks.tsunami).ammoTypes.put(HLiquids.nitratedOil, new LiquidBulletType(HLiquids.nitratedOil) {{
 			lifetime = 49f;

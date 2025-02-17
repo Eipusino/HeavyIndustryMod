@@ -83,7 +83,7 @@ public class HyperGenerator extends ImpactReactor {
 			updateEffect1 = HFx.circleOut(effectColor, lightningRange * 0.75f);
 
 			hitShake = despawnShake = 80f;
-			despawnSound = Soundsf.hugeBlast;
+			despawnSound = HSounds.hugeBlast;
 		}
 			@Override
 			public void init(Bullet b) {

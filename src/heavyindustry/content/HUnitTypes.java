@@ -2316,7 +2316,7 @@ public final class HUnitTypes {
 					smokeEffect = Fx.shootBigSmoke;
 					despawnEffect = HFx.crossBlast(hitColor, 50f);
 				}};
-				shootSound = Soundsf.blaster;
+				shootSound = HSounds.blaster;
 			}});
 			abilities.add(new JavelinAbility(20f, 5f, 29f) {{
 				minDamage = 5f;
@@ -2725,7 +2725,7 @@ public final class HUnitTypes {
 				inaccuracy = 5f;
 				ejectEffect = Fx.none;
 				bullet = HBullets.annMissile;
-				shootSound = Soundsf.launch;
+				shootSound = HSounds.launch;
 			}}, new Weapon() {{
 				x = 26f;
 				y = -12.5f;
@@ -2740,7 +2740,7 @@ public final class HUnitTypes {
 				mirror = true;
 				rotateSpeed = 2.5f;
 				alternate = true;
-				shootSound = Soundsf.launch;
+				shootSound = HSounds.launch;
 				shootCone = 30f;
 				shootY = 5f;
 				top = true;
@@ -2847,13 +2847,13 @@ public final class HUnitTypes {
 				reload = 120f;
 				shootY = 27.5f;
 				cooldownTime = 45f;
-				heatColor = Palf.ancientHeat;
+				heatColor = HPal.ancientHeat;
 				shoot = new ShootAlternate(12.3f) {{
 					shots = 2;
 					shotDelay = 0f;
 				}};
 				inaccuracy = 1.3f;
-				shootSound = Soundsf.flak;
+				shootSound = HSounds.flak;
 				bullet = new AccelBulletType(1f, 400f, "missile-large") {{
 					lightOpacity = 0.7f;
 					healPercent = 20f;
@@ -2866,7 +2866,7 @@ public final class HUnitTypes {
 					accelerateEnd = 0.55f;
 					pierce = pierceBuilding = true;
 					pierceCap = 5;
-					lightningColor = backColor = trailColor = hitColor = lightColor = Palf.ancient;
+					lightningColor = backColor = trailColor = hitColor = lightColor = HPal.ancient;
 					lightRadius = 70f;
 					shootEffect = new WrapperEffect(HFx.shootLine(33f, 32), backColor);
 					smokeEffect = HFx.hugeSmokeLong;
@@ -2897,7 +2897,7 @@ public final class HUnitTypes {
 					hitEffect = new MultiEffect(HFx.square45_6_45, HFx.hitSparkLarge);
 					despawnEffect = HFx.lightningHitLarge;
 					fragBullet = new EdgeFragBulletType() {{
-						hitColor = trailColor = Palf.ancient;
+						hitColor = trailColor = HPal.ancient;
 					}};
 					fragBullets = 4;
 					fragLifeMin = 0.7f;
@@ -2939,7 +2939,7 @@ public final class HUnitTypes {
 				rotateSpeed = 4f;
 				autoTarget = true;
 				controllable = alternate = false;
-				shootSound = Soundsf.gauss;
+				shootSound = HSounds.gauss;
 				shadow = 20f;
 				bullet = new BasicBulletType(12f, 220f) {{
 					width = 9f;
@@ -2948,7 +2948,7 @@ public final class HUnitTypes {
 					trailLength = 7;
 					lifetime = 39f;
 					drag = 0.015f;
-					trailColor = hitColor = backColor = lightColor = lightningColor = Palf.ancient;
+					trailColor = hitColor = backColor = lightColor = lightningColor = HPal.ancient;
 					frontColor = Color.white;
 					pierce = pierceArmor = true;
 					pierceCap = 3;
@@ -3029,7 +3029,7 @@ public final class HUnitTypes {
 				reload = 180f;
 				x = y = shootX = shootY = 0;
 				shootCone = 360;
-				shootSound = Soundsf.blaster;
+				shootSound = HSounds.blaster;
 				bullet = HBullets.vastBulletAccel;
 				shoot = new ShootPattern() {{
 					shots = 15;
@@ -3046,7 +3046,7 @@ public final class HUnitTypes {
 				reload = 120f;
 				x = y = shootX = shootY = 0;
 				rotateSpeed = 360;
-				shootSound = Soundsf.hugeShoot;
+				shootSound = HSounds.hugeShoot;
 				velocityRnd = 0.015f;
 				shoot = new ShootMulti(new ShootSummon(0, 0, 220, 0) {{
 					shots = 3;

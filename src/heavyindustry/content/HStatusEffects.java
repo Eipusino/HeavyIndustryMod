@@ -42,7 +42,7 @@ public final class HStatusEffects {
 			effect = HFx.glowParticle;
 		}};
 		regenerating = new LoadStatusEffect("regenerating") {{
-			color = Palf.regenerating;
+			color = HPal.regenerating;
 			damage = -4;
 			effectChance = 0.3f;
 			effect = HFx.glowParticle;

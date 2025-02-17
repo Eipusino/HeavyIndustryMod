@@ -56,7 +56,7 @@ public class OreDetector extends Block {
 		canOverdrive = false;
 		fogRadius = (int) range / 8;
 		clipSize = range * 2f;
-		loopSound = Soundsf.radar;
+		loopSound = HSounds.radar;
 		flags = EnumSet.of(BlockFlag.unitCargoUnloadPoint);
 
 		config(Boolean.class, (r, b) -> ((OreDetectorBuild) r).showOres = b);

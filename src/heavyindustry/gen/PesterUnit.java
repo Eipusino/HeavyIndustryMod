@@ -252,7 +252,7 @@ public class PesterUnit extends Unitf implements Pesterc {
 		nextTargets.clear();
 
 		if (!headless && itr > 0) {
-			Soundsf.hugeShoot.at(ex, ey);
+			HSounds.hugeShoot.at(ex, ey);
 			HFx.crossSpinBlast.at(ex, ey, 0, team.color, this);
 		}
 

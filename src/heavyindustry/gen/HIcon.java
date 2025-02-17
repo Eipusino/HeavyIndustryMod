@@ -5,7 +5,7 @@ import arc.scene.style.*;
 
 import static heavyindustry.HVars.*;
 
-public final class Iconf {
+public final class HIcon {
 	public static Drawable
 			keplerIcon, aboutIcon, artistIcon, configureIcon, contributeIcon, databaseIcon, debuggingIcon, defaultShowIcon, fullSwordIcon, gasesIcon,
 			holdIcon, matrixIcon, nuclearIcon, programIcon, publicInfoIcon, reactionIcon, showInfosIcon, showRangeIcon, musicsIcon,
@@ -18,7 +18,7 @@ public final class Iconf {
 			seiChan, seiChanHit, quadChan, quadChanHit, boulderChan, boulderChanHit;
 
 	/** Don't let anyone instantiate this class. */
-	private Iconf() {}
+	private HIcon() {}
 
 	public static void load() {
 		keplerIcon = modDrawable("kepler-icon");

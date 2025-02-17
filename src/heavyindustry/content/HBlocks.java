@@ -255,7 +255,7 @@ public final class HBlocks {
 			variants = 0;
 		}};
 		pit = new Floor("pit", 0) {{
-			cacheLayer = CacheLayerf.pit;
+			cacheLayer = HCacheLayer.pit;
 			placeableOn = false;
 			canShadow = false;
 			solid = true;
@@ -266,7 +266,7 @@ public final class HBlocks {
 			}
 		};
 		waterPit = new Floor("water-pit", 0) {{
-			cacheLayer = CacheLayerf.waterPit;
+			cacheLayer = HCacheLayer.waterPit;
 			isLiquid = true;
 			drownTime = 20f;
 			speedMultiplier = 0.1f;
@@ -300,7 +300,7 @@ public final class HBlocks {
 			liquidDrop = HLiquids.brine;
 			liquidMultiplier = 1.1f;
 			isLiquid = true;
-			cacheLayer = CacheLayerf.brine;
+			cacheLayer = HCacheLayer.brine;
 			albedo = 1f;
 		}};
 		nanoFluid = new Floor("pooled-nano-fluid", 0) {{
@@ -310,7 +310,7 @@ public final class HBlocks {
 			speedMultiplier = 0.6f;
 			liquidDrop = HLiquids.nanoFluid;
 			isLiquid = true;
-			cacheLayer = CacheLayerf.nanoFluid;
+			cacheLayer = HCacheLayer.nanoFluid;
 			liquidMultiplier = 0.5f;
 			emitLight = true;
 			lightRadius = 30f;
@@ -718,7 +718,7 @@ public final class HBlocks {
 			size = 1;
 			health = 2055;
 			armor = 44f;
-			healColor = Palf.chromiumGrey;
+			healColor = HPal.chromiumGrey;
 			buildCostMultiplier = 4f;
 		}};
 		aparajitoLarge = new AparajitoWall("aparajito-large") {{
@@ -726,7 +726,7 @@ public final class HBlocks {
 			size = 2;
 			health = 8220;
 			armor = 44f;
-			healColor = Palf.chromiumGrey;
+			healColor = HPal.chromiumGrey;
 			buildCostMultiplier = 4f;
 		}};
 		//drill
@@ -1308,13 +1308,13 @@ public final class HBlocks {
 			explosionShakeDuration = 120;
 			explosionRadius = 35;
 			explosionDamage = 7200;
-			explodeSound = Soundsf.dbz1;
+			explodeSound = HSounds.dbz1;
 			explodeEffect = new Effect(30, 500f, b -> {
 				float intensity = 8f;
 				float baseLifetime = 25f + intensity * 15f;
 				b.lifetime = 50f + intensity * 64f;
 
-				Draw.color(Palf.uraniumGrey);
+				Draw.color(HPal.uraniumGrey);
 				Draw.alpha(0.8f);
 				for (int i = 0; i < 5; i++) {
 					Fx.rand.setSeed(b.id * 2l + i);
@@ -1325,7 +1325,7 @@ public final class HBlocks {
 						float rad = fout * ((2f + intensity) * 2.35f);
 
 						Fill.circle(e.x + x, e.y + y, rad);
-						Drawf.light(e.x + x, e.y + y, rad * 2.6f, Palf.uraniumGrey, 0.7f);
+						Drawf.light(e.x + x, e.y + y, rad * 2.6f, HPal.uraniumGrey, 0.7f);
 					}));
 				}
 
@@ -1337,7 +1337,7 @@ public final class HBlocks {
 						Drawf.light(e.x, e.y, i.fin() * 14f * 2f * intensity, Color.white, 0.9f * e.fout());
 					});
 
-					Draw.color(Color.white, Palf.uraniumGrey, e.fin());
+					Draw.color(Color.white, HPal.uraniumGrey, e.fin());
 					Lines.stroke((2f * e.fout()));
 
 					Draw.z(Layer.effect + 0.001f);
@@ -1681,7 +1681,7 @@ public final class HBlocks {
 			outputItem = new ItemStack(HItems.nanoCore, 1);
 			craftEffect = Fx.none;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawSpecConstruct() {{
-				constructColor1 = constructColor2 = Palf.nanoCoreRed;
+				constructColor1 = constructColor2 = HPal.nanoCoreRed;
 			}}, new DrawDefault());
 			consumePower(2.5f);
 			consumeItems(with(Items.titanium, 2, Items.silicon, 3, HItems.purifiedOriginium, 1));
@@ -1698,7 +1698,7 @@ public final class HBlocks {
 			outputItem = new ItemStack(HItems.nanoCore, 12);
 			craftEffect = Fx.none;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.cryofluid), new DrawRegion("-mid"), new DrawSpecConstruct() {{
-				constructColor1 = constructColor2 = Palf.nanoCoreRed;
+				constructColor1 = constructColor2 = HPal.nanoCoreRed;
 			}}, new DrawDefault());
 			consumePower(25f);
 			consumeLiquid(Liquids.cryofluid, 6f / 60f);
@@ -1894,7 +1894,7 @@ public final class HBlocks {
 			craftEffect = Fx.smeltsmoke;
 			drawer = new DrawMulti(new DrawDefault(), new DrawGlowRegion() {{
 				alpha = 1f;
-				color = Palf.uraniumGrey.cpy().lerp(Color.white, 0.1f);
+				color = HPal.uraniumGrey.cpy().lerp(Color.white, 0.1f);
 			}});
 			consumePower(5f);
 			consumeItems(with(Items.graphite, 1, Items.thorium, 1));
@@ -1975,7 +1975,7 @@ public final class HBlocks {
 			results = with(Items.pyratite, 1, Items.blastCompound, 4);
 			craftTime = 12f;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(HLiquids.nitratedOil), new DrawDefault());
-			ambientSound = Soundsf.largeBeam;
+			ambientSound = HSounds.largeBeam;
 			ambientSoundVolume = 0.24f;
 			consumePower(4f);
 			consumeLiquid(HLiquids.nitratedOil, 36f / 60f);
@@ -2260,18 +2260,18 @@ public final class HBlocks {
 			optionalUseTime = 3600;
 			optionalMultiplier = 6;
 			effectChance = 0.5f;
-			effect = WrapperEffect.wrap(HFx.polyParticle, Palf.nanoCoreRed);
+			effect = WrapperEffect.wrap(HFx.polyParticle, HPal.nanoCoreRed);
 			drawer = new DrawMulti(new DrawDefault(), new DrawPulseShape() {{
 				layer = 110;
 				stroke = 3f;
 				timeScl = 120f;
-				color = Palf.regenerating;
+				color = HPal.regenerating;
 			}}, new DrawShape() {{
 				layer = 110;
 				radius = 5f;
 				useWarmupRadius = true;
 				timeScl = 1.22f;
-				color = Palf.regenerating;
+				color = HPal.regenerating;
 			}});
 			consumePower(20f);
 			consumeItem(HItems.nanoCore, 10).boost();
@@ -2606,8 +2606,8 @@ public final class HBlocks {
 				splashDamage = 15f;
 				splashDamageRadius = 18f;
 				drag = -0.028f;
-				backColor = trailColor = Palf.brightSteelBlue;
-				frontColor = Palf.lightGrey;
+				backColor = trailColor = HPal.brightSteelBlue;
+				frontColor = HPal.lightGrey;
 				lifetime = 36;
 				homingPower = 0.045f;
 				homingRange = 40f;
@@ -2621,7 +2621,7 @@ public final class HBlocks {
 				drag = -0.028f;
 				makeFire = true;
 				backColor = trailColor = Color.valueOf("ffb90f");
-				frontColor = Palf.lightGrey;
+				frontColor = HPal.lightGrey;
 				lifetime = 36;
 				homingPower = 0.03f;
 				homingRange = 40f;
@@ -2633,8 +2633,8 @@ public final class HBlocks {
 				splashDamage = 47f;
 				splashDamageRadius = 32f;
 				drag = -0.026f;
-				backColor = trailColor = Palf.orangeBack;
-				frontColor = Palf.lightGrey;
+				backColor = trailColor = HPal.orangeBack;
+				frontColor = HPal.lightGrey;
 				lifetime = 38;
 				homingPower = 0.03f;
 				homingRange = 40f;
@@ -2669,8 +2669,8 @@ public final class HBlocks {
 				lifetime = 38f;
 				hitShake = 2;
 				backColor = trailColor = Color.valueOf("ffb90f");
-				frontColor = Palf.lightGrey;
-				hitColor = Palf.lightYellow;
+				frontColor = HPal.lightGrey;
+				hitColor = HPal.lightYellow;
 				status = StatusEffects.burning;
 				statusDuration = 600;
 				width = 16;
@@ -2689,8 +2689,8 @@ public final class HBlocks {
 				splashDamageRadius = 76f;
 				lifetime = 38f;
 				hitShake = 2;
-				hitColor = backColor = trailColor = Palf.orangeBack;
-				frontColor = Palf.lightGrey;
+				hitColor = backColor = trailColor = HPal.orangeBack;
+				frontColor = HPal.lightGrey;
 				status = StatusEffects.burning;
 				statusDuration = 600;
 				width = 14;
@@ -2743,8 +2743,8 @@ public final class HBlocks {
 				homingDelay = 10f;
 				homingRange = 800f;
 				homingPower = 0.15f;
-				backColor = Palf.brightSteelBlue;
-				frontColor = Palf.lightGrey;
+				backColor = HPal.brightSteelBlue;
+				frontColor = HPal.lightGrey;
 				trailLength = 15;
 				trailWidth = 1.5f;
 				trailColor = Color.white.cpy().a(0.5f);
@@ -2767,7 +2767,7 @@ public final class HBlocks {
 				homingDelay = 10f;
 				homingRange = 800f;
 				backColor = Color.valueOf("ffb90f");
-				frontColor = Palf.lightGrey;
+				frontColor = HPal.lightGrey;
 				trailLength = 15;
 				trailWidth = 1.5f;
 				trailColor = Color.white.cpy().a(0.5f);
@@ -2789,7 +2789,7 @@ public final class HBlocks {
 				homingDelay = 10f;
 				homingRange = 800f;
 				backColor = Color.valueOf("ff7055");
-				frontColor = Palf.lightGrey;
+				frontColor = HPal.lightGrey;
 				trailLength = 15;
 				trailWidth = 1.5f;
 				trailColor = Color.white.cpy().a(0.5f);
@@ -2814,7 +2814,7 @@ public final class HBlocks {
 				homingDelay = 10f;
 				homingRange = 800f;
 				backColor = Color.valueOf("f2e770");
-				frontColor = Palf.lightGrey;
+				frontColor = HPal.lightGrey;
 				trailLength = 16;
 				trailWidth = 2.5f;
 				trailColor = Color.white.cpy().a(0.5f);
@@ -2876,7 +2876,7 @@ public final class HBlocks {
 			}};
 			ammoUseEffect = HFx.casing(60f);
 			canOverdrive = false;
-			shootSound = Soundsf.dd1;
+			shootSound = HSounds.dd1;
 			consumePowerCond(6f, TurretBuild::isActive);
 		}};
 		dragonBreath = new ItemTurret("dragon-breath") {{
@@ -3337,7 +3337,7 @@ public final class HBlocks {
 				trailWidth = 1.7f;
 				trailLength = 9;
 				status = HStatusEffects.breached;
-				trailColor = backColor = hitColor = lightColor = lightningColor = Palf.chromiumGrey;
+				trailColor = backColor = hitColor = lightColor = lightningColor = HPal.chromiumGrey;
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
 				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
 				smokeEffect = Fx.shootBigSmoke;
@@ -3381,7 +3381,7 @@ public final class HBlocks {
 			velocityRnd = 0.075f;
 			unitSort = UnitSorts.weakest;
 			range = 360f;
-			shootSound = Soundsf.fissure;
+			shootSound = HSounds.fissure;
 			shoot = new ShootMulti(new ShootPattern(), new ShootBarrel() {{
 				barrels = new float[]{-6.5f, 3f, 0f};
 			}}, new ShootBarrel() {{
@@ -3765,7 +3765,7 @@ public final class HBlocks {
 				height = 22.5f;
 				pierce = pierceBuilding = true;
 				pierceCap = 5;
-				hitColor = backColor = trailColor = Palf.carbideShot;
+				hitColor = backColor = trailColor = HPal.carbideShot;
 				frontColor = Color.white;
 				trailLength = 11;
 				trailWidth = 2.4f;
@@ -3785,7 +3785,7 @@ public final class HBlocks {
 					lifetime = 8.55f;
 					pierce = pierceBuilding = true;
 					pierceCap = 2;
-					hitColor = backColor = trailColor = Palf.carbideShot;
+					hitColor = backColor = trailColor = HPal.carbideShot;
 					frontColor = Color.white;
 					trailLength = 11;
 					trailWidth = 1.9f;

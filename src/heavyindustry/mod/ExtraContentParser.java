@@ -88,7 +88,7 @@ public class ExtraContentParser {
 		put(Sortf.class, (type, data) -> modField(UnitSorts.class, HUnitSorts.class, data));
 		put(Interp.class, (type, data) -> modField(Interp.class, HInterps.class, data));
 		put(Blending.class, (type, data) -> field(Blending.class, data));
-		put(CacheLayer.class, (type, data) -> modField(CacheLayer.class, CacheLayerf.class, data));
+		put(CacheLayer.class, (type, data) -> modField(CacheLayer.class, HCacheLayer.class, data));
 		put(Attribute.class, (type, data) -> {
 			String attr = data.asString();
 			if (Attribute.exists(attr)) return Attribute.get(attr);

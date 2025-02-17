@@ -14,8 +14,8 @@ public class AncientUnitType extends UnitTypef {
 		super(name);
 
 		outlineColor = Pal.darkOutline;
-		healColor = Palf.ancientLightMid;
-		lightColor = Palf.ancientLightMid;
+		healColor = HPal.ancientLightMid;
+		lightColor = HPal.ancientLightMid;
 	}
 
 	public void addEngine(float x, float y, float relativeRot, float rad, boolean flipAdd) {

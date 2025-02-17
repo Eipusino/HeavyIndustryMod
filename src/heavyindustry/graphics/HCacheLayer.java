@@ -12,20 +12,20 @@ import static mindustry.Vars.*;
  *
  * @author Eipusino
  */
-public final class CacheLayerf {
+public final class HCacheLayer {
 	public static ShaderLayer brine, nanoFluid, armor, pit, waterPit;
 
 	/** Don't let anyone instantiate this class. */
-	private CacheLayerf() {}
+	private HCacheLayer() {}
 
 	/** Loads the cache layers. */
 	public static void init() {
-		brine = new ShaderLayer(Shadersf.brine);
-		nanoFluid = new ShaderLayer(Shadersf.nanoFluid);
-		pit = new ShaderLayer(Shadersf.pit);
-		waterPit = new ShaderLayer(Shadersf.waterPit);
+		brine = new ShaderLayer(HShaders.brine);
+		nanoFluid = new ShaderLayer(HShaders.nanoFluid);
+		pit = new ShaderLayer(HShaders.pit);
+		waterPit = new ShaderLayer(HShaders.waterPit);
 
-		armor = new ShaderLayer(Shadersf.tiler) {
+		armor = new ShaderLayer(HShaders.tiler) {
 			@Override
 			public void begin() {
 				renderer.blocks.floor.endc();
@@ -39,7 +39,7 @@ public final class CacheLayerf {
 				renderer.blocks.floor.endc();
 				renderer.effectBuffer.end();
 
-				Shadersf.tiler.texture = Textures.armor;
+				HShaders.tiler.texture = HTextures.armor;
 				renderer.effectBuffer.blit(shader);
 
 				renderer.blocks.floor.beginc();

@@ -23,7 +23,7 @@ import static mindustry.Vars.*;
  *
  * @author Eipusino
  */
-public final class Shadersf {
+public final class HShaders {
 	public static DepthShader depth;
 	public static DepthScreenspaceShader depthScreenspace;
 	public static DepthAtmosphereShader depthAtmosphere;
@@ -44,7 +44,7 @@ public final class Shadersf {
 	public static PlanetTextureShader planetTexture;
 
 	/** Don't let anyone instantiate this class. */
-	private Shadersf() {}
+	private HShaders() {}
 
 	/** Loads the shaders. */
 	public static void init() {

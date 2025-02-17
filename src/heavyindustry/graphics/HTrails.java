@@ -16,9 +16,9 @@ import mindustry.graphics.*;
 import static heavyindustry.HVars.*;
 import static heavyindustry.util.Structf.*;
 
-public final class Trails {
+public final class HTrails {
 	/** Don't let anyone instantiate this class. */
-	private Trails() {}
+	private HTrails() {}
 
 	public static TexturedTrail singlePhantasmal(String name, int length, TrailAttrib... attributes) {
 		return new TexturedTrail(length, name, attributes) {{

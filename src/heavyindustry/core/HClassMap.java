@@ -32,9 +32,9 @@ import heavyindustry.world.draw.*;
 import static mindustry.mod.ClassMap.*;
 
 /** Generated class. Maps simple class names to concrete classes. For use in JSON attached mods. */
-final class ClassMapf {
+final class HClassMap {
 	/** Don't let anyone instantiate this class. */
-	private ClassMapf() {}
+	private HClassMap() {}
 
 	static void load() {
 		//ai

@@ -37,7 +37,7 @@ public final class HLiquids {
 			flammability = 1f;
 			explosiveness = 1f;
 		}};
-		nanoFluid = new Liquid("nano-fluid", Palf.nanoCoreRed) {{
+		nanoFluid = new Liquid("nano-fluid", HPal.nanoCoreRed) {{
 			heatCapacity = 2.5f;
 			viscosity = 0.8f;
 			temperature = 0.3f;
@@ -49,8 +49,8 @@ public final class HLiquids {
 		}
 			@Override
 			public void drawPuddle(Puddle puddle) {
-				Draws.drawTask(nanoFluidId, puddle, Shadersf.wave, s -> {
-					s.waveMix = Palf.nanoCoreRedBright;
+				Draws.drawTask(nanoFluidId, puddle, HShaders.wave, s -> {
+					s.waveMix = HPal.nanoCoreRedBright;
 					s.mixAlpha = 0.2f + Mathf.absin(5, 0.2f);
 					s.waveScl = 0.2f;
 					s.maxThreshold = 1f;

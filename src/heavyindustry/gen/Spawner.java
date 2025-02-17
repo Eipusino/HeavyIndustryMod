@@ -142,7 +142,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 
 	public void effect() {
 		Effect.shake(type.hitSize / 3f, type.hitSize / 4f, toSpawn);
-		Soundsf.jumpIn.at(toSpawn.x, toSpawn.y);
+		HSounds.jumpIn.at(toSpawn.x, toSpawn.y);
 		if (type.flying) {
 			HFx.jumpTrail.at(toSpawn.x, toSpawn.y, rotation(), team.color, type);
 			toSpawn.apply(StatusEffects.slow, HFx.jumpTrail.lifetime);
@@ -195,7 +195,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 
 	@Override
 	public void draw() {
-		if (type.health > 8000 && team != Vars.player.team()) Soundsf.alertLoop();
+		if (type.health > 8000 && team != Vars.player.team()) HSounds.alertLoop();
 
 		TextureRegion arrowRegion = Core.atlas.find(name("jump-gate-arrow"));
 

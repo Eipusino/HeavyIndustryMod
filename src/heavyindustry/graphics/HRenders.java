@@ -8,7 +8,7 @@ import arc.util.*;
 import mindustry.game.EventType.*;
 import mindustry.graphics.*;
 
-public final class Rendersf {
+public final class HRenders {
 	private static float
 			//reduction rate of screen flash
 			flashIntensity,
@@ -17,7 +17,7 @@ public final class Rendersf {
 			//current duration of screen flash
 			flashTime;
 
-	private Rendersf() {}
+	private HRenders() {}
 
 	public static void init() {
 		DimRenderer.load();

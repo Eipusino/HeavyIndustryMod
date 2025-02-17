@@ -102,7 +102,7 @@ public final class SlashRenderer {
 		public float[] slashes;
 
 		SlashShader() {
-			super(Shadersf.dsv("screenspace"), Shadersf.msf("slash"));
+			super(HShaders.dsv("screenspace"), HShaders.msf("slash"));
 		}
 
 		@Override

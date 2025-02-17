@@ -428,8 +428,8 @@ public final class Drawn {
 				drawSpinSprite(regions, x, y, w, h, r);
 				buffer.end();
 
-				Shadersf.alphaShader.alpha = alpha;
-				buffer.blit(Shadersf.alphaShader);
+				HShaders.alphaShader.alpha = alpha;
+				buffer.blit(HShaders.alphaShader);
 			});
 		} else {
 			drawSpinSprite(regions, x, y, w, h, r);
@@ -525,7 +525,7 @@ public final class Drawn {
 		} else {
 			a = 1f - Mathf.clamp(temp / 273.15f);
 			if (a < 0.01f) return;
-			Draw.color(Palf.coldcolor, a);
+			Draw.color(HPal.coldcolor, a);
 		}
 		Draw.blend(Blending.additive);
 		Draw.rect(reg, x, y, rot);
@@ -864,11 +864,11 @@ public final class Drawn {
 	}
 
 	public static void blockBuildCenter(float x, float y, TextureRegion region, Color color, float rotation, float progress) {
-		Shadersf.blockBuildCenter.region = region;
-		Shadersf.blockBuildCenter.progress = progress;
+		HShaders.blockBuildCenter.region = region;
+		HShaders.blockBuildCenter.progress = progress;
 
 		Draw.color(color);
-		Draw.shader(Shadersf.blockBuildCenter);
+		Draw.shader(HShaders.blockBuildCenter);
 		Draw.rect(region, x, y, rotation);
 		Draw.shader();
 		Draw.color();

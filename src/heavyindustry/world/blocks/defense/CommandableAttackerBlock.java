@@ -195,7 +195,7 @@ public class CommandableAttackerBlock extends CommandableBlock {
 
 			if (!headless && participantsTmp.any()) {
 				if (team != player.team())
-					UIUtils.showToast(Icon.warning, "[#ff7b69]Caution: []Attack " + (int) (pos.x / 8) + ", " + (int) (pos.y / 8), Soundsf.alert2);
+					UIUtils.showToast(Icon.warning, "[#ff7b69]Caution: []Attack " + (int) (pos.x / 8) + ", " + (int) (pos.y / 8), HSounds.alert2);
 				HFx.attackWarningRange.at(pos.x, pos.y, 80, team.color);
 			}
 		}

@@ -3,7 +3,7 @@ package heavyindustry.graphics;
 import arc.graphics.*;
 import mindustry.graphics.*;
 
-public final class Palf {
+public final class HPal {
 	public static final Color[] spectrum = {Color.red, Color.coral, Color.yellow, Color.lime, Color.green, Color.teal, Color.blue, Color.purple, Color.magenta};
 
 	/** Static read-only palettes that are used throughout the mod. */
@@ -49,5 +49,5 @@ public final class Palf {
 			heat = new Color(1f, 0.22f, 0.22f, 0.8f);
 
 	/** Don't let anyone instantiate this class. */
-	private Palf() {}
+	private HPal() {}
 }

@@ -15,7 +15,7 @@ import mindustry.graphics.*;
 import java.util.*;
 
 import static heavyindustry.graphics.Drawn.*;
-import static heavyindustry.graphics.Shadersf.*;
+import static heavyindustry.graphics.HShaders.*;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public final class Draws {
@@ -41,16 +41,16 @@ public final class Draws {
 			Draw.draw(mirrorField + 0.51f, () -> {
 				effectBuffer.end();
 
-				Shadersf.mirrorField.waveMix = Tmp.c1.set(Palf.matrixNet);
-				Shadersf.mirrorField.waveScl = 0.03f;
-				Shadersf.mirrorField.gridStroke = 0.8f;
-				Shadersf.mirrorField.maxThreshold = 1f;
-				Shadersf.mirrorField.minThreshold = 0.7f;
-				Shadersf.mirrorField.stroke = 2;
-				Shadersf.mirrorField.sideLen = 10;
-				Shadersf.mirrorField.offset.set(Time.time / 10, Time.time / 10);
+				HShaders.mirrorField.waveMix = Tmp.c1.set(HPal.matrixNet);
+				HShaders.mirrorField.waveScl = 0.03f;
+				HShaders.mirrorField.gridStroke = 0.8f;
+				HShaders.mirrorField.maxThreshold = 1f;
+				HShaders.mirrorField.minThreshold = 0.7f;
+				HShaders.mirrorField.stroke = 2;
+				HShaders.mirrorField.sideLen = 10;
+				HShaders.mirrorField.offset.set(Time.time / 10, Time.time / 10);
 
-				effectBuffer.blit(Shadersf.mirrorField);
+				effectBuffer.blit(HShaders.mirrorField);
 			});
 		});
 	}
@@ -377,7 +377,7 @@ public final class Draws {
 	}
 
 	public static <T> void drawMirrorField(int taskId, T target, DrawAcceptor<MirrorFieldShader> pre, DrawAcceptor<T> draw) {
-		drawTask(taskId, target, Shadersf.mirrorField, pre, draw);
+		drawTask(taskId, target, HShaders.mirrorField, pre, draw);
 	}
 
 	public static <T> void drawMask(int taskID, MaskShader shader, GLFrameBuffer<? extends Texture> baseBuffer, T target, DrawAcceptor<T> draw) {
@@ -1226,7 +1226,7 @@ public final class Draws {
 
 		private static void end(boolean blit) {
 			samplerBuffer.end();
-			if (blit) samplerBuffer.blit(Shadersf.baseShader);
+			if (blit) samplerBuffer.blit(HShaders.baseShader);
 		}
 
 		private static void flush(boolean legacy) {
@@ -1262,7 +1262,7 @@ public final class Draws {
 			if (clear) target.begin(Color.clear);
 			else target.begin();
 
-			samplerBuffer.blit(Shadersf.baseShader);
+			samplerBuffer.blit(HShaders.baseShader);
 			target.end();
 		}
 	}

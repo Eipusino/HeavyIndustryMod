@@ -46,19 +46,19 @@ public class MirrorArmorAbility extends BaseMirrorShieldAbility {
 		if (Core.settings.getBool("hi-animated-shields")) {
 			Draw.z(Layer.shields - 2f);
 			Draws.drawToBuffer(drawId, drawBuffer, unit, b -> {
-				Shadersf.mirrorField.waveMix = Tmp.c1.set(Palf.matrixNet);
-				Shadersf.mirrorField.stroke = 1.2f;
-				Shadersf.mirrorField.sideLen = 5;
-				Shadersf.mirrorField.waveScl = 0.03f;
-				Shadersf.mirrorField.gridStroke = 0.6f;
-				Shadersf.mirrorField.maxThreshold = 1f;
-				Shadersf.mirrorField.minThreshold = 0.7f;
-				Shadersf.mirrorField.offset.set(Time.time * 0.1f, Time.time * 0.1f);
+				HShaders.mirrorField.waveMix = Tmp.c1.set(HPal.matrixNet);
+				HShaders.mirrorField.stroke = 1.2f;
+				HShaders.mirrorField.sideLen = 5;
+				HShaders.mirrorField.waveScl = 0.03f;
+				HShaders.mirrorField.gridStroke = 0.6f;
+				HShaders.mirrorField.maxThreshold = 1f;
+				HShaders.mirrorField.minThreshold = 0.7f;
+				HShaders.mirrorField.offset.set(Time.time * 0.1f, Time.time * 0.1f);
 
 				pingPongBuffer.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
 				pingPongBuffer.begin(Color.clear);
 				Blending.disabled.apply();
-				b.blit(Shadersf.mirrorField);
+				b.blit(HShaders.mirrorField);
 				Blending.normal.apply();
 				pingPongBuffer.end();
 			}, e -> {
@@ -68,7 +68,7 @@ public class MirrorArmorAbility extends BaseMirrorShieldAbility {
 				Draw.reset();
 			});
 
-			Draws.drawTask(maskId, unit, Shadersf.alphaMask, s -> Shadersf.alphaMask.texture = pingPongBuffer.getTexture(), e -> {
+			Draws.drawTask(maskId, unit, HShaders.alphaMask, s -> HShaders.alphaMask.texture = pingPongBuffer.getTexture(), e -> {
 				Draw.color(Color.white, Math.max(alpha, Mathf.absin(6, 0.6f)));
 				Draw.scl(1.15f);
 				Draw.rect(e.type.shadowRegion, e.x, e.y, e.rotation - 90);

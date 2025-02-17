@@ -6,11 +6,11 @@ import arc.graphics.Texture.*;
 
 import static heavyindustry.HVars.*;
 
-public final class Textures {
+public final class HTextures {
 	public static Texture smooth, particle, darker, gaussian, median, armor;
 
 	/** Don't let anyone instantiate this class. */
-	private Textures() {}
+	private HTextures() {}
 
 	public static void init() {
 		smooth = loadTexture("smooth-noise", t -> {

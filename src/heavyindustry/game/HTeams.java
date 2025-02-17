@@ -3,9 +3,9 @@ package heavyindustry.game;
 import arc.graphics.*;
 import mindustry.game.*;
 
-public final class Teamsf {
+public final class HTeams {
 	/** Don't let anyone instantiate this class. */
-	private Teamsf() {}
+	private HTeams() {}
 
 	public static void load() {
 		//TODO There are currently no teams to add.

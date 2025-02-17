@@ -66,11 +66,11 @@ public final class HWeathers {
 			duration = 15f * Time.toMinutes;
 			bulletChange = 0.5f;
 			soundVol = 0.05f;
-			sound = Soundsf.hailRain;
+			sound = HSounds.hailRain;
 			setBullets(
 					new HailStoneBulletType(name("hailstone-big"), 3) {{
 						hitEffect = Fx.explosion.layer(Layer.power);
-						hitSound = Soundsf.bigHailstoneHit;
+						hitSound = HSounds.bigHailstoneHit;
 						hitSoundVolume = 0.2f;
 						despawnEffect = HFx.staticStone;
 						splashDamage = 95f;
@@ -118,7 +118,7 @@ public final class HWeathers {
 					new HailStoneBulletType(name("stone-storm-big"), 3) {{
 						speed = 4f;
 						hitEffect = Fx.explosion.layer(Layer.power);
-						hitSound = Soundsf.bigHailstoneHit;
+						hitSound = HSounds.bigHailstoneHit;
 						hitSoundVolume = 0.2f;
 						despawnEffect = HFx.staticStone;
 						damage = splashDamage = 95f;

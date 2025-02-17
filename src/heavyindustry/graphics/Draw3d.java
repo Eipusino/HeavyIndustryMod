@@ -56,7 +56,7 @@ public final class Draw3d {
 					buffer.end();
 					Gl.blendEquationSeparate(Gl.funcAdd, Gl.funcAdd);
 
-					buffer.blit(Shadersf.passThrough);
+					buffer.blit(HShaders.passThrough);
 				});
 				shadowQueue.clear();
 			}

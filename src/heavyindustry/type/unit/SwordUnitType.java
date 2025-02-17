@@ -7,7 +7,7 @@ import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
 import heavyindustry.gen.*;
-import heavyindustry.graphics.Trails.*;
+import heavyindustry.graphics.HTrails.*;
 import mindustry.ai.types.*;
 import mindustry.content.*;
 import mindustry.entities.*;

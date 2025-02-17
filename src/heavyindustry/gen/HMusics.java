@@ -11,11 +11,11 @@ import static mindustry.Vars.*;
  *
  * @since 1.0.2
  */
-public final class Musicsf {
+public final class HMusics {
 	private static final ObjectMap<String, Music[]> musicSets = new ObjectMap<>();
 
 	/** Don't let anyone instantiate this class. */
-	private Musicsf() {}
+	private HMusics() {}
 
 	public static void load() {}
 
@@ -29,7 +29,7 @@ public final class Musicsf {
 		for (String track : tracks) {
 			Music music = tree.loadMusic(basePath + track);
 			try {
-				Musicsf.class.getField(track).set(null, music);
+				HMusics.class.getField(track).set(null, music);
 			} catch (Exception e) {
 				Log.err("Failed to load music: " + track, e);
 			}

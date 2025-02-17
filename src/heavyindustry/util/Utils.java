@@ -625,7 +625,7 @@ public final class Utils {
 
 	public static void debugDots(Vec2[] points) {
 		for (int i = 0; i < points.length; i++) {
-			Draw.color(Palf.spectrum[i], 0.5f);
+			Draw.color(HPal.spectrum[i], 0.5f);
 			Fill.poly(points[i].x, points[i].y, 12, 2f);
 		}
 		Draw.color();
@@ -633,7 +633,7 @@ public final class Utils {
 
 	public static void debugDots(float[] points) {
 		for (int i = 0; i < points.length; i += 2) {
-			Draw.color(Palf.spectrum[i / 2], 0.5f);
+			Draw.color(HPal.spectrum[i / 2], 0.5f);
 			Fill.poly(points[i], points[i + 1], 12, 2f);
 		}
 		Draw.color();

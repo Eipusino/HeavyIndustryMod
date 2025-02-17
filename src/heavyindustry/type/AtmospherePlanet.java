@@ -44,7 +44,7 @@ public class AtmospherePlanet extends Planet {
 		Gl.depthMask(false);
 		Blending.additive.apply();
 
-		var shader = Shadersf.depthAtmosphere;
+		var shader = HShaders.depthAtmosphere;
 		shader.camera = cam;
 		shader.planet = this;
 		shader.bind();
@@ -69,7 +69,7 @@ public class AtmospherePlanet extends Planet {
 		@Override
 		public void render(PlanetParams params, Mat3D projection, Mat3D transform) {
 			if (params.alwaysDrawAtmosphere || Core.settings.getBool("atmosphere")) {
-				var depth = Shadersf.depth;
+				var depth = HShaders.depth;
 				buffer.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
 				buffer.begin(Tmp.c1.set(0xffffff00));
 				Blending.disabled.apply();

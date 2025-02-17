@@ -125,8 +125,8 @@ public final class HBullets {
 			}
 		};
 		ancientArtilleryProjectile = new ShieldBreakerType(7f, 6000f, "missile-large", 7000f) {{
-			backColor = trailColor = lightColor = lightningColor = hitColor = Palf.ancientLightMid;
-			frontColor = Palf.ancientLight;
+			backColor = trailColor = lightColor = lightningColor = hitColor = HPal.ancientLightMid;
+			frontColor = HPal.ancientLight;
 			trailEffect = HFx.hugeTrail;
 			trailParam = 6f;
 			trailChance = 0.2f;
@@ -171,8 +171,8 @@ public final class HBullets {
 			fragBullet = new BasicBulletType(2f, 300, name("circle-bolt")) {{
 				width = height = 10f;
 				shrinkY = shrinkX = 0.7f;
-				backColor = trailColor = lightColor = lightningColor = hitColor = Palf.ancientLightMid;
-				frontColor = Palf.ancientLight;
+				backColor = trailColor = lightColor = lightningColor = hitColor = HPal.ancientLightMid;
+				frontColor = HPal.ancientLight;
 				trailEffect = Fx.missileTrail;
 				trailParam = 3.5f;
 				splashDamage = 80;
@@ -209,7 +209,7 @@ public final class HBullets {
 			scaledSplashDamage = true;
 			collidesTiles = collidesGround = collides = collidesAir = true;
 			lightningDamage = 200f;
-			lightColor = lightningColor = trailColor = hitColor = Palf.ancient;
+			lightColor = lightningColor = trailColor = hitColor = HPal.ancient;
 			lightning = 5;
 			lightningLength = 12;
 			lightningLengthRand = 16;
@@ -268,7 +268,7 @@ public final class HBullets {
 
 			hittable = false;
 
-			lightColor = Palf.ancient;
+			lightColor = HPal.ancient;
 			lightningDamage = 2000f;
 			lightning = 2;
 			lightningLength = 4;
@@ -366,7 +366,7 @@ public final class HBullets {
 
 			hittable = false;
 
-			lightColor = hitColor = Palf.ancient;
+			lightColor = hitColor = HPal.ancient;
 			lightningDamage = 2000f;
 			lightning = 2;
 			lightningLength = 4;
@@ -484,9 +484,9 @@ public final class HBullets {
 			tracerSpacing = 10f;
 			tracerUpdateSpacing *= 1.25f;
 			removeAfterPierce = false;
-			hitColor = backColor = lightColor = lightningColor = Palf.ancient;
-			trailColor = Palf.ancientLightMid;
-			frontColor = Palf.ancientLight;
+			hitColor = backColor = lightColor = lightningColor = HPal.ancient;
+			trailColor = HPal.ancientLightMid;
+			frontColor = HPal.ancientLight;
 			width = 18f;
 			height = 60f;
 			homingPower = 0.01f;
@@ -1293,9 +1293,9 @@ public final class HBullets {
 		collapseFrag = new LightningLinkerBulletType() {{
 			effectLightningChance = 0.15f;
 			damage = 200;
-			backColor = trailColor = lightColor = lightningColor = hitColor = Palf.thurmixRed;
+			backColor = trailColor = lightColor = lightningColor = hitColor = HPal.thurmixRed;
 			size = 10f;
-			frontColor = Palf.thurmixRedLight;
+			frontColor = HPal.thurmixRedLight;
 			range = 600f;
 			spreadEffect = Fx.none;
 
@@ -1336,11 +1336,11 @@ public final class HBullets {
 
 			hitShake = despawnShake = 40f;
 			drawSize = 800f;
-			hitColor = lightColor = trailColor = lightningColor = Palf.thurmixRed;
+			hitColor = lightColor = trailColor = lightningColor = HPal.thurmixRed;
 
 			fragBullets = 22;
 			fragBullet = collapseFrag;
-			hitSound = Soundsf.hugeBlast;
+			hitSound = HSounds.hugeBlast;
 			hitSoundVolume = 4f;
 
 			fragLifeMax = 1.1f;
@@ -1415,7 +1415,7 @@ public final class HBullets {
 				}
 
 				if (b.fin() > 0.05f && Mathf.chanceDelta(b.fin() * 0.3f + 0.02f)) {
-					Soundsf.blaster.at(b.x, b.y, 1f, 0.3f);
+					HSounds.blaster.at(b.x, b.y, 1f, 0.3f);
 					Tmp.v1.rnd(rad / 4 * b.fin());
 					HFx.shuttleLerp.at(b.x + Tmp.v1.x, b.y + Tmp.v1.y, Tmp.v1.angle(), hitColor, Mathf.random(rad, rad * 3f) * (Mathf.curve(b.fin(Interp.pow2In), 0, 0.7f) + 2) / 3);
 				}
@@ -1456,10 +1456,10 @@ public final class HBullets {
 				Draw.z(Layer.effect + 0.001f);
 				Draw.color(hitColor);
 				Fill.circle(b.x, b.y, rad * fin * circleF / 2f);
-				Draw.color(Palf.thurmixRedDark);
+				Draw.color(HPal.thurmixRedDark);
 				Fill.circle(b.x, b.y, rad * fin * circleF * 0.75f / 2f);
 				Draw.z(Layer.bullet - 0.1f);
-				Draw.color(Palf.thurmixRedDark);
+				Draw.color(HPal.thurmixRedDark);
 				Fill.circle(b.x, b.y, rad * fin * circleF * 0.8f / 2f);
 				Draw.z(z);
 			}

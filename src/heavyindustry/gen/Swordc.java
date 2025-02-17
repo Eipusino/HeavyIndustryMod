@@ -1,7 +1,7 @@
 package heavyindustry.gen;
 
 import arc.struct.*;
-import heavyindustry.graphics.Trails.*;
+import heavyindustry.graphics.HTrails.*;
 import mindustry.gen.*;
 
 public interface Swordc extends Unitc {

@@ -6,7 +6,7 @@ import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
 import heavyindustry.content.*;
-import heavyindustry.graphics.Trails.*;
+import heavyindustry.graphics.HTrails.*;
 import heavyindustry.type.unit.*;
 import mindustry.core.*;
 import mindustry.entities.*;

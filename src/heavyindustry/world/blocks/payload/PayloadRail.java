@@ -490,8 +490,8 @@ public class PayloadRail extends PayloadBlock {
 					payload.draw();
 					buffer.end();
 
-					Shadersf.alphaShader.alpha = opacity;
-					buffer.blit(Shadersf.alphaShader);
+					HShaders.alphaShader.alpha = opacity;
+					buffer.blit(HShaders.alphaShader);
 				});
 			} else {
 				payload.draw();

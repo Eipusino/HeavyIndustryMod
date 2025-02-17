@@ -21,7 +21,7 @@ import static mindustry.Vars.*;
 public class BombLauncher extends CommandableAttackerBlock {
 	public TextureRegion bombRegion;
 
-	public Sound shootSound = Soundsf.launch;
+	public Sound shootSound = HSounds.launch;
 	public Color baseColor = Pal.command;
 
 	public float bombVelPerTile = 2f;

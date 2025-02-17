@@ -12,7 +12,7 @@ import heavyindustry.entities.abilities.*;
 import heavyindustry.entities.bullet.*;
 import heavyindustry.graphics.*;
 import heavyindustry.graphics.Draws.*;
-import heavyindustry.graphics.Trails.*;
+import heavyindustry.graphics.HTrails.*;
 import heavyindustry.math.*;
 import heavyindustry.struct.*;
 import heavyindustry.util.*;
@@ -556,7 +556,7 @@ public final class HFx {
 			}),
 			triSpark2 = new Effect(26f, e -> {
 				rand.setSeed(e.id);
-				Draw.color(Palf.ancient, Color.white, e.fin());
+				Draw.color(HPal.ancient, Color.white, e.fin());
 				Angles.randLenVectors(e.id, 3, 3f + 24f * e.fin(), 5f, (x, y) -> {
 					float randN = rand.random(120f);
 					Fill.poly(e.x + x, e.y + y, 3, e.fout() * 8f * rand.random(0.8f, 1.2f), e.rotation + randN * e.fin());
@@ -1352,7 +1352,7 @@ public final class HFx {
 						Drawf.light(b.x, b.y, i.fin() * 14f * 2f * intensity, Color.white, 0.9f * b.fout());
 					});
 
-					Draw.color(Palf.winter, Palf.frost, b.fin());
+					Draw.color(HPal.winter, HPal.frost, b.fin());
 					Lines.stroke((2f * b.fout()));
 
 					Draw.z(Layer.effect + 0.001f);
@@ -1370,13 +1370,13 @@ public final class HFx {
 				float y = e.y;
 				float fout = e.fout();
 				float fin = e.fin();
-				Drawf.light(x, y, fout * size, Palf.winter, 0.7f);
+				Drawf.light(x, y, fout * size, HPal.winter, 0.7f);
 
 				float lerp = e.fin(Interp.pow3Out);
 				int id = e.id;
 
 				Draws.drawBloomUponFlyUnit(null, n -> {
-					Draw.color(Palf.winter);
+					Draw.color(HPal.winter);
 					Draws.drawLightEdge(x, y, l, w, l, w);
 					Lines.stroke(5f * fout);
 					Lines.circle(x, y, 55 * fout);
@@ -1390,7 +1390,7 @@ public final class HFx {
 					float s = Mathf.randomSeed((int) (id + dx), size / 4, size / 2);
 
 					float le = 1 - Mathf.pow(fin, 4);
-					Draws.drawCrystal(x + dx * lerp, y + dy * lerp, s, s * le * 0.35f, s * le * 0.24f, 0, 0, 0.8f * le, Layer.effect, Layer.bullet - 1, Time.time * Mathf.randomSeed(id, -3.5f, 3.35f) + Mathf.randomSeed((long) (id + dx), 360), Mathf.angle(dx, dy), Tmp.c1.set(Palf.frost).a(0.65f), Palf.winter);
+					Draws.drawCrystal(x + dx * lerp, y + dy * lerp, s, s * le * 0.35f, s * le * 0.24f, 0, 0, 0.8f * le, Layer.effect, Layer.bullet - 1, Time.time * Mathf.randomSeed(id, -3.5f, 3.35f) + Mathf.randomSeed((long) (id + dx), 360), Mathf.angle(dx, dy), Tmp.c1.set(HPal.frost).a(0.65f), HPal.winter);
 				});
 			}),
 			crossLightMini = new Effect(22, e -> {
@@ -1440,7 +1440,7 @@ public final class HFx {
 				Draws.drawLightEdge(e.x, e.y, 240, 12.5f * l, 240, 12.5f * l, e.rotation + 237 * e.fin(Interp.pow3Out));
 			}),
 			auroraCoreCharging = new Effect(80, 100, e -> {
-				Draw.color(Palf.matrixNet);
+				Draw.color(HPal.matrixNet);
 				Lines.stroke(e.fin() * 2f);
 				Lines.circle(e.x, e.y, 4f + e.fout() * 100f);
 
@@ -1692,7 +1692,7 @@ public final class HFx {
 				float y = e.y;
 				float fout = e.fout();
 				float fin = e.fin();
-				Drawf.light(x, y, fout * 192, Palf.winter, 0.7f);
+				Drawf.light(x, y, fout * 192, HPal.winter, 0.7f);
 
 				Draw.z(Layer.flyingUnit + 1);
 
@@ -1700,7 +1700,7 @@ public final class HFx {
 				int id = e.id;
 
 				Draws.drawBloomUponFlyUnit(null, n -> {
-					Draw.color(Palf.winter);
+					Draw.color(HPal.winter);
 					Draws.drawLightEdge(x, y, l, w, l, w);
 					Lines.stroke(5f * fout);
 					Lines.circle(x, y, 55 * fout);
@@ -1736,7 +1736,7 @@ public final class HFx {
 			}),
 			crystalFragFex = new Effect(26, e -> {
 				float size = Mathf.randomSeed(e.id, 2, 4) * e.fout();
-				Draw.color(Palf.fexCrystal, 0.7f);
+				Draw.color(HPal.fexCrystal, 0.7f);
 				Draws.drawDiamond(e.x, e.y, size * 2.5f, size, Mathf.randomSeed(e.id, 0f, 360f));
 			}),
 			iceCrystal = new Effect(120, e -> {
@@ -1763,12 +1763,12 @@ public final class HFx {
 			}),
 			winterShooting = new Effect(60, e -> {
 				e.scaled(12f, b -> {
-					Lines.stroke(b.fout() * 4f + 0.2f, Palf.winter);
+					Lines.stroke(b.fout() * 4f + 0.2f, HPal.winter);
 					Lines.circle(b.x, b.y, b.fin() * 75f);
 				});
 
 				float lerp = e.fout(Interp.pow2Out);
-				Draw.color(Palf.winter);
+				Draw.color(HPal.winter);
 				Draws.drawLightEdge(e.x, e.y, 64 + 64 * lerp, 12 * lerp, 60 + 80 * lerp, 6 * lerp, e.rotation + 90);
 
 				float l = e.fin(Interp.pow2Out);
@@ -1852,7 +1852,7 @@ public final class HFx {
 				});
 			}),
 			shrinkIceParticleSmall = new Effect(120, e -> {
-				Draw.color(Palf.winter);
+				Draw.color(HPal.winter);
 
 				Angles.randLenVectors(e.id, Mathf.randomSeed(e.id, 6, 12), 32, (x, y) -> {
 					float size = Mathf.randomSeed((int) (e.id + x), 8, 16);
@@ -2258,7 +2258,7 @@ public final class HFx {
 	public static Effect fireworksShoot(float r) {
 		return new Effect(30, e -> {
 			Draw.z(Layer.effect - 0.1f);
-			Draw.color(Utils.c7.set(Palf.rainBowRed).shiftHue(Time.time * 2f));
+			Draw.color(Utils.c7.set(HPal.rainBowRed).shiftHue(Time.time * 2f));
 			Angles.randLenVectors(e.id, 1, e.fin() * 20f, e.rotation + r, 0, (x, y) -> {
 				Fill.circle(e.x + x, e.y + y, 2 * e.fout());
 			});

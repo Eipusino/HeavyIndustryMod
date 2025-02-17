@@ -6,9 +6,9 @@ import heavyindustry.input.InputAggregator.*;
 
 import java.io.*;
 
-public class HITypeIO {
+public class HTypeIO {
 	/** Don't let anyone instantiate this class. */
-	private HITypeIO() {}
+	private HTypeIO() {}
 
 	public static void writeStrings(Writes write, Seq<String> array) {
 		write.i(array.size);

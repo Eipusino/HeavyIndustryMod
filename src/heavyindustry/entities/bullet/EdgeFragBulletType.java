@@ -15,14 +15,14 @@ public class EdgeFragBulletType extends BulletType {
 		lifetime = 120;
 		despawnHit = true;
 		hitEffect = HFx.diamondSpark;
-		hitColor = Palf.matrixNet;
+		hitColor = HPal.matrixNet;
 
 		collidesTiles = false;
 
 		homingRange = 160;
 		homingPower = 0.075f;
 
-		trailColor = Palf.matrixNet;
+		trailColor = HPal.matrixNet;
 		trailLength = 25;
 		trailWidth = 3f;
 	}

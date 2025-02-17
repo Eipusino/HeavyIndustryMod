@@ -37,33 +37,33 @@ public final class HItems {
 			buildable = false;
 			lowPriority = true;
 		}};
-		nanoCore = new Item("nano-core", Palf.nanoCoreRed) {{
+		nanoCore = new Item("nano-core", HPal.nanoCoreRed) {{
 			cost = -0.75f;
 			hardness = 6;
 		}};
-		originium = new Item("originium", Palf.originiumBlack) {{
+		originium = new Item("originium", HPal.originiumBlack) {{
 			cost = 1.25f;
 			flammability = 0.2f;
 			explosiveness = 0.3f;
 			radioactivity = 0.1f;
 			hardness = 5;
 		}};
-		purifiedOriginium = new Item("purified-originium", Palf.coldcolor) {{
+		purifiedOriginium = new Item("purified-originium", HPal.coldcolor) {{
 			cost = 1.35f;
 			radioactivity = 0.2f;
 			hardness = 6;
 		}};
-		syntheticJade = new Item("synthetic-jade", Palf.heat) {{
+		syntheticJade = new Item("synthetic-jade", HPal.heat) {{
 			cost = 1.45f;
 			hardness = 6;
 		}};
-		uranium = new Item("uranium", Palf.uraniumGrey) {{
+		uranium = new Item("uranium", HPal.uraniumGrey) {{
 			cost = 3f;
 			hardness = 7;
 			healthScaling = 1.4f;
 			radioactivity = 2f;
 		}};
-		chromium = new Item("chromium", Palf.chromiumGrey) {{
+		chromium = new Item("chromium", HPal.chromiumGrey) {{
 			cost = 5f;
 			hardness = 8;
 			healthScaling = 1.8f;

@@ -6,7 +6,7 @@ import mindustry.*;
 
 import static heavyindustry.HVars.*;
 
-public final class Soundsf {
+public final class HSounds {
 	public static Sound
 			ct1 = new Sound(),
 			dbz1 = new Sound(),
@@ -35,7 +35,7 @@ public final class Soundsf {
 			giantHailstoneHit = new Sound();
 
 	/** Don't let anyone instantiate this class. */
-	private Soundsf() {}
+	private HSounds() {}
 
 	public static void load() {
 		ct1 = new Sound(ogg("ct1"));
