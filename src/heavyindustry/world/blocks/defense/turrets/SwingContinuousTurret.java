@@ -162,7 +162,7 @@ public class SwingContinuousTurret extends ContinuousTurret {
 				var params = DrawPart.params.set(build.warmup(), 1f - progress, 1f - progress, tb.heat, tb.curRecoil, tb.charge, tb.x + tb.recoilOffset.x, tb.y + tb.recoilOffset.y, tb.rotation);
 				params.life = tb.rotateSpeedf;
 
-				for (var part : parts) {
+				for (DrawPart part : parts) {
 					part.draw(params);
 				}
 			}

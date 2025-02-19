@@ -13,6 +13,7 @@ import arc.scene.ui.*;
 import arc.scene.ui.ImageButton.*;
 import arc.struct.*;
 import arc.util.*;
+import arc.util.Nullable;
 import arc.util.pooling.*;
 import arc.util.pooling.Pool.*;
 import heavyindustry.content.*;
@@ -1303,7 +1304,7 @@ public final class Utils {
 	public static float angleDistSigned(float a, float b, float start) {
 		float dst = angleDistSigned(a, b);
 		if (Math.abs(dst) > start) {
-			return dst > 0 ? dst - start : dst + start;
+			return dst > 0f ? dst - start : dst + start;
 		}
 
 		return 0f;
@@ -1321,11 +1322,11 @@ public final class Utils {
 	}
 
 	public static float clampedAngle(float angle, float relative, float limit) {
-		if (limit >= 180) return angle;
-		if (limit <= 0) return relative;
+		if (limit >= 180f) return angle;
+		if (limit <= 0f) return relative;
 		float dst = angleDistSigned(angle, relative);
 		if (Math.abs(dst) > limit) {
-			float val = dst > 0 ? dst - limit : dst + limit;
+			float val = dst > 0f ? dst - limit : dst + limit;
 			return (angle - val) % 360f;
 		}
 		return angle;
@@ -1376,8 +1377,7 @@ public final class Utils {
 		tmpUnit = null;
 
 		Units.nearbyEnemies(hitter.team, rect, u -> {
-			if ((tmpUnit != null && u.dst2(x, y) > tmpUnit.dst2(x, y)) || !u.checkTarget(hitter.type.collidesAir, hitter.type.collidesGround))
-				return;
+			if ((tmpUnit != null && u.dst2(x, y) > tmpUnit.dst2(x, y)) || !u.checkTarget(hitter.type.collidesAir, hitter.type.collidesGround)) return;
 
 			u.hitbox(hitRect);
 			Rect other = hitRect;
@@ -1405,7 +1405,7 @@ public final class Utils {
 	}
 
 	public static float biasSlope(float fin, float bias) {
-		return (fin < bias ? (fin / bias) : 1f - (fin - bias) / (1f - bias));
+		return fin < bias ? (fin / bias) : 1f - (fin - bias) / (1f - bias);
 	}
 
 	public static float inRayCastCircle(float x, float y, float[] in, Sized target) {
@@ -1580,8 +1580,8 @@ public final class Utils {
 		for (int i = 0; i < 4; i++) {
 			int mod = i % 2;
 			int i2 = i / 2;
-			float rx1 = (rect.x + rect.width * mod);
-			float ry1 = (rect.y + rect.height * i2);
+			float rx1 = rect.x + rect.width * mod;
+			float ry1 = rect.y + rect.height * i2;
 
 			if (Mathf.within(x, y, rx1, ry1, radius)) {
 				count++;
@@ -1687,6 +1687,7 @@ public final class Utils {
 	}
 
 	/** code taken from BadWrong_ on the gamemaker subreddit */
+	@Nullable
 	public static Vec2 intersectCircle(float x1, float y1, float x2, float y2, float cx, float cy, float cr) {
 		if (!Intersector.nearestSegmentPoint(x1, y1, x2, y2, cx, cy, v4).within(cx, cy, cr)) return null;
 

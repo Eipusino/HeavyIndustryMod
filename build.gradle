@@ -48,6 +48,7 @@ tasks.withType(KotlinCompile).configureEach {
 }
 
 dependencies {
+	//implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 	implementation "org.jetbrains:annotations:24.0.1"
 	implementation "org.tomlj:tomlj:1.1.1"
 

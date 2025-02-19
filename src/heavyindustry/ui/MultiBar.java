@@ -44,23 +44,23 @@ public class MultiBar extends Bar {
 	}
 
 	public void reset(float value) {
-		float v = value / barParts.size;
-		barParts.each((part) -> {
-			part.value = part.lastValue = part.blink = v;
-		});
+		float valueSize = value / barParts.size;
+		for (BarPart part : barParts) {
+			part.value = part.lastValue = part.blink = valueSize;
+		}
 	}
 
 	public void updateParts() {
-		barParts.each(BarPart::update);
+		for (BarPart part : barParts) {
+			part.update();
+		}
 	}
 
 	public void drawParts() {
-		float[] offset = new float[]{x};
-
-		barParts.each((part) -> {
-			part.draw(offset[0], y, width, height, barParts);
-			offset[0] = part.offset;
-		});
+		for (BarPart part : barParts) {
+			part.draw(x, y, width, height, barParts);
+			x = part.offset;
+		}
 	}
 
 	public void set(Prov<String> prov, Seq<BarPart> bar) {

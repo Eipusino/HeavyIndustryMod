@@ -248,6 +248,7 @@ public final class HTechTree {
 			node(spike, () -> node(fissure, () -> {}));
 			node(minigun, () -> {});
 		});
+		vanillaNode(tsunami, () -> node(ironStream, () -> {}));
 		vanillaNode(spectre, () -> node(evilSpirits, () -> {}));
 		vanillaNode(meltdown, () -> node(judgement, () -> {}));
 		//turret-erekir

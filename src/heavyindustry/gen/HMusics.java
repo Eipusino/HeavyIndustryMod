@@ -25,15 +25,19 @@ public final class HMusics {
 	 * @param basePath   Base path for the music files.
 	 * @param tracks Array of track names to load.
 	 */
-	public static void loadMusicSet(String basePath, String[] tracks) {
+	public static void loadMusicSet(Class<?> clazz, String basePath, String[] tracks) {
 		for (String track : tracks) {
 			Music music = tree.loadMusic(basePath + track);
 			try {
-				HMusics.class.getField(track).set(null, music);
+				clazz.getField(track).set(null, music);
 			} catch (Exception e) {
 				Log.err("Failed to load music: " + track, e);
 			}
 		}
+	}
+
+	private static void loadMusicSet(String basePath, String[] tracks) {
+		loadMusicSet(HMusics.class, basePath, tracks);
 	}
 
 	/**

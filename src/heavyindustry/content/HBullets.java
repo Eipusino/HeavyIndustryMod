@@ -44,7 +44,7 @@ public final class HBullets {
 
 	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
 	public static void load() {
-		basicMissile = new MissileBulletType(4.2f, 15) {{
+		basicMissile = new MissileBulletType(4.2f, 15f) {{
 			homingPower = 0.12f;
 			width = 8f;
 			height = 8f;
@@ -61,7 +61,7 @@ public final class HBullets {
 			weaveScale = 8f;
 			weaveMag = 2f;
 		}};
-		sapArtilleryFrag = new ArtilleryBulletType(2.3f, 30) {{
+		sapArtilleryFrag = new ArtilleryBulletType(2.3f, 30f) {{
 			hitEffect = Fx.sapExplosion;
 			knockback = 0.8f;
 			lifetime = 70f;
@@ -81,7 +81,7 @@ public final class HBullets {
 			status = StatusEffects.sapped;
 			statusDuration = 60f * 10;
 		}};
-		boidMissile = new BoidBulletType(2.7f, 30) {{
+		boidMissile = new BoidBulletType(2.7f, 30f) {{
 			damage = 50;
 			homingPower = 0.02f;
 			lifetime = 500f;
@@ -587,7 +587,7 @@ public final class HBullets {
 			accelerateBegin = 0.045f;
 			accelerateEnd = 0.675f;
 			pierceCap = 3;
-			splashDamage = damage / 4;
+			splashDamage = damage / 4f;
 			splashDamageRadius = 24f;
 			trailLength = 30;
 			trailWidth = 3f;
@@ -597,18 +597,18 @@ public final class HBullets {
 			trailRotation = false;
 			trailChance = 0.35f;
 			trailParam = 4f;
-			homingRange = 640F;
+			homingRange = 640f;
 			homingPower = 0.075f;
-			homingDelay = 5;
+			homingDelay = 5f;
 			lightning = 3;
 			lightningLengthRand = 10;
 			lightningLength = 5;
-			lightningDamage = damage / 4;
+			lightningDamage = damage / 4f;
 			shootEffect = smokeEffect = Fx.none;
 			hitEffect = despawnEffect = new MultiEffect(new Effect(65f, b -> {
 				Draw.color(b.color);
 				Fill.circle(b.x, b.y, 6f * b.fout(Interp.pow3Out));
-				Angles.randLenVectors(b.id, 6, 35 * b.fin() + 5, (x, y) -> Fill.circle(b.x + x, b.y + y, 4 * b.fout(Interp.pow2Out)));
+				Angles.randLenVectors(b.id, 6, 35f * b.fin() + 5f, (x, y) -> Fill.circle(b.x + x, b.y + y, 4f * b.fout(Interp.pow2Out)));
 			}), HFx.hitSparkLarge);
 			despawnHit = false;
 			rangeOverride = 480f;
@@ -619,7 +619,7 @@ public final class HBullets {
 			}
 
 			public void updateTrailEffects(Bullet b) {
-				if (trailChance > 0) {
+				if (trailChance > 0f) {
 					if (Mathf.chanceDelta(trailChance)) {
 						trailEffect.at(b.x, b.y, trailRotation ? b.rotation() : trailParam, b.team.color);
 					}
@@ -640,7 +640,7 @@ public final class HBullets {
 
 				Effect.shake(hitShake, hitShake, b);
 
-				if (splashDamageRadius > 0 && !b.absorbed) {
+				if (splashDamageRadius > 0f && !b.absorbed) {
 					Damage.damage(b.team, x, y, splashDamageRadius, splashDamage * b.damageMultiplier(), collidesAir, collidesGround);
 
 					if (status != StatusEffects.none) {
@@ -648,12 +648,12 @@ public final class HBullets {
 					}
 				}
 
-				for (int i = 0; i < lightning; i++) Lightning.create(b, b.team.color, lightningDamage < 0 ? damage : lightningDamage, b.x, b.y, b.rotation() + Mathf.range(lightningCone/2) + lightningAngle, lightningLength + Mathf.random(lightningLengthRand));
+				for (int i = 0; i < lightning; i++) Lightning.create(b, b.team.color, lightningDamage < 0f ? damage : lightningDamage, b.x, b.y, b.rotation() + Mathf.range(lightningCone/2) + lightningAngle, lightningLength + Mathf.random(lightningLengthRand));
 
 				if (!(b.owner instanceof Unit from)) return;
 				if (from.dead || !from.isAdded() || from.healthf() > 0.99f) return;
 				HFx.chainLightningFade.at(b.x, b.y, Mathf.random(12, 20), b.team.color, from);
-				from.heal(damage / 8);
+				from.heal(damage / 8f);
 			}
 
 			@Override
@@ -688,17 +688,17 @@ public final class HBullets {
 				}
 
 				Draw.color(b.team.color, Color.white, 0.35f);
-				Drawn.arrow(b.x, b.y, 5, 35, -6, b.rotation());
+				Drawn.arrow(b.x, b.y, 5f, 35f, -6f, b.rotation());
 				Draw.color(Tmp.c1);
-				Drawn.arrow(b.x, b.y, 5, 35, 12, b.rotation());
+				Drawn.arrow(b.x, b.y, 5f, 35f, 12f, b.rotation());
 
 				Draw.reset();
 			}
 		};
-		vastBulletLightningBall = new LightningLinkerBulletType(3f, 120) {{
-			lifetime = 120;
+		vastBulletLightningBall = new LightningLinkerBulletType(3f, 120f) {{
+			lifetime = 120f;
 			keepVelocity = false;
-			lightningDamage = damage = splashDamage = 80;
+			lightningDamage = damage = splashDamage = 80f;
 			splashDamageRadius = 50f;
 			homingDelay = 20f;
 			homingRange = 300f;

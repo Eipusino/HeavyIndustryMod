@@ -105,7 +105,9 @@ public class OrnitopterUnitType extends UnitTypef {
 	@Override
 	public void load() {
 		super.load();
-		blades.each(Blade::load);
+		for (Blade b : blades) {
+			b.load();
+		}
 	}
 
 	public static class Blade {

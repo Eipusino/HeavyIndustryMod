@@ -215,10 +215,10 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 		}
 
 		if (can) {
-			trails.each(t -> {
+			for (Trail t : trails) {
 				t.drawCap(team.color, trailWidth);
 				t.draw(team.color, trailWidth);
-			});
+			}
 		}
 
 		if (can) {

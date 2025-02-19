@@ -137,7 +137,7 @@ public final class HBlocks {
 			matrixProcessor, hugeLogicDisplay, buffrerdMemoryCell, buffrerdMemoryBank, heatSink, heatFan, heatSinkLarge, laserRuler, labelMessage,
 			//turret
 			dissipation, rocketLauncher, largeRocketLauncher, rocketSilo,
-			dragonBreath, breakthrough, cloudbreaker, minigun,
+			dragonBreath, breakthrough, cloudbreaker, ironStream, minigun,
 			spike, fissure,
 			hurricane, judgement, evilSpirits,
 			//turret-erekir
@@ -3079,6 +3079,42 @@ public final class HBlocks {
 			cooldownTime = 300f;
 			shootSound = Sounds.artillery;
 			coolant = consumeCoolant(0.2f);
+		}};
+		ironStream = new LiquidTurret("iron-stream") {{
+			requirements(Category.turret, with(Items.lead, 250, Items.metaglass, 150, Items.titanium, 120, Items.thorium, 100));
+			ammo(Liquids.slag, new RailBulletType() {{
+				pointEffectSpace = 18f;
+				pointEffect = Fx.railTrail;
+				damage = 135f;
+				knockback = 3f;
+				lifetime = 30f;
+				length = 208f;
+				pierce = true;
+				pierceDamageFactor = 0.3f;
+				hitEffect = Fx.hitMeltdown;
+				status = StatusEffects.melting;
+				statusDuration = 600f;
+				shootEffect = Fx.instShoot;
+				smokeEffect = Fx.none;
+			}});
+			health = 2200;
+			size = 3;
+			reload = 24f;
+			range = 208f;
+			recoilTime = 30f;
+			recoil = 3f;
+			shootSound = Sounds.shotgun;
+			targetGround = true;
+			targetAir = true;
+			inaccuracy = 2f;
+			shoot = new ShootSpread() {{
+				shots = 3;
+				spread = 0f;
+			}};
+			shake = 2f;
+			rotateSpeed = 9f;
+			liquidCapacity = 10f;
+			buildCostMultiplier = 0.8f;
 		}};
 		minigun = new MinigunTurret("minigun") {{
 			requirements(Category.turret, with(Items.copper, 350, Items.graphite, 300, Items.titanium, 150, Items.plastanium, 175, Items.surgeAlloy, 120));

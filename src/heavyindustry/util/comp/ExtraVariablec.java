@@ -348,7 +348,7 @@ public interface ExtraVariablec {
 			return n.floatValue();
 		} else if (res == null) {
 			extra().put(field, floatOf(value));
-			return 0;
+			return 0f;
 		}
 
 		throw new ClassCastException(res + " is not a number or single float reference array");

@@ -60,9 +60,6 @@ public final class HeavyIndustryMod extends Mod {
 	/** Is this mod in plugin mode. In this mode, the mod will not load content. */
 	public static final boolean isPlugin;
 
-	public static HeavyIndustryMod theMod;
-	public static Class<? extends HeavyIndustryMod> theModType;
-
 	/** If needed, please call {@link #loaded()} for the LoadedMod of this mod. */
 	private static LoadedMod loaded;
 
@@ -76,9 +73,6 @@ public final class HeavyIndustryMod extends Mod {
 	}
 
 	public HeavyIndustryMod() {
-		theMod = this;
-		theModType = getClass();
-
 		Log.infoTag("Kotlin", "Version: " + KotlinVersion.CURRENT);
 		Log.info("Loaded HeavyIndustry Mod constructor.");
 

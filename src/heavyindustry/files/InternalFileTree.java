@@ -3,6 +3,8 @@ package heavyindustry.files;
 import arc.files.*;
 import arc.util.*;
 
+import java.util.*;
+
 /**
  * Use for jar internal navigation.
  * <p>Replace {@code Vars.mods.getMod(mod).root} with a more secure method of obtaining the jar root directory based on the class path as internal navigation for the jar.
@@ -17,10 +19,9 @@ public class InternalFileTree {
 
 	/** @param owner navigation anchor */
 	public InternalFileTree(Class<?> owner) {
-		anchorClass = owner;
+		anchorClass = Objects.requireNonNull(owner);
 
-		//noinspection DataFlowIssue
-		String classPath = owner.getResource("").getFile().replaceAll("%20", " ");
+		String classPath = Objects.requireNonNull(anchorClass.getResource("")).getFile().replaceAll("%20", " ");
 		classPath = classPath.substring(classPath.indexOf(":") + 2);
 		String jarPath = (OS.isLinux ? "/" : "") + classPath.substring(0, classPath.indexOf("!"));
 

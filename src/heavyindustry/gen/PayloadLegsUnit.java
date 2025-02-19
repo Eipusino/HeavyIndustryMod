@@ -59,7 +59,11 @@ public class PayloadLegsUnit extends LegsUnitf implements Payloadc {
 
 	@Override
 	public void destroy() {
-		if (Vars.state.rules.unitPayloadsExplode) payloads.each(Payload::destroyed);
+		if (Vars.state.rules.unitPayloadsExplode) {
+			for (Payload pay : payloads) {
+				pay.destroyed();
+			}
+		}
 		super.destroy();
 	}
 

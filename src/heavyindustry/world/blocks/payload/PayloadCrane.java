@@ -25,13 +25,14 @@ import mindustry.world.meta.*;
  * @since 1.0.6
  */
 public class PayloadCrane extends Block {
+	static final float[] segmentLengths = {100f, 70f, 35f};
+	static final float[] segmentOffsets = {60f, 45f, 25f, 0f};
+
 	public float hookOffset = 130f, minExtension = -1f, maxExtension = 210f;
 	public float extensionSpeed = 1.5f;
 	public float rotateSpeed = 0.5f;
 
 	public int segments = 4;
-	public float[] segmentLengths = {100f, 70f, 35f};
-	public float[] segmentOffsets = {60f, 45f, 25f, 0f};
 
 	public TextureRegion baseRegion, previewRegion, topRegion, outlineRegion, topOutlineRegion;
 	public TextureRegion[] segmentRegions, segmentOutlineRegions, hookRegions, hookOutlineRegions;
