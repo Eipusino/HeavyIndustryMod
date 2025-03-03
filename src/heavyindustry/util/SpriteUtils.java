@@ -1,11 +1,11 @@
 package heavyindustry.util;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.math.geom.*;
-import arc.struct.*;
+import arc.Core;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.geom.Point2;
+import arc.struct.IntIntMap;
 
-import java.util.*;
+import java.util.Arrays;
 
 /**
  * The utility set for split sprite.

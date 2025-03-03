@@ -1,14 +1,15 @@
 package heavyindustry.entities.abilities;
 
-import arc.scene.ui.layout.*;
-import arc.struct.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.ui.*;
+import arc.scene.ui.layout.Table;
+import arc.struct.Seq;
+import arc.util.Interval;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.entities.Units;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Unit;
+import mindustry.graphics.Pal;
+import mindustry.ui.Bar;
 
 public class SwapHealthAbility extends Ability {
 	public float percent = 3600f, reload = 0.05f;

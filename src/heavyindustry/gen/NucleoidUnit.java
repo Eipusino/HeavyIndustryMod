@@ -1,20 +1,25 @@
 package heavyindustry.gen;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import arc.util.io.*;
-import heavyindustry.graphics.*;
-import heavyindustry.type.unit.*;
-import mindustry.content.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.util.Time;
+import arc.util.Tmp;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.graphics.Drawn;
+import heavyindustry.type.unit.NucleoidUnitType;
+import mindustry.content.Fx;
+import mindustry.graphics.Layer;
+import mindustry.type.UnitType;
 
-import static heavyindustry.HVars.*;
+import static heavyindustry.HVars.name;
 
-public class NucleoidUnit extends Unitf implements Nucleoidc {
+public class NucleoidUnit extends ExtraUnit implements Nucleoidc {
 	public float recentDamage = 0f;
 	public float reinforcementsReload = 0f;
 

@@ -1,26 +1,35 @@
 package heavyindustry.type.unit;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.scene.ui.*;
-import arc.scene.ui.layout.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.ai.*;
-import heavyindustry.gen.*;
-import heavyindustry.world.meta.*;
-import mindustry.ai.types.*;
-import mindustry.content.*;
-import mindustry.entities.abilities.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.ui.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.scene.ui.Image;
+import arc.scene.ui.layout.Table;
+import arc.struct.Seq;
+import arc.util.Scaling;
+import arc.util.Strings;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.ai.SentryAI;
+import heavyindustry.gen.Sentryc;
+import heavyindustry.world.meta.HIStat;
+import mindustry.ai.types.LogicAI;
+import mindustry.content.Blocks;
+import mindustry.entities.abilities.Ability;
+import mindustry.game.Team;
+import mindustry.gen.Iconc;
+import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Pal;
+import mindustry.ui.Bar;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
-public class SentryUnitType extends UnitTypef {
+public class SentryUnitType extends ExtraUnitType {
 	public float startElevation = 0.5f, riseSpeed = -1f;
 	public float anchorDrag = 0.15f;
 	public float pullScale = 0.01f, anchorPullScale = 0.003f;

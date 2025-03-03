@@ -1,21 +1,27 @@
 package heavyindustry.world.blocks.liquid;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.world.blocks.distribution.*;
-import mindustry.*;
-import mindustry.core.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
-import mindustry.world.blocks.liquid.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.math.geom.Position;
+import arc.math.geom.Vec2;
+import arc.util.Eachable;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.world.blocks.distribution.TubeItemBridge;
+import mindustry.Vars;
+import mindustry.core.Renderer;
+import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Building;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.world.Tile;
+import mindustry.world.blocks.liquid.LiquidBlock;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
 
 /**
  * A bridge with the same connection method as the power node.

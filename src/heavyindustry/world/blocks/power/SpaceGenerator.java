@@ -1,22 +1,33 @@
 package heavyindustry.world.blocks.power;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.world.meta.*;
-import mindustry.content.*;
-import mindustry.core.*;
-import mindustry.entities.*;
-import mindustry.graphics.*;
-import mindustry.ui.*;
-import mindustry.world.*;
-import mindustry.world.blocks.power.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.math.Mathf;
+import arc.struct.EnumSet;
+import arc.struct.Seq;
+import arc.util.Interval;
+import arc.util.Strings;
+import heavyindustry.world.meta.HIStatValues;
+import mindustry.content.Blocks;
+import mindustry.content.Fx;
+import mindustry.core.World;
+import mindustry.entities.Effect;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.ui.Bar;
+import mindustry.world.Tile;
+import mindustry.world.blocks.power.PowerGenerator;
+import mindustry.world.meta.Attribute;
+import mindustry.world.meta.BlockFlag;
+import mindustry.world.meta.Env;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 public class SpaceGenerator extends PowerGenerator {
 	public int space = 3;

@@ -1,13 +1,14 @@
 package heavyindustry.world.draw;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.util.*;
-import heavyindustry.graphics.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.world.*;
-import mindustry.world.draw.*;
+import arc.Core;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.util.Eachable;
+import heavyindustry.graphics.Drawn;
+import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Building;
+import mindustry.world.Block;
+import mindustry.world.draw.DrawBlock;
 
 public class DrawHalfSpinner extends DrawBlock {
 	public TextureRegion region;

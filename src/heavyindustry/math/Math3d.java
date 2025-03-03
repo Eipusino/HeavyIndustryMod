@@ -1,12 +1,17 @@
 package heavyindustry.math;
 
-import arc.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.gen.*;
+import arc.Core;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Position;
+import arc.math.geom.Vec2;
+import arc.math.geom.Vec3;
+import arc.util.Time;
+import arc.util.Tmp;
+import mindustry.gen.Hitboxc;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.renderer;
+import static mindustry.Vars.tilesize;
 
 /** @since 1.0.5 */
 public final class Math3d {

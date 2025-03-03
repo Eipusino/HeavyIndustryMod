@@ -1,15 +1,15 @@
 package heavyindustry.graphics;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.graphics.gl.*;
-import arc.math.geom.*;
-import heavyindustry.content.*;
-import mindustry.graphics.*;
-import mindustry.graphics.g3d.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.gl.FrameBuffer;
+import arc.math.geom.Vec3;
+import heavyindustry.content.HPlanets;
+import mindustry.graphics.MenuRenderer;
+import mindustry.graphics.g3d.PlanetParams;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.renderer;
 
 public class PlanetMenuRenderer extends MenuRenderer {
 	public static FrameBuffer buffer;

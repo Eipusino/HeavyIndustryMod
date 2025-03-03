@@ -1,9 +1,11 @@
 package heavyindustry.ui;
 
-import arc.scene.*;
-import arc.scene.event.*;
-import arc.scene.ui.layout.*;
-import arc.struct.*;
+import arc.scene.Element;
+import arc.scene.event.Touchable;
+import arc.scene.ui.layout.Scl;
+import arc.scene.ui.layout.WidgetGroup;
+import arc.struct.Seq;
+import arc.struct.SnapshotSeq;
 
 /** The first is used as a background, the rest are stacked on top at stackX, stackY */
 public class ShiftedStack extends WidgetGroup {

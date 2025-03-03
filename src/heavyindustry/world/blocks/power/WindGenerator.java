@@ -1,23 +1,30 @@
 package heavyindustry.world.blocks.power;
 
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import arc.util.io.*;
-import heavyindustry.graphics.*;
-import heavyindustry.type.weather.*;
-import mindustry.entities.units.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.input.*;
-import mindustry.world.*;
-import mindustry.world.blocks.power.*;
-import mindustry.world.meta.*;
+import arc.graphics.g2d.Draw;
+import arc.math.Mathf;
+import arc.math.geom.Point2;
+import arc.struct.EnumSet;
+import arc.struct.Seq;
+import arc.util.Eachable;
+import arc.util.Time;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.graphics.Drawm;
+import heavyindustry.type.weather.EffectWeather;
+import mindustry.entities.units.BuildPlan;
+import mindustry.game.Team;
+import mindustry.gen.Groups;
+import mindustry.gen.WeatherState;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Pal;
+import mindustry.input.Placement;
+import mindustry.world.Tile;
+import mindustry.world.blocks.power.PowerGenerator;
+import mindustry.world.meta.Env;
+import mindustry.world.meta.StatUnit;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 public class WindGenerator extends PowerGenerator {
 	public int spacing = 9;

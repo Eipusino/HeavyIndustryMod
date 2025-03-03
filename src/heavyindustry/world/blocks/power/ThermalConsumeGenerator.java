@@ -1,11 +1,11 @@
 package heavyindustry.world.blocks.power;
 
-import arc.*;
-import arc.math.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.world.blocks.power.*;
+import arc.Core;
+import arc.math.Mathf;
+import arc.util.Time;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.world.blocks.power.ThermalGenerator;
 
 public class ThermalConsumeGenerator extends ThermalGenerator {
 	public float itemDuration = 120f;

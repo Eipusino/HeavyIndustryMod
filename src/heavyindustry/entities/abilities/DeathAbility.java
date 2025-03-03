@@ -1,8 +1,10 @@
 package heavyindustry.entities.abilities;
 
-import arc.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
+import arc.Core;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Building;
+import mindustry.gen.Groups;
+import mindustry.gen.Unit;
 
 public class DeathAbility extends Ability {
 	public float length = 200f;

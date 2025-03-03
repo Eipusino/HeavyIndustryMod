@@ -1,14 +1,17 @@
 package heavyindustry.gen;
 
-import arc.math.*;
-import arc.util.*;
-import heavyindustry.type.unit.*;
-import heavyindustry.type.unit.CopterUnitType.*;
-import mindustry.gen.*;
+import arc.math.Mathf;
+import arc.util.Time;
+import heavyindustry.type.unit.CopterUnitType;
+import heavyindustry.type.unit.CopterUnitType.Rotor;
+import heavyindustry.type.unit.CopterUnitType.RotorMount;
+import mindustry.gen.Call;
+import mindustry.gen.Groups;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.net;
+import static mindustry.Vars.state;
 
-public class CopterUnit extends Unitf implements Copterc {
+public class CopterUnit extends ExtraUnit implements Copterc {
 	protected transient RotorMount[] rotors = {};
 	protected transient float rotorSpeedScl = 1f;
 

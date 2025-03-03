@@ -1,22 +1,32 @@
 package heavyindustry.world.blocks.defense;
 
-import arc.*;
-import arc.audio.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import arc.util.pooling.*;
-import heavyindustry.content.*;
-import heavyindustry.gen.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.Core;
+import arc.audio.Sound;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.math.Rand;
+import arc.math.geom.Position;
+import arc.math.geom.Vec2;
+import arc.util.Time;
+import arc.util.Tmp;
+import arc.util.pooling.Pools;
+import heavyindustry.content.HFx;
+import heavyindustry.gen.HSounds;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.game.Team;
+import mindustry.gen.Damagec;
+import mindustry.gen.Groups;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.graphics.Trail;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
 
 public class BombLauncher extends CommandableAttackerBlock {
 	public TextureRegion bombRegion;

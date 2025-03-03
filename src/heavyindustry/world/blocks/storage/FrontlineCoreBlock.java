@@ -1,13 +1,17 @@
 package heavyindustry.world.blocks.storage;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import mindustry.game.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
-import mindustry.world.blocks.storage.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import mindustry.game.Team;
+import mindustry.graphics.Layer;
+import mindustry.world.Block;
+import mindustry.world.Tile;
+import mindustry.world.blocks.storage.CoreBlock;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.headless;
+import static mindustry.Vars.state;
+import static mindustry.Vars.ui;
 
 public class FrontlineCoreBlock extends CoreBlock {
 	public int max = 3;

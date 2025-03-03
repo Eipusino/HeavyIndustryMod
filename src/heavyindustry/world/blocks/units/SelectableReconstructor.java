@@ -1,26 +1,32 @@
 package heavyindustry.world.blocks.units;
 
-import arc.*;
-import arc.graphics.*;
-import arc.math.*;
-import arc.scene.ui.layout.*;
-import arc.struct.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.game.EventType.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.ui.*;
-import mindustry.world.blocks.*;
-import mindustry.world.blocks.payloads.*;
-import mindustry.world.blocks.units.*;
-import mindustry.world.blocks.units.UnitFactory.*;
-import mindustry.world.consumers.*;
-import mindustry.world.meta.*;
+import arc.Events;
+import arc.graphics.Color;
+import arc.math.Mathf;
+import arc.scene.ui.layout.Table;
+import arc.struct.Seq;
+import arc.util.Scaling;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.game.EventType.UnitCreateEvent;
+import mindustry.gen.Building;
+import mindustry.gen.Icon;
+import mindustry.gen.Player;
+import mindustry.graphics.Pal;
+import mindustry.type.Item;
+import mindustry.type.ItemStack;
+import mindustry.type.UnitType;
+import mindustry.ui.Styles;
+import mindustry.world.blocks.ItemSelection;
+import mindustry.world.blocks.payloads.Payload;
+import mindustry.world.blocks.payloads.UnitPayload;
+import mindustry.world.blocks.units.Reconstructor;
+import mindustry.world.blocks.units.UnitFactory.UnitPlan;
+import mindustry.world.consumers.ConsumeItemDynamic;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.state;
 
 public class SelectableReconstructor extends Reconstructor {
 	public Seq<DynamicUnitPlan> plans = new Seq<>();

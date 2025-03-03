@@ -1,10 +1,12 @@
 package heavyindustry.world.blocks.defense
 
-import arc.graphics.g2d.*
-import mindustry.gen.*
+import arc.graphics.g2d.Draw
+import arc.graphics.g2d.Fill
+import mindustry.gen.Building
 import mindustry.gen.Unit
-import mindustry.world.*
-import mindustry.world.meta.*
+import mindustry.world.Block
+import mindustry.world.meta.Stat
+import mindustry.world.meta.StatUnit
 
 /**
  * Causing damage to units walking on it.

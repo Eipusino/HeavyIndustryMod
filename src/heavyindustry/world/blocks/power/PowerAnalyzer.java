@@ -1,21 +1,28 @@
 package heavyindustry.world.blocks.power;
 
-import arc.*;
-import arc.Graphics.*;
-import arc.Graphics.Cursor.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import heavyindustry.ui.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.blocks.power.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.Graphics.Cursor;
+import arc.Graphics.Cursor.SystemCursor;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.util.Eachable;
+import heavyindustry.ui.UIUtils;
+import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Building;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Pal;
+import mindustry.world.blocks.power.PowerBlock;
+import mindustry.world.blocks.power.PowerNode;
+import mindustry.world.meta.BlockStatus;
 
-import static heavyindustry.HVars.*;
-import static mindustry.Vars.*;
+import static heavyindustry.HVars.modName;
+import static mindustry.Vars.player;
+import static mindustry.Vars.renderer;
+import static mindustry.Vars.tilesize;
 
 public class PowerAnalyzer extends PowerBlock {
 	public float displayLength = 8f;

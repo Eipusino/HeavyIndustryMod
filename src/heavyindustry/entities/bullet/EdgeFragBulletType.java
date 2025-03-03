@@ -1,10 +1,11 @@
 package heavyindustry.entities.bullet;
 
-import arc.math.geom.*;
-import heavyindustry.content.*;
-import heavyindustry.graphics.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
+import arc.math.geom.Vec2;
+import heavyindustry.content.HFx;
+import heavyindustry.graphics.Draws;
+import heavyindustry.graphics.HPal;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Bullet;
 
 public class EdgeFragBulletType extends BulletType {
 	public EdgeFragBulletType(float speed, float damage) {

@@ -1,17 +1,21 @@
 package heavyindustry.world.blocks.environment;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import heavyindustry.graphics.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
-import mindustry.world.blocks.environment.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.PixmapRegion;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.math.geom.Point2;
+import arc.struct.Seq;
+import heavyindustry.graphics.HCacheLayer;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.MultiPacker;
+import mindustry.world.Tile;
+import mindustry.world.blocks.environment.Floor;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.headless;
+import static mindustry.Vars.world;
 
 public class ArmorFloor extends Floor {
 	protected static final int scanStep = 5;

@@ -1,7 +1,7 @@
 package heavyindustry.ai;
 
-import mindustry.entities.units.*;
-import mindustry.gen.*;
+import mindustry.entities.units.UnitController;
+import mindustry.gen.Unit;
 
 public class NullAI implements UnitController {
 	Unit unit;

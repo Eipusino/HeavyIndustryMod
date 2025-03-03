@@ -1,9 +1,9 @@
 package heavyindustry.type.form;
 
-import heavyindustry.struct.*;
-import heavyindustry.struct.BitWordList.*;
-import heavyindustry.type.CustomShape.*;
-import heavyindustry.type.*;
+import heavyindustry.struct.BitWordList;
+import heavyindustry.struct.BitWordList.WordLength;
+import heavyindustry.type.CustomShape.BlockType;
+import heavyindustry.type.CustomShapeLoader;
 
 public class StringShapeLoader extends CustomShapeLoader<String[]> {
 	public final char voidChar, blockChar, anchorChar;

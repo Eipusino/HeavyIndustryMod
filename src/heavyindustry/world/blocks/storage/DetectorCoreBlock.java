@@ -1,26 +1,39 @@
 package heavyindustry.world.blocks.storage;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.scene.style.*;
-import arc.scene.ui.layout.*;
-import arc.struct.*;
-import arc.util.*;
-import arc.util.io.*;
-import heavyindustry.gen.*;
-import heavyindustry.world.blocks.environment.*;
-import mindustry.content.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.logic.*;
-import mindustry.ui.*;
-import mindustry.world.*;
-import mindustry.world.blocks.storage.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.scene.style.TextureRegionDrawable;
+import arc.scene.ui.layout.Table;
+import arc.struct.Seq;
+import arc.util.Time;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.gen.HSounds;
+import heavyindustry.world.blocks.environment.UndergroundOreBlock;
+import mindustry.content.Blocks;
+import mindustry.game.Team;
+import mindustry.gen.Call;
+import mindustry.gen.Icon;
+import mindustry.gen.Player;
+import mindustry.gen.Sounds;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.logic.Ranged;
+import mindustry.ui.Styles;
+import mindustry.world.Tile;
+import mindustry.world.blocks.storage.CoreBlock;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.player;
+import static mindustry.Vars.state;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.ui;
+import static mindustry.Vars.world;
 
 /**
  * A class for cores that have a functionality of scanning underground ores.

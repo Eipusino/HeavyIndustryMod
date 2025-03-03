@@ -1,13 +1,16 @@
 package heavyindustry.io;
 
-import arc.math.geom.*;
-import arc.struct.*;
-import mindustry.io.SaveFileReader.*;
-import mindustry.world.*;
+import arc.math.geom.Point2;
+import arc.struct.ByteSeq;
+import arc.struct.IntSeq;
+import mindustry.io.SaveFileReader.CustomChunk;
+import mindustry.world.Tile;
 
-import java.io.*;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.world;
 
 public class WorldTileData implements CustomChunk {
 	public IntSeq packPos = new IntSeq();

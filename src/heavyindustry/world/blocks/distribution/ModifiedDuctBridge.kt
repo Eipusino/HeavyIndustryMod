@@ -1,14 +1,15 @@
 package heavyindustry.world.blocks.distribution
 
-import arc.graphics.g2d.*
-import arc.math.geom.*
-import arc.util.*
-import mindustry.*
-import mindustry.entities.units.*
-import mindustry.gen.*
-import mindustry.graphics.*
-import mindustry.type.*
-import mindustry.world.blocks.distribution.*
+import arc.graphics.g2d.Draw
+import arc.math.geom.Geometry
+import arc.util.Eachable
+import mindustry.Vars
+import mindustry.entities.units.BuildPlan
+import mindustry.gen.Building
+import mindustry.graphics.Drawf
+import mindustry.graphics.Pal
+import mindustry.type.Item
+import mindustry.world.blocks.distribution.DirectionBridge
 
 open class ModifiedDuctBridge(name: String) : DirectionBridge(name) {
 	@JvmField var speed = 5f

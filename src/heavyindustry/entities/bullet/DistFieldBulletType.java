@@ -1,13 +1,18 @@
 package heavyindustry.entities.bullet;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Angles;
+import arc.math.Mathf;
+import mindustry.entities.Effect;
+import mindustry.entities.Units;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Bullet;
+import mindustry.gen.Groups;
+import mindustry.graphics.Pal;
+import mindustry.type.StatusEffect;
 
 public class DistFieldBulletType extends BulletType {
 	public Color centerColor, edgeColor;

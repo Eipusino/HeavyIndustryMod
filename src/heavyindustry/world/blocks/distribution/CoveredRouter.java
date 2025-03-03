@@ -1,19 +1,24 @@
 package heavyindustry.world.blocks.distribution;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import arc.util.io.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.world.*;
-import mindustry.world.blocks.distribution.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.util.Nullable;
+import arc.util.Tmp;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import mindustry.gen.Building;
+import mindustry.graphics.Layer;
+import mindustry.type.Item;
+import mindustry.world.Tile;
+import mindustry.world.blocks.distribution.Router;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.itemSize;
+import static mindustry.Vars.tilesize;
 
 /**
  * literally nothing special here unoriginal ass.

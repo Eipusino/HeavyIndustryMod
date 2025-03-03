@@ -1,16 +1,19 @@
 package heavyindustry.util;
 
-import arc.*;
-import arc.files.*;
-import arc.graphics.g2d.*;
-import arc.graphics.g2d.Font.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import mindustry.ui.*;
+import arc.Core;
+import arc.files.Fi;
+import arc.graphics.g2d.Font;
+import arc.graphics.g2d.Font.Glyph;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.geom.Vec2;
+import arc.struct.Seq;
+import arc.util.Log;
+import arc.util.Scaling;
+import mindustry.ui.Fonts;
 
-import java.io.*;
-import java.util.*;
+import java.io.Reader;
+import java.util.Map;
+import java.util.Properties;
 
 public final class IconLoader {
 	private IconLoader() {}

@@ -1,11 +1,13 @@
 package heavyindustry.ui.tooltips;
 
-import arc.func.*;
-import arc.scene.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import heavyindustry.ui.defaults.*;
-import kotlin.jvm.internal.Ref.*;
+import arc.func.Cons;
+import arc.func.Cons2;
+import arc.scene.Element;
+import arc.scene.ui.layout.Cell;
+import arc.scene.ui.layout.Table;
+import arc.util.Align;
+import heavyindustry.ui.defaults.DefaultBackground;
+import kotlin.jvm.internal.Ref.ObjectRef;
 
 public final class Tooltipf {
 	public static Cons2<String, Table> defaultTooltipTable = (text, table) ->

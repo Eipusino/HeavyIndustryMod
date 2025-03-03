@@ -1,17 +1,26 @@
 package heavyindustry.world.blocks.distribution;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.world.blocks.distribution.*;
+import arc.Core;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.geom.Geometry;
+import arc.math.geom.Point2;
+import arc.util.Eachable;
+import arc.util.Time;
+import arc.util.Tmp;
+import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Building;
+import mindustry.gen.Teamc;
+import mindustry.gen.Unit;
+import mindustry.graphics.Layer;
+import mindustry.type.Item;
+import mindustry.world.blocks.distribution.Conveyor;
 
-import static heavyindustry.util.Utils.*;
-import static mindustry.Vars.*;
+import static heavyindustry.util.Utils.reverse;
+import static heavyindustry.util.Utils.splitLayers;
+import static mindustry.Vars.itemSize;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 /**
  * Compared to CoveredConverter, its upper layer texture has been changed to one that can have light and shadow effects.

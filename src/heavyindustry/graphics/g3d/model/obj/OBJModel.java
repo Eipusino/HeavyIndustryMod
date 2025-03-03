@@ -1,12 +1,16 @@
 package heavyindustry.graphics.g3d.model.obj;
 
-import arc.graphics.*;
-import arc.graphics.gl.*;
-import arc.math.geom.*;
-import heavyindustry.graphics.g3d.model.*;
-import heavyindustry.graphics.g3d.model.obj.mtl.*;
-import heavyindustry.graphics.g3d.model.obj.obj.*;
-import heavyindustry.graphics.g3d.render.*;
+import arc.graphics.Gl;
+import arc.graphics.Mesh;
+import arc.graphics.Texture;
+import arc.graphics.VertexAttribute;
+import arc.graphics.gl.Shader;
+import arc.math.geom.Mat3D;
+import arc.math.geom.Vec3;
+import heavyindustry.graphics.g3d.model.Model;
+import heavyindustry.graphics.g3d.model.obj.mtl.MTL;
+import heavyindustry.graphics.g3d.model.obj.obj.OBJ;
+import heavyindustry.graphics.g3d.render.Renderer3D;
 
 public class OBJModel implements Model {
 	private final OBJ obj;

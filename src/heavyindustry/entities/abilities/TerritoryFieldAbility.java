@@ -1,14 +1,15 @@
 package heavyindustry.entities.abilities;
 
-import arc.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import heavyindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
+import arc.Core;
+import arc.scene.ui.layout.Table;
+import arc.util.Time;
+import heavyindustry.content.HStatusEffects;
+import mindustry.entities.Damage;
+import mindustry.entities.Units;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Unit;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
 
 public class TerritoryFieldAbility extends Ability {
 	public float range;

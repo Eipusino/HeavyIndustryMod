@@ -1,16 +1,19 @@
 package heavyindustry.entities.bullet;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import mindustry.*;
-import mindustry.content.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.util.Time;
+import arc.util.Tmp;
+import mindustry.Vars;
+import mindustry.content.Fx;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Building;
+import mindustry.gen.Bullet;
+import mindustry.graphics.Pal;
+import mindustry.world.Tile;
 
 public class GrenadeBulletType extends BulletType {
 	public float width, height;

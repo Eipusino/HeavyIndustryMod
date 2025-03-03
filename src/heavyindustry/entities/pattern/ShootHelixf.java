@@ -1,8 +1,8 @@
 package heavyindustry.entities.pattern;
 
-import arc.math.*;
-import arc.util.*;
-import mindustry.entities.pattern.*;
+import arc.math.Mathf;
+import arc.util.Nullable;
+import mindustry.entities.pattern.ShootHelix;
 
 public class ShootHelixf extends ShootHelix {
 	public boolean flip = false;

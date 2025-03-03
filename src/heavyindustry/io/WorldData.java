@@ -1,6 +1,6 @@
 package heavyindustry.io;
 
-import mindustry.io.*;
+import mindustry.io.SaveVersion;
 
 public final class WorldData {
 	public static WorldTileData worldTileData;

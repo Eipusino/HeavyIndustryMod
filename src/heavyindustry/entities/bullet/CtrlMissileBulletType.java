@@ -1,17 +1,20 @@
 package heavyindustry.entities.bullet;
 
-import arc.*;
-import arc.audio.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.blocks.*;
+import arc.Core;
+import arc.audio.Sound;
+import arc.graphics.g2d.Draw;
+import arc.math.Angles;
+import arc.math.geom.Position;
+import arc.util.Time;
+import mindustry.Vars;
+import mindustry.entities.Units;
+import mindustry.entities.bullet.BasicBulletType;
+import mindustry.gen.Bullet;
+import mindustry.gen.Sounds;
+import mindustry.gen.Teamc;
+import mindustry.gen.Unit;
+import mindustry.graphics.Layer;
+import mindustry.world.blocks.ControlBlock;
 
 public class CtrlMissileBulletType extends BasicBulletType {
 	public String sprite;

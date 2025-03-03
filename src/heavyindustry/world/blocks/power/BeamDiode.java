@@ -1,23 +1,34 @@
 package heavyindustry.world.blocks.power;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.core.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.ui.*;
-import mindustry.world.*;
-import mindustry.world.blocks.power.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.math.geom.Point2;
+import arc.util.Eachable;
+import mindustry.core.Renderer;
+import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Building;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.ui.Bar;
+import mindustry.world.Block;
+import mindustry.world.Tile;
+import mindustry.world.blocks.power.PowerGraph;
+import mindustry.world.blocks.power.PowerNode;
+import mindustry.world.meta.BlockGroup;
+import mindustry.world.meta.Env;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
-import java.util.*;
+import java.util.Arrays;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.player;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 /**
  * Combining the characteristics of laser nodes and diodes.

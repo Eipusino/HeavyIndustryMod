@@ -1,7 +1,7 @@
 package heavyindustry.util;
 
-import arc.math.*;
-import arc.math.geom.*;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
 
 public interface Geometryc {
 	/**

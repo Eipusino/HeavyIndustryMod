@@ -1,13 +1,13 @@
 package heavyindustry.util;
 
-import arc.func.*;
-import arc.math.*;
-import arc.math.geom.*;
-import mindustry.world.*;
+import arc.func.Floatc2;
+import arc.math.Mathf;
+import arc.math.geom.Point2;
+import mindustry.world.Tile;
 
-import java.util.*;
+import java.util.Arrays;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.maxBlockSize;
 
 /** Tool set used for directional edge coordinate traversal. */
 public final class DirEdges {

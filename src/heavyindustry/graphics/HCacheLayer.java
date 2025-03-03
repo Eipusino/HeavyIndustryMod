@@ -1,11 +1,11 @@
 package heavyindustry.graphics;
 
-import arc.*;
-import arc.graphics.*;
-import mindustry.graphics.*;
-import mindustry.graphics.CacheLayer.*;
+import arc.Core;
+import arc.graphics.Color;
+import mindustry.graphics.CacheLayer;
+import mindustry.graphics.CacheLayer.ShaderLayer;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.renderer;
 
 /**
  * Defines the {@linkplain CacheLayer cache layer}s this mod offers.

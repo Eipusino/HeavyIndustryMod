@@ -1,7 +1,9 @@
 package heavyindustry.graphics.g3d;
 
-import arc.graphics.*;
-import arc.math.geom.*;
+import arc.graphics.Mesh;
+import arc.graphics.VertexAttribute;
+import arc.math.geom.Vec2;
+import arc.math.geom.Vec3;
 
 final class MeshUtils {
 	static final Vec3

@@ -1,9 +1,10 @@
 package heavyindustry.gen;
 
-import arc.*;
-import arc.scene.style.*;
+import arc.Core;
+import arc.scene.style.Drawable;
+import arc.scene.style.TextureRegionDrawable;
 
-import static heavyindustry.HVars.*;
+import static heavyindustry.HVars.modName;
 
 public final class HIcon {
 	public static Drawable

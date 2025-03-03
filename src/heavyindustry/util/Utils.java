@@ -1,46 +1,110 @@
 package heavyindustry.util;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.graphics.g2d.TextureAtlas.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.math.geom.QuadTree.*;
-import arc.scene.style.*;
-import arc.scene.ui.*;
-import arc.scene.ui.ImageButton.*;
-import arc.struct.*;
-import arc.util.*;
+import arc.Core;
+import arc.func.Boolf;
+import arc.func.Cons;
+import arc.func.Floatc;
+import arc.func.Intc2;
+import arc.func.Prov;
+import arc.graphics.Color;
+import arc.graphics.Pixmap;
+import arc.graphics.Texture;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.PixmapRegion;
+import arc.graphics.g2d.TextureAtlas;
+import arc.graphics.g2d.TextureAtlas.AtlasRegion;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Angles;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.math.Rand;
+import arc.math.geom.Geometry;
+import arc.math.geom.Intersector;
+import arc.math.geom.Point2;
+import arc.math.geom.Position;
+import arc.math.geom.QuadTree;
+import arc.math.geom.QuadTree.QuadTreeObject;
+import arc.math.geom.Rect;
+import arc.math.geom.Vec2;
+import arc.scene.style.Drawable;
+import arc.scene.ui.ImageButton;
+import arc.scene.ui.ImageButton.ImageButtonStyle;
+import arc.struct.IntSeq;
+import arc.struct.IntSet;
+import arc.struct.ObjectMap;
+import arc.struct.Seq;
 import arc.util.Nullable;
-import arc.util.pooling.*;
-import arc.util.pooling.Pool.*;
-import heavyindustry.content.*;
-import heavyindustry.gen.*;
-import heavyindustry.graphics.*;
-import mindustry.content.*;
-import mindustry.core.*;
-import mindustry.ctype.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.entities.pattern.*;
-import mindustry.entities.units.*;
-import mindustry.game.*;
-import mindustry.game.Teams.*;
-import mindustry.gen.*;
-import mindustry.type.*;
-import mindustry.world.*;
-import mindustry.world.blocks.defense.turrets.*;
-import mindustry.world.draw.*;
-import org.jetbrains.annotations.*;
+import arc.util.Time;
+import arc.util.Tmp;
+import arc.util.pooling.Pool;
+import arc.util.pooling.Pool.Poolable;
+import arc.util.pooling.Pools;
+import heavyindustry.content.HFx;
+import heavyindustry.gen.Spawner;
+import heavyindustry.graphics.HPal;
+import mindustry.content.Fx;
+import mindustry.content.Items;
+import mindustry.content.Liquids;
+import mindustry.content.StatusEffects;
+import mindustry.core.UI;
+import mindustry.core.World;
+import mindustry.ctype.UnlockableContent;
+import mindustry.entities.Effect;
+import mindustry.entities.Fires;
+import mindustry.entities.Mover;
+import mindustry.entities.Sized;
+import mindustry.entities.Units;
+import mindustry.entities.bullet.ArtilleryBulletType;
+import mindustry.entities.bullet.BulletType;
+import mindustry.entities.bullet.PointBulletType;
+import mindustry.entities.pattern.ShootSpread;
+import mindustry.entities.units.WeaponMount;
+import mindustry.game.Team;
+import mindustry.game.Teams.TeamData;
+import mindustry.gen.Building;
+import mindustry.gen.Bullet;
+import mindustry.gen.Entityc;
+import mindustry.gen.Groups;
+import mindustry.gen.Healthc;
+import mindustry.gen.Player;
+import mindustry.gen.Posc;
+import mindustry.gen.Teamc;
+import mindustry.gen.Unit;
+import mindustry.gen.Velc;
+import mindustry.gen.WaterMovec;
+import mindustry.type.Item;
+import mindustry.type.ItemStack;
+import mindustry.type.Liquid;
+import mindustry.type.StatusEffect;
+import mindustry.type.UnitType;
+import mindustry.type.Weapon;
+import mindustry.world.Block;
+import mindustry.world.Tile;
+import mindustry.world.blocks.defense.turrets.ItemTurret;
+import mindustry.world.blocks.defense.turrets.Turret;
+import mindustry.world.draw.DrawBlock;
+import mindustry.world.draw.DrawDefault;
+import mindustry.world.draw.DrawMulti;
+import mindustry.world.draw.DrawRegion;
+import org.jetbrains.annotations.Contract;
 
-import java.text.*;
-import java.util.*;
-import java.util.regex.*;
+import java.text.DecimalFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.regex.Pattern;
 
-import static heavyindustry.HVars.*;
-import static mindustry.Vars.*;
+import static heavyindustry.HVars.name;
+import static mindustry.Vars.content;
+import static mindustry.Vars.headless;
+import static mindustry.Vars.indexer;
+import static mindustry.Vars.net;
+import static mindustry.Vars.renderer;
+import static mindustry.Vars.state;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 /**
  * Input-output utilities, providing very specific functions that aren't really commonly used, but often
@@ -182,6 +246,7 @@ public final class Utils {
 	private static final BasicPool<Hit> hPool = new BasicPool<>(Hit::new);
 	private static final IntSeq amounts = new IntSeq();
 	private static final String[] byteUnit = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"};
+
 	private static Tile tileParma;
 	private static Posc result;
 	private static float cDist;
@@ -410,13 +475,12 @@ public final class Utils {
 		rand.setSeed(seed);
 
 		for (int i = 0; i < bubblesAmount; i++) {
-			float
-					angle = rand.random(360f),
-					fin = (rand.random(0.8f) * (Time.time / baseLife)) % rand.random(0.1f, 0.6f),
-					len = rand.random(baseSize / 2f, baseSize) / fin,
+			float angle = rand.random(360f);
+			float fin = (rand.random(0.8f) * (Time.time / baseLife)) % rand.random(0.1f, 0.6f);
+			float len = rand.random(baseSize / 2f, baseSize) / fin;
 
-					trnsx = x + Angles.trnsx(angle, len, rand.random(baseSize / 4f, baseSize / 4f)),
-					trnsy = y + Angles.trnsy(angle, len, rand.random(baseSize / 4f, baseSize / 4f));
+			float trnsx = x + Angles.trnsx(angle, len, rand.random(baseSize / 4f, baseSize / 4f));
+			float trnsy = y + Angles.trnsy(angle, len, rand.random(baseSize / 4f, baseSize / 4f));
 
 			Fill.poly(trnsx, trnsy, 18, Interp.sine.apply(fin * 3.5f) * bubblesSize);
 		}

@@ -1,9 +1,13 @@
 package heavyindustry.gen;
 
-import arc.math.geom.*;
-import arc.struct.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.math.geom.Vec2;
+import arc.struct.ObjectFloatMap;
+import arc.struct.Seq;
+import mindustry.gen.Entityc;
+import mindustry.gen.Healthc;
+import mindustry.gen.Teamc;
+import mindustry.gen.Unitc;
+import mindustry.graphics.Trail;
 
 public interface Pesterc extends Unitc {
 	Healthc findOwner(Entityc ent);

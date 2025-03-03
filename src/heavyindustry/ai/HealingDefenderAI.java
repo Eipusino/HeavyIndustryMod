@@ -1,12 +1,18 @@
 package heavyindustry.ai;
 
-import arc.math.*;
-import arc.math.geom.*;
-import mindustry.ai.types.*;
-import mindustry.entities.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.type.*;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import mindustry.ai.types.DefenderAI;
+import mindustry.entities.Predict;
+import mindustry.entities.Sized;
+import mindustry.entities.Units;
+import mindustry.entities.units.WeaponMount;
+import mindustry.gen.Building;
+import mindustry.gen.Healthc;
+import mindustry.gen.Teamc;
+import mindustry.gen.Unit;
+import mindustry.type.Weapon;
 
 public class HealingDefenderAI extends DefenderAI {
 	@Override

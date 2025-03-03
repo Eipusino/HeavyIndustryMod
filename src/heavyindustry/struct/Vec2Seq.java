@@ -1,11 +1,15 @@
 package heavyindustry.struct;
 
-import arc.func.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
+import arc.func.Boolf;
+import arc.func.Cons;
+import arc.func.Floatc2;
+import arc.math.geom.Position;
+import arc.math.geom.Vec2;
+import arc.struct.FloatSeq;
+import arc.struct.Seq;
+import arc.util.Eachable;
 
-import java.util.*;
+import java.util.Iterator;
 
 /**
  * Use floats to restore the coords of a 2D vector to improve the performance. <p>

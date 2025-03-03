@@ -1,11 +1,14 @@
 package heavyindustry.ui.comp;
 
-import arc.func.*;
-import arc.graphics.g2d.*;
-import arc.scene.*;
-import arc.scene.event.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
+import arc.func.Boolp;
+import arc.func.Cons;
+import arc.graphics.g2d.Draw;
+import arc.scene.Action;
+import arc.scene.event.Touchable;
+import arc.scene.ui.layout.Table;
+import arc.scene.ui.layout.WidgetGroup;
+import arc.util.ArcRuntimeException;
+import arc.util.Nullable;
 
 public class HorizontalCollapser extends WidgetGroup {
 	Table table;

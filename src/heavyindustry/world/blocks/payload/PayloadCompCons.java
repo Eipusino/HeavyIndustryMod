@@ -1,8 +1,8 @@
 package heavyindustry.world.blocks.payload;
 
-import mindustry.*;
-import mindustry.world.*;
-import mindustry.world.blocks.payloads.*;
+import mindustry.Vars;
+import mindustry.world.Block;
+import mindustry.world.blocks.payloads.Constructor;
 
 /**
  * constructor that can construct cores because for some reason vanilla constructors just Cant

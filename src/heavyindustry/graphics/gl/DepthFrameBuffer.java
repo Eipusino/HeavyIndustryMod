@@ -1,10 +1,12 @@
 package heavyindustry.graphics.gl;
 
-import arc.graphics.*;
-import arc.graphics.Pixmap.*;
-import arc.graphics.Texture.*;
-import arc.graphics.gl.*;
-import arc.util.*;
+import arc.graphics.Color;
+import arc.graphics.Gl;
+import arc.graphics.Pixmap.Format;
+import arc.graphics.Texture;
+import arc.graphics.Texture.TextureFilter;
+import arc.graphics.gl.FrameBuffer;
+import arc.util.Nullable;
 
 /**
  * A framebuffer that requests depth (and stencil) textures instead of renderbuffers, letting users sample from them.

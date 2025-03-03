@@ -1,13 +1,16 @@
 package heavyindustry.world.blocks.production
 
-import arc.math.*
-import heavyindustry.content.*
-import mindustry.*
-import mindustry.content.*
-import mindustry.world.*
-import mindustry.world.blocks.environment.*
-import mindustry.world.blocks.production.*
-import mindustry.world.meta.*
+import arc.math.Mathf
+import heavyindustry.content.HFx
+import mindustry.Vars
+import mindustry.content.Fx
+import mindustry.content.Items
+import mindustry.world.Block
+import mindustry.world.Tile
+import mindustry.world.blocks.environment.Floor
+import mindustry.world.blocks.production.Drill
+import mindustry.world.meta.Stat
+import mindustry.world.meta.StatValues
 
 open class SingleDrill(name: String) : Drill(name) {
 	/** Can only get that specific item.  */

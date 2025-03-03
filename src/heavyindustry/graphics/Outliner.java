@@ -1,9 +1,12 @@
 package heavyindustry.graphics;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import mindustry.graphics.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.Pixmap;
+import arc.graphics.Pixmaps;
+import arc.graphics.g2d.PixmapRegion;
+import arc.graphics.g2d.TextureRegion;
+import mindustry.graphics.MultiPacker;
 
 public final class Outliner {
 	/** Don't let anyone instantiate this class. */

@@ -1,21 +1,25 @@
 package heavyindustry.content;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import heavyindustry.core.*;
-import heavyindustry.graphics.*;
-import heavyindustry.util.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.graphics.MultiPacker.*;
-import mindustry.type.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.Pixmap;
+import arc.graphics.g2d.Lines;
+import arc.math.Mathf;
+import arc.util.Time;
+import heavyindustry.core.HeavyIndustryMod;
+import heavyindustry.graphics.HPal;
+import heavyindustry.util.Utils;
+import mindustry.content.Fx;
+import mindustry.content.Items;
+import mindustry.entities.Effect;
+import mindustry.gen.Unit;
+import mindustry.graphics.MultiPacker;
+import mindustry.graphics.MultiPacker.PageType;
+import mindustry.graphics.Pal;
+import mindustry.type.StatusEffect;
 
-import static mindustry.content.StatusEffects.*;
+import static mindustry.content.StatusEffects.sapped;
+import static mindustry.content.StatusEffects.slow;
 
 /**
  * Sets up content {@link StatusEffect status effects}. Loaded after every other content is instantiated.
@@ -111,6 +115,8 @@ public final class HStatusEffects {
 	}
 
 	public static class LoadStatusEffect extends StatusEffect {
+		public Color outlineColor = Pal.gray;
+
 		public LoadStatusEffect(String name) {
 			super(name);
 		}
@@ -125,7 +131,7 @@ public final class HStatusEffects {
 			//outline the image
 			Pixmap container = new Pixmap(tint.width + 6, tint.height + 6);
 			container.draw(base, 3, 3, true);
-			base = container.outline(Pal.gray, 3);
+			base = container.outline(outlineColor, 3);
 			packer.add(PageType.ui, name, base);
 		}
 	}

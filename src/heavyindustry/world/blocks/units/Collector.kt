@@ -1,17 +1,20 @@
 package heavyindustry.world.blocks.units
 
-import arc.*
-import arc.math.*
-import arc.math.geom.*
-import arc.struct.*
-import arc.util.io.*
-import mindustry.Vars.*
-import mindustry.content.*
-import mindustry.game.EventType.*
-import mindustry.gen.*
-import mindustry.graphics.*
-import mindustry.type.*
-import mindustry.world.*
+import arc.Events
+import arc.math.Mathf
+import arc.math.geom.Geometry
+import arc.struct.Seq
+import arc.util.io.Reads
+import mindustry.Vars.tilesize
+import mindustry.content.Fx
+import mindustry.content.Items
+import mindustry.game.EventType.ResetEvent
+import mindustry.game.EventType.UnitDestroyEvent
+import mindustry.gen.Building
+import mindustry.graphics.Drawf
+import mindustry.graphics.Pal
+import mindustry.type.Item
+import mindustry.world.Block
 
 open class Collector(name: String) : Block(name) {
 	@JvmField val existing = Seq<Building>()

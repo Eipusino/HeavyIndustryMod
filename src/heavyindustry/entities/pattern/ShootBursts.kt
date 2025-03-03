@@ -1,7 +1,7 @@
 package heavyindustry.entities.pattern
 
-import arc.util.*
-import mindustry.entities.pattern.*
+import arc.util.Nullable
+import mindustry.entities.pattern.ShootPattern
 
 open class ShootBursts : ShootPattern {
 	@JvmField var shotsPerBurst = 1

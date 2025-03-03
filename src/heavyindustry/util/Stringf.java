@@ -1,6 +1,6 @@
 package heavyindustry.util;
 
-import arc.util.*;
+import arc.util.Nullable;
 
 public final class Stringf {
 	/** Don't let anyone instantiate this class. */

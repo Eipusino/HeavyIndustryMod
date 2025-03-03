@@ -1,21 +1,25 @@
 package heavyindustry.world.blocks.defense.turrets;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.scene.style.*;
-import arc.struct.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.ui.*;
-import mindustry.ui.dialogs.*;
-import mindustry.world.blocks.defense.turrets.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.graphics.g2d.Draw;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Vec3;
+import arc.scene.style.TextureRegionDrawable;
+import arc.struct.ObjectMap;
+import arc.util.Align;
+import arc.util.Scaling;
+import arc.util.Tmp;
+import mindustry.content.StatusEffects;
+import mindustry.entities.Units;
+import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.type.StatusEffect;
+import mindustry.ui.Styles;
+import mindustry.ui.dialogs.ContentInfoDialog;
+import mindustry.world.blocks.defense.turrets.TractorBeamTurret;
+import mindustry.world.meta.Stat;
 
 public class MultiTractorBeamTurret extends TractorBeamTurret {
 	protected static final float OFFSET = 12f;

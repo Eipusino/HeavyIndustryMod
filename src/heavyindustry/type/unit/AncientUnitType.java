@@ -1,15 +1,20 @@
 package heavyindustry.type.unit;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import heavyindustry.graphics.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
+import arc.graphics.Blending;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Mathf;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.graphics.HPal;
+import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Pal;
+import mindustry.type.UnitType;
 
-public class AncientUnitType extends UnitTypef {
+public class AncientUnitType extends ExtraUnitType {
 	public AncientUnitType(String name) {
 		super(name);
 

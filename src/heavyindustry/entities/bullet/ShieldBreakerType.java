@@ -1,13 +1,15 @@
 package heavyindustry.entities.bullet;
 
-import arc.graphics.*;
-import arc.math.*;
-import heavyindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
+import arc.graphics.Color;
+import arc.math.Mathf;
+import heavyindustry.content.HFx;
+import mindustry.entities.Effect;
+import mindustry.entities.bullet.BasicBulletType;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Bullet;
+import mindustry.gen.Sounds;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
 
 public class ShieldBreakerType extends BasicBulletType {
 	protected static BulletType breakType = new EffectBulletType(3f) {{

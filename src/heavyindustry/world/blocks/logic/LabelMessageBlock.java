@@ -1,26 +1,31 @@
 package heavyindustry.world.blocks.logic;
 
-import arc.*;
-import arc.graphics.*;
-import arc.math.geom.*;
-import arc.scene.ui.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import arc.util.io.*;
-import arc.util.pooling.*;
-import heavyindustry.ui.*;
-import mindustry.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.ui.*;
-import mindustry.ui.dialogs.*;
-import mindustry.world.*;
-import mindustry.world.blocks.logic.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.Input;
+import arc.graphics.Color;
+import arc.math.geom.Point2;
+import arc.scene.ui.TextArea;
+import arc.scene.ui.layout.Table;
+import arc.util.Tmp;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import arc.util.pooling.Pools;
+import heavyindustry.ui.UIUtils;
+import mindustry.Vars;
+import mindustry.game.Team;
+import mindustry.gen.Icon;
+import mindustry.gen.WorldLabel;
+import mindustry.graphics.Drawf;
+import mindustry.type.Category;
+import mindustry.type.ItemStack;
+import mindustry.ui.Styles;
+import mindustry.ui.dialogs.BaseDialog;
+import mindustry.world.Tile;
+import mindustry.world.blocks.logic.MessageBlock;
+import mindustry.world.meta.BuildVisibility;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.mobile;
+import static mindustry.Vars.tilesize;
 
 public class LabelMessageBlock extends MessageBlock {
 	public LabelMessageBlock(String name) {

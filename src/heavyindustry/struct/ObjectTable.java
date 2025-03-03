@@ -1,9 +1,9 @@
 package heavyindustry.struct;
 
-import arc.func.*;
-import arc.struct.*;
+import arc.func.Prov;
+import arc.struct.ObjectMap;
 
-import java.util.*;
+import java.util.Iterator;
 
 public class ObjectTable<K, V> implements Iterable<ObjectTable.Entry<K, V>> {
 	protected final ObjectMap<K, V> map12 = new ObjectMap<>();

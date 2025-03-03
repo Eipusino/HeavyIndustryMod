@@ -1,11 +1,12 @@
 package heavyindustry.ui.tooltips;
 
-import arc.func.*;
-import arc.math.geom.*;
-import arc.scene.*;
-import arc.scene.ui.*;
-import arc.scene.ui.layout.*;
-import heavyindustry.ui.*;
+import arc.func.Cons;
+import arc.math.geom.Vec2;
+import arc.scene.Element;
+import arc.scene.Scene;
+import arc.scene.ui.Tooltip;
+import arc.scene.ui.layout.Table;
+import heavyindustry.ui.UIUtils;
 
 public class SideTooltip extends Tooltip {
 	private static final Vec2 tmp = new Vec2();

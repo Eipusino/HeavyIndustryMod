@@ -1,14 +1,14 @@
 package heavyindustry.files;
 
-import arc.files.*;
-import arc.graphics.*;
-import arc.graphics.g2d.TextureAtlas.*;
-import arc.graphics.g2d.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.*;
+import arc.files.Fi;
+import arc.graphics.Texture;
+import arc.graphics.g2d.TextureAtlas.AtlasRegion;
+import arc.graphics.g2d.TextureRegion;
+import arc.struct.ObjectSet;
+import arc.util.Log;
+import heavyindustry.HVars;
 
-import java.util.*;
+import java.util.HashMap;
 
 public final class FileTree {
 	private static final HashMap<String, Fi> files = new HashMap<>();

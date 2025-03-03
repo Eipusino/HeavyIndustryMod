@@ -1,12 +1,16 @@
 package heavyindustry.graphics;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.graphics.gl.*;
-import arc.math.*;
-import arc.util.*;
-import mindustry.graphics.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.Texture;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.graphics.gl.FrameBuffer;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.util.Tmp;
+import mindustry.graphics.Pal;
 
 /** Extended Draw */
 public final class Drawe {

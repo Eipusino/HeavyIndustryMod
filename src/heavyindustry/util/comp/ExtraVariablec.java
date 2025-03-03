@@ -1,12 +1,25 @@
 package heavyindustry.util.comp;
 
-import arc.func.*;
-import heavyindustry.func.*;
+import arc.func.Boolp;
+import arc.func.Floatp;
+import arc.func.Func;
+import arc.func.Intp;
+import arc.func.Prov;
+import heavyindustry.func.Boolt;
+import heavyindustry.func.Doublep;
+import heavyindustry.func.Doublet;
+import heavyindustry.func.Floatt;
+import heavyindustry.func.Intt;
+import heavyindustry.func.Longp;
+import heavyindustry.func.Longt;
 
-import java.util.*;
-import java.util.concurrent.atomic.*;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
-import static heavyindustry.struct.Collectionsf.*;
+import static heavyindustry.struct.Collectionsf.doubleOf;
+import static heavyindustry.struct.Collectionsf.floatOf;
 
 /**
  * The appended variable interface is used to provide dynamic append variables for types,
@@ -339,7 +352,7 @@ public interface ExtraVariablec {
 	default float setVar(String field, float value) {
 		Object res = getVar(field);
 
-		if (res instanceof float[] a && a.length == 1) {
+		if (res instanceof float[] a && a.length > 0) {
 			float r = a[0];
 			a[0] = value;
 			return r;
@@ -364,7 +377,7 @@ public interface ExtraVariablec {
 		Object res = getVar(field);
 		if (res == null) return def;
 
-		if (res instanceof float[] f && f.length == 1) return f[0];
+		if (res instanceof float[] f && f.length > 0) return f[0];
 		else if (res instanceof Number n) return n.floatValue();
 
 		throw new ClassCastException(res + " is not a number or single float reference array");
@@ -384,7 +397,7 @@ public interface ExtraVariablec {
 			return f;
 		}
 
-		if (res instanceof float[] l && l.length == 1) return l[0];
+		if (res instanceof float[] l && l.length > 0) return l[0];
 		else if (res instanceof Number n) return n.longValue();
 
 		throw new ClassCastException(res + " is not a number or single float reference array");
@@ -412,7 +425,7 @@ public interface ExtraVariablec {
 	default double setVar(String field, double value) {
 		Object res = getVar(field);
 
-		if (res instanceof double[] a && a.length == 1) {
+		if (res instanceof double[] a && a.length > 0) {
 			double r = a[0];
 			a[0] = value;
 			return r;
@@ -437,7 +450,7 @@ public interface ExtraVariablec {
 		Object res = getVar(field);
 		if (res == null) return def;
 
-		if (res instanceof double[] f && f.length == 1) return f[0];
+		if (res instanceof double[] f && f.length > 0) return f[0];
 		else if (res instanceof Number n) return n.doubleValue();
 
 		throw new ClassCastException(res + " is not a number or single double reference array");
@@ -457,7 +470,7 @@ public interface ExtraVariablec {
 			return d;
 		}
 
-		if (res instanceof double[] d && d.length == 1) return d[0];
+		if (res instanceof double[] d && d.length > 0) return d[0];
 		else if (res instanceof Number n) return n.doubleValue();
 
 		throw new ClassCastException(res + " is not a number or single double reference array");

@@ -1,20 +1,30 @@
 package heavyindustry.graphics;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.graphics.gl.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import arc.util.pooling.Pool.*;
-import arc.util.pooling.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.Core;
+import arc.graphics.Blending;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.TextureRegion;
+import arc.graphics.gl.Shader;
+import arc.math.Angles;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.math.geom.Vec3;
+import arc.struct.FloatSeq;
+import arc.struct.Seq;
+import arc.util.Time;
+import arc.util.Tmp;
+import arc.util.pooling.Pool.Poolable;
+import arc.util.pooling.Pools;
+import mindustry.gen.Rotc;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Trail;
 
-import static heavyindustry.HVars.*;
-import static heavyindustry.util.Structf.*;
+import static heavyindustry.HVars.name;
+import static heavyindustry.util.Structf.copyArray;
+import static heavyindustry.util.Structf.sumi;
 
 public final class HTrails {
 	/** Don't let anyone instantiate this class. */

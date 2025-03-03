@@ -1,6 +1,8 @@
 package heavyindustry.struct;
 
-import arc.struct.*;
+import arc.struct.ObjectMap;
+import arc.struct.OrderedMap;
+import arc.struct.Seq;
 
 /**
  * Implementation of Ordered Map based on {@link OrderedMap} wrapper for Java collection framework

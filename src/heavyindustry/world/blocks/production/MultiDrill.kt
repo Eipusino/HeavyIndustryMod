@@ -1,21 +1,30 @@
 package heavyindustry.world.blocks.production
 
-import arc.*
-import arc.graphics.*
-import arc.graphics.g2d.*
-import arc.math.*
-import arc.math.geom.*
-import arc.struct.*
-import arc.util.*
-import heavyindustry.*
-import mindustry.*
-import mindustry.content.*
-import mindustry.game.*
-import mindustry.gen.*
-import mindustry.graphics.*
-import mindustry.type.*
-import mindustry.world.*
-import mindustry.world.meta.*
+import arc.Core
+import arc.graphics.Blending
+import arc.graphics.Color
+import arc.graphics.g2d.Draw
+import arc.graphics.g2d.Lines
+import arc.graphics.g2d.TextureRegion
+import arc.math.Mathf
+import arc.math.geom.Point2
+import arc.struct.ObjectFloatMap
+import arc.struct.ObjectIntMap
+import arc.util.Time
+import heavyindustry.HVars
+import mindustry.Vars
+import mindustry.content.Fx
+import mindustry.game.Team
+import mindustry.gen.Building
+import mindustry.gen.Sounds
+import mindustry.graphics.Pal
+import mindustry.type.Item
+import mindustry.world.Block
+import mindustry.world.Edges
+import mindustry.world.Tile
+import mindustry.world.meta.BlockGroup
+import mindustry.world.meta.Stat
+import mindustry.world.meta.StatUnit
 
 open class MultiDrill(name: String) : Block(name) {
 	@JvmField val oreCount = ObjectIntMap<Item>()

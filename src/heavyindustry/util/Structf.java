@@ -1,10 +1,17 @@
 package heavyindustry.util;
 
-import arc.func.*;
-import arc.util.*;
+import arc.func.Boolf;
+import arc.func.Boolf2;
+import arc.func.Cons;
+import arc.func.Floatf;
+import arc.func.Func;
+import arc.func.Func2;
+import arc.func.Intf;
+import arc.util.Eachable;
 
-import java.lang.reflect.*;
-import java.util.*;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Struct utilities, providing some stateless iterative utilities such as reduce.

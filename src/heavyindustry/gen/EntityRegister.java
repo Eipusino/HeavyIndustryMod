@@ -1,10 +1,12 @@
 package heavyindustry.gen;
 
-import arc.func.*;
-import arc.struct.*;
-import arc.util.*;
-import mindustry.gen.*;
-import mindustry.type.*;
+import arc.func.Prov;
+import arc.struct.ObjectIntMap;
+import arc.util.Strings;
+import mindustry.gen.EntityMapping;
+import mindustry.gen.Entityc;
+import mindustry.gen.Unit;
+import mindustry.type.UnitType;
 
 /**
  * Each Entity class requires an independent {@link Entityc#classId()} in order to be saved properly in the map.
@@ -62,17 +64,17 @@ public final class EntityRegister {
 	}
 
 	public static void load() {
-		put("Unitf", Unitf.class, Unitf::new);
-		put("MechUnitf", MechUnitf.class, MechUnitf::new);
-		put("LegsUnitf", LegsUnitf.class, LegsUnitf::new);
-		put("PayloadUnitf", PayloadUnitf.class, PayloadUnitf::new);
-		put("TankUnitf", TankUnitf.class, TankUnitf::new);
-		put("BuildingTetherPayloadUnitf", BuildingTetherPayloadUnitf.class, BuildingTetherPayloadUnitf::new);
-		put("UnitWaterMovef", UnitWaterMovef.class, UnitWaterMovef::new);
-		put("TimedKillUnitf", TimedKillUnitf.class, TimedKillUnitf::new);
+		put("ExtraUnit", ExtraUnit.class, ExtraUnit::new);
+		put("ExtraMechUnit", ExtraMechUnit.class, ExtraMechUnit::new);
+		put("ExtraLegsUnit", ExtraLegsUnit.class, ExtraLegsUnit::new);
+		put("ExtraPayloadUnit", ExtraPayloadUnit.class, ExtraPayloadUnit::new);
+		put("ExtraTankUnit", ExtraTankUnit.class, ExtraTankUnit::new);
+		put("ExtraBuildingTetherPayloadUnit", ExtraBuildingTetherPayloadUnit.class, ExtraBuildingTetherPayloadUnit::new);
+		put("ExtraUnitWaterMove", ExtraUnitWaterMove.class, ExtraUnitWaterMove::new);
+		put("ExtraTimedKillUnit", ExtraTimedKillUnit.class, ExtraTimedKillUnit::new);
 		put("PayloadLegsUnit", PayloadLegsUnit.class, PayloadLegsUnit::new);
 		put("BuildingTetherPayloadLegsUnit", BuildingTetherPayloadLegsUnit.class, BuildingTetherPayloadLegsUnit::new);
-		put("CrawlUnitf", CrawlUnitf.class, CrawlUnitf::new);
+		put("ExtraCrawlUnit", ExtraCrawlUnit.class, ExtraCrawlUnit::new);
 		put("TractorBeamUnit", TractorBeamUnit.class, TractorBeamUnit::new);
 		put("OrnitopterUnit", OrnitopterUnit.class, OrnitopterUnit::new);
 		put("CopterUnit", CopterUnit.class, CopterUnit::new);

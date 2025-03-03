@@ -1,21 +1,26 @@
 package heavyindustry.world.blocks.units;
 
-import arc.graphics.g2d.*;
-import arc.scene.style.*;
-import arc.scene.ui.*;
-import arc.scene.ui.layout.*;
-import heavyindustry.util.*;
-import mindustry.ctype.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.type.*;
-import mindustry.ui.*;
-import mindustry.world.*;
-import mindustry.world.blocks.*;
-import mindustry.world.blocks.payloads.*;
-import mindustry.world.blocks.storage.*;
+import arc.graphics.g2d.Draw;
+import arc.scene.style.TextureRegionDrawable;
+import arc.scene.ui.ButtonGroup;
+import arc.scene.ui.ImageButton;
+import arc.scene.ui.layout.Scl;
+import arc.scene.ui.layout.Table;
+import heavyindustry.util.Utils;
+import mindustry.ctype.UnlockableContent;
+import mindustry.game.Team;
+import mindustry.gen.Tex;
+import mindustry.gen.Unit;
+import mindustry.type.UnitType;
+import mindustry.ui.Styles;
+import mindustry.world.Block;
+import mindustry.world.blocks.ItemSelection;
+import mindustry.world.blocks.payloads.PayloadSource;
+import mindustry.world.blocks.storage.CoreBlock;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.content;
+import static mindustry.Vars.player;
+import static mindustry.Vars.state;
 
 public class PayloadSourcef extends PayloadSource {
 	public static final Team[] teams = new Team[]{Team.derelict, Team.sharded, Team.crux, Team.green, Team.malis, Team.blue};

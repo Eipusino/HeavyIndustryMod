@@ -1,13 +1,15 @@
 package heavyindustry.type.unit;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.struct.*;
-import heavyindustry.gen.*;
-import mindustry.gen.*;
+import arc.Core;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.struct.Seq;
+import heavyindustry.gen.Copterc;
+import mindustry.gen.Unit;
 
-public class CopterUnitType extends UnitTypef {
+public class CopterUnitType extends ExtraUnitType {
 	public final Seq<Rotor> rotors = new Seq<>(2);
 	public float rotorDeathSlowdown = 0.01f;
 	public float fallRotateSpeed = 2.5f;
@@ -135,8 +137,8 @@ public class CopterUnitType extends UnitTypef {
 		public Rotor copy() {
 			try {//This is definitely the most disgusting, stupid, and insulting design in Java!
 				return (Rotor) super.clone();
-			} catch (CloneNotSupportedException e) {
-				throw new RuntimeException("java sucks", e);
+			} catch (CloneNotSupportedException suck) {
+				throw new RuntimeException("very good language design", suck);
 			}
 		}
 	}

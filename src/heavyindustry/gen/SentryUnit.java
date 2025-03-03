@@ -1,14 +1,14 @@
 package heavyindustry.gen;
 
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.type.unit.*;
-import mindustry.*;
-import mindustry.gen.*;
-import mindustry.type.*;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.type.unit.SentryUnitType;
+import mindustry.Vars;
+import mindustry.type.UnitType;
 
-public class SentryUnit extends TimedKillUnitf implements Sentryc {
+public class SentryUnit extends ExtraTimedKillUnit implements Sentryc {
 	public Vec2 anchorVel = new Vec2();
 	public float anchorX, anchorY, anchorRot;
 	public float anchorDrag;

@@ -1,10 +1,13 @@
 package heavyindustry.type.pixmap;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.graphics.*;
+import arc.graphics.Pixmap;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.geom.Vec2;
+import arc.util.ArcRuntimeException;
+import arc.util.Log;
+import arc.util.Scaling;
+import arc.util.Tmp;
+import mindustry.graphics.Pal;
 
 public interface PixmapProcessor {
 	static void drawScaledFit(Pixmap base, Pixmap image) {

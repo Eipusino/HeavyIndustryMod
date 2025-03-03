@@ -1,15 +1,15 @@
 package heavyindustry.world.draw;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import heavyindustry.util.*;
-import mindustry.gen.*;
-import mindustry.world.*;
-import mindustry.world.draw.*;
+import arc.graphics.Blending;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.util.Time;
+import mindustry.gen.Building;
+import mindustry.world.Block;
+import mindustry.world.draw.DrawPlasma;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
 
 public class DrawExpandPlasma extends DrawPlasma {
 	public float rotationSpeed = 1f;

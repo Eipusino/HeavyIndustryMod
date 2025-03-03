@@ -1,7 +1,12 @@
 package heavyindustry.math;
 
-import arc.math.*;
-import arc.math.Interp.*;
+import arc.math.Interp;
+import arc.math.Interp.BounceIn;
+import arc.math.Interp.BounceOut;
+import arc.math.Interp.Pow;
+import arc.math.Interp.PowIn;
+import arc.math.Interp.PowOut;
+import arc.math.Mathf;
 
 /** @since 1.0.1 */
 public final class HInterps {

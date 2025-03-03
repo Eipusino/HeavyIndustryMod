@@ -1,10 +1,11 @@
 package heavyindustry.world.blocks.power;
 
-import arc.math.*;
-import arc.util.*;
-import mindustry.entities.*;
-import mindustry.world.blocks.power.*;
-import mindustry.world.meta.*;
+import arc.math.Mathf;
+import arc.util.Time;
+import mindustry.entities.Damage;
+import mindustry.world.blocks.power.VariableReactor;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
 public class ConsumeVariableReactor extends VariableReactor {
 	public float itemDuration = 120f;

@@ -1,15 +1,20 @@
 package heavyindustry.world.blocks.defense.turrets;
 
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import arc.util.io.*;
-import heavyindustry.math.*;
-import mindustry.entities.part.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.blocks.defense.turrets.*;
-import mindustry.world.draw.*;
+import arc.graphics.g2d.Draw;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.util.Time;
+import arc.util.Tmp;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.math.Mathm;
+import mindustry.entities.part.DrawPart;
+import mindustry.gen.Building;
+import mindustry.gen.Bullet;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.world.blocks.defense.turrets.ContinuousTurret;
+import mindustry.world.draw.DrawTurret;
 
 public class SwingContinuousTurret extends ContinuousTurret {
 	public float rotateSpeedAccel = 0.5f, rotateSpeedDrag = 0.3f;

@@ -1,11 +1,13 @@
 package heavyindustry.entities.abilities;
 
-import arc.math.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
+import arc.math.Angles;
+import arc.math.Mathf;
+import mindustry.content.Bullets;
+import mindustry.content.Fx;
+import mindustry.entities.Damage;
+import mindustry.entities.abilities.Ability;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Unit;
 
 public class SuicideExplosionAbility extends Ability {
 	public float radius = 8;

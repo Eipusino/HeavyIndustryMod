@@ -1,11 +1,11 @@
 package heavyindustry.ai;
 
-import arc.math.*;
-import arc.math.geom.*;
-import heavyindustry.math.*;
-import mindustry.ai.types.*;
+import arc.math.Angles;
+import arc.math.geom.Vec2;
+import heavyindustry.math.Mathm;
+import mindustry.ai.types.FlyingAI;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.state;
 
 public class SurroundAI extends FlyingAI {
 	public static final Vec2 tmp = new Vec2();

@@ -1,18 +1,21 @@
 package heavyindustry.type.unit;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.struct.*;
-import heavyindustry.gen.*;
-import heavyindustry.graphics.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.io.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.struct.Seq;
+import heavyindustry.gen.Ornitopterc;
+import heavyindustry.graphics.Outliner;
+import mindustry.gen.Unit;
+import mindustry.graphics.Layer;
+import mindustry.graphics.MultiPacker;
+import mindustry.io.JsonIO;
+import mindustry.world.meta.Env;
 
-public class OrnitopterUnitType extends UnitTypef {
+public class OrnitopterUnitType extends ExtraUnitType {
 	public final Seq<Blade> blades = new Seq<>();
 
 	public float bladeDeathMoveSlowdown = 0.01f, fallDriftScl = 60f;

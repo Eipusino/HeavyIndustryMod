@@ -1,16 +1,20 @@
 package heavyindustry.world.blocks.payload;
 
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import arc.util.io.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.io.*;
-import mindustry.world.blocks.payloads.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.util.Nullable;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import mindustry.gen.Building;
+import mindustry.gen.Unit;
+import mindustry.graphics.Layer;
+import mindustry.io.TypeIO;
+import mindustry.world.blocks.payloads.Payload;
+import mindustry.world.blocks.payloads.PayloadBlock;
 
-import static heavyindustry.util.Utils.*;
+import static heavyindustry.util.Utils.splitLayers;
 
 public class PayloadDuct extends PayloadBlock {
 	public TextureRegion[][] regions;

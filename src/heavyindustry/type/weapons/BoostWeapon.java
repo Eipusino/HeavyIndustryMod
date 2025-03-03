@@ -1,15 +1,20 @@
 package heavyindustry.type.weapons;
 
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.audio.*;
-import mindustry.entities.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.type.*;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.util.Time;
+import arc.util.Tmp;
+import mindustry.audio.SoundLoop;
+import mindustry.entities.Predict;
+import mindustry.entities.Sized;
+import mindustry.entities.units.WeaponMount;
+import mindustry.gen.Sounds;
+import mindustry.gen.Unit;
+import mindustry.type.Weapon;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.headless;
+import static mindustry.Vars.state;
 
 public class BoostWeapon extends Weapon {
 	public BoostWeapon(String name) {

@@ -1,18 +1,25 @@
 package heavyindustry.world.blocks.storage;
 
-import arc.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.game.*;
-import mindustry.graphics.*;
-import mindustry.ui.*;
-import mindustry.world.*;
-import mindustry.world.blocks.storage.*;
-import mindustry.world.blocks.storage.CoreBlock.*;
-import mindustry.world.meta.*;
-import mindustry.world.modules.*;
+import arc.Core;
+import arc.math.geom.Rect;
+import arc.util.Tmp;
+import mindustry.game.Team;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Pal;
+import mindustry.ui.Bar;
+import mindustry.world.Tile;
+import mindustry.world.blocks.storage.CoreBlock;
+import mindustry.world.blocks.storage.CoreBlock.CoreBuild;
+import mindustry.world.blocks.storage.StorageBlock;
+import mindustry.world.meta.BlockFlag;
+import mindustry.world.meta.Stat;
+import mindustry.world.modules.ItemModule;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.indexer;
+import static mindustry.Vars.player;
+import static mindustry.Vars.state;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 /**
  * Connect the core warehouse.

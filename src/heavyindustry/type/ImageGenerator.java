@@ -1,9 +1,9 @@
 package heavyindustry.type;
 
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import heavyindustry.type.pixmap.*;
+import arc.func.Func;
+import arc.graphics.Pixmap;
+import arc.graphics.g2d.TextureRegion;
+import heavyindustry.type.pixmap.PixmapProcessor;
 
 public interface ImageGenerator {
 	default Pixmap generate(Pixmap icon, Func<TextureRegion, Pixmap> pixmapProvider) {

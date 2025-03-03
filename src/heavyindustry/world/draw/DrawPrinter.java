@@ -1,16 +1,20 @@
 package heavyindustry.world.draw;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import mindustry.*;
-import mindustry.content.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.world.*;
-import mindustry.world.draw.*;
+import arc.Core;
+import arc.graphics.Blending;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import mindustry.Vars;
+import mindustry.content.Items;
+import mindustry.gen.Building;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.type.Item;
+import mindustry.world.Block;
+import mindustry.world.draw.DrawDefault;
 
 public class DrawPrinter extends DrawDefault {
 	public Color printColor;

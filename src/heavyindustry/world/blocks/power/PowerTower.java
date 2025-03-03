@@ -1,21 +1,29 @@
 package heavyindustry.world.blocks.power;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import mindustry.*;
-import mindustry.core.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.blocks.power.*;
-import mindustry.world.meta.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.math.geom.Point2;
+import arc.struct.Seq;
+import arc.util.Tmp;
+import mindustry.Vars;
+import mindustry.core.Renderer;
+import mindustry.gen.Building;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.world.blocks.power.BeamNode;
+import mindustry.world.blocks.power.PowerGraph;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
-import java.util.*;
+import java.util.Arrays;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.indexer;
+import static mindustry.Vars.player;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 public class PowerTower extends BeamNode {
 	public Color baseColor = Color.valueOf("d4e1ff");

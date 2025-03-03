@@ -1,24 +1,33 @@
 package heavyindustry.world.blocks.logic;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import arc.util.io.*;
-import heavyindustry.graphics.*;
-import mindustry.content.*;
-import mindustry.core.*;
-import mindustry.entities.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.logic.*;
-import mindustry.world.*;
+import arc.Events;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Point2;
+import arc.struct.Seq;
+import arc.util.Tmp;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.graphics.DrawText;
+import mindustry.content.Fx;
+import mindustry.core.World;
+import mindustry.entities.Effect;
+import mindustry.game.EventType;
+import mindustry.gen.Building;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.logic.LAccess;
+import mindustry.logic.Ranged;
+import mindustry.world.Block;
+import mindustry.world.Tile;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.control;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 public class LaserRuler extends Block {
 	protected static final Seq<Runnable> drawRunners = new Seq<>();

@@ -1,20 +1,27 @@
 package heavyindustry.world.blocks.production;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import heavyindustry.func.*;
-import heavyindustry.type.*;
-import mindustry.*;
-import mindustry.entities.units.*;
-import mindustry.graphics.*;
-import mindustry.world.blocks.production.*;
+import arc.Core;
+import arc.func.Cons3;
+import arc.func.Func;
+import arc.graphics.Blending;
+import arc.graphics.Pixmap;
+import arc.graphics.Pixmaps;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.PixmapRegion;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.util.Eachable;
+import arc.util.Structs;
+import arc.util.Time;
+import heavyindustry.func.Floatc3;
+import heavyindustry.type.ImageGenerator;
+import mindustry.Vars;
+import mindustry.entities.units.BuildPlan;
+import mindustry.graphics.MultiPacker;
+import mindustry.world.blocks.production.Drill;
 
-import static heavyindustry.HVars.*;
-import static mindustry.Vars.*;
+import static heavyindustry.HVars.name;
+import static mindustry.Vars.tilesize;
 
 public class MultiRotatorDrill extends Drill implements ImageGenerator {
 	public Rotator[] rotators = {};

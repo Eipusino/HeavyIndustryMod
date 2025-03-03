@@ -1,6 +1,6 @@
 package heavyindustry.type.unit;
 
-import arc.util.*;
+import arc.util.Time;
 
 public class NucleoidUnitType extends AncientUnitType {
 	public float maxDamagedPerSec = 30000;

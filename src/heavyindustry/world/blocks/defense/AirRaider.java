@@ -1,12 +1,15 @@
 package heavyindustry.world.blocks.defense;
 
-import arc.audio.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.gen.*;
+import arc.audio.Sound;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.util.Time;
+import arc.util.Tmp;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.entities.Mover;
+import mindustry.gen.Sounds;
 
 public class AirRaider extends CommandableAttackerBlock {
 	public float shootSpread = 38f;

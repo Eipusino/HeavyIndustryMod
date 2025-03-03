@@ -1,18 +1,21 @@
 package heavyindustry.entities.abilities;
 
-import arc.audio.*;
-import arc.math.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import heavyindustry.world.meta.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.ui.*;
-import mindustry.world.meta.*;
+import arc.audio.Sound;
+import arc.math.Mathf;
+import arc.scene.ui.layout.Table;
+import arc.util.Strings;
+import heavyindustry.world.meta.HIStatUnit;
+import mindustry.content.Fx;
+import mindustry.entities.Damage;
+import mindustry.entities.Effect;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Sounds;
+import mindustry.gen.Unit;
+import mindustry.graphics.Pal;
+import mindustry.type.StatusEffect;
+import mindustry.ui.Bar;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
 public class SafeAbility extends Ability {
 	public float threshold = 0.5f, reload, trailChance = 0.3f;

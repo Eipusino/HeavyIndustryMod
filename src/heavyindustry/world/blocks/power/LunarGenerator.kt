@@ -1,11 +1,13 @@
 package heavyindustry.world.blocks.power
 
-import arc.math.*
-import arc.struct.*
-import heavyindustry.util.*
-import mindustry.*
-import mindustry.world.blocks.power.*
-import mindustry.world.meta.*
+import arc.math.Mathf
+import arc.struct.EnumSet
+import heavyindustry.util.eq
+import mindustry.Vars
+import mindustry.world.blocks.power.PowerGenerator
+import mindustry.world.meta.Attribute
+import mindustry.world.meta.Env
+import mindustry.world.meta.StatUnit
 
 open class LunarGenerator(name: String) : PowerGenerator(name) {
 	init {

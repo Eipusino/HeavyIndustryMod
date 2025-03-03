@@ -1,15 +1,21 @@
 package heavyindustry.entities.abilities;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.graphics.gl.*;
-import arc.math.*;
-import arc.util.*;
-import heavyindustry.graphics.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.Core;
+import arc.func.Cons;
+import arc.graphics.Blending;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.gl.FrameBuffer;
+import arc.math.Mathf;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.graphics.Draws;
+import heavyindustry.graphics.HPal;
+import heavyindustry.graphics.HShaders;
+import mindustry.gen.Bullet;
+import mindustry.gen.Groups;
+import mindustry.gen.Unit;
+import mindustry.graphics.Layer;
 
 public class MirrorArmorAbility extends BaseMirrorShieldAbility {
 	protected static final int drawId = Draws.nextTaskId();

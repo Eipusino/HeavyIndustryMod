@@ -1,10 +1,13 @@
 package heavyindustry.gen;
 
-import arc.*;
-import arc.struct.*;
-import heavyindustry.world.blocks.defense.CommandableBlock.*;
-import mindustry.core.*;
-import mindustry.game.EventType.*;
+import arc.Core;
+import arc.Events;
+import arc.struct.Seq;
+import heavyindustry.world.blocks.defense.CommandableBlock.CommandableBuild;
+import mindustry.core.GameState;
+import mindustry.game.EventType.ResetEvent;
+import mindustry.game.EventType.StateChangeEvent;
+import mindustry.game.EventType.WorldLoadEvent;
 
 public final class WorldRegister {
 	public static final Seq<Runnable> afterLoad = new Seq<>();

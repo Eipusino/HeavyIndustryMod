@@ -1,30 +1,53 @@
 package heavyindustry.gen;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import arc.util.io.*;
-import heavyindustry.content.*;
-import heavyindustry.entities.*;
-import heavyindustry.graphics.*;
-import heavyindustry.math.*;
-import heavyindustry.type.unit.*;
-import heavyindustry.util.*;
-import mindustry.ai.types.*;
-import mindustry.content.*;
-import mindustry.core.*;
-import mindustry.entities.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.world.meta.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Mathf;
+import arc.math.Rand;
+import arc.math.geom.Vec2;
+import arc.struct.ObjectFloatMap;
+import arc.struct.ObjectIntMap;
+import arc.struct.Seq;
+import arc.util.Time;
+import arc.util.Tmp;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.content.HBullets;
+import heavyindustry.content.HFx;
+import heavyindustry.entities.HUnitSorts;
+import heavyindustry.graphics.Drawn;
+import heavyindustry.math.HInterps;
+import heavyindustry.type.unit.PesterUnitType;
+import heavyindustry.util.Utils;
+import mindustry.ai.types.MissileAI;
+import mindustry.content.Fx;
+import mindustry.content.StatusEffects;
+import mindustry.core.World;
+import mindustry.entities.Sized;
+import mindustry.entities.Units;
+import mindustry.gen.Building;
+import mindustry.gen.Bullet;
+import mindustry.gen.Entityc;
+import mindustry.gen.Groups;
+import mindustry.gen.Healthc;
+import mindustry.gen.Hitboxc;
+import mindustry.gen.Player;
+import mindustry.gen.Teamc;
+import mindustry.gen.Unit;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Trail;
+import mindustry.type.UnitType;
+import mindustry.world.meta.BlockGroup;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.headless;
+import static mindustry.Vars.mobile;
+import static mindustry.Vars.net;
+import static mindustry.Vars.state;
+import static mindustry.Vars.world;
 
-public class PesterUnit extends Unitf implements Pesterc {
+public class PesterUnit extends ExtraUnit implements Pesterc {
 	public static final ObjectIntMap<Healthc> checked = new ObjectIntMap<>();
 
 	public static Building tmpBuilding = null;

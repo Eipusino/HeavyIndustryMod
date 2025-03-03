@@ -1,7 +1,7 @@
 package heavyindustry.util.pools;
 
-import arc.struct.*;
-import arc.util.pooling.*;
+import arc.struct.Seq;
+import arc.util.pooling.Pool;
 
 public abstract class ThreadSafePool<T> extends Pool<T> {
 	public ThreadSafePool() {

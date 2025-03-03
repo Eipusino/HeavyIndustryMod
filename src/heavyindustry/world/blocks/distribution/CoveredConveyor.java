@@ -1,15 +1,20 @@
 package heavyindustry.world.blocks.distribution;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
+import arc.Core;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.geom.Geometry;
+import arc.util.Time;
+import arc.util.Tmp;
+import mindustry.gen.Building;
+import mindustry.gen.Unit;
+import mindustry.graphics.Layer;
+import mindustry.type.Item;
 
-import static heavyindustry.util.Utils.*;
-import static mindustry.Vars.*;
+import static heavyindustry.util.Utils.relativeDirection;
+import static mindustry.Vars.itemSize;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 /**
  * Compared to the original conveyor belt, there is an additional sprites on top of the item layer.

@@ -1,11 +1,12 @@
 package heavyindustry.world.blocks.liquid;
 
-import arc.graphics.g2d.*;
-import arc.math.*;
-import mindustry.gen.*;
-import mindustry.type.*;
-import mindustry.world.blocks.liquid.*;
-import mindustry.world.meta.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import mindustry.gen.Building;
+import mindustry.type.Liquid;
+import mindustry.world.blocks.liquid.LiquidBlock;
+import mindustry.world.meta.Stat;
 
 public class LiquidOverflowValve extends LiquidBlock {
 	public boolean invert = false;

@@ -1,11 +1,11 @@
 package heavyindustry.entities.bullet;
 
-import arc.graphics.g2d.*;
-import arc.math.*;
-import heavyindustry.world.blocks.liquid.LiquidMassDriver.*;
-import mindustry.content.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
+import arc.graphics.g2d.Draw;
+import arc.math.Angles;
+import heavyindustry.world.blocks.liquid.LiquidMassDriver.LiquidBulletData;
+import mindustry.content.Fx;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Bullet;
 
 public class LiquidMassDriverBolt extends BulletType {
 	public LiquidMassDriverBolt() {

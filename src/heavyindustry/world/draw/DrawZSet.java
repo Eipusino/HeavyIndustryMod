@@ -1,8 +1,8 @@
 package heavyindustry.world.draw;
 
-import arc.graphics.g2d.*;
-import mindustry.gen.*;
-import mindustry.world.draw.*;
+import arc.graphics.g2d.Draw;
+import mindustry.gen.Building;
+import mindustry.world.draw.DrawBlock;
 
 /**
  * Transform the Draw layer. JSON specific.

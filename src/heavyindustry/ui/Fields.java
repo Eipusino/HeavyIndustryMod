@@ -1,15 +1,21 @@
 package heavyindustry.ui;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.scene.ui.*;
-import arc.scene.ui.TextField.*;
-import arc.scene.ui.layout.*;
-import arc.scene.utils.*;
-import arc.util.*;
-import heavyindustry.ui.defaults.*;
-import kotlin.jvm.internal.Ref.*;
+import arc.Core;
+import arc.func.Boolf;
+import arc.func.Cons;
+import arc.func.Floatc;
+import arc.func.Intc;
+import arc.func.Prov;
+import arc.graphics.Color;
+import arc.scene.ui.TextField;
+import arc.scene.ui.TextField.TextFieldFilter;
+import arc.scene.ui.layout.Cell;
+import arc.scene.ui.layout.Table;
+import arc.scene.utils.Elem;
+import arc.util.Nullable;
+import arc.util.Strings;
+import heavyindustry.ui.defaults.DefaultBackground;
+import kotlin.jvm.internal.Ref.ObjectRef;
 
 /** Custom fields */
 public final class Fields {

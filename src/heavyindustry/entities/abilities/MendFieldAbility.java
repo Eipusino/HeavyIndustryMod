@@ -1,14 +1,16 @@
 package heavyindustry.entities.abilities;
 
-import arc.graphics.*;
-import arc.math.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.graphics.Color;
+import arc.math.Mathf;
+import arc.util.Time;
+import arc.util.Tmp;
+import mindustry.content.Fx;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Building;
+import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.indexer;
 
 public class MendFieldAbility extends Ability {
 	public Color baseColor = Color.valueOf("84f491");

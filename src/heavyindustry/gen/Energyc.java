@@ -1,10 +1,10 @@
 package heavyindustry.gen;
 
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.type.unit.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.math.geom.Vec2;
+import arc.util.Interval;
+import heavyindustry.type.unit.EnergyUnitType;
+import mindustry.gen.Unitc;
+import mindustry.graphics.Trail;
 
 public interface Energyc extends Unitc {
 	boolean teleportValid(EnergyUnitType eType);

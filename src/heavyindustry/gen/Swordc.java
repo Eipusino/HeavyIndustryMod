@@ -1,8 +1,8 @@
 package heavyindustry.gen;
 
-import arc.struct.*;
-import heavyindustry.graphics.HTrails.*;
-import mindustry.gen.*;
+import arc.struct.IntSeq;
+import heavyindustry.graphics.HTrails.DriftTrail;
+import mindustry.gen.Unitc;
 
 public interface Swordc extends Unitc {
 	void unitRayCast(float x1, float y1, float x2, float y2);

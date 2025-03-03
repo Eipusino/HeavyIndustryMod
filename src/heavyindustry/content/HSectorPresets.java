@@ -1,8 +1,8 @@
 package heavyindustry.content;
 
-import heavyindustry.core.*;
-import mindustry.content.*;
-import mindustry.type.*;
+import heavyindustry.core.HeavyIndustryMod;
+import mindustry.content.Planets;
+import mindustry.type.SectorPreset;
 
 /**
  * Defines the {@linkplain SectorPreset maps} this mod offers.

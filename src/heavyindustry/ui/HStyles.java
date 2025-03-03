@@ -1,17 +1,17 @@
 package heavyindustry.ui;
 
-import arc.*;
-import arc.graphics.*;
-import arc.scene.style.*;
-import arc.scene.ui.Button.*;
-import arc.scene.ui.ImageButton.*;
-import arc.scene.ui.TextButton.*;
-import arc.scene.ui.TextField.*;
-import heavyindustry.scene.ui.HoldImageButton.*;
-import mindustry.gen.*;
-import mindustry.ui.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.scene.style.Drawable;
+import arc.scene.ui.Button.ButtonStyle;
+import arc.scene.ui.ImageButton.ImageButtonStyle;
+import arc.scene.ui.TextButton.TextButtonStyle;
+import arc.scene.ui.TextField.TextFieldStyle;
+import heavyindustry.scene.ui.HoldImageButton.HoldImageButtonStyle;
+import mindustry.gen.Tex;
+import mindustry.ui.Styles;
 
-import static heavyindustry.gen.HIcon.*;
+import static heavyindustry.gen.HIcon.modDrawable;
 
 public final class HStyles {
 	public static Drawable

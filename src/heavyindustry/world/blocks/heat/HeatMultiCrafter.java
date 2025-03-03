@@ -1,12 +1,14 @@
 package heavyindustry.world.blocks.heat;
 
-import arc.*;
-import arc.math.*;
-import arc.util.io.*;
-import heavyindustry.world.blocks.production.*;
-import mindustry.graphics.*;
-import mindustry.ui.*;
-import mindustry.world.blocks.heat.*;
+import arc.Core;
+import arc.math.Mathf;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.world.blocks.production.MultiCrafter;
+import mindustry.graphics.Pal;
+import mindustry.ui.Bar;
+import mindustry.world.blocks.heat.HeatBlock;
+import mindustry.world.blocks.heat.HeatConsumer;
 
 /**
  * Why is the heat separated separately? Mainly to avoid various strange small problems.

@@ -1,8 +1,8 @@
 package heavyindustry.type;
 
-import arc.func.*;
-import heavyindustry.struct.*;
-import heavyindustry.struct.BitWordList.*;
+import arc.func.Intc2;
+import heavyindustry.struct.BitWordList;
+import heavyindustry.struct.BitWordList.WordLength;
 
 public class CustomShape {
 	public final int width;

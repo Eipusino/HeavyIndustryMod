@@ -1,17 +1,19 @@
 package heavyindustry.world.blocks.defense.turrets;
 
-import arc.*;
-import arc.math.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.graphics.*;
-import mindustry.ui.*;
-import mindustry.world.blocks.defense.turrets.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.math.Mathf;
+import arc.util.Time;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.entities.Mover;
+import mindustry.entities.bullet.BulletType;
+import mindustry.graphics.Pal;
+import mindustry.ui.Bar;
+import mindustry.world.blocks.defense.turrets.PowerTurret;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
 
 public class SpeedupTurret extends PowerTurret {
 	public float overheatTime = 360f;

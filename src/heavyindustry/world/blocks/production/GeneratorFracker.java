@@ -1,12 +1,13 @@
 package heavyindustry.world.blocks.production;
 
-import arc.*;
-import arc.math.*;
-import arc.util.*;
-import mindustry.graphics.*;
-import mindustry.ui.*;
-import mindustry.world.blocks.production.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.math.Mathf;
+import arc.util.Strings;
+import mindustry.graphics.Pal;
+import mindustry.ui.Bar;
+import mindustry.world.blocks.production.Fracker;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
 public class GeneratorFracker extends Fracker {
 	public float powerProduction = 1f;

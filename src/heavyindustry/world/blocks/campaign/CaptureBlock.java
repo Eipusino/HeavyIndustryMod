@@ -1,18 +1,27 @@
 package heavyindustry.world.blocks.campaign;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.struct.*;
-import arc.util.*;
-import mindustry.ctype.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
-import mindustry.world.draw.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Mathf;
+import arc.struct.Seq;
+import arc.util.Eachable;
+import arc.util.Time;
+import mindustry.ctype.UnlockableContent;
+import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Building;
+import mindustry.gen.Groups;
+import mindustry.gen.Player;
+import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Pal;
+import mindustry.world.Block;
+import mindustry.world.draw.DrawBlock;
+import mindustry.world.draw.DrawDefault;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.net;
+import static mindustry.Vars.player;
 
 public class CaptureBlock extends Block {
 	public float captureTime = 60f * 60f, captureRadius = 20f * 8f, warmupSpeed = 0.019f, idleProgressDecrease = 0.5f;

@@ -1,19 +1,25 @@
 package heavyindustry.world.blocks.liquid
 
-import arc.*
-import arc.graphics.*
-import arc.graphics.g2d.*
-import arc.math.*
-import arc.util.*
-import heavyindustry.util.*
-import mindustry.*
-import mindustry.game.*
-import mindustry.logic.*
-import mindustry.type.*
-import mindustry.world.*
-import mindustry.world.blocks.liquid.*
-import mindustry.world.draw.*
-import mindustry.world.meta.*
+import arc.Core
+import arc.graphics.Color
+import arc.graphics.g2d.Draw
+import arc.graphics.g2d.TextureRegion
+import arc.math.Mathf
+import arc.util.Time
+import heavyindustry.util.eq
+import mindustry.Vars
+import mindustry.game.Team
+import mindustry.logic.LAccess
+import mindustry.type.Liquid
+import mindustry.world.Tile
+import mindustry.world.blocks.liquid.LiquidBlock
+import mindustry.world.draw.DrawDefault
+import mindustry.world.draw.DrawMulti
+import mindustry.world.draw.DrawPumpLiquid
+import mindustry.world.meta.BlockGroup
+import mindustry.world.meta.Env
+import mindustry.world.meta.Stat
+import mindustry.world.meta.StatUnit
 
 open class ThermalPump(name: String) : LiquidBlock(name) {
 	/** Pump amount per tile.  */

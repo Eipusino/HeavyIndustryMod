@@ -1,12 +1,15 @@
 package heavyindustry.entities.bullet;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import mindustry.entities.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.Core;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import mindustry.entities.Damage;
+import mindustry.entities.Effect;
+import mindustry.entities.Lightning;
+import mindustry.gen.Bullet;
+import mindustry.graphics.Layer;
 
 /** IS JUST POR HAILSTONE WEATHER */
 public class HailStoneBulletType extends FallingBulletType {

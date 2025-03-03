@@ -1,11 +1,16 @@
 package heavyindustry.util;
 
-import arc.func.*;
-import arc.struct.*;
-import arc.util.io.*;
-import arc.util.serialization.*;
+import arc.func.Func;
+import arc.struct.LongMap;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import arc.util.serialization.SerializationException;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.Serializable;
 
 /**
  * Used to package an object, objects implementing this interface can customize the behavior of serializing data into a byte stream, as referenced in {@link Serializable},

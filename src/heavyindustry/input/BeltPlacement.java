@@ -1,12 +1,12 @@
 package heavyindustry.input;
 
-import arc.func.*;
-import arc.struct.*;
-import mindustry.*;
-import mindustry.entities.units.*;
-import mindustry.input.*;
-import mindustry.world.*;
-import mindustry.world.blocks.distribution.*;
+import arc.func.Boolf;
+import arc.struct.Seq;
+import mindustry.Vars;
+import mindustry.entities.units.BuildPlan;
+import mindustry.input.Placement;
+import mindustry.world.Block;
+import mindustry.world.blocks.distribution.DirectionBridge;
 
 // i do not know what i am doing
 public final class BeltPlacement {

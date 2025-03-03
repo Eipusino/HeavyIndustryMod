@@ -1,11 +1,12 @@
 package heavyindustry.type;
 
-import arc.*;
-import arc.struct.*;
-import mindustry.*;
-import mindustry.content.*;
-import mindustry.game.*;
-import mindustry.type.*;
+import arc.Events;
+import arc.struct.ObjectMap;
+import mindustry.Vars;
+import mindustry.game.EventType;
+import mindustry.type.Planet;
+import mindustry.type.Sector;
+import mindustry.type.SectorPreset;
 
 public class ExtraSectorPreset extends SectorPreset {
 	public static ObjectMap<Sector, Runnable> scripts = new ObjectMap<>();

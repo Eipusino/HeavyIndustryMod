@@ -1,11 +1,12 @@
 package heavyindustry.world.draw;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import mindustry.gen.*;
-import mindustry.world.*;
-import mindustry.world.draw.*;
+import arc.Core;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Interp;
+import mindustry.gen.Building;
+import mindustry.world.Block;
+import mindustry.world.draw.DrawBlock;
 
 // Draws a hydraulic press.
 public class DrawPress extends DrawBlock {

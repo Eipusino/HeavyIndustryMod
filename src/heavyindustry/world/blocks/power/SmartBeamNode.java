@@ -1,14 +1,16 @@
 package heavyindustry.world.blocks.power;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import mindustry.core.*;
-import mindustry.graphics.*;
-import mindustry.world.blocks.power.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.math.geom.Point2;
+import mindustry.core.Renderer;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.world.blocks.power.BeamNode;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
 
 public class SmartBeamNode extends BeamNode {
 	public SmartBeamNode(String name) {

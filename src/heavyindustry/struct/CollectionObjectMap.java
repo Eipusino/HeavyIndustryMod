@@ -1,8 +1,13 @@
 package heavyindustry.struct;
 
-import arc.struct.*;
+import arc.struct.ObjectMap;
 
-import java.util.*;
+import java.util.AbstractCollection;
+import java.util.AbstractSet;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Implementation of Java Collection Framework Map based on {@link ObjectMap} wrapper,

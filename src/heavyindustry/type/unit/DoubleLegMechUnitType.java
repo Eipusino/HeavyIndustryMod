@@ -1,15 +1,18 @@
 package heavyindustry.type.unit;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.gen.*;
-import mindustry.world.blocks.environment.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.util.Tmp;
+import mindustry.content.Blocks;
+import mindustry.gen.Mechc;
+import mindustry.gen.Unit;
+import mindustry.world.blocks.environment.Floor;
 
-public class DoubleLegMechUnitType extends UnitTypef {
+public class DoubleLegMechUnitType extends ExtraUnitType {
 	public TextureRegion leg2Region;
 
 	public DoubleLegMechUnitType(String name) {

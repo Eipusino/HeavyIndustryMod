@@ -1,10 +1,10 @@
 package heavyindustry.entities.part;
 
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import mindustry.entities.part.*;
+import arc.graphics.g2d.Draw;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.struct.Seq;
+import mindustry.entities.part.DrawPart;
 
 public class CustomPart extends DrawPart {
 	protected final Vec2 vec = new Vec2();

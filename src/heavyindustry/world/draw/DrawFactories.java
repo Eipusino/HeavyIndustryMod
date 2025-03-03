@@ -1,14 +1,15 @@
 package heavyindustry.world.draw;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import mindustry.gen.*;
-import mindustry.world.*;
-import mindustry.world.draw.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.struct.Seq;
+import mindustry.gen.Building;
+import mindustry.world.Block;
+import mindustry.world.draw.DrawDefault;
 
 public class DrawFactories extends DrawDefault {
 	public TextureRegion rotator, rotator2, bottom, liquid, pressor, top;

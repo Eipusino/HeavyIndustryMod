@@ -1,7 +1,7 @@
 package heavyindustry.game;
 
-import arc.graphics.*;
-import mindustry.game.*;
+import arc.graphics.Color;
+import mindustry.game.Team;
 
 public final class HTeams {
 	/** Don't let anyone instantiate this class. */

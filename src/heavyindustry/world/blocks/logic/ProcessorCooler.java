@@ -1,19 +1,23 @@
 package heavyindustry.world.blocks.logic;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.ui.*;
-import mindustry.world.*;
-import mindustry.world.blocks.liquid.*;
-import mindustry.world.blocks.logic.LogicBlock.*;
-import mindustry.world.consumers.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.graphics.Blending;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.util.Nullable;
+import mindustry.gen.Building;
+import mindustry.graphics.Pal;
+import mindustry.type.Liquid;
+import mindustry.ui.Bar;
+import mindustry.world.Block;
+import mindustry.world.blocks.liquid.LiquidBlock;
+import mindustry.world.blocks.logic.LogicBlock.LogicBuild;
+import mindustry.world.consumers.ConsumeLiquidBase;
+import mindustry.world.consumers.ConsumeLiquidFilter;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
 public class ProcessorCooler extends Block {
 	public TextureRegion heatRegion, liquidRegion, topRegion;

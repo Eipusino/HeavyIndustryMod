@@ -1,10 +1,13 @@
 package heavyindustry.ui.listeners;
 
-import arc.*;
-import arc.func.*;
-import arc.input.*;
-import arc.scene.*;
-import arc.scene.event.*;
+import arc.Core;
+import arc.func.Boolp;
+import arc.func.Cons;
+import arc.input.KeyCode;
+import arc.scene.Action;
+import arc.scene.Element;
+import arc.scene.event.ClickListener;
+import arc.scene.event.InputEvent;
 
 public final class Listeners {
 	/** Don't let anyone instantiate this class. */

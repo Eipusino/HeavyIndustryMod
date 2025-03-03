@@ -1,22 +1,29 @@
 package heavyindustry.entities.abilities;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.scene.ui.layout.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.world.meta.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.type.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.graphics.Blending;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.scene.ui.layout.Table;
+import arc.struct.Seq;
+import arc.util.Strings;
+import arc.util.Time;
+import heavyindustry.world.meta.HIStat;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.entities.Units;
+import mindustry.entities.abilities.Ability;
+import mindustry.game.Team;
+import mindustry.gen.Building;
+import mindustry.gen.Healthc;
+import mindustry.gen.Unit;
+import mindustry.type.UnitType;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.state;
 
 public class JavelinAbility extends Ability {
 	protected final Seq<Healthc> targets = new Seq<>();

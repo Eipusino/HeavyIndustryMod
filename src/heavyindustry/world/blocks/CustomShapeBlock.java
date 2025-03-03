@@ -1,29 +1,43 @@
 package heavyindustry.world.blocks;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import arc.util.io.*;
-import heavyindustry.type.*;
-import heavyindustry.type.form.*;
-import heavyindustry.type.form.SpriteShapeLoader.ChunkProcessor.*;
-import heavyindustry.util.*;
-import mindustry.*;
-import mindustry.entities.units.*;
-import mindustry.game.EventType.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
-import mindustry.world.blocks.ConstructBlock.*;
+import arc.Core;
+import arc.Events;
+import arc.func.Cons3;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.util.Eachable;
+import arc.util.Log;
+import arc.util.Reflect;
+import arc.util.Time;
+import arc.util.Tmp;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.type.CustomShape;
+import heavyindustry.type.form.PixmapShapeLoader;
+import heavyindustry.type.form.SpriteShapeLoader;
+import heavyindustry.type.form.SpriteShapeLoader.ChunkProcessor.PercentProcessor;
+import heavyindustry.type.form.StringShapeLoader;
+import heavyindustry.util.Reflectf;
+import mindustry.Vars;
+import mindustry.entities.units.BuildPlan;
+import mindustry.game.EventType.TileChangeEvent;
+import mindustry.game.Team;
+import mindustry.gen.Building;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.world.Block;
+import mindustry.world.Build;
+import mindustry.world.Tile;
+import mindustry.world.blocks.ConstructBlock.ConstructBuild;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Field;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.player;
+import static mindustry.Vars.tilesize;
 
 public class CustomShapeBlock extends Block {
 	protected static final Field blockField = Reflectf.getField(Tile.class, "block");

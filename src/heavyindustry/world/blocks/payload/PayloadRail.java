@@ -1,23 +1,38 @@
 package heavyindustry.world.blocks.payload;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.graphics.gl.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import arc.util.io.*;
-import heavyindustry.graphics.*;
-import mindustry.core.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
-import mindustry.world.blocks.payloads.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.graphics.gl.FrameBuffer;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Point2;
+import arc.math.geom.Position;
+import arc.math.geom.Vec2;
+import arc.struct.IntSet;
+import arc.struct.Seq;
+import arc.util.Eachable;
+import arc.util.Time;
+import arc.util.Tmp;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.graphics.Drawn;
+import heavyindustry.graphics.HShaders;
+import mindustry.core.Renderer;
+import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Building;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.world.Tile;
+import mindustry.world.blocks.payloads.Payload;
+import mindustry.world.blocks.payloads.PayloadBlock;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.renderer;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 public class PayloadRail extends PayloadBlock {
 	protected static final IntSet highlighted = new IntSet();

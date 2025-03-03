@@ -1,28 +1,69 @@
 package heavyindustry.content;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.core.*;
-import heavyindustry.entities.bullet.*;
-import heavyindustry.entities.effect.*;
-import heavyindustry.gen.*;
-import heavyindustry.graphics.*;
-import heavyindustry.math.*;
-import heavyindustry.util.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.entities.effect.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.graphics.Blending;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Angles;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.math.Rand;
+import arc.math.geom.Vec2;
+import arc.struct.Seq;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.core.HeavyIndustryMod;
+import heavyindustry.entities.bullet.AccelBulletType;
+import heavyindustry.entities.bullet.BoidBulletType;
+import heavyindustry.entities.bullet.EffectBulletType;
+import heavyindustry.entities.bullet.LightningLinkerBulletType;
+import heavyindustry.entities.bullet.ShieldBreakerType;
+import heavyindustry.entities.bullet.StrafeLaserBulletType;
+import heavyindustry.entities.bullet.TrailFadeBulletType;
+import heavyindustry.entities.effect.WrapperEffect;
+import heavyindustry.gen.HSounds;
+import heavyindustry.gen.UltFire;
+import heavyindustry.graphics.Drawn;
+import heavyindustry.graphics.HPal;
+import heavyindustry.graphics.Layerf;
+import heavyindustry.graphics.PositionLightning;
+import heavyindustry.math.HInterps;
+import heavyindustry.util.Utils;
+import mindustry.content.Fx;
+import mindustry.content.StatusEffects;
+import mindustry.entities.Damage;
+import mindustry.entities.Effect;
+import mindustry.entities.Lightning;
+import mindustry.entities.Sized;
+import mindustry.entities.Units;
+import mindustry.entities.bullet.ArtilleryBulletType;
+import mindustry.entities.bullet.BasicBulletType;
+import mindustry.entities.bullet.BulletType;
+import mindustry.entities.bullet.ContinuousLaserBulletType;
+import mindustry.entities.bullet.FireBulletType;
+import mindustry.entities.bullet.FlakBulletType;
+import mindustry.entities.bullet.MissileBulletType;
+import mindustry.entities.effect.MultiEffect;
+import mindustry.game.Team;
+import mindustry.gen.Building;
+import mindustry.gen.Bullet;
+import mindustry.gen.Entityc;
+import mindustry.gen.Groups;
+import mindustry.gen.Healthc;
+import mindustry.gen.Hitboxc;
+import mindustry.gen.Sounds;
+import mindustry.gen.Teamc;
+import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
 
-import static heavyindustry.HVars.*;
-import static mindustry.Vars.*;
+import static heavyindustry.HVars.name;
+import static mindustry.Vars.headless;
+import static mindustry.Vars.indexer;
+import static mindustry.Vars.mobile;
+import static mindustry.Vars.tilesize;
 
 /**
  * Some preset bullets. Perhaps it will be used multiple times.
@@ -168,21 +209,21 @@ public final class HBullets {
 			despawnSound = hitSound = Sounds.largeExplosion;
 
 			fragBullets = 22;
-			fragBullet = new BasicBulletType(2f, 300, name("circle-bolt")) {{
+			fragBullet = new BasicBulletType(2f, 300f, name("circle-bolt")) {{
 				width = height = 10f;
 				shrinkY = shrinkX = 0.7f;
 				backColor = trailColor = lightColor = lightningColor = hitColor = HPal.ancientLightMid;
 				frontColor = HPal.ancientLight;
 				trailEffect = Fx.missileTrail;
 				trailParam = 3.5f;
-				splashDamage = 80;
-				splashDamageRadius = 40;
+				splashDamage = 80f;
+				splashDamageRadius = 40f;
 
 				lifetime = 18f;
 
 				lightning = 2;
 				lightningLength = lightningLengthRand = 4;
-				lightningDamage = 30;
+				lightningDamage = 30f;
 
 				hitSoundVolume /= 2.2f;
 				despawnShake = hitShake = 4f;
@@ -264,7 +305,7 @@ public final class HBullets {
 		};
 		ncBlackHole = new EffectBulletType(120f, 10000f, 3800f) {{
 			despawnHit = true;
-			splashDamageRadius = 240;
+			splashDamageRadius = 240f;
 
 			hittable = false;
 
@@ -298,9 +339,9 @@ public final class HBullets {
 
 			public void hitTile(Sized target, Entityc o, Team team, float x, float y) {
 				for (int i = 0; i < lightning; i++)
-					Lightning.create(team, lightColor, lightningDamage, x, y, Mathf.random(360), lightningLength + Mathf.random(lightningLengthRand));
+					Lightning.create(team, lightColor, lightningDamage, x, y, Mathf.random(360f), lightningLength + Mathf.random(lightningLengthRand));
 
-				if (target instanceof Unit unit && unit.health > 1000) HBullets.hitter.create(o, team, x, y, 0);
+				if (target instanceof Unit unit && unit.health > 1000f) HBullets.hitter.create(o, team, x, y, 0f);
 			}
 
 			@Override
@@ -314,13 +355,13 @@ public final class HBullets {
 			public void despawned(Bullet b) {
 				super.despawned(b);
 
-				float rad = 33;
+				float rad = 33f;
 
 				Vec2 v = new Vec2().set(b);
 
 				for (int i = 0; i < 5; i++) {
 					Time.run(i * 0.35f + Mathf.random(2), () -> {
-						Tmp.v1.rnd(rad / 3).scl(Mathf.random());
+						Tmp.v1.rnd(rad / 3f).scl(Mathf.random());
 						HFx.shuttle.at(v.x + Tmp.v1.x, v.y + Tmp.v1.y, Tmp.v1.angle(), lightColor, Mathf.random(rad * 3f, rad * 12f));
 					});
 				}
@@ -362,7 +403,7 @@ public final class HBullets {
 		};
 		nuBlackHole = new EffectBulletType(20f, 10000f, 0f) {{
 			despawnHit = true;
-			splashDamageRadius = 36;
+			splashDamageRadius = 36f;
 
 			hittable = false;
 
@@ -385,9 +426,9 @@ public final class HBullets {
 				for (Object o : dat) {
 					if (o instanceof Sized s)
 						if (s instanceof Building) {
-							Fill.square(s.getX(), s.getY(), s.hitSize() / 2);
+							Fill.square(s.getX(), s.getY(), s.hitSize() / 2f);
 						} else {
-							Lines.spikes(s.getX(), s.getY(), s.hitSize() * (0.5f + b.fout() * 2f), s.hitSize() / 2f * b.fslope() + 12 * b.fin(), 4, 45);
+							Lines.spikes(s.getX(), s.getY(), s.hitSize() * (0.5f + b.fout() * 2f), s.hitSize() / 2f * b.fslope() + 12f * b.fin(), 4, 45);
 						}
 				}
 
@@ -1404,15 +1445,16 @@ public final class HBullets {
 					}
 				}
 
-				if (b.lifetime() - b.time() > HFx.chainLightningFadeReversed.lifetime) for (int i = 0; i < 2; i++) {
-					if (Mathf.chanceDelta(0.2 * Mathf.curve(b.fin(), 0, 0.8f))) {
-						for (int j : Mathf.signs) {
-							Sounds.spark.at(b.x, b.y, 1f, 0.3f);
-							Vec2 v = Tmp.v6.rnd(rad / 2 + Mathf.random(rad * 2) * (1 + Mathf.curve(b.fin(), 0, 0.9f)) / 1.5f).add(b);
-							(j > 0 ? HFx.chainLightningFade : HFx.chainLightningFadeReversed).at(v.x, v.y, 12f, hitColor, b);
+				if (b.lifetime() - b.time() > HFx.chainLightningFadeReversed.lifetime)
+					for (int i = 0; i < 2; i++) {
+						if (Mathf.chanceDelta(0.2 * Mathf.curve(b.fin(), 0, 0.8f))) {
+							for (int j : Mathf.signs) {
+								Sounds.spark.at(b.x, b.y, 1f, 0.3f);
+								Vec2 v = Tmp.v6.rnd(rad / 2 + Mathf.random(rad * 2) * (1 + Mathf.curve(b.fin(), 0, 0.9f)) / 1.5f).add(b);
+								(j > 0 ? HFx.chainLightningFade : HFx.chainLightningFadeReversed).at(v.x, v.y, 12f, hitColor, b);
+							}
 						}
 					}
-				}
 
 				if (b.fin() > 0.05f && Mathf.chanceDelta(b.fin() * 0.3f + 0.02f)) {
 					HSounds.blaster.at(b.x, b.y, 1f, 0.3f);
@@ -1423,13 +1465,13 @@ public final class HBullets {
 
 			@Override
 			public void draw(Bullet b) {
-				float fin = Mathf.curve(b.fin(), 0, 0.02f);
+				float fin = Mathf.curve(b.fin(), 0f, 0.02f);
 				float f = fin * Mathf.curve(b.fout(), 0f, 0.1f);
-				float rad = 120;
+				float rad = 120f;
 
 				float z = Draw.z();
 
-				float circleF = (b.fout(Interp.pow2In) + 1) / 2;
+				float circleFout = (b.fout(Interp.pow2In) + 1) / 2;
 
 				Draw.color(hitColor);
 				Lines.stroke(rad / 20 * b.fin());
@@ -1439,13 +1481,13 @@ public final class HBullets {
 				Rand rand = HFx.rand0;
 				rand.setSeed(b.id);
 				for (int i = 0; i < (int) (rad / 3); i++) {
-					Tmp.v1.trns(rand.random(360f) + rand.range(1f) * rad / 5 * b.fin(Interp.pow2Out), rad / 2.05f * circleF + rand.random(rad * (1 + b.fin(Interp.circleOut)) / 1.8f));
+					Tmp.v1.trns(rand.random(360f) + rand.range(1f) * rad / 5 * b.fin(Interp.pow2Out), rad / 2.05f * circleFout + rand.random(rad * (1 + b.fin(Interp.circleOut)) / 1.8f));
 					float angle = Tmp.v1.angle();
 					Drawn.tri(b.x + Tmp.v1.x, b.y + Tmp.v1.y, (b.fin() + 1) / 2 * 28 + rand.random(0, 8), rad / 16 * (b.fin(Interp.exp5In) + 0.25f), angle);
 					Drawn.tri(b.x + Tmp.v1.x, b.y + Tmp.v1.y, (b.fin() + 1) / 2 * 12 + rand.random(0, 2), rad / 12 * (b.fin(Interp.exp5In) + 0.5f) / 1.2f, angle - 180);
 				}
 
-				Angles.randLenVectors(b.id + 1, (int) (rad / 3), rad / 4 * circleF, rad * (1 + b.fin(Interp.pow3Out)) / 3, (x, y) -> {
+				Angles.randLenVectors(b.id + 1, (int) (rad / 3), rad / 4 * circleFout, rad * (1 + b.fin(Interp.pow3Out)) / 3, (x, y) -> {
 					float angle = Mathf.angle(x, y);
 					Drawn.tri(b.x + x, b.y + y, rad / 8 * (1 + b.fout()) / 2.2f, (b.fout() * 3 + 1) / 3 * 25 + rand.random(4, 12) * (b.fout(Interp.circleOut) + 1) / 2, angle);
 					Drawn.tri(b.x + x, b.y + y, rad / 8 * (1 + b.fout()) / 2.2f, (b.fout() * 3 + 1) / 3 * 9 + rand.random(0, 2) * (b.fin() + 1) / 2, angle - 180);
@@ -1455,12 +1497,12 @@ public final class HBullets {
 
 				Draw.z(Layer.effect + 0.001f);
 				Draw.color(hitColor);
-				Fill.circle(b.x, b.y, rad * fin * circleF / 2f);
+				Fill.circle(b.x, b.y, rad * fin * circleFout / 2f);
 				Draw.color(HPal.thurmixRedDark);
-				Fill.circle(b.x, b.y, rad * fin * circleF * 0.75f / 2f);
+				Fill.circle(b.x, b.y, rad * fin * circleFout * 0.75f / 2f);
 				Draw.z(Layer.bullet - 0.1f);
 				Draw.color(HPal.thurmixRedDark);
-				Fill.circle(b.x, b.y, rad * fin * circleF * 0.8f / 2f);
+				Fill.circle(b.x, b.y, rad * fin * circleFout * 0.8f / 2f);
 				Draw.z(z);
 			}
 		};

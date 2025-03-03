@@ -1,17 +1,19 @@
 package heavyindustry.world.blocks.distribution
 
-import arc.graphics.*
-import arc.graphics.g2d.*
-import arc.math.*
-import arc.math.geom.*
-import arc.util.*
-import heavyindustry.*
-import heavyindustry.util.*
-import heavyindustry.world.meta.*
-import mindustry.*
-import mindustry.graphics.*
-import mindustry.world.blocks.Autotiler.*
-import mindustry.world.meta.*
+import arc.graphics.Blending
+import arc.graphics.g2d.Draw
+import arc.math.Mathf
+import arc.math.geom.Geometry
+import arc.util.Tmp
+import heavyindustry.HVars
+import heavyindustry.util.Utils
+import heavyindustry.util.eq
+import heavyindustry.world.meta.HIStat
+import mindustry.Vars
+import mindustry.graphics.Layer
+import mindustry.graphics.Pal
+import mindustry.world.blocks.Autotiler.SliceMode
+import mindustry.world.meta.StatUnit
 
 open class OverchargeDuct(name: String) : TubeDuct(name) {
 	@JvmField var glowRegions = Array(5) { HVars.whiteRegion }

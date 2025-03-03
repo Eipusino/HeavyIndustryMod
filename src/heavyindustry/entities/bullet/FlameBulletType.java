@@ -1,14 +1,15 @@
 package heavyindustry.entities.bullet;
 
-import arc.graphics.*;
-import arc.math.*;
-import heavyindustry.content.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
+import arc.graphics.Color;
+import arc.math.Angles;
+import heavyindustry.content.HFx;
+import mindustry.content.Fx;
+import mindustry.content.StatusEffects;
+import mindustry.entities.Units;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Bullet;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.indexer;
 
 public class FlameBulletType extends BulletType {
 	public float flameLength, flameCone;

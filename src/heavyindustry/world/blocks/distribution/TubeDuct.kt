@@ -1,8 +1,8 @@
 package heavyindustry.world.blocks.distribution
 
-import arc.graphics.g2d.*
-import heavyindustry.util.*
-import mindustry.world.blocks.distribution.*
+import arc.graphics.g2d.TextureRegion
+import heavyindustry.util.Utils
+import mindustry.world.blocks.distribution.Duct
 
 open class TubeDuct(name: String) : Duct(name) {
 	override fun load() {

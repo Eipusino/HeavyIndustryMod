@@ -1,10 +1,11 @@
 package heavyindustry.world.blocks.distribution
 
-import arc.math.*
-import heavyindustry.util.*
-import mindustry.*
-import mindustry.gen.*
-import mindustry.world.blocks.distribution.*
+import arc.math.Mathf
+import heavyindustry.util.eq
+import heavyindustry.util.ins
+import mindustry.Vars
+import mindustry.gen.Building
+import mindustry.world.blocks.distribution.ItemBridge
 
 open class InstantBridge(name: String) : ItemBridge(name) {
 	open inner class InstantBridgeBuild : ItemBridgeBuild() {

@@ -1,13 +1,15 @@
 package heavyindustry.world.draw;
 
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.draw.*;
+import arc.func.Cons;
+import arc.graphics.Blending;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.math.Mathf;
+import arc.util.Tmp;
+import mindustry.gen.Building;
+import mindustry.graphics.Pal;
+import mindustry.world.draw.DrawBlock;
 
 public class DrawScanLine extends DrawBlock implements Cloneable {
 	//public float lineLength = 12;

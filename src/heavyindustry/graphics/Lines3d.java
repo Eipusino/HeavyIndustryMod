@@ -1,13 +1,16 @@
 package heavyindustry.graphics;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.math.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.util.Tmp;
+import heavyindustry.math.Math3d;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
 
 public final class Lines3d {
 	private Lines3d() {}

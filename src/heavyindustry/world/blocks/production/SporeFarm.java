@@ -1,17 +1,22 @@
 package heavyindustry.world.blocks.production;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.io.*;
-import mindustry.content.*;
-import mindustry.gen.*;
-import mindustry.type.*;
-import mindustry.world.*;
+import arc.Core;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import mindustry.content.Items;
+import mindustry.content.Liquids;
+import mindustry.gen.Building;
+import mindustry.type.Item;
+import mindustry.type.Liquid;
+import mindustry.world.Block;
+import mindustry.world.Tile;
 
-import static heavyindustry.util.Utils.*;
-import static mindustry.Vars.*;
+import static heavyindustry.util.Utils.split;
+import static mindustry.Vars.world;
 
 /**
  * e.

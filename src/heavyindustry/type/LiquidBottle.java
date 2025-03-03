@@ -1,10 +1,12 @@
 package heavyindustry.type;
 
-import arc.graphics.*;
-import arc.util.*;
-import heavyindustry.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
+import arc.graphics.Color;
+import arc.graphics.Pixmap;
+import arc.util.Tmp;
+import heavyindustry.HVars;
+import mindustry.graphics.MultiPacker;
+import mindustry.type.Item;
+import mindustry.type.Liquid;
 
 /** Must be created via {@link LiquidBottle#LiquidBottle(java.lang.String, mindustry.type.Liquid)} and after loading mods. **/
 public class LiquidBottle extends Item {

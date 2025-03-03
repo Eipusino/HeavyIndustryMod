@@ -1,13 +1,15 @@
 package heavyindustry.world.draw;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import mindustry.*;
-import mindustry.gen.*;
-import mindustry.world.*;
-import mindustry.world.draw.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import mindustry.Vars;
+import mindustry.gen.Building;
+import mindustry.world.Block;
+import mindustry.world.draw.DrawBlock;
 
 public class DrawWeaveColor extends DrawBlock {
 	public TextureRegion weave;

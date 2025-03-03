@@ -1,23 +1,32 @@
 package heavyindustry.gen;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import arc.util.io.*;
-import heavyindustry.type.unit.*;
-import mindustry.*;
-import mindustry.content.*;
-import mindustry.core.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.io.*;
-import mindustry.world.*;
-import mindustry.world.blocks.payloads.*;
+import arc.Events;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.util.Time;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.type.unit.TractorBeamUnitType;
+import mindustry.Vars;
+import mindustry.content.Fx;
+import mindustry.core.World;
+import mindustry.game.EventType;
+import mindustry.gen.Building;
+import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Pal;
+import mindustry.io.TypeIO;
+import mindustry.world.Build;
+import mindustry.world.Tile;
+import mindustry.world.blocks.payloads.BuildPayload;
+import mindustry.world.blocks.payloads.Payload;
+import mindustry.world.blocks.payloads.UnitPayload;
 
-public class TractorBeamUnit extends PayloadUnitf {
+public class TractorBeamUnit extends ExtraPayloadUnit {
 	public Payload beamHeld;
 	public Vec2 mouse = new Vec2(), payPos = new Vec2(), unitPos = new Vec2();
 	public int mouseTileX, mouseTileY;

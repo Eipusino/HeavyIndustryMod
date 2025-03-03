@@ -1,18 +1,21 @@
 package heavyindustry.world.blocks.liquid;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.scene.ui.layout.*;
-import arc.util.io.*;
-import mindustry.gen.*;
-import mindustry.type.*;
-import mindustry.ui.*;
-import mindustry.world.*;
-import mindustry.world.blocks.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.scene.ui.layout.Table;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import mindustry.gen.Building;
+import mindustry.type.Liquid;
+import mindustry.ui.Bar;
+import mindustry.world.Block;
+import mindustry.world.blocks.ItemSelection;
+import mindustry.world.meta.BlockGroup;
+import mindustry.world.meta.Env;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.content;
 
 public class LiquidDirectionalUnloader extends Block {
 	public TextureRegion arrowRegion, centerRegion, topRegion;

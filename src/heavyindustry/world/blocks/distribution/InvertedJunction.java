@@ -1,22 +1,27 @@
 package heavyindustry.world.blocks.distribution;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.scene.style.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import arc.util.io.*;
-import mindustry.gen.*;
-import mindustry.type.*;
-import mindustry.ui.*;
-import mindustry.world.blocks.distribution.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.scene.style.TextureRegionDrawable;
+import arc.scene.ui.layout.Table;
+import arc.util.Time;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import mindustry.gen.BufferItem;
+import mindustry.gen.Building;
+import mindustry.gen.Unit;
+import mindustry.type.Item;
+import mindustry.ui.Styles;
+import mindustry.world.blocks.distribution.Junction;
 
-import static heavyindustry.HVars.*;
-import static heavyindustry.util.Utils.*;
-import static mindustry.Vars.*;
+import static heavyindustry.HVars.name;
+import static heavyindustry.util.Utils.split;
+import static mindustry.Vars.content;
+import static mindustry.Vars.tilesize;
 
 /**
  * Inverted Junction

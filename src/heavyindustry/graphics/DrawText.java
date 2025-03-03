@@ -1,13 +1,16 @@
 package heavyindustry.graphics;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.geom.*;
-import arc.scene.ui.layout.*;
-import arc.struct.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Font;
+import arc.graphics.g2d.FontCache;
+import arc.graphics.g2d.GlyphLayout;
+import arc.math.geom.Position;
+import arc.scene.ui.layout.Scl;
+import arc.struct.Seq;
 
-import java.util.*;
+import java.util.Objects;
 
 /** Draws text on screen without label or other stuff. */
 public final class DrawText {

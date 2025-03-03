@@ -1,23 +1,28 @@
 package heavyindustry.type.unit;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.scene.ui.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import heavyindustry.gen.*;
-import heavyindustry.graphics.HTrails.*;
-import mindustry.ai.types.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.scene.ui.Image;
+import arc.scene.ui.layout.Table;
+import arc.util.Scaling;
+import arc.util.Tmp;
+import heavyindustry.gen.Swordc;
+import heavyindustry.graphics.HTrails.DriftTrail;
+import mindustry.ai.types.FlyingAI;
+import mindustry.content.Fx;
+import mindustry.content.StatusEffects;
+import mindustry.entities.Effect;
+import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.type.StatusEffect;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.iconMed;
 
-public class SwordUnitType extends UnitTypef {
+public class SwordUnitType extends ExtraUnitType {
 	public float travelSpeed = -1f, curveRnd = -1f;
 
 	//Hit stuff

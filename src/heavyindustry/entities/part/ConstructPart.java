@@ -1,11 +1,13 @@
 package heavyindustry.entities.part;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import mindustry.entities.part.*;
-import mindustry.graphics.*;
+import arc.Core;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Angles;
+import arc.util.Nullable;
+import arc.util.Time;
+import mindustry.entities.part.DrawPart;
+import mindustry.graphics.Drawf;
 
 /**
  * Draws a region with a construct animation, is meant to be used only on units.

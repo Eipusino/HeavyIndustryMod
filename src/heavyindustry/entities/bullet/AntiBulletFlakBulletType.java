@@ -1,10 +1,12 @@
 package heavyindustry.entities.bullet;
 
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.math.geom.Rect;
+import arc.util.Tmp;
+import mindustry.entities.bullet.FlakBulletType;
+import mindustry.gen.Bullet;
+import mindustry.gen.Groups;
 
 public class AntiBulletFlakBulletType extends FlakBulletType {
 	public float bulletDamage = 5f;

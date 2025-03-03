@@ -1,23 +1,32 @@
 package heavyindustry.gen;
 
-import arc.*;
-import arc.math.*;
-import arc.scene.ui.layout.*;
-import arc.struct.*;
-import arc.util.*;
-import arc.util.io.*;
-import mindustry.*;
-import mindustry.content.*;
-import mindustry.core.*;
-import mindustry.entities.*;
-import mindustry.game.EventType.*;
-import mindustry.gen.*;
-import mindustry.io.*;
-import mindustry.world.*;
-import mindustry.world.blocks.payloads.*;
-import mindustry.world.blocks.power.*;
+import arc.Events;
+import arc.math.Mathf;
+import arc.scene.ui.layout.Table;
+import arc.struct.Seq;
+import arc.util.Nullable;
+import arc.util.Tmp;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import mindustry.Vars;
+import mindustry.content.Fx;
+import mindustry.core.World;
+import mindustry.entities.EntityGroup;
+import mindustry.entities.Units;
+import mindustry.game.EventType.PayloadDropEvent;
+import mindustry.game.EventType.PickupEvent;
+import mindustry.gen.Building;
+import mindustry.gen.Payloadc;
+import mindustry.gen.Unit;
+import mindustry.io.TypeIO;
+import mindustry.world.Build;
+import mindustry.world.Tile;
+import mindustry.world.blocks.payloads.BuildPayload;
+import mindustry.world.blocks.payloads.Payload;
+import mindustry.world.blocks.payloads.UnitPayload;
+import mindustry.world.blocks.power.PowerGraph;
 
-public class PayloadLegsUnit extends LegsUnitf implements Payloadc {
+public class PayloadLegsUnit extends ExtraLegsUnit implements Payloadc {
 	protected Seq<Payload> payloads = new Seq<>();
 
 	protected transient @Nullable PowerGraph payloadPower;

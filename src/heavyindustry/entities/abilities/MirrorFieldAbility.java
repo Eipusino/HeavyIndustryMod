@@ -1,16 +1,25 @@
 package heavyindustry.entities.abilities;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.graphics.*;
-import mindustry.gen.*;
-import mindustry.type.*;
+import arc.Core;
+import arc.func.Cons;
+import arc.func.Floatf;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Angles;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.math.geom.Intersector;
+import arc.math.geom.Vec2;
+import arc.struct.Seq;
+import arc.util.Nullable;
+import arc.util.Time;
+import heavyindustry.graphics.Draws;
+import mindustry.gen.Bullet;
+import mindustry.gen.Groups;
+import mindustry.gen.Unit;
+import mindustry.type.UnitType;
 
 public class MirrorFieldAbility extends BaseMirrorShieldAbility {
 	public boolean rotation;

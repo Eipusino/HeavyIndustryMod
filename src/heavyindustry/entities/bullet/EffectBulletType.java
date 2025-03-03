@@ -1,8 +1,8 @@
 package heavyindustry.entities.bullet;
 
-import mindustry.content.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
+import mindustry.content.Fx;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Bullet;
 
 public class EffectBulletType extends BulletType {
 	public EffectBulletType() {

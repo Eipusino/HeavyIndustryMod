@@ -1,7 +1,7 @@
 package heavyindustry.util.pools;
 
-import arc.func.*;
-import arc.util.pooling.*;
+import arc.func.Prov;
+import arc.util.pooling.Pool;
 
 public class PoolImpl<T> extends Pool<T> {
 	public final Prov<T> provider;

@@ -1,21 +1,25 @@
 package heavyindustry.world.blocks.defense;
 
-import arc.*;
-import arc.Graphics.*;
-import arc.Graphics.Cursor.*;
-import arc.audio.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import arc.util.io.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.logic.*;
-import mindustry.world.blocks.defense.*;
+import arc.Core;
+import arc.Graphics.Cursor;
+import arc.Graphics.Cursor.SystemCursor;
+import arc.audio.Sound;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.util.Eachable;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Sounds;
+import mindustry.logic.LAccess;
+import mindustry.world.blocks.defense.Wall;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.net;
+import static mindustry.Vars.player;
+import static mindustry.Vars.world;
 
 /**
  * A wall with insulation properties that change with opening and closing.

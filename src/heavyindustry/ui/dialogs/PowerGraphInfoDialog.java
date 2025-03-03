@@ -1,17 +1,20 @@
 package heavyindustry.ui.dialogs;
 
-import arc.*;
-import arc.scene.ui.layout.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.ui.elements.*;
-import heavyindustry.ui.elements.PowerInfoGroup.*;
-import mindustry.gen.*;
-import mindustry.ui.*;
-import mindustry.ui.dialogs.*;
-import mindustry.world.blocks.power.*;
+import arc.Core;
+import arc.scene.ui.layout.Table;
+import arc.struct.IntMap;
+import arc.struct.IntSeq;
+import arc.struct.IntSet;
+import arc.struct.Seq;
+import arc.util.Time;
+import heavyindustry.ui.elements.PowerInfoGroup;
+import heavyindustry.ui.elements.PowerInfoGroup.InfoToggled;
+import mindustry.gen.Building;
+import mindustry.ui.Styles;
+import mindustry.ui.dialogs.BaseDialog;
+import mindustry.world.blocks.power.PowerGraph;
 
-import static heavyindustry.ui.UIUtils.*;
+import static heavyindustry.ui.UIUtils.formatAmount;
 
 public class PowerGraphInfoDialog extends BaseDialog {
 	protected final float updateInterval = 60; //Update every second

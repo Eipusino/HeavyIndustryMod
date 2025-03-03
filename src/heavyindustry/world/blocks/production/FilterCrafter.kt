@@ -1,15 +1,17 @@
 package heavyindustry.world.blocks.production
 
-import arc.scene.style.*
-import arc.scene.ui.layout.*
-import arc.struct.*
-import heavyindustry.util.*
-import mindustry.*
-import mindustry.gen.*
-import mindustry.type.*
-import mindustry.ui.*
-import mindustry.world.blocks.production.*
-import mindustry.world.meta.*
+import arc.scene.style.TextureRegionDrawable
+import arc.scene.ui.layout.Table
+import arc.struct.Seq
+import heavyindustry.util.eq
+import mindustry.Vars
+import mindustry.gen.Building
+import mindustry.gen.Icon
+import mindustry.gen.Tex
+import mindustry.type.Item
+import mindustry.ui.Styles
+import mindustry.world.blocks.production.GenericCrafter
+import mindustry.world.meta.Stat
 
 open class FilterCrafter(name: String) : GenericCrafter(name) {
 	@JvmField val filterItemsBuilder = Seq<Item>()

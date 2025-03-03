@@ -1,25 +1,35 @@
 package heavyindustry.world.blocks.power;
 
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.content.*;
-import heavyindustry.entities.bullet.*;
-import heavyindustry.gen.*;
-import heavyindustry.graphics.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.blocks.power.*;
-import mindustry.world.meta.*;
+import arc.func.Cons;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.math.geom.Position;
+import arc.struct.EnumSet;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.content.HBullets;
+import heavyindustry.content.HFx;
+import heavyindustry.entities.bullet.EffectBulletType;
+import heavyindustry.gen.HSounds;
+import heavyindustry.graphics.Drawn;
+import heavyindustry.graphics.PositionLightning;
+import mindustry.entities.Damage;
+import mindustry.entities.Effect;
+import mindustry.entities.Units;
+import mindustry.entities.bullet.BulletType;
+import mindustry.game.Team;
+import mindustry.gen.Bullet;
+import mindustry.gen.Sounds;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.world.blocks.power.ImpactReactor;
+import mindustry.world.meta.BlockFlag;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
 
 /**
  * After being destroyed, it will produce complex explosive effects and other split bullets.

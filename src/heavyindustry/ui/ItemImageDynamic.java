@@ -1,16 +1,18 @@
 package heavyindustry.ui;
 
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.scene.ui.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import mindustry.core.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.ui.*;
-import mindustry.world.modules.*;
+import arc.func.Intp;
+import arc.func.Prov;
+import arc.graphics.Color;
+import arc.graphics.g2d.TextureRegion;
+import arc.scene.ui.Image;
+import arc.scene.ui.layout.Stack;
+import arc.scene.ui.layout.Table;
+import arc.util.Scaling;
+import mindustry.core.UI;
+import mindustry.graphics.Pal;
+import mindustry.type.Item;
+import mindustry.ui.Styles;
+import mindustry.world.modules.ItemModule;
 
 public class ItemImageDynamic extends Stack {
 	public ItemImageDynamic(TextureRegion region, Intp amountp, Prov<Color> colorProv) {

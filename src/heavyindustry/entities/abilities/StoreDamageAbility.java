@@ -1,13 +1,15 @@
 package heavyindustry.entities.abilities;
 
-import arc.graphics.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
-import mindustry.world.meta.*;
+import arc.graphics.Color;
+import arc.scene.ui.layout.Table;
+import arc.util.Strings;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.entities.Units;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Unit;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
 public class StoreDamageAbility extends Ability {
 	public float nowHealth = 0, storedDamage, maxStored, mod;

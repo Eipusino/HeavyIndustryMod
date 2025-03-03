@@ -1,14 +1,19 @@
 package heavyindustry.util;
 
-import arc.*;
-import arc.files.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.struct.*;
-import arc.util.*;
+import arc.Core;
+import arc.files.Fi;
+import arc.func.Cons;
+import arc.func.ConsT;
+import arc.graphics.Pixmap;
+import arc.graphics.Texture;
+import arc.graphics.g2d.TextureRegion;
+import arc.struct.ObjectMap;
+import arc.struct.OrderedMap;
+import arc.util.Http;
+import arc.util.Log;
 
-import java.io.*;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public final class URLDownloader {
 	private static final OrderedMap<String, String> urlReplacers = new OrderedMap<>();

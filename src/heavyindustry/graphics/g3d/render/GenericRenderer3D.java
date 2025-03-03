@@ -1,13 +1,17 @@
 package heavyindustry.graphics.g3d.render;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.graphics.g3d.*;
-import arc.graphics.gl.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import heavyindustry.graphics.g3d.model.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.Gl;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g3d.Camera3D;
+import arc.graphics.g3d.PlaneBatch3D;
+import arc.graphics.g3d.VertexBatch3D;
+import arc.graphics.gl.FrameBuffer;
+import arc.graphics.gl.Shader;
+import arc.math.geom.Mat3D;
+import arc.struct.Seq;
+import heavyindustry.graphics.g3d.model.Model;
 
 /** Example 3D renderer. */
 public class GenericRenderer3D implements Renderer3D {

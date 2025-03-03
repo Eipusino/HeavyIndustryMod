@@ -1,18 +1,22 @@
 package heavyindustry.type.weapons;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.g2d.*;
-import arc.scene.ui.layout.*;
-import arc.struct.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.entities.bullet.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.type.*;
-import mindustry.ui.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.func.Func;
+import arc.graphics.g2d.TextureRegion;
+import arc.scene.ui.layout.Table;
+import arc.struct.ObjectMap;
+import arc.util.Strings;
+import mindustry.content.Bullets;
+import mindustry.entities.bullet.BulletType;
+import mindustry.entities.units.WeaponMount;
+import mindustry.gen.Tex;
+import mindustry.gen.Unit;
+import mindustry.type.UnitType;
+import mindustry.type.Weapon;
+import mindustry.ui.Styles;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
+import mindustry.world.meta.StatValues;
 
 /** a weapon that shoots different things depending on things in a unit. */
 public class FilterWeapon extends Weapon {

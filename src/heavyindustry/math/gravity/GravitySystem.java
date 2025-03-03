@@ -1,6 +1,6 @@
 package heavyindustry.math.gravity;
 
-import arc.math.geom.*;
+import arc.math.geom.Vec2;
 
 /**
  * Gravity system interface, processing unit for gravity operations.

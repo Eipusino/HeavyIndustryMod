@@ -1,14 +1,17 @@
 package heavyindustry.graphics.g3d.model.obj;
 
-import arc.files.*;
-import arc.graphics.*;
-import arc.graphics.gl.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.graphics.g3d.model.obj.mtl.*;
-import heavyindustry.graphics.g3d.model.obj.obj.*;
+import arc.files.Fi;
+import arc.graphics.Texture;
+import arc.graphics.gl.Shader;
+import arc.struct.ObjectMap;
+import arc.struct.Seq;
+import arc.util.Nullable;
+import heavyindustry.graphics.g3d.model.obj.mtl.MTL;
+import heavyindustry.graphics.g3d.model.obj.mtl.MTLParser;
+import heavyindustry.graphics.g3d.model.obj.obj.OBJ;
+import heavyindustry.graphics.g3d.model.obj.obj.OBJParser;
 
-import java.util.*;
+import java.util.Objects;
 
 /** Use it for models parsing. */
 public class ObjectModelFactory {

@@ -1,13 +1,14 @@
 package heavyindustry.world.blocks.defense;
 
-import arc.graphics.*;
-import arc.util.*;
-import arc.util.io.*;
-import mindustry.content.*;
-import mindustry.graphics.*;
-import mindustry.world.blocks.defense.*;
+import arc.graphics.Color;
+import arc.util.Time;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import mindustry.content.Fx;
+import mindustry.graphics.Pal;
+import mindustry.world.blocks.defense.Wall;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.net;
 
 public class AparajitoWall extends Wall {
 	public float hitHealAmount = 0.05f, hitHealReload = 0.5f * 60;

@@ -1,7 +1,7 @@
 package heavyindustry.audio;
 
-import arc.*;
-import arc.audio.*;
+import arc.Core;
+import arc.audio.Sound;
 
 public class SoundInstance {
 	public final Sound sound;

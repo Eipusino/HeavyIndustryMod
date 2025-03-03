@@ -1,15 +1,17 @@
 package heavyindustry.entities.abilities;
 
-import arc.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.scene.ui.layout.Table;
+import arc.util.Strings;
+import arc.util.Time;
+import mindustry.content.Fx;
+import mindustry.entities.Units;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Unit;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
 
 public class SurroundRegenAbility extends Ability {
 	public float healAmount = 1, reload = 100, healRange = 60;

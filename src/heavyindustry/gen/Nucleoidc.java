@@ -1,6 +1,6 @@
 package heavyindustry.gen;
 
-import mindustry.gen.*;
+import mindustry.gen.Unitc;
 
 public interface Nucleoidc extends Unitc {
 	float recentDamage();

@@ -1,17 +1,29 @@
 package heavyindustry.entities.bullet;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import heavyindustry.graphics.*;
-import heavyindustry.util.*;
-import mindustry.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Angles;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.graphics.Drawn;
+import heavyindustry.util.Utils;
+import mindustry.Vars;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.entities.UnitSorts;
+import mindustry.entities.Units;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Building;
+import mindustry.gen.Bullet;
+import mindustry.gen.Player;
+import mindustry.gen.Teamc;
+import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
 
 public class StrafeLaserBulletType extends BulletType {
 	public float strafeAngle = 70;

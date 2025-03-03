@@ -1,6 +1,6 @@
 package heavyindustry.world.meta;
 
-import mindustry.world.meta.*;
+import mindustry.world.meta.StatUnit;
 
 public final class HIStatUnit {
 	public static StatUnit

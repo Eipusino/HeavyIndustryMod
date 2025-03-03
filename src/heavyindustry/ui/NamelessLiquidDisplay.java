@@ -1,14 +1,16 @@
 package heavyindustry.ui;
 
-import arc.graphics.*;
-import arc.scene.ui.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import mindustry.type.*;
-import mindustry.ui.*;
-import mindustry.world.meta.*;
+import arc.graphics.Color;
+import arc.scene.ui.Image;
+import arc.scene.ui.layout.Stack;
+import arc.scene.ui.layout.Table;
+import arc.util.Scaling;
+import arc.util.Strings;
+import mindustry.type.Liquid;
+import mindustry.ui.Styles;
+import mindustry.world.meta.StatUnit;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.iconMed;
 
 /** Similar to {@code LiquidDisplay}, however does not append with the liquid's name. */
 public class NamelessLiquidDisplay extends Table {

@@ -1,20 +1,25 @@
 package heavyindustry.world.blocks.defense.turrets
 
-import arc.*
-import arc.graphics.*
-import arc.graphics.g2d.*
-import arc.math.*
-import arc.struct.*
-import arc.util.*
-import arc.util.io.*
-import heavyindustry.*
-import mindustry.*
-import mindustry.entities.*
-import mindustry.gen.*
+import arc.Core
+import arc.graphics.Color
+import arc.graphics.g2d.Draw
+import arc.graphics.g2d.TextureRegion
+import arc.math.Angles
+import arc.math.Mathf
+import arc.struct.Seq
+import arc.util.Timer
+import arc.util.io.Reads
+import arc.util.io.Writes
+import heavyindustry.HVars
+import mindustry.Vars
+import mindustry.entities.Units
+import mindustry.gen.Sounds
 import mindustry.gen.Unit
-import mindustry.graphics.*
-import mindustry.world.blocks.defense.turrets.*
-import mindustry.world.meta.*
+import mindustry.graphics.Drawf
+import mindustry.graphics.Layer
+import mindustry.world.blocks.defense.turrets.BaseTurret
+import mindustry.world.meta.Stat
+import mindustry.world.meta.StatUnit
 
 open class HackTurret(name: String) : BaseTurret(name) {
 	@JvmField val targets = Seq<Unit>()

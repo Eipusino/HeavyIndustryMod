@@ -1,22 +1,27 @@
 package heavyindustry.world.blocks.distribution;
 
-import arc.func.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.world.*;
-import mindustry.world.blocks.distribution.*;
-import mindustry.world.blocks.sandbox.*;
+import arc.func.Boolf;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.math.geom.Point2;
+import arc.struct.Seq;
+import arc.util.Eachable;
+import arc.util.Tmp;
+import mindustry.content.Blocks;
+import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Building;
+import mindustry.graphics.Layer;
+import mindustry.type.Item;
+import mindustry.world.Block;
+import mindustry.world.blocks.distribution.Junction;
+import mindustry.world.blocks.sandbox.ItemSource;
+import mindustry.world.blocks.sandbox.ItemVoid;
 
-import static heavyindustry.util.Utils.*;
-import static mindustry.Vars.*;
+import static heavyindustry.util.Utils.split;
+import static mindustry.Vars.itemSize;
+import static mindustry.Vars.tilesize;
 
 public class HeavyDuct extends TubeDuct {
 	public TextureRegion[] sheetRegions;

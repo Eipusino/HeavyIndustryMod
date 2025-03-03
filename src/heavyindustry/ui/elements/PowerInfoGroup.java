@@ -1,17 +1,19 @@
 package heavyindustry.ui.elements;
 
-import arc.*;
-import arc.graphics.*;
-import arc.scene.ui.*;
-import arc.scene.ui.layout.*;
-import arc.struct.*;
-import heavyindustry.ui.dialogs.PowerGraphInfoDialog.*;
-import mindustry.*;
-import mindustry.gen.*;
-import mindustry.world.*;
-import mindustry.world.consumers.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.scene.ui.ImageButton;
+import arc.scene.ui.layout.Collapser;
+import arc.scene.ui.layout.Table;
+import arc.struct.Seq;
+import heavyindustry.ui.dialogs.PowerGraphInfoDialog.PowerInfoType;
+import mindustry.Vars;
+import mindustry.gen.Building;
+import mindustry.gen.Icon;
+import mindustry.world.Block;
+import mindustry.world.consumers.ConsumePower;
 
-import static heavyindustry.ui.UIUtils.*;
+import static heavyindustry.ui.UIUtils.formatAmount;
 
 public class PowerInfoGroup extends Table {
 	public PowerInfoGroup(Seq<Building> buildings, PowerInfoType type, boolean isOpen, InfoToggled toggled) {

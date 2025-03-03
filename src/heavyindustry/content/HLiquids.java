@@ -1,14 +1,17 @@
 package heavyindustry.content;
 
-import arc.graphics.*;
-import arc.math.*;
-import heavyindustry.core.*;
-import heavyindustry.entities.effect.*;
-import heavyindustry.graphics.*;
-import heavyindustry.type.*;
-import mindustry.content.*;
-import mindustry.gen.*;
-import mindustry.type.*;
+import arc.graphics.Color;
+import arc.math.Mathf;
+import heavyindustry.core.HeavyIndustryMod;
+import heavyindustry.entities.effect.WrapperEffect;
+import heavyindustry.graphics.Draws;
+import heavyindustry.graphics.HPal;
+import heavyindustry.graphics.HShaders;
+import heavyindustry.type.MultiCellLiquid;
+import mindustry.content.Liquids;
+import mindustry.content.StatusEffects;
+import mindustry.gen.Puddle;
+import mindustry.type.Liquid;
 
 /**
  * Defines the {@linkplain Liquid liquid} this mod offers.

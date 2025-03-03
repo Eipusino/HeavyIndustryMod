@@ -1,19 +1,25 @@
 package heavyindustry.entities.bullet;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import heavyindustry.graphics.*;
-import heavyindustry.util.*;
-import mindustry.content.*;
-import mindustry.entities.bullet.*;
-import mindustry.entities.effect.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.util.Nullable;
+import heavyindustry.graphics.HPal;
+import heavyindustry.util.Utils;
+import mindustry.content.Fx;
+import mindustry.content.StatusEffects;
+import mindustry.entities.bullet.BulletType;
+import mindustry.entities.effect.ExplosionEffect;
+import mindustry.gen.Bullet;
+import mindustry.gen.Hitboxc;
+import mindustry.gen.Sounds;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
 
-import static heavyindustry.HVars.*;
+import static heavyindustry.HVars.name;
 
 /** Draw the effect of bullet fireworks. Although its memory usage may be slightly high. */
 public class FireWorkBulletType extends BulletType {

@@ -1,15 +1,18 @@
 package heavyindustry.ui.elements;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.scene.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import arc.util.pooling.Pool.*;
-import arc.util.pooling.*;
-import mindustry.entities.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.math.Mat;
+import arc.math.Rand;
+import arc.scene.Element;
+import arc.scene.Group;
+import arc.scene.ui.layout.Scl;
+import arc.util.Align;
+import arc.util.Time;
+import arc.util.pooling.Pool.Poolable;
+import arc.util.pooling.Pools;
+import mindustry.entities.Effect;
 
 /**
  * Scene effects tool, a layout tool used to display {@link Effect} in the UI.

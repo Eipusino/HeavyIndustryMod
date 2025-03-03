@@ -1,9 +1,10 @@
 package heavyindustry.entities.bullet;
 
-import arc.math.*;
-import arc.struct.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.struct.FloatSeq;
+import mindustry.entities.bullet.BasicBulletType;
+import mindustry.gen.Bullet;
 
 public class AccelBulletType extends BasicBulletType {
 	public float velocityBegin = -1, velocityIncrease = 0f, accelerateBegin = 0.1f, accelerateEnd = 0.6f;

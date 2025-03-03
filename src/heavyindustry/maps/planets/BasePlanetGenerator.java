@@ -1,14 +1,16 @@
 package heavyindustry.maps.planets;
 
-import arc.graphics.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import arc.util.noise.*;
-import mindustry.content.*;
-import mindustry.maps.generators.*;
-import mindustry.world.*;
+import arc.graphics.Color;
+import arc.math.Mathf;
+import arc.math.geom.Vec3;
+import arc.struct.ObjectMap;
+import arc.util.Tmp;
+import arc.util.noise.Ridged;
+import arc.util.noise.Simplex;
+import mindustry.content.Blocks;
+import mindustry.maps.generators.PlanetGenerator;
+import mindustry.world.Block;
+import mindustry.world.TileGen;
 
 public abstract class BasePlanetGenerator extends PlanetGenerator {
 	protected static int lastSeed = 0;

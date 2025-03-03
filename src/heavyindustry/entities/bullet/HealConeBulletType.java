@@ -1,15 +1,18 @@
 package heavyindustry.entities.bullet;
 
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import heavyindustry.world.blocks.defense.turrets.MendTurret.*;
-import mindustry.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.math.Angles;
+import arc.math.Interp;
+import arc.util.Time;
+import heavyindustry.world.blocks.defense.turrets.MendTurret.MendTurretBuild;
+import mindustry.Vars;
+import mindustry.content.Fx;
+import mindustry.entities.Units;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Bullet;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
 
 public class HealConeBulletType extends BulletType {
 	public float findRange;

@@ -1,10 +1,10 @@
 package heavyindustry.world.draw;
 
-import arc.graphics.g2d.*;
-import arc.struct.*;
-import mindustry.gen.*;
-import mindustry.world.*;
-import mindustry.world.draw.*;
+import arc.graphics.g2d.TextureRegion;
+import arc.struct.Seq;
+import mindustry.gen.Building;
+import mindustry.world.Block;
+import mindustry.world.draw.DrawBlock;
 
 public class MultiDrawBlock extends DrawBlock {
 	protected Seq<DrawBlock> drawBlocks = new Seq<>();

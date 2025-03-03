@@ -1,20 +1,26 @@
 package heavyindustry.world.blocks.distribution;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.entities.units.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
-import mindustry.world.blocks.distribution.*;
+import arc.Core;
+import arc.graphics.Blending;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.util.Eachable;
+import arc.util.Tmp;
+import mindustry.entities.units.BuildPlan;
+import mindustry.game.Team;
+import mindustry.gen.Building;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.world.Tile;
+import mindustry.world.blocks.distribution.StackConveyor;
 
-import static heavyindustry.util.Utils.*;
-import static mindustry.Vars.*;
+import static heavyindustry.util.Utils.split;
+import static mindustry.Vars.itemSize;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 public class BeltStackConveyor extends StackConveyor {
 	public boolean drawGlow = false;

@@ -1,12 +1,12 @@
 package heavyindustry.entities.abilities;
 
-import arc.graphics.*;
-import arc.util.*;
-import heavyindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.graphics.Color;
+import arc.util.Time;
+import heavyindustry.content.HFx;
+import mindustry.entities.Units;
+import mindustry.entities.abilities.RepairFieldAbility;
+import mindustry.gen.Unit;
+import mindustry.graphics.Pal;
 
 public class HealAbility extends RepairFieldAbility {
 	public Color applyColor = Pal.heal;

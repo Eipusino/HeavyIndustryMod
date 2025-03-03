@@ -1,11 +1,11 @@
 package heavyindustry.world.blocks.environment;
 
-import arc.graphics.g2d.*;
-import heavyindustry.util.*;
-import mindustry.world.*;
-import mindustry.world.blocks.environment.*;
+import arc.graphics.g2d.Draw;
+import heavyindustry.util.SpriteUtils;
+import mindustry.world.Tile;
+import mindustry.world.blocks.environment.Floor;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.world;
 
 public class GrooveFloor extends Floor {
 	public GrooveFloor(String name) {

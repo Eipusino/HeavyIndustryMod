@@ -1,16 +1,23 @@
 package heavyindustry.world.blocks.defense;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import arc.util.io.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.util.Time;
+import arc.util.Tmp;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import mindustry.gen.Building;
+import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Pal;
+import mindustry.world.Block;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.indexer;
+import static mindustry.Vars.tilesize;
 
 public class AdjustableOverdrive extends Block {
 	protected static final float MAX = 100000f, MIN = 1f, INIT_MASK = 1000000f;

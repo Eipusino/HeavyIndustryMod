@@ -1,9 +1,9 @@
 package heavyindustry.ai;
 
-import arc.func.*;
-import mindustry.*;
-import mindustry.entities.units.*;
-import mindustry.world.meta.*;
+import arc.func.Prov;
+import mindustry.Vars;
+import mindustry.entities.units.AIController;
+import mindustry.world.meta.BlockFlag;
 
 public class ReloadingAI extends AIController {
 	public Prov<AIController> provider;

@@ -1,19 +1,21 @@
 package heavyindustry.world.blocks.distribution;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.util.*;
-import mindustry.*;
-import mindustry.content.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.world.*;
-import mindustry.world.blocks.distribution.*;
+import arc.Core;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.util.Eachable;
+import mindustry.Vars;
+import mindustry.content.Blocks;
+import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Building;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.type.Item;
+import mindustry.world.Tile;
+import mindustry.world.blocks.distribution.Router;
 
-import static heavyindustry.util.Utils.*;
-import static mindustry.Vars.*;
+import static heavyindustry.util.Utils.reverse;
+import static mindustry.Vars.itemSize;
 
 public class TubeDistributor extends Router {
 	public TextureRegion bottomRegion, topRegion, rotatorRegion, lockedRegion1, lockedRegion2;

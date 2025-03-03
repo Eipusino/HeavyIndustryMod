@@ -1,27 +1,42 @@
 package heavyindustry.world.blocks.defense;
 
-import arc.*;
-import arc.math.geom.*;
-import arc.scene.ui.layout.*;
-import arc.struct.*;
-import arc.util.io.*;
-import heavyindustry.content.*;
-import heavyindustry.gen.*;
-import heavyindustry.graphics.*;
-import heavyindustry.ui.*;
-import mindustry.content.*;
-import mindustry.core.*;
-import mindustry.entities.bullet.*;
-import mindustry.entities.pattern.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.io.*;
-import mindustry.logic.*;
-import mindustry.ui.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.math.geom.Point2;
+import arc.math.geom.Vec2;
+import arc.scene.ui.layout.Table;
+import arc.struct.ObjectMap;
+import arc.struct.Seq;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.content.HFx;
+import heavyindustry.gen.HSounds;
+import heavyindustry.gen.WorldRegister;
+import heavyindustry.graphics.Drawn;
+import heavyindustry.ui.UIUtils;
+import mindustry.content.Bullets;
+import mindustry.core.UI;
+import mindustry.core.World;
+import mindustry.entities.bullet.BulletType;
+import mindustry.entities.pattern.ShootPattern;
+import mindustry.gen.Icon;
+import mindustry.gen.Iconc;
+import mindustry.gen.Tex;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Pal;
+import mindustry.io.TypeIO;
+import mindustry.logic.LAccess;
+import mindustry.ui.Bar;
+import mindustry.ui.Styles;
+import mindustry.world.meta.BlockStatus;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
+import mindustry.world.meta.StatValues;
 
-import static heavyindustry.ui.UIUtils.*;
-import static mindustry.Vars.*;
+import static heavyindustry.ui.UIUtils.LEN;
+import static mindustry.Vars.control;
+import static mindustry.Vars.headless;
+import static mindustry.Vars.player;
+import static mindustry.Vars.tilesize;
 
 /**
  * Basic Commandable Attacker Block.

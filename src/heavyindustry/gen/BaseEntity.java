@@ -1,15 +1,19 @@
 package heavyindustry.gen;
 
-import arc.math.geom.*;
-import arc.util.io.*;
-import mindustry.entities.*;
-import mindustry.gen.*;
-import mindustry.world.*;
-import mindustry.world.blocks.environment.*;
+import arc.math.geom.Position;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import mindustry.entities.EntityGroup;
+import mindustry.gen.Drawc;
+import mindustry.gen.Entityc;
+import mindustry.gen.Groups;
+import mindustry.gen.Unitc;
+import mindustry.world.Block;
+import mindustry.world.Tile;
+import mindustry.world.blocks.environment.Floor;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.player;
 
-@SuppressWarnings("unchecked")
 public abstract class BaseEntity implements Drawc {
 	public float x = 0, y = 0, drawSize = 40;
 	public boolean added;
@@ -46,11 +50,13 @@ public abstract class BaseEntity implements Drawc {
 		return this instanceof Unitc unit && unit.isPlayer() && !isLocal();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Entityc> T self() {
 		return (T) this;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T as() {
 		return (T) this;

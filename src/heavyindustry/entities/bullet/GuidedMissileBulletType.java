@@ -1,10 +1,12 @@
 package heavyindustry.entities.bullet;
 
-import arc.math.*;
-import arc.util.*;
-import mindustry.entities.bullet.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.util.Time;
+import arc.util.Tmp;
+import mindustry.entities.bullet.MissileBulletType;
+import mindustry.entities.units.WeaponMount;
+import mindustry.gen.Bullet;
 
 public class GuidedMissileBulletType extends MissileBulletType {
 	public float threshold = 1f;

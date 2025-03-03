@@ -1,13 +1,15 @@
 package heavyindustry.world.draw;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.g2d.*;
-import mindustry.gen.*;
-import mindustry.world.*;
-import mindustry.world.draw.*;
+import arc.Core;
+import arc.func.Floatf;
+import arc.func.Intf;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import mindustry.gen.Building;
+import mindustry.world.Block;
+import mindustry.world.draw.DrawBlock;
 
-import static heavyindustry.util.Utils.*;
+import static heavyindustry.util.Utils.split;
 
 @SuppressWarnings("unchecked")
 public class DrawFrame<E extends Building> extends DrawBlock {

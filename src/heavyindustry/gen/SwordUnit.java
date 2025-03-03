@@ -1,20 +1,26 @@
 package heavyindustry.gen;
 
-import arc.func.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.content.*;
-import heavyindustry.graphics.HTrails.*;
-import heavyindustry.type.unit.*;
-import mindustry.core.*;
-import mindustry.entities.*;
-import mindustry.gen.*;
+import arc.func.Cons;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.math.geom.Rect;
+import arc.math.geom.Vec2;
+import arc.struct.IntSeq;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.content.HFx;
+import heavyindustry.graphics.HTrails.DriftTrail;
+import heavyindustry.type.unit.SwordUnitType;
+import mindustry.core.World;
+import mindustry.entities.Units;
+import mindustry.gen.Building;
+import mindustry.gen.Unit;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.state;
+import static mindustry.Vars.world;
 
-public class SwordUnit extends Unitf implements Swordc {
+public class SwordUnit extends ExtraUnit implements Swordc {
 	public IntSeq collided = new IntSeq();
 	public float lastBaseX = Float.NEGATIVE_INFINITY, lastBaseY;
 	public int orbitPos;

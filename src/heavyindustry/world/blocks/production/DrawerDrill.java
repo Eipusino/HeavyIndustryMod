@@ -1,10 +1,12 @@
 package heavyindustry.world.blocks.production;
 
-import arc.graphics.g2d.*;
-import arc.util.*;
-import mindustry.entities.units.*;
-import mindustry.world.blocks.production.*;
-import mindustry.world.draw.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.util.Eachable;
+import mindustry.entities.units.BuildPlan;
+import mindustry.world.blocks.production.Drill;
+import mindustry.world.draw.DrawBlock;
+import mindustry.world.draw.DrawDefault;
 
 public class DrawerDrill extends Drill {
 	public DrawBlock drawer = new DrawDefault();

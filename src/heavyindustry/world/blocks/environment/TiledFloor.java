@@ -1,11 +1,12 @@
 package heavyindustry.world.blocks.environment;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import mindustry.world.*;
-import mindustry.world.blocks.environment.*;
+import arc.Core;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.math.geom.Point2;
+import mindustry.world.Tile;
+import mindustry.world.blocks.environment.Floor;
 
 public class TiledFloor extends Floor {
 	public TextureRegion sheetRegion;

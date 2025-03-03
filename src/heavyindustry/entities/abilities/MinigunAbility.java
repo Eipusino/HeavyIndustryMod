@@ -1,13 +1,14 @@
 package heavyindustry.entities.abilities;
 
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import heavyindustry.content.*;
-import heavyindustry.world.meta.*;
-import mindustry.content.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
-import mindustry.world.meta.*;
+import arc.scene.ui.layout.Table;
+import arc.util.Strings;
+import heavyindustry.content.HFx;
+import heavyindustry.world.meta.HIStatUnit;
+import mindustry.content.StatusEffects;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Unit;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
 public class MinigunAbility extends Ability {
 	public float heatMax, heatDamage;

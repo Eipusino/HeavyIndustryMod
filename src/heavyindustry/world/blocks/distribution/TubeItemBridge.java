@@ -1,25 +1,39 @@
 package heavyindustry.world.blocks.distribution;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import arc.util.io.*;
-import mindustry.core.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.input.*;
-import mindustry.ui.*;
-import mindustry.world.*;
-import mindustry.world.blocks.distribution.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.func.Boolf;
+import arc.func.Prov;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Point2;
+import arc.math.geom.Vec2;
+import arc.struct.OrderedMap;
+import arc.struct.Seq;
+import arc.util.Time;
+import arc.util.Tmp;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import mindustry.core.Renderer;
+import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Building;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.input.Placement;
+import mindustry.ui.Bar;
+import mindustry.world.Block;
+import mindustry.world.ItemBuffer;
+import mindustry.world.Tile;
+import mindustry.world.blocks.distribution.ItemBridge;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 /**
  * A bridge with the same connection method as the power node.
@@ -181,8 +195,8 @@ public class TubeItemBridge extends ItemBridge {
 					if (!positionsValid(tile.x, tile.y, Mathf.ceil(other.x + offVec.x), Mathf.ceil(other.y + offVec.y)))
 						break check;
 					boolean connected = false;
-					if (other.build instanceof ItemBridgeBuild) {
-						connected = other.build.<ItemBridgeBuild>as().link == tile.pos();
+					if (other.build instanceof ItemBridgeBuild bridge) {
+						connected = bridge.link == tile.pos();
 					}
 					return ((tile.block() instanceof TubeItemBridge bridge && bridge.connectFilter.get(other.build)) || !(tile.block() instanceof ItemBridge) && other.block() == this) &&
 							b2 &&

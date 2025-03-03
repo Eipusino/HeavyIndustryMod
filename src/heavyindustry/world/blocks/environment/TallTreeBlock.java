@@ -1,11 +1,12 @@
 package heavyindustry.world.blocks.environment;
 
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
-import mindustry.world.blocks.environment.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.util.Time;
+import mindustry.graphics.Layer;
+import mindustry.world.Tile;
+import mindustry.world.blocks.environment.TreeBlock;
 
 public class TallTreeBlock extends TreeBlock {
 	public TallTreeBlock(String name) {

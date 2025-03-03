@@ -1,7 +1,7 @@
 package heavyindustry.graphics;
 
-import arc.graphics.*;
-import mindustry.graphics.*;
+import arc.graphics.Color;
+import mindustry.graphics.Pal;
 
 public final class HPal {
 	public static final Color[] spectrum = {Color.red, Color.coral, Color.yellow, Color.lime, Color.green, Color.teal, Color.blue, Color.purple, Color.magenta};

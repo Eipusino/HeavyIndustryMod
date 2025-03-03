@@ -1,15 +1,17 @@
 package heavyindustry.type.weapons;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
+import arc.Core;
+import arc.func.Intc;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.util.Time;
+import mindustry.entities.units.WeaponMount;
+import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
+import mindustry.type.Weapon;
 
 public class MultiBarrelWeapon extends Weapon {
 	protected static final Vec2 tv = new Vec2();

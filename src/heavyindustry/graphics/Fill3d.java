@@ -1,10 +1,14 @@
 package heavyindustry.graphics;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.math.geom.Vec3;
+import arc.util.Tmp;
 
 public class Fill3d {
 	public static final Vec2 vec = new Vec2();

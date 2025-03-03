@@ -1,6 +1,8 @@
 package heavyindustry.struct;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 @SuppressWarnings("unchecked")
 public class HierarchyArray<T> implements Iterable<T> {

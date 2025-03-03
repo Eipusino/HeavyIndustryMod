@@ -1,19 +1,29 @@
 package heavyindustry.world.blocks.defense;
 
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import heavyindustry.content.*;
-import heavyindustry.graphics.*;
-import heavyindustry.world.meta.*;
-import mindustry.gen.*;
-import mindustry.world.blocks.defense.*;
-import mindustry.world.meta.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.math.geom.Point2;
+import arc.struct.Queue;
+import arc.struct.Seq;
+import heavyindustry.content.HFx;
+import heavyindustry.graphics.Drawn;
+import heavyindustry.world.meta.HIStat;
+import mindustry.gen.Building;
+import mindustry.gen.Bullet;
+import mindustry.gen.Call;
+import mindustry.world.blocks.defense.Wall;
+import mindustry.world.meta.StatUnit;
 
-import static heavyindustry.util.SpriteUtils.*;
-import static heavyindustry.util.Utils.*;
-import static mindustry.Vars.*;
+import static heavyindustry.util.SpriteUtils.diagonalPos;
+import static heavyindustry.util.SpriteUtils.orthogonalPos;
+import static heavyindustry.util.SpriteUtils.proximityPos;
+import static heavyindustry.util.Utils.splitLayers;
+import static mindustry.Vars.net;
+import static mindustry.Vars.state;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 /**
  * Shaped Wall
@@ -53,7 +63,7 @@ public class ShapedWall extends Wall {
 		}
 
 		public boolean checkWall(Building build) {
-			return build != null && build.block == this.block;
+			return build != null && build.block == block;
 		}
 
 		public void findLinkWalls() {
@@ -153,7 +163,9 @@ public class ShapedWall extends Wall {
 			if (!net.client()) {
 				building.health -= damage;
 			}
-			healthChanged();
+			if (damaged()) {
+				healthChanged();
+			}
 			if (building.health <= 0) {
 				Call.buildDestroyed(building);
 			}
@@ -182,6 +194,7 @@ public class ShapedWall extends Wall {
 			}
 		}
 
+		@Override
 		public void updateProximity() {
 			super.updateProximity();
 

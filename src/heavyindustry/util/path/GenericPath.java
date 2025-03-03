@@ -1,6 +1,7 @@
 package heavyindustry.util.path;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * Universal path implementation based on {@link LinkedList},

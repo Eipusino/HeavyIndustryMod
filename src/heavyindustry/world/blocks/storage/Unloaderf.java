@@ -1,6 +1,6 @@
 package heavyindustry.world.blocks.storage;
 
-import mindustry.world.blocks.storage.*;
+import mindustry.world.blocks.storage.Unloader;
 
 /**
  * AN unloader that is not affected by game frame rates.

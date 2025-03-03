@@ -1,9 +1,9 @@
 package heavyindustry.audio;
 
-import arc.*;
-import arc.audio.*;
-import arc.math.*;
-import arc.util.*;
+import arc.Core;
+import arc.audio.Sound;
+import arc.math.Mathf;
+import arc.util.Time;
 
 public class PassiveSoundLoop {
 	protected static final float fadeSpeed = 0.075f;

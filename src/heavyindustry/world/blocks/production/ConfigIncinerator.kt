@@ -1,15 +1,18 @@
 package heavyindustry.world.blocks.production
 
-import arc.graphics.g2d.*
-import arc.scene.style.*
-import arc.scene.ui.layout.*
-import arc.util.io.*
-import heavyindustry.ui.*
-import heavyindustry.util.*
-import mindustry.gen.*
+import arc.graphics.g2d.TextureRegion
+import arc.scene.style.TextureRegionDrawable
+import arc.scene.ui.layout.Table
+import arc.util.io.Reads
+import arc.util.io.Writes
+import heavyindustry.ui.HStyles
+import heavyindustry.util.Utils
+import heavyindustry.util.eq
+import mindustry.gen.Building
 import mindustry.gen.Unit
-import mindustry.type.*
-import mindustry.world.blocks.production.*
+import mindustry.type.Item
+import mindustry.type.Liquid
+import mindustry.world.blocks.production.Incinerator
 
 open class ConfigIncinerator(name: String) : Incinerator(name) {
 	@JvmField var choice = arrayOf<TextureRegion>()

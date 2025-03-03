@@ -1,6 +1,7 @@
 package heavyindustry.math;
 
-import arc.math.*;
+import arc.math.Angles;
+import arc.math.Mathf;
 
 /** @since 1.0.4 */
 public final class Anglesf {

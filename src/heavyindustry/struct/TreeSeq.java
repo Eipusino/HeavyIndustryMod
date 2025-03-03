@@ -1,8 +1,12 @@
 package heavyindustry.struct;
 
-import arc.func.*;
+import arc.func.Func;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.TreeSet;
 
 /**
  * An ordered and reconfigurable set based on {@link TreeSet}, adding elements to this set will insert them into positions of appropriate size.

@@ -1,9 +1,10 @@
 package heavyindustry.files;
 
-import arc.files.*;
-import arc.util.*;
+import arc.files.Fi;
+import arc.files.ZipFi;
+import arc.util.OS;
 
-import java.util.*;
+import java.util.Objects;
 
 /**
  * Use for jar internal navigation.

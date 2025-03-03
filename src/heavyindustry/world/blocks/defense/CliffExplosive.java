@@ -1,10 +1,10 @@
 package heavyindustry.world.blocks.defense;
 
-import mindustry.content.*;
-import mindustry.gen.*;
-import mindustry.world.*;
+import mindustry.content.Blocks;
+import mindustry.content.Fx;
+import mindustry.world.Tile;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.world;
 
 public class CliffExplosive extends Explosive {
 	public CliffExplosive(String name) {

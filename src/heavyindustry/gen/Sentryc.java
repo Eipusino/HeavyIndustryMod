@@ -1,7 +1,7 @@
 package heavyindustry.gen;
 
-import arc.math.geom.*;
-import mindustry.gen.*;
+import arc.math.geom.Vec2;
+import mindustry.gen.TimedKillc;
 
 public interface Sentryc extends TimedKillc {
 	Vec2 anchorVel();

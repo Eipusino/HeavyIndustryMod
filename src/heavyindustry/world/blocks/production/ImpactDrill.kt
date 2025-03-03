@@ -1,18 +1,20 @@
 package heavyindustry.world.blocks.production
 
-import arc.*
-import arc.graphics.*
-import arc.graphics.g2d.*
-import arc.math.*
-import heavyindustry.util.*
-import heavyindustry.world.meta.*
-import mindustry.*
-import mindustry.graphics.*
-import mindustry.type.*
-import mindustry.world.*
-import mindustry.world.blocks.environment.*
-import mindustry.world.blocks.production.*
-import mindustry.world.meta.*
+import arc.Core
+import arc.graphics.Color
+import arc.graphics.g2d.Draw
+import arc.math.Mathf
+import heavyindustry.util.eq
+import heavyindustry.world.meta.HIStatValues
+import mindustry.Vars
+import mindustry.graphics.Drawf
+import mindustry.type.Item
+import mindustry.world.Block
+import mindustry.world.Tile
+import mindustry.world.blocks.environment.Floor
+import mindustry.world.blocks.production.Drill
+import mindustry.world.meta.Stat
+import mindustry.world.meta.StatUnit
 
 open class ImpactDrill(name: String) : Drill(name) {
 	@JvmField var outputAmount = 5

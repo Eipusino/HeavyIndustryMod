@@ -1,8 +1,8 @@
 package heavyindustry.ui.elements;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.scene.*;
+import arc.Core;
+import arc.graphics.g2d.Bloom;
+import arc.scene.Group;
 
 /**
  * The floodlight effect container is used to filter the elements inside the container, giving them a light effect.

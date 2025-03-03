@@ -1,8 +1,9 @@
 package heavyindustry.world.blocks;
 
-import arc.struct.*;
-import mindustry.*;
-import mindustry.gen.*;
+import arc.struct.IntSeq;
+import arc.struct.Seq;
+import mindustry.Vars;
+import mindustry.gen.Building;
 
 public interface LinkGroupc extends Linkablec {
 	default Seq<Building> linkBuilds() {

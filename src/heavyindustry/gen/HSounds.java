@@ -1,10 +1,10 @@
 package heavyindustry.gen;
 
-import arc.audio.*;
-import arc.files.*;
-import mindustry.*;
+import arc.audio.Sound;
+import arc.files.Fi;
+import mindustry.Vars;
 
-import static heavyindustry.HVars.*;
+import static heavyindustry.HVars.internalTree;
 
 public final class HSounds {
 	public static Sound

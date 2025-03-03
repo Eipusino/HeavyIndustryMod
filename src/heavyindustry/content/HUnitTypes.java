@@ -1,43 +1,133 @@
 package heavyindustry.content;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.scene.ui.layout.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.ai.*;
-import heavyindustry.core.*;
-import heavyindustry.entities.abilities.*;
-import heavyindustry.entities.bullet.*;
-import heavyindustry.entities.effect.*;
-import heavyindustry.entities.part.*;
-import heavyindustry.gen.*;
-import heavyindustry.graphics.*;
-import heavyindustry.type.unit.*;
-import heavyindustry.type.weapons.*;
-import heavyindustry.ui.*;
-import mindustry.ai.*;
-import mindustry.ai.types.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.entities.bullet.*;
-import mindustry.entities.effect.*;
-import mindustry.entities.part.*;
-import mindustry.entities.pattern.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.type.ammo.*;
-import mindustry.type.weapons.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.graphics.Blending;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Angles;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.math.geom.Rect;
+import arc.scene.ui.layout.Table;
+import arc.struct.ObjectSet;
+import arc.struct.Seq;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.ai.HealingDefenderAI;
+import heavyindustry.ai.MinerPointAI;
+import heavyindustry.ai.SniperAI;
+import heavyindustry.ai.SurroundAI;
+import heavyindustry.core.HeavyIndustryMod;
+import heavyindustry.entities.abilities.BatteryAbility;
+import heavyindustry.entities.abilities.DeathAbility;
+import heavyindustry.entities.abilities.JavelinAbility;
+import heavyindustry.entities.abilities.MirrorArmorAbility;
+import heavyindustry.entities.abilities.MirrorFieldAbility;
+import heavyindustry.entities.abilities.TerritoryFieldAbility;
+import heavyindustry.entities.bullet.AccelBulletType;
+import heavyindustry.entities.bullet.AntiBulletFlakBulletType;
+import heavyindustry.entities.bullet.ArrowBulletType;
+import heavyindustry.entities.bullet.CtrlMissileBulletType;
+import heavyindustry.entities.bullet.EdgeFragBulletType;
+import heavyindustry.entities.bullet.FlameBulletType;
+import heavyindustry.entities.bullet.GuidedMissileBulletType;
+import heavyindustry.entities.bullet.HealConeBulletType;
+import heavyindustry.entities.bullet.TrailFadeBulletType;
+import heavyindustry.entities.effect.WrapperEffect;
+import heavyindustry.entities.part.AimPart;
+import heavyindustry.entities.part.BowHalo;
+import heavyindustry.entities.part.PartBow;
+import heavyindustry.gen.BuildingTetherPayloadLegsUnit;
+import heavyindustry.gen.CopterUnit;
+import heavyindustry.gen.EnergyUnit;
+import heavyindustry.gen.ExtraBuildingTetherPayloadUnit;
+import heavyindustry.gen.ExtraLegsUnit;
+import heavyindustry.gen.ExtraMechUnit;
+import heavyindustry.gen.ExtraPayloadUnit;
+import heavyindustry.gen.ExtraTankUnit;
+import heavyindustry.gen.ExtraUnit;
+import heavyindustry.gen.ExtraUnitWaterMove;
+import heavyindustry.gen.HSounds;
+import heavyindustry.gen.PayloadLegsUnit;
+import heavyindustry.gen.UltFire;
+import heavyindustry.graphics.Drawn;
+import heavyindustry.graphics.HPal;
+import heavyindustry.type.unit.CopterUnitType;
+import heavyindustry.type.unit.EnergyUnitType;
+import heavyindustry.type.unit.ExtraUnitType;
+import heavyindustry.type.weapons.AcceleratingWeapon;
+import heavyindustry.type.weapons.BoostWeapon;
+import heavyindustry.type.weapons.EnergyChargeWeapon;
+import heavyindustry.type.weapons.HealConeWeapon;
+import heavyindustry.type.weapons.LimitedAngleWeapon;
+import heavyindustry.type.weapons.PointDefenceMultiBarrelWeapon;
+import heavyindustry.ui.UIUtils;
+import mindustry.ai.UnitCommand;
+import mindustry.ai.types.FlyingAI;
+import mindustry.ai.types.FlyingFollowAI;
+import mindustry.content.Bullets;
+import mindustry.content.Fx;
+import mindustry.content.Items;
+import mindustry.content.StatusEffects;
+import mindustry.entities.Effect;
+import mindustry.entities.Units;
+import mindustry.entities.abilities.EnergyFieldAbility;
+import mindustry.entities.abilities.ForceFieldAbility;
+import mindustry.entities.abilities.RegenAbility;
+import mindustry.entities.abilities.RepairFieldAbility;
+import mindustry.entities.abilities.ShieldRegenFieldAbility;
+import mindustry.entities.abilities.StatusFieldAbility;
+import mindustry.entities.abilities.SuppressionFieldAbility;
+import mindustry.entities.bullet.ArtilleryBulletType;
+import mindustry.entities.bullet.BasicBulletType;
+import mindustry.entities.bullet.BulletType;
+import mindustry.entities.bullet.ContinuousLaserBulletType;
+import mindustry.entities.bullet.EmpBulletType;
+import mindustry.entities.bullet.FlakBulletType;
+import mindustry.entities.bullet.LaserBulletType;
+import mindustry.entities.bullet.LightningBulletType;
+import mindustry.entities.bullet.MissileBulletType;
+import mindustry.entities.bullet.PointBulletType;
+import mindustry.entities.bullet.RailBulletType;
+import mindustry.entities.bullet.ShrapnelBulletType;
+import mindustry.entities.effect.ExplosionEffect;
+import mindustry.entities.effect.MultiEffect;
+import mindustry.entities.part.RegionPart;
+import mindustry.entities.part.ShapePart;
+import mindustry.entities.pattern.ShootAlternate;
+import mindustry.entities.pattern.ShootBarrel;
+import mindustry.entities.pattern.ShootMulti;
+import mindustry.entities.pattern.ShootPattern;
+import mindustry.entities.pattern.ShootSine;
+import mindustry.entities.pattern.ShootSpread;
+import mindustry.entities.pattern.ShootSummon;
+import mindustry.entities.units.WeaponMount;
+import mindustry.gen.Building;
+import mindustry.gen.Bullet;
+import mindustry.gen.Healthc;
+import mindustry.gen.Hitboxc;
+import mindustry.gen.Shieldc;
+import mindustry.gen.Sounds;
+import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.type.StatusEffect;
+import mindustry.type.UnitType;
+import mindustry.type.Weapon;
+import mindustry.type.ammo.ItemAmmoType;
+import mindustry.type.ammo.PowerAmmoType;
+import mindustry.type.weapons.PointDefenseWeapon;
+import mindustry.type.weapons.RepairBeamWeapon;
+import mindustry.world.meta.BlockFlag;
+import mindustry.world.meta.Env;
 
-import static heavyindustry.HVars.*;
-import static mindustry.Vars.*;
+import static heavyindustry.HVars.name;
+import static mindustry.Vars.content;
+import static mindustry.Vars.indexer;
+import static mindustry.Vars.tilePayload;
 
 /**
  * Defines the {@linkplain UnitType units} this mod offers.
@@ -45,7 +135,7 @@ import static mindustry.Vars.*;
  * @author Eipusino
  */
 public final class HUnitTypes {
-	public static UnitTypef
+	public static ExtraUnitType
 			//vanilla-tank
 			vanguard, striker, counterattack, crush, destruction, purgatory,
 			//vanilla-copter
@@ -70,8 +160,8 @@ public final class HUnitTypes {
 	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
 	public static void load() {
 		//vanilla-tank
-		vanguard = new UnitTypef("vanguard") {{
-			constructor = TankUnitf::create;
+		vanguard = new ExtraUnitType("vanguard") {{
+			constructor = ExtraTankUnit::create;
 			squareShape = true;
 			omniMovement = false;
 			rotateMoveFirst = false;
@@ -110,8 +200,8 @@ public final class HUnitTypes {
 			}});
 			hidden = true;
 		}};
-		striker = new UnitTypef("striker") {{
-			constructor = TankUnitf::create;
+		striker = new ExtraUnitType("striker") {{
+			constructor = ExtraTankUnit::create;
 			squareShape = true;
 			omniMovement = false;
 			rotateMoveFirst = false;
@@ -143,8 +233,8 @@ public final class HUnitTypes {
 			}});
 			hidden = true;
 		}};
-		counterattack = new UnitTypef("counterattack") {{
-			constructor = TankUnitf::create;
+		counterattack = new ExtraUnitType("counterattack") {{
+			constructor = ExtraTankUnit::create;
 			treadFrames = 8;
 			treadPullOffset = 8;
 			treadRects = new Rect[]{new Rect(-45f, -45f, 24f, 88f)};
@@ -189,8 +279,8 @@ public final class HUnitTypes {
 			}});
 			hidden = true;
 		}};
-		crush = new UnitTypef("crush") {{
-			constructor = TankUnitf::create;
+		crush = new ExtraUnitType("crush") {{
+			constructor = ExtraTankUnit::create;
 			squareShape = true;
 			omniMovement = false;
 			rotateMoveFirst = false;
@@ -232,8 +322,8 @@ public final class HUnitTypes {
 			}});
 			hidden = true;
 		}};
-		destruction = new UnitTypef("destruction") {{
-			constructor = TankUnitf::create;
+		destruction = new ExtraUnitType("destruction") {{
+			constructor = ExtraTankUnit::create;
 			squareShape = true;
 			omniMovement = false;
 			rotateMoveFirst = false;
@@ -277,8 +367,8 @@ public final class HUnitTypes {
 			}});
 			hidden = true;
 		}};
-		purgatory = new UnitTypef("purgatory") {{
-			constructor = TankUnitf::create;
+		purgatory = new ExtraUnitType("purgatory") {{
+			constructor = ExtraTankUnit::create;
 			squareShape = true;
 			omniMovement = false;
 			rotateMoveFirst = false;
@@ -756,8 +846,8 @@ public final class HUnitTypes {
 			hideDetails = false;
 		}};
 		//vanilla-tier6
-		suzerain = new UnitTypef("suzerain") {{
-			constructor = MechUnitf::create;
+		suzerain = new ExtraUnitType("suzerain") {{
+			constructor = ExtraMechUnit::create;
 			speed = 0.4f;
 			hitSize = 40f;
 			rotateSpeed = 1.65f;
@@ -859,8 +949,8 @@ public final class HUnitTypes {
 				}};
 			}});
 		}};
-		supernova = new UnitTypef("supernova") {{
-			constructor = LegsUnitf::create;
+		supernova = new ExtraUnitType("supernova") {{
+			constructor = ExtraLegsUnit::create;
 			hitSize = 41f;
 			health = 59000f;
 			armor = 32f;
@@ -984,8 +1074,8 @@ public final class HUnitTypes {
 				}};
 			}});
 		}};
-		cancer = new UnitTypef("cancer") {{
-			constructor = LegsUnitf::create;
+		cancer = new ExtraUnitType("cancer") {{
+			constructor = ExtraLegsUnit::create;
 			speed = 0.5f;
 			hitSize = 33f;
 			health = 54000f;
@@ -1099,8 +1189,8 @@ public final class HUnitTypes {
 				}};
 			}});
 		}};
-		sunlit = new UnitTypef("sunlit") {{
-			constructor = Unitf::create;
+		sunlit = new ExtraUnitType("sunlit") {{
+			constructor = ExtraUnit::create;
 			speed = 0.55f;
 			accel = 0.04f;
 			drag = 0.04f;
@@ -1198,8 +1288,8 @@ public final class HUnitTypes {
 				}};
 			}});
 		}};
-		windstorm = new UnitTypef("windstorm") {{
-			constructor = PayloadUnitf::create;
+		windstorm = new ExtraUnitType("windstorm") {{
+			constructor = ExtraPayloadUnit::create;
 			aiController = HealingDefenderAI::new;
 			armor = 41f;
 			health = 61000f;
@@ -1255,8 +1345,8 @@ public final class HUnitTypes {
 				bullet = Bullets.placeholder;
 			}});
 		}};
-		mosasaur = new UnitTypef("mosasaur") {{
-			constructor = UnitWaterMovef::create;
+		mosasaur = new ExtraUnitType("mosasaur") {{
+			constructor = ExtraUnitWaterMove::create;
 			trailLength = 70;
 			waveTrailX = 25f;
 			waveTrailY = -32f;
@@ -1410,8 +1500,8 @@ public final class HUnitTypes {
 				}};
 			}});
 		}};
-		killerWhale = new UnitTypef("killer-whale") {{
-			constructor = UnitWaterMovef::create;
+		killerWhale = new ExtraUnitType("killer-whale") {{
+			constructor = ExtraUnitWaterMove::create;
 			armor = 48f;
 			drag = 0.2f;
 			speed = 0.7f;
@@ -1611,10 +1701,10 @@ public final class HUnitTypes {
 			});
 		}};
 		//vanilla-tier6-erekir
-		dominate = new UnitTypef("dominate") {{
+		dominate = new ExtraUnitType("dominate") {{
 			erekir();
 			tank();
-			constructor = TankUnitf::create;
+			constructor = ExtraTankUnit::create;
 			hitSize = 57f;
 			treadPullOffset = 1;
 			speed = 0.48f;
@@ -1778,9 +1868,9 @@ public final class HUnitTypes {
 			}});
 			fogRadius = 44f;
 		}};
-		oracle = new UnitTypef("oracle") {{
+		oracle = new ExtraUnitType("oracle") {{
 			erekir();
-			constructor = LegsUnitf::create;
+			constructor = ExtraLegsUnit::create;
 			drag = 0.1f;
 			speed = 0.9f;
 			hitSize = 50f;
@@ -1981,9 +2071,9 @@ public final class HUnitTypes {
 			}});
 			fogRadius = 52f;
 		}};
-		havoc = new UnitTypef("havoc") {{
+		havoc = new ExtraUnitType("havoc") {{
 			erekir();
-			constructor = PayloadUnitf::create;
+			constructor = ExtraPayloadUnit::create;
 			aiController = FlyingFollowAI::new;
 			envDisabled = 0;
 			lowAltitude = false;
@@ -2091,9 +2181,9 @@ public final class HUnitTypes {
 			setEnginesMirror(new UnitEngine(95f / 4f, -56f / 4, 5f, 330f), new UnitEngine(89f / 4, -95f / 4, 4f, 315f));
 		}};
 		//miner-erekir
-		miner = new UnitTypef("miner") {{
+		miner = new ExtraUnitType("miner") {{
 			erekir();
-			constructor = BuildingTetherPayloadUnitf::create;
+			constructor = ExtraBuildingTetherPayloadUnit::create;
 			defaultCommand = UnitCommand.mineCommand;
 			controller = u -> new MinerPointAI();
 			flying = true;
@@ -2125,9 +2215,9 @@ public final class HUnitTypes {
 			targetPriority = -2;
 			setEnginesMirror(new UnitEngine(24 / 4f, -24 / 4f, 2.3f, 315f));
 		}};
-		largeMiner = new UnitTypef("large-miner") {{
+		largeMiner = new ExtraUnitType("large-miner") {{
 			erekir();
-			constructor = BuildingTetherPayloadUnitf::create;
+			constructor = ExtraBuildingTetherPayloadUnit::create;
 			defaultCommand = UnitCommand.mineCommand;
 			controller = u -> new MinerPointAI();
 			flying = true;
@@ -2160,7 +2250,7 @@ public final class HUnitTypes {
 			targetPriority = -2;
 			setEnginesMirror(new UnitEngine(40 / 4f, -40 / 4f, 3f, 315f));
 		}};
-		legsMiner = new UnitTypef("legs-miner") {{
+		legsMiner = new ExtraUnitType("legs-miner") {{
 			erekir();
 			constructor = BuildingTetherPayloadLegsUnit::create;
 			isEnemy = false;
@@ -2199,9 +2289,9 @@ public final class HUnitTypes {
 			}});
 		}};
 		//other
-		armoredCarrierVehicle = new UnitTypef("armored-carrier-vehicle") {{
+		armoredCarrierVehicle = new ExtraUnitType("armored-carrier-vehicle") {{
 			tank();
-			constructor = TankUnitf::create;
+			constructor = ExtraTankUnit::create;
 			healFlash = false;
 			treadFrames = 16;
 			treadPullOffset = 8;
@@ -2226,7 +2316,7 @@ public final class HUnitTypes {
 			deathExplosionEffect = new MultiEffect(HFx.explodeImpWave);
 			hidden = true;
 		}};
-		pioneer = new UnitTypef("pioneer") {{
+		pioneer = new ExtraUnitType("pioneer") {{
 			constructor = PayloadLegsUnit::create;
 			drag = 0.1f;
 			speed = 0.62f;
@@ -2278,8 +2368,8 @@ public final class HUnitTypes {
 				}};
 			}});
 		}};
-		vulture = new UnitTypef("vulture") {{
-			constructor = Unitf::create;
+		vulture = new ExtraUnitType("vulture") {{
+			constructor = ExtraUnit::create;
 			aiController = SurroundAI::new;
 			weapons.add(new Weapon() {{
 				top = false;
@@ -2340,8 +2430,8 @@ public final class HUnitTypes {
 			armor = 10.5f;
 			flying = true;
 		}};
-		burner = new UnitTypef("burner") {{
-			constructor = MechUnitf::create;
+		burner = new ExtraUnitType("burner") {{
+			constructor = ExtraMechUnit::create;
 			speed = 0.36f;
 			hitSize = 24f;
 			rotateSpeed = 2.1f;
@@ -2404,8 +2494,8 @@ public final class HUnitTypes {
 				}
 			});
 		}};
-		shadowBlade = new UnitTypef("shadow-blade") {{
-			constructor = MechUnitf::create;
+		shadowBlade = new ExtraUnitType("shadow-blade") {{
+			constructor = ExtraMechUnit::create;
 			speed = 0.36f;
 			hitSize = 24f;
 			rotateSpeed = 2.1f;
@@ -2517,8 +2607,8 @@ public final class HUnitTypes {
 				}
 			});
 		}};
-		artilleryFirePioneer = new UnitTypef("artillery-fire-pioneer") {{
-			constructor = Unitf::create;
+		artilleryFirePioneer = new ExtraUnitType("artillery-fire-pioneer") {{
+			constructor = ExtraUnit::create;
 			hitSize = 28f;
 			speed = 1.1f;
 			accel = 0.05f;
@@ -2604,8 +2694,8 @@ public final class HUnitTypes {
 			hidden = true;
 		}};
 		//elite
-		tiger = new UnitTypef("tiger") {{
-			constructor = MechUnitf::create;
+		tiger = new ExtraUnitType("tiger") {{
+			constructor = ExtraMechUnit::create;
 			damageMultiplier = 0.9f;
 			drawShields = false;
 			engineOffset = 18f;
@@ -2817,9 +2907,9 @@ public final class HUnitTypes {
 			fogRadius = 72f;
 			hidden = true;
 		}};
-		thunder = new UnitTypef("thunder") {{
+		thunder = new ExtraUnitType("thunder") {{
 			tank();
-			constructor = TankUnitf::create;
+			constructor = ExtraTankUnit::create;
 			damageMultiplier = 0.5f;
 			health = 52500f;
 			armor = 79f;

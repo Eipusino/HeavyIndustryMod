@@ -1,6 +1,6 @@
 package heavyindustry.world.blocks.logic;
 
-import mindustry.world.blocks.logic.*;
+import mindustry.world.blocks.logic.MemoryBlock;
 
 public class CopyMemoryBlock extends MemoryBlock {
 	public CopyMemoryBlock(String name) {

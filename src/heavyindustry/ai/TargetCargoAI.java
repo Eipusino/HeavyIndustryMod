@@ -1,10 +1,11 @@
 package heavyindustry.ai;
 
-import arc.struct.*;
-import mindustry.*;
-import mindustry.ai.types.*;
-import mindustry.gen.*;
-import mindustry.world.meta.*;
+import arc.struct.ObjectSet;
+import mindustry.Vars;
+import mindustry.ai.types.CargoAI;
+import mindustry.gen.Building;
+import mindustry.gen.Call;
+import mindustry.world.meta.BlockFlag;
 
 // cargo AI that doesn't require the unit to be tethered
 public class TargetCargoAI extends CargoAI {

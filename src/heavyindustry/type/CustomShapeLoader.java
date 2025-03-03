@@ -1,6 +1,6 @@
 package heavyindustry.type;
 
-import heavyindustry.struct.*;
+import heavyindustry.struct.BitWordList;
 
 public abstract class CustomShapeLoader<T> {
 	public int width;

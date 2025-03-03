@@ -1,15 +1,17 @@
 package heavyindustry.world.blocks.production;
 
-import arc.*;
-import arc.math.*;
-import arc.util.io.*;
-import heavyindustry.world.meta.*;
-import mindustry.content.*;
-import mindustry.gen.*;
-import mindustry.type.*;
-import mindustry.ui.*;
-import mindustry.world.blocks.production.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.math.Mathf;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.world.meta.HIStat;
+import heavyindustry.world.meta.HIStatValues;
+import mindustry.content.Items;
+import mindustry.gen.Building;
+import mindustry.type.Item;
+import mindustry.ui.Bar;
+import mindustry.world.blocks.production.GenericCrafter;
+import mindustry.world.meta.Attribute;
 
 /**
  * A smelter uses fuel to craft. Attribute tiles make it use less fuel.

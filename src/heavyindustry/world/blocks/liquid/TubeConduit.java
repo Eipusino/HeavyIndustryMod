@@ -1,13 +1,15 @@
 package heavyindustry.world.blocks.liquid;
 
-import arc.graphics.g2d.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.geom.Geometry;
+import arc.util.Tmp;
+import mindustry.gen.Building;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
 
-import static heavyindustry.util.Utils.*;
-import static mindustry.Vars.*;
+import static heavyindustry.util.Utils.splitLayers;
+import static mindustry.Vars.renderer;
 
 public class TubeConduit extends BeltConduit {
 	static final byte[][] ductArrows = {

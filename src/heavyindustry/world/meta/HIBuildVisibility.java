@@ -1,8 +1,9 @@
 package heavyindustry.world.meta;
 
-import mindustry.world.meta.*;
+import mindustry.world.meta.BuildVisibility;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.player;
+import static mindustry.Vars.state;
 
 public final class HIBuildVisibility {
 	public static BuildVisibility

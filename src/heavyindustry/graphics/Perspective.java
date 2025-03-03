@@ -1,12 +1,16 @@
 package heavyindustry.graphics;
 
-import arc.*;
-import arc.math.*;
-import arc.math.geom.*;
-import heavyindustry.math.*;
-import mindustry.game.EventType.*;
+import arc.Core;
+import arc.Events;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.math.geom.Vec3;
+import heavyindustry.math.Math3d;
+import mindustry.game.EventType.Trigger;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.headless;
+import static mindustry.Vars.renderer;
 
 public final class Perspective {
 	private static final Vec2 offsetPos = new Vec2();

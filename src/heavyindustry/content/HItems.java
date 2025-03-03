@@ -1,9 +1,9 @@
 package heavyindustry.content;
 
-import arc.graphics.*;
-import heavyindustry.core.*;
-import heavyindustry.graphics.*;
-import mindustry.type.*;
+import arc.graphics.Color;
+import heavyindustry.core.HeavyIndustryMod;
+import heavyindustry.graphics.HPal;
+import mindustry.type.Item;
 
 /**
  * Defines the {@linkplain Item item} this mod offers.

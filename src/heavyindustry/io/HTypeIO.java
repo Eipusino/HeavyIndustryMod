@@ -1,14 +1,84 @@
 package heavyindustry.io;
 
-import arc.struct.*;
-import arc.util.io.*;
-import heavyindustry.input.InputAggregator.*;
+import arc.math.geom.Point2;
+import arc.struct.IntSeq;
+import arc.struct.Seq;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.input.InputAggregator.TapResult;
+import mindustry.Vars;
+import mindustry.content.TechTree.TechNode;
+import mindustry.ctype.Content;
+import mindustry.ctype.ContentType;
+import mindustry.ctype.UnlockableContent;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
+import static mindustry.Vars.content;
 
 public class HTypeIO {
 	/** Don't let anyone instantiate this class. */
 	private HTypeIO() {}
+
+	public static void writeContent(Writes write, Content map) {
+		write.i(map.getContentType().ordinal());
+		write.i(map.id);
+	}
+
+	public static <T extends Content> T readContent(Reads read) {
+		return Vars.content.getByID(ContentType.all[read.i()], read.i());
+	}
+
+	public static void writeIntSeq(Writes write, IntSeq arr) {
+		write.i(arr.size);
+		for (int i = 0; i < arr.size; i++) {
+			write.i(arr.items[i]);
+		}
+	}
+
+	public static IntSeq readIntSeq(Reads read) {
+		int length = read.i();
+		IntSeq arr = new IntSeq(length);
+
+		for (int i = 0; i < length; i++) arr.add(read.i());
+		return arr;
+	}
+
+	public static void writePoint2(Writes write, Point2 p) {
+		write.i(p.x);
+		write.i(p.y);
+	}
+
+	public static Point2 readPoint2(Reads read) {
+		return new Point2(read.i(), read.i());
+	}
+
+	public static void writePoint2s(Writes write, Point2[] p) {
+		write.b(p.length);
+		for (Point2 point2 : p) {
+			write.i(point2.pack());
+		}
+	}
+
+	public static Point2[] readPoint2s(Reads read) {
+		byte len = read.b();
+		Point2[] out = new Point2[len];
+
+		for (int i = 0; i < len; i++) out[i] = Point2.unpack(read.i());
+		return out;
+	}
+
+	public static void writeTechNode(Writes write, TechNode map) {
+		write.b(map.content.getContentType().ordinal());
+		write.s(map.content.id);
+	}
+
+	public static TechNode readTechNode(Reads read) {
+		return content.<UnlockableContent>getByID(ContentType.all[read.b()], read.s()).techNode;
+	}
 
 	public static void writeStrings(Writes write, Seq<String> array) {
 		write.i(array.size);

@@ -1,17 +1,19 @@
 package heavyindustry.input;
 
-import arc.struct.*;
-import arc.util.*;
-import arc.util.io.*;
-import heavyindustry.input.InputAggregator.*;
-import heavyindustry.io.*;
-import heavyindustry.net.*;
-import mindustry.gen.*;
-import mindustry.io.*;
-import mindustry.net.*;
+import arc.struct.Seq;
+import arc.util.Nullable;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.input.InputAggregator.TapResult;
+import heavyindustry.io.HTypeIO;
+import heavyindustry.net.HCall;
+import mindustry.gen.Player;
+import mindustry.io.TypeIO;
+import mindustry.net.NetConnection;
+import mindustry.net.Packet;
 
-import static heavyindustry.HVars.*;
-import static mindustry.Vars.*;
+import static heavyindustry.HVars.inputAggregator;
+import static mindustry.Vars.net;
 
 public class TapPacket extends Packet {
 	public @Nullable Player player;

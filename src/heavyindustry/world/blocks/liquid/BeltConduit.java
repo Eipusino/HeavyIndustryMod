@@ -1,17 +1,21 @@
 package heavyindustry.world.blocks.liquid;
 
-import arc.graphics.g2d.*;
-import arc.util.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.world.*;
-import mindustry.world.blocks.distribution.*;
-import mindustry.world.blocks.liquid.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.util.Eachable;
+import arc.util.Tmp;
+import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Building;
+import mindustry.graphics.Drawf;
+import mindustry.type.Liquid;
+import mindustry.world.Block;
+import mindustry.world.Tile;
+import mindustry.world.blocks.distribution.DirectionLiquidBridge;
+import mindustry.world.blocks.liquid.Conduit;
+import mindustry.world.blocks.liquid.LiquidJunction;
 
-import static heavyindustry.util.Utils.*;
-import static mindustry.Vars.*;
+import static heavyindustry.util.Utils.split;
+import static mindustry.Vars.renderer;
 
 public class BeltConduit extends Conduit {
 	static final float[][] rotateOffsets = new float[][]{{0.75f, 0.75f}, {-0.75f, 0.75f}, {-0.75f, -0.75f}, {0.75f, -0.75f}};

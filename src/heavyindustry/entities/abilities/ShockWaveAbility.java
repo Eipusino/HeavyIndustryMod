@@ -1,19 +1,24 @@
 package heavyindustry.entities.abilities;
 
-import arc.audio.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.content.*;
-import heavyindustry.gen.*;
-import heavyindustry.graphics.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
-import mindustry.type.*;
+import arc.audio.Sound;
+import arc.func.Cons2;
+import arc.graphics.Color;
+import arc.math.Mathf;
+import arc.math.geom.Position;
+import arc.struct.ObjectFloatMap;
+import arc.struct.Seq;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.content.HFx;
+import heavyindustry.gen.HSounds;
+import heavyindustry.graphics.HPal;
+import heavyindustry.graphics.PositionLightning;
+import mindustry.entities.Effect;
+import mindustry.entities.Units;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Unit;
+import mindustry.type.StatusEffect;
+import mindustry.type.UnitType;
 
 public class ShockWaveAbility extends Ability {
 	protected static final Seq<Unit> all = new Seq<>();

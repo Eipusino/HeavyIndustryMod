@@ -1,9 +1,9 @@
 package heavyindustry.type.weather;
 
-import arc.math.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.gen.*;
+import arc.math.Mathf;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.gen.WeatherState;
 
 public class EffectWeather extends SpawnerWeather {
 	public Effect weatherFx = Fx.none;

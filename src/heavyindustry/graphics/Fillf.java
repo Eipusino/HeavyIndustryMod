@@ -1,8 +1,8 @@
 package heavyindustry.graphics;
 
-import arc.graphics.g2d.*;
-import arc.math.geom.*;
-import arc.struct.*;
+import arc.graphics.g2d.Fill;
+import arc.math.geom.Vec2;
+import arc.struct.FloatSeq;
 
 /** Extended Fill */
 public final class Fillf {

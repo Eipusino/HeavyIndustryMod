@@ -1,8 +1,8 @@
 package heavyindustry.graphics.g3d;
 
-import arc.graphics.*;
-import arc.graphics.g3d.*;
-import arc.math.geom.*;
+import arc.graphics.Color;
+import arc.graphics.g3d.VertexBatch3D;
+import arc.math.geom.Vec3;
 
 public final class Draw3DUtils {
 	private static final Vec3 a = new Vec3(), b = new Vec3(), c = new Vec3(), d = new Vec3();

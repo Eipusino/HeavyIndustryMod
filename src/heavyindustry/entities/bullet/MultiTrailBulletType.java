@@ -1,12 +1,14 @@
 package heavyindustry.entities.bullet;
 
-import arc.math.*;
-import arc.util.*;
-import heavyindustry.graphics.*;
-import mindustry.content.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.math.Mathf;
+import arc.math.Rand;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.graphics.Draws;
+import mindustry.content.Fx;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Bullet;
+import mindustry.graphics.Trail;
 
 public class MultiTrailBulletType extends BulletType {
 	protected static final Rand rand = new Rand();

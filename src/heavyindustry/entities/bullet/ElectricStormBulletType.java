@@ -1,19 +1,29 @@
 package heavyindustry.entities.bullet;
 
-import arc.audio.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.struct.*;
-import heavyindustry.content.*;
-import heavyindustry.util.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.audio.Sound;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Mathf;
+import arc.struct.Seq;
+import heavyindustry.content.HFx;
+import heavyindustry.util.Utils;
+import mindustry.content.Fx;
+import mindustry.content.StatusEffects;
+import mindustry.entities.Effect;
+import mindustry.entities.Units;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Building;
+import mindustry.gen.Bullet;
+import mindustry.gen.Healthc;
+import mindustry.gen.Sounds;
+import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.indexer;
+import static mindustry.Vars.state;
 
 public class ElectricStormBulletType extends BulletType {
 	public Color color;

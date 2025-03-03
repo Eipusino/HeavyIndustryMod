@@ -1,17 +1,22 @@
 package heavyindustry.world.blocks.distribution;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.blocks.distribution.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.util.Time;
+import arc.util.Tmp;
+import mindustry.content.Fx;
+import mindustry.entities.bullet.MassDriverBolt;
+import mindustry.gen.Building;
+import mindustry.gen.Sounds;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.world.blocks.distribution.MassDriver;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.world;
 
 public class LaserMassDriver extends MassDriver {
 	public float circularInterval = 32 * 2f, circularSize = 0.8f;

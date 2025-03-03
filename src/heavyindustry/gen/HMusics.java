@@ -1,10 +1,11 @@
 package heavyindustry.gen;
 
-import arc.audio.*;
-import arc.struct.*;
-import arc.util.*;
+import arc.audio.Music;
+import arc.struct.ObjectMap;
+import arc.struct.Seq;
+import arc.util.Log;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tree;
 
 /**
  * Manages music, including vanilla and custom tracks.

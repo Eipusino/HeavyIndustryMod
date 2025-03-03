@@ -1,8 +1,9 @@
 package heavyindustry.graphics;
 
-import arc.graphics.g2d.*;
-import arc.math.geom.*;
-import arc.struct.*;
+import arc.graphics.g2d.Lines;
+import arc.math.geom.Rect;
+import arc.math.geom.Vec2;
+import arc.struct.FloatSeq;
 
 /** Extended Lines */
 public final class Linesf {

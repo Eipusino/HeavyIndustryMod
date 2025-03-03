@@ -1,7 +1,8 @@
 package heavyindustry.ai;
 
-import mindustry.entities.*;
-import mindustry.entities.units.*;
+import mindustry.entities.Predict;
+import mindustry.entities.Units;
+import mindustry.entities.units.AIController;
 
 public class SentryAI extends AIController {
 	@Override

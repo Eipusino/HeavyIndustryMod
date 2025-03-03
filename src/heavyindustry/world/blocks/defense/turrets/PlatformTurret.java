@@ -1,10 +1,11 @@
 package heavyindustry.world.blocks.defense.turrets;
 
-import arc.struct.*;
-import mindustry.content.*;
-import mindustry.entities.bullet.*;
-import mindustry.world.blocks.defense.turrets.*;
-import mindustry.world.meta.*;
+import arc.struct.ObjectMap;
+import mindustry.content.Bullets;
+import mindustry.entities.bullet.BulletType;
+import mindustry.world.blocks.defense.turrets.Turret;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatValues;
 
 public class PlatformTurret extends Turret {
 	public BulletType shootType = Bullets.placeholder;

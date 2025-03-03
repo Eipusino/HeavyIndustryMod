@@ -1,20 +1,30 @@
 package heavyindustry.type.unit;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.content.*;
-import heavyindustry.graphics.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Angles;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.math.Rand;
+import arc.math.geom.Vec2;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.content.HFx;
+import heavyindustry.graphics.Drawn;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.gen.Mechc;
+import mindustry.gen.Payloadc;
+import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
 
-import static heavyindustry.HVars.*;
-import static mindustry.Vars.*;
+import static heavyindustry.HVars.name;
+import static mindustry.Vars.tilesize;
 
 public class EnergyUnitType extends AncientUnitType {
 	public float outerEyeScl = 0.25f;

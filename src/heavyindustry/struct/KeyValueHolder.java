@@ -1,6 +1,7 @@
 package heavyindustry.struct;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * An immutable container for a key and a value, suitable for use

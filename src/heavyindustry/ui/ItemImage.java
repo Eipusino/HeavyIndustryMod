@@ -1,12 +1,14 @@
 package heavyindustry.ui;
 
-import arc.graphics.g2d.*;
-import arc.scene.ui.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import mindustry.core.*;
-import mindustry.type.*;
-import mindustry.ui.*;
+import arc.graphics.g2d.TextureRegion;
+import arc.scene.ui.Image;
+import arc.scene.ui.layout.Stack;
+import arc.scene.ui.layout.Table;
+import arc.util.Scaling;
+import mindustry.core.UI;
+import mindustry.type.ItemStack;
+import mindustry.type.PayloadStack;
+import mindustry.ui.Styles;
 
 public class ItemImage extends Stack {
 	public ItemImage(TextureRegion region, int amount) {

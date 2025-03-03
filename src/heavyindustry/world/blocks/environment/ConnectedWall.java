@@ -1,11 +1,13 @@
 package heavyindustry.world.blocks.environment;
 
-import arc.graphics.g2d.*;
-import mindustry.world.*;
-import mindustry.world.blocks.environment.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import mindustry.world.Tile;
+import mindustry.world.blocks.environment.StaticWall;
 
-import static heavyindustry.util.Utils.*;
-import static mindustry.Vars.*;
+import static heavyindustry.util.Utils.getTilingIndex;
+import static heavyindustry.util.Utils.split;
+import static mindustry.Vars.world;
 
 public class ConnectedWall extends StaticWall {
 	public ConnectedWall(String name) {

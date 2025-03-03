@@ -1,10 +1,11 @@
 package heavyindustry.ui;
 
-import arc.graphics.*;
-import arc.scene.style.*;
-import arc.scene.ui.*;
-import arc.scene.ui.layout.*;
-import heavyindustry.ui.defaults.*;
+import arc.graphics.Color;
+import arc.scene.style.Drawable;
+import arc.scene.ui.Image;
+import arc.scene.ui.layout.Cell;
+import arc.scene.ui.layout.Table;
+import heavyindustry.ui.defaults.DefaultBackground;
 
 public final class Separators {
 	public static Drawable separatorDrawable;

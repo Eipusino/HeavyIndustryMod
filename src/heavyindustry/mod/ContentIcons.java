@@ -1,12 +1,15 @@
 package heavyindustry.mod;
 
-import arc.struct.*;
-import arc.util.*;
-import mindustry.*;
-import mindustry.ctype.*;
-import mindustry.gen.*;
+import arc.struct.ObjectMap;
+import arc.struct.Seq;
+import arc.util.Log;
+import arc.util.Strings;
+import mindustry.Vars;
+import mindustry.ctype.ContentType;
+import mindustry.ctype.MappableContent;
+import mindustry.gen.Iconc;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Field;
 
 /**
  * Text icon mapping.

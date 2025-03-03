@@ -1,17 +1,26 @@
 package heavyindustry.type.weapons;
 
-import arc.func.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.util.*;
-import mindustry.audio.*;
-import mindustry.entities.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.type.*;
+import arc.func.Boolf;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.util.Utils;
+import mindustry.audio.SoundLoop;
+import mindustry.entities.Predict;
+import mindustry.entities.Sized;
+import mindustry.entities.Units;
+import mindustry.entities.units.WeaponMount;
+import mindustry.gen.Posc;
+import mindustry.gen.Sounds;
+import mindustry.gen.Teamc;
+import mindustry.gen.Unit;
+import mindustry.type.Weapon;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.headless;
+import static mindustry.Vars.net;
+import static mindustry.Vars.state;
 
 public class LimitedAngleWeapon extends Weapon {
 	public float angleCone = 45f;

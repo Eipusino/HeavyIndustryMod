@@ -1,6 +1,6 @@
 package heavyindustry.entities.part;
 
-import mindustry.entities.part.DrawPart.*;
+import mindustry.entities.part.DrawPart.PartProgress;
 
 public final class HPartProgress {
 	public static final PartProgress

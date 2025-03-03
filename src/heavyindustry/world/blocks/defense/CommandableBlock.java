@@ -1,26 +1,42 @@
 package heavyindustry.world.blocks.defense;
 
-import arc.func.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import arc.util.io.*;
-import heavyindustry.gen.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.units.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.io.*;
-import mindustry.logic.*;
-import mindustry.world.*;
-import mindustry.world.blocks.environment.*;
-import mindustry.world.blocks.storage.CoreBlock.*;
-import mindustry.world.draw.*;
+import arc.func.Cons;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.math.geom.Point2;
+import arc.math.geom.Position;
+import arc.math.geom.Vec2;
+import arc.struct.Seq;
+import arc.util.Eachable;
+import arc.util.Time;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.gen.WorldRegister;
+import mindustry.content.UnitTypes;
+import mindustry.entities.EntityGroup;
+import mindustry.entities.units.BuildPlan;
+import mindustry.game.Team;
+import mindustry.gen.BlockUnitc;
+import mindustry.gen.Building;
+import mindustry.gen.Drawc;
+import mindustry.gen.Entityc;
+import mindustry.gen.Groups;
+import mindustry.gen.Teamc;
+import mindustry.gen.Timedc;
+import mindustry.gen.Unitc;
+import mindustry.io.TypeIO;
+import mindustry.logic.Ranged;
+import mindustry.world.Block;
+import mindustry.world.Tile;
+import mindustry.world.blocks.environment.Floor;
+import mindustry.world.blocks.storage.CoreBlock.CoreBuild;
+import mindustry.world.draw.DrawBlock;
+import mindustry.world.draw.DrawDefault;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.fogControl;
+import static mindustry.Vars.player;
+import static mindustry.Vars.state;
+import static mindustry.Vars.world;
 
 /**
  * Basic Commandable Block.

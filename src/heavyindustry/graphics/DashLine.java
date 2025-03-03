@@ -1,12 +1,15 @@
 package heavyindustry.graphics;
 
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import arc.util.pooling.*;
-import arc.util.pooling.Pool.*;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.struct.FloatSeq;
+import arc.util.Tmp;
+import arc.util.pooling.Pool;
+import arc.util.pooling.Pool.Poolable;
+import arc.util.pooling.Pools;
 
 public final class DashLine {
 	private static final Vec2 tmp1 = new Vec2(), tmp2 = new Vec2(), tmp3 = new Vec2(), tmp4 = new Vec2();

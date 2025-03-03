@@ -1,18 +1,20 @@
 package heavyindustry.entities.abilities;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import mindustry.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.graphics.Blending;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.scene.ui.layout.Table;
+import arc.util.Time;
+import mindustry.Vars;
+import mindustry.content.Fx;
+import mindustry.entities.Lightning;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Unit;
+import mindustry.graphics.Pal;
+import mindustry.world.meta.Stat;
 
 public class LightSpeedAbility extends Ability { //Combined of V5 and V7 coding just formatted to be compatible!
 	public float damage = 1f;

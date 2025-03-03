@@ -1,16 +1,19 @@
 package heavyindustry.entities.bullet;
 
-import arc.func.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.graphics.*;
-import heavyindustry.util.*;
-import mindustry.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
+import arc.func.Cons2;
+import arc.math.geom.Position;
+import arc.math.geom.Vec2;
+import arc.struct.Seq;
+import arc.util.Tmp;
+import heavyindustry.graphics.PositionLightning;
+import heavyindustry.util.Utils;
+import mindustry.Vars;
+import mindustry.content.Fx;
+import mindustry.entities.Damage;
+import mindustry.entities.Units;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Bullet;
+import mindustry.gen.Unit;
 
 public class ChainBulletType extends BulletType {
 	protected static final Seq<ChainBulletType> all = new Seq<>();

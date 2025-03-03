@@ -1,18 +1,26 @@
 package heavyindustry.entities.part;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.graphics.*;
-import mindustry.entities.part.*;
-import mindustry.graphics.*;
+import arc.Core;
+import arc.func.Floatf;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.math.Rand;
+import arc.math.geom.Vec2;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.graphics.Drawn;
+import mindustry.entities.part.DrawPart;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
 
-import static heavyindustry.HVars.*;
-import static mindustry.Vars.*;
+import static heavyindustry.HVars.name;
+import static mindustry.Vars.mobile;
+import static mindustry.Vars.tilesize;
 
 public class ArcCharge extends DrawPart {
 	protected static final Rand rand = new Rand();

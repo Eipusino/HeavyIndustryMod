@@ -1,14 +1,16 @@
 package heavyindustry.entities.part;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import mindustry.*;
-import mindustry.entities.part.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.util.Tmp;
+import mindustry.Vars;
+import mindustry.entities.part.DrawPart;
 
-import static heavyindustry.HVars.*;
+import static heavyindustry.HVars.name;
 
 public class AimPart extends DrawPart {
 	public Color color;

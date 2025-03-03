@@ -1,10 +1,15 @@
 package heavyindustry.type.weapons;
 
-import arc.scene.ui.layout.*;
-import mindustry.entities.*;
-import mindustry.gen.*;
-import mindustry.type.*;
-import mindustry.world.meta.*;
+import arc.scene.ui.layout.Table;
+import mindustry.entities.Units;
+import mindustry.gen.Building;
+import mindustry.gen.Healthc;
+import mindustry.gen.Sounds;
+import mindustry.gen.Teamc;
+import mindustry.gen.Unit;
+import mindustry.type.UnitType;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
 public class HealConeWeapon extends BoostWeapon {
 	public boolean targetBuildings = true;

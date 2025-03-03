@@ -1,15 +1,17 @@
 package heavyindustry.world.draw;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.util.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.world.*;
+import arc.Core;
+import arc.func.Cons;
+import arc.graphics.Pixmap;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.PixmapRegion;
+import arc.graphics.g2d.TextureRegion;
+import arc.util.Eachable;
+import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Building;
+import mindustry.world.Block;
 
-import static heavyindustry.util.Utils.*;
+import static heavyindustry.util.Utils.rotatePixmap90;
 
 public class DrawPayloadFactory<E extends Building> extends DrawDirSpliceBlock<E> {
 	public TextureRegion topRegion, outRegion;

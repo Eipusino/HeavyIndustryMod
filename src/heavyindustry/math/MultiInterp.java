@@ -1,6 +1,6 @@
 package heavyindustry.math;
 
-import arc.math.*;
+import arc.math.Interp;
 
 public class MultiInterp implements Interp {
 	public static Interp fastFastSlow = new MultiInterp(Interp.pow2In, Interp.pow2);

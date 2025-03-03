@@ -1,13 +1,17 @@
 package heavyindustry.graphics.g3d.model.obj.obj;
 
-import arc.files.*;
-import arc.func.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.graphics.g3d.model.obj.*;
+import arc.files.Fi;
+import arc.func.Prov;
+import arc.math.geom.Vec2;
+import arc.math.geom.Vec3;
+import arc.struct.FloatSeq;
+import arc.struct.IntSeq;
+import arc.struct.Seq;
+import arc.util.Log;
+import heavyindustry.graphics.g3d.model.obj.ObjectModelFactory;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 /** For models parsing use {@link ObjectModelFactory}. */
 public class OBJParser {

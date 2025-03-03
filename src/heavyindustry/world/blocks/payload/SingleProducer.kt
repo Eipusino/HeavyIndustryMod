@@ -1,13 +1,15 @@
 package heavyindustry.world.blocks.payload
 
-import arc.math.*
-import heavyindustry.util.*
-import mindustry.*
-import mindustry.gen.*
-import mindustry.type.*
-import mindustry.world.*
-import mindustry.world.blocks.payloads.*
-import mindustry.world.consumers.*
+import arc.math.Mathf
+import heavyindustry.util.nof
+import mindustry.Vars
+import mindustry.gen.Building
+import mindustry.type.Item
+import mindustry.type.ItemStack
+import mindustry.world.Block
+import mindustry.world.blocks.payloads.BlockProducer
+import mindustry.world.blocks.payloads.BuildPayload
+import mindustry.world.consumers.ConsumeItemDynamic
 
 open class SingleProducer(name: String) : BlockProducer(name) {
 	@JvmField var produce: Block? = null

@@ -1,10 +1,10 @@
 package heavyindustry.world.blocks.environment;
 
-import arc.graphics.g2d.*;
-import arc.math.*;
-import heavyindustry.util.*;
-import mindustry.world.*;
-import mindustry.world.blocks.environment.*;
+import arc.graphics.g2d.Draw;
+import arc.math.Mathf;
+import heavyindustry.util.SpriteUtils;
+import mindustry.world.Tile;
+import mindustry.world.blocks.environment.Floor;
 
 /**
  * Waiting for Anuke to allow Floor to save data to tile.data.

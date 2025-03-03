@@ -1,7 +1,9 @@
 package heavyindustry.gen;
 
-import arc.util.*;
-import mindustry.gen.*;
+import arc.util.Nullable;
+import mindustry.gen.Building;
+import mindustry.gen.BuildingTetherc;
+import mindustry.gen.Call;
 
 public class BuildingTetherPayloadLegsUnit extends PayloadLegsUnit implements BuildingTetherc {
 	public @Nullable Building building;

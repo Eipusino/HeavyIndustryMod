@@ -1,13 +1,17 @@
 package heavyindustry.graphics
 
-import arc.graphics.*
-import arc.graphics.g2d.*
-import arc.math.geom.*
-import arc.scene.ui.layout.*
-import arc.util.*
-import arc.util.pooling.*
-import mindustry.graphics.*
-import mindustry.ui.*
+import arc.graphics.Color
+import arc.graphics.g2d.Draw
+import arc.graphics.g2d.Fill
+import arc.graphics.g2d.Font
+import arc.graphics.g2d.GlyphLayout
+import arc.math.geom.Position
+import arc.scene.ui.layout.Scl
+import arc.util.Align
+import arc.util.Tmp
+import arc.util.pooling.Pools
+import mindustry.graphics.Drawf
+import mindustry.ui.Fonts
 
 /**
  * Draw Text

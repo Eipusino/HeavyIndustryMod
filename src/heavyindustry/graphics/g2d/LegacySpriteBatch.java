@@ -1,10 +1,13 @@
 package heavyindustry.graphics.g2d;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.graphics.gl.*;
-import arc.math.*;
+import arc.Core;
+import arc.graphics.Gl;
+import arc.graphics.Mesh;
+import arc.graphics.Texture;
+import arc.graphics.VertexAttribute;
+import arc.graphics.g2d.TextureRegion;
+import arc.graphics.gl.Shader;
+import arc.math.Mathf;
 
 /**
  * APIs that were removed in previous versions. Of course, no matter what, continuing to use it is not a good idea.

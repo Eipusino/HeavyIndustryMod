@@ -1,21 +1,27 @@
 package heavyindustry.world.blocks.distribution
 
-import arc.*
-import arc.graphics.g2d.*
-import arc.math.*
-import arc.scene.ui.layout.*
-import arc.util.*
-import arc.util.io.*
-import heavyindustry.*
-import heavyindustry.util.*
-import mindustry.*
-import mindustry.entities.units.*
-import mindustry.gen.*
+import arc.Core
+import arc.graphics.g2d.Draw
+import arc.graphics.g2d.Fill
+import arc.graphics.g2d.TextureRegion
+import arc.math.Mathf
+import arc.scene.ui.layout.Table
+import arc.util.Eachable
+import arc.util.io.Reads
+import arc.util.io.Writes
+import heavyindustry.HVars
+import heavyindustry.util.eqf
+import heavyindustry.util.nof
+import mindustry.Vars
+import mindustry.entities.units.BuildPlan
+import mindustry.gen.Building
 import mindustry.gen.Unit
-import mindustry.type.*
-import mindustry.world.*
-import mindustry.world.blocks.*
-import mindustry.world.meta.*
+import mindustry.type.Item
+import mindustry.world.Block
+import mindustry.world.DirectionalItemBuffer
+import mindustry.world.Tile
+import mindustry.world.blocks.ItemSelection
+import mindustry.world.meta.BlockGroup
 
 open class SorterRevamp(name: String) : Block(name) {
 	@JvmField var cross = HVars.whiteRegion

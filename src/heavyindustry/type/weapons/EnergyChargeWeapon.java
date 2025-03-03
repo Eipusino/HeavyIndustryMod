@@ -1,15 +1,21 @@
 package heavyindustry.type.weapons;
 
-import arc.func.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.*;
-import mindustry.audio.*;
-import mindustry.entities.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.type.*;
+import arc.func.Cons2;
+import arc.func.Cons3;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.util.Time;
+import arc.util.Tmp;
+import mindustry.Vars;
+import mindustry.audio.SoundLoop;
+import mindustry.entities.Predict;
+import mindustry.entities.Sized;
+import mindustry.entities.units.WeaponMount;
+import mindustry.gen.Bullet;
+import mindustry.gen.Sounds;
+import mindustry.gen.Unit;
+import mindustry.type.Weapon;
 
 public class EnergyChargeWeapon extends Weapon {
 	public Cons3<Unit, WeaponMount, Float> drawCharge = (unit, mount, charge) -> {};

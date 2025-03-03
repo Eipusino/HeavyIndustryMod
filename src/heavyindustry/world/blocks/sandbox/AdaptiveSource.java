@@ -1,11 +1,12 @@
 package heavyindustry.world.blocks.sandbox;
 
-import mindustry.type.*;
-import mindustry.world.blocks.heat.*;
-import mindustry.world.blocks.sandbox.*;
-import mindustry.world.meta.*;
+import mindustry.type.Item;
+import mindustry.type.Liquid;
+import mindustry.world.blocks.heat.HeatBlock;
+import mindustry.world.blocks.sandbox.PowerSource;
+import mindustry.world.meta.Stat;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.content;
 
 public class AdaptiveSource extends PowerSource {
 	public short itemsPerSecond;

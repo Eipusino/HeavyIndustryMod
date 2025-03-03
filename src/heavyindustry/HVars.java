@@ -1,14 +1,15 @@
 package heavyindustry;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.graphics.g2d.TextureAtlas.*;
-import heavyindustry.core.*;
-import heavyindustry.files.*;
-import heavyindustry.input.*;
-import mindustry.content.*;
-import mindustry.type.*;
+import arc.Core;
+import arc.graphics.Texture;
+import arc.graphics.g2d.TextureAtlas.AtlasRegion;
+import arc.graphics.g2d.TextureRegion;
+import heavyindustry.core.HeavyIndustryMod;
+import heavyindustry.files.InternalFileTree;
+import heavyindustry.input.InputAggregator;
+import mindustry.content.TechTree;
+import mindustry.type.Planet;
+import mindustry.type.Sector;
 
 /**
  * I didn't want my Mod main class to look too messy, so I created this class.

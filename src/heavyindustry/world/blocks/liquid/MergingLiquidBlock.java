@@ -1,12 +1,14 @@
 package heavyindustry.world.blocks.liquid;
 
-import arc.graphics.g2d.*;
-import arc.struct.*;
-import mindustry.*;
-import mindustry.gen.*;
-import mindustry.type.*;
-import mindustry.world.blocks.liquid.*;
-import mindustry.world.modules.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.struct.Queue;
+import arc.struct.Seq;
+import mindustry.Vars;
+import mindustry.gen.Building;
+import mindustry.type.Liquid;
+import mindustry.world.blocks.liquid.LiquidBlock;
+import mindustry.world.modules.LiquidModule;
 
 public class MergingLiquidBlock extends LiquidBlock {
 	public static final Queue<MergingLiquidBuild> buildQueue = new Queue<>();
@@ -70,7 +72,7 @@ public class MergingLiquidBlock extends LiquidBlock {
 				Building other = proximity.get((i + dump) % proximity.size);
 				if (outputDir != -1 && (outputDir + rotation) % 4 != relativeTo(other)) continue;
 
-				other = other.getLiquidDestination(self(), liquid);
+				other = other.getLiquidDestination(this, liquid);
 
 				if (other != null && other.block.hasLiquids && canDumpLiquid(other, liquid) && other.liquids != null) {
 					float ofract = other.liquids.get(liquid) / other.block.liquidCapacity;

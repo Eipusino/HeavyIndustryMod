@@ -1,14 +1,18 @@
 package heavyindustry.ui.fragment;
 
-import arc.scene.*;
-import arc.scene.event.*;
-import arc.scene.ui.layout.*;
-import heavyindustry.world.blocks.environment.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.ui.*;
+import arc.scene.Group;
+import arc.scene.event.Touchable;
+import arc.scene.ui.layout.Table;
+import heavyindustry.world.blocks.environment.Clifff;
+import mindustry.gen.Icon;
+import mindustry.gen.Tex;
+import mindustry.graphics.Pal;
+import mindustry.ui.Styles;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.control;
+import static mindustry.Vars.iconSmall;
+import static mindustry.Vars.state;
+import static mindustry.Vars.ui;
 
 public class CliffPlacerFragment extends Table {
 	protected Table layout;

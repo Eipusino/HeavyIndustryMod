@@ -1,12 +1,14 @@
 package heavyindustry.graphics;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.game.EventType.*;
-import mindustry.graphics.*;
+import arc.Events;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.geom.Position;
+import arc.util.Time;
+import mindustry.game.EventType.ResetEvent;
+import mindustry.game.EventType.Trigger;
+import mindustry.graphics.Layer;
 
 public final class HRenders {
 	private static float

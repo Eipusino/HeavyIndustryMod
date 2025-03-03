@@ -1,17 +1,18 @@
 package heavyindustry.entities.abilities;
 
 
-import arc.*;
-import arc.math.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import mindustry.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.math.Mathf;
+import arc.scene.ui.layout.Table;
+import arc.util.Time;
+import mindustry.Vars;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.entities.Lightning;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Unit;
+import mindustry.graphics.Pal;
+import mindustry.world.meta.Stat;
 
 public class LightLandingAbility extends Ability {
 	public float damage = 1f;

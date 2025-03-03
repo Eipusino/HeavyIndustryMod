@@ -1,18 +1,26 @@
 package heavyindustry.util
 
-import arc.func.*
+import arc.func.Cons
+import arc.func.Cons2
+import arc.func.Func
+import arc.func.Prov
 import arc.graphics.g2d.TextureAtlas.AtlasRegion
 import arc.graphics.g2d.TextureRegion
-import arc.math.geom.*
-import arc.struct.*
-import heavyindustry.*
-import mindustry.*
-import mindustry.content.TechTree.*
-import mindustry.ctype.*
-import mindustry.game.Objectives.*
-import mindustry.type.*
-import rhino.*
-import java.net.*
+import arc.math.geom.Vec2
+import arc.struct.ObjectMap
+import arc.struct.Seq
+import heavyindustry.HVars
+import mindustry.Vars
+import mindustry.content.TechTree
+import mindustry.content.TechTree.TechNode
+import mindustry.ctype.UnlockableContent
+import mindustry.game.Objectives.Objective
+import mindustry.type.Item
+import mindustry.type.ItemStack
+import mindustry.type.Liquid
+import mindustry.type.LiquidStack
+import rhino.NativeJavaClass
+import java.net.URLClassLoader
 
 //class name: UtilsKt
 //Java/JS calling method: UtilsKt.research(my_blocks.yyy, Blocks.xxx);
@@ -74,7 +82,7 @@ fun <P, R> func(func: Func<P, R>, p: P): R = func.get(p)
 fun research(children: UnlockableContent?, content: UnlockableContent?, requirements: Array<ItemStack>?, objectives: Seq<Objective>?) {
 	if (children == null || content == null) return
 
-	val lastNode = all.find { t -> t.content === children }
+	val lastNode = TechTree.all.find { t -> t.content === children }
 	lastNode?.remove()
 
 	val node = TechNode(null, children, requirements ?: children.researchRequirements())
@@ -87,7 +95,7 @@ fun research(children: UnlockableContent?, content: UnlockableContent?, requirem
 	}
 
 	// find parent node.
-	val parent = all.find { t -> t.content === content }
+	val parent = TechTree.all.find { t -> t.content === content }
 
 	if (parent == null) return
 

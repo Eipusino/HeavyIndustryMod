@@ -1,6 +1,7 @@
 package heavyindustry.util.path;
 
-import heavyindustry.util.path.PathFindFunc.*;
+import heavyindustry.util.path.PathFindFunc.PathAcceptor;
+import heavyindustry.util.path.PathFindFunc.VerticesAcceptor;
 
 /**
  * The base class, subclass, or interface of the basic path searcher requires the use of one or several algorithms to implement the path search method.

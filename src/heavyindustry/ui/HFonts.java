@@ -1,15 +1,18 @@
 package heavyindustry.ui;
 
-import arc.*;
-import arc.assets.*;
-import arc.files.*;
-import arc.freetype.*;
-import arc.freetype.FreeTypeFontGenerator.*;
-import arc.freetype.FreetypeFontLoader.*;
-import arc.graphics.g2d.*;
-import arc.struct.*;
+import arc.Core;
+import arc.assets.AssetDescriptor;
+import arc.assets.AssetManager;
+import arc.files.Fi;
+import arc.freetype.FreeTypeFontGenerator;
+import arc.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import arc.freetype.FreeTypeFontGeneratorLoader;
+import arc.freetype.FreetypeFontLoader;
+import arc.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter;
+import arc.graphics.g2d.Font;
+import arc.struct.Seq;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tree;
 
 @SuppressWarnings("rawtypes")
 public final class HFonts {

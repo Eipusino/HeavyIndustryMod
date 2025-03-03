@@ -1,21 +1,52 @@
 package heavyindustry.graphics;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.graphics.gl.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.func.*;
-import mindustry.game.EventType.*;
-import mindustry.graphics.*;
+import arc.Core;
+import arc.Events;
+import arc.func.Prov;
+import arc.graphics.Color;
+import arc.graphics.Gl;
+import arc.graphics.Pixmap;
+import arc.graphics.Texture;
+import arc.graphics.g2d.Bloom;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.graphics.gl.FrameBuffer;
+import arc.graphics.gl.GLFrameBuffer;
+import arc.graphics.gl.Shader;
+import arc.math.Angles;
+import arc.math.Mat;
+import arc.math.Mathf;
+import arc.math.geom.Rect;
+import arc.math.geom.Vec2;
+import arc.math.geom.Vec3;
+import arc.util.Disposable;
+import arc.util.Nullable;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.func.Floatc3;
+import mindustry.game.EventType.Trigger;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
 
-import java.util.*;
+import java.util.Arrays;
 
-import static heavyindustry.graphics.Drawn.*;
-import static heavyindustry.graphics.HShaders.*;
+import static heavyindustry.graphics.Drawn.c1;
+import static heavyindustry.graphics.Drawn.v1;
+import static heavyindustry.graphics.Drawn.v2;
+import static heavyindustry.graphics.Drawn.v3;
+import static heavyindustry.graphics.Drawn.v31;
+import static heavyindustry.graphics.Drawn.v32;
+import static heavyindustry.graphics.Drawn.v33;
+import static heavyindustry.graphics.Drawn.v34;
+import static heavyindustry.graphics.Drawn.v4;
+import static heavyindustry.graphics.Drawn.v5;
+import static heavyindustry.graphics.Drawn.v6;
+import static heavyindustry.graphics.HShaders.MaskShader;
+import static heavyindustry.graphics.HShaders.MirrorFieldShader;
+import static heavyindustry.graphics.HShaders.dsv;
+import static heavyindustry.graphics.HShaders.msf;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public final class Draws {

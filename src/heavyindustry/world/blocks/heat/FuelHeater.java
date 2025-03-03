@@ -1,15 +1,20 @@
 package heavyindustry.world.blocks.heat;
 
-import arc.math.*;
-import arc.util.*;
-import arc.util.io.*;
-import mindustry.graphics.*;
-import mindustry.ui.*;
-import mindustry.world.blocks.heat.*;
-import mindustry.world.blocks.production.*;
-import mindustry.world.consumers.*;
-import mindustry.world.draw.*;
-import mindustry.world.meta.*;
+import arc.math.Mathf;
+import arc.util.Nullable;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import mindustry.graphics.Pal;
+import mindustry.ui.Bar;
+import mindustry.world.blocks.heat.HeatBlock;
+import mindustry.world.blocks.production.GenericCrafter;
+import mindustry.world.consumers.ConsumeItemFilter;
+import mindustry.world.consumers.ConsumeLiquidFilter;
+import mindustry.world.draw.DrawDefault;
+import mindustry.world.draw.DrawHeatOutput;
+import mindustry.world.draw.DrawMulti;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
 public class FuelHeater extends GenericCrafter {
 	public float heatOutput = 5f, warmupRate = 0.15f;

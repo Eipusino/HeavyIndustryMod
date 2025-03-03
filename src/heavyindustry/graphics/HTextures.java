@@ -1,10 +1,11 @@
 package heavyindustry.graphics;
 
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.Texture.*;
+import arc.func.Cons;
+import arc.graphics.Texture;
+import arc.graphics.Texture.TextureFilter;
+import arc.graphics.Texture.TextureWrap;
 
-import static heavyindustry.HVars.*;
+import static heavyindustry.HVars.internalTree;
 
 public final class HTextures {
 	public static Texture smooth, particle, darker, gaussian, median, armor;

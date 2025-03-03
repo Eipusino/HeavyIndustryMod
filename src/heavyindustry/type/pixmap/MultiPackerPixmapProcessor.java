@@ -1,13 +1,13 @@
 package heavyindustry.type.pixmap;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.PixmapPacker.*;
-import arc.graphics.g2d.TextureAtlas.*;
-import arc.graphics.g2d.*;
-import arc.struct.*;
-import mindustry.graphics.*;
-import mindustry.graphics.MultiPacker.*;
+import arc.Core;
+import arc.graphics.Pixmap;
+import arc.graphics.g2d.PixmapPacker.Page;
+import arc.graphics.g2d.TextureAtlas.AtlasRegion;
+import arc.graphics.g2d.TextureRegion;
+import arc.struct.ObjectMap;
+import mindustry.graphics.MultiPacker;
+import mindustry.graphics.MultiPacker.PageType;
 
 public final class MultiPackerPixmapProcessor {
 	private static final ObjectMap<MultiPacker, PixmapProcessor> map = new ObjectMap<>();

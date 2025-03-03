@@ -1,14 +1,18 @@
 package heavyindustry.entities.effect;
 
-import arc.*;
-import arc.math.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.gen.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.game.EventType.*;
-import mindustry.gen.*;
+import arc.Events;
+import arc.math.Mathf;
+import arc.struct.IntMap;
+import arc.struct.Seq;
+import arc.util.Time;
+import heavyindustry.gen.VapourizeEffectState;
+import mindustry.content.Liquids;
+import mindustry.entities.Puddles;
+import mindustry.game.EventType.Trigger;
+import mindustry.game.EventType.WorldLoadEvent;
+import mindustry.gen.Building;
+import mindustry.gen.Entityc;
+import mindustry.gen.Unit;
 
 public final class ExtraEffect {
 	private static final Seq<BuildQueue> vapourizeQueue = new Seq<>(512);

@@ -1,16 +1,25 @@
 package heavyindustry.world.blocks.defense;
 
-import arc.*;
-import arc.math.*;
-import arc.struct.*;
-import arc.util.*;
-import mindustry.entities.*;
-import mindustry.game.EventType.*;
-import mindustry.gen.*;
-import mindustry.world.blocks.defense.*;
-import mindustry.world.meta.*;
+import arc.Events;
+import arc.math.Mathf;
+import arc.struct.IntFloatMap;
+import arc.struct.IntSet;
+import arc.struct.Seq;
+import arc.util.Time;
+import arc.util.Tmp;
+import mindustry.entities.Damage;
+import mindustry.entities.TargetPriority;
+import mindustry.game.EventType.BuildingBulletDestroyEvent;
+import mindustry.gen.Building;
+import mindustry.gen.Bullet;
+import mindustry.world.blocks.defense.Wall;
+import mindustry.world.meta.BlockGroup;
+import mindustry.world.meta.Env;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.indexer;
+import static mindustry.Vars.state;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 /**
  * A wall that can self restore life.

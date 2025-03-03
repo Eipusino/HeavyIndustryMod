@@ -1,17 +1,21 @@
 package heavyindustry.world.blocks.environment;
 
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.world.*;
-import mindustry.world.blocks.environment.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.math.geom.Point2;
+import arc.util.Time;
+import mindustry.content.Blocks;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.world.Block;
+import mindustry.world.Tile;
+import mindustry.world.blocks.environment.SteamVent;
 
-import static heavyindustry.util.Structf.*;
-import static heavyindustry.util.Utils.*;
-import static mindustry.Vars.*;
+import static heavyindustry.util.Structf.resize;
+import static heavyindustry.util.Utils.split;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 /**
  * A {@link SteamVent} that can be of any size. Spans multiple tiles; only the middle tile (or in case of {@code size % 2 == 0},

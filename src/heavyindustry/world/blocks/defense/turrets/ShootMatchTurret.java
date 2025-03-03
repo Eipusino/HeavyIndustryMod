@@ -1,13 +1,16 @@
 package heavyindustry.world.blocks.defense.turrets;
 
-import arc.math.*;
-import arc.struct.*;
-import arc.util.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.entities.pattern.*;
-import mindustry.type.*;
-import mindustry.world.blocks.defense.turrets.*;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.struct.IntMap;
+import arc.struct.ObjectMap;
+import arc.util.Time;
+import mindustry.entities.Effect;
+import mindustry.entities.Mover;
+import mindustry.entities.bullet.BulletType;
+import mindustry.entities.pattern.ShootPattern;
+import mindustry.type.Item;
+import mindustry.world.blocks.defense.turrets.ItemTurret;
 
 /** Shoot Match Turret */
 public class ShootMatchTurret extends ItemTurret {

@@ -1,10 +1,11 @@
 package heavyindustry.entities.bullet;
 
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.math.Mathf;
+import arc.util.Tmp;
+import mindustry.entities.bullet.BasicBulletType;
+import mindustry.gen.Bullet;
 
 public class ArrowBulletType extends BasicBulletType {
 	public ArrowBulletType(float speed, float damage) {

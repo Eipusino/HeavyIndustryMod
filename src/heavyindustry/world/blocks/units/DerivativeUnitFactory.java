@@ -1,24 +1,37 @@
 package heavyindustry.world.blocks.units;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.content.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
-import mindustry.world.blocks.payloads.*;
-import mindustry.world.blocks.units.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.Events;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.math.geom.Rect;
+import arc.math.geom.Vec2;
+import arc.struct.EnumSet;
+import arc.util.Tmp;
+import heavyindustry.content.HFx;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.game.EventType;
+import mindustry.game.Team;
+import mindustry.gen.Sounds;
+import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.world.Tile;
+import mindustry.world.blocks.payloads.UnitPayload;
+import mindustry.world.blocks.units.UnitFactory;
+import mindustry.world.meta.BlockFlag;
 
-import static heavyindustry.HVars.*;
-import static mindustry.Vars.*;
+import static heavyindustry.HVars.name;
+import static mindustry.Vars.control;
+import static mindustry.Vars.indexer;
+import static mindustry.Vars.state;
+import static mindustry.Vars.tilesize;
 
 public class DerivativeUnitFactory extends UnitFactory {
 	public int areaSize = 14;

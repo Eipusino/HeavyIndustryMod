@@ -1,23 +1,32 @@
 package heavyindustry.world.blocks.defense;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import arc.util.io.*;
-import heavyindustry.world.blocks.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.io.*;
-import mindustry.ui.*;
-import mindustry.world.blocks.defense.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.func.Cons2;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.math.geom.Point2;
+import arc.struct.IntSeq;
+import arc.struct.Seq;
+import arc.util.Time;
+import arc.util.Tmp;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.io.HTypeIO;
+import heavyindustry.world.blocks.LinkGroupc;
+import mindustry.gen.Building;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Pal;
+import mindustry.ui.Bar;
+import mindustry.world.blocks.defense.OverdriveProjector;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 /**
  * Assign Overdrive
@@ -245,7 +254,7 @@ public class AssignOverdrive extends OverdriveProjector {
 			super.write(write);
 			write.f(heat);
 			write.f(phaseHeat);
-			TypeIO.writeObject(write, targets);
+			HTypeIO.writeIntSeq(write, targets);
 		}
 
 		@Override
@@ -253,7 +262,7 @@ public class AssignOverdrive extends OverdriveProjector {
 			super.read(read, revision);
 			heat = read.f();
 			phaseHeat = read.f();
-			targets = (IntSeq) TypeIO.readObject(read);
+			targets = HTypeIO.readIntSeq(read);
 		}
 
 		@Override

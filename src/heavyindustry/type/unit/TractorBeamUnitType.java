@@ -1,11 +1,12 @@
 package heavyindustry.type.unit;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import mindustry.gen.*;
+import arc.Core;
+import arc.graphics.Blending;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import mindustry.gen.Unit;
 
-public class TractorBeamUnitType extends UnitTypef {
+public class TractorBeamUnitType extends ExtraUnitType {
 	public boolean glowEngine = false;
 	public TextureRegion cellGlow;
 	public float tractorBeamRange = 100;

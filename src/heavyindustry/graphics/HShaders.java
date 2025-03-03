@@ -1,22 +1,28 @@
 package heavyindustry.graphics;
 
-import arc.*;
-import arc.files.*;
-import arc.graphics.*;
-import arc.graphics.Texture.*;
-import arc.graphics.g2d.*;
-import arc.graphics.g3d.*;
-import arc.graphics.gl.*;
-import arc.math.geom.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import heavyindustry.graphics.gl.*;
-import heavyindustry.type.*;
-import mindustry.*;
-import mindustry.type.*;
+import arc.Core;
+import arc.files.Fi;
+import arc.graphics.Color;
+import arc.graphics.Texture;
+import arc.graphics.Texture.TextureFilter;
+import arc.graphics.Texture.TextureWrap;
+import arc.graphics.g2d.TextureRegion;
+import arc.graphics.g3d.Camera3D;
+import arc.graphics.gl.Shader;
+import arc.math.geom.Mat3D;
+import arc.math.geom.Vec2;
+import arc.math.geom.Vec3;
+import arc.scene.ui.layout.Scl;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.graphics.gl.DepthFrameBuffer;
+import heavyindustry.type.AtmospherePlanet;
+import mindustry.Vars;
+import mindustry.type.Planet;
 
-import static heavyindustry.HVars.*;
-import static mindustry.Vars.*;
+import static heavyindustry.HVars.internalTree;
+import static heavyindustry.HVars.name;
+import static mindustry.Vars.renderer;
 
 /**
  * Defines the {@linkplain Shader shader}s this mod offers.

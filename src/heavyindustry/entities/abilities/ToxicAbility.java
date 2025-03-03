@@ -1,13 +1,14 @@
 package heavyindustry.entities.abilities;
 
-import arc.graphics.*;
-import arc.math.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
-import mindustry.type.*;
+import arc.graphics.Color;
+import arc.math.Mathf;
+import arc.util.Time;
+import mindustry.content.Fx;
+import mindustry.content.StatusEffects;
+import mindustry.entities.Units;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Unit;
+import mindustry.type.StatusEffect;
 
 public class ToxicAbility extends Ability {
 	public float damage = 1f;

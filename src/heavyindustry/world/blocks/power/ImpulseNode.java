@@ -1,19 +1,21 @@
 package heavyindustry.world.blocks.power;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import mindustry.content.*;
-import mindustry.core.*;
-import mindustry.entities.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
-import mindustry.world.blocks.power.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.struct.Seq;
+import mindustry.content.Fx;
+import mindustry.core.Renderer;
+import mindustry.entities.Effect;
+import mindustry.gen.Building;
+import mindustry.graphics.Layer;
+import mindustry.world.Tile;
+import mindustry.world.blocks.power.PowerNode;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 public class ImpulseNode extends PowerNode {
 	public int effectTimer = timers++;

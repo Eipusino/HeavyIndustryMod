@@ -1,17 +1,22 @@
 package heavyindustry.entities.abilities;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.world.meta.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.scene.ui.layout.Table;
+import arc.util.Strings;
+import arc.util.Time;
+import mindustry.entities.Damage;
+import mindustry.entities.Effect;
+import mindustry.entities.Units;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Unit;
+import mindustry.graphics.Layer;
+import mindustry.type.StatusEffect;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
 
 public class DamageFieldAbility extends Ability {
 	public float reload = 60, radius = 20, damage = 10;

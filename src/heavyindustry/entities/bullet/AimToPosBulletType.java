@@ -1,11 +1,12 @@
 package heavyindustry.entities.bullet;
 
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
+import arc.math.Angles;
+import arc.math.geom.Position;
+import arc.util.Time;
+import mindustry.entities.Units;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Bullet;
+import mindustry.gen.Teamc;
 
 public class AimToPosBulletType extends BulletType {
 	public float before = 30f, rotSpeed = 4f;

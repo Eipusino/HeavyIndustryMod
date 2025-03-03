@@ -1,9 +1,10 @@
 package heavyindustry.maps;
 
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.noise.*;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.math.geom.Vec3;
+import arc.struct.Seq;
+import arc.util.noise.Simplex;
 
 /**
  * a pass for custom height for a planet mesh

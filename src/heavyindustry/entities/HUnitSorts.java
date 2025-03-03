@@ -1,15 +1,17 @@
 package heavyindustry.entities;
 
-import arc.func.*;
-import arc.math.*;
-import mindustry.*;
-import mindustry.entities.*;
-import mindustry.entities.Units.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.world.meta.*;
+import arc.func.Boolf2;
+import arc.math.Mathf;
+import mindustry.Vars;
+import mindustry.entities.UnitSorts;
+import mindustry.entities.Units;
+import mindustry.entities.Units.Sortf;
+import mindustry.game.Team;
+import mindustry.gen.Teamc;
+import mindustry.gen.Unit;
+import mindustry.world.meta.BlockGroup;
 
-import java.util.*;
+import java.util.Arrays;
 
 public final class HUnitSorts {
 	public static final Sortf slowest = (u, x, y) -> u.speed() + Mathf.dst2(u.x, u.y, x, y) / 6400f;

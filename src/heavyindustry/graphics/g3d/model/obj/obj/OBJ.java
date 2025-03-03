@@ -1,6 +1,6 @@
 package heavyindustry.graphics.g3d.model.obj.obj;
 
-import arc.files.*;
+import arc.files.Fi;
 
 /**
  * Object data container.

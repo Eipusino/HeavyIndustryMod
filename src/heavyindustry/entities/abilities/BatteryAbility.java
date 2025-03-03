@@ -1,26 +1,36 @@
 package heavyindustry.entities.abilities;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import heavyindustry.content.*;
-import heavyindustry.entities.bullet.*;
-import mindustry.content.*;
-import mindustry.core.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.ammo.*;
-import mindustry.ui.*;
-import mindustry.world.blocks.power.*;
+import arc.Core;
+import arc.func.Cons;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Intersector;
+import arc.scene.ui.layout.Table;
+import arc.util.Strings;
+import arc.util.Time;
+import heavyindustry.content.HFx;
+import heavyindustry.entities.bullet.ElectricStormBulletType;
+import mindustry.content.Fx;
+import mindustry.core.Renderer;
+import mindustry.entities.Effect;
+import mindustry.entities.Units;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Building;
+import mindustry.gen.Bullet;
+import mindustry.gen.Groups;
+import mindustry.gen.Unit;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.type.ammo.PowerAmmoType;
+import mindustry.ui.Bar;
+import mindustry.world.blocks.power.PowerGraph;
+import mindustry.world.blocks.power.PowerNode;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.indexer;
+import static mindustry.Vars.state;
 
 public class BatteryAbility extends Ability {
 	public static Effect absorb = Fx.none;

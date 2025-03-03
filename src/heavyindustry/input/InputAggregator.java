@@ -1,19 +1,27 @@
 package heavyindustry.input;
 
-import arc.*;
-import arc.func.*;
-import arc.input.*;
-import arc.input.GestureDetector.*;
-import arc.math.geom.*;
-import arc.scene.ui.*;
-import arc.struct.*;
-import arc.util.*;
-import arc.util.pooling.*;
-import heavyindustry.net.*;
-import mindustry.game.EventType.*;
-import mindustry.gen.*;
+import arc.Core;
+import arc.Events;
+import arc.func.Boolp;
+import arc.func.Cons;
+import arc.input.GestureDetector;
+import arc.input.GestureDetector.GestureListener;
+import arc.input.KeyCode;
+import arc.math.geom.Vec2;
+import arc.scene.ui.TextField;
+import arc.struct.OrderedMap;
+import arc.struct.Seq;
+import arc.util.Eachable;
+import arc.util.pooling.Pool;
+import heavyindustry.net.HCall;
+import mindustry.game.EventType.Trigger;
+import mindustry.gen.Player;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.control;
+import static mindustry.Vars.headless;
+import static mindustry.Vars.mobile;
+import static mindustry.Vars.player;
+import static mindustry.Vars.state;
 
 public class InputAggregator implements Eachable<String> {
 	protected final OrderedMap<String, TapHandle> handles;

@@ -1,21 +1,32 @@
 package heavyindustry.world.draw;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.graphics.gl.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.graphics.*;
-import mindustry.*;
-import mindustry.game.EventType.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
-import mindustry.world.draw.*;
+import arc.Core;
+import arc.Events;
+import arc.func.Cons;
+import arc.func.Floatf;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.graphics.gl.FrameBuffer;
+import arc.math.Mat;
+import arc.math.Mathf;
+import arc.math.geom.Mat3D;
+import arc.math.geom.Quat;
+import arc.math.geom.Vec2;
+import arc.math.geom.Vec3;
+import arc.struct.FloatSeq;
+import arc.struct.Seq;
+import arc.util.Tmp;
+import heavyindustry.graphics.Draw3d;
+import heavyindustry.graphics.Drawe;
+import mindustry.Vars;
+import mindustry.game.EventType.Trigger;
+import mindustry.gen.Building;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.world.Block;
+import mindustry.world.draw.DrawBlock;
 
 public class Draw3dSpin extends DrawBlock {
 	protected static final Mat3D transformation = new Mat3D();

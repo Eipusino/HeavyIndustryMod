@@ -1,12 +1,18 @@
 package heavyindustry.mod;
 
-import arc.func.*;
-import arc.util.*;
-import heavyindustry.util.*;
-import mindustry.*;
-import rhino.*;
+import arc.func.Func;
+import arc.util.Log;
+import heavyindustry.util.Reflectf;
+import mindustry.Vars;
+import rhino.Context;
+import rhino.Function;
+import rhino.ImporterTopLevel;
+import rhino.NativeJavaClass;
+import rhino.NativeJavaPackage;
+import rhino.Scriptable;
+import rhino.Wrapper;
 
-import static heavyindustry.util.Utils.*;
+import static heavyindustry.util.Utils.packages;
 
 /**
  * Utility class for transition between Java and JS scripts, as well as providing a custom top level scope for the sake of

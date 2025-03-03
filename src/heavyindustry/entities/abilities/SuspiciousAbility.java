@@ -1,11 +1,11 @@
 package heavyindustry.entities.abilities;
 
-import arc.math.*;
-import mindustry.*;
-import mindustry.entities.abilities.*;
-import mindustry.game.*;
-import mindustry.game.Teams.*;
-import mindustry.gen.*;
+import arc.math.Mathf;
+import mindustry.Vars;
+import mindustry.entities.abilities.Ability;
+import mindustry.game.Team;
+import mindustry.game.Teams.TeamData;
+import mindustry.gen.Unit;
 
 public class SuspiciousAbility extends Ability {
 	@Override

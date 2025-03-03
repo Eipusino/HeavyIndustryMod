@@ -1,15 +1,18 @@
 package heavyindustry.world.blocks.distribution;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.gen.*;
-import mindustry.type.*;
-import mindustry.world.blocks.distribution.*;
+import arc.Core;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.util.Nullable;
+import arc.util.Tmp;
+import mindustry.gen.Building;
+import mindustry.type.Item;
+import mindustry.world.blocks.distribution.Duct;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.itemSize;
+import static mindustry.Vars.tilesize;
 
 /** Routes through rotation like a payload conveyor. heehoo rainer world ref */
 public class RotatorRouter extends Duct {

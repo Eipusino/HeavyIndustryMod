@@ -1,15 +1,19 @@
 package heavyindustry.world.blocks.liquid;
 
-import arc.graphics.g2d.*;
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.util.*;
-import mindustry.*;
-import mindustry.entities.units.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.world.*;
-import mindustry.world.blocks.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.geom.Geometry;
+import arc.util.Eachable;
+import arc.util.Tmp;
+import heavyindustry.util.Utils;
+import mindustry.Vars;
+import mindustry.entities.units.BuildPlan;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.type.Liquid;
+import mindustry.world.Block;
+import mindustry.world.Tile;
+import mindustry.world.blocks.Autotiler;
 
 public class Pipe extends MergingLiquidBlock implements Autotiler {
 	static final float rotatePad = 6;

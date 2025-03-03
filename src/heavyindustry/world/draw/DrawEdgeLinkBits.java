@@ -1,17 +1,18 @@
 package heavyindustry.world.draw;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.g2d.*;
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.util.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.world.*;
-import mindustry.world.draw.*;
+import arc.Core;
+import arc.func.Func;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.geom.Point2;
+import arc.util.Eachable;
+import heavyindustry.util.DirEdges;
+import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Building;
+import mindustry.world.Block;
+import mindustry.world.draw.DrawBlock;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
 
 public class DrawEdgeLinkBits<T extends Building> extends DrawBlock {
 	public static final byte[] EMP = new byte[]{0, 0, 0, 0};

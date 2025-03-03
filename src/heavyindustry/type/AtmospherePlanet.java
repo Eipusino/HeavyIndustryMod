@@ -1,18 +1,26 @@
 package heavyindustry.type;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.Texture.*;
-import arc.graphics.g3d.*;
-import arc.graphics.gl.*;
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.graphics.*;
-import mindustry.graphics.*;
-import mindustry.graphics.g3d.*;
-import mindustry.type.*;
+import arc.Core;
+import arc.graphics.Blending;
+import arc.graphics.Gl;
+import arc.graphics.Mesh;
+import arc.graphics.Texture.TextureFilter;
+import arc.graphics.g3d.Camera3D;
+import arc.graphics.gl.FrameBuffer;
+import arc.math.geom.Mat3D;
+import arc.math.geom.Vec3;
+import arc.util.Nullable;
+import arc.util.Tmp;
+import heavyindustry.graphics.HShaders;
+import mindustry.graphics.Shaders;
+import mindustry.graphics.g3d.GenericMesh;
+import mindustry.graphics.g3d.HexMesher;
+import mindustry.graphics.g3d.MeshBuilder;
+import mindustry.graphics.g3d.PlanetParams;
+import mindustry.type.Planet;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.headless;
+import static mindustry.Vars.renderer;
 
 /**
  * Just a regular planet, but with a fixed atmosphere shader at the little cost of performance.

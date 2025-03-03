@@ -1,8 +1,11 @@
 package heavyindustry.entities.part;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import mindustry.entities.part.*;
+import arc.graphics.Blending;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import mindustry.entities.part.DrawPart;
 
 public class RangeCirclePart extends DrawPart {
 	public float range, stroke, layer, backLayer;

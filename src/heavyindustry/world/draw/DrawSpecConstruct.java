@@ -1,14 +1,16 @@
 package heavyindustry.world.draw;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import heavyindustry.graphics.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
-import mindustry.world.draw.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import heavyindustry.graphics.Drawn;
+import mindustry.gen.Building;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.world.Block;
+import mindustry.world.draw.DrawBlock;
 
-import static heavyindustry.util.Utils.*;
+import static heavyindustry.util.Utils.split;
 
 /**
  * Display multi-layer textures in sequence according to the progress of the building.

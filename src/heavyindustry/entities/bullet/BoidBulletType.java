@@ -1,10 +1,11 @@
 package heavyindustry.entities.bullet;
 
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.struct.Seq;
+import mindustry.entities.bullet.BasicBulletType;
+import mindustry.gen.Bullet;
+import mindustry.gen.Groups;
 
 public class BoidBulletType extends BasicBulletType {
 	public float alignrate = 3f;

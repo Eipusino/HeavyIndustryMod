@@ -1,18 +1,28 @@
 package heavyindustry.entities.bullet;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import arc.util.pooling.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.math.geom.Position;
+import arc.math.geom.Vec2;
+import arc.util.Time;
+import arc.util.Tmp;
+import arc.util.pooling.Pools;
+import mindustry.entities.Effect;
+import mindustry.entities.Mover;
+import mindustry.entities.Units;
+import mindustry.entities.bullet.BulletType;
+import mindustry.game.Team;
+import mindustry.gen.Building;
+import mindustry.gen.Bullet;
+import mindustry.gen.Entityc;
+import mindustry.gen.Hitboxc;
+import mindustry.graphics.Drawf;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.world;
 
 public class DelayedPointBulletType extends BulletType {
 	protected static float cdist = 0f, lengthFalloff = 0.5f;

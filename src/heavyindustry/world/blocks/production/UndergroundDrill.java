@@ -1,25 +1,35 @@
 package heavyindustry.world.blocks.production;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.world.blocks.environment.*;
-import heavyindustry.world.blocks.storage.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.logic.*;
-import mindustry.type.*;
-import mindustry.ui.*;
-import mindustry.world.*;
-import mindustry.world.blocks.production.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.func.Boolf;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.math.Mathf;
+import arc.struct.ObjectFloatMap;
+import arc.util.Scaling;
+import arc.util.Strings;
+import heavyindustry.world.blocks.environment.UndergroundOreBlock;
+import heavyindustry.world.blocks.storage.DetectorCoreBlock;
+import mindustry.game.Team;
+import mindustry.gen.Building;
+import mindustry.graphics.Drawf;
+import mindustry.logic.Ranged;
+import mindustry.type.Item;
+import mindustry.ui.Styles;
+import mindustry.world.Block;
+import mindustry.world.Tile;
+import mindustry.world.blocks.production.Drill;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
+import mindustry.world.meta.StatValue;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.content;
+import static mindustry.Vars.iconSmall;
+import static mindustry.Vars.indexer;
+import static mindustry.Vars.player;
+import static mindustry.Vars.state;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 public class UndergroundDrill extends Drill {
 	public UndergroundDrill(String name) {

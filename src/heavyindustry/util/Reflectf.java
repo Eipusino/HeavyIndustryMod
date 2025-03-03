@@ -1,12 +1,14 @@
 package heavyindustry.util;
 
-import arc.func.*;
-import arc.util.*;
-import mindustry.*;
+import arc.func.Prov;
+import arc.util.Log;
+import mindustry.Vars;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
-import static heavyindustry.struct.Collectionsf.*;
+import static heavyindustry.struct.Collectionsf.arrayOf;
 
 /**
  * More expansion of Java reflection functionality.

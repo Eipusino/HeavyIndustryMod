@@ -1,8 +1,10 @@
 package heavyindustry.type.weapons;
 
-import heavyindustry.util.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
+import heavyindustry.util.Utils;
+import mindustry.entities.units.WeaponMount;
+import mindustry.gen.Bullet;
+import mindustry.gen.Teamc;
+import mindustry.gen.Unit;
 
 public class PointDefenceMultiBarrelWeapon extends MultiBarrelWeapon {
 	protected static WeaponMount tmp;

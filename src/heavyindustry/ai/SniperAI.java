@@ -1,8 +1,8 @@
 package heavyindustry.ai;
 
-import mindustry.ai.types.*;
+import mindustry.ai.types.FlyingAI;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.state;
 
 public class SniperAI extends FlyingAI {
 	public static final float APPROACHING_DST = 48f;

@@ -1,9 +1,11 @@
 package heavyindustry.math.gravity;
 
-import arc.func.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
+import arc.func.Boolf;
+import arc.func.Func;
+import arc.math.geom.Vec2;
+import arc.struct.ObjectMap;
+import arc.struct.ObjectSet;
+import arc.util.Time;
 
 /**
  * A container for simulating the gravitational field,

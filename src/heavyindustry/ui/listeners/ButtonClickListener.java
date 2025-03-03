@@ -1,7 +1,8 @@
 package heavyindustry.ui.listeners;
 
-import arc.scene.event.*;
-import arc.scene.ui.*;
+import arc.scene.event.ClickListener;
+import arc.scene.event.InputEvent;
+import arc.scene.ui.Button;
 
 /**
  * Default implementation of {@link ClickListener} for {@link Button}.

@@ -1,17 +1,21 @@
 package heavyindustry.world.blocks;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.graphics.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.logic.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.math.Mathf;
+import arc.math.geom.Point2;
+import arc.struct.Seq;
+import arc.util.Nullable;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.graphics.Drawn;
+import mindustry.gen.Building;
+import mindustry.gen.Buildingc;
+import mindustry.graphics.Drawf;
+import mindustry.logic.Ranged;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 public interface Linkablec extends Buildingc, Ranged {
 	@Deprecated

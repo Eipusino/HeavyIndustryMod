@@ -1,9 +1,10 @@
 package heavyindustry.type.ammo;
 
-import arc.graphics.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
+import arc.graphics.Color;
+import mindustry.gen.Iconc;
+import mindustry.gen.Unit;
+import mindustry.graphics.Pal;
+import mindustry.type.AmmoType;
 
 public class VanityAmmoType implements AmmoType {
 	@Override

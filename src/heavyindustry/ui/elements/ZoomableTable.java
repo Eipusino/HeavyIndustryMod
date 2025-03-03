@@ -1,11 +1,17 @@
 package heavyindustry.ui.elements;
 
-import arc.input.*;
-import arc.math.*;
-import arc.scene.*;
-import arc.scene.event.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
+import arc.input.KeyCode;
+import arc.math.Mathf;
+import arc.scene.Action;
+import arc.scene.Element;
+import arc.scene.event.ElementGestureListener;
+import arc.scene.event.EventListener;
+import arc.scene.event.InputEvent;
+import arc.scene.event.InputListener;
+import arc.scene.event.Touchable;
+import arc.scene.ui.layout.Cell;
+import arc.scene.ui.layout.Table;
+import arc.util.Align;
 
 public class ZoomableTable extends Table {
 	public float maxZoom = 1.5f, minZoom = 0.5f;

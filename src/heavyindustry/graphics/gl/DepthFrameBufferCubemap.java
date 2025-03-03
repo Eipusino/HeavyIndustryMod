@@ -1,15 +1,18 @@
 package heavyindustry.graphics.gl;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.Cubemap.*;
-import arc.graphics.Pixmap.*;
-import arc.graphics.Texture.*;
-import arc.graphics.gl.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.util.*;
+import arc.Core;
+import arc.func.Cons;
+import arc.graphics.Cubemap;
+import arc.graphics.Cubemap.CubemapSide;
+import arc.graphics.Gl;
+import arc.graphics.Pixmap.Format;
+import arc.graphics.Texture.TextureFilter;
+import arc.graphics.gl.FrameBufferCubemap;
+import arc.struct.Seq;
+import arc.util.Buffers;
+import arc.util.Nullable;
+import arc.util.Reflect;
+import heavyindustry.util.Reflectf;
 
 /**
  * A cubemap framebuffer that requests depth (and stencil) textures instead of renderbuffers, letting users sample from

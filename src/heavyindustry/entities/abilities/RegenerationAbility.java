@@ -1,12 +1,12 @@
 package heavyindustry.entities.abilities;
 
-import arc.*;
-import arc.math.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.math.Mathf;
+import arc.scene.ui.layout.Table;
+import arc.util.Time;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Unit;
+import mindustry.world.meta.Stat;
 
 public class RegenerationAbility extends Ability {
 	public float healby; //How much basically by tick

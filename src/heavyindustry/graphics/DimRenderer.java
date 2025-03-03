@@ -1,14 +1,18 @@
 package heavyindustry.graphics;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.graphics.gl.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import mindustry.game.EventType.*;
+import arc.Core;
+import arc.Events;
+import arc.graphics.Blending;
+import arc.graphics.Color;
+import arc.graphics.Gl;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.graphics.gl.FrameBuffer;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.struct.Seq;
+import arc.util.Tmp;
+import mindustry.game.EventType.ResetEvent;
 
 /** Based on LightRenderer. Dims the entire screen. */
 public final class DimRenderer {

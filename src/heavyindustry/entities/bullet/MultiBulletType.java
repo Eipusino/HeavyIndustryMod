@@ -1,15 +1,19 @@
 package heavyindustry.entities.bullet;
 
-import arc.audio.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.entities.bullet.*;
-import mindustry.entities.units.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.type.*;
+import arc.audio.Sound;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.util.Tmp;
+import mindustry.content.Fx;
+import mindustry.entities.bullet.BulletType;
+import mindustry.entities.units.WeaponMount;
+import mindustry.game.Team;
+import mindustry.gen.Bullet;
+import mindustry.gen.Entityc;
+import mindustry.gen.Sounds;
+import mindustry.gen.Unit;
+import mindustry.type.Weapon;
 
 /**
  * Experimental multi bullet type.

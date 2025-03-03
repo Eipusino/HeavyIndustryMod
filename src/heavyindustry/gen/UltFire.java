@@ -1,22 +1,41 @@
 package heavyindustry.gen;
 
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import arc.util.pooling.*;
-import heavyindustry.content.*;
-import mindustry.core.*;
-import mindustry.entities.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
-import mindustry.world.meta.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.math.geom.Point2;
+import arc.math.geom.Position;
+import arc.util.Time;
+import arc.util.pooling.Pools;
+import heavyindustry.content.HBullets;
+import heavyindustry.content.HStatusEffects;
+import mindustry.core.World;
+import mindustry.entities.Damage;
+import mindustry.entities.Effect;
+import mindustry.entities.Fires;
+import mindustry.entities.Puddles;
+import mindustry.game.Team;
+import mindustry.gen.Building;
+import mindustry.gen.Fire;
+import mindustry.gen.Groups;
+import mindustry.gen.Puddlec;
+import mindustry.gen.Sounds;
+import mindustry.gen.Teamc;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Pal;
+import mindustry.world.Tile;
+import mindustry.world.meta.Attribute;
 
-import static heavyindustry.HVars.*;
-import static heavyindustry.util.Utils.*;
-import static mindustry.Vars.*;
+import static heavyindustry.HVars.name;
+import static heavyindustry.util.Utils.split;
+import static mindustry.Vars.control;
+import static mindustry.Vars.headless;
+import static mindustry.Vars.indexer;
+import static mindustry.Vars.net;
+import static mindustry.Vars.netClient;
+import static mindustry.Vars.state;
+import static mindustry.Vars.world;
 
 public class UltFire extends Fire {
 	public static final float baseLifetime = 1200f;

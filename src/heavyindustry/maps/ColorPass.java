@@ -1,9 +1,9 @@
 package heavyindustry.maps;
 
-import arc.graphics.*;
-import arc.math.geom.*;
-import arc.util.*;
-import arc.util.noise.*;
+import arc.graphics.Color;
+import arc.math.geom.Vec3;
+import arc.util.Nullable;
+import arc.util.noise.Simplex;
 
 public abstract class ColorPass {
 	public abstract @Nullable Color color(Vec3 pos, float height);

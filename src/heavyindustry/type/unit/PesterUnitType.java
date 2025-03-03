@@ -1,13 +1,14 @@
 package heavyindustry.type.unit;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import heavyindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.math.Interp;
+import heavyindustry.content.HBullets;
+import mindustry.entities.Effect;
+import mindustry.entities.bullet.BulletType;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
 
 public class PesterUnitType extends AncientUnitType {
 	public float bossWeaponRange = 80f * tilesize;

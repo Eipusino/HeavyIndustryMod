@@ -1,18 +1,24 @@
 package heavyindustry.mod;
 
-import arc.files.*;
-import arc.struct.*;
-import arc.util.*;
-import arc.util.serialization.*;
-import heavyindustry.mod.ExtraContentParser.*;
-import mindustry.*;
-import mindustry.ctype.*;
-import mindustry.mod.*;
-import mindustry.mod.Mods.*;
-import mindustry.type.*;
-import org.tomlj.*;
+import arc.files.Fi;
+import arc.struct.ObjectSet;
+import arc.struct.Seq;
+import arc.util.ArcRuntimeException;
+import arc.util.Log;
+import arc.util.Reflect;
+import arc.util.serialization.Jval;
+import heavyindustry.mod.ExtraContentParser.ExtraParseListener;
+import mindustry.Vars;
+import mindustry.ctype.Content;
+import mindustry.ctype.ContentType;
+import mindustry.ctype.UnlockableContent;
+import mindustry.mod.Mod;
+import mindustry.mod.Mods;
+import mindustry.mod.Mods.LoadedMod;
+import mindustry.type.ErrorContent;
+import org.tomlj.Toml;
 
-import java.util.*;
+import java.util.Locale;
 
 public final class LoadMod {
 	public static final String[] metaFiles = {"mod.json", "mod.hjson", "plugin.json", "plugin.hjson"};
@@ -101,7 +107,7 @@ public final class LoadMod {
 						l.file.extension().equals("toml") ? Toml.parse(l.file.read()).toJson() :
 								l.file.readString("UTF-8")
 						, l.file, l.type);
-				Log.debug("[@] Loaded '@'.", l.mod.meta.name, (loaded instanceof UnlockableContent u ? u.localizedName : loaded.toString()));
+				Log.debug("[@] Loaded '@'.", l.mod.meta.name, loaded instanceof UnlockableContent u ? u.localizedName : loaded.toString());
 			} catch (Throwable e) {
 				if (current != Vars.content.getLastAdded() && Vars.content.getLastAdded() != null) {
 					parser.markError(Vars.content.getLastAdded(), l.mod, l.file, e);

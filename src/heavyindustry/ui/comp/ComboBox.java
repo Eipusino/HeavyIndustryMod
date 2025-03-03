@@ -1,20 +1,28 @@
 package heavyindustry.ui.comp;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.scene.*;
-import arc.scene.style.*;
-import arc.scene.ui.*;
-import arc.scene.ui.Button.*;
-import arc.scene.ui.Label.*;
-import arc.scene.ui.layout.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.ui.listeners.Listeners.*;
-import kotlin.jvm.internal.Ref.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Font;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.scene.Element;
+import arc.scene.style.Drawable;
+import arc.scene.ui.Button;
+import arc.scene.ui.Button.ButtonStyle;
+import arc.scene.ui.Label;
+import arc.scene.ui.Label.LabelStyle;
+import arc.scene.ui.TextField;
+import arc.scene.ui.layout.Cell;
+import arc.scene.ui.layout.Scl;
+import arc.scene.ui.layout.Table;
+import arc.struct.Seq;
+import arc.util.Align;
+import arc.util.Nullable;
+import arc.util.Tmp;
+import heavyindustry.ui.listeners.Listeners.ClickOnOtherListener;
+import kotlin.jvm.internal.Ref.ObjectRef;
 
 public class ComboBox extends Table {
 	protected final Table mySelectionTable = new Table() {{

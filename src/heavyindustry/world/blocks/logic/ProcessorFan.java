@@ -1,10 +1,11 @@
 package heavyindustry.world.blocks.logic;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import heavyindustry.gen.*;
+import arc.Core;
+import arc.graphics.Blending;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import heavyindustry.gen.HSounds;
 
 public class ProcessorFan extends ProcessorCooler {
 	public TextureRegion spinnerRegion;

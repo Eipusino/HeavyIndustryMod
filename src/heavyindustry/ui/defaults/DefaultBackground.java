@@ -1,9 +1,11 @@
 package heavyindustry.ui.defaults;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.scene.style.*;
+import arc.Core;
+import arc.func.Prov;
+import arc.graphics.Color;
+import arc.graphics.Pixmap;
+import arc.scene.style.Drawable;
+import arc.scene.style.TextureRegionDrawable;
 
 public final class DefaultBackground {
 	private static final Lazy<Drawable> white = new Lazy<>(() -> {

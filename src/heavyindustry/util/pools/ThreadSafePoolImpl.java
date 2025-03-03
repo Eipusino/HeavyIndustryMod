@@ -1,6 +1,6 @@
 package heavyindustry.util.pools;
 
-import arc.func.*;
+import arc.func.Prov;
 
 public class ThreadSafePoolImpl<T> extends ThreadSafePool<T> {
 	public final Prov<T> provider;

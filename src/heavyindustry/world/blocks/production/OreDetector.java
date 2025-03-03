@@ -1,27 +1,46 @@
 package heavyindustry.world.blocks.production;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.scene.style.*;
-import arc.scene.ui.layout.*;
-import arc.struct.*;
-import arc.util.*;
-import arc.util.io.*;
-import heavyindustry.gen.*;
-import heavyindustry.world.blocks.environment.*;
-import mindustry.content.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.logic.*;
-import mindustry.ui.*;
-import mindustry.world.*;
-import mindustry.world.draw.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.scene.style.TextureRegionDrawable;
+import arc.scene.ui.layout.Table;
+import arc.struct.EnumSet;
+import arc.struct.Seq;
+import arc.util.Time;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.gen.HSounds;
+import heavyindustry.world.blocks.environment.UndergroundOreBlock;
+import mindustry.content.Fx;
+import mindustry.gen.Building;
+import mindustry.gen.Icon;
+import mindustry.gen.Sounds;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.logic.Ranged;
+import mindustry.ui.Styles;
+import mindustry.world.Block;
+import mindustry.world.Tile;
+import mindustry.world.draw.DrawBlock;
+import mindustry.world.draw.DrawDefault;
+import mindustry.world.draw.DrawFlame;
+import mindustry.world.draw.DrawMulti;
+import mindustry.world.draw.DrawRegion;
+import mindustry.world.meta.BlockFlag;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
-import static mindustry.Vars.*;
-import static mindustry.content.Blocks.*;
+import static mindustry.Vars.indexer;
+import static mindustry.Vars.player;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
+import static mindustry.content.Blocks.air;
 
 public class OreDetector extends Block {
 	/** Ore detector radius, in world units. */

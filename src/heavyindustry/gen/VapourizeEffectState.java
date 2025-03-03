@@ -1,16 +1,22 @@
 package heavyindustry.gen;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.content.*;
-import heavyindustry.entities.effect.*;
-import heavyindustry.util.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Position;
+import arc.util.Tmp;
+import heavyindustry.content.HFx;
+import heavyindustry.entities.effect.ExtraEffect;
+import heavyindustry.util.Utils;
+import mindustry.gen.EffectState;
+import mindustry.gen.Entityc;
+import mindustry.gen.Groups;
+import mindustry.gen.Hitboxc;
+import mindustry.gen.Posc;
+import mindustry.gen.Unit;
+import mindustry.graphics.Layer;
+import mindustry.type.UnitType;
 
 public class VapourizeEffectState extends EffectState {
 	public float extraAlpha = 0f;

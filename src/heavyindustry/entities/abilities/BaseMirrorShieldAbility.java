@@ -1,20 +1,25 @@
 package heavyindustry.entities.abilities;
 
-import arc.*;
-import arc.func.*;
-import arc.math.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import heavyindustry.content.*;
-import heavyindustry.math.*;
-import heavyindustry.world.meta.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.ui.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.func.Cons;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.scene.ui.layout.Table;
+import arc.util.Strings;
+import arc.util.Time;
+import heavyindustry.content.HFx;
+import heavyindustry.math.Mathm;
+import heavyindustry.world.meta.HIStat;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Bullet;
+import mindustry.gen.Hitboxc;
+import mindustry.gen.Unit;
+import mindustry.graphics.Pal;
+import mindustry.ui.Bar;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
 /**
  * Base mirror shield ability

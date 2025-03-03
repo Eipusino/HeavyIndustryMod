@@ -1,10 +1,11 @@
 package heavyindustry.maps.planets;
 
-import arc.graphics.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import heavyindustry.maps.*;
-import mindustry.type.*;
+import arc.graphics.Color;
+import arc.math.geom.Vec3;
+import arc.struct.Seq;
+import heavyindustry.maps.ColorPass;
+import heavyindustry.maps.HeightPass;
+import mindustry.type.Sector;
 
 public class GliesePlanetGenerator extends BasePlanetGenerator {
 	public Seq<HeightPass> heights = new Seq<>();

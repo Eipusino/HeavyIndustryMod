@@ -1,17 +1,20 @@
 package heavyindustry.world.blocks.distribution;
 
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
-import mindustry.world.blocks.distribution.*;
-import mindustry.world.blocks.distribution.StackConveyor.*;
-import mindustry.world.meta.*;
+import arc.graphics.g2d.Lines;
+import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.math.geom.Rect;
+import arc.util.Time;
+import arc.util.Tmp;
+import mindustry.gen.Building;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Pal;
+import mindustry.world.Block;
+import mindustry.world.blocks.distribution.StackConveyor;
+import mindustry.world.blocks.distribution.StackConveyor.StackConveyorBuild;
+import mindustry.world.meta.BlockGroup;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
 
 /**
  * Stack Helper

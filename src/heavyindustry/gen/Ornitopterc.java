@@ -1,8 +1,8 @@
 package heavyindustry.gen;
 
-import heavyindustry.type.unit.OrnitopterUnitType.*;
-import mindustry.gen.*;
-import mindustry.type.*;
+import heavyindustry.type.unit.OrnitopterUnitType.BladeMount;
+import mindustry.gen.Unitc;
+import mindustry.type.UnitType;
 
 public interface Ornitopterc extends Unitc {
 	float bladeMoveSpeedScl();

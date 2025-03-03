@@ -1,13 +1,15 @@
 package heavyindustry.graphics;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.graphics.gl.*;
-import arc.math.*;
-import arc.struct.*;
-import arc.util.*;
+import arc.Core;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.gl.FrameBuffer;
+import arc.graphics.gl.Shader;
+import arc.math.Mathf;
+import arc.struct.Seq;
+import arc.util.Tmp;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.renderer;
 
 public final class SlashRenderer {
 	private static final Seq<SlashData> slashes = new Seq<>(SlashData.class);

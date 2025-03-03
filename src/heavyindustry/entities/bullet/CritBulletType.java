@@ -1,17 +1,25 @@
 package heavyindustry.entities.bullet;
 
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.content.*;
-import heavyindustry.graphics.HTrails.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.Rand;
+import arc.math.geom.Vec2;
+import arc.util.Time;
+import heavyindustry.content.HFx;
+import heavyindustry.graphics.HTrails.CritTrail;
+import mindustry.content.Fx;
+import mindustry.entities.Damage;
+import mindustry.entities.Effect;
+import mindustry.entities.Lightning;
+import mindustry.entities.Units;
+import mindustry.entities.bullet.BasicBulletType;
+import mindustry.gen.Building;
+import mindustry.gen.Bullet;
+import mindustry.gen.Hitboxc;
+import mindustry.gen.Teamc;
+import mindustry.graphics.Pal;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.headless;
 
 public class CritBulletType extends BasicBulletType {
 	protected static Rand critRand = new Rand();

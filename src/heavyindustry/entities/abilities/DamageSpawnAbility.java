@@ -1,12 +1,14 @@
 package heavyindustry.entities.abilities;
 
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
-import mindustry.type.*;
-import mindustry.world.meta.*;
+import arc.scene.ui.layout.Table;
+import arc.util.Strings;
+import mindustry.entities.Units;
+import mindustry.entities.abilities.UnitSpawnAbility;
+import mindustry.gen.Building;
+import mindustry.gen.Unit;
+import mindustry.type.UnitType;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
 public class DamageSpawnAbility extends UnitSpawnAbility {
 	public float damage;

@@ -1,6 +1,7 @@
 package heavyindustry.entities.abilities;
 
-import mindustry.gen.*;
+import mindustry.gen.Hitboxc;
+import mindustry.gen.Unit;
 
 /**
  * interface, Not directly usable.

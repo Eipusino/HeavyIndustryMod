@@ -1,7 +1,7 @@
 package heavyindustry.world.draw;
 
-import mindustry.gen.*;
-import mindustry.world.draw.*;
+import mindustry.gen.Building;
+import mindustry.world.draw.DrawBlock;
 
 /**
  * Draw a TeamTop for the Block. JSON specific.

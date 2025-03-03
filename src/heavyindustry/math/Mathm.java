@@ -1,9 +1,17 @@
 package heavyindustry.math;
 
-import arc.func.*;
-import arc.math.*;
-import arc.math.geom.*;
-import heavyindustry.func.*;
+import arc.func.FloatFloatf;
+import arc.func.Floatc2;
+import arc.math.Angles;
+import arc.math.Interp;
+import arc.math.Mat;
+import arc.math.Mathf;
+import arc.math.Rand;
+import arc.math.geom.Bezier;
+import arc.math.geom.Mat3D;
+import arc.math.geom.Vec2;
+import arc.math.geom.Vec3;
+import heavyindustry.func.Floatc3;
 
 /** @since 1.0.4 */
 public final class Mathm {

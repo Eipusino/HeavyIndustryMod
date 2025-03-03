@@ -1,8 +1,8 @@
 package heavyindustry.struct;
 
-import arc.math.*;
+import arc.math.Mathf;
 
-import java.util.*;
+import java.util.Arrays;
 
 public class BoolGrid {
 	boolean[] array = {};

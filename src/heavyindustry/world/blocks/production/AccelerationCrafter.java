@@ -1,13 +1,15 @@
 package heavyindustry.world.blocks.production;
 
-import arc.*;
-import arc.func.*;
-import arc.math.*;
-import arc.util.io.*;
-import mindustry.graphics.*;
-import mindustry.ui.*;
-import mindustry.world.blocks.production.*;
-import mindustry.world.consumers.*;
+import arc.Core;
+import arc.func.Cons;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import mindustry.graphics.Pal;
+import mindustry.ui.Bar;
+import mindustry.world.blocks.production.GenericCrafter;
+import mindustry.world.consumers.ConsumeItems;
 
 public class AccelerationCrafter extends GenericCrafter {
 	public float accelerationSpeed = 0.03f, decelerationSpeed = 0.05f;

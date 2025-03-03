@@ -1,7 +1,7 @@
 package heavyindustry.graphics.g3d.model.obj.mtl;
 
-import arc.files.*;
-import arc.struct.*;
+import arc.files.Fi;
+import arc.struct.ObjectMap;
 
 /**
  * Material data container.

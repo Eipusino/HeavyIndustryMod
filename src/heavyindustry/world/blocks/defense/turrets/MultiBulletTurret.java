@@ -1,28 +1,39 @@
 package heavyindustry.world.blocks.defense.turrets;
 
-import arc.*;
-import arc.math.*;
-import arc.scene.ui.*;
-import arc.scene.ui.layout.*;
-import arc.struct.*;
-import arc.struct.ObjectMap.*;
-import arc.util.*;
-import arc.util.io.*;
-import heavyindustry.world.meta.*;
-import mindustry.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.ui.*;
-import mindustry.world.blocks.defense.turrets.*;
-import mindustry.world.consumers.*;
-import mindustry.world.meta.*;
+import arc.Core;
+import arc.Events;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.scene.ui.Image;
+import arc.scene.ui.layout.Table;
+import arc.struct.ObjectMap;
+import arc.struct.ObjectMap.Entry;
+import arc.struct.Seq;
+import arc.util.Strings;
+import arc.util.Time;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.world.meta.HIStatValues;
+import mindustry.Vars;
+import mindustry.content.Bullets;
+import mindustry.content.Items;
+import mindustry.entities.Effect;
+import mindustry.entities.Mover;
+import mindustry.entities.bullet.BulletType;
+import mindustry.game.EventType;
+import mindustry.gen.Building;
+import mindustry.gen.Teamc;
+import mindustry.graphics.Pal;
+import mindustry.type.Item;
+import mindustry.ui.Bar;
+import mindustry.ui.MultiReqImage;
+import mindustry.ui.ReqImage;
+import mindustry.world.blocks.defense.turrets.Turret;
+import mindustry.world.consumers.ConsumeItemFilter;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.Stats;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.content;
 
 /** Multi Bullet Turret */
 public class MultiBulletTurret extends Turret {

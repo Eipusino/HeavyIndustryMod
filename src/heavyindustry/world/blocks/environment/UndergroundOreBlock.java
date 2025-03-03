@@ -1,10 +1,10 @@
 package heavyindustry.world.blocks.environment;
 
-import arc.graphics.g2d.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.world.*;
-import mindustry.world.blocks.environment.*;
+import arc.graphics.g2d.Draw;
+import mindustry.graphics.Layer;
+import mindustry.type.Item;
+import mindustry.world.Tile;
+import mindustry.world.blocks.environment.OverlayFloor;
 
 public class UndergroundOreBlock extends OverlayFloor {
 	/** Used instead of itemDrop! */

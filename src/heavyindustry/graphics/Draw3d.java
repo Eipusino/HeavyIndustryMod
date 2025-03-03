@@ -1,17 +1,26 @@
 package heavyindustry.graphics;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.graphics.gl.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import mindustry.game.EventType.*;
-import mindustry.graphics.*;
+import arc.Core;
+import arc.Events;
+import arc.graphics.Color;
+import arc.graphics.Gl;
+import arc.graphics.g2d.Bloom;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.graphics.gl.FrameBuffer;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Mat3D;
+import arc.math.geom.Vec3;
+import arc.struct.Seq;
+import arc.util.Time;
+import arc.util.Tmp;
+import mindustry.game.EventType.Trigger;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.renderer;
 
 /** Draws 2d region with applying {@link Mat3D}. */
 public final class Draw3d {

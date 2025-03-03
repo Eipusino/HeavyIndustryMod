@@ -1,7 +1,7 @@
 package heavyindustry.world.blocks.environment;
 
-import mindustry.graphics.*;
-import mindustry.world.*;
+import mindustry.graphics.CacheLayer;
+import mindustry.world.Block;
 
 public class CliffHelper extends Block {
 	public CliffHelper(String name) {

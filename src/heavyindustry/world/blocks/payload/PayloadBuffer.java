@@ -1,15 +1,18 @@
 package heavyindustry.world.blocks.payload;
 
-import arc.scene.ui.layout.*;
-import arc.struct.*;
-import arc.util.io.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.io.*;
-import mindustry.ui.*;
-import mindustry.world.blocks.payloads.*;
+import arc.scene.ui.layout.Table;
+import arc.struct.Seq;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import mindustry.gen.Building;
+import mindustry.graphics.Pal;
+import mindustry.io.TypeIO;
+import mindustry.ui.Bar;
+import mindustry.world.blocks.payloads.Payload;
+import mindustry.world.blocks.payloads.PayloadBlock;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.iconMed;
+import static mindustry.Vars.player;
 
 public class PayloadBuffer extends PayloadBlock {
 	public float payloadCapacity = 6f * 6f * 64f;

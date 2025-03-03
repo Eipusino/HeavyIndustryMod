@@ -1,17 +1,19 @@
 package heavyindustry.entities.effect;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.math.geom.*;
-import arc.util.*;
-import arc.util.pooling.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.gen.*;
-import mindustry.world.blocks.defense.turrets.BaseTurret.*;
+import arc.Core;
+import arc.func.Cons;
+import arc.graphics.Color;
+import arc.math.geom.Rect;
+import arc.util.Tmp;
+import arc.util.pooling.Pools;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.gen.EffectState;
+import mindustry.gen.Posc;
+import mindustry.gen.Rotc;
+import mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.headless;
 
 public class ParentEffect extends Effect {
 	public ParentEffect(float life, Cons<EffectContainer> renderer) {

@@ -1,10 +1,11 @@
 package heavyindustry.ui;
 
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import mindustry.type.*;
-import mindustry.ui.*;
-import mindustry.world.meta.*;
+import arc.scene.ui.layout.Table;
+import arc.util.Strings;
+import mindustry.type.Item;
+import mindustry.type.ItemStack;
+import mindustry.ui.Styles;
+import mindustry.world.meta.StatUnit;
 
 /**
  * An item image with text.

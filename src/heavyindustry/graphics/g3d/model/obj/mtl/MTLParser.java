@@ -1,10 +1,11 @@
 package heavyindustry.graphics.g3d.model.obj.mtl;
 
-import arc.files.*;
-import arc.struct.*;
-import heavyindustry.graphics.g3d.model.obj.*;
+import arc.files.Fi;
+import arc.struct.Seq;
+import heavyindustry.graphics.g3d.model.obj.ObjectModelFactory;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 /** For models parsing use {@link ObjectModelFactory}. */
 public class MTLParser {

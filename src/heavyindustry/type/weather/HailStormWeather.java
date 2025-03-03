@@ -1,18 +1,18 @@
 package heavyindustry.type.weather;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import mindustry.content.*;
-import mindustry.entities.bullet.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.type.*;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import mindustry.content.Liquids;
+import mindustry.entities.bullet.BulletType;
+import mindustry.game.Team;
+import mindustry.gen.WeatherState;
+import mindustry.type.Liquid;
 
-import java.util.*;
+import java.util.Arrays;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.net;
 
 public class HailStormWeather extends SpawnerWeather {
 	public float yspeed = 5f, xspeed = 1.5f, density = 900f, stroke = 0.75f, sizeMin = 8f, sizeMax = 40f, splashTimeScale = 22f;

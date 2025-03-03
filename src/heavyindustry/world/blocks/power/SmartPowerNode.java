@@ -1,12 +1,12 @@
 package heavyindustry.world.blocks.power;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import mindustry.*;
-import mindustry.core.*;
-import mindustry.gen.*;
-import mindustry.world.blocks.power.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.math.Mathf;
+import mindustry.Vars;
+import mindustry.core.Renderer;
+import mindustry.gen.Building;
+import mindustry.world.blocks.power.PowerNode;
 
 public class SmartPowerNode extends PowerNode {
 	public SmartPowerNode(String name) {

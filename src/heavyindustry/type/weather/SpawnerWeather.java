@@ -1,12 +1,15 @@
 package heavyindustry.type.weather;
 
-import arc.*;
-import arc.math.*;
-import arc.util.*;
-import mindustry.gen.*;
-import mindustry.type.weather.*;
+import arc.Core;
+import arc.math.Mathf;
+import arc.util.Time;
+import arc.util.Tmp;
+import mindustry.gen.WeatherState;
+import mindustry.type.weather.ParticleWeather;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.renderer;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 public class SpawnerWeather extends ParticleWeather {
 	public int maxSpawn = 6;

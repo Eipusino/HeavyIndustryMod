@@ -1,9 +1,11 @@
 package heavyindustry.ai;
 
-import mindustry.content.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.world.*;
+import mindustry.content.Blocks;
+import mindustry.entities.units.AIController;
+import mindustry.gen.Building;
+import mindustry.gen.BuildingTetherc;
+import mindustry.gen.Call;
+import mindustry.world.Tile;
 
 public class MinerPointAI extends AIController {
 	public boolean mining = true;

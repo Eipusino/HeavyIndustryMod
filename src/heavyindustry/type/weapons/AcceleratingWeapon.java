@@ -1,10 +1,10 @@
 package heavyindustry.type.weapons;
 
-import arc.math.*;
-import arc.util.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.type.*;
+import arc.math.Mathf;
+import arc.util.Time;
+import mindustry.entities.units.WeaponMount;
+import mindustry.gen.Unit;
+import mindustry.type.Weapon;
 
 public class AcceleratingWeapon extends Weapon {
 	public float accelCooldownTime = 120f;

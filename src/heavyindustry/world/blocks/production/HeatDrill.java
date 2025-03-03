@@ -1,10 +1,10 @@
 package heavyindustry.world.blocks.production;
 
-import arc.*;
-import arc.math.*;
-import mindustry.graphics.*;
-import mindustry.ui.*;
-import mindustry.world.blocks.heat.*;
+import arc.Core;
+import arc.math.Mathf;
+import mindustry.graphics.Pal;
+import mindustry.ui.Bar;
+import mindustry.world.blocks.heat.HeatConsumer;
 
 public class HeatDrill extends DrawerDrill {
 	/** Base heat requirement for 100% efficiency. */

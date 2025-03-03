@@ -1,7 +1,8 @@
 package heavyindustry.struct;
 
-import arc.math.*;
-import arc.struct.*;
+import arc.math.Mathf;
+import arc.struct.FloatSeq;
+import arc.struct.Seq;
 
 public class WeightedRandom<T> {
 	float lastValue = 0f;

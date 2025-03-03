@@ -1,21 +1,27 @@
 package heavyindustry.graphics;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import mindustry.*;
-import mindustry.content.*;
-import mindustry.core.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.world.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.Rand;
+import arc.math.geom.Position;
+import arc.math.geom.Vec2;
+import arc.struct.IntSet;
+import arc.struct.Seq;
+import arc.util.Time;
+import arc.util.Tmp;
+import mindustry.Vars;
+import mindustry.content.Bullets;
+import mindustry.core.World;
+import mindustry.entities.Effect;
+import mindustry.entities.bullet.BulletType;
+import mindustry.game.Team;
+import mindustry.gen.Bullet;
+import mindustry.world.Tile;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.tilesize;
 
 /**
  * @author Ovulam5480

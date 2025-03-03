@@ -1,18 +1,20 @@
 package heavyindustry.world.blocks.environment;
 
-import arc.graphics.g2d.*;
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.content.*;
-import mindustry.content.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.geom.Geometry;
+import arc.util.Tmp;
+import heavyindustry.content.HBlocks;
+import mindustry.content.Blocks;
+import mindustry.game.Team;
+import mindustry.gen.Call;
+import mindustry.graphics.CacheLayer;
+import mindustry.world.Block;
+import mindustry.world.Tile;
 
-import static heavyindustry.HVars.*;
-import static heavyindustry.util.Utils.*;
-import static mindustry.Vars.*;
+import static heavyindustry.HVars.name;
+import static heavyindustry.util.Utils.split;
+import static mindustry.Vars.world;
 
 public class Clifff extends Block {
 	public float colorMultiplier = 1.5f;

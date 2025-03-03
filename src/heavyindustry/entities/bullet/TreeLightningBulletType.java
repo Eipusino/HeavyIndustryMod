@@ -1,10 +1,11 @@
 package heavyindustry.entities.bullet;
 
-import arc.graphics.*;
-import heavyindustry.graphics.*;
-import mindustry.content.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
+import arc.graphics.Color;
+import heavyindustry.graphics.TreeLightning;
+import mindustry.content.Fx;
+import mindustry.content.StatusEffects;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Bullet;
 
 public class TreeLightningBulletType extends BulletType {
 	public float lightningRange = 120f;

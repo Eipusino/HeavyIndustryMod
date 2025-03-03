@@ -1,10 +1,11 @@
 package heavyindustry.entities.abilities;
 
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.abilities.*;
-import mindustry.gen.*;
+import arc.util.Time;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.entities.Units;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Unit;
 
 public class MindControlFieldAbility extends Ability {
 	public float damage = 1f, threshold = 1000f, reload = 180f, range = 60f;

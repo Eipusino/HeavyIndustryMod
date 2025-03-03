@@ -1,19 +1,20 @@
 package heavyindustry.content;
 
-import arc.graphics.*;
-import arc.util.*;
-import heavyindustry.core.*;
-import heavyindustry.entities.bullet.*;
-import heavyindustry.gen.*;
-import heavyindustry.type.weather.*;
-import mindustry.content.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.type.weather.*;
-import mindustry.world.meta.*;
+import arc.graphics.Color;
+import arc.util.Time;
+import heavyindustry.core.HeavyIndustryMod;
+import heavyindustry.entities.bullet.HailStoneBulletType;
+import heavyindustry.gen.HSounds;
+import heavyindustry.type.weather.EffectWeather;
+import heavyindustry.type.weather.HailStormWeather;
+import mindustry.content.Fx;
+import mindustry.gen.Sounds;
+import mindustry.graphics.Layer;
+import mindustry.type.Weather;
+import mindustry.type.weather.ParticleWeather;
+import mindustry.world.meta.Attribute;
 
-import static heavyindustry.HVars.*;
+import static heavyindustry.HVars.name;
 
 /**
  * Defines the {@linkplain Weather weather} this mod offers.

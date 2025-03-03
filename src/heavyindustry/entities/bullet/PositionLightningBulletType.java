@@ -1,11 +1,16 @@
 package heavyindustry.entities.bullet;
 
-import heavyindustry.content.*;
-import heavyindustry.graphics.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
+import heavyindustry.content.HFx;
+import heavyindustry.graphics.PositionLightning;
+import mindustry.content.Fx;
+import mindustry.entities.Damage;
+import mindustry.entities.Effect;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Building;
+import mindustry.gen.Bullet;
+import mindustry.gen.Healthc;
+import mindustry.gen.Hitboxc;
+import mindustry.gen.Sounds;
 
 public class PositionLightningBulletType extends BulletType {
 	public int boltNum = 2;

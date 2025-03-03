@@ -1,13 +1,19 @@
 package heavyindustry.graphics.g3d;
 
-import arc.graphics.*;
-import arc.graphics.gl.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.graphics.*;
-import mindustry.graphics.g3d.*;
-import mindustry.type.*;
+import arc.graphics.Color;
+import arc.graphics.Gl;
+import arc.graphics.Mesh;
+import arc.graphics.Texture;
+import arc.graphics.gl.Shader;
+import arc.math.Mathf;
+import arc.math.geom.Mat3D;
+import arc.math.geom.Vec2;
+import arc.math.geom.Vec3;
+import arc.util.Tmp;
+import heavyindustry.graphics.HShaders;
+import mindustry.graphics.g3d.PlanetMesh;
+import mindustry.graphics.g3d.PlanetParams;
+import mindustry.type.Planet;
 
 public class CircleMesh extends PlanetMesh {
 	public final Mesh mesh;

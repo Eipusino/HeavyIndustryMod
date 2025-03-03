@@ -1,10 +1,10 @@
 package heavyindustry.type.form;
 
-import arc.graphics.*;
-import heavyindustry.struct.*;
-import heavyindustry.struct.BitWordList.*;
-import heavyindustry.type.CustomShape.*;
-import heavyindustry.type.*;
+import arc.graphics.Pixmap;
+import heavyindustry.struct.BitWordList;
+import heavyindustry.struct.BitWordList.WordLength;
+import heavyindustry.type.CustomShape.BlockType;
+import heavyindustry.type.CustomShapeLoader;
 
 public class SpriteShapeLoader extends CustomShapeLoader<Pixmap> {
 	public final int chunkSize;

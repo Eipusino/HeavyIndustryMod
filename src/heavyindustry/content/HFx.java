@@ -1,34 +1,57 @@
 package heavyindustry.content;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.entities.abilities.*;
-import heavyindustry.entities.bullet.*;
-import heavyindustry.graphics.*;
-import heavyindustry.graphics.Draws.*;
-import heavyindustry.graphics.HTrails.*;
-import heavyindustry.math.*;
-import heavyindustry.struct.*;
-import heavyindustry.util.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.entities.effect.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
-import mindustry.world.*;
-import mindustry.world.blocks.payloads.*;
+import arc.Core;
+import arc.func.Floatp;
+import arc.graphics.Blending;
+import arc.graphics.Color;
+import arc.graphics.g2d.Bloom;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Angles;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.math.Rand;
+import arc.math.geom.Geometry;
+import arc.math.geom.Position;
+import arc.math.geom.Vec2;
+import arc.math.geom.Vec3;
+import arc.struct.IntMap;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.entities.abilities.MirrorFieldAbility;
+import heavyindustry.entities.bullet.HailStoneBulletType;
+import heavyindustry.graphics.Drawm;
+import heavyindustry.graphics.Drawn;
+import heavyindustry.graphics.Draws;
+import heavyindustry.graphics.Draws.DrawAcceptor;
+import heavyindustry.graphics.HPal;
+import heavyindustry.graphics.HTrails.CritTrail;
+import heavyindustry.graphics.HTrails.DriftTrail;
+import heavyindustry.graphics.Layerf;
+import heavyindustry.graphics.PositionLightning;
+import heavyindustry.math.Math3d;
+import heavyindustry.struct.Vec2Seq;
+import heavyindustry.util.Utils;
+import mindustry.content.Fx;
+import mindustry.content.Items;
+import mindustry.entities.Effect;
+import mindustry.entities.effect.MultiEffect;
+import mindustry.gen.Building;
+import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.type.UnitType;
+import mindustry.world.Block;
+import mindustry.world.blocks.payloads.Payload;
 
-import java.util.*;
+import java.util.Objects;
 
-import static heavyindustry.HVars.*;
-import static mindustry.Vars.*;
+import static heavyindustry.HVars.name;
+import static mindustry.Vars.state;
+import static mindustry.Vars.tilesize;
 
 /**
  * Defines the {@linkplain Effect visual effects} this mod offers.
@@ -2807,17 +2830,17 @@ public final class HFx {
 		});
 	}
 
-	/** Refer to {@link HFx#burstCloud(float, float, int, float, Color)} */
+	/** Refer to {@link #burstCloud(float, float, int, float, Color)} */
 	public static Effect burstCloud(Color color) {
 		return burstCloud(15, color);
 	}
 
-	/** Refer to {@link HFx#burstCloud(float, float, int, float, Color)} */
+	/** Refer to {@link #burstCloud(float, float, int, float, Color)} */
 	public static Effect burstCloud(float size, Color color) {
 		return burstCloud(size, 22, 160, color);
 	}
 
-	/** Refer to {@link HFx#burstCloud(float, float, int, float, Color)} */
+	/** Refer to {@link #burstCloud(float, float, int, float, Color)} */
 	public static Effect burstCloud(float size, int amount, float spreadRad, Color color) {
 		return burstCloud(size, size * 6, amount, spreadRad, color);
 	}

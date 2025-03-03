@@ -1,16 +1,18 @@
 package heavyindustry.world.blocks.heat
 
-import arc.*
-import arc.math.*
-import arc.util.*
-import arc.util.io.*
-import heavyindustry.util.*
-import mindustry.graphics.*
-import mindustry.ui.*
-import mindustry.world.blocks.heat.*
-import mindustry.world.blocks.power.*
-import mindustry.world.consumers.*
-import mindustry.world.meta.*
+import arc.Core
+import arc.math.Mathf
+import arc.util.Time
+import arc.util.io.Reads
+import arc.util.io.Writes
+import heavyindustry.util.eq
+import mindustry.graphics.Pal
+import mindustry.ui.Bar
+import mindustry.world.blocks.heat.HeatConsumer
+import mindustry.world.blocks.power.PowerGenerator
+import mindustry.world.consumers.ConsumePower
+import mindustry.world.meta.Stat
+import mindustry.world.meta.StatUnit
 
 open class HeatGenerator(name: String) : PowerGenerator(name) {
 	@JvmField var maxHeat = 180f

@@ -1,20 +1,28 @@
 package heavyindustry.world.blocks.defense;
 
-import arc.audio.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.game.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.ui.*;
-import mindustry.world.*;
-import mindustry.world.blocks.storage.CoreBlock.*;
+import arc.audio.Sound;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.math.Mathf;
+import arc.util.Align;
+import arc.util.Strings;
+import arc.util.Time;
+import mindustry.content.Fx;
+import mindustry.entities.Damage;
+import mindustry.entities.Effect;
+import mindustry.game.Team;
+import mindustry.gen.Building;
+import mindustry.gen.Sounds;
+import mindustry.graphics.Drawf;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.ui.Fonts;
+import mindustry.world.Block;
+import mindustry.world.Tile;
+import mindustry.world.blocks.storage.CoreBlock.CoreBuild;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.player;
+import static mindustry.Vars.tilesize;
 
 public class Explosive extends Block {
 	/** Explosion radius. 1 is equivalent to 1 grid. */

@@ -1,18 +1,25 @@
 package heavyindustry.entities.bullet;
 
-import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
-import heavyindustry.content.*;
-import heavyindustry.entities.*;
-import mindustry.*;
-import mindustry.content.*;
-import mindustry.core.*;
-import mindustry.entities.bullet.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
+import arc.math.Mathf;
+import arc.math.geom.Geometry;
+import arc.math.geom.Position;
+import arc.math.geom.Vec2;
+import arc.struct.IntSeq;
+import arc.struct.Seq;
+import arc.util.Tmp;
+import heavyindustry.content.HFx;
+import heavyindustry.entities.HDamage;
+import mindustry.Vars;
+import mindustry.content.Fx;
+import mindustry.core.World;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.Building;
+import mindustry.gen.Bullet;
+import mindustry.gen.Groups;
+import mindustry.gen.Sounds;
+import mindustry.gen.Unit;
+import mindustry.graphics.Pal;
+import mindustry.world.Tile;
 
 public class ChainLightningBulletType extends BulletType {
 	private static int charges;

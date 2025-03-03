@@ -1,6 +1,6 @@
 package heavyindustry.graphics;
 
-import mindustry.graphics.*;
+import mindustry.graphics.Layer;
 
 public final class Layerf {
 	public static final float

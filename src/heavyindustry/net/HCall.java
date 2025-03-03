@@ -1,14 +1,16 @@
 package heavyindustry.net;
 
-import arc.func.*;
-import arc.struct.*;
-import heavyindustry.input.*;
-import heavyindustry.input.InputAggregator.*;
-import mindustry.gen.*;
-import mindustry.net.*;
+import arc.func.Cons;
+import arc.struct.Seq;
+import heavyindustry.input.InputAggregator;
+import heavyindustry.input.InputAggregator.TapResult;
+import heavyindustry.input.TapPacket;
+import mindustry.gen.Player;
+import mindustry.net.Net;
+import mindustry.net.NetConnection;
 
-import static heavyindustry.HVars.*;
-import static mindustry.Vars.*;
+import static heavyindustry.HVars.inputAggregator;
+import static mindustry.Vars.net;
 
 public final class HCall {
 	/** Don't let anyone instantiate this class. */

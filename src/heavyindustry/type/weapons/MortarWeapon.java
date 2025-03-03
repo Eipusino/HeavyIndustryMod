@@ -1,12 +1,15 @@
 package heavyindustry.type.weapons;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.util.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.type.*;
+import arc.Core;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.util.Tmp;
+import mindustry.entities.units.WeaponMount;
+import mindustry.gen.Unit;
+import mindustry.type.Weapon;
 
 public class MortarWeapon extends Weapon {
 	public float inclineOffset = 5f, maxIncline = 85f;

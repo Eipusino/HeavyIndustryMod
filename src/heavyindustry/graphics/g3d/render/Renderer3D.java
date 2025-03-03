@@ -1,6 +1,6 @@
 package heavyindustry.graphics.g3d.render;
 
-import arc.math.geom.*;
+import arc.math.geom.Mat3D;
 
 /** Interface for 3D renderers. */
 public interface Renderer3D {

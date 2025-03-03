@@ -1,14 +1,18 @@
 package heavyindustry.entities.bullet;
 
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.content.*;
-import heavyindustry.graphics.*;
-import heavyindustry.struct.*;
-import mindustry.*;
-import mindustry.gen.*;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.Lines;
+import arc.math.Mathf;
+import arc.math.Rand;
+import arc.math.geom.Vec2;
+import arc.util.Tmp;
+import heavyindustry.content.HFx;
+import heavyindustry.graphics.PositionLightning;
+import heavyindustry.struct.Vec2Seq;
+import mindustry.Vars;
+import mindustry.gen.Bullet;
+import mindustry.gen.Hitboxc;
 
 public class TrailedEnergyBulletType extends AccelBulletType {
 	protected static final Vec2 v1 = new Vec2(), v2 = new Vec2(), v3 = new Vec2();

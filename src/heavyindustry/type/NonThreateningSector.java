@@ -1,8 +1,9 @@
 package heavyindustry.type;
 
-import arc.*;
-import mindustry.graphics.g3d.PlanetGrid.*;
-import mindustry.type.*;
+import arc.Core;
+import mindustry.graphics.g3d.PlanetGrid.Ptile;
+import mindustry.type.Planet;
+import mindustry.type.Sector;
 
 // it is not threatening . threat level None .
 public class NonThreateningSector extends Sector {

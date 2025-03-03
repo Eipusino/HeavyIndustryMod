@@ -1,18 +1,22 @@
 package heavyindustry.world.draw;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.util.*;
-import mindustry.entities.units.*;
-import mindustry.gen.*;
-import mindustry.world.*;
-import mindustry.world.draw.*;
+import arc.Core;
+import arc.func.Boolf2;
+import arc.func.Intf;
+import arc.graphics.Pixmap;
+import arc.graphics.Pixmaps;
+import arc.graphics.Texture;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.geom.Point2;
+import arc.util.Eachable;
+import heavyindustry.util.DirEdges;
+import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Building;
+import mindustry.world.Block;
+import mindustry.world.draw.DrawBlock;
 
-import static heavyindustry.util.Utils.*;
+import static heavyindustry.util.Utils.split;
 
 public class DrawAntiSpliceBlock<E extends Building> extends DrawBlock {
 	protected static final String[] splices = {"right", "right-top", "top", "left-top", "left", "left-bot", "bot", "right-bot"};

@@ -1,9 +1,11 @@
 package heavyindustry.entities.bullet;
 
-import arc.math.*;
-import arc.util.*;
-import mindustry.entities.*;
-import mindustry.gen.*;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.util.Time;
+import mindustry.entities.Units;
+import mindustry.gen.Bullet;
+import mindustry.gen.Teamc;
 
 public class ThermoBulletType extends TrailFadeBulletType {
 	public float angelRandOffset = 3.5f;

@@ -1,15 +1,20 @@
 package heavyindustry.scene.ui;
 
-import arc.*;
-import arc.func.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.scene.*;
-import arc.scene.event.*;
-import arc.scene.style.*;
-import arc.scene.ui.*;
-import arc.util.*;
-import heavyindustry.*;
+import arc.Core;
+import arc.func.Boolp;
+import arc.func.Cons;
+import arc.graphics.Color;
+import arc.graphics.g2d.TextureRegion;
+import arc.scene.Element;
+import arc.scene.event.ClickListener;
+import arc.scene.event.InputEvent;
+import arc.scene.style.Drawable;
+import arc.scene.style.TextureRegionDrawable;
+import arc.scene.ui.Button;
+import arc.scene.ui.Image;
+import arc.scene.ui.ImageButton;
+import arc.util.Time;
+import heavyindustry.HVars;
 
 public class HoldImageButton extends ImageButton {
 	public Boolp canHold = () -> true;

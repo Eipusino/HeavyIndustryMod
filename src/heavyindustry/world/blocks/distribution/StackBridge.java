@@ -1,12 +1,12 @@
 package heavyindustry.world.blocks.distribution;
 
-import mindustry.gen.*;
-import mindustry.type.*;
-import mindustry.world.*;
-import mindustry.world.blocks.distribution.*;
-import mindustry.world.blocks.distribution.StackConveyor.*;
+import mindustry.gen.Building;
+import mindustry.type.Item;
+import mindustry.world.Tile;
+import mindustry.world.blocks.distribution.BufferedItemBridge;
+import mindustry.world.blocks.distribution.StackConveyor.StackConveyorBuild;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.world;
 
 /**
  * Multiple items can be transported together to the other end.

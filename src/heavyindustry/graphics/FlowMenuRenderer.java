@@ -1,20 +1,34 @@
 package heavyindustry.graphics;
 
-import arc.*;
-import arc.graphics.*;
-import arc.graphics.Texture.*;
-import arc.graphics.g2d.*;
-import arc.graphics.gl.*;
-import arc.math.*;
-import arc.scene.ui.layout.*;
-import arc.util.*;
-import arc.util.noise.*;
-import heavyindustry.content.*;
-import mindustry.content.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
+import arc.Core;
+import arc.graphics.Camera;
+import arc.graphics.Color;
+import arc.graphics.Texture.TextureFilter;
+import arc.graphics.g2d.Batch;
+import arc.graphics.g2d.CacheBatch;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.SpriteCache;
+import arc.graphics.gl.FrameBuffer;
+import arc.math.Mat;
+import arc.math.Mathf;
+import arc.math.Rand;
+import arc.scene.ui.layout.Scl;
+import arc.util.Disposable;
+import arc.util.Log;
+import arc.util.Time;
+import arc.util.noise.Simplex;
+import heavyindustry.content.HBlocks;
+import mindustry.content.Blocks;
+import mindustry.graphics.MenuRenderer;
+import mindustry.world.Block;
+import mindustry.world.CachedTile;
+import mindustry.world.Tile;
+import mindustry.world.Tiles;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.mobile;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 public class FlowMenuRenderer extends MenuRenderer {
 	protected int viewWidth = !mobile ? 100 : 60;

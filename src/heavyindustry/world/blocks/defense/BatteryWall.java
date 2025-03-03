@@ -1,14 +1,18 @@
 package heavyindustry.world.blocks.defense;
 
-import arc.audio.*;
-import arc.math.*;
-import arc.struct.*;
-import arc.util.io.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.gen.*;
-import mindustry.world.blocks.power.*;
-import mindustry.world.meta.*;
+import arc.audio.Sound;
+import arc.math.Mathf;
+import arc.struct.EnumSet;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.gen.Building;
+import mindustry.gen.Sounds;
+import mindustry.world.blocks.power.PowerDistributor;
+import mindustry.world.meta.BlockFlag;
+import mindustry.world.meta.BlockStatus;
+import mindustry.world.meta.Env;
 
 public class BatteryWall extends PowerDistributor {
 	//scale 1:1

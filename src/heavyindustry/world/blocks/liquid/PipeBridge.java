@@ -1,13 +1,14 @@
 package heavyindustry.world.blocks.liquid;
 
-import arc.*;
-import arc.graphics.g2d.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import mindustry.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.world.*;
+import arc.Core;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.geom.Geometry;
+import arc.struct.Seq;
+import mindustry.Vars;
+import mindustry.gen.Building;
+import mindustry.graphics.Layer;
+import mindustry.world.Tile;
 
 public class PipeBridge extends MergingLiquidBlock {
 	public TextureRegion top1, top2, bridgeRegion1, bridgeRegion2;

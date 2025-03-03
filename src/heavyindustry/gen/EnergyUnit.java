@@ -1,22 +1,35 @@
 package heavyindustry.gen;
 
-import arc.graphics.*;
-import arc.graphics.g2d.*;
-import arc.math.*;
-import arc.math.geom.*;
-import arc.util.*;
-import heavyindustry.content.*;
-import heavyindustry.graphics.*;
-import heavyindustry.type.unit.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.gen.*;
-import mindustry.graphics.*;
-import mindustry.type.*;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.math.Mathf;
+import arc.math.Rand;
+import arc.math.geom.Vec2;
+import arc.util.Interval;
+import arc.util.Time;
+import arc.util.Tmp;
+import heavyindustry.content.HFx;
+import heavyindustry.graphics.Drawn;
+import heavyindustry.type.unit.EnergyUnitType;
+import mindustry.content.Fx;
+import mindustry.entities.Lightning;
+import mindustry.entities.Units;
+import mindustry.gen.Call;
+import mindustry.gen.Groups;
+import mindustry.gen.Sounds;
+import mindustry.gen.Teamc;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Trail;
+import mindustry.type.UnitType;
 
-import static mindustry.Vars.*;
+import static mindustry.Vars.finalWorldBounds;
+import static mindustry.Vars.headless;
+import static mindustry.Vars.mobile;
+import static mindustry.Vars.net;
+import static mindustry.Vars.state;
+import static mindustry.Vars.world;
 
-public class EnergyUnit extends Unitf implements Energyc {
+public class EnergyUnit extends ExtraUnit implements Energyc {
 	protected transient Vec2 lastPos = new Vec2();
 	protected float reloadValue = 0;
 	protected float lastHealth = 0;
