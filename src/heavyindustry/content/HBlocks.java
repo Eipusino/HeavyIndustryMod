@@ -2365,7 +2365,7 @@ public final class HBlocks {
 				@Override
 				public void updateTile() {
 					super.updateTile();
-					if (!nextFlash && heatf < 0.001f && Mathf.chance(0.01f * edelta()) && canConsume() && efficiency() > 0.0001f) {
+					if (!nextFlash && heatf < 0.001f && Mathf.chance(0.01f * edelta()) && canConsume() && efficiency > 0.0001f) {
 						nextFlash = true;
 						heatf = 1f;
 					} else if (nextFlash && heatf < 0.001f) {
@@ -2373,7 +2373,7 @@ public final class HBlocks {
 						heatf = 1f;
 					}
 					heatf = Mathf.approachDelta(heatf, 0f, 0.05f);
-					warmupf = Mathf.approachDelta(warmupf, efficiency(), 0.04f);
+					warmupf = Mathf.approachDelta(warmupf, efficiency, 0.04f);
 				}
 
 				@Override

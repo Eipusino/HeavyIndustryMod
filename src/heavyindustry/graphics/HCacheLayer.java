@@ -28,7 +28,7 @@ public final class HCacheLayer {
 		armor = new ShaderLayer(HShaders.tiler) {
 			@Override
 			public void begin() {
-				renderer.blocks.floor.endc();
+				//renderer.blocks.floor.endc();
 				renderer.effectBuffer.begin();
 				Core.graphics.clear(Color.clear);
 				renderer.blocks.floor.beginc();
@@ -36,7 +36,7 @@ public final class HCacheLayer {
 
 			@Override
 			public void end() {
-				renderer.blocks.floor.endc();
+				//renderer.blocks.floor.endc();
 				renderer.effectBuffer.end();
 
 				HShaders.tiler.texture = HTextures.armor;

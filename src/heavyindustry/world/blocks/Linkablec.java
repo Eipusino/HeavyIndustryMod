@@ -21,8 +21,7 @@ public interface Linkablec extends Buildingc, Ranged {
 	@Deprecated
 	Seq<Building> tmpSeq = new Seq<>(1);
 
-	@Override
-	default boolean onConfigureBuildTapped(Building other) {
+	/*default boolean onConfigureBuildTapped(Building other) {
 		if (this == other || linkPos() == other.pos()) {
 			configure(Tmp.p1.set(-1, -1));
 			return false;
@@ -32,9 +31,9 @@ public interface Linkablec extends Buildingc, Ranged {
 			return false;
 		}
 		return true;
-	}
+	}*/
 
-	default void drawLink(@Nullable Seq<Building> builds) {
+	void drawLink(@Nullable Seq<Building> builds);/* {
 		Draw.reset();
 		if (builds == null) {
 			if (linkValid(link())) {
@@ -53,7 +52,7 @@ public interface Linkablec extends Buildingc, Ranged {
 		}
 
 		Draw.reset();
-	}
+	}*/
 
 	default void drawLink() {
 		drawLink(null);

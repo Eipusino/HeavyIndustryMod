@@ -13,7 +13,7 @@ buildscript {
 
 	dependencies {
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-		classpath files("libs/mindustry-25701.jar")
+		classpath files("libs/mindustry-v8-build-147-beta.jar")
 	}
 }
 
@@ -52,7 +52,7 @@ dependencies {
 	implementation "org.jetbrains:annotations:24.0.1"
 	implementation "org.tomlj:tomlj:1.1.1"
 
-	compileOnly files("libs/mindustry-25701.jar")
+	compileOnly files("libs/mindustry-v8-build-147-beta.jar")
 }
 
 task jarAndroid {

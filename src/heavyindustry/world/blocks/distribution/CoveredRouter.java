@@ -109,7 +109,7 @@ public class CoveredRouter extends Router {
 		@Override
 		public void handleItem(Building source, Item item) {
 			recDir = relativeToEdge(source.tile);
-			lastInput = source.tile();
+			lastInput = source.tile;
 			current = item;
 			progress = -1f;
 			items.add(item, 1);

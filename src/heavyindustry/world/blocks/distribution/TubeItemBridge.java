@@ -46,7 +46,7 @@ public class TubeItemBridge extends ItemBridge {
 
 	protected Seq<Block> connectibleBlocks = new Seq<>();
 
-	public Boolf<Building> connectFilter = (building) -> connectibleBlocks.contains(building.block());
+	public Boolf<Building> connectFilter = building -> connectibleBlocks.contains(building.block);
 
 	public TubeItemBridge(String name) {
 		super(name);
@@ -374,7 +374,7 @@ public class TubeItemBridge extends ItemBridge {
 			}
 			if (orderedMap.containsKey(this)) orderedMap.remove(this);
 			for (var ord : orderedMap) {
-				Drawf.select(ord.key.x, ord.key.y, (ord.key.block().size * 8f) / 2f + 2f + (ord.value ? 0f : Mathf.absin(Time.time, 4f, 1f)), ord.value ? Pal.place : Pal.breakInvalid);
+				Drawf.select(ord.key.x, ord.key.y, (ord.key.block.size * 8f) / 2f + 2f + (ord.value ? 0f : Mathf.absin(Time.time, 4f, 1f)), ord.value ? Pal.place : Pal.breakInvalid);
 			}
 		}
 

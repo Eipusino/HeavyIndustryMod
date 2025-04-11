@@ -70,12 +70,12 @@ public class UndergroundDrill extends Drill {
 		if (isMultiblock()) {
 			for (Tile other : tile.getLinkedTilesAs(this, tempTiles)) {
 				Building build = other.build;
-				if (build != null && build.block() instanceof UndergroundDrill && build.team == team) return true;
+				if (build != null && build.block instanceof UndergroundDrill && build.team == team) return true;
 			}
 			return nearestDetector(team, tile.worldx(), tile.worldy()) != null;
 		} else {
 			Building build = tile.build;
-			return (build != null && build.block() instanceof UndergroundDrill && build.team == team) ||
+			return (build != null && build.block instanceof UndergroundDrill && build.team == team) ||
 					nearestDetector(team, tile.worldx(), tile.worldy()) != null;
 		}
 	}

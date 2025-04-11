@@ -144,9 +144,7 @@ open class MultiDrill(name: String) : Block(name) {
 		@JvmField var timeDrilled = 0f
 		@JvmField var warmup = 0f
 
-		override fun shouldActiveSound() = efficiency() > 0.01f
-
-		override fun ambientVolume() = efficiency() * (size * size) / 4f
+		override fun ambientVolume() = efficiency * (size * size) / 4f
 
 		override fun drawSelect() {
 			var off = 0f

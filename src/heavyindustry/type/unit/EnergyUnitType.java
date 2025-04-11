@@ -169,7 +169,7 @@ public class EnergyUnitType extends AncientUnitType {
 	@Override
 	public void drawCell(Unit unit) {}
 
-	@Override
+	/*@Override
 	public void drawControl(Unit unit) {
 		Draw.z(Layer.effect + 0.001f);
 		Draw.color(unit.team.color, Color.white, Mathf.absin(4f, 0.3f) + Mathf.clamp(unit.hitTime) / 5f);
@@ -179,7 +179,7 @@ public class EnergyUnitType extends AncientUnitType {
 			Draw.rect(Core.atlas.find(name("jump-gate-arrow")), Tmp.v1.x, Tmp.v1.y, rotation + 90);
 		}
 		Draw.reset();
-	}
+	}*/
 
 	@Override
 	public void drawItems(Unit unit) {

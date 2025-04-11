@@ -127,16 +127,16 @@ public final class Drawn {
 		circlePercent(x, y, rad, f > 0 ? f : -f, in + -90 * Mathf.sign(f));
 	}
 
-	public static void link(Buildingc from, Buildingc to, Color color) {
+	public static void link(Building from, Building to, Color color) {
 		float
 				sin = Mathf.absin(Time.time * sinScl, 6f, 1f),
-				r1 = from.block().size / 2f * tilesize + sin,
+				r1 = from.block.size / 2f * tilesize + sin,
 				x1 = from.getX(), x2 = to.getX(), y1 = from.getY(), y2 = to.getY(),
-				r2 = to.block().size / 2f * tilesize + sin;
+				r2 = to.block.size / 2f * tilesize + sin;
 
 		Draw.color(color);
 
-		Lines.square(x2, y2, to.block().size * tilesize / 2f + 1f);
+		Lines.square(x2, y2, to.block.size * tilesize / 2f + 1f);
 
 		Tmp.v1.trns(from.angleTo(to), r1);
 		Tmp.v2.trns(to.angleTo(from), r2);
@@ -147,7 +147,7 @@ public final class Drawn {
 		Lines.stroke(2, color);
 		Lines.dashLine(x1 + Tmp.v1.x, y1 + Tmp.v1.y, x2 + Tmp.v2.x, y2 + Tmp.v2.y, signs);
 
-		Drawf.arrow(x1, y1, x2, y2, from.block().size * tilesize / 2f + sin, 4 + sin, color);
+		Drawf.arrow(x1, y1, x2, y2, from.block.size * tilesize / 2f + sin, 4 + sin, color);
 
 		Drawf.circles(x2, y2, r2, color);
 	}
@@ -289,9 +289,9 @@ public final class Drawn {
 		Draw.reset();
 	}
 
-	public static void selected(Buildingc tile, Color color) {
+	/*public static void selected(Buildingc tile, Color color) {
 		Drawf.selected(tile.tile(), color);
-	}
+	}*/
 
 	public static void posSquareLink(Color color, float stroke, float size, boolean drawBottom, float x, float y, float x2, float y2) {
 		posSquareLink(color, stroke, size, drawBottom, v6.set(x, y), v6.set(x2, y2));

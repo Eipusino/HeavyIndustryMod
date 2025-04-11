@@ -87,7 +87,7 @@ open class ImpactDrill(name: String) : Drill(name) {
 			if (items.total() <= itemCapacity - outputAmount && dominantItems > 0 && efficiency > 0) {
 				warmup = Mathf.lerpDelta(warmup, warmupTime, efficiency)
 				val wlD = (warmup / warmupTime)
-				val speed = efficiency() * (wlD)
+				val speed = efficiency * (wlD)
 				timeDrilled += speed
 
 				if (warmup >= warmupTime) {

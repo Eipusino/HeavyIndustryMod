@@ -32,11 +32,6 @@ public interface LinkGroupc extends Linkablec {
 	}
 
 	@Override
-	default int linkPos() {
-		return pos();
-	}
-
-	@Override
 	default Building link() {
 		return as();
 	}

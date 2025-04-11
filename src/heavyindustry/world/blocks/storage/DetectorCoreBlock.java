@@ -13,7 +13,6 @@ import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.gen.HSounds;
 import heavyindustry.world.blocks.environment.UndergroundOreBlock;
 import mindustry.content.Blocks;
 import mindustry.game.Team;
@@ -56,7 +55,7 @@ public class DetectorCoreBlock extends CoreBlock {
 		super(name);
 		configurable = true;
 		clipSize = radarRange * 2f;
-		loopSound = HSounds.radar;
+		//loopSound = HSounds.radar;
 	}
 
 	@Override
@@ -160,10 +159,10 @@ public class DetectorCoreBlock extends CoreBlock {
 			}
 		}
 
-		@Override
+		/*@Override
 		public boolean shouldActiveSound() {
 			return canConsume() && showOres;
-		}
+		}*/
 
 		public float radarRot() {
 			return (curTime() * speed) % 360f;

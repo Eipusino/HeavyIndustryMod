@@ -304,9 +304,6 @@ public abstract class CommandableBlock extends Block {
 			this.lifetime = lifetime;
 		}
 
-		@Override
-		public void afterAllRead() {}
-
 		@SuppressWarnings("unchecked")
 		@Override
 		public <T extends Entityc> T self() {
@@ -428,6 +425,12 @@ public abstract class CommandableBlock extends Block {
 
 		@Override
 		public void afterRead() {}
+
+		@Override
+		public void afterReadAll() {}
+
+		@Override
+		public void beforeWrite() {}
 
 		@Override
 		public int id() {

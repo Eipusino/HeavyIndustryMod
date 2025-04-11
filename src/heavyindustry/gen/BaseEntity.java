@@ -174,9 +174,6 @@ public abstract class BaseEntity implements Drawc {
 	public void afterRead() {}
 
 	@Override
-	public void afterAllRead() {}
-
-	@Override
 	public int id() {
 		return id;
 	}

@@ -120,6 +120,12 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 	}
 
 	@Override
+	public void afterReadAll() {}
+
+	@Override
+	public void beforeWrite() {}
+
+	@Override
 	public void remove() {
 		if (!added) return;
 		Groups.draw.remove(this);

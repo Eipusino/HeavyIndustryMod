@@ -98,7 +98,7 @@ public class LaserBeamDrill extends Drill {
 				Draw.rect(rotatorRegion, moveX, y + (-shooterOffset + warmup * shooterExtendOffset) * i, 90 * i - 90);
 			}
 
-			float stroke = laserScl * Mathf.curve(warmup, 0, (items.total() < itemCapacity && dominantItems > 0 && efficiency > 0) ? efficiency() : 1);
+			float stroke = laserScl * Mathf.curve(warmup, 0, (items.total() < itemCapacity && dominantItems > 0 && efficiency > 0) ? efficiency : 1);
 			Draw.mixcol(laserColor, Mathf.absin(4f, 0.6f));
 			Draw.alpha(laserAlpha + Mathf.absin(8f, laserAlphaSine));
 			Draw.blend(Blending.additive);

@@ -75,7 +75,7 @@ public class OreDetector extends Block {
 		canOverdrive = false;
 		fogRadius = (int) range / 8;
 		clipSize = range * 2f;
-		loopSound = HSounds.radar;
+		//loopSound = HSounds.radar;
 		flags = EnumSet.of(BlockFlag.unitCargoUnloadPoint);
 
 		config(Boolean.class, (r, b) -> ((OreDetectorBuild) r).showOres = b);
@@ -139,10 +139,10 @@ public class OreDetector extends Block {
 			}).size(40);
 		}
 
-		@Override
+		/*@Override
 		public boolean shouldActiveSound() {
 			return canConsume() && showOres;
-		}
+		}*/
 
 		public float radarRot() {
 			return (curTime() * speed) % 360f;
@@ -237,7 +237,7 @@ public class OreDetector extends Block {
 			super.onDestroyed();
 
 			indexer.eachBlock(this, range(),
-					b -> b instanceof UndergroundDrill.UndergroundDrillBuild && b.enabled() && b.potentialEfficiency > 0,
+					b -> b instanceof UndergroundDrill.UndergroundDrillBuild && b.enabled && b.potentialEfficiency > 0,
 					b -> {
 						Fx.circleColorSpark.at(b.x, b.y, Pal.orangeSpark);
 						Sounds.spark.at(b);

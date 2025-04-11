@@ -118,7 +118,7 @@ open class HackTurret(name: String) : BaseTurret(name) {
 		}
 
 		open fun validateTarget(): Boolean {
-			return !Units.invalidateTarget(target, team, x, y, range) && efficiency() > 0.02f
+			return !Units.invalidateTarget(target, team, x, y, range) && efficiency > 0.02f
 		}
 
 		override fun onRemoved() {
@@ -147,7 +147,7 @@ open class HackTurret(name: String) : BaseTurret(name) {
 			Drawf.laser(
 				laser, laserEnd,
 				x + Angles.trnsx(ang, shootLength), y + Angles.trnsy(ang, shootLength),
-				lastX, lastY, efficiency() * laserWidth
+				lastX, lastY, efficiency * laserWidth
 			)
 			Draw.mixcol()
 		}

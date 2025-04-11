@@ -50,7 +50,7 @@ public class DrawSpecConstruct extends DrawBlock {
 			Draw.rect(constructRegions[i], build.x, build.y);
 		}
 
-		Draw.draw(Layer.blockOver, () -> Drawn.construct(build, constructRegions[stage], constructColor1, constructColor2, 0f, stageProgress, build.warmup() * build.efficiency(), build.totalProgress() * 1.6f));
+		Draw.draw(Layer.blockOver, () -> Drawn.construct(build, constructRegions[stage], constructColor1, constructColor2, 0f, stageProgress, build.warmup() * build.efficiency, build.totalProgress() * 1.6f));
 	}
 
 	@Override

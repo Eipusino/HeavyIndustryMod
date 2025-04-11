@@ -445,9 +445,9 @@ public class JumpGate extends Block {
 
 		@Override
 		public void updateTile() {
-			totalProgress += (efficiency() + warmup) * delta() * Mathf.curve(Time.delta, 0f, 0.5f);
+			totalProgress += (efficiency + warmup) * delta() * Mathf.curve(Time.delta, 0f, 0.5f);
 			if (!cooling && isCalling() && Units.canCreate(team, getType())) {
-				buildProgress += efficiency() * state.rules.unitBuildSpeedMultiplier * delta() * warmup * state.rules.unitBuildSpeed(team);
+				buildProgress += efficiency * state.rules.unitBuildSpeedMultiplier * delta() * warmup * state.rules.unitBuildSpeed(team);
 				if (buildProgress >= costTime(getSet(), true) && !jammed) {
 					spawn(getSet());
 				}
@@ -467,7 +467,7 @@ public class JumpGate extends Block {
 				}
 			}
 
-			if (efficiency() > 0 && power.status > 0.5f) {
+			if (efficiency > 0 && power.status > 0.5f) {
 				if (Mathf.equal(warmup, 1, 0.0015F)) warmup = 1f;
 				else warmup = Mathf.lerpDelta(warmup, 1, 0.01f);
 			} else {
@@ -505,7 +505,7 @@ public class JumpGate extends Block {
 			Color color = getColor(getSet());
 			Drawf.dashCircle(x, y, range(), color);
 			Draw.color(color);
-			Lines.square(x, y, block().size * tilesize / 2f + 1f);
+			Lines.square(x, y, size * tilesize / 2f + 1f);
 
 			Vec2 target = link();
 			Draw.alpha(1f);
@@ -723,14 +723,14 @@ public class JumpGate extends Block {
 			float scl = warmup * atlasSizeScl;
 			Lines.stroke(squareStroke * warmup, getColor(getSet()));
 			float rot = totalProgress;
-			Lines.square(x, y, block.size * tilesize / 2.5f, -rot);
-			Lines.square(x, y, block.size * tilesize / 2f, rot);
+			Lines.square(x, y, size * tilesize / 2.5f, -rot);
+			Lines.square(x, y, size * tilesize / 2f, rot);
 			for (int i = 0; i < 4; i++) {
-				float length = tilesize * block().size / 2f + 8f;
+				float length = tilesize * size / 2f + 8f;
 				Tmp.v1.trns(i * 90 + rot, -length);
 				Draw.rect(arrowRegion, x + Tmp.v1.x, y + Tmp.v1.y, arrowRegion.width * Draw.scl * scl, arrowRegion.height * Draw.scl * scl, i * 90 + 90 + rot);
 				float sin = Mathf.absin(totalProgress, 16f, tilesize);
-				length = tilesize * block().size / 2f + 3 + sin;
+				length = tilesize * size / 2f + 3 + sin;
 				float signSize = 0.75f + Mathf.absin(totalProgress + 8f, 8f, 0.15f);
 				Tmp.v1.trns(i * 90, -length);
 				Draw.rect(pointerRegion, x + Tmp.v1.x, y + Tmp.v1.y, pointerRegion.width * Draw.scl * signSize * scl, pointerRegion.height * Draw.scl * signSize * scl, i * 90 + 90);
@@ -929,7 +929,7 @@ public class JumpGate extends Block {
 		}
 
 		public ItemModule realItems() {
-			return team.data().hasCore() ? team.core().items() : items;
+			return team.data().hasCore() ? team.core().items : items;
 		}
 	}
 }

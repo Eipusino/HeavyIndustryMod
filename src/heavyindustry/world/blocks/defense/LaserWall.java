@@ -10,6 +10,7 @@ import arc.math.Interp;
 import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.Eachable;
+import arc.util.Nullable;
 import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
@@ -61,7 +62,7 @@ public class LaserWall extends Wall {
 		hasPower = true;
 		hasShadow = true;
 
-		ambientSound = loopSound = Sounds.pulse;
+		ambientSound = Sounds.pulse;
 	}
 
 	@Override
@@ -230,6 +231,28 @@ public class LaserWall extends Wall {
 				return false;
 			}
 			return true;
+		}
+
+		@Override
+		public void drawLink(@Nullable Seq<Building> builds) {
+			Draw.reset();
+			if (builds == null) {
+				if (linkValid(link())) {
+					Draw.color(getLinkColor());
+					Drawf.circles(getX(), getY(), size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), getLinkColor());
+					Drawn.link(this, link(), getLinkColor());
+				}
+			} else if (builds.any()) {
+				Draw.color(getLinkColor());
+				Drawf.circles(getX(), getY(), size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), getLinkColor());
+
+				for (Building b : builds) {
+					if (!linkValid(b)) continue;
+					Drawn.link(this, b, getLinkColor());
+				}
+			}
+
+			Draw.reset();
 		}
 
 		@Override

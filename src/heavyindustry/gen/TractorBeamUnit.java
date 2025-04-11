@@ -73,10 +73,12 @@ public class TractorBeamUnit extends ExtraPayloadUnit {
 
 		if (beamHeld instanceof BuildPayload) {
 			payPos.approach(movingIn ? unitPos : mouse, Mathf.clamp(payPos.dst(movingIn ? unitPos : mouse) * 0.1f, movingIn ? 2f : 0.1f, movingIn ? 32f : 16f) * Time.delta);
-		} else payPos.set(unitPos);
+		} else {
+			payPos.set(unitPos);
+		}
 
 		beamHeld.update(this, null);
-		beamHeld.set(payPos.x, payPos.y, beamHeld instanceof BuildPayload ? ((BuildPayload) beamHeld).build.rotation() : rotation);
+		beamHeld.set(payPos.x, payPos.y, beamHeld instanceof BuildPayload ? ((BuildPayload) beamHeld).build.rotation : rotation);
 		if (beamHeld instanceof BuildPayload && ((BuildPayload) beamHeld).build.health <= 0) { //todo FUCK
 			beamHeld = null;
 		}

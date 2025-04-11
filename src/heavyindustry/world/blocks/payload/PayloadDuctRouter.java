@@ -62,7 +62,7 @@ public class PayloadDuctRouter extends PayloadDuct {
 		@Override
 		public void onProximityUpdate() {
 			super.onProximityUpdate();
-			blocked = (next != null && next.block.solid && !(next.block().outputsPayload || next.block().acceptsPayload)) || (next != null && next.payloadCheck(rotation));
+			blocked = (next != null && next.block.solid && !(next.block.outputsPayload || next.block.acceptsPayload)) || (next != null && next.payloadCheck(rotation));
 		}
 
 		public void checkMatch() {

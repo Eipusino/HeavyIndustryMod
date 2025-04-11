@@ -11,10 +11,12 @@ import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
 import arc.struct.IntSeq;
 import arc.struct.Seq;
+import arc.util.Nullable;
 import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.graphics.Drawn;
 import heavyindustry.io.HTypeIO;
 import heavyindustry.world.blocks.LinkGroupc;
 import mindustry.gen.Building;
@@ -106,6 +108,28 @@ public class AssignOverdrive extends OverdriveProjector {
 		}
 
 		@Override
+		public void drawLink(@Nullable Seq<Building> builds) {
+			Draw.reset();
+			if (builds == null) {
+				if (linkValid(link())) {
+					Draw.color(getLinkColor());
+					Drawf.circles(getX(), getY(), size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), getLinkColor());
+					Drawn.link(this, link(), getLinkColor());
+				}
+			} else if (builds.any()) {
+				Draw.color(getLinkColor());
+				Drawf.circles(getX(), getY(), size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), getLinkColor());
+
+				for (Building b : builds) {
+					if (!linkValid(b)) continue;
+					Drawn.link(this, b, getLinkColor());
+				}
+			}
+
+			Draw.reset();
+		}
+
+		@Override
 		public boolean onConfigureBuildTapped(Building other) {
 			if (other != null && within(other, range())) {
 				configure(other.pos());
@@ -177,7 +201,7 @@ public class AssignOverdrive extends OverdriveProjector {
 				Lines.line(fromX, fromY, Tmp.v1.x, Tmp.v1.y, false);
 				Lines.line(Tmp.v1.x, Tmp.v1.y, toX, toY, false);
 				Fill.square(Tmp.v1.x, Tmp.v1.y, 1.5f);
-				Lines.square(b.x, b.y, b.block().size * tilesize / 2f + 2f);
+				Lines.square(b.x, b.y, b.block.size * tilesize / 2f + 2f);
 			}
 
 			for (Building b : buildings) {
@@ -204,7 +228,7 @@ public class AssignOverdrive extends OverdriveProjector {
 				Fill.square(b.x, b.y, targetOffset);
 				Draw.color(baseColor);
 				Draw.alpha(1f);
-				Lines.square(b.x, b.y, b.block().size * tilesize / 2f + 1.0f);
+				Lines.square(b.x, b.y, b.block.size * tilesize / 2f + 1.0f);
 			}
 
 			Lines.stroke(1f, baseColor);

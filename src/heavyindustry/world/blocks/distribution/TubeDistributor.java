@@ -117,7 +117,7 @@ public class TubeDistributor extends Router {
 			items.add(item, 1);
 			lastItem = item;
 			time = 0f;
-			lastInput = source.tile();
+			lastInput = source.tile;
 		}
 
 		@Override
