@@ -48,7 +48,7 @@ import heavyindustry.world.blocks.defense.turrets.PlatformTurret;
 import heavyindustry.world.blocks.distribution.BeltConveyor;
 import heavyindustry.world.blocks.distribution.BeltStackConveyor;
 import heavyindustry.world.blocks.distribution.CoveredRouter;
-import heavyindustry.world.blocks.distribution.DirectionalUnloaderf;
+import heavyindustry.world.blocks.distribution.XLDirectionalUnloader;
 import heavyindustry.world.blocks.distribution.DuctJunction;
 import heavyindustry.world.blocks.distribution.InvertedJunction;
 import heavyindustry.world.blocks.distribution.MultiJunction;
@@ -90,7 +90,7 @@ import heavyindustry.world.blocks.production.MultiCrafter;
 import heavyindustry.world.blocks.production.SporeFarm;
 import heavyindustry.world.blocks.sandbox.AdaptiveSource;
 import heavyindustry.world.blocks.storage.CoreStorageBlock;
-import heavyindustry.world.blocks.storage.Unloaderf;
+import heavyindustry.world.blocks.storage.XLUnloader;
 import heavyindustry.world.blocks.units.DerivativeUnitFactory;
 import heavyindustry.world.blocks.units.PayloadSourcef;
 import heavyindustry.world.blocks.units.UnitIniter;
@@ -1187,7 +1187,7 @@ public final class HBlocks {
 			transportTime = 1f;
 			consumePower(0.5f);
 		}};
-		rapidDirectionalUnloader = new DirectionalUnloaderf("rapid-directional-unloader") {{
+		rapidDirectionalUnloader = new XLDirectionalUnloader("rapid-directional-unloader") {{
 			requirements(Category.distribution, with(Items.silicon, 40, Items.plastanium, 25, HItems.chromium, 15, Items.phaseFabric, 5));
 			speed = 1f;
 			squareSprite = false;
@@ -1219,7 +1219,7 @@ public final class HBlocks {
 			buildCostMultiplier = 2;
 			((Duct) Blocks.armoredDuct).bridgeReplacement = this;
 		}};
-		rapidDuctUnloader = new DirectionalUnloaderf("rapid-duct-unloader") {{
+		rapidDuctUnloader = new XLDirectionalUnloader("rapid-duct-unloader") {{
 			requirements(Category.distribution, with(Items.graphite, 25, Items.silicon, 30, Items.tungsten, 20, Items.oxide, 15));
 			health = 240;
 			speed = 2f;
@@ -2585,7 +2585,7 @@ public final class HBlocks {
 			speed = 60f / 4.2f;
 			group = BlockGroup.transportation;
 		}};
-		rapidUnloader = new Unloaderf("rapid-unloader") {{
+		rapidUnloader = new XLUnloader("rapid-unloader") {{
 			requirements(Category.effect, with(Items.silicon, 35, Items.plastanium, 15, HItems.nanoCore, 10, HItems.chromium, 15));
 			speed = 1f;
 			group = BlockGroup.transportation;

@@ -9,7 +9,7 @@ public class ExtraUnitWaterMove extends UnitWaterMove implements ExtraUnitc {
 
 	@Override
 	public int classId() {
-		return EntityRegister.getId(UnitWaterMove.class);
+		return EntityRegister.getId(getClass());
 	}
 
 	@Override

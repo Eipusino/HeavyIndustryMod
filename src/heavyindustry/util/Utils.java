@@ -88,7 +88,6 @@ import mindustry.world.draw.DrawBlock;
 import mindustry.world.draw.DrawDefault;
 import mindustry.world.draw.DrawMulti;
 import mindustry.world.draw.DrawRegion;
-import org.jetbrains.annotations.Contract;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -266,7 +265,6 @@ public final class Utils {
 			cont.description = (cont.description == null ? developer : cont.description + "\n" + developer);
 	}
 
-	@Contract(pure = true)
 	public static int reverse(int rotation) {
 		return switch (rotation) {
 			case 0 -> 2;
@@ -750,7 +748,6 @@ public final class Utils {
 		return result;
 	}
 
-	@Contract(value = "_, _ -> new", pure = true)
 	public static Position pos(float x, float y) {
 		return new Position() {
 			@Override

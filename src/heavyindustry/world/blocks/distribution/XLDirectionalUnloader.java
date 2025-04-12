@@ -7,12 +7,12 @@ import mindustry.world.blocks.distribution.DirectionalUnloader;
  *
  * @author Eipusino
  */
-public class DirectionalUnloaderf extends DirectionalUnloader {
-	public DirectionalUnloaderf(String name) {
+public class XLDirectionalUnloader extends DirectionalUnloader {
+	public XLDirectionalUnloader(String name) {
 		super(name);
 	}
 
-	public class DirectionalUnloaderBuildf extends DirectionalUnloaderBuild {
+	public class XLDirectionalUnloaderBuild extends DirectionalUnloaderBuild {
 		protected float counter;
 
 		@Override

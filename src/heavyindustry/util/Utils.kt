@@ -151,4 +151,4 @@ fun inZone(start: Vec2, size: Vec2, point: Vec2): Boolean = inZone(start.x, star
 
 fun <T : Comparable<T>> inZone(x: T, y: T, x1: T, y1: T, px: T, py: T): Boolean = x < px && y < py && x1 > px && y1 > py
 
-fun TextureRegion.selfAtlas(): AtlasRegion = if (this is AtlasRegion) this else AtlasRegion(this)
+fun self(t: TextureRegion): AtlasRegion = if (t is AtlasRegion) t else AtlasRegion(t)
