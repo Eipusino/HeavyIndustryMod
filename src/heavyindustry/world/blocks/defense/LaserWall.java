@@ -63,6 +63,7 @@ public class LaserWall extends Wall {
 		hasShadow = true;
 
 		ambientSound = Sounds.pulse;
+		//loopSound = Sounds.pulse;
 	}
 
 	@Override

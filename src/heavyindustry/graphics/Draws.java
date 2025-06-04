@@ -201,7 +201,7 @@ public final class Draws {
 	 * @param shader <strong>Selective parameter, if the task has already been initialized, this parameter is invalid</strong>, The shader used for drawing in this set of tasks.
 	 * @param draw   The drawing task added to the task cache, which is the operation of this drawing.
 	 */
-	public static void drawTask(int taskId, Shader shader, DrawDef draw) {
+	public static void drawTask(int taskId, Shader shader, DrawDefault draw) {
 		drawTask(taskId, null, shader, draw);
 	}
 
@@ -236,7 +236,7 @@ public final class Draws {
 	 * @param taskId The identification ID of the task, used to distinguish the task cache.
 	 * @param draw   The drawing task added to the task cache, which is the operation of this drawing.
 	 */
-	public static void drawTask(int taskId, DrawDef draw) {
+	public static void drawTask(int taskId, DrawDefault draw) {
 		while (taskId >= drawTasks.length) {
 			drawTasks = Arrays.copyOf(drawTasks, drawTasks.length * 2);
 		}
@@ -293,7 +293,7 @@ public final class Draws {
 	}
 
 	/** @see Draws#drawBloom(int, Object, DrawAcceptor) */
-	public static void drawBloom(int taskId, DrawDef draw) {
+	public static void drawBloom(int taskId, DrawDefault draw) {
 		drawBloom(taskId, (DrawAcceptor<Bloom>) draw);
 	}
 
@@ -317,7 +317,7 @@ public final class Draws {
 	}
 
 	/** @see Draws#drawBloomUnderBlock(Object, DrawAcceptor) */
-	public static void drawBloomUnderBlock(DrawDef draw) {
+	public static void drawBloomUnderBlock(DrawDefault draw) {
 		drawBloomUnderBlock(null, (DrawAcceptor<?>) draw);
 	}
 
@@ -338,7 +338,7 @@ public final class Draws {
 	/**
 	 * @see Draws#drawBloomUponFlyUnit(Object, DrawAcceptor)
 	 */
-	public static void drawBloomUponFlyUnit(DrawDef draw) {
+	public static void drawBloomUponFlyUnit(DrawDefault draw) {
 		drawBloomUponFlyUnit(null, draw);
 	}
 
@@ -359,7 +359,7 @@ public final class Draws {
 	/**
 	 * @see Draws#drawBloomUnderFlyUnit(Object, DrawAcceptor)
 	 */
-	public static void drawBloomUnderFlyUnit(DrawDef draw) {
+	public static void drawBloomUnderFlyUnit(DrawDefault draw) {
 		drawBloomUnderFlyUnit(null, draw);
 	}
 
@@ -898,7 +898,7 @@ public final class Draws {
 		void draw(T accept);
 	}
 
-	public interface DrawDef extends DrawAcceptor {
+	public interface DrawDefault extends DrawAcceptor {
 		@Override
 		default void draw(Object accept) {
 			draw();

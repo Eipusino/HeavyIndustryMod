@@ -198,7 +198,7 @@ public class HIResearchDialog extends BaseDialog {
 		addCloseButton();
 
 		keyDown(key -> {
-			if (key == Core.keybinds.get(Binding.research).key) {
+			if (key == Binding.research.value.key) {
 				Core.app.post(this::hide);
 			}
 		});
