@@ -8,7 +8,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
+import static heavyindustry.struct.HCollections.arrayOf;
 
 /**
  * More expansion of Java reflection functionality.

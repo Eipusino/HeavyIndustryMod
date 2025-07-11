@@ -12,7 +12,6 @@ import arc.util.Scaling;
 import mindustry.ui.Fonts;
 
 import java.io.Reader;
-import java.util.Map;
 import java.util.Properties;
 
 public final class IconLoader {
@@ -28,10 +27,12 @@ public final class IconLoader {
 		try (Reader reader = fi.reader(512)) {
 			iconProperties.load(reader);
 		} catch (Exception e) {
+			Log.err(e);
+
 			return;
 		}
 
-		for (Map.Entry<Object, Object> entry : iconProperties.entrySet()) {
+		for (var entry : iconProperties.entrySet()) {
 			if (entry.getKey() instanceof String codePointStr && entry.getValue() instanceof String getValue) {
 				String[] valueParts = getValue.split("\\|");
 				if (valueParts.length < 2) {

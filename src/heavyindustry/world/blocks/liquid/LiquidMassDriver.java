@@ -9,6 +9,7 @@ import arc.math.Angles;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
 import arc.struct.OrderedSet;
+import arc.util.Eachable;
 import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
@@ -19,6 +20,7 @@ import heavyindustry.entities.bullet.LiquidMassDriverBolt;
 import mindustry.content.Fx;
 import mindustry.content.Liquids;
 import mindustry.entities.Effect;
+import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.gen.Sounds;
@@ -79,6 +81,16 @@ public class LiquidMassDriver extends Block {
 	public void load() {
 		super.load();
 		drawer.load(this);
+	}
+
+	@Override
+	protected TextureRegion[] icons() {
+		return drawer.finalIcons(this);
+	}
+
+	@Override
+	public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list) {
+		drawer.drawPlan(this, plan, list);
 	}
 
 	@Override

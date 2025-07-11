@@ -42,6 +42,7 @@ import heavyindustry.graphics.FlowMenuRenderer;
 import heavyindustry.graphics.HCacheLayer;
 import heavyindustry.graphics.HShaders;
 import heavyindustry.graphics.HTextures;
+import heavyindustry.graphics.MuelsyseMenuRenderer;
 import heavyindustry.input.InputAggregator;
 import heavyindustry.io.WorldData;
 import heavyindustry.mod.LoadMod;
@@ -50,7 +51,7 @@ import heavyindustry.net.HCall;
 import heavyindustry.ui.HFonts;
 import heavyindustry.ui.HStyles;
 import heavyindustry.ui.UIUtils;
-import heavyindustry.ui.dialogs.HIResearchDialog;
+import heavyindustry.ui.dialogs.HResearchDialog;
 import heavyindustry.util.IconLoader;
 import heavyindustry.util.Utils;
 import kotlin.KotlinVersion;
@@ -125,8 +126,10 @@ public final class HeavyIndustryMod extends Mod {
 		Events.on(ClientLoadEvent.class, event -> {
 			if (isPlugin) return;
 
+			boolean muelsyse = Core.settings.getBool("hi-muelsyse");
+
 			try {
-				Reflect.set(MenuFragment.class, ui.menufrag, "renderer", new FlowMenuRenderer());
+				Reflect.set(MenuFragment.class, ui.menufrag, "renderer", muelsyse ? new MuelsyseMenuRenderer() : new FlowMenuRenderer());
 			} catch (Exception e) {
 				Log.err("Failed to replace renderer", e);
 			}
@@ -146,7 +149,7 @@ public final class HeavyIndustryMod extends Mod {
 						}
 					}).size(210f, 64f);
 					cont.pane(t -> {
-						t.image(Core.atlas.find(name("cover"))).left().size(600f, 310f).pad(3f).row();
+						t.image(Core.atlas.find(name(muelsyse ? "muelsyse-cover" : "cover"))).left().size(600f, 310f).pad(3f).row();
 						t.add(Core.bundle.get("hi-version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 						t.add(label).left().row();
 						t.add(Core.bundle.get("hi-class")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
@@ -236,6 +239,7 @@ public final class HeavyIndustryMod extends Mod {
 		Core.settings.defaults("hi-closed-dialog", false);
 		Core.settings.defaults("hi-floating-text", true);
 		Core.settings.defaults("hi-animated-shields", true);
+		Core.settings.defaults("hi-muelsyse", false);
 
 		if (!headless && !isPlugin && mods.locateMod("extra-utilities") == null && isAprilFoolsDay()) {
 			HOverrides.loadAprilFoolsDay();
@@ -290,13 +294,14 @@ public final class HeavyIndustryMod extends Mod {
 					t.checkPref("hi-floating-text", true);
 					t.checkPref("hi-animated-shields", true);
 					t.checkPref("hi-serpulo-sector-invasion", true);
+					t.checkPref("hi-muelsyse", false);
 					t.checkPref("hi-developer-mode", false);
 				});
 			}
 
 			//Replace the original technology ResearchDialog
 			//This is a rather foolish approach, but there is nothing we can do about it.
-			var dialog = new HIResearchDialog();
+			var dialog = new HResearchDialog();
 			ui.research.shown(() -> {
 				dialog.show();
 				Objects.requireNonNull(ui.research);
@@ -351,16 +356,16 @@ public final class HeavyIndustryMod extends Mod {
 				TextureRegion logo = Core.atlas.find("logo");
 				float width = Core.graphics.getWidth(), height = Core.graphics.getHeight() - Core.scene.marginTop;
 				float logoScl = Scl.scl(1) * logo.scale;
-				float logoW = Math.min(logo.width * logoScl, Core.graphics.getWidth() - Scl.scl(20));
-				float logoH = logoW * (float) logo.height / logo.width;
+				float logoWidth = Math.min(logo.width * logoScl, Core.graphics.getWidth() - Scl.scl(20));
+				float logoHeight = logoWidth * (float) logo.height / logo.width;
 
 				float fx = (int) (width / 2f);
-				float fy = (int) (height - 6 - logoH) + logoH / 2 - (Core.graphics.isPortrait() ? Scl.scl(30f) : 0f);
+				float fy = (int) (height - 6 - logoHeight) + logoHeight / 2 - (Core.graphics.isPortrait() ? Scl.scl(30f) : 0f);
 				if (Core.settings.getBool("macnotch")) {
 					fy -= Scl.scl(macNotchHeight);
 				}
 
-				float ex = fx + logoW / 3 - Scl.scl(1f), ey = fy - logoH / 3f - Scl.scl(2f);
+				float ex = fx + logoWidth / 3 - Scl.scl(1f), ey = fy - logoHeight / 3f - Scl.scl(2f);
 				float ang = 12 + Mathf.sin(Time.time, 8, 2f);
 
 				float dst = Mathf.dst(ex, ey, 0, 0);

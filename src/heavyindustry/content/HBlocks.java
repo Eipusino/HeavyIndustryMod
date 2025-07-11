@@ -49,7 +49,7 @@ import heavyindustry.world.blocks.distribution.BeltConveyor;
 import heavyindustry.world.blocks.distribution.BeltStackConveyor;
 import heavyindustry.world.blocks.distribution.CoveredRouter;
 import heavyindustry.world.blocks.distribution.XLDirectionalUnloader;
-import heavyindustry.world.blocks.distribution.DuctJunction;
+import heavyindustry.world.blocks.distribution.XCDuctJunction;
 import heavyindustry.world.blocks.distribution.InvertedJunction;
 import heavyindustry.world.blocks.distribution.MultiJunction;
 import heavyindustry.world.blocks.distribution.MultiRouter;
@@ -1195,13 +1195,14 @@ public final class HBlocks {
 			allowCoreUnload = true;
 		}};
 		//distribution-erekir
-		ductJunction = new DuctJunction("duct-junction") {{
+		ductJunction = new XCDuctJunction("duct-junction") {{
 			requirements(Category.distribution, with(Items.beryllium, 5));
-			health = 75;
+			health = 90;
 			speed = 4f;
 		}};
 		ductDistributor = new CoveredRouter("duct-distributor") {{
 			requirements(Category.distribution, with(Items.beryllium, 20));
+			health = 270;
 			size = 2;
 			speed = 2f;
 			solid = false;
@@ -1372,7 +1373,7 @@ public final class HBlocks {
 		reinforcedLiquidOverflowValve = new LiquidOverflowValve("reinforced-liquid-overflow-valve") {{
 			requirements(Category.liquid, with(Items.graphite, 6, Items.beryllium, 10));
 			buildCostMultiplier = 3f;
-			health = 260;
+			health = 250;
 			researchCostMultiplier = 1;
 			solid = false;
 			underBullets = true;
@@ -1380,7 +1381,7 @@ public final class HBlocks {
 		reinforcedLiquidUnderflowValve = new LiquidOverflowValve("reinforced-liquid-underflow-valve") {{
 			requirements(Category.liquid, with(Items.graphite, 6, Items.beryllium, 10));
 			buildCostMultiplier = 3f;
-			health = 260;
+			health = 250;
 			researchCostMultiplier = 1;
 			invert = true;
 			solid = false;
@@ -1389,7 +1390,7 @@ public final class HBlocks {
 		reinforcedLiquidUnloader = new LiquidDirectionalUnloader("reinforced-liquid-unloader") {{
 			requirements(Category.liquid, with(Items.tungsten, 10, Items.beryllium, 15));
 			buildCostMultiplier = 3f;
-			health = 570;
+			health = 550;
 			researchCostMultiplier = 1;
 			solid = false;
 			underBullets = true;
@@ -1397,6 +1398,7 @@ public final class HBlocks {
 		}};
 		reinforcedLiquidSorter = new SortLiquidRouter("reinforced-liquid-sorter") {{
 			requirements(Category.liquid, with(Items.silicon, 8, Items.beryllium, 4));
+			health = 250;
 			liquidCapacity = 400f;
 			liquidPadding = 3f / 4f;
 			researchCostMultiplier = 3;
@@ -1407,6 +1409,7 @@ public final class HBlocks {
 		}};
 		reinforcedLiquidValve = new SortLiquidRouter("reinforced-liquid-valve") {{
 			requirements(Category.liquid, with(Items.graphite, 6, Items.beryllium, 6));
+			health = 250;
 			liquidCapacity = 150f;
 			liquidPadding = 3f / 4f;
 			researchCostMultiplier = 3;

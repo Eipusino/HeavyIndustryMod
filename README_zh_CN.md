@@ -1,6 +1,6 @@
 ## 重工业
 ### 重工业目前处于预发布状态-可能会出现损坏、未完成或不平衡的内容！
-### 仅支持Mindustry的be-254xx以上的版本，如果需要提前体验，请下载该版本的Mindustry游玩。
+### 仅支持Mindustry的149-Beta以上的版本，如果需要提前体验，请下载该版本的Mindustry游玩。
 - 像素工厂 重工业 Java 模组
 - [English](README.md) | 中文
 - Github : https://github.com/Eipusino/HeavyIndustryMod

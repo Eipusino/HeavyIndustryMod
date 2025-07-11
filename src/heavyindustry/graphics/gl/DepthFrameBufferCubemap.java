@@ -1,18 +1,12 @@
 package heavyindustry.graphics.gl;
 
-import arc.Core;
-import arc.func.Cons;
 import arc.graphics.Cubemap;
 import arc.graphics.Cubemap.CubemapSide;
 import arc.graphics.Gl;
 import arc.graphics.Pixmap.Format;
 import arc.graphics.Texture.TextureFilter;
 import arc.graphics.gl.FrameBufferCubemap;
-import arc.struct.Seq;
-import arc.util.Buffers;
 import arc.util.Nullable;
-import arc.util.Reflect;
-import heavyindustry.util.Reflectf;
 
 /**
  * A cubemap framebuffer that requests depth (and stencil) textures instead of renderbuffers, letting users sample from
@@ -46,76 +40,6 @@ public class DepthFrameBufferCubemap extends FrameBufferCubemap {
 		if (hasStencil) builder.addStencilTextureAttachment(Gl.stencilIndex8, Gl.unsignedByte);
 
 		return builder;
-	}
-
-	@Override
-	protected void build() {
-		if (!defaultFramebufferHandleInitialized) {
-			defaultFramebufferHandleInitialized = true;
-			defaultFramebufferHandle = 0; // Java mods don't work on iOS anyway.
-		}
-
-		int lastHandle = currentBoundFramebuffer == null ? defaultFramebufferHandle : currentBoundFramebuffer.getFramebufferHandle();
-
-		framebufferHandle = Gl.genFramebuffer();
-		Gl.bindFramebuffer(Gl.framebuffer, framebufferHandle);
-
-		// And here we see one of the most horrendous code ever due to Java's stupid tendency of making everything private for no reason.
-		int width = Reflect.get(GLFrameBufferBuilder.class, bufferBuilder, "width");
-		int height = Reflect.get(GLFrameBufferBuilder.class, bufferBuilder, "height");
-
-		var specs = Reflect.<Seq<FrameBufferTextureAttachmentSpec>>get(GLFrameBufferBuilder.class, bufferBuilder, "textureAttachmentSpecs");
-		isMRT = specs.size > 1;
-
-		int colorTextureCounter = 0;
-		if (isMRT) {
-			for (var spec : specs) {
-				var texture = createTexture(spec);
-				textureAttachments.add(texture);
-
-				if (spec.isColorTexture()) {
-					attachTexture(Gl.colorAttachment0 + colorTextureCounter, texture);
-					colorTextureCounter++;
-				} else if (Reflectf.getBool(FrameBufferTextureAttachmentSpec.class, spec, "isDepth")) {
-					attachTexture(Gl.depthAttachment, texture);
-				} else if (Reflectf.getBool(FrameBufferTextureAttachmentSpec.class, spec, "isStencil")) {
-					attachTexture(Gl.stencilAttachment, texture);
-				}
-			}
-		} else {
-			var texture = createTexture(specs.first());
-			textureAttachments.add(texture);
-			attachTexture(Gl.colorAttachment0, texture);
-		}
-
-		if (isMRT) {
-			var buffer = Buffers.newIntBuffer(colorTextureCounter);
-			for (int i = 0; i < colorTextureCounter; i++) {
-				buffer.put(Gl.colorAttachment0 + i);
-			}
-
-			buffer.position(0);
-			Core.gl30.glDrawBuffers(colorTextureCounter, buffer);
-		}
-
-		for (var texture : textureAttachments) Gl.bindTexture(texture.glTarget, 0);
-		int result = Gl.checkFramebufferStatus(Gl.framebuffer);
-
-		Gl.bindFramebuffer(Gl.framebuffer, lastHandle);
-		if (result != Gl.framebufferComplete) {
-			for (var texture : textureAttachments) texture.dispose();
-
-			Gl.deleteFramebuffer(framebufferHandle);
-			if (result == Gl.framebufferIncompleteAttachment)
-				throw new IllegalStateException("Frame buffer couldn't be constructed: incomplete attachment (" + width + "x" + height + ")");
-			if (result == Gl.framebufferIncompleteDimensions)
-				throw new IllegalStateException("Frame buffer couldn't be constructed: incomplete dimensions");
-			if (result == Gl.framebufferIncompleteMissingAttachment)
-				throw new IllegalStateException("Frame buffer couldn't be constructed: missing attachment");
-			if (result == Gl.framebufferUnsupported)
-				throw new IllegalStateException("Frame buffer couldn't be constructed: unsupported combination of formats");
-			throw new IllegalStateException("Frame buffer couldn't be constructed: unknown error " + result);
-		}
 	}
 
 	@Override
@@ -167,12 +91,5 @@ public class DepthFrameBufferCubemap extends FrameBufferCubemap {
 
 		// Ignore filters for depth and stencil textures, as changing them in the first place is always a wrong choice.
 		getTexture().setFilter(min, mag);
-	}
-
-	public void eachSide(Cons<CubemapSide> cons) {
-		for (var side : CubemapSide.all) {
-			bindSide(side);
-			cons.get(side);
-		}
 	}
 }

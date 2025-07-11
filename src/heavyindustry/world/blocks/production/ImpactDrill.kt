@@ -73,7 +73,7 @@ open class ImpactDrill(name: String) : Drill(name) {
 
 	open fun getDrillTime(): Float = ((outputAmount / (60 / drillTime)) / 2f) / 2f
 
-	open inner class ImpactDrilllBuild : DrillBuild() {
+	open inner class ImpactDrillBuild : DrillBuild() {
 		@JvmField var warmup = 0f
 
 		override fun updateTile() {

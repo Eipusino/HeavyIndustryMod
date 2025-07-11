@@ -28,13 +28,14 @@ import static mindustry.Vars.tilesize;
  * Will Anuken actually install it in V8?
  *
  * @author Eipusino
+ * @see mindustry.world.blocks.distribution.DuctJunction
  */
-public class DuctJunction extends Block {
+public class XCDuctJunction extends Block {
 	public float speed = 5f;
 	public Color transparentColor = new Color(0.4f, 0.4f, 0.4f, 0.1f);
 	public TextureRegion bottomRegion;
 
-	public DuctJunction(String name) {
+	public XCDuctJunction(String name) {
 		super(name);
 
 		group = BlockGroup.transportation;
@@ -78,7 +79,7 @@ public class DuctJunction extends Block {
 		return true;
 	}
 
-	public class DuctJunctionBuild extends Building {
+	public class XCDuctJunctionBuild extends Building {
 		public Item[] current = new Item[2];
 		public float[] progress = new float[2];
 		public int[] from = new int[2];

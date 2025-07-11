@@ -7,7 +7,7 @@ import arc.graphics.g2d.TextureRegion;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.files.InternalFileTree;
 import heavyindustry.input.InputAggregator;
-import mindustry.content.TechTree;
+import mindustry.content.TechTree.TechNode;
 import mindustry.type.Planet;
 import mindustry.type.Sector;
 
@@ -64,10 +64,10 @@ public final class HVars {
 	}
 
 	/** Clear all tech nodes under the specified root node. Use with caution, as this will completely disrupt the player's game progress. */
-	public static void resetTree(TechTree.TechNode root) {
+	public static void resetTree(TechNode root) {
 		root.reset();
 		root.content.clearUnlock();
-		for (TechTree.TechNode node : root.children) {
+		for (TechNode node : root.children) {
 			resetTree(node);
 		}
 	}

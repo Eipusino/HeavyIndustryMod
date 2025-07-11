@@ -69,7 +69,7 @@ import static mindustry.gen.Tex.buttonOver;
  *
  * @since 1.0.2
  */
-public class HIResearchDialog extends BaseDialog {
+public class HResearchDialog extends BaseDialog {
 	public static boolean debugShowRequirements = false;
 
 	public final float nodeSize = Scl.scl(60f);
@@ -84,7 +84,7 @@ public class HIResearchDialog extends BaseDialog {
 
 	protected boolean showTechSelect;
 
-	public HIResearchDialog() {
+	public HResearchDialog() {
 		super("");
 
 		init();

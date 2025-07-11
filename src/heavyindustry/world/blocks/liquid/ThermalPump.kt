@@ -167,7 +167,7 @@ open class ThermalPump(name: String) : LiquidBlock(name) {
 				liquids.add(liquidDrop, maxPump)
 
 				//does nothing for most pumps, as those do not require items.
-				if ((delta().let { consTimer += it; consTimer }) >= consumeTime) {
+				if (delta().let { consTimer += it; consTimer } >= consumeTime) {
 					consume()
 					consTimer %= 1f
 				}

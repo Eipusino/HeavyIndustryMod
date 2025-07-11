@@ -158,7 +158,7 @@ import mindustry.world.meta.Env;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
+import static heavyindustry.struct.HCollections.arrayOf;
 import static mindustry.Vars.content;
 import static mindustry.Vars.maxBlockSize;
 
@@ -1220,7 +1220,7 @@ public class ExtraContentParser {
 	}
 
 	Object modField(Class<?> type, Class<?> modType, JsonValue value) {
-		return modField(type, modType,value.asString());
+		return modField(type, modType, value.asString());
 	}
 
 	private Object modField(Class<?> type, Class<?> modType, String name) {

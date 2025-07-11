@@ -9,20 +9,22 @@ import arc.math.Mathf;
 import arc.math.Rand;
 import arc.math.geom.Bezier;
 import arc.math.geom.Mat3D;
+import arc.math.geom.Point2;
 import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
 import heavyindustry.func.Floatc3;
+import mindustry.gen.Posc;
 
 /** @since 1.0.4 */
 public final class Mathm {
-	private static final int aSinBits = 14; //16KB. Adjust for accuracy.
-	private static final int aSinMask = ~(-1 << aSinBits);
-	private static final int aSinCount = aSinMask + 1;
-	private static final float[] aSinTable = new float[aSinCount];
-	private static final float sinToIndex = aSinCount / 2f;
-	private static final float radFull = Mathf.PI * 2;
-	private static final Vec2 bezOut = new Vec2(), p1 = new Vec2(), p2 = new Vec2(), p3 = new Vec2(), p4 = new Vec2(), p5 = new Vec2(), tmp = new Vec2();
-	private static final Rand seedr = new Rand();
+	static final int aSinBits = 14; //16KB. Adjust for accuracy.
+	static final int aSinMask = ~(-1 << aSinBits);
+	static final int aSinCount = aSinMask + 1;
+	static final float[] aSinTable = new float[aSinCount];
+	static final float sinToIndex = aSinCount / 2f;
+	static final float radFull = Mathf.PI * 2;
+	static final Vec2 bezOut = new Vec2(), p1 = new Vec2(), p2 = new Vec2(), p3 = new Vec2(), p4 = new Vec2(), p5 = new Vec2(), tmp = new Vec2();
+	static final Rand seedr = new Rand();
 
 	static {
 		for (int i = 0; i < aSinCount; i++)
@@ -376,6 +378,18 @@ public final class Mathm {
 
 	public static Vec3 normal(Vec3 out, Vec3 a, Vec3 b, Vec3 c) {
 		return out.set(b).sub(a).crs(c.x - a.x, c.y - a.y, c.z - a.z).nor();
+	}
+
+	public static float dst(Posc a, Posc b) {
+		return Mathf.dst(a.x(), a.y(), b.x(), b.y());
+	}
+
+	public static float dst(Point2 a, Point2 b) {
+		return Mathf.dst(a.x, a.y, b.x, b.y);
+	}
+
+	public static float dst(Vec2 a, Vec2 b) {
+		return Mathf.dst(a.x, a.y, b.x, b.y);
 	}
 
 	public static float absin(float rad) {

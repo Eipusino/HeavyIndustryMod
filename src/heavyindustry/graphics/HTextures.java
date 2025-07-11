@@ -41,9 +41,9 @@ public final class HTextures {
 	}
 
 	public static Texture loadTexture(String name, Cons<Texture> modifier) {
-		Texture tex = new Texture(internalTree.child("sprites").child(name + (name.endsWith(".png") ? "" : ".png")));
-		modifier.get(tex);
+		Texture texture = new Texture(internalTree.child("sprites").child(name + (name.endsWith(".png") ? "" : ".png")));
+		modifier.get(texture);
 
-		return tex;
+		return texture;
 	}
 }

@@ -16,9 +16,9 @@ public final class FileTree {
 	private static final ObjectSet<String> filter = ObjectSet.with("heavyindustry", "kotlin", "org", "META-INF");
 
 	static {
-		for (Fi it : HVars.internalTree.root.list()) {
-			if (!filter.contains(it.name())) {
-				loop(it);
+		for (Fi f : HVars.internalTree.root.list()) {
+			if (!filter.contains(f.name())) {
+				loop(f);
 			}
 		}
 	}
@@ -30,8 +30,8 @@ public final class FileTree {
 		if (fi.isDirectory()) {
 			directory.put(fi.name(), fi);
 
-			for (Fi it : fi.list()) {
-				loop(it);
+			for (Fi f : fi.list()) {
+				loop(f);
 			}
 		} else {
 			if (files.containsKey(fi.name())) {

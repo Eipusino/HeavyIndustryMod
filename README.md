@@ -1,6 +1,6 @@
 # Heavy Industry
 ### Heavy Industry IS IN A PRE-RELEASE STATE RIGHT NOW - BROKEN, UNFINISHED OR UNBALANCED CONTENT MAY BE PRESENT!
-### Only supports Mindustry versions be-254xx and above. If you need to experience it in advance, please download this version of Mindustry to play.
+### Only supports Mindustry versions 149-Beta and above. If you need to experience it in advance, please download this version of Mindustry to play.
 - Mindustry Heavy Industry Java Mod
 - English | [中文](README_zh_CN.md)
 - Github : https://github.com/Eipusino/HeavyIndustryMod

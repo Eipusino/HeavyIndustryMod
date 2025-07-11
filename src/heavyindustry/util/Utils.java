@@ -208,12 +208,12 @@ public final class Utils {
 
 	public static final Seq<Building> buildings = new Seq<>();
 
-	private static final byte[][] joinsChkDirs = {
+	static final byte[][] joinsChkDirs = {
 			{-1, 1}, {0, 1}, {1, 1},
 			{-1, 0}, /*{0, 0}, */{1, 0},
 			{-1, -1}, {0, -1}, {1, -1}
 	};
-	private static final byte[] joinsMap = {//not sure how to format this.
+	static final byte[] joinsMap = {//not sure how to format this.
 			39, 39, 27, 27, 39, 39, 27, 27, 38, 38, 17, 26, 38, 38, 17, 26, 36,
 			36, 16, 16, 36, 36, 24, 24, 37, 37, 41, 21, 37, 37, 43, 25, 39,
 			39, 27, 27, 39, 39, 27, 27, 38, 38, 17, 26, 38, 38, 17, 26, 36,
@@ -232,25 +232,25 @@ public final class Utils {
 			0, 42, 42, 0, 0, 12, 12, 1, 1, 45, 18, 1, 1, 19, 13
 	};
 
-	private static final Vec2 v11 = new Vec2(), v12 = new Vec2(), v13 = new Vec2();
-	private static final IntSet collidedBlocks = new IntSet();
-	private static final Rect rect = new Rect(), hitRect = new Rect();
-	private static final IntSeq buildIdSeq = new IntSeq();
-	private static final Seq<Tile> tiles = new Seq<>();
-	private static final Seq<Unit> units = new Seq<>();
-	private static final Seq<Hit> hseq = new Seq<>();
-	private static final Seq<ItemStack> rawStacks = new Seq<>();
-	private static final Seq<Item> items = new Seq<>();
-	private static final IntSet collided = new IntSet(), collided2 = new IntSet();
-	private static final BasicPool<Hit> hPool = new BasicPool<>(Hit::new);
-	private static final IntSeq amounts = new IntSeq();
-	private static final String[] byteUnit = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"};
+	static final Vec2 v11 = new Vec2(), v12 = new Vec2(), v13 = new Vec2();
+	static final IntSet collidedBlocks = new IntSet();
+	static final Rect rect = new Rect(), hitRect = new Rect();
+	static final IntSeq buildIdSeq = new IntSeq();
+	static final Seq<Tile> tiles = new Seq<>();
+	static final Seq<Unit> units = new Seq<>();
+	static final Seq<Hit> hseq = new Seq<>();
+	static final Seq<ItemStack> rawStacks = new Seq<>();
+	static final Seq<Item> items = new Seq<>();
+	static final IntSet collided = new IntSet(), collided2 = new IntSet();
+	static final BasicPool<Hit> hPool = new BasicPool<>(Hit::new);
+	static final IntSeq amounts = new IntSeq();
+	static final String[] byteUnit = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"};
 
-	private static Tile tileParma;
-	private static Posc result;
-	private static float cDist;
-	private static Building tmpBuilding;
-	private static Unit tmpUnit;
+	static Tile tileParma;
+	static Posc result;
+	static float cDist;
+	static Building tmpBuilding;
+	static Unit tmpUnit;
 
 	/** Don't let anyone instantiate this class. */
 	private Utils() {}

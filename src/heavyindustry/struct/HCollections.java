@@ -5,8 +5,8 @@ package heavyindustry.struct;
  *
  * @since 1.0.6
  */
-public final class Collectionsf {
-	private Collectionsf() {}
+public final class HCollections {
+	private HCollections() {}
 
 	/** Convert vararg to an array. */
 	@SafeVarargs
