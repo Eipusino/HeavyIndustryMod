@@ -43,6 +43,7 @@ import heavyindustry.graphics.HCacheLayer;
 import heavyindustry.graphics.HShaders;
 import heavyindustry.graphics.HTextures;
 import heavyindustry.graphics.MuelsyseMenuRenderer;
+import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.input.InputAggregator;
 import heavyindustry.io.WorldData;
 import heavyindustry.mod.LoadMod;
@@ -74,6 +75,7 @@ import static heavyindustry.HVars.inputAggregator;
 import static heavyindustry.HVars.internalTree;
 import static heavyindustry.HVars.modName;
 import static heavyindustry.HVars.name;
+import static heavyindustry.HVars.sizedGraphics;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.macNotchHeight;
 import static mindustry.Vars.mods;
@@ -115,6 +117,10 @@ public final class HeavyIndustryMod extends Mod {
 	}
 
 	public HeavyIndustryMod() {
+		if (Core.graphics != null && !Core.graphics.isGL30Available()) {
+			throw new UnsupportedOperationException("HeavyIndustryMod only runs with OpenGL 3.0 (on desktop) or OpenGL ES 3.0 (on android) and above!");
+		}
+
 		Log.infoTag("Kotlin", "Version: " + KotlinVersion.CURRENT);
 		Log.info("Loaded HeavyIndustry Mod constructor.");
 
@@ -173,6 +179,7 @@ public final class HeavyIndustryMod extends Mod {
 					HCacheLayer.init();
 
 					inputAggregator = new InputAggregator();
+					sizedGraphics = new SizedGraphics();
 				});
 			}
 		});

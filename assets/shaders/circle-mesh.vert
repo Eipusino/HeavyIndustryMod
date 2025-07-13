@@ -1,7 +1,7 @@
-attribute vec4 a_position;
-attribute vec3 a_normal;
-attribute vec4 a_color;
-attribute vec2 a_texCoord0;
+in vec4 a_position;
+in vec3 a_normal;
+in vec4 a_color;
+in vec2 a_texCoord0;
 
 uniform mat4 u_proj;
 uniform mat4 u_trans;
@@ -15,9 +15,9 @@ uniform vec4 u_planet_info;
 
 uniform float u_alpha;
 
-varying vec4 v_col;
-varying vec3 v_position;
-varying vec2 v_texCoords;
+out vec4 v_col;
+out vec3 v_position;
+out vec2 v_texCoords;
 
 const vec3 diffuse = vec3(0.01);
 

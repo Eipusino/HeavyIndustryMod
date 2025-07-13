@@ -2,16 +2,17 @@ package heavyindustry.type;
 
 import arc.Core;
 import arc.graphics.Blending;
+import arc.graphics.Color;
 import arc.graphics.Gl;
 import arc.graphics.Mesh;
 import arc.graphics.Texture.TextureFilter;
+import arc.graphics.g2d.Draw;
 import arc.graphics.g3d.Camera3D;
-import arc.graphics.gl.FrameBuffer;
 import arc.math.geom.Mat3D;
 import arc.math.geom.Vec3;
 import arc.util.Nullable;
-import arc.util.Tmp;
 import heavyindustry.graphics.HShaders;
+import heavyindustry.graphics.gl.DepthFrameBuffer;
 import mindustry.graphics.Shaders;
 import mindustry.graphics.g3d.GenericMesh;
 import mindustry.graphics.g3d.HexMesher;
@@ -28,7 +29,7 @@ import static mindustry.Vars.renderer;
  * @since 1.0.6
  */
 public class AtmospherePlanet extends Planet {
-	public @Nullable FrameBuffer buffer;
+	public @Nullable DepthFrameBuffer buffer;
 
 	public AtmospherePlanet(String name, Planet parent, float radius) {
 		super(name, parent, radius);
@@ -41,8 +42,8 @@ public class AtmospherePlanet extends Planet {
 	@Override
 	public void load() {
 		super.load();
-		if (!headless) {
-			buffer = new FrameBuffer(Core.graphics.getWidth(), Core.graphics.getHeight(), true);
+		if (!headless && buffer == null) {
+			buffer = new DepthFrameBuffer(2, 2, true);
 			buffer.getTexture().setFilter(TextureFilter.nearest);
 		}
 	}
@@ -76,32 +77,24 @@ public class AtmospherePlanet extends Planet {
 
 		@Override
 		public void render(PlanetParams params, Mat3D projection, Mat3D transform) {
-			if (params.alwaysDrawAtmosphere || Core.settings.getBool("atmosphere")) {
-				var depth = HShaders.depth;
-				buffer.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
-				buffer.begin(Tmp.c1.set(0xffffff00));
-				Blending.disabled.apply();
-
-				depth.camera = renderer.planets.cam;
-				depth.bind();
-				depth.setUniformMatrix4("u_proj", projection.val);
-				depth.setUniformMatrix4("u_trans", transform.val);
-				depth.apply();
-				mesh.render(depth, Gl.triangles);
-
-				Blending.normal.apply();
-				buffer.end();
-			}
+			buffer.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
+			buffer.begin(Color.clear);
 
 			var shader = Shaders.planet;
 			shader.planet = AtmospherePlanet.this;
 			shader.lightDir.set(solarSystem.position).sub(position).rotate(Vec3.Y, getRotation()).nor();
 			shader.ambientColor.set(solarSystem.lightColor);
 			shader.bind();
-			shader.setUniformMatrix4("u_proj", projection.val);
+			shader.setUniformMatrix4("u_proj", renderer.planets.cam.combined.val);
 			shader.setUniformMatrix4("u_trans", transform.val);
 			shader.apply();
 			mesh.render(shader, Gl.triangles);
+
+			buffer.end();
+
+			var blit = HShaders.depthScreenspace;
+			blit.buffer = buffer;
+			Draw.blit(blit);
 		}
 	}
 }

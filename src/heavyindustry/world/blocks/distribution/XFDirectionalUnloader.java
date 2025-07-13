@@ -18,7 +18,7 @@ import mindustry.world.blocks.distribution.DirectionalUnloader;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
-import static heavyindustry.struct.HCollections.arrayOf;
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.content;
 
 public class XFDirectionalUnloader extends DirectionalUnloader {

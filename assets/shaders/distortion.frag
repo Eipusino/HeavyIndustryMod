@@ -1,4 +1,3 @@
-
 uniform sampler2D u_texture0;
 uniform sampler2D u_texture1;
 
@@ -6,10 +5,12 @@ uniform float width;
 uniform float height;
 uniform float strength;
 
-varying vec2 v_texCoords;
+in vec2 v_texCoords;
+
+out vec4 fragColor;
 
 void main() {
-	vec4 col = texture2D(u_texture0, v_texCoords);
+	vec4 col = texture(u_texture0, v_texCoords);
 
 	if (col.a > 0.0) {
 		float lerp = col.b * col.a;
@@ -21,8 +22,8 @@ void main() {
 		float w = strength / width;
 		float h = strength / height;
 
-		gl_FragColor = vec4(texture2D(u_texture1, v_texCoords + vec2(off.r * w, off.g * h)).rgb, 1.0);
+		fragColor = vec4(texture(u_texture1, v_texCoords + vec2(off.r * w, off.g * h)).rgb, 1.0);
 	} else {
-		gl_FragColor = vec4(0.0);
+		fragColor = vec4(0.0);
 	}
 }

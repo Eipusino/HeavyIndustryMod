@@ -3,6 +3,7 @@ package heavyindustry.graphics;
 import arc.Core;
 import arc.files.Fi;
 import arc.graphics.Color;
+import arc.graphics.Cubemap.CubemapSide;
 import arc.graphics.Texture;
 import arc.graphics.Texture.TextureFilter;
 import arc.graphics.Texture.TextureWrap;
@@ -16,7 +17,9 @@ import arc.scene.ui.layout.Scl;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.graphics.gl.DepthFrameBuffer;
+import heavyindustry.graphics.gl.Gl30Shader;
 import heavyindustry.type.AtmospherePlanet;
+import heavyindustry.type.BlackHole;
 import mindustry.Vars;
 import mindustry.type.Planet;
 
@@ -34,7 +37,7 @@ public final class HShaders {
 	public static DepthScreenspaceShader depthScreenspace;
 	public static DepthAtmosphereShader depthAtmosphere;
 	public static AlphaShader alphaShader;
-	public static SurfaceShaderf brine, nanoFluid, boundWater, pit, waterPit;
+	public static Gl30SurfaceShader brine, nanoFluid, boundWater, pit, waterPit;
 	public static ChromaticAberrationShader chromatic;
 	public static MaskShader alphaMask;
 	public static WaveShader wave;
@@ -45,9 +48,11 @@ public final class HShaders {
 	public static TractorConeShader tractorCone;
 	public static DimShader dimShader;
 	public static SmallSpaceShader smallSpaceShader;
-	public static Shader baseShader, passThrough;
+	public static Gl30Shader baseShader, passThrough;
 	public static TilerShader tiler;
 	public static PlanetTextureShader planetTexture;
+	public static BlackHoleShader blackHole;
+	public static BlackHoleStencilShader blackHoleStencil;
 
 	/** Don't let anyone instantiate this class. */
 	private HShaders() {}
@@ -63,11 +68,11 @@ public final class HShaders {
 
 		alphaShader = new AlphaShader();
 
-		brine = new SurfaceShaderf("brine");
-		nanoFluid = new SurfaceShaderf("nano-fluid");
-		boundWater = new SurfaceShaderf("bound-water");
-		pit = new PitShader("pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
-		waterPit = new PitShader("water-pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
+		brine = new Gl30SurfaceShader("brine", "brine");
+		nanoFluid = new Gl30SurfaceShader("nano-fluid", "nano-fluid");
+		boundWater = new Gl30SurfaceShader("bound-water", "bound-water");
+		pit = new PitShader("pit", "pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
+		waterPit = new PitShader("water-pit", "water-pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
 
 		chromatic = new ChromaticAberrationShader();
 
@@ -80,14 +85,17 @@ public final class HShaders {
 		blockBuildCenter = new BlockBuildCenterShader();
 		tractorCone = new TractorConeShader();
 		dimShader = new DimShader();
-		smallSpaceShader = new SmallSpaceShader("small-space");
+		smallSpaceShader = new SmallSpaceShader();
 
-		baseShader = new Shader(dsv("screenspace"), msf("dist-base"));
-		passThrough = new Shader(dsv("screenspace"), msf("pass-through"));
+		baseShader = new Gl30Shader(msv("dist-base"), msf("dist-base"));
+		passThrough = new Gl30Shader(msv("pass-through"), msf("pass-through"));
 
 		tiler = new TilerShader();
 
 		planetTexture = new PlanetTextureShader();
+
+		blackHole = new BlackHoleShader();
+		blackHoleStencil = new BlackHoleStencilShader();
 
 		Shader.prependVertexCode = prevVert;
 		Shader.prependFragmentCode = prevFrag;
@@ -122,7 +130,7 @@ public final class HShaders {
 	}
 
 	/** Specialized mesh shader to capture fragment depths. */
-	public static class DepthShader extends Shader {
+	public static class DepthShader extends Gl30Shader {
 		public Camera3D camera;
 
 		/** The only instance of this class: {@link #depth}. */
@@ -137,7 +145,7 @@ public final class HShaders {
 		}
 	}
 
-	public static class DepthScreenspaceShader extends Shader {
+	public static class DepthScreenspaceShader extends Gl30Shader {
 		public DepthFrameBuffer buffer;
 
 		/** The only instance of this class: {@link #depthScreenspace}. */
@@ -159,7 +167,7 @@ public final class HShaders {
 	 * An atmosphere shader that incorporates the planet shape in a form of depth texture. Better quality, but at the little
 	 * cost of performance.
 	 */
-	public static class DepthAtmosphereShader extends Shader {
+	public static class DepthAtmosphereShader extends Gl30Shader {
 		private static final Mat3D mat = new Mat3D();
 
 		public Camera3D camera;
@@ -172,12 +180,13 @@ public final class HShaders {
 
 		@Override
 		public void apply() {
-			setUniformMatrix4("u_proj", camera.combined.val);
+			setUniformMatrix4("u_projView", camera.combined.val);
+			setUniformMatrix4("u_invProj", mat.set(camera.projection).inv().val);
 			setUniformMatrix4("u_trans", planet.getTransform(mat).val);
 
 			setUniformf("u_camPos", camera.position);
 			setUniformf("u_relCamPos", Tmp.v31.set(camera.position).sub(planet.position));
-			setUniformf("u_camRange", camera.near, camera.far - camera.near);
+			setUniformf("u_depthRange", camera.near, camera.far);
 			setUniformf("u_center", planet.position);
 			setUniformf("u_light", planet.getLightNormal());
 			setUniformf("u_color", planet.atmosphereColor.r, planet.atmosphereColor.g, planet.atmosphereColor.b);
@@ -185,13 +194,13 @@ public final class HShaders {
 			setUniformf("u_innerRadius", planet.radius + planet.atmosphereRadIn);
 			setUniformf("u_outerRadius", planet.radius + planet.atmosphereRadOut);
 
-			planet.buffer.getTexture().bind(0);
+			planet.buffer.getDepthTexture().bind(0);
 			setUniformi("u_topology", 0);
 			setUniformf("u_viewport", Core.graphics.getWidth(), Core.graphics.getHeight());
 		}
 	}
 
-	public static class PlanetTextureShader extends Shader {
+	public static class PlanetTextureShader extends Gl30Shader {
 		public Vec3 lightDir = new Vec3(1, 1, 1).nor();
 		public Color ambientColor = Color.white.cpy();
 		public Vec3 camDir = new Vec3();
@@ -218,18 +227,18 @@ public final class HShaders {
 
 		private void setPlanetInfo(String name, Planet planet) {
 			Vec3 position = planet.position;
-			Shader shader = this;
+			var shader = this;
 			shader.setUniformf(name, position.x, position.y, position.z, planet.radius);
 		}
 	}
 
-	public static class TilerShader extends Shader {
+	public static class TilerShader extends Gl30Shader {
 		public Texture texture = Core.atlas.white().texture;
 		public float scl = 4f;
 
 		/** The only instance of this class: {@link #tiler}. */
 		TilerShader() {
-			super(dsv("screenspace"), msf("tiler"));
+			super(msv("tiler"), msf("tiler"));
 		}
 
 		@Override
@@ -245,12 +254,12 @@ public final class HShaders {
 		}
 	}
 
-	public static class AlphaShader extends Shader {
+	public static class AlphaShader extends Gl30Shader {
 		public float alpha = 1f;
 
 		/** The only instance of this class: {@link #alphaShader}. */
 		AlphaShader() {
-			super(dsv("screenspace"), msf("post-alpha"));
+			super(msv("post-alpha"), msf("post-alpha"));
 		}
 
 		@Override
@@ -259,7 +268,7 @@ public final class HShaders {
 		}
 	}
 
-	public static class WaveShader extends Shader {
+	public static class WaveShader extends Gl30Shader {
 		public Color waveMix = Color.white;
 		public float mixAlpha = 0.4f;
 		public float mixOmiga = 0.75f;
@@ -269,7 +278,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #wave}. */
 		WaveShader() {
-			super(dsv("screenspace"), msf("wave"));
+			super(msv("wave"), msf("wave"));
 		}
 
 		@Override
@@ -287,7 +296,7 @@ public final class HShaders {
 		}
 	}
 
-	public static class MirrorFieldShader extends Shader {
+	public static class MirrorFieldShader extends Gl30Shader {
 		public Color waveMix = Color.white;
 		public Vec2 offset = new Vec2(0, 0);
 		public float stroke = 2;
@@ -301,7 +310,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #mirrorField}. */
 		MirrorFieldShader() {
-			super(dsv("screenspace"), msf("mirror-field"));
+			super(msv("mirror-field"), msf("mirror-field"));
 		}
 
 		@Override
@@ -323,12 +332,12 @@ public final class HShaders {
 		}
 	}
 
-	public static final class MaskShader extends Shader {
+	public static final class MaskShader extends Gl30Shader {
 		public Texture texture;
 
 		/** The only instance of this class: {@link #alphaMask}. */
 		MaskShader() {
-			super(dsv("screenspace"), msf("alpha-mask"));
+			super(msv("alpha-mask"), msf("alpha-mask"));
 		}
 
 		@Override
@@ -340,9 +349,9 @@ public final class HShaders {
 		}
 	}
 
-	public static final class ChromaticAberrationShader extends Shader {
+	public static final class ChromaticAberrationShader extends Gl30Shader {
 		ChromaticAberrationShader() {
-			super(dsv("screenspace"), msf("aberration"));
+			super(msv("aberration"), msf("aberration"));
 		}
 
 		@Override
@@ -356,14 +365,14 @@ public final class HShaders {
 		}
 	}
 
-	public static class MaterializeShader extends Shader {
+	public static class MaterializeShader extends Gl30Shader {
 		public float progress, offset, time;
 		public int shadow;
 		public Color color = new Color();
 		public TextureRegion region;
 
 		MaterializeShader() {
-			super(dsv("default"), msf("materialize"));
+			super(msv("materialize"), msf("materialize"));
 		}
 
 		@Override
@@ -380,13 +389,13 @@ public final class HShaders {
 		}
 	}
 
-	public static class VerticalBuildShader extends Shader {
+	public static class VerticalBuildShader extends Gl30Shader {
 		public float progress, time;
 		public Color color = new Color();
 		public TextureRegion region;
 
 		VerticalBuildShader() {
-			super(dsv("default"), msf("vertical-build"));
+			super(msv("vertical-build"), msf("vertical-build"));
 		}
 
 		@Override
@@ -400,13 +409,13 @@ public final class HShaders {
 		}
 	}
 
-	public static class BlockBuildCenterShader extends Shader {
+	public static class BlockBuildCenterShader extends Gl30Shader {
 		public float progress;
 		public TextureRegion region;
 		public float time;
 
 		BlockBuildCenterShader() {
-			super(dsv("default"), msf("block-build-center"));
+			super(msv("block-build-center"), msf("block-build-center"));
 		}
 
 		@Override
@@ -419,12 +428,12 @@ public final class HShaders {
 		}
 	}
 
-	public static class TractorConeShader extends Shader {
+	public static class TractorConeShader extends Gl30Shader {
 		public float cx, cy;
 		public float time, spacing, thickness;
 
 		TractorConeShader() {
-			super(dsv("screenspace"), msf("tractor-cone"));
+			super(msv("tractor-cone"), msf("tractor-cone"));
 		}
 
 		@Override
@@ -448,11 +457,11 @@ public final class HShaders {
 		}
 	}
 
-	public static class DimShader extends Shader {
+	public static class DimShader extends Gl30Shader {
 		public float alpha;
 
 		DimShader() {
-			super(dsv("screenspace"), msf("dim"));
+			super(msv("dim"), msf("dim"));
 		}
 
 		@Override
@@ -461,11 +470,11 @@ public final class HShaders {
 		}
 	}
 
-	public static class SmallSpaceShader extends Shader {
+	public static class SmallSpaceShader extends Gl30Shader {
 		Texture texture;
 
-		SmallSpaceShader(String fragment) {
-			super(dsv("screenspace"), msf(fragment));
+		SmallSpaceShader() {
+			super(msv("small-space"), msf("small-space"));
 		}
 
 		@Override
@@ -489,12 +498,12 @@ public final class HShaders {
 	}
 
 	/** SurfaceShader but uses a mod fragment asset. */
-	public static class PitShader extends SurfaceShaderf {
+	public static class PitShader extends Gl30SurfaceShader {
 		protected TextureRegion topLayer, bottomLayer, truss;
 		protected String topLayerName, bottomLayerName, trussName;
 
-		public PitShader(String fragment, String topLayer, String bottomLayer, String truss) {
-			super(fragment);
+		public PitShader(String vertex, String fragment, String topLayer, String bottomLayer, String truss) {
+			super(vertex, fragment);
 			topLayerName = topLayer;
 			bottomLayerName = bottomLayer;
 			trussName = truss;
@@ -532,11 +541,84 @@ public final class HShaders {
 		}
 	}
 
-	public static class SurfaceShaderf extends Shader {
+	public static class BlackHoleShader extends Gl30Shader {
+		private static final Mat3D mat = new Mat3D();
+
+		public Camera3D camera;
+		public Mat3D[] cubemapView = new Mat3D[CubemapSide.values().length];
+		public BlackHole planet;
+
+		BlackHoleShader() {
+			super(msv("black-hole"), msf("black-hole"));
+			for (int i = 0; i < cubemapView.length; i++) {
+				cubemapView[i] = new Mat3D();
+			}
+		}
+
+		@Override
+		public void apply() {
+			if (planet == null) return;
+
+			setUniformf("u_camPos", camera.position);
+			setUniformf("u_viewport", Core.graphics.getWidth(), Core.graphics.getHeight());
+			setUniformf("u_relCamPos", Tmp.v31.set(camera.position).sub(planet.position));
+			setUniformf("u_center", planet.position);
+
+			setUniformf("u_radius", planet.radius);
+			setUniformf("u_horizon", planet.horizon);
+
+			for (int i = 0; i < cubemapView.length; i++) {
+				setUniformMatrix4("u_cubeView[" + i + "]", cubemapView[i].val);
+				setUniformMatrix4("u_cubeInvView[" + i + "]", mat.set(cubemapView[i]).inv().val);
+			}
+
+			setUniformMatrix4("u_projView", camera.combined.val);
+			setUniformMatrix4("u_invProjView", camera.invProjectionView.val);
+			setUniformf("u_depthRange", camera.near, camera.far);
+
+			planet.pov.getDepthTexture().bind(1);
+			planet.pov.getTexture().bind(0);
+			setUniformi("u_depth", 1);
+			setUniformi("u_ref", 0);
+		}
+	}
+
+	public static class BlackHoleStencilShader extends Gl30Shader {
+		private static final Mat3D mat = new Mat3D();
+		private static final Vec3 v1 = new Vec3();
+
+		public Camera3D camera;
+		public BlackHole planet;
+
+		BlackHoleStencilShader() {
+			super(msv("black-hole-stencil"), msf("black-hole-stencil"));
+		}
+
+		@Override
+		public void apply() {
+			if (planet == null) return;
+
+			setUniformMatrix4("u_invProj", mat.set(camera.projection).inv().val);
+			setUniformMatrix4("u_invProjView", camera.invProjectionView.val);
+			setUniformf("u_camPos", camera.position);
+			setUniformf("u_relCamPos", v1.set(camera.position).sub(planet.position));
+			setUniformf("u_viewport", Core.graphics.getWidth(), Core.graphics.getHeight());
+
+			setUniformf("u_radius", planet.radius);
+
+			planet.orbit.getTexture().bind(1);
+			planet.orbit.getDepthTexture().bind(0);
+
+			setUniformi("u_src", 1);
+			setUniformi("u_srcDepth", 0);
+		}
+	}
+
+	public static class Gl30SurfaceShader extends Gl30Shader {
 		Texture noiseTex;
 
-		public SurfaceShaderf(String fragment) {
-			super(dsv("screenspace"), msf(fragment));
+		public Gl30SurfaceShader(String vertex, String fragment) {
+			super(msv(vertex), msf(fragment));
 			loadNoise();
 		}
 

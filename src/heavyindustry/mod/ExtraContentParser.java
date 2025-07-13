@@ -158,7 +158,7 @@ import mindustry.world.meta.Env;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import static heavyindustry.struct.HCollections.arrayOf;
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.content;
 import static mindustry.Vars.maxBlockSize;
 

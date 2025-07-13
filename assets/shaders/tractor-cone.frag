@@ -12,7 +12,9 @@ uniform float u_thickness;
 uniform float u_cx;
 uniform float u_cy;
 
-varying vec2 v_texCoords;
+in vec2 v_texCoords;
+
+out vec4 fragColor;
 
 float dst(vec2 coords) {
 	float dx = coords.x / u_dp - u_cx;
@@ -30,11 +32,11 @@ void main() {
 	vec2 coords = (T * u_texsize) + u_offset;
 	float dst = fixMod(dst(coords) + u_time, u_spacing);
 
-	vec4 color = texture2D(u_texture, T);
+	vec4 color = texture(u_texture, T);
 
 	if (dst > u_thickness) {
 		color.a *= 0.4;
 	}
 
-	gl_FragColor = color;
+	fragColor = color;
 }

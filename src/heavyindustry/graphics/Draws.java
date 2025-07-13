@@ -26,6 +26,7 @@ import arc.util.Nullable;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.func.Floatc3;
+import heavyindustry.graphics.gl.Gl30Shader;
 import mindustry.game.EventType.Trigger;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
@@ -45,8 +46,6 @@ import static heavyindustry.graphics.Drawn.v5;
 import static heavyindustry.graphics.Drawn.v6;
 import static heavyindustry.graphics.HShaders.MaskShader;
 import static heavyindustry.graphics.HShaders.MirrorFieldShader;
-import static heavyindustry.graphics.HShaders.dsv;
-import static heavyindustry.graphics.HShaders.msf;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public final class Draws {
@@ -948,7 +947,7 @@ public final class Draws {
 		boolean capturing, disposed;
 
 		public Distortion() {
-			distortion = new Shader(dsv("screenspace"), msf("distortion"));
+			distortion = new Gl30Shader(HShaders.msv("distortion"), HShaders.msf("distortion"));
 
 			buffer = new FrameBuffer();
 
@@ -1115,7 +1114,7 @@ public final class Draws {
 			int c = 0;
 			int half = convLen / 2;
 			for (float v : convolutions) {
-				varying.append("varying vec2 v_texCoords").append(c).append(";").append(System.lineSeparator());
+				varying.append("out vec2 v_texCoords").append(c).append(";").append(System.lineSeparator());
 
 				assignVar.append("v_texCoords").append(c).append(" = ").append("a_texCoord0");
 				if (c - half != 0)
@@ -1124,21 +1123,22 @@ public final class Draws {
 				assignVar.append(";").append(System.lineSeparator()).append("  ");
 
 				if (c > 0) convolution.append("		+ ");
-				convolution.append(v).append(" * texture2D(u_texture1, v_texCoords").append(c).append(")").append(".rgb").append(System.lineSeparator());
+				convolution.append(v).append(" * texture(u_texture1, v_texCoords").append(c).append(")").append(".rgb").append(System.lineSeparator());
 
 				c++;
 			}
 			convolution.append(";");
 
 			String vertexShader = """
-					attribute vec4 a_position;
-					attribute vec2 a_texCoord0;
+					in vec4 a_position;
+					in vec2 a_texCoord0;
 					
 					uniform vec2 dir;
 					uniform vec2 size;
 					
-					varying vec2 v_texCoords;
+					out vec2 v_texCoords;
 					%varying%
+					
 					void main() {
 						vec2 len = dir/size;
 					
@@ -1146,33 +1146,37 @@ public final class Draws {
 						%assignVar%
 						gl_Position = a_position;
 					}
-					""".replace("%varying%", varying).replace("%assignVar%", assignVar);
+					""".replace("%varying%", varying.toString()).replace("%assignVar%", assignVar);
+
 			String fragmentShader = """
 					uniform lowp sampler2D u_texture0;
 					uniform lowp sampler2D u_texture1;
 					
 					uniform lowp float def_alpha;
 					
-					varying vec2 v_texCoords;
+					in vec2 v_texCoords;
 					%varying%
+					
+					out vec4 fragColor;
+					
 					void main() {
-						vec4 blur = texture2D(u_texture0, v_texCoords);
-						vec3 color = texture2D(u_texture1, v_texCoords).rgb;
+						vec4 blur = texture(u_texture0, v_texCoords);
+						vec3 color = texture(u_texture1, v_texCoords).rgb;
 					
 						if (blur.a > 0.0) {
 							vec3 blurColor =
 								%convolution%
 					
-							gl_FragColor.rgb = mix(color, blurColor, blur.a);
-							gl_FragColor.a = 1.0;
+							fragColor.rgb = mix(color, blurColor, blur.a);
+							fragColor.a = 1.0;
 						} else {
-							gl_FragColor.rgb = color;
-							gl_FragColor.a = def_alpha;
+							fragColor.rgb = color;
+							fragColor.a = def_alpha;
 						}
 					}
-					""".replace("%varying%", varying).replace("%convolution%", convolution);
+					""".replace("%varying%", varying.toString().replace("out", "in")).replace("%convolution%", convolution);
 
-			return new Shader(vertexShader, fragmentShader);
+			return new Gl30Shader(vertexShader, fragmentShader);
 		}
 
 		public void resize(int width, int height) {
@@ -1430,16 +1434,16 @@ public final class Draws {
 			Draw.shader();
 		}
 
-		public static class MathShader extends Shader {
+		public static class MathShader extends Gl30Shader {
 			private static final String vert = """
 				uniform mat4 u_projTrans;
 				
-				attribute vec4 a_position;
-				attribute vec2 a_texCoord0;
-				attribute vec4 a_color;
+				in vec4 a_position;
+				in vec2 a_texCoord0;
+				in vec4 a_color;
 				
-				varying vec4 v_color;
-				varying vec2 v_texCoords;
+				out vec4 v_color;
+				out vec2 v_texCoords;
 				
 				void main() {
 					gl_Position = u_projTrans * a_position;
@@ -1462,14 +1466,16 @@ public final class Draws {
 				
 				%args%
 				
-				varying vec4 v_color;
-				varying vec2 v_texCoords;
+				in vec4 v_color;
+				in vec2 v_texCoords;
+				
+				out vec4 fragColor;
 				
 				void main() {
 					float x = (v_texCoords.x - 0.5) * %wScl% * sclX;
 					float y = (v_texCoords.y - 0.5) * %hScl% * sclY;
 				
-					vec4 c = texture2D(u_texture, v_texCoords);
+					vec4 c = texture(u_texture, v_texCoords);
 					vec4 mixed = v_color*c;
 				
 					%perVar%
@@ -1479,7 +1485,7 @@ public final class Draws {
 				
 					alpha = max(min((alpha - minThreshold)/(maxThreshold - minThreshold), 1.0), 0.0) * mixed.a;
 				
-					gl_FragColor = vec4(mixed.r, mixed.g, mixed.b, alpha);
+					fragColor = vec4(mixed.r, mixed.g, mixed.b, alpha);
 				}
 				""";
 

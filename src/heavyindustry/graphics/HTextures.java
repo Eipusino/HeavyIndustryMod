@@ -14,30 +14,27 @@ public final class HTextures {
 	private HTextures() {}
 
 	public static void init() {
-		smooth = loadTexture("smooth-noise", t -> {
-			t.setFilter(TextureFilter.linear);
-			t.setWrap(TextureWrap.repeat);
-		});
-		particle = loadTexture("particle-noise", t -> {
-			t.setFilter(TextureFilter.linear);
-			t.setWrap(TextureWrap.repeat);
-		});
-		darker = loadTexture("darker-noise", t -> {
-			t.setFilter(TextureFilter.linear);
-			t.setWrap(TextureWrap.repeat);
-		});
-		gaussian = loadTexture("gaussian-noise", t -> {
-			t.setFilter(TextureFilter.linear);
-			t.setWrap(TextureWrap.repeat);
-		});
-		median = loadTexture("median-noise", t -> {
-			t.setFilter(TextureFilter.linear);
-			t.setWrap(TextureWrap.repeat);
-		});
+		smooth = loadTexture("smooth-noise");
+		particle = loadTexture("particle-noise");
+		darker = loadTexture("darker-noise");
+		gaussian = loadTexture("gaussian-noise");
+		median = loadTexture("median-noise");
 		armor = loadTexture("armor", t -> {
 			t.setFilter(TextureFilter.nearest);
 			t.setWrap(TextureWrap.repeat);
 		});
+	}
+
+	public static Texture loadTexture(String name) {
+		return loadTexture(name, TextureFilter.linear, TextureWrap.repeat);
+	}
+
+	public static Texture loadTexture(String name, TextureFilter filter, TextureWrap wrap) {
+		Texture texture = new Texture(internalTree.child("sprites").child(name + (name.endsWith(".png") ? "" : ".png")));
+		texture.setFilter(filter);
+		texture.setWrap(wrap);
+
+		return texture;
 	}
 
 	public static Texture loadTexture(String name, Cons<Texture> modifier) {

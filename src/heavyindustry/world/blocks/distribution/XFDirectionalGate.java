@@ -15,7 +15,7 @@ import mindustry.gen.Building;
 import mindustry.gen.Sounds;
 import mindustry.world.blocks.distribution.OverflowDuct;
 
-import static heavyindustry.struct.HCollections.arrayOf;
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.player;
 
 public class XFDirectionalGate extends OverflowDuct {

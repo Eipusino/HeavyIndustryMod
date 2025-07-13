@@ -1,6 +1,8 @@
-varying vec2 v_texCoords;
-varying vec4 v_col;
-varying vec3 v_position;
+in vec2 v_texCoords;
+in vec4 v_col;
+in vec3 v_position;
+
+out vec4 fragColor;
 
 uniform sampler2D u_texture;
 uniform vec4 u_color;
@@ -9,7 +11,7 @@ uniform vec4 u_sun_info;
 uniform vec4 u_planet_info;
 
 void main() {
-	vec4 color = texture2D(u_texture, v_texCoords);
+	vec4 color = texture(u_texture, v_texCoords);
 
 	vec3 p1 = u_sun_info.xyz;
 	float r1 = u_sun_info.w;
@@ -52,5 +54,5 @@ void main() {
 		col.rgb *= smoothstep(0.0, 1.0, i);
 	}
 
-	gl_FragColor = color * u_color * v_col * col;
+	fragColor = color * u_color * v_col * col;
 }

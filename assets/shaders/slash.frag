@@ -12,7 +12,9 @@ uniform vec2 u_resolution;
 uniform int u_slashescount;
 uniform vec4 u_slashes[MAX_COUNT]; //x, y, angle, offset
 
-varying vec2 v_texCoords;
+in vec2 v_texCoords;
+
+out vec4 fragColor;
 
 bool invert(float a1, float a2) {
 	float fd = abs(a1 - a2);
@@ -42,5 +44,5 @@ void main() {
 	}
 
 	coords += offset;
-	gl_FragColor = texture2D(u_texture, (coords - u_campos) / u_resolution);
+	fragColor = texture(u_texture, (coords - u_campos) / u_resolution);
 }

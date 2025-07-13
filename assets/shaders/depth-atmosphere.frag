@@ -14,11 +14,14 @@ const float flare = 0.0025;
 const float intensity = 14.3;
 const float gm = -0.85;
 
-varying vec3 v_position;
+in vec3 v_position;
 
+out vec4 fragColor;
+
+uniform mat4 u_invProj;
 uniform vec3 u_camPos;
 uniform vec3 u_relCamPos;
-uniform vec2 u_camRange;
+uniform vec2 u_depthRange;
 uniform vec3 u_center;
 uniform vec3 u_light;
 uniform vec3 u_color;
@@ -77,6 +80,8 @@ float optic(vec3 p, vec3 q) {
 
 vec3 inScatter(vec3 eye, vec3 ray, vec2 bound, vec3 light) {
 	float len = (bound.y - bound.x) / fNumInScatter;
+	len = min(len, u_innerRadius * 0.5);
+
 	vec3 step = ray * len;
 	vec3 start = eye + ray * bound.x;
 	vec3 march = start + ray * (len * 0.5);
@@ -96,8 +101,16 @@ vec3 inScatter(vec3 eye, vec3 ray, vec2 bound, vec3 light) {
 	return sum * (peak * u_color * rayleighPhase(cc) + flare * miePhase(gm, c, cc)) * intensity;
 }
 
-float unpack(vec4 pack) {
-	return dot(pack, 1.0 / vec4(1.0, 255.0, 65025.0, 16581375.0)) * u_camRange.y + u_camRange.x;
+float depth(vec2 uv) {
+	float depth = texture(u_topology, uv).r;
+
+	float x_ndc = uv.x * 2.0 - 1.0;
+	float y_ndc = uv.y * 2.0 - 1.0;
+	float z_ndc = depth * 2.0 - 1.0;
+	vec4 clip = vec4(x_ndc, y_ndc, z_ndc, 1.0);
+
+	vec4 view = u_invProj * clip;
+	return length(view.xyz / view.w);
 }
 
 void main() {
@@ -106,7 +119,7 @@ void main() {
 	vec3 normal = normalize(v_position - u_center);
 
 	vec2 bound = intersect(eye, ray, u_outerRadius);
-	bound.y = min(bound.y, unpack(texture2D(u_topology, gl_FragCoord.xy / u_viewport)));
+	bound.y = min(bound.y, depth(gl_FragCoord.xy / u_viewport));
 
-	gl_FragColor = vec4(inScatter(eye, ray, bound, u_light), 1.0);
+	fragColor = vec4(inScatter(eye, ray, bound, u_light), 1.0);
 }

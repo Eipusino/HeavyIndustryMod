@@ -12,6 +12,7 @@ import arc.graphics.gl.Shader;
 import arc.math.geom.Mat3D;
 import arc.struct.Seq;
 import heavyindustry.graphics.g3d.model.Model;
+import heavyindustry.graphics.gl.Gl30Shader;
 
 /** Example 3D renderer. */
 public class GenericRenderer3D implements Renderer3D {
@@ -32,11 +33,11 @@ public class GenericRenderer3D implements Renderer3D {
 
 	/** @return shader for frame buffer drawing. */
 	public static Shader createShader() {
-		return new Shader("""
-				attribute vec4 a_position;
-				attribute vec2 a_texCoord0;
+		return new Gl30Shader("""
+				in vec4 a_position;
+				in vec2 a_texCoord0;
 				
-				varying vec2 v_texCoords;
+				out vec2 v_texCoords;
 				
 				void main() {
 					v_texCoords = a_texCoord0;
@@ -45,10 +46,12 @@ public class GenericRenderer3D implements Renderer3D {
 				""", """
 				uniform sampler2D u_texture;
 				
-				varying vec2 v_texCoords;
+				in vec2 v_texCoords;
+				
+				out vec4 fragColor;
 				
 				void main() {
-					gl_FragColor = texture2D(u_texture, v_texCoords);
+					fragColor = texture(u_texture, v_texCoords);
 				}
 				""");
 	}

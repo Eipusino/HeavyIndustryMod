@@ -8,7 +8,9 @@ uniform vec2 u_campos;
 uniform vec2 u_resolution;
 uniform float u_time;
 
-varying vec2 v_texCoords;
+in vec2 v_texCoords;
+
+out vec4 fragColor;
 
 uniform vec2 mscl;
 uniform float tscal;
@@ -21,12 +23,12 @@ float ridge(float x) {
 }
 
 float mudh(vec2 v, vec2 o) {
-	vec4 b = texture2D(u_texture, v + o);
+	vec4 b = texture(u_texture, v + o);
 	return b.r + b.g + b.b + b.a;
 }
 
 float nh(vec2 v, vec2 o, float scl) {
-	return max(0.4, texture2D(u_noise, (v + o) / scl).r);
+	return max(0.4, texture(u_noise, (v + o) / scl).r);
 }
 
 void main() {
@@ -39,7 +41,7 @@ void main() {
 
 	vec2 wavecord = c + vec2(sin(stime / 3.0 + coords.y / 0.75) * v.x, 0.0);
 
-	vec4 fcolor = texture2D(u_texture, c);
+	vec4 fcolor = texture(u_texture, c);
 	vec2 mnorm = vec2(mudh(c, v * vec2(1.0, 0.0)) - mudh(c, v * vec2(-1.0, 0.0)), mudh(c, v * vec2(0.0, 1.0)) - mudh(c, v * vec2(0.0, -1.0)));
 
 	vec3 color = fcolor.rgb * 0.7;
@@ -55,7 +57,7 @@ void main() {
 
 	vec3 refl = reflect(cam, normal);
 
-	vec4 fly = texture2D(u_flying, c + refl.xy * v * 30.0);
+	vec4 fly = texture(u_flying, c + refl.xy * v * 30.0);
 
 	vec3 lightcol = vec3(pow(max(0.0, -dot(refl, light)), 700.0)) * (0.8 * color + vec3(0.2));
 	lightcol += sky * (pow(max(0.0, -dot(refl, light)), 10.0)) * 0.1;
@@ -63,5 +65,5 @@ void main() {
 
 	color += lightcol + (fly.a * fly.rgb * (0.3 - ch));
 	color *= (1.0 - fly.a * 0.2);
-	gl_FragColor = vec4(color.rgb, min(1.0, fcolor.a * 6.0));
+	fragColor = vec4(color.rgb, min(1.0, fcolor.a * 6.0));
 }

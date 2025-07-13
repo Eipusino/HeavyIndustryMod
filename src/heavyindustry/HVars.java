@@ -6,6 +6,7 @@ import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.graphics.g2d.TextureRegion;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.files.InternalFileTree;
+import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.input.InputAggregator;
 import mindustry.content.TechTree.TechNode;
 import mindustry.type.Planet;
@@ -24,6 +25,9 @@ public final class HVars {
 
 	/** Modules present in both servers and clients. */
 	public static InputAggregator inputAggregator;
+
+	/** Modules only present in clients, rendering. */
+	public static SizedGraphics sizedGraphics;
 
 	/** Blank Texture Region, used for Kotlin code, can avoid {@code lateinit var}. */
 	public static final Texture whiteTexture;
