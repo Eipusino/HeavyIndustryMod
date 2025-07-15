@@ -12,7 +12,7 @@ import heavyindustry.content.HFx;
 import heavyindustry.gen.HSounds;
 import heavyindustry.gen.WorldRegister;
 import heavyindustry.graphics.Drawn;
-import heavyindustry.ui.UIUtils;
+import heavyindustry.ui.Elements;
 import mindustry.content.Bullets;
 import mindustry.core.UI;
 import mindustry.core.World;
@@ -32,7 +32,7 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 import mindustry.world.meta.StatValues;
 
-import static heavyindustry.ui.UIUtils.LEN;
+import static heavyindustry.ui.Elements.LEN;
 import static mindustry.Vars.control;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.player;
@@ -210,7 +210,7 @@ public class CommandableAttackerBlock extends CommandableBlock {
 
 			if (!headless && participantsTmp.any()) {
 				if (team != player.team())
-					UIUtils.showToast(Icon.warning, "[#ff7b69]Caution: []Attack " + (int) (pos.x / 8) + ", " + (int) (pos.y / 8), HSounds.alert2);
+					Elements.showToast(Icon.warning, "[#ff7b69]Caution: []Attack " + (int) (pos.x / 8) + ", " + (int) (pos.y / 8), HSounds.alert2);
 				HFx.attackWarningRange.at(pos.x, pos.y, 80, team.color);
 			}
 		}
@@ -226,7 +226,7 @@ public class CommandableAttackerBlock extends CommandableBlock {
 
 			table.table(Tex.paneSolid, t -> {
 				t.button(Icon.modeAttack, Styles.cleari, () -> configure(targetVec)).size(LEN).disabled(b -> targetVec.epsilonEquals(x, y, 0.1f));
-				t.button(Core.bundle.get("hi-select-target"), Icon.move, Styles.cleart, LEN, () -> UIUtils.selectPos(t, this::configure)).size(LEN * 4, LEN).row();
+				t.button(Core.bundle.get("hi-select-target"), Icon.move, Styles.cleart, LEN, () -> Elements.selectPos(t, this::configure)).size(LEN * 4, LEN).row();
 			}).fill();
 		}
 	}

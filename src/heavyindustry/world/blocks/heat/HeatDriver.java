@@ -31,6 +31,7 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
 import static heavyindustry.HVars.name;
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.state;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
@@ -187,7 +188,7 @@ public class HeatDriver extends Block {
 
 		@Override
 		public TextureRegion[] icons(Block block) {
-			return new TextureRegion[]{preview};
+			return arrayOf(preview);
 		}
 	}
 

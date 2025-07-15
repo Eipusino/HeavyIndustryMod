@@ -96,6 +96,8 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 import static heavyindustry.HVars.name;
+import static heavyindustry.struct.Collectionsf.arrayOf;
+import static heavyindustry.struct.Collectionsf.floatOf;
 import static mindustry.Vars.content;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.indexer;
@@ -623,12 +625,12 @@ public final class Utils {
 
 	public static void quadHelper(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
 		Fill.quad(x1, y1, x2, y2, x3, y3, x4, y4);
-		debugDots(new float[]{x1, y1, x2, y2, x3, y3, x4, y4});
+		debugDots(floatOf(x1, y1, x2, y2, x3, y3, x4, y4));
 	}
 
 	public static void quadHelper(TextureRegion region, float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
 		Fill.quad(region, x1, y1, x2, y2, x3, y3, x4, y4);
-		debugDots(new float[]{x1, y1, x2, y2, x3, y3, x4, y4});
+		debugDots(floatOf(x1, y1, x2, y2, x3, y3, x4, y4));
 	}
 
 	public static void quadHelper(TextureRegion region, Vec2 v1, Vec2 v2, Vec2 v3, Vec2 v4) {
@@ -934,17 +936,17 @@ public final class Utils {
 	 */
 	public static void test() {
 		int size = 40;
-		for (Liquid liquid : new Liquid[]{Liquids.water, Liquids.slag, Liquids.oil, Liquids.cryofluid,
+		for (Liquid liquid : arrayOf(Liquids.water, Liquids.slag, Liquids.oil, Liquids.cryofluid,
 				Liquids.arkycite, Liquids.gallium, Liquids.neoplasm,
-				Liquids.ozone, Liquids.hydrogen, Liquids.nitrogen, Liquids.cyanogen}) {
+				Liquids.ozone, Liquids.hydrogen, Liquids.nitrogen, Liquids.cyanogen)) {
 			if (liquid.hidden) continue;
 			ObjectMap<Integer, Cons<Liquid>> cons = getEntries(liquid, size);
 			liquid(cons, liquid.name, liquid.color, liquid.explosiveness, liquid.flammability, liquid.heatCapacity, liquid.viscosity, liquid.temperature);
 		}
 
-		for (Item item : new Item[]{Items.scrap, Items.copper, Items.lead, Items.graphite, Items.coal, Items.titanium, Items.thorium, Items.silicon, Items.plastanium,
+		for (Item item : arrayOf(Items.scrap, Items.copper, Items.lead, Items.graphite, Items.coal, Items.titanium, Items.thorium, Items.silicon, Items.plastanium,
 				Items.phaseFabric, Items.surgeAlloy, Items.sporePod, Items.sand, Items.blastCompound, Items.pyratite, Items.metaglass,
-				Items.beryllium, Items.tungsten, Items.oxide, Items.carbide, Items.fissileMatter, Items.dormantCyst}) {
+				Items.beryllium, Items.tungsten, Items.oxide, Items.carbide, Items.fissileMatter, Items.dormantCyst)) {
 			if (item.hidden) continue;
 			ObjectMap<Integer, Cons<Item>> cons = getEntries(item, size);
 			item(cons, item.name, item.color, item.explosiveness, item.flammability, item.cost, item.radioactivity, item.charge, item.healthScaling);

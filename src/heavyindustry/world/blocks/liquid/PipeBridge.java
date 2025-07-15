@@ -10,6 +10,8 @@ import mindustry.gen.Building;
 import mindustry.graphics.Layer;
 import mindustry.world.Tile;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
+
 public class PipeBridge extends MergingLiquidBlock {
 	public TextureRegion top1, top2, bridgeRegion1, bridgeRegion2;
 
@@ -33,7 +35,7 @@ public class PipeBridge extends MergingLiquidBlock {
 
 	@Override
 	public TextureRegion[] icons() {
-		return new TextureRegion[]{region, top1};
+		return arrayOf(region, top1);
 	}
 
 	public class PipeBridgeBuild extends MergingLiquidBuild {

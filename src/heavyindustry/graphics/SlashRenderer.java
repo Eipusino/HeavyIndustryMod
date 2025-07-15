@@ -51,12 +51,12 @@ public final class SlashRenderer {
 	}
 
 	public static void draw() {
-		Draw.draw(Layerf.begin - 0.1f, () -> {
+		Draw.draw(HLayer.begin - 0.1f, () -> {
 			buffer.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
 			buffer.begin();
 		});
 
-		Draw.draw(Layerf.end + 1f, () -> {
+		Draw.draw(HLayer.end + 1f, () -> {
 			buffer.end();
 
 			while (slashes.size > maxCount) createShader();

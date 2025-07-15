@@ -343,7 +343,7 @@ public final class HTrails {
 				float x1 = pos1.x, y1 = pos1.y;
 				Vec2 pos2 = Perspective.drawPos(lastX, lastY, lastZ);
 				float x2 = pos2.x, y2 = pos2.y;
-				float w1 = Perspective.scale(lastX, lastY, lastZ), w = w1 * width / (points.size / 4) * i / 4f * 2f;
+				float w1 = Perspective.scale(lastX, lastY, lastZ), w = w1 * width / (points.size / 4f) * i / 4f * 2f;
 				if (w1 <= 0.001f) return;
 				if (fade) {
 					Draw.color(Tmp.c1.set(color).mulA(Perspective.alpha(lastX, lastY, lastZ)));
@@ -961,7 +961,7 @@ public final class HTrails {
 			if (forceCap) forceDrawCap(color, width);
 
 			var items = points.items;
-			for (int i = 0, str = stride; i < len; i += str) drawSegment(color, width, items, len, i);
+			for (int i = 0; i < len; i += stride) drawSegment(color, width, items, len, i);
 			Draw.blend();
 		}
 

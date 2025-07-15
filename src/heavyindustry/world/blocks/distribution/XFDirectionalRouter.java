@@ -7,6 +7,8 @@ import arc.util.Eachable;
 import mindustry.entities.units.BuildPlan;
 import mindustry.world.blocks.distribution.DuctRouter;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
+
 public class XFDirectionalRouter extends DuctRouter {
 	public TextureRegion baseRegion, itemRegion;
 
@@ -32,7 +34,7 @@ public class XFDirectionalRouter extends DuctRouter {
 	}
 
 	public TextureRegion[] icons() {
-		return new TextureRegion[]{region};
+		return arrayOf(region);
 	}
 
 	public class XFDirectionalRouterBuild extends DuctRouterBuild {

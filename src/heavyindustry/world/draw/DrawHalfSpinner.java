@@ -10,6 +10,8 @@ import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
+
 public class DrawHalfSpinner extends DrawBlock {
 	public TextureRegion region;
 	public String suffix = "";
@@ -39,7 +41,7 @@ public class DrawHalfSpinner extends DrawBlock {
 
 	@Override
 	public TextureRegion[] icons(Block block) {
-		return new TextureRegion[]{region};
+		return arrayOf(region);
 	}
 
 	@Override

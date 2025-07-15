@@ -5,6 +5,7 @@ import arc.graphics.g2d.TextureRegion;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.StaticWall;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static heavyindustry.util.Utils.getTilingIndex;
 import static heavyindustry.util.Utils.split;
 import static mindustry.Vars.world;
@@ -22,7 +23,7 @@ public class ConnectedWall extends StaticWall {
 
 	@Override
 	public TextureRegion[] icons() {
-		return new TextureRegion[]{region};
+		return arrayOf(region);
 	}
 
 	@Override

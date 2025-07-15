@@ -24,7 +24,7 @@ import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.content.HBlocks;
-import heavyindustry.ui.UIUtils;
+import heavyindustry.ui.Elements;
 import mindustry.content.Fx;
 import mindustry.core.UI;
 import mindustry.ctype.UnlockableContent;
@@ -55,6 +55,7 @@ import mindustry.world.meta.StatUnit;
 import mindustry.world.meta.StatValues;
 import mindustry.world.meta.Stats;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.tilesize;
 
 /**
@@ -181,7 +182,7 @@ public class MultiCrafter extends Block {
 					if (plan.outputLiquids.length > 0)
 						stat.add(Stat.output, StatValues.liquids(1f, plan.outputLiquids));
 
-					info.table(t -> UIUtils.statTurnTable(stat, t)).pad(8).left();
+					info.table(t -> Elements.statTurnTable(stat, t)).pad(8).left();
 				}).growX().left().pad(10);
 				table.row();
 			}
@@ -604,7 +605,7 @@ public class MultiCrafter extends Block {
 								for (Consume c : plan.consumers) {
 									c.display(stat);
 								}
-							UIUtils.statToTable(stat, from);
+							Elements.statToTable(stat, from);
 						}).left().pad(6);
 						info.row();
 						info.table(to -> {
@@ -832,7 +833,7 @@ public class MultiCrafter extends Block {
 
 		public void consumeItem(Item item, int amount) {
 			setApply(item);
-			consume(new ConsumeItems(new ItemStack[]{new ItemStack(item, amount)}));
+			consume(new ConsumeItems(arrayOf(new ItemStack(item, amount))));
 		}
 
 		public void consumeItems(ItemStack... items) {

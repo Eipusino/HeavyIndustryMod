@@ -47,6 +47,7 @@ import mindustry.world.blocks.payloads.PayloadBlock;
 import mindustry.world.consumers.ConsumeItemDynamic;
 import mindustry.world.meta.Stat;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.content;
 import static mindustry.Vars.state;
 
@@ -172,9 +173,9 @@ public class PayloadCrafter extends PayloadBlock {
 	@Override
 	public TextureRegion[] icons() {
 		if (recipes.contains(PayloadRecipe::hasInputBlock)) {
-			return new TextureRegion[]{region, inRegion, outRegion, topRegion};
+			return arrayOf(region, inRegion, outRegion, topRegion);
 		}
-		return new TextureRegion[]{region, outRegion, topRegion};
+		return arrayOf(region, outRegion, topRegion);
 	}
 
 	@Override

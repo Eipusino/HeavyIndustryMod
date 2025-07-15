@@ -15,6 +15,7 @@ import mindustry.world.blocks.ItemSelection;
 import mindustry.world.meta.BlockGroup;
 import mindustry.world.meta.Env;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.content;
 
 public class LiquidDirectionalUnloader extends Block {
@@ -82,7 +83,7 @@ public class LiquidDirectionalUnloader extends Block {
 
 	@Override
 	protected TextureRegion[] icons() {
-		return new TextureRegion[]{region, topRegion, arrowRegion};
+		return arrayOf(region, topRegion, arrowRegion);
 	}
 
 	public class LiquidDirectionalUnloaderBuild extends Building {

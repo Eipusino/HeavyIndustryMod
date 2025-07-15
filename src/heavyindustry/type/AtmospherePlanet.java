@@ -68,7 +68,7 @@ public class AtmospherePlanet extends Planet {
 		protected Mesh mesh;
 
 		public AtmosphereHexMesh(HexMesher mesher, int divisions) {
-			mesh = MeshBuilder.buildHex(mesher, divisions, false, radius, 0.2f);
+			mesh = MeshBuilder.buildHex(mesher, divisions, radius, 0.2f);
 		}
 
 		public AtmosphereHexMesh(int divisions) {
@@ -95,6 +95,16 @@ public class AtmospherePlanet extends Planet {
 			var blit = HShaders.depthScreenspace;
 			blit.buffer = buffer;
 			Draw.blit(blit);
+		}
+
+		@Override
+		public void dispose() {
+			mesh.dispose();
+		}
+
+		@Override
+		public boolean isDisposed() {
+			return mesh.isDisposed();
 		}
 	}
 }

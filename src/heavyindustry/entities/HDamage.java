@@ -52,7 +52,7 @@ public final class HDamage {
 
 	private static final UnitDamageEvent bulletDamageEvent = new UnitDamageEvent();
 	private static final Rect rect = new Rect(), hitrect = new Rect();
-	private static final Vec2 tr = new Vec2(), seg1 = new Vec2(), seg2 = new Vec2();
+	private static final Vec2 vec = new Vec2(), seg1 = new Vec2(), seg2 = new Vec2();
 	private static final Seq<Building> builds = new Seq<>();
 	private static final Seq<Unit> units = new Seq<>();
 	private static final IntSet collidedBlocks = new IntSet();
@@ -270,10 +270,10 @@ public final class HDamage {
 	 * Only enemies of the specified team are damaged.
 	 */
 	public static boolean collideLine(float damage, Team team, Effect effect, StatusEffect status, float statusDuration, float x, float y, float angle, float length, boolean ground, boolean air, boolean buildings) {
-		tr.trnsExact(angle, length);
+		vec.trnsExact(angle, length);
 
-		rect.setPosition(x, y).setSize(tr.x, tr.y);
-		float x2 = x + tr.x, y2 = y + tr.y;
+		rect.setPosition(x, y).setSize(vec.x, vec.y);
+		float x2 = x + vec.x, y2 = y + vec.y;
 
 		if (rect.width < 0) {
 			rect.x += rect.width;
@@ -333,7 +333,7 @@ public final class HDamage {
 			};
 
 			seg1.set(x, y);
-			seg2.set(seg1).add(tr);
+			seg2.set(seg1).add(vec);
 			World.raycastEachWorld(x, y, seg2.x, seg2.y, (cx, cy) -> {
 				collider.get(cx, cy);
 
@@ -359,12 +359,12 @@ public final class HDamage {
 		}
 
 		collidedBlocks.clear();
-		tr.trnsExact(angle, length);
+		vec.trnsExact(angle, length);
 
 		float expand = 3f;
 
-		rect.setPosition(x, y).setSize(tr.x, tr.y).normalize().grow(expand * 2f);
-		float x2 = tr.x + x, y2 = tr.y + y;
+		rect.setPosition(x, y).setSize(vec.x, vec.y).normalize().grow(expand * 2f);
+		float x2 = vec.x + x, y2 = vec.y + y;
 
 		Units.nearbyEnemies(team, rect, u -> {
 			if (u.checkTarget(hitter.type.collidesAir, hitter.type.collidesGround) && u.hittable() && u.controller() instanceof MissileAI) {
@@ -409,15 +409,15 @@ public final class HDamage {
 
 	/** {@link Damage#findPierceLength} but it returns the distance to the point of contact, not the distance to the center of the target. */
 	public static float findPierceLength(Bullet b, int pierceCap, float length) {
-		tr.trnsExact(b.rotation(), length);
-		rect.setPosition(b.x, b.y).setSize(tr.x, tr.y).normalize().grow(3f);
+		vec.trnsExact(b.rotation(), length);
+		rect.setPosition(b.x, b.y).setSize(vec.x, vec.y).normalize().grow(3f);
 
 		//Max dist
 		tmpFloat = Float.POSITIVE_INFINITY;
 
 		distances.clear();
 
-		World.raycast(b.tileX(), b.tileY(), World.toTile(b.x + tr.x), World.toTile(b.y + tr.y), (x, y) -> {
+		World.raycast(b.tileX(), b.tileY(), World.toTile(b.x + vec.x), World.toTile(b.y + vec.y), (x, y) -> {
 			//add distance to list so it can be processed
 			Building build = world.build(x, y);
 
@@ -437,7 +437,7 @@ public final class HDamage {
 		Units.nearbyEnemies(b.team, rect, u -> {
 			u.hitbox(hitrect);
 
-			if (u.checkTarget(b.type.collidesAir, b.type.collidesGround) && u.hittable() && Intersector.intersectSegmentRectangle(b.x, b.y, b.x + tr.x, b.y + tr.y, hitrect)) {
+			if (u.checkTarget(b.type.collidesAir, b.type.collidesGround) && u.hittable() && Intersector.intersectSegmentRectangle(b.x, b.y, b.x + vec.x, b.y + vec.y, hitrect)) {
 				distances.add(b.dst(u) - u.hitSize());
 			}
 		});
@@ -473,13 +473,13 @@ public final class HDamage {
 	 * @return the collision point of the first encountered object.
 	 */
 	public static Vec2 linecast(boolean ground, boolean air, Team team, float x, float y, float angle, float length) {
-		tr.trnsExact(angle, length);
+		vec.trnsExact(angle, length);
 
 		tmpBuilding = null;
 
 		if (ground) {
 			seg1.set(x, y);
-			seg2.set(seg1).add(tr);
+			seg2.set(seg1).add(vec);
 			World.raycastEachWorld(x, y, seg2.x, seg2.y, (cx, cy) -> {
 				Building tile = world.build(cx, cy);
 				if (tile != null && tile.team != team) {
@@ -493,8 +493,8 @@ public final class HDamage {
 
 		float expand = 3f;
 
-		rect.setPosition(x, y).setSize(tr.x, tr.y).normalize().grow(expand * 2f);
-		float x2 = tr.x + x, y2 = tr.y + y;
+		rect.setPosition(x, y).setSize(vec.x, vec.y).normalize().grow(expand * 2f);
+		float x2 = vec.x + x, y2 = vec.y + y;
 
 		tmpUnit = null;
 
@@ -520,6 +520,107 @@ public final class HDamage {
 			return Tmp.v2;
 		}
 
-		return tr.add(x, y);
+		return vec.add(x, y);
+	}
+
+	public static void collideLine(Bullet hitter, Team team, Effect effect, float x, float y, float angle, float length) {
+		collideLine(hitter, team, effect, x, y, angle, length, false);
+	}
+
+	/**
+	 * Damages entities in a line.
+	 * Only enemies of the specified team are damaged.
+	 */
+	public static void collideLine(Bullet hitter, Team team, Effect effect, float x, float y, float angle, float length, boolean large) {
+		collideLine(hitter, team, effect, x, y, angle, length, large, true);
+	}
+
+	/**
+	 * Damages entities in a line.
+	 * Only enemies of the specified team are damaged.
+	 */
+	public static void collideLine(Bullet hitter, Team team, Effect effect, float x, float y, float angle, float length, boolean large, boolean laser) {
+		collideLine(hitter, team, effect, x, y, angle, length, large, laser, -1);
+	}
+
+	/**
+	 * Damages entities in a line.
+	 * Only enemies of the specified team are damaged.
+	 */
+	public static void collideLine(Bullet hitter, Team team, Effect effect, float x, float y, float angle, float length, boolean large, boolean laser, int pierceCap) {
+		length = Damage.findLength(hitter, length, laser, pierceCap);
+		hitter.fdata = length;
+
+		collidedBlocks.clear();
+		vec.trnsExact(angle, length);
+
+		if (hitter.type.collidesGround && hitter.type.collidesTiles) {
+			seg1.set(x, y);
+			seg2.set(seg1).add(vec);
+			World.raycastEachWorld(x, y, seg2.x, seg2.y, (cx, cy) -> {
+				Building tile = world.build(cx, cy);
+				boolean collide = tile != null && tile.collide(hitter) && hitter.checkUnderBuild(tile, cx * tilesize, cy * tilesize)
+						&& ((tile.team != team && tile.collide(hitter)) || hitter.type.testCollision(hitter, tile)) && collidedBlocks.add(tile.pos());
+				if (collide) {
+					collided.add(collidePool.obtain().set(cx * tilesize, cy * tilesize, tile));
+
+					for (Point2 p : Geometry.d4) {
+						Tile other = world.tile(p.x + cx, p.y + cy);
+						if (other != null && (large || Intersector.intersectSegmentRectangle(seg1, seg2, other.getBounds(Tmp.r1)))) {
+							Building build = other.build;
+							if (build != null && hitter.checkUnderBuild(build, cx * tilesize, cy * tilesize) && collidedBlocks.add(build.pos())) {
+								collided.add(collidePool.obtain().set((p.x + cx * tilesize), (p.y + cy) * tilesize, build));
+							}
+						}
+					}
+				}
+				return false;
+			});
+		}
+
+		float expand = 3f;
+
+		rect.setPosition(x, y).setSize(vec.x, vec.y).normalize().grow(expand * 2f);
+		float x2 = vec.x + x, y2 = vec.y + y;
+
+		Units.nearbyEnemies(team, rect, u -> {
+			if (u.checkTarget(hitter.type.collidesAir, hitter.type.collidesGround) && u.hittable()) {
+				u.hitbox(hitrect);
+
+				Vec2 vec = Geometry.raycastRect(x, y, x2, y2, hitrect.grow(expand * 2));
+
+				if (vec != null) {
+					collided.add(collidePool.obtain().set(vec.x, vec.y, u));
+				}
+			}
+		});
+
+		int[] collideCount = {0};
+		collided.sort(c -> hitter.dst2(c.x, c.y));
+		collided.each(c -> {
+			if (hitter.damage > 0 && (pierceCap <= 0 || collideCount[0] < pierceCap)) {
+				if (c.target instanceof Unit u) {
+					u.collision(hitter, c.x, c.y);
+					hitter.collision(u, c.x, c.y);
+					collideCount[0]++;
+				} else if (c.target instanceof Building tile) {
+					float health = tile.health;
+
+					if (tile.team != team && tile.collide(hitter)) {
+						tile.collision(hitter);
+						hitter.type.hit(hitter, c.x, c.y);
+						collideCount[0]++;
+					}
+
+					//try to heal the tile
+					if (hitter.type.testCollision(hitter, tile)) {
+						hitter.type.hitTile(hitter, tile, c.x, c.y, health, false);
+					}
+				}
+			}
+		});
+
+		collidePool.freeAll(collided);
+		collided.clear();
 	}
 }

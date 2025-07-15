@@ -213,11 +213,6 @@ public class SizedGraphics extends Graphics {
 	}
 
 	@Override
-	public void setResizable(boolean resizable) {
-		delegate.setResizable(resizable);
-	}
-
-	@Override
 	public void setVSync(boolean vsync) {
 		delegate.setVSync(vsync);
 	}

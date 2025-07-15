@@ -13,7 +13,7 @@ import mindustry.gen.Icon;
 import mindustry.world.Block;
 import mindustry.world.consumers.ConsumePower;
 
-import static heavyindustry.ui.UIUtils.formatAmount;
+import static heavyindustry.ui.Elements.formatAmount;
 
 public class PowerInfoGroup extends Table {
 	public PowerInfoGroup(Seq<Building> buildings, PowerInfoType type, boolean isOpen, InfoToggled toggled) {

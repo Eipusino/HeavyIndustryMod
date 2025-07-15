@@ -16,6 +16,7 @@ import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.world.blocks.distribution.MassDriver;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.world;
 
 public class LaserMassDriver extends MassDriver {
@@ -24,7 +25,7 @@ public class LaserMassDriver extends MassDriver {
 	public float lightStroke = 40f;
 	public int divisions = 13;
 
-	public Color[] colors = new Color[]{Pal.heal.cpy().a(.2f), Pal.heal.cpy().a(.5f), Pal.heal.cpy().mul(1.2f), Color.white};
+	public Color[] colors = arrayOf(Pal.heal.cpy().a(.2f), Pal.heal.cpy().a(.5f), Pal.heal.cpy().mul(1.2f), Color.white);
 	public Color laserColor = Color.valueOf("b2ffe1");
 
 	public float strokeFrom = 2f, strokeTo = 0.5f;

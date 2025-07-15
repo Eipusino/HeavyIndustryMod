@@ -4,12 +4,12 @@ import arc.Core;
 import arc.graphics.Texture;
 import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.graphics.g2d.TextureRegion;
+import arc.struct.Seq;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.files.InternalFileTree;
 import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.input.InputAggregator;
 import mindustry.content.TechTree.TechNode;
-import mindustry.type.Planet;
 import mindustry.type.Sector;
 
 /**
@@ -58,8 +58,8 @@ public final class HVars {
 	}
 
 	/** Clear all occupied sectors of the specified Planet. Use with caution, as this will completely disrupt the player's game progress. */
-	public static void resetSaves(Planet planet) {
-		for (Sector sector : planet.sectors) {
+	public static void resetSaves(Seq<Sector> sectors) {
+		for (Sector sector : sectors) {
 			if (sector.hasSave()) {
 				sector.save.delete();
 				sector.save = null;

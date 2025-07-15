@@ -9,6 +9,8 @@ import mindustry.entities.units.BuildPlan;
 import mindustry.graphics.Pal;
 import mindustry.world.Block;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
+
 public class DuctNode extends TubeDuct {
 	public int chainLimit = 2;
 	public TextureRegion topRegion;
@@ -38,7 +40,7 @@ public class DuctNode extends TubeDuct {
 
 	@Override
 	public TextureRegion[] icons() {
-		return new TextureRegion[]{region};
+		return arrayOf(region);
 	}
 
 	public class DuctNodeBuild extends TubeDuctBuild {

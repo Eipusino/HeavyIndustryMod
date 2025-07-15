@@ -14,6 +14,7 @@ import mindustry.world.Edges;
 import mindustry.world.blocks.ItemSelection;
 import mindustry.world.blocks.liquid.LiquidRouter;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.content;
 
 public class SortLiquidRouter extends LiquidRouter {
@@ -43,7 +44,7 @@ public class SortLiquidRouter extends LiquidRouter {
 
 	@Override
 	public TextureRegion[] icons() {
-		return new TextureRegion[]{bottomRegion, region, topRegion};
+		return arrayOf(bottomRegion, region, topRegion);
 	}
 
 	public class SortLiquidRouterBuild extends LiquidRouterBuild {

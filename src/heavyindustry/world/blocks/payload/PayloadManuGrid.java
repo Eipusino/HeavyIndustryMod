@@ -40,6 +40,8 @@ import mindustry.world.blocks.payloads.Payload;
 import mindustry.world.blocks.payloads.PayloadBlock;
 import mindustry.world.blocks.payloads.UnitPayload;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
+
 /**
  * @author Nullotte
  * @since 1.0.6
@@ -101,7 +103,7 @@ public class PayloadManuGrid extends PayloadBlock {
 
 	@Override
 	public TextureRegion[] icons() {
-		return new TextureRegion[]{region, outRegion};
+		return arrayOf(region, outRegion);
 	}
 
 	public static class PayloadManuRecipe {

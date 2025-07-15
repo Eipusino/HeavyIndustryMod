@@ -20,6 +20,7 @@ import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.type.StatusEffect;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.iconMed;
 
 public class SwordUnitType extends ExtraUnitType {
@@ -107,10 +108,10 @@ public class SwordUnitType extends ExtraUnitType {
 
 		if (trailLength > 0) {
 			if (sword.driftTrails() == null) {
-				sword.driftTrails(new DriftTrail[]{
+				sword.driftTrails(arrayOf(
 						new DriftTrail(trailLength),
 						new DriftTrail(trailLength)
-				});
+				));
 			}
 
 			for (DriftTrail trail : sword.driftTrails()) {

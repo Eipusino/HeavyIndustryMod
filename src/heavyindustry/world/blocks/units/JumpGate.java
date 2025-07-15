@@ -36,7 +36,7 @@ import heavyindustry.graphics.Drawn;
 import heavyindustry.ui.ItemDisplay;
 import heavyindustry.ui.ItemImage;
 import heavyindustry.ui.ItemImageDynamic;
-import heavyindustry.ui.UIUtils;
+import heavyindustry.ui.Elements;
 import heavyindustry.util.Utils;
 import mindustry.content.Fx;
 import mindustry.content.UnitTypes;
@@ -75,8 +75,8 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import static heavyindustry.HVars.name;
-import static heavyindustry.ui.UIUtils.LEN;
-import static heavyindustry.ui.UIUtils.OFFSET;
+import static heavyindustry.ui.Elements.LEN;
+import static heavyindustry.ui.Elements.OFFSET;
 import static mindustry.Vars.mobile;
 import static mindustry.Vars.player;
 import static mindustry.Vars.state;
@@ -246,7 +246,7 @@ public class JumpGate extends Block {
 				for (ItemStack stack : team == null ? set.baseRequirements() : set.dynamicRequirements(team)) {
 					if (module != null || index % 7 == 0) table.row();
 					if (module != null) {
-						UIUtils.itemStack(table, stack, module);
+						Elements.itemStack(table, stack, module);
 					} else
 						table.add(new ItemDisplay(stack.item, stack.amount, false).left()).padLeft(OFFSET / 2).left();
 					index++;
@@ -353,7 +353,7 @@ public class JumpGate extends Block {
 					t2.margin(6f);
 					t2.defaults().left().padRight(OFFSET);
 					t2.table(Tex.clear, table2 -> {
-						UIUtils.tableImageShrink(set.type.fullIcon, LEN, table2, i -> i.color.set(Pal.gray));
+						Elements.tableImageShrink(set.type.fullIcon, LEN, table2, i -> i.color.set(Pal.gray));
 						table2.image(Icon.cancel).size(LEN + OFFSET * 1.5f).color(Color.scarlet).padLeft(OFFSET / 2f);
 					}).left().padLeft(OFFSET * 2f);
 
@@ -376,7 +376,7 @@ public class JumpGate extends Block {
 					t2.pane(table2 -> {
 						table2.left().marginLeft(12f);
 						table2.add("[lightgray]" + Core.bundle.get("editor.spawn") + ": [accent]" + set.type.localizedName + "[lightgray] | Tier: [accent]" + set.sortIndex[1]).left().row();
-						table2.add("[lightgray]" + Core.bundle.get("stat.buildtime") + ": [accent]" + UIUtils.format(set.costTimeVar() / 60) + "[lightgray] " + Core.bundle.get("unit.seconds")).row();
+						table2.add("[lightgray]" + Core.bundle.get("stat.buildtime") + ": [accent]" + Elements.format(set.costTimeVar() / 60) + "[lightgray] " + Core.bundle.get("unit.seconds")).row();
 					}).growX().height(LEN).center();
 
 					t2.pack();
@@ -543,7 +543,7 @@ public class JumpGate extends Block {
 							UnitSet set = calls.get(hashcode);
 							callTable.table(Tex.pane, info -> {
 								info.add(new UnitSetTable(set, table2 -> {
-									table2.button(Icon.infoCircle, Styles.clearNonei, () -> showInfo(set, new Label(() -> ("[lightgray]Construction Available?: " + UIUtils.judge(canSpawn(set, false) && hasConsume(set, spawnNum)))), realItems(), team)).size(LEN);
+									table2.button(Icon.infoCircle, Styles.clearNonei, () -> showInfo(set, new Label(() -> ("[lightgray]Construction Available?: " + Elements.judge(canSpawn(set, false) && hasConsume(set, spawnNum)))), realItems(), team)).size(LEN);
 									table2.button(Icon.add, Styles.clearNonei, () -> configure(IntSeq.with(0, hashcode, spawnNum))).size(LEN).disabled(b -> (team.data().countType(set.type) + spawnNum > Units.getCap(team)) || jammed || isCalling() || !hasConsume(set, spawnNum) || cooling);
 								})).fillY().growX().row();
 								if (!hideSet(set.type)) {
@@ -598,7 +598,7 @@ public class JumpGate extends Block {
 
 			table.table(Tex.paneSolid, t -> {
 				t.button("@spawn", Icon.add, Styles.cleart, dialog::show).size(LEN * 5, LEN).row();
-				t.button("@mod.ui.select-target", Icon.move, Styles.cleart, () -> UIUtils.selectPos(table, this::configure)).size(LEN * 5, LEN).row();
+				t.button("@mod.ui.select-target", Icon.move, Styles.cleart, () -> Elements.selectPos(table, this::configure)).size(LEN * 5, LEN).row();
 				t.button("@settings", Icon.settings, Styles.cleart, () -> new BaseDialog("@settings") {{
 					Label l = new Label(""), currentPlan = new Label("");
 					Slider s = new Slider(1, Mathf.clamp(Units.getCap(team), 1, maxSpawnPerOne), 1, false);

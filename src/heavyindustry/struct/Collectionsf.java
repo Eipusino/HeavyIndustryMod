@@ -8,7 +8,10 @@ package heavyindustry.struct;
 public final class Collectionsf {
 	private Collectionsf() {}
 
-	/** Convert vararg to an array. */
+	/**
+	 * Convert vararg to an array.
+	 * Returns an array containing the specified elements.
+	 */
 	@SafeVarargs
 	public static <T> T[] arrayOf(T... elements) {
 		return elements;

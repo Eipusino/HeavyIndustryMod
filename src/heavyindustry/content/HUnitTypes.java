@@ -63,7 +63,7 @@ import heavyindustry.type.weapons.EnergyChargeWeapon;
 import heavyindustry.type.weapons.HealConeWeapon;
 import heavyindustry.type.weapons.LimitedAngleWeapon;
 import heavyindustry.type.weapons.PointDefenceMultiBarrelWeapon;
-import heavyindustry.ui.UIUtils;
+import heavyindustry.ui.Elements;
 import mindustry.ai.UnitCommand;
 import mindustry.ai.types.FlyingAI;
 import mindustry.ai.types.FlyingFollowAI;
@@ -114,7 +114,6 @@ import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
-import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
 import mindustry.type.ammo.ItemAmmoType;
@@ -125,6 +124,7 @@ import mindustry.world.meta.BlockFlag;
 import mindustry.world.meta.Env;
 
 import static heavyindustry.HVars.name;
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.content;
 import static mindustry.Vars.indexer;
 import static mindustry.Vars.tilePayload;
@@ -341,7 +341,7 @@ public final class HUnitTypes {
 			itemCapacity = 30;
 			faceTarget = false;
 			immunities = ObjectSet.with(StatusEffects.burning);
-			targetFlags = new BlockFlag[]{BlockFlag.repair, BlockFlag.turret};
+			targetFlags = arrayOf(BlockFlag.repair, BlockFlag.turret);
 			weapons.add(new Weapon(name("destruction-weapon")) {{
 				reload = 110f;
 				x = 0f;
@@ -1203,7 +1203,7 @@ public final class HUnitTypes {
 			health = 60000f;
 			hitSize = 62f;
 			armor = 45f;
-			targetFlags = new BlockFlag[]{BlockFlag.reactor, BlockFlag.battery, BlockFlag.core, null};
+			targetFlags = arrayOf(BlockFlag.reactor, BlockFlag.battery, BlockFlag.core, null);
 			ammoType = new ItemAmmoType(HItems.uranium);
 			itemCapacity = 460;
 			abilities.add(new EnergyFieldAbility(220f, 90f, 192f) {{
@@ -1695,7 +1695,7 @@ public final class HUnitTypes {
 				@Override
 				public void addStats(UnitType u, Table t) {
 					String text = Core.bundle.get("unit.heavy-industry-killer-whale-weapon-1.description");
-					UIUtils.collapseTextToTable(t, text);
+					Elements.collapseTextToTable(t, text);
 					super.addStats(u, t);
 				}
 			});
@@ -2489,7 +2489,7 @@ public final class HUnitTypes {
 				@Override
 				public void addStats(UnitType u, Table t) {
 					String text = Core.bundle.get("unit.heavy-industry-burner-weapon-0.description");
-					UIUtils.collapseTextToTable(t, text);
+					Elements.collapseTextToTable(t, text);
 					super.addStats(u, t);
 				}
 			});
@@ -2602,7 +2602,7 @@ public final class HUnitTypes {
 				@Override
 				public void addStats(UnitType u, Table t) {
 					String text = Core.bundle.get("unit.heavy-industry-shadow-blade-weapon-0.description");
-					UIUtils.collapseTextToTable(t, text);
+					Elements.collapseTextToTable(t, text);
 					super.addStats(u, t);
 				}
 			});
@@ -2621,7 +2621,7 @@ public final class HUnitTypes {
 			targetGround = true;
 			targetAir = false;
 			ammoType = new PowerAmmoType(22000f);
-			targetFlags = new BlockFlag[]{BlockFlag.storage, BlockFlag.repair, BlockFlag.turret, null};
+			targetFlags = arrayOf(BlockFlag.storage, BlockFlag.repair, BlockFlag.turret, null);
 			weapons.add(new Weapon() {{
 				mirror = false;
 				rotate = true;
@@ -2793,7 +2793,7 @@ public final class HUnitTypes {
 				@Override
 				public void addStats(UnitType u, Table t) {
 					String text = Core.bundle.get("unit.heavy-industry-tiger-weapon-0.description");
-					UIUtils.collapseTextToTable(t, text);
+					Elements.collapseTextToTable(t, text);
 					super.addStats(u, t);
 				}
 			}, new Weapon() {{
@@ -3017,7 +3017,7 @@ public final class HUnitTypes {
 				@Override
 				public void addStats(UnitType u, Table t) {
 					String text = Core.bundle.get("unit.heavy-industry-thunder-weapon-0.description");
-					UIUtils.collapseTextToTable(t, text);
+					Elements.collapseTextToTable(t, text);
 					super.addStats(u, t);
 				}
 			}, new Weapon(name("thunder-point-weapon")) {{
@@ -3069,7 +3069,7 @@ public final class HUnitTypes {
 				@Override
 				public void addStats(UnitType u, Table t) {
 					String text = Core.bundle.get("unit.heavy-industry-thunder-weapon-1.description");
-					UIUtils.collapseTextToTable(t, text);
+					Elements.collapseTextToTable(t, text);
 					super.addStats(u, t);
 				}
 			});
@@ -3096,7 +3096,7 @@ public final class HUnitTypes {
 			deathExplosionEffect = Fx.none;
 			deathSound = Sounds.plasmaboom;
 			trailScl = 3f;
-			Seq<StatusEffect> seq = Seq.with(StatusEffects.none, StatusEffects.boss, StatusEffects.invincible);
+			var seq = Seq.with(StatusEffects.none, StatusEffects.boss, StatusEffects.invincible);
 			immunities = ObjectSet.with(content.statusEffects().select(s -> s != null && !seq.contains(s)));
 			armor = 8f;
 			hitSize = 45;
@@ -3113,7 +3113,7 @@ public final class HUnitTypes {
 			crashDamageMultiplier = Mathf.clamp(hitSize / 10f, 1, 10);
 			buildBeamOffset = 0;
 			aiController = SniperAI::new;
-			targetFlags = new BlockFlag[]{BlockFlag.reactor, BlockFlag.generator, BlockFlag.turret, null};
+			targetFlags = arrayOf(BlockFlag.reactor, BlockFlag.generator, BlockFlag.turret, null);
 			abilities.add(new DeathAbility());
 			weapons.add(new Weapon() {{
 				reload = 180f;

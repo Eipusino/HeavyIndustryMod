@@ -10,7 +10,7 @@ import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import arc.util.pooling.Pools;
-import heavyindustry.ui.UIUtils;
+import heavyindustry.ui.Elements;
 import mindustry.Vars;
 import mindustry.game.Team;
 import mindustry.gen.Icon;
@@ -126,7 +126,7 @@ public class LabelMessageBlock extends MessageBlock {
 				deselect();
 			}).size(50f);
 			table.button(Icon.link, Styles.cleari, () -> {
-				UIUtils.selectPos(table, p -> {
+				Elements.selectPos(table, p -> {
 					targetPos = p.pack();
 				});
 			}).size(50f);
@@ -151,8 +151,8 @@ public class LabelMessageBlock extends MessageBlock {
 			if (!Vars.net.client() && targetPos != -1) {
 				WorldLabel l = Pools.obtain(WorldLabel.class, WorldLabel::create);
 				String s = message.toString();
-				if (s.startsWith("@")) l.text(Core.bundle.get(s.replaceFirst("@", "")));
-				else l.text(s);
+				if (s.startsWith("@")) l.text = Core.bundle.get(s.replaceFirst("@", ""));
+				else l.text = s;
 				Tmp.p1.set(Point2.unpack(targetPos));
 				l.set(Tmp.p1.x * tilesize, Tmp.p1.y * tilesize);
 				l.add();

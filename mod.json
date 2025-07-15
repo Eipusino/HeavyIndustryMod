@@ -4,10 +4,10 @@
 	"author": "Eipusino",
 	"subtitle": "Heavy Industry Java Mod",
 	"main": "heavyindustry.core.HeavyIndustryMod",
-	"description": "The author will be busy with affairs after the New Year, and the mod will be updated slowly for a long time.",
+	"description": "Meaningless Mod.",
 	"version": "1.0.6-alpha",
 	"java": true,
 	"plugin": false,
-	"minGameVersion": 147.0,
+	"minGameVersion": 149.0,
 	"hideBrowser": true
 }

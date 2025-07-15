@@ -1562,7 +1562,9 @@ public final class Draws {
 						setUniformf("arg" + i, v);
 					} else if (o instanceof Mat m) {
 						setUniformMatrix("arg" + i, m);
-					} else throw new IllegalArgumentException("invalid type: " + o.getClass());
+					} else {
+						throw new IllegalArgumentException("invalid type: " + o.getClass());
+					}
 				}
 			}
 		}

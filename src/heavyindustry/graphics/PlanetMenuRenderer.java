@@ -6,10 +6,9 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.gl.FrameBuffer;
 import arc.math.geom.Vec3;
 import heavyindustry.content.HPlanets;
+import mindustry.Vars;
 import mindustry.graphics.MenuRenderer;
 import mindustry.graphics.g3d.PlanetParams;
-
-import static mindustry.Vars.renderer;
 
 public class PlanetMenuRenderer extends MenuRenderer {
 	public static FrameBuffer buffer;
@@ -32,7 +31,7 @@ public class PlanetMenuRenderer extends MenuRenderer {
 		params.camPos.rotate(Vec3.Y, 0.10f);
 		params.camPos.rotate(Vec3.Y, -0.10f); //I don't know how, but it still moves with this. At least I can bypass the lower speed limit with it.
 
-		renderer.planets.render(params);
+		Vars.renderer.planets.render(params);
 
 		buffer.end();
 

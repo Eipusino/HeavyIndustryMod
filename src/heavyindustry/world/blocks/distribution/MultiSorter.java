@@ -18,6 +18,7 @@ import mindustry.world.Block;
 import mindustry.world.blocks.ItemSelection;
 import mindustry.world.meta.BlockGroup;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.content;
 
 public class MultiSorter extends Block {
@@ -61,7 +62,7 @@ public class MultiSorter extends Block {
 
 	@Override
 	protected TextureRegion[] icons() {
-		return new TextureRegion[]{region, topRegion};
+		return arrayOf(region, topRegion);
 	}
 
 	@Override

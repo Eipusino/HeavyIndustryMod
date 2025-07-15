@@ -11,6 +11,7 @@ import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static heavyindustry.util.Utils.rotatePixmap90;
 
 public class DrawPayloadFactory<E extends Building> extends DrawDirSpliceBlock<E> {
@@ -67,6 +68,6 @@ public class DrawPayloadFactory<E extends Building> extends DrawDirSpliceBlock<E
 
 	@Override
 	public TextureRegion[] icons(Block block) {
-		return new TextureRegion[]{block.region, outRegion, topRegion};
+		return arrayOf(block.region, outRegion, topRegion);
 	}
 }

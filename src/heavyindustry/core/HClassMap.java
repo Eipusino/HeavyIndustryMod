@@ -66,7 +66,6 @@ import heavyindustry.type.weapons.PointDefenceMultiBarrelWeapon;
 import heavyindustry.type.weather.EffectWeather;
 import heavyindustry.type.weather.HailStormWeather;
 import heavyindustry.type.weather.SpawnerWeather;
-import heavyindustry.world.blocks.CustomShapeBlock;
 import heavyindustry.world.blocks.campaign.CaptureBlock;
 import heavyindustry.world.blocks.defense.AdjustableOverdrive;
 import heavyindustry.world.blocks.defense.AirRaider;
@@ -368,8 +367,6 @@ final class HClassMap {
 		classes.put("HailStormWeather", HailStormWeather.class);
 		classes.put("SpawnerWeather", SpawnerWeather.class);
 		//blocks
-		classes.put("CustomShapeBlock", CustomShapeBlock.class);
-		classes.put("CustomFormBuild", CustomShapeBlock.CustomFormBuild.class);
 		classes.put("ConnectedWall", ConnectedWall.class);
 		classes.put("GrooveFloor", GrooveFloor.class);
 		classes.put("TiledFloor", TiledFloor.class);

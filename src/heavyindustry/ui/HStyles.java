@@ -43,7 +43,7 @@ public final class HStyles {
 	/** Don't let anyone instantiate this class. */
 	private HStyles() {}
 
-	public static void init() {
+	public static void onClient() {
 		//drawable
 		buttonLeft = modDrawable("button-left");
 		buttonLeftDown = modDrawable("button-left-down");

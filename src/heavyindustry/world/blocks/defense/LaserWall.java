@@ -15,13 +15,13 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.entities.HDamage;
 import heavyindustry.gen.WorldRegister;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.world.blocks.Linkablec;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
-import mindustry.entities.Damage;
 import mindustry.entities.Effect;
 import mindustry.entities.Lightning;
 import mindustry.entities.bullet.BulletType;
@@ -153,7 +153,7 @@ public class LaserWall extends Wall {
 
 			//damage every 5 ticks
 			if (b.timer(1, 5f)) {
-				Damage.collideLine(b, b.team, hitEffect, b.x, b.y, b.rotation(), b.dst(build), true, false);
+				HDamage.collideLine(b, b.team, hitEffect, b.x, b.y, b.rotation(), b.dst(build), true, false);
 			}
 
 			if (hitShake > 0) {

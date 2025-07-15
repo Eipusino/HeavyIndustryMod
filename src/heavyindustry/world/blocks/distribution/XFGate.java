@@ -16,6 +16,7 @@ import mindustry.gen.Sounds;
 import mindustry.type.Item;
 import mindustry.world.blocks.distribution.OverflowGate;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.player;
 
 public class XFGate extends OverflowGate {
@@ -32,7 +33,7 @@ public class XFGate extends OverflowGate {
 	}
 
 	public TextureRegion[] icons() {
-		return new TextureRegion[]{region};
+		return arrayOf(region);
 	}
 
 	@Override

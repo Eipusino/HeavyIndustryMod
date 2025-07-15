@@ -32,7 +32,7 @@ import heavyindustry.gen.HSounds;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.HCacheLayer;
 import heavyindustry.graphics.HPal;
-import heavyindustry.graphics.Layerf;
+import heavyindustry.graphics.HLayer;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.util.Utils;
 import heavyindustry.world.blocks.defense.AparajitoWall;
@@ -59,8 +59,8 @@ import heavyindustry.world.blocks.distribution.StackBridge;
 import heavyindustry.world.blocks.distribution.StackHelper;
 import heavyindustry.world.blocks.distribution.TubeConveyor;
 import heavyindustry.world.blocks.distribution.TubeDistributor;
-import heavyindustry.world.blocks.environment.CliffHelper;
-import heavyindustry.world.blocks.environment.Clifff;
+import heavyindustry.world.blocks.environment.DPCliffHelper;
+import heavyindustry.world.blocks.environment.DPCliff;
 import heavyindustry.world.blocks.environment.ConnectedWall;
 import heavyindustry.world.blocks.heat.FuelHeater;
 import heavyindustry.world.blocks.heat.HeatDriver;
@@ -242,6 +242,7 @@ import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 
 import static heavyindustry.HVars.name;
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.content;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.indexer;
@@ -345,8 +346,8 @@ public final class HBlocks {
 	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
 	public static void load() {
 		//environment
-		cliff = new Clifff("cliff");
-		cliffHelper = new CliffHelper("cliff-helper");
+		cliff = new DPCliff("cliff");
+		cliffHelper = new DPCliffHelper("cliff-helper");
 		darkPanel7 = new Floor("dark-panel-7", 0);
 		darkPanel8 = new Floor("dark-panel-8", 0);
 		darkPanel9 = new Floor("dark-panel-9", 0);
@@ -451,7 +452,7 @@ public final class HBlocks {
 		}
 			@Override
 			public TextureRegion[] icons() {
-				return new TextureRegion[]{fullIcon};
+				return arrayOf(fullIcon);
 			}
 		};
 		waterPit = new Floor("water-pit", 0) {{
@@ -466,7 +467,7 @@ public final class HBlocks {
 		}
 			@Override
 			public TextureRegion[] icons() {
-				return new TextureRegion[]{fullIcon};
+				return arrayOf(fullIcon);
 			}
 		};
 		softRareEarth = new Floor("soft-rare-earth", 3) {{
@@ -975,7 +976,7 @@ public final class HBlocks {
 
 			@Override
 			public TextureRegion[] icons() {
-				return new TextureRegion[]{region};
+				return arrayOf(region);
 			}
 		};
 		oilRig = new Fracker("oil-rig") {{
@@ -1008,7 +1009,7 @@ public final class HBlocks {
 		}
 			@Override
 			public TextureRegion[] icons() {
-				return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
+				return teamRegion.found() ? arrayOf(region, teamRegions[Team.sharded.id]) : arrayOf(region);
 			}
 		};
 		//drill-erekir
@@ -1600,7 +1601,7 @@ public final class HBlocks {
 
 			@Override
 			public TextureRegion[] icons() {
-				return new TextureRegion[]{bottomRegion, region};
+				return arrayOf(bottomRegion, region);
 			}
 		};
 		hyperMagneticReactor = new HyperGenerator("hyper-magnetic-reactor") {{
@@ -2500,7 +2501,7 @@ public final class HBlocks {
 		}
 			@Override
 			protected TextureRegion[] icons() {
-				return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
+				return teamRegion.found() ? arrayOf(region, teamRegions[Team.sharded.id]) : arrayOf(region);
 			}
 		};
 		paralysisMine = new ShockMine("paralysis-mine") {{
@@ -2568,7 +2569,7 @@ public final class HBlocks {
 		}
 			@Override
 			protected TextureRegion[] icons() {
-				return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
+				return teamRegion.found() ? arrayOf(region, teamRegions[Team.sharded.id]) : arrayOf(region);
 			}
 		};
 		cargo = new StorageBlock("cargo") {{
@@ -2579,7 +2580,7 @@ public final class HBlocks {
 		}
 			@Override
 			protected TextureRegion[] icons() {
-				return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
+				return teamRegion.found() ? arrayOf(region, teamRegions[Team.sharded.id]) : arrayOf(region);
 			}
 		};
 		machineryUnloader = new Unloader("machinery-unloader") {{
@@ -2599,7 +2600,7 @@ public final class HBlocks {
 		}
 			@Override
 			protected TextureRegion[] icons() {
-				return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
+				return teamRegion.found() ? arrayOf(region, teamRegions[Team.sharded.id]) : arrayOf(region);
 			}
 		};
 		//storage-erekir
@@ -2610,7 +2611,7 @@ public final class HBlocks {
 		}
 			@Override
 			protected TextureRegion[] icons() {
-				return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
+				return teamRegion.found() ? arrayOf(region, teamRegions[Team.sharded.id]) : arrayOf(region);
 			}
 		};
 		//payload
@@ -3765,7 +3766,7 @@ public final class HBlocks {
 						tmpColor.lerp(Color.white, 0.86f);
 						Draw.color(tmpColor);
 						Drawn.basicLaser(b.x, b.y, b.aimX, b.aimY, stroke * 0.55f * darkenPartWarmup);
-						Draw.z(Layerf.effectBottom);
+						Draw.z(HLayer.effectBottom);
 						Drawn.basicLaser(b.x, b.y, b.aimX, b.aimY, stroke * 0.6f * darkenPartWarmup);
 						Draw.z(Layer.bullet);
 					}
@@ -4206,7 +4207,7 @@ public final class HBlocks {
 
 			@Override
 			protected TextureRegion[] icons() {
-				return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
+				return teamRegion.found() ? arrayOf(region, teamRegions[Team.sharded.id]) : arrayOf(region);
 			}
 		};
 		barrierProjector = new BaseShield("barrier-projector") {{

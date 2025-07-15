@@ -26,7 +26,7 @@ import heavyindustry.gen.HSounds;
 import heavyindustry.gen.UltFire;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.HPal;
-import heavyindustry.graphics.Layerf;
+import heavyindustry.graphics.HLayer;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.math.HInterps;
 import heavyindustry.util.Utils;
@@ -1157,10 +1157,10 @@ public final class HBullets {
 				Draw.color(backColor);
 				Fill.circle(b.x, b.y, size);
 
-				Draw.z(Layerf.effectMask);
+				Draw.z(HLayer.effectMask);
 				Draw.color(frontColor);
 				Fill.circle(b.x, b.y, size * 0.62f);
-				Draw.z(Layerf.effectBottom);
+				Draw.z(HLayer.effectBottom);
 				Draw.color(frontColor);
 				Fill.circle(b.x, b.y, size * 0.66f);
 				Draw.z(Layer.bullet);

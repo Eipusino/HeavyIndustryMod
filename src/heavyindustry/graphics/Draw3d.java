@@ -74,7 +74,7 @@ public final class Draw3d {
 				bloomQueue.sort(q -> q.layer);
 				Bloom bloom = renderer.bloom;
 				if (bloom != null) {
-					Draw.draw(Layerf.skyBloom, () -> {
+					Draw.draw(HLayer.skyBloom, () -> {
 						bloom.capture();
 						for (QueuedBloom b : bloomQueue) {
 							b.draw.run();

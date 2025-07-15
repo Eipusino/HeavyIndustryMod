@@ -10,7 +10,7 @@ import arc.graphics.g2d.Lines;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.util.Eachable;
-import heavyindustry.ui.UIUtils;
+import heavyindustry.ui.Elements;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
@@ -20,6 +20,7 @@ import mindustry.world.blocks.power.PowerNode;
 import mindustry.world.meta.BlockStatus;
 
 import static heavyindustry.HVars.modName;
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.player;
 import static mindustry.Vars.renderer;
 import static mindustry.Vars.tilesize;
@@ -57,7 +58,7 @@ public class PowerAnalyzer extends PowerBlock {
 
 	@Override
 	protected TextureRegion[] icons() {
-		return new TextureRegion[]{region, topRegion};
+		return arrayOf(region, topRegion);
 	}
 
 	@Override
@@ -183,7 +184,7 @@ public class PowerAnalyzer extends PowerBlock {
 
 		@Override
 		public void tapped() {
-			UIUtils.powerInfoDialog.show(power.graph);
+			Elements.powerInfoDialog.show(power.graph);
 		}
 	}
 }

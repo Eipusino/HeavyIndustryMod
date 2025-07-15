@@ -33,6 +33,7 @@ import mindustry.world.consumers.ConsumeItemFilter;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.Stats;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.content;
 
 /** Multi Bullet Turret */
@@ -236,7 +237,7 @@ public class MultiBulletTurret extends Turret {
 		}
 
 		public BulletType[] peekAmmos() {
-			return ammo.isEmpty() ? new BulletType[]{Bullets.placeholder} : ammo.peek().type();
+			return ammo.isEmpty() ? arrayOf(Bullets.placeholder) : ammo.peek().type();
 		}
 
 		protected void updateShooting() {

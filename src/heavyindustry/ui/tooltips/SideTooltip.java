@@ -6,7 +6,7 @@ import arc.scene.Element;
 import arc.scene.Scene;
 import arc.scene.ui.Tooltip;
 import arc.scene.ui.layout.Table;
-import heavyindustry.ui.UIUtils;
+import heavyindustry.ui.Elements;
 
 public class SideTooltip extends Tooltip {
 	private static final Vec2 tmp = new Vec2();
@@ -17,7 +17,7 @@ public class SideTooltip extends Tooltip {
 	public SideTooltip(int ali, Cons<Table> contents) {
 		super(contents);
 		align = ali;
-		invertedAlign = UIUtils.invertAlign(ali);
+		invertedAlign = Elements.invertAlign(ali);
 	}
 
 	@Override
@@ -32,8 +32,8 @@ public class SideTooltip extends Tooltip {
 		container.pack();
 		float dist = manager.edgeDistance;
 
-		float x = UIUtils.getX(0, element.getWidth(), align);
-		float y = UIUtils.getX(0, element.getHeight(), align);
+		float x = Elements.getX(0, element.getWidth(), align);
+		float y = Elements.getX(0, element.getHeight(), align);
 		Vec2 point = element.localToStageCoordinates(tmp.set(x, y - container.getHeight()));
 		if (point.y < dist) point = element.localToStageCoordinates(tmp.set(x, y));
 		if (point.x < dist) point.x = dist;

@@ -8,6 +8,7 @@ import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawFrames;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static heavyindustry.util.Utils.split;
 
 public class DrawAnim extends DrawFrames {
@@ -25,7 +26,7 @@ public class DrawAnim extends DrawFrames {
 
 	@Override
 	public TextureRegion[] icons(Block block) {
-		return new TextureRegion[]{icon};
+		return arrayOf(icon);
 	}
 
 	@Override

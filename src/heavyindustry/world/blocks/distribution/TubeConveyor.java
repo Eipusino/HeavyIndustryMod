@@ -16,6 +16,7 @@ import mindustry.graphics.Layer;
 import mindustry.type.Item;
 import mindustry.world.blocks.distribution.Conveyor;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static heavyindustry.util.Utils.reverse;
 import static heavyindustry.util.Utils.splitLayers;
 import static mindustry.Vars.itemSize;
@@ -50,13 +51,13 @@ public class TubeConveyor extends BeltConveyor {
 	public void load() {
 		super.load();
 		topRegion = splitLayers(name + "-sheet", 32, 2);
-		capRegion = new TextureRegion[]{topRegion[1][0], topRegion[1][1]};
+		capRegion = arrayOf(topRegion[1][0], topRegion[1][1]);
 		editorRegion = Core.atlas.find(name + "-editor");
 	}
 
 	@Override
 	public TextureRegion[] icons() {
-		return new TextureRegion[]{editorRegion};
+		return arrayOf(editorRegion);
 	}
 
 	@Override

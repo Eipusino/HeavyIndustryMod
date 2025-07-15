@@ -11,6 +11,7 @@ import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.scene.Group;
 import arc.scene.event.Touchable;
+import arc.scene.ui.ImageButton.ImageButtonStyle;
 import arc.scene.ui.layout.Scl;
 import arc.util.Align;
 import arc.util.Log;
@@ -51,7 +52,7 @@ import heavyindustry.mod.ModJS;
 import heavyindustry.net.HCall;
 import heavyindustry.ui.HFonts;
 import heavyindustry.ui.HStyles;
-import heavyindustry.ui.UIUtils;
+import heavyindustry.ui.Elements;
 import heavyindustry.ui.dialogs.HResearchDialog;
 import heavyindustry.util.IconLoader;
 import heavyindustry.util.Utils;
@@ -61,9 +62,12 @@ import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.game.EventType.DisposeEvent;
 import mindustry.game.EventType.FileTreeInitEvent;
 import mindustry.game.EventType.MusicRegisterEvent;
+import mindustry.gen.Icon;
+import mindustry.gen.Tex;
 import mindustry.mod.Mod;
 import mindustry.mod.Mods.LoadedMod;
 import mindustry.ui.Fonts;
+import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
 import mindustry.ui.fragments.MenuFragment;
 
@@ -77,6 +81,7 @@ import static heavyindustry.HVars.modName;
 import static heavyindustry.HVars.name;
 import static heavyindustry.HVars.sizedGraphics;
 import static mindustry.Vars.headless;
+import static mindustry.Vars.iconMed;
 import static mindustry.Vars.macNotchHeight;
 import static mindustry.Vars.mods;
 import static mindustry.Vars.ui;
@@ -112,8 +117,6 @@ public final class HeavyIndustryMod extends Mod {
 		isPlugin = modJson != null && modJson.has("plugin") && modJson.isBoolean() && modJson.get("plugin").asBool();
 
 		LoadMod.addBlacklistedMods();
-
-		//try {Class.forName("heavyindustry.files.FileTree");} catch (Throwable e) {Log.err(e);}
 	}
 
 	public HeavyIndustryMod() {
@@ -160,9 +163,7 @@ public final class HeavyIndustryMod extends Mod {
 						t.add(label).left().row();
 						t.add(Core.bundle.get("hi-class")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 						t.add(Core.bundle.get("hi-oh-no")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
-						t.add(Core.bundle.get("hi-note")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
-						t.add(Core.bundle.get("hi-prompt")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
-						t.add(Core.bundle.get("hi-other")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
+						t.add(Core.bundle.get("hi-oh-no-l")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
 					}).grow().center().maxWidth(600f);
 				}};
 				dialog.show();
@@ -235,8 +236,8 @@ public final class HeavyIndustryMod extends Mod {
 			ScreenSampler.setup();
 			Draw3d.init();
 
-			HStyles.init();
-			UIUtils.init();
+			HStyles.onClient();
+			Elements.onClient();
 		}
 
 		WorldData.init();
@@ -303,6 +304,23 @@ public final class HeavyIndustryMod extends Mod {
 					t.checkPref("hi-serpulo-sector-invasion", true);
 					t.checkPref("hi-muelsyse", false);
 					t.checkPref("hi-developer-mode", false);
+					t.table(Tex.button, c -> {
+						c.button("@settings.game", Icon.settings, Styles.flatt, iconMed, () -> {}).growX().marginLeft(8f).height(50f).row();
+						c.button("@settings.controls", Icon.move, Styles.flatt, iconMed, () -> {}).growX().marginLeft(8f).height(50f).row();
+						c.button("@settings.hi-cleardata", Icon.save, Styles.flatt, iconMed, () -> {
+							if (Elements.gameDataDialog != null) {
+								Elements.gameDataDialog.show();
+							}
+						});
+					}).width(Math.min(Core.graphics.getWidth() / 1.2f, 460f)).padBottom(45f);
+					t.fill(c -> {
+						c.bottom().right().button(Icon.github, new ImageButtonStyle(), () -> {
+							if (!Core.app.openURI(linkGitHub)) {
+								ui.showInfoFade("@linkfail");
+								Core.app.setClipboardText(linkGitHub);
+							}
+						}).marginTop(9f).marginLeft(10f).tooltip("@setting.hi-github-join").size(84f, 45f).name("github");
+					});
 				});
 			}
 

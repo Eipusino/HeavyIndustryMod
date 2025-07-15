@@ -29,7 +29,7 @@ import heavyindustry.graphics.Draws.DrawAcceptor;
 import heavyindustry.graphics.HPal;
 import heavyindustry.graphics.HTrails.CritTrail;
 import heavyindustry.graphics.HTrails.DriftTrail;
-import heavyindustry.graphics.Layerf;
+import heavyindustry.graphics.HLayer;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.math.Math3d;
 import heavyindustry.struct.Vec2Seq;
@@ -153,13 +153,13 @@ public final class HFx {
 				}
 
 				float len1 = len * 0.66f;
-				Draw.z(Layerf.effectMask);
+				Draw.z(HLayer.effectMask);
 				Draw.color(Color.black);
 				for (int i : Mathf.signs) {
 					Drawn.tri(e.x, e.y, len1 / 17f * fout * (Mathf.absin(0.8f, 0.07f) + 1), len1 * 3f * Interp.swingOut.apply(Mathf.curve(e.fin(), 0, 0.7f)) * (Mathf.absin(0.8f, 0.12f) + 1) * e.fout(0.2f), e.rotation + 90 + i * 90);
 				}
 
-				Draw.z(Layerf.effectBottom);
+				Draw.z(HLayer.effectBottom);
 				for (int i : Mathf.signs) {
 					Drawn.tri(e.x, e.y, len1 / 17f * fout * (Mathf.absin(0.8f, 0.07f) + 1), len1 * 3f * Interp.swingOut.apply(Mathf.curve(e.fin(), 0, 0.7f)) * (Mathf.absin(0.8f, 0.12f) + 1) * e.fout(0.2f), e.rotation + 90 + i * 90);
 				}
@@ -400,9 +400,9 @@ public final class HFx {
 					float dx = e.x + scl * x, dy = e.y + scl * y;
 					Fill.circle(dx, dy, e.fin() * rad);
 					Draw.color(Pal.techBlue);
-					Draw.z(Layerf.effectMask);
+					Draw.z(HLayer.effectMask);
 					Fill.circle(dx, dy, e.fin() * rad / 1.8f);
-					Draw.z(Layerf.effectBottom);
+					Draw.z(HLayer.effectBottom);
 					Fill.circle(dx, dy, e.fin() * rad / 1.8f);
 					Draw.z(Layer.effect);
 					Drawf.light(dx, dy, e.fin() * rad * 1.5f, Pal.techBlue, 0.7f);
@@ -413,11 +413,11 @@ public final class HFx {
 				Fill.circle(e.x, e.y, e.fin() * 32);
 				Lines.stroke(e.fin() * 3.7f);
 				Lines.circle(e.x, e.y, e.fout() * 80);
-				Draw.z(Layerf.effectMask);
+				Draw.z(HLayer.effectMask);
 				Draw.color(Pal.techBlue);
 				Fill.circle(e.x, e.y, e.fin() * 20);
 
-				Draw.z(Layerf.effectBottom);
+				Draw.z(HLayer.effectBottom);
 				Draw.color(Pal.techBlue);
 				Fill.circle(e.x, e.y, e.fin() * 22);
 				Drawf.light(e.x, e.y, e.fin() * 35f, Pal.techBlue, 0.7f);
@@ -442,12 +442,12 @@ public final class HFx {
 					Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fslope() * 14 + 5);
 				});
 
-				Draw.z(Layerf.effectMask);
+				Draw.z(HLayer.effectMask);
 				Draw.color(Pal.techBlue);
 				Fill.circle(e.x, e.y, e.fout() * 30);
 				Drawf.light(e.x, e.y, e.fout() * 80f, Pal.techBlue, 0.7f);
 
-				Draw.z(Layerf.effectBottom);
+				Draw.z(HLayer.effectBottom);
 				Fill.circle(e.x, e.y, e.fout() * 31);
 				Draw.z(Layer.effect - 0.0001f);
 			}).layer(Layer.effect - 0.0001f),

@@ -19,7 +19,7 @@ import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.gen.Fire;
 import mindustry.gen.Groups;
-import mindustry.gen.Puddlec;
+import mindustry.gen.Puddle;
 import mindustry.gen.Sounds;
 import mindustry.gen.Teamc;
 import mindustry.graphics.Drawf;
@@ -159,7 +159,7 @@ public class UltFire extends Fire {
 
 				if ((damageTimer += Time.delta) >= 40f) {
 					damageTimer = 0f;
-					Puddlec p = Puddles.get(tile);
+					Puddle p = Puddles.get(tile);
 					puddleFlammability = p != null ? p.getFlammability() / 3f : 0f;
 					if (damage) {
 						entity.damage(25f);

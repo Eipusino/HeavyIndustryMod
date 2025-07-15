@@ -15,6 +15,7 @@ import mindustry.type.Liquid;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static heavyindustry.util.Utils.split;
 import static mindustry.Vars.world;
 
@@ -78,7 +79,7 @@ public class SporeFarm extends Block {
 
 	@Override
 	protected TextureRegion[] icons() {
-		return new TextureRegion[]{region};
+		return arrayOf(region);
 	}
 
 	public class SporeFarmBuild extends Building {
