@@ -29,7 +29,7 @@ public final class LoadMod {
 	 * attempting to use reflection to remove elements from {@code blacklistedMods} to play HeavyIndustry
 	 * Mod, this itself contradicts the author's advocacy of protecting individual labor achievements.
 	 */
-	private static final String[] blacklistedMods = {"\u949b\u94c5\u5de5\u4e1a", "mfxiao2"};
+	private static final String[] blacklistedMods = {"mfxiao2"};
 
 	/** Don't let anyone instantiate this class. */
 	private LoadMod() {}

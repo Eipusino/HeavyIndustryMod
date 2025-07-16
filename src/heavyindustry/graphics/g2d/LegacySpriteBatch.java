@@ -23,6 +23,42 @@ public abstract class LegacySpriteBatch extends LegacyBatch {
 
 	protected final float[] vertices;
 
+	static final String vertTemplate = """
+			in vec4 a_position;
+			in vec4 a_color;
+			in vec2 a_texCoord0;
+			in vec4 a_mix_color;
+			
+			uniform mat4 u_projTrans;
+			
+			out vec4 v_color;
+			out vec4 v_mix_color;
+			out vec2 v_texCoords;
+			
+			void main() {
+				v_color = a_color;
+				v_color.a = v_color.a * (255.0 / 254.0);
+				v_mix_color = a_mix_color;
+				v_mix_color.a *= (255.0 / 254.0);
+				v_texCoords = a_texCoord0;
+				gl_Position = u_projTrans * a_position;
+			}
+			""";
+	static final String fragmentTemplate = """
+			in lowp vec4 v_color;
+			in lowp vec4 v_mix_color;
+			in highp vec2 v_texCoords;
+			
+			out vec4 fragColor;
+			
+			uniform highp sampler2D u_texture;
+			
+			void main() {
+				vec4 c = texture(u_texture, v_texCoords);
+				fragColor = v_color * mix(c, vec4(v_mix_color.rgb, c.a), v_mix_color.a);
+			}
+			""";
+
 	/** Number of rendering calls, ever. Will not be reset unless set manually. **/
 	int totalRenderCalls = 0;
 	/** The maximum number of sprites rendered in one batch so far. **/
@@ -99,41 +135,7 @@ public abstract class LegacySpriteBatch extends LegacyBatch {
 	}
 
 	public static Shader createShader() {
-		return new Gl30Shader("""
-				in vec4 a_position;
-				in vec4 a_color;
-				in vec2 a_texCoord0;
-				in vec4 a_mix_color;
-				
-				uniform mat4 u_projTrans;
-				
-				out vec4 v_color;
-				out vec4 v_mix_color;
-				out vec2 v_texCoords;
-				
-				void main() {
-					v_color = a_color;
-					v_color.a = v_color.a * (255.0 / 254.0);
-					v_mix_color = a_mix_color;
-					v_mix_color.a *= (255.0 / 254.0);
-					v_texCoords = a_texCoord0;
-					gl_Position = u_projTrans * a_position;
-				}
-				""", """
-				in lowp vec4 v_color;
-				in lowp vec4 v_mix_color;
-				in highp vec2 v_texCoords;
-				
-				out vec4 fragColor;
-				
-				uniform highp sampler2D u_texture;
-				
-				void main() {
-					vec4 c = texture(u_texture, v_texCoords);
-					fragColor = v_color * mix(c, vec4(v_mix_color.rgb, c.a), v_mix_color.a);
-				}
-				"""
-		);
+		return new Gl30Shader(vertTemplate, fragmentTemplate);
 	}
 
 	@Override

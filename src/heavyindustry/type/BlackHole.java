@@ -44,6 +44,7 @@ public class BlackHole extends Planet {
 
 	public BlackHole(String name, float radius) {
 		super(name, null, radius, 0);
+
 		Events.run(Trigger.universeDrawBegin, () -> {
 			if (Vars.ui.planet.state.planet.solarSystem == this) {
 				stashSkybox = Reflect.get(CubemapMesh.class, Vars.renderer.planets.skybox, "map");
@@ -99,6 +100,8 @@ public class BlackHole extends Planet {
 
 	@Override
 	public void draw(PlanetParams params, Mat3D projection, Mat3D transform) {
+		if (Vars.mobile) return;
+
 		// Fool `PlanetRenderer` into thinking the black hole has no children, so that it can draw them itself.
 		var stash = stashChildren;
 		stashChildren = children;
@@ -106,7 +109,9 @@ public class BlackHole extends Planet {
 
 		drawing = true;
 		var cam = Vars.renderer.planets.cam;
+
 		float fov = cam.fov, w = cam.width, h = cam.height;
+
 		var up = v1.set(cam.up);
 		var dir = v2.set(cam.direction);
 
@@ -149,14 +154,14 @@ public class BlackHole extends Planet {
 				cam.update();
 				shader.cubemapView[side.index].set(cam.view);
 
-				for (var p : requests) {
+				for (Planet p : requests) {
 					if (!p.visible()) continue;
 					if (cam.frustum.containsSphere(p.position, p.clipRadius) && !frustum.frustum.containsSphere(p.position, p.clipRadius)) {
 						p.draw(params, cam.combined, p.getTransform(mat));
 					}
 				}
 
-				for (var p : requests) {
+				for (Planet p : requests) {
 					if (!p.visible()) continue;
 					if (!frustum.frustum.containsSphere(p.position, p.clipRadius)) {
 						p.drawClouds(params, cam.combined, p.getTransform(mat));
@@ -176,7 +181,7 @@ public class BlackHole extends Planet {
 				orbit.begin(Color.clear);
 				Blending.disabled.apply();
 
-				for (var p : requests) {
+				for (Planet p : requests) {
 					if (!p.visible()) continue;
 					if (params.drawUi) Vars.renderer.planets.renderOrbit(p, params);
 				}
@@ -203,8 +208,8 @@ public class BlackHole extends Planet {
 		shader.planet = this;
 		Draw.blit(shader);
 
-		for (var child : stashChildren) Vars.renderer.planets.renderPlanet(child, params);
-		for (var child : stashChildren) Vars.renderer.planets.renderTransparent(child, params);
+		for (Planet child : stashChildren) Vars.renderer.planets.renderPlanet(child, params);
+		for (Planet child : stashChildren) Vars.renderer.planets.renderTransparent(child, params);
 	}
 
 	@Override
@@ -218,7 +223,7 @@ public class BlackHole extends Planet {
 	}
 
 	protected void visit(Planet planet, Cons<Planet> cons) {
-		for (var child : (planet == this && drawing) ? stashChildren : planet.children) {
+		for (Planet child : (planet == this && drawing) ? stashChildren : planet.children) {
 			cons.get(child);
 			visit(child, cons);
 		}

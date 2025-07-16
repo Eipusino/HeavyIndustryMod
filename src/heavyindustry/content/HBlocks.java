@@ -59,8 +59,8 @@ import heavyindustry.world.blocks.distribution.StackBridge;
 import heavyindustry.world.blocks.distribution.StackHelper;
 import heavyindustry.world.blocks.distribution.TubeConveyor;
 import heavyindustry.world.blocks.distribution.TubeDistributor;
-import heavyindustry.world.blocks.environment.DPCliffHelper;
-import heavyindustry.world.blocks.environment.DPCliff;
+import heavyindustry.world.blocks.environment.DepthCliffHelper;
+import heavyindustry.world.blocks.environment.DepthCliff;
 import heavyindustry.world.blocks.environment.ConnectedWall;
 import heavyindustry.world.blocks.heat.FuelHeater;
 import heavyindustry.world.blocks.heat.HeatDriver;
@@ -276,64 +276,64 @@ public final class HBlocks {
 			mycelium, myceliumSpore, myceliumShrubs, myceliumPine,
 			softRareEarth, patternRareEarth, softRareEarthWall,
 			oreUranium, oreChromium,
-			//wall
-			copperWallHuge, copperWallGigantic, titaniumWallHuge, titaniumWallGigantic, armoredWall, armoredWallLarge, armoredWallHuge, armoredWallGigantic,
+	//wall
+	copperWallHuge, copperWallGigantic, titaniumWallHuge, titaniumWallGigantic, armoredWall, armoredWallLarge, armoredWallHuge, armoredWallGigantic,
 			uraniumWall, uraniumWallLarge, chromiumWall, chromiumWallLarge, chromiumDoor, chromiumDoorLarge, heavyAlloyWall, heavyAlloyWallLarge, nanoCompositeWall, nanoCompositeWallLarge, shapedWall,
-			//wall-erekir
-			berylliumWallHuge, berylliumWallGigantic, tungstenWallHuge, tungstenWallGigantic, blastDoorLarge, blastDoorHuge, reinforcedSurgeWallHuge, reinforcedSurgeWallGigantic, carbideWallHuge, carbideWallGigantic, shieldedWallLarge, shieldedWallHuge,
+	//wall-erekir
+	berylliumWallHuge, berylliumWallGigantic, tungstenWallHuge, tungstenWallGigantic, blastDoorLarge, blastDoorHuge, reinforcedSurgeWallHuge, reinforcedSurgeWallGigantic, carbideWallHuge, carbideWallGigantic, shieldedWallLarge, shieldedWallHuge,
 			aparajito, aparajitoLarge,
-			//drill
-			titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, beamDrill,
-			//drill-erekir
-			heavyPlasmaBore, minerPoint, minerCenter,
-			//distribution
-			invertedJunction, itemLiquidJunction, multiSorter, plastaniumRouter, plastaniumBridge, stackHelper, chromiumEfficientConveyor, chromiumArmorConveyor, chromiumTubeConveyor, chromiumTubeDistributor, chromiumStackConveyor, chromiumStackRouter, chromiumStackBridge, chromiumJunction, chromiumRouter, chromiumItemBridge,
+	//drill
+	titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, beamDrill,
+	//drill-erekir
+	heavyPlasmaBore, minerPoint, minerCenter,
+	//distribution
+	invertedJunction, itemLiquidJunction, multiSorter, plastaniumRouter, plastaniumBridge, stackHelper, chromiumEfficientConveyor, chromiumArmorConveyor, chromiumTubeConveyor, chromiumTubeDistributor, chromiumStackConveyor, chromiumStackRouter, chromiumStackBridge, chromiumJunction, chromiumRouter, chromiumItemBridge,
 			phaseItemNode, rapidDirectionalUnloader,
-			//distribution-erekir
-			ductJunction, ductDistributor, ductMultiSorter, armoredDuctBridge, rapidDuctUnloader,
-			//liquid
-			liquidSorter, liquidValve, liquidOverflowValve, liquidUnderflowValve, liquidUnloader, liquidMassDriver, turboPump, phaseLiquidNode, chromiumArmorConduit, chromiumLiquidBridge, chromiumArmorLiquidContainer, chromiumArmorLiquidTank,
-			//liquid-erekir
-			reinforcedLiquidOverflowValve, reinforcedLiquidUnderflowValve, reinforcedLiquidUnloader, reinforcedLiquidSorter, reinforcedLiquidValve, smallReinforcedPump, largeReinforcedPump,
-			//power
-			smartPowerNode, powerNodePhase, powerNodeHuge, powerAnalyzer, lunarPanel, uraniumReactor, hyperMagneticReactor, hugeBattery, armoredCoatedBattery,
-			//power-erekir
-			smartBeamNode, beamDiode, beamInsulator, reinforcedPowerAnalyzer, liquidConsumeGenerator,
-			//production
-			largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, sporeFarm, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
+	//distribution-erekir
+	ductJunction, ductDistributor, ductMultiSorter, armoredDuctBridge, rapidDuctUnloader,
+	//liquid
+	liquidSorter, liquidValve, liquidOverflowValve, liquidUnderflowValve, liquidUnloader, liquidMassDriver, turboPump, phaseLiquidNode, chromiumArmorConduit, chromiumLiquidBridge, chromiumArmorLiquidContainer, chromiumArmorLiquidTank,
+	//liquid-erekir
+	reinforcedLiquidOverflowValve, reinforcedLiquidUnderflowValve, reinforcedLiquidUnloader, reinforcedLiquidSorter, reinforcedLiquidValve, smallReinforcedPump, largeReinforcedPump,
+	//power
+	smartPowerNode, powerNodePhase, powerNodeHuge, powerAnalyzer, lunarPanel, uraniumReactor, hyperMagneticReactor, hugeBattery, armoredCoatedBattery,
+	//power-erekir
+	smartBeamNode, beamDiode, beamInsulator, reinforcedPowerAnalyzer, liquidConsumeGenerator,
+	//production
+	largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, sporeFarm, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
 			nanoCoreConstructor, nanoCorePrinter, nanoCoreActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, ironcladCompressor,
 			originiumHeater,
 			uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilSedimentationTank,
-			//production-erekir
-			ventHeater, chemicalSiliconSmelter, largeElectricHeater, liquidFuelHeater, heatDriver, largeOxidationChamber, largeSurgeCrucible, largeCarbideCrucible,
+	//production-erekir
+	ventHeater, chemicalSiliconSmelter, largeElectricHeater, liquidFuelHeater, heatDriver, largeOxidationChamber, largeSurgeCrucible, largeCarbideCrucible,
 			uraniumFuser, chromiumFuser,
-			//defense
-			lighthouse, mendDome, sectorStructureMender, assignOverdrive, largeShieldGenerator, paralysisMine, detonator, bombLauncher,
-			//defense-erekir
-			largeRadar,
-			//storage
-			cargo, bin, machineryUnloader, rapidUnloader, coreStorage,
-			//storage-erekir
-			reinforcedCoreStorage,
-			//payload
-			payloadJunction, payloadRail,
-			//payload-erekir
-			reinforcedPayloadJunction, reinforcedPayloadRail,
-			//unit
-			unitMaintenanceDepot, titanReconstructor, experimentalUnitFactory,
-			//unit-erekir
-			largeUnitRepairTower, seniorAssemblerModule,
-			//logic
-			matrixProcessor, hugeLogicDisplay, buffrerdMemoryCell, buffrerdMemoryBank, heatSink, heatFan, heatSinkLarge, laserRuler, labelMessage,
-			//turret
-			dissipation, rocketLauncher, largeRocketLauncher, rocketSilo,
+	//defense
+	lighthouse, mendDome, sectorStructureMender, assignOverdrive, largeShieldGenerator, paralysisMine, detonator, bombLauncher,
+	//defense-erekir
+	largeRadar,
+	//storage
+	cargo, bin, machineryUnloader, rapidUnloader, coreStorage,
+	//storage-erekir
+	reinforcedCoreStorage,
+	//payload
+	payloadJunction, payloadRail,
+	//payload-erekir
+	reinforcedPayloadJunction, reinforcedPayloadRail,
+	//unit
+	unitMaintenanceDepot, titanReconstructor, experimentalUnitFactory,
+	//unit-erekir
+	largeUnitRepairTower, seniorAssemblerModule,
+	//logic
+	matrixProcessor, hugeLogicDisplay, buffrerdMemoryCell, buffrerdMemoryBank, heatSink, heatFan, heatSinkLarge, laserRuler, labelMessage,
+	//turret
+	dissipation, rocketLauncher, largeRocketLauncher, rocketSilo,
 			dragonBreath, breakthrough, cloudbreaker, ironStream, minigun,
 			spike, fissure,
 			hurricane, judgement, evilSpirits,
-			//turret-erekir
-			rupture,
-			//sandbox
-			unitIniter,
+	//turret-erekir
+	rupture,
+	//sandbox
+	unitIniter,
 			reinforcedItemSource, reinforcedLiquidSource, reinforcedPowerSource, reinforcedPayloadSource, adaptiveSource,
 			omniNode, ultraAssignOverdrive,
 			teamChanger, barrierProjector, nihility, invincibleWall, invincibleWallLarge, invincibleWallHuge, invincibleWallGigantic,
@@ -346,8 +346,8 @@ public final class HBlocks {
 	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
 	public static void load() {
 		//environment
-		cliff = new DPCliff("cliff");
-		cliffHelper = new DPCliffHelper("cliff-helper");
+		cliff = new DepthCliff("cliff");
+		cliffHelper = new DepthCliffHelper("cliff-helper");
 		darkPanel7 = new Floor("dark-panel-7", 0);
 		darkPanel8 = new Floor("dark-panel-8", 0);
 		darkPanel9 = new Floor("dark-panel-9", 0);
@@ -952,22 +952,22 @@ public final class HBlocks {
 			consumePower(3.5f);
 		}
 			public TextureRegion rotatorRegion1;
-		{
-			buildType = () -> new SolidPumpBuild() {
-				@Override
-				public void draw() {
-					Draw.rect(bottomRegion, x, y);
-					Draw.z(Layer.blockCracks);
-					super.drawCracks();
-					Draw.z(Layer.blockAfterCracks);
+			{
+				buildType = () -> new SolidPumpBuild() {
+					@Override
+					public void draw() {
+						Draw.rect(bottomRegion, x, y);
+						Draw.z(Layer.blockCracks);
+						super.drawCracks();
+						Draw.z(Layer.blockAfterCracks);
 
-					Drawf.liquid(liquidRegion, x, y, liquids.get(result) / liquidCapacity, result.color);
-					Drawf.spinSprite(rotatorRegion, x, y, pumpTime * rotateSpeed);
-					Drawf.spinSprite(rotatorRegion1, x, y, pumpTime * -rotateSpeed / 3);
-					Draw.rect(topRegion, x, y);
-				}
-			};
-		}
+						Drawf.liquid(liquidRegion, x, y, liquids.get(result) / liquidCapacity, result.color);
+						Drawf.spinSprite(rotatorRegion, x, y, pumpTime * rotateSpeed);
+						Drawf.spinSprite(rotatorRegion1, x, y, pumpTime * -rotateSpeed / 3);
+						Draw.rect(topRegion, x, y);
+					}
+				};
+			}
 			@Override
 			public void load() {
 				super.load();
@@ -1549,49 +1549,49 @@ public final class HBlocks {
 			public final float alpha = 0.9f, glowScale = 10f, glowIntensity = 0.5f, layer = Layer.blockAdditive;
 			public final Color color = Color.red.cpy();
 			public TextureRegion bottomRegion, glowRegion;
-		{
-			buildType = () -> new NuclearReactorBuild() {
-				@Override
-				public void draw() {
-					Draw.rect(bottomRegion, x, y);
+			{
+				buildType = () -> new NuclearReactorBuild() {
+					@Override
+					public void draw() {
+						Draw.rect(bottomRegion, x, y);
 
-					Draw.color(coolColor, hotColor, heat);
-					Fill.rect(x, y, size * tilesize, size * tilesize);
+						Draw.color(coolColor, hotColor, heat);
+						Fill.rect(x, y, size * tilesize, size * tilesize);
 
-					Draw.color(liquids.current().color);
-					Draw.alpha(liquids.currentAmount() / liquidCapacity);
-					Draw.rect(topRegion, x, y);
-					Draw.reset();
+						Draw.color(liquids.current().color);
+						Draw.alpha(liquids.currentAmount() / liquidCapacity);
+						Draw.rect(topRegion, x, y);
+						Draw.reset();
 
-					Draw.rect(region, x, y);
+						Draw.rect(region, x, y);
 
-					drawGlow();
+						drawGlow();
 
-					if (heat > flashThreshold) {
-						flash += (1f + ((heat - flashThreshold) / (1f - flashThreshold)) * 5.4f) * Time.delta;
-						Draw.color(Color.red, Color.yellow, Mathf.absin(flash, 9f, 1f));
-						Draw.alpha(0.3f);
-						Draw.rect(lightsRegion, x, y);
+						if (heat > flashThreshold) {
+							flash += (1f + ((heat - flashThreshold) / (1f - flashThreshold)) * 5.4f) * Time.delta;
+							Draw.color(Color.red, Color.yellow, Mathf.absin(flash, 9f, 1f));
+							Draw.alpha(0.3f);
+							Draw.rect(lightsRegion, x, y);
+						}
+
+						Draw.reset();
 					}
 
-					Draw.reset();
-				}
+					public void drawGlow() {
+						if (warmup() <= 0.001f) return;
 
-				public void drawGlow() {
-					if (warmup() <= 0.001f) return;
-
-					float z = Draw.z();
-					Draw.z(layer);
-					Draw.blend(blending);
-					Draw.color(color);
-					Draw.alpha((Mathf.absin(totalProgress(), glowScale, alpha) * glowIntensity + 1f - glowIntensity) * warmup() * alpha);
-					Draw.rect(glowRegion, x, y, 0f);
-					Draw.reset();
-					Draw.blend();
-					Draw.z(z);
-				}
-			};
-		}
+						float z = Draw.z();
+						Draw.z(layer);
+						Draw.blend(blending);
+						Draw.color(color);
+						Draw.alpha((Mathf.absin(totalProgress(), glowScale, alpha) * glowIntensity + 1f - glowIntensity) * warmup() * alpha);
+						Draw.rect(glowRegion, x, y, 0f);
+						Draw.reset();
+						Draw.blend();
+						Draw.z(z);
+					}
+				};
+			}
 			@Override
 			public void load() {
 				super.load();
@@ -2344,76 +2344,76 @@ public final class HBlocks {
 			squareSprite = false;
 		}};
 		chromiumFuser = new GenericCrafter("chromium-fuser") {{
-				requirements(Category.crafting, with(Items.silicon, 150, Items.graphite, 120, Items.tungsten, 200, Items.oxide, 180, Items.phaseFabric, 100, HItems.purifiedOriginium, 15));
-				size = 3;
-				itemCapacity = 20;
-				craftTime = 35f;
-				liquidCapacity = 300f;
-				hasLiquids = true;
-				craftEffect = Fx.none;
-				outputItem = new ItemStack(HItems.chromium, 1);
-				drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.hydrogen, 3f), new DrawDefault(), new DrawHeatInput());
-				consumeItem(Items.tungsten, 1);
-				consumeLiquid(Liquids.hydrogen, 12f / 60f);
-				consumePower(12f);
-				squareSprite = false;
+			requirements(Category.crafting, with(Items.silicon, 150, Items.graphite, 120, Items.tungsten, 200, Items.oxide, 180, Items.phaseFabric, 100, HItems.purifiedOriginium, 15));
+			size = 3;
+			itemCapacity = 20;
+			craftTime = 35f;
+			liquidCapacity = 300f;
+			hasLiquids = true;
+			craftEffect = Fx.none;
+			outputItem = new ItemStack(HItems.chromium, 1);
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.hydrogen, 3f), new DrawDefault(), new DrawHeatInput());
+			consumeItem(Items.tungsten, 1);
+			consumeLiquid(Liquids.hydrogen, 12f / 60f);
+			consumePower(12f);
+			squareSprite = false;
 		}
 			public final float sizeScl = 15 * 6f;
 			public final Color color1 = Pal.lancerLaser, color2 = Pal.sapBullet;
 			public TextureRegion lightRegion, heatRegion, shadowRegion;
-		{
-			buildType = () -> new GenericCrafterBuild() {
-				public boolean nextFlash;
-				public float heatf, warmupf;
+			{
+				buildType = () -> new GenericCrafterBuild() {
+					public boolean nextFlash;
+					public float heatf, warmupf;
 
-				@Override
-				public void updateTile() {
-					super.updateTile();
-					if (!nextFlash && heatf < 0.001f && Mathf.chance(0.01f * edelta()) && canConsume() && efficiency > 0.0001f) {
-						nextFlash = true;
-						heatf = 1f;
-					} else if (nextFlash && heatf < 0.001f) {
-						nextFlash = false;
-						heatf = 1f;
+					@Override
+					public void updateTile() {
+						super.updateTile();
+						if (!nextFlash && heatf < 0.001f && Mathf.chance(0.01f * edelta()) && canConsume() && efficiency > 0.0001f) {
+							nextFlash = true;
+							heatf = 1f;
+						} else if (nextFlash && heatf < 0.001f) {
+							nextFlash = false;
+							heatf = 1f;
+						}
+						heatf = Mathf.approachDelta(heatf, 0f, 0.05f);
+						warmupf = Mathf.approachDelta(warmupf, efficiency, 0.04f);
 					}
-					heatf = Mathf.approachDelta(heatf, 0f, 0.05f);
-					warmupf = Mathf.approachDelta(warmupf, efficiency, 0.04f);
-				}
 
-				@Override
-				public void draw() {
-					super.draw();
-					setFlameColor(Tmp.c4);
-					if (heatf >= 0.001f) {
-						Draw.z(Layer.bullet - 0.01f);
-						Draw.color(Color.white, Tmp.c4, Mathf.clamp(heatf * 3f - 2f));
-						Draw.alpha(Mathf.clamp(heatf * 1.5f));
-						Draw.rect(lightRegion, x, y);
+					@Override
+					public void draw() {
+						super.draw();
+						setFlameColor(Tmp.c4);
+						if (heatf >= 0.001f) {
+							Draw.z(Layer.bullet - 0.01f);
+							Draw.color(Color.white, Tmp.c4, Mathf.clamp(heatf * 3f - 2f));
+							Draw.alpha(Mathf.clamp(heatf * 1.5f));
+							Draw.rect(lightRegion, x, y);
+						}
+						Draw.z(Layer.blockOver);
+						Draw.blend(Blending.additive);
+						if (heatf >= 0.001f) {
+							Draw.alpha(Mathf.clamp(heatf * 1.5f) * 0.2f);
+							Draw.rect(heatRegion, x, y);
+						}
+						Draw.alpha(Mathf.absin(11f, 0.2f * warmupf));
+						Draw.rect(shadowRegion, x, y, sizeScl * Draw.scl * Draw.xscl, sizeScl * Draw.scl * Draw.yscl);
+						Draw.blend();
+						Draw.color();
 					}
-					Draw.z(Layer.blockOver);
-					Draw.blend(Blending.additive);
-					if (heatf >= 0.001f) {
-						Draw.alpha(Mathf.clamp(heatf * 1.5f) * 0.2f);
-						Draw.rect(heatRegion, x, y);
+
+					@Override
+					public void drawLight() {
+						super.drawLight();
+						setFlameColor(Tmp.c4);
+						Drawf.light(x, y, (lightRadius * (1f + Mathf.clamp(heatf) * 0.1f) + Mathf.absin(10f, 5f)) * warmupf * block.size, Tmp.c4, 0.65f);
 					}
-					Draw.alpha(Mathf.absin(11f, 0.2f * warmupf));
-					Draw.rect(shadowRegion, x, y, sizeScl * Draw.scl * Draw.xscl, sizeScl * Draw.scl * Draw.yscl);
-					Draw.blend();
-					Draw.color();
-				}
 
-				@Override
-				public void drawLight() {
-					super.drawLight();
-					setFlameColor(Tmp.c4);
-					Drawf.light(x, y, (lightRadius * (1f + Mathf.clamp(heatf) * 0.1f) + Mathf.absin(10f, 5f)) * warmupf * block.size, Tmp.c4, 0.65f);
-				}
-
-				public void setFlameColor(Color tmp) {
-					tmp.set(color1).lerp(color2, Mathf.absin(Time.time + Mathf.randomSeed(pos(), 0f, 9f * 6.29f), 9f, 1f));
-				}
-			};
-		}
+					public void setFlameColor(Color tmp) {
+						tmp.set(color1).lerp(color2, Mathf.absin(Time.time + Mathf.randomSeed(pos(), 0f, 9f * 6.29f), 9f, 1f));
+					}
+				};
+			}
 			@Override
 			public void load() {
 				super.load();

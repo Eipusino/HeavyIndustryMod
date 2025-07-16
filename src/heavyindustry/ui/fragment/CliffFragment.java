@@ -10,17 +10,21 @@ import arc.scene.event.InputEvent;
 import arc.scene.event.InputListener;
 import arc.scene.event.Touchable;
 import arc.scene.ui.layout.Table;
-import heavyindustry.world.blocks.environment.DPCliff;
+import heavyindustry.world.blocks.environment.DepthCliff;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.ui.Styles;
 
 public class CliffFragment extends Table {
-	private final Table layout;
-	private final Color col = Color.valueOf("645654");
-	private boolean enabled;
+	protected Table layout;
+	protected Color col = Color.valueOf("645654");
+	protected boolean enabled;
 
 	public CliffFragment() {
+		init();
+	}
+
+	protected void init() {
 		setFillParent(true);
 		visible(() -> Vars.ui.hudfrag.shown && Vars.state.isEditor());
 		touchable(() -> enabled && visible ? Touchable.enabled : Touchable.disabled);
@@ -33,8 +37,8 @@ public class CliffFragment extends Table {
 				title.image(Icon.treeSmall).size(15f).center().padLeft(15f).color(col);
 			}).growX().padBottom(10f).row();
 			t.table(Styles.black3, buttons -> {
-				buttons.button("@hi-process-cliffs", Icon.play, Styles.nonet, DPCliff::processCliffs).growX().height(50f).pad(5f).row();
-				buttons.button("@hi-un-process-cliffs", Icon.undo, Styles.nonet, DPCliff::unProcessCliffs).growX().height(50f).pad(5f);
+				buttons.button("@hi-process-cliffs", Icon.play, Styles.nonet, DepthCliff::processCliffs).growX().height(50f).pad(5f).row();
+				buttons.button("@hi-un-process-cliffs", Icon.undo, Styles.nonet, DepthCliff::unProcessCliffs).growX().height(50f).pad(5f);
 			}).growX();
 		})).margin(10f);
 	}
@@ -57,7 +61,7 @@ public class CliffFragment extends Table {
 		}
 	}
 
-	private void toggle() {
+	protected void toggle() {
 		if (!visible || layout.hasActions()) return;
 		enabled = !enabled;
 		if (enabled) {

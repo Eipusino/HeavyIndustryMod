@@ -16,7 +16,6 @@ import arc.scene.ui.layout.Scl;
 import arc.util.Align;
 import arc.util.Log;
 import arc.util.Nullable;
-import arc.util.Reflect;
 import arc.util.Time;
 import arc.util.serialization.Jval;
 import heavyindustry.HVars;
@@ -38,12 +37,11 @@ import heavyindustry.gen.HMusics;
 import heavyindustry.gen.HSounds;
 import heavyindustry.gen.WorldRegister;
 import heavyindustry.graphics.Draw3d;
-import heavyindustry.graphics.Draws.ScreenSampler;
-import heavyindustry.graphics.FlowMenuRenderer;
 import heavyindustry.graphics.HCacheLayer;
 import heavyindustry.graphics.HShaders;
 import heavyindustry.graphics.HTextures;
-import heavyindustry.graphics.MuelsyseMenuRenderer;
+import heavyindustry.graphics.SpecialMenuRenderer;
+import heavyindustry.graphics.ScreenSampler;
 import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.input.InputAggregator;
 import heavyindustry.io.WorldData;
@@ -106,9 +104,6 @@ public final class HeavyIndustryMod extends Mod {
 	/** Is this mod in plugin mode. In this mode, the mod will not load content. */
 	public static final boolean isPlugin;
 
-	public static HeavyIndustryMod instance;
-	public static Class<? extends HeavyIndustryMod> type;
-
 	/** If needed, please call {@link #loaded()} for the LoadedMod of this mod. */
 	private static LoadedMod loaded;
 
@@ -127,18 +122,19 @@ public final class HeavyIndustryMod extends Mod {
 		Log.infoTag("Kotlin", "Version: " + KotlinVersion.CURRENT);
 		Log.info("Loaded HeavyIndustry Mod constructor.");
 
-		instance = this;
-		type = getClass();
-
 		HClassMap.load();
 
 		Events.on(ClientLoadEvent.class, event -> {
 			if (isPlugin) return;
 
-			boolean muelsyse = Core.settings.getBool("hi-muelsyse");
+			boolean special = Core.settings.getBool("hi-special");
 
 			try {
-				Reflect.set(MenuFragment.class, ui.menufrag, "renderer", muelsyse ? new MuelsyseMenuRenderer() : new FlowMenuRenderer());
+				if (special) {
+					var field = MenuFragment.class.getDeclaredField("renderer");
+					field.setAccessible(true);
+					field.set(ui.menufrag, new SpecialMenuRenderer());
+				}
 			} catch (Exception e) {
 				Log.err("Failed to replace renderer", e);
 			}
@@ -158,7 +154,7 @@ public final class HeavyIndustryMod extends Mod {
 						}
 					}).size(210f, 64f);
 					cont.pane(t -> {
-						t.image(Core.atlas.find(name(muelsyse ? "muelsyse-cover" : "cover"))).left().size(600f, 310f).pad(3f).row();
+						t.image(Core.atlas.find(name(special ? "cover-special" : "cover"))).left().size(600f, 310f).pad(3f).row();
 						t.add(Core.bundle.get("hi-version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 						t.add(label).left().row();
 						t.add(Core.bundle.get("hi-class")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
@@ -247,7 +243,7 @@ public final class HeavyIndustryMod extends Mod {
 		Core.settings.defaults("hi-closed-dialog", false);
 		Core.settings.defaults("hi-floating-text", true);
 		Core.settings.defaults("hi-animated-shields", true);
-		Core.settings.defaults("hi-muelsyse", false);
+		Core.settings.defaults("hi-special", false);
 
 		if (!headless && !isPlugin && mods.locateMod("extra-utilities") == null && isAprilFoolsDay()) {
 			HOverrides.loadAprilFoolsDay();
@@ -302,7 +298,7 @@ public final class HeavyIndustryMod extends Mod {
 					t.checkPref("hi-floating-text", true);
 					t.checkPref("hi-animated-shields", true);
 					t.checkPref("hi-serpulo-sector-invasion", true);
-					t.checkPref("hi-muelsyse", false);
+					t.checkPref("hi-special", false);
 					t.checkPref("hi-developer-mode", false);
 					t.table(Tex.button, c -> {
 						c.button("@settings.game", Icon.settings, Styles.flatt, iconMed, () -> {}).growX().marginLeft(8f).height(50f).row();

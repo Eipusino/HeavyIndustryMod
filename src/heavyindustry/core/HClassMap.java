@@ -128,6 +128,7 @@ import heavyindustry.world.blocks.environment.ArmorFloor;
 import heavyindustry.world.blocks.environment.ConnectedWall;
 import heavyindustry.world.blocks.environment.DataFloor;
 import heavyindustry.world.blocks.environment.GrooveFloor;
+import heavyindustry.world.blocks.environment.RotatedProp;
 import heavyindustry.world.blocks.environment.SizedVent;
 import heavyindustry.world.blocks.environment.TallTreeBlock;
 import heavyindustry.world.blocks.environment.TiledFloor;
@@ -369,6 +370,7 @@ final class HClassMap {
 		//blocks
 		classes.put("ConnectedWall", ConnectedWall.class);
 		classes.put("GrooveFloor", GrooveFloor.class);
+		classes.put("RotatedProp", RotatedProp.class);
 		classes.put("TiledFloor", TiledFloor.class);
 		classes.put("SizedVent", SizedVent.class);
 		classes.put("ArmorFloor", ArmorFloor.class);

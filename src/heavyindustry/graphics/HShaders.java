@@ -48,7 +48,7 @@ public final class HShaders {
 	public static TractorConeShader tractorCone;
 	public static DimShader dimShader;
 	public static SmallSpaceShader smallSpaceShader;
-	public static Gl30Shader baseShader, passThrough;
+	public static Gl30Shader distBase, passThrough;
 	public static TilerShader tiler;
 	public static PlanetTextureShader planetTexture;
 	public static BlackHoleShader blackHole;
@@ -87,7 +87,7 @@ public final class HShaders {
 		dimShader = new DimShader();
 		smallSpaceShader = new SmallSpaceShader();
 
-		baseShader = new Gl30Shader(msv("dist-base"), msf("dist-base"));
+		distBase = new Gl30Shader(msv("dist-base"), msf("dist-base"));
 		passThrough = new Gl30Shader(msv("pass-through"), msf("pass-through"));
 
 		tiler = new TilerShader();

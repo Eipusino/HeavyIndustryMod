@@ -198,6 +198,16 @@ public class SizedGraphics extends Graphics {
 	}
 
 	@Override
+	public void setWindowPosition(int x, int y) {
+		delegate.setWindowPosition(x, y);
+	}
+
+	@Override
+	public void setWindowSize(int width, int height) {
+		delegate.setWindowSize(width, height);
+	}
+
+	@Override
 	public boolean setWindowedMode(int width, int height) {
 		return delegate.setWindowedMode(width, height);
 	}
@@ -303,10 +313,5 @@ public class SizedGraphics extends Graphics {
 	@Override
 	public void dispose() {
 		delegate.dispose();
-	}
-
-	@Override
-	public boolean isDisposed() {
-		return delegate.isDisposed();
 	}
 }

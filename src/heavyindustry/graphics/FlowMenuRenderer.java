@@ -30,6 +30,7 @@ import static mindustry.Vars.mobile;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
+@Deprecated
 public class FlowMenuRenderer extends MenuRenderer {
 	protected int viewWidth = !mobile ? 100 : 60;
 	protected MenuSlide[] menus = {MenuSlides.stone, MenuSlides.grass};

@@ -13,15 +13,13 @@ import arc.math.geom.Vec3;
 import arc.util.Nullable;
 import heavyindustry.graphics.HShaders;
 import heavyindustry.graphics.gl.DepthFrameBuffer;
+import mindustry.Vars;
 import mindustry.graphics.Shaders;
 import mindustry.graphics.g3d.GenericMesh;
 import mindustry.graphics.g3d.HexMesher;
 import mindustry.graphics.g3d.MeshBuilder;
 import mindustry.graphics.g3d.PlanetParams;
 import mindustry.type.Planet;
-
-import static mindustry.Vars.headless;
-import static mindustry.Vars.renderer;
 
 /**
  * Just a regular planet, but with a fixed atmosphere shader at the little cost of performance.
@@ -42,7 +40,7 @@ public class AtmospherePlanet extends Planet {
 	@Override
 	public void load() {
 		super.load();
-		if (!headless && buffer == null) {
+		if (!Vars.headless && buffer == null) {
 			buffer = new DepthFrameBuffer(2, 2, true);
 			buffer.getTexture().setFilter(TextureFilter.nearest);
 		}
@@ -85,7 +83,7 @@ public class AtmospherePlanet extends Planet {
 			shader.lightDir.set(solarSystem.position).sub(position).rotate(Vec3.Y, getRotation()).nor();
 			shader.ambientColor.set(solarSystem.lightColor);
 			shader.bind();
-			shader.setUniformMatrix4("u_proj", renderer.planets.cam.combined.val);
+			shader.setUniformMatrix4("u_proj", Vars.renderer.planets.cam.combined.val);
 			shader.setUniformMatrix4("u_trans", transform.val);
 			shader.apply();
 			mesh.render(shader, Gl.triangles);

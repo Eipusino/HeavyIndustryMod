@@ -29,9 +29,12 @@ public final class SlashRenderer {
 			slashShader.dispose();
 		}
 
+		String prevFrag = Shader.prependFragmentCode;
 		Shader.prependFragmentCode = "#define MAX_COUNT " + maxCount + "\n";
+
 		slashShader = new SlashShader();
-		Shader.prependFragmentCode = "";
+
+		Shader.prependFragmentCode = prevFrag;
 	}
 
 	public static void init() {
