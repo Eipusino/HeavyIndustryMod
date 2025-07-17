@@ -95,13 +95,11 @@ public class BlackHole extends Planet {
 	}
 
 	protected Fi megalith(String name) {
-		return HVars.internalTree.child("sprites/megalith/" + name);
+		return HVars.internalTree.child("other/megalith/" + name);
 	}
 
 	@Override
 	public void draw(PlanetParams params, Mat3D projection, Mat3D transform) {
-		if (Vars.mobile) return;
-
 		// Fool `PlanetRenderer` into thinking the black hole has no children, so that it can draw them itself.
 		var stash = stashChildren;
 		stashChildren = children;

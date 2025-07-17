@@ -24,29 +24,29 @@ in lowp vec2 v_texCoords;
 
 out vec4 fragColor;
 
-const float TR = 1.73205;
-const float TB = 3.0;
+const float tr = 1.73205;
+const float tb = 3.0;
 
 vec2 selectCenter(vec2 coords) {
-	int indexX = int(coords.x / TB / side_len);
-	int indexY = int(coords.y / TR / side_len);
+	int indexX = int(coords.x / tb / side_len);
+	int indexY = int(coords.y / tr / side_len);
 	vec2 v1, v2, samp;
 
 	if (indexX / 2 * 2 == indexX) {
 		if (indexY / 2 * 2 == indexY) {
-			v1 = vec2(float(indexX) * side_len * TB, float(indexY) * side_len * TR);
-			v2 = vec2(float(indexX + 1) * side_len * TB, float(indexY + 1) * side_len * TR);
+			v1 = vec2(float(indexX) * side_len * tb, float(indexY) * side_len * tr);
+			v2 = vec2(float(indexX + 1) * side_len * tb, float(indexY + 1) * side_len * tr);
 		} else {
-			v1 = vec2(float(indexX) * side_len * TB, float(indexY + 1) * side_len * TR);
-			v2 = vec2(float(indexX + 1) * side_len * TB, float(indexY) * side_len * TR);
+			v1 = vec2(float(indexX) * side_len * tb, float(indexY + 1) * side_len * tr);
+			v2 = vec2(float(indexX + 1) * side_len * tb, float(indexY) * side_len * tr);
 		}
 	} else {
 		if (indexY / 2 * 2 == indexY) {
-			v1 = vec2(float(indexX) * side_len * TB, float(indexY + 1) * side_len * TR);
-			v2 = vec2(float(indexX + 1) * side_len * TB, float(indexY) * side_len * TR);
+			v1 = vec2(float(indexX) * side_len * tb, float(indexY + 1) * side_len * tr);
+			v2 = vec2(float(indexX + 1) * side_len * tb, float(indexY) * side_len * tr);
 		} else {
-			v1 = vec2(float(indexX) * side_len * TB, float(indexY) * side_len * TR);
-			v2 = vec2(float(indexX + 1) * side_len * TB, float(indexY + 1) * side_len * TR);
+			v1 = vec2(float(indexX) * side_len * tb, float(indexY) * side_len * tr);
+			v2 = vec2(float(indexX + 1) * side_len * tb, float(indexY + 1) * side_len * tr);
 		}
 	}
 
@@ -99,7 +99,7 @@ void main(void) {
 			vec2 diff = worldCoord - coords;
 			float dst = distance(worldCoord, coords);
 			float angle = mod(atan(diff.y, diff.x), PI / 3.0);
-			float realRad = TR * side_len / (sin(2.0 * PI / 3.0 - angle));
+			float realRad = tr * side_len / (sin(2.0 * PI / 3.0 - angle));
 
 			if (realRad - dst < u_stroke) {
 				fragColor = mix(vec4(baseColor.rgb, u_alpha), mix_color, a);

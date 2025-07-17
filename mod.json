@@ -5,7 +5,7 @@
 	"subtitle": "Heavy Industry Java Mod",
 	"main": "heavyindustry.core.HeavyIndustryMod",
 	"description": "Meaningless Mod.",
-	"version": "1.0.6-alpha",
+	"version": "1.0.6-beta",
 	"java": true,
 	"plugin": false,
 	"minGameVersion": 149.0,

@@ -308,21 +308,21 @@ public final class Mathm {
 		return round(Mathf.radiansToDegrees * Math.atan(tan));
 	}
 
-	public static float bound(float in, float from, float to, float start, float end, Interp interpolation){
-		if(in < from || in > to){
+	public static float bound(float in, float from, float to, float start, float end, Interp interpolation) {
+		if (in < from || in > to) {
 			return 0f;
-		}else{
+		} else {
 			float f = (in - from) / (to - from);
 			return interpolation.apply(start, end, f);
 		}
 	}
 
-	public static float curve(float in, float from, float to, float start, float end, Interp interpolation){
-		if(in < from){
+	public static float curve(float in, float from, float to, float start, float end, Interp interpolation) {
+		if (in < from) {
 			return start;
-		}else if(in > to){
+		} else if (in > to) {
 			return end;
-		}else{
+		} else {
 			float f = (in - from) / (to - from);
 			return interpolation.apply(start, end, f);
 		}

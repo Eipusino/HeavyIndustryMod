@@ -86,27 +86,27 @@ public final class SpriteUtils {
 
 	private SpriteUtils() {}
 
-	public static TextureRegion[] splitIndex(String name, int tileWidth, int tileHeight) {
-		return splitIndex(Core.atlas.find(name), tileWidth, tileHeight);
+	public static TextureRegion[] splitInLayers(String name, int tileWidth, int tileHeight) {
+		return splitInLayers(Core.atlas.find(name), tileWidth, tileHeight);
 	}
 
-	public static TextureRegion[] splitIndex(String name, int tileWidth, int tileHeight, int pad) {
-		return splitIndex(Core.atlas.find(name), tileWidth, tileHeight, pad);
+	public static TextureRegion[] splitInLayers(String name, int tileWidth, int tileHeight, int pad) {
+		return splitInLayers(Core.atlas.find(name), tileWidth, tileHeight, pad);
 	}
 
-	public static TextureRegion[] splitIndex(String name, int tileWidth, int tileHeight, int pad, int[] indexMap) {
-		return splitIndex(Core.atlas.find(name), tileWidth, tileHeight, pad, indexMap);
+	public static TextureRegion[] splitInLayers(String name, int tileWidth, int tileHeight, int pad, int[] indexMap) {
+		return splitInLayers(Core.atlas.find(name), tileWidth, tileHeight, pad, indexMap);
 	}
 
-	public static TextureRegion[] splitIndex(TextureRegion region, int tileWidth, int tileHeight) {
-		return splitIndex(region, tileWidth, tileHeight, 0);
+	public static TextureRegion[] splitInLayers(TextureRegion region, int tileWidth, int tileHeight) {
+		return splitInLayers(region, tileWidth, tileHeight, 0);
 	}
 
-	public static TextureRegion[] splitIndex(TextureRegion region, int tileWidth, int tileHeight, int pad) {
-		return splitIndex(region, tileWidth, tileHeight, pad, null);
+	public static TextureRegion[] splitInLayers(TextureRegion region, int tileWidth, int tileHeight, int pad) {
+		return splitInLayers(region, tileWidth, tileHeight, pad, null);
 	}
 
-	public static TextureRegion[] splitIndex(TextureRegion region, int tileWidth, int tileHeight, int pad, int[] indexMap) {
+	public static TextureRegion[] splitInLayers(TextureRegion region, int tileWidth, int tileHeight, int pad, int[] indexMap) {
 		int x = region.getX();
 		int y = region.getY();
 		int width = region.width;

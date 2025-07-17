@@ -123,7 +123,7 @@ public final class LoadMod {
 	}
 
 	/** Adds a listener for parsed JSON objects. */
-	public static void addParseListener(ExtraParseListener hook){
+	public static void addParseListener(ExtraParseListener hook) {
 		parser.listeners.add(hook);
 	}
 

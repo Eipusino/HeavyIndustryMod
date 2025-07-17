@@ -13,6 +13,7 @@ import mindustry.game.Objectives.Produce;
 import mindustry.game.Objectives.Research;
 import mindustry.game.Objectives.SectorComplete;
 import mindustry.type.ItemStack;
+import mindustry.type.SectorPreset;
 
 import static heavyindustry.content.HBlocks.*;
 import static heavyindustry.content.HSectorPresets.*;
@@ -160,13 +161,18 @@ public final class HTechTree {
 		vanillaNode(turbineCondenser, () -> node(liquidConsumeGenerator, ItemStack.with(Items.beryllium, 2200, Items.graphite, 2400, Items.silicon, 2300, Items.tungsten, 1600, Items.oxide, 60), () -> {}));
 		//production
 		vanillaNode(kiln, () -> node(largeKiln, () -> {}));
-		vanillaNode(pulverizer, () -> node(largePulverizer, () -> {
-			node(uraniumSynthesizer, Seq.with(new OnSector(desolateRift)), () -> {});
-			node(chromiumSynthesizer, Seq.with(new OnSector(desolateRift)), () -> {});
-		}));
+		vanillaNode(pulverizer, () -> {
+			node(stoneCrusher, () -> {});
+			node(largePulverizer, () -> {
+				node(uraniumSynthesizer, Seq.with(new OnSector(desolateRift)), () -> {
+				});
+				node(chromiumSynthesizer, Seq.with(new OnSector(desolateRift)), () -> {
+				});
+			});
+		});
 		vanillaNode(melter, () -> {
 			node(largeMelter, () -> {});
-			node(clarifier, () -> {});
+			node(clarifier, Seq.with(new Research(HLiquids.brine)), () -> {});
 		});
 		vanillaNode(surgeSmelter, () -> node(heavyAlloySmelter, () -> {}));
 		vanillaNode(disassembler, () -> node(metalAnalyzer, Seq.with(new OnSector(desolateRift)), () -> {}));
@@ -282,6 +288,10 @@ public final class HTechTree {
 		vanillaNode(desolateRift, () -> node(moltenRiftValley, Seq.with(new SectorComplete(desolateRift)), () -> {}));
 	}
 
+	public static void loadGliese() {
+		HPlanets.gliese.techTree = nodeRoot("serpulo", coreShard, () -> node(gravelMountain, () -> {}));
+	}
+
 	public static void vanillaNode(UnlockableContent content, Runnable children) {
 		context = TechTree.all.find(t -> t.content == content);
 		children.run();
@@ -294,37 +304,55 @@ public final class HTechTree {
 		}
 	}
 
-	public static void node(UnlockableContent content) {
-		node(content, content.researchRequirements(), () -> {});
+	public static TechNode nodeRoot(String name, UnlockableContent content, Runnable children) {
+		return nodeRoot(name, content, false, children);
 	}
 
-	public static void node(UnlockableContent content, Runnable children) {
-		node(content, content.researchRequirements(), children);
+	public static TechNode nodeRoot(String name, UnlockableContent content, boolean requireUnlock, Runnable children) {
+		var root = node(content, content.researchRequirements(), children);
+		root.name = name;
+		root.requiresUnlock = requireUnlock;
+		TechTree.roots.add(root);
+		return root;
 	}
 
-	public static void node(UnlockableContent content, ItemStack[] requirements, Runnable children) {
-		node(content, requirements, null, children);
+	public static TechNode node(UnlockableContent content) {
+		return node(content, content.researchRequirements(), () -> {});
 	}
 
-	public static void node(UnlockableContent content, ItemStack[] requirements, Seq<Objective> objectives, Runnable children) {
+	public static TechNode node(UnlockableContent content, Runnable children) {
+		return node(content, content.researchRequirements(), children);
+	}
+
+	public static TechNode node(UnlockableContent content, ItemStack[] requirements, Runnable children) {
+		return node(content, requirements, null, children);
+	}
+
+	public static TechNode node(UnlockableContent content, ItemStack[] requirements, Seq<Objective> objectives, Runnable children) {
 		TechNode node = new TechNode(context, content, requirements);
 		if (objectives != null) node.objectives.addAll(objectives);
+
+		if (context != null && context.content instanceof SectorPreset preset && !node.objectives.contains(o -> o instanceof SectorComplete sc && sc.preset == preset)) {
+			node.objectives.insert(0, new SectorComplete(preset));
+		}
 
 		TechNode prev = context;
 		context = node;
 		children.run();
 		context = prev;
+
+		return node;
 	}
 
-	public static void node(UnlockableContent content, Seq<Objective> objectives, Runnable children) {
-		node(content, content.researchRequirements(), objectives, children);
+	public static TechNode node(UnlockableContent content, Seq<Objective> objectives, Runnable children) {
+		return node(content, content.researchRequirements(), objectives, children);
 	}
 
-	public static void nodeProduce(UnlockableContent content, Seq<Objective> objectives, Runnable children) {
-		node(content, content.researchRequirements(), objectives.add(new Produce(content)), children);
+	public static TechNode nodeProduce(UnlockableContent content, Seq<Objective> objectives, Runnable children) {
+		return node(content, content.researchRequirements(), objectives.add(new Produce(content)), children);
 	}
 
-	public static void nodeProduce(UnlockableContent content, Runnable children) {
-		nodeProduce(content, new Seq<>(), children);
+	public static TechNode nodeProduce(UnlockableContent content, Runnable children) {
+		return nodeProduce(content, new Seq<>(), children);
 	}
 }

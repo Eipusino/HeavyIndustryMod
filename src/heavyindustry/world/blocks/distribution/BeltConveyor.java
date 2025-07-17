@@ -19,6 +19,7 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Conveyor;
 
 import static heavyindustry.struct.Collectionsf.arrayOf;
+import static heavyindustry.util.Utils.splitUnLayers;
 import static mindustry.Vars.itemSize;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
@@ -51,8 +52,8 @@ public class BeltConveyor extends Conveyor {
 			teamRegions[team.id] = teamRegion.found() && team.hasPalette ? Core.atlas.find(name + "-team-" + team.name, teamRegion) : teamRegion;
 		}
 
-		regions = Core.atlas.find(name + "-base").split(32, 32);
-		edgeRegions = Core.atlas.find(name + "-edge").split(32, 32);
+		regions = splitUnLayers(Core.atlas.find(name + "-base"), 32);
+		edgeRegions = splitUnLayers(Core.atlas.find(name + "-edge"), 32);
 	}
 
 	@Override

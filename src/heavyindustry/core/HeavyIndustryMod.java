@@ -215,6 +215,7 @@ public final class HeavyIndustryMod extends Mod {
 			HPlanets.load();
 			HSectorPresets.load();
 			HTechTree.load();
+			HTechTree.loadGliese();
 		}
 
 		Utils.loadItems();
@@ -300,6 +301,7 @@ public final class HeavyIndustryMod extends Mod {
 					t.checkPref("hi-serpulo-sector-invasion", true);
 					t.checkPref("hi-special", false);
 					t.checkPref("hi-developer-mode", false);
+					//this fucking sucks
 					t.table(Tex.button, c -> {
 						c.button("@settings.game", Icon.settings, Styles.flatt, iconMed, () -> {}).growX().marginLeft(8f).height(50f).row();
 						c.button("@settings.controls", Icon.move, Styles.flatt, iconMed, () -> {}).growX().marginLeft(8f).height(50f).row();
@@ -307,7 +309,7 @@ public final class HeavyIndustryMod extends Mod {
 							if (Elements.gameDataDialog != null) {
 								Elements.gameDataDialog.show();
 							}
-						});
+						}).growX().marginLeft(8f).height(50f).row();
 					}).width(Math.min(Core.graphics.getWidth() / 1.2f, 460f)).padBottom(45f);
 					t.fill(c -> {
 						c.bottom().right().button(Icon.github, new ImageButtonStyle(), () -> {

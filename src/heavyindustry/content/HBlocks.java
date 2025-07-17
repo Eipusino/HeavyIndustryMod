@@ -94,6 +94,7 @@ import heavyindustry.world.blocks.storage.XLUnloader;
 import heavyindustry.world.blocks.units.DerivativeUnitFactory;
 import heavyindustry.world.blocks.units.PayloadSourcef;
 import heavyindustry.world.blocks.units.UnitIniter;
+import heavyindustry.world.draw.DrawAnim;
 import heavyindustry.world.draw.DrawPowerLight;
 import heavyindustry.world.draw.DrawPrinter;
 import heavyindustry.world.draw.DrawRotator;
@@ -300,7 +301,7 @@ public final class HBlocks {
 	//power-erekir
 	smartBeamNode, beamDiode, beamInsulator, reinforcedPowerAnalyzer, liquidConsumeGenerator,
 	//production
-	largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, sporeFarm, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
+	largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, stoneCrusher, sporeFarm, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
 			nanoCoreConstructor, nanoCorePrinter, nanoCoreActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, ironcladCompressor,
 			originiumHeater,
 			uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilSedimentationTank,
@@ -430,15 +431,23 @@ public final class HBlocks {
 			attributes.set(Attribute.water, -0.85f);
 		}};
 		stoneFullTiles = new Floor("stone-full-tiles", 3) {{
+			itemDrop = HItems.stone;
+			playerUnmineable = true;
 			attributes.set(Attribute.water, -0.75f);
 		}};
 		stoneFull = new Floor("stone-full", 3) {{
+			itemDrop = HItems.stone;
+			playerUnmineable = true;
 			attributes.set(Attribute.water, -0.75f);
 		}};
 		stoneHalf = new Floor("stone-half", 3) {{
+			itemDrop = HItems.stone;
+			playerUnmineable = true;
 			attributes.set(Attribute.water, -0.5f);
 		}};
 		stoneTiles = new Floor("stone-tiles", 3) {{
+			itemDrop = HItems.stone;
+			playerUnmineable = true;
 			attributes.set(Attribute.water, -0.5f);
 		}};
 		concreteWall = new ConnectedWall("concrete-wall") {{
@@ -1804,6 +1813,21 @@ public final class HBlocks {
 			maxBoost = 3f;
 			consumePower(3f);
 			consumeLiquid(Liquids.water, 36f / 60f);
+		}};
+		stoneCrusher = new GenericCrafter("stone-crusher") {{
+			requirements(Category.crafting, with(Items.copper, 40, Items.graphite, 60, Items.silicon, 25));
+			outputItem = new ItemStack(Items.sand, 3);
+			craftTime = 60f;
+			size = 2;
+			hasPower = hasItems = true;
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawAnim(), new DrawDefault(), new DrawRegion("-top"));
+			updateEffect = new Effect(20f, e -> {
+				Draw.color(Pal.gray, Color.lightGray, e.fin());
+				Angles.randLenVectors(e.id, 6, 3f + e.fin() * 6f, (x, y) -> Fill.square(e.x + x, e.y + y, e.fout() * 2f, 45f));
+			});
+			consumeItem(HItems.stone, 2);
+			consumePower(1.2f);
+			squareSprite = false;
 		}};
 		sporeFarm = new SporeFarm("spore-farm") {{
 			requirements(Category.production, with(Items.copper, 5, Items.lead, 5));

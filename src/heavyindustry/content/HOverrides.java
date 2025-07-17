@@ -14,6 +14,7 @@ import mindustry.content.Blocks;
 import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.content.Liquids;
+import mindustry.content.Planets;
 import mindustry.content.StatusEffects;
 import mindustry.content.UnitTypes;
 import mindustry.entities.Effect;
@@ -482,10 +483,10 @@ public final class HOverrides {
 		Items.surgeAlloy.hardness = 6;
 		Items.phaseFabric.hardness = 3;
 		Items.carbide.hardness = 6;
-		Items.serpuloItems.addAll(HItems.rareEarth, HItems.nanoCore, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.originium, HItems.purifiedOriginium, HItems.syntheticJade);
+		Items.serpuloItems.addAll(HItems.stone, HItems.salt, HItems.rareEarth, HItems.nanoCore, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.originium, HItems.purifiedOriginium, HItems.syntheticJade);
 		Items.erekirItems.addAll(HItems.uranium, HItems.chromium, HItems.originium, HItems.purifiedOriginium, HItems.syntheticJade);
 		//planet
-
+		Planets.serpulo.allowSectorInvasion = false;
 		//other
 	}
 

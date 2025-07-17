@@ -14,6 +14,7 @@ import mindustry.graphics.MultiPacker;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Floor;
 
+import static heavyindustry.util.Utils.splitUnLayers;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.world;
 
@@ -117,7 +118,7 @@ public class ArmorFloor extends Floor {
 	public void load() {
 		super.load();
 		large = Core.atlas.find(name + "-large");
-		split = large.split(32, 32);
+		split = splitUnLayers(large, 32);
 	}
 
 	boolean eq(int rx, int ry) {

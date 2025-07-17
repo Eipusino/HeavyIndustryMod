@@ -50,10 +50,10 @@ public class XFConveyor extends Conveyor {
 	@Override
 	public void load() {
 		super.load();
-		edgeRegions = SpriteUtils.splitIndex(Core.atlas.find(name + "-edge"), 32, 32, 1);
-		armorRegions = SpriteUtils.splitIndex(Core.atlas.find(name + "-edge-armored"), 32, 32, 1);
-		arrowRegions = SpriteUtils.splitIndex(Core.atlas.find(name + "-arrow"), 32, 32, 1);
-		pulseRegions = SpriteUtils.splitIndex(Core.atlas.find(name + "-pulse"), 32, 32, 1);
+		edgeRegions = SpriteUtils.splitInLayers(Core.atlas.find(name + "-edge"), 32, 32, 1);
+		armorRegions = SpriteUtils.splitInLayers(Core.atlas.find(name + "-edge-armored"), 32, 32, 1);
+		arrowRegions = SpriteUtils.splitInLayers(Core.atlas.find(name + "-arrow"), 32, 32, 1);
+		pulseRegions = SpriteUtils.splitInLayers(Core.atlas.find(name + "-pulse"), 32, 32, 1);
 	}
 
 	@Override

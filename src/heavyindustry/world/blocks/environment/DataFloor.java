@@ -21,7 +21,7 @@ public class DataFloor extends Floor {
 	@Override
 	public void load() {
 		super.load();
-		variantRegions = SpriteUtils.splitIndex(name + "-sheet", 32, 32);
+		variantRegions = SpriteUtils.splitInLayers(name + "-sheet", 32, 32);
 		length = Math.min(variantRegions.length, MAX);
 	}
 

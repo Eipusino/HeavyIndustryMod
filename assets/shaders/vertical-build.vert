@@ -9,7 +9,7 @@ out vec2 v_texCoords;
 
 uniform vec2 u_viewportInverse;
 
-void main(){
+void main() {
 	gl_Position = u_projTrans * a_position;
 	v_texCoords = a_texCoord0;
 	v_color = a_color;

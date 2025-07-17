@@ -36,9 +36,7 @@ import mindustry.world.meta.Env;
 
 /** Defines the {@linkplain Planet planets} and other celestial objects this mod offers. */
 public final class HPlanets {
-	public static Planet serilia;
-	public static AtmospherePlanet kepler, gliese;
-	public static BlackHole blackHole;
+	public static Planet serilia, kepler, gliese, blackHole;
 
 	/** Don't let anyone instantiate this class. */
 	private HPlanets() {}
@@ -159,8 +157,10 @@ public final class HPlanets {
 						}}
 				);
 			}};
+			launchCapacityMultiplier = 0.5f;
 			sectorSeed = 3;
 			defaultEnv = Env.terrestrial | Env.groundOil | Env.groundWater | Env.oxygen;
+			allowLaunchToNumbered = false;
 			allowWaves = true;
 			allowWaveSimulation = true;
 			allowSectorInvasion = false;
@@ -168,12 +168,16 @@ public final class HPlanets {
 			enemyCoreSpawnReplace = true;
 			allowLaunchLoadout = true;
 			prebuildBase = false;
+			defaultCore = Blocks.coreShard;
 			ruleSetter = r -> {
 				r.waveTeam = Team.crux;
 				r.placeRangeCheck = false;
 				r.showSpawns = false;
+				r.coreDestroyClear = true;
 			};
+			showRtsAIRule = true;
 			alwaysUnlocked = true;
+			allowSelfSectorLaunch = true;
 			meshLoader = () -> new MultiMesh(
 					new AtmosphereHexMesh(7),
 					new HexMesh(this, 7),
@@ -297,12 +301,13 @@ public final class HPlanets {
 					new HexSkyMesh(this, 1, 0.6f, 0.16f, 6, Color.white.cpy().lerp(Color.gray, 0.55f).a(0.25f), 2, 0.45f, 1f, 0.61f)
 			);
 			launchCapacityMultiplier = 0.5f;
-			sectorSeed = 2;
+			sectorSeed = 4;
 			orbitRadius = 80;
 			orbitSpacing = 30;
+			allowLaunchToNumbered = false;
 			allowWaves = true;
 			allowWaveSimulation = true;
-			allowSectorInvasion = true;
+			allowSectorInvasion = false;
 			allowLaunchSchematics = true;
 			enemyCoreSpawnReplace = true;
 			allowLaunchLoadout = true;
@@ -311,12 +316,15 @@ public final class HPlanets {
 				r.waveTeam = Team.crux;
 				r.placeRangeCheck = false;
 				r.showSpawns = false;
+				r.coreDestroyClear = true;
 			};
+			showRtsAIRule = true;
+			allowSelfSectorLaunch = true;
+			defaultCore = Blocks.coreShard;
 			iconColor = Color.valueOf("0044ff");
 			atmosphereColor = Color.valueOf("4d4372");
 			atmosphereRadIn = -0.02f;
 			atmosphereRadOut = 0.3f;
-			startSector = 15;
 			alwaysUnlocked = true;
 			landCloudColor = Color.blue.cpy().a(0.5f);
 		}};

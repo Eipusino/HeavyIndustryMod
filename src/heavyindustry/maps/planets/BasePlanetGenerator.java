@@ -13,19 +13,16 @@ import mindustry.world.Block;
 import mindustry.world.TileGen;
 
 public abstract class BasePlanetGenerator extends PlanetGenerator {
-	protected static int lastSeed = 0;
-
-	protected final int seed = lastSeed++;
-
-	public Block[][] arr = {};
-	public float scl = 0.f;
-	public float waterOffset = 0.f;
-	public float water = 0.f;
+	public float scl = 0f;
+	public float waterOffset = 0f;
+	public float water = 0f;
 	protected ObjectMap<Block, Block> dec = new ObjectMap<>();
 
 	protected ObjectMap<Block, Block> tars = new ObjectMap<>();
 
 	public BasePlanetGenerator() {}
+
+	public abstract Block[][] arr();
 
 	public Color getColor(Vec3 position) {
 		Block block = getBlock(position);
@@ -47,9 +44,8 @@ public abstract class BasePlanetGenerator extends PlanetGenerator {
 		height = Mathf.clamp(height);
 
 		float tar = Simplex.noise3d(seed, 4, 0.55, 0.5, pos.x, pos.y + 999, pos.z) * 0.3f + Tmp.v31.dst(0, 0, 1) * 0.2f;
-		Block res = arr[
-				Mathf.clamp(Mathf.floor(temp * arr.length), 0, arr[0].length - 1)][Mathf.clamp(Mathf.floor(height * arr[0].length), 0, arr[0].length - 1)
-				];
+		var arr = arr();
+		Block res = arr[Mathf.clamp(Mathf.floor(temp * arr.length), 0, arr[0].length - 1)][Mathf.clamp(Mathf.floor(height * arr[0].length), 0, arr[0].length - 1)];
 
 		if (tar > 0.5) {
 			return tars.get(res, res);
@@ -66,11 +62,13 @@ public abstract class BasePlanetGenerator extends PlanetGenerator {
 		return (Mathf.pow(Simplex.noise3d(seed, 7, 0.5, 1d / 3d, pos.x, pos.y, pos.z), 2.3f) + waterOffset) / (1 + waterOffset);
 	}
 
+	@Override
 	public float getHeight(Vec3 position) {
 		float height = rawHeight(position);
 		return Math.max(height, water);
 	}
 
+	@Override
 	public void genTile(Vec3 position, TileGen tile) {
 		tile.floor = getBlock(position);
 		tile.block = tile.floor.asFloor().wall;

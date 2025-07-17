@@ -297,6 +297,31 @@ public final class Utils {
 		return layers;
 	}
 
+	public static TextureRegion[][] splitUnLayers(String name, int size) {
+		return splitUnLayers(Core.atlas.find(name), size);
+	}
+
+	public static TextureRegion[][] splitUnLayers(TextureRegion region, int size) {
+		int x = region.getX();
+		int y = region.getY();
+		int width = region.width;
+		int height = region.height;
+
+		int sw = width / size;
+		int sh = height / size;
+
+		int startX = x;
+		TextureRegion[][] tiles = new TextureRegion[sw][sh];
+		for (int cy = 0; cy < sh; cy++, y += size) {
+			x = startX;
+			for (int cx = 0; cx < sw; cx++, x += size) {
+				tiles[cx][cy] = new TextureRegion(region.texture, x, y, size, size);
+			}
+		}
+
+		return tiles;
+	}
+
 	/**
 	 * Gets multiple regions inside a {@link TextureRegion}.
 	 *

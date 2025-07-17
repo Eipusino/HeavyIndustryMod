@@ -62,7 +62,7 @@ public class XFStackConveyor extends StackConveyor {
 	public void load() {
 		super.load();
 		edge2Region = Core.atlas.find(name + "-edge-d");
-		topRegions = SpriteUtils.splitIndex(Core.atlas.find(name + "-top"), 32, 32, 1);
+		topRegions = SpriteUtils.splitInLayers(Core.atlas.find(name + "-top"), 32, 32, 1);
 	}
 
 	public class XFStackConveyorBuild extends StackConveyorBuild {

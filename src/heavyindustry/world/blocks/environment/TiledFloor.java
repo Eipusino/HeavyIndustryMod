@@ -8,8 +8,10 @@ import arc.math.geom.Point2;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Floor;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
+import static heavyindustry.util.Utils.splitUnLayers;
+
 public class TiledFloor extends Floor {
-	public TextureRegion sheetRegion;
 	public TextureRegion[][] largeSpilt;
 
 	public int splitTileSize = 4;
@@ -29,11 +31,12 @@ public class TiledFloor extends Floor {
 	public void load() {
 		super.load();
 
-		sheetRegion = Core.atlas.find(name + "-sheet");
-		largeSpilt = new TextureRegion[splitTileSize * splitVariants][splitTileSize];
-		for (int i = 0; i < splitVariants; i++) {
-			largeSpilt = sheetRegion.split(32, 32);
-		}
+		largeSpilt = splitUnLayers(name + "-sheet", 32);
+	}
+
+	@Override
+	public TextureRegion[] icons() {
+		return arrayOf(region);
 	}
 
 	private void drawTile(Tile tile) {
