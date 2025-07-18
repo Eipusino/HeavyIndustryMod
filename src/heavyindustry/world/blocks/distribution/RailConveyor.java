@@ -33,18 +33,18 @@ import static mindustry.Vars.player;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
-public class XFConveyor extends Conveyor {
+public class RailConveyor extends Conveyor {
 	public TextureRegion[] edgeRegions, armorRegions, arrowRegions, pulseRegions;
 	public float framePeriod = 8f;
 
-	public XFConveyor(String name) {
+	public RailConveyor(String name) {
 		super(name);
 
 		canOverdrive = false;
 		placeableLiquid = true;
 		drawTeamOverlay = false;
 
-		config(Boolean.class, (XFConveyorBuild build, Boolean armored) -> build.armored = armored);
+		config(Boolean.class, (RailConveyorBuild build, Boolean armored) -> build.armored = armored);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class XFConveyor extends Conveyor {
 
 	@Override
 	public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock) {
-		boolean armored = (tile.build instanceof XFConveyorBuild && ((XFConveyorBuild) tile.build).armored);
+		boolean armored = (tile.build instanceof RailConveyorBuild && ((RailConveyorBuild) tile.build).armored);
 		if (!armored)
 			return (otherblock.outputsItems() || (lookingAt(tile, rotation, otherx, othery, otherblock) && otherblock.hasItems))
 					&& lookingAtEither(tile, rotation, otherx, othery, otherrot, otherblock);
@@ -104,14 +104,15 @@ public class XFConveyor extends Conveyor {
 
 	public int pulseFrame() {
 		int value = (int) ((Time.time / 4f) % 4f);
-		if (value == 0) return 0;
-		if (value == 1) return 1;
-		if (value == 2) return 2;
-		if (value == 3) return 1;
-		return 0;
+		return switch (value) {
+			case 1 -> 1;
+			case 2 -> 2;
+			case 3 -> 3;
+			default -> 0;
+		};
 	}
 
-	public class XFConveyorBuild extends ConveyorBuild {
+	public class RailConveyorBuild extends ConveyorBuild {
 		public int drawIndex = 0;
 		public boolean armored = false;
 
@@ -181,9 +182,11 @@ public class XFConveyor extends Conveyor {
 
 			Draw.z(Layer.block - 0.15f);
 			Draw.color(team.color, Color.white, 0.3f);
-			if (!armored)
+			if (!armored) {
 				Draw.rect(edgeRegions[blendbits], x, y, tilesize * blendsclx, tilesize * blendscly, rotation * 90);
-			else Draw.rect(armorRegions[blendbits], x, y, tilesize * blendsclx, tilesize * blendscly, rotation * 90);
+			} else {
+				Draw.rect(armorRegions[blendbits], x, y, tilesize * blendsclx, tilesize * blendscly, rotation * 90);
+			}
 			Draw.color();
 
 			Draw.z(Layer.block - 0.1f);
@@ -206,9 +209,7 @@ public class XFConveyor extends Conveyor {
 
 		@Override
 		public boolean acceptItem(Building source, Item item) {
-			if (!armored) return super.acceptItem(source, item);
-			else
-				return super.acceptItem(source, item) && (source.block instanceof Conveyor || Edges.getFacingEdge(source.tile, tile).relativeTo(tile) == rotation);
+			return super.acceptItem(source, item) && (!armored || (source.block instanceof Conveyor || Edges.getFacingEdge(source.tile, tile).relativeTo(tile) == rotation));
 		}
 
 		@Override

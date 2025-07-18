@@ -36,6 +36,7 @@ import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
+import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.control;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
@@ -391,20 +392,33 @@ public class LiquidMassDriver extends Block {
 	}
 
 	public static class DrawLiquidMassDriver extends DrawBlock {
-		public TextureRegion baseRegion, regionRegion, bottomRegion, liquidRegion, topRegion;
+		public TextureRegion region, baseRegion, bottomRegion, liquidRegion, topRegion;
+
+		@Override
+		public TextureRegion[] icons(Block block) {
+			return arrayOf(baseRegion, bottomRegion, region, topRegion);
+		}
+
+		@Override
+		public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list) {
+			Draw.rect(baseRegion, plan.drawx(), plan.drawy());
+			Draw.rect(bottomRegion, plan.drawx(), plan.drawy());
+			Draw.rect(region, plan.drawx(), plan.drawy());
+			Draw.rect(topRegion, plan.drawx(), plan.drawy());
+		}
 
 		@Override
 		public void draw(Building build) {
 			if (!(build instanceof LiquidMassDriverBuild bu && build.block instanceof LiquidMassDriver bl)) return;
 			Draw.rect(baseRegion, bu.x, bu.y);
 			Draw.z(Layer.turret);
-			Drawf.shadow(regionRegion,
+			Drawf.shadow(region,
 					bu.x + Angles.trnsx(bu.rotation + 180, bu.reloadCounter * bl.knockback) - (bl.size / 2f),
 					bu.y + Angles.trnsy(bu.rotation + 180, bu.reloadCounter * bl.knockback) - (bl.size / 2f), bu.rotation - 90);
 			Draw.rect(bottomRegion,
 					bu.x + Angles.trnsx(bu.rotation + 180, bu.reloadCounter * bl.knockback),
 					bu.y + Angles.trnsy(bu.rotation + 180, bu.reloadCounter * bl.knockback), bu.rotation - 90);
-			Draw.rect(regionRegion,
+			Draw.rect(region,
 					bu.x + Angles.trnsx(bu.rotation + 180, bu.reloadCounter * bl.knockback),
 					bu.y + Angles.trnsy(bu.rotation + 180, bu.reloadCounter * bl.knockback), bu.rotation - 90);
 			Draw.color(bu.liquids.current().color);
@@ -422,7 +436,7 @@ public class LiquidMassDriver extends Block {
 		@Override
 		public void load(Block block) {
 			baseRegion = Core.atlas.find(block.name + "-base");
-			regionRegion = Core.atlas.find(block.name + "-region");
+			region = Core.atlas.find(block.name + "-region");
 			bottomRegion = Core.atlas.find(block.name + "-bottom");
 			liquidRegion = Core.atlas.find(block.name + "-liquid");
 			topRegion = Core.atlas.find(block.name + "-top");

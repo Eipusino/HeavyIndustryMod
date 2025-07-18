@@ -86,7 +86,7 @@ public class BeltConveyor extends Conveyor {
 	public class BeltConveyorBuild extends ConveyorBuild {
 		@Override
 		public boolean acceptItem(Building source, Item item) {
-			return noSideBlend ? super.acceptItem(source, item) && (source.block instanceof Conveyor || Edges.getFacingEdge(source.tile, tile).relativeTo(tile) == rotation) : super.acceptItem(source, item);
+			return super.acceptItem(source, item) && (!noSideBlend || (source.block instanceof Conveyor || Edges.getFacingEdge(source.tile, tile).relativeTo(tile) == rotation));
 		}
 
 		@Override

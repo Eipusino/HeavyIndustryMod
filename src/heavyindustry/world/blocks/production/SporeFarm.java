@@ -14,15 +14,16 @@ import mindustry.type.Item;
 import mindustry.type.Liquid;
 import mindustry.world.Block;
 import mindustry.world.Tile;
+import mindustry.world.meta.Attribute;
 
 import static heavyindustry.struct.Collectionsf.arrayOf;
 import static heavyindustry.util.Utils.split;
 import static mindustry.Vars.world;
 
 /**
- * e.
+ * Spore?
  *
- * @author Eipusino
+ * @since 1.0.6
  */
 public class SporeFarm extends Block {
 	static final int frames = 5;
@@ -53,9 +54,11 @@ public class SporeFarm extends Block {
 	public float dumpTime = 5f;
 	/** If true, nearby floors need to contain growthLiquid to grow. */
 	public boolean hasGrowthLiquid = true;
-	/** The liquid required for growth. (Can it also be slag?) */
+	/** The liquid required for growth. */
 	public Liquid growthLiquid = Liquids.water;
-	/** Output Item. (Can it also be phase-fabric?) */
+	public Attribute growthAttribute = Attribute.spores;
+	public float growthAttributeMultiplier = 1f;
+	/** Output Item. */
 	public Item dumpItem = Items.sporePod;
 
 	protected int gTimer;
@@ -90,7 +93,12 @@ public class SporeFarm extends Block {
 		public boolean randomChk() {
 			Tile ct = world.tile(tileX() + Mathf.range(3), tileY() + Mathf.range(3));
 
-			return ct != null && ct.floor().liquidDrop == growthLiquid;
+			return ct != null && (ct.floor().liquidDrop == growthLiquid);
+		}
+
+		public float randomAtt() {
+			Tile ct = world.tile(tileX() + Mathf.range(3), tileY() + Mathf.range(3));
+			return ct == null ? 0f : ct.floor().attributes.get(growthAttribute) / 10f;
 		}
 
 		public void updateTilings() {
@@ -162,8 +170,11 @@ public class SporeFarm extends Block {
 				Draw.rect(sporeRegions[Mathf.floor(growth)], x, y, rrot2 * 90f);
 			}
 
-			//Mainly to prevent terrible situations.
-			Draw.rect(fenceRegions[tileMap[Math.max(tileIndex, 0)]], x, y, 8f, 8f);
+			if (tileIndex > -1) {
+				Draw.rect(fenceRegions[tileMap[tileIndex]], x, y, 8f, 8f);
+			} else {
+				Draw.rect(region, x, y, 8f, 8f);
+			}
 			drawTeamTop();
 		}
 
@@ -171,12 +182,14 @@ public class SporeFarm extends Block {
 		public void write(Writes write) {
 			super.write(write);
 			write.f(growth);
+			write.i(tileIndex);
 		}
 
 		@Override
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
 			growth = read.f();
+			tileIndex = read.i();
 		}
 	}
 }

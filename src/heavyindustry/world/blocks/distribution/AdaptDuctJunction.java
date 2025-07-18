@@ -31,12 +31,12 @@ import static mindustry.Vars.tilesize;
  * @author Eipusino
  * @see mindustry.world.blocks.distribution.DuctJunction
  */
-public class XCDuctJunction extends Block {
+public class AdaptDuctJunction extends Block {
 	public float speed = 5f;
 	public Color transparentColor = new Color(0.4f, 0.4f, 0.4f, 0.1f);
 	public TextureRegion bottomRegion;
 
-	public XCDuctJunction(String name) {
+	public AdaptDuctJunction(String name) {
 		super(name);
 
 		group = BlockGroup.transportation;
@@ -80,7 +80,7 @@ public class XCDuctJunction extends Block {
 		return true;
 	}
 
-	public class XCDuctJunctionBuild extends Building {
+	public class LogisticsDuctJunctionBuild extends Building {
 		public Item[] current = new Item[2];
 		public float[] progress = new float[2];
 		public int[] from = new int[2];

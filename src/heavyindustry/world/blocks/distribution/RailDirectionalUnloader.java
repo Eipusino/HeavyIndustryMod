@@ -21,10 +21,10 @@ import mindustry.world.meta.StatUnit;
 import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.content;
 
-public class XFDirectionalUnloader extends DirectionalUnloader {
+public class RailDirectionalUnloader extends DirectionalUnloader {
 	public TextureRegion[] regions;
 
-	public XFDirectionalUnloader(String name) {
+	public RailDirectionalUnloader(String name) {
 		super(name);
 	}
 
@@ -54,7 +54,7 @@ public class XFDirectionalUnloader extends DirectionalUnloader {
 		stats.add(Stat.speed, 15, StatUnit.itemsSecond);
 	}
 
-	public class XFDirectionalUnloaderBuild extends DirectionalUnloaderBuild {
+	public class RailDirectionalUnloaderBuild extends DirectionalUnloaderBuild {
 		@Override
 		public void updateTile() {
 			float inc = unloadItem == null ? edelta() : (edelta() / 16.5f * 30f);

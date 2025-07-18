@@ -22,7 +22,7 @@ public final class HLiquids {
 	private static final int nanoFluidId = Draws.nextTaskId();
 
 	public static Liquid
-			brine, methane, nanoFluid, nitratedOil, originiumFluid;
+			brine, gas, lightOil, nanoFluid, nitratedOil, originiumFluid;
 
 	/** Don't let anyone instantiate this class. */
 	private HLiquids() {}
@@ -34,11 +34,20 @@ public final class HLiquids {
 			viscosity = 0.8f;
 			explosiveness = 0.1f;
 		}};
-		methane = new Liquid("methane", Color.valueOf("fbd367")) {{
+		gas = new Liquid("gas", Color.valueOf("fbd367")) {{
 			gasColor = barColor = lightColor = color;
 			gas = true;
 			flammability = 1f;
 			explosiveness = 1f;
+		}};
+		lightOil = new Liquid("light-oil", Color.rgb(252, 205, 32).a(0.8f)) {{
+			heatCapacity = 0.7f;
+			temperature = 0.3f;
+			boilPoint = 0.6f;
+			viscosity = 0.7f;
+			flammability = 0.2f;
+			gasColor = Color.grays(0.7f);
+			effect = StatusEffects.muddy;
 		}};
 		nanoFluid = new Liquid("nano-fluid", HPal.nanoCoreRed) {{
 			heatCapacity = 2.5f;

@@ -5,12 +5,12 @@ import mindustry.gen.Building;
 import mindustry.type.Item;
 import mindustry.world.Edges;
 
-public class XFDirectionalMerger extends XFDirectionalRouter {
-	public XFDirectionalMerger(String name) {
+public class RailDirectionalMerger extends RailDirectionalRouter {
+	public RailDirectionalMerger(String name) {
 		super(name);
 	}
 
-	public class XFDirectionalMergerBuild extends XFDirectionalRouterBuild {
+	public class RailDirectionalMergerBuild extends RailDirectionalRouterBuild {
 		@Nullable
 		public Building target() {
 			if (front() == null) return null;

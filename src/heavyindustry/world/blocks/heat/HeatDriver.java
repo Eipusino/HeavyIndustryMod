@@ -174,8 +174,8 @@ public class HeatDriver extends Block {
 			turretLine = Core.atlas.find(block.name + "-turret-outline");
 			lPart = Core.atlas.find(block.name + "-l");
 			lLine = Core.atlas.find(block.name + "-l-outline");
-			rPart = Core.atlas.find(block.name + "-r");
-			rLine = Core.atlas.find(block.name + "-r-outline");
+			rPart = Core.atlas.find(block.name + "-reflect");
+			rLine = Core.atlas.find(block.name + "-reflect-outline");
 			effect = Core.atlas.find(block.name + "-effect", name("heat-driver-effect"));
 			arrow = Core.atlas.find(block.name + "-arrow", name("heat-driver-arrow"));
 			preview = Core.atlas.find(block.name + "-preview");

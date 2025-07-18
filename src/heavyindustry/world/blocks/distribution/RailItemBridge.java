@@ -26,11 +26,11 @@ import mindustry.world.meta.StatUnit;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
-public class XFItemBridge extends ItemBridge {
+public class RailItemBridge extends ItemBridge {
 	public static final int maxLinks = 3;
 	public TextureRegion topRegion;
 
-	public XFItemBridge(String name) {
+	public RailItemBridge(String name) {
 		super(name);
 
 		range = 6;
@@ -107,7 +107,7 @@ public class XFItemBridge extends ItemBridge {
 		stats.add(Stat.range, range, StatUnit.blocks);
 	}
 
-	public class XFItemBridgeBuild extends ItemBridgeBuild {
+	public class RailItemBridgeBuild extends ItemBridgeBuild {
 		@Override
 		public void updateTransport(Building other) {
 			if (timer(0, 1)) {

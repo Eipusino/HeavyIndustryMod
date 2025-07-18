@@ -45,11 +45,11 @@ import heavyindustry.world.blocks.defense.RegenWall;
 import heavyindustry.world.blocks.defense.ShapedWall;
 import heavyindustry.world.blocks.defense.turrets.MinigunTurret;
 import heavyindustry.world.blocks.defense.turrets.PlatformTurret;
+import heavyindustry.world.blocks.distribution.AdaptDirectionalUnloader;
 import heavyindustry.world.blocks.distribution.BeltConveyor;
 import heavyindustry.world.blocks.distribution.BeltStackConveyor;
 import heavyindustry.world.blocks.distribution.CoveredRouter;
-import heavyindustry.world.blocks.distribution.XLDirectionalUnloader;
-import heavyindustry.world.blocks.distribution.XCDuctJunction;
+import heavyindustry.world.blocks.distribution.AdaptDuctJunction;
 import heavyindustry.world.blocks.distribution.InvertedJunction;
 import heavyindustry.world.blocks.distribution.MultiJunction;
 import heavyindustry.world.blocks.distribution.MultiRouter;
@@ -90,16 +90,16 @@ import heavyindustry.world.blocks.production.MultiCrafter;
 import heavyindustry.world.blocks.production.SporeFarm;
 import heavyindustry.world.blocks.sandbox.AdaptiveSource;
 import heavyindustry.world.blocks.storage.CoreStorageBlock;
-import heavyindustry.world.blocks.storage.XLUnloader;
+import heavyindustry.world.blocks.storage.AdaptUnloader;
+import heavyindustry.world.blocks.units.AdaptPayloadSource;
 import heavyindustry.world.blocks.units.DerivativeUnitFactory;
-import heavyindustry.world.blocks.units.PayloadSourcef;
 import heavyindustry.world.blocks.units.UnitIniter;
 import heavyindustry.world.draw.DrawAnim;
 import heavyindustry.world.draw.DrawPowerLight;
 import heavyindustry.world.draw.DrawPrinter;
 import heavyindustry.world.draw.DrawRotator;
 import heavyindustry.world.draw.DrawSpecConstruct;
-import heavyindustry.world.meta.HIAttribute;
+import heavyindustry.world.meta.HAttribute;
 import heavyindustry.world.meta.HIBuildVisibility;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
@@ -284,7 +284,7 @@ public final class HBlocks {
 	berylliumWallHuge, berylliumWallGigantic, tungstenWallHuge, tungstenWallGigantic, blastDoorLarge, blastDoorHuge, reinforcedSurgeWallHuge, reinforcedSurgeWallGigantic, carbideWallHuge, carbideWallGigantic, shieldedWallLarge, shieldedWallHuge,
 			aparajito, aparajitoLarge,
 	//drill
-	titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, beamDrill,
+	titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, cuttingDrill, beamDrill,
 	//drill-erekir
 	heavyPlasmaBore, minerPoint, minerCenter,
 	//distribution
@@ -301,7 +301,7 @@ public final class HBlocks {
 	//power-erekir
 	smartBeamNode, beamDiode, beamInsulator, reinforcedPowerAnalyzer, liquidConsumeGenerator,
 	//production
-	largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, stoneCrusher, sporeFarm, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
+	largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, petroleumDistillationUnit, stoneCrusher, sporeFarm, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
 			nanoCoreConstructor, nanoCorePrinter, nanoCoreActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, ironcladCompressor,
 			originiumHeater,
 			uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilSedimentationTank,
@@ -400,7 +400,7 @@ public final class HBlocks {
 		}};
 		arkyciteSand = new Floor("arkycite-sand", 3) {{
 			itemDrop = Items.sand;
-			attributes.set(HIAttribute.arkycite, 1);
+			attributes.set(HAttribute.arkycite, 1);
 			playerUnmineable = true;
 		}};
 		arkyciteSandWall = new StaticWall("arkycite-sand-wall") {{
@@ -1005,13 +1005,32 @@ public final class HBlocks {
 			consumeLiquid(Liquids.water, 0.3f);
 			buildCostMultiplier = 0.8f;
 		}};
+		cuttingDrill = new Drill("cutting-drill") {{
+			requirements(Category.production, with(Items.lead, 160, Items.silicon, 120, Items.thorium, 50, Items.plastanium, 70, Items.surgeAlloy, 30));
+			size = 3;
+			health = 640;
+			armor = 3f;
+			tier = 8;
+			updateEffect = Fx.pulverizeRed;
+			updateEffectChance = 0.03f;
+			drillTime = 350f;
+			drillEffect = Fx.mineHuge;
+			itemCapacity = 15;
+			liquidBoostIntensity = 1.871f;
+			hardnessDrillMultiplier = 5f;
+			consumePower(4f);
+			consumeLiquid(HLiquids.lightOil, 0.1f).optional(true, true);
+		}};
 		beamDrill = new LaserBeamDrill("beam-drill") {{
-			requirements(Category.production, with(Items.lead, 160, Items.silicon, 120, HItems.chromium, 60, HItems.nanoCore, 35, Items.phaseFabric, 25));
+			requirements(Category.production, with(Items.lead, 160, Items.silicon, 120, Items.plastanium, 80, HItems.chromium, 60, HItems.nanoCore, 35, Items.phaseFabric, 25));
 			size = 4;
 			health = 960;
+			armor = 10f;
 			tier = 11;
+			drillTime = 150f;
+			liquidBoostIntensity = 1.65f;
 			itemCapacity = 50;
-			hardnessDrillMultiplier = 20f;
+			hardnessDrillMultiplier = 35f;
 			buildCostMultiplier = 0.8f;
 			consumePower(6f);
 			consumeLiquid(Liquids.water, 0.1f).optional(true, true);
@@ -1197,7 +1216,7 @@ public final class HBlocks {
 			transportTime = 1f;
 			consumePower(0.5f);
 		}};
-		rapidDirectionalUnloader = new XLDirectionalUnloader("rapid-directional-unloader") {{
+		rapidDirectionalUnloader = new AdaptDirectionalUnloader("rapid-directional-unloader") {{
 			requirements(Category.distribution, with(Items.silicon, 40, Items.plastanium, 25, HItems.chromium, 15, Items.phaseFabric, 5));
 			speed = 1f;
 			squareSprite = false;
@@ -1205,7 +1224,7 @@ public final class HBlocks {
 			allowCoreUnload = true;
 		}};
 		//distribution-erekir
-		ductJunction = new XCDuctJunction("duct-junction") {{
+		ductJunction = new AdaptDuctJunction("duct-junction") {{
 			requirements(Category.distribution, with(Items.beryllium, 5));
 			health = 90;
 			speed = 4f;
@@ -1230,7 +1249,7 @@ public final class HBlocks {
 			buildCostMultiplier = 2;
 			((Duct) Blocks.armoredDuct).bridgeReplacement = this;
 		}};
-		rapidDuctUnloader = new XLDirectionalUnloader("rapid-duct-unloader") {{
+		rapidDuctUnloader = new AdaptDirectionalUnloader("rapid-duct-unloader") {{
 			requirements(Category.distribution, with(Items.graphite, 25, Items.silicon, 30, Items.tungsten, 20, Items.oxide, 15));
 			health = 240;
 			speed = 2f;
@@ -1814,6 +1833,19 @@ public final class HBlocks {
 			consumePower(3f);
 			consumeLiquid(Liquids.water, 36f / 60f);
 		}};
+		petroleumDistillationUnit = new GenericCrafter("petroleum-distillation-unit") {{
+			requirements(Category.crafting, with(Items.lead, 45, Items.titanium, 35, Items.silicon, 30, Items.metaglass, 20));
+			size = 3;
+			hasPower = true;
+			hasItems = true;
+			hasLiquids = true;
+			craftTime = 90f;
+			liquidCapacity = 20f;
+			outputLiquid = new LiquidStack(HLiquids.lightOil, 0.1f);
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.oil), new DrawLiquidTile(HLiquids.lightOil), Utils.base(2.5f));
+			consumeLiquids(LiquidStack.with(Liquids.oil, 0.1f, HLiquids.gas, 0.1f));
+			consumePower(0.2f);
+		}};
 		stoneCrusher = new GenericCrafter("stone-crusher") {{
 			requirements(Category.crafting, with(Items.copper, 40, Items.graphite, 60, Items.silicon, 25));
 			outputItem = new ItemStack(Items.sand, 3);
@@ -1827,7 +1859,6 @@ public final class HBlocks {
 			});
 			consumeItem(HItems.stone, 2);
 			consumePower(1.2f);
-			squareSprite = false;
 		}};
 		sporeFarm = new SporeFarm("spore-farm") {{
 			requirements(Category.production, with(Items.copper, 5, Items.lead, 5));
@@ -2613,7 +2644,7 @@ public final class HBlocks {
 			speed = 60f / 4.2f;
 			group = BlockGroup.transportation;
 		}};
-		rapidUnloader = new XLUnloader("rapid-unloader") {{
+		rapidUnloader = new AdaptUnloader("rapid-unloader") {{
 			requirements(Category.effect, with(Items.silicon, 35, Items.plastanium, 15, HItems.nanoCore, 10, HItems.chromium, 15));
 			speed = 1f;
 			group = BlockGroup.transportation;
@@ -2682,11 +2713,11 @@ public final class HBlocks {
 			upgrades.addAll(
 					new UnitType[]{UnitTypes.eclipse, HUnitTypes.sunlit},
 					new UnitType[]{UnitTypes.toxopid, HUnitTypes.cancer},
-					new UnitType[]{UnitTypes.reign, HUnitTypes.suzerain},
+					new UnitType[]{UnitTypes.reign, HUnitTypes.fearless},
 					new UnitType[]{UnitTypes.oct, HUnitTypes.windstorm},
 					new UnitType[]{UnitTypes.corvus, HUnitTypes.supernova},
-					new UnitType[]{UnitTypes.omura, HUnitTypes.mosasaur},
-					new UnitType[]{UnitTypes.navanax, HUnitTypes.killerWhale},
+					new UnitType[]{UnitTypes.omura, HUnitTypes.poseidon},
+					new UnitType[]{UnitTypes.navanax, HUnitTypes.leviathan},
 					new UnitType[]{HUnitTypes.destruction, HUnitTypes.purgatory},
 					new UnitType[]{HUnitTypes.lepidoptera, HUnitTypes.mantodea}
 			);
@@ -3884,6 +3915,8 @@ public final class HBlocks {
 				height = 23.52f;
 				shootEffect = Fx.shootBig;
 				smokeEffect = Fx.shootBigSmoke;
+				hitColor = backColor = trailColor = Pal.graphiteAmmoBack;
+				frontColor = Pal.graphiteAmmoFront;
 				ammoMultiplier = 4;
 				reloadMultiplier = 1.7f;
 				knockback = 0.3f;
@@ -3935,6 +3968,8 @@ public final class HBlocks {
 				height = 23.52f;
 				shootEffect = Fx.shootBig;
 				smokeEffect = Fx.shootBigSmoke;
+				backColor = hitColor = trailColor = Pal.thoriumAmmoBack;
+				frontColor = Pal.thoriumAmmoFront;
 				reloadMultiplier = 1.7f;
 				knockback = 0.4f;
 			}}, HItems.uranium, new BasicBulletType(9.75f, 146f) {{
@@ -3949,6 +3984,8 @@ public final class HBlocks {
 				height = 23.52f;
 				shootEffect = Fx.shootBig;
 				smokeEffect = Fx.shootBigSmoke;
+				backColor = hitColor = trailColor = HPal.uraniumGrey;
+				frontColor = Color.white.cpy();
 				reloadMultiplier = 1.7f;
 				knockback = 0.4f;
 			}});
@@ -4106,7 +4143,7 @@ public final class HBlocks {
 			health = 1000;
 			powerProduction = 10000000f / 60f;
 		}};
-		reinforcedPayloadSource = new PayloadSourcef("reinforced-payload-source") {{
+		reinforcedPayloadSource = new AdaptPayloadSource("reinforced-payload-source") {{
 			requirements(Category.units, BuildVisibility.sandboxOnly, with());
 			size = 5;
 			health = 1000;

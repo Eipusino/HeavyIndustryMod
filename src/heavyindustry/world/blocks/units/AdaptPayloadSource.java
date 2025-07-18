@@ -23,10 +23,8 @@ import static mindustry.Vars.content;
 import static mindustry.Vars.player;
 import static mindustry.Vars.state;
 
-public class PayloadSourcef extends PayloadSource {
-	public static final Team[] teams = arrayOf(Team.derelict, Team.sharded, Team.crux, Team.green, Team.malis, Team.blue);
-
-	public PayloadSourcef(String name) {
+public class AdaptPayloadSource extends PayloadSource {
+	public AdaptPayloadSource(String name) {
 		super(name);
 		noUpdateDisabled = false;
 		unitCapModifier = 1;
@@ -34,7 +32,7 @@ public class PayloadSourcef extends PayloadSource {
 		underBullets = true;
 		destructible = false;
 
-		config(Block.class, (PayloadSourceBuildf tile, Block block) -> {
+		config(Block.class, (AdaptPayloadSourceBuild tile, Block block) -> {
 			if (canProduce(block) && tile.configBlock != block) {
 				tile.configBlock = block;
 				tile.unit = null;
@@ -43,7 +41,7 @@ public class PayloadSourcef extends PayloadSource {
 			}
 		});
 
-		config(UnitType.class, (PayloadSourceBuildf tile, UnitType unit) -> {
+		config(UnitType.class, (AdaptPayloadSourceBuild tile, UnitType unit) -> {
 			if (canProduce(unit) && tile.unit != unit) {
 				tile.unit = unit;
 				tile.configBlock = null;
@@ -52,14 +50,14 @@ public class PayloadSourcef extends PayloadSource {
 			}
 		});
 
-		config(Integer.class, (PayloadSourceBuildf tile, Integer index) -> {
+		config(Integer.class, (AdaptPayloadSourceBuild tile, Integer index) -> {
 			tile.unit = null;
 			tile.configBlock = null;
 			tile.payload = null;
 			tile.scl = 0;
 		});
 
-		configClear((PayloadSourceBuildf tile) -> {
+		configClear((AdaptPayloadSourceBuild tile) -> {
 			tile.configBlock = null;
 			tile.unit = null;
 			tile.payload = null;
@@ -72,7 +70,7 @@ public class PayloadSourcef extends PayloadSource {
 		return b.isVisible() && !(b instanceof CoreBlock) && !state.rules.isBanned(b) && b.environmentBuildable();
 	}
 
-	public class PayloadSourceBuildf extends PayloadSourceBuild {
+	public class AdaptPayloadSourceBuild extends PayloadSourceBuild {
 		@Override
 		public void updateTile() {
 			enabled = true;
@@ -99,8 +97,8 @@ public class PayloadSourcef extends PayloadSource {
 			table.add(cont).maxHeight(Scl.scl(55 * 2)).left();
 			table.row();
 			ItemSelection.buildTable(block, table,
-					content.blocks().select(PayloadSourcef.this::canProduce).<UnlockableContent>as()
-							.add(content.units().select(PayloadSourcef.this::canProduce).as()),
+					content.blocks().select(AdaptPayloadSource.this::canProduce).<UnlockableContent>as()
+							.add(content.units().select(AdaptPayloadSource.this::canProduce).as()),
 					this::config, this::configure, false, selectionRows, selectionColumns);
 		}
 

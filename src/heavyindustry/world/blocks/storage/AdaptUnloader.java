@@ -7,12 +7,12 @@ import mindustry.world.blocks.storage.Unloader;
  *
  * @author Eipusino
  */
-public class XLUnloader extends Unloader {
-	public XLUnloader(String name) {
+public class AdaptUnloader extends Unloader {
+	public AdaptUnloader(String name) {
 		super(name);
 	}
 
-	public class XLUnloaderBuild extends UnloaderBuild {
+	public class AdaptUnloaderBuild extends UnloaderBuild {
 		protected float counter;
 
 		@Override

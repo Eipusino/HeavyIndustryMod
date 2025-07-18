@@ -141,7 +141,7 @@ public final class HUnitTypes {
 			//vanilla-copter
 			caelifera, schistocerca, anthophila, vespula, lepidoptera, mantodea,
 			//vanilla-tier6
-			suzerain, supernova, cancer, sunlit, windstorm, mosasaur, killerWhale,
+			fearless, supernova, cancer, sunlit, windstorm, poseidon, leviathan,
 			//vanilla-tier6-erekir
 			dominate, oracle, havoc,
 			//miner-erekir
@@ -846,7 +846,7 @@ public final class HUnitTypes {
 			hideDetails = false;
 		}};
 		//vanilla-tier6
-		suzerain = new ExtraUnitType("suzerain") {{
+		fearless = new ExtraUnitType("fearless") {{
 			constructor = ExtraMechUnit::create;
 			speed = 0.4f;
 			hitSize = 40f;
@@ -866,7 +866,7 @@ public final class HUnitTypes {
 				open = true;
 			}});
 			immunities = ObjectSet.with(HStatusEffects.territoryFieldSuppress);
-			weapons.add(new LimitedAngleWeapon(name("suzerain-mount")) {{
+			weapons.add(new LimitedAngleWeapon(name("fearless-mount")) {{
 				x = 20.75f;
 				y = 10f;
 				shootY = 6.25f;
@@ -905,7 +905,7 @@ public final class HUnitTypes {
 						serrationSpacing = 5f;
 					}};
 				}};
-			}}, new LimitedAngleWeapon(name("suzerain-cannon")) {{
+			}}, new LimitedAngleWeapon(name("fearless-cannon")) {{
 				y = -1f;
 				x = 28f;
 				angleCone = 15f;
@@ -1163,6 +1163,7 @@ public final class HUnitTypes {
 				shake = 6f;
 				recoil = 8f;
 				bullet = new RailBulletType() {{
+					length = 220f;
 					speed = 15f;
 					damage = 95f;
 					lifetime = 23f;
@@ -1174,6 +1175,7 @@ public final class HUnitTypes {
 					lightning = 3;
 					lightningLength = 20;
 					smokeEffect = Fx.shootBigSmoke2;
+					pointEffect = Fx.railTrail;
 					hitShake = 10f;
 					lightRadius = 40f;
 					lightColor = Pal.sap;
@@ -1293,7 +1295,7 @@ public final class HUnitTypes {
 			aiController = HealingDefenderAI::new;
 			armor = 41f;
 			health = 61000f;
-			speed = 0.8f;
+			speed = 0.65f;
 			rotateSpeed = 1f;
 			accel = 0.04f;
 			drag = 0.018f;
@@ -1345,7 +1347,7 @@ public final class HUnitTypes {
 				bullet = Bullets.placeholder;
 			}});
 		}};
-		mosasaur = new ExtraUnitType("mosasaur") {{
+		poseidon = new ExtraUnitType("poseidon") {{
 			constructor = ExtraUnitWaterMove::create;
 			trailLength = 70;
 			waveTrailX = 25f;
@@ -1364,7 +1366,7 @@ public final class HUnitTypes {
 				active = false;
 			}});
 			immunities = ObjectSet.with(HStatusEffects.territoryFieldSuppress);
-			weapons.addAll(new LimitedAngleWeapon(name("mosasaur-front-cannon")) {{
+			weapons.addAll(new LimitedAngleWeapon(name("poseidon-front-cannon")) {{
 				layerOffset = -0.01f;
 				x = 22f;
 				y = 26f;
@@ -1386,7 +1388,7 @@ public final class HUnitTypes {
 					pierceBuilding = true;
 					knockback = 0.7f;
 				}};
-			}}, new LimitedAngleWeapon(name("mosasaur-side-silo")) {{
+			}}, new LimitedAngleWeapon(name("poseidon-side-silo")) {{
 				layerOffset = -0.01f;
 				x = 24f;
 				y = -13f;
@@ -1423,7 +1425,7 @@ public final class HUnitTypes {
 						b.data = mount;
 					}
 				}
-			}, new LimitedAngleWeapon(name("mosasaur-launcher")) {{
+			}, new LimitedAngleWeapon(name("poseidon-launcher")) {{
 				x = 0f;
 				y = 21f;
 				shootY = 8f;
@@ -1435,7 +1437,7 @@ public final class HUnitTypes {
 				shootSound = Sounds.missile;
 				angleCone = 135f;
 				bullet = HBullets.basicMissile;
-			}}, new PointDefenceMultiBarrelWeapon(name("mosasaur-flak-turret")) {{
+			}}, new PointDefenceMultiBarrelWeapon(name("poseidon-flak-turret")) {{
 				x = 23f;
 				y = 15f;
 				shootY = 15.75f;
@@ -1467,7 +1469,7 @@ public final class HUnitTypes {
 					status = StatusEffects.blasted;
 					statusDuration = 60f;
 				}};
-			}}, new Weapon(name("mosasaur-railgun")) {{
+			}}, new Weapon(name("poseidon-railgun")) {{
 				x = 0f;
 				y = 0f;
 				shootY = 38.5f;
@@ -1478,6 +1480,7 @@ public final class HUnitTypes {
 				reload = 60f * 2.5f;
 				shootSound = Sounds.railgun;
 				bullet = new RailBulletType() {{
+					length = 800f;
 					lifetime = 10f;
 					speed = 70f;
 					damage = 2100f;
@@ -1485,6 +1488,11 @@ public final class HUnitTypes {
 					splashDamageRadius = 30f;
 					pierceDamageFactor = 0.15f;
 					pierceCap = -1;
+					pierceEffect = Fx.railHit;
+					trailEffect = HFx.coloredArrowTrail;
+					hitEffect = Fx.massiveExplosion;
+					smokeEffect = Fx.shootBig2;
+					pointEffect = Fx.railTrail;
 					fragBullet = new BasicBulletType(3.5f, 18) {{
 						width = 9f;
 						height = 12f;
@@ -1496,11 +1504,10 @@ public final class HUnitTypes {
 					fragRandomSpread = 20f;
 					fragLifeMin = 0.4f;
 					fragLifeMax = 0.7f;
-					trailEffect = HFx.coloredArrowTrail;
 				}};
 			}});
 		}};
-		killerWhale = new ExtraUnitType("killer-whale") {{
+		leviathan = new ExtraUnitType("leviathan") {{
 			constructor = ExtraUnitWaterMove::create;
 			armor = 48f;
 			drag = 0.2f;
@@ -1694,7 +1701,7 @@ public final class HUnitTypes {
 			}
 				@Override
 				public void addStats(UnitType u, Table t) {
-					String text = Core.bundle.get("unit.heavy-industry-killer-whale-weapon-1.description");
+					String text = Core.bundle.get("unit.heavy-industry-leviathan-weapon-1.description");
 					Elements.collapseTextToTable(t, text);
 					super.addStats(u, t);
 				}

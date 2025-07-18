@@ -9,7 +9,7 @@ import arc.struct.Seq;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.entities.bullet.CtrlMissileBulletType;
 import heavyindustry.graphics.HPal;
-import heavyindustry.world.meta.HIAttribute;
+import heavyindustry.world.meta.HAttribute;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
 import mindustry.content.Items;
@@ -96,8 +96,8 @@ public final class HOverrides {
 		Blocks.slag.attributes.set(Attribute.heat, 1f);
 		//blocks-environment-erekir
 		Blocks.yellowStonePlates.attributes.set(Attribute.water, -1f);
-		Blocks.beryllicStone.attributes.set(HIAttribute.arkycite, 0.7f);
-		Blocks.arkyicStone.attributes.set(HIAttribute.arkycite, 1f);
+		Blocks.beryllicStone.attributes.set(HAttribute.arkycite, 0.7f);
+		Blocks.arkyicStone.attributes.set(HAttribute.arkycite, 1f);
 		//blocks-wall
 		Blocks.copperWall.armor = Blocks.copperWallLarge.armor = 1f;
 		Blocks.titaniumWall.armor = Blocks.titaniumWallLarge.armor = Blocks.plastaniumWall.armor = Blocks.plastaniumWallLarge.armor = 2f;
@@ -243,7 +243,7 @@ public final class HOverrides {
 		Blocks.diffuse.armor = 3f;
 		Blocks.sublimate.armor = 4f;
 		((ContinuousLiquidTurret) Blocks.sublimate).range = 120f;
-		((ContinuousLiquidTurret) Blocks.sublimate).ammo(HLiquids.methane, new ContinuousFlameBulletType() {{
+		((ContinuousLiquidTurret) Blocks.sublimate).ammo(HLiquids.gas, new ContinuousFlameBulletType() {{
 			damage = 40f;
 			length = 120f;
 			knockback = 1f;

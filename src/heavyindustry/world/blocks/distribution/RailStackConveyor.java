@@ -21,12 +21,12 @@ import static mindustry.Vars.itemSize;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
-public class XFStackConveyor extends StackConveyor {
+public class RailStackConveyor extends StackConveyor {
 	public boolean onlyCarry = true;
 	public TextureRegion edge2Region;
 	public TextureRegion[] topRegions;
 
-	public XFStackConveyor(String name) {
+	public RailStackConveyor(String name) {
 		super(name);
 
 		canOverdrive = false;
@@ -65,7 +65,7 @@ public class XFStackConveyor extends StackConveyor {
 		topRegions = SpriteUtils.splitInLayers(Core.atlas.find(name + "-top"), 32, 32, 1);
 	}
 
-	public class XFStackConveyorBuild extends StackConveyorBuild {
+	public class RailStackConveyorBuild extends StackConveyorBuild {
 		@Override
 		public void draw() {
 			Draw.z(Layer.block - 0.2f);

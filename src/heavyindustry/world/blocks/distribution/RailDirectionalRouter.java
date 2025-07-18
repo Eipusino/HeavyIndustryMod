@@ -9,10 +9,10 @@ import mindustry.world.blocks.distribution.DuctRouter;
 
 import static heavyindustry.struct.Collectionsf.arrayOf;
 
-public class XFDirectionalRouter extends DuctRouter {
+public class RailDirectionalRouter extends DuctRouter {
 	public TextureRegion baseRegion, itemRegion;
 
-	public XFDirectionalRouter(String name) {
+	public RailDirectionalRouter(String name) {
 		super(name);
 
 		placeableLiquid = true;
@@ -37,7 +37,7 @@ public class XFDirectionalRouter extends DuctRouter {
 		return arrayOf(region);
 	}
 
-	public class XFDirectionalRouterBuild extends DuctRouterBuild {
+	public class RailDirectionalRouterBuild extends DuctRouterBuild {
 		@Override
 		public void draw() {
 			Draw.rect(baseRegion, x, y);

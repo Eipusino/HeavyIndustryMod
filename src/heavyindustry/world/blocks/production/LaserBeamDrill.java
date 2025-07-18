@@ -17,8 +17,6 @@ import mindustry.gen.Sounds;
 import mindustry.graphics.Drawf;
 import mindustry.world.blocks.production.Drill;
 
-import static heavyindustry.HVars.name;
-
 public class LaserBeamDrill extends Drill {
 	protected static final Rand rand = new Rand();
 
@@ -61,8 +59,8 @@ public class LaserBeamDrill extends Drill {
 	@Override
 	public void load() {
 		super.load();
-		laser = Core.atlas.find(name("mine-laser"), "laser");
-		laserEnd = Core.atlas.find(name("mine-laser-end"), "laser-end");
+		laser = Core.atlas.find(name + "-laser", "laser");
+		laserEnd = Core.atlas.find(name + "-laser-end", "laser-end");
 	}
 
 	public class LaserBeamDrillBuild extends DrillBuild {
@@ -89,9 +87,8 @@ public class LaserBeamDrill extends Drill {
 				Draw.color();
 			}
 
-			float
-					moveX = Mathf.sin(timeDrilled, moveScale + Mathf.randomSeed(id, -moveScaleRand, moveScaleRand), shooterMoveRange) + x,
-					moveY = Mathf.sin(timeDrilled + Mathf.randomSeed(id >> 1, moveScale), moveScale + Mathf.randomSeed(id >> 2, -moveScaleRand, moveScaleRand), shooterMoveRange) + y;
+			float moveX = Mathf.sin(timeDrilled, moveScale + Mathf.randomSeed(id, -moveScaleRand, moveScaleRand), shooterMoveRange) + x;
+			float moveY = Mathf.sin(timeDrilled + Mathf.randomSeed(id >> 1, moveScale), moveScale + Mathf.randomSeed(id >> 2, -moveScaleRand, moveScaleRand), shooterMoveRange) + y;
 
 			for (int i : Mathf.signs) {
 				Draw.rect(rotatorRegion, x + (-shooterOffset + warmup * shooterExtendOffset) * i, moveY, -90 * i);

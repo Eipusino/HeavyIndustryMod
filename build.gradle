@@ -50,7 +50,7 @@ tasks.withType(KotlinCompile).configureEach {
 dependencies {
 	implementation "org.tomlj:tomlj:1.1.1"
 
-	compileOnly files("libs/26094.jar")
+	compileOnly files("libs/26094.jar", "libs/android-dalvik-1.0.jar")
 }
 
 task jarAndroid {

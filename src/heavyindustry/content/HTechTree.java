@@ -38,7 +38,7 @@ public final class HTechTree {
 		//items,liquids
 		vanillaNode(Liquids.water, () -> nodeProduce(HLiquids.brine, () -> {}));
 		vanillaNode(Liquids.oil, () -> nodeProduce(HLiquids.nitratedOil, () -> {}));
-		vanillaNode(Liquids.ozone, () -> nodeProduce(HLiquids.methane, () -> {}));
+		vanillaNode(Liquids.ozone, () -> nodeProduce(HLiquids.gas, () -> {}));
 		vanillaNode(Items.sand, () -> {
 			nodeProduce(HItems.stone, () -> nodeProduce(HItems.originium, () -> nodeProduce(HItems.purifiedOriginium, () -> nodeProduce(HItems.syntheticJade, () -> {}))));
 			nodeProduce(HItems.rareEarth, () -> {});
@@ -268,13 +268,13 @@ public final class HTechTree {
 		//tier6
 		vanillaNode(dagger, () -> node(vanguard, () -> node(striker, () -> node(counterattack, () -> node(crush, () -> node(destruction, () -> node(purgatory, () -> {})))))));
 		vanillaNode(flare, () -> node(caelifera, () -> node(schistocerca, () -> node(anthophila, () -> node(vespula, () -> node(lepidoptera, () -> node(mantodea, () -> {})))))));
-		vanillaNode(reign, () -> node(suzerain, () -> {}));
+		vanillaNode(reign, () -> node(fearless, () -> {}));
 		vanillaNode(corvus, () -> node(supernova, () -> {}));
 		vanillaNode(toxopid, () -> node(cancer, () -> {}));
 		vanillaNode(eclipse, () -> node(sunlit, () -> {}));
 		vanillaNode(oct, () -> node(windstorm, () -> {}));
-		vanillaNode(omura, () -> node(mosasaur, () -> {}));
-		vanillaNode(navanax, () -> node(killerWhale, () -> {}));
+		vanillaNode(omura, () -> node(poseidon, () -> {}));
+		vanillaNode(navanax, () -> node(leviathan, () -> {}));
 		//tier6-erekir
 		vanillaNode(conquer, () -> node(dominate, () -> {}));
 		vanillaNode(collaris, () -> node(oracle, () -> {}));

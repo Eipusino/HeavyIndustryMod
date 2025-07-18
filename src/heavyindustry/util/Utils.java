@@ -128,12 +128,13 @@ public final class Utils {
 	public static final Rand rand = new Rand(), rand2 = new Rand();
 
 	/** Contains all packages within heavy industry. */
-	public static final List<String> packages = Arrays.asList(
+	public static final String[] packages = {
 			"heavyindustry",
 			"heavyindustry.ai",
 			"heavyindustry.audio",
 			"heavyindustry.content",
 			"heavyindustry.core",
+			"heavyindustry.editor",
 			"heavyindustry.entities",
 			"heavyindustry.entities.abilities",
 			"heavyindustry.entities.bullet",
@@ -147,11 +148,6 @@ public final class Utils {
 			"heavyindustry.graphics",
 			"heavyindustry.graphics.g2d",
 			"heavyindustry.graphics.g3d",
-			"heavyindustry.graphics.g3d.model",
-			"heavyindustry.graphics.g3d.model.obj",
-			"heavyindustry.graphics.g3d.model.obj.mtl",
-			"heavyindustry.graphics.g3d.model.obj.obj",
-			"heavyindustry.graphics.g3d.render",
 			"heavyindustry.graphics.gl",
 			"heavyindustry.input",
 			"heavyindustry.io",
@@ -183,6 +179,7 @@ public final class Utils {
 			"heavyindustry.util.comp",
 			"heavyindustry.util.path",
 			"heavyindustry.util.pools",
+			"heavyindustry.util.reflect",
 			//"heavyindustry.world",
 			"heavyindustry.world.blocks",
 			"heavyindustry.world.blocks.campaign",
@@ -202,8 +199,8 @@ public final class Utils {
 			"heavyindustry.world.consumers",
 			"heavyindustry.world.draw",
 			"heavyindustry.world.meta"
-	);
-	public static final List<Team> baseTeams = Arrays.asList(Team.derelict, Team.sharded, Team.crux, Team.green, Team.malis, Team.blue);
+	};
+	public static final Team[] baseTeams = {Team.derelict, Team.sharded, Team.crux, Team.green, Team.malis, Team.blue};
 
 	public static final Seq<UnlockableContent> donorItems = new Seq<>();
 	public static final Seq<UnlockableContent> developerItems = new Seq<>();

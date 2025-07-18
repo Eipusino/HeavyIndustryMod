@@ -18,17 +18,17 @@ import mindustry.world.blocks.distribution.OverflowDuct;
 import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.player;
 
-public class XFDirectionalGate extends OverflowDuct {
+public class RailDirectionalGate extends OverflowDuct {
 	public TextureRegion baseRegion, overlayRegion, invertRegion;
 
-	public XFDirectionalGate(String name) {
+	public RailDirectionalGate(String name) {
 		super(name);
 
 		saveConfig = true;
 		placeableLiquid = true;
 		drawTeamOverlay = false;
 
-		config(Boolean.class, (XFDirectionalGateBuild build, Boolean invert) -> build.invert = invert);
+		config(Boolean.class, (RailDirectionalGateBuild build, Boolean invert) -> build.invert = invert);
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class XFDirectionalGate extends OverflowDuct {
 		Draw.rect(overlayRegion, plan.drawx(), plan.drawy(), plan.rotation * 90);
 	}
 
-	public class XFDirectionalGateBuild extends OverflowDuctBuild {
+	public class RailDirectionalGateBuild extends OverflowDuctBuild {
 		public boolean invert;
 
 		public boolean invert() {

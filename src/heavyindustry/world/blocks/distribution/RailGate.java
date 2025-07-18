@@ -19,17 +19,17 @@ import mindustry.world.blocks.distribution.OverflowGate;
 import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.player;
 
-public class XFGate extends OverflowGate {
+public class RailGate extends OverflowGate {
 	public TextureRegion invertRegion;
 
-	public XFGate(String name) {
+	public RailGate(String name) {
 		super(name);
 
 		saveConfig = true;
 		placeableLiquid = true;
 		drawTeamOverlay = false;
 
-		config(Boolean.class, (XFGateBuild build, Boolean invert) -> build.invert = invert);
+		config(Boolean.class, (RailGateBuild build, Boolean invert) -> build.invert = invert);
 	}
 
 	public TextureRegion[] icons() {
@@ -47,7 +47,7 @@ public class XFGate extends OverflowGate {
 		invertRegion = Core.atlas.find(name + "-invert");
 	}
 
-	public class XFGateBuild extends OverflowGateBuild {
+	public class RailGateBuild extends OverflowGateBuild {
 		public boolean invert;
 
 		@Override

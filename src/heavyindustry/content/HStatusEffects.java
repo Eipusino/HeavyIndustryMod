@@ -5,7 +5,7 @@ import arc.graphics.Color;
 import arc.graphics.Pixmap;
 import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
-import arc.util.Time;
+import arc.util.Tmp;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.graphics.HPal;
 import heavyindustry.util.Utils;
@@ -78,13 +78,9 @@ public final class HStatusEffects {
 		}
 			@Override
 			public void update(Unit unit, float time) {
-				if (damage > 0f) {
-					unit.damageContinuousPierce(damage);
-				} else if (damage < 0f) {
-					unit.heal(-1f * damage * Time.delta);
-				}
+				unit.damageContinuousPierce(damage);
 
-				if (effect != Fx.none && Mathf.chanceDelta(effectChance)) {
+				if (Mathf.chanceDelta(effectChance)) {
 					effect.at(unit.x, unit.y, 0, color, parentizeEffect ? unit : null);
 				}
 			}
@@ -94,7 +90,17 @@ public final class HStatusEffects {
 			damage = 15f;
 			speedMultiplier = 1.2f;
 			effect = HFx.ultFireBurn;
-		}};
+		}
+			@Override
+			public void update(Unit unit, float time) {
+				unit.damageContinuousPierce(unit.health / 0.002f + damage);
+
+				if (Mathf.chanceDelta(effectChance)) {
+					Tmp.v1.rnd(Mathf.range(unit.type.hitSize / 2f));
+					effect.at(unit.x + Tmp.v1.x, unit.y + Tmp.v1.y, 0, color, parentizeEffect ? unit : null);
+				}
+			}
+		};
 		territoryFieldIncrease = new LoadStatusEffect("territory-field-increase") {{
 			color = Color.valueOf("ea8878");
 			buildSpeedMultiplier = 1.5f;
