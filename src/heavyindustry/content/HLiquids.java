@@ -19,10 +19,10 @@ import mindustry.type.Liquid;
  * @author Eipusino
  */
 public final class HLiquids {
-	private static final int nanoFluidId = Draws.nextTaskId();
+	private static final int originiumFluidId = Draws.nextTaskId();
 
 	public static Liquid
-			brine, gas, lightOil, nanoFluid, nitratedOil, originiumFluid;
+			brine, gas, lightOil, nitratedOil, originiumFluid;
 
 	/** Don't let anyone instantiate this class. */
 	private HLiquids() {}
@@ -45,31 +45,11 @@ public final class HLiquids {
 			temperature = 0.3f;
 			boilPoint = 0.6f;
 			viscosity = 0.7f;
-			flammability = 0.2f;
+			flammability = 0.3f;
+			explosiveness = 1.2f;
 			gasColor = Color.grays(0.7f);
 			effect = StatusEffects.muddy;
 		}};
-		nanoFluid = new Liquid("nano-fluid", HPal.nanoCoreRed) {{
-			heatCapacity = 2.5f;
-			viscosity = 0.8f;
-			temperature = 0.3f;
-			lightColor = color.cpy().a(0.3f);
-			particleSpacing = 10;
-			particleEffect = WrapperEffect.wrap(HFx.glowParticle, color);
-			effect = StatusEffects.electrified;
-			coolant = true;
-		}
-			@Override
-			public void drawPuddle(Puddle puddle) {
-				Draws.drawTask(nanoFluidId, puddle, HShaders.wave, s -> {
-					s.waveMix = HPal.nanoCoreRedBright;
-					s.mixAlpha = 0.2f + Mathf.absin(5, 0.2f);
-					s.waveScl = 0.2f;
-					s.maxThreshold = 1f;
-					s.minThreshold = 0.4f;
-				}, super::drawPuddle);
-			}
-		};
 		nitratedOil = new Liquid("nitrated-oil", Color.valueOf("3c3e45")) {{
 			temperature = 0.5f;
 			viscosity = 0.8f;
@@ -79,13 +59,29 @@ public final class HLiquids {
 			canStayOn.add(Liquids.water);
 			coolant = false;
 		}};
-		originiumFluid = new MultiCellLiquid("originium-fluid", Color.black) {{
-			heatCapacity = 1.5f;
+		originiumFluid = new MultiCellLiquid("originium-fluid", HPal.crystalCircuitRed) {{
+			heatCapacity = 2.5f;
 			flammability = 0.2f;
 			explosiveness = 0.4f;
 			coolant = false;
+			lightColor = color.cpy().a(0.3f);
+			particleSpacing = 10;
+			particleEffect = WrapperEffect.wrap(HFx.glowParticle, color);
+			effect = StatusEffects.electrified;
+			coolant = true;
 			spreadTargets.addAll(Liquids.neoplasm);
 			canStayOn.addAll(Liquids.water, Liquids.cryofluid, Liquids.oil, Liquids.arkycite, Liquids.neoplasm);
-		}};
+		}
+			@Override
+			public void drawPuddle(Puddle puddle) {
+				Draws.drawTask(originiumFluidId, puddle, HShaders.wave, s -> {
+					s.waveMix = HPal.crystalCircuitRedBright;
+					s.mixAlpha = 0.2f + Mathf.absin(5, 0.2f);
+					s.waveScl = 0.2f;
+					s.maxThreshold = 1f;
+					s.minThreshold = 0.4f;
+				}, super::drawPuddle);
+			}
+		};
 	}
 }

@@ -179,6 +179,7 @@ import mindustry.world.blocks.environment.OreBlock;
 import mindustry.world.blocks.environment.Prop;
 import mindustry.world.blocks.environment.StaticWall;
 import mindustry.world.blocks.environment.SteamVent;
+import mindustry.world.blocks.environment.TallBlock;
 import mindustry.world.blocks.environment.TreeBlock;
 import mindustry.world.blocks.heat.HeatProducer;
 import mindustry.world.blocks.liquid.LiquidBridge;
@@ -268,7 +269,7 @@ public final class HBlocks {
 			darkPanel7, darkPanel8, darkPanel9, darkPanel10, darkPanel11, darkPanelDamaged,
 			stoneVent, basaltVent, shaleVent, basaltSpikes, basaltWall, basaltGraphiticWall, basaltPyratiticWall, snowySand, snowySandWall, arkyciteSand, arkyciteSandWall, arkyciteSandBoulder, darksandBoulder,
 			concreteBlank, concreteFill, concreteNumber, concreteStripe, concrete, stoneFullTiles, stoneFull, stoneHalf, stoneTiles, concreteWall, pit, waterPit,
-			brine, nanoFluid,
+			brine, originiumFluid,
 			oldTracks,
 			metalFloorWater, metalFloorWater2, metalFloorWater3, metalFloorWater4, metalFloorWater5, metalFloorDamagedWater,
 			stoneWater, shaleWater, basaltWater, mudWater,
@@ -276,10 +277,11 @@ public final class HBlocks {
 			corruptedMoss, corruptedSporeMoss, corruptedSporeRocks, corruptedSporePine, corruptedSporeFern, corruptedSporePlant, corruptedSporeTree,
 			mycelium, myceliumSpore, myceliumShrubs, myceliumPine,
 			softRareEarth, patternRareEarth, softRareEarthWall,
-			oreUranium, oreChromium,
+			originiumCrystals,
+			oreOriginium, oreUranium, oreChromium,
 	//wall
 	copperWallHuge, copperWallGigantic, titaniumWallHuge, titaniumWallGigantic, armoredWall, armoredWallLarge, armoredWallHuge, armoredWallGigantic,
-			uraniumWall, uraniumWallLarge, chromiumWall, chromiumWallLarge, chromiumDoor, chromiumDoorLarge, heavyAlloyWall, heavyAlloyWallLarge, nanoCompositeWall, nanoCompositeWallLarge, shapedWall,
+			uraniumWall, uraniumWallLarge, chromiumWall, chromiumWallLarge, chromiumDoor, chromiumDoorLarge, heavyAlloyWall, heavyAlloyWallLarge, compositeWall, compositeWallLarge, shapedWall,
 	//wall-erekir
 	berylliumWallHuge, berylliumWallGigantic, tungstenWallHuge, tungstenWallGigantic, blastDoorLarge, blastDoorHuge, reinforcedSurgeWallHuge, reinforcedSurgeWallGigantic, carbideWallHuge, carbideWallGigantic, shieldedWallLarge, shieldedWallHuge,
 			aparajito, aparajitoLarge,
@@ -301,8 +303,8 @@ public final class HBlocks {
 	//power-erekir
 	smartBeamNode, beamDiode, beamInsulator, reinforcedPowerAnalyzer, liquidConsumeGenerator,
 	//production
-	largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, petroleumDistillationUnit, stoneCrusher, sporeFarm, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
-			nanoCoreConstructor, nanoCorePrinter, nanoCoreActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, ironcladCompressor,
+	largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, stoneCrusher, sporeFarm, fractionator, largeFractionator, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
+			crystalCircuitConstructor, crystalCircuitPrinter, originiumActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, ironcladCompressor,
 			originiumHeater,
 			uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilSedimentationTank,
 	//production-erekir
@@ -502,14 +504,14 @@ public final class HBlocks {
 			cacheLayer = HCacheLayer.brine;
 			albedo = 1f;
 		}};
-		nanoFluid = new Floor("pooled-nano-fluid", 0) {{
+		originiumFluid = new Floor("pooled-originium-fluid", 0) {{
 			status = HStatusEffects.regenerating;
 			statusDuration = 60f;
 			drownTime = 160f;
 			speedMultiplier = 0.6f;
-			liquidDrop = HLiquids.nanoFluid;
+			liquidDrop = HLiquids.originiumFluid;
 			isLiquid = true;
-			cacheLayer = HCacheLayer.nanoFluid;
+			cacheLayer = HCacheLayer.originiumFluid;
 			liquidMultiplier = 0.5f;
 			emitLight = true;
 			lightRadius = 30f;
@@ -644,6 +646,14 @@ public final class HBlocks {
 		myceliumPine = new StaticWall("mycelium-pine") {{
 			variants = 2;
 		}};
+		originiumCrystals = new TallBlock("originium-crystals") {{
+			variants = 3;
+			clipSize = 128f;
+			itemDrop = HItems.originium;
+		}};
+		oreOriginium = new OreBlock("ore-originium", HItems.originium) {{
+			variants = 3;
+		}};
 		oreUranium = new OreBlock("ore-uranium", HItems.uranium) {{
 			variants = 3;
 			oreDefault = true;
@@ -769,8 +779,8 @@ public final class HBlocks {
 			absorbLasers = insulated = true;
 			crushDamageMultiplier = 0.5f;
 		}};
-		nanoCompositeWall = new RegenWall("nano-composite-wall") {{
-			requirements(Category.defense, with(HItems.nanoCore, 2, HItems.heavyAlloy, 6, Items.metaglass, 1, Items.plastanium, 4));
+		compositeWall = new RegenWall("composite-wall") {{
+			requirements(Category.defense, with(HItems.crystalCircuit, 2, HItems.heavyAlloy, 6, Items.metaglass, 1, Items.plastanium, 4));
 			size = 1;
 			health = 2680;
 			armor = 42f;
@@ -780,8 +790,8 @@ public final class HBlocks {
 			chanceHeal = 0.15f;
 			regenPercent = 0.5f;
 		}};
-		nanoCompositeWallLarge = new RegenWall("nano-composite-wall-large") {{
-			requirements(Category.defense, with(HItems.nanoCore, 8, HItems.heavyAlloy, 24, Items.metaglass, 4, Items.plastanium, 16));
+		compositeWallLarge = new RegenWall("composite-wall-large") {{
+			requirements(Category.defense, with(HItems.crystalCircuit, 8, HItems.heavyAlloy, 24, Items.metaglass, 4, Items.plastanium, 16));
 			size = 2;
 			health = 10720;
 			armor = 42f;
@@ -1022,7 +1032,7 @@ public final class HBlocks {
 			consumeLiquid(HLiquids.lightOil, 0.1f).optional(true, true);
 		}};
 		beamDrill = new LaserBeamDrill("beam-drill") {{
-			requirements(Category.production, with(Items.lead, 160, Items.silicon, 120, Items.plastanium, 80, HItems.chromium, 60, HItems.nanoCore, 35, Items.phaseFabric, 25));
+			requirements(Category.production, with(Items.lead, 160, Items.silicon, 120, Items.plastanium, 80, HItems.chromium, 60, HItems.crystalCircuit, 35, Items.phaseFabric, 25));
 			size = 4;
 			health = 960;
 			armor = 10f;
@@ -1649,7 +1659,7 @@ public final class HBlocks {
 			ambientSoundVolume = 0.1f;
 			consumePower(65f);
 			consumeItem(Items.phaseFabric, 1);
-			consumeLiquid(HLiquids.nanoFluid, 0.25f);
+			consumeLiquid(HLiquids.originiumFluid, 0.25f);
 			buildCostMultiplier = 0.6f;
 		}};
 		hugeBattery = new Battery("huge-battery") {{
@@ -1833,19 +1843,6 @@ public final class HBlocks {
 			consumePower(3f);
 			consumeLiquid(Liquids.water, 36f / 60f);
 		}};
-		petroleumDistillationUnit = new GenericCrafter("petroleum-distillation-unit") {{
-			requirements(Category.crafting, with(Items.lead, 45, Items.titanium, 35, Items.silicon, 30, Items.metaglass, 20));
-			size = 3;
-			hasPower = true;
-			hasItems = true;
-			hasLiquids = true;
-			craftTime = 90f;
-			liquidCapacity = 20f;
-			outputLiquid = new LiquidStack(HLiquids.lightOil, 0.1f);
-			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.oil), new DrawLiquidTile(HLiquids.lightOil), Utils.base(2.5f));
-			consumeLiquids(LiquidStack.with(Liquids.oil, 0.1f, HLiquids.gas, 0.1f));
-			consumePower(0.2f);
-		}};
 		stoneCrusher = new GenericCrafter("stone-crusher") {{
 			requirements(Category.crafting, with(Items.copper, 40, Items.graphite, 60, Items.silicon, 25));
 			outputItem = new ItemStack(Items.sand, 3);
@@ -1869,6 +1866,40 @@ public final class HBlocks {
 			envRequired |= Env.spores;
 			breakSound = Sounds.splash;
 			buildCostMultiplier = 0.1f;
+		}};
+		fractionator = new GenericCrafter("fractionator") {{
+			requirements(Category.crafting, with(Items.copper, 110, Items.graphite, 70, Items.silicon, 60, Items.titanium, 80, Items.plastanium, 30));
+			size = 3;
+			armor = 1f;
+			health = 860;
+			hasPower = true;
+			hasItems = true;
+			hasLiquids = true;
+			craftTime = 90f;
+			itemCapacity = 20;
+			liquidCapacity = 60f;
+			outputItem = new ItemStack(Items.coal, 1);
+			outputLiquids = LiquidStack.with(HLiquids.lightOil, 0.6f, HLiquids.gas, 0.4f);
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.oil), new DrawDefault());
+			consumeLiquid(Liquids.oil, 0.9f);
+			consumePower(10.5f);
+		}};
+		largeFractionator = new GenericCrafter("large-fractionator") {{
+			requirements(Category.crafting, with(Items.graphite, 150, Items.silicon, 200, Items.thorium, 100, Items.plastanium, 150, Items.surgeAlloy, 180, HItems.chromium, 80));
+			size = 5;
+			armor = 4f;
+			health = 3200;
+			hasPower = true;
+			hasItems = true;
+			hasLiquids = true;
+			craftTime = 60f;
+			itemCapacity = 40;
+			liquidCapacity = 300f;
+			outputItem = new ItemStack(Items.coal, 3);
+			outputLiquids = LiquidStack.with(HLiquids.lightOil, 3f, HLiquids.gas, 2f);
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.oil), new DrawDefault());
+			consumeLiquid(Liquids.oil, 3.6f);
+			consumePower(25f);
 		}};
 		largePlastaniumCompressor = new GenericCrafter("large-plastanium-compressor") {{
 			requirements(Category.crafting, with(Items.silicon, 150, Items.lead, 220, Items.graphite, 120, Items.titanium, 150, Items.thorium, 100));
@@ -1921,21 +1952,21 @@ public final class HBlocks {
 			consumeItems(with(Items.coal, 5, Items.sand, 8, Items.blastCompound, 1));
 			consumePower(4f);
 		}};
-		nanoCoreConstructor = new GenericCrafter("nano-core-constructor") {{
+		crystalCircuitConstructor = new GenericCrafter("crystal-circuit-constructor") {{
 			requirements(Category.crafting, with(Items.copper, 120, Items.titanium, 45, Items.silicon, 35, HItems.purifiedOriginium, 20));
 			size = 2;
 			itemCapacity = 15;
 			craftTime = 100f;
-			outputItem = new ItemStack(HItems.nanoCore, 1);
+			outputItem = new ItemStack(HItems.crystalCircuit, 1);
 			craftEffect = Fx.none;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawSpecConstruct() {{
-				constructColor1 = constructColor2 = HPal.nanoCoreRed;
+				constructColor1 = constructColor2 = HPal.crystalCircuitRed;
 			}}, new DrawDefault());
 			consumePower(2.5f);
 			consumeItems(with(Items.titanium, 2, Items.silicon, 3, HItems.purifiedOriginium, 1));
 		}};
-		nanoCorePrinter = new GenericCrafter("nano-core-printer") {{
-			requirements(Category.crafting, with(Items.titanium, 600, Items.silicon, 400, Items.plastanium, 350, Items.surgeAlloy, 250, HItems.chromium, 200, HItems.nanoCore, 150, HItems.purifiedOriginium, 150));
+		crystalCircuitPrinter = new GenericCrafter("crystal-circuit-printer") {{
+			requirements(Category.crafting, with(Items.titanium, 600, Items.silicon, 400, Items.plastanium, 350, Items.surgeAlloy, 250, HItems.chromium, 200, HItems.crystalCircuit, 150, HItems.purifiedOriginium, 150));
 			size = 4;
 			health = 1500;
 			squareSprite = false;
@@ -1943,18 +1974,18 @@ public final class HBlocks {
 			itemCapacity = 40;
 			liquidCapacity = 60f;
 			craftTime = 150f;
-			outputItem = new ItemStack(HItems.nanoCore, 12);
+			outputItem = new ItemStack(HItems.crystalCircuit, 12);
 			craftEffect = Fx.none;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.cryofluid), new DrawRegion("-mid"), new DrawSpecConstruct() {{
-				constructColor1 = constructColor2 = HPal.nanoCoreRed;
+				constructColor1 = constructColor2 = HPal.crystalCircuitRed;
 			}}, new DrawDefault());
 			consumePower(25f);
 			consumeLiquid(Liquids.cryofluid, 6f / 60f);
 			consumeItems(with(Items.titanium, 6, Items.silicon, 9, HItems.purifiedOriginium, 3));
 			hideDetails = false;
 		}};
-		nanoCoreActivator = new GenericCrafter("nano-core-activator") {{
-			requirements(Category.crafting, with(Items.titanium, 90, Items.silicon, 80, HItems.nanoCore, 30, Items.plastanium, 60));
+		originiumActivator = new GenericCrafter("originium-activator") {{
+			requirements(Category.crafting, with(Items.titanium, 90, Items.silicon, 80, HItems.crystalCircuit, 30, Items.plastanium, 60));
 			size = 2;
 			health = 360;
 			hasLiquids = outputsLiquid = true;
@@ -1964,14 +1995,15 @@ public final class HBlocks {
 			liquidCapacity = 24f;
 			craftTime = 100f;
 			craftEffect = Fx.smeltsmoke;
-			outputLiquid = new LiquidStack(HLiquids.nanoFluid, 18f / 60f);
-			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(HLiquids.nanoFluid), new DrawDefault(), new DrawRegion("-top"), new DrawFrames() {{
+			outputLiquid = new LiquidStack(HLiquids.originiumFluid, 18f / 60f);
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.water), new DrawLiquidTile(HLiquids.originiumFluid), new DrawDefault(), new DrawRegion("-top"), new DrawFrames() {{
 				frames = 5;
 				sine = true;
 			}});
-			lightLiquid = HLiquids.nanoFluid;
+			lightLiquid = HLiquids.originiumFluid;
 			consumePower(3f);
-			consumeItem(HItems.nanoCore, 1);
+			consumeItem(HItems.originium, 1);
+			consumeLiquid(Liquids.water, 18f / 60f);
 		}};
 		largePhaseWeaver = new GenericCrafter("large-phase-weaver") {{
 			requirements(Category.crafting, with(Items.lead, 160, Items.thorium, 100, Items.silicon, 80, Items.plastanium, 50, Items.phaseFabric, 15));
@@ -1997,7 +2029,7 @@ public final class HBlocks {
 			consumeItems(with(Items.sand, 15, Items.thorium, 5));
 		}};
 		phaseFusionInstrument = new GenericCrafter("phase-fusion-instrument") {{
-			requirements(Category.crafting, with(Items.silicon, 100, Items.plastanium, 80, Items.phaseFabric, 60, HItems.chromium, 80, HItems.nanoCore, 40));
+			requirements(Category.crafting, with(Items.silicon, 100, Items.plastanium, 80, Items.phaseFabric, 60, HItems.chromium, 80, HItems.crystalCircuit, 40));
 			size = 3;
 			itemCapacity = 30;
 			lightRadius /= 2f;
@@ -2171,7 +2203,7 @@ public final class HBlocks {
 			consumeItem(Items.titanium, 8);
 		}};
 		heavyAlloySmelter = new GenericCrafter("heavy-alloy-smelter") {{
-			requirements(Category.crafting, with(Items.lead, 150, Items.silicon, 80, HItems.nanoCore, 12, Items.thorium, 120, HItems.chromium, 30, Items.phaseFabric, 20));
+			requirements(Category.crafting, with(Items.lead, 150, Items.silicon, 80, HItems.crystalCircuit, 12, Items.thorium, 120, HItems.chromium, 30, Items.phaseFabric, 20));
 			size = 3;
 			health = 850;
 			craftTime = 80f;
@@ -2182,7 +2214,7 @@ public final class HBlocks {
 			consumeItems(with(HItems.uranium, 1, HItems.chromium, 1));
 		}};
 		metalAnalyzer = new Separator("metal-analyzer") {{
-			requirements(Category.crafting, with(Items.titanium, 120, Items.silicon, 180, Items.plastanium, 80, HItems.nanoCore, 30));
+			requirements(Category.crafting, with(Items.titanium, 120, Items.silicon, 180, Items.plastanium, 80, HItems.crystalCircuit, 30));
 			size = 3;
 			itemCapacity = 20;
 			liquidCapacity = 30f;
@@ -2210,7 +2242,7 @@ public final class HBlocks {
 			outputLiquid = new LiquidStack(HLiquids.nitratedOil, 12f / 60f);
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.oil), new DrawLiquidTile(HLiquids.nitratedOil), new DrawDefault());
 			consumePower(5f);
-			consumeLiquid(Liquids.oil, 12f / 60f);
+			consumeLiquid(HLiquids.lightOil, 12f / 60f);
 			consumeItem(Items.sporePod, 1);
 		}};
 		nitratedOilSedimentationTank = new Separator("nitrated-oil-sedimentation-tank") {{
@@ -2499,7 +2531,7 @@ public final class HBlocks {
 			consumeItem(Items.phaseFabric, 1).boost();
 		}};
 		sectorStructureMender = new RegenProjector("sector-structure-mender") {{
-			requirements(Category.effect, with(Items.lead, 600, Items.titanium, 400, Items.silicon, 350, Items.plastanium, 250, Items.surgeAlloy, 220, HItems.nanoCore, 150));
+			requirements(Category.effect, with(Items.lead, 600, Items.titanium, 400, Items.silicon, 350, Items.plastanium, 250, Items.surgeAlloy, 220, HItems.crystalCircuit, 150));
 			size = 4;
 			health = 1800;
 			range = 1500;
@@ -2508,7 +2540,7 @@ public final class HBlocks {
 			optionalUseTime = 3600;
 			optionalMultiplier = 6;
 			effectChance = 0.5f;
-			effect = WrapperEffect.wrap(HFx.polyParticle, HPal.nanoCoreRed);
+			effect = WrapperEffect.wrap(HFx.polyParticle, HPal.crystalCircuitRed);
 			drawer = new DrawMulti(new DrawDefault(), new DrawPulseShape() {{
 				layer = 110;
 				stroke = 3f;
@@ -2522,7 +2554,7 @@ public final class HBlocks {
 				color = HPal.regenerating;
 			}});
 			consumePower(20f);
-			consumeItem(HItems.nanoCore, 10).boost();
+			consumeItem(HItems.crystalCircuit, 10).boost();
 		}};
 		assignOverdrive = new AssignOverdrive("assign-overdrive") {{
 			requirements(Category.effect, with(Items.silicon, 150, Items.thorium, 120, Items.plastanium, 100, Items.surgeAlloy, 60, HItems.chromium, 80));
@@ -2645,7 +2677,7 @@ public final class HBlocks {
 			group = BlockGroup.transportation;
 		}};
 		rapidUnloader = new AdaptUnloader("rapid-unloader") {{
-			requirements(Category.effect, with(Items.silicon, 35, Items.plastanium, 15, HItems.nanoCore, 10, HItems.chromium, 15));
+			requirements(Category.effect, with(Items.silicon, 35, Items.plastanium, 15, HItems.crystalCircuit, 10, HItems.chromium, 15));
 			speed = 1f;
 			group = BlockGroup.transportation;
 		}};
@@ -2689,7 +2721,7 @@ public final class HBlocks {
 		}};
 		//unit
 		unitMaintenanceDepot = new RepairTower("unit-maintenance-depot") {{
-			requirements(Category.units, with(Items.thorium, 360, Items.plastanium, 220, Items.surgeAlloy, 160, Items.phaseFabric, 100, HItems.nanoCore, 120));
+			requirements(Category.units, with(Items.thorium, 360, Items.plastanium, 220, Items.surgeAlloy, 160, Items.phaseFabric, 100, HItems.crystalCircuit, 120));
 			size = 4;
 			health = 1200;
 			liquidCapacity = 120f;
@@ -2702,7 +2734,7 @@ public final class HBlocks {
 			glowMag = 0.4f;
 			glowScl = 12f;
 			consumePower(18f);
-			consumeLiquid(HLiquids.nanoFluid, 0.6f);
+			consumeLiquid(HLiquids.originiumFluid, 0.6f);
 		}};
 		titanReconstructor = new Reconstructor("titan-reconstructor") {{
 			requirements(Category.units, with(Items.lead, 4000, Items.silicon, 3000, Items.plastanium, 1500, Items.surgeAlloy, 1200, Items.phaseFabric, 300, HItems.uranium, 600, HItems.chromium, 800));
@@ -2723,10 +2755,10 @@ public final class HBlocks {
 			);
 			consumePower(35f);
 			consumeLiquid(Liquids.cryofluid, 4f);
-			consumeItems(ItemStack.with(Items.silicon, 1500, HItems.nanoCore, 300, HItems.uranium, 400, HItems.chromium, 500));
+			consumeItems(ItemStack.with(Items.silicon, 1500, HItems.crystalCircuit, 300, HItems.uranium, 400, HItems.chromium, 500));
 		}};
 		experimentalUnitFactory = new DerivativeUnitFactory("experimental-unit-factory") {{
-			requirements(Category.units, with(Items.silicon, 2500, Items.plastanium, 1000, Items.surgeAlloy, 1200, HItems.nanoCore, 800, Items.phaseFabric, 1500, HItems.heavyAlloy, 1100));
+			requirements(Category.units, with(Items.silicon, 2500, Items.plastanium, 1000, Items.surgeAlloy, 1200, HItems.crystalCircuit, 800, Items.phaseFabric, 1500, HItems.heavyAlloy, 1100));
 			size = 5;
 			liquidCapacity = 60f;
 			floating = true;
@@ -2741,7 +2773,7 @@ public final class HBlocks {
 				tile.payload = null;
 			});
 			consumePower(40f);
-			consumeLiquid(HLiquids.nanoFluid, 0.3f);
+			consumeLiquid(HLiquids.originiumFluid, 0.3f);
 		}
 			@Override
 			public void init() {
@@ -2787,7 +2819,7 @@ public final class HBlocks {
 		}};
 		//logic
 		matrixProcessor = new LogicBlock("matrix-processor") {{
-			requirements(Category.logic, with(Items.lead, 500, Items.silicon, 350, Items.surgeAlloy, 125, HItems.nanoCore, 50, HItems.chromium, 75));
+			requirements(Category.logic, with(Items.lead, 500, Items.silicon, 350, Items.surgeAlloy, 125, HItems.crystalCircuit, 50, HItems.chromium, 75));
 			consumeLiquid(Liquids.cryofluid, 0.12f);
 			hasLiquids = true;
 			instructionsPerTick = 100;
@@ -3905,7 +3937,7 @@ public final class HBlocks {
 			armor = 10f;
 			unitSort = UnitSorts.strongest;
 			consumePower(26f);
-			consumeLiquid(HLiquids.nanoFluid, 12f / 60f);
+			consumeLiquid(HLiquids.originiumFluid, 12f / 60f);
 		}};
 		evilSpirits = new ItemTurret("evil-spirits") {{
 			requirements(Category.turret, with(Items.copper, 400, Items.graphite, 400, Items.plastanium, 200, HItems.uranium, 220, Items.surgeAlloy, 280));

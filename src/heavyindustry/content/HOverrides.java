@@ -154,7 +154,7 @@ public final class HOverrides {
 			drag = 0.01f;
 			layer = Layer.bullet - 2f;
 		}});
-		((LiquidTurret) Blocks.wave).ammoTypes.put(HLiquids.nanoFluid, new LiquidBulletType(HLiquids.nanoFluid) {{
+		((LiquidTurret) Blocks.wave).ammoTypes.put(HLiquids.originiumFluid, new LiquidBulletType(HLiquids.originiumFluid) {{
 			drag = 0.01f;
 			healPercent = 5f;
 			collidesTeam = true;
@@ -188,7 +188,7 @@ public final class HOverrides {
 			damage = 0.2f;
 			layer = Layer.bullet - 2f;
 		}});
-		((LiquidTurret) Blocks.tsunami).ammoTypes.put(HLiquids.nanoFluid, new LiquidBulletType(HLiquids.nanoFluid) {{
+		((LiquidTurret) Blocks.tsunami).ammoTypes.put(HLiquids.originiumFluid, new LiquidBulletType(HLiquids.originiumFluid) {{
 			lifetime = 49f;
 			speed = 4f;
 			knockback = 1.3f;
@@ -473,7 +473,7 @@ public final class HOverrides {
 		Liquids.hydrogen.explosiveness = 1.5f;
 		Liquids.ozone.flammability = 0f;
 		Liquids.ozone.explosiveness = 0f;
-		Liquids.neoplasm.canStayOn.addAll(HLiquids.nanoFluid, HLiquids.nitratedOil);
+		Liquids.neoplasm.canStayOn.addAll(HLiquids.originiumFluid, HLiquids.nitratedOil);
 		Liquids.neoplasm.capPuddles = true;
 		//items
 		Items.graphite.hardness = 2;
@@ -483,7 +483,7 @@ public final class HOverrides {
 		Items.surgeAlloy.hardness = 6;
 		Items.phaseFabric.hardness = 3;
 		Items.carbide.hardness = 6;
-		Items.serpuloItems.addAll(HItems.stone, HItems.salt, HItems.rareEarth, HItems.nanoCore, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.originium, HItems.purifiedOriginium, HItems.syntheticJade);
+		Items.serpuloItems.addAll(HItems.stone, HItems.salt, HItems.rareEarth, HItems.crystalCircuit, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.originium, HItems.purifiedOriginium, HItems.syntheticJade);
 		Items.erekirItems.addAll(HItems.uranium, HItems.chromium, HItems.originium, HItems.purifiedOriginium, HItems.syntheticJade);
 		//planet
 		Planets.serpulo.allowSectorInvasion = false;

@@ -13,7 +13,7 @@ import mindustry.type.Item;
 public final class HItems {
 	public static Item
 			stone, salt, rareEarth,
-			nanoCore,
+			crystalCircuit,
 			originium, purifiedOriginium, syntheticJade,
 			uranium, chromium, heavyAlloy;
 
@@ -37,7 +37,7 @@ public final class HItems {
 			buildable = false;
 			lowPriority = true;
 		}};
-		nanoCore = new Item("nano-core", HPal.nanoCoreRed) {{
+		crystalCircuit = new Item("crystal-circuit", HPal.crystalCircuitRed) {{
 			cost = -0.75f;
 			hardness = 6;
 		}};

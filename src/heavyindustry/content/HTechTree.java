@@ -44,7 +44,7 @@ public final class HTechTree {
 			nodeProduce(HItems.rareEarth, () -> {});
 			nodeProduce(HItems.salt, () -> {});
 		});
-		vanillaNode(Items.silicon, () -> nodeProduce(HItems.nanoCore, () -> nodeProduce(HLiquids.nanoFluid, () -> {})));
+		vanillaNode(Items.silicon, () -> nodeProduce(HItems.crystalCircuit, () -> nodeProduce(HLiquids.originiumFluid, () -> {})));
 		vanillaNode(Items.thorium, () -> nodeProduce(HItems.uranium, () -> nodeProduce(HItems.chromium, () -> {})));
 		vanillaNode(Items.surgeAlloy, () -> nodeProduce(HItems.heavyAlloy, () -> {}));
 		//items,liquids-erekir
@@ -66,7 +66,7 @@ public final class HTechTree {
 		}));
 		vanillaNode(surgeWall, () -> node(heavyAlloyWall, () -> {
 			node(heavyAlloyWallLarge, () -> {});
-			node(nanoCompositeWall, () -> node(nanoCompositeWallLarge, () -> {}));
+			node(compositeWall, () -> node(compositeWallLarge, () -> {}));
 		}));
 		//wall-erekir
 		vanillaNode(berylliumWallLarge, () -> node(berylliumWallHuge, () -> node(berylliumWallGigantic, () -> {})));
@@ -178,7 +178,7 @@ public final class HTechTree {
 		vanillaNode(disassembler, () -> node(metalAnalyzer, Seq.with(new OnSector(desolateRift)), () -> {}));
 		vanillaNode(cryofluidMixer, () -> {
 			node(largeCryofluidMixer, Seq.with(new SectorComplete(impact0078)), () -> {});
-			node(nanoCoreActivator, () -> {});
+			node(originiumActivator, () -> {});
 		});
 		vanillaNode(pyratiteMixer, () -> node(largePyratiteMixer, Seq.with(new SectorComplete(facility32m)), () -> {}));
 		vanillaNode(blastMixer, () -> node(largeBlastMixer, () -> {}));
@@ -186,7 +186,7 @@ public final class HTechTree {
 		vanillaNode(plastaniumCompressor, () -> node(largePlastaniumCompressor, Seq.with(new SectorComplete(facility32m)), () -> node(ironcladCompressor, () -> {})));
 		vanillaNode(surgeSmelter, () -> node(largeSurgeSmelter, () -> {}));
 		vanillaNode(siliconCrucible, () -> node(blastSiliconSmelter, () -> {}));
-		vanillaNode(siliconSmelter, () -> node(nanoCoreConstructor, Seq.with(new SectorComplete(impact0078)), () -> node(nanoCorePrinter, () -> {})));
+		vanillaNode(siliconSmelter, () -> node(crystalCircuitConstructor, Seq.with(new SectorComplete(impact0078)), () -> node(crystalCircuitPrinter, () -> {})));
 		vanillaNode(sporePress, () -> node(nitrificationReactor, () -> node(nitratedOilSedimentationTank, () -> {})));
 		vanillaNode(phaseWeaver, () -> node(largePhaseWeaver, () -> node(phaseFusionInstrument, () -> {})));
 		//production-erekir

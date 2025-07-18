@@ -1,6 +1,6 @@
 #define HIGHP
 
-//shades of nano-fluid
+//shades of originium-fluid
 #define S1 vec3(97.5, 50.7, 40.1) / 100.0
 #define S2 vec3(100.0, 72.9, 57.3) / 100.0
 #define NSCALE 100.0 / 2.0

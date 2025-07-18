@@ -10,9 +10,9 @@ public final class HPal {
 	public static final Color
 			miku = Color.valueOf("39c5bb"),
 			carbideShot = Color.valueOf("ab8ec5"),
-			nanoCoreRed = Color.valueOf("fa8267"),
-			nanoCoreRedBright = Color.valueOf("ffbb93"),
-			nanoCoreRedDark = Color.valueOf("d54040"),
+			crystalCircuitRed = Color.valueOf("fa8267"),
+			crystalCircuitRedBright = Color.valueOf("ffbb93"),
+			crystalCircuitRedDark = Color.valueOf("d54040"),
 			originiumBlack = Color.valueOf("3a2616"),
 			activatedOriginiumBlack = Color.valueOf("c32900"),
 			uraniumGrey = Color.valueOf("a5b2c2"),

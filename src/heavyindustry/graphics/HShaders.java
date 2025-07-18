@@ -37,7 +37,7 @@ public final class HShaders {
 	public static DepthScreenspaceShader depthScreenspace;
 	public static DepthAtmosphereShader depthAtmosphere;
 	public static AlphaShader alphaShader;
-	public static Gl30SurfaceShader brine, nanoFluid, boundWater, pit, waterPit;
+	public static Gl30SurfaceShader brine, originiumFluid, boundWater, pit, waterPit;
 	public static ChromaticAberrationShader chromatic;
 	public static MaskShader alphaMask;
 	public static WaveShader wave;
@@ -69,7 +69,7 @@ public final class HShaders {
 		alphaShader = new AlphaShader();
 
 		brine = new Gl30SurfaceShader("brine", "brine");
-		nanoFluid = new Gl30SurfaceShader("nano-fluid", "nano-fluid");
+		originiumFluid = new Gl30SurfaceShader("originium-fluid", "originium-fluid");
 		boundWater = new Gl30SurfaceShader("bound-water", "bound-water");
 		pit = new PitShader("pit", "pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
 		waterPit = new PitShader("water-pit", "water-pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
@@ -103,7 +103,7 @@ public final class HShaders {
 
 	public static void dispose() {
 		brine.dispose();
-		nanoFluid.dispose();
+		originiumFluid.dispose();
 		boundWater.dispose();
 	}
 
