@@ -36,7 +36,7 @@ public final class HStatusEffects {
 
 	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
 	public static void load() {
-		overheat = new LoadStatusEffect("overheat") {{
+		overheat = new AdaptStatusEffect("overheat") {{
 			color = Color.valueOf("ffdcd8");
 			disarm = true;
 			dragMultiplier = 1f;
@@ -45,14 +45,14 @@ public final class HStatusEffects {
 			effectChance = 0.35f;
 			effect = HFx.glowParticle;
 		}};
-		regenerating = new LoadStatusEffect("regenerating") {{
+		regenerating = new AdaptStatusEffect("regenerating") {{
 			color = HPal.regenerating;
 			damage = -4;
 			effectChance = 0.3f;
 			effect = HFx.glowParticle;
 			init(() -> opposite(sapped, slow, breached));
 		}};
-		breached = new LoadStatusEffect("breached") {{
+		breached = new AdaptStatusEffect("breached") {{
 			color = Color.valueOf("666484");
 			healthMultiplier = 0.9f;
 			speedMultiplier = 0.8f;
@@ -60,7 +60,7 @@ public final class HStatusEffects {
 			transitionDamage = 220f;
 			permanent = true;
 		}};
-		flamePoint = new LoadStatusEffect("flame-point") {{
+		flamePoint = new AdaptStatusEffect("flame-point") {{
 			damage = 0.2f;
 			color = Pal.lightFlame;
 			parentizeEffect = true;
@@ -85,7 +85,7 @@ public final class HStatusEffects {
 				}
 			}
 		};
-		ultFireBurn = new LoadStatusEffect("ult-fire-burn") {{
+		ultFireBurn = new AdaptStatusEffect("ult-fire-burn") {{
 			color = Pal.techBlue;
 			damage = 15f;
 			speedMultiplier = 1.2f;
@@ -101,7 +101,7 @@ public final class HStatusEffects {
 				}
 			}
 		};
-		territoryFieldIncrease = new LoadStatusEffect("territory-field-increase") {{
+		territoryFieldIncrease = new AdaptStatusEffect("territory-field-increase") {{
 			color = Color.valueOf("ea8878");
 			buildSpeedMultiplier = 1.5f;
 			speedMultiplier = 1.1f;
@@ -110,7 +110,7 @@ public final class HStatusEffects {
 			effectChance = 0.07f;
 			effect = Fx.overclocked;
 		}};
-		territoryFieldSuppress = new LoadStatusEffect("territory-field-suppress") {{
+		territoryFieldSuppress = new AdaptStatusEffect("territory-field-suppress") {{
 			color = Color.valueOf("8b9bb4");
 			speedMultiplier = 0.85f;
 			reloadMultiplier = 0.8f;
@@ -120,10 +120,10 @@ public final class HStatusEffects {
 		}};
 	}
 
-	public static class LoadStatusEffect extends StatusEffect {
+	public static class AdaptStatusEffect extends StatusEffect {
 		public Color outlineColor = Pal.gray;
 
-		public LoadStatusEffect(String name) {
+		public AdaptStatusEffect(String name) {
 			super(name);
 		}
 

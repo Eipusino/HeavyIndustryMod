@@ -15,8 +15,6 @@ import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.Autotiler;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
-
 public class Pipe extends MergingLiquidBlock implements Autotiler {
 	static final float rotatePad = 6;
 	static final float rotateHpad = 0.75f;
@@ -98,7 +96,7 @@ public class Pipe extends MergingLiquidBlock implements Autotiler {
 
 	@Override
 	public TextureRegion[] icons() {
-		return arrayOf(bottomRegions[0], regions[0][0]);
+		return new TextureRegion[]{region};
 	}
 
 	@Override

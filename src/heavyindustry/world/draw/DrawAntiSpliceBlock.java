@@ -16,7 +16,6 @@ import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static heavyindustry.util.Utils.split;
 
 public class DrawAntiSpliceBlock<E extends Building> extends DrawBlock {
@@ -59,7 +58,7 @@ public class DrawAntiSpliceBlock<E extends Building> extends DrawBlock {
 
 	@Override
 	public TextureRegion[] icons(Block block) {
-		return arrayOf(icon);
+		return new TextureRegion[]{icon};
 	}
 
 	protected TextureRegion getRegionWithBit(Pixmap[] regions, Pixmap[] inner, int index) {

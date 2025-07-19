@@ -40,7 +40,7 @@ public final class HTechTree {
 		vanillaNode(Liquids.oil, () -> nodeProduce(HLiquids.nitratedOil, () -> {}));
 		vanillaNode(Liquids.ozone, () -> nodeProduce(HLiquids.gas, () -> {}));
 		vanillaNode(Items.sand, () -> {
-			nodeProduce(HItems.stone, () -> nodeProduce(HItems.originium, () -> nodeProduce(HItems.purifiedOriginium, () -> nodeProduce(HItems.syntheticJade, () -> {}))));
+			nodeProduce(HItems.stone, () -> nodeProduce(HItems.originium, () -> {}));
 			nodeProduce(HItems.rareEarth, () -> {});
 			nodeProduce(HItems.salt, () -> {});
 		});
@@ -48,7 +48,7 @@ public final class HTechTree {
 		vanillaNode(Items.thorium, () -> nodeProduce(HItems.uranium, () -> nodeProduce(HItems.chromium, () -> {})));
 		vanillaNode(Items.surgeAlloy, () -> nodeProduce(HItems.heavyAlloy, () -> {}));
 		//items,liquids-erekir
-		vanillaNode(Items.beryllium, () -> nodeProduce(HItems.originium, () -> nodeProduce(HItems.purifiedOriginium, () -> nodeProduce(HItems.syntheticJade, () -> {}))));
+		vanillaNode(Items.beryllium, () -> nodeProduce(HItems.originium, () -> {}));
 		vanillaNode(Items.tungsten, () -> {
 			nodeProduce(HItems.uranium, () -> {});
 			nodeProduce(HItems.chromium, () -> {});
@@ -194,7 +194,6 @@ public final class HTechTree {
 			node(chemicalSiliconSmelter, ItemStack.with(Items.graphite, 2800, Items.silicon, 1000, Items.tungsten, 2400, Items.oxide, 50), () -> {});
 			node(ventHeater, () -> {});
 		});
-		vanillaNode(heatRedirector, () -> node(heatDriver, () -> {}));
 		vanillaNode(electricHeater, () -> {
 			node(largeElectricHeater, ItemStack.with(Items.tungsten, 3000, Items.oxide, 2400, Items.carbide, 800), () -> {});
 			node(liquidFuelHeater, () -> {});
@@ -286,10 +285,6 @@ public final class HTechTree {
 			node(ironBridgeCoast, Seq.with(new SectorComplete(coastline)), () -> {});
 		});
 		vanillaNode(desolateRift, () -> node(moltenRiftValley, Seq.with(new SectorComplete(desolateRift)), () -> {}));
-	}
-
-	public static void loadGliese() {
-		HPlanets.gliese.techTree = nodeRoot("serpulo", coreShard, () -> node(gravelMountain, () -> {}));
 	}
 
 	public static void vanillaNode(UnlockableContent content, Runnable children) {

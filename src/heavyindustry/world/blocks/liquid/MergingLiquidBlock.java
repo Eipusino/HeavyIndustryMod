@@ -10,8 +10,6 @@ import mindustry.type.Liquid;
 import mindustry.world.blocks.liquid.LiquidBlock;
 import mindustry.world.modules.LiquidModule;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
-
 public class MergingLiquidBlock extends LiquidBlock {
 	public static final Queue<MergingLiquidBuild> buildQueue = new Queue<>();
 	// terrible
@@ -23,7 +21,7 @@ public class MergingLiquidBlock extends LiquidBlock {
 
 	@Override
 	public TextureRegion[] icons() {
-		return arrayOf(bottomRegion, region);
+		return new TextureRegion[]{bottomRegion, region};
 	}
 
 	public class MergingLiquidBuild extends LiquidBuild {

@@ -9,7 +9,6 @@ import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawPlasma;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.tilesize;
 
 public class DrawExpandPlasma extends DrawPlasma {
@@ -39,6 +38,6 @@ public class DrawExpandPlasma extends DrawPlasma {
 
 	@Override
 	public TextureRegion[] icons(Block block) {
-		return arrayOf(block.region);
+		return new TextureRegion[]{block.region};
 	}
 }

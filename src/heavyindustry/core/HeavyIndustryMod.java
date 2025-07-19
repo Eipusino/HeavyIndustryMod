@@ -75,7 +75,7 @@ import java.util.Objects;
 
 import static heavyindustry.HVars.inputAggregator;
 import static heavyindustry.HVars.internalTree;
-import static heavyindustry.HVars.modName;
+import static heavyindustry.HVars.MOD_NAME;
 import static heavyindustry.HVars.name;
 import static heavyindustry.HVars.sizedGraphics;
 import static mindustry.Vars.headless;
@@ -215,7 +215,6 @@ public final class HeavyIndustryMod extends Mod {
 			HPlanets.load();
 			HSectorPresets.load();
 			HTechTree.load();
-			HTechTree.loadGliese();
 		}
 
 		Utils.loadItems();
@@ -286,7 +285,7 @@ public final class HeavyIndustryMod extends Mod {
 			theMod.meta.author = author;
 			if (isPlugin) {
 				theMod.meta.hidden = true;
-				theMod.meta.name = modName + "-plugin";
+				theMod.meta.name = MOD_NAME + "-plugin";
 				theMod.meta.displayName = Core.bundle.get("hi-name") + " Plugin";
 			}
 		}
@@ -353,7 +352,7 @@ public final class HeavyIndustryMod extends Mod {
 
 	/** Safely obtain the {@code LoadedMod} for this mod. */
 	public static LoadedMod loaded() {
-		if (loaded == null) loaded = mods.getMod(modName);
+		if (loaded == null) loaded = mods.getMod(MOD_NAME);
 		return loaded;
 	}
 

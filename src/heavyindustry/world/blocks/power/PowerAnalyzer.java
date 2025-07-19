@@ -19,8 +19,7 @@ import mindustry.world.blocks.power.PowerBlock;
 import mindustry.world.blocks.power.PowerNode;
 import mindustry.world.meta.BlockStatus;
 
-import static heavyindustry.HVars.modName;
-import static heavyindustry.struct.Collectionsf.arrayOf;
+import static heavyindustry.HVars.MOD_NAME;
 import static mindustry.Vars.player;
 import static mindustry.Vars.renderer;
 import static mindustry.Vars.tilesize;
@@ -53,12 +52,12 @@ public class PowerAnalyzer extends PowerBlock {
 		super.load();
 
 		topRegion = Core.atlas.find(name + "-top");
-		arrowRegion = Core.atlas.find(name + "-arrow", modName + "-power-analyzer-arrow");
+		arrowRegion = Core.atlas.find(name + "-arrow", MOD_NAME + "-power-analyzer-arrow");
 	}
 
 	@Override
 	protected TextureRegion[] icons() {
-		return arrayOf(region, topRegion);
+		return new TextureRegion[]{region, topRegion};
 	}
 
 	@Override

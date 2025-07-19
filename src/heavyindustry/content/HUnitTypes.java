@@ -124,7 +124,6 @@ import mindustry.world.meta.BlockFlag;
 import mindustry.world.meta.Env;
 
 import static heavyindustry.HVars.name;
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.content;
 import static mindustry.Vars.indexer;
 import static mindustry.Vars.tilePayload;
@@ -341,7 +340,7 @@ public final class HUnitTypes {
 			itemCapacity = 30;
 			faceTarget = false;
 			immunities = ObjectSet.with(StatusEffects.burning);
-			targetFlags = arrayOf(BlockFlag.repair, BlockFlag.turret);
+			targetFlags = new BlockFlag[]{BlockFlag.repair, BlockFlag.turret};
 			weapons.add(new Weapon(name("destruction-weapon")) {{
 				reload = 110f;
 				x = 0f;
@@ -1205,7 +1204,7 @@ public final class HUnitTypes {
 			health = 60000f;
 			hitSize = 62f;
 			armor = 45f;
-			targetFlags = arrayOf(BlockFlag.reactor, BlockFlag.battery, BlockFlag.core, null);
+			targetFlags = new BlockFlag[]{BlockFlag.reactor, BlockFlag.battery, BlockFlag.core, null};
 			ammoType = new ItemAmmoType(HItems.uranium);
 			itemCapacity = 460;
 			abilities.add(new EnergyFieldAbility(220f, 90f, 192f) {{
@@ -2628,7 +2627,7 @@ public final class HUnitTypes {
 			targetGround = true;
 			targetAir = false;
 			ammoType = new PowerAmmoType(22000f);
-			targetFlags = arrayOf(BlockFlag.storage, BlockFlag.repair, BlockFlag.turret, null);
+			targetFlags = new BlockFlag[]{BlockFlag.storage, BlockFlag.repair, BlockFlag.turret, null};
 			weapons.add(new Weapon() {{
 				mirror = false;
 				rotate = true;
@@ -3120,7 +3119,7 @@ public final class HUnitTypes {
 			crashDamageMultiplier = Mathf.clamp(hitSize / 10f, 1, 10);
 			buildBeamOffset = 0;
 			aiController = SniperAI::new;
-			targetFlags = arrayOf(BlockFlag.reactor, BlockFlag.generator, BlockFlag.turret, null);
+			targetFlags = new BlockFlag[]{BlockFlag.reactor, BlockFlag.generator, BlockFlag.turret, null};
 			abilities.add(new DeathAbility());
 			weapons.add(new Weapon() {{
 				reload = 180f;

@@ -20,7 +20,6 @@ import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.content;
 import static mindustry.Vars.itemSize;
 import static mindustry.Vars.tilesize;
@@ -66,7 +65,7 @@ public class AdaptDuctJunction extends Block {
 
 	@Override
 	public TextureRegion[] icons() {
-		return arrayOf(bottomRegion, region);
+		return new TextureRegion[]{bottomRegion, region};
 	}
 
 	@Override

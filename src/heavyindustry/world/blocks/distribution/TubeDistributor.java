@@ -14,7 +14,6 @@ import mindustry.type.Item;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Router;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static heavyindustry.util.Utils.reverse;
 import static mindustry.Vars.itemSize;
 
@@ -46,7 +45,7 @@ public class TubeDistributor extends Router {
 
 	@Override
 	public TextureRegion[] icons() {
-		return arrayOf(region);
+		return new TextureRegion[]{region};
 	}
 
 	public class TubeDistributorBuild extends RouterBuild {

@@ -4,7 +4,7 @@ import arc.Core;
 import arc.scene.style.Drawable;
 import arc.scene.style.TextureRegionDrawable;
 
-import static heavyindustry.HVars.modName;
+import static heavyindustry.HVars.MOD_NAME;
 
 public final class HIcon {
 	public static Drawable
@@ -73,11 +73,11 @@ public final class HIcon {
 	}
 
 	public static <T extends Drawable> T getModDrawable(String name) {
-		return Core.atlas.getDrawable(modName + "-" + name);
+		return Core.atlas.getDrawable(MOD_NAME + "-" + name);
 	}
 
 	public static Drawable modDrawable(String name) {
-		return Core.atlas.drawable(modName + "-" + name);
+		return Core.atlas.drawable(MOD_NAME + "-" + name);
 	}
 
 	public static TextureRegionDrawable regionDrawable(String name) {
@@ -85,6 +85,6 @@ public final class HIcon {
 	}
 
 	public static TextureRegionDrawable modRegionDrawable(String name) {
-		return regionDrawable(modName + "-" + name);
+		return regionDrawable(MOD_NAME + "-" + name);
 	}
 }

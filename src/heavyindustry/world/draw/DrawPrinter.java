@@ -16,8 +16,6 @@ import mindustry.type.Item;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawDefault;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
-
 public class DrawPrinter extends DrawDefault {
 	public Color printColor;
 	public Color lightColor;
@@ -76,6 +74,6 @@ public class DrawPrinter extends DrawDefault {
 
 	@Override
 	public TextureRegion[] icons(Block block) {
-		return arrayOf(bottom, block.region);
+		return new TextureRegion[]{bottom, block.region};
 	}
 }

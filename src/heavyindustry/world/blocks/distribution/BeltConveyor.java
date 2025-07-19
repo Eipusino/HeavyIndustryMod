@@ -18,7 +18,6 @@ import mindustry.world.Edges;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Conveyor;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static heavyindustry.util.Utils.splitUnLayers;
 import static mindustry.Vars.itemSize;
 import static mindustry.Vars.tilesize;
@@ -63,14 +62,14 @@ public class BeltConveyor extends Conveyor {
 		if (bits == null) return;
 
 		TextureRegion conveyor = regions[0][bits[0]], edge = edgeRegions[0][bits[0]];
-		for (TextureRegion i : arrayOf(conveyor, edge)) {
+		for (TextureRegion i : new TextureRegion[]{conveyor, edge}) {
 			Draw.rect(i, plan.drawx(), plan.drawy(), i.width * bits[1] * i.scl(), i.height * bits[2] * i.scl(), plan.rotation * 90);
 		}
 	}
 
 	@Override
 	public TextureRegion[] icons() {
-		return arrayOf(region);
+		return new TextureRegion[]{region};
 	}
 
 	@Override

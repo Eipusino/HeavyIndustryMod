@@ -8,7 +8,6 @@ import arc.math.geom.Point2;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Floor;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static heavyindustry.util.Utils.splitUnLayers;
 
 public class TiledFloor extends Floor {
@@ -36,7 +35,7 @@ public class TiledFloor extends Floor {
 
 	@Override
 	public TextureRegion[] icons() {
-		return arrayOf(region);
+		return new TextureRegion[]{region};
 	}
 
 	private void drawTile(Tile tile) {

@@ -14,7 +14,6 @@ import mindustry.world.blocks.distribution.DirectionLiquidBridge;
 import mindustry.world.blocks.liquid.Conduit;
 import mindustry.world.blocks.liquid.LiquidJunction;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static heavyindustry.util.Utils.split;
 import static mindustry.Vars.renderer;
 
@@ -52,7 +51,7 @@ public class BeltConduit extends Conduit {
 
 	@Override
 	public TextureRegion[] icons() {
-		return arrayOf(region);
+		return new TextureRegion[]{region};
 	}
 
 	@Override

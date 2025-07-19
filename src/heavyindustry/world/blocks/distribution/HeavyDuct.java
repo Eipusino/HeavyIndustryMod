@@ -19,7 +19,6 @@ import mindustry.world.blocks.distribution.Junction;
 import mindustry.world.blocks.sandbox.ItemSource;
 import mindustry.world.blocks.sandbox.ItemVoid;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static heavyindustry.util.Utils.split;
 import static mindustry.Vars.itemSize;
 import static mindustry.Vars.tilesize;
@@ -47,7 +46,7 @@ public class HeavyDuct extends TubeDuct {
 
 	@Override
 	public TextureRegion[] icons() {
-		return arrayOf(region);
+		return new TextureRegion[]{region};
 	}
 
 	@Override

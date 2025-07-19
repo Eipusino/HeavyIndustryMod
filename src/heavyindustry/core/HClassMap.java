@@ -213,7 +213,6 @@ import heavyindustry.world.blocks.storage.ResourcesDispatchingCenter;
 import heavyindustry.world.blocks.storage.SpaceUnloader;
 import heavyindustry.world.blocks.storage.TurretCoreBlock;
 import heavyindustry.world.blocks.storage.AdaptUnloader;
-import heavyindustry.world.blocks.storage.AdaptUnloader.AdaptUnloaderBuild;
 import heavyindustry.world.blocks.units.Collector;
 import heavyindustry.world.blocks.units.DerivativeUnitFactory;
 import heavyindustry.world.blocks.units.IndestructibleUnitFactory;
@@ -223,6 +222,7 @@ import heavyindustry.world.blocks.units.AdaptPayloadSource;
 import heavyindustry.world.blocks.units.SelectableReconstructor;
 import heavyindustry.world.blocks.units.UnitBoost;
 import heavyindustry.world.blocks.units.UnitIniter;
+import heavyindustry.world.consumers.ConsumeItem;
 import heavyindustry.world.consumers.ConsumeLiquidDynamic;
 import heavyindustry.world.draw.Draw3dSpin;
 import heavyindustry.world.draw.DrawAnim;
@@ -658,7 +658,7 @@ final class HClassMap {
 		classes.put("OreDetector", OreDetector.class);
 		classes.put("OreDetectorBuild", OreDetector.OreDetectorBuild.class);
 		classes.put("AdaptUnloader", AdaptUnloader.class);
-		classes.put("AdaptUnloaderBuild", AdaptUnloaderBuild.class);
+		classes.put("AdaptUnloaderBuild", AdaptUnloader.AdaptUnloaderBuild.class);
 		classes.put("DetectorCoreBlock", DetectorCoreBlock.class);
 		classes.put("DetectorCoreBuild", DetectorCoreBlock.DetectorCoreBuild.class);
 		classes.put("FrontlineCoreBlock", FrontlineCoreBlock.class);
@@ -680,6 +680,7 @@ final class HClassMap {
 		classes.put("CaptureBlock", CaptureBlock.class);
 		classes.put("CaptureBuild", CaptureBlock.CaptureBuild.class);
 		//consume
+		classes.put("ConsumeItem", ConsumeItem.class);
 		classes.put("ConsumeLiquidDynamic", ConsumeLiquidDynamic.class);
 		//draw
 		classes.put("DrawZSet", DrawZSet.class);

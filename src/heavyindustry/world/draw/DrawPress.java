@@ -8,8 +8,6 @@ import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
-
 // Draws a hydraulic press.
 public class DrawPress extends DrawBlock {
 	public TextureRegion pressRegion;
@@ -35,6 +33,6 @@ public class DrawPress extends DrawBlock {
 
 	@Override
 	public TextureRegion[] icons(Block block) {
-		return arrayOf(pressRegion);
+		return new TextureRegion[]{pressRegion};
 	}
 }

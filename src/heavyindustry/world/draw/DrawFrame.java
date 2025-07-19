@@ -9,7 +9,6 @@ import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static heavyindustry.util.Utils.split;
 
 @SuppressWarnings("unchecked")
@@ -35,7 +34,7 @@ public class DrawFrame<E extends Building> extends DrawBlock {
 
 	@Override
 	public TextureRegion[] icons(Block block) {
-		return arrayOf(icon);
+		return new TextureRegion[]{icon};
 	}
 
 	@Override

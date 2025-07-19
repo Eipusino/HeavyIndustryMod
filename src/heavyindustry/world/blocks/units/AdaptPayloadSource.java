@@ -18,7 +18,6 @@ import mindustry.world.blocks.ItemSelection;
 import mindustry.world.blocks.payloads.PayloadSource;
 import mindustry.world.blocks.storage.CoreBlock;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.content;
 import static mindustry.Vars.player;
 import static mindustry.Vars.state;

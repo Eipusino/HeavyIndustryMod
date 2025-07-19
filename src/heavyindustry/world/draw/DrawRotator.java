@@ -10,8 +10,6 @@ import mindustry.graphics.Drawf;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
-
 public class DrawRotator extends DrawBlock {
 	public String suffix = "-rotator";
 	public TextureRegion rotator;
@@ -67,7 +65,7 @@ public class DrawRotator extends DrawBlock {
 
 	@Override
 	public TextureRegion[] icons(Block block) {
-		return arrayOf(rotator);
+		return new TextureRegion[]{rotator};
 	}
 
 	@Override

@@ -23,7 +23,6 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 import mindustry.world.meta.StatValues;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
@@ -61,13 +60,13 @@ public class PayloadJunction extends Block {
 
 		TextureRegion hLightRegion = Core.atlas.find(name + "-light-h");
 		if (hLightRegion.found()) {
-			dLightRegions = arrayOf(hLightRegion, Core.atlas.find(name + "-light-v"));
+			dLightRegions = new TextureRegion[]{hLightRegion, Core.atlas.find(name + "-light-v")};
 		}
 	}
 
 	@Override
 	protected TextureRegion[] icons() {
-		return arrayOf(iconRegion);
+		return new TextureRegion[]{iconRegion};
 	}
 
 	@Override

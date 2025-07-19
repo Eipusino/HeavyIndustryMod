@@ -30,7 +30,6 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.payloads.Payload;
 import mindustry.world.blocks.payloads.PayloadBlock;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.renderer;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
@@ -109,7 +108,7 @@ public class PayloadRail extends PayloadBlock {
 
 	@Override
 	public TextureRegion[] icons() {
-		return arrayOf(region, inRegion, outRegion, topRegion, railEndRegion);
+		return new TextureRegion[]{region, inRegion, outRegion, topRegion, railEndRegion};
 	}
 
 	@Override

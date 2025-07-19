@@ -31,7 +31,6 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
 import static heavyindustry.HVars.name;
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.state;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
@@ -93,7 +92,7 @@ public class HeatDriver extends Block {
 	}
 
 	public static class DrawHeatDriver extends DrawBlock {
-		public TextureRegion turretPart, turretLine, lPart, rPart, lLine, rLine, effect, arrow, preview;
+		public TextureRegion turretPart, turretLine, rPart, rLine, effect, arrow, preview;
 
 		public float arrowSpacing = 4f, arrowOffset = 2f, arrowPeriod = 0.4f, arrowTimeScl = 6.2f;
 
@@ -113,16 +112,13 @@ public class HeatDriver extends Block {
 
 			Drawf.shadow(turretPart, bu.x, bu.y, rotation - 90f);
 
-			Drawf.shadow(lPart, bu.x + Angles.trnsx(rotation + 180f, 0f, -move) - bl.size / 2f, bu.y + Angles.trnsy(rotation + 180f, 0, -move) - bl.size / 2f, rotation - 90f);
 			Drawf.shadow(rPart, bu.x + Angles.trnsx(rotation + 180f, 0f, move) - bl.size / 2f, bu.y + Angles.trnsy(rotation + 180f, 0f, move) - bl.size / 2f, rotation - 90f);
 
 			Draw.rect(rLine, bu.x + Angles.trnsx(rotation + 180f, 0f, move), bu.y + Angles.trnsy(rotation + 180f, 0f, move), rotation - 90f);
-			Draw.rect(lLine, bu.x + Angles.trnsx(rotation + 180f, 0f, -move), bu.y + Angles.trnsy(rotation + 180f, 0f, -move), rotation - 90f);
 
 			Draw.rect(turretLine, bu.x, bu.y, rotation - 90f);
 			Draw.rect(turretPart, bu.x, bu.y, rotation - 90f);
 
-			Draw.rect(lPart, bu.x + Angles.trnsx(rotation + 180f, 0f, -move), bu.y + Angles.trnsy(rotation + 180f, 0f, -move), rotation - 90f);
 			Draw.rect(rPart, bu.x + Angles.trnsx(rotation + 180f, 0f, move), bu.y + Angles.trnsy(rotation + 180f, 0f, move), rotation - 90f);
 
 			float p = Math.min((bu.heat / bl.visualMaxHeat) * bu.power.status, 1);
@@ -172,8 +168,6 @@ public class HeatDriver extends Block {
 		public void load(Block block) {
 			turretPart = Core.atlas.find(block.name + "-turret");
 			turretLine = Core.atlas.find(block.name + "-turret-outline");
-			lPart = Core.atlas.find(block.name + "-l");
-			lLine = Core.atlas.find(block.name + "-l-outline");
 			rPart = Core.atlas.find(block.name + "-reflect");
 			rLine = Core.atlas.find(block.name + "-reflect-outline");
 			effect = Core.atlas.find(block.name + "-effect", name("heat-driver-effect"));
@@ -188,7 +182,7 @@ public class HeatDriver extends Block {
 
 		@Override
 		public TextureRegion[] icons(Block block) {
-			return arrayOf(preview);
+			return new TextureRegion[]{preview};
 		}
 	}
 

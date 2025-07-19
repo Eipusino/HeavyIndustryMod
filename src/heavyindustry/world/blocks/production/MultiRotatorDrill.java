@@ -21,7 +21,6 @@ import mindustry.graphics.MultiPacker;
 import mindustry.world.blocks.production.Drill;
 
 import static heavyindustry.HVars.name;
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.tilesize;
 
 public class MultiRotatorDrill extends Drill implements ImageGenerator {
@@ -126,7 +125,7 @@ public class MultiRotatorDrill extends Drill implements ImageGenerator {
 
 	@Override
 	public TextureRegion[] icons() {
-		return arrayOf(region);
+		return new TextureRegion[]{region};
 	}
 
 	@Override

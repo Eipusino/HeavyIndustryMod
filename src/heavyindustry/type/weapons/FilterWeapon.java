@@ -18,8 +18,6 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 import mindustry.world.meta.StatValues;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
-
 /** a weapon that shoots different things depending on things in a unit. */
 public class FilterWeapon extends Weapon {
 	/** separate from bulletFilter for stats. */
@@ -27,7 +25,7 @@ public class FilterWeapon extends Weapon {
 	public Func<Unit, BulletType> bulletFilter = unit -> bullets[0];
 	// TODO i don't know how to make those icons work, and i have no clue as to why it is casting a string to BulletType
 	public TextureRegion[] iconRegions;
-	public String[] icons = arrayOf("");
+	public String[] icons = new String[]{""};
 
 	public FilterWeapon(String name) {
 		super(name);

@@ -18,7 +18,6 @@ import mindustry.world.blocks.distribution.DirectionalUnloader;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.content;
 
 public class RailDirectionalUnloader extends DirectionalUnloader {
@@ -44,7 +43,7 @@ public class RailDirectionalUnloader extends DirectionalUnloader {
 
 	@Override
 	public TextureRegion[] icons() {
-		return arrayOf(region);
+		return new TextureRegion[]{region};
 	}
 
 	@Override

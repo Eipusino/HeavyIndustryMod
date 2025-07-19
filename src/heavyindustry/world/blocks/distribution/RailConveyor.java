@@ -27,7 +27,6 @@ import mindustry.world.Edges;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Conveyor;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.itemSize;
 import static mindustry.Vars.player;
 import static mindustry.Vars.tilesize;
@@ -95,7 +94,7 @@ public class RailConveyor extends Conveyor {
 
 	@Override
 	public TextureRegion[] icons() {
-		return arrayOf(region);
+		return new TextureRegion[]{region};
 	}
 
 	public int conveyorFrame() {

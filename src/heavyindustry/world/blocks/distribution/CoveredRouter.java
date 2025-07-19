@@ -17,7 +17,6 @@ import mindustry.world.blocks.distribution.Router;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.itemSize;
 import static mindustry.Vars.tilesize;
 
@@ -47,7 +46,7 @@ public class CoveredRouter extends Router {
 
 	@Override
 	public TextureRegion[] icons() {
-		return arrayOf(region, topRegion);
+		return new TextureRegion[]{region, topRegion};
 	}
 
 	public class CoveredRouterBuild extends RouterBuild {

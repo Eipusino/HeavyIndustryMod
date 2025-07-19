@@ -34,8 +34,6 @@ import mindustry.world.blocks.payloads.Payload;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
-
 /**
  * NONE OF THESE PAYLOAD BLOCKS HAVE LIMITS CURRENTLY THEY CAN LITERALLY PICK UP MURASAKI
  * <p>also These numbers. They anger me.
@@ -152,7 +150,7 @@ public class PayloadCrane extends Block {
 
 	@Override
 	protected TextureRegion[] icons() {
-		return arrayOf(baseRegion, previewRegion);
+		return new TextureRegion[]{baseRegion, previewRegion};
 	}
 
 	@Override

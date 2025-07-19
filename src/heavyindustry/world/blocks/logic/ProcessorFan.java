@@ -7,8 +7,6 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import heavyindustry.gen.HSounds;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
-
 public class ProcessorFan extends ProcessorCooler {
 	public TextureRegion spinnerRegion;
 	public float spinSpeed = 28f;
@@ -27,7 +25,7 @@ public class ProcessorFan extends ProcessorCooler {
 
 	@Override
 	public TextureRegion[] icons() {
-		return arrayOf(region, spinnerRegion, topRegion);
+		return new TextureRegion[]{region, spinnerRegion, topRegion};
 	}
 
 	public class ProcessorFanBuild extends ProcessorCoolerBuild {

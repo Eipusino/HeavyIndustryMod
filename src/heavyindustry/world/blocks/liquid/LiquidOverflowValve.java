@@ -8,8 +8,6 @@ import mindustry.type.Liquid;
 import mindustry.world.blocks.liquid.LiquidBlock;
 import mindustry.world.meta.Stat;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
-
 public class LiquidOverflowValve extends LiquidBlock {
 	public boolean invert = false;
 
@@ -33,7 +31,7 @@ public class LiquidOverflowValve extends LiquidBlock {
 
 	@Override
 	public TextureRegion[] icons() {
-		return arrayOf(region);
+		return new TextureRegion[]{region};
 	}
 
 	public class LiquidOverfloatValveBuild extends Building {

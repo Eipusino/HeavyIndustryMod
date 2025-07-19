@@ -6,6 +6,7 @@
 	"main": "heavyindustry.core.HeavyIndustryMod",
 	"description": "Meaningless Mod.",
 	"version": "1.0.7-beta",
+	"repo": "Eipusino/HeavyIndustryMod",
 	"java": true,
 	"plugin": false,
 	"minGameVersion": 149.0,

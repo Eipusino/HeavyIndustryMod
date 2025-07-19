@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.storage;
 
+import arc.graphics.g2d.TextureRegion;
 import mindustry.world.blocks.storage.Unloader;
 
 /**
@@ -10,6 +11,11 @@ import mindustry.world.blocks.storage.Unloader;
 public class AdaptUnloader extends Unloader {
 	public AdaptUnloader(String name) {
 		super(name);
+	}
+
+	@Override
+	protected TextureRegion[] icons() {
+		return new TextureRegion[]{region};
 	}
 
 	public class AdaptUnloaderBuild extends UnloaderBuild {

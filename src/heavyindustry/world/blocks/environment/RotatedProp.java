@@ -9,8 +9,6 @@ import mindustry.graphics.Layer;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Prop;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
-
 public class RotatedProp extends Prop {
 	public RotatedProp(String name) {
 		super(name);
@@ -35,6 +33,6 @@ public class RotatedProp extends Prop {
 
 	@Override
 	public TextureRegion[] icons() {
-		return arrayOf(region);
+		return new TextureRegion[]{region};
 	}
 }

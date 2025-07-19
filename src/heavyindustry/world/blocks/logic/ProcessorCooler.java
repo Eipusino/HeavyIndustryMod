@@ -19,8 +19,6 @@ import mindustry.world.consumers.ConsumeLiquidFilter;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
-
 public class ProcessorCooler extends Block {
 	public TextureRegion heatRegion, liquidRegion, topRegion;
 
@@ -66,7 +64,7 @@ public class ProcessorCooler extends Block {
 
 	@Override
 	public TextureRegion[] icons() {
-		if (useTopRegion) return arrayOf(region, topRegion);
+		if (useTopRegion) return new TextureRegion[]{region, topRegion};
 		return super.icons();
 	}
 

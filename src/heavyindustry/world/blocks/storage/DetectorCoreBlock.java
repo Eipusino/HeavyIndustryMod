@@ -28,7 +28,6 @@ import mindustry.ui.Styles;
 import mindustry.world.Tile;
 import mindustry.world.blocks.storage.CoreBlock;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.player;
 import static mindustry.Vars.state;
 import static mindustry.Vars.tilesize;
@@ -61,7 +60,7 @@ public class DetectorCoreBlock extends CoreBlock {
 
 	@Override
 	protected TextureRegion[] icons() {
-		return teamRegion.found() ? arrayOf(region, teamRegions[Team.sharded.id]) : arrayOf(region);
+		return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
 	}
 
 	public class DetectorCoreBuild extends CoreBuild implements Ranged {

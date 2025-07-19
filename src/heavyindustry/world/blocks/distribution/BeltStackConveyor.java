@@ -17,7 +17,6 @@ import mindustry.graphics.Layer;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.StackConveyor;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static heavyindustry.util.Utils.split;
 import static mindustry.Vars.itemSize;
 import static mindustry.Vars.tilesize;
@@ -54,7 +53,7 @@ public class BeltStackConveyor extends StackConveyor {
 
 	@Override
 	protected TextureRegion[] icons() {
-		return arrayOf(region);
+		return new TextureRegion[]{region};
 	}
 
 	@Override

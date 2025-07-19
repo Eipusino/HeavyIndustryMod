@@ -37,10 +37,10 @@ public final class HLiquids {
 		gas = new Liquid("gas", Color.valueOf("fbd367")) {{
 			gasColor = barColor = lightColor = color;
 			gas = true;
-			flammability = 1f;
-			explosiveness = 1f;
+			flammability = 1.25f;
+			explosiveness = 0.25f;
 		}};
-		lightOil = new Liquid("light-oil", Color.rgb(252, 205, 32).a(0.8f)) {{
+		lightOil = new Liquid("light-oil", Color.rgb(239, 202, 152).a(0.8f)) {{
 			heatCapacity = 0.7f;
 			temperature = 0.3f;
 			boilPoint = 0.6f;
@@ -59,7 +59,7 @@ public final class HLiquids {
 			canStayOn.add(Liquids.water);
 			coolant = false;
 		}};
-		originiumFluid = new MultiCellLiquid("originium-fluid", HPal.crystalCircuitRed) {{
+		originiumFluid = new MultiCellLiquid("originium-fluid", HPal.originiumRed) {{
 			heatCapacity = 2.5f;
 			flammability = 0.2f;
 			explosiveness = 0.4f;
@@ -75,7 +75,7 @@ public final class HLiquids {
 			@Override
 			public void drawPuddle(Puddle puddle) {
 				Draws.drawTask(originiumFluidId, puddle, HShaders.wave, s -> {
-					s.waveMix = HPal.crystalCircuitRedBright;
+					s.waveMix = HPal.originiumRedBright;
 					s.mixAlpha = 0.2f + Mathf.absin(5, 0.2f);
 					s.waveScl = 0.2f;
 					s.maxThreshold = 1f;

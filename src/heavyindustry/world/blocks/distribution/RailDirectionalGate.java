@@ -15,7 +15,6 @@ import mindustry.gen.Building;
 import mindustry.gen.Sounds;
 import mindustry.world.blocks.distribution.OverflowDuct;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.player;
 
 public class RailDirectionalGate extends OverflowDuct {
@@ -40,7 +39,7 @@ public class RailDirectionalGate extends OverflowDuct {
 	}
 
 	public TextureRegion[] icons() {
-		return arrayOf(region);
+		return new TextureRegion[]{region};
 	}
 
 	@Override

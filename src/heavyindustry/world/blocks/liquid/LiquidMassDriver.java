@@ -36,7 +36,6 @@ import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.control;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
@@ -396,7 +395,7 @@ public class LiquidMassDriver extends Block {
 
 		@Override
 		public TextureRegion[] icons(Block block) {
-			return arrayOf(baseRegion, bottomRegion, region, topRegion);
+			return new TextureRegion[]{baseRegion, bottomRegion, region, topRegion};
 		}
 
 		@Override

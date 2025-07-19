@@ -63,7 +63,6 @@ import heavyindustry.world.blocks.environment.DepthCliffHelper;
 import heavyindustry.world.blocks.environment.DepthCliff;
 import heavyindustry.world.blocks.environment.ConnectedWall;
 import heavyindustry.world.blocks.heat.FuelHeater;
-import heavyindustry.world.blocks.heat.HeatDriver;
 import heavyindustry.world.blocks.heat.ThermalHeater;
 import heavyindustry.world.blocks.liquid.BeltConduit;
 import heavyindustry.world.blocks.liquid.LiquidDirectionalUnloader;
@@ -225,6 +224,7 @@ import mindustry.world.draw.DrawGlowRegion;
 import mindustry.world.draw.DrawHeatInput;
 import mindustry.world.draw.DrawHeatOutput;
 import mindustry.world.draw.DrawHeatRegion;
+import mindustry.world.draw.DrawLiquidOutputs;
 import mindustry.world.draw.DrawLiquidRegion;
 import mindustry.world.draw.DrawLiquidTile;
 import mindustry.world.draw.DrawMulti;
@@ -244,7 +244,6 @@ import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 
 import static heavyindustry.HVars.name;
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.content;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.indexer;
@@ -308,7 +307,7 @@ public final class HBlocks {
 			originiumHeater,
 			uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilSedimentationTank,
 	//production-erekir
-	ventHeater, chemicalSiliconSmelter, largeElectricHeater, liquidFuelHeater, heatDriver, largeOxidationChamber, largeSurgeCrucible, largeCarbideCrucible,
+	ventHeater, chemicalSiliconSmelter, largeElectricHeater, liquidFuelHeater, largeOxidationChamber, largeSurgeCrucible, largeCarbideCrucible,
 			uraniumFuser, chromiumFuser,
 	//defense
 	lighthouse, mendDome, sectorStructureMender, assignOverdrive, largeShieldGenerator, paralysisMine, detonator, bombLauncher,
@@ -463,7 +462,7 @@ public final class HBlocks {
 		}
 			@Override
 			public TextureRegion[] icons() {
-				return arrayOf(fullIcon);
+				return new TextureRegion[]{fullIcon};
 			}
 		};
 		waterPit = new Floor("water-pit", 0) {{
@@ -478,7 +477,7 @@ public final class HBlocks {
 		}
 			@Override
 			public TextureRegion[] icons() {
-				return arrayOf(fullIcon);
+				return new TextureRegion[]{fullIcon};
 			}
 		};
 		softRareEarth = new Floor("soft-rare-earth", 3) {{
@@ -995,7 +994,7 @@ public final class HBlocks {
 
 			@Override
 			public TextureRegion[] icons() {
-				return arrayOf(region);
+				return new TextureRegion[]{region};
 			}
 		};
 		oilRig = new Fracker("oil-rig") {{
@@ -1047,7 +1046,7 @@ public final class HBlocks {
 		}
 			@Override
 			public TextureRegion[] icons() {
-				return teamRegion.found() ? arrayOf(region, teamRegions[Team.sharded.id]) : arrayOf(region);
+				return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
 			}
 		};
 		//drill-erekir
@@ -1587,49 +1586,49 @@ public final class HBlocks {
 			public final float alpha = 0.9f, glowScale = 10f, glowIntensity = 0.5f, layer = Layer.blockAdditive;
 			public final Color color = Color.red.cpy();
 			public TextureRegion bottomRegion, glowRegion;
-			{
-				buildType = () -> new NuclearReactorBuild() {
-					@Override
-					public void draw() {
-						Draw.rect(bottomRegion, x, y);
+		{
+			buildType = () -> new NuclearReactorBuild() {
+				@Override
+				public void draw() {
+					Draw.rect(bottomRegion, x, y);
 
-						Draw.color(coolColor, hotColor, heat);
-						Fill.rect(x, y, size * tilesize, size * tilesize);
+					Draw.color(coolColor, hotColor, heat);
+					Fill.rect(x, y, size * tilesize, size * tilesize);
 
-						Draw.color(liquids.current().color);
-						Draw.alpha(liquids.currentAmount() / liquidCapacity);
-						Draw.rect(topRegion, x, y);
-						Draw.reset();
+					Draw.color(liquids.current().color);
+					Draw.alpha(liquids.currentAmount() / liquidCapacity);
+					Draw.rect(topRegion, x, y);
+					Draw.reset();
 
-						Draw.rect(region, x, y);
+					Draw.rect(region, x, y);
 
-						drawGlow();
+					drawGlow();
 
-						if (heat > flashThreshold) {
-							flash += (1f + ((heat - flashThreshold) / (1f - flashThreshold)) * 5.4f) * Time.delta;
-							Draw.color(Color.red, Color.yellow, Mathf.absin(flash, 9f, 1f));
-							Draw.alpha(0.3f);
-							Draw.rect(lightsRegion, x, y);
-						}
-
-						Draw.reset();
+					if (heat > flashThreshold) {
+						flash += (1f + ((heat - flashThreshold) / (1f - flashThreshold)) * 5.4f) * Time.delta;
+						Draw.color(Color.red, Color.yellow, Mathf.absin(flash, 9f, 1f));
+						Draw.alpha(0.3f);
+						Draw.rect(lightsRegion, x, y);
 					}
 
-					public void drawGlow() {
-						if (warmup() <= 0.001f) return;
+					Draw.reset();
+				}
 
-						float z = Draw.z();
-						Draw.z(layer);
-						Draw.blend(blending);
-						Draw.color(color);
-						Draw.alpha((Mathf.absin(totalProgress(), glowScale, alpha) * glowIntensity + 1f - glowIntensity) * warmup() * alpha);
-						Draw.rect(glowRegion, x, y, 0f);
-						Draw.reset();
-						Draw.blend();
-						Draw.z(z);
-					}
-				};
-			}
+				public void drawGlow() {
+					if (warmup() <= 0.001f) return;
+
+					float z = Draw.z();
+					Draw.z(layer);
+					Draw.blend(blending);
+					Draw.color(color);
+					Draw.alpha((Mathf.absin(totalProgress(), glowScale, alpha) * glowIntensity + 1f - glowIntensity) * warmup() * alpha);
+					Draw.rect(glowRegion, x, y, 0f);
+					Draw.reset();
+					Draw.blend();
+					Draw.z(z);
+				}
+			};
+		}
 			@Override
 			public void load() {
 				super.load();
@@ -1639,7 +1638,7 @@ public final class HBlocks {
 
 			@Override
 			public TextureRegion[] icons() {
-				return arrayOf(bottomRegion, region);
+				return new TextureRegion[]{bottomRegion, region};
 			}
 		};
 		hyperMagneticReactor = new HyperGenerator("hyper-magnetic-reactor") {{
@@ -1663,13 +1662,13 @@ public final class HBlocks {
 			buildCostMultiplier = 0.6f;
 		}};
 		hugeBattery = new Battery("huge-battery") {{
-			requirements(Category.power, with(HItems.purifiedOriginium, 110, Items.graphite, 125, Items.phaseFabric, 80, Items.thorium, 110, Items.plastanium, 100));
+			requirements(Category.power, with(HItems.originium, 110, Items.graphite, 125, Items.phaseFabric, 80, Items.thorium, 110, Items.plastanium, 100));
 			size = 5;
 			health = 1600;
 			consumePowerBuffered(750000f);
 		}};
 		armoredCoatedBattery = new Battery("armored-coated-battery") {{
-			requirements(Category.power, with(HItems.purifiedOriginium, 70, Items.silicon, 180, Items.plastanium, 120, HItems.chromium, 100, Items.phaseFabric, 50));
+			requirements(Category.power, with(HItems.originium, 70, Items.silicon, 180, Items.plastanium, 120, HItems.chromium, 100, Items.phaseFabric, 50));
 			size = 4;
 			health = 8400;
 			armor = 28f;
@@ -1875,12 +1874,16 @@ public final class HBlocks {
 			hasPower = true;
 			hasItems = true;
 			hasLiquids = true;
+			rotate = true;
+			invertFlip = true;
+			regionRotated1 = 3;
+			liquidOutputDirections = new int[]{1, 3};
 			craftTime = 90f;
 			itemCapacity = 20;
 			liquidCapacity = 60f;
 			outputItem = new ItemStack(Items.coal, 1);
 			outputLiquids = LiquidStack.with(HLiquids.lightOil, 0.6f, HLiquids.gas, 0.4f);
-			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.oil), new DrawDefault());
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.oil), new DrawDefault(), new DrawLiquidOutputs());
 			consumeLiquid(Liquids.oil, 0.9f);
 			consumePower(10.5f);
 		}};
@@ -1892,12 +1895,16 @@ public final class HBlocks {
 			hasPower = true;
 			hasItems = true;
 			hasLiquids = true;
+			rotate = true;
+			invertFlip = true;
+			regionRotated1 = 3;
+			liquidOutputDirections = new int[]{1, 3};
 			craftTime = 60f;
 			itemCapacity = 40;
 			liquidCapacity = 300f;
 			outputItem = new ItemStack(Items.coal, 3);
 			outputLiquids = LiquidStack.with(HLiquids.lightOil, 3f, HLiquids.gas, 2f);
-			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.oil), new DrawDefault());
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.oil), new DrawDefault(), new DrawLiquidOutputs());
 			consumeLiquid(Liquids.oil, 3.6f);
 			consumePower(25f);
 		}};
@@ -1953,20 +1960,20 @@ public final class HBlocks {
 			consumePower(4f);
 		}};
 		crystalCircuitConstructor = new GenericCrafter("crystal-circuit-constructor") {{
-			requirements(Category.crafting, with(Items.copper, 120, Items.titanium, 45, Items.silicon, 35, HItems.purifiedOriginium, 20));
+			requirements(Category.crafting, with(Items.copper, 120, Items.titanium, 45, Items.silicon, 35, HItems.originium, 20));
 			size = 2;
 			itemCapacity = 15;
 			craftTime = 100f;
 			outputItem = new ItemStack(HItems.crystalCircuit, 1);
 			craftEffect = Fx.none;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawSpecConstruct() {{
-				constructColor1 = constructColor2 = HPal.crystalCircuitRed;
+				constructColor1 = constructColor2 = HPal.originiumRed;
 			}}, new DrawDefault());
 			consumePower(2.5f);
-			consumeItems(with(Items.titanium, 2, Items.silicon, 3, HItems.purifiedOriginium, 1));
+			consumeItems(with(Items.titanium, 2, Items.silicon, 3, HItems.originium, 1));
 		}};
 		crystalCircuitPrinter = new GenericCrafter("crystal-circuit-printer") {{
-			requirements(Category.crafting, with(Items.titanium, 600, Items.silicon, 400, Items.plastanium, 350, Items.surgeAlloy, 250, HItems.chromium, 200, HItems.crystalCircuit, 150, HItems.purifiedOriginium, 150));
+			requirements(Category.crafting, with(Items.titanium, 600, Items.silicon, 400, Items.plastanium, 350, Items.surgeAlloy, 250, HItems.chromium, 200, HItems.crystalCircuit, 150, HItems.originium, 150));
 			size = 4;
 			health = 1500;
 			squareSprite = false;
@@ -1977,11 +1984,11 @@ public final class HBlocks {
 			outputItem = new ItemStack(HItems.crystalCircuit, 12);
 			craftEffect = Fx.none;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.cryofluid), new DrawRegion("-mid"), new DrawSpecConstruct() {{
-				constructColor1 = constructColor2 = HPal.crystalCircuitRed;
+				constructColor1 = constructColor2 = HPal.originiumRed;
 			}}, new DrawDefault());
 			consumePower(25f);
 			consumeLiquid(Liquids.cryofluid, 6f / 60f);
-			consumeItems(with(Items.titanium, 6, Items.silicon, 9, HItems.purifiedOriginium, 3));
+			consumeItems(with(Items.titanium, 6, Items.silicon, 9, HItems.originium, 3));
 			hideDetails = false;
 		}};
 		originiumActivator = new GenericCrafter("originium-activator") {{
@@ -2166,7 +2173,7 @@ public final class HBlocks {
 			heatOutput = 6f;
 		}};
 		uraniumSynthesizer = new GenericCrafter("uranium-synthesizer") {{
-			requirements(Category.crafting, with(Items.graphite, 50, Items.silicon, 40, Items.plastanium, 30, Items.phaseFabric, 15, HItems.purifiedOriginium, 10));
+			requirements(Category.crafting, with(Items.graphite, 50, Items.silicon, 40, Items.plastanium, 30, Items.phaseFabric, 15, HItems.originium, 10));
 			size = 2;
 			health = 350;
 			craftTime = 60;
@@ -2180,7 +2187,7 @@ public final class HBlocks {
 			consumeItems(with(Items.graphite, 1, Items.thorium, 1));
 		}};
 		chromiumSynthesizer = new GenericCrafter("chromium-synthesizer") {{
-			requirements(Category.crafting, with(Items.metaglass, 30, Items.silicon, 40, Items.plastanium, 50, Items.phaseFabric, 25, HItems.purifiedOriginium, 15));
+			requirements(Category.crafting, with(Items.metaglass, 30, Items.silicon, 40, Items.plastanium, 50, Items.phaseFabric, 25, HItems.originium, 15));
 			size = 3;
 			health = 650;
 			hasLiquids = true;
@@ -2322,14 +2329,6 @@ public final class HBlocks {
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(), new DrawDefault(), new DrawHeatOutput());
 			consume(new ConsumeLiquidFlammable(7.5f / 60f));
 		}};
-		heatDriver = new HeatDriver("heat-driver") {{
-			requirements(Category.crafting, with(Items.graphite, 110, Items.silicon, 120, Items.tungsten, 150, Items.oxide, 130, Items.carbide, 60));
-			size = 3;
-			drawer = new DrawMulti(new DrawDefault(), new DrawHeatOutput(), new DrawHeatInput("-heat"), new DrawHeatDriver());
-			range = 360;
-			regionRotated1 = 1;
-			consumePower(4f);
-		}};
 		largeElectricHeater = new HeatProducer("large-electric-heater") {{
 			requirements(Category.crafting, with(Items.tungsten, 150, Items.oxide, 120, Items.carbide, 50));
 			size = 5;
@@ -2408,7 +2407,7 @@ public final class HBlocks {
 			consumePower(1f);
 		}};
 		uraniumFuser = new HeatCrafter("uranium-fuser") {{
-			requirements(Category.crafting, with(Items.silicon, 120, Items.graphite, 60, Items.tungsten, 100, Items.oxide, 40, Items.surgeAlloy, 60, HItems.purifiedOriginium, 10));
+			requirements(Category.crafting, with(Items.silicon, 120, Items.graphite, 60, Items.tungsten, 100, Items.oxide, 40, Items.surgeAlloy, 60, HItems.originium, 10));
 			size = 3;
 			itemCapacity = 20;
 			heatRequirement = 10f;
@@ -2431,7 +2430,7 @@ public final class HBlocks {
 			squareSprite = false;
 		}};
 		chromiumFuser = new GenericCrafter("chromium-fuser") {{
-			requirements(Category.crafting, with(Items.silicon, 150, Items.graphite, 120, Items.tungsten, 200, Items.oxide, 180, Items.phaseFabric, 100, HItems.purifiedOriginium, 15));
+			requirements(Category.crafting, with(Items.silicon, 150, Items.graphite, 120, Items.tungsten, 200, Items.oxide, 180, Items.phaseFabric, 100, HItems.originium, 15));
 			size = 3;
 			itemCapacity = 20;
 			craftTime = 35f;
@@ -2448,59 +2447,59 @@ public final class HBlocks {
 			public final float sizeScl = 15 * 6f;
 			public final Color color1 = Pal.lancerLaser, color2 = Pal.sapBullet;
 			public TextureRegion lightRegion, heatRegion, shadowRegion;
-			{
-				buildType = () -> new GenericCrafterBuild() {
-					public boolean nextFlash;
-					public float heatf, warmupf;
+		{
+			buildType = () -> new GenericCrafterBuild() {
+				public boolean nextFlash;
+				public float heatf, warmupf;
 
-					@Override
-					public void updateTile() {
-						super.updateTile();
-						if (!nextFlash && heatf < 0.001f && Mathf.chance(0.01f * edelta()) && canConsume() && efficiency > 0.0001f) {
-							nextFlash = true;
-							heatf = 1f;
-						} else if (nextFlash && heatf < 0.001f) {
-							nextFlash = false;
-							heatf = 1f;
-						}
-						heatf = Mathf.approachDelta(heatf, 0f, 0.05f);
-						warmupf = Mathf.approachDelta(warmupf, efficiency, 0.04f);
+				@Override
+				public void updateTile() {
+					super.updateTile();
+					if (!nextFlash && heatf < 0.001f && Mathf.chance(0.01f * edelta()) && canConsume() && efficiency > 0.0001f) {
+						nextFlash = true;
+						heatf = 1f;
+					} else if (nextFlash && heatf < 0.001f) {
+						nextFlash = false;
+						heatf = 1f;
 					}
+					heatf = Mathf.approachDelta(heatf, 0f, 0.05f);
+					warmupf = Mathf.approachDelta(warmupf, efficiency, 0.04f);
+				}
 
-					@Override
-					public void draw() {
-						super.draw();
-						setFlameColor(Tmp.c4);
-						if (heatf >= 0.001f) {
-							Draw.z(Layer.bullet - 0.01f);
-							Draw.color(Color.white, Tmp.c4, Mathf.clamp(heatf * 3f - 2f));
-							Draw.alpha(Mathf.clamp(heatf * 1.5f));
-							Draw.rect(lightRegion, x, y);
-						}
-						Draw.z(Layer.blockOver);
-						Draw.blend(Blending.additive);
-						if (heatf >= 0.001f) {
-							Draw.alpha(Mathf.clamp(heatf * 1.5f) * 0.2f);
-							Draw.rect(heatRegion, x, y);
-						}
-						Draw.alpha(Mathf.absin(11f, 0.2f * warmupf));
-						Draw.rect(shadowRegion, x, y, sizeScl * Draw.scl * Draw.xscl, sizeScl * Draw.scl * Draw.yscl);
-						Draw.blend();
-						Draw.color();
+				@Override
+				public void draw() {
+					super.draw();
+					setFlameColor(Tmp.c4);
+					if (heatf >= 0.001f) {
+						Draw.z(Layer.bullet - 0.01f);
+						Draw.color(Color.white, Tmp.c4, Mathf.clamp(heatf * 3f - 2f));
+						Draw.alpha(Mathf.clamp(heatf * 1.5f));
+						Draw.rect(lightRegion, x, y);
 					}
+					Draw.z(Layer.blockOver);
+					Draw.blend(Blending.additive);
+					if (heatf >= 0.001f) {
+						Draw.alpha(Mathf.clamp(heatf * 1.5f) * 0.2f);
+						Draw.rect(heatRegion, x, y);
+					}
+					Draw.alpha(Mathf.absin(11f, 0.2f * warmupf));
+					Draw.rect(shadowRegion, x, y, sizeScl * Draw.scl * Draw.xscl, sizeScl * Draw.scl * Draw.yscl);
+					Draw.blend();
+					Draw.color();
+				}
 
-					@Override
-					public void drawLight() {
-						super.drawLight();
-						setFlameColor(Tmp.c4);
-						Drawf.light(x, y, (lightRadius * (1f + Mathf.clamp(heatf) * 0.1f) + Mathf.absin(10f, 5f)) * warmupf * block.size, Tmp.c4, 0.65f);
-					}
+				@Override
+				public void drawLight() {
+					super.drawLight();
+					setFlameColor(Tmp.c4);
+					Drawf.light(x, y, (lightRadius * (1f + Mathf.clamp(heatf) * 0.1f) + Mathf.absin(10f, 5f)) * warmupf * block.size, Tmp.c4, 0.65f);
+				}
 
-					public void setFlameColor(Color tmp) {
-						tmp.set(color1).lerp(color2, Mathf.absin(Time.time + Mathf.randomSeed(pos(), 0f, 9f * 6.29f), 9f, 1f));
-					}
-				};
-			}
+				public void setFlameColor(Color tmp) {
+					tmp.set(color1).lerp(color2, Mathf.absin(Time.time + Mathf.randomSeed(pos(), 0f, 9f * 6.29f), 9f, 1f));
+				}
+			};
+		}
 			@Override
 			public void load() {
 				super.load();
@@ -2540,7 +2539,7 @@ public final class HBlocks {
 			optionalUseTime = 3600;
 			optionalMultiplier = 6;
 			effectChance = 0.5f;
-			effect = WrapperEffect.wrap(HFx.polyParticle, HPal.crystalCircuitRed);
+			effect = WrapperEffect.wrap(HFx.polyParticle, HPal.originiumRed);
 			drawer = new DrawMulti(new DrawDefault(), new DrawPulseShape() {{
 				layer = 110;
 				stroke = 3f;
@@ -2588,7 +2587,7 @@ public final class HBlocks {
 		}
 			@Override
 			protected TextureRegion[] icons() {
-				return teamRegion.found() ? arrayOf(region, teamRegions[Team.sharded.id]) : arrayOf(region);
+				return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
 			}
 		};
 		paralysisMine = new ShockMine("paralysis-mine") {{
@@ -2656,7 +2655,7 @@ public final class HBlocks {
 		}
 			@Override
 			protected TextureRegion[] icons() {
-				return teamRegion.found() ? arrayOf(region, teamRegions[Team.sharded.id]) : arrayOf(region);
+				return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
 			}
 		};
 		cargo = new StorageBlock("cargo") {{
@@ -2667,7 +2666,7 @@ public final class HBlocks {
 		}
 			@Override
 			protected TextureRegion[] icons() {
-				return teamRegion.found() ? arrayOf(region, teamRegions[Team.sharded.id]) : arrayOf(region);
+				return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
 			}
 		};
 		machineryUnloader = new Unloader("machinery-unloader") {{
@@ -2684,23 +2683,13 @@ public final class HBlocks {
 		coreStorage = new CoreStorageBlock("core-storage") {{
 			requirements(Category.effect, with(Items.lead, 600, Items.titanium, 400, Items.silicon, 300, Items.thorium, 150, Items.plastanium, 120));
 			size = 3;
-		}
-			@Override
-			protected TextureRegion[] icons() {
-				return teamRegion.found() ? arrayOf(region, teamRegions[Team.sharded.id]) : arrayOf(region);
-			}
-		};
+		}};
 		//storage-erekir
 		reinforcedCoreStorage = new CoreStorageBlock("reinforced-core-storage") {{
 			requirements(Category.effect, BuildVisibility.sandboxOnly, with(Items.beryllium, 300, Items.tungsten, 200, Items.thorium, 120, Items.silicon, 220, Items.oxide, 80));
 			size = 3;
 			squareSprite = false;
-		}
-			@Override
-			protected TextureRegion[] icons() {
-				return teamRegion.found() ? arrayOf(region, teamRegions[Team.sharded.id]) : arrayOf(region);
-			}
-		};
+		}};
 		//payload
 		payloadJunction = new PayloadJunction("payload-junction") {{
 			requirements(Category.units, with(Items.graphite, 15, Items.copper, 20));
@@ -3728,7 +3717,7 @@ public final class HBlocks {
 			canOverdrive = false;
 		}};
 		judgement = new ContinuousTurret("judgement") {{
-			requirements(Category.turret, with(Items.silicon, 1200, Items.metaglass, 400, Items.plastanium, 800, Items.surgeAlloy, 650, HItems.syntheticJade, 350, HItems.heavyAlloy, 600));
+			requirements(Category.turret, with(Items.silicon, 1200, Items.metaglass, 400, Items.plastanium, 800, Items.surgeAlloy, 650, HItems.originium, 350, HItems.heavyAlloy, 600));
 			shootType = new PointLaserBulletType() {{
 				damage = 100f;
 				hitEffect = HFx.hitSpark;
@@ -4300,7 +4289,7 @@ public final class HBlocks {
 
 			@Override
 			protected TextureRegion[] icons() {
-				return teamRegion.found() ? arrayOf(region, teamRegions[Team.sharded.id]) : arrayOf(region);
+				return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
 			}
 		};
 		barrierProjector = new BaseShield("barrier-projector") {{

@@ -14,7 +14,7 @@ public final class HItems {
 	public static Item
 			stone, salt, rareEarth,
 			crystalCircuit,
-			originium, purifiedOriginium, syntheticJade,
+			originium,
 			uranium, chromium, heavyAlloy;
 
 	/** Don't let anyone instantiate this class. */
@@ -37,25 +37,16 @@ public final class HItems {
 			buildable = false;
 			lowPriority = true;
 		}};
-		crystalCircuit = new Item("crystal-circuit", HPal.crystalCircuitRed) {{
+		crystalCircuit = new Item("crystal-circuit", HPal.originiumRed) {{
 			cost = -0.75f;
 			hardness = 6;
 		}};
-		originium = new Item("originium", HPal.originiumBlack) {{
+		originium = new Item("originium", HPal.originiumRed) {{
 			cost = 1.25f;
 			flammability = 0.2f;
 			explosiveness = 0.3f;
 			radioactivity = 0.1f;
 			hardness = 5;
-		}};
-		purifiedOriginium = new Item("purified-originium", HPal.coldcolor) {{
-			cost = 1.35f;
-			radioactivity = 0.2f;
-			hardness = 6;
-		}};
-		syntheticJade = new Item("synthetic-jade", HPal.heat) {{
-			cost = 1.45f;
-			hardness = 6;
 		}};
 		uranium = new Item("uranium", HPal.uraniumGrey) {{
 			cost = 3f;

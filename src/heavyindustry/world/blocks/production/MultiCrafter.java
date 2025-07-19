@@ -25,6 +25,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.content.HBlocks;
 import heavyindustry.ui.Elements;
+import heavyindustry.world.consumers.ConsumeItem;
 import mindustry.content.Fx;
 import mindustry.core.UI;
 import mindustry.ctype.UnlockableContent;
@@ -55,7 +56,6 @@ import mindustry.world.meta.StatUnit;
 import mindustry.world.meta.StatValues;
 import mindustry.world.meta.Stats;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.tilesize;
 
 /**
@@ -833,7 +833,7 @@ public class MultiCrafter extends Block {
 
 		public void consumeItem(Item item, int amount) {
 			setApply(item);
-			consume(new ConsumeItems(arrayOf(new ItemStack(item, amount))));
+			consume(new ConsumeItem(new ItemStack(item, amount)));
 		}
 
 		public void consumeItems(ItemStack... items) {

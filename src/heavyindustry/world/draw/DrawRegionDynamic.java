@@ -13,8 +13,6 @@ import mindustry.graphics.Drawf;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
-
 public class DrawRegionDynamic<E extends Building> extends DrawBlock {
 	public Floatf<E> rotation = e -> 0;
 	public Floatf<E> alpha = e -> 1;
@@ -70,7 +68,7 @@ public class DrawRegionDynamic<E extends Building> extends DrawBlock {
 
 	@Override
 	public TextureRegion[] icons(Block block) {
-		return makeIcon ? arrayOf(region) : arrayOf(block.region);
+		return makeIcon ? new TextureRegion[]{region} : new TextureRegion[]{block.region};
 	}
 
 	@Override

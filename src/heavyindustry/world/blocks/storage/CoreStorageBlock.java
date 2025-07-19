@@ -1,6 +1,7 @@
 package heavyindustry.world.blocks.storage;
 
 import arc.Core;
+import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Rect;
 import arc.util.Tmp;
 import mindustry.game.Team;
@@ -38,6 +39,11 @@ public class CoreStorageBlock extends StorageBlock {
 		itemCapacity = 0;
 		configurable = true;
 		replaceable = false;
+	}
+
+	@Override
+	protected TextureRegion[] icons() {
+		return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
 	}
 
 	@Override

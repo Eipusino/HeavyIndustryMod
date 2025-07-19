@@ -11,8 +11,6 @@ import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
-
 public class DrawWeaveColor extends DrawBlock {
 	public TextureRegion weave;
 	public Color color;
@@ -39,7 +37,7 @@ public class DrawWeaveColor extends DrawBlock {
 
 	@Override
 	public TextureRegion[] icons(Block block) {
-		return arrayOf(weave);
+		return new TextureRegion[]{weave};
 	}
 
 	@Override
