@@ -13,6 +13,7 @@ import arc.math.Mathf;
 import arc.math.Rand;
 import arc.util.Time;
 import mindustry.content.Fx;
+import mindustry.game.Team;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Drawf;
 import mindustry.world.blocks.production.Drill;
@@ -29,6 +30,8 @@ public class LaserBeamDrill extends Drill {
 	public float moveScaleRand = 20f;
 
 	public float laserScl = 0.2f;
+
+	public TextureRegion baseRegion;
 
 	public TextureRegion laser;
 	public TextureRegion laserEnd;
@@ -59,8 +62,16 @@ public class LaserBeamDrill extends Drill {
 	@Override
 	public void load() {
 		super.load();
+
+		baseRegion = Core.atlas.find(name + "-bottom");
+
 		laser = Core.atlas.find(name + "-laser", "laser");
 		laserEnd = Core.atlas.find(name + "-laser-end", "laser-end");
+	}
+
+	@Override
+	public TextureRegion[] icons() {
+		return teamRegion.found() ? new TextureRegion[]{baseRegion, topRegion, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
 	}
 
 	public class LaserBeamDrillBuild extends DrillBuild {
@@ -76,7 +87,7 @@ public class LaserBeamDrill extends Drill {
 			float s = 0.3f;
 			float ts = 0.6f;
 
-			Draw.rect(region, x, y);
+			Draw.rect(baseRegion, x, y);
 
 			if (drawRim) {
 				Draw.color(heatColor);

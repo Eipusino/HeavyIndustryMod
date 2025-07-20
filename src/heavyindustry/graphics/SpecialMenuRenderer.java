@@ -20,8 +20,8 @@ public class SpecialMenuRenderer extends MenuRenderer {
 		Draw.rect(region,
 				Core.graphics.getWidth() / 2f,
 				Core.graphics.getHeight() / 2f,
-				region.width * Core.graphics.getHeight() / 1000f,
-				region.height * Core.graphics.getHeight() / 1000f);
+				region.width,
+				region.height);
 		Draw.flush();
 	}
 }

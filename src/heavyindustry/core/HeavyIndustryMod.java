@@ -95,9 +95,9 @@ import static mindustry.Vars.ui;
  */
 public final class HeavyIndustryMod extends Mod {
 	/** The author of this mod. */
-	public static final String author = "Eipusino";
+	public static final String AUTHOR = "Eipusino";
 	/** The GitHub address of this mod. */
-	public static final String linkGitHub = "https://github.com/Eipusino/HeavyIndustryMod";
+	public static final String LINK_GIT_HUB = "https://github.com/Eipusino/HeavyIndustryMod";
 
 	/** The meta of this mod. */
 	public static final Jval modJson;
@@ -144,17 +144,17 @@ public final class HeavyIndustryMod extends Mod {
 			dia: {
 				if (headless || Core.settings.getBool("hi-closed-dialog") || isAprilFoolsDay()) break dia;
 
-				FLabel label = new FLabel(Core.bundle.get("hi-author") + author);
+				FLabel label = new FLabel(Core.bundle.get("hi-author") + AUTHOR);
 				BaseDialog dialog = new BaseDialog(Core.bundle.get("hi-name")) {{
 					buttons.button(close, this::hide).size(210f, 64f);
 					buttons.button((Core.bundle.get("hi-link-github")), () -> {
-						if (!Core.app.openURI(linkGitHub)) {
+						if (!Core.app.openURI(LINK_GIT_HUB)) {
 							ui.showErrorMessage("@linkfail");
-							Core.app.setClipboardText(linkGitHub);
+							Core.app.setClipboardText(LINK_GIT_HUB);
 						}
 					}).size(210f, 64f);
 					cont.pane(t -> {
-						t.image(Core.atlas.find(name(special ? "cover-special" : "cover"))).left().size(600f, 310f).pad(3f).row();
+						t.image(Core.atlas.find(name(special ? "cover-special" : "cover"))).left().size(600f, 403f).pad(3f).row();
 						t.add(Core.bundle.get("hi-version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 						t.add(label).left().row();
 						t.add(Core.bundle.get("hi-class")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
@@ -282,7 +282,7 @@ public final class HeavyIndustryMod extends Mod {
 		LoadedMod theMod = loaded();
 
 		if (theMod != null) {
-			theMod.meta.author = author;
+			theMod.meta.author = AUTHOR;
 			if (isPlugin) {
 				theMod.meta.hidden = true;
 				theMod.meta.name = MOD_NAME + "-plugin";
@@ -312,9 +312,9 @@ public final class HeavyIndustryMod extends Mod {
 					}).width(Math.min(Core.graphics.getWidth() / 1.2f, 460f)).padBottom(45f);
 					t.fill(c -> {
 						c.bottom().right().button(Icon.github, new ImageButtonStyle(), () -> {
-							if (!Core.app.openURI(linkGitHub)) {
+							if (!Core.app.openURI(LINK_GIT_HUB)) {
 								ui.showInfoFade("@linkfail");
-								Core.app.setClipboardText(linkGitHub);
+								Core.app.setClipboardText(LINK_GIT_HUB);
 							}
 						}).marginTop(9f).marginLeft(10f).tooltip("@setting.hi-github-join").size(84f, 45f).name("github");
 					});

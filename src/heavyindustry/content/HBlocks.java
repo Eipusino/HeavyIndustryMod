@@ -285,7 +285,7 @@ public final class HBlocks {
 	berylliumWallHuge, berylliumWallGigantic, tungstenWallHuge, tungstenWallGigantic, blastDoorLarge, blastDoorHuge, reinforcedSurgeWallHuge, reinforcedSurgeWallGigantic, carbideWallHuge, carbideWallGigantic, shieldedWallLarge, shieldedWallHuge,
 			aparajito, aparajitoLarge,
 	//drill
-	titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, cuttingDrill, beamDrill,
+	titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, cuttingDrill, heavyCuttingDrill, beamDrill,
 	//drill-erekir
 	heavyPlasmaBore, minerPoint, minerCenter,
 	//distribution
@@ -970,22 +970,22 @@ public final class HBlocks {
 			consumePower(3.5f);
 		}
 			public TextureRegion rotatorRegion1;
-			{
-				buildType = () -> new SolidPumpBuild() {
-					@Override
-					public void draw() {
-						Draw.rect(bottomRegion, x, y);
-						Draw.z(Layer.blockCracks);
-						super.drawCracks();
-						Draw.z(Layer.blockAfterCracks);
+		{
+			buildType = () -> new SolidPumpBuild() {
+				@Override
+				public void draw() {
+					Draw.rect(bottomRegion, x, y);
+					Draw.z(Layer.blockCracks);
+					super.drawCracks();
+					Draw.z(Layer.blockAfterCracks);
 
-						Drawf.liquid(liquidRegion, x, y, liquids.get(result) / liquidCapacity, result.color);
-						Drawf.spinSprite(rotatorRegion, x, y, pumpTime * rotateSpeed);
-						Drawf.spinSprite(rotatorRegion1, x, y, pumpTime * -rotateSpeed / 3);
-						Draw.rect(topRegion, x, y);
-					}
-				};
-			}
+					Drawf.liquid(liquidRegion, x, y, liquids.get(result) / liquidCapacity, result.color);
+					Drawf.spinSprite(rotatorRegion, x, y, pumpTime * rotateSpeed);
+					Drawf.spinSprite(rotatorRegion1, x, y, pumpTime * -rotateSpeed / 3);
+					Draw.rect(topRegion, x, y);
+				}
+			};
+		}
 			@Override
 			public void load() {
 				super.load();
@@ -1015,40 +1015,69 @@ public final class HBlocks {
 			buildCostMultiplier = 0.8f;
 		}};
 		cuttingDrill = new Drill("cutting-drill") {{
-			requirements(Category.production, with(Items.lead, 160, Items.silicon, 120, Items.thorium, 50, Items.plastanium, 70, Items.surgeAlloy, 30));
+			requirements(Category.production, with(Items.copper, 160, Items.silicon, 120, Items.thorium, 50, Items.plastanium, 40, Items.surgeAlloy, 30));
 			size = 3;
 			health = 640;
 			armor = 3f;
 			tier = 8;
 			updateEffect = Fx.pulverizeRed;
 			updateEffectChance = 0.03f;
-			drillTime = 350f;
+			drillTime = 320f;
 			drillEffect = Fx.mineHuge;
+			rotateSpeed = 1.8f;
+			warmupSpeed = 0.008f;
 			itemCapacity = 15;
-			liquidBoostIntensity = 1.871f;
-			hardnessDrillMultiplier = 5f;
-			consumePower(4f);
-			consumeLiquid(HLiquids.lightOil, 0.1f).optional(true, true);
+			liquidCapacity = 10f;
+			liquidBoostIntensity = 1.8f;
+			hardnessDrillMultiplier = 12f;
+			consumePower(8f);
+			consumeLiquid(HLiquids.lightOil, 0.12f).optional(true, true);
+		}};
+		heavyCuttingDrill = new Drill("heavy-cutting-drill") {{
+			requirements(Category.production, with(Items.copper, 320, Items.silicon, 180, Items.thorium, 50, Items.plastanium, 70, Items.surgeAlloy, 80, Items.phaseFabric, 15));
+			size = 4;
+			health = 1070;
+			armor = 6f;
+			tier = 10;
+			updateEffect = Fx.pulverizeRed;
+			updateEffectChance = 0.03f;
+			drillTime = 280f;
+			drillEffect = Fx.mineHuge;
+			/*updateEffect = new ParticleEffect() {{
+				particles = 3;
+				interp = Interp.fastSlow;
+				sizeFrom = 1;
+				sizeTo = 9;
+				length = 60;
+				lifetime = 300;
+				colorFrom = Color.valueOf("eec591");
+				colorTo = Color.valueOf("eec59100");
+				cone = 20;
+			}};*/
+			rotateSpeed = 1.5f;
+			warmupSpeed = 0.002f;
+			itemCapacity = 35;
+			liquidCapacity = 30f;
+			liquidBoostIntensity = 1.8f;
+			hardnessDrillMultiplier = 10f;
+			consumePower(11f);
+			consumeLiquid(HLiquids.lightOil, 0.3f).optional(true, true);
 		}};
 		beamDrill = new LaserBeamDrill("beam-drill") {{
-			requirements(Category.production, with(Items.lead, 160, Items.silicon, 120, Items.plastanium, 80, HItems.chromium, 60, HItems.crystalCircuit, 35, Items.phaseFabric, 25));
+			requirements(Category.production, with(Items.lead, 160, Items.silicon, 120, Items.plastanium, 80, HItems.heavyAlloy, 60, HItems.crystalCircuit, 35, Items.phaseFabric, 25));
 			size = 4;
-			health = 960;
-			armor = 10f;
-			tier = 11;
-			drillTime = 150f;
+			health = 1660;
+			armor = 12f;
+			tier = 12;
+			drillTime = 80f;
 			liquidBoostIntensity = 1.65f;
 			itemCapacity = 50;
-			hardnessDrillMultiplier = 35f;
+			liquidCapacity = 20f;
+			hardnessDrillMultiplier = 20f;
 			buildCostMultiplier = 0.8f;
 			consumePower(6f);
 			consumeLiquid(Liquids.water, 0.1f).optional(true, true);
-		}
-			@Override
-			public TextureRegion[] icons() {
-				return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
-			}
-		};
+		}};
 		//drill-erekir
 		heavyPlasmaBore = new BeamDrill("heavy-plasma-bore") {{
 			requirements(Category.production, with(Items.silicon, 300, Items.oxide, 150, Items.beryllium, 350, Items.tungsten, 250, Items.carbide, 100));
@@ -3717,7 +3746,7 @@ public final class HBlocks {
 			canOverdrive = false;
 		}};
 		judgement = new ContinuousTurret("judgement") {{
-			requirements(Category.turret, with(Items.silicon, 1200, Items.metaglass, 400, Items.plastanium, 800, Items.surgeAlloy, 650, HItems.originium, 350, HItems.heavyAlloy, 600));
+			requirements(Category.turret, with(Items.silicon, 1200, Items.metaglass, 400, Items.plastanium, 800, Items.surgeAlloy, 650, HItems.originium, 350, HItems.crystalCircuit, 180, HItems.heavyAlloy, 600));
 			shootType = new PointLaserBulletType() {{
 				damage = 100f;
 				hitEffect = HFx.hitSpark;
@@ -3940,7 +3969,7 @@ public final class HBlocks {
 				frontColor = Pal.graphiteAmmoFront;
 				ammoMultiplier = 4;
 				reloadMultiplier = 1.7f;
-				knockback = 0.3f;
+				knockback = 0.4f;
 			}}, Items.pyratite, new BasicBulletType(8.25f, 94f) {{
 				rangeChange = 5f;
 				hitSize = 5f;
@@ -3958,8 +3987,7 @@ public final class HBlocks {
 				pierceCap = 2;
 				pierceBuilding = true;
 				ammoMultiplier = 3;
-				reloadMultiplier = 1.7f;
-				knockback = 0.5f;
+				knockback = 0.8f;
 			}}, Items.blastCompound, new BasicBulletType(8.25f, 54f) {{
 				rangeChange = 5f;
 				hitSize = 5f;
@@ -3977,8 +4005,7 @@ public final class HBlocks {
 				pierceCap = 2;
 				pierceBuilding = true;
 				ammoMultiplier = 3;
-				reloadMultiplier = 1.7f;
-				knockback = 0.5f;
+				knockback = 1.2f;
 			}}, Items.thorium, new BasicBulletType(8.75f, 123f) {{
 				rangeChange = 15f;
 				pierce = true;
@@ -3991,10 +4018,10 @@ public final class HBlocks {
 				smokeEffect = Fx.shootBigSmoke;
 				backColor = hitColor = trailColor = Pal.thoriumAmmoBack;
 				frontColor = Pal.thoriumAmmoFront;
-				reloadMultiplier = 1.7f;
-				knockback = 0.4f;
+				knockback = 0.9f;
+				lifetime = 37.5f;
 			}}, HItems.uranium, new BasicBulletType(9.75f, 146f) {{
-				rangeChange = 25f;
+				rangeChange = 30f;
 				pierce = true;
 				pierceCap = 3;
 				pierceBuilding = true;
@@ -4007,8 +4034,8 @@ public final class HBlocks {
 				smokeEffect = Fx.shootBigSmoke;
 				backColor = hitColor = trailColor = HPal.uraniumGrey;
 				frontColor = Color.white.cpy();
-				reloadMultiplier = 1.7f;
-				knockback = 0.4f;
+				knockback = 0.9f;
+				lifetime = 37.5f;
 			}});
 			size = 5;
 			health = 5500;

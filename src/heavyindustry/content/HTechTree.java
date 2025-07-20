@@ -13,7 +13,6 @@ import mindustry.game.Objectives.Produce;
 import mindustry.game.Objectives.Research;
 import mindustry.game.Objectives.SectorComplete;
 import mindustry.type.ItemStack;
-import mindustry.type.SectorPreset;
 
 import static heavyindustry.content.HBlocks.*;
 import static heavyindustry.content.HSectorPresets.*;
@@ -37,7 +36,10 @@ public final class HTechTree {
 	public static void load() {
 		//items,liquids
 		vanillaNode(Liquids.water, () -> nodeProduce(HLiquids.brine, () -> {}));
-		vanillaNode(Liquids.oil, () -> nodeProduce(HLiquids.nitratedOil, () -> {}));
+		vanillaNode(Liquids.oil, () -> {
+			nodeProduce(HLiquids.lightOil, () -> {});
+			nodeProduce(HLiquids.nitratedOil, () -> {});
+		});
 		vanillaNode(Liquids.ozone, () -> nodeProduce(HLiquids.gas, () -> {}));
 		vanillaNode(Items.sand, () -> {
 			nodeProduce(HItems.stone, () -> nodeProduce(HItems.originium, () -> {}));
@@ -326,10 +328,6 @@ public final class HTechTree {
 	public static TechNode node(UnlockableContent content, ItemStack[] requirements, Seq<Objective> objectives, Runnable children) {
 		TechNode node = new TechNode(context, content, requirements);
 		if (objectives != null) node.objectives.addAll(objectives);
-
-		if (context != null && context.content instanceof SectorPreset preset && !node.objectives.contains(o -> o instanceof SectorComplete sc && sc.preset == preset)) {
-			node.objectives.insert(0, new SectorComplete(preset));
-		}
 
 		TechNode prev = context;
 		context = node;

@@ -1,2 +1,2 @@
-## 重工业
-## OH NO
+# Heavy Industry
+# OH NO

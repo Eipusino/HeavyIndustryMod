@@ -12,6 +12,7 @@ import arc.math.geom.Mat3D;
 import arc.math.geom.Point2;
 import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
+import arc.util.Time;
 import heavyindustry.func.Floatc3;
 import mindustry.gen.Posc;
 
@@ -401,7 +402,7 @@ public final class Mathm {
 	}
 
 	public static byte clamp(byte value, byte min, byte max) {
-		return max(min(value, max), min);
+		return value > max ? max : value < min ? min : value;
 	}
 
 	public static byte max(byte a, byte b) {
@@ -413,7 +414,7 @@ public final class Mathm {
 	}
 
 	public static short clamp(short value, short min, short max) {
-		return max(min(value, max), min);
+		return value > max ? max : value < min ? min : value;
 	}
 
 	public static short max(short a, short b) {
@@ -422,5 +423,25 @@ public final class Mathm {
 
 	public static short min(short a, short b) {
 		return (a <= b) ? a : b;
+	}
+
+	public static int clamp(int value, int min, int max) {
+		return value > max ? max : value < min ? min : value;
+	}
+
+	public static long clamp(long value, long min, long max) {
+		return value > max ? max : value < min ? min : value;
+	}
+
+	public static float clamp(float value, float min, float max) {
+		return value > max ? max : value < min ? min : value;
+	}
+
+	public static double clamp(double value, double min, double max) {
+		return value > max ? max : value < min ? min : value;
+	}
+
+	public static boolean chanceDelta(float d) {
+		return Mathf.rand.nextFloat() < d * Time.delta;
 	}
 }

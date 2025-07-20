@@ -23,7 +23,7 @@ public class DeathAbility extends Ability {
 					owner.kill();
 
 				Building building = null;
-				if (b.owner instanceof Building building1) building = building1;
+				if (b.owner instanceof Building build) building = build;
 				if (b.type.damage > unit.maxHealth / 2f || b.type.splashDamage > unit.maxHealth / 2f || b.type.lightningDamage > unit.maxHealth / 2f) {
 					if (building != null) building.kill();
 					b.remove();

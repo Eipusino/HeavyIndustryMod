@@ -23,7 +23,6 @@ import heavyindustry.maps.HeightPass.NoiseHeight;
 import heavyindustry.maps.planets.GliesePlanetGenerator;
 import heavyindustry.maps.planets.KeplerPlanetGenerator;
 import heavyindustry.type.AtmospherePlanet;
-import heavyindustry.type.BlackHole;
 import mindustry.content.Blocks;
 import mindustry.content.Planets;
 import mindustry.game.Team;
@@ -36,17 +35,13 @@ import mindustry.world.meta.Env;
 
 /** Defines the {@linkplain Planet planets} and other celestial objects this mod offers. */
 public final class HPlanets {
-	public static Planet serilia, kepler, gliese, blackHole;
+	public static Planet serilia, kepler, gliese;
 
 	/** Don't let anyone instantiate this class. */
 	private HPlanets() {}
 
 	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
 	public static void load() {
-		blackHole = new BlackHole("black-hole", 12f) {{
-			camRadius = -4f;
-			orbitSpacing = 16f;
-		}};
 		serilia = new Planet("serilia", Planets.sun, 33f, 3) {{
 			bloom = true;
 			drawOrbit = false;
@@ -192,7 +187,7 @@ public final class HPlanets {
 					new HexSkyMesh(this, 1, 0.6f, 0.15f, 6, Blocks.water.mapColor.cpy().a(0.2f), 2, 0.42f, 1.2f, 0.5f)
 			);
 		}};
-		gliese = new AtmospherePlanet("gliese", blackHole, 1f, 3) {{
+		gliese = new AtmospherePlanet("gliese", Planets.sun, 1f, 3) {{
 			Vec3 ringPos = new Vec3(0,1,0).rotate(Vec3.X, 35);
 
 			generator = new GliesePlanetGenerator() {{

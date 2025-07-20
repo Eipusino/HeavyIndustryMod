@@ -53,6 +53,10 @@ public final class HVars {
 		return MOD_NAME + "-" + add;
 	}
 
+	public static String name() {
+		return MOD_NAME + "-";
+	}
+
 	/** Delta time that is unaffected by time control. */
 	public static float graphicsDelta() {
 		return Core.graphics.getDeltaTime() * 60f;

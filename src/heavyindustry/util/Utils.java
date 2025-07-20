@@ -176,7 +176,6 @@ public final class Utils {
 			"heavyindustry.util.comp",
 			"heavyindustry.util.path",
 			"heavyindustry.util.pools",
-			"heavyindustry.util.reflect",
 			//"heavyindustry.world",
 			"heavyindustry.world.blocks",
 			"heavyindustry.world.blocks.campaign",

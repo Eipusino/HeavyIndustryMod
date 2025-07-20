@@ -55,6 +55,7 @@ import mindustry.world.blocks.power.NuclearReactor;
 import mindustry.world.blocks.power.PowerNode;
 import mindustry.world.blocks.production.AttributeCrafter;
 import mindustry.world.blocks.production.BeamDrill;
+import mindustry.world.blocks.production.Drill;
 import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.blocks.production.HeatCrafter;
 import mindustry.world.blocks.production.Pump;
@@ -117,6 +118,8 @@ public final class HOverrides {
 		Blocks.phaseConduit.liquidCapacity = 16f;
 		//blocks-liquid-erekir
 		Blocks.reinforcedLiquidRouter.liquidCapacity = 40f;
+		//Blocks-drill
+		((Drill) Blocks.blastDrill).hardnessDrillMultiplier = 40f;
 		//Blocks-drill-erekir
 		((BeamDrill) Blocks.largePlasmaBore).drillMultipliers.put(Items.beryllium, 1.5f);
 		((BeamDrill) Blocks.largePlasmaBore).drillMultipliers.put(Items.graphite, 1.5f);
@@ -216,6 +219,7 @@ public final class HOverrides {
 		}});
 		((ItemTurret) Blocks.spectre).range = 280f;
 		((ItemTurret) Blocks.spectre).ammoTypes.put(HItems.uranium, new BasicBulletType(9f, 105f) {{
+			rangeChange = 5f;
 			hitSize = 5f;
 			width = 16f;
 			height = 23f;
@@ -225,9 +229,10 @@ public final class HOverrides {
 			knockback = 0.7f;
 			status = StatusEffects.melting;
 			statusDuration = 270f;
+			lifetime = 37.5f;
 		}});
 		((LaserTurret) Blocks.meltdown).range = 245;
-		((LaserTurret) Blocks.meltdown).shootType = new ContinuousLaserBulletType(96) {{
+		((LaserTurret) Blocks.meltdown).shootType = new ContinuousLaserBulletType(96f) {{
 			length = 250f;
 			hitEffect = Fx.hitMeltdown;
 			hitColor = Pal.meltdownHit;

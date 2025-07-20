@@ -3,7 +3,6 @@ package heavyindustry.graphics;
 import arc.Core;
 import arc.files.Fi;
 import arc.graphics.Color;
-import arc.graphics.Cubemap.CubemapSide;
 import arc.graphics.Texture;
 import arc.graphics.Texture.TextureFilter;
 import arc.graphics.Texture.TextureWrap;
@@ -19,7 +18,6 @@ import arc.util.Tmp;
 import heavyindustry.graphics.gl.DepthFrameBuffer;
 import heavyindustry.graphics.gl.Gl30Shader;
 import heavyindustry.type.AtmospherePlanet;
-import heavyindustry.type.BlackHole;
 import mindustry.Vars;
 import mindustry.type.Planet;
 
@@ -51,8 +49,6 @@ public final class HShaders {
 	public static Gl30Shader distBase, passThrough;
 	public static TilerShader tiler;
 	public static PlanetTextureShader planetTexture;
-	public static BlackHoleShader blackHole;
-	public static BlackHoleStencilShader blackHoleStencil;
 
 	/** Don't let anyone instantiate this class. */
 	private HShaders() {}
@@ -93,9 +89,6 @@ public final class HShaders {
 		tiler = new TilerShader();
 
 		planetTexture = new PlanetTextureShader();
-
-		blackHole = new BlackHoleShader();
-		blackHoleStencil = new BlackHoleStencilShader();
 
 		Shader.prependVertexCode = prevVert;
 		Shader.prependFragmentCode = prevFrag;
@@ -180,13 +173,12 @@ public final class HShaders {
 
 		@Override
 		public void apply() {
-			setUniformMatrix4("u_projView", camera.combined.val);
-			setUniformMatrix4("u_invProj", mat.set(camera.projection).inv().val);
+			setUniformMatrix4("u_proj", camera.combined.val);
 			setUniformMatrix4("u_trans", planet.getTransform(mat).val);
 
 			setUniformf("u_camPos", camera.position);
 			setUniformf("u_relCamPos", Tmp.v31.set(camera.position).sub(planet.position));
-			setUniformf("u_depthRange", camera.near, camera.far);
+			setUniformf("u_camRange", camera.near, camera.far - camera.near);
 			setUniformf("u_center", planet.position);
 			setUniformf("u_light", planet.getLightNormal());
 			setUniformf("u_color", planet.atmosphereColor.r, planet.atmosphereColor.g, planet.atmosphereColor.b);
@@ -194,7 +186,7 @@ public final class HShaders {
 			setUniformf("u_innerRadius", planet.radius + planet.atmosphereRadIn);
 			setUniformf("u_outerRadius", planet.radius + planet.atmosphereRadOut);
 
-			planet.buffer.getDepthTexture().bind(0);
+			planet.buffer.getTexture().bind(0);
 			setUniformi("u_topology", 0);
 			setUniformf("u_viewport", Core.graphics.getWidth(), Core.graphics.getHeight());
 		}
@@ -538,79 +530,6 @@ public final class HShaders {
 			renderer.effectBuffer.getTexture().bind(0);
 			setUniformi("u_noise", 1);
 			setUniformi("u_texture2", 2);
-		}
-	}
-
-	public static class BlackHoleShader extends Gl30Shader {
-		private static final Mat3D mat = new Mat3D();
-
-		public Camera3D camera;
-		public Mat3D[] cubemapView = new Mat3D[CubemapSide.values().length];
-		public BlackHole planet;
-
-		BlackHoleShader() {
-			super(msv("black-hole"), msf("black-hole"));
-			for (int i = 0; i < cubemapView.length; i++) {
-				cubemapView[i] = new Mat3D();
-			}
-		}
-
-		@Override
-		public void apply() {
-			if (planet == null) return;
-
-			setUniformf("u_camPos", camera.position);
-			setUniformf("u_viewport", Core.graphics.getWidth(), Core.graphics.getHeight());
-			setUniformf("u_relCamPos", Tmp.v31.set(camera.position).sub(planet.position));
-			setUniformf("u_center", planet.position);
-
-			setUniformf("u_radius", planet.radius);
-			setUniformf("u_horizon", planet.horizon);
-
-			for (int i = 0; i < cubemapView.length; i++) {
-				setUniformMatrix4("u_cubeView[" + i + "]", cubemapView[i].val);
-				setUniformMatrix4("u_cubeInvView[" + i + "]", mat.set(cubemapView[i]).inv().val);
-			}
-
-			setUniformMatrix4("u_projView", camera.combined.val);
-			setUniformMatrix4("u_invProjView", camera.invProjectionView.val);
-			setUniformf("u_depthRange", camera.near, camera.far);
-
-			planet.pov.getDepthTexture().bind(1);
-			planet.pov.getTexture().bind(0);
-			setUniformi("u_depth", 1);
-			setUniformi("u_ref", 0);
-		}
-	}
-
-	public static class BlackHoleStencilShader extends Gl30Shader {
-		private static final Mat3D mat = new Mat3D();
-		private static final Vec3 v1 = new Vec3();
-
-		public Camera3D camera;
-		public BlackHole planet;
-
-		BlackHoleStencilShader() {
-			super(msv("black-hole-stencil"), msf("black-hole-stencil"));
-		}
-
-		@Override
-		public void apply() {
-			if (planet == null) return;
-
-			setUniformMatrix4("u_invProj", mat.set(camera.projection).inv().val);
-			setUniformMatrix4("u_invProjView", camera.invProjectionView.val);
-			setUniformf("u_camPos", camera.position);
-			setUniformf("u_relCamPos", v1.set(camera.position).sub(planet.position));
-			setUniformf("u_viewport", Core.graphics.getWidth(), Core.graphics.getHeight());
-
-			setUniformf("u_radius", planet.radius);
-
-			planet.orbit.getTexture().bind(1);
-			planet.orbit.getDepthTexture().bind(0);
-
-			setUniformi("u_src", 1);
-			setUniformi("u_srcDepth", 0);
 		}
 	}
 
