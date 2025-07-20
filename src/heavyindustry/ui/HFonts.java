@@ -11,8 +11,7 @@ import arc.freetype.FreetypeFontLoader;
 import arc.freetype.FreetypeFontLoader.FreeTypeFontLoaderParameter;
 import arc.graphics.g2d.Font;
 import arc.struct.Seq;
-
-import static mindustry.Vars.tree;
+import mindustry.Vars;
 
 @SuppressWarnings("rawtypes")
 public final class HFonts {
@@ -24,14 +23,14 @@ public final class HFonts {
 	private HFonts() {}
 
 	public static void load() {
-		Core.assets.setLoader(FreeTypeFontGenerator.class, loaderSuffix, new FreeTypeFontGeneratorLoader(tree) {
+		Core.assets.setLoader(FreeTypeFontGenerator.class, loaderSuffix, new FreeTypeFontGeneratorLoader(Vars.tree) {
 			@Override
 			public FreeTypeFontGenerator load(AssetManager assetManager, String fileName, Fi file, FreeTypeFontGeneratorParameters parameter) {
 				return new FreeTypeFontGenerator(resolve(fileName.substring(0, fileName.length() - loaderSuffix.length())));
 			}
 		});
 
-		Core.assets.setLoader(Font.class, "-heavyindustry", new FreetypeFontLoader(tree) {
+		Core.assets.setLoader(Font.class, "-heavyindustry", new FreetypeFontLoader(Vars.tree) {
 			@Override
 			public Font loadSync(AssetManager manager, String fileName, Fi file, FreeTypeFontLoaderParameter parameter) {
 				if (parameter == null)

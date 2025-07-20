@@ -23,7 +23,6 @@ import mindustry.type.Planet;
 
 import static heavyindustry.HVars.internalTree;
 import static heavyindustry.HVars.name;
-import static mindustry.Vars.renderer;
 
 /**
  * Defines the {@linkplain Shader shader}s this mod offers.
@@ -206,7 +205,7 @@ public final class HShaders {
 
 		@Override
 		public void apply() {
-			camDir.set(renderer.planets.cam.direction).rotate(Vec3.Y, planet.getRotation());
+			camDir.set(Vars.renderer.planets.cam.direction).rotate(Vec3.Y, planet.getRotation());
 
 			setUniformf("u_alpha", alpha);
 			setUniformf("u_lightdir", lightDir);
@@ -214,7 +213,7 @@ public final class HShaders {
 			setPlanetInfo("u_sun_info", planet.solarSystem);
 			setPlanetInfo("u_planet_info", planet);
 			setUniformf("u_camdir", camDir);
-			setUniformf("u_campos", renderer.planets.cam.position);
+			setUniformf("u_campos", Vars.renderer.planets.cam.position);
 		}
 
 		private void setPlanetInfo(String name, Planet planet) {
@@ -240,7 +239,7 @@ public final class HShaders {
 			setUniformf("u_tiletexsize", texture.width / scl, texture.height / scl);
 
 			texture.bind(1);
-			renderer.effectBuffer.getTexture().bind(0);
+			Vars.renderer.effectBuffer.getTexture().bind(0);
 
 			setUniformi("u_tiletex", 1);
 		}
@@ -472,7 +471,7 @@ public final class HShaders {
 		@Override
 		public void apply() {
 			if (texture == null) {
-				texture = new Texture(internalTree.child("sprites/small-space.png"));
+				texture = new Texture(internalTree.child("other/textures/small-space.png"));
 				texture.setFilter(TextureFilter.linear);
 				texture.setWrap(TextureWrap.repeat);
 			}
@@ -483,7 +482,7 @@ public final class HShaders {
 			setUniformf("u_time", Time.time);
 
 			texture.bind(1);
-			renderer.effectBuffer.getTexture().bind(0);
+			Vars.renderer.effectBuffer.getTexture().bind(0);
 
 			setUniformi("u_stars", 1);
 		}
@@ -527,7 +526,7 @@ public final class HShaders {
 
 			texture.bind(2);
 			noiseTex.bind(1);
-			renderer.effectBuffer.getTexture().bind(0);
+			Vars.renderer.effectBuffer.getTexture().bind(0);
 			setUniformi("u_noise", 1);
 			setUniformi("u_texture2", 2);
 		}
@@ -564,7 +563,7 @@ public final class HShaders {
 				}
 
 				noiseTex.bind(1);
-				renderer.effectBuffer.getTexture().bind(0);
+				Vars.renderer.effectBuffer.getTexture().bind(0);
 
 				setUniformi("u_noise", 1);
 			}

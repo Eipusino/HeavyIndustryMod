@@ -41,7 +41,7 @@ public final class HVars {
 	static {
 		internalTree = new InternalFileTree(HeavyIndustryMod.class);
 
-		whiteTexture = new Texture(internalTree.child("sprites/white.png"));
+		whiteTexture = new Texture(internalTree.child("other/textures/white.png"));
 		whiteRegion = new AtlasRegion(new TextureRegion(whiteTexture));
 	}
 

@@ -98,59 +98,51 @@ public final class HPlanets {
 					}});
 				}
 				heights.add(new MultiHeight(mountains, MixType.max, Operation.add), new ClampHeight(0f, 0.8f));
-				colors.addAll(
-						new NoiseColorPass() {{
-							scale = 1.5;
-							persistence = 0.5;
-							octaves = 3;
-							magnitude = 1.2f;
-							min = 0.3f;
-							max = 0.6f;
-							out = HBlocks.corruptedMoss.mapColor;
-							offset.set(1500f, 300f, -500f);
-						}},
-						new NoiseColorPass() {{
-							seed = 5;
-							scale = 1.5;
-							persistence = 0.5;
-							octaves = 5;
-							magnitude = 1.2f;
-							min = 0.1f;
-							max = 0.4f;
-							out = HBlocks.overgrownGrass.mapColor;
-							offset.set(1500f, 300f, -500f);
-						}},
-						new NoiseColorPass() {{
-							seed = 8;
-							scale = 1.5;
-							persistence = 0.5;
-							octaves = 7;
-							magnitude = 1.2f;
-							min = 0.1f;
-							max = 0.4f;
-							out = HBlocks.mycelium.mapColor;
-							offset.set(1500f, 300f, -500f);
-						}}
-				);
+				colors.addAll(new NoiseColorPass() {{
+					scale = 1.5;
+					persistence = 0.5;
+					octaves = 3;
+					magnitude = 1.2f;
+					min = 0.3f;
+					max = 0.6f;
+					out = HBlocks.corruptedMoss.mapColor;
+					offset.set(1500f, 300f, -500f);
+				}}, new NoiseColorPass() {{
+					seed = 5;
+					scale = 1.5;
+					persistence = 0.5;
+					octaves = 5;
+					magnitude = 1.2f;
+					min = 0.1f;
+					max = 0.4f;
+					out = HBlocks.overgrownGrass.mapColor;
+					offset.set(1500f, 300f, -500f);
+				}}, new NoiseColorPass() {{
+					seed = 8;
+					scale = 1.5;
+					persistence = 0.5;
+					octaves = 7;
+					magnitude = 1.2f;
+					min = 0.1f;
+					max = 0.4f;
+					out = HBlocks.mycelium.mapColor;
+					offset.set(1500f, 300f, -500f);
+				}});
 				for (int i = 0; i < 5; i++) {
 					colors.add(new SphereColorPass(new Vec3().setToRandomDirection(), 0.06f, Blocks.darksand.mapColor));
 				}
-				colors.add(
-						new FlatColorPass() {{
-							min = max = 0f;
-							out = Blocks.water.mapColor;
-						}},
-						new FlatColorPass() {{
-							min = 0.3f;
-							max = 0.5f;
-							out = Blocks.snow.mapColor;
-						}},
-						new FlatColorPass() {{
-							max = 1f;
-							min = 0.5f;
-							out = Blocks.iceSnow.mapColor;
-						}}
-				);
+				colors.add(new FlatColorPass() {{
+					min = max = 0f;
+					out = Blocks.water.mapColor;
+				}}, new FlatColorPass() {{
+					min = 0.3f;
+					max = 0.5f;
+					out = Blocks.snow.mapColor;
+				}}, new FlatColorPass() {{
+					max = 1f;
+					min = 0.5f;
+					out = Blocks.iceSnow.mapColor;
+				}});
 			}};
 			launchCapacityMultiplier = 0.5f;
 			sectorSeed = 3;
@@ -193,17 +185,15 @@ public final class HPlanets {
 			generator = new GliesePlanetGenerator() {{
 				baseHeight = 0f;
 				baseColor = Color.valueOf("212630");
-				heights.addAll(
-						new NoiseHeight() {{
-							seed = 6;
-							persistence = 0.62f;
-							octaves = 4;
-							scale = 1.2;
-							magnitude = 1.35f;
-							heightOffset = -0.7f;
-							offset.set(500f, 0f, -500f);
-						}}
-				);
+				heights.addAll(new NoiseHeight() {{
+					seed = 6;
+					persistence = 0.62f;
+					octaves = 4;
+					scale = 1.2;
+					magnitude = 1.35f;
+					heightOffset = -0.7f;
+					offset.set(500f, 0f, -500f);
+				}});
 				heights.add(new ClampHeight(0f, 0.85f));
 				Mathf.rand.setSeed(10);
 				Seq<HeightPass> mountains = new Seq<>();
@@ -217,72 +207,64 @@ public final class HPlanets {
 				}
 				heights.add(new MultiHeight(mountains, MixType.max, Operation.add));
 				heights.add(new ClampHeight(0f, 0.95f));
-				colors.addAll(
-						new NoiseColorPass() {{
-							seed = 7;
-							scale = 1.4;
-							persistence = 1;
-							octaves = 3;
-							magnitude = 1.2f;
-							min = 0f;
-							max = 0.55f;
-							out = Color.valueOf("8d9ac3");
-							offset.set(1500f, 0f, 0f);
-						}},
-						new NoiseColorPass() {{
-							scale = 1.5;
-							persistence = 0.5;
-							octaves = 3;
-							magnitude = 1.2f;
-							min = 0f;
-							max = 0.6f;
-							out = HBlocks.stoneHalf.mapColor;
-							offset.set(1500f, 0f, 0f);
-						}},
-						new NoiseColorPass() {{
-							seed = 5;
-							scale = 1.5;
-							persistence = 0.2;
-							octaves = 1;
-							magnitude = 1.2f;
-							min = 0f;
-							max = 0.35f;
-							out = HBlocks.stoneFull.mapColor;
-							offset.set(1500f, 0f, 0f);
-						}},
-						new NoiseColorPass() {{
-							seed = 9;
-							scale = 1.5;
-							persistence = 0.8f;
-							octaves = 9;
-							magnitude = 1f;
-							min = 0f;
-							max = 0.4f;
-							out = HBlocks.stoneFullTiles.mapColor;
-							offset.set(1500f, 0f, 0f);
-						}},
-						new NoiseColorPass() {{
-							seed = 8;
-							scale = 4.5;
-							persistence = 1;
-							octaves = 2;
-							magnitude = 6f;
-							min = 0f;
-							max = 0.4f;
-							out = HBlocks.stoneTiles.mapColor;
-							offset.set(1500f, 0f, 0f);
-						}},
-						new FlatColorPass() {{
-							max = 1f;
-							min = 0.52f;
-							out = Color.valueOf("99adc9");
-						}},
-						new FlatColorPass() {{
-							min = 0;
-							max = 0.02f;
-							out = Blocks.stone.mapColor;
-						}}
-				);
+				colors.addAll(new NoiseColorPass() {{
+					seed = 7;
+					scale = 1.4;
+					persistence = 1;
+					octaves = 3;
+					magnitude = 1.2f;
+					min = 0f;
+					max = 0.55f;
+					out = Color.valueOf("8d9ac3");
+					offset.set(1500f, 0f, 0f);
+				}}, new NoiseColorPass() {{
+					scale = 1.5;
+					persistence = 0.5;
+					octaves = 3;
+					magnitude = 1.2f;
+					min = 0f;
+					max = 0.6f;
+					out = HBlocks.stoneHalf.mapColor;
+					offset.set(1500f, 0f, 0f);
+				}}, new NoiseColorPass() {{
+					seed = 5;
+					scale = 1.5;
+					persistence = 0.2;
+					octaves = 1;
+					magnitude = 1.2f;
+					min = 0f;
+					max = 0.35f;
+					out = HBlocks.stoneFull.mapColor;
+					offset.set(1500f, 0f, 0f);
+				}}, new NoiseColorPass() {{
+					seed = 9;
+					scale = 1.5;
+					persistence = 0.8f;
+					octaves = 9;
+					magnitude = 1f;
+					min = 0f;
+					max = 0.4f;
+					out = HBlocks.stoneFullTiles.mapColor;
+					offset.set(1500f, 0f, 0f);
+				}}, new NoiseColorPass() {{
+					seed = 8;
+					scale = 4.5;
+					persistence = 1;
+					octaves = 2;
+					magnitude = 6f;
+					min = 0f;
+					max = 0.4f;
+					out = HBlocks.stoneTiles.mapColor;
+					offset.set(1500f, 0f, 0f);
+				}}, new FlatColorPass() {{
+					max = 1f;
+					min = 0.52f;
+					out = Color.valueOf("99adc9");
+				}}, new FlatColorPass() {{
+					min = 0;
+					max = 0.02f;
+					out = Blocks.stone.mapColor;
+				}});
 			}};
 			meshLoader = () -> new MultiMesh(
 					new HexMesh(this, 7),

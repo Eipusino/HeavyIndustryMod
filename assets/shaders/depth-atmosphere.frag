@@ -108,7 +108,7 @@ void main() {
 	vec3 normal = normalize(v_position - u_center);
 
 	vec2 bound = intersect(eye, ray, u_outerRadius);
-	bound.y = min(bound.y, unpack(texture2D(u_topology, gl_FragCoord.xy / u_viewport)));
+	bound.y = min(bound.y, unpack(texture(u_topology, gl_FragCoord.xy / u_viewport)));
 
 	fragColor = vec4(inScatter(eye, ray, bound, u_light), 1.0);
 }

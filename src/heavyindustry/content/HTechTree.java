@@ -81,10 +81,7 @@ public final class HTechTree {
 		vanillaNode(carbideWallLarge, () -> node(carbideWallHuge, () -> node(carbideWallGigantic, () -> {})));
 		vanillaNode(shieldedWall, () -> node(shieldedWallLarge, () -> node(shieldedWallHuge, () -> {})));
 		//drill
-		vanillaNode(pneumaticDrill, () -> {
-			node(titaniumDrill, () -> {});
-			node(sporeFarm, () -> {});
-		});
+		vanillaNode(pneumaticDrill, () -> node(titaniumDrill, () -> {}));
 		vanillaNode(waterExtractor, () -> {
 			node(largeWaterExtractor, () -> {});
 			node(slagExtractor, () -> {});
@@ -200,7 +197,6 @@ public final class HTechTree {
 			node(largeElectricHeater, ItemStack.with(Items.tungsten, 3000, Items.oxide, 2400, Items.carbide, 800), () -> {});
 			node(liquidFuelHeater, () -> {});
 			node(heatReactor, () -> {});
-			node(uraniumFuser, Seq.with(new OnSector(origin)), () -> node(chromiumFuser, () -> {}));
 		});
 		vanillaNode(oxidationChamber, () -> node(largeOxidationChamber, ItemStack.with(Items.tungsten, 3600, Items.graphite, 4400, Items.silicon, 4400, Items.beryllium, 6400, Items.oxide, 600, Items.carbide, 1400), () -> {}));
 		vanillaNode(surgeCrucible, () -> node(largeSurgeCrucible, ItemStack.with(Items.graphite, 4400, Items.silicon, 4000, Items.tungsten, 4800, Items.oxide, 960, Items.surgeAlloy, 1600), () -> {}));

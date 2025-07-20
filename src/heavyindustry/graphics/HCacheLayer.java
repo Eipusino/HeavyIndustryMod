@@ -2,10 +2,9 @@ package heavyindustry.graphics;
 
 import arc.Core;
 import arc.graphics.Color;
+import mindustry.Vars;
 import mindustry.graphics.CacheLayer;
 import mindustry.graphics.CacheLayer.ShaderLayer;
-
-import static mindustry.Vars.renderer;
 
 /**
  * Defines the {@linkplain CacheLayer cache layer}s this mod offers.
@@ -28,21 +27,21 @@ public final class HCacheLayer {
 		armor = new ShaderLayer(HShaders.tiler) {
 			@Override
 			public void begin() {
-				//renderer.blocks.floor.endc();
-				renderer.effectBuffer.begin();
+				//Vars.renderer.blocks.floor.endc();
+				Vars.renderer.effectBuffer.begin();
 				Core.graphics.clear(Color.clear);
-				renderer.blocks.floor.beginc();
+				Vars.renderer.blocks.floor.beginc();
 			}
 
 			@Override
 			public void end() {
-				//renderer.blocks.floor.endc();
-				renderer.effectBuffer.end();
+				//Vars.renderer.blocks.floor.endc();
+				Vars.renderer.effectBuffer.end();
 
 				HShaders.tiler.texture = HTextures.armor;
-				renderer.effectBuffer.blit(shader);
+				Vars.renderer.effectBuffer.blit(shader);
 
-				renderer.blocks.floor.beginc();
+				Vars.renderer.blocks.floor.beginc();
 			}
 		};
 

@@ -162,7 +162,7 @@ import static heavyindustry.struct.Collectionsf.arrayOf;
 import static mindustry.Vars.content;
 import static mindustry.Vars.maxBlockSize;
 
-public class ExtraContentParser {
+public class HContentParser {
 	private static final boolean ignoreUnknownFields = true;
 	private static final ContentType[] typesToSearch = {ContentType.block, ContentType.item, ContentType.unit, ContentType.liquid, ContentType.planet};
 
@@ -504,8 +504,8 @@ public class ExtraContentParser {
 			return t;
 		}
 
-		@SuppressWarnings({"unchecked", "rawtypes"})
-		private <T> T internalRead(Class<T> type, Class elementType, JsonValue jsonData, Class keyType) {
+		@SuppressWarnings("unchecked")
+		private <T> T internalRead(Class<T> type, Class<?> elementType, JsonValue jsonData, Class<?> keyType) {
 			if (type != null) {
 				if (classParsers.containsKey(type)) {
 					try {
@@ -870,6 +870,8 @@ public class ExtraContentParser {
 
 				Planet parent = locate(ContentType.planet, value.getString("parent", ""));
 				Planet planet = new Planet(mod + "-" + name, parent, value.getFloat("radius", 1f), value.getInt("sectorSize", 0));
+
+				value.remove("sectorSize");
 
 				if (value.has("mesh")) {
 					var mesh = value.get("mesh");

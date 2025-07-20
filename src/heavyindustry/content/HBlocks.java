@@ -31,8 +31,8 @@ import heavyindustry.entities.effect.WrapperEffect;
 import heavyindustry.gen.HSounds;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.HCacheLayer;
-import heavyindustry.graphics.HPal;
 import heavyindustry.graphics.HLayer;
+import heavyindustry.graphics.HPal;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.util.Utils;
 import heavyindustry.world.blocks.defense.AparajitoWall;
@@ -86,6 +86,7 @@ import heavyindustry.world.blocks.power.SmartPowerNode;
 import heavyindustry.world.blocks.production.LaserBeamDrill;
 import heavyindustry.world.blocks.production.MinerPoint;
 import heavyindustry.world.blocks.production.MultiCrafter;
+import heavyindustry.world.blocks.production.PressureDrill;
 import heavyindustry.world.blocks.production.SporeFarm;
 import heavyindustry.world.blocks.sandbox.AdaptiveSource;
 import heavyindustry.world.blocks.storage.CoreStorageBlock;
@@ -120,6 +121,7 @@ import mindustry.entities.bullet.PointBulletType;
 import mindustry.entities.bullet.PointLaserBulletType;
 import mindustry.entities.bullet.RailBulletType;
 import mindustry.entities.effect.MultiEffect;
+import mindustry.entities.effect.ParticleEffect;
 import mindustry.entities.effect.RadialEffect;
 import mindustry.entities.part.RegionPart;
 import mindustry.entities.pattern.ShootAlternate;
@@ -147,7 +149,6 @@ import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.net.Packets;
 import mindustry.type.Category;
-import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.type.Liquid;
 import mindustry.type.LiquidStack;
@@ -211,7 +212,6 @@ import mindustry.world.blocks.units.UnitAssemblerModule;
 import mindustry.world.consumers.ConsumeCoolant;
 import mindustry.world.consumers.ConsumeLiquid;
 import mindustry.world.consumers.ConsumeLiquidFlammable;
-import mindustry.world.draw.DrawBlurSpin;
 import mindustry.world.draw.DrawCells;
 import mindustry.world.draw.DrawCircles;
 import mindustry.world.draw.DrawCrucibleFlame;
@@ -285,7 +285,7 @@ public final class HBlocks {
 	berylliumWallHuge, berylliumWallGigantic, tungstenWallHuge, tungstenWallGigantic, blastDoorLarge, blastDoorHuge, reinforcedSurgeWallHuge, reinforcedSurgeWallGigantic, carbideWallHuge, carbideWallGigantic, shieldedWallLarge, shieldedWallHuge,
 			aparajito, aparajitoLarge,
 	//drill
-	titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, cuttingDrill, heavyCuttingDrill, beamDrill,
+	titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, ionDrill, cuttingDrill, beamDrill,
 	//drill-erekir
 	heavyPlasmaBore, minerPoint, minerCenter,
 	//distribution
@@ -308,7 +308,6 @@ public final class HBlocks {
 			uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilSedimentationTank,
 	//production-erekir
 	ventHeater, chemicalSiliconSmelter, largeElectricHeater, liquidFuelHeater, largeOxidationChamber, largeSurgeCrucible, largeCarbideCrucible,
-			uraniumFuser, chromiumFuser,
 	//defense
 	lighthouse, mendDome, sectorStructureMender, assignOverdrive, largeShieldGenerator, paralysisMine, detonator, bombLauncher,
 	//defense-erekir
@@ -337,7 +336,7 @@ public final class HBlocks {
 	//sandbox
 	unitIniter,
 			reinforcedItemSource, reinforcedLiquidSource, reinforcedPowerSource, reinforcedPayloadSource, adaptiveSource,
-			omniNode, ultraAssignOverdrive,
+			staticDrill, omniNode, ultraAssignOverdrive,
 			teamChanger, barrierProjector, nihility, invincibleWall, invincibleWallLarge, invincibleWallHuge, invincibleWallGigantic,
 			mustDieTurret, oneShotTurret, pointTurret,
 			nextWave;
@@ -769,6 +768,7 @@ public final class HBlocks {
 			armor = 48f;
 			absorbLasers = insulated = true;
 			crushDamageMultiplier = 0.5f;
+			hideDetails = false;
 		}};
 		heavyAlloyWallLarge = new Wall("heavy-alloy-wall-large") {{
 			requirements(Category.defense, with(HItems.heavyAlloy, 24, Items.metaglass, 12, Items.plastanium, 16));
@@ -777,6 +777,7 @@ public final class HBlocks {
 			armor = 48f;
 			absorbLasers = insulated = true;
 			crushDamageMultiplier = 0.5f;
+			hideDetails = false;
 		}};
 		compositeWall = new RegenWall("composite-wall") {{
 			requirements(Category.defense, with(HItems.crystalCircuit, 2, HItems.heavyAlloy, 6, Items.metaglass, 1, Items.plastanium, 4));
@@ -788,6 +789,7 @@ public final class HBlocks {
 			healPercent = 3f / 60f;
 			chanceHeal = 0.15f;
 			regenPercent = 0.5f;
+			hideDetails = false;
 		}};
 		compositeWallLarge = new RegenWall("composite-wall-large") {{
 			requirements(Category.defense, with(HItems.crystalCircuit, 8, HItems.heavyAlloy, 24, Items.metaglass, 4, Items.plastanium, 16));
@@ -799,6 +801,7 @@ public final class HBlocks {
 			healPercent = 3f / 60f;
 			chanceHeal = 0.15f;
 			regenPercent = 0.5f;
+			hideDetails = false;
 		}};
 		shapedWall = new ShapedWall("shaped-wall") {{
 			requirements(Category.defense, BuildVisibility.sandboxOnly, with(HItems.heavyAlloy, 8, Items.phaseFabric, 6));
@@ -807,6 +810,7 @@ public final class HBlocks {
 			insulated = absorbLasers = true;
 			crushDamageMultiplier = 0.5f;
 			maxShareStep = 3;
+			hideDetails = false;
 		}};
 		//wall-erekir
 		berylliumWallHuge = new Wall("beryllium-wall-huge") {{
@@ -956,7 +960,7 @@ public final class HBlocks {
 			envRequired |= Env.groundWater;
 			consumePower(2.5f);
 		}};
-		slagExtractor = new SolidPump("slag-extractor") {{
+		slagExtractor = new SlagExtractor("slag-extractor") {{
 			requirements(Category.production, with(Items.graphite, 60, Items.titanium, 35, Items.metaglass, 80, Items.silicon, 80, Items.thorium, 45));
 			size = 3;
 			liquidCapacity = 30;
@@ -968,35 +972,7 @@ public final class HBlocks {
 			pumpAmount = 0.9f;
 			envRequired |= Env.none;
 			consumePower(3.5f);
-		}
-			public TextureRegion rotatorRegion1;
-		{
-			buildType = () -> new SolidPumpBuild() {
-				@Override
-				public void draw() {
-					Draw.rect(bottomRegion, x, y);
-					Draw.z(Layer.blockCracks);
-					super.drawCracks();
-					Draw.z(Layer.blockAfterCracks);
-
-					Drawf.liquid(liquidRegion, x, y, liquids.get(result) / liquidCapacity, result.color);
-					Drawf.spinSprite(rotatorRegion, x, y, pumpTime * rotateSpeed);
-					Drawf.spinSprite(rotatorRegion1, x, y, pumpTime * -rotateSpeed / 3);
-					Draw.rect(topRegion, x, y);
-				}
-			};
-		}
-			@Override
-			public void load() {
-				super.load();
-				rotatorRegion1 = Core.atlas.find(name + "-rotator1");
-			}
-
-			@Override
-			public TextureRegion[] icons() {
-				return new TextureRegion[]{region};
-			}
-		};
+		}};
 		oilRig = new Fracker("oil-rig") {{
 			requirements(Category.production, with(Items.lead, 220, Items.graphite, 200, Items.silicon, 100, Items.thorium, 180, Items.plastanium, 120, Items.phaseFabric, 30));
 			size = 4;
@@ -1014,36 +990,38 @@ public final class HBlocks {
 			consumeLiquid(Liquids.water, 0.3f);
 			buildCostMultiplier = 0.8f;
 		}};
-		cuttingDrill = new Drill("cutting-drill") {{
-			requirements(Category.production, with(Items.copper, 160, Items.silicon, 120, Items.thorium, 50, Items.plastanium, 40, Items.surgeAlloy, 30));
+		ionDrill = new Drill("ion-drill") {{
+			requirements(Category.production, with(Items.copper, 30, Items.graphite, 40, Items.silicon, 60, Items.titanium, 40, Items.thorium, 80, Items.plastanium, 15));
 			size = 3;
 			health = 640;
 			armor = 3f;
 			tier = 8;
-			updateEffect = Fx.pulverizeRed;
+			updateEffect = Fx.mineBig;
 			updateEffectChance = 0.03f;
-			drillTime = 320f;
-			drillEffect = Fx.mineHuge;
-			rotateSpeed = 1.8f;
-			warmupSpeed = 0.008f;
+			drawRim = true;
+			drillTime = 240f;
+			drillEffect = Fx.mineBig;
+			rotateSpeed = 2f;
+			warmupSpeed = 0.06f;
 			itemCapacity = 15;
-			liquidCapacity = 10f;
-			liquidBoostIntensity = 1.8f;
-			hardnessDrillMultiplier = 12f;
-			consumePower(8f);
-			consumeLiquid(HLiquids.lightOil, 0.12f).optional(true, true);
+			liquidCapacity = 20f;
+			liquidBoostIntensity = 1.6f;
+			hardnessDrillMultiplier = 40f;
+			consumePower(3f);
+			consumeLiquid(Liquids.water, 0.1f).optional(true, true);
+			hideDetails = false;
 		}};
-		heavyCuttingDrill = new Drill("heavy-cutting-drill") {{
-			requirements(Category.production, with(Items.copper, 320, Items.silicon, 180, Items.thorium, 50, Items.plastanium, 70, Items.surgeAlloy, 80, Items.phaseFabric, 15));
+		cuttingDrill = new Drill("cutting-drill") {{
+			requirements(Category.production, with(Items.copper, 320, Items.silicon, 180, Items.thorium, 50, Items.plastanium, 60, Items.surgeAlloy, 80, Items.phaseFabric, 15));
 			size = 4;
 			health = 1070;
 			armor = 6f;
 			tier = 10;
 			updateEffect = Fx.pulverizeRed;
 			updateEffectChance = 0.03f;
-			drillTime = 280f;
+			drillTime = 320f;
 			drillEffect = Fx.mineHuge;
-			/*updateEffect = new ParticleEffect() {{
+			updateEffect = new ParticleEffect() {{
 				particles = 3;
 				interp = Interp.fastSlow;
 				sizeFrom = 1;
@@ -1053,15 +1031,16 @@ public final class HBlocks {
 				colorFrom = Color.valueOf("eec591");
 				colorTo = Color.valueOf("eec59100");
 				cone = 20;
-			}};*/
+			}};
 			rotateSpeed = 1.5f;
 			warmupSpeed = 0.002f;
 			itemCapacity = 35;
 			liquidCapacity = 30f;
 			liquidBoostIntensity = 1.8f;
-			hardnessDrillMultiplier = 10f;
+			hardnessDrillMultiplier = 5f;
 			consumePower(11f);
-			consumeLiquid(HLiquids.lightOil, 0.3f).optional(true, true);
+			consumeLiquid(HLiquids.lightOil, 0.1f).optional(true, true);
+			hideDetails = false;
 		}};
 		beamDrill = new LaserBeamDrill("beam-drill") {{
 			requirements(Category.production, with(Items.lead, 160, Items.silicon, 120, Items.plastanium, 80, HItems.heavyAlloy, 60, HItems.crystalCircuit, 35, Items.phaseFabric, 25));
@@ -1072,11 +1051,12 @@ public final class HBlocks {
 			drillTime = 80f;
 			liquidBoostIntensity = 1.65f;
 			itemCapacity = 50;
-			liquidCapacity = 20f;
+			liquidCapacity = 30f;
 			hardnessDrillMultiplier = 20f;
 			buildCostMultiplier = 0.8f;
 			consumePower(6f);
 			consumeLiquid(Liquids.water, 0.1f).optional(true, true);
+			hideDetails = false;
 		}};
 		//drill-erekir
 		heavyPlasmaBore = new BeamDrill("heavy-plasma-bore") {{
@@ -1549,7 +1529,7 @@ public final class HBlocks {
 			size = 2;
 			powerProduction = 0.4f;
 		}};
-		uraniumReactor = new NuclearReactor("uranium-reactor") {{
+		uraniumReactor = new UraniumReactor("uranium-reactor") {{
 			requirements(Category.power, with(Items.lead, 400, Items.metaglass, 120, Items.graphite, 350, Items.silicon, 300, HItems.uranium, 100));
 			size = 3;
 			health = 1450;
@@ -1610,66 +1590,7 @@ public final class HBlocks {
 			ambientSoundVolume = 0.24f;
 			consumeItem(HItems.uranium);
 			consumeLiquid(Liquids.cryofluid, heating / coolantPower).update(false);
-		}
-			public final Blending blending = Blending.additive;
-			public final float alpha = 0.9f, glowScale = 10f, glowIntensity = 0.5f, layer = Layer.blockAdditive;
-			public final Color color = Color.red.cpy();
-			public TextureRegion bottomRegion, glowRegion;
-		{
-			buildType = () -> new NuclearReactorBuild() {
-				@Override
-				public void draw() {
-					Draw.rect(bottomRegion, x, y);
-
-					Draw.color(coolColor, hotColor, heat);
-					Fill.rect(x, y, size * tilesize, size * tilesize);
-
-					Draw.color(liquids.current().color);
-					Draw.alpha(liquids.currentAmount() / liquidCapacity);
-					Draw.rect(topRegion, x, y);
-					Draw.reset();
-
-					Draw.rect(region, x, y);
-
-					drawGlow();
-
-					if (heat > flashThreshold) {
-						flash += (1f + ((heat - flashThreshold) / (1f - flashThreshold)) * 5.4f) * Time.delta;
-						Draw.color(Color.red, Color.yellow, Mathf.absin(flash, 9f, 1f));
-						Draw.alpha(0.3f);
-						Draw.rect(lightsRegion, x, y);
-					}
-
-					Draw.reset();
-				}
-
-				public void drawGlow() {
-					if (warmup() <= 0.001f) return;
-
-					float z = Draw.z();
-					Draw.z(layer);
-					Draw.blend(blending);
-					Draw.color(color);
-					Draw.alpha((Mathf.absin(totalProgress(), glowScale, alpha) * glowIntensity + 1f - glowIntensity) * warmup() * alpha);
-					Draw.rect(glowRegion, x, y, 0f);
-					Draw.reset();
-					Draw.blend();
-					Draw.z(z);
-				}
-			};
-		}
-			@Override
-			public void load() {
-				super.load();
-				bottomRegion = Core.atlas.find(name + "-bottom");
-				glowRegion = Core.atlas.find(name + "-glow");
-			}
-
-			@Override
-			public TextureRegion[] icons() {
-				return new TextureRegion[]{bottomRegion, region};
-			}
-		};
+		}};
 		hyperMagneticReactor = new HyperGenerator("hyper-magnetic-reactor") {{
 			requirements(Category.power, with(Items.titanium, 1200, Items.metaglass, 1300, Items.plastanium, 800, Items.silicon, 1600, Items.phaseFabric, 1200, HItems.chromium, 2500, HItems.heavyAlloy, 2200));
 			size = 6;
@@ -1886,7 +1807,7 @@ public final class HBlocks {
 			consumePower(1.2f);
 		}};
 		sporeFarm = new SporeFarm("spore-farm") {{
-			requirements(Category.production, with(Items.copper, 5, Items.lead, 5));
+			requirements(Category.production, BuildVisibility.sandboxOnly, with(Items.copper, 5, Items.lead, 5));
 			health = 50;
 			rebuildable = false;
 			hasItems = true;
@@ -2435,108 +2356,6 @@ public final class HBlocks {
 			consumeItems(with(Items.graphite, 8, Items.tungsten, 5));
 			consumePower(1f);
 		}};
-		uraniumFuser = new HeatCrafter("uranium-fuser") {{
-			requirements(Category.crafting, with(Items.silicon, 120, Items.graphite, 60, Items.tungsten, 100, Items.oxide, 40, Items.surgeAlloy, 60, HItems.originium, 10));
-			size = 3;
-			itemCapacity = 20;
-			heatRequirement = 10f;
-			craftTime = 120f;
-			liquidCapacity = 300f;
-			hasLiquids = true;
-			outputItem = new ItemStack(HItems.uranium, 1);
-			craftEffect = new Effect(50f, e -> {
-				Draw.color(Liquids.slag.color);
-				Draw.alpha(e.fslope() * 0.8f);
-				Mathf.rand.setSeed(e.id + 2);
-				Angles.randLenVectors(e.id, 5, 3f, 9f * e.fin(), (x, y) -> Fill.circle(e.x + x, e.y + y, Mathf.rand.random(0.65f, 1.5f)));
-			}).layer(Layer.bullet - 1f);
-			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.slag, 3f), new DrawDefault(), new DrawHeatInput(), new DrawGlowRegion("-glow") {{
-				color = Color.valueOf("70170b");
-			}}, new DrawBlurSpin("-rotator", 12f));
-			consumeItem(Items.thorium, 1);
-			consumeLiquid(Liquids.slag, 30f / 60f);
-			consumePower(2f);
-			squareSprite = false;
-		}};
-		chromiumFuser = new GenericCrafter("chromium-fuser") {{
-			requirements(Category.crafting, with(Items.silicon, 150, Items.graphite, 120, Items.tungsten, 200, Items.oxide, 180, Items.phaseFabric, 100, HItems.originium, 15));
-			size = 3;
-			itemCapacity = 20;
-			craftTime = 35f;
-			liquidCapacity = 300f;
-			hasLiquids = true;
-			craftEffect = Fx.none;
-			outputItem = new ItemStack(HItems.chromium, 1);
-			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.hydrogen, 3f), new DrawDefault(), new DrawHeatInput());
-			consumeItem(Items.tungsten, 1);
-			consumeLiquid(Liquids.hydrogen, 12f / 60f);
-			consumePower(12f);
-			squareSprite = false;
-		}
-			public final float sizeScl = 15 * 6f;
-			public final Color color1 = Pal.lancerLaser, color2 = Pal.sapBullet;
-			public TextureRegion lightRegion, heatRegion, shadowRegion;
-		{
-			buildType = () -> new GenericCrafterBuild() {
-				public boolean nextFlash;
-				public float heatf, warmupf;
-
-				@Override
-				public void updateTile() {
-					super.updateTile();
-					if (!nextFlash && heatf < 0.001f && Mathf.chance(0.01f * edelta()) && canConsume() && efficiency > 0.0001f) {
-						nextFlash = true;
-						heatf = 1f;
-					} else if (nextFlash && heatf < 0.001f) {
-						nextFlash = false;
-						heatf = 1f;
-					}
-					heatf = Mathf.approachDelta(heatf, 0f, 0.05f);
-					warmupf = Mathf.approachDelta(warmupf, efficiency, 0.04f);
-				}
-
-				@Override
-				public void draw() {
-					super.draw();
-					setFlameColor(Tmp.c4);
-					if (heatf >= 0.001f) {
-						Draw.z(Layer.bullet - 0.01f);
-						Draw.color(Color.white, Tmp.c4, Mathf.clamp(heatf * 3f - 2f));
-						Draw.alpha(Mathf.clamp(heatf * 1.5f));
-						Draw.rect(lightRegion, x, y);
-					}
-					Draw.z(Layer.blockOver);
-					Draw.blend(Blending.additive);
-					if (heatf >= 0.001f) {
-						Draw.alpha(Mathf.clamp(heatf * 1.5f) * 0.2f);
-						Draw.rect(heatRegion, x, y);
-					}
-					Draw.alpha(Mathf.absin(11f, 0.2f * warmupf));
-					Draw.rect(shadowRegion, x, y, sizeScl * Draw.scl * Draw.xscl, sizeScl * Draw.scl * Draw.yscl);
-					Draw.blend();
-					Draw.color();
-				}
-
-				@Override
-				public void drawLight() {
-					super.drawLight();
-					setFlameColor(Tmp.c4);
-					Drawf.light(x, y, (lightRadius * (1f + Mathf.clamp(heatf) * 0.1f) + Mathf.absin(10f, 5f)) * warmupf * block.size, Tmp.c4, 0.65f);
-				}
-
-				public void setFlameColor(Color tmp) {
-					tmp.set(color1).lerp(color2, Mathf.absin(Time.time + Mathf.randomSeed(pos(), 0f, 9f * 6.29f), 9f, 1f));
-				}
-			};
-		}
-			@Override
-			public void load() {
-				super.load();
-				lightRegion = Core.atlas.find(name + "-light");
-				heatRegion = Core.atlas.find(name + "-light-heat");
-				shadowRegion = Core.atlas.find("circle-shadow");
-			}
-		};
 		//defense
 		lighthouse = new LightBlock("lighthouse") {{
 			requirements(Category.effect, BuildVisibility.lightingOnly, with(Items.graphite, 20, Items.silicon, 10, Items.lead, 30, Items.titanium, 15));
@@ -2599,6 +2418,7 @@ public final class HBlocks {
 			consumePower(14f);
 			consumeItem(Items.phaseFabric).boost();
 			squareSprite = false;
+			hideDetails = false;
 		}};
 		largeShieldGenerator = new ForceProjector("large-shield-generator") {{
 			requirements(Category.effect, with(Items.silicon, 120, Items.lead, 250, Items.graphite, 180, Items.plastanium, 150, Items.phaseFabric, 40, HItems.chromium, 60));
@@ -2613,6 +2433,7 @@ public final class HBlocks {
 			phaseRadiusBoost = 100f;
 			phaseShieldBoost = 15000f;
 			consumePower(15f);
+			hideDetails = false;
 		}
 			@Override
 			protected TextureRegion[] icons() {
@@ -3763,7 +3584,6 @@ public final class HBlocks {
 				hitShake = 2;
 				range = 75 * 8;
 				trailLength = 8;
-				buildCostMultiplier = 0.8f;
 			}
 				public final Color tmpColor = new Color();
 				public final Color from = color, to = Pal.techBlue;
@@ -3954,6 +3774,7 @@ public final class HBlocks {
 			scaledHealth = 300;
 			armor = 10f;
 			unitSort = UnitSorts.strongest;
+			buildCostMultiplier = 0.8f;
 			consumePower(26f);
 			consumeLiquid(HLiquids.originiumFluid, 12f / 60f);
 		}};
@@ -4170,46 +3991,56 @@ public final class HBlocks {
 		reinforcedItemSource = new ItemSource("reinforced-item-source") {{
 			requirements(Category.distribution, BuildVisibility.sandboxOnly, with());
 			health = 1000;
-			buildType = () -> new ItemSourceBuild() {
-				@Override
-				public boolean dump(Item item) {
-					int count = 36;
-					items.set(item, count);
-					while (count > 0 && super.dump(item)) {
-						count--;
-					}
-					return super.dump(item);
-				}
-			};
+			armor = 10f;
+			itemsPerSecond = 1000;
+			hideDetails = false;
 		}};
 		reinforcedLiquidSource = new LiquidSource("reinforced-liquid-source") {{
 			requirements(Category.liquid, BuildVisibility.sandboxOnly, with());
+			armor = 10f;
 			health = 1000;
 		}};
 		reinforcedPowerSource = new PowerSource("reinforced-power-source") {{
 			requirements(Category.power, BuildVisibility.sandboxOnly, with());
 			health = 1000;
+			armor = 10f;
 			powerProduction = 10000000f / 60f;
 		}};
 		reinforcedPayloadSource = new AdaptPayloadSource("reinforced-payload-source") {{
 			requirements(Category.units, BuildVisibility.sandboxOnly, with());
 			size = 5;
 			health = 1000;
+			armor = 10f;
 			placeableLiquid = true;
 			floating = true;
 		}};
 		adaptiveSource = new AdaptiveSource("adaptive-source") {{
 			requirements(Category.distribution, BuildVisibility.sandboxOnly, with());
 			health = 1000;
+			armor = 10f;
 			liquidCapacity = 100f;
 			laserRange = 200f;
 			maxNodes = 500;
 			itemsPerSecond = 2000;
 			autolink = drawRange = false;
 		}};
+		staticDrill = new PressureDrill("static-drill") {{
+			requirements(Category.production, BuildVisibility.sandboxOnly, with());
+			health = 1000;
+			armor = 10f;
+			drillTime = 3f;
+			tier = Integer.MAX_VALUE;
+			itemCapacity = 1000;
+			drillEffect = Fx.none;
+			updateEffect = Fx.none;
+			rotateSpeed = 8;
+			warmupSpeed = 0.5f;
+			hardnessDrillMultiplier = 0f;
+		}};
 		omniNode = new NodeBridge("omni-node") {{
 			requirements(Category.distribution, BuildVisibility.sandboxOnly, with());
 			health = 1000;
+			armor = 10f;
 			range = 35;
 			hasPower = false;
 			hasLiquids = true;
@@ -4224,6 +4055,7 @@ public final class HBlocks {
 			requirements(Category.effect, BuildVisibility.sandboxOnly, with());
 			size = 2;
 			health = 1000;
+			armor = 10f;
 			hasItems = false;
 			hasPower = false;
 			range = 600f;
@@ -4239,6 +4071,7 @@ public final class HBlocks {
 			requirements(Category.effect, BuildVisibility.sandboxOnly, with());
 			size = 3;
 			health = 1000;
+			armor = 10f;
 			itemCapacity = 10000;
 			unitCapModifier = 1;
 			configurable = true;
@@ -4322,6 +4155,7 @@ public final class HBlocks {
 		barrierProjector = new BaseShield("barrier-projector") {{
 			requirements(Category.effect, BuildVisibility.sandboxOnly, with());
 			health = 1000;
+			armor = 10f;
 			size = 2;
 			hasPower = false;
 			radius = 300f;
@@ -4334,10 +4168,16 @@ public final class HBlocks {
 					return 0f;
 				}
 			};
-		}};
+		}
+			@Override
+			protected TextureRegion[] icons() {
+				return new TextureRegion[]{region};
+			}
+		};
 		nihility = new ForceProjector("nihility") {{
 			requirements(Category.effect, BuildVisibility.sandboxOnly, with());
 			health = 1000;
+			armor = 10f;
 			size = 2;
 			hasPower = false;
 			radius = 220f;
@@ -4408,10 +4248,16 @@ public final class HBlocks {
 				}
 			};
 			itemConsumer = consumeItem(Items.phaseFabric).boost();
-		}};
+		}
+			@Override
+			protected TextureRegion[] icons() {
+				return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
+			}
+		};
 		invincibleWall = new IndestructibleWall("invincible-wall") {{
 			requirements(Category.defense, BuildVisibility.sandboxOnly, with());
 			health = 1000;
+			armor = 10f;
 			size = 1;
 			absorbLasers = insulated = true;
 			unlocked = false;
@@ -4419,6 +4265,7 @@ public final class HBlocks {
 		invincibleWallLarge = new IndestructibleWall("invincible-wall-large") {{
 			requirements(Category.defense, BuildVisibility.sandboxOnly, with());
 			health = 4000;
+			armor = 10f;
 			size = 2;
 			absorbLasers = insulated = true;
 			unlocked = false;
@@ -4426,6 +4273,7 @@ public final class HBlocks {
 		invincibleWallHuge = new IndestructibleWall("invincible-wall-huge") {{
 			requirements(Category.defense, BuildVisibility.sandboxOnly, with());
 			health = 9000;
+			armor = 10f;
 			size = 3;
 			absorbLasers = insulated = true;
 			unlocked = false;
@@ -4433,6 +4281,7 @@ public final class HBlocks {
 		invincibleWallGigantic = new IndestructibleWall("invincible-wall-gigantic") {{
 			requirements(Category.defense, BuildVisibility.sandboxOnly, with());
 			health = 16000;
+			armor = 10f;
 			size = 4;
 			absorbLasers = insulated = true;
 			unlocked = false;
@@ -4440,6 +4289,7 @@ public final class HBlocks {
 		mustDieTurret = new PlatformTurret("must-die-turret") {{
 			requirements(Category.turret, BuildVisibility.sandboxOnly, with());
 			health = 1000;
+			armor = 10f;
 			range = 500f;
 			inaccuracy = 25f;
 			rotateSpeed = 20f;
@@ -4575,6 +4425,7 @@ public final class HBlocks {
 			requirements(Category.turret, BuildVisibility.sandboxOnly, with());
 			size = 2;
 			health = 1000;
+			armor = 10f;
 			range = 600f;
 			reload = 30f;
 			inaccuracy = 0f;
@@ -4624,6 +4475,7 @@ public final class HBlocks {
 			requirements(Category.turret, BuildVisibility.sandboxOnly, with());
 			size = 2;
 			health = 1000;
+			armor = 10f;
 			range = 600f;
 			reload = 30f;
 			inaccuracy = 0f;
@@ -4724,6 +4576,7 @@ public final class HBlocks {
 			requirements(Category.effect, BuildVisibility.sandboxOnly, with());
 			size = 2;
 			health = 1000;
+			armor = 10f;
 			update = true;
 			solid = false;
 			targetable = false;
@@ -4753,5 +4606,108 @@ public final class HBlocks {
 				}
 			};
 		}};
+	}
+}
+
+class SlagExtractor extends SolidPump {
+	TextureRegion rotatorRegion1;
+
+	SlagExtractor(String name) {
+		super(name);
+
+		buildType = SlagExtractorBuild::new;
+	}
+
+	@Override
+	public void load() {
+		super.load();
+		rotatorRegion1 = Core.atlas.find(name + "-rotator1");
+	}
+
+	@Override
+	public TextureRegion[] icons() {
+		return new TextureRegion[]{region};
+	}
+
+	class SlagExtractorBuild extends SolidPumpBuild {
+		@Override
+		public void draw() {
+			Draw.rect(bottomRegion, x, y);
+			Draw.z(Layer.blockCracks);
+			super.drawCracks();
+			Draw.z(Layer.blockAfterCracks);
+
+			Drawf.liquid(liquidRegion, x, y, liquids.get(result) / liquidCapacity, result.color);
+			Drawf.spinSprite(rotatorRegion, x, y, pumpTime * rotateSpeed);
+			Drawf.spinSprite(rotatorRegion1, x, y, pumpTime * -rotateSpeed / 3);
+			Draw.rect(topRegion, x, y);
+		}
+	}
+}
+
+class UraniumReactor extends NuclearReactor {
+	Blending blending = Blending.additive;
+	float alpha = 0.9f, glowScale = 10f, glowIntensity = 0.5f, layer = Layer.blockAdditive;
+	Color color = Color.red.cpy();
+
+	TextureRegion bottomRegion, glowRegion;
+
+	UraniumReactor(String name) {
+		super(name);
+		buildType = UraniumReactorBuild::new;
+	}
+
+	@Override
+	public void load() {
+		super.load();
+		bottomRegion = Core.atlas.find(name + "-bottom");
+		glowRegion = Core.atlas.find(name + "-glow");
+	}
+
+	@Override
+	public TextureRegion[] icons() {
+		return new TextureRegion[]{bottomRegion, region};
+	}
+
+	class UraniumReactorBuild extends NuclearReactorBuild {
+		@Override
+		public void draw() {
+			Draw.rect(bottomRegion, x, y);
+
+			Draw.color(coolColor, hotColor, heat);
+			Fill.rect(x, y, size * tilesize, size * tilesize);
+
+			Draw.color(liquids.current().color);
+			Draw.alpha(liquids.currentAmount() / liquidCapacity);
+			Draw.rect(topRegion, x, y);
+			Draw.reset();
+
+			Draw.rect(region, x, y);
+
+			drawGlow();
+
+			if (heat > flashThreshold) {
+				flash += (1f + ((heat - flashThreshold) / (1f - flashThreshold)) * 5.4f) * Time.delta;
+				Draw.color(Color.red, Color.yellow, Mathf.absin(flash, 9f, 1f));
+				Draw.alpha(0.3f);
+				Draw.rect(lightsRegion, x, y);
+			}
+
+			Draw.reset();
+		}
+
+		void drawGlow() {
+			if (warmup() <= 0.001f) return;
+
+			float z = Draw.z();
+			Draw.z(layer);
+			Draw.blend(blending);
+			Draw.color(color);
+			Draw.alpha((Mathf.absin(totalProgress(), glowScale, alpha) * glowIntensity + 1f - glowIntensity) * warmup() * alpha);
+			Draw.rect(glowRegion, x, y, 0f);
+			Draw.reset();
+			Draw.blend();
+			Draw.z(z);
+		}
 	}
 }

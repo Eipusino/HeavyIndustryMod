@@ -32,7 +32,7 @@ public class PressureDrill extends Drill {
 			float delay = getDrillTime(dominantItem);
 
 			if (items.total() < itemCapacity && dominantItems > 0 && efficiency > 0) {
-				float powerFactor = power.graph.getPowerBalance() / (minPowerNeed * consPower.requestedPower(this));
+				float powerFactor = power == null || consPower == null ? 1f : power.graph.getPowerBalance() / (minPowerNeed * consPower.requestedPower(this));
 				float finalFactor = (float) Math.sqrt(Math.min(Math.max(powerFactor, 1f), maxFactor));
 
 				float speed = Mathf.lerp(1f, liquidBoostIntensity, optionalEfficiency) * efficiency * finalFactor;

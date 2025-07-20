@@ -240,11 +240,6 @@ public final class HeavyIndustryMod extends Mod {
 
 		IconLoader.loadIcons(internalTree.child("other/icons.properties"));
 
-		Core.settings.defaults("hi-closed-dialog", false);
-		Core.settings.defaults("hi-floating-text", true);
-		Core.settings.defaults("hi-animated-shields", true);
-		Core.settings.defaults("hi-special", false);
-
 		if (!headless && !isPlugin && mods.locateMod("extra-utilities") == null && isAprilFoolsDay()) {
 			HOverrides.loadAprilFoolsDay();
 
@@ -362,47 +357,47 @@ public final class HeavyIndustryMod extends Mod {
 		String fd = sdf.format(date);
 		return fd.equals("0401");
 	}
+}
 
-	public static class FloatingText {
-		protected static final Mat setMat = new Mat(), reMat = new Mat();
-		protected static final Vec2 vec2 = new Vec2();
+class FloatingText {
+	static final Mat setMat = new Mat(), reMat = new Mat();
+	static final Vec2 vec2 = new Vec2();
 
-		public final String title;
+	final String title;
 
-		public FloatingText(String v) {
-			title = v;
-		}
+	FloatingText(String v) {
+		title = v;
+	}
 
-		public void build(Group parent) {
-			parent.fill((x, y, w, h) -> {
-				TextureRegion logo = Core.atlas.find("logo");
-				float width = Core.graphics.getWidth(), height = Core.graphics.getHeight() - Core.scene.marginTop;
-				float logoScl = Scl.scl(1) * logo.scale;
-				float logoWidth = Math.min(logo.width * logoScl, Core.graphics.getWidth() - Scl.scl(20));
-				float logoHeight = logoWidth * (float) logo.height / logo.width;
+	void build(Group parent) {
+		parent.fill((x, y, w, h) -> {
+			TextureRegion logo = Core.atlas.find("logo");
+			float width = Core.graphics.getWidth(), height = Core.graphics.getHeight() - Core.scene.marginTop;
+			float logoScl = Scl.scl(1) * logo.scale;
+			float logoWidth = Math.min(logo.width * logoScl, Core.graphics.getWidth() - Scl.scl(20));
+			float logoHeight = logoWidth * (float) logo.height / logo.width;
 
-				float fx = (int) (width / 2f);
-				float fy = (int) (height - 6 - logoHeight) + logoHeight / 2 - (Core.graphics.isPortrait() ? Scl.scl(30f) : 0f);
-				if (Core.settings.getBool("macnotch")) {
-					fy -= Scl.scl(macNotchHeight);
-				}
+			float fx = (int) (width / 2f);
+			float fy = (int) (height - 6 - logoHeight) + logoHeight / 2 - (Core.graphics.isPortrait() ? Scl.scl(30f) : 0f);
+			if (Core.settings.getBool("macnotch")) {
+				fy -= Scl.scl(macNotchHeight);
+			}
 
-				float ex = fx + logoWidth / 3 - Scl.scl(1f), ey = fy - logoHeight / 3f - Scl.scl(2f);
-				float ang = 12 + Mathf.sin(Time.time, 8, 2f);
+			float ex = fx + logoWidth / 3 - Scl.scl(1f), ey = fy - logoHeight / 3f - Scl.scl(2f);
+			float ang = 12 + Mathf.sin(Time.time, 8, 2f);
 
-				float dst = Mathf.dst(ex, ey, 0, 0);
-				vec2.set(0, 0);
-				float dx = Utils.dx(0, dst, vec2.angleTo(ex, ey) + ang);
-				float dy = Utils.dy(0, dst, vec2.angleTo(ex, ey) + ang);
+			float dst = Mathf.dst(ex, ey, 0, 0);
+			vec2.set(0, 0);
+			float dx = Utils.dx(0, dst, vec2.angleTo(ex, ey) + ang);
+			float dy = Utils.dy(0, dst, vec2.angleTo(ex, ey) + ang);
 
-				reMat.set(Draw.trans());
+			reMat.set(Draw.trans());
 
-				Draw.trans(setMat.setToTranslation(ex - dx, ey - dy).rotate(ang));
-				Fonts.outline.draw(title, ex, ey, Color.yellow, Math.min(30f / title.length(), 1.5f) + Mathf.sin(Time.time, 8, 0.2f), false, Align.center);
+			Draw.trans(setMat.setToTranslation(ex - dx, ey - dy).rotate(ang));
+			Fonts.outline.draw(title, ex, ey, Color.yellow, Math.min(30f / title.length(), 1.5f) + Mathf.sin(Time.time, 8, 0.2f), false, Align.center);
 
-				Draw.trans(reMat);
-				Draw.reset();
-			}).touchable = Touchable.disabled;
-		}
+			Draw.trans(reMat);
+			Draw.reset();
+		}).touchable = Touchable.disabled;
 	}
 }

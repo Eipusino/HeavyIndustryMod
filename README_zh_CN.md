@@ -1,2 +1,9 @@
 # Heavy Industry
-# OH NO
+
+---
+
+![Logo](assets/other/cover-desktop.png)
+
+---
+
+# 哦，不

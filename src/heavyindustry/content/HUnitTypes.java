@@ -1072,6 +1072,7 @@ public final class HUnitTypes {
 					maxRange = 180f;
 				}};
 			}});
+			hideDetails = false;
 		}};
 		cancer = new ExtraUnitType("cancer") {{
 			constructor = ExtraLegsUnit::create;

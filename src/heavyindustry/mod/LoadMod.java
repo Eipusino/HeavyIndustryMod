@@ -7,12 +7,11 @@ import arc.util.ArcRuntimeException;
 import arc.util.Log;
 import arc.util.Reflect;
 import arc.util.serialization.Jval;
-import heavyindustry.mod.ExtraContentParser.ExtraParseListener;
+import heavyindustry.mod.HContentParser.ExtraParseListener;
 import mindustry.Vars;
 import mindustry.ctype.Content;
 import mindustry.ctype.ContentType;
 import mindustry.ctype.UnlockableContent;
-import mindustry.mod.Mod;
 import mindustry.mod.Mods;
 import mindustry.mod.Mods.LoadedMod;
 import mindustry.type.ErrorContent;
@@ -23,7 +22,7 @@ import java.util.Locale;
 public final class LoadMod {
 	public static final String[] metaFiles = {"mod.json", "mod.hjson", "plugin.json", "plugin.hjson"};
 
-	private static final ExtraContentParser parser = new ExtraContentParser();
+	private static final HContentParser parser = new HContentParser();
 	/**
 	 * The following mods have stolen other mod textures or engaged in even worse behavior. If
 	 * attempting to use reflection to remove elements from {@code blacklistedMods} to play HeavyIndustry
@@ -53,19 +52,6 @@ public final class LoadMod {
 		}
 
 		return Jval.read(metaFile.reader());
-	}
-
-	public static Jval getMeta(LoadedMod mod) {
-		if (mod == null) return Jval.NULL;
-		return getMeta(mod.root);
-	}
-
-	public static Jval getMeta(String modName) {
-		return getMeta(Vars.mods.getMod(modName));
-	}
-
-	public static Jval getMeta(Class<? extends Mod> type) {
-		return getMeta(Vars.mods.getMod(type));
 	}
 
 	/**

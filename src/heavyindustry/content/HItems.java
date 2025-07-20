@@ -56,7 +56,7 @@ public final class HItems {
 		}};
 		chromium = new Item("chromium", HPal.chromiumGrey) {{
 			cost = 5f;
-			hardness = 8;
+			hardness = 9;
 			healthScaling = 1.8f;
 		}};
 		heavyAlloy = new Item("heavy-alloy", Color.valueOf("686b7b")) {{

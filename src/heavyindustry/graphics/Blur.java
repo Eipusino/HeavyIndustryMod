@@ -155,7 +155,7 @@ public class Blur {
 
 			if (c > 0) convolution.append("        + ");
 			convolution.append(v)
-					.append("*texture2D(u_texture1, v_texCoords")
+					.append(" * texture(u_texture1, v_texCoords")
 					.append(c)
 					.append(")")
 					.append(".rgb")
