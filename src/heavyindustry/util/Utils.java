@@ -31,6 +31,7 @@ import arc.math.geom.Vec2;
 import arc.scene.style.Drawable;
 import arc.scene.ui.ImageButton;
 import arc.scene.ui.ImageButton.ImageButtonStyle;
+import arc.struct.IntMap;
 import arc.struct.IntSeq;
 import arc.struct.IntSet;
 import arc.struct.ObjectMap;
@@ -198,8 +199,19 @@ public final class Utils {
 	};
 	public static final Team[] baseTeams = {Team.derelict, Team.sharded, Team.crux, Team.green, Team.malis, Team.blue};
 
+	public static final String[] donors = {
+			"\u232C\u232C\u82cf\u6cfd",
+			"\u55b5\u5b50"
+	};
+	public static final String[] developers = {
+			"Eipusino"
+	};
+
 	public static final Seq<UnlockableContent> donorItems = new Seq<>();
 	public static final Seq<UnlockableContent> developerItems = new Seq<>();
+
+	public static final IntMap<Seq<UnlockableContent>> donorMap = new IntMap<>();
+	public static final IntMap<Seq<UnlockableContent>> developerMap = new IntMap<>();
 
 	public static final Seq<Building> buildings = new Seq<>();
 
@@ -246,6 +258,13 @@ public final class Utils {
 	static float cDist;
 	static Building tmpBuilding;
 	static Unit tmpUnit;
+
+	static {
+		donorMap.put(0, new Seq<>());//\u82cf\u6cfd
+		donorMap.put(1, new Seq<>());//\u55b5\u5b50
+
+		developerMap.put(0, new Seq<>());//Eipusino
+	}
 
 	/** Don't let anyone instantiate this class. */
 	private Utils() {}
@@ -1023,6 +1042,80 @@ public final class Utils {
 		ib.setStyle(style);
 		if (listener != null) ib.changed(listener);
 		return ib;
+	}
+
+	/**
+	 * Moving bullets
+	 *
+	 * @param b     Bullets to be moved
+	 * @param endX  End coordinate X
+	 * @param endY  End coordinate Y
+	 * @param speed Speed
+	 */
+	public static void movePoint(Bullet b, float endX, float endY, float speed) {
+		// Calculate the distance between two points
+		float distance = (float) Math.sqrt(Math.pow(endX - b.x, 2) + Math.pow(endY - b.y, 2));
+
+		float moveSpeed = distance * speed;
+
+		// Calculate the unit vector for the direction of movement
+		float dx = (endX - b.x) / distance;
+		float dy = (endY - b.y) / distance;
+
+		// Calculate the distance moved within each tick
+		float moveDistance = moveSpeed * Time.delta;
+
+		// Update the position of bullets
+		b.x += dx * moveDistance;
+		b.y += dy * moveDistance;
+
+		// Check if the destination has been reached or exceeded
+		if (Math.abs(b.x - endX) < 1e-4f && Math.abs(b.y - endY) < 1e-4f) {
+			b.x = endX;
+			b.y = endY;
+		}
+	}
+
+	/**
+	 * Find the y-coordinate based on the known two points and the x-coordinate
+	 *
+	 * @param x1 The x-coordinate of the first point
+	 * @param y1 The y-coordinate of the first point
+	 * @param x2 The x-coordinate of the second point
+	 * @param y2 The y-coordinate of the second point
+	 * @param x  Request the x-coordinate of the point with y-coordinate
+	 * @return Corresponding y-coordinate
+	 */
+	public float lineY(float x1, float y1, float x2, float y2, float x) {
+		// Calculate slope
+		float slope = (y2 - y1) / (x2 - x1);
+
+		// Calculate intercept
+		float intercept = y1 - slope * x1;
+
+		//Calculate the y-coordinate based on the linear equation y = mx + b
+		return slope * x + intercept;
+	}
+
+	/**
+	 * Based on the known angle of a point or line and the x-coordinate of another point, solve for the y-coordinate of that point.
+	 *
+	 * @param x1    The x-coordinate of a known point
+	 * @param y1    The y-coordinate of a known point
+	 * @param angle The angle between the line and the positive x-axis direction (in degrees)
+	 * @param x2    The x-coordinate of another point
+	 * @return The solved y-coordinate
+	 */
+	public float angleY(float x1, float y1, float angle, float x2) {
+		// Handle special cases with angles of 90 degrees or 270 degrees
+		if (angle == 90 || angle == 270) {
+			// If the angle is 90 degrees or 270 degrees, the line is vertical and the y-coordinate is the same as y1
+			return y1;
+		}
+		// Slope
+		float slope = (float) Math.tan(Math.toRadians(angle));
+		// Calculate the y-coordinate and return it
+		return slope * (x2 - x1) + y1;
 	}
 
 	public static void drawTiledFramesBar(float w, float h, float x, float y, Liquid liquid, float alpha) {

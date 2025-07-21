@@ -20,7 +20,7 @@ public final class HInterps {
 			inOut2 = x -> 1.6243f * (0.9f * x + 0.46f) + 1 / (10 * (x + 0.1f)) - 1.3f,
 			parabola4 = x -> 4 * (x - 0.5f) * (x - 0.5f),
 			parabola4Reversed = x -> -4 * (x - 0.5f) * (x - 0.5f) + 1,
-			parabola4Reversed_X4 = x -> (-4 * (x - 0.5f) * (x - 0.5f) + 1) * 2.75f,
+			parabola4ReversedX4 = x -> (-4 * (x - 0.5f) * (x - 0.5f) + 1) * 2.75f,
 			laser = x -> Interp.pow10Out.apply(x * 1.5f) * Mathf.curve(1 - x, 0, 0.085f);
 
 	public static final BounceOut bounce5Out = new BounceOut(5);
@@ -29,7 +29,7 @@ public final class HInterps {
 
 	public static final Pow pow10 = new Pow(10);
 
-	public static final PowIn pow1_5In = new PowIn(1.5f), pow6In = new PowIn(6);
+	public static final PowIn pow1r5In = new PowIn(1.5f), pow6In = new PowIn(6);
 
 	public static final PowOut pow25Out = new PowOut(25);
 

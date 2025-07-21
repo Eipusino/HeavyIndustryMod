@@ -197,8 +197,6 @@ import heavyindustry.world.blocks.production.MinerPoint;
 import heavyindustry.world.blocks.production.MultiCrafter;
 import heavyindustry.world.blocks.production.MultiDrill;
 import heavyindustry.world.blocks.production.OreDetector;
-import heavyindustry.world.blocks.production.PressureDrill;
-import heavyindustry.world.blocks.production.SporeFarm;
 import heavyindustry.world.blocks.production.UndergroundDrill;
 import heavyindustry.world.blocks.sandbox.AdaptiveSource;
 import heavyindustry.world.blocks.storage.CoreStorageBlock;
@@ -626,8 +624,6 @@ final class HClassMap {
 		classes.put("MultiCrafter", MultiCrafter.class);
 		classes.put("MultiCrafterBuild", MultiCrafter.MultiCrafterBuild.class);
 		classes.put("CraftPlan", MultiCrafter.CraftPlan.class);
-		classes.put("SporeFarm", SporeFarm.class);
-		classes.put("SporeFarmBuild", SporeFarm.SporeFarmBuild.class);
 		classes.put("DrawerDrill", DrawerDrill.class);
 		classes.put("DrawerDrillBuild", DrawerDrill.DrawerDrillBuild.class);
 		classes.put("DrawerBurstDrill", DrawerBurstDrill.class);
@@ -640,8 +636,6 @@ final class HClassMap {
 		classes.put("LaserBeamDrillBuild", LaserBeamDrill.LaserBeamDrillBuild.class);
 		classes.put("MultiDrill", MultiDrill.class);
 		classes.put("MultiDrillBuild", MultiDrill.MultiDrillBuild.class);
-		classes.put("PressureDrill", PressureDrill.class);
-		classes.put("PressureDrillBuild", PressureDrill.PressureDrillBuild.class);
 		classes.put("UndergroundDrill", UndergroundDrill.class);
 		classes.put("UndergroundDrillBuild", UndergroundDrill.UndergroundDrillBuild.class);
 		classes.put("MinerPoint", MinerPoint.class);

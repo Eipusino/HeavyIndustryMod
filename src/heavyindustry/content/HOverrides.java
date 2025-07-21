@@ -71,7 +71,6 @@ import mindustry.world.meta.Attribute;
 import mindustry.world.meta.BuildVisibility;
 
 import static mindustry.Vars.content;
-import static mindustry.type.ItemStack.with;
 
 /**
  * Covering the original content.
@@ -338,7 +337,7 @@ public final class HOverrides {
 			fragLifeMin = 0.5f;
 		}};*/
 		Blocks.titan.armor = 13f;
-		Blocks.titan.researchCost = with(Items.thorium, 4000, Items.silicon, 3000, Items.tungsten, 2500);
+		Blocks.titan.researchCost = ItemStack.with(Items.thorium, 4000, Items.silicon, 3000, Items.tungsten, 2500);
 		Blocks.disperse.armor = 9f;
 		Blocks.afflict.armor = 16f;
 		Blocks.lustre.armor = 15f;
@@ -350,8 +349,8 @@ public final class HOverrides {
 		((PowerTurret) Blocks.malign).minWarmup = 0.98f;
 		((PowerTurret) Blocks.malign).warmupMaintainTime = 45f;
 		//blocks-units
-		((UnitFactory) Blocks.groundFactory).plans.add(new UnitPlan(HUnitTypes.vanguard, 1200f, with(Items.lead, 25, Items.titanium, 25, Items.silicon, 30)));
-		((UnitFactory) Blocks.airFactory).plans.add(new UnitPlan(HUnitTypes.caelifera, 1200f, with(Items.lead, 35, Items.titanium, 15, Items.silicon, 30)));
+		((UnitFactory) Blocks.groundFactory).plans.add(new UnitPlan(HUnitTypes.vanguard, 1200f, ItemStack.with(Items.lead, 25, Items.titanium, 25, Items.silicon, 30)));
+		((UnitFactory) Blocks.airFactory).plans.add(new UnitPlan(HUnitTypes.caelifera, 1200f, ItemStack.with(Items.lead, 35, Items.titanium, 15, Items.silicon, 30)));
 		((Reconstructor) Blocks.additiveReconstructor).upgrades.add(new UnitType[]{HUnitTypes.vanguard, HUnitTypes.striker}, new UnitType[]{HUnitTypes.caelifera, HUnitTypes.schistocerca});
 		((Reconstructor) Blocks.multiplicativeReconstructor).upgrades.add(new UnitType[]{HUnitTypes.striker, HUnitTypes.counterattack}, new UnitType[]{HUnitTypes.schistocerca, HUnitTypes.anthophila});
 		((Reconstructor) Blocks.exponentialReconstructor).upgrades.add(new UnitType[]{HUnitTypes.counterattack, HUnitTypes.crush}, new UnitType[]{HUnitTypes.anthophila, HUnitTypes.vespula});
@@ -478,8 +477,9 @@ public final class HOverrides {
 		Liquids.hydrogen.explosiveness = 1.5f;
 		Liquids.ozone.flammability = 0f;
 		Liquids.ozone.explosiveness = 0f;
-		Liquids.neoplasm.canStayOn.addAll(HLiquids.originiumFluid, HLiquids.nitratedOil);
+		Liquids.neoplasm.canStayOn.addAll(HLiquids.originiumFluid, HLiquids.lightOil, HLiquids.nitratedOil, HLiquids.blastReagent);
 		Liquids.neoplasm.capPuddles = true;
+		Liquids.gallium.hidden = false;
 		//items
 		Items.graphite.hardness = 2;
 		Items.metaglass.hardness = 2;
@@ -488,7 +488,7 @@ public final class HOverrides {
 		Items.surgeAlloy.hardness = 6;
 		Items.phaseFabric.hardness = 3;
 		Items.carbide.hardness = 6;
-		Items.serpuloItems.addAll(HItems.stone, HItems.salt, HItems.rareEarth, HItems.crystalCircuit, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.originium);
+		Items.serpuloItems.addAll(HItems.stone, HItems.salt, HItems.rareEarth, HItems.galliumNitride, HItems.crystalCircuit, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.originium);
 		Items.erekirItems.addAll(HItems.uranium, HItems.chromium, HItems.originium);
 		//planet
 		Planets.serpulo.allowSectorInvasion = false;

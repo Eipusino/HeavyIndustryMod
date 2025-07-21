@@ -22,7 +22,7 @@ public final class HLiquids {
 	private static final int originiumFluidId = Draws.nextTaskId();
 
 	public static Liquid
-			brine, gas, lightOil, nitratedOil, originiumFluid;
+			brine, gas, lightOil, nitratedOil, blastReagent, originiumFluid;
 
 	/** Don't let anyone instantiate this class. */
 	private HLiquids() {}
@@ -45,32 +45,38 @@ public final class HLiquids {
 			temperature = 0.3f;
 			boilPoint = 0.6f;
 			viscosity = 0.7f;
-			flammability = 0.3f;
-			explosiveness = 1.2f;
+			flammability = 0.25f;
+			explosiveness = 1.25f;
 			gasColor = Color.grays(0.7f);
 			effect = StatusEffects.muddy;
+			coolant = false;
 		}};
 		nitratedOil = new Liquid("nitrated-oil", Color.valueOf("3c3e45")) {{
 			temperature = 0.5f;
 			viscosity = 0.8f;
-			flammability = 0.8f;
-			explosiveness = 3.2f;
+			flammability = 1.5f;
+			explosiveness = 1.8f;
 			effect = StatusEffects.tarred;
 			canStayOn.add(Liquids.water);
 			coolant = false;
+		}};
+		blastReagent = new Liquid("blast-reagent", Color.valueOf("d97c7c")){{
+			flammability = 0.75f;
+			temperature = 0.5f;
+			viscosity = 0.8f;
+			explosiveness = 3f;
 		}};
 		originiumFluid = new MultiCellLiquid("originium-fluid", HPal.originiumRed) {{
 			heatCapacity = 2.5f;
 			flammability = 0.2f;
 			explosiveness = 0.4f;
-			coolant = false;
 			lightColor = color.cpy().a(0.3f);
 			particleSpacing = 10;
 			particleEffect = WrapperEffect.wrap(HFx.glowParticle, color);
 			effect = StatusEffects.electrified;
-			coolant = true;
 			spreadTargets.addAll(Liquids.neoplasm);
 			canStayOn.addAll(Liquids.water, Liquids.cryofluid, Liquids.oil, Liquids.arkycite, Liquids.neoplasm);
+			coolant = false;
 		}
 			@Override
 			public void drawPuddle(Puddle puddle) {

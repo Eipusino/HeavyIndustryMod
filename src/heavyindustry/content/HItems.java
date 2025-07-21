@@ -13,9 +13,9 @@ import mindustry.type.Item;
 public final class HItems {
 	public static Item
 			stone, salt, rareEarth,
-			crystalCircuit,
+			galliumNitride, crystalCircuit,
 			originium,
-			uranium, chromium, heavyAlloy;
+			gold, uranium, chromium, heavyAlloy;
 
 	/** Don't let anyone instantiate this class. */
 	private HItems() {}
@@ -37,6 +37,10 @@ public final class HItems {
 			buildable = false;
 			lowPriority = true;
 		}};
+		galliumNitride = new Item("gallium-nitride", Color.valueOf("bff3ff")) {{
+			cost = 1.2f;
+			hardness = 3;
+		}};
 		crystalCircuit = new Item("crystal-circuit", HPal.originiumRed) {{
 			cost = -0.75f;
 			hardness = 6;
@@ -47,6 +51,10 @@ public final class HItems {
 			explosiveness = 0.3f;
 			radioactivity = 0.1f;
 			hardness = 5;
+		}};
+		gold = new Item("gold", HPal.goldYellow) {{
+			cost = 0.9f;
+			hardness = 1;
 		}};
 		uranium = new Item("uranium", HPal.uraniumGrey) {{
 			cost = 3f;

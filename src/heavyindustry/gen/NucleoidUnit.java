@@ -72,7 +72,8 @@ public class NucleoidUnit extends ExtraUnit implements Nucleoidc {
 	public void draw() {
 		super.draw();
 
-		if (type instanceof NucleoidUnitType nType) {
+		if (type instanceof NucleoidUnitType nType && nType.drawArrow) {
+
 			float z = Draw.z();
 			Draw.z(Layer.bullet);
 

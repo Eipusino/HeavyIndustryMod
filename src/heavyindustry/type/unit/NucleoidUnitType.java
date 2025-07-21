@@ -11,6 +11,8 @@ public class NucleoidUnitType extends AncientUnitType {
 
 	public float mass = 800000f;
 
+	public boolean drawArrow = false;
+
 	public NucleoidUnitType(String name) {
 		super(name);
 	}

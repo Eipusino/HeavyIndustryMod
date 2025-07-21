@@ -6,10 +6,13 @@ import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
 import arc.math.Interp;
 import arc.math.Mathf;
+import arc.math.Rand;
 import arc.math.geom.Rect;
+import arc.math.geom.Vec2;
 import arc.scene.ui.layout.Table;
 import arc.struct.ObjectSet;
 import arc.struct.Seq;
@@ -50,13 +53,16 @@ import heavyindustry.gen.ExtraTankUnit;
 import heavyindustry.gen.ExtraUnit;
 import heavyindustry.gen.ExtraUnitWaterMove;
 import heavyindustry.gen.HSounds;
+import heavyindustry.gen.NucleoidUnit;
 import heavyindustry.gen.PayloadLegsUnit;
 import heavyindustry.gen.UltFire;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.HPal;
+import heavyindustry.graphics.PositionLightning;
 import heavyindustry.type.unit.CopterUnitType;
 import heavyindustry.type.unit.EnergyUnitType;
 import heavyindustry.type.unit.ExtraUnitType;
+import heavyindustry.type.unit.NucleoidUnitType;
 import heavyindustry.type.weapons.AcceleratingWeapon;
 import heavyindustry.type.weapons.BoostWeapon;
 import heavyindustry.type.weapons.EnergyChargeWeapon;
@@ -64,6 +70,7 @@ import heavyindustry.type.weapons.HealConeWeapon;
 import heavyindustry.type.weapons.LimitedAngleWeapon;
 import heavyindustry.type.weapons.PointDefenceMultiBarrelWeapon;
 import heavyindustry.ui.Elements;
+import heavyindustry.util.Utils;
 import mindustry.ai.UnitCommand;
 import mindustry.ai.types.FlyingAI;
 import mindustry.ai.types.FlyingFollowAI;
@@ -114,6 +121,7 @@ import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
+import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
 import mindustry.type.ammo.ItemAmmoType;
@@ -125,8 +133,10 @@ import mindustry.world.meta.Env;
 
 import static heavyindustry.HVars.name;
 import static mindustry.Vars.content;
+import static mindustry.Vars.headless;
 import static mindustry.Vars.indexer;
 import static mindustry.Vars.tilePayload;
+import static mindustry.Vars.tilesize;
 
 /**
  * Defines the {@linkplain UnitType units} this mod offers.
@@ -151,7 +161,9 @@ public final class HUnitTypes {
 			//elite
 			tiger, thunder,
 			//boss
-			vast;
+			vast,
+			//
+			eipusino;
 
 	/** Don't let anyone instantiate this class. */
 	private HUnitTypes() {}
@@ -3103,8 +3115,8 @@ public final class HUnitTypes {
 			deathExplosionEffect = Fx.none;
 			deathSound = Sounds.plasmaboom;
 			trailScl = 3f;
-			var seq = Seq.with(StatusEffects.none, StatusEffects.boss, StatusEffects.invincible);
-			immunities = ObjectSet.with(content.statusEffects().select(s -> s != null && !seq.contains(s)));
+			Seq<StatusEffect> filter = Seq.with(StatusEffects.none, StatusEffects.boss, StatusEffects.invincible);
+			immunities = ObjectSet.with(content.statusEffects().select(s -> s != null && !filter.contains(s)));
 			armor = 8f;
 			hitSize = 45;
 			speed = 1.5f;
@@ -3182,5 +3194,160 @@ public final class HUnitTypes {
 			fogRadius = 66f;
 			hidden = true;
 		}};
+		eipusino = new NucleoidUnitType("eipusino") {{
+			constructor = NucleoidUnit::create;
+			health = 180000;
+			engineSize = 0f;
+			buildSpeed = 10f;
+			engineOffset = 0f;
+			itemCapacity = 300;
+			armor = 180f;
+			drawShields = false;
+			faceTarget = false;
+			Seq<StatusEffect> filter = Seq.with(StatusEffects.none, StatusEffects.boss, StatusEffects.invincible);
+			immunities = ObjectSet.with(content.statusEffects().select(s -> s != null && !filter.contains(s)));
+			lowAltitude = true;
+			flying = true;
+			deathExplosionEffect = new MultiEffect(HFx.blast(HPal.thurmixRed, 400f), new Effect(300F, 1600f, e -> {
+				Rand rand = Utils.rand2;
+				float rad = 150f;
+				rand.setSeed(e.id);
+
+				Draw.color(Color.white, HPal.thurmixRed, e.fin() + 0.6f);
+				float circleRad = e.fin(Interp.circleOut) * rad * 4f;
+				Lines.stroke(12 * e.fout());
+				Lines.circle(e.x, e.y, circleRad);
+				for (int i = 0; i < 16; i++) {
+					Tmp.v1.set(1, 0).setToRandomDirection(rand).scl(circleRad);
+					Drawn.tri(e.x + Tmp.v1.x, e.y + Tmp.v1.y, rand.random(circleRad / 16, circleRad / 12) * e.fout(), rand.random(circleRad / 4, circleRad / 1.5f) * (1 + e.fin()) / 2, Tmp.v1.angle() - 180);
+				}
+
+				e.scaled(120f, i -> {
+					Draw.color(Color.white, HPal.thurmixRed, i.fin() + 0.4f);
+					Fill.circle(i.x, i.y, rad * i.fout());
+					Lines.stroke(18 * i.fout());
+					Lines.circle(i.x, i.y, i.fin(Interp.circleOut) * rad * 1.2f);
+					Angles.randLenVectors(i.id, 40, rad / 3, rad * i.fin(Interp.pow2Out), (x, y) -> {
+						Lines.lineAngle(i.x + x, i.y + y, Mathf.angle(x, y), i.fslope() * 25 + 10);
+					});
+
+					Angles.randLenVectors(i.id, (int) (rad / 4), rad / 6, rad * (1 + i.fout(Interp.circleOut)) / 1.5f, (x, y) -> {
+						float angle = Mathf.angle(x, y);
+						float width = i.foutpowdown() * rand.random(rad / 6, rad / 3);
+						float length = rand.random(rad / 2, rad * 5) * i.fout(Interp.circleOut);
+
+						Draw.color(HPal.thurmixRed);
+						Drawn.tri(i.x + x, i.y + y, width, rad / 3 * i.fout(Interp.circleOut), angle - 180);
+						Drawn.tri(i.x + x, i.y + y, width, length, angle);
+
+						Draw.color(Color.black);
+
+						width *= i.fout();
+
+						Drawn.tri(i.x + x, i.y + y, width / 2, rad / 3 * i.fout(Interp.circleOut) * 0.9f * i.fout(), angle - 180);
+						Drawn.tri(i.x + x, i.y + y, width / 2, length / 1.5f * i.fout(), angle);
+					});
+
+
+					Draw.color(Color.black);
+					Fill.circle(i.x, i.y, rad * i.fout() * 0.75f);
+				});
+
+				Drawf.light(e.x, e.y, rad * e.fslope() * 4f, HPal.thurmixRed, 0.7f);
+			}).layer(Layer.effect + 0.001f));
+			fallEffect = HFx.blast(HPal.thurmixRed, 120f);
+			targetAir = targetGround = true;
+			weapons.addAll(new Weapon() {{
+				y = 25.425f;
+				x = 0;
+				shootY = 0;
+				shoot = new ShootPattern();
+				reload = 900f;
+				rotateSpeed = 100f;
+				rotate = true;
+				top = false;
+				mirror = alternate = predictTarget = false;
+				heatColor = HPal.thurmixRed;
+				shootSound = HSounds.hugeShoot;
+				bullet = HBullets.collapse;
+			}
+				TextureRegion arrowRegion;
+				final float rangeWeapon = 4000f;
+
+				@Override
+				public void draw(Unit unit, WeaponMount mount) {
+					float z = Draw.z();
+
+					Tmp.v1.trns(unit.rotation, y);
+					float f = 1 - mount.reload / reload;
+					float rad = 12f;
+
+					float f1 = Mathf.curve(f, 0.4f, 1f);
+					Draw.z(Layer.bullet);
+					Draw.color(heatColor);
+					for (int i : Mathf.signs) {
+						for (int j : Mathf.signs) {
+							Drawn.tri(unit.x + Tmp.v1.x, unit.y + Tmp.v1.y, f1 * rad / 3f + Mathf.num(j > 0) * 2f * (f1 + 1) / 2, (rad * 3f + Mathf.num(j > 0) * 20f) * f1, j * Time.time + 90 * i);
+						}
+					}
+
+					if (arrowRegion == null) arrowRegion = Core.atlas.find(name("jump-gate-arrow"));
+
+					Tmp.v6.set(mount.aimX, mount.aimY).sub(unit);
+					Tmp.v2.set(mount.aimX, mount.aimY).sub(unit).nor().scl(Math.min(Tmp.v6.len(), rangeWeapon)).add(unit);
+
+					for (int l = 0; l < 4; l++) {
+						float angle = 45 + 90 * l;
+						for (int i = 0; i < 4; i++) {
+							Tmp.v3.trns(angle, (i - 4) * tilesize + tilesize).add(Tmp.v2);
+							float fs = (100 - (Time.time + 25 * i) % 100) / 100 * f1 / 4;
+							Draw.rect(arrowRegion, Tmp.v3.x, Tmp.v3.y, arrowRegion.width * fs, arrowRegion.height * fs, angle + 90);
+						}
+					}
+
+					Lines.stroke((1.5f + Mathf.absin(Time.time + 4, 8f, 1.5f)) * f1, heatColor);
+					Lines.square(Tmp.v2.x, Tmp.v2.y, 4 + Mathf.absin(8f, 4f), 45);
+
+					Lines.stroke(rad / 2.5f * mount.heat, heatColor);
+					Lines.circle(unit.x + Tmp.v1.x, unit.y + Tmp.v1.y, rad * 2 * (1 - mount.heat));
+
+					Draw.color(heatColor);
+					Fill.circle(unit.x + Tmp.v1.x, unit.y + Tmp.v1.y, f * rad);
+					Lines.stroke(f * 1.5f);
+					Drawn.circlePercentFlip(unit.x + Tmp.v1.x, unit.y + Tmp.v1.y, f * rad + 5, Time.time, 20f);
+					Draw.color(Color.white);
+					Fill.circle(unit.x + Tmp.v1.x, unit.y + Tmp.v1.y, f * rad * 0.7f);
+
+					Draw.z(z);
+				}
+
+				@Override
+				protected void shoot(Unit unit, WeaponMount mount, float shootX, float shootY, float rotation) {
+					shootSound.at(shootX, shootY, Mathf.random(soundPitchMin, soundPitchMax));
+
+					Tmp.v6.set(mount.aimX, mount.aimY).sub(unit);
+					Tmp.v1.set(mount.aimX, mount.aimY).sub(unit).nor().scl(Math.min(Tmp.v6.len(), rangeWeapon)).add(unit);
+
+					Bullet b = bullet.create(unit, unit.team, Tmp.v1.x, Tmp.v1.y, 0);
+					b.vel.setZero();
+					b.set(Tmp.v1);
+					unit.apply(shootStatus, shootStatusDuration);
+
+					if (headless) return;
+					Vec2 vec2 = new Vec2().trns(unit.rotation, y).add(unit);
+					PositionLightning.createEffect(vec2, b, HPal.thurmixRed, 3, 2.5f);
+					for (int i = 0; i < 5; i++) {
+						Time.run(i * 6f, () -> {
+							HFx.chainLightningFade.at(vec2.x, vec2.y, Mathf.random(8, 14), HPal.thurmixRed, b);
+						});
+					}
+
+					bullet.shootEffect.at(shootX, shootY, rotation);
+					bullet.smokeEffect.at(shootX, shootY, rotation);
+				}
+			});
+		}};
+
+		Utils.developerMap.get(0).addAll(eipusino);
 	}
 }

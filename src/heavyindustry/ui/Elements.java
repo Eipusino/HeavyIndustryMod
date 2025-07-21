@@ -37,6 +37,7 @@ import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.core.HeavyIndustryMod;
+import heavyindustry.ui.dialogs.DDItemsList;
 import heavyindustry.ui.dialogs.GameDataDialog;
 import heavyindustry.ui.dialogs.PowerGraphInfoDialog;
 import heavyindustry.ui.fragment.CliffFragment;
@@ -62,6 +63,8 @@ import java.text.DecimalFormat;
 public final class Elements {
 	public static final float LEN = 60f, OFFSET = 12f;
 
+	public static DDItemsList ddItemsList;
+
 	public static PowerGraphInfoDialog powerInfoDialog;
 	public static CliffFragment cliffFragment;
 	public static GameDataDialog gameDataDialog;
@@ -86,6 +89,8 @@ public final class Elements {
 	}
 
 	public static void onClient() {
+		ddItemsList = new DDItemsList();
+
 		powerInfoDialog = new PowerGraphInfoDialog();
 
 		gameDataDialog = new GameDataDialog();

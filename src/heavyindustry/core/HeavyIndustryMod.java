@@ -67,6 +67,8 @@ import mindustry.mod.Mods.LoadedMod;
 import mindustry.ui.Fonts;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
+import mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable;
+import mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable.Setting;
 import mindustry.ui.fragments.MenuFragment;
 
 import java.time.LocalDate;
@@ -295,6 +297,19 @@ public final class HeavyIndustryMod extends Mod {
 					t.checkPref("hi-serpulo-sector-invasion", true);
 					t.checkPref("hi-special", false);
 					t.checkPref("hi-developer-mode", false);
+					t.pref(new Setting(Core.bundle.get("hi-show-donor-and-develop")) {
+						@Override
+						public void add(SettingsTable table) {
+							table.button(name, () -> {
+								try {
+									Elements.ddItemsList.toShow();
+								} catch (Exception e) {
+									ui.showException(e);
+								}
+							}).margin(14).width(200f).pad(6);
+							table.row();
+						}
+					});
 					//this fucking sucks
 					t.table(Tex.button, c -> {
 						c.button("@settings.game", Icon.settings, Styles.flatt, iconMed, () -> {}).growX().marginLeft(8f).height(50f).row();
