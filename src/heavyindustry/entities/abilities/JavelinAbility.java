@@ -10,7 +10,7 @@ import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
 import arc.util.Strings;
 import arc.util.Time;
-import heavyindustry.world.meta.HIStat;
+import heavyindustry.world.meta.HStat;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.Units;
@@ -85,8 +85,8 @@ public class JavelinAbility extends Ability {
 				Strings.autoFixed(60f * damage / damageInterval, 2) + " " + StatUnit.perSecond.localized()
 		).row();
 		t.add("[lightgray]" + Stat.range.localized() + ": [white]" + Strings.autoFixed(radius / 8f, 2) + " " + StatUnit.blocks.localized()).row();
-		t.add("[lightgray]" + HIStat.minSpeed.localized() + ": [white]" + Strings.autoFixed(minSpeed / 8f, 2) + " " + StatUnit.tilesSecond.localized()).row();
-		t.add("[lightgray]" + HIStat.maxSpeed.localized() + ": [white]" + Strings.autoFixed(maxSpeed / 8f, 2) + " " + StatUnit.tilesSecond.localized()).row();
+		t.add("[lightgray]" + HStat.minSpeed.localized() + ": [white]" + Strings.autoFixed(minSpeed / 8f, 2) + " " + StatUnit.tilesSecond.localized()).row();
+		t.add("[lightgray]" + HStat.maxSpeed.localized() + ": [white]" + Strings.autoFixed(maxSpeed / 8f, 2) + " " + StatUnit.tilesSecond.localized()).row();
 		t.add("[lightgray]" + Stat.targetsAir.localized() + ": [white]" + Core.bundle.get(targetAir ? "yes" : "no")).row();
 		t.add("[lightgray]" + Stat.targetsGround.localized() + ": [white]" + Core.bundle.get(targetGround ? "yes" : "no")).row();
 	}

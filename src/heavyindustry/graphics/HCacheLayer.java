@@ -30,7 +30,7 @@ public final class HCacheLayer {
 				//Vars.renderer.blocks.floor.endc();
 				Vars.renderer.effectBuffer.begin();
 				Core.graphics.clear(Color.clear);
-				Vars.renderer.blocks.floor.beginc();
+				Vars.renderer.blocks.floor.beginDraw();
 			}
 
 			@Override
@@ -41,7 +41,7 @@ public final class HCacheLayer {
 				HShaders.tiler.texture = HTextures.armor;
 				Vars.renderer.effectBuffer.blit(shader);
 
-				Vars.renderer.blocks.floor.beginc();
+				Vars.renderer.blocks.floor.beginDraw();
 			}
 		};
 

@@ -21,7 +21,7 @@ import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.entities.HDamage;
-import heavyindustry.world.meta.HIStatValues;
+import heavyindustry.world.meta.HStatValues;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
 import mindustry.core.Renderer;
@@ -136,7 +136,7 @@ public class StaticNode extends Block {
 		stats.add(Stat.targetsAir, hitAir);
 		stats.add(Stat.targetsGround, hitGround);
 
-		stats.add(Stat.ammo, HIStatValues.staticDamage(damage, reload, status));
+		stats.add(Stat.ammo, HStatValues.staticDamage(damage, reload, status));
 	}
 
 	@Override

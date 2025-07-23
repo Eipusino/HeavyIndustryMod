@@ -22,6 +22,9 @@ public class AdaptiveSource extends Block {
 		super(name);
 		hasItems = true;
 		hasLiquids = true;
+		hasPower = true;
+		outputsPower = true;
+		consumesPower = false;
 		update = true;
 		displayFlow = false;
 		canOverdrive = true;

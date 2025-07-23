@@ -9,7 +9,7 @@ import arc.math.geom.Geometry;
 import arc.util.Eachable;
 import arc.util.Tmp;
 import heavyindustry.graphics.Drawn;
-import heavyindustry.util.SpriteUtils;
+import heavyindustry.util.Sprites;
 import mindustry.entities.units.BuildPlan;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
@@ -62,7 +62,7 @@ public class RailStackConveyor extends StackConveyor {
 	public void load() {
 		super.load();
 		edge2Region = Core.atlas.find(name + "-edge-d");
-		topRegions = SpriteUtils.splitInLayers(Core.atlas.find(name + "-top"), 32, 32, 1);
+		topRegions = Sprites.splitInLayers(Core.atlas.find(name + "-top"), 32, 32, 1);
 	}
 
 	public class RailStackConveyorBuild extends StackConveyorBuild {

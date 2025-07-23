@@ -5,6 +5,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.math.Interp;
 import arc.math.Mathf;
+import arc.struct.ObjectFloatMap;
 import arc.struct.Seq;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.entities.bullet.CtrlMissileBulletType;
@@ -55,6 +56,7 @@ import mindustry.world.blocks.power.NuclearReactor;
 import mindustry.world.blocks.power.PowerNode;
 import mindustry.world.blocks.production.AttributeCrafter;
 import mindustry.world.blocks.production.BeamDrill;
+import mindustry.world.blocks.production.BurstDrill;
 import mindustry.world.blocks.production.Drill;
 import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.blocks.production.HeatCrafter;
@@ -120,6 +122,19 @@ public final class HOverrides {
 		//Blocks-drill
 		((Drill) Blocks.blastDrill).hardnessDrillMultiplier = 40f;
 		//Blocks-drill-erekir
+		ObjectFloatMap<Item> drillMultipliers = new ObjectFloatMap<>();
+		drillMultipliers.put(Items.sand, 4f);
+		drillMultipliers.put(Items.scrap, 4f);
+		drillMultipliers.put(Items.copper, 3.5f);
+		drillMultipliers.put(Items.lead, 3.5f);
+		drillMultipliers.put(HItems.stone, 3.5f);
+		drillMultipliers.put(HItems.rareEarth, 3.5f);
+		drillMultipliers.put(Items.coal, 3f);
+		drillMultipliers.put(Items.titanium, 2.5f);
+		drillMultipliers.put(HItems.uranium, 0.5f);
+		drillMultipliers.put(HItems.chromium, 0.5f);
+		((BurstDrill) Blocks.impactDrill).drillMultipliers.putAll(drillMultipliers);
+		((BurstDrill) Blocks.eruptionDrill).drillMultipliers.putAll(drillMultipliers);
 		((BeamDrill) Blocks.largePlasmaBore).drillMultipliers.put(Items.beryllium, 1.5f);
 		((BeamDrill) Blocks.largePlasmaBore).drillMultipliers.put(Items.graphite, 1.5f);
 		//blocks-power
@@ -488,7 +503,7 @@ public final class HOverrides {
 		Items.surgeAlloy.hardness = 6;
 		Items.phaseFabric.hardness = 3;
 		Items.carbide.hardness = 6;
-		Items.serpuloItems.addAll(HItems.stone, HItems.salt, HItems.rareEarth, HItems.galliumNitride, HItems.crystalCircuit, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.originium);
+		Items.serpuloItems.addAll(HItems.stone, HItems.salt, HItems.rareEarth, HItems.galliumNitride, HItems.crystalCircuit, HItems.gold, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.originium);
 		Items.erekirItems.addAll(HItems.uranium, HItems.chromium, HItems.originium);
 		//planet
 		Planets.serpulo.allowSectorInvasion = false;

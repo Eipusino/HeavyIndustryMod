@@ -1,7 +1,8 @@
 package heavyindustry.world.blocks.environment;
 
+import arc.Core;
 import arc.graphics.g2d.Draw;
-import heavyindustry.util.SpriteUtils;
+import heavyindustry.util.Sprites;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Floor;
 
@@ -15,7 +16,7 @@ public class GrooveFloor extends Floor {
 	@Override
 	public void load() {
 		super.load();
-		variantRegions = SpriteUtils.splitInLayers(name + "-sheet", 32, 32);
+		variantRegions = Sprites.splitInLayers(Core.atlas.find(name + "-sheet"), 32, 32);
 	}
 
 	@Override
@@ -39,7 +40,4 @@ public class GrooveFloor extends Floor {
 		if (world.floor(tile.x - 1, tile.y) == this) index += 8;
 		return index;
 	}
-
-	@Override
-	protected void drawEdgesFlat(Tile tile, boolean sameLayer) {}
 }

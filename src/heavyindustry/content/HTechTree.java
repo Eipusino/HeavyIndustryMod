@@ -49,6 +49,7 @@ public final class HTechTree {
 			nodeProduce(HItems.rareEarth);
 			nodeProduce(HItems.salt);
 		});
+		vanillaNode(Items.copper, () -> nodeProduce(HItems.gold));
 		vanillaNode(Items.silicon, () -> {
 			nodeProduce(HItems.crystalCircuit, () -> nodeProduce(HLiquids.originiumFluid));
 			nodeProduce(HItems.galliumNitride);
@@ -150,7 +151,7 @@ public final class HTechTree {
 		vanillaNode(reinforcedConduit, () -> node(smallReinforcedPump, Seq.with(new OnSector(basin)), () -> node(reinforcedPump, () -> node(largeReinforcedPump))));
 		//power
 		vanillaNode(powerNode, () -> node(smartPowerNode, () -> node(powerAnalyzer)));
-		vanillaNode(powerNodeLarge, () -> node(powerNodeHuge, () -> node(powerNodePhase)));
+		vanillaNode(powerNodeLarge, () -> node(heavyArmoredPowerNode, () -> node(microArmoredPowerNode)));
 		vanillaNode(thoriumReactor, () -> node(uraniumReactor));
 		vanillaNode(impactReactor, () -> node(hyperMagneticReactor));
 		vanillaNode(batteryLarge, () -> {
@@ -191,7 +192,7 @@ public final class HTechTree {
 		vanillaNode(siliconCrucible, () -> node(blastSiliconSmelter));
 		vanillaNode(siliconSmelter, () -> node(crystalCircuitConstructor, Seq.with(new SectorComplete(impact0078)), () -> node(crystalCircuitPrinter)));
 		vanillaNode(sporePress, () -> node(nitrificationReactor, () -> {
-			node(nitratedOilSedimentationTank);
+			node(nitratedOilPrecipitator);
 			node(blastReagentMixer);
 		}));
 		vanillaNode(phaseWeaver, () -> node(largePhaseWeaver, () -> node(phaseFusionInstrument)));

@@ -160,9 +160,8 @@ public final class HUnitTypes {
 			burner, shadowBlade, artilleryFirePioneer,
 			//elite
 			tiger, thunder,
-			//boss
+			//?
 			vast,
-			//
 			eipusino;
 
 	/** Don't let anyone instantiate this class. */
@@ -2448,6 +2447,7 @@ public final class HUnitTypes {
 			rotateSpeed = 2.5f;
 			armor = 10.5f;
 			flying = true;
+			hideDetails = false;
 		}};
 		burner = new ExtraUnitType("burner") {{
 			constructor = ExtraMechUnit::create;
@@ -3195,6 +3195,7 @@ public final class HUnitTypes {
 			hidden = true;
 		}};
 		eipusino = new NucleoidUnitType("eipusino") {{
+			envDisabled = Env.none;
 			constructor = NucleoidUnit::create;
 			health = 180000;
 			engineSize = 0f;
@@ -3204,10 +3205,11 @@ public final class HUnitTypes {
 			armor = 180f;
 			drawShields = false;
 			faceTarget = false;
-			Seq<StatusEffect> filter = Seq.with(StatusEffects.none, StatusEffects.boss, StatusEffects.invincible);
+			Seq<StatusEffect> filter = Seq.with(StatusEffects.none, StatusEffects.overclock, StatusEffects.shielded, StatusEffects.boss, StatusEffects.invincible, HStatusEffects.regenerating, HStatusEffects.territoryFieldIncrease);
 			immunities = ObjectSet.with(content.statusEffects().select(s -> s != null && !filter.contains(s)));
 			lowAltitude = true;
 			flying = true;
+			hittable = true;
 			deathExplosionEffect = new MultiEffect(HFx.blast(HPal.thurmixRed, 400f), new Effect(300F, 1600f, e -> {
 				Rand rand = Utils.rand2;
 				float rad = 150f;

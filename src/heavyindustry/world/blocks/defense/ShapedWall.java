@@ -9,16 +9,16 @@ import arc.struct.Queue;
 import arc.struct.Seq;
 import heavyindustry.content.HFx;
 import heavyindustry.graphics.Drawn;
-import heavyindustry.world.meta.HIStat;
+import heavyindustry.world.meta.HStat;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.gen.Call;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.meta.StatUnit;
 
-import static heavyindustry.util.SpriteUtils.diagonalPos;
-import static heavyindustry.util.SpriteUtils.orthogonalPos;
-import static heavyindustry.util.SpriteUtils.proximityPos;
+import static heavyindustry.util.Sprites.diagonalPos;
+import static heavyindustry.util.Sprites.orthogonalPos;
+import static heavyindustry.util.Sprites.proximityPos;
 import static heavyindustry.util.Utils.splitLayers;
 import static mindustry.Vars.net;
 import static mindustry.Vars.state;
@@ -50,7 +50,7 @@ public class ShapedWall extends Wall {
 	@Override
 	public void setStats() {
 		super.setStats();
-		stats.add(HIStat.damageReduction, damageReduction * 100, StatUnit.percent);
+		stats.add(HStat.damageReduction, damageReduction * 100, StatUnit.percent);
 	}
 
 	public class ShapedWallBuild extends WallBuild {

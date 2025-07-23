@@ -5,15 +5,15 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
-import heavyindustry.util.SpriteUtils;
+import heavyindustry.util.Sprites;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
 import mindustry.type.Liquid;
 import mindustry.world.Edges;
 import mindustry.world.blocks.production.Pump;
 
-import static heavyindustry.util.SpriteUtils.index4r4;
-import static heavyindustry.util.SpriteUtils.orthogonalPos;
+import static heavyindustry.util.Sprites.index4r4;
+import static heavyindustry.util.Sprites.orthogonalPos;
 import static mindustry.Vars.world;
 
 public class AdaptPump extends Pump {
@@ -27,9 +27,9 @@ public class AdaptPump extends Pump {
 	public void load() {
 		super.load();
 		if (size == 1) {
-			splits = SpriteUtils.splitInLayers(Core.atlas.find(name + "-atlas"), 32, 32, 1, index4r4);
+			splits = Sprites.splitInLayers(Core.atlas.find(name + "-atlas"), 32, 32, 1, index4r4);
 		} else {
-			splits = SpriteUtils.splitInLayers(Core.atlas.find(name + "-atlas"), 32, 32, 1);
+			splits = Sprites.splitInLayers(Core.atlas.find(name + "-atlas"), 32, 32, 1);
 		}
 	}
 

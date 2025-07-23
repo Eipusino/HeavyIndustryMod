@@ -3,7 +3,7 @@ package heavyindustry.entities.abilities;
 import arc.scene.ui.layout.Table;
 import arc.util.Strings;
 import heavyindustry.content.HFx;
-import heavyindustry.world.meta.HIStatUnit;
+import heavyindustry.world.meta.HStatUnit;
 import mindustry.content.StatusEffects;
 import mindustry.entities.abilities.Ability;
 import mindustry.gen.Unit;
@@ -16,7 +16,7 @@ public class MinigunAbility extends Ability {
 	public float heat, dr;
 
 	public void addStats(Table t) {
-		t.add("[lightgray]" + Stat.reloadMultiplier.localized() + ": [white]" + HIStatUnit.upTo.localized() + " " + Strings.autoFixed(heatReloadMultiplier * 1.5f, 2));
+		t.add("[lightgray]" + Stat.reloadMultiplier.localized() + ": [white]" + HStatUnit.upTo.localized() + " " + Strings.autoFixed(heatReloadMultiplier * 1.5f, 2));
 		t.row();
 		t.add("[lightgray]" + Stat.damage.localized() + ": [white]" + Strings.autoFixed(heatDamage / (50 / 60f), 2) + " " + StatUnit.perSecond.localized());
 		t.row();

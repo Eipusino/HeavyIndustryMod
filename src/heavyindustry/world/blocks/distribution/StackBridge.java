@@ -3,7 +3,7 @@ package heavyindustry.world.blocks.distribution;
 import mindustry.gen.Building;
 import mindustry.type.Item;
 import mindustry.world.Tile;
-import mindustry.world.blocks.distribution.BufferedItemBridge;
+import mindustry.world.blocks.distribution.ItemBridge;
 import mindustry.world.blocks.distribution.StackConveyor.StackConveyorBuild;
 
 import static mindustry.Vars.world;
@@ -12,12 +12,12 @@ import static mindustry.Vars.world;
  * Multiple items can be transported together to the other end.
  * And it can also increase the packaging point of the stack conveyor belt at the output end to the highest speed.
  */
-public class StackBridge extends BufferedItemBridge {
+public class StackBridge extends ItemBridge {
 	public StackBridge(String name) {
 		super(name);
 	}
 
-	public class StackBridgeBuild extends BufferedItemBridgeBuild {
+	public class StackBridgeBuild extends ItemBridgeBuild {
 		public Item lastItem;
 		public int amount = 0;
 

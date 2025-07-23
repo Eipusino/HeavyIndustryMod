@@ -1,8 +1,9 @@
 package heavyindustry.world.blocks.environment;
 
+import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.math.Mathf;
-import heavyindustry.util.SpriteUtils;
+import heavyindustry.util.Sprites;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Floor;
 
@@ -21,7 +22,7 @@ public class DataFloor extends Floor {
 	@Override
 	public void load() {
 		super.load();
-		variantRegions = SpriteUtils.splitInLayers(name + "-sheet", 32, 32);
+		variantRegions = Sprites.splitInLayers(Core.atlas.find(name + "-sheet"), 32, 32);
 		length = Math.min(variantRegions.length, MAX);
 	}
 

@@ -16,7 +16,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.ai.SentryAI;
 import heavyindustry.gen.Sentryc;
-import heavyindustry.world.meta.HIStat;
+import heavyindustry.world.meta.HStat;
 import mindustry.ai.types.LogicAI;
 import mindustry.content.Blocks;
 import mindustry.entities.abilities.Ability;
@@ -164,7 +164,7 @@ public class SentryUnitType extends ExtraUnitType {
 	public void setStats() {
 		super.setStats();
 
-		stats.add(HIStat.sentryLifetime, (int) (lifetime / 60f), StatUnit.seconds);
+		stats.add(HStat.sentryLifetime, (int) (lifetime / 60f), StatUnit.seconds);
 
 		stats.remove(Stat.speed);
 		stats.remove(Stat.itemCapacity);

@@ -300,13 +300,7 @@ public final class HeavyIndustryMod extends Mod {
 					t.pref(new Setting(Core.bundle.get("hi-show-donor-and-develop")) {
 						@Override
 						public void add(SettingsTable table) {
-							table.button(name, () -> {
-								try {
-									Elements.ddItemsList.toShow();
-								} catch (Exception e) {
-									ui.showException(e);
-								}
-							}).margin(14).width(200f).pad(6);
+							table.button(name, Elements.ddItemsList::toShow).margin(14).width(200f).pad(6);
 							table.row();
 						}
 					});
@@ -318,16 +312,14 @@ public final class HeavyIndustryMod extends Mod {
 							if (Elements.gameDataDialog != null) {
 								Elements.gameDataDialog.show();
 							}
-						}).growX().marginLeft(8f).height(50f).row();
+						}).growX().marginLeft(8f).height(50f).pad(12f).row();
 					}).width(Math.min(Core.graphics.getWidth() / 1.2f, 460f)).padBottom(45f);
-					t.fill(c -> {
-						c.bottom().right().button(Icon.github, new ImageButtonStyle(), () -> {
-							if (!Core.app.openURI(LINK_GIT_HUB)) {
-								ui.showInfoFade("@linkfail");
-								Core.app.setClipboardText(LINK_GIT_HUB);
-							}
-						}).marginTop(9f).marginLeft(10f).tooltip("@setting.hi-github-join").size(84f, 45f).name("github");
-					});
+					t.fill(c -> c.bottom().right().button(Icon.github, new ImageButtonStyle(), () -> {
+						if (!Core.app.openURI(LINK_GIT_HUB)) {
+							ui.showInfoFade("@linkfail");
+							Core.app.setClipboardText(LINK_GIT_HUB);
+						}
+					}).marginTop(9f).marginLeft(10f).tooltip("@setting.hi-github-join").size(84f, 45f).name("github"));
 				});
 			}
 

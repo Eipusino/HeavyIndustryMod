@@ -12,7 +12,6 @@ import mindustry.graphics.CacheLayer;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 
-import static heavyindustry.HVars.name;
 import static heavyindustry.util.Utils.split;
 import static mindustry.Vars.world;
 
@@ -82,7 +81,8 @@ public class DepthCliff extends Block {
 	@Override
 	public void load() {
 		super.load();
-		cliffs = split(name("cliffs"), 48, 0);
+
+		cliffs = split(name + "-sheet", 48, 0);
 	}
 
 	@Override

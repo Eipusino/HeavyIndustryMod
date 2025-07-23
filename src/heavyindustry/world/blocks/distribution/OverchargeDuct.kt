@@ -8,7 +8,7 @@ import arc.util.Tmp
 import heavyindustry.HVars
 import heavyindustry.util.Utils
 import heavyindustry.util.eq
-import heavyindustry.world.meta.HIStat
+import heavyindustry.world.meta.HStat
 import mindustry.Vars
 import mindustry.graphics.Layer
 import mindustry.graphics.Pal
@@ -29,8 +29,8 @@ open class OverchargeDuct(name: String) : TubeDuct(name) {
 
 	override fun setStats() {
 		super.setStats()
-		//stats.add(HIStat.itemsMovedBase, 60f / speed, StatUnit.itemsSecond)
-		stats.add(HIStat.itemsMovedBoost, 60f / (speed / (1f + (baseEfficiency * 2f))), StatUnit.itemsSecond)
+		//stats.add(HStat.itemsMovedBase, 60f / speed, StatUnit.itemsSecond)
+		stats.add(HStat.itemsMovedBoost, 60f / (speed / (1f + (baseEfficiency * 2f))), StatUnit.itemsSecond)
 	}
 
 	override fun load() {

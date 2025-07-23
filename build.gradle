@@ -13,7 +13,7 @@ buildscript {
 
 	dependencies {
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-		classpath files("libs/26094.jar")
+		classpath files("libs/26118.jar")
 	}
 }
 
@@ -50,7 +50,7 @@ tasks.withType(KotlinCompile).configureEach {
 dependencies {
 	implementation "org.tomlj:tomlj:1.1.1"
 
-	compileOnly files("libs/26094.jar")
+	compileOnly files("libs/26118.jar")
 }
 
 task jarAndroid {

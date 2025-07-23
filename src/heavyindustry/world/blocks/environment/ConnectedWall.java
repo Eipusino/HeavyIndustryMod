@@ -1,13 +1,11 @@
 package heavyindustry.world.blocks.environment;
 
-import arc.graphics.g2d.Draw;
+import arc.Core;
 import arc.graphics.g2d.TextureRegion;
-import mindustry.world.Tile;
+import mindustry.game.Team;
 import mindustry.world.blocks.environment.StaticWall;
 
-import static heavyindustry.util.Utils.getTilingIndex;
 import static heavyindustry.util.Utils.split;
-import static mindustry.Vars.world;
 
 public class ConnectedWall extends StaticWall {
 	public ConnectedWall(String name) {
@@ -16,36 +14,61 @@ public class ConnectedWall extends StaticWall {
 
 	@Override
 	public void load() {
-		super.load();
-		variantRegions = split(name + "-sheet", 32, 12, 4);
+		region = Core.atlas.find(name);
+
+		customShadowRegion = Core.atlas.find(name + "-shadow");
+		teamRegion = Core.atlas.find(name + "-team");
+
+		large = Core.atlas.find(name + "-large");
+
+		//load specific team regions
+		teamRegions = new TextureRegion[Team.all.length];
+		for (Team team : Team.all) {
+			teamRegions[team.id] = teamRegion.found() && team.hasPalette ? Core.atlas.find(name + "-team-" + team.name, teamRegion) : teamRegion;
+		}
+
+		if (variants != 0) {
+			variantRegions = new TextureRegion[variants];
+
+			for (int i = 0; i < variants; i++) {
+				variantRegions[i] = Core.atlas.find(name + (i + 1));
+			}
+			region = variantRegions[0];
+
+			if (customShadow) {
+				variantShadowRegions = new TextureRegion[variants];
+				for (int i = 0; i < variants; i++) {
+					variantShadowRegions[i] = Core.atlas.find(name + "-shadow" + (i + 1));
+				}
+			}
+		} else {
+			variantRegions = new TextureRegion[]{region};
+		}
+
+		int size = large.width / 2;
+		split = large.split(size, size);
+		if (split != null) {
+			for (TextureRegion[] arr : split) {
+				for (TextureRegion reg : arr) {
+					reg.scale = region.scale;
+				}
+			}
+		}
+
+		if (autotile) {
+			autotileRegions = split(name + "-autotile", 32, 12, 4);
+		}
+	}
+
+	@Override
+	public void init() {
+		super.init();
+
+		if (autotileRegions.length < 47) autotile = false;
 	}
 
 	@Override
 	public TextureRegion[] icons() {
 		return new TextureRegion[]{region};
-	}
-
-	@Override
-	public void drawBase(Tile tile) {
-		Tile[][] grid = new Tile[3][3];
-		int avail = 0;
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				grid[i][j] = world.tile(i + tile.x - 1, j + tile.y - 1);
-				if (grid[i][j] != null) {
-					avail++;
-				}
-			}
-		}
-
-		int index = getTilingIndex(grid, 1, 1, t -> t != null && t.block() == this);
-		if (avail == 0) {
-			Draw.rect(region, tile.worldx(), tile.worldy());
-		} else {
-			Draw.rect(variantRegions[index], tile.worldx(), tile.worldy());
-		}
-		if (tile.overlay().wallOre) {
-			tile.overlay().drawBase(tile);
-		}
 	}
 }

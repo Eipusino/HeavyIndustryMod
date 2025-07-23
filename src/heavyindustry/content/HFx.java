@@ -55,7 +55,6 @@ import static mindustry.Vars.tilesize;
 
 /**
  * Defines the {@linkplain Effect visual effects} this mod offers.
- * <p>Why not import static xxx.xDraw. *? Because this may reduce the readability of the code.
  *
  * @author Eipusino
  */

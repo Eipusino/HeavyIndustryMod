@@ -36,11 +36,9 @@ import arc.util.Reflect;
 import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
-import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.ui.dialogs.DDItemsList;
 import heavyindustry.ui.dialogs.GameDataDialog;
 import heavyindustry.ui.dialogs.PowerGraphInfoDialog;
-import heavyindustry.ui.fragment.CliffFragment;
 import mindustry.Vars;
 import mindustry.core.UI;
 import mindustry.core.World;
@@ -66,7 +64,6 @@ public final class Elements {
 	public static DDItemsList ddItemsList;
 
 	public static PowerGraphInfoDialog powerInfoDialog;
-	public static CliffFragment cliffFragment;
 	public static GameDataDialog gameDataDialog;
 
 	private static final Vec2 ctrlVec = new Vec2();
@@ -94,11 +91,6 @@ public final class Elements {
 		powerInfoDialog = new PowerGraphInfoDialog();
 
 		gameDataDialog = new GameDataDialog();
-
-		if (!HeavyIndustryMod.isPlugin && Core.settings.getBool("hi-developer-mode")) {
-			cliffFragment = new CliffFragment();
-			cliffFragment.build(Vars.ui.hudGroup);
-		}
 	}
 
 	/** Based on {@link UI#formatAmount(long)} but for floats. */

@@ -19,7 +19,7 @@ import arc.util.pooling.Pool;
 import arc.util.pooling.Pools;
 import heavyindustry.util.Utils;
 import heavyindustry.util.Utils.ExtPos;
-import heavyindustry.world.meta.HIStatValues;
+import heavyindustry.world.meta.HStatValues;
 import mindustry.content.Items;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Units;
@@ -100,7 +100,7 @@ public class UnitBoost extends Block {
 
 		if (findConsumer(c -> c instanceof ConsumeItems) instanceof ConsumeItems cons) {
 			stats.remove(Stat.booster);
-			stats.add(Stat.booster, HIStatValues.itemRangeBoosters("{0}" + StatUnit.timesSpeed.localized(), stats.timePeriod, boostStatus, boostRange * 8, cons.items, boostReplace, this::consumesItem));
+			stats.add(Stat.booster, HStatValues.itemRangeBoosters("{0}" + StatUnit.timesSpeed.localized(), stats.timePeriod, boostStatus, boostRange * 8, cons.items, boostReplace, this::consumesItem));
 		}
 	}
 

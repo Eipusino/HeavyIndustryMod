@@ -9,7 +9,7 @@ import arc.util.Strings;
 import arc.util.Time;
 import heavyindustry.content.HFx;
 import heavyindustry.math.Mathm;
-import heavyindustry.world.meta.HIStat;
+import heavyindustry.world.meta.HStat;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.abilities.Ability;
@@ -58,9 +58,9 @@ public abstract class BaseMirrorShieldAbility extends Ability implements Collide
 		t.row();
 		t.add("[lightgray]" + Stat.armor.localized() + ": [white]" + Math.round(shieldArmor));
 		t.row();
-		t.add("[lightgray]" + HIStat.fieldStrength.localized() + ": [white]" + Math.round(strength));
+		t.add("[lightgray]" + HStat.fieldStrength.localized() + ": [white]" + Math.round(strength));
 		t.row();
-		t.add("[lightgray]" + HIStat.albedo.localized() + ": [white]" + (Mathf.equal(minAlbedo, maxAlbedo) ?
+		t.add("[lightgray]" + HStat.albedo.localized() + ": [white]" + (Mathf.equal(minAlbedo, maxAlbedo) ?
 				Mathf.round(minAlbedo * 100) + "%" :
 				Mathf.round(minAlbedo * 100) + "% - " + Mathf.round(maxAlbedo * 100) + "%"));
 		t.row();

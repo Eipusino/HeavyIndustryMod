@@ -8,7 +8,7 @@ import arc.util.Eachable;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.util.SpriteUtils;
+import heavyindustry.util.Sprites;
 import mindustry.content.Fx;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -38,7 +38,7 @@ public class AdaptConduit extends Conduit {
 	@Override
 	public void load() {
 		super.load();
-		topMaskRegions = SpriteUtils.splitInLayers(Core.atlas.find(name + "-top"), 32, 32, 1);
+		topMaskRegions = Sprites.splitInLayers(Core.atlas.find(name + "-top"), 32, 32, 1);
 	}
 
 	@Override

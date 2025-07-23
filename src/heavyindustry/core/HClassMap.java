@@ -91,6 +91,7 @@ import heavyindustry.world.blocks.defense.turrets.PlatformTurret;
 import heavyindustry.world.blocks.defense.turrets.ShootMatchTurret;
 import heavyindustry.world.blocks.defense.turrets.SpeedupTurret;
 import heavyindustry.world.blocks.defense.turrets.SwingContinuousTurret;
+import heavyindustry.world.blocks.distribution.BufferedStackBridge;
 import heavyindustry.world.blocks.distribution.RailDirectionalGate;
 import heavyindustry.world.blocks.distribution.RailDirectionalMerger;
 import heavyindustry.world.blocks.distribution.RailDirectionalRouter;
@@ -298,7 +299,7 @@ final class HClassMap {
 		classes.put("FallingBulletType", FallingBulletType.class);
 		classes.put("FireWorkBulletType", FireWorkBulletType.class);
 		classes.put("FlameBulletType", FlameBulletType.class);
-		classes.put("FlameBulletTypef", FlameBulletTypef.class);
+		classes.put("ParticleFlameBulletType", ParticleFlameBulletType.class);
 		classes.put("ColorFireBulletType", FireWorkBulletType.ColorFireBulletType.class);
 		classes.put("SpriteBulletType", FireWorkBulletType.SpriteBulletType.class);
 		classes.put("GrenadeBulletType", GrenadeBulletType.class);
@@ -488,6 +489,8 @@ final class HClassMap {
 		classes.put("StackHelperBuild", StackHelper.StackHelperBuild.class);
 		classes.put("StackBridge", StackBridge.class);
 		classes.put("StackBridgeBuild", StackBridge.StackBridgeBuild.class);
+		classes.put("BufferedStackBridge", BufferedStackBridge.class);
+		classes.put("BufferedStackBridgeBuild", BufferedStackBridge.BufferedStackBridgeBuild.class);
 		classes.put("LaserMassDriver", LaserMassDriver.class);
 		classes.put("LaserMassDriverBuilding", LaserMassDriver.LaserMassDriverBuilding.class);
 		classes.put("TubeLiquidBridge", TubeLiquidBridge.class);

@@ -4,8 +4,8 @@ import arc.Core;
 import arc.math.Mathf;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.world.meta.HIStat;
-import heavyindustry.world.meta.HIStatValues;
+import heavyindustry.world.meta.HStat;
+import heavyindustry.world.meta.HStatValues;
 import mindustry.content.Items;
 import mindustry.gen.Building;
 import mindustry.type.Item;
@@ -60,7 +60,7 @@ public class FuelCrafter extends GenericCrafter {
 	public void setStats() {
 		super.setStats();
 
-		stats.add(HIStat.fuel, HIStatValues.fuel(this));
+		stats.add(HStat.fuel, HStatValues.fuel(this));
 	}
 
 	public class FuelCrafterBuild extends GenericCrafterBuild {

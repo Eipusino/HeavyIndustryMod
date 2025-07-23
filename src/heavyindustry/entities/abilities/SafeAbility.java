@@ -4,7 +4,7 @@ import arc.audio.Sound;
 import arc.math.Mathf;
 import arc.scene.ui.layout.Table;
 import arc.util.Strings;
-import heavyindustry.world.meta.HIStatUnit;
+import heavyindustry.world.meta.HStatUnit;
 import mindustry.content.Fx;
 import mindustry.entities.Damage;
 import mindustry.entities.Effect;
@@ -59,7 +59,7 @@ public class SafeAbility extends Ability {
 		}
 		t.add("[lightgray]" + Stat.cooldownTime.localized() + ": [white]" + Strings.autoFixed(reload / 60, 2) + " " + StatUnit.seconds.localized());
 		t.row();
-		t.add("[lightgray]" + HIStatUnit.threshold.localized() + ": [white]" + Strings.autoFixed(threshold * 100, 0) + " " + StatUnit.percent.localized());
+		t.add("[lightgray]" + HStatUnit.threshold.localized() + ": [white]" + Strings.autoFixed(threshold * 100, 0) + " " + StatUnit.percent.localized());
 		if (selfStatus != null) {
 			t.row();
 			t.add(selfStatus.emoji() + " " + selfStatus.localizedName);

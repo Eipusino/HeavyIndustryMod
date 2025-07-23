@@ -13,7 +13,7 @@ import arc.util.Strings;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.world.meta.HIStatValues;
+import heavyindustry.world.meta.HStatValues;
 import mindustry.Vars;
 import mindustry.content.Bullets;
 import mindustry.content.Items;
@@ -64,7 +64,7 @@ public class MultiBulletTurret extends Turret {
 		super.setStats();
 
 		stats.remove(Stat.itemCapacity);
-		stats.add(Stat.ammo, HIStatValues.ammo(ammoTypes));
+		stats.add(Stat.ammo, HStatValues.ammo(ammoTypes));
 		if (all) {
 			stats.remove(Stat.reload);
 			stats.add(Stat.reload, Core.bundle.format("stat.hi-shoot-time", Strings.autoFixed(reload / 60f, 2)));

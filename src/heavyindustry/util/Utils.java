@@ -215,30 +215,6 @@ public final class Utils {
 
 	public static final Seq<Building> buildings = new Seq<>();
 
-	static final byte[][] joinsChkDirs = {
-			{-1, 1}, {0, 1}, {1, 1},
-			{-1, 0}, /*{0, 0}, */{1, 0},
-			{-1, -1}, {0, -1}, {1, -1}
-	};
-	static final byte[] joinsMap = {//not sure how to format this.
-			39, 39, 27, 27, 39, 39, 27, 27, 38, 38, 17, 26, 38, 38, 17, 26, 36,
-			36, 16, 16, 36, 36, 24, 24, 37, 37, 41, 21, 37, 37, 43, 25, 39,
-			39, 27, 27, 39, 39, 27, 27, 38, 38, 17, 26, 38, 38, 17, 26, 36,
-			36, 16, 16, 36, 36, 24, 24, 37, 37, 41, 21, 37, 37, 43, 25, 3,
-			3, 15, 15, 3, 3, 15, 15, 5, 5, 29, 31, 5, 5, 29, 31, 4,
-			4, 40, 40, 4, 4, 20, 20, 28, 28, 10, 11, 28, 28, 23, 32, 3,
-			3, 15, 15, 3, 3, 15, 15, 2, 2, 9, 14, 2, 2, 9, 14, 4,
-			4, 40, 40, 4, 4, 20, 20, 30, 30, 47, 44, 30, 30, 22, 6, 39,
-			39, 27, 27, 39, 39, 27, 27, 38, 38, 17, 26, 38, 38, 17, 26, 36,
-			36, 16, 16, 36, 36, 24, 24, 37, 37, 41, 21, 37, 37, 43, 25, 39,
-			39, 27, 27, 39, 39, 27, 27, 38, 38, 17, 26, 38, 38, 17, 26, 36,
-			36, 16, 16, 36, 36, 24, 24, 37, 37, 41, 21, 37, 37, 43, 25, 3,
-			3, 15, 15, 3, 3, 15, 15, 5, 5, 29, 31, 5, 5, 29, 31, 0,
-			0, 42, 42, 0, 0, 12, 12, 8, 8, 35, 34, 8, 8, 33, 7, 3,
-			3, 15, 15, 3, 3, 15, 15, 2, 2, 9, 14, 2, 2, 9, 14, 0,
-			0, 42, 42, 0, 0, 12, 12, 1, 1, 45, 18, 1, 1, 19, 13
-	};
-
 	static final Vec2 v11 = new Vec2(), v12 = new Vec2(), v13 = new Vec2();
 	static final IntSet collidedBlocks = new IntSet();
 	static final Rect rect = new Rect(), hitRect = new Rect();
@@ -451,10 +427,6 @@ public final class Utils {
 		}
 	}
 
-	public static AtlasRegion asAtlas(TextureRegion texture) {
-		return texture instanceof AtlasRegion atlas ? atlas : new AtlasRegion(texture);
-	}
-
 	/** reads every single pixel on a textureRegion from bottom left to top right. */
 	public static void readTexturePixels(PixmapRegion pixmap, Intc2 cons) {
 		for (int j = 0; j < pixmap.height; j++) {
@@ -483,29 +455,6 @@ public final class Utils {
 		} else {
 			throw new IllegalArgumentException();
 		}
-	}
-
-	public static <T> int getMaskIndex(T[][] map, int x, int y, Boolf<T> canConnect) {
-		int index = 0, ax, ay;
-		T t;
-
-		for (int i = 0; i < joinsChkDirs.length; i++) {
-			ax = joinsChkDirs[i][0] + x;
-			ay = joinsChkDirs[i][1] + y;
-			t = null;
-
-			if (ax >= 0 && ay >= 0 && ax < map.length && ay < map[0].length) {
-				t = map[ax][ay];
-			}
-
-			index += canConnect.get(t) ? (1 << i) : 0;
-		}
-
-		return index;
-	}
-
-	public static <T> int getTilingIndex(T[][] map, int x, int y, Boolf<T> canConnect) {
-		return joinsMap[getMaskIndex(map, x, y, canConnect)];
 	}
 
 	public static void bubbles(int seed, float x, float y, int bubblesAmount, float bubblesSize, float baseLife, float baseSize) {

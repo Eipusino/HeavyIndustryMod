@@ -2,7 +2,7 @@ package heavyindustry.type.unit;
 
 import arc.Core;
 import arc.util.Strings;
-import heavyindustry.world.meta.HIStat;
+import heavyindustry.world.meta.HStat;
 import mindustry.content.Items;
 import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
@@ -20,7 +20,7 @@ public class ExtraUnitType extends UnitType {
 	public void setStats() {
 		super.setStats();
 		if (damageMultiplier < 1f) {
-			stats.add(HIStat.damageReduction, Core.bundle.format("hi-sin", Strings.autoFixed((1f - damageMultiplier) * 100, 2)));
+			stats.add(HStat.damageReduction, Core.bundle.format("hi-sin", Strings.autoFixed((1f - damageMultiplier) * 100, 2)));
 		}
 	}
 

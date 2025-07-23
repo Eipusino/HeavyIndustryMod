@@ -22,8 +22,8 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.world.consumers.ConsumeLiquidDynamic;
-import heavyindustry.world.meta.HIStat;
-import heavyindustry.world.meta.HIStatValues;
+import heavyindustry.world.meta.HStat;
+import heavyindustry.world.meta.HStatValues;
 import mindustry.Vars;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -95,7 +95,7 @@ public class PayloadCrafter extends PayloadBlock {
 	public void setRecipeProductionStats() {
 		for (PayloadRecipe r : recipes) {
 			if (r.outputBlock != null) {
-				r.outputBlock.stats.add(HIStat.producer, s -> {
+				r.outputBlock.stats.add(HStat.producer, s -> {
 					s.row();
 					s.table(Styles.grayPanel, t -> {
 						t.left().defaults().top().left();
@@ -109,13 +109,13 @@ public class PayloadCrafter extends PayloadBlock {
 							n.defaults().left();
 							n.add(localizedName);
 							n.row();
-							HIStatValues.infoButton(n, this, 4f * 8f).padTop(4f);
+							HStatValues.infoButton(n, this, 4f * 8f).padTop(4f);
 						}).padLeft(8f);
 					}).left().top().growX().margin(10f).padTop(5).padBottom(5);
 				});
 
 				if (r.hasInputBlock()) {
-					r.inputBlock.stats.add(HIStat.produce, s -> {
+					r.inputBlock.stats.add(HStat.produce, s -> {
 						s.row();
 						s.table(Styles.grayPanel, t -> {
 							t.left().defaults().top().left();
@@ -134,7 +134,7 @@ public class PayloadCrafter extends PayloadBlock {
 								n.defaults().left();
 								n.add(r.outputBlock.localizedName);
 								n.row();
-								HIStatValues.infoButton(n, this, 4f * 8f).padTop(4f);
+								HStatValues.infoButton(n, this, 4f * 8f).padTop(4f);
 							}).padLeft(8f);
 						}).left().top().growX().margin(10f).padTop(5).padBottom(5);
 					});
@@ -184,7 +184,7 @@ public class PayloadCrafter extends PayloadBlock {
 		stats.remove(Stat.itemCapacity);
 		stats.remove(Stat.liquidCapacity);
 
-		stats.add(HIStat.recipes, HIStatValues.payloadProducts(recipes));
+		stats.add(HStat.recipes, HStatValues.payloadProducts(recipes));
 	}
 
 	@Override

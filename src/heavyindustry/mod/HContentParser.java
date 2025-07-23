@@ -49,7 +49,7 @@ import heavyindustry.math.HInterps;
 import heavyindustry.util.Reflectf;
 import heavyindustry.world.blocks.production.MultiCrafter;
 import heavyindustry.world.blocks.production.MultiCrafter.CraftPlan;
-import heavyindustry.world.meta.HIBuildVisibility;
+import heavyindustry.world.meta.HBuildVisibility;
 import mindustry.Vars;
 import mindustry.ai.UnitCommand;
 import mindustry.ai.UnitStance;
@@ -193,7 +193,7 @@ public class HContentParser {
 			if (Attribute.exists(attr)) return Attribute.get(attr);
 			return Attribute.add(attr);
 		});
-		put(BuildVisibility.class, (type, data) -> modField(BuildVisibility.class, HIBuildVisibility.class, data));
+		put(BuildVisibility.class, (type, data) -> modField(BuildVisibility.class, HBuildVisibility.class, data));
 		put(Schematic.class, (type, data) -> {
 			Object result = fieldOpt(Loadouts.class, data);
 			if (result != null) {
