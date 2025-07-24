@@ -2217,7 +2217,7 @@ public final class HBlocks {
 			size = 2;
 			hasPower = hasItems = hasLiquids = true;
 			liquidCapacity = 30;
-			attribute = Attribute.water;
+			attribute = Attribute.spores;
 			baseEfficiency = 1;
 			maxBoost = 1;
 			boostScale = 0.25f;
