@@ -38,7 +38,7 @@ public class AdaptConduit extends Conduit {
 	@Override
 	public void load() {
 		super.load();
-		topMaskRegions = Sprites.splitInLayers(Core.atlas.find(name + "-top"), 32, 32, 1);
+		topMaskRegions = Sprites.splitInLayers(Core.atlas.find(name + "-top"), 32, 1);
 	}
 
 	@Override

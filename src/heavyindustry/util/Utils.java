@@ -170,7 +170,6 @@ public final class Utils {
 			"heavyindustry.ui.defaults",
 			"heavyindustry.ui.dialogs",
 			"heavyindustry.ui.elements",
-			"heavyindustry.ui.fragment",
 			"heavyindustry.ui.listeners",
 			"heavyindustry.ui.tooltips",
 			"heavyindustry.util",
@@ -343,17 +342,17 @@ public final class Utils {
 	 * @param height The amount of regions vertically.
 	 */
 	public static TextureRegion[] split(String name, int size, int width, int height) {
-		TextureRegion textures = Core.atlas.find(name);
+		TextureRegion reg = Core.atlas.find(name);
 		int textureSize = width * height;
 		TextureRegion[] regions = new TextureRegion[textureSize];
 
-		float tileWidth = (textures.u2 - textures.u) / width;
-		float tileHeight = (textures.v2 - textures.v) / height;
+		float tileWidth = (reg.u2 - reg.u) / width;
+		float tileHeight = (reg.v2 - reg.v) / height;
 
 		for (int i = 0; i < textureSize; i++) {
 			float tileX = ((float) (i % width)) / width;
 			float tileY = ((float) (i / width)) / height;
-			TextureRegion region = new TextureRegion(textures);
+			TextureRegion region = new TextureRegion(reg);
 
 			//start coordinate
 			region.u = Mathf.map(tileX, 0f, 1f, region.u, region.u2) + tileWidth * 0.02f;

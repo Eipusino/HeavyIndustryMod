@@ -10,6 +10,7 @@ import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.world.Block;
 import mindustry.world.Tile;
+import mindustry.world.blocks.environment.Floor;
 import mindustry.world.blocks.environment.SteamVent;
 
 import static heavyindustry.util.Structf.resize;
@@ -133,5 +134,10 @@ public class SizedVent extends SteamVent {
 		}
 
 		return out;
+	}
+
+	@Override
+	public Floor asFloor() {
+		return this;
 	}
 }

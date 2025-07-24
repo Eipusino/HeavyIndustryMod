@@ -32,7 +32,7 @@ import static mindustry.Vars.player;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
-public class RailConveyor extends Conveyor {
+public class RailConveyor extends BeltConveyor {
 	public TextureRegion[] edgeRegions, armorRegions, arrowRegions, pulseRegions;
 	public float framePeriod = 8f;
 
@@ -49,10 +49,10 @@ public class RailConveyor extends Conveyor {
 	@Override
 	public void load() {
 		super.load();
-		edgeRegions = Sprites.splitInLayers(Core.atlas.find(name + "-edge"), 32, 32, 1);
-		armorRegions = Sprites.splitInLayers(Core.atlas.find(name + "-edge-armored"), 32, 32, 1);
-		arrowRegions = Sprites.splitInLayers(Core.atlas.find(name + "-arrow"), 32, 32, 1);
-		pulseRegions = Sprites.splitInLayers(Core.atlas.find(name + "-pulse"), 32, 32, 1);
+		edgeRegions = Sprites.splitInLayers(Core.atlas.find(name + "-edge"), 32, 1);
+		armorRegions = Sprites.splitInLayers(Core.atlas.find(name + "-edge-armored"), 32, 1);
+		arrowRegions = Sprites.splitInLayers(Core.atlas.find(name + "-arrow"), 32, 1);
+		pulseRegions = Sprites.splitInLayers(Core.atlas.find(name + "-pulse"), 32, 1);
 	}
 
 	@Override
@@ -92,11 +92,6 @@ public class RailConveyor extends Conveyor {
 		super.drawPlace(x, y, rotation, valid);
 	}
 
-	@Override
-	public TextureRegion[] icons() {
-		return new TextureRegion[]{region};
-	}
-
 	public int conveyorFrame() {
 		return (int) ((((Time.time) % framePeriod) / framePeriod) * 16);
 	}
@@ -111,7 +106,7 @@ public class RailConveyor extends Conveyor {
 		};
 	}
 
-	public class RailConveyorBuild extends ConveyorBuild {
+	public class RailConveyorBuild extends BeltConveyorBuild {
 		public int drawIndex = 0;
 		public boolean armored = false;
 

@@ -38,6 +38,7 @@ public final class HTechTree {
 		vanillaNode(Liquids.water, () -> {
 			nodeProduce(HLiquids.brine);
 			nodeProduce(Liquids.gallium);
+			nodeProduce(Liquids.nitrogen);
 		});
 		vanillaNode(Liquids.oil, () -> {
 			nodeProduce(HLiquids.lightOil);

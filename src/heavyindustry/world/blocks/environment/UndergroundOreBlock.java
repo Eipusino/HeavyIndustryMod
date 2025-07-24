@@ -4,6 +4,7 @@ import arc.graphics.g2d.Draw;
 import mindustry.graphics.Layer;
 import mindustry.type.Item;
 import mindustry.world.Tile;
+import mindustry.world.blocks.environment.Floor;
 import mindustry.world.blocks.environment.OverlayFloor;
 
 public class UndergroundOreBlock extends OverlayFloor {
@@ -51,5 +52,10 @@ public class UndergroundOreBlock extends OverlayFloor {
 
 			Draw.z(l);
 		}
+	}
+
+	@Override
+	public Floor asFloor() {
+		return this;
 	}
 }

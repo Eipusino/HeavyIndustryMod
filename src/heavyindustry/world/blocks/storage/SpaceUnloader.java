@@ -301,6 +301,7 @@ public class SpaceUnloader extends StorageBlock {
 		@Override
 		public void updateTile() {
 			super.updateTile();
+
 			var hasItem = false;
 			boolean valid = efficiency > 0.4F;
 			if (timer.get(1, frameDelay)) {
@@ -376,6 +377,7 @@ public class SpaceUnloader extends StorageBlock {
 		@Override
 		public void display(Table table) {
 			super.display(table);
+
 			if (items != null) {
 				table.row();
 				table.left();
@@ -406,6 +408,7 @@ public class SpaceUnloader extends StorageBlock {
 		@Override
 		public void draw() {
 			super.draw();
+
 			Draw.color(Color.valueOf("#0a156e"));
 			Draw.alpha(warmup);
 			Draw.rect(bottomRegion, x, y);
@@ -475,33 +478,27 @@ public class SpaceUnloader extends StorageBlock {
 
 		@Override
 		public void add() {
-			if (added) {
-				return;
-			}
+			if (added) return;
 			suGroup.add(this);
+
 			super.add();
 		}
 
 		@Override
 		public void remove() {
-			if (!added) {
-				return;
-			}
+			if (!added) return;
 			suGroup.remove(this);
+
 			super.remove();
 		}
 
 		@Override
 		public boolean canDump(Building to, Item item) {
-			if (linkedCore != null) {
-				return false;
-			}
+			if (linkedCore != null) return false;
 			for (int i = 0; i < links.size; i++) {
 				int pos = links.get(i);
 				Building linkTarget = Vars.world.build(pos);
-				if (to == linkTarget) {
-					return false;
-				}
+				if (to == linkTarget) return false;
 			}
 			return true;
 		}

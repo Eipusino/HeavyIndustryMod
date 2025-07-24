@@ -29,9 +29,9 @@ public class ArmorFloor extends Floor {
 	public TextureRegion large;
 	public TextureRegion[][] split;
 
-	public ArmorFloor(String name, int variants, Floor solidReact) {
+	public ArmorFloor(String name, int variants, Floor solid) {
 		super(name, variants);
-		this.solidReact = solidReact;
+		solidReact = solid;
 
 		cacheLayer = HCacheLayer.armor;
 		oreDefault = false;
@@ -103,10 +103,11 @@ public class ArmorFloor extends Floor {
 
 	@Override
 	public void drawEnvironmentLight(Tile tile) {
-		if (!useDynamicLight) super.drawEnvironmentLight(tile);
-		else {
+		if (useDynamicLight) {
 			Color color = lightColor(tile);
 			Drawf.light(tile.worldx(), tile.worldy(), lightRadius, color, color.a);
+		} else {
+			super.drawEnvironmentLight(tile);
 		}
 	}
 
@@ -127,5 +128,10 @@ public class ArmorFloor extends Floor {
 				&& world.tile(rx, ry + 1).floor() == this
 				&& world.tile(rx, ry).floor() == this
 				&& world.tile(rx + 1, ry + 1).floor() == this;
+	}
+
+	@Override
+	public Floor asFloor() {
+		return this;
 	}
 }

@@ -15,6 +15,10 @@ public class ConnectedFloor extends Floor {
 		super(name);
 	}
 
+	public ConnectedFloor(String name, int variants) {
+		super(name, variants);
+	}
+
 	@Override
 	public void load() {
 		region = Core.atlas.find(name);
@@ -78,5 +82,10 @@ public class ConnectedFloor extends Floor {
 	@Override
 	public TextureRegion[] icons() {
 		return new TextureRegion[]{region};
+	}
+
+	@Override
+	public Floor asFloor() {
+		return this;
 	}
 }

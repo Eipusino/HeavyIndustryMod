@@ -62,8 +62,7 @@ public class BeltStackConveyor extends StackConveyor {
 
 		if (bits == null) return;
 
-		TextureRegion region = regions[0];
-		Draw.rect(region, plan.drawx(), plan.drawy(), plan.rotation * 90);
+		Draw.rect(regions[0], plan.drawx(), plan.drawy(), plan.rotation * 90);
 
 		for (int i = 0; i < 4; i++) {
 			if ((bits[3] & (1 << i)) == 0) {

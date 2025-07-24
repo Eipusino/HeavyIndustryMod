@@ -27,9 +27,9 @@ public class AdaptPump extends Pump {
 	public void load() {
 		super.load();
 		if (size == 1) {
-			splits = Sprites.splitInLayers(Core.atlas.find(name + "-atlas"), 32, 32, 1, index4r4);
+			splits = Sprites.splitInLayers(Core.atlas.find(name + "-atlas"), 32, 1, index4r4);
 		} else {
-			splits = Sprites.splitInLayers(Core.atlas.find(name + "-atlas"), 32, 32, 1);
+			splits = Sprites.splitInLayers(Core.atlas.find(name + "-atlas"), 32, 1);
 		}
 	}
 

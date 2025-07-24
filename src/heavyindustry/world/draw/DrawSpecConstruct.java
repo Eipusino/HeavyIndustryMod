@@ -32,10 +32,6 @@ public class DrawSpecConstruct extends DrawBlock {
 		this(Pal.accent, Pal.accent);
 	}
 
-	public DrawSpecConstruct(Color color) {
-		this(color, color);
-	}
-
 	public DrawSpecConstruct(Color color1, Color color2) {
 		constructColor1 = color1;
 		constructColor2 = color2;

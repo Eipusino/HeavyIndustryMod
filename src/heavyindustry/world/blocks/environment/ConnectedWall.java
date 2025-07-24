@@ -61,13 +61,6 @@ public class ConnectedWall extends StaticWall {
 	}
 
 	@Override
-	public void init() {
-		super.init();
-
-		if (autotileRegions.length < 47) autotile = false;
-	}
-
-	@Override
 	public TextureRegion[] icons() {
 		return new TextureRegion[]{region};
 	}

@@ -93,15 +93,14 @@ public final class Sprites {
 
 	private Sprites() {}
 
-	public static TextureRegion[][] split(TextureRegion region, int tileWidth, int tileHeight, int pad) {
-		if (region.texture == null) return null;
+	public static TextureRegion[][] split(TextureRegion region, int size, int pad) {
 		int x = region.getX();
 		int y = region.getY();
 		int width = region.width;
 		int height = region.height;
 
-		int pWidth = tileWidth + pad * 2;
-		int pHeight = tileHeight + pad * 2;
+		int pWidth = size + pad * 2;
+		int pHeight = size + pad * 2;
 
 		int sw = width / pWidth;
 		int sh = height / pHeight;
@@ -112,29 +111,29 @@ public final class Sprites {
 		for (int cy = 0; cy < sh; cy++, y += pHeight) {
 			x = startX;
 			for (int cx = 0; cx < sw; cx++, x += pWidth) {
-				tiles[cx][cy] = new TextureRegion(region.texture, x + pad, y + pad, tileWidth, tileHeight);
+				tiles[cx][cy] = new TextureRegion(region.texture, x + pad, y + pad, size, size);
 			}
 		}
 
 		return tiles;
 	}
 
-	public static TextureRegion[] splitInLayers(TextureRegion region, int tileWidth, int tileHeight) {
-		return splitInLayers(region, tileWidth, tileHeight, 0);
+	public static TextureRegion[] splitInLayers(TextureRegion region, int size) {
+		return splitInLayers(region, size, 0);
 	}
 
-	public static TextureRegion[] splitInLayers(TextureRegion region, int tileWidth, int tileHeight, int pad) {
-		return splitInLayers(region, tileWidth, tileHeight, pad, null);
+	public static TextureRegion[] splitInLayers(TextureRegion region, int size, int pad) {
+		return splitInLayers(region, size, pad, null);
 	}
 
-	public static TextureRegion[] splitInLayers(TextureRegion region, int tileWidth, int tileHeight, int pad, int[] indexMap) {
+	public static TextureRegion[] splitInLayers(TextureRegion region, int size, int pad, int[] indexMap) {
 		int x = region.getX();
 		int y = region.getY();
 		int width = region.width;
 		int height = region.height;
 
-		int pWidth = tileWidth + pad * 2;
-		int pHeight = tileHeight + pad * 2;
+		int pWidth = size + pad * 2;
+		int pHeight = size + pad * 2;
 
 		int sw = width / pWidth;
 		int sh = height / pHeight;
@@ -146,9 +145,9 @@ public final class Sprites {
 			for (int cx = 0; cx < sw; cx++, x += pWidth) {
 				int index = cx + cy * sw;
 				if (indexMap != null) {
-					tiles[indexMap[index]] = new TextureRegion(region.texture, x + pad, y + pad, tileWidth, tileHeight);
+					tiles[indexMap[index]] = new TextureRegion(region.texture, x + pad, y + pad, size, size);
 				} else {
-					tiles[index] = new TextureRegion(region.texture, x + pad, y + pad, tileWidth, tileHeight);
+					tiles[index] = new TextureRegion(region.texture, x + pad, y + pad, size, size);
 				}
 			}
 		}
