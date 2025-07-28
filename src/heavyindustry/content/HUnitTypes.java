@@ -21,27 +21,21 @@ import arc.util.Tmp;
 import heavyindustry.ai.HealingDefenderAI;
 import heavyindustry.ai.MinerPointAI;
 import heavyindustry.ai.NullAI;
-import heavyindustry.ai.SniperAI;
 import heavyindustry.ai.SurroundAI;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.entities.abilities.BatteryAbility;
-import heavyindustry.entities.abilities.DeathAbility;
-import heavyindustry.entities.abilities.HealAbility;
 import heavyindustry.entities.abilities.JavelinAbility;
 import heavyindustry.entities.abilities.MirrorArmorAbility;
 import heavyindustry.entities.abilities.MirrorFieldAbility;
-import heavyindustry.entities.abilities.ShockWaveAbility;
 import heavyindustry.entities.abilities.TerritoryFieldAbility;
 import heavyindustry.entities.bullet.AccelBulletType;
 import heavyindustry.entities.bullet.AntiBulletFlakBulletType;
 import heavyindustry.entities.bullet.ArrowBulletType;
 import heavyindustry.entities.bullet.CtrlMissileBulletType;
-import heavyindustry.entities.bullet.DelayedPointBulletType;
 import heavyindustry.entities.bullet.EdgeFragBulletType;
 import heavyindustry.entities.bullet.FlameBulletType;
 import heavyindustry.entities.bullet.GuidedMissileBulletType;
 import heavyindustry.entities.bullet.HealConeBulletType;
-import heavyindustry.entities.bullet.LightningLaserBulletType;
 import heavyindustry.type.unit.RailMissileUnitType;
 import heavyindustry.entities.bullet.TrailFadeBulletType;
 import heavyindustry.entities.effect.WrapperEffect;
@@ -56,7 +50,6 @@ import heavyindustry.gen.BaseUnit;
 import heavyindustry.gen.BaseUnitWaterMove;
 import heavyindustry.gen.BuildingTetherPayloadLegsUnit;
 import heavyindustry.gen.CopterUnit;
-import heavyindustry.gen.EnergyUnit;
 import heavyindustry.gen.BaseLegsUnit;
 import heavyindustry.gen.HSounds;
 import heavyindustry.gen.NucleoidUnit;
@@ -67,7 +60,6 @@ import heavyindustry.graphics.HPal;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.type.unit.BaseUnitType;
 import heavyindustry.type.unit.CopterUnitType;
-import heavyindustry.type.unit.EnergyUnitType;
 import heavyindustry.type.unit.NucleoidUnitType;
 import heavyindustry.type.weapons.AcceleratingWeapon;
 import heavyindustry.type.weapons.BoostWeapon;
@@ -85,9 +77,7 @@ import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
-import mindustry.entities.UnitSorts;
 import mindustry.entities.Units;
-import mindustry.entities.abilities.Ability;
 import mindustry.entities.abilities.EnergyFieldAbility;
 import mindustry.entities.abilities.ForceFieldAbility;
 import mindustry.entities.abilities.MoveEffectAbility;
@@ -115,20 +105,16 @@ import mindustry.entities.part.RegionPart;
 import mindustry.entities.part.ShapePart;
 import mindustry.entities.pattern.ShootAlternate;
 import mindustry.entities.pattern.ShootBarrel;
-import mindustry.entities.pattern.ShootMulti;
 import mindustry.entities.pattern.ShootPattern;
 import mindustry.entities.pattern.ShootSine;
 import mindustry.entities.pattern.ShootSpread;
-import mindustry.entities.pattern.ShootSummon;
 import mindustry.entities.units.WeaponMount;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.gen.Healthc;
 import mindustry.gen.Hitboxc;
-import mindustry.gen.Player;
 import mindustry.gen.Shieldc;
 import mindustry.gen.Sounds;
-import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
@@ -175,10 +161,9 @@ public final class HUnitTypes {
 	//missile
 	airRaidMissile,
 	//?
-	collapser, singularity, nucleoid,
-			eipusino;
+	eipusino;
 
-	static ObjectSet<StatusEffect> immunitier = new ObjectSet<>();
+	private final static ObjectSet<StatusEffect> immunitier = new ObjectSet<>();
 
 	/** Don't let anyone instantiate this class. */
 	private HUnitTypes() {}
@@ -3184,13 +3169,33 @@ public final class HUnitTypes {
 				}};
 			}});
 		}};
-		collapser = new BaseUnitType("collapser") {{
-			abilities.add(new ForceFieldAbility(180f, 60, 80000, 900));
-			constructor = BaseUnit::new;
-			fallSpeed = 0.008f;
+		eipusino = new NucleoidUnitType("eipusino") {{
+			outlines = false;
+			envDisabled = Env.none;
+			constructor = NucleoidUnit::new;
+			aiController = NullAI::new;
+			drawArrow = false;
+			damageMultiplier = 0.01f;
+			health = 900;
+			engineSize = 0f;
+			buildSpeed = 9f;
+			engineOffset = 0f;
+			itemCapacity = 900;
+			armor = 9f;
+			speed *= 1.75f;
 			drawShields = false;
-			faceTarget = false;
+			isEnemy = false;
 			immunities = immunitier();
+			flying = true;
+			hittable = false;
+			targetable = false;
+			faceTarget = false;
+			targetPriority = -9;
+			mineWalls = true;
+			mineFloor = true;
+			mineHardnessScaling = false;
+			mineSpeed = 9f;
+			mineTier = 99;
 			deathExplosionEffect = new MultiEffect(HFx.blast(HPal.thurmixRed, 400f), new Effect(300F, 1600f, e -> {
 				Rand rand = Utils.rand2;
 				float rad = 150f;
@@ -3239,59 +3244,8 @@ public final class HUnitTypes {
 				Drawf.light(e.x, e.y, rad * e.fslope() * 4f, HPal.thurmixRed, 0.7f);
 			}).layer(Layer.effect + 0.001f));
 			fallEffect = HFx.blast(HPal.thurmixRed, 120f);
-			targetAir = targetGround = true;
-
-			Weapon cannon = new Weapon(name("collapser-cannon")) {{
-				top = rotate = alternate = mirror = true;
-				reload = 60f;
-				shake = 12f;
-				heatColor = HPal.thurmixRed;
-				shootSound = Sounds.laser;
-				shootY = 16f;
-				inaccuracy = 0;
-				shoot = new ShootSpread() {{
-					shots = 3;
-					shotDelay = 2.25f;
-					spread = 1f;
-				}};
-				rotateSpeed = 2f;
-				ejectEffect = HFx.hugeSmoke;
-				shootCone = 20f;
-				bullet = new LightningLaserBulletType(800f) {{
-					hitColor = HPal.thurmixRed;
-					colors = new Color[]{hitColor.cpy().mul(1f, 1f, 1f, 0.45f), hitColor, HPal.thurmixRedLight, Color.white};
-					length = 600f;
-					width = 14f;
-					lifetime = PositionLightning.lifetime + 5f;
-					ammoMultiplier = 4;
-					lengthFalloff = 0.8f;
-					sideLength = 40f;
-					sideWidth = 0.5f;
-					sideAngle = 30f;
-					largeHit = true;
-					hitEffect = HFx.instHit(hitColor, 2, 36f);
-					shootEffect = HFx.square(hitColor, 15f, 2, 8f, 2f);
-				}};
-			}};
-
-			weapons.addAll(copyAndMove(cannon, 60, -50), copyAndMove(cannon, 40, -20), copyAndMove(cannon, 32, 60), new Weapon(name("collapser-laser")) {{
-				y = -42;
-				x = 0;
-				shootY = 25f;
-				shoot = new ShootSpread() {{
-					shots = 3;
-					shotDelay = 15;
-					spread = 3f;
-				}};
-				inaccuracy = 3f;
-				reload = 150f;
-				rotateSpeed = 1.5f;
-				rotate = true;
-				top = true;
-				shootSound = HSounds.flak;
-				mirror = alternate = false;
-				bullet = HBullets.collapseFrag;
-			}}, new Weapon() {{
+			targetAir = targetGround = false;
+			weapons.add(new Weapon() {{
 				y = 0f;
 				x = 0f;
 				shootY = 0f;
@@ -3381,375 +3335,12 @@ public final class HUnitTypes {
 					bullet.smokeEffect.at(shootX, shootY, rotation);
 				}
 			});
-			hitSize = 140f;
-			speed = 0.5f;
-			health = 180000;
-			rotateSpeed = 0.65f;
-			engineSize = 30f;
-			buildSpeed = 10f;
-			engineOffset = 68f;
-			itemCapacity = 300;
-			armor = 180;
-			lowAltitude = true;
-			flying = true;
-			setEnginesMirror(new UnitEngine(43.25f, -79.5f, 10, 315f));
-		}};
-		singularity = new EnergyUnitType("singularity") {{
-			envDisabled = Env.none;
-			constructor = EnergyUnit::new;
-			damageMultiplier = 0.3f;
-			clipSize = 260f;
-			engineLayer = Layer.effect;
-			engineOffset = 5f;
-			deathExplosionEffect = Fx.none;
-			deathSound = Sounds.plasmaboom;
-			trailScl = 3f;
-			immunities = immunitier();
-			armor = 8f;
-			hitSize = 45;
-			speed = 1.5f;
-			accel = 0.07f;
-			drag = 0.075f;
-			health = 22500f;
-			itemCapacity = 0;
-			rotateSpeed = 6;
-			engineSize = 8f;
-			flying = true;
-			trailLength = 70;
-			buildSpeed = 10f;
-			crashDamageMultiplier = Mathf.clamp(hitSize / 10f, 1, 10);
-			buildBeamOffset = 0;
-			aiController = SniperAI::new;
-			targetFlags = new BlockFlag[]{BlockFlag.reactor, BlockFlag.generator, BlockFlag.turret, null};
-			abilities.add(new DeathAbility());
-			weapons.add(new Weapon() {{
-				reload = 180f;
-				x = y = shootX = shootY = 0;
-				shootCone = 360;
-				shootSound = HSounds.blaster;
-				bullet = HBullets.singularityBulletAccel;
-				shoot = new ShootPattern() {{
-					shots = 15;
-					shotDelay = 3f;
-				}
-					@Override
-					public void shoot(int totalShots, BulletHandler handler) {
-						for (int i = 0; i < shots; i++) {
-							handler.shoot(0, 0, Mathf.random(360), firstShotDelay + shotDelay * i);
-						}
-					}
-				};
-			}}, new Weapon() {{
-				reload = 120f;
-				x = y = shootX = shootY = 0;
-				rotateSpeed = 360;
-				shootSound = HSounds.hugeShoot;
-				velocityRnd = 0.015f;
-				shoot = new ShootMulti(new ShootSummon(0, 0, 220, 0) {{
-					shots = 3;
-					shotDelay = 1f;
-				}}, new ShootSpread() {{
-					shots = 2;
-					spread = 2f;
-					shotDelay = 25;
-				}});
-				bullet = HBullets.singularityBulletLightningBall;
-			}}, new Weapon() {{
-				shootCone = 30f;
-				predictTarget = false;
-				top = false;
-				mirror = false;
-				rotate = true;
-				x = y = shootX = shootY = 0f;
-				continuous = false;
-				rotateSpeed = 100f;
-				reload = 600f;
-				shootStatus = StatusEffects.slow;
-				shootStatusDuration = 180f;
-				shoot = new ShootSummon(0, 0, 180, 0) {{
-					shots = 3;
-				}};
-				shake = 13f;
-				shootSound = Sounds.none;
-				bullet = HBullets.singularityBulletStrafeLaser;
-			}
-				@Override
-				protected void shoot(Unit unit, WeaponMount mount, float shootX, float shootY, float rotation) {
-					super.shoot(unit, mount, shootX, shootY, rotation);
-					HFx.crossSpinBlast.at(unit.x, unit.y, unit.rotation, unit.team.color, unit);
-				}
-			});
-			fogRadius = 66f;
-			hidden = true;
-		}};
-		nucleoid = new NucleoidUnitType("nucleoid") {{
-			constructor = NucleoidUnit::new;
-			aiController = FlyingAI::new;
-			createScorch = false;
-			outlineRadius += 1;
-			fogRadius = 120;
-			engineOffset = 140.25f;
-			engineSize = -1;
-			deathExplosionEffect = Fx.none;
-			deathSound = HSounds.jumpIn;
-			crashDamageMultiplier = 0;
-			faceTarget = false;
-			lowAltitude = true;
-			itemCapacity = 500;
-			health = 1000000f;
-			speed = 0.175F;
-			accel = 0.04F;
-			drag = 0.035F;
-			flying = true;
-			hitSize = 200f;
-			armor = 220f;
-			rotateSpeed = 0.25F;
-			buildSpeed = 20f;
-			targetFlags = new BlockFlag[]{BlockFlag.turret, BlockFlag.core, null};
-			engines.add(new AncientEngine(-41.25f, -190.5f, 4f, -90));
-			engines.add(new AncientEngine(-41.25f, -187f, 6.5f, -90, 0.45f, 0.6f, 2.6f));
-			engines.add(new AncientEngine(64f, -170f, 7f, -90));
-			engines.add(new AncientEngine(64f, -167f, 7f, -90, 0.45f, 0.6f, 2.6f));
-
-			float o = Mathf.random(5);
-
-			for (float i = -18f; i < 34; i += 2f) {
-				engines.add(new AncientEngine(i, -190.5f, 4f, -90, o));
-			}
-
-			for (float i = -16; i <= 32.0; i += 6f) {
-				engines.add(new AncientEngine(i, -187f, 6.5f, -90, 0.335f, 0.8f, 2.6f) {{
-					phaseOffset = o;
-				}});
-			}
-
-			abilities.add(new HealAbility(3000, 180, 220, healColor) {{
-				selfHealReloadTime = 300;
-			}});
-			abilities.add(new Ability() {{
-				display = false;
-			}
-				@Override
-				public void death(Unit unit) {
-					Effect.shake(unit.hitSize / 10f, unit.hitSize / 8f, unit.x, unit.y);
-					HFx.circleOut.at(unit.x, unit.y, unit.hitSize, unit.team.color);
-					HFx.jumpTrailOut.at(unit.x, unit.y, unit.rotation, unit.team.color, unit.type);
-					HSounds.jumpIn.at(unit.x, unit.y, 1, 3);
-				}
-			});
-			abilities.add(new ShockWaveAbility(180, 320, 2000, HPal.ancientLightMid) {{
-				knockback = 400f;
-				shootEffect = new MultiEffect(HFx.circleOut, HFx.hitSpark(hitColor, 55, 40, range + 30, 3, 8), HFx.crossBlastArrow45, HFx.smoothColorCircle(HPal.ancientLightMid.cpy().a(0.3f), range, 60));
-			}}.status(StatusEffects.unmoving, 300f, StatusEffects.disarmed, 300f));
-			parts.add(new RegionPart("-backwings") {{
-				outline = true;
-				layerOffset = -1f;
-			}});
-			Weapon pds = copyAnd(HWeapons.ancientPrism, w -> {
-				w.shootStatus = StatusEffects.none;
-				w.reload = 90;
-				w.bullet = w.bullet.copy();
-				if (w.bullet instanceof DelayedPointBulletType b) {
-					b.rangeOverride = 960;
-					b.despawnEffect = WrapperEffect.wrap(HFx.circle, b.hitColor, 40);
-					b.damage = 2000;
-					b.lightning = 2;
-					b.lightningDamage = b.damage;
-					b.lightningLength = b.lightningLengthRand = 6;
-					b.fragBullet = b.fragBullet.copy();
-					b.fragBullet.damage = 800;
-				}
-			});
-			weapons.add(copyAndMove(pds, -16.25f, 9.5f));
-			weapons.add(copyAndMove(pds, -56.5f, 52.5f));
-			weapons.add(copyAndMove(pds, 36.25f, -20.75f));
-			weapons.add(copyAndMove(pds, -69.5f, -137.0f));
-			weapons.add(copyAndMove(pds, -46.75f, -159.25f));
-			weapons.add(copyAndMove(pds, 36.75f, -166.25f));
-			weapons.add(copyAndMove(pds, 68.75f, -77.0f));
-			weapons.add(copyAndMove(HWeapons.ancientCannon, -46.75f, -15.5f));
-			weapons.add(copyAndMove(HWeapons.ancientCannon, -46.75f, -15.5f));
-			weapons.add(copyAndMove(HWeapons.ancientCannon, -20.25f, 168.5f));
-			weapons.add(copyAndMove(HWeapons.ancientCannon, 44.25f, -44.0f));
-			weapons.add(copyAndMoveAnd(HWeapons.ancientLightningBallTurret, 5.5f, -168.0f, w -> {
-				w.mirror = false;
-				w.shoot.shotDelay = 12;
-				w.shoot = w.shoot.copy();
-				w.shoot.shots = 3;
-				if (HBullets.ancientBall.copy() instanceof AccelBulletType tb) {
-					tb.velocityBegin += 8;
-					tb.velocityIncrease -= 8;
-					tb.shootEffect = HFx.blast(HPal.ancient, 12f);
-					tb.smokeEffect = HFx.shootCircleSmall(HPal.ancient);
-					tb.fragBullets = 2;
-					w.bullet = tb;
-				}
-			}));
-			weapons.add(new Weapon(name("ancient-executor")) {{
-				x = 43.5f;
-				y = -109.75f;
-				mirror = false;
-				layerOffset = 0.15f;
-				rotate = true;
-				rotateSpeed = 0.75f;
-				reload = 90f;
-				inaccuracy = 1.5f;
-				velocityRnd = 0.075f;
-				shoot = new ShootBarrel() {{
-					shots = 2;
-					barrels = new float[]{-20, 31, 0, 20, 31, 0};
-				}};
-				bullet = HBullets.executor;
-			}
-				@Override
-				protected Teamc findTarget(Unit unit, float x, float y, float range, boolean air, boolean ground) {
-					return Units.bestTarget(unit.team, x, y, range, u -> u.checkTarget(air, ground), t -> ground, UnitSorts.strongest);
-				}
-			});
-			weapons.add(new Weapon(name + "-missile") {{
-				reload = 240f;
-				xRand = 10f;
-				shootY = 75f;
-				showStatSprite = false;
-				x = y = 0;
-				layerOffset = 0.002f;
-				shoot = new ShootMulti(new ShootBarrel() {{
-					shots = 3;
-					barrels = new float[]{
-							-96, 0, 0,
-							-82, 0, 0,
-							-110, 0, 0,
-					};
-				}}, new ShootPattern() {{
-					shots = 15;
-					shotDelay = 4.5f;
-				}});
-				velocityRnd = 0.05f;
-				shootSound = HSounds.launch;
-				bullet = new AccelBulletType(9.2f, 500, "missile-large") {{
-					width = 6f;
-					height = 16f;
-					shrinkY = 0f;
-					accelerateBegin = 0.1f;
-					accelerateEnd = 0.6f;
-					velocityBegin = 3f;
-					velocityIncrease = 11f;
-					backColor = hitColor = lightColor = lightningColor = HPal.ancient;
-					trailColor = Color.gray;
-					frontColor = HPal.ancientLight;
-					homingPower = 0.08f;
-					homingDelay = 5f;
-					lifetime = 120f;
-					hitEffect = HFx.instHit(backColor, 2, 30f);
-					despawnEffect = HFx.shootCircleSmall(backColor);
-					lightning = 1;
-					lightningLengthRand = 12;
-					lightningLength = 3;
-					lightningDamage = 300;
-					smokeEffect = Fx.shootPyraFlame;
-					shootEffect = HFx.hugeSmokeGray;
-					trailColor = HPal.trail;
-					trailWidth = 2f;
-					trailLength = 12;
-				}
-					@Override
-					public void updateHoming(Bullet b) {
-						if (b.time >= homingDelay) {
-							if (b.owner instanceof Unit u) {
-								if (u.isPlayer()) {
-									Player p = u.getPlayer();
-									b.vel.setAngle(Angles.moveToward(b.rotation(), b.angleTo(p.mouseX, p.mouseY), homingPower * Time.delta * 50.0F));
-								} else {
-									super.updateHoming(b);
-								}
-							} else {
-								super.updateHoming(b);
-							}
-						}
-					}
-				};
-				minWarmup = 0.9f;
-				shootWarmupSpeed /= 3f;
-				shootCone = 360;
-				baseRotation = 90;
-				recoil = 2f;
-				mirror = rotate = false;
-				parts.add(new RegionPart("-cooler") {{
-					under = outline = true;
-					rotation = -90;
-					y = 7f;
-					moveY = -7f;
-					progress = PartProgress.warmup;
-				}}, new RegionPart("-silo") {{
-					under = outline = true;
-					rotation = -90;
-				}});
-			}});
-		}};
-		eipusino = new NucleoidUnitType("eipusino") {{
-			outlines = false;
-			envDisabled = Env.none;
-			constructor = NucleoidUnit::new;
-			aiController = NullAI::new;
-			drawArrow = false;
-			damageMultiplier = 0.01f;
-			health = 900;
-			engineSize = 0f;
-			buildSpeed = 9f;
-			engineOffset = 0f;
-			itemCapacity = 900;
-			armor = 9f;
-			speed *= 1.75f;
-			drawShields = false;
-			isEnemy = false;
-			immunities = immunitier();
-			flying = true;
-			hittable = false;
-			targetable = false;
-			faceTarget = false;
-			targetPriority = -9;
-			mineWalls = true;
-			mineFloor = true;
-			mineHardnessScaling = false;
-			mineSpeed = 9f;
-			mineTier = 99;
-			targetAir = targetGround = false;
-			weapons.add(new Weapon(name + "-prism") {{
-				x = y = 0f;
-				rotate = true;
-				rotateSpeed = 30f;
-				mirror = false;
-				recoil = 0f;
-				reload = 180f;
-				bullet = Bullets.placeholder;
-			}});
 		}};
 
 		Utils.developerMap.get(0).addAll(eipusino);
 	}
 
-	public static Weapon copyAnd(Weapon weapon, Cons<Weapon> modifier) {
-		Weapon n = weapon.copy();
-		modifier.get(n);
-		return n;
-	}
-
-	public static Weapon copyAndMove(Weapon weapon, float x, float y) {
-		Weapon n = weapon.copy();
-		n.x = x;
-		n.y = y;
-		return n;
-	}
-
-	public static Weapon copyAndMoveAnd(Weapon weapon, float x, float y, Cons<Weapon> modifier) {
-		Weapon n = weapon.copy();
-		n.x = x;
-		n.y = y;
-		modifier.get(n);
-		return n;
-	}
-
-	static ObjectSet<StatusEffect> immunitier() {
+	private static ObjectSet<StatusEffect> immunitier() {
 		if (immunitier.isEmpty()) {
 			ObjectSet<StatusEffect> filter = ObjectSet.with(StatusEffects.none, StatusEffects.overclock, StatusEffects.shielded, StatusEffects.boss, StatusEffects.invincible, HStatusEffects.regenerating, HStatusEffects.territoryFieldIncrease);
 			immunitier.addAll(content.statusEffects().select(s -> s != null && !filter.contains(s)));

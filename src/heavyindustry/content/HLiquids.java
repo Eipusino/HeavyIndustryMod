@@ -68,15 +68,12 @@ public final class HLiquids {
 		}};
 		originiumFluid = new MultiCellLiquid("originium-fluid", HPal.originiumRed) {{
 			heatCapacity = 2.5f;
-			flammability = 0.2f;
-			explosiveness = 0.4f;
 			lightColor = color.cpy().a(0.3f);
 			particleSpacing = 10;
 			particleEffect = WrapperEffect.wrap(HFx.glowParticle, color);
 			effect = StatusEffects.electrified;
 			spreadTargets.addAll(Liquids.neoplasm);
 			canStayOn.addAll(Liquids.water, Liquids.cryofluid, Liquids.oil, Liquids.arkycite, Liquids.neoplasm);
-			coolant = false;
 		}
 			@Override
 			public void drawPuddle(Puddle puddle) {

@@ -21,7 +21,6 @@ import heavyindustry.content.HSectorPresets;
 import heavyindustry.content.HStatusEffects;
 import heavyindustry.content.HTechTree;
 import heavyindustry.content.HUnitTypes;
-import heavyindustry.content.HWeapons;
 import heavyindustry.content.HWeathers;
 import heavyindustry.game.HTeams;
 import heavyindustry.gen.Entitys;
@@ -201,7 +200,6 @@ public final class HeavyIndustryMod extends Mod {
 			HItems.load();
 			HStatusEffects.load();
 			HLiquids.load();
-			HWeapons.load();
 			HUnitTypes.load();
 			HBlocks.load();
 			HWeathers.load();
@@ -279,7 +277,7 @@ public final class HeavyIndustryMod extends Mod {
 					t.checkPref("hi-animated-shields", true);
 					t.checkPref("hi-serpulo-sector-invasion", true);
 					t.checkPref("hi-special", false);
-					t.checkPref("hi-developer-mode", false);
+					t.checkPref("hi-show-test-item", false);
 					t.pref(new Setting(Core.bundle.get("hi-show-donor-and-develop")) {
 						@Override
 						public void add(SettingsTable table) {

@@ -418,7 +418,7 @@ public final class HBullets {
 			splashDamageRadius = 60f;
 			hitShake = despawnShake = 20f;
 			hitSound = despawnSound = Sounds.explosionbig;
-			hitEffect = despawnEffect = new MultiEffect(HFx.square45_8_45, HFx.hitSparkHuge, HFx.crossBlast45);
+			hitEffect = despawnEffect = new MultiEffect(HFx.square45_8_45, HFx.hitSparkHuge, HFx.crossBlast_45);
 		}
 			@Override
 			public void despawned(Bullet b) {

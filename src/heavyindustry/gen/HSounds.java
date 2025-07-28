@@ -31,6 +31,8 @@ public final class HSounds {
 	public static Sound hailRain = new Sound();
 	public static Sound bigHailstoneHit = new Sound();
 	public static Sound giantHailstoneHit = new Sound();
+	public static Sound railGunBlast = new Sound();
+	public static Sound railGunCharge = new Sound();
 	public static Sound shootAltHeavy = new Sound();
 	public static Sound shootAltLight = new Sound();
 
@@ -63,6 +65,8 @@ public final class HSounds {
 		hailRain = new Sound(ogg("hailRain"));
 		bigHailstoneHit = new Sound(ogg("bigHailstoneHit"));
 		giantHailstoneHit = new Sound(ogg("giantHailstoneHit"));
+		railGunBlast = new Sound(ogg("railGunBlast"));
+		railGunCharge = new Sound(ogg("railGunCharge"));
 		shootAltHeavy = new Sound(ogg("shootAltHeavy"));
 		shootAltLight = new Sound(ogg("shootAltLight"));
 	}

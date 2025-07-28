@@ -7,7 +7,7 @@ import static mindustry.Vars.state;
 
 public final class HBuildVisibility {
 	public static BuildVisibility
-			campaignOrSandboxOnly = new BuildVisibility(() -> state == null || state.isCampaign() || state.rules.infiniteResources),
+			singlePlayer = new BuildVisibility(() -> state == null || state.serverTps == -1 ),
 			techDsAvailable = new BuildVisibility(() -> state == null || state.rules.infiniteResources || player == null);
 
 	/** Don't let anyone instantiate this class. */

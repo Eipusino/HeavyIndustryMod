@@ -481,7 +481,7 @@ public final class HFx {
 				Angles.randLenVectors(e.id, 15, 7f + 60f * e.finpow(), (x, y) -> Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), 4f + e.fout() * 16f));
 				Drawf.light(e.x, e.y, e.fout() * 120f, Pal.techBlue, 0.7f);
 			}),
-			crossBlastArrow45 = new Effect(65, 140, e -> {
+			crossBlastArrow_45 = new Effect(65, 140, e -> {
 				Draw.color(e.color, Color.white, e.fout() * 0.55f);
 				Drawf.light(e.x, e.y, e.fout() * 70, e.color, 0.7f);
 
@@ -518,7 +518,7 @@ public final class HFx {
 					Drawn.tri(e.x, e.y, 3.5f * (e.fout() * 3f + 1) / 4 * (e.fout(Interp.pow3In) + 0.5f) / 1.5f, (sizeDiv + randL) * Mathf.curve(e.fin(), 0, 0.05f) * e.fout(Interp.pow3), i * 90);
 				}
 			}),
-			crossBlast45 = new Effect(35f, 140, e -> {
+			crossBlast_45 = new Effect(35f, 140, e -> {
 				Draw.color(e.color, Color.white, e.fout() * 0.55f);
 				Drawf.light(e.x, e.y, e.fout() * 70, e.color, 0.7f);
 

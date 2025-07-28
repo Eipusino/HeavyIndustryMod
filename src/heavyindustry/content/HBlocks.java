@@ -340,7 +340,7 @@ public final class HBlocks {
 			dragonBreath, breakthrough, cloudbreaker, ironStream, minigun,
 			spike, fissure,
 			hurricane, judgement, evilSpirits,
-			solstice, starfall, annihilate, heatDeath,
+			solstice, starfall, annihilate, executor, heatDeath,
 	//turret-erekir
 	rupture,
 	//sandbox
@@ -2632,7 +2632,7 @@ public final class HBlocks {
 			lightningColor = Pal.surge;
 		}};
 		detonator = new Explosive("detonator") {{
-			requirements(Category.effect, HBuildVisibility.campaignOrSandboxOnly, ItemStack.with(Items.lead, 30, Items.graphite, 20, Items.thorium, 10, Items.blastCompound, 10));
+			requirements(Category.effect, HBuildVisibility.singlePlayer, ItemStack.with(Items.lead, 30, Items.graphite, 20, Items.thorium, 10, Items.blastCompound, 10));
 			health = 160;
 			size = 3;
 			squareSprite = false;
@@ -4286,13 +4286,14 @@ public final class HBlocks {
 		}};
 		annihilate = new PowerTurret("annihilate") {{
 			recoil = 5f;
-			armor = 15;
+			health = 90000;
+			armor = 15f;
 			shootCone = 15f;
 			squareSprite = false;
 			unitSort = UnitSorts.strongest;
 			warmupMaintainTime = 50f;
 			coolant = consume(new ConsumeLiquid(HLiquids.originiumFluid, 20f / 60f));
-			coolantMultiplier = 2.5f;
+			coolantMultiplier = 1.5f;
 			moveWhileCharging = false;
 			canOverdrive = false;
 			shootWarmupSpeed = 0.035f;
@@ -4341,7 +4342,6 @@ public final class HBlocks {
 			size = 8;
 			health = 28000;
 			armor = 15f;
-			hasItems = true;
 			heatColor = Pal.techBlue;
 			consumePower(30f);
 			reload = 420f;
@@ -4350,16 +4350,46 @@ public final class HBlocks {
 			inaccuracy = 0f;
 			shootSound = Sounds.laserbig;
 		}};
+		executor = new PowerTurret("executor") {{
+			requirements(Category.turret, ItemStack.with(Items.plastanium, 2200, Items.surgeAlloy, 2500, Items.phaseFabric, 1200, HItems.crystalCircuit, 1100, HItems.heavyAlloy, 1500));
+			size = 8;
+			rotate = true;
+			rotateSpeed = 0.75f;
+			reload = 90f;
+			range = 1800f;
+			inaccuracy = 1.5f;
+			velocityRnd = 0.075f;
+			shootSound = HSounds.railGunBlast;
+			chargeSound = Sounds.none;
+			canOverdrive = false;
+			shoot = new ShootBarrel() {{
+				shots = 2;
+				barrels = new float[]{
+						-20, 31, 0,
+						20, 31, 0
+				};
+			}};
+			shootType = HBullets.executor;
+			consumePowerCond(1000f, TurretBuild::isActive);
+			drawer = new DrawTurret() {{
+				parts.add(new RegionPart("-backwings") {{
+					outline = true;
+					layerOffset = -1f;
+				}});
+			}};
+		}};
 		heatDeath = new PowerTurret("heat-death") {{
-			armor = 30;
 			size = 16;
+			health = 800000;
+			armor = 30;
 			outlineRadius = 7;
 			range = 1200;
 			heatColor = Pal.techBlue;
 			unitSort = HUnitSorts.regionalHPMaximumAll;
 			coolant = consume(new ConsumeLiquid(HLiquids.originiumFluid, 1f));
+			coolantMultiplier = 0.5f;
 			liquidCapacity = 120;
-			buildCostMultiplier *= 2;
+			buildCostMultiplier = 0.8f;
 			canOverdrive = false;
 			drawer = new DrawTurret() {{
 				parts.add(new RegionPart("-side") {{
@@ -4400,7 +4430,6 @@ public final class HBlocks {
 			shoot = new ShootPattern();
 			inaccuracy = 0;
 			ammoPerShot = 40;
-			coolantMultiplier = 0.8f;
 			rotateSpeed = 0.25f;
 
 			float chargeCircleFrontRad = 12f;
@@ -4438,7 +4467,6 @@ public final class HBlocks {
 			recoil = 18f;
 			shake = 80f;
 			shootSound = Sounds.laserblast;
-			health = 800000;
 			shootCone = 5f;
 			maxAmmo = 80;
 			consumePowerCond(800f, TurretBuild::isActive);
