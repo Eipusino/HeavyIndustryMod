@@ -11,7 +11,7 @@ import arc.util.Eachable;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.gen.WorldRegister;
+import heavyindustry.gen.Worlds;
 import mindustry.content.UnitTypes;
 import mindustry.entities.EntityGroup;
 import mindustry.entities.units.BuildPlan;
@@ -216,14 +216,14 @@ public abstract class CommandableBlock extends Block {
 
 		@Override
 		public void add() {
-			if (!added) WorldRegister.commandableBuilds.add(this);
+			if (!added) Worlds.commandableBuilds.add(this);
 
 			super.add();
 		}
 
 		@Override
 		public void remove() {
-			if (added) WorldRegister.commandableBuilds.remove(this);
+			if (added) Worlds.commandableBuilds.remove(this);
 
 			super.remove();
 		}

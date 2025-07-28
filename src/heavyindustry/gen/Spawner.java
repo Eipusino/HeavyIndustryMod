@@ -303,7 +303,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 
 	@Override
 	public int classId() {
-		return EntityRegister.getId(Spawner.class);
+		return Entitys.getId(Spawner.class);
 	}
 
 	@Override

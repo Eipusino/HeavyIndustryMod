@@ -6,6 +6,7 @@ import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.gl.FrameBuffer;
 import arc.graphics.gl.Shader;
+import arc.util.Log;
 import mindustry.game.EventType.Trigger;
 
 public final class ScreenSampler {
@@ -21,14 +22,17 @@ public final class ScreenSampler {
 	 * If you try to load it a second time, nothing will happen.
 	 */
 	public static void setup() {
-		if (activity) return;//forbid setup sampler twice.
+		if (!activity) {
+			activity = true;
 
-		Events.run(Trigger.preDraw, ScreenSampler::beginWorld);
-		Events.run(Trigger.postDraw, ScreenSampler::endWorld);
+			Events.run(Trigger.preDraw, ScreenSampler::beginWorld);
+			Events.run(Trigger.postDraw, ScreenSampler::endWorld);
 
-		Events.run(Trigger.uiDrawBegin, ScreenSampler::beginUI);
-		Events.run(Trigger.uiDrawEnd, ScreenSampler::endUI);
-		activity = true;
+			Events.run(Trigger.uiDrawBegin, ScreenSampler::beginUI);
+			Events.run(Trigger.uiDrawEnd, ScreenSampler::endUI);
+		} else {
+			Log.err(new IllegalStateException("forbid setup sampler twice."));
+		}
 	}
 
 	/** @return Has whether set up. */
@@ -71,10 +75,12 @@ public final class ScreenSampler {
 	 * @param unit Texture units bound to screen sampling textures
 	 */
 	public static void blit(Shader shader, int unit) {
-		if (currBuffer == null) throw new IllegalStateException("currently no buffer bound");
-
-		currBuffer.getTexture().bind(unit);
-		Draw.blit(shader);
+		if (currBuffer != null) {
+			currBuffer.getTexture().bind(unit);
+			Draw.blit(shader);
+		} else {
+			Log.err(new IllegalStateException("currently no buffer bound."));
+		}
 	}
 
 	/**
@@ -84,13 +90,15 @@ public final class ScreenSampler {
 	 * @param clear  Is the frame buffer cleared before transferring.
 	 */
 	public static void getToBuffer(FrameBuffer target, boolean clear) {
-		if (currBuffer == null) throw new IllegalStateException("currently no buffer bound");
+		if (currBuffer != null) {
+			if (clear) {
+				target.begin(Color.clear);
+			} else target.begin();
 
-		if (clear) {
-			target.begin(Color.clear);
-		} else target.begin();
-
-		currBuffer.blit(HShaders.distBase);
-		target.end();
+			currBuffer.blit(HShaders.distBase);
+			target.end();
+		} else {
+			Log.err(new IllegalStateException("currently no buffer bound."));
+		}
 	}
 }

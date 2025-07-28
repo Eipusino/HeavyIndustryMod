@@ -196,14 +196,18 @@ public class TubeDistributor extends Router {
 
 		@Override
 		public void draw() {
-			Draw.z(Layer.blockUnder);
+			float z = Draw.z();
+
 			Draw.rect(bottomRegion, x, y);
+
 			Draw.z(Layer.block - 0.2f);
 			drawItem();
 			Draw.z(Layer.block - 0.15f);
 			Drawf.spinSprite(rotatorRegion, x, y, rot % 360);
 			Draw.rect(topRegion, x, y);
 			Draw.rect(rotation > 1 ? lockedRegion2 : lockedRegion1, x, y, rotdeg());
+
+			Draw.z(z);
 		}
 
 		public Building getTileTarget(Item item, Tile from, boolean set) {

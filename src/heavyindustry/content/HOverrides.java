@@ -62,13 +62,14 @@ import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.blocks.production.HeatCrafter;
 import mindustry.world.blocks.production.Pump;
 import mindustry.world.blocks.production.Separator;
+import mindustry.world.blocks.production.WallCrafter;
 import mindustry.world.blocks.units.Reconstructor;
 import mindustry.world.blocks.units.UnitAssembler;
 import mindustry.world.blocks.units.UnitAssembler.AssemblerUnitPlan;
 import mindustry.world.blocks.units.UnitFactory;
 import mindustry.world.blocks.units.UnitFactory.UnitPlan;
 import mindustry.world.consumers.ConsumeItems;
-import mindustry.world.consumers.ConsumeLiquidBase;
+import mindustry.world.consumers.ConsumeLiquid;
 import mindustry.world.meta.Attribute;
 import mindustry.world.meta.BuildVisibility;
 
@@ -122,17 +123,22 @@ public final class HOverrides {
 		//Blocks-drill
 		((Drill) Blocks.blastDrill).hardnessDrillMultiplier = 40f;
 		//Blocks-drill-erekir
+		((WallCrafter) Blocks.largeCliffCrusher).boostItemUseTime = 180f;
+		Blocks.largeCliffCrusher.removeConsumers(c -> c instanceof ConsumeLiquid);
+		Blocks.largeCliffCrusher.consumeLiquid(Liquids.hydrogen, 0.5f / 60f);
 		ObjectFloatMap<Item> drillMultipliers = new ObjectFloatMap<>();
-		drillMultipliers.put(Items.sand, 4f);
-		drillMultipliers.put(Items.scrap, 4f);
-		drillMultipliers.put(Items.copper, 3.5f);
-		drillMultipliers.put(Items.lead, 3.5f);
-		drillMultipliers.put(HItems.stone, 3.5f);
-		drillMultipliers.put(HItems.rareEarth, 3.5f);
-		drillMultipliers.put(Items.coal, 3f);
-		drillMultipliers.put(Items.titanium, 2.5f);
+		drillMultipliers.put(Items.sand, 3.5f);
+		drillMultipliers.put(Items.scrap, 3.5f);
+		drillMultipliers.put(Items.copper, 3f);
+		drillMultipliers.put(Items.lead, 3f);
+		drillMultipliers.put(HItems.stone, 3f);
+		drillMultipliers.put(HItems.rareEarth, 3f);
+		drillMultipliers.put(Items.coal, 2.5f);
+		drillMultipliers.put(Items.titanium, 2f);
 		drillMultipliers.put(HItems.uranium, 0.5f);
 		drillMultipliers.put(HItems.chromium, 0.5f);
+		Blocks.impactDrill.liquidCapacity *= 2f;
+		Blocks.eruptionDrill.liquidCapacity *= 2f;
 		((BurstDrill) Blocks.impactDrill).drillMultipliers.putAll(drillMultipliers);
 		((BurstDrill) Blocks.eruptionDrill).drillMultipliers.putAll(drillMultipliers);
 		((BeamDrill) Blocks.largePlasmaBore).drillMultipliers.put(Items.beryllium, 1.5f);
@@ -152,8 +158,8 @@ public final class HOverrides {
 		Blocks.heatReactor.buildVisibility = BuildVisibility.shown;
 		((AttributeCrafter) Blocks.ventCondenser).maxBoost = 3f;
 		((GenericCrafter) Blocks.electrolyzer).outputLiquids = LiquidStack.with(Liquids.ozone, 4f / 60f, Liquids.hydrogen, 8f / 60f);
-		Blocks.cyanogenSynthesizer.removeConsumers(c -> c instanceof ConsumeLiquidBase);
-		Blocks.cyanogenSynthesizer.consumeLiquid(Liquids.arkycite, 15f / 60f);
+		Blocks.cyanogenSynthesizer.removeConsumers(c -> c instanceof ConsumeLiquid);
+		Blocks.cyanogenSynthesizer.consumeLiquid(Liquids.arkycite, 20f / 60f);
 		((HeatCrafter) Blocks.cyanogenSynthesizer).outputLiquid = new LiquidStack(Liquids.cyanogen, 4f / 60f);
 		//blocks-defense
 		Blocks.shockMine.underBullets = true;

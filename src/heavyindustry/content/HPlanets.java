@@ -304,6 +304,8 @@ public final class HPlanets {
 			atmosphereRadOut = 0.3f;
 			alwaysUnlocked = true;
 			landCloudColor = Color.blue.cpy().a(0.5f);
+			autoAssignPlanet = false;
+			launchCandidates.add(Planets.serpulo);
 		}};
 	}
 

@@ -14,7 +14,7 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
 
-public class AncientUnitType extends ExtraUnitType {
+public class AncientUnitType extends BaseUnitType {
 	public AncientUnitType(String name) {
 		super(name);
 
@@ -74,7 +74,7 @@ public class AncientUnitType extends ExtraUnitType {
 
 				if (forceZ > 0) Draw.z(forceZ);
 
-				float rot = unit.rotation - 90.0F;
+				float rot = unit.rotation - 90f;
 				Color c = type.engineColor == null ? unit.team.color : type.engineColor;
 				Tmp.v1.set(x, y).rotate(rot).add(unit.x, unit.y);
 				float ex = Tmp.v1.x;

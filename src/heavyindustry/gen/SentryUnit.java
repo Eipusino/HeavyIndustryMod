@@ -8,16 +8,16 @@ import heavyindustry.type.unit.SentryUnitType;
 import mindustry.Vars;
 import mindustry.type.UnitType;
 
-public class SentryUnit extends ExtraTimedKillUnit implements Sentryc {
+public class SentryUnit extends BaseTimedKillUnit implements Sentryc {
 	public Vec2 anchorVel = new Vec2();
 	public float anchorX, anchorY, anchorRot;
 	public float anchorDrag;
 
-	protected SentryUnit() {}
+	public SentryUnit() {}
 
 	@Override
 	public int classId() {
-		return EntityRegister.getId(SentryUnit.class);
+		return Entitys.getId(SentryUnit.class);
 	}
 
 	@Override
@@ -140,9 +140,5 @@ public class SentryUnit extends ExtraTimedKillUnit implements Sentryc {
 	@Override
 	public void anchorY(float value) {
 		anchorY = value;
-	}
-
-	public static SentryUnit create() {
-		return new SentryUnit();
 	}
 }

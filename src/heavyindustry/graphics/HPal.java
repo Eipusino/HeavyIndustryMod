@@ -27,6 +27,7 @@ public final class HPal {
 			thurmixRed = Color.valueOf("#ff9492"),
 			thurmixRedLight = Color.valueOf("#ffced0"),
 			thurmixRedDark = thurmixRed.cpy().lerp(Color.black, 0.9f),
+			trail = Color.lightGray.cpy().lerp(Color.gray, 0.65f),
 			rainBowRed = Color.valueOf("ff8787"),
 			cold = Color.valueOf("6bc7ff"),
 			fexCrystal = Color.valueOf("ff9584"),

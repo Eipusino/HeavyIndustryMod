@@ -2,7 +2,7 @@
 
 ---
 
-![Logo](assets/other/cover-desktop.png)
+![Logo](assets/other/cover-alpha.png)
 
 ---
 

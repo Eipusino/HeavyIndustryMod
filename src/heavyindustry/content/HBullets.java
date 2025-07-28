@@ -31,6 +31,7 @@ import heavyindustry.graphics.PositionLightning;
 import heavyindustry.math.HInterps;
 import heavyindustry.util.Utils;
 import mindustry.content.Fx;
+import mindustry.content.Items;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Damage;
 import mindustry.entities.Effect;
@@ -43,6 +44,7 @@ import mindustry.entities.bullet.BulletType;
 import mindustry.entities.bullet.ContinuousLaserBulletType;
 import mindustry.entities.bullet.FireBulletType;
 import mindustry.entities.bullet.FlakBulletType;
+import mindustry.entities.bullet.LaserBulletType;
 import mindustry.entities.bullet.MissileBulletType;
 import mindustry.entities.effect.MultiEffect;
 import mindustry.game.Team;
@@ -73,9 +75,10 @@ import static mindustry.Vars.tilesize;
 public final class HBullets {
 	public static BulletType
 			basicMissile, boidMissile, sapArtilleryFrag, continuousSapLaser,
-			ancientArtilleryProjectile,
+			heavyArtilleryProjectile,
+			ancientBall, ancientStd,
 			hitter, ncBlackHole, nuBlackHole, executor,
-			ultFireball, basicSkyFrag, annMissile, vastBulletStrafeLaser, vastBulletAccel, vastBulletLightningBall,
+			ultFireball, basicSkyFrag, annMissile, singularityBulletStrafeLaser, singularityBulletAccel, singularityBulletLightningBall,
 			hyperBlast, hyperBlastLinker,
 			arc9000frag, arc9000, arc9000hyper,
 			collapseFrag, collapse;
@@ -165,21 +168,18 @@ public final class HBullets {
 				}
 			}
 		};
-		ancientArtilleryProjectile = new ShieldBreakerType(7f, 6000f, "missile-large", 7000f) {{
+		heavyArtilleryProjectile = new ShieldBreakerType(7f, 6000f, "missile-large", 7000f) {{
 			backColor = trailColor = lightColor = lightningColor = hitColor = HPal.ancientLightMid;
 			frontColor = HPal.ancientLight;
 			trailEffect = HFx.hugeTrail;
 			trailParam = 6f;
 			trailChance = 0.2f;
 			trailInterval = 3;
-
 			lifetime = 200f;
 			scaleLife = true;
-
 			trailWidth = 5f;
 			trailLength = 55;
 			trailInterp = Interp.slope;
-
 			lightning = 6;
 			lightningLength = lightningLengthRand = 22;
 			splashDamage = damage;
@@ -188,13 +188,10 @@ public final class HBullets {
 			scaledSplashDamage = true;
 			despawnHit = true;
 			collides = false;
-
 			shrinkY = shrinkX = 0.33f;
 			width = 17f;
 			height = 55f;
-
 			despawnShake = hitShake = 12f;
-
 			hitEffect = new MultiEffect(HFx.square(hitColor, 200f, 20, splashDamageRadius + 80, 10), HFx.lightningHitLarge, HFx.hitSpark(hitColor, 130, 85, splashDamageRadius * 1.5f, 2.2f, 10f), HFx.subEffect(140, splashDamageRadius + 12, 33, 34f, Interp.pow2Out, ((i, x, y, rot, fin) -> {
 				float fout = Interp.pow2Out.apply(1 - fin);
 				for (int s : Mathf.signs) {
@@ -202,12 +199,9 @@ public final class HBullets {
 				}
 			})));
 			despawnEffect = HFx.circleOut(145f, splashDamageRadius + 15f, 3f);
-
 			shootEffect = WrapperEffect.wrap(HFx.missileShoot, hitColor);//NHFx.blast(hitColor, 45f);
 			smokeEffect = HFx.instShoot(hitColor, frontColor);
-
 			despawnSound = hitSound = Sounds.largeExplosion;
-
 			fragBullets = 22;
 			fragBullet = new BasicBulletType(2f, 300f, name("circle-bolt")) {{
 				width = height = 10f;
@@ -218,35 +212,202 @@ public final class HBullets {
 				trailParam = 3.5f;
 				splashDamage = 80f;
 				splashDamageRadius = 40f;
-
 				lifetime = 18f;
-
 				lightning = 2;
 				lightningLength = lightningLengthRand = 4;
 				lightningDamage = 30f;
-
 				hitSoundVolume /= 2.2f;
 				despawnShake = hitShake = 4f;
 				despawnSound = hitSound = Sounds.dullExplosion;
-
 				trailWidth = 5f;
 				trailLength = 35;
 				trailInterp = Interp.slope;
-
 				despawnEffect = HFx.blast(hitColor, 40f);
 				hitEffect = HFx.hitSparkHuge;
 			}};
-
 			fragLifeMax = 5f;
 			fragLifeMin = 1.5f;
 			fragVelocityMax = 2f;
 			fragVelocityMin = 0.35f;
 		}};
+		ancientBall = new AccelBulletType(2.85f, 240f, "mine-bullet") {{
+			frontColor = Color.white;
+			backColor = lightningColor = trailColor = hitColor = lightColor = HPal.ancient;
+			lifetime = 95f;
+			spin = 3f;
+			statusDuration = 300f;
+			accelerateBegin = 0.15f;
+			accelerateEnd = 0.95f;
+			despawnSound = hitSound = Sounds.titanExplosion;
+			velocityBegin = 8f;
+			velocityIncrease = -7.5f;
+			collides = false;
+			scaleLife = scaledSplashDamage = true;
+			despawnHit = true;
+			hitShake = despawnShake = 18f;
+			lightning = 4;
+			lightningCone = 360;
+			lightningLengthRand = 12;
+			lightningLength = 10;
+			width = height = 30;
+			shrinkX = shrinkY = 0;
+			splashDamageRadius = 120f;
+			splashDamage = 800f;
+			lightningDamage = damage * 0.85f;
+			hitEffect = HFx.hitSparkLarge;
+			despawnEffect = HFx.square45_6_45;
+			trailEffect = HFx.trailToGray;
+			trailLength = 15;
+			trailWidth = 5f;
+			drawSize = 300f;
+			shootEffect = HFx.instShoot(backColor, frontColor);
+			smokeEffect = HFx.lightningHitLarge;
+			hitEffect = new Effect(90, e -> {
+				Draw.color(backColor, frontColor, e.fout() * 0.7f);
+				Fill.circle(e.x, e.y, e.fout() * height / 1.25f);
+				Lines.stroke(e.fout() * 3f);
+				Lines.circle(e.x, e.y, e.fin() * 80);
+				Lines.stroke(e.fout() * 2f);
+				Lines.circle(e.x, e.y, e.fin() * 50);
+				Angles.randLenVectors(e.id, 35, 18 + 100 * e.fin(), (x, y) -> Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fslope() * 12 + 4));
+
+				Draw.color(frontColor);
+				Fill.circle(e.x, e.y, e.fout() * height / 1.75f);
+			});
+			despawnEffect = new MultiEffect(HFx.hitSparkHuge, HFx.instHit(backColor, 3, 120f));
+			fragBullets = 3;
+			fragBullet = new LaserBulletType() {{
+				length = 460f;
+				damage = 4060f;
+				width = 45f;
+				statusDuration = 120f;
+				lifetime = 65f;
+				splashDamage = 800;
+				splashDamageRadius = 120;
+				hitShake = 18f;
+				lightningSpacing = 35f;
+				lightningLength = 8;
+				lightningDelay = 1.1f;
+				lightningLengthRand = 15;
+				lightningDamage = 450;
+				lightningAngleRand = 40f;
+				scaledSplashDamage = largeHit = true;
+				lightningColor = trailColor = hitColor = lightColor = Items.surgeAlloy.color.cpy().lerp(Pal.accent, 0.055f);
+				despawnHit = false;
+				hitEffect = new Effect(90, 500, e -> {
+					Draw.color(backColor, frontColor, e.fout() * 0.7f);
+					Fill.circle(e.x, e.y, e.fout() * height / 1.55f);
+					Lines.stroke(e.fout() * 3f);
+					Lines.circle(e.x, e.y, e.fin(Interp.pow3Out) * 80);
+					Angles.randLenVectors(e.id, 18, 18 + 100 * e.fin(), (x, y) -> Fill.circle(e.x + x, e.y + y, e.fout() * 7f));
+
+					Draw.color(frontColor);
+					Fill.circle(e.x, e.y, e.fout() * height / 2f);
+				});
+				sideAngle = 15f;
+				sideWidth = 0f;
+				sideLength = 0f;
+				colors = new Color[]{hitColor.cpy().a(0.2f), hitColor, Color.white};
+			}
+				@Override
+				public void despawned(Bullet b) {}
+
+				@Override
+				public void init(Bullet b) {
+					Vec2 p = new Vec2().set(Utils.collideBuildOnLength(b.team, b.x, b.y, length, b.rotation(), bu -> true));
+
+					float resultLength = b.dst(p), rot = b.rotation();
+
+					b.fdata = resultLength;
+					laserEffect.at(b.x, b.y, rot, resultLength * 0.75f);
+
+					if (lightningSpacing > 0) {
+						int idx = 0;
+						for (float i = 0; i <= resultLength; i += lightningSpacing) {
+							float cx = b.x + Angles.trnsx(rot, i),
+									cy = b.y + Angles.trnsy(rot, i);
+
+							int f = idx++;
+
+							for (int s : Mathf.signs) {
+								Time.run(f * lightningDelay, () -> {
+									if (b.isAdded() && b.type == this) {
+										Lightning.create(b, lightningColor,
+												lightningDamage < 0 ? damage : lightningDamage,
+												cx, cy, rot + 90 * s + Mathf.range(lightningAngleRand),
+												lightningLength + Mathf.random(lightningLengthRand));
+									}
+								});
+							}
+						}
+					}
+				}
+
+				@Override
+				public void draw(Bullet b) {
+					float realLength = b.fdata;
+
+					float f = Mathf.curve(b.fin(), 0f, 0.2f);
+					float baseLen = realLength * f;
+					float cwidth = width;
+					float compound = 1f;
+
+					Tmp.v1.trns(b.rotation(), baseLen);
+
+					for (Color color : colors) {
+						Draw.color(color);
+						Lines.stroke((cwidth *= lengthFalloff) * b.fout());
+						Lines.lineAngle(b.x, b.y, b.rotation(), baseLen, false);
+
+						Fill.circle(Tmp.v1.x + b.x, Tmp.v1.y + b.y, Lines.getStroke() * 2.2f);
+						Fill.circle(b.x, b.y, 1f * cwidth * b.fout());
+						compound *= lengthFalloff;
+					}
+					Draw.reset();
+					Drawf.light(b.x, b.y, b.x + Tmp.v1.x, b.y + Tmp.v1.y, width * 1.4f * b.fout(), colors[0], 0.6f);
+				}
+			};
+		}};
+		ancientStd = new AccelBulletType(2.85f, 120f) {{
+			frontColor = HPal.ancientLight;
+			backColor = lightningColor = hitColor = lightColor = HPal.ancient;
+			trailColor = HPal.ancientLightMid;
+			lifetime = 126f;
+			knockback = 2f;
+			ammoMultiplier = 8f;
+			accelerateBegin = 0.1f;
+			accelerateEnd = 0.85f;
+			statusDuration = 30f;
+			despawnSound = hitSound = Sounds.dullExplosion;
+			hitSoundVolume /= 4f;
+			velocityBegin = 8f;
+			velocityIncrease = -5f;
+			homingDelay = 20f;
+			homingPower = 0.05f;
+			homingRange = 120f;
+			despawnHit = pierceBuilding = true;
+			hitShake = despawnShake = 5f;
+			lightning = 1;
+			lightningCone = 360;
+			lightningLengthRand = 12;
+			lightningLength = 4;
+			width = 10f;
+			height = 35f;
+			pierceCap = 8;
+			shrinkX = shrinkY = 0;
+			lightningDamage = damage * 0.85f;
+			hitEffect = HFx.hitSparkLarge;
+			despawnEffect = HFx.square45_6_45;
+			shootEffect = HFx.shootCircleSmall(backColor);
+			smokeEffect = HFx.hugeSmokeGray;
+			trailEffect = HFx.trailToGray;
+			trailLength = 15;
+			trailWidth = 2f;
+			drawSize = 300f;
+		}};
 		hitter = new EffectBulletType(15f, 500f, 600f) {{
 			speed = 0;
-
 			hittable = false;
-
 			scaledSplashDamage = true;
 			collidesTiles = collidesGround = collides = collidesAir = true;
 			lightningDamage = 200f;
@@ -257,7 +418,7 @@ public final class HBullets {
 			splashDamageRadius = 60f;
 			hitShake = despawnShake = 20f;
 			hitSound = despawnSound = Sounds.explosionbig;
-			hitEffect = despawnEffect = new MultiEffect(HFx.square45_8_45, HFx.hitSparkHuge, HFx.crossBlast_45);
+			hitEffect = despawnEffect = new MultiEffect(HFx.square45_8_45, HFx.hitSparkHuge, HFx.crossBlast45);
 		}
 			@Override
 			public void despawned(Bullet b) {
@@ -306,15 +467,12 @@ public final class HBullets {
 		ncBlackHole = new EffectBulletType(120f, 10000f, 3800f) {{
 			despawnHit = true;
 			splashDamageRadius = 240f;
-
 			hittable = false;
-
 			lightColor = HPal.ancient;
 			lightningDamage = 2000f;
 			lightning = 2;
 			lightningLength = 4;
 			lightningLengthRand = 8;
-
 			scaledSplashDamage = true;
 			collidesAir = collidesGround = collidesTiles = true;
 		}
@@ -404,15 +562,12 @@ public final class HBullets {
 		nuBlackHole = new EffectBulletType(20f, 10000f, 0f) {{
 			despawnHit = true;
 			splashDamageRadius = 36f;
-
 			hittable = false;
-
 			lightColor = hitColor = HPal.ancient;
 			lightningDamage = 2000f;
 			lightning = 2;
 			lightningLength = 4;
 			lightningLengthRand = 8;
-
 			scaledSplashDamage = true;
 			collidesAir = collidesGround = collidesTiles = true;
 		}
@@ -619,7 +774,7 @@ public final class HBullets {
 				Angles.randLenVectors(e.id, 4, 7 + 40 * e.fin(), (x, y) -> Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fslope() * 8 + 3));
 			});
 		}};
-		vastBulletAccel = new AccelBulletType(2f, 180f) {{
+		singularityBulletAccel = new AccelBulletType(2f, 180f) {{
 			width = 22f;
 			height = 40f;
 			velocityBegin = 1f;
@@ -736,7 +891,7 @@ public final class HBullets {
 				Draw.reset();
 			}
 		};
-		vastBulletLightningBall = new LightningLinkerBulletType(3f, 120f) {{
+		singularityBulletLightningBall = new LightningLinkerBulletType(3f, 120f) {{
 			lifetime = 120f;
 			keepVelocity = false;
 			lightningDamage = damage = splashDamage = 80f;
@@ -935,7 +1090,7 @@ public final class HBullets {
 				}
 			}
 		};
-		vastBulletStrafeLaser = new StrafeLaserBulletType(0f, 300f) {{
+		singularityBulletStrafeLaser = new StrafeLaserBulletType(0f, 300f) {{
 			strafeAngle = 0;
 		}
 			public void init(Bullet b) {
@@ -1020,12 +1175,9 @@ public final class HBullets {
 		};
 		hyperBlast = new BasicBulletType(3.3f, 400) {{
 			lifetime = 60;
-
 			trailLength = 15;
 			drawSize = 250f;
-
 			drag = 0.0075f;
-
 			despawnEffect = hitEffect = HFx.lightningHitLarge(Pal.techBlue);
 			knockback = 12f;
 			width = 15f;
@@ -1048,21 +1200,16 @@ public final class HBullets {
 			size = 8f;
 			frontColor = Pal.techBlue.cpy().lerp(Color.white, 0.25f);
 			range = 200f;
-
 			trailWidth = 8f;
 			trailLength = 20;
-
 			linkRange = 280f;
-
 			maxHit = 8;
 			drag = 0.085f;
 			hitSound = Sounds.explosionbig;
 			splashDamageRadius = 120f;
 			splashDamage = lightningDamage = damage / 4f;
 			lifetime = 50f;
-
 			scaleLife = false;
-
 			despawnEffect = HFx.lightningHitLarge(hitColor);
 			hitEffect = new MultiEffect(HFx.hitSpark(backColor, 65f, 22, splashDamageRadius, 4, 16), HFx.blast(backColor, splashDamageRadius / 2f));
 			shootEffect = HFx.hitSpark(backColor, 45f, 12, 60, 3, 8);
@@ -1070,12 +1217,10 @@ public final class HBullets {
 		}};
 		arc9000frag = new FlakBulletType(3.75f, 200) {{
 			trailColor = lightColor = lightningColor = backColor = frontColor = Pal.techBlue;
-
 			trailLength = 14;
 			trailWidth = 2.7f;
 			trailRotation = true;
 			trailInterval = 3;
-
 			trailEffect = HFx.polyTrail(backColor, frontColor, 4.65f, 22f);
 			trailChance = 0f;
 			despawnEffect = hitEffect = HFx.techBlueExplosion;
@@ -1097,21 +1242,16 @@ public final class HBullets {
 		arc9000 = new LightningLinkerBulletType(2.75f, 200) {{
 			trailWidth = 4.5f;
 			trailLength = 66;
-
 			chargeEffect = new MultiEffect(HFx.techBlueCharge, HFx.techBlueChargeBegin);
-
 			spreadEffect = slopeEffect = Fx.none;
 			trailEffect = HFx.hitSparkHuge;
 			trailInterval = 5;
-
 			backColor = trailColor = hitColor = lightColor = lightningColor = frontColor = Pal.techBlue;
 			randomGenerateRange = 340f;
 			randomLightningNum = 3;
 			linkRange = 280f;
 			range = 800f;
-
 			drawSize = 500f;
-
 			drag = 0.0035f;
 			fragLifeMin = 0.3f;
 			fragLifeMax = 1f;
@@ -1124,9 +1264,7 @@ public final class HBullets {
 			splashDamageRadius = 120f;
 			splashDamage = 1000;
 			lightningDamage = 375f;
-
 			hittable = false;
-
 			collidesTiles = true;
 			pierce = false;
 			collides = false;
@@ -1175,16 +1313,12 @@ public final class HBullets {
 			despawnHit = false;
 			collidesAir = collidesGround = collidesTiles = true;
 			splashDamage = 4000f;
-
 			velocityBegin = 6f;
 			velocityIncrease = -5.9f;
-
 			accelerateEnd = 0.75f;
 			accelerateBegin = 0.1f;
-
 			accelInterp = Interp.pow2;
 			trailInterp = Interp.pow10Out;
-
 			despawnSound = Sounds.plasmaboom;
 			hitSound = Sounds.explosionbig;
 			hitShake = 60;
@@ -1193,20 +1327,16 @@ public final class HBullets {
 			lightningDamage = 2000f;
 			lightningLength = 50;
 			lightningLengthRand = 80;
-
 			fragBullets = 1;
 			fragBullet = arc9000;
 			fragVelocityMin = 0.4f;
 			fragVelocityMax = 0.6f;
 			fragLifeMin = 0.5f;
 			fragLifeMax = 0.7f;
-
 			trailWidth = 12F;
 			trailLength = 120;
 			ammoMultiplier = 1;
-
 			hittable = false;
-
 			scaleLife = true;
 			splashDamageRadius = 400f;
 			hitColor = lightColor = lightningColor = trailColor = Pal.techBlue;
@@ -1339,14 +1469,10 @@ public final class HBullets {
 			frontColor = HPal.thurmixRedLight;
 			range = 600f;
 			spreadEffect = Fx.none;
-
 			trailWidth = 8f;
 			trailLength = 20;
-
 			speed = 6f;
-
 			linkRange = 280f;
-
 			maxHit = 12;
 			drag = 0.0065f;
 			hitSound = Sounds.explosionbig;
@@ -1363,39 +1489,35 @@ public final class HBullets {
 			collides = false;
 			collidesTiles = collidesAir = collidesGround = true;
 			speed = 0.1f;
-
 			despawnHit = true;
 			keepVelocity = false;
-
 			splashDamageRadius = 800f;
 			splashDamage = 800f;
-
 			lightningDamage = 200f;
 			lightning = 36;
 			lightningLength = 60;
 			lightningLengthRand = 60;
-
 			hitShake = despawnShake = 40f;
 			drawSize = 800f;
 			hitColor = lightColor = trailColor = lightningColor = HPal.thurmixRed;
-
 			fragBullets = 22;
 			fragBullet = collapseFrag;
 			hitSound = HSounds.hugeBlast;
 			hitSoundVolume = 4f;
-
 			fragLifeMax = 1.1f;
 			fragLifeMin = 0.7f;
 			fragVelocityMax = 0.6f;
 			fragVelocityMin = 0.2f;
-
 			status = StatusEffects.shocked;
-
 			shootEffect = HFx.lightningHitLarge(hitColor);
-
 			hitEffect = HFx.hitSpark(hitColor, 240f, 220, 900, 8, 27);
 			despawnEffect = HFx.collapserBulletExplode;
 		}
+			@Override
+			protected float calculateRange() {
+				return 520f;
+			}
+
 			@Override
 			public void despawned(Bullet b) {
 				super.despawned(b);

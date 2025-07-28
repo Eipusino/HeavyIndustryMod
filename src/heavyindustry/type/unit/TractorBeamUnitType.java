@@ -6,7 +6,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import mindustry.gen.Unit;
 
-public class TractorBeamUnitType extends ExtraUnitType {
+public class TractorBeamUnitType extends BaseUnitType {
 	public boolean glowEngine = false;
 	public TextureRegion cellGlow;
 	public float tractorBeamRange = 100;

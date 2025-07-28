@@ -16,7 +16,7 @@ import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.entities.HDamage;
-import heavyindustry.gen.WorldRegister;
+import heavyindustry.gen.Worlds;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.world.blocks.Linkablec;
@@ -293,7 +293,7 @@ public class LaserWall extends Wall {
 		@Override
 		public void created() {
 			linkPos(linkPos);
-			WorldRegister.postAfterLoad(() -> linkPos(linkPos));
+			Worlds.postAfterLoad(() -> linkPos(linkPos));
 		}
 
 		@Override

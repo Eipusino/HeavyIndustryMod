@@ -8,11 +8,11 @@ import mindustry.gen.Call;
 public class BuildingTetherPayloadLegsUnit extends PayloadLegsUnit implements BuildingTetherc {
 	public @Nullable Building building;
 
-	protected BuildingTetherPayloadLegsUnit() {}
+	public BuildingTetherPayloadLegsUnit() {}
 
 	@Override
 	public int classId() {
-		return EntityRegister.getId(BuildingTetherPayloadLegsUnit.class);
+		return Entitys.getId(BuildingTetherPayloadLegsUnit.class);
 	}
 
 	@Override
@@ -31,9 +31,5 @@ public class BuildingTetherPayloadLegsUnit extends PayloadLegsUnit implements Bu
 	@Override
 	public void building(Building build) {
 		building = build;
-	}
-
-	public static BuildingTetherPayloadLegsUnit create() {
-		return new BuildingTetherPayloadLegsUnit();
 	}
 }

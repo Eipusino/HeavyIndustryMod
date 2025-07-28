@@ -2,37 +2,37 @@ package heavyindustry.gen;
 
 import arc.audio.Sound;
 import arc.files.Fi;
+import heavyindustry.HVars;
 import mindustry.Vars;
 
-import static heavyindustry.HVars.internalTree;
-
 public final class HSounds {
-	public static Sound
-			ct1 = new Sound(),
-			dbz1 = new Sound(),
-			dd1 = new Sound(),
-			fj = new Sound(),
-			jg1 = new Sound(),
-			flak = new Sound(),
-			flak2 = new Sound(),
-			shock = new Sound(),
-			jumpIn = new Sound(),
-			launch = new Sound(),
-			gauss = new Sound(),
-			radar = new Sound(),
-			fissure = new Sound(),
-			blaster = new Sound(),
-			hugeShoot = new Sound(),
-			hugeBlast = new Sound(),
-			largeBeam = new Sound(),
-			metalPipe = new Sound(),
-			metalWalk = new Sound(),
-			alert2 = new Sound(),
-			hammer = new Sound(),
-			coolingFan = new Sound(),
-			hailRain = new Sound(),
-			bigHailstoneHit = new Sound(),
-			giantHailstoneHit = new Sound();
+	public static Sound ct1 = new Sound();
+	public static Sound dbz1 = new Sound();
+	public static Sound dd1 = new Sound();
+	public static Sound fj = new Sound();
+	public static Sound jg1 = new Sound();
+	public static Sound flak = new Sound();
+	public static Sound flak2 = new Sound();
+	public static Sound shock = new Sound();
+	public static Sound jumpIn = new Sound();
+	public static Sound launch = new Sound();
+	public static Sound gauss = new Sound();
+	public static Sound radar = new Sound();
+	public static Sound fissure = new Sound();
+	public static Sound blaster = new Sound();
+	public static Sound hugeShoot = new Sound();
+	public static Sound hugeBlast = new Sound();
+	public static Sound largeBeam = new Sound();
+	public static Sound metalPipe = new Sound();
+	public static Sound metalWalk = new Sound();
+	public static Sound alert2 = new Sound();
+	public static Sound hammer = new Sound();
+	public static Sound coolingFan = new Sound();
+	public static Sound hailRain = new Sound();
+	public static Sound bigHailstoneHit = new Sound();
+	public static Sound giantHailstoneHit = new Sound();
+	public static Sound shootAltHeavy = new Sound();
+	public static Sound shootAltLight = new Sound();
 
 	/** Don't let anyone instantiate this class. */
 	private HSounds() {}
@@ -63,6 +63,8 @@ public final class HSounds {
 		hailRain = new Sound(ogg("hailRain"));
 		bigHailstoneHit = new Sound(ogg("bigHailstoneHit"));
 		giantHailstoneHit = new Sound(ogg("giantHailstoneHit"));
+		shootAltHeavy = new Sound(ogg("shootAltHeavy"));
+		shootAltLight = new Sound(ogg("shootAltLight"));
 	}
 
 	public static void alertLoop() {
@@ -72,10 +74,10 @@ public final class HSounds {
 	}
 
 	public static Fi ogg(String name) {
-		return internalTree.child("sounds/" + name+ ".ogg");
+		return HVars.internalTree.child("sounds/" + name + ".ogg");
 	}
 
 	public static Fi mp3(String name) {
-		return internalTree.child("sounds/" + name+ ".mp3");
+		return HVars.internalTree.child("sounds/" + name + ".mp3");
 	}
 }

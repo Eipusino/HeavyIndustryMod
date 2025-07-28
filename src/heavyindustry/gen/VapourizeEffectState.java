@@ -7,7 +7,7 @@ import arc.math.Mathf;
 import arc.math.geom.Position;
 import arc.util.Tmp;
 import heavyindustry.content.HFx;
-import heavyindustry.entities.effect.ExtraEffect;
+import heavyindustry.entities.effect.VapourizeEffect;
 import heavyindustry.util.Utils;
 import mindustry.gen.EffectState;
 import mindustry.gen.Entityc;
@@ -36,7 +36,7 @@ public class VapourizeEffectState extends EffectState {
 
 	@Override
 	public int classId() {
-		return EntityRegister.getId(VapourizeEffectState.class);
+		return Entitys.getId(VapourizeEffectState.class);
 	}
 
 	@Override
@@ -85,7 +85,7 @@ public class VapourizeEffectState extends EffectState {
 		if (!added) return;
 		Groups.all.remove(this);
 		Groups.draw.remove(this);
-		ExtraEffect.removeEvaporation(parent.id());
+		VapourizeEffect.removeEvaporation(parent.id());
 		added = false;
 	}
 }

@@ -481,6 +481,26 @@ public final class HFx {
 				Angles.randLenVectors(e.id, 15, 7f + 60f * e.finpow(), (x, y) -> Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), 4f + e.fout() * 16f));
 				Drawf.light(e.x, e.y, e.fout() * 120f, Pal.techBlue, 0.7f);
 			}),
+			crossBlastArrow45 = new Effect(65, 140, e -> {
+				Draw.color(e.color, Color.white, e.fout() * 0.55f);
+				Drawf.light(e.x, e.y, e.fout() * 70, e.color, 0.7f);
+
+				e.scaled(10f, i -> {
+					Lines.stroke(1.35f * i.fout());
+					Fill.circle(e.x, e.y, 49 * i.finpow());
+				});
+
+				rand.setSeed(e.id);
+				float sizeDiv = 138;
+				float randL = rand.random(sizeDiv);
+
+				float f = Mathf.curve(e.fin(), 0, 0.05f);
+
+				for (int i = 0; i < 4; i++) {
+					Tmp.v1.trns(45 + i * 90, 66);
+					Drawn.arrow(e.x + Tmp.v1.x, e.y + Tmp.v1.y, 27.5f * (e.fout() * 3f + 1) / 4 * e.fout(Interp.pow3In), (sizeDiv + randL) * f * e.fout(Interp.pow3), -randL / 6f * f, i * 90 + 45);
+				}
+			}),
 			crossBlast = new Effect(35f, 140, e -> {
 				Draw.color(e.color, Color.white, e.fout() * 0.55f);
 				Drawf.light(e.x, e.y, e.fout() * 70, e.color, 0.7f);
@@ -498,7 +518,7 @@ public final class HFx {
 					Drawn.tri(e.x, e.y, 3.5f * (e.fout() * 3f + 1) / 4 * (e.fout(Interp.pow3In) + 0.5f) / 1.5f, (sizeDiv + randL) * Mathf.curve(e.fin(), 0, 0.05f) * e.fout(Interp.pow3), i * 90);
 				}
 			}),
-			crossBlast_45 = new Effect(35f, 140, e -> {
+			crossBlast45 = new Effect(35f, 140, e -> {
 				Draw.color(e.color, Color.white, e.fout() * 0.55f);
 				Drawf.light(e.x, e.y, e.fout() * 70, e.color, 0.7f);
 
@@ -2475,6 +2495,29 @@ public final class HFx {
 		}));
 	}
 
+	public static Effect railShoot(Color color, float length, float width, float lifetime, float spacing) {
+		return new Effect(lifetime, length * 2f, e -> {
+			TextureRegion arrowRegion = Core.atlas.find(name("jump-gate-arrow"));
+
+			Draw.color(color);
+
+			float railFout = Mathf.curve(e.fin(Interp.pow2Out), 0f, 0.25f) * Mathf.curve(e.fout(Interp.pow4Out), 0f, 0.3f) * e.fin();
+
+			for (int i = 0; i <= length / spacing; i++) {
+				Tmp.v1.trns(e.rotation, i * spacing);
+				float f = Interp.pow3Out.apply(Mathf.clamp((e.fin() * length - i * spacing) / spacing)) * (0.6f + railFout * 0.4f);
+				Draw.rect(arrowRegion, e.x + Tmp.v1.x, e.y + Tmp.v1.y, arrowRegion.width * Draw.scl * f, arrowRegion.height * Draw.scl * f, e.rotation - 90);
+			}
+
+			Tmp.v1.trns(e.rotation, 0f, (2 - railFout) * tilesize * 1.4f);
+
+			Lines.stroke(railFout * 2f);
+			for (int i : Mathf.signs) {
+				Lines.lineAngle(e.x + Tmp.v1.x * i, e.y + Tmp.v1.y * i, e.rotation, length * (0.75f + railFout / 4f) * Mathf.curve(e.fout(Interp.pow5Out), 0f, 0.1f));
+			}
+		}).followParent(true);
+	}
+
 	public static Effect instShoot(Color color, Color colorInner) {
 		return new Effect(24f, e -> {
 			e.scaled(10f, (b) -> {
@@ -2528,6 +2571,18 @@ public final class HFx {
 				Lines.stroke(thick * e.fout(0.32f));
 				Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), (e.fslope() + e.fin()) * 0.5f * (size * rand.random(0.15f, 0.5f) + rand.random(2f)) + rand.random(2f));
 				Drawf.light(e.x + x, e.y + y, e.fslope() * (size * 0.5f + 14f) + 3, e.color, 0.7f);
+			});
+		});
+	}
+
+	public static Effect shootSquare(float lifetime, int num, float size, float angle, float range, float angleRange) {
+		return new Effect(lifetime, e -> {
+			Draw.color(e.color, Color.white, e.fout() * 0.7f);
+			rand.setSeed(e.id);
+			Drawn.randLenVectors(e.id, num, size + range * e.fin(), size * 0.15f * e.fin(), e.rotation, angleRange, (x, y) -> {
+				float size0 = (e.fslope() + e.fout()) * 0.5f * (size * rand.random(0.25f, 1f));
+				Fill.square(e.x + x, e.y + y, size0, angle);
+				Drawf.light(e.x + x, e.y + y, size0 * 1.25f, e.color, 0.7f);
 			});
 		});
 	}

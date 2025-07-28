@@ -382,13 +382,13 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 
 			Draw.color(Pal.accent);
 			Lines.stroke(1);
-			Drawf.circles(x, y, (tile.block().size / 2.0F + 1) * tilesize + sin - 2, Pal.accent);
+			Drawf.circles(x, y, (tile.block().size / 2f + 1) * tilesize + sin - 2, Pal.accent);
 
 			for (int i = 0; i < links.size; i++) {
 				int pos = links.get(i);
 				if (linkValid(this, pos)) {
 					Building linkTarget = Vars.world.build(pos);
-					Drawf.square(linkTarget.x, linkTarget.y, linkTarget.block.size * tilesize / 2.0F + 1, Pal.place);
+					Drawf.square(linkTarget.x, linkTarget.y, linkTarget.block.size * tilesize / 2f + 1, Pal.place);
 				}
 			}
 
@@ -429,7 +429,7 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 							int id = entry.key;
 							int amount = entry.value;
 							Item item = Vars.content.item(id);
-							l.image(item.uiIcon).padRight(3.0F);
+							l.image(item.uiIcon).padRight(3f);
 							l.label((() -> "  " + Strings.fixed(seq.contains(item) ? amount : 0, 0)))
 									.color(Color.lightGray);
 							l.row();

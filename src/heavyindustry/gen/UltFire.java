@@ -93,16 +93,16 @@ public class UltFire extends Fire {
 
 		Fire fire = Fires.get(tile.x, tile.y);
 
-		if (!(fire instanceof UltFire)) {
+		if (fire instanceof UltFire) {
+			fire.lifetime = baseLifetime;
+			fire.time = 0f;
+		} else  {
 			fire = UltFire.create();
 			fire.tile = tile;
 			fire.lifetime = baseLifetime;
 			fire.set(tile.worldx(), tile.worldy());
 			fire.add();
 			Fires.register(fire);
-		} else {
-			fire.lifetime = baseLifetime;
-			fire.time = 0f;
 		}
 	}
 
@@ -187,7 +187,7 @@ public class UltFire extends Fire {
 
 	@Override
 	public int classId() {
-		return EntityRegister.getId(UltFire.class);
+		return Entitys.getId(UltFire.class);
 	}
 
 	@Override

@@ -4,6 +4,7 @@ import arc.struct.Seq;
 import heavyindustry.core.HeavyIndustryMod;
 import mindustry.content.Items;
 import mindustry.content.Liquids;
+import mindustry.content.SectorPresets;
 import mindustry.content.TechTree;
 import mindustry.content.TechTree.TechNode;
 import mindustry.ctype.UnlockableContent;
@@ -15,10 +16,8 @@ import mindustry.game.Objectives.SectorComplete;
 import mindustry.type.ItemStack;
 
 import static heavyindustry.content.HBlocks.*;
-import static heavyindustry.content.HSectorPresets.*;
 import static heavyindustry.content.HUnitTypes.*;
 import static mindustry.content.Blocks.*;
-import static mindustry.content.SectorPresets.*;
 import static mindustry.content.UnitTypes.*;
 
 /**
@@ -67,6 +66,8 @@ public final class HTechTree {
 		vanillaNode(copperWall, () -> node(armoredWall, () -> node(armoredWallLarge, () -> node(armoredWallHuge, () -> node(armoredWallGigantic)))));
 		vanillaNode(copperWallLarge, () -> node(copperWallHuge, () -> node(copperWallGigantic)));
 		vanillaNode(titaniumWallLarge, () -> node(titaniumWallHuge, () -> node(titaniumWallGigantic)));
+		vanillaNode(doorLarge, () -> node(doorHuge, () -> node(doorGigantic)));
+		vanillaNode(plastaniumWallLarge, () -> node(plastaniumWallHuge, () -> node(plastaniumWallGigantic)));
 		vanillaNode(thoriumWall, () -> node(uraniumWall, () -> {
 			node(uraniumWallLarge);
 			node(chromiumWall, () -> {
@@ -74,10 +75,13 @@ public final class HTechTree {
 				node(chromiumDoor, () -> node(chromiumDoorLarge));
 			});
 		}));
+		vanillaNode(thoriumWallLarge, () -> node(thoriumWallHuge, () -> node(thoriumWallGigantic)));
+		vanillaNode(phaseWallLarge, () -> node(phaseWallHuge, () -> node(phaseWallGigantic)));
 		vanillaNode(surgeWall, () -> node(heavyAlloyWall, () -> {
 			node(heavyAlloyWallLarge);
 			node(compositeWall, () -> node(compositeWallLarge));
 		}));
+		vanillaNode(surgeWallLarge, () -> node(surgeWallHuge, () -> node(surgeWallGigantic)));
 		//wall-erekir
 		vanillaNode(berylliumWallLarge, () -> node(berylliumWallHuge, () -> node(berylliumWallGigantic)));
 		vanillaNode(tungstenWallLarge, () -> {
@@ -94,7 +98,7 @@ public final class HTechTree {
 			node(largeWaterExtractor);
 			node(slagExtractor);
 		});
-		vanillaNode(blastDrill, () -> node(beamDrill, Seq.with(new SectorComplete(impact0078))));
+		vanillaNode(blastDrill, () -> node(beamDrill, Seq.with(new SectorComplete(SectorPresets.impact0078))));
 		vanillaNode(oilExtractor, () -> node(oilRig));
 		//drill-erekir
 		vanillaNode(impactDrill, () -> node(minerPoint, Seq.with(new Research(electrolyzer)), () -> node(minerCenter, Seq.with(new Research(atmosphericConcentrator)))));
@@ -126,6 +130,7 @@ public final class HTechTree {
 			node(ductJunction);
 			node(ductMultiSorter);
 		});
+		vanillaNode(ductRouter, () -> node(ductDistributor));
 		vanillaNode(armoredDuct, () -> node(armoredDuctBridge));
 		vanillaNode(ductUnloader, () -> node(rapidDuctUnloader));
 		//liquid
@@ -149,7 +154,7 @@ public final class HTechTree {
 			node(reinforcedLiquidValve);
 		});
 		removeNode(reinforcedPump);
-		vanillaNode(reinforcedConduit, () -> node(smallReinforcedPump, Seq.with(new OnSector(basin)), () -> node(reinforcedPump, () -> node(largeReinforcedPump))));
+		vanillaNode(reinforcedConduit, () -> node(smallReinforcedPump, Seq.with(new OnSector(SectorPresets.basin)), () -> node(reinforcedPump, () -> node(largeReinforcedPump))));
 		//power
 		vanillaNode(powerNode, () -> node(smartPowerNode, () -> node(powerAnalyzer)));
 		vanillaNode(powerNodeLarge, () -> node(heavyArmoredPowerNode, () -> node(microArmoredPowerNode)));
@@ -165,14 +170,13 @@ public final class HTechTree {
 			node(beamDiode);
 			node(beamInsulator);
 		});
-		vanillaNode(turbineCondenser, () -> node(liquidConsumeGenerator, ItemStack.with(Items.beryllium, 2200, Items.graphite, 2400, Items.silicon, 2300, Items.tungsten, 1600, Items.oxide, 60)));
 		//production
 		vanillaNode(kiln, () -> node(largeKiln));
 		vanillaNode(pulverizer, () -> {
 			node(stoneCrusher);
 			node(largePulverizer, () -> {
-				node(uraniumSynthesizer, Seq.with(new OnSector(desolateRift)));
-				node(chromiumSynthesizer, Seq.with(new OnSector(desolateRift)));
+				node(uraniumSynthesizer, Seq.with(new OnSector(SectorPresets.desolateRift)));
+				node(chromiumSynthesizer, Seq.with(new OnSector(SectorPresets.desolateRift)));
 			});
 		});
 		vanillaNode(melter, () -> {
@@ -180,18 +184,18 @@ public final class HTechTree {
 			node(clarifier, Seq.with(new Research(HLiquids.brine)));
 		});
 		vanillaNode(surgeSmelter, () -> node(heavyAlloySmelter));
-		vanillaNode(disassembler, () -> node(metalAnalyzer, Seq.with(new OnSector(desolateRift))));
+		vanillaNode(disassembler, () -> node(metalAnalyzer, Seq.with(new OnSector(SectorPresets.desolateRift))));
 		vanillaNode(cryofluidMixer, () -> {
-			node(largeCryofluidMixer, Seq.with(new SectorComplete(impact0078)));
+			node(largeCryofluidMixer, Seq.with(new SectorComplete(SectorPresets.impact0078)));
 			node(originiumActivator);
 		});
-		vanillaNode(pyratiteMixer, () -> node(largePyratiteMixer, Seq.with(new SectorComplete(facility32m))));
+		vanillaNode(pyratiteMixer, () -> node(largePyratiteMixer, Seq.with(new SectorComplete(SectorPresets.facility32m))));
 		vanillaNode(blastMixer, () -> node(largeBlastMixer));
-		vanillaNode(cultivator, () -> node(largeCultivator, Seq.with(new SectorComplete(taintedWoods))));
-		vanillaNode(plastaniumCompressor, () -> node(largePlastaniumCompressor, Seq.with(new SectorComplete(facility32m)), () -> node(ironcladCompressor)));
+		vanillaNode(cultivator, () -> node(largeCultivator, Seq.with(new SectorComplete(SectorPresets.taintedWoods))));
+		vanillaNode(plastaniumCompressor, () -> node(largePlastaniumCompressor, Seq.with(new SectorComplete(SectorPresets.facility32m)), () -> node(ironcladCompressor)));
 		vanillaNode(surgeSmelter, () -> node(largeSurgeSmelter));
 		vanillaNode(siliconCrucible, () -> node(blastSiliconSmelter));
-		vanillaNode(siliconSmelter, () -> node(crystalCircuitConstructor, Seq.with(new SectorComplete(impact0078)), () -> node(crystalCircuitPrinter)));
+		vanillaNode(siliconSmelter, () -> node(crystalCircuitConstructor, Seq.with(new SectorComplete(SectorPresets.impact0078)), () -> node(crystalCircuitPrinter)));
 		vanillaNode(sporePress, () -> node(nitrificationReactor, () -> {
 			node(nitratedOilPrecipitator);
 			node(blastReagentMixer);
@@ -204,7 +208,6 @@ public final class HTechTree {
 		});
 		vanillaNode(electricHeater, () -> {
 			node(largeElectricHeater, ItemStack.with(Items.tungsten, 3000, Items.oxide, 2400, Items.carbide, 800));
-			node(liquidFuelHeater);
 			node(heatReactor);
 		});
 		vanillaNode(oxidationChamber, () -> node(largeOxidationChamber, ItemStack.with(Items.tungsten, 3600, Items.graphite, 4400, Items.silicon, 4400, Items.beryllium, 6400, Items.oxide, 600, Items.carbide, 1400)));
@@ -240,7 +243,7 @@ public final class HTechTree {
 		//unit
 		vanillaNode(tetrativeReconstructor, () -> node(titanReconstructor, () -> node(experimentalUnitFactory)));
 		//unit-erekir
-		vanillaNode(unitRepairTower, () -> node(largeUnitRepairTower, ItemStack.with(Items.graphite, 2400, Items.silicon, 3000, Items.tungsten, 2600, Items.oxide, 1200, Items.carbide, 600), Seq.with(new OnSector(siege))));
+		vanillaNode(unitRepairTower, () -> node(largeUnitRepairTower, ItemStack.with(Items.graphite, 2400, Items.silicon, 3000, Items.tungsten, 2600, Items.oxide, 1200, Items.carbide, 600), Seq.with(new OnSector(SectorPresets.siege))));
 		vanillaNode(basicAssemblerModule, () -> node(seniorAssemblerModule));
 		//logic
 		vanillaNode(memoryCell, () -> node(buffrerdMemoryCell, () -> node(buffrerdMemoryBank)));
@@ -253,9 +256,9 @@ public final class HTechTree {
 		//turret
 		vanillaNode(segment, () -> node(dissipation));
 		vanillaNode(duo, () -> {
-			node(rocketLauncher, Seq.with(new SectorComplete(ruinousShores)), () -> {
-				node(largeRocketLauncher, Seq.with(new Research(swarmer), new SectorComplete(facility32m)));
-				node(rocketSilo, Seq.with(new SectorComplete(tarFields)));
+			node(rocketLauncher, Seq.with(new SectorComplete(SectorPresets.ruinousShores)), () -> {
+				node(largeRocketLauncher, Seq.with(new Research(swarmer), new SectorComplete(SectorPresets.facility32m)));
+				node(rocketSilo, Seq.with(new SectorComplete(SectorPresets.tarFields)));
 			});
 			node(cloudbreaker);
 		});
@@ -270,7 +273,7 @@ public final class HTechTree {
 		vanillaNode(spectre, () -> node(evilSpirits));
 		vanillaNode(meltdown, () -> node(judgement));
 		//turret-erekir
-		vanillaNode(breach, () -> node(rupture));
+		vanillaNode(breach, () -> node(rupture, Seq.with(new SectorComplete(SectorPresets.stronghold))));
 		//tier6
 		vanillaNode(dagger, () -> node(vanguard, () -> node(striker, () -> node(counterattack, () -> node(crush, () -> node(destruction, () -> node(purgatory)))))));
 		vanillaNode(flare, () -> node(caelifera, () -> node(schistocerca, () -> node(anthophila, () -> node(vespula, () -> node(lepidoptera, () -> node(mantodea)))))));
@@ -286,12 +289,12 @@ public final class HTechTree {
 		vanillaNode(collaris, () -> node(oracle));
 		vanillaNode(disrupt, () -> node(havoc));
 		//sector presets
-		vanillaNode(impact0078, () -> node(frozenPlateau, Seq.with(new SectorComplete(impact0078))));
-		vanillaNode(coastline, () -> {
-			node(volcanicArchipelago, Seq.with(new SectorComplete(coastline)));
-			node(ironBridgeCoast, Seq.with(new SectorComplete(coastline)));
+		vanillaNode(SectorPresets.impact0078, () -> node(HSectorPresets.frozenPlateau, Seq.with(new SectorComplete(SectorPresets.impact0078))));
+		vanillaNode(SectorPresets.coastline, () -> {
+			node(HSectorPresets.volcanicArchipelago, Seq.with(new SectorComplete(SectorPresets.coastline)));
+			node(HSectorPresets.ironBridgeCoast, Seq.with(new SectorComplete(SectorPresets.coastline)));
 		});
-		vanillaNode(desolateRift, () -> node(moltenRiftValley, Seq.with(new SectorComplete(desolateRift))));
+		vanillaNode(SectorPresets.desolateRift, () -> node(HSectorPresets.moltenRiftValley, Seq.with(new SectorComplete(SectorPresets.desolateRift))));
 	}
 
 	public static void vanillaNode(UnlockableContent content, Runnable children) {

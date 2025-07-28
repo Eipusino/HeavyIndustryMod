@@ -47,7 +47,7 @@ import static mindustry.Vars.net;
 import static mindustry.Vars.state;
 import static mindustry.Vars.world;
 
-public class PesterUnit extends ExtraUnit implements Pesterc {
+public class PesterUnit extends BaseUnit implements Pesterc {
 	public static final ObjectIntMap<Healthc> checked = new ObjectIntMap<>();
 
 	public static Building tmpBuilding = null;
@@ -78,11 +78,11 @@ public class PesterUnit extends ExtraUnit implements Pesterc {
 
 	protected Trail[] trails = {};
 
-	protected PesterUnit() {}
+	public PesterUnit() {}
 
 	@Override
 	public int classId() {
-		return EntityRegister.getId(PesterUnit.class);
+		return Entitys.getId(PesterUnit.class);
 	}
 
 	@Override
@@ -659,9 +659,5 @@ public class PesterUnit extends ExtraUnit implements Pesterc {
 	@Override
 	public void trails(Trail[] value) {
 		trails = value;
-	}
-
-	public static PesterUnit create() {
-		return new PesterUnit();
 	}
 }

@@ -20,18 +20,18 @@ import mindustry.gen.Unit;
 import static mindustry.Vars.state;
 import static mindustry.Vars.world;
 
-public class SwordUnit extends ExtraUnit implements Swordc {
+public class SwordUnit extends BaseUnit implements Swordc {
 	public IntSeq collided = new IntSeq();
 	public float lastBaseX = Float.NEGATIVE_INFINITY, lastBaseY;
 	public int orbitPos;
 	public float heat;
 	public transient DriftTrail[] driftTrails;
 
-	protected SwordUnit() {}
+	public SwordUnit() {}
 
 	@Override
 	public int classId() {
-		return EntityRegister.getId(SwordUnit.class);
+		return Entitys.getId(SwordUnit.class);
 	}
 
 	@Override
@@ -243,9 +243,5 @@ public class SwordUnit extends ExtraUnit implements Swordc {
 	@Override
 	public void driftTrails(DriftTrail[] value) {
 		driftTrails = value;
-	}
-
-	public static SwordUnit create() {
-		return new SwordUnit();
 	}
 }

@@ -20,12 +20,12 @@ public final class Linesf {
 	private Linesf() {}
 
 	public static void arc(float x, float y, float radius, float finion) {
-		arc(x, y, radius, finion, 0.0F);
+		arc(x, y, radius, finion, 0f);
 	}
 
 	public static void arc(float x, float y, float radius, float finion, float angle) {
 		float stroke = Lines.getStroke();
-		float halfStroke = stroke / 2.0F;
+		float halfStroke = stroke / 2f;
 		Fillf.donut(x, y, radius - halfStroke, radius + halfStroke, finion, angle);
 	}
 
@@ -33,7 +33,7 @@ public final class Linesf {
 
 	/** Draws square without overlapping sides(useful when you use alpha) */
 	public static void square(float x, float y, float rad) {
-		rect(x - rad, y - rad, rad * 2.0F, rad * 2.0F);
+		rect(x - rad, y - rad, rad * 2f, rad * 2f);
 	}
 
 	/** Draws rect without overlapping sides(useful when you use alpha) */

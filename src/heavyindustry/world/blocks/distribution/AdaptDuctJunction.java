@@ -25,8 +25,6 @@ import static mindustry.Vars.itemSize;
 import static mindustry.Vars.tilesize;
 
 /**
- * Will Anuken actually install it in V8?
- *
  * @author Eipusino
  * @see mindustry.world.blocks.distribution.DuctJunction
  */
@@ -79,7 +77,7 @@ public class AdaptDuctJunction extends Block {
 		return true;
 	}
 
-	public class LogisticsDuctJunctionBuild extends Building {
+	public class AdaptDuctJunctionBuild extends Building {
 		public Item[] current = new Item[2];
 		public float[] progress = new float[2];
 		public int[] from = new int[2];

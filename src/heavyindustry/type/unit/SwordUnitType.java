@@ -22,7 +22,7 @@ import mindustry.type.StatusEffect;
 
 import static mindustry.Vars.iconMed;
 
-public class SwordUnitType extends ExtraUnitType {
+public class SwordUnitType extends BaseUnitType {
 	public float travelSpeed = -1f, curveRnd = -1f;
 
 	//Hit stuff

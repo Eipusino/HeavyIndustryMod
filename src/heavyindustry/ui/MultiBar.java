@@ -90,7 +90,7 @@ public class MultiBar extends Bar {
 			GlyphLayout lay = Pools.obtain(GlyphLayout.class, GlyphLayout::new);
 			lay.setText(font, name);
 			font.setColor(Color.white);
-			font.draw(name, x + width / 2.0F - lay.width / 2.0F, y + height / 2.0F + lay.height / 2.0F + 1.0F);
+			font.draw(name, x + width / 2f - lay.width / 2f, y + height / 2f + lay.height / 2f + 1f);
 			Pools.free(lay);
 		}
 	}

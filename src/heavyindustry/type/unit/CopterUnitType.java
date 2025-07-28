@@ -9,7 +9,7 @@ import arc.struct.Seq;
 import heavyindustry.gen.Copterc;
 import mindustry.gen.Unit;
 
-public class CopterUnitType extends ExtraUnitType {
+public class CopterUnitType extends BaseUnitType {
 	public final Seq<Rotor> rotors = new Seq<>(2);
 	public float rotorDeathSlowdown = 0.01f;
 	public float fallRotateSpeed = 2.5f;

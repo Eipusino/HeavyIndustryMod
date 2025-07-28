@@ -88,14 +88,14 @@ public class GrenadeBulletType extends BulletType {
 	@Override
 	public void draw(Bullet b) {
 		if (b.fin() < 0.15 && b.timer.get(0, (3 + b.fslope() * 2))) {
-			trailEffect.at(b.x, b.y, b.fslope() * 4.0f * Mathf.clamp(b.fout()), backColor);
+			trailEffect.at(b.x, b.y, b.fslope() * 4f * Mathf.clamp(b.fout()), backColor);
 		}
 
 		float scl = getZ(b) + 1;
-		float offset = Time.time * 3.0f;
+		float offset = Time.time * 3f;
 		float height = this.height * scl;
 		float width = this.width * scl;
-		boolean flash = Mathf.pow(2, 5 * b.fin() - 1) % 1.0 > 0.5;
+		boolean flash = Mathf.pow(2, 5 * b.fin() - 1) % 1f > 0.5f;
 
 		Color mix = Tmp.c1.set(mixColorFrom).lerp(mixColorTo, b.fin());
 

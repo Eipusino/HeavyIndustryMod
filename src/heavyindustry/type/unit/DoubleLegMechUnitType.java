@@ -12,7 +12,7 @@ import mindustry.gen.Mechc;
 import mindustry.gen.Unit;
 import mindustry.world.blocks.environment.Floor;
 
-public class DoubleLegMechUnitType extends ExtraUnitType {
+public class DoubleLegMechUnitType extends BaseUnitType {
 	public TextureRegion leg2Region;
 
 	public DoubleLegMechUnitType(String name) {

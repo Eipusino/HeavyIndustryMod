@@ -11,15 +11,15 @@ import mindustry.gen.Groups;
 import static mindustry.Vars.net;
 import static mindustry.Vars.state;
 
-public class CopterUnit extends ExtraUnit implements Copterc {
+public class CopterUnit extends BaseUnit implements Copterc {
 	protected transient RotorMount[] rotors = {};
 	protected transient float rotorSpeedScl = 1f;
 
-	protected CopterUnit() {}
+	public CopterUnit() {}
 
 	@Override
 	public int classId() {
-		return EntityRegister.getId(CopterUnit.class);
+		return Entitys.getId(CopterUnit.class);
 	}
 
 	@Override
@@ -94,9 +94,5 @@ public class CopterUnit extends ExtraUnit implements Copterc {
 	@Override
 	public void rotorSpeedScl(float value) {
 		rotorSpeedScl = value;
-	}
-
-	public static CopterUnit create() {
-		return new CopterUnit();
 	}
 }

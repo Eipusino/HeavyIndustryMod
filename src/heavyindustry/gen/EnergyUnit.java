@@ -29,7 +29,7 @@ import static mindustry.Vars.net;
 import static mindustry.Vars.state;
 import static mindustry.Vars.world;
 
-public class EnergyUnit extends ExtraUnit implements Energyc {
+public class EnergyUnit extends BaseUnit implements Energyc {
 	protected transient Vec2 lastPos = new Vec2();
 	protected float reloadValue = 0;
 	protected float lastHealth = 0;
@@ -37,11 +37,11 @@ public class EnergyUnit extends ExtraUnit implements Energyc {
 
 	protected Trail[] trails = {};
 
-	protected EnergyUnit() {}
+	public EnergyUnit() {}
 
 	@Override
 	public int classId() {
-		return EntityRegister.getId(EnergyUnit.class);
+		return Entitys.getId(EnergyUnit.class);
 	}
 
 	@Override
@@ -255,9 +255,5 @@ public class EnergyUnit extends ExtraUnit implements Energyc {
 	@Override
 	public void trails(Trail[] value) {
 		trails = value;
-	}
-
-	public static EnergyUnit create() {
-		return new EnergyUnit();
 	}
 }

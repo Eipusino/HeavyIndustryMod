@@ -49,11 +49,7 @@ public class DrawLiquidsOutputs extends DrawLiquidOutputs {
 			liquidOutputRegions = new TextureRegion[2][crafter.outputLiquids.length];
 			for (int i = 0; i < crafter.outputLiquids.length; i++) {
 				for (int j = 1; j <= 2; j++) {
-					String suffix = block.name + "-" + i + "-output" + j;
-
-					liquidOutputRegions[j - 1][i] = Core.atlas.find(suffix);
-
-					//Log.debug("Loaded: @", suffix);
+					liquidOutputRegions[j - 1][i] = Core.atlas.find(block.name + "-" + i + "-output" + j);
 				}
 			}
 		}

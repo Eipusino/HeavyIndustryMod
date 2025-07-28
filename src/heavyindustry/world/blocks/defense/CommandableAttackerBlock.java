@@ -10,7 +10,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.content.HFx;
 import heavyindustry.gen.HSounds;
-import heavyindustry.gen.WorldRegister;
+import heavyindustry.gen.Worlds;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.ui.Elements;
 import mindustry.content.Bullets;
@@ -175,7 +175,7 @@ public class CommandableAttackerBlock extends CommandableBlock {
 			Drawf.dashCircle(x, y, range, team.color);
 
 			Seq<CommandableBuild> builds = new Seq<>();
-			for (CommandableBuild build : WorldRegister.commandableBuilds) {
+			for (CommandableBuild build : Worlds.commandableBuilds) {
 				if (build != this && build != null && build.team == team && sameGroup(build.block) && build.canCommand(targetVec)) {
 					builds.add(build);
 					Drawn.posSquareLink(Pal.gray, 3, 4, false, build.x, build.y, targetVec.x, targetVec.y);
@@ -200,7 +200,7 @@ public class CommandableAttackerBlock extends CommandableBlock {
 		public void commandAll(Vec2 pos) {
 			participantsTmp.clear();
 
-			for (CommandableBuild build : WorldRegister.commandableBuilds) {
+			for (CommandableBuild build : Worlds.commandableBuilds) {
 				if (build.team == team && sameGroup(build.block) && build.canCommand(pos)) {
 					build.command(pos);
 					participantsTmp.add(build);

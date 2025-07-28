@@ -53,7 +53,7 @@ public class CoveredRouter extends Router {
 		public float progress;
 		public @Nullable Item current;
 		public int recDir = 0;
-		public @Nullable Tile lastInput;
+		public Tile lastInput;
 		public int r = 0;
 		public @Nullable Building target;
 
@@ -61,6 +61,7 @@ public class CoveredRouter extends Router {
 		public void updateTile() {
 			if (lastItem == null && items.any()) {
 				lastItem = items.first();
+				current = lastItem;
 			}
 			progress += edelta() / speed * 2f;
 
@@ -70,14 +71,13 @@ public class CoveredRouter extends Router {
 				target = getTileTarget(lastItem, lastInput, false);
 				if (target != null) {
 					r = relativeToEdge(target.tile);
-
-					// handle item
 					if (progress >= (1f - 1f / speed)) {
 						getTileTarget(lastItem, lastInput, true);
 						target.handleItem(this, lastItem);
 						items.remove(lastItem, 1);
 						lastItem = null;
 						progress = 0;
+						current = null;
 					}
 				}
 			} else {
@@ -96,14 +96,15 @@ public class CoveredRouter extends Router {
 			// Draw the current item
 			if (current != null) {
 				Draw.z(Layer.blockUnder + 0.2f);
-
 				Draw.z(Layer.blockUnder + 0.1f);
 				Tmp.v1.set(Geometry.d4x(recDir) * tilesize / 2f, Geometry.d4y(recDir) * tilesize / 2f)
 						.lerp(Geometry.d4x(r) * tilesize / 2f, Geometry.d4y(r) * tilesize / 2f,
 								Mathf.clamp((progress + 1f) / 2f));
 
 				Draw.rect(current.fullIcon, x + Tmp.v1.x, y + Tmp.v1.y, itemSize, itemSize);
+				Draw.reset();
 			}
+			Draw.reset();
 		}
 
 		@Override
@@ -124,12 +125,14 @@ public class CoveredRouter extends Router {
 		@Override
 		public void write(Writes write) {
 			super.write(write);
+
 			write.b(recDir);
 		}
 
 		@Override
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
+
 			if (revision >= 1) {
 				recDir = read.b();
 			}

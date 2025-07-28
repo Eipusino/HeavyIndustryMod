@@ -3,16 +3,8 @@ package heavyindustry.core;
 import arc.Core;
 import arc.Events;
 import arc.flabel.FLabel;
-import arc.graphics.Color;
-import arc.graphics.g2d.Draw;
-import arc.graphics.g2d.TextureRegion;
-import arc.math.Mat;
 import arc.math.Mathf;
-import arc.math.geom.Vec2;
-import arc.scene.Group;
-import arc.scene.event.Touchable;
 import arc.scene.ui.ImageButton.ImageButtonStyle;
-import arc.scene.ui.layout.Scl;
 import arc.util.Align;
 import arc.util.Log;
 import arc.util.Nullable;
@@ -29,22 +21,20 @@ import heavyindustry.content.HSectorPresets;
 import heavyindustry.content.HStatusEffects;
 import heavyindustry.content.HTechTree;
 import heavyindustry.content.HUnitTypes;
+import heavyindustry.content.HWeapons;
 import heavyindustry.content.HWeathers;
 import heavyindustry.game.HTeams;
-import heavyindustry.gen.EntityRegister;
+import heavyindustry.gen.Entitys;
 import heavyindustry.gen.HIcon;
 import heavyindustry.gen.HMusics;
 import heavyindustry.gen.HSounds;
-import heavyindustry.gen.WorldRegister;
-import heavyindustry.graphics.Draw3d;
+import heavyindustry.gen.Worlds;
 import heavyindustry.graphics.HCacheLayer;
 import heavyindustry.graphics.HShaders;
 import heavyindustry.graphics.HTextures;
 import heavyindustry.graphics.SpecialMenuRenderer;
-import heavyindustry.graphics.ScreenSampler;
 import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.input.InputAggregator;
-import heavyindustry.io.WorldData;
 import heavyindustry.mod.LoadMod;
 import heavyindustry.mod.ModJS;
 import heavyindustry.net.HCall;
@@ -64,7 +54,6 @@ import mindustry.gen.Icon;
 import mindustry.gen.Tex;
 import mindustry.mod.Mod;
 import mindustry.mod.Mods.LoadedMod;
-import mindustry.ui.Fonts;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
 import mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable;
@@ -82,7 +71,6 @@ import static heavyindustry.HVars.name;
 import static heavyindustry.HVars.sizedGraphics;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.iconMed;
-import static mindustry.Vars.macNotchHeight;
 import static mindustry.Vars.mods;
 import static mindustry.Vars.ui;
 
@@ -106,8 +94,11 @@ public final class HeavyIndustryMod extends Mod {
 	/** Is this mod in plugin mode. In this mode, the mod will not load content. */
 	public static final boolean isPlugin;
 
+	static @Nullable FloatingText floatingText;
+	static @Nullable SpecialMenuRenderer specialMenuRenderer;
+
 	/** If needed, please call {@link #loaded()} for the LoadedMod of this mod. */
-	private static LoadedMod loaded;
+	static LoadedMod loaded;
 
 	static {
 		modJson = LoadMod.getMeta(internalTree.root);
@@ -135,9 +126,9 @@ public final class HeavyIndustryMod extends Mod {
 				if (special) {
 					var field = MenuFragment.class.getDeclaredField("renderer");
 					field.setAccessible(true);
-					field.set(ui.menufrag, new SpecialMenuRenderer());
+					field.set(ui.menufrag, specialMenuRenderer = new SpecialMenuRenderer());
 				}
-			} catch (Exception e) {
+			} catch (Exception | ExceptionInInitializerError e) {
 				Log.err("Failed to replace renderer", e);
 			}
 
@@ -200,8 +191,8 @@ public final class HeavyIndustryMod extends Mod {
 	public void loadContent() {
 		HCall.init();
 
-		EntityRegister.load();
-		WorldRegister.load();
+		Entitys.load();
+		Worlds.load();
 
 		HBullets.load();
 
@@ -210,6 +201,7 @@ public final class HeavyIndustryMod extends Mod {
 			HItems.load();
 			HStatusEffects.load();
 			HLiquids.load();
+			HWeapons.load();
 			HUnitTypes.load();
 			HBlocks.load();
 			HWeathers.load();
@@ -220,9 +212,6 @@ public final class HeavyIndustryMod extends Mod {
 		}
 
 		Utils.loadItems();
-
-		//Load the content of the accessory module.
-		LoadMod.loadContent();
 	}
 
 	@Override
@@ -230,15 +219,9 @@ public final class HeavyIndustryMod extends Mod {
 		if (!headless) {
 			HIcon.load();
 
-			//Set up screen sampler.
-			ScreenSampler.setup();
-			Draw3d.init();
-
 			HStyles.onClient();
 			Elements.onClient();
 		}
-
-		WorldData.init();
 
 		IconLoader.loadIcons(internalTree.child("other/icons.properties"));
 
@@ -339,8 +322,8 @@ public final class HeavyIndustryMod extends Mod {
 
 			if (headless || ui == null || mods.locateMod("extra-utilities") != null || !Core.settings.getBool("hi-floating-text")) break set;
 
-			var fl = new FloatingText(massageSplit[Mathf.random(massageSplit.length - 1)]);
-			fl.build(ui.menuGroup);
+			floatingText = new FloatingText(massageSplit[Mathf.random(massageSplit.length - 1)]);
+			floatingText.build(ui.menuGroup);
 		}
 	}
 
@@ -363,48 +346,5 @@ public final class HeavyIndustryMod extends Mod {
 		var sdf = DateTimeFormatter.ofPattern("MMdd");
 		String fd = sdf.format(date);
 		return fd.equals("0401");
-	}
-}
-
-class FloatingText {
-	static final Mat setMat = new Mat(), reMat = new Mat();
-	static final Vec2 vec2 = new Vec2();
-
-	final String title;
-
-	FloatingText(String v) {
-		title = v;
-	}
-
-	void build(Group parent) {
-		parent.fill((x, y, w, h) -> {
-			TextureRegion logo = Core.atlas.find("logo");
-			float width = Core.graphics.getWidth(), height = Core.graphics.getHeight() - Core.scene.marginTop;
-			float logoScl = Scl.scl(1) * logo.scale;
-			float logoWidth = Math.min(logo.width * logoScl, Core.graphics.getWidth() - Scl.scl(20));
-			float logoHeight = logoWidth * (float) logo.height / logo.width;
-
-			float fx = (int) (width / 2f);
-			float fy = (int) (height - 6 - logoHeight) + logoHeight / 2 - (Core.graphics.isPortrait() ? Scl.scl(30f) : 0f);
-			if (Core.settings.getBool("macnotch")) {
-				fy -= Scl.scl(macNotchHeight);
-			}
-
-			float ex = fx + logoWidth / 3 - Scl.scl(1f), ey = fy - logoHeight / 3f - Scl.scl(2f);
-			float ang = 12 + Mathf.sin(Time.time, 8, 2f);
-
-			float dst = Mathf.dst(ex, ey, 0, 0);
-			vec2.set(0, 0);
-			float dx = Utils.dx(0, dst, vec2.angleTo(ex, ey) + ang);
-			float dy = Utils.dy(0, dst, vec2.angleTo(ex, ey) + ang);
-
-			reMat.set(Draw.trans());
-
-			Draw.trans(setMat.setToTranslation(ex - dx, ey - dy).rotate(ang));
-			Fonts.outline.draw(title, ex, ey, Color.yellow, Math.min(30f / title.length(), 1.5f) + Mathf.sin(Time.time, 8, 0.2f), false, Align.center);
-
-			Draw.trans(reMat);
-			Draw.reset();
-		}).touchable = Touchable.disabled;
 	}
 }

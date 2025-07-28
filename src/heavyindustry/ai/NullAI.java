@@ -4,7 +4,7 @@ import mindustry.entities.units.UnitController;
 import mindustry.gen.Unit;
 
 public class NullAI implements UnitController {
-	Unit unit;
+	protected Unit unit;
 
 	@Override
 	public void unit(Unit u) {

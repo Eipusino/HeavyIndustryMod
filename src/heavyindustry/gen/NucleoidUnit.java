@@ -19,51 +19,56 @@ import mindustry.type.UnitType;
 
 import static heavyindustry.HVars.name;
 
-public class NucleoidUnit extends ExtraUnit implements Nucleoidc {
+public class NucleoidUnit extends BaseUnit implements Nucleoidc {
 	public float recentDamage = 0f;
 	public float reinforcementsReload = 0f;
 
-	protected NucleoidUnit() {}
+	private NucleoidUnitType nucleoidType;
+
+	public NucleoidUnit() {}
 
 	@Override
 	public int classId() {
-		return EntityRegister.getId(NucleoidUnit.class);
+		return Entitys.getId(NucleoidUnit.class);
 	}
 
 	@Override
 	public void setType(UnitType type) {
+		nucleoidType = checkType(type);
+
 		super.setType(type);
 
-		if (type instanceof NucleoidUnitType nType) {
-			recentDamage = nType.maxDamagedPerSec;
-			reinforcementsReload = nType.reinforcementsSpacing;
+		recentDamage = nucleoidType.maxDamagedPerSec;
+		reinforcementsReload = nucleoidType.reinforcementsSpacing;
+	}
+
+	public NucleoidUnitType checkType(UnitType def) {
+		if (def instanceof NucleoidUnitType nu) {
+			return nu;
 		}
+
+		throw new ClassCastException("Unit's type must be NucleoidUnitType!");
 	}
 
 	@Override
 	public float mass() {
-		if (type instanceof NucleoidUnitType nType) {
-			return nType.mass;
-		}
-		return 8000000f;
+		return nucleoidType.mass;
 	}
 
 	@Override
 	public void update() {
 		super.update();
 
-		if (type instanceof NucleoidUnitType nType) {
-			recentDamage += nType.recentDamageResume * Time.delta;
-			if (recentDamage >= nType.maxDamagedPerSec) {
-				recentDamage = nType.maxDamagedPerSec;
-			}
+		recentDamage += nucleoidType.recentDamageResume * Time.delta;
+		if (recentDamage >= nucleoidType.maxDamagedPerSec) {
+			recentDamage = nucleoidType.maxDamagedPerSec;
+		}
 
-			reinforcementsReload += Time.delta;
-			if (healthf() < 0.3f && reinforcementsReload >= nType.reinforcementsSpacing) {
-				reinforcementsReload = 0;
-				for (int i : Mathf.signs) {
-					Tmp.v1.trns(rotation + 60 * i, -hitSize * 1.85f).add(x, y);
-				}
+		reinforcementsReload += Time.delta;
+		if (healthf() < 0.3f && reinforcementsReload >= nucleoidType.reinforcementsSpacing) {
+			reinforcementsReload = 0;
+			for (int i : Mathf.signs) {
+				Tmp.v1.trns(rotation + 60 * i, -hitSize * 1.85f).add(x, y);
 			}
 		}
 	}
@@ -72,7 +77,7 @@ public class NucleoidUnit extends ExtraUnit implements Nucleoidc {
 	public void draw() {
 		super.draw();
 
-		if (type instanceof NucleoidUnitType nType && nType.drawArrow) {
+		if (nucleoidType.drawArrow) {
 
 			float z = Draw.z();
 			Draw.z(Layer.bullet);
@@ -80,9 +85,9 @@ public class NucleoidUnit extends ExtraUnit implements Nucleoidc {
 			Tmp.c1.set(team.color).lerp(Color.white, Mathf.absin(4f, 0.15f));
 			Draw.color(Tmp.c1);
 			Lines.stroke(3f);
-			Drawn.circlePercent(x, y, hitSize * 1.15f, reinforcementsReload / nType.reinforcementsSpacing, 0);
+			Drawn.circlePercent(x, y, hitSize * 1.15f, reinforcementsReload / nucleoidType.reinforcementsSpacing, 0);
 
-			float scl = Interp.pow3Out.apply(Mathf.curve(reinforcementsReload / nType.reinforcementsSpacing, 0.96f, 1f));
+			float scl = Interp.pow3Out.apply(Mathf.curve(reinforcementsReload / nucleoidType.reinforcementsSpacing, 0.96f, 1f));
 			TextureRegion arrowRegion = Core.atlas.find(name("jump-gate-arrow"));
 
 			for (int l : Mathf.signs) {
@@ -101,33 +106,31 @@ public class NucleoidUnit extends ExtraUnit implements Nucleoidc {
 
 	@Override
 	public void rawDamage(float amount) {
-		if (type instanceof NucleoidUnitType nType) {
-			boolean hadShields = shield > 0.0001f;
-			if (hadShields) {
-				shieldAlpha = 1f;
+		boolean hadShields = shield > 0.0001f;
+		if (hadShields) {
+			shieldAlpha = 1f;
+		}
+
+		float a = amount * nucleoidType.damageMultiplier;
+
+		a = Math.min(a, nucleoidType.maxOnceDamage);
+
+		float shieldDamage = Math.min(Math.max(shield, 0f), a);
+		shield -= shieldDamage;
+		hitTime = 1f;
+
+		a -= shieldDamage;
+		a = Math.min(recentDamage / healthMultiplier, a);
+		recentDamage -= a * 1.5f * healthMultiplier;
+
+		if (a > 0f && type.killable) {
+			health -= a;
+			if (health <= 0f && !dead) {
+				kill();
 			}
 
-			float a = amount * nType.damageMultiplier;
-
-			a = Math.min(a, nType.maxOnceDamage);
-
-			float shieldDamage = Math.min(Math.max(shield, 0f), a);
-			shield -= shieldDamage;
-			hitTime = 1f;
-
-			a -= shieldDamage;
-			a = Math.min(recentDamage / healthMultiplier, a);
-			recentDamage -= a * 1.5f * healthMultiplier;
-
-			if (a > 0f && type.killable) {
-				health -= a;
-				if (health <= 0f && !dead) {
-					kill();
-				}
-
-				if (hadShields && shield <= 0.0001f) {
-					Fx.unitShieldBreak.at(x, y, 0f, team.color, this);
-				}
+			if (hadShields && shield <= 0.0001f) {
+				Fx.unitShieldBreak.at(x, y, 0f, team.color, this);
 			}
 		}
 	}
@@ -182,9 +185,5 @@ public class NucleoidUnit extends ExtraUnit implements Nucleoidc {
 	@Override
 	public void reinforcementsReload(float value) {
 		reinforcementsReload = value;
-	}
-
-	public static NucleoidUnit create() {
-		return new NucleoidUnit();
 	}
 }

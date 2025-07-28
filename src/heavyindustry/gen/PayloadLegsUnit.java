@@ -26,16 +26,16 @@ import mindustry.world.blocks.payloads.Payload;
 import mindustry.world.blocks.payloads.UnitPayload;
 import mindustry.world.blocks.power.PowerGraph;
 
-public class PayloadLegsUnit extends ExtraLegsUnit implements Payloadc {
+public class PayloadLegsUnit extends BaseLegsUnit implements Payloadc {
 	protected Seq<Payload> payloads = new Seq<>();
 
 	protected transient @Nullable PowerGraph payloadPower;
 
-	protected PayloadLegsUnit() {}
+	public PayloadLegsUnit() {}
 
 	@Override
 	public int classId() {
-		return EntityRegister.getId(PayloadLegsUnit.class);
+		return Entitys.getId(PayloadLegsUnit.class);
 	}
 
 	@Override
@@ -247,45 +247,45 @@ public class PayloadLegsUnit extends ExtraLegsUnit implements Payloadc {
 
 	@Override
 	public void read(Reads read) {
-		super.read(read);
 		int r = read.i();
 		payloads.clear();
 		for (int i = 0; i < r; i++) {
 			Payload p = TypeIO.readPayload(read);
 			if (p != null) payloads.add(p);
 		}
+
+		super.read(read);
 	}
 
 	@Override
 	public void write(Writes write) {
-		super.write(write);
 		write.i(payloads.size);
 		for (int i = 0; i < payloads.size; i++) {
 			TypeIO.writePayload(write, payloads.get(i));
 		}
+
+		super.write(write);
 	}
 
 	@Override
 	public void readSync(Reads read) {
-		super.readSync(read);
 		int r = read.i();
 		payloads.clear();
 		for (int i = 0; i < r; i++) {
 			Payload p = TypeIO.readPayload(read);
 			if (p != null) payloads.add(p);
 		}
+
+		super.readSync(read);
 	}
 
 	@Override
 	public void writeSync(Writes write) {
-		super.writeSync(write);
 		write.i(payloads.size);
 		for (int i = 0; i < payloads.size; i++) {
 			TypeIO.writePayload(write, payloads.get(i));
 		}
-	}
 
-	public static PayloadLegsUnit create() {
-		return new PayloadLegsUnit();
+		super.writeSync(write);
 	}
 }

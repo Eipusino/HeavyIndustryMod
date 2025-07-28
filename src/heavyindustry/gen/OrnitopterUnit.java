@@ -9,7 +9,7 @@ import heavyindustry.type.unit.OrnitopterUnitType.BladeMount;
 import mindustry.content.Fx;
 import mindustry.type.UnitType;
 
-public class OrnitopterUnit extends ExtraUnit implements Ornitopterc {
+public class OrnitopterUnit extends BaseUnit implements Ornitopterc {
 	public BladeMount[] blades;
 	public float bladeMoveSpeedScl = 1f;
 	public long drawSeed = 0;
@@ -17,11 +17,11 @@ public class OrnitopterUnit extends ExtraUnit implements Ornitopterc {
 	protected float driftAngle;
 	protected boolean hasDriftAngle = false;
 
-	protected OrnitopterUnit() {}
+	public OrnitopterUnit() {}
 
 	@Override
 	public int classId() {
-		return EntityRegister.getId(OrnitopterUnit.class);
+		return Entitys.getId(OrnitopterUnit.class);
 	}
 
 	@Override
@@ -122,9 +122,5 @@ public class OrnitopterUnit extends ExtraUnit implements Ornitopterc {
 	@Override
 	public void drawSeed(long value) {
 		drawSeed = value;
-	}
-
-	public static OrnitopterUnit create() {
-		return new OrnitopterUnit();
 	}
 }
