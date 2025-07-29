@@ -51,7 +51,7 @@ public final class HTechTree {
 		});
 		vanillaNode(Items.copper, () -> nodeProduce(HItems.gold));
 		vanillaNode(Items.silicon, () -> {
-			nodeProduce(HItems.crystalCircuit, () -> nodeProduce(HLiquids.originiumFluid));
+			nodeProduce(HItems.crystallineCircuit, () -> nodeProduce(HLiquids.originiumFluid));
 			nodeProduce(HItems.galliumNitride);
 		});
 		vanillaNode(Items.thorium, () -> nodeProduce(HItems.uranium, () -> nodeProduce(HItems.chromium)));
@@ -195,7 +195,7 @@ public final class HTechTree {
 		vanillaNode(plastaniumCompressor, () -> node(largePlastaniumCompressor, Seq.with(new SectorComplete(SectorPresets.facility32m)), () -> node(ironcladCompressor)));
 		vanillaNode(surgeSmelter, () -> node(largeSurgeSmelter));
 		vanillaNode(siliconCrucible, () -> node(blastSiliconSmelter));
-		vanillaNode(siliconSmelter, () -> node(crystalCircuitConstructor, Seq.with(new SectorComplete(SectorPresets.impact0078)), () -> node(crystalCircuitPrinter)));
+		vanillaNode(siliconSmelter, () -> node(crystallineCircuitConstructor, Seq.with(new SectorComplete(SectorPresets.impact0078)), () -> node(crystallineCircuitPrinter)));
 		vanillaNode(sporePress, () -> node(nitrificationReactor, () -> {
 			node(nitratedOilPrecipitator);
 			node(blastReagentMixer);

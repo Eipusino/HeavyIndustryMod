@@ -1514,11 +1514,6 @@ public final class HBullets {
 			despawnEffect = HFx.collapserBulletExplode;
 		}
 			@Override
-			protected float calculateRange() {
-				return 520f;
-			}
-
-			@Override
 			public void despawned(Bullet b) {
 				super.despawned(b);
 

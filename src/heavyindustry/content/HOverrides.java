@@ -509,7 +509,7 @@ public final class HOverrides {
 		Items.surgeAlloy.hardness = 6;
 		Items.phaseFabric.hardness = 3;
 		Items.carbide.hardness = 6;
-		Items.serpuloItems.addAll(HItems.stone, HItems.salt, HItems.rareEarth, HItems.galliumNitride, HItems.crystalCircuit, HItems.gold, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.originium);
+		Items.serpuloItems.addAll(HItems.stone, HItems.salt, HItems.rareEarth, HItems.galliumNitride, HItems.crystallineCircuit, HItems.gold, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.originium);
 		Items.erekirItems.addAll(HItems.uranium, HItems.chromium, HItems.originium);
 		//planet
 		Planets.serpulo.allowSectorInvasion = false;

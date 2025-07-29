@@ -13,7 +13,7 @@ import mindustry.type.Item;
 public final class HItems {
 	public static Item
 			stone, salt, rareEarth,
-			galliumNitride, crystalCircuit,
+			galliumNitride, crystallineCircuit, crystallineElectronicUnit,
 			originium,
 			gold, uranium, chromium, heavyAlloy;
 
@@ -41,9 +41,13 @@ public final class HItems {
 			cost = 1.2f;
 			hardness = 3;
 		}};
-		crystalCircuit = new Item("crystal-circuit", HPal.originiumRed) {{
+		crystallineCircuit = new Item("crystalline-circuit", HPal.originiumRed) {{
 			cost = -0.75f;
-			hardness = 6;
+			hardness = 4;
+		}};
+		crystallineElectronicUnit = new Item("crystalline-electronic-unit") {{
+			cost = -1.75f;
+			hardness = 7;
 		}};
 		originium = new Item("originium", HPal.originiumRed) {{
 			cost = 1.25f;

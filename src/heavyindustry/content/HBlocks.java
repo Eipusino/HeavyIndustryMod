@@ -312,7 +312,7 @@ public final class HBlocks {
 	smartBeamNode, beamDiode, beamInsulator, reinforcedPowerAnalyzer,
 	//production
 	largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, stoneCrusher, fractionator, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
-			crystalCircuitConstructor, crystalCircuitPrinter, originiumActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, ironcladCompressor,
+			crystallineCircuitConstructor, crystallineCircuitPrinter, originiumActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, ironcladCompressor,
 			originiumHeater, liquidFuelHeater,
 			atmosphericCollector, atmosphericCooler, uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilPrecipitator, blastReagentMixer, centrifuge, galliumNitrideSmelter,
 	//production-erekir
@@ -860,7 +860,7 @@ public final class HBlocks {
 			hideDetails = false;
 		}};
 		compositeWall = new RegenWall("composite-wall") {{
-			requirements(Category.defense, ItemStack.with(HItems.crystalCircuit, 2, HItems.heavyAlloy, 6, Items.metaglass, 1, Items.plastanium, 4));
+			requirements(Category.defense, ItemStack.with(HItems.crystallineCircuit, 2, HItems.heavyAlloy, 6, Items.metaglass, 1, Items.plastanium, 4));
 			size = 1;
 			health = 2680;
 			armor = 42f;
@@ -1151,7 +1151,7 @@ public final class HBlocks {
 			hideDetails = false;
 		}};
 		beamDrill = new LaserBeamDrill("beam-drill") {{
-			requirements(Category.production, ItemStack.with(Items.lead, 160, Items.silicon, 120, Items.plastanium, 80, HItems.heavyAlloy, 60, HItems.crystalCircuit, 35, Items.phaseFabric, 25));
+			requirements(Category.production, ItemStack.with(Items.lead, 160, Items.silicon, 120, Items.plastanium, 80, HItems.heavyAlloy, 60, HItems.crystallineCircuit, 35, Items.phaseFabric, 25));
 			size = 4;
 			health = 1660;
 			armor = 12f;
@@ -2011,19 +2011,19 @@ public final class HBlocks {
 			consumeItems(ItemStack.with(Items.coal, 5, Items.sand, 8, Items.blastCompound, 1));
 			consumePower(4f);
 		}};
-		crystalCircuitConstructor = new GenericCrafter("crystal-circuit-constructor") {{
+		crystallineCircuitConstructor = new GenericCrafter("crystalline-circuit-constructor") {{
 			requirements(Category.crafting, ItemStack.with(Items.copper, 120, Items.titanium, 45, Items.silicon, 35, HItems.originium, 20));
 			size = 2;
 			itemCapacity = 15;
 			craftTime = 100f;
-			outputItem = new ItemStack(HItems.crystalCircuit, 1);
+			outputItem = new ItemStack(HItems.crystallineCircuit, 1);
 			craftEffect = Fx.none;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawSpecConstruct(HPal.originiumRed, HPal.originiumRed), new DrawDefault());
 			consumePower(2.5f);
 			consumeItems(ItemStack.with(Items.titanium, 2, Items.silicon, 3, HItems.originium, 1));
 		}};
-		crystalCircuitPrinter = new GenericCrafter("crystal-circuit-printer") {{
-			requirements(Category.crafting, ItemStack.with(Items.titanium, 600, Items.silicon, 400, Items.plastanium, 350, Items.surgeAlloy, 250, HItems.chromium, 200, HItems.crystalCircuit, 150, HItems.originium, 150));
+		crystallineCircuitPrinter = new GenericCrafter("crystalline-circuit-printer") {{
+			requirements(Category.crafting, ItemStack.with(Items.titanium, 600, Items.silicon, 400, Items.plastanium, 350, Items.surgeAlloy, 250, HItems.chromium, 200, HItems.crystallineCircuit, 150, HItems.originium, 150));
 			size = 4;
 			health = 1500;
 			squareSprite = false;
@@ -2031,7 +2031,7 @@ public final class HBlocks {
 			itemCapacity = 40;
 			liquidCapacity = 60f;
 			craftTime = 150f;
-			outputItem = new ItemStack(HItems.crystalCircuit, 12);
+			outputItem = new ItemStack(HItems.crystallineCircuit, 12);
 			craftEffect = Fx.none;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.cryofluid), new DrawRegion("-mid"), new DrawSpecConstruct(HPal.originiumRed, HPal.originiumRed), new DrawDefault());
 			consumePower(25f);
@@ -2040,7 +2040,7 @@ public final class HBlocks {
 			hideDetails = false;
 		}};
 		originiumActivator = new GenericCrafter("originium-activator") {{
-			requirements(Category.crafting, ItemStack.with(Items.titanium, 90, Items.silicon, 80, HItems.crystalCircuit, 30, Items.plastanium, 60));
+			requirements(Category.crafting, ItemStack.with(Items.titanium, 90, Items.silicon, 80, HItems.crystallineCircuit, 30, Items.plastanium, 60));
 			size = 2;
 			health = 360;
 			hasPower = hasLiquids = outputsLiquid = true;
@@ -2082,7 +2082,7 @@ public final class HBlocks {
 			consumeItems(ItemStack.with(Items.sand, 15, Items.thorium, 5));
 		}};
 		phaseFusionInstrument = new GenericCrafter("phase-fusion-instrument") {{
-			requirements(Category.crafting, ItemStack.with(Items.silicon, 100, Items.plastanium, 80, Items.phaseFabric, 60, HItems.chromium, 80, HItems.crystalCircuit, 40));
+			requirements(Category.crafting, ItemStack.with(Items.silicon, 100, Items.plastanium, 80, Items.phaseFabric, 60, HItems.chromium, 80, HItems.crystallineCircuit, 40));
 			size = 3;
 			itemCapacity = 30;
 			lightRadius /= 2f;
@@ -2302,7 +2302,7 @@ public final class HBlocks {
 			consumeItem(Items.titanium, 8);
 		}};
 		heavyAlloySmelter = new GenericCrafter("heavy-alloy-smelter") {{
-			requirements(Category.crafting, ItemStack.with(Items.lead, 150, Items.silicon, 80, HItems.crystalCircuit, 12, Items.thorium, 120, HItems.chromium, 30, Items.phaseFabric, 20));
+			requirements(Category.crafting, ItemStack.with(Items.lead, 150, Items.silicon, 80, HItems.crystallineCircuit, 12, Items.thorium, 120, HItems.chromium, 30, Items.phaseFabric, 20));
 			size = 3;
 			health = 850;
 			craftTime = 80f;
@@ -2314,7 +2314,7 @@ public final class HBlocks {
 			hideDetails = false;
 		}};
 		metalAnalyzer = new Separator("metal-analyzer") {{
-			requirements(Category.crafting, ItemStack.with(Items.titanium, 120, Items.silicon, 180, Items.plastanium, 80, HItems.crystalCircuit, 30));
+			requirements(Category.crafting, ItemStack.with(Items.titanium, 120, Items.silicon, 180, Items.plastanium, 80, HItems.crystallineCircuit, 30));
 			size = 3;
 			itemCapacity = 20;
 			liquidCapacity = 30f;
@@ -2557,7 +2557,7 @@ public final class HBlocks {
 			consumeItem(Items.phaseFabric, 1).boost();
 		}};
 		sectorStructureMender = new RegenProjector("sector-structure-mender") {{
-			requirements(Category.effect, ItemStack.with(Items.lead, 600, Items.titanium, 400, Items.silicon, 350, Items.plastanium, 250, Items.surgeAlloy, 220, HItems.crystalCircuit, 150));
+			requirements(Category.effect, ItemStack.with(Items.lead, 600, Items.titanium, 400, Items.silicon, 350, Items.plastanium, 250, Items.surgeAlloy, 220, HItems.crystallineCircuit, 150));
 			size = 4;
 			health = 1800;
 			range = 1500;
@@ -2580,7 +2580,7 @@ public final class HBlocks {
 				color = HPal.regenerating;
 			}});
 			consumePower(20f);
-			consumeItem(HItems.crystalCircuit, 10).boost();
+			consumeItem(HItems.crystallineCircuit, 10).boost();
 		}};
 		assignOverdrive = new AssignOverdrive("assign-overdrive") {{
 			requirements(Category.effect, ItemStack.with(Items.silicon, 150, Items.thorium, 120, Items.plastanium, 100, Items.surgeAlloy, 60, HItems.chromium, 80));
@@ -2705,7 +2705,7 @@ public final class HBlocks {
 			group = BlockGroup.transportation;
 		}};
 		rapidUnloader = new AdaptUnloader("rapid-unloader") {{
-			requirements(Category.effect, ItemStack.with(Items.silicon, 35, Items.plastanium, 15, HItems.crystalCircuit, 10, HItems.chromium, 15));
+			requirements(Category.effect, ItemStack.with(Items.silicon, 35, Items.plastanium, 15, HItems.crystallineCircuit, 10, HItems.chromium, 15));
 			speed = 1f;
 			group = BlockGroup.transportation;
 		}};
@@ -2743,7 +2743,7 @@ public final class HBlocks {
 		}};
 		//unit
 		unitMaintenanceDepot = new RepairTower("unit-maintenance-depot") {{
-			requirements(Category.units, ItemStack.with(Items.thorium, 360, Items.plastanium, 220, Items.surgeAlloy, 160, Items.phaseFabric, 100, HItems.crystalCircuit, 120));
+			requirements(Category.units, ItemStack.with(Items.thorium, 360, Items.plastanium, 220, Items.surgeAlloy, 160, Items.phaseFabric, 100, HItems.crystallineCircuit, 120));
 			size = 4;
 			health = 1200;
 			liquidCapacity = 120f;
@@ -2777,10 +2777,10 @@ public final class HBlocks {
 			);
 			consumePower(35f);
 			consumeLiquid(Liquids.cryofluid, 4f);
-			consumeItems(ItemStack.with(Items.silicon, 1500, HItems.crystalCircuit, 300, HItems.uranium, 400, HItems.chromium, 500));
+			consumeItems(ItemStack.with(Items.silicon, 1500, HItems.crystallineCircuit, 300, HItems.uranium, 400, HItems.chromium, 500));
 		}};
 		experimentalUnitFactory = new DerivativeUnitFactory("experimental-unit-factory") {{
-			requirements(Category.units, ItemStack.with(Items.silicon, 2500, Items.plastanium, 1000, Items.surgeAlloy, 1200, HItems.crystalCircuit, 800, Items.phaseFabric, 1500, HItems.heavyAlloy, 1100));
+			requirements(Category.units, ItemStack.with(Items.silicon, 2500, Items.plastanium, 1000, Items.surgeAlloy, 1200, HItems.crystallineCircuit, 800, Items.phaseFabric, 1500, HItems.heavyAlloy, 1100));
 			size = 5;
 			liquidCapacity = 60f;
 			floating = true;
@@ -2841,7 +2841,7 @@ public final class HBlocks {
 		}};
 		//logic
 		matrixProcessor = new LogicBlock("matrix-processor") {{
-			requirements(Category.logic, ItemStack.with(Items.lead, 500, Items.silicon, 350, Items.surgeAlloy, 125, HItems.crystalCircuit, 50, HItems.chromium, 75));
+			requirements(Category.logic, ItemStack.with(Items.lead, 500, Items.silicon, 350, Items.surgeAlloy, 125, HItems.crystallineCircuit, 50, HItems.chromium, 75));
 			consumeLiquid(Liquids.cryofluid, 0.12f);
 			hasLiquids = true;
 			instructionsPerTick = 100;
@@ -3750,7 +3750,7 @@ public final class HBlocks {
 			canOverdrive = false;
 		}};
 		judgement = new ContinuousTurret("judgement") {{
-			requirements(Category.turret, ItemStack.with(Items.silicon, 1200, Items.metaglass, 400, Items.plastanium, 800, Items.surgeAlloy, 650, HItems.originium, 350, HItems.crystalCircuit, 180, HItems.heavyAlloy, 600));
+			requirements(Category.turret, ItemStack.with(Items.silicon, 1200, Items.metaglass, 400, Items.plastanium, 800, Items.surgeAlloy, 650, HItems.originium, 350, HItems.galliumNitride, 360, HItems.crystallineElectronicUnit, 180, HItems.heavyAlloy, 600));
 			shootType = new PointLaserBulletType() {{
 				damage = 100f;
 				hitEffect = HFx.hitSpark;
@@ -3955,14 +3955,14 @@ public final class HBlocks {
 			size = 5;
 			range = 420f;
 			scaledHealth = 300;
-			armor = 10f;
+			armor = 20f;
 			unitSort = UnitSorts.strongest;
 			buildCostMultiplier = 0.8f;
 			consumePower(26f);
 			consumeLiquid(HLiquids.originiumFluid, 12f / 60f);
 		}};
 		evilSpirits = new ItemTurret("evil-spirits") {{
-			requirements(Category.turret, ItemStack.with(Items.copper, 400, Items.graphite, 400, Items.plastanium, 200, HItems.uranium, 220, Items.surgeAlloy, 280));
+			requirements(Category.turret, ItemStack.with(Items.copper, 600, Items.graphite, 500, Items.plastanium, 250, HItems.uranium, 220, Items.surgeAlloy, 280));
 			ammo(Items.graphite, new BasicBulletType(7.5f, 82f) {{
 				hitSize = 5f;
 				width = 16.8f;
@@ -3974,6 +3974,7 @@ public final class HBlocks {
 				ammoMultiplier = 4;
 				reloadMultiplier = 1.7f;
 				knockback = 0.4f;
+				lifetime *= 1.1f;
 			}}, Items.pyratite, new BasicBulletType(8.25f, 94f) {{
 				rangeChange = 5f;
 				hitSize = 5f;
@@ -3992,6 +3993,7 @@ public final class HBlocks {
 				pierceBuilding = true;
 				ammoMultiplier = 3;
 				knockback = 0.8f;
+				lifetime *= 1.1f;
 			}}, Items.blastCompound, new BasicBulletType(8.25f, 54f) {{
 				rangeChange = 5f;
 				hitSize = 5f;
@@ -4010,7 +4012,8 @@ public final class HBlocks {
 				pierceBuilding = true;
 				ammoMultiplier = 3;
 				knockback = 1.2f;
-			}}, Items.thorium, new BasicBulletType(8.75f, 123f) {{
+				lifetime *= 1.1f;
+			}}, Items.thorium, new BasicBulletType(8.75f, 122f) {{
 				rangeChange = 15f;
 				pierce = true;
 				pierceCap = 2;
@@ -4023,8 +4026,8 @@ public final class HBlocks {
 				backColor = hitColor = trailColor = Pal.thoriumAmmoBack;
 				frontColor = Pal.thoriumAmmoFront;
 				knockback = 0.9f;
-				lifetime = 37.5f;
-			}}, HItems.uranium, new BasicBulletType(9.75f, 146f) {{
+				lifetime *= 1.05f;
+			}}, HItems.uranium, new BasicBulletType(9.75f, 155f) {{
 				rangeChange = 30f;
 				pierce = true;
 				pierceCap = 3;
@@ -4039,12 +4042,12 @@ public final class HBlocks {
 				backColor = hitColor = trailColor = HPal.uraniumGrey;
 				frontColor = Color.white.cpy();
 				knockback = 0.9f;
-				lifetime = 37.5f;
+				lifetime *= 1.05f;
 			}});
 			size = 5;
-			health = 5500;
-			armor = 12f;
-			range = 320f;
+			health = 6500;
+			armor = 22f;
+			range = 360f;
 			reload = 12f;
 			coolantMultiplier = 0.5f;
 			inaccuracy = 3f;
@@ -4061,7 +4064,7 @@ public final class HBlocks {
 			hideDetails = false;
 		}};
 		starfall = new ItemTurret("starfall") {{
-			requirements(Category.turret, ItemStack.with(Items.graphite, 2500, Items.plastanium, 1200, Items.surgeAlloy, 1500, HItems.crystalCircuit, 800, HItems.uranium, 1200));
+			requirements(Category.turret, ItemStack.with(Items.graphite, 2500, Items.plastanium, 1200, Items.surgeAlloy, 1500, HItems.crystallineCircuit, 800, HItems.uranium, 1200));
 			size = 8;
 			destructible = false;
 			sync = true;
@@ -4136,7 +4139,7 @@ public final class HBlocks {
 			lightColor = HPal.ancientLightMid;
 			clipSize = 8 * 24;
 			outlineColor = Pal.darkOutline;
-			requirements(Category.turret, ItemStack.with(Items.plastanium, 2000, Items.surgeAlloy, 2500, Items.phaseFabric, 1600, HItems.crystalCircuit, 1100, HItems.galliumNitride, 1800, HItems.heavyAlloy, 2200));
+			requirements(Category.turret, ItemStack.with(Items.plastanium, 2000, Items.surgeAlloy, 2500, Items.phaseFabric, 1600, HItems.crystallineCircuit, 1100, HItems.galliumNitride, 1800, HItems.heavyAlloy, 2200));
 			warmupMaintainTime = 90f;
 			shootWarmupSpeed /= 5f;
 			minWarmup = 0.9f;
@@ -4333,7 +4336,7 @@ public final class HBlocks {
 				firstShotDelay = HFx.techBlueChargeBegin.lifetime;
 			}};
 			chargeSound = Sounds.none;
-			requirements(Category.turret, ItemStack.with(Items.plastanium, 1500, Items.surgeAlloy, 1100, HItems.crystalCircuit, 400, HItems.chromium, 800));
+			requirements(Category.turret, ItemStack.with(Items.plastanium, 1500, Items.surgeAlloy, 1100, HItems.crystallineCircuit, 400, HItems.chromium, 800));
 			shootType = HBullets.arc9000;
 			shootCone = 12f;
 			rotateSpeed = 0.75f;
@@ -4351,12 +4354,13 @@ public final class HBlocks {
 			shootSound = Sounds.laserbig;
 		}};
 		executor = new PowerTurret("executor") {{
-			requirements(Category.turret, ItemStack.with(Items.plastanium, 2200, Items.surgeAlloy, 2500, Items.phaseFabric, 1200, HItems.crystalCircuit, 1100, HItems.heavyAlloy, 1500));
-			size = 8;
-			rotate = true;
+			requirements(Category.turret, ItemStack.with(Items.plastanium, 2200, Items.surgeAlloy, 3500, Items.phaseFabric, 4200, HItems.crystallineElectronicUnit, 1700, HItems.heavyAlloy, 2500));
+			size = 16;
+			health = 1000000;
+			armor = 150;
 			rotateSpeed = 0.75f;
 			reload = 90f;
-			range = 1800f;
+			range = 1100f;
 			inaccuracy = 1.5f;
 			velocityRnd = 0.075f;
 			shootSound = HSounds.railGunBlast;
@@ -4365,8 +4369,8 @@ public final class HBlocks {
 			shoot = new ShootBarrel() {{
 				shots = 2;
 				barrels = new float[]{
-						-20, 31, 0,
-						20, 31, 0
+						-25, 21, 0,
+						25, 21, 0
 				};
 			}};
 			shootType = HBullets.executor;
@@ -4381,7 +4385,7 @@ public final class HBlocks {
 		heatDeath = new PowerTurret("heat-death") {{
 			size = 16;
 			health = 800000;
-			armor = 30;
+			armor = 150;
 			outlineRadius = 7;
 			range = 1200;
 			heatColor = Pal.techBlue;
@@ -4472,7 +4476,7 @@ public final class HBlocks {
 			consumePowerCond(800f, TurretBuild::isActive);
 			reload = 1800f;
 			shootType = HBullets.arc9000hyper;
-			requirements(Category.turret, ItemStack.with(HItems.crystalCircuit, 2200, HItems.heavyAlloy, 5500));
+			requirements(Category.turret, ItemStack.with(HItems.crystallineCircuit, 2200, HItems.crystallineElectronicUnit, 1100, HItems.heavyAlloy, 5500));
 		}};
 		//turrets-erekir
 		rupture = new ItemTurret("rupture") {{
@@ -5202,10 +5206,10 @@ public final class HBlocks {
 		//donor
  		//developer
 
-		Utils.donorItems.addAll(largePulverizer, largeMelter, largePyratiteMixer, largeBlastMixer, largeCryofluidMixer, crystalCircuitPrinter);
+		Utils.donorItems.addAll(largePulverizer, largeMelter, largePyratiteMixer, largeBlastMixer, largeCryofluidMixer, crystallineCircuitPrinter);
 
 		Utils.donorMap.get(0).addAll(largePulverizer, largeMelter, largePyratiteMixer, largeBlastMixer, largeCryofluidMixer);
-		Utils.donorMap.get(1).addAll(crystalCircuitPrinter);
+		Utils.donorMap.get(1).addAll(crystallineCircuitPrinter);
 	}
 
 	public static class SlagExtractor extends SolidPump {

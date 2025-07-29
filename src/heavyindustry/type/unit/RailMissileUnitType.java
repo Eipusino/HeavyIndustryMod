@@ -14,6 +14,7 @@ public class RailMissileUnitType extends BaseUnitType {
 
 	public RailMissileUnitType(String name) {
 		super(name);
+
 		missile();
 		constructor = TrailTimedKillUnit::new;
 		deathSound = Sounds.explosion;
