@@ -49,6 +49,7 @@ public class TractorBeamUnit extends BasePayloadUnit {
 		super.setType(type);
 	}
 
+	@Override
 	public TractorBeamUnitType checkType(UnitType def) {
 		if (def instanceof TractorBeamUnitType tu) {
 			return tu;

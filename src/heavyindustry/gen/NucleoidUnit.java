@@ -1,6 +1,5 @@
 package heavyindustry.gen;
 
-import arc.Core;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
@@ -17,8 +16,6 @@ import mindustry.content.Fx;
 import mindustry.graphics.Layer;
 import mindustry.type.UnitType;
 
-import static heavyindustry.HVars.name;
-
 public class NucleoidUnit extends BaseUnit implements Nucleoidc {
 	public float recentDamage = 0f;
 	public float reinforcementsReload = 0f;
@@ -33,6 +30,11 @@ public class NucleoidUnit extends BaseUnit implements Nucleoidc {
 	}
 
 	@Override
+	public NucleoidUnitType type() {
+		return nucleoidType;
+	}
+
+	@Override
 	public void setType(UnitType type) {
 		nucleoidType = checkType(type);
 
@@ -40,14 +42,6 @@ public class NucleoidUnit extends BaseUnit implements Nucleoidc {
 
 		recentDamage = nucleoidType.maxDamagedPerSec;
 		reinforcementsReload = nucleoidType.reinforcementsSpacing;
-	}
-
-	public NucleoidUnitType checkType(UnitType def) {
-		if (def instanceof NucleoidUnitType nu) {
-			return nu;
-		}
-
-		throw new ClassCastException("Unit's type must be NucleoidUnitType!");
 	}
 
 	@Override
@@ -77,31 +71,31 @@ public class NucleoidUnit extends BaseUnit implements Nucleoidc {
 	public void draw() {
 		super.draw();
 
-		if (nucleoidType.drawArrow) {
+		if (!nucleoidType.drawArrow) return;
 
-			float z = Draw.z();
-			Draw.z(Layer.bullet);
+		float z = Draw.z();
+		Draw.z(Layer.bullet);
 
-			Tmp.c1.set(team.color).lerp(Color.white, Mathf.absin(4f, 0.15f));
-			Draw.color(Tmp.c1);
-			Lines.stroke(3f);
-			Drawn.circlePercent(x, y, hitSize * 1.15f, reinforcementsReload / nucleoidType.reinforcementsSpacing, 0);
+		Tmp.c1.set(team.color).lerp(Color.white, Mathf.absin(4f, 0.15f));
+		Draw.color(Tmp.c1);
+		Lines.stroke(3f);
+		Drawn.circlePercent(x, y, hitSize * 1.15f, reinforcementsReload / nucleoidType.reinforcementsSpacing, 0);
 
-			float scl = Interp.pow3Out.apply(Mathf.curve(reinforcementsReload / nucleoidType.reinforcementsSpacing, 0.96f, 1f));
-			TextureRegion arrowRegion = Core.atlas.find(name("jump-gate-arrow"));
+		float scl = Interp.pow3Out.apply(Mathf.curve(reinforcementsReload / nucleoidType.reinforcementsSpacing, 0.96f, 1f));
+		TextureRegion arrowRegion = nucleoidType.arrowRegion;
 
-			for (int l : Mathf.signs) {
-				float angle = 90 + 90 * l;
-				for (int i = 0; i < 4; i++) {
-					Tmp.v1.trns(angle, i * 50 + hitSize * 1.32f);
-					float f = (100 - (Time.time + 25 * i) % 100) / 100;
+		for (int l : Mathf.signs) {
+			float angle = 90 + 90 * l;
+			for (int i = 0; i < 4; i++) {
+				Tmp.v1.trns(angle, i * 50 + hitSize * 1.32f);
+				float f = (100 - (Time.time + 25 * i) % 100) / 100;
 
-					Draw.rect(arrowRegion, x + Tmp.v1.x, y + Tmp.v1.y, arrowRegion.width * f * scl, arrowRegion.height * f * scl, angle + 90);
-				}
+				Draw.rect(arrowRegion, x + Tmp.v1.x, y + Tmp.v1.y, arrowRegion.width * f * scl, arrowRegion.height * f * scl, angle + 90);
 			}
-
-			Draw.z(z);
 		}
+
+		Draw.z(z);
+
 	}
 
 	@Override

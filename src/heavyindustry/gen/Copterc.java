@@ -1,9 +1,8 @@
 package heavyindustry.gen;
 
 import heavyindustry.type.unit.CopterUnitType.RotorMount;
-import mindustry.gen.Unitc;
 
-public interface Copterc extends Unitc {
+public interface Copterc extends BaseUnitc {
 	RotorMount[] rotors();
 
 	float rotorSpeedScl();

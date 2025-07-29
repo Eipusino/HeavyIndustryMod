@@ -109,6 +109,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 	/**
 	 * Wrong cast errors are way too long. So long in fact that the crash box is too small for it.
 	 */
+	@Override
 	public ChainedUnitType checkType(UnitType def) {
 		if (def instanceof ChainedUnitType cu) {
 			return cu;

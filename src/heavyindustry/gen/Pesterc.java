@@ -6,10 +6,9 @@ import arc.struct.Seq;
 import mindustry.gen.Entityc;
 import mindustry.gen.Healthc;
 import mindustry.gen.Teamc;
-import mindustry.gen.Unitc;
 import mindustry.graphics.Trail;
 
-public interface Pesterc extends Unitc {
+public interface Pesterc extends BaseUnitc {
 	Healthc findOwner(Entityc ent);
 
 	void shootBossTarget();

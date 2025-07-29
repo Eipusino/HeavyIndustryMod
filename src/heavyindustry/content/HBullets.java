@@ -700,6 +700,8 @@ public final class HBullets {
 			shootEffect = HFx.instShoot(backColor, frontColor);
 			despawnEffect = HFx.lightningHitLarge;
 			hitEffect = new MultiEffect(HFx.hitSpark(backColor, 75f, 24, 90f, 2f, 12f), HFx.square45_6_45, HFx.lineCircleOut(backColor, 18f, 20, 2), HFx.sharpBlast(backColor, frontColor, 120f, 40f));
+			hittable = false;
+			absorbable = false;
 		}
 			@Override
 			public void createFrags(Bullet b, float x, float y) {
@@ -1210,6 +1212,8 @@ public final class HBullets {
 			splashDamage = lightningDamage = damage / 4f;
 			lifetime = 50f;
 			scaleLife = false;
+			hittable = false;
+			absorbable = false;
 			despawnEffect = HFx.lightningHitLarge(hitColor);
 			hitEffect = new MultiEffect(HFx.hitSpark(backColor, 65f, 22, splashDamageRadius, 4, 16), HFx.blast(backColor, splashDamageRadius / 2f));
 			shootEffect = HFx.hitSpark(backColor, 45f, 12, 60, 3, 8);
@@ -1229,6 +1233,7 @@ public final class HBullets {
 			width = 17f;
 			height = 42f;
 			hittable = false;
+			absorbable = false;
 			collidesTiles = false;
 			splashDamageRadius = 60f;
 			splashDamage = damage * 0.6f;
@@ -1268,6 +1273,7 @@ public final class HBullets {
 			collidesTiles = true;
 			pierce = false;
 			collides = false;
+			absorbable = false;
 			ammoMultiplier = 1f;
 			lifetime = 300;
 			despawnEffect = HFx.circleOut(hitColor, splashDamageRadius * 1.5f);
@@ -1337,6 +1343,7 @@ public final class HBullets {
 			trailLength = 120;
 			ammoMultiplier = 1;
 			hittable = false;
+			absorbable = false;
 			scaleLife = true;
 			splashDamageRadius = 400f;
 			hitColor = lightColor = lightningColor = trailColor = Pal.techBlue;
@@ -1486,6 +1493,7 @@ public final class HBullets {
 		}};
 		collapse = new EffectBulletType(480f) {{
 			hittable = false;
+			absorbable = false;
 			collides = false;
 			collidesTiles = collidesAir = collidesGround = true;
 			speed = 0.1f;

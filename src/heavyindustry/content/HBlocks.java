@@ -4354,7 +4354,7 @@ public final class HBlocks {
 			shootSound = Sounds.laserbig;
 		}};
 		executor = new PowerTurret("executor") {{
-			requirements(Category.turret, ItemStack.with(Items.plastanium, 2200, Items.surgeAlloy, 3500, Items.phaseFabric, 4200, HItems.crystallineElectronicUnit, 1700, HItems.heavyAlloy, 2500));
+			requirements(Category.turret, ItemStack.with(Items.plastanium, 2200, Items.surgeAlloy, 3500, Items.phaseFabric, 4200, HItems.crystallineElectronicUnit, 1700, HItems.heavyAlloy, 4500));
 			size = 16;
 			health = 1000000;
 			armor = 150;
@@ -4366,6 +4366,8 @@ public final class HBlocks {
 			shootSound = HSounds.railGunBlast;
 			chargeSound = Sounds.none;
 			canOverdrive = false;
+			warmupMaintainTime = 50f;
+			shootWarmupSpeed = 0.65f;
 			shoot = new ShootBarrel() {{
 				shots = 2;
 				barrels = new float[]{
@@ -4485,7 +4487,7 @@ public final class HBlocks {
 				buildingDamageMultiplier = 0.33f;
 				ammoMultiplier = 1f;
 				knockback = 1.1f;
-				lifetime = 56f / 3;
+				lifetime = 56f / 3f;
 				width = 13f;
 				height = 22f;
 				pierce = pierceBuilding = true;

@@ -18,7 +18,7 @@ import mindustry.entities.part.DrawPart;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 
-import static heavyindustry.HVars.name;
+import static heavyindustry.HVars.MOD_NAME;
 import static mindustry.Vars.mobile;
 import static mindustry.Vars.tilesize;
 
@@ -35,6 +35,10 @@ public class ArcCharge extends DrawPart {
 	public Interp lightningCircleCurve = Interp.pow3Out;
 	public Floatf<PartParams> chargeY = t -> 1;
 	public Floatf<PartParams> shootY = t -> 1;
+
+	public String arrowSuffix = MOD_NAME + "-jump-gate-arrow", pointerSuffix = MOD_NAME + "-jump-gate-pointer";
+
+	public TextureRegion arrowRegion, pointerRegion;
 
 	@Override
 	public void draw(PartParams params) {
@@ -60,15 +64,11 @@ public class ArcCharge extends DrawPart {
 		Lines.stroke(fin * lightningCircleInScl * 4.5f);
 		Lines.circle(x, y, scl * lightningCircleInScl);
 
-		TextureRegion arrowRegion = Core.atlas.find(name("jump-gate-arrow"));
-
 		for (int i = 0; i < 4; i++) {
 			float rot = Time.time + i * 90;
 			Tmp.v1.trns(rot, sclSign * lightningCircleInScl + Lines.getStroke() * 2f).add(x, y);
 			Draw.rect(arrowRegion, Tmp.v1.x, Tmp.v1.y, arrowRegion.width * Draw.scl * fin_9, arrowRegion.height * Draw.scl * fin_9, rot + 90);
 		}
-
-		TextureRegion pointerRegion = Core.atlas.find(name("jump-gate-pointer"));
 
 		Lines.stroke(fin * lightningCircleOutScl * 4.5f);
 		Lines.circle(x, y, scl * lightningCircleOutScl);
@@ -104,5 +104,8 @@ public class ArcCharge extends DrawPart {
 	}
 
 	@Override
-	public void load(String name) {}
+	public void load(String name) {
+		arrowRegion = Core.atlas.find(arrowSuffix);
+		pointerRegion = Core.atlas.find(pointerSuffix);
+	}
 }
