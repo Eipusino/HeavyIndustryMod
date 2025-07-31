@@ -12,7 +12,7 @@ import mindustry.type.Item;
  */
 public final class HItems {
 	public static Item
-			stone, salt, rareEarth,
+			stone, agglomerateSalt, rareEarth,
 			galliumNitride, crystallineCircuit, crystallineElectronicUnit,
 			originium,
 			gold, uranium, chromium, heavyAlloy;
@@ -27,7 +27,7 @@ public final class HItems {
 			cost = 0.4f;
 			lowPriority = true;
 		}};
-		salt = new Item("salt", Color.white) {{
+		agglomerateSalt = new Item("agglomerate-salt", Color.white) {{
 			cost = 1.1f;
 			hardness = 2;
 		}};

@@ -17,7 +17,7 @@ public class GameDataDialog extends BaseDialog {
 
 		cont.table(Tex.button, cat -> {
 			for (Planet planet : Vars.content.planets()) {
-				if (planet != null && planet.visible && planet.accessible && planet.techTree != null && planet.sectors.any()) {
+				if (planet != null && planet.accessible && planet.techTree != null && planet.sectors.any()) {
 					cat.button(
 							Core.bundle.get("settings.clearresearch") + ": " + planet.localizedName,
 							Icon.trash,

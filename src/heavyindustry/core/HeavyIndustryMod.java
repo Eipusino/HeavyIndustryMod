@@ -277,7 +277,6 @@ public final class HeavyIndustryMod extends Mod {
 					t.checkPref("hi-animated-shields", true);
 					t.checkPref("hi-serpulo-sector-invasion", true);
 					t.checkPref("hi-special", false);
-					t.checkPref("hi-show-test-item", false);
 					t.pref(new Setting(Core.bundle.get("hi-show-donor-and-develop")) {
 						@Override
 						public void add(SettingsTable table) {

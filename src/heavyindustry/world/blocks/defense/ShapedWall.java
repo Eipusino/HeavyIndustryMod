@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.defense;
 
+import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.TextureRegion;
@@ -8,18 +9,15 @@ import arc.math.geom.Point2;
 import arc.struct.Queue;
 import arc.struct.Seq;
 import heavyindustry.content.HFx;
-import heavyindustry.graphics.Drawn;
+import heavyindustry.util.Sprites;
 import heavyindustry.world.meta.HStat;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.gen.Call;
+import mindustry.graphics.Layer;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.meta.StatUnit;
 
-import static heavyindustry.util.Sprites.diagonalPos;
-import static heavyindustry.util.Sprites.orthogonalPos;
-import static heavyindustry.util.Sprites.proximityPos;
-import static heavyindustry.util.Utils.splitLayers;
 import static mindustry.Vars.net;
 import static mindustry.Vars.state;
 import static mindustry.Vars.tilesize;
@@ -32,19 +30,20 @@ public class ShapedWall extends Wall {
 	protected final Seq<Building> toDamage = new Seq<>();
 	protected final Queue<Building> queue = new Queue<>();
 
-	public TextureRegion[][] orthogonalRegion;
+	public TextureRegion[] autotileRegions;
 	public float damageReduction = 0.1f;
-	public float maxShareStep = 1;
+	public float maxShareStep = 3;
 
 	public ShapedWall(String name) {
 		super(name);
 		size = 1;
+		teamPassable = true;
 	}
 
 	@Override
 	public void load() {
 		super.load();
-		orthogonalRegion = splitLayers(name + "-sheet", 32, 2);
+		autotileRegions = Sprites.splitInLayers(Core.atlas.find(name + "-autotile"), 32, 0, Sprites.index4r12);
 	}
 
 	@Override
@@ -55,15 +54,34 @@ public class ShapedWall extends Wall {
 
 	public class ShapedWallBuild extends WallBuild {
 		public Seq<ShapedWallBuild> connectedWalls = new Seq<>();
-		public int orthogonalIndex = 0;
-		public boolean[] diagonalIndex = new boolean[4];
+		public int drawIndex = 0;
 
-		public boolean linkValid(Building build) {
-			return checkWall(build) && Mathf.dstm(tileX(), tileY(), build.tileX(), build.tileY()) <= maxShareStep;
-		}
+		public void updateDrawRegion() {
+			drawIndex = 0;
 
-		public boolean checkWall(Building build) {
-			return build != null && build.block == block;
+			for (int i = 0; i < Sprites.orthogonalPos.length; i++) {
+				Point2 pos = Sprites.orthogonalPos[i];
+				Building build = world.build(tileX() + pos.x, tileY() + pos.y);
+				if (checkWall(build)) {
+					drawIndex += 1 << i;
+				}
+			}
+			for (int i = 0; i < Sprites.diagonalPos.length; i++) {
+				Point2[] posArray = Sprites.diagonalPos[i];
+				boolean out = true;
+				for (Point2 pos : posArray) {
+					Building build = world.build(tileX() + pos.x, tileY() + pos.y);
+					if (!(checkWall(build))) {
+						out = false;
+						break;
+					}
+				}
+				if (out) {
+					drawIndex += 1 << i + 4;
+				}
+			}
+
+			drawIndex = Sprites.index4r12map.get(drawIndex);
 		}
 
 		public void findLinkWalls() {
@@ -83,57 +101,51 @@ public class ShapedWall extends Wall {
 			}
 		}
 
-		public void updateDrawRegion() {
-			orthogonalIndex = 0;
+		public boolean linkValid(Building build) {
+			return checkWall(build) && Mathf.dstm(tileX(), tileY(), build.tileX(), build.tileY()) <= maxShareStep;
+		}
 
-			for (int i = 0; i < orthogonalPos.length; i++) {
-				Point2 pos = orthogonalPos[i];
-				Building build = world.build(tileX() + pos.x, tileY() + pos.y);
-				if (build instanceof ShapedWallBuild && build.team == team) {
-					orthogonalIndex += 1 << i;
-				}
+		public boolean checkWall(Building build) {
+			return build != null && build.team == team && build.block == block;
+		}
+
+		@Override
+		public void drawSelect() {
+			super.drawSelect();
+			findLinkWalls();
+			for (Building wall : toDamage) {
+				Draw.color(team.color);
+				Draw.alpha(0.5f);
+				Fill.square(wall.x, wall.y, 2);
 			}
-
-			for (int i = 0; i < diagonalPos.length; i++) {
-				boolean diagonal = true;
-				Point2[] posArray = diagonalPos[i];
-
-				for (Point2 pos : posArray) {
-					Building build = world.build(tileX() + pos.x, tileY() + pos.y);
-					if (!(build instanceof ShapedWallBuild && build.team == team)) {
-						diagonal = false;
-						break;
-					}
-				}
-
-				diagonalIndex[i] = diagonal;
-			}
+			Draw.reset();
 		}
 
 		public void updateProximityWall() {
-			tmpTiles.clear();
 			connectedWalls.clear();
 
-			for (Point2 point : proximityPos) {
+			for (Point2 point : Sprites.proximityPos) {
 				Building other = world.build(tile.x + point.x, tile.y + point.y);
 				if (other == null || other.team != team) continue;
-				if (other instanceof ShapedWallBuild) {
-					tmpTiles.add(other);
+				if (checkWall(other)) {
+					connectedWalls.add((ShapedWallBuild) other);
 				}
-			}
-			for (Building tile : tmpTiles) {
-				ShapedWallBuild shapeWall = (ShapedWallBuild) tile;
-				connectedWalls.add(shapeWall);
 			}
 
 			updateDrawRegion();
 		}
 
-		@Override
 		public void drawTeam() {
 			Draw.color(team.color);
-			Fill.square(x, y, 1.015f, 45);
+			Draw.alpha(0.25f);
+			Draw.z(Layer.blockUnder);
+			Fill.square(x, y, 5f);
 			Draw.color();
+		}
+
+		@Override
+		public boolean checkSolid() {
+			return false;
 		}
 
 		@Override
@@ -152,6 +164,7 @@ public class ShapedWall extends Wall {
 			return shareDamage;
 		}
 
+		//todo healthChanged sometimes not trigger properly
 		public void damageShared(Building building, float damage) {
 			if (building.dead()) return;
 			float dm = state.rules.blockHealth(team);
@@ -174,27 +187,10 @@ public class ShapedWall extends Wall {
 
 		@Override
 		public void draw() {
-			Draw.rect(orthogonalRegion[0][orthogonalIndex], x, y);
-			for (int i = 0; i < diagonalIndex.length; i++) {
-				if (diagonalIndex[i]) {
-					Draw.rect(orthogonalRegion[1][i], x, y);
-				}
-			}
+			Draw.z(Layer.block + 1f);
+			Draw.rect(autotileRegions[drawIndex], x, y);
 		}
 
-		@Override
-		public void drawSelect() {
-			super.drawSelect();
-			findLinkWalls();
-			int i = 0;
-			for (Building wall : toDamage) {
-				Fill.square(wall.x, wall.y, 2);
-				Drawn.drawText(i + "", wall.x, wall.y);
-				i++;
-			}
-		}
-
-		@Override
 		public void updateProximity() {
 			super.updateProximity();
 
@@ -209,6 +205,7 @@ public class ShapedWall extends Wall {
 			for (ShapedWallBuild other : connectedWalls) {
 				other.updateProximityWall();
 			}
+
 			super.onRemoved();
 		}
 	}

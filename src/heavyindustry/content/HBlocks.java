@@ -74,7 +74,9 @@ import heavyindustry.world.blocks.liquid.LiquidMassDriver;
 import heavyindustry.world.blocks.liquid.LiquidOverflowValve;
 import heavyindustry.world.blocks.liquid.LiquidUnloader;
 import heavyindustry.world.blocks.liquid.SortLiquidRouter;
+import heavyindustry.world.blocks.logic.CharacterDisplay;
 import heavyindustry.world.blocks.logic.CopyMemoryBlock;
+import heavyindustry.world.blocks.logic.IconDisplay;
 import heavyindustry.world.blocks.logic.LabelMessageBlock;
 import heavyindustry.world.blocks.logic.LaserRuler;
 import heavyindustry.world.blocks.logic.ProcessorCooler;
@@ -121,6 +123,7 @@ import mindustry.entities.Units;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.BulletType;
 import mindustry.entities.bullet.LaserBulletType;
+import mindustry.entities.bullet.LiquidBulletType;
 import mindustry.entities.bullet.MissileBulletType;
 import mindustry.entities.bullet.PointBulletType;
 import mindustry.entities.bullet.PointLaserBulletType;
@@ -131,6 +134,7 @@ import mindustry.entities.effect.RadialEffect;
 import mindustry.entities.effect.WrapEffect;
 import mindustry.entities.part.HaloPart;
 import mindustry.entities.part.RegionPart;
+import mindustry.entities.part.ShapePart;
 import mindustry.entities.pattern.ShootAlternate;
 import mindustry.entities.pattern.ShootBarrel;
 import mindustry.entities.pattern.ShootMulti;
@@ -334,7 +338,10 @@ public final class HBlocks {
 	//unit-erekir
 	largeUnitRepairTower, seniorAssemblerModule,
 	//logic
-	matrixProcessor, hugeLogicDisplay, buffrerdMemoryCell, buffrerdMemoryBank, heatSink, heatFan, heatSinkLarge, laserRuler, labelMessage,
+	matrixProcessor, hugeLogicDisplay, buffrerdMemoryCell, buffrerdMemoryBank, heatSink, heatFan, heatSinkLarge, laserRuler,
+			labelMessage, iconDisplay, iconDisplayLarge, characterDisplay, characterDisplayLarge,
+	//logic-erekir
+	reinforcedIconDisplay, reinforcedIconDisplayLarge, reinforcedCharacterDisplay, reinforcedCharacterDisplayLarge,
 	//turret
 	dissipation, rocketLauncher, largeRocketLauncher, rocketSilo,
 			dragonBreath, breakthrough, cloudbreaker, ironStream, minigun,
@@ -342,7 +349,7 @@ public final class HBlocks {
 			hurricane, judgement, evilSpirits,
 			solstice, starfall, annihilate, executor, heatDeath,
 	//turret-erekir
-	rupture,
+	rupture, rift,
 	//sandbox
 	unitIniter,
 			reinforcedItemSource, reinforcedLiquidSource, reinforcedPowerSource, reinforcedPayloadSource, adaptiveSource,
@@ -1179,6 +1186,7 @@ public final class HBlocks {
 			drillTime = 63f;
 			drillMultipliers.put(Items.beryllium, 1.5f);
 			drillMultipliers.put(Items.graphite, 1.5f);
+			drillMultipliers.put(Items.pyratite, 1.5f);
 			consumePower(390f / 60f);
 			consumeLiquid(Liquids.hydrogen, 1.5f / 60f);
 			consumeLiquid(Liquids.nitrogen, 7.5f / 60f).boost();
@@ -2140,7 +2148,7 @@ public final class HBlocks {
 			hasLiquids = true;
 			liquidCapacity = 90;
 			outputLiquid = new LiquidStack(Liquids.water, 0.35f);
-			outputItem = new ItemStack(HItems.salt, 1);
+			outputItem = new ItemStack(HItems.agglomerateSalt, 1);
 			Color color1 = Color.valueOf("85966a"), color2 = Color.valueOf("f1ffdc"), color3 = Color.valueOf("728259");
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(HLiquids.brine, 2), new DrawCultivator() {{
 				timeScl = 120;
@@ -2887,7 +2895,36 @@ public final class HBlocks {
 			requirements(Category.logic, ItemStack.with(Items.lead, 15, Items.silicon, 25, Items.metaglass, 5));
 			size = 1;
 		}};
+		iconDisplay = new IconDisplay("icon-display") {{
+			requirements(Category.logic, ItemStack.with(Items.graphite, 3, Items.silicon, 4, Items.metaglass, 2));
+		}};
+		iconDisplayLarge = new IconDisplay("icon-display-large") {{
+			requirements(Category.logic, ItemStack.mult(iconDisplay.requirements, 4));
+			size = 2;
+		}};
+		characterDisplay = new CharacterDisplay("character-display") {{
+			requirements(Category.logic, ItemStack.with(Items.graphite, 3, Items.silicon, 4, Items.metaglass, 2));
+		}};
+		characterDisplayLarge = new CharacterDisplay("character-display-large") {{
+			requirements(Category.logic, ItemStack.mult(characterDisplay.requirements, 4));
+			size = 2;
+		}};
 		labelMessage = new LabelMessageBlock("label-message");
+		//logic-erekir
+		reinforcedIconDisplay = new IconDisplay("reinforced-icon-display") {{
+			requirements(Category.logic, ItemStack.with(Items.beryllium, 2, Items.graphite, 3, Items.silicon, 4));
+		}};
+		reinforcedIconDisplayLarge = new IconDisplay("reinforced-icon-display-large") {{
+			requirements(Category.logic, ItemStack.mult(reinforcedIconDisplay.requirements, 4));
+			size = 2;
+		}};
+		reinforcedCharacterDisplay = new CharacterDisplay("reinforced-character-display") {{
+			requirements(Category.logic, ItemStack.with(Items.beryllium, 2, Items.graphite, 3, Items.silicon, 4));
+		}};
+		reinforcedCharacterDisplayLarge = new CharacterDisplay("reinforced-character-display-large") {{
+			requirements(Category.logic, ItemStack.mult(reinforcedCharacterDisplay.requirements, 4));
+			size = 2;
+		}};
 		//turret
 		dissipation = new PointDefenseTurret("dissipation") {{
 			requirements(Category.turret, ItemStack.with(Items.silicon, 220, HItems.chromium, 80, Items.phaseFabric, 40, Items.plastanium, 60));
@@ -4588,6 +4625,267 @@ public final class HBlocks {
 			coolant = consume(new ConsumeLiquid(Liquids.water, 0.5f));
 			buildCostMultiplier = 0.8f;
 			squareSprite = false;
+		}};
+		rift = new ItemTurret("rift") {{
+			requirements(Category.turret, ItemStack.with(Items.graphite, 920, Items.silicon, 500, Items.surgeAlloy, 800, Items.tungsten, 1200, Items.carbide, 480));
+			health = 8830;
+			size = 5;
+			reload = 100f;
+			range = 550f;
+			heatRequirement = 60f;
+			warmupMaintainTime = 60f;
+			shootWarmupSpeed = 0.02f;
+			minWarmup = 0.76f;
+			outlineColor = Pal.darkOutline;
+			drawer = new DrawTurret("reinforced-") {{
+				parts.addAll(new RegionPart("-blade") {{
+					mirror = true;
+					under = false;
+					x = 0f;
+					heatProgress = PartProgress.recoil;
+					heatColor = Pal.slagOrange;
+					moveX = 4f;
+					children.add(new RegionPart("-mid") {{
+						mirror = true;
+						under = true;
+						x = 3f;
+						heatProgress = PartProgress.recoil;
+						heatColor = Pal.slagOrange;
+						moves.add(new PartMove() {{
+							progress = PartProgress.recoil;
+							y = -3;
+						}});
+						moveX = -3f;
+						moveY = 9.25f;
+					}});
+				}}, new RegionPart("-top") {{
+					mirror = false;
+					heatProgress = PartProgress.warmup;
+					heatColor = Pal.slagOrange;
+					progress = PartProgress.recoil;
+					moveY = -2;
+				}}, new ShapePart() {{
+					progress = PartProgress.warmup;
+					y = -17f;
+					color = Pal.slagOrange;
+					stroke = 0f;
+					strokeTo = 1.6f;
+					circle = true;
+					hollow = true;
+					radius = 0f;
+					radiusTo = 10f;
+					layer = 110f;
+				}}, new HaloPart() {{
+					shapeRotation = 45;
+					progress = PartProgress.warmup;
+					shapes = 1;
+					sides = 3;
+					x = 10f;
+					y = -27f;
+					color = Pal.slagOrange;
+					layer = 110f;
+					tri = true;
+					radius = 0f;
+					radiusTo = 5f;
+					triLength = 0f;
+					triLengthTo = 12f;
+					haloRadius = 0f;
+					haloRadiusTo = 0f;
+					haloRotateSpeed = 0f;
+				}}, new HaloPart() {{
+					shapeRotation = -135;
+					progress = PartProgress.warmup;
+					shapes = 1;
+					sides = 3;
+					x = 10f;
+					y = -27f;
+					color = Pal.slagOrange;
+					layer = 110f;
+					tri = true;
+					radius = 0f;
+					radiusTo = 5f;
+					triLength = 0f;
+					triLengthTo = 28f;
+					haloRadius = 0f;
+					haloRadiusTo = 0f;
+					haloRotateSpeed = 0f;
+				}}, new HaloPart() {{
+					shapeRotation = 135;
+					progress = PartProgress.warmup;
+					shapes = 1;
+					sides = 3;
+					x = -10f;
+					y = -27f;
+					color = Pal.slagOrange;
+					layer = 110f;
+					tri = true;
+					radius = 0f;
+					radiusTo = 5;
+					triLength = 0f;
+					triLengthTo = 28f;
+					haloRadius = 0f;
+					haloRadiusTo = 0f;
+					haloRotateSpeed = 0f;
+				}}, new ShapePart() {{
+					progress = PartProgress.warmup;
+					y = -23f;
+					color = Pal.slagOrange;
+					stroke = 0f;
+					strokeTo = 2f;
+					circle = true;
+					hollow = true;
+					radius = 0f;
+					radiusTo = 16f;
+					layer = 110f;
+				}}, new HaloPart() {{
+					progress = PartProgress.warmup;
+					sides = 3;
+					shapes = 3;
+					y = -23f;
+					color = Pal.slagOrange;
+					layer = 110f;
+					tri = true;
+					radius = 0f;
+					radiusTo = 5f;
+					triLength = 0f;
+					triLengthTo = 8f;
+					haloRadius = 0f;
+					haloRadiusTo = 21f;
+					haloRotation = 0f;
+					haloRotateSpeed = -0.9f;
+				}}, new HaloPart() {{
+					shapeRotation = 180;
+					progress = PartProgress.warmup;
+					sides = 3;
+					shapes = 3;
+					y = -23;
+					color = Pal.slagOrange;
+					layer = 110;
+					tri = true;
+					radius = 0f;
+					radiusTo = 5f;
+					triLength = 0f;
+					triLengthTo = 5f;
+					haloRadius = 0f;
+					haloRadiusTo = 21f;
+					haloRotation = 0f;
+					haloRotateSpeed = -0.9f;
+				}}, new HaloPart() {{
+					progress = PartProgress.warmup;
+					shapes = 1;
+					sides = 3;
+					x = 0f;
+					y = -35f;
+					color = Pal.slagOrange;
+					layer = 110f;
+					tri = true;
+					radius = 0f;
+					radiusTo = 6f;
+					triLength = 0f;
+					triLengthTo = 15f;
+					haloRadius = 0f;
+					haloRadiusTo = 0f;
+					haloRotateSpeed = 0f;
+				}}, new HaloPart() {{
+					shapeRotation = -180;
+					progress = PartProgress.warmup;
+					shapes = 1;
+					sides = 3;
+					x = 0f;
+					y = -35f;
+					color = Pal.slagOrange;
+					layer = 110f;
+					tri = true;
+					radius = 0f;
+					radiusTo = 6f;
+					triLength = 0f;
+					triLengthTo = 33f;
+					haloRadius = 0f;
+					haloRadiusTo = 0f;
+					haloRotateSpeed = 0f;
+				}});
+			}};
+			shootSound = Sounds.shootSmite;
+			shootY = 4f;
+			ammoUseEffect = Fx.none;
+			shootCone = 8f;
+			rotateSpeed = 1.12f;
+			shake = 6f;
+			maxAmmo = 30;
+			ammoPerShot = 10;
+			heatColor = Pal.slagOrange;
+			cooldownTime = 100f;
+			recoil = 5f;
+			recoilTime = 45f;
+			ammo(Items.tungsten, new BasicBulletType(15f, 406f) {{
+				inaccuracy = 5;
+				splashDamageRadius = 38;
+				splashDamage = 126.3f;
+				buildingDamageMultiplier = 0.33f;
+				speed = 15f;
+				lifetime = 36f;
+				width = 20f;
+				height = 33f;
+				pierce = true;
+				pierceCap = 3;
+				pierceArmor = true;
+				status = StatusEffects.slow;
+				statusDuration = 33f;
+				backColor = Pal.slagOrange;
+				frontColor = Pal.slagOrange;
+				trailColor = Pal.slagOrange;
+				trailLength = 13;
+				trailWidth = 4.5f;
+				trailChance = 1f;
+				trailInterval = 8f;
+				trailEffect = HFx.trailSolid;//trail
+				hitSound = Sounds.shotgun;
+				hitShake = 3f;
+				hitEffect = HFx.lightningHitSmall(Pal.slagOrange);//hit
+				shootEffect = HFx.shootCircleSmall(Pal.slagOrange);//shoot
+				despawnEffect = Fx.none;
+				smokeEffect = HFx.hugeSmokeLong;//smoke
+				fragBullets = 18;
+				fragRandomSpread = 60f;
+				fragBullet = new LiquidBulletType(Liquids.slag) {{
+					damage = 46f;
+					puddleSize = 16f;
+					orbSize = 5f;
+					knockback = 1.75f;
+					statusDuration = 600f;
+					status = StatusEffects.melting;
+					pierceArmor = true;
+					pierce = true;
+					pierceCap = 2;
+					speed = 8f;
+					lifetime = 20f;
+					hitEffect = HFx.lightningHitSmall(Pal.slagOrange);//hit
+				}};
+			}}, Items.carbide, new BasicBulletType(28.4f, 2160f, "missile-large") {{
+				rangeChange = 160;
+				buildingDamageMultiplier = 0.5f;
+				lifetime = 25f;
+				width = 20f;
+				height = 34f;
+				pierce = true;
+				pierceArmor = true;
+				status = HStatusEffects.breached;
+				backColor = HPal.energyYellow;
+				frontColor = Pal.slagOrange;
+				trailColor = HPal.energyYellow;
+				shrinkY = 0f;
+				trailLength = 13;
+				trailWidth = 5f;
+				trailChance = 0f;
+				trailInterval = 0.2f;
+				trailEffect = HFx.trailParticle;//trail
+				hitSound = Sounds.shotgun;
+				hitShake = 5f;
+				hitEffect = HFx.lightningHitSmall(Pal.slagOrange);//hit
+				despawnEffect = Fx.none;
+				shootEffect = HFx.shootCircleSmall(Pal.slagOrange);//shoot
+				smokeEffect = HFx.hugeSmokeLong;//smoke
+			}});
 		}};
 		//sandbox
 		unitIniter = new UnitIniter("unit-initer");

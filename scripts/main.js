@@ -1,5 +1,5 @@
 //This js is main used to check if the user downloaded the wrong version of mod, usually uncomplicated source.
-Events.on(ClientLoadEvent, cons(et => {
+Events.on(ClientLoadEvent, cons(ignored => {
 	var loadFailed = false;
 
 	const mod = Vars.mods.getMod("heavy-industry");

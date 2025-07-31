@@ -47,7 +47,7 @@ public final class HTechTree {
 		vanillaNode(Items.sand, () -> {
 			nodeProduce(HItems.stone, () -> nodeProduce(HItems.originium));
 			nodeProduce(HItems.rareEarth);
-			nodeProduce(HItems.salt);
+			nodeProduce(HItems.agglomerateSalt);
 		});
 		vanillaNode(Items.copper, () -> nodeProduce(HItems.gold));
 		vanillaNode(Items.silicon, () -> {
@@ -211,8 +211,8 @@ public final class HTechTree {
 			node(heatReactor);
 		});
 		vanillaNode(oxidationChamber, () -> node(largeOxidationChamber, ItemStack.with(Items.tungsten, 3600, Items.graphite, 4400, Items.silicon, 4400, Items.beryllium, 6400, Items.oxide, 600, Items.carbide, 1400)));
-		vanillaNode(surgeCrucible, () -> node(largeSurgeCrucible, ItemStack.with(Items.graphite, 4400, Items.silicon, 4000, Items.tungsten, 4800, Items.oxide, 960, Items.surgeAlloy, 1600)));
-		vanillaNode(carbideCrucible, () -> node(largeCarbideCrucible, ItemStack.with(Items.thorium, 6000, Items.tungsten, 8000, Items.oxide, 1000, Items.carbide, 1200)));
+		vanillaNode(surgeCrucible, () -> node(largeSurgeCrucible, ItemStack.with(Items.graphite, 4400, Items.silicon, 4000, Items.tungsten, 4800, Items.oxide, 960, Items.surgeAlloy, 1600), Seq.with(new OnSector(SectorPresets.karst))));
+		vanillaNode(carbideCrucible, () -> node(largeCarbideCrucible, ItemStack.with(Items.thorium, 6000, Items.tungsten, 8000, Items.oxide, 1000, Items.carbide, 1200), Seq.with(new OnSector(SectorPresets.karst))));
 		//defense
 		vanillaNode(coreShard, () -> node(detonator, () -> node(bombLauncher)));
 		vanillaNode(illuminator, () -> node(lighthouse));
@@ -220,7 +220,7 @@ public final class HTechTree {
 		vanillaNode(overdriveDome, () -> node(assignOverdrive));
 		vanillaNode(forceProjector, () -> node(largeShieldGenerator));
 		//defense-erekir
-		vanillaNode(radar, () -> node(largeRadar, ItemStack.with(Items.graphite, 3600, Items.silicon, 3200, Items.beryllium, 600, Items.tungsten, 200, Items.oxide, 10)));
+		vanillaNode(radar, () -> node(largeRadar, ItemStack.with(Items.graphite, 3600, Items.silicon, 3200, Items.beryllium, 600, Items.tungsten, 200, Items.oxide, 10), Seq.with(new OnSector(SectorPresets.stronghold))));
 		//storage
 		vanillaNode(router, () -> node(bin, ItemStack.with(Items.copper, 550, Items.lead, 350), () -> node(machineryUnloader, ItemStack.with(Items.copper, 300, Items.lead, 200))));
 		vanillaNode(vault, () -> {
@@ -253,6 +253,15 @@ public final class HTechTree {
 			node(heatFan);
 			node(heatSinkLarge);
 		}));
+		vanillaNode(message, () -> node(characterDisplay, () -> {
+			node(characterDisplayLarge);
+			node(iconDisplay, () -> node(iconDisplayLarge));
+		}));
+		//logic-erekir
+		vanillaNode(reinforcedMessage, () -> node(reinforcedCharacterDisplay, () -> {
+			node(reinforcedCharacterDisplayLarge);
+			node(reinforcedIconDisplay, () -> node(reinforcedIconDisplayLarge));
+		}));
 		//turret
 		vanillaNode(segment, () -> node(dissipation));
 		vanillaNode(duo, () -> {
@@ -273,7 +282,7 @@ public final class HTechTree {
 		vanillaNode(spectre, () -> node(evilSpirits));
 		vanillaNode(meltdown, () -> node(judgement));
 		//turret-erekir
-		vanillaNode(breach, () -> node(rupture, Seq.with(new SectorComplete(SectorPresets.stronghold))));
+		vanillaNode(breach, () -> node(rupture, Seq.with(new OnSector(SectorPresets.stronghold)), () -> node(rift, Seq.with(new OnSector(SectorPresets.karst)))));
 		//tier6
 		vanillaNode(dagger, () -> node(vanguard, () -> node(striker, () -> node(counterattack, () -> node(crush, () -> node(destruction, () -> node(purgatory)))))));
 		vanillaNode(flare, () -> node(caelifera, () -> node(schistocerca, () -> node(anthophila, () -> node(vespula, () -> node(lepidoptera, () -> node(mantodea)))))));

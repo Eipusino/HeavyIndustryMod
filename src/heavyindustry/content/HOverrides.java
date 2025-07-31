@@ -1,14 +1,10 @@
 package heavyindustry.content;
 
 import arc.graphics.Color;
-import arc.graphics.g2d.Draw;
-import arc.graphics.g2d.Lines;
-import arc.math.Interp;
 import arc.math.Mathf;
 import arc.struct.ObjectFloatMap;
 import arc.struct.Seq;
 import heavyindustry.core.HeavyIndustryMod;
-import heavyindustry.entities.bullet.CtrlMissileBulletType;
 import heavyindustry.graphics.HPal;
 import heavyindustry.world.meta.HAttribute;
 import mindustry.content.Blocks;
@@ -18,20 +14,12 @@ import mindustry.content.Liquids;
 import mindustry.content.Planets;
 import mindustry.content.StatusEffects;
 import mindustry.content.UnitTypes;
-import mindustry.entities.Effect;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.ContinuousFlameBulletType;
 import mindustry.entities.bullet.ContinuousLaserBulletType;
 import mindustry.entities.bullet.LiquidBulletType;
 import mindustry.entities.bullet.RailBulletType;
 import mindustry.entities.bullet.ShrapnelBulletType;
-import mindustry.entities.effect.ExplosionEffect;
-import mindustry.entities.effect.MultiEffect;
-import mindustry.entities.effect.WaveEffect;
-import mindustry.entities.effect.WrapEffect;
-import mindustry.entities.part.FlarePart;
-import mindustry.entities.part.ShapePart;
-import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.type.Item;
@@ -81,6 +69,8 @@ import static mindustry.Vars.content;
  * @author Eipusino
  */
 public final class HOverrides {
+	private static final ObjectFloatMap<Item> drillMultipliers = new ObjectFloatMap<>();
+
 	/** Don't let anyone instantiate this class. */
 	private HOverrides() {}
 
@@ -126,21 +116,10 @@ public final class HOverrides {
 		((WallCrafter) Blocks.largeCliffCrusher).boostItemUseTime = 180f;
 		Blocks.largeCliffCrusher.removeConsumers(c -> c instanceof ConsumeLiquid);
 		Blocks.largeCliffCrusher.consumeLiquid(Liquids.hydrogen, 0.5f / 60f);
-		ObjectFloatMap<Item> drillMultipliers = new ObjectFloatMap<>();
-		drillMultipliers.put(Items.sand, 3.5f);
-		drillMultipliers.put(Items.scrap, 3.5f);
-		drillMultipliers.put(Items.copper, 3f);
-		drillMultipliers.put(Items.lead, 3f);
-		drillMultipliers.put(HItems.stone, 3f);
-		drillMultipliers.put(HItems.rareEarth, 3f);
-		drillMultipliers.put(Items.coal, 2.5f);
-		drillMultipliers.put(Items.titanium, 2f);
-		drillMultipliers.put(HItems.uranium, 0.5f);
-		drillMultipliers.put(HItems.chromium, 0.5f);
 		Blocks.impactDrill.liquidCapacity *= 2f;
 		Blocks.eruptionDrill.liquidCapacity *= 2f;
-		((BurstDrill) Blocks.impactDrill).drillMultipliers.putAll(drillMultipliers);
-		((BurstDrill) Blocks.eruptionDrill).drillMultipliers.putAll(drillMultipliers);
+		((BurstDrill) Blocks.impactDrill).drillMultipliers.putAll(drillMultipliers());
+		((BurstDrill) Blocks.eruptionDrill).drillMultipliers.putAll(drillMultipliers());
 		((BeamDrill) Blocks.largePlasmaBore).drillMultipliers.put(Items.beryllium, 1.5f);
 		((BeamDrill) Blocks.largePlasmaBore).drillMultipliers.put(Items.graphite, 1.5f);
 		//blocks-power
@@ -296,67 +275,6 @@ public final class HOverrides {
 			colors = new Color[]{Color.valueOf("465ab888"), Color.valueOf("66a6d2a0"), Color.valueOf("89e8b6b0"), Color.valueOf("cafcbe"), Color.white};
 			lightColor = hitColor = flareColor = Color.valueOf("89e8b6");
 		}});
-		/*((PowerTurret) Blocks.afflict).shootType = new BasicBulletType(5f, 180f, "large-orb") {{
-			shootEffect = new MultiEffect(Fx.shootTitan, new WaveEffect() {{
-				colorTo = Pal.surge;
-				sizeTo = 26f;
-				lifetime = 14f;
-				strokeFrom = 4f;
-			}});
-			smokeEffect = Fx.shootSmokeTitan;
-			hitColor = Pal.surge;
-			trailEffect = Fx.missileTrail;
-			trailInterval = 3f;
-			trailParam = 4f;
-			pierceCap = 2;
-			buildingDamageMultiplier = 0.5f;
-			fragOnHit = false;
-			lifetime = 80f;
-			width = height = 16f;
-			backColor = Pal.surge;
-			frontColor = Color.white;
-			shrinkX = shrinkY = 0f;
-			trailColor = Pal.surge;
-			trailLength = 12;
-			trailWidth = 2.2f;
-			despawnEffect = hitEffect = new ExplosionEffect() {{
-				waveColor = Pal.surge;
-				smokeColor = Color.gray;
-				sparkColor = Pal.sap;
-				waveStroke = 4f;
-				waveRad = 40f;
-			}};
-			despawnSound = Sounds.dullExplosion;
-			fragBullet = intervalBullet = new BasicBulletType(3f, 35) {{
-				width = 9f;
-				hitSize = 5f;
-				height = 15f;
-				pierce = true;
-				lifetime = 35f;
-				pierceBuilding = true;
-				hitColor = backColor = trailColor = Pal.surge;
-				frontColor = Color.white;
-				trailWidth = 2.1f;
-				trailLength = 5;
-				hitEffect = despawnEffect = new WaveEffect() {{
-					colorFrom = colorTo = Pal.surge;
-					sizeTo = 4f;
-					strokeFrom = 4f;
-					lifetime = 10f;
-				}};
-				buildingDamageMultiplier = 0.3f;
-				homingPower = 0.2f;
-			}};
-			bulletInterval = 3f;
-			intervalRandomSpread = 20f;
-			intervalBullets = 2;
-			intervalAngle = 180f;
-			intervalSpread = 300f;
-			fragBullets = 20;
-			fragVelocityMin = 0.5f;
-			fragVelocityMax = 1.5f;
-			fragLifeMin = 0.5f;
-		}};*/
 		Blocks.titan.armor = 13f;
 		Blocks.titan.researchCost = ItemStack.with(Items.thorium, 4000, Items.silicon, 3000, Items.tungsten, 2500);
 		Blocks.disperse.armor = 9f;
@@ -377,7 +295,7 @@ public final class HOverrides {
 		((Reconstructor) Blocks.exponentialReconstructor).upgrades.add(new UnitType[]{HUnitTypes.counterattack, HUnitTypes.crush}, new UnitType[]{HUnitTypes.anthophila, HUnitTypes.vespula});
 		((Reconstructor) Blocks.tetrativeReconstructor).upgrades.add(new UnitType[]{HUnitTypes.crush, HUnitTypes.destruction}, new UnitType[]{HUnitTypes.vespula, HUnitTypes.lepidoptera});
 		//blocks-units-erekir
-		((Constructor) Blocks.constructor).filter = Seq.with();
+		((Constructor) Blocks.constructor).filter.clear();
 		((UnitAssembler) Blocks.tankAssembler).plans.add(new AssemblerUnitPlan(HUnitTypes.dominate, 60f * 60f * 4f, PayloadStack.list(UnitTypes.precept, 4, HBlocks.aparajitoLarge, 20)));
 		((UnitAssembler) Blocks.shipAssembler).plans.add(new AssemblerUnitPlan(HUnitTypes.havoc, 60f * 60f * 4f, PayloadStack.list(UnitTypes.obviate, 4, HBlocks.aparajitoLarge, 20)));
 		((UnitAssembler) Blocks.mechAssembler).plans.add(new AssemblerUnitPlan(HUnitTypes.oracle, 60f * 60f * 4f, PayloadStack.list(UnitTypes.anthicus, 4, HBlocks.aparajitoLarge, 20)));
@@ -391,105 +309,6 @@ public final class HOverrides {
 		UnitTypes.beta.coreUnitDock = true;
 		UnitTypes.gamma.coreUnitDock = true;
 		//unit types-erekir
-		UnitTypes.quell.targetAir = true;
-		UnitTypes.quell.weapons.get(0).bullet = new CtrlMissileBulletType("quell-missile", -1, -1) {{
-			shootEffect = Fx.shootBig;
-			smokeEffect = Fx.shootBigSmoke2;
-			speed = 4.3f;
-			keepVelocity = false;
-			maxRange = 6f;
-			lifetime = 60f * 1.6f;
-			damage = 100f;
-			splashDamage = 100f;
-			splashDamageRadius = 25f;
-			buildingDamageMultiplier = 0.5f;
-			hitEffect = despawnEffect = Fx.massiveExplosion;
-			trailColor = Pal.sapBulletBack;
-		}};
-		UnitTypes.quell.weapons.get(0).shake = 1f;
-		UnitTypes.disrupt.targetAir = true;
-		UnitTypes.disrupt.weapons.get(0).bullet = new CtrlMissileBulletType("disrupt-missile", -1, -1) {{
-			shootEffect = Fx.sparkShoot;
-			smokeEffect = Fx.shootSmokeTitan;
-			hitColor = Pal.suppress;
-			maxRange = 5f;
-			speed = 4.6f;
-			keepVelocity = false;
-			homingDelay = 10f;
-			trailColor = Pal.sapBulletBack;
-			trailLength = 8;
-			hitEffect = despawnEffect = new ExplosionEffect() {{
-				lifetime = 50f;
-				waveStroke = 5f;
-				waveLife = 8f;
-				waveColor = Color.white;
-				sparkColor = smokeColor = Pal.suppress;
-				waveRad = 40f;
-				smokeSize = 4f;
-				smokes = 7;
-				smokeSizeBase = 0f;
-				sparks = 10;
-				sparkRad = 40f;
-				sparkLen = 6f;
-				sparkStroke = 2f;
-			}};
-			damage = 135f;
-			splashDamage = 135f;
-			splashDamageRadius = 25f;
-			buildingDamageMultiplier = 0.5f;
-			parts.add(new ShapePart() {{
-				layer = Layer.effect;
-				circle = true;
-				y = -3.5f;
-				radius = 1.6f;
-				color = Pal.suppress;
-				colorTo = Color.white;
-				progress = PartProgress.life.curve(Interp.pow5In);
-			}});
-		}};
-		UnitTypes.disrupt.weapons.get(0).shake = 1f;
-		UnitTypes.anthicus.weapons.get(0).bullet = new CtrlMissileBulletType("anthicus-missile", -1, -1) {{
-			shootEffect = new MultiEffect(Fx.shootBigColor, new Effect(9, e -> {
-				Draw.color(Color.white, e.color, e.fin());
-				Lines.stroke(0.7f + e.fout());
-				Lines.square(e.x, e.y, e.fin() * 5f, e.rotation + 45f);
-				Drawf.light(e.x, e.y, 23f, e.color, e.fout() * 0.7f);
-			}), new WaveEffect() {{
-				colorFrom = colorTo = Pal.techBlue;
-				sizeTo = 15f;
-				lifetime = 12f;
-				strokeFrom = 3f;
-			}});
-			smokeEffect = Fx.shootBigSmoke2;
-			speed = 3.7f;
-			keepVelocity = false;
-			inaccuracy = 2f;
-			maxRange = 6;
-			trailWidth = 2;
-			trailColor = Pal.techBlue;
-			low = true;
-			damage = 110f;
-			splashDamage = 110f;
-			splashDamageRadius = 25f;
-			buildingDamageMultiplier = 0.8f;
-			despawnEffect = hitEffect = new MultiEffect(Fx.massiveExplosion, new WrapEffect(Fx.dynamicSpikes, Pal.techBlue, 24f), new WaveEffect() {{
-				colorFrom = colorTo = Pal.techBlue;
-				sizeTo = 40f;
-				lifetime = 12f;
-				strokeFrom = 4f;
-			}});
-			parts.add(new FlarePart() {{
-				progress = PartProgress.life.slope().curve(Interp.pow2In);
-				radius = 0f;
-				radiusTo = 35f;
-				stroke = 3f;
-				rotation = 45f;
-				y = -5f;
-				followRotation = true;
-			}});
-		}};
-		UnitTypes.anthicus.weapons.get(0).shake = 2f;
-		UnitTypes.anthicus.weapons.get(0).reload = 120f;
 		UnitTypes.tecta.armor = 11f;
 		UnitTypes.collaris.armor = 15f;
 		//liquids
@@ -509,11 +328,10 @@ public final class HOverrides {
 		Items.surgeAlloy.hardness = 6;
 		Items.phaseFabric.hardness = 3;
 		Items.carbide.hardness = 6;
-		Items.serpuloItems.addAll(HItems.stone, HItems.salt, HItems.rareEarth, HItems.galliumNitride, HItems.crystallineCircuit, HItems.gold, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.originium);
+		Items.serpuloItems.addAll(HItems.stone, HItems.agglomerateSalt, HItems.rareEarth, HItems.galliumNitride, HItems.crystallineCircuit, HItems.gold, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.originium);
 		Items.erekirItems.addAll(HItems.uranium, HItems.chromium, HItems.originium);
 		//planet
 		Planets.serpulo.allowSectorInvasion = false;
-		//other
 	}
 
 	/** special changes on April Fool's Day. */
@@ -601,5 +419,22 @@ public final class HOverrides {
 				}
 			}
 		}
+	}
+
+	public static ObjectFloatMap<Item> drillMultipliers() {
+		if (drillMultipliers.isEmpty()) {
+			drillMultipliers.put(Items.sand, 3.5f);
+			drillMultipliers.put(Items.scrap, 3.5f);
+			drillMultipliers.put(Items.copper, 3f);
+			drillMultipliers.put(Items.lead, 3f);
+			drillMultipliers.put(HItems.stone, 3f);
+			drillMultipliers.put(HItems.rareEarth, 3f);
+			drillMultipliers.put(Items.coal, 2.5f);
+			drillMultipliers.put(Items.titanium, 2f);
+			drillMultipliers.put(HItems.uranium, 0.5f);
+			drillMultipliers.put(HItems.chromium, 0.5f);
+		}
+
+		return drillMultipliers;
 	}
 }
