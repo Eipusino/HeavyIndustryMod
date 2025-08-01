@@ -30,7 +30,6 @@ public final class HVars {
 	/** Modules only present in clients, rendering. */
 	public static SizedGraphics sizedGraphics;
 
-	/** Blank Texture Region, used for Kotlin code, can avoid {@code lateinit var}. */
 	public static final Texture whiteTexture;
 	public static final TextureRegion whiteRegion;
 

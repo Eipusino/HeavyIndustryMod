@@ -16,17 +16,17 @@ public class SpecialMenuRenderer extends MenuRenderer {
 		coverBeta = new TextureRegion(new Texture(HVars.internalTree.child("other/cover-beta.png")));
 	}
 
-	public boolean randomBoolean;
+	public boolean random;
 	public float scale;
 
 	public SpecialMenuRenderer() {
-		randomBoolean = Mathf.randomBoolean();
+		random = Mathf.randomBoolean();
 		scale = Math.max(Core.graphics.getWidth() / 1920f, Core.graphics.getHeight() / 1024f);
 	}
 
 	@Override
 	public void render() {
-		TextureRegion region = randomBoolean ? coverAlpha : coverBeta;
+		TextureRegion region = random ? coverAlpha : coverBeta;
 
 		Draw.color();
 		Draw.rect(region,

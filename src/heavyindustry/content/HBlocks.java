@@ -2417,7 +2417,7 @@ public final class HBlocks {
 			requirements(Category.crafting, ItemStack.with(Items.beryllium, 60, Items.graphite, 70, Items.tungsten, 80, Items.oxide, 50));
 			size = 3;
 			hasPower = false;
-			hasLiquids = true;
+			hasLiquids = outputsLiquid = true;
 			attribute = Attribute.steam;
 			group = BlockGroup.liquids;
 			displayEfficiencyScale = 1f / 9;
@@ -4841,8 +4841,8 @@ public final class HBlocks {
 				trailEffect = HFx.trailSolid;//trail
 				hitSound = Sounds.shotgun;
 				hitShake = 3f;
-				hitEffect = HFx.lightningHitSmall(Pal.slagOrange);//hit
-				shootEffect = HFx.shootCircleSmall(Pal.slagOrange);//shoot
+				hitEffect = HFx.crossBlast(Pal.slagOrange, height + width);//hit
+				shootEffect = HFx.square(Pal.slagOrange, 45f, 5, 38, 4);//shoot
 				despawnEffect = Fx.none;
 				smokeEffect = HFx.hugeSmokeLong;//smoke
 				fragBullets = 18;
@@ -4859,7 +4859,7 @@ public final class HBlocks {
 					pierceCap = 2;
 					speed = 8f;
 					lifetime = 20f;
-					hitEffect = HFx.lightningHitSmall(Pal.slagOrange);//hit
+					hitEffect = HFx.crossBlast(Pal.slagOrange, height + width);//hit
 				}};
 			}}, Items.carbide, new BasicBulletType(28.4f, 2160f, "missile-large") {{
 				rangeChange = 160;
@@ -4878,12 +4878,12 @@ public final class HBlocks {
 				trailWidth = 5f;
 				trailChance = 0f;
 				trailInterval = 0.2f;
-				trailEffect = HFx.trailParticle;//trail
+				trailEffect = HFx.polyCloud(Pal.slagOrange, 30f, 8f, 18f, 4);//trail
 				hitSound = Sounds.shotgun;
 				hitShake = 5f;
-				hitEffect = HFx.lightningHitSmall(Pal.slagOrange);//hit
+				hitEffect = HFx.crossBlast(Pal.slagOrange, height + width);//hit
 				despawnEffect = Fx.none;
-				shootEffect = HFx.shootCircleSmall(Pal.slagOrange);//shoot
+				shootEffect = HFx.square(Pal.slagOrange, 45f, 5, 38, 4);//shoot
 				smokeEffect = HFx.hugeSmokeLong;//smoke
 			}});
 		}};

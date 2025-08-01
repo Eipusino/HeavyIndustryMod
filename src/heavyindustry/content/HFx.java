@@ -672,6 +672,16 @@ public final class HFx {
 					Drawf.light(e.x + x, e.y + y, e.fout() * 12f, e.color, 0.7f);
 				});
 			}),
+			healEffectSky = new Effect(11f, e -> {
+				Draw.color(e.color);
+				Lines.stroke(e.fout() * 2f);
+				Lines.poly(e.x, e.y, 6, 2f + e.finpow() * 79f);
+			}),
+			activeEffectSky = new Effect(22f, e -> {
+				Draw.color(e.color);
+				Lines.stroke(e.fout() * 3f);
+				Lines.poly(e.x, e.y, 6, 4f + e.finpow() * e.rotation);
+			}),
 			posLightning = (new Effect(PositionLightning.lifetime, 1200f, e -> {
 				if (!(e.data instanceof Vec2Seq v)) return;
 

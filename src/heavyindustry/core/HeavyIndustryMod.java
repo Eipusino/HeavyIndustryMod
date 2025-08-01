@@ -43,7 +43,6 @@ import heavyindustry.ui.Elements;
 import heavyindustry.ui.dialogs.HResearchDialog;
 import heavyindustry.util.IconLoader;
 import heavyindustry.util.Utils;
-import kotlin.KotlinVersion;
 import mindustry.ctype.Content;
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.game.EventType.DisposeEvent;
@@ -111,7 +110,6 @@ public final class HeavyIndustryMod extends Mod {
 			throw new UnsupportedOperationException("HeavyIndustryMod only runs with OpenGL 3.0 (on desktop) or OpenGL ES 3.0 (on android) and above!");
 		}
 
-		Log.infoTag("Kotlin", "Version: " + KotlinVersion.CURRENT);
 		Log.info("Loaded HeavyIndustry Mod constructor.");
 
 		HClassMap.load();

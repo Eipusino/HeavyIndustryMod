@@ -1227,6 +1227,7 @@ public final class HBullets {
 			trailInterval = 3;
 			trailEffect = HFx.polyTrail(backColor, frontColor, 4.65f, 22f);
 			trailChance = 0f;
+			hitColor = Pal.techBlue;
 			despawnEffect = hitEffect = HFx.techBlueExplosion;
 			knockback = 12f;
 			lifetime = 90f;
@@ -1348,9 +1349,9 @@ public final class HBullets {
 			splashDamageRadius = 400f;
 			hitColor = lightColor = lightningColor = trailColor = Pal.techBlue;
 			Effect effect = HFx.crossBlast(hitColor, 420f, 45);
-			effect.lifetime += 180;
+			effect.lifetime += 180f;
 			despawnEffect = HFx.circleOut(hitColor, splashDamageRadius);
-			hitEffect = new MultiEffect(HFx.blast(hitColor, 200f), new Effect(180F, 600f, e -> {
+			hitEffect = new MultiEffect(HFx.blast(hitColor, 200f), new Effect(180f, 600f, e -> {
 				float rad = 120f;
 
 				float f = (e.fin(Interp.pow10Out) + 8) / 9 * Mathf.curve(Interp.slowFast.apply(e.fout(0.75f)), 0f, 0.85f);
@@ -1369,10 +1370,10 @@ public final class HBullets {
 				Fill.circle(e.x, e.y, rad * f * 0.75f);
 
 				Drawf.light(e.x, e.y, rad * f * 2f, Draw.getColor(), 0.7f);
-			}).layer(Layer.effect + 0.001f), effect, new Effect(260, 460f, e -> {
+			}).layer(Layer.effect + 0.001f), effect, new Effect(260f, 460f, e -> {
 				Draw.blend(Blending.additive);
 				Draw.z(Layer.flyingUnit - 0.8f);
-				float radius = e.fin(Interp.pow3Out) * 230;
+				float radius = e.fin(Interp.pow3Out) * 230f;
 				Fill.light(e.x, e.y, Lines.circleVertices(radius), radius, Color.clear, Tmp.c1.set(Pal.techBlue).a(e.fout(Interp.pow10Out)));
 				Draw.blend();
 			}));

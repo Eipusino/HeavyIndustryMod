@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import static heavyindustry.struct.Collectionsf.arrayOf;
+import static heavyindustry.util.Utils.arrayOf;
 
 /**
  * More expansion of Java reflection functionality.
