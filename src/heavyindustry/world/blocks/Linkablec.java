@@ -17,10 +17,7 @@ import mindustry.logic.Ranged;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
-public interface Linkablec extends Buildingc, Ranged {
-	@Deprecated
-	Seq<Building> tmpSeq = new Seq<>(1);
-
+public interface Linkablec extends Ranged {
 	/*default boolean onConfigureBuildTapped(Building other) {
 		if (this == other || linkPos() == other.pos()) {
 			configure(Tmp.p1.set(-1, -1));
@@ -66,7 +63,7 @@ public interface Linkablec extends Buildingc, Ranged {
 		return linkValid(link());
 	}
 
-	default boolean linkValid(Building b) {
+	default boolean linkValid(@Nullable Building b) {
 		return b != null;
 	}
 

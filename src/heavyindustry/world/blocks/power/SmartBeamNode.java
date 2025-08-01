@@ -1,20 +1,26 @@
 package heavyindustry.world.blocks.power;
 
+import arc.Core;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
-import arc.math.geom.Geometry;
-import arc.math.geom.Point2;
 import mindustry.core.Renderer;
-import mindustry.graphics.Drawf;
-import mindustry.graphics.Layer;
+import mindustry.game.Team;
 import mindustry.world.blocks.power.BeamNode;
 
-import static mindustry.Vars.tilesize;
-
 public class SmartBeamNode extends BeamNode {
+	public TextureRegion topRegion;
+
 	public SmartBeamNode(String name) {
 		super(name);
+	}
+
+	@Override
+	public void load() {
+		super.load();
+
+		topRegion = Core.atlas.find(name + "-top", "white");
 	}
 
 	public class SmartBeamNodeBuild extends BeamNodeBuild {
@@ -24,6 +30,7 @@ public class SmartBeamNode extends BeamNode {
 		@Override
 		public void updateTile() {
 			super.updateTile();
+
 			updatePowerColor();
 		}
 
@@ -39,32 +46,16 @@ public class SmartBeamNode extends BeamNode {
 
 		@Override
 		public void draw() {
-			Draw.rect(region, x, y);
-			drawTeamTop();
+			super.draw();
 
-			if (Mathf.zero(Renderer.laserOpacity)) return;
+			if (topRegion.found() && !Mathf.zero(Renderer.laserOpacity) && team != Team.derelict) {
+				Draw.color(lightColor, darkColor, (1f - power.graph.getSatisfaction()) * 0.86f + Mathf.absin(3f, 0.1f));
+				Draw.alpha(Renderer.laserOpacity);
 
-			Draw.z(Layer.power);
-			Draw.color(lightColor, darkColor, (1f - power.graph.getSatisfaction()) * 0.86f + Mathf.absin(3f, 0.1f));
-			Draw.alpha(Renderer.laserOpacity);
-			float w = laserWidth + Mathf.absin(pulseScl, pulseMag);
+				Draw.rect(topRegion, x, y);
 
-			for (int i = 0; i < 4; i++) {
-				if (dests[i] != null && links[i].wasVisible && (!(links[i].block instanceof BeamNode node) ||
-						(links[i].tileX() != tileX() && links[i].tileY() != tileY()) ||
-						(links[i].id > id && range >= node.range) || range > node.range)) {
-
-					int dst = Math.max(Math.abs(dests[i].x - tile.x), Math.abs(dests[i].y - tile.y));
-					//don't draw lasers for adjacent blocks
-					if (dst > 1 + size / 2) {
-						Point2 point = Geometry.d4[i];
-						float poff = tilesize / 2f;
-						Drawf.laser(laser, laserEnd, x + poff * size * point.x, y + poff * size * point.y, dests[i].worldx() - poff * point.x, dests[i].worldy() - poff * point.y, w);
-					}
-				}
+				Draw.reset();
 			}
-
-			Draw.reset();
 		}
 	}
 }

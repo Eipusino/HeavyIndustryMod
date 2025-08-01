@@ -2001,6 +2001,28 @@ public final class Utils {
 		return intersected ? v2.set(nearX, nearY) : null;
 	}
 
+	public static PixmapRegion color(PixmapRegion pixmap, ColorBool cond, Int2Color to) {
+		pixmap.pixmap.each((x, y) -> {
+			if (x >= pixmap.x && x < pixmap.x + pixmap.width && y >= pixmap.y && y < pixmap.y + pixmap.height &&
+					cond.get(pixmap.pixmap.get(x, y))) {
+				pixmap.pixmap.set(x, y, to.get(x, y));
+			}
+		});
+		return pixmap;
+	}
+
+	public static PixmapRegion color(PixmapRegion pixmap, Color from, Color to) {
+		return color(pixmap, c -> c == from.rgba(), (x, y) -> to);
+	}
+
+	public interface ColorBool {
+		boolean get(int c);
+	}
+
+	public interface Int2Color {
+		Color get(int x, int y);
+	}
+
 	public interface LineHitHandler<T> {
 		void get(T t, float x, float y);
 	}

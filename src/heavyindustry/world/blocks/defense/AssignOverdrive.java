@@ -1,7 +1,6 @@
 package heavyindustry.world.blocks.defense;
 
 import arc.Core;
-import arc.func.Cons2;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
@@ -17,11 +16,11 @@ import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.graphics.Drawn;
-import heavyindustry.io.HTypeIO;
 import heavyindustry.world.blocks.LinkGroupc;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Pal;
+import mindustry.io.TypeIO;
 import mindustry.ui.Bar;
 import mindustry.world.blocks.defense.OverdriveProjector;
 import mindustry.world.meta.Stat;
@@ -44,8 +43,8 @@ public class AssignOverdrive extends OverdriveProjector {
 		solid = true;
 		hasItems = true;
 		hasPower = true;
-		config(Integer.class, (Cons2<AssignOverdriveBuild, Integer>) AssignOverdriveBuild::linkPos);
-		config(Point2.class, (Cons2<AssignOverdriveBuild, Point2>) AssignOverdriveBuild::linkPos);
+		config(Integer.class, (AssignOverdriveBuild tile, Integer index) -> tile.linkPos(index));
+		config(Point2.class, (AssignOverdriveBuild tile, Point2 point) -> tile.linkPos(point));
 		config(Point2[].class, (AssignOverdriveBuild tile, Point2[] points) -> {
 			for (Point2 p : points) {
 				tile.linkPos(Point2.pack(p.x + tile.tileX(), p.y + tile.tileY()));
@@ -139,7 +138,7 @@ public class AssignOverdrive extends OverdriveProjector {
 		}
 
 		@Override
-		public boolean linkValid(Building b) {
+		public boolean linkValid(@Nullable Building b) {
 			return b != null && b.team == team && b.block.canOverdrive;
 		}
 
@@ -276,17 +275,19 @@ public class AssignOverdrive extends OverdriveProjector {
 		@Override
 		public void write(Writes write) {
 			super.write(write);
+
 			write.f(heat);
 			write.f(phaseHeat);
-			HTypeIO.writeIntSeq(write, targets);
+			TypeIO.writeIntSeq(write, targets);
 		}
 
 		@Override
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
+
 			heat = read.f();
 			phaseHeat = read.f();
-			targets = HTypeIO.readIntSeq(read);
+			targets = TypeIO.readIntSeq(read);
 		}
 
 		@Override

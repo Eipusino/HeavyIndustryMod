@@ -46,7 +46,7 @@ public abstract class BaseMirrorShieldAbility extends Ability implements Collide
 	protected float alpha;
 	protected float radScl;
 
-	private boolean lastBreak;
+	protected boolean lastBreak;
 
 	public abstract boolean shouldReflect(Unit unit, Bullet bullet);
 
@@ -94,8 +94,8 @@ public abstract class BaseMirrorShieldAbility extends Ability implements Collide
 	public void update(Unit unit) {
 		alpha = Mathf.lerpDelta(alpha, 0, 0.06f);
 
-		lastBreak = false;
-		if (unit.shield > 0) {
+		if (unit.shield >= maxShield - 0.1f) lastBreak = false;
+		if (unit.shield > 0 && !lastBreak) {
 			radScl = Mathf.lerpDelta(radScl, 1f, 0.06f);
 
 			eachNearBullets(unit, bullet -> {
@@ -107,8 +107,9 @@ public abstract class BaseMirrorShieldAbility extends Ability implements Collide
 			radScl = 0f;
 		}
 
-		if (!lastBreak && unit.shield < maxShield)
+		if (unit.shield < maxShield) {
 			unit.shield = Math.min(maxShield, unit.shield + recoverSpeed * Time.delta * unit.reloadMultiplier);
+		}
 	}
 
 	public void doCollide(Unit unit, Bullet bullet) {
@@ -117,7 +118,7 @@ public abstract class BaseMirrorShieldAbility extends Ability implements Collide
 		} else {
 			alpha = 1;
 			bullet.collided.add(unit.id);
-			damageShield(unit, bullet.damage());
+			damageShield(unit, bullet.type().shieldDamage(bullet));
 
 			bullet.damage -= Math.min(strength, unit.shield);
 			float rot;
@@ -127,7 +128,7 @@ public abstract class BaseMirrorShieldAbility extends Ability implements Collide
 	}
 
 	public void damageShield(Unit unit, float damage) {
-		if (unit.shield <= damage - shieldArmor) {
+		if (unit.shield <= Mathf.maxZero(damage - shieldArmor)) {
 			unit.shield = -cooldown;
 
 			breakEffect.at(unit.x, unit.y, unit.rotation(), unit.team.color, this);
@@ -142,7 +143,7 @@ public abstract class BaseMirrorShieldAbility extends Ability implements Collide
 
 		float albedo = Mathf.equal(minAlbedo, maxAlbedo) ? minAlbedo : Mathf.random(minAlbedo, maxAlbedo);
 
-		damageShield(unit, bullet.damage() * albedo);
+		damageShield(unit, bullet.type().shieldDamage(bullet) * albedo);
 
 		float baseAngel = Angles.angle(bullet.x - unit.x, bullet.y - unit.y);
 		float diffAngel = Mathm.innerAngle(bullet.rotation(), baseAngel);

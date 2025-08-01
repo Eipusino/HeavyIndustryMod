@@ -14,7 +14,7 @@ public class BaseCrawlUnit extends CrawlUnit implements BaseUnitc {
 
 	@Override
 	public void rawDamage(float amount) {
-		if (type instanceof BaseUnitType bt) {
+		if (type instanceof BaseUnitType but) {
 			boolean hadShields = shield > 0.0001f;
 
 			if (Float.isNaN(health)) health = 0f;
@@ -23,7 +23,7 @@ public class BaseCrawlUnit extends CrawlUnit implements BaseUnitc {
 				shieldAlpha = 1f;
 			}
 
-			float a = amount * bt.damageMultiplier;
+			float a = amount * but.damageMultiplier;
 
 			float shieldDamage = Math.min(Math.max(shield, 0), a);
 			shield -= shieldDamage;

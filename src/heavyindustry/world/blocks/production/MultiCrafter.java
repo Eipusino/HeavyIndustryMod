@@ -2,6 +2,7 @@ package heavyindustry.world.blocks.production;
 
 import arc.Core;
 import arc.func.Boolf;
+import arc.func.Cons;
 import arc.func.Func;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
@@ -130,7 +131,7 @@ public class MultiCrafter extends Block {
 				outputsPower = true;
 			}
 		}
-		if (hasPower && consumesPower) consumePowerDynamic(b -> ((MultiCrafterBuild) b).formulaPower());
+		if (hasPower && consumesPower) consumePowerDynamic(MultiCrafterBuild::formulaPower);
 
 		super.init();
 

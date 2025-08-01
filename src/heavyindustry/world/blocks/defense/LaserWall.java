@@ -303,7 +303,7 @@ public class LaserWall extends Wall {
 		}
 
 		@Override
-		public boolean linkValid(Building b) {
+		public boolean linkValid(@Nullable Building b) {
 			return b instanceof LaserWallBuild build && b.team == team && b.isValid() && build.link() != this;
 		}
 

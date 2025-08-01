@@ -18,6 +18,7 @@ public class ThermalHeater extends ThermalGenerator {
 
 	public ThermalHeater(String name) {
 		super(name);
+
 		drawer = new DrawMulti(new DrawDefault(), new DrawHeatOutput());
 		rotateDraw = false;
 		rotate = true;

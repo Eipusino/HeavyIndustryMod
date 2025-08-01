@@ -1,7 +1,6 @@
 package heavyindustry.content;
 
 import arc.Core;
-import arc.func.Cons;
 import arc.graphics.Blending;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
@@ -3187,6 +3186,7 @@ public final class HUnitTypes {
 			isEnemy = false;
 			immunities = immunitier();
 			flying = true;
+			killable = false;
 			hittable = false;
 			targetable = false;
 			faceTarget = false;

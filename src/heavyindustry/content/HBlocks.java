@@ -42,6 +42,8 @@ import heavyindustry.util.Utils;
 import heavyindustry.world.blocks.defense.AparajitoWall;
 import heavyindustry.world.blocks.defense.AssignOverdrive;
 import heavyindustry.world.blocks.defense.BombLauncher;
+import heavyindustry.world.blocks.defense.DPSWall;
+import heavyindustry.world.blocks.defense.DPSWallDisplay;
 import heavyindustry.world.blocks.defense.Explosive;
 import heavyindustry.world.blocks.defense.IndestructibleWall;
 import heavyindustry.world.blocks.defense.InsulationWall;
@@ -354,7 +356,9 @@ public final class HBlocks {
 	unitIniter,
 			reinforcedItemSource, reinforcedLiquidSource, reinforcedPowerSource, reinforcedPayloadSource, adaptiveSource,
 			staticDrill, omniNode, ultraAssignOverdrive,
-			teamChanger, barrierProjector, nihility, invincibleWall, invincibleWallLarge, invincibleWallHuge, invincibleWallGigantic,
+			teamChanger, barrierProjector, nihility,
+			invincibleWall, invincibleWallLarge, invincibleWallHuge, invincibleWallGigantic,
+			dpsWall, dpsWallLarge, dpsWallHuge, dpsWallGigantic, dpsWallDisplay,
 			mustDieTurret, oneShotTurret, pointTurret,
 			nextWave;
 
@@ -2417,7 +2421,6 @@ public final class HBlocks {
 			requirements(Category.crafting, ItemStack.with(Items.beryllium, 60, Items.graphite, 70, Items.tungsten, 80, Items.oxide, 50));
 			size = 3;
 			hasPower = false;
-			hasLiquids = outputsLiquid = true;
 			attribute = Attribute.steam;
 			group = BlockGroup.liquids;
 			displayEfficiencyScale = 1f / 9;
@@ -4892,40 +4895,40 @@ public final class HBlocks {
 		reinforcedItemSource = new ItemSource("reinforced-item-source") {{
 			requirements(Category.distribution, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 1000;
-			armor = 50f;
+			armor = 10f;
 			itemsPerSecond = 1000;
 			hideDetails = false;
 		}};
 		reinforcedLiquidSource = new LiquidSource("reinforced-liquid-source") {{
 			requirements(Category.liquid, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 1000;
-			armor = 50f;
+			armor = 10f;
 		}};
 		reinforcedPowerSource = new PowerSource("reinforced-power-source") {{
 			requirements(Category.power, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 1000;
-			armor = 50f;
+			armor = 10f;
 			powerProduction = 10000000f / 60f;
 		}};
 		reinforcedPayloadSource = new AdaptPayloadSource("reinforced-payload-source") {{
 			requirements(Category.units, BuildVisibility.sandboxOnly, ItemStack.empty);
 			size = 5;
 			health = 1000;
-			armor = 50f;
+			armor = 10f;
 			placeableLiquid = true;
 			floating = true;
 		}};
 		adaptiveSource = new AdaptiveSource("adaptive-source") {{
 			requirements(Category.distribution, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 1000;
-			armor = 50f;
+			armor = 10f;
 			liquidCapacity = 100f;
 			itemsPerSecond = 2000;
 		}};
 		staticDrill = new Drill("static-drill") {{
 			requirements(Category.production, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 1000;
-			armor = 50f;
+			armor = 10f;
 			drillTime = 1f;
 			tier = 114514;
 			itemCapacity = 1000;
@@ -4937,7 +4940,7 @@ public final class HBlocks {
 		omniNode = new NodeBridge("omni-node") {{
 			requirements(Category.distribution, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 1000;
-			armor = 50f;
+			armor = 10f;
 			range = 35;
 			hasPower = false;
 			hasLiquids = true;
@@ -4952,7 +4955,7 @@ public final class HBlocks {
 			requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.empty);
 			size = 2;
 			health = 1000;
-			armor = 50f;
+			armor = 10f;
 			hasItems = false;
 			hasPower = false;
 			range = 600f;
@@ -4968,7 +4971,7 @@ public final class HBlocks {
 			requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.empty);
 			size = 3;
 			health = 1000;
-			armor = 50f;
+			armor = 10f;
 			itemCapacity = 10000;
 			unitCapModifier = 1;
 			configurable = true;
@@ -5052,7 +5055,7 @@ public final class HBlocks {
 		barrierProjector = new BaseShield("barrier-projector") {{
 			requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 1000;
-			armor = 50f;
+			armor = 10f;
 			size = 2;
 			hasPower = false;
 			radius = 300f;
@@ -5074,7 +5077,7 @@ public final class HBlocks {
 		nihility = new ForceProjector("nihility") {{
 			requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 1000;
-			armor = 50f;
+			armor = 10f;
 			size = 2;
 			hasPower = false;
 			radius = 220f;
@@ -5154,7 +5157,7 @@ public final class HBlocks {
 		invincibleWall = new IndestructibleWall("invincible-wall") {{
 			requirements(Category.defense, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 1000;
-			armor = 50f;
+			armor = 10f;
 			size = 1;
 			absorbLasers = insulated = true;
 			unlocked = false;
@@ -5162,7 +5165,7 @@ public final class HBlocks {
 		invincibleWallLarge = new IndestructibleWall("invincible-wall-large") {{
 			requirements(Category.defense, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 4000;
-			armor = 50f;
+			armor = 10f;
 			size = 2;
 			absorbLasers = insulated = true;
 			unlocked = false;
@@ -5170,7 +5173,7 @@ public final class HBlocks {
 		invincibleWallHuge = new IndestructibleWall("invincible-wall-huge") {{
 			requirements(Category.defense, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 9000;
-			armor = 50f;
+			armor = 10f;
 			size = 3;
 			absorbLasers = insulated = true;
 			unlocked = false;
@@ -5178,15 +5181,39 @@ public final class HBlocks {
 		invincibleWallGigantic = new IndestructibleWall("invincible-wall-gigantic") {{
 			requirements(Category.defense, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 16000;
-			armor = 50f;
+			armor = 10f;
 			size = 4;
 			absorbLasers = insulated = true;
 			unlocked = false;
 		}};
+		dpsWall = new DPSWall("dps-wall") {{
+			requirements(Category.defense, BuildVisibility.sandboxOnly, ItemStack.empty);
+			health = 1000;
+		}};
+		dpsWallLarge = new DPSWall("dps-wall-large") {{
+			requirements(Category.defense, BuildVisibility.sandboxOnly, ItemStack.empty);
+			size = 2;
+			health = 4000;
+		}};
+		dpsWallHuge = new DPSWall("dps-wall-huge") {{
+			requirements(Category.defense, BuildVisibility.sandboxOnly, ItemStack.empty);
+			size = 3;
+			health = 9000;
+		}};
+		dpsWallGigantic = new DPSWall("dps-wall-gigantic") {{
+			requirements(Category.defense, BuildVisibility.sandboxOnly, ItemStack.empty);
+			size = 4;
+			health = 16000;
+		}};
+		dpsWallDisplay = new DPSWallDisplay("dps-wall-display") {{
+			requirements(Category.defense, BuildVisibility.sandboxOnly, ItemStack.empty);
+			size = 5;
+			health = 25000;
+		}};
 		mustDieTurret = new PlatformTurret("must-die-turret") {{
 			requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 1000;
-			armor = 50f;
+			armor = 10f;
 			range = 500f;
 			inaccuracy = 25f;
 			rotateSpeed = 20f;
@@ -5322,7 +5349,7 @@ public final class HBlocks {
 			requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.empty);
 			size = 2;
 			health = 1000;
-			armor = 50f;
+			armor = 10f;
 			range = 600f;
 			reload = 30f;
 			inaccuracy = 0f;
@@ -5372,7 +5399,7 @@ public final class HBlocks {
 			requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.empty);
 			size = 2;
 			health = 1000;
-			armor = 50f;
+			armor = 10f;
 			range = 600f;
 			reload = 30f;
 			inaccuracy = 0f;
@@ -5473,7 +5500,7 @@ public final class HBlocks {
 			requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.empty);
 			size = 2;
 			health = 1000;
-			armor = 50f;
+			armor = 10f;
 			update = true;
 			solid = false;
 			targetable = false;

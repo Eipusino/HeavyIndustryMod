@@ -7,13 +7,17 @@ import mindustry.gen.Building;
 
 public interface LinkGroupc extends Linkablec {
 	default Seq<Building> linkBuilds() {
-		Seq<Building> bs = new Seq<>();
+		Seq<Building> builds = new Seq<>();
+
 		for (int pos : linkGroup().shrink()) {
-			Building b = Vars.world.build(pos);
-			if (linkValid(b)) bs.add(b);
-			else linkGroup().removeValue(pos);
+			Building build = Vars.world.build(pos);
+			if (linkValid(build)) {
+				builds.add(build);
+			} else {
+				linkGroup().removeValue(pos);
+			}
 		}
-		return bs;
+		return builds;
 	}
 
 	IntSeq linkGroup();

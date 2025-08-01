@@ -45,7 +45,7 @@ public class MirrorArmorAbility extends BaseMirrorShieldAbility {
 
 	@Override
 	public void draw(Unit unit) {
-		if (unit.shield <= 0) return;
+		if (unit.shield <= 0 || lastBreak) return;
 
 		float z = Draw.z();
 

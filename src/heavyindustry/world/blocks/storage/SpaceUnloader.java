@@ -93,7 +93,7 @@ public class SpaceUnloader extends StorageBlock {
 
 		config(Integer.class, SpaceUnloaderBuild::setOneLink);
 
-		config(Item.class, (SpaceUnloaderBuild tile, Item v) -> tile.setItemTypeId(v.id));
+		config(Item.class, (SpaceUnloaderBuild tile, Item item) -> tile.setItemTypeId(item.id));
 
 		configClear((SpaceUnloaderBuild tile) -> tile.setLink(new IntSeq()));
 	}

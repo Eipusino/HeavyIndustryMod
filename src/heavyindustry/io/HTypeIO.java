@@ -1,7 +1,6 @@
 package heavyindustry.io;
 
 import arc.math.geom.Point2;
-import arc.struct.IntSeq;
 import arc.struct.Seq;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
@@ -30,21 +29,6 @@ public class HTypeIO {
 
 	public static <T extends Content> T readContent(Reads read) {
 		return Vars.content.getByID(ContentType.all[read.i()], read.i());
-	}
-
-	public static void writeIntSeq(Writes write, IntSeq arr) {
-		write.i(arr.size);
-		for (int i = 0; i < arr.size; i++) {
-			write.i(arr.items[i]);
-		}
-	}
-
-	public static IntSeq readIntSeq(Reads read) {
-		int length = read.i();
-		IntSeq arr = new IntSeq(length);
-
-		for (int i = 0; i < length; i++) arr.add(read.i());
-		return arr;
 	}
 
 	public static void writePoint2(Writes write, Point2 p) {

@@ -22,7 +22,7 @@ import heavyindustry.content.HStatusEffects;
 import heavyindustry.content.HTechTree;
 import heavyindustry.content.HUnitTypes;
 import heavyindustry.content.HWeathers;
-import heavyindustry.game.HTeams;
+import heavyindustry.game.HTeam;
 import heavyindustry.gen.Entitys;
 import heavyindustry.gen.HIcon;
 import heavyindustry.gen.HMusics;
@@ -194,7 +194,7 @@ public final class HeavyIndustryMod extends Mod {
 		HBullets.load();
 
 		if (!isPlugin) {
-			HTeams.load();
+			HTeam.load();
 			HItems.load();
 			HStatusEffects.load();
 			HLiquids.load();
