@@ -1,8 +1,6 @@
 package heavyindustry.entities.bullet;
 
-import arc.Core;
 import arc.audio.Sound;
-import arc.graphics.g2d.Draw;
 import arc.math.Angles;
 import arc.math.geom.Position;
 import arc.util.Time;
@@ -13,21 +11,24 @@ import mindustry.gen.Bullet;
 import mindustry.gen.Sounds;
 import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
-import mindustry.graphics.Layer;
 import mindustry.world.blocks.ControlBlock;
 
 public class CtrlMissileBulletType extends BasicBulletType {
-	public String sprite;
-	public float width, height;
-	public boolean autoHoming = false, low = false;
+	public boolean autoHoming = false;
 
 	public Sound loopSound = Sounds.missileTrail;
 	public float loopSoundVolume = 0.1f;
 
-	public CtrlMissileBulletType(String spr, float wid, float hei) {
-		sprite = spr;
-		width = wid;
-		height = hei;
+	public CtrlMissileBulletType() {
+		this(1, 1, "missile");
+	}
+
+	public CtrlMissileBulletType(String bulletSprite) {
+		this(1, 1, bulletSprite);
+	}
+
+	public CtrlMissileBulletType(float speed, float damage, String bulletSprite) {
+		super(speed, damage, bulletSprite);
 		homingPower = 2.5f;
 		homingRange = 8 * 8;
 		trailWidth = 3;
@@ -60,8 +61,8 @@ public class CtrlMissileBulletType extends BasicBulletType {
 	@Override
 	public void updateHoming(Bullet b) {
 		if (homingPower > 0.0001f && b.time >= homingDelay) {
-			float realAimX = b.aimX < 0 ? b.data instanceof Position ? ((Position) b.data).getX() : b.x : b.aimX;
-			float realAimY = b.aimY < 0 ? b.data instanceof Position ? ((Position) b.data).getY() : b.y : b.aimY;
+			float realAimX = b.aimX < 0 ? b.data instanceof Position p ? p.getX() : b.x : b.aimX;
+			float realAimY = b.aimY < 0 ? b.data instanceof Position p ? p.getY() : b.y : b.aimY;
 
 			Teamc target;
 			if (heals()) {
@@ -85,22 +86,17 @@ public class CtrlMissileBulletType extends BasicBulletType {
 				if (b.owner instanceof Unit unit) shooter = unit;
 				if (b.owner instanceof ControlBlock control) shooter = control.unit();
 				if (shooter != null) {
-					if (shooter.isPlayer()) lookAt(shooter.aimX, shooter.aimY, b);
-					else {
-						if (b.data instanceof Position p) lookAt(p.getX(), p.getY(), b);
-						else lookAt(realAimX, realAimY, b);
+					if (shooter.isPlayer()) {
+						lookAt(shooter.aimX, shooter.aimY, b);
+					} else {
+						if (b.data instanceof Position p) {
+							lookAt(p.getX(), p.getY(), b);
+						} else {
+							lookAt(realAimX, realAimY, b);
+						}
 					}
 				}
 			}
 		}
-	}
-
-	@Override
-	public void draw(Bullet b) {
-		super.draw(b);
-		Draw.z(low ? Layer.flyingUnitLow : Layer.flyingUnit);
-		if (width > 0 && height > 0) Draw.rect(Core.atlas.find(sprite), b.x, b.y, width, height, b.rotation() - 90);
-		else Draw.rect(Core.atlas.find(sprite), b.x, b.y, b.rotation() - 90);
-		Draw.reset();
 	}
 }

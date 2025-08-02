@@ -35,7 +35,6 @@ import heavyindustry.entities.bullet.EdgeFragBulletType;
 import heavyindustry.entities.bullet.FlameBulletType;
 import heavyindustry.entities.bullet.GuidedMissileBulletType;
 import heavyindustry.entities.bullet.HealConeBulletType;
-import heavyindustry.type.unit.RailMissileUnitType;
 import heavyindustry.entities.bullet.TrailFadeBulletType;
 import heavyindustry.entities.effect.WrapperEffect;
 import heavyindustry.entities.part.AimPart;
@@ -79,7 +78,6 @@ import mindustry.entities.Effect;
 import mindustry.entities.Units;
 import mindustry.entities.abilities.EnergyFieldAbility;
 import mindustry.entities.abilities.ForceFieldAbility;
-import mindustry.entities.abilities.MoveEffectAbility;
 import mindustry.entities.abilities.RegenAbility;
 import mindustry.entities.abilities.RepairFieldAbility;
 import mindustry.entities.abilities.ShieldRegenFieldAbility;
@@ -90,7 +88,6 @@ import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.BulletType;
 import mindustry.entities.bullet.ContinuousLaserBulletType;
 import mindustry.entities.bullet.EmpBulletType;
-import mindustry.entities.bullet.ExplosionBulletType;
 import mindustry.entities.bullet.FlakBulletType;
 import mindustry.entities.bullet.LaserBulletType;
 import mindustry.entities.bullet.LightningBulletType;
@@ -157,8 +154,6 @@ public final class HUnitTypes {
 			burner, shadowBlade, artilleryFirePioneer,
 	//elite
 	tiger, thunder,
-	//missile
-	airRaidMissile,
 	//?
 	eipusino;
 
@@ -1630,7 +1625,9 @@ public final class HUnitTypes {
 				reload = 72;
 				inaccuracy = 0;
 				shootSound = Sounds.blaster;
-				bullet = new CtrlMissileBulletType("missile-large", 6, 10) {{
+				bullet = new CtrlMissileBulletType("missile-large") {{
+					width = 6f;
+					height = 10f;
 					status = StatusEffects.electrified;
 					damage = 108;
 					buildingDamageMultiplier = 1f;
@@ -2155,7 +2152,7 @@ public final class HUnitTypes {
 					under = true;
 					mirror = true;
 				}});
-				bullet = new CtrlMissileBulletType(name("havoc-missile"), -1, -1) {{
+				bullet = new CtrlMissileBulletType(name("havoc-missile")) {{
 					shootEffect = Fx.sparkShoot;
 					smokeEffect = Fx.shootSmokeTitan;
 					hitColor = Pal.suppress;
@@ -2487,14 +2484,14 @@ public final class HUnitTypes {
 						Units.nearbyEnemies(b.team, b.x, b.y, flameLength, unit -> {
 							if (Angles.within(b.rotation(), b.angleTo(unit), flameCone) && unit.checkTarget(collidesAir, collidesGround) && unit.hittable()) {
 								Fx.hitFlameSmall.at(unit);
-								unit.health(unit.health() - damage * damageBoost);
+								unit.health(unit.health - damage * damageBoost);
 								unit.apply(status, statusDuration);
 							}
 						});
 						indexer.allBuildings(b.x, b.y, flameLength, other -> {
 							if (other.team != b.team && Angles.within(b.rotation(), b.angleTo(other), flameCone)) {
 								Fx.hitFlameSmall.at(other);
-								other.health(other.health() - damage * buildingDamageMultiplier * damageBoost);
+								other.health(other.health - damage * buildingDamageMultiplier * damageBoost);
 							}
 						});
 					}
@@ -2538,7 +2535,9 @@ public final class HUnitTypes {
 				inaccuracy = 3f;
 				shoot = new ShootSpread(3, 18f);
 				shootCone = 35f;
-				bullet = new CtrlMissileBulletType("missile-large", 6, 10) {{
+				bullet = new CtrlMissileBulletType("missile-large") {{
+					width = 6f;
+					height = 10f;
 					damage = 165f;
 					buildingDamageMultiplier = 1.2f;
 					pierceArmor = true;
@@ -3101,72 +3100,6 @@ public final class HUnitTypes {
 			}});
 			drownTimeMultiplier = 26f;
 			fogRadius = 68f;
-		}};
-		airRaidMissile = new RailMissileUnitType("air-raid-missile") {{
-			speed = 10f;
-			accel = 0.32f;
-			drag /= 2;
-			lifetime = 60f * 1.8f;
-			targetPriority = 0f;
-			rotateSpeed = 3.5f;
-			baseRotateSpeed = 3.5f;
-			armor = 10;
-			outlineColor = Pal.darkOutline;
-			health = 4000;
-			homingDelay = 17f;
-			lowAltitude = true;
-			engineSize = 2.75f;
-			engineOffset = 23f;
-			engineColor = trailColor = Pal.techBlue;
-			engineLayer = Layer.effect;
-			trailLength = 45;
-			deathExplosionEffect = Fx.none;
-			loopSoundVolume = 0.1f;
-			abilities.add(new MoveEffectAbility() {{
-				effect = HFx.hugeSmoke;
-				rotation = 180f;
-				y = -22f;
-				color = Color.grays(0.6f).lerp(Pal.techBlue, 0.5f).a(0.9f);
-				interval = 5f;
-			}});
-			clipSize = 620;
-			weapons.add(new Weapon() {{
-				shootCone = 360f;
-				mirror = false;
-				reload = 1f;
-				shootOnDeath = true;
-				shootSound = Sounds.explosionbig;
-				predictTarget = false;
-				shake = 12;
-				bullet = new ExplosionBulletType(4200, 150f) {{
-					trailColor = lightColor = lightningColor = hitColor = Pal.techBlue;
-					suppressionRange = 600f;
-					suppressionDuration = 600f;
-					hitSound = despawnSound = Sounds.none;
-					status = HStatusEffects.territoryFieldSuppress;
-					lightningDamage = damage = splashDamage / 1.5f;
-					scaledSplashDamage = true;
-					splashDamageRadius = 200f;
-					hitShake = despawnShake = 16f;
-					lightning = 6;
-					lightningCone = 360;
-					lightningLengthRand = lightningLength = 15;
-					fragLifeMin = 0.6f;
-					fragLifeMax = 1f;
-					fragVelocityMin = 0.4f;
-					fragVelocityMax = 0.6f;
-					fragBullets = 8;
-					fragBullet = HBullets.arc9000frag;
-					shootEffect = new MultiEffect(HFx.largeTechBlueHit, HFx.blast(Pal.techBlue, 140f), HFx.largeTechBlueHitCircle, HFx.subEffect(150, splashDamageRadius * 0.66f, 13, 34f, Interp.pow2Out, ((i, x, y, rot, fin) -> {
-						float fout = Interp.pow2Out.apply(1 - fin);
-						float finpow = Interp.pow3Out.apply(fin);
-						Tmp.v1.trns(rot, 25 * finpow);
-						for (int s : Mathf.signs) {
-							Drawf.tri(x, y, 12 * fout, 45 * Mathf.curve(finpow, 0, 0.3f) * HFx.fout(fin, 0.15f), rot + s * 90);
-						}
-					})));
-				}};
-			}});
 		}};
 		eipusino = new NucleoidUnitType("eipusino") {{
 			outlines = false;

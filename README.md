@@ -2,7 +2,7 @@
 
 ---
 
-![Logo](assets/other/cover-beta.png)
+![Logo](assets/other/cover-mobile.png)
 
 ---
 

@@ -97,6 +97,8 @@ public final class HShaders {
 		brine.dispose();
 		originiumFluid.dispose();
 		boundWater.dispose();
+		pit.dispose();
+		waterPit.dispose();
 	}
 
 	/**

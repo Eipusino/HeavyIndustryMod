@@ -96,7 +96,7 @@ public final class HeavyIndustryMod extends Mod {
 	static @Nullable SpecialMenuRenderer specialMenuRenderer;
 
 	/** If needed, please call {@link #loaded()} for the LoadedMod of this mod. */
-	static LoadedMod loaded;
+	static @Nullable LoadedMod loaded;
 
 	static {
 		modJson = LoadMod.getMeta(internalTree.root);

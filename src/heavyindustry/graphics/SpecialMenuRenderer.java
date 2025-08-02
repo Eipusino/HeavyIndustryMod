@@ -4,30 +4,31 @@ import arc.Core;
 import arc.graphics.Texture;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
-import arc.math.Mathf;
 import heavyindustry.HVars;
 import mindustry.graphics.MenuRenderer;
 
 public class SpecialMenuRenderer extends MenuRenderer {
-	public static final TextureRegion coverAlpha, coverBeta;
+	public static final TextureRegion coverDesktop, coverMobile;
+
+	protected TextureRegion region;
 
 	static {
-		coverAlpha = new TextureRegion(new Texture(HVars.internalTree.child("other/cover-alpha.png")));
-		coverBeta = new TextureRegion(new Texture(HVars.internalTree.child("other/cover-beta.png")));
+		coverDesktop = new TextureRegion(new Texture(HVars.internalTree.child("other/cover-desktop.png")));
+		coverMobile = new TextureRegion(new Texture(HVars.internalTree.child("other/cover-mobile.png")));
 	}
 
-	public boolean random;
 	public float scale;
+	public boolean isMobile;
 
 	public SpecialMenuRenderer() {
-		random = Mathf.randomBoolean();
-		scale = Math.max(Core.graphics.getWidth() / 1920f, Core.graphics.getHeight() / 1024f);
+		isMobile = Core.app.isMobile();
+		region = isMobile ? coverMobile : coverDesktop;
+
+		scale = Math.max(Core.graphics.getWidth() / region.width, Core.graphics.getHeight() / region.height);
 	}
 
 	@Override
 	public void render() {
-		TextureRegion region = random ? coverAlpha : coverBeta;
-
 		Draw.color();
 		Draw.rect(region,
 				Core.graphics.getWidth() / 2f,

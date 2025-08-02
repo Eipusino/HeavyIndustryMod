@@ -7,6 +7,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import mindustry.core.Renderer;
 import mindustry.game.Team;
+import mindustry.graphics.Layer;
 import mindustry.world.blocks.power.BeamNode;
 
 public class SmartBeamNode extends BeamNode {
@@ -49,11 +50,14 @@ public class SmartBeamNode extends BeamNode {
 			super.draw();
 
 			if (topRegion.found() && !Mathf.zero(Renderer.laserOpacity) && team != Team.derelict) {
+				float z = Draw.z();
+				Draw.z(Layer.block);
 				Draw.color(lightColor, darkColor, (1f - power.graph.getSatisfaction()) * 0.86f + Mathf.absin(3f, 0.1f));
 				Draw.alpha(Renderer.laserOpacity);
 
 				Draw.rect(topRegion, x, y);
 
+				Draw.z(z);
 				Draw.reset();
 			}
 		}

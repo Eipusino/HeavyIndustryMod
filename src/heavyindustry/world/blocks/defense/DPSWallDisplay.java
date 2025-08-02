@@ -66,7 +66,7 @@ public class DPSWallDisplay extends Wall {
 		@Override
 		public void damage(float amount) {
 			totalDamage += amount;
-			hits += 1;
+			hits++;
 			if (firstHitTime == 0) {
 				firstHitTime = Time.time;
 			}
@@ -143,6 +143,8 @@ public class DPSWallDisplay extends Wall {
 					Building linkTarget = world.build(pos);
 					if (linkValid(linkTarget)) {
 						Drawf.square(linkTarget.x, linkTarget.y, linkTarget.block.size * tilesize / 2f + 1f, Pal.place);
+					} else {
+						links.removeValue(pos);
 					}
 				}
 			}
@@ -170,6 +172,7 @@ public class DPSWallDisplay extends Wall {
 			return out;
 		}
 
+		@Deprecated
 		public boolean linkValid(int pos) {
 			if (pos == -1) return false;
 			Building linkTarget = world.build(pos);
@@ -181,7 +184,6 @@ public class DPSWallDisplay extends Wall {
 			for (Building b : linkBuilds()) {
 				if (!linkValid(b)) {
 					links.removeValue(b.pos());
-					if (b instanceof DPSWall.DPSWallBuild wall) wall.linkRemove(this);
 					return false;
 				}
 			}
@@ -208,17 +210,17 @@ public class DPSWallDisplay extends Wall {
 			Draw.reset();
 			if (builds == null) {
 				if (linkValid(link())) {
-					Draw.color(getLinkColor());
-					Drawf.circles(getX(), getY(), size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), getLinkColor());
-					Drawn.link(this, link(), getLinkColor());
+					Draw.color(linkColor());
+					Drawf.circles(getX(), getY(), size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), linkColor());
+					Drawn.link(this, link(), linkColor());
 				}
 			} else if (builds.any()) {
-				Draw.color(getLinkColor());
-				Drawf.circles(getX(), getY(), size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), getLinkColor());
+				Draw.color(linkColor());
+				Drawf.circles(getX(), getY(), size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), linkColor());
 
 				for (Building b : builds) {
 					if (!linkValid(b)) continue;
-					Drawn.link(this, b, getLinkColor());
+					Drawn.link(this, b, linkColor());
 				}
 			}
 
@@ -239,14 +241,18 @@ public class DPSWallDisplay extends Wall {
 		public void linkPos(int value) {
 			Building other = world.build(value);
 
-			if (other instanceof DPSWall.DPSWallBuild wall && !links.removeValue(value) && links.size < maxLink - 1 && within(other, range())) {
-				links.add(value);
-				wall.linkAdd(this);
+			if (other instanceof DPSWall.DPSWallBuild wall) {
+				if (!links.removeValue(value) && links.size < maxLink - 1 && within(other, range())) {
+					links.add(value);
+					wall.linkAdd(this);
+				} else {
+					wall.linkRemove(this);
+				}
 			}
 		}
 
 		@Override
-		public Color getLinkColor() {
+		public Color linkColor() {
 			return linkColor;
 		}
 

@@ -25,6 +25,7 @@ import arc.util.Tmp;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.entities.HUnitSorts;
 import heavyindustry.entities.bullet.CritBulletType;
+import heavyindustry.entities.bullet.CtrlMissileBulletType;
 import heavyindustry.entities.bullet.EffectBulletType;
 import heavyindustry.entities.bullet.FlameBulletType;
 import heavyindustry.entities.bullet.PositionLightningBulletType;
@@ -3293,6 +3294,7 @@ public final class HBlocks {
 			health = 2800;
 			range = 500f;
 			coolantMultiplier = 1.5f;
+			sync = true;
 			targetAir = true;
 			reload = 500f;
 			shoot.firstShotDelay = 100f;
@@ -4106,18 +4108,41 @@ public final class HBlocks {
 		starfall = new ItemTurret("starfall") {{
 			requirements(Category.turret, ItemStack.with(Items.graphite, 2500, Items.plastanium, 1200, Items.surgeAlloy, 1500, HItems.crystallineCircuit, 800, HItems.uranium, 1200));
 			size = 8;
-			destructible = false;
 			sync = true;
 			health = 42500;
 			armor = 110f;
 			lightColor = HPal.ancientLightMid;
 			clipSize = 6 * 24;
 			outlineColor = Pal.darkOutline;
-			ammo(HItems.uranium, new BulletType() {{
-				hittable = false;
-				hitColor = lightColor = trailColor = Pal.techBlue;
+			ammo(HItems.uranium, new CtrlMissileBulletType(10f, 2800f, name("large-missile")) {{
+				hitSize *= 10f;
+				accel = 0.32f;
+				drag /= 2;
+				lifetime = 60f * 2.4f;
+				homingDelay = 17f;
+				frontColor = Color.clear;
+				trailColor = lightColor = lightningColor = hitColor = backColor = Pal.techBlue;
+				trailLength = 45;
+				loopSoundVolume = 0.1f;
+				hitSound = Sounds.explosionbig;
+				suppressionRange = 600f;
+				suppressionDuration = 600f;
+				status = HStatusEffects.ultFireBurn;
+				splashDamage = 4200f;
+				lightningDamage = 1200f;
+				scaledSplashDamage = true;
+				splashDamageRadius = 200f;
+				hitShake = despawnShake = 16f;
+				lightning = 6;
+				lightningCone = 360f;
+				lightningLengthRand = lightningLength = 15;
+				fragLifeMin = 0.6f;
+				fragLifeMax = 1f;
+				fragVelocityMin = 0.4f;
+				fragVelocityMax = 0.6f;
+				fragBullets = 8;
+				fragBullet = HBullets.arc9000frag;
 				ammoMultiplier = 1f;
-				spawnUnit = HUnitTypes.airRaidMissile;
 				chargeEffect = HFx.railShoot(Pal.techBlue, 800f, 18, HFx.techBlueChargeBegin.lifetime, 25);
 				shootEffect = HFx.instShoot(Pal.techBlue, Pal.techBlue);
 				smokeEffect = new Effect(180f, 300f, b -> {
@@ -4141,6 +4166,14 @@ public final class HBlocks {
 						});
 					}
 				});
+				hitEffect = new MultiEffect(HFx.largeTechBlueHit, HFx.blast(Pal.techBlue, 140f), HFx.largeTechBlueHitCircle, HFx.subEffect(150, splashDamageRadius * 0.66f, 13, 34f, Interp.pow2Out, ((i, x, y, rot, fin) -> {
+					float fout = Interp.pow2Out.apply(1 - fin);
+					float finpow = Interp.pow3Out.apply(fin);
+					Tmp.v1.trns(rot, 25 * finpow);
+					for (int s : Mathf.signs) {
+						Drawf.tri(x, y, 12 * fout, 45 * Mathf.curve(finpow, 0, 0.3f) * HFx.fout(fin, 0.15f), rot + s * 90);
+					}
+				})));
 			}});
 			shoot = new ShootBarrel() {{
 				barrels = new float[]{
@@ -4160,14 +4193,14 @@ public final class HBlocks {
 			canOverdrive = false;
 			ammoPerShot = 12;
 			maxAmmo = 180;
-			range = 1200;
+			range = 1500;
 			reload = 120;
 			unitSort = HUnitSorts.slowest;
 			shake = 7;
 			recoil = 3;
 			shootY = -13.5f;
 			shootSound = HSounds.flak;
-			consumePowerCond(5, TurretBuild::isActive);
+			consumePowerCond(30f, TurretBuild::isActive);
 			enableDrawStatus = false;
 		}};
 		solstice = new PowerTurret("solstice") {{
@@ -4196,7 +4229,7 @@ public final class HBlocks {
 			recoil = 3;
 			shootY = -13.5f;
 			shootSound = HSounds.flak;
-			consumePowerCond(5, TurretBuild::isActive);
+			consumePowerCond(160f, TurretBuild::isActive);
 			enableDrawStatus = false;
 			drawer = new DrawTurret() {{
 				parts.addAll(new RegionPart("-additional") {{
@@ -4386,7 +4419,7 @@ public final class HBlocks {
 			health = 28000;
 			armor = 15f;
 			heatColor = Pal.techBlue;
-			consumePower(30f);
+			consumePowerCond(180f, TurretBuild::isActive);
 			reload = 420f;
 			range = 800f;
 			trackingRange = range * 1.4f;

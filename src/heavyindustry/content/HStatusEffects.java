@@ -81,23 +81,23 @@ public final class HStatusEffects {
 				unit.damageContinuousPierce(damage);
 
 				if (Mathf.chanceDelta(effectChance)) {
-					effect.at(unit.x, unit.y, 0, color, parentizeEffect ? unit : null);
+					effect.at(unit.x, unit.y, 0, color, unit);
 				}
 			}
 		};
 		ultFireBurn = new AdaptStatusEffect("ult-fire-burn") {{
 			color = Pal.techBlue;
-			damage = 15f;
+			damage = 6.5f;
 			speedMultiplier = 1.2f;
 			effect = HFx.ultFireBurn;
 		}
 			@Override
 			public void update(Unit unit, float time) {
-				unit.damageContinuousPierce(unit.health / 0.002f + damage);
+				unit.damageContinuousPierce(damage);
 
 				if (Mathf.chanceDelta(effectChance)) {
 					Tmp.v1.rnd(Mathf.range(unit.type.hitSize / 2f));
-					effect.at(unit.x + Tmp.v1.x, unit.y + Tmp.v1.y, 0, color, parentizeEffect ? unit : null);
+					effect.at(unit.x + Tmp.v1.x, unit.y + Tmp.v1.y, 0, color, unit);
 				}
 			}
 		};

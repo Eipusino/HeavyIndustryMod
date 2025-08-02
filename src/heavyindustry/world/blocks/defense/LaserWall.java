@@ -239,17 +239,17 @@ public class LaserWall extends Wall {
 			Draw.reset();
 			if (builds == null) {
 				if (linkValid(link())) {
-					Draw.color(getLinkColor());
-					Drawf.circles(getX(), getY(), size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), getLinkColor());
-					Drawn.link(this, link(), getLinkColor());
+					Draw.color(linkColor());
+					Drawf.circles(getX(), getY(), size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), linkColor());
+					Drawn.link(this, link(), linkColor());
 				}
 			} else if (builds.any()) {
-				Draw.color(getLinkColor());
-				Drawf.circles(getX(), getY(), size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), getLinkColor());
+				Draw.color(linkColor());
+				Drawf.circles(getX(), getY(), size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), linkColor());
 
 				for (Building b : builds) {
 					if (!linkValid(b)) continue;
-					Drawn.link(this, b, getLinkColor());
+					Drawn.link(this, b, linkColor());
 				}
 			}
 
@@ -258,7 +258,7 @@ public class LaserWall extends Wall {
 
 		@Override
 		public void drawConfigure() {
-			Color color = getLinkColor();
+			Color color = linkColor();
 
 			Drawf.dashCircle(x, y, range(), color);
 
@@ -333,7 +333,7 @@ public class LaserWall extends Wall {
 		}
 
 		@Override
-		public Color getLinkColor() {
+		public Color linkColor() {
 			return team.color;
 		}
 

@@ -26,10 +26,7 @@ public class DPSWall extends Wall {
 		}
 
 		public void linkRemove(DPSWallDisplay.DPSWallDisplayBuild display) {
-			int index = displays.indexOf(display);
-			if (index >= 0) {
-				displays.remove(index);
-			}
+			displays.remove(display);
 		}
 
 		@Override
