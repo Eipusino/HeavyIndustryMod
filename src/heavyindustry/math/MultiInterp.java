@@ -5,10 +5,10 @@ import arc.math.Interp;
 public class MultiInterp implements Interp {
 	public static Interp fastFastSlow = new MultiInterp(Interp.pow2In, Interp.pow2);
 
-	Interp[] interps;
+	public final Interp[] interps;
 
-	public MultiInterp(Interp... ints) {
-		interps = ints;
+	public MultiInterp(Interp... interp) {
+		interps = interp;
 	}
 
 	@Override

@@ -59,6 +59,7 @@ import mindustry.entities.Sized;
 import mindustry.entities.Units;
 import mindustry.entities.bullet.ArtilleryBulletType;
 import mindustry.entities.bullet.BulletType;
+import mindustry.entities.bullet.ContinuousBulletType;
 import mindustry.entities.bullet.PointBulletType;
 import mindustry.entities.pattern.ShootSpread;
 import mindustry.entities.units.WeaponMount;
@@ -89,6 +90,7 @@ import mindustry.world.draw.DrawBlock;
 import mindustry.world.draw.DrawDefault;
 import mindustry.world.draw.DrawMulti;
 import mindustry.world.draw.DrawRegion;
+import mindustry.world.meta.StatUnit;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
@@ -2013,6 +2015,41 @@ public final class Utils {
 
 	public static PixmapRegion color(PixmapRegion pixmap, Color from, Color to) {
 		return color(pixmap, c -> c == from.rgba(), (x, y) -> to);
+	}
+
+	public static Vec2 randomPoint(float radius) {
+		float r = radius * Mathf.sqrt(Mathf.random());
+		return Tmp.v1.setToRandomDirection().setLength(r);
+	}
+
+	public static String statUnitName(StatUnit statUnit) {
+		return statUnit.icon != null ? statUnit.icon + " " + statUnit.localized() : statUnit.localized();
+	}
+
+	public static float bulletDamage(BulletType b, float lifetime) {
+		if (b.spawnUnit != null) { //Missile unit damage
+			if (b.spawnUnit.weapons.isEmpty()) return 0f;
+			Weapon uW = b.spawnUnit.weapons.first();
+			return bulletDamage(uW.bullet, uW.bullet.lifetime) * uW.shoot.shots;
+		} else {
+			float damage = b.damage + b.splashDamage; //Base Damage
+			damage += b.lightningDamage * b.lightning * b.lightningLength; //Lightning Damage
+
+			if (b.fragBullet != null) { //Frag Bullet Damage
+				damage += bulletDamage(b.fragBullet, b.fragBullet.lifetime) * b.fragBullets;
+			}
+
+			if (b.intervalBullet != null) { //Interval Bullet Damage
+				int amount = (int) (lifetime / b.bulletInterval * b.intervalBullets);
+				damage += bulletDamage(b.intervalBullet, b.intervalBullet.lifetime) * amount;
+			}
+
+			if (b instanceof ContinuousBulletType cbt) { //Continuous Damage
+				return damage * lifetime / cbt.damageInterval;
+			} else {
+				return damage;
+			}
+		}
 	}
 
 	public interface ColorBool {

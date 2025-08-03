@@ -23,7 +23,7 @@ public class DrawerDrill extends Drill {
 
 	@Override
 	public TextureRegion[] icons() {
-		return drawer.icons(this);
+		return drawer.finalIcons(this);
 	}
 
 	@Override
@@ -42,6 +42,11 @@ public class DrawerDrill extends Drill {
 			}
 
 			drawTeamTop();
+		}
+
+		@Override
+		public float totalProgress() {
+			return timeDrilled;
 		}
 	}
 }

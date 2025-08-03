@@ -74,7 +74,7 @@ public class AdaptiveSource extends Block {
 		}
 
 		@Override
-		public float getPowerProduction(){
+		public float getPowerProduction() {
 			return enabled ? powerProduction : 0f;
 		}
 

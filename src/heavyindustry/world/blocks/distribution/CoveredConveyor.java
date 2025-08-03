@@ -22,7 +22,7 @@ import static mindustry.Vars.world;
  * @author Eipusino
  * @since 1.0.4
  */
-public class CoveredConveyor extends BeltConveyor {
+public class CoveredConveyor extends AdaptConveyor {
 	public TextureRegion inputRegion, outputRegion;
 
 	public CoveredConveyor(String name) {
@@ -41,7 +41,7 @@ public class CoveredConveyor extends BeltConveyor {
 		outputRegion = Core.atlas.find(name + "-cover-out");
 	}
 
-	public class CoveredConveyorBuild extends BeltConveyorBuild {
+	public class CoveredConveyorBuild extends AdaptConveyorBuild {
 		public boolean backCap, leftCap, rightCap, frontCap;
 
 		@Override

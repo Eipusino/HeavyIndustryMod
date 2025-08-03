@@ -29,7 +29,7 @@ public class PayloadBuffer extends PayloadBlock {
 	public void setBars() {
 		super.setBars();
 
-		addBar("payloadcapacity", (PayloadBufferBuild e) -> new Bar("stat.payloadcapacity", Pal.items, () -> e.payloadUsed / payloadCapacity));
+		addBar("payloadcapacity", (PayloadBufferBuild tile) -> new Bar("stat.payloadcapacity", Pal.items, () -> tile.payloadUsed / payloadCapacity));
 	}
 
 	public class PayloadBufferBuild extends PayloadBlockBuild<Payload> {

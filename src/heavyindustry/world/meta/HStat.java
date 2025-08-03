@@ -21,8 +21,7 @@ public final class HStat {
 			damageReduction = new Stat("hi-damage-reduction", StatCat.general),
 			fieldStrength = new Stat("hi-field-strength", StatCat.function),
 			albedo = new Stat("hi-albedo", StatCat.function),
-			installableBlocks = new Stat("hi-installable-blocks", StatCat.function),
-			compatibleBlocks = new Stat("hi-compatible-blocks", StatCat.function);
+			contents = new Stat("hi-contents");
 
 	/** Don't let anyone instantiate this class. */
 	private HStat() {}

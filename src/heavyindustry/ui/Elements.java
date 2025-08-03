@@ -2,6 +2,7 @@ package heavyindustry.ui;
 
 import arc.Core;
 import arc.audio.Sound;
+import arc.flabel.FLabel;
 import arc.func.Boolf;
 import arc.func.Cons;
 import arc.func.Floatp;
@@ -37,6 +38,7 @@ import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.ui.dialogs.DDItemsList;
+import heavyindustry.ui.dialogs.FlowrateVoidDialog;
 import heavyindustry.ui.dialogs.GameDataDialog;
 import heavyindustry.ui.dialogs.PowerGraphInfoDialog;
 import mindustry.Vars;
@@ -65,6 +67,7 @@ public final class Elements {
 
 	public static PowerGraphInfoDialog powerInfoDialog;
 	public static GameDataDialog gameDataDialog;
+	public static FlowrateVoidDialog flowrateVoidDialog;
 
 	private static final Vec2 ctrlVec = new Vec2();
 	private static final DecimalFormat df = new DecimalFormat("######0.0");
@@ -91,12 +94,14 @@ public final class Elements {
 		powerInfoDialog = new PowerGraphInfoDialog();
 
 		gameDataDialog = new GameDataDialog();
+		flowrateVoidDialog = new FlowrateVoidDialog();
 	}
 
 	/** Based on {@link UI#formatAmount(long)} but for floats. */
 	public static String formatAmount(float num) {
-		if (Float.isNaN(num) || num == Float.MAX_VALUE) return "infinite";
-		if (num == Float.MIN_VALUE) return "-infinite";
+		if (Float.isNaN(num)) return "NaN";
+		if (num == Float.MAX_VALUE) return "Infinite";
+		if (num == Float.MIN_VALUE) return "-Infinite";
 
 		float mag = Math.abs(num);
 		String sign = num < 0 ? "-" : "";
@@ -112,6 +117,11 @@ public final class Elements {
 	}
 
 	public static String round(float num) {
+		//prevent things like bars displaying erroneous representations of casted infinities
+		if (Float.isNaN(num)) return "NaN";
+		if (num == Float.MAX_VALUE) return "Infinite";
+		if (num == Float.MIN_VALUE) return "-Infinite";
+
 		if (num >= 1000000000f) {
 			return Strings.autoFixed(num / 1000000000f, 1) + UI.billions;
 		} else if (num >= 1000000f) {
@@ -120,6 +130,22 @@ public final class Elements {
 			return Strings.autoFixed(num / 1000f, 1) + UI.thousands;
 		} else {
 			return num + "";
+		}
+	}
+
+	public static String roundDPS(float num) {
+		if (Float.isNaN(num)) return "NaN";
+		if (num == Float.MAX_VALUE) return "Infinite";
+		if (num == Float.MIN_VALUE) return "-Infinite";
+
+		if (num >= 1000000000f) {
+			return Strings.autoFixed(num / 1000000000f, 1) + UI.billions;
+		} else if (num >= 1000000f) {
+			return Strings.autoFixed(num / 1000000f, 1) + UI.millions;
+		} else if (num >= 1000f) {
+			return Strings.autoFixed(num / 1000f, 1) + UI.thousands;
+		} else {
+			return Strings.autoFixed(num, 2);
 		}
 	}
 
@@ -132,6 +158,32 @@ public final class Elements {
 			return Vars.spawner.countFlyerSpawns();
 
 		return Vars.spawner.countGroundSpawns();
+	}
+
+	public static void divider(Table t, String label, Color color, int colSpan) {
+		if (label != null) {
+			t.add(label).growX().color(color).colspan(colSpan).left();
+			t.row();
+		}
+		t.image().growX().pad(5f, 0f, 5f, 0f)
+				.height(3f).color(color).colspan(colSpan).left();
+		t.row();
+	}
+
+	public static void divider(Table t, String label, Color color) {
+		divider(t, label, color, 1);
+	}
+
+	public static FLabel infinity() {
+		return new FLabel("{wave}{rainbow}" + Core.bundle.get("hi-infinity"));
+	}
+
+	public static FLabel infiniteDamage() {
+		return new FLabel("{wave}{rainbow}" + Core.bundle.get("hi-infinite-damage"));
+	}
+
+	public static FLabel everything() {
+		return new FLabel("{wave}{rainbow}" + Core.bundle.get("hi-everything"));
 	}
 
 	public static boolean hasMouse() {

@@ -1,13 +1,17 @@
 package heavyindustry.world.blocks.power;
 
 import arc.Core;
+import arc.graphics.Color;
 import arc.math.Mathf;
 import arc.util.Time;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
+import mindustry.graphics.Drawf;
 import mindustry.world.blocks.power.ThermalGenerator;
 
 public class ThermalConsumeGenerator extends ThermalGenerator {
+	// if v8 thermal generator ends up having this behavior and what ive done is for nothing im going to cry
+	// its gonna become like "cablethermalgenerator" or some shit
 	public float itemDuration = 120f;
 
 	public float warmupSpeed = 0.05f;
@@ -16,14 +20,15 @@ public class ThermalConsumeGenerator extends ThermalGenerator {
 
 	public ThermalConsumeGenerator(String name) {
 		super(name);
-		// it uses efficiency, which is already affected by whether the block is enabled
+		// it uses efficiency, which is already affected by whether or not the block is enabled
 		noUpdateDisabled = false;
+		// AAAAAAGHGHJGJ
 		displayEfficiency = false;
 	}
 
 	@Override
 	public void setStats() {
-		// man, why doesn't vanilla do this?
+		// man why doesnt vanilla do this ?
 		stats.timePeriod = itemDuration;
 		super.setStats();
 	}
@@ -36,13 +41,14 @@ public class ThermalConsumeGenerator extends ThermalGenerator {
 	}
 
 	public class ThermalConsumeGeneratorBuild extends ThermalGeneratorBuild {
-		public float warmup, totalTime;
+		public float warmup, cableWarmup, totalTime;
 
 		@Override
 		public void updateTile() {
 			boolean valid = efficiency > 0f;
 
 			warmup = Mathf.lerpDelta(warmup, valid ? 1f : 0f, warmupSpeed);
+			cableWarmup = Mathf.lerpDelta(cableWarmup, power.graph.getSatisfaction(), warmupSpeed);
 			totalTime += warmup * Time.delta;
 			productionEfficiency = (sum + attribute.env()) * efficiency;
 
@@ -63,7 +69,8 @@ public class ThermalConsumeGenerator extends ThermalGenerator {
 				dumpLiquid(outputLiquid.liquid);
 			}
 
-			generateTime -= delta() / itemDuration;
+			// might be a bad idea to use displayefficiencyscale here
+			generateTime -= (productionEfficiency * displayEfficiencyScale * delta()) / itemDuration;
 		}
 
 		@Override
@@ -73,7 +80,13 @@ public class ThermalConsumeGenerator extends ThermalGenerator {
 
 		@Override
 		public float warmup() {
-			return warmup;
+			// used for the glow
+			return cableWarmup;
+		}
+
+		@Override
+		public void drawLight() {
+			Drawf.light(x, y, (40f + Mathf.absin(10f, 5f)) * size * warmup, Color.scarlet, 0.4f);
 		}
 
 		@Override

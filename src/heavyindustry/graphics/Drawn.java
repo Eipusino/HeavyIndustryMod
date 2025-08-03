@@ -1145,6 +1145,16 @@ public final class Drawn {
 		return (-b - Mathf.sqrt(b * b - 4)) / 2;
 	}
 
+	public static void setStrobeColor() {
+		Draw.color(applyStrobeHue(Tmp.c1.set(Color.red)));
+	}
+
+	public static Color applyStrobeHue(Color color) {
+		float speed = Core.settings.getInt("hi-strobespeed", 3) / 2f;
+		color.shiftHue(Time.time * speed);
+		return color;
+	}
+
 	private static int mul4(int value) {
 		while (value % 4 != 0) {
 			value++;

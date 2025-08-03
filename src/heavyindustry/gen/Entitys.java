@@ -20,6 +20,7 @@ public final class Entitys {
 	/** Don't let anyone instantiate this class. */
 	private Entitys() {}
 
+	/** @see #register(String, Class, Prov) */
 	public static <T extends Entityc> void register(Class<T> type, Prov<T> prov) {
 		synchronized (Entitys.class) {
 			if (ids.containsKey(type) || EntityMapping.nameMap.containsKey(type.getSimpleName())) return;
@@ -78,6 +79,8 @@ public final class Entitys {
 		register("EnergyUnit", EnergyUnit.class, EnergyUnit::new);
 		register("PesterUnit", PesterUnit.class, PesterUnit::new);
 		register("NucleoidUnit", NucleoidUnit.class, NucleoidUnit::new);
+		register("DPSMechUnit", DPSMechUnit.class, DPSMechUnit::new);
+		register("InvincibleShipUnit", InvincibleShipUnit.class, InvincibleShipUnit::new);
 		register("UltFire", UltFire.class, UltFire::new);
 		register("Spawner", Spawner.class, Spawner::new);
 		register("VapourizeEffectState", VapourizeEffectState.class, VapourizeEffectState::new);

@@ -15,7 +15,7 @@ import mindustry.Vars;
 
 @SuppressWarnings("rawtypes")
 public final class HFonts {
-	public static Font consolas, inconsoiata, jetbrainsmono;
+	public static Font consolas, inconsoiata, jetbrainsmonomedium;
 
 	public static final String loaderSuffix = ".heavyindustry.gen";
 
@@ -66,14 +66,14 @@ public final class HFonts {
 			inconsoiata = f;
 		};
 
-		Core.assets.load("jetbrainsmono-heavyindustry", Font.class, new FreeTypeFontLoaderParameter("fonts/jetbrainsmono.ttf", new FreeTypeFontParameter() {{
+		Core.assets.load("jetbrainsmonomedium-heavyindustry", Font.class, new FreeTypeFontLoaderParameter("fonts/jetbrainsmonomedium.ttf", new FreeTypeFontParameter() {{
 			size = 22;
 			incremental = true;
 			renderCount = 1;
 			characters = FreeTypeFontGenerator.DEFAULT_CHARS;
 		}})).loaded = f -> {
 			f.setFixedWidthGlyphs(FreeTypeFontGenerator.DEFAULT_CHARS);
-			jetbrainsmono = f;
+			jetbrainsmonomedium = f;
 		};
 	}
 }

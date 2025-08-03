@@ -3,8 +3,11 @@ package heavyindustry.graphics;
 import arc.graphics.Color;
 import mindustry.graphics.Pal;
 
+import static mindustry.Vars.content;
+
 public final class HPal {
 	public static final Color[] spectrum = {Color.red, Color.coral, Color.yellow, Color.lime, Color.green, Color.teal, Color.blue, Color.purple, Color.magenta};
+	public static Color[] itemColors = {}, liquidColors = {};
 
 	/** Static read-only palettes that are used throughout the mod. */
 	public static final Color
@@ -73,4 +76,20 @@ public final class HPal {
 
 	/** Don't let anyone instantiate this class. */
 	private HPal() {}
+
+	public static void init() {
+		int items = content.items().size;
+		itemColors = new Color[items + 1];
+		for (int i = 0; i < items; i++) {
+			itemColors[i] = content.item(i).color;
+		}
+		itemColors[items] = content.items().first().color;
+
+		int liquids = content.liquids().size;
+		liquidColors = new Color[liquids + 1];
+		for (int i = 0; i < liquids; i++) {
+			liquidColors[i] = content.liquid(i).color;
+		}
+		liquidColors[liquids] = content.liquids().first().color;
+	}
 }

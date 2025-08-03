@@ -167,7 +167,6 @@ public class MultiBulletTurret extends Turret {
 
 		@Override
 		public void handleItem(Building source, Item item) {
-
 			if (item == Items.pyratite) {
 				Events.fire(EventType.Trigger.flameAmmo);
 			}
@@ -178,8 +177,10 @@ public class MultiBulletTurret extends Turret {
 
 			BulletType[] types = ammoTypes.get(item);
 			if (types == null) return;
-			for (BulletType type : types) if (type == null) return;
-			float ammoMultiplier = types[0].ammoMultiplier;
+			for (BulletType type : types) {
+				if (type == null) return;
+			}
+			int ammoMultiplier = (int) types[0].ammoMultiplier;
 
 			totalAmmo += ammoMultiplier;
 
@@ -193,14 +194,16 @@ public class MultiBulletTurret extends Turret {
 				}
 			}
 
-			ammo.add(new MultiBulletTurret.ItemEntry(item, (int) ammoMultiplier));
+			ammo.add(new MultiBulletTurret.ItemEntry(item, ammoMultiplier));
 		}
 
 		@Override
 		public boolean acceptItem(Building source, Item item) {
 			BulletType[] types = ammoTypes.get(item);
 			if (types == null) return false;
-			for (BulletType type : types) if (type == null) return false;
+			for (BulletType type : types) {
+				if (type == null) return false;
+			}
 
 			float ammoMultiplier = 1;
 			for (BulletType type : types) {
@@ -355,7 +358,7 @@ public class MultiBulletTurret extends Turret {
 		public Item item;
 		public int amount;
 
-		ItemEntry(Item ite, int amo) {
+		public ItemEntry(Item ite, int amo) {
 			item = ite;
 			amount = amo;
 		}

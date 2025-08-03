@@ -16,16 +16,12 @@ import arc.struct.Seq;
 import arc.util.Scaling;
 import arc.util.Strings;
 import heavyindustry.ui.ItemDisplay;
-import heavyindustry.ui.NamelessLiquidDisplay;
 import heavyindustry.util.Utils;
-import heavyindustry.world.blocks.payload.PayloadCrafter;
 import heavyindustry.world.blocks.production.FuelCrafter;
 import mindustry.content.StatusEffects;
 import mindustry.ctype.UnlockableContent;
 import mindustry.entities.bullet.BulletType;
-import mindustry.gen.Icon;
 import mindustry.gen.Tex;
-import mindustry.graphics.Pal;
 import mindustry.maps.Map;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;
@@ -170,7 +166,7 @@ public final class HStatValues {
 				if (status != StatusEffects.none) {
 					t.add((status.minfo.mod == null ? status.emoji() : "") + "[stat]" + status.localizedName);
 				}
-			}).padTop(-9).left().get().background(Tex.underline);
+			}).padTop(-9f).left().get().background(Tex.underline);
 		};
 	}
 
@@ -371,94 +367,6 @@ public final class HStatValues {
 					if (++i % 2 == 0) c.row();
 				}
 			}).growX().colspan(table.getColumns());
-		};
-	}
-
-	public static StatValue payloadProducts(Seq<PayloadCrafter.PayloadRecipe> products) {
-		return table -> {
-			table.row();
-
-			for (PayloadCrafter.PayloadRecipe recipe : products) {
-				table.table(Styles.grayPanel, t -> {
-					Block out = recipe.outputBlock;
-
-					if (state.rules.bannedBlocks.contains(out)) {
-						t.image(Icon.cancel).color(Pal.remove).size(40);
-						return;
-					}
-
-					if (recipe.unlocked()) {
-						if (recipe.hasInputBlock()) {
-							t.table(i -> {
-								i.left();
-
-								i.image(recipe.inputBlock.fullIcon).size(40).left().scaling(Scaling.fit);
-								i.add(recipe.inputBlock.localizedName).padLeft(8f).left();
-								infoButton(i, recipe.inputBlock, 32).padLeft(8f).left();
-
-								i.image(Icon.right).color(Pal.darkishGray).size(40).pad(8f).center();
-
-								i.image(out.fullIcon).size(40).right().scaling(Scaling.fit);
-								i.add(out.localizedName).padLeft(8f).right();
-								infoButton(i, out, 32).padLeft(8f).right();
-							}).left().padTop(5).padBottom(5);
-							t.row();
-							t.add(Strings.autoFixed(recipe.craftTime / 60f, 1) + " " + StatUnit.seconds.localized()).color(Color.lightGray).padLeft(10f).left();
-							if (recipe.powerUse > 0) {
-								t.row();
-								t.add(Strings.autoFixed(recipe.powerUse * 60f, 1) + " " + StatUnit.powerSecond.localized()).color(Color.lightGray).padLeft(10f).left();
-							}
-							t.row();
-						} else {
-							t.image(out.uiIcon).size(40).pad(10f).left().top();
-							t.table(info -> {
-								info.top().defaults().left();
-
-								info.add(out.localizedName);
-								infoButton(info, out, 32).padLeft(8f).expandX();
-
-								info.row();
-								info.add(Strings.autoFixed(recipe.craftTime / 60f, 1) + " " + StatUnit.seconds.localized()).color(Color.lightGray).colspan(2);
-								if (recipe.powerUse > 0) {
-									info.row();
-									info.add(Strings.autoFixed(recipe.powerUse * 60f, 1) + " " + StatUnit.powerSecond.localized()).color(Color.lightGray).colspan(2);
-								}
-							}).top();
-						}
-
-						if (recipe.showReqList()) {
-							t.table(req -> {
-								if (recipe.hasInputBlock()) {
-									req.left().defaults().left();
-								} else {
-									req.right().defaults().right();
-								}
-
-								int i = 0;
-								int col = recipe.hasInputBlock() ? 12 : recipe.powerUse > 0 ? 4 : 6;
-								if (recipe.itemRequirements.length > 0) {
-									while (i < recipe.itemRequirements.length) {
-										if (i % col == 0) req.row();
-
-										ItemStack stack = recipe.itemRequirements[i];
-										req.add(new ItemDisplay(stack.item, stack.amount, false)).pad(5);
-
-										i++;
-									}
-								}
-								if (recipe.liquidRequirements != null) {
-									if (i % col == 0) req.row();
-									req.add(new NamelessLiquidDisplay(recipe.liquidRequirements.liquid, recipe.liquidRequirements.amount, false)).pad(5);
-								}
-							}).right().top().grow().pad(10f);
-						}
-					} else {
-						t.image(Icon.lock).color(Pal.darkerGray).size(40);
-						t.add("@hi-missing-research");
-					}
-				}).growX().pad(5);
-				table.row();
-			}
 		};
 	}
 

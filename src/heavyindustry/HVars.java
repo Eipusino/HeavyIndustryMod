@@ -33,6 +33,8 @@ public final class HVars {
 	public static final Texture whiteTexture;
 	public static final TextureRegion whiteRegion;
 
+	public static final float boardTimeTotal = 60 * 6;
+
 	public static float pressTimer = 30f;
 	public static float longPress = 30f;
 	public static float iconSize = 40f, buttonSize = 24f, sliderWidth = 140f, fieldWidth = 80f;

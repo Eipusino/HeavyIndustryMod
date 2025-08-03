@@ -1,73 +1,84 @@
 package heavyindustry.world.blocks.defense;
 
-import arc.struct.Seq;
-import arc.util.io.Reads;
-import arc.util.io.Writes;
-import mindustry.gen.Building;
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Font;
+import arc.util.Align;
+import arc.util.Time;
+import mindustry.Vars;
+import mindustry.graphics.Layer;
+import mindustry.ui.Fonts;
 import mindustry.world.blocks.defense.Wall;
 
-import static mindustry.Vars.world;
+import static heavyindustry.HVars.boardTimeTotal;
 
 public class DPSWall extends Wall {
 	public DPSWall(String name) {
 		super(name);
 
 		update = true;
-		solid = true;
 	}
 
 	public class DPSWallBuild extends WallBuild {
-		public Seq<DPSWallDisplay.DPSWallDisplayBuild> displays = new Seq<>();
+		public float totalDamage = 0f, hits = 0f, firstHitTime = 0f, lastHitTime = 0f, showBoardTime = 0f;
 
-		public void linkAdd(DPSWallDisplay.DPSWallDisplayBuild display) {
-			if (!displays.contains(display)) {
-				displays.add(display);
-			}
-		}
+		@Override
+		public void health(float health) {
+			super.health(health);
 
-		public void linkRemove(DPSWallDisplay.DPSWallDisplayBuild display) {
-			displays.remove(display);
+			damage(health);
 		}
 
 		@Override
 		public void damage(float damage) {
-			for (DPSWallDisplay.DPSWallDisplayBuild display : displays) {
-				display.damage(damage);
+			totalDamage += damage;
+			hits += 1;
+			if (firstHitTime == 0) {
+				firstHitTime = Time.time;
+			}
+			showBoardTime = boardTimeTotal;
+			lastHitTime = Time.time;
+		}
+
+		@Override
+		public void updateTile() {
+			super.updateTile();
+
+			showBoardTime = Math.max(showBoardTime - Time.delta, 0);
+			if (showBoardTime == 0 && totalDamage > 0) {
+				totalDamage = 0;
+				hits = 0;
+				firstHitTime = 0;
+				lastHitTime = 0;
+				showBoardTime = 0;
 			}
 		}
 
 		@Override
-		public void remove() {
-			if (added) {
-				for (DPSWallDisplay.DPSWallDisplayBuild display : displays) {
-					display.links.removeValue(pos());
-				}
-			}
+		public void draw() {
+			super.draw();
 
-			super.remove();
-		}
+			if (showBoardTime > 0) {
+				Font font = Fonts.def;
+				Color color = Color.yellow.cpy();
+				float fontSize = 12f / 60f;
+				float gap = Vars.mobile ? fontSize / 0.04f : fontSize / 0.06f;
+				float dx = x - 13f;
+				float dy = y + (Vars.mobile ? 29f : 17f);
 
-		@Override
-		public void write(Writes write) {
-			super.write(write);
+				float gameDuration = lastHitTime - firstHitTime;
+				float realDuration = gameDuration / 60;
+				float damage = totalDamage;
+				float dps = damage / (realDuration == 0 ? 1 : realDuration);
 
-			write.i(displays.size);
-			for (DPSWallDisplay.DPSWallDisplayBuild display : displays) {
-				write.i(display.pos());
-			}
-		}
+				Draw.z(Layer.weather + 1);
+				color.a = Math.min(showBoardTime / boardTimeTotal * 3, 1);
+				font.draw(Core.bundle.format("hi-dps-info-hits", hits), dx, (dy -= gap), color, fontSize, false, Align.left);
+				font.draw(Core.bundle.format("hi-dps-info-damage", damage), dx, (dy -= gap), color, fontSize, false, Align.left);
+				font.draw(Core.bundle.format("hi-dps-info-dps", dps), dx, dy - gap, color, fontSize, false, Align.left);
 
-		@Override
-		public void read(Reads read, byte revision) {
-			super.read(read, revision);
-
-			int length = read.i();
-			for (int i = 0; i < length; i++) {
-				int pos = read.i();
-				Building linkTarget = world.build(pos);
-				if (linkTarget instanceof DPSWallDisplay.DPSWallDisplayBuild display) {
-					displays.add(display);
-				}
+				Draw.reset();
 			}
 		}
 	}

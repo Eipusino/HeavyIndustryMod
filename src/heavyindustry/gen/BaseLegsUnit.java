@@ -23,15 +23,15 @@ public class BaseLegsUnit extends LegsUnit implements BaseUnitc {
 				shieldAlpha = 1f;
 			}
 
-			float a = amount * but.damageMultiplier;
+			float damage = amount * but.damageMultiplier;
 
-			float shieldDamage = Math.min(Math.max(shield, 0), a);
+			float shieldDamage = Math.min(Math.max(shield, 0), damage);
 			shield -= shieldDamage;
 			hitTime = 1f;
-			a -= shieldDamage;
+			damage -= shieldDamage;
 
-			if (a > 0 && type.killable) {
-				health -= a;
+			if (damage > 0 && type.killable) {
+				health -= damage;
 				if (health <= 0 && !dead) {
 					kill();
 				}

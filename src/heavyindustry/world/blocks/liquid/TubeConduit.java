@@ -7,11 +7,13 @@ import arc.util.Tmp;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
+import mindustry.world.blocks.liquid.Conduit;
 
 import static heavyindustry.util.Utils.splitLayers;
 import static mindustry.Vars.renderer;
 
-public class TubeConduit extends BeltConduit {
+public class TubeConduit extends Conduit {
+	static final float[][] rotateOffsets = new float[][]{{0.75f, 0.75f}, {-0.75f, 0.75f}, {-0.75f, -0.75f}, {0.75f, -0.75f}};
 	static final byte[][] ductArrows = {
 			{1, 1, 1, 0, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1},
 			{1, 1, 1, 2, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -31,7 +33,7 @@ public class TubeConduit extends BeltConduit {
 		regions = splitLayers(name + "-sheet", 32, 2);
 	}
 
-	public class TubeConduitBuild extends BeltConduitBuild {
+	public class TubeConduitBuild extends ConduitBuild {
 		public int tiling = 0;
 
 		@Override

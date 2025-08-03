@@ -115,7 +115,7 @@ public class CoreStorageBlock extends StorageBlock {
 				}
 			} else {
 				linkedCore = null;
-				items = new ItemModule();
+				items = ItemModule.empty;
 			}
 		}
 
@@ -125,7 +125,6 @@ public class CoreStorageBlock extends StorageBlock {
 		}
 
 		@Override
-		public void drawSelect() {
-		}
+		public void drawSelect() {}
 	}
 }

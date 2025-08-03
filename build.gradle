@@ -38,8 +38,6 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 dependencies {
-	implementation "org.tomlj:tomlj:1.1.1"
-
 	compileOnly files("libs/mindustry-150v1.jar")
 }
 

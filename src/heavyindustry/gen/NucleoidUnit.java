@@ -10,11 +10,17 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.content.HFx;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.type.unit.NucleoidUnitType;
 import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.entities.abilities.Ability;
+import mindustry.entities.units.WeaponMount;
 import mindustry.graphics.Layer;
 import mindustry.type.UnitType;
+
+import static mindustry.Vars.headless;
 
 public class NucleoidUnit extends BaseUnit implements Nucleoidc {
 	public float recentDamage = 0f;
@@ -105,20 +111,20 @@ public class NucleoidUnit extends BaseUnit implements Nucleoidc {
 			shieldAlpha = 1f;
 		}
 
-		float a = amount * nucleoidType.damageMultiplier;
+		float damage = amount * nucleoidType.damageMultiplier;
 
-		a = Math.min(a, nucleoidType.maxOnceDamage);
+		damage = Math.min(damage, nucleoidType.maxOnceDamage);
 
-		float shieldDamage = Math.min(Math.max(shield, 0f), a);
+		float shieldDamage = Math.min(Math.max(shield, 0f), damage);
 		shield -= shieldDamage;
 		hitTime = 1f;
 
-		a -= shieldDamage;
-		a = Math.min(recentDamage / healthMultiplier, a);
-		recentDamage -= a * 1.5f * healthMultiplier;
+		damage -= shieldDamage;
+		damage = Math.min(recentDamage / healthMultiplier, damage);
+		recentDamage -= damage * 1.5f * healthMultiplier;
 
-		if (a > 0f && type.killable) {
-			health -= a;
+		if (damage > 0f && type.killable) {
+			health -= damage;
 			if (health <= 0f && !dead) {
 				kill();
 			}
@@ -127,6 +133,37 @@ public class NucleoidUnit extends BaseUnit implements Nucleoidc {
 				Fx.unitShieldBreak.at(x, y, 0f, team.color, this);
 			}
 		}
+	}
+
+	@Override
+	public void destroy() {
+		if (!isAdded()) return;
+
+		if (!headless) {
+			type.deathSound.at(this);
+		}
+
+		for (WeaponMount mount : mounts) {
+			if (mount.weapon.shootOnDeath && (!mount.weapon.bullet.killShooter || mount.totalShots <= 0)) {
+				mount.reload = 0;
+				mount.shoot = true;
+				mount.weapon.update(this, mount);
+			}
+		}
+
+		if (!headless) {
+			Effect.shake(hitSize / 10f, hitSize / 8f, x, y);
+			HFx.circleOut.at(x, y, hitSize, team.color);
+			HFx.jumpTrailOut.at(x, y, rotation, team.color, type);
+			HSounds.jumpIn.at(x, y, 1, 3);
+		}
+
+		for (Ability a : abilities) {
+			a.death(this);
+		}
+
+		type.killed(this);
+		remove();
 	}
 
 	@Override
@@ -145,20 +182,19 @@ public class NucleoidUnit extends BaseUnit implements Nucleoidc {
 
 	@Override
 	public void readSync(Reads read) {
-		super.readSync(read);
-
+		float reload = read.f();
 		if (!isLocal()) {
-			reinforcementsReload = read.f();
-		} else {
-			read.f();
+			reinforcementsReload = reload;
 		}
+
+		super.readSync(read);
 	}
 
 	@Override
 	public void writeSync(Writes write) {
-		super.writeSync(write);
-
 		write.f(reinforcementsReload);
+
+		super.writeSync(write);
 	}
 
 	@Override

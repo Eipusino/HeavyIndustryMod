@@ -4,6 +4,8 @@ import arc.graphics.g2d.Draw;
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.util.Nullable;
+import heavyindustry.content.HFx;
+import mindustry.entities.Effect;
 import mindustry.gen.Building;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;
@@ -24,6 +26,8 @@ public class Centrifuge extends Separator {
 	public @Nullable LiquidStack[] outputLiquids;
 	/** Liquid output directions, specified in the same order as outputLiquids. Use -1 to dump in every direction. Rotations are relative to block. */
 	public int[] liquidOutputDirections = {-1};
+
+	public Effect fullEffect = HFx.centrifugeFull;
 
 	/** if true, crafters with multiple liquid outputs will dump excess when there's still space for at least one liquid type */
 	public boolean dumpExtraLiquid = true;
@@ -183,6 +187,8 @@ public class Centrifuge extends Separator {
 
 			if (outputLiquids != null) {
 				for (int i = 0; i < outputLiquids.length; i++) {
+					if (liquids.get(outputLiquids[i].liquid) >= liquidCapacity && Mathf.chanceDelta(0.5f * edelta()))
+						fullEffect.at(x, y, outputLiquids[i].liquid.color);
 					int dir = liquidOutputDirections.length > i ? liquidOutputDirections[i] : -1;
 
 					dumpLiquid(outputLiquids[i].liquid, 2f, dir);

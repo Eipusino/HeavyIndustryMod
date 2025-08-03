@@ -2,7 +2,6 @@ package heavyindustry.world.blocks.production;
 
 import arc.Core;
 import arc.func.Boolf;
-import arc.func.Cons;
 import arc.func.Func;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
@@ -65,7 +64,6 @@ import static mindustry.Vars.tilesize;
  * @author Eipusino
  * @apiNote Example usage {@link HBlocks#ironcladCompressor }.
  * @see heavyindustry.world.blocks.heat.HeatMultiCrafter heat
- * @see heavyindustry.world.blocks.payload.PayloadCrafter payload
  * @since 1.0.6
  */
 public class MultiCrafter extends Block {

@@ -17,13 +17,15 @@ import heavyindustry.net.HCall;
 import mindustry.game.EventType.Trigger;
 import mindustry.gen.Player;
 
+import java.util.Iterator;
+
 import static mindustry.Vars.control;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.mobile;
 import static mindustry.Vars.player;
 import static mindustry.Vars.state;
 
-public class InputAggregator implements Eachable<String> {
+public class InputAggregator implements Iterable<String>, Eachable<String> {
 	protected final OrderedMap<String, TapHandle> handles;
 	protected final Seq<String> handleKeys;
 	protected final Seq<TapResult> results = new Seq<>();
@@ -109,6 +111,11 @@ public class InputAggregator implements Eachable<String> {
 	@Override
 	public void each(Cons<? super String> listener) {
 		handleKeys.each(listener);
+	}
+
+	@Override
+	public Iterator<String> iterator() {
+		return handleKeys.iterator();
 	}
 
 	public enum TapResult {

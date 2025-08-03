@@ -51,7 +51,7 @@ public class SwingContinuousTurret extends ContinuousTurret {
 		}
 
 		protected void updateBullet(BulletEntry entry) {
-			if (!(entry instanceof SwingBulletEntry s)) return;
+			if (!(entry instanceof SwingBulletEntry sbe)) return;
 
 			float
 					bulletX = x + Angles.trnsx(rotation - 90, shootX + entry.x, shootY + entry.y),
@@ -71,10 +71,10 @@ public class SwingContinuousTurret extends ContinuousTurret {
 			} else {
 				//update aim change speed
 				float targetSpeed = aimChangeSpeed * Mathf.sign(shootLength - curLength);
-				s.aimChangeSpeed = Mathf.approachDelta(s.aimChangeSpeed, targetSpeed, aimChangeSpeedAccel * efficiency);
-				s.aimChangeSpeed *= Math.max(1f - aimChangeSpeedDrag * Time.delta, 0);
+				sbe.aimChangeSpeed = Mathf.approachDelta(sbe.aimChangeSpeed, targetSpeed, aimChangeSpeedAccel * efficiency);
+				sbe.aimChangeSpeed *= Math.max(1f - aimChangeSpeedDrag * Time.delta, 0);
 				//resulting length of the bullet (smoothed)
-				resultLength = Math.max(curLength + s.aimChangeSpeed, shootY);
+				resultLength = Math.max(curLength + sbe.aimChangeSpeed, shootY);
 			}
 			//actual aim end point based on length
 			Tmp.v1.trns(rotation, lastLength = resultLength).add(x, y);

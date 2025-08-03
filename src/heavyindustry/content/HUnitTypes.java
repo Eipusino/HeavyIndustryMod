@@ -23,6 +23,7 @@ import heavyindustry.ai.NullAI;
 import heavyindustry.ai.SurroundAI;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.entities.abilities.BatteryAbility;
+import heavyindustry.entities.abilities.InvincibleForceFieldAbility;
 import heavyindustry.entities.abilities.JavelinAbility;
 import heavyindustry.entities.abilities.MirrorArmorAbility;
 import heavyindustry.entities.abilities.MirrorFieldAbility;
@@ -49,7 +50,9 @@ import heavyindustry.gen.BaseUnitWaterMove;
 import heavyindustry.gen.BuildingTetherPayloadLegsUnit;
 import heavyindustry.gen.CopterUnit;
 import heavyindustry.gen.BaseLegsUnit;
+import heavyindustry.gen.DPSMechUnit;
 import heavyindustry.gen.HSounds;
+import heavyindustry.gen.InvincibleShipUnit;
 import heavyindustry.gen.NucleoidUnit;
 import heavyindustry.gen.PayloadLegsUnit;
 import heavyindustry.gen.UltFire;
@@ -68,6 +71,8 @@ import heavyindustry.type.weapons.PointDefenceMultiBarrelWeapon;
 import heavyindustry.ui.Elements;
 import heavyindustry.util.Utils;
 import mindustry.ai.UnitCommand;
+import mindustry.ai.types.BuilderAI;
+import mindustry.ai.types.CommandAI;
 import mindustry.ai.types.FlyingAI;
 import mindustry.ai.types.FlyingFollowAI;
 import mindustry.content.Bullets;
@@ -107,6 +112,7 @@ import mindustry.entities.pattern.ShootSpread;
 import mindustry.entities.units.WeaponMount;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
+import mindustry.gen.Call;
 import mindustry.gen.Healthc;
 import mindustry.gen.Hitboxc;
 import mindustry.gen.Shieldc;
@@ -152,6 +158,7 @@ public final class HUnitTypes {
 	//other
 	armoredCarrierVehicle, pioneer, vulture,
 			burner, shadowBlade, artilleryFirePioneer,
+			invincibleShip, dpsTesterLand, targetDummy,
 	//elite
 	tiger, thunder,
 	//?
@@ -1671,6 +1678,7 @@ public final class HUnitTypes {
 					@Override
 					public void hitEntity(Bullet b, Hitboxc entity, float health) {
 						super.hitEntity(b, entity, health);
+
 						if (entity instanceof Unit unit) {
 							if (unit.shield > 0) {
 								HFx.hitOut.at(unit.x, unit.y, b.rotation(), unit);
@@ -1682,6 +1690,7 @@ public final class HUnitTypes {
 					@Override
 					public void hitTile(Bullet b, Building build, float x, float y, float initialHealth, boolean direct) {
 						super.hitTile(b, build, x, y, initialHealth, direct);
+
 						if (build == null || build.dead) return;
 						if (build.timeScale() > 1) {
 							HFx.hitOut.at(build.x, build.y, b.rotation(), build);
@@ -2597,7 +2606,9 @@ public final class HUnitTypes {
 							unit.damagePierce(b.damage * (1 + Math.max(unit.type.armor, 0) / 10f));
 						} else if (entity instanceof Building build && build.block != null) {
 							build.damagePierce(b.damage * buildingDamageMultiplier * (1 + Math.max(build.block.armor, 0) / 10f));
-						} else super.hitEntity(b, entity, health);
+						} else {
+							super.hitEntity(b, entity, health);
+						}
 					}
 
 					@Override
@@ -2709,6 +2720,96 @@ public final class HUnitTypes {
 					return rangeWeapon;
 				}
 			});
+		}};
+		invincibleShip = new BaseUnitType("invincible-ship") {{
+			constructor = InvincibleShipUnit::new;
+			abilities.add(new RepairFieldAbility(11451.4191981f, 60, 8 * 8), new InvincibleForceFieldAbility(60, 114.514191981f, 1145141919.81f, 300));
+			aiController = BuilderAI::new;
+			controller = u -> !playerControllable || (u.team.isAI() && !u.team.rules().rtsAi) ? new NullAI() : new CommandAI();
+			weapons.add(new Weapon(name + "-weapon") {{
+				reload = 7;
+				bullet = new BasicBulletType(24.1f, 114514.191981f) {{
+					splashDamage = 114514.191981f;
+					hitSize = 5f;
+					width = 7f;
+					height = 35f;
+					lifetime = 10f;
+					inaccuracy = 0f;
+					despawnEffect = Fx.hitBulletSmall;
+					keepVelocity = false;
+				}
+					@Override
+					public void hitEntity(Bullet b, Hitboxc entity, float health) {
+						super.hitEntity(b, entity, health);
+
+						if (entity instanceof Healthc h && !h.dead()) {
+							Call.unitDestroy(h.id());
+						}
+					}
+
+					@Override
+					public void hitTile(Bullet b, Building build, float x, float y, float initialHealth, boolean direct) {
+						super.hitTile(b, build, x, y, initialHealth, direct);
+
+						if (build != null && build.team != b.team) {
+							build.killed();
+						}
+					}
+				};
+				rotate = true;
+				rotateSpeed = 20f;
+				x = 3f;
+				y = 2f;
+			}});
+			flying = true;
+			speed = 120f;
+			hitSize = 12f;
+			accel = 0.01f;
+			rotateSpeed = 20f;
+			baseRotateSpeed = 20f;
+			drag = 0.1f;
+			health = 11451.4191981f;
+			mineSpeed = 1145.14191981f;
+			mineTier = 114514;
+			buildSpeed = 114.514191981f;
+			itemCapacity = 9999;
+			canHeal = false;
+			engineOffset = 5;
+			engineSize = 3;
+			payloadCapacity = (256 * 256) * tilePayload;
+			ammoCapacity = 114514;
+			coreUnitDock = true;
+			mineWalls = true;
+			envDisabled = 0;
+			isEnemy = false;
+		}};
+		dpsTesterLand = new BaseUnitType("dps-tester-land") {{
+			constructor = DPSMechUnit::new;
+			controller = u -> !playerControllable || (u.team.isAI() && !u.team.rules().rtsAi) ? new NullAI() : new CommandAI();
+			armor = 10f;
+			health = 65535;
+			speed = 0.4f;
+			rotateSpeed = 2f;
+			flying = false;
+			hitSize = 25f;
+			canDrown = false;
+			mechFrontSway = 1f;
+			mechStepParticles = true;
+			stepShake = 0.15f;
+			singleTarget = true;
+			mineSpeed = 1145.14191981f;
+			mineTier = 114514;
+			buildSpeed = 114.514191981f;
+			itemCapacity = 1145;
+			canBoost = true;
+			boostMultiplier = 5;
+			mechLandShake = 4;
+			engineOffset = 12;
+			engineSize = 6;
+			lowAltitude = true;
+			mineWalls = true;
+			envDisabled = 0;
+			isEnemy = false;
 		}};
 		//elite
 		tiger = new BaseUnitType("tiger") {{
@@ -3107,6 +3208,9 @@ public final class HUnitTypes {
 			constructor = NucleoidUnit::new;
 			aiController = NullAI::new;
 			drawArrow = false;
+			createScorch = false;
+			deathExplosionEffect = Fx.none;
+			deathSound = HSounds.jumpIn;
 			damageMultiplier = 0.01f;
 			health = 900;
 			engineSize = 0f;
@@ -3269,6 +3373,8 @@ public final class HUnitTypes {
 				}
 			});
 		}};
+
+		Utils.developerItems.add(eipusino);
 
 		Utils.developerMap.get(0).addAll(eipusino);
 	}

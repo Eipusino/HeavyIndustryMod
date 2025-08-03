@@ -2,6 +2,7 @@ package heavyindustry.mod;
 
 import arc.func.Func;
 import arc.util.Log;
+import heavyindustry.HVars;
 import heavyindustry.util.Reflectf;
 import mindustry.Vars;
 import rhino.Context;
@@ -11,6 +12,9 @@ import rhino.NativeJavaClass;
 import rhino.NativeJavaPackage;
 import rhino.Scriptable;
 import rhino.Wrapper;
+
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import static heavyindustry.util.Utils.packages;
 
@@ -90,5 +94,21 @@ public final class ModJS {
 				throw new IllegalStateException("Incompatible return type: Expected '" + returnType + "', but got '" + res.getClass() + "'!");
 			return (T) type.cast(res);
 		};
+	}
+
+	public static NativeJavaClass getClass(String name) {
+		try {
+			return new NativeJavaClass(Vars.mods.getScripts().scope, Class.forName(name, true, Vars.mods.mainLoader()));
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static NativeJavaClass loadClass(String name) {
+		try (URLClassLoader urlLoader = new URLClassLoader(new URL[]{HVars.internalTree.file.file().toURI().toURL()})) {
+			return new NativeJavaClass(Vars.mods.getScripts().scope, urlLoader.loadClass(name));
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

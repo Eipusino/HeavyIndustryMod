@@ -13,6 +13,7 @@ import mindustry.type.ammo.ItemAmmoType;
 import mindustry.world.meta.Env;
 
 public class BaseUnitType extends UnitType {
+	public boolean invincible = false;
 	public float damageMultiplier = 1f;
 
 	public BaseUnitType(String name) {

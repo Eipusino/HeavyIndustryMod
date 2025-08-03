@@ -60,7 +60,7 @@ public final class HLiquids {
 			canStayOn.add(Liquids.water);
 			coolant = false;
 		}};
-		blastReagent = new Liquid("blast-reagent", Color.valueOf("d97c7c")){{
+		blastReagent = new Liquid("blast-reagent", Color.valueOf("d97c7c")) {{
 			flammability = 0.75f;
 			temperature = 0.5f;
 			viscosity = 0.8f;

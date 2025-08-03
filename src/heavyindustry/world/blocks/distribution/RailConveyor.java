@@ -32,7 +32,7 @@ import static mindustry.Vars.player;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
-public class RailConveyor extends BeltConveyor {
+public class RailConveyor extends AdaptConveyor {
 	public TextureRegion[] edgeRegions, armorRegions, arrowRegions, pulseRegions;
 	public float framePeriod = 8f;
 
@@ -106,7 +106,7 @@ public class RailConveyor extends BeltConveyor {
 		};
 	}
 
-	public class RailConveyorBuild extends BeltConveyorBuild {
+	public class RailConveyorBuild extends AdaptConveyorBuild {
 		public int drawIndex = 0;
 		public boolean armored = false;
 

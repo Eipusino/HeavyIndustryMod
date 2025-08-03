@@ -15,6 +15,7 @@ import mindustry.gen.Building;
 import mindustry.graphics.Layer;
 import mindustry.type.Item;
 import mindustry.world.Block;
+import mindustry.world.blocks.distribution.Duct;
 import mindustry.world.blocks.distribution.Junction;
 import mindustry.world.blocks.sandbox.ItemSource;
 import mindustry.world.blocks.sandbox.ItemVoid;
@@ -23,8 +24,8 @@ import static heavyindustry.util.Utils.split;
 import static mindustry.Vars.itemSize;
 import static mindustry.Vars.tilesize;
 
-public class HeavyDuct extends TubeDuct {
-	public TextureRegion[] sheetRegions;
+public class HeavyDuct extends Duct {
+	public TextureRegion[] regions;
 	public Seq<Block> acceptFrom;
 	public Block junctionReplacement;
 
@@ -41,7 +42,7 @@ public class HeavyDuct extends TubeDuct {
 	@Override
 	public void load() {
 		super.load();
-		sheetRegions = split(name + "-sheet", 32, 0);
+		regions = split(name + "-sheet", 32, 0);
 	}
 
 	@Override
@@ -69,7 +70,7 @@ public class HeavyDuct extends TubeDuct {
 	@Override
 	public void handlePlacementLine(Seq<BuildPlan> plans) {}
 
-	public class HeavyDuctBuild extends TubeDuctBuild {
+	public class HeavyDuctBuild extends DuctBuild {
 		public int state = 0;
 		public Building last;
 		public Point2 frontPos, backPos;
@@ -78,9 +79,9 @@ public class HeavyDuct extends TubeDuct {
 		@Override
 		public void draw() {
 			Draw.z(Layer.blockUnder);
-			Draw.rect(sheetRegions[0], x, y, 0f);
-			if (frontUnder) draughted(sheetRegions[0], false);
-			if (backUnder) draughted(sheetRegions[0], true);
+			Draw.rect(regions[0], x, y, 0f);
+			if (frontUnder) draughted(regions[0], false);
+			if (backUnder) draughted(regions[0], true);
 
 			//draw item
 			if (current != null) {
@@ -93,15 +94,15 @@ public class HeavyDuct extends TubeDuct {
 			}
 
 			Draw.z(Layer.blockUnder + 0.2f);
-			Draw.rect(sheetRegions[state == 4 ? 2 : state + 1], x, y, state == 4 ? -8f : 8f, rotation == 1 || rotation == 2 ? -8f : 8f, rotdeg());
-			Draw.rect(sheetRegions[4], x, y, rotdeg());
+			Draw.rect(regions[state == 4 ? 2 : state + 1], x, y, state == 4 ? -8f : 8f, rotation == 1 || rotation == 2 ? -8f : 8f, rotdeg());
+			Draw.rect(regions[4], x, y, rotdeg());
 			if (frontUnder) {
-				draughted(sheetRegions[3], false);
-				draughted(sheetRegions[4], false);
+				draughted(regions[3], false);
+				draughted(regions[4], false);
 			}
 			if (backUnder) {
-				draughted(sheetRegions[3], true);
-				draughted(sheetRegions[4], true);
+				draughted(regions[3], true);
+				draughted(regions[4], true);
 			}
 		}
 

@@ -426,13 +426,6 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 	}
 
 	@Override
-	public void rawDamage(float amount) {
-		if (type instanceof PesterUnitType pType) {
-			super.rawDamage(pType.damageMultiplier * amount);
-		}
-	}
-
-	@Override
 	public void writeSync(Writes write) {
 		super.writeSync(write);
 		write.f(salvoReload);

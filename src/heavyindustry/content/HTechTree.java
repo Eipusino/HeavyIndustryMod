@@ -228,8 +228,6 @@ public final class HTechTree {
 			node(coreStorage);
 		});
 		vanillaNode(unloader, () -> node(rapidUnloader, () -> node(rapidDirectionalUnloader)));
-		//storage-erekir
-		vanillaNode(reinforcedVault, () -> node(reinforcedCoreStorage));
 		//payload
 		vanillaNode(payloadConveyor, () -> {
 			node(payloadJunction);

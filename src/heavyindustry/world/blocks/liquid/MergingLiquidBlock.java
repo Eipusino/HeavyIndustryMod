@@ -27,7 +27,7 @@ public class MergingLiquidBlock extends LiquidBlock {
 	public class MergingLiquidBuild extends LiquidBuild {
 		public Seq<MergingLiquidBuild> chained = new Seq<>();
 		public float totalCapacity;
-		// IDK if this is even an issue anymore
+		// idk if this is even an issue anymore
 		public boolean removing;
 
 		@Override
@@ -38,7 +38,7 @@ public class MergingLiquidBlock extends LiquidBlock {
 		}
 
 		public void moveLiquids() {
-			// don't bother if it's only connected to other pipes
+			// dont bother if its only connected to other pipes
 			if (proximity.contains(b -> !(b instanceof MergingLiquidBuild other) || other.chained != chained)) {
 				dumpLiquid(liquids.current());
 			}

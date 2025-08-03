@@ -35,6 +35,9 @@ public final class HSounds {
 	public static Sound railGunCharge = new Sound();
 	public static Sound shootAltHeavy = new Sound();
 	public static Sound shootAltLight = new Sound();
+	public static Sound flowrateAbosrb = new Sound();
+	public static Sound eviscerationCharge = new Sound();
+	public static Sound eviscerationBlast = new Sound();
 
 	/** Don't let anyone instantiate this class. */
 	private HSounds() {}
@@ -69,6 +72,9 @@ public final class HSounds {
 		railGunCharge = new Sound(ogg("railGunCharge"));
 		shootAltHeavy = new Sound(ogg("shootAltHeavy"));
 		shootAltLight = new Sound(ogg("shootAltLight"));
+		flowrateAbosrb = new Sound(ogg("flowrateAbsorb"));
+		eviscerationCharge = new Sound(ogg("eviscerationCharge"));
+		eviscerationBlast = new Sound(ogg("eviscerationBlast"));
 	}
 
 	public static void alertLoop() {

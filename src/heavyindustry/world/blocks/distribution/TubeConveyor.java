@@ -27,7 +27,7 @@ import static mindustry.Vars.world;
  *
  * @author Eipusino
  */
-public class TubeConveyor extends BeltConveyor {
+public class TubeConveyor extends AdaptConveyor {
 	static final float itemSpace = 0.4f;
 	static final byte[][] tileMap = {
 			{},
@@ -100,7 +100,7 @@ public class TubeConveyor extends BeltConveyor {
 		}
 	}
 
-	public class TubeConveyorBuild extends BeltConveyorBuild {
+	public class TubeConveyorBuild extends AdaptConveyorBuild {
 		public int tiling = 0;
 
 		public boolean valid(int i) {

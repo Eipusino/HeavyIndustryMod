@@ -8,6 +8,7 @@ import arc.scene.ui.ImageButton.ImageButtonStyle;
 import arc.util.Align;
 import arc.util.Log;
 import arc.util.Nullable;
+import arc.util.Strings;
 import arc.util.Time;
 import arc.util.serialization.Jval;
 import heavyindustry.HVars;
@@ -273,8 +274,8 @@ public final class HeavyIndustryMod extends Mod {
 					t.checkPref("hi-closed-dialog", false);
 					t.checkPref("hi-floating-text", true);
 					t.checkPref("hi-animated-shields", true);
-					t.checkPref("hi-serpulo-sector-invasion", true);
 					t.checkPref("hi-special", false);
+					t.sliderPref("hi-strobespeed", 3, 1, 20, 1, s -> Strings.autoFixed(s / 2f, 2));
 					t.pref(new Setting(Core.bundle.get("hi-show-donor-and-develop")) {
 						@Override
 						public void add(SettingsTable table) {
@@ -297,7 +298,7 @@ public final class HeavyIndustryMod extends Mod {
 							ui.showInfoFade("@linkfail");
 							Core.app.setClipboardText(LINK_GIT_HUB);
 						}
-					}).marginTop(9f).marginLeft(10f).tooltip("@setting.hi-github-join").size(84f, 45f).name("github"));
+					}).marginTop(9f).marginLeft(10f).tooltip("@setting.hi-github-join").size(84f, 45f).name("@setting.github"));
 				});
 			}
 

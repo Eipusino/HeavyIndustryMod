@@ -105,8 +105,8 @@ public class IconDisplay extends Block {
 			if (builder != null && builder.isPlayer()) {
 				lastAccessed = builder.getPlayer().coloredName();
 			}
-			if (block.configurations.containsKey(type) && content != null) {
-				block.configurations.get(type).get(this, cont);
+			if (configurations.containsKey(type) && content != null) {
+				configurations.get(type).get(this, cont);
 			}
 		}
 

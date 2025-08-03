@@ -18,7 +18,7 @@ import java.io.ObjectOutputStream;
 
 import static mindustry.Vars.content;
 
-public class HTypeIO {
+public final class HTypeIO {
 	/** Don't let anyone instantiate this class. */
 	private HTypeIO() {}
 

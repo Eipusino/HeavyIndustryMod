@@ -44,7 +44,6 @@ import heavyindustry.world.blocks.defense.AparajitoWall;
 import heavyindustry.world.blocks.defense.AssignOverdrive;
 import heavyindustry.world.blocks.defense.BombLauncher;
 import heavyindustry.world.blocks.defense.DPSWall;
-import heavyindustry.world.blocks.defense.DPSWallDisplay;
 import heavyindustry.world.blocks.defense.Explosive;
 import heavyindustry.world.blocks.defense.IndestructibleWall;
 import heavyindustry.world.blocks.defense.InsulationWall;
@@ -52,9 +51,9 @@ import heavyindustry.world.blocks.defense.RegenWall;
 import heavyindustry.world.blocks.defense.ShapedWall;
 import heavyindustry.world.blocks.defense.turrets.MinigunTurret;
 import heavyindustry.world.blocks.defense.turrets.PlatformTurret;
+import heavyindustry.world.blocks.defense.turrets.SpeedupTurret;
+import heavyindustry.world.blocks.distribution.AdaptConveyor;
 import heavyindustry.world.blocks.distribution.AdaptDirectionalUnloader;
-import heavyindustry.world.blocks.distribution.BeltConveyor;
-import heavyindustry.world.blocks.distribution.BeltStackConveyor;
 import heavyindustry.world.blocks.distribution.CoveredRouter;
 import heavyindustry.world.blocks.distribution.InvertedJunction;
 import heavyindustry.world.blocks.distribution.MultiJunction;
@@ -71,7 +70,6 @@ import heavyindustry.world.blocks.environment.DepthCliff;
 import heavyindustry.world.blocks.environment.ConnectedWall;
 import heavyindustry.world.blocks.heat.FuelHeater;
 import heavyindustry.world.blocks.heat.ThermalHeater;
-import heavyindustry.world.blocks.liquid.BeltConduit;
 import heavyindustry.world.blocks.liquid.LiquidDirectionalUnloader;
 import heavyindustry.world.blocks.liquid.LiquidMassDriver;
 import heavyindustry.world.blocks.liquid.LiquidOverflowValve;
@@ -88,7 +86,6 @@ import heavyindustry.world.blocks.payload.PayloadJunction;
 import heavyindustry.world.blocks.payload.PayloadRail;
 import heavyindustry.world.blocks.power.BeamDiode;
 import heavyindustry.world.blocks.power.HyperGenerator;
-import heavyindustry.world.blocks.power.LunarGenerator;
 import heavyindustry.world.blocks.power.PowerAnalyzer;
 import heavyindustry.world.blocks.power.SmartBeamNode;
 import heavyindustry.world.blocks.power.SmartPowerNode;
@@ -189,6 +186,7 @@ import mindustry.world.blocks.distribution.Duct;
 import mindustry.world.blocks.distribution.DuctBridge;
 import mindustry.world.blocks.distribution.DuctJunction;
 import mindustry.world.blocks.distribution.ItemBridge;
+import mindustry.world.blocks.distribution.StackConveyor;
 import mindustry.world.blocks.distribution.StackRouter;
 import mindustry.world.blocks.environment.Floor;
 import mindustry.world.blocks.environment.OreBlock;
@@ -198,6 +196,7 @@ import mindustry.world.blocks.environment.SteamVent;
 import mindustry.world.blocks.environment.TallBlock;
 import mindustry.world.blocks.environment.TreeBlock;
 import mindustry.world.blocks.heat.HeatProducer;
+import mindustry.world.blocks.liquid.ArmoredConduit;
 import mindustry.world.blocks.liquid.LiquidBridge;
 import mindustry.world.blocks.liquid.LiquidRouter;
 import mindustry.world.blocks.logic.LogicBlock;
@@ -207,6 +206,7 @@ import mindustry.world.blocks.power.ConsumeGenerator;
 import mindustry.world.blocks.power.LightBlock;
 import mindustry.world.blocks.power.NuclearReactor;
 import mindustry.world.blocks.power.PowerNode;
+import mindustry.world.blocks.power.SolarGenerator;
 import mindustry.world.blocks.production.AttributeCrafter;
 import mindustry.world.blocks.production.BeamDrill;
 import mindustry.world.blocks.production.BurstDrill;
@@ -314,7 +314,7 @@ public final class HBlocks {
 	//liquid-erekir
 	reinforcedLiquidOverflowValve, reinforcedLiquidUnderflowValve, reinforcedLiquidUnloader, reinforcedLiquidSorter, reinforcedLiquidValve, smallReinforcedPump, largeReinforcedPump,
 	//power
-	networkPowerNode, smartPowerNode, microArmoredPowerNode, heavyArmoredPowerNode, powerAnalyzer, lunarPanel, liquidConsumeGenerator, uraniumReactor, hyperMagneticReactor, hugeBattery, armoredCoatedBattery,
+	networkPowerNode, smartPowerNode, microArmoredPowerNode, heavyArmoredPowerNode, powerAnalyzer, solarPanelArray, liquidConsumeGenerator, uraniumReactor, hyperMagneticReactor, hugeBattery, armoredCoatedBattery,
 	//power-erekir
 	smartBeamNode, beamDiode, beamInsulator, reinforcedPowerAnalyzer,
 	//production
@@ -357,9 +357,9 @@ public final class HBlocks {
 	unitIniter,
 			reinforcedItemSource, reinforcedLiquidSource, reinforcedPowerSource, reinforcedPayloadSource, adaptiveSource,
 			staticDrill, omniNode, ultraAssignOverdrive,
-			teamChanger, barrierProjector, nihility,
+			teamChanger, barrierProjector, entityRemove,
 			invincibleWall, invincibleWallLarge, invincibleWallHuge, invincibleWallGigantic,
-			dpsWall, dpsWallLarge, dpsWallHuge, dpsWallGigantic, dpsWallDisplay,
+			dpsWall, dpsWallLarge, dpsWallHuge, dpsWallGigantic,
 			mustDieTurret, oneShotTurret, pointTurret,
 			nextWave;
 
@@ -1251,14 +1251,14 @@ public final class HBlocks {
 			requirements(Category.distribution, ItemStack.with(Items.silicon, 20, Items.phaseFabric, 10, Items.plastanium, 20));
 			health = 90;
 		}};
-		chromiumEfficientConveyor = new BeltConveyor("chromium-efficient-conveyor") {{
+		chromiumEfficientConveyor = new AdaptConveyor("chromium-efficient-conveyor") {{
 			requirements(Category.distribution, ItemStack.with(Items.lead, 1, HItems.chromium, 1));
 			health = 240;
 			armor = 3f;
 			speed = 0.18f;
 			displayedSpeed = 18;
 		}};
-		chromiumArmorConveyor = new BeltConveyor("chromium-armor-conveyor") {{
+		chromiumArmorConveyor = new AdaptConveyor("chromium-armor-conveyor") {{
 			requirements(Category.distribution, ItemStack.with(Items.metaglass, 1, Items.thorium, 1, Items.plastanium, 1, HItems.chromium, 1));
 			health = 560;
 			armor = 5f;
@@ -1285,7 +1285,7 @@ public final class HBlocks {
 			placeableLiquid = true;
 			displayFlow = true;
 		}};
-		chromiumStackConveyor = new BeltStackConveyor("chromium-stack-conveyor") {{
+		chromiumStackConveyor = new StackConveyor("chromium-stack-conveyor") {{
 			requirements(Category.distribution, ItemStack.with(Items.graphite, 1, Items.silicon, 1, Items.plastanium, 1, HItems.chromium, 1));
 			health = 380;
 			armor = 4f;
@@ -1326,8 +1326,8 @@ public final class HBlocks {
 			armor = 4f;
 			speed = 12;
 			capacity = itemCapacity = 12;
-			((BeltConveyor) chromiumEfficientConveyor).junctionReplacement = this;
-			((BeltConveyor) chromiumArmorConveyor).junctionReplacement = this;
+			((AdaptConveyor) chromiumEfficientConveyor).junctionReplacement = this;
+			((AdaptConveyor) chromiumArmorConveyor).junctionReplacement = this;
 			((TubeConveyor) chromiumTubeConveyor).junctionReplacement = this;
 		}};
 		chromiumItemBridge = new ItemBridge("chromium-item-bridge") {{
@@ -1340,8 +1340,8 @@ public final class HBlocks {
 			arrowSpacing = 6;
 			bridgeWidth = 8;
 			buildCostMultiplier = 0.8f;
-			((BeltConveyor) chromiumEfficientConveyor).bridgeReplacement = this;
-			((BeltConveyor) chromiumArmorConveyor).bridgeReplacement = this;
+			((AdaptConveyor) chromiumEfficientConveyor).bridgeReplacement = this;
+			((AdaptConveyor) chromiumArmorConveyor).bridgeReplacement = this;
 			((TubeConveyor) chromiumTubeConveyor).bridgeReplacement = this;
 		}};
 		phaseItemNode = new NodeBridge("phase-item-node") {{
@@ -1431,7 +1431,7 @@ public final class HBlocks {
 			hideDetails = false;
 			liquidCapacity = 60f;
 		}};
-		chromiumArmorConduit = new BeltConduit("chromium-armor-conduit") {{
+		chromiumArmorConduit = new ArmoredConduit("chromium-armor-conduit") {{
 			requirements(Category.liquid, ItemStack.with(Items.metaglass, 2, HItems.chromium, 2));
 			health = 420;
 			armor = 4f;
@@ -1439,8 +1439,7 @@ public final class HBlocks {
 			liquidPressure = 3.2f;
 			noSideBlend = true;
 			leaks = false;
-			fireproof = true;
-			buildType = () -> new BeltConduitBuild() {
+			buildType = () -> new ArmoredConduitBuild() {
 				@Override
 				public float moveLiquid(Building next, Liquid liquid) {
 					if (next == null) return 0f;
@@ -1483,7 +1482,7 @@ public final class HBlocks {
 			liquidCapacity = 200f;
 			arrowSpacing = 6;
 			bridgeWidth = 8f;
-			((BeltConduit) chromiumArmorConduit).bridgeReplacement = this;
+			((ArmoredConduit) chromiumArmorConduit).bridgeReplacement = this;
 		}};
 		chromiumArmorLiquidContainer = new LiquidRouter("chromium-armor-liquid-container") {{
 			requirements(Category.liquid, ItemStack.with(Items.metaglass, 15, HItems.chromium, 6));
@@ -1602,7 +1601,7 @@ public final class HBlocks {
 			squareSprite = false;
 		}};
 		//power
-		networkPowerNode = new PowerNode("network-power-node"){{
+		networkPowerNode = new PowerNode("network-power-node") {{
 			requirements(Category.power, ItemStack.with(Items.titanium, 15, Items.silicon, 15, Items.surgeAlloy, 10));
 			size = 3;
 			maxNodes = 25;
@@ -1667,11 +1666,10 @@ public final class HBlocks {
 			displayLength = 24f / 4f;
 			hideDetails = false;
 		}};
-		lunarPanel = new LunarGenerator("lunar-panel") {{
-			requirements(Category.power, ItemStack.with(Items.silicon, 15, HItems.originium, 10, Items.lead, 15));
-			health = 45 * size * size;
-			size = 2;
-			powerProduction = 0.4f;
+		solarPanelArray = new SolarGenerator("solar-panel-array") {{
+			requirements(Category.power, ItemStack.with(Items.lead, 220, Items.metaglass, 40, HItems.galliumNitride, 60));
+			size = 6;
+			powerProduction = 12.6f;
 		}};
 		liquidConsumeGenerator = new ConsumeGenerator("liquid-generator") {{
 			requirements(Category.power, ItemStack.with(Items.graphite, 120, Items.metaglass, 80, Items.silicon, 115));
@@ -2728,7 +2726,7 @@ public final class HBlocks {
 		}};
 		//storage-erekir
 		reinforcedCoreStorage = new CoreStorageBlock("reinforced-core-storage") {{
-			requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.with(Items.beryllium, 300, Items.tungsten, 200, Items.thorium, 120, Items.silicon, 220, Items.oxide, 80));
+			requirements(Category.effect, ItemStack.with(Items.beryllium, 400, Items.tungsten, 200, Items.thorium, 220, Items.silicon, 300, Items.oxide, 100, Items.carbide, 150));
 			size = 3;
 			squareSprite = false;
 		}};
@@ -3768,18 +3766,19 @@ public final class HBlocks {
 				barrels = new float[]{6.5f, 3f, 0f};
 			}});
 		}};
-		hurricane = new PowerTurret("hurricane") {{
-			requirements(Category.turret, ItemStack.with(Items.lead, 80, Items.graphite, 100, Items.silicon, 250, Items.plastanium, 120, Items.phaseFabric, 150));
+		hurricane = new SpeedupTurret("hurricane") {{
+			requirements(Category.turret, ItemStack.with(Items.lead, 80, Items.graphite, 100, Items.silicon, 250, Items.plastanium, 120, Items.surgeAlloy, 80, Items.phaseFabric, 150));
 			size = 3;
 			health = 960;
+			hasLiquids = true;
 			range = 300f;
-			reload = 12f;
+			reload = 60f;
 			shoot = new ShootAlternate() {{
 				spread = 7f;
 			}};
 			shootCone = 24f;
 			shootSound = Sounds.spark;
-			shootType = new PositionLightningBulletType(50f) {{
+			shootType = new PositionLightningBulletType(150f) {{
 				lightningColor = hitColor = Pal.techBlue;
 				maxRange = rangeOverride = 250f;
 				hitEffect = HFx.hitSpark;
@@ -3787,8 +3786,13 @@ public final class HBlocks {
 			}};
 			warmupMaintainTime = 120f;
 			rotateSpeed = 3f;
+			maxSpeedupScl = 4f;
+			speedupPerShoot = 0.2f;
+			overheatTime = 600f;
+			overheatCoolAmount = 2f;
 			coolant = new ConsumeCoolant(0.15f);
-			consumePowerCond(35f, TurretBuild::isActive);
+			coolant.optional(false, false);
+			consumePowerCond(15f, TurretBuild::isActive);
 			canOverdrive = false;
 		}};
 		judgement = new ContinuousTurret("judgement") {{
@@ -4874,13 +4878,13 @@ public final class HBlocks {
 				trailWidth = 4.5f;
 				trailChance = 1f;
 				trailInterval = 8f;
-				trailEffect = HFx.trailSolid;//trail
+				trailEffect = HFx.polyCloud(Pal.slagOrange, 30f, 8f, 18f, 4);//trail
 				hitSound = Sounds.shotgun;
 				hitShake = 3f;
-				hitEffect = HFx.crossBlast(Pal.slagOrange, height + width);//hit
+				hitEffect = HFx.hitSparkLarge;//hit
 				shootEffect = HFx.square(Pal.slagOrange, 45f, 5, 38, 4);//shoot
 				despawnEffect = Fx.none;
-				smokeEffect = HFx.hugeSmokeLong;//smoke
+				smokeEffect = Fx.shootBigSmoke;//smoke
 				fragBullets = 18;
 				fragRandomSpread = 60f;
 				fragBullet = new LiquidBulletType(Liquids.slag) {{
@@ -4895,7 +4899,7 @@ public final class HBlocks {
 					pierceCap = 2;
 					speed = 8f;
 					lifetime = 20f;
-					hitEffect = HFx.crossBlast(Pal.slagOrange, height + width);//hit
+					hitEffect = Fx.hitBulletBig;//hit
 				}};
 			}}, Items.carbide, new BasicBulletType(28.4f, 2160f, "missile-large") {{
 				rangeChange = 160;
@@ -4917,10 +4921,10 @@ public final class HBlocks {
 				trailEffect = HFx.polyCloud(Pal.slagOrange, 30f, 8f, 18f, 4);//trail
 				hitSound = Sounds.shotgun;
 				hitShake = 5f;
-				hitEffect = HFx.crossBlast(Pal.slagOrange, height + width);//hit
+				hitEffect = HFx.hitSparkLarge;//hit
 				despawnEffect = Fx.none;
 				shootEffect = HFx.square(Pal.slagOrange, 45f, 5, 38, 4);//shoot
-				smokeEffect = HFx.hugeSmokeLong;//smoke
+				smokeEffect = Fx.shootBigSmoke;//smoke
 			}});
 		}};
 		//sandbox
@@ -5107,7 +5111,7 @@ public final class HBlocks {
 				return new TextureRegion[]{region};
 			}
 		};
-		nihility = new ForceProjector("nihility") {{
+		entityRemove = new ForceProjector("entity-remove") {{
 			requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 1000;
 			armor = 10f;
@@ -5237,11 +5241,6 @@ public final class HBlocks {
 			requirements(Category.defense, BuildVisibility.sandboxOnly, ItemStack.empty);
 			size = 4;
 			health = 16000;
-		}};
-		dpsWallDisplay = new DPSWallDisplay("dps-wall-display") {{
-			requirements(Category.defense, BuildVisibility.sandboxOnly, ItemStack.empty);
-			size = 5;
-			health = 25000;
 		}};
 		mustDieTurret = new PlatformTurret("must-die-turret") {{
 			requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.empty);
@@ -5548,15 +5547,17 @@ public final class HBlocks {
 
 				@Override
 				public void configured(Unit builder, Object value) {
-					if (value instanceof Number index) switch (index.intValue()) {
-						case 0 -> {
-							if (net.client()) Call.adminRequest(player, Packets.AdminAction.wave, null);
-							else state.wavetime = 0f;
-						}
-						case 1 -> {
-							for (int i = 10; i > 0; i--) {
+					if (value instanceof Number index) {
+						switch (index.intValue()) {
+							case 0 -> {
 								if (net.client()) Call.adminRequest(player, Packets.AdminAction.wave, null);
-								else logic.runWave();
+								else state.wavetime = 0f;
+							}
+							case 1 -> {
+								for (int i = 10; i > 0; i--) {
+									if (net.client()) Call.adminRequest(player, Packets.AdminAction.wave, null);
+									else logic.runWave();
+								}
 							}
 						}
 					}

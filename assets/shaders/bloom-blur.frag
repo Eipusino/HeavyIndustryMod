@@ -20,7 +20,7 @@ void main() {
 
 		float offset = -4.0;
 		for (int y = 0; y < 3; y++) {
-			for (int x = 0; x < 3; x++){
+			for (int x = 0; x < 3; x++) {
 				blurColor += convolution[y][x] * texture(u_texture1, v_texCoords + len * offset).rgb;
 				offset = offset + 1.0;
 			}

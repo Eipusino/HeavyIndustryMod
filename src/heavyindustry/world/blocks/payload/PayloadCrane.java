@@ -31,25 +31,20 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.ControlBlock;
 import mindustry.world.blocks.payloads.BuildPayload;
 import mindustry.world.blocks.payloads.Payload;
+import mindustry.world.meta.BuildVisibility;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
-/**
- * NONE OF THESE PAYLOAD BLOCKS HAVE LIMITS CURRENTLY THEY CAN LITERALLY PICK UP MURASAKI
- * <p>also These numbers. They anger me.
- *
- * @author Nullotte
- * @since 1.0.6
- */
+// NONE OF THESE PAYLOAD BLOCKS HAVE LIMITS CURRENTLY THEY CAN LITERALLY PICK UP OMURAS
+// also These numbers. They anger me.
 public class PayloadCrane extends Block {
-	static final float[] segmentLengths = {100f, 70f, 35f};
-	static final float[] segmentOffsets = {60f, 45f, 25f, 0f};
-
 	public float hookOffset = 130f, minExtension = -1f, maxExtension = 210f;
 	public float extensionSpeed = 1.5f;
 	public float rotateSpeed = 0.5f;
 
 	public int segments = 4;
+	public float[] segmentLengths = {100f, 70f, 35f};
+	public float[] segmentOffsets = {60f, 45f, 25f, 0f};
 
 	public TextureRegion baseRegion, previewRegion, topRegion, outlineRegion, topOutlineRegion;
 	public TextureRegion[] segmentRegions, segmentOutlineRegions, hookRegions, hookOutlineRegions;
@@ -164,10 +159,10 @@ public class PayloadCrane extends Block {
 	public static class CranePoint extends Point2 {
 		public boolean output;
 
-		public CranePoint(Point2 point, boolean out) {
+		public CranePoint(Point2 point, boolean output) {
 			x = point.x;
 			y = point.y;
-			output = out;
+			this.output = output;
 		}
 	}
 
@@ -221,7 +216,7 @@ public class PayloadCrane extends Block {
 				}
 			}
 
-			// update crane stuff . I don't like how linear it is.... but Oh well
+			// update crane stuff . i dont like how linear it is.... but Oh well
 			craneRotation = Angles.moveToward(craneRotation, angleTo(target), rotateSpeed * edelta());
 			extension = Mathf.approach(extension, Mathf.clamp(dst(target) - hookOffset, -hookOffset + minExtension, maxExtension), extensionSpeed * edelta());
 
@@ -234,7 +229,7 @@ public class PayloadCrane extends Block {
 
 		@Override
 		public void created() {
-			// so it doesn't just try to target 0, 0 immediately
+			// so it doesnt just try to target 0, 0 immediately
 			target.set(this).add(0f, 1f);
 		}
 
@@ -260,7 +255,7 @@ public class PayloadCrane extends Block {
 					if (current != null) {
 						payload = build.takePayload();
 						Fx.unitPickup.at(build);
-					} else if (build.canPickup() && payload == null) {
+					} else if (build.block.buildVisibility != BuildVisibility.hidden && build.canPickup() && payload == null) {
 						build.pickedUp();
 						build.tile.remove();
 						build.afterPickedUp();

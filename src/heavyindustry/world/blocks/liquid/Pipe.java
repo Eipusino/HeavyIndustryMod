@@ -1,11 +1,13 @@
 package heavyindustry.world.blocks.liquid;
 
+import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Geometry;
+import arc.struct.Seq;
 import arc.util.Eachable;
 import arc.util.Tmp;
-import heavyindustry.util.Utils;
+import heavyindustry.input.BeltPlacement;
 import mindustry.Vars;
 import mindustry.entities.units.BuildPlan;
 import mindustry.graphics.Drawf;
@@ -20,16 +22,18 @@ public class Pipe extends MergingLiquidBlock implements Autotiler {
 	static final float rotateHpad = 0.75f;
 	static final float[][] rotateOffsets = new float[][]{{0.75f, 0.75f}, {-0.75f, 0.75f}, {-0.75f, -0.75f}, {0.75f, -0.75f}};
 
-	static final byte[][] blendIndices = {
+	static final int[][] blendIndices = {
 			{0, 0}, {0, 0}, {0, 1}, {1, 3},
 			{0, 0}, {0, 0}, {1, 2}, {2, 3},
 			{0, 1}, {1, 0}, {0, 1}, {2, 0},
 			{1, 1}, {2, 1}, {2, 2}, {3, 0}
 	};
 
-	public TextureRegion[] bottomRegions;
 	public TextureRegion[][] regions;
+	public TextureRegion[] bottomRegions;
 	public TextureRegion[][][] rotateRegions;
+
+	public Block bridgeReplacement;
 
 	public Pipe(String name) {
 		super(name);
@@ -41,11 +45,27 @@ public class Pipe extends MergingLiquidBlock implements Autotiler {
 	public void load() {
 		super.load();
 
-		regions = Utils.splitLayers(name + "-top", 32, 4);
+		regions = new TextureRegion[4][];
 
-		bottomRegions = Utils.split(name + "-bottom", size * 32, 0);
+		regions[0] = new TextureRegion[2];
+		regions[1] = new TextureRegion[4];
+		regions[2] = new TextureRegion[4];
+		regions[3] = new TextureRegion[1];
 
-		// everything about this mod is terrible, and I hate it and i
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				if (j < regions[i].length) {
+					regions[i][j] = Core.atlas.find(name + "-" + i + "-" + j);
+				}
+			}
+		}
+
+		bottomRegions = new TextureRegion[2];
+		for (int i = 0; i < 2; i++) {
+			bottomRegions[i] = Core.atlas.find(name + "-bottom" + i);
+		}
+
+		// everything about this mod is terrible and janky and i hate it and i
 		rotateRegions = new TextureRegion[4][2][Liquid.animationFrames];
 
 		if (Vars.renderer != null) {
@@ -81,12 +101,19 @@ public class Pipe extends MergingLiquidBlock implements Autotiler {
 	}
 
 	@Override
+	public void init() {
+		super.init();
+
+		//if (bridgeReplacement == null) bridgeReplacement = HBlocks.pipeBridge;
+	}
+
+	@Override
 	public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list) {
 		int[] bits = getTiling(plan, list);
 
 		if (bits == null) return;
 
-		byte[] blending = blendIndices[bits[3]];
+		int[] blending = blendIndices[bits[3]];
 		int index1 = blending[0];
 		int index2 = blending[1];
 
@@ -96,7 +123,7 @@ public class Pipe extends MergingLiquidBlock implements Autotiler {
 
 	@Override
 	public TextureRegion[] icons() {
-		return new TextureRegion[]{region};
+		return new TextureRegion[]{bottomRegions[0], regions[0][0]};
 	}
 
 	@Override
@@ -120,6 +147,13 @@ public class Pipe extends MergingLiquidBlock implements Autotiler {
 		Drawf.liquid(liquidr, x + ox, y + oy, fullness, liquid.color.write(Tmp.c1).a(1f));
 
 		Draw.rect(regions[index1][index2], x, y);
+	}
+
+	@Override
+	public void handlePlacementLine(Seq<BuildPlan> plans) {
+		// for some reason it doesnt automatically bridge over other pipes and i cant figure it out....
+		// i actually Did figure out a fix but it didnt work for vertical bridging so like. guess ill die
+		BeltPlacement.calculateBridges(plans, bridgeReplacement, b -> b instanceof Pipe, true);
 	}
 
 	public class PipeBuild extends MergingLiquidBuild {
@@ -150,7 +184,7 @@ public class Pipe extends MergingLiquidBlock implements Autotiler {
 			int[] bits = buildBlending(tile, 0, null, true);
 			underBlending = bits[4];
 
-			byte[] blending = blendIndices[bits[3]];
+			int[] blending = blendIndices[bits[3]];
 			index1 = blending[0];
 			index2 = blending[1];
 		}
