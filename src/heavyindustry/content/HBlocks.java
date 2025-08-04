@@ -1053,7 +1053,7 @@ public final class HBlocks {
 			envRequired |= Env.groundWater;
 			consumePower(5.5f);
 		}};
-		slagExtractor = new SlagExtractor("slag-extractor") {{
+		slagExtractor = new SlagExtractorBlock("slag-extractor") {{
 			requirements(Category.production, ItemStack.with(Items.graphite, 60, Items.titanium, 35, Items.metaglass, 80, Items.silicon, 80, Items.thorium, 45));
 			size = 3;
 			liquidCapacity = 30;
@@ -1698,7 +1698,7 @@ public final class HBlocks {
 			consume(new ConsumeLiquidFlammable(0.4f, 0.2f));
 			squareSprite = false;
 		}};
-		uraniumReactor = new UraniumReactor("uranium-reactor") {{
+		uraniumReactor = new UraniumReactorBlock("uranium-reactor") {{
 			requirements(Category.power, ItemStack.with(Items.lead, 400, Items.metaglass, 120, Items.graphite, 350, Items.silicon, 300, HItems.uranium, 100));
 			size = 3;
 			health = 1450;
@@ -5573,10 +5573,14 @@ public final class HBlocks {
 		Utils.donorMap.get(1).addAll(crystallineCircuitPrinter);
 	}
 
-	public static class SlagExtractor extends SolidPump {
+	/**
+	 * For internal use only.
+	 * @see HBlocks#slagExtractor
+	 */
+	public static class SlagExtractorBlock extends SolidPump {
 		public TextureRegion rotatorRegion1;
 
-		SlagExtractor(String name) {
+		SlagExtractorBlock(String name) {
 			super(name);
 
 			buildType = SlagExtractorBuild::new;
@@ -5609,14 +5613,18 @@ public final class HBlocks {
 		}
 	}
 
-	public static class UraniumReactor extends NuclearReactor {
+	/**
+	 * For internal use only.
+	 * @see HBlocks#uraniumReactor
+	 */
+	public static class UraniumReactorBlock extends NuclearReactor {
 		public Blending blending = Blending.additive;
 		public float alpha = 0.9f, glowScale = 10f, glowIntensity = 0.5f, layer = Layer.blockAdditive;
 		public Color color = Color.red.cpy();
 
 		public TextureRegion bottomRegion, glowRegion;
 
-		UraniumReactor(String name) {
+		UraniumReactorBlock(String name) {
 			super(name);
 			buildType = UraniumReactorBuild::new;
 		}

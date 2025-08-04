@@ -70,7 +70,7 @@ public final class Elements {
 	public static FlowrateVoidDialog flowrateVoidDialog;
 
 	private static final Vec2 ctrlVec = new Vec2();
-	private static final DecimalFormat df = new DecimalFormat("######0.0");
+	private static final DecimalFormat form = new DecimalFormat("######0.0");
 	private static final Vec2 point = new Vec2(-1, -1);
 	private static final Table starter = new Table(Tex.paneSolid);
 
@@ -81,7 +81,7 @@ public final class Elements {
 	private Elements() {}
 
 	public static String format(float value) {
-		return df.format(value);
+		return form.format(value);
 	}
 
 	public static String judge(boolean value) {
@@ -116,24 +116,8 @@ public final class Elements {
 		}
 	}
 
+	/** Similar to {@link UI#formatAmount(long)} but for floats. */
 	public static String round(float num) {
-		//prevent things like bars displaying erroneous representations of casted infinities
-		if (Float.isNaN(num)) return "NaN";
-		if (num == Float.MAX_VALUE) return "Infinite";
-		if (num == Float.MIN_VALUE) return "-Infinite";
-
-		if (num >= 1000000000f) {
-			return Strings.autoFixed(num / 1000000000f, 1) + UI.billions;
-		} else if (num >= 1000000f) {
-			return Strings.autoFixed(num / 1000000f, 1) + UI.millions;
-		} else if (num >= 1000f) {
-			return Strings.autoFixed(num / 1000f, 1) + UI.thousands;
-		} else {
-			return num + "";
-		}
-	}
-
-	public static String roundDPS(float num) {
 		if (Float.isNaN(num)) return "NaN";
 		if (num == Float.MAX_VALUE) return "Infinite";
 		if (num == Float.MIN_VALUE) return "-Infinite";
@@ -165,8 +149,7 @@ public final class Elements {
 			t.add(label).growX().color(color).colspan(colSpan).left();
 			t.row();
 		}
-		t.image().growX().pad(5f, 0f, 5f, 0f)
-				.height(3f).color(color).colspan(colSpan).left();
+		t.image().growX().pad(5f, 0f, 5f, 0f).height(3f).color(color).colspan(colSpan).left();
 		t.row();
 	}
 
@@ -176,10 +159,6 @@ public final class Elements {
 
 	public static FLabel infinity() {
 		return new FLabel("{wave}{rainbow}" + Core.bundle.get("hi-infinity"));
-	}
-
-	public static FLabel infiniteDamage() {
-		return new FLabel("{wave}{rainbow}" + Core.bundle.get("hi-infinite-damage"));
 	}
 
 	public static FLabel everything() {

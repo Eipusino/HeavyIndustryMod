@@ -210,7 +210,7 @@ public class TargetDummyBase extends Block {
 
 		public String displayDPS(boolean round) {
 			if (time > 0) {
-				return Core.bundle.format("hi-target-dummy.dps", (round ? (DPS > 0 ? Elements.roundDPS(DPS) : "---") : Strings.autoFixed(total / time * 60f, 2)));
+				return Core.bundle.format("hi-target-dummy.dps", (round ? (DPS > 0 ? Elements.round(DPS) : "---") : Strings.autoFixed(total / time * 60f, 2)));
 			} else {
 				return Core.bundle.format("hi-target-dummy.dps", "---");
 			}
@@ -218,7 +218,7 @@ public class TargetDummyBase extends Block {
 
 		public String displayTotal() {
 			if (time > 0) {
-				return Core.bundle.format("hi-target-dummy.total", Elements.roundDPS(totalDisplay), Strings.autoFixed(timeDisplay, 2));
+				return Core.bundle.format("hi-target-dummy.total", Elements.round(totalDisplay), Strings.autoFixed(timeDisplay, 2));
 			} else {
 				return Core.bundle.format("hi-target-dummy.total", "---", "---");
 			}

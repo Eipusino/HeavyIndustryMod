@@ -6,6 +6,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Font;
 import arc.util.Align;
 import arc.util.Time;
+import heavyindustry.ui.Elements;
 import mindustry.Vars;
 import mindustry.graphics.Layer;
 import mindustry.ui.Fonts;
@@ -75,8 +76,8 @@ public class DPSWall extends Wall {
 				Draw.z(Layer.weather + 1);
 				color.a = Math.min(showBoardTime / boardTimeTotal * 3, 1);
 				font.draw(Core.bundle.format("hi-dps-info-hits", hits), dx, (dy -= gap), color, fontSize, false, Align.left);
-				font.draw(Core.bundle.format("hi-dps-info-damage", damage), dx, (dy -= gap), color, fontSize, false, Align.left);
-				font.draw(Core.bundle.format("hi-dps-info-dps", dps), dx, dy - gap, color, fontSize, false, Align.left);
+				font.draw(Core.bundle.format("hi-dps-info-damage", Elements.round(damage)), dx, (dy -= gap), color, fontSize, false, Align.left);
+				font.draw(Core.bundle.format("hi-dps-info-dps", Elements.round(dps)), dx, dy - gap, color, fontSize, false, Align.left);
 
 				Draw.reset();
 			}

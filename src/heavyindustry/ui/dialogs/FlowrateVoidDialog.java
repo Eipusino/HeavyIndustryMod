@@ -1,5 +1,6 @@
 package heavyindustry.ui.dialogs;
 
+import arc.Core;
 import arc.Events;
 import arc.graphics.Color;
 import arc.scene.ui.layout.Table;
@@ -21,17 +22,20 @@ import mindustry.world.Block;
 import mindustry.world.meta.StatUnit;
 import mindustry.world.meta.StatValues;
 
-import static arc.Core.bundle;
 import static mindustry.Vars.mobile;
 
 public class FlowrateVoidDialog extends BaseDialog {
-	private static final int cols = mobile ? 1 : 3;
-	private final Table info = new Table();
-	private FlowrateVoidBuild build;
-	private int col = 0;
+	protected static final int cols = mobile ? 1 : 3;
+	protected final Table info = new Table();
+	protected FlowrateVoidBuild build;
+	protected int col = 0;
 
 	public FlowrateVoidDialog() {
 		super("@hi-flowrate-reader.title");
+		init();
+	}
+
+	protected void init() {
 		shouldPause = false;
 		addCloseButton();
 		shown(this::rebuild);
@@ -58,13 +62,13 @@ public class FlowrateVoidDialog extends BaseDialog {
 		buildPayloads();
 	}
 
-	private void buildItems() {
+	protected void buildItems() {
 		if (build.items.empty()) return;
 
 		Elements.divider(info, "@content.item.name", Pal.accent);
 		info.table(items -> {
 			items.table(t -> {
-				t.add(bundle.format("hi-flowrate-reader.total", build.items.total())).left();
+				t.add(Core.bundle.format("hi-flowrate-reader.total", build.items.total())).left();
 				t.add(perSec(build.items.total())).padLeft(24);
 			}).colspan(cols).left().row();
 
@@ -77,7 +81,7 @@ public class FlowrateVoidDialog extends BaseDialog {
 					i.table(info -> {
 						info.left();
 						info.add(item.localizedName).left().bottom().wrap().growX().row();
-						info.add(bundle.format("hi-flowrate-reader.total", amount)).left().top();
+						info.add(Core.bundle.format("hi-flowrate-reader.total", amount)).left().top();
 					}).left().growX();
 					i.add(perSec(amount)).right().pad(10f);
 				}).uniformX().growX().pad(5);
@@ -96,14 +100,14 @@ public class FlowrateVoidDialog extends BaseDialog {
 		}).growX().row();
 	}
 
-	private void buildLiquids() {
+	protected void buildLiquids() {
 		float totalAmount = build.getTotalLiquids();
 		if ((totalAmount <= 0.01f)) return;
 
 		Elements.divider(info, "@content.liquid.name", Pal.accent);
 		info.table(fluids -> {
 			fluids.table(t -> {
-				t.add(bundle.format("hi-flowrate-reader.total", StatValues.fixValue(totalAmount))).left();
+				t.add(Core.bundle.format("hi-flowrate-reader.total", StatValues.fixValue(totalAmount))).left();
 				t.add(perSec(totalAmount)).padLeft(24);
 			}).colspan(cols).left().row();
 
@@ -116,7 +120,7 @@ public class FlowrateVoidDialog extends BaseDialog {
 					l.table(info -> {
 						info.left();
 						info.add(liquid.localizedName).left().bottom().wrap().growX().row();
-						info.add(bundle.format("hi-flowrate-reader.total", StatValues.fixValue(amount))).left().top();
+						info.add(Core.bundle.format("hi-flowrate-reader.total", StatValues.fixValue(amount))).left().top();
 					}).left().growX();
 					l.add(perSec(amount)).right().pad(10f);
 				}).uniformX().growX().pad(5);
@@ -135,7 +139,7 @@ public class FlowrateVoidDialog extends BaseDialog {
 		}).growX().left().row();
 	}
 
-	private void buildPower() {
+	protected void buildPower() {
 		if ((build.totalPowerProduced + build.totalPowerConsumed + build.totalPowerTransported) <= 0.01f) return;
 
 		Elements.divider(info, "@bar.power", Pal.accent);
@@ -143,28 +147,28 @@ public class FlowrateVoidDialog extends BaseDialog {
 			power.left();
 			power.defaults().left();
 
-			power.add(bundle.format("hi-flowrate-reader.powerproduced", StatValues.fixValue(build.totalPowerProduced)));
+			power.add(Core.bundle.format("hi-flowrate-reader.powerproduced", StatValues.fixValue(build.totalPowerProduced)));
 			power.add(perSec(build.totalPowerProduced)).pad(10f).row();
-			power.add(bundle.format("hi-flowrate-reader.powerconsumed", StatValues.fixValue(build.totalPowerConsumed)));
+			power.add(Core.bundle.format("hi-flowrate-reader.powerconsumed", StatValues.fixValue(build.totalPowerConsumed)));
 			power.add(perSec(build.totalPowerConsumed)).pad(10f).row();
 			float net = build.totalPowerProduced - build.totalPowerConsumed;
-			power.add(bundle.format("hi-flowrate-reader.powernet", StatValues.fixValue(net)));
+			power.add(Core.bundle.format("hi-flowrate-reader.powernet", StatValues.fixValue(net)));
 			power.add((net > 0 ? "[stat]+" : "[negstat]") + StatValues.fixValue(net / build.totalTime * 60f) + StatUnit.perSecond.localized()).pad(10f).row();
 
 			if (build.totalPowerTransported > 0.01f) {
-				power.add(bundle.format("hi-flowrate-reader.powertransported", StatValues.fixValue(build.totalPowerTransported)));
+				power.add(Core.bundle.format("hi-flowrate-reader.powertransported", StatValues.fixValue(build.totalPowerTransported)));
 				power.add(perSec(build.totalPowerTransported)).pad(10f);
 			}
 		}).growX().left().pad(5).row();
 	}
 
-	private void buildPayloads() {
+	protected void buildPayloads() {
 		if (!build.totalPayloads.any()) return;
 
 		Elements.divider(info, "@hi-flowrate-reader.payloads", Pal.accent);
 		info.table(payloads -> {
 			payloads.table(t -> {
-				t.add(bundle.format("hi-flowrate-reader.total", build.totalPayloads.total())).left();
+				t.add(Core.bundle.format("hi-flowrate-reader.total", build.totalPayloads.total())).left();
 				t.add(perSec(build.totalPayloads.total())).padLeft(24);
 			}).colspan(cols).left().row();
 
@@ -186,7 +190,7 @@ public class FlowrateVoidDialog extends BaseDialog {
 					p.image(content.uiIcon).size(40).pad(10f).left().scaling(Scaling.fit);
 					p.table(info -> {
 						info.add(content.localizedName).left().bottom().wrap().growX().row();
-						info.add(bundle.format("hi-flowrate-reader.total", amount)).left().top();
+						info.add(Core.bundle.format("hi-flowrate-reader.total", amount)).left().top();
 					}).left().growX();
 					p.add(perSec(amount)).pad(10f);
 
@@ -199,7 +203,7 @@ public class FlowrateVoidDialog extends BaseDialog {
 								d.table(t -> {
 									t.left();
 									t.add(i.localizedName).left().wrap().growX().row();
-									t.add(bundle.format("hi-flowrate-reader.total", StatValues.fixValue(a))).left();
+									t.add(Core.bundle.format("hi-flowrate-reader.total", StatValues.fixValue(a))).left();
 								}).growX();
 								d.add(perSec(a)).right().growX().labelAlign(Align.right).row();
 							});
@@ -208,7 +212,7 @@ public class FlowrateVoidDialog extends BaseDialog {
 								d.table(t -> {
 									t.left();
 									t.add(l.localizedName).left().wrap().growX().row();
-									t.add(bundle.format("hi-flowrate-reader.total", StatValues.fixValue(a))).left();
+									t.add(Core.bundle.format("hi-flowrate-reader.total", StatValues.fixValue(a))).left();
 								}).growX();
 								d.add(perSec(a)).right().growX().labelAlign(Align.right).row();
 							});
@@ -217,7 +221,7 @@ public class FlowrateVoidDialog extends BaseDialog {
 								d.table(t -> {
 									t.left();
 									t.add("@bar.power").left().wrap().growX().row();
-									t.add(bundle.format("hi-flowrate-reader.total", StatValues.fixValue(data.power))).left();
+									t.add(Core.bundle.format("hi-flowrate-reader.total", StatValues.fixValue(data.power))).left();
 								}).growX();
 								d.add(perSec(data.power)).right();
 							}
@@ -239,7 +243,7 @@ public class FlowrateVoidDialog extends BaseDialog {
 		}).growX();
 	}
 
-	private String perSec(float value) {
+	protected String perSec(float value) {
 		return "[stat]" + StatValues.fixValue(value / build.totalTime * 60f) + StatUnit.perSecond.localized();
 	}
 }

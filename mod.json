@@ -9,6 +9,6 @@
 	"repo": "Eipusino/HeavyIndustryMod",
 	"java": true,
 	"plugin": false,
-	"minGameVersion": 150.0,
+	"minGameVersion": 150.1,
 	"hideBrowser": true
 }

@@ -19,8 +19,8 @@ public final class Worlds {
 	/** Don't let anyone instantiate this class. */
 	private Worlds() {}
 
-	public static void postAfterLoad(Runnable runnable) {
-		if (worldLoaded) afterLoad.add(runnable);
+	public static void postAfterLoad(Runnable run) {
+		if (worldLoaded) afterLoad.add(run);
 	}
 
 	public static void load() {

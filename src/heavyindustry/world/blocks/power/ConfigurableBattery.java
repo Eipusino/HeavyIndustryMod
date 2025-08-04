@@ -61,7 +61,7 @@ public class ConfigurableBattery extends Battery {
 		addBar("power", entity -> new Bar(
 				() -> {
 					float capacity = dynBufferedPower.getPowerCapacity(entity);
-					return Core.bundle.format("bar.poweramount", Float.isNaN(entity.power.status * capacity) ? "<ERROR>" : Elements.roundDPS(entity.power.status * capacity)) + "/" + Elements.roundDPS(capacity);
+					return Core.bundle.format("bar.poweramount", Float.isNaN(entity.power.status * capacity) ? "<ERROR>" : Elements.round(entity.power.status * capacity)) + "/" + Elements.round(capacity);
 				},
 				() -> Pal.powerBar,
 				() -> Mathf.zero(consPower.requestedPower(entity)) && entity.power.graph.getPowerProduced() + entity.power.graph.getBatteryStored() > 0f ? 1f : entity.power.status)

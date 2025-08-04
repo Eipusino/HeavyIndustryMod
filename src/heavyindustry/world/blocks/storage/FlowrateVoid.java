@@ -366,7 +366,7 @@ public class FlowrateVoid extends PayloadVoid {
 
 		public String labelText(float value) {
 			if (totalTime <= 0) return Core.bundle.get("hi-flowrate-reader.no-time");
-			return Elements.roundDPS(value / totalTime * 60f) + StatUnit.perSecond.localized();
+			return Elements.round(value / totalTime * 60f) + StatUnit.perSecond.localized();
 		}
 
 		@Override

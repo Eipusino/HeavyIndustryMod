@@ -222,7 +222,7 @@ public final class HeavyIndustryMod extends Mod {
 
 		IconLoader.loadIcons(internalTree.child("other/icons.properties"));
 
-		if (!headless && !isPlugin && mods.locateMod("extra-utilities") == null && isAprilFoolsDay()) {
+		if (!headless && !isPlugin && !modEnabled("extra-utilities") && isAprilFoolsDay()) {
 			HOverrides.loadAprilFoolsDay();
 
 			if (ui != null) {
@@ -316,7 +316,7 @@ public final class HeavyIndustryMod extends Mod {
 			String massage = Core.bundle.get("hi-random-massage");
 			String[] massageSplit = massage.split("&");
 
-			if (headless || ui == null || mods.locateMod("extra-utilities") != null || !Core.settings.getBool("hi-floating-text")) break set;
+			if (headless || ui == null || modEnabled("extra-utilities") || !Core.settings.getBool("hi-floating-text")) break set;
 
 			floatingText = new FloatingText(massageSplit[Mathf.random(massageSplit.length - 1)]);
 			floatingText.build(ui.menuGroup);
@@ -337,10 +337,15 @@ public final class HeavyIndustryMod extends Mod {
 		return loaded;
 	}
 
+	public static boolean modEnabled(String name) {
+		LoadedMod mod = mods.getMod(name);
+		return mod != null && mod.isSupported() && mod.enabled();
+	}
+
 	public static boolean isAprilFoolsDay() {
-		var date = LocalDate.now();
-		var sdf = DateTimeFormatter.ofPattern("MMdd");
-		String fd = sdf.format(date);
-		return fd.equals("0401");
+		LocalDate date = LocalDate.now();
+		DateTimeFormatter form = DateTimeFormatter.ofPattern("MMdd");
+		String fromdata = form.format(date);
+		return fromdata.equals("0401");
 	}
 }
