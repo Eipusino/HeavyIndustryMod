@@ -15,6 +15,7 @@ import arc.math.geom.Geometry;
 import arc.math.geom.Intersector;
 import arc.math.geom.Vec2;
 import arc.scene.style.TextureRegionDrawable;
+import arc.scene.ui.Button;
 import arc.scene.ui.ButtonGroup;
 import arc.scene.ui.ImageButton;
 import arc.scene.ui.ScrollPane;
@@ -93,6 +94,7 @@ import heavyindustry.world.blocks.production.Centrifuge;
 import heavyindustry.world.blocks.production.LaserBeamDrill;
 import heavyindustry.world.blocks.production.MinerPoint;
 import heavyindustry.world.blocks.production.MultiCrafter;
+import heavyindustry.world.blocks.production.SporeFarmBlock;
 import heavyindustry.world.blocks.sandbox.AdaptiveSource;
 import heavyindustry.world.blocks.storage.CoreStorageBlock;
 import heavyindustry.world.blocks.storage.AdaptUnloader;
@@ -302,6 +304,7 @@ public final class HBlocks {
 			aparajito, aparajitoLarge,
 	//drill
 	titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, blastWell, ionDrill, cuttingDrill, beamDrill,
+			sporeFarm,
 	//drill-erekir
 	heavyPlasmaBore, minerPoint, minerCenter,
 	//distribution
@@ -1176,6 +1179,14 @@ public final class HBlocks {
 			buildCostMultiplier = 0.8f;
 			consumePower(6f);
 			consumeLiquid(Liquids.water, 0.1f).optional(true, true);
+			hideDetails = false;
+		}};
+		sporeFarm = new SporeFarmBlock("spore-farm") {{
+			requirements(Category.production, ItemStack.with(Items.copper, 5, Items.lead, 5));
+			health = 50;
+			hasItems = true;
+			buildCostMultiplier = 0.01f;
+			breakSound = Sounds.splash;
 			hideDetails = false;
 		}};
 		//drill-erekir
@@ -5023,22 +5034,24 @@ public final class HBlocks {
 
 				@Override
 				public void buildConfiguration(Table table) {
-					var g = new ButtonGroup<>();
+					ButtonGroup<Button> bg = new ButtonGroup<>();
 					Table cont = new Table();
 					cont.defaults().size(55);
 					for (Team bt : Utils.baseTeams) {
 						ImageButton button = cont.button(((TextureRegionDrawable) Tex.whiteui).tint(bt.color), Styles.clearTogglei, 35, () -> {
-						}).group(g).get();
+						}).group(bg).get();
 						button.changed(() -> {
 							if (button.isChecked()) {
 								if (player.team() == team) {
 									configure(bt.id);
-								} else deselect();
+								} else {
+									deselect();
+								}
 							}
 						});
 						button.update(() -> button.setChecked(team == bt));
 					}
-					var pane = new ScrollPane(cont, Styles.smallPane);
+					ScrollPane pane = new ScrollPane(cont, Styles.smallPane);
 					pane.setScrollingDisabled(true, false);
 					pane.setOverscroll(false, false);
 					table.add(pane).maxHeight(Scl.scl(40 * 2)).left();
@@ -5074,9 +5087,6 @@ public final class HBlocks {
 			public boolean canPlaceOn(Tile tile, Team team, int rotation) {
 				return true;
 			}
-
-			@Override
-			public void placeBegan(Tile tile, Block previous) {}
 
 			@Override
 			public void beforePlaceBegan(Tile tile, Block previous) {}
@@ -5168,8 +5178,7 @@ public final class HBlocks {
 
 					if (realRadius > 0 && !broken) {
 						Groups.unit.intersect(x - realRadius, y - realRadius, realRadius * 2f, realRadius * 2f, trait -> {
-							if (trait.team != team
-									&& Intersector.isInsideHexagon(x, y, realRadius() * 2f, trait.x, trait.y)) {
+							if (trait.team != team && Intersector.isInsideHexagon(x, y, realRadius() * 2f, trait.x, trait.y)) {
 								trait.remove();
 							}
 						});

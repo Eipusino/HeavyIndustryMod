@@ -119,6 +119,11 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 	}
 
 	@Override
+	public ChainedUnitType checkType() {
+		return (ChainedUnitType) type;
+	}
+
+	@Override
 	public void chainTime(float value) {
 		chainTime = value;
 	}

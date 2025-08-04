@@ -15,6 +15,10 @@ public interface BaseUnitc extends Unitc {
 		throw new ClassCastException("Unit's type must be BaseUnitType!");
 	}
 
+	default BaseUnitType checkType() {
+		return (BaseUnitType) type();
+	}
+
 	default <T extends Entityc> Prov<T> provSelf() {
 		return this::self;
 	}

@@ -233,7 +233,7 @@ public class MultiSource extends Block {
 			}
 			//save last used config
 			block.lastConfig = data;
-			Call.tileConfig(player, self(), value);
+			Call.tileConfig(player, this, value);
 		}
 
 		@Override
@@ -251,7 +251,7 @@ public class MultiSource extends Block {
 					data.set(l);
 				}
 			}
-			Call.tileConfig(player, self(), value);
+			Call.tileConfig(player, this, value);
 		}
 
 		@Override

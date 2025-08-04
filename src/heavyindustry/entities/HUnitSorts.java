@@ -20,6 +20,7 @@ public final class HUnitSorts {
 	private static final float[][] costs = new float[16][];
 	private static final float[][] cpriority = new float[16][];
 	private static final Unit[][] result = new Unit[16][];
+
 	private static float dcr;
 
 	public static final Sortf regionalHPMaximumUnit = (u, x, y) -> {

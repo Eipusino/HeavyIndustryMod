@@ -238,6 +238,7 @@ import heavyindustry.world.blocks.production.LaserBeamDrill;
 import heavyindustry.world.blocks.production.MinerPoint;
 import heavyindustry.world.blocks.production.MultiCrafter;
 import heavyindustry.world.blocks.production.OreDetector;
+import heavyindustry.world.blocks.production.SporeFarmBlock;
 import heavyindustry.world.blocks.production.UndergroundDrill;
 import heavyindustry.world.blocks.sandbox.AdaptiveSource;
 import heavyindustry.world.blocks.sandbox.EverythingItemSource;
@@ -722,6 +723,8 @@ final class HClassMap {
 		classes.put("MinerPointBuild", MinerPoint.MinerPointBuild.class);
 		classes.put("OreDetector", OreDetector.class);
 		classes.put("OreDetectorBuild", OreDetector.OreDetectorBuild.class);
+		classes.put("SporeFarmBlock", SporeFarmBlock.class);
+		classes.put("SporeFarmBuild", SporeFarmBlock.SporeFarmBuild.class);
 		classes.put("AdaptUnloader", AdaptUnloader.class);
 		classes.put("AdaptUnloaderBuild", AdaptUnloader.AdaptUnloaderBuild.class);
 		classes.put("DetectorCoreBlock", DetectorCoreBlock.class);

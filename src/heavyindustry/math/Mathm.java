@@ -444,4 +444,11 @@ public final class Mathm {
 	public static boolean chanceDelta(float d) {
 		return Mathf.rand.nextFloat() < d * Time.delta;
 	}
+
+	public static boolean isNaNInfinite(float... fields) {
+		for (float field : fields) {
+			if (Float.isNaN(field) || Float.isInfinite(field) || field >= Float.MAX_VALUE) return true;
+		}
+		return false;
+	}
 }

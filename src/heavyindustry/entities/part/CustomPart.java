@@ -10,7 +10,7 @@ public class CustomPart extends DrawPart {
 	protected final Vec2 vec = new Vec2();
 	protected final Vec2 vec2 = new Vec2();
 
-	public Drawer draw;
+	public Drawer draw = (x, y, rotation, progress) -> {};
 	public Seq<PartMove> moves = new Seq<>();
 	public PartProgress progress = p -> 1;
 

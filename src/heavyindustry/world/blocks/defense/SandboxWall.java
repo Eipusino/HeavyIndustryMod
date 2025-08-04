@@ -319,7 +319,7 @@ public class SandboxWall extends Block {
 			}
 
 			damage(bullet.team, damage);
-			Events.fire(bulletDamageEvent.set(self(), bullet));
+			Events.fire(bulletDamageEvent.set(this, bullet));
 
 			hit = 1f;
 

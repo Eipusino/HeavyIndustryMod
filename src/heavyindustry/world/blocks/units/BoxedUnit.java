@@ -83,7 +83,7 @@ public class BoxedUnit extends Block {
 		}
 
 		protected Unit spawn() {
-			Unit u = type.spawn(self(), team);
+			Unit u = type.spawn(this, team);
 			Fx.spawn.at(this);
 			kill();
 			u.rotation(90f);

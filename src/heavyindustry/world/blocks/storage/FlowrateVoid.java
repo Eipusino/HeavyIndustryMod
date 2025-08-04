@@ -220,8 +220,9 @@ public class FlowrateVoid extends PayloadVoid {
 		@Override
 		public Building create(Block block, Team team) {
 			super.create(block, team);
+
 			if (block.hasLiquids) liquids = new EmptyLiquidModule();
-			return self();
+			return this;
 		}
 
 		@Override
@@ -267,7 +268,7 @@ public class FlowrateVoid extends PayloadVoid {
 				Tmp.v2.set(p).approach(Tmp.v1.set(this), payloadSpeed);
 				p.set(Tmp.v2.x, Tmp.v2.y, p.rotation());
 
-				if (p.within(self(), 0.01f)) {
+				if (p.within(this, 0.01f)) {
 					consumePayload(p);
 					payloads.remove(i);
 				}
