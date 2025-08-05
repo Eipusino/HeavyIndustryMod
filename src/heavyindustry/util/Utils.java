@@ -200,12 +200,6 @@ public final class Utils {
 			"Eipusino"
 	};
 
-	public static final Seq<UnlockableContent> donorItems = new Seq<>();
-	public static final Seq<UnlockableContent> developerItems = new Seq<>();
-
-	public static final IntMap<Seq<UnlockableContent>> donorMap = new IntMap<>();
-	public static final IntMap<Seq<UnlockableContent>> developerMap = new IntMap<>();
-
 	public static final Seq<Building> buildings = new Seq<>();
 
 	static final Vec2 v11 = new Vec2(), v12 = new Vec2(), v13 = new Vec2();
@@ -228,25 +222,8 @@ public final class Utils {
 	static Building tmpBuilding;
 	static Unit tmpUnit;
 
-	static {
-		donorMap.put(0, new Seq<>());//\u82cf\u6cfd
-		donorMap.put(1, new Seq<>());//\u55b5\u5b50
-
-		developerMap.put(0, new Seq<>());//Eipusino
-	}
-
 	/** Don't let anyone instantiate this class. */
 	private Utils() {}
-
-	public static void loadItems() {
-		String donor = Core.bundle.get("hi-donor-item");
-		String developer = Core.bundle.get("hi-developer-item");
-
-		for (UnlockableContent cont : donorItems)
-			cont.description = (cont.description == null ? donor : cont.description + "\n" + donor);
-		for (UnlockableContent cont : developerItems)
-			cont.description = (cont.description == null ? developer : cont.description + "\n" + developer);
-	}
 
 	public static int reverse(int rotation) {
 		return switch (rotation) {

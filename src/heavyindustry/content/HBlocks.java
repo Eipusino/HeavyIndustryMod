@@ -5582,13 +5582,6 @@ public final class HBlocks {
 				}
 			};
 		}};
-		//donor
- 		//developer
-
-		Utils.donorItems.addAll(largePulverizer, largeMelter, largePyratiteMixer, largeBlastMixer, largeCryofluidMixer, crystallineCircuitPrinter);
-
-		Utils.donorMap.get(0).addAll(largePulverizer, largeMelter, largePyratiteMixer, largeBlastMixer, largeCryofluidMixer);
-		Utils.donorMap.get(1).addAll(crystallineCircuitPrinter);
 	}
 
 	/**

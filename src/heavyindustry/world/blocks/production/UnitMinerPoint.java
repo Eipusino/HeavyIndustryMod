@@ -168,7 +168,7 @@ public class UnitMinerPoint extends Block {
 		addBar("units", (UnitMinerPointBuild tile) -> new Bar(
 				() -> Core.bundle.format("bar.unitcap", Fonts.getUnicodeStr(minerUnit.name), tile.units.size, dronesCreated),
 				() -> Pal.power,
-				() -> tile.units.size / dronesCreated));
+				() -> (float) tile.units.size / dronesCreated));
 	}
 
 	@Override

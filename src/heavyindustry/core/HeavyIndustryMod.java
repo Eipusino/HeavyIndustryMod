@@ -55,8 +55,6 @@ import mindustry.mod.Mod;
 import mindustry.mod.Mods.LoadedMod;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
-import mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable;
-import mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable.Setting;
 import mindustry.ui.fragments.MenuFragment;
 
 import java.time.LocalDate;
@@ -207,8 +205,6 @@ public final class HeavyIndustryMod extends Mod {
 			HSectorPresets.load();
 			HTechTree.load();
 		}
-
-		Utils.loadItems();
 	}
 
 	@Override
@@ -276,13 +272,6 @@ public final class HeavyIndustryMod extends Mod {
 					t.checkPref("hi-animated-shields", true);
 					t.checkPref("hi-special", false);
 					t.sliderPref("hi-strobespeed", 3, 1, 20, 1, s -> Strings.autoFixed(s / 2f, 2));
-					t.pref(new Setting(Core.bundle.get("hi-show-donor-and-develop")) {
-						@Override
-						public void add(SettingsTable table) {
-							table.button(name, Elements.ddItemsList::toShow).margin(14).width(200f).pad(6);
-							table.row();
-						}
-					});
 					//this fucking sucks
 					t.table(Tex.button, c -> {
 						c.button("@settings.game", Icon.settings, Styles.flatt, iconMed, () -> {}).growX().marginLeft(8f).height(50f).row();

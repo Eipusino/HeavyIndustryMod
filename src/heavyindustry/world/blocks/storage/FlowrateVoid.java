@@ -156,15 +156,15 @@ public class FlowrateVoid extends PayloadVoid {
 		public float[] liquids = new float[content.liquids().size];
 		public float power;
 
-		public void addI(Item item, int amount) {
+		public void addItem(Item item, int amount) {
 			items[item.id] += amount;
 		}
 
-		public void addL(Liquid liquid, float amount) {
+		public void addLiquid(Liquid liquid, float amount) {
 			liquids[liquid.id] += amount;
 		}
 
-		public void addP(float amount) {
+		public void addPower(float amount) {
 			power += amount;
 		}
 
@@ -282,19 +282,19 @@ public class FlowrateVoid extends PayloadVoid {
 					if (p.block().hasItems) {
 						p.build.items.each((item, amount) -> {
 							items.add(item, amount);
-							data.addI(item, amount);
+							data.addItem(item, amount);
 						});
 					}
 					if (p.block().hasLiquids) {
 						p.build.liquids.each((liquid, amount) -> {
 							liquids.add(liquid, amount);
-							data.addL(liquid, amount);
+							data.addLiquid(liquid, amount);
 						});
 					}
 					if (p.block().consPower != null && p.block().consPower.buffered) {
 						float pow = p.build.power.status * p.block().consPower.capacity;
 						totalPowerTransported += pow;
-						data.addP(pow);
+						data.addPower(pow);
 					}
 				}
 				totalPayloads.add(payload.content());

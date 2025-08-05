@@ -7,19 +7,13 @@ import mindustry.gen.Building;
 import mindustry.gen.BuildingTetherc;
 import mindustry.gen.Call;
 import mindustry.io.TypeIO;
-import mindustry.world.blocks.storage.CoreBlock;
 
-public class NoCoreDepositBuildingTetherLegsUnit extends BaseLegsUnit implements BuildingTetherc {
+public class BaseBuildingTetherLegsUnit extends BaseLegsUnit implements BuildingTetherc {
 	public @Nullable Building building;
 
 	@Override
 	public int classId() {
-		return Entitys.getId(NoCoreDepositBuildingTetherLegsUnit.class);
-	}
-
-	@Override
-	public CoreBlock.CoreBuild core() {
-		return null;//If closestCore is null, it cannot deposit items into it. Kinda hacky but there's no other option.
+		return Entitys.getId(BaseBuildingTetherLegsUnit.class);
 	}
 
 	@Override

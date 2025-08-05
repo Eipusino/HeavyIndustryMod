@@ -245,7 +245,7 @@ public class SandboxWall extends Block {
 		public void updateTile() {
 			super.updateTile();
 
-			if (DPSTesting()) {
+			if (dpsTesting()) {
 				time += Time.delta;
 				reset += Time.delta;
 
@@ -289,7 +289,7 @@ public class SandboxWall extends Block {
 			if (insulating()) {
 				Draw.rect(insulatingRegion, x, y);
 			}
-			if (DPSTesting()) {
+			if (dpsTesting()) {
 				if (armored()) {
 					Draw.rect(armorRegion, x, y);
 				}
@@ -301,7 +301,7 @@ public class SandboxWall extends Block {
 		}
 
 		public String displayDPS(boolean round) {
-			if (!DPSTesting()) {
+			if (!dpsTesting()) {
 				return "[lightgray]" + Iconc.cancel;
 			} else if (time > 0) {
 				float damage = state.rules.blockHealth(team);
@@ -377,7 +377,7 @@ public class SandboxWall extends Block {
 			float dm = state.rules.blockHealth(team);
 			lastDamageTime = Time.time;
 
-			if (!DPSTesting()) return;
+			if (!dpsTesting()) return;
 
 			reset = 0f;
 			total += Mathf.zero(dm) ? 1 : damage / dm;
@@ -499,7 +499,7 @@ public class SandboxWall extends Block {
 			data.toggle(i);
 
 			//Reset DPS testing
-			if (i == 3 && DPSTesting()) {
+			if (i == 3 && dpsTesting()) {
 				total = 0f;
 				time = 0f;
 				DPS = 0f;
@@ -519,7 +519,7 @@ public class SandboxWall extends Block {
 			return data.insulated;
 		}
 
-		public boolean DPSTesting() {
+		public boolean dpsTesting() {
 			return data.dpsTesting;
 		}
 

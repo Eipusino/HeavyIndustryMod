@@ -17,7 +17,7 @@ import arc.scene.ui.layout.Table;
 import arc.struct.ObjectSet;
 import arc.util.Time;
 import arc.util.Tmp;
-import heavyindustry.ai.DepotMinerAI;
+import heavyindustry.ai.MinerDepotAI;
 import heavyindustry.ai.HealingDefenderAI;
 import heavyindustry.ai.MinerPointAI;
 import heavyindustry.ai.NullAI;
@@ -42,7 +42,8 @@ import heavyindustry.entities.effect.WrapperEffect;
 import heavyindustry.entities.part.AimPart;
 import heavyindustry.entities.part.BowHalo;
 import heavyindustry.entities.part.PartBow;
-import heavyindustry.gen.BaseBuildingTetherPayloadUnit;
+import heavyindustry.gen.BaseBuildingTetherLegsUnit;
+import heavyindustry.gen.BaseBuildingTetherUnit;
 import heavyindustry.gen.BaseMechUnit;
 import heavyindustry.gen.BasePayloadUnit;
 import heavyindustry.gen.BaseTankUnit;
@@ -53,7 +54,6 @@ import heavyindustry.gen.BaseLegsUnit;
 import heavyindustry.gen.DPSMechUnit;
 import heavyindustry.gen.HSounds;
 import heavyindustry.gen.InvincibleShipUnit;
-import heavyindustry.gen.NoCoreDepositBuildingTetherLegsUnit;
 import heavyindustry.gen.NucleoidUnit;
 import heavyindustry.gen.PayloadLegsUnit;
 import heavyindustry.gen.UltFire;
@@ -165,7 +165,7 @@ public final class HUnitTypes {
 	//?
 	eipusino;
 
-	private final static ObjectSet<StatusEffect> immunitier = new ObjectSet<>();
+	private final static ObjectSet<StatusEffect> filter = new ObjectSet<>();
 
 	/** Don't let anyone instantiate this class. */
 	private HUnitTypes() {}
@@ -2208,7 +2208,7 @@ public final class HUnitTypes {
 		//miner-erekir
 		miner = new BaseUnitType("miner") {{
 			erekir();
-			constructor = BaseBuildingTetherPayloadUnit::new;
+			constructor = BaseBuildingTetherUnit::new;
 			defaultCommand = UnitCommand.mineCommand;
 			controller = u -> new MinerPointAI();
 			flying = true;
@@ -2242,7 +2242,7 @@ public final class HUnitTypes {
 		}};
 		largeMiner = new BaseUnitType("large-miner") {{
 			erekir();
-			constructor = NoCoreDepositBuildingTetherLegsUnit::new;
+			constructor = BaseBuildingTetherUnit::new;
 			defaultCommand = UnitCommand.mineCommand;
 			controller = u -> new MinerPointAI();
 			flying = true;
@@ -2277,8 +2277,8 @@ public final class HUnitTypes {
 		}};
 		legsMiner = new BaseUnitType("legs-miner") {{
 			erekir();
-			controller = u -> new DepotMinerAI();
-			constructor = NoCoreDepositBuildingTetherLegsUnit::new;
+			controller = u -> new MinerDepotAI();
+			constructor = BaseBuildingTetherLegsUnit::new;
 			isEnemy = false;
 			allowedInPayloads = false;
 			logicControllable = false;
@@ -3243,7 +3243,7 @@ public final class HUnitTypes {
 			speed *= 1.75f;
 			drawShields = false;
 			isEnemy = false;
-			immunities = immunitier();
+			immunities = filter();
 			flying = true;
 			killable = false;
 			hittable = false;
@@ -3395,18 +3395,14 @@ public final class HUnitTypes {
 				}
 			});
 		}};
-
-		Utils.developerItems.add(eipusino);
-
-		Utils.developerMap.get(0).addAll(eipusino);
 	}
 
-	private static ObjectSet<StatusEffect> immunitier() {
-		if (immunitier.isEmpty()) {
-			ObjectSet<StatusEffect> filter = ObjectSet.with(StatusEffects.none, StatusEffects.overclock, StatusEffects.shielded, StatusEffects.boss, StatusEffects.invincible, HStatusEffects.regenerating, HStatusEffects.territoryFieldIncrease);
-			immunitier.addAll(content.statusEffects().select(s -> s != null && !filter.contains(s)));
+	private static ObjectSet<StatusEffect> filter() {
+		if (filter.isEmpty()) {
+			ObjectSet<StatusEffect> status = ObjectSet.with(StatusEffects.none, StatusEffects.overclock, StatusEffects.shielded, StatusEffects.boss, StatusEffects.invincible, HStatusEffects.regenerating, HStatusEffects.territoryFieldIncrease);
+			filter.addAll(content.statusEffects().select(s -> s != null && !status.contains(s)));
 		}
 
-		return immunitier;
+		return filter;
 	}
 }

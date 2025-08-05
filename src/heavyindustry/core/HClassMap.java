@@ -1,6 +1,6 @@
 package heavyindustry.core;
 
-import heavyindustry.ai.DepotMinerAI;
+import heavyindustry.ai.MinerDepotAI;
 import heavyindustry.ai.HealingDefenderAI;
 import heavyindustry.ai.MinerPointAI;
 import heavyindustry.ai.NullAI;
@@ -315,7 +315,7 @@ final class HClassMap {
 		classes.put("ReloadingAI", ReloadingAI.class);
 		classes.put("TargetCargoAI", TargetCargoAI.class);
 		classes.put("MinerPointAI", MinerPointAI.class);
-		classes.put("DepotMinerAI", DepotMinerAI.class);
+		classes.put("MinerDepotAI", MinerDepotAI.class);
 		//ability
 		classes.put("BatteryAbility", BatteryAbility.class);
 		classes.put("DeathAbility", DeathAbility.class);

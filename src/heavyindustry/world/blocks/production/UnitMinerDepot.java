@@ -6,6 +6,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.math.Interp;
 import arc.math.Mathf;
+import arc.math.geom.Position;
 import arc.math.geom.Vec2;
 import arc.scene.ui.layout.Table;
 import arc.struct.EnumSet;
@@ -54,8 +55,8 @@ public class UnitMinerDepot extends Block {
 
 	public float polyStroke = 1.8f, polyRadius = 6.75f, polyRotateSpeed = 1f;
 	public float polyStrokeScl = 1.75f, polyStrokeSclSpeed = 0.03f, polyStrokeTime = 120f;
-	public int polySides = 4;
-	public Color polyColor = Pal.accent;
+	public int polySides = 6;
+	public Color polyColor = Color.valueOf("92dd7e");
 
 	public UnitMinerDepot(String name) {
 		super(name);
@@ -89,7 +90,7 @@ public class UnitMinerDepot extends Block {
 		addBar("units", (UnitMinerDepotBuild tile) -> new Bar(
 				() -> Core.bundle.format("bar.unitcap", Fonts.getUnicodeStr(minerUnit.name), tile.team.data().countType(minerUnit), Units.getStringCap(tile.team)),
 				() -> Pal.power,
-				() -> tile.team.data().countType(minerUnit) / Units.getCap(tile.team)
+				() -> (float) tile.team.data().countType(minerUnit) / Units.getCap(tile.team)
 		));
 	}
 
@@ -153,16 +154,9 @@ public class UnitMinerDepot extends Block {
 				oresFound = true;
 				minerUnit.mineItems.each(item -> {
 					//is there a better way?
-					Tile floor = indexer.findClosestOre(x, y, item);
-					Tile wall = indexer.findClosestWallOre(x, y, item);
-					if (!oreTiles.containsKey(item)) {
-						if (floor != null && wall != null) { //If there are both floor ore and wall ore, the block closest to it will be selected.
-							oreTiles.put(item, floor.dst2(x, y) < wall.dst2(x, y) ? floor : wall);
-						} else if (floor != null) {
-							oreTiles.put(item, floor);
-						} else if (wall != null) {
-							oreTiles.put(item, wall);
-						}
+					Tile ore = oreTile(x, y, item);
+					if (!oreTiles.containsKey(item) && ore != null) {
+						oreTiles.put(item, ore);
 					}
 				});
 			}
@@ -186,6 +180,23 @@ public class UnitMinerDepot extends Block {
 			}
 
 			dump();
+		}
+
+		public Tile oreTile(Position pos, Item item) {
+			return oreTile(pos.getX(), pos.getY(), item);
+		}
+
+		public Tile oreTile(float xp, float yp, Item item) {
+			Tile floor = indexer.findClosestOre(xp, yp, item);
+			Tile wall = indexer.findClosestWallOre(xp, yp, item);
+
+			if (floor != null && wall != null) {
+				return floor.dst2(xp, yp) < wall.dst2(xp, yp) ? floor : wall;
+			} else if (floor != null) {
+				return floor;
+			} else {
+				return wall;
+			}
 		}
 
 		public Item oreDrop(Tile tiled) {

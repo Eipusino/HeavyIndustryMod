@@ -10,7 +10,7 @@ import mindustry.world.Tile;
 import static mindustry.Vars.controlPath;
 import static mindustry.Vars.indexer;
 
-public class DepotMinerAI extends AIController {
+public class MinerDepotAI extends AIController {
 	protected static final boolean[] noFound = {false};
 
 	protected final Vec2 targetPos = new Vec2(), vecOut = new Vec2(), vecMovePos = new Vec2();
@@ -41,8 +41,8 @@ public class DepotMinerAI extends AIController {
 			} else {
 				//(When target not manually set) Closer ore was passed on the way to the original target, save it as new closer target.
 				if (!home.targetSet && timer.get(timerTarget, 40)) {
-					Tile ore = indexer.findClosestOre(unit, home.targetItem);
-					if (ore != targetTile && unit.within(ore.worldx(), ore.worldy(), unit.type.mineRange)) {
+					Tile ore = home.oreTile(unit, home.targetItem);
+					if (ore != null && ore != targetTile && unit.within(ore.worldx(), ore.worldy(), unit.type.mineRange)) {
 						home.oreTiles.put(home.targetItem, ore);
 					}
 				}

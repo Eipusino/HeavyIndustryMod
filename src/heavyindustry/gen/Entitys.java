@@ -47,11 +47,11 @@ public final class Entitys {
 		register("BaseTankUnit", BaseTankUnit.class, BaseTankUnit::new);
 		register("BaseElevationMoveUnit", BaseElevationMoveUnit.class, BaseElevationMoveUnit::new);
 		register("BaseBuildingTetherPayloadUnit", BaseBuildingTetherPayloadUnit.class, BaseBuildingTetherPayloadUnit::new);
+		register("BaseBuildingTetherUnit", BaseBuildingTetherUnit.class, BaseBuildingTetherUnit::new);
 		register("BaseUnitWaterMove", BaseUnitWaterMove.class, BaseUnitWaterMove::new);
 		register("BaseTimedKillUnit", BaseTimedKillUnit.class, BaseTimedKillUnit::new);
-		register("TrailTimedKillUnit", TrailTimedKillUnit.class, TrailTimedKillUnit::new);
 		register("PayloadLegsUnit", PayloadLegsUnit.class, PayloadLegsUnit::new);
-		register("NoCoreDepositBuildingTetherLegsUnit", NoCoreDepositBuildingTetherLegsUnit.class, NoCoreDepositBuildingTetherLegsUnit::new);
+		register("BaseBuildingTetherLegsUnit", BaseBuildingTetherLegsUnit.class, BaseBuildingTetherLegsUnit::new);
 		register("BaseCrawlUnit", BaseCrawlUnit.class, BaseCrawlUnit::new);
 		register("ChainedChainMechUnit", ChainedChainMechUnit.class, ChainedChainMechUnit::new);
 		register("TractorBeamUnit", TractorBeamUnit.class, TractorBeamUnit::new);

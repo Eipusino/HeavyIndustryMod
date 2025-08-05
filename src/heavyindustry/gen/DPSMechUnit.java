@@ -6,6 +6,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Font;
 import arc.util.Align;
 import arc.util.Time;
+import heavyindustry.ui.Elements;
 import mindustry.Vars;
 import mindustry.graphics.Layer;
 import mindustry.ui.Fonts;
@@ -95,12 +96,12 @@ public class DPSMechUnit extends BaseMechUnit {
 			font.draw(Core.bundle.format("hi-dps-info-armor", armor), dx, (dy -= gap), color, fontSize, false, Align.left);
 			font.draw(Core.bundle.format("hi-dps-info-hitsize", hitSize), dx, (dy -= gap), color, fontSize, false, Align.left);
 			font.draw(Core.bundle.format("hi-dps-info-hits", hits), dx, (dy -= gap), color, fontSize, false, Align.left);
-			font.draw(Core.bundle.format("hi-dps-info-duration-frame", gameDuration), dx, (dy -= gap), color, fontSize, false, Align.left);
-			font.draw(Core.bundle.format("hi-dps-info-duration-real", realDuration), dx, (dy -= gap), color, fontSize, false, Align.left);
-			font.draw(Core.bundle.format("hi-dps-info-origin-damage", originDamage), dx, (dy -= gap), color, fontSize, false, Align.left);
-			font.draw(Core.bundle.format("hi-dps-info-real-damage", realDamage), dx, (dy -= gap), color, fontSize, false, Align.left);
-			font.draw(Core.bundle.format("hi-dps-info-dps-origin", originDps), dx, (dy -= gap), color, fontSize, false, Align.left);
-			font.draw(Core.bundle.format("hi-dps-info-dps-real", realDps), dx, dy - gap, color, fontSize, false, Align.left);
+			font.draw(Core.bundle.format("hi-dps-info-duration-frame", Elements.round(gameDuration)), dx, (dy -= gap), color, fontSize, false, Align.left);
+			font.draw(Core.bundle.format("hi-dps-info-duration-real", Elements.round(realDuration)), dx, (dy -= gap), color, fontSize, false, Align.left);
+			font.draw(Core.bundle.format("hi-dps-info-origin-damage", Elements.round(originDamage)), dx, (dy -= gap), color, fontSize, false, Align.left);
+			font.draw(Core.bundle.format("hi-dps-info-real-damage", Elements.round(realDamage)), dx, (dy -= gap), color, fontSize, false, Align.left);
+			font.draw(Core.bundle.format("hi-dps-info-dps-origin", Elements.round(originDps)), dx, (dy -= gap), color, fontSize, false, Align.left);
+			font.draw(Core.bundle.format("hi-dps-info-dps-real", Elements.round(realDps)), dx, dy - gap, color, fontSize, false, Align.left);
 			Draw.reset();
 		}
 	}
