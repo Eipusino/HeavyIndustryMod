@@ -37,8 +37,6 @@ public class EnergyUnit extends BaseUnit implements Energyc {
 
 	protected Trail[] trails = {};
 
-	public EnergyUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(EnergyUnit.class);

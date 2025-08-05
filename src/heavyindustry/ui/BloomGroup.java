@@ -1,4 +1,4 @@
-package heavyindustry.ui.elements;
+package heavyindustry.ui;
 
 import arc.Core;
 import arc.graphics.g2d.Bloom;

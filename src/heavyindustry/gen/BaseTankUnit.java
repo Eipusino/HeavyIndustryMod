@@ -5,8 +5,6 @@ import mindustry.content.Fx;
 import mindustry.gen.TankUnit;
 
 public class BaseTankUnit extends TankUnit implements BaseUnitc {
-	public BaseTankUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(BaseTankUnit.class);

@@ -1,8 +1,10 @@
 package heavyindustry.gen;
 
+import arc.func.Func;
 import arc.func.Prov;
 import arc.struct.ObjectIntMap;
-import arc.util.Strings;
+import arc.struct.ObjectMap;
+import arc.util.Structs;
 import mindustry.gen.EntityMapping;
 import mindustry.gen.Entityc;
 
@@ -13,46 +15,28 @@ import mindustry.gen.Entityc;
  * @since 1.0.6
  */
 public final class Entitys {
-	private static final ObjectIntMap<Class<? extends Entityc>> ids = new ObjectIntMap<>();
-
-	private static volatile int last = 0;
+	private static final ObjectIntMap<Class<? extends Entityc>> classIdMap = new ObjectIntMap<>();
+	private static final ObjectMap<String, Prov<? extends Entityc>> needMap = new ObjectMap<>();
 
 	/** Don't let anyone instantiate this class. */
 	private Entitys() {}
 
-	/** @see #register(String, Class, Prov) */
-	public static <T extends Entityc> void register(Class<T> type, Prov<T> prov) {
-		synchronized (Entitys.class) {
-			if (ids.containsKey(type) || EntityMapping.nameMap.containsKey(type.getSimpleName())) return;
-
-			for (; last < EntityMapping.idMap.length; last++) {
-				if (EntityMapping.idMap[last] == null) {
-					EntityMapping.idMap[last] = prov;
-					ids.put(type, last);
-
-					EntityMapping.nameMap.put(type.getSimpleName(), prov);
-					EntityMapping.nameMap.put(Strings.camelToKebab(type.getSimpleName()), prov);
-
-					return;
-				}
-			}
-
-			throw new IllegalStateException("In case you used up all 256 class ids; use the same code for ~200 units you idiot.");
-		}
+	public static <T extends Entityc> void register(String name, Class<T> type, Prov<T> prov) {
+		needMap.put(name, prov);
+		classIdMap.put(type, EntityMapping.register(name, prov));
 	}
 
-	public static <T extends Entityc> void register(String name, Class<T> type, Prov<T> prov) {
-		register(type, prov);
-		EntityMapping.nameMap.put(name, prov);
-
-		int id = getId(type);
-		if (id != -1) {
-			EntityMapping.customIdMap.put(id, name);
+	public static <T, E extends Entityc> T content(String name, Class<E> type, Func<String, ? extends T> create) {
+		if (type.getName().startsWith("mindustry.gen.")) {
+			EntityMapping.nameMap.put(name, Structs.find(EntityMapping.idMap, p -> p != null && p.get().getClass().equals(type)));
+		} else {
+			EntityMapping.nameMap.put(name, needMap.get(type.getSimpleName()));
 		}
+		return create.get(name);
 	}
 
 	public static int getId(Class<? extends Entityc> type) {
-		return ids.get(type, -1);
+		return classIdMap.get(type, -1);
 	}
 
 	public static void load() {
@@ -67,7 +51,7 @@ public final class Entitys {
 		register("BaseTimedKillUnit", BaseTimedKillUnit.class, BaseTimedKillUnit::new);
 		register("TrailTimedKillUnit", TrailTimedKillUnit.class, TrailTimedKillUnit::new);
 		register("PayloadLegsUnit", PayloadLegsUnit.class, PayloadLegsUnit::new);
-		register("BuildingTetherPayloadLegsUnit", BuildingTetherPayloadLegsUnit.class, BuildingTetherPayloadLegsUnit::new);
+		register("NoCoreDepositBuildingTetherLegsUnit", NoCoreDepositBuildingTetherLegsUnit.class, NoCoreDepositBuildingTetherLegsUnit::new);
 		register("BaseCrawlUnit", BaseCrawlUnit.class, BaseCrawlUnit::new);
 		register("ChainedChainMechUnit", ChainedChainMechUnit.class, ChainedChainMechUnit::new);
 		register("TractorBeamUnit", TractorBeamUnit.class, TractorBeamUnit::new);

@@ -11,7 +11,7 @@ import arc.util.Eachable;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.gen.Worlds;
+import heavyindustry.world.Worlds;
 import mindustry.content.UnitTypes;
 import mindustry.entities.EntityGroup;
 import mindustry.entities.units.BuildPlan;

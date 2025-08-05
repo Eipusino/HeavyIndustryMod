@@ -1,4 +1,4 @@
-package heavyindustry.ui.listeners;
+package heavyindustry.ui;
 
 import arc.scene.event.ClickListener;
 import arc.scene.event.InputEvent;

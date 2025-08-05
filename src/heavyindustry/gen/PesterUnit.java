@@ -78,8 +78,6 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 
 	protected Trail[] trails = {};
 
-	public PesterUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(PesterUnit.class);

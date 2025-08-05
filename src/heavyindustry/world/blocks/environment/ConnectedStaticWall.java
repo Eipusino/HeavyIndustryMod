@@ -7,8 +7,8 @@ import mindustry.world.blocks.environment.StaticWall;
 
 import static heavyindustry.util.Utils.split;
 
-public class ConnectedWall extends StaticWall {
-	public ConnectedWall(String name) {
+public class ConnectedStaticWall extends StaticWall {
+	public ConnectedStaticWall(String name) {
 		super(name);
 	}
 

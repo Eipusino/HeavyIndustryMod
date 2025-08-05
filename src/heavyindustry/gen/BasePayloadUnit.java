@@ -5,8 +5,6 @@ import mindustry.content.Fx;
 import mindustry.gen.PayloadUnit;
 
 public class BasePayloadUnit extends PayloadUnit implements BaseUnitc {
-	public BasePayloadUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(BasePayloadUnit.class);

@@ -1,4 +1,4 @@
-package heavyindustry.ui.listeners;
+package heavyindustry.ui;
 
 import arc.Core;
 import arc.func.Boolp;

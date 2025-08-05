@@ -5,8 +5,6 @@ import mindustry.content.Fx;
 import mindustry.gen.TimedKillUnit;
 
 public class BaseTimedKillUnit extends TimedKillUnit implements BaseUnitc {
-	public BaseTimedKillUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(BaseTimedKillUnit.class);

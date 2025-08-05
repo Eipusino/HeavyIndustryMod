@@ -1,6 +1,5 @@
 package heavyindustry.world.blocks.distribution;
 
-import arc.Core;
 import arc.Graphics;
 import arc.graphics.Blending;
 import arc.graphics.Color;
@@ -13,7 +12,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.util.Sprites;
+import heavyindustry.util.Utils;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.units.BuildPlan;
@@ -49,10 +48,11 @@ public class RailConveyor extends AdaptConveyor {
 	@Override
 	public void load() {
 		super.load();
-		edgeRegions = Sprites.splitInLayers(Core.atlas.find(name + "-edge"), 32, 1);
-		armorRegions = Sprites.splitInLayers(Core.atlas.find(name + "-edge-armored"), 32, 1);
-		arrowRegions = Sprites.splitInLayers(Core.atlas.find(name + "-arrow"), 32, 1);
-		pulseRegions = Sprites.splitInLayers(Core.atlas.find(name + "-pulse"), 32, 1);
+
+		edgeRegions = Utils.split(name + "-edge", 32, 5, 1);
+		armorRegions = Utils.split(name + "-edge-armored", 32, 5, 1);
+		arrowRegions = Utils.split(name + "-arrow", 32, 16, 2);
+		pulseRegions = Utils.split(name + "-pulse", 32, 5, 3);
 	}
 
 	@Override

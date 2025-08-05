@@ -5,8 +5,6 @@ import mindustry.content.Fx;
 import mindustry.gen.UnitWaterMove;
 
 public class BaseUnitWaterMove extends UnitWaterMove implements BaseUnitc {
-	public BaseUnitWaterMove() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(getClass());

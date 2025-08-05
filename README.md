@@ -6,7 +6,7 @@
 
 **Under development.**
 
-**This Mod has nothing.**
+**The cover is not related to the content of the module. this Mod has nothing.**
 
 ---
 

@@ -1,4 +1,4 @@
-package heavyindustry.scene.ui;
+package heavyindustry.ui;
 
 import arc.Core;
 import arc.func.Boolp;

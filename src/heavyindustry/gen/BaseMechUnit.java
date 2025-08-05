@@ -5,8 +5,6 @@ import mindustry.content.Fx;
 import mindustry.gen.MechUnit;
 
 public class BaseMechUnit extends MechUnit implements BaseUnitc {
-	public BaseMechUnit() {}
-
 	@Override
 	public void rawDamage(float amount) {
 		if (type instanceof BaseUnitType but) {

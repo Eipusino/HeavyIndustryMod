@@ -22,8 +22,8 @@ public interface Linkablec extends Ranged {
 		return true;
 	}*/
 
-	void drawLink(@Nullable Seq<Building> builds);/* {
-		Draw.reset();
+	default void drawLink(@Nullable Seq<Building> builds) {
+		/*Draw.reset();
 		if (builds == null) {
 			if (linkValid(link())) {
 				Draw.color(getLinkColor());
@@ -34,14 +34,14 @@ public interface Linkablec extends Ranged {
 			Draw.color(getLinkColor());
 			Drawf.circles(getX(), getY(), block().size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), getLinkColor());
 
-			for (Building b : builds) {
-				if (!linkValid(b)) continue;
-				Drawn.link(this, b, getLinkColor());
+			for (Building build : builds) {
+				if (!linkValid(build)) continue;
+				Drawn.link(this, build, getLinkColor());
 			}
 		}
 
-		Draw.reset();
-	}*/
+		Draw.reset();*/
+	}
 
 	default void drawLink() {
 		drawLink(null);

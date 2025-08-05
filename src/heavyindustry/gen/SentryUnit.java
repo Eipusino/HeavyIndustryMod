@@ -13,8 +13,6 @@ public class SentryUnit extends BaseTimedKillUnit implements Sentryc {
 	public float anchorX, anchorY, anchorRot;
 	public float anchorDrag;
 
-	public SentryUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(SentryUnit.class);

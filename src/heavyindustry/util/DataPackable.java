@@ -19,34 +19,34 @@ import java.io.Serializable;
  * <pre>{@code
  * //Declare a packable type
  * public class GltfData implements DataPackable {
- *	 private static final long typeID = 1587541965784324577l;
+ *     private static final long typeID = 1587541965784324577l;
  *
- *	 static {
- *		 DataPackable.assignType(typeID, args -> new GltfData());
- *	 }
+ *     static {
+ *         DataPackable.assignType(typeID, args -> new GltfData());
+ *     }
  *
- *	 String name;
- *	 float health;
- *	 boolean alive;
+ *     String name;
+ *     float health;
+ *     boolean alive;
  *
- *	 @Override
- *	 public long typeID() {
- *		 return typeID;
- *	 }
+ *     @Override
+ *     public long typeID() {
+ *         return typeID;
+ *     }
  *
- *	 @Override
- *	 public void write(Writes write) {
- *		 write.str(name);
- *		 write.f(health);
- *		 write.bool(alive);
- *	 }
+ *     @Override
+ *     public void write(Writes write) {
+ *         write.str(name);
+ *         write.f(health);
+ *         write.bool(alive);
+ *     }
  *
- *	 @Override
- *	 public void read(Reads read) {
- *		 name = read.str();
- *		 health = read.f();
- *		 alive = read.bool();
- *	 }
+ *     @Override
+ *     public void read(Reads read) {
+ *         name = read.str();
+ *         health = read.f();
+ *         alive = read.bool();
+ *     }
  * }
  * }</pre>
  * So, use this object and complete data packaging and disassembly:
@@ -70,7 +70,7 @@ public interface DataPackable {
 	 * Register a constructor of a wrapper type that takes an array of objects
 	 * as a parameter and returns the object in its initial state.
 	 *
-	 * @param typeID	  Construct an ID for this type
+	 * @param typeID      Construct an ID for this type
 	 * @param constructor Method for creating raw objects when performing data parsing using this ID
 	 */
 	static void assignType(long typeID, Func<Object[], Object> constructor) {

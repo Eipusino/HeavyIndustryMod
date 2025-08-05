@@ -28,8 +28,6 @@ public class NucleoidUnit extends BaseUnit implements Nucleoidc {
 
 	private NucleoidUnitType nucleoidType;
 
-	public NucleoidUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(NucleoidUnit.class);

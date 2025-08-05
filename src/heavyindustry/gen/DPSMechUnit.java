@@ -15,8 +15,6 @@ import static heavyindustry.HVars.boardTimeTotal;
 public class DPSMechUnit extends BaseMechUnit {
 	public float totalOrigin = 0, totalReal = 0, hits = 0, firstHitTime = 0, lastHitTime = 0, showBoardTime = 0;
 
-	public DPSMechUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(DPSMechUnit.class);

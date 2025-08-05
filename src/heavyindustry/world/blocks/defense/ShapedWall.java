@@ -1,9 +1,7 @@
 package heavyindustry.world.blocks.defense;
 
-import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
-import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
 import arc.struct.Queue;
@@ -15,7 +13,6 @@ import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.gen.Call;
 import mindustry.graphics.Layer;
-import mindustry.world.blocks.defense.Wall;
 import mindustry.world.meta.StatUnit;
 
 import static mindustry.Vars.net;
@@ -26,11 +23,10 @@ import static mindustry.Vars.world;
 /**
  * Shaped Wall
  */
-public class ShapedWall extends Wall {
+public class ShapedWall extends ConnectedWall {
 	protected final Seq<Building> toDamage = new Seq<>();
 	protected final Queue<Building> queue = new Queue<>();
 
-	public TextureRegion[] autotileRegions;
 	public float damageReduction = 0.1f;
 	public float maxShareStep = 3;
 
@@ -41,48 +37,13 @@ public class ShapedWall extends Wall {
 	}
 
 	@Override
-	public void load() {
-		super.load();
-		autotileRegions = Sprites.splitInLayers(Core.atlas.find(name + "-autotile"), 32, 0, Sprites.index4r12);
-	}
-
-	@Override
 	public void setStats() {
 		super.setStats();
 		stats.add(HStat.damageReduction, damageReduction * 100, StatUnit.percent);
 	}
 
-	public class ShapedWallBuild extends WallBuild {
+	public class ShapedWallBuild extends ConnectedWallBuild {
 		public Seq<ShapedWallBuild> connectedWalls = new Seq<>();
-		public int drawIndex = 0;
-
-		public void updateDrawRegion() {
-			drawIndex = 0;
-
-			for (int i = 0; i < Sprites.orthogonalPos.length; i++) {
-				Point2 pos = Sprites.orthogonalPos[i];
-				Building build = world.build(tileX() + pos.x, tileY() + pos.y);
-				if (checkWall(build)) {
-					drawIndex += 1 << i;
-				}
-			}
-			for (int i = 0; i < Sprites.diagonalPos.length; i++) {
-				Point2[] posArray = Sprites.diagonalPos[i];
-				boolean out = true;
-				for (Point2 pos : posArray) {
-					Building build = world.build(tileX() + pos.x, tileY() + pos.y);
-					if (!(checkWall(build))) {
-						out = false;
-						break;
-					}
-				}
-				if (out) {
-					drawIndex += 1 << i + 4;
-				}
-			}
-
-			drawIndex = Sprites.index4r12map.get(drawIndex);
-		}
 
 		public void findLinkWalls() {
 			toDamage.clear();
@@ -112,6 +73,7 @@ public class ShapedWall extends Wall {
 		@Override
 		public void drawSelect() {
 			super.drawSelect();
+
 			findLinkWalls();
 			for (Building wall : toDamage) {
 				Draw.color(team.color);
@@ -131,8 +93,6 @@ public class ShapedWall extends Wall {
 					connectedWalls.add((ShapedWallBuild) other);
 				}
 			}
-
-			updateDrawRegion();
 		}
 
 		public void drawTeam() {
@@ -183,12 +143,6 @@ public class ShapedWall extends Wall {
 				Call.buildDestroyed(building);
 			}
 			HFx.shareDamage.at(building.x, building.y, building.block.size * tilesize / 2f, team.color, Mathf.clamp(damage / (block.health * 0.1f)));
-		}
-
-		@Override
-		public void draw() {
-			Draw.z(Layer.block + 1f);
-			Draw.rect(autotileRegions[drawIndex], x, y);
 		}
 
 		public void updateProximity() {

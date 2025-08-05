@@ -52,9 +52,14 @@ import static mindustry.Vars.world;
 
 /**
  * In fact, it continues the characteristics of Anuke's planet, but there may still be some bugs.
+ * @author guiY
  */
-public class MinerPoint extends Block {
-	public Seq<Item> blockedItem = new Seq<>();
+public class UnitMinerPoint extends Block {
+	/** Special exemption item that this miner can't mine. */
+	public @Nullable Item blockedItem;
+
+	/** Special exemption items that this miner can't mine. */
+	public Seq<Item> blockedItems = new Seq<>();
 
 	public int range = 12;
 	public int tier = 2;
@@ -67,35 +72,43 @@ public class MinerPoint extends Block {
 	public boolean alwaysCons = false;
 	public boolean limitSize = true;
 
-	public UnitType MinerUnit = HUnitTypes.miner;
+	public UnitType minerUnit = HUnitTypes.miner;
 
 	public boolean canPickUp = false;
 
-	public MinerPoint(String name) {
+	public UnitMinerPoint(String name) {
 		super(name);
 		size = 3;
 		solid = true;
 		update = true;
 		hasItems = true;
 		hasPower = true;
-		itemCapacity = 200;
 		configurable = true;
 		copyConfig = false;
 		sync = true;
 		buildCostMultiplier = 0;
 		flags = EnumSet.of(BlockFlag.factory);
 
-		config(Integer.class, (MinerPointBuild tile, Integer sort) -> tile.sort = sort);
+		config(Integer.class, (UnitMinerPointBuild tile, Integer sort) -> tile.sort = sort);
 	}
 
-	public static void minerPointDroneSpawned(Tile tile, int id) {
-		if ((net.server() || !net.active()) && tile != null && tile.build instanceof MinerPointBuild ti) ti.spawned(id);
+	public static void unitMinerPointDroneSpawned(Tile tile, int id) {
+		if ((net.server() || !net.active()) && tile != null && tile.build instanceof UnitMinerPointBuild ti) ti.spawned(id);
 
 		if (net.server()) {
-			MinerPointDroneSpawnedCallPacket packet = new MinerPointDroneSpawnedCallPacket();
+			UnitMinerPointDroneSpawnedCallPacket packet = new UnitMinerPointDroneSpawnedCallPacket();
 			packet.tile = tile;
 			packet.id = id;
 			net.send(packet, true);
+		}
+	}
+
+	@Override
+	public void init() {
+		super.init();
+
+		if (blockedItem != null) {
+			blockedItems.add(blockedItem);
 		}
 	}
 
@@ -124,10 +137,10 @@ public class MinerPoint extends Block {
 			return false;
 		if (!limitSize) return true;
 		Rect rect = getRect(Tmp.r1, tile.worldx() + offset, tile.worldy() + offset, range).grow(0.1f);
-		return !indexer.getFlagged(team, BlockFlag.factory).contains(b -> {
-			if (b instanceof MinerPointBuild build) {
-				MinerPoint block = (MinerPoint) b.block;
-				return getRect(Tmp.r2, build.x, build.y, block.range).overlaps(rect);
+		return !indexer.getFlagged(team, BlockFlag.factory).contains(build -> {
+			if (build instanceof UnitMinerPointBuild miner) {
+				UnitMinerPoint block = (UnitMinerPoint) build.block;
+				return getRect(Tmp.r2, miner.x, miner.y, block.range).overlaps(rect);
 			}
 			return false;
 		});
@@ -136,11 +149,11 @@ public class MinerPoint extends Block {
 	@Override
 	public void setStats() {
 		super.setStats();
-		stats.add(Stat.drillTier, StatValues.blocks(b -> {
-			if (b instanceof Floor f) {
-				return (f.wallOre && f.itemDrop != null && !blockedItem.contains(f.itemDrop) && f.itemDrop.hardness <= tier) || (!f.wallOre && f.itemDrop != null && f.itemDrop.hardness <= tier && !blockedItem.contains(f.itemDrop) && (indexer.isBlockPresent(f) || state.isMenu()));
-			} else if (b instanceof StaticWall w) {
-				return w.itemDrop != null && !blockedItem.contains(w.itemDrop) && w.itemDrop.hardness <= tier;
+		stats.add(Stat.drillTier, StatValues.blocks(block -> {
+			if (block instanceof Floor floor) {
+				return (floor.wallOre && floor.itemDrop != null && !blockedItems.contains(floor.itemDrop) && floor.itemDrop.hardness <= tier) || (!floor.wallOre && floor.itemDrop != null && floor.itemDrop.hardness <= tier && !blockedItems.contains(floor.itemDrop) && (indexer.isBlockPresent(floor) || state.isMenu()));
+			} else if (block instanceof StaticWall wall) {
+				return wall.itemDrop != null && !blockedItems.contains(wall.itemDrop) && wall.itemDrop.hardness <= tier;
 			} else {
 				return false;
 			}
@@ -152,10 +165,10 @@ public class MinerPoint extends Block {
 	@Override
 	public void setBars() {
 		super.setBars();
-		addBar("units", (MinerPointBuild tile) -> new Bar(
-				() -> Core.bundle.format("bar.unitcap", Fonts.getUnicodeStr(MinerUnit.name), tile.units.size, dronesCreated),
+		addBar("units", (UnitMinerPointBuild tile) -> new Bar(
+				() -> Core.bundle.format("bar.unitcap", Fonts.getUnicodeStr(minerUnit.name), tile.units.size, dronesCreated),
 				() -> Pal.power,
-				() -> (float) tile.units.size / dronesCreated));
+				() -> tile.units.size / dronesCreated));
 	}
 
 	@Override
@@ -163,36 +176,40 @@ public class MinerPoint extends Block {
 		return true;
 	}
 
-	public static class MinerPointDroneSpawnedCallPacket extends Packet {
+	public static class UnitMinerPointDroneSpawnedCallPacket extends Packet {
 		public Tile tile;
 		public int id;
 		private byte[] data;
 
-		public MinerPointDroneSpawnedCallPacket() {
-			this.data = NODATA;
+		public UnitMinerPointDroneSpawnedCallPacket() {
+			data = NODATA;
 		}
 
+		@Override
 		public void write(Writes write) {
 			TypeIO.writeTile(write, tile);
 			write.i(id);
 		}
 
+		@Override
 		public void read(Reads read, int length) {
-			this.data = read.b(length);
+			data = read.b(length);
 		}
 
+		@Override
 		public void handled() {
 			BAIS.setBytes(data);
 			tile = TypeIO.readTile(READ);
 			id = READ.i();
 		}
 
+		@Override
 		public void handleClient() {
-			minerPointDroneSpawned(tile, id);
+			unitMinerPointDroneSpawned(tile, id);
 		}
 	}
 
-	public class MinerPointBuild extends Building {
+	public class UnitMinerPointBuild extends Building {
 		public @Nullable Tile sortTile = null;
 
 		public int sort = -1;
@@ -266,15 +283,15 @@ public class MinerPoint extends Block {
 
 			if (units.size < dronesCreated && (droneProgress += edelta() * state.rules.unitBuildSpeed(team) * powerStatus / droneConstructTime) >= 1f) {
 				if (!net.client()) {
-					Unit unit = MinerUnit.create(team);
-					if (unit instanceof BuildingTetherc u) {
-						u.building(this);
+					Unit unit = minerUnit.create(team);
+					if (unit instanceof BuildingTetherc bt) {
+						bt.building(this);
 					}
 					unit.set(x, y);
 					unit.rotation = 90f;
 					unit.add();
 					units.add(unit);
-					minerPointDroneSpawned(tile, unit.id);
+					unitMinerPointDroneSpawned(tile, unit.id);
 				}
 			}
 
@@ -306,7 +323,7 @@ public class MinerPoint extends Block {
 			//same as UnitCargoLoader
 			Draw.rect(block.region, x, y);
 			if (units.size < dronesCreated) {
-				Draw.draw(Layer.blockOver, () -> Drawf.construct(this, MinerUnit.fullIcon, 0f, droneProgress, warmup, totalDroneProgress));
+				Draw.draw(Layer.blockOver, () -> Drawf.construct(this, minerUnit.fullIcon, 0f, droneProgress, warmup, totalDroneProgress));
 			} else {
 				Draw.z(Layer.bullet - 0.01f);
 				Draw.color(polyColor);
@@ -323,28 +340,26 @@ public class MinerPoint extends Block {
 
 			Drawf.dashSquare(Pal.accent, x, y, range * tilesize * 2);
 
-			if (Core.settings != null && Core.settings.getBool("eu-show-miner-point")) {
-				if (tiles.isEmpty() && !placeInAir) {
-					findOre();
-					if (tiles.isEmpty()) {
-						placeInAir = true;
-						return;
-					}
+			if (tiles.isEmpty() && !placeInAir) {
+				findOre();
+				if (tiles.isEmpty()) {
+					placeInAir = true;
+					return;
 				}
+			}
 
-				if (tiles.any()) {
-					float z = Draw.z();
-					Draw.z(Layer.blockUnder - 2.5f);
-					float sin = Mathf.absin(Time.time, 6, 0.8f);
-					for (Tile t : tiles) {
-						Item i = oreDrop(t);
-						if (i == null || !validOre(t)) continue;
-						Draw.color(Tmp.c1.set(i.color).a(sin));
-						Fill.square(t.worldx(), t.worldy(), tilesize / 2f);
-					}
-					Draw.reset();
-					Draw.z(z);
+			if (tiles.any()) {
+				float z = Draw.z();
+				Draw.z(Layer.blockUnder - 2.5f);
+				float sin = Mathf.absin(Time.time, 6, 0.8f);
+				for (Tile t : tiles) {
+					Item i = oreDrop(t);
+					if (i == null || !validOre(t)) continue;
+					Draw.color(Tmp.c1.set(i.color).a(sin));
+					Fill.square(t.worldx(), t.worldy(), tilesize / 2f);
 				}
+				Draw.reset();
+				Draw.z(z);
 			}
 
 			if (sortTile == null) return;
@@ -371,12 +386,12 @@ public class MinerPoint extends Block {
 		}
 
 		protected boolean validOre(Tile t) {
-			return (t.solid() && t.wallDrop() != null && !blockedItem.contains(t.wallDrop()) && t.wallDrop().hardness <= tier) || (t.block() == Blocks.air && t.drop() != null && !blockedItem.contains(t.drop()) && t.drop().hardness <= tier);
+			return (t.solid() && t.wallDrop() != null && !blockedItems.contains(t.wallDrop()) && t.wallDrop().hardness <= tier) || (t.block() == Blocks.air && t.drop() != null && !blockedItems.contains(t.drop()) && t.drop().hardness <= tier);
 		}
 
-		protected Item oreDrop(Tile t) {
-			if (t.solid() && t.wallDrop() != null) return t.wallDrop();
-			if (t.block() == Blocks.air && t.drop() != null) return t.drop();
+		protected Item oreDrop(Tile tile) {
+			if (tile.solid() && tile.wallDrop() != null) return tile.wallDrop();
+			if (tile.block() == Blocks.air && tile.drop() != null) return tile.drop();
 
 			return null;
 		}

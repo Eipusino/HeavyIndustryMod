@@ -68,7 +68,7 @@ import heavyindustry.world.blocks.distribution.TubeDistributor;
 import heavyindustry.world.blocks.environment.ConnectedFloor;
 import heavyindustry.world.blocks.environment.DepthCliffHelper;
 import heavyindustry.world.blocks.environment.DepthCliff;
-import heavyindustry.world.blocks.environment.ConnectedWall;
+import heavyindustry.world.blocks.environment.ConnectedStaticWall;
 import heavyindustry.world.blocks.heat.FuelHeater;
 import heavyindustry.world.blocks.heat.ThermalHeater;
 import heavyindustry.world.blocks.liquid.LiquidDirectionalUnloader;
@@ -92,7 +92,8 @@ import heavyindustry.world.blocks.power.SmartBeamNode;
 import heavyindustry.world.blocks.power.SmartPowerNode;
 import heavyindustry.world.blocks.production.Centrifuge;
 import heavyindustry.world.blocks.production.LaserBeamDrill;
-import heavyindustry.world.blocks.production.MinerPoint;
+import heavyindustry.world.blocks.production.UnitMinerDepot;
+import heavyindustry.world.blocks.production.UnitMinerPoint;
 import heavyindustry.world.blocks.production.MultiCrafter;
 import heavyindustry.world.blocks.production.SporeFarmBlock;
 import heavyindustry.world.blocks.sandbox.AdaptiveSource;
@@ -306,7 +307,7 @@ public final class HBlocks {
 	titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, blastWell, ionDrill, cuttingDrill, beamDrill,
 			sporeFarm,
 	//drill-erekir
-	heavyPlasmaBore, minerPoint, minerCenter,
+	heavyPlasmaBore, unitMinerPoint, unitMinerCenter, unitMinerDepot,
 	//distribution
 	invertedJunction, itemLiquidJunction, multiSorter, plastaniumRouter, plastaniumBridge, stackHelper, chromiumEfficientConveyor, chromiumArmorConveyor, chromiumTubeConveyor, chromiumTubeDistributor, chromiumStackConveyor, chromiumStackRouter, chromiumStackBridge, chromiumJunction, chromiumRouter, chromiumItemBridge,
 			phaseItemNode, rapidDirectionalUnloader,
@@ -466,7 +467,7 @@ public final class HBlocks {
 			itemDrop = HItems.stone;
 			playerUnmineable = true;
 		}};
-		concreteWall = new ConnectedWall("concrete-wall") {{
+		concreteWall = new ConnectedStaticWall("concrete-wall") {{
 			autotile = true;
 			variants = 0;
 		}};
@@ -1207,27 +1208,37 @@ public final class HBlocks {
 			consumeLiquid(Liquids.hydrogen, 1.5f / 60f);
 			consumeLiquid(Liquids.nitrogen, 7.5f / 60f).boost();
 		}};
-		minerPoint = new MinerPoint("miner-point") {{
-			requirements(Category.production, ItemStack.with(Items.beryllium, 120, Items.graphite, 120, Items.silicon, 85, Items.tungsten, 50));
-			blockedItem.add(Items.thorium);
+		unitMinerPoint = new UnitMinerPoint("unit-miner-point") {{
+			requirements(Category.production, BuildVisibility.sandboxOnly, ItemStack.with(Items.beryllium, 220, Items.graphite, 220, Items.silicon, 200, Items.tungsten, 180));
+			blockedItems.add(Items.thorium);
 			droneConstructTime = 60 * 10f;
 			tier = 5;
+			itemCapacity = 200;
 			consumePower(2f);
 			consumeLiquid(Liquids.hydrogen, 6 / 60f);
 			squareSprite = false;
 		}};
-		minerCenter = new MinerPoint("miner-center") {{
-			requirements(Category.production, ItemStack.with(Items.beryllium, 480, Items.tungsten, 360, Items.oxide, 125, Items.carbide, 120, Items.surgeAlloy, 130));
+		unitMinerCenter = new UnitMinerPoint("unit-miner-center") {{
+			requirements(Category.production, BuildVisibility.sandboxOnly, ItemStack.with(Items.beryllium, 600, Items.tungsten, 500, Items.oxide, 150, Items.carbide, 120, Items.surgeAlloy, 150));
 			range = 18;
 			dronesCreated = 6;
 			droneConstructTime = 60 * 7f;
 			tier = 7;
 			size = 4;
 			itemCapacity = 300;
-			MinerUnit = HUnitTypes.largeMiner;
+			minerUnit = HUnitTypes.largeMiner;
 			consumePower(3);
-			consumeLiquid(Liquids.nitrogen, 9 / 60f);
+			consumeLiquid(Liquids.cyanogen, 9 / 60f);
 			buildCostMultiplier = 0.8f;
+			squareSprite = false;
+		}};
+		unitMinerDepot = new UnitMinerDepot("unit-miner-depot") {{
+			requirements(Category.production, BuildVisibility.sandboxOnly, ItemStack.with(Items.beryllium, 120, Items.graphite, 120, Items.silicon, 100, Items.tungsten, 80, Items.oxide, 20));
+			size = 3;
+			buildTime = 60f * 8f;
+			consumePower(8f / 60f);
+			consumeLiquid(Liquids.nitrogen, 8 / 60f);
+			itemCapacity = 100;
 			squareSprite = false;
 		}};
 		//distribution
@@ -4129,11 +4140,11 @@ public final class HBlocks {
 			lightColor = HPal.ancientLightMid;
 			clipSize = 6 * 24;
 			outlineColor = Pal.darkOutline;
-			ammo(HItems.uranium, new CtrlMissileBulletType(10f, 2800f, name("large-missile")) {{
+			ammo(HItems.uranium, new CtrlMissileBulletType(8f, 2800f, name("large-missile")) {{
 				hitSize *= 10f;
 				accel = 0.32f;
 				drag /= 2;
-				lifetime = 60f * 2.4f;
+				lifetime = 120f;
 				homingDelay = 17f;
 				frontColor = Color.clear;
 				trailColor = lightColor = lightningColor = hitColor = backColor = Pal.techBlue;
@@ -4208,7 +4219,7 @@ public final class HBlocks {
 			canOverdrive = false;
 			ammoPerShot = 12;
 			maxAmmo = 180;
-			range = 1500;
+			range = 820f;
 			reload = 120;
 			unitSort = HUnitSorts.slowest;
 			shake = 7;
@@ -4380,7 +4391,6 @@ public final class HBlocks {
 			health = 90000;
 			armor = 15f;
 			shootCone = 15f;
-			squareSprite = false;
 			unitSort = UnitSorts.strongest;
 			warmupMaintainTime = 50f;
 			coolant = consume(new ConsumeLiquid(HLiquids.originiumFluid, 20f / 60f));
@@ -4436,7 +4446,7 @@ public final class HBlocks {
 			heatColor = Pal.techBlue;
 			consumePowerCond(180f, TurretBuild::isActive);
 			reload = 420f;
-			range = 800f;
+			range = 780f;
 			trackingRange = range * 1.4f;
 			inaccuracy = 0f;
 			shootSound = Sounds.laserbig;
@@ -4476,7 +4486,6 @@ public final class HBlocks {
 			size = 16;
 			health = 800000;
 			armor = 150;
-			outlineRadius = 7;
 			range = 1200;
 			heatColor = Pal.techBlue;
 			unitSort = HUnitSorts.regionalHPMaximumAll;

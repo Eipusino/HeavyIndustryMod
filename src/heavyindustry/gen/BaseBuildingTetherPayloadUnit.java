@@ -5,8 +5,6 @@ import mindustry.content.Fx;
 import mindustry.gen.BuildingTetherPayloadUnit;
 
 public class BaseBuildingTetherPayloadUnit extends BuildingTetherPayloadUnit implements BaseUnitc {
-	public BaseBuildingTetherPayloadUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(BaseBuildingTetherPayloadUnit.class);

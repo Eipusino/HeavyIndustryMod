@@ -7,6 +7,7 @@ import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.util.Utils;
 import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Items;
@@ -18,8 +19,6 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.TileBitmask;
 import mindustry.world.blocks.environment.Floor;
 import mindustry.world.meta.Attribute;
-
-import static heavyindustry.util.Utils.split;
 
 // Do you feel familiar? Yes, it has been added back now.
 public class SporeFarmBlock extends Block {
@@ -47,10 +46,10 @@ public class SporeFarmBlock extends Block {
 	public void load() {
 		super.load();
 
-		sporeRegions = split(name + "-spore", 32, 0);
-		groundRegions = split(name + "-ground", 32, 0);
+		sporeRegions = Utils.split(name + "-spore", 32, 5, 1);
+		groundRegions = Utils.split(name + "-ground", 32, 5, 1);
 
-		fenceRegions = split(name + "-fence", 32, 12, 4);
+		fenceRegions = Utils.split(name + "-fence", 32, 12, 4);
 		cageFloor = Core.atlas.find(name + "-floor");
 	}
 

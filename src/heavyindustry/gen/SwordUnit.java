@@ -27,8 +27,6 @@ public class SwordUnit extends BaseUnit implements Swordc {
 	public float heat;
 	public transient DriftTrail[] driftTrails;
 
-	public SwordUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(SwordUnit.class);

@@ -46,8 +46,6 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 	int parentID = -1, childID = -1;
 	boolean grown;
 
-	public ChainedChainMechUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(ChainedChainMechUnit.class);

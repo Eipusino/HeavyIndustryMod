@@ -101,7 +101,6 @@ public final class HTechTree {
 		vanillaNode(blastDrill, () -> node(beamDrill, Seq.with(new SectorComplete(SectorPresets.impact0078))));
 		vanillaNode(oilExtractor, () -> node(oilRig));
 		//drill-erekir
-		vanillaNode(impactDrill, () -> node(minerPoint, Seq.with(new Research(electrolyzer)), () -> node(minerCenter, Seq.with(new Research(atmosphericConcentrator)))));
 		vanillaNode(largePlasmaBore, () -> node(heavyPlasmaBore, ItemStack.with(Items.silicon, 6000, Items.oxide, 3000, Items.beryllium, 7000, Items.tungsten, 5000, Items.carbide, 2000)));
 		//distribution
 		vanillaNode(sorter, () -> node(multiSorter));

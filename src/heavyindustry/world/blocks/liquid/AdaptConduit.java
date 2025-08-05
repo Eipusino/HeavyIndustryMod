@@ -1,6 +1,5 @@
 package heavyindustry.world.blocks.liquid;
 
-import arc.Core;
 import arc.Graphics;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
@@ -8,7 +7,7 @@ import arc.util.Eachable;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.util.Sprites;
+import heavyindustry.util.Utils;
 import mindustry.content.Fx;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -38,7 +37,7 @@ public class AdaptConduit extends Conduit {
 	@Override
 	public void load() {
 		super.load();
-		topMaskRegions = Sprites.splitInLayers(Core.atlas.find(name + "-top"), 32, 1);
+		topMaskRegions = Utils.split(name + "-top", 32, 5, 2);
 	}
 
 	@Override

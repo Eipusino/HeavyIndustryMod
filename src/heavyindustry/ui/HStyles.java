@@ -7,7 +7,7 @@ import arc.scene.ui.Button.ButtonStyle;
 import arc.scene.ui.ImageButton.ImageButtonStyle;
 import arc.scene.ui.TextButton.TextButtonStyle;
 import arc.scene.ui.TextField.TextFieldStyle;
-import heavyindustry.scene.ui.HoldImageButton.HoldImageButtonStyle;
+import heavyindustry.ui.HoldImageButton.HoldImageButtonStyle;
 import mindustry.gen.Tex;
 import mindustry.ui.Styles;
 

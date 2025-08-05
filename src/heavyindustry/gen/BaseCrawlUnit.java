@@ -5,8 +5,6 @@ import mindustry.content.Fx;
 import mindustry.gen.CrawlUnit;
 
 public class BaseCrawlUnit extends CrawlUnit implements BaseUnitc {
-	public BaseCrawlUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(BaseCrawlUnit.class);

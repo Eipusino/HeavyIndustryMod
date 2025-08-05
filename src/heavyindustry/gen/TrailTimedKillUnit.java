@@ -9,8 +9,6 @@ import mindustry.gen.Groups;
 
 //It's too expensive to just solve a trail fade effect. Plz fix it.
 public class TrailTimedKillUnit extends BaseTimedKillUnit {
-	public TrailTimedKillUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(TrailTimedKillUnit.class);

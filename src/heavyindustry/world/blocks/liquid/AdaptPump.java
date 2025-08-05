@@ -1,19 +1,17 @@
 package heavyindustry.world.blocks.liquid;
 
-import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
 import heavyindustry.util.Sprites;
+import heavyindustry.util.Utils;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
 import mindustry.type.Liquid;
 import mindustry.world.Edges;
 import mindustry.world.blocks.production.Pump;
 
-import static heavyindustry.util.Sprites.index4r4;
-import static heavyindustry.util.Sprites.orthogonalPos;
 import static mindustry.Vars.world;
 
 public class AdaptPump extends Pump {
@@ -26,11 +24,8 @@ public class AdaptPump extends Pump {
 	@Override
 	public void load() {
 		super.load();
-		if (size == 1) {
-			splits = Sprites.splitInLayers(Core.atlas.find(name + "-atlas"), 32, 1, index4r4);
-		} else {
-			splits = Sprites.splitInLayers(Core.atlas.find(name + "-atlas"), 32, 1);
-		}
+
+		splits = Utils.split(name + "-atlas", 32, 4, 4);
 	}
 
 	public class AdaptPumpBuild extends PumpBuild {
@@ -43,8 +38,8 @@ public class AdaptPump extends Pump {
 			super.onProximityUpdate();
 			if (size == 1) {
 				drawIndex = 0;
-				for (int i = 0; i < orthogonalPos.length; i++) {
-					Point2 p = orthogonalPos[i];
+				for (int i = 0; i < Sprites.orthogonalPos.length; i++) {
+					Point2 p = Sprites.orthogonalPos[i];
 					if (world.build(tileX() + p.x, tileY() + p.y) instanceof AdaptPumpBuild) {
 						drawIndex += 1 << i;
 					}

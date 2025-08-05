@@ -17,6 +17,7 @@ import arc.scene.ui.layout.Table;
 import arc.struct.ObjectSet;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.ai.DepotMinerAI;
 import heavyindustry.ai.HealingDefenderAI;
 import heavyindustry.ai.MinerPointAI;
 import heavyindustry.ai.NullAI;
@@ -47,12 +48,12 @@ import heavyindustry.gen.BasePayloadUnit;
 import heavyindustry.gen.BaseTankUnit;
 import heavyindustry.gen.BaseUnit;
 import heavyindustry.gen.BaseUnitWaterMove;
-import heavyindustry.gen.BuildingTetherPayloadLegsUnit;
 import heavyindustry.gen.CopterUnit;
 import heavyindustry.gen.BaseLegsUnit;
 import heavyindustry.gen.DPSMechUnit;
 import heavyindustry.gen.HSounds;
 import heavyindustry.gen.InvincibleShipUnit;
+import heavyindustry.gen.NoCoreDepositBuildingTetherLegsUnit;
 import heavyindustry.gen.NucleoidUnit;
 import heavyindustry.gen.PayloadLegsUnit;
 import heavyindustry.gen.UltFire;
@@ -2241,7 +2242,7 @@ public final class HUnitTypes {
 		}};
 		largeMiner = new BaseUnitType("large-miner") {{
 			erekir();
-			constructor = BaseBuildingTetherPayloadUnit::new;
+			constructor = NoCoreDepositBuildingTetherLegsUnit::new;
 			defaultCommand = UnitCommand.mineCommand;
 			controller = u -> new MinerPointAI();
 			flying = true;
@@ -2276,7 +2277,8 @@ public final class HUnitTypes {
 		}};
 		legsMiner = new BaseUnitType("legs-miner") {{
 			erekir();
-			constructor = BuildingTetherPayloadLegsUnit::new;
+			controller = u -> new DepotMinerAI();
+			constructor = NoCoreDepositBuildingTetherLegsUnit::new;
 			isEnemy = false;
 			allowedInPayloads = false;
 			logicControllable = false;
@@ -2295,6 +2297,8 @@ public final class HUnitTypes {
 			mineTier = 5;
 			mineSpeed = 6f;
 			mineWalls = true;
+			mineItems.remove(Items.thorium);
+			mineItems.addAll(Items.beryllium, Items.graphite, Items.tungsten, HItems.stone, HItems.rareEarth, HItems.gold);
 			allowLegStep = true;
 			legCount = 6;
 			legGroupSize = 3;
@@ -2308,6 +2312,24 @@ public final class HUnitTypes {
 			legForwardScl = 1f;
 			legMoveSpace = 2.5f;
 			hovering = true;
+			weapons.add(new Weapon(name + "-weapon") {{
+				x = 22f / 4f;
+				y = -3f;
+				shootX = -3f / 4f;
+				shootY = 4.5f / 4f;
+				rotate = true;
+				rotateSpeed = 35f;
+				reload = 35f;
+				shootSound = Sounds.laser;
+				bullet = new LaserBulletType() {{
+					damage = 45f;
+					sideAngle = 30f;
+					sideWidth = 1f;
+					sideLength = 5.25f * 8;
+					length = 13.75f * 8f;
+					colors = new Color[]{Pal.heal.cpy().a(0.4f), Pal.heal, Color.white};
+				}};
+			}});
 			abilities.add(new RegenAbility() {{
 				percentAmount = 1f / (90f * 60f) * 100f;
 			}});

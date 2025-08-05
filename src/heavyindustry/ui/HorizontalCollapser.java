@@ -1,4 +1,4 @@
-package heavyindustry.ui.comp;
+package heavyindustry.ui;
 
 import arc.func.Boolp;
 import arc.func.Cons;

@@ -65,7 +65,13 @@ public class AssignOverdrive extends OverdriveProjector {
 	}
 
 	public class AssignOverdriveBuild extends OverdriveBuild implements LinkGroupc {
+		protected Seq<Building> builds = new Seq<>();
 		protected IntSeq targets = new IntSeq(maxLink);
+
+		@Override
+		public Seq<Building> builds() {
+			return builds;
+		}
 
 		@Override
 		public Point2[] config() {
@@ -78,10 +84,10 @@ public class AssignOverdrive extends OverdriveProjector {
 
 		@Override
 		public void draw() {
-			if (block.variants != 0 && block.variantRegions != null) {
-				Draw.rect(block.variantRegions[Mathf.randomSeed(tile.pos(), 0, Math.max(0, block.variantRegions.length - 1))], x, y, drawrot());
+			if (variants > 0 && variantRegions != null) {
+				Draw.rect(variantRegions[Mathf.randomSeed(tile.pos(), 0, Math.max(0, variantRegions.length - 1))], x, y, drawrot());
 			} else {
-				Draw.rect(block.region, x, y, drawrot());
+				Draw.rect(region, x, y, drawrot());
 			}
 
 			drawTeamTop();
@@ -119,9 +125,9 @@ public class AssignOverdrive extends OverdriveProjector {
 				Draw.color(linkColor());
 				Drawf.circles(getX(), getY(), size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), linkColor());
 
-				for (Building b : builds) {
-					if (!linkValid(b)) continue;
-					Drawn.link(this, b, linkColor());
+				for (Building build : builds) {
+					if (!linkValid(build)) continue;
+					Drawn.link(this, build, linkColor());
 				}
 			}
 

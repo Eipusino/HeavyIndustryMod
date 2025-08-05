@@ -22,8 +22,6 @@ public class FloatMechCoreUnit extends BaseUnit implements Corec, FloatMechc {
 	public transient float walkTime, walkExtension;
 	public transient boolean walked;
 
-	protected FloatMechCoreUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(FloatMechCoreUnit.class);

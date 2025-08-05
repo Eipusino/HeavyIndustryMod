@@ -1,4 +1,4 @@
-package heavyindustry.ui.elements;
+package heavyindustry.ui;
 
 import arc.input.KeyCode;
 import arc.math.Mathf;

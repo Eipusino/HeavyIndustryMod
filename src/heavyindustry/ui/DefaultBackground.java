@@ -1,4 +1,4 @@
-package heavyindustry.ui.defaults;
+package heavyindustry.ui;
 
 import arc.Core;
 import arc.func.Prov;

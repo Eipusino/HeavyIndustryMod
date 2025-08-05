@@ -40,8 +40,6 @@ public class TractorBeamUnit extends BasePayloadUnit {
 
 	private TractorBeamUnitType tractorBeamType;
 
-	public TractorBeamUnit() {}
-
 	@Override
 	public void setType(UnitType type) {
 		tractorBeamType = checkType(type);

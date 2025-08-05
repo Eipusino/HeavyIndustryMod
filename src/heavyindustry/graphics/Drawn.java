@@ -745,41 +745,6 @@ public final class Drawn {
 		Fill.tri(v1.x, v1.y, v2.x, v2.y, v3.x, v3.y);
 	}
 
-	public static void targetLine(float x1, float y1, float x2, float y2, float r1, float r2, Color color) {
-		float ang = Angles.angle(x1, y1, x2, y2);
-		float calc = 1f + (1f - Mathf.sinDeg(Mathf.mod(ang, 90f) * 2)) * (Mathf.sqrt2 - 1f);
-
-		Tmp.v1.trns(ang, (r1 / Mathf.sqrt2) * calc).add(x1, y1);
-		Tmp.v2.trns(ang + 180, (r2 / Mathf.sqrt2) * calc).add(x2, y2);
-
-		Lines.stroke(3f, Pal.gray);
-		Lines.square(x1, y1, r1, 45f);
-		Lines.square(x2, y2, r2, 45f);
-		Lines.line(Tmp.v1.x, Tmp.v1.y, Tmp.v2.x, Tmp.v2.y);
-
-		Lines.stroke(1f, color);
-		Lines.square(x1, y1, r1, 45f);
-		Lines.square(x2, y2, r2, 45f);
-		Lines.line(Tmp.v1.x, Tmp.v1.y, Tmp.v2.x, Tmp.v2.y);
-	}
-
-	public static void target(float x, float y, float angle, float radius, Color ringColor, Color spikeColor, float alpha) {
-		Draw.color(Pal.gray, alpha);
-		Lines.stroke(3);
-		Fill.poly(x, y, 4, 7f * radius, angle);
-		Lines.spikes(x, y, 3f * radius, 6f * radius, 4, angle);
-		Draw.color(ringColor, alpha);
-		Lines.stroke(1);
-		Fill.poly(x, y, 4, 7f * radius, angle);
-		Draw.color(spikeColor);
-		Lines.spikes(x, y, 3f * radius, 6f * radius, 4, angle);
-		Draw.color();
-	}
-
-	public static void target(float x, float y, float angle, float radius, Color color, float alpha) {
-		target(x, y, angle, radius, color, color, alpha);
-	}
-
 	public static void progressRing(float x, float y, float rad1, float rad2, float progress) {
 		if (Math.abs(rad1 - rad2) > 0.01f) {
 			int sides = (int) (Lines.circleVertices(Math.max(rad1, rad2)) * progress);

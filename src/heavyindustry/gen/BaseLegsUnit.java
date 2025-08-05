@@ -5,8 +5,6 @@ import mindustry.content.Fx;
 import mindustry.gen.LegsUnit;
 
 public class BaseLegsUnit extends LegsUnit implements BaseUnitc {
-	public BaseLegsUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(BaseLegsUnit.class);

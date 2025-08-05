@@ -5,8 +5,6 @@ import mindustry.content.Fx;
 import mindustry.gen.ElevationMoveUnit;
 
 public class BaseElevationMoveUnit extends ElevationMoveUnit implements BaseUnitc {
-	public BaseElevationMoveUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(BaseElevationMoveUnit.class);

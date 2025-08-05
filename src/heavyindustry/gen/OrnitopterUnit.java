@@ -17,8 +17,6 @@ public class OrnitopterUnit extends BaseUnit implements Ornitopterc {
 	protected float driftAngle;
 	protected boolean hasDriftAngle = false;
 
-	public OrnitopterUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(OrnitopterUnit.class);

@@ -4,6 +4,7 @@ import arc.Core;
 import arc.graphics.Color;
 import arc.graphics.Texture;
 import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.graphics.g2d.TextureRegion;
 import arc.graphics.gl.FrameBuffer;
@@ -94,5 +95,22 @@ public final class Drawe {
 		Lines.square(x1, y1, r1, 45f);
 		Lines.square(x2, y2, r2, 45f);
 		Lines.line(Tmp.v1.x, Tmp.v1.y, Tmp.v2.x, Tmp.v2.y);
+	}
+
+	public static void target(float x, float y, float angle, float radius, Color ringColor, Color spikeColor, float alpha) {
+		Draw.color(Pal.gray, alpha);
+		Lines.stroke(3);
+		Fill.poly(x, y, 4, 7f * radius, angle);
+		Lines.spikes(x, y, 3f * radius, 6f * radius, 4, angle);
+		Draw.color(ringColor, alpha);
+		Lines.stroke(1);
+		Fill.poly(x, y, 4, 7f * radius, angle);
+		Draw.color(spikeColor);
+		Lines.spikes(x, y, 3f * radius, 6f * radius, 4, angle);
+		Draw.color();
+	}
+
+	public static void target(float x, float y, float angle, float radius, Color color, float alpha) {
+		target(x, y, angle, radius, color, color, alpha);
 	}
 }

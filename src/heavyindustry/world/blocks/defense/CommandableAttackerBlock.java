@@ -10,7 +10,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.content.HFx;
 import heavyindustry.gen.HSounds;
-import heavyindustry.gen.Worlds;
+import heavyindustry.world.Worlds;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.ui.Elements;
 import mindustry.content.Bullets;

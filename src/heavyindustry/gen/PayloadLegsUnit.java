@@ -31,8 +31,6 @@ public class PayloadLegsUnit extends BaseLegsUnit implements Payloadc {
 
 	protected transient @Nullable PowerGraph payloadPower;
 
-	public PayloadLegsUnit() {}
-
 	@Override
 	public int classId() {
 		return Entitys.getId(PayloadLegsUnit.class);
