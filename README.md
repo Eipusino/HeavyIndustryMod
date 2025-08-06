@@ -2,11 +2,9 @@
 
 ---
 
-![Logo](assets/other/cover-desktop.png)
+![Logo](assets/sprites-override/effects/error.png)
 
 **Under development.**
-
-**The cover is not related to the content of the module. this Mod has nothing.**
 
 ---
 

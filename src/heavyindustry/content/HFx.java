@@ -33,6 +33,7 @@ import heavyindustry.graphics.HLayer;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.math.Math3d;
 import heavyindustry.struct.Vec2Seq;
+import heavyindustry.util.Structf;
 import heavyindustry.util.Utils;
 import mindustry.content.Fx;
 import mindustry.content.Items;
@@ -46,8 +47,6 @@ import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
 import mindustry.world.Block;
 import mindustry.world.blocks.payloads.Payload;
-
-import java.util.Objects;
 
 import static heavyindustry.HVars.name;
 import static mindustry.Vars.state;
@@ -2628,7 +2627,7 @@ public final class HFx {
 	}
 
 	public static Effect get(String m, Color c, Effect effect) {
-		int hash = Objects.hash(m, c);
+		int hash = Structf.hashCode(m, c);
 		Effect or = same.get(hash);
 		if (or == null) same.put(hash, effect);
 		return or == null ? effect : or;

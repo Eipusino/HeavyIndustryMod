@@ -4,11 +4,8 @@ import arc.files.Fi;
 import arc.files.ZipFi;
 import arc.util.OS;
 
-import java.util.Objects;
-
 /**
  * Use for jar internal navigation.
- * <p>Replace {@code Vars.mods.getMod(mod).root} with a more secure method of obtaining the jar root directory based on the class path as internal navigation for the jar.
  *
  * @since 1.0.6
  */
@@ -20,7 +17,7 @@ public class InternalFileTree {
 
 	/** @param owner navigation anchor */
 	public InternalFileTree(Class<?> owner) {
-		anchorClass = Objects.requireNonNull(owner);
+		anchorClass = owner;
 
 		String classPath = anchorClass.getResource("").getFile().replaceAll("%20", " ");
 		classPath = classPath.substring(classPath.indexOf(":") + 2);

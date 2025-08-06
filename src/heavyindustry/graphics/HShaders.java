@@ -63,11 +63,11 @@ public final class HShaders {
 
 		alphaShader = new AlphaShader();
 
-		brine = new Gl30SurfaceShader("brine", "brine");
-		originiumFluid = new Gl30SurfaceShader("originium-fluid", "originium-fluid");
-		boundWater = new Gl30SurfaceShader("bound-water", "bound-water");
-		pit = new PitShader("pit", "pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
-		waterPit = new PitShader("water-pit", "water-pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
+		brine = new Gl30SurfaceShader("general-highp", "brine");
+		originiumFluid = new Gl30SurfaceShader("general-highp", "originium-fluid");
+		boundWater = new Gl30SurfaceShader("general-highp", "bound-water");
+		pit = new PitShader("general-highp", "pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
+		waterPit = new PitShader("general-highp", "water-pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
 
 		chromatic = new ChromaticAberrationShader();
 
@@ -82,8 +82,8 @@ public final class HShaders {
 		dimShader = new DimShader();
 		smallSpaceShader = new SmallSpaceShader();
 
-		distBase = new Gl30Shader(msv("dist-base"), msf("dist-base"));
-		passThrough = new Gl30Shader(msv("pass-through"), msf("pass-through"));
+		distBase = new Gl30Shader(msv("general"), msf("dist-base"));
+		passThrough = new Gl30Shader(msv("general-highp"), msf("pass-through"));
 
 		tiler = new TilerShader();
 
@@ -144,7 +144,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #depthScreenspace}. */
 		DepthScreenspaceShader() {
-			super(msv("depth-screenspace"), msf("depth-screenspace"));
+			super(msv("general-highp"), msf("depth-screenspace"));
 		}
 
 		@Override
@@ -231,7 +231,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #tiler}. */
 		TilerShader() {
-			super(msv("tiler"), msf("tiler"));
+			super(msv("general-highp"), msf("tiler"));
 		}
 
 		@Override
@@ -252,7 +252,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #alphaShader}. */
 		AlphaShader() {
-			super(msv("post-alpha"), msf("post-alpha"));
+			super(msv("general-highp"), msf("post-alpha"));
 		}
 
 		@Override
@@ -271,7 +271,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #wave}. */
 		WaveShader() {
-			super(msv("wave"), msf("wave"));
+			super(msv("general-highp"), msf("wave"));
 		}
 
 		@Override
@@ -303,7 +303,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #mirrorField}. */
 		MirrorFieldShader() {
-			super(msv("mirror-field"), msf("mirror-field"));
+			super(msv("general-highp"), msf("mirror-field"));
 		}
 
 		@Override
@@ -330,7 +330,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #alphaMask}. */
 		MaskShader() {
-			super(msv("alpha-mask"), msf("alpha-mask"));
+			super(msv("general"), msf("alpha-mask"));
 		}
 
 		@Override
@@ -344,7 +344,7 @@ public final class HShaders {
 
 	public static final class ChromaticAberrationShader extends Gl30Shader {
 		ChromaticAberrationShader() {
-			super(msv("aberration"), msf("aberration"));
+			super(msv("general"), msf("aberration"));
 		}
 
 		@Override
@@ -426,7 +426,7 @@ public final class HShaders {
 		public float time, spacing, thickness;
 
 		TractorConeShader() {
-			super(msv("tractor-cone"), msf("tractor-cone"));
+			super(msv("general-highp"), msf("tractor-cone"));
 		}
 
 		@Override
@@ -454,7 +454,7 @@ public final class HShaders {
 		public float alpha;
 
 		DimShader() {
-			super(msv("dim"), msf("dim"));
+			super(msv("general"), msf("dim"));
 		}
 
 		@Override
@@ -467,7 +467,7 @@ public final class HShaders {
 		Texture texture;
 
 		SmallSpaceShader() {
-			super(msv("small-space"), msf("small-space"));
+			super(msv("general-highp"), msf("small-space"));
 		}
 
 		@Override

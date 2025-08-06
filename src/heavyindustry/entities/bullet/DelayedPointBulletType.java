@@ -168,7 +168,7 @@ public class DelayedPointBulletType extends BulletType {
 
 	@Override
 	public Bullet create(Entityc owner, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY) {
-		Bullet bullet = Bullet.create();//Pools.obtain(BulletF.class, BulletF::new);
+		Bullet bullet = Bullet.create();//Pools.obtain(PoolBullet.class, PoolBullet::new);
 		bullet.type = this;
 		bullet.owner = owner;
 		bullet.team = team;
@@ -203,14 +203,9 @@ public class DelayedPointBulletType extends BulletType {
 	public void handlePierce(Bullet b, float initialHealth, float x, float y) {
 	}
 
-	public static class BulletF extends Bullet {
+	public static class PoolBullet extends Bullet {
 		static {
-			Pools.get(BulletF.class, BulletF::new, 1000);
-		}
-
-		@Override
-		public void update() {
-			super.update();
+			Pools.get(PoolBullet.class, PoolBullet::new, 1000);
 		}
 	}
 }

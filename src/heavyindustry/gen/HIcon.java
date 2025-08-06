@@ -11,6 +11,7 @@ public final class HIcon {
 			keplerIcon, aboutIcon, artistIcon, configureIcon, contributeIcon, databaseIcon, debuggingIcon, defaultShowIcon, fullSwordIcon, gasesIcon,
 			holdIcon, matrixIcon, nuclearIcon, programIcon, publicInfoIcon, reactionIcon, showInfosIcon, showRangeIcon, musicsIcon,
 			soundsIcon, sounds2Icon, startIcon, telegramIcon, timeIcon, translateIcon, unShowInfosIcon,
+			javaIcon, javaScriptIcon, networkErrorIcon,
 			//small
 			resetIconSmall, timeIconSmall,
 			//
@@ -48,6 +49,9 @@ public final class HIcon {
 		timeIcon = modDrawable("time-icon");
 		translateIcon = modDrawable("translate-icon");
 		unShowInfosIcon = modDrawable("un-show-infos-icon");
+		javaIcon = modDrawable("java-icon");
+		javaScriptIcon = modDrawable("java-script-icon");
+		networkErrorIcon = modDrawable("network-error-icon");
 		//small
 		resetIconSmall = modDrawable("reset-icon-small");
 		timeIconSmall = modDrawable("time-icon-small");

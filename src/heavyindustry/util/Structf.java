@@ -8,6 +8,8 @@ import arc.func.Func;
 import arc.func.Func2;
 import arc.func.Intf;
 import arc.util.Eachable;
+import arc.util.Nullable;
+import arc.util.Structs;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -19,22 +21,142 @@ import java.util.Iterator;
  * @author Eipusino
  */
 public final class Structf {
-	private static final Object[] emptyArray = new Object[0];
-	private static final Empty<?> empty = new Empty<>();
-
 	/** Don't let anyone instantiate this class. */
 	private Structf() {}
 
-	@SuppressWarnings("unchecked")
-	public static <T> Empty<T> empty() {
-		// SAFETY: Has no references or casts to T, so type erasure shouldn't mess everything up.
-		return (Empty<T>) empty;
+	/**
+	 * Convert vararg to an array.
+	 * Returns an array containing the specified elements.
+	 */
+	@SafeVarargs
+	public static <T> T[] arrayOf(T... elements) {
+		return elements;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <T> T[] emptyArray() {
-		// SAFETY: If users require the type to be exactly T[], they can use reflection instead.
-		return (T[]) emptyArray;
+	public static boolean[] boolOf(boolean... bools) {
+		return bools;
+	}
+
+	public static byte[] byteOf(byte... bytes) {
+		return bytes;
+	}
+
+	public static short[] shortOf(short... shorts) {
+		return shorts;
+	}
+
+	public static int[] intOf(int... ints) {
+		return ints;
+	}
+
+	public static long[] longOf(long... longs) {
+		return longs;
+	}
+
+	public static float[] floatOf(float... floats) {
+		return floats;
+	}
+
+	public static double[] doubleOf(double... doubles) {
+		return doubles;
+	}
+
+	public static <T> int indexOf(@Nullable T[] array, T element) {
+		if (array == null) return -1;
+		for (int i = 0; i < array.length; i++) {
+			if (Structs.eq(array[i], element)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOf(@Nullable boolean[] array, boolean element) {
+		if (array == null) return -1;
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == element) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOf(@Nullable byte[] array, byte element) {
+		if (array == null) return -1;
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == element) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOf(@Nullable short[] array, short element) {
+		if (array == null) return -1;
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == element) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOf(@Nullable int[] array, int element) {
+		if (array == null) return -1;
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == element) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOf(@Nullable long[] array, long element) {
+		if (array == null) return -1;
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == element) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOf(@Nullable float[] array, float element) {
+		if (array == null) return -1;
+		for (int i = 0; i < array.length; i++) {
+			if (Float.compare(array[i], element) == 0) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOf(@Nullable double[] array, double element) {
+		if (array == null) return -1;
+		for (int i = 0; i < array.length; i++) {
+			if (Double.compare(array[i], element) == 0) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/** @deprecated see {@link #hashCode(Object...)} */
+	@Deprecated
+	public static int hash(Object... values) {
+		return hashCode(values);
+	}
+
+	public static int hashCode(Object... values) {
+		if (values == null)
+			return 0;
+
+		int result = 1;
+
+		for (Object element : values)
+			result = 31 * result + (element == null ? 0 : element.hashCode());
+
+		return result;
 	}
 
 	public static <T> T[] copyArray(T[] array, Func<T, T> copy) {
@@ -137,26 +259,6 @@ public final class Structf {
 		T[] get(int size);
 	}
 
-	public static class Empty<T> implements Iterable<T>, Iterator<T>, Eachable<T> {
-		@Override
-		public Empty<T> iterator() {
-			return this;
-		}
-
-		@Override
-		public boolean hasNext() {
-			return false;
-		}
-
-		@Override
-		public T next() {
-			return null; //Empty<T> has no elements.
-		}
-
-		@Override
-		public void each(Cons<? super T> cons) {}
-	}
-
 	public static class Single<T> implements Iterable<T>, Iterator<T>, Eachable<T> {
 		protected final T item;
 		protected boolean done;
@@ -189,14 +291,18 @@ public final class Structf {
 	}
 
 	public static class Iter<T> implements Iterable<T>, Iterator<T>, Eachable<T> {
-		protected final T[] array;
-		protected final int offset, length;
-		protected int index = 0;
+		private final T[] array;
+		private final int offset, length;
+		private int index = 0;
 
 		public Iter(T[] arr, int off, int len) {
 			array = arr;
 			offset = off;
 			length = len;
+		}
+
+		public int size() {
+			return length;
 		}
 
 		@Override
@@ -211,8 +317,7 @@ public final class Structf {
 
 		@Override
 		public T next() {
-			if (hasNext()) return array[offset + index++];
-			else return null;
+			return hasNext() ? array[offset + index++] : null;
 		}
 
 		@Override
@@ -222,7 +327,7 @@ public final class Structf {
 	}
 
 	public static class Chain<T> implements Iterable<T>, Iterator<T>, Eachable<T> {
-		protected final Iterator<T> first, second;
+		private final Iterator<T> first, second;
 
 		public Chain(Iterator<T> fir, Iterator<T> sec) {
 			first = fir;

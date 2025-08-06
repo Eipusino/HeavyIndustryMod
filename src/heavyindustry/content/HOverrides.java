@@ -3,9 +3,7 @@ package heavyindustry.content;
 import arc.func.Boolf;
 import arc.func.Cons;
 import arc.graphics.Color;
-import arc.math.Mathf;
 import arc.struct.ObjectFloatMap;
-import arc.struct.Seq;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.graphics.HPal;
 import heavyindustry.world.meta.HAttribute;
@@ -26,7 +24,6 @@ import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;
-import mindustry.type.Liquid;
 import mindustry.type.LiquidStack;
 import mindustry.type.PayloadStack;
 import mindustry.type.UnitType;
@@ -62,8 +59,6 @@ import mindustry.world.consumers.ConsumeItems;
 import mindustry.world.consumers.ConsumeLiquid;
 import mindustry.world.meta.Attribute;
 import mindustry.world.meta.BuildVisibility;
-
-import static mindustry.Vars.content;
 
 /**
  * Covering the original content.
@@ -332,93 +327,6 @@ public final class HOverrides {
 		Items.erekirItems.addAll(HItems.uranium, HItems.chromium, HItems.originium);
 		//planet
 		Planets.serpulo.allowSectorInvasion = false;
-	}
-
-	/** special changes on April Fool's Day. */
-	public static void loadAprilFoolsDay() {
-		Seq<Block> sc = content.blocks().copy();
-		sc.removeAll(b -> b.localizedName == null || b.description == null);
-		for (int i = 0; i < sc.size; i++) {
-			Block b = sc.get(i);
-			if (b != null) {
-				String l = b.localizedName;
-				String n = b.description;
-				int d = Mathf.random(sc.size - 1);
-				while (d == i) {
-					d = Mathf.random(sc.size - 1);
-				}
-				Block b1 = sc.get(d);
-				if (b1 != null) {
-					b.localizedName = b1.localizedName;
-					b.description = b1.description;
-					b1.localizedName = l;
-					b1.description = n;
-				}
-			}
-		}
-
-		Seq<Item> ic = content.items().copy();
-		ic.removeAll(it -> it.localizedName == null || it.description == null);
-		for (int i = 0; i < ic.size; i++) {
-			Item b = ic.get(i);
-			if (b != null) {
-				String l = b.localizedName;
-				String n = b.description;
-				int d = Mathf.random(ic.size - 1);
-				while (d == i) {
-					d = Mathf.random(ic.size - 1);
-				}
-				Item b1 = ic.get(d);
-				if (b1 != null) {
-					b.localizedName = b1.localizedName;
-					b.description = b1.description;
-					b1.localizedName = l;
-					b1.description = n;
-				}
-			}
-		}
-
-		Seq<Liquid> lc = content.liquids().copy();
-		lc.removeAll(lt -> lt.localizedName == null || lt.description == null);
-		for (int i = 0; i < lc.size; i++) {
-			Liquid b = lc.get(i);
-			if (b != null) {
-				String l = b.localizedName;
-				String n = b.description;
-				int d = Mathf.random(ic.size - 1);
-				while (d == i) {
-					d = Mathf.random(ic.size - 1);
-				}
-				Liquid b1 = lc.get(d);
-				if (b1 != null) {
-					b.localizedName = b1.localizedName;
-					b.description = b1.description;
-					b1.localizedName = l;
-					b1.description = n;
-				}
-			}
-		}
-
-		Seq<UnitType> uc = content.units().copy();
-		uc.removeAll(u -> u.localizedName == null || u.description == null);
-		for (int i = 0; i < uc.size; i++) {
-			UnitType b = uc.get(i);
-			if (b != null) {
-				String l = b.localizedName;
-				String n = b.description;
-				int d = Mathf.random(uc.size - 1);
-				while (d == i) {
-					d = Mathf.random(uc.size - 1);
-				}
-				UnitType b1 = uc.get(d);
-				if (b1 != null) {
-					b.localizedName = b1.localizedName;
-					b.description = b1.description;
-					b1.localizedName = l;
-					b1.description = n;
-				}
-			}
-		}
 	}
 
 	//Is this really necessary?

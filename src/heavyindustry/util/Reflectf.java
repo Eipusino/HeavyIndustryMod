@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import static heavyindustry.util.Utils.arrayOf;
+import static heavyindustry.util.Structf.arrayOf;
 
 /**
  * More expansion of Java reflection functionality.
@@ -57,6 +57,11 @@ public final class Reflectf {
 			case "float", "double" -> "0.0";
 			default -> "null";
 		};
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T cast(Object value) {
+		return (T) value;
 	}
 
 	@SuppressWarnings("unchecked")

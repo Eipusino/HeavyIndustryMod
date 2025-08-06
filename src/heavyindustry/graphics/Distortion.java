@@ -25,7 +25,7 @@ public class Distortion implements Disposable {
 	boolean capturing, disposed;
 
 	public Distortion() {
-		distortion = new Gl30Shader(HShaders.msv("distortion"), HShaders.msf("distortion"));
+		distortion = new Gl30Shader(HShaders.msv("general"), HShaders.msf("distortion"));
 
 		buffer = new FrameBuffer();
 

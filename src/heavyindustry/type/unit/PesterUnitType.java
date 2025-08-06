@@ -5,6 +5,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.math.Interp;
 import heavyindustry.content.HBullets;
+import mindustry.content.Bullets;
 import mindustry.entities.Effect;
 import mindustry.entities.bullet.BulletType;
 
@@ -24,6 +25,7 @@ public class PesterUnitType extends AncientUnitType {
 	public float checkRange = 320f;
 
 	public BulletType hitterBullet = HBullets.hitter;
+	public BulletType blackHole = HBullets.ncBlackHole;
 
 	public Effect toBeBlastedEffect = new Effect(shootDelay, e -> {
 		Draw.color(e.color, Color.white, e.fin());
@@ -36,5 +38,13 @@ public class PesterUnitType extends AncientUnitType {
 
 	public PesterUnitType(String name) {
 		super(name);
+	}
+
+	@Override
+	public void init() {
+		if (hitterBullet == null) hitterBullet = Bullets.placeholder;
+		if (blackHole == null) blackHole = Bullets.placeholder;
+
+		super.init();
 	}
 }

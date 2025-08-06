@@ -2807,7 +2807,7 @@ public final class HUnitTypes {
 		}};
 		dpsTesterLand = new BaseUnitType("dps-tester-land") {{
 			constructor = DPSMechUnit::new;
-			controller = u -> !playerControllable || (u.team.isAI() && !u.team.rules().rtsAi) ? new NullAI() : new CommandAI();
+			aiController = NullAI::new;
 			armor = 10f;
 			health = 65535;
 			speed = 0.4f;
@@ -3255,7 +3255,7 @@ public final class HUnitTypes {
 			mineHardnessScaling = false;
 			mineSpeed = 9f;
 			mineTier = 99;
-			deathExplosionEffect = new MultiEffect(HFx.blast(HPal.thurmixRed, 400f), new Effect(300F, 1600f, e -> {
+			deathExplosionEffect = new MultiEffect(HFx.blast(HPal.thurmixRed, 400f), new Effect(300f, 1600f, e -> {
 				Rand rand = Utils.rand2;
 				float rad = 150f;
 				rand.setSeed(e.id);
@@ -3319,8 +3319,13 @@ public final class HUnitTypes {
 				bullet = HBullets.collapse;
 				aiControllable = false;
 			}
-				TextureRegion arrowRegion;
-				final float rangeWeapon = 520f;
+				private TextureRegion arrowRegion;
+				private final float rangeWeapon = 1040f;
+
+				@Override
+				public float range() {
+					return rangeWeapon;
+				}
 
 				@Override
 				public void draw(Unit unit, WeaponMount mount) {

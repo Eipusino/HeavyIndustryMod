@@ -158,12 +158,12 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 
 		super.update();
 
-		if (type instanceof PesterUnitType pType) {
+		if (type instanceof PesterUnitType put) {
 			bossTargetSearchReload -= Time.delta;
 			if (bossTargetSearchReload < 0 && isBoss) {
-				bossTargetSearchReload = pType.checkBossReload;
+				bossTargetSearchReload = put.checkBossReload;
 
-				bossTarget = Units.bestTarget(team, x, y, pType.bossWeaponRange, e -> true, e -> !(e.block.group == BlockGroup.walls), HUnitSorts.regionalHPMaximumAll);
+				bossTarget = Units.bestTarget(team, x, y, put.bossWeaponRange, e -> true, e -> !(e.block.group == BlockGroup.walls), HUnitSorts.regionalHPMaximumAll);
 			}
 
 			if (bossTarget != null) {
@@ -180,7 +180,7 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 
 			if (lastTarget != null && lastTarget.isAdded()) {
 				bossWeaponWarmup = Mathf.lerpDelta(bossWeaponWarmup, 1, 0.0075f);
-				bossWeaponProgress += Time.delta * bossWeaponWarmup * (0.86f + Mathf.absin(37f, 1f) + Mathf.absin(77f, 1f)) * (0.9f - (bossWeaponReload / pType.bossReload) * 0.7f);
+				bossWeaponProgress += Time.delta * bossWeaponWarmup * (0.86f + Mathf.absin(37f, 1f) + Mathf.absin(77f, 1f)) * (0.9f - (bossWeaponReload / put.bossReload) * 0.7f);
 				bossWeaponReload += Time.delta * bossWeaponWarmup;
 			} else {
 				if (bossWeaponWarmup <= 0) {
@@ -192,7 +192,7 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 				bossWeaponWarmup = Mathf.lerpDelta(bossWeaponWarmup, 0, 0.0075f);
 			}
 
-			if (bossWeaponReload > pType.bossReload) {
+			if (bossWeaponReload > put.bossReload) {
 				bossWeaponReload = bossWeaponWarmup = bossWeaponProgress = 0;
 				shootBossTarget();
 				lastTargetPos.set(x, y);
@@ -200,9 +200,9 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 
 			if (hatred.size > 0) hatredCheckReload -= Time.delta;
 			if (hatredCheckReload < 0) {
-				hatredCheckReload = pType.checkReload;
+				hatredCheckReload = put.checkReload;
 
-				Groups.bullet.intersect(x - pType.checkRange, y - pType.checkRange, pType.checkRange * 2, pType.checkRange * 2, bullet -> {
+				Groups.bullet.intersect(x - put.checkRange, y - put.checkRange, put.checkRange * 2, put.checkRange * 2, bullet -> {
 					if (bullet.team != team) {
 						Healthc target = findOwner(bullet);
 
@@ -217,15 +217,15 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 					//??Why this happens??
 					if (e.key == null) continue;
 
-					if (!e.key.isValid() || !within(e.key, pType.reflectRange) || ((Teamc) e.key).team() == team) {
+					if (!e.key.isValid() || !within(e.key, put.reflectRange) || ((Teamc) e.key).team() == team) {
 						hatred.remove(e.key, 0);
 						continue;
 					}
 
 
-					if (e.value > pType.checkDamage) {
+					if (e.value > put.checkDamage) {
 						nextTargets.add(e.key);
-						e.value -= pType.checkDamage;
+						e.value -= put.checkDamage;
 					}
 				}
 			}
@@ -233,7 +233,7 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 			if (nextTargets.any()) {
 				salvoReload += Time.delta * (1 + Mathf.num(isBoss) * reloadMultiplier);
 
-				if (salvoReload > pType.salvoReload) {
+				if (salvoReload > put.salvoReload) {
 					shootAtHatred();
 					salvoReload = 0;
 				}
@@ -243,7 +243,11 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 
 	@Override
 	public void shootBossTarget() {
-		HBullets.ncBlackHole.create(this, team, lastTargetPos.x, lastTargetPos.y, 0, 1, 1, 1, HBullets.ncBlackHole.splashDamageRadius);
+		if (type instanceof PesterUnitType put) {
+			put.blackHole.create(this, team, lastTargetPos.x, lastTargetPos.y,
+					0, 1, 1, 1,
+					put.blackHole.splashDamageRadius);
+		}
 	}
 
 	@Override
@@ -299,13 +303,13 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 
 	@Override
 	public void shoot(Healthc h) {
-		if (state.isGame() && h.isValid() && type instanceof PesterUnitType pType) {
-			pType.toBeBlastedEffect.at(h.getX(), h.getY(), h instanceof Sized s ? s.hitSize() : 30f, team.color, h);
+		if (state.isGame() && h.isValid() && type instanceof PesterUnitType put) {
+			put.toBeBlastedEffect.at(h.getX(), h.getY(), h instanceof Sized s ? s.hitSize() : 30f, team.color, h);
 			Fx.chainLightning.at(x, y, 0, team.color, h);
 
-			Time.run(pType.shootDelay, () -> {
+			Time.run(put.shootDelay, () -> {
 				if (state.isGame() && h.isValid()) {
-					pType.hitterBullet.create(this, team, h.getX(), h.getY(), 0);
+					put.hitterBullet.create(this, team, h.getX(), h.getY(), 0);
 					heal(500);
 				}
 			});
@@ -314,8 +318,8 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 
 	@Override
 	public void drawBossWeapon() {
-		if (bossWeaponWarmup > 0.01f && type instanceof PesterUnitType pType) {
-			float fin = bossWeaponReload / pType.bossReload, fout = 1 - fin;
+		if (bossWeaponWarmup > 0.01f && type instanceof PesterUnitType put) {
+			float fin = bossWeaponReload / put.bossReload, fout = 1 - fin;
 			float fadeS = Mathf.curve(fout, 0.0225f, 0.06f);
 			float fadeS2 = Mathf.curve(fout, 0.09f, 0.185f);
 			float fade = bossWeaponWarmup * Mathf.curve(fout, 0, 0.025f) * HInterps.bounce5In.apply(fadeS);
@@ -382,7 +386,7 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 	public void draw() {
 		super.draw();
 
-		if (type instanceof PesterUnitType pType) {
+		if (type instanceof PesterUnitType put) {
 			Tmp.c1.set(team.color).lerp(Color.white, Mathf.absin(4f, 0.3f));
 
 			Draw.reset();
@@ -406,8 +410,8 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 				}
 			}
 
-			Lines.stroke((3f + Mathf.absin(10f, 0.55f)) * Mathf.curve(1 - salvoReload / pType.salvoReload, 0, 0.075f));
-			if (salvoReload > 5f) Drawn.circlePercent(x, y, hitSize * 1.35f, salvoReload / pType.salvoReload, 0);
+			Lines.stroke((3f + Mathf.absin(10f, 0.55f)) * Mathf.curve(1 - salvoReload / put.salvoReload, 0, 0.075f));
+			if (salvoReload > 5f) Drawn.circlePercent(x, y, hitSize * 1.35f, salvoReload / put.salvoReload, 0);
 
 			Draw.z(Layer.bullet);
 

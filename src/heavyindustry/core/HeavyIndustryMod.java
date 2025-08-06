@@ -32,7 +32,6 @@ import heavyindustry.world.Worlds;
 import heavyindustry.graphics.HCacheLayer;
 import heavyindustry.graphics.HShaders;
 import heavyindustry.graphics.HTextures;
-import heavyindustry.graphics.SpecialMenuRenderer;
 import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.input.InputAggregator;
 import heavyindustry.mod.LoadMod;
@@ -43,7 +42,6 @@ import heavyindustry.ui.HStyles;
 import heavyindustry.ui.Elements;
 import heavyindustry.ui.dialogs.HResearchDialog;
 import heavyindustry.util.IconLoader;
-import heavyindustry.util.Utils;
 import mindustry.ctype.Content;
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.game.EventType.DisposeEvent;
@@ -55,11 +53,6 @@ import mindustry.mod.Mod;
 import mindustry.mod.Mods.LoadedMod;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
-import mindustry.ui.fragments.MenuFragment;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 import static heavyindustry.HVars.inputAggregator;
 import static heavyindustry.HVars.internalTree;
@@ -92,7 +85,6 @@ public final class HeavyIndustryMod extends Mod {
 	public static final boolean isPlugin;
 
 	static @Nullable FloatingText floatingText;
-	static @Nullable SpecialMenuRenderer specialMenuRenderer;
 
 	/** If needed, please call {@link #loaded()} for the LoadedMod of this mod. */
 	static @Nullable LoadedMod loaded;
@@ -105,10 +97,6 @@ public final class HeavyIndustryMod extends Mod {
 	}
 
 	public HeavyIndustryMod() {
-		if (Core.graphics != null && !Core.graphics.isGL30Available()) {
-			throw new UnsupportedOperationException("HeavyIndustryMod only runs with OpenGL 3.0 (on desktop) or OpenGL ES 3.0 (on android) and above!");
-		}
-
 		Log.info("Loaded HeavyIndustry Mod constructor.");
 
 		HClassMap.load();
@@ -116,22 +104,10 @@ public final class HeavyIndustryMod extends Mod {
 		Events.on(ClientLoadEvent.class, event -> {
 			if (isPlugin) return;
 
-			boolean special = Core.settings.getBool("hi-special");
-
-			try {
-				if (special) {
-					var field = MenuFragment.class.getDeclaredField("renderer");
-					field.setAccessible(true);
-					field.set(ui.menufrag, specialMenuRenderer = new SpecialMenuRenderer());
-				}
-			} catch (Exception | ExceptionInInitializerError e) {
-				Log.err("Failed to replace renderer", e);
-			}
-
 			String close = Core.bundle.get("close");
 
 			dia: {
-				if (headless || Core.settings.getBool("hi-closed-dialog") || isAprilFoolsDay()) break dia;
+				if (headless || Core.settings.getBool("hi-closed-dialog")) break dia;
 
 				FLabel label = new FLabel(Core.bundle.get("hi-author") + AUTHOR);
 				BaseDialog dialog = new BaseDialog(Core.bundle.get("hi-name")) {{
@@ -143,7 +119,7 @@ public final class HeavyIndustryMod extends Mod {
 						}
 					}).size(210f, 64f);
 					cont.pane(t -> {
-						t.image(Core.atlas.find(name(special ? "cover-special" : "cover"))).left().size(600f, 403f).pad(3f).row();
+						t.image(Core.atlas.find(name("cover"))).left().size(600f, 403f).pad(3f).row();
 						t.add(Core.bundle.get("hi-version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 						t.add(label).left().row();
 						t.add(Core.bundle.get("hi-class")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
@@ -180,7 +156,10 @@ public final class HeavyIndustryMod extends Mod {
 				HShaders.dispose();
 		});
 
-		Core.app.post(ModJS::init);
+		//IOS does not support rhino js
+		if (!Core.app.isIOS()) {
+			Core.app.post(ModJS::init);
+		}
 	}
 
 	@Override
@@ -190,9 +169,8 @@ public final class HeavyIndustryMod extends Mod {
 		Entitys.load();
 		Worlds.load();
 
-		HBullets.load();
-
 		if (!isPlugin) {
+			HBullets.load();
 			HTeam.load();
 			HItems.load();
 			HStatusEffects.load();
@@ -218,40 +196,6 @@ public final class HeavyIndustryMod extends Mod {
 
 		IconLoader.loadIcons(internalTree.child("other/icons.properties"));
 
-		if (!headless && !isPlugin && !modEnabled("extra-utilities") && isAprilFoolsDay()) {
-			HOverrides.loadAprilFoolsDay();
-
-			if (ui != null) {
-				Events.on(ClientLoadEvent.class, event -> Time.runTask(10f, () -> {
-					BaseDialog dialog = new BaseDialog(Core.bundle.get("hi-name")) {
-						int con = 0;
-						float bx, by;
-					{
-						cont.add(Core.bundle.get("hi-ap-main"));
-						buttons.button("", this::hide).update(b -> {
-							b.setText(con > 0 ? con == 5 ? Core.bundle.get("hi-ap-happy") : Core.bundle.get("hi-ap-click") : Core.bundle.get("hi-ap-ok"));
-							if (con > 0) {
-								b.x = bx;
-								b.y = by;
-							}
-						}).size(140, 50).center();
-					}
-						@Override
-						public void hide() {
-							if (con >= 5) {
-								super.hide();
-								return;
-							}
-							con++;
-							bx = Mathf.random(width * 0.8f);
-							by = Mathf.random(height * 0.8f);
-						}
-					};
-					dialog.show();
-				}));
-			}
-		}
-
 		LoadedMod theMod = loaded();
 
 		if (theMod != null) {
@@ -270,7 +214,6 @@ public final class HeavyIndustryMod extends Mod {
 					t.checkPref("hi-closed-dialog", false);
 					t.checkPref("hi-floating-text", true);
 					t.checkPref("hi-animated-shields", true);
-					t.checkPref("hi-special", false);
 					t.sliderPref("hi-strobespeed", 3, 1, 20, 1, s -> Strings.autoFixed(s / 2f, 2));
 					//this fucking sucks
 					t.table(Tex.button, c -> {
@@ -296,8 +239,9 @@ public final class HeavyIndustryMod extends Mod {
 			var dialog = new HResearchDialog();
 			ui.research.shown(() -> {
 				dialog.show();
-				Objects.requireNonNull(ui.research);
-				Time.runTask(1f, ui.research::hide);
+				if (ui.research != null) {
+					Time.runTask(1f, ui.research::hide);
+				}
 			});
 		}
 
@@ -329,12 +273,5 @@ public final class HeavyIndustryMod extends Mod {
 	public static boolean modEnabled(String name) {
 		LoadedMod mod = mods.getMod(name);
 		return mod != null && mod.isSupported() && mod.enabled();
-	}
-
-	public static boolean isAprilFoolsDay() {
-		LocalDate date = LocalDate.now();
-		DateTimeFormatter form = DateTimeFormatter.ofPattern("MMdd");
-		String fromdata = form.format(date);
-		return fromdata.equals("0401");
 	}
 }

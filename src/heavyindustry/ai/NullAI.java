@@ -8,7 +8,7 @@ public class NullAI implements UnitController {
 
 	@Override
 	public void unit(Unit u) {
-		unit = u;
+		if (unit != u) unit = u;
 	}
 
 	@Override

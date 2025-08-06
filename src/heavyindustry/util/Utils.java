@@ -31,7 +31,6 @@ import arc.math.geom.Vec2;
 import arc.scene.style.Drawable;
 import arc.scene.ui.ImageButton;
 import arc.scene.ui.ImageButton.ImageButtonStyle;
-import arc.struct.IntMap;
 import arc.struct.IntSeq;
 import arc.struct.IntSet;
 import arc.struct.ObjectMap;
@@ -51,7 +50,6 @@ import mindustry.content.Liquids;
 import mindustry.content.StatusEffects;
 import mindustry.core.UI;
 import mindustry.core.World;
-import mindustry.ctype.UnlockableContent;
 import mindustry.entities.Effect;
 import mindustry.entities.Fires;
 import mindustry.entities.Mover;
@@ -94,7 +92,6 @@ import mindustry.world.meta.StatUnit;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 import static heavyindustry.HVars.name;
@@ -427,123 +424,6 @@ public final class Utils {
 		}
 	}
 
-	/**
-	 * Convert vararg to an array.
-	 * Returns an array containing the specified elements.
-	 */
-	@SafeVarargs
-	public static <T> T[] arrayOf(T... elements) {
-		return elements;
-	}
-
-	public static boolean[] boolOf(boolean... bools) {
-		return bools;
-	}
-
-	public static byte[] byteOf(byte... bytes) {
-		return bytes;
-	}
-
-	public static short[] shortOf(short... shorts) {
-		return shorts;
-	}
-
-	public static int[] intOf(int... ints) {
-		return ints;
-	}
-
-	public static long[] longOf(long... longs) {
-		return longs;
-	}
-
-	public static float[] floatOf(float... floats) {
-		return floats;
-	}
-
-	public static double[] doubleOf(double... doubles) {
-		return doubles;
-	}
-
-	public static <T> int indexOf(@Nullable T[] array, T element) {
-		if (array == null) return -1;
-		for (int i = 0; i < array.length; i++) {
-			if (Objects.equals(array[i], element)) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	public static int indexOf(@Nullable boolean[] array, boolean element) {
-		if (array == null) return -1;
-		for (int i = 0; i < array.length; i++) {
-			if (array[i] == element) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	public static int indexOf(@Nullable byte[] array, byte element) {
-		if (array == null) return -1;
-		for (int i = 0; i < array.length; i++) {
-			if (array[i] == element) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	public static int indexOf(@Nullable short[] array, short element) {
-		if (array == null) return -1;
-		for (int i = 0; i < array.length; i++) {
-			if (array[i] == element) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	public static int indexOf(@Nullable int[] array, int element) {
-		if (array == null) return -1;
-		for (int i = 0; i < array.length; i++) {
-			if (array[i] == element) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	public static int indexOf(@Nullable long[] array, long element) {
-		if (array == null) return -1;
-		for (int i = 0; i < array.length; i++) {
-			if (array[i] == element) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	public static int indexOf(@Nullable float[] array, float element) {
-		if (array == null) return -1;
-		for (int i = 0; i < array.length; i++) {
-			if (Float.compare(array[i], element) == 0) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
-	public static int indexOf(@Nullable double[] array, double element) {
-		if (array == null) return -1;
-		for (int i = 0; i < array.length; i++) {
-			if (Double.compare(array[i], element) == 0) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
 	public static void bubbles(int seed, float x, float y, int bubblesAmount, float bubblesSize, float baseLife, float baseSize) {
 		rand.setSeed(seed);
 
@@ -606,7 +486,7 @@ public final class Utils {
 
 	/** Determine whether the string is composed of {@code Number} and {@code . }. */
 	public static boolean isNumeric(String key) {
-		if (Objects.isNull(key)) return false;
+		if (key == null) return false;
 
 		Pattern pattern = Pattern.compile("[0-9]*");
 		if (key.indexOf(".") > 0) {//Determine if there is a decimal point

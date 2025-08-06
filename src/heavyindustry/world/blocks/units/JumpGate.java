@@ -22,7 +22,6 @@ import arc.struct.IntSeq;
 import arc.struct.ObjectIntMap;
 import arc.struct.Seq;
 import arc.util.Align;
-import arc.util.Eachable;
 import arc.util.Nullable;
 import arc.util.Scaling;
 import arc.util.Strings;
@@ -37,12 +36,12 @@ import heavyindustry.ui.ItemDisplay;
 import heavyindustry.ui.ItemImage;
 import heavyindustry.ui.ItemImageDynamic;
 import heavyindustry.ui.Elements;
+import heavyindustry.util.Structf;
 import heavyindustry.util.Utils;
 import mindustry.content.Fx;
 import mindustry.content.UnitTypes;
 import mindustry.core.World;
 import mindustry.entities.Units;
-import mindustry.entities.units.BuildPlan;
 import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.gen.Icon;
@@ -72,13 +71,11 @@ import mindustry.world.meta.StatUnit;
 import mindustry.world.modules.ItemModule;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 import static heavyindustry.HVars.name;
 import static heavyindustry.ui.Elements.LEN;
 import static heavyindustry.ui.Elements.OFFSET;
 import static mindustry.Vars.mobile;
-import static mindustry.Vars.player;
 import static mindustry.Vars.state;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
@@ -154,19 +151,7 @@ public class JumpGate extends Block {
 		return super.canReplace(other) || (other instanceof JumpGate && size > other.size);
 	}
 
-	public void drawDefaultPlanRegion(BuildPlan plan, Eachable<BuildPlan> list) {
-		TextureRegion reg = getPlanRegion(plan, list);
-		Draw.rect(reg, plan.drawx(), plan.drawy(), !rotate || !rotateDraw ? 0 : plan.rotation * 90);
-
-		if (plan.worldContext && player != null && teamRegion != null && teamRegion.found()) {
-			if (teamRegions[player.team().id] == teamRegion) Draw.color(player.team().color);
-			Draw.rect(teamRegions[player.team().id], plan.drawx(), plan.drawy());
-			Draw.color();
-		}
-
-		drawPlanConfig(plan, list);
-	}
-
+	@Override
 	public void drawPlace(int x, int y, int rotation, boolean valid) {
 		Color color = baseColor == null ? Pal.accent : baseColor;
 		Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, range, color);
@@ -318,7 +303,7 @@ public class JumpGate extends Block {
 
 		@Override
 		public int hashCode() {
-			int result = Objects.hash(type.name.hashCode());
+			int result = Structf.hashCode(type.name.hashCode());
 			result = 31 * result + Arrays.hashCode(sortIndex);
 			return result;
 		}

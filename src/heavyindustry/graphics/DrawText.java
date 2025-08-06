@@ -10,8 +10,6 @@ import arc.math.geom.Position;
 import arc.scene.ui.layout.Scl;
 import arc.struct.Seq;
 
-import java.util.Objects;
-
 /** Draws text on screen without label or other stuff. */
 public final class DrawText {
 	public static Font defaultFont;
@@ -30,10 +28,12 @@ public final class DrawText {
 			fontList = new Seq<>();
 			defaultFont = Core.assets.getAll(Font.class, fontList).firstOpt();
 		}
-		return Objects.requireNonNull(defaultFont, "heavyindustry.graphics.DrawText.defaultFont is null");
+		return defaultFont;
 	}
 
 	public static void drawText(Font font, float x, float y, float textSize, Color color, String text) {
+		if (font == null) return;
+
 		boolean ints = font.usesIntegerPositions();
 		font.getData().setScale(textSize / Scl.scl(1.0f));
 		font.setUseIntegerPositions(false);

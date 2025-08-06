@@ -2,10 +2,9 @@
 
 ---
 
-![Logo](assets/other/cover-desktop.png)
+![Logo](assets/sprites-override/effects/error.png)
 
 **正在开发中。**
-**封面与模组内容无关。这个模组什么也没有。**
 
 ---
 

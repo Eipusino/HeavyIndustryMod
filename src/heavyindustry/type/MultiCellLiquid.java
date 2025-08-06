@@ -16,8 +16,6 @@ import mindustry.type.CellLiquid;
 import mindustry.type.Liquid;
 import mindustry.world.Tile;
 
-import java.util.Objects;
-
 public class MultiCellLiquid extends CellLiquid {
 	public Seq<Liquid> spreadTargets = new Seq<>();
 
@@ -27,12 +25,6 @@ public class MultiCellLiquid extends CellLiquid {
 
 	public MultiCellLiquid(String name) {
 		super(name);
-	}
-
-	@Override
-	public void init() {
-		super.init();
-		spreadTargets.removeAll(Objects::isNull);
 	}
 
 	@Override

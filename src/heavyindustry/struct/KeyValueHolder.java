@@ -1,7 +1,6 @@
 package heavyindustry.struct;
 
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * An immutable container for a key and a value, suitable for use
@@ -23,14 +22,14 @@ import java.util.Objects;
  * @see Map#ofEntries Map.ofEntries()
  * @since 9
  */
-final class KeyValueHolder<K, V> implements Map.Entry<K, V> {
-	final K key;
+public final class KeyValueHolder<K, V> implements Map.Entry<K, V> {
+	private final K key;
 
-	final V value;
+	private final V value;
 
-	KeyValueHolder(K k, V v) {
-		key = Objects.requireNonNull(k);
-		value = Objects.requireNonNull(v);
+	public KeyValueHolder(K k, V v) {
+		key = k;
+		value = v;
 	}
 
 	/**
