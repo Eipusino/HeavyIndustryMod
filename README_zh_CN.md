@@ -13,7 +13,7 @@
 + **模组版本号：1.0.7-beta**
 + **模组类型：Java SE 16**
 + **Mindustry版本号：150.1**
-+ **兼容平台：Android（安卓）、Desktp**
++ **兼容平台：Android（安卓）、Desktp（桌面）。未来Mindustry可能支持IOS模组？**
 
 ---
 

@@ -14,7 +14,7 @@ import mindustry.world.Block;
 import mindustry.world.meta.BlockGroup;
 import mindustry.world.meta.Env;
 
-import static heavyindustry.HVars.MOD_NAME;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 
 public class EverythingItemSource extends Block {
 	public float ticksPerItemColor = 90f;

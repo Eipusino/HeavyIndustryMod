@@ -51,7 +51,9 @@ import static mindustry.Vars.renderer;
 
 public class FlowrateVoid extends PayloadVoid {
 	protected static float addTimeSetting;
+
 	private static ObjectSet<FlowrateVoidBuild> spaceDraws;
+
 	public int extraAbsorbEffects = 6;
 	public float extraAbsorbOffset = 6f;
 	public float extraAbsorbEffectMinDelay = 15f, extraAbsorbEffectMaxDelay = 35f;
@@ -367,7 +369,7 @@ public class FlowrateVoid extends PayloadVoid {
 
 		public String labelText(float value) {
 			if (totalTime <= 0) return Core.bundle.get("hi-flowrate-reader.no-time");
-			return Elements.round(value / totalTime * 60f) + StatUnit.perSecond.localized();
+			return Mathf.round(value / totalTime * 60f) + StatUnit.perSecond.localized();
 		}
 
 		@Override

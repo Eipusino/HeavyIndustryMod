@@ -209,7 +209,6 @@ import mindustry.world.blocks.power.ConsumeGenerator;
 import mindustry.world.blocks.power.LightBlock;
 import mindustry.world.blocks.power.NuclearReactor;
 import mindustry.world.blocks.power.PowerNode;
-import mindustry.world.blocks.power.SolarGenerator;
 import mindustry.world.blocks.production.AttributeCrafter;
 import mindustry.world.blocks.production.BeamDrill;
 import mindustry.world.blocks.production.BurstDrill;
@@ -262,7 +261,7 @@ import mindustry.world.meta.BuildVisibility;
 import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 
-import static heavyindustry.HVars.name;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static mindustry.Vars.content;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.indexer;
@@ -318,7 +317,7 @@ public final class HBlocks {
 	//liquid-erekir
 	reinforcedLiquidOverflowValve, reinforcedLiquidUnderflowValve, reinforcedLiquidUnloader, reinforcedLiquidSorter, reinforcedLiquidValve, smallReinforcedPump, largeReinforcedPump,
 	//power
-	networkPowerNode, smartPowerNode, microArmoredPowerNode, heavyArmoredPowerNode, powerAnalyzer, solarPanelArray, liquidConsumeGenerator, uraniumReactor, hyperMagneticReactor, hugeBattery, armoredCoatedBattery,
+	networkPowerNode, smartPowerNode, microArmoredPowerNode, heavyArmoredPowerNode, powerAnalyzer, liquidConsumeGenerator, uraniumReactor, hyperMagneticReactor, hugeBattery, armoredCoatedBattery,
 	//power-erekir
 	smartBeamNode, beamDiode, beamInsulator, reinforcedPowerAnalyzer,
 	//production
@@ -1688,11 +1687,6 @@ public final class HBlocks {
 			displayLength = 24f / 4f;
 			hideDetails = false;
 		}};
-		solarPanelArray = new SolarGenerator("solar-panel-array") {{
-			requirements(Category.power, ItemStack.with(Items.lead, 220, Items.metaglass, 40, HItems.galliumNitride, 60));
-			size = 6;
-			powerProduction = 12.6f;
-		}};
 		liquidConsumeGenerator = new ConsumeGenerator("liquid-generator") {{
 			requirements(Category.power, ItemStack.with(Items.graphite, 120, Items.metaglass, 80, Items.silicon, 115));
 			size = 3;
@@ -1950,7 +1944,6 @@ public final class HBlocks {
 			craftEffect = Fx.none;
 			envRequired |= Env.spores;
 			attribute = Attribute.spores;
-			legacyReadWarmup = true;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.water), new DrawCultivator(), new DrawDefault());
 			maxBoost = 3f;
 			consumePower(3f);
@@ -2043,6 +2036,7 @@ public final class HBlocks {
 			ambientSoundVolume = 0.21f;
 			consumeItems(ItemStack.with(Items.coal, 5, Items.sand, 8, Items.blastCompound, 1));
 			consumePower(4f);
+			hideDetails = false;
 		}};
 		crystallineCircuitConstructor = new GenericCrafter("crystalline-circuit-constructor") {{
 			requirements(Category.crafting, ItemStack.with(Items.copper, 120, Items.titanium, 45, Items.silicon, 35, HItems.originium, 20));
@@ -3022,7 +3016,7 @@ public final class HBlocks {
 		}};
 		largeRocketLauncher = new ItemTurret("large-rocket-launcher") {{
 			requirements(Category.turret, ItemStack.with(Items.graphite, 360, Items.titanium, 220, Items.thorium, 100, Items.silicon, 110, Items.plastanium, 70));
-			ammo(Items.pyratite, new MissileBulletType(10f, 44f, name("rocket")) {{
+			ammo(Items.pyratite, new MissileBulletType(10f, 44f, MOD_NAME + "-rocket") {{
 				shrinkY = 0;
 				inaccuracy = 4;
 				trailChance = 0.8f;
@@ -3042,7 +3036,7 @@ public final class HBlocks {
 				shootEffect = new MultiEffect(Fx.shootBig2, Fx.shootPyraFlame, Fx.shootPyraFlame);
 				despawnEffect = Fx.flakExplosion;
 				hitEffect = new MultiEffect(HFx.explodeImpWaveSmall, HFx.impactWave);
-			}}, Items.blastCompound, new MissileBulletType(10f, 46f, name("missile")) {{
+			}}, Items.blastCompound, new MissileBulletType(10f, 46f, MOD_NAME + "-missile") {{
 				recoil = 1;
 				shrinkY = 0;
 				inaccuracy = 4;
@@ -3097,7 +3091,7 @@ public final class HBlocks {
 		}};
 		rocketSilo = new ItemTurret("rocket-silo") {{
 			requirements(Category.turret, ItemStack.with(Items.lead, 300, Items.graphite, 150, Items.titanium, 120, Items.silicon, 120, Items.plastanium, 50));
-			ammo(Items.graphite, new MissileBulletType(8f, 22f, name("missile")) {{
+			ammo(Items.graphite, new MissileBulletType(8f, 22f, MOD_NAME + "-missile") {{
 				buildingDamageMultiplier = 0.3f;
 				splashDamage = 15f;
 				splashDamageRadius = 18f;
@@ -3118,7 +3112,7 @@ public final class HBlocks {
 				ammoMultiplier = 2f;
 				smokeEffect = Fx.shootSmallFlame;
 				hitEffect = Fx.flakExplosion;
-			}}, Items.pyratite, new MissileBulletType(7f, 14f, name("missile")) {{
+			}}, Items.pyratite, new MissileBulletType(7f, 14f, MOD_NAME + "-missile") {{
 				buildingDamageMultiplier = 0.3f;
 				splashDamage = 39f;
 				splashDamageRadius = 32f;
@@ -3141,7 +3135,7 @@ public final class HBlocks {
 				ammoMultiplier = 2f;
 				smokeEffect = Fx.shootSmallFlame;
 				hitEffect = Fx.flakExplosionBig;
-			}}, Items.blastCompound, new MissileBulletType(7f, 17f, name("missile")) {{
+			}}, Items.blastCompound, new MissileBulletType(7f, 17f, MOD_NAME + "-missile") {{
 				buildingDamageMultiplier = 0.3f;
 				splashDamage = 55f;
 				splashDamageRadius = 45f;
@@ -3163,7 +3157,7 @@ public final class HBlocks {
 				ammoMultiplier = 2f;
 				smokeEffect = Fx.shootSmallFlame;
 				hitEffect = Fx.flakExplosionBig;
-			}}, Items.surgeAlloy, new MissileBulletType(9f, 47f, name("missile")) {{
+			}}, Items.surgeAlloy, new MissileBulletType(9f, 47f, MOD_NAME + "-missile") {{
 				buildingDamageMultiplier = 0.3f;
 				splashDamage = 75f;
 				splashDamageRadius = 45f;
@@ -3314,8 +3308,8 @@ public final class HBlocks {
 			health = 2800;
 			range = 500f;
 			coolantMultiplier = 1.5f;
-			sync = true;
-			targetAir = true;
+			moveWhileCharging = false;
+			accurateDelay = false;
 			reload = 500f;
 			shoot.firstShotDelay = 100f;
 			recoil = 5f;
@@ -4140,7 +4134,7 @@ public final class HBlocks {
 			lightColor = HPal.ancientLightMid;
 			clipSize = 6 * 24;
 			outlineColor = Pal.darkOutline;
-			ammo(HItems.uranium, new CtrlMissileBulletType(8f, 2800f, name("large-missile")) {{
+			ammo(HItems.uranium, new CtrlMissileBulletType(8f, 2800f, MOD_NAME + "-large-missile") {{
 				hitSize *= 10f;
 				accel = 0.32f;
 				drag /= 2;

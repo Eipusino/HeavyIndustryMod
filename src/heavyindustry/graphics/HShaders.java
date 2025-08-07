@@ -35,7 +35,7 @@ public final class HShaders {
 	public static DepthAtmosphereShader depthAtmosphere;
 	public static AlphaShader alphaShader;
 	public static Gl30SurfaceShader brine, originiumFluid, boundWater, pit, waterPit;
-	public static ChromaticAberrationShader chromatic;
+	public static AberrationShader aberration;
 	public static MaskShader alphaMask;
 	public static WaveShader wave;
 	public static MirrorFieldShader mirrorField;
@@ -69,7 +69,7 @@ public final class HShaders {
 		pit = new PitShader("general-highp", "pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
 		waterPit = new PitShader("general-highp", "water-pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
 
-		chromatic = new ChromaticAberrationShader();
+		aberration = new AberrationShader();
 
 		alphaMask = new MaskShader();
 		mirrorField = new MirrorFieldShader();
@@ -342,8 +342,8 @@ public final class HShaders {
 		}
 	}
 
-	public static final class ChromaticAberrationShader extends Gl30Shader {
-		ChromaticAberrationShader() {
+	public static final class AberrationShader extends Gl30Shader {
+		AberrationShader() {
 			super(msv("general"), msf("aberration"));
 		}
 

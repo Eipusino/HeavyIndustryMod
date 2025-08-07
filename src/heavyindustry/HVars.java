@@ -18,9 +18,6 @@ import mindustry.type.Sector;
  * @since 1.0.6
  */
 public final class HVars {
-	/** Commonly used static read-only String. Do not change unless you know what you're doing. */
-	public static final String MOD_NAME = "heavy-industry";
-
 	/** jar internal navigation. */
 	public static final InternalFileTree internalTree;
 
@@ -51,11 +48,11 @@ public final class HVars {
 
 	/** Omitting longer mod names is generally used to load mod sprites. */
 	public static String name(String add) {
-		return MOD_NAME + "-" + add;
+		return HeavyIndustryMod.MOD_NAME + "-" + add;
 	}
 
 	public static String name() {
-		return MOD_NAME + "-";
+		return HeavyIndustryMod.MOD_NAME + "-";
 	}
 
 	/** Delta time that is unaffected by time control. */

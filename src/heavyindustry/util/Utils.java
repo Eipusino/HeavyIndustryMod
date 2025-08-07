@@ -90,7 +90,6 @@ import mindustry.world.draw.DrawMulti;
 import mindustry.world.draw.DrawRegion;
 import mindustry.world.meta.StatUnit;
 
-import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
@@ -290,7 +289,7 @@ public final class Utils {
 	 * forcibly converted to {@link AtlasRegion}.
 	 */
 	public static TextureRegion[] split(String name, int size, int layer) {
-		TextureRegion textures = Core.atlas.find(name, name("error"));
+		TextureRegion textures = Core.atlas.find(name);
 		int margin = 0;
 		int countX = textures.width / size;
 		TextureRegion[] tiles = new TextureRegion[countX];
@@ -498,11 +497,6 @@ public final class Utils {
 		} else {
 			return pattern.matcher(key).matches();
 		}
-	}
-
-	/** Return a float to save a string of x digits. */
-	public static String decimalFormat(float value, int i) {
-		return new DecimalFormat("#0." + repeat("0", Math.max(0, i))).format(value);
 	}
 
 	/**

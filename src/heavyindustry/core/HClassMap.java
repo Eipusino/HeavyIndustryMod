@@ -73,6 +73,7 @@ import heavyindustry.entities.pattern.FlipShootHelix;
 import heavyindustry.entities.pattern.ShootBursts;
 import heavyindustry.type.AtmospherePlanet;
 import heavyindustry.type.ExtraSectorPreset;
+import heavyindustry.type.LiquidBottle;
 import heavyindustry.type.MultiCellLiquid;
 import heavyindustry.type.NonThreateningSector;
 import heavyindustry.type.ammo.VanityAmmoType;
@@ -222,6 +223,7 @@ import heavyindustry.world.blocks.power.SpaceGenerator;
 import heavyindustry.world.blocks.power.ThermalConsumeGenerator;
 import heavyindustry.world.blocks.power.WindGenerator;
 import heavyindustry.world.blocks.production.AccelerationCrafter;
+import heavyindustry.world.blocks.production.AdaptiveCrafter;
 import heavyindustry.world.blocks.production.AttributeGenerator;
 import heavyindustry.world.blocks.production.DrawerBurstDrill;
 import heavyindustry.world.blocks.production.DrawerDrill;
@@ -411,6 +413,8 @@ final class HClassMap {
 		classes.put("MortarWeapon", MortarWeapon.class);
 		classes.put("MultiBarrelWeapon", MultiBarrelWeapon.class);
 		classes.put("PointDefenceMultiBarrelWeapon", PointDefenceMultiBarrelWeapon.class);
+		//types-item
+		classes.put("LiquidBottle", LiquidBottle.class);
 		//types-liquid
 		classes.put("MultiCellLiquid", MultiCellLiquid.class);
 		//types-planet
@@ -703,6 +707,9 @@ final class HClassMap {
 		classes.put("MultiCrafter", MultiCrafter.class);
 		classes.put("MultiCrafterBuild", MultiCrafter.MultiCrafterBuild.class);
 		classes.put("CraftPlan", MultiCrafter.CraftPlan.class);
+		classes.put("AdaptiveCrafter", AdaptiveCrafter.class);
+		classes.put("AdaptiveCrafterBuild", AdaptiveCrafter.AdaptiveCrafterBuild.class);
+		classes.put("Recipe", AdaptiveCrafter.Recipe.class);
 		classes.put("DrawerDrill", DrawerDrill.class);
 		classes.put("DrawerDrillBuild", DrawerDrill.DrawerDrillBuild.class);
 		classes.put("DrawerBurstDrill", DrawerBurstDrill.class);

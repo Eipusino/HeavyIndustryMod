@@ -60,6 +60,7 @@ public class DrawScanLine extends DrawBlock implements Cloneable {
 		try {
 			return (DrawScanLine) super.clone();
 		} catch (CloneNotSupportedException e) {
+			//I am disgusted
 			throw new RuntimeException("java sucks", e);
 		}
 	}

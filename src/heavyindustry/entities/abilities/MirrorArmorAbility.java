@@ -10,6 +10,7 @@ import arc.math.Mathf;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.graphics.Draws;
+import heavyindustry.graphics.HLayer;
 import heavyindustry.graphics.HPal;
 import heavyindustry.graphics.HShaders;
 import mindustry.gen.Bullet;
@@ -17,7 +18,7 @@ import mindustry.gen.Groups;
 import mindustry.gen.Unit;
 import mindustry.graphics.Layer;
 
-public class MirrorArmorAbility extends BaseMirrorShieldAbility {
+public class MirrorArmorAbility extends MirrorShieldAbility {
 	protected static final int drawId = Draws.nextTaskId();
 	protected static final int maskId = Draws.nextTaskId();
 	protected static final int fukId = Draws.nextTaskId();
@@ -45,7 +46,7 @@ public class MirrorArmorAbility extends BaseMirrorShieldAbility {
 
 	@Override
 	public void draw(Unit unit) {
-		if (unit.shield <= 0 || lastBreak) return;
+		if (unit.shield <= 0) return;
 
 		float z = Draw.z();
 
@@ -90,7 +91,7 @@ public class MirrorArmorAbility extends BaseMirrorShieldAbility {
 				pingPongBuffer.blit(Draw.getShader());
 			}), u -> {});
 		} else {
-			Draw.z(Draws.mirrorField + 1);
+			Draw.z(HLayer.mirrorField + 1);
 			Draw.mixcol(Tmp.c1.set(unit.team.color).lerp(Color.white, alpha), 1f);
 			Draw.alpha(0.3f * Math.max(alpha, Mathf.absin(6, 0.6f)));
 			Draw.scl(1.1f);

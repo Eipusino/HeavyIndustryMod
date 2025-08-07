@@ -8,8 +8,6 @@ import arc.func.Func;
 import arc.func.Func2;
 import arc.func.Intf;
 import arc.util.Eachable;
-import arc.util.Nullable;
-import arc.util.Structs;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -23,6 +21,10 @@ import java.util.Iterator;
 public final class Structf {
 	/** Don't let anyone instantiate this class. */
 	private Structf() {}
+
+	public static boolean equals(Object a, Object b) {
+		return (a == b) || (a != null && a.equals(b));
+	}
 
 	/**
 	 * Convert vararg to an array.
@@ -61,18 +63,16 @@ public final class Structf {
 		return doubles;
 	}
 
-	public static <T> int indexOf(@Nullable T[] array, T element) {
-		if (array == null) return -1;
+	public static <T> int indexOf(T[] array, T element) {
 		for (int i = 0; i < array.length; i++) {
-			if (Structs.eq(array[i], element)) {
+			if (equals(array[i], element)) {
 				return i;
 			}
 		}
 		return -1;
 	}
 
-	public static int indexOf(@Nullable boolean[] array, boolean element) {
-		if (array == null) return -1;
+	public static int indexOf(boolean[] array, boolean element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -81,8 +81,7 @@ public final class Structf {
 		return -1;
 	}
 
-	public static int indexOf(@Nullable byte[] array, byte element) {
-		if (array == null) return -1;
+	public static int indexOf(byte[] array, byte element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -91,8 +90,7 @@ public final class Structf {
 		return -1;
 	}
 
-	public static int indexOf(@Nullable short[] array, short element) {
-		if (array == null) return -1;
+	public static int indexOf(short[] array, short element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -101,8 +99,7 @@ public final class Structf {
 		return -1;
 	}
 
-	public static int indexOf(@Nullable int[] array, int element) {
-		if (array == null) return -1;
+	public static int indexOf(int[] array, int element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -111,8 +108,7 @@ public final class Structf {
 		return -1;
 	}
 
-	public static int indexOf(@Nullable long[] array, long element) {
-		if (array == null) return -1;
+	public static int indexOf(long[] array, long element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -121,8 +117,7 @@ public final class Structf {
 		return -1;
 	}
 
-	public static int indexOf(@Nullable float[] array, float element) {
-		if (array == null) return -1;
+	public static int indexOf(float[] array, float element) {
 		for (int i = 0; i < array.length; i++) {
 			if (Float.compare(array[i], element) == 0) {
 				return i;
@@ -131,8 +126,7 @@ public final class Structf {
 		return -1;
 	}
 
-	public static int indexOf(@Nullable double[] array, double element) {
-		if (array == null) return -1;
+	public static int indexOf(double[] array, double element) {
 		for (int i = 0; i < array.length; i++) {
 			if (Double.compare(array[i], element) == 0) {
 				return i;
@@ -141,8 +135,6 @@ public final class Structf {
 		return -1;
 	}
 
-	/** @deprecated see {@link #hashCode(Object...)} */
-	@Deprecated
 	public static int hash(Object... values) {
 		return hashCode(values);
 	}
@@ -187,7 +179,7 @@ public final class Structf {
 		return new Single<>(item);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SafeVarargs
 	public static <T> Iter<T> iter(T... array) {
 		return iter(array, 0, array.length);
 	}
@@ -301,8 +293,12 @@ public final class Structf {
 			length = len;
 		}
 
-		public int size() {
+		public int length() {
 			return length;
+		}
+
+		public void reset() {
+			index = 0;
 		}
 
 		@Override

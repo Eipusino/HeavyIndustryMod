@@ -4,7 +4,7 @@ import arc.Core;
 import arc.scene.style.Drawable;
 import arc.scene.style.TextureRegionDrawable;
 
-import static heavyindustry.HVars.MOD_NAME;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 
 public final class HIcon {
 	public static Drawable

@@ -15,13 +15,13 @@ import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Nullable;
 import arc.util.Time;
-import heavyindustry.graphics.Draws;
+import heavyindustry.graphics.HLayer;
 import mindustry.gen.Bullet;
 import mindustry.gen.Groups;
 import mindustry.gen.Unit;
 import mindustry.type.UnitType;
 
-public class MirrorFieldAbility extends BaseMirrorShieldAbility {
+public class MirrorFieldAbility extends MirrorShieldAbility {
 	public boolean rotation;
 	public Seq<ShieldShape> shapes = new Seq<>(ShieldShape.class);
 
@@ -65,8 +65,8 @@ public class MirrorFieldAbility extends BaseMirrorShieldAbility {
 	@Override
 	public boolean shouldReflect(Unit unit, Bullet bullet) {
 		for (ShieldShape shape : shapes) {
-			if ((rotation && shape.inlerp(unit, unit.rotation() - 90, bullet, radScl))
-					|| (!rotation && shape.inlerp(unit, 0, bullet, radScl))) return true;
+			if ((rotation && shape.inlerp(unit, unit.rotation() - 90, bullet, radiusScale))
+					|| (!rotation && shape.inlerp(unit, 0, bullet, radiusScale))) return true;
 		}
 		return false;
 	}
@@ -91,11 +91,14 @@ public class MirrorFieldAbility extends BaseMirrorShieldAbility {
 	public void draw(Unit unit) {
 		if (unit.shield > 0) {
 			Draw.color(unit.team.color, Color.white, Mathf.clamp(alpha));
-			Draw.z(Draws.mirrorField + 0.001f * alpha);
+			Draw.z(HLayer.mirrorField + 0.001f * alpha);
 
 			for (ShieldShape shape : shapes) {
-				if (rotation) shape.draw(unit, unit.rotation() - 90, alpha, radScl);
-				else shape.draw(unit, 0, alpha, radScl);
+				if (rotation) {
+					shape.draw(unit, unit.rotation() - 90, alpha, radiusScale);
+				} else {
+					shape.draw(unit, 0, alpha, radiusScale);
+				}
 			}
 		}
 	}
@@ -133,10 +136,10 @@ public class MirrorFieldAbility extends BaseMirrorShieldAbility {
 			Draw.color(unit.team.color, Color.white, Mathf.clamp(alpha));
 
 			if (Core.settings.getBool("hi-animated-shields")) {
-				Draw.z(Draws.mirrorField + 0.001f * alpha);
+				Draw.z(HLayer.mirrorField + 0.001f * alpha);
 				Fill.poly(drawX, drawY, sides, radius * scl, rotation + angle + moveOffsetRot);
 			} else {
-				Draw.z(Draws.mirrorField + 1);
+				Draw.z(HLayer.mirrorField + 1);
 				Lines.stroke(1.5f);
 				Draw.alpha(0.09f);
 				Fill.poly(drawX, drawY, sides, radius * scl, rotation + angle + moveOffsetRot);

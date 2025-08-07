@@ -11,7 +11,8 @@ public final class HLayer {
 			//Layer the black hole renderer's frame buffer ends
 			end = Layer.max - 5,
 			//Secondary bloom ranges from -1.02 to +1.02 around this
-			skyBloom = 145;
+			skyBloom = 145,
+					mirrorField = 135f;
 
 	/** Don't let anyone instantiate this class. */
 	private HLayer() {}

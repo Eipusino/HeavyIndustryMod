@@ -11,7 +11,7 @@ import arc.util.Tmp;
 import mindustry.entities.part.DrawPart;
 import mindustry.graphics.Layer;
 
-import static heavyindustry.HVars.MOD_NAME;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 
 /**
  * @author Yuria

@@ -27,6 +27,7 @@ public class ShaderTextureRegion extends TextureRegion {
 	public Shader shader;
 	/** Use to transfer shader parameters to {@link ShaderTextureRegion#shaderPrepare}. */
 	public Object[] shaderPrepareParams;
+
 	private int counter = 0;
 
 	public ShaderTextureRegion(Shader shader, Texture original, Cons2<Shader, Object[]> shaderPrepare, int shaderPrepareParamsSize) {

@@ -6,6 +6,7 @@ import arc.graphics.gl.Shader;
 
 /**
  * Shader that works only on and expects GL 3.0-compatible shaders instead of GL 2.0.
+ *
  * @since 1.0.6
  */
 public class Gl30Shader extends Shader {

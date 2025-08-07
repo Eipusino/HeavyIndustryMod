@@ -10,8 +10,8 @@ import mindustry.type.Liquid;
 
 /** Must be created via {@link LiquidBottle#LiquidBottle(java.lang.String, mindustry.type.Liquid)} and after loading mods. **/
 public class LiquidBottle extends Item {
-	private static final Pixmap top;
-	private static final Pixmap bottom;
+	public static Pixmap top;
+	public static Pixmap bottom;
 
 	static {
 		top = new Pixmap(HVars.internalTree.child("sprites/items/bottle.png"));
@@ -20,16 +20,15 @@ public class LiquidBottle extends Item {
 
 	public Liquid liquid;
 
-	public LiquidBottle(String name, Liquid liquid) {
-		super(name, liquid.color);
-		this.liquid = liquid;
+	public LiquidBottle(String name, Liquid liq) {
+		super(name, liq.color);
+		liquid = liq;
 
-		explosiveness = liquid.explosiveness * 0.8f;
-		flammability = liquid.flammability * 0.7f;
+		explosiveness = liq.explosiveness * 0.8f;
+		flammability = liq.flammability * 0.7f;
 		radioactivity = 0;
 
-		hidden = true;
-		alwaysUnlocked = liquid.alwaysUnlocked;
+		alwaysUnlocked = liq.alwaysUnlocked;
 		generateIcons = true;
 	}
 

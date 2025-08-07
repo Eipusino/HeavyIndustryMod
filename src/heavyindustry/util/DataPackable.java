@@ -10,10 +10,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
-import java.io.Serializable;
 
 /**
- * Used to package an object, objects implementing this interface can customize the behavior of serializing data into a byte stream, as referenced in {@link Serializable},
+ * Used to package an object, objects implementing this interface can customize the behavior of serializing data into a byte stream, as referenced in {@code Serializable},
  * but this is usually faster than Java serialization because we often do not need to pass the complete information of an object.
  * <p>Here is a use case:
  * <pre>{@code

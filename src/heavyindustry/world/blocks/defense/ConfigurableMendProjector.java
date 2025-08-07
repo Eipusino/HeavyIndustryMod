@@ -24,7 +24,7 @@ import mindustry.world.blocks.defense.MendProjector;
 import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 
-import static heavyindustry.HVars.MOD_NAME;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static mindustry.Vars.indexer;
 import static mindustry.Vars.player;
 import static mindustry.Vars.tilesize;

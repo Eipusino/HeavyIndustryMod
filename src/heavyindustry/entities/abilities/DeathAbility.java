@@ -1,34 +1,37 @@
 package heavyindustry.entities.abilities;
 
 import arc.Core;
+import arc.util.Nullable;
 import mindustry.entities.abilities.Ability;
 import mindustry.gen.Building;
 import mindustry.gen.Groups;
 import mindustry.gen.Unit;
 
 public class DeathAbility extends Ability {
+	protected @Nullable Unit ownerUnit;
+	protected @Nullable Building ownerBuild;
+
 	public float length = 200f;
 
 	@Override
 	public void update(Unit unit) {
-		Groups.bullet.intersect(unit.x - length, unit.y - length, length * 2, length * 2, b -> {
-			if (b.team != unit.team && unit.within(b, 200)) {
-				Unit owner = null;
-				if (b.owner instanceof Unit unit1) owner = unit1;
-				if (b.type.damage > unit.maxHealth / 2f || b.type.splashDamage > unit.maxHealth / 2f || b.type.lightningDamage > unit.maxHealth / 2f) {
-					if (owner != null) owner.kill();
-					b.remove();
+		Groups.bullet.intersect(unit.x - length, unit.y - length, length * 2, length * 2, bullet -> {
+			if (bullet.team != unit.team && unit.within(bullet, 200)) {
+				ownerUnit = null;
+				if (bullet.owner instanceof Unit u) ownerUnit = u;
+				if (bullet.type.damage > unit.maxHealth / 2f || bullet.type.splashDamage > unit.maxHealth / 2f || bullet.type.lightningDamage > unit.maxHealth / 2f) {
+					if (ownerUnit != null) ownerUnit.kill();
+					bullet.remove();
 				}
-				if (owner != null && (owner.maxHealth > unit.maxHealth * 2 || owner.type.armor >= unit.type.armor * 2))
-					owner.kill();
+				if (ownerUnit != null && (ownerUnit.maxHealth > unit.maxHealth * 2 || ownerUnit.type.armor >= unit.type.armor * 2)) ownerUnit.kill();
 
-				Building building = null;
-				if (b.owner instanceof Building build) building = build;
-				if (b.type.damage > unit.maxHealth / 2f || b.type.splashDamage > unit.maxHealth / 2f || b.type.lightningDamage > unit.maxHealth / 2f) {
-					if (building != null) building.kill();
-					b.remove();
+				ownerBuild = null;
+				if (bullet.owner instanceof Building b) ownerBuild = b;
+				if (bullet.type.damage > unit.maxHealth / 2f || bullet.type.splashDamage > unit.maxHealth / 2f || bullet.type.lightningDamage > unit.maxHealth / 2f) {
+					if (ownerBuild != null) ownerBuild.kill();
+					bullet.remove();
 				}
-				if (building != null && building.health > unit.maxHealth * 2) building.kill();
+				if (ownerBuild != null && ownerBuild.health > unit.maxHealth * 2) ownerBuild.kill();
 			}
 		});
 	}

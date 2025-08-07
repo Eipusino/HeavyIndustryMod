@@ -19,7 +19,7 @@ import mindustry.world.blocks.power.PowerBlock;
 import mindustry.world.blocks.power.PowerNode;
 import mindustry.world.meta.BlockStatus;
 
-import static heavyindustry.HVars.MOD_NAME;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static mindustry.Vars.player;
 import static mindustry.Vars.renderer;
 import static mindustry.Vars.tilesize;

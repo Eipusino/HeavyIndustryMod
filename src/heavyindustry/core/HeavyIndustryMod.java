@@ -56,8 +56,6 @@ import mindustry.ui.dialogs.BaseDialog;
 
 import static heavyindustry.HVars.inputAggregator;
 import static heavyindustry.HVars.internalTree;
-import static heavyindustry.HVars.MOD_NAME;
-import static heavyindustry.HVars.name;
 import static heavyindustry.HVars.sizedGraphics;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.iconMed;
@@ -74,6 +72,8 @@ import static mindustry.Vars.ui;
  * @see HVars
  */
 public final class HeavyIndustryMod extends Mod {
+	/** Commonly used static read-only String. Do not change unless you know what you're doing. */
+	public static final String MOD_NAME = "heavy-industry";
 	/** The author of this mod. */
 	public static final String AUTHOR = "Eipusino";
 	/** The GitHub address of this mod. */
@@ -119,7 +119,7 @@ public final class HeavyIndustryMod extends Mod {
 						}
 					}).size(210f, 64f);
 					cont.pane(t -> {
-						t.image(Core.atlas.find(name("cover"))).left().size(600f, 403f).pad(3f).row();
+						t.image(Core.atlas.find(MOD_NAME + "-cover")).left().size(600f, 403f).pad(3f).row();
 						t.add(Core.bundle.get("hi-version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 						t.add(label).left().row();
 						t.add(Core.bundle.get("hi-class")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
@@ -135,6 +135,7 @@ public final class HeavyIndustryMod extends Mod {
 			if (!headless) {
 				HFonts.load();
 				HSounds.load();
+
 				Core.app.post(() -> {
 					HShaders.init();
 					HTextures.init();
@@ -196,14 +197,14 @@ public final class HeavyIndustryMod extends Mod {
 
 		IconLoader.loadIcons(internalTree.child("other/icons.properties"));
 
-		LoadedMod theMod = loaded();
+		LoadedMod mod = loaded();
 
-		if (theMod != null) {
-			theMod.meta.author = AUTHOR;
+		if (mod != null) {
+			mod.meta.author = AUTHOR;
 			if (isPlugin) {
-				theMod.meta.hidden = true;
-				theMod.meta.name = MOD_NAME + "-plugin";
-				theMod.meta.displayName = Core.bundle.get("hi-name") + " Plugin";
+				mod.meta.hidden = true;
+				mod.meta.name = MOD_NAME + "-plugin";
+				mod.meta.displayName = Core.bundle.get("hi-name") + " Plugin";
 			}
 		}
 

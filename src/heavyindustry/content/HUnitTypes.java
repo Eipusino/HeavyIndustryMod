@@ -132,7 +132,7 @@ import mindustry.type.weapons.RepairBeamWeapon;
 import mindustry.world.meta.BlockFlag;
 import mindustry.world.meta.Env;
 
-import static heavyindustry.HVars.name;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static mindustry.Vars.content;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.indexer;
@@ -192,7 +192,7 @@ public final class HUnitTypes {
 				applyEffect = Fx.none;
 				activeEffect = HFx.circle;
 			}});
-			weapons.add(new Weapon(name("vanguard-weapon")) {{
+			weapons.add(new Weapon(name + "-weapon") {{
 				reload = 7.6f;
 				recoil = 0f;
 				x = 0f;
@@ -231,7 +231,7 @@ public final class HUnitTypes {
 			rotateSpeed = 3f;
 			itemCapacity = 0;
 			faceTarget = false;
-			weapons.add(new Weapon(name("striker-weapon")) {{
+			weapons.add(new Weapon(name + "-weapon") {{
 				reload = 120;
 				x = 0f;
 				y = -1f;
@@ -263,7 +263,7 @@ public final class HUnitTypes {
 			rotateSpeed = 2f;
 			itemCapacity = 0;
 			faceTarget = false;
-			weapons.add(new Weapon(name("counterattack-weapon")) {{
+			weapons.add(new Weapon(name + "-weapon") {{
 				reload = 80f;
 				x = 0f;
 				y = 0f;
@@ -318,7 +318,7 @@ public final class HUnitTypes {
 				applyEffect = Fx.none;
 				activeEffect = HFx.circle;
 			}});
-			weapons.add(new Weapon(name("crush-weapon")) {{
+			weapons.add(new Weapon(name + "-weapon") {{
 				reload = 90f;
 				shootY = 19.2f;
 				x = 0f;
@@ -355,7 +355,7 @@ public final class HUnitTypes {
 			faceTarget = false;
 			immunities = ObjectSet.with(StatusEffects.burning);
 			targetFlags = new BlockFlag[]{BlockFlag.repair, BlockFlag.turret};
-			weapons.add(new Weapon(name("destruction-weapon")) {{
+			weapons.add(new Weapon(name + "-weapon") {{
 				reload = 110f;
 				x = 0f;
 				y = -0.5f;
@@ -400,7 +400,7 @@ public final class HUnitTypes {
 			rotateSpeed = 1f;
 			itemCapacity = 55;
 			faceTarget = false;
-			weapons.add(new Weapon(name("purgatory-weapon")) {{
+			weapons.add(new Weapon(name + "-weapon") {{
 				reload = 78f;
 				x = 0f;
 				y = 0f;
@@ -438,7 +438,7 @@ public final class HUnitTypes {
 			flying = true;
 			hitSize = 12f;
 			range = 140f;
-			weapons.add(new Weapon(name("caelifera-gun")) {{
+			weapons.add(new Weapon(name + "-gun") {{
 				layerOffset = -0.01f;
 				reload = 6f;
 				x = 5.25f;
@@ -450,7 +450,7 @@ public final class HUnitTypes {
 					lifetime = 30f;
 					shrinkY = 0.2f;
 				}};
-			}}, new Weapon(name("caelifera-launcher")) {{
+			}}, new Weapon(name + "-launcher") {{
 				layerOffset = -0.01f;
 				reload = 30f;
 				x = 4.5f;
@@ -466,7 +466,7 @@ public final class HUnitTypes {
 					drag = -0.01f;
 				}};
 			}});
-			rotors.add(new Rotor(name("caelifera-rotor")) {{
+			rotors.add(new Rotor(name + "-rotor") {{
 				x = 0f;
 				y = 6f;
 			}});
@@ -487,7 +487,7 @@ public final class HUnitTypes {
 			hitSize = 13f;
 			range = 165f;
 			rotateSpeed = 4.6f;
-			weapons.add(new Weapon(name("schistocerca-gun")) {{
+			weapons.add(new Weapon(name + "-gun") {{
 				layerOffset = -0.01f;
 				top = false;
 				x = 1.5f;
@@ -501,7 +501,7 @@ public final class HUnitTypes {
 					lifetime = 36;
 					shrinkY = 0.2f;
 				}};
-			}}, new Weapon(name("schistocerca-gun")) {{
+			}}, new Weapon(name + "-gun") {{
 				top = false;
 				x = 4f;
 				y = 8.75f;
@@ -516,7 +516,7 @@ public final class HUnitTypes {
 					lifetime = 36f;
 					shrinkY = 0.2f;
 				}};
-			}}, new Weapon(name("schistocerca-gun-big")) {{
+			}}, new Weapon(name + "-gun-big") {{
 				top = false;
 				x = 6.75f;
 				y = 5.75f;
@@ -540,7 +540,7 @@ public final class HUnitTypes {
 				}};
 			}});
 			for (int i : Mathf.signs) {
-				rotors.add(new Rotor(name("schistocerca-rotor")) {{
+				rotors.add(new Rotor(name + "-rotor") {{
 					x = 0f;
 					y = 6.5f;
 					bladeCount = 3;
@@ -569,7 +569,7 @@ public final class HUnitTypes {
 			fallRotateSpeed = 2f;
 			rotateSpeed = 3.8f;
 			ammoType = new ItemAmmoType(Items.graphite);
-			weapons.add(new Weapon(name("anthophila-gun")) {{
+			weapons.add(new Weapon(name + "-gun") {{
 				layerOffset = -0.01f;
 				x = 4.25f;
 				y = 14f;
@@ -584,7 +584,7 @@ public final class HUnitTypes {
 					shootEffect = Fx.shootBig;
 					smokeEffect = Fx.shootBigSmoke;
 				}};
-			}}, new Weapon(name("anthophila-tesla")) {{
+			}}, new Weapon(name + "-tesla") {{
 				x = 7.75f;
 				y = 8.25f;
 				shootY = 5.25f;
@@ -598,7 +598,7 @@ public final class HUnitTypes {
 				}};
 			}});
 			for (int i : Mathf.signs) {
-				rotors.add(new Rotor(name("anthophila-rotor2")) {{
+				rotors.add(new Rotor(name + "-rotor2") {{
 					x = 0f;
 					y = -13f;
 					bladeCount = 2;
@@ -608,7 +608,7 @@ public final class HUnitTypes {
 					speed = 29f * i;
 				}});
 			}
-			rotors.add(new Rotor(name("anthophila-rotor1")) {{
+			rotors.add(new Rotor(name + "-rotor1") {{
 				mirror = true;
 				x = 13f;
 				y = 3f;
@@ -633,7 +633,7 @@ public final class HUnitTypes {
 			lowAltitude = true;
 			rotateSpeed = 3.5f;
 			ammoType = new ItemAmmoType(Items.thorium);
-			weapons.add(new Weapon(name("vespula-gun-big")) {{
+			weapons.add(new Weapon(name + "-gun-big") {{
 				layerOffset = -0.01f;
 				x = 8.25f;
 				y = 9.5f;
@@ -648,7 +648,7 @@ public final class HUnitTypes {
 					shootEffect = Fx.shootBig;
 					smokeEffect = Fx.shootBigSmoke;
 				}};
-			}}, new Weapon(name("vespula-gun")) {{
+			}}, new Weapon(name + "-gun") {{
 				layerOffset = -0.01f;
 				x = 6.5f;
 				y = 21.5f;
@@ -666,7 +666,7 @@ public final class HUnitTypes {
 					ammoMultiplier = 4;
 					lifetime = 60f;
 				}};
-			}}, new Weapon(name("vespula-laser-gun")) {{
+			}}, new Weapon(name + "-laser-gun") {{
 				x = 13.5f;
 				y = 15.5f;
 				shootY = 4.5f;
@@ -678,7 +678,7 @@ public final class HUnitTypes {
 				}};
 			}});
 			for (int i : Mathf.signs) {
-				rotors.add(new Rotor(name("vespula-rotor")) {{
+				rotors.add(new Rotor(name + "-rotor") {{
 					mirror = true;
 					x = 15f;
 					y = 6.75f;
@@ -708,7 +708,7 @@ public final class HUnitTypes {
 			fallRotateSpeed = 0.8f;
 			rotateSpeed = 2.7f;
 			ammoType = new ItemAmmoType(Items.thorium);
-			weapons.add(new Weapon(name("lepidoptera-gun")) {{
+			weapons.add(new Weapon(name + "-gun") {{
 				layerOffset = -0.01f;
 				x = 14f;
 				y = 27f;
@@ -723,7 +723,7 @@ public final class HUnitTypes {
 					shootEffect = Fx.shootBig;
 					smokeEffect = Fx.shootBigSmoke;
 				}};
-			}}, new Weapon(name("lepidoptera-launcher")) {{
+			}}, new Weapon(name + "-launcher") {{
 				x = 17f;
 				y = 14f;
 				shootY = 5.75f;
@@ -744,7 +744,7 @@ public final class HUnitTypes {
 					frontColor = Pal.missileYellow;
 					backColor = Pal.missileYellowBack;
 				}};
-			}}, new Weapon(name("lepidoptera-gun-big")) {{
+			}}, new Weapon(name + "-gun-big") {{
 				rotate = true;
 				rotateSpeed = 3f;
 				x = 8f;
@@ -762,7 +762,7 @@ public final class HUnitTypes {
 				}};
 			}});
 			for (int i : Mathf.signs) {
-				rotors.add(new Rotor(name("lepidoptera-rotor1")) {{
+				rotors.add(new Rotor(name + "-rotor1") {{
 					mirror = true;
 					x = 22.5f;
 					y = 21.25f;
@@ -771,7 +771,7 @@ public final class HUnitTypes {
 					ghostAlpha = 0.4f;
 					shadowAlpha = 0.2f;
 					shadeSpeed = 3f * i;
-				}}, new Rotor(name("lepidoptera-rotor2")) {{
+				}}, new Rotor(name + "lepidoptera-rotor2") {{
 					mirror = true;
 					x = 17.25f;
 					y = 1f;
@@ -802,7 +802,7 @@ public final class HUnitTypes {
 			rotateSpeed = 2.2f;
 			ammoType = new ItemAmmoType(Items.surgeAlloy);
 			for (float[] i : new float[][]{{14.25f, 26.5f, 25f}, {26.25f, 19.5f, 15f}}) {
-				weapons.add(new Weapon(name("mantodea-gun")) {{
+				weapons.add(new Weapon(name + "-gun") {{
 					mirror = true;
 					rotate = false;
 					x = i[0];
@@ -831,14 +831,14 @@ public final class HUnitTypes {
 				}});
 			}
 			for (int i : Mathf.signs) {
-				rotors.add(new Rotor(name("mantodea-rotor2")) {{
+				rotors.add(new Rotor(name + "-rotor2") {{
 					y = -31.25f;
 					bladeCount = 4;
 					speed = 19f * i;
 					ghostAlpha = 0.4f;
 					shadowAlpha = 0.2f;
 					shadeSpeed = 4f * i;
-				}}, new Rotor(name("mantodea-rotor3")) {{
+				}}, new Rotor(name + "-rotor3") {{
 					mirror = true;
 					x = 28.5f;
 					y = -11.75f;
@@ -849,7 +849,7 @@ public final class HUnitTypes {
 					shadeSpeed = 3f * i;
 				}});
 			}
-			rotors.add(new Rotor(name("mantodea-rotor1")) {{
+			rotors.add(new Rotor(name + "-rotor1") {{
 				y = 9.25f;
 				bladeCount = 3;
 				speed = 29f;
@@ -879,7 +879,7 @@ public final class HUnitTypes {
 				open = true;
 			}});
 			immunities = ObjectSet.with(HStatusEffects.territoryFieldSuppress);
-			weapons.add(new LimitedAngleWeapon(name("fearless-mount")) {{
+			weapons.add(new LimitedAngleWeapon(name + "-mount") {{
 				x = 20.75f;
 				y = 10f;
 				shootY = 6.25f;
@@ -918,7 +918,7 @@ public final class HUnitTypes {
 						serrationSpacing = 5f;
 					}};
 				}};
-			}}, new LimitedAngleWeapon(name("fearless-cannon")) {{
+			}}, new LimitedAngleWeapon(name + "-cannon") {{
 				y = -1f;
 				x = 28f;
 				angleCone = 15f;
@@ -993,11 +993,11 @@ public final class HUnitTypes {
 				hitUnits = false;
 				y = -20;
 			}});
-			weapons.add(new Weapon() {{
+			weapons.add(new Weapon(name + "-laser") {{
 				mirror = false;
 				x = 0f;
 				y = 0f;
-				shootY = 16.75f;
+				shootY = 23.75f;
 				reload = 170f;
 				shootSound = Sounds.beam;
 				shoot.firstShotDelay = 59f;
@@ -1046,10 +1046,11 @@ public final class HUnitTypes {
 						handlePierce(b, health, entity.x(), entity.y());
 					}
 				};
-			}}, new AcceleratingWeapon(name("supernova-mount")) {{
-				x = 18.25f;
-				y = -7.25f;
-				shootY = 17f;
+			}}, new AcceleratingWeapon(name + "-mount") {{
+				x = 28f;
+				y = 0f;
+				shootX = -3.5f;
+				shootY = 12f;
 				reload = 30f;
 				accelCooldownWaitTime = 31f;
 				minReload = 5f;
@@ -1063,6 +1064,7 @@ public final class HUnitTypes {
 				bullet = new ArrowBulletType(7f, 25f) {{
 					lifetime = 60f;
 					pierce = true;
+					pierceArmor = true;
 					pierceBuilding = true;
 					pierceCap = 4;
 					backColor = trailColor = hitColor = lightColor = lightningColor = Pal.heal;
@@ -1113,7 +1115,7 @@ public final class HUnitTypes {
 			shadowElevation = 0.95f;
 			groundLayer = Layer.legUnit;
 			itemCapacity = 200;
-			weapons.add(new LimitedAngleWeapon(name("cancer-launcher")) {{
+			weapons.add(new LimitedAngleWeapon(name + "-launcher") {{
 				layerOffset = -0.01f;
 				x = 19.7f;
 				y = 8.5f;
@@ -1151,7 +1153,7 @@ public final class HUnitTypes {
 					status = StatusEffects.blasted;
 					statusDuration = 60f;
 				}};
-			}}, new LimitedAngleWeapon(name("cancer-mount")) {{
+			}}, new LimitedAngleWeapon(name + "-mount") {{
 				x = 17.75f;
 				y = 7.5f;
 				shootY = 10.25f - 5f;
@@ -1164,7 +1166,7 @@ public final class HUnitTypes {
 				recoil = 5f;
 				shootSound = Sounds.laserbeam;
 				bullet = HBullets.continuousSapLaser;
-			}}, new Weapon(name("cancer-railgun")) {{
+			}}, new Weapon(name + "-railgun") {{
 				x = 14.5f;
 				y = -10f;
 				shootY = 20.5f - 4f;
@@ -1185,14 +1187,13 @@ public final class HUnitTypes {
 					splashDamage = 90f;
 					hitEffect = Fx.sapExplosion;
 					ammoMultiplier = 4f;
-					trailEffect = HFx.coloredRailgunSmallTrail;
 					lightning = 3;
 					lightningLength = 20;
 					smokeEffect = Fx.shootBigSmoke2;
-					pointEffect = Fx.railTrail;
+					pointEffect = trailEffect = HFx.coloredRailgunSmallTrail;
 					hitShake = 10f;
 					lightRadius = 40f;
-					lightColor = Pal.sap;
+					trailColor = lightColor = Pal.sap;
 					lightOpacity = 0.6f;
 					collidesAir = false;
 					scaleLife = true;
@@ -1258,7 +1259,7 @@ public final class HUnitTypes {
 					incendAmount = 1;
 					collidesTeam = true;
 				}};
-			}}, new Weapon(name("sunlit-mount")) {{
+			}}, new Weapon(name + "-mount") {{
 				x = 16f;
 				y = 18f;
 				rotateSpeed = 2f;
@@ -1277,7 +1278,7 @@ public final class HUnitTypes {
 					lifetime = 32f;
 					status = StatusEffects.blasted;
 				}};
-			}}, new Weapon(name("sunlit-mount")) {{
+			}}, new Weapon(name + "-mount") {{
 				y = 32f;
 				x = -16f;
 				reload = 8f;
@@ -1326,7 +1327,7 @@ public final class HUnitTypes {
 			itemCapacity = 540;
 			abilities.add(new ForceFieldAbility(180f, 6f, 12000f, 60f * 8, 6, 0f), new RepairFieldAbility(290f, 60f * 2, 160f));
 			ammoType = new PowerAmmoType(2500);
-			weapons.add(new HealConeWeapon("windstorm-heal-mount") {{
+			weapons.add(new HealConeWeapon(name + "-heal-mount") {{
 				x = 33.5f;
 				y = -7.75f;
 				bullet = new HealConeBulletType() {{
@@ -1380,7 +1381,7 @@ public final class HUnitTypes {
 				active = false;
 			}});
 			immunities = ObjectSet.with(HStatusEffects.territoryFieldSuppress);
-			weapons.addAll(new LimitedAngleWeapon(name("poseidon-front-cannon")) {{
+			weapons.addAll(new LimitedAngleWeapon(name + "-front-cannon") {{
 				layerOffset = -0.01f;
 				x = 22f;
 				y = 26f;
@@ -1402,7 +1403,7 @@ public final class HUnitTypes {
 					pierceBuilding = true;
 					knockback = 0.7f;
 				}};
-			}}, new LimitedAngleWeapon(name("poseidon-side-silo")) {{
+			}}, new LimitedAngleWeapon(name + "-side-silo") {{
 				layerOffset = -0.01f;
 				x = 24f;
 				y = -13f;
@@ -1439,7 +1440,7 @@ public final class HUnitTypes {
 						b.data = mount;
 					}
 				}
-			}, new LimitedAngleWeapon(name("poseidon-launcher")) {{
+			}, new LimitedAngleWeapon(name + "-launcher") {{
 				x = 0f;
 				y = 21f;
 				shootY = 8f;
@@ -1451,7 +1452,7 @@ public final class HUnitTypes {
 				shootSound = Sounds.missile;
 				angleCone = 135f;
 				bullet = HBullets.basicMissile;
-			}}, new PointDefenceMultiBarrelWeapon(name("poseidon-flak-turret")) {{
+			}}, new PointDefenceMultiBarrelWeapon(name + "-flak-turret") {{
 				x = 23f;
 				y = 15f;
 				shootY = 15.75f;
@@ -1483,7 +1484,7 @@ public final class HUnitTypes {
 					status = StatusEffects.blasted;
 					statusDuration = 60f;
 				}};
-			}}, new Weapon(name("poseidon-railgun")) {{
+			}}, new Weapon(name + "-railgun") {{
 				x = 0f;
 				y = 0f;
 				shootY = 38.5f;
@@ -1503,10 +1504,9 @@ public final class HUnitTypes {
 					pierceDamageFactor = 0.15f;
 					pierceCap = -1;
 					pierceEffect = Fx.railHit;
-					trailEffect = HFx.coloredArrowTrail;
 					hitEffect = Fx.massiveExplosion;
 					smokeEffect = Fx.shootBig2;
-					pointEffect = Fx.railTrail;
+					trailEffect = pointEffect = HFx.coloredArrowTrail;
 					fragBullet = new BasicBulletType(3.5f, 18) {{
 						width = 9f;
 						height = 12f;
@@ -1739,7 +1739,7 @@ public final class HUnitTypes {
 			rotateSpeed = 0.8f;
 			treadRects = new Rect[]{new Rect(-113f, 34f, 70f, 100f), new Rect(-113f, -113f, 70f, 90f)};
 			itemCapacity = 360;
-			weapons.add(new Weapon(name("dominate-weapon")) {{
+			weapons.add(new Weapon(name + "-weapon") {{
 				mirror = false;
 				rotate = true;
 				layerOffset = 0.1f;
@@ -1791,9 +1791,9 @@ public final class HUnitTypes {
 					spacing = 10f;
 					color = Color.valueOf("feb380");
 				}});
-				bullet = new BasicBulletType(10f, 660f) {{
+				bullet = new BasicBulletType(10f, 360f) {{
 					hitSound = despawnSound = Sounds.explosionbig;
-					splashDamage = 960f;
+					splashDamage = 860f;
 					splashDamageRadius = 12f * 8;
 					buildingDamageMultiplier = 0.8f;
 					hitEffect = despawnEffect = new ExplosionEffect() {{
@@ -1834,7 +1834,7 @@ public final class HUnitTypes {
 			int i = 0;
 			for (float f : new float[]{19f, -19f}) {
 				int fi = i++;
-				weapons.add(new Weapon(name("dominate-weapon-small")) {{
+				weapons.add(new Weapon(name + "-weapon-small") {{
 					reload = 35f + fi * 5;
 					x = 18f;
 					y = f;
@@ -1844,7 +1844,7 @@ public final class HUnitTypes {
 					rotateSpeed = 2f;
 					shootCone = 2;
 					shootSound = Sounds.dullExplosion;
-					bullet = new BasicBulletType(9f, 150) {{
+					bullet = new BasicBulletType(9f, 90f) {{
 						sprite = "missile-large";
 						width = 8f;
 						height = 14.5f;
@@ -1866,7 +1866,7 @@ public final class HUnitTypes {
 						trailRotation = true;
 						trailInterval = 3f;
 						fragBullets = 4;
-						fragBullet = new BasicBulletType(5f, 35) {{
+						fragBullet = new BasicBulletType(5f, 35f) {{
 							sprite = "missile-large";
 							width = 5f;
 							height = 7f;
@@ -2030,7 +2030,7 @@ public final class HUnitTypes {
 						}}, Fx.blastExplosion);
 					}};
 				}};
-			}}, new Weapon(name("oracle-weapon-small")) {{
+			}}, new Weapon(name + "-weapon-small") {{
 				shootSound = Sounds.malignShoot;
 				mirror = true;
 				rotate = true;
@@ -2079,7 +2079,7 @@ public final class HUnitTypes {
 						sparkStroke = 1.5f;
 					}};
 				}};
-			}}, new PointDefenseWeapon(name("oracle-point-defense")) {{
+			}}, new PointDefenseWeapon(name + "-point-defense") {{
 				x = 11.2f;
 				y = 25f;
 				reload = 6f;
@@ -2162,7 +2162,7 @@ public final class HUnitTypes {
 					under = true;
 					mirror = true;
 				}});
-				bullet = new CtrlMissileBulletType(name("havoc-missile")) {{
+				bullet = new CtrlMissileBulletType(name + "-missile") {{
 					shootEffect = Fx.sparkShoot;
 					smokeEffect = Fx.shootSmokeTitan;
 					hitColor = Pal.suppress;
@@ -2554,7 +2554,7 @@ public final class HUnitTypes {
 			stepShake = 0.15f;
 			singleTarget = true;
 			drownTimeMultiplier = 4f;
-			weapons.add(new Weapon(name("shadow-blade-weapon")) {{
+			weapons.add(new Weapon(name + "-weapon") {{
 				top = false;
 				y = 1f;
 				x = 16f;
@@ -2847,7 +2847,7 @@ public final class HUnitTypes {
 			armor = 53f;
 			envDisabled = Env.none;
 			ammoType = new PowerAmmoType(3000f);
-			weapons.add(new Weapon(name("tiger-cannon")) {{
+			weapons.add(new Weapon(name + "-cannon") {{
 				top = false;
 				rotate = true;
 				rotationLimit = 13f;
@@ -2875,7 +2875,7 @@ public final class HUnitTypes {
 				velocityRnd = 0.075f;
 				inaccuracy = 6f;
 				ejectEffect = Fx.none;
-				bullet = new BasicBulletType(8, 200f, name("strike")) {{
+				bullet = new BasicBulletType(8, 200f, MOD_NAME + "-strike") {{
 					trailColor = lightningColor = backColor = lightColor = Pal.techBlue;
 					frontColor = Pal.techBlue;
 					lightning = 2;
@@ -2975,7 +2975,7 @@ public final class HUnitTypes {
 				shootY = 5f;
 				top = true;
 				rotate = true;
-				bullet = new BasicBulletType(5.25f, 150f, name("strike")) {{
+				bullet = new BasicBulletType(5.25f, 150f, MOD_NAME + "-strike") {{
 					lifetime = 60;
 					knockback = 12f;
 					width = 11f;
@@ -3000,7 +3000,7 @@ public final class HUnitTypes {
 				}};
 			}});
 			for (float[] i : new float[][]{{22f, 18f}, {25f, 2f}}) {
-				weapons.add(new PointDefenseWeapon(name("tiger-cannon-small")) {{
+				weapons.add(new PointDefenseWeapon(name + "-cannon-small") {{
 					x = i[0];
 					y = i[1];
 					color = Pal.techBlue;
@@ -3030,9 +3030,9 @@ public final class HUnitTypes {
 			boostMultiplier = 2.5f;
 			abilities.add(new MirrorFieldAbility() {{
 				strength = 350f;
-				maxShield = 22600f;
-				recoverSpeed = 10.5f;
-				cooldown = 6500f;
+				max = 22600f;
+				regen = 10.5f;
+				cooldown = 2200f;
 				minAlbedo = 1f;
 				maxAlbedo = 1f;
 				rotation = false;
@@ -3062,7 +3062,7 @@ public final class HUnitTypes {
 			hoverable = hovering = true;
 			ammoType = new PowerAmmoType(3000);
 			crushDamage = 20;
-			weapons.add(new Weapon(name("thunder-weapon")) {{
+			weapons.add(new Weapon(name + "-weapon") {{
 				x = 0f;
 				y = -2f;
 				rotate = true;
@@ -3159,7 +3159,7 @@ public final class HUnitTypes {
 					Elements.collapseTextToTable(t, text);
 					super.addStats(u, t);
 				}
-			}, new Weapon(name("thunder-point-weapon")) {{
+			}, new Weapon(name + "-point-weapon") {{
 				reload = 30f;
 				x = y = 15f;
 				shootY = 7f;
@@ -3214,9 +3214,9 @@ public final class HUnitTypes {
 			});
 			abilities.addAll(new MirrorArmorAbility() {{
 				strength = 240f;
-				maxShield = 16400f;
-				recoverSpeed = 5.5f;
-				cooldown = 5500f;
+				max = 16400f;
+				regen = 5.5f;
+				cooldown = 2250f;
 				minAlbedo = 0.5f;
 				maxAlbedo = 0.8f;
 				shieldArmor = 26f;
@@ -3234,11 +3234,11 @@ public final class HUnitTypes {
 			deathExplosionEffect = Fx.none;
 			deathSound = HSounds.jumpIn;
 			damageMultiplier = 0.01f;
-			health = 900;
+			health = 999;
 			engineSize = 0f;
 			buildSpeed = 9f;
 			engineOffset = 0f;
-			itemCapacity = 900;
+			itemCapacity = 999;
 			armor = 9f;
 			speed *= 1.75f;
 			drawShields = false;
@@ -3309,8 +3309,8 @@ public final class HUnitTypes {
 				x = 0f;
 				shootY = 0f;
 				shoot = new ShootPattern();
-				reload = 900f;
-				rotateSpeed = 100f;
+				reload = 999f;
+				rotateSpeed = 99f;
 				rotate = true;
 				top = false;
 				mirror = alternate = predictTarget = false;
@@ -3320,7 +3320,7 @@ public final class HUnitTypes {
 				aiControllable = false;
 			}
 				private TextureRegion arrowRegion;
-				private final float rangeWeapon = 1040f;
+				private final float rangeWeapon = 999f;
 
 				@Override
 				public float range() {
@@ -3344,7 +3344,7 @@ public final class HUnitTypes {
 						}
 					}
 
-					if (arrowRegion == null) arrowRegion = Core.atlas.find(name("jump-gate-arrow"));
+					if (arrowRegion == null) arrowRegion = Core.atlas.find(MOD_NAME + "-jump-gate-arrow");
 
 					Tmp.v6.set(mount.aimX, mount.aimY).sub(unit);
 					Tmp.v2.set(mount.aimX, mount.aimY).sub(unit).nor().scl(Math.min(Tmp.v6.len(), rangeWeapon)).add(unit);

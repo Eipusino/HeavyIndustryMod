@@ -361,7 +361,7 @@ public class JumpGate extends Block {
 					t2.pane(table2 -> {
 						table2.left().marginLeft(12f);
 						table2.add("[lightgray]" + Core.bundle.get("editor.spawn") + ": [accent]" + set.type.localizedName + "[lightgray] | Tier: [accent]" + set.sortIndex[1]).left().row();
-						table2.add("[lightgray]" + Core.bundle.get("stat.buildtime") + ": [accent]" + Elements.format(set.costTimeVar() / 60) + "[lightgray] " + Core.bundle.get("unit.seconds")).row();
+						table2.add("[lightgray]" + Core.bundle.get("stat.buildtime") + ": [accent]" + Mathf.round(set.costTimeVar() / 60) + "[lightgray] " + Core.bundle.get("unit.seconds")).row();
 					}).growX().height(LEN).center();
 
 					t2.pack();

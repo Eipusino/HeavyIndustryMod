@@ -2147,10 +2147,7 @@ public final class HFx {
 			mirrorShieldBreak = new Effect(40, e -> {
 				Lines.stroke(1.4f * e.fout());
 
-				float radius = 130;
-				if (e.data instanceof MirrorFieldAbility base) {
-					radius = base.nearRadius;
-				}
+				float radius = e.data instanceof MirrorFieldAbility mirror ? mirror.nearRadius : 130f;
 
 				rand.setSeed(e.id);
 				Angles.randLenVectors(e.id, rand.random((int) radius / 5, (int) radius / 3), 0, radius, (x, y) -> {

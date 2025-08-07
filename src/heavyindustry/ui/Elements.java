@@ -57,8 +57,6 @@ import mindustry.world.meta.StatValue;
 import mindustry.world.meta.Stats;
 import mindustry.world.modules.ItemModule;
 
-import java.text.DecimalFormat;
-
 public final class Elements {
 	public static final float LEN = 60f, OFFSET = 12f;
 
@@ -67,7 +65,6 @@ public final class Elements {
 	public static FlowrateVoidDialog flowrateVoidDialog;
 
 	private static final Vec2 ctrlVec = new Vec2();
-	private static final DecimalFormat form = new DecimalFormat("######0.0");
 	private static final Vec2 point = new Vec2(-1, -1);
 	private static final Table starter = new Table(Tex.paneSolid);
 
@@ -76,10 +73,6 @@ public final class Elements {
 
 	/** Don't let anyone instantiate this class. */
 	private Elements() {}
-
-	public static String format(float value) {
-		return form.format(value);
-	}
 
 	public static String judge(boolean value) {
 		return value ? "[heal]" + Core.bundle.get("yes") + "[]" : "[#ff7b69]" + Core.bundle.get("no") + "[]";

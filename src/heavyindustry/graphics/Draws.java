@@ -42,7 +42,6 @@ import static heavyindustry.graphics.HShaders.MirrorFieldShader;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public final class Draws {
-	public static final float mirrorField = 135f;
 	public static final FrameBuffer effectBuffer = new FrameBuffer();
 
 	public static final int sharedUnderBlockBloomId = nextTaskId();
@@ -57,11 +56,11 @@ public final class Draws {
 
 	static {
 		Events.run(Trigger.draw, () -> {
-			Draw.draw(mirrorField - 0.01f, () -> {
+			Draw.draw(HLayer.mirrorField - 0.01f, () -> {
 				effectBuffer.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
 				effectBuffer.begin(Color.clear);
 			});
-			Draw.draw(mirrorField + 0.51f, () -> {
+			Draw.draw(HLayer.mirrorField + 0.51f, () -> {
 				effectBuffer.end();
 
 				HShaders.mirrorField.waveMix = Tmp.c1.set(HPal.matrixNet);
