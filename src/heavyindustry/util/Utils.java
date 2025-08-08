@@ -3,7 +3,6 @@ package heavyindustry.util;
 import arc.Core;
 import arc.func.Boolf;
 import arc.func.Cons;
-import arc.func.Floatc;
 import arc.func.Intc2;
 import arc.func.Prov;
 import arc.graphics.Color;
@@ -69,7 +68,6 @@ import mindustry.gen.Entityc;
 import mindustry.gen.Groups;
 import mindustry.gen.Healthc;
 import mindustry.gen.Player;
-import mindustry.gen.Posc;
 import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
 import mindustry.gen.Velc;
@@ -188,35 +186,24 @@ public final class Utils {
 	};
 	public static final Team[] baseTeams = {Team.derelict, Team.sharded, Team.crux, Team.green, Team.malis, Team.blue};
 
-	public static final String[] donors = {
-			"\u232C\u232C\u82cf\u6cfd",
-			"\u55b5\u5b50"
-	};
-	public static final String[] developers = {
-			"Eipusino"
-	};
-
 	public static final Seq<Building> buildings = new Seq<>();
 
-	static final Vec2 v11 = new Vec2(), v12 = new Vec2(), v13 = new Vec2();
-	static final IntSet collidedBlocks = new IntSet();
-	static final Rect rect = new Rect(), hitRect = new Rect();
-	static final IntSeq buildIdSeq = new IntSeq();
-	static final Seq<Tile> tiles = new Seq<>();
-	static final Seq<Unit> units = new Seq<>();
-	static final Seq<Hit> hseq = new Seq<>();
-	static final Seq<ItemStack> rawStacks = new Seq<>();
-	static final Seq<Item> items = new Seq<>();
-	static final IntSet collided = new IntSet(), collided2 = new IntSet();
-	static final BasicPool<Hit> hPool = new BasicPool<>(Hit::new);
-	static final IntSeq amounts = new IntSeq();
-	static final String[] byteUnit = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"};
+	private static final Vec2 v11 = new Vec2(), v12 = new Vec2(), v13 = new Vec2();
+	private static final IntSet collidedBlocks = new IntSet();
+	private static final Rect rect = new Rect(), hitRect = new Rect();
+	private static final IntSeq buildIdSeq = new IntSeq();
+	private static final Seq<Tile> tiles = new Seq<>();
+	private static final Seq<Unit> units = new Seq<>();
+	private static final Seq<Hit> hseq = new Seq<>();
+	private static final Seq<ItemStack> rawStacks = new Seq<>();
+	private static final Seq<Item> items = new Seq<>();
+	private static final IntSet collided = new IntSet(), collided2 = new IntSet();
+	private static final BasicPool<Hit> hPool = new BasicPool<>(Hit::new);
+	private static final IntSeq amounts = new IntSeq();
+	private static final String[] byteUnit = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"};
 
-	static Tile tileParma;
-	static Posc result;
-	static float cDist;
-	static Building tmpBuilding;
-	static Unit tmpUnit;
+	private static Tile tileParma;
+	private static Building tmpBuilding;
 
 	/** Don't let anyone instantiate this class. */
 	private Utils() {}
@@ -1367,136 +1354,8 @@ public final class Utils {
 		return rand;
 	}
 
-	public static boolean friendly(Liquid l) {
-		return l.effect != StatusEffects.none && l.effect.damage <= 0.1f && (l.effect.damage < -0.01f || l.effect.healthMultiplier > 1.01f || l.effect.damageMultiplier > 1.01f);
-	}
-
-	public static Bullet nearestBullet(float x, float y, float range, Boolf<Bullet> boolf) {
-		result = null;
-		cDist = range;
-		Tmp.r1.setCentered(x, y, range * 2);
-		Groups.bullet.intersect(Tmp.r1.x, Tmp.r1.y, Tmp.r1.width, Tmp.r1.height, b -> {
-			float dst = b.dst(x, y);
-			if (boolf.get(b) && b.within(x, y, range + b.hitSize) && (result == null || dst < cDist)) {
-				result = b;
-				cDist = dst;
-			}
-		});
-
-		return (Bullet) result;
-	}
-
-	public static float angleDistSigned(float a, float b) {
-		a = (a + 360f) % 360f;
-		b = (b + 360f) % 360f;
-
-		float d = Math.abs(a - b) % 360f;
-		int sign = (a - b >= 0f && a - b <= 180f) || (a - b <= -180f && a - b >= -360f) ? 1 : -1;
-
-		return (d > 180f ? 360f - d : d) * sign;
-	}
-
-	public static float angleDistSigned(float a, float b, float start) {
-		float dst = angleDistSigned(a, b);
-		if (Math.abs(dst) > start) {
-			return dst > 0f ? dst - start : dst + start;
-		}
-
-		return 0f;
-	}
-
-	public static float angleDist(float a, float b) {
-		float d = Math.abs(a - b) % 360f;
-		return (d > 180f ? 360f - d : d);
-	}
-
-	public static void shotgun(int points, float spacing, float offset, Floatc cons) {
-		for (int i = 0; i < points; i++) {
-			cons.get(i * spacing - (points - 1) * spacing / 2f + offset);
-		}
-	}
-
-	public static float clampedAngle(float angle, float relative, float limit) {
-		if (limit >= 180f) return angle;
-		if (limit <= 0f) return relative;
-		float dst = angleDistSigned(angle, relative);
-		if (Math.abs(dst) > limit) {
-			float val = dst > 0f ? dst - limit : dst + limit;
-			return (angle - val) % 360f;
-		}
-		return angle;
-	}
-
-	/**
-	 * Casts forward in a line.
-	 *
-	 * @return the first encountered model.
-	 * There's an issue with the one in 126.2, which I fixed in a pr. This can be removed after the next Mindustry release.
-	 */
-	public static Healthc lineCast(Bullet hitter, float x, float y, float angle, float length) {
-		v11.trns(angle, length);
-
-		tmpBuilding = null;
-
-		if (hitter.type.collidesGround) {
-			World.raycastEachWorld(x, y, x + v11.x, y + v11.y, (cx, cy) -> {
-				Building tile = world.build(cx, cy);
-				if (tile != null && tile.team != hitter.team) {
-					tmpBuilding = tile;
-					return true;
-				}
-				return false;
-			});
-		}
-
-		rect.setPosition(x, y).setSize(v11.x, v11.y);
-		float x2 = v11.x + x, y2 = v11.y + y;
-
-		if (rect.width < 0) {
-			rect.x += rect.width;
-			rect.width *= -1;
-		}
-
-		if (rect.height < 0) {
-			rect.y += rect.height;
-			rect.height *= -1;
-		}
-
-		float expand = 3f;
-
-		rect.y -= expand;
-		rect.x -= expand;
-		rect.width += expand * 2;
-		rect.height += expand * 2;
-
-		tmpUnit = null;
-
-		Units.nearbyEnemies(hitter.team, rect, u -> {
-			if ((tmpUnit != null && u.dst2(x, y) > tmpUnit.dst2(x, y)) || !u.checkTarget(hitter.type.collidesAir, hitter.type.collidesGround)) return;
-
-			u.hitbox(hitRect);
-			Rect other = hitRect;
-			other.y -= expand;
-			other.x -= expand;
-			other.width += expand * 2;
-			other.height += expand * 2;
-
-			Vec2 vec = Geometry.raycastRect(x, y, x2, y2, other);
-
-			if (vec != null) {
-				tmpUnit = u;
-			}
-		});
-
-		if (tmpBuilding != null && tmpUnit != null) {
-			if (Mathf.dst2(x, y, tmpBuilding.getX(), tmpBuilding.getY()) <= Mathf.dst2(x, y, tmpUnit.getX(), tmpUnit.getY())) {
-				return tmpBuilding;
-			}
-		} else if (tmpBuilding != null) {
-			return tmpBuilding;
-		}
-
-		return tmpUnit;
+	public static boolean friendly(Liquid liquid) {
+		return liquid.effect != StatusEffects.none && liquid.effect.damage <= 0.1f && (liquid.effect.damage < -0.01f || liquid.effect.healthMultiplier > 1.01f || liquid.effect.damageMultiplier > 1.01f);
 	}
 
 	public static float biasSlope(float fin, float bias) {
@@ -1912,7 +1771,7 @@ public final class Utils {
 	}
 
 	public static class BasicPool<T> extends Pool<T> {
-		Prov<T> prov;
+		public final Prov<T> prov;
 
 		public BasicPool(Prov<T> f) {
 			prov = f;
@@ -1925,8 +1784,8 @@ public final class Utils {
 	}
 
 	public static class Hit implements Poolable {
-		Healthc entity;
-		float x, y;
+		public Healthc entity;
+		public float x, y;
 
 		@Override
 		public void reset() {

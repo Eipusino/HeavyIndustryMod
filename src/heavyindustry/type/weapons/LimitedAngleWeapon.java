@@ -6,7 +6,7 @@ import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.util.Time;
 import arc.util.Tmp;
-import heavyindustry.util.Utils;
+import heavyindustry.math.Mathm;
 import mindustry.audio.SoundLoop;
 import mindustry.entities.Predict;
 import mindustry.entities.Sized;
@@ -123,7 +123,7 @@ public class LimitedAngleWeapon extends Weapon {
 
 			mount.targetRotation = Angles.angle(axisX, axisY, mount.aimX, mount.aimY) - unit.rotation;
 			mount.rotation = Angles.moveToward(mount.rotation, mount.targetRotation, rotateSpeed * Time.delta);
-			mount.rotation = Utils.clampedAngle(mount.rotation, angleOffset * Mathf.sign(flipSprite), angleCone);
+			mount.rotation = Mathm.clampedAngle(mount.rotation, angleOffset * Mathf.sign(flipSprite), angleCone);
 		} else if (!rotate) {
 			mount.rotation = 0;
 			mount.targetRotation = unit.angleTo(mount.aimX, mount.aimY);
@@ -150,12 +150,12 @@ public class LimitedAngleWeapon extends Weapon {
 
 	@Override
 	protected Teamc findTarget(Unit unit, float x, float y, float range, boolean air, boolean ground) {
-		Boolf<Posc> angBool = e -> Utils.angleDist(unit.rotation + (angleOffset * Mathf.sign(flipSprite)), unit.angleTo(e)) <= angleCone;
+		Boolf<Posc> angBool = e -> Mathm.angleDist(unit.rotation + (angleOffset * Mathf.sign(flipSprite)), unit.angleTo(e)) <= angleCone;
 		return Units.closestTarget(unit.team, x, y, range + Math.abs(shootY), u -> u.checkTarget(air, ground) && angBool.get(u), t -> ground && angBool.get(t));
 	}
 
 	@Override
 	protected boolean checkTarget(Unit unit, Teamc target, float x, float y, float range) {
-		return super.checkTarget(unit, target, x, y, range) || Utils.angleDist(unit.rotation + (angleOffset * Mathf.sign(flipSprite)), unit.angleTo(target)) > angleCone;
+		return super.checkTarget(unit, target, x, y, range) || Mathm.angleDist(unit.rotation + (angleOffset * Mathf.sign(flipSprite)), unit.angleTo(target)) > angleCone;
 	}
 }

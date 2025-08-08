@@ -272,9 +272,11 @@ import heavyindustry.world.blocks.units.MechPad;
 import heavyindustry.world.blocks.units.SelectableReconstructor;
 import heavyindustry.world.blocks.units.UnitBoost;
 import heavyindustry.world.blocks.units.UnitIniter;
+import heavyindustry.world.consumers.ConsumeBufferedPowerDynamic;
 import heavyindustry.world.consumers.ConsumeItem;
 import heavyindustry.world.consumers.ConsumeItemsUses;
 import heavyindustry.world.consumers.ConsumeLiquidDynamic;
+import heavyindustry.world.consumers.ConsumeRecipe;
 import heavyindustry.world.draw.DrawAnim;
 import heavyindustry.world.draw.DrawAntiSpliceBlock;
 import heavyindustry.world.draw.DrawDirSpliceBlock;
@@ -771,9 +773,11 @@ final class HClassMap {
 		classes.put("CaptureBlock", CaptureBlock.class);
 		classes.put("CaptureBuild", CaptureBlock.CaptureBuild.class);
 		//consume
+		classes.put("ConsumeBufferedPowerDynamic", ConsumeBufferedPowerDynamic.class);
 		classes.put("ConsumeItem", ConsumeItem.class);
 		classes.put("ConsumeItemsUses", ConsumeItemsUses.class);
 		classes.put("ConsumeLiquidDynamic", ConsumeLiquidDynamic.class);
+		classes.put("ConsumeRecipe", ConsumeRecipe.class);
 		//draw
 		classes.put("DrawZSet", DrawZSet.class);
 		classes.put("DrawTeam", DrawTeam.class);

@@ -23,7 +23,7 @@ public final class Structf {
 	private Structf() {}
 
 	public static boolean equals(Object a, Object b) {
-		return (a == b) || (a != null && a.equals(b));
+		return a == b || a != null && a.equals(b);
 	}
 
 	/**
@@ -149,6 +149,11 @@ public final class Structf {
 			result = 31 * result + (element == null ? 0 : element.hashCode());
 
 		return result;
+	}
+
+	public static <T> T apply(T obj, Cons<T> cons) {
+		cons.get(obj);
+		return obj;
 	}
 
 	public static <T> T[] copyArray(T[] array, Func<T, T> copy) {

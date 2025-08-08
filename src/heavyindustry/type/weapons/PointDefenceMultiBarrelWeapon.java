@@ -1,6 +1,6 @@
 package heavyindustry.type.weapons;
 
-import heavyindustry.util.Utils;
+import heavyindustry.entities.HDamage;
 import mindustry.entities.units.WeaponMount;
 import mindustry.gen.Bullet;
 import mindustry.gen.Teamc;
@@ -25,7 +25,7 @@ public class PointDefenceMultiBarrelWeapon extends MultiBarrelWeapon {
 
 	@Override
 	protected Teamc findTarget(Unit unit, float x, float y, float range, boolean air, boolean ground) {
-		return Utils.nearestBullet(x, y, range, b -> b.team != unit.team && b.type.hittable && b.vel.len2() < 5f * 5f);
+		return HDamage.nearestBullet(x, y, range, b -> b.team != unit.team && b.type.hittable && b.vel.len2() < 5f * 5f);
 	}
 
 	@Override

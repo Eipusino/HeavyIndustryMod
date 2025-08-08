@@ -8,6 +8,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.math.Mathm;
 import heavyindustry.type.unit.ChainedUnitType;
 import heavyindustry.util.Utils;
 import mindustry.Vars;
@@ -544,7 +545,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		if (isHead()) consBackwards(c -> {
 			if (c.parent() != null) {
 				Tmp.v1.set(c).sub(c.parent()).nor().scl(cu.segmentOffset);
-				float angleDst = Utils.angleDistSigned(Tmp.v1.angle(), c.parent().rotation + 180);
+				float angleDst = Mathm.angleDistSigned(Tmp.v1.angle(), c.parent().rotation + 180);
 				if (Math.abs(angleDst) > cu.angleLimit) {
 					Tmp.v1.rotate(-Tmp.v1.angle() + c.parent().rotation + 180 + (angleDst > 0 ? cu.angleLimit : -cu.angleLimit));
 				}

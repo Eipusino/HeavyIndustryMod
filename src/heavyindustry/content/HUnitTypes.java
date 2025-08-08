@@ -37,6 +37,7 @@ import heavyindustry.entities.bullet.EdgeFragBulletType;
 import heavyindustry.entities.bullet.FlameBulletType;
 import heavyindustry.entities.bullet.GuidedMissileBulletType;
 import heavyindustry.entities.bullet.HealConeBulletType;
+import heavyindustry.entities.bullet.HealingNukeBulletType;
 import heavyindustry.entities.bullet.TrailFadeBulletType;
 import heavyindustry.entities.effect.WrapperEffect;
 import heavyindustry.entities.part.AimPart;
@@ -1359,7 +1360,13 @@ public final class HUnitTypes {
 					Draw.color(Color.white);
 					Drawn.shiningCircle(unit.id, Time.time, wx, wy, 6.5f * charge, 5, 70f, 15f, 4f * charge, 360f);
 				};
-				bullet = Bullets.placeholder;
+				bullet = new HealingNukeBulletType() {{
+					allyStatus = StatusEffects.overclock;
+					allyStatusDuration = 15f * 60f;
+					//status = HStatusEffects.disabled;
+					statusDuration = 120f;
+					healPercent = 20f;
+				}};
 			}});
 		}};
 		poseidon = new BaseUnitType("poseidon") {{

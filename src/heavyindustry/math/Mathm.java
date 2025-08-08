@@ -1,6 +1,7 @@
 package heavyindustry.math;
 
 import arc.func.FloatFloatf;
+import arc.func.Floatc;
 import arc.func.Floatc2;
 import arc.math.Angles;
 import arc.math.Interp;
@@ -379,6 +380,47 @@ public final class Mathm {
 
 	public static Vec3 normal(Vec3 out, Vec3 a, Vec3 b, Vec3 c) {
 		return out.set(b).sub(a).crs(c.x - a.x, c.y - a.y, c.z - a.z).nor();
+	}
+
+	public static float angleDistSigned(float a, float b) {
+		a = (a + 360f) % 360f;
+		b = (b + 360f) % 360f;
+
+		float d = Math.abs(a - b) % 360f;
+		int sign = (a - b >= 0f && a - b <= 180f) || (a - b <= -180f && a - b >= -360f) ? 1 : -1;
+
+		return (d > 180f ? 360f - d : d) * sign;
+	}
+
+	public static float angleDistSigned(float a, float b, float start) {
+		float dst = angleDistSigned(a, b);
+		if (Math.abs(dst) > start) {
+			return dst > 0f ? dst - start : dst + start;
+		}
+
+		return 0f;
+	}
+
+	public static float angleDist(float a, float b) {
+		float d = Math.abs(a - b) % 360f;
+		return (d > 180f ? 360f - d : d);
+	}
+
+	public static void shotgun(int points, float spacing, float offset, Floatc cons) {
+		for (int i = 0; i < points; i++) {
+			cons.get(i * spacing - (points - 1) * spacing / 2f + offset);
+		}
+	}
+
+	public static float clampedAngle(float angle, float relative, float limit) {
+		if (limit >= 180f) return angle;
+		if (limit <= 0f) return relative;
+		float dst = angleDistSigned(angle, relative);
+		if (Math.abs(dst) > limit) {
+			float val = dst > 0f ? dst - limit : dst + limit;
+			return (angle - val) % 360f;
+		}
+		return angle;
 	}
 
 	public static float dst(Posc a, Posc b) {
