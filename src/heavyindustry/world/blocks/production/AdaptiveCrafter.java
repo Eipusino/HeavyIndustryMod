@@ -93,6 +93,7 @@ public class AdaptiveCrafter extends GenericCrafter {
 
 		if (powerProduction > 0f) {
 			consumesPower = false;
+			outputsPower = true;
 		}
 
 		recipes.each(recipe -> {
@@ -213,7 +214,9 @@ public class AdaptiveCrafter extends GenericCrafter {
 
 	public class AdaptiveCrafterBuild extends GenericCrafterBuild {
 		public PayloadSeq payloads = new PayloadSeq();
+
 		public int recipeIndex = -1;
+		public Recipe recipe;
 
 		@Override
 		public PayloadSeq getPayloads() {
@@ -233,7 +236,7 @@ public class AdaptiveCrafter extends GenericCrafter {
 		}
 
 		public void updateRecipe() {
-			for (int i = 0; i < recipes.size; i++) {
+			for (int i = recipes.size - 1; i >= 0; i--) {
 				boolean valid = true;
 
 				for (ItemStack input : recipes.get(i).inputItem) {
@@ -290,24 +293,27 @@ public class AdaptiveCrafter extends GenericCrafter {
 		@Override
 		public void updateTile() {
 			if (!validRecipe()) updateRecipe();
+
+			super.updateTile();
+
+			recipe = getRecipe();
+
 			if (efficiency > 0) {
-				if (getRecipe() != null) {
+				if (recipe != null) {
 					float inc = getProgressIncrease(1f);
-					for (var output : getRecipe().outputLiquid) {
+					for (var output : recipe.outputLiquid) {
 						handleLiquid(this, output.liquid, Math.min(output.amount * inc, liquidCapacity - liquids.get(output.liquid)));
 					}
 				}
 			}
 
-			super.updateTile();
-
-			if (getRecipe() == null) return;
-			getRecipe().outputItem.each(stack -> {
+			if (recipe == null) return;
+			recipe.outputItem.each(stack -> {
 				if (items.get(stack.item) >= itemCapacity) {
 					items.set(stack.item, itemCapacity);
 				}
 			});
-			getRecipe().outputPayload.each(stack -> {
+			recipe.outputPayload.each(stack -> {
 				if (getPayloads().get(stack.item) >= payloadCapacity) {
 					getPayloads().remove(stack.item, getPayloads().get(stack.item) - payloadCapacity);
 				}
@@ -341,21 +347,24 @@ public class AdaptiveCrafter extends GenericCrafter {
 
 		@Override
 		public boolean shouldConsume() {
-			if (getRecipe() == null) return false;
-			for (var output : getRecipe().outputItem) {
+			recipe = getRecipe();
+
+			if (recipe == null) return false;
+
+			for (var output : recipe.outputItem) {
 				if (items.get(output.item) + output.amount > itemCapacity) {
 					return powerProduction > 0;
 				}
 			}
-			for (var output : getRecipe().outputPayload) {
+			for (var output : recipe.outputPayload) {
 				if (getPayloads().get(output.item) + output.amount > payloadCapacity) {
 					return powerProduction > 0;
 				}
 			}
 			if (!ignoreLiquidFullness) {
-				if (getRecipe().outputLiquid.isEmpty()) return true;
+				if (recipe.outputLiquid.isEmpty()) return true;
 				boolean allFull = true;
-				for (var output : getRecipe().outputLiquid) {
+				for (var output : recipe.outputLiquid) {
 					if (liquids.get(output.liquid) >= liquidCapacity - 0.001f) {
 						if (!dumpExtraLiquid) {
 							return false;
@@ -379,22 +388,27 @@ public class AdaptiveCrafter extends GenericCrafter {
 		@Override
 		public float getProgressIncrease(float baseTime) {
 			float scl = 0f;
-			if (getRecipe() != null) scl = getRecipe().craftTime / craftTime;
+
+			recipe = getRecipe();
+
+			if (recipe != null) scl = recipe.craftTime / craftTime;
 			return super.getProgressIncrease(baseTime) / scl;
 		}
 
 		@Override
 		public void craft() {
-			if (getRecipe() == null) return;
+			recipe = getRecipe();
+
+			if (recipe == null) return;
 
 			consume();
 
-			getRecipe().outputItem.each(stack -> {
+			recipe.outputItem.each(stack -> {
 				for (int i = 0; i < stack.amount; i++) {
 					offload(stack.item);
 				}
 			});
-			getRecipe().outputPayload.each(stack -> payloads.add(stack.item, stack.amount));
+			recipe.outputPayload.each(stack -> payloads.add(stack.item, stack.amount));
 
 			progress %= 1f;
 
@@ -404,7 +418,7 @@ public class AdaptiveCrafter extends GenericCrafter {
 
 		@Override
 		public byte version() {
-			return 2;
+			return 1;
 		}
 
 		@Override
@@ -418,7 +432,7 @@ public class AdaptiveCrafter extends GenericCrafter {
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
 
-			if (revision == 2) {
+			if (revision == 1) {
 				payloads.read(read);
 			}
 		}

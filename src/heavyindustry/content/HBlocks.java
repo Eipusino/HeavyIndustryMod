@@ -90,8 +90,10 @@ import heavyindustry.world.blocks.power.HyperGenerator;
 import heavyindustry.world.blocks.power.PowerAnalyzer;
 import heavyindustry.world.blocks.power.SmartBeamNode;
 import heavyindustry.world.blocks.power.SmartPowerNode;
+import heavyindustry.world.blocks.production.AugerDrill;
 import heavyindustry.world.blocks.production.Centrifuge;
 import heavyindustry.world.blocks.production.LaserBeamDrill;
+import heavyindustry.world.blocks.production.AugerSoildPump;
 import heavyindustry.world.blocks.production.UnitMinerDepot;
 import heavyindustry.world.blocks.production.UnitMinerPoint;
 import heavyindustry.world.blocks.production.MultiCrafter;
@@ -303,7 +305,7 @@ public final class HBlocks {
 	berylliumWallHuge, berylliumWallGigantic, tungstenWallHuge, tungstenWallGigantic, blastDoorLarge, blastDoorHuge, reinforcedSurgeWallHuge, reinforcedSurgeWallGigantic, carbideWallHuge, carbideWallGigantic, shieldedWallLarge, shieldedWallHuge,
 			aparajito, aparajitoLarge,
 	//drill
-	titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, blastWell, ionDrill, cuttingDrill, beamDrill,
+	titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, augerWaterExtractor, augerDrill, blastWell, ionDrill, cuttingDrill, beamDrill,
 			sporeFarm,
 	//drill-erekir
 	heavyPlasmaBore, unitMinerPoint, unitMinerCenter, unitMinerDepot,
@@ -1085,6 +1087,24 @@ public final class HBlocks {
 			consumeItem(Items.sand);
 			consumeLiquid(Liquids.water, 0.3f);
 			buildCostMultiplier = 0.8f;
+		}};
+		augerWaterExtractor = new AugerSoildPump("auger-water-extractor") {{
+			requirements(Category.production, ItemStack.with(Items.lead, 100, Items.copper, 75, Items.graphite, 35));
+			result = Liquids.water;
+			size = 3;
+			pumpAmount = 0.4f;
+			liquidCapacity = 100f;
+			attribute = Attribute.water;
+			envRequired |= Env.groundWater;
+			consumePower(1.10f);
+		}};
+		augerDrill = new AugerDrill("auger-drill") {{
+			requirements(Category.production, ItemStack.with(Items.lead, 100, Items.copper, 75, Items.graphite, 35));
+			size = 3;
+			tier = 3;
+			drillTime = 350f;
+			consumePower(0.55f);
+			consumeLiquid(Liquids.water, 0.07f).optional(true, true);
 		}};
 		blastWell = new BurstDrill("blast-ore-well") {{
 			requirements(Category.production, ItemStack.with(Items.lead, 80, Items.graphite, 180, Items.thorium, 110, Items.plastanium, 80, Items.surgeAlloy, 60));
@@ -2435,6 +2455,7 @@ public final class HBlocks {
 		ventHeater = new ThermalHeater("vent-heater") {{
 			requirements(Category.crafting, ItemStack.with(Items.beryllium, 60, Items.graphite, 70, Items.tungsten, 80, Items.oxide, 50));
 			size = 3;
+			hasLiquids = true;
 			hasPower = false;
 			attribute = Attribute.steam;
 			group = BlockGroup.liquids;

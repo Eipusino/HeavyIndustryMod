@@ -525,6 +525,7 @@ public final class Drawn {
 
 	public static void drawRotRect(TextureRegion region, float x, float y, float w, float rot_h, float true_h, float rot, float ang1, float ang2) {
 		if (region == null || !Core.settings.getBool("effects")) return;
+
 		float amod1 = Mathf.mod(ang1, 360f);
 		float amod2 = Mathf.mod(ang2, 360f);
 		if (amod1 >= 180f && amod2 >= 180f) return;
@@ -637,7 +638,6 @@ public final class Drawn {
 		Draw.rect(t2, dx - t2w * 0.5f, y, t2w, h, x - (dx - t2w), h * 0.5f, rotation);
 	}
 
-	/** @author sunny */
 	public static void ring(float bx, float by, int sides, float rad, float hScl, float rot, float thickness, float layerUnder, float layerOver) {
 		float wScl = 1f;
 

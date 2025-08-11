@@ -30,7 +30,7 @@ public class PointDefenceMultiBarrelWeapon extends MultiBarrelWeapon {
 
 	@Override
 	protected boolean checkTarget(Unit unit, Teamc target, float x, float y, float range) {
-		boolean bullet = (target instanceof Bullet b && (b.hitSize <= 0f || b.type == null));
+		boolean bullet = target instanceof Bullet b && (b.hitSize <= 0f || b.type == null);
 		if (bullet) tmp.retarget = 5f;
 		return super.checkTarget(unit, target, x, y, range) || bullet;
 	}

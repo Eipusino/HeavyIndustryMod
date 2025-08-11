@@ -17,6 +17,7 @@ import arc.scene.ui.layout.Table;
 import arc.struct.ObjectSet;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.ai.CopterAI;
 import heavyindustry.ai.MinerDepotAI;
 import heavyindustry.ai.HealingDefenderAI;
 import heavyindustry.ai.MinerPointAI;
@@ -427,7 +428,7 @@ public final class HUnitTypes {
 		//vanilla-copter
 		caelifera = new CopterUnitType("caelifera") {{
 			constructor = CopterUnit::new;
-			aiController = FlyingAI::new;
+			aiController = CopterAI::new;
 			circleTarget = false;
 			speed = 5f;
 			drag = 0.08f;
@@ -475,7 +476,7 @@ public final class HUnitTypes {
 		}};
 		schistocerca = new CopterUnitType("schistocerca") {{
 			constructor = CopterUnit::new;
-			aiController = FlyingAI::new;
+			aiController = CopterAI::new;
 			circleTarget = false;
 			speed = 4.5f;
 			drag = 0.07f;
@@ -555,7 +556,7 @@ public final class HUnitTypes {
 		}};
 		anthophila = new CopterUnitType("anthophila") {{
 			constructor = CopterUnit::new;
-			aiController = FlyingAI::new;
+			aiController = CopterAI::new;
 			circleTarget = false;
 			speed = 4f;
 			drag = 0.07f;
@@ -619,7 +620,7 @@ public final class HUnitTypes {
 		}};
 		vespula = new CopterUnitType("vespula") {{
 			constructor = CopterUnit::new;
-			aiController = FlyingAI::new;
+			aiController = CopterAI::new;
 			circleTarget = false;
 			speed = 3.5f;
 			drag = 0.07f;
@@ -693,7 +694,7 @@ public final class HUnitTypes {
 		}};
 		lepidoptera = new CopterUnitType("lepidoptera") {{
 			constructor = CopterUnit::new;
-			aiController = FlyingAI::new;
+			aiController = CopterAI::new;
 			circleTarget = false;
 			speed = 3f;
 			drag = 0.07f;
@@ -787,7 +788,7 @@ public final class HUnitTypes {
 		}};
 		mantodea = new CopterUnitType("mantodea") {{
 			constructor = CopterUnit::new;
-			aiController = FlyingAI::new;
+			aiController = CopterAI::new;
 			circleTarget = false;
 			speed = 5f;
 			drag = 0.1f;
@@ -1209,6 +1210,7 @@ public final class HUnitTypes {
 		}};
 		sunlit = new BaseUnitType("sunlit") {{
 			constructor = BaseUnit::new;
+			aiController = FlyingAI::new;
 			speed = 0.55f;
 			accel = 0.04f;
 			drag = 0.04f;

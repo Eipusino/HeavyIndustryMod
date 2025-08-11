@@ -53,7 +53,6 @@ public class TubeDistributor extends Router {
 		public Tile lastInput;
 		public int lastTargetAngle, lastSourceAngle;
 		public float time, rot, angle, lastRot;
-		public int lastRotation = rotation;
 
 		@Override
 		public void updateTile() {
@@ -196,8 +195,7 @@ public class TubeDistributor extends Router {
 
 		@Override
 		public void draw() {
-			float z = Draw.z();
-
+			Draw.z(Layer.blockUnder);
 			Draw.rect(bottomRegion, x, y);
 
 			Draw.z(Layer.block - 0.2f);
@@ -206,15 +204,14 @@ public class TubeDistributor extends Router {
 			Drawf.spinSprite(rotatorRegion, x, y, rot % 360);
 			Draw.rect(topRegion, x, y);
 			Draw.rect(rotation > 1 ? lockedRegion2 : lockedRegion1, x, y, rotdeg());
-
-			Draw.z(z);
 		}
 
+		@Override
 		public Building getTileTarget(Item item, Tile from, boolean set) {
-			int counter = lastRotation;
+			int counter = rotation;
 			for (int i = 0; i < proximity.size; i++) {
 				Building other = proximity.get((i + counter) % proximity.size);
-				if (set) lastRotation = ((byte) ((lastRotation + 1) % proximity.size));
+				if (set) rotation = ((byte) ((rotation + 1) % proximity.size));
 				if (other.tile == from && from.block() == Blocks.overflowGate) continue;
 				if (other.acceptItem(this, item)) {
 					return other;

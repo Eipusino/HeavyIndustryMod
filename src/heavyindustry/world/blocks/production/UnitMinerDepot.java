@@ -142,9 +142,9 @@ public class UnitMinerDepot extends Block {
 			strokeScl = Mathf.approachDelta(strokeScl, scl, polyStrokeSclSpeed);
 
 			if (!targetSet && targetItem != null && commandPos != null) {
-				Tile tiled = world.tileWorld(commandPos.x, commandPos.y);
-				if (tiled != null && oreDrop(tiled) == targetItem) {
-					oreTiles.put(targetItem, tiled);
+				Tile t = world.tileWorld(commandPos.x, commandPos.y);
+				if (t != null && oreDrop(t) == targetItem) {
+					oreTiles.put(targetItem, t);
 					targetSet = true;
 					if (unit != null) unit.mineTile = null;
 				}
@@ -199,11 +199,11 @@ public class UnitMinerDepot extends Block {
 			}
 		}
 
-		public Item oreDrop(Tile tiled) {
-			if (tiled == null) return null;
+		public Item oreDrop(Tile t) {
+			if (t == null) return null;
 
-			if (tiled.solid() && tiled.wallDrop() != null) return tiled.wallDrop();
-			if (tiled.block() == Blocks.air && tiled.drop() != null) return tiled.drop();
+			if (t.solid() && t.wallDrop() != null) return t.wallDrop();
+			if (t.block() == Blocks.air && t.drop() != null) return t.drop();
 
 			return null;
 		}

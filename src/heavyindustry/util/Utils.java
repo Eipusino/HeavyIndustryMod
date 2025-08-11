@@ -546,18 +546,6 @@ public final class Utils {
 		return (isNegative ? "-" : "") + arr[0] + (retain == 0 ? "" : "." + arr[1].substring(0, realRetain) + end + byteUnit[index]);
 	}
 
-	public static int compareBool(boolean x, boolean y) {
-		return Boolean.compare(x, y);
-	}
-
-	public static int compareInt(int x, int y) {
-		return Integer.compare(x, y);
-	}
-
-	public static int compareFloat(float x, float y) {
-		return Float.compare(x, y);
-	}
-
 	public static Vec2 vecSetLine(Vec2 vec, Vec2 pos, float rotation, float length) {
 		vec.setLength(length).setAngle(rotation).add(pos);
 		return vec;
