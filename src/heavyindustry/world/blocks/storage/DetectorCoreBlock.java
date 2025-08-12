@@ -78,7 +78,7 @@ public class DetectorCoreBlock extends CoreBlock {
 			super.created();
 
 			startTime = Time.time;
-			detectedOres = new Seq<>();
+			detectedOres = new Seq<>(Tile.class);
 		}
 
 		protected TextureRegionDrawable eyeIcon() {

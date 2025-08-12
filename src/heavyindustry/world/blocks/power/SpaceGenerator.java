@@ -101,8 +101,8 @@ public class SpaceGenerator extends PowerGenerator {
 	}
 
 	public class SpaceGeneratorBuild extends GeneratorBuild {
-		public Seq<Tile> tiles = new Seq<>();
-		public Seq<Tile> solids = new Seq<>();
+		public Seq<Tile> tiles = new Seq<>(Tile.class);
+		public Seq<Tile> solids = new Seq<>(Tile.class);
 		public int tileNum = 0;
 		public transient Interval timer = new Interval(6);
 

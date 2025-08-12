@@ -15,7 +15,7 @@ import mindustry.gen.Entityc;
 import mindustry.gen.Unit;
 
 public final class VapourizeEffect {
-	private static final Seq<BuildQueue> vapourizeQueue = new Seq<>(512);
+	private static final Seq<BuildQueue> vapourizeQueue = new Seq<>(true, 512, BuildQueue.class);
 	private static final IntMap<BuildQueue> buildQMap = new IntMap<>();
 	private static final IntMap<VapourizeEffectState> vapourizeMap = new IntMap<>();
 

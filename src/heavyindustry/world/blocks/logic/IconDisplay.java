@@ -60,7 +60,7 @@ public class IconDisplay extends Block {
 
 	public class IconDisplayBuild extends Building {
 		public UnlockableContent displayContent;
-		public Seq<UnlockableContent> tmpSeq = new Seq<>();
+		public Seq<UnlockableContent> tmpSeq = new Seq<>(UnlockableContent.class);
 
 		public Seq<UnlockableContent> displayContents() {
 			tmpSeq.clear();

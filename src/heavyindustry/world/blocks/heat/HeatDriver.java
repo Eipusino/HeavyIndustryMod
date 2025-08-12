@@ -191,7 +191,7 @@ public class HeatDriver extends Block {
 		public float progress = 0f;
 		public float resProgress = 0f;
 		public int link = -1;
-		public Seq<Building> owners = new Seq<>();
+		public Seq<Building> owners = new Seq<>(Building.class);
 
 		public float heat = 0f;
 		public float[] sideHeat = new float[4];

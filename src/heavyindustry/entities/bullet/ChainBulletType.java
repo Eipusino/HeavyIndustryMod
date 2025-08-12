@@ -16,9 +16,9 @@ import mindustry.gen.Bullet;
 import mindustry.gen.Unit;
 
 public class ChainBulletType extends BulletType {
-	protected static final Seq<ChainBulletType> all = new Seq<>();
+	protected static final Seq<ChainBulletType> all = new Seq<>(ChainBulletType.class);
 
-	protected static final Seq<Position> points = new Seq<>();
+	protected static final Seq<Position> points = new Seq<>(Position.class);
 	protected static final Vec2 tmpVec = new Vec2();
 
 	public int maxHit = 12;

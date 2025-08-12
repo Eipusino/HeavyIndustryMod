@@ -25,7 +25,7 @@ public final class DrawText {
 
 	private static Font defaultFont() {
 		if (defaultFont == null && Core.assets != null && fontList == null) {
-			fontList = new Seq<>();
+			fontList = new Seq<>(Font.class);
 			defaultFont = Core.assets.getAll(Font.class, fontList).firstOpt();
 		}
 		return defaultFont;

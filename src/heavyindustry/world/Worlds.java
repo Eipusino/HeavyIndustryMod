@@ -6,7 +6,7 @@ import heavyindustry.world.blocks.defense.CommandableBlock;
 import mindustry.game.EventType.ResetEvent;
 
 public final class Worlds {
-	public static final Seq<CommandableBlock.CommandableBuild> commandableBuilds = new Seq<>();
+	public static final Seq<CommandableBlock.CommandableBuild> commandableBuilds = new Seq<>(CommandableBlock.CommandableBuild.class);
 
 	/** Don't let anyone instantiate this class. */
 	private Worlds() {}

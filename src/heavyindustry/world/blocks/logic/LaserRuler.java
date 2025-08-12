@@ -30,7 +30,7 @@ import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
 public class LaserRuler extends Block {
-	protected static final Seq<Runnable> drawRunners = new Seq<>();
+	protected static final Seq<Runnable> drawRunners = new Seq<>(Runnable.class);
 	protected static Tile lastTaped;
 
 	static {
@@ -63,8 +63,8 @@ public class LaserRuler extends Block {
 	}
 
 	public class LaserRulerBuild extends Building implements Ranged {
-		public final Seq<Tile> xtiles = new Seq<>();
-		public final Seq<Tile> ytiles = new Seq<>();
+		public final Seq<Tile> xtiles = new Seq<>(Tile.class);
+		public final Seq<Tile> ytiles = new Seq<>(Tile.class);
 		public int target = -1;
 
 		@Override

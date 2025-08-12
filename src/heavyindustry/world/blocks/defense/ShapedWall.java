@@ -24,8 +24,8 @@ import static mindustry.Vars.world;
  * Shaped Wall
  */
 public class ShapedWall extends ConnectedWall {
-	protected final Seq<Building> toDamage = new Seq<>();
-	protected final Queue<Building> queue = new Queue<>();
+	protected final Seq<Building> toDamage = new Seq<>(Building.class);
+	protected final Queue<Building> queue = new Queue<>(16, Building.class);
 
 	public float damageReduction = 0.1f;
 	public float maxShareStep = 3;
@@ -43,7 +43,7 @@ public class ShapedWall extends ConnectedWall {
 	}
 
 	public class ShapedWallBuild extends ConnectedWallBuild {
-		public Seq<ShapedWallBuild> connectedWalls = new Seq<>();
+		public Seq<ShapedWallBuild> connectedWalls = new Seq<>(ShapedWallBuild.class);
 
 		public void findLinkWalls() {
 			toDamage.clear();

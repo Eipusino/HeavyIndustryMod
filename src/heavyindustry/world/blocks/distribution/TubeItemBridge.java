@@ -40,11 +40,11 @@ import static mindustry.Vars.world;
  */
 public class TubeItemBridge extends ItemBridge {
 	public final int timerAccept;
-	public Prov<Seq<Block>> connectBlocksGetter = Seq::new;
+	public Prov<Seq<Block>> connectBlocksGetter = () -> new Seq<>(Block.class);
 	public byte maxConnections = 3;
 	public int bufferCapacity;
 
-	protected Seq<Block> connectibleBlocks = new Seq<>();
+	protected Seq<Block> connectibleBlocks = new Seq<>(Block.class);
 
 	public Boolf<Building> connectFilter = building -> connectibleBlocks.contains(building.block);
 
@@ -67,7 +67,7 @@ public class TubeItemBridge extends ItemBridge {
 	public void init() {
 		super.init();
 		Seq<Block> blocks = connectBlocksGetter.get();
-		if (blocks == null) blocks = new Seq<>();
+		if (blocks == null) blocks = new Seq<>(Block.class);
 		blocks.add(this);
 		connectibleBlocks = blocks;
 		maxConnections++;

@@ -11,7 +11,7 @@ import mindustry.world.blocks.liquid.LiquidBlock;
 import mindustry.world.modules.LiquidModule;
 
 public class MergingLiquidBlock extends LiquidBlock {
-	public static final Queue<MergingLiquidBuild> buildQueue = new Queue<>();
+	public static final Queue<MergingLiquidBuild> buildQueue = new Queue<>(16, MergingLiquidBuild.class);
 	// terrible
 	public static final LiquidModule tmpLiquids = new LiquidModule();
 
@@ -25,7 +25,7 @@ public class MergingLiquidBlock extends LiquidBlock {
 	}
 
 	public class MergingLiquidBuild extends LiquidBuild {
-		public Seq<MergingLiquidBuild> chained = new Seq<>();
+		public Seq<MergingLiquidBuild> chained = new Seq<>(MergingLiquidBuild.class);
 		public float totalCapacity;
 		// idk if this is even an issue anymore
 		public boolean removing;
@@ -126,7 +126,7 @@ public class MergingLiquidBlock extends LiquidBlock {
 			Seq<MergingLiquidBuild> prev = chained;
 
 			float capacity = 0f;
-			chained = new Seq<>();
+			chained = new Seq<>(MergingLiquidBuild.class);
 			buildQueue.clear();
 			buildQueue.add(this);
 

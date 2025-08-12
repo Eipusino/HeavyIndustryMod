@@ -59,7 +59,7 @@ public class UnitMinerPoint extends Block {
 	public @Nullable Item blockedItem;
 
 	/** Special exemption items that this miner can't mine. */
-	public Seq<Item> blockedItems = new Seq<>();
+	public Seq<Item> blockedItems = new Seq<>(Item.class);
 
 	public int range = 12;
 	public int tier = 2;
@@ -215,8 +215,8 @@ public class UnitMinerPoint extends Block {
 		public int sort = -1;
 		public int lastSort = -1;
 
-		public Seq<Tile> tiles = new Seq<>();
-		public Seq<Unit> units = new Seq<>();
+		public Seq<Tile> tiles = new Seq<>(Tile.class);
+		public Seq<Unit> units = new Seq<>(Unit.class);
 
 		public float droneWarmup, powerWarmup;
 		public float warmup, readyness;

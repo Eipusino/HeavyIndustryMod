@@ -21,7 +21,7 @@ import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
 
 public class ShockWaveAbility extends Ability {
-	protected static final Seq<Unit> all = new Seq<>();
+	protected static final Seq<Unit> all = new Seq<>(Unit.class);
 
 	public ObjectFloatMap<StatusEffect> status = new ObjectFloatMap<>();
 

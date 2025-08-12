@@ -174,7 +174,7 @@ public class CommandableAttackerBlock extends CommandableBlock {
 
 			Drawf.dashCircle(x, y, range, team.color);
 
-			Seq<CommandableBuild> builds = new Seq<>();
+			Seq<CommandableBuild> builds = new Seq<>(CommandableBuild.class);
 			for (CommandableBuild build : Worlds.commandableBuilds) {
 				if (build != this && build != null && build.team == team && sameGroup(build.block) && build.canCommand(targetVec)) {
 					builds.add(build);
@@ -225,8 +225,12 @@ public class CommandableAttackerBlock extends CommandableBlock {
 			control.input.selectedBlock();
 
 			table.table(Tex.paneSolid, t -> {
-				t.button(Icon.modeAttack, Styles.cleari, () -> configure(targetVec)).size(LEN).disabled(b -> targetVec.epsilonEquals(x, y, 0.1f));
-				t.button(Core.bundle.get("hi-select-target"), Icon.move, Styles.cleart, LEN, () -> Elements.selectPos(t, this::configure)).size(LEN * 4, LEN).row();
+				t.button(Icon.modeAttack, Styles.cleari, () -> {
+					configure(targetVec);
+				}).size(LEN).disabled(b -> targetVec.epsilonEquals(x, y, 0.1f));
+				t.button("@mod.ui.select-target", Icon.move, Styles.cleart, LEN, () -> {
+					Elements.selectPos(t, this::configure);
+				}).size(LEN * 4, LEN).row();
 			}).fill();
 		}
 	}

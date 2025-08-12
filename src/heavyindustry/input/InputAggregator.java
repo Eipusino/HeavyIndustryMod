@@ -28,9 +28,9 @@ import static mindustry.Vars.state;
 public class InputAggregator implements Iterable<String>, Eachable<String> {
 	protected final OrderedMap<String, TapHandle> handles;
 	protected final Seq<String> handleKeys;
-	protected final Seq<TapResult> results = new Seq<>();
+	protected final Seq<TapResult> results = new Seq<>(TapResult.class);
 
-	protected final Seq<Vec2> taps = new Seq<>();
+	protected final Seq<Vec2> taps = new Seq<>(Vec2.class);
 	protected final Pool<Vec2> tapPool = new Pool<>() {
 		@Override
 		protected Vec2 newObject() {
@@ -70,7 +70,9 @@ public class InputAggregator implements Iterable<String>, Eachable<String> {
 
 				for (TapHandle handle : handles.values()) handle.enabled = handle.predicate.get();
 				if (taps.any()) {
-					taps.each(tap -> HCall.tap(player, tap.x, tap.y, handleKeys));
+					for (Vec2 tap : taps) {
+						HCall.tap(player, tap.x, tap.y, handleKeys);
+					}
 
 					tapPool.freeAll(taps);
 					taps.clear();
@@ -80,7 +82,7 @@ public class InputAggregator implements Iterable<String>, Eachable<String> {
 	}
 
 	public TapHandle onTap(String key, TapListener listener) {
-		if (handles.containsKey(key)) throw new IllegalArgumentException("Tap listener '" + key + "' already added.");
+		if (handles.containsKey(key)) return handles.get(key);
 		TapHandle handle = new TapHandle();
 		handle.index = handleKeys.size;
 		handle.listener = listener;
@@ -110,7 +112,9 @@ public class InputAggregator implements Iterable<String>, Eachable<String> {
 
 	@Override
 	public void each(Cons<? super String> listener) {
-		handleKeys.each(listener);
+		for (String key : handleKeys) {
+			listener.get(key);
+		}
 	}
 
 	@Override

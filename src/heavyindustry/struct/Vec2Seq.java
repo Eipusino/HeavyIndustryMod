@@ -131,7 +131,7 @@ public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 	}
 
 	public Seq<Vec2> asSeq() {
-		Seq<Vec2> seq = new Seq<>(true, size());
+		Seq<Vec2> seq = new Seq<>(true, size(), Vec2.class);
 		for (int j = 0; j < size(); j++) {
 			seq.add(newVec2(j));
 		}

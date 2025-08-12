@@ -6,7 +6,7 @@ import arc.math.geom.Vec3;
 import arc.struct.Seq;
 
 public interface Transform {
-	Seq<Transform> tmpStack = new Seq<>();
+	Seq<Transform> tmpStack = new Seq<>(Transform.class);
 
 	Transform parent();
 

@@ -17,7 +17,7 @@ import mindustry.type.Liquid;
 import mindustry.world.Tile;
 
 public class MultiCellLiquid extends CellLiquid {
-	public Seq<Liquid> spreadTargets = new Seq<>();
+	public Seq<Liquid> spreadTargets = new Seq<>(Liquid.class);
 
 	public MultiCellLiquid(String name, Color color) {
 		super(name, color);

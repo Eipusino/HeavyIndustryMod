@@ -3935,7 +3935,8 @@ public final class HBlocks {
 					int particles = 44;
 					float particleLife = 74f;
 					float particleLen = 7.5f;
-					Rand rand = new Rand(b.id);
+					Rand rand = HFx.rand3;
+					rand.setSeed(b.id);
 
 					float base = (Time.time / particleLife);
 					for (int i = 0; i < particles; i++) {
@@ -4057,7 +4058,7 @@ public final class HBlocks {
 				ammoMultiplier = 4;
 				reloadMultiplier = 1.7f;
 				knockback = 0.4f;
-				lifetime *= 1.1f;
+				lifetime *= 1.2f;
 			}}, Items.pyratite, new BasicBulletType(8.25f, 94f) {{
 				rangeChange = 5f;
 				hitSize = 5f;
@@ -4076,7 +4077,7 @@ public final class HBlocks {
 				pierceBuilding = true;
 				ammoMultiplier = 3;
 				knockback = 0.8f;
-				lifetime *= 1.1f;
+				lifetime *= 1.2f;
 			}}, Items.blastCompound, new BasicBulletType(8.25f, 54f) {{
 				rangeChange = 5f;
 				hitSize = 5f;
@@ -4095,7 +4096,7 @@ public final class HBlocks {
 				pierceBuilding = true;
 				ammoMultiplier = 3;
 				knockback = 1.2f;
-				lifetime *= 1.1f;
+				lifetime *= 1.2f;
 			}}, Items.thorium, new BasicBulletType(8.75f, 122f) {{
 				rangeChange = 15f;
 				pierce = true;
@@ -4109,7 +4110,7 @@ public final class HBlocks {
 				backColor = hitColor = trailColor = Pal.thoriumAmmoBack;
 				frontColor = Pal.thoriumAmmoFront;
 				knockback = 0.9f;
-				lifetime *= 1.05f;
+				lifetime *= 1.1f;
 			}}, HItems.uranium, new BasicBulletType(9.75f, 155f) {{
 				rangeChange = 30f;
 				pierce = true;

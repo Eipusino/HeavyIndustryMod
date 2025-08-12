@@ -483,13 +483,16 @@ public final class HBullets {
 				Draw.color(lightColor, Color.white, b.fin() * 0.7f);
 				Draw.alpha(b.fin(Interp.pow3Out) * 1.1f);
 				Lines.stroke(2 * b.fout());
-				for (Object o : dat) {
-					if (o instanceof Sized s)
+				if (dat.items instanceof Sized[] sizeds) {
+					for (Sized s : sizeds) {
+						if (s == null) continue;
+
 						if (s instanceof Building) {
 							Fill.square(s.getX(), s.getY(), s.hitSize() / 2);
 						} else {
 							Lines.spikes(s.getX(), s.getY(), s.hitSize() * (0.5f + b.fout() * 2f), s.hitSize() / 2f * b.fslope() + 12 * b.fin(), 4, 45);
 						}
+					}
 				}
 
 				Drawf.light(b.x, b.y, b.fdata, lightColor, 0.3f + b.fin() * 0.8f);
@@ -506,7 +509,7 @@ public final class HBullets {
 			public void update(Bullet b) {
 				super.update(b);
 
-				if (b.data instanceof Seq<?> dat) dat.remove(d -> d instanceof Healthc h && !h.isValid());
+				if (b.data instanceof Seq<?> dat) dat.remove(d -> d == null || d instanceof Healthc h && !h.isValid());
 			}
 
 			@Override
@@ -527,8 +530,10 @@ public final class HBullets {
 				if (!(b.data instanceof Seq<?> dat)) return;
 				Entityc o = b.owner();
 
-				for (Object ob : dat) {
-					if (ob instanceof Sized s) {
+				if (dat.items instanceof Sized[] sizeds) {
+					for (Sized s : sizeds) {
+						if (s == null) continue;
+
 						float size = Math.min(s.hitSize(), 85);
 						Time.run(Mathf.random(44), () -> {
 							if (Mathf.chance(0.32) || dat.size < 8)
@@ -544,19 +549,18 @@ public final class HBullets {
 			@Override
 			public void init(Bullet b) {
 				super.init(b);
-				float f = b.data instanceof Number n ? n.floatValue() : 0f;
 
-				Seq<Sized> data = new Seq<>();
+				Seq<Sized> data = new Seq<>(Sized.class);
 
-				indexer.eachBlock(null, b.x, b.y, f, bu -> bu.team != b.team, data::add);
+				indexer.eachBlock(null, b.x, b.y, b.fdata, bu -> bu.team != b.team, data::add);
 
-				Groups.unit.intersect(b.x - f / 2, b.y - f / 2, f, f, u -> {
+				Groups.unit.intersect(b.x - b.fdata / 2, b.y - b.fdata / 2, b.fdata, b.fdata, u -> {
 					if (u.team != b.team) data.add(u);
 				});
 
 				b.data = data;
 
-				HFx.circleOut.at(b.x, b.y, f * 1.25f, lightColor);
+				HFx.circleOut.at(b.x, b.y, b.fdata * 1.25f, lightColor);
 			}
 		};
 		nuBlackHole = new EffectBulletType(20f, 10000f, 0f) {{
@@ -578,13 +582,16 @@ public final class HBullets {
 				Draw.color(lightColor, Color.white, b.fin() * 0.7f);
 				Draw.alpha(b.fin(Interp.pow3Out) * 1.1f);
 				Lines.stroke(2 * b.fout());
-				for (Object o : dat) {
-					if (o instanceof Sized s)
+				if (dat.items instanceof Sized[] sizeds) {
+					for (Sized s : sizeds) {
+						if (s == null) continue;
+
 						if (s instanceof Building) {
 							Fill.square(s.getX(), s.getY(), s.hitSize() / 2f);
 						} else {
 							Lines.spikes(s.getX(), s.getY(), s.hitSize() * (0.5f + b.fout() * 2f), s.hitSize() / 2f * b.fslope() + 12f * b.fin(), 4, 45);
 						}
+					}
 				}
 
 				Drawf.light(b.x, b.y, b.fdata, lightColor, 0.3f + b.fin() * 0.8f);
@@ -601,7 +608,7 @@ public final class HBullets {
 			public void update(Bullet b) {
 				super.update(b);
 
-				if (b.timer(0, 5) && b.data instanceof Seq<?> dat) dat.remove(d -> d instanceof Healthc h && !h.isValid());
+				if (b.timer(0, 5) && b.data instanceof Seq<?> dat) dat.remove(d -> d == null || d instanceof Healthc h && !h.isValid());
 			}
 
 			@Override
@@ -611,8 +618,10 @@ public final class HBullets {
 				if (!(b.data instanceof Seq<?> dat)) return;
 				Entityc o = b.owner();
 
-				for (Object ob : dat) {
-					if (ob instanceof Sized s) {
+				if (dat.items instanceof Sized[] sizeds) {
+					for (Sized s : sizeds) {
+						if (s == null) continue;
+
 						float size = Math.min(s.hitSize(), 75);
 						if (Mathf.chance(0.32) || dat.size < 8) {
 							float sd = Mathf.random(size * 3f, size * 12f);
@@ -629,9 +638,10 @@ public final class HBullets {
 			@Override
 			public void init(Bullet b) {
 				super.init(b);
+
 				b.fdata = splashDamageRadius;
 
-				Seq<Sized> data = new Seq<>();
+				Seq<Sized> data = new Seq<>(Sized.class);
 
 				indexer.eachBlock(null, b.x, b.y, b.fdata, bu -> bu.team != b.team, data::add);
 
@@ -1555,7 +1565,7 @@ public final class HBullets {
 				Effect.shake(8 * b.fin(), 6, b);
 
 				if (b.timer(1, 12)) {
-					Seq<Teamc> entites = new Seq<>();
+					Seq<Teamc> entites = new Seq<>(Teamc.class);
 
 					Units.nearbyEnemies(b.team, b.x, b.y, rad * 2.5f * (1 + b.fin()) / 2, entites::add);
 

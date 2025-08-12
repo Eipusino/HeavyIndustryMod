@@ -48,11 +48,11 @@ public class DPSWall extends Wall {
 
 			showBoardTime = Math.max(showBoardTime - Time.delta, 0);
 			if (showBoardTime == 0 && totalDamage > 0) {
-				totalDamage = 0;
-				hits = 0;
-				firstHitTime = 0;
-				lastHitTime = 0;
-				showBoardTime = 0;
+				totalDamage = 0f;
+				hits = 0f;
+				firstHitTime = 0f;
+				lastHitTime = 0f;
+				showBoardTime = 0f;
 			}
 		}
 

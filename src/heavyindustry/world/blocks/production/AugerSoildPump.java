@@ -17,6 +17,7 @@ public class AugerSoildPump extends SolidPump {
 		super(name);
 
 		rotate = true;
+		drawArrow = false;
 	}
 
 	@Override

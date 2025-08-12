@@ -12,7 +12,7 @@ import mindustry.game.EventType.Trigger;
  * @since 1.0.6
  */
 public abstract class EditorListener {
-	private boolean attached;
+	protected boolean attached;
 
 	protected EditorListener() {
 		Events.run(Trigger.update, () -> valid(this::update));

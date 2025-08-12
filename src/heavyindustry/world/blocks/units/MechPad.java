@@ -161,7 +161,6 @@ public class MechPad extends Block {
 	}
 
 	public class MechPadBuild extends Building implements ControlBlock {
-
 		public float progress, time, speedScl;
 		public @Nullable BlockUnitc unit;
 

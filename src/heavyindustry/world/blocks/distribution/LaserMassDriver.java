@@ -57,7 +57,7 @@ public class LaserMassDriver extends MassDriver {
 		@Override
 		public void updateTile() {
 			super.updateTile();
-			if (state == MassDriver.DriverState.idle || state == MassDriver.DriverState.accepting) {
+			if (state == DriverState.idle || state == DriverState.accepting) {
 				int times = 20;//the output speed multiplier is 2, and the total output speed is the default 200%
 				for (int i = 0; i < times; i++) {
 					dumpAccumulate();

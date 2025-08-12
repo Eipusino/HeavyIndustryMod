@@ -8,7 +8,7 @@ import mindustry.graphics.MultiPacker;
 import mindustry.type.Item;
 import mindustry.type.Liquid;
 
-/** Must be created via {@link LiquidBottle#LiquidBottle(java.lang.String, mindustry.type.Liquid)} and after loading mods. **/
+/** Must be created via {@link LiquidBottle#LiquidBottle(String, Liquid)} and after loading mods. **/
 public class LiquidBottle extends Item {
 	public static Pixmap top;
 	public static Pixmap bottom;

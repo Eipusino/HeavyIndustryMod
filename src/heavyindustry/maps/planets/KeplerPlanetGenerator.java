@@ -11,8 +11,8 @@ import mindustry.world.Block;
 import mindustry.world.Tiles;
 
 public class KeplerPlanetGenerator extends BasePlanetGenerator {
-	public Seq<HeightPass> heights = new Seq<>();
-	public Seq<ColorPass> colors = new Seq<>();
+	public Seq<HeightPass> heights = new Seq<>(HeightPass.class);
+	public Seq<ColorPass> colors = new Seq<>(ColorPass.class);
 
 	public float baseHeight = 1;
 	public Color baseColor = Color.white;

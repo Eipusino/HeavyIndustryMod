@@ -121,7 +121,7 @@ public final class TreeLightning {
 		hit.clear();
 
 		BulletType hitCreate = hitter.type.lightningType == null ? Bullets.damageLightning : hitter.type.lightningType;
-		Seq<Vec2> lines = new Seq<>();
+		Seq<Vec2> lines = new Seq<>(Vec2.class);
 		bhit = false;
 
 		for (int i = 0; i < length / 2; i++) {

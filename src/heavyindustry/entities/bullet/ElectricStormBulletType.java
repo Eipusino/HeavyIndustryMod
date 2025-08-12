@@ -46,7 +46,7 @@ public class ElectricStormBulletType extends BulletType {
 		if (b.time >= b.lifetime - HFx.chainLightningFade.lifetime) return;
 		float baseRange = splashDamageRadius * 0.1f + splashDamageRadius * 0.9f * b.finpow();
 		if (b.timer.get(lifetime / 15f)) {
-			Seq<Healthc> t = new Seq<>();
+			Seq<Healthc> t = new Seq<>(Healthc.class);
 			indexer.allBuildings(b.x, b.y, baseRange, build -> {
 				if (!build.block.privileged && build.team != b.team && Mathf.chance(0.5f) && t.size < maxTarget) t.addUnique(build);
 			});

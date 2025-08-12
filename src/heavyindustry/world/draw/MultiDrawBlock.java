@@ -7,7 +7,7 @@ import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 
 public class MultiDrawBlock extends DrawBlock {
-	protected Seq<DrawBlock> drawBlocks = new Seq<>();
+	protected Seq<DrawBlock> drawBlocks = new Seq<>(DrawBlock.class);
 
 	public MultiDrawBlock(DrawBlock iconProvider, DrawBlock... drawBlocks) {
 		super();

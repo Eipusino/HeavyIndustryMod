@@ -63,21 +63,21 @@ import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
 public final class HDamage {
-	public static final Seq<Unit> list = new Seq<>();
+	public static final Seq<Unit> list = new Seq<>(Unit.class);
 
 	private static final UnitDamageEvent bulletDamageEvent = new UnitDamageEvent();
 	private static final Rect rect = new Rect(), rectAlt = new Rect(), hitrect = new Rect();
 	private static final Vec2 vec = new Vec2(), vec2 = new Vec2(), vec3 = new Vec2(), seg1 = new Vec2(), seg2 = new Vec2();
-	private static final Seq<Building> builds = new Seq<>();
-	private static final Seq<Unit> units = new Seq<>();
+	private static final Seq<Building> builds = new Seq<>(Building.class);
+	private static final Seq<Unit> units = new Seq<>(Unit.class);
 	private static final IntSet collidedBlocks = new IntSet();
 	private static final IntFloatMap damages = new IntFloatMap();
-	private static final Seq<Collided> collided = new Seq<>();
+	private static final Seq<Collided> collided = new Seq<>(Collided.class);
 	private static final Pool<Collided> collidePool = Pools.get(Collided.class, Collided::new);
 	private static final FloatSeq distances = new FloatSeq();
 	private static final BoolGrid collideLineCollided = new BoolGrid();
 	private static final IntSeq lineCast = new IntSeq(), lineCastNext = new IntSeq();
-	private static final Seq<Hit> hitEffects = new Seq<>();
+	private static final Seq<Hit> hitEffects = new Seq<>(Hit.class);
 
 	private static Tile furthest;
 	private static Building tmpBuilding;

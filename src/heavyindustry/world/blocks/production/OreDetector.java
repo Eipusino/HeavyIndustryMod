@@ -108,7 +108,7 @@ public class OreDetector extends Block {
 	public class OreDetectorBuild extends Building implements Ranged {
 		public boolean showOres = true;
 		public float startTime;
-		public Seq<Tile> detectedOres = new Seq<>();
+		public Seq<Tile> detectedOres = new Seq<>(Tile.class);
 
 		@Override
 		public void created() {

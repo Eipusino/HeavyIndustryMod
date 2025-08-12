@@ -32,7 +32,7 @@ import mindustry.world.blocks.environment.Floor;
 public class ChainedUnitType extends BaseUnitType {
 	//Legs extra
 	protected static Vec2 legOffsetB = new Vec2();
-	public final Seq<Seq<Weapon>> chainWeapons = new Seq<>();
+	public final Seq<Seq<Weapon>> chainWeapons = new Seq<>(Seq.class);
 	public TextureRegion
 			segmentRegion, tailRegion,
 			segmentCellRegion, tailCellRegion,
@@ -133,7 +133,7 @@ public class ChainedUnitType extends BaseUnitType {
 	}
 
 	public void sortSegWeapons(Seq<Weapon> weaponSeq) {
-		Seq<Weapon> mapped = new Seq<>();
+		Seq<Weapon> mapped = new Seq<>(Weapon.class);
 		for (int i = 0, len = weaponSeq.size; i < len; i++) {
 			Weapon w = weaponSeq.get(i);
 			if (w.recoilTime < 0f) {

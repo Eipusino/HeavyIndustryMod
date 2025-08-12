@@ -89,7 +89,7 @@ public class PowerTower extends BeamNode {
 	}
 
 	public class PowerTowerBuild extends BeamNodeBuild {
-		public Seq<Building> targets = new Seq<>();
+		public Seq<Building> targets = new Seq<>(Building.class);
 
 		@Override
 		public void updateTile() {
@@ -178,7 +178,7 @@ public class PowerTower extends BeamNode {
 
 		public void updateLink() {
 			//I know this is meaningless and stupid.
-			Seq<Building> newTargets = new Seq<>();
+			Seq<Building> newTargets = new Seq<>(Building.class);
 			indexer.eachBlock(player.team(), Tmp.r1.setCentered(x, y, linkRange * tilesize), b -> (b.power != null) && !(b instanceof PowerTowerBuild), newTargets::add);
 			for (Building build : newTargets) {
 				if (!targets.contains(build)) {

@@ -14,7 +14,7 @@ import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.meta.Stat;
 
 public class FilterCrafter extends GenericCrafter {
-	public Seq<Item> filterItemsBuilder = new Seq<>();
+	public Seq<Item> filterItemsBuilder = new Seq<>(Item.class);
 
 	public FilterCrafter(String name) {
 		super(name);

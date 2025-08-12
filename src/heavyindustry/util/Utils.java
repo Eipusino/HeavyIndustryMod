@@ -186,17 +186,17 @@ public final class Utils {
 	};
 	public static final Team[] baseTeams = {Team.derelict, Team.sharded, Team.crux, Team.green, Team.malis, Team.blue};
 
-	public static final Seq<Building> buildings = new Seq<>();
+	public static final Seq<Building> buildings = new Seq<>(Building.class);
 
 	private static final Vec2 v11 = new Vec2(), v12 = new Vec2(), v13 = new Vec2();
 	private static final IntSet collidedBlocks = new IntSet();
 	private static final Rect rect = new Rect(), hitRect = new Rect();
 	private static final IntSeq buildIdSeq = new IntSeq();
-	private static final Seq<Tile> tiles = new Seq<>();
-	private static final Seq<Unit> units = new Seq<>();
-	private static final Seq<Hit> hseq = new Seq<>();
-	private static final Seq<ItemStack> rawStacks = new Seq<>();
-	private static final Seq<Item> items = new Seq<>();
+	private static final Seq<Tile> tiles = new Seq<>(Tile.class);
+	private static final Seq<Unit> units = new Seq<>(Unit.class);
+	private static final Seq<Hit> hseq = new Seq<>(Hit.class);
+	private static final Seq<ItemStack> rawStacks = new Seq<>(ItemStack.class);
+	private static final Seq<Item> items = new Seq<>(Item.class);
 	private static final IntSet collided = new IntSet(), collided2 = new IntSet();
 	private static final BasicPool<Hit> hPool = new BasicPool<>(Hit::new);
 	private static final IntSeq amounts = new IntSeq();
@@ -734,7 +734,7 @@ public final class Utils {
 
 	public static Seq<Class<?>> getClassSubclassHierarchy(Class<?> clazz) {
 		Class<?> c = clazz.getSuperclass();
-		Seq<Class<?>> hierarchy = new Seq<>();
+		Seq<Class<?>> hierarchy = new Seq<>(Class.class);
 		while (c != null) {
 			hierarchy.add(c);
 			Class<?>[] interfaces = c.getInterfaces();
@@ -745,7 +745,7 @@ public final class Utils {
 	}
 
 	public static Seq<Turret> turrets() {
-		Seq<Turret> turretSeq = new Seq<>();
+		Seq<Turret> turretSeq = new Seq<>(Turret.class);
 		int size = content.blocks().size;
 		for (int i = 0; i < size; i++) {
 			Block b = content.block(i);
@@ -758,7 +758,7 @@ public final class Utils {
 
 	/** turret and unit only, not use contents.bullets() */
 	public static Seq<BulletType> bulletTypes() {//use item
-		Seq<BulletType> bullets = new Seq<>();
+		Seq<BulletType> bullets = new Seq<>(BulletType.class);
 		for (Turret t : turrets()) {
 			if (t instanceof ItemTurret turret) {
 				for (Item item : turret.ammoTypes.keys()) {
@@ -1222,7 +1222,7 @@ public final class Utils {
 
 	/** [0]For flying, [1] for navy, [2] for ground */
 	public static Seq<Boolf<Tile>> formats() {
-		Seq<Boolf<Tile>> seq = new Seq<>(3);
+		Seq<Boolf<Tile>> seq = new Seq<>(true, 3, Boolf.class);
 
 		seq.add(
 				t -> world.getQuadBounds(Tmp.r1).contains(t.getBounds(Tmp.r2)),
@@ -1273,7 +1273,7 @@ public final class Utils {
 	public static boolean spawnUnit(Team team, float x, float y, float angle, float spawnRange, float spawnReloadTime, float spawnDelay, UnitType type, int spawnNum, Cons<Spawner> modifier) {
 		if (type == null) return false;
 		clearTmp();
-		Seq<Vec2> vectorSeq = new Seq<>();
+		Seq<Vec2> vectorSeq = new Seq<>(Vec2.class);
 
 		if (!ableToSpawnPoints(vectorSeq, type, x, y, spawnRange, spawnNum, rand.nextLong())) return false;
 
@@ -1317,6 +1317,14 @@ public final class Utils {
 		spawner.init(type, team, v1.set(x, y), angle, delay);
 		modifier.get(spawner);
 		if (!net.client()) spawner.add();
+	}
+
+	public static <T extends QuadTreeObject> Seq<T> getObjects(QuadTree<T> tree, Class<T> arrayType) {
+		Seq<T> seq = new Seq<>(arrayType);
+
+		tree.getObjects(seq);
+
+		return seq;
 	}
 
 	public static <T extends QuadTreeObject> Seq<T> getObjects(QuadTree<T> tree) {

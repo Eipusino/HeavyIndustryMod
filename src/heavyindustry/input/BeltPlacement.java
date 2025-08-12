@@ -15,8 +15,8 @@ import static mindustry.Vars.player;
 
 // i do not know what i am doing
 public final class BeltPlacement {
-	private static final Seq<BuildPlan> plans1 = new Seq<>();
-	private static final Seq<Point2> tmpPoints = new Seq<>(), tmpPoints2 = new Seq<>();
+	private static final Seq<BuildPlan> plans1 = new Seq<>(BuildPlan.class);
+	private static final Seq<Point2> tmpPoints = new Seq<>(Point2.class), tmpPoints2 = new Seq<>(Point2.class);
 
 	private BeltPlacement() {}
 

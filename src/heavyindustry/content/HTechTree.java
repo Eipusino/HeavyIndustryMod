@@ -372,10 +372,10 @@ public final class HTechTree {
 	}
 
 	public static TechNode nodeProduce(UnlockableContent content, Runnable children) {
-		return nodeProduce(content, new Seq<>(), children);
+		return nodeProduce(content, new Seq<>(Objective.class), children);
 	}
 
 	public static TechNode nodeProduce(UnlockableContent content) {
-		return nodeProduce(content, new Seq<>(), () -> {});
+		return nodeProduce(content, new Seq<>(Objective.class), () -> {});
 	}
 }

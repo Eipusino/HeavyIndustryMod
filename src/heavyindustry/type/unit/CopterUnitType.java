@@ -10,7 +10,7 @@ import heavyindustry.gen.Copterc;
 import mindustry.gen.Unit;
 
 public class CopterUnitType extends BaseUnitType {
-	public final Seq<Rotor> rotors = new Seq<>(2);
+	public final Seq<Rotor> rotors = new Seq<>(true, 2, Rotor.class);
 	public float rotorDeathSlowdown = 0.01f;
 	public float fallRotateSpeed = 2.5f;
 
@@ -28,7 +28,7 @@ public class CopterUnitType extends BaseUnitType {
 	public void init() {
 		super.init();
 
-		Seq<Rotor> mapped = new Seq<>();
+		Seq<Rotor> mapped = new Seq<>(Rotor.class);
 		for (Rotor rotor : rotors) {
 			mapped.add(rotor);
 			if (rotor.mirror) {

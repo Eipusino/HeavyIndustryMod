@@ -12,6 +12,7 @@ import arc.util.Strings;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.type.Recipe;
 import heavyindustry.world.consumers.ConsumeRecipe;
 import mindustry.content.Fx;
 import mindustry.core.UI;
@@ -39,11 +40,11 @@ import mindustry.world.meta.StatValues;
 
 public class AdaptiveCrafter extends GenericCrafter {
 	public ObjectSet<UnlockableContent> payloadFilter = new ObjectSet<>();
-	public Seq<Recipe> recipes = new Seq<>();
+	public Seq<Recipe> recipes = new Seq<>(Recipe.class);
 
-	public Seq<Item> itemOutput = new Seq<>();
-	public Seq<Liquid> liquidOutput = new Seq<>();
-	public Seq<UnlockableContent> payloadOutput = new Seq<>();
+	public Seq<Item> itemOutput = new Seq<>(Item.class);
+	public Seq<Liquid> liquidOutput = new Seq<>(Liquid.class);
+	public Seq<UnlockableContent> payloadOutput = new Seq<>(UnlockableContent.class);
 
 	public float powerProduction = 0f;
 	public int payloadCapacity = 10;
@@ -184,32 +185,6 @@ public class AdaptiveCrafter extends GenericCrafter {
 				}
 			});
 		};
-	}
-
-	public static class Recipe {
-		public static final Recipe empty = new Recipe();
-
-		public Seq<ItemStack> inputItem = new Seq<>();
-		public Seq<LiquidStack> inputLiquid = new Seq<>();
-		public Seq<PayloadStack> inputPayload = new Seq<>();
-
-		public Seq<ItemStack> outputItem = new Seq<>();
-		public Seq<LiquidStack> outputLiquid = new Seq<>();
-		public Seq<PayloadStack> outputPayload = new Seq<>();
-
-		public float craftTime = 60f;
-
-		public Recipe(Object... objects) {
-			for (int i = 0; i < objects.length / 2; i++) {
-				if (objects[i * 2] instanceof Item item && objects[i * 2 + 1] instanceof Integer count) {
-					inputItem.add(new ItemStack(item, count));
-				} else if (objects[i * 2] instanceof Liquid liquid && objects[i * 2 + 1] instanceof Float count) {
-					inputLiquid.add(new LiquidStack(liquid, count));
-				} else if (objects[i * 2] instanceof UnlockableContent payload && objects[i * 2 + 1] instanceof Integer count) {
-					inputPayload.add(new PayloadStack(payload, count));
-				}
-			}
-		}
 	}
 
 	public class AdaptiveCrafterBuild extends GenericCrafterBuild {

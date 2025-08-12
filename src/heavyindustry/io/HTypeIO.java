@@ -71,7 +71,7 @@ public final class HTypeIO {
 
 	public static Seq<String> readStrings(Reads read) {
 		int size = read.i();
-		Seq<String> out = new Seq<>(size);
+		Seq<String> out = new Seq<>(true, size, String.class);
 
 		for (int i = 0; i < size; i++) out.add(read.str());
 		return out;
@@ -84,7 +84,7 @@ public final class HTypeIO {
 
 	public static <T extends Enum<T>> Seq<T> readEnums(Reads read, FromOrdinal<T> prov) {
 		int size = read.i();
-		Seq<T> out = new Seq<>(size);
+		Seq<T> out = new Seq<>(true, size);
 
 		for (int i = 0; i < size; i++) out.add(prov.get(read.b()));
 		return out;

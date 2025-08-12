@@ -67,7 +67,8 @@ public class EnergyUnitType extends AncientUnitType {
 
 				float angle = Angles.angle(e.x, e.y, v.x, v.y);
 				float dst = Mathf.dst(e.x, e.y, v.x, v.y);
-				Rand rand = new Rand(e.id);
+				Rand rand = HFx.rand3;
+				rand.setSeed(e.id);
 				Tmp.v1.set(v).sub(e.x, e.y).nor().scl(tilesize * 3f);
 				Lines.stroke(Mathf.curve(e.fout(), 0, 0.3f) * 1.75f);
 				Draw.color(e.color, Color.white, e.fout() * 0.75f);
@@ -85,7 +86,8 @@ public class EnergyUnitType extends AncientUnitType {
 
 				float angle = Angles.angle(e.x, e.y, v.x, v.y);
 				float dst = Mathf.dst(e.x, e.y, v.x, v.y);
-				Rand rand = new Rand(e.id);
+				Rand rand = HFx.rand3;
+				rand.setSeed(e.id);
 				Tmp.v1.set(v).sub(e.x, e.y).nor().scl(tilesize * 3f);
 				Lines.stroke(Mathf.curve(e.fout(), 0, 0.3f) * 1.75f);
 				Draw.color(e.color, Color.white, e.fout() * 0.75f);

@@ -171,7 +171,7 @@ public class PayloadCrane extends Block {
 		public float craneRotation = 90f, extension;
 		public Vec2 target = new Vec2();
 		public Payload payload;
-		public Seq<CranePoint> cranePoints = new Seq<>();
+		public Seq<CranePoint> cranePoints = new Seq<>(CranePoint.class);
 		// player control debounce thing
 		public boolean acted;
 

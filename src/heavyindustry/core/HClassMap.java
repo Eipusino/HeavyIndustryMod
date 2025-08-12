@@ -1,5 +1,7 @@
 package heavyindustry.core;
 
+import heavyindustry.ai.ChainedAI;
+import heavyindustry.ai.CopterAI;
 import heavyindustry.ai.MinerDepotAI;
 import heavyindustry.ai.HealingDefenderAI;
 import heavyindustry.ai.MinerPointAI;
@@ -76,6 +78,7 @@ import heavyindustry.type.ExtraSectorPreset;
 import heavyindustry.type.LiquidBottle;
 import heavyindustry.type.MultiCellLiquid;
 import heavyindustry.type.NonThreateningSector;
+import heavyindustry.type.Recipe;
 import heavyindustry.type.ammo.VanityAmmoType;
 import heavyindustry.type.unit.AncientUnitType;
 import heavyindustry.type.unit.BaseUnitType;
@@ -314,6 +317,8 @@ final class HClassMap {
 	static void load() {
 		//ai
 		classes.put("NullAI", NullAI.class);
+		classes.put("ChainedAI", ChainedAI.class);
+		classes.put("CopterAI", CopterAI.class);
 		classes.put("HealingDefenderAI", HealingDefenderAI.class);
 		classes.put("SentryAI", SentryAI.class);
 		classes.put("SniperAI", SniperAI.class);
@@ -659,7 +664,7 @@ final class HClassMap {
 		classes.put("MechPad", MechPad.class);
 		classes.put("MechPadBuild", MechPad.MechPadBuild.class);
 		classes.put("JumpGate", JumpGate.class);
-		classes.put("JumpGateBuild", JumpGate.JumpGateBuild.class);
+		classes.put("LegacyJumpGateBuild", JumpGate.JumpGateBuild.class);
 		classes.put("UnitBoost", UnitBoost.class);
 		classes.put("UnitBoostBuild", UnitBoost.UnitBoostBuild.class);
 		classes.put("UnitIniter", UnitIniter.class);
@@ -713,7 +718,7 @@ final class HClassMap {
 		classes.put("CraftPlan", MultiCrafter.CraftPlan.class);
 		classes.put("AdaptiveCrafter", AdaptiveCrafter.class);
 		classes.put("AdaptiveCrafterBuild", AdaptiveCrafter.AdaptiveCrafterBuild.class);
-		classes.put("Recipe", AdaptiveCrafter.Recipe.class);
+		classes.put("Recipe", Recipe.class);
 		classes.put("AugerSoildPump", AugerSoildPump.class);
 		classes.put("AugerSoildPumpBuild", AugerSoildPump.AugerSoildPumpBuild.class);
 		classes.put("DrawerDrill", DrawerDrill.class);

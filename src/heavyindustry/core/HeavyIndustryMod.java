@@ -102,33 +102,29 @@ public final class HeavyIndustryMod extends Mod {
 		HClassMap.load();
 
 		Events.on(ClientLoadEvent.class, event -> {
-			if (isPlugin) return;
+			if (isPlugin || headless || Core.settings.getBool("hi-closed-dialog")) return;
 
 			String close = Core.bundle.get("close");
 
-			dia: {
-				if (headless || Core.settings.getBool("hi-closed-dialog")) break dia;
-
-				FLabel label = new FLabel(Core.bundle.get("hi-author") + AUTHOR);
-				BaseDialog dialog = new BaseDialog(Core.bundle.get("hi-name")) {{
-					buttons.button(close, this::hide).size(210f, 64f);
-					buttons.button((Core.bundle.get("hi-link-github")), () -> {
-						if (!Core.app.openURI(LINK_GIT_HUB)) {
-							ui.showErrorMessage("@linkfail");
-							Core.app.setClipboardText(LINK_GIT_HUB);
-						}
-					}).size(210f, 64f);
-					cont.pane(t -> {
-						t.image(Core.atlas.find(MOD_NAME + "-cover")).left().size(600f, 403f).pad(3f).row();
-						t.add(Core.bundle.get("hi-version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
-						t.add(label).left().row();
-						t.add(Core.bundle.get("hi-class")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
-						t.add(Core.bundle.get("hi-oh-no")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
-						t.add(Core.bundle.get("hi-oh-no-l")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
-					}).grow().center().maxWidth(600f);
-				}};
-				dialog.show();
-			}
+			FLabel label = new FLabel(Core.bundle.get("hi-author") + AUTHOR);
+			BaseDialog dialog = new BaseDialog(Core.bundle.get("hi-name")) {{
+				buttons.button(close, this::hide).size(210f, 64f);
+				buttons.button((Core.bundle.get("hi-link-github")), () -> {
+					if (!Core.app.openURI(LINK_GIT_HUB)) {
+						ui.showErrorMessage("@linkfail");
+						Core.app.setClipboardText(LINK_GIT_HUB);
+					}
+				}).size(210f, 64f);
+				cont.pane(t -> {
+					t.image(Core.atlas.find(MOD_NAME + "-cover")).left().size(600f, 403f).pad(3f).row();
+					t.add(Core.bundle.get("hi-version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
+					t.add(label).left().row();
+					t.add(Core.bundle.get("hi-class")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
+					t.add(Core.bundle.get("hi-oh-no")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
+					t.add(Core.bundle.get("hi-oh-no-l")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
+				}).grow().center().maxWidth(600f);
+			}};
+			dialog.show();
 		});
 
 		Events.on(FileTreeInitEvent.class, event -> {
@@ -246,15 +242,13 @@ public final class HeavyIndustryMod extends Mod {
 			});
 		}
 
-		set: {
-			String massage = Core.bundle.get("hi-random-massage");
-			String[] massageSplit = massage.split("&");
+		if (headless || ui == null || modEnabled("extra-utilities") || !Core.settings.getBool("hi-floating-text")) return;
 
-			if (headless || ui == null || modEnabled("extra-utilities") || !Core.settings.getBool("hi-floating-text")) break set;
+		String massage = Core.bundle.get("hi-random-massage");
+		String[] massageSplit = massage.split("&");
 
-			floatingText = new FloatingText(massageSplit[Mathf.random(massageSplit.length - 1)]);
-			floatingText.build(ui.menuGroup);
-		}
+		floatingText = new FloatingText(massageSplit[Mathf.random(massageSplit.length - 1)]);
+		floatingText.build(ui.menuGroup);
 	}
 
 	public static boolean isHeavyIndustry(@Nullable Content content) {

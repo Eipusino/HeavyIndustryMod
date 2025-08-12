@@ -65,7 +65,7 @@ public class AssignOverdrive extends OverdriveProjector {
 	}
 
 	public class AssignOverdriveBuild extends OverdriveBuild implements LinkGroupc {
-		protected Seq<Building> builds = new Seq<>();
+		protected Seq<Building> builds = new Seq<>(Building.class);
 		protected IntSeq targets = new IntSeq(maxLink);
 
 		@Override

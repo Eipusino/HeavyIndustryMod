@@ -58,7 +58,7 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 	public TextureRegion bottomRegion;
 	public TextureRegion rotatorRegion;
 
-	public Seq<ItemHave> tmpWhatHave = new Seq<>(32);
+	public Seq<ItemHave> tmpWhatHave = new Seq<>(true, 32, ItemHave.class);
 
 	public ResourcesDispatchingCenter(String name) {
 		super(name);
@@ -416,11 +416,11 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 				table.row();
 				table.left();
 				table.table((l -> {
-					var map = new IntIntMap();
+					IntIntMap map = new IntIntMap();
 					l.update((() -> {
 						l.clearChildren();
 						l.left();
-						var seq = new Seq<>(Item.class);
+						Seq<Item> seq = new Seq<>(Item.class);
 						items.each((item, amount) -> {
 							map.put(item.id, amount);
 							seq.add(item);

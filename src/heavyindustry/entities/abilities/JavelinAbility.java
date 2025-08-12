@@ -26,7 +26,7 @@ import mindustry.world.meta.StatUnit;
 import static mindustry.Vars.state;
 
 public class JavelinAbility extends Ability {
-	protected final Seq<Healthc> targets = new Seq<>();
+	protected final Seq<Healthc> targets = new Seq<>(Healthc.class);
 
 	public String suffix = "-overlay";
 	public String name;

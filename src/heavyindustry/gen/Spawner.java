@@ -47,7 +47,7 @@ import mindustry.ui.Fonts;
 
 import java.nio.FloatBuffer;
 
-import static heavyindustry.HVars.name;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.tilesize;
 
@@ -78,14 +78,14 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 		return drawSize + 500;
 	}
 
-	public Spawner init(UnitType v1, Team v2, Position v3, float v4, float v5) {
-		type = v1;
-		lifetime = v5;
-		rotation = v4;
-		team = v2;
-		drawSize = v1.hitSize;
+	public Spawner init(UnitType unit, Team t, Position pos, float rot, float life) {
+		type = unit;
+		lifetime = life;
+		rotation = rot;
+		team = t;
+		drawSize = unit.hitSize;
 		trailWidth = Mathf.clamp(drawSize / 15f, 1.25f, 4f);
-		set(v3);
+		set(pos);
 
 		return this;
 	}
@@ -226,7 +226,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 	public void draw() {
 		if (type.health > 8000 && team != Vars.player.team()) HSounds.alertLoop();
 
-		TextureRegion arrowRegion = Core.atlas.find(name("jump-gate-arrow"));
+		TextureRegion arrowRegion = Core.atlas.find(MOD_NAME + "-jump-gate-arrow");
 
 		Drawf.light(x, y, clipSize() * fout(), team.color, 0.7f);
 		Draw.z(Layer.effect - 1f);

@@ -155,7 +155,7 @@ public final class HTrails {
 
 		public DriftTrail(int len) {
 			length = len;
-			points = new Seq<>(len);
+			points = new Seq<>(true, len, DriftTrailData.class);
 		}
 
 		public DriftTrail copy() {

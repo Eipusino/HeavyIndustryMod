@@ -33,7 +33,7 @@ public class PayloadBuffer extends PayloadBlock {
 	}
 
 	public class PayloadBufferBuild extends PayloadBlockBuild<Payload> {
-		public final Seq<Payload> inventory = new Seq<>(8);
+		public final Seq<Payload> inventory = new Seq<>(true, 8, Payload.class);
 
 		public Building next;
 		public float payloadUsed;

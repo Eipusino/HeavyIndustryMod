@@ -63,7 +63,7 @@ public class RegenWall extends Wall {
 	}
 
 	public class RegenWallBuild extends WallBuild {
-		public Seq<Building> targets = new Seq<>();
+		public Seq<Building> targets = new Seq<>(Building.class);
 		public int lastChange = -2;
 		public float warmup, totalTime;
 		public boolean anyTargets = false;

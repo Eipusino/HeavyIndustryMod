@@ -14,12 +14,17 @@ import mindustry.content.Liquids;
 import mindustry.content.Planets;
 import mindustry.content.StatusEffects;
 import mindustry.content.UnitTypes;
+import mindustry.ctype.UnlockableContent;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.ContinuousFlameBulletType;
 import mindustry.entities.bullet.ContinuousLaserBulletType;
 import mindustry.entities.bullet.LiquidBulletType;
 import mindustry.entities.bullet.RailBulletType;
 import mindustry.entities.bullet.ShrapnelBulletType;
+import mindustry.entities.effect.ExplosionEffect;
+import mindustry.entities.effect.MultiEffect;
+import mindustry.entities.effect.WaveEffect;
+import mindustry.gen.Sounds;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.type.Item;
@@ -62,6 +67,8 @@ import mindustry.world.meta.BuildVisibility;
 
 /**
  * Covering the original content.
+ * <p> An overwriter class designed to easily modify vanilla contents. This has to be used with <em>huge
+ * responsibility</em>, we do not want to break other mods or even the vanilla Mindustry itself.
  *
  * @author Eipusino
  */
@@ -77,7 +84,7 @@ public final class HOverrides {
 	 */
 	public static void load() {
 		//blocks-environment
-		Blocks.stone.itemDrop = Blocks.craters.itemDrop = Blocks.charr.itemDrop = HItems.stone;
+		Blocks.stone.itemDrop = Blocks.craters.itemDrop = Blocks.charr.itemDrop = Blocks.basalt.itemDrop = Blocks.dacite.itemDrop = HItems.stone;
 		Blocks.stone.playerUnmineable = Blocks.craters.playerUnmineable = Blocks.charr.playerUnmineable = true;
 		Blocks.sandWater.itemDrop = Blocks.darksandWater.itemDrop = Blocks.darksandTaintedWater.itemDrop = Items.sand;
 		Blocks.sandWater.playerUnmineable = Blocks.darksandWater.playerUnmineable = Blocks.darksandTaintedWater.playerUnmineable = true;
@@ -243,8 +250,8 @@ public final class HOverrides {
 		Blocks.sublimate.armor = 4f;
 		((ContinuousLiquidTurret) Blocks.sublimate).range = 120f;
 		((ContinuousLiquidTurret) Blocks.sublimate).ammo(HLiquids.gas, new ContinuousFlameBulletType() {{
-			damage = 40f;
-			length = 120f;
+			damage = 90f;
+			length = 160f;
 			knockback = 1f;
 			pierceCap = 2;
 			buildingDamageMultiplier = 0.3f;
@@ -274,6 +281,66 @@ public final class HOverrides {
 		Blocks.titan.researchCost = ItemStack.with(Items.thorium, 4000, Items.silicon, 3000, Items.tungsten, 2500);
 		Blocks.disperse.armor = 9f;
 		Blocks.afflict.armor = 16f;
+		((PowerTurret) Blocks.afflict).shootType = new BasicBulletType(5f, 180f, "large-orb") {{
+			shootEffect = new MultiEffect(Fx.shootTitan, new WaveEffect() {{
+				colorTo = Pal.surge;
+				sizeTo = 26f;
+				lifetime = 14f;
+				strokeFrom = 4f;
+			}});
+			smokeEffect = Fx.shootSmokeTitan;
+			hitColor = Pal.surge;
+			trailEffect = Fx.missileTrail;
+			trailInterval = 3f;
+			trailParam = 4f;
+			pierceCap = 2;
+			fragOnHit = false;
+			lifetime = 80f;
+			width = height = 16f;
+			backColor = Pal.surge;
+			frontColor = Color.white;
+			shrinkX = shrinkY = 0f;
+			trailColor = Pal.surge;
+			trailLength = 12;
+			trailWidth = 2.2f;
+			despawnEffect = hitEffect = new ExplosionEffect() {{
+				waveColor = Pal.surge;
+				smokeColor = Color.gray;
+				sparkColor = Pal.sap;
+				waveStroke = 4f;
+				waveRad = 40f;
+			}};
+			despawnSound = Sounds.dullExplosion;
+			fragBullet = intervalBullet = new BasicBulletType(3f, 35) {{
+				width = 9f;
+				hitSize = 5f;
+				height = 15f;
+				pierce = true;
+				lifetime = 35f;
+				pierceBuilding = true;
+				hitColor = backColor = trailColor = Pal.surge;
+				frontColor = Color.white;
+				trailWidth = 2.1f;
+				trailLength = 5;
+				hitEffect = despawnEffect = new WaveEffect() {{
+					colorFrom = colorTo = Pal.surge;
+					sizeTo = 4f;
+					strokeFrom = 4f;
+					lifetime = 10f;
+				}};
+				buildingDamageMultiplier = 0.3f;
+				homingPower = 0.2f;
+			}};
+			bulletInterval = 3f;
+			intervalRandomSpread = 20f;
+			intervalBullets = 2;
+			intervalAngle = 180f;
+			intervalSpread = 300f;
+			fragBullets = 20;
+			fragVelocityMin = 0.5f;
+			fragVelocityMax = 1.5f;
+			fragLifeMin = 0.5f;
+		}};
 		Blocks.lustre.armor = 15f;
 		Blocks.scathe.armor = 15f;
 		Blocks.smite.armor = 21f;
@@ -327,6 +394,11 @@ public final class HOverrides {
 		Items.erekirItems.addAll(HItems.uranium, HItems.chromium, HItems.originium);
 		//planet
 		Planets.serpulo.allowSectorInvasion = false;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T extends UnlockableContent> void overwrite(UnlockableContent target, Cons<T> setter) {
+		setter.get((T) target);
 	}
 
 	//Is this really necessary?

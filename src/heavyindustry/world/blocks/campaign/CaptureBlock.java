@@ -49,7 +49,7 @@ public class CaptureBlock extends Block {
 	}
 
 	public class CaptureBuild extends Building {
-		protected final Seq<Player> players = new Seq<>();
+		protected final Seq<Player> players = new Seq<>(Player.class);
 		protected final Color teamColor = team().color.cpy();
 
 		public float progress, warmup, totalProgress, capturingFrac;

@@ -29,7 +29,7 @@ import mindustry.world.meta.StatUnit;
 import static mindustry.Vars.state;
 
 public class SelectableReconstructor extends Reconstructor {
-	public Seq<DynamicUnitPlan> plans = new Seq<>();
+	public Seq<DynamicUnitPlan> plans = new Seq<>(DynamicUnitPlan.class);
 
 	public SelectableReconstructor(String name) {
 		super(name);

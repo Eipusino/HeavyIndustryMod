@@ -92,7 +92,7 @@ public class CoreStorageBlock extends StorageBlock {
 	public boolean canPlaceOn(Tile tile, Team team, int rotation) {
 		if (state.rules.infiniteResources) return true;
 
-		CoreBlock.CoreBuild core = team.core();
+		CoreBuild core = team.core();
 		if (core == null || (!state.rules.infiniteResources && !core.items.has(requirements, state.rules.buildCostMultiplier)))
 			return false;
 

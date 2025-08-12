@@ -53,7 +53,7 @@ public final class HUnitSorts {
 
 	private static float temp;
 
-	public static Units.Sortf denser = (e, x, y) -> {
+	public static Sortf denser = (e, x, y) -> {
 		temp = e.maxHealth;
 		e.team.data().unitTree.intersect(e.x - 64, e.y - 64, 128, 128, u -> {
 			temp += u.maxHealth / u.dst(e);
@@ -86,31 +86,31 @@ public final class HUnitSorts {
 		return findEnemies(targets, team, x, y, range, null, UnitSorts.closest, true);
 	}
 
-	public static Unit[] findEnemies(int targets, Teamc team, float range, Units.Sortf sortf) {
+	public static Unit[] findEnemies(int targets, Teamc team, float range, Sortf sortf) {
 		return findEnemies(targets, team.team(), team.x(), team.y(), range, null, sortf, true);
 	}
 
-	public static Unit[] findEnemies(int targets, Teamc team, float range, Boolf2<Unit[], Unit> filter, Units.Sortf sortf) {
+	public static Unit[] findEnemies(int targets, Teamc team, float range, Boolf2<Unit[], Unit> filter, Sortf sortf) {
 		return findEnemies(targets, team.team(), team.x(), team.y(), range, filter, sortf, true);
 	}
 
-	public static Unit[] findEnemies(int targets, Teamc team, float x, float y, float range, Boolf2<Unit[], Unit> filter, Units.Sortf sortf) {
+	public static Unit[] findEnemies(int targets, Teamc team, float x, float y, float range, Boolf2<Unit[], Unit> filter, Sortf sortf) {
 		return findEnemies(targets, team.team(), x, y, range, filter, sortf, true);
 	}
 
-	public static Unit[] findEnemies(int targets, Teamc team, float x, float y, float range, Units.Sortf sortf) {
+	public static Unit[] findEnemies(int targets, Teamc team, float x, float y, float range, Sortf sortf) {
 		return findEnemies(targets, team.team(), x, y, range, null, sortf, true);
 	}
 
-	public static Unit[] findEnemies(int targets, Team team, float x, float y, float range, Units.Sortf sortf) {
+	public static Unit[] findEnemies(int targets, Team team, float x, float y, float range, Sortf sortf) {
 		return findEnemies(targets, team, x, y, range, null, sortf, true);
 	}
 
-	public static Unit[] findEnemies(int targets, Team team, float x, float y, float range, Boolf2<Unit[], Unit> filter, Units.Sortf sortf) {
+	public static Unit[] findEnemies(int targets, Team team, float x, float y, float range, Boolf2<Unit[], Unit> filter, Sortf sortf) {
 		return findEnemies(targets, team, x, y, range, filter, sortf, true);
 	}
 
-	public static Unit[] findEnemies(int targets, Team team, float x, float y, float range, Boolf2<Unit[], Unit> filter, Units.Sortf sortf, boolean ignoredNull) {
+	public static Unit[] findEnemies(int targets, Team team, float x, float y, float range, Boolf2<Unit[], Unit> filter, Sortf sortf, boolean ignoredNull) {
 		if (targets <= 0)
 			throw new IllegalArgumentException("targets must bigger than 0");
 

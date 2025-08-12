@@ -103,7 +103,7 @@ public class MultiBulletTurret extends Turret {
 	}
 
 	public class MultiBulletTurretBuild extends TurretBuild {
-		public Seq<ItemEntry> ammo = new Seq<>();
+		public Seq<ItemEntry> ammo = new Seq<>(ItemEntry.class);
 		public int bid = 0;
 		public float resetBidTimer = 0;
 
@@ -194,7 +194,7 @@ public class MultiBulletTurret extends Turret {
 				}
 			}
 
-			ammo.add(new MultiBulletTurret.ItemEntry(item, ammoMultiplier));
+			ammo.add(new ItemEntry(item, ammoMultiplier));
 		}
 
 		@Override
@@ -348,7 +348,7 @@ public class MultiBulletTurret extends Turret {
 
 				if (item != null && ammoTypes.containsKey(item)) {
 					totalAmmo += a;
-					ammo.add(new MultiBulletTurret.ItemEntry(item, a));
+					ammo.add(new ItemEntry(item, a));
 				}
 			}
 		}

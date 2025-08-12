@@ -12,7 +12,7 @@ import arc.struct.Seq;
 import mindustry.game.EventType.Trigger;
 
 public class ShaderTextureRegion extends TextureRegion {
-	public static final Seq<ShaderTextureRegion> regions = new Seq<>();
+	public static final Seq<ShaderTextureRegion> regions = new Seq<>(ShaderTextureRegion.class);
 
 	static {
 		Events.run(Trigger.update, () -> regions.each(ShaderTextureRegion::updateShader));

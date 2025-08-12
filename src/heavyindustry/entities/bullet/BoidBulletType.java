@@ -12,7 +12,7 @@ public class BoidBulletType extends BasicBulletType {
 	public float cohesion = 1.7f;
 	public float sep = 10f;
 
-	protected final Seq<Bullet> close = new Seq<>();
+	protected final Seq<Bullet> close = new Seq<>(Bullet.class);
 
 	public BoidBulletType(float speed, float damage) {
 		super(speed, damage, "missile");

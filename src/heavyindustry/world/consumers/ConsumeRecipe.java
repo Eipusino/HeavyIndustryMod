@@ -3,7 +3,7 @@ package heavyindustry.world.consumers;
 import arc.func.Func;
 import arc.scene.ui.layout.Table;
 import arc.util.Nullable;
-import heavyindustry.world.blocks.production.AdaptiveCrafter.Recipe;
+import heavyindustry.type.Recipe;
 import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.type.ItemStack;

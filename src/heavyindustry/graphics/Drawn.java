@@ -291,10 +291,6 @@ public final class Drawn {
 		Draw.reset();
 	}
 
-	/*public static void selected(Buildingc tile, Color color) {
-		Drawf.selected(tile.tile(), color);
-	}*/
-
 	public static void posSquareLink(Color color, float stroke, float size, boolean drawBottom, float x, float y, float x2, float y2) {
 		posSquareLink(color, stroke, size, drawBottom, v6.set(x, y), v6.set(x2, y2));
 	}
@@ -524,7 +520,7 @@ public final class Drawn {
 	}
 
 	public static void drawRotRect(TextureRegion region, float x, float y, float w, float rot_h, float true_h, float rot, float ang1, float ang2) {
-		if (region == null || !Core.settings.getBool("effects")) return;
+		if (region == null) return;
 
 		float amod1 = Mathf.mod(ang1, 360f);
 		float amod2 = Mathf.mod(ang2, 360f);
@@ -602,10 +598,10 @@ public final class Drawn {
 	}
 
 	public static void drawRectOrtho(TextureRegion region, float x, float y, float ox, float oy, float z, float w, float h, float rotY, float rotZ, float sprrotZ) {
-		tmpV[3].set(+w * 0.5f, +h * 0.5f, 0);
-		tmpV[0].set(-w * 0.5f, +h * 0.5f, 0);
+		tmpV[3].set(w * 0.5f, h * 0.5f, 0);
+		tmpV[0].set(-w * 0.5f, h * 0.5f, 0);
 		tmpV[1].set(-w * 0.5f, -h * 0.5f, 0);
-		tmpV[2].set(+w * 0.5f, -h * 0.5f, 0);
+		tmpV[2].set(w * 0.5f, -h * 0.5f, 0);
 
 		tmpV2.set(ox, oy, z);
 		matT.idt();

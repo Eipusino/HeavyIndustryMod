@@ -129,7 +129,7 @@ public class UnitBoost extends Block {
 	}
 
 	public class UnitBoostBuild extends Building implements HeatConsumer {
-		protected final Seq<Float[]> pos = new Seq<>();
+		protected final Seq<Float[]> pos = new Seq<>(Float[].class);
 		protected final Pool<ExtPos> posPool = Pools.get(ExtPos.class, ExtPos::new);
 
 		public float[] sideHeat = new float[4];

@@ -1,856 +1,443 @@
 package heavyindustry.world.blocks.units;
 
 import arc.Core;
-import arc.func.Cons;
+import arc.func.Boolp;
 import arc.func.Cons2;
+import arc.func.Prov;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.graphics.g2d.TextureRegion;
-import arc.input.KeyCode;
+import arc.math.Angles;
 import arc.math.Mathf;
-import arc.math.geom.Point2;
 import arc.math.geom.Vec2;
-import arc.scene.Element;
-import arc.scene.style.TextureRegionDrawable;
-import arc.scene.ui.Label;
-import arc.scene.ui.Slider;
+import arc.scene.ui.Image;
 import arc.scene.ui.layout.Stack;
 import arc.scene.ui.layout.Table;
-import arc.struct.IntMap;
-import arc.struct.IntSeq;
-import arc.struct.ObjectIntMap;
 import arc.struct.Seq;
-import arc.util.Align;
 import arc.util.Nullable;
 import arc.util.Scaling;
 import arc.util.Strings;
-import arc.util.Structs;
-import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.content.HFx;
-import heavyindustry.graphics.Drawn;
-import heavyindustry.ui.ItemDisplay;
-import heavyindustry.ui.ItemImage;
-import heavyindustry.ui.ItemImageDynamic;
-import heavyindustry.ui.Elements;
-import heavyindustry.util.Structf;
+import heavyindustry.gen.Spawner;
+import heavyindustry.type.Recipe;
+import heavyindustry.ui.DelaySlideTable;
 import heavyindustry.util.Utils;
+import heavyindustry.world.consumers.ConsumeRecipe;
 import mindustry.content.Fx;
 import mindustry.content.UnitTypes;
-import mindustry.core.World;
+import mindustry.core.UI;
+import mindustry.ctype.UnlockableContent;
 import mindustry.entities.Units;
-import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.gen.Icon;
 import mindustry.gen.Iconc;
 import mindustry.gen.Tex;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
-import mindustry.graphics.MultiPacker;
 import mindustry.graphics.Pal;
 import mindustry.io.TypeIO;
-import mindustry.logic.Ranged;
-import mindustry.type.Category;
-import mindustry.type.Item;
 import mindustry.type.ItemStack;
+import mindustry.type.PayloadSeq;
+import mindustry.type.PayloadStack;
 import mindustry.type.UnitType;
 import mindustry.ui.Bar;
 import mindustry.ui.Fonts;
 import mindustry.ui.Styles;
-import mindustry.ui.dialogs.BaseDialog;
-import mindustry.ui.dialogs.ContentInfoDialog;
 import mindustry.world.Block;
 import mindustry.world.Tile;
-import mindustry.world.meta.BlockGroup;
-import mindustry.world.meta.Env;
+import mindustry.world.blocks.payloads.Payload;
+import mindustry.world.blocks.units.UnitAssembler;
 import mindustry.world.meta.Stat;
-import mindustry.world.meta.StatUnit;
+import mindustry.world.meta.StatValues;
 import mindustry.world.modules.ItemModule;
 
-import java.util.Arrays;
-
-import static heavyindustry.HVars.name;
-import static heavyindustry.ui.Elements.LEN;
-import static heavyindustry.ui.Elements.OFFSET;
-import static mindustry.Vars.mobile;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static mindustry.Vars.net;
 import static mindustry.Vars.state;
 import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
 
 public class JumpGate extends Block {
-	protected static final ObjectIntMap<UnitSet> allSets = new ObjectIntMap<>();
-	protected static final Seq<IntMap.Entry<UnitSet>> tmpSetSeq = new Seq<>();
-	protected static final Vec2 linkVec = new Vec2();
-	protected static final Point2 point = new Point2();
+	public Seq<UnitRecipe> recipeList = new Seq<>(UnitRecipe.class);
+	public float warmupPerSpawn = 0.2f;
+	public float maxWarmupSpeed = 3f;
 
-	protected static int lastSelectedInt = 0;
-	protected static int selectId = 0, selectNum = 1;
+	public float maxRadius = 180f;
 
-	public final IntMap<UnitSet> calls = new IntMap<>();
-	public int maxSpawnPerOne = 15;
-	public boolean adaptable = false;
+	public int maxSpawnCount = 16;
 
-	public float spawnDelay = 5f;
-	public float spawnReloadTime = 180f;
-	public float spawnRange = tilesize * 12f;
-	public float range = 200f;
-	public float atlasSizeScl = 1f;
-	public float basePowerDraw = 2f;
-	public TextureRegion pointerRegion, arrowRegion;
-	public Color baseColor;
-	public float squareStroke = 2f;
-	public float cooldownTime = 300f;
-	public float buildSpeedMultiplierCoefficient = 1f;
+	public TextureRegion arrowRegion, pointerRegion;
+
+	//todo duplicated code
+	public Cons2<JumpGateBuild, Boolean> blockDrawer = (building, valid) -> {
+		Draw.z(Layer.bullet);
+
+		float scl = building.warmup() * 0.125f;
+		float rot = building.totalProgress();
+
+		Draw.color(building.team.color);
+		Lines.stroke(8f * scl);
+		Lines.square(building.x, building.y, building.block.size * tilesize / 2.5f, -rot);
+		Lines.square(building.x, building.y, building.block.size * tilesize / 2f, rot);
+		for (int i = 0; i < 4; i++) {
+			float length = tilesize * building.block.size / 2f + 8f;
+			float rotation = i * 90;
+			float sin = Mathf.absin(building.totalProgress(), 16f, tilesize);
+			float signSize = 0.75f + Mathf.absin(building.totalProgress() + 8f, 8f, 0.15f);
+
+			Tmp.v1.trns(rotation + rot, -length);
+			Draw.rect(arrowRegion, building.x + Tmp.v1.x, building.y + Tmp.v1.y, arrowRegion.width * scl, arrowRegion.height * scl, rotation + 90 + rot);
+			length = tilesize * building.block.size / 2f + 3 + sin;
+			Tmp.v1.trns(rotation, -length);
+			Draw.rect(pointerRegion, building.x + Tmp.v1.x, building.y + Tmp.v1.y, pointerRegion.width * signSize * scl, pointerRegion.height * signSize * scl, rotation + 90);
+		}
+		Draw.color();
+	};
 
 	public JumpGate(String name) {
 		super(name);
-		copyConfig = true;
-		update = true;
-		sync = true;
-		configurable = true;
-		acceptsItems = true;
-		unloadable = true;
 		solid = true;
+		sync = true;
+		breakable = true;
+		update = true;
 		commandable = true;
-		hasPower = hasItems = true;
-		timers = 3;
-		envEnabled = Env.any;
-		category = Category.units;
+		configurable = true;
+		saveConfig = true;
+		canOverdrive = false;
 		logicConfigurable = true;
-		separateItemCapacity = true;
-		group = BlockGroup.units;
+		clearOnDoubleTap = true;
+		allowConfigInventory = false;
+		unloadable = false;
 
-		consumePowerCond(basePowerDraw, (JumpGateBuild b) -> !b.isCalling());
+		config(Integer.class, JumpGateBuild::changePlan);
+		config(Float.class, JumpGateBuild::changeSpawnCount);
+		configClear((JumpGateBuild e) -> e.recipeIndex = -1);
 
-		config(Boolean.class, (JumpGateBuild tile, Boolean i) -> {
-			if (i) tile.spawn(tile.getSet());
-			else tile.startBuild(0, 0);
-		});
-		config(Point2.class, (Cons2<JumpGateBuild, Point2>) JumpGateBuild::linkPos);
-		config(IntSeq.class, (JumpGateBuild tile, IntSeq seq) -> {
-			if (seq.size < 3) return;
-			if (seq.get(0) == 0) {
-				tile.startBuild(seq.get(1), seq.get(2));
-			} else {
-				tile.planSpawnId = seq.get(1);
-				tile.planSpawnNum = seq.get(2);
+		consume(new ConsumeRecipe(JumpGateBuild::recipe));
+		consumeBuilder.each(c -> c.multiplier = b -> {
+			if (b instanceof JumpGateBuild gate) {
+				return gate.costMultiplier();
 			}
-		});
-		configClear((JumpGateBuild tile) -> tile.startBuild(0, 0));
-	}
-
-	public static boolean hideSet(UnitType type) {
-		return state.rules.bannedUnits.contains(type) || type.locked() && !state.rules.infiniteResources && state.isCampaign();
-	}
-
-	@Override
-	public boolean canReplace(Block other) {
-		return super.canReplace(other) || (other instanceof JumpGate && size > other.size);
-	}
-
-	@Override
-	public void drawPlace(int x, int y, int rotation, boolean valid) {
-		Color color = baseColor == null ? Pal.accent : baseColor;
-		Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, range, color);
-	}
-
-	public void addSets(UnitSet... sets) {
-		for (UnitSet set : sets) {
-			calls.put(set.hashCode(), set);
-		}
-	}
-
-	@Override
-	public void init() {
-		super.init();
-		if (calls.isEmpty()) throw new IllegalArgumentException("Seq @calls is [red]EMPTY[].");
-		for (UnitSet set : calls.values()) {
-			allSets.put(set, size);
-		}
-
-		clipSize = size * tilesize * 4;
-		if (adaptable) for (UnitSet set : allSets.keys()) {
-			if (allSets.get(set) >= size) continue;
-			calls.put(set.hashCode(), set);
-		}
-
-		Seq<UnitSet> keys = calls.values().toArray();
-		calls.clear();
-		keys.sort();
-		for (UnitSet set : keys) calls.put(set.hashCode(), set);
-	}
-
-	public Seq<Integer> getSortedKeys() {
-		Seq<UnitSet> keys = calls.values().toArray().sort();
-		Seq<Integer> hashs = new Seq<>();
-		for (UnitSet set : keys) {
-			hashs.add(set.hashCode());
-		}
-		return hashs;
-	}
-
-	@Override
-	public void createIcons(MultiPacker packer) {
-		super.createIcons(packer);
-	}
-
-	@Override
-	public void setStats() {
-		super.setStats();
-		stats.add(Stat.powerUse, basePowerDraw * 60F, StatUnit.powerSecond);
-
-		stats.add(Stat.output, (t) -> {
-			t.row().add(Core.bundle.get("editor.spawn") + ":").left().pad(OFFSET).row();
-			for (Integer i : getSortedKeys()) {
-				UnitSet set = calls.get(i);
-				t.add(new UnitSetTable(set, table -> {
-					table.button(Icon.infoCircle, Styles.clearNonei, () -> showInfo(set, new Label("[]"), null, null)).size(LEN);
-				})).fill().row();
-			}
+			return 1f;
 		});
 	}
 
-	public void showInfo(UnitSet set, Element extra, @Nullable ItemModule module, @Nullable Team team) {
-		BaseDialog dialogIn = new BaseDialog("More Info");
-		dialogIn.addCloseListener();
-		dialogIn.cont.margin(15f);
-		if (!mobile) {
-			dialogIn.cont.marginLeft(220f).marginRight(220f);
-		}
-		dialogIn.cont.pane(inner -> {
-			inner.button(new TextureRegionDrawable(set.type.fullIcon), Styles.clearNonei, () -> new ContentInfoDialog().show(set.type)).growX().fillY().center().row();
-			inner.image().growX().height(OFFSET / 4).pad(OFFSET / 4f).color(Pal.accent).row();
-			inner.add("[lightgray]" + Core.bundle.get("editor.spawn") + ": [accent]" + set.type.localizedName + "[lightgray] | Tier: [accent]" + set.sortIndex[1]).left().padLeft(OFFSET).row();
-			inner.add("[lightgray]" + Core.bundle.get("stat.buildtime") + ": [accent]" + Strings.fixed(set.costTimeVar() / 60, 2) + "[lightgray] " + Core.bundle.get("unit.seconds")).left().padLeft(OFFSET).row();
-			inner.image().growX().height(OFFSET / 4).pad(OFFSET / 4f).color(Pal.accent).row();
-			inner.table(table -> {
-				int index = 0;
-				for (ItemStack stack : team == null ? set.baseRequirements() : set.dynamicRequirements(team)) {
-					if (module != null || index % 7 == 0) table.row();
-					if (module != null) {
-						Elements.itemStack(table, stack, module);
-					} else
-						table.add(new ItemDisplay(stack.item, stack.amount, false).left()).padLeft(OFFSET / 2).left();
-					index++;
-				}
-			}).growX().fillY().left().padLeft(OFFSET).row();
-			inner.image().growX().pad(OFFSET / 4f).height(OFFSET / 4).color(Pal.accent).row();
-			inner.add(extra).left().padLeft(OFFSET).row();
-			inner.button("@back", Icon.left, Styles.cleart, dialogIn::hide).size(LEN * 3f, LEN).pad(OFFSET);
-		}).grow().row();
-		dialogIn.show();
-	}
-
-	@Override
-	public void setBars() {
-		super.setBars();
-		addBar("progress",
-				(JumpGateBuild entity) -> new Bar(
-						() -> entity.isCalling() ?
-								Core.bundle.get("bar.progress") : "[lightgray]" + Iconc.cancel,
-						() -> entity.isCalling() && Units.canCreate(entity.team, entity.getType()) ? Pal.power : Pal.redderDust,
-						() -> entity.isCalling() ? entity.buildProgress / entity.costTime(entity.getSet(), true) : 0
-				)
-		);
-		addBar("cooldown",
-				(JumpGateBuild entity) -> new Bar(
-						() -> Core.bundle.get("stat.cooldowntime"),
-						() -> Pal.lancerLaser,
-						() -> entity.cooling ? (cooldownTime - entity.cooldown) / cooldownTime : 0
-				)
-		);
+	public void addUnitRecipe(UnitType unitType, float craftTime, Recipe recipe) {
+		UnitRecipe unitRecipe = new UnitRecipe();
+		unitRecipe.unitType = unitType;
+		unitRecipe.craftTime = craftTime;
+		unitRecipe.recipe = recipe;
+		recipeList.add(unitRecipe);
 	}
 
 	@Override
 	public void load() {
 		super.load();
-		pointerRegion = Core.atlas.find(name("jump-gate-pointer"));
-		arrowRegion = Core.atlas.find(name("jump-gate-arrow"));
+
+		arrowRegion = Core.atlas.find(MOD_NAME + "-jump-gate-arrow");
+		pointerRegion = Core.atlas.find(MOD_NAME + "-jump-gate-pointer");
 	}
 
-	public static class UnitSet implements Comparable<UnitSet> {
-		public final Seq<ItemStack> requirements = new Seq<>(ItemStack.class);
-		public final byte[] sortIndex;
-		public UnitType type;
-		public float costTime;
-
-		public UnitSet() {
-			this(UnitTypes.alpha, new byte[]{-1, -1}, 0);
-		}
-
-		public UnitSet(UnitType unitType, byte[] index, float cost, ItemStack... req) {
-			Arrays.sort(req, Structs.comparingInt(j -> j.item.id));
-			type = unitType;
-			sortIndex = index;
-			costTime = cost;
-			requirements.addAll(req);
-		}
-
-		@Override
-		public boolean equals(Object o) {
-			if (this == o) return true;
-			if (!(o instanceof UnitSet set)) return false;
-			return type.equals(set.type) && Arrays.equals(sortIndex, set.sortIndex);
-		}
-
-		@Override
-		public String toString() {
-			return "UnitSet{" + "type=" + type + ", sortIndex=" + Arrays.toString(sortIndex) + '}';
-		}
-
-		@Override
-		public int hashCode() {
-			int result = Structf.hashCode(type.name.hashCode());
-			result = 31 * result + Arrays.hashCode(sortIndex);
-			return result;
-		}
-
-		public float costTime() {
-			return costTime;
-		}
-
-		public float costTimeVar() {
-			return costTime / state.rules.unitBuildSpeedMultiplier;
-		}
-
-		public ItemStack[] baseRequirements() {
-			return requirements.toArray();
-		}
-
-		public ItemStack[] dynamicRequirements(Team team) {
-			return ItemStack.mult(requirements.toArray(), state.rules.unitCost(team));
-		}
-
-		@Override
-		public int compareTo(UnitSet set2) {
-			return sortIndex[0] - set2.sortIndex[0] == 0 ? sortIndex[1] - set2.sortIndex[1] : sortIndex[0] - set2.sortIndex[0];
-		}
+	@Override
+	public void init() {
+		super.init();
+		clipSize = maxRadius;
 	}
 
-	public static class UnitSetTable extends Table {
-		public UnitSetTable(UnitSet set, Cons<Table> stat) {
-			super();
-			if (state.rules.bannedUnits.contains(set.type)) {
-				table(Styles.grayPanel, t2 -> {
-					t2.margin(6f);
-					t2.defaults().left().padRight(OFFSET);
-					t2.table(Tex.clear, table2 -> {
-						Elements.tableImageShrink(set.type.fullIcon, LEN, table2, i -> i.color.set(Pal.gray));
-						table2.image(Icon.cancel).size(LEN + OFFSET * 1.5f).color(Color.scarlet).padLeft(OFFSET / 2f);
-					}).left().padLeft(OFFSET * 2f);
+	@Override
+	public void setBars() {
+		super.setBars();
+		addBar("progress", (JumpGateBuild e) -> new Bar("bar.progress", Pal.ammo, e::progress));
+		addBar("efficiency", (JumpGateBuild e) -> new Bar(() -> Core.bundle.format("bar.efficiency", Strings.autoFixed(e.speedMultiplier * 100f, 0)), () -> Pal.techBlue, () -> e.speedMultiplier / maxWarmupSpeed));
+		addBar("units", (JumpGateBuild e) -> new Bar(
+				() -> e.unitType() == null ? "[lightgray]" + Iconc.cancel :
+						Core.bundle.format("bar.unitcap",
+								Fonts.getUnicodeStr(e.unitType().name),
+								e.team.data().countType(e.unitType()),
+								e.unitType() == null ? Units.getStringCap(e.team) : (e.unitType().useUnitCap ? Units.getStringCap(e.team) : "∞")
+						),
+				() -> Pal.power,
+				() -> e.unitType() == null ? 0f : (e.unitType().useUnitCap ? (float) e.team.data().countType(e.unitType()) / Units.getCap(e.team) : 1f)
+		));
+	}
 
-					t2.pane(table2 -> table2.add(Core.bundle.get("banned")));
-				}).growX().fillY().padBottom(OFFSET / 2).row();
-			} else if (set.type.locked() && !state.rules.infiniteResources && state.isCampaign()) {
-				table(Styles.grayPanel, t2 -> {
-					t2.margin(6f);
-					t2.defaults().left().padRight(OFFSET);
-					t2.table(Tex.clear, table2 -> table2.image(Icon.lock).size(LEN + OFFSET * 1.5f)).left().padLeft(OFFSET / 2f);
+	@Override
+	public void setStats() {
+		super.setStats();
 
-					t2.pane(table2 -> table2.add("[gray]Need to be researched.").left().row()).grow();
-				}).growX().fillY().padBottom(OFFSET / 2).row();
-			} else {
-				table(Styles.grayPanel, t2 -> {
-					t2.margin(6f);
-					t2.defaults().left().padRight(OFFSET);
-					t2.image(set.type.fullIcon).size(LEN + OFFSET).scaling(Scaling.fit).left().padLeft(OFFSET / 2f);
+		stats.add(Stat.output, table -> {
+			table.row();
 
-					t2.pane(table2 -> {
-						table2.left().marginLeft(12f);
-						table2.add("[lightgray]" + Core.bundle.get("editor.spawn") + ": [accent]" + set.type.localizedName + "[lightgray] | Tier: [accent]" + set.sortIndex[1]).left().row();
-						table2.add("[lightgray]" + Core.bundle.get("stat.buildtime") + ": [accent]" + Mathf.round(set.costTimeVar() / 60) + "[lightgray] " + Core.bundle.get("unit.seconds")).row();
-					}).growX().height(LEN).center();
+			for (UnitRecipe unitPlan : recipeList) {
+				Recipe recipe = unitPlan.recipe;
+				UnitType plan = unitPlan.unitType;
+				table.table(Styles.grayPanel, t -> {
 
-					t2.pack();
+					if (plan.isBanned()) {
+						t.image(Icon.cancel).color(Pal.remove).size(40);
+						return;
+					}
 
-					t2.pane(items -> {
-						items.right();
-						for (ItemStack stack : set.baseRequirements()) {
-							items.add(new ItemImage(stack.item.fullIcon, stack.amount)).padRight(OFFSET / 2).left();
-						}
-					}).growX().height(LEN).center();
+					if (plan.unlockedNow()) {
+						t.image(plan.uiIcon).size(40).pad(10f).left().scaling(Scaling.fit).with(i -> StatValues.withTooltip(i, plan));
+						t.table(info -> {
+							info.add(plan.localizedName).left();
+							info.row();
+							info.add(Strings.autoFixed(unitPlan.craftTime / 60f, 1) + " " + Core.bundle.get("unit.seconds")).color(Color.lightGray);
+						}).left();
 
-					t2.table(stat).fillX().height(LEN + OFFSET).right();
-				}).growX().fillY().padBottom(OFFSET / 2).row();
+						t.table(req -> {
+							req.right();
+							int i = 0;
+							for (ItemStack stack: recipe.inputItem) {
+								if (++i % 6 == 0) req.row();
+								req.add(StatValues.stack(stack.item, stack.amount, true)).pad(5);
+							}
+							for (PayloadStack stack: recipe.inputPayload) {
+								if (++i % 6 == 0) req.row();
+								req.add(StatValues.stack(stack.item, stack.amount, true)).pad(5);
+							}
+						}).right().grow().pad(10f);
+					} else {
+						t.image(Icon.lock).color(Pal.darkerGray).size(40);
+					}
+				}).growX().pad(5);
+				table.row();
 			}
-		}
+		});
 	}
 
-	public class JumpGateBuild extends Building implements Ranged {
-		public int spawnId = 0;
-		public int link = -1;
-		public float buildProgress = 0;
-		public float totalProgress;
+	public static class UnitRecipe{
+		public UnitType unitType = UnitTypes.alpha;
+		public float craftTime = 10 * 60f;
+		public Recipe recipe = Recipe.empty;
+	}
+
+	public Stack getReqStack(UnlockableContent content, Prov<CharSequence> display, Boolp valid){
+		return new Stack(
+				new Table(o -> o.left().add(new Image(content.fullIcon)).size(32f).scaling(Scaling.fit)),
+				new Table(t -> {
+					t.left().bottom();
+					t.label(() -> (valid.get()? "[accent]": "[negstat]") + display.get()).style(Styles.outlineLabel);
+					t.pack();
+				})
+		);
+	}
+
+	@SuppressWarnings("InnerClassMayBeStatic")
+	public class JumpGateBuild extends Building {
+		public float speedMultiplier = 1f;
+		public float progress;
 		public float warmup;
-		public boolean jammed;
+		public float spawnWarmup;
+		public int recipeIndex;
+		public int spawnCount = 1;
+		public @Nullable Vec2 command = new Vec2(Float.NaN, Float.NaN);
 
-		public float cooldown = 0;
-		public boolean cooling = false;
-
-		public int spawnNum = 1;
-		public int buildingSpawnNum = 0;
-
-		public int planSpawnId = 0;
-		public int planSpawnNum = 0;
-
-		public Vec2 commandPos = null;
-
-		@Override
-		public void onCommand(Vec2 target) {
-			hitbox(Tmp.r1);
-			if (Tmp.r1.contains(target)) commandPos = null;
-			else commandPos = target;
-		}
+		public ItemModule tmpItem = new ItemModule();
+		public Seq<Tile> tiles = new Seq<>(Tile.class);
 
 		@Override
 		public Vec2 getCommandPosition() {
-			return commandPos;
+			return command;
 		}
 
 		@Override
-		public boolean acceptItem(Building source, Item item) {
-			return realItems().get(item) < getMaximumAccepted(item);
+		public void onCommand(Vec2 target) {
+			command.set(target);
 		}
 
 		@Override
-		public void created() {
-			super.created();
-
-			UnitSet set;
-			if (!cheating() && (set = calls.get(planSpawnId)) != null && hideSet(set.type)) spawnId = 0;
+		public PayloadSeq getPayloads() {
+			return new PayloadSeq();
 		}
 
 		@Override
-		public IntSeq config() {
-			return IntSeq.with(1, planSpawnId, planSpawnNum);
+		public void handlePayload(Building source, Payload payload) {
+			getPayloads().add(payload.content(), 1);
+			Fx.payloadDeposit.at(payload.x(), payload.y(), payload.angleTo(this), new UnitAssembler.YeetData(new Vec2(x, y), payload.content()));
+		}
+
+		public UnitRecipe unitRecipe() {
+			if (recipeIndex < 0 || recipeIndex > recipeList.size - 1) return null;
+			return recipeList.get(recipeIndex);
+		}
+
+		public UnitType unitType() {
+			if (recipeIndex < 0 || recipeIndex > recipeList.size - 1) return null;
+			return recipeList.get(recipeIndex).unitType;
+		}
+
+		public Recipe recipe() {
+			if (unitRecipe() == null) return Recipe.empty;
+			return unitRecipe().recipe;
+		}
+
+		public float craftTime() {
+			if (recipeIndex < 0 || recipeIndex > recipeList.size - 1) return 0f;
+			return recipeList.get(recipeIndex).craftTime;
+		}
+
+		public float costMultiplier() {
+			return state.rules.teams.get(team).unitCostMultiplier * spawnCount;
+		}
+
+		public boolean canSpawn() {
+			return unitRecipe() != null;
 		}
 
 		@Override
-		public void updateTile() {
-			totalProgress += (efficiency + warmup) * delta() * Mathf.curve(Time.delta, 0f, 0.5f);
-			if (!cooling && isCalling() && Units.canCreate(team, getType())) {
-				buildProgress += efficiency * state.rules.unitBuildSpeedMultiplier * delta() * warmup * state.rules.unitBuildSpeed(team);
-				if (buildProgress >= costTime(getSet(), true) && !jammed) {
-					spawn(getSet());
-				}
+		public void drawSelect() {
+			super.drawSelect();
+			Drawf.dashCircle(x, y, maxRadius, team.color);
+
+			if (unitType() != null) {
+				drawItemSelection(unitType());
 			}
 
-			if (cooling) {
-				if (Mathf.chanceDelta(0.2f))
-					Fx.reactorsmoke.at(x + Mathf.range(tilesize * size / 2), y + Mathf.range(tilesize * size / 2));
-				if (timer.get(0, 4)) for (int i = 0; i < 4; i++) {
-					Fx.shootSmallSmoke.at(x, y, i * 90);
-				}
-
-				cooldown += warmup * delta();
-				if (cooldown > cooldownTime) {
-					cooling = false;
-					cooldown = 0;
-				}
-			}
-
-			if (efficiency > 0 && power.status > 0.5f) {
-				if (Mathf.equal(warmup, 1, 0.0015F)) warmup = 1f;
-				else warmup = Mathf.lerpDelta(warmup, 1, 0.01f);
-			} else {
-				if (Mathf.equal(warmup, 0, 0.0015F)) warmup = 0f;
-				else warmup = Mathf.lerpDelta(warmup, 0, 0.03f);
-			}
-
-			if (timer(1, 20) && calls.containsKey(planSpawnId) && planSpawnNum > 0 && power.status > 0.5f && hasConsume(calls.get(planSpawnId), planSpawnNum)) {
-				if (!isCalling() && !cooling) {
-					startBuild(planSpawnId, planSpawnNum);
-				}
-
-				if (jammed) {
-					Tile t = null;
-					while (t == null) {
-						Tmp.v1.set(1, 1).rnd(range()).add(this).clamp(0, 0, world.unitWidth(), world.unitHeight());
-						t = world.tile(World.toTile(Tmp.v1.x), World.toTile(Tmp.v1.y));
-					}
-					link = t.pos();
-					spawn(getSet());
-				}
-			}
-
-		}
-
-		public Color getColor(UnitSet set) {
-			if (cooling) return Pal.lancerLaser;
-			if (jammed || (set != null && !canSpawn(set, true)))
-				return Tmp.c1.set(team.color).lerp(Pal.ammo, Mathf.absin(10f, 0.3f) + 0.1f);
-			else return team.color;
+			if (Float.isNaN(command.x) || Float.isNaN(command.y)) return;
+			Lines.stroke(3f, Pal.gray);
+			Lines.square(command.x, command.y, 8f, 45f);
+			Lines.stroke(1f, team.color);
+			Lines.square(command.x, command.y, 8f, 45f);
+			Draw.reset();
 		}
 
 		@Override
 		public void drawConfigure() {
-			Color color = getColor(getSet());
-			Drawf.dashCircle(x, y, range(), color);
-			Draw.color(color);
-			Lines.square(x, y, size * tilesize / 2f + 1f);
-
-			Vec2 target = link();
-			Draw.alpha(1f);
-			Drawf.dashCircle(target.x, target.y, spawnRange, color);
-
-			Draw.color(Pal.gray);
-			Drawn.posSquareLink(color, 1.5f, 3.5f, true, this, target);
-			Draw.color();
-
-			if (core() != null) Drawn.posSquareLinkArr(color, 1.5f, 3.5f, true, false, this, core());
-
-			if (jammed) Drawn.overlayText(Core.bundle.get("spawn-error"), x, y, size * tilesize / 2f, color, true);
-
-			Draw.reset();
+			drawPlaceText(unitType() == null? "@empty": unitType().localizedName + " x" + spawnCount, tileX(), tileY(), true);
 		}
 
-		public float speedMultiplier(int spawnNum) {
-			return Mathf.sqrt(spawnNum) * buildSpeedMultiplierCoefficient;
+		public void changePlan(int idx) {
+			if (idx == -1) return;
+			idx = Mathf.clamp(idx, 0, recipeList.size - 1);
+			if (idx == recipeIndex) return;
+			progress = 0f;
+			recipeIndex = idx;
+			speedMultiplier = 1f;
+		}
+
+		public void changeSpawnCount(float count) {
+			spawnCount = Mathf.round(Mathf.clamp(count, 1, maxSpawnCount));
+			progress = 0f;
+			speedMultiplier = 1f;
+		}
+
+		public void findTiles(){
+			tiles = Utils.ableToSpawn(unitType(), x, y, maxRadius);
+		}
+
+		public void spawnUnit() {
+			if (unitRecipe() == null) return;
+			if (unitType() == null) return;
+
+			if (!net.client()) {
+				float rot = core() == null ? Angles.angle(x, y, command.x, command.y) : Angles.angle(core().x, core().y, x, y);
+				Spawner spawner = new Spawner();
+				Tile t = tiles.random();
+				Tmp.v1.set(t.worldx(), t.worldy());
+				spawner.init(unitType(), team, Tmp.v1, rot, Mathf.clamp(unitRecipe().craftTime / maxWarmupSpeed, 5f * 60, 15f * 60));
+				if (command != null) spawner.commandPos.set(command.cpy());
+				spawner.add();
+			}
+
+			speedMultiplier = Mathf.clamp(speedMultiplier + warmupPerSpawn, 1, maxWarmupSpeed);
 		}
 
 		@Override
-		public void updateTableAlign(Table table) {
-			Vec2 pos = Core.input.mouseScreen(x - block.size * 4f - 1f, y);
-			table.setPosition(pos.x, pos.y, Align.right);
+		public void updateTile() {
+			super.updateTile();
+			warmup = Mathf.lerp(warmup, efficiency, 0.01f);
+			spawnWarmup = Mathf.lerp(spawnWarmup, efficiency, 0.01f);
+			items = closestCore() == null? tmpItem: closestCore().items;
+			if (unitRecipe() == null || unitType() == null) {
+				progress = 0f;
+				return;
+			}
+			if (canSpawn() && Units.canCreate(team, unitType())) {
+				progress += getProgressIncrease(craftTime() * Mathf.sqrt(spawnCount));
+			}
+			if (progress >= 1) {
+				findTiles();
+				for (int i = 0; i < spawnCount; i++){
+					spawnUnit();
+				}
+				consume();
+				progress = 0f;
+			}
+		}
+
+		@Override
+		public float getProgressIncrease(float baseTime) {
+			return super.getProgressIncrease(baseTime) * speedMultiplier;
+		}
+
+		public boolean canConsume() {
+			return !(unitRecipe() == null || unitType() == null) && canSpawn() && Units.canCreate(team, unitType());
 		}
 
 		@Override
 		public void buildConfiguration(Table table) {
-			BaseDialog dialog = new BaseDialog("@spawn");
-			dialog.addCloseListener();
-
-			dialog.cont.pane(inner ->
-					inner.table(callTable -> {
-						for (Integer hashcode : getSortedKeys()) {
-							UnitSet set = calls.get(hashcode);
-							callTable.table(Tex.pane, info -> {
-								info.add(new UnitSetTable(set, table2 -> {
-									table2.button(Icon.infoCircle, Styles.clearNonei, () -> showInfo(set, new Label(() -> ("[lightgray]Construction Available?: " + Elements.judge(canSpawn(set, false) && hasConsume(set, spawnNum)))), realItems(), team)).size(LEN);
-									table2.button(Icon.add, Styles.clearNonei, () -> configure(IntSeq.with(0, hashcode, spawnNum))).size(LEN).disabled(b -> (team.data().countType(set.type) + spawnNum > Units.getCap(team)) || jammed || isCalling() || !hasConsume(set, spawnNum) || cooling);
-								})).fillY().growX().row();
-								if (!hideSet(set.type)) {
-									Bar unitCurrent = new Bar(() -> Core.bundle.format("bar.unitcap", Fonts.getUnicodeStr(set.type.name), team.data().countType(set.type), Units.getCap(team)), () -> canSpawn(set, false) ? Pal.accent : Units.canCreate(team, set.type) ? Pal.ammo : Pal.redderDust, () -> (float) team.data().countType(set.type) / Units.getCap(team));
-									info.add(unitCurrent).growX().height(LEN - OFFSET);
+			table.table(inner -> {
+				inner.background(Tex.paneSolid);
+				inner.slider(1, maxSpawnCount, 1, 1, this::configure).growX().row();
+				inner.image().size(320, 4).color(Pal.accent).padTop(12f).padBottom(8f).growX().row();
+				inner.pane(selectionTable -> {
+					for (int i = 0; i < recipeList.size; i++) {
+						int finalI = i;
+						UnitRecipe unitRecipe = recipeList.get(i);
+						UnitType type = unitRecipe.unitType;
+						selectionTable.button(button -> {
+							button.table(selection -> selection.stack(
+									new DelaySlideTable(
+											() -> Pal.techBlue,
+											() -> "          " + Core.bundle.format("bar.unitcap",
+													type.localizedName,
+													team.data().countType(type),
+													type.useUnitCap ? Units.getStringCap(team) : "∞"),
+											() -> type.useUnitCap ? (float) team.data().countType(type) / Units.getCap(team) : 1f),
+									new Table(image -> image.image(type.uiIcon).scaling(Scaling.fit).size(48, 48).padTop(6f).padBottom(6f).padLeft(8f)).left(),
+									new Table(req -> {
+										req.right();
+										int j = 0;
+										for (ItemStack stack: unitRecipe.recipe.inputItem) {
+											if (++j % 3 == 0) req.row();
+											req.add(getReqStack(stack.item, () -> Strings.format("@/@", UI.formatAmount((long) stack.amount * spawnCount), UI.formatAmount(items.get(stack.item))),
+													() -> items.has(stack.item, stack.amount * spawnCount))).pad(5);
+										}
+										req.row();
+										int k = 0;
+										for (PayloadStack stack: unitRecipe.recipe.inputPayload) {
+											if (++k % 4 == 0) req.row();
+											req.add(getReqStack(stack.item, () -> Strings.format("@/@", UI.formatAmount((long) stack.amount * spawnCount), UI.formatAmount(getPayloads().get(stack.item))),
+													() -> getPayloads().get(stack.item) >= stack.amount * spawnCount)).pad(5);
+										}
+									}).marginLeft(60).marginTop(36f).marginBottom(4f).left()
+							).expandX().fillX()).growX();
+							button.update(() -> {
+								if (unitRecipe() == null) {
+									button.setChecked(false);
+								}else {
+									button.setChecked(unitRecipe == unitRecipe());
 								}
-							}).fillY().growX().padTop(OFFSET).row();
-						}
-					}).grow()
-			).grow().row();
-			dialog.cont.table(t -> {
-				Label l = new Label("");
-				Slider s = new Slider(1, Mathf.clamp(Units.getCap(team), 1, maxSpawnPerOne), 1, false);
-				s.moved((i) -> {
-					spawnNum = (int) i;
-					if (!isCalling()) buildingSpawnNum = spawnNum;
-				});
-				t.update(() -> {
-					l.setText("[gray]<" + Core.bundle.get("filter.option.amount") + ": [lightgray]" + spawnNum + "[] | " + Core.bundle.get("stat.buildspeedmultiplier") + ": [lightgray]" + Strings.fixed(speedMultiplier(spawnNum), 2) + "[]>");
-					s.setValue(spawnNum);
-				});
-
-				Stack stack = new Stack(s, new Table(ta -> {
-					ta.center();
-					ta.add(l);
-				}));
-
-				t.add(stack).growX().height(LEN).padRight(OFFSET).padLeft(OFFSET).align(Align.center);
-				if (Core.graphics.isPortrait()) {
-					t.row().add().height(6f).growX();
-					t.row();
-				}
-				t.add(new Bar(
-						() -> !isCalling() ? "[lightgray]" + Iconc.cancel :
-								Units.canCreate(team, getType()) && !jammed ? "[lightgray]" + Core.bundle.get("editor.spawn") + ": [accent]" + buildingSpawnNum + "[]* [accent]" + getSet().type.localizedName + "[lightgray]" + (mobile ? "\n" : " | ") + Core.bundle.get("ui.remain-time") + ": [accent]" + (int) Math.max((costTime(getSet(), true) - buildProgress) / Time.toSeconds / state.rules.unitBuildSpeedMultiplier, 0) + "[lightgray] " + Core.bundle.get("unit.seconds") :
-										"[red]Call Jammed",
-						() -> isCalling() && canSpawn(getSet(), true) && !jammed ? Pal.power : Pal.redderDust,
-						() -> isCalling() ? buildProgress / costTime(getSet(), true) : 0
-				)).growX().height(LEN);
-			}).growX().height(LEN).row();
-			dialog.cont.table(t -> {
-				t.button("@back", Icon.left, Styles.cleart, dialog::hide).padTop(OFFSET / 2).marginLeft(OFFSET).growX().height(LEN);
-				t.button("@cancel", Icon.cancel, Styles.cleart, () -> configure(false)).marginLeft(OFFSET).padTop(OFFSET / 2).disabled(b -> !isCalling()).growX().height(LEN);
-				t.button("@release", Icon.add, Styles.cleart, () -> configure(true)).marginLeft(OFFSET).padTop(OFFSET / 2).disabled(b -> getSet() == null || !jammed).growX().height(LEN);
-			}).growX().height(LEN).bottom();
-			dialog.keyDown(c -> {
-				if (c == KeyCode.left)
-					spawnNum = Mathf.clamp(--spawnNum, 1, Mathf.clamp(Units.getCap(team), 1, maxSpawnPerOne));
-				if (c == KeyCode.right)
-					spawnNum = Mathf.clamp(++spawnNum, 1, Mathf.clamp(Units.getCap(team), 1, maxSpawnPerOne));
-			});
-
-			table.table(Tex.paneSolid, t -> {
-				t.button("@spawn", Icon.add, Styles.cleart, dialog::show).size(LEN * 5, LEN).row();
-				t.button("@mod.ui.select-target", Icon.move, Styles.cleart, () -> Elements.selectPos(table, this::configure)).size(LEN * 5, LEN).row();
-				t.button("@settings", Icon.settings, Styles.cleart, () -> new BaseDialog("@settings") {{
-					Label l = new Label(""), currentPlan = new Label("");
-					Slider s = new Slider(1, Mathf.clamp(Units.getCap(team), 1, maxSpawnPerOne), 1, false);
-					s.moved((i) -> selectNum = (int) i);
-					cont.update(() -> {
-						if (calls.get(planSpawnId) == null || planSpawnNum < 1) {
-							currentPlan.setText("None");
-						} else {
-							currentPlan.setText(Core.bundle.get("editor.spawn") + ": [accent]" + planSpawnNum + "[]* [accent]" + calls.get(planSpawnId).type.localizedName);
-						}
-						l.setText("[gray]<" + Core.bundle.get("filter.option.amount") + ": [lightgray]" + selectNum + "[] | " + Core.bundle.get("stat.buildspeedmultiplier") + ": [lightgray]" + Strings.fixed(speedMultiplier(selectNum), 2) + "[]>");
-						s.setValue(selectNum);
-					});
-					cont.table(t -> {
-						tmpSetSeq.clear();
-						for (IntMap.Entry<UnitSet> entry : calls) {
-							IntMap.Entry<UnitSet> entryN = new IntMap.Entry<>();
-							entryN.key = entry.key;
-							entryN.value = entry.value;
-							tmpSetSeq.add(entryN);
-						}
-
-						tmpSetSeq.sortComparing(s1 -> s1.value);
-						lastSelectedInt = 0;
-
-						if (!Core.graphics.isPortrait()) t.marginLeft(LEN * 2).marginRight(LEN * 2);
-						t.pane(table -> {
-							for (int i = 0; i < tmpSetSeq.size; i++) {
-								IntMap.Entry<UnitSet> entry = tmpSetSeq.get(i);
-								UnitSet set = entry.value;
-								if (hideSet(set.type)) continue;
-								int j = i;
-								table.table(Tex.whiteui, in -> {
-									in.marginLeft(6).marginRight(6);
-
-									in.update(() -> {
-										if (planSpawnId == entry.key) {
-											if (planSpawnNum > 0) {
-												if (hasConsume(set, planSpawnNum)) {
-													in.color.set(Pal.accent);
-												} else {
-													in.color.set(Pal.ammo);
-												}
-											} else {
-												in.color.set(Pal.lightishGray);
-											}
-										} else if (selectId == entry.key) {
-											in.color.set(Pal.accent).lerp(Pal.gray, 0.5f);
-										} else {
-											in.color.set(Pal.gray);
-										}
-									});
-
-									in.button(new TextureRegionDrawable(set.type.fullIcon), Styles.emptyi, LEN, () -> {
-										selectId = entry.key;
-										lastSelectedInt = j;
-									}).padRight(OFFSET * 2).padLeft(4f);
-									in.add(set.type.localizedName).left().fill();
-									in.table(ta -> {
-										ta.right();
-										for (ItemStack stack : set.dynamicRequirements(team)) {
-											ta.add(new ItemImageDynamic(stack.item, () -> stack.amount * selectNum, realItems())).padRight(OFFSET / 2).left();
-										}
-									}).growX().height(LEN).right();
-								}).growX().height(LEN + OFFSET).padBottom(OFFSET).row();
-							}
-
-							lastSelectedInt = 0;
-						}).grow().row();
-						t.add(new Stack(s, new Table(ta -> {
-							ta.center();
-							ta.add(l);
-						}))).growX().height(LEN).center().row();
-
-						t.table(Styles.grayPanel, cur -> {
-							cur.image(Icon.rightOpen).padLeft(OFFSET).padRight(16f);
-							cur.add(currentPlan).growX().fillY().row();
-						}).fillX().height(LEN).row();
-
-
-						t.table(t1 -> {
-							t1.button("@back", Icon.left, Styles.cleart, this::hide).marginLeft(OFFSET).growX().height(LEN);
-							t1.button("@cancel", Icon.cancel, Styles.cleart, () -> configure(IntSeq.with(1, 0, 0))).marginLeft(OFFSET).growX().height(LEN);
-							t1.button("@confirm", Icon.cancel, Styles.cleart, () -> configure(IntSeq.with(1, selectId, selectNum))).marginLeft(OFFSET).growX().height(LEN);
-						}).growX().fillY();
-					}).grow().row();
-
-					addCloseListener();
-
-
-					keyDown(c -> {
-						if (c == KeyCode.backspace) configure(IntSeq.with(1, 0, 0));
-						if (c == KeyCode.enter) configure(IntSeq.with(1, selectId, selectNum));
-
-						if (c == KeyCode.down) {
-							if (lastSelectedInt < tmpSetSeq.size - 1) {
-								selectId = tmpSetSeq.get(++lastSelectedInt).key;
-							} else {
-								selectId = tmpSetSeq.get(lastSelectedInt = 0).key;
-							}
-						}
-
-						if (c == KeyCode.up) {
-							if (lastSelectedInt > 0) {
-								selectId = tmpSetSeq.get(--lastSelectedInt).key;
-							} else {
-								selectId = tmpSetSeq.get(lastSelectedInt = tmpSetSeq.size - 1).key;
-							}
-						}
-
-						if (c == KeyCode.left) selectNum = Mathf.clamp(--selectNum, 1, Mathf.clamp(Units.getCap(team), 1, maxSpawnPerOne));
-						if (c == KeyCode.right) selectNum = Mathf.clamp(++selectNum, 1, Mathf.clamp(Units.getCap(team), 1, maxSpawnPerOne));
-					});
-				}}.show()).size(LEN * 5, LEN);
-			}).fill();
-		}
-
-		@Override
-		public void draw() {
-			super.draw();
-			Draw.z(Layer.bullet);
-			float scl = warmup * atlasSizeScl;
-			Lines.stroke(squareStroke * warmup, getColor(getSet()));
-			float rot = totalProgress;
-			Lines.square(x, y, size * tilesize / 2.5f, -rot);
-			Lines.square(x, y, size * tilesize / 2f, rot);
-			for (int i = 0; i < 4; i++) {
-				float length = tilesize * size / 2f + 8f;
-				Tmp.v1.trns(i * 90 + rot, -length);
-				Draw.rect(arrowRegion, x + Tmp.v1.x, y + Tmp.v1.y, arrowRegion.width * Draw.scl * scl, arrowRegion.height * Draw.scl * scl, i * 90 + 90 + rot);
-				float sin = Mathf.absin(totalProgress, 16f, tilesize);
-				length = tilesize * size / 2f + 3 + sin;
-				float signSize = 0.75f + Mathf.absin(totalProgress + 8f, 8f, 0.15f);
-				Tmp.v1.trns(i * 90, -length);
-				Draw.rect(pointerRegion, x + Tmp.v1.x, y + Tmp.v1.y, pointerRegion.width * Draw.scl * signSize * scl, pointerRegion.height * Draw.scl * signSize * scl, i * 90 + 90);
-			}
-			Draw.color();
-
-			if (isCalling()) {
-				Draw.z(Layer.bullet);
-				Draw.color(getColor(getSet()));
-				for (int l = 0; l < 4; l++) {
-					float angle = 45 + 90 * l;
-					float regSize = Utils.regSize(getType()) / 3f + Draw.scl;
-					for (int i = 0; i < 4; i++) {
-						Tmp.v1.trns(angle, (i - 4) * tilesize * 2);
-						float f = (100 - (totalProgress - 25 * i) % 100) / 100;
-						Draw.rect(arrowRegion, x + Tmp.v1.x, y + Tmp.v1.y, pointerRegion.width * regSize * f * scl, pointerRegion.height * regSize * f * scl, angle - 90);
+							});
+						}, Styles.underlineb, () -> configure(finalI)).expandX().fillX().margin(0).pad(4);
+						selectionTable.row();
 					}
-				}
-				if (jammed || !Units.canCreate(team, getType())) {
-					Draw.color(getColor(getSet()));
-					float signSize = 0.75f + Mathf.absin(totalProgress + 8f, 8f, 0.15f);
-					for (int i = 0; i < 4; i++) {
-						Draw.rect(arrowRegion, x, y, arrowRegion.width * Draw.scl * signSize * scl, arrowRegion.height * Draw.scl * signSize * scl, 90 * i);
-					}
-				}
-				Drawn.circlePercent(x, y, size * tilesize / 1.5f, buildProgress / costTime(getSet(), true), 0);
-			}
-			Draw.reset();
-
-			Drawf.light(tile, size * tilesize * 4 * warmup, team.color, 0.95f);
-		}
-
-		public void consumeItems() {
-			if (!cheating()) realItems().remove(ItemStack.mult(getSet().dynamicRequirements(team), buildingSpawnNum));
-		}
-
-		public boolean hasConsume(UnitSet set, int num) {
-			if (set == null || cheating() || (!state.rules.pvp && team == state.rules.waveTeam)) return true;
-			return realItems().has(ItemStack.mult(set.dynamicRequirements(team), num * state.rules.teams.get(team).unitCostMultiplier));
-		}
-
-		public float costTime(UnitSet set, boolean buildingParma) {
-			return (buildingParma ? buildingSpawnNum : spawnNum) * set.costTime() / speedMultiplier(buildingParma ? buildingSpawnNum : spawnNum);
-		}
-
-		public boolean canSpawn(UnitSet set, boolean buildingParma) {
-			return team.data().countType(set.type) + (buildingParma ? buildingSpawnNum : spawnNum) <= Units.getCap(team);
-		}
-
-		public void startBuild(int set, int spawnNum) {
-			jammed = false;
-
-			if (isCalling()) cooling = true;
-
-			if (!calls.keys().toArray().contains(set)) {
-				if (isCalling()) {
-					if (getSet() != null) {
-						Building target = team.data().hasCore() ? team.core() : this;
-
-						for (ItemStack stack : ItemStack.mult(getSet().dynamicRequirements(team), buildingSpawnNum * (costTime(getSet(), true) - buildProgress) / costTime(getSet(), true))) {
-							realItems().add(stack.item, Math.min(stack.amount, target.getMaximumAccepted(stack.item) - realItems().get(stack.item)));
-						}
-					}
-				}
-
-				spawnId = 0;
-				buildProgress = 0;
-			} else {
-				spawnId = set;
-				buildProgress = 1;
-				buildingSpawnNum = spawnNum;
-				consumeItems();
-			}
-		}
-
-		public void spawn(UnitSet set) {
-			if (!isValid()) return;
-			boolean success;
-
-			Vec2 target = link();
-
-			HFx.spawn.at(x, y, Utils.regSize(set.type), team.color, this);
-
-			success = Utils.spawnUnit(team, target.x, target.y, angleTo(target), spawnRange, spawnReloadTime, spawnDelay, getType(), buildingSpawnNum, s -> {
-				if (commandPos != null) s.commandPos.set(commandPos);
-			});
-
-			if (success) {
-				buildProgress = 0;
-				spawnId = 0;
-				buildingSpawnNum = spawnNum;
-				jammed = false;
-				cooling = true;
-			} else {
-				jammed = true;
-			}
+				}).scrollX(false).width(342).maxHeight(400).padRight(2).row();
+			}).width(360);
 		}
 
 		@Override
-		public float range() {
-			return range;
+		public UnitType config() {
+			return unitType();
 		}
 
 		@Override
-		public void write(Writes write) {
-			write.i(spawnId);
-			write.i(link);
-			write.f(buildProgress);
-			write.f(warmup);
-			write.i(buildingSpawnNum);
-
-			write.bool(cooling);
-			write.f(cooldown);
-
-			write.i(planSpawnId);
-			write.i(planSpawnNum);
-
-			TypeIO.writeVecNullable(write, commandPos);
-		}
-
-		@Override
-		public void read(Reads read, byte revision) {
-			spawnId = read.i();
-			link = read.i();
-			buildProgress = read.f();
-			warmup = read.f();
-			buildingSpawnNum = read.i();
-
-			cooling = read.bool();
-			cooldown = read.f();
-
-			planSpawnId = read.i();
-			planSpawnNum = read.i();
-
-			commandPos = TypeIO.readVecNullable(read);
+		public float progress() {
+			return progress;
 		}
 
 		@Override
@@ -859,62 +446,35 @@ public class JumpGate extends Block {
 		}
 
 		@Override
-		public float progress() {
-			return buildProgress / costTime(getSet(), true);
+		public void draw() {
+			super.draw();
+
+			blockDrawer.get(this, unitType() != null && getCommandPosition() != null);
 		}
 
 		@Override
-		public float totalProgress() {
-			return totalProgress;
+		public byte version() {
+			return 2;
 		}
 
 		@Override
-		public void displayBars(Table table) {
-			super.displayBars(table);
-			table.row().table(t -> {
-				t.left();
-				t.label(() -> "[lightgray]Constructing: [accent]" + (getType() == null ? Core.bundle.get("none") : getType().localizedName)).pad(OFFSET / 2f);
-				t.image(() -> getType() == null ? Icon.cancel.getRegion() : getType().uiIcon).size(LEN - OFFSET).scaling(Scaling.fit);
-			}).growX().fillY().visible(this::isCalling);
+		public void write(Writes write) {
+			super.write(write);
+			write.f(speedMultiplier);
+			write.f(progress);
+			write.i(recipeIndex);
+			TypeIO.writeVec2(write, command);
 		}
 
-		public boolean isCalling() {
-			return calls.containsKey(spawnId);
-		}
-
-		public UnitType getType() {
-			UnitSet set = calls.get(spawnId);
-			return set == null ? null : set.type;
-		}
-
-		public UnitSet getSet() {
-			return calls.get(spawnId);
-		}
-
-		public Vec2 link() {
-			Tile t = world.tile(linkPos());
-			if (t == null) return linkVec.set(this);
-			else return linkVec.set(t);
-		}
-
-		public int linkPos() {
-			return link;
-		}
-
-		public void linkPos(Point2 point2) {
-			Tile tile = world.tile(point2.x, point2.y);
-			if (tile != null && tile.within(this, range())) {
-				link = point2.pack();
-			} else if (tile != null) {
-				Tmp.v1.set(tile).sub(this).nor().scl(range());
-				link = point.set((int) World.conv(x + Tmp.v1.x), (int) World.conv(y + Tmp.v1.y)).pack();
-			} else {
-				link = pos();
+		@Override
+		public void read(Reads read, byte revision) {
+			super.read(read, revision);
+			if (revision == 2){
+				speedMultiplier = read.f();
+				progress = read.f();
+				recipeIndex = read.i();
+				command = TypeIO.readVec2(read);
 			}
-		}
-
-		public ItemModule realItems() {
-			return team.data().hasCore() ? team.core().items : items;
 		}
 	}
 }

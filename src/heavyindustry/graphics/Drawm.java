@@ -169,7 +169,7 @@ public final class Drawm {
 	public static void outlineRegion(MultiPacker packer, TextureRegion tex, Color outlineColor, String name) {
 		Pixmap out = Pixmaps.outline(Core.atlas.getPixmap(tex), outlineColor, 4);
 		Drawf.checkBleed(out);
-		packer.add(MultiPacker.PageType.main, name, out);
+		packer.add(PageType.main, name, out);
 	}
 
 	/** Outlines a list of regions. Run in createIcons. */

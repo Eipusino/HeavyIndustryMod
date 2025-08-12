@@ -71,7 +71,7 @@ public class ImpulseNode extends PowerNode {
 
 		/** Original code from Project HPL[<a href="https://github.com/HPL-Team/Project-HPL">...</a>] */
 		public void lightning(float x1, float y1, float x2, float y2, int iterations, float rndScale, Color c, Effect e) {
-			Seq<Vec2> lines = new Seq<>();
+			Seq<Vec2> lines = new Seq<>(Vec2.class);
 			boolean swap = Math.abs(y1 - y2) < Math.abs(x1 - x2);
 			if (swap) {
 				lines.add(new Vec2(y1, x1));

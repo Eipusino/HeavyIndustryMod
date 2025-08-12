@@ -68,7 +68,7 @@ import static mindustry.Vars.tilesize;
  */
 public class MultiCrafter extends Block {
 	/** PayloadRecipe {@link CraftPlan}. */
-	public Seq<CraftPlan> craftPlans = new Seq<>();
+	public Seq<CraftPlan> craftPlans = new Seq<>(CraftPlan.class);
 	/** If {@link MultiCrafter#useBlockDrawer} is false, use the drawer in the recipe for the block. */
 	public DrawBlock drawer = new DrawDefault();
 	/** Do you want to use the {@link MultiCrafter#drawer} inside the block itself. */
@@ -731,7 +731,7 @@ public class MultiCrafter extends Block {
 		public MultiCrafter owner = null;
 
 		/** List for building-up consumption before init(). */
-		protected Seq<Consume> consumeBuilder = new Seq<>();
+		protected Seq<Consume> consumeBuilder = new Seq<>(Consume.class);
 		/** Map of bars by name. */
 		protected OrderedMap<String, Func<Building, Bar>> barMap = new OrderedMap<>();
 

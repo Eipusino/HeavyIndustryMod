@@ -82,7 +82,7 @@ public class HoldImageButton extends ImageButton {
 		return style;
 	}
 
-	public void setStyle(Button.ButtonStyle style) {
+	public void setStyle(ButtonStyle style) {
 		if (!(style instanceof HoldImageButtonStyle s)) {
 			throw new IllegalArgumentException("style must be a HoldImageButtonStyle.");
 		} else {

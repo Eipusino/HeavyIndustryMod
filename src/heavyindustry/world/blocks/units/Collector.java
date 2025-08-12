@@ -18,7 +18,7 @@ import mindustry.world.Block;
 import static mindustry.Vars.tilesize;
 
 public class Collector extends Block {
-	public Seq<Building> existing = new Seq<>();
+	public Seq<Building> existing = new Seq<>(Building.class);
 	public float range = 120f;
 
 	public Collector(String name) {

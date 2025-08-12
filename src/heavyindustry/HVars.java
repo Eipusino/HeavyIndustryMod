@@ -12,6 +12,8 @@ import heavyindustry.input.InputAggregator;
 import mindustry.content.TechTree.TechNode;
 import mindustry.type.Sector;
 
+import static mindustry.Vars.headless;
+
 /**
  * I didn't want my Mod main class to look too messy, so I created this class.
  *
@@ -27,8 +29,8 @@ public final class HVars {
 	/** Modules only present in clients, rendering. */
 	public static SizedGraphics sizedGraphics;
 
-	public static final Texture whiteTexture;
-	public static final TextureRegion whiteRegion;
+	public static Texture whiteTexture;
+	public static TextureRegion whiteRegion;
 
 	public static final float boardTimeTotal = 60 * 6;
 
@@ -39,8 +41,10 @@ public final class HVars {
 	static {
 		internalTree = new InternalFileTree(HeavyIndustryMod.class);
 
-		whiteTexture = new Texture(internalTree.child("other/textures/white.png"));
-		whiteRegion = new AtlasRegion(new TextureRegion(whiteTexture));
+		if (!headless) {
+			whiteTexture = new Texture(internalTree.child("other/textures/white.png"));
+			whiteRegion = new AtlasRegion(new TextureRegion(whiteTexture));
+		}
 	}
 
 	/** Don't let anyone instantiate this class. */

@@ -74,7 +74,7 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 	public transient float salvoReloadTarget = 0f;
 
 	public ObjectFloatMap<Healthc> hatred = new ObjectFloatMap<>();
-	public Seq<Healthc> nextTargets = new Seq<>();
+	public Seq<Healthc> nextTargets = new Seq<>(Healthc.class);
 
 	protected Trail[] trails = {};
 
@@ -244,9 +244,10 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 	@Override
 	public void shootBossTarget() {
 		if (type instanceof PesterUnitType put) {
-			put.blackHole.create(this, team, lastTargetPos.x, lastTargetPos.y,
+			Bullet bullet = put.blackHole.create(this, team, lastTargetPos.x, lastTargetPos.y,
 					0, 1, 1, 1,
-					put.blackHole.splashDamageRadius);
+					null);
+			bullet.fdata = put.blackHole.splashDamageRadius;
 		}
 	}
 

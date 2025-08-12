@@ -382,11 +382,11 @@ public class SpaceUnloader extends StorageBlock {
 				table.row();
 				table.left();
 				table.table(l -> {
-					var map = new IntIntMap();
+					IntIntMap map = new IntIntMap();
 					l.update(() -> {
 						l.clearChildren();
 						l.left();
-						var seq = new Seq<>(Item.class);
+						Seq<Item> seq = new Seq<>(Item.class);
 						items.each((item, amount) -> {
 							map.put(item.id, amount);
 							seq.add(item);

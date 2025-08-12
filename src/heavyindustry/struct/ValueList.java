@@ -5,7 +5,7 @@ import arc.struct.Seq;
 import java.util.Iterator;
 
 public class ValueList extends ValueMap implements Iterable<ValueMap> {
-	Seq<ValueMap> list = new Seq<>();
+	Seq<ValueMap> list = new Seq<>(ValueMap.class);
 
 	public ValueMap getMap(int index) {
 		return list.get(index);

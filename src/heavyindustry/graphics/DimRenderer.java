@@ -20,7 +20,7 @@ public final class DimRenderer {
 
 	private static final float[] vertices = new float[24];
 	private static final FrameBuffer buffer = new FrameBuffer();
-	private static final Seq<Runnable> lights = new Seq<>();
+	private static final Seq<Runnable> lights = new Seq<>(Runnable.class);
 	private static final Seq<FadeCircle> circles = new Seq<>(FadeCircle.class);
 	private static int circleIndex = 0;
 	private static TextureRegion circleRegion;

@@ -48,12 +48,12 @@ import mindustry.world.blocks.payloads.PayloadBlock;
 import mindustry.world.blocks.payloads.UnitPayload;
 
 public class PayloadManufacturingGrid extends PayloadBlock {
-	public static final Queue<PayloadManufacturingGridBuild> gridQueue = new Queue<>();
+	public static final Queue<PayloadManufacturingGridBuild> gridQueue = new Queue<>(16, PayloadManufacturingGridBuild.class);
 
 	public static long lastTime = 0;
 	public static int pitchSeq = 0;
 
-	public Seq<PayloadManufacturingRecipe> recipes = new Seq<>();
+	public Seq<PayloadManufacturingRecipe> recipes = new Seq<>(PayloadManufacturingRecipe.class);
 	public float craftTime = 60f;
 	public float ingredientRadius = 4f * Vars.tilesize;
 	public Interp mergeInterp = Interp.pow2In, sizeInterp = a -> 1f - Interp.pow2In.apply(a);
@@ -169,7 +169,7 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 		public Point2 offset = new Point2();
 		public Vec2 center = new Vec2();
 		// for checking whether or not to begin crafting
-		public Seq<PayloadManufacturingGridBuild> chained = new Seq<>();
+		public Seq<PayloadManufacturingGridBuild> chained = new Seq<>(PayloadManufacturingGridBuild.class);
 
 		@Override
 		public void updateTile() {
@@ -254,7 +254,7 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 										return r.requirements.size == ingredients.size;
 									});
 
-									Seq<PayloadStack> accumulated = new Seq<>();
+									Seq<PayloadStack> accumulated = new Seq<>(PayloadStack.class);
 
 									for (IntIntMap.Entry entry : ingredients) {
 										Building build = Vars.world.build(entry.value);
@@ -485,7 +485,7 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 		}
 
 		public void updateChained() {
-			chained = new Seq<>();
+			chained.clear();
 			gridQueue.clear();
 			gridQueue.add(this);
 

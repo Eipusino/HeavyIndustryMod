@@ -21,7 +21,7 @@ import static mindustry.Vars.world;
 public class ArmorFloor extends Floor {
 	protected static final int scanStep = 5;
 	protected static final Color tmpColor = new Color();
-	protected static final Seq<Color> collectedColors = new Seq<>();
+	protected static final Seq<Color> collectedColors = new Seq<>(Color.class);
 
 	public Floor solidReact;
 	public boolean useDynamicLight = false;

@@ -15,7 +15,7 @@ public class SwapHealthAbility extends Ability {
 	public float percent = 3600f, reload = 0.05f;
 	public Effect chainLightningFade = Fx.none;
 
-	public Seq<Unit> all = new Seq<>();
+	public Seq<Unit> all = new Seq<>(Unit.class);
 	public Interval timer = new Interval();
 
 	public SwapHealthAbility() {}

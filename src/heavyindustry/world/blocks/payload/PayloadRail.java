@@ -136,7 +136,7 @@ public class PayloadRail extends PayloadBlock {
 	}
 
 	public class PayloadRailBuild extends PayloadBlockBuild<Payload> {
-		public Seq<RailPayload> items = new Seq<>();
+		public Seq<RailPayload> items = new Seq<>(RailPayload.class);
 		public int link = -1;
 		public int incoming = -1;
 		public float clawInAlpha, clawOutAlpha;

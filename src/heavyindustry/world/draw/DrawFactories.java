@@ -20,29 +20,29 @@ public class DrawFactories extends DrawDefault {
 	public boolean drawTop;
 
 	@Override
-	public void draw(Building entity) {
-		Draw.rect(bottom, entity.x, entity.y);
+	public void draw(Building build) {
+		Draw.rect(bottom, build.x, build.y);
 
 		if (liquidColor.a > 0.001f) {
 			Draw.color(liquidColor);
-			Draw.alpha(entity.liquids.currentAmount() / entity.block.liquidCapacity);
-			Draw.rect(liquid, entity.x, entity.y);
+			Draw.alpha(build.liquids.currentAmount() / build.block.liquidCapacity);
+			Draw.rect(liquid, build.x, build.y);
 			Draw.reset();
 		}
-		if (drawRotator != 0) Draw.rect(rotator, entity.x, entity.y, drawRotator * entity.totalProgress());
-		if (drawRotator2 != 0) Draw.rect(rotator2, entity.x, entity.y, drawRotator2 * entity.totalProgress());
+		if (drawRotator != 0) Draw.rect(rotator, build.x, build.y, drawRotator * build.totalProgress());
+		if (drawRotator2 != 0) Draw.rect(rotator2, build.x, build.y, drawRotator2 * build.totalProgress());
 
 		if (pressorSet.length == 4) {
 			for (int arm = 0; arm < 4; arm++) {
 				int offest = arm - 1;
 				Vec2 armVec = new Vec2();
-				armVec.trns(pressorSet[2] + 90 * offest, Mathf.absin(entity.totalProgress(), pressorSet[0], pressorSet[1] * entity.warmup()));
-				Draw.rect(pressor, entity.x + armVec.x, entity.y + armVec.y, 90 * offest + pressorSet[3]);
+				armVec.trns(pressorSet[2] + 90 * offest, Mathf.absin(build.totalProgress(), pressorSet[0], pressorSet[1] * build.warmup()));
+				Draw.rect(pressor, build.x + armVec.x, build.y + armVec.y, 90 * offest + pressorSet[3]);
 			}
 		}
 
-		Draw.rect(entity.block.region, entity.x, entity.y);
-		if (drawTop) Draw.rect(top, entity.x, entity.y);
+		Draw.rect(build.block.region, build.x, build.y);
+		if (drawTop) Draw.rect(top, build.x, build.y);
 	}
 
 	@Override

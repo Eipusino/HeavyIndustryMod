@@ -16,7 +16,7 @@ import mindustry.io.JsonIO;
 import mindustry.world.meta.Env;
 
 public class OrnitopterUnitType extends BaseUnitType {
-	public final Seq<Blade> blades = new Seq<>();
+	public final Seq<Blade> blades = new Seq<>(Blade.class);
 
 	public float bladeDeathMoveSlowdown = 0.01f, fallDriftScl = 60f;
 	public float fallSmokeX = 0f, fallSmokeY = 0f, fallSmokeChance = 0.1f;

@@ -47,7 +47,7 @@ import static mindustry.Vars.world;
  * @since 1.0.4
  */
 public abstract class CommandableBlock extends Block {
-	protected static final Seq<CommandableBuild> participantsTmp = new Seq<>();
+	protected static final Seq<CommandableBuild> participantsTmp = new Seq<>(CommandableBuild.class);
 
 	public DrawBlock drawer = new DrawDefault();
 	public float warmupSpeed = 0.02f;

@@ -27,7 +27,7 @@ import mindustry.world.blocks.payloads.UnitPayload;
 import mindustry.world.blocks.power.PowerGraph;
 
 public class PayloadLegsUnit extends BaseLegsUnit implements Payloadc {
-	protected Seq<Payload> payloads = new Seq<>();
+	protected Seq<Payload> payloads = new Seq<>(Payload.class);
 
 	protected transient @Nullable PowerGraph payloadPower;
 

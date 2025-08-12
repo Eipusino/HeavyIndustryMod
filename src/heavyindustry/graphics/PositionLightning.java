@@ -100,7 +100,7 @@ public final class PositionLightning {
 	}
 
 	public static void createRange(Bullet owner, boolean hitAir, boolean hitGround, Position from, Team team, float range, int maxHit, Color color, boolean createSubLightning, float damage, int subLightningLength, float width, int lightningNum, Cons<Position> hitPointMovement) {
-		Seq<Healthc> entities = new Seq<>();
+		Seq<Healthc> entities = new Seq<>(Healthc.class);
 		whetherAdd(entities, team, rect.setSize(range * 2f).setCenter(from.getX(), from.getY()), maxHit, hitGround, hitAir);
 		for (Healthc p : entities)
 			create(owner, team, from, p, color, createSubLightning, damage, subLightningLength, width, lightningNum, hitPointMovement);

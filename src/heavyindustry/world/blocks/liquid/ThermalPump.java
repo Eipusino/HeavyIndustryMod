@@ -124,7 +124,7 @@ public class ThermalPump extends LiquidBlock {
 		super.setBars();
 
 		//replace dynamic output bar with own custom bar
-		addLiquidBar((ThermalPump.ThermalPumpBuild build) -> build.liquidDrop);
+		addLiquidBar((ThermalPumpBuild build) -> build.liquidDrop);
 	}
 
 	public class ThermalPumpBuild extends LiquidBuild {

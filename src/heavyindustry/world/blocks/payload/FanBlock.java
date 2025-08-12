@@ -38,7 +38,7 @@ public class FanBlock extends Block {
 	public float particleLayer = Layer.power;
 	public Color particleColor = Color.white;
 
-	public Seq<FanProcessingType> processingTypes = new Seq<>();
+	public Seq<FanProcessingType> processingTypes = new Seq<>(FanProcessingType.class);
 
 	public DrawBlock drawer;
 
@@ -75,7 +75,7 @@ public class FanBlock extends Block {
 	public class FanBuild extends Building {
 		public float warmup;
 		public float totalProgress;
-		public Seq<FanFlowData> flowData = new Seq<>();
+		public Seq<FanFlowData> flowData = new Seq<>(FanFlowData.class);
 
 		@Override
 		public void updateTile() {

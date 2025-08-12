@@ -211,7 +211,7 @@ public class FlowrateVoid extends PayloadVoid {
 	}
 
 	public class FlowrateVoidBuild extends Building {
-		public Seq<Payload> payloads = new Seq<>();
+		public Seq<Payload> payloads = new Seq<>(Payload.class);
 		public float maxTime = 1f;
 		public float readingTimer = 0f;
 		public float totalTime = 0f;

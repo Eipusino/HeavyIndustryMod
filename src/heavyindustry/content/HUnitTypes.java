@@ -773,7 +773,7 @@ public final class HUnitTypes {
 					ghostAlpha = 0.4f;
 					shadowAlpha = 0.2f;
 					shadeSpeed = 3f * i;
-				}}, new Rotor(name + "lepidoptera-rotor2") {{
+				}}, new Rotor(name + "-rotor2") {{
 					mirror = true;
 					x = 17.25f;
 					y = 1f;

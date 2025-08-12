@@ -87,7 +87,7 @@ public final class HPlanets {
 					magnitude = 1;
 					heightOffset = -0.5f;
 				}});
-				Seq<HeightPass> mountains = new Seq<>();
+				Seq<HeightPass> mountains = new Seq<>(HeightPass.class);
 				for (int i = 0; i < 30; i++) {
 					mountains.add(new DotHeight() {{
 						dir.setToRandomDirection().y *= 10f;
@@ -196,7 +196,7 @@ public final class HPlanets {
 				}});
 				heights.add(new ClampHeight(0f, 0.85f));
 				Mathf.rand.setSeed(10);
-				Seq<HeightPass> mountains = new Seq<>();
+				Seq<HeightPass> mountains = new Seq<>(HeightPass.class);
 				for (int i = 0; i < 3; i++) {
 					mountains.add(new DotHeight() {{
 						dir.setToRandomDirection().y = Mathf.random(5f, 1f);
