@@ -11,7 +11,7 @@ import heavyindustry.ui.HoldImageButton.HoldImageButtonStyle;
 import mindustry.gen.Tex;
 import mindustry.ui.Styles;
 
-import static heavyindustry.gen.HIcon.modDrawable;
+import static heavyindustry.gen.HIcon.drawable;
 
 public final class HStyles {
 	public static Drawable
@@ -45,17 +45,17 @@ public final class HStyles {
 
 	public static void onClient() {
 		//drawable
-		buttonLeft = modDrawable("button-left");
-		buttonLeftDown = modDrawable("button-left-down");
-		buttonLeftOver = modDrawable("button-left-over");
-		buttonCenter = modDrawable("button-center");
-		buttonCenterDown = modDrawable("button-center-down");
-		buttonCenterOver = modDrawable("button-center-over");
-		buttonCenterDisabled = modDrawable("button-center-disabled");
-		buttonRight = modDrawable("button-right");
-		buttonRightDown = modDrawable("button-right-down");
-		buttonRightOver = modDrawable("button-right-over");
-		paneBottom = modDrawable("pane-bottom");
+		buttonLeft = drawable("button-left");
+		buttonLeftDown = drawable("button-left-down");
+		buttonLeftOver = drawable("button-left-over");
+		buttonCenter = drawable("button-center");
+		buttonCenterDown = drawable("button-center-down");
+		buttonCenterOver = drawable("button-center-over");
+		buttonCenterDisabled = drawable("button-center-disabled");
+		buttonRight = drawable("button-right");
+		buttonRightDown = drawable("button-right-down");
+		buttonRightOver = drawable("button-right-over");
+		paneBottom = drawable("pane-bottom");
 		//style
 		modImageStyle = new ImageButtonStyle(Styles.logici) {{
 			down = Styles.flatDown;

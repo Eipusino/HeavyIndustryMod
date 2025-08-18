@@ -1,13 +1,16 @@
 package heavyindustry.gen;
 
 import arc.Core;
+import arc.graphics.g2d.NinePatch;
+import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.scene.style.Drawable;
+import arc.scene.style.ScaledNinePatchDrawable;
 import arc.scene.style.TextureRegionDrawable;
 
 import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 
 public final class HIcon {
-	public static Drawable
+	public static TextureRegionDrawable
 			keplerIcon, aboutIcon, artistIcon, configureIcon, contributeIcon, databaseIcon, debuggingIcon, defaultShowIcon, fullSwordIcon, gasesIcon,
 			holdIcon, matrixIcon, nuclearIcon, programIcon, publicInfoIcon, reactionIcon, showInfosIcon, showRangeIcon, musicsIcon,
 			soundsIcon, sounds2Icon, startIcon, telegramIcon, timeIcon, translateIcon, unShowInfosIcon,
@@ -23,72 +26,74 @@ public final class HIcon {
 	private HIcon() {}
 
 	public static void load() {
-		keplerIcon = modDrawable("kepler-icon");
-		aboutIcon = modDrawable("about-icon");
-		artistIcon = modDrawable("artist-icon");
-		configureIcon = modDrawable("configure-icon");
-		contributeIcon = modDrawable("contribute-icon");
-		databaseIcon = modDrawable("database-icon");
-		debuggingIcon = modDrawable("debugging-icon");
-		defaultShowIcon = modDrawable("default-show-icon");
-		fullSwordIcon = modDrawable("full-sword-icon");
-		gasesIcon = modDrawable("gases-icon");
-		holdIcon = modDrawable("hold-icon");
-		matrixIcon = modDrawable("matrix-icon");
-		nuclearIcon = modDrawable("nuclear-icon");
-		programIcon = modDrawable("program-icon");
-		publicInfoIcon = modDrawable("public-info-icon");
-		reactionIcon = modDrawable("reaction-icon");
-		showInfosIcon = modDrawable("show-infos-icon");
-		showRangeIcon = modDrawable("show-range-icon");
-		musicsIcon = modDrawable("musics-icon");
-		soundsIcon = modDrawable("sounds-icon");
-		sounds2Icon = modDrawable("sounds-2-icon");
-		startIcon = modDrawable("start-icon");
-		telegramIcon = modDrawable("telegram-icon");
-		timeIcon = modDrawable("time-icon");
-		translateIcon = modDrawable("translate-icon");
-		unShowInfosIcon = modDrawable("un-show-infos-icon");
-		javaIcon = modDrawable("java-icon");
-		javaScriptIcon = modDrawable("java-script-icon");
-		networkErrorIcon = modDrawable("network-error-icon");
+		keplerIcon = texture("kepler-icon");
+		aboutIcon = texture("about-icon");
+		artistIcon = texture("artist-icon");
+		configureIcon = texture("configure-icon");
+		contributeIcon = texture("contribute-icon");
+		databaseIcon = texture("database-icon");
+		debuggingIcon = texture("debugging-icon");
+		defaultShowIcon = texture("default-show-icon");
+		fullSwordIcon = texture("full-sword-icon");
+		gasesIcon = texture("gases-icon");
+		holdIcon = texture("hold-icon");
+		matrixIcon = texture("matrix-icon");
+		nuclearIcon = texture("nuclear-icon");
+		programIcon = texture("program-icon");
+		publicInfoIcon = texture("public-info-icon");
+		reactionIcon = texture("reaction-icon");
+		showInfosIcon = texture("show-infos-icon");
+		showRangeIcon = texture("show-range-icon");
+		musicsIcon = texture("musics-icon");
+		soundsIcon = texture("sounds-icon");
+		sounds2Icon = texture("sounds-2-icon");
+		startIcon = texture("start-icon");
+		telegramIcon = texture("telegram-icon");
+		timeIcon = texture("time-icon");
+		translateIcon = texture("translate-icon");
+		unShowInfosIcon = texture("un-show-infos-icon");
+		javaIcon = texture("java-icon");
+		javaScriptIcon = texture("java-script-icon");
+		networkErrorIcon = texture("network-error-icon");
 		//small
-		resetIconSmall = modDrawable("reset-icon-small");
-		timeIconSmall = modDrawable("time-icon-small");
+		resetIconSmall = texture("reset-icon-small");
+		timeIconSmall = texture("time-icon-small");
 		//animdustry
-		alphaChan = modDrawable("alpha-chan");
-		alphaChanHit = modDrawable("alpha-chan-hit");
-		crawlerChan = modDrawable("crawler-chan");
-		crawlerChanHit = modDrawable("crawler-chan-hit");
-		zenithChan = modDrawable("zenith-chan");
-		zenithChanHit = modDrawable("zenith-chan-hit");
-		monoChan = modDrawable("mono-chan");
-		monoChanHit = modDrawable("mono-chan-hit");
-		oxynoeChan = modDrawable("oxynoe-chan");
-		oxynoeChanHit = modDrawable("oxynoe-chan-hit");
-		octChan = modDrawable("oct-chan");
-		octChanHit = modDrawable("oct-chan-hit");
-		seiChan = modDrawable("sei-chan");
-		seiChanHit = modDrawable("sei-chan-hit");
-		quadChan = modDrawable("quad-chan");
-		quadChanHit = modDrawable("quad-chan-hit");
-		boulderChan = modDrawable("boulder-chan");
-		boulderChanHit = modDrawable("boulder-chan-hit");
+		alphaChan = texture("alpha-chan");
+		alphaChanHit = texture("alpha-chan-hit");
+		crawlerChan = texture("crawler-chan");
+		crawlerChanHit = texture("crawler-chan-hit");
+		zenithChan = texture("zenith-chan");
+		zenithChanHit = texture("zenith-chan-hit");
+		monoChan = texture("mono-chan");
+		monoChanHit = texture("mono-chan-hit");
+		oxynoeChan = texture("oxynoe-chan");
+		oxynoeChanHit = texture("oxynoe-chan-hit");
+		octChan = texture("oct-chan");
+		octChanHit = texture("oct-chan-hit");
+		seiChan = texture("sei-chan");
+		seiChanHit = texture("sei-chan-hit");
+		quadChan = texture("quad-chan");
+		quadChanHit = texture("quad-chan-hit");
+		boulderChan = texture("boulder-chan");
+		boulderChanHit = texture("boulder-chan-hit");
 	}
 
-	public static <T extends Drawable> T getModDrawable(String name) {
-		return Core.atlas.getDrawable(MOD_NAME + "-" + name);
+	public static Drawable drawable(String name) {
+		AtlasRegion region = Core.atlas.find(MOD_NAME + "-" + name);
+
+		if (region.splits != null && region.pads != null) {
+			int[] splits = region.splits;
+			NinePatch patch = new NinePatch(region, splits[0], splits[1], splits[2], splits[3]);
+			int[] pads = region.pads;
+			if (pads != null) patch.setPadding(pads[0], pads[1], pads[2], pads[3]);
+			return new ScaledNinePatchDrawable(patch);
+		} else {
+			return new TextureRegionDrawable(region);
+		}
 	}
 
-	public static Drawable modDrawable(String name) {
-		return Core.atlas.drawable(MOD_NAME + "-" + name);
-	}
-
-	public static TextureRegionDrawable regionDrawable(String name) {
-		return new TextureRegionDrawable(Core.atlas.find(name));
-	}
-
-	public static TextureRegionDrawable modRegionDrawable(String name) {
-		return regionDrawable(MOD_NAME + "-" + name);
+	public static TextureRegionDrawable texture(String name) {
+		return new TextureRegionDrawable(Core.atlas.find(MOD_NAME + "-" + name));
 	}
 }

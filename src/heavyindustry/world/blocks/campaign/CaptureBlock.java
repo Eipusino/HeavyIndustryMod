@@ -91,7 +91,7 @@ public class CaptureBlock extends Block {
 			Groups.player.copy(players);
 			players.retainAll((Player p) -> p.team() != team);//TODO ctf mechanics for user made PvP maps? currently lets *all* enemies collectively cap
 
-			int capturing = 0;
+			float capturing = 0f;
 
 			for (int i = 0; i < players.size; i++) {
 				Unit unit = players.get(i).unit();
@@ -100,7 +100,7 @@ public class CaptureBlock extends Block {
 
 			capturingFrac = players.size / capturing;
 
-			return capturing > 0;
+			return capturing > 0f;
 		}
 
 		@Override

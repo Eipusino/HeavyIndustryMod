@@ -50,15 +50,6 @@ public final class HVars {
 	/** Don't let anyone instantiate this class. */
 	private HVars() {}
 
-	/** Omitting longer mod names is generally used to load mod sprites. */
-	public static String name(String add) {
-		return HeavyIndustryMod.MOD_NAME + "-" + add;
-	}
-
-	public static String name() {
-		return HeavyIndustryMod.MOD_NAME + "-";
-	}
-
 	/** Delta time that is unaffected by time control. */
 	public static float graphicsDelta() {
 		return Core.graphics.getDeltaTime() * 60f;

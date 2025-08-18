@@ -184,6 +184,20 @@ public final class HFx {
 					Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fslope() * 14 + 4);
 				});
 			}),
+			diffuse = new Effect(30, e -> {
+				if (!(e.data instanceof Integer siz)) return;
+				int size = siz;
+				float f = e.fout();
+				float r = Math.max(0f, Mathf.clamp(2f - f * 2f) * size * tilesize / 2f - f - 0.2f), w = Mathf.clamp(0.5f - f) * size * tilesize;
+				Lines.stroke(3f * f, e.color);
+				Lines.beginLine();
+				for (int i = 0; i < 4; i++) {
+					Lines.linePoint(e.x + Geometry.d4(i).x * r + Geometry.d4(i).y * w, e.y + Geometry.d4(i).y * r - Geometry.d4(i).x * w);
+					if (f < 0.5f)
+						Lines.linePoint(e.x + Geometry.d4(i).x * r - Geometry.d4(i).y * w, e.y + Geometry.d4(i).y * r + Geometry.d4(i).x * w);
+				}
+				Lines.endLine(true);
+			}),
 			skyTrail = new Effect(22, e -> {
 				Draw.color(Pal.techBlue, Pal.gray, e.fin() * 0.6f);
 
@@ -2356,6 +2370,33 @@ public final class HFx {
 			float lr = rot + e.fin() * 20f * i;
 			Draw.rect(Core.atlas.find("casing"), e.x + Angles.trnsx(lr, len) + Mathf.randomSeedRange(e.id + i + 7, 3f * e.fin()), e.y + Angles.trnsy(lr, len) + Mathf.randomSeedRange(e.id + i + 8, 3f * e.fin()), 2f, 3f, rot + e.fin() * 50f * i);
 		}).layer(Layer.bullet);
+	}
+
+	public static Effect diffuse(int size, Color color, float life) {
+		return new Effect(life, e -> {
+			float f = e.fout();
+			if (f < 1e-4f) return;
+			float r = Math.max(0f, Mathf.clamp(2f - f * 2f) * size * tilesize / 2f - f - 0.2f), w = Mathf.clamp(0.5f - f) * size * tilesize;
+			Lines.stroke(3f * f, color);
+			Lines.beginLine();
+			for (int i = 0; i < 4; i++) {
+				Lines.linePoint(e.x + Geometry.d4(i).x * r + Geometry.d4(i).y * w, e.y + Geometry.d4(i).y * r - Geometry.d4(i).x * w);
+				if (f < 0.5f)
+					Lines.linePoint(e.x + Geometry.d4(i).x * r - Geometry.d4(i).y * w, e.y + Geometry.d4(i).y * r + Geometry.d4(i).x * w);
+			}
+			Lines.endLine(true);
+		});
+	}
+
+	public static Effect fiammettaExp(float r) {
+		return new Effect(30, e -> {
+			float fin = Math.min(e.time / 10, 1), fout = 1 - ((e.time - 10) / (e.lifetime - 10));
+			Draw.color(e.color.cpy().a(e.time > 10 ? 0.3f * fout : 0.3f));
+			Fill.circle(e.x, e.y, r * fin);
+			float ww = r * 2f * fin, hh = r * 2f * fin;
+			Draw.color(e.color.cpy().a(e.time > 10 ? fout : 1));
+			Draw.rect(Core.atlas.find(MOD_NAME + "firebird-light"), e.x, e.y, ww, hh);
+		});
 	}
 
 	public static Effect edessp(float lifetime) {

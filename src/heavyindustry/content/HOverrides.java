@@ -85,7 +85,7 @@ public final class HOverrides {
 	public static void load() {
 		//blocks-environment
 		Blocks.stone.itemDrop = Blocks.craters.itemDrop = Blocks.charr.itemDrop = Blocks.basalt.itemDrop = Blocks.dacite.itemDrop = HItems.stone;
-		Blocks.stone.playerUnmineable = Blocks.craters.playerUnmineable = Blocks.charr.playerUnmineable = true;
+		Blocks.stone.playerUnmineable = Blocks.craters.playerUnmineable = Blocks.charr.playerUnmineable = Blocks.basalt.playerUnmineable = Blocks.dacite.playerUnmineable = true;
 		Blocks.sandWater.itemDrop = Blocks.darksandWater.itemDrop = Blocks.darksandTaintedWater.itemDrop = Items.sand;
 		Blocks.sandWater.playerUnmineable = Blocks.darksandWater.playerUnmineable = Blocks.darksandTaintedWater.playerUnmineable = true;
 		Blocks.deepTaintedWater.asFloor().liquidMultiplier = 1.5f;

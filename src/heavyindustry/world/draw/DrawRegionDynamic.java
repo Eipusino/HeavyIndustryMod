@@ -13,10 +13,10 @@ import mindustry.graphics.Drawf;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 
-public class DrawRegionDynamic<E extends Building> extends DrawBlock {
-	public Floatf<E> rotation = e -> 0;
-	public Floatf<E> alpha = e -> 1;
-	public Func<E, Color> color;
+public class DrawRegionDynamic extends DrawBlock {
+	public Floatf<Building> rotation = e -> 0;
+	public Floatf<Building> alpha = e -> 1;
+	public Func<Building, Color> color;
 
 	public TextureRegion region;
 	public String suffix = "";
@@ -30,31 +30,32 @@ public class DrawRegionDynamic<E extends Building> extends DrawBlock {
 
 	public boolean makeIcon = false;
 
-	public DrawRegionDynamic(String suf) {
-		suffix = suf;
+	@SuppressWarnings("unchecked")
+	public <E extends Building> DrawRegionDynamic(Floatf<E> rotations, Floatf<E> alphas, Func<E, Color> colors, String fix) {
+		rotation = (Floatf<Building>) rotations;
+		alpha = (Floatf<Building>) alphas;
+		color = (Func<Building, Color>) colors;
+		suffix = fix;
 	}
 
 	public DrawRegionDynamic() {}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void draw(Building build) {
-		E entity = (E) build;
-
-		float alp = alpha.get(entity);
+		float alp = alpha.get(build);
 		if (alp <= 0.01f) return;
 
 		float z = Draw.z();
 
 		if (layer > 0) Draw.z(layer);
-		if (color != null) Draw.color(color.get(entity));
+		if (color != null) Draw.color(color.get(build));
 
 		Draw.alpha(alp);
 
 		if (spinSprite) {
-			Drawf.spinSprite(region, build.x + x, build.y + y, rotation.get(entity));
+			Drawf.spinSprite(region, build.x + x, build.y + y, rotation.get(build));
 		} else {
-			Draw.rect(region, build.x + x, build.y + y, rotation.get(entity));
+			Draw.rect(region, build.x + x, build.y + y, rotation.get(build));
 		}
 		Draw.color();
 		Draw.z(z);

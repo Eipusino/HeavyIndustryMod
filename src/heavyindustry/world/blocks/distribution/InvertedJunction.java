@@ -18,7 +18,7 @@ import mindustry.type.Item;
 import mindustry.ui.Styles;
 import mindustry.world.blocks.distribution.Junction;
 
-import static heavyindustry.HVars.name;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static heavyindustry.util.Utils.split;
 import static mindustry.Vars.content;
 import static mindustry.Vars.tilesize;
@@ -46,10 +46,10 @@ public class InvertedJunction extends Junction {
 	public void load() {
 		super.load();
 		place = Core.atlas.find(placeSprite);
-		locs = split(name("junction"), 32, 0);
-		arrow1 = Core.atlas.find(name("arrow-1"));
-		arrow2 = Core.atlas.find(name("arrow-2"));
-		flip = Core.atlas.find(name("flip"));
+		locs = split(MOD_NAME + "-junction", 32, 0);
+		arrow1 = Core.atlas.find(MOD_NAME + "-arrow-1");
+		arrow2 = Core.atlas.find(MOD_NAME + "-arrow-2");
+		flip = Core.atlas.find(MOD_NAME + "-flip");
 	}
 
 	public class InvertedJunctionBuild extends JunctionBuild {

@@ -99,6 +99,7 @@ import heavyindustry.world.blocks.production.UnitMinerPoint;
 import heavyindustry.world.blocks.production.MultiCrafter;
 import heavyindustry.world.blocks.production.SporeFarmBlock;
 import heavyindustry.world.blocks.sandbox.AdaptiveSource;
+import heavyindustry.world.blocks.sandbox.RandomSource;
 import heavyindustry.world.blocks.storage.CoreStorageBlock;
 import heavyindustry.world.blocks.storage.AdaptUnloader;
 import heavyindustry.world.blocks.units.AdaptPayloadSource;
@@ -360,7 +361,7 @@ public final class HBlocks {
 	rupture, rift,
 	//sandbox
 	unitIniter,
-			reinforcedItemSource, reinforcedLiquidSource, reinforcedPowerSource, reinforcedPayloadSource, adaptiveSource,
+			reinforcedItemSource, reinforcedLiquidSource, reinforcedPowerSource, reinforcedPayloadSource, adaptiveSource, randomSource,
 			staticDrill, omniNode, ultraAssignOverdrive,
 			teamChanger, barrierProjector, entityRemove,
 			invincibleWall, invincibleWallLarge, invincibleWallHuge, invincibleWallGigantic,
@@ -3270,8 +3271,8 @@ public final class HBlocks {
 				reloadMultiplier = 0.5f;
 				ammoMultiplier = 4;
 			}
-				final float slpRange = 52f;
-				final Effect easyExp = new Effect(20, e -> {
+				public final float slpRange = 52f;
+				public final Effect easyExp = new Effect(20, e -> {
 					Fx.rand.setSeed(e.id);
 					float baseRd = e.rotation;
 					float randRd = baseRd / 6f;
@@ -4596,7 +4597,7 @@ public final class HBlocks {
 		//turrets-erekir
 		rupture = new ItemTurret("rupture") {{
 			requirements(Category.turret, ItemStack.with(Items.graphite, 350, Items.silicon, 250, Items.beryllium, 400, Items.tungsten, 200, Items.oxide, 50));
-			ammo(Items.beryllium, new BasicBulletType(12f, 72f) {{
+			ammo(Items.beryllium, new BasicBulletType(12f, 85f) {{
 				buildingDamageMultiplier = 0.33f;
 				ammoMultiplier = 1f;
 				knockback = 1.1f;
@@ -4612,7 +4613,7 @@ public final class HBlocks {
 				hitEffect = despawnEffect = Fx.hitBulletColor;
 				smokeEffect = Fx.shootBigSmoke;
 				shootEffect = new MultiEffect(Fx.shootSmallColor, Fx.colorSpark);
-			}}, Items.tungsten, new BasicBulletType(13f, 96.8f) {{
+			}}, Items.tungsten, new BasicBulletType(13f, 95f) {{
 				buildingDamageMultiplier = 0.33f;
 				ammoMultiplier = 2f;
 				knockback = 1.5f;
@@ -4629,7 +4630,7 @@ public final class HBlocks {
 				hitEffect = despawnEffect = Fx.hitBulletColor;
 				smokeEffect = Fx.shootBigSmoke;
 				shootEffect = new MultiEffect(Fx.shootSmallColor, Fx.colorSpark);
-			}}, Items.carbide, new BasicBulletType(16f, 337.9f) {{
+			}}, Items.carbide, new BasicBulletType(16f, 325f / 0.75f) {{
 				buildingDamageMultiplier = 0.33f;
 				ammoMultiplier = 2f;
 				reloadMultiplier = 0.2f;
@@ -4654,7 +4655,7 @@ public final class HBlocks {
 				fragRandomSpread = 0f;
 				fragSpread = 25f;
 				fragVelocityMin = 1f;
-				fragBullet = new BasicBulletType(8.7f, 225.6f) {{
+				fragBullet = new BasicBulletType(8.7f, 227f) {{
 					width = 10f;
 					height = 15f;
 					lifetime = 8.55f;
@@ -4701,6 +4702,39 @@ public final class HBlocks {
 			coolant = consume(new ConsumeLiquid(Liquids.water, 0.5f));
 			buildCostMultiplier = 0.8f;
 			squareSprite = false;
+			buildType = () -> new ItemTurretBuild() {
+				@Override
+				protected void shoot(BulletType type) {
+					float bulletX = x + Angles.trnsx(rotation - 90, shootX, shootY);
+					float bulletY = y + Angles.trnsy(rotation - 90, shootX, shootY);
+
+					if (shoot.firstShotDelay > 0) {
+						chargeSound.at(bulletX, bulletY, Mathf.random(soundPitchMin, soundPitchMax));
+						type.chargeEffect.at(bulletX, bulletY, rotation);
+					}
+
+					shoot.shoot(barrelCounter, (xOffset, yOffset, angle, delay, mover) -> {
+						queuedBullets++;
+						int barrel = barrelCounter;
+
+						if (delay > 0f && type.reloadMultiplier > 0f) {
+							Time.run(delay / type.reloadMultiplier, () -> {
+								//hack: make sure the barrel is the same as what it was when the bullet was queued to fire
+								int prev = barrelCounter;
+								barrelCounter = barrel;
+								bullet(type, xOffset, yOffset, angle, mover);
+								barrelCounter = prev;
+							});
+						} else {
+							bullet(type, xOffset, yOffset, angle, mover);
+						}
+					}, () -> barrelCounter++);
+
+					if (consumeAmmoOnce) {
+						useAmmo();
+					}
+				}
+			};
 		}};
 		rift = new ItemTurret("rift") {{
 			requirements(Category.turret, ItemStack.with(Items.graphite, 920, Items.silicon, 500, Items.surgeAlloy, 800, Items.tungsten, 1200, Items.carbide, 480));
@@ -4995,7 +5029,15 @@ public final class HBlocks {
 			requirements(Category.distribution, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 1000;
 			armor = 10f;
-			liquidCapacity = 100f;
+			liquidCapacity = 10000f;
+			itemCapacity = 1000;
+		}};
+		randomSource = new RandomSource("random-source") {{
+			requirements(Category.distribution, BuildVisibility.sandboxOnly, ItemStack.empty);
+			health = 1000;
+			armor = 10f;
+			liquidCapacity = 10000f;
+			itemCapacity = 1000;
 			itemsPerSecond = 2000;
 		}};
 		staticDrill = new Drill("static-drill") {{

@@ -22,10 +22,9 @@ import java.util.Map;
  * @see Map#ofEntries Map.ofEntries()
  * @since 9
  */
-public final class KeyValueHolder<K, V> implements Map.Entry<K, V> {
-	private final K key;
-
-	private final V value;
+public class KeyValueHolder<K, V> implements Map.Entry<K, V>, Cloneable {
+	protected K key;
+	protected V value;
 
 	public KeyValueHolder(K k, V v) {
 		key = k;
@@ -55,12 +54,23 @@ public final class KeyValueHolder<K, V> implements Map.Entry<K, V> {
 	/**
 	 * Throws {@link UnsupportedOperationException}.
 	 *
-	 * @param value ignored
+	 * @param v ignored
 	 * @return never returns normally
 	 */
 	@Override
-	public V setValue(V value) {
-		throw new UnsupportedOperationException("not supported");
+	public V setValue(V v) {
+		value = v;
+
+		return value;
+	}
+
+	@SuppressWarnings("unchecked")
+	public KeyValueHolder<K, V> copy() {
+		try {
+			return (KeyValueHolder<K, V>) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException("oh no", e);
+		}
 	}
 
 	/**

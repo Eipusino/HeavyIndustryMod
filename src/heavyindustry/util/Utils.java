@@ -91,7 +91,7 @@ import mindustry.world.meta.StatUnit;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-import static heavyindustry.HVars.name;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static mindustry.Vars.content;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.indexer;
@@ -271,7 +271,7 @@ public final class Utils {
 	 * @param layer Number of segmentation layers
 	 * @return Split sprites by size and layer parameter ratio.
 	 * @throws NullPointerException	   If the {@code name} is {@code null}.
-	 * @throws NegativeArraySizeException If {@code size} or {@code layer} is negative.
+	 * @throws IllegalArgumentException If {@code size} or {@code layer} is negative.
 	 * @apiNote The element returned by this method cannot be used in situations where it will be
 	 * forcibly converted to {@link AtlasRegion}.
 	 */
@@ -894,7 +894,7 @@ public final class Utils {
 			cons.put(i, it -> {
 				PixmapRegion base = Core.atlas.getPixmap(item.uiIcon);
 				Pixmap mix = base.crop();
-				AtlasRegion number = Core.atlas.find(name("number-" + j));
+				AtlasRegion number = Core.atlas.find(MOD_NAME + "-number-" + j);
 				if (number.found()) {
 					PixmapRegion region = TextureAtlas.blankAtlas().getPixmap(number);
 
@@ -918,7 +918,7 @@ public final class Utils {
 			cons.put(i, ld -> {
 				PixmapRegion base = Core.atlas.getPixmap(liquid.uiIcon);
 				Pixmap mix = base.crop();
-				AtlasRegion number = Core.atlas.find(name("number-" + j));
+				AtlasRegion number = Core.atlas.find(MOD_NAME + "-number-" + j);
 				if (number.found()) {
 					PixmapRegion region = TextureAtlas.blankAtlas().getPixmap(number);
 

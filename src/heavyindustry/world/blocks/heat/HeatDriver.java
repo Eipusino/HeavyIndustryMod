@@ -30,7 +30,7 @@ import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
-import static heavyindustry.HVars.name;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static mindustry.Vars.state;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
@@ -170,8 +170,8 @@ public class HeatDriver extends Block {
 			turretLine = Core.atlas.find(block.name + "-turret-outline");
 			rPart = Core.atlas.find(block.name + "-reflect");
 			rLine = Core.atlas.find(block.name + "-reflect-outline");
-			effect = Core.atlas.find(block.name + "-effect", name("heat-driver-effect"));
-			arrow = Core.atlas.find(block.name + "-arrow", name("heat-driver-arrow"));
+			effect = Core.atlas.find(block.name + "-effect", MOD_NAME + "-heat-driver-effect");
+			arrow = Core.atlas.find(block.name + "-arrow", MOD_NAME + "-heat-driver-arrow");
 			preview = Core.atlas.find(block.name + "-preview");
 		}
 

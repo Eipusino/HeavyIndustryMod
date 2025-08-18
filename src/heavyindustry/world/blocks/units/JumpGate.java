@@ -2,7 +2,6 @@ package heavyindustry.world.blocks.units;
 
 import arc.Core;
 import arc.func.Boolp;
-import arc.func.Cons2;
 import arc.func.Prov;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
@@ -25,6 +24,7 @@ import heavyindustry.gen.Spawner;
 import heavyindustry.type.Recipe;
 import heavyindustry.ui.DelaySlideTable;
 import heavyindustry.util.Utils;
+import heavyindustry.world.Worlds;
 import heavyindustry.world.consumers.ConsumeRecipe;
 import mindustry.content.Fx;
 import mindustry.content.UnitTypes;
@@ -70,32 +70,6 @@ public class JumpGate extends Block {
 
 	public TextureRegion arrowRegion, pointerRegion;
 
-	//todo duplicated code
-	public Cons2<JumpGateBuild, Boolean> blockDrawer = (building, valid) -> {
-		Draw.z(Layer.bullet);
-
-		float scl = building.warmup() * 0.125f;
-		float rot = building.totalProgress();
-
-		Draw.color(building.team.color);
-		Lines.stroke(8f * scl);
-		Lines.square(building.x, building.y, building.block.size * tilesize / 2.5f, -rot);
-		Lines.square(building.x, building.y, building.block.size * tilesize / 2f, rot);
-		for (int i = 0; i < 4; i++) {
-			float length = tilesize * building.block.size / 2f + 8f;
-			float rotation = i * 90;
-			float sin = Mathf.absin(building.totalProgress(), 16f, tilesize);
-			float signSize = 0.75f + Mathf.absin(building.totalProgress() + 8f, 8f, 0.15f);
-
-			Tmp.v1.trns(rotation + rot, -length);
-			Draw.rect(arrowRegion, building.x + Tmp.v1.x, building.y + Tmp.v1.y, arrowRegion.width * scl, arrowRegion.height * scl, rotation + 90 + rot);
-			length = tilesize * building.block.size / 2f + 3 + sin;
-			Tmp.v1.trns(rotation, -length);
-			Draw.rect(pointerRegion, building.x + Tmp.v1.x, building.y + Tmp.v1.y, pointerRegion.width * signSize * scl, pointerRegion.height * signSize * scl, rotation + 90);
-		}
-		Draw.color();
-	};
-
 	public JumpGate(String name) {
 		super(name);
 		solid = true;
@@ -115,13 +89,8 @@ public class JumpGate extends Block {
 		config(Float.class, JumpGateBuild::changeSpawnCount);
 		configClear((JumpGateBuild e) -> e.recipeIndex = -1);
 
-		consume(new ConsumeRecipe(JumpGateBuild::recipe));
-		consumeBuilder.each(c -> c.multiplier = b -> {
-			if (b instanceof JumpGateBuild gate) {
-				return gate.costMultiplier();
-			}
-			return 1f;
-		});
+		consumeBuilder.add(new ConsumeRecipe(JumpGateBuild::recipe));
+		consumeBuilder.each(c -> c.multiplier = b -> b instanceof JumpGateBuild gate ? gate.costMultiplier() : 1f);
 	}
 
 	public void addUnitRecipe(UnitType unitType, float craftTime, Recipe recipe) {
@@ -149,17 +118,17 @@ public class JumpGate extends Block {
 	@Override
 	public void setBars() {
 		super.setBars();
-		addBar("progress", (JumpGateBuild e) -> new Bar("bar.progress", Pal.ammo, e::progress));
-		addBar("efficiency", (JumpGateBuild e) -> new Bar(() -> Core.bundle.format("bar.efficiency", Strings.autoFixed(e.speedMultiplier * 100f, 0)), () -> Pal.techBlue, () -> e.speedMultiplier / maxWarmupSpeed));
-		addBar("units", (JumpGateBuild e) -> new Bar(
-				() -> e.unitType() == null ? "[lightgray]" + Iconc.cancel :
+		addBar("progress", (JumpGateBuild tile) -> new Bar("bar.progress", Pal.ammo, tile::progress));
+		addBar("efficiency", (JumpGateBuild tile) -> new Bar(() -> Core.bundle.format("bar.efficiency", Strings.autoFixed(tile.speedMultiplier * 100f, 0)), () -> Pal.techBlue, () -> tile.speedMultiplier / maxWarmupSpeed));
+		addBar("units", (JumpGateBuild tile) -> new Bar(
+				() -> tile.unitType() == null ? "[lightgray]" + Iconc.cancel :
 						Core.bundle.format("bar.unitcap",
-								Fonts.getUnicodeStr(e.unitType().name),
-								e.team.data().countType(e.unitType()),
-								e.unitType() == null ? Units.getStringCap(e.team) : (e.unitType().useUnitCap ? Units.getStringCap(e.team) : "∞")
+								Fonts.getUnicodeStr(tile.unitType().name),
+								tile.team.data().countType(tile.unitType()),
+								tile.unitType() == null ? Units.getStringCap(tile.team) : (tile.unitType().useUnitCap ? Units.getStringCap(tile.team) : "∞")
 						),
 				() -> Pal.power,
-				() -> e.unitType() == null ? 0f : (e.unitType().useUnitCap ? (float) e.team.data().countType(e.unitType()) / Units.getCap(e.team) : 1f)
+				() -> tile.unitType() == null ? 0f : (tile.unitType().useUnitCap ? (float) tile.team.data().countType(tile.unitType()) / Units.getCap(tile.team) : 1f)
 		));
 	}
 
@@ -191,11 +160,11 @@ public class JumpGate extends Block {
 						t.table(req -> {
 							req.right();
 							int i = 0;
-							for (ItemStack stack: recipe.inputItem) {
+							for (ItemStack stack : recipe.inputItem) {
 								if (++i % 6 == 0) req.row();
 								req.add(StatValues.stack(stack.item, stack.amount, true)).pad(5);
 							}
-							for (PayloadStack stack: recipe.inputPayload) {
+							for (PayloadStack stack : recipe.inputPayload) {
 								if (++i % 6 == 0) req.row();
 								req.add(StatValues.stack(stack.item, stack.amount, true)).pad(5);
 							}
@@ -209,24 +178,23 @@ public class JumpGate extends Block {
 		});
 	}
 
-	public static class UnitRecipe{
+	public static class UnitRecipe {
 		public UnitType unitType = UnitTypes.alpha;
 		public float craftTime = 10 * 60f;
 		public Recipe recipe = Recipe.empty;
 	}
 
-	public Stack getReqStack(UnlockableContent content, Prov<CharSequence> display, Boolp valid){
+	public Stack getReqStack(UnlockableContent content, Prov<CharSequence> display, Boolp valid) {
 		return new Stack(
 				new Table(o -> o.left().add(new Image(content.fullIcon)).size(32f).scaling(Scaling.fit)),
 				new Table(t -> {
 					t.left().bottom();
-					t.label(() -> (valid.get()? "[accent]": "[negstat]") + display.get()).style(Styles.outlineLabel);
+					t.label(() -> (valid.get() ? "[accent]" : "[negstat]") + display.get()).style(Styles.outlineLabel);
 					t.pack();
 				})
 		);
 	}
 
-	@SuppressWarnings("InnerClassMayBeStatic")
 	public class JumpGateBuild extends Building {
 		public float speedMultiplier = 1f;
 		public float progress;
@@ -251,7 +219,7 @@ public class JumpGate extends Block {
 
 		@Override
 		public PayloadSeq getPayloads() {
-			return new PayloadSeq();
+			return Worlds.teamPayloadData.getPayload(team);
 		}
 
 		@Override
@@ -307,7 +275,7 @@ public class JumpGate extends Block {
 
 		@Override
 		public void drawConfigure() {
-			drawPlaceText(unitType() == null? "@empty": unitType().localizedName + " x" + spawnCount, tileX(), tileY(), true);
+			drawPlaceText(unitType() == null ? "@empty" : unitType().localizedName + " x" + spawnCount, tileX(), tileY(), true);
 		}
 
 		public void changePlan(int idx) {
@@ -325,7 +293,7 @@ public class JumpGate extends Block {
 			speedMultiplier = 1f;
 		}
 
-		public void findTiles(){
+		public void findTiles() {
 			tiles = Utils.ableToSpawn(unitType(), x, y, maxRadius);
 		}
 
@@ -351,7 +319,7 @@ public class JumpGate extends Block {
 			super.updateTile();
 			warmup = Mathf.lerp(warmup, efficiency, 0.01f);
 			spawnWarmup = Mathf.lerp(spawnWarmup, efficiency, 0.01f);
-			items = closestCore() == null? tmpItem: closestCore().items;
+			items = closestCore() == null ? tmpItem : closestCore().items;
 			if (unitRecipe() == null || unitType() == null) {
 				progress = 0f;
 				return;
@@ -361,7 +329,7 @@ public class JumpGate extends Block {
 			}
 			if (progress >= 1) {
 				findTiles();
-				for (int i = 0; i < spawnCount; i++){
+				for (int i = 0; i < spawnCount; i++) {
 					spawnUnit();
 				}
 				consume();
@@ -402,14 +370,14 @@ public class JumpGate extends Block {
 									new Table(req -> {
 										req.right();
 										int j = 0;
-										for (ItemStack stack: unitRecipe.recipe.inputItem) {
+										for (ItemStack stack : unitRecipe.recipe.inputItem) {
 											if (++j % 3 == 0) req.row();
 											req.add(getReqStack(stack.item, () -> Strings.format("@/@", UI.formatAmount((long) stack.amount * spawnCount), UI.formatAmount(items.get(stack.item))),
 													() -> items.has(stack.item, stack.amount * spawnCount))).pad(5);
 										}
 										req.row();
 										int k = 0;
-										for (PayloadStack stack: unitRecipe.recipe.inputPayload) {
+										for (PayloadStack stack : unitRecipe.recipe.inputPayload) {
 											if (++k % 4 == 0) req.row();
 											req.add(getReqStack(stack.item, () -> Strings.format("@/@", UI.formatAmount((long) stack.amount * spawnCount), UI.formatAmount(getPayloads().get(stack.item))),
 													() -> getPayloads().get(stack.item) >= stack.amount * spawnCount)).pad(5);
@@ -419,7 +387,7 @@ public class JumpGate extends Block {
 							button.update(() -> {
 								if (unitRecipe() == null) {
 									button.setChecked(false);
-								}else {
+								} else {
 									button.setChecked(unitRecipe == unitRecipe());
 								}
 							});
@@ -449,12 +417,33 @@ public class JumpGate extends Block {
 		public void draw() {
 			super.draw();
 
-			blockDrawer.get(this, unitType() != null && getCommandPosition() != null);
+			Draw.z(Layer.bullet);
+
+			float scl = warmup() * 0.125f;
+			float rot = totalProgress();
+
+			Draw.color(team.color);
+			Lines.stroke(8f * scl);
+			Lines.square(x, y, size * tilesize / 2.5f, -rot);
+			Lines.square(x, y, size * tilesize / 2f, rot);
+			for (int i = 0; i < 4; i++) {
+				float length = tilesize * size / 2f + 8f;
+				float rotation = i * 90;
+				float sin = Mathf.absin(totalProgress(), 16f, tilesize);
+				float signSize = 0.75f + Mathf.absin(totalProgress() + 8f, 8f, 0.15f);
+
+				Tmp.v1.trns(rotation + rot, -length);
+				Draw.rect(arrowRegion, x + Tmp.v1.x, y + Tmp.v1.y, arrowRegion.width * scl, arrowRegion.height * scl, rotation + 90 + rot);
+				length = tilesize * size / 2f + 3 + sin;
+				Tmp.v1.trns(rotation, -length);
+				Draw.rect(pointerRegion, x + Tmp.v1.x, y + Tmp.v1.y, pointerRegion.width * signSize * scl, pointerRegion.height * signSize * scl, rotation + 90);
+			}
+			Draw.color();
 		}
 
 		@Override
 		public byte version() {
-			return 2;
+			return 1;
 		}
 
 		@Override
@@ -469,7 +458,7 @@ public class JumpGate extends Block {
 		@Override
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
-			if (revision == 2){
+			if (revision == 1) {
 				speedMultiplier = read.f();
 				progress = read.f();
 				recipeIndex = read.i();

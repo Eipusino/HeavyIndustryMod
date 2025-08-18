@@ -1,13 +1,9 @@
 package heavyindustry.util;
 
-import arc.func.Boolf;
-import arc.func.Boolf2;
-import arc.func.Cons;
-import arc.func.Floatf;
-import arc.func.Func;
-import arc.func.Func2;
-import arc.func.Intf;
+import arc.func.*;
 import arc.util.Eachable;
+import arc.util.Log;
+import heavyindustry.func.ProvT;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -154,6 +150,48 @@ public final class Structf {
 	public static <T> T apply(T obj, Cons<T> cons) {
 		cons.get(obj);
 		return obj;
+	}
+
+	public static <T> void get(ConsT<T, Exception> cons, T obj) {
+		try {
+			cons.get(obj);
+		} catch (Exception e) {
+			Log.err(e);
+		}
+	}
+
+	public static <T> T get(ProvT<T, Exception> prov, T def) {
+		try {
+			return prov.get();
+		} catch (Exception e) {
+			Log.err(e);
+
+			return def;
+		}
+	}
+
+	public static <T> T get(ProvT<T, Exception> prov, ConsT<T, Exception> cons, T def) {
+		try {
+			T t = prov.get();
+			cons.get(t);
+			return t;
+		} catch (Exception e) {
+			Log.err(e);
+
+			return def;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T cast(Object obj) {
+		return (T) obj;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T cast(Object obj, Class<T> type, T def) {
+		if (obj != null && !type.isInstance(obj))
+			return def;
+		return (T) obj;
 	}
 
 	public static <T> T[] copyArray(T[] array, Func<T, T> copy) {

@@ -20,9 +20,9 @@ import mindustry.world.draw.DrawBlock;
 import static heavyindustry.util.Utils.rotatePixmap90;
 import static heavyindustry.util.Utils.split;
 
-public class DrawDirSpliceBlock<E extends Building> extends DrawBlock {
+public class DrawDirSpliceBlock extends DrawBlock {
 	public TextureRegion[] regions = new TextureRegion[16];
-	public Intf<E> spliceBits = e -> 0;
+	public Intf<Building> spliceBits = e -> 0;
 	public Boolf2<BuildPlan, BuildPlan> planSplicer = (plan, other) -> false;
 
 	public int size = 1;
@@ -32,6 +32,13 @@ public class DrawDirSpliceBlock<E extends Building> extends DrawBlock {
 	public boolean split = false;
 	public boolean simpleSpliceRegion = false;
 	public String suffix = "-splice";
+
+	@SuppressWarnings("unchecked")
+	public <E extends Building> DrawDirSpliceBlock(Intf<E> splice) {
+		spliceBits = (Intf<Building>) splice;
+	}
+
+	public DrawDirSpliceBlock() {}
 
 	@Override
 	public void load(Block block) {
@@ -81,12 +88,11 @@ public class DrawDirSpliceBlock<E extends Building> extends DrawBlock {
 		return new TextureRegion(tex);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void draw(Building build) {
 		float z = Draw.z();
 		Draw.z(z + layerOffset);
-		Draw.rect(regions[spliceBits.get((E) build)], build.x, build.y);
+		Draw.rect(regions[spliceBits.get(build)], build.x, build.y);
 		if (layerRec) Draw.z(z);
 		else Draw.z(z + 0.0001f);
 	}

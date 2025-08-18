@@ -39,7 +39,7 @@ import mindustry.graphics.Pal;
 import mindustry.graphics.Shaders;
 import mindustry.ui.Fonts;
 
-import static heavyindustry.HVars.name;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.net;
 import static mindustry.Vars.renderer;
@@ -354,9 +354,9 @@ public final class Drawn {
 			float length = size / 2f + 3 + sin;
 			Tmp.v1.trns(i * 90, -length);
 			Draw.color(Pal.gray);
-			Draw.rect(Core.atlas.find(name("linked-arrow-back")), x + Tmp.v1.x, y + Tmp.v1.y, i * 90);
+			Draw.rect(Core.atlas.find(MOD_NAME + "-linked-arrow-back"), x + Tmp.v1.x, y + Tmp.v1.y, i * 90);
 			Draw.color(color);
-			Draw.rect(Core.atlas.find(name("linked-arrow")), x + Tmp.v1.x, y + Tmp.v1.y, i * 90);
+			Draw.rect(Core.atlas.find(MOD_NAME + "-linked-arrow"), x + Tmp.v1.x, y + Tmp.v1.y, i * 90);
 		}
 		Draw.reset();
 	}

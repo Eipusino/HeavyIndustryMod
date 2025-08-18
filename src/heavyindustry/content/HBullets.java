@@ -61,7 +61,7 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 
-import static heavyindustry.HVars.name;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.indexer;
 import static mindustry.Vars.mobile;
@@ -203,7 +203,7 @@ public final class HBullets {
 			smokeEffect = HFx.instShoot(hitColor, frontColor);
 			despawnSound = hitSound = Sounds.largeExplosion;
 			fragBullets = 22;
-			fragBullet = new BasicBulletType(2f, 300f, name("circle-bolt")) {{
+			fragBullet = new BasicBulletType(2f, 300f, MOD_NAME + "-circle-bolt") {{
 				width = height = 10f;
 				shrinkY = shrinkX = 0.7f;
 				backColor = trailColor = lightColor = lightningColor = hitColor = HPal.ancientLightMid;
@@ -350,7 +350,7 @@ public final class HBullets {
 					float f = Mathf.curve(b.fin(), 0f, 0.2f);
 					float baseLen = realLength * f;
 					float cwidth = width;
-					float compound = 1f;
+					//float compound = 1f;
 
 					Tmp.v1.trns(b.rotation(), baseLen);
 
@@ -361,7 +361,7 @@ public final class HBullets {
 
 						Fill.circle(Tmp.v1.x + b.x, Tmp.v1.y + b.y, Lines.getStroke() * 2.2f);
 						Fill.circle(b.x, b.y, 1f * cwidth * b.fout());
-						compound *= lengthFalloff;
+						//compound *= lengthFalloff;
 					}
 					Draw.reset();
 					Drawf.light(b.x, b.y, b.x + Tmp.v1.x, b.y + Tmp.v1.y, width * 1.4f * b.fout(), colors[0], 0.6f);
@@ -394,7 +394,7 @@ public final class HBullets {
 			width = 10f;
 			height = 35f;
 			pierceCap = 8;
-			shrinkX = shrinkY = 0;
+			shrinkX = shrinkY = 0f;
 			lightningDamage = damage * 0.85f;
 			hitEffect = HFx.hitSparkLarge;
 			despawnEffect = HFx.square45_6_45;
@@ -406,7 +406,7 @@ public final class HBullets {
 			drawSize = 300f;
 		}};
 		hitter = new EffectBulletType(15f, 500f, 600f) {{
-			speed = 0;
+			speed = 0.001f;
 			hittable = false;
 			scaledSplashDamage = true;
 			collidesTiles = collidesGround = collides = collidesAir = true;
@@ -478,7 +478,7 @@ public final class HBullets {
 		}
 			@Override
 			public void draw(Bullet b) {
-				if (!(b.data instanceof Seq<?> dat)) return;
+				if (!(b.data instanceof Seq<?> dat) || dat.size > 8) return;
 
 				Draw.color(lightColor, Color.white, b.fin() * 0.7f);
 				Draw.alpha(b.fin(Interp.pow3Out) * 1.1f);
@@ -577,7 +577,7 @@ public final class HBullets {
 		}
 			@Override
 			public void draw(Bullet b) {
-				if (!(b.data instanceof Seq<?> dat)) return;
+				if (!(b.data instanceof Seq<?> dat) || dat.size > 8) return;
 
 				Draw.color(lightColor, Color.white, b.fin() * 0.7f);
 				Draw.alpha(b.fin(Interp.pow3Out) * 1.1f);
@@ -752,7 +752,7 @@ public final class HBullets {
 				UltFire.createChance(b, 12, 0.0075f);
 			}
 		};
-		annMissile = new BasicBulletType(5.6f, 80f, name("strike")) {{
+		annMissile = new BasicBulletType(5.6f, 80f, MOD_NAME + "-strike") {{
 			trailColor = lightningColor = backColor = lightColor = frontColor = Pal.techBlue;
 			lightning = 3;
 			lightningCone = 360;
@@ -821,11 +821,7 @@ public final class HBullets {
 			despawnHit = false;
 			rangeOverride = 480f;
 		}
-			@Override
-			public void update(Bullet b) {
-				super.update(b);
-			}
-
+            @Override
 			public void updateTrailEffects(Bullet b) {
 				if (trailChance > 0f) {
 					if (Mathf.chanceDelta(trailChance)) {

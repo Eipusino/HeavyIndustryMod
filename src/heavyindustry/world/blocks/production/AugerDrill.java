@@ -48,7 +48,7 @@ public class AugerDrill extends Drill {
 		return new TextureRegion[]{region};
 	}
 
-	public class ArguerDrillBuild extends DrillBuild {
+	public class AugerDrillBuild extends DrillBuild {
 		public float rot;
 
 		@Override

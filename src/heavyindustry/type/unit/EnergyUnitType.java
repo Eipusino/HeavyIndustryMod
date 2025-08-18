@@ -23,7 +23,7 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 
-import static heavyindustry.HVars.name;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static mindustry.Vars.tilesize;
 
 public class EnergyUnitType extends AncientUnitType {
@@ -116,7 +116,7 @@ public class EnergyUnitType extends AncientUnitType {
 	@Override
 	public void load() {
 		super.load();
-		shadowRegion = uiIcon = fullIcon = Core.atlas.find(name("jump-gate-pointer"));
+		shadowRegion = uiIcon = fullIcon = Core.atlas.find(MOD_NAME + "-jump-gate-pointer");
 	}
 
 	@Override

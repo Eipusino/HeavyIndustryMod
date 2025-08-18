@@ -1,19 +1,27 @@
 package heavyindustry.struct;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-@SuppressWarnings("unchecked")
 public class HierarchyArray<T> implements Iterable<T> {
-	public T[] array;
-	public float[] scores;
+	public final T[] array;
+	public final float[] scores;
+
 	public int size = 0;
 
 	HierarchyIterable<T> iterable;
 
+	@SuppressWarnings("unchecked")
 	public HierarchyArray(int size) {
 		array = (T[]) new Object[size];
+		scores = new float[size];
+	}
+
+	@SuppressWarnings("unchecked")
+	public HierarchyArray(int size, Class<?> arrayType) {
+		array = (T[]) Array.newInstance(arrayType, size);
 		scores = new float[size];
 	}
 

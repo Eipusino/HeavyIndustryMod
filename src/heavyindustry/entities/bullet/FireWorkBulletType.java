@@ -19,7 +19,7 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 
-import static heavyindustry.HVars.name;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 
 /** Draw the effect of bullet fireworks. Although its memory usage may be slightly high. */
 public class FireWorkBulletType extends BulletType {
@@ -70,15 +70,15 @@ public class FireWorkBulletType extends BulletType {
 	}
 
 	public FireWorkBulletType(float dmg, float spd, Color col) {
-		this(dmg, spd, name("mb-fireworks"), col, 6 * 8);
+		this(dmg, spd, MOD_NAME + "-mb-fireworks", col, 6 * 8);
 	}
 
 	public FireWorkBulletType(float dmg, float spd) {
-		this(dmg, spd, name("mb-fireworks"), Color.gray, 6 * 8);
+		this(dmg, spd, MOD_NAME + "-mb-fireworks", Color.gray, 6 * 8);
 	}
 
 	public FireWorkBulletType() {
-		this(1f, 1f, name("mb-fireworks"), Color.gray, 6 * 8);
+		this(1f, 1f, MOD_NAME + "-mb-fireworks", Color.gray, 6 * 8);
 	}
 
 	@Override

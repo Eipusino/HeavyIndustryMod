@@ -28,6 +28,7 @@ import heavyindustry.gen.Entitys;
 import heavyindustry.gen.HIcon;
 import heavyindustry.gen.HMusics;
 import heavyindustry.gen.HSounds;
+import heavyindustry.util.Structf;
 import heavyindustry.world.Worlds;
 import heavyindustry.graphics.HCacheLayer;
 import heavyindustry.graphics.HShaders;
@@ -91,7 +92,8 @@ public final class HeavyIndustryMod extends Mod {
 
 	static {
 		modJson = LoadMod.getMeta(internalTree.root);
-		isPlugin = modJson != null && modJson.has("plugin") && modJson.isBoolean() && modJson.get("plugin").asBool();
+
+		isPlugin = Structf.get(() -> modJson.get("plugin").asBool(), false);
 
 		LoadMod.addBlacklistedMods();
 	}
@@ -144,13 +146,15 @@ public final class HeavyIndustryMod extends Mod {
 		});
 
 		Events.on(MusicRegisterEvent.class, event -> {
-			if (!headless)
+			if (!headless) {
 				HMusics.load();
+			}
 		});
 
 		Events.on(DisposeEvent.class, event -> {
-			if (!headless)
+			if (!headless) {
 				HShaders.dispose();
+			}
 		});
 
 		//IOS does not support rhino js
@@ -195,13 +199,11 @@ public final class HeavyIndustryMod extends Mod {
 
 		LoadedMod mod = loaded();
 
-		if (mod != null) {
-			mod.meta.author = AUTHOR;
-			if (isPlugin) {
-				mod.meta.hidden = true;
-				mod.meta.name = MOD_NAME + "-plugin";
-				mod.meta.displayName = Core.bundle.get("hi-name") + " Plugin";
-			}
+		if (mod != null && isPlugin) {
+			mod.meta.hidden = true;
+			mod.meta.name = MOD_NAME + "-plugin";
+			mod.meta.displayName = Core.bundle.get("hi-name") + " Plugin";
+			mod.meta.version = Structf.get(() -> modJson.get("version").asString() + "-plug-in", mod.meta.version);
 		}
 
 		if (ui != null) {
@@ -242,13 +244,22 @@ public final class HeavyIndustryMod extends Mod {
 			});
 		}
 
-		if (headless || ui == null || modEnabled("extra-utilities") || !Core.settings.getBool("hi-floating-text")) return;
+		if (headless || ui == null || isEnabled("extra-utilities") || !Core.settings.getBool("hi-floating-text")) return;
 
 		String massage = Core.bundle.get("hi-random-massage");
 		String[] massageSplit = massage.split("&");
 
 		floatingText = new FloatingText(massageSplit[Mathf.random(massageSplit.length - 1)]);
 		floatingText.build(ui.menuGroup);
+	}
+
+	/** Omitting longer mod names is generally used to load mod sprites. */
+	public static String name(String add) {
+		return MOD_NAME + "-" + add;
+	}
+
+	public static String name() {
+		return MOD_NAME + "-";
 	}
 
 	public static boolean isHeavyIndustry(@Nullable Content content) {
@@ -265,7 +276,7 @@ public final class HeavyIndustryMod extends Mod {
 		return loaded;
 	}
 
-	public static boolean modEnabled(String name) {
+	public static boolean isEnabled(String name) {
 		LoadedMod mod = mods.getMod(name);
 		return mod != null && mod.isSupported() && mod.enabled();
 	}

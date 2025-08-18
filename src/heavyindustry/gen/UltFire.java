@@ -27,7 +27,7 @@ import mindustry.graphics.Pal;
 import mindustry.world.Tile;
 import mindustry.world.meta.Attribute;
 
-import static heavyindustry.HVars.name;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static heavyindustry.util.Utils.split;
 import static mindustry.Vars.control;
 import static mindustry.Vars.headless;
@@ -47,7 +47,7 @@ public class UltFire extends Fire {
 	});
 
 	static {
-		ultRegion = split(name("ult-fire"), 160, 10, 4);
+		ultRegion = split(MOD_NAME + "-ult-fire", 160, 10, 4);
 	}
 
 	public static void create(float x, float y, Team team) {

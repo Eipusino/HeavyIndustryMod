@@ -5,6 +5,7 @@ import arc.struct.Seq;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.input.InputAggregator.TapResult;
+import heavyindustry.util.Structf;
 import mindustry.Vars;
 import mindustry.content.TechTree.TechNode;
 import mindustry.ctype.Content;
@@ -114,7 +115,7 @@ public final class HTypeIO {
 		byte[] bytes = read.b(length);
 		try (ByteArrayInputStream bin = new ByteArrayInputStream(bytes); ObjectInputStream in = new ObjectInputStream(bin)) {
 			Object object = in.readObject();
-			return type.isAssignableFrom(object.getClass()) ? type.cast(object) : null;
+			return Structf.cast(object, type, null);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

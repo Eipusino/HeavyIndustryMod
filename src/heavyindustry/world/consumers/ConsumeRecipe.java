@@ -2,7 +2,6 @@ package heavyindustry.world.consumers;
 
 import arc.func.Func;
 import arc.scene.ui.layout.Table;
-import arc.util.Nullable;
 import heavyindustry.type.Recipe;
 import mindustry.Vars;
 import mindustry.gen.Building;
@@ -15,19 +14,19 @@ import mindustry.world.consumers.Consume;
 import mindustry.world.meta.StatValues;
 
 public class ConsumeRecipe extends Consume {
-	public final @Nullable Func<Building, Recipe> recipe;
-	public final Func<Building, Recipe> display;
+	public final Func<Building, Recipe> recipes;
+	public final Func<Building, Recipe> displays;
 
 	@SuppressWarnings("unchecked")
-	public <T extends Building> ConsumeRecipe(Func<T, Recipe> r, Func<T, Recipe> d) {
-		recipe = (Func<Building, Recipe>) r;
-		display = (Func<Building, Recipe>) d;
+	public <T extends Building> ConsumeRecipe(Func<T, Recipe> recipe, Func<T, Recipe> display) {
+		recipes = (Func<Building, Recipe>) recipe;
+		displays = (Func<Building, Recipe>) display;
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends Building> ConsumeRecipe(Func<T, Recipe> r) {
-		recipe = (Func<Building, Recipe>) r;
-		display = (Func<Building, Recipe>) r;
+	public <T extends Building> ConsumeRecipe(Func<T, Recipe> recipe) {
+		recipes = (Func<Building, Recipe>) recipe;
+		displays = (Func<Building, Recipe>) recipe;
 	}
 
 	@Override
@@ -41,19 +40,21 @@ public class ConsumeRecipe extends Consume {
 
 	@Override
 	public void update(Building build) {
-		if (recipe.get(build) == null) return;
-		for (LiquidStack stack : recipe.get(build).inputLiquid) {
+		Recipe recipe = recipes.get(build);
+		if (recipe == null) return;
+		for (LiquidStack stack : recipe.inputLiquid) {
 			build.liquids.remove(stack.liquid, stack.amount * build.edelta() * multiplier.get(build));
 		}
 	}
 
 	@Override
 	public void trigger(Building build) {
-		if (recipe.get(build) == null) return;
-		for (ItemStack stack : recipe.get(build).inputItem) {
+		Recipe recipe = recipes.get(build);
+		if (recipe == null) return;
+		for (ItemStack stack : recipe.inputItem) {
 			build.items.remove(stack.item, Math.round(stack.amount * multiplier.get(build)));
 		}
-		for (PayloadStack stack : recipe.get(build).inputPayload) {
+		for (PayloadStack stack : recipe.inputPayload) {
 			build.getPayloads().remove(stack.item, Math.round(stack.amount * multiplier.get(build)));
 		}
 	}
@@ -62,19 +63,20 @@ public class ConsumeRecipe extends Consume {
 	public float efficiency(Building build) {
 		float ed = build.edelta();
 		if (ed <= 0.00000001f) return 0f;
-		if (recipe.get(build) == null) return 0f;
+		Recipe recipe = recipes.get(build);
+		if (recipe == null) return 0f;
 		float min = 1f;
 
-		for (LiquidStack stack : recipe.get(build).inputLiquid) {
+		for (LiquidStack stack : recipe.inputLiquid) {
 			min = Math.min(build.liquids.get(stack.liquid) / (stack.amount * ed * multiplier.get(build)), min);
 		}
-		for (PayloadStack stack : recipe.get(build).inputPayload) {
+		for (PayloadStack stack : recipe.inputPayload) {
 			if (!build.getPayloads().contains(stack.item, Math.round(stack.amount * multiplier.get(build)))) {
 				min = 0f;
 				break;
 			}
 		}
-		for (ItemStack stack : recipe.get(build).inputItem) {
+		for (ItemStack stack : recipe.inputItem) {
 			if (!build.items.has(stack.item, Math.round(stack.amount * multiplier.get(build)))) {
 				min = 0f;
 				break;
@@ -85,14 +87,15 @@ public class ConsumeRecipe extends Consume {
 
 	@Override
 	public void build(Building build, Table table) {
-		if (display.get(build) == null) return;
+		Recipe recipe = displays.get(build);
+		if (recipe == null) return;
 		table.update(() -> {
 			table.clear();
 			table.left();
 
-			ItemStack[] currentItem = display.get(build).inputItem.toArray(ItemStack.class);
-			LiquidStack[] currentLiquid = display.get(build).inputLiquid.toArray(LiquidStack.class);
-			PayloadStack[] currentPayload = display.get(build).inputPayload.toArray(PayloadStack.class);
+			ItemStack[] currentItem = recipe.inputItem.toArray(ItemStack.class);
+			LiquidStack[] currentLiquid = recipe.inputLiquid.toArray(LiquidStack.class);
+			PayloadStack[] currentPayload = recipe.inputPayload.toArray(PayloadStack.class);
 			table.table(cont -> {
 				int i = 0;
 				if (currentItem != null) {

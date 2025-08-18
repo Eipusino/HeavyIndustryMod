@@ -22,7 +22,7 @@ import mindustry.Vars;
 import mindustry.type.Planet;
 
 import static heavyindustry.HVars.internalTree;
-import static heavyindustry.HVars.name;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 
 /**
  * Defines the {@linkplain Shader shader}s this mod offers.
@@ -66,8 +66,8 @@ public final class HShaders {
 		brine = new Gl30SurfaceShader("general-highp", "brine");
 		originiumFluid = new Gl30SurfaceShader("general-highp", "originium-fluid");
 		boundWater = new Gl30SurfaceShader("general-highp", "bound-water");
-		pit = new PitShader("general-highp", "pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
-		waterPit = new PitShader("general-highp", "water-pit", name("concrete-blank1"), name("stone-sheet"), name("truss"));
+		pit = new PitShader("general-highp", "pit", MOD_NAME + "-concrete-blank1", MOD_NAME + "-stone-sheet", MOD_NAME + "-truss");
+		waterPit = new PitShader("general-highp", "water-pit", MOD_NAME + "-concrete-blank1", MOD_NAME + "-stone-sheet", MOD_NAME + "-truss");
 
 		aberration = new AberrationShader();
 

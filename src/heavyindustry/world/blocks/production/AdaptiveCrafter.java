@@ -49,8 +49,6 @@ public class AdaptiveCrafter extends GenericCrafter {
 	public float powerProduction = 0f;
 	public int payloadCapacity = 10;
 
-	public PayloadStack[] outputPayloads;
-
 	public AdaptiveCrafter(String name) {
 		super(name);
 
@@ -112,7 +110,6 @@ public class AdaptiveCrafter extends GenericCrafter {
 
 		outputItems = null;
 		outputLiquids = null;
-		outputPayloads = null;
 
 		craftTime = 60f;
 	}
@@ -162,9 +159,9 @@ public class AdaptiveCrafter extends GenericCrafter {
 			table.table(cont -> {
 				for (int i = 0; i < recipes.size; i++) {
 					Recipe recipe = recipes.get(i);
-					int finalI = i;
+					int j = i;
 					cont.table(t -> {
-						t.left().marginLeft(12f).add("[accent][" + (finalI + 1) + "]:[]").width(48f);
+						t.left().marginLeft(12f).add("[accent][" + (j + 1) + "]:[]").width(48f);
 						t.table(inner -> {
 							inner.table(row -> {
 								row.left();
@@ -191,7 +188,6 @@ public class AdaptiveCrafter extends GenericCrafter {
 		public PayloadSeq payloads = new PayloadSeq();
 
 		public int recipeIndex = -1;
-		public Recipe recipe;
 
 		@Override
 		public PayloadSeq getPayloads() {
@@ -271,7 +267,7 @@ public class AdaptiveCrafter extends GenericCrafter {
 
 			super.updateTile();
 
-			recipe = getRecipe();
+			Recipe recipe = getRecipe();
 
 			if (efficiency > 0) {
 				if (recipe != null) {
@@ -322,7 +318,7 @@ public class AdaptiveCrafter extends GenericCrafter {
 
 		@Override
 		public boolean shouldConsume() {
-			recipe = getRecipe();
+			Recipe recipe = getRecipe();
 
 			if (recipe == null) return false;
 
@@ -364,7 +360,7 @@ public class AdaptiveCrafter extends GenericCrafter {
 		public float getProgressIncrease(float baseTime) {
 			float scl = 0f;
 
-			recipe = getRecipe();
+			Recipe recipe = getRecipe();
 
 			if (recipe != null) scl = recipe.craftTime / craftTime;
 			return super.getProgressIncrease(baseTime) / scl;
@@ -372,7 +368,7 @@ public class AdaptiveCrafter extends GenericCrafter {
 
 		@Override
 		public void craft() {
-			recipe = getRecipe();
+			Recipe recipe = getRecipe();
 
 			if (recipe == null) return;
 

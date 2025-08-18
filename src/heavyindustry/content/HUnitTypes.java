@@ -78,7 +78,6 @@ import mindustry.ai.types.BuilderAI;
 import mindustry.ai.types.CommandAI;
 import mindustry.ai.types.FlyingAI;
 import mindustry.ai.types.FlyingFollowAI;
-import mindustry.content.Bullets;
 import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.content.StatusEffects;
@@ -161,7 +160,7 @@ public final class HUnitTypes {
 	//other
 	armoredCarrierVehicle, pioneer, vulture,
 			burner, shadowBlade, artilleryFirePioneer,
-			invincibleShip, dpsTesterLand, targetDummy,
+			invincibleShip, dpsTesterLand,
 	//elite
 	tiger, thunder,
 	//?
@@ -213,7 +212,6 @@ public final class HUnitTypes {
 					height = 10f;
 				}};
 			}});
-			hidden = true;
 		}};
 		striker = new BaseUnitType("striker") {{
 			constructor = BaseTankUnit::new;
@@ -244,9 +242,26 @@ public final class HUnitTypes {
 				ejectEffect = Fx.casing2;
 				shootSound = Sounds.artillery;
 				alternate = false;
-				bullet = Bullets.placeholder;
+				bullet = new MissileBulletType(11f, 108f, MOD_NAME + "-rocket") {{
+					hitSize = 40;
+					splashDamageRadius = 46;
+					splashDamage = 96;
+					status = StatusEffects.blasted;
+					statusDuration = 60;
+					backColor = HPal.orangeBack;
+					frontColor = HPal.missileGray;
+					lifetime = 30;
+					homingPower = 0.03f;
+					homingRange = 80;
+					knockback = 8;
+					width = 12;
+					height = 40;
+					ammoMultiplier = 3;
+					despawnEffect = Fx.none;
+					shootEffect = Fx.shootPyraFlame;
+					hitEffect = HFx.fiammettaExp(splashDamageRadius);
+				}};
 			}});
-			hidden = true;
 		}};
 		counterattack = new BaseUnitType("counterattack") {{
 			constructor = BaseTankUnit::new;
@@ -290,9 +305,29 @@ public final class HUnitTypes {
 				shootStatus = StatusEffects.slow;
 				shootStatusDuration = reload + 1f;
 				velocityRnd = 0.1f;
-				bullet = Bullets.placeholder;
+				bullet = new ArtilleryBulletType(12f, 10f, MOD_NAME + "-rocket") {{
+					backColor = HPal.orangeBack;
+					frontColor = trailColor = hitColor = HPal.missileGray;
+					width = 8f;
+					height = 45f;
+					trailChance = 0f;
+					trailInterval = 1f;
+					trailEffect = HFx.trailFromWhite;
+					trailRotation = true;
+					splashDamage = 55f;
+					splashDamageRadius = 45f;
+					buildingDamageMultiplier = 2.33f;
+					collides = false;
+					status = StatusEffects.blasted;
+					shootEffect = Fx.shootSmallFlame;
+					smokeEffect = HFx.crucibleSmoke(HPal.smoke);
+					lifetime = 41.6f;
+					hitShake = 2f;
+					hitSound = Sounds.explosion;
+					hitEffect = HFx.hitExplosionMassive;
+					despawnEffect = Fx.flakExplosionBig;
+				}};
 			}});
-			hidden = true;
 		}};
 		crush = new BaseUnitType("crush") {{
 			constructor = BaseTankUnit::new;
@@ -333,9 +368,57 @@ public final class HUnitTypes {
 				shootSound = Sounds.laser;
 				shake = 3f;
 				alternate = false;
-				bullet = Bullets.placeholder;
+				bullet = new PointBulletType() {{
+					trailColor = HPal.energyYellow;
+					trailEffect = HFx.trailSolid;
+					trailSpacing = 9f;
+					damage = 180f;
+					splashDamage = 170f;
+					splashDamageRadius = 16f;
+					buildingDamageMultiplier = 2.5f;
+					speed = 20f;
+					lifetime = 15f;
+					hitSound = Sounds.lasercharge2;
+					smokeEffect = Fx.bigShockwave;
+					shootEffect = HFx.shootLine(22f, 22f);
+					hitEffect = HFx.circleOut(HPal.energyYellow, splashDamageRadius);
+					despawnEffect = Fx.bigShockwave;
+					fragLifeMin = 1f;
+					fragVelocityMax = 0f;
+					fragBullets = 1;
+					fragBullet = new BasicBulletType() {{
+						lifetime = 15f;
+						height = 0f;
+						width = 0f;
+						collides = false;
+						hittable = false;
+						absorbable = false;
+						buildingDamageMultiplier = 3f;
+						splashDamageRadius = 66.4f;
+						splashDamage = 136f;
+						hitShake = 1f;
+						hitSound = Sounds.plasmaboom;
+						hitColor = HPal.energyYellow;
+						hitEffect = HFx.explodeImpWave;
+						despawnEffect = Fx.none;
+						fragBullets = 4;
+						fragBullet = new PointBulletType() {{
+							trailSpacing = 9f;
+							trailEffect = HFx.particleSpread;
+							lifetime = 8f;
+							speed = 15f;
+							buildingDamageMultiplier = 3f;
+							splashDamageRadius = 10f;
+							splashDamage = 25f;
+							hitShake = 1f;
+							hitSound = Sounds.laser;
+							hitColor = HPal.energyYellow;
+							hitEffect = HFx.hitEmpColorSpark;
+							despawnEffect = Fx.none;
+						}};
+					}};
+				}};
 			}});
-			hidden = true;
 		}};
 		destruction = new BaseUnitType("destruction") {{
 			constructor = BaseTankUnit::new;
@@ -370,8 +453,49 @@ public final class HUnitTypes {
 				mirror = false;
 				inaccuracy = 0f;
 				shootSound = Sounds.mediumCannon;
-				shake = 8;
-				bullet = Bullets.placeholder;
+				shake = 8f;
+				bullet = new BasicBulletType(31f, 250f) {{
+					splashDamage = 135f;
+					splashDamageRadius = 55f;
+					buildingDamageMultiplier = 3f;
+					lifetime = 15f;
+					lightning = 2;
+					lightningDamage = 90f;
+					lightningLength = 15;
+					lightningColor = backColor = trailColor = hitColor = HPal.energyYellow;
+					shrinkY = 0f;
+					frontColor = Color.white;
+					trailLength = 15;
+					trailWidth = 2.2f;
+					pierce = true;
+					pierceCap = 4;
+					knockback = 8f;
+					hitEffect = HFx.lightningBoltWave;
+					shootEffect = HFx.shootRecoilWave;
+					smokeEffect = Fx.smokeCloud;
+					width = 16f;
+					height = 28f;
+					hitSound = Sounds.plasmaboom;
+					fragLifeMin = 0.1f;
+					fragBullets = 3;
+					fragRandomSpread = 60f;
+					fragBullet = new PointBulletType() {{
+						trailEffect = Fx.none;
+						despawnEffect = Fx.none;
+						status = StatusEffects.blasted;
+						hitColor = HPal.energyYellow;
+						hitEffect = HFx.explodeImpWave;
+						hitSound = Sounds.laser;
+						collides = false;
+						damage = 250f;
+						splashDamageRadius = 40f;
+						splashDamage = 85f;
+						buildingDamageMultiplier = 2.25f;
+						lifetime = 10f;
+						speed = 8f;
+					}};
+					despawnEffect = Fx.bigShockwave;
+				}};
 				parts.add(new RegionPart("-barrel") {{
 					mirror = true;
 					under = true;
@@ -380,7 +504,6 @@ public final class HUnitTypes {
 					progress = PartProgress.recoil;
 				}});
 			}});
-			hidden = true;
 		}};
 		purgatory = new BaseUnitType("purgatory") {{
 			constructor = BaseTankUnit::new;
@@ -421,9 +544,40 @@ public final class HUnitTypes {
 				inaccuracy = 0.5f;
 				shootSound = Sounds.largeCannon;
 				shake = 8f;
-				bullet = Bullets.placeholder;
+				bullet = new BasicBulletType(24f, 500f, "missile-large") {{
+					splashDamage = 285f;
+					splashDamageRadius = 80f;
+					buildingDamageMultiplier = 1.5f;
+					width = 10f;
+					height = 26f;
+					hitSize = 18f;
+					lifetime = 17f;
+					drag = -0.01f;
+					absorbable = false;
+					hittable = false;
+					pierce = true;
+					pierceArmor = true;
+					pierceBuilding = true;
+					pierceCap = 3;
+					hitShake = 5f;
+					status = StatusEffects.unmoving;
+					statusDuration = 80f;
+					frontColor = Color.white;
+					backColor = trailColor = hitColor = HPal.energyYellow;
+					trailLength = 8;
+					trailWidth = 4f;
+					trailRotation = true;
+					trailChance = 1f;
+					trailInterval = 33f;
+					trailEffect = HFx.polyParticle;
+					shrinkY = 0f;
+					hitEffect = HFx.moveDiamondParticle;
+					hitSound = Sounds.plasmaboom;
+					shootEffect = HFx.shootCrossLight;
+					smokeEffect = Fx.smokeCloud;
+					despawnEffect = HFx.edessp(lifetime);
+				}};
 			}});
-			hidden = true;
 		}};
 		//vanilla-copter
 		caelifera = new CopterUnitType("caelifera") {{
@@ -2803,7 +2957,7 @@ public final class HUnitTypes {
 			mineSpeed = 1145.14191981f;
 			mineTier = 114514;
 			buildSpeed = 114.514191981f;
-			itemCapacity = 9999;
+			itemCapacity = 1145;
 			canHeal = false;
 			engineOffset = 5;
 			engineSize = 3;

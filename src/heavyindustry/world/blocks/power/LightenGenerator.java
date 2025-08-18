@@ -30,7 +30,7 @@ import mindustry.world.blocks.power.NuclearReactor;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatValues;
 
-import static heavyindustry.HVars.name;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static mindustry.Vars.tilesize;
 
 public class LightenGenerator extends NuclearReactor {
@@ -247,7 +247,7 @@ public class LightenGenerator extends NuclearReactor {
 				Drawn.circlePercent(x, y, range, (float) items.total() / itemCapacity, 135);
 			}
 			Draw.alpha(light);
-			Draw.rect(Core.atlas.find(name("lightnin-generator-lights")), x, y);
+			Draw.rect(Core.atlas.find(MOD_NAME + "-lightnin-generator-lights"), x, y);
 		}
 
 		@Override

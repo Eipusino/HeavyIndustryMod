@@ -2,6 +2,7 @@ package heavyindustry.world.draw;
 
 import arc.Core;
 import arc.func.Cons;
+import arc.func.Intf;
 import arc.graphics.Pixmap;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.PixmapRegion;
@@ -13,11 +14,19 @@ import mindustry.world.Block;
 
 import static heavyindustry.util.Utils.rotatePixmap90;
 
-public class DrawPayloadFactory<E extends Building> extends DrawDirSpliceBlock<E> {
+public class DrawPayloadFactory extends DrawDirSpliceBlock {
 	public TextureRegion topRegion, outRegion;
 
-	public Cons<E> drawPayload = e -> {};
+	public Cons<Building> drawPayload = e -> {};
 	public String suffix = "";
+
+	@SuppressWarnings("unchecked")
+	public <E extends Building> DrawPayloadFactory(Intf<E> splice, Cons<E> draws) {
+		super(splice);
+		drawPayload = (Cons<Building>) draws;
+	}
+
+	public DrawPayloadFactory() {}
 
 	@Override
 	public void load(Block block) {
@@ -53,14 +62,13 @@ public class DrawPayloadFactory<E extends Building> extends DrawDirSpliceBlock<E
 		Draw.rect(topRegion, plan.drawx(), plan.drawy());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void draw(Building build) {
 		Draw.rect(build.block.region, build.x, build.y);
-		Draw.rect(regions[spliceBits.get((E) build)], build.x, build.y);
+		Draw.rect(regions[spliceBits.get(build)], build.x, build.y);
 		Draw.rect(outRegion, build.x, build.y, build.rotdeg());
 
-		drawPayload.get((E) build);
+		drawPayload.get(build);
 
 		Draw.rect(topRegion, build.x, build.y);
 	}

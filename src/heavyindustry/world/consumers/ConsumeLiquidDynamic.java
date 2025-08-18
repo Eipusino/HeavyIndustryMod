@@ -13,8 +13,8 @@ public class ConsumeLiquidDynamic extends Consume {
 	public final Func<Building, LiquidStack> liquid;
 
 	@SuppressWarnings("unchecked")
-	public <T extends Building> ConsumeLiquidDynamic(Func<T, LiquidStack> l) {
-		liquid = (Func<Building, LiquidStack>) l;
+	public <T extends Building> ConsumeLiquidDynamic(Func<T, LiquidStack> liquids) {
+		liquid = (Func<Building, LiquidStack>) liquids;
 	}
 
 	@Override

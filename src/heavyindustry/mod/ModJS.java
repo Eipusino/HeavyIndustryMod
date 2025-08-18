@@ -92,7 +92,7 @@ public final class ModJS {
 			if (res instanceof Wrapper w) res = w.unwrap();
 			if (!type.isAssignableFrom(res.getClass()))
 				throw new IllegalStateException("Incompatible return type: Expected '" + returnType + "', but got '" + res.getClass() + "'!");
-			return (T) type.cast(res);
+			return (T) res;
 		};
 	}
 

@@ -1,0 +1,218 @@
+package heavyindustry.world.blocks.defense;
+
+import arc.Core;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.math.Mathf;
+import arc.math.geom.*;
+import arc.util.Time;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import heavyindustry.content.HFx;
+import mindustry.Vars;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.entities.bullet.BulletType;
+import mindustry.gen.*;
+import mindustry.io.TypeIO;
+import mindustry.net.Packet;
+import mindustry.ui.Bar;
+import mindustry.world.Tile;
+import mindustry.world.blocks.defense.Wall;
+import mindustry.world.meta.Stat;
+
+import static mindustry.Vars.net;
+
+public class ReleaseShieldWall extends Wall {
+	public float chargeChance = 0.8f;
+	public float maxHandle = 180;
+	public float lifetime = 150;
+
+	public Color color = Color.white;
+
+	public ReleaseShieldWall(String name) {
+		super(name);
+		update = true;
+	}
+
+	@Override
+	public void setBars() {
+		super.setBars();
+		addBar("charge", (ReleaseShieldWallBuild entity) ->
+				new Bar(() ->
+						Core.bundle.get("bar.charge"),
+						() -> color,
+						entity::getCharge
+				)
+		);
+	}
+
+	@Override
+	public void setStats() {
+		super.setStats();
+		stats.add(Stat.abilities, Core.bundle.format("stat.charge", maxHandle, chargeChance * 100));
+	}
+
+	public static void setDamage(Tile tile, float damage) {
+		if (tile == null || !(tile.build instanceof ReleaseShieldWallBuild)) return;
+		((ReleaseShieldWallBuild) tile.build).setDamage(damage);
+	}
+
+	public static void releaseShieldWallBuildSync(Tile tile, float damage) {
+		if (Vars.net.server()) {
+			ReleaseShieldWallBuildSyncPacket packet = new ReleaseShieldWallBuildSyncPacket();
+			packet.tile = tile;
+			packet.damage = damage;
+			Vars.net.send(packet, true);
+		}
+	}
+
+	public static class ReleaseShieldWallBuildSyncPacket extends Packet {
+		private byte[] data;
+
+		public Tile tile;
+		public float damage;
+
+		@Override
+		public void write(Writes write) {
+			TypeIO.writeTile(write, tile);
+			write.f(damage);
+		}
+
+		@Override
+		public void read(Reads read, int length) {
+			data = read.b(length);
+		}
+
+		@Override
+		public void handled() {
+			BAIS.setBytes(data);
+			tile = TypeIO.readTile(READ);
+			damage = READ.f();
+		}
+
+		@Override
+		public void handleClient() {
+			ReleaseShieldWall.setDamage(tile, damage);
+		}
+	}
+
+	public class ReleaseShieldWallBuild extends WallBuild {
+		public float totalDamage = 0;
+		public float clientDamage = 0;
+		public float shieldLife = 0;
+		public Bullet shieldBullet = null;
+		public boolean acceptDamage = true;
+		public float rePacketTimer = 0;
+
+		public float getCharge() {
+			return (net.client() ? clientDamage : totalDamage) / maxHandle;
+		}
+
+		@Override
+		public void updateTile() {
+			rePacketTimer = Math.min(rePacketTimer + Time.delta, 60);
+			timeScale = getCharge();
+			if (totalDamage > maxHandle) {
+				releaseShieldWallBuildSync(tile, totalDamage);
+				shieldBullet = new ShieldBullet(size * 64).create(tile.build, team, x, y, 0);
+				shieldLife = lifetime;
+				acceptDamage = false;
+				totalDamage = 0;
+				clientDamage = 0;
+			}
+			if (shieldLife > 0) {
+				if (shieldBullet != null) {
+					shieldBullet.set(x, y);
+					shieldBullet.time = 0;
+				}
+				shieldLife -= Time.delta;
+			} else {
+				shieldBullet = null;
+				acceptDamage = true;
+			}
+		}
+
+		@Override
+		public void damage(float damage) {
+			super.damage(damage);
+			if (acceptDamage) {
+				if (!net.client()) {
+					if (Mathf.chance(chargeChance)) totalDamage += damage;
+				} else {
+					if (Mathf.chance(chargeChance)) clientDamage += damage;
+				}
+			}
+		}
+
+		public void setDamage(float v) {
+			if (net.client()) {
+				totalDamage = v;
+			}
+		}
+
+		@Override
+		public void write(Writes write) {
+			super.write(write);
+			write.f(totalDamage);
+		}
+
+		@Override
+		public void read(Reads read, byte revision) {
+			super.read(read, revision);
+			totalDamage = read.f();
+		}
+	}
+
+	public static class ShieldBullet extends BulletType {
+		public float range;
+		public Effect openEffect;
+
+		public Color color = Color.white;
+
+		public ShieldBullet(float ran) {
+			range = ran;
+			openEffect = new Effect(35, e -> {
+				Draw.color(e.color);
+				Lines.stroke(e.fout() * 4);
+				Lines.poly(e.x, e.y, 6, range * 0.525f + 75 * e.fin());
+			});
+			hittable = false;
+			absorbable = false;
+			hitEffect = despawnEffect = Fx.none;
+			lifetime = 60;
+			speed = damage = 0;
+			collides = false;
+			collidesAir = false;
+			collidesGround = false;
+			keepVelocity = false;
+			reflectable = false;
+		}
+
+		@Override
+		public void update(Bullet b) {
+			float realRange = range * b.fout();
+			Groups.bullet.intersect(b.x - realRange, b.y - realRange, realRange * 2, realRange * 2, trait -> {
+				if (trait.type.absorbable && trait.team != b.team && Intersector.isInsideHexagon(trait.getX(), trait.getY(), realRange, b.x, b.y)) {
+					trait.absorb();
+					HFx.shieldDefense.at(trait.getX(), trait.getY(), color);
+				}
+			});
+		}
+
+		@Override
+		public void init(Bullet b) {
+			if (b == null) return;
+			openEffect.at(b.x, b.y, b.fout(), color);
+		}
+
+		@Override
+		public void draw(Bullet b) {
+			Draw.color(color);
+			float fout = Math.min(b.fout(), 0.5f) * 2;
+			Lines.stroke(fout * 3);
+			Lines.poly(b.x, b.y, 6, (range * 0.525f) * fout * fout);
+		}
+	}
+}

@@ -18,12 +18,12 @@ import mindustry.world.draw.DrawBlock;
 
 import static heavyindustry.util.Utils.split;
 
-public class DrawAntiSpliceBlock<E extends Building> extends DrawBlock {
+public class DrawAntiSpliceBlock extends DrawBlock {
 	protected static final String[] splices = {"right", "right-top", "top", "left-top", "left", "left-bot", "bot", "right-bot"};
 
 	public TextureRegion[] drawRegions = new TextureRegion[256];//Space for time, don't use this type too much.
 	public Boolf2<BuildPlan, BuildPlan> planSplicer = (plan, other) -> false;
-	public Intf<E> splicer = e -> 0;
+	public Intf<Building> splicer = e -> 0;
 
 	public TextureRegion icon;
 
@@ -32,6 +32,13 @@ public class DrawAntiSpliceBlock<E extends Building> extends DrawBlock {
 	public boolean split = false;
 
 	public boolean interConner;
+
+	@SuppressWarnings("unchecked")
+	public <E extends Building> DrawAntiSpliceBlock(Intf<E> splicers) {
+		splicer = (Intf<Building>) splicers;
+	}
+
+	public DrawAntiSpliceBlock() {}
 
 	@Override
 	public void load(Block block) {
@@ -84,12 +91,11 @@ public class DrawAntiSpliceBlock<E extends Building> extends DrawBlock {
 		return new TextureRegion(texture);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void draw(Building build) {
 		float z = Draw.z();
 		Draw.z(z + layerOffset);
-		Draw.rect(drawRegions[splicer.get((E) build)], build.x, build.y);
+		Draw.rect(drawRegions[splicer.get(build)], build.x, build.y);
 		if (layerRec) Draw.z(z);
 	}
 

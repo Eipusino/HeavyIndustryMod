@@ -266,11 +266,13 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 	@Override
 	public void write(Writes write) {
 		super.write(write);
+
 		write.f(lifetime);
 		write.f(time);
 		write.f(rotation);
 		write.f(surviveTime);
 		write.d(flagToApply);
+
 		TypeIO.writeUnitType(write, type);
 		TypeIO.writeTeam(write, team);
 		TypeIO.writeStatus(write, statusEntry);
@@ -281,6 +283,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 	@Override
 	public void read(Reads read) {
 		super.read(read);
+
 		lifetime = read.f();
 		time = read.f();
 		rotation = read.f();

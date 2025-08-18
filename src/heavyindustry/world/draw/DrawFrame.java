@@ -11,13 +11,12 @@ import mindustry.world.draw.DrawBlock;
 
 import static heavyindustry.util.Utils.split;
 
-@SuppressWarnings("unchecked")
-public class DrawFrame<E extends Building> extends DrawBlock {
+public class DrawFrame extends DrawBlock {
 	public int frames = 3;
 
-	public Intf<E> cursor = e -> (int) ((e.totalProgress() / 5) % frames);
-	public Floatf<E> alpha = e -> 1;
-	public Floatf<E> rotation = e -> 0;
+	public Intf<Building> cursor = e -> (int) ((e.totalProgress() / 5) % frames);
+	public Floatf<Building> alpha = e -> 1;
+	public Floatf<Building> rotation = e -> 0;
 
 	public TextureRegion[] regions;
 	public TextureRegion icon;
@@ -25,10 +24,19 @@ public class DrawFrame<E extends Building> extends DrawBlock {
 	public int size = 1;
 	public boolean split = false;
 
+	@SuppressWarnings("unchecked")
+	public <T extends Building> DrawFrame(Intf<T> cursors, Floatf<T> alphas, Floatf<T> rotations) {
+		cursor = (Intf<Building>) cursors;
+		alpha = (Floatf<Building>) alphas;
+		rotation = (Floatf<Building>) rotations;
+	}
+
+	public DrawFrame() {}
+
 	@Override
 	public void draw(Building build) {
-		Draw.alpha(alpha.get((E) build));
-		Draw.rect(regions[cursor.get((E) build)], build.x, build.y, rotation.get((E) build));
+		Draw.alpha(alpha.get(build));
+		Draw.rect(regions[cursor.get(build)], build.x, build.y, rotation.get(build));
 		Draw.color();
 	}
 

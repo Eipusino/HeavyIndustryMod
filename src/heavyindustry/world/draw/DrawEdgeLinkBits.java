@@ -5,23 +5,29 @@ import arc.func.Func;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Point2;
-import arc.util.Eachable;
 import heavyindustry.util.DirEdges;
-import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 
 import static mindustry.Vars.tilesize;
 
-public class DrawEdgeLinkBits<T extends Building> extends DrawBlock {
-	public static final byte[] EMP = new byte[]{0, 0, 0, 0};
-	public Func<T, byte[]> compLinked = e -> EMP;
+public class DrawEdgeLinkBits extends DrawBlock {
+	public static final byte[] empty = new byte[]{0, 0, 0, 0};
+
+	public Func<Building, byte[]> compLinked = e -> empty;
 
 	public float layer = -1;
 
 	public TextureRegion linker;
 	public String suffix = "-linker";
+
+	@SuppressWarnings("unchecked")
+	public <T extends Building> DrawEdgeLinkBits(Func<T, byte[]> compLinks) {
+		compLinked = (Func<Building, byte[]>) compLinks;
+	}
+
+	public DrawEdgeLinkBits() {}
 
 	@Override
 	public void load(Block block) {
@@ -30,16 +36,12 @@ public class DrawEdgeLinkBits<T extends Building> extends DrawBlock {
 	}
 
 	@Override
-	public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list) {}
-
-	@SuppressWarnings("unchecked")
-	@Override
 	public void draw(Building build) {
 		float z = Draw.z();
 		if (layer > 0) Draw.z(layer);
 		for (int dir = 0; dir < 4; dir++) {
 			Point2[] arr = DirEdges.get(build.block.size, dir);
-			byte[] linkBits = compLinked.get((T) build);
+			byte[] linkBits = compLinked.get(build);
 			for (int i = 0; i < arr.length; i++) {
 				if ((linkBits[dir] & 1 << i) == 0) continue;
 				float dx = 0, dy = 0;

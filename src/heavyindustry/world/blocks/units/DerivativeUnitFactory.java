@@ -27,7 +27,7 @@ import mindustry.world.blocks.payloads.UnitPayload;
 import mindustry.world.blocks.units.UnitFactory;
 import mindustry.world.meta.BlockFlag;
 
-import static heavyindustry.HVars.name;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static mindustry.Vars.control;
 import static mindustry.Vars.indexer;
 import static mindustry.Vars.state;
@@ -202,7 +202,7 @@ public class DerivativeUnitFactory extends UnitFactory {
 							float ay = v.y + Angles.trnsy(rot, plan.unit.hitSize * 1.1f);
 							for (int a = 0; a < 3; a++) {
 								float sin = Math.max(0, Mathf.sin(time + a * 60f, 55f, 1f)) * speedScl;
-								Draw.rect(Core.atlas.find(name("aim-shoot")), ax + Angles.trnsx(rot + 180, -4) * (tilesize / 2f + a * 2.8f), ay + Angles.trnsy(rot + 180, -4) * (tilesize / 2f + a * 2.8f), 45f * sin, 45f * sin, rot + 90);
+								Draw.rect(Core.atlas.find(MOD_NAME + "-aim-shoot"), ax + Angles.trnsx(rot + 180, -4) * (tilesize / 2f + a * 2.8f), ay + Angles.trnsy(rot + 180, -4) * (tilesize / 2f + a * 2.8f), 45f * sin, 45f * sin, rot + 90);
 							}
 						}
 					}

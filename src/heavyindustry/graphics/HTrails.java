@@ -22,7 +22,7 @@ import mindustry.gen.Rotc;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Trail;
 
-import static heavyindustry.HVars.name;
+import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static heavyindustry.util.Structf.copyArray;
 import static heavyindustry.util.Structf.sumi;
 
@@ -673,7 +673,7 @@ public final class HTrails {
 
 		@Override
 		protected void drawSegment(Color color, float width, float[] points, int len, int offset) {
-			if (region == null) region = Core.atlas.find(name, name("trail"));
+			if (region == null) region = Core.atlas.find(name, MOD_NAME + "-trail");
 
 			int str = stride;
 			float
@@ -784,7 +784,7 @@ public final class HTrails {
 
 		@Override
 		protected void forceDrawCap(Color color, float width) {
-			if (capRegion == null) capRegion = Core.atlas.find(name + "-cap", name("trail-cap"));
+			if (capRegion == null) capRegion = Core.atlas.find(name + "-cap", MOD_NAME + "-trail-cap");
 
 			int len = points.size;
 			float
