@@ -41,15 +41,14 @@ public class TapPacket extends Packet {
 
 	@Override
 	public void handled() {
-		Reads read = READ;
 		if (net.client()) {
-			player = TypeIO.readEntity(read);
-			results = HTypeIO.readTaps(read);
+			player = TypeIO.readEntity(READ);
+			results = HTypeIO.readTaps(READ);
 		}
 
-		x = read.f();
-		y = read.f();
-		targets = HTypeIO.readStrings(read);
+		x = READ.f();
+		y = READ.f();
+		targets = HTypeIO.readStrings(READ);
 	}
 
 	@Override

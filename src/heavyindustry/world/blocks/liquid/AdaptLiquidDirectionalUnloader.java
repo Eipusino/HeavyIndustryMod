@@ -138,7 +138,7 @@ public class AdaptLiquidDirectionalUnloader extends Block {
 
 		@Override
 		public void buildConfiguration(Table table) {
-			ItemSelection.buildTable(AdaptLiquidDirectionalUnloader.this, table, content.liquids(), () -> unloadLiquid, this::configure);
+			ItemSelection.buildTable(block, table, content.liquids(), () -> unloadLiquid, this::configure);
 		}
 
 		@Override

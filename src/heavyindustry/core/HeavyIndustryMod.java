@@ -43,6 +43,7 @@ import heavyindustry.ui.HStyles;
 import heavyindustry.ui.Elements;
 import heavyindustry.ui.dialogs.HResearchDialog;
 import heavyindustry.util.IconLoader;
+import mindustry.Vars;
 import mindustry.ctype.Content;
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.game.EventType.DisposeEvent;
@@ -54,6 +55,8 @@ import mindustry.mod.Mod;
 import mindustry.mod.Mods.LoadedMod;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
+
+import java.lang.reflect.Field;
 
 import static heavyindustry.HVars.inputAggregator;
 import static heavyindustry.HVars.internalTree;
@@ -184,6 +187,16 @@ public final class HeavyIndustryMod extends Mod {
 			HSectorPresets.load();
 			HTechTree.load();
 		}
+
+		try {
+			Field[] fields = Vars.class.getDeclaredFields();
+			for (Field field : fields) {
+				if (field.getName().equals("arcVersion")) {
+					Log.warn(Core.bundle.get("hi-arc-warn"));
+					break;
+				}
+			}
+		} catch (Exception ignored) {}
 	}
 
 	@Override

@@ -821,7 +821,7 @@ public final class HBullets {
 			despawnHit = false;
 			rangeOverride = 480f;
 		}
-            @Override
+			@Override
 			public void updateTrailEffects(Bullet b) {
 				if (trailChance > 0f) {
 					if (Mathf.chanceDelta(trailChance)) {

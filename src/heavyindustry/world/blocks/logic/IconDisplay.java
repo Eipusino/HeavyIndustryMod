@@ -76,7 +76,7 @@ public class IconDisplay extends Block {
 
 		@Override
 		public void buildConfiguration(Table table) {
-			ItemSelection.buildTable(IconDisplay.this, table, displayContents(),
+			ItemSelection.buildTable(block, table, displayContents(),
 					this::config, this::configure, selectionRows, selectionColumns);
 		}
 
@@ -97,7 +97,7 @@ public class IconDisplay extends Block {
 			if (value instanceof Long num) {
 				int typeId = Point2.unpack(Math.toIntExact(num)).x;
 				int contId = Point2.unpack(Math.toIntExact(num)).y;
-				if (typeId < content.getContentMap().length && content.getContentMap()[typeId].get(contId) != null) {
+				if (content != null && typeId < content.getContentMap().length && content.getContentMap()[typeId].get(contId) != null) {
 					type = UnlockableContent.class;
 					cont = (UnlockableContent) content.getContentMap()[typeId].get(contId);
 				}

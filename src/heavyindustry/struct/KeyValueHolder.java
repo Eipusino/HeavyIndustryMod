@@ -20,15 +20,22 @@ import java.util.Map;
  * <p>This class differs from AbstractMap.SimpleImmutableEntry in the following ways:
  * it is not serializable, it is final, and its key and value must be non-null.
  * @see Map#ofEntries Map.ofEntries()
- * @since 9
+ * @since 1.0.7
  */
 public class KeyValueHolder<K, V> implements Map.Entry<K, V>, Cloneable {
 	protected K key;
 	protected V value;
 
+	protected boolean modifiable;
+
 	public KeyValueHolder(K k, V v) {
 		key = k;
 		value = v;
+	}
+
+	public KeyValueHolder(K k, V v, boolean mod) {
+		this(k, v);
+		modifiable = mod;
 	}
 
 	/**
@@ -52,14 +59,14 @@ public class KeyValueHolder<K, V> implements Map.Entry<K, V>, Cloneable {
 	}
 
 	/**
-	 * Throws {@link UnsupportedOperationException}.
+	 * If modifiable is true, replace the given value with the current value.
 	 *
-	 * @param v ignored
-	 * @return never returns normally
+	 * @param v value
+	 * @return the value
 	 */
 	@Override
 	public V setValue(V v) {
-		value = v;
+		if (modifiable) value = v;
 
 		return value;
 	}
@@ -69,7 +76,8 @@ public class KeyValueHolder<K, V> implements Map.Entry<K, V>, Cloneable {
 		try {
 			return (KeyValueHolder<K, V>) super.clone();
 		} catch (CloneNotSupportedException e) {
-			throw new RuntimeException("oh no", e);
+			//Since the Cloneable interface has been implemented, this situation will never happen.
+			return new KeyValueHolder<>(key, value, modifiable);
 		}
 	}
 

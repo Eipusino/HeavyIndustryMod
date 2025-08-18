@@ -6,9 +6,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.input.InputAggregator.TapResult;
 import heavyindustry.util.Structf;
-import mindustry.Vars;
 import mindustry.content.TechTree.TechNode;
-import mindustry.ctype.Content;
 import mindustry.ctype.ContentType;
 import mindustry.ctype.UnlockableContent;
 
@@ -22,15 +20,6 @@ import static mindustry.Vars.content;
 public final class HTypeIO {
 	/** Don't let anyone instantiate this class. */
 	private HTypeIO() {}
-
-	public static void writeContent(Writes write, Content map) {
-		write.i(map.getContentType().ordinal());
-		write.i(map.id);
-	}
-
-	public static <T extends Content> T readContent(Reads read) {
-		return Vars.content.getByID(ContentType.all[read.i()], read.i());
-	}
 
 	public static void writePoint2(Writes write, Point2 p) {
 		write.i(p.x);
@@ -57,12 +46,12 @@ public final class HTypeIO {
 	}
 
 	public static void writeTechNode(Writes write, TechNode map) {
-		write.b(map.content.getContentType().ordinal());
+		write.i(map.content.getContentType().ordinal());
 		write.s(map.content.id);
 	}
 
 	public static TechNode readTechNode(Reads read) {
-		return content.<UnlockableContent>getByID(ContentType.all[read.b()], read.s()).techNode;
+		return content.<UnlockableContent>getByID(ContentType.all[read.i()], read.s()).techNode;
 	}
 
 	public static void writeStrings(Writes write, Seq<String> array) {
@@ -83,9 +72,9 @@ public final class HTypeIO {
 		for (T t : array) write.b(t.ordinal());
 	}
 
-	public static <T extends Enum<T>> Seq<T> readEnums(Reads read, FromOrdinal<T> prov) {
+	public static <T extends Enum<T>> Seq<T> readEnums(Reads read, FromOrdinal<T> prov, Class<T> type) {
 		int size = read.i();
-		Seq<T> out = new Seq<>(true, size);
+		Seq<T> out = new Seq<>(true, size, type);
 
 		for (int i = 0; i < size; i++) out.add(prov.get(read.b()));
 		return out;
@@ -96,7 +85,7 @@ public final class HTypeIO {
 	}
 
 	public static Seq<TapResult> readTaps(Reads read) {
-		return readEnums(read, ordinal -> TapResult.all[ordinal]);
+		return readEnums(read, ordinal -> TapResult.all[ordinal], TapResult.class);
 	}
 
 	public static void writeObject(Writes write, Object object) {

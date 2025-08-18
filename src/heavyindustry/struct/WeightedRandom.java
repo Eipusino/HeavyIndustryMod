@@ -6,8 +6,16 @@ import arc.struct.Seq;
 
 public class WeightedRandom<T> {
 	float lastValue = 0f;
-	Seq<T> items = new Seq<>();
+	Seq<T> items;
 	FloatSeq weights = new FloatSeq();
+
+	public WeightedRandom() {
+		items = new Seq<>();
+	}
+
+	public WeightedRandom(Class<T> type) {
+		items = new Seq<>(type);
+	}
 
 	public void add(T t, float weight) {
 		if (weight <= 0f) return;

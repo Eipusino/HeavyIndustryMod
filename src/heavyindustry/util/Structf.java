@@ -4,6 +4,7 @@ import arc.func.*;
 import arc.util.Eachable;
 import arc.util.Log;
 import heavyindustry.func.ProvT;
+import heavyindustry.math.Mathm;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -192,6 +193,15 @@ public final class Structf {
 		if (obj != null && !type.isInstance(obj))
 			return def;
 		return (T) obj;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T[] array(Class<T> type, int size, T value) {
+		T[] arr = (T[]) Array.newInstance(type, Mathm.clamp(size, 0, 255));
+		for (int i = 0; i < arr.length; i++) {
+			arr[i] = value;
+		}
+		return arr;
 	}
 
 	public static <T> T[] copyArray(T[] array, Func<T, T> copy) {

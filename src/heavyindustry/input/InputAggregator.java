@@ -41,7 +41,8 @@ public class InputAggregator implements Iterable<String>, Eachable<String> {
 	public InputAggregator() {
 		// Store as an ordered map for fast iteration, but don't actually order the keys for fast swap-remove.
 		handles = new OrderedMap<>();
-		(handleKeys = handles.orderedKeys()).ordered = false;
+		handleKeys = handles.orderedKeys();
+		handleKeys.ordered = false;
 
 		if (!headless) {
 			if (mobile) Core.input.addProcessor(new GestureDetector(new GestureListener() {

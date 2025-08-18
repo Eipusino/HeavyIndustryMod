@@ -1,6 +1,4 @@
-plugins {
-	id 'java'
-}
+apply plugin: 'java'
 
 version '1.0'
 
