@@ -195,15 +195,6 @@ public final class Structf {
 		return (T) obj;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <T> T[] array(Class<T> type, int size, T value) {
-		T[] arr = (T[]) Array.newInstance(type, Mathm.clamp(size, 0, 255));
-		for (int i = 0; i < arr.length; i++) {
-			arr[i] = value;
-		}
-		return arr;
-	}
-
 	public static <T> T[] copyArray(T[] array, Func<T, T> copy) {
 		T[] out = array.clone();
 		for (int i = 0, len = out.length; i < len; i++) out[i] = copy.get(out[i]);

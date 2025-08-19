@@ -109,11 +109,9 @@ public final class HeavyIndustryMod extends Mod {
 		Events.on(ClientLoadEvent.class, event -> {
 			if (isPlugin || headless || Core.settings.getBool("hi-closed-dialog")) return;
 
-			String close = Core.bundle.get("close");
-
 			FLabel label = new FLabel(Core.bundle.get("hi-author") + AUTHOR);
 			BaseDialog dialog = new BaseDialog(Core.bundle.get("hi-name")) {{
-				buttons.button(close, this::hide).size(210f, 64f);
+				buttons.button(Core.bundle.get("close"), this::hide).size(210f, 64f);
 				buttons.button((Core.bundle.get("hi-link-github")), () -> {
 					if (!Core.app.openURI(LINK_GIT_HUB)) {
 						ui.showErrorMessage("@linkfail");
@@ -193,6 +191,7 @@ public final class HeavyIndustryMod extends Mod {
 			for (Field field : fields) {
 				if (field.getName().equals("arcVersion")) {
 					Log.warn(Core.bundle.get("hi-arc-warn"));
+
 					break;
 				}
 			}

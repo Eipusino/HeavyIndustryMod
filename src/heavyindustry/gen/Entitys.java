@@ -5,6 +5,7 @@ import arc.func.Prov;
 import arc.struct.ObjectIntMap;
 import arc.struct.ObjectMap;
 import arc.util.Structs;
+import mindustry.ctype.Content;
 import mindustry.gen.EntityMapping;
 import mindustry.gen.Entityc;
 
@@ -27,12 +28,15 @@ public final class Entitys {
 	}
 
 	public static <T, E extends Entityc> T content(String name, Class<E> type, Func<String, ? extends T> create) {
+		T get = create.get(name);
+		String suffix = get instanceof Content content && content.minfo.mod != null ? content.minfo.mod.name + "-" : "";
+
 		if (type.getName().startsWith("mindustry.gen.")) {
-			EntityMapping.nameMap.put(name, Structs.find(EntityMapping.idMap, p -> p != null && p.get().getClass().equals(type)));
+			EntityMapping.nameMap.put(suffix + name, Structs.find(EntityMapping.idMap, p -> p != null && p.get().getClass().equals(type)));
 		} else {
-			EntityMapping.nameMap.put(name, needMap.get(type.getSimpleName()));
+			EntityMapping.nameMap.put(suffix + name, needMap.get(type.getSimpleName()));
 		}
-		return create.get(name);
+		return get;
 	}
 
 	public static int getId(Class<? extends Entityc> type) {

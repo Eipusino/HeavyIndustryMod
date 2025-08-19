@@ -1,4 +1,4 @@
-package heavyindustry.annotations.misc;
+package heavyindustry.annotations;
 
 import arc.struct.ObjectMap;
 import arc.struct.Seq;
@@ -20,16 +20,14 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.List;
-import heavyindustry.annotations.Annotations.ListClasses;
-import heavyindustry.annotations.Annotations.ListPackages;
 
 /**
  * Gathers all declared non-anonymous classes and packages and appends them to fields with {@code Seq.<String>with()}
  * initializer and annotated with {@link ListClasses} or {@link ListPackages}
  */
 public class TypeListPlugin implements Plugin {
-	Seq<JCMethodInvocation> classes = new Seq<>(), packages = new Seq<>();
-	Seq<String> classDefs = new Seq<>(), packageDefs = new Seq<>();
+	Seq<JCMethodInvocation> classes = new Seq<>(JCMethodInvocation.class), packages = new Seq<>(JCMethodInvocation.class);
+	Seq<String> classDefs = new Seq<>(String.class), packageDefs = new Seq<>(String.class);
 	ObjectMap<JCMethodInvocation, List<JCExpression>> classArgs = new ObjectMap<>(), packArgs = new ObjectMap<>();
 
 	@Override

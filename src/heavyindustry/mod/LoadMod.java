@@ -27,7 +27,7 @@ public final class LoadMod {
 	 * @throws NullPointerException If file is null
 	 * @throws ArcRuntimeException If the path file is not available
 	 */
-	public static Jval getMeta(Fi file) {
+	public static Jval getMeta(Fi file, Jval def) {
 		Fi metaFile = null;
 		for (String name : metaFiles) {
 			if ((metaFile = file.child(name)).exists()) {
@@ -36,10 +36,14 @@ public final class LoadMod {
 		}
 
 		if (!metaFile.exists()) {
-			return Jval.NULL;
+			return def;
 		}
 
 		return Jval.read(metaFile.reader());
+	}
+
+	public static Jval getMeta(Fi file) {
+		return getMeta(file, null);
 	}
 
 	/** Add {@link #blacklistedMods} to the {@code Mods.blacklistedMods} list. */

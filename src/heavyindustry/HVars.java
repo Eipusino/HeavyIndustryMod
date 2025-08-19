@@ -5,6 +5,8 @@ import arc.graphics.Texture;
 import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.graphics.g2d.TextureRegion;
 import arc.struct.Seq;
+import heavyindustry.annotations.ListClasses;
+import heavyindustry.annotations.ListPackages;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.files.InternalFileTree;
 import heavyindustry.graphics.SizedGraphics;
@@ -20,6 +22,13 @@ import static mindustry.Vars.headless;
  * @since 1.0.6
  */
 public final class HVars {
+	/** Lists all the mod's classes by their canonical names. Generated at compile-time. */
+	@ListClasses
+	public static Seq<String> classes = Seq.with();
+	/** Lists all the mod's packages by their canonical names. Generated at compile-time. */
+	@ListPackages
+	public static Seq<String> packages = Seq.with();
+
 	/** jar internal navigation. */
 	public static final InternalFileTree internalTree;
 
