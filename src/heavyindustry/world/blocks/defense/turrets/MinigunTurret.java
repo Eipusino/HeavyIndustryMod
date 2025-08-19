@@ -53,6 +53,11 @@ public class MinigunTurret extends ItemTurret {
 		addBar("hi-minigun-speed", (MinigunTurretBuild tile) -> new Bar(() -> Core.bundle.format("bar.hi-minigun-speed", Strings.autoFixed(tile.speedf() * 100f, 2)), tile::barColor, tile::speedf));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = MinigunTurretBuild::new;
+	}
+
 	public class MinigunTurretBuild extends ItemTurretBuild {
 		protected float[] heats = {0f, 0f, 0f, 0f};
 		protected float spinSpeed, spin;

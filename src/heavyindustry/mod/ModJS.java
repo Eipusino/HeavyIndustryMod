@@ -16,7 +16,7 @@ import rhino.Wrapper;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import static heavyindustry.util.Utils.packages;
+import static heavyindustry.HVars.packages;
 
 /**
  * Utility class for transition between Java and JS scripts, as well as providing a custom top level scope for the sake of

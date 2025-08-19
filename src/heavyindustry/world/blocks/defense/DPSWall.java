@@ -21,6 +21,11 @@ public class DPSWall extends Wall {
 		update = true;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = DPSWallBuild::new;
+	}
+
 	public class DPSWallBuild extends WallBuild {
 		public float totalDamage = 0f, hits = 0f, firstHitTime = 0f, lastHitTime = 0f, showBoardTime = 0f;
 

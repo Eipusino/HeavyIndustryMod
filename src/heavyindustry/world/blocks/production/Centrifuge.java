@@ -110,6 +110,11 @@ public class Centrifuge extends Separator {
 		}
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = CentrifugeBuild::new;
+	}
+
 	public class CentrifugeBuild extends SeparatorBuild {
 		@Override
 		public boolean shouldConsume() {

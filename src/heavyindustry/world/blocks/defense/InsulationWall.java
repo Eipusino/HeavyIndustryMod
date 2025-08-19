@@ -56,6 +56,11 @@ public class InsulationWall extends Wall {
 		return plan.config == Boolean.TRUE ? openRegion : region;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = InsulationWallBuild::new;
+	}
+
 	public class InsulationWallBuild extends WallBuild {
 		public boolean open = false;
 

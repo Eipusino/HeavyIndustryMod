@@ -138,6 +138,11 @@ public class SandboxWall extends Block {
 		}
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = SandboxWallBuild::new;
+	}
+
 	public static class SandboxWallData {
 		public boolean lightning, deflecting, insulated, dpsTesting;
 		public float lightningChance = 0.05f, lightningDamage = 20f;

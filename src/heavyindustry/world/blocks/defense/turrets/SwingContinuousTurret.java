@@ -27,6 +27,11 @@ public class SwingContinuousTurret extends ContinuousTurret {
 		drawer = new DrawSwingTurret();
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = SwingContinuousTurretBuild::new;
+	}
+
 	public class SwingContinuousTurretBuild extends ContinuousTurretBuild {
 		public float realRotateSpeed, rotateSpeedf;
 		public boolean slowing;

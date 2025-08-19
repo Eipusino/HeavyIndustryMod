@@ -95,6 +95,11 @@ public class PayloadJunction extends Block {
 		clipSize = Math.max(clipSize, size * tilesize * 2.1f);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = PayloadJunctionBuild::new;
+	}
+
 	public class PayloadJunctionBuild extends Building {
 		public Payload[] payloads = new Payload[2];
 		public Building[] surrounding = new Building[4];

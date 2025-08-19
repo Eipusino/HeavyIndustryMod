@@ -170,6 +170,11 @@ public class LightenGenerator extends NuclearReactor {
 		if (deathBullet != null) stats.add(Stat.ammo, StatValues.ammo(ObjectMap.of(this, deathBullet)));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = LightenGeneratorBuild::new;
+	}
+
 	public class LightenGeneratorBuild extends NuclearReactorBuild {
 		public boolean working = false;
 		public float consumeTimer = 0;

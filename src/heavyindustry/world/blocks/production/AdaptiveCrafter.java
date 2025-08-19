@@ -184,6 +184,11 @@ public class AdaptiveCrafter extends GenericCrafter {
 		};
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = AdaptiveCrafterBuild::new;
+	}
+
 	public class AdaptiveCrafterBuild extends GenericCrafterBuild {
 		public PayloadSeq payloads = new PayloadSeq();
 

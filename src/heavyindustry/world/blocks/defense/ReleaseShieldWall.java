@@ -68,6 +68,11 @@ public class ReleaseShieldWall extends Wall {
 		}
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ReleaseShieldWallBuild::new;
+	}
+
 	public static class ReleaseShieldWallBuildSyncPacket extends Packet {
 		private byte[] data;
 

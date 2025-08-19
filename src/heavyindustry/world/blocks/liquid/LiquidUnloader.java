@@ -61,6 +61,11 @@ public class LiquidUnloader extends Block {
 		drawPlanConfigCenter(plan, plan.config, name + "-center", true);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = LiquidUnloaderBuild::new;
+	}
+
 	public class LiquidUnloaderBuild extends Building {
 		public @Nullable Liquid sortLiquid = null;
 		public @Nullable Liquid lastSort = null;

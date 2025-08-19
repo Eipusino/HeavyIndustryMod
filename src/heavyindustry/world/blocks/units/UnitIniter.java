@@ -83,6 +83,11 @@ public class UnitIniter extends Block {
 		if (!canBeBuilt()) drawPlaceText(Core.bundle.get("hi-unit-initer"), x, y, valid);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = UnitIniterBuild::new;
+	}
+
 	public class UnitIniterBuild extends Building {
 		public UnitType toSpawnType = UnitTypes.alpha;
 		public float angle;

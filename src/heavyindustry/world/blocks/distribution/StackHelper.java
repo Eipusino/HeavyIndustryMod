@@ -48,6 +48,11 @@ public class StackHelper extends Block {
 		}
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = StackHelperBuild::new;
+	}
+
 	public class StackHelperBuild extends Building {
 		@Override
 		public void updateTile() {

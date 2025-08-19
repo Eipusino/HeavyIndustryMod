@@ -41,6 +41,11 @@ public class ConfigurablePowerVoid extends PowerBlock {
 		colorRegion = Core.atlas.find(name + "-strobe");
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ConfigurablePowerVoidBuild::new;
+	}
+
 	public class ConfigurablePowerVoidBuild extends Building {
 		public float powerConsumption = initialPowerConsumption;
 

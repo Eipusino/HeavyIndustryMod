@@ -39,6 +39,11 @@ public class ConfigurablePowerSource extends PowerBlock {
 		colorRegion = Core.atlas.find(name + "-strobe");
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ConfigurablePowerSourceBuild::new;
+	}
+
 	public class ConfigurablePowerSourceBuild extends Building {
 		public float powerProduction = initialPowerProduction;
 

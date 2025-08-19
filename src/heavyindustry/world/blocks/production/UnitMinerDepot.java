@@ -108,6 +108,11 @@ public class UnitMinerDepot extends Block {
 		}
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = UnitMinerDepotBuild::new;
+	}
+
 	public class UnitMinerDepotBuild extends Building implements UnitTetherBlock {
 		//needs to be "unboxed" after reading, since units are read after buildings.
 		public int readUnitId = -1;

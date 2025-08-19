@@ -18,6 +18,11 @@ public class HeatPipe extends HeatConductor implements Autotiler {
 		return false;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = HeatPipeBuild::new;
+	}
+
 	public class HeatPipeBuild extends HeatConductorBuild implements ChainedBuilding {
 		public @Nullable Building next;
 		public @Nullable HeatPipeBuild nextc;

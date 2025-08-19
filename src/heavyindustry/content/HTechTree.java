@@ -63,6 +63,7 @@ public final class HTechTree {
 			nodeProduce(HItems.chromium);
 		});
 		//wall
+		vanillaNode(scrapWall, () -> node(oldTracks));
 		vanillaNode(copperWall, () -> node(armoredWall, () -> node(armoredWallLarge, () -> node(armoredWallHuge, () -> node(armoredWallGigantic)))));
 		vanillaNode(copperWallLarge, () -> node(copperWallHuge, () -> node(copperWallGigantic)));
 		vanillaNode(titaniumWallLarge, () -> node(titaniumWallHuge, () -> node(titaniumWallGigantic)));

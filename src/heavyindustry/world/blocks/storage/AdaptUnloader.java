@@ -18,6 +18,11 @@ public class AdaptUnloader extends Unloader {
 		return new TextureRegion[]{region};
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = AdaptUnloaderBuild::new;
+	}
+
 	public class AdaptUnloaderBuild extends UnloaderBuild {
 		protected float counter;
 

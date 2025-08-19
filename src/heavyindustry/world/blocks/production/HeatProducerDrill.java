@@ -36,6 +36,11 @@ public class HeatProducerDrill extends DrawerDrill {
 		addBar("heat", (HeatProducerDrillBuild tile) -> new Bar("bar.heat", Pal.lightOrange, tile::heatFrac));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = HeatProducerDrillBuild::new;
+	}
+
 	public class HeatProducerDrillBuild extends DrawerDrillBuild implements HeatBlock {
 		public float heat;
 

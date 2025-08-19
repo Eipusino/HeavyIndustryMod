@@ -84,6 +84,11 @@ public class ConfigurableContainer extends StorageBlock {
 		coreMerge = false; //No compatibility, CoreBlocks don't check for dynamic item capacity.
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ConfigurableContainerBuild::new;
+	}
+
 	public class ConfigurableContainerBuild extends StorageBuild {
 		public int storageCapacity = initialStorageCapacity;
 		public boolean incinerate = false;

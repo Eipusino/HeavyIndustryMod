@@ -105,6 +105,11 @@ public class CoreStorageBlock extends StorageBlock {
 		});
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = CoreStorageBuild::new;
+	}
+
 	public class CoreStorageBuild extends StorageBuild {
 		@Override
 		public void updateTile() {

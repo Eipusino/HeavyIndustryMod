@@ -25,6 +25,11 @@ public class LunarGenerator extends PowerGenerator {
 		stats.add(generationType, powerProduction * 60.0f, StatUnit.powerSecond);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = LunarGeneratorBuild::new;
+	}
+
 	public class LunarGeneratorBuild extends GeneratorBuild {
 		@Override
 		public void updateTile() {

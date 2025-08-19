@@ -234,6 +234,11 @@ public class TubeItemBridge extends ItemBridge {
 		Placement.calculateNodes(points, this, rotation, this::positionsValid);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = TubeItemBridgeBuild::new;
+	}
+
 	public class TubeItemBridgeBuild extends ItemBridgeBuild {
 		protected ItemBuffer buffer = new ItemBuffer(bufferCapacity);
 

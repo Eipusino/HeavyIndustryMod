@@ -176,6 +176,11 @@ public class UnitMinerPoint extends Block {
 		return true;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = UnitMinerPointBuild::new;
+	}
+
 	public static class UnitMinerPointDroneSpawnedCallPacket extends Packet {
 		public Tile tile;
 		public int id;

@@ -56,6 +56,11 @@ public class SpeedupTurret extends PowerTurret {
 		stats.add(Stat.heatCapacity, overheatTime / Time.toSeconds, StatUnit.seconds);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = SpeedupTurretBuild::new;
+	}
+
 	public class SpeedupTurretBuild extends PowerTurretBuild {
 		public float speedupScl = 0f;
 		public float slowDownReload = 0f;

@@ -33,6 +33,11 @@ public class TubeConduit extends Conduit {
 		regions = splitLayers(name + "-sheet", 32, 2);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = TubeConduitBuild::new;
+	}
+
 	public class TubeConduitBuild extends ConduitBuild {
 		public int tiling = 0;
 

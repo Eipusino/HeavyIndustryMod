@@ -46,6 +46,11 @@ public class EverythingItemSource extends Block {
 		removeBar("items");
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = EverythingItemSourceBuild::new;
+	}
+
 	public class EverythingItemSourceBuild extends Building {
 		@Override
 		public void draw() {

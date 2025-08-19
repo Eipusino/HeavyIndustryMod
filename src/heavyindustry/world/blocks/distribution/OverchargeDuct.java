@@ -45,6 +45,11 @@ public class OverchargeDuct extends Duct {
 		stats.add(HStat.itemsMovedBoost, 60f / (speed / (1f + (baseEfficiency * 2f))), StatUnit.itemsSecond);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = OverchargeDuctBuild::new;
+	}
+
 	public class OverchargeDuctBuild extends DuctBuild {
 		@Override
 		public void draw() {

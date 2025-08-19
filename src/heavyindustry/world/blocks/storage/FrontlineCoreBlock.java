@@ -39,6 +39,11 @@ public class FrontlineCoreBlock extends CoreBlock {
 		return state.teams.cores(team).size < max;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = FrontlineCoreBuild::new;
+	}
+
 	public class FrontlineCoreBuild extends CoreBuild {
 		public boolean kill = false;
 

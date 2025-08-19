@@ -40,6 +40,11 @@ public class ThermalConsumeGenerator extends ThermalGenerator {
 		drawPlaceText(Core.bundle.formatFloat("bar.efficiency", sumAttribute(attribute, x, y) * 100f * displayEfficiencyScale, 1), x, y, valid);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ThermalConsumeGeneratorBuild::new;
+	}
+
 	public class ThermalConsumeGeneratorBuild extends ThermalGeneratorBuild {
 		public float warmup, cableWarmup, totalTime;
 

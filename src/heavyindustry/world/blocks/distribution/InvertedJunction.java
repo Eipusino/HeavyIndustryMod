@@ -52,6 +52,11 @@ public class InvertedJunction extends Junction {
 		flip = Core.atlas.find(MOD_NAME + "-flip");
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = InvertedJunctionBuild::new;
+	}
+
 	public class InvertedJunctionBuild extends JunctionBuild {
 		public int loc = 1;
 

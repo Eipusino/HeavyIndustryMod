@@ -50,6 +50,11 @@ public class FuelHeater extends GenericCrafter {
 		super.init();
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = FuelHeaterBuild::new;
+	}
+
 	public class FuelHeaterBuild extends GenericCrafterBuild implements HeatBlock {
 		public float heat, efficiencyMultiplier = 1f;
 

@@ -46,6 +46,11 @@ public class SortLiquidRouter extends LiquidRouter {
 		return new TextureRegion[]{bottomRegion, region, topRegion};
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = SortLiquidRouterBuild::new;
+	}
+
 	public class SortLiquidRouterBuild extends LiquidRouterBuild {
 		public Liquid sortLiquid = null;
 

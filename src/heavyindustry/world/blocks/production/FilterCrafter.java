@@ -29,6 +29,11 @@ public class FilterCrafter extends GenericCrafter {
 		stats.remove(Stat.productionTime);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = FilterCrafterBuild::new;
+	}
+
 	public class FilterCrafterBuild extends GenericCrafterBuild {
 		public Item[] filterItems = filterItemsBuilder.toArray(Item.class);
 		public boolean[] shown = new boolean[filterItems.length];

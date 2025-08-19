@@ -14,7 +14,6 @@ import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.gen.HSounds;
 import heavyindustry.world.blocks.environment.UndergroundOreBlock;
 import mindustry.content.Fx;
 import mindustry.gen.Building;
@@ -103,6 +102,11 @@ public class OreDetector extends Block {
 	@Override
 	protected TextureRegion[] icons() {
 		return drawer.icons(this);
+	}
+
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = OreDetectorBuild::new;
 	}
 
 	public class OreDetectorBuild extends Building implements Ranged {

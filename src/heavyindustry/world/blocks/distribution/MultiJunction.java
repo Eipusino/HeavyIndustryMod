@@ -36,6 +36,11 @@ public class MultiJunction extends LiquidJunction {
 		return true;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = MultiJunctionBuild::new;
+	}
+
 	public class MultiJunctionBuild extends LiquidJunctionBuild {
 		public DirectionalItemBuffer buffer = new DirectionalItemBuffer(capacity);
 

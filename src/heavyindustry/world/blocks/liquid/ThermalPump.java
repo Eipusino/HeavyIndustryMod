@@ -127,6 +127,11 @@ public class ThermalPump extends LiquidBlock {
 		addLiquidBar((ThermalPumpBuild build) -> build.liquidDrop);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ThermalPumpBuild::new;
+	}
+
 	public class ThermalPumpBuild extends LiquidBuild {
 		public float warmup, totalProgress;
 		public float consTimer;

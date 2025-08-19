@@ -82,6 +82,11 @@ public class MultiSource extends Block {
 				(size == other.size || (size >= other.size && ((subclass != null && subclass == other.subclass) || group.anyReplace)));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = MultiSourceBuild::new;
+	}
+
 	public static class SourceData {
 		protected Item item;
 		protected Liquid liquid;

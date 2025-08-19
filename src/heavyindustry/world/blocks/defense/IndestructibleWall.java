@@ -18,6 +18,11 @@ public class IndestructibleWall extends Wall {
 		chanceDeflect = 1f;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = IndestructibleWallBuild::new;
+	}
+
 	public class IndestructibleWallBuild extends WallBuild implements ControlBlock {
 		public @Nullable BlockUnitc unit;
 

@@ -186,6 +186,11 @@ public class HyperGenerator extends ImpactReactor {
 		};
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = HyperGeneratorBuild::new;
+	}
+
 	public class HyperGeneratorBuild extends ImpactReactorBuild {
 		@Override
 		public void onDestroyed() {

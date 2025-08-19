@@ -104,6 +104,10 @@ public class AdaptLiquidDirectionalUnloader extends Block {
 		return new TextureRegion[]{region};
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = AdaptLiquidDirectionalUnloaderBuild::new;
+	}
 
 	public class AdaptLiquidDirectionalUnloaderBuild extends Building {
 		public float unloadTimer = 0f;

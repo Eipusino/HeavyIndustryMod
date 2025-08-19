@@ -11,6 +11,11 @@ public class RandomSource extends AdaptiveSource {
 		super(name);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = RandomSourceBuild::new;
+	}
+
 	public class RandomSourceBuild extends AdaptiveSourceBuild {
 		protected float counter;
 

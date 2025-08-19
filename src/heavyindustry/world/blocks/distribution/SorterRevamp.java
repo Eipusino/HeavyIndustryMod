@@ -70,6 +70,11 @@ public class SorterRevamp extends Block {
 		return new TextureRegion[]{source, region};
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = SorterRevampBuild::new;
+	}
+
 	public class SorterRevampBuild extends Building {
 		public Item sortItem;
 

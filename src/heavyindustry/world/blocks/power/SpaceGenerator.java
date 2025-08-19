@@ -100,6 +100,11 @@ public class SpaceGenerator extends PowerGenerator {
 		Drawf.dashSquare(valid ? Pal.accent : Pal.remove, x, y, (space + (size % 2) / 2f) * tilesize * 2);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = SpaceGeneratorBuild::new;
+	}
+
 	public class SpaceGeneratorBuild extends GeneratorBuild {
 		public Seq<Tile> tiles = new Seq<>(Tile.class);
 		public Seq<Tile> solids = new Seq<>(Tile.class);

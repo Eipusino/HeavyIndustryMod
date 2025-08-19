@@ -73,6 +73,11 @@ public class PowerAnalyzer extends PowerBlock {
 		addBar("batteries", PowerNode.makeBatteryBalance());
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = PowerAnalyzerBuild::new;
+	}
+
 	public class PowerAnalyzerBuild extends Building {
 		public PowerAnalyzerBuild() {}
 

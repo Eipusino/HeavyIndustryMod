@@ -70,6 +70,7 @@ public final class Entitys {
 		register("DPSMechUnit", DPSMechUnit.class, DPSMechUnit::new);
 		register("InvincibleShipUnit", InvincibleShipUnit.class, InvincibleShipUnit::new);
 		register("UltFire", UltFire.class, UltFire::new);
+		register("UltPuddle", UltPuddle.class, UltPuddle::new);
 		register("Spawner", Spawner.class, Spawner::new);
 		register("VapourizeEffectState", VapourizeEffectState.class, VapourizeEffectState::new);
 	}

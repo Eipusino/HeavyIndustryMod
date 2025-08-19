@@ -51,6 +51,11 @@ public class Collector extends Block {
 		Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, range, Pal.placing);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = CollectorBuild::new;
+	}
+
 	public class CollectorBuild extends Building {
 		@Override
 		public void updateTile() {

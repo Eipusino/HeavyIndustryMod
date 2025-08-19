@@ -49,6 +49,11 @@ public class EverythingSourceVoid extends Block {
 		removeBar("liquid");
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = MaterialSourceVoidBuild::new;
+	}
+
 	public class MaterialSourceVoidBuild extends Building {
 		@Override
 		public void draw() {

@@ -70,6 +70,11 @@ public class HeavyDuct extends Duct {
 	@Override
 	public void handlePlacementLine(Seq<BuildPlan> plans) {}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = HeavyDuctBuild::new;
+	}
+
 	public class HeavyDuctBuild extends DuctBuild {
 		public int state = 0;
 		public Building last;

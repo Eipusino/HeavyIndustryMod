@@ -32,6 +32,11 @@ public class PayloadBuffer extends PayloadBlock {
 		addBar("payloadcapacity", (PayloadBufferBuild tile) -> new Bar("stat.payloadcapacity", Pal.items, () -> tile.payloadUsed / payloadCapacity));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = PayloadBufferBuild::new;
+	}
+
 	public class PayloadBufferBuild extends PayloadBlockBuild<Payload> {
 		public final Seq<Payload> inventory = new Seq<>(true, 8, Payload.class);
 

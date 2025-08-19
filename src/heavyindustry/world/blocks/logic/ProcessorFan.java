@@ -28,6 +28,11 @@ public class ProcessorFan extends ProcessorCooler {
 		return new TextureRegion[]{region, spinnerRegion, topRegion};
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ProcessorFanBuild::new;
+	}
+
 	public class ProcessorFanBuild extends ProcessorCoolerBuild {
 		public float timeSpun = 0f;
 

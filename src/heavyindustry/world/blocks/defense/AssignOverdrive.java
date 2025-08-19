@@ -64,6 +64,11 @@ public class AssignOverdrive extends OverdriveProjector {
 		addBar("boost", (AssignOverdriveBuild tile) -> new Bar(() -> Core.bundle.format("bar.boost", (int) (tile.realBoost() * 100)), () -> Pal.accent, () -> tile.realBoost() / (hasBoost ? speedBoost + speedBoostPhase : speedBoost)));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = AssignOverdriveBuild::new;
+	}
+
 	public class AssignOverdriveBuild extends OverdriveBuild implements LinkGroupc {
 		protected Seq<Building> builds = new Seq<>(Building.class);
 		protected IntSeq targets = new IntSeq(maxLink);

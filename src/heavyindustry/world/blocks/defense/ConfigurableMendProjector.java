@@ -102,6 +102,11 @@ public class ConfigurableMendProjector extends MendProjector {
 		return 1f / (repairTime * 60f / reload);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ConfigurableMendBuild::new;
+	}
+
 	public class ConfigurableMendBuild extends MendBuild {
 		public float repairTime = 100f / healPercent * reload / 60f, setRange = range;
 

@@ -41,6 +41,11 @@ public class CoveredConveyor extends AdaptConveyor {
 		outputRegion = Core.atlas.find(name + "-cover-out");
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = CoveredConveyorBuild::new;
+	}
+
 	public class CoveredConveyorBuild extends AdaptConveyorBuild {
 		public boolean backCap, leftCap, rightCap, frontCap;
 

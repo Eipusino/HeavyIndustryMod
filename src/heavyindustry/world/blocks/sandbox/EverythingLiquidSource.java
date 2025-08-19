@@ -48,6 +48,11 @@ public class EverythingLiquidSource extends Block {
 		removeBar("liquid");
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = EverythingLiquidSourceBuild::new;
+	}
+
 	public class EverythingLiquidSourceBuild extends Building {
 		@Override
 		public void draw() {

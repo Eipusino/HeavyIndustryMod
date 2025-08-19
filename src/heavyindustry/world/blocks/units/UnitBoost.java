@@ -128,6 +128,11 @@ public class UnitBoost extends Block {
 		return drawer == null ? super.icons() : drawer.finalIcons(this);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = UnitBoostBuild::new;
+	}
+
 	public class UnitBoostBuild extends Building implements HeatConsumer {
 		protected final Seq<Float[]> pos = new Seq<>(Float[].class);
 		protected final Pool<ExtPos> posPool = Pools.get(ExtPos.class, ExtPos::new);

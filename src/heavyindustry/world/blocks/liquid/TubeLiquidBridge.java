@@ -119,6 +119,11 @@ public class TubeLiquidBridge extends TubeItemBridge {
 		bridgeLiquidRegion = Core.atlas.find(name + "-bridge-liquid");
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = TubeLiquidBridgeBuild::new;
+	}
+
 	public class TubeLiquidBridgeBuild extends TubeItemBridgeBuild {
 		@Override
 		public void draw() {

@@ -76,6 +76,11 @@ public class AdaptConveyor extends Conveyor {
 		return noSideBlend ? Point2.equals(tile.x + Geometry.d4(rotation).x, tile.y + Geometry.d4(rotation).y, otherx, othery) || ((!otherblock.rotatedOutput(otherx, othery) && Edges.getFacingEdge(otherblock, otherx, othery, tile) != null && Edges.getFacingEdge(otherblock, otherx, othery, tile).relativeTo(tile) == rotation) || (otherblock instanceof Conveyor && otherblock.rotatedOutput(otherx, othery) && Point2.equals(otherx + Geometry.d4(otherrot).x, othery + Geometry.d4(otherrot).y, tile.x, tile.y))) : super.blendsArmored(tile, rotation, otherx, othery, otherrot, otherblock);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = AdaptConveyorBuild::new;
+	}
+
 	public class AdaptConveyorBuild extends ConveyorBuild {
 		@Override
 		public boolean acceptItem(Building source, Item item) {

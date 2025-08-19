@@ -31,6 +31,11 @@ public class MultiVoid extends Block {
 				(size == other.size || (size >= other.size && ((subclass != null && subclass == other.subclass) || group.anyReplace)));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = MultiVoidBuild::new;
+	}
+
 	public class MultiVoidBuild extends Building {
 		@Override
 		public boolean acceptItem(Building source, Item item) {

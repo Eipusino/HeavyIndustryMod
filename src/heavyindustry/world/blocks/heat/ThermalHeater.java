@@ -38,6 +38,11 @@ public class ThermalHeater extends ThermalGenerator {
 		addBar("heat", (ThermalHeaterBuild tile) -> new Bar("bar.heat", Pal.lightOrange, () -> Math.min(tile.heat / heatOutput, 1f)));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ThermalHeaterBuild::new;
+	}
+
 	public class ThermalHeaterBuild extends ThermalGeneratorBuild implements HeatBlock {
 		public float heat;
 

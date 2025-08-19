@@ -69,6 +69,11 @@ public class LabelMessageBlock extends MessageBlock {
 		return Vars.state.rules.editor;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = LabelMessageBuild::new;
+	}
+
 	public class LabelMessageBuild extends MessageBuild {
 		public int targetPos = -1;
 

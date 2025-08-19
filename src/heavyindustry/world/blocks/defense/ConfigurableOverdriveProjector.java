@@ -100,6 +100,11 @@ public class ConfigurableOverdriveProjector extends OverdriveProjector {
 		indexer.eachBlock(player.team(), plan.drawx(), plan.drawy(), realRange, other -> other.block.canOverdrive, other -> Drawf.selected(other, Tmp.c1.set(baseColor).a(Mathf.absin(4f, 1f))));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ConfigurableOverdriveBuild::new;
+	}
+
 	public class ConfigurableOverdriveBuild extends OverdriveBuild {
 		float boost = 100, setRange = range;
 

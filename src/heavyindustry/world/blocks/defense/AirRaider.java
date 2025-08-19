@@ -43,6 +43,11 @@ public class AirRaider extends CommandableAttackerBlock {
 		super.setStats();
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = AirRaiderBuild::new;
+	}
+
 	public class AirRaiderBuild extends CommandableAttackerBlockBuild {
 		@Override
 		public void shoot(Vec2 target) {

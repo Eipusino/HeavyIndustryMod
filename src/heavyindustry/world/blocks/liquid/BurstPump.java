@@ -28,6 +28,11 @@ public class BurstPump extends Pump {
 				new Bar(() -> Core.bundle.get("bar.progress"), () -> Pal.ammo, () -> e.counter / pumpTime));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = BurstPumpBuild::new;
+	}
+
 	public class BurstPumpBuild extends PumpBuild {
 		public float counter;
 		public @Nullable Liquid liquidDrop = null;

@@ -12,6 +12,11 @@ public class InstantBridge extends ItemBridge {
 		super(name);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = InstantBridgeBuild::new;
+	}
+
 	public class InstantBridgeBuild extends ItemBridgeBuild {
 		@Override
 		public void updateTile() {

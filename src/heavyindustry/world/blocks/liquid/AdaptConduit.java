@@ -63,6 +63,11 @@ public class AdaptConduit extends Conduit {
 		Draw.scl();
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = AdaptConduitBuild::new;
+	}
+
 	public class AdaptConduitBuild extends ConduitBuild {
 		public boolean armored = false;
 

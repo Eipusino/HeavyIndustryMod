@@ -162,6 +162,11 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 		});
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = PayloadManufacturingGridBuild::new;
+	}
+
 	public class PayloadManufacturingGridBuild extends PayloadBlockBuild<Payload> {
 		public boolean crafting, failed, moveOut, merge, dirty;
 		public float progress;

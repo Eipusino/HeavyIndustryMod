@@ -91,6 +91,11 @@ public class HeatDriver extends Block {
 		return drawer.finalIcons(this);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = HeatDriverBuild::new;
+	}
+
 	public static class DrawHeatDriver extends DrawBlock {
 		public TextureRegion turretPart, turretLine, rPart, rLine, effect, arrow, preview;
 

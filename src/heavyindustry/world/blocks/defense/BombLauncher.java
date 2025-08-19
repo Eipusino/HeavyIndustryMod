@@ -62,6 +62,11 @@ public class BombLauncher extends CommandableAttackerBlock {
 		bombRegion = Core.atlas.find(name + "-bomb", Core.atlas.find("launchpod"));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = BombLauncherBuild::new;
+	}
+
 	public class BombLauncherBuild extends CommandableAttackerBlockBuild {
 		@Override
 		public void draw() {

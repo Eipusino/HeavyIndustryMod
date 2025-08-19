@@ -49,6 +49,11 @@ public class CoveredRouter extends Router {
 		return new TextureRegion[]{region, topRegion};
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = CoveredRouterBuild::new;
+	}
+
 	public class CoveredRouterBuild extends RouterBuild {
 		public float progress;
 		public @Nullable Item current;

@@ -29,6 +29,11 @@ public class MultiRouter extends LiquidRouter {
 		noUpdateDisabled = true;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = MultiRouterBuild::new;
+	}
+
 	public class MultiRouterBuild extends LiquidRouterBuild {
 		public Item lastItem;
 		public Tile lastInput;

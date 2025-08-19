@@ -113,6 +113,11 @@ public class MultiSorter extends Block {
 		}
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = MultiSorterBuild::new;
+	}
+
 	public class MultiSorterBuild extends Building {
 		public @Nullable Item leftSort, frontSort, rightSort;
 		public byte outDir;

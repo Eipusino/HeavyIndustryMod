@@ -187,6 +187,11 @@ public class PipeBridge extends MergingLiquidBlock {
 		}
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = PipeBridgeBuild::new;
+	}
+
 	public class PipeBridgeBuild extends MergingLiquidBuild {
 		public int underBlending;
 

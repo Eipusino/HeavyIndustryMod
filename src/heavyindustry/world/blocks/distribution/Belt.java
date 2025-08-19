@@ -146,6 +146,11 @@ public class Belt extends Block implements Autotiler {
 		Draw.z(z);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = BeltBuild::new;
+	}
+
 	public class BeltBuild extends Building implements ChainedBuilding {
 		public float clogHeat;
 		public boolean moved;

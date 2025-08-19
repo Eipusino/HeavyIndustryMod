@@ -42,6 +42,11 @@ public class DuctNode extends Duct {
 		return new TextureRegion[]{region};
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = DuctNodeBuild::new;
+	}
+
 	public class DuctNodeBuild extends DuctBuild {
 		public int chainCount, lastChainCount;
 

@@ -95,6 +95,11 @@ public class EffectZone extends Block {
 		Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, range, baseColor);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = EffectZoneBuild::new;
+	}
+
 	public class EffectZoneBuild extends Building {
 		public float heat, activeHeat, activeHeight;
 		public float charge = Mathf.random(reload);

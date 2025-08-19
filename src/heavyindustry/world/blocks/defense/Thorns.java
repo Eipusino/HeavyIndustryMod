@@ -28,6 +28,11 @@ public class Thorns extends Block {
 		stats.add(Stat.damage, 60f / cooldown * damage, StatUnit.perSecond);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ThornsBuild::new;
+	}
+
 	public class ThornsBuild extends Building {
 		@Override
 		public void draw() {

@@ -35,6 +35,11 @@ public class GeneratorFracker extends Fracker {
 		));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = GeneratorFrackerBuild::new;
+	}
+
 	public class GeneratorFrackerBuild extends FrackerBuild {
 		@Override
 		public float getPowerProduction() {

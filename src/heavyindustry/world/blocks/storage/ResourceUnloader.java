@@ -41,6 +41,11 @@ public class ResourceUnloader extends Unloader {
 		stats.add(Stat.range, range / 8, StatUnit.blocks);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ResourceUnloaderBuild::new;
+	}
+
 	public class ResourceUnloaderBuild extends UnloaderBuild {
 		@Override
 		public void updateTile() {

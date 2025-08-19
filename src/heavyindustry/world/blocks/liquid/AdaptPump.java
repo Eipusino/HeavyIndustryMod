@@ -28,6 +28,11 @@ public class AdaptPump extends Pump {
 		splits = Utils.split(name + "-atlas", 32, 4, 4);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = AdaptPumpBuild::new;
+	}
+
 	public class AdaptPumpBuild extends PumpBuild {
 		public boolean[] drawLink = new boolean[8];
 		public int[] drawIdx = new int[4];

@@ -74,8 +74,6 @@ import heavyindustry.type.weapons.PointDefenceMultiBarrelWeapon;
 import heavyindustry.ui.Elements;
 import heavyindustry.util.Utils;
 import mindustry.ai.UnitCommand;
-import mindustry.ai.types.BuilderAI;
-import mindustry.ai.types.CommandAI;
 import mindustry.ai.types.FlyingAI;
 import mindustry.ai.types.FlyingFollowAI;
 import mindustry.content.Fx;
@@ -368,10 +366,7 @@ public final class HUnitTypes {
 				shootSound = Sounds.laser;
 				shake = 3f;
 				alternate = false;
-				bullet = new PointBulletType() {{
-					trailColor = HPal.energyYellow;
-					trailEffect = HFx.trailSolid;
-					trailSpacing = 9f;
+				bullet = new RailBulletType() {{
 					damage = 180f;
 					splashDamage = 170f;
 					splashDamageRadius = 16f;
@@ -380,8 +375,8 @@ public final class HUnitTypes {
 					lifetime = 15f;
 					hitSound = Sounds.lasercharge2;
 					smokeEffect = Fx.bigShockwave;
-					shootEffect = HFx.shootLine(22f, 22f);
-					hitEffect = HFx.circleOut(HPal.energyYellow, splashDamageRadius);
+					shootEffect = HFx.shootRail;
+					hitEffect = HFx.circleOutQuick;
 					despawnEffect = Fx.bigShockwave;
 					fragLifeMin = 1f;
 					fragVelocityMax = 0f;
@@ -399,12 +394,12 @@ public final class HUnitTypes {
 						hitShake = 1f;
 						hitSound = Sounds.plasmaboom;
 						hitColor = HPal.energyYellow;
-						hitEffect = HFx.explodeImpWave;
+						hitEffect = HFx.impactExplode(22f, lifetime);
 						despawnEffect = Fx.none;
 						fragBullets = 4;
 						fragBullet = new PointBulletType() {{
 							trailSpacing = 9f;
-							trailEffect = HFx.particleSpread;
+							trailEffect = HFx.skyTrail;
 							lifetime = 8f;
 							speed = 15f;
 							buildingDamageMultiplier = 3f;
@@ -413,7 +408,7 @@ public final class HUnitTypes {
 							hitShake = 1f;
 							hitSound = Sounds.laser;
 							hitColor = HPal.energyYellow;
-							hitEffect = HFx.hitEmpColorSpark;
+							hitEffect = HFx.hitSpark;
 							despawnEffect = Fx.none;
 						}};
 					}};
@@ -471,7 +466,7 @@ public final class HUnitTypes {
 					pierceCap = 4;
 					knockback = 8f;
 					hitEffect = HFx.lightningBoltWave;
-					shootEffect = HFx.shootRecoilWave;
+					shootEffect = HFx.missileShoot;
 					smokeEffect = Fx.smokeCloud;
 					width = 16f;
 					height = 28f;
@@ -569,13 +564,13 @@ public final class HUnitTypes {
 					trailRotation = true;
 					trailChance = 1f;
 					trailInterval = 33f;
-					trailEffect = HFx.polyParticle;
+					trailEffect = HFx.glowParticle;
 					shrinkY = 0f;
-					hitEffect = HFx.moveDiamondParticle;
+					hitEffect = HFx.glowParticle;
 					hitSound = Sounds.plasmaboom;
-					shootEffect = HFx.shootCrossLight;
+					shootEffect = HFx.winterShooting;
 					smokeEffect = Fx.smokeCloud;
-					despawnEffect = HFx.edessp(lifetime);
+					despawnEffect = HFx.spawnWave;
 				}};
 			}});
 		}};
@@ -2909,8 +2904,7 @@ public final class HUnitTypes {
 		invincibleShip = new BaseUnitType("invincible-ship") {{
 			constructor = InvincibleShipUnit::new;
 			abilities.add(new RepairFieldAbility(11451.4191981f, 60, 8 * 8), new InvincibleForceFieldAbility(60, 114.514191981f, 1145141919.81f, 300));
-			aiController = BuilderAI::new;
-			controller = u -> !playerControllable || (u.team.isAI() && !u.team.rules().rtsAi) ? new NullAI() : new CommandAI();
+			aiController = NullAI::new;
 			weapons.add(new Weapon(name + "-weapon") {{
 				reload = 7;
 				bullet = new BasicBulletType(24.1f, 114514.191981f) {{

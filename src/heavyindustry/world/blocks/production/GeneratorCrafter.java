@@ -54,6 +54,11 @@ public class GeneratorCrafter extends GenericCrafter {
 		}
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = GeneratorCrafterBuild::new;
+	}
+
 	public class GeneratorCrafterBuild extends GenericCrafterBuild {
 		@Override
 		public float getPowerProduction() {

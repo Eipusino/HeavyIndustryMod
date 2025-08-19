@@ -62,6 +62,11 @@ public class NodeBridge extends ItemBridge {
 		laserEnd = Core.atlas.find(name + "-laser-end", "laser-end");
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = NodeBridgeBuild::new;
+	}
+
 	public class NodeBridgeBuild extends ItemBridgeBuild {
 		@Override
 		public void updateTile() {

@@ -24,6 +24,11 @@ public class SmartBeamNode extends BeamNode {
 		topRegion = Core.atlas.find(name + "-top", "white");
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = SmartBeamNodeBuild::new;
+	}
+
 	public class SmartBeamNodeBuild extends BeamNodeBuild {
 		public int lastId = -1;
 		public Color darkColor = new Color(), lightColor = new Color();

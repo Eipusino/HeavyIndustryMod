@@ -73,6 +73,11 @@ public class LaserBeamDrill extends Drill {
 		return teamRegion.found() ? new TextureRegion[]{baseRegion, topRegion, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = LaserBeamDrillBuild::new;
+	}
+
 	public class LaserBeamDrillBuild extends DrillBuild {
 		public Rand rand = new Rand();
 

@@ -33,6 +33,11 @@ public class RotatorRouter extends Duct {
 		botRegion = Core.atlas.find(name + "-bottom");
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = RotatorRouterBuild::new;
+	}
+
 	public class RotatorRouterBuild extends DuctBuild {
 		public @Nullable Item sorted;
 		public int receiveDir;

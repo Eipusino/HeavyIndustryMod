@@ -195,6 +195,11 @@ public class JumpGate extends Block {
 		);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = JumpGateBuild::new;
+	}
+
 	public class JumpGateBuild extends Building {
 		public float speedMultiplier = 1f;
 		public float progress;

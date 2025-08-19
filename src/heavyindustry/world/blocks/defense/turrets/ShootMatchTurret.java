@@ -29,6 +29,11 @@ public class ShootMatchTurret extends ItemTurret {
 		}
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ShootMatchTurretBuild::new;
+	}
+
 	public class ShootMatchTurretBuild extends ItemTurretBuild {
 		public ShootPattern getShooter(BulletType type) {
 			ShootPattern s = shooterMap.get(type.id);

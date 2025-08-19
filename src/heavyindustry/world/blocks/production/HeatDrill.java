@@ -27,6 +27,11 @@ public class HeatDrill extends DrawerDrill {
 		);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = HeatDrillBuild::new;
+	}
+
 	public class HeatDrillBuild extends DrawerDrillBuild implements HeatConsumer {
 		public float[] sideHeat = new float[4];
 		public float heat = 0f;

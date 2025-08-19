@@ -69,6 +69,11 @@ public class CapacityConfigurer extends PayloadBlock {
 		Draw.rect(topRegion, plan.drawx(), plan.drawy());
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = CapacityConfigurerBuild::new;
+	}
+
 	public class CapacityConfigurerBuild extends PayloadBlockBuild<Payload> {
 		public boolean exporting;
 		public int configItemCap = 1000;

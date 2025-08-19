@@ -25,6 +25,11 @@ public class ProcessableBlock extends Block {
 		drawDisabled = false;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ProcessableBuild::new;
+	}
+
 	public class ProcessableBuild extends Building {
 		public float progress;
 

@@ -35,6 +35,11 @@ public class DirectionalRouter extends DuctRouter {
 		return new TextureRegion[]{region};
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = RailDirectionalRouterBuild::new;
+	}
+
 	public class RailDirectionalRouterBuild extends DuctRouterBuild {
 		@Override
 		public void draw() {

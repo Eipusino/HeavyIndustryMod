@@ -156,6 +156,11 @@ public class Pipe extends MergingLiquidBlock implements Autotiler {
 		BeltPlacement.calculateBridges(plans, bridgeReplacement, b -> b instanceof Pipe, true);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = PipeBuild::new;
+	}
+
 	public class PipeBuild extends MergingLiquidBuild {
 		public int index1, index2, underBlending;
 

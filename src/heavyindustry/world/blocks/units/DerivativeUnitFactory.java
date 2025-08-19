@@ -87,6 +87,11 @@ public class DerivativeUnitFactory extends UnitFactory {
 		return !indexer.getFlagged(team, BlockFlag.factory).contains(b -> b instanceof DerivativeUnitFactoryBuild && getRect(Tmp.r2, b.x, b.y, b.rotation).overlaps(rect));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = DerivativeUnitFactoryBuild::new;
+	}
+
 	public class DerivativeUnitFactoryBuild extends UnitFactoryBuild {
 		protected final Object[] objects = new Object[4];
 		protected final Effect espEffect = HFx.edessp(24);

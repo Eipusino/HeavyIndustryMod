@@ -210,6 +210,11 @@ public class FlowrateVoid extends PayloadVoid {
 		}
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = FlowrateVoidBuild::new;
+	}
+
 	public class FlowrateVoidBuild extends Building {
 		public Seq<Payload> payloads = new Seq<>(Payload.class);
 		public float maxTime = 1f;

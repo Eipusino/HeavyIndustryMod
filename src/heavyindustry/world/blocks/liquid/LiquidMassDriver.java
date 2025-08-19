@@ -134,6 +134,11 @@ public class LiquidMassDriver extends Block {
 		public static final DriverState[] all = values();
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = LiquidMassDriverBuild::new;
+	}
+
 	public static class LiquidBulletData implements Poolable {
 		public LiquidMassDriverBuild from, to;
 		public Liquid liquid = Liquids.water;

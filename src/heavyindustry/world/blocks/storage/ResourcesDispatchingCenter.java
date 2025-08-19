@@ -210,6 +210,11 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 		}
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ResourcesDispatchingCenterBuild::new;
+	}
+
 	public class ResourcesDispatchingCenterBuild extends StorageBuild {
 		public Interval timer = new Interval(6);
 		public IntSeq links = new IntSeq();

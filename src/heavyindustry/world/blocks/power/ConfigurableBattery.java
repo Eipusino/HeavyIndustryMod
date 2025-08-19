@@ -73,6 +73,11 @@ public class ConfigurableBattery extends Battery {
 		return consume(new ConsumeBufferedPowerDynamic((Floatf<Building>) usage));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ConfigurableBatteryBuild::new;
+	}
+
 	public class ConfigurableBatteryBuild extends BatteryBuild {
 		public float powerCapacity = initialPowerCapacity;
 

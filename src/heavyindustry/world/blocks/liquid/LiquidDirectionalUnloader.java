@@ -85,6 +85,11 @@ public class LiquidDirectionalUnloader extends Block {
 		return new TextureRegion[]{region, topRegion, arrowRegion};
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = LiquidDirectionalUnloaderBuild::new;
+	}
+
 	public class LiquidDirectionalUnloaderBuild extends Building {
 		public Liquid sortLiquid = null;
 

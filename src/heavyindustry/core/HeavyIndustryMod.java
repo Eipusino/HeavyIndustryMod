@@ -178,6 +178,7 @@ public final class HeavyIndustryMod extends Mod {
 			HStatusEffects.load();
 			HLiquids.load();
 			HUnitTypes.load();
+			HBlocks.loadInternal();
 			HBlocks.load();
 			HWeathers.load();
 			HOverrides.load();
@@ -195,7 +196,9 @@ public final class HeavyIndustryMod extends Mod {
 					break;
 				}
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {
+			Log.err(e);
+		}
 	}
 
 	@Override

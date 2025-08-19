@@ -131,6 +131,11 @@ public class BeamDiode extends Block {
 		return (tile != null && tile.block.hasPower) ? tile.power.graph.getLastPowerStored() / tile.power.graph.getTotalBatteryCapacity() : 0f;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = BeamDiodeBuild::new;
+	}
+
 	public class BeamDiodeBuild extends Building {
 		public Building[] links = new Building[2];
 		public Tile[] dests = new Tile[2];

@@ -109,6 +109,11 @@ public class WindGenerator extends PowerGenerator {
 			Placement.calculateNodes(points, this, rotation, (point, other) -> intersectsSpacing(point.x, point.y, other.x, other.y, 1));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = WindGeneratorBuild::new;
+	}
+
 	public class WindGeneratorBuild extends GeneratorBuild {
 		public float boost;
 		public float lastRotation, targetRotation, rot, nextChangeTime, startTime;

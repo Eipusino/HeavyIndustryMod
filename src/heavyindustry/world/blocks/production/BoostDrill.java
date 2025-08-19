@@ -70,6 +70,11 @@ public class BoostDrill extends Drill {
 		super.init();
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = BoostDrillBuild::new;
+	}
+
 	public class BoostDrillBuild extends DrillBuild {
 		public float consumeTimer = 0;
 		public float boostWarm = 0;

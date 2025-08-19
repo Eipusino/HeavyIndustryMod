@@ -23,6 +23,11 @@ public class TubeGate extends OverflowGate {
 		rotorRegion = Core.atlas.find(name + "-rotator");
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = TubeGateBuild::new;
+	}
+
 	public class TubeGateBuild extends OverflowGateBuild {
 		public ObjectIntMap<Item> directionalItems = new ObjectIntMap<>();
 

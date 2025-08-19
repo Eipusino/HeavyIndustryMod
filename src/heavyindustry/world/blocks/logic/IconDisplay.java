@@ -58,6 +58,11 @@ public class IconDisplay extends Block {
 		}
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = IconDisplayBuild::new;
+	}
+
 	public class IconDisplayBuild extends Building {
 		public UnlockableContent displayContent;
 		public Seq<UnlockableContent> tmpSeq = new Seq<>(UnlockableContent.class);

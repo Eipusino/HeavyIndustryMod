@@ -25,6 +25,11 @@ public class ImpulseNode extends PowerNode {
 		super(name);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ImpulseNodeBuild::new;
+	}
+
 	public class ImpulseNodeBuild extends PowerNodeBuild {
 		@Override
 		public void draw() {

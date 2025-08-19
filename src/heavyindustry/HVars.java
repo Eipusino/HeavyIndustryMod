@@ -14,6 +14,7 @@ import heavyindustry.input.InputAggregator;
 import mindustry.content.TechTree.TechNode;
 import mindustry.type.Sector;
 
+import static heavyindustry.util.Structf.arrayOf;
 import static mindustry.Vars.headless;
 
 /**
@@ -23,11 +24,9 @@ import static mindustry.Vars.headless;
  */
 public final class HVars {
 	/** Lists all the mod's classes by their canonical names. Generated at compile-time. */
-	@ListClasses
-	public static Seq<String> classes = Seq.with();
+	public static final @ListClasses String[] classes = arrayOf();
 	/** Lists all the mod's packages by their canonical names. Generated at compile-time. */
-	@ListPackages
-	public static Seq<String> packages = Seq.with();
+	public static final @ListPackages String[] packages = arrayOf();
 
 	/** jar internal navigation. */
 	public static final InternalFileTree internalTree;
@@ -66,20 +65,18 @@ public final class HVars {
 
 	/** Clear all occupied sectors of the specified Planet. Use with caution, as this will completely disrupt the player's game progress. */
 	public static void resetSaves(Seq<Sector> sectors) {
-		for (Sector sector : sectors) {
+		sectors.each(sector -> {
 			if (sector.hasSave()) {
 				sector.save.delete();
 				sector.save = null;
 			}
-		}
+		});
 	}
 
 	/** Clear all tech nodes under the specified root node. Use with caution, as this will completely disrupt the player's game progress. */
 	public static void resetTree(TechNode root) {
 		root.reset();
 		root.content.clearUnlock();
-		for (TechNode node : root.children) {
-			resetTree(node);
-		}
+		root.children.each(HVars::resetTree);
 	}
 }

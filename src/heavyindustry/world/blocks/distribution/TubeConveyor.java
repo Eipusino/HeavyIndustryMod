@@ -100,6 +100,11 @@ public class TubeConveyor extends AdaptConveyor {
 		}
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = TubeConveyorBuild::new;
+	}
+
 	public class TubeConveyorBuild extends AdaptConveyorBuild {
 		public int tiling = 0;
 

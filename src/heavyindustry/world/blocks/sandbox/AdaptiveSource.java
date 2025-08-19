@@ -52,6 +52,11 @@ public class AdaptiveSource extends Block {
 		return true;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = AdaptiveSourceBuild::new;
+	}
+
 	public class AdaptiveSourceBuild extends Building implements HeatBlock {
 		@Override
 		public void updateTile() {

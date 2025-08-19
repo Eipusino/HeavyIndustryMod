@@ -53,6 +53,11 @@ public class SporeFarmBlock extends Block {
 		cageFloor = Core.atlas.find(name + "-floor");
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = SporeFarmBuild::new;
+	}
+
 	public class SporeFarmBuild extends Building {
 		protected float growth, delay = -1;
 		protected int tileIndex = 0;

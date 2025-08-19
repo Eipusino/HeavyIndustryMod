@@ -20,6 +20,11 @@ public class PlatformTurret extends Turret {
 		stats.add(Stat.ammo, StatValues.ammo(ObjectMap.of(this, shootType)));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = PlatformTurretBuild::new;
+	}
+
 	public class PlatformTurretBuild extends TurretBuild {
 		@Override
 		public BulletType useAmmo() {

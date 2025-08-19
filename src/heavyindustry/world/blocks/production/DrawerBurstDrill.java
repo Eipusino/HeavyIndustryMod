@@ -31,6 +31,11 @@ public class DrawerBurstDrill extends BurstDrill {
 		drawer.drawPlan(this, plan, list);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = DrawerBurstDrillBuild::new;
+	}
+
 	public class DrawerBurstDrillBuild extends BurstDrillBuild {
 		@Override
 		public void draw() {

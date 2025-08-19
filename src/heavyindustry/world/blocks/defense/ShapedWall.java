@@ -42,6 +42,11 @@ public class ShapedWall extends ConnectedWall {
 		stats.add(HStat.damageReduction, damageReduction * 100, StatUnit.percent);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ShapedWallBuild::new;
+	}
+
 	public class ShapedWallBuild extends ConnectedWallBuild {
 		public Seq<ShapedWallBuild> connectedWalls = new Seq<>(ShapedWallBuild.class);
 

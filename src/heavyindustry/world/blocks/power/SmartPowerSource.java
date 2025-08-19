@@ -29,6 +29,11 @@ public class SmartPowerSource extends PowerBlock {
 		colorRegion = Core.atlas.find(name + "-strobe");
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = SmartPowerSourceBuild::new;
+	}
+
 	public class SmartPowerSourceBuild extends Building {
 		@Override
 		public void draw() {

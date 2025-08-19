@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Fills a {@code Seq.<String>with()}'s arg with the list of compiled packages.
+ * Fills a {@code <String>arrayOf()}'s arg with the list of compiled packages.
  */
 @Target({ElementType.FIELD, ElementType.LOCAL_VARIABLE})
 @Retention(RetentionPolicy.SOURCE)

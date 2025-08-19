@@ -349,6 +349,11 @@ public class StaticNode extends Block {
 		return false;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = StaticNodeBuild::new;
+	}
+
 	public class StaticNodeBuild extends Building {
 		public IntSeq links = new IntSeq();
 		public boolean active;

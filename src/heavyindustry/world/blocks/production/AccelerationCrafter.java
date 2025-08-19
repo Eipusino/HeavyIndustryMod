@@ -28,6 +28,11 @@ public class AccelerationCrafter extends GenericCrafter {
 		addBar("craft-speed", (AcceleratingCrafterBuild tile) -> new Bar(() -> Core.bundle.format("bar.hi-craft-speed", Mathf.round(tile.getDisplaySpeed() * 100f)), () -> Pal.surge, tile::getDisplaySpeed));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = AcceleratingCrafterBuild::new;
+	}
+
 	public class AcceleratingCrafterBuild extends GenericCrafterBuild {
 		public float speed;
 

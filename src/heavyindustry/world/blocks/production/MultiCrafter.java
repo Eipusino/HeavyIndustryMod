@@ -218,6 +218,11 @@ public class MultiCrafter extends Block {
 		return useBlockDrawer ? drawer.icons(this) : craftPlans.any() ? craftPlans.get(0).drawer.icons(this) : super.icons();
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = MultiCrafterBuild::new;
+	}
+
 	public class MultiCrafterBuild extends Building {
 		public CraftPlan craftPlan = craftPlans.any() ? craftPlans.get(0) : null;
 		public float progress;

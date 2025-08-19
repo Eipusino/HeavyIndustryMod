@@ -48,6 +48,11 @@ public class TubeSorter extends Block {
 		return true;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = TubeSorterBuild::new;
+	}
+
 	public class TubeSorterBuild extends Building {
 		public final MultiItemData data = new MultiItemData();
 

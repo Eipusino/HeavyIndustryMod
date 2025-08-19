@@ -45,7 +45,7 @@ import static mindustry.Vars.tilesize;
  * @see AirRaider
  * @since 1.0.4
  */
-public class CommandableAttackerBlock extends CommandableBlock {
+public abstract class CommandableAttackerBlock extends CommandableBlock {
 	public float spread = 120f;
 	public float prepareDelay = 60f;
 	public int storage = 1;

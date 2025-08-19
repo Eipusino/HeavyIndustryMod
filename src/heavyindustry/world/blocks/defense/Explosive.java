@@ -64,6 +64,11 @@ public class Explosive extends Block {
 		return true;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ExplosiveBuild::new;
+	}
+
 	public class ExplosiveBuild extends Building {
 		public float counter;
 

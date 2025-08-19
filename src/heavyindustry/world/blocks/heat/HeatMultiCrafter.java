@@ -53,6 +53,11 @@ public class HeatMultiCrafter extends MultiCrafter {
 		);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = HeatMultiCrafterBuild::new;
+	}
+
 	public class HeatMultiCrafterBuild extends MultiCrafterBuild implements HeatBlock, HeatConsumer {
 		public float heat;
 		public float heatRequirement;

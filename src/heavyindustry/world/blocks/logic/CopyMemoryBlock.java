@@ -13,6 +13,11 @@ public class CopyMemoryBlock extends MemoryBlock {
 		});
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = CopyMemoryBuild::new;
+	}
+
 	public class CopyMemoryBuild extends MemoryBuild {
 		public Object[] objects = new Object[memoryCapacity];
 

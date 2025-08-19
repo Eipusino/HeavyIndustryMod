@@ -62,6 +62,11 @@ public class LaserRuler extends Block {
 		configClear((LaserRulerBuild build) -> build.target = -1);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = LaserRulerBuild::new;
+	}
+
 	public class LaserRulerBuild extends Building implements Ranged {
 		public final Seq<Tile> xtiles = new Seq<>(Tile.class);
 		public final Seq<Tile> ytiles = new Seq<>(Tile.class);

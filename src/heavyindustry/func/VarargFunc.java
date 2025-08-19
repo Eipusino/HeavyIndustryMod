@@ -1,5 +1,5 @@
 package heavyindustry.func;
 
-public interface VariableFunc<P, R> {
+public interface VarargFunc<P, R> {
 	R apply(P[] apply);
 }

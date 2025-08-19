@@ -176,6 +176,11 @@ public class BeltBridge extends DuctBridge {
 		}
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = BeltBridgeBuild::new;
+	}
+
 	public class BeltBridgeBuild extends DuctBridgeBuild implements BeltUnderBlending {
 		public boolean out, configged;
 		public int inputDir = -1;

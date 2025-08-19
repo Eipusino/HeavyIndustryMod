@@ -63,6 +63,11 @@ public class DetectorCoreBlock extends CoreBlock {
 		return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = DetectorCoreBuild::new;
+	}
+
 	public class DetectorCoreBuild extends CoreBuild implements Ranged {
 		public float timer = 0f, startTime;
 		public boolean showOres = true, requested = false;

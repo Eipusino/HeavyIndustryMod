@@ -135,6 +135,11 @@ public class PayloadRail extends PayloadBlock {
 		arrowRegion = Core.atlas.find("bridge-arrow");
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = PayloadRailBuild::new;
+	}
+
 	public class PayloadRailBuild extends PayloadBlockBuild<Payload> {
 		public Seq<RailPayload> items = new Seq<>(RailPayload.class);
 		public int link = -1;

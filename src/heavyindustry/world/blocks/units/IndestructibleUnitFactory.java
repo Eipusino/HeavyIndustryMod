@@ -62,6 +62,11 @@ public class IndestructibleUnitFactory extends UnitFactory {
 		capacities[Items.copper.id] = 1;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = IndestructibleUnitFactoryBuild::new;
+	}
+
 	public class IndestructibleUnitFactoryBuild extends UnitFactoryBuild {
 		public Team targetTeam = Team.sharded;
 

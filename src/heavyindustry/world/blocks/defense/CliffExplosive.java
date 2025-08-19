@@ -11,6 +11,11 @@ public class CliffExplosive extends Explosive {
 		super(name);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = CliffExplosiveBuild::new;
+	}
+
 	public class CliffExplosiveBuild extends ExplosiveBuild {
 		@Override
 		public void detonate() {

@@ -20,6 +20,11 @@ public class SingleProducer extends BlockProducer {
 		consumeBuilder.add(new ConsumeItemDynamic((SingleProducerBuild tile) -> tile.tehRecipe != null ? tile.tehRecipe.requirements : ItemStack.empty));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = SingleProducerBuild::new;
+	}
+
 	public class SingleProducerBuild extends BlockProducerBuild {
 		public Block tehRecipe;
 

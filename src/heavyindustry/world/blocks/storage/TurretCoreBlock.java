@@ -27,6 +27,11 @@ public class TurretCoreBlock extends CoreBlock {
 		}
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = TurretCoreBuild::new;
+	}
+
 	public class TurretCoreBuild extends CoreBuild {
 		public BuildPayload payload = new BuildPayload(turret, Team.derelict);
 

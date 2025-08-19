@@ -28,6 +28,11 @@ public class RailLiquidBridge extends RailItemBridge {
 		envEnabled = Env.any;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = RailLiquidBridgeBuild::new;
+	}
+
 	public class RailLiquidBridgeBuild extends RailItemBridgeBuild {
 		@Override
 		public void updateTransport(Building other) {

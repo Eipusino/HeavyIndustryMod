@@ -8,6 +8,11 @@ public class Valve extends MergingLiquidBlock {
 		super(name);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = ValveBuild::new;
+	}
+
 	public class ValveBuild extends MergingLiquidBuild {
 		@Override
 		public boolean acceptLiquid(Building source, Liquid liquid) {

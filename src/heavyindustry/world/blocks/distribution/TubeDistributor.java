@@ -48,6 +48,11 @@ public class TubeDistributor extends Router {
 		return new TextureRegion[]{region};
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = TubeDistributorBuild::new;
+	}
+
 	public class TubeDistributorBuild extends RouterBuild {
 		public Item lastItem;
 		public Tile lastInput;

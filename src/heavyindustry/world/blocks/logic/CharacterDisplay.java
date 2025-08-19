@@ -106,6 +106,11 @@ public class CharacterDisplay extends Block {
 		}
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = CharacterDisplayBuild::new;
+	}
+
 	public class CharacterDisplayBuild extends Building {
 		public int displayCharacter;
 		public int displayColor = Color.white.rgba();

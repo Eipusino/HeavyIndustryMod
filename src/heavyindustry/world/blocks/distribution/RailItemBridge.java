@@ -47,6 +47,7 @@ public class RailItemBridge extends ItemBridge {
 		topRegion = Core.atlas.find(name + "-top");
 	}
 
+	@Override
 	public void drawBridge(BuildPlan req, float ox, float oy, float flip) {
 		if (Mathf.zero(Renderer.bridgeOpacity)) return;
 		Draw.alpha(Renderer.bridgeOpacity);
@@ -81,6 +82,7 @@ public class RailItemBridge extends ItemBridge {
 		Draw.reset();
 	}
 
+	@Override
 	public boolean linkValid(Tile tile, Tile other, boolean checkDouble) {
 		if (other == null || tile == null || !positionsValid(tile.x, tile.y, other.x, other.y)) return false;
 
@@ -103,6 +105,11 @@ public class RailItemBridge extends ItemBridge {
 	public void setStats() {
 		super.setStats();
 		stats.add(Stat.range, range, StatUnit.blocks);
+	}
+
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = RailItemBridgeBuild::new;
 	}
 
 	public class RailItemBridgeBuild extends ItemBridgeBuild {

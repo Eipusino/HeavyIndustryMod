@@ -102,6 +102,11 @@ public class MultiBulletTurret extends Turret {
 		super.init();
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = MultiBulletTurretBuild::new;
+	}
+
 	public class MultiBulletTurretBuild extends TurretBuild {
 		public Seq<ItemEntry> ammo = new Seq<>(ItemEntry.class);
 		public int bid = 0;

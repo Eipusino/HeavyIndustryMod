@@ -12,6 +12,11 @@ public class AdaptDirectionalUnloader extends DirectionalUnloader {
 		super(name);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = AdaptDirectionalUnloaderBuild::new;
+	}
+
 	public class AdaptDirectionalUnloaderBuild extends DirectionalUnloaderBuild {
 		protected float counter;
 

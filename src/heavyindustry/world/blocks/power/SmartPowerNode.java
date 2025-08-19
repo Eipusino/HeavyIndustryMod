@@ -24,6 +24,11 @@ public class SmartPowerNode extends PowerNode {
 		topRegion = Core.atlas.find(name + "-top", "white");
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = SmartPowerNodeBuild::new;
+	}
+
 	public class SmartPowerNodeBuild extends PowerNodeBuild {
 		public int lastId = -1;
 		public Color darkColor = new Color(), lightColor = new Color();

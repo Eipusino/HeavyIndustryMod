@@ -21,6 +21,11 @@ public class AparajitoWall extends Wall {
 		update = true;
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = AparajitoWallBuild::new;
+	}
+
 	public class AparajitoWallBuild extends WallBuild {
 		public boolean wasInReload = false;
 		public float timerHit = 0f, timerHeal = 0f;

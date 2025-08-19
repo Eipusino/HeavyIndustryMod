@@ -63,6 +63,11 @@ public class FuelCrafter extends GenericCrafter {
 		stats.add(HStat.fuel, HStatValues.fuel(this));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = FuelCrafterBuild::new;
+	}
+
 	public class FuelCrafterBuild extends GenericCrafterBuild {
 		public int fuel;
 		public float attrsum;

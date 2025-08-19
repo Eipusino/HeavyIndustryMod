@@ -75,6 +75,11 @@ public class AdaptDuctBridge extends DirectionBridge {
 		}
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = AdaptDuctBridgeBuild::new;
+	}
+
 	public class AdaptDuctBridgeBuild extends DirectionBridgeBuild {
 		public float progress = 0f;
 		public boolean transporter = false;

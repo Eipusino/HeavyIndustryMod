@@ -173,6 +173,11 @@ public class UndergroundDrill extends Drill {
 				&& Mathf.within(wx, wy, b.x, b.y, ((Ranged) b).range()));
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = UndergroundDrillBuild::new;
+	}
+
 	public class UndergroundDrillBuild extends DrillBuild {
 		@Override
 		public void onProximityUpdate() {

@@ -155,6 +155,11 @@ public class PayloadCrane extends Block {
 		out.add(hookRegions);
 	}
 
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = PayloadCraneBuild::new;
+	}
+
 	// janky janky janky janky j
 	public static class CranePoint extends Point2 {
 		public boolean output;

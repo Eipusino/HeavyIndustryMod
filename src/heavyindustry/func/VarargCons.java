@@ -1,5 +1,5 @@
 package heavyindustry.func;
 
-public interface VariableCons<T> {
+public interface VarargCons<T> {
 	void apply(T[] args);
 }
