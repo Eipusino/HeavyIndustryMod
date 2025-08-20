@@ -36,6 +36,7 @@ public class FilterCrafter extends GenericCrafter {
 
 	public class FilterCrafterBuild extends GenericCrafterBuild {
 		public Item[] filterItems = filterItemsBuilder.toArray(Item.class);
+
 		public boolean[] shown = new boolean[filterItems.length];
 		public int current = 0;
 

@@ -27,8 +27,8 @@ public class MirrorArmorAbility extends MirrorShieldAbility {
 	protected static final FrameBuffer pingPongBuffer = new FrameBuffer();
 
 	@Override
-	public String localized() {
-		return Core.bundle.get("ability.mirror-armor");
+	public String getBundle() {
+		return "ability.mirror-armor";
 	}
 
 	@Override

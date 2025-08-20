@@ -1,7 +1,5 @@
 package heavyindustry.entities.abilities;
 
-
-import arc.Core;
 import arc.math.Mathf;
 import arc.scene.ui.layout.Table;
 import arc.util.Time;
@@ -48,7 +46,7 @@ public class LightLandingAbility extends Ability {
 	}
 
 	@Override
-	public String localized() {
-		return Core.bundle.format("ability.lightlandability", damage);
+	public String getBundle() {
+		return "ability.light-land-ability";
 	}
 }

@@ -8,9 +8,10 @@ import mindustry.world.meta.Stats;
 public class ConsumeBufferedPowerDynamic extends ConsumePower {
 	private final Floatf<Building> dynamicCapacity;
 
-	public ConsumeBufferedPowerDynamic(Floatf<Building> capacity) {
+	@SuppressWarnings("unchecked")
+	public <T extends Building> ConsumeBufferedPowerDynamic(Floatf<T> capacity) {
 		super(0, 1, true);
-		dynamicCapacity = capacity;
+		dynamicCapacity = (Floatf<Building>) capacity;
 
 		update = true;
 	}

@@ -96,8 +96,8 @@ public class BatteryAbility extends Ability {
 	}
 
 	@Override
-	public String localized() {
-		return Core.bundle.format("ability.battery-ability", capacity, range / 8);
+	public String getBundle() {
+		return "ability.battery-ability";
 	}
 
 	@Override

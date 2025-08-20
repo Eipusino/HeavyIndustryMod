@@ -1,5 +1,6 @@
 package heavyindustry.entities.abilities;
 
+import arc.Core;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
 import arc.util.Interval;
@@ -49,6 +50,11 @@ public class SwapHealthAbility extends Ability {
 
 	@Override
 	public void displayBars(Unit unit, Table bars) {
-		bars.add(new Bar("换血冷却", Pal.accent, () -> 60f / reload)).row();
+		bars.add(new Bar(Core.bundle.get("ability.swap-health.bar"), Pal.accent, () -> 60f / reload)).row();
+	}
+
+	@Override
+	public String getBundle() {
+		return "ability.swap-health";
 	}
 }

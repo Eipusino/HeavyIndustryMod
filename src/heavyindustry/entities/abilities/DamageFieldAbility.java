@@ -63,7 +63,8 @@ public class DamageFieldAbility extends Ability {
 		}
 	}
 
-	public float timer() {
-		return timer;
+	@Override
+	public String getBundle() {
+		return "ability.damage-field";
 	}
 }

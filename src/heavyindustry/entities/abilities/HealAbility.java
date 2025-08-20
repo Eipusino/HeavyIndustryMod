@@ -69,4 +69,9 @@ public class HealAbility extends RepairFieldAbility {
 
 		lastHealth = unit.health;
 	}
+
+	@Override
+	public String getBundle() {
+		return "ability.heal";
+	}
 }

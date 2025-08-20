@@ -50,4 +50,9 @@ public class MendFieldAbility extends Ability {
 			Drawf.selected(other, tmp);
 		});
 	}
+
+	@Override
+	public String getBundle() {
+		return "ability.mend-field";
+	}
 }

@@ -135,7 +135,7 @@ public class NucleoidUnit extends BaseUnit implements Nucleoidc {
 
 	@Override
 	public void destroy() {
-		if (!isAdded()) return;
+		if (!isAdded() || !type.killable) return;
 
 		if (!headless) {
 			type.deathSound.at(this);

@@ -95,4 +95,9 @@ public class SafeAbility extends Ability {
 			readyTrail.at(unit.x, unit.y);
 		}
 	}
+
+	@Override
+	public String getBundle() {
+		return "ability.safe";
+	}
 }

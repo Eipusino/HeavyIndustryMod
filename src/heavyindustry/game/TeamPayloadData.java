@@ -65,9 +65,9 @@ public class TeamPayloadData implements CustomChunk {
 	public void write(DataOutput stream) throws IOException {
 		try (Writes write = new Writes(stream)) {
 			write.b(teamPayloadData.size);
-			teamPayloadData.each((team, payloadSeq) -> {
+			teamPayloadData.each((team, payloads) -> {
 				write.b(team.id);
-				payloadSeq.write(write);
+				payloads.write(write);
 			});
 		}
 	}
@@ -79,9 +79,9 @@ public class TeamPayloadData implements CustomChunk {
 			int size = read.b();
 			for (int i = 0; i < size; i++) {
 				Team team = Team.get(read.b());
-				PayloadSeq payloadSeq = new PayloadSeq();
-				payloadSeq.read(read);
-				teamPayloadData.put(team, payloadSeq);
+				PayloadSeq payloads = new PayloadSeq();
+				payloads.read(read);
+				teamPayloadData.put(team, payloads);
 			}
 		}
 	}

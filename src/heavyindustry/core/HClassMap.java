@@ -670,6 +670,10 @@ final class HClassMap {
 		classes.put("AdaptiveCrafter", AdaptiveCrafter.class);
 		classes.put("AdaptiveCrafterBuild", AdaptiveCrafter.AdaptiveCrafterBuild.class);
 		classes.put("Recipe", Recipe.class);
+		classes.put("LinkGenericCrafter", LinkGenericCrafter.class);
+		classes.put("LinkGenericCrafterBuild", LinkGenericCrafter.LinkGenericCrafterBuild.class);
+		classes.put("LinkAttributeCrafter", LinkAttributeCrafter.class);
+		classes.put("LinkAttributeCrafterBuild", LinkAttributeCrafter.LinkAttributeCrafterBuild.class);
 		classes.put("AugerSoildPump", AugerSoildPump.class);
 		classes.put("AugerSoildPumpBuild", AugerSoildPump.AugerSoildPumpBuild.class);
 		classes.put("DrawerDrill", DrawerDrill.class);

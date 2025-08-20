@@ -34,8 +34,8 @@ public class SurroundRegenAbility extends Ability {
 	}
 
 	@Override
-	public String localized() {
-		return Core.bundle.format("ability.surroundregenability", healAmount, healRange);
+	public String getBundle() {
+		return "ability.surround-regen-ability";
 	}
 
 	@Override

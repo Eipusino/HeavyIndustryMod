@@ -68,7 +68,7 @@ public class LightSpeedAbility extends Ability { //Combined of V5 and V7 coding 
 	}
 
 	@Override
-	public String localized() {
-		return Core.bundle.format("ability.lightspeedability", damage);
+	public String getBundle() {
+		return Core.bundle.get("ability.light-speed-ability");
 	}
 }

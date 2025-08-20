@@ -32,8 +32,8 @@ public class MirrorFieldAbility extends MirrorShieldAbility {
 	public float nearRadius = -1f;
 
 	@Override
-	public String localized() {
-		return Core.bundle.get("ability.mirror-shield");
+	public String getBundle() {
+		return "ability.mirror-shield";
 	}
 
 	@Override

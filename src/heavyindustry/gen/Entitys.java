@@ -8,6 +8,7 @@ import arc.util.Structs;
 import mindustry.ctype.Content;
 import mindustry.gen.EntityMapping;
 import mindustry.gen.Entityc;
+import mindustry.type.UnitType;
 
 /**
  * Each Entity class requires an independent {@link Entityc#classId()} in order to be saved properly in the map.
@@ -29,12 +30,14 @@ public final class Entitys {
 
 	public static <T, E extends Entityc> T content(String name, Class<E> type, Func<String, ? extends T> create) {
 		T get = create.get(name);
-		String suffix = get instanceof Content content && content.minfo.mod != null ? content.minfo.mod.name + "-" : "";
 
-		if (type.getName().startsWith("mindustry.gen.")) {
-			EntityMapping.nameMap.put(suffix + name, Structs.find(EntityMapping.idMap, p -> p != null && p.get().getClass().equals(type)));
-		} else {
-			EntityMapping.nameMap.put(suffix + name, needMap.get(type.getSimpleName()));
+		if (get instanceof UnitType ut) {
+			String suffix = ut.minfo.mod == null ? "" : ut.minfo.mod.name + "-";
+			if (type.getName().startsWith("mindustry.gen.")) {
+				EntityMapping.nameMap.put(suffix + name, Structs.find(EntityMapping.idMap, p -> p != null && p.get().getClass().equals(type)));
+			} else {
+				EntityMapping.nameMap.put(suffix + name, needMap.get(type.getSimpleName()));
+			}
 		}
 		return get;
 	}
@@ -71,6 +74,7 @@ public final class Entitys {
 		register("InvincibleShipUnit", InvincibleShipUnit.class, InvincibleShipUnit::new);
 		register("UltFire", UltFire.class, UltFire::new);
 		register("UltPuddle", UltPuddle.class, UltPuddle::new);
+		register("DiffBullet", DiffBullet.class, DiffBullet::new);
 		register("Spawner", Spawner.class, Spawner::new);
 		register("VapourizeEffectState", VapourizeEffectState.class, VapourizeEffectState::new);
 	}

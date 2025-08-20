@@ -1,6 +1,5 @@
 package heavyindustry.entities.abilities;
 
-import arc.Core;
 import arc.util.Nullable;
 import mindustry.entities.abilities.Ability;
 import mindustry.gen.Building;
@@ -37,7 +36,7 @@ public class DeathAbility extends Ability {
 	}
 
 	@Override
-	public String localized() {
-		return Core.bundle.get("ability.death");
+	public String getBundle() {
+		return "ability.death";
 	}
 }

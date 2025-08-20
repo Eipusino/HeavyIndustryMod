@@ -1,7 +1,6 @@
 package heavyindustry.world.blocks.power;
 
 import arc.Core;
-import arc.func.Floatf;
 import arc.math.Mathf;
 import arc.scene.ui.TextField.TextFieldFilter;
 import arc.scene.ui.layout.Table;
@@ -13,13 +12,11 @@ import heavyindustry.util.Utils;
 import heavyindustry.world.consumers.ConsumeBufferedPowerDynamic;
 import heavyindustry.world.draw.DrawStrobe;
 import heavyindustry.world.draw.DrawStrobePower;
-import mindustry.gen.Building;
 import mindustry.gen.Icon;
 import mindustry.graphics.Pal;
 import mindustry.ui.Bar;
 import mindustry.ui.Styles;
 import mindustry.world.blocks.power.Battery;
-import mindustry.world.consumers.ConsumePower;
 import mindustry.world.draw.DrawDefault;
 import mindustry.world.draw.DrawMulti;
 import mindustry.world.draw.DrawRegion;
@@ -41,7 +38,7 @@ public class ConfigurableBattery extends Battery {
 
 		drawer = new DrawMulti(new DrawDefault(), new DrawStrobePower(), new DrawRegion("-top"), new DrawStrobe());
 
-		consumeBufferedPowerDynamic((ConfigurableBatteryBuild tile) -> tile.powerCapacity);
+		consume(new ConsumeBufferedPowerDynamic((ConfigurableBatteryBuild tile) -> tile.powerCapacity));
 
 		config(Float.class, (ConfigurableBatteryBuild tile, Float capacity) -> {
 			float amount = tile.powerCapacity * tile.power.status;
@@ -66,11 +63,6 @@ public class ConfigurableBattery extends Battery {
 				() -> Pal.powerBar,
 				() -> Mathf.zero(consPower.requestedPower(entity)) && entity.power.graph.getPowerProduced() + entity.power.graph.getBatteryStored() > 0f ? 1f : entity.power.status)
 		);
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T extends Building> ConsumePower consumeBufferedPowerDynamic(Floatf<T> usage) {
-		return consume(new ConsumeBufferedPowerDynamic((Floatf<Building>) usage));
 	}
 
 	@Override

@@ -36,4 +36,9 @@ public class SuicideExplosionAbility extends Ability {
 			}
 		}
 	}
+
+	@Override
+	public String getBundle() {
+		return "ability.suicide-explosion";
+	}
 }

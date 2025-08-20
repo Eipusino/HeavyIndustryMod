@@ -43,4 +43,9 @@ public class MinigunAbility extends Ability {
 		if (unit.isShooting && heat < heatMax * 3) heat += 2;
 		else heat -= 1;
 	}
+
+	@Override
+	public String getBundle() {
+		return "ability.minigun";
+	}
 }

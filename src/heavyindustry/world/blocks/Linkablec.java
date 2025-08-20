@@ -1,15 +1,25 @@
 package heavyindustry.world.blocks;
 
 import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.math.Mathf;
 import arc.math.geom.Point2;
 import arc.struct.Seq;
 import arc.util.Nullable;
+import arc.util.Time;
+import heavyindustry.graphics.Drawn;
+import mindustry.Vars;
 import mindustry.gen.Building;
+import mindustry.gen.Buildingc;
+import mindustry.graphics.Drawf;
 import mindustry.logic.Ranged;
+import mindustry.world.Block;
 
-import static mindustry.Vars.world;
+public interface Linkablec extends Ranged, Buildingc {
+	Building build();
 
-public interface Linkablec extends Ranged {
+	Block block();
+
 	/*default boolean onConfigureBuildTapped(Building other) {
 		if (this == other || linkPos() == other.pos()) {
 			configure(Tmp.p1.set(-1, -1));
@@ -23,24 +33,24 @@ public interface Linkablec extends Ranged {
 	}*/
 
 	default void drawLink(@Nullable Seq<Building> builds) {
-		/*Draw.reset();
+		Draw.reset();
 		if (builds == null) {
 			if (linkValid(link())) {
-				Draw.color(getLinkColor());
-				Drawf.circles(getX(), getY(), block().size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), getLinkColor());
-				Drawn.link(this, link(), getLinkColor());
+				Draw.color(linkColor());
+				Drawf.circles(getX(), getY(), block().size / 2f * Vars.tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), linkColor());
+				Drawn.link(build(), link(), linkColor());
 			}
 		} else if (builds.any()) {
-			Draw.color(getLinkColor());
-			Drawf.circles(getX(), getY(), block().size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), getLinkColor());
+			Draw.color(linkColor());
+			Drawf.circles(getX(), getY(), block().size / 2f * Vars.tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), linkColor());
 
 			for (Building build : builds) {
 				if (!linkValid(build)) continue;
-				Drawn.link(this, build, getLinkColor());
+				Drawn.link(build(), build, linkColor());
 			}
 		}
 
-		Draw.reset();*/
+		Draw.reset();
 	}
 
 	default void drawLink() {
@@ -48,7 +58,7 @@ public interface Linkablec extends Ranged {
 	}
 
 	default Building link() {
-		return world.build(linkPos());
+		return Vars.world.build(linkPos());
 	}
 
 	default boolean linkValid() {

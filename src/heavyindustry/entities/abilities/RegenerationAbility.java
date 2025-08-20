@@ -18,8 +18,8 @@ public class RegenerationAbility extends Ability {
 	public RegenerationAbility() {}
 
 	@Override
-	public String localized() {
-		return Core.bundle.format("ability.regenability", healby);
+	public String getBundle() {
+		return "ability.regen-ability";
 	}
 
 	@Override

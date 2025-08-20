@@ -48,4 +48,9 @@ public class StoreDamageAbility extends Ability {
 			}
 		});
 	}
+
+	@Override
+	public String getBundle() {
+		return "ability.store-damage";
+	}
 }

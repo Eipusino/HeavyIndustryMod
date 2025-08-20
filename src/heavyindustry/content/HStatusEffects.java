@@ -5,6 +5,7 @@ import arc.graphics.Color;
 import arc.graphics.Pixmap;
 import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
+import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.graphics.HPal;
@@ -13,10 +14,13 @@ import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.entities.Effect;
 import mindustry.gen.Unit;
+import mindustry.graphics.Drawf;
 import mindustry.graphics.MultiPacker;
 import mindustry.graphics.MultiPacker.PageType;
 import mindustry.graphics.Pal;
 import mindustry.type.StatusEffect;
+import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
 
 import static mindustry.content.StatusEffects.sapped;
 import static mindustry.content.StatusEffects.slow;
@@ -29,7 +33,7 @@ import static mindustry.content.StatusEffects.slow;
 public final class HStatusEffects {
 	public static StatusEffect
 			overheat, regenerating, breached, flamePoint, ultFireBurn,
-			territoryFieldIncrease, territoryFieldSuppress;
+			territoryFieldIncrease, territoryFieldSuppress, breakage;
 
 	/** Don't let anyone instantiate this class. */
 	private HStatusEffects() {}
@@ -118,6 +122,63 @@ public final class HStatusEffects {
 			effectChance = 0.07f;
 			effect = Fx.overclocked;
 		}};
+		breakage = new AdaptStatusEffect("breakage") {{
+			damage = -1;
+			parentizeApplyEffect = true;
+			applyColor = Pal.techBlue;
+			applyEffect = new Effect(45, e -> {
+				if (!(e.data instanceof Unit u)) return;
+
+				float size = u.hitSize * 2;
+				Fx.rand.setSeed(e.id);
+				float pin = (1 - e.foutpow());
+				Lines.stroke(size / 24 * e.foutpow(), e.color);
+				Lines.circle(e.x, e.y, size * pin);
+				for (int i = 0; i < 5; i++) {
+					float a = Fx.rand.random(180);
+					float lx = Utils.dx(e.x, size * pin, a);
+					float ly = Utils.dy(e.y, size * pin, a);
+					Drawf.tri(lx, ly, size / 32 * e.foutpow(), (size + Fx.rand.random(-size, size)) * e.foutpow(), a + 180);
+				}
+				for (int i = 0; i < 5; i++) {
+					float a = 180 + Fx.rand.random(180);
+					float lx = Utils.dx(e.x, size * pin, a);
+					float ly = Utils.dy(e.y, size * pin, a);
+					Drawf.tri(lx, ly, size / 32 * e.foutpow(), (size + Fx.rand.random(-size, size)) * e.foutpow(), a + 180);
+				}
+			});
+		}
+			@Override
+			public void setStats() {
+				super.setStats();
+				stats.remove(Stat.healing);
+				stats.addMultModifier(Stat.damageMultiplier, 0.8f);
+				stats.addMultModifier(Stat.speedMultiplier, 0.4f);
+				stats.addMultModifier(Stat.reloadMultiplier, 0.5f);
+				stats.add(Stat.damage, 60f, StatUnit.perSecond);
+			}
+
+			@Override
+			public void applied(Unit unit, float time, boolean extend) {
+				super.applied(unit, time, extend);
+
+				unit.health -= 100;
+			}
+
+			@Override
+			public void update(Unit unit, float time) {
+				unit.damageMultiplier *= 0.8f;
+				unit.speedMultiplier *= 0.4f;
+				unit.reloadMultiplier *= 0.5f;
+
+				unit.health -= Time.delta;
+
+				if (effect != Fx.none && Mathf.chanceDelta(effectChance)) {
+					Tmp.v1.rnd(Mathf.range(unit.type.hitSize / 2f));
+					effect.at(unit.x + Tmp.v1.x, unit.y + Tmp.v1.y, 0, color, parentizeEffect ? unit : null);
+				}
+			}
+		};
 	}
 
 	public static class AdaptStatusEffect extends StatusEffect {

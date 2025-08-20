@@ -54,4 +54,9 @@ public class MindControlFieldAbility extends Ability {
 			time = 0;
 		}
 	}
+
+	@Override
+	public String getBundle() {
+		return "ability.mind-control-field";
+	}
 }

@@ -147,4 +147,9 @@ public class JavelinAbility extends Ability {
 		}
 		timer += Time.delta;
 	}
+
+	@Override
+	public String getBundle() {
+		return "ability.jave-lin";
+	}
 }

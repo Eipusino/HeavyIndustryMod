@@ -20,6 +20,7 @@ public final class HUnitSorts {
 	private static final float[][] costs = new float[16][];
 	private static final float[][] cpriority = new float[16][];
 	private static final Unit[][] result = new Unit[16][];
+	private static final Unit[] empty = new Unit[0];
 
 	private static float dcr;
 
@@ -111,11 +112,7 @@ public final class HUnitSorts {
 	}
 
 	public static Unit[] findEnemies(int targets, Team team, float x, float y, float range, Boolf2<Unit[], Unit> filter, Sortf sortf, boolean ignoredNull) {
-		if (targets <= 0)
-			throw new IllegalArgumentException("targets must bigger than 0");
-
-		if (targets > 16)
-			throw new IllegalArgumentException("targets maximum 16");
+		if (targets <= 0 || targets > 16) return empty;
 
 		count = 0;
 

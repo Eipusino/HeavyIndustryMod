@@ -102,9 +102,9 @@ public class IconDisplay extends Block {
 			if (value instanceof Long num) {
 				int typeId = Point2.unpack(Math.toIntExact(num)).x;
 				int contId = Point2.unpack(Math.toIntExact(num)).y;
-				if (content != null && typeId < content.getContentMap().length && content.getContentMap()[typeId].get(contId) != null) {
+				if (content != null && typeId < content.getContentMap().length && content.getContentMap()[typeId].get(contId) instanceof UnlockableContent uc) {
 					type = UnlockableContent.class;
-					cont = (UnlockableContent) content.getContentMap()[typeId].get(contId);
+					cont = uc;
 				}
 			}
 			if (builder != null && builder.isPlayer()) {

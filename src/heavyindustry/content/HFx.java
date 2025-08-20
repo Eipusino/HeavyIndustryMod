@@ -15,6 +15,7 @@ import arc.math.Mathf;
 import arc.math.Rand;
 import arc.math.geom.Geometry;
 import arc.math.geom.Position;
+import arc.math.geom.Rect;
 import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
 import arc.struct.IntMap;
@@ -40,6 +41,7 @@ import mindustry.content.Items;
 import mindustry.entities.Effect;
 import mindustry.entities.effect.MultiEffect;
 import mindustry.gen.Building;
+import mindustry.gen.Healthc;
 import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
@@ -68,6 +70,59 @@ public final class HFx {
 	private static float percent = 0;
 
 	public static final Effect
+			diffHit = new Effect(30, e -> {
+				if (e.data instanceof Building b && b.block != null) {
+					Draw.mixcol(e.color, 1);
+					Draw.alpha(e.fout());
+					Draw.rect(b.block.fullIcon, e.x, e.y);
+				} else if (e.data instanceof Unit u && u.type != null) {
+					Draw.mixcol(e.color, 1);
+					Draw.alpha(e.fout());
+					Draw.rect(u.type.fullIcon, e.x, e.y, u.rotation - 90);
+				}
+			}),
+			witchServiceWork = new Effect(36, e -> {
+				if (!(e.data instanceof Rect r)) return;
+
+				float z = Draw.z();
+				Draw.z(Layer.blockUnder);
+				Draw.color(Pal.techBlue);
+				Draw.alpha(e.foutpow() * 0.5f);
+				Fill.rect(r);
+
+				Draw.z(z);
+				Draw.alpha(1);
+				Lines.stroke(3 * e.foutpow());
+				Lines.rect(r);
+				Draw.reset();
+			}),
+			witchServiceApplyIn = new Effect(60, e -> {
+				if (!(e.data instanceof Unit u) || !u.isAdded() || u.dead) return;
+				float size = u.hitSize * 2;
+				for (int i = 0; i < 2; i++) {
+					for (int r = 0; r < 15; r++) {
+						float dx = Utils.dx(e.x, size * e.foutpow() + size * 0.01f * r * e.foutpow(), 360 * e.foutpow() + 180 * i + r * size / 24),
+								dy = Utils.dy(e.y, size * e.foutpow() + size * 0.01f * r * e.foutpow(), 360 * e.foutpow() + 180 * i + r * size / 24);
+						Draw.color(Pal.techBlue);
+						Fill.circle(dx, dy, size / 16 * ((15 - r) / 15f));
+					}
+				}
+			}),
+			witchServiceApplyOut = new Effect(30, e -> {
+				if (!(e.data instanceof Unit u) || !u.isAdded() || u.dead) return;
+				float size = u.hitSize * 2;
+				Lines.stroke(size / 16 * e.finpow(), Pal.techBlue);
+				Lines.square(e.x, e.y, size * e.foutpow(), 135 * e.finpow());
+				float z = Draw.z();
+				if (u.type != null && u.type.fullIcon != null) {
+					Draw.z(Layer.flyingUnit);
+					Draw.color(Pal.stoneGray);
+					Draw.alpha(e.foutpow());
+					Draw.rect(u.type.fullIcon, e.x, e.y, u.rotation - 90);
+				}
+				Draw.reset();
+				Draw.z(z);
+			}),
 			hitOut = new Effect(60f, e -> {
 				if (e.data instanceof Unit u) {
 					UnitType type = u.type;

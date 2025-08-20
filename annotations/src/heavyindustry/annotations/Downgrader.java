@@ -40,7 +40,7 @@ public class Downgrader extends AbstractProcessor {
 			})
 				set.invokeExact(feature, Source.JDK8);
 		} catch (Throwable t) {
-			throw new RuntimeException(t);
+			throw new RuntimeException("oh no", t);
 		}
 	}
 

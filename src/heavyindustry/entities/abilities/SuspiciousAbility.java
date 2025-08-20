@@ -21,4 +21,9 @@ public class SuspiciousAbility extends Ability {
 			}
 		}
 	}
+
+	@Override
+	public String getBundle() {
+		return "ability.suspicious";
+	}
 }

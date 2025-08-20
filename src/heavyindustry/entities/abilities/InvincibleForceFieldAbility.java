@@ -47,4 +47,9 @@ public class InvincibleForceFieldAbility extends ForceFieldAbility {
 		Groups.bullet.intersect(unit.x - realRad, unit.y - realRad, realRad * 2, realRad * 2, shieldConsumer);
 		alpha = Math.max(alpha - Time.delta / 10, 0);
 	}
+
+	@Override
+	public String getBundle() {
+		return "ability.invincible-force-field";
+	}
 }

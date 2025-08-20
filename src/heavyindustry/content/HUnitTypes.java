@@ -6,13 +6,10 @@ import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
-import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
 import arc.math.Interp;
 import arc.math.Mathf;
-import arc.math.Rand;
 import arc.math.geom.Rect;
-import arc.math.geom.Vec2;
 import arc.scene.ui.layout.Table;
 import arc.struct.ObjectSet;
 import arc.util.Time;
@@ -30,6 +27,7 @@ import heavyindustry.entities.abilities.JavelinAbility;
 import heavyindustry.entities.abilities.MirrorArmorAbility;
 import heavyindustry.entities.abilities.MirrorFieldAbility;
 import heavyindustry.entities.abilities.TerritoryFieldAbility;
+import heavyindustry.entities.abilities.WitchServiceAbility;
 import heavyindustry.entities.bullet.AccelBulletType;
 import heavyindustry.entities.bullet.AntiBulletFlakBulletType;
 import heavyindustry.entities.bullet.ArrowBulletType;
@@ -61,7 +59,6 @@ import heavyindustry.gen.PayloadLegsUnit;
 import heavyindustry.gen.UltFire;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.HPal;
-import heavyindustry.graphics.PositionLightning;
 import heavyindustry.type.unit.BaseUnitType;
 import heavyindustry.type.unit.CopterUnitType;
 import heavyindustry.type.unit.NucleoidUnitType;
@@ -72,7 +69,6 @@ import heavyindustry.type.weapons.HealConeWeapon;
 import heavyindustry.type.weapons.LimitedAngleWeapon;
 import heavyindustry.type.weapons.PointDefenceMultiBarrelWeapon;
 import heavyindustry.ui.Elements;
-import heavyindustry.util.Utils;
 import mindustry.ai.UnitCommand;
 import mindustry.ai.types.FlyingAI;
 import mindustry.ai.types.FlyingFollowAI;
@@ -133,10 +129,8 @@ import mindustry.world.meta.Env;
 
 import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static mindustry.Vars.content;
-import static mindustry.Vars.headless;
 import static mindustry.Vars.indexer;
 import static mindustry.Vars.tilePayload;
-import static mindustry.Vars.tilesize;
 
 /**
  * Defines the {@linkplain UnitType units} this mod offers.
@@ -2673,14 +2667,22 @@ public final class HUnitTypes {
 						Units.nearbyEnemies(b.team, b.x, b.y, flameLength, unit -> {
 							if (Angles.within(b.rotation(), b.angleTo(unit), flameCone) && unit.checkTarget(collidesAir, collidesGround) && unit.hittable()) {
 								Fx.hitFlameSmall.at(unit);
-								unit.health(unit.health - damage * damageBoost);
-								unit.apply(status, statusDuration);
+								if (unit.health <= damage) {
+									unit.kill();
+								} else {
+									unit.health -= damage * damageBoost;
+									unit.apply(status, statusDuration);
+								}
 							}
 						});
 						indexer.allBuildings(b.x, b.y, flameLength, other -> {
 							if (other.team != b.team && Angles.within(b.rotation(), b.angleTo(other), flameCone)) {
 								Fx.hitFlameSmall.at(other);
-								other.health(other.health - damage * buildingDamageMultiplier * damageBoost);
+								if (other.health <= damage) {
+									other.kill();
+								} else {
+									other.health -= damage * buildingDamageMultiplier * damageBoost;
+								}
 							}
 						});
 					}
@@ -3067,7 +3069,11 @@ public final class HUnitTypes {
 					@Override
 					public void hitEntity(Bullet b, Hitboxc entity, float health) {
 						if (entity instanceof Healthc h && !h.dead()) {
-							h.health(h.health() - damage);
+							if (h.health() <= damage) {
+								h.kill();
+							} else {
+								h.health(h.health() - damage);
+							}
 						}
 
 						if (entity instanceof Unit unit) {
@@ -3349,7 +3355,12 @@ public final class HUnitTypes {
 					@Override
 					public void hitEntity(Bullet b, Hitboxc entity, float health) {
 						if (entity instanceof Healthc h && !h.dead()) {
-							h.health(h.health() - (float) Math.ceil(h.maxHealth() * percent));
+							float amount = h.health() - h.maxHealth() * percent;
+							if (h.health() <= amount) {
+								h.kill();
+							} else {
+								h.health(amount);
+							}
 						}
 
 						if (entity instanceof Unit unit) {
@@ -3400,7 +3411,7 @@ public final class HUnitTypes {
 			speed *= 1.75f;
 			drawShields = false;
 			isEnemy = false;
-			immunities = filter();
+			immunities = getFilter();
 			flying = true;
 			killable = false;
 			hittable = false;
@@ -3412,154 +3423,13 @@ public final class HUnitTypes {
 			mineHardnessScaling = false;
 			mineSpeed = 9f;
 			mineTier = 99;
-			deathExplosionEffect = new MultiEffect(HFx.blast(HPal.thurmixRed, 400f), new Effect(300f, 1600f, e -> {
-				Rand rand = Utils.rand2;
-				float rad = 150f;
-				rand.setSeed(e.id);
-
-				Draw.color(Color.white, HPal.thurmixRed, e.fin() + 0.6f);
-				float circleRad = e.fin(Interp.circleOut) * rad * 4f;
-				Lines.stroke(12 * e.fout());
-				Lines.circle(e.x, e.y, circleRad);
-				for (int i = 0; i < 16; i++) {
-					Tmp.v1.set(1, 0).setToRandomDirection(rand).scl(circleRad);
-					Drawn.tri(e.x + Tmp.v1.x, e.y + Tmp.v1.y, rand.random(circleRad / 16, circleRad / 12) * e.fout(), rand.random(circleRad / 4, circleRad / 1.5f) * (1 + e.fin()) / 2, Tmp.v1.angle() - 180);
-				}
-
-				e.scaled(120f, i -> {
-					Draw.color(Color.white, HPal.thurmixRed, i.fin() + 0.4f);
-					Fill.circle(i.x, i.y, rad * i.fout());
-					Lines.stroke(18 * i.fout());
-					Lines.circle(i.x, i.y, i.fin(Interp.circleOut) * rad * 1.2f);
-					Angles.randLenVectors(i.id, 40, rad / 3, rad * i.fin(Interp.pow2Out), (x, y) -> {
-						Lines.lineAngle(i.x + x, i.y + y, Mathf.angle(x, y), i.fslope() * 25 + 10);
-					});
-
-					Angles.randLenVectors(i.id, (int) (rad / 4), rad / 6, rad * (1 + i.fout(Interp.circleOut)) / 1.5f, (x, y) -> {
-						float angle = Mathf.angle(x, y);
-						float width = i.foutpowdown() * rand.random(rad / 6, rad / 3);
-						float length = rand.random(rad / 2, rad * 5) * i.fout(Interp.circleOut);
-
-						Draw.color(HPal.thurmixRed);
-						Drawn.tri(i.x + x, i.y + y, width, rad / 3 * i.fout(Interp.circleOut), angle - 180);
-						Drawn.tri(i.x + x, i.y + y, width, length, angle);
-
-						Draw.color(Color.black);
-
-						width *= i.fout();
-
-						Drawn.tri(i.x + x, i.y + y, width / 2, rad / 3 * i.fout(Interp.circleOut) * 0.9f * i.fout(), angle - 180);
-						Drawn.tri(i.x + x, i.y + y, width / 2, length / 1.5f * i.fout(), angle);
-					});
-
-
-					Draw.color(Color.black);
-					Fill.circle(i.x, i.y, rad * i.fout() * 0.75f);
-				});
-
-				Drawf.light(e.x, e.y, rad * e.fslope() * 4f, HPal.thurmixRed, 0.7f);
-			}).layer(Layer.effect + 0.001f));
 			fallEffect = HFx.blast(HPal.thurmixRed, 120f);
 			targetAir = targetGround = false;
-			weapons.add(new Weapon() {{
-				y = 0f;
-				x = 0f;
-				shootY = 0f;
-				shoot = new ShootPattern();
-				reload = 999f;
-				rotateSpeed = 99f;
-				rotate = true;
-				top = false;
-				mirror = alternate = predictTarget = false;
-				heatColor = HPal.thurmixRed;
-				shootSound = HSounds.hugeShoot;
-				bullet = HBullets.collapse;
-				aiControllable = false;
-			}
-				private TextureRegion arrowRegion;
-				private final float rangeWeapon = 999f;
-
-				@Override
-				public float range() {
-					return rangeWeapon;
-				}
-
-				@Override
-				public void draw(Unit unit, WeaponMount mount) {
-					float z = Draw.z();
-
-					Tmp.v1.trns(unit.rotation, y);
-					float f = 1 - mount.reload / reload;
-					float rad = 12f;
-
-					float f1 = Mathf.curve(f, 0.4f, 1f);
-					Draw.z(Layer.bullet);
-					Draw.color(heatColor);
-					for (int i : Mathf.signs) {
-						for (int j : Mathf.signs) {
-							Drawn.tri(unit.x + Tmp.v1.x, unit.y + Tmp.v1.y, f1 * rad / 3f + Mathf.num(j > 0) * 2f * (f1 + 1) / 2, (rad * 3f + Mathf.num(j > 0) * 20f) * f1, j * Time.time + 90 * i);
-						}
-					}
-
-					if (arrowRegion == null) arrowRegion = Core.atlas.find(MOD_NAME + "-jump-gate-arrow");
-
-					Tmp.v6.set(mount.aimX, mount.aimY).sub(unit);
-					Tmp.v2.set(mount.aimX, mount.aimY).sub(unit).nor().scl(Math.min(Tmp.v6.len(), rangeWeapon)).add(unit);
-
-					for (int l = 0; l < 4; l++) {
-						float angle = 45 + 90 * l;
-						for (int i = 0; i < 4; i++) {
-							Tmp.v3.trns(angle, (i - 4) * tilesize + tilesize).add(Tmp.v2);
-							float fs = (100 - (Time.time + 25 * i) % 100) / 100 * f1 / 4;
-							Draw.rect(arrowRegion, Tmp.v3.x, Tmp.v3.y, arrowRegion.width * fs, arrowRegion.height * fs, angle + 90);
-						}
-					}
-
-					Lines.stroke((1.5f + Mathf.absin(Time.time + 4, 8f, 1.5f)) * f1, heatColor);
-					Lines.square(Tmp.v2.x, Tmp.v2.y, 4 + Mathf.absin(8f, 4f), 45);
-
-					Lines.stroke(rad / 2.5f * mount.heat, heatColor);
-					Lines.circle(unit.x + Tmp.v1.x, unit.y + Tmp.v1.y, rad * 2 * (1 - mount.heat));
-
-					Draw.color(heatColor);
-					Fill.circle(unit.x + Tmp.v1.x, unit.y + Tmp.v1.y, f * rad);
-					Lines.stroke(f * 1.5f);
-					Drawn.circlePercentFlip(unit.x + Tmp.v1.x, unit.y + Tmp.v1.y, f * rad + 5, Time.time, 20f);
-					Draw.color(Color.white);
-					Fill.circle(unit.x + Tmp.v1.x, unit.y + Tmp.v1.y, f * rad * 0.7f);
-
-					Draw.z(z);
-				}
-
-				@Override
-				protected void shoot(Unit unit, WeaponMount mount, float shootX, float shootY, float rotation) {
-					shootSound.at(shootX, shootY, Mathf.random(soundPitchMin, soundPitchMax));
-
-					Tmp.v6.set(mount.aimX, mount.aimY).sub(unit);
-					Tmp.v1.set(mount.aimX, mount.aimY).sub(unit).nor().scl(Math.min(Tmp.v6.len(), rangeWeapon)).add(unit);
-
-					Bullet b = bullet.create(unit, unit.team, Tmp.v1.x, Tmp.v1.y, 0);
-					b.vel.setZero();
-					b.set(Tmp.v1);
-					unit.apply(shootStatus, shootStatusDuration);
-
-					if (headless) return;
-					Vec2 vec2 = new Vec2().trns(unit.rotation, y).add(unit);
-					PositionLightning.createEffect(vec2, b, HPal.thurmixRed, 3, 2.5f);
-					for (int i = 0; i < 5; i++) {
-						Time.run(i * 6f, () -> {
-							HFx.chainLightningFade.at(vec2.x, vec2.y, Mathf.random(8, 14), HPal.thurmixRed, b);
-						});
-					}
-
-					bullet.shootEffect.at(shootX, shootY, rotation);
-					bullet.smokeEffect.at(shootX, shootY, rotation);
-				}
-			});
+			abilities.add(new WitchServiceAbility());
 		}};
 	}
 
-	private static ObjectSet<StatusEffect> filter() {
+	private static ObjectSet<StatusEffect> getFilter() {
 		if (filter.isEmpty()) {
 			ObjectSet<StatusEffect> status = ObjectSet.with(StatusEffects.none, StatusEffects.overclock, StatusEffects.shielded, StatusEffects.boss, StatusEffects.invincible, HStatusEffects.regenerating, HStatusEffects.territoryFieldIncrease);
 			filter.addAll(content.statusEffects().select(s -> s != null && !status.contains(s)));

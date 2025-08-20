@@ -17,17 +17,16 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.world.blocks.LinkGroupc;
+import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Pal;
 import mindustry.io.TypeIO;
 import mindustry.ui.Bar;
+import mindustry.world.Block;
 import mindustry.world.blocks.defense.OverdriveProjector;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
-
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
 
 /**
  * Assign Overdrive
@@ -74,6 +73,16 @@ public class AssignOverdrive extends OverdriveProjector {
 		protected IntSeq targets = new IntSeq(maxLink);
 
 		@Override
+		public Building build() {
+			return this;
+		}
+
+		@Override
+		public Block block() {
+			return block;
+		}
+
+		@Override
 		public Seq<Building> builds() {
 			return builds;
 		}
@@ -105,7 +114,7 @@ public class AssignOverdrive extends OverdriveProjector {
 			Draw.alpha(1f);
 			Lines.stroke(Mathf.clamp(2f * Mathf.curve(f, strokeClamp, 1) + strokeOffset) * heat);
 
-			float r = Math.max(0f, Mathf.clamp(2f - f * 2f) * size * tilesize / 2f - f - 0.2f), w = Mathf.clamp(0.5f - f) * size * tilesize;
+			float r = Math.max(0f, Mathf.clamp(2f - f * 2f) * size * Vars.tilesize / 2f - f - 0.2f), w = Mathf.clamp(0.5f - f) * size * Vars.tilesize;
 			Lines.beginLine();
 			for (int i = 0; i < 4; i++) {
 				Lines.linePoint(x + Geometry.d4(i).x * r + Geometry.d4(i).y * w, y + Geometry.d4(i).y * r - Geometry.d4(i).x * w);
@@ -123,12 +132,12 @@ public class AssignOverdrive extends OverdriveProjector {
 			if (builds == null) {
 				if (linkValid(link())) {
 					Draw.color(linkColor());
-					Drawf.circles(getX(), getY(), size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), linkColor());
+					Drawf.circles(getX(), getY(), size / 2f * Vars.tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), linkColor());
 					Drawn.link(this, link(), linkColor());
 				}
 			} else if (builds.any()) {
 				Draw.color(linkColor());
-				Drawf.circles(getX(), getY(), size / 2f * tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), linkColor());
+				Drawf.circles(getX(), getY(), size / 2f * Vars.tilesize + Mathf.absin(Time.time * Drawn.sinScl, 6f, 1f), linkColor());
 
 				for (Building build : builds) {
 					if (!linkValid(build)) continue;
@@ -185,7 +194,7 @@ public class AssignOverdrive extends OverdriveProjector {
 
 		@Override
 		public void drawConfigure() {
-			float offset = size * tilesize / 2f + 1f;
+			float offset = size * Vars.tilesize / 2f + 1f;
 
 			Lines.stroke(3f, Pal.gray);
 			Lines.square(x, y, offset + 1f);
@@ -193,7 +202,7 @@ public class AssignOverdrive extends OverdriveProjector {
 			Seq<Building> buildings = linkBuilds();
 
 			for (Building b : buildings) {
-				float targetOffset = b.block.size * tilesize / 2f + 1f;
+				float targetOffset = b.block.size * Vars.tilesize / 2f + 1f;
 				float angle = angleTo(b);
 
 				boolean right = Mathf.equal(angle, 0, 90);
@@ -211,11 +220,11 @@ public class AssignOverdrive extends OverdriveProjector {
 				Lines.line(fromX, fromY, Tmp.v1.x, Tmp.v1.y, false);
 				Lines.line(Tmp.v1.x, Tmp.v1.y, toX, toY, false);
 				Fill.square(Tmp.v1.x, Tmp.v1.y, 1.5f);
-				Lines.square(b.x, b.y, b.block.size * tilesize / 2f + 2f);
+				Lines.square(b.x, b.y, b.block.size * Vars.tilesize / 2f + 2f);
 			}
 
 			for (Building b : buildings) {
-				float targetOffset = b.block.size * tilesize / 2f + 1f;
+				float targetOffset = b.block.size * Vars.tilesize / 2f + 1f;
 				float angle = angleTo(b);
 
 				boolean right = Mathf.equal(angle, 0, 90);
@@ -238,7 +247,7 @@ public class AssignOverdrive extends OverdriveProjector {
 				Fill.square(b.x, b.y, targetOffset);
 				Draw.color(baseColor);
 				Draw.alpha(1f);
-				Lines.square(b.x, b.y, b.block.size * tilesize / 2f + 1.0f);
+				Lines.square(b.x, b.y, b.block.size * Vars.tilesize / 2f + 1.0f);
 			}
 
 			Lines.stroke(1f, baseColor);
@@ -280,7 +289,7 @@ public class AssignOverdrive extends OverdriveProjector {
 
 		@Override
 		public Building link() {
-			return world.build(targets.first());
+			return Vars.world.build(targets.first());
 		}
 
 		@Override
@@ -303,7 +312,7 @@ public class AssignOverdrive extends OverdriveProjector {
 
 		@Override
 		public void linkPos(int value) {
-			Building other = world.build(value);
+			Building other = Vars.world.build(value);
 
 			if (other != null && !targets.removeValue(value) && targets.size < maxLink - 1 && within(other, range()))
 				targets.add(value);

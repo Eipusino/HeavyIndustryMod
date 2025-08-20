@@ -1,4 +1,6 @@
-apply plugin: 'java'
+plugins {
+	id "java"
+}
 
 version '1.0'
 
@@ -11,7 +13,7 @@ repositories {
 }
 
 java {
-	targetCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_1_8
 	sourceCompatibility = JavaVersion.VERSION_17
 }
 
@@ -23,6 +25,7 @@ ext {
 
 tasks.withType(JavaCompile).configureEach {
 	options.encoding = "UTF-8"
+	options.compilerArgs.addAll(["--release", "8"])
 }
 
 dependencies {

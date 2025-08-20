@@ -54,4 +54,9 @@ public class ToxicAbility extends Ability {
 			j -= 15f;
 		}
 	}
+
+	@Override
+	public String getBundle() {
+		return "ability.toxic";
+	}
 }

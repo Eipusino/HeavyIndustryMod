@@ -254,7 +254,7 @@ public class LinkBlock extends Block {
 
         @Override
         public void onProximityUpdate() {
-            if (linkBuild != null) ((MultiBuild) linkBuild).updateLinkProximity();
+            if (linkBuild instanceof MultiBuild build) build.updateLinkProximity();
             super.onProximityUpdate();
         }
 

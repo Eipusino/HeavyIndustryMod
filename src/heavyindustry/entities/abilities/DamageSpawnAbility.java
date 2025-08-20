@@ -54,4 +54,9 @@ public class DamageSpawnAbility extends UnitSpawnAbility {
 			charge--;
 		}
 	}
+
+	@Override
+	public String getBundle() {
+		return "ability.damage-spawn";
+	}
 }

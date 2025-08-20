@@ -4,14 +4,12 @@ import arc.math.geom.Point2;
 import arc.struct.IntSeq;
 import arc.struct.Seq;
 import heavyindustry.content.HBlocks;
+import mindustry.Vars;
 import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.Build;
 import mindustry.world.Tile;
-
-import static mindustry.Vars.state;
-import static mindustry.Vars.world;
 
 //i guess some method here are terrible and should use sizeOffset
 public interface MultiBlock {
@@ -56,13 +54,13 @@ public interface MultiBlock {
     }
 
     default void createPlaceholder(Tile tile, int size) {
-        if (state.rules.infiniteResources || tile == null || tile.build == null) return;
+        if (Vars.state.rules.infiniteResources || tile == null || tile.build == null) return;
 
         for (int i = 0; i < linkBlockPos().size; i++) {
             Point2 p = linkBlockPos().get(i);
             int s = linkBlockSize().get(i);
             Point2 rotated = calculateRotatedPosition(p, size, s, tile.build.rotation);
-            Tile t = world.tile(tile.x + rotated.x, tile.y + rotated.y);
+            Tile t = Vars.world.tile(tile.x + rotated.x, tile.y + rotated.y);
             t.setBlock(HBlocks.placeholderBlock[s - 1], tile.team(), 0);
             PlaceholderBlock.PlaceholderBuild b = (PlaceholderBlock.PlaceholderBuild) t.build;
             b.updateLink(tile);
@@ -75,7 +73,7 @@ public interface MultiBlock {
             Point2 p = linkBlockPos().get(i);
             int s = linkBlockSize().get(i);
             Point2 rotated = calculateRotatedPosition(p, size, s, rotation);
-            Tile t = world.tile(tile.x + rotated.x, tile.y + rotated.y);
+            Tile t = Vars.world.tile(tile.x + rotated.x, tile.y + rotated.y);
 
             if (!block.outputsLiquid) {
                 t.setBlock(HBlocks.linkBlock[s - 1], team, 0);
@@ -94,7 +92,7 @@ public interface MultiBlock {
         Point2 lb = leftBottomPos(size);
         for (int tx = 0; tx < size; tx++) {
             for (int ty = 0; ty < size; ty++) {
-                Tile other = world.tile(x + tx + lb.x, y + ty + lb.y);
+                Tile other = Vars.world.tile(x + tx + lb.x, y + ty + lb.y);
                 if(other != null) tiles.add(other);
             }
         }
@@ -107,7 +105,7 @@ public interface MultiBlock {
 
             for (int tx = 0; tx < s; tx++) {
                 for (int ty = 0; ty < s; ty++) {
-                    Tile other = world.tile(x + tx + lb2.x, y + ty + lb2.y);
+                    Tile other = Vars.world.tile(x + tx + lb2.x, y + ty + lb2.y);
                     if(other != null) tiles.add(other);
                 }
             }

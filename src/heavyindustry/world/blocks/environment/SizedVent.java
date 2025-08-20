@@ -40,10 +40,10 @@ public class SizedVent extends SteamVent {
 		border = 0;
 	}
 
-	public SizedVent(String name, int size, int border) {
+	public SizedVent(String name, int sz, int br) {
 		super(name);
-		this.size = size;
-		this.border = border;
+		size = sz;
+		border = br;
 	}
 
 	@Override

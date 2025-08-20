@@ -4,7 +4,6 @@ import arc.func.Prov;
 import arc.struct.ObjectMap;
 import arc.util.Log;
 import mindustry.Vars;
-import sun.misc.Unsafe;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -356,16 +355,6 @@ public final class Reflectf {
 			return Class.forName(trace[3].getClassName(), false, Vars.mods.mainLoader());
 		} catch (Exception e) {
 			return null;
-		}
-	}
-
-	public static Unsafe getUnsafe() {
-		try {
-			Field field = Unsafe.class.getDeclaredField("theUnsafe");
-			field.setAccessible(true);
-			return (Unsafe) field.get(null);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
 		}
 	}
 

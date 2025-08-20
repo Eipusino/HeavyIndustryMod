@@ -34,8 +34,8 @@ public class TerritoryFieldAbility extends Ability {
 	}
 
 	@Override
-	public String localized() {
-		return Core.bundle.get("ability.territory-field-ability");
+	public String getBundle() {
+		return "ability.territory-field-ability";
 	}
 
 	@Override

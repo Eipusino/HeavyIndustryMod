@@ -726,38 +726,40 @@ public final class Utils {
 	}
 
 	//use for cst bullet
-	public static Bullet anyOtherCreate(Bullet bullet, BulletType bt, Entityc owner, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY) {
+	public static Bullet anyOtherCreate(Bullet bullet, BulletType bt, Entityc shooter, Entityc owner, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY, @Nullable Teamc target) {
+		if (bt == null) return null;
 		bullet.type = bt;
 		bullet.owner = owner;
+		bullet.shooter = (shooter == null ? owner : shooter);
 		bullet.team = team;
 		bullet.time = 0f;
 		bullet.originX = x;
 		bullet.originY = y;
 		if (!(aimX == -1f && aimY == -1f)) {
-			bullet.aimTile = world.tileWorld(aimX, aimY);
+			bullet.aimTile = target instanceof Building b ? b.tile : world.tileWorld(aimX, aimY);
 		}
 		bullet.aimX = aimX;
 		bullet.aimY = aimY;
 
-		bullet.initVel(angle, bt.speed * velocityScl);
+		bullet.initVel(angle, bt.speed * velocityScl * (bt.velocityScaleRandMin != 1f || bt.velocityScaleRandMax != 1f ? Mathf.random(bt.velocityScaleRandMin, bt.velocityScaleRandMax) : 1f));
 		if (bt.backMove) {
 			bullet.set(x - bullet.vel.x * Time.delta, y - bullet.vel.y * Time.delta);
 		} else {
 			bullet.set(x, y);
 		}
-		bullet.lifetime = bt.lifetime * lifetimeScl;
+		bullet.lifetime = bt.lifetime * lifetimeScl * (bt.lifeScaleRandMin != 1f || bt.lifeScaleRandMax != 1f ? Mathf.random(bt.lifeScaleRandMin, bt.lifeScaleRandMax) : 1f);
 		bullet.data = data;
 		bullet.drag = bt.drag;
 		bullet.hitSize = bt.hitSize;
 		bullet.mover = mover;
 		bullet.damage = (damage < 0 ? bt.damage : damage) * bullet.damageMultiplier();
+		//reset trail
 		if (bullet.trail != null) {
 			bullet.trail.clear();
 		}
 		bullet.add();
 
 		if (bt.keepVelocity && owner instanceof Velc v) bullet.vel.add(v.vel());
-
 		return bullet;
 	}
 
