@@ -12,7 +12,7 @@ import arc.struct.FloatSeq;
 import arc.struct.Seq;
 import heavyindustry.content.HFx;
 import heavyindustry.entities.bullet.EffectBulletType;
-import heavyindustry.struct.Vec2Seq;
+import heavyindustry.util.Vec2Seq;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
 import mindustry.core.World;

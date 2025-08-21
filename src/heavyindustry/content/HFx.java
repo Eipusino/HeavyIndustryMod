@@ -33,15 +33,12 @@ import heavyindustry.graphics.HTrails.DriftTrail;
 import heavyindustry.graphics.HLayer;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.math.Math3d;
-import heavyindustry.struct.Vec2Seq;
-import heavyindustry.util.Structf;
+import heavyindustry.util.Vec2Seq;
 import heavyindustry.util.Utils;
 import mindustry.content.Fx;
-import mindustry.content.Items;
 import mindustry.entities.Effect;
 import mindustry.entities.effect.MultiEffect;
 import mindustry.gen.Building;
-import mindustry.gen.Healthc;
 import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
@@ -2377,7 +2374,7 @@ public final class HFx {
 				Fill.circle(e.x + x * i, e.y + y * i, size * e.fout(Interp.pow5Out));
 			});
 			Draw.z(Layer.effect);
-			Draw.color(Items.graphite.color);
+			Draw.color(HPal.graphiteGrey);
 			Angles.randLenVectors(e.id + 1, (int) (density * 0.65f), radius, (x, y) -> {
 				float size = Mathf.randomSeed((int) (e.id + x), 7, 10);
 				size *= e.fout(Interp.pow4In);
@@ -2720,7 +2717,7 @@ public final class HFx {
 	}
 
 	public static Effect get(String m, Color c, Effect effect) {
-		int hash = Structf.hashCode(m, c);
+		int hash = Utils.hashCode(m, c);
 		Effect or = same.get(hash);
 		if (or == null) same.put(hash, effect);
 		return or == null ? effect : or;

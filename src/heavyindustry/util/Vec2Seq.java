@@ -1,4 +1,4 @@
-package heavyindustry.struct;
+package heavyindustry.util;
 
 import arc.func.Boolf;
 import arc.func.Cons;

@@ -10,17 +10,17 @@ import arc.math.Mathf;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.util.Utils;
-import mindustry.content.Items;
 import mindustry.entities.part.DrawPart;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
 
 public class PartBow extends DrawPart {
 	public float bowMoveY = -40 + 8, bowFY = -8;
 	public float bowWidth = 36, bowHeight = 15, bowTk = 8, turretTk = 15;
 	public float visRad = 12;
 
-	public Color color = Items.surgeAlloy.color;
+	public Color color = Pal.surge;
 	public String arrowSp = null;
 
 	public PartProgress progressWarmup = PartProgress.warmup;

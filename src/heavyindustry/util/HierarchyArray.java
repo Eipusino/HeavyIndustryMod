@@ -1,4 +1,4 @@
-package heavyindustry.struct;
+package heavyindustry.util;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;

@@ -49,7 +49,7 @@ public class OreDetector extends Block {
 	/** Radar location speed, in degrees per tick. */
 	public float speed = 0.8f;
 	/** Effect color. */
-	public Color effectColor = Pal.accent;
+	public Color effectColor = Pal.accent, placeColor = Color.valueOf("4b95ff");
 	/** Efficiency of drills powered by this detector. */
 	public float drillEfficiencyMultiplier = 1f;
 	/** Max depth this can work with. */
@@ -96,7 +96,7 @@ public class OreDetector extends Block {
 	@Override
 	public void drawPlace(int x, int y, int rotation, boolean valid) {
 		super.drawPlace(x, y, rotation, valid);
-		Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, range, Color.valueOf("4b95ff"));
+		Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, range, placeColor);
 	}
 
 	@Override

@@ -18,8 +18,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static heavyindustry.util.Structf.doubleOf;
-import static heavyindustry.util.Structf.floatOf;
+import static heavyindustry.util.Utils.doubleOf;
+import static heavyindustry.util.Utils.floatOf;
 
 /**
  * The appended variable interface is used to provide dynamic append variables for types,

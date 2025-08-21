@@ -292,7 +292,7 @@ public final class HBullets {
 				lightningDamage = 450;
 				lightningAngleRand = 40f;
 				scaledSplashDamage = largeHit = true;
-				lightningColor = trailColor = hitColor = lightColor = Items.surgeAlloy.color.cpy().lerp(Pal.accent, 0.055f);
+				lightningColor = trailColor = hitColor = lightColor = Pal.surge.cpy().lerp(Pal.accent, 0.055f);
 				despawnHit = false;
 				hitEffect = new Effect(90, 500, e -> {
 					Draw.color(backColor, frontColor, e.fout() * 0.7f);

@@ -211,7 +211,7 @@ public class UnitBoost extends Block {
 
 			Draw.z(Layer.effect);
 
-			Draw.color(team.color, team.color.cpy().mul(Items.phaseFabric.color), phaseHeat);
+			Draw.color(team.color, team.color.cpy().mul(Pal.range), phaseHeat);
 
 			Fill.square(x, y, size * ps, rotation);
 

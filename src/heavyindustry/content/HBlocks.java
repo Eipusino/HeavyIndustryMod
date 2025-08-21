@@ -1200,7 +1200,7 @@ public final class HBlocks {
 				effect = Fx.dynamicExplosion;
 				color = Color.valueOf("fec59ef1");
 				rotation = 1.5f;
-			}}, Fx.mineImpactWave.wrap(Items.blastCompound.color, 45f));
+			}}, Fx.mineImpactWave.wrap(HPal.blastRed, 45f));
 			consumeLiquid(HLiquids.blastReagent, 0.1f);
 			buildType = BurstDrillBuild::new;
 			hideDetails = false;
@@ -2402,7 +2402,7 @@ public final class HBlocks {
 				particleRad = 12;
 				particleLife = 120;
 				alpha = 0.4f;
-				color = Items.sporePod.color;
+				color = Pal.spore;
 			}});
 			buildType = AttributeCrafterBuild::new;
 		}};
@@ -3405,7 +3405,7 @@ public final class HBlocks {
 				damage = 98;
 				statusDuration = 60 * 6;
 				ammoMultiplier = 4;
-			}}, Items.blastCompound, new FlameBulletType(Items.blastCompound.color.cpy().mul(Pal.lightFlame), Items.blastCompound.color.cpy(), Pal.lightishGray, range + 8, 22, 66, 30) {{
+			}}, Items.blastCompound, new FlameBulletType(HPal.blastRed.cpy().mul(Pal.lightFlame), HPal.blastRed.cpy(), Pal.lightishGray, range + 8, 22, 66, 30) {{
 				damage = 90;
 				status = HStatusEffects.flamePoint;
 				statusDuration = 8 * 60f;
@@ -3438,7 +3438,7 @@ public final class HBlocks {
 							if (unit.hasEffect(status)) {
 								Damage.damage(b.team, unit.x, unit.y, slpRange, damage / 3f, false, true);
 								Damage.status(b.team, unit.x, unit.y, slpRange, status, statusDuration, false, true);
-								easyExp.at(unit.x, unit.y, slpRange, Items.blastCompound.color);
+								easyExp.at(unit.x, unit.y, slpRange, HPal.blastRed);
 								unit.unapply(status);
 							} else {
 								unit.apply(status, statusDuration);
@@ -3736,7 +3736,7 @@ public final class HBlocks {
 			ammo(Items.titanium, new BasicBulletType(5f, 24f) {{
 				width = 8f;
 				height = 25f;
-				hitColor = backColor = lightColor = trailColor = Items.titanium.color.cpy().lerp(Color.white, 0.1f);
+				hitColor = backColor = lightColor = trailColor = HPal.titaniumBlue.cpy().lerp(Color.white, 0.1f);
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
 				hitEffect = HFx.crossBlast(hitColor, height + width);
 				shootEffect = despawnEffect = HFx.square(hitColor, 20f, 3, 12f, 2f);
@@ -3750,7 +3750,7 @@ public final class HBlocks {
 					lifetime = 10f;
 					height = 12f;
 					ammoMultiplier = 12;
-					hitColor = backColor = lightColor = trailColor = Items.plastanium.color.cpy().lerp(Color.white, 0.1f);
+					hitColor = backColor = lightColor = trailColor = Pal.plastanium.cpy().lerp(Color.white, 0.1f);
 					frontColor = backColor.cpy().lerp(Color.white, 0.35f);
 					hitEffect = HFx.lightningHitSmall(backColor);
 					shootEffect = despawnEffect = HFx.square45_4_45;
@@ -3761,7 +3761,7 @@ public final class HBlocks {
 				fragLifeMax = 1.25f;
 				fragLifeMin = 0.25f;
 				ammoMultiplier = 12;
-				hitColor = backColor = lightColor = trailColor = Items.plastanium.color.cpy().lerp(Color.white, 0.1f);
+				hitColor = backColor = lightColor = trailColor = Pal.plastanium.cpy().lerp(Color.white, 0.1f);
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
 				hitEffect = HFx.crossBlast(hitColor, height + width);
 				shootEffect = despawnEffect = HFx.square(hitColor, 20f, 3, 20f, 2f);
@@ -3771,7 +3771,7 @@ public final class HBlocks {
 				status = StatusEffects.shocked;
 				statusDuration = 15f;
 				ammoMultiplier = 12;
-				lightningColor = hitColor = backColor = lightColor = trailColor = Items.thorium.color.cpy().lerp(Color.white, 0.1f);
+				lightningColor = hitColor = backColor = lightColor = trailColor = Pal.thoriumPink.cpy().lerp(Color.white, 0.1f);
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
 				hitEffect = HFx.crossBlast(hitColor, height + width);
 				shootEffect = despawnEffect = HFx.square(hitColor, 20f, 3, 20f, 2f);
@@ -3784,7 +3784,7 @@ public final class HBlocks {
 				status = StatusEffects.burning;
 				statusDuration = 15f;
 				ammoMultiplier = 12f;
-				hitColor = backColor = lightColor = trailColor = Items.pyratite.color.cpy().lerp(Color.white, 0.1f);
+				hitColor = backColor = lightColor = trailColor = HPal.pyraYellow.cpy().lerp(Color.white, 0.1f);
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
 				hitEffect = HFx.crossBlast(hitColor, height + width);
 				despawnEffect = Fx.blastExplosion;
@@ -3797,7 +3797,7 @@ public final class HBlocks {
 				splashDamageRadius = 12f;
 				splashDamage = 36f;
 				ammoMultiplier = 8;
-				hitColor = backColor = lightColor = trailColor = Items.blastCompound.color.cpy().lerp(Color.white, 0.1f);
+				hitColor = backColor = lightColor = trailColor = HPal.blastRed.cpy().lerp(Color.white, 0.1f);
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
 				hitEffect = HFx.crossBlast(hitColor, height + width);
 				despawnEffect = Fx.blastExplosion;
@@ -3817,7 +3817,7 @@ public final class HBlocks {
 				shrinkX = 0;
 				trailWidth = 1.7f;
 				trailLength = 9;
-				trailColor = backColor = hitColor = lightColor = lightningColor = Items.titanium.color;
+				trailColor = backColor = hitColor = lightColor = lightningColor = HPal.titaniumBlue;
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
 				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
 				smokeEffect = Fx.shootBigSmoke;
@@ -3831,7 +3831,7 @@ public final class HBlocks {
 				shrinkX = 0;
 				trailWidth = 1.7f;
 				trailLength = 9;
-				trailColor = backColor = hitColor = lightColor = lightningColor = Items.thorium.color;
+				trailColor = backColor = hitColor = lightColor = lightningColor = Pal.thoriumPink;
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
 				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
 				smokeEffect = Fx.shootBigSmoke;
@@ -3864,7 +3864,7 @@ public final class HBlocks {
 				trailWidth = 1.7f;
 				trailLength = 9;
 				status = StatusEffects.burning;
-				trailColor = backColor = hitColor = lightColor = lightningColor = Items.pyratite.color;
+				trailColor = backColor = hitColor = lightColor = lightningColor = HPal.pyraYellow;
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
 				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
 				smokeEffect = Fx.shootBigSmoke;
@@ -3881,7 +3881,7 @@ public final class HBlocks {
 				trailWidth = 1.7f;
 				trailLength = 9;
 				status = StatusEffects.blasted;
-				trailColor = backColor = hitColor = lightColor = lightningColor = Items.blastCompound.color;
+				trailColor = backColor = hitColor = lightColor = lightningColor = HPal.blastRed;
 				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
 				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
 				smokeEffect = Fx.shootBigSmoke;
@@ -4306,7 +4306,7 @@ public final class HBlocks {
 			lightColor = HPal.ancientLightMid;
 			clipSize = 6 * 24;
 			outlineColor = Pal.darkOutline;
-			ammo(HItems.uranium, new CtrlMissileBulletType(8f, 2800f, MOD_NAME + "-large-missile") {{
+			ammo(HItems.uranium, new CtrlMissileBulletType(4.2f, 2800f, MOD_NAME + "-large-missile") {{
 				hitSize *= 10f;
 				accel = 0.32f;
 				drag /= 2;
@@ -4385,7 +4385,7 @@ public final class HBlocks {
 			canOverdrive = false;
 			ammoPerShot = 12;
 			maxAmmo = 180;
-			range = 820f;
+			range = 790f;
 			reload = 120;
 			unitSort = HUnitSorts.slowest;
 			shake = 7;
@@ -5119,6 +5119,7 @@ public final class HBlocks {
 				smokeEffect = Fx.shootBigSmoke;//smoke
 			}});
 			buildType = ItemTurretBuild::new;
+			squareSprite = false;
 		}};
 		//sandbox
 		unitIniter = new UnitIniter("unit-initer");

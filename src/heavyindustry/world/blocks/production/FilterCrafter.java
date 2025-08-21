@@ -3,7 +3,7 @@ package heavyindustry.world.blocks.production;
 import arc.scene.style.TextureRegionDrawable;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
-import heavyindustry.util.Structf;
+import heavyindustry.util.Utils;
 import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.gen.Icon;
@@ -42,7 +42,7 @@ public class FilterCrafter extends GenericCrafter {
 
 		@Override
 		public boolean acceptItem(Building source, Item item) {
-			return Structf.indexOf(filterItems, item) < getMaximumAccepted(item);
+			return Utils.indexOf(filterItems, item) < getMaximumAccepted(item);
 		}
 
 		@Override

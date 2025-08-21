@@ -10,7 +10,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
-import static heavyindustry.util.Structf.arrayOf;
+import static heavyindustry.util.Utils.arrayOf;
 
 /**
  * More expansion of Java reflection functionality.
@@ -18,11 +18,11 @@ import static heavyindustry.util.Structf.arrayOf;
  * @author Eipusino
  * @since 1.0.6
  */
-public final class Reflectf {
+public final class Reflects {
 	public static ObjectMap<String, Field> targetFieldMap = new ObjectMap<>();
 
 	/** Don't let anyone instantiate this class. */
-	private Reflectf() {}
+	private Reflects() {}
 
 	public static Class<?> box(Class<?> type) {
 		if (type == boolean.class) return Boolean.class;
@@ -59,8 +59,22 @@ public final class Reflectf {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> T cast(Object value) {
-		return (T) value;
+	public static <T> T get(Class<?> type, Object object, String name, T def) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return (T) field.get(object);
+		} catch (Exception e) {
+			return def;
+		}
+	}
+
+	public static <T> T get(Object object, String name, T def) {
+		return get(object.getClass(), object, name, def);
+	}
+
+	public static <T> T get(Class<?> type, String name, T def) {
+		return get(type, null, name, def);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -132,6 +146,33 @@ public final class Reflectf {
 	}
 
 	@SuppressWarnings("unchecked")
+	public static <T> T invoke(Class<?> type, Object object, String name, Object[] args, Class<?>[] parameterTypes, T def) {
+		try {
+			Method method = type.getDeclaredMethod(name, parameterTypes);
+			method.setAccessible(true);
+			return (T) method.invoke(object, args);
+		} catch (Exception e) {
+			return def;
+		}
+	}
+
+	public static <T> T invoke(Class<?> type, String name, Object[] args, Class<?>[] parameterTypes, T def) {
+		return invoke(type, null, name, args, parameterTypes, def);
+	}
+
+	public static <T> T invoke(Class<?> type, String name, T def) {
+		return invoke(type, name, arrayOf(), arrayOf(), def);
+	}
+
+	public static <T> T invoke(Object object, String name, Object[] args, Class<?>[] parameterTypes, T def) {
+		return invoke(object.getClass(), object, name, args, parameterTypes, def);
+	}
+
+	public static <T> T invoke(Object object, String name, T def) {
+		return invoke(object, name, arrayOf(), arrayOf(), def);
+	}
+
+	@SuppressWarnings("unchecked")
 	public static <T> T invoke(Class<?> type, Object object, String name, Object[] args, Class<?>[] parameterTypes) {
 		try {
 			Method method = type.getDeclaredMethod(name, parameterTypes);
@@ -170,13 +211,7 @@ public final class Reflectf {
 
 	/** Gets a field of a model without throwing exceptions. */
 	public static Field getField(Object object, String name) {
-		try {
-			Field field = object.getClass().getDeclaredField(name);
-			field.setAccessible(true);
-			return field;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		return getField(object.getClass(), name);
 	}
 
 	public static Method getMethod(Class<?> type, String name) {
@@ -214,57 +249,57 @@ public final class Reflectf {
 		}
 	}
 
-	public static boolean getBool(Object object, String name) {
-		return getBool(object.getClass(), object, name);
+	public static boolean getBool(Object object, String name, boolean def) {
+		return getBool(object.getClass(), object, name, def);
 	}
 
-	public static boolean getBool(Class<?> type, String name) {
-		return getBool(type, null, name);
+	public static boolean getBool(Class<?> type, String name, boolean def) {
+		return getBool(type, null, name, def);
 	}
 
-	public static boolean getBool(Class<?> type, Object object, String name) {
+	public static boolean getBool(Class<?> type, Object object, String name, boolean def) {
 		try {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			return field.getBoolean(object);
 		} catch (Exception e) {
-			return false;
+			return def;
 		}
 	}
 
-	public static int getInt(Object object, String name) {
-		return getInt(object.getClass(), object, name);
+	public static int getInt(Object object, String name, int def) {
+		return getInt(object.getClass(), object, name, def);
 	}
 
-	public static int getInt(Class<?> type, String name) {
-		return getInt(type, null, name);
+	public static int getInt(Class<?> type, String name, int def) {
+		return getInt(type, null, name, def);
 	}
 
-	public static int getInt(Class<?> type, Object object, String name) {
+	public static int getInt(Class<?> type, Object object, String name, int def) {
 		try {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			return field.getInt(object);
 		} catch (Exception e) {
-			return 0;
+			return def;
 		}
 	}
 
-	public static float getFloat(Object object, String name) {
-		return getFloat(object.getClass(), object, name);
+	public static float getFloat(Object object, String name, float def) {
+		return getFloat(object.getClass(), object, name, def);
 	}
 
-	public static float getFloat(Class<?> type, String name) {
-		return getFloat(type, null, name);
+	public static float getFloat(Class<?> type, String name, float def) {
+		return getFloat(type, null, name, def);
 	}
 
-	public static float getFloat(Class<?> type, Object object, String name) {
+	public static float getFloat(Class<?> type, Object object, String name, float def) {
 		try {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			return field.getFloat(object);
 		} catch (Exception e) {
-			return 0f;
+			return def;
 		}
 	}
 
@@ -310,7 +345,7 @@ public final class Reflectf {
 		return supply(type, arrayOf(), arrayOf());
 	}
 
-	public static <T> Prov<T> supply(Class<T> type, Class<?>[] parameterTypes, Object[] args) {
+	public static <T> Prov<T> supply(Class<T> type, Object[] args, Class<?>[] parameterTypes) {
 		try {
 			Constructor<T> cons = type.getDeclaredConstructor(parameterTypes);
 			return () -> {

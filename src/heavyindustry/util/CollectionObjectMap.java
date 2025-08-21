@@ -1,4 +1,4 @@
-package heavyindustry.struct;
+package heavyindustry.util;
 
 import arc.struct.ObjectMap;
 

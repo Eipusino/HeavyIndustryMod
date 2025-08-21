@@ -27,8 +27,8 @@ public final class HPal {
 			ancientHeat = Color.red.cpy().mul(1.075f),
 			ancientLight = ancient.cpy().lerp(Color.white, 0.7f),
 			ancientLightMid = ancient.cpy().lerp(Color.white, 0.4f),
-			thurmixRed = Color.valueOf("#ff9492"),
-			thurmixRedLight = Color.valueOf("#ffced0"),
+			thurmixRed = Color.valueOf("ff9492"),
+			thurmixRedLight = Color.valueOf("ffced0"),
 			thurmixRedDark = thurmixRed.cpy().lerp(Color.black, 0.9f),
 			trail = Color.lightGray.cpy().lerp(Color.gray, 0.65f),
 			rainBowRed = Color.valueOf("ff8787"),
@@ -50,10 +50,16 @@ public final class HPal {
 			strontiumDark = Color.valueOf("d97c7c"),
 			rubidium = Color.valueOf("d0bae6"),
 			ferium = Color.valueOf("dedede"),
-			sisteelDark = Color.valueOf("7595D2"),
-			sisteelLight = Color.valueOf("B9C0eb"),
-			clusRed = Color.valueOf("FE7777"),
-			clusRedDark = Color.valueOf("FF5845"),
+			sisteelDark = Color.valueOf("7595d2"),
+			sisteelLight = Color.valueOf("b9c0eb"),
+			clusRed = Color.valueOf("fe7777"),
+			clusRedDark = Color.valueOf("ff5845"),
+
+			graphiteGrey = new Color(0.69f, 0.77f, 0.82f),
+			scrapGrey = new Color(0.46f, 0.46f, 0.46f),
+			pyraYellow = new Color(1f, 0.66f, 0.37f),
+			titaniumBlue = new Color(0.55f, 0.63f, 0.89f),
+			blastRed = new Color(1f, 0.47f, 0.36f),
 
 			discLight = Color.valueOf("ffd59e"),
 			discDark = Color.valueOf("eec591"),
@@ -71,8 +77,7 @@ public final class HPal {
 			energyGreen = Color.valueOf("f2ff9c"),
 			enemyRedLight = Color.valueOf("ff6464"),
 			enemyRedDark = Color.valueOf("c93b3b"),
-			darkOutline = Color.valueOf("383848")
-	;
+			darkOutline = Color.valueOf("383848");
 
 	/** Don't let anyone instantiate this class. */
 	private HPal() {}

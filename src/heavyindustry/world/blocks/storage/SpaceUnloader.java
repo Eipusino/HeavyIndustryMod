@@ -44,7 +44,7 @@ import mindustry.world.blocks.storage.StorageBlock;
 public class SpaceUnloader extends StorageBlock {
 	public static final EntityGroup<Building> suGroup = new EntityGroup<>(Building.class, false, false);
 
-	public Color color = Color.valueOf("0068fc");
+	public Color color = Color.valueOf("0068fc"), bottomColor = Color.valueOf("#0a156e");
 	public Effect inEffect = Fx.none;
 
 	/** max loop per frame */
@@ -414,7 +414,7 @@ public class SpaceUnloader extends StorageBlock {
 		public void draw() {
 			super.draw();
 
-			Draw.color(Color.valueOf("#0a156e"));
+			Draw.color(bottomColor);
 			Draw.alpha(warmup);
 			Draw.rect(bottomRegion, x, y);
 			Draw.color();

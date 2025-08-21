@@ -10,7 +10,6 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.math.Mathm;
 import heavyindustry.type.unit.ChainedUnitType;
-import heavyindustry.util.Utils;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.EntityCollisions;

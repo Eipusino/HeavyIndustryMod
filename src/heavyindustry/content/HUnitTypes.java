@@ -3408,7 +3408,7 @@ public final class HUnitTypes {
 			engineOffset = 0f;
 			itemCapacity = 999;
 			armor = 9f;
-			speed *= 1.75f;
+			speed = 3.75f;
 			drawShields = false;
 			isEnemy = false;
 			immunities = getFilter();

@@ -3,7 +3,7 @@ package heavyindustry.mod;
 import arc.func.Func;
 import arc.util.Log;
 import heavyindustry.HVars;
-import heavyindustry.util.Reflectf;
+import heavyindustry.util.Reflects;
 import mindustry.Vars;
 import rhino.Context;
 import rhino.Function;
@@ -64,7 +64,7 @@ public final class ModJS {
 	}
 
 	public static void importClass(ImporterTopLevel scope, String canonical) {
-		importClass(scope, Reflectf.mainClass(canonical));
+		importClass(scope, Reflects.mainClass(canonical));
 	}
 
 	public static void importClass(ImporterTopLevel scope, Class<?> type) {
@@ -84,7 +84,7 @@ public final class ModJS {
 
 	@SuppressWarnings("unchecked")
 	public static <T> Func<Object[], T> requireType(Function func, Context context, Scriptable scope, Class<T> returnType) {
-		Class<?> type = Reflectf.box(returnType);
+		Class<?> type = Reflects.box(returnType);
 		return args -> {
 			Object res = func.call(context, scope, scope, args);
 			if (type == void.class || type == Void.class) return null;

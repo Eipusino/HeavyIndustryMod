@@ -1,4 +1,4 @@
-package heavyindustry.struct;
+package heavyindustry.util;
 
 public class DisjointSetUnion {
 	public final int size;

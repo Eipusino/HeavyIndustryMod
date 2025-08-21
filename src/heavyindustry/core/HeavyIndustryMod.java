@@ -28,7 +28,7 @@ import heavyindustry.gen.Entitys;
 import heavyindustry.gen.HIcon;
 import heavyindustry.gen.HMusics;
 import heavyindustry.gen.HSounds;
-import heavyindustry.util.Structf;
+import heavyindustry.util.Utils;
 import heavyindustry.world.Worlds;
 import heavyindustry.graphics.HCacheLayer;
 import heavyindustry.graphics.HShaders;
@@ -43,7 +43,6 @@ import heavyindustry.ui.HStyles;
 import heavyindustry.ui.Elements;
 import heavyindustry.ui.dialogs.HResearchDialog;
 import heavyindustry.util.IconLoader;
-import mindustry.Vars;
 import mindustry.ctype.Content;
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.game.EventType.DisposeEvent;
@@ -55,8 +54,6 @@ import mindustry.mod.Mod;
 import mindustry.mod.Mods.LoadedMod;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
-
-import java.lang.reflect.Field;
 
 import static heavyindustry.HVars.inputAggregator;
 import static heavyindustry.HVars.internalTree;
@@ -88,6 +85,9 @@ public final class HeavyIndustryMod extends Mod {
 	/** Is this mod in plugin mode. In this mode, the mod will not load content. */
 	public static final boolean isPlugin;
 
+	/** Indicates whether the client is the original version. Valid only for ARC and X. */
+	public static boolean vanillaClient = true;
+
 	static @Nullable FloatingText floatingText;
 
 	/** If needed, please call {@link #loaded()} for the LoadedMod of this mod. */
@@ -96,7 +96,7 @@ public final class HeavyIndustryMod extends Mod {
 	static {
 		modJson = LoadMod.getMeta(internalTree.root);
 
-		isPlugin = Structf.get(() -> modJson.get("plugin").asBool(), false);
+		isPlugin = Utils.get(() -> modJson.get("plugin").asBool(), false);
 
 		LoadMod.addBlacklistedMods();
 	}
@@ -123,8 +123,8 @@ public final class HeavyIndustryMod extends Mod {
 					t.add(Core.bundle.get("hi-version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 					t.add(label).left().row();
 					t.add(Core.bundle.get("hi-class")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
-					t.add(Core.bundle.get("hi-oh-no")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
-					t.add(Core.bundle.get("hi-oh-no-l")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
+					t.add(Utils.generateRandomString(10, 20)).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
+					t.add(Utils.generateRandomString(100, 200)).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
 				}).grow().center().maxWidth(600f);
 			}};
 			dialog.show();
@@ -186,19 +186,6 @@ public final class HeavyIndustryMod extends Mod {
 			HSectorPresets.load();
 			HTechTree.load();
 		}
-
-		try {
-			Field[] fields = Vars.class.getDeclaredFields();
-			for (Field field : fields) {
-				if (field.getName().equals("arcVersion")) {
-					Log.warn(Core.bundle.get("hi-arc-warn"));
-
-					break;
-				}
-			}
-		} catch (Exception e) {
-			Log.err(e);
-		}
 	}
 
 	@Override
@@ -218,7 +205,7 @@ public final class HeavyIndustryMod extends Mod {
 			mod.meta.hidden = true;
 			mod.meta.name = MOD_NAME + "-plugin";
 			mod.meta.displayName = Core.bundle.get("hi-name") + " Plugin";
-			mod.meta.version = Structf.get(() -> modJson.get("version").asString() + "-plug-in", mod.meta.version);
+			mod.meta.version = Utils.get(() -> modJson.get("version").asString() + "-plug-in", mod.meta.version);
 		}
 
 		if (ui != null) {

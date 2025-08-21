@@ -14,7 +14,7 @@ import heavyindustry.input.InputAggregator;
 import mindustry.content.TechTree.TechNode;
 import mindustry.type.Sector;
 
-import static heavyindustry.util.Structf.arrayOf;
+import static heavyindustry.util.Utils.arrayOf;
 import static mindustry.Vars.headless;
 
 /**

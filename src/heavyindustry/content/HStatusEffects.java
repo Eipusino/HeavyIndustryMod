@@ -11,7 +11,6 @@ import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.graphics.HPal;
 import heavyindustry.util.Utils;
 import mindustry.content.Fx;
-import mindustry.content.Items;
 import mindustry.entities.Effect;
 import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
@@ -33,14 +32,14 @@ import static mindustry.content.StatusEffects.slow;
 public final class HStatusEffects {
 	public static StatusEffect
 			overheat, regenerating, breached, flamePoint, ultFireBurn,
-			territoryFieldIncrease, territoryFieldSuppress, breakage;
+			territoryFieldIncrease, territoryFieldSuppress, apoptosis;
 
 	/** Don't let anyone instantiate this class. */
 	private HStatusEffects() {}
 
 	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
 	public static void load() {
-		overheat = new AdaptStatusEffect("overheat") {{
+		overheat = new BaseStatusEffect("overheat") {{
 			color = Color.valueOf("ffdcd8");
 			disarm = true;
 			dragMultiplier = 1f;
@@ -49,14 +48,14 @@ public final class HStatusEffects {
 			effectChance = 0.35f;
 			effect = HFx.glowParticle;
 		}};
-		regenerating = new AdaptStatusEffect("regenerating") {{
+		regenerating = new BaseStatusEffect("regenerating") {{
 			color = HPal.regenerating;
 			damage = -4;
 			effectChance = 0.3f;
 			effect = HFx.glowParticle;
 			init(() -> opposite(sapped, slow, breached));
 		}};
-		breached = new AdaptStatusEffect("breached") {{
+		breached = new BaseStatusEffect("breached") {{
 			color = Color.valueOf("666484");
 			healthMultiplier = 0.9f;
 			speedMultiplier = 0.8f;
@@ -64,13 +63,13 @@ public final class HStatusEffects {
 			transitionDamage = 220f;
 			permanent = true;
 		}};
-		flamePoint = new AdaptStatusEffect("flame-point") {{
+		flamePoint = new BaseStatusEffect("flame-point") {{
 			damage = 0.2f;
 			color = Pal.lightFlame;
 			parentizeEffect = true;
 			effect = new Effect(36, e -> {
 				if (!(e.data instanceof Unit unit)) return;
-				Lines.stroke(2 * e.foutpow(), Items.blastCompound.color);
+				Lines.stroke(2 * e.foutpow(), HPal.blastRed);
 				for (int i = 0; i < 3; i++) {
 					float a = 360 / 3f * i + e.time * 6;
 					float x = Utils.dx(e.x, Math.max(6, unit.hitSize / 2f), a), y = Utils.dy(e.y, Math.max(6, unit.hitSize / 2f), a);
@@ -89,7 +88,7 @@ public final class HStatusEffects {
 				}
 			}
 		};
-		ultFireBurn = new AdaptStatusEffect("ult-fire-burn") {{
+		ultFireBurn = new BaseStatusEffect("ult-fire-burn") {{
 			color = Pal.techBlue;
 			damage = 6.5f;
 			speedMultiplier = 1.2f;
@@ -97,7 +96,7 @@ public final class HStatusEffects {
 		}
 			@Override
 			public void update(Unit unit, float time) {
-				unit.damageContinuousPierce(damage);
+				unit.damageContinuousPierce(damage + unit.maxHealth * 0.00001f);
 
 				if (Mathf.chanceDelta(effectChance)) {
 					Tmp.v1.rnd(Mathf.range(unit.type.hitSize / 2f));
@@ -105,7 +104,7 @@ public final class HStatusEffects {
 				}
 			}
 		};
-		territoryFieldIncrease = new AdaptStatusEffect("territory-field-increase") {{
+		territoryFieldIncrease = new BaseStatusEffect("territory-field-increase") {{
 			color = Color.valueOf("ea8878");
 			buildSpeedMultiplier = 1.5f;
 			speedMultiplier = 1.1f;
@@ -114,7 +113,7 @@ public final class HStatusEffects {
 			effectChance = 0.07f;
 			effect = Fx.overclocked;
 		}};
-		territoryFieldSuppress = new AdaptStatusEffect("territory-field-suppress") {{
+		territoryFieldSuppress = new BaseStatusEffect("territory-field-suppress") {{
 			color = Color.valueOf("8b9bb4");
 			speedMultiplier = 0.85f;
 			reloadMultiplier = 0.8f;
@@ -122,7 +121,8 @@ public final class HStatusEffects {
 			effectChance = 0.07f;
 			effect = Fx.overclocked;
 		}};
-		breakage = new AdaptStatusEffect("breakage") {{
+		apoptosis = new BaseStatusEffect("apoptosis") {{
+			color = Color.valueOf("88a4ff");
 			damage = -1;
 			parentizeApplyEffect = true;
 			applyColor = Pal.techBlue;
@@ -151,6 +151,7 @@ public final class HStatusEffects {
 			@Override
 			public void setStats() {
 				super.setStats();
+
 				stats.remove(Stat.healing);
 				stats.addMultModifier(Stat.damageMultiplier, 0.8f);
 				stats.addMultModifier(Stat.speedMultiplier, 0.4f);
@@ -162,7 +163,7 @@ public final class HStatusEffects {
 			public void applied(Unit unit, float time, boolean extend) {
 				super.applied(unit, time, extend);
 
-				unit.health -= 100;
+				unit.health -= 100f;
 			}
 
 			@Override
@@ -171,7 +172,7 @@ public final class HStatusEffects {
 				unit.speedMultiplier *= 0.4f;
 				unit.reloadMultiplier *= 0.5f;
 
-				unit.health -= Time.delta;
+				unit.health -= Time.delta + unit.maxHealth * 0.0006f;
 
 				if (effect != Fx.none && Mathf.chanceDelta(effectChance)) {
 					Tmp.v1.rnd(Mathf.range(unit.type.hitSize / 2f));
@@ -181,15 +182,19 @@ public final class HStatusEffects {
 		};
 	}
 
-	public static class AdaptStatusEffect extends StatusEffect {
+	public static class BaseStatusEffect extends StatusEffect {
 		public Color outlineColor = Pal.gray;
 
-		public AdaptStatusEffect(String name) {
+		public BaseStatusEffect(String name) {
 			super(name);
+
+			outline = true;
 		}
 
 		@Override
 		public void createIcons(MultiPacker packer) {
+			if (!outline || !uiIcon.found()) return;
+
 			//color image
 			Pixmap base = Core.atlas.getPixmap(uiIcon).crop();
 			Pixmap tint = base;

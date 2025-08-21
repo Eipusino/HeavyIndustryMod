@@ -27,7 +27,7 @@ import static mindustry.Vars.world;
 public class DelayedPointBulletType extends BulletType {
 	protected static float cdist = 0f, lengthFalloff = 0.5f;
 	protected static Position result;
-	protected static Color[] colors = {new Color(1, 1, 1, 0f).a(-5f), new Color(1, 1, 1, 1f), new Color(1, 1, 1, 1f)};
+	protected static Color[] colors = {new Color(1f, 1f, 1f, 0f).a(-5f), new Color(1f, 1f, 1f, 1f), new Color(1f, 1f, 1f, 1f)};
 
 	public static Effect laser = new Effect(60f, 2000f, b -> {
 		if (!(b.data instanceof Position p)) return;

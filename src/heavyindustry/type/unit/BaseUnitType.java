@@ -6,14 +6,12 @@ import heavyindustry.world.meta.HStat;
 import mindustry.ai.types.MissileAI;
 import mindustry.content.Items;
 import mindustry.gen.Sounds;
-import mindustry.gen.TimedKillUnit;
 import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
 import mindustry.type.ammo.ItemAmmoType;
 import mindustry.world.meta.Env;
 
 public class BaseUnitType extends UnitType {
-	public boolean invincible = false;
 	public float damageMultiplier = 1f;
 
 	public BaseUnitType(String name) {

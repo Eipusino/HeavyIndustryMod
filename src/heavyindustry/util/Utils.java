@@ -2,8 +2,14 @@ package heavyindustry.util;
 
 import arc.Core;
 import arc.func.Boolf;
+import arc.func.Boolf2;
 import arc.func.Cons;
+import arc.func.ConsT;
+import arc.func.Floatf;
+import arc.func.Func;
+import arc.func.Func2;
 import arc.func.Intc2;
+import arc.func.Intf;
 import arc.func.Prov;
 import arc.graphics.Color;
 import arc.graphics.Pixmap;
@@ -34,6 +40,8 @@ import arc.struct.IntSeq;
 import arc.struct.IntSet;
 import arc.struct.ObjectMap;
 import arc.struct.Seq;
+import arc.util.Eachable;
+import arc.util.Log;
 import arc.util.Nullable;
 import arc.util.Time;
 import arc.util.Tmp;
@@ -41,6 +49,7 @@ import arc.util.pooling.Pool;
 import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import heavyindustry.content.HFx;
+import heavyindustry.func.ProvT;
 import heavyindustry.gen.Spawner;
 import heavyindustry.graphics.HPal;
 import mindustry.content.Fx;
@@ -88,7 +97,9 @@ import mindustry.world.draw.DrawMulti;
 import mindustry.world.draw.DrawRegion;
 import mindustry.world.meta.StatUnit;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.regex.Pattern;
 
 import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
@@ -138,6 +149,7 @@ public final class Utils {
 	private static final BasicPool<Hit> hPool = new BasicPool<>(Hit::new);
 	private static final IntSeq amounts = new IntSeq();
 	private static final String[] byteUnit = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"};
+	private static final char[] printableCharacters = {' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~'};
 
 	private static Tile tileParma;
 	private static Building tmpBuilding;
@@ -395,11 +407,11 @@ public final class Utils {
 	public static String repeat(String key, int count) {
 		if (count < 2) return key;
 
-		StringBuilder build = new StringBuilder(key.length() * count);
+		StringBuilder builder = new StringBuilder(key.length() * count);
 		for (int i = 0; i < count; i++) {
-			build.append("0");
+			builder.append(key);
 		}
-		return build.toString();
+		return builder.toString();
 	}
 
 	/** Determine whether the string is composed entirely of numbers. */
@@ -421,6 +433,21 @@ public final class Utils {
 		} else {
 			return pattern.matcher(key).matches();
 		}
+	}
+
+	public static String generateRandomString(int min, int max) {
+		if (min < 0 || max < min || max > 100000) return "";
+
+		int length = min + Mathf.random(max - min + 1);
+		return generateRandomString0(length);
+	}
+
+	private static String generateRandomString0(int length) {
+		char[] chars = new char[length];
+		for (int i = 0; i < length; i++) {
+			chars[i] = printableCharacters[Mathf.random(printableCharacters.length - 1)];
+		}
+		return String.valueOf(chars);
 	}
 
 	/**
@@ -1686,6 +1713,430 @@ public final class Utils {
 			} else {
 				return damage;
 			}
+		}
+	}
+
+	public static boolean canParseLong(String s) {
+		return parseLong(s) != null;
+	}
+
+	public static Long parseLong(String s) {
+		return parseLong(s, 10);
+	}
+
+	public static Long parseLong(String s, int radix) {
+		return parseLong(s, radix, 0, s.length());
+	}
+
+	public static Long parseLong(String s, int radix, int start, int end) {
+		boolean negative = false;
+		int i = start, len = end - start;
+		long limit = -9223372036854775807l;
+		if (len <= 0) {
+			return null;
+		} else {
+			char firstChar = s.charAt(i);
+			if (firstChar < '0') {
+				if (firstChar == '-') {
+					negative = true;
+					limit = -9223372036854775808l;
+				} else if (firstChar != '+') {
+					return null;
+				}
+
+				if (len == 1) return null;
+
+				++i;
+			}
+
+			long result;
+			int digit;
+			for (result = 0L; i < end; result -= digit) {
+				digit = Character.digit(s.charAt(i++), radix);
+				if (digit < 0) {
+					return null;
+				}
+
+				result *= radix;
+				if (result < limit + (long) digit) {
+					return null;
+				}
+			}
+
+			return negative ? result : -result;
+		}
+	}
+
+	public static boolean equals(Object a, Object b) {
+		return a == b || a != null && a.equals(b);
+	}
+
+	/**
+	 * Convert vararg to an array.
+	 * Returns an array containing the specified elements.
+	 */
+	@SafeVarargs
+	public static <T> T[] arrayOf(T... elements) {
+		return elements;
+	}
+
+	public static boolean[] boolOf(boolean... bools) {
+		return bools;
+	}
+
+	public static byte[] byteOf(byte... bytes) {
+		return bytes;
+	}
+
+	public static short[] shortOf(short... shorts) {
+		return shorts;
+	}
+
+	public static int[] intOf(int... ints) {
+		return ints;
+	}
+
+	public static long[] longOf(long... longs) {
+		return longs;
+	}
+
+	public static float[] floatOf(float... floats) {
+		return floats;
+	}
+
+	public static double[] doubleOf(double... doubles) {
+		return doubles;
+	}
+
+	public static <T> int indexOf(T[] array, T element) {
+		for (int i = 0; i < array.length; i++) {
+			if (equals(array[i], element)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOf(boolean[] array, boolean element) {
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == element) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOf(byte[] array, byte element) {
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == element) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOf(short[] array, short element) {
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == element) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOf(int[] array, int element) {
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == element) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOf(long[] array, long element) {
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == element) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOf(float[] array, float element) {
+		for (int i = 0; i < array.length; i++) {
+			if (Float.compare(array[i], element) == 0) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOf(double[] array, double element) {
+		for (int i = 0; i < array.length; i++) {
+			if (Double.compare(array[i], element) == 0) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int hashCode(Object... values) {
+		if (values == null)
+			return 0;
+
+		int result = 1;
+
+		for (Object element : values)
+			result = 31 * result + (element == null ? 0 : element.hashCode());
+
+		return result;
+	}
+
+	public static <T> T apply(T obj, Cons<T> cons) {
+		cons.get(obj);
+		return obj;
+	}
+
+	public static <T> void get(ConsT<T, Exception> cons, T obj) {
+		try {
+			cons.get(obj);
+		} catch (Exception e) {
+			Log.err(e);
+		}
+	}
+
+	public static <T> T get(ProvT<T, Exception> prov, T def) {
+		try {
+			return prov.get();
+		} catch (Exception e) {
+			Log.err(e);
+
+			return def;
+		}
+	}
+
+	public static <T> T get(ProvT<T, Exception> prov, ConsT<T, Exception> cons, T def) {
+		try {
+			T t = prov.get();
+			cons.get(t);
+			return t;
+		} catch (Exception e) {
+			Log.err(e);
+
+			return def;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T cast(Object obj) {
+		return (T) obj;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T cast(Object obj, Class<T> type, T def) {
+		if (obj != null && !type.isInstance(obj))
+			return def;
+		return (T) obj;
+	}
+
+	public static <T> T[] copyArray(T[] array, Func<T, T> copy) {
+		T[] out = array.clone();
+		for (int i = 0, len = out.length; i < len; i++) out[i] = copy.get(out[i]);
+		return out;
+	}
+
+	public static <T> boolean any(T[] array, Boolf<T> pred) {
+		for (T e : array) if (pred.get(e)) return true;
+		return false;
+	}
+
+	public static <T> boolean all(T[] array, Boolf<T> pred) {
+		for (T e : array) if (!pred.get(e)) return false;
+		return true;
+	}
+
+	public static <T> void each(T[] array, Cons<? super T> cons) {
+		each(array, 0, array.length, cons);
+	}
+
+	public static <T> void each(T[] array, int offset, int length, Cons<? super T> cons) {
+		for (int i = offset, len = i + length; i < len; i++) cons.get(array[i]);
+	}
+
+	public static <T> Single<T> iter(T item) {
+		return new Single<>(item);
+	}
+
+	@SafeVarargs
+	public static <T> Iter<T> iter(T... array) {
+		return iter(array, 0, array.length);
+	}
+
+	public static <T> Iter<T> iter(T[] array, int offset, int length) {
+		return new Iter<>(array, offset, length);
+	}
+
+	public static <T> Chain<T> chain(Iterator<T> first, Iterator<T> second) {
+		return new Chain<>(first, second);
+	}
+
+	public static <T, R> R reduce(T[] array, R initial, Func2<T, R, R> reduce) {
+		for (T item : array) initial = reduce.get(item, initial);
+		return initial;
+	}
+
+	public static <T> int reducei(T[] array, int initial, Reducei<T> reduce) {
+		for (T item : array) initial = reduce.get(item, initial);
+		return initial;
+	}
+
+	public static <T> int sumi(T[] array, Intf<T> extract) {
+		return reducei(array, 0, (item, accum) -> accum + extract.get(item));
+	}
+
+	public static <T> float reducef(T[] array, float initial, Reducef<T> reduce) {
+		for (T item : array) initial = reduce.get(item, initial);
+		return initial;
+	}
+
+	public static <T> float average(T[] array, Floatf<T> extract) {
+		return reducef(array, 0f, (item, accum) -> accum + extract.get(item)) / array.length;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T[] resize(T[] array, int newSize, T fill) {
+		Class<?> type = array.getClass().getComponentType();
+		return resize(array, size -> (T[]) Array.newInstance(type, size), newSize, fill);
+	}
+
+	public static <T> T[] resize(T[] array, ArrayCreator<T> create, int newSize, T fill) {
+		if (array.length == newSize) return array;
+
+		T[] out = create.get(newSize);
+		System.arraycopy(array, 0, out, 0, Math.min(array.length, newSize));
+
+		if (fill != null && newSize > array.length) Arrays.fill(out, array.length, newSize, fill);
+		return out;
+	}
+
+	public static <T> boolean arrayEq(T[] first, T[] second, Boolf2<T, T> eq) {
+		if (first.length != second.length) return false;
+		for (int i = 0; i < first.length; i++) {
+			if (!eq.get(first[i], second[i])) return false;
+		}
+		return true;
+	}
+
+	public interface Reducei<T> {
+		int get(T item, int accum);
+	}
+
+	public interface Reducef<T> {
+		float get(T item, float accum);
+	}
+
+	public interface ArrayCreator<T> {
+		T[] get(int size);
+	}
+
+	public static class Single<T> implements Iterable<T>, Iterator<T>, Eachable<T> {
+		protected final T item;
+		protected boolean done;
+
+		public Single(T t) {
+			item = t;
+		}
+
+		@Override
+		public Single<T> iterator() {
+			return this;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return !done;
+		}
+
+		@Override
+		public T next() {
+			if (done) return null;
+			done = true;
+			return item;
+		}
+
+		@Override
+		public void each(Cons<? super T> cons) {
+			if (!done) cons.get(item);
+		}
+	}
+
+	public static class Iter<T> implements Iterable<T>, Iterator<T>, Eachable<T> {
+		private final T[] array;
+		private final int offset, length;
+		private int index = 0;
+
+		public Iter(T[] arr, int off, int len) {
+			array = arr;
+			offset = off;
+			length = len;
+		}
+
+		public int length() {
+			return length;
+		}
+
+		public void reset() {
+			index = 0;
+		}
+
+		@Override
+		public Iter<T> iterator() {
+			return this;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return index < length - offset;
+		}
+
+		@Override
+		public T next() {
+			return hasNext() ? array[offset + index++] : null;
+		}
+
+		@Override
+		public void each(Cons<? super T> cons) {
+			while (hasNext()) cons.get(array[offset + index++]);
+		}
+	}
+
+	public static class Chain<T> implements Iterable<T>, Iterator<T>, Eachable<T> {
+		private final Iterator<T> first, second;
+
+		public Chain(Iterator<T> fir, Iterator<T> sec) {
+			first = fir;
+			second = sec;
+		}
+
+		@Override
+		public Chain<T> iterator() {
+			return this;
+		}
+
+		@Override
+		public boolean hasNext() {
+			return first.hasNext() || second.hasNext();
+		}
+
+		@Override
+		public T next() {
+			return first.hasNext() ? first.next() : second.next();
+		}
+
+		@Override
+		public void each(Cons<? super T> cons) {
+			while (first.hasNext()) cons.get(first.next());
+			while (second.hasNext()) cons.get(second.next());
 		}
 	}
 

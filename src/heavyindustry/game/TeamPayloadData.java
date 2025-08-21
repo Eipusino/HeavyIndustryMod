@@ -46,19 +46,19 @@ public class TeamPayloadData implements CustomChunk {
 	}
 
 	public void display() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("Team Payload Data\n");
+		StringBuilder builder = new StringBuilder();
+		builder.append("Team Payload Data\n");
 		teamPayloadData.each((team, payload) -> {
-			sb.append("-----").append(team.name).append("-----").append("\n");
+			builder.append("-----").append(team.name).append("-----").append("\n");
 			Vars.content.each(content -> {
 				if (content instanceof UnlockableContent uc) {
 					if (payload.get(uc) != 0) {
-						sb.append(uc.name).append(" ").append(payload.get(uc)).append(" ").append("\n");
+						builder.append(uc.name).append(" ").append(payload.get(uc)).append(" ").append("\n");
 					}
 				}
 			});
 		});
-		Log.info(sb.toString());
+		Log.info(builder.toString());
 	}
 
 	@Override

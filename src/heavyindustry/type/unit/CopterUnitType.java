@@ -8,6 +8,8 @@ import arc.math.Mathf;
 import arc.struct.Seq;
 import heavyindustry.gen.Copterc;
 import mindustry.gen.Unit;
+import mindustry.graphics.MultiPacker;
+import mindustry.graphics.MultiPacker.PageType;
 
 public class CopterUnitType extends BaseUnitType {
 	public final Seq<Rotor> rotors = new Seq<>(true, 2, Rotor.class);
@@ -103,6 +105,25 @@ public class CopterUnitType extends BaseUnitType {
 		}
 
 		Draw.reset();
+	}
+
+	@Override
+	public void createIcons(MultiPacker packer) {
+		super.createIcons(packer);
+
+		if (outlines) {
+			Seq<TextureRegion> outlineTargets = new Seq<>(TextureRegion.class);
+
+			for (Rotor rotor : rotors) {
+				outlineTargets.add(rotor.topRegion, rotor.bladeRegion);
+			}
+
+			for (TextureRegion outlineTarget : outlineTargets) {
+				if (!outlineTarget.found()) continue;
+
+				makeOutline(PageType.main, packer, outlineTarget, alwaysCreateOutline, outlineColor, outlineRadius);
+			}
+		}
 	}
 
 	public static class Rotor implements Cloneable {

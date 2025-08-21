@@ -9,7 +9,7 @@ import arc.math.geom.Vec2;
 import arc.util.Tmp;
 import heavyindustry.content.HFx;
 import heavyindustry.graphics.PositionLightning;
-import heavyindustry.struct.Vec2Seq;
+import heavyindustry.util.Vec2Seq;
 import mindustry.Vars;
 import mindustry.gen.Bullet;
 import mindustry.gen.Hitboxc;
