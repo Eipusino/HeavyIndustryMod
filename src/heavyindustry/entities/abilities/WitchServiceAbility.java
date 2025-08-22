@@ -2,7 +2,6 @@ package heavyindustry.entities.abilities;
 
 import arc.graphics.Color;
 import arc.math.geom.Rect;
-import arc.struct.ObjectFloatMap;
 import arc.util.Time;
 import heavyindustry.content.HFx;
 import heavyindustry.content.HStatusEffects;
@@ -14,10 +13,12 @@ import mindustry.gen.Unit;
 import mindustry.graphics.Pal;
 import mindustry.type.StatusEffect;
 
+import java.util.HashMap;
+
 import static mindustry.Vars.tilesize;
 
 public class WitchServiceAbility extends Ability {
-	public ObjectFloatMap<Unit> findMap = new ObjectFloatMap<>();
+	public HashMap<Unit, Float> findMap = new HashMap<>();
 
 	public float width = 60f, height = 60f;
 	public StatusEffect effectType = HStatusEffects.apoptosis;
@@ -65,7 +66,7 @@ public class WitchServiceAbility extends Ability {
 						if (!findMap.containsKey(u)) {
 							findMap.put(u, applyMultiplier);
 						} else {
-							findMap.put(u, findMap.get(u, 0f) + applyMultiplier);
+							findMap.put(u, findMap.getOrDefault(u, 0f) + applyMultiplier);
 						}
 
 						working = true;
@@ -78,16 +79,16 @@ public class WitchServiceAbility extends Ability {
 					}
 				}
 			});
-			for (Unit u : findMap.keys()) {
+			for (Unit u : findMap.keySet()) {
 				if (u == null || !u.isAdded() || u.dead || u.hasEffect(effectType)) {
 					findMap.remove(u, 0f);
 					continue;
 				}
 
-				findMap.put(u, findMap.get(u, 0f) + applyMultiplier);
+				findMap.put(u, findMap.getOrDefault(u, 0f) + applyMultiplier);
 				applyOut.at(u.x, u.y, u.rotation, u);
 
-				if (findMap.get(u, 0f) >= 1) {
+				if (findMap.getOrDefault(u, 0f) >= 1) {
 					u.apply(effectType, effectTime);
 					findMap.remove(u, 0f);
 				}

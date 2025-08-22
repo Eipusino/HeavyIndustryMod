@@ -45,7 +45,7 @@ public class RandomSource extends AdaptiveSource {
 
 			for (int i = 0; i < outputLiquids.size; i++) {
 				Liquid liquid = outputLiquids.random();
-				liquids.add(liquid, liquidCapacity);
+				liquids.set(liquid, liquidCapacity);
 				dumpLiquid(liquid);
 			}
 		}

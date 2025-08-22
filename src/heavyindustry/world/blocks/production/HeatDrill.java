@@ -20,10 +20,10 @@ public class HeatDrill extends DrawerDrill {
 	public void setBars() {
 		super.setBars();
 
-		addBar("heat", (HeatDrillBuild entity) -> new Bar(() ->
-				Core.bundle.format("bar.heatpercent", (int) (entity.heat + 0.01f), (int) (entity.efficiencyScale() * 100 + 0.01f)),
+		addBar("heat", (HeatDrillBuild tile) -> new Bar(() ->
+				Core.bundle.format("bar.heatpercent", (int) (tile.heat + 0.01f), (int) (tile.efficiencyScale() * 100 + 0.01f)),
 				() -> Pal.lightOrange,
-				() -> entity.heat / heatRequirement)
+				() -> tile.heat / heatRequirement)
 		);
 	}
 

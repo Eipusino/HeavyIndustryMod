@@ -4,7 +4,6 @@ import arc.func.Boolf;
 import arc.func.Cons;
 import arc.graphics.Color;
 import arc.struct.ObjectFloatMap;
-import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.graphics.HPal;
 import heavyindustry.world.meta.HAttribute;
 import mindustry.content.Blocks;
@@ -65,6 +64,8 @@ import mindustry.world.consumers.ConsumeLiquid;
 import mindustry.world.meta.Attribute;
 import mindustry.world.meta.BuildVisibility;
 
+import static heavyindustry.util.Utils.cast;
+
 /**
  * Covering the original content.
  * <p> An overwriter class designed to easily modify vanilla contents. This has to be used with <em>huge
@@ -79,7 +80,7 @@ public final class HOverrides {
 	private HOverrides() {}
 
 	/**
-	 * Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}.
+	 * Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}.
 	 * <p>Remember not to execute it a second time, I did not take any precautionary measures.
 	 */
 	public static void load() {
@@ -239,6 +240,7 @@ public final class HOverrides {
 			hitColor = Pal.meltdownHit;
 			status = StatusEffects.melting;
 			drawSize = 420f;
+			timescaleDamage = true;
 			incendChance = 0.4f;
 			incendSpread = 5f;
 			incendAmount = 1;
@@ -248,9 +250,10 @@ public final class HOverrides {
 		Blocks.breach.armor = 2f;
 		Blocks.diffuse.armor = 3f;
 		Blocks.sublimate.armor = 4f;
-		((ContinuousLiquidTurret) Blocks.sublimate).range = 120f;
+		((ContinuousLiquidTurret) Blocks.sublimate).range = 130f;
 		((ContinuousLiquidTurret) Blocks.sublimate).ammo(HLiquids.gas, new ContinuousFlameBulletType() {{
 			damage = 90f;
+			rangeChange = 30f;
 			length = 160f;
 			knockback = 1f;
 			pierceCap = 2;
@@ -260,7 +263,6 @@ public final class HOverrides {
 			hitColor = Color.valueOf("ffd367");
 		}}, Liquids.hydrogen, new ContinuousFlameBulletType() {{
 			damage = 60f;
-			rangeChange = 10f;
 			length = 130f;
 			knockback = 1f;
 			pierceCap = 2;
@@ -269,7 +271,7 @@ public final class HOverrides {
 			lightColor = hitColor = flareColor = Color.valueOf("92abff");
 		}}, Liquids.cyanogen, new ContinuousFlameBulletType() {{
 			damage = 130f;
-			rangeChange = 80f;
+			rangeChange = 70f;
 			length = 200f;
 			knockback = 2f;
 			pierceCap = 3;
@@ -396,9 +398,14 @@ public final class HOverrides {
 		Planets.serpulo.allowSectorInvasion = false;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static <T extends UnlockableContent> void overwrite(UnlockableContent target, Cons<T> setter) {
-		setter.get((T) target);
+		setter.get(cast(target));
+	}
+
+	public static <T extends UnlockableContent> void overwrite(UnlockableContent target, Cons<T> setter, Class<T> type) {
+		if (type.isInstance(target)) {
+			overwrite(target, setter);
+		}
 	}
 
 	//Is this really necessary?

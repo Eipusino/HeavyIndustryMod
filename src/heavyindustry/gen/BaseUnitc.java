@@ -7,12 +7,8 @@ import mindustry.gen.Unitc;
 import mindustry.type.UnitType;
 
 public interface BaseUnitc extends Unitc {
-	default BaseUnitType checkType(UnitType def) {
-		if (def instanceof BaseUnitType bu) {
-			return bu;
-		}
-
-		throw new ClassCastException("Unit's type must be BaseUnitType!");
+	default BaseUnitType checkType(UnitType value) {
+		return (BaseUnitType) value;
 	}
 
 	default BaseUnitType checkType() {

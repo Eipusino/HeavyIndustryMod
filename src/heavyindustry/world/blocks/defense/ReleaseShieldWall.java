@@ -39,11 +39,11 @@ public class ReleaseShieldWall extends Wall {
 	@Override
 	public void setBars() {
 		super.setBars();
-		addBar("charge", (ReleaseShieldWallBuild entity) ->
+		addBar("charge", (ReleaseShieldWallBuild tile) ->
 				new Bar(() ->
 						Core.bundle.get("bar.charge"),
 						() -> color,
-						entity::getCharge
+						tile::getCharge
 				)
 		);
 	}

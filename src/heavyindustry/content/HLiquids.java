@@ -2,7 +2,6 @@ package heavyindustry.content;
 
 import arc.graphics.Color;
 import arc.math.Mathf;
-import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.entities.effect.WrapperEffect;
 import heavyindustry.graphics.Draws;
 import heavyindustry.graphics.HPal;
@@ -27,7 +26,7 @@ public final class HLiquids {
 	/** Don't let anyone instantiate this class. */
 	private HLiquids() {}
 
-	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
 	public static void load() {
 		brine = new Liquid("brine", Color.valueOf("b8c89f")) {{
 			coolant = false;

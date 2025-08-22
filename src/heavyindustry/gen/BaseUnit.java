@@ -1,7 +1,8 @@
 package heavyindustry.gen;
 
 import heavyindustry.type.unit.BaseUnitType;
-import mindustry.content.Fx;
+import mindustry.Vars;
+import mindustry.entities.Damage;
 import mindustry.gen.UnitEntity;
 
 public class BaseUnit extends UnitEntity implements BaseUnitc {
@@ -11,33 +12,12 @@ public class BaseUnit extends UnitEntity implements BaseUnitc {
 	}
 
 	@Override
-	public void rawDamage(float amount) {
-		if (type instanceof BaseUnitType but) {
-			boolean hadShields = shield > 0.0001f;
+	public BaseUnitType checkType() {
+		return (BaseUnitType) type;
+	}
 
-			if (Float.isNaN(health)) health = 0f;
-
-			if (hadShields) {
-				shieldAlpha = 1f;
-			}
-
-			float damage = amount * but.damageMultiplier;
-
-			float shieldDamage = Math.min(Math.max(shield, 0), damage);
-			shield -= shieldDamage;
-			hitTime = 1f;
-			damage -= shieldDamage;
-
-			if (damage > 0 && type.killable) {
-				health -= damage;
-				if (health <= 0 && !dead) {
-					kill();
-				}
-
-				if (hadShields && shield <= 0.0001f) {
-					Fx.unitShieldBreak.at(x, y, 0, type.shieldColor(this), this);
-				}
-			}
-		}
+	@Override
+	public void damage(float amount) {
+		rawDamage(Damage.applyArmor(amount, armorOverride >= 0 ? armorOverride : armor) / healthMultiplier / Vars.state.rules.unitHealth(team) * checkType().damageMultiplier);
 	}
 }

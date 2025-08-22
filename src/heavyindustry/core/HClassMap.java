@@ -46,7 +46,7 @@ import heavyindustry.entities.bullet.EffectBulletType;
 import heavyindustry.entities.bullet.ElectricStormBulletType;
 import heavyindustry.entities.bullet.FallingBulletType;
 import heavyindustry.entities.bullet.FireWorkBulletType;
-import heavyindustry.entities.bullet.FlameBulletType;
+import heavyindustry.entities.bullet.ConeFlameBulletType;
 import heavyindustry.entities.bullet.GrenadeBulletType;
 import heavyindustry.entities.bullet.GuidedMissileBulletType;
 import heavyindustry.entities.bullet.HailStoneBulletType;
@@ -319,7 +319,7 @@ final class HClassMap {
 		classes.put("ElectricStormBulletType", ElectricStormBulletType.class);
 		classes.put("FallingBulletType", FallingBulletType.class);
 		classes.put("FireWorkBulletType", FireWorkBulletType.class);
-		classes.put("FlameBulletType", FlameBulletType.class);
+		classes.put("FlameBulletType", ConeFlameBulletType.class);
 		classes.put("ParticleFlameBulletType", ParticleFlameBulletType.class);
 		classes.put("ColorFireBulletType", FireWorkBulletType.ColorFireBulletType.class);
 		classes.put("SpriteBulletType", FireWorkBulletType.SpriteBulletType.class);

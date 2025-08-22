@@ -24,8 +24,7 @@ public class BurstPump extends Pump {
 	public void setBars() {
 		super.setBars();
 
-		addBar("pumpProgress", (BurstPumpBuild e) ->
-				new Bar(() -> Core.bundle.get("bar.progress"), () -> Pal.ammo, () -> e.counter / pumpTime));
+		addBar("pumpProgress", (BurstPumpBuild tile) -> new Bar(() -> Core.bundle.get("bar.progress"), () -> Pal.ammo, () -> tile.counter / pumpTime));
 	}
 
 	@Override

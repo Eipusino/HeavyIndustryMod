@@ -1,7 +1,6 @@
 package heavyindustry.content;
 
 import arc.graphics.Color;
-import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.graphics.HPal;
 import mindustry.type.Item;
 
@@ -20,7 +19,7 @@ public final class HItems {
 	/** Don't let anyone instantiate this class. */
 	private HItems() {}
 
-	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
 	public static void load() {
 		stone = new Item("stone", Color.valueOf("8a8a8a")) {{
 			hardness = 1;

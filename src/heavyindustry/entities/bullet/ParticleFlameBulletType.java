@@ -17,7 +17,7 @@ import mindustry.graphics.Pal;
 
 import java.util.Arrays;
 
-public class ParticleFlameBulletType extends FlameBulletType {
+public class ParticleFlameBulletType extends ConeFlameBulletType {
 	protected final Color tc = new Color(), tc2 = new Color();
 
 	public Color[] colors = {Pal.lightFlame, Pal.darkFlame, Color.gray};

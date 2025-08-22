@@ -24,7 +24,7 @@ public class AdaptUnloader extends Unloader {
 	}
 
 	public class AdaptUnloaderBuild extends UnloaderBuild {
-		protected float counter;
+		public float counter;
 
 		@Override
 		public void updateTile() {

@@ -5,8 +5,8 @@ import mindustry.type.UnitType;
 
 public interface Nucleoidc extends BaseUnitc {
 	@Override
-	default NucleoidUnitType checkType(UnitType def) {
-		if (def instanceof NucleoidUnitType nu) {
+	default NucleoidUnitType checkType(UnitType value) {
+		if (value instanceof NucleoidUnitType nu) {
 			return nu;
 		}
 

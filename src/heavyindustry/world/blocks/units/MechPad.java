@@ -102,7 +102,7 @@ public class MechPad extends Block {
 	@Override
 	public void setBars() {
 		super.setBars();
-		addBar("progress", (MechPadBuild e) -> new Bar("bar.progress", Pal.ammo, e::fraction));
+		addBar("progress", (MechPadBuild tile) -> new Bar("bar.progress", Pal.ammo, tile::fraction));
 	}
 
 	@Override

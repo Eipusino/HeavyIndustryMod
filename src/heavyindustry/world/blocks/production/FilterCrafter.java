@@ -35,10 +35,18 @@ public class FilterCrafter extends GenericCrafter {
 	}
 
 	public class FilterCrafterBuild extends GenericCrafterBuild {
-		public Item[] filterItems = filterItemsBuilder.toArray(Item.class);
+		public Item[] filterItems;
 
-		public boolean[] shown = new boolean[filterItems.length];
+		public boolean[] shown;
 		public int current = 0;
+
+		@Override
+		public void created() {
+			super.created();
+
+			filterItems = filterItemsBuilder.toArray(Item.class);
+			shown = new boolean[filterItems.length];
+		}
 
 		@Override
 		public boolean acceptItem(Building source, Item item) {

@@ -138,17 +138,17 @@ public class MultiCrafter extends Block {
 
 	@Override
 	public void setBars() {
-		addBar("health", entity -> new Bar("stat.health", Pal.health, entity::healthf).blink(Color.white));
+		addBar("health", tile -> new Bar("stat.health", Pal.health, tile::healthf).blink(Color.white));
 
 		if (consPower != null) {
 			boolean buffered = consPower.buffered;
 			float capacity = consPower.capacity;
 
-			addBar("power", entity -> new Bar(
-					() -> buffered ? Core.bundle.format("bar.poweramount", Float.isNaN(entity.power.status * capacity) ? "<ERROR>" : UI.formatAmount((int) (entity.power.status * capacity))) :
+			addBar("power", tile -> new Bar(
+					() -> buffered ? Core.bundle.format("bar.poweramount", Float.isNaN(tile.power.status * capacity) ? "<ERROR>" : UI.formatAmount((int) (tile.power.status * capacity))) :
 							Core.bundle.get("bar.power"),
 					() -> Pal.powerBar,
-					() -> Mathf.zero(consPower.requestedPower(entity)) && entity.power.graph.getPowerProduced() + entity.power.graph.getBatteryStored() > 0f ? 1f : entity.power.status)
+					() -> Mathf.zero(consPower.requestedPower(tile)) && tile.power.graph.getPowerProduced() + tile.power.graph.getBatteryStored() > 0f ? 1f : tile.power.status)
 			);
 		}
 

@@ -144,15 +144,15 @@ public class SpaceUnloader extends StorageBlock {
 	@Override
 	public void setBars() {
 		super.setBars();
-		addBar("capacity", (SpaceUnloaderBuild e) -> new Bar(
-				() -> Core.bundle.format("bar.capacity", UI.formatAmount(e.block.itemCapacity)),
+		addBar("capacity", (SpaceUnloaderBuild tile) -> new Bar(
+				() -> Core.bundle.format("bar.capacity", UI.formatAmount(tile.block.itemCapacity)),
 				() -> Pal.items,
-				() -> (float) e.items.total() / (e.block.itemCapacity * Vars.content.items().count(UnlockableContent::unlockedNow))
+				() -> (float) tile.items.total() / (tile.block.itemCapacity * Vars.content.items().count(UnlockableContent::unlockedNow))
 		));
-		addBar("connections", (SpaceUnloaderBuild e) -> new Bar(
+		addBar("connections", (SpaceUnloaderBuild tile) -> new Bar(
 				() -> Core.bundle.format("bar.powerlines", linkLimit),
 				() -> Pal.items,
-				() -> (float) e.links.size / linkLimit
+				() -> (float) tile.links.size / linkLimit
 		));
 	}
 

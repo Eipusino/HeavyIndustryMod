@@ -53,16 +53,14 @@ public class ConfigurableBattery extends Battery {
 	public void setBars() {
 		super.setBars();
 
-		removeBar("power");
-		ConsumeBufferedPowerDynamic dynBufferedPower = (ConsumeBufferedPowerDynamic) consPower;
-		addBar("power", entity -> new Bar(
-				() -> {
-					float capacity = dynBufferedPower.getPowerCapacity(entity);
-					return Core.bundle.format("bar.poweramount", Float.isNaN(entity.power.status * capacity) ? "<ERROR>" : Elements.round(entity.power.status * capacity)) + "/" + Elements.round(capacity);
-				},
-				() -> Pal.powerBar,
-				() -> Mathf.zero(consPower.requestedPower(entity)) && entity.power.graph.getPowerProduced() + entity.power.graph.getBatteryStored() > 0f ? 1f : entity.power.status)
-		);
+		if (consPower instanceof ConsumeBufferedPowerDynamic dynamic) {
+			removeBar("power");
+			addBar("power", tile -> new Bar(() -> {
+						float capacity = dynamic.getPowerCapacity(tile);
+						return Core.bundle.format("bar.poweramount", Float.isNaN(tile.power.status * capacity) ? "<ERROR>" : Elements.round(tile.power.status * capacity)) + "/" + Elements.round(capacity);
+					}, () -> Pal.powerBar, () -> Mathf.zero(consPower.requestedPower(tile)) && tile.power.graph.getPowerProduced() + tile.power.graph.getBatteryStored() > 0f ? 1f : tile.power.status)
+			);
+		}
 	}
 
 	@Override

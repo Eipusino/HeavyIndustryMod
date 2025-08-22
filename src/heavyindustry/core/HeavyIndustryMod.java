@@ -215,6 +215,7 @@ public final class HeavyIndustryMod extends Mod {
 					t.checkPref("hi-closed-dialog", false);
 					t.checkPref("hi-floating-text", true);
 					t.checkPref("hi-animated-shields", true);
+					t.checkPref("hi-render-sort", false);
 					t.sliderPref("hi-strobespeed", 3, 1, 20, 1, s -> Strings.autoFixed(s / 2f, 2));
 					//this fucking sucks
 					t.table(Tex.button, c -> {

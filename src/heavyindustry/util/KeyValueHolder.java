@@ -76,7 +76,7 @@ public class KeyValueHolder<K, V> implements Map.Entry<K, V>, Cloneable {
 		try {
 			return (KeyValueHolder<K, V>) super.clone();
 		} catch (CloneNotSupportedException e) {
-			//Since the Cloneable interface has been implemented, this situation will never happen.
+			//this shouldn't happen, since we are Cloneable
 			return new KeyValueHolder<>(key, value, modifiable);
 		}
 	}

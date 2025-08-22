@@ -11,13 +11,13 @@ import mindustry.gen.Bullet;
 
 import static mindustry.Vars.indexer;
 
-public class FlameBulletType extends BulletType {
+public class ConeFlameBulletType extends BulletType {
 	public float flameLength, flameCone;
 	public int particleNumber;
 
 	public float damageBoost = 3f;
 
-	public FlameBulletType(float length, float cone, int number) {
+	public ConeFlameBulletType(float length, float cone, int number) {
 		super();
 		flameLength = length;
 		flameCone = cone;
@@ -40,7 +40,7 @@ public class FlameBulletType extends BulletType {
 		despawnHit = true;
 	}
 
-	public FlameBulletType(Color colorBegin, Color colorTo, Color colorEnd, float length, float cone, int number, float lifetime) {
+	public ConeFlameBulletType(Color colorBegin, Color colorTo, Color colorEnd, float length, float cone, int number, float lifetime) {
 		this(length, cone, number);
 		shootEffect = HFx.flameShoot(colorBegin, colorTo, colorEnd, length, cone, number, lifetime);
 	}

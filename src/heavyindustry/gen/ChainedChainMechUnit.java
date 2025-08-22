@@ -40,8 +40,6 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 
 	public float baseRotation;
 
-	private ChainedUnitType chainedType;
-
 	// internal values that i wish i had the entityanno knowledge to not make it generate io
 	int parentID = -1, childID = -1;
 	boolean grown;
@@ -49,13 +47,6 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 	@Override
 	public int classId() {
 		return Entitys.getId(ChainedChainMechUnit.class);
-	}
-
-	@Override
-	public void setType(UnitType set) {
-		chainedType = checkType(set);
-
-		super.setType(set);
 	}
 
 	/**
@@ -82,7 +73,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		head = tail = this;
 
 		if (!grown) {
-			for (int i = 0; i < chainedType.minSegments - 1; i++) grow();
+			for (int i = 0; i < checkType().minSegments - 1; i++) grow();
 			// i need this because again, i don't know how to not genio.
 			grown = true;
 		}
@@ -100,7 +91,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 
 	@Override
 	public int cap() {
-		ChainedUnitType ct = chainedType;
+		ChainedUnitType ct = checkType();
 		return Math.max(Units.getCap(team) * Math.max(ct.growLength, ct.maxSegments), Units.getCap(team));
 	}
 
@@ -108,12 +99,8 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 	 * Wrong cast errors are way too long. So long in fact that the crash box is too small for it.
 	 */
 	@Override
-	public ChainedUnitType checkType(UnitType def) {
-		if (def instanceof ChainedUnitType cu) {
-			return cu;
-		}
-
-		throw new ClassCastException("Unit's type must be ChainedUnitType!");
+	public ChainedUnitType checkType(UnitType value) {
+		return (ChainedUnitType) value;
 	}
 
 	@Override
@@ -223,7 +210,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 				return;
 			}
 
-			controller = chainedType.segmentAI.get(this);
+			controller = checkType().segmentAI.get(this);
 			if (controller.unit() != this) controller.unit(this);
 			return;
 		}
@@ -280,13 +267,13 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		if (!isTail()) {
 			((Chainedc) tail).grow();
 		} else {
-			ChainedUnitType uType = chainedType;
+			ChainedUnitType ct = checkType();
 
 			var tail = ((Unit & Chainedc) type.create(team));
 			tail.grown(true);
 			tail.set(
-					x + Angles.trnsx(rotation + 90, 0, uType.segmentOffset),
-					y + Angles.trnsy(rotation + 90, 0, uType.segmentOffset)
+					x + Angles.trnsx(rotation + 90, 0, ct.segmentOffset),
+					y + Angles.trnsy(rotation + 90, 0, ct.segmentOffset)
 			);
 			tail.rotation = rotation;
 			tail.add();
@@ -431,7 +418,8 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 			}
 		}
 
-		if (chainedType.splittable) {
+		ChainedUnitType cu = checkType();
+		if (cu.splittable) {
 			if (parent != null) {
 				((Chainedc) parent).child(null);
 				((Chainedc) parent).consForward(u -> {
@@ -446,7 +434,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 					u.setupWeapons(u.type);
 				});
 			}
-			if (parent != null && child != null) chainedType.splitSound.at(x, y);
+			if (parent != null && child != null) cu.splitSound.at(x, y);
 		} else {
 			if (parent != null) ((Chainedc) parent).consForward(Unitc::kill);
 			if (child != null) ((Chainedc) child).consBackwards(Unitc::kill);
@@ -458,7 +446,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 	 */
 	@Override
 	public void setupWeapons(UnitType def) {
-		ChainedUnitType cu = chainedType;
+		ChainedUnitType cu = checkType();
 		Seq<Weapon> weapons = cu.chainWeapons.get(cu.weaponsIndex.get(this));
 		mounts = new WeaponMount[weapons.size];
 		for (int i = 0; i < mounts.length; i++) {
@@ -501,7 +489,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		}
 
 		if (isTail()) {
-			ChainedUnitType cu = chainedType;
+			ChainedUnitType cu = checkType();
 
 			if (countForward() + 1 < cu.growLength && cu.regenTime > 0) {
 				growTime += Time.delta;
@@ -540,7 +528,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 	 * Updates the position and rotation of each segment in the chain.
 	 */
 	public void updateChain() {
-		ChainedUnitType cu = chainedType;
+		ChainedUnitType cu = checkType();
 		if (isHead()) consBackwards(c -> {
 			if (c.parent() != null) {
 				Tmp.v1.set(c).sub(c.parent()).nor().scl(cu.segmentOffset);

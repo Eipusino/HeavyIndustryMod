@@ -137,10 +137,10 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 	@Override
 	public void setBars() {
 		super.setBars();
-		addBar("capacity", (ResourcesDispatchingCenterBuild e) -> new Bar(
-				() -> Core.bundle.format("bar.capacity", UI.formatAmount(e.block.itemCapacity)),
+		addBar("capacity", (ResourcesDispatchingCenterBuild tile) -> new Bar(
+				() -> Core.bundle.format("bar.capacity", UI.formatAmount(tile.block.itemCapacity)),
 				() -> Pal.items,
-				() -> ((float) e.items.total()) / (e.block.itemCapacity * Vars.content.items().count(UnlockableContent::unlockedNow))
+				() -> ((float) tile.items.total()) / (tile.block.itemCapacity * Vars.content.items().count(UnlockableContent::unlockedNow))
 		));
 	}
 

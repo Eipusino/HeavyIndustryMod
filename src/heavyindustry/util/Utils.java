@@ -932,7 +932,7 @@ public final class Utils {
 		b.y += dy * moveDistance;
 
 		// Check if the destination has been reached or exceeded
-		if (Math.abs(b.x - endX) < 1e-4f && Math.abs(b.y - endY) < 1e-4f) {
+		if (Math.abs(b.x - endX) < 0.0001f && Math.abs(b.y - endY) < 0.0001f) {
 			b.x = endX;
 			b.y = endY;
 		}
@@ -1934,7 +1934,7 @@ public final class Utils {
 
 	@SuppressWarnings("unchecked")
 	public static <T> T cast(Object obj, Class<T> type, T def) {
-		if (obj != null && !type.isInstance(obj))
+		if (type.isInstance(obj))
 			return def;
 		return (T) obj;
 	}

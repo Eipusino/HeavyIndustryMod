@@ -1,9 +1,6 @@
 package heavyindustry.content;
 
-import heavyindustry.core.HeavyIndustryMod;
-import mindustry.content.Items;
 import mindustry.content.Planets;
-import mindustry.type.ItemStack;
 import mindustry.type.SectorPreset;
 
 /**
@@ -14,23 +11,20 @@ import mindustry.type.SectorPreset;
 public final class HSectorPresets {
 	public static SectorPreset
 			//serpulo
-			volcanicArchipelago, ironBridgeCoast, moltenRiftValley, frozenPlateau,
+			volcanicArchipelago, ironBridgeCoast, moltenRiftValley, frozenPlateau;
 			//erekir
-
-			//gliese
-			gravelMountain;
 
 	/** Don't let anyone instantiate this class. */
 	private HSectorPresets() {}
 
-	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
 	public static void load() {
 		//serpulo
 		volcanicArchipelago = new SectorPreset("volcanicArchipelago", Planets.serpulo, 111) {{
 			captureWave = 55;
 			difficulty = 10f;
 		}};
-		ironBridgeCoast = new SectorPreset("ironBridgeCoast", Planets.serpulo, 243) {{
+		ironBridgeCoast = new SectorPreset("ironBridgeCoast", Planets.serpulo, 244) {{
 			captureWave = 65;
 			difficulty = 11f;
 		}};
@@ -41,13 +35,6 @@ public final class HSectorPresets {
 		frozenPlateau = new SectorPreset("frozenPlateau", Planets.serpulo, 132) {{
 			captureWave = 75;
 			difficulty = 12f;
-		}};
-		//
-		gravelMountain = new SectorPreset("gravelMountain", HPlanets.gliese, 0) {{
-			alwaysUnlocked = true;
-			overrideLaunchDefaults = true;
-			captureWave = 15;
-			difficulty = 2f;
 		}};
 	}
 }

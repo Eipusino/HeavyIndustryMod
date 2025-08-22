@@ -146,10 +146,10 @@ public class FlowrateVoid extends PayloadVoid {
 		removeBar("items");
 		removeBar("liquid");
 
-		addBar("time", (FlowrateVoidBuild entity) -> new Bar(
-				() -> UI.formatTime(entity.readingTimer) + " | " + UI.formatTime(entity.totalTime),
+		addBar("time", (FlowrateVoidBuild tile) -> new Bar(
+				() -> UI.formatTime(tile.readingTimer) + " | " + UI.formatTime(tile.totalTime),
 				() -> Pal.bar,
-				() -> entity.readingTimer / entity.maxTime
+				() -> tile.readingTimer / tile.maxTime
 		));
 	}
 

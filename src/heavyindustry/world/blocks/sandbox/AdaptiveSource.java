@@ -12,7 +12,14 @@ import mindustry.type.LiquidStack;
 import mindustry.ui.Bar;
 import mindustry.world.Block;
 import mindustry.world.blocks.heat.HeatBlock;
-import mindustry.world.consumers.*;
+import mindustry.world.consumers.Consume;
+import mindustry.world.consumers.ConsumeItemDynamic;
+import mindustry.world.consumers.ConsumeItemFilter;
+import mindustry.world.consumers.ConsumeItems;
+import mindustry.world.consumers.ConsumeLiquid;
+import mindustry.world.consumers.ConsumeLiquidFilter;
+import mindustry.world.consumers.ConsumeLiquids;
+import mindustry.world.consumers.ConsumeLiquidsDynamic;
 import mindustry.world.meta.Stat;
 
 public class AdaptiveSource extends Block {
@@ -44,7 +51,7 @@ public class AdaptiveSource extends Block {
 
 	@Override
 	public void setBars() {
-		addBar("health", entity -> new Bar("stat.health", Pal.health, entity::healthf).blink(Color.white));
+		addBar("health", tile -> new Bar("stat.health", Pal.health, tile::healthf).blink(Color.white));
 	}
 
 	@Override
@@ -66,62 +73,65 @@ public class AdaptiveSource extends Block {
 			if (outputLiquids == null) outputLiquids = Vars.content.liquids();
 
 			for (int i = 0; i < proximity.size; i++) {
-				Building bd = proximity.get(i);
-				if (bd != null && bd.shouldConsume() && bd.block != null && bd.block.consumers != null) {
-					for (Consume c : bd.block.consumers) {
-						if (c instanceof ConsumeItems ci) {
-							ItemStack[] is = ci.items;
-							for (ItemStack ik : is) {
-								for (int a = 0; a < ik.amount; a++) {
-									if (bd.acceptItem(this, ik.item)) {
-										bd.handleItem(this, ik.item);
-									}
+				Building build = proximity.get(i);
+				if (build == null || !build.shouldConsume() || build.block == null || build.block.consumers == null) continue;
+				for (Consume consume : build.block.consumers) {
+					if (consume instanceof ConsumeItems cons) {
+						ItemStack[] items = cons.items;
+						for (ItemStack item : items) {
+							for (int a = 0; a < item.amount; a++) {
+								if (build.acceptItem(this, item.item)) {
+									build.handleItem(this, item.item);
 								}
 							}
-						} else if (c instanceof ConsumeItemFilter cf) {
-							for (Item it : outputItems) {
-								if (cf.filter.get(it) && bd.acceptItem(this, it)) {
-									bd.handleItem(this, it);
+						}
+					} else if (consume instanceof ConsumeItemFilter cons) {
+						for (Item item : outputItems) {
+							if (cons.filter.get(item) && build.acceptItem(this, item)) {
+								build.handleItem(this, item);
+							}
+						}
+					} else if (consume instanceof ConsumeLiquid cons) {
+						if (build.acceptLiquid(this, cons.liquid) && build.liquids.get(cons.liquid) < build.block.liquidCapacity) {
+							build.handleLiquid(this, cons.liquid, cons.amount * build.block.liquidCapacity);
+						}
+					} else if (consume instanceof ConsumeLiquids cons) {
+						LiquidStack[] liquids = cons.liquids;
+						for (LiquidStack liquid : liquids) {
+							if (build.acceptLiquid(this, liquid.liquid) && build.liquids.get(liquid.liquid) < build.block.liquidCapacity) {
+								build.handleLiquid(this, liquid.liquid, liquid.amount * build.block.liquidCapacity);
+							}
+						}
+					} else if (consume instanceof ConsumeLiquidFilter cons) {
+						for (Liquid liquid : outputLiquids) {
+							if (cons.filter.get(liquid) && build.acceptLiquid(this, liquid) && build.liquids.get(liquid) < build.block.liquidCapacity) {
+								build.handleLiquid(this, liquid, cons.amount * build.block.liquidCapacity);
+							}
+						}
+					} else if (consume instanceof ConsumeItemDynamic cons) {
+						ItemStack[] items = cons.items.get(build);
+						for (ItemStack item : items) {
+							for (int a = 0; a < item.amount; a++) {
+								if (build.acceptItem(this, item.item)) {
+									build.handleItem(this, item.item);
 								}
 							}
-						} else if (c instanceof ConsumeLiquid cl) {
-							if (bd.acceptLiquid(this, cl.liquid)) {
-								bd.handleLiquid(this, cl.liquid, cl.amount * bd.block.liquidCapacity);
-							}
-						} else if (c instanceof ConsumeLiquids cls) {
-							LiquidStack[] ls = cls.liquids;
-							for (LiquidStack lk : ls) {
-								if (bd.acceptLiquid(this, lk.liquid)) {
-									bd.handleLiquid(this, lk.liquid, lk.amount * bd.block.liquidCapacity);
-								}
-							}
-						} else if (c instanceof ConsumeLiquidFilter lf) {
-							for (Liquid lq : outputLiquids) {
-								if (lf.filter.get(lq) && bd.acceptLiquid(this, lq)) {
-									bd.handleLiquid(this, lq, lf.amount * bd.block.liquidCapacity);
-								}
-							}
-						} else if (c instanceof ConsumeItemDynamic cd) {
-							ItemStack[] is = cd.items.get(bd);
-							for (ItemStack ik : is) {
-								for (int a = 0; a < ik.amount; a++) {
-									if (bd.acceptItem(this, ik.item)) {
-										bd.handleItem(this, ik.item);
-									}
-								}
-							}
-						} else if (c instanceof ConsumeLiquidsDynamic ld) {
-							LiquidStack[] ls = ld.liquids.get(bd);
-							for (LiquidStack lk : ls) {
-								if (bd.acceptLiquid(this, lk.liquid)) {
-									bd.handleLiquid(this, lk.liquid, lk.amount * bd.block.liquidCapacity);
-								}
+						}
+					} else if (consume instanceof ConsumeLiquidsDynamic cons) {
+						LiquidStack[] liquids = cons.liquids.get(build);
+						for (LiquidStack liquid : liquids) {
+							if (build.acceptLiquid(this, liquid.liquid) && build.liquids.get(liquid.liquid) < build.block.liquidCapacity) {
+								build.handleLiquid(this, liquid.liquid, liquid.amount * build.block.liquidCapacity);
 							}
 						}
 					}
 				}
+
 			}
 		}
+
+		@Override
+		public void splashLiquid(Liquid liquid, float amount) {}
 
 		@Override
 		public float getPowerProduction() {

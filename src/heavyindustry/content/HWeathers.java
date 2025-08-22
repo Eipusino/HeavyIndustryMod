@@ -2,7 +2,6 @@ package heavyindustry.content;
 
 import arc.graphics.Color;
 import arc.util.Time;
-import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.entities.bullet.HailStoneBulletType;
 import heavyindustry.gen.HSounds;
 import heavyindustry.type.weather.EffectWeather;
@@ -27,7 +26,7 @@ public final class HWeathers {
 	/** Don't let anyone instantiate this class. */
 	private HWeathers() {}
 
-	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
 	public static void load() {
 		wind = new EffectWeather("wind") {{
 			weatherFx = HFx.windTail;

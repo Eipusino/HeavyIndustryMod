@@ -71,10 +71,10 @@ public class ConfigurableContainer extends StorageBlock {
 		super.setBars();
 
 		removeBar("items");
-		addBar("items", (ConfigurableContainerBuild entity) -> new Bar(
-				() -> Core.bundle.format("bar.capacity", UI.formatAmount(entity.storageCapacity)),
+		addBar("items", (ConfigurableContainerBuild tile) -> new Bar(
+				() -> Core.bundle.format("bar.capacity", UI.formatAmount(tile.storageCapacity)),
 				() -> Pal.items,
-				() -> (float) entity.items.total() / entity.storageCapacity * content.items().count(UnlockableContent::unlockedNow)
+				() -> (float) tile.items.total() / tile.storageCapacity * content.items().count(UnlockableContent::unlockedNow)
 		));
 	}
 

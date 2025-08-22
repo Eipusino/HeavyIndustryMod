@@ -28,7 +28,7 @@ import heavyindustry.entities.HUnitSorts;
 import heavyindustry.entities.bullet.CritBulletType;
 import heavyindustry.entities.bullet.CtrlMissileBulletType;
 import heavyindustry.entities.bullet.EffectBulletType;
-import heavyindustry.entities.bullet.FlameBulletType;
+import heavyindustry.entities.bullet.ConeFlameBulletType;
 import heavyindustry.entities.bullet.PositionLightningBulletType;
 import heavyindustry.entities.effect.WrapperEffect;
 import heavyindustry.entities.part.ArcCharge;
@@ -147,7 +147,6 @@ import mindustry.entities.part.RegionPart;
 import mindustry.entities.part.ShapePart;
 import mindustry.entities.pattern.ShootAlternate;
 import mindustry.entities.pattern.ShootBarrel;
-import mindustry.entities.pattern.ShootMulti;
 import mindustry.entities.pattern.ShootPattern;
 import mindustry.entities.pattern.ShootSpread;
 import mindustry.game.Team;
@@ -357,7 +356,6 @@ public final class HBlocks {
 	//turret
 	dissipation, rocketLauncher, largeRocketLauncher, rocketSilo,
 			dragonBreath, breakthrough, cloudbreaker, ironStream, minigun,
-			spike, fissure,
 			hurricane, judgement, evilSpirits,
 			solstice, starfall, annihilate, executor, heatDeath,
 	//turret-erekir
@@ -385,21 +383,21 @@ public final class HBlocks {
 		placeholderBlock = new PlaceholderBlock[maxsize];
 
 		for (int i = 0; i < maxsize; i++) {
-			int s = i + 1;
-			linkBlock[i] = new LinkBlock("link-block-" + s) {{
-				size = s;
+			int tz = i + 1;
+			linkBlock[i] = new LinkBlock("link-block-" + tz) {{
+				size = tz;
 			}};
-			linkBlockLiquid[i] = new LinkBlock("link-block-liquid-" + s) {{
-				size = s;
+			linkBlockLiquid[i] = new LinkBlock("link-block-liquid-" + tz) {{
+				size = tz;
 				outputsLiquid = true;
 			}};
-			placeholderBlock[i] = new PlaceholderBlock("placeholder-block-" + s) {{
-				size = s;
+			placeholderBlock[i] = new PlaceholderBlock("placeholder-block-" + tz) {{
+				size = tz;
 			}};
 		}
 	}
 
-	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
 	public static void load() {
 		//environment
 		cliff = new DepthCliff("cliff");
@@ -3401,11 +3399,11 @@ public final class HBlocks {
 		}};
 		dragonBreath = new ItemTurret("dragon-breath") {{
 			requirements(Category.turret, ItemStack.with(Items.graphite, 40, Items.silicon, 25, Items.titanium, 60, Items.plastanium, 30));
-			ammo(Items.coal, new FlameBulletType(Pal.lightFlame, Pal.darkFlame, Color.gray, range + 8, 14, 60, 22), Items.pyratite, new FlameBulletType(Pal.lightPyraFlame, Pal.darkPyraFlame, Color.gray, range + 8, 20, 72, 22) {{
+			ammo(Items.coal, new ConeFlameBulletType(Pal.lightFlame, Pal.darkFlame, Color.gray, range + 8, 14, 60, 22), Items.pyratite, new ConeFlameBulletType(Pal.lightPyraFlame, Pal.darkPyraFlame, Color.gray, range + 8, 20, 72, 22) {{
 				damage = 98;
 				statusDuration = 60 * 6;
 				ammoMultiplier = 4;
-			}}, Items.blastCompound, new FlameBulletType(HPal.blastRed.cpy().mul(Pal.lightFlame), HPal.blastRed.cpy(), Pal.lightishGray, range + 8, 22, 66, 30) {{
+			}}, Items.blastCompound, new ConeFlameBulletType(HPal.blastRed.cpy().mul(Pal.lightFlame), HPal.blastRed.cpy(), Pal.lightishGray, range + 8, 22, 66, 30) {{
 				damage = 90;
 				status = HStatusEffects.flamePoint;
 				statusDuration = 8 * 60f;
@@ -3714,242 +3712,6 @@ public final class HBlocks {
 				};
 			}};
 			ammoUseEffect = HFx.casing(32f);
-		}};
-		spike = new ItemTurret("spike") {{
-			requirements(Category.turret, ItemStack.with(Items.copper, 30, Items.lead, 60, Items.graphite, 40, Items.titanium, 50));
-			health = 960;
-			range = 200f;
-			smokeEffect = Fx.shootBigSmoke;
-			coolant = consumeCoolant(0.1f);
-			shoot = new ShootSpread() {{
-				shots = 12;
-				shotDelay = 2f;
-				spread = 0.55f;
-			}};
-			reload = 90f;
-			recoil = 3f;
-			shootCone = 30f;
-			inaccuracy = 4f;
-			size = 2;
-			shootSound = Sounds.shootSnap;
-			shake = 1f;
-			ammo(Items.titanium, new BasicBulletType(5f, 24f) {{
-				width = 8f;
-				height = 25f;
-				hitColor = backColor = lightColor = trailColor = HPal.titaniumBlue.cpy().lerp(Color.white, 0.1f);
-				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				hitEffect = HFx.crossBlast(hitColor, height + width);
-				shootEffect = despawnEffect = HFx.square(hitColor, 20f, 3, 12f, 2f);
-				ammoMultiplier = 8;
-			}}, Items.plastanium, new BasicBulletType(5f, 26f) {{
-				width = 8f;
-				height = 25f;
-				fragBullets = 4;
-				fragBullet = new BasicBulletType(2f, 26f) {{
-					width = 3f;
-					lifetime = 10f;
-					height = 12f;
-					ammoMultiplier = 12;
-					hitColor = backColor = lightColor = trailColor = Pal.plastanium.cpy().lerp(Color.white, 0.1f);
-					frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-					hitEffect = HFx.lightningHitSmall(backColor);
-					shootEffect = despawnEffect = HFx.square45_4_45;
-				}};
-				fragAngle = 130f;
-				fragVelocityMax = 1.1f;
-				fragVelocityMin = 0.5f;
-				fragLifeMax = 1.25f;
-				fragLifeMin = 0.25f;
-				ammoMultiplier = 12;
-				hitColor = backColor = lightColor = trailColor = Pal.plastanium.cpy().lerp(Color.white, 0.1f);
-				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				hitEffect = HFx.crossBlast(hitColor, height + width);
-				shootEffect = despawnEffect = HFx.square(hitColor, 20f, 3, 20f, 2f);
-			}}, Items.thorium, new BasicBulletType(5f, 38f) {{
-				width = 8f;
-				height = 25f;
-				status = StatusEffects.shocked;
-				statusDuration = 15f;
-				ammoMultiplier = 12;
-				lightningColor = hitColor = backColor = lightColor = trailColor = Pal.thoriumPink.cpy().lerp(Color.white, 0.1f);
-				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				hitEffect = HFx.crossBlast(hitColor, height + width);
-				shootEffect = despawnEffect = HFx.square(hitColor, 20f, 3, 20f, 2f);
-			}}, Items.pyratite, new BasicBulletType(5f, 18f) {{
-				width = 8f;
-				height = 25f;
-				incendAmount = 4;
-				incendChance = 0.25f;
-				incendSpread = 12f;
-				status = StatusEffects.burning;
-				statusDuration = 15f;
-				ammoMultiplier = 12f;
-				hitColor = backColor = lightColor = trailColor = HPal.pyraYellow.cpy().lerp(Color.white, 0.1f);
-				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				hitEffect = HFx.crossBlast(hitColor, height + width);
-				despawnEffect = Fx.blastExplosion;
-				shootEffect = HFx.square(hitColor, 20f, 3, 20f, 2f);
-			}}, Items.blastCompound, new BasicBulletType(5f, 22f) {{
-				width = 8f;
-				height = 25f;
-				status = StatusEffects.blasted;
-				statusDuration = 15f;
-				splashDamageRadius = 12f;
-				splashDamage = 36f;
-				ammoMultiplier = 8;
-				hitColor = backColor = lightColor = trailColor = HPal.blastRed.cpy().lerp(Color.white, 0.1f);
-				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				hitEffect = HFx.crossBlast(hitColor, height + width);
-				despawnEffect = Fx.blastExplosion;
-				shootEffect = HFx.square(hitColor, 20f, 3, 20f, 2f);
-			}});
-			limitRange();
-			maxAmmo = 120;
-			ammoPerShot = 12;
-			buildType = ItemTurretBuild::new;
-		}};
-		fissure = new ItemTurret("fissure") {{
-			requirements(Category.turret, ItemStack.with(Items.titanium, 110, Items.thorium, 90, Items.graphite, 150, Items.silicon, 120, Items.plastanium, 80));
-			ammo(Items.titanium, new BasicBulletType(8f, 45f) {{
-				lifetime = 48f;
-				width = 8f;
-				height = 42f;
-				shrinkX = 0;
-				trailWidth = 1.7f;
-				trailLength = 9;
-				trailColor = backColor = hitColor = lightColor = lightningColor = HPal.titaniumBlue;
-				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
-				smokeEffect = Fx.shootBigSmoke;
-				despawnEffect = HFx.square(backColor, 85f, 5, 52, 5);
-				hitEffect = HFx.hitSparkLarge;
-				ammoMultiplier = 4;
-			}}, Items.thorium, new BasicBulletType(8f, 65f) {{
-				lifetime = 48f;
-				width = 8f;
-				height = 42f;
-				shrinkX = 0;
-				trailWidth = 1.7f;
-				trailLength = 9;
-				trailColor = backColor = hitColor = lightColor = lightningColor = Pal.thoriumPink;
-				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
-				smokeEffect = Fx.shootBigSmoke;
-				despawnEffect = HFx.square(backColor, 85f, 5, 52, 5);
-				hitEffect = HFx.hitSparkLarge;
-				ammoMultiplier = 4;
-			}}, Items.plastanium, new BasicBulletType(8f, 60f) {{
-				lifetime = 48f;
-				width = 8f;
-				height = 42f;
-				shrinkX = 0;
-				splashDamage = 25f;
-				splashDamageRadius = 20f;
-				trailWidth = 1.7f;
-				trailLength = 9;
-				trailColor = backColor = hitColor = lightColor = lightningColor = Pal.plastanium;
-				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
-				smokeEffect = Fx.shootBigSmoke;
-				despawnEffect = HFx.square(backColor, 85f, 5, 52, 5);
-				hitEffect = HFx.hitSparkLarge;
-				ammoMultiplier = 4;
-			}}, Items.pyratite, new BasicBulletType(8f, 40f) {{
-				lifetime = 48f;
-				width = 8f;
-				height = 42f;
-				shrinkX = 0;
-				splashDamage = 35f;
-				splashDamageRadius = 25f;
-				trailWidth = 1.7f;
-				trailLength = 9;
-				status = StatusEffects.burning;
-				trailColor = backColor = hitColor = lightColor = lightningColor = HPal.pyraYellow;
-				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
-				smokeEffect = Fx.shootBigSmoke;
-				despawnEffect = HFx.square(backColor, 85f, 5, 52, 5);
-				hitEffect = HFx.hitSparkLarge;
-				ammoMultiplier = 4;
-			}}, Items.blastCompound, new BasicBulletType(8f, 40f) {{
-				lifetime = 48f;
-				width = 8f;
-				height = 42f;
-				shrinkX = 0;
-				splashDamage = 55f;
-				splashDamageRadius = 35f;
-				trailWidth = 1.7f;
-				trailLength = 9;
-				status = StatusEffects.blasted;
-				trailColor = backColor = hitColor = lightColor = lightningColor = HPal.blastRed;
-				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
-				smokeEffect = Fx.shootBigSmoke;
-				despawnEffect = HFx.square(backColor, 85f, 5, 52, 5);
-				hitEffect = HFx.hitSparkLarge;
-				ammoMultiplier = 4;
-			}}, HItems.chromium, new BasicBulletType(8f, 125f) {{
-				lifetime = 48f;
-				width = 8f;
-				height = 42f;
-				shrinkX = 0;
-				pierce = true;
-				pierceCap = 3;
-				pierceArmor = true;
-				trailWidth = 1.7f;
-				trailLength = 9;
-				status = HStatusEffects.breached;
-				trailColor = backColor = hitColor = lightColor = lightningColor = HPal.chromiumGrey;
-				frontColor = backColor.cpy().lerp(Color.white, 0.35f);
-				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
-				smokeEffect = Fx.shootBigSmoke;
-				despawnEffect = HFx.square(backColor, 85f, 5, 52, 5);
-				hitEffect = HFx.hitSparkLarge;
-				ammoMultiplier = 4;
-			}}, Items.phaseFabric, new BasicBulletType(8f, 65f) {{
-				lifetime = 48f;
-				width = 8f;
-				height = 42f;
-				shrinkX = 0;
-				trailWidth = 1.7f;
-				trailLength = 9;
-				trailColor = backColor = hitColor = lightColor = lightningColor = Pal.accent;
-				frontColor = Color.white;
-				shootEffect = HFx.square(backColor, 45f, 5, 38, 4);
-				smokeEffect = Fx.shootBigSmoke;
-				splashDamage = damage;
-				splashDamageRadius = 32f;
-				despawnEffect = hitEffect = new MultiEffect(HFx.circleOut(backColor, splashDamageRadius * 1.25f), HFx.hitSparkLarge);
-				ammoMultiplier = 6;
-				reloadMultiplier = 0.9f;
-				status = StatusEffects.melting;
-				statusDuration = 120f;
-			}});
-			size = 3;
-			health = 1420;
-			reload = 12f;
-			inaccuracy = 0.75f;
-			recoil = 0.5f;
-			coolant = consumeCoolant(0.2f);
-			drawer = new DrawTurret() {{
-				parts.add(new RegionPart("-shooter") {{
-					under = true;
-					outline = true;
-					moveY = -3f;
-					progress = PartProgress.recoil;
-				}});
-			}};
-			coolantMultiplier = 2f;
-			velocityRnd = 0.075f;
-			unitSort = UnitSorts.weakest;
-			range = 360f;
-			shootSound = HSounds.fissure;
-			shoot = new ShootMulti(new ShootPattern(), new ShootBarrel() {{
-				barrels = new float[]{-6.5f, 3f, 0f};
-			}}, new ShootBarrel() {{
-				barrels = new float[]{6.5f, 3f, 0f};
-			}});
-			buildType = ItemTurretBuild::new;
 		}};
 		hurricane = new SpeedupTurret("hurricane") {{
 			requirements(Category.turret, ItemStack.with(Items.lead, 80, Items.graphite, 100, Items.silicon, 250, Items.plastanium, 120, Items.surgeAlloy, 80, Items.phaseFabric, 150));

@@ -1,7 +1,6 @@
 package heavyindustry.content;
 
 import arc.struct.Seq;
-import heavyindustry.core.HeavyIndustryMod;
 import mindustry.content.Items;
 import mindustry.content.Liquids;
 import mindustry.content.SectorPresets;
@@ -31,7 +30,7 @@ public final class HTechTree {
 	/** Don't let anyone instantiate this class. */
 	private HTechTree() {}
 
-	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
 	public static void load() {
 		//items,liquids
 		vanillaNode(Liquids.water, () -> {
@@ -272,10 +271,7 @@ public final class HTechTree {
 		vanillaNode(scorch, () -> node(dragonBreath));
 		vanillaNode(arc, () -> node(hurricane));
 		vanillaNode(lancer, () -> node(breakthrough));
-		vanillaNode(salvo, () -> {
-			node(spike, () -> node(fissure));
-			node(minigun);
-		});
+		vanillaNode(salvo, () -> node(minigun));
 		vanillaNode(tsunami, () -> node(ironStream));
 		vanillaNode(spectre, () -> node(evilSpirits));
 		vanillaNode(meltdown, () -> node(judgement));

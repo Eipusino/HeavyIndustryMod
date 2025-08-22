@@ -13,7 +13,9 @@ import arc.util.io.Writes;
 import heavyindustry.content.HFx;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.type.unit.NucleoidUnitType;
+import mindustry.Vars;
 import mindustry.content.Fx;
+import mindustry.entities.Damage;
 import mindustry.entities.Effect;
 import mindustry.entities.abilities.Ability;
 import mindustry.entities.units.WeaponMount;
@@ -26,44 +28,42 @@ public class NucleoidUnit extends BaseUnit implements Nucleoidc {
 	public float recentDamage = 0f;
 	public float reinforcementsReload = 0f;
 
-	private NucleoidUnitType nucleoidType;
-
 	@Override
 	public int classId() {
 		return Entitys.getId(NucleoidUnit.class);
 	}
 
 	@Override
-	public NucleoidUnitType type() {
-		return nucleoidType;
+	public void setType(UnitType type) {
+		super.setType(type);
+
+		NucleoidUnitType nu = checkType();
+		recentDamage = nu.maxDamagedPerSec;
+		reinforcementsReload = nu.reinforcementsSpacing;
 	}
 
 	@Override
-	public void setType(UnitType type) {
-		nucleoidType = checkType(type);
-
-		super.setType(type);
-
-		recentDamage = nucleoidType.maxDamagedPerSec;
-		reinforcementsReload = nucleoidType.reinforcementsSpacing;
+	public NucleoidUnitType checkType() {
+		return (NucleoidUnitType) type;
 	}
 
 	@Override
 	public float mass() {
-		return nucleoidType.mass;
+		return checkType().mass;
 	}
 
 	@Override
 	public void update() {
 		super.update();
 
-		recentDamage += nucleoidType.recentDamageResume * Time.delta;
-		if (recentDamage >= nucleoidType.maxDamagedPerSec) {
-			recentDamage = nucleoidType.maxDamagedPerSec;
+		NucleoidUnitType nu = checkType();
+		recentDamage += nu.recentDamageResume * Time.delta;
+		if (recentDamage >= nu.maxDamagedPerSec) {
+			recentDamage = nu.maxDamagedPerSec;
 		}
 
 		reinforcementsReload += Time.delta;
-		if (healthf() < 0.3f && reinforcementsReload >= nucleoidType.reinforcementsSpacing) {
+		if (healthf() < 0.3f && reinforcementsReload >= nu.reinforcementsSpacing) {
 			reinforcementsReload = 0;
 			for (int i : Mathf.signs) {
 				Tmp.v1.trns(rotation + 60 * i, -hitSize * 1.85f).add(x, y);
@@ -75,7 +75,8 @@ public class NucleoidUnit extends BaseUnit implements Nucleoidc {
 	public void draw() {
 		super.draw();
 
-		if (!nucleoidType.drawArrow) return;
+		NucleoidUnitType nu = checkType();
+		if (!nu.drawArrow) return;
 
 		float z = Draw.z();
 		Draw.z(Layer.bullet);
@@ -83,10 +84,10 @@ public class NucleoidUnit extends BaseUnit implements Nucleoidc {
 		Tmp.c1.set(team.color).lerp(Color.white, Mathf.absin(4f, 0.15f));
 		Draw.color(Tmp.c1);
 		Lines.stroke(3f);
-		Drawn.circlePercent(x, y, hitSize * 1.15f, reinforcementsReload / nucleoidType.reinforcementsSpacing, 0);
+		Drawn.circlePercent(x, y, hitSize * 1.15f, reinforcementsReload / nu.reinforcementsSpacing, 0);
 
-		float scl = Interp.pow3Out.apply(Mathf.curve(reinforcementsReload / nucleoidType.reinforcementsSpacing, 0.96f, 1f));
-		TextureRegion arrowRegion = nucleoidType.arrowRegion;
+		float scl = Interp.pow3Out.apply(Mathf.curve(reinforcementsReload / nu.reinforcementsSpacing, 0.96f, 1f));
+		TextureRegion arrowRegion = nu.arrowRegion;
 
 		for (int l : Mathf.signs) {
 			float angle = 90 + 90 * l;
@@ -103,26 +104,38 @@ public class NucleoidUnit extends BaseUnit implements Nucleoidc {
 	}
 
 	@Override
+	public void damage(float amount) {
+		rawDamage(Damage.applyArmor(amount, armorOverride >= 0 ? armorOverride : armor) / healthMultiplier / Vars.state.rules.unitHealth(team) * checkType().damageMultiplier);
+	}
+
+	@Override
+	public void damagePierce(float amount, boolean withEffect) {
+		float pre = hitTime;
+		rawDamage(amount / healthMultiplier / Vars.state.rules.unitHealth(team) * checkType().damageMultiplier);
+		if (!withEffect) {
+			hitTime = pre;
+		}
+	}
+
+	@Override
 	public void rawDamage(float amount) {
 		boolean hadShields = shield > 0.0001f;
 		if (hadShields) {
 			shieldAlpha = 1f;
 		}
 
-		float damage = amount * nucleoidType.damageMultiplier;
+		amount = Math.min(amount, checkType().maxOnceDamage);
 
-		damage = Math.min(damage, nucleoidType.maxOnceDamage);
-
-		float shieldDamage = Math.min(Math.max(shield, 0f), damage);
+		float shieldDamage = Math.min(Math.max(shield, 0f), amount);
 		shield -= shieldDamage;
 		hitTime = 1f;
 
-		damage -= shieldDamage;
-		damage = Math.min(recentDamage / healthMultiplier, damage);
-		recentDamage -= damage * 1.5f * healthMultiplier;
+		amount -= shieldDamage;
+		amount = Math.min(recentDamage / healthMultiplier, amount);
+		recentDamage -= amount * 1.5f * healthMultiplier;
 
-		if (damage > 0f && type.killable) {
-			health -= damage;
+		if (amount > 0f && type.killable) {
+			health -= amount;
 			if (health <= 0f && !dead) {
 				kill();
 			}

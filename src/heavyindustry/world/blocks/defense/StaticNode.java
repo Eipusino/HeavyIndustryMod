@@ -169,10 +169,10 @@ public class StaticNode extends Block {
 	@Override
 	public void setBars() {
 		super.setBars();
-		addBar("connections", (StaticNodeBuild entity) -> new Bar(
-				() -> Core.bundle.format("bar.powerlines", entity.links.size, maxNodes),
-				() -> entity.team.color,
-				() -> (float) (entity.links.size / maxNodes)
+		addBar("connections", (StaticNodeBuild tile) -> new Bar(
+				() -> Core.bundle.format("bar.powerlines", tile.links.size, maxNodes),
+				() -> tile.team.color,
+				() -> (float) (tile.links.size / maxNodes)
 		));
 	}
 

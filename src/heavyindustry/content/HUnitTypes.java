@@ -20,7 +20,6 @@ import heavyindustry.ai.HealingDefenderAI;
 import heavyindustry.ai.MinerPointAI;
 import heavyindustry.ai.NullAI;
 import heavyindustry.ai.SurroundAI;
-import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.entities.abilities.BatteryAbility;
 import heavyindustry.entities.abilities.InvincibleForceFieldAbility;
 import heavyindustry.entities.abilities.JavelinAbility;
@@ -33,7 +32,7 @@ import heavyindustry.entities.bullet.AntiBulletFlakBulletType;
 import heavyindustry.entities.bullet.ArrowBulletType;
 import heavyindustry.entities.bullet.CtrlMissileBulletType;
 import heavyindustry.entities.bullet.EdgeFragBulletType;
-import heavyindustry.entities.bullet.FlameBulletType;
+import heavyindustry.entities.bullet.ConeFlameBulletType;
 import heavyindustry.entities.bullet.GuidedMissileBulletType;
 import heavyindustry.entities.bullet.HealConeBulletType;
 import heavyindustry.entities.bullet.HealingNukeBulletType;
@@ -163,7 +162,7 @@ public final class HUnitTypes {
 	/** Don't let anyone instantiate this class. */
 	private HUnitTypes() {}
 
-	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
 	public static void load() {
 		//vanilla-tank
 		vanguard = new BaseUnitType("vanguard") {{
@@ -1389,8 +1388,7 @@ public final class HUnitTypes {
 				cooldownTime = 120f;
 				shadow = 20f;
 				rotate = true;
-				bullet = new ContinuousLaserBulletType() {{
-					damage = 72f;
+				bullet = new ContinuousLaserBulletType(72f) {{
 					width = 6f;
 					length = 300f;
 					drawSize = 200f;
@@ -2654,7 +2652,7 @@ public final class HUnitTypes {
 				shootSound = Sounds.flame;
 				inaccuracy = 3f;
 				shootCone = 8f;
-				bullet = new FlameBulletType(Pal.techBlue, Pal.techBlue.cpy().lerp(Color.gray, 0.3f), Color.gray, range + 8f, 8, 72, 22f) {{
+				bullet = new ConeFlameBulletType(Pal.techBlue, Pal.techBlue.cpy().lerp(Color.gray, 0.3f), Color.gray, range + 8f, 8, 72, 22f) {{
 					damage = 225f;
 					collidesAir = true;
 					status = HStatusEffects.ultFireBurn;

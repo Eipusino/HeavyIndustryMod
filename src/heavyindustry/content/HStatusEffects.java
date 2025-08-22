@@ -7,7 +7,6 @@ import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
 import arc.util.Time;
 import arc.util.Tmp;
-import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.graphics.HPal;
 import heavyindustry.util.Utils;
 import mindustry.content.Fx;
@@ -37,7 +36,7 @@ public final class HStatusEffects {
 	/** Don't let anyone instantiate this class. */
 	private HStatusEffects() {}
 
-	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
 	public static void load() {
 		overheat = new BaseStatusEffect("overheat") {{
 			color = Color.valueOf("ffdcd8");

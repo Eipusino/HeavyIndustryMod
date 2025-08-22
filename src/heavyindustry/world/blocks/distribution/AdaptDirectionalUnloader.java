@@ -18,7 +18,7 @@ public class AdaptDirectionalUnloader extends DirectionalUnloader {
 	}
 
 	public class AdaptDirectionalUnloaderBuild extends DirectionalUnloaderBuild {
-		protected float counter;
+		public float counter;
 
 		@Override
 		public void updateTile() {

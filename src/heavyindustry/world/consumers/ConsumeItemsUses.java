@@ -57,8 +57,8 @@ public class ConsumeItemsUses extends ConsumeItems {
 		super.apply(block);
 
 		Core.app.post(() -> {
-			block.addBar("uses", build -> {
-				if (build instanceof UseCounter counter) {
+			block.addBar("uses", tile -> {
+				if (tile instanceof UseCounter counter) {
 					Item item = items[0].item;
 					return new Bar(Core.bundle.format("bar.usage", item.localizedName), Pal.powerBar, () -> ((float) counter.getUses()) / uses);
 				}

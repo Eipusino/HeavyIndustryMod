@@ -48,12 +48,8 @@ public class TractorBeamUnit extends BasePayloadUnit {
 	}
 
 	@Override
-	public TractorBeamUnitType checkType(UnitType def) {
-		if (def instanceof TractorBeamUnitType tu) {
-			return tu;
-		}
-
-		throw new ClassCastException("Unit's type must be ChainedUnitType!");
+	public TractorBeamUnitType checkType(UnitType value) {
+		return (TractorBeamUnitType) value;
 	}
 
 	public void moveIn() {
