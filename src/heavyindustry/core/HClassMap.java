@@ -143,6 +143,7 @@ import heavyindustry.world.blocks.distribution.TubeItemBridge;
 import heavyindustry.world.blocks.distribution.TubeSorter;
 import heavyindustry.world.blocks.environment.ArmorFloor;
 import heavyindustry.world.blocks.environment.ConnectedStaticWall;
+import heavyindustry.world.blocks.environment.EdgeFloor;
 import heavyindustry.world.blocks.environment.RotatedProp;
 import heavyindustry.world.blocks.environment.SizedVent;
 import heavyindustry.world.blocks.environment.TallTreeBlock;
@@ -391,6 +392,7 @@ final class HClassMap {
 		classes.put("ConnectedStaticWall", ConnectedStaticWall.class);
 		classes.put("RotatedProp", RotatedProp.class);
 		classes.put("SizedVent", SizedVent.class);
+		classes.put("EdgeFloor", EdgeFloor.class);
 		classes.put("ArmorFloor", ArmorFloor.class);
 		classes.put("UndergroundOreBlock", UndergroundOreBlock.class);
 		classes.put("TallTreeBlock", TallTreeBlock.class);

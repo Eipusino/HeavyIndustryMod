@@ -17,7 +17,7 @@ import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 
-import static heavyindustry.util.Utils.rotatePixmap90;
+import static heavyindustry.graphics.HPixmaps.rotatePixmap90;
 import static heavyindustry.util.Utils.split;
 
 public class DrawDirSpliceBlock extends DrawBlock {

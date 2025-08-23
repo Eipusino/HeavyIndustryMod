@@ -13,6 +13,7 @@ import rhino.NativeJavaPackage;
 import rhino.Scriptable;
 import rhino.Wrapper;
 
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -64,7 +65,7 @@ public final class ModJS {
 	}
 
 	public static void importClass(ImporterTopLevel scope, String canonical) {
-		importClass(scope, Reflects.mainClass(canonical));
+		importClass(scope, Reflects.findClass(canonical));
 	}
 
 	public static void importClass(ImporterTopLevel scope, Class<?> type) {
@@ -107,7 +108,7 @@ public final class ModJS {
 	public static NativeJavaClass loadClass(String name) {
 		try (URLClassLoader urlLoader = new URLClassLoader(new URL[]{HVars.internalTree.file.file().toURI().toURL()})) {
 			return new NativeJavaClass(Vars.mods.getScripts().scope, urlLoader.loadClass(name));
-		} catch (Exception e) {
+		} catch (IOException | ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
 	}

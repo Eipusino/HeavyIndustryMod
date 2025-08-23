@@ -12,13 +12,10 @@ import arc.func.Intc2;
 import arc.func.Intf;
 import arc.func.Prov;
 import arc.graphics.Color;
-import arc.graphics.Pixmap;
-import arc.graphics.Texture;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.graphics.g2d.PixmapRegion;
-import arc.graphics.g2d.TextureAtlas;
 import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
@@ -53,8 +50,6 @@ import heavyindustry.func.ProvT;
 import heavyindustry.gen.Spawner;
 import heavyindustry.graphics.HPal;
 import mindustry.content.Fx;
-import mindustry.content.Items;
-import mindustry.content.Liquids;
 import mindustry.content.StatusEffects;
 import mindustry.core.UI;
 import mindustry.core.World;
@@ -99,10 +94,12 @@ import mindustry.world.meta.StatUnit;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static mindustry.Vars.content;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.indexer;
@@ -136,23 +133,23 @@ public final class Utils {
 
 	public static final Seq<Building> buildings = new Seq<>(Building.class);
 
-	private static final Vec2 v11 = new Vec2(), v12 = new Vec2(), v13 = new Vec2();
-	private static final IntSet collidedBlocks = new IntSet();
-	private static final Rect rect = new Rect(), hitRect = new Rect();
-	private static final IntSeq buildIdSeq = new IntSeq();
-	private static final Seq<Tile> tiles = new Seq<>(Tile.class);
-	private static final Seq<Unit> units = new Seq<>(Unit.class);
-	private static final Seq<Hit> hseq = new Seq<>(Hit.class);
-	private static final Seq<ItemStack> rawStacks = new Seq<>(ItemStack.class);
-	private static final Seq<Item> items = new Seq<>(Item.class);
-	private static final IntSet collided = new IntSet(), collided2 = new IntSet();
-	private static final BasicPool<Hit> hPool = new BasicPool<>(Hit::new);
-	private static final IntSeq amounts = new IntSeq();
-	private static final String[] byteUnit = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"};
-	private static final char[] printableCharacters = {' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~'};
+	static final Vec2 v11 = new Vec2(), v12 = new Vec2(), v13 = new Vec2();
+	static final IntSet collidedBlocks = new IntSet();
+	static final Rect rect = new Rect(), hitRect = new Rect();
+	static final IntSeq buildIdSeq = new IntSeq();
+	static final Seq<Tile> tiles = new Seq<>(Tile.class);
+	static final Seq<Unit> units = new Seq<>(Unit.class);
+	static final Seq<Hit> hseq = new Seq<>(Hit.class);
+	static final Seq<ItemStack> rawStacks = new Seq<>(ItemStack.class);
+	static final Seq<Item> items = new Seq<>(Item.class);
+	static final IntSet collided = new IntSet(), collided2 = new IntSet();
+	static final BasicPool<Hit> hPool = new BasicPool<>(Hit::new);
+	static final IntSeq amounts = new IntSeq();
+	static final String[] byteUnit = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"};
+	static final char[] printableCharacters = {' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~'};
 
-	private static Tile tileParma;
-	private static Building tmpBuilding;
+	static Tile tileParma;
+	static Building tmpBuilding;
 
 	/** Don't let anyone instantiate this class. */
 	private Utils() {}
@@ -269,32 +266,6 @@ public final class Utils {
 			regions[i] = region;
 		}
 		return regions;
-	}
-
-	/**
-	 * Rotate one {@link Pixmap} by a multiple of 90 degrees. This method does not change the original pixmap
-	 * and returns a copy.
-	 *
-	 * @param target The target pixmap to be rotated.
-	 * @param rotate Rotation angle coefficient, the actual rotation angle is 90 * rotate.
-	 * @return A rotated pixmap copy.
-	 */
-	public static Pixmap rotatePixmap90(Pixmap target, int rotate) {
-		Pixmap res = new Pixmap(target.width, target.height);
-
-		for (int i = 0; i < target.width; i++) {
-			for (int j = 0; j < target.height; j++) {
-				int c = target.get(i, j);
-				switch (Mathf.mod(-rotate, 4)) {
-					case 0 -> res.set(i, j, c);
-					case 1 -> res.set(target.width - j - 1, i, c);
-					case 2 -> res.set(target.width - i - 1, target.height - j - 1, c);
-					case 3 -> res.set(j, target.height - i - 1, c);
-				}
-			}
-		}
-
-		return res;
 	}
 
 	public static int[] sort(int[] arr) {
@@ -681,33 +652,6 @@ public final class Utils {
 		return y + length * sin;
 	}
 
-	public static boolean isInstanceButNotSubclass(Object obj, Class<?> clazz) {
-		if (clazz.isInstance(obj)) {
-			try {
-				if (getClassSubclassHierarchy(obj.getClass()).contains(clazz)) {
-					return false;
-				}
-			} catch (ClassCastException e) {
-				return false;
-			}
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public static Seq<Class<?>> getClassSubclassHierarchy(Class<?> clazz) {
-		Class<?> c = clazz.getSuperclass();
-		Seq<Class<?>> hierarchy = new Seq<>(Class.class);
-		while (c != null) {
-			hierarchy.add(c);
-			Class<?>[] interfaces = c.getInterfaces();
-			hierarchy.addAll(Arrays.asList(interfaces));
-			c = c.getSuperclass();
-		}
-		return hierarchy;
-	}
-
 	public static Seq<Turret> turrets() {
 		Seq<Turret> turretSeq = new Seq<>(Turret.class);
 		int size = content.blocks().size;
@@ -825,76 +769,6 @@ public final class Utils {
 				cons.get(i).get(item);
 			}
 		}
-	}
-
-	/**
-	 * 1. Cannot use {@link mindustry.Vars#content}
-	 * 2. Cannot be used for init() anymore
-	 *
-	 * @author guiY
-	 */
-	public static void test() {
-		int size = 40;
-		for (Liquid liquid : new Liquid[]{Liquids.water, Liquids.slag, Liquids.oil, Liquids.cryofluid,
-				Liquids.arkycite, Liquids.gallium, Liquids.neoplasm,
-				Liquids.ozone, Liquids.hydrogen, Liquids.nitrogen, Liquids.cyanogen}) {
-			if (liquid.hidden) continue;
-			ObjectMap<Integer, Cons<Liquid>> cons = getEntries(liquid, size);
-			liquid(cons, liquid.name, liquid.color, liquid.explosiveness, liquid.flammability, liquid.heatCapacity, liquid.viscosity, liquid.temperature);
-		}
-
-		for (Item item : new Item[]{Items.scrap, Items.copper, Items.lead, Items.graphite, Items.coal, Items.titanium, Items.thorium, Items.silicon, Items.plastanium,
-				Items.phaseFabric, Items.surgeAlloy, Items.sporePod, Items.sand, Items.blastCompound, Items.pyratite, Items.metaglass,
-				Items.beryllium, Items.tungsten, Items.oxide, Items.carbide, Items.fissileMatter, Items.dormantCyst}) {
-			if (item.hidden) continue;
-			ObjectMap<Integer, Cons<Item>> cons = getEntries(item, size);
-			item(cons, item.name, item.color, item.explosiveness, item.flammability, item.cost, item.radioactivity, item.charge, item.healthScaling);
-		}
-		Draw.color();
-	}
-
-	private static ObjectMap<Integer, Cons<Item>> getEntries(Item item, int size) {
-		ObjectMap<Integer, Cons<Item>> cons = new ObjectMap<>();
-		for (int i = 1; i < 10; i++) {
-			int j = i;
-			cons.put(i, it -> {
-				PixmapRegion base = Core.atlas.getPixmap(item.uiIcon);
-				Pixmap mix = base.crop();
-				AtlasRegion number = Core.atlas.find(MOD_NAME + "-number-" + j);
-				if (number.found()) {
-					PixmapRegion region = TextureAtlas.blankAtlas().getPixmap(number);
-
-					mix.draw(region.pixmap, region.x, region.y, region.width, region.height, 0, base.height - size, size, size, false, true);
-				}
-
-				it.uiIcon = it.fullIcon = new TextureRegion(new Texture(mix));
-
-				it.buildable = item.buildable;
-				it.hardness = item.hardness + j;
-				it.lowPriority = item.lowPriority;
-			});
-		}
-		return cons;
-	}
-
-	private static ObjectMap<Integer, Cons<Liquid>> getEntries(Liquid liquid, int size) {
-		ObjectMap<Integer, Cons<Liquid>> cons = new ObjectMap<>();
-		for (int i = 1; i < 10; i++) {
-			int j = i;
-			cons.put(i, ld -> {
-				PixmapRegion base = Core.atlas.getPixmap(liquid.uiIcon);
-				Pixmap mix = base.crop();
-				AtlasRegion number = Core.atlas.find(MOD_NAME + "-number-" + j);
-				if (number.found()) {
-					PixmapRegion region = TextureAtlas.blankAtlas().getPixmap(number);
-
-					mix.draw(region.pixmap, region.x, region.y, region.width, region.height, 0, base.height - size, size, size, false, true);
-				}
-
-				ld.uiIcon = ld.fullIcon = new TextureRegion(new Texture(mix));
-			});
-		}
-		return cons;
 	}
 
 	public static ImageButton selfStyleImageButton(Drawable imageUp, ImageButtonStyle is, Runnable listener) {
@@ -1806,6 +1680,109 @@ public final class Utils {
 
 	public static double[] doubleOf(double... doubles) {
 		return doubles;
+	}
+
+	/**
+	 * Returns a comparator that compares {@link Map.Entry} in natural order on key.
+	 *
+	 * <p>The returned comparator is serializable and throws {@link
+	 * NullPointerException} when comparing an entry with a null key.
+	 *
+	 * @param  <K> the {@link Comparable} type of then map keys
+	 * @param  <V> the type of the map values
+	 * @return a comparator that compares {@link Map.Entry} in natural order on key.
+	 * @see Comparable
+	 * @since 1.0.7
+	 */
+	public static <K extends Comparable<? super K>, V> Comparator<Map.Entry<K, V>> comparingByKey() {
+		return (c1, c2) -> c1.getKey().compareTo(c2.getKey());
+	}
+
+	/**
+	 * Returns a comparator that compares {@link Map.Entry} in natural order on value.
+	 *
+	 * <p>The returned comparator is serializable and throws {@link
+	 * NullPointerException} when comparing an entry with null values.
+	 *
+	 * @param <K> the type of the map keys
+	 * @param <V> the {@link Comparable} type of the map values
+	 * @return a comparator that compares {@link Map.Entry} in natural order on value.
+	 * @see Comparable
+	 * @since 1.0.7
+	 */
+	public static <K, V extends Comparable<? super V>> Comparator<Map.Entry<K, V>> comparingByValue() {
+		return (c1, c2) -> c1.getValue().compareTo(c2.getValue());
+	}
+
+	/**
+	 * Returns a comparator that compares {@link Map.Entry} by key using the given
+	 * {@link Comparator}.
+	 *
+	 * <p>The returned comparator is serializable if the specified comparator
+	 * is also serializable.
+	 *
+	 * @param  <K> the type of the map keys
+	 * @param  <V> the type of the map values
+	 * @param  cmp the key {@link Comparator}
+	 * @return a comparator that compares {@link Map.Entry} by the key.
+	 * @since 1.0.7
+	 */
+	public static <K, V> Comparator<Map.Entry<K, V>> comparingByKey(Comparator<? super K> cmp) {
+		Objects.requireNonNull(cmp);
+		return (c1, c2) -> cmp.compare(c1.getKey(), c2.getKey());
+	}
+
+	/**
+	 * Returns a comparator that compares {@link Map.Entry} by value using the given
+	 * {@link Comparator}.
+	 *
+	 * <p>The returned comparator is serializable if the specified comparator
+	 * is also serializable.
+	 *
+	 * @param  <K> the type of the map keys
+	 * @param  <V> the type of the map values
+	 * @param  cmp the value {@link Comparator}
+	 * @return a comparator that compares {@link Map.Entry} by the value.
+	 * @since 1.0.7
+	 */
+	public static <K, V> Comparator<Map.Entry<K, V>> comparingByValue(Comparator<? super V> cmp) {
+		Objects.requireNonNull(cmp);
+		return (c1, c2) -> cmp.compare(c1.getValue(), c2.getValue());
+	}
+
+	/**
+	 * Returns a copy of the given {@code Map.Entry}. The returned instance is not
+	 * associated with any map. The returned instance has the same characteristics
+	 * as instances returned by the {@link Map#entry Map::entry} method.
+	 *
+	 * @apiNote
+	 * An instance obtained from a map's entry-set view has a connection to that map.
+	 * The {@code copyOf}  method may be used to create a {@code Map.Entry} instance,
+	 * containing the same key and value, that is independent of any map.
+	 *
+	 * @implNote
+	 * If the given entry was obtained from a call to {@code copyOf} or {@code Map::entry},
+	 * calling {@code copyOf} will generally not create another copy.
+	 *
+	 * @param <K> the type of the key
+	 * @param <V> the type of the value
+	 * @param e the entry to be copied
+	 * @return a map entry equal to the given entry
+	 * @throws NullPointerException if e is null or if either of its key or value is null
+	 * @since 1.0.7
+	 */
+	@SuppressWarnings("unchecked")
+	public static <K, V> Map.Entry<K, V> copyOf(Map.Entry<? extends K, ? extends V> e) {
+		if (e instanceof Pair<? extends K, ? extends V>) {
+			return (Map.Entry<K, V>) e;
+		} else {
+			return entry(e.getKey(), e.getValue());
+		}
+	}
+
+	static <K, V> Map.Entry<K, V> entry(K k, V v) {
+		// Pair checks for nulls
+		return new Pair<>(k, v);
 	}
 
 	public static <T> int indexOf(T[] array, T element) {

@@ -12,7 +12,7 @@ import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 
-import static heavyindustry.util.Utils.rotatePixmap90;
+import static heavyindustry.graphics.HPixmaps.rotatePixmap90;
 
 public class DrawPayloadFactory extends DrawDirSpliceBlock {
 	public TextureRegion topRegion, outRegion;

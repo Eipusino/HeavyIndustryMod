@@ -9,9 +9,11 @@ import arc.graphics.GL30;
 import arc.graphics.Pixmap;
 import arc.graphics.gl.FrameBuffer;
 import arc.graphics.gl.GLVersion;
+import heavyindustry.util.Reflects;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
+import static heavyindustry.util.Utils.arrayOf;
 
 /**
  * A {@link Graphics} mock-module used to logically pretend that the window's screen resolution is something else. This
@@ -24,18 +26,11 @@ import java.lang.reflect.Method;
  * @since 1.0.6
  */
 public class SizedGraphics extends Graphics {
-	private static final Method setCursor, setSystemCursor;
+	protected static final Method setCursor, setSystemCursor;
 
 	static {
-		try {
-			setCursor = Graphics.class.getDeclaredMethod("setCursor", Cursor.class);
-			setSystemCursor = Graphics.class.getDeclaredMethod("setSystemCursor", SystemCursor.class);
-
-			setCursor.setAccessible(true);
-			setSystemCursor.setAccessible(true);
-		} catch (NoSuchMethodException e) {
-			throw new RuntimeException(e);
-		}
+		setCursor = Reflects.getMethod(Graphics.class, "setCursor", arrayOf(Cursor.class));
+		setSystemCursor = Reflects.getMethod(Graphics.class, "setSystemCursor", arrayOf(SystemCursor.class));
 	}
 
 	protected int overrideWidth, overrideHeight;
@@ -294,20 +289,12 @@ public class SizedGraphics extends Graphics {
 
 	@Override
 	protected void setCursor(Cursor cursor) {
-		try {
-			setCursor.invoke(delegate, cursor);
-		} catch (InvocationTargetException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
+		Reflects.invokeVoidMethod(setCursor, delegate, arrayOf(cursor));
 	}
 
 	@Override
 	protected void setSystemCursor(SystemCursor systemCursor) {
-		try {
-			setSystemCursor.invoke(delegate, systemCursor);
-		} catch (InvocationTargetException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
+		Reflects.invokeVoidMethod(setSystemCursor, delegate, arrayOf(systemCursor));
 	}
 
 	@Override

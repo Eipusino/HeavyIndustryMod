@@ -112,13 +112,13 @@ public class CopterUnitType extends BaseUnitType {
 		super.createIcons(packer);
 
 		if (outlines) {
-			Seq<TextureRegion> outlineTargets = new Seq<>(TextureRegion.class);
+			Seq<TextureRegion> outlineRotors = new Seq<>(TextureRegion.class);
 
 			for (Rotor rotor : rotors) {
-				outlineTargets.add(rotor.topRegion, rotor.bladeRegion);
+				outlineRotors.add(rotor.topRegion, rotor.bladeRegion);
 			}
 
-			for (TextureRegion outlineTarget : outlineTargets) {
+			for (TextureRegion outlineTarget : outlineRotors) {
 				if (!outlineTarget.found()) continue;
 
 				makeOutline(PageType.main, packer, outlineTarget, alwaysCreateOutline, outlineColor, outlineRadius);

@@ -2,13 +2,15 @@ package heavyindustry.util;
 
 import arc.func.Prov;
 import arc.struct.ObjectMap;
-import arc.util.Log;
+import arc.struct.Seq;
 import mindustry.Vars;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 
 import static heavyindustry.util.Utils.arrayOf;
 
@@ -59,90 +61,37 @@ public final class Reflects {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> T get(Class<?> type, Object object, String name, T def) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			return (T) field.get(object);
-		} catch (Exception e) {
-			return def;
-		}
-	}
-
-	public static <T> T get(Object object, String name, T def) {
-		return get(object.getClass(), object, name, def);
-	}
-
-	public static <T> T get(Class<?> type, String name, T def) {
-		return get(type, null, name, def);
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T> T gef(String type, Object object, String name) {
+	public static <T> T getForName(String type, Object object, String name) {
 		try {
 			Field field = Class.forName(type).getDeclaredField(name);
 			field.setAccessible(true);
 			return (T) field.get(object);
-		} catch (Exception e) {
+		} catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public static <T> T gef(String type, String name) {
-		return gef(type, null, name);
+	public static <T> T getForName(String type, String name) {
+		return getForName(type, null, name);
 	}
 
-	/**
-	 * @param object object from which the represented field's value is to be extracted
-	 * @param type The standard name of the class where the field is located.
-	 * @param name the name of the field
-	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T gel(Object object, String type, String name) {
-		try {
-			Field field = object.getClass().getClassLoader().loadClass(type).getDeclaredField(name);
-			field.setAccessible(true);
-			return (T) field.get(object);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void sel(Object object, String type, String name, Object value) {
-		try {
-			Field field = object.getClass().getClassLoader().loadClass(type).getDeclaredField(name);
-			field.setAccessible(true);
-			field.set(object, value);
-		} catch (Exception e) {
-			Log.err(e);
-		}
-	}
-
-	public static <T> T ged(Class<?> type, String name, T def) {
-		return ged(type, null, name, def);
-	}
-
-	public static <T> T ged(Object object, String name, T def) {
-		return ged(object.getClass(), object, name, def);
-	}
-
-	/**
-	 * Reflect to retrieve fields without throwing exceptions and return default value.
-	 *
-	 * @param type the class from which to obtain the field
-	 * @param object object from which the represented field's value is to be extracted
-	 * @param name the name of the field
-	 * @param def default value. If there is an abnormality in the reflection, return this parameter.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> T ged(Class<?> type, Object object, String name, T def) {
+	public static <T> T getOrDefault(Class<?> type, Object object, String name, T def) {
 		try {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			return (T) field.get(object);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			return def;
 		}
+	}
+
+	public static <T> T getOrDefault(Object object, String name, T def) {
+		return getOrDefault(object.getClass(), object, name, def);
+	}
+
+	public static <T> T getOrDefault(Class<?> type, String name, T def) {
+		return getOrDefault(type, null, name, def);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -151,7 +100,7 @@ public final class Reflects {
 			Method method = type.getDeclaredMethod(name, parameterTypes);
 			method.setAccessible(true);
 			return (T) method.invoke(object, args);
-		} catch (Exception e) {
+		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
 			return def;
 		}
 	}
@@ -178,7 +127,33 @@ public final class Reflects {
 			Method method = type.getDeclaredMethod(name, parameterTypes);
 			method.setAccessible(true);
 			return (T) method.invoke(object, args);
-		} catch (Exception e) {
+		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void invokeVoid(Object object, String name) {
+		invokeVoid(object.getClass(), object, name);
+	}
+
+	public static void invokeVoid(Class<?> type, Object object, String name) {
+		invokeVoid(type, object, name, arrayOf(), arrayOf());
+	}
+
+	public static void invokeVoid(Class<?> type, String name) {
+		invokeVoid(type, name, arrayOf(), arrayOf());
+	}
+
+	public static void invokeVoid(Class<?> type, String name, Object[] args, Class<?>[] parameterTypes) {
+		invokeVoid(type, null, name, args, parameterTypes);
+	}
+
+	public static void invokeVoid(Class<?> type, Object object, String name, Object[] args, Class<?>[] parameterTypes) {
+		try {
+			Method method = type.getDeclaredMethod(name, parameterTypes);
+			method.setAccessible(true);
+			method.invoke(object, args);
+		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -204,7 +179,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			return field;
-		} catch (Exception e) {
+		} catch (NoSuchFieldException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -212,6 +187,37 @@ public final class Reflects {
 	/** Gets a field of a model without throwing exceptions. */
 	public static Field getField(Object object, String name) {
 		return getField(object.getClass(), name);
+	}
+
+	/** Gets a value from a field of an model without throwing exceptions. */
+	@SuppressWarnings("unchecked")
+	public static <T> T getField(Object object, Field field) {
+		try {
+			return (T) field.get(object);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/** A utility function to find a field without throwing exceptions. */
+	public static Field findField(Class<?> type, String name, boolean access) {
+		try {
+			Field field = findClassField(type, name).getDeclaredField(name);
+			if (access) field.setAccessible(true);
+
+			return field;
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/** Sets a field of an model without throwing exceptions. */
+	public static void setField(Object object, Field field, Object value) {
+		try {
+			field.set(object, value);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static Method getMethod(Class<?> type, String name) {
@@ -223,7 +229,19 @@ public final class Reflects {
 			Method method = type.getDeclaredMethod(name, parameterTypes);
 			method.setAccessible(true);
 			return method;
-		} catch (Exception e) {
+		} catch (NoSuchMethodException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/** A utility function to find a method without throwing exceptions. */
+	public static Method findMethod(Class<?> type, String name, boolean access, Class<?>... args) {
+		try {
+			Method method = findClassMethod(type, name, args).getDeclaredMethod(name, args);
+			if (access) method.setAccessible(true);
+
+			return method;
+		} catch (NoSuchMethodException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -244,7 +262,27 @@ public final class Reflects {
 	public static <T> T invokeMethod(Method method, Object object, Object[] args) {
 		try {
 			return (T) method.invoke(object, args);
-		} catch (Exception e) {
+		} catch (IllegalAccessException | InvocationTargetException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void invokeVoidMethod(Method method) {
+		invokeVoidMethod(method, null, arrayOf());
+	}
+
+	public static void invokeVoidMethod(Method method, Object[] args) {
+		invokeVoidMethod(method, null, args);
+	}
+
+	public static void invokeVoidMethod(Method method, Object object) {
+		invokeVoidMethod(method, object, arrayOf());
+	}
+
+	public static void invokeVoidMethod(Method method, Object object, Object[] args) {
+		try {
+			method.invoke(object, args);
+		} catch (IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -262,7 +300,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			return field.getBoolean(object);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			return def;
 		}
 	}
@@ -280,7 +318,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			return field.getInt(object);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			return def;
 		}
 	}
@@ -298,22 +336,35 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			return field.getFloat(object);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			return def;
 		}
 	}
 
-	public static <T> Constructor<T> cons(Class<T> type, Class<?>[] args) {
-		return cons(type, true, args);
+	public static <T> Constructor<T> getConstructor(Class<T> type, Class<?>[] args) {
+		return getConstructor(type, true, args);
 	}
 
 	/** A utility function to find a constructor without throwing exceptions. */
-	public static <T> Constructor<T> cons(Class<T> type, boolean access, Class<?>[] args) {
+	public static <T> Constructor<T> getConstructor(Class<T> type, boolean access, Class<?>[] args) {
 		try {
 			Constructor<T> cons = type.getDeclaredConstructor(args);
 			if (access) cons.setAccessible(true);
 			return cons;
-		} catch (Exception e) {
+		} catch (NoSuchMethodException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/** A utility function to find a constructor without throwing exceptions. */
+	@SuppressWarnings("unchecked")
+	public static <T> Constructor<T> findConstructor(Class<T> type, boolean access, Class<?>... args) {
+		try {
+			Constructor<T> c = ((Class<T>) findClassConstructor(type, args)).getDeclaredConstructor(args);
+			if (access) c.setAccessible(true);
+
+			return c;
+		} catch (NoSuchMethodException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -326,7 +377,7 @@ public final class Reflects {
 	public static <T> T make(Constructor<T> cons, Object[] args) {
 		try {
 			return cons.newInstance(args);
-		} catch (Exception e) {
+		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -336,7 +387,7 @@ public final class Reflects {
 			Constructor<T> cons = type.getDeclaredConstructor(parameterTypes);
 			cons.setAccessible(true);
 			return cons.newInstance(args);
-		} catch (Exception e) {
+		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -351,16 +402,52 @@ public final class Reflects {
 			return () -> {
 				try {
 					return cons.newInstance(args);
-				} catch (Exception e) {
+				} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
 					throw new RuntimeException(e);
 				}
 			};
-		} catch (Exception e) {
+		} catch (NoSuchMethodException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public static <T> Class<T> mainClass(String name) {
+	/** Finds a class from the parent classes that has a specific field. */
+	public static Class<?> findClassField(Class<?> type, final String name) {
+		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
+			Field[] fields = type.getDeclaredFields();
+			for (Field field : fields) {
+				if (field.getName().equals(name)) return type;
+			}
+		}
+
+		return type;
+	}
+
+	/** Finds a class from the parent classes that has a specific method. */
+	public static Class<?> findClassMethod(Class<?> type, final String name, Class<?>... args) {
+		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
+			Method[] methods = type.getDeclaredMethods();
+			for (Method method : methods) {
+				if (method.getName().equals(name) && Arrays.equals(method.getParameterTypes(), args)) return type;
+			}
+		}
+
+		return type;
+	}
+
+	/** Finds a class from the parent classes that has a specific constructor. */
+	public static Class<?> findClassConstructor(Class<?> type, Class<?>... args) {
+		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
+			Constructor<?>[] constructors = type.getDeclaredConstructors();
+			for (Constructor<?> constructor : constructors) {
+				if (Arrays.equals(constructor.getParameterTypes(), args)) return type;
+			}
+		}
+
+		return type;
+	}
+
+	public static <T> Class<T> findClass(final String name) {
 		return forClass(name, true, Vars.mods.mainLoader());
 	}
 
@@ -369,7 +456,7 @@ public final class Reflects {
 	public static <T> Class<T> forClass(String name) {
 		try {
 			return (Class<T>) Class.forName(name);
-		} catch (Exception e) {
+		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -378,7 +465,7 @@ public final class Reflects {
 	public static <T> Class<T> forClass(String name, boolean initialize, ClassLoader loader) {
 		try {
 			return (Class<T>) Class.forName(name, initialize, loader);
-		} catch (Exception e) {
+		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -388,9 +475,39 @@ public final class Reflects {
 			Thread thread = Thread.currentThread();
 			StackTraceElement[] trace = thread.getStackTrace();
 			return Class.forName(trace[3].getClassName(), false, Vars.mods.mainLoader());
-		} catch (Exception e) {
+		} catch (ClassNotFoundException e) {
 			return null;
 		}
+	}
+
+	public static boolean isInstanceButNotSubclass(Object obj, Class<?> clazz) {
+		if (clazz.isInstance(obj)) {
+			try {
+				if (getClassSubclassHierarchy(obj.getClass()).contains(clazz)) {
+					return false;
+				}
+			} catch (ClassCastException e) {
+				return false;
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static Seq<Class<?>> getClassSubclassHierarchy(Class<?> clazz) {
+		Class<?> c = clazz.getSuperclass();
+		Seq<Class<?>> hierarchy = new Seq<>(Class.class);
+		while (c != null) {
+			hierarchy.add(c);
+			Class<?>[] interfaces = c.getInterfaces();
+			hierarchy.addAll(Arrays.asList(interfaces));
+
+			if (c == Object.class) break;
+
+			c = c.getSuperclass();
+		}
+		return hierarchy;
 	}
 
 	public static void copyProperties(Object source, Object target) {
@@ -405,6 +522,8 @@ public final class Reflects {
 						targetFieldMap.put(field.getName(), field);
 					}
 				}
+				if (targetClass == Object.class) break;
+
 				targetClass = targetClass.getSuperclass();
 			}
 
@@ -424,6 +543,8 @@ public final class Reflects {
 						targetField.set(target, value);
 					}
 				}
+				if (sourceClass == Object.class) break;
+
 				sourceClass = sourceClass.getSuperclass();
 			}
 		} catch (IllegalArgumentException | IllegalAccessException e) {

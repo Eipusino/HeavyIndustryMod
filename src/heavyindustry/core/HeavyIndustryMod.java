@@ -43,6 +43,7 @@ import heavyindustry.ui.HStyles;
 import heavyindustry.ui.Elements;
 import heavyindustry.ui.dialogs.HResearchDialog;
 import heavyindustry.util.IconLoader;
+import kotlin.KotlinVersion;
 import mindustry.ctype.Content;
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.game.EventType.DisposeEvent;
@@ -94,6 +95,8 @@ public final class HeavyIndustryMod extends Mod {
 	static @Nullable LoadedMod loaded;
 
 	static {
+		Log.infoTag("Kotlin", String.valueOf(KotlinVersion.CURRENT));
+
 		modJson = LoadMod.getMeta(internalTree.root);
 
 		isPlugin = Utils.get(() -> modJson.get("plugin").asBool(), false);
@@ -254,15 +257,6 @@ public final class HeavyIndustryMod extends Mod {
 
 		floatingText = new FloatingText(massageSplit[Mathf.random(massageSplit.length - 1)]);
 		floatingText.build(ui.menuGroup);
-	}
-
-	/** Omitting longer mod names is generally used to load mod sprites. */
-	public static String name(String add) {
-		return MOD_NAME + "-" + add;
-	}
-
-	public static String name() {
-		return MOD_NAME + "-";
 	}
 
 	public static boolean isHeavyIndustry(@Nullable Content content) {

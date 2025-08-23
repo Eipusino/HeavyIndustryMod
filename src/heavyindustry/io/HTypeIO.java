@@ -12,6 +12,7 @@ import mindustry.ctype.UnlockableContent;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -94,7 +95,7 @@ public final class HTypeIO {
 			byte[] bytes = bout.toByteArray();
 			write.i(bytes.length);
 			write.b(bytes);
-		} catch (Exception e) {
+		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -105,7 +106,7 @@ public final class HTypeIO {
 		try (ByteArrayInputStream bin = new ByteArrayInputStream(bytes); ObjectInputStream in = new ObjectInputStream(bin)) {
 			Object object = in.readObject();
 			return Utils.cast(object, type, null);
-		} catch (Exception e) {
+		} catch (IOException | ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
 	}

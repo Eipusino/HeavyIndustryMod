@@ -1116,6 +1116,10 @@ public final class Drawn {
 		return color;
 	}
 
+	public static void crectUi(float x, float y, float w, float h) {
+		Draw.rect(Core.atlas.find("whiteui"), x + w / 2f, y + h / 2f, w, h);
+	}
+
 	private static int mul4(int value) {
 		while (value % 4 != 0) {
 			value++;

@@ -33,13 +33,13 @@ import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
 import arc.util.Align;
 import arc.util.Nullable;
-import arc.util.Reflect;
 import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.ui.dialogs.FlowrateVoidDialog;
 import heavyindustry.ui.dialogs.GameDataDialog;
 import heavyindustry.ui.dialogs.PowerGraphInfoDialog;
+import heavyindustry.util.Reflects;
 import mindustry.Vars;
 import mindustry.core.UI;
 import mindustry.core.World;
@@ -57,6 +57,8 @@ import mindustry.world.meta.StatValue;
 import mindustry.world.meta.Stats;
 import mindustry.world.modules.ItemModule;
 
+import java.lang.reflect.Field;
+
 public final class Elements {
 	public static final float LEN = 60f, OFFSET = 12f;
 
@@ -70,6 +72,8 @@ public final class Elements {
 
 	private static long lastToast;
 	private static Table pTable = new Table(), floatTable = new Table();
+
+	private static Field clickListenerField;
 
 	/** Don't let anyone instantiate this class. */
 	private Elements() {}
@@ -575,7 +579,8 @@ public final class Elements {
 	public static void replaceClickListener(Button button, ClickListener newListener) {
 		button.removeListener(button.getClickListener());
 
-		Reflect.set(Button.class, button, "clickListener", newListener);
+		if (clickListenerField == null) clickListenerField = Reflects.getField(Button.class, "clickListener");
+		Reflects.setField(button, clickListenerField, newListener);
 		button.addListener(newListener);
 	}
 }
