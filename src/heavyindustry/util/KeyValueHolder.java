@@ -22,20 +22,13 @@ import java.util.Map;
  * @see Map#ofEntries Map.ofEntries()
  * @since 1.0.7
  */
-public class Pair<K, V> implements Map.Entry<K, V>, Cloneable {
+public class KeyValueHolder<K, V> implements Map.Entry<K, V>, Cloneable {
 	protected K key;
 	protected V value;
 
-	protected boolean modifiable;
-
-	public Pair(K k, V v) {
+	public KeyValueHolder(K k, V v) {
 		key = k;
 		value = v;
-	}
-
-	public Pair(K k, V v, boolean mod) {
-		this(k, v);
-		modifiable = mod;
 	}
 
 	/**
@@ -66,18 +59,17 @@ public class Pair<K, V> implements Map.Entry<K, V>, Cloneable {
 	 */
 	@Override
 	public V setValue(V v) {
-		if (modifiable) value = v;
-
+		value = v;
 		return value;
 	}
 
 	@SuppressWarnings("unchecked")
-	public Pair<K, V> copy() {
+	public KeyValueHolder<K, V> copy() {
 		try {
-			return (Pair<K, V>) super.clone();
+			return (KeyValueHolder<K, V>) super.clone();
 		} catch (CloneNotSupportedException e) {
 			//this shouldn't happen, since we are Cloneable
-			return new Pair<>(key, value, modifiable);
+			return new KeyValueHolder<>(key, value);
 		}
 	}
 

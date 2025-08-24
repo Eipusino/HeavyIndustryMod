@@ -26,9 +26,9 @@ import com.sun.tools.javac.util.List;
  * initializer and annotated with {@link ListClasses} or {@link ListPackages}
  */
 public class TypeListPlugin implements Plugin {
-	Seq<JCMethodInvocation> classes = new Seq<>(JCMethodInvocation.class), packages = new Seq<>(JCMethodInvocation.class);
-	Seq<String> classDefs = new Seq<>(String.class), packageDefs = new Seq<>(String.class);
-	ObjectMap<JCMethodInvocation, List<JCExpression>> classArgs = new ObjectMap<>(), packArgs = new ObjectMap<>();
+	protected Seq<JCMethodInvocation> classes = new Seq<>(JCMethodInvocation.class), packages = new Seq<>(JCMethodInvocation.class);
+	protected Seq<String> classDefs = new Seq<>(String.class), packageDefs = new Seq<>(String.class);
+	protected ObjectMap<JCMethodInvocation, List<JCExpression>> classArgs = new ObjectMap<>(), packArgs = new ObjectMap<>();
 
 	@Override
 	public void init(JavacTask task, String... args) {
@@ -41,7 +41,7 @@ public class TypeListPlugin implements Plugin {
 						@Override
 						public Void visitVariable(VariableTree node, Void unused) {
 							ExpressionTree init = node.getInitializer();
-							if (init != null && init.toString().startsWith("arrayOf(")) {
+							if (init != null && init.toString().startsWith("stringOf(")) {
 								if (node.getModifiers().getAnnotations().stream().anyMatch(a -> a.getAnnotationType().toString().equals(ListClasses.class.getSimpleName()))) {
 									classes.add((JCMethodInvocation) init);
 								} else if (node.getModifiers().getAnnotations().stream().anyMatch(a -> a.getAnnotationType().toString().equals(ListPackages.class.getSimpleName()))) {

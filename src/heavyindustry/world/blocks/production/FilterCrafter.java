@@ -35,9 +35,9 @@ public class FilterCrafter extends GenericCrafter {
 	}
 
 	public class FilterCrafterBuild extends GenericCrafterBuild {
-		public Item[] filterItems;
+		public Item[] filterItems = {};
 
-		public boolean[] shown;
+		public boolean[] shown = {};
 		public int current = 0;
 
 		@Override

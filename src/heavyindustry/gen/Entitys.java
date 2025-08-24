@@ -5,7 +5,6 @@ import arc.func.Prov;
 import arc.struct.ObjectIntMap;
 import arc.struct.ObjectMap;
 import arc.util.Structs;
-import mindustry.ctype.Content;
 import mindustry.gen.EntityMapping;
 import mindustry.gen.Entityc;
 import mindustry.type.UnitType;
@@ -18,13 +17,13 @@ import mindustry.type.UnitType;
  */
 public final class Entitys {
 	private static final ObjectIntMap<Class<? extends Entityc>> classIdMap = new ObjectIntMap<>();
-	private static final ObjectMap<String, Prov<? extends Entityc>> needMap = new ObjectMap<>();
+	private static final ObjectMap<String, Prov<? extends Entityc>> needIdMap = new ObjectMap<>();
 
 	/** Don't let anyone instantiate this class. */
 	private Entitys() {}
 
 	public static <T extends Entityc> void register(String name, Class<T> type, Prov<T> prov) {
-		needMap.put(name, prov);
+		needIdMap.put(name, prov);
 		classIdMap.put(type, EntityMapping.register(name, prov));
 	}
 
@@ -36,7 +35,7 @@ public final class Entitys {
 			if (type.getName().startsWith("mindustry.gen.")) {
 				EntityMapping.nameMap.put(suffix + name, Structs.find(EntityMapping.idMap, p -> p != null && p.get().getClass().equals(type)));
 			} else {
-				EntityMapping.nameMap.put(suffix + name, needMap.get(type.getSimpleName()));
+				EntityMapping.nameMap.put(suffix + name, needIdMap.get(type.getSimpleName()));
 			}
 		}
 		return get;

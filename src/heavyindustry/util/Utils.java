@@ -15,7 +15,6 @@ import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
-import arc.graphics.g2d.PixmapRegion;
 import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
@@ -40,6 +39,7 @@ import arc.struct.Seq;
 import arc.util.Eachable;
 import arc.util.Log;
 import arc.util.Nullable;
+import arc.util.Reflect;
 import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.pooling.Pool;
@@ -91,6 +91,7 @@ import mindustry.world.draw.DrawDefault;
 import mindustry.world.draw.DrawMulti;
 import mindustry.world.draw.DrawRegion;
 import mindustry.world.meta.StatUnit;
+import org.jetbrains.annotations.Contract;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -154,6 +155,7 @@ public final class Utils {
 	/** Don't let anyone instantiate this class. */
 	private Utils() {}
 
+	@Contract(pure = true)
 	public static int reverse(int rotation) {
 		return switch (rotation) {
 			case 0 -> 2;
@@ -296,15 +298,6 @@ public final class Utils {
 					j -= step;
 				}
 				arr[j + step] = temp;
-			}
-		}
-	}
-
-	/** reads every single pixel on a textureRegion from bottom left to top right. */
-	public static void readTexturePixels(PixmapRegion pixmap, Intc2 cons) {
-		for (int j = 0; j < pixmap.height; j++) {
-			for (int i = 0; i < pixmap.width; i++) {
-				cons.get(pixmap.get(i, j), i + pixmap.width * (pixmap.height - 1 - j));
 			}
 		}
 	}
@@ -1541,20 +1534,6 @@ public final class Utils {
 		return intersected ? v2.set(nearX, nearY) : null;
 	}
 
-	public static PixmapRegion color(PixmapRegion pixmap, ColorBool cond, Int2Color to) {
-		pixmap.pixmap.each((x, y) -> {
-			if (x >= pixmap.x && x < pixmap.x + pixmap.width && y >= pixmap.y && y < pixmap.y + pixmap.height &&
-					cond.get(pixmap.pixmap.get(x, y))) {
-				pixmap.pixmap.set(x, y, to.get(x, y));
-			}
-		});
-		return pixmap;
-	}
-
-	public static PixmapRegion color(PixmapRegion pixmap, Color from, Color to) {
-		return color(pixmap, c -> c == from.rgba(), (x, y) -> to);
-	}
-
 	public static Vec2 randomPoint(float radius) {
 		float r = radius * Mathf.sqrt(Mathf.random());
 		return Tmp.v1.setToRandomDirection().setLength(r);
@@ -1652,6 +1631,10 @@ public final class Utils {
 	@SafeVarargs
 	public static <T> T[] arrayOf(T... elements) {
 		return elements;
+	}
+
+	public static String[] stringOf(String... strings) {
+		return strings;
 	}
 
 	public static boolean[] boolOf(boolean... bools) {
@@ -1773,7 +1756,7 @@ public final class Utils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <K, V> Map.Entry<K, V> copyOf(Map.Entry<? extends K, ? extends V> e) {
-		if (e instanceof Pair<? extends K, ? extends V>) {
+		if (e instanceof KeyValueHolder<? extends K, ? extends V>) {
 			return (Map.Entry<K, V>) e;
 		} else {
 			return entry(e.getKey(), e.getValue());
@@ -1782,7 +1765,7 @@ public final class Utils {
 
 	static <K, V> Map.Entry<K, V> entry(K k, V v) {
 		// Pair checks for nulls
-		return new Pair<>(k, v);
+		return new KeyValueHolder<>(k, v);
 	}
 
 	public static <T> int indexOf(T[] array, T element) {
@@ -1980,10 +1963,8 @@ public final class Utils {
 		return reducef(array, 0f, (item, accum) -> accum + extract.get(item)) / array.length;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static <T> T[] resize(T[] array, int newSize, T fill) {
-		Class<?> type = array.getClass().getComponentType();
-		return resize(array, size -> (T[]) Array.newInstance(type, size), newSize, fill);
+		return resize(array, size -> Reflect.newArray(array, newSize), newSize, fill);
 	}
 
 	public static <T> T[] resize(T[] array, ArrayCreator<T> create, int newSize, T fill) {

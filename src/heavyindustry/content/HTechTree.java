@@ -16,6 +16,7 @@ import mindustry.type.ItemStack;
 
 import static heavyindustry.content.HBlocks.*;
 import static heavyindustry.content.HUnitTypes.*;
+import static heavyindustry.util.Constant.RUNNABLE_NOTHING;
 import static mindustry.content.Blocks.*;
 import static mindustry.content.UnitTypes.*;
 
@@ -325,7 +326,7 @@ public final class HTechTree {
 	}
 
 	public static TechNode node(UnlockableContent content) {
-		return node(content, content.researchRequirements(), () -> {});
+		return node(content, content.researchRequirements(), RUNNABLE_NOTHING);
 	}
 
 	public static TechNode node(UnlockableContent content, Runnable children) {
@@ -333,7 +334,7 @@ public final class HTechTree {
 	}
 
 	public static TechNode node(UnlockableContent content, ItemStack[] requirements) {
-		return node(content, requirements, null, () -> {});
+		return node(content, requirements, null, RUNNABLE_NOTHING);
 	}
 
 	public static TechNode node(UnlockableContent content, ItemStack[] requirements, Runnable children) {
@@ -341,7 +342,7 @@ public final class HTechTree {
 	}
 
 	public static TechNode node(UnlockableContent content, ItemStack[] requirements, Seq<Objective> objectives) {
-		return node(content, requirements, objectives, () -> {});
+		return node(content, requirements, objectives, RUNNABLE_NOTHING);
 	}
 
 	public static TechNode node(UnlockableContent content, ItemStack[] requirements, Seq<Objective> objectives, Runnable children) {
@@ -361,7 +362,7 @@ public final class HTechTree {
 	}
 
 	public static TechNode node(UnlockableContent content, Seq<Objective> objectives) {
-		return node(content, content.researchRequirements(), objectives, () -> {});
+		return node(content, content.researchRequirements(), objectives, RUNNABLE_NOTHING);
 	}
 
 	public static TechNode nodeProduce(UnlockableContent content, Seq<Objective> objectives, Runnable children) {
@@ -373,6 +374,6 @@ public final class HTechTree {
 	}
 
 	public static TechNode nodeProduce(UnlockableContent content) {
-		return nodeProduce(content, new Seq<>(Objective.class), () -> {});
+		return nodeProduce(content, new Seq<>(Objective.class), RUNNABLE_NOTHING);
 	}
 }

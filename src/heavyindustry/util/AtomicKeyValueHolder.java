@@ -3,15 +3,15 @@ package heavyindustry.util;
 import java.util.Map;
 
 /** @since 1.0.7 */
-public class AtomicPair<K, V> implements Map.Entry<K, V>, Cloneable {
+public class AtomicKeyValueHolder<K, V> implements Map.Entry<K, V>, Cloneable {
 	public volatile K key;
 	public volatile V value;
 
-	public AtomicPair() {
+	public AtomicKeyValueHolder() {
 		this(null, null);
 	}
 
-	public AtomicPair(K k, V v) {
+	public AtomicKeyValueHolder(K k, V v) {
 		key = k;
 		value = v;
 	}
@@ -22,12 +22,12 @@ public class AtomicPair<K, V> implements Map.Entry<K, V>, Cloneable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public AtomicPair<K, V> copy() {
+	public AtomicKeyValueHolder<K, V> copy() {
 		try {
-			return (AtomicPair<K, V>) super.clone();
+			return (AtomicKeyValueHolder<K, V>) super.clone();
 		} catch (CloneNotSupportedException e) {
 			//this shouldn't happen, since we are Cloneable
-			return new AtomicPair<>(key, value);
+			return new AtomicKeyValueHolder<>(key, value);
 		}
 	}
 

@@ -8,12 +8,14 @@ import mindustry.type.Planet;
 import mindustry.type.Sector;
 import mindustry.type.SectorPreset;
 
+import static heavyindustry.util.Constant.RUNNABLE_NOTHING;
+
 public class ExtraSectorPreset extends SectorPreset {
 	public static ObjectMap<Sector, Runnable> scripts = new ObjectMap<>();
 
 	static {
 		Events.run(EventType.Trigger.update, () -> {
-			if (Vars.state.getSector() != null) scripts.get(Vars.state.getSector(), () -> {}).run();
+			if (Vars.state.getSector() != null) scripts.get(Vars.state.getSector(), RUNNABLE_NOTHING).run();
 		});
 	}
 

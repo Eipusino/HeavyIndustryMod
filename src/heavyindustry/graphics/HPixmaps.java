@@ -1,9 +1,12 @@
 package heavyindustry.graphics;
 
+import arc.func.Intc2;
 import arc.graphics.Color;
 import arc.graphics.Pixmap;
 import arc.graphics.Pixmaps;
+import arc.graphics.g2d.PixmapRegion;
 import arc.math.Mathf;
+import heavyindustry.util.Utils;
 
 public final class HPixmaps {
 	private HPixmaps() {}
@@ -99,5 +102,28 @@ public final class HPixmaps {
 		});
 
 		return out;
+	}
+
+	/** reads every single pixel on a textureRegion from bottom left to top right. */
+	public static void readTexturePixels(PixmapRegion pixmap, Intc2 cons) {
+		for (int j = 0; j < pixmap.height; j++) {
+			for (int i = 0; i < pixmap.width; i++) {
+				cons.get(pixmap.get(i, j), i + pixmap.width * (pixmap.height - 1 - j));
+			}
+		}
+	}
+
+	public static PixmapRegion color(PixmapRegion pixmap, Utils.ColorBool cond, Utils.Int2Color to) {
+		pixmap.pixmap.each((x, y) -> {
+			if (x >= pixmap.x && x < pixmap.x + pixmap.width && y >= pixmap.y && y < pixmap.y + pixmap.height &&
+					cond.get(pixmap.pixmap.get(x, y))) {
+				pixmap.pixmap.set(x, y, to.get(x, y));
+			}
+		});
+		return pixmap;
+	}
+
+	public static PixmapRegion color(PixmapRegion pixmap, Color from, Color to) {
+		return color(pixmap, c -> c == from.rgba(), (x, y) -> to);
 	}
 }

@@ -13,8 +13,6 @@ import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 public final class Worlds {
 	public static final Seq<CommandableBlock.CommandableBuild> commandableBuilds = new Seq<>(CommandableBlock.CommandableBuild.class);
 
-	public static final short currentVer = 1;
-
 	public static WorldData worldData = new WorldData();
 	public static TeamPayloadData teamPayloadData = new TeamPayloadData();
 

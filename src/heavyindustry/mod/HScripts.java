@@ -1,5 +1,6 @@
 package heavyindustry.mod;
 
+import arc.files.Fi;
 import arc.func.Func;
 import arc.util.Log;
 import heavyindustry.HVars;
@@ -17,17 +18,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import static heavyindustry.HVars.packages;
-
 /**
  * Utility class for transition between Java and JS scripts, as well as providing a custom top level scope for the sake of
  * cross-mod compatibility. Use the custom scope for programmatically compiling Rhino functions.
  *
  * @since 1.0.6
  */
-public final class ModJS {
+public final class HScripts {
 	/** Don't let anyone instantiate this class. */
-	private ModJS() {}
+	private HScripts() {}
 
 	/** Initializes the Mod JS. Main-thread only! */
 	public static void init() {
@@ -44,7 +43,7 @@ public final class ModJS {
 	 *			  another custom scope.
 	 */
 	public static void importDefaults(ImporterTopLevel scope) {
-		for (String pack : packages) importPackage(scope, pack);
+		for (String pack : HVars.packages) importPackage(scope, pack);
 	}
 
 	/**
@@ -97,19 +96,17 @@ public final class ModJS {
 		};
 	}
 
-	public static NativeJavaClass getClass(String name) {
-		try {
-			return new NativeJavaClass(Vars.mods.getScripts().scope, Class.forName(name, true, Vars.mods.mainLoader()));
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
+	public static NativeJavaClass getClass(String name) throws ClassNotFoundException {
+		return new NativeJavaClass(Vars.mods.getScripts().scope, Class.forName(name, true, Vars.mods.mainLoader()));
 	}
 
-	public static NativeJavaClass loadClass(String name) {
-		try (URLClassLoader urlLoader = new URLClassLoader(new URL[]{HVars.internalTree.file.file().toURI().toURL()})) {
+	public static NativeJavaClass loadClass(String name) throws ClassNotFoundException, IOException {
+		return loadClass(HVars.internalTree.file, name);
+	}
+
+	public static NativeJavaClass loadClass(Fi file, String name) throws ClassNotFoundException, IOException {
+		try (URLClassLoader urlLoader = new URLClassLoader(new URL[]{file.file().toURI().toURL()})) {
 			return new NativeJavaClass(Vars.mods.getScripts().scope, urlLoader.loadClass(name));
-		} catch (IOException | ClassNotFoundException e) {
-			throw new RuntimeException(e);
 		}
 	}
 }

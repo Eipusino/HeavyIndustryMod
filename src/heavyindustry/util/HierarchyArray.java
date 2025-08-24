@@ -1,5 +1,7 @@
 package heavyindustry.util;
 
+import arc.util.Reflect;
+
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -19,9 +21,8 @@ public class HierarchyArray<T> implements Iterable<T> {
 		scores = new float[size];
 	}
 
-	@SuppressWarnings("unchecked")
-	public HierarchyArray(int size, Class<?> arrayType) {
-		array = (T[]) Array.newInstance(arrayType, size);
+	public HierarchyArray(int size, Class<T> arrayType) {
+		array = Reflect.newArray(arrayType, size);
 		scores = new float[size];
 	}
 

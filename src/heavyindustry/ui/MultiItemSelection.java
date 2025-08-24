@@ -51,8 +51,7 @@ public final class MultiItemSelection {
 
 			Seq<T> list = items.select(u -> (text.isEmpty() || u.localizedName.toLowerCase().contains(text.toLowerCase())));
 			for (T item : list) {
-				if (!item.unlockedNow() || (item instanceof Item) || item.isHidden())
-					continue;
+				if (!item.unlockedNow() || item.isHidden()) continue;
 
 				ImageButton button = cont.button(Tex.whiteui, Styles.clearNoneTogglei, Mathf.clamp(item.selectionSize, 0f, 40f), () -> {
 				}).tooltip(item.localizedName).get();

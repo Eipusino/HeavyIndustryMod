@@ -21,7 +21,9 @@ public final class HStat {
 			damageReduction = new Stat("hi-damage-reduction", StatCat.general),
 			fieldStrength = new Stat("hi-field-strength", StatCat.function),
 			albedo = new Stat("hi-albedo", StatCat.function),
-			contents = new Stat("hi-contents");
+			contents = new Stat("hi-contents"),
+			healPercent = new Stat("hi-heal-percent", StatCat.general),
+			produceChance = new Stat("hi-produce-chance", StatCat.crafting);
 
 	/** Don't let anyone instantiate this class. */
 	private HStat() {}

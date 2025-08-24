@@ -4,7 +4,6 @@ import arc.func.Cons;
 import arc.struct.Seq;
 import heavyindustry.input.InputAggregator;
 import heavyindustry.input.InputAggregator.TapResult;
-import heavyindustry.input.TapPacket;
 import mindustry.gen.Player;
 import mindustry.net.Net;
 import mindustry.net.NetConnection;

@@ -522,16 +522,16 @@ public class MySpriteBatchBase extends Batch {
 		contiguous[ci + 2] = numRequests - startI;
 		this.contiguous = contiguous;
 
-		final int L = (ci / 3) + 1;
+		final int l = (ci / 3) + 1;
 
 		if (contiguousCopy.length < contiguous.length) contiguousCopy = new int[contiguous.length];
 
-		final int[] sorted = CountingSort.countingSortMap(contiguous, contiguousCopy, L);
+		final int[] sorted = CountingSort.countingSortMap(contiguous, contiguousCopy, l);
 
 		if (copy.length < numRequests) copy = new DrawRequest[numRequests + (numRequests >> 3)];
 		int ptr = 0;
 		final DrawRequest[] items = requests, dest = copy;
-		for (int i = 0; i < L * 3; i += 3) {
+		for (int i = 0; i < l * 3; i += 3) {
 			final int pos = sorted[i + 1], length = sorted[i + 2];
 			if (length < 10) {
 				final int end = pos + length;

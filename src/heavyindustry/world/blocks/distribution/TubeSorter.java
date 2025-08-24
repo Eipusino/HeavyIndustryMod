@@ -25,6 +25,7 @@ import static mindustry.Vars.renderer;
 public class TubeSorter extends Block {
 	public TubeSorter(String name) {
 		super(name);
+
 		update = false;
 		destructible = true;
 		underBullets = true;

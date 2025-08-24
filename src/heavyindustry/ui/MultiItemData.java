@@ -21,22 +21,18 @@ public class MultiItemData implements Iterable<Item>, Eachable<Item> {
 
 	public IntSet asIntSet() {
 		IntSet seq = new IntSet();
-		for (Item item : items) {
-			seq.add(item.id);
-		}
+		items.each(item -> seq.add(item.id));
 		return seq;
 	}
 
 	public void write(Writes writes) {
 		writes.i(items.size);
-		for (Item item : items) {
-			writes.str(item.name);
-		}
+		items.each(item -> writes.str(item.name));
 	}
 
 	public void read(Reads reads) {
-		int len = reads.i();
-		for (int i = 0; i < len; i++) {
+		int length = reads.i();
+		for (int i = 0; i < length; i++) {
 			toggle(reads.str());
 		}
 	}

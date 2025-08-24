@@ -65,29 +65,29 @@ import static mindustry.Vars.world;
 public final class HDamage {
 	public static final Seq<Unit> list = new Seq<>(Unit.class);
 
-	private static final UnitDamageEvent bulletDamageEvent = new UnitDamageEvent();
-	private static final Rect rect = new Rect(), rectAlt = new Rect(), hitrect = new Rect();
-	private static final Vec2 vec = new Vec2(), vec2 = new Vec2(), vec3 = new Vec2(), seg1 = new Vec2(), seg2 = new Vec2();
-	private static final Seq<Building> builds = new Seq<>(Building.class);
-	private static final Seq<Unit> units = new Seq<>(Unit.class);
-	private static final IntSet collidedBlocks = new IntSet();
-	private static final IntFloatMap damages = new IntFloatMap();
-	private static final Seq<Collided> collided = new Seq<>(Collided.class);
-	private static final Pool<Collided> collidePool = Pools.get(Collided.class, Collided::new);
-	private static final FloatSeq distances = new FloatSeq();
-	private static final BoolGrid collideLineCollided = new BoolGrid();
-	private static final IntSeq lineCast = new IntSeq(), lineCastNext = new IntSeq();
-	private static final Seq<Hit> hitEffects = new Seq<>(Hit.class);
+	static final UnitDamageEvent bulletDamageEvent = new UnitDamageEvent();
+	static final Rect rect = new Rect(), rectAlt = new Rect(), hitrect = new Rect();
+	static final Vec2 vec = new Vec2(), vec2 = new Vec2(), vec3 = new Vec2(), seg1 = new Vec2(), seg2 = new Vec2();
+	static final Seq<Building> builds = new Seq<>(Building.class);
+	static final Seq<Unit> units = new Seq<>(Unit.class);
+	static final IntSet collidedBlocks = new IntSet();
+	static final IntFloatMap damages = new IntFloatMap();
+	static final Seq<Collided> collided = new Seq<>(Collided.class);
+	static final Pool<Collided> collidePool = Pools.get(Collided.class, Collided::new);
+	static final FloatSeq distances = new FloatSeq();
+	static final BoolGrid collideLineCollided = new BoolGrid();
+	static final IntSeq lineCast = new IntSeq(), lineCastNext = new IntSeq();
+	static final Seq<Hit> hitEffects = new Seq<>(Hit.class);
 
-	private static Tile furthest;
-	private static Building tmpBuilding;
-	private static Unit tmpUnit;
-	private static float tmpFloat;
-	private static boolean check;
-	private static Posc result;
-	private static float cdist;
-	private static int idx;
-	private static boolean hit, hitB;
+	static Tile furthest;
+	static Building tmpBuilding;
+	static Unit tmpUnit;
+	static float tmpFloat;
+	static boolean check;
+	static Posc result;
+	static float cdist;
+	static int idx;
+	static boolean hit, hitB;
 
 	/** Don't let anyone instantiate this class. */
 	private HDamage() {}

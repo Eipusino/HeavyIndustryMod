@@ -17,6 +17,8 @@ import mindustry.gen.Tex;
 import mindustry.ui.Bar;
 import mindustry.ui.Fonts;
 
+import static heavyindustry.util.Constant.RUNNABLE_NOTHING;
+
 public class MultiBar extends Bar {
 	private static final Rect scissor = new Rect();
 	Seq<BarPart> barParts;
@@ -103,7 +105,7 @@ public class MultiBar extends Bar {
 		public Color blinkColor = new Color();
 		public Floatp fraction;
 
-		Runnable runnable = () -> {};
+		Runnable runnable = RUNNABLE_NOTHING;
 		float x, y, width, height, offset;
 
 		public BarPart(Color col, Floatp floatp) {

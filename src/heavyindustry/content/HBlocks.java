@@ -23,7 +23,6 @@ import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.util.Time;
 import arc.util.Tmp;
-import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.entities.HUnitSorts;
 import heavyindustry.entities.bullet.CritBulletType;
 import heavyindustry.entities.bullet.CtrlMissileBulletType;
@@ -67,6 +66,7 @@ import heavyindustry.world.blocks.distribution.StackBridge;
 import heavyindustry.world.blocks.distribution.StackHelper;
 import heavyindustry.world.blocks.distribution.TubeConveyor;
 import heavyindustry.world.blocks.distribution.TubeDistributor;
+import heavyindustry.world.blocks.distribution.TubeSorter;
 import heavyindustry.world.blocks.environment.ConnectedFloor;
 import heavyindustry.world.blocks.environment.DepthCliffHelper;
 import heavyindustry.world.blocks.environment.DepthCliff;
@@ -313,7 +313,7 @@ public final class HBlocks {
 	//drill-erekir
 	heavyPlasmaBore, unitMinerPoint, unitMinerCenter, unitMinerDepot,
 	//distribution
-	invertedJunction, itemLiquidJunction, multiSorter, plastaniumRouter, plastaniumBridge, stackHelper, chromiumEfficientConveyor, chromiumArmorConveyor, chromiumTubeConveyor, chromiumTubeDistributor, chromiumStackConveyor, chromiumStackRouter, chromiumStackBridge, chromiumJunction, chromiumRouter, chromiumItemBridge,
+	invertedJunction, itemLiquidJunction, multiSorter, plastaniumRouter, plastaniumBridge, stackHelper, chromiumEfficientConveyor, chromiumArmorConveyor, chromiumTubeConveyor, chromiumTubeDistributor, chromiumTubeSorter, chromiumStackConveyor, chromiumStackRouter, chromiumStackBridge, chromiumJunction, chromiumRouter, chromiumItemBridge,
 			phaseItemNode, rapidDirectionalUnloader,
 	//distribution-erekir
 	ductJunction, ductDistributor, ductMultiSorter, armoredDuctBridge, rapidDuctUnloader,
@@ -1398,6 +1398,11 @@ public final class HBlocks {
 			speed = 0.18f;
 			placeableLiquid = true;
 			displayFlow = true;
+		}};
+		chromiumTubeSorter = new TubeSorter("chromium-tube-sorter") {{
+			requirements(Category.distribution, ItemStack.with(Items.copper, 1, Items.metaglass, 1, HItems.chromium, 1));
+			health = 450;
+			armor = 4f;
 		}};
 		chromiumStackConveyor = new StackConveyor("chromium-stack-conveyor") {{
 			requirements(Category.distribution, ItemStack.with(Items.graphite, 1, Items.silicon, 1, Items.plastanium, 1, HItems.chromium, 1));

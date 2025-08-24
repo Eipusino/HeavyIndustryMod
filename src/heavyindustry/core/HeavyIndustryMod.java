@@ -4,7 +4,6 @@ import arc.Core;
 import arc.Events;
 import arc.flabel.FLabel;
 import arc.math.Mathf;
-import arc.scene.ui.ImageButton.ImageButtonStyle;
 import arc.util.Align;
 import arc.util.Log;
 import arc.util.Nullable;
@@ -36,7 +35,7 @@ import heavyindustry.graphics.HTextures;
 import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.input.InputAggregator;
 import heavyindustry.mod.LoadMod;
-import heavyindustry.mod.ModJS;
+import heavyindustry.mod.HScripts;
 import heavyindustry.net.HCall;
 import heavyindustry.ui.HFonts;
 import heavyindustry.ui.HStyles;
@@ -49,18 +48,14 @@ import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.game.EventType.DisposeEvent;
 import mindustry.game.EventType.FileTreeInitEvent;
 import mindustry.game.EventType.MusicRegisterEvent;
-import mindustry.gen.Icon;
-import mindustry.gen.Tex;
 import mindustry.mod.Mod;
 import mindustry.mod.Mods.LoadedMod;
-import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
 
 import static heavyindustry.HVars.inputAggregator;
 import static heavyindustry.HVars.internalTree;
 import static heavyindustry.HVars.sizedGraphics;
 import static mindustry.Vars.headless;
-import static mindustry.Vars.iconMed;
 import static mindustry.Vars.mods;
 import static mindustry.Vars.ui;
 
@@ -163,7 +158,7 @@ public final class HeavyIndustryMod extends Mod {
 
 		//IOS does not support rhino js
 		if (!Core.app.isIOS()) {
-			Core.app.post(ModJS::init);
+			Core.app.post(HScripts::init);
 		}
 	}
 
@@ -220,22 +215,6 @@ public final class HeavyIndustryMod extends Mod {
 					t.checkPref("hi-animated-shields", true);
 					t.checkPref("hi-render-sort", false);
 					t.sliderPref("hi-strobespeed", 3, 1, 20, 1, s -> Strings.autoFixed(s / 2f, 2));
-					//this fucking sucks
-					t.table(Tex.button, c -> {
-						c.button("@settings.game", Icon.settings, Styles.flatt, iconMed, () -> {}).growX().marginLeft(8f).height(50f).row();
-						c.button("@settings.controls", Icon.move, Styles.flatt, iconMed, () -> {}).growX().marginLeft(8f).height(50f).row();
-						c.button("@settings.hi-cleardata", Icon.save, Styles.flatt, iconMed, () -> {
-							if (Elements.gameDataDialog != null) {
-								Elements.gameDataDialog.show();
-							}
-						}).growX().marginLeft(8f).height(50f).pad(12f).row();
-					}).width(Math.min(Core.graphics.getWidth() / 1.2f, 460f)).padBottom(45f);
-					t.fill(c -> c.bottom().right().button(Icon.github, new ImageButtonStyle(), () -> {
-						if (!Core.app.openURI(LINK_GIT_HUB)) {
-							ui.showInfoFade("@linkfail");
-							Core.app.setClipboardText(LINK_GIT_HUB);
-						}
-					}).marginTop(9f).marginLeft(10f).tooltip("@setting.hi-github-join").size(84f, 45f).name("@setting.github"));
 				});
 			}
 

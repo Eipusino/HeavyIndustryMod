@@ -9,6 +9,8 @@ import heavyindustry.util.Utils;
 import mindustry.content.TechTree.TechNode;
 import mindustry.ctype.ContentType;
 import mindustry.ctype.UnlockableContent;
+import mindustry.gen.Itemsc;
+import mindustry.io.TypeIO;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -66,6 +68,22 @@ public final class HTypeIO {
 
 		for (int i = 0; i < size; i++) out.add(read.str());
 		return out;
+	}
+
+	public static void writeItemConsumers(Writes writes, Itemsc[] itemscs) {
+		writes.i(itemscs.length);
+		for (Itemsc itemsc : itemscs) {
+			TypeIO.writeObject(writes, itemsc);
+		}
+	}
+
+	public static Itemsc[] readItemConsumers(Reads read) {
+		int amount = read.i();
+		Itemsc[] itemscs = new Itemsc[amount];
+		for (int i = 0; i < itemscs.length; i++) {
+			itemscs[i] = TypeIO.readEntity(read);
+		}
+		return itemscs;
 	}
 
 	public static <T extends Enum<T>> void writeEnums(Writes write, Seq<T> array) {
