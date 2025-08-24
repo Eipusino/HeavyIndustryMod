@@ -91,9 +91,7 @@ import mindustry.world.draw.DrawDefault;
 import mindustry.world.draw.DrawMulti;
 import mindustry.world.draw.DrawRegion;
 import mindustry.world.meta.StatUnit;
-import org.jetbrains.annotations.Contract;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -155,7 +153,6 @@ public final class Utils {
 	/** Don't let anyone instantiate this class. */
 	private Utils() {}
 
-	@Contract(pure = true)
 	public static int reverse(int rotation) {
 		return switch (rotation) {
 			case 0 -> 2;
@@ -1945,7 +1942,7 @@ public final class Utils {
 		return initial;
 	}
 
-	public static <T> int reducei(T[] array, int initial, Reducei<T> reduce) {
+	public static <T> int reducei(T[] array, int initial, ReduceInt<T> reduce) {
 		for (T item : array) initial = reduce.get(item, initial);
 		return initial;
 	}
@@ -1954,7 +1951,7 @@ public final class Utils {
 		return reducei(array, 0, (item, accum) -> accum + extract.get(item));
 	}
 
-	public static <T> float reducef(T[] array, float initial, Reducef<T> reduce) {
+	public static <T> float reducef(T[] array, float initial, ReduceFloat<T> reduce) {
 		for (T item : array) initial = reduce.get(item, initial);
 		return initial;
 	}
@@ -1985,11 +1982,11 @@ public final class Utils {
 		return true;
 	}
 
-	public interface Reducei<T> {
+	public interface ReduceInt<T> {
 		int get(T item, int accum);
 	}
 
-	public interface Reducef<T> {
+	public interface ReduceFloat<T> {
 		float get(T item, float accum);
 	}
 

@@ -25,18 +25,6 @@ import static mindustry.Vars.headless;
 public final class HVars {
 	/** Lists all the mod's classes by their canonical names. Generated at compile-time. */
 	public static final @ListClasses String[] classes = stringOf();
-	/**
-	 * Lists all the mod's kotlin-classes by their canonical names.
-	 * <p><h3>This should be handled by the annotation processor, but I won't configure Kotlin's annotation processor.</h3>
-	 */
-	public static final String[] k_classes = stringOf(
-			"heavyindustry.graphics.KDrawText",
-			"heavyindustry.util.Graph",
-			"heavyindustry.util.KReflects",
-			"heavyindustry.util.KUtils",
-			"heavyindustry.world.KWorlds"
-	);
-
 	/** Lists all the mod's packages by their canonical names. Generated at compile-time. */
 	public static final @ListPackages String[] packages = stringOf();
 

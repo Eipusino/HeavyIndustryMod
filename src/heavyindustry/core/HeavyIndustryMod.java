@@ -42,7 +42,6 @@ import heavyindustry.ui.HStyles;
 import heavyindustry.ui.Elements;
 import heavyindustry.ui.dialogs.HResearchDialog;
 import heavyindustry.util.IconLoader;
-import kotlin.KotlinVersion;
 import mindustry.ctype.Content;
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.game.EventType.DisposeEvent;
@@ -90,8 +89,6 @@ public final class HeavyIndustryMod extends Mod {
 	static @Nullable LoadedMod loaded;
 
 	static {
-		Log.infoTag("Kotlin", String.valueOf(KotlinVersion.CURRENT));
-
 		modJson = LoadMod.getMeta(internalTree.root);
 
 		isPlugin = Utils.get(() -> modJson.get("plugin").asBool(), false);
