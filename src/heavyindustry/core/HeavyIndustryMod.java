@@ -27,7 +27,6 @@ import heavyindustry.gen.Entitys;
 import heavyindustry.gen.HIcon;
 import heavyindustry.gen.HMusics;
 import heavyindustry.gen.HSounds;
-import heavyindustry.graphics.Draws;
 import heavyindustry.util.Utils;
 import heavyindustry.world.Worlds;
 import heavyindustry.graphics.HCacheLayer;
@@ -78,11 +77,6 @@ public final class HeavyIndustryMod extends Mod {
 
 	/** The meta of this mod. */
 	public static final Jval modJson;
-	/** Is this mod in plugin mode. In this mode, the mod will not load content. */
-	public static final boolean isPlugin;
-
-	/** Indicates whether the client is the original version. Valid only for ARC and X. */
-	public static boolean vanillaClient = true;
 
 	static @Nullable FloatingText floatingText;
 
@@ -91,8 +85,6 @@ public final class HeavyIndustryMod extends Mod {
 
 	static {
 		modJson = LoadMod.getMeta(internalTree.root);
-
-		isPlugin = Utils.get(() -> modJson.get("plugin").asBool(), false);
 
 		LoadMod.addBlacklistedMods();
 	}
@@ -103,7 +95,7 @@ public final class HeavyIndustryMod extends Mod {
 		HClassMap.load();
 
 		Events.on(ClientLoadEvent.class, event -> {
-			if (isPlugin || headless || Core.settings.getBool("hi-closed-dialog")) return;
+			if (headless || Core.settings.getBool("hi-closed-dialog")) return;
 
 			FLabel label = new FLabel(Core.bundle.get("hi-author") + AUTHOR);
 			BaseDialog dialog = new BaseDialog(Core.bundle.get("hi-name")) {{
@@ -167,21 +159,19 @@ public final class HeavyIndustryMod extends Mod {
 		Entitys.load();
 		Worlds.load();
 
-		if (!isPlugin) {
-			HBullets.load();
-			HTeam.load();
-			HItems.load();
-			HStatusEffects.load();
-			HLiquids.load();
-			HUnitTypes.load();
-			HBlocks.loadInternal();
-			HBlocks.load();
-			HWeathers.load();
-			HOverrides.load();
-			HPlanets.load();
-			HSectorPresets.load();
-			HTechTree.load();
-		}
+		HBullets.load();
+		HTeam.load();
+		HItems.load();
+		HStatusEffects.load();
+		HLiquids.load();
+		HUnitTypes.load();
+		HBlocks.loadInternal();
+		HBlocks.load();
+		HWeathers.load();
+		HOverrides.load();
+		HPlanets.load();
+		HSectorPresets.load();
+		HTechTree.load();
 	}
 
 	@Override
@@ -194,15 +184,6 @@ public final class HeavyIndustryMod extends Mod {
 		}
 
 		IconLoader.loadIcons(internalTree.child("other/icons.properties"));
-
-		LoadedMod mod = loaded();
-
-		if (mod != null && isPlugin) {
-			mod.meta.hidden = true;
-			mod.meta.name = MOD_NAME + "-plugin";
-			mod.meta.displayName = Core.bundle.get("hi-name") + " Plugin";
-			mod.meta.version = Utils.get(() -> modJson.get("version").asString() + "-plug-in", mod.meta.version);
-		}
 
 		if (ui != null) {
 			if (ui.settings != null) {
@@ -218,7 +199,7 @@ public final class HeavyIndustryMod extends Mod {
 
 			//Replace the original technology ResearchDialog
 			//This is a rather foolish approach, but there is nothing we can do about it.
-			var dialog = new HResearchDialog();
+			HResearchDialog dialog = new HResearchDialog();
 			ui.research.shown(() -> {
 				dialog.show();
 				if (ui.research != null) {
