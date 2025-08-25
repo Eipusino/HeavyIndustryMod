@@ -12,7 +12,7 @@
 
 + **Mod Version: 1.0.7-beta**
 + **Mod Type: Java SE 17**
-+ **Mindustry Version: 150.1**
++ **Mindustry Version: 151**
 + **Compatible Platform: Android, Desktp. Will Mindustry support iOS mods in the future?**
 
 ---

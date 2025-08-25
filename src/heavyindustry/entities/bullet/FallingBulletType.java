@@ -51,7 +51,7 @@ public class FallingBulletType extends BulletType {
 
 		this.sprite = sprite;
 
-		collides = hittable = reflectable = keepVelocity = backMove = false;
+		collides = hittable = reflectable = keepVelocity = false;
 		despawnHit = true;
 	}
 

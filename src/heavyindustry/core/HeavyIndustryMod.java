@@ -27,6 +27,7 @@ import heavyindustry.gen.Entitys;
 import heavyindustry.gen.HIcon;
 import heavyindustry.gen.HMusics;
 import heavyindustry.gen.HSounds;
+import heavyindustry.graphics.Draws;
 import heavyindustry.util.Utils;
 import heavyindustry.world.Worlds;
 import heavyindustry.graphics.HCacheLayer;

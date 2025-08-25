@@ -60,7 +60,6 @@ public class DelayedPointBulletType extends BulletType {
 		collides = false;
 		reflectable = false;
 		keepVelocity = false;
-		backMove = false;
 		hittable = absorbable = false;
 		despawnHit = false;
 		setDefaults = false;
@@ -179,14 +178,11 @@ public class DelayedPointBulletType extends BulletType {
 		bullet.aimX = aimX;
 		bullet.aimY = aimY;
 		bullet.initVel(angle, speed * velocityScl);
-		if (backMove) {
-			bullet.set(x - bullet.vel.x * Time.delta, y - bullet.vel.y * Time.delta);
-		} else {
-			bullet.set(x, y);
-		}
+		bullet.set(x, y);
+		bullet.lastX = x;
+		bullet.lastY = y;
 		bullet.lifetime = lifetime * lifetimeScl;
 		bullet.data = data;
-		bullet.drag = drag;
 		bullet.hitSize = hitSize;
 		bullet.mover = mover;
 		bullet.damage = (damage < 0 ? this.damage : damage) * bullet.damageMultiplier();

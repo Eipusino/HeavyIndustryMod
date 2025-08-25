@@ -41,7 +41,7 @@ public class TypeListPlugin implements Plugin {
 						@Override
 						public Void visitVariable(VariableTree node, Void unused) {
 							ExpressionTree init = node.getInitializer();
-							if (init != null && init.toString().startsWith("stringOf(")) {
+							if (init != null && init.toString().startsWith("with(")) {
 								if (node.getModifiers().getAnnotations().stream().anyMatch(a -> a.getAnnotationType().toString().equals(ListClasses.class.getSimpleName()))) {
 									classes.add((JCMethodInvocation) init);
 								} else if (node.getModifiers().getAnnotations().stream().anyMatch(a -> a.getAnnotationType().toString().equals(ListPackages.class.getSimpleName()))) {
@@ -57,15 +57,7 @@ public class TypeListPlugin implements Plugin {
 						@Override
 						public Void visitClass(ClassTree node, Void unused) {
 							ClassSymbol sym = ((JCClassDecl) node).sym;
-							if (
-									sym != null &&
-											!sym.isAnonymous() &&
-											!(
-													sym.getQualifiedName().toString().startsWith("heavyindustry.entities.comp") ||
-															sym.getQualifiedName().toString().startsWith("heavyindustry.entities.merge") ||
-															sym.getQualifiedName().toString().startsWith("heavyindustry.fetched")
-											)
-							) {
+							if (sym != null && !sym.isAnonymous()) {
 								StringBuilder builder = new StringBuilder(sym.getSimpleName().toString());
 
 								Symbol current = sym;

@@ -14,7 +14,6 @@ import heavyindustry.input.InputAggregator;
 import mindustry.content.TechTree.TechNode;
 import mindustry.type.Sector;
 
-import static heavyindustry.util.Utils.stringOf;
 import static mindustry.Vars.headless;
 
 /**
@@ -24,9 +23,9 @@ import static mindustry.Vars.headless;
  */
 public final class HVars {
 	/** Lists all the mod's classes by their canonical names. Generated at compile-time. */
-	public static final @ListClasses String[] classes = stringOf();
+	public static final @ListClasses String[] classes = with();
 	/** Lists all the mod's packages by their canonical names. Generated at compile-time. */
-	public static final @ListPackages String[] packages = stringOf();
+	public static final @ListPackages String[] packages = with("java.lang", "java.util");
 
 	/** jar internal navigation. */
 	public static final InternalFileTree internalTree;
@@ -78,5 +77,9 @@ public final class HVars {
 		root.reset();
 		root.content.clearUnlock();
 		root.children.each(HVars::resetTree);
+	}
+
+	static String[] with(String... arg) {
+		return arg;
 	}
 }

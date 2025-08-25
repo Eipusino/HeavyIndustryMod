@@ -100,6 +100,7 @@ public class ShapedWall extends ConnectedWall {
 			}
 		}
 
+		@Override
 		public void drawTeam() {
 			Draw.color(team.color);
 			Draw.alpha(0.25f);
@@ -150,6 +151,7 @@ public class ShapedWall extends ConnectedWall {
 			HFx.shareDamage.at(building.x, building.y, building.block.size * tilesize / 2f, team.color, Mathf.clamp(damage / (block.health * 0.1f)));
 		}
 
+		@Override
 		public void updateProximity() {
 			super.updateProximity();
 

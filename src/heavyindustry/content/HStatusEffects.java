@@ -11,6 +11,7 @@ import heavyindustry.graphics.HPal;
 import heavyindustry.util.Utils;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
+import mindustry.entities.units.StatusEntry;
 import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.MultiPacker;
@@ -79,7 +80,7 @@ public final class HStatusEffects {
 			speedMultiplier = 0.9f;
 		}
 			@Override
-			public void update(Unit unit, float time) {
+			public void update(Unit unit, StatusEntry entry) {
 				unit.damageContinuousPierce(damage);
 
 				if (Mathf.chanceDelta(effectChance)) {
@@ -94,7 +95,7 @@ public final class HStatusEffects {
 			effect = HFx.ultFireBurn;
 		}
 			@Override
-			public void update(Unit unit, float time) {
+			public void update(Unit unit, StatusEntry entry) {
 				unit.damageContinuousPierce(damage + unit.maxHealth * 0.00001f);
 
 				if (Mathf.chanceDelta(effectChance)) {
@@ -166,7 +167,7 @@ public final class HStatusEffects {
 			}
 
 			@Override
-			public void update(Unit unit, float time) {
+			public void update(Unit unit, StatusEntry entry) {
 				unit.damageMultiplier *= 0.8f;
 				unit.speedMultiplier *= 0.4f;
 				unit.reloadMultiplier *= 0.5f;

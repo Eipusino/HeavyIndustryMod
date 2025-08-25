@@ -687,9 +687,9 @@ public final class Utils {
 	}
 
 	//use for cst bullet
-	public static Bullet anyOtherCreate(Bullet bullet, BulletType bt, Entityc shooter, Entityc owner, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY, @Nullable Teamc target) {
-		if (bt == null) return null;
-		bullet.type = bt;
+	public static Bullet anyOtherCreate(Bullet bullet, BulletType type, Entityc shooter, Entityc owner, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY, @Nullable Teamc target) {
+		if (type == null) return null;
+		bullet.type = type;
 		bullet.owner = owner;
 		bullet.shooter = (shooter == null ? owner : shooter);
 		bullet.team = team;
@@ -702,25 +702,22 @@ public final class Utils {
 		bullet.aimX = aimX;
 		bullet.aimY = aimY;
 
-		bullet.initVel(angle, bt.speed * velocityScl * (bt.velocityScaleRandMin != 1f || bt.velocityScaleRandMax != 1f ? Mathf.random(bt.velocityScaleRandMin, bt.velocityScaleRandMax) : 1f));
-		if (bt.backMove) {
-			bullet.set(x - bullet.vel.x * Time.delta, y - bullet.vel.y * Time.delta);
-		} else {
-			bullet.set(x, y);
-		}
-		bullet.lifetime = bt.lifetime * lifetimeScl * (bt.lifeScaleRandMin != 1f || bt.lifeScaleRandMax != 1f ? Mathf.random(bt.lifeScaleRandMin, bt.lifeScaleRandMax) : 1f);
+		bullet.initVel(angle, type.speed * velocityScl * (type.velocityScaleRandMin != 1f || type.velocityScaleRandMax != 1f ? Mathf.random(type.velocityScaleRandMin, type.velocityScaleRandMax) : 1f));
+		bullet.set(x, y);
+		bullet.lastX = x;
+		bullet.lastY = y;
+		bullet.lifetime = type.lifetime * lifetimeScl * (type.lifeScaleRandMin != 1f || type.lifeScaleRandMax != 1f ? Mathf.random(type.lifeScaleRandMin, type.lifeScaleRandMax) : 1f);
 		bullet.data = data;
-		bullet.drag = bt.drag;
-		bullet.hitSize = bt.hitSize;
+		bullet.hitSize = type.hitSize;
 		bullet.mover = mover;
-		bullet.damage = (damage < 0 ? bt.damage : damage) * bullet.damageMultiplier();
+		bullet.damage = (damage < 0 ? type.damage : damage) * bullet.damageMultiplier();
 		//reset trail
 		if (bullet.trail != null) {
 			bullet.trail.clear();
 		}
 		bullet.add();
 
-		if (bt.keepVelocity && owner instanceof Velc v) bullet.vel.add(v.vel());
+		if (type.keepVelocity && owner instanceof Velc v) bullet.vel.add(v.vel());
 		return bullet;
 	}
 
@@ -1630,10 +1627,6 @@ public final class Utils {
 		return elements;
 	}
 
-	public static String[] stringOf(String... strings) {
-		return strings;
-	}
-
 	public static boolean[] boolOf(boolean... bools) {
 		return bools;
 	}
@@ -1753,7 +1746,7 @@ public final class Utils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <K, V> Map.Entry<K, V> copyOf(Map.Entry<? extends K, ? extends V> e) {
-		if (e instanceof KeyValueHolder<? extends K, ? extends V>) {
+		if (e instanceof Pair<? extends K, ? extends V>) {
 			return (Map.Entry<K, V>) e;
 		} else {
 			return entry(e.getKey(), e.getValue());
@@ -1762,7 +1755,7 @@ public final class Utils {
 
 	static <K, V> Map.Entry<K, V> entry(K k, V v) {
 		// Pair checks for nulls
-		return new KeyValueHolder<>(k, v);
+		return new Pair<>(k, v);
 	}
 
 	public static <T> int indexOf(T[] array, T element) {

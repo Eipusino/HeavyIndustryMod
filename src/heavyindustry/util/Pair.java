@@ -22,11 +22,11 @@ import java.util.Map;
  * @see Map#ofEntries Map.ofEntries()
  * @since 1.0.7
  */
-public class KeyValueHolder<K, V> implements Map.Entry<K, V>, Cloneable {
-	protected K key;
-	protected V value;
+public class Pair<K, V> implements Map.Entry<K, V>, Cloneable {
+	public K key;
+	public V value;
 
-	public KeyValueHolder(K k, V v) {
+	public Pair(K k, V v) {
 		key = k;
 		value = v;
 	}
@@ -64,12 +64,12 @@ public class KeyValueHolder<K, V> implements Map.Entry<K, V>, Cloneable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public KeyValueHolder<K, V> copy() {
+	public Pair<K, V> copy() {
 		try {
-			return (KeyValueHolder<K, V>) super.clone();
+			return (Pair<K, V>) super.clone();
 		} catch (CloneNotSupportedException e) {
 			//this shouldn't happen, since we are Cloneable
-			return new KeyValueHolder<>(key, value);
+			return new Pair<>(key, value);
 		}
 	}
 

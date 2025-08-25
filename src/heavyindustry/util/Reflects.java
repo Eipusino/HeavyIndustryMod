@@ -3,6 +3,7 @@ package heavyindustry.util;
 import arc.func.Prov;
 import arc.struct.ObjectMap;
 import arc.struct.Seq;
+import arc.util.Nullable;
 import mindustry.Vars;
 
 import java.lang.reflect.Constructor;
@@ -447,8 +448,20 @@ public final class Reflects {
 		return type;
 	}
 
-	public static <T> Class<T> findClass(final String name) {
-		return forClass(name, true, Vars.mods.mainLoader());
+	/**
+	 * Finds and casts a class with the specified name using Mindustry's mod class loader.
+	 *
+	 * @param name The class' binary name, as per {@link Class#getName()}.
+	 * @param <T>  The arbitrary type parameter to cast the class into.
+	 * @return The casted class, or {@code null} if not found.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> @Nullable Class<T> findClass(String name) {
+		try {
+			return (Class<T>) Class.forName(name, true, Vars.mods.mainLoader());
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
 	}
 
 	/** Search for class based on class names without throwing exceptions. */
@@ -456,15 +469,6 @@ public final class Reflects {
 	public static <T> Class<T> forClass(String name) {
 		try {
 			return (Class<T>) Class.forName(name);
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T> Class<T> forClass(String name, boolean initialize, ClassLoader loader) {
-		try {
-			return (Class<T>) Class.forName(name, initialize, loader);
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}
