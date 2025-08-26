@@ -25,7 +25,7 @@ public final class HVars {
 	/** Lists all the mod's classes by their canonical names. Generated at compile-time. */
 	public static final @ListClasses String[] classes = with();
 	/** Lists all the mod's packages by their canonical names. Generated at compile-time. */
-	public static final @ListPackages String[] packages = with("java.lang", "java.util");
+	public static final @ListPackages String[] packages = with();
 
 	/** jar internal navigation. */
 	public static final InternalFileTree internalTree;

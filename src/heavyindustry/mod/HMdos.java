@@ -9,7 +9,7 @@ import arc.util.serialization.Jval;
 import mindustry.Vars;
 import mindustry.mod.Mods;
 
-public final class LoadMod {
+public final class HMdos {
 	public static final String[] metaFiles = {"mod.json", "mod.hjson", "plugin.json", "plugin.hjson"};
 	/**
 	 * The following mods have stolen other mod textures or engaged in even worse behavior. If
@@ -19,7 +19,7 @@ public final class LoadMod {
 	private static final String[] blacklistedMods = {"mfxiao2"};
 
 	/** Don't let anyone instantiate this class. */
-	private LoadMod() {}
+	private HMdos() {}
 
 	/**
 	 * @param file the compressed file path of mod

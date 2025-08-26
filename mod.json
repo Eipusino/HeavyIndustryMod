@@ -8,6 +8,6 @@
 	"version": "1.0.7-beta",
 	"repo": "Eipusino/HeavyIndustryMod",
 	"java": true,
-	"minGameVersion": 150.1,
+	"minGameVersion": 151.1,
 	"hideBrowser": true
 }

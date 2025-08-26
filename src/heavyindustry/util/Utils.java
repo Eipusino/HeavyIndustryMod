@@ -10,7 +10,6 @@ import arc.func.Func;
 import arc.func.Func2;
 import arc.func.Intc2;
 import arc.func.Intf;
-import arc.func.Prov;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
@@ -42,14 +41,11 @@ import arc.util.Nullable;
 import arc.util.Reflect;
 import arc.util.Time;
 import arc.util.Tmp;
-import arc.util.pooling.Pool;
-import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import heavyindustry.content.HFx;
 import heavyindustry.func.ProvT;
 import heavyindustry.gen.Spawner;
 import heavyindustry.graphics.HPal;
-import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
 import mindustry.core.UI;
 import mindustry.core.World;
@@ -58,11 +54,8 @@ import mindustry.entities.Fires;
 import mindustry.entities.Mover;
 import mindustry.entities.Sized;
 import mindustry.entities.Units;
-import mindustry.entities.bullet.ArtilleryBulletType;
 import mindustry.entities.bullet.BulletType;
 import mindustry.entities.bullet.ContinuousBulletType;
-import mindustry.entities.bullet.PointBulletType;
-import mindustry.entities.pattern.ShootSpread;
 import mindustry.entities.units.WeaponMount;
 import mindustry.game.Team;
 import mindustry.game.Teams.TeamData;
@@ -70,7 +63,6 @@ import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.gen.Entityc;
 import mindustry.gen.Groups;
-import mindustry.gen.Healthc;
 import mindustry.gen.Player;
 import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
@@ -82,10 +74,8 @@ import mindustry.type.Liquid;
 import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
-import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.defense.turrets.ItemTurret;
-import mindustry.world.blocks.defense.turrets.Turret;
 import mindustry.world.draw.DrawBlock;
 import mindustry.world.draw.DrawDefault;
 import mindustry.world.draw.DrawMulti;
@@ -99,7 +89,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-import static mindustry.Vars.content;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.indexer;
 import static mindustry.Vars.net;
@@ -138,11 +127,10 @@ public final class Utils {
 	static final IntSeq buildIdSeq = new IntSeq();
 	static final Seq<Tile> tiles = new Seq<>(Tile.class);
 	static final Seq<Unit> units = new Seq<>(Unit.class);
-	static final Seq<Hit> hseq = new Seq<>(Hit.class);
 	static final Seq<ItemStack> rawStacks = new Seq<>(ItemStack.class);
 	static final Seq<Item> items = new Seq<>(Item.class);
 	static final IntSet collided = new IntSet(), collided2 = new IntSet();
-	static final BasicPool<Hit> hPool = new BasicPool<>(Hit::new);
+
 	static final IntSeq amounts = new IntSeq();
 	static final String[] byteUnit = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"};
 	static final char[] printableCharacters = {' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~'};
@@ -364,9 +352,10 @@ public final class Utils {
 		return -1;
 	}
 
-	/** {@code String.repeat(int)} */
+	/** See {@code String.repeat(int)}. */
 	public static String repeat(String key, int count) {
-		if (count < 2) return key;
+		if (count <= 0 || key.isEmpty()) return "";
+		if (count == 1) return key;
 
 		StringBuilder builder = new StringBuilder(key.length() * count);
 		for (int i = 0; i < count; i++) {
@@ -640,50 +629,6 @@ public final class Utils {
 		float a = (float) ((Math.PI * angle) / 180);
 		float sin = (float) Math.sin(a);
 		return y + length * sin;
-	}
-
-	public static Seq<Turret> turrets() {
-		Seq<Turret> turretSeq = new Seq<>(Turret.class);
-		int size = content.blocks().size;
-		for (int i = 0; i < size; i++) {
-			Block b = content.block(i);
-			if (b instanceof Turret t) {
-				turretSeq.addUnique(t);
-			}
-		}
-		return turretSeq;
-	}
-
-	/** turret and unit only, not use contents.bullets() */
-	public static Seq<BulletType> bulletTypes() {//use item
-		Seq<BulletType> bullets = new Seq<>(BulletType.class);
-		for (Turret t : turrets()) {
-			if (t instanceof ItemTurret turret) {
-				for (Item item : turret.ammoTypes.keys()) {
-					BulletType b = turret.ammoTypes.get(item);
-					if (t.shoot.shots == 1 || b instanceof PointBulletType || b instanceof ArtilleryBulletType) {
-						bullets.add(b);
-					} else {
-						BulletType bulletType = new BulletType() {{
-							fragBullet = b;
-							fragBullets = t.shoot.shots;
-							fragAngle = 0;
-							if (t.shoot instanceof ShootSpread s) {
-								fragSpread = s.spread;
-							}
-							fragRandomSpread = t.inaccuracy;
-							fragVelocityMin = 1 - t.velocityRnd;
-							absorbable = hittable = collides = collidesGround = collidesAir = false;
-							despawnHit = true;
-							lifetime = damage = speed = 0;
-							hitEffect = despawnEffect = Fx.none;
-						}};
-						bullets.add(bulletType);
-					}
-				}
-			}
-		}
-		return bullets;
 	}
 
 	//use for cst bullet
@@ -1306,50 +1251,6 @@ public final class Utils {
 
 			buildings.clear();
 		}
-	}
-
-	public static float hitLaser(Team team, float width, float x1, float y1, float x2, float y2, Boolf<Healthc> within, Boolf<Healthc> stop, LineHitHandler<Healthc> cons) {
-		hseq.removeAll(h -> {
-			hPool.free(h);
-			return true;
-		});
-		float ll = Mathf.dst(x1, y1, x2, y2);
-
-		for (TeamData data : state.teams.present) {
-			if (data.team != team) {
-				if (data.unitTree != null) {
-					intersectLine(data.unitTree, width, x1, y1, x2, y2, (t, x, y) -> {
-						if (within != null && !within.get(t)) return;
-						Hit h = hPool.obtain();
-						h.entity = t;
-						h.x = x;
-						h.y = y;
-						hseq.add(h);
-					});
-				}
-				if (data.buildingTree != null) {
-					intersectLine(data.buildingTree, width, x1, y1, x2, y2, (t, x, y) -> {
-						if (within != null && !within.get(t)) return;
-						Hit h = hPool.obtain();
-						h.entity = t;
-						h.x = x;
-						h.y = y;
-						hseq.add(h);
-					});
-				}
-			}
-		}
-		hseq.sort(a -> a.entity.dst2(x1, y1));
-		for (Hit hit : hseq) {
-			Healthc t = hit.entity;
-
-			cons.get(t, hit.x, hit.y);
-			if (stop.get(t)) {
-				ll = Mathf.dst(x1, y1, hit.x, hit.y) - (t instanceof Sized s ? s.hitSize() / 4f : 0f);
-				break;
-			}
-		}
-		return ll;
 	}
 
 	public static boolean circleContainsRect(float x, float y, float radius, Rect rect) {
@@ -2102,30 +2003,6 @@ public final class Utils {
 
 	public interface QuadTreeHandler {
 		boolean get(Rect rect, boolean tree);
-	}
-
-	public static class BasicPool<T> extends Pool<T> {
-		public final Prov<T> prov;
-
-		public BasicPool(Prov<T> f) {
-			prov = f;
-		}
-
-		@Override
-		protected T newObject() {
-			return prov.get();
-		}
-	}
-
-	public static class Hit implements Poolable {
-		public Healthc entity;
-		public float x, y;
-
-		@Override
-		public void reset() {
-			entity = null;
-			x = y = 0f;
-		}
 	}
 
 	public static class ExtPos implements Position {

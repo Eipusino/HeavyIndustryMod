@@ -34,7 +34,7 @@ import heavyindustry.graphics.HShaders;
 import heavyindustry.graphics.HTextures;
 import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.input.InputAggregator;
-import heavyindustry.mod.LoadMod;
+import heavyindustry.mod.HMdos;
 import heavyindustry.mod.HScripts;
 import heavyindustry.net.HCall;
 import heavyindustry.ui.HFonts;
@@ -84,9 +84,9 @@ public final class HeavyIndustryMod extends Mod {
 	static @Nullable LoadedMod loaded;
 
 	static {
-		modJson = LoadMod.getMeta(internalTree.root);
+		modJson = HMdos.getMeta(internalTree.root);
 
-		LoadMod.addBlacklistedMods();
+		HMdos.addBlacklistedMods();
 	}
 
 	public HeavyIndustryMod() {

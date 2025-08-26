@@ -14,7 +14,7 @@ import java.lang.reflect.Field;
 public final class TimeReflect {
 	static Field runs, delay, finish;
 	static Seq<DelayRun> trueRuns;
-	static Seq<DelayRun> removes = new Seq<>();
+	static Seq<DelayRun> removes = new Seq<>(DelayRun.class);
 
 	private TimeReflect() {}
 

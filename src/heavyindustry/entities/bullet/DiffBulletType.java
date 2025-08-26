@@ -3,7 +3,6 @@ package heavyindustry.entities.bullet;
 import arc.graphics.Color;
 import arc.graphics.g2d.Lines;
 import arc.math.Angles;
-import arc.util.Nullable;
 import heavyindustry.content.HFx;
 import heavyindustry.gen.DiffBullet;
 import heavyindustry.util.Utils;
@@ -49,14 +48,14 @@ public class DiffBulletType extends BulletType {
 			float r = splashDamageRadius * (1 - b.foutpow());
 			Vars.indexer.allBuildings(b.x, b.y, r, bd -> {
 				if (bd.team != b.team && bd.block != null && bd.block.targetable && Angles.within(b.rotation(), b.angleTo(bd), cont))
-					d.seq.addUnique(bd);
+					d.healthcs.addUnique(bd);
 			});
 			Units.nearbyEnemies(b.team, b.x - r, b.y - r, r * 2, r * 2, u -> {
 				if (u.type != null && u.type.targetable && b.within(u, r) && Angles.within(b.rotation(), b.angleTo(u), cont))
-					d.seq.addUnique(u);
+					d.healthcs.addUnique(u);
 			});
-			for (int i = 0; i < d.seq.size; i++) {
-				Healthc hc = d.seq.get(i);
+			for (int i = 0; i < d.healthcs.size; i++) {
+				Healthc hc = d.healthcs.get(i);
 				if (hc != null && !hc.dead()) {
 					if (!b.hasCollided(hc.id())) {
 
@@ -91,9 +90,9 @@ public class DiffBulletType extends BulletType {
 	}
 
 	@Override
-	public Bullet create( Entityc owner, Entityc shooter, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY, Teamc target) {
+	public Bullet create(Entityc owner, Entityc shooter, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY, Teamc target) {
 		DiffBullet bullet = DiffBullet.obtain();
-		if (bullet.seq.size > 0) bullet.seq.clear();
+		if (bullet.healthcs.size > 0) bullet.healthcs.clear();
 		return Utils.anyOtherCreate(bullet, this, shooter, owner, team, x, y, angle, damage, velocityScl, lifetimeScl, data, mover, aimX, aimY, target);
 	}
 }

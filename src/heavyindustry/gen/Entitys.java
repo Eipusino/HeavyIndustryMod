@@ -74,6 +74,7 @@ public final class Entitys {
 		register("UltFire", UltFire.class, UltFire::new);
 		register("UltPuddle", UltPuddle.class, UltPuddle::new);
 		register("DiffBullet", DiffBullet.class, DiffBullet::new);
+		register("BlackHoleBullet", BlackHoleBullet.class, BlackHoleBullet::new);
 		register("Spawner", Spawner.class, Spawner::new);
 		register("VapourizeEffectState", VapourizeEffectState.class, VapourizeEffectState::new);
 	}

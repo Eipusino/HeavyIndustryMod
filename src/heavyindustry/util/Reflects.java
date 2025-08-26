@@ -456,9 +456,9 @@ public final class Reflects {
 	 * @return The casted class, or {@code null} if not found.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> @Nullable Class<T> findClass(String name) {
+	public static <T> @Nullable Class<T> findClass(String name, boolean initialize) {
 		try {
-			return (Class<T>) Class.forName(name, true, Vars.mods.mainLoader());
+			return (Class<T>) Class.forName(name, initialize, Vars.mods.mainLoader());
 		} catch (ClassNotFoundException e) {
 			return null;
 		}

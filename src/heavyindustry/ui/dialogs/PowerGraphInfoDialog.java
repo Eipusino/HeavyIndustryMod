@@ -145,9 +145,9 @@ public class PowerGraphInfoDialog extends BaseDialog {
 
 		clearData();
 
-		graph.producers.each(p -> producers.get(p.block.id, Seq::new).add(p));
-		graph.consumers.each(p -> consumers.get(p.block.id, Seq::new).add(p));
-		graph.batteries.each(p -> batteries.get(p.block.id, Seq::new).add(p));
+		graph.producers.each(p -> producers.get(p.block.id, () -> new Seq<>(Building.class)).add(p));
+		graph.consumers.each(p -> consumers.get(p.block.id, () -> new Seq<>(Building.class)).add(p));
+		graph.batteries.each(p -> batteries.get(p.block.id, () -> new Seq<>(Building.class)).add(p));
 
 		refresh();
 	}

@@ -33,10 +33,10 @@ public class WavefrontObject {
 	protected static final float defaultScl = 4f;
 	protected static final float perspectiveDistance = 350f;
 
-	public Seq<Vec3> vertices = new Seq<>();
-	public Seq<Vec2> uvs = new Seq<>();
-	public Seq<Vec3> normals = new Seq<>();
-	public Seq<Face> faces = new Seq<>();
+	public Seq<Vec3> vertices = new Seq<>(Vec3.class);
+	public Seq<Vec2> uvs = new Seq<>(Vec3.class);
+	public Seq<Vec3> normals = new Seq<>(Vec3.class);
+	public Seq<Face> faces = new Seq<>(Face.class);
 	public String textureName = "";
 	public ObjectMap<String, Material> materials;
 
@@ -50,8 +50,8 @@ public class WavefrontObject {
 	protected int indexerA;
 	protected float indexerZ;
 
-	private final Seq<Vertex> drawnVertices = new Seq<>();
-	private final Seq<Vec3> drawnNormals = new Seq<>();
+	private final Seq<Vertex> drawnVertices = new Seq<>(Vertex.class);
+	private final Seq<Vec3> drawnNormals = new Seq<>(Vec3.class);
 	private AtlasRegion texture = null;
 	private boolean hasMaterial = false;
 	private boolean hasNormal = false;
@@ -455,7 +455,7 @@ public class WavefrontObject {
 
 	public static class Vertex {
 		public Vec3 source;
-		public Seq<Vertex> neighbors = new Seq<>();
+		public Seq<Vertex> neighbors = new Seq<>(Vertex.class);
 
 		public Vertex(float x, float y, float z) {
 			source = new Vec3(x, y, z);

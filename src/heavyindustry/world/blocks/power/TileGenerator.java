@@ -10,7 +10,7 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatValues;
 
 public class TileGenerator extends AdvancedConsumeGenerator {
-	public Seq<Block> filter = new Seq<>();
+	public Seq<Block> filter = new Seq<>(Block.class);
 
 	public TileGenerator(String name) {
 		super(name);

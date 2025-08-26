@@ -25,6 +25,7 @@ import heavyindustry.entities.abilities.InvincibleForceFieldAbility;
 import heavyindustry.entities.abilities.JavelinAbility;
 import heavyindustry.entities.abilities.MirrorArmorAbility;
 import heavyindustry.entities.abilities.MirrorFieldAbility;
+import heavyindustry.entities.abilities.RegenProjectorAbility;
 import heavyindustry.entities.abilities.TerritoryFieldAbility;
 import heavyindustry.entities.abilities.WitchServiceAbility;
 import heavyindustry.entities.bullet.AccelBulletType;
@@ -3423,7 +3424,7 @@ public final class HUnitTypes {
 			mineTier = 99;
 			fallEffect = HFx.blast(HPal.thurmixRed, 120f);
 			targetAir = targetGround = false;
-			abilities.add(new WitchServiceAbility());
+			abilities.add(new WitchServiceAbility(), new RegenProjectorAbility());
 		}};
 	}
 

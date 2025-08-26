@@ -13,6 +13,7 @@ import arc.func.Floatc;
 import arc.func.Floatc2;
 import arc.func.Floatf;
 import arc.func.Intc2;
+import arc.func.Prov;
 import arc.graphics.Color;
 import arc.math.Angles;
 import arc.math.Mathf;
@@ -32,22 +33,25 @@ import arc.util.Nullable;
 import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.pooling.Pool;
+import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import heavyindustry.content.HFx;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.BoolGrid;
+import heavyindustry.util.Utils;
 import heavyindustry.util.ValueMap;
-import heavyindustry.util.Utils.Hit;
 import mindustry.Vars;
 import mindustry.ai.types.MissileAI;
 import mindustry.core.World;
 import mindustry.entities.Damage;
 import mindustry.entities.Damage.Collided;
 import mindustry.entities.Effect;
+import mindustry.entities.Sized;
 import mindustry.entities.Units;
 import mindustry.entities.Units.Sortf;
 import mindustry.game.EventType.UnitDamageEvent;
 import mindustry.game.Team;
+import mindustry.game.Teams;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.gen.Groups;
@@ -88,6 +92,8 @@ public final class HDamage {
 	static float cdist;
 	static int idx;
 	static boolean hit, hitB;
+	static final Seq<Hit> hseq = new Seq<>(Hit.class);
+	static final BasicPool<Hit> hPool = new BasicPool<>(Hit::new);
 
 	/** Don't let anyone instantiate this class. */
 	private HDamage() {}
@@ -1097,6 +1103,50 @@ public final class HDamage {
 		return tmpUnit;
 	}
 
+	public static float hitLaser(Team team, float width, float x1, float y1, float x2, float y2, Boolf<Healthc> within, Boolf<Healthc> stop, Utils.LineHitHandler<Healthc> cons) {
+		hseq.removeAll(h -> {
+			hPool.free(h);
+			return true;
+		});
+		float ll = Mathf.dst(x1, y1, x2, y2);
+
+		for (Teams.TeamData data : state.teams.present) {
+			if (data.team != team) {
+				if (data.unitTree != null) {
+					Utils.intersectLine(data.unitTree, width, x1, y1, x2, y2, (t, x, y) -> {
+						if (within != null && !within.get(t)) return;
+						Hit h = hPool.obtain();
+						h.entity = t;
+						h.x = x;
+						h.y = y;
+						hseq.add(h);
+					});
+				}
+				if (data.buildingTree != null) {
+					Utils.intersectLine(data.buildingTree, width, x1, y1, x2, y2, (t, x, y) -> {
+						if (within != null && !within.get(t)) return;
+						Hit h = hPool.obtain();
+						h.entity = t;
+						h.x = x;
+						h.y = y;
+						hseq.add(h);
+					});
+				}
+			}
+		}
+		hseq.sort(a -> a.entity.dst2(x1, y1));
+		for (Hit hit : hseq) {
+			Healthc t = hit.entity;
+
+			cons.get(t, hit.x, hit.y);
+			if (stop.get(t)) {
+				ll = Mathf.dst(x1, y1, hit.x, hit.y) - (t instanceof Sized s ? s.hitSize() / 4f : 0f);
+				break;
+			}
+		}
+		return ll;
+	}
+
 	public static void add(ValueMap o, String key, float f) {
 		if (!o.has(key)) {
 			o.put(key, f);
@@ -1114,5 +1164,29 @@ public final class HDamage {
 
 	public interface HitHandler {
 		boolean get(float x, float y, Healthc ent, boolean direct);
+	}
+
+	public static class Hit implements Poolable {
+		public Healthc entity;
+		public float x, y;
+
+		@Override
+		public void reset() {
+			entity = null;
+			x = y = 0f;
+		}
+	}
+
+	public static class BasicPool<T> extends Pool<T> {
+		public final Prov<T> prov;
+
+		public BasicPool(Prov<T> f) {
+			prov = f;
+		}
+
+		@Override
+		protected T newObject() {
+			return prov.get();
+		}
 	}
 }

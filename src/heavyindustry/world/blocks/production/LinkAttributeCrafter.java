@@ -28,7 +28,7 @@ import mindustry.world.meta.Stat;
 public class LinkAttributeCrafter extends AttributeCrafter implements MultiBlock {
 	//link positions
 	public int[] linkValues = {};
-	public Seq<Point2> linkPos = new Seq<>();
+	public Seq<Point2> linkPos = new Seq<>(Point2.class);
 	public IntSeq linkSize = new IntSeq();
 
 	public boolean canMirror = false;
@@ -180,7 +180,7 @@ public class LinkAttributeCrafter extends AttributeCrafter implements MultiBlock
 		@Override
 		public void created() {
 			super.created();
-			linkProximityMap = new Seq<>();
+			linkProximityMap = new Seq<>(Building[].class);
 		}
 
 		@Override

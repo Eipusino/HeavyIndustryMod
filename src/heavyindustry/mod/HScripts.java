@@ -64,7 +64,7 @@ public final class HScripts {
 	}
 
 	public static void importClass(ImporterTopLevel scope, String canonical) {
-		importClass(scope, Reflects.findClass(canonical));
+		importClass(scope, Reflects.findClass(canonical, true));
 	}
 
 	public static void importClass(ImporterTopLevel scope, Class<?> type) {

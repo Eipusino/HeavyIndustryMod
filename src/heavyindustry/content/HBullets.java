@@ -15,6 +15,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.entities.bullet.AccelBulletType;
+import heavyindustry.entities.bullet.BlackHoleBulletType;
 import heavyindustry.entities.bullet.BoidBulletType;
 import heavyindustry.entities.bullet.EffectBulletType;
 import heavyindustry.entities.bullet.LightningLinkerBulletType;
@@ -22,6 +23,7 @@ import heavyindustry.entities.bullet.ShieldBreakerType;
 import heavyindustry.entities.bullet.StrafeLaserBulletType;
 import heavyindustry.entities.bullet.TrailFadeBulletType;
 import heavyindustry.entities.effect.WrapperEffect;
+import heavyindustry.gen.BlackHoleBullet;
 import heavyindustry.gen.HSounds;
 import heavyindustry.gen.UltFire;
 import heavyindustry.graphics.Drawn;
@@ -31,7 +33,6 @@ import heavyindustry.graphics.PositionLightning;
 import heavyindustry.math.HInterps;
 import heavyindustry.util.Utils;
 import mindustry.content.Fx;
-import mindustry.content.Items;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Damage;
 import mindustry.entities.Effect;
@@ -51,7 +52,6 @@ import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.gen.Entityc;
-import mindustry.gen.Groups;
 import mindustry.gen.Healthc;
 import mindustry.gen.Hitboxc;
 import mindustry.gen.Sounds;
@@ -63,7 +63,6 @@ import mindustry.graphics.Pal;
 
 import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
 import static mindustry.Vars.headless;
-import static mindustry.Vars.indexer;
 import static mindustry.Vars.mobile;
 import static mindustry.Vars.tilesize;
 
@@ -86,7 +85,7 @@ public final class HBullets {
 	/** Don't let anyone instantiate this class. */
 	private HBullets() {}
 
-	/** Instantiates all contents. Called in the main thread in {@link HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
 	public static void load() {
 		basicMissile = new MissileBulletType(4.2f, 15f) {{
 			homingPower = 0.12f;
@@ -464,7 +463,7 @@ public final class HBullets {
 				}
 			}
 		};
-		ncBlackHole = new EffectBulletType(120f, 10000f, 3800f) {{
+		ncBlackHole = new BlackHoleBulletType(120f, 10000f, 3800f) {{
 			despawnHit = true;
 			splashDamageRadius = 240f;
 			hittable = false;
@@ -477,44 +476,21 @@ public final class HBullets {
 			collidesAir = collidesGround = collidesTiles = true;
 		}
 			@Override
-			public void draw(Bullet b) {
-				if (!(b.data instanceof Seq<?> dat) || dat.size > 8) return;
-
-				Draw.color(lightColor, Color.white, b.fin() * 0.7f);
-				Draw.alpha(b.fin(Interp.pow3Out) * 1.1f);
-				Lines.stroke(2 * b.fout());
-				if (dat.items instanceof Sized[] sizeds) {
-					for (Sized s : sizeds) {
-						if (s == null) continue;
-
-						if (s instanceof Building) {
-							Fill.square(s.getX(), s.getY(), s.hitSize() / 2);
-						} else {
-							Lines.spikes(s.getX(), s.getY(), s.hitSize() * (0.5f + b.fout() * 2f), s.hitSize() / 2f * b.fslope() + 12 * b.fin(), 4, 45);
-						}
-					}
+			public void despawned(Bullet b) {
+				if (despawnHit) {
+					hit(b);
+				} else {
+					createUnits(b, b.x, b.y);
 				}
 
-				Drawf.light(b.x, b.y, b.fdata, lightColor, 0.3f + b.fin() * 0.8f);
-			}
+				if (!fragOnHit) {
+					createFrags(b, b.x, b.y);
+				}
 
-			public void hitTile(Sized target, Entityc o, Team team, float x, float y) {
-				for (int i = 0; i < lightning; i++)
-					Lightning.create(team, lightColor, lightningDamage, x, y, Mathf.random(360f), lightningLength + Mathf.random(lightningLengthRand));
+				despawnEffect.at(b.x, b.y, b.rotation(), hitColor);
+				despawnSound.at(b);
 
-				if (target instanceof Unit unit && unit.health > 1000f) HBullets.hitter.create(o, team, x, y, 0f);
-			}
-
-			@Override
-			public void update(Bullet b) {
-				super.update(b);
-
-				if (b.data instanceof Seq<?> dat) dat.remove(d -> d == null || d instanceof Healthc h && !h.isValid());
-			}
-
-			@Override
-			public void despawned(Bullet b) {
-				super.despawned(b);
+				Effect.shake(despawnShake, despawnShake, b);
 
 				float rad = 33f;
 
@@ -527,16 +503,15 @@ public final class HBullets {
 					});
 				}
 
-				if (!(b.data instanceof Seq<?> dat)) return;
-				Entityc o = b.owner();
+				if (b instanceof BlackHoleBullet hb) {
+					Entityc o = b.owner();
 
-				if (dat.items instanceof Sized[] sizeds) {
-					for (Sized s : sizeds) {
+					for (Sized s : hb.sizeds) {
 						if (s == null) continue;
 
 						float size = Math.min(s.hitSize(), 85);
 						Time.run(Mathf.random(44), () -> {
-							if (Mathf.chance(0.32) || dat.size < 8)
+							if (Mathf.chance(0.32) || hb.sizeds.size < 8)
 								HFx.shuttle.at(s.getX(), s.getY(), 45, lightColor, Mathf.random(size * 3f, size * 12f));
 							hitTile(s, o, b.team, s.getX(), s.getY());
 						});
@@ -550,20 +525,10 @@ public final class HBullets {
 			public void init(Bullet b) {
 				super.init(b);
 
-				Seq<Sized> data = new Seq<>(Sized.class);
-
-				indexer.eachBlock(null, b.x, b.y, b.fdata, bu -> bu.team != b.team, data::add);
-
-				Groups.unit.intersect(b.x - b.fdata / 2, b.y - b.fdata / 2, b.fdata, b.fdata, u -> {
-					if (u.team != b.team) data.add(u);
-				});
-
-				b.data = data;
-
 				HFx.circleOut.at(b.x, b.y, b.fdata * 1.25f, lightColor);
 			}
 		};
-		nuBlackHole = new EffectBulletType(20f, 10000f, 0f) {{
+		nuBlackHole = new BlackHoleBulletType(20f, 10000f, 0f) {{
 			despawnHit = true;
 			splashDamageRadius = 36f;
 			hittable = false;
@@ -574,84 +539,7 @@ public final class HBullets {
 			lightningLengthRand = 8;
 			scaledSplashDamage = true;
 			collidesAir = collidesGround = collidesTiles = true;
-		}
-			@Override
-			public void draw(Bullet b) {
-				if (!(b.data instanceof Seq<?> dat) || dat.size > 8) return;
-
-				Draw.color(lightColor, Color.white, b.fin() * 0.7f);
-				Draw.alpha(b.fin(Interp.pow3Out) * 1.1f);
-				Lines.stroke(2 * b.fout());
-				if (dat.items instanceof Sized[] sizeds) {
-					for (Sized s : sizeds) {
-						if (s == null) continue;
-
-						if (s instanceof Building) {
-							Fill.square(s.getX(), s.getY(), s.hitSize() / 2f);
-						} else {
-							Lines.spikes(s.getX(), s.getY(), s.hitSize() * (0.5f + b.fout() * 2f), s.hitSize() / 2f * b.fslope() + 12f * b.fin(), 4, 45);
-						}
-					}
-				}
-
-				Drawf.light(b.x, b.y, b.fdata, lightColor, 0.3f + b.fin() * 0.8f);
-			}
-
-			public void hitTile(Entityc o, Team team, float x, float y) {
-				for (int i = 0; i < lightning; i++)
-					Lightning.create(team, lightColor, lightningDamage, x, y, Mathf.random(360), lightningLength + Mathf.random(lightningLengthRand));
-
-				HBullets.hitter.create(o, team, x, y, 0, 3000, 1, 1, null);
-			}
-
-			@Override
-			public void update(Bullet b) {
-				super.update(b);
-
-				if (b.timer(0, 5) && b.data instanceof Seq<?> dat) dat.remove(d -> d == null || d instanceof Healthc h && !h.isValid());
-			}
-
-			@Override
-			public void despawned(Bullet b) {
-				super.despawned(b);
-
-				if (!(b.data instanceof Seq<?> dat)) return;
-				Entityc o = b.owner();
-
-				if (dat.items instanceof Sized[] sizeds) {
-					for (Sized s : sizeds) {
-						if (s == null) continue;
-
-						float size = Math.min(s.hitSize(), 75);
-						if (Mathf.chance(0.32) || dat.size < 8) {
-							float sd = Mathf.random(size * 3f, size * 12f);
-
-							HFx.shuttleDark.at(s.getX() + Mathf.range(size), s.getY() + Mathf.range(size), 45, lightColor, sd);
-						}
-						hitTile(o, b.team, s.getX(), s.getY());
-					}
-				}
-
-				createSplashDamage(b, b.x, b.y);
-			}
-
-			@Override
-			public void init(Bullet b) {
-				super.init(b);
-
-				b.fdata = splashDamageRadius;
-
-				Seq<Sized> data = new Seq<>(Sized.class);
-
-				indexer.eachBlock(null, b.x, b.y, b.fdata, bu -> bu.team != b.team, data::add);
-
-				Groups.unit.intersect(b.x - b.fdata / 2, b.y - b.fdata / 2, b.fdata, b.fdata, u -> {
-					if (u.team != b.team) data.add(u);
-				});
-
-				b.data = data;
-			}
-		};
+		}};
 		ultFireball = new FireBulletType(1f, 10) {{
 			colorFrom = colorMid = Pal.techBlue;
 			lifetime = 12f;

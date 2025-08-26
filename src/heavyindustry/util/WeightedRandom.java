@@ -13,8 +13,8 @@ public class WeightedRandom<T> {
 		items = new Seq<>();
 	}
 
-	public WeightedRandom(Class<T> type) {
-		items = new Seq<>(type);
+	public WeightedRandom(Class<T> componentType) {
+		items = new Seq<>(componentType);
 	}
 
 	public void add(T t, float weight) {

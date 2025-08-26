@@ -332,7 +332,7 @@ public final class BlockMovement {
 		bmu.update();
 	}
 
-	private static final Seq<Building> toRemove = new Seq<>();
+	private static final Seq<Building> toRemove = new Seq<>(Building.class);
 
 	public static void onUpdate() {
 		currentlyPushing.each((b, animate) -> {
