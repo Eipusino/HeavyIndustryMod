@@ -6,10 +6,8 @@ import arc.flabel.FLabel;
 import arc.math.Mathf;
 import arc.util.Align;
 import arc.util.Log;
-import arc.util.Nullable;
 import arc.util.Strings;
 import arc.util.Time;
-import arc.util.serialization.Jval;
 import heavyindustry.HVars;
 import heavyindustry.content.HBlocks;
 import heavyindustry.content.HBullets;
@@ -34,7 +32,7 @@ import heavyindustry.graphics.HShaders;
 import heavyindustry.graphics.HTextures;
 import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.input.InputAggregator;
-import heavyindustry.mod.HMdos;
+import heavyindustry.mod.HMods;
 import heavyindustry.mod.HScripts;
 import heavyindustry.net.HCall;
 import heavyindustry.ui.HFonts;
@@ -42,20 +40,20 @@ import heavyindustry.ui.HStyles;
 import heavyindustry.ui.Elements;
 import heavyindustry.ui.dialogs.HResearchDialog;
 import heavyindustry.util.IconLoader;
-import mindustry.ctype.Content;
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.game.EventType.DisposeEvent;
 import mindustry.game.EventType.FileTreeInitEvent;
 import mindustry.game.EventType.MusicRegisterEvent;
 import mindustry.mod.Mod;
-import mindustry.mod.Mods.LoadedMod;
 import mindustry.ui.dialogs.BaseDialog;
 
+import static heavyindustry.HVars.AUTHOR;
 import static heavyindustry.HVars.inputAggregator;
 import static heavyindustry.HVars.internalTree;
+import static heavyindustry.HVars.LINK_GIT_HUB;
+import static heavyindustry.HVars.MOD_NAME;
 import static heavyindustry.HVars.sizedGraphics;
 import static mindustry.Vars.headless;
-import static mindustry.Vars.mods;
 import static mindustry.Vars.ui;
 
 /**
@@ -67,27 +65,8 @@ import static mindustry.Vars.ui;
  * @author Eipusino
  * @see HVars
  */
-public final class HeavyIndustryMod extends Mod {
-	/** Commonly used static read-only String. Do not change unless you know what you're doing. */
-	public static final String MOD_NAME = "heavy-industry";
-	/** The author of this mod. */
-	public static final String AUTHOR = "Eipusino";
-	/** The GitHub address of this mod. */
-	public static final String LINK_GIT_HUB = "https://github.com/Eipusino/HeavyIndustryMod";
-
-	/** The meta of this mod. */
-	public static final Jval modJson;
-
-	static @Nullable FloatingText floatingText;
-
-	/** If needed, please call {@link #loaded()} for the LoadedMod of this mod. */
-	static @Nullable LoadedMod loaded;
-
-	static {
-		modJson = HMdos.getMeta(internalTree.root);
-
-		HMdos.addBlacklistedMods();
-	}
+public class HeavyIndustryMod extends Mod {
+	FloatingText floatingText;
 
 	public HeavyIndustryMod() {
 		Log.info("Loaded HeavyIndustry Mod constructor.");
@@ -120,13 +99,13 @@ public final class HeavyIndustryMod extends Mod {
 
 		Events.on(FileTreeInitEvent.class, event -> {
 			if (!headless) {
-				HFonts.load();
-				HSounds.load();
+				HFonts.onClient();
+				HSounds.onClient();
 
 				Core.app.post(() -> {
-					HShaders.init();
-					HTextures.init();
-					HCacheLayer.init();
+					HShaders.onClient();
+					HTextures.onClient();
+					HCacheLayer.onClient();
 
 					inputAggregator = new InputAggregator();
 					sizedGraphics = new SizedGraphics();
@@ -136,7 +115,7 @@ public final class HeavyIndustryMod extends Mod {
 
 		Events.on(MusicRegisterEvent.class, event -> {
 			if (!headless) {
-				HMusics.load();
+				HMusics.onClient();
 			}
 		});
 
@@ -177,7 +156,7 @@ public final class HeavyIndustryMod extends Mod {
 	@Override
 	public void init() {
 		if (!headless) {
-			HIcon.load();
+			HIcon.onClient();
 
 			HStyles.onClient();
 			Elements.onClient();
@@ -208,31 +187,12 @@ public final class HeavyIndustryMod extends Mod {
 			});
 		}
 
-		if (headless || ui == null || isEnabled("extra-utilities") || !Core.settings.getBool("hi-floating-text")) return;
+		if (headless || ui == null || HMods.isEnabled("extra-utilities") || !Core.settings.getBool("hi-floating-text")) return;
 
 		String massage = Core.bundle.get("hi-random-massage");
 		String[] massageSplit = massage.split("&");
 
 		floatingText = new FloatingText(massageSplit[Mathf.random(massageSplit.length - 1)]);
 		floatingText.build(ui.menuGroup);
-	}
-
-	public static boolean isHeavyIndustry(@Nullable Content content) {
-		return content != null && isHeavyIndustry(content.minfo.mod);
-	}
-
-	public static boolean isHeavyIndustry(@Nullable LoadedMod mod) {
-		return mod != null && mod == loaded();
-	}
-
-	/** Safely obtain the {@code LoadedMod} for this mod. */
-	public static LoadedMod loaded() {
-		if (loaded == null) loaded = mods.getMod(MOD_NAME);
-		return loaded;
-	}
-
-	public static boolean isEnabled(String name) {
-		LoadedMod mod = mods.getMod(name);
-		return mod != null && mod.isSupported() && mod.enabled();
 	}
 }

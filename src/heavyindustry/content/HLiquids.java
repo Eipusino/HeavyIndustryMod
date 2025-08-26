@@ -26,7 +26,7 @@ public final class HLiquids {
 	/** Don't let anyone instantiate this class. */
 	private HLiquids() {}
 
-	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
 		brine = new Liquid("brine", Color.valueOf("b8c89f")) {{
 			coolant = false;

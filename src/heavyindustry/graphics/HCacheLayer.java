@@ -18,7 +18,7 @@ public final class HCacheLayer {
 	private HCacheLayer() {}
 
 	/** Loads the cache layers. */
-	public static void init() {
+	public static void onClient() {
 		brine = new ShaderLayer(HShaders.brine);
 		originiumFluid = new ShaderLayer(HShaders.originiumFluid);
 		pit = new ShaderLayer(HShaders.pit);

@@ -14,7 +14,7 @@ import mindustry.game.EventType.ResetEvent;
 import mindustry.io.SaveVersion;
 import mindustry.world.Block;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 
 public final class Worlds {
 	public static final Seq<CommandableBlock.CommandableBuild> commandableBuilds = new Seq<>(CommandableBlock.CommandableBuild.class);

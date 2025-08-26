@@ -266,7 +266,7 @@ import mindustry.world.meta.BuildVisibility;
 import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 import static mindustry.Vars.content;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.indexer;
@@ -397,7 +397,7 @@ public final class HBlocks {
 		}
 	}
 
-	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
 		//environment
 		cliff = new DepthCliff("cliff");

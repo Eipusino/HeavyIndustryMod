@@ -19,7 +19,7 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 
 /** Draw the effect of bullet fireworks. Although its memory usage may be slightly high. */
 public class FireWorkBulletType extends BulletType {

@@ -23,7 +23,7 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 import static mindustry.Vars.tilesize;
 
 public class EnergyUnitType extends AncientUnitType {

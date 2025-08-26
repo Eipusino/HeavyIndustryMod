@@ -13,7 +13,7 @@ public final class HTextures {
 	/** Don't let anyone instantiate this class. */
 	private HTextures() {}
 
-	public static void init() {
+	public static void onClient() {
 		smooth = loadTexture("smooth-noise", TextureFilter.linear, TextureWrap.repeat);
 		particle = loadTexture("particle-noise", TextureFilter.linear, TextureWrap.repeat);
 		darker = loadTexture("darker-noise", TextureFilter.linear, TextureWrap.repeat);

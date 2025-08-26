@@ -10,6 +10,7 @@ import arc.func.Func;
 import arc.func.Func2;
 import arc.func.Intc2;
 import arc.func.Intf;
+import arc.func.Prov;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
@@ -44,6 +45,7 @@ import arc.util.Tmp;
 import arc.util.pooling.Pools;
 import heavyindustry.content.HFx;
 import heavyindustry.func.ProvT;
+import heavyindustry.func.RunT;
 import heavyindustry.gen.Spawner;
 import heavyindustry.graphics.HPal;
 import mindustry.content.StatusEffects;
@@ -1519,6 +1521,22 @@ public final class Utils {
 		return a == b || a != null && a.equals(b);
 	}
 
+	public static int hashCode(Object obj) {
+		return obj != null ? obj.hashCode() : 0;
+	}
+
+	public static int hash(Object... values) {
+		if (values == null)
+			return 0;
+
+		int result = 1;
+
+		for (Object element : values)
+			result = 31 * result + (element == null ? 0 : element.hashCode());
+
+		return result;
+	}
+
 	/**
 	 * Convert vararg to an array.
 	 * Returns an array containing the specified elements.
@@ -1731,21 +1749,17 @@ public final class Utils {
 		return -1;
 	}
 
-	public static int hashCode(Object... values) {
-		if (values == null)
-			return 0;
-
-		int result = 1;
-
-		for (Object element : values)
-			result = 31 * result + (element == null ? 0 : element.hashCode());
-
-		return result;
-	}
-
 	public static <T> T apply(T obj, Cons<T> cons) {
 		cons.get(obj);
 		return obj;
+	}
+
+	public static void run(RunT<Exception> cons) {
+		try {
+			cons.run();
+		} catch (Exception e) {
+			Log.err(e);
+		}
 	}
 
 	public static <T> void get(ConsT<T, Exception> cons, T obj) {

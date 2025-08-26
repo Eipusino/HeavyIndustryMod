@@ -30,7 +30,7 @@ import mindustry.world.blocks.power.NuclearReactor;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatValues;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 import static mindustry.Vars.tilesize;
 
 public class LightenGenerator extends NuclearReactor {

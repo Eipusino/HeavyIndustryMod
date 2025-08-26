@@ -22,6 +22,13 @@ import static mindustry.Vars.headless;
  * @since 1.0.6
  */
 public final class HVars {
+	/** Commonly used static read-only String. Do not change unless you know what you're doing. */
+	public static final String MOD_NAME = "heavy-industry";
+	/** The author of this mod. */
+	public static final String AUTHOR = "Eipusino";
+	/** The GitHub address of this mod. */
+	public static final String LINK_GIT_HUB = "https://github.com/Eipusino/HeavyIndustryMod";
+
 	/** Lists all the mod's classes by their canonical names. Generated at compile-time. */
 	public static final @ListClasses String[] classes = with();
 	/** Lists all the mod's packages by their canonical names. Generated at compile-time. */

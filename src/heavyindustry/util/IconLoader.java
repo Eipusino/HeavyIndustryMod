@@ -17,14 +17,14 @@ import java.util.Properties;
 public final class IconLoader {
 	private IconLoader() {}
 
-	public static void loadIcons(Fi fi) {
-		if (!fi.exists()) return;
+	public static void loadIcons(Fi file) {
+		if (!file.exists()) return;
 
 		Seq<Font> availableFonts = Seq.with(Fonts.def, Fonts.outline);
 		int fontSize = (int) (Fonts.def.getData().lineHeight / Fonts.def.getData().scaleY);
 
 		Properties iconProperties = new Properties();
-		try (Reader reader = fi.reader(512)) {
+		try (Reader reader = file.reader(512)) {
 			iconProperties.load(reader);
 		} catch (Exception e) {
 			Log.err(e);

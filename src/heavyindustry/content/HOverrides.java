@@ -80,7 +80,7 @@ public final class HOverrides {
 	private HOverrides() {}
 
 	/**
-	 * Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}.
+	 * Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}.
 	 * <p>Remember not to execute it a second time, I did not take any precautionary measures.
 	 */
 	public static void load() {

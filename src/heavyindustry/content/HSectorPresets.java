@@ -17,7 +17,7 @@ public final class HSectorPresets {
 	/** Don't let anyone instantiate this class. */
 	private HSectorPresets() {}
 
-	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
 		//serpulo
 		volcanicArchipelago = new SectorPreset("volcanicArchipelago", Planets.serpulo, 111) {{

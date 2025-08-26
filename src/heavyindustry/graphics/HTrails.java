@@ -22,7 +22,7 @@ import mindustry.gen.Rotc;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Trail;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 import static heavyindustry.util.Utils.copyArray;
 import static heavyindustry.util.Utils.sumi;
 

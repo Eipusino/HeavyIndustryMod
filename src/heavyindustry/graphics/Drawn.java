@@ -39,7 +39,7 @@ import mindustry.graphics.Pal;
 import mindustry.graphics.Shaders;
 import mindustry.ui.Fonts;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.net;
 import static mindustry.Vars.renderer;

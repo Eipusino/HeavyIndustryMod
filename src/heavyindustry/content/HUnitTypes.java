@@ -127,7 +127,7 @@ import mindustry.type.weapons.RepairBeamWeapon;
 import mindustry.world.meta.BlockFlag;
 import mindustry.world.meta.Env;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 import static mindustry.Vars.content;
 import static mindustry.Vars.indexer;
 import static mindustry.Vars.tilePayload;
@@ -163,7 +163,7 @@ public final class HUnitTypes {
 	/** Don't let anyone instantiate this class. */
 	private HUnitTypes() {}
 
-	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
 		//vanilla-tank
 		vanguard = new BaseUnitType("vanguard") {{

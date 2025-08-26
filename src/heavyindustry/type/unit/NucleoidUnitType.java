@@ -4,7 +4,7 @@ import arc.Core;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Time;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 
 public class NucleoidUnitType extends AncientUnitType {
 	public TextureRegion arrowRegion;

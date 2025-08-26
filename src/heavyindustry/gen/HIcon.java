@@ -7,7 +7,7 @@ import arc.scene.style.Drawable;
 import arc.scene.style.ScaledNinePatchDrawable;
 import arc.scene.style.TextureRegionDrawable;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 
 public final class HIcon {
 	public static TextureRegionDrawable
@@ -25,7 +25,7 @@ public final class HIcon {
 	/** Don't let anyone instantiate this class. */
 	private HIcon() {}
 
-	public static void load() {
+	public static void onClient() {
 		keplerIcon = texture("kepler-icon");
 		aboutIcon = texture("about-icon");
 		artistIcon = texture("artist-icon");

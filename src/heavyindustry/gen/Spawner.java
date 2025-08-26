@@ -47,7 +47,7 @@ import mindustry.ui.Fonts;
 
 import java.nio.FloatBuffer;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.tilesize;
 

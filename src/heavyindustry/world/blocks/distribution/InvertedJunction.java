@@ -18,7 +18,7 @@ import mindustry.type.Item;
 import mindustry.ui.Styles;
 import mindustry.world.blocks.distribution.Junction;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 import static heavyindustry.util.Utils.split;
 import static mindustry.Vars.content;
 import static mindustry.Vars.tilesize;

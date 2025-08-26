@@ -10,7 +10,7 @@ import arc.util.Tmp;
 import mindustry.Vars;
 import mindustry.entities.part.DrawPart;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 
 public class AimPart extends DrawPart {
 	public Color color;

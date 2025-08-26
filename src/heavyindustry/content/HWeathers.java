@@ -13,7 +13,7 @@ import mindustry.type.Weather;
 import mindustry.type.weather.ParticleWeather;
 import mindustry.world.meta.Attribute;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 
 /**
  * Defines the {@linkplain Weather weather} this mod offers.
@@ -26,7 +26,7 @@ public final class HWeathers {
 	/** Don't let anyone instantiate this class. */
 	private HWeathers() {}
 
-	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
 		wind = new EffectWeather("wind") {{
 			weatherFx = HFx.windTail;

@@ -37,7 +37,7 @@ public final class HStatusEffects {
 	/** Don't let anyone instantiate this class. */
 	private HStatusEffects() {}
 
-	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
 		overheat = new BaseStatusEffect("overheat") {{
 			color = Color.valueOf("ffdcd8");

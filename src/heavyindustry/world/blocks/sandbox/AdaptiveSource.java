@@ -2,6 +2,8 @@ package heavyindustry.world.blocks.sandbox;
 
 import arc.graphics.Color;
 import arc.struct.Seq;
+import heavyindustry.type.Recipe;
+import heavyindustry.world.consumers.ConsumeRecipe;
 import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.graphics.Pal;
@@ -9,6 +11,7 @@ import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.type.Liquid;
 import mindustry.type.LiquidStack;
+import mindustry.type.PayloadStack;
 import mindustry.ui.Bar;
 import mindustry.world.Block;
 import mindustry.world.blocks.heat.HeatBlock;
@@ -93,19 +96,19 @@ public class AdaptiveSource extends Block {
 						}
 					} else if (consume instanceof ConsumeLiquid cons) {
 						if (build.acceptLiquid(this, cons.liquid) && build.liquids.get(cons.liquid) < build.block.liquidCapacity) {
-							build.handleLiquid(this, cons.liquid, cons.amount * build.block.liquidCapacity);
+							build.handleLiquid(this, cons.liquid, build.block.liquidCapacity - build.liquids.get(cons.liquid));
 						}
 					} else if (consume instanceof ConsumeLiquids cons) {
 						LiquidStack[] liquids = cons.liquids;
 						for (LiquidStack liquid : liquids) {
 							if (build.acceptLiquid(this, liquid.liquid) && build.liquids.get(liquid.liquid) < build.block.liquidCapacity) {
-								build.handleLiquid(this, liquid.liquid, liquid.amount * build.block.liquidCapacity);
+								build.handleLiquid(this, liquid.liquid, build.block.liquidCapacity - build.liquids.get(liquid.liquid));
 							}
 						}
 					} else if (consume instanceof ConsumeLiquidFilter cons) {
 						for (Liquid liquid : outputLiquids) {
 							if (cons.filter.get(liquid) && build.acceptLiquid(this, liquid) && build.liquids.get(liquid) < build.block.liquidCapacity) {
-								build.handleLiquid(this, liquid, cons.amount * build.block.liquidCapacity);
+								build.handleLiquid(this, liquid, build.block.liquidCapacity - build.liquids.get(liquid));
 							}
 						}
 					} else if (consume instanceof ConsumeItemDynamic cons) {
@@ -121,12 +124,26 @@ public class AdaptiveSource extends Block {
 						LiquidStack[] liquids = cons.liquids.get(build);
 						for (LiquidStack liquid : liquids) {
 							if (build.acceptLiquid(this, liquid.liquid) && build.liquids.get(liquid.liquid) < build.block.liquidCapacity) {
-								build.handleLiquid(this, liquid.liquid, liquid.amount * build.block.liquidCapacity);
+								build.handleLiquid(this, liquid.liquid, build.block.liquidCapacity - build.liquids.get(liquid.liquid));
 							}
+						}
+					} else if (consume instanceof ConsumeRecipe cons) {
+						Recipe recipe = cons.recipes.get(build);
+
+						if (recipe == null) continue;
+
+						for (ItemStack stack : recipe.inputItem) {
+							if (build.acceptItem(this, stack.item)) build.handleItem(this, stack.item);
+						}
+						for (LiquidStack stack : recipe.inputLiquid) {
+							if (build.acceptLiquid(this, stack.liquid) && build.liquids.get(stack.liquid) < build.block.liquidCapacity) {
+								build.handleLiquid(this, stack.liquid, build.block.liquidCapacity - build.liquids.get(stack.liquid));
+							}
+						}
+						for (PayloadStack stack : recipe.inputPayload) {
 						}
 					}
 				}
-
 			}
 		}
 

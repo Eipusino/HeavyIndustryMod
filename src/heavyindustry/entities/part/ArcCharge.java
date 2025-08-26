@@ -18,7 +18,7 @@ import mindustry.entities.part.DrawPart;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 import static mindustry.Vars.mobile;
 import static mindustry.Vars.tilesize;
 

@@ -19,7 +19,7 @@ public final class HItems {
 	/** Don't let anyone instantiate this class. */
 	private HItems() {}
 
-	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
 		stone = new Item("stone", Color.valueOf("8a8a8a")) {{
 			hardness = 1;

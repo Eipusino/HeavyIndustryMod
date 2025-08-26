@@ -18,7 +18,7 @@ public final class HMusics {
 	/** Don't let anyone instantiate this class. */
 	private HMusics() {}
 
-	public static void load() {}
+	public static void onClient() {}
 
 	/**
 	 * Loads a set of music tracks from a specified base path.

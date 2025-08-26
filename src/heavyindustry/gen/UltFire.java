@@ -27,7 +27,7 @@ import mindustry.graphics.Pal;
 import mindustry.world.Tile;
 import mindustry.world.meta.Attribute;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 import static heavyindustry.util.Utils.split;
 import static mindustry.Vars.control;
 import static mindustry.Vars.headless;

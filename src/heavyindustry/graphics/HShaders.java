@@ -22,7 +22,7 @@ import mindustry.Vars;
 import mindustry.type.Planet;
 
 import static heavyindustry.HVars.internalTree;
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 
 /**
  * Defines the {@linkplain Shader shader}s this mod offers.
@@ -53,7 +53,7 @@ public final class HShaders {
 	private HShaders() {}
 
 	/** Loads the shaders. */
-	public static void init() {
+	public static void onClient() {
 		String prevVert = Shader.prependVertexCode, prevFrag = Shader.prependFragmentCode;
 		Shader.prependVertexCode = Shader.prependFragmentCode = "";
 

@@ -13,7 +13,6 @@ import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
-import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.entities.bullet.AccelBulletType;
 import heavyindustry.entities.bullet.BlackHoleBulletType;
 import heavyindustry.entities.bullet.BoidBulletType;
@@ -61,7 +60,7 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.mobile;
 import static mindustry.Vars.tilesize;
@@ -85,7 +84,7 @@ public final class HBullets {
 	/** Don't let anyone instantiate this class. */
 	private HBullets() {}
 
-	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
 		basicMissile = new MissileBulletType(4.2f, 15f) {{
 			homingPower = 0.12f;

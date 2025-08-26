@@ -30,7 +30,7 @@ import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 import static mindustry.Vars.state;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;

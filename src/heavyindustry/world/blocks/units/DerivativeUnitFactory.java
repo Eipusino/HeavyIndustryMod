@@ -27,7 +27,7 @@ import mindustry.world.blocks.payloads.UnitPayload;
 import mindustry.world.blocks.units.UnitFactory;
 import mindustry.world.meta.BlockFlag;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 import static mindustry.Vars.control;
 import static mindustry.Vars.indexer;
 import static mindustry.Vars.state;

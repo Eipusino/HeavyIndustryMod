@@ -73,15 +73,16 @@ public class WitchServiceAbility extends Ability {
 						applyIn.at(u.x, u.y, u.rotation, u);
 						u.apply(applyEffect, timeApply / 2f);
 					} else {
-						if (u.isAdded() && !u.dead && findMap.containsKey(u)) {
+						if (u.isValid() && findMap.containsKey(u)) {
 							findMap.remove(u, 0f);
 						}
 					}
 				}
 			});
 			for (Unit u : findMap.keySet()) {
-				if (u == null || !u.isAdded() || u.dead || u.hasEffect(effectType)) {
+				if (u == null || !u.isValid() || u.hasEffect(effectType)) {
 					findMap.remove(u, 0f);
+
 					continue;
 				}
 

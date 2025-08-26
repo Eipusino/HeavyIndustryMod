@@ -47,7 +47,7 @@ import mindustry.type.UnitType;
 import mindustry.world.Block;
 import mindustry.world.blocks.payloads.Payload;
 
-import static heavyindustry.core.HeavyIndustryMod.MOD_NAME;
+import static heavyindustry.HVars.MOD_NAME;
 import static mindustry.Vars.state;
 import static mindustry.Vars.tilesize;
 
@@ -2758,7 +2758,7 @@ public final class HFx {
 	}
 
 	public static Effect get(String m, Color c, Effect effect) {
-		int hash = Utils.hashCode(m, c);
+		int hash = Utils.hash(m, c);
 		Effect or = same.get(hash);
 		if (or == null) same.put(hash, effect);
 		return or == null ? effect : or;

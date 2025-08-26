@@ -31,7 +31,7 @@ public final class HTechTree {
 	/** Don't let anyone instantiate this class. */
 	private HTechTree() {}
 
-	/** Instantiates all contents. Called in the main thread in {@link heavyindustry.core.HeavyIndustryMod#loadContent()}. */
+	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
 		//items,liquids
 		vanillaNode(Liquids.water, () -> {
