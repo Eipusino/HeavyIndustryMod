@@ -13,7 +13,7 @@ repositories {
 }
 
 java {
-	targetCompatibility = JavaVersion.VERSION_1_8
+	targetCompatibility = JavaVersion.VERSION_17
 	sourceCompatibility = JavaVersion.VERSION_17
 }
 
@@ -25,13 +25,17 @@ ext {
 
 tasks.withType(JavaCompile).configureEach {
 	options.encoding = "UTF-8"
-	options.compilerArgs.addAll(["--release", "8"])
+	options.compilerArgs.addAll([
+			"--add-exports", "java.base/jdk.internal.misc=ALL-UNNAMED"
+	])
 }
 
 dependencies {
 	compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
 	compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
 	compileOnly project(":annotations")
+
+	implementation files("libs/FieldUtils.jar")
 
 	annotationProcessor project(":annotations")
 }

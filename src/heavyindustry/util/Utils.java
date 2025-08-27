@@ -1537,6 +1537,18 @@ public final class Utils {
 		return result;
 	}
 
+	public static <T> T requireInstance(Class<?> type, T obj) {
+		if (!type.isInstance(obj))
+			throw new ClassCastException();
+		return obj;
+	}
+
+	public static <T> T requireNonNull(T obj) {
+		if (obj == null)
+			throw new NullPointerException();
+		return obj;
+	}
+
 	/**
 	 * Convert vararg to an array.
 	 * Returns an array containing the specified elements.
