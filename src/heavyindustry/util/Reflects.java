@@ -14,6 +14,7 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
 import static heavyindustry.util.Utils.arrayOf;
+import static heavyindustry.util.Utils.requireNonNull;
 
 /**
  * More expansion of Java reflection functionality.
@@ -202,14 +203,10 @@ public final class Reflects {
 
 	/** A utility function to find a field without throwing exceptions. */
 	public static Field findField(Class<?> type, String name, boolean access) {
-		try {
-			Field field = findClassField(type, name).getDeclaredField(name);
-			if (access) field.setAccessible(true);
+		Field field = requireNonNull(findClassField(type, name));
+		if (access) field.setAccessible(true);
 
-			return field;
-		} catch (NoSuchFieldException e) {
-			throw new RuntimeException(e);
-		}
+		return field;
 	}
 
 	/** Sets a field of an model without throwing exceptions. */
@@ -237,14 +234,10 @@ public final class Reflects {
 
 	/** A utility function to find a method without throwing exceptions. */
 	public static Method findMethod(Class<?> type, String name, boolean access, Class<?>... args) {
-		try {
-			Method method = findClassMethod(type, name, args).getDeclaredMethod(name, args);
-			if (access) method.setAccessible(true);
+		Method method = requireNonNull(findClassMethod(type, name, args));
+		if (access) method.setAccessible(true);
 
-			return method;
-		} catch (NoSuchMethodException e) {
-			throw new RuntimeException(e);
-		}
+		return method;
 	}
 
 	public static <T> T invokeMethod(Method method) {
@@ -358,16 +351,11 @@ public final class Reflects {
 	}
 
 	/** A utility function to find a constructor without throwing exceptions. */
-	@SuppressWarnings("unchecked")
 	public static <T> Constructor<T> findConstructor(Class<T> type, boolean access, Class<?>... args) {
-		try {
-			Constructor<T> c = ((Class<T>) findClassConstructor(type, args)).getDeclaredConstructor(args);
-			if (access) c.setAccessible(true);
+		Constructor<T> constructor = requireNonNull(findClassConstructor(type, args));
+		if (access) constructor.setAccessible(true);
 
-			return c;
-		} catch (NoSuchMethodException e) {
-			throw new RuntimeException(e);
-		}
+		return constructor;
 	}
 
 	public static <T> T make(Class<T> type) {
@@ -412,8 +400,42 @@ public final class Reflects {
 		}
 	}
 
+	public static Field findClassField(Class<?> type, final String name) {
+		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
+			Field[] fields = type.getDeclaredFields();
+			for (Field field : fields) {
+				if (field.getName().equals(name)) return field;
+			}
+		}
+
+		return null;
+	}
+
+	public static Method findClassMethod(Class<?> type, final String name, Class<?>... args) {
+		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
+			Method[] methods = type.getDeclaredMethods();
+			for (Method method : methods) {
+				if (method.getName().equals(name) && Arrays.equals(method.getParameterTypes(), args)) return method;
+			}
+		}
+
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> Constructor<T> findClassConstructor(Class<?> type, Class<?>... args) {
+		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
+			Constructor<?>[] constructors = type.getDeclaredConstructors();
+			for (Constructor<?> constructor : constructors) {
+				if (Arrays.equals(constructor.getParameterTypes(), args)) return (Constructor<T>) constructor;
+			}
+		}
+
+		return null;
+	}
+
 	/** Finds a class from the parent classes that has a specific field. */
-	public static Class<?> findClassField(Class<?> type, final String name) {
+	public static Class<?> findContainsFieldClass(Class<?> type, final String name) {
 		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
 			Field[] fields = type.getDeclaredFields();
 			for (Field field : fields) {
@@ -425,7 +447,7 @@ public final class Reflects {
 	}
 
 	/** Finds a class from the parent classes that has a specific method. */
-	public static Class<?> findClassMethod(Class<?> type, final String name, Class<?>... args) {
+	public static Class<?> findContainsMethodClass(Class<?> type, final String name, Class<?>... args) {
 		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
 			Method[] methods = type.getDeclaredMethods();
 			for (Method method : methods) {
@@ -437,7 +459,7 @@ public final class Reflects {
 	}
 
 	/** Finds a class from the parent classes that has a specific constructor. */
-	public static Class<?> findClassConstructor(Class<?> type, Class<?>... args) {
+	public static Class<?> findContainsConstructorClass(Class<?> type, Class<?>... args) {
 		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
 			Constructor<?>[] constructors = type.getDeclaredConstructors();
 			for (Constructor<?> constructor : constructors) {

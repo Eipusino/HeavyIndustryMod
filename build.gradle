@@ -25,9 +25,6 @@ ext {
 
 tasks.withType(JavaCompile).configureEach {
 	options.encoding = "UTF-8"
-	options.compilerArgs.addAll([
-			"--add-exports", "java.base/jdk.internal.misc=ALL-UNNAMED"
-	])
 }
 
 dependencies {
@@ -35,7 +32,7 @@ dependencies {
 	compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
 	compileOnly project(":annotations")
 
-	implementation files("libs/FieldUtils.jar")
+	implementation files("libs/field-utils.jar")
 
 	annotationProcessor project(":annotations")
 }

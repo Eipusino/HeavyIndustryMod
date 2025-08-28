@@ -7,19 +7,29 @@ import sun.misc.Unsafe;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import static heavyindustry.util.Utils.requireInstance;
+
 /**
- * Unsafe-reflection utilities.
+ * {@code Unsafe} reflection tool. Mainly provides functions for modifying or setting field values.
+ * <p>This class behavior will violate the access protection of Java security encapsulation and is inherently
+ * insecure. If it is not necessary, please try to avoid using this class.
+ * <p><strong>Never use {@link FieldUtils#getFieldOffset(Field)} on non Android platforms, as this will directly
+ * trigger {@link NoSuchMethodError}. If you want to obtain the offset of a field, please use the relevant
+ * functions provided by this class.</strong>
  *
+ * @author Eipusino
  * @since 1.0.7
  */
 public final class Unsafer {
-	static final Unsafe unsafe = getUnsafe();
+	public static final Unsafe unsafe = getUnsafe();
 
+	/** Do not call. */
 	private Unsafer() {}
 
 	/** Get the unique instance of Unsafe. */
-	static Unsafe getUnsafe() {
+	public static Unsafe getUnsafe() {
 		try {
+			// Note that 'Unsafe.class.getDeclaredConstructor()' is not available on Android, so we can directly retrieve the 'theUnsafe' field.
 			Field field = Unsafe.class.getDeclaredField("theUnsafe");
 			field.setAccessible(true);
 			return (Unsafe) field.get(null);
@@ -28,7 +38,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static <T> T getObject(Class<?> type, Object object, String name) {
+	public static <T> T getObject(Class<?> type, String name, Object object) {
 		try {
 			return getObject(type.getDeclaredField(name), object);
 		} catch (NoSuchFieldException e) {
@@ -40,13 +50,17 @@ public final class Unsafer {
 	 * Retrieve the value of a field through {@code Unsafe}. If the field is {@code static}, object can be {@code null}.
 	 * Otherwise, {@code object} must not be {@code null} and be an instance of {@code field.getDeclaringClass()}.
 	 *
-	 * @throws IllegalArgumentException If the field is not {@code static} and the {@code object} is not an
+	 * @throws IllegalHandleException If the field type is a primitive type.
+	 * @throws ClassCastException If the field is not {@code static} and the {@code object} is not an
 	 *                                  instance of {@code field.getDeclaringClass()} or {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getObject(Field field, Object object) {
+		if (field.getType().isPrimitive()) throw new IllegalHandleException("Method 'getObject' does not support field of primitive types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
+
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
@@ -56,7 +70,17 @@ public final class Unsafer {
 				unsafe.getObject(isStatic ? type : requireInstance(type, object), offset));
 	}
 
+	public static boolean getBool(Class<?> type, String name, Object object) {
+		try {
+			return getBool(type.getDeclaredField(name), object);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static boolean getBool(Field field, Object object) {
+		if (field.getType() != boolean.class) throw new IllegalHandleException("Method 'getBool' does not support field other than boolean types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
@@ -68,7 +92,17 @@ public final class Unsafer {
 				unsafe.getBoolean(isStatic ? type : requireInstance(type, object), offset);
 	}
 
+	public static byte getByte(Class<?> type, String name, Object object) {
+		try {
+			return getByte(type.getDeclaredField(name), object);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static byte getByte(Field field, Object object) {
+		if (field.getType() != byte.class) throw new IllegalHandleException("Method 'getByte' does not support field other than byte types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
@@ -80,7 +114,17 @@ public final class Unsafer {
 				unsafe.getByte(isStatic ? type : requireInstance(type, object), offset);
 	}
 
+	public static short getShort(Class<?> type, String name, Object object) {
+		try {
+			return getShort(type.getDeclaredField(name), object);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static short getShort(Field field, Object object) {
+		if (field.getType() != short.class) throw new IllegalHandleException("Method 'getShort' does not support field other than short types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
@@ -92,7 +136,17 @@ public final class Unsafer {
 				unsafe.getShort(isStatic ? type : requireInstance(type, object), offset);
 	}
 
+	public static int getInt(Class<?> type, String name, Object object) {
+		try {
+			return getInt(type.getDeclaredField(name), object);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static int getInt(Field field, Object object) {
+		if (field.getType() != int.class) throw new IllegalHandleException("Method 'getInt' does not support field other than int types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
@@ -104,7 +158,17 @@ public final class Unsafer {
 				unsafe.getInt(isStatic ? type : requireInstance(type, object), offset);
 	}
 
+	public static long getLong(Class<?> type, String name, Object object) {
+		try {
+			return getLong(type.getDeclaredField(name), object);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static long getLong(Field field, Object object) {
+		if (field.getType() != long.class) throw new IllegalHandleException("Method 'getLong' does not support field other than long types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
@@ -116,7 +180,17 @@ public final class Unsafer {
 				unsafe.getLong(isStatic ? type : requireInstance(type, object), offset);
 	}
 
+	public static char getChar(Class<?> type, String name, Object object) {
+		try {
+			return getChar(type.getDeclaredField(name), object);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static char getChar(Field field, Object object) {
+		if (field.getType() != char.class) throw new IllegalHandleException("Method 'getChar' does not support field other than char types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
@@ -128,7 +202,17 @@ public final class Unsafer {
 				unsafe.getChar(isStatic ? type : requireInstance(type, object), offset);
 	}
 
+	public static float getFloat(Class<?> type, String name, Object object) {
+		try {
+			return getFloat(type.getDeclaredField(name), object);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static float getFloat(Field field, Object object) {
+		if (field.getType() != float.class) throw new IllegalHandleException("Method 'getFloat' does not support field other than float types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
@@ -140,7 +224,17 @@ public final class Unsafer {
 				unsafe.getFloat(isStatic ? type : requireInstance(type, object), offset);
 	}
 
+	public static double getDouble(Class<?> type, String name, Object object) {
+		try {
+			return getDouble(type.getDeclaredField(name), object);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static double getDouble(Field field, Object object) {
+		if (field.getType() != double.class) throw new IllegalHandleException("Method 'getDouble' does not support field other than double types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
@@ -152,7 +246,7 @@ public final class Unsafer {
 				unsafe.getDouble(isStatic ? type : requireInstance(type, object), offset);
 	}
 
-	public static void setObject(Class<?> type, Object object, String name, Object value) {
+	public static void setObject(Class<?> type, String name, Object object, Object value) {
 		try {
 			setObject(type.getDeclaredField(name), object, value);
 		} catch (NoSuchFieldException e) {
@@ -164,24 +258,38 @@ public final class Unsafer {
 	 * Set the value of a field through {@code Unsafe}. If the field is {@code static}, object can be {@code null}.
 	 * Otherwise, {@code object} must not be {@code null} and be an instance of {@code field.getDeclaringClass()}.
 	 *
-	 * @throws IllegalArgumentException If the field is not {@code static} and the {@code object} is not an
+	 * @throws IllegalHandleException If the field type is a primitive type.
+	 * @throws ClassCastException If the field is not {@code static} and the {@code object} is not an
 	 *                                  instance of {@code field.getDeclaringClass()} or {@code null}.
 	 */
 	public static void setObject(Field field, Object object, Object value) {
+		if (field.getType().isPrimitive()) throw new IllegalHandleException("Method 'getObject' does not support field of primitive types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
+
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
 		if (Modifier.isVolatile(modifiers)) {
-			unsafe.putObjectVolatile(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putObjectVolatile(isStatic ? type : requireInstance(type, object), offset, requireInstance(field.getType(), value));
 		} else {
-			unsafe.putObject(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putObject(isStatic ? type : requireInstance(type, object), offset, requireInstance(field.getType(), value));
+		}
+	}
+
+	public static void setBool(Class<?> type, String name, Object object, boolean value) {
+		try {
+			setBool(type.getDeclaredField(name), object, value);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
 	public static void setBool(Field field, Object object, boolean value) {
+		if (field.getType() != boolean.class) throw new IllegalHandleException("Method 'setBool' does not support field other than boolean types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
@@ -195,7 +303,17 @@ public final class Unsafer {
 		}
 	}
 
+	public static void setByte(Class<?> type, String name, Object object, byte value) {
+		try {
+			setByte(type.getDeclaredField(name), object, value);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static void setByte(Field field, Object object, byte value) {
+		if (field.getType() != byte.class) throw new IllegalHandleException("Method 'setByte' does not support field other than byte types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
@@ -209,7 +327,17 @@ public final class Unsafer {
 		}
 	}
 
+	public static void setShort(Class<?> type, String name, Object object, short value) {
+		try {
+			setShort(type.getDeclaredField(name), object, value);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static void setShort(Field field, Object object, short value) {
+		if (field.getType() != short.class) throw new IllegalHandleException("Method 'setShort' does not support field other than short types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
@@ -223,7 +351,17 @@ public final class Unsafer {
 		}
 	}
 
+	public static void setInt(Class<?> type, String name, Object object, int value) {
+		try {
+			setInt(type.getDeclaredField(name), object, value);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static void setInt(Field field, Object object, int value) {
+		if (field.getType() != int.class) throw new IllegalHandleException("Method 'setInt' does not support field other than int types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
@@ -237,7 +375,17 @@ public final class Unsafer {
 		}
 	}
 
+	public static void setLong(Class<?> type, String name, Object object, long value) {
+		try {
+			setLong(type.getDeclaredField(name), object, value);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static void setLong(Field field, Object object, long value) {
+		if (field.getType() != long.class) throw new IllegalHandleException("Method 'setLong' does not support field other than long types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
@@ -251,7 +399,17 @@ public final class Unsafer {
 		}
 	}
 
+	public static void setChar(Class<?> type, String name, Object object, char value) {
+		try {
+			setChar(type.getDeclaredField(name), object, value);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static void setChar(Field field, Object object, char value) {
+		if (field.getType() != char.class) throw new IllegalHandleException("Method 'setChar' does not support field other than char types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
@@ -265,7 +423,17 @@ public final class Unsafer {
 		}
 	}
 
+	public static void setFloat(Class<?> type, String name, Object object, float value) {
+		try {
+			setFloat(type.getDeclaredField(name), object, value);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static void setFloat(Field field, Object object, float value) {
+		if (field.getType() != float.class) throw new IllegalHandleException("Method 'setFloat' does not support field other than float types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
@@ -279,7 +447,17 @@ public final class Unsafer {
 		}
 	}
 
+	public static void setDouble(Class<?> type, String name, Object object, double value) {
+		try {
+			setDouble(type.getDeclaredField(name), object, value);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static void setDouble(Field field, Object object, double value) {
+		if (field.getType() != double.class) throw new IllegalHandleException("Method 'setDouble' does not support field other than double types");
+
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 		long offset = isStatic ? staticOffset(field) : objectOffset(field);
@@ -293,11 +471,93 @@ public final class Unsafer {
 		}
 	}
 
+	public static Object get(Class<?> type, String name, Object object) {
+		try {
+			return get(type.getDeclaredField(name), object);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static Object get(Field field, Object object) {
+		long offset = getOffset(field);
+		Class<?> type = field.getType(), clazz = field.getDeclaringClass();
+		Object o = Modifier.isStatic(field.getModifiers()) ? clazz : requireInstance(clazz, object);
+
+		if (Modifier.isVolatile(field.getModifiers())) {
+			if (type.isPrimitive()) {
+				if (type == int.class) return unsafe.getIntVolatile(o, offset);
+				else if (type == float.class) return unsafe.getFloatVolatile(o, offset);
+				else if (type == boolean.class) return unsafe.getBooleanVolatile(o, offset);
+				else if (type == byte.class) return unsafe.getByteVolatile(o, offset);
+				else if (type == long.class) return unsafe.getLongVolatile(o, offset);
+				else if (type == double.class) return unsafe.getDoubleVolatile(o, offset);
+				else if (type == char.class) return unsafe.getCharVolatile(o, offset);
+				else if (type == short.class) return unsafe.getShortVolatile(o, offset);
+				else throw new IllegalHandleException("unknown type of field " + field);
+			} else {
+				return unsafe.getObjectVolatile(o, offset);
+			}
+		} else {
+			if (type.isPrimitive()) {
+				if (type == int.class) return unsafe.getInt(o, offset);
+				else if (type == float.class) return unsafe.getFloat(o, offset);
+				else if (type == boolean.class) return unsafe.getBoolean(o, offset);
+				else if (type == byte.class) return unsafe.getByte(o, offset);
+				else if (type == long.class) return unsafe.getDouble(o, offset);
+				else if (type == double.class) return unsafe.getLong(o, offset);
+				else if (type == char.class) return unsafe.getChar(o, offset);
+				else if (type == short.class) return unsafe.getShort(o, offset);
+				else throw new IllegalHandleException("unknown type of field " + type);
+			} else {
+				return unsafe.getObject(o, offset);
+			}
+		}
+	}
+
+	public static void set(Field field, Object object, Object value) {
+		long offset = getOffset(field);
+		Class<?> type = field.getType(), clazz = field.getDeclaringClass();
+		Object o = Modifier.isStatic(field.getModifiers()) ? clazz : requireInstance(clazz, object);
+
+		if (Modifier.isVolatile(field.getModifiers())) {
+			if (type.isPrimitive()) {
+				if (type == int.class) unsafe.putIntVolatile(o, offset, (int) value);
+				else if (type == float.class) unsafe.putFloatVolatile(o, offset, (float) value);
+				else if (type == boolean.class) unsafe.putBooleanVolatile(o, offset, (boolean) value);
+				else if (type == byte.class) unsafe.putByteVolatile(o, offset, (byte) value);
+				else if (type == long.class) unsafe.putLongVolatile(o, offset, (long) value);
+				else if (type == double.class) unsafe.putDoubleVolatile(o, offset, (double) value);
+				else if (type == char.class) unsafe.putCharVolatile(o, offset, (char) value);
+				else if (type == short.class) unsafe.putShortVolatile(o, offset, (short) value);
+				else throw new IllegalHandleException("unknown type of field " + field);
+			} else {
+				unsafe.putObjectVolatile(o, offset, requireInstance(field.getType(), value));
+			}
+		} else {
+			if (type.isPrimitive()) {
+				if (type == int.class) unsafe.putInt(o, offset, (int) value);
+				else if (type == float.class) unsafe.putFloat(o, offset, (float) value);
+				else if (type == boolean.class) unsafe.putBoolean(o, offset, (boolean) value);
+				else if (type == byte.class) unsafe.putByte(o, offset, (byte) value);
+				else if (type == double.class) unsafe.putDouble(o, offset, (double) value);
+				else if (type == long.class) unsafe.putLong(o, offset, (long) value);
+				else if (type == char.class) unsafe.putChar(o, offset, (char) value);
+				else if (type == short.class) unsafe.putShort(o, offset, (short) value);
+				else throw new IllegalHandleException("unknown type of field " + type);
+			} else {
+				unsafe.putObjectVolatile(o, offset, requireInstance(field.getType(), value));
+			}
+		}
+	}
+
 	/**
 	 * Get the field offset.
 	 */
 	public static long getOffset(Field field) {
-		return OS.isAndroid ? FieldUtils.getFieldOffset(field) : Modifier.isStatic(field.getModifiers())? unsafe.staticFieldOffset(field): unsafe.objectFieldOffset(field);
+		// If it is an Android platform, simply call the getOffset method of the field.
+		return OS.isAndroid ? FieldUtils.getFieldOffset(field) : Modifier.isStatic(field.getModifiers()) ?
+				unsafe.staticFieldOffset(field) : unsafe.objectFieldOffset(field);
 	}
 
 	/**
@@ -316,11 +576,5 @@ public final class Unsafer {
 	 */
 	static long staticOffset(Field field) {
 		return OS.isAndroid ? FieldUtils.getFieldOffset(field) : unsafe.staticFieldOffset(field);
-	}
-
-	static <T> T requireInstance(Class<?> type, T obj) {
-		if (!type.isInstance(obj))
-			throw new IllegalArgumentException();
-		return obj;
 	}
 }

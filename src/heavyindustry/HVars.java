@@ -11,6 +11,7 @@ import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.files.InternalFileTree;
 import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.input.InputAggregator;
+import heavyindustry.util.ReflectImpl;
 import mindustry.content.TechTree.TechNode;
 import mindustry.type.Sector;
 
@@ -33,6 +34,8 @@ public final class HVars {
 	public static final @ListClasses String[] classes = with();
 	/** Lists all the mod's packages by their canonical names. Generated at compile-time. */
 	public static final @ListPackages String[] packages = with();
+
+	public static ReflectImpl reflectImpl = null;
 
 	/** jar internal navigation. */
 	public static final InternalFileTree internalTree;

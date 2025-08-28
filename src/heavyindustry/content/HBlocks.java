@@ -3470,7 +3470,7 @@ public final class HBlocks {
 			buildType = ItemTurretBuild::new;
 		}};
 		breakthrough = new PowerTurret("breakthrough") {{
-			requirements(Category.turret, ItemStack.with(Items.silicon, 130, Items.thorium, 150));
+			requirements(Category.turret, ItemStack.with(Items.silicon, 130, Items.titanium, 180, Items.thorium, 150, Items.plastanium, 100, Items.phaseFabric, 20));
 			size = 4;
 			health = 2800;
 			range = 500f;

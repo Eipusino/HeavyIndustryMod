@@ -10,7 +10,6 @@ import arc.func.Func;
 import arc.func.Func2;
 import arc.func.Intc2;
 import arc.func.Intf;
-import arc.func.Prov;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;

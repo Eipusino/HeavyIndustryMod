@@ -97,9 +97,7 @@ public class MultiItemData implements Iterable<Item>, Eachable<Item> {
 
 	@Override
 	public void each(Cons<? super Item> cons) {
-		for (Item item : items) {
-			cons.get(item);
-		}
+		items.each(cons);
 	}
 
 	@Override

@@ -2,10 +2,13 @@ package heavyindustry.core;
 
 import arc.Core;
 import arc.Events;
+import arc.files.Fi;
 import arc.flabel.FLabel;
+import arc.func.Cons;
 import arc.math.Mathf;
 import arc.util.Align;
 import arc.util.Log;
+import arc.util.OS;
 import arc.util.Strings;
 import arc.util.Time;
 import heavyindustry.HVars;
@@ -20,11 +23,13 @@ import heavyindustry.content.HStatusEffects;
 import heavyindustry.content.HTechTree;
 import heavyindustry.content.HUnitTypes;
 import heavyindustry.content.HWeathers;
+import heavyindustry.files.HFiles;
 import heavyindustry.game.HTeam;
 import heavyindustry.gen.Entitys;
 import heavyindustry.gen.HIcon;
 import heavyindustry.gen.HMusics;
 import heavyindustry.gen.HSounds;
+import heavyindustry.util.ReflectImpl;
 import heavyindustry.util.Utils;
 import heavyindustry.world.Worlds;
 import heavyindustry.graphics.HCacheLayer;
@@ -40,21 +45,21 @@ import heavyindustry.ui.HStyles;
 import heavyindustry.ui.Elements;
 import heavyindustry.ui.dialogs.HResearchDialog;
 import heavyindustry.util.IconLoader;
+import mindustry.Vars;
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.game.EventType.DisposeEvent;
 import mindustry.game.EventType.FileTreeInitEvent;
 import mindustry.game.EventType.MusicRegisterEvent;
 import mindustry.mod.Mod;
+import mindustry.mod.ModClassLoader;
 import mindustry.ui.dialogs.BaseDialog;
 
+import java.lang.reflect.AccessibleObject;
+
 import static heavyindustry.HVars.AUTHOR;
-import static heavyindustry.HVars.inputAggregator;
-import static heavyindustry.HVars.internalTree;
 import static heavyindustry.HVars.LINK_GIT_HUB;
 import static heavyindustry.HVars.MOD_NAME;
-import static heavyindustry.HVars.sizedGraphics;
-import static mindustry.Vars.headless;
-import static mindustry.Vars.ui;
+import static mindustry.Vars.platform;
 
 /**
  * Main entry point of the mod. Handles startup things like content loading, entity registering, and utility
@@ -66,7 +71,17 @@ import static mindustry.Vars.ui;
  * @see HVars
  */
 public class HeavyIndustryMod extends Mod {
+	public static final boolean loadImpl = false;
+
+	public static ClassLoader lastLoader;
+
 	FloatingText floatingText;
+
+	static {
+		if (loadImpl) loadLibrary();
+
+		if (HVars.reflectImpl == null) HVars.reflectImpl = new DefaultImpl();
+	}
 
 	public HeavyIndustryMod() {
 		Log.info("Loaded HeavyIndustry Mod constructor.");
@@ -74,14 +89,14 @@ public class HeavyIndustryMod extends Mod {
 		HClassMap.load();
 
 		Events.on(ClientLoadEvent.class, event -> {
-			if (headless || Core.settings.getBool("hi-closed-dialog")) return;
+			if (Vars.headless || Core.settings.getBool("hi-closed-dialog")) return;
 
 			FLabel label = new FLabel(Core.bundle.get("hi-author") + AUTHOR);
 			BaseDialog dialog = new BaseDialog(Core.bundle.get("hi-name")) {{
 				buttons.button(Core.bundle.get("close"), this::hide).size(210f, 64f);
 				buttons.button((Core.bundle.get("hi-link-github")), () -> {
 					if (!Core.app.openURI(LINK_GIT_HUB)) {
-						ui.showErrorMessage("@linkfail");
+						Vars.ui.showErrorMessage("@linkfail");
 						Core.app.setClipboardText(LINK_GIT_HUB);
 					}
 				}).size(210f, 64f);
@@ -98,7 +113,7 @@ public class HeavyIndustryMod extends Mod {
 		});
 
 		Events.on(FileTreeInitEvent.class, event -> {
-			if (!headless) {
+			if (!Vars.headless) {
 				HFonts.onClient();
 				HSounds.onClient();
 
@@ -107,20 +122,20 @@ public class HeavyIndustryMod extends Mod {
 					HTextures.onClient();
 					HCacheLayer.onClient();
 
-					inputAggregator = new InputAggregator();
-					sizedGraphics = new SizedGraphics();
+					HVars.inputAggregator = new InputAggregator();
+					HVars.sizedGraphics = new SizedGraphics();
 				});
 			}
 		});
 
 		Events.on(MusicRegisterEvent.class, event -> {
-			if (!headless) {
+			if (!Vars.headless) {
 				HMusics.onClient();
 			}
 		});
 
 		Events.on(DisposeEvent.class, event -> {
-			if (!headless) {
+			if (!Vars.headless) {
 				HShaders.dispose();
 			}
 		});
@@ -155,19 +170,19 @@ public class HeavyIndustryMod extends Mod {
 
 	@Override
 	public void init() {
-		if (!headless) {
+		if (!Vars.headless) {
 			HIcon.onClient();
 
 			HStyles.onClient();
 			Elements.onClient();
 		}
 
-		IconLoader.loadIcons(internalTree.child("other/icons.properties"));
+		IconLoader.loadIcons(HVars.internalTree.child("other/icons.properties"));
 
-		if (ui != null) {
-			if (ui.settings != null) {
+		if (Vars.ui != null) {
+			if (Vars.ui.settings != null) {
 				//add heavy-industry settings
-				ui.settings.addCategory(Core.bundle.format("hi-settings"), HIcon.reactionIcon, t -> {
+				Vars.ui.settings.addCategory(Core.bundle.format("hi-settings"), HIcon.reactionIcon, t -> {
 					t.checkPref("hi-closed-dialog", false);
 					t.checkPref("hi-floating-text", true);
 					t.checkPref("hi-animated-shields", true);
@@ -179,20 +194,90 @@ public class HeavyIndustryMod extends Mod {
 			//Replace the original technology ResearchDialog
 			//This is a rather foolish approach, but there is nothing we can do about it.
 			HResearchDialog dialog = new HResearchDialog();
-			ui.research.shown(() -> {
+			Vars.ui.research.shown(() -> {
 				dialog.show();
-				if (ui.research != null) {
-					Time.runTask(1f, ui.research::hide);
+				if (Vars.ui.research != null) {
+					Time.runTask(1f, Vars.ui.research::hide);
 				}
 			});
 		}
 
-		if (headless || ui == null || HMods.isEnabled("extra-utilities") || !Core.settings.getBool("hi-floating-text")) return;
+		if (Vars.headless || Vars.ui == null || HMods.isEnabled("extra-utilities") || !Core.settings.getBool("hi-floating-text")) return;
 
 		String massage = Core.bundle.get("hi-random-massage");
 		String[] massageSplit = massage.split("&");
 
 		floatingText = new FloatingText(massageSplit[Mathf.random(massageSplit.length - 1)]);
-		floatingText.build(ui.menuGroup);
+		floatingText.build(Vars.ui.menuGroup);
+	}
+
+	public static void loadLibrary() {
+		try {
+			Class<?> impl = loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl", true);
+
+			if (impl != null) {
+				HVars.reflectImpl = (ReflectImpl) impl.getConstructor().newInstance();
+			}
+		} catch (Throwable e) {
+			Log.err(e);
+		}
+	}
+
+	public static Class<?> loadLibrary(String fileName, String mainClassName, boolean showError) {
+		return loadLibrary(fileName, mainClassName, showError, c -> {});
+	}
+
+	public static Class<?> loadLibrary(String fileName, String mainClassName, boolean showError, Cons<Class<?>> callback) {
+		ModClassLoader mainLoader = (ModClassLoader) Vars.mods.mainLoader();
+
+		/*try {
+			return mainLoader.loadClass(mainClassName);
+		} catch (Exception ignored) {}*/
+
+		Fi sourceFile = HVars.internalTree.child("libs").child(fileName + ".jar");
+		if (!sourceFile.exists()) {
+			Log.warn("File: '@' not exists", "libs/" + fileName + ".jar");
+
+			return null;
+		}
+
+		Log.info("Loading @.jar", fileName);
+		Time.mark();
+
+		try {
+			Fi toFile = Vars.dataDirectory.child("tmp/heavy-industry/" + fileName + ".jar");
+			HFiles.delete(toFile);
+			sourceFile.copyTo(toFile);
+			ClassLoader loader = platform.loadJar(toFile, mainLoader);
+			mainLoader.addChild(loader);
+			Class<?> clazz = Class.forName(mainClassName, true, loader);
+			lastLoader = loader;
+
+			if (callback != null) callback.get(clazz);
+
+			toFile.delete();
+
+			return clazz;
+		} catch (Throwable e) {
+			if (showError) {
+				Log.err(Strings.format("Unexpected exception when loading '@'", sourceFile), e);
+			}
+
+			return null;
+		} finally {
+			Log.info("Loaded '@' in @ms", sourceFile.name(), Time.elapsed());
+		}
+	}
+}
+
+class DefaultImpl implements ReflectImpl {
+	@Override
+	public void setOverride(AccessibleObject override) {
+		// not
+	}
+
+	@Override
+	public void setPublic(Class<?> obj) {
+		// not
 	}
 }
