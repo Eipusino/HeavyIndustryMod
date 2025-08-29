@@ -5,7 +5,7 @@
 	"subtitle": "Heavy Industry Java Mod",
 	"main": "heavyindustry.core.HeavyIndustryMod",
 	"description": "oh no",
-	"version": "1.0.7-beta",
+	"version": "1.0.8-beta",
 	"repo": "Eipusino/HeavyIndustryMod",
 	"java": true,
 	"minGameVersion": 151.1,

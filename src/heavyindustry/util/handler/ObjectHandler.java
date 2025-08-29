@@ -8,27 +8,31 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-/** 对对象的一些实用工具集，用于将对象的字段属性拷贝到另一个 */
-public class ObjectHandler {
+/** A set of practical tools for copying field properties of an object to another. */
+public final class ObjectHandler {
 	public static Cons<Throwable> exceptionHandler = e -> {};
 
+	private ObjectHandler() {}
+
 	/**
-	 * 将来源对象的所有属性值完整的复制到目标对象，目标对象必须是来源对象的类型或者子类
+	 * Copy all attribute values of the source object completely to the target object, which must be the
+	 * type or subclass of the source object.
 	 *
-	 * @param source 属性的源对象
-	 * @param target 复制属性到的目标对象
-	 * @throws IllegalArgumentException 如果目标对象不分配自来源类
+	 * @param source Source object of attribute
+	 * @param target Copy the attribute to the target object
+	 * @throws IllegalArgumentException If the target object is not assigned from the source class
 	 */
 	public static <S, T extends S> void copyField(S source, T target) {
 		copyFieldAsBlack(source, target);
 	}
 
 	/**
-	 * 将来源对象的不在黑名单中的属性的值复制到目标对象，目标对象必须是来源对象的类型或者子类
+	 * Copy the values of attributes of the source object that are not on the blacklist to the target object,
+	 * which must be the type or subclass of the source object.
 	 *
-	 * @param source    属性的源对象
-	 * @param target    复制属性到的目标对象
-	 * @param blackList 字段黑名单
+	 * @param source    Source object of attribute
+	 * @param target    Copy the attribute to the target object
+	 * @param blackList Field blacklist
 	 */
 	public static <S, T extends S> void copyFieldAsBlack(S source, T target, String... blackList) {
 		Class<?> curr = source.getClass();
@@ -49,11 +53,12 @@ public class ObjectHandler {
 	}
 
 	/**
-	 * 将来源对象的指定属性值复制到目标对象，目标对象必须是来源对象的类型或者子类
+	 * Copy the specified attribute values of the source object to the target object, which must be the type
+	 * or subclass of the source object.
 	 *
-	 * @param source    属性的源对象
-	 * @param target    复制属性到的目标对象
-	 * @param whiteList 字段白名单
+	 * @param source    Source object of attribute
+	 * @param target    Copy the attribute to the target object
+	 * @param whiteList Field whitelist
 	 */
 	public static <S, T extends S> void copyFieldAsWhite(S source, T target, String... whiteList) {
 		for (String s : whiteList) {

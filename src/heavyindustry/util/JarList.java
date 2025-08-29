@@ -22,10 +22,10 @@ import java.util.HashMap;
 import static heavyindustry.HVars.MOD_NAME;
 
 public class JarList {
-	public static final Fi jarFileCache = Core.settings.getDataDirectory().child("heavyindustry").child("cache");
+	public static final Fi jarFileCache = Core.settings.getDataDirectory().child("tmp").child("heavy-industry").child("cache");
 	private static final Fi listFile = jarFileCache.child("mod-generated-jars.lis");
 
-	private static JarList instance;
+	private static final JarList instance = new JarList();
 
 	private final HashMap<String, InfoEntry> list = new HashMap<>();
 	private boolean selfUpdate, recached;
@@ -51,7 +51,6 @@ public class JarList {
 	}
 
 	public static JarList inst() {
-		if (instance == null) instance = new JarList();
 		return instance;
 	}
 
@@ -90,12 +89,7 @@ public class JarList {
 
 	public Fi loadCacheFile(ModInfo mod) {
 		if (!selfUpdate && mod.name.equals(MOD_NAME)) {
-			if (!matched(mod)) {
-				selfUpdate = true;
-				Log.info("[HeavyIndustry] universe core updated, all cache will be regenerated");
-				list.clear();
-				writeToList();
-			} else {
+			if (matched(mod)) {
 				for (Fi fi : Vars.modDirectory.list()) {
 					try {
 						ModGetter.checkModFormat(fi);
@@ -104,11 +98,16 @@ public class JarList {
 						if (!info.name.equals(MOD_NAME) && !matched(info)) {
 							selfUpdate = true;
 							Log.info("[HeavyIndustry] exist mod updated, universe core class cache updating");
+
 							break;
 						}
-					} catch (IllegalHandleException ignored) {
-					}
+					} catch (IllegalHandleException ignored) {}
 				}
+			} else {
+				selfUpdate = true;
+				Log.info("[HeavyIndustry] heavy-industry updated, all cache will be regenerated");
+				list.clear();
+				writeToList();
 			}
 		}
 
@@ -133,7 +132,9 @@ public class JarList {
 			entry.file.delete();
 			entry.md5 = getMd5(mod.file);
 			writeToList();
-		} else Log.info("[HeavyIndustry] loading mod: " + mod.name + " class cache");
+		} else {
+			Log.info("[HeavyIndustry] loading mod: " + mod.name + " class cache");
+		}
 
 		return entry.file;
 	}

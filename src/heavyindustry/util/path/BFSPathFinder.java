@@ -59,13 +59,13 @@ public interface BFSPathFinder<V> extends PathFinder<V> {
 
 	/**
 	 * Create a path object that should be able to return a blank path during implementation.
-	 * You may also need to implement the {@link Pathc} interface and return its instance, or use the default implementation {@link GenericPath} directly.
+	 * You may also need to implement the {@link IPath} interface and return its instance, or use the default implementation {@link GenericPath} directly.
 	 *
 	 * @return An empty path
-	 * @see Pathc
+	 * @see IPath
 	 * @see GenericPath
 	 */
-	Pathc<V> createPath();
+	IPath<V> createPath();
 
 	/**
 	 * A standard BFS pathfinding implementation typically finds the shortest or one of the shortest paths in an unweighted graph.
@@ -89,7 +89,7 @@ public interface BFSPathFinder<V> extends PathFinder<V> {
 
 			if (isDestination(origin, next)) {
 				PathPointer<V> tracePointer = pointer;
-				Pathc<V> path = createPath();
+				IPath<V> path = createPath();
 				path.addFirst(pointer.self);
 
 				while ((tracePointer = tracePointer.previous) != null) {

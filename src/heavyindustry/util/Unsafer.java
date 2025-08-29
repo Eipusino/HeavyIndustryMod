@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import static heavyindustry.util.Utils.requireInstance;
+import static heavyindustry.util.Utils.requireNonNullInstance;
 
 /**
  * {@code Unsafe} reflection tool. Mainly provides functions for modifying or setting field values.
@@ -67,8 +68,8 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		return (T) (Modifier.isVolatile(modifiers) ?
-				unsafe.getObjectVolatile(isStatic ? type : requireInstance(type, object), offset) :
-				unsafe.getObject(isStatic ? type : requireInstance(type, object), offset));
+				unsafe.getObjectVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				unsafe.getObject(isStatic ? type : requireNonNullInstance(type, object), offset));
 	}
 
 	public static boolean getBool(Class<?> type, String name, Object object) {
@@ -89,8 +90,8 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		return Modifier.isVolatile(modifiers) ?
-				unsafe.getBooleanVolatile(isStatic ? type : requireInstance(type, object), offset) :
-				unsafe.getBoolean(isStatic ? type : requireInstance(type, object), offset);
+				unsafe.getBooleanVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				unsafe.getBoolean(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
 	public static byte getByte(Class<?> type, String name, Object object) {
@@ -111,8 +112,8 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		return Modifier.isVolatile(modifiers) ?
-				unsafe.getByteVolatile(isStatic ? type : requireInstance(type, object), offset) :
-				unsafe.getByte(isStatic ? type : requireInstance(type, object), offset);
+				unsafe.getByteVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				unsafe.getByte(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
 	public static short getShort(Class<?> type, String name, Object object) {
@@ -133,8 +134,8 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		return Modifier.isVolatile(modifiers) ?
-				unsafe.getShortVolatile(isStatic ? type : requireInstance(type, object), offset) :
-				unsafe.getShort(isStatic ? type : requireInstance(type, object), offset);
+				unsafe.getShortVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				unsafe.getShort(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
 	public static int getInt(Class<?> type, String name, Object object) {
@@ -155,8 +156,8 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		return Modifier.isVolatile(modifiers) ?
-				unsafe.getIntVolatile(isStatic ? type : requireInstance(type, object), offset) :
-				unsafe.getInt(isStatic ? type : requireInstance(type, object), offset);
+				unsafe.getIntVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				unsafe.getInt(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
 	public static long getLong(Class<?> type, String name, Object object) {
@@ -177,8 +178,8 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		return Modifier.isVolatile(modifiers) ?
-				unsafe.getLongVolatile(isStatic ? type : requireInstance(type, object), offset) :
-				unsafe.getLong(isStatic ? type : requireInstance(type, object), offset);
+				unsafe.getLongVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				unsafe.getLong(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
 	public static char getChar(Class<?> type, String name, Object object) {
@@ -199,8 +200,8 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		return Modifier.isVolatile(modifiers) ?
-				unsafe.getCharVolatile(isStatic ? type : requireInstance(type, object), offset) :
-				unsafe.getChar(isStatic ? type : requireInstance(type, object), offset);
+				unsafe.getCharVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				unsafe.getChar(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
 	public static float getFloat(Class<?> type, String name, Object object) {
@@ -221,8 +222,8 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		return Modifier.isVolatile(modifiers) ?
-				unsafe.getFloatVolatile(isStatic ? type : requireInstance(type, object), offset) :
-				unsafe.getFloat(isStatic ? type : requireInstance(type, object), offset);
+				unsafe.getFloatVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				unsafe.getFloat(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
 	public static double getDouble(Class<?> type, String name, Object object) {
@@ -243,8 +244,8 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		return Modifier.isVolatile(modifiers) ?
-				unsafe.getDoubleVolatile(isStatic ? type : requireInstance(type, object), offset) :
-				unsafe.getDouble(isStatic ? type : requireInstance(type, object), offset);
+				unsafe.getDoubleVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				unsafe.getDouble(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
 	public static void setObject(Class<?> type, String name, Object object, Object value) {
@@ -274,9 +275,9 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		if (Modifier.isVolatile(modifiers)) {
-			unsafe.putObjectVolatile(isStatic ? type : requireInstance(type, object), offset, requireInstance(field.getType(), value));
+			unsafe.putObjectVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, requireInstance(field.getType(), value));
 		} else {
-			unsafe.putObject(isStatic ? type : requireInstance(type, object), offset, requireInstance(field.getType(), value));
+			unsafe.putObject(isStatic ? type : requireNonNullInstance(type, object), offset, requireInstance(field.getType(), value));
 		}
 	}
 
@@ -298,9 +299,9 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		if (Modifier.isVolatile(modifiers)) {
-			unsafe.putBooleanVolatile(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putBooleanVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		} else {
-			unsafe.putBoolean(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putBoolean(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		}
 	}
 
@@ -322,9 +323,9 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		if (Modifier.isVolatile(modifiers)) {
-			unsafe.putByteVolatile(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putByteVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		} else {
-			unsafe.putByte(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putByte(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		}
 	}
 
@@ -346,9 +347,9 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		if (Modifier.isVolatile(modifiers)) {
-			unsafe.putShortVolatile(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putShortVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		} else {
-			unsafe.putShort(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putShort(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		}
 	}
 
@@ -370,9 +371,9 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		if (Modifier.isVolatile(modifiers)) {
-			unsafe.putIntVolatile(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putIntVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		} else {
-			unsafe.putInt(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putInt(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		}
 	}
 
@@ -394,9 +395,9 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		if (Modifier.isVolatile(modifiers)) {
-			unsafe.putLongVolatile(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putLongVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		} else {
-			unsafe.putLong(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putLong(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		}
 	}
 
@@ -418,9 +419,9 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		if (Modifier.isVolatile(modifiers)) {
-			unsafe.putCharVolatile(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putCharVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		} else {
-			unsafe.putChar(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putChar(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		}
 	}
 
@@ -442,9 +443,9 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		if (Modifier.isVolatile(modifiers)) {
-			unsafe.putFloatVolatile(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putFloatVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		} else {
-			unsafe.putFloat(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putFloat(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		}
 	}
 
@@ -466,9 +467,9 @@ public final class Unsafer {
 		Class<?> type = field.getDeclaringClass();
 
 		if (Modifier.isVolatile(modifiers)) {
-			unsafe.putDoubleVolatile(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putDoubleVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		} else {
-			unsafe.putDouble(isStatic ? type : requireInstance(type, object), offset, value);
+			unsafe.putDouble(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		}
 	}
 
@@ -483,7 +484,7 @@ public final class Unsafer {
 	public static Object get(Field field, Object object) {
 		long offset = getOffset(field);
 		Class<?> type = field.getType(), clazz = field.getDeclaringClass();
-		Object o = Modifier.isStatic(field.getModifiers()) ? clazz : requireInstance(clazz, object);
+		Object o = Modifier.isStatic(field.getModifiers()) ? clazz : requireNonNullInstance(clazz, object);
 
 		if (Modifier.isVolatile(field.getModifiers())) {
 			if (type.isPrimitive()) {
@@ -519,7 +520,7 @@ public final class Unsafer {
 	public static void set(Field field, Object object, Object value) {
 		long offset = getOffset(field);
 		Class<?> type = field.getType(), clazz = field.getDeclaringClass();
-		Object o = Modifier.isStatic(field.getModifiers()) ? clazz : requireInstance(clazz, object);
+		Object o = Modifier.isStatic(field.getModifiers()) ? clazz : requireNonNullInstance(clazz, object);
 
 		if (Modifier.isVolatile(field.getModifiers())) {
 			if (type.isPrimitive()) {

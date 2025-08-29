@@ -5,23 +5,22 @@ import java.util.HashMap;
 import static heavyindustry.HVars.methodInvokeHelper;
 
 /**
- * 对方法调用的实用工具集，包含调用，实例化等
+ * A utility set for method invocation, including invocation, instantiation, etc.
  *
- * @author EBwilson
- * @since 1.2
+ * @since 1.0.8
  */
 @SuppressWarnings("unchecked")
 public class MethodHandler<T> {
-	private static final HashMap<Class<?>, MethodHandler<?>> defaultMap = new HashMap<>();
+	protected static final HashMap<Class<?>, MethodHandler<?>> defaultMap = new HashMap<>();
 
-	private final Class<T> clazz;
+	protected final Class<T> clazz;
 
 	public MethodHandler(Class<T> c) {
 		clazz = c;
 	}
 
 	/**
-	 * 使用默认准则创建一个方法处理器并缓存它，使用它来进行方法调用操作
+	 * Create a method handler using default guidelines and cache it for method invocation operations.
 	 *
 	 * @see MethodHandler#invoke(Object, String, Object...)
 	 */
@@ -30,7 +29,8 @@ public class MethodHandler<T> {
 	}
 
 	/**
-	 * 使用默认准则创建一个方法处理器并缓存它，使用它来进行方法静态调用操作
+	 * Create a method handler using default guidelines and cache it for static method invocation
+	 * operations.
 	 *
 	 * @see MethodHandler#invokeStatic(String, Object...)
 	 */
@@ -39,7 +39,8 @@ public class MethodHandler<T> {
 	}
 
 	/**
-	 * 使用默认准则创建一个方法处理器，使用它来进行方法调用操作，但不缓存这个处理器
+	 * Create a method handler using default guidelines to perform method call operations, but do not
+	 * cache the handler.
 	 *
 	 * @see MethodHandler#invoke(Object, String, Object...)
 	 */
@@ -48,7 +49,8 @@ public class MethodHandler<T> {
 	}
 
 	/**
-	 * 使用默认准则创建一个方法处理器，使用它来进行静态方法调用，但不缓存这个处理器
+	 * Create a method handler using default guidelines for static method calls, but do not cache the
+	 * handler.
 	 *
 	 * @see MethodHandler#invokeStatic(String, Object...)
 	 */
@@ -57,7 +59,7 @@ public class MethodHandler<T> {
 	}
 
 	/**
-	 * 使用默认准则创建一个方法处理器并缓存它，使用它来进行构造函数调用
+	 * Create a method handler using default guidelines and cache it for constructor calls.
 	 *
 	 * @see MethodHandler#newInstance(Object...)
 	 */
@@ -66,7 +68,8 @@ public class MethodHandler<T> {
 	}
 
 	/**
-	 * 使用默认准则创建一个方法处理器，使用它来调用构造函数，但不缓存这个处理器
+	 * Create a method handler using default guidelines to call the constructor, but do not cache the
+	 * handler.
 	 *
 	 * @see MethodHandler#newInstance(Object...)
 	 */
@@ -75,32 +78,38 @@ public class MethodHandler<T> {
 	}
 
 	/**
-	 * 对一个对象调用其给定名称和参数类型的方法，这不受访问修饰符影响，参数中的null会按通用位处理，即null位任何类型都可以进行匹配
+	 * Call a method on an object with its given name and parameter type, which is not affected by access
+	 * modifiers. The null in the parameter will be treated as a universal bit, that is, the null bit can be
+	 * matched with any type.
 	 *
-	 * @param object 调用所方法执行的目标对象
-	 * @param name   方法名称
-	 * @param args   传递给方法的参数列表
-	 * @return 目标方法的返回值
+	 * @param object Call the target object executed by the method
+	 * @param name   method name
+	 * @param args   List of parameters passed to method
+	 * @return Return value of the target method
 	 */
 	public <R> R invoke(T object, String name, Object... args) {
 		return methodInvokeHelper.invoke(object, name, args);
 	}
 
 	/**
-	 * 调用该处理器指定的类型中具有指定名称和参数类型的静态方法，这不受访问修饰符影响，参数中的null会按通用位处理，即null位任何类型都可以进行匹配
+	 * Call a static method with a specified name and parameter type in the type specified by the
+	 * processor, which is not affected by access modifiers. The null in the parameter will be treated as a
+	 * generic bit, meaning that any type can be matched with a null bit.
 	 *
-	 * @param name 方法名称
-	 * @param args 传递给方法的参数列表
-	 * @return 目标方法的返回值
+	 * @param name method name
+	 * @param args List of parameters passed to method
+	 * @return Return value of the target method
 	 */
 	public <R> R invokeStatic(String name, Object... args) {
 		return methodInvokeHelper.invokeStatic(clazz, name, args);
 	}
 
 	/**
-	 * 实例化这个处理器指定的类，获得一个该类型的实例，传入的参数中的null会按通用位处理，即null位任何类型都可以进行匹配
+	 * Instantiate the class specified by this processor to obtain an instance of that type. The null in the
+	 * passed parameters will be treated as a universal bit, meaning that any type can be matched with a
+	 * null bit.
 	 *
-	 * @param args 传递给构造器的参数列表
+	 * @param args List of parameters passed to constructor
 	 */
 	public T newInstance(Object... args) {
 		return methodInvokeHelper.newInstance(clazz, args);

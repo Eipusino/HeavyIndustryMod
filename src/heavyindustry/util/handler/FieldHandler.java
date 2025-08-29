@@ -5,10 +5,11 @@ import java.util.WeakHashMap;
 import static heavyindustry.HVars.fieldAccessHelper;
 
 /**
- * 字段操作的静态方法集合，包含了读取，写入等操作，所有引用抛出异常都被catch并封装到{@link RuntimeException}，无需手动try或抛出
+ * A collection of static methods for field operations, including read, write, and other operations. All
+ * exceptions thrown by references are caught and encapsulated in {@link RuntimeException}, without the need
+ * for manual try or throw.
  *
- * @author EBwilson
- * @since 1.0
+ * @since 1.0.8
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class FieldHandler<T> {
@@ -21,7 +22,8 @@ public class FieldHandler<T> {
 	}
 
 	/**
-	 * 使用默认规则构造一个处理器对象并缓存，使用这个默认处理器来执行setValue操作
+	 * Construct a processor object using default rules and cache it, and use this default processor to
+	 * perform {@code setValue} operations.
 	 *
 	 * @see FieldHandler#setValue(Object, String, Object)
 	 */
@@ -30,7 +32,8 @@ public class FieldHandler<T> {
 	}
 
 	/**
-	 * 使用默认规则构造一个处理器对象并缓存，使用这个默认处理器来执行静态的getValue操作
+	 * Construct a processor object using default rules and cache it, using this default processor to perform
+	 * static {@code getValue} operations.
 	 *
 	 * @see FieldHandler#setValue(Object, String, Object)
 	 */
@@ -39,7 +42,8 @@ public class FieldHandler<T> {
 	}
 
 	/**
-	 * 使用默认规则构造一个处理器对象并缓存，使用这个默认处理器来执行getValue操作
+	 * Construct a processor object using default rules and cache it, and use this default processor to
+	 * perform the {@code getValue} operation.
 	 *
 	 * @see FieldHandler#getValue(Object, String)
 	 */
@@ -48,7 +52,8 @@ public class FieldHandler<T> {
 	}
 
 	/**
-	 * 使用默认规则构造一个处理器对象并缓存，使用这个默认处理器来执行静态的getValue操作
+	 * Construct a processor object using default rules and cache it, and use this default processor to
+	 * perform static {@code getValue} operations.
 	 *
 	 * @see FieldHandler#getValue(Object, String)
 	 */

@@ -15,6 +15,7 @@ import heavyindustry.util.AccessibleHelper;
 import heavyindustry.util.FieldAccessHelper;
 import heavyindustry.util.MethodInvokeHelper;
 import heavyindustry.util.ReflectImpl;
+import heavyindustry.util.aspect.AspectManager;
 import heavyindustry.util.handler.ClassHandler;
 import heavyindustry.util.handler.ClassHandlerFactory;
 import mindustry.content.TechTree.TechNode;
@@ -48,6 +49,9 @@ public final class HVars {
 	public static ClassHandler classHandler;
 	public static ReflectImpl reflectImpl;
 
+	/**切面管理器实例*/
+	public static AspectManager aspects;
+
 	/** jar internal navigation. */
 	public static final InternalFileTree internalTree;
 
@@ -73,6 +77,8 @@ public final class HVars {
 			whiteTexture = new Texture(internalTree.child("other/textures/white.png"));
 			whiteRegion = new AtlasRegion(new TextureRegion(whiteTexture));
 		}
+
+		aspects = AspectManager.getDefault();
 	}
 
 	/** Don't let anyone instantiate this class. */

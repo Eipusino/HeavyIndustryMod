@@ -1537,6 +1537,12 @@ public final class Utils {
 	}
 
 	public static <T> T requireInstance(Class<?> type, T obj) {
+		if (obj != null && !type.isInstance(obj))
+			throw new ClassCastException();
+		return obj;
+	}
+
+	public static <T> T requireNonNullInstance(Class<?> type, T obj) {
 		if (!type.isInstance(obj))
 			throw new ClassCastException();
 		return obj;

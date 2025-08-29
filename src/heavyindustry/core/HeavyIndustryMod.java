@@ -57,7 +57,6 @@ import mindustry.ui.dialogs.BaseDialog;
 import static heavyindustry.HVars.AUTHOR;
 import static heavyindustry.HVars.LINK_GIT_HUB;
 import static heavyindustry.HVars.MOD_NAME;
-import static mindustry.Vars.platform;
 
 /**
  * Main entry point of the mod. Handles startup things like content loading, entity registering, and utility
@@ -70,12 +69,11 @@ import static mindustry.Vars.platform;
  */
 public class HeavyIndustryMod extends Mod {
 	public static ClassLoader lastLoader;
+	public static Object database;
 
 	FloatingText floatingText;
 
 	static {
-		if (HVars.reflectImpl == null) HVars.reflectImpl = new DefaultImpl();
-
 		try {
 			loadLibrary();
 
@@ -85,6 +83,8 @@ public class HeavyIndustryMod extends Mod {
 		} catch (Throwable e) {
 			Log.err(e);
 		}
+
+		if (HVars.reflectImpl == null) HVars.reflectImpl = new DefaultImpl();
 	}
 
 	public HeavyIndustryMod() {
@@ -222,10 +222,6 @@ public class HeavyIndustryMod extends Mod {
 	public static Class<?> loadLibrary(String fileName, String mainClassName, boolean showError, Cons<Class<?>> callback) {
 		ModClassLoader mainLoader = (ModClassLoader) Vars.mods.mainLoader();
 
-		/*try {
-			return mainLoader.loadClass(mainClassName);
-		} catch (Exception ignored) {}*/
-
 		Fi sourceFile = HVars.internalTree.child("libs").child(fileName + ".jar");
 		if (!sourceFile.exists()) {
 			Log.warn("File: '@' not exists", "libs/" + fileName + ".jar");
@@ -240,7 +236,7 @@ public class HeavyIndustryMod extends Mod {
 			Fi toFile = Vars.dataDirectory.child("tmp/heavy-industry/" + fileName + ".jar");
 			HFiles.delete(toFile);
 			sourceFile.copyTo(toFile);
-			ClassLoader loader = platform.loadJar(toFile, mainLoader);
+			ClassLoader loader = Vars.platform.loadJar(toFile, mainLoader);
 			mainLoader.addChild(loader);
 			Class<?> clazz = Class.forName(mainClassName, true, loader);
 			lastLoader = loader;
@@ -260,14 +256,14 @@ public class HeavyIndustryMod extends Mod {
 	}
 
 	static void loadLibrary() {
-		try {
-			Class<?> impl = loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl", true);
-
-			if (impl != null && impl.getConstructor().newInstance() instanceof ReflectImpl core) {
-				HVars.reflectImpl = core;
+		loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl", true, impl -> {
+			try {
+				if (impl.getConstructor().newInstance() instanceof ReflectImpl core) {
+					HVars.reflectImpl = core;
+				}
+			} catch (Throwable e) {
+				Log.err(e);
 			}
-		} catch (Throwable e) {
-			Log.err(e);
-		}
+		});
 	}
 }

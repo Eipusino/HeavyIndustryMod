@@ -8,7 +8,7 @@ package heavyindustry.util.path;
  * @see GenericPath
  * @since 1.0.5
  */
-public interface Pathc<V> extends Iterable<V> {
+public interface IPath<V> extends Iterable<V> {
 	/**
 	 * Insert a vertex from the starting point of the path and use it as the starting point.
 	 *

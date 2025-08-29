@@ -20,19 +20,19 @@ public final class HSectorPresets {
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
 		//serpulo
-		volcanicArchipelago = new SectorPreset("volcanicArchipelago", Planets.serpulo, 111) {{
+		volcanicArchipelago = new SectorPreset("volcanicArchipelago", Planets.serpulo, 14) {{
 			captureWave = 55;
 			difficulty = 10f;
 		}};
-		ironBridgeCoast = new SectorPreset("ironBridgeCoast", Planets.serpulo, 244) {{
+		ironBridgeCoast = new SectorPreset("ironBridgeCoast", Planets.serpulo, 37) {{
 			captureWave = 65;
 			difficulty = 11f;
 		}};
-		moltenRiftValley = new SectorPreset("moltenRiftValley", Planets.serpulo, 125) {{
+		moltenRiftValley = new SectorPreset("moltenRiftValley", Planets.serpulo, 270) {{
 			captureWave = 65;
 			difficulty = 11f;
 		}};
-		frozenPlateau = new SectorPreset("frozenPlateau", Planets.serpulo, 132) {{
+		frozenPlateau = new SectorPreset("frozenPlateau", Planets.serpulo, 267) {{
 			captureWave = 75;
 			difficulty = 12f;
 		}};

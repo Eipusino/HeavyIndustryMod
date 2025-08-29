@@ -9,7 +9,7 @@ import java.util.LinkedList;
  *
  * @since 1.0.5
  */
-public class GenericPath<V> implements Pathc<V> {
+public class GenericPath<V> implements IPath<V> {
 	private final LinkedList<V> path = new LinkedList<>();
 
 	@Override
