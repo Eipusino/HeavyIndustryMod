@@ -54,8 +54,6 @@ import mindustry.mod.Mod;
 import mindustry.mod.ModClassLoader;
 import mindustry.ui.dialogs.BaseDialog;
 
-import java.lang.reflect.AccessibleObject;
-
 import static heavyindustry.HVars.AUTHOR;
 import static heavyindustry.HVars.LINK_GIT_HUB;
 import static heavyindustry.HVars.MOD_NAME;
@@ -71,16 +69,22 @@ import static mindustry.Vars.platform;
  * @see HVars
  */
 public class HeavyIndustryMod extends Mod {
-	public static final boolean loadImpl = false;
-
 	public static ClassLoader lastLoader;
 
 	FloatingText floatingText;
 
 	static {
-		if (loadImpl) loadLibrary();
-
 		if (HVars.reflectImpl == null) HVars.reflectImpl = new DefaultImpl();
+
+		try {
+			loadLibrary();
+
+			HMods.signup(HeavyIndustryMod.class);
+
+			if (HVars.classesFactory != null) HVars.classHandler = HVars.classesFactory.getHandler(HeavyIndustryMod.class);
+		} catch (Throwable e) {
+			Log.err(e);
+		}
 	}
 
 	public HeavyIndustryMod() {
@@ -211,18 +215,6 @@ public class HeavyIndustryMod extends Mod {
 		floatingText.build(Vars.ui.menuGroup);
 	}
 
-	public static void loadLibrary() {
-		try {
-			Class<?> impl = loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl", true);
-
-			if (impl != null) {
-				HVars.reflectImpl = (ReflectImpl) impl.getConstructor().newInstance();
-			}
-		} catch (Throwable e) {
-			Log.err(e);
-		}
-	}
-
 	public static Class<?> loadLibrary(String fileName, String mainClassName, boolean showError) {
 		return loadLibrary(fileName, mainClassName, showError, c -> {});
 	}
@@ -255,8 +247,6 @@ public class HeavyIndustryMod extends Mod {
 
 			if (callback != null) callback.get(clazz);
 
-			toFile.delete();
-
 			return clazz;
 		} catch (Throwable e) {
 			if (showError) {
@@ -268,16 +258,16 @@ public class HeavyIndustryMod extends Mod {
 			Log.info("Loaded '@' in @ms", sourceFile.name(), Time.elapsed());
 		}
 	}
-}
 
-class DefaultImpl implements ReflectImpl {
-	@Override
-	public void setOverride(AccessibleObject override) {
-		// not
-	}
+	static void loadLibrary() {
+		try {
+			Class<?> impl = loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl", true);
 
-	@Override
-	public void setPublic(Class<?> obj) {
-		// not
+			if (impl != null && impl.getConstructor().newInstance() instanceof ReflectImpl core) {
+				HVars.reflectImpl = core;
+			}
+		} catch (Throwable e) {
+			Log.err(e);
+		}
 	}
 }

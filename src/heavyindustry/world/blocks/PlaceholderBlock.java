@@ -25,6 +25,10 @@ public class PlaceholderBlock extends Block {
         inEditor = false;
 
         buildVisibility = BuildVisibility.hidden;
+
+	    localizedName = Core.bundle.get(getContentType() + ".heavy-industry-inner-block.name", this.name);
+	    description = Core.bundle.getOrNull(getContentType() + ".heavy-industry-inner-block.description");
+	    details = Core.bundle.getOrNull(getContentType() + ".heavy-industry-inner-block.details");
     }
 
     public boolean canBreak(Tile tile) {

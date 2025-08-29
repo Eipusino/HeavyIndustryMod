@@ -7,6 +7,10 @@ public interface ReflectImpl {
 
 	void setPublic(Class<?> obj) throws Exception;
 
+	/**
+	 * Get the caller-class of method.
+	 * <p>It does not work on rhino-js.
+	 */
 	default Class<?> getCallerClass() {
 		try {
 			Thread thread = Thread.currentThread();

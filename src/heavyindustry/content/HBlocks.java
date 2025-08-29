@@ -181,6 +181,7 @@ import mindustry.world.blocks.defense.BaseShield;
 import mindustry.world.blocks.defense.Door;
 import mindustry.world.blocks.defense.ForceProjector;
 import mindustry.world.blocks.defense.MendProjector;
+import mindustry.world.blocks.defense.OverdriveProjector;
 import mindustry.world.blocks.defense.Radar;
 import mindustry.world.blocks.defense.RegenProjector;
 import mindustry.world.blocks.defense.ShieldWall;
@@ -363,7 +364,7 @@ public final class HBlocks {
 	//sandbox
 	unitIniter,
 			reinforcedItemSource, reinforcedLiquidSource, reinforcedPowerSource, reinforcedPayloadSource, adaptiveSource, randomSource,
-			staticDrill, omniNode, ultraAssignOverdrive,
+			staticDrill, omniNode, overloadProjector, ultraAssignOverdrive,
 			teamChanger, barrierProjector, entityRemove,
 			invincibleWall, invincibleWallLarge, invincibleWallHuge, invincibleWallGigantic,
 			dpsWall, dpsWallLarge, dpsWallHuge, dpsWallGigantic,
@@ -1970,7 +1971,7 @@ public final class HBlocks {
 			buildType = GenericCrafterBuild::new;
 		}};
 		largePulverizer = new GenericCrafter("large-pulverizer") {{
-			requirements(Category.crafting, ItemStack.with(Items.copper, 25, Items.lead, 25, Items.graphite, 15, Items.titanium, 10));
+			requirements(Category.crafting, ItemStack.with(Items.copper, 25, Items.lead, 25, Items.graphite, 15, Items.plastanium, 10));
 			size = 2;
 			health = 160;
 			itemCapacity = 20;
@@ -2008,7 +2009,7 @@ public final class HBlocks {
 			hideDetails = false;
 		}};
 		largeCryofluidMixer = new GenericCrafter("large-cryofluid-mixer") {{
-			requirements(Category.crafting, ItemStack.with(Items.lead, 120, Items.silicon, 60, Items.titanium, 150, Items.thorium, 110));
+			requirements(Category.crafting, ItemStack.with(Items.lead, 120, Items.silicon, 60, Items.titanium, 150, Items.thorium, 110, Items.plastanium, 20));
 			outputLiquid = new LiquidStack(Liquids.cryofluid, 36f / 60f);
 			size = 3;
 			hasLiquids = true;
@@ -2028,7 +2029,7 @@ public final class HBlocks {
 			hideDetails = false;
 		}};
 		largePyratiteMixer = new GenericCrafter("large-pyratite-mixer") {{
-			requirements(Category.crafting, ItemStack.with(Items.copper, 100, Items.lead, 50, Items.titanium, 25, Items.silicon, 20));
+			requirements(Category.crafting, ItemStack.with(Items.copper, 100, Items.lead, 50, Items.silicon, 20, Items.thorium, 15));
 			outputItem = new ItemStack(Items.pyratite, 3);
 			envEnabled |= Env.space;
 			size = 3;
@@ -2039,7 +2040,7 @@ public final class HBlocks {
 			hideDetails = false;
 		}};
 		largeBlastMixer = new GenericCrafter("large-blast-mixer") {{
-			requirements(Category.crafting, ItemStack.with(Items.lead, 60, Items.titanium, 40, Items.silicon, 20));
+			requirements(Category.crafting, ItemStack.with(Items.lead, 60, Items.titanium, 40, Items.silicon, 20, Items.thorium, 15));
 			outputItem = new ItemStack(Items.blastCompound, 3);
 			size = 3;
 			itemCapacity = 20;
@@ -4961,6 +4962,19 @@ public final class HBlocks {
 			transportTime = 1f;
 			squareSprite = false;
 		}};
+		overloadProjector = new OverdriveProjector("overload-projector") {{
+			requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.empty);
+			size = 3;
+			health = 1000;
+			armor = 10f;
+			hasItems = false;
+			hasPower = false;
+			range = 180f;
+			phaseRangeBoost = 0f;
+			speedBoost = 35f;
+			speedBoostPhase = 0f;
+			hasBoost = false;
+		}};
 		ultraAssignOverdrive = new AssignOverdrive("ultra-assign-overdrive") {{
 			requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.empty);
 			size = 2;
@@ -4968,11 +4982,11 @@ public final class HBlocks {
 			armor = 10f;
 			hasItems = false;
 			hasPower = false;
-			range = 600f;
+			range = 360f;
 			phaseRangeBoost = 0f;
 			speedBoost = 35f;
 			speedBoostPhase = 0f;
-			maxLink = 100;
+			maxLink = 30;
 			hasBoost = false;
 			strokeOffset = -0.05f;
 			strokeClamp = 0.06f;

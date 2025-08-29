@@ -1,6 +1,7 @@
 package heavyindustry.util;
 
 import arc.util.OS;
+import dynamilize.IllegalHandleException;
 import heavyindustry.android.field.FieldUtils;
 import sun.misc.Unsafe;
 
