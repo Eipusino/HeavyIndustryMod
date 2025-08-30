@@ -29,6 +29,7 @@ import heavyindustry.gen.Entitys;
 import heavyindustry.gen.HIcon;
 import heavyindustry.gen.HMusics;
 import heavyindustry.gen.HSounds;
+import heavyindustry.ui.dialogs.BaseDatabaseDialog;
 import heavyindustry.util.ReflectImpl;
 import heavyindustry.util.Utils;
 import heavyindustry.world.Worlds;
@@ -69,7 +70,7 @@ import static heavyindustry.HVars.MOD_NAME;
  */
 public class HeavyIndustryMod extends Mod {
 	public static ClassLoader lastLoader;
-	public static Object database;
+	public static boolean database = false;
 
 	FloatingText floatingText;
 
@@ -181,14 +182,13 @@ public class HeavyIndustryMod extends Mod {
 			Elements.onClient();
 		}
 
-		// Damn Android packaging optimization, now Java Dynamilize is completely unusable, f**k anuke
-		/*if (!Vars.net.server()) {
+		if (!Vars.net.server() && database) {
 			try {
 				Vars.ui.database = BaseDatabaseDialog.make();
 			} catch (Throwable e) {
 				Log.err(e);
 			}
-		}*/
+		}
 
 		IconLoader.loadIcons(HVars.internalTree.child("other/icons.properties"));
 

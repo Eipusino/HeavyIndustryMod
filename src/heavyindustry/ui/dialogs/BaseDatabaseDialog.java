@@ -42,7 +42,6 @@ import static mindustry.Vars.ui;
  *
  * @since 1.0.8
  */
-@Deprecated
 public class BaseDatabaseDialog {
 	private static final DynamicClass baseDatabase = DynamicClass.get("BaseDatabase");
 	private static final ObjectSet<UnlockableContent> hiddenContents = new ObjectSet<>();
