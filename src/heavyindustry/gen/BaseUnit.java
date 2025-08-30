@@ -1,8 +1,11 @@
 package heavyindustry.gen;
 
+import heavyindustry.entities.abilities.ICollideBlockerAbility;
 import heavyindustry.type.unit.BaseUnitType;
 import mindustry.Vars;
 import mindustry.entities.Damage;
+import mindustry.entities.abilities.Ability;
+import mindustry.gen.Hitboxc;
 import mindustry.gen.UnitEntity;
 
 public class BaseUnit extends UnitEntity implements BaseUnitc {
@@ -14,6 +17,15 @@ public class BaseUnit extends UnitEntity implements BaseUnitc {
 	@Override
 	public BaseUnitType checkType() {
 		return (BaseUnitType) type;
+	}
+
+	@Override
+	public boolean collides(Hitboxc other) {
+		for (Ability ability : abilities) {
+			if (ability instanceof ICollideBlockerAbility blocker && blocker.blockedCollides(this, other)) return false;
+		}
+
+		return super.collides(other);
 	}
 
 	@Override

@@ -1,8 +1,12 @@
 package heavyindustry.gen;
 
+import heavyindustry.entities.abilities.ICollideBlockerAbility;
 import heavyindustry.type.unit.BaseUnitType;
-import mindustry.content.Fx;
+import mindustry.Vars;
+import mindustry.entities.Damage;
+import mindustry.entities.abilities.Ability;
 import mindustry.gen.BuildingTetherPayloadUnit;
+import mindustry.gen.Hitboxc;
 
 public class BaseBuildingTetherPayloadUnit extends BuildingTetherPayloadUnit implements BaseUnitc {
 	@Override
@@ -11,33 +15,21 @@ public class BaseBuildingTetherPayloadUnit extends BuildingTetherPayloadUnit imp
 	}
 
 	@Override
-	public void rawDamage(float amount) {
-		if (type instanceof BaseUnitType but) {
-			boolean hadShields = shield > 0.0001f;
+	public BaseUnitType checkType() {
+		return (BaseUnitType) type;
+	}
 
-			if (Float.isNaN(health)) health = 0f;
-
-			if (hadShields) {
-				shieldAlpha = 1f;
-			}
-
-			float damage = amount * but.damageMultiplier;
-
-			float shieldDamage = Math.min(Math.max(shield, 0), damage);
-			shield -= shieldDamage;
-			hitTime = 1f;
-			damage -= shieldDamage;
-
-			if (damage > 0 && type.killable) {
-				health -= damage;
-				if (health <= 0 && !dead) {
-					kill();
-				}
-
-				if (hadShields && shield <= 0.0001f) {
-					Fx.unitShieldBreak.at(x, y, 0, type.shieldColor(this), this);
-				}
-			}
+	@Override
+	public boolean collides(Hitboxc other) {
+		for (Ability ability : abilities) {
+			if (ability instanceof ICollideBlockerAbility blocker && blocker.blockedCollides(this, other)) return false;
 		}
+
+		return super.collides(other);
+	}
+
+	@Override
+	public void damage(float amount) {
+		rawDamage(Damage.applyArmor(amount, armorOverride >= 0 ? armorOverride : armor) / healthMultiplier / Vars.state.rules.unitHealth(team) * checkType().damageMultiplier);
 	}
 }

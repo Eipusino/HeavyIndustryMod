@@ -181,6 +181,15 @@ public class HeavyIndustryMod extends Mod {
 			Elements.onClient();
 		}
 
+		// Damn Android packaging optimization, now Java Dynamilize is completely unusable, f**k anuke
+		/*if (!Vars.net.server()) {
+			try {
+				Vars.ui.database = BaseDatabaseDialog.make();
+			} catch (Throwable e) {
+				Log.err(e);
+			}
+		}*/
+
 		IconLoader.loadIcons(HVars.internalTree.child("other/icons.properties"));
 
 		if (Vars.ui != null) {

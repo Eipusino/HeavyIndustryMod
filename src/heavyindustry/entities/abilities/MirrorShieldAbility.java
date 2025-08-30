@@ -13,6 +13,7 @@ import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.abilities.Ability;
 import mindustry.gen.Bullet;
+import mindustry.gen.Hitboxc;
 import mindustry.gen.Unit;
 import mindustry.graphics.Pal;
 import mindustry.ui.Bar;
@@ -27,7 +28,7 @@ import mindustry.world.meta.StatUnit;
  * @see MirrorArmorAbility
  * @since 1.0.6
  */
-public abstract class MirrorShieldAbility extends Ability {
+public abstract class MirrorShieldAbility extends Ability implements ICollideBlockerAbility {
 	public Effect breakEffect = HFx.mirrorShieldBreak;
 	public Effect reflectEffect = Fx.none;
 	public Effect refrectEffect = Fx.absorb;
@@ -70,6 +71,19 @@ public abstract class MirrorShieldAbility extends Ability {
 	@Override
 	public void displayBars(Unit unit, Table bars) {
 		bars.add(new Bar("bar.mirror-shield-health", Pal.accent, () -> Math.max(unit.shield, 0f) / max)).row();
+	}
+
+	@Override
+	public boolean blockedCollides(Unit unit, Hitboxc other) {
+		if (other instanceof Bullet bullet) {
+			boolean blocked = unit.shield > 0 && bullet.type.reflectable && !bullet.hasCollided(unit.id) && shouldReflect(unit, bullet);
+
+			if (blocked) doCollide(unit, bullet);
+
+			return blocked;
+		}
+
+		return true;
 	}
 
 	@Override

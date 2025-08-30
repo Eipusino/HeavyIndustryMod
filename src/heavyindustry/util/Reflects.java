@@ -496,16 +496,6 @@ public final class Reflects {
 		}
 	}
 
-	public static Class<?> getCallerClass() {
-		try {
-			Thread thread = Thread.currentThread();
-			StackTraceElement[] trace = thread.getStackTrace();
-			return Class.forName(trace[3].getClassName(), false, Vars.mods.mainLoader());
-		} catch (ClassNotFoundException e) {
-			return null;
-		}
-	}
-
 	public static boolean isInstanceButNotSubclass(Object obj, Class<?> clazz) {
 		if (clazz.isInstance(obj)) {
 			try {

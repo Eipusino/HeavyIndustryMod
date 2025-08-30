@@ -49,7 +49,7 @@ public final class HVars {
 	public static ClassHandler classHandler;
 	public static ReflectImpl reflectImpl;
 
-	/**切面管理器实例*/
+	/** Instance of Aspect Manager */
 	public static AspectManager aspects;
 
 	/** jar internal navigation. */

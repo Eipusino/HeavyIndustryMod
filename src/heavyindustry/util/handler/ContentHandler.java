@@ -69,11 +69,11 @@ public final class ContentHandler {
 		if (oldContent.getContentType() != newContent.getContentType())
 			throw new RuntimeException("The old content cannot override by new content, because the content type are different");
 
-		if (newContent instanceof UnlockableContent newC) {
-			newC.localizedName = Core.bundle.get(type + "." + oldName + ".name", oldName);
-			newC.description = Core.bundle.getOrNull(type + "." + oldName + ".description");
-			newC.details = Core.bundle.getOrNull(type + "." + oldName + ".details");
-			FieldHandler.setValueDefault(newC, "unlocked", Core.settings != null && Core.settings.getBool(oldName + "-unlocked", false));
+		if (newContent instanceof UnlockableContent unlContent) {
+			unlContent.localizedName = Core.bundle.get(type + "." + oldName + ".name", oldName);
+			unlContent.description = Core.bundle.getOrNull(type + "." + oldName + ".description");
+			unlContent.details = Core.bundle.getOrNull(type + "." + oldName + ".details");
+			FieldHandler.setValueDefault(unlContent, "unlocked", Core.settings != null && Core.settings.getBool(oldName + "-unlocked", false));
 		}
 
 		if (contentNameMap != null) {

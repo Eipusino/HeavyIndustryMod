@@ -9,13 +9,19 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * 容器切面的基类，一个切面应当具有拦截来源目标容器的add与remove入口的能力，否则则不应对切面分配来源容器，这样做会失去切面的意义
- * <p>切面容器是一种基于入口代理的特殊的容器成员处理对象，通过代理来源的add入口与remove入口，通过过滤器来完成切面成员的增删，避免依赖遍历来过滤目标，对Hash索引的容器尤其有效，
- * 可以更好的针对来源容器的某一类（由过滤器决定）对象统一的进行处理。通常，这个处理过程由触发器入口进行操作，同时这个类实现了{@link Iterable}，您也可以直接对元素进行遍历
- * <p>实现切面应当于构造函数中完成容器的分配，完成对来源的入口代理。
+ * The base class of container slicing should have the ability to intercept the add and remove entries of the
+ * source and target containers. Otherwise, the source container should not be assigned to the slicing,
+ * which would lose the meaning of the slicing。
+ * <p>Slice container is a special container member processing object based on entrance proxy. It adds and
+ * deletes slice members through the add and remove entrances of the proxy source, and filters them to
+ * avoid relying on traversal to filter targets. It is particularly effective for hash indexed containers and can
+ * better handle a certain type of object (determined by the filter) in the source container uniformly. Usually,
+ * this processing procedure is operated by the trigger entry, and this class implements {@link Iterable}. You can
+ * also directly traverse the elements.
+ * <p>The implementation of slicing should complete the container allocation in the constructor and complete
+ * the entry proxy for the source.
  *
- * @author EBwilson
- * @since 1.2
+ * @since 1.0.8
  */
 @SuppressWarnings("rawtypes")
 public abstract class AbstractAspect<T, S> implements Iterable<T> {
@@ -29,21 +35,24 @@ public abstract class AbstractAspect<T, S> implements Iterable<T> {
 	protected Cons<T> entry;
 	protected Cons<T> exit;
 
-	private boolean modified = true;//初始化
+	private boolean modified = true;// initialization
 
 	protected AbstractAspect(S source) {
 		this.source = source;
 	}
 
-	/** 获得该切面应用的有效容器实例 */
+	/** Obtain valid container instances for the application of this aspect. */
 	public abstract S instance();
 
-	/** 切面处理的元素过滤器 */
+	/** Element filter for aspect processing. */
 	public abstract boolean filter(T target);
 
 	/**
-	 * 当切面不再使用后，调用此方法来释放切面，具体的释放内容由子类进行实现，重写应当能够释放切面对成员的所有引用以及切面产生的各种副作用
-	 * <p>调用此方法前请确认已经从<strong>所有</strong>切面管理器卸载此切面，否则可能会造成不可预测的异常
+	 * When the aspect is no longer used, call this method to release the aspect. The specific release
+	 * content is implemented by the subclass. Rewriting should be able to release all references of the
+	 * aspect to members and various side effects produced by the aspect.
+	 * <p>Before calling this method, please confirm that this aspect has been uninstalled from <strong>all</strong> aspect
+	 * managers, otherwise it may cause unpredictable exceptions.
 	 */
 	public void releaseAspect() {
 		children.clear();
@@ -54,9 +63,9 @@ public abstract class AbstractAspect<T, S> implements Iterable<T> {
 	}
 
 	/**
-	 * 设置切面的入口触发器，当元素被添加进切面时调用触发器
+	 * Set the entry trigger for the aspect, and call the trigger when an element is added to the aspect.
 	 *
-	 * @param entry 入口触发器，传入进入切面的元素
+	 * @param entry Entry trigger, passing in elements that enter the aspect
 	 */
 	public AbstractAspect<T, S> setEntryTrigger(Cons<T> entry) {
 		this.entry = entry;
@@ -64,16 +73,16 @@ public abstract class AbstractAspect<T, S> implements Iterable<T> {
 	}
 
 	/**
-	 * 设置切面的出口触发器，当元素从切面退出时调用触发器
+	 * Set the exit trigger for the aspect, and call the trigger when the element exits from the aspect.
 	 *
-	 * @param exit 出口触发器，传入退出切面的元素
+	 * @param exit Export trigger, passing in the element of the exit aspect
 	 */
 	public AbstractAspect<T, S> setExitTrigger(Cons<T> exit) {
 		this.exit = exit;
 		return this;
 	}
 
-	/** 将切面重置，这会清空切面保存的元素 */
+	/** Reset the aspect, which will clear the elements saved in the aspect */
 	public void reset() {
 		for (T child : children) {
 			if (exit != null) exit.get(child);
@@ -83,9 +92,9 @@ public abstract class AbstractAspect<T, S> implements Iterable<T> {
 	}
 
 	/**
-	 * 设置一个触发器入口，关于触发器入口，请参见{@link BaseTriggerEntry}
+	 * Set up a trigger entry. For trigger entry, see {@link BaseTriggerEntry}
 	 *
-	 * @param trigger 触发器入口
+	 * @param trigger Trigger entrance
 	 */
 	public AbstractAspect<T, S> setTrigger(BaseTriggerEntry<T> trigger) {
 		triggers.add(trigger);
@@ -95,9 +104,9 @@ public abstract class AbstractAspect<T, S> implements Iterable<T> {
 	}
 
 	/**
-	 * 移除一个触发器入口，关于触发器入口，请参见{@link BaseTriggerEntry}
+	 * Remove a trigger entry. For trigger entries, see {@link BaseTriggerEntry}
 	 *
-	 * @param trigger 触发器入口
+	 * @param trigger Trigger entrance
 	 */
 	public void removeTrigger(BaseTriggerEntry<T> trigger) {
 		triggers.remove(trigger);
@@ -105,9 +114,9 @@ public abstract class AbstractAspect<T, S> implements Iterable<T> {
 	}
 
 	/**
-	 * 对切面的所有子元素执行触发器处理
+	 * Perform trigger processing on all sub elements of the aspect.
 	 *
-	 * @param entry 执行的目标触发器
+	 * @param entry Target trigger for execution
 	 */
 	public void run(BaseTriggerEntry<T> entry) {
 		for (T child : this) {
@@ -116,9 +125,9 @@ public abstract class AbstractAspect<T, S> implements Iterable<T> {
 	}
 
 	/**
-	 * 尝试向切面中添加一个元素，如果过滤器通过则元素进入切面
+	 * Attempt to add an element to the aspect, and if the filter passes, the element will enter the aspect.
 	 *
-	 * @param added 尝试添加的元素
+	 * @param added Trying to add elements
 	 */
 	public void add(T added) {
 		if (filter(added)) {
@@ -130,9 +139,9 @@ public abstract class AbstractAspect<T, S> implements Iterable<T> {
 	}
 
 	/**
-	 * 从切面中移除一个元素
+	 * Remove an element from the aspect.
 	 *
-	 * @param removed 从切面移除的元素
+	 * @param removed Elements removed from the cut surface
 	 */
 	public void remove(T removed) {
 		if (children.remove(removed) && exit != null) {
@@ -143,7 +152,10 @@ public abstract class AbstractAspect<T, S> implements Iterable<T> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterator<T> iterator() {//规避并发修改，切面的行为有可能使元素从切面移除，需要一个缓冲区回避此问题
+	public Iterator<T> iterator() {
+		// To avoid concurrent modifications,
+		// the behavior of slicing may cause elements to be removed from the slicing,
+		// and a buffer is needed to avoid this issue.
 		if (modified) {
 			if (iterateCache.arr == null || iterateCache.arr.length < children.size()) {
 				iterateCache.arr = (T[]) new Object[children.size()];
@@ -168,7 +180,7 @@ public abstract class AbstractAspect<T, S> implements Iterable<T> {
 		if (remove != null) remove.get(entry);
 	}
 
-	private class Cache implements Iterable<T> {
+	class Cache implements Iterable<T> {
 		T[] arr;
 		int index;
 

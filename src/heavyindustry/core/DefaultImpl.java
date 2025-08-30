@@ -4,14 +4,14 @@ import heavyindustry.util.ReflectImpl;
 
 import java.lang.reflect.AccessibleObject;
 
-class DefaultImpl implements ReflectImpl {
+public class DefaultImpl implements ReflectImpl {
 	@Override
 	public void setOverride(AccessibleObject override) {
 		// not
 	}
 
 	@Override
-	public void setPublic(Class<?> obj) {
+	public void setPublic(Class<?> type) {
 		// not
 	}
 }
