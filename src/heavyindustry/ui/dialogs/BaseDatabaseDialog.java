@@ -52,7 +52,7 @@ public class BaseDatabaseDialog {
 			TextField search = s.getVar("search");
 
 			all.clear();
-			var text = search.getText();
+			String text = search.getText();
 
 			for (int j = 0; j < BaseContentType.displayContentList.length; j++) {
 				ContentType type = BaseContentType.displayContentList[j];

@@ -70,7 +70,6 @@ import static heavyindustry.HVars.MOD_NAME;
  */
 public class HeavyIndustryMod extends Mod {
 	public static ClassLoader lastLoader;
-	public static boolean database = false;
 
 	FloatingText floatingText;
 
@@ -182,11 +181,13 @@ public class HeavyIndustryMod extends Mod {
 			Elements.onClient();
 		}
 
-		if (!Vars.net.server() && database) {
+		if (!Vars.net.server()) {
 			try {
 				Vars.ui.database = BaseDatabaseDialog.make();
 			} catch (Throwable e) {
 				Log.err(e);
+
+				Vars.ui.showException(e);
 			}
 		}
 
