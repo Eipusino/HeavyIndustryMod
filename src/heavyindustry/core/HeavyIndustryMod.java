@@ -70,6 +70,8 @@ import static heavyindustry.HVars.MOD_NAME;
  */
 public class HeavyIndustryMod extends Mod {
 	public static ClassLoader lastLoader;
+	public static Class<?> platformImpl;
+	public static boolean keepDynamic = true;
 
 	FloatingText floatingText;
 
@@ -82,6 +84,8 @@ public class HeavyIndustryMod extends Mod {
 			if (HVars.classesFactory != null) HVars.classHandler = HVars.classesFactory.getHandler(HeavyIndustryMod.class);
 		} catch (Throwable e) {
 			Log.err(e);
+
+			keepDynamic = false;
 		}
 
 		if (HVars.reflectImpl == null) HVars.reflectImpl = new DefaultImpl();
@@ -181,8 +185,9 @@ public class HeavyIndustryMod extends Mod {
 			Elements.onClient();
 		}
 
-		if (!Vars.net.server()) {
+		if (!Vars.net.server() && keepDynamic) {
 			try {
+				// If Anuke does not merge my Pull Requests, then this feature will never be added to the official release.
 				Vars.ui.database = BaseDatabaseDialog.make();
 			} catch (Throwable e) {
 				Log.err(e);
@@ -266,13 +271,15 @@ public class HeavyIndustryMod extends Mod {
 	}
 
 	static void loadLibrary() {
-		loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl", true, impl -> {
+		platformImpl = loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl", true, impl -> {
 			try {
 				if (impl.getConstructor().newInstance() instanceof ReflectImpl core) {
 					HVars.reflectImpl = core;
 				}
 			} catch (Throwable e) {
 				Log.err(e);
+
+				keepDynamic = false;
 			}
 		});
 	}
