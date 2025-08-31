@@ -1,25 +1,17 @@
 package heavyindustry.mod;
 
-import arc.struct.ObjectMap;
 import mindustry.Vars;
 import mindustry.ctype.Content;
-import mindustry.mod.Mod;
 import mindustry.mod.Mods.LoadedMod;
 
 import static heavyindustry.HVars.MOD_NAME;
 
 public final class HMods {
-	static final ObjectMap<Class<? extends Mod>, ModInfo> referredMods = new ObjectMap<>();
-
 	/** If needed, please call {@link #loaded()} for the LoadedMod of this mod. */
 	static LoadedMod loaded;
 
 	/** Don't let anyone instantiate this class. */
 	private HMods() {}
-
-	public static void signup(Class<? extends Mod> main){
-		referredMods.put(main, ModGetter.getModWithClass(main));
-	}
 
 	public static boolean isHeavyIndustry(Content content) {
 		return content != null && isHeavyIndustry(content.minfo.mod);

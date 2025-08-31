@@ -1,7 +1,6 @@
 package heavyindustry.util;
 
 import arc.util.OS;
-import dynamilize.IllegalHandleException;
 import heavyindustry.android.field.FieldUtils;
 import sun.misc.Unsafe;
 
@@ -52,13 +51,13 @@ public final class Unsafer {
 	 * Retrieve the value of a field through {@code Unsafe}. If the field is {@code static}, object can be {@code null}.
 	 * Otherwise, {@code object} must not be {@code null} and be an instance of {@code field.getDeclaringClass()}.
 	 *
-	 * @throws IllegalHandleException If the field type is a primitive type.
+	 * @throws IllegalArgumentException If the field type is a primitive type.
 	 * @throws ClassCastException If the field is not {@code static} and the {@code object} is not an
 	 *                                  instance of {@code field.getDeclaringClass()} or {@code null}.
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getObject(Field field, Object object) {
-		if (field.getType().isPrimitive()) throw new IllegalHandleException("Method 'getObject' does not support field of primitive types");
+		if (field.getType().isPrimitive()) throw new IllegalArgumentException("Method 'getObject' does not support field of primitive types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -81,7 +80,7 @@ public final class Unsafer {
 	}
 
 	public static boolean getBool(Field field, Object object) {
-		if (field.getType() != boolean.class) throw new IllegalHandleException("Method 'getBool' does not support field other than boolean types");
+		if (field.getType() != boolean.class) throw new IllegalArgumentException("Method 'getBool' does not support field other than boolean types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -103,7 +102,7 @@ public final class Unsafer {
 	}
 
 	public static byte getByte(Field field, Object object) {
-		if (field.getType() != byte.class) throw new IllegalHandleException("Method 'getByte' does not support field other than byte types");
+		if (field.getType() != byte.class) throw new IllegalArgumentException("Method 'getByte' does not support field other than byte types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -125,7 +124,7 @@ public final class Unsafer {
 	}
 
 	public static short getShort(Field field, Object object) {
-		if (field.getType() != short.class) throw new IllegalHandleException("Method 'getShort' does not support field other than short types");
+		if (field.getType() != short.class) throw new IllegalArgumentException("Method 'getShort' does not support field other than short types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -147,7 +146,7 @@ public final class Unsafer {
 	}
 
 	public static int getInt(Field field, Object object) {
-		if (field.getType() != int.class) throw new IllegalHandleException("Method 'getInt' does not support field other than int types");
+		if (field.getType() != int.class) throw new IllegalArgumentException("Method 'getInt' does not support field other than int types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -169,7 +168,7 @@ public final class Unsafer {
 	}
 
 	public static long getLong(Field field, Object object) {
-		if (field.getType() != long.class) throw new IllegalHandleException("Method 'getLong' does not support field other than long types");
+		if (field.getType() != long.class) throw new IllegalArgumentException("Method 'getLong' does not support field other than long types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -191,7 +190,7 @@ public final class Unsafer {
 	}
 
 	public static char getChar(Field field, Object object) {
-		if (field.getType() != char.class) throw new IllegalHandleException("Method 'getChar' does not support field other than char types");
+		if (field.getType() != char.class) throw new IllegalArgumentException("Method 'getChar' does not support field other than char types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -213,7 +212,7 @@ public final class Unsafer {
 	}
 
 	public static float getFloat(Field field, Object object) {
-		if (field.getType() != float.class) throw new IllegalHandleException("Method 'getFloat' does not support field other than float types");
+		if (field.getType() != float.class) throw new IllegalArgumentException("Method 'getFloat' does not support field other than float types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -235,7 +234,7 @@ public final class Unsafer {
 	}
 
 	public static double getDouble(Field field, Object object) {
-		if (field.getType() != double.class) throw new IllegalHandleException("Method 'getDouble' does not support field other than double types");
+		if (field.getType() != double.class) throw new IllegalArgumentException("Method 'getDouble' does not support field other than double types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -260,12 +259,12 @@ public final class Unsafer {
 	 * Set the value of a field through {@code Unsafe}. If the field is {@code static}, object can be {@code null}.
 	 * Otherwise, {@code object} must not be {@code null} and be an instance of {@code field.getDeclaringClass()}.
 	 *
-	 * @throws IllegalHandleException If the field type is a primitive type.
+	 * @throws IllegalArgumentException If the field type is a primitive type.
 	 * @throws ClassCastException If the field is not {@code static} and the {@code object} is not an
 	 *                                  instance of {@code field.getDeclaringClass()} or {@code null}.
 	 */
 	public static void setObject(Field field, Object object, Object value) {
-		if (field.getType().isPrimitive()) throw new IllegalHandleException("Method 'getObject' does not support field of primitive types");
+		if (field.getType().isPrimitive()) throw new IllegalArgumentException("Method 'getObject' does not support field of primitive types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -290,7 +289,7 @@ public final class Unsafer {
 	}
 
 	public static void setBool(Field field, Object object, boolean value) {
-		if (field.getType() != boolean.class) throw new IllegalHandleException("Method 'setBool' does not support field other than boolean types");
+		if (field.getType() != boolean.class) throw new IllegalArgumentException("Method 'setBool' does not support field other than boolean types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -314,7 +313,7 @@ public final class Unsafer {
 	}
 
 	public static void setByte(Field field, Object object, byte value) {
-		if (field.getType() != byte.class) throw new IllegalHandleException("Method 'setByte' does not support field other than byte types");
+		if (field.getType() != byte.class) throw new IllegalArgumentException("Method 'setByte' does not support field other than byte types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -338,7 +337,7 @@ public final class Unsafer {
 	}
 
 	public static void setShort(Field field, Object object, short value) {
-		if (field.getType() != short.class) throw new IllegalHandleException("Method 'setShort' does not support field other than short types");
+		if (field.getType() != short.class) throw new IllegalArgumentException("Method 'setShort' does not support field other than short types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -362,7 +361,7 @@ public final class Unsafer {
 	}
 
 	public static void setInt(Field field, Object object, int value) {
-		if (field.getType() != int.class) throw new IllegalHandleException("Method 'setInt' does not support field other than int types");
+		if (field.getType() != int.class) throw new IllegalArgumentException("Method 'setInt' does not support field other than int types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -386,7 +385,7 @@ public final class Unsafer {
 	}
 
 	public static void setLong(Field field, Object object, long value) {
-		if (field.getType() != long.class) throw new IllegalHandleException("Method 'setLong' does not support field other than long types");
+		if (field.getType() != long.class) throw new IllegalArgumentException("Method 'setLong' does not support field other than long types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -410,7 +409,7 @@ public final class Unsafer {
 	}
 
 	public static void setChar(Field field, Object object, char value) {
-		if (field.getType() != char.class) throw new IllegalHandleException("Method 'setChar' does not support field other than char types");
+		if (field.getType() != char.class) throw new IllegalArgumentException("Method 'setChar' does not support field other than char types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -434,7 +433,7 @@ public final class Unsafer {
 	}
 
 	public static void setFloat(Field field, Object object, float value) {
-		if (field.getType() != float.class) throw new IllegalHandleException("Method 'setFloat' does not support field other than float types");
+		if (field.getType() != float.class) throw new IllegalArgumentException("Method 'setFloat' does not support field other than float types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -458,7 +457,7 @@ public final class Unsafer {
 	}
 
 	public static void setDouble(Field field, Object object, double value) {
-		if (field.getType() != double.class) throw new IllegalHandleException("Method 'setDouble' does not support field other than double types");
+		if (field.getType() != double.class) throw new IllegalArgumentException("Method 'setDouble' does not support field other than double types");
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -496,7 +495,7 @@ public final class Unsafer {
 				else if (type == double.class) return unsafe.getDoubleVolatile(o, offset);
 				else if (type == char.class) return unsafe.getCharVolatile(o, offset);
 				else if (type == short.class) return unsafe.getShortVolatile(o, offset);
-				else throw new IllegalHandleException("unknown type of field " + field);
+				else throw new IllegalArgumentException("unknown type of field " + field);
 			} else {
 				return unsafe.getObjectVolatile(o, offset);
 			}
@@ -510,7 +509,7 @@ public final class Unsafer {
 				else if (type == double.class) return unsafe.getLong(o, offset);
 				else if (type == char.class) return unsafe.getChar(o, offset);
 				else if (type == short.class) return unsafe.getShort(o, offset);
-				else throw new IllegalHandleException("unknown type of field " + type);
+				else throw new IllegalArgumentException("unknown type of field " + type);
 			} else {
 				return unsafe.getObject(o, offset);
 			}
@@ -532,7 +531,7 @@ public final class Unsafer {
 				else if (type == double.class) unsafe.putDoubleVolatile(o, offset, (double) value);
 				else if (type == char.class) unsafe.putCharVolatile(o, offset, (char) value);
 				else if (type == short.class) unsafe.putShortVolatile(o, offset, (short) value);
-				else throw new IllegalHandleException("unknown type of field " + field);
+				else throw new IllegalArgumentException("unknown type of field " + field);
 			} else {
 				unsafe.putObjectVolatile(o, offset, requireInstance(field.getType(), value));
 			}
@@ -546,7 +545,7 @@ public final class Unsafer {
 				else if (type == long.class) unsafe.putLong(o, offset, (long) value);
 				else if (type == char.class) unsafe.putChar(o, offset, (char) value);
 				else if (type == short.class) unsafe.putShort(o, offset, (short) value);
-				else throw new IllegalHandleException("unknown type of field " + type);
+				else throw new IllegalArgumentException("unknown type of field " + type);
 			} else {
 				unsafe.putObjectVolatile(o, offset, requireInstance(field.getType(), value));
 			}

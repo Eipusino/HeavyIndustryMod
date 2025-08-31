@@ -32,7 +32,7 @@ dependencies {
 	compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
 	compileOnly project(":annotations")
 
-	implementation files("libs/field-utils.jar", "libs/java-dynamilizer.jar")
+	implementation files("libs/field-utils.jar")
 
 	annotationProcessor project(":annotations")
 }

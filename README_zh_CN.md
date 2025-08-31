@@ -17,6 +17,12 @@
 
 ---
 
+# 关于模组
+
+**[反射库](https://github.com/Eipusino/Template)，模组反射功能非常重要的部分。**
+
+---
+
 # 推荐模组：
 
 **[新视界](https://github.com/Yuria-Shikibe/NewHorizonMod)，状态：持续更新。**

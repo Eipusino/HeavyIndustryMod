@@ -29,7 +29,6 @@ import heavyindustry.gen.Entitys;
 import heavyindustry.gen.HIcon;
 import heavyindustry.gen.HMusics;
 import heavyindustry.gen.HSounds;
-import heavyindustry.ui.dialogs.BaseDatabaseDialog;
 import heavyindustry.util.ReflectImpl;
 import heavyindustry.util.Utils;
 import heavyindustry.world.Worlds;
@@ -69,25 +68,20 @@ import static heavyindustry.HVars.MOD_NAME;
  * @see HVars
  */
 public class HeavyIndustryMod extends Mod {
-	public static ClassLoader lastLoader;
-	public static Class<?> platformImpl;
-	public static boolean keepDynamic = true;
+	static ClassLoader lastLoader;
+	static Class<?> platformImpl;
 
-	FloatingText floatingText;
+	static FloatingText floatingText;
 
 	static {
 		try {
+			// Load Impl.jar from the libs path inside the mod, This is a very important part of the mod's reflection function.
 			loadLibrary();
-
-			HMods.signup(HeavyIndustryMod.class);
-
-			if (HVars.classesFactory != null) HVars.classHandler = HVars.classesFactory.getHandler(HeavyIndustryMod.class);
 		} catch (Throwable e) {
 			Log.err(e);
-
-			keepDynamic = false;
 		}
 
+		// This situation usually does not occur...
 		if (HVars.reflectImpl == null) HVars.reflectImpl = new DefaultImpl();
 	}
 
@@ -185,17 +179,6 @@ public class HeavyIndustryMod extends Mod {
 			Elements.onClient();
 		}
 
-		if (!Vars.net.server() && keepDynamic) {
-			try {
-				// If Anuke does not merge my Pull Requests, then this feature will never be added to the official release.
-				Vars.ui.database = BaseDatabaseDialog.make();
-			} catch (Throwable e) {
-				Log.err(e);
-
-				Vars.ui.showException(e);
-			}
-		}
-
 		IconLoader.loadIcons(HVars.internalTree.child("other/icons.properties"));
 
 		if (Vars.ui != null) {
@@ -278,8 +261,6 @@ public class HeavyIndustryMod extends Mod {
 				}
 			} catch (Throwable e) {
 				Log.err(e);
-
-				keepDynamic = false;
 			}
 		});
 	}

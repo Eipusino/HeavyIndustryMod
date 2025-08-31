@@ -11,13 +11,7 @@ import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.files.InternalFileTree;
 import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.input.InputAggregator;
-import heavyindustry.util.AccessibleHelper;
-import heavyindustry.util.FieldAccessHelper;
-import heavyindustry.util.MethodInvokeHelper;
 import heavyindustry.util.ReflectImpl;
-import heavyindustry.util.aspect.AspectManager;
-import heavyindustry.util.handler.ClassHandler;
-import heavyindustry.util.handler.ClassHandlerFactory;
 import mindustry.content.TechTree.TechNode;
 import mindustry.type.Sector;
 
@@ -41,16 +35,7 @@ public final class HVars {
 	/** Lists all the mod's packages by their canonical names. Generated at compile-time. */
 	public static final @ListPackages String[] packages = with();
 
-	public static AccessibleHelper accessibleHelper;
-	public static ClassHandlerFactory classesFactory;
-	public static FieldAccessHelper fieldAccessHelper;
-	public static MethodInvokeHelper methodInvokeHelper;
-
-	public static ClassHandler classHandler;
 	public static ReflectImpl reflectImpl;
-
-	/** Instance of Aspect Manager */
-	public static AspectManager aspects;
 
 	/** jar internal navigation. */
 	public static final InternalFileTree internalTree;
@@ -77,8 +62,6 @@ public final class HVars {
 			whiteTexture = new Texture(internalTree.child("other/textures/white.png"));
 			whiteRegion = new AtlasRegion(new TextureRegion(whiteTexture));
 		}
-
-		aspects = AspectManager.getDefault();
 	}
 
 	/** Don't let anyone instantiate this class. */
