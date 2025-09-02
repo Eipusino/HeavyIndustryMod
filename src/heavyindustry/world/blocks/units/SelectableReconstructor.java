@@ -144,8 +144,8 @@ public class SelectableReconstructor extends Reconstructor {
 		public void updateTile() {
 			boolean valid = false;
 			if (payload != null && currentPlan != -1) {
-				var Plan = plans.get(currentPlan);
-				if (Plan.unit != payload.unit.type) {
+				DynamicUnitPlan plan = plans.get(currentPlan);
+				if (plan.unit != payload.unit.type) {
 					moveOutPayload();
 				} else if (moveInPayload()) {
 					if (efficiency > 0f) {
@@ -153,8 +153,8 @@ public class SelectableReconstructor extends Reconstructor {
 						progress += edelta() * state.rules.unitBuildSpeed(team);
 					}
 
-					if (progress >= Plan.time) {
-						payload.unit = Plan.resultUnit.create(payload.unit.team());
+					if (progress >= plan.time) {
+						payload.unit = plan.resultUnit.create(payload.unit.team());
 						if (payload.unit.isCommandable()) {
 							if (commandPos != null) {
 								payload.unit.command().commandPosition(commandPos);

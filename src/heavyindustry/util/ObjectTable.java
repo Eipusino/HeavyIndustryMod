@@ -4,6 +4,7 @@ import arc.func.Prov;
 import arc.struct.ObjectMap;
 
 import java.util.Iterator;
+import java.util.Map;
 
 public class ObjectTable<K, V> implements Iterable<ObjectTable.Entry<K, V>> {
 	protected final ObjectMap<K, V> map12 = new ObjectMap<>();
@@ -91,13 +92,28 @@ public class ObjectTable<K, V> implements Iterable<ObjectTable.Entry<K, V>> {
 		map21.clear();
 	}
 
-	public static class Entry<K, V> {
+	public static class Entry<K, V> implements Map.Entry<K, V> {
 		public final K key;
 		public final V value;
 
 		public Entry(K a1, V a2) {
 			key = a1;
 			value = a2;
+		}
+
+		@Override
+		public K getKey() {
+			return key;
+		}
+
+		@Override
+		public V getValue() {
+			return value;
+		}
+
+		@Override
+		public V setValue(Object v) {
+			return value;
 		}
 	}
 

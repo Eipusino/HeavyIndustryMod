@@ -17,10 +17,9 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import arc.util.pooling.Pool;
 import arc.util.pooling.Pools;
-import heavyindustry.util.Utils;
+import heavyindustry.ui.Elements;
 import heavyindustry.util.Utils.ExtPos;
 import heavyindustry.world.meta.HStatValues;
-import mindustry.content.Items;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Units;
 import mindustry.gen.Building;
@@ -91,7 +90,7 @@ public class UnitBoost extends Block {
 				for (StatusEffect s : status) {
 					if (s == StatusEffects.none) continue;
 					inner.row();
-					inner.add(Utils.selfStyleImageButton(new TextureRegionDrawable(s.uiIcon), Styles.emptyi, () -> ui.content.show(s))).padTop(4f).padBottom(6f).size(42);
+					inner.add(Elements.selfStyleImageButton(new TextureRegionDrawable(s.uiIcon), Styles.emptyi, () -> ui.content.show(s))).padTop(4f).padBottom(6f).size(42);
 					//inner.button(new TextureRegionDrawable(s.uiIcon), () -> ui.content.show(s)).padTop(4f).padBottom(6f).size(50);
 					inner.add(s.localizedName).padLeft(5);
 				}

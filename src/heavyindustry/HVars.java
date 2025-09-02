@@ -9,7 +9,6 @@ import heavyindustry.annotations.ListClasses;
 import heavyindustry.annotations.ListPackages;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.files.InternalFileTree;
-import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.input.InputAggregator;
 import heavyindustry.util.ReflectImpl;
 import mindustry.content.TechTree.TechNode;
@@ -42,9 +41,6 @@ public final class HVars {
 
 	/** Modules present in both servers and clients. */
 	public static InputAggregator inputAggregator;
-
-	/** Modules only present in clients, rendering. */
-	public static SizedGraphics sizedGraphics;
 
 	public static Texture whiteTexture;
 	public static TextureRegion whiteRegion;

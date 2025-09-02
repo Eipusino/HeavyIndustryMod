@@ -903,7 +903,7 @@ public final class Draws {
 		void draw();
 	}
 
-	private static class DrawTask {
+	static class DrawTask {
 		protected Object defaultTarget;
 		protected DrawAcceptor<?>[] tasks = new DrawAcceptor<?>[16];
 		protected Object[] dataTarget = new Object[16];

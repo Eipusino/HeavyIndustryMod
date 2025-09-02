@@ -9,6 +9,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.math.Mathm;
 import mindustry.entities.part.DrawPart;
+import mindustry.entities.part.DrawPart.PartParams;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.graphics.Drawf;
@@ -169,7 +170,7 @@ public class SwingContinuousTurret extends ContinuousTurret {
 				float progress = tb.progress();
 
 				//TODO no smooth reload
-				var params = DrawPart.params.set(build.warmup(), 1f - progress, 1f - progress, tb.heat, tb.curRecoil, tb.charge, tb.x + tb.recoilOffset.x, tb.y + tb.recoilOffset.y, tb.rotation);
+				PartParams params = DrawPart.params.set(build.warmup(), 1f - progress, 1f - progress, tb.heat, tb.curRecoil, tb.charge, tb.x + tb.recoilOffset.x, tb.y + tb.recoilOffset.y, tb.rotation);
 				params.life = tb.rotateSpeedf;
 
 				for (DrawPart part : parts) {

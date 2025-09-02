@@ -277,7 +277,7 @@ public class AdaptiveCrafter extends GenericCrafter {
 			if (efficiency > 0) {
 				if (recipe != null) {
 					float inc = getProgressIncrease(1f);
-					for (var output : recipe.outputLiquid) {
+					for (LiquidStack output : recipe.outputLiquid) {
 						handleLiquid(this, output.liquid, Math.min(output.amount * inc, liquidCapacity - liquids.get(output.liquid)));
 					}
 				}
@@ -327,12 +327,12 @@ public class AdaptiveCrafter extends GenericCrafter {
 
 			if (recipe == null) return false;
 
-			for (var output : recipe.outputItem) {
+			for (ItemStack output : recipe.outputItem) {
 				if (items.get(output.item) + output.amount > itemCapacity) {
 					return powerProduction > 0;
 				}
 			}
-			for (var output : recipe.outputPayload) {
+			for (PayloadStack output : recipe.outputPayload) {
 				if (getPayloads().get(output.item) + output.amount > payloadCapacity) {
 					return powerProduction > 0;
 				}
@@ -340,7 +340,7 @@ public class AdaptiveCrafter extends GenericCrafter {
 			if (!ignoreLiquidFullness) {
 				if (recipe.outputLiquid.isEmpty()) return true;
 				boolean allFull = true;
-				for (var output : recipe.outputLiquid) {
+				for (LiquidStack output : recipe.outputLiquid) {
 					if (liquids.get(output.liquid) >= liquidCapacity - 0.001f) {
 						if (!dumpExtraLiquid) {
 							return false;

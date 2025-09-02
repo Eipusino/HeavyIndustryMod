@@ -83,7 +83,7 @@ public class UndergroundDrill extends Drill {
 	@Override
 	public void drawPlace(int x, int y, int rotation, boolean valid) {
 		Tile tile = world.tile(x, y);
-		var detector = nearestDetector(player.team(), x * 8, y * 8);
+		Ranged detector = nearestDetector(player.team(), x * 8, y * 8);
 		if (tile == null) return;
 
 		if (detector == null) {
@@ -198,7 +198,7 @@ public class UndergroundDrill extends Drill {
 		public void drawSelect() {
 			super.drawSelect();
 
-			var d = nearestDetector(team, x, y);
+			Ranged d = nearestDetector(team, x, y);
 			if (d != null) {
 				Drawf.dashLine(team.color, x, y, d.x(), d.y());
 			}

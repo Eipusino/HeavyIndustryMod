@@ -3,6 +3,7 @@ package heavyindustry.world.blocks.production;
 import arc.math.Mathf;
 import arc.util.Time;
 import heavyindustry.world.meta.HStat;
+import mindustry.type.LiquidStack;
 import mindustry.world.blocks.production.GenericCrafter;
 
 public class ColiderCrafter extends GenericCrafter {
@@ -39,7 +40,7 @@ public class ColiderCrafter extends GenericCrafter {
 
 				if (outputLiquids != null) {
 					float inc = getProgressIncrease(1f);
-					for (var output : outputLiquids) {
+					for (LiquidStack output : outputLiquids) {
 						handleLiquid(this, output.liquid, Math.min(output.amount * inc, liquidCapacity - liquids.get(output.liquid)));
 					}
 				}

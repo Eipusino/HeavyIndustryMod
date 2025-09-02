@@ -30,6 +30,12 @@ public class DrawRegionDynamic extends DrawBlock {
 
 	public boolean makeIcon = false;
 
+	public DrawRegionDynamic() {}
+
+	public <E extends Building> DrawRegionDynamic(Floatf<E> rotations, Floatf<E> alphas, String fix) {
+		this(rotations, alphas, null, fix);
+	}
+
 	@SuppressWarnings("unchecked")
 	public <E extends Building> DrawRegionDynamic(Floatf<E> rotations, Floatf<E> alphas, Func<E, Color> colors, String fix) {
 		rotation = (Floatf<Building>) rotations;
@@ -37,8 +43,6 @@ public class DrawRegionDynamic extends DrawBlock {
 		color = (Func<Building, Color>) colors;
 		suffix = fix;
 	}
-
-	public DrawRegionDynamic() {}
 
 	@Override
 	public void draw(Building build) {

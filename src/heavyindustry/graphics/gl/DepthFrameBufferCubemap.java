@@ -34,7 +34,7 @@ public class DepthFrameBufferCubemap extends FrameBufferCubemap {
 		if (width < 2) width = 2;
 		if (height < 2) height = 2;
 
-		var builder = new FrameBufferCubemapBuilder(width, height);
+		FrameBufferCubemapBuilder builder = new FrameBufferCubemapBuilder(width, height);
 		builder.addBasicColorTextureAttachment(format);
 		if (hasDepth) builder.addDepthTextureAttachment(Gl.depthComponent, Gl.floatV);
 		if (hasStencil) builder.addStencilTextureAttachment(Gl.stencilIndex8, Gl.unsignedByte);
@@ -44,7 +44,7 @@ public class DepthFrameBufferCubemap extends FrameBufferCubemap {
 
 	@Override
 	protected Cubemap createTexture(FrameBufferTextureAttachmentSpec spec) {
-		var result = super.createTexture(spec);
+		Cubemap result = super.createTexture(spec);
 		if (!spec.isColorTexture()) result.setFilter(TextureFilter.nearest);
 
 		return result;
@@ -52,8 +52,8 @@ public class DepthFrameBufferCubemap extends FrameBufferCubemap {
 
 	protected void attachTexture(int attachment, Cubemap texture) {
 		int glHandle = texture.getTextureObjectHandle();
-		var sides = CubemapSide.values();
-		for (var side : sides) Gl.framebufferTexture2D(Gl.framebuffer, attachment, side.glEnum, glHandle, 0);
+		CubemapSide[] sides = CubemapSide.values();
+		for (CubemapSide side : sides) Gl.framebufferTexture2D(Gl.framebuffer, attachment, side.glEnum, glHandle, 0);
 	}
 
 	public @Nullable Cubemap getDepthTexture() {

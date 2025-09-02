@@ -207,9 +207,9 @@ public class OreDetector extends Block {
 
 			tile.circle((int) (radius / tilesize), (ore) -> {
 				if (ore != null && ore.overlay() != null && ore.overlay() instanceof UndergroundOreBlock u) {
-					var angle = Mathf.angle(ore.x - tile.x, ore.y - tile.y);
-					var c1 = radarRot();
-					var c2 = radarRot() + radarCone;
+					float angle = Mathf.angle(ore.x - tile.x, ore.y - tile.y);
+					float c1 = radarRot();
+					float c2 = radarRot() + radarCone;
 					if (c2 >= 360f && angle < 180f) {
 						angle += 360;
 					}
@@ -220,7 +220,7 @@ public class OreDetector extends Block {
 				}
 			});
 
-			for (var ore : detectedOres) {
+			for (Tile ore : detectedOres) {
 				if (ore.block() != air || !(ore.overlay() instanceof UndergroundOreBlock u) || tier < u.depth) continue;
 
 				u.shouldDrawBase = true;

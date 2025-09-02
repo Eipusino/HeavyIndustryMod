@@ -21,7 +21,7 @@ public class ChainedDecal {
 	public float lineWidth = 2f;
 	public TextureRegion baseRegion, endRegion;
 	public TextureRegion[] segmentRegions;
-	String name;
+	public final String name;
 
 	public ChainedDecal(String n) {
 		name = n;

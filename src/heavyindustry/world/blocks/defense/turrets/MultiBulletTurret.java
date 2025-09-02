@@ -7,7 +7,6 @@ import arc.math.Mathf;
 import arc.scene.ui.Image;
 import arc.scene.ui.layout.Table;
 import arc.struct.ObjectMap;
-import arc.struct.ObjectMap.Entry;
 import arc.struct.Seq;
 import arc.util.Strings;
 import arc.util.Time;
@@ -54,7 +53,7 @@ public class MultiBulletTurret extends Turret {
 	}
 
 	public void limitRange(float margin) {
-		for (Entry<Item, BulletType[]> entry : ammoTypes.entries()) {
+		for (var entry : ammoTypes.entries()) {
 			for (BulletType b : entry.value) limitRange(b, margin);
 		}
 	}
@@ -64,7 +63,7 @@ public class MultiBulletTurret extends Turret {
 		super.setStats();
 
 		stats.remove(Stat.itemCapacity);
-		stats.add(Stat.ammo, HStatValues.ammo(ammoTypes));
+		stats.add(Stat.ammo, HStatValues.ammo(ammoTypes, all));
 		if (all) {
 			stats.remove(Stat.reload);
 			stats.add(Stat.reload, Core.bundle.format("stat.hi-shoot-time", Strings.autoFixed(reload / 60f, 2)));

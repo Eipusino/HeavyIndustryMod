@@ -30,6 +30,7 @@ import arc.util.Align;
 import arc.util.Nullable;
 import arc.util.Scaling;
 import arc.util.Structs;
+import heavyindustry.func.FuncInte;
 import mindustry.content.TechTree;
 import mindustry.content.TechTree.TechNode;
 import mindustry.core.UI;
@@ -408,7 +409,7 @@ public class HResearchDialog extends BaseDialog {
 
 			for (TechTreeNode node : nodes) {
 				ImageButton button = new ImageButton(node.node.content.uiIcon, Styles.nodei);
-				button.visible(() -> true);
+				button.visible(FuncInte.BOOLP_TRUE);
 				button.clicked(() -> {
 					if (moved) return;
 

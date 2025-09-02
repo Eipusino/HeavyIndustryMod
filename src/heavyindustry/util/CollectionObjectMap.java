@@ -88,7 +88,7 @@ public class CollectionObjectMap<K, V> implements Map<K, V> {
 
 	private final Set<Entry<K, V>> entrySet = new AbstractSet<>() {
 		private final Itr itr = new Itr();
-		private final Ent ent = new Ent();
+		private final CollEnt ent = new CollEnt();
 
 		@Override
 		public int size() {
@@ -138,7 +138,7 @@ public class CollectionObjectMap<K, V> implements Map<K, V> {
 			}
 		}
 
-		class Ent implements Entry<K, V> {
+		class CollEnt implements Entry<K, V> {
 			ObjectMap.Entry<K, V> entry;
 
 			@Override

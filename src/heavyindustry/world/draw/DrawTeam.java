@@ -9,6 +9,8 @@ import mindustry.world.draw.DrawBlock;
  * @since 1.0.6
  */
 public class DrawTeam extends DrawBlock {
+	public DrawTeam() {}
+
 	@Override
 	public void draw(Building build) {
 		if (build.block.teamRegion.found()) {

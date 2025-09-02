@@ -74,7 +74,7 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 			IntSeq links = new IntSeq();
 			int linkX = -999;
 			for (int i = 0; i < sq.size; i++) {
-				var num = sq.get(i);
+				int num = sq.get(i);
 				if (linkX == -999) {
 					linkX = num;
 				} else {
@@ -152,7 +152,7 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 	@Override
 	public Object pointConfig(Object config, Cons<Point2> transformer) {
 		if (config instanceof IntSeq seq) {
-			var newSeq = new IntSeq(seq.size);
+			IntSeq newSeq = new IntSeq(seq.size);
 			boolean linkXed = false;
 			int linkX = 0;
 			for (int i = 0; i < seq.size; i++) {
@@ -161,7 +161,7 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 					linkX = num;
 				} else {
 					// The source position is relative to right bottom, transform it.
-					var point = new Point2(linkX * 2 - 1, num * 2 - 1);
+					Point2 point = new Point2(linkX * 2 - 1, num * 2 - 1);
 					transformer.get(point);
 					newSeq.add((point.x + 1) / 2);
 					newSeq.add((point.y + 1) / 2);
@@ -301,7 +301,7 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 		 * @return Is the sending successful
 		 */
 		public boolean sendItems(Building target, Seq<ItemHave> whatIHave) {
-			var s = false;
+			boolean s = false;
 			for (int i = whatIHave.size - 1; i >= 0; i--) {
 				ItemHave have = whatIHave.get(i);
 				Item item = have.item;

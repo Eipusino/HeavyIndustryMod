@@ -44,7 +44,7 @@ public final class DimRenderer {
 		if (circles.size <= circleIndex) circles.add(new FadeCircle());
 
 		//pool circles to prevent runaway GC usage from lambda capturing
-		var light = circles.items[circleIndex];
+		FadeCircle light = circles.items[circleIndex];
 		light.set(x, y, radius, opacity);
 
 		circleIndex++;
@@ -204,7 +204,7 @@ public final class DimRenderer {
 			run.run();
 		}
 		for (int i = 0; i < circleIndex; i++) {
-			var cir = circles.items[i];
+			FadeCircle cir = circles.items[i];
 			Draw.alpha(cir.alpha);
 			Draw.rect(circleRegion, cir.x, cir.y, cir.radius * 2, cir.radius * 2);
 		}

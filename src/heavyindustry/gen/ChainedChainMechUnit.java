@@ -269,7 +269,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		} else {
 			ChainedUnitType ct = checkType();
 
-			var tail = ((Unit & Chainedc) type.create(team));
+			T tail = type.create(team).self();
 			tail.grown(true);
 			tail.set(
 					x + Angles.trnsx(rotation + 90, 0, ct.segmentOffset),

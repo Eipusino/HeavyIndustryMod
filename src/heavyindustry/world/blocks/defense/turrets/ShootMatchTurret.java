@@ -24,7 +24,7 @@ public class ShootMatchTurret extends ItemTurret {
 	public void shooter(Object... objects) {
 		ObjectMap<Item, ShootPattern> mapper = ObjectMap.of(objects);
 
-		for (ObjectMap.Entry<Item, BulletType> entry : ammoTypes.entries()) {
+		for (var entry : ammoTypes.entries()) {
 			shooterMap.put(entry.value.id, mapper.get(entry.key, shoot));
 		}
 	}

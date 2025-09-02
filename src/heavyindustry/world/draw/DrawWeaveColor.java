@@ -15,6 +15,10 @@ public class DrawWeaveColor extends DrawBlock {
 	public TextureRegion weave;
 	public Color color;
 
+	public DrawWeaveColor() {
+		this(Color.white);
+	}
+
 	public DrawWeaveColor(Color col) {
 		color = col;
 	}

@@ -1,8 +1,7 @@
 package heavyindustry.ai;
 
+import mindustry.Vars;
 import mindustry.ai.types.FlyingAI;
-
-import static mindustry.Vars.state;
 
 public class SniperAI extends FlyingAI {
 	public static final float APPROACHING_DST = 48f;
@@ -25,8 +24,8 @@ public class SniperAI extends FlyingAI {
 			}
 		}
 
-		if (target == null && state.rules.waves && unit.team == state.rules.defaultTeam) {
-			moveTo(getClosestSpawner(), state.rules.dropZoneRadius + 130f);
+		if (target == null && Vars.state.rules.waves && unit.team == Vars.state.rules.defaultTeam) {
+			moveTo(getClosestSpawner(), Vars.state.rules.dropZoneRadius + 130f);
 		}
 	}
 }

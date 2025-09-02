@@ -48,8 +48,7 @@ public class DrawRotator extends DrawBlock {
 		primaryRotation = pri;
 	}
 
-	public DrawRotator() {
-	}
+	public DrawRotator() {}
 
 	@Override
 	public void draw(Building build) {

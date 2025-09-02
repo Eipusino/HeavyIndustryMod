@@ -74,11 +74,11 @@ public class SpaceUnloader extends StorageBlock {
 		config(IntSeq.class, (SpaceUnloaderBuild tile, IntSeq seq) -> {
 			// This seems only used by coping block
 			// Deserialize from IntSeq
-			var itemId = seq.get(0);
+			int itemId = seq.get(0);
 			IntSeq links = new IntSeq();
 			int linkX = -999;
 			for (int i = 2; i < seq.size; i++) {
-				var num = seq.get(i);
+				int num = seq.get(i);
 				if (linkX == -999) {
 					linkX = num;
 				} else {
@@ -164,7 +164,7 @@ public class SpaceUnloader extends StorageBlock {
 	@Override
 	public Object pointConfig(Object config, Cons<Point2> transformer) {
 		if (config instanceof IntSeq seq) {
-			var newSeq = new IntSeq(seq.size);
+			IntSeq newSeq = new IntSeq(seq.size);
 			newSeq.add(seq.get(0));
 			newSeq.add(seq.get(1));
 			boolean linkXed = false;
@@ -175,7 +175,7 @@ public class SpaceUnloader extends StorageBlock {
 					linkX = num;
 				} else {
 					// The source position is relative to right bottom, transform it.
-					var point = new Point2(linkX * 2 - 1, num * 2 - 1);
+					Point2 point = new Point2(linkX * 2 - 1, num * 2 - 1);
 					transformer.get(point);
 					newSeq.add((point.x + 1) / 2);
 					newSeq.add((point.y + 1) / 2);
@@ -307,7 +307,7 @@ public class SpaceUnloader extends StorageBlock {
 		public void updateTile() {
 			super.updateTile();
 
-			var hasItem = false;
+			boolean hasItem = false;
 			boolean valid = efficiency > 0.4F;
 			if (timer.get(1, frameDelay)) {
 				itemSent = false;
@@ -345,7 +345,7 @@ public class SpaceUnloader extends StorageBlock {
 						if (accept > 0) {
 							handleStack(itemType, accept, linkTarget);
 							linkTarget.removeStack(itemType, accept);
-							for (var tmpi = accept; tmpi > 0; tmpi--) {
+							for (int tmpi = accept; tmpi > 0; tmpi--) {
 								linkTarget.itemTaken(itemType);
 							}
 							hasItem = true;
@@ -366,7 +366,7 @@ public class SpaceUnloader extends StorageBlock {
 				if (enabled && rotateSpeed > 0.5 && Mathf.random(60) > 12) {
 					Time.run(Mathf.random(10), () -> inEffect.at(x, y, 0));
 				}
-				for (var i = 0; i < frameDelay; i++) {
+				for (int i = 0; i < frameDelay; i++) {
 					dump();
 				}
 			}
@@ -540,7 +540,7 @@ public class SpaceUnloader extends StorageBlock {
 		@Override
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
-			var id = read.s();
+			short id = read.s();
 			itemType = id == -1 ? null : Vars.content.items().get(id);
 			links = new IntSeq();
 			short linkSize = read.s();

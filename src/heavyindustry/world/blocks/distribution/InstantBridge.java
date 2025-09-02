@@ -1,6 +1,7 @@
 package heavyindustry.world.blocks.distribution;
 
 import arc.math.Mathf;
+import arc.struct.IntSeq;
 import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.type.Item;
@@ -38,8 +39,8 @@ public class InstantBridge extends ItemBridge {
 				warmup = 0f;
 			} else {
 				if (other.build instanceof ItemBridgeBuild it) {
-					var inc = it.incoming;
-					var pos = tile.pos();
+					IntSeq inc = it.incoming;
+					int pos = tile.pos();
 					if (!inc.contains(pos)) {
 						inc.add(pos);
 					}

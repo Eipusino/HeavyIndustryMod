@@ -2,12 +2,11 @@ package heavyindustry.ai;
 
 import arc.math.geom.Vec2;
 import heavyindustry.world.blocks.production.UnitMinerDepot;
+import mindustry.Vars;
 import mindustry.entities.units.AIController;
 import mindustry.gen.BuildingTetherc;
 import mindustry.gen.Call;
 import mindustry.world.Tile;
-
-import static mindustry.Vars.controlPath;
 
 public class MinerDepotAI extends AIController {
 	protected static final boolean[] noFound = {false};
@@ -88,7 +87,7 @@ public class MinerDepotAI extends AIController {
 		} else {
 			vecOut.set(targetPos);
 
-			boolean move = controlPath.getPathPosition(unit, vecMovePos, targetPos, vecOut, noFound);
+			boolean move = Vars.controlPath.getPathPosition(unit, vecMovePos, targetPos, vecOut, noFound);
 			if (move) {
 				moveTo(vecOut, mining && unit.within(targetPos, unit.type.mineRange / 2) ? unit.type.mineRange : 0.5f, 8f);
 			}

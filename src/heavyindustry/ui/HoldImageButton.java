@@ -10,16 +10,16 @@ import arc.scene.event.ClickListener;
 import arc.scene.event.InputEvent;
 import arc.scene.style.Drawable;
 import arc.scene.style.TextureRegionDrawable;
-import arc.scene.ui.Button;
 import arc.scene.ui.Image;
 import arc.scene.ui.ImageButton;
 import arc.util.Time;
 import heavyindustry.HVars;
+import heavyindustry.func.FuncInte;
 
 public class HoldImageButton extends ImageButton {
-	public Boolp canHold = () -> true;
+	public Boolp canHold = FuncInte.BOOLP_TRUE;
 
-	protected Runnable held = () -> {};
+	protected Runnable held = FuncInte.RUNNABLE_NOTHING;
 	protected boolean heldAct;
 	protected HoldImageButtonStyle style;
 	protected boolean repeat = false;

@@ -44,7 +44,7 @@ public abstract class BasePlanetGenerator extends PlanetGenerator {
 		height = Mathf.clamp(height);
 
 		float tar = Simplex.noise3d(seed, 4, 0.55, 0.5, pos.x, pos.y + 999, pos.z) * 0.3f + Tmp.v31.dst(0, 0, 1) * 0.2f;
-		var arr = arr();
+		Block[][] arr = arr();
 		Block res = arr[Mathf.clamp(Mathf.floor(temp * arr.length), 0, arr[0].length - 1)][Mathf.clamp(Mathf.floor(height * arr[0].length), 0, arr[0].length - 1)];
 
 		if (tar > 0.5) {

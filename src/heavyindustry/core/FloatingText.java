@@ -13,9 +13,8 @@ import arc.scene.ui.layout.Scl;
 import arc.util.Align;
 import arc.util.Time;
 import heavyindustry.util.Utils;
+import mindustry.Vars;
 import mindustry.ui.Fonts;
-
-import static mindustry.Vars.macNotchHeight;
 
 public class FloatingText {
 	protected static final Mat setMat = new Mat(), reMat = new Mat();
@@ -38,7 +37,7 @@ public class FloatingText {
 			float fx = (int) (width / 2f);
 			float fy = (int) (height - 6 - logoHeight) + logoHeight / 2 - (Core.graphics.isPortrait() ? Scl.scl(30f) : 0f);
 			if (Core.settings.getBool("macnotch")) {
-				fy -= Scl.scl(macNotchHeight);
+				fy -= Scl.scl(Vars.macNotchHeight);
 			}
 
 			float ex = fx + logoWidth / 3 - Scl.scl(1f), ey = fy - logoHeight / 3f - Scl.scl(2f);

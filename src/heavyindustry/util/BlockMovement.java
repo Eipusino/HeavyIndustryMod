@@ -235,12 +235,12 @@ public final class BlockMovement {
 			return false;
 		}
 		//scan in reverse
-		for (var i = pushing.size - 1; i >= 0; i--) {
+		for (int i = pushing.size - 1; i >= 0; i--) {
 			if (!canPush(pushing.get(i), direction)) {
 				return false;
 			}
 		}
-		for (var i = pushing.size - 1; i >= 0; i--) {
+		for (int i = pushing.size - 1; i >= 0; i--) {
 			pushSingle(pushing.get(i), direction);
 			if (speed > 0) {
 				addPushedBlock(pushing.get(i), direction, speed);

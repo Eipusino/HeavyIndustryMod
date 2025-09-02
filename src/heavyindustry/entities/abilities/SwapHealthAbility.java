@@ -40,11 +40,11 @@ public class SwapHealthAbility extends Ability {
 		all.sort(e -> 1 - e.healthf());
 
 		if (all.size > 0) {
-			var other = all.get(0);
+			Unit other = all.get(0);
 			chainLightningFade.at(unit.x, unit.y, 0, Pal.heal, other);
-			var ohpf = other.healthf();
+			float heal = other.healthf();
 			other.health = unit.healthf() * other.maxHealth;
-			unit.health = ohpf * unit.maxHealth;
+			unit.health = heal * unit.maxHealth;
 		}
 	}
 

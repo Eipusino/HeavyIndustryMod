@@ -23,6 +23,7 @@ public class CopterUnitType extends BaseUnitType {
 	@Override
 	public void load() {
 		super.load();
+
 		for (Rotor rotor : rotors) rotor.load();
 	}
 

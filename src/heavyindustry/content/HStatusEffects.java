@@ -10,6 +10,7 @@ import arc.util.Tmp;
 import heavyindustry.graphics.HPal;
 import heavyindustry.util.Utils;
 import mindustry.content.Fx;
+import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
 import mindustry.entities.units.StatusEntry;
 import mindustry.gen.Unit;
@@ -20,9 +21,6 @@ import mindustry.graphics.Pal;
 import mindustry.type.StatusEffect;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
-
-import static mindustry.content.StatusEffects.sapped;
-import static mindustry.content.StatusEffects.slow;
 
 /**
  * Sets up content {@link StatusEffect status effects}. Loaded after every other content is instantiated.
@@ -53,7 +51,7 @@ public final class HStatusEffects {
 			damage = -4;
 			effectChance = 0.3f;
 			effect = HFx.glowParticle;
-			init(() -> opposite(sapped, slow, breached));
+			init(() -> opposite(StatusEffects.sapped, StatusEffects.slow, breached));
 		}};
 		breached = new BaseStatusEffect("breached") {{
 			color = Color.valueOf("666484");
@@ -172,7 +170,7 @@ public final class HStatusEffects {
 				unit.speedMultiplier *= 0.4f;
 				unit.reloadMultiplier *= 0.5f;
 
-				unit.health -= Time.delta + unit.maxHealth * 0.0006f;
+				unit.health -= Time.delta + unit.maxHealth * 0.0004f;
 
 				if (effect != Fx.none && Mathf.chanceDelta(effectChance)) {
 					Tmp.v1.rnd(Mathf.range(unit.type.hitSize / 2f));

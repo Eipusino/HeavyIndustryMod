@@ -35,7 +35,6 @@ import heavyindustry.world.Worlds;
 import heavyindustry.graphics.HCacheLayer;
 import heavyindustry.graphics.HShaders;
 import heavyindustry.graphics.HTextures;
-import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.input.InputAggregator;
 import heavyindustry.mod.HMods;
 import heavyindustry.mod.HScripts;
@@ -53,6 +52,8 @@ import mindustry.game.EventType.MusicRegisterEvent;
 import mindustry.mod.Mod;
 import mindustry.mod.ModClassLoader;
 import mindustry.ui.dialogs.BaseDialog;
+import mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable;
+import mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable.Setting;
 
 import static heavyindustry.HVars.AUTHOR;
 import static heavyindustry.HVars.LINK_GIT_HUB;
@@ -67,7 +68,7 @@ import static heavyindustry.HVars.MOD_NAME;
  * @author Eipusino
  * @see HVars
  */
-public class HeavyIndustryMod extends Mod {
+public final class HeavyIndustryMod extends Mod {
 	static ClassLoader lastLoader;
 	static Class<?> platformImpl;
 
@@ -125,7 +126,6 @@ public class HeavyIndustryMod extends Mod {
 					HCacheLayer.onClient();
 
 					HVars.inputAggregator = new InputAggregator();
-					HVars.sizedGraphics = new SizedGraphics();
 				});
 			}
 		});
@@ -172,6 +172,8 @@ public class HeavyIndustryMod extends Mod {
 
 	@Override
 	public void init() {
+		HUnitTypes.loadImmunities();
+
 		if (!Vars.headless) {
 			HIcon.onClient();
 
@@ -188,19 +190,32 @@ public class HeavyIndustryMod extends Mod {
 					t.checkPref("hi-closed-dialog", false);
 					t.checkPref("hi-floating-text", true);
 					t.checkPref("hi-animated-shields", true);
-					t.checkPref("hi-render-sort", false);
-					t.sliderPref("hi-strobespeed", 3, 1, 20, 1, s -> Strings.autoFixed(s / 2f, 2));
+					t.sliderPref("hi-strobe-speed", 3, 1, 20, 1, s -> Strings.autoFixed(s / 2f, 2));
+					t.pref(new Setting(Core.bundle.get("hi-game-data")) {
+						@Override
+						public void add(SettingsTable table) {
+							table.button(name, Elements.gameDataDialog::show).margin(14).width(200f).pad(6);
+							table.row();
+						}
+					});
+					t.pref(new Setting(Core.bundle.get("hi-export-data")) {
+						@Override
+						public void add(SettingsTable table) {
+							table.button(name, Worlds::exportBlockData).margin(14).width(200f).pad(6);
+							table.row();
+						}
+					});
 				});
 			}
 
-			//Replace the original technology ResearchDialog
-			//This is a rather foolish approach, but there is nothing we can do about it.
+			// Replace the original technology ResearchDialog
+			// This is a rather foolish approach, but there is nothing we can do about it.
 			HResearchDialog dialog = new HResearchDialog();
 			Vars.ui.research.shown(() -> {
 				dialog.show();
-				if (Vars.ui.research != null) {
-					Time.runTask(1f, Vars.ui.research::hide);
-				}
+				Time.runTask(1f, () -> {
+					if (Vars.ui.research != null) Vars.ui.research.hide();
+				});
 			});
 		}
 

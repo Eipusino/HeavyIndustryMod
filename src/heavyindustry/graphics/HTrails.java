@@ -917,7 +917,7 @@ public final class HTrails {
 
 		@Override
 		public BaseTrail copy() {
-			var out = copyBlank();
+			BaseTrail out = copyBlank();
 			copyAssign(out);
 
 			return out;
@@ -960,7 +960,7 @@ public final class HTrails {
 			Draw.blend(blend);
 			if (forceCap) forceDrawCap(color, width);
 
-			var items = points.items;
+			float[] items = points.items;
 			for (int i = 0; i < len; i += stride) drawSegment(color, width, items, len, i);
 			Draw.blend();
 		}
@@ -985,7 +985,7 @@ public final class HTrails {
 
 			if (count > 0 && points.size >= str) points.removeRange(0, Math.min(count * str, points.size) - 1);
 
-			var items = points.items;
+			float[] items = points.items;
 			for (int i = 0, len = points.size; i < len; i += str) {
 				int offset = i;
 				eachAttrib((attrib, off) -> attrib.update(this, items, offset, off));
@@ -1001,7 +1001,7 @@ public final class HTrails {
 			if (Float.isNaN(lastW)) lastW = headW = width;
 
 			int len = points.size, str = stride;
-			var items = points.items;
+			float[] items = points.items;
 
 			// May be NaN if this is the first `update(x, y, width)`, since there's only one point. That's okay though, since
 			// in most cases nothing can be meaningfully drawn anyway. In case where it changed from NaN to valid, update all
@@ -1083,7 +1083,7 @@ public final class HTrails {
 			if (len == 0) return;
 
 			int str = stride;
-			var items = points.items;
+			float[] items = points.items;
 
 			float max = 0f;
 			for (int i = 0; i < len; i += str) {
@@ -1116,7 +1116,7 @@ public final class HTrails {
 
 		public void eachAttrib(AttribCons cons) {
 			for (int i = 0, off = baseStride(); i < attributes.length; i++) {
-				var attrib = attributes[i];
+				TrailAttrib attrib = attributes[i];
 				cons.get(attrib, off);
 
 				off += attrib.count;

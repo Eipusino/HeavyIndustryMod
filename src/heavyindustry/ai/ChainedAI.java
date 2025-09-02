@@ -3,6 +3,7 @@ package heavyindustry.ai;
 import arc.util.Tmp;
 import heavyindustry.gen.Chainedc;
 import mindustry.entities.units.AIController;
+import mindustry.entities.units.WeaponMount;
 import mindustry.gen.Player;
 import mindustry.type.Weapon;
 
@@ -12,7 +13,7 @@ public class ChainedAI extends AIController {
 		if (unit instanceof Chainedc cast && cast.head().controller() instanceof Player p) {
 			unit.isShooting = p.unit().isShooting;
 
-			for (var mount : unit.mounts) {
+			for (WeaponMount mount : unit.mounts) {
 				Weapon weapon = mount.weapon;
 
 				//let uncontrollable weapons do their own thing

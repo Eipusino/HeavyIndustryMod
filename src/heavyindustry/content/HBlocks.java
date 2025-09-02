@@ -167,7 +167,7 @@ import mindustry.graphics.CacheLayer;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
-import mindustry.net.Packets;
+import mindustry.net.Packets.AdminAction;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.type.Liquid;
@@ -289,7 +289,7 @@ public final class HBlocks {
 			//environment
 			cliff, cliffHelper,
 			darkPanel7, darkPanel8, darkPanel9, darkPanel10, darkPanel11, darkPanelDamaged, asphalt, asphaltTiles,
-			stoneVent, basaltVent, shaleVent, basaltSpikes, basaltWall, basaltGraphiticWall, basaltPyratiticWall, snowySand, snowySandWall, arkyciteSand, arkyciteSandWall, arkyciteSandBoulder, darksandBoulder,
+			shaleVent, basaltSpikes, basaltWall, basaltGraphiticWall, basaltPyratiticWall, snowySand, snowySandWall, arkyciteSand, arkyciteSandWall, arkyciteSandBoulder, darksandBoulder,
 			concreteBlank, concreteFill, concreteNumber, concreteStripe, concrete, stoneFullTiles, stoneFull, stoneHalf, stoneTiles, concreteWall, pit, waterPit,
 			brine, originiumFluid,
 			metalFloorWater, metalFloorWater2, metalFloorWater3, metalFloorWater4, metalFloorWater5, metalFloorDamagedWater,
@@ -329,7 +329,7 @@ public final class HBlocks {
 	//production
 	largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, stoneCrusher, fractionator, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
 			crystallineCircuitConstructor, crystallineCircuitPrinter, originiumActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, ironcladCompressor,
-			originiumHeater, liquidFuelHeater,
+			originiumHeater, liquidFuelHeater, crucible,
 			atmosphericCollector, atmosphericCooler, uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilPrecipitator, blastReagentMixer, centrifuge, galliumNitrideSmelter,
 	//production-erekir
 	ventHeater, chemicalSiliconSmelter, largeElectricHeater, largeOxidationChamber, largeSurgeCrucible, largeCarbideCrucible,
@@ -413,16 +413,6 @@ public final class HBlocks {
 		asphaltTiles = new ConnectedFloor("asphalt-tiles") {{
 			autotile = true;
 			blendGroup = asphalt;
-		}};
-		stoneVent = new SteamVent("stone-vent") {{
-			variants = 2;
-			parent = blendGroup = Blocks.stone;
-			attributes.set(Attribute.steam, 1f);
-		}};
-		basaltVent = new SteamVent("basalt-vent") {{
-			variants = 2;
-			parent = blendGroup = Blocks.basalt;
-			attributes.set(Attribute.steam, 1f);
 		}};
 		shaleVent = new SteamVent("shale-vent") {{
 			variants = 3;
@@ -5535,12 +5525,12 @@ public final class HBlocks {
 					if (value instanceof Number index) {
 						switch (index.intValue()) {
 							case 0 -> {
-								if (net.client()) Call.adminRequest(player, Packets.AdminAction.wave, null);
+								if (net.client()) Call.adminRequest(player, AdminAction.wave, null);
 								else state.wavetime = 0f;
 							}
 							case 1 -> {
 								for (int i = 10; i > 0; i--) {
-									if (net.client()) Call.adminRequest(player, Packets.AdminAction.wave, null);
+									if (net.client()) Call.adminRequest(player, AdminAction.wave, null);
 									else logic.runWave();
 								}
 							}

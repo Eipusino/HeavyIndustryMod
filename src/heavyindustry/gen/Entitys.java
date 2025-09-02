@@ -27,18 +27,16 @@ public final class Entitys {
 		classIdMap.put(type, EntityMapping.register(name, prov));
 	}
 
-	public static <T, E extends Entityc> T content(String name, Class<E> type, Func<String, ? extends T> create) {
-		T get = create.get(name);
+	public static <T extends UnitType, E extends Entityc> T content(String name, Class<E> type, Func<String, ? extends T> create) {
+		T content = create.get(name);
 
-		if (get instanceof UnitType ut) {
-			String suffix = ut.minfo.mod == null ? "" : ut.minfo.mod.name + "-";
-			if (type.getName().startsWith("mindustry.gen.")) {
-				EntityMapping.nameMap.put(suffix + name, Structs.find(EntityMapping.idMap, p -> p != null && p.get().getClass().equals(type)));
-			} else {
-				EntityMapping.nameMap.put(suffix + name, needIdMap.get(type.getSimpleName()));
-			}
+		String suffix = content.minfo.mod == null ? "" : content.minfo.mod.name + "-";
+		if (type.getName().startsWith("mindustry.gen.")) {
+			EntityMapping.nameMap.put(suffix + name, Structs.find(EntityMapping.idMap, p -> p != null && p.get().getClass() == type));
+		} else {
+			EntityMapping.nameMap.put(suffix + name, needIdMap.get(type.getSimpleName()));
 		}
-		return get;
+		return content;
 	}
 
 	public static int getId(Class<? extends Entityc> type) {

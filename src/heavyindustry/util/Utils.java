@@ -28,9 +28,6 @@ import arc.math.geom.QuadTree;
 import arc.math.geom.QuadTree.QuadTreeObject;
 import arc.math.geom.Rect;
 import arc.math.geom.Vec2;
-import arc.scene.style.Drawable;
-import arc.scene.ui.ImageButton;
-import arc.scene.ui.ImageButton.ImageButtonStyle;
 import arc.struct.IntSeq;
 import arc.struct.IntSet;
 import arc.struct.ObjectMap;
@@ -47,6 +44,7 @@ import heavyindustry.func.ProvT;
 import heavyindustry.func.RunT;
 import heavyindustry.gen.Spawner;
 import heavyindustry.graphics.HPal;
+import mindustry.Vars;
 import mindustry.content.StatusEffects;
 import mindustry.core.UI;
 import mindustry.core.World;
@@ -89,14 +87,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
-
-import static mindustry.Vars.headless;
-import static mindustry.Vars.indexer;
-import static mindustry.Vars.net;
-import static mindustry.Vars.renderer;
-import static mindustry.Vars.state;
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
 
 /**
  * Input-output utilities, providing very specific functions that aren't really commonly used, but often
@@ -643,7 +633,7 @@ public final class Utils {
 		bullet.originX = x;
 		bullet.originY = y;
 		if (!(aimX == -1f && aimY == -1f)) {
-			bullet.aimTile = target instanceof Building b ? b.tile : world.tileWorld(aimX, aimY);
+			bullet.aimTile = target instanceof Building b ? b.tile : Vars.world.tileWorld(aimX, aimY);
 		}
 		bullet.aimX = aimX;
 		bullet.aimY = aimY;
@@ -702,15 +692,6 @@ public final class Utils {
 				cons.get(i).get(item);
 			}
 		}
-	}
-
-	public static ImageButton selfStyleImageButton(Drawable imageUp, ImageButtonStyle is, Runnable listener) {
-		ImageButton ib = new ImageButton(new ImageButtonStyle(null, null, null, imageUp, null, null));
-		ImageButtonStyle style = new ImageButtonStyle(is);
-		style.imageUp = imageUp;
-		ib.setStyle(style);
-		if (listener != null) ib.changed(listener);
-		return ib;
 	}
 
 	/**
@@ -788,7 +769,7 @@ public final class Utils {
 	}
 
 	public static void drawTiledFramesBar(float w, float h, float x, float y, Liquid liquid, float alpha) {
-		TextureRegion region = renderer.fluidFrames[liquid.gas ? 1 : 0][liquid.getAnimationFrame()];
+		TextureRegion region = Vars.renderer.fluidFrames[liquid.gas ? 1 : 0][liquid.getAnimationFrame()];
 
 		Draw.color(liquid.color, liquid.color.a * alpha);
 		Draw.rect(region, x + w / 2f, y + h / 2f, w, h);
@@ -796,18 +777,18 @@ public final class Utils {
 	}
 
 	public static void extinguish(Team team, float x, float y, float range, float intensity) {
-		indexer.eachBlock(team, x, y, range, b -> true, b -> Fires.extinguish(b.tile, intensity));
+		Vars.indexer.eachBlock(team, x, y, range, b -> true, b -> Fires.extinguish(b.tile, intensity));
 	}
 
 	public static void extinguish(Teamc teamc, float range, float intensity) {
-		indexer.eachBlock(teamc.team(), teamc.x(), teamc.y(), range, b -> true, b -> Fires.extinguish(b.tile, intensity));
+		Vars.indexer.eachBlock(teamc.team(), teamc.x(), teamc.y(), range, b -> true, b -> Fires.extinguish(b.tile, intensity));
 	}
 
 	public static Position collideBuild(Team team, float x1, float y1, float x2, float y2, Boolf<Building> boolf) {
 		tmpBuilding = null;
 
 		boolean found = World.raycast(World.toTile(x1), World.toTile(y1), World.toTile(x2), World.toTile(y2),
-				(x, y) -> (tmpBuilding = world.build(x, y)) != null && tmpBuilding.team != team && boolf.get(tmpBuilding));
+				(x, y) -> (tmpBuilding = Vars.world.build(x, y)) != null && tmpBuilding.team != team && boolf.get(tmpBuilding));
 
 		return found ? tmpBuilding : v1.set(x2, y2);
 	}
@@ -823,7 +804,7 @@ public final class Utils {
 		tileParma = null;
 
 		boolean found = World.raycast(b.tileX(), b.tileY(), World.toTile(b.x + Tmp.v1.x), World.toTile(b.y + Tmp.v1.y),
-				(x, y) -> (tileParma = world.tile(x, y)) != null && tileParma.team() != b.team && tileParma.block().absorbLasers);
+				(x, y) -> (tileParma = Vars.world.tile(x, y)) != null && tileParma.team() != b.team && tileParma.block().absorbLasers);
 
 		return found && tileParma != null ? Math.max(6f, b.dst(tileParma.worldx(), tileParma.worldy())) : length;
 	}
@@ -835,7 +816,7 @@ public final class Utils {
 		v11.trnsExact(angle, length);
 
 		Intc2 collider = (cx, cy) -> {
-			Building tile = world.build(cx, cy);
+			Building tile = Vars.world.build(cx, cy);
 			boolean collide = tile != null && collidedBlocks.add(tile.pos());
 
 			if (hitter.damage > 0) {
@@ -848,7 +829,7 @@ public final class Utils {
 
 				//try to heal the tile
 				if (collide && hitter.type.testCollision(hitter, tile)) {
-					hitter.type.hitTile(hitter, tile, cx * tilesize, cy * tilesize, health, false);
+					hitter.type.hitTile(hitter, tile, cx * Vars.tilesize, cy * Vars.tilesize, health, false);
 				}
 			}
 		};
@@ -860,7 +841,7 @@ public final class Utils {
 				collider.get(cx, cy);
 
 				for (Point2 p : Geometry.d4) {
-					Tile other = world.tile(p.x + cx, p.y + cy);
+					Tile other = Vars.world.tile(p.x + cx, p.y + cy);
 					if (other != null && (large || Intersector.intersectSegmentRectangle(v12, v13, other.getBounds(Tmp.r1)))) {
 						collider.get(cx + p.x, cy + p.y);
 					}
@@ -923,7 +904,7 @@ public final class Utils {
 	}
 
 	public static Unit teleportUnitNet(Unit before, float x, float y, float angle, Player player) {
-		if (net.active() || headless) {
+		if (Vars.net.active() || Vars.headless) {
 			if (player != null) {
 				player.set(x, y);
 				player.snapInterpolation();
@@ -953,8 +934,8 @@ public final class Utils {
 	public static Seq<Tile> getAcceptableTiles(int x, int y, int range, Boolf<Tile> bool) {
 		Seq<Tile> tiles = new Seq<>(true, (int) (Mathf.pow(range, 2) * Mathf.pi), Tile.class);
 		Geometry.circle(x, y, range, (x1, y1) -> {
-			if ((tileParma = world.tile(x1, y1)) != null && bool.get(tileParma)) {
-				tiles.add(world.tile(x1, y1));
+			if ((tileParma = Vars.world.tile(x1, y1)) != null && bool.get(tileParma)) {
+				tiles.add(Vars.world.tile(x1, y1));
 			}
 		});
 		return tiles;
@@ -971,7 +952,7 @@ public final class Utils {
 	}
 
 	public static void limitRangeWithoutNew(ItemTurret turret, float margin) {
-		for (ObjectMap.Entry<Item, BulletType> entry : turret.ammoTypes.entries()) {
+		for (var entry : turret.ammoTypes.entries()) {
 			entry.value.lifetime = (turret.range + margin) / entry.value.speed;
 		}
 	}
@@ -990,7 +971,7 @@ public final class Utils {
 	}
 
 	public static float regSize(UnitType type) {
-		return type.hitSize / tilesize / tilesize / 3.25f;
+		return type.hitSize / Vars.tilesize / Vars.tilesize / 3.25f;
 	}
 
 	/** [0]For flying, [1] for navy, [2] for ground */
@@ -998,7 +979,7 @@ public final class Utils {
 		Seq<Boolf<Tile>> seq = new Seq<>(true, 3, Boolf.class);
 
 		seq.add(
-				t -> world.getQuadBounds(Tmp.r1).contains(t.getBounds(Tmp.r2)),
+				t -> Vars.world.getQuadBounds(Tmp.r1).contains(t.getBounds(Tmp.r2)),
 				t -> t.floor().isLiquid && !t.cblock().solid && !t.floor().solid && !t.overlay().solid && !t.block().solidifes,
 				t -> !t.floor().isDeep() && !t.cblock().solid && !t.floor().solid && !t.overlay().solid && !t.block().solidifes
 		);
@@ -1055,7 +1036,7 @@ public final class Utils {
 			Spawner spawner = Pools.obtain(Spawner.class, Spawner::new);
 			spawner.init(type, team, s, angle, spawnReloadTime + i * spawnDelay);
 			modifier.get(spawner);
-			if (!net.client()) spawner.add();
+			if (!Vars.net.client()) spawner.add();
 			i++;
 		}
 		return true;
@@ -1082,14 +1063,14 @@ public final class Utils {
 	public static void spawnSingleUnit(Team team, float x, float y, float angle, float delay, UnitType type) {
 		Spawner spawner = Pools.obtain(Spawner.class, Spawner::new);
 		spawner.init(type, team, v1.set(x, y), angle, delay);
-		if (!net.client()) spawner.add();
+		if (!Vars.net.client()) spawner.add();
 	}
 
 	public static void spawnSingleUnit(Team team, float x, float y, float angle, float delay, UnitType type, Cons<Spawner> modifier) {
 		Spawner spawner = Pools.obtain(Spawner.class, Spawner::new);
 		spawner.init(type, team, v1.set(x, y), angle, delay);
 		modifier.get(spawner);
-		if (!net.client()) spawner.add();
+		if (!Vars.net.client()) spawner.add();
 	}
 
 	public static <T extends QuadTreeObject> Seq<T> getObjects(QuadTree<T> tree, Class<T> arrayType) {
@@ -1169,11 +1150,11 @@ public final class Utils {
 			float ang = (i / (float) res) * 360f;
 			v2.trns(ang, radius).add(x, y);
 			float vx = v2.x, vy = v2.y;
-			int tx1 = (int) (x / tilesize), ty1 = (int) (y / tilesize);
-			int tx2 = (int) (vx / tilesize), ty2 = (int) (vy / tilesize);
+			int tx1 = (int) (x / Vars.tilesize), ty1 = (int) (y / Vars.tilesize);
+			int tx2 = (int) (vx / Vars.tilesize), ty2 = (int) (vy / Vars.tilesize);
 
 			World.raycastEach(tx1, ty1, tx2, ty2, (rx, ry) -> {
-				Tile tile = world.tile(rx, ry);
+				Tile tile = Vars.world.tile(rx, ry);
 				boolean collide = false;
 
 				if (tile != null && !tile.block().isAir() && stop.get(tile)) {
@@ -1190,7 +1171,7 @@ public final class Utils {
 						collide = true;
 					} else {
 						for (Point2 d : Geometry.d8) {
-							Tile nt = world.tile(tile.x + d.x, tile.y + d.y);
+							Tile nt = Vars.world.tile(tile.x + d.x, tile.y + d.y);
 
 							if (nt != null && !nt.block().isAir() && stop.get(nt)) {
 								nt.getBounds(r2);
@@ -1236,7 +1217,7 @@ public final class Utils {
 
 		if (targetGround) {
 			buildings.clear();
-			for (TeamData data : state.teams.active) {
+			for (TeamData data : Vars.state.teams.active) {
 				if (data.team != team && data.buildingTree != null) {
 					data.buildingTree.intersect(r1, b -> {
 						if (Mathf.within(x, y, b.x, b.y, radius + b.hitSize() / 2f)) {

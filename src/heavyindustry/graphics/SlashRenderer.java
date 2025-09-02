@@ -47,7 +47,7 @@ public final class SlashRenderer {
 		if (slashes.size <= slashIndex) slashes.add(new SlashData());
 
 		//Pool slashes
-		var slash = slashes.items[slashIndex];
+		SlashData slash = slashes.items[slashIndex];
 		slash.set(x, y, a, off, length, width, color);
 
 		slashIndex++;

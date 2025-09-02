@@ -35,6 +35,7 @@ import heavyindustry.graphics.PositionLightning;
 import heavyindustry.math.Math3d;
 import heavyindustry.util.Vec2Seq;
 import heavyindustry.util.Utils;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.effect.MultiEffect;
@@ -48,8 +49,6 @@ import mindustry.world.Block;
 import mindustry.world.blocks.payloads.Payload;
 
 import static heavyindustry.HVars.MOD_NAME;
-import static mindustry.Vars.state;
-import static mindustry.Vars.tilesize;
 
 /**
  * Defines the {@linkplain Effect visual effects} this mod offers.
@@ -281,7 +280,7 @@ public final class HFx {
 				if (!(e.data instanceof Integer siz)) return;
 				int size = siz;
 				float f = e.fout();
-				float r = Math.max(0f, Mathf.clamp(2f - f * 2f) * size * tilesize / 2f - f - 0.2f), w = Mathf.clamp(0.5f - f) * size * tilesize;
+				float r = Math.max(0f, Mathf.clamp(2f - f * 2f) * size * Vars.tilesize / 2f - f - 0.2f), w = Mathf.clamp(0.5f - f) * size * Vars.tilesize;
 				Lines.stroke(3f * f, e.color);
 				Lines.beginLine();
 				for (int i = 0; i < 4; i++) {
@@ -356,10 +355,10 @@ public final class HFx {
 
 				for (int j = 1; j <= 3; j++) {
 					for (int i = 0; i < 4; i++) {
-						float length = e.rotation * 3f + tilesize;
+						float length = e.rotation * 3f + Vars.tilesize;
 						float x = Angles.trnsx(i * 90, -length), y = Angles.trnsy(i * 90, -length);
 						e.scaled(30 * j, k -> {
-							float signSize = e.rotation / tilesize / 3f * Draw.scl * k.fout();
+							float signSize = e.rotation / Vars.tilesize / 3f * Draw.scl * k.fout();
 							Draw.rect(pointerRegion, e.x + x * k.finpow(), e.y + y * k.finpow(), pointerRegion.width * signSize, pointerRegion.height * signSize, Angles.angle(x, y) - 90);
 							Drawf.light(e.x + x, e.y + y, e.fout() * signSize * pointerRegion.height, e.color, 0.7f);
 						});
@@ -368,7 +367,7 @@ public final class HFx {
 			}),
 			spawnGround = new Effect(60f, e -> {
 				Draw.color(e.color, Pal.gray, e.fin());
-				Angles.randLenVectors(e.id, (int) (e.rotation * 1.35f), e.rotation * tilesize / 1.125f * e.fin(), (x, y) -> Fill.square(e.x + x, e.y + y, e.rotation * e.fout(), 45));
+				Angles.randLenVectors(e.id, (int) (e.rotation * 1.35f), e.rotation * Vars.tilesize / 1.125f * e.fin(), (x, y) -> Fill.square(e.x + x, e.y + y, e.rotation * e.fout(), 45));
 			}),
 			spawnWave = new Effect(60f, e -> {
 				Lines.stroke(3 * e.fout(), e.color);
@@ -457,7 +456,7 @@ public final class HFx {
 					v.removeRange(0, v.size() - strokeOffset - 1);
 				}
 
-				if (!state.isPaused() && v.any()) {
+				if (!Vars.state.isPaused() && v.any()) {
 					v.remove(0);
 				}
 
@@ -1058,7 +1057,7 @@ public final class HFx {
 					float angle = 90 * l;
 					float regSize = e.rotation / 150f;
 					for (int i = 0; i < 4; i++) {
-						Tmp.v1.trns(angle, (i - 4) * tilesize * e.rotation / tilesize / 4);
+						Tmp.v1.trns(angle, (i - 4) * Vars.tilesize * e.rotation / Vars.tilesize / 4);
 						float f = (100 - (Time.time - 25 * i) % 100) / 100;
 
 						Draw.rect(arrowRegion, e.x + Tmp.v1.x, e.y + Tmp.v1.y, arrowRegion.width * regSize * f * scl, arrowRegion.height * regSize * f * scl, angle - 90);
@@ -1067,15 +1066,15 @@ public final class HFx {
 			}),
 			trailToGray = new Effect(50f, e -> {
 				Draw.color(e.color, Color.gray, e.fin());
-				Angles.randLenVectors(e.id, 2, tilesize * e.fin(), (x, y) -> Fill.circle(e.x + x, e.y + y, e.rotation * e.fout()));
+				Angles.randLenVectors(e.id, 2, Vars.tilesize * e.fin(), (x, y) -> Fill.circle(e.x + x, e.y + y, e.rotation * e.fout()));
 			}),
 			trailFromWhite = new Effect(50f, e -> {
 				Draw.color(e.color, Color.white, e.fout() * 0.35f);
-				Angles.randLenVectors(e.id, 2, tilesize * e.fin(), (x, y) -> Fill.circle(e.x + x, e.y + y, e.rotation * e.fout()));
+				Angles.randLenVectors(e.id, 2, Vars.tilesize * e.fin(), (x, y) -> Fill.circle(e.x + x, e.y + y, e.rotation * e.fout()));
 			}),
 			trailSolid = new Effect(50f, e -> {
 				Draw.color(e.color);
-				Angles.randLenVectors(e.id, 2, tilesize * e.fin(), (x, y) -> Fill.circle(e.x + x, e.y + y, e.rotation * e.fout()));
+				Angles.randLenVectors(e.id, 2, Vars.tilesize * e.fin(), (x, y) -> Fill.circle(e.x + x, e.y + y, e.rotation * e.fout()));
 			}),
 			laserBeam = new Effect(30f, e -> {
 				rand3.setSeed(e.id);
@@ -1206,7 +1205,7 @@ public final class HFx {
 
 				e.lifetime = trail.length * 1.4f;
 
-				if (!state.isPaused()) {
+				if (!Vars.state.isPaused()) {
 					trail.shorten();
 				}
 				trail.drawCap(e.color, e.rotation);
@@ -1217,7 +1216,7 @@ public final class HFx {
 				//lifetime is how many frames it takes to fade out the trail
 				e.lifetime = trail.length * 1.4f;
 
-				if (!state.isPaused()) {
+				if (!Vars.state.isPaused()) {
 					trail.shorten();
 					trail.drift();
 				}
@@ -2283,7 +2282,7 @@ public final class HFx {
 			storageConfiged = new Effect(30f, e -> {
 				Draw.color(e.color);
 				Draw.alpha(e.fout() * 1);
-				Fill.square(e.x, e.y, e.rotation * tilesize / 2f);
+				Fill.square(e.x, e.y, e.rotation * Vars.tilesize / 2f);
 			}).followParent(true).layer(Layer.blockOver + 0.05f),
 			flowrateAbsorb = new Effect(60f, e -> {
 				Lines.stroke(e.fout(), e.color);
@@ -2469,7 +2468,7 @@ public final class HFx {
 		return new Effect(life, e -> {
 			float f = e.fout();
 			if (f < 1e-4f) return;
-			float r = Math.max(0f, Mathf.clamp(2f - f * 2f) * size * tilesize / 2f - f - 0.2f), w = Mathf.clamp(0.5f - f) * size * tilesize;
+			float r = Math.max(0f, Mathf.clamp(2f - f * 2f) * size * Vars.tilesize / 2f - f - 0.2f), w = Mathf.clamp(0.5f - f) * size * Vars.tilesize;
 			Lines.stroke(3f * f, color);
 			Lines.beginLine();
 			for (int i = 0; i < 4; i++) {
@@ -2713,7 +2712,7 @@ public final class HFx {
 				Draw.rect(arrowRegion, e.x + Tmp.v1.x, e.y + Tmp.v1.y, arrowRegion.width * Draw.scl * f, arrowRegion.height * Draw.scl * f, e.rotation - 90);
 			}
 
-			Tmp.v1.trns(e.rotation, 0f, (2 - railFout) * tilesize * 1.4f);
+			Tmp.v1.trns(e.rotation, 0f, (2 - railFout) * Vars.tilesize * 1.4f);
 
 			Lines.stroke(railFout * 2f);
 			for (int i : Mathf.signs) {

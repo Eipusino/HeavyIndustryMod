@@ -14,8 +14,8 @@ public class MultiDrawFlame extends DrawFlame {
 	public FlamePoint[] flamePoints = {};
 	public boolean drawTopOnce = false;
 
-	public void flamePoints(FlamePoint... flamePoints) {
-		this.flamePoints = flamePoints;
+	public void flamePoints(FlamePoint... flames) {
+		flamePoints = flames;
 	}
 
 	@Override

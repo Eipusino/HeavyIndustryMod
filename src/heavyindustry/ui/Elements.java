@@ -6,6 +6,7 @@ import arc.flabel.FLabel;
 import arc.func.Boolf;
 import arc.func.Cons;
 import arc.func.Floatp;
+import arc.func.Prov;
 import arc.graphics.Color;
 import arc.graphics.g2d.Font;
 import arc.graphics.g2d.GlyphLayout;
@@ -26,12 +27,16 @@ import arc.scene.event.Touchable;
 import arc.scene.style.Drawable;
 import arc.scene.ui.Button;
 import arc.scene.ui.Image;
+import arc.scene.ui.ImageButton;
+import arc.scene.ui.ImageButton.ImageButtonStyle;
 import arc.scene.ui.Label;
 import arc.scene.ui.Tooltip;
 import arc.scene.ui.layout.Collapser;
 import arc.scene.ui.layout.Table;
+import arc.struct.OrderedMap;
 import arc.struct.Seq;
 import arc.util.Align;
+import arc.util.Log;
 import arc.util.Nullable;
 import arc.util.Strings;
 import arc.util.Time;
@@ -39,7 +44,6 @@ import arc.util.Tmp;
 import heavyindustry.ui.dialogs.FlowrateVoidDialog;
 import heavyindustry.ui.dialogs.GameDataDialog;
 import heavyindustry.ui.dialogs.PowerGraphInfoDialog;
-import heavyindustry.util.Reflects;
 import mindustry.Vars;
 import mindustry.core.UI;
 import mindustry.core.World;
@@ -125,6 +129,15 @@ public final class Elements {
 		}
 	}
 
+	public static ImageButton selfStyleImageButton(Drawable imageUp, ImageButtonStyle is, Runnable listener) {
+		ImageButton button = new ImageButton(new ImageButtonStyle(null, null, null, imageUp, null, null));
+		ImageButtonStyle style = new ImageButtonStyle(is);
+		style.imageUp = imageUp;
+		button.setStyle(style);
+		if (listener != null) button.changed(listener);
+		return button;
+	}
+
 	public static int countSpawns(SpawnGroup group) {
 		if (group.spawn != -1)
 			return 1; //If the group has a set spawn pos, assume it's a valid position and count it as 1 spawn.
@@ -180,11 +193,11 @@ public final class Elements {
 	}
 
 	public static void statToTable(Stats stat, Table table) {
-		var m = stat.toMap().keys().toSeq();
+		Seq<StatCat> m = stat.toMap().keys().toSeq();
 		for (int i = 0; i < m.size; i++) {
-			var s = stat.toMap().get(m.get(i)).keys().toSeq();
+			Seq<Stat> s = stat.toMap().get(m.get(i)).keys().toSeq();
 			for (int j = 0; j < s.size; j++) {
-				var v = stat.toMap().get(m.get(i)).get(s.get(j));
+				Seq<StatValue> v = stat.toMap().get(m.get(i)).get(s.get(j));
 				for (int k = 0; k < v.size; k++) {
 					v.get(k).display(table);
 				}
@@ -194,7 +207,7 @@ public final class Elements {
 
 	public static void statTurnTable(Stats stats, Table table) {
 		for (StatCat cat : stats.toMap().keys()) {
-			var map = stats.toMap().get(cat);
+			OrderedMap<Stat, Seq<StatValue>> map = stats.toMap().get(cat);
 
 			if (map.size == 0) continue;
 
@@ -304,8 +317,8 @@ public final class Elements {
 	}
 
 	public static void selectPos(Table parentT, Cons<Point2> cons) {
-		var original = parentT.touchablility;
-		var parentTouchable = parentT.touchable;
+		Prov<Touchable> original = parentT.touchablility;
+		Touchable parentTouchable = parentT.touchable;
 
 		parentT.touchablility = () -> Touchable.disabled;
 
@@ -522,6 +535,10 @@ public final class Elements {
 		return e;
 	}
 
+	public static <T extends Element> T hitChild(Group group, float stageX, float stageY) {
+		return hitChild(group, stageX, stageY, null);
+	}
+
 	@SuppressWarnings("unchecked")
 	public static <T extends Element> T hitChild(Group group, float stageX, float stageY, @Nullable Boolf<Element> filter) {
 		//noinspection unchecked
@@ -553,7 +570,6 @@ public final class Elements {
 		return result;
 	}
 
-
 	public static float getX(float x, float width, int align) {
 		float offset = 0;
 		if ((align & Align.right) != 0) {
@@ -579,8 +595,12 @@ public final class Elements {
 	public static void replaceClickListener(Button button, ClickListener newListener) {
 		button.removeListener(button.getClickListener());
 
-		if (clickListenerField == null) clickListenerField = Reflects.getField(Button.class, "clickListener");
-		Reflects.setField(button, clickListenerField, newListener);
-		button.addListener(newListener);
+		try {
+			if (clickListenerField == null) clickListenerField = Button.class.getDeclaredField("clickListener");
+			clickListenerField.set(button, newListener);
+			button.addListener(newListener);
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			Log.err(e);
+		}
 	}
 }

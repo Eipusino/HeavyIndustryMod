@@ -1,6 +1,7 @@
 package heavyindustry.content;
 
 import arc.struct.Seq;
+import heavyindustry.func.FuncInte;
 import mindustry.content.Items;
 import mindustry.content.Liquids;
 import mindustry.content.SectorPresets;
@@ -16,7 +17,6 @@ import mindustry.type.ItemStack;
 
 import static heavyindustry.content.HBlocks.*;
 import static heavyindustry.content.HUnitTypes.*;
-import static heavyindustry.util.Constant.RUNNABLE_NOTHING;
 import static mindustry.content.Blocks.*;
 import static mindustry.content.UnitTypes.*;
 
@@ -318,7 +318,7 @@ public final class HTechTree {
 	}
 
 	public static TechNode nodeRoot(String name, UnlockableContent content, boolean requireUnlock, Runnable children) {
-		var root = node(content, content.researchRequirements(), children);
+		TechNode root = node(content, content.researchRequirements(), children);
 		root.name = name;
 		root.requiresUnlock = requireUnlock;
 		TechTree.roots.add(root);
@@ -326,7 +326,7 @@ public final class HTechTree {
 	}
 
 	public static TechNode node(UnlockableContent content) {
-		return node(content, content.researchRequirements(), RUNNABLE_NOTHING);
+		return node(content, content.researchRequirements(), FuncInte.RUNNABLE_NOTHING);
 	}
 
 	public static TechNode node(UnlockableContent content, Runnable children) {
@@ -334,7 +334,7 @@ public final class HTechTree {
 	}
 
 	public static TechNode node(UnlockableContent content, ItemStack[] requirements) {
-		return node(content, requirements, null, RUNNABLE_NOTHING);
+		return node(content, requirements, null, FuncInte.RUNNABLE_NOTHING);
 	}
 
 	public static TechNode node(UnlockableContent content, ItemStack[] requirements, Runnable children) {
@@ -342,7 +342,7 @@ public final class HTechTree {
 	}
 
 	public static TechNode node(UnlockableContent content, ItemStack[] requirements, Seq<Objective> objectives) {
-		return node(content, requirements, objectives, RUNNABLE_NOTHING);
+		return node(content, requirements, objectives, FuncInte.RUNNABLE_NOTHING);
 	}
 
 	public static TechNode node(UnlockableContent content, ItemStack[] requirements, Seq<Objective> objectives, Runnable children) {
@@ -362,7 +362,7 @@ public final class HTechTree {
 	}
 
 	public static TechNode node(UnlockableContent content, Seq<Objective> objectives) {
-		return node(content, content.researchRequirements(), objectives, RUNNABLE_NOTHING);
+		return node(content, content.researchRequirements(), objectives, FuncInte.RUNNABLE_NOTHING);
 	}
 
 	public static TechNode nodeProduce(UnlockableContent content, Seq<Objective> objectives, Runnable children) {
@@ -370,10 +370,55 @@ public final class HTechTree {
 	}
 
 	public static TechNode nodeProduce(UnlockableContent content, Runnable children) {
-		return nodeProduce(content, new Seq<>(Objective.class), children);
+		return nodeProduce(content, Seq.with(), children);
 	}
 
 	public static TechNode nodeProduce(UnlockableContent content) {
-		return nodeProduce(content, new Seq<>(Objective.class), RUNNABLE_NOTHING);
+		return nodeProduce(content, Seq.with(), FuncInte.RUNNABLE_NOTHING);
+	}
+
+	// -----legacy-addToResearch-----
+
+	public static void research(UnlockableContent content, UnlockableContent parentContent) {
+		research(content, parentContent, ItemStack.empty, Seq.with());
+	}
+
+	public static void research(UnlockableContent content, UnlockableContent parentContent, Seq<Objective> objectives) {
+		research(content, parentContent, ItemStack.empty, objectives);
+	}
+
+	public static void research(UnlockableContent content, UnlockableContent parentContent, ItemStack[] customRequirements) {
+		research(content, parentContent, customRequirements, Seq.with());
+	}
+
+	public static void research(UnlockableContent content, UnlockableContent parentContent, ItemStack[] customRequirements, Seq<Objective> objectives) {
+		if (content == null || parentContent == null) return;
+
+		TechNode lastNode = TechTree.all.find(t -> t.content == content);
+		if (lastNode != null) {
+			lastNode.remove();
+		}
+
+		TechNode node = new TechNode(null, content, customRequirements != null ? customRequirements : content.researchRequirements());
+
+		if (objectives != null) {
+			node.objectives.addAll(objectives);
+		}
+
+		if (node.parent != null) {
+			node.parent.children.remove(node);
+		}
+
+		// find parent node.
+		TechNode parent = TechTree.all.find(t -> t.content == parentContent);
+
+		if (parent == null) return;
+
+		// add this node to the parent
+		if (!parent.children.contains(node)) {
+			parent.children.add(node);
+		}
+		// reparent the node
+		node.parent = parent;
 	}
 }

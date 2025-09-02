@@ -483,7 +483,7 @@ public class MultiCrafter extends Block {
 		protected void rebuildBar(Table table) {
 			table.clear();
 
-			for (var bar : block.listBars()) {
+			for (Func<Building, Bar> bar : block.listBars()) {
 				Bar result = bar.get(this);
 				if (result != null) {
 					table.add(result).growX();
@@ -493,7 +493,7 @@ public class MultiCrafter extends Block {
 
 			if (craftPlan == null || craftPlan.barMap.isEmpty()) return;
 
-			for (var bar : craftPlan.listBars()) {
+			for (Func<Building, Bar> bar : craftPlan.listBars()) {
 				Bar result = bar.get(this);
 				if (result == null) continue;
 				table.add(result).growX();
@@ -535,7 +535,7 @@ public class MultiCrafter extends Block {
 			shouldConsumePower = true;
 
 			//first pass: get the minimum efficiency of any consumer
-			for (var cons : craftPlan.nonOptionalConsumers) {
+			for (Consume cons : craftPlan.nonOptionalConsumers) {
 				float result = cons.efficiency(this);
 
 				if (cons != consPower && result <= 0.0000001f) {
@@ -546,7 +546,7 @@ public class MultiCrafter extends Block {
 			}
 
 			//same for optionals
-			for (var cons : craftPlan.optionalConsumers) {
+			for (Consume cons : craftPlan.optionalConsumers) {
 				optionalEfficiency = Math.min(optionalEfficiency, cons.efficiency(this));
 			}
 
@@ -566,7 +566,7 @@ public class MultiCrafter extends Block {
 
 			//second pass: update every consumer based on efficiency
 			if (update && efficiency > 0) {
-				for (var cons : craftPlan.updateConsumers) {
+				for (Consume cons : craftPlan.updateConsumers) {
 					cons.update(this);
 				}
 			}
@@ -584,7 +584,7 @@ public class MultiCrafter extends Block {
 				rtc.clearChildren();
 				if (hasDoubleOutput) {
 					for (int i = 0; i < rotationIcon.length; i++) {
-						var button = new ImageButton();
+						ImageButton button = new ImageButton();
 						int j = i;
 						button.table(img -> img.image(rotationIcon[j]).color(Color.white).size(40).pad(10f));
 						button.changed(() -> {
@@ -599,7 +599,7 @@ public class MultiCrafter extends Block {
 
 				cont.clearChildren();
 				for (CraftPlan plan : craftPlans) {
-					var button = new ImageButton();
+					ImageButton button = new ImageButton();
 					button.table(info -> {
 						info.left();
 						info.table(from -> {

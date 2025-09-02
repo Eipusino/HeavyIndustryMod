@@ -57,7 +57,7 @@ public class DepthFrameBuffer extends FrameBuffer {
 		height = Math.max(height, 2);
 		format = form;
 
-		var builder = new FrameBufferBuilder(width, height);
+		FrameBufferBuilder builder = new FrameBufferBuilder(width, height);
 		builder.addBasicColorTextureAttachment(form);
 		if (hasDep) builder.addDepthTextureAttachment(Gl.depthComponent, Gl.floatV);
 		if (hasSte) builder.addStencilTextureAttachment(Gl.stencilIndex8, Gl.unsignedByte);
@@ -70,7 +70,7 @@ public class DepthFrameBuffer extends FrameBuffer {
 
 	@Override
 	protected Texture createTexture(FrameBufferTextureAttachmentSpec spec) {
-		var result = super.createTexture(spec);
+		Texture result = super.createTexture(spec);
 		if (!spec.isColorTexture()) result.setFilter(TextureFilter.nearest);
 
 		return result;
@@ -85,7 +85,7 @@ public class DepthFrameBuffer extends FrameBuffer {
 		TextureFilter min = getTexture().getMinFilter(), mag = getTexture().getMagFilter();
 		dispose();
 
-		var builder = new FrameBufferBuilder(width, height);
+		FrameBufferBuilder builder = new FrameBufferBuilder(width, height);
 		builder.addBasicColorTextureAttachment(format);
 		if (hasDepth) builder.addDepthTextureAttachment(Gl.depthComponent, Gl.floatV);
 		if (hasStencil) builder.addStencilTextureAttachment(Gl.stencilIndex8, Gl.unsignedByte);

@@ -53,7 +53,7 @@ public final class HScripts {
 	 */
 	public static void importPackage(ImporterTopLevel scope, String name) {
 		if (scope == null) return;
-		var pac = new NativeJavaPackage(name, Vars.mods.mainLoader());
+		NativeJavaPackage pac = new NativeJavaPackage(name, Vars.mods.mainLoader());
 		pac.setParentScope(scope);
 
 		scope.importPackage(pac);
@@ -68,7 +68,7 @@ public final class HScripts {
 	}
 
 	public static void importClass(ImporterTopLevel scope, Class<?> type) {
-		var nat = new NativeJavaClass(scope, type);
+		NativeJavaClass nat = new NativeJavaClass(scope, type);
 		nat.setParentScope(scope);
 
 		scope.importClass(nat);

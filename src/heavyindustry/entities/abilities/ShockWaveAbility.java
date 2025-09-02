@@ -100,7 +100,7 @@ public class ShockWaveAbility extends Ability {
 
 				shootEffect.at(rx, ry, range, hitColor);
 				for (Unit u : all) {
-					for (ObjectFloatMap.Entry<StatusEffect> s : status.entries()) {
+					for (var s : status.entries()) {
 						u.apply(s.key, s.value);
 					}
 

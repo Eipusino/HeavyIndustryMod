@@ -220,8 +220,7 @@ public final class HShaders {
 
 		private void setPlanetInfo(String name, Planet planet) {
 			Vec3 position = planet.position;
-			var shader = this;
-			shader.setUniformf(name, position.x, position.y, position.z, planet.radius);
+			setUniformf(name, position.x, position.y, position.z, planet.radius);
 		}
 	}
 

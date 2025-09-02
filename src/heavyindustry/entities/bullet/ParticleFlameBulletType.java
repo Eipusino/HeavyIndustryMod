@@ -10,6 +10,7 @@ import arc.math.Mathf;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
+import mindustry.entities.bullet.BulletType;
 import mindustry.gen.Bullet;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
@@ -17,7 +18,7 @@ import mindustry.graphics.Pal;
 
 import java.util.Arrays;
 
-public class ParticleFlameBulletType extends ConeFlameBulletType {
+public class ParticleFlameBulletType extends BulletType {
 	protected final Color tc = new Color(), tc2 = new Color();
 
 	public Color[] colors = {Pal.lightFlame, Pal.darkFlame, Color.gray};
@@ -27,8 +28,8 @@ public class ParticleFlameBulletType extends ConeFlameBulletType {
 
 	protected Color[] hitColors;
 
-	public ParticleFlameBulletType(float length, float cone, int number) {
-		super(length, cone, number);
+	public ParticleFlameBulletType(float speed, float damage) {
+		super(speed, damage);
 		pierce = true;
 		lifetime = 12f;
 		despawnEffect = Fx.none;

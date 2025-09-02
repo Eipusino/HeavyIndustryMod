@@ -2,8 +2,9 @@ package heavyindustry.world;
 
 import arc.Core;
 import arc.Events;
-import arc.struct.ObjectMap;
+import arc.files.Fi;
 import arc.struct.Seq;
+import arc.util.Log;
 import arc.util.Structs;
 import heavyindustry.game.TeamPayloadData;
 import heavyindustry.game.WorldData;
@@ -13,6 +14,8 @@ import mindustry.Vars;
 import mindustry.game.EventType.ResetEvent;
 import mindustry.io.SaveVersion;
 import mindustry.world.Block;
+
+import java.io.BufferedWriter;
 
 import static heavyindustry.HVars.MOD_NAME;
 
@@ -43,7 +46,7 @@ public final class Worlds {
 			blocks.add(new Pair<>(block.name, block));
 		}
 
-		for (ObjectMap.Entry<String, String> entry : SaveVersion.fallback) {
+		for (var entry : SaveVersion.fallback) {
 			Block block = Vars.content.block(entry.value);
 			if (block != null) {
 				blocks.add(new Pair<>(entry.key, block));
@@ -51,26 +54,38 @@ public final class Worlds {
 		}
 
 		blocks.sort(Structs.comparingInt(pair -> pair.value.id))
-				.each(pair -> write(data, pair.value, pair.key));
+				.each(pair -> {
+					String name = pair.key;
+					Block block = pair.value;
 
-		Vars.platform.showFileChooser(false, Core.bundle.get("hi-export-data"), "dat", file -> {
-			if (file == null) return;
+					data.append(name)
+							.append(' ')
+							.append(block.synthetic() ? '1' : '0')
+							.append(' ')
+							.append(block.solid ? '1' : '0')
+							.append(' ')
+							.append(block.size)
+							.append(' ')
+							.append(block.mapColor.rgba() >>> 8)
+							.append('\n');
+				});
 
+		Fi file = Core.settings.getDataDirectory().child("tile.dat");
+
+		try (BufferedWriter writer = new BufferedWriter(file.writer(false))) {
+			writer.write(data.toString());
+			Core.app.post(() -> Vars.ui.showInfo(Core.bundle.format("hi-export-data-format", file.file().getName())));
+		} catch (Throwable e) {
+			Log.err(e);
+
+			Vars.ui.showException(e);
+		}
+
+		// This cannot be saved on Android, it's strange.
+		/*Vars.platform.showFileChooser(false, "Export Block Data", "dat", file -> {
+			if (file == null || !file.exists()) return;
 			file.writeString(data.toString(), false);
 			Core.app.post(() -> Vars.ui.showInfo(Core.bundle.format("hi-export-data-format", file.name())));
-		});
-	}
-
-	static void write(StringBuilder data, Block block, String name) {
-		data.append(name);
-		data.append(' ');
-		data.append(block.synthetic() ? '1' : '0');
-		data.append(' ');
-		data.append(block.solid ? '1' : '0');
-		data.append(' ');
-		data.append(block.size);
-		data.append(' ');
-		data.append(block.mapColor.rgba() >>> 8);
-		data.append('\n');
+		});*/
 	}
 }

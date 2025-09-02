@@ -9,10 +9,11 @@ import mindustry.world.draw.DrawBlock;
 public class MultiDrawBlock extends DrawBlock {
 	protected Seq<DrawBlock> drawBlocks = new Seq<>(DrawBlock.class);
 
-	public MultiDrawBlock(DrawBlock iconProvider, DrawBlock... drawBlocks) {
-		super();
-		this.drawBlocks.add(iconProvider);
-		this.drawBlocks.addAll(drawBlocks);
+	public MultiDrawBlock() {}
+
+	public MultiDrawBlock(DrawBlock icons, DrawBlock... draws) {
+		drawBlocks.add(icons);
+		drawBlocks.addAll(draws);
 	}
 
 	public MultiDrawBlock setIconProvider(DrawBlock other) {

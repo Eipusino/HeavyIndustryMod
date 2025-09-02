@@ -2,6 +2,7 @@ package heavyindustry.world.draw;
 
 import arc.graphics.g2d.Draw;
 import mindustry.gen.Building;
+import mindustry.graphics.Layer;
 import mindustry.world.draw.DrawBlock;
 
 /**
@@ -11,6 +12,10 @@ import mindustry.world.draw.DrawBlock;
  */
 public class DrawZSet extends DrawBlock {
 	public float layer;
+
+	public DrawZSet() {
+		this(Layer.block);
+	}
 
 	public DrawZSet(float l) {
 		layer = l;

@@ -56,7 +56,7 @@ public class Centrifuge extends Separator {
 			removeBar("liquid");
 
 			//then display output buffer
-			for (var stack : outputLiquids) {
+			for (LiquidStack stack : outputLiquids) {
 				addLiquidBar(stack.liquid);
 			}
 		}
@@ -127,7 +127,7 @@ public class Centrifuge extends Separator {
 			}
 			boolean allFull = false;
 			if (outputLiquids != null && !ignoreLiquidFullness) {
-				for (var output : outputLiquids) {
+				for (LiquidStack output : outputLiquids) {
 					if (liquids.get(output.liquid) >= liquidCapacity - 0.001f) {
 						if (!dumpExtraLiquid) {
 							allFull = true;
@@ -153,7 +153,7 @@ public class Centrifuge extends Separator {
 				//continuously output based on efficiency
 				if (outputLiquids != null) {
 					float inc = getProgressIncrease(1f);
-					for (var output : outputLiquids) {
+					for (LiquidStack output : outputLiquids) {
 						handleLiquid(this, output.liquid, Math.min(output.amount * inc, liquidCapacity - liquids.get(output.liquid)));
 					}
 				}
@@ -211,7 +211,7 @@ public class Centrifuge extends Separator {
 			float scaling = 1f, max = 1f;
 			if (outputLiquids != null) {
 				max = 0f;
-				for (var s : outputLiquids) {
+				for (LiquidStack s : outputLiquids) {
 					float value = (liquidCapacity - liquids.get(s.liquid)) / (s.amount * edelta());
 					scaling = Math.min(scaling, value);
 					max = Math.max(max, value);

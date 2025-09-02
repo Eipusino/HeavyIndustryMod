@@ -7,7 +7,6 @@ import arc.func.ConsT;
 import arc.graphics.Pixmap;
 import arc.graphics.Texture;
 import arc.graphics.g2d.TextureRegion;
-import arc.struct.ObjectMap;
 import arc.struct.OrderedMap;
 import arc.util.Http;
 import arc.util.Log;
@@ -37,7 +36,7 @@ public final class URLDownloader {
 		int[] counter = {0};
 		Runnable[] get = new Runnable[1];
 
-		for (ObjectMap.Entry<String, String> entry : urlReplacers) {
+		for (var entry : urlReplacers) {
 			if (url.startsWith(entry.key)) {
 				url = url.replaceFirst(entry.key, entry.value);
 			}

@@ -86,7 +86,7 @@ public class AdaptDuctBridge extends DirectionBridge {
 
 		@Override
 		public void updateTile() {
-			var link = findLink();
+			DirectionBridgeBuild link = findLink();
 			if (link != null) {
 				transporter = (link.occupied.length > 0);
 				link.occupied[rotation % 4] = this;

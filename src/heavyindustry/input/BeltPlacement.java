@@ -125,7 +125,7 @@ public final class BeltPlacement {
 
 			//find the furthest node that overlaps this one
 			for (int j = base.size - 1; j > i; j--) {
-				var other = base.get(j);
+				Point2 other = base.get(j);
 				boolean over = overlapper.get(point, other);
 
 				if (!out && over) {

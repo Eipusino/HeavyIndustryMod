@@ -56,7 +56,7 @@ public class SingleProducer extends BlockProducer {
 		public void updateTile() {
 			if (tehRecipe == null && produce != null) tehRecipe = produce;
 			//super.updateTile();
-			var recipe = tehRecipe;
+			Block recipe = tehRecipe;
 			boolean produce = recipe != null && efficiency > 0 && payload == null;
 
 			if (produce) {

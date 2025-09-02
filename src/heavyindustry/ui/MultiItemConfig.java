@@ -22,21 +22,21 @@ public final class MultiItemConfig {
 		});
 
 		block.config(int[].class, (T build, int[] config) -> {
-			var data = getter.get(build);
+			MultiItemData data = getter.get(build);
 			for (int i : config) {
 				data.toggle(i);
 			}
 		});
 
 		block.config(String[].class, (T build, String[] config) -> {
-			var data = getter.get(build);
+			MultiItemData data = getter.get(build);
 			for (String i : config) {
 				data.toggle(i);
 			}
 		});
 
 		block.config(Item[].class, (T build, Item[] config) -> {
-			var data = getter.get(build);
+			MultiItemData data = getter.get(build);
 			for (Item i : config) {
 				data.toggle(i);
 			}

@@ -31,6 +31,7 @@ import heavyindustry.graphics.HLayer;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.math.HInterps;
 import heavyindustry.util.Utils;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Damage;
@@ -61,9 +62,6 @@ import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 
 import static heavyindustry.HVars.MOD_NAME;
-import static mindustry.Vars.headless;
-import static mindustry.Vars.mobile;
-import static mindustry.Vars.tilesize;
 
 /**
  * Some preset bullets. Perhaps it will be used multiple times.
@@ -999,7 +997,7 @@ public final class HBullets {
 					if (from.dead || !from.isAdded() || from.healthf() > 0.99f) return;
 
 					from.heal(damage / 20f);
-					if (headless) return;
+					if (Vars.headless) return;
 
 					PositionLightning.createEffect(b, from, b.team.color, 2, Mathf.random(1.5f, 3f));
 				}
@@ -1293,7 +1291,7 @@ public final class HBullets {
 					Drawn.tri(b.x, b.y, width * b.foutpowdown(), 200 + 570 * extend, rotAngle + 90 * i + 45);
 				}
 
-				float cameraFin = (1 + 2 * Drawn.cameraDstScl(b.x, b.y, mobile ? 200 : 320)) / 3f;
+				float cameraFin = (1 + 2 * Drawn.cameraDstScl(b.x, b.y, Vars.mobile ? 200 : 320)) / 3f;
 				float triWidth = b.fout() * chargeCircleFrontRad * cameraFin;
 
 				for (int i : Mathf.signs) {
@@ -1423,9 +1421,9 @@ public final class HBullets {
 
 				float damageMulti = b.damageMultiplier();
 				Team team = b.team;
-				for (int i = 0; i < splashDamageRadius / (tilesize * 3.5f); i++) {
+				for (int i = 0; i < splashDamageRadius / (Vars.tilesize * 3.5f); i++) {
 					int j = i;
-					Time.run(i * despawnEffect.lifetime / (splashDamageRadius / (tilesize * 2)), () -> Damage.damage(team, vec.x, vec.y, tilesize * (j + 6), splashDamage * damageMulti, true));
+					Time.run(i * despawnEffect.lifetime / (splashDamageRadius / (Vars.tilesize * 2)), () -> Damage.damage(team, vec.x, vec.y, Vars.tilesize * (j + 6), splashDamage * damageMulti, true));
 				}
 
 				float rad = 120;

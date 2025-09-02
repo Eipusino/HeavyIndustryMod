@@ -35,7 +35,7 @@ public class Collector extends Block {
 
 			if (build != null) {
 				if (unit.within(build, range)) {
-					var amount = Mathf.clamp(unit.hitSize, 0f, build.getMaximumAccepted(Items.scrap));
+					float amount = Mathf.clamp(unit.hitSize, 0f, build.getMaximumAccepted(Items.scrap));
 					Fx.itemTransfer.at(unit.x, unit.y, amount, HPal.scrapGrey, build);
 					build.items.add(Items.scrap, Mathf.ceil(amount));
 				}

@@ -8,6 +8,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.PixmapRegion;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Eachable;
+import heavyindustry.func.FuncInte;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
@@ -17,7 +18,7 @@ import static heavyindustry.graphics.HPixmaps.rotatePixmap90;
 public class DrawPayloadFactory extends DrawDirSpliceBlock {
 	public TextureRegion topRegion, outRegion;
 
-	public Cons<Building> drawPayload = e -> {};
+	public Cons<Building> drawPayload = FuncInte.cons();
 	public String suffix = "";
 
 	@SuppressWarnings("unchecked")

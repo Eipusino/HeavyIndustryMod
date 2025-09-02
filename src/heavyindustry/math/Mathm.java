@@ -370,7 +370,7 @@ public final class Mathm {
 	}
 
 	public static Vec3 mul(Mat mat, float x, float y, float z, Vec3 out) {
-		var m = mat.val;
+		float[] m = mat.val;
 		return out.set(
 				m[Mat.M00] * x + m[Mat.M10] * y + m[Mat.M20] * z,
 				m[Mat.M01] * x + m[Mat.M11] * y + m[Mat.M21] * z,

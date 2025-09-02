@@ -11,7 +11,6 @@ import arc.math.Interp;
 import arc.math.Mathf;
 import arc.math.geom.Rect;
 import arc.scene.ui.layout.Table;
-import arc.struct.ObjectSet;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.ai.CopterAI;
@@ -33,10 +32,10 @@ import heavyindustry.entities.bullet.AntiBulletFlakBulletType;
 import heavyindustry.entities.bullet.ArrowBulletType;
 import heavyindustry.entities.bullet.CtrlMissileBulletType;
 import heavyindustry.entities.bullet.EdgeFragBulletType;
-import heavyindustry.entities.bullet.ConeFlameBulletType;
 import heavyindustry.entities.bullet.GuidedMissileBulletType;
 import heavyindustry.entities.bullet.HealConeBulletType;
 import heavyindustry.entities.bullet.HealingNukeBulletType;
+import heavyindustry.entities.bullet.ParticleFlameBulletType;
 import heavyindustry.entities.bullet.TrailFadeBulletType;
 import heavyindustry.entities.effect.WrapperEffect;
 import heavyindustry.entities.part.AimPart;
@@ -55,7 +54,6 @@ import heavyindustry.gen.DPSMechUnit;
 import heavyindustry.gen.HSounds;
 import heavyindustry.gen.InvincibleShipUnit;
 import heavyindustry.gen.NucleoidUnit;
-import heavyindustry.gen.PayloadLegsUnit;
 import heavyindustry.gen.UltFire;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.HPal;
@@ -69,6 +67,7 @@ import heavyindustry.type.weapons.HealConeWeapon;
 import heavyindustry.type.weapons.LimitedAngleWeapon;
 import heavyindustry.type.weapons.PointDefenceMultiBarrelWeapon;
 import heavyindustry.ui.Elements;
+import mindustry.Vars;
 import mindustry.ai.UnitCommand;
 import mindustry.ai.types.FlyingAI;
 import mindustry.ai.types.FlyingFollowAI;
@@ -76,7 +75,6 @@ import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
-import mindustry.entities.Units;
 import mindustry.entities.abilities.EnergyFieldAbility;
 import mindustry.entities.abilities.ForceFieldAbility;
 import mindustry.entities.abilities.RegenAbility;
@@ -117,7 +115,6 @@ import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
-import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
 import mindustry.type.ammo.ItemAmmoType;
@@ -128,9 +125,6 @@ import mindustry.world.meta.BlockFlag;
 import mindustry.world.meta.Env;
 
 import static heavyindustry.HVars.MOD_NAME;
-import static mindustry.Vars.content;
-import static mindustry.Vars.indexer;
-import static mindustry.Vars.tilePayload;
 
 /**
  * Defines the {@linkplain UnitType units} this mod offers.
@@ -150,15 +144,11 @@ public final class HUnitTypes {
 	//miner-erekir
 	miner, largeMiner, legsMiner,
 	//other
-	armoredCarrierVehicle, pioneer, vulture,
-			burner, shadowBlade, artilleryFirePioneer,
-			invincibleShip, dpsTesterLand,
+	vulture, invincibleShip, dpsTesterLand,
 	//elite
 	tiger, thunder,
-	//?
+	//special
 	eipusino;
-
-	private final static ObjectSet<StatusEffect> filter = new ObjectSet<>();
 
 	/** Don't let anyone instantiate this class. */
 	private HUnitTypes() {}
@@ -341,7 +331,7 @@ public final class HUnitTypes {
 			rotateSpeed = 1.5f;
 			itemCapacity = 0;
 			faceTarget = false;
-			immunities = ObjectSet.with(StatusEffects.burning, StatusEffects.shocked);
+			immunities.addAll(StatusEffects.burning, StatusEffects.shocked);
 			targetFlags = new BlockFlag[]{BlockFlag.repair, BlockFlag.turret};
 			abilities.add(new StatusFieldAbility(StatusEffects.overclock, 1200f, 1200f, 45f) {{
 				applyEffect = Fx.none;
@@ -427,7 +417,7 @@ public final class HUnitTypes {
 			rotateSpeed = 1.22f;
 			itemCapacity = 30;
 			faceTarget = false;
-			immunities = ObjectSet.with(StatusEffects.burning);
+			immunities.add(StatusEffects.burning);
 			targetFlags = new BlockFlag[]{BlockFlag.repair, BlockFlag.turret};
 			weapons.add(new Weapon(name + "-weapon") {{
 				reload = 110f;
@@ -504,7 +494,7 @@ public final class HUnitTypes {
 			crushDamage = 10f;
 			treadRects = new Rect[]{new Rect(-115f, 118f, 52f, 48f), new Rect(-118f, -160f, 79f, 144f)};
 			hitSize = 66f;
-			immunities = ObjectSet.with(StatusEffects.burning);
+			immunities.add(StatusEffects.burning);
 			ammoType = new ItemAmmoType(Items.surgeAlloy);
 			ammoCapacity = 80;
 			targetAir = true;
@@ -1023,7 +1013,7 @@ public final class HUnitTypes {
 			abilities.add(new TerritoryFieldAbility(20 * 8f, 90f, 210f) {{
 				open = true;
 			}});
-			immunities = ObjectSet.with(HStatusEffects.territoryFieldSuppress);
+			immunities.add(HStatusEffects.territoryFieldSuppress);
 			weapons.add(new LimitedAngleWeapon(name + "-mount") {{
 				x = 20.75f;
 				y = 10f;
@@ -1066,44 +1056,34 @@ public final class HUnitTypes {
 			}}, new LimitedAngleWeapon(name + "-cannon") {{
 				y = -1f;
 				x = 28f;
-				angleCone = 15f;
-				shootY = 17f;
-				reload = 36f;
-				recoil = 5f;
-				shake = 2f;
-				shoot.shots = 3;
-				shoot.shotDelay = 4f;
-				ejectEffect = Fx.casing4;
-				shootSound = Sounds.bang;
-				bullet = new BasicBulletType(15f, 225f) {{
-					pierceArmor = true;
-					pierce = true;
-					pierceCap = 10;
-					width = 16f;
-					height = 37f;
-					lifetime = 22f;
-					shootEffect = Fx.shootBig;
-					fragVelocityMin = 0.4f;
-					hitEffect = Fx.blastExplosion;
-					splashDamage = 40f;
-					splashDamageRadius = 22f;
+				xRand = 4.5f;
+				alternate = false;
+				rotate = true;
+				rotateSpeed = 1.2f;
+				inaccuracy = 4f;
+				reload = 3f;
+				shoot.shots = 2;
+				angleCone = 20f;
+				angleOffset = -15f;
+				shootCone = 20f;
+				shootSound = Sounds.flame;
+				cooldownTime = 180f;
+				bullet = new ParticleFlameBulletType(6.6f, 115f) {{
+					lifetime = 42f;
+					pierceCap = 6;
+					pierceBuilding = true;
+					collidesAir = true;
+					reflectable = false;
+					incendChance = 0.2f;
+					incendAmount = 1;
+					particleAmount = 23;
+					particleSizeScl = 8f;
+					particleSpread = 11f;
+					hitSize = 9f;
+					layer = Layer.bullet - 0.001f;
 					status = StatusEffects.melting;
-					statusDuration = 330f;
-					fragBullets = 1;
-					fragLifeMin = 0f;
-					fragRandomSpread = 30f;
-					fragBullet = new BasicBulletType(9f, 70f) {{
-						width = 10f;
-						height = 11f;
-						pierceArmor = true;
-						pierce = true;
-						pierceBuilding = true;
-						pierceCap = 3;
-						lifetime = 20f;
-						hitEffect = Fx.flakExplosion;
-						splashDamage = 40f;
-						splashDamageRadius = 12f;
-					}};
+					smokeColors = new Color[]{Pal.darkFlame, Color.darkGray, Color.gray};
+					colors = new Color[]{Color.white, Color.valueOf("fff4ac"), Pal.lightFlame, Pal.darkFlame, Color.gray};
 				}};
 			}});
 		}};
@@ -1130,7 +1110,7 @@ public final class HUnitTypes {
 			ammoType = new PowerAmmoType(3500);
 			groundLayer = 75f;
 			speed = 0.3f;
-			immunities = ObjectSet.with(StatusEffects.sapped, StatusEffects.wet, StatusEffects.electrified);
+			immunities.addAll(StatusEffects.sapped, StatusEffects.wet, StatusEffects.electrified);
 			drawShields = false;
 			abilities.add(new EnergyFieldAbility(60, 90, 200) {{
 				maxTargets = 25;
@@ -1209,7 +1189,6 @@ public final class HUnitTypes {
 				bullet = new ArrowBulletType(7f, 25f) {{
 					lifetime = 60f;
 					pierce = true;
-					pierceArmor = true;
 					pierceBuilding = true;
 					pierceCap = 4;
 					backColor = trailColor = hitColor = lightColor = lightningColor = Pal.heal;
@@ -1464,7 +1443,7 @@ public final class HUnitTypes {
 			engineSize = 9f;
 			faceTarget = false;
 			hitSize = 66f;
-			payloadCapacity = (6.5f * 6.5f) * tilePayload;
+			payloadCapacity = (6.5f * 6.5f) * Vars.tilePayload;
 			buildSpeed = 4f;
 			drawShields = false;
 			lowAltitude = true;
@@ -1531,7 +1510,7 @@ public final class HUnitTypes {
 			abilities.add(new ShieldRegenFieldAbility(100f, 1500f, 60f * 4, 200f), new TerritoryFieldAbility(220, -1, 150) {{
 				active = false;
 			}});
-			immunities = ObjectSet.with(HStatusEffects.territoryFieldSuppress);
+			immunities.add(HStatusEffects.territoryFieldSuppress);
 			weapons.addAll(new LimitedAngleWeapon(name + "-front-cannon") {{
 				layerOffset = -0.01f;
 				x = 22f;
@@ -1783,7 +1762,7 @@ public final class HUnitTypes {
 				}};
 				reload = 72;
 				inaccuracy = 0;
-				shootSound = Sounds.blaster;
+				shootSound = Sounds.missileSmall;
 				bullet = new CtrlMissileBulletType("missile-large") {{
 					width = 6f;
 					height = 10f;
@@ -2261,7 +2240,7 @@ public final class HUnitTypes {
 			health = 28000f;
 			armor = 27f;
 			hitSize = 46f;
-			payloadCapacity = Mathf.sqr(7f) * tilePayload;
+			payloadCapacity = Mathf.sqr(7f) * Vars.tilePayload;
 			engineSize = 6f;
 			engineOffset = 25.25f;
 			itemCapacity = 360;
@@ -2486,85 +2465,6 @@ public final class HUnitTypes {
 			}});
 		}};
 		//other
-		armoredCarrierVehicle = new BaseUnitType("armored-carrier-vehicle") {{
-			tank();
-			constructor = BaseTankUnit::new;
-			healFlash = false;
-			treadFrames = 16;
-			treadPullOffset = 8;
-			crushDamage = 2f;
-			treadRects = new Rect[]{new Rect(-60f, -76f, 24f, 152f)};
-			rotateSpeed = 0.7f;
-			speed = 0.55f;
-			accel = 0.08f;
-			drag = 0.08f;
-			hitSize = 32f;
-			ammoType = new PowerAmmoType(10000f);
-			ammoCapacity = 30;
-			hovering = true;
-			canDrown = false;
-			health = 8700f;
-			armor = 24f;
-			itemCapacity = 2000;
-			faceTarget = false;
-			itemOffsetY = 15f;
-			lightRadius = 60f;
-			fogRadius = 30f;
-			deathExplosionEffect = new MultiEffect(HFx.explodeImpWave);
-			hidden = true;
-		}};
-		pioneer = new BaseUnitType("pioneer") {{
-			constructor = PayloadLegsUnit::new;
-			drag = 0.1f;
-			speed = 0.62f;
-			hitSize = 23f;
-			health = 7200f;
-			armor = 14f;
-			rotateSpeed = 2.7f;
-			legCount = 6;
-			legMoveSpace = 1f;
-			legPairOffset = 3f;
-			legLength = 30f;
-			legExtension = -15f;
-			legBaseOffset = 10f;
-			stepShake = 1f;
-			legLengthScl = 0.96f;
-			rippleScale = 2f;
-			legSpeed = 0.2f;
-			ammoType = new PowerAmmoType(2000);
-			legSplashDamage = 32f;
-			legSplashRange = 30f;
-			drownTimeMultiplier = 2f;
-			hovering = true;
-			shadowElevation = 0.65f;
-			groundLayer = Layer.legUnit;
-			payloadCapacity = (3 * 3) * tilePayload;
-			buildSpeed = 2.5f;
-			buildBeamOffset = 2.3f;
-			range = 140f;
-			mineTier = 5;
-			mineSpeed = 10.5f;
-			weapons.add(new Weapon("avert-weapon") {{
-				top = false;
-				shake = 2f;
-				shootY = 4f;
-				x = 10.5f;
-				reload = 55f;
-				recoil = 4f;
-				shootSound = Sounds.laser;
-				bullet = new LaserBulletType() {{
-					damage = 45f;
-					recoil = 1f;
-					sideAngle = 45f;
-					sideWidth = 1f;
-					sideLength = 70f;
-					healPercent = 10f;
-					collidesTeam = true;
-					length = 135f;
-					colors = new Color[]{Pal.sapBulletBack.cpy().a(0.4f), Pal.sapBullet, Color.white};
-				}};
-			}});
-		}};
 		vulture = new BaseUnitType("vulture") {{
 			constructor = BaseUnit::new;
 			aiController = SurroundAI::new;
@@ -2628,280 +2528,6 @@ public final class HUnitTypes {
 			flying = true;
 			hideDetails = false;
 		}};
-		burner = new BaseUnitType("burner") {{
-			constructor = BaseMechUnit::new;
-			speed = 0.36f;
-			hitSize = 24f;
-			rotateSpeed = 2.1f;
-			health = 16700;
-			armor = 32f;
-			mechFrontSway = 1f;
-			ammoType = new PowerAmmoType(500);
-			mechStepParticles = true;
-			stepShake = 0.15f;
-			singleTarget = true;
-			drownTimeMultiplier = 4f;
-			range = 168f;
-			weapons.add(new Weapon("scepter-weapon") {{
-				mirror = top = false;
-				y = 1f;
-				x = 16f;
-				shootY = 8f;
-				reload = 6f;
-				recoil = 2f;
-				shake = 1f;
-				shootSound = Sounds.flame;
-				inaccuracy = 3f;
-				shootCone = 8f;
-				bullet = new ConeFlameBulletType(Pal.techBlue, Pal.techBlue.cpy().lerp(Color.gray, 0.3f), Color.gray, range + 8f, 8, 72, 22f) {{
-					damage = 225f;
-					collidesAir = true;
-					status = HStatusEffects.ultFireBurn;
-					statusDuration = 60f * 6;
-					ammoMultiplier = 4f;
-				}
-					@Override
-					public void hit(Bullet b) {
-						if (absorbable && b.absorbed) return;
-						Units.nearbyEnemies(b.team, b.x, b.y, flameLength, unit -> {
-							if (Angles.within(b.rotation(), b.angleTo(unit), flameCone) && unit.checkTarget(collidesAir, collidesGround) && unit.hittable()) {
-								Fx.hitFlameSmall.at(unit);
-								if (unit.health <= damage) {
-									unit.kill();
-								} else {
-									unit.health -= damage * damageBoost;
-									unit.apply(status, statusDuration);
-								}
-							}
-						});
-						indexer.allBuildings(b.x, b.y, flameLength, other -> {
-							if (other.team != b.team && Angles.within(b.rotation(), b.angleTo(other), flameCone)) {
-								Fx.hitFlameSmall.at(other);
-								if (other.health <= damage) {
-									other.kill();
-								} else {
-									other.health -= damage * buildingDamageMultiplier * damageBoost;
-								}
-							}
-						});
-					}
-				};
-			}
-				@Override
-				public float range() {
-					return range;
-				}
-
-				@Override
-				public void addStats(UnitType u, Table t) {
-					String text = Core.bundle.get("unit.heavy-industry-burner-weapon-0.description");
-					Elements.collapseTextToTable(t, text);
-					super.addStats(u, t);
-				}
-			});
-		}};
-		shadowBlade = new BaseUnitType("shadow-blade") {{
-			constructor = BaseMechUnit::new;
-			speed = 0.36f;
-			hitSize = 24f;
-			rotateSpeed = 2.1f;
-			health = 11000;
-			armor = 17f;
-			mechFrontSway = 1f;
-			ammoType = new PowerAmmoType(3000f);
-			mechStepParticles = true;
-			stepShake = 0.15f;
-			singleTarget = true;
-			drownTimeMultiplier = 4f;
-			weapons.add(new Weapon(name + "-weapon") {{
-				top = false;
-				y = 1f;
-				x = 16f;
-				shootY = 8f;
-				reload = 70f;
-				recoil = 2f;
-				shake = 1f;
-				shootSound = Sounds.missileLarge;
-				inaccuracy = 3f;
-				shoot = new ShootSpread(3, 18f);
-				shootCone = 35f;
-				bullet = new CtrlMissileBulletType("missile-large") {{
-					width = 6f;
-					height = 10f;
-					damage = 165f;
-					buildingDamageMultiplier = 1.2f;
-					pierceArmor = true;
-					autoHoming = true;
-					homingPower = 7.5f;
-					homingRange = 100f;
-					homingDelay = 18f;
-					backColor = frontColor = lightColor = healColor = hitColor = trailColor = Pal.suppress;
-					trailLength = 15;
-					trailWidth = 2.4f;
-					speed = 5.3f;
-					lifetime = 100f;
-					hitEffect = despawnEffect = new Effect(30, e -> {
-						e.scaled(12, b -> {
-							Lines.stroke(2 * e.foutpow(), Color.lightGray);
-							Lines.circle(e.x, e.y, 32 * e.finpow());
-						});
-						Draw.color(e.color);
-						Angles.randLenVectors(e.id, 5, 32 * e.finpow(), e.rotation, 360, (x, y) -> Fill.poly(e.x + x, e.y + y, (int) Math.max(3, e.fout() * 12), 12 * e.fout(), Mathf.randomSeed(e.id, 360) + 360 * e.fout()));
-					});
-					shootEffect = new Effect(24, e -> {
-						Draw.color(e.color);
-						Angles.randLenVectors(e.id, 3, 16 * e.finpow(), e.rotation, 45, (x, y) -> Fill.poly(e.x + x, e.y + y, (int) Math.max(3, e.fout() * 8), 6.5f * e.fout(), Mathf.randomSeed(e.id, 360) + 180 * e.fout()));
-					});
-					parts.add(new ShapePart() {{
-						layer = Layer.effect;
-						circle = true;
-						y = -0.25f;
-						radius = 1.5f;
-						color = trailColor;
-						colorTo = Color.white;
-						progress = PartProgress.life.curve(Interp.pow5In);
-					}});
-				}
-					@Override
-					public void update(Bullet b) {
-						super.update(b);
-						float startTime = homingDelay + 12;
-						if (b.time < startTime) {
-							float in = b.time / startTime;
-							float out = 1 - in;
-							out = Interp.fastSlow.apply(out);
-							b.initVel(b.rotation(), speed * out + 1f);
-						} else {
-							float in = Math.min(1, (b.time - startTime) / 30);
-							b.initVel(b.rotation(), speed * 2f * in + 1f);
-						}
-					}
-
-					@Override
-					public void hitEntity(Bullet b, Hitboxc entity, float health) {
-						if (entity instanceof Unit unit && unit.type != null) {
-							if (unit.shield > 0) {
-								HFx.hitOut.at(unit.x, unit.y, b.rotation(), unit);
-								unit.health -= damage;
-							}
-							unit.damagePierce(b.damage * (1 + Math.max(unit.type.armor, 0) / 10f));
-						} else if (entity instanceof Building build && build.block != null) {
-							build.damagePierce(b.damage * buildingDamageMultiplier * (1 + Math.max(build.block.armor, 0) / 10f));
-						} else {
-							super.hitEntity(b, entity, health);
-						}
-					}
-
-					@Override
-					public void draw(Bullet b) {
-						drawTrail(b);
-						drawParts(b);
-						float z = Draw.z();
-						Draw.z(Layer.effect);
-						Draw.color(trailColor);
-						Draw.rect(frontRegion, b.x, b.y, width * 1.5f, height * 1.5f, b.rotation() - 90);
-						Draw.z(Layer.effect + 1);
-						Draw.color(trailColor);
-						Draw.rect(frontRegion, b.x, b.y, width * 0.9f, height * 0.9f, b.rotation() - 90);
-
-						Draw.z(z);
-						Draw.reset();
-					}
-				};
-			}
-				@Override
-				public void addStats(UnitType u, Table t) {
-					String text = Core.bundle.get("unit.heavy-industry-shadow-blade-weapon-0.description");
-					Elements.collapseTextToTable(t, text);
-					super.addStats(u, t);
-				}
-			});
-		}};
-		artilleryFirePioneer = new BaseUnitType("artillery-fire-pioneer") {{
-			constructor = BaseUnit::new;
-			hitSize = 28f;
-			speed = 1.1f;
-			accel = 0.05f;
-			drag = 0.05f;
-			rotateSpeed = 0.1f;
-			health = 6300f;
-			armor = 39f;
-			flying = true;
-			lowAltitude = true;
-			targetGround = true;
-			targetAir = false;
-			ammoType = new PowerAmmoType(22000f);
-			targetFlags = new BlockFlag[]{BlockFlag.storage, BlockFlag.repair, BlockFlag.turret, null};
-			weapons.add(new Weapon() {{
-				mirror = false;
-				rotate = true;
-				rotateSpeed = 100f;
-				reload = 150f;
-				shootSound = Sounds.none;
-				bullet = new BulletType(0f, 0f) {{
-					lifetime = 10f;
-					collides = collidesAir = collidesGround = collidesTiles = false;
-					despawnEffect = hitEffect = Fx.none;
-					fragBullets = 4;
-					fragBullet = new PointBulletType() {{
-						trailSpacing = 7f;
-						trailEffect = hitEffect = despawnEffect = Fx.none;
-						lifetime = 8f;
-						speed = 15f;
-						hitSound = Sounds.none;
-						fragBullets = 1;
-						fragLifeMin = 0.3f;
-						fragBullet = new ArtilleryBulletType(0.1f, 350f, "shell") {{
-							hitEffect = new MultiEffect(Fx.titanExplosion, Fx.titanSmoke);
-							despawnEffect = Fx.none;
-							knockback = 2f;
-							lifetime = 140f;
-							height = width = 0f;
-							splashDamageRadius = 65f;
-							splashDamage = 350f;
-							scaledSplashDamage = true;
-							backColor = hitColor = trailColor = Color.valueOf("ea8878").lerp(Pal.redLight, 0.5f);
-							frontColor = Color.white;
-							ammoMultiplier = 1f;
-							hitSound = Sounds.titanExplosion;
-							status = StatusEffects.blasted;
-							trailLength = 32;
-							trailWidth = 3.35f;
-							trailSinScl = 2.5f;
-							trailSinMag = 0.5f;
-							trailEffect = Fx.none;
-							despawnShake = 7f;
-							shootEffect = Fx.shootTitan;
-							smokeEffect = Fx.shootSmokeTitan;
-							trailInterp = v -> Math.max(Mathf.slope(v), 0.8f);
-							shrinkX = 0.2f;
-							shrinkY = 0.1f;
-							buildingDamageMultiplier = 0.7f;
-						}};
-					}};
-				}};
-			}
-				public final float rangeWeapon = 720f;
-
-				@Override
-				protected void shoot(Unit unit, WeaponMount mount, float shootX, float shootY, float rotation) {
-					shootSound.at(shootX, shootY, Mathf.random(soundPitchMin, soundPitchMax));
-
-					Tmp.v6.set(mount.aimX, mount.aimY).sub(unit);
-					Tmp.v1.set(mount.aimX, mount.aimY).sub(unit).nor().scl(Math.min(Tmp.v6.len(), rangeWeapon)).add(unit);
-
-					Bullet b = bullet.create(unit, unit.team, Tmp.v1.x, Tmp.v1.y, 0);
-					b.vel.setZero();
-					b.set(Tmp.v1);
-					unit.apply(shootStatus, shootStatusDuration);
-				}
-
-				@Override
-				public float range() {
-					return rangeWeapon;
-				}
-			});
-		}};
 		invincibleShip = new BaseUnitType("invincible-ship") {{
 			constructor = InvincibleShipUnit::new;
 			abilities.add(new RepairFieldAbility(11451.4191981f, 60, 8 * 8), new InvincibleForceFieldAbility(60, 114.514191981f, 1145141919.81f, 300));
@@ -2956,7 +2582,7 @@ public final class HUnitTypes {
 			canHeal = false;
 			engineOffset = 5;
 			engineSize = 3;
-			payloadCapacity = (256 * 256) * tilePayload;
+			payloadCapacity = (256 * 256) * Vars.tilePayload;
 			ammoCapacity = 114514;
 			coreUnitDock = true;
 			mineWalls = true;
@@ -3207,6 +2833,7 @@ public final class HUnitTypes {
 				}});
 			}});
 			fogRadius = 72f;
+			immunities.addAll(StatusEffects.unmoving, StatusEffects.blasted, StatusEffects.corroded, StatusEffects.sporeSlowed, StatusEffects.disarmed, StatusEffects.electrified);
 		}};
 		thunder = new BaseUnitType("thunder") {{
 			tank();
@@ -3390,6 +3017,7 @@ public final class HUnitTypes {
 			}});
 			drownTimeMultiplier = 26f;
 			fogRadius = 68f;
+			immunities.addAll(StatusEffects.unmoving, StatusEffects.blasted, StatusEffects.corroded, StatusEffects.sporeSlowed, StatusEffects.disarmed, StatusEffects.electrified);
 		}};
 		eipusino = new NucleoidUnitType("eipusino") {{
 			outlines = false;
@@ -3410,7 +3038,6 @@ public final class HUnitTypes {
 			speed = 3.75f;
 			drawShields = false;
 			isEnemy = false;
-			immunities = getFilter();
 			flying = true;
 			killable = false;
 			hittable = false;
@@ -3428,12 +3055,10 @@ public final class HUnitTypes {
 		}};
 	}
 
-	private static ObjectSet<StatusEffect> getFilter() {
-		if (filter.isEmpty()) {
-			ObjectSet<StatusEffect> status = ObjectSet.with(StatusEffects.none, StatusEffects.overclock, StatusEffects.shielded, StatusEffects.boss, StatusEffects.invincible, HStatusEffects.regenerating, HStatusEffects.territoryFieldIncrease);
-			filter.addAll(content.statusEffects().select(s -> s != null && !status.contains(s)));
-		}
-
-		return filter;
+	public static void loadImmunities() {
+		fearless.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> !fearless.immunities.contains(s) && (s.reloadMultiplier >= 1 && !s.disarm)));
+		poseidon.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> s.reloadMultiplier >= 1 && !s.disarm));
+		leviathan.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> (s == StatusEffects.none || s.healthMultiplier > 1 || s.damage < 0 || s.reloadMultiplier > 1 || s.damageMultiplier > 1 || s.speedMultiplier > 1) && !s.disarm));
+		eipusino.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> s == StatusEffects.none || (s.healthMultiplier >= 1 && s.damage <= 0 && s.reloadMultiplier >= 1 && s.damageMultiplier >= 1 && s.speedMultiplier >= 1 && !s.disarm)));
 	}
 }

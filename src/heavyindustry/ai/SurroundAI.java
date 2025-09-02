@@ -3,9 +3,8 @@ package heavyindustry.ai;
 import arc.math.Angles;
 import arc.math.geom.Vec2;
 import heavyindustry.math.Mathm;
+import mindustry.Vars;
 import mindustry.ai.types.FlyingAI;
-
-import static mindustry.Vars.state;
 
 public class SurroundAI extends FlyingAI {
 	public static final Vec2 tmp = new Vec2();
@@ -42,8 +41,8 @@ public class SurroundAI extends FlyingAI {
 			unit.moveAt(tmp.trns(ang, unit.speed()));
 		}
 
-		if (target == null && state.rules.waves && unit.team == state.rules.defaultTeam) {
-			moveTo(getClosestSpawner(), state.rules.dropZoneRadius + 130f);
+		if (target == null && Vars.state.rules.waves && unit.team == Vars.state.rules.defaultTeam) {
+			moveTo(getClosestSpawner(), Vars.state.rules.dropZoneRadius + 130f);
 		}
 	}
 

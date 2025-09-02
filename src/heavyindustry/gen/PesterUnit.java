@@ -213,7 +213,7 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 					}
 				});
 
-				for (ObjectFloatMap.Entry<Healthc> e : hatred.entries()) {
+				for (var e : hatred.entries()) {
 					//??Why this happens??
 					if (e.key == null) continue;
 

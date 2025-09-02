@@ -26,11 +26,10 @@ public class DrawStrobePower extends DrawBlock {
 	/** Any number <=0 disables layer changes. */
 	public float layer = -1;
 
-	public DrawStrobePower() {
-	}
+	public DrawStrobePower() {}
 
-	public DrawStrobePower(String suffix) {
-		this.suffix = suffix;
+	public DrawStrobePower(String suf) {
+		suffix = suf;
 	}
 
 	@Override

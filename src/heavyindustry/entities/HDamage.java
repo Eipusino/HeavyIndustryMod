@@ -62,10 +62,6 @@ import mindustry.gen.Unit;
 import mindustry.type.StatusEffect;
 import mindustry.world.Tile;
 
-import static mindustry.Vars.state;
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
-
 public final class HDamage {
 	public static final Seq<Unit> list = new Seq<>(Unit.class);
 
@@ -175,12 +171,12 @@ public final class HDamage {
 		int tx = World.toTile(wx);
 		int ty = World.toTile(wy);
 
-		int tileRange = Mathf.floorPositive(range / tilesize);
+		int tileRange = Mathf.floorPositive(range / Vars.tilesize);
 
 		for (int x = tx - tileRange - 2; x <= tx + tileRange + 2; x++) {
 			for (int y = ty - tileRange - 2; y <= ty + tileRange + 2; y++) {
-				if (Mathf.within(x * tilesize, y * tilesize, wx, wy, range)) {
-					Building other = world.build(x, y);
+				if (Mathf.within(x * Vars.tilesize, y * Vars.tilesize, wx, wy, range)) {
+					Building other = Vars.world.build(x, y);
 					if (other != null && !collidedBlocks.contains(other.pos())) {
 						cons.get(other);
 						collidedBlocks.add(other.pos());
@@ -195,12 +191,12 @@ public final class HDamage {
 		int tx = World.toTile(wx);
 		int ty = World.toTile(wy);
 
-		int tileRange = Mathf.floorPositive(range / tilesize);
+		int tileRange = Mathf.floorPositive(range / Vars.tilesize);
 
 		for (int x = tx - tileRange - 2; x <= tx + tileRange + 2; x++) {
 			for (int y = ty - tileRange - 2; y <= ty + tileRange + 2; y++) {
-				if (Mathf.within(x * tilesize, y * tilesize, wx, wy, range)) {
-					Tile other = world.tile(x, y);
+				if (Mathf.within(x * Vars.tilesize, y * Vars.tilesize, wx, wy, range)) {
+					Tile other = Vars.world.tile(x, y);
 					if (other != null && !collidedBlocks.contains(other.pos())) {
 						cons.get(other);
 						collidedBlocks.add(other.pos());
@@ -273,7 +269,7 @@ public final class HDamage {
 		tmpFloat = 0;
 
 		trueEachBlock(cx, cy, range, b -> {
-			if (!(b.team() == team || (b.team() == Team.derelict && !state.rules.coreCapture)) && pred.get(b)) {
+			if (!(b.team() == team || (b.team() == Team.derelict && !Vars.state.rules.coreCapture)) && pred.get(b)) {
 				//if a block has the same priority, the closer one should be targeted
 				float dist = b.dst(x, y) - b.hitSize() / 2f;
 				if (tmpBuilding == null ||
@@ -351,7 +347,7 @@ public final class HDamage {
 			collidedBlocks.clear();
 
 			Intc2 collider = (cx, cy) -> {
-				Building tile = world.build(cx, cy);
+				Building tile = Vars.world.build(cx, cy);
 				boolean collide = tile != null && collidedBlocks.add(tile.pos());
 
 				if (collide && damage > 0 && tile.team != team) {
@@ -367,7 +363,7 @@ public final class HDamage {
 				collider.get(cx, cy);
 
 				for (Point2 p : Geometry.d4) {
-					Tile other = world.tile(p.x + cx, p.y + cy);
+					Tile other = Vars.world.tile(p.x + cx, p.y + cy);
 					if (other != null && Intersector.intersectSegmentRectangle(seg1, seg2, other.getBounds(Tmp.r1))) {
 						collider.get(cx + p.x, cy + p.y);
 					}
@@ -431,7 +427,7 @@ public final class HDamage {
 		furthest = null;
 
 		boolean found = World.raycast(World.toTile(x), World.toTile(y), World.toTile(x + Tmp.v1.x), World.toTile(y + Tmp.v1.y),
-				(tx, ty) -> (furthest = world.tile(tx, ty)) != null && furthest.team() != team && furthest.block().absorbLasers);
+				(tx, ty) -> (furthest = Vars.world.tile(tx, ty)) != null && furthest.team() != team && furthest.block().absorbLasers);
 
 		return found && furthest != null ? Math.max(6f, Mathf.dst(x, y, furthest.worldx(), furthest.worldy())) : length;
 	}
@@ -448,10 +444,10 @@ public final class HDamage {
 
 		World.raycast(b.tileX(), b.tileY(), World.toTile(b.x + vec.x), World.toTile(b.y + vec.y), (x, y) -> {
 			//add distance to list so it can be processed
-			Building build = world.build(x, y);
+			Building build = Vars.world.build(x, y);
 
-			if (build != null && build.team != b.team && build.collide(b) && b.checkUnderBuild(build, x * tilesize, y * tilesize)) {
-				float dst = b.dst(x * tilesize, y * tilesize) - tilesize;
+			if (build != null && build.team != b.team && build.collide(b) && b.checkUnderBuild(build, x * Vars.tilesize, y * Vars.tilesize)) {
+				float dst = b.dst(x * Vars.tilesize, y * Vars.tilesize) - Vars.tilesize;
 				distances.add(dst);
 
 				if (b.type.laserAbsorb && build.absorbLasers()) {
@@ -510,10 +506,10 @@ public final class HDamage {
 			seg1.set(x, y);
 			seg2.set(seg1).add(vec);
 			World.raycastEachWorld(x, y, seg2.x, seg2.y, (cx, cy) -> {
-				Building tile = world.build(cx, cy);
+				Building tile = Vars.world.build(cx, cy);
 				if (tile != null && tile.team != team) {
 					tmpBuilding = tile;
-					Tmp.v1.set(cx * tilesize, cy * tilesize);
+					Tmp.v1.set(cx * Vars.tilesize, cy * Vars.tilesize);
 					return true;
 				}
 				return false;
@@ -587,18 +583,18 @@ public final class HDamage {
 			seg1.set(x, y);
 			seg2.set(seg1).add(vec);
 			World.raycastEachWorld(x, y, seg2.x, seg2.y, (cx, cy) -> {
-				Building tile = world.build(cx, cy);
-				boolean collide = tile != null && tile.collide(hitter) && hitter.checkUnderBuild(tile, cx * tilesize, cy * tilesize)
+				Building tile = Vars.world.build(cx, cy);
+				boolean collide = tile != null && tile.collide(hitter) && hitter.checkUnderBuild(tile, cx * Vars.tilesize, cy * Vars.tilesize)
 						&& ((tile.team != team && tile.collide(hitter)) || hitter.type.testCollision(hitter, tile)) && collidedBlocks.add(tile.pos());
 				if (collide) {
-					collided.add(collidePool.obtain().set(cx * tilesize, cy * tilesize, tile));
+					collided.add(collidePool.obtain().set(cx * Vars.tilesize, cy * Vars.tilesize, tile));
 
 					for (Point2 p : Geometry.d4) {
-						Tile other = world.tile(p.x + cx, p.y + cy);
+						Tile other = Vars.world.tile(p.x + cx, p.y + cy);
 						if (other != null && (large || Intersector.intersectSegmentRectangle(seg1, seg2, other.getBounds(Tmp.r1)))) {
 							Building build = other.build;
-							if (build != null && hitter.checkUnderBuild(build, cx * tilesize, cy * tilesize) && collidedBlocks.add(build.pos())) {
-								collided.add(collidePool.obtain().set((p.x + cx * tilesize), (p.y + cy) * tilesize, build));
+							if (build != null && hitter.checkUnderBuild(build, cx * Vars.tilesize, cy * Vars.tilesize) && collidedBlocks.add(build.pos())) {
+								collided.add(collidePool.obtain().set((p.x + cx * Vars.tilesize), (p.y + cy) * Vars.tilesize, build));
 							}
 						}
 					}
@@ -703,9 +699,9 @@ public final class HDamage {
 				vec2.trns(con, range).add(wx, wy);
 				ref[idx] = range * range;
 				World.raycastEachWorld(wx, wy, vec2.x, vec2.y, (x, y) -> {
-					Tile tile = world.tile(x, y);
+					Tile tile = Vars.world.tile(x, y);
 					if (tile != null && insulator.get(tile)) {
-						ref[idx] = Mathf.dst2(wx, wy, x * tilesize, y * tilesize);
+						ref[idx] = Mathf.dst2(wx, wy, x * Vars.tilesize, y * Vars.tilesize);
 						return true;
 					}
 					return false;
@@ -714,21 +710,21 @@ public final class HDamage {
 			});
 		}
 
-		int tx = Mathf.round(rect.x / tilesize);
-		int ty = Mathf.round(rect.y / tilesize);
-		int tw = tx + Mathf.round(rect.width / tilesize);
-		int th = ty + Mathf.round(rect.height / tilesize);
+		int tx = Mathf.round(rect.x / Vars.tilesize);
+		int ty = Mathf.round(rect.y / Vars.tilesize);
+		int tw = tx + Mathf.round(rect.width / Vars.tilesize);
+		int th = ty + Mathf.round(rect.height / Vars.tilesize);
 		for (int x = tx; x <= tw; x++) {
 			for (int y = ty; y <= th; y++) {
-				float ofX = (x * tilesize) - wx, ofY = (y * tilesize) - wy;
+				float ofX = (x * Vars.tilesize) - wx, ofY = (y * Vars.tilesize) - wy;
 				int angIdx = Mathf.clamp(Mathf.round(((Mathm.angleDistSigned(Angles.angle(ofX, ofY), angle) + cone) / (cone * 2f)) * (ref.length - 1)), 0, ref.length - 1);
 				float dst = ref[angIdx];
 				float dst2 = Mathf.dst2(ofX, ofY);
 				if (dst2 < dst && dst2 < range * range && Mathm.angleDist(Angles.angle(ofX, ofY), angle) < cone) {
-					Tile tile = world.tile(x, y);
+					Tile tile = Vars.world.tile(x, y);
 					Building building = null;
 					if (tile != null) {
-						Building b = world.build(x, y);
+						Building b = Vars.world.build(x, y);
 						if (b != null && !collidedBlocks.contains(b.id)) {
 							building = b;
 							collidedBlocks.add(b.id);
@@ -765,17 +761,17 @@ public final class HDamage {
 				rect.merge(rectAlt);
 			}
 
-			int tx = Mathf.round(rect.x / tilesize);
-			int ty = Mathf.round(rect.y / tilesize);
-			int tw = tx + Mathf.round(rect.width / tilesize);
-			int th = ty + Mathf.round(rect.height / tilesize);
+			int tx = Mathf.round(rect.x / Vars.tilesize);
+			int ty = Mathf.round(rect.y / Vars.tilesize);
+			int tw = tx + Mathf.round(rect.width / Vars.tilesize);
+			int th = ty + Mathf.round(rect.height / Vars.tilesize);
 			for (int x = tx; x <= tw; x++) {
 				for (int y = ty; y <= th; y++) {
-					float temp = Angles.angle(wx, wy, x * tilesize, y * tilesize);
-					float tempDst = Mathf.dst(x * tilesize, y * tilesize, wx, wy);
+					float temp = Angles.angle(wx, wy, x * Vars.tilesize, y * Vars.tilesize);
+					float tempDst = Mathf.dst(x * Vars.tilesize, y * Vars.tilesize, wx, wy);
 					if (tempDst >= rangeSquare || !Angles.within(temp, angle, cone)) continue;
 
-					Tile other = world.tile(x, y);
+					Tile other = Vars.world.tile(x, y);
 					if (other == null) continue;
 					if (!collidedBlocks.contains(other.pos())) {
 						float dst = 1f - tempDst / range;
@@ -811,7 +807,7 @@ public final class HDamage {
 			int s = i;
 
 			World.raycastEachWorld(wx, wy, vec2.x, vec2.y, (cx, cy) -> {
-				Tile t = world.tile(cx, cy);
+				Tile t = Vars.world.tile(cx, cy);
 				if (t != null && t.block() != null && insulator.get(t)) {
 					float dst = t.dst(wx, wy);
 					cast[s] = dst;
@@ -837,7 +833,7 @@ public final class HDamage {
 	public static void collideLineRawEnemyRatio(Team team, float x, float y, float x2, float y2, float width, Boolf3<Building, Float, Boolean> buildingCons, Boolf2<Unit, Float> unitCons, Floatc2 effectHandler) {
 		float minRatio = 0.05f;
 		collideLineRawEnemy(team, x, y, x2, y2, width, (building, direct) -> {
-			float size = (building.block.size * tilesize / 2f);
+			float size = (building.block.size * Vars.tilesize / 2f);
 			float dst = Mathf.clamp(1f - ((Intersector.distanceSegmentPoint(x, y, x2, y2, building.x, building.y) - width) / size), minRatio, 1f);
 			return buildingCons.get(building, dst, direct);
 		}, unit -> {
@@ -924,18 +920,18 @@ public final class HDamage {
 				hitB = false;
 				lineCast.each(i -> {
 					int tx = Point2.x(i), ty = Point2.y(i);
-					Building build = world.build(tx, ty);
+					Building build = Vars.world.build(tx, ty);
 
 					boolean hit = false;
 					if (build != null && (buildingFilter == null || buildingFilter.get(build)) && collidedBlocks.add(build.pos())) {
 						if (sort == null) {
-							hit = hitHandler.get(tx * tilesize, ty * tilesize, build, true);
+							hit = hitHandler.get(tx * Vars.tilesize, ty * Vars.tilesize, build, true);
 						} else {
-							hit = hitHandler.get(tx * tilesize, ty * tilesize, build, false);
+							hit = hitHandler.get(tx * Vars.tilesize, ty * Vars.tilesize, build, false);
 							Hit he = Pools.obtain(Hit.class, Hit::new);
 							he.entity = build;
-							he.x = tx * tilesize;
-							he.y = ty * tilesize;
+							he.x = tx * Vars.tilesize;
+							he.y = ty * Vars.tilesize;
 
 							hitEffects.add(he);
 						}
@@ -946,13 +942,13 @@ public final class HDamage {
 						}
 					}
 
-					Vec2 segment = Intersector.nearestSegmentPoint(x, y, vec2.x, vec2.y, tx * tilesize, ty * tilesize, vec3);
+					Vec2 segment = Intersector.nearestSegmentPoint(x, y, vec2.x, vec2.y, tx * Vars.tilesize, ty * Vars.tilesize, vec3);
 					if (!hit && tileWidth > 0f) {
 						for (Point2 p : Geometry.d8) {
 							int newX = (p.x + tx);
 							int newY = (p.y + ty);
-							boolean within = !hitB || Mathf.within(x / tilesize, y / tilesize, newX, newY, vec2.dst(x, y) / tilesize);
-							if (segment.within(newX * tilesize, newY * tilesize, tileWidth) && collideLineCollided.within(newX, newY) && !collideLineCollided.get(newX, newY) && within) {
+							boolean within = !hitB || Mathf.within(x / Vars.tilesize, y / Vars.tilesize, newX, newY, vec2.dst(x, y) / Vars.tilesize);
+							if (segment.within(newX * Vars.tilesize, newY * Vars.tilesize, tileWidth) && collideLineCollided.within(newX, newY) && !collideLineCollided.get(newX, newY) && within) {
 								lineCastNext.add(Point2.pack(newX, newY));
 								collideLineCollided.set(newX, newY, true);
 							}
@@ -1043,7 +1039,7 @@ public final class HDamage {
 
 		if (hitter.type.collidesGround) {
 			World.raycastEachWorld(x, y, x + vec2.x, y + vec2.y, (cx, cy) -> {
-				Building tile = world.build(cx, cy);
+				Building tile = Vars.world.build(cx, cy);
 				if (tile != null && tile.team != hitter.team) {
 					tmpBuilding = tile;
 					return true;
@@ -1110,7 +1106,7 @@ public final class HDamage {
 		});
 		float ll = Mathf.dst(x1, y1, x2, y2);
 
-		for (Teams.TeamData data : state.teams.present) {
+		for (Teams.TeamData data : Vars.state.teams.present) {
 			if (data.team != team) {
 				if (data.unitTree != null) {
 					Utils.intersectLine(data.unitTree, width, x1, y1, x2, y2, (t, x, y) -> {

@@ -15,7 +15,7 @@ public class CraftGridImage extends Element {
 
 	public float itemsWidth() {
 		int max = 0;
-		for (IntMap.Entry<UnlockableContent> entry : items.entries()) {
+		for (var entry : items.entries()) {
 			Point2 pos = Point2.unpack(entry.key);
 			max = Math.max(max, pos.x + 1);
 		}
@@ -24,7 +24,7 @@ public class CraftGridImage extends Element {
 
 	public float itemsHeight() {
 		int max = 0;
-		for (IntMap.Entry<UnlockableContent> entry : items.entries()) {
+		for (var entry : items.entries()) {
 			Point2 pos = Point2.unpack(entry.key);
 			max = Math.max(max, pos.y + 1);
 		}
@@ -45,7 +45,7 @@ public class CraftGridImage extends Element {
 		}
 
 		Draw.color(Color.white, parentAlpha);
-		for (IntMap.Entry<UnlockableContent> entry : items.entries()) {
+		for (var entry : items.entries()) {
 			Point2 pos = Point2.unpack(entry.key);
 			Draw.rect(
 					entry.value.uiIcon,
