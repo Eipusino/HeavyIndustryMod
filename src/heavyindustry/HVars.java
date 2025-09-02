@@ -9,6 +9,7 @@ import heavyindustry.annotations.ListClasses;
 import heavyindustry.annotations.ListPackages;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.files.InternalFileTree;
+import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.input.InputAggregator;
 import heavyindustry.util.ReflectImpl;
 import mindustry.content.TechTree.TechNode;
@@ -38,6 +39,9 @@ public final class HVars {
 
 	/** jar internal navigation. */
 	public static final InternalFileTree internalTree;
+
+	/** Modules only present in clients, typically rendering or auxiliary input utilities. */
+	public static SizedGraphics sizedGraphics;
 
 	/** Modules present in both servers and clients. */
 	public static InputAggregator inputAggregator;

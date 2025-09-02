@@ -22,7 +22,7 @@ void main() {
 	vec4 base = texture2D(u_texture, v_texCoords);
 	vec2 worldCoord = vec2(v_texCoords.x * u_resolution.x + u_campos.x, v_texCoords.y * u_resolution.y + u_campos.y);
 
-    float m = min(min(min(
+	float m = min(min(min(
 			texture(u_texture, v_texCoords + vec2(1.0, 0.0) * v).a,
 			texture(u_texture, v_texCoords + vec2(0.0, 1.0) * v).a),
 			texture(u_texture, v_texCoords + vec2(-1.0, 0.0) * v).a),

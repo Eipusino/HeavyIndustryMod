@@ -10,7 +10,7 @@ public final class HPlanets {
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
-		// null
+		// not
 	}
 
 	public static Texture rings(String name) {

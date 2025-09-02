@@ -29,6 +29,7 @@ import heavyindustry.gen.Entitys;
 import heavyindustry.gen.HIcon;
 import heavyindustry.gen.HMusics;
 import heavyindustry.gen.HSounds;
+import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.util.ReflectImpl;
 import heavyindustry.util.Utils;
 import heavyindustry.world.Worlds;
@@ -125,6 +126,7 @@ public final class HeavyIndustryMod extends Mod {
 					HTextures.onClient();
 					HCacheLayer.onClient();
 
+					HVars.sizedGraphics = new SizedGraphics();
 					HVars.inputAggregator = new InputAggregator();
 				});
 			}

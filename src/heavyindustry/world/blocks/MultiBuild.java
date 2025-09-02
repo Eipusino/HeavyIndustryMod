@@ -19,30 +19,30 @@ public interface MultiBuild extends Buildingc {
 		dumpIndex((dumpIndex() + 1) % prox);
 	}
 
-    default void updateLinkProximity() {
-	    if (linkEntities() != null) {
-		    linkProximityMap().clear();
-		    //add link entity's proximity
-		    for (Building link : linkEntities()) {
-			    for (Building linkProx : link.proximity) {
-				    if (linkProx != this && !linkEntities().contains(linkProx)) {
-					    if (checkValidPair(linkProx, link)) {
-						    linkProximityMap().add(new Building[]{linkProx, link});
-					    }
-				    }
-			    }
-		    }
+	default void updateLinkProximity() {
+		if (linkEntities() != null) {
+			linkProximityMap().clear();
+			//add link entity's proximity
+			for (Building link : linkEntities()) {
+				for (Building linkProx : link.proximity) {
+					if (linkProx != this && !linkEntities().contains(linkProx)) {
+						if (checkValidPair(linkProx, link)) {
+							linkProximityMap().add(new Building[]{linkProx, link});
+						}
+					}
+				}
+			}
 
-		    //add self entity's proximity
-		    for (Building prox : build().proximity) {
-			    if (!linkEntities().contains(prox)) {
-				    if (checkValidPair(prox, build())) {
-					    linkProximityMap().add(new Building[]{prox, build()});
-				    }
-			    }
-		    }
-	    }
-    }
+			//add self entity's proximity
+			for (Building prox : build().proximity) {
+				if (!linkEntities().contains(prox)) {
+					if (checkValidPair(prox, build())) {
+						linkProximityMap().add(new Building[]{prox, build()});
+					}
+				}
+			}
+		}
+	}
 
 	default boolean checkValidPair(Building target, Building source) {
 		for (Building[] pair : linkProximityMap()) {
