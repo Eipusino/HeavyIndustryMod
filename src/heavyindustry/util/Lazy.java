@@ -3,37 +3,27 @@ package heavyindustry.util;
 import arc.func.Prov;
 
 public class Lazy<T> {
-	private static final Object UNINITIALIZED_VALUE = new Object();
+	private T t;
+	private Prov<T> prov;
 
-	private final Object lock = new Object();
-
-	private Prov<T> initializer;
-	private Object value = UNINITIALIZED_VALUE;
-
-	public Lazy(Prov<T> init) {
-		initializer = init;
+	public Lazy(Prov<T> p) {
+		if (p == null) throw new IllegalArgumentException("The prov cannot be null.");
+		prov = p;
 	}
 
-	public void set(T val) {
-		value = val;
+	public static <T> Lazy<T> of(Prov<T> prov) {
+		return new Lazy<>(prov);
 	}
 
-	@SuppressWarnings("unchecked")
 	public T get() {
-		Object o = value;
-		if (o != UNINITIALIZED_VALUE) {
-			return (T) o;
-		}
+		if (prov == null) return t;
 
-		synchronized (lock) {
-			Object s = value;
-			if (s != UNINITIALIZED_VALUE) {
-				return (T) s;
-			}
-			T typedValue = initializer.get();
-			value = typedValue;
-			initializer = null;
-			return typedValue;
-		}
+		t = prov.get();
+		prov = null;
+		return t;
+	}
+
+	public void set(T value) {
+		t = value;
 	}
 }

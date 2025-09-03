@@ -83,8 +83,10 @@ public final class HeavyIndustryMod extends Mod {
 			Log.err(e);
 		}
 
-		// This situation usually does not occur...
-		if (HVars.reflectImpl == null) HVars.reflectImpl = new DefaultImpl();
+		if (HVars.reflectImpl == null) {
+			// This situation usually does not occur...
+			HVars.reflectImpl = new DefaultImpl();
+		}
 	}
 
 	public HeavyIndustryMod() {
@@ -235,7 +237,7 @@ public final class HeavyIndustryMod extends Mod {
 	}
 
 	public static Class<?> loadLibrary(String fileName, String mainClassName, boolean showError, Cons<Class<?>> callback) {
-		ModClassLoader mainLoader = (ModClassLoader) Vars.mods.mainLoader();
+		ClassLoader mainLoader = Vars.mods.mainLoader();
 
 		Fi sourceFile = HVars.internalTree.child("libs").child(fileName + ".jar");
 		if (!sourceFile.exists()) {
@@ -252,7 +254,9 @@ public final class HeavyIndustryMod extends Mod {
 			HFiles.delete(toFile);
 			sourceFile.copyTo(toFile);
 			ClassLoader loader = Vars.platform.loadJar(toFile, mainLoader);
-			mainLoader.addChild(loader);
+
+			if (mainLoader instanceof ModClassLoader mod) mod.addChild(loader);
+
 			Class<?> clazz = Class.forName(mainClassName, true, loader);
 			lastLoader = loader;
 

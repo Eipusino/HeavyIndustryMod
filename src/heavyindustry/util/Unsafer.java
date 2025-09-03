@@ -19,25 +19,15 @@ import static heavyindustry.util.Utils.requireNonNullInstance;
  * functions provided by this class.</strong>
  *
  * @author Eipusino
+ * @see InteUnsafer
  * @since 1.0.7
  */
 public final class Unsafer {
-	public static final Unsafe unsafe = getUnsafe();
+	/** Initialize in libs/Impl.jar in the mod resource package. */
+	public static Unsafe unsafe;
 
 	/** Do not call. */
 	private Unsafer() {}
-
-	/** Get the unique instance of Unsafe. */
-	public static Unsafe getUnsafe() {
-		try {
-			// Note that 'Unsafe.class.getDeclaredConstructor()' is not available on Android, so we can directly retrieve the 'theUnsafe' field.
-			Field field = Unsafe.class.getDeclaredField("theUnsafe");
-			field.setAccessible(true);
-			return (Unsafe) field.get(null);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
 
 	public static <T> T getObject(Class<?> type, String name, Object object) {
 		try {
@@ -516,6 +506,14 @@ public final class Unsafer {
 		}
 	}
 
+	public static void set(Class<?> type, String name, Object object, Object value) {
+		try {
+			set(type.getDeclaredField(name), object, value);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
 	public static void set(Field field, Object object, Object value) {
 		long offset = getOffset(field);
 		Class<?> type = field.getType(), clazz = field.getDeclaringClass();
@@ -545,9 +543,9 @@ public final class Unsafer {
 				else if (type == long.class) unsafe.putLong(o, offset, (long) value);
 				else if (type == char.class) unsafe.putChar(o, offset, (char) value);
 				else if (type == short.class) unsafe.putShort(o, offset, (short) value);
-				else throw new IllegalArgumentException("unknown type of field " + type);
+				else throw new IllegalArgumentException("unknown type of field " + field);
 			} else {
-				unsafe.putObjectVolatile(o, offset, requireInstance(field.getType(), value));
+				unsafe.putObject(o, offset, requireInstance(field.getType(), value));
 			}
 		}
 	}

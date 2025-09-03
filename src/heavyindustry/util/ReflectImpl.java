@@ -1,5 +1,6 @@
 package heavyindustry.util;
 
+import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.AccessibleObject;
 
 public interface ReflectImpl {
@@ -7,13 +8,7 @@ public interface ReflectImpl {
 
 	void setPublic(Class<?> type);
 
-	default Class<?> getCallerClass() {
-		try {
-			Thread thread = Thread.currentThread();
-			StackTraceElement[] trace = thread.getStackTrace();
-			return Class.forName(trace[3].getClassName());
-		} catch (ClassNotFoundException e) {
-			return null;
-		}
-	}
+	Class<?> callerClass();
+
+	Lookup lookup();
 }
