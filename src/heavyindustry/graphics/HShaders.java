@@ -15,13 +15,13 @@ import arc.math.geom.Vec3;
 import arc.scene.ui.layout.Scl;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.HVars;
 import heavyindustry.graphics.gl.DepthFrameBuffer;
 import heavyindustry.graphics.gl.Gl30Shader;
 import heavyindustry.type.AtmospherePlanet;
 import mindustry.Vars;
 import mindustry.type.Planet;
 
-import static heavyindustry.HVars.internalTree;
 import static heavyindustry.HVars.MOD_NAME;
 
 /**
@@ -34,7 +34,7 @@ public final class HShaders {
 	public static DepthScreenspaceShader depthScreenspace;
 	public static DepthAtmosphereShader depthAtmosphere;
 	public static AlphaShader alphaShader;
-	public static Gl30SurfaceShader brine, originiumFluid, boundWater, pit, waterPit;
+	public static Gl30SurfaceShader brine, originiumFluid, deepOriginiumFluid, boundWater, pit, waterPit;
 	public static AberrationShader aberration;
 	public static MaskShader alphaMask;
 	public static WaveShader wave;
@@ -65,6 +65,20 @@ public final class HShaders {
 
 		brine = new Gl30SurfaceShader("general-highp", "brine");
 		originiumFluid = new Gl30SurfaceShader("general-highp", "originium-fluid");
+		deepOriginiumFluid = new BaseSurfaceShader("general-highp", "deep-originium-fluid") {
+			@Override
+			public void loadNoise() {
+				super.loadNoise();
+
+				noiseTex2 = HTextures.darker;
+				noiseTex = HTextures.smooth;
+			}
+
+			@Override
+			public Texture getTexture() {
+				return HTextures.smooth;
+			}
+		};
 		boundWater = new Gl30SurfaceShader("general-highp", "bound-water");
 		pit = new PitShader("general-highp", "pit", MOD_NAME + "-concrete-blank1", MOD_NAME + "-stone-sheet", MOD_NAME + "-truss");
 		waterPit = new PitShader("general-highp", "water-pit", MOD_NAME + "-concrete-blank1", MOD_NAME + "-stone-sheet", MOD_NAME + "-truss");
@@ -116,11 +130,11 @@ public final class HShaders {
 	}
 
 	public static Fi msf(String name) {
-		return internalTree.child("shaders/" + name + ".frag");
+		return HVars.internalTree.child("shaders/" + name + ".frag");
 	}
 
 	public static Fi msv(String name) {
-		return internalTree.child("shaders/" + name + ".vert");
+		return HVars.internalTree.child("shaders/" + name + ".vert");
 	}
 
 	/** Specialized mesh shader to capture fragment depths. */
@@ -472,7 +486,7 @@ public final class HShaders {
 		@Override
 		public void apply() {
 			if (texture == null) {
-				texture = new Texture(internalTree.child("other/textures/small-space.png"));
+				texture = new Texture(HVars.internalTree.child("other/textures/small-space.png"));
 				texture.setFilter(TextureFilter.linear);
 				texture.setWrap(TextureWrap.repeat);
 			}
@@ -533,8 +547,49 @@ public final class HShaders {
 		}
 	}
 
+	public static class BaseSurfaceShader extends Gl30SurfaceShader {
+		protected Texture noiseTex2;
+
+		public BaseSurfaceShader(String vertex, String fragment) {
+			super(vertex, fragment);
+		}
+
+		public Texture getTexture() {
+			return null;
+		}
+
+		@Override
+		public void apply() {
+			setUniformf("u_campos", Core.camera.position.x - Core.camera.width / 2, Core.camera.position.y - Core.camera.height / 2);
+			setUniformf("u_resolution", Core.camera.width, Core.camera.height);
+			setUniformf("u_time", Time.time);
+
+			if (hasUniform("u_noise")) {
+				if (noiseTex == null) {
+					noiseTex = getTexture() == null ? Core.assets.get("sprites/" + textureName() + ".png", Texture.class) : getTexture();
+				}
+
+				noiseTex.bind(1);
+				Vars.renderer.effectBuffer.getTexture().bind(0);
+
+				setUniformi("u_noise", 1);
+			}
+
+			if (hasUniform("u_noise_2")) {
+				if (noiseTex2 == null) {
+					noiseTex2 = Core.assets.get("sprites/" + "noise" + ".png", Texture.class);
+				}
+
+				noiseTex2.bind(1);
+				Vars.renderer.effectBuffer.getTexture().bind(0);
+
+				setUniformi("u_noise_2", 1);
+			}
+		}
+	}
+
 	public static class Gl30SurfaceShader extends Gl30Shader {
-		Texture noiseTex;
+		protected Texture noiseTex;
 
 		public Gl30SurfaceShader(String vertex, String fragment) {
 			super(msv(vertex), msf(fragment));

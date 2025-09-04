@@ -1446,24 +1446,24 @@ public final class Utils {
 		}
 	}
 
-	public static boolean canParseLong(String s) {
-		return parseLong(s) != null;
+	public static boolean canParseLong(String s, long def) {
+		return parseLong(s, def) != def;
 	}
 
-	public static Long parseLong(String s) {
-		return parseLong(s, 10);
+	public static long parseLong(String s, long def) {
+		return parseLong(s, 10, def);
 	}
 
-	public static Long parseLong(String s, int radix) {
-		return parseLong(s, radix, 0, s.length());
+	public static long parseLong(String s, int radix, long def) {
+		return parseLong(s, radix, 0, s.length(), def);
 	}
 
-	public static Long parseLong(String s, int radix, int start, int end) {
+	public static long parseLong(String s, int radix, int start, int end, long def) {
 		boolean negative = false;
 		int i = start, len = end - start;
 		long limit = -9223372036854775807l;
 		if (len <= 0) {
-			return null;
+			return def;
 		} else {
 			char firstChar = s.charAt(i);
 			if (firstChar < '0') {
@@ -1471,25 +1471,25 @@ public final class Utils {
 					negative = true;
 					limit = -9223372036854775808l;
 				} else if (firstChar != '+') {
-					return null;
+					return def;
 				}
 
-				if (len == 1) return null;
+				if (len == 1) return def;
 
 				++i;
 			}
 
 			long result;
 			int digit;
-			for (result = 0L; i < end; result -= digit) {
+			for (result = 0l; i < end; result -= digit) {
 				digit = Character.digit(s.charAt(i++), radix);
 				if (digit < 0) {
-					return null;
+					return def;
 				}
 
 				result *= radix;
 				if (result < limit + (long) digit) {
-					return null;
+					return def;
 				}
 			}
 
@@ -1752,38 +1752,38 @@ public final class Utils {
 		return obj;
 	}
 
-	public static void run(RunT<Exception> cons) {
+	public static void run(RunT<Throwable> cons) {
 		try {
 			cons.run();
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			Log.err(e);
 		}
 	}
 
-	public static <T> void get(ConsT<T, Exception> cons, T obj) {
+	public static <T> void get(ConsT<T, Throwable> cons, T obj) {
 		try {
 			cons.get(obj);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			Log.err(e);
 		}
 	}
 
-	public static <T> T get(ProvT<T, Exception> prov, T def) {
+	public static <T> T get(ProvT<T, Throwable> prov, T def) {
 		try {
 			return prov.get();
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			Log.err(e);
 
 			return def;
 		}
 	}
 
-	public static <T> T get(ProvT<T, Exception> prov, ConsT<T, Exception> cons, T def) {
+	public static <T> T get(ProvT<T, Throwable> prov, ConsT<T, Throwable> cons, T def) {
 		try {
 			T t = prov.get();
 			cons.get(t);
 			return t;
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			Log.err(e);
 
 			return def;

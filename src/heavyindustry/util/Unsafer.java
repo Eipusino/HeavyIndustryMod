@@ -14,6 +14,10 @@ import static heavyindustry.util.Utils.requireNonNullInstance;
  * {@code Unsafe} reflection tool. Mainly provides functions for modifying or setting field values.
  * <p>This class behavior will violate the access protection of Java security encapsulation and is inherently
  * insecure. If it is not necessary, please try to avoid using this class.
+ * <p>The {@link #unsafe} field of this class is public, but it is generally recommended to use the static methods
+ * provided by the class, which perform some security check packaging on the methods inside the {@link Unsafe}
+ * to avoid causing strange bugs or even <strong>JVM crashes</strong>. Unless you are very clear about what you are doing
+ * at this moment, it is not recommended to use the {@link #unsafe} field directly.
  * <p><strong>Never use {@link FieldUtils#getFieldOffset(Field)} on non Android platforms, as this will directly
  * trigger {@link NoSuchMethodError}. If you want to obtain the offset of a field, please use the relevant
  * functions provided by this class.</strong>

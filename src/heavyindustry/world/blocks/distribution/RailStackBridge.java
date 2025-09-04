@@ -3,26 +3,21 @@ package heavyindustry.world.blocks.distribution;
 import mindustry.gen.Building;
 import mindustry.type.Item;
 import mindustry.world.Tile;
-import mindustry.world.blocks.distribution.ItemBridge;
 import mindustry.world.blocks.distribution.StackConveyor.StackConveyorBuild;
 
 import static mindustry.Vars.world;
 
-/**
- * Multiple items can be transported together to the other end.
- * And it can also increase the packaging point of the stack conveyor belt at the output end to the highest speed.
- */
-public class StackBridge extends ItemBridge {
-	public StackBridge(String name) {
+public class RailStackBridge extends RailItemBridge {
+	public RailStackBridge(String name) {
 		super(name);
 	}
 
 	@Override
 	protected void initBuilding() {
-		if (buildType == null) buildType = StackBridgeBuild::new;
+		if (buildType == null) buildType = RailStackBridgeBuild::new;
 	}
 
-	public class StackBridgeBuild extends ItemBridgeBuild {
+	public class RailStackBridgeBuild extends RailItemBridgeBuild {
 		public Item lastItem;
 		public int amount = 0;
 
@@ -36,7 +31,7 @@ public class StackBridge extends ItemBridge {
 
 		@Override
 		public void updateTransport(Building other) {
-			if (lastItem != null && items.total() >= block.itemCapacity && other instanceof StackBridgeBuild ot && ot.team == team && ot.items.total() < block.itemCapacity) {
+			if (lastItem != null && items.total() >= block.itemCapacity && other instanceof RailStackBridgeBuild ot && ot.team == team && ot.items.total() < block.itemCapacity) {
 				ot.amount = items.total();
 				ot.items.add(lastItem, ot.amount);
 				items.clear();

@@ -33,6 +33,7 @@ import mindustry.world.blocks.payloads.BuildPayload;
 import mindustry.world.blocks.payloads.Payload;
 import mindustry.world.blocks.production.GenericCrafter;
 import mindustry.world.blocks.units.UnitAssembler;
+import mindustry.world.meta.BlockStatus;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 import mindustry.world.meta.StatValue;
@@ -146,11 +147,6 @@ public class AdaptiveCrafter extends GenericCrafter {
 		stats.add(Stat.input, display());
 		stats.remove(Stat.output);
 		stats.remove(Stat.productionTime);
-	}
-
-	public void addInput(Object... objects) {
-		Recipe recipe = new Recipe(objects);
-		recipes.add(recipe);
 	}
 
 	public StatValue display() {
@@ -390,6 +386,12 @@ public class AdaptiveCrafter extends GenericCrafter {
 
 			if (wasVisible) craftEffect.at(x, y);
 			updateRecipe();
+		}
+
+		@Override
+		public BlockStatus status() {
+			if (enabled && getRecipe() == null) return BlockStatus.noInput;
+			return super.status();
 		}
 
 		@Override

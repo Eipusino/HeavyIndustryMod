@@ -233,9 +233,9 @@ public final class HOverrides {
 			statusDuration = 270f;
 			lifetime = 37.5f;
 		}});
-		((LaserTurret) Blocks.meltdown).range = 245;
+		((LaserTurret) Blocks.meltdown).range = 235;
 		((LaserTurret) Blocks.meltdown).shootType = new ContinuousLaserBulletType(96f) {{
-			length = 250f;
+			length = 240f;
 			hitEffect = Fx.hitMeltdown;
 			hitColor = Pal.meltdownHit;
 			status = StatusEffects.melting;

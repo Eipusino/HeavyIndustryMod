@@ -4,8 +4,7 @@ import arc.func.Cons;
 import arc.graphics.Texture;
 import arc.graphics.Texture.TextureFilter;
 import arc.graphics.Texture.TextureWrap;
-
-import static heavyindustry.HVars.internalTree;
+import heavyindustry.HVars;
 
 public final class HTextures {
 	public static Texture smooth, particle, darker, gaussian, median, armor;
@@ -23,7 +22,7 @@ public final class HTextures {
 	}
 
 	public static Texture loadTexture(String name, TextureFilter filter, TextureWrap wrap) {
-		Texture texture = new Texture(internalTree.child("other/textures/" + name + ".png"));
+		Texture texture = new Texture(HVars.internalTree.child("other/textures/" + name + ".png"));
 		texture.setFilter(filter);
 		texture.setWrap(wrap);
 
@@ -31,7 +30,7 @@ public final class HTextures {
 	}
 
 	public static Texture loadTexture(String name, Cons<Texture> modifier) {
-		Texture texture = new Texture(internalTree.child("other/textures/" + name + ".png"));
+		Texture texture = new Texture(HVars.internalTree.child("other/textures/" + name + ".png"));
 		modifier.get(texture);
 
 		return texture;

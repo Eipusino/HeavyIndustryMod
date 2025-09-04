@@ -1,6 +1,5 @@
 package heavyindustry;
 
-import arc.Core;
 import arc.graphics.Texture;
 import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.graphics.g2d.TextureRegion;
@@ -12,10 +11,9 @@ import heavyindustry.files.InternalFileTree;
 import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.input.InputAggregator;
 import heavyindustry.util.ReflectImpl;
+import mindustry.Vars;
 import mindustry.content.TechTree.TechNode;
 import mindustry.type.Sector;
-
-import static mindustry.Vars.headless;
 
 /**
  * I didn't want my Mod main class to look too messy, so I created this class.
@@ -25,6 +23,7 @@ import static mindustry.Vars.headless;
 public final class HVars {
 	/** Commonly used static read-only String. Do not change unless you know what you're doing. */
 	public static final String MOD_NAME = "heavy-industry";
+	public static final String MOD_PREFIX = "heavy-industry-";
 	/** The author of this mod. */
 	public static final String AUTHOR = "Eipusino";
 	/** The GitHub address of this mod. */
@@ -58,7 +57,7 @@ public final class HVars {
 	static {
 		internalTree = new InternalFileTree(HeavyIndustryMod.class);
 
-		if (!headless) {
+		if (!Vars.headless) {
 			whiteTexture = new Texture(internalTree.child("other/textures/white.png"));
 			whiteRegion = new AtlasRegion(new TextureRegion(whiteTexture));
 		}
@@ -66,11 +65,6 @@ public final class HVars {
 
 	/** Don't let anyone instantiate this class. */
 	private HVars() {}
-
-	/** Delta time that is unaffected by time control. */
-	public static float graphicsDelta() {
-		return Core.graphics.getDeltaTime() * 60f;
-	}
 
 	/** Clear all occupied sectors of the specified Planet. Use with caution, as this will completely disrupt the player's game progress. */
 	public static void resetSaves(Seq<Sector> sectors) {

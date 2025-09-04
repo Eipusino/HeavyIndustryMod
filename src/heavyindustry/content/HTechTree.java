@@ -158,6 +158,7 @@ public final class HTechTree {
 		//power
 		vanillaNode(powerNode, () -> node(smartPowerNode, () -> node(powerAnalyzer)));
 		vanillaNode(powerNodeLarge, () -> node(heavyArmoredPowerNode, () -> node(microArmoredPowerNode)));
+		vanillaNode(thermalGenerator, () -> node(largeThermalGenerator));
 		vanillaNode(thoriumReactor, () -> node(uraniumReactor));
 		vanillaNode(impactReactor, () -> node(hyperMagneticReactor));
 		vanillaNode(batteryLarge, () -> {
@@ -192,7 +193,7 @@ public final class HTechTree {
 		vanillaNode(pyratiteMixer, () -> node(largePyratiteMixer, Seq.with(new SectorComplete(SectorPresets.facility32m))));
 		vanillaNode(blastMixer, () -> node(largeBlastMixer));
 		vanillaNode(cultivator, () -> node(largeCultivator, Seq.with(new SectorComplete(SectorPresets.taintedWoods))));
-		vanillaNode(plastaniumCompressor, () -> node(largePlastaniumCompressor, Seq.with(new SectorComplete(SectorPresets.facility32m)), () -> node(ironcladCompressor)));
+		vanillaNode(plastaniumCompressor, () -> node(largePlastaniumCompressor, Seq.with(new SectorComplete(SectorPresets.facility32m)), () -> node(corkscrewCompressor)));
 		vanillaNode(surgeSmelter, () -> node(largeSurgeSmelter));
 		vanillaNode(siliconCrucible, () -> node(blastSiliconSmelter));
 		vanillaNode(siliconSmelter, () -> node(crystallineCircuitConstructor, Seq.with(new SectorComplete(SectorPresets.impact0078)), () -> node(crystallineCircuitPrinter)));
@@ -239,7 +240,7 @@ public final class HTechTree {
 			node(reinforcedPayloadRail);
 		});
 		//unit
-		vanillaNode(tetrativeReconstructor, () -> node(titanReconstructor, () -> node(experimentalUnitFactory)));
+		vanillaNode(tetrativeReconstructor, () -> node(titanReconstructor));
 		//unit-erekir
 		vanillaNode(unitRepairTower, () -> node(largeUnitRepairTower, ItemStack.with(Items.graphite, 2400, Items.silicon, 3000, Items.tungsten, 2600, Items.oxide, 1200, Items.carbide, 600), Seq.with(new OnSector(SectorPresets.siege))));
 		vanillaNode(basicAssemblerModule, () -> node(seniorAssemblerModule));

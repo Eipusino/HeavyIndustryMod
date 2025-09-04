@@ -96,6 +96,8 @@ import mindustry.entities.bullet.RailBulletType;
 import mindustry.entities.bullet.ShrapnelBulletType;
 import mindustry.entities.effect.ExplosionEffect;
 import mindustry.entities.effect.MultiEffect;
+import mindustry.entities.effect.ParticleEffect;
+import mindustry.entities.effect.WaveEffect;
 import mindustry.entities.part.RegionPart;
 import mindustry.entities.part.ShapePart;
 import mindustry.entities.pattern.ShootAlternate;
@@ -241,7 +243,31 @@ public final class HUnitTypes {
 					ammoMultiplier = 3;
 					despawnEffect = Fx.none;
 					shootEffect = Fx.shootPyraFlame;
-					hitEffect = HFx.fiammettaExp(splashDamageRadius);
+					hitEffect = new MultiEffect(new ParticleEffect() {{
+						particles = 8;
+						sizeFrom = 6;
+						sizeTo = 0;
+						length = 25;
+						baseLength = 23;
+						lifetime = 35;
+						colorFrom = colorTo = HPal.smoke;
+					}}, new ParticleEffect() {{
+						particles = 12;
+						line = true;
+						length = 43;
+						baseLength = 3;
+						lifetime = 22;
+						colorFrom = Color.white;
+						colorTo = HPal.missileYellow;
+					}}, new WaveEffect() {{
+						lifetime = 10;
+						sizeFrom = 1;
+						sizeTo = 48;
+						strokeFrom = 2;
+						strokeTo = 0;
+						colorFrom = HPal.missileYellow;
+						colorTo = Color.white;
+					}});
 				}};
 			}});
 		}};
@@ -294,7 +320,18 @@ public final class HUnitTypes {
 					height = 45f;
 					trailChance = 0f;
 					trailInterval = 1f;
-					trailEffect = HFx.trailFromWhite;
+					trailEffect = new ParticleEffect() {{
+						particles = 3;
+						length = 30f;
+						baseLength = 0f;
+						sizeInterp = Interp.pow5In;
+						lifetime = 10f;
+						colorFrom = HPal.missileGray;
+						colorTo = HPal.missileGray.cpy().a(0.45f);
+						sizeFrom = 2.6f;
+						sizeTo = 0f;
+						cone = 8f;
+					}};
 					trailRotation = true;
 					splashDamage = 55f;
 					splashDamageRadius = 45f;
@@ -302,11 +339,64 @@ public final class HUnitTypes {
 					collides = false;
 					status = StatusEffects.blasted;
 					shootEffect = Fx.shootSmallFlame;
-					smokeEffect = HFx.crucibleSmoke(HPal.smoke);
+					smokeEffect = new ParticleEffect() {{
+						particles = 9;
+						interp = Interp.pow10Out;
+						sizeInterp = Interp.pow10In;
+						sizeFrom = 6;
+						sizeTo = 0;
+						length = -58;
+						baseLength = -20;
+						lifetime = 42;
+						colorFrom = colorTo = HPal.smoke.cpy().a(6f);
+						cone = 40;
+						layer = 49;
+					}};
 					lifetime = 41.6f;
 					hitShake = 2f;
 					hitSound = Sounds.explosion;
-					hitEffect = HFx.hitExplosionMassive;
+					hitEffect = new MultiEffect(new ParticleEffect() {{
+						particles = 8;
+						sizeFrom = 10;
+						sizeTo = 0;
+						length = 35;
+						baseLength = 33;
+						lifetime = 35;
+						colorFrom = colorTo = HPal.smoke;
+					}}, new ParticleEffect() {{
+						particles = 12;
+						line = true;
+						strokeFrom = 2;
+						strokeTo = 0;
+						lenFrom = 16;
+						lenTo = 8;
+						length = 66;
+						baseLength = 3;
+						lifetime = 12;
+						colorFrom = Color.white;
+						colorTo = HPal.missileYellow;
+					}}, new ParticleEffect() {{
+						particles = 1;
+						sizeFrom = 0;
+						sizeTo = 45;
+						length = 0;
+						baseLength = 0;
+						sizeInterp = Interp.pow5Out;
+						lifetime = 12;
+						layer = 50;
+						colorFrom = Color.white.cpy().a(0.5f);
+						colorTo = HPal.smoke.cpy().a(0f);
+					}}, new WaveEffect() {{
+						lifetime = 10;
+						sizeFrom = 0;
+						sizeTo = 48;
+						interp = Interp.circleOut;
+						strokeFrom = 15;
+						strokeTo = 0;
+						layer = 50;
+						colorFrom = Color.white;
+						colorTo = HPal.smoke.cpy().a(0.65f);
+					}});
 					despawnEffect = Fx.flakExplosionBig;
 				}};
 			}});
@@ -335,7 +425,14 @@ public final class HUnitTypes {
 			targetFlags = new BlockFlag[]{BlockFlag.repair, BlockFlag.turret};
 			abilities.add(new StatusFieldAbility(StatusEffects.overclock, 1200f, 1200f, 45f) {{
 				applyEffect = Fx.none;
-				activeEffect = HFx.circle;
+				activeEffect = new WaveEffect() {{
+					lifetime = 15;
+					sizeFrom = 8;
+					sizeTo = 45;
+					strokeFrom = 2;
+					strokeTo = 0;
+					colorFrom = colorTo = HPal.energyYellow;
+				}};
 			}});
 			weapons.add(new Weapon(name + "-weapon") {{
 				reload = 90f;
@@ -359,9 +456,35 @@ public final class HUnitTypes {
 					lifetime = 15f;
 					hitSound = Sounds.lasercharge2;
 					smokeEffect = Fx.bigShockwave;
-					shootEffect = HFx.shootRail;
-					hitEffect = HFx.circleOutQuick;
+					shootEffect = new ParticleEffect() {{
+						particles = 1;
+						sizeFrom = 5f;
+						sizeTo = length = baseLength = 0f;
+						lifetime = 11f;
+						colorFrom = colorTo = HPal.energyYellow;
+					}};
+					hitEffect = new ParticleEffect() {{
+						particles = 1;
+						sizeFrom = 10f;
+						sizeTo = length = baseLength = 0f;
+						lifetime = 15f;
+						colorFrom = colorTo = HPal.energyYellow;
+					}};
 					despawnEffect = Fx.bigShockwave;
+					pointEffect = new ParticleEffect() {{
+						particles = 1;
+						length = 0f;
+						baseLength = 1f;
+						lifetime = 10f;
+						line = true;
+						randLength = false;
+						lenFrom = 10f;
+						lenTo = 10f;
+						strokeFrom = 4f;
+						strokeTo = 0f;
+						colorFrom = colorTo = HPal.energyYellow;
+						cone = 0f;
+					}};
 					fragLifeMin = 1f;
 					fragVelocityMax = 0f;
 					fragBullets = 1;
@@ -378,12 +501,52 @@ public final class HUnitTypes {
 						hitShake = 1f;
 						hitSound = Sounds.plasmaboom;
 						hitColor = HPal.energyYellow;
-						hitEffect = HFx.impactExplode(22f, lifetime);
+						hitEffect = new MultiEffect(new ParticleEffect() {{
+							particles = 4;
+							sizeFrom = 15f;
+							sizeTo = 0f;
+							length = 20f;
+							baseLength = 48f;
+							lifetime = 25f;
+							colorFrom = HPal.energyYellow.cpy().a(0.45f);
+							colorTo = HPal.energyYellow.cpy().a(0f);
+						}}, new ParticleEffect() {{
+							particles = 22;
+							line = true;
+							strokeFrom = 3f;
+							strokeTo = 0f;
+							lenFrom = 20f;
+							lenTo = 0f;
+							length = 63f;
+							baseLength = 0f;
+							lifetime = 20f;
+							colorFrom = colorTo = HPal.energyYellow;
+						}}, new WaveEffect() {{
+							lifetime = 25f;
+							sizeFrom = 0f;
+							sizeTo = 66f;
+							strokeFrom = 3f;
+							strokeTo = 0f;
+							colorFrom = colorTo = HPal.energyYellow;
+						}});
 						despawnEffect = Fx.none;
 						fragBullets = 4;
 						fragBullet = new PointBulletType() {{
 							trailSpacing = 9f;
-							trailEffect = HFx.skyTrail;
+							trailEffect = new ParticleEffect() {{
+								particles = 1;
+								length = 0f;
+								baseLength = 1f;
+								lifetime = 6f;
+								line = true;
+								randLength = false;
+								lenFrom = 10f;
+								lenTo = 10f;
+								strokeFrom = 2f;
+								strokeTo = 0f;
+								colorFrom = colorTo = HPal.energyYellow;
+								cone = 0f;
+							}};
 							lifetime = 8f;
 							speed = 15f;
 							buildingDamageMultiplier = 3f;
@@ -392,7 +555,15 @@ public final class HUnitTypes {
 							hitShake = 1f;
 							hitSound = Sounds.laser;
 							hitColor = HPal.energyYellow;
-							hitEffect = HFx.hitSpark;
+							hitEffect = new ParticleEffect() {{
+								particles = 1;
+								sizeFrom = 5f;
+								sizeTo = 0f;
+								length = 0f;
+								baseLength = 0f;
+								lifetime = 11f;
+								colorFrom = colorTo = HPal.energyYellow;
+							}};
 							despawnEffect = Fx.none;
 						}};
 					}};
@@ -449,8 +620,43 @@ public final class HUnitTypes {
 					pierce = true;
 					pierceCap = 4;
 					knockback = 8f;
-					hitEffect = HFx.lightningBoltWave;
-					shootEffect = HFx.missileShoot;
+					hitEffect = new MultiEffect(new ParticleEffect() {{
+						particles = 9;
+						sizeFrom = 10f;
+						sizeTo = 0f;
+						length = 65f;
+						baseLength = 0f;
+						lifetime = 15f;
+						colorFrom = HPal.energyYellow;
+						colorTo = Color.white;
+						cone = 40f;
+					}}, new WaveEffect() {{
+						lifetime = 10f;
+						sizeFrom = 2f;
+						sizeTo = 60f;
+						strokeFrom = 10f;
+						strokeTo = 0f;
+						colorFrom = colorTo = HPal.energyYellow;
+					}});
+					shootEffect = new MultiEffect(new ParticleEffect() {{
+						particles = 6;
+						sizeFrom = 8;
+						sizeTo = 0;
+						length = 55;
+						baseLength = 0;
+						lifetime = 33;
+						colorFrom = HPal.energyYellow;
+						colorTo = Color.white;
+						cone = 35;
+					}}, new WaveEffect() {{
+						lifetime = 10;
+						sizeFrom = 0;
+						sizeTo = 30;
+						strokeFrom = 3;
+						strokeTo = 0;
+						colorFrom = HPal.energyYellow;
+						colorTo = Color.white;
+					}});
 					smokeEffect = Fx.smokeCloud;
 					width = 16f;
 					height = 28f;
@@ -463,7 +669,22 @@ public final class HUnitTypes {
 						despawnEffect = Fx.none;
 						status = StatusEffects.blasted;
 						hitColor = HPal.energyYellow;
-						hitEffect = HFx.explodeImpWave;
+						hitEffect = new MultiEffect(new ParticleEffect() {{
+							particles = 9;
+							sizeFrom = 8f;
+							sizeTo = 0f;
+							length = 55f;
+							baseLength = 0f;
+							lifetime = 15f;
+							colorFrom = colorTo = HPal.energyYellow;
+						}}, new WaveEffect() {{
+							lifetime = 15f;
+							sizeFrom = 2f;
+							sizeTo = 40f;
+							strokeFrom = 6f;
+							strokeTo = 0f;
+							colorFrom = colorTo = HPal.energyYellow;
+						}});
 						hitSound = Sounds.laser;
 						collides = false;
 						damage = 250f;
@@ -548,13 +769,66 @@ public final class HUnitTypes {
 					trailRotation = true;
 					trailChance = 1f;
 					trailInterval = 33f;
-					trailEffect = HFx.glowParticle;
+					trailEffect = new ParticleEffect() {{
+						particles = 3;
+						sizeFrom = 3;
+						sizeTo = 0;
+						interp = Interp.circleOut;
+						sizeInterp = Interp.pow3In;
+						length = 10;
+						baseLength = 0;
+						lifetime = 8;
+						colorFrom = colorTo = HPal.energyYellow;
+					}};
 					shrinkY = 0f;
-					hitEffect = HFx.glowParticle;
+					hitEffect = new MultiEffect(new ParticleEffect() {{
+						particles = 9;
+						sizeFrom = 10;
+						sizeTo = 0;
+						length = 90;
+						baseLength = 8;
+						lifetime = 35;
+						colorFrom = colorTo = HPal.energyYellow;
+					}}, new WaveEffect() {{
+						lifetime = 10;
+						sizeFrom = 2;
+						sizeTo = 60;
+						strokeFrom = 10;
+						strokeTo = 0;
+						colorFrom = colorTo = HPal.energyYellow;
+					}});
 					hitSound = Sounds.plasmaboom;
-					shootEffect = HFx.winterShooting;
+					shootEffect = new MultiEffect(new ParticleEffect() {{
+						particles = 6;
+						line = true;
+						strokeFrom = 6f;
+						strokeTo = 0f;
+						lenFrom = 25f;
+						lenTo = 0f;
+						length = 50f;
+						baseLength = 0f;
+						lifetime = 11f;
+						colorFrom = colorTo = HPal.energyYellow;
+						cone = 15f;
+					}}, new WaveEffect() {{
+						lifetime = 10f;
+						sizeFrom = 0f;
+						sizeTo = 35f;
+						strokeFrom = 4f;
+						strokeTo = 0f;
+						colorFrom = colorTo = HPal.energyYellow;
+					}});
 					smokeEffect = Fx.smokeCloud;
-					despawnEffect = HFx.spawnWave;
+					despawnEffect = new ParticleEffect() {{
+						particles = 1;
+						sizeFrom = 10f;
+						sizeTo = 0f;
+						length = 0f;
+						baseLength = 0f;
+						lifetime = 65f;
+						colorFrom = HPal.energyYellow;
+						colorTo = Color.white;
+					}};
 				}};
 			}});
 		}};
@@ -1068,7 +1342,7 @@ public final class HUnitTypes {
 				shootCone = 20f;
 				shootSound = Sounds.flame;
 				cooldownTime = 180f;
-				bullet = new ParticleFlameBulletType(6.6f, 115f) {{
+				bullet = new ParticleFlameBulletType(6.6f, 105f) {{
 					lifetime = 42f;
 					pierceCap = 6;
 					pierceBuilding = true;

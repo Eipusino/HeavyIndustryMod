@@ -40,7 +40,7 @@ public final class HItems {
 			cost = 1.2f;
 			hardness = 3;
 		}};
-		crystallineCircuit = new Item("crystalline-circuit", HPal.originiumRed) {{
+		crystallineCircuit = new Item("crystalline-circuit", HPal.originiumGreen) {{
 			cost = -0.75f;
 			hardness = 4;
 		}};
@@ -48,7 +48,7 @@ public final class HItems {
 			cost = -1.75f;
 			hardness = 7;
 		}};
-		originium = new Item("originium", HPal.originiumRed) {{
+		originium = new Item("originium", HPal.originiumGreen) {{
 			cost = 1.25f;
 			flammability = 0.2f;
 			explosiveness = 0.3f;

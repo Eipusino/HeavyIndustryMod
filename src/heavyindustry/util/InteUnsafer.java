@@ -9,8 +9,12 @@ import static heavyindustry.util.Utils.requireInstance;
 import static heavyindustry.util.Utils.requireNonNullInstance;
 
 /**
- * JDK-Internal-Unsafe class. <strong>It may become invalid in future Java or Android versions or behave
- * inconsistently on different devices, and is not recommended for non-essential use.</strong>
+ * JDK-Internal-Unsafe class. It may become invalid in future Java or Android versions or behave
+ * inconsistently on different devices, and is not recommended for non-essential use.
+ * <p>The {@link #internalUnsafe} field of this class is public, but it is generally recommended to use the static
+ * methods provided by the class, which perform some security check packaging on the methods inside the
+ * {@link Unsafe} to avoid causing strange bugs or even <strong>JVM crashes</strong>. Unless you
+ * are very clear about what you are doing at this moment, it is not recommended to use the {@link #internalUnsafe} field directly.
  *
  * @author Eipusino
  * @see Unsafer

@@ -3,8 +3,8 @@ package heavyindustry.util;
 import arc.func.Prov;
 
 public class Lazy<T> {
-	private T t;
-	private Prov<T> prov;
+	T t;
+	Prov<T> prov;
 
 	public Lazy(Prov<T> p) {
 		if (p == null) throw new IllegalArgumentException("The prov cannot be null.");

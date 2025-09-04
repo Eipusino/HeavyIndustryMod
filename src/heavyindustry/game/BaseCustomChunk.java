@@ -7,18 +7,18 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 public interface BaseCustomChunk extends CustomChunk {
-	short version();
+	byte version();
 
 	@Override
 	default void write(DataOutput stream) throws IOException {
-		stream.writeShort(version());
+		stream.writeByte(version());
 	}
 
 	@Override
 	default void read(DataInput stream) throws IOException {
-		short version = stream.readShort();
+		byte version = stream.readByte();
 		read(stream, version);
 	}
 
-	void read(DataInput stream, short version) throws IOException;
+	void read(DataInput stream, byte version) throws IOException;
 }

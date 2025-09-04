@@ -100,7 +100,7 @@ public final class HeavyIndustryMod extends Mod {
 			FLabel label = new FLabel(Core.bundle.get("hi-author") + AUTHOR);
 			BaseDialog dialog = new BaseDialog(Core.bundle.get("hi-name")) {{
 				buttons.button(Core.bundle.get("close"), this::hide).size(210f, 64f);
-				buttons.button((Core.bundle.get("hi-link-github")), () -> {
+				buttons.button(Core.bundle.get("hi-link-github"), () -> {
 					if (!Core.app.openURI(LINK_GIT_HUB)) {
 						Vars.ui.showErrorMessage("@linkfail");
 						Core.app.setClipboardText(LINK_GIT_HUB);
@@ -124,8 +124,8 @@ public final class HeavyIndustryMod extends Mod {
 				HSounds.onClient();
 
 				Core.app.post(() -> {
-					HShaders.onClient();
 					HTextures.onClient();
+					HShaders.onClient();
 					HCacheLayer.onClient();
 
 					HVars.sizedGraphics = new SizedGraphics();

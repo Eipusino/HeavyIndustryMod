@@ -62,7 +62,6 @@ import static mindustry.Vars.tilesize;
  * MultiCrafter. You can freely choose to change the production formula.
  *
  * @author Eipusino
- * @apiNote Example usage {@link HBlocks#ironcladCompressor }.
  * @see heavyindustry.world.blocks.heat.HeatMultiCrafter heat
  * @since 1.0.6
  */

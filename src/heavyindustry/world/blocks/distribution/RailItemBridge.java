@@ -56,12 +56,9 @@ public class RailItemBridge extends ItemBridge {
 
 		Tmp.v1.set(ox, oy).sub(req.drawx(), req.drawy()).setLength(tilesize / 4f);
 
-		Lines.line(bridgeRegion, req.drawx() + Tmp.v1.x, req.drawy() + Tmp.v1.y,
-				ox - Tmp.v1.x, oy - Tmp.v1.y,
-				false);
+		Lines.line(bridgeRegion, req.drawx() + Tmp.v1.x, req.drawy() + Tmp.v1.y, ox - Tmp.v1.x, oy - Tmp.v1.y, false);
 
-		Draw.rect(arrowRegion, (req.drawx() + ox) / 2f, (req.drawy() + oy) / 2f,
-				Angles.angle(req.drawx(), req.drawy(), ox, oy) + flip);
+		Draw.rect(arrowRegion, (req.drawx() + ox) / 2f, (req.drawy() + oy) / 2f, Angles.angle(req.drawx(), req.drawy(), ox, oy) + flip);
 
 		Draw.reset();
 	}

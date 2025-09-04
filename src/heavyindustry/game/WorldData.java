@@ -14,7 +14,7 @@ public class WorldData implements BaseCustomChunk {
 
 	@Override
 	public void write(DataOutput stream) throws IOException {
-		BaseCustomChunk.super.write(stream);
+		stream.writeByte(version());
 
 		stream.writeFloat(eventReloadSpeed);
 		stream.writeBoolean(jumpGateUsesCoreItems);
@@ -22,7 +22,7 @@ public class WorldData implements BaseCustomChunk {
 	}
 
 	@Override
-	public void read(DataInput stream, short version) throws IOException {
+	public void read(DataInput stream, byte version) throws IOException {
 		eventReloadSpeed = stream.readFloat();
 
 		if (version == 1) {
@@ -40,7 +40,7 @@ public class WorldData implements BaseCustomChunk {
 	}
 
 	@Override
-	public short version() {
+	public byte version() {
 		return 1;
 	}
 }

@@ -7,7 +7,7 @@ import arc.scene.style.Drawable;
 import arc.scene.style.ScaledNinePatchDrawable;
 import arc.scene.style.TextureRegionDrawable;
 
-import static heavyindustry.HVars.MOD_NAME;
+import static heavyindustry.HVars.MOD_PREFIX;
 
 public final class HIcon {
 	public static TextureRegionDrawable
@@ -80,7 +80,7 @@ public final class HIcon {
 	}
 
 	public static Drawable drawable(String name) {
-		AtlasRegion region = Core.atlas.find(MOD_NAME + "-" + name);
+		AtlasRegion region = Core.atlas.find(MOD_PREFIX + name);
 
 		if (region.splits != null && region.pads != null) {
 			int[] splits = region.splits;
@@ -94,6 +94,6 @@ public final class HIcon {
 	}
 
 	public static TextureRegionDrawable texture(String name) {
-		return new TextureRegionDrawable(Core.atlas.find(MOD_NAME + "-" + name));
+		return new TextureRegionDrawable(Core.atlas.find(MOD_PREFIX + name));
 	}
 }

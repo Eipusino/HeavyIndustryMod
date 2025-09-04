@@ -39,6 +39,7 @@ import heavyindustry.graphics.HCacheLayer;
 import heavyindustry.graphics.HLayer;
 import heavyindustry.graphics.HPal;
 import heavyindustry.graphics.PositionLightning;
+import heavyindustry.type.Recipe;
 import heavyindustry.util.Utils;
 import heavyindustry.world.blocks.LinkBlock;
 import heavyindustry.world.blocks.PlaceholderBlock;
@@ -62,6 +63,7 @@ import heavyindustry.world.blocks.distribution.MultiJunction;
 import heavyindustry.world.blocks.distribution.MultiRouter;
 import heavyindustry.world.blocks.distribution.MultiSorter;
 import heavyindustry.world.blocks.distribution.NodeBridge;
+import heavyindustry.world.blocks.distribution.RailItemBridge;
 import heavyindustry.world.blocks.distribution.StackBridge;
 import heavyindustry.world.blocks.distribution.StackHelper;
 import heavyindustry.world.blocks.distribution.TubeConveyor;
@@ -73,11 +75,13 @@ import heavyindustry.world.blocks.environment.DepthCliff;
 import heavyindustry.world.blocks.environment.ConnectedStaticWall;
 import heavyindustry.world.blocks.heat.FuelHeater;
 import heavyindustry.world.blocks.heat.ThermalHeater;
+import heavyindustry.world.blocks.liquid.ConnectedPump;
 import heavyindustry.world.blocks.liquid.LiquidDirectionalUnloader;
 import heavyindustry.world.blocks.liquid.LiquidMassDriver;
 import heavyindustry.world.blocks.liquid.LiquidOverflowValve;
 import heavyindustry.world.blocks.liquid.LiquidUnloader;
 import heavyindustry.world.blocks.liquid.LiquidExtractor;
+import heavyindustry.world.blocks.liquid.RailLiquidBridge;
 import heavyindustry.world.blocks.liquid.SortLiquidRouter;
 import heavyindustry.world.blocks.logic.CharacterDisplay;
 import heavyindustry.world.blocks.logic.CopyMemoryBlock;
@@ -94,20 +98,20 @@ import heavyindustry.world.blocks.power.HyperGenerator;
 import heavyindustry.world.blocks.power.PowerAnalyzer;
 import heavyindustry.world.blocks.power.SmartBeamNode;
 import heavyindustry.world.blocks.power.SmartPowerNode;
+import heavyindustry.world.blocks.production.AdaptiveCrafter;
 import heavyindustry.world.blocks.production.AugerDrill;
 import heavyindustry.world.blocks.production.Centrifuge;
 import heavyindustry.world.blocks.production.LaserBeamDrill;
 import heavyindustry.world.blocks.production.AugerSoildPump;
+import heavyindustry.world.blocks.distribution.RailStackBridge;
 import heavyindustry.world.blocks.production.UnitMinerDepot;
 import heavyindustry.world.blocks.production.UnitMinerPoint;
-import heavyindustry.world.blocks.production.MultiCrafter;
 import heavyindustry.world.blocks.production.SporeFarmBlock;
 import heavyindustry.world.blocks.sandbox.AdaptiveSource;
 import heavyindustry.world.blocks.sandbox.RandomSource;
 import heavyindustry.world.blocks.storage.CoreStorageBlock;
 import heavyindustry.world.blocks.storage.AdaptUnloader;
 import heavyindustry.world.blocks.units.AdaptPayloadSource;
-import heavyindustry.world.blocks.units.DerivativeUnitFactory;
 import heavyindustry.world.blocks.units.UnitIniter;
 import heavyindustry.world.draw.DrawAnim;
 import heavyindustry.world.draw.DrawHeat;
@@ -118,6 +122,7 @@ import heavyindustry.world.draw.DrawRotator;
 import heavyindustry.world.draw.DrawSpecConstruct;
 import heavyindustry.world.meta.HAttribute;
 import heavyindustry.world.meta.HBuildVisibility;
+import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
 import mindustry.content.Items;
@@ -195,7 +200,6 @@ import mindustry.world.blocks.defense.turrets.PowerTurret;
 import mindustry.world.blocks.distribution.Duct;
 import mindustry.world.blocks.distribution.DuctBridge;
 import mindustry.world.blocks.distribution.DuctJunction;
-import mindustry.world.blocks.distribution.ItemBridge;
 import mindustry.world.blocks.distribution.StackConveyor;
 import mindustry.world.blocks.distribution.StackRouter;
 import mindustry.world.blocks.environment.Floor;
@@ -207,7 +211,6 @@ import mindustry.world.blocks.environment.TallBlock;
 import mindustry.world.blocks.environment.TreeBlock;
 import mindustry.world.blocks.heat.HeatProducer;
 import mindustry.world.blocks.liquid.ArmoredConduit;
-import mindustry.world.blocks.liquid.LiquidBridge;
 import mindustry.world.blocks.liquid.LiquidRouter;
 import mindustry.world.blocks.logic.LogicBlock;
 import mindustry.world.blocks.logic.LogicDisplay;
@@ -215,6 +218,7 @@ import mindustry.world.blocks.power.Battery;
 import mindustry.world.blocks.power.ConsumeGenerator;
 import mindustry.world.blocks.power.LightBlock;
 import mindustry.world.blocks.power.PowerNode;
+import mindustry.world.blocks.power.ThermalGenerator;
 import mindustry.world.blocks.production.AttributeCrafter;
 import mindustry.world.blocks.production.BeamDrill;
 import mindustry.world.blocks.production.BurstDrill;
@@ -256,7 +260,6 @@ import mindustry.world.draw.DrawPistons;
 import mindustry.world.draw.DrawPlasma;
 import mindustry.world.draw.DrawPower;
 import mindustry.world.draw.DrawPulseShape;
-import mindustry.world.draw.DrawPumpLiquid;
 import mindustry.world.draw.DrawRegion;
 import mindustry.world.draw.DrawShape;
 import mindustry.world.draw.DrawTurret;
@@ -268,14 +271,6 @@ import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 
 import static heavyindustry.HVars.MOD_NAME;
-import static mindustry.Vars.content;
-import static mindustry.Vars.headless;
-import static mindustry.Vars.indexer;
-import static mindustry.Vars.logic;
-import static mindustry.Vars.net;
-import static mindustry.Vars.player;
-import static mindustry.Vars.state;
-import static mindustry.Vars.tilesize;
 
 /**
  * Defines the {@linkplain Block blocks} this mod offers.
@@ -291,7 +286,7 @@ public final class HBlocks {
 			darkPanel7, darkPanel8, darkPanel9, darkPanel10, darkPanel11, darkPanelDamaged, asphalt, asphaltTiles,
 			shaleVent, basaltSpikes, basaltWall, basaltGraphiticWall, basaltPyratiticWall, snowySand, snowySandWall, arkyciteSand, arkyciteSandWall, arkyciteSandBoulder, darksandBoulder,
 			concreteBlank, concreteFill, concreteNumber, concreteStripe, concrete, stoneFullTiles, stoneFull, stoneHalf, stoneTiles, concreteWall, pit, waterPit,
-			brine, originiumFluid,
+			brine, originiumFluid, deepOriginiumFluid,
 			metalFloorWater, metalFloorWater2, metalFloorWater3, metalFloorWater4, metalFloorWater5, metalFloorDamagedWater,
 			stoneWater, shaleWater, basaltWater, mudWater,
 			overgrownGrass, overgrownShrubs, overgrownPine,
@@ -314,22 +309,24 @@ public final class HBlocks {
 	//drill-erekir
 	heavyPlasmaBore, unitMinerPoint, unitMinerCenter, unitMinerDepot,
 	//distribution
-	invertedJunction, itemLiquidJunction, multiSorter, plastaniumRouter, plastaniumBridge, stackHelper, chromiumEfficientConveyor, chromiumArmorConveyor, chromiumTubeConveyor, chromiumTubeDistributor, chromiumTubeSorter, chromiumStackConveyor, chromiumStackRouter, chromiumStackBridge, chromiumJunction, chromiumRouter, chromiumItemBridge,
+	invertedJunction, itemLiquidJunction, multiSorter, plastaniumRouter, plastaniumBridge, stackHelper,
+			chromiumEfficientConveyor, chromiumArmorConveyor, chromiumTubeConveyor, chromiumTubeDistributor, chromiumTubeSorter, chromiumStackConveyor, chromiumStackRouter, chromiumStackBridge, chromiumJunction, chromiumRouter, chromiumItemBridge,
 			phaseItemNode, rapidDirectionalUnloader,
 	//distribution-erekir
 	ductJunction, ductDistributor, ductMultiSorter, armoredDuctBridge, rapidDuctUnloader,
 	//liquid
-	liquidSorter, liquidValve, liquidOverflowValve, liquidUnderflowValve, liquidUnloader, liquidMassDriver, turboPump, phaseLiquidNode, chromiumArmorConduit, chromiumLiquidBridge, chromiumArmorLiquidContainer, chromiumArmorLiquidTank,
+	liquidSorter, liquidValve, liquidOverflowValve, liquidUnderflowValve, liquidUnloader, liquidMassDriver, turboPumpSmall, turboPump, phaseLiquidNode,
+			chromiumArmorConduit, chromiumLiquidBridge, chromiumArmorLiquidContainer, chromiumArmorLiquidTank,
 	//liquid-erekir
 	reinforcedLiquidOverflowValve, reinforcedLiquidUnderflowValve, reinforcedLiquidUnloader, reinforcedLiquidSorter, reinforcedLiquidValve, smallReinforcedPump, largeReinforcedPump,
 	//power
-	networkPowerNode, smartPowerNode, microArmoredPowerNode, heavyArmoredPowerNode, powerAnalyzer, liquidConsumeGenerator, uraniumReactor, hyperMagneticReactor, hugeBattery, armoredCoatedBattery,
+	networkPowerNode, smartPowerNode, microArmoredPowerNode, heavyArmoredPowerNode, powerAnalyzer, largeThermalGenerator, liquidConsumeGenerator, uraniumReactor, hyperMagneticReactor, hugeBattery, armoredCoatedBattery,
 	//power-erekir
 	smartBeamNode, beamDiode, beamInsulator, reinforcedPowerAnalyzer,
 	//production
 	largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, stoneCrusher, fractionator, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
-			crystallineCircuitConstructor, crystallineCircuitPrinter, originiumActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, ironcladCompressor,
-			originiumHeater, liquidFuelHeater, crucible,
+			crystallineCircuitConstructor, crystallineCircuitPrinter, originiumActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, corkscrewCompressor,
+			originiumHeater, liquidFuelHeater,
 			atmosphericCollector, atmosphericCooler, uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilPrecipitator, blastReagentMixer, centrifuge, galliumNitrideSmelter,
 	//production-erekir
 	ventHeater, chemicalSiliconSmelter, largeElectricHeater, largeOxidationChamber, largeSurgeCrucible, largeCarbideCrucible,
@@ -346,7 +343,7 @@ public final class HBlocks {
 	//payload-erekir
 	reinforcedPayloadJunction, reinforcedPayloadRail,
 	//unit
-	unitMaintenanceDepot, titanReconstructor, experimentalUnitFactory,
+	unitMaintenanceDepot, titanReconstructor,
 	//unit-erekir
 	largeUnitRepairTower, seniorAssemblerModule,
 	//logic
@@ -542,11 +539,23 @@ public final class HBlocks {
 			status = HStatusEffects.regenerating;
 			statusDuration = 60f;
 			drownTime = 160f;
-			speedMultiplier = 0.6f;
+			speedMultiplier = 0.8f;
 			liquidDrop = HLiquids.originiumFluid;
 			isLiquid = true;
 			cacheLayer = HCacheLayer.originiumFluid;
 			liquidMultiplier = 0.5f;
+			emitLight = true;
+			lightRadius = 20f;
+			lightColor = Color.green.cpy().a(0.19f);
+		}};
+		deepOriginiumFluid = new Floor("pooled-deep-originium-fluid", 0) {{
+			status = HStatusEffects.regenerating;
+			statusDuration = 180f;
+			drownTime = 120f;
+			speedMultiplier = 0.6f;
+			liquidDrop = HLiquids.originiumFluid;
+			isLiquid = true;
+			cacheLayer = HCacheLayer.deepOriginiumFluid;
 			emitLight = true;
 			lightRadius = 30f;
 			lightColor = Color.green.cpy().a(0.19f);
@@ -1413,7 +1422,7 @@ public final class HBlocks {
 			buildCostMultiplier = 0.8f;
 			buildType = StackRouterBuild::new;
 		}};
-		chromiumStackBridge = new StackBridge("chromium-stack-bridge") {{
+		chromiumStackBridge = new RailStackBridge("chromium-stack-bridge") {{
 			requirements(Category.distribution, ItemStack.with(Items.lead, 15, Items.silicon, 12, Items.plastanium, 10, HItems.chromium, 10));
 			health = 420;
 			armor = 4f;
@@ -1428,7 +1437,7 @@ public final class HBlocks {
 			armor = 4f;
 			speed = 2;
 			itemCapacity = 20;
-			liquidCapacity = 64f;
+			liquidCapacity = 200f;
 			underBullets = true;
 			solid = false;
 		}};
@@ -1442,7 +1451,7 @@ public final class HBlocks {
 			((AdaptConveyor) chromiumArmorConveyor).junctionReplacement = this;
 			((TubeConveyor) chromiumTubeConveyor).junctionReplacement = this;
 		}};
-		chromiumItemBridge = new ItemBridge("chromium-item-bridge") {{
+		chromiumItemBridge = new RailItemBridge("chromium-item-bridge") {{
 			requirements(Category.distribution, ItemStack.with(Items.graphite, 6, Items.silicon, 8, Items.plastanium, 4, HItems.chromium, 3));
 			health = 420;
 			armor = 4f;
@@ -1452,7 +1461,6 @@ public final class HBlocks {
 			arrowSpacing = 6;
 			bridgeWidth = 8;
 			buildCostMultiplier = 0.8f;
-			buildType = ItemBridgeBuild::new;
 			((AdaptConveyor) chromiumEfficientConveyor).bridgeReplacement = this;
 			((AdaptConveyor) chromiumArmorConveyor).bridgeReplacement = this;
 			((TubeConveyor) chromiumTubeConveyor).bridgeReplacement = this;
@@ -1588,7 +1596,7 @@ public final class HBlocks {
 				}
 			};
 		}};
-		chromiumLiquidBridge = new LiquidBridge("chromium-liquid-bridge") {{
+		chromiumLiquidBridge = new RailLiquidBridge("chromium-liquid-bridge") {{
 			requirements(Category.liquid, ItemStack.with(Items.metaglass, 10, HItems.chromium, 6));
 			health = 480;
 			armor = 5f;
@@ -1597,7 +1605,6 @@ public final class HBlocks {
 			liquidCapacity = 200f;
 			arrowSpacing = 6;
 			bridgeWidth = 8f;
-			buildType = LiquidBridgeBuild::new;
 			((ArmoredConduit) chromiumArmorConduit).bridgeReplacement = this;
 		}};
 		chromiumArmorLiquidContainer = new LiquidRouter("chromium-armor-liquid-container") {{
@@ -1630,16 +1637,24 @@ public final class HBlocks {
 			hasPower = true;
 			consumePower(1.8f);
 		}};
-		turboPump = new Pump("turbo-pump") {{
-			requirements(Category.liquid, ItemStack.with(Items.titanium, 40, Items.thorium, 50, Items.metaglass, 80, Items.silicon, 60, HItems.chromium, 30));
-			size = 2;
-			consumePower(1.75f);
+		turboPumpSmall = new ConnectedPump("turbo-pump-small") {{
+			requirements(Category.liquid, ItemStack.with(Items.titanium, 12, Items.thorium, 10, Items.metaglass, 20, Items.silicon, 15, HItems.chromium, 10));
+			hasPower = true;
+			conductivePower = true;
 			pumpAmount = 0.8f;
-			liquidCapacity = 200f;
-			squareSprite = false;
-			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawPumpLiquid(), new DrawDefault());
-			buildType = PumpBuild::new;
+			liquidCapacity = 60f;
 			buildCostMultiplier = 0.8f;
+			consumePower(0.4f);
+		}};
+		turboPump = new ConnectedPump("turbo-pump") {{
+			requirements(Category.liquid, ItemStack.mult(turboPumpSmall.requirements, 4f));
+			size = 2;
+			hasPower = true;
+			conductivePower = true;
+			pumpAmount = 0.8f;
+			liquidCapacity = 240f;
+			buildCostMultiplier = 0.8f;
+			consumePower(1.6f);
 		}};
 		phaseLiquidNode = new NodeBridge("phase-liquid-node") {{
 			requirements(Category.liquid, ItemStack.with(Items.metaglass, 20, HItems.chromium, 10, Items.silicon, 15, Items.phaseFabric, 10));
@@ -1787,6 +1802,21 @@ public final class HBlocks {
 			displaySpacing = 18f / 4f;
 			displayLength = 24f / 4f;
 			hideDetails = false;
+		}};
+		largeThermalGenerator = new ThermalGenerator("large-thermal-generator") {{
+			requirements(Category.power, ItemStack.with(Items.graphite, 200, Items.metaglass, 150, Items.silicon, 130, Items.plastanium, 80, Items.surgeAlloy, 30));
+			size = 3;
+			health = 660;
+			buildCostMultiplier = 0.9f;
+			attribute = Attribute.heat;
+			powerProduction = 2.7f;
+			generateEffect = Fx.redgeneratespark;
+			effectChance = 0.08f;
+			drawer = new DrawMulti(new DrawDefault(), new DrawFade() {{
+				scale = 10;
+			}});
+			floating = true;
+			ambientSound = Sounds.hum;
 		}};
 		liquidConsumeGenerator = new ConsumeGenerator("liquid-generator") {{
 			requirements(Category.power, ItemStack.with(Items.graphite, 120, Items.metaglass, 80, Items.silicon, 115));
@@ -2161,7 +2191,7 @@ public final class HBlocks {
 			craftTime = 100f;
 			outputItem = new ItemStack(HItems.crystallineCircuit, 1);
 			craftEffect = Fx.none;
-			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawSpecConstruct(HPal.originiumRed, HPal.originiumRed), new DrawDefault());
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawSpecConstruct(HPal.originiumGreen, HPal.originiumGreen), new DrawDefault());
 			consumePower(2.5f);
 			consumeItems(ItemStack.with(Items.titanium, 2, Items.silicon, 3, HItems.originium, 1));
 			buildType = GenericCrafterBuild::new;
@@ -2177,7 +2207,7 @@ public final class HBlocks {
 			craftTime = 150f;
 			outputItem = new ItemStack(HItems.crystallineCircuit, 12);
 			craftEffect = Fx.none;
-			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.cryofluid), new DrawRegion("-mid"), new DrawSpecConstruct(HPal.originiumRed, HPal.originiumRed), new DrawDefault());
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.cryofluid), new DrawRegion("-mid"), new DrawSpecConstruct(HPal.originiumGreen, HPal.originiumGreen), new DrawDefault());
 			consumePower(25f);
 			consumeLiquid(Liquids.cryofluid, 6f / 60f);
 			consumeItems(ItemStack.with(Items.titanium, 6, Items.silicon, 9, HItems.originium, 3));
@@ -2194,7 +2224,7 @@ public final class HBlocks {
 			itemCapacity = 15;
 			liquidCapacity = 24f;
 			craftTime = 100f;
-			craftEffect = HFx.square(HPal.originiumRedBright, 38, 3, 24, 3.2f);
+			craftEffect = HFx.square(HPal.originiumGreenBright, 38, 3, 24, 3.2f);
 			outputLiquid = new LiquidStack(HLiquids.originiumFluid, 18f / 60f);
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.water), new DrawLiquidTile(HLiquids.originiumFluid), new DrawRotator(1.5f), new DrawDefault(), new DrawRegion("-top"));
 			lightLiquid = HLiquids.originiumFluid;
@@ -2223,7 +2253,7 @@ public final class HBlocks {
 				moveLength = 4.2f;
 				time = 25f;
 			}};
-			clipSize = size * tilesize * 2f;
+			clipSize = size * Vars.tilesize * 2f;
 			consumePower(7f);
 			consumeItems(ItemStack.with(Items.sand, 15, Items.thorium, 5));
 			buildType = GenericCrafterBuild::new;
@@ -2314,47 +2344,35 @@ public final class HBlocks {
 			buildType = GenericCrafterBuild::new;
 			squareSprite = false;
 		}};
-		ironcladCompressor = new MultiCrafter("ironclad-compressor") {{
+		corkscrewCompressor = new AdaptiveCrafter("corkscrew-compressor") {{
 			requirements(Category.crafting, ItemStack.with(Items.titanium, 250, Items.graphite, 210, Items.plastanium, 90, Items.silicon, 80));
 			health = 1800;
-			size = 3;
+			size = 4;
 			itemCapacity = 60;
 			liquidCapacity = 360f;
 			hasItems = true;
 			hasLiquids = true;
 			outputsLiquid = true;
-			useBlockDrawer = false;
-			craftPlans.add(new CraftPlan() {{
-				outputItems = ItemStack.with(Items.graphite, 5);
-				craftTime = 15f;
-				consumeItem(Items.coal, 8);
-				consumeLiquid(Liquids.water, 0.8f);
-				consumePower(3f);
-				drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawDefault(), new DrawRegion("-top-graphite"));
-			}}, new CraftPlan() {{
-				outputLiquids = LiquidStack.with(Liquids.oil, 0.8f);
-				craftTime = 30f;
-				consumeItem(Items.sporePod, 4);
-				consumePower(2.8f);
-				drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawDefault(), new DrawCircles() {{
-					color = Color.valueOf("1d201f").a(0.24f);
-					strokeMax = 2.5f;
-					radius = 30f * 0.25f;
-					amount = 4;
-				}}, new DrawLiquidTile() {{
-					drawLiquid = Liquids.oil;
-					padding = 34 * 0.25f;
-				}}, new DrawRegion("-top-spore"));
-			}}, new CraftPlan() {{
-				outputItems = ItemStack.with(Items.plastanium, 1);
-				craftTime = 15f;
-				consumeItem(Items.titanium, 2);
-				consumeLiquid(Liquids.oil, 1f);
-				consumePower(7f);
-				drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawDefault(), new DrawRegion("-top-plast"), new DrawFade() {{
-					suffix = "-top-plast-top";
-				}});
+			drawer = new DrawMulti(new DrawDefault(), new DrawRegion("-rotator") {{
+				spinSprite = true;
+				rotateSpeed = 1.125f;
 			}});
+			recipes.add(new Recipe() {{
+				outputItem.add(ItemStack.with(Items.graphite, 5));
+				inputItem.add(ItemStack.with(Items.coal, 8));
+				inputLiquid.add(LiquidStack.with(Liquids.water, 0.8f));
+				craftTime = 15f;
+			}}, new Recipe() {{
+				outputLiquid.add(LiquidStack.with(Liquids.oil, 0.8f));
+				inputItem.add(ItemStack.with(Items.sporePod, 4));
+				craftTime = 30f;
+			}}, new Recipe() {{
+				outputItem.add(ItemStack.with(Items.plastanium, 1));
+				inputItem.add(ItemStack.with(Items.titanium, 2));
+				inputLiquid.add(LiquidStack.with(Liquids.oil, 1f));
+				craftTime = 15f;
+			}});
+			consumePower(5.5f);
 		}};
 		originiumHeater = new HeatProducer("originium-heater") {{
 			requirements(Category.crafting, ItemStack.with(Items.graphite, 50, Items.thorium, 30, HItems.originium, 15));
@@ -2733,7 +2751,7 @@ public final class HBlocks {
 			optionalUseTime = 3600;
 			optionalMultiplier = 6;
 			effectChance = 0.5f;
-			effect = WrapperEffect.wrap(HFx.polyParticle, HPal.originiumRed);
+			effect = WrapperEffect.wrap(HFx.polyParticle, HPal.originiumGreen);
 			drawer = new DrawMulti(new DrawDefault(), new DrawPulseShape() {{
 				layer = 110;
 				stroke = 3f;
@@ -2955,46 +2973,6 @@ public final class HBlocks {
 			consumeItems(ItemStack.with(Items.silicon, 1500, HItems.crystallineCircuit, 300, HItems.uranium, 400, HItems.chromium, 500));
 			buildType = ReconstructorBuild::new;
 		}};
-		experimentalUnitFactory = new DerivativeUnitFactory("experimental-unit-factory") {{
-			requirements(Category.units, ItemStack.with(Items.silicon, 2500, Items.plastanium, 1000, Items.surgeAlloy, 1200, HItems.crystallineCircuit, 800, Items.phaseFabric, 1500, HItems.heavyAlloy, 1100));
-			size = 5;
-			liquidCapacity = 60f;
-			floating = true;
-			config(Integer.class, (DerivativeUnitFactoryBuild tile, Integer index) -> {
-				tile.currentPlan = index < 0 || index >= plans.size ? -1 : index;
-				tile.progress = 0f;
-				tile.payload = null;
-			});
-			config(UnitType.class, (DerivativeUnitFactoryBuild tile, UnitType unit) -> {
-				tile.currentPlan = plans.indexOf(p -> p.unit == unit);
-				tile.progress = 0f;
-				tile.payload = null;
-			});
-			consumePower(40f);
-			consumeLiquid(HLiquids.originiumFluid, 0.3f);
-		}
-			@Override
-			public void init() {
-				for (int i = 0; i < content.units().size; i++) {
-					UnitType u = content.unit(i);
-					if (u != null && u.getFirstRequirements() != null) {
-						ItemStack[] is = u.getFirstRequirements();
-						ItemStack[] os = new ItemStack[is.length];
-						for (int a = 0; a < is.length; a++) {
-							os[a] = new ItemStack(is[a].item, is[a].amount >= 40 ? (int) (is[a].amount * (1.0)) : is[a].amount);
-						}
-						float time = 0;
-						if (u.getFirstRequirements().length > 0) {
-							for (ItemStack itemStack : os) {
-								time += itemStack.amount * itemStack.item.cost;
-							}
-						}
-						plans.add(new UnitPlan(u, time * 2, is));
-					}
-				}
-				super.init();
-			}
-		};
 		//unit-erekir
 		largeUnitRepairTower = new RepairTower("large-unit-repair-tower") {{
 			requirements(Category.units, ItemStack.with(Items.graphite, 120, Items.silicon, 150, Items.tungsten, 180, Items.oxide, 60, Items.carbide, 30));
@@ -3439,7 +3417,7 @@ public final class HBlocks {
 							}
 						}
 					});
-					indexer.allBuildings(b.x, b.y, flameLength, other -> {
+					Vars.indexer.allBuildings(b.x, b.y, flameLength, other -> {
 						if (other.team != b.team && Angles.within(b.rotation(), b.angleTo(other), flameCone)) {
 							Fx.hitFlameSmall.at(other);
 							other.damage(damage * buildingDamageMultiplier);
@@ -3793,7 +3771,7 @@ public final class HBlocks {
 					else b.fdata = Math.min(b.fdata, chargeReload + lerpReload / 2f + 1f);
 
 					if (charged(b)) {
-						if (!headless && b.timer(3, 3)) {
+						if (!Vars.headless && b.timer(3, 3)) {
 							PositionLightning.createEffect(b, Tmp.v1.set(b.aimX, b.aimY), getColor(b), 1, 2);
 							if (Mathf.chance(0.25)) HFx.hitSparkLarge.at(b.x, b.y, tmpColor);
 						}
@@ -5008,7 +4986,7 @@ public final class HBlocks {
 						}).group(bg).get();
 						button.changed(() -> {
 							if (button.isChecked()) {
-								if (player.team() == team) {
+								if (Vars.player.team() == team) {
 									configure(bt.id);
 								} else {
 									deselect();
@@ -5041,7 +5019,7 @@ public final class HBlocks {
 		}
 			@Override
 			public boolean canBreak(Tile tile) {
-				return state.teams.cores(tile.team()).size > 1;
+				return Vars.state.teams.cores(tile.team()).size > 1;
 			}
 
 			@Override
@@ -5108,7 +5086,7 @@ public final class HBlocks {
 					}
 
 					if (Mathf.chanceDelta(buildup / shieldHealth * 0.1f)) {
-						Fx.reactorsmoke.at(x + Mathf.range(tilesize / 2), y + Mathf.range(tilesize / 2));
+						Fx.reactorsmoke.at(x + Mathf.range(Vars.tilesize / 2), y + Mathf.range(Vars.tilesize / 2));
 					}
 
 					warmup = Mathf.lerpDelta(warmup, efficiency, 0.1f);
@@ -5525,13 +5503,13 @@ public final class HBlocks {
 					if (value instanceof Number index) {
 						switch (index.intValue()) {
 							case 0 -> {
-								if (net.client()) Call.adminRequest(player, AdminAction.wave, null);
-								else state.wavetime = 0f;
+								if (Vars.net.client()) Call.adminRequest(Vars.player, AdminAction.wave, null);
+								else Vars.state.wavetime = 0f;
 							}
 							case 1 -> {
 								for (int i = 10; i > 0; i--) {
-									if (net.client()) Call.adminRequest(player, AdminAction.wave, null);
-									else logic.runWave();
+									if (Vars.net.client()) Call.adminRequest(Vars.player, AdminAction.wave, null);
+									else Vars.logic.runWave();
 								}
 							}
 						}

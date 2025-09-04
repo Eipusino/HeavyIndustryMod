@@ -1,8 +1,8 @@
 #define HIGHP
 
 //shades of originium-fluid
-#define S1 vec3(97.5, 50.7, 40.1) / 100.0
-#define S2 vec3(100.0, 72.9, 57.3) / 100.0
+#define S1 vec3(49.5, 82.6, 53.4) / 100.0
+#define S2 vec3(58.5, 89.7, 62.4) / 100.0
 #define NSCALE 100.0 / 2.0
 
 uniform sampler2D u_texture;
