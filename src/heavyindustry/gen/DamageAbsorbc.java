@@ -1,0 +1,50 @@
+package heavyindustry.gen;
+
+import arc.math.Mathf;
+import arc.util.Time;
+import heavyindustry.type.unit.BaseUnitType;
+import mindustry.Vars;
+import mindustry.entities.Damage;
+import mindustry.gen.MechUnit;
+import mindustry.gen.Unitc;
+
+public interface DamageAbsorbc extends Unitc {
+	default float realDamage(boolean isStatus, float amount) {
+		return !isStatus && type() instanceof BaseUnitType fu ? amount * Mathf.clamp(1 - fu.absorption) : amount;
+	}
+
+	@Override
+	default void damage(float amount) {
+		damage(false, amount);
+	}
+
+	default void damage(boolean isStatus, float amount) {
+		rawDamage(Damage.applyArmor(realDamage(isStatus, amount), armor()) / healthMultiplier() / Vars.state.rules.unitHealthMultiplier);
+	}
+
+	default void damagePierce(boolean isStatus, float amount, boolean withEffect) {
+		float pre = hitTime();
+		rawDamage(realDamage(isStatus, amount) / healthMultiplier() / Vars.state.rules.unitHealth(team()));
+		if (!withEffect) {
+			hitTime(pre);
+		}
+	}
+
+	@Override
+	default void damageContinuous(float amount) {
+		damageContinuous(false, amount);
+	}
+
+	default void damageContinuous(boolean isStatus, float amount) {
+		damage(realDamage(isStatus, amount) * Time.delta, hitTime() <= -10 + MechUnit.hitDuration);
+	}
+
+	@Override
+	default void damageContinuousPierce(float amount) {
+		damageContinuousPierce(false, amount);
+	}
+
+	default void damageContinuousPierce(boolean isStatus, float amount) {
+		damagePierce(realDamage(isStatus, amount) * Time.delta, hitTime() <= -20 + MechUnit.hitDuration);
+	}
+}

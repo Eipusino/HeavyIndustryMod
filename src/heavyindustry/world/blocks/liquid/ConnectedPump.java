@@ -4,7 +4,6 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
-import arc.util.Log;
 import heavyindustry.util.Sprites;
 import heavyindustry.util.Utils;
 import mindustry.gen.Building;
@@ -80,7 +79,6 @@ public class ConnectedPump extends Pump {
 						Draw.rect(splits[drawIdx[2] + 8], x - 4, y - 4);
 						Draw.rect(splits[drawIdx[3] + 12], x + 4, y - 4);
 					}
-					default -> Log.debug("[ConnectedPump] Unsupported size: @", size);
 				}
 			}
 
@@ -96,11 +94,11 @@ public class ConnectedPump extends Pump {
 
 		@Override
 		public boolean acceptLiquid(Building source, Liquid liquid) {
-			return super.acceptLiquid(source, liquid) || (isValidPump(source) && liquidDrop == liquid);
+			return (hasLiquids && consumesLiquid(liquid)) || (isValidPump(source) && liquidDrop == liquid);
 		}
 
 		public boolean isValidPump(Building b) {
-			return b instanceof ConnectedPumpBuild build && build.team == team;
+			return b instanceof ConnectedPumpBuild && b.team == team;
 		}
 	}
 }

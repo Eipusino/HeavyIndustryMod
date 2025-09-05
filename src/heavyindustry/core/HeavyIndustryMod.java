@@ -29,6 +29,7 @@ import heavyindustry.gen.Entitys;
 import heavyindustry.gen.HIcon;
 import heavyindustry.gen.HMusics;
 import heavyindustry.gen.HSounds;
+import heavyindustry.graphics.MathRenderer;
 import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.util.ReflectImpl;
 import heavyindustry.util.Utils;
@@ -127,6 +128,7 @@ public final class HeavyIndustryMod extends Mod {
 					HTextures.onClient();
 					HShaders.onClient();
 					HCacheLayer.onClient();
+					MathRenderer.onClient();
 
 					HVars.sizedGraphics = new SizedGraphics();
 					HVars.inputAggregator = new InputAggregator();
@@ -146,7 +148,6 @@ public final class HeavyIndustryMod extends Mod {
 			}
 		});
 
-		//IOS does not support rhino js
 		if (!Core.app.isIOS()) {
 			Core.app.post(HScripts::init);
 		}

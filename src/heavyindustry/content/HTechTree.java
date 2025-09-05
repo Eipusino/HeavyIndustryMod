@@ -140,7 +140,7 @@ public final class HTechTree {
 			node(liquidValve);
 		});
 		vanillaNode(liquidContainer, () -> node(liquidUnloader));
-		vanillaNode(impulsePump, () -> node(turboPump));
+		vanillaNode(impulsePump, () -> node(turboPumpSmall, () -> node(turboPump)));
 		vanillaNode(phaseConduit, () -> node(phaseLiquidNode));
 		vanillaNode(platedConduit, () -> node(chromiumArmorConduit, () -> {
 			node(chromiumLiquidBridge);
@@ -380,20 +380,20 @@ public final class HTechTree {
 
 	// -----legacy-addToResearch-----
 
-	public static void research(UnlockableContent content, UnlockableContent parentContent) {
-		research(content, parentContent, ItemStack.empty, Seq.with());
+	public static TechNode research(UnlockableContent content, UnlockableContent parentContent) {
+		return research(content, parentContent, ItemStack.empty, Seq.with());
 	}
 
-	public static void research(UnlockableContent content, UnlockableContent parentContent, Seq<Objective> objectives) {
-		research(content, parentContent, ItemStack.empty, objectives);
+	public static TechNode research(UnlockableContent content, UnlockableContent parentContent, Seq<Objective> objectives) {
+		return research(content, parentContent, ItemStack.empty, objectives);
 	}
 
-	public static void research(UnlockableContent content, UnlockableContent parentContent, ItemStack[] customRequirements) {
-		research(content, parentContent, customRequirements, Seq.with());
+	public static TechNode research(UnlockableContent content, UnlockableContent parentContent, ItemStack[] customRequirements) {
+		return research(content, parentContent, customRequirements, Seq.with());
 	}
 
-	public static void research(UnlockableContent content, UnlockableContent parentContent, ItemStack[] customRequirements, Seq<Objective> objectives) {
-		if (content == null || parentContent == null) return;
+	public static TechNode research(UnlockableContent content, UnlockableContent parentContent, ItemStack[] customRequirements, Seq<Objective> objectives) {
+		if (content == null || parentContent == null) return null;
 
 		TechNode lastNode = TechTree.all.find(t -> t.content == content);
 		if (lastNode != null) {
@@ -413,7 +413,7 @@ public final class HTechTree {
 		// find parent node.
 		TechNode parent = TechTree.all.find(t -> t.content == parentContent);
 
-		if (parent == null) return;
+		if (parent == null) return null;
 
 		// add this node to the parent
 		if (!parent.children.contains(node)) {
@@ -421,5 +421,7 @@ public final class HTechTree {
 		}
 		// reparent the node
 		node.parent = parent;
+
+		return parent;
 	}
 }

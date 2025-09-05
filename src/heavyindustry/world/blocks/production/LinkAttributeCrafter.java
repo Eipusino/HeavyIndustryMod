@@ -164,9 +164,7 @@ public class LinkAttributeCrafter extends AttributeCrafter implements MultiBlock
 
 	@Override
 	protected void initBuilding() {
-		if (buildType == null) {
-			buildType = LinkAttributeCrafterBuild::new;
-		}
+		if (buildType == null) buildType = LinkAttributeCrafterBuild::new;
 	}
 
 	public class LinkAttributeCrafterBuild extends AttributeCrafterBuild implements MultiBuild {

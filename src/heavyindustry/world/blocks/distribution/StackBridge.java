@@ -36,10 +36,15 @@ public class StackBridge extends ItemBridge {
 
 		@Override
 		public void updateTransport(Building other) {
-			if (lastItem != null && items.total() >= block.itemCapacity && other instanceof StackBridgeBuild ot && ot.team == team && ot.items.total() < block.itemCapacity) {
-				ot.amount = items.total();
-				ot.items.add(lastItem, ot.amount);
-				items.clear();
+			transportCounter += edelta();
+
+			while (transportCounter >= transportTime) {
+				if (lastItem != null && items.total() >= itemCapacity && other instanceof StackBridgeBuild ot && ot.team == team && ot.items.total() < itemCapacity) {
+					ot.amount = items.total();
+					ot.items.add(lastItem, ot.amount);
+					items.clear();
+				}
+				transportCounter -= transportTime;
 			}
 		}
 

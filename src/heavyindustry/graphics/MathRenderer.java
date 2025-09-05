@@ -44,19 +44,17 @@ public final class MathRenderer {
 		return blank;
 	}
 
-	public static void load() {
+	public static void onClient() {
 		sinShader = new MathShader(1, 2,
 				"y - sin(x * arg0 + arg1)",
 				"sqrt(1.0 + pow(arg0 * cos(x * arg0 + arg1), 2.0))",
 				"float", "float"
 		);
-
 		ovalShader = new MathShader(
 				"x * x * arg0 + y * y * arg1 - arg2",
 				"sqrt(4.0 * pow(arg0 * x, 2.0) + 4.0 * pow(arg1 * y, 2.0))",
 				"float", "float", "float"
 		);
-
 		curveCircle = new MathShader(
 				"float arctan = arg2 * atan(y / x);\nfloat costan = cos(arctan);", 2, 2,
 				"x * x + y * y - arg0 - arg1 * sin(arctan)",
@@ -154,7 +152,7 @@ public final class MathRenderer {
 					in vec4 a_position;
 					in vec2 a_texCoord0;
 					in vec4 a_color;
-				
+					
 					out vec4 v_color;
 					out vec2 v_texCoords;
 					
@@ -196,7 +194,7 @@ public final class MathRenderer {
 						float gradMod = %gradMod%;
 						float alpha = dispersion * gradMod / (abs(%fx%) + dispersion * gradMod);
 					
-						alpha = max(min((alpha - minThreshold)/(maxThreshold - minThreshold), 1.0), 0.0) * mixed.a;
+						alpha = max(min((alpha - minThreshold) / (maxThreshold - minThreshold), 1.0), 0.0) * mixed.a;
 					
 						fragColor = vec4(mixed.r, mixed.g, mixed.b, alpha);
 					}
@@ -215,6 +213,7 @@ public final class MathRenderer {
 
 		public MathShader(String perVar, float widthScl, float heightScl, String func, String gradMod, String... argTypes) {
 			super(vert, genFrag(perVar, widthScl, heightScl, func, gradMod, argTypes));
+
 			function = func;
 			argsArr = new Object[argTypes.length];
 		}
@@ -276,7 +275,7 @@ public final class MathRenderer {
 				} else if (o instanceof Mat m) {
 					setUniformMatrix("arg" + i, m);
 				} else {
-					throw new IllegalArgumentException("invalid type: " + o.getClass());
+					arc.util.Log.err(new IllegalArgumentException("invalid type: " + o.getClass()));
 				}
 			}
 		}

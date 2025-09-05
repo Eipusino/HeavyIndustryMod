@@ -238,6 +238,7 @@ import heavyindustry.world.blocks.power.TileGenerator;
 import heavyindustry.world.blocks.power.WindGenerator;
 import heavyindustry.world.blocks.production.AccelerationCrafter;
 import heavyindustry.world.blocks.production.AdaptiveCrafter;
+import heavyindustry.world.blocks.production.ArcCrafter;
 import heavyindustry.world.blocks.production.AttributeGenerator;
 import heavyindustry.world.blocks.production.AugerDrill;
 import heavyindustry.world.blocks.production.AugerSoildPump;
@@ -741,6 +742,8 @@ final class HClassMap {
 		classes.put("GeneratorCrafterBuild", GeneratorCrafter.GeneratorCrafterBuild.class);
 		classes.put("AttributeGenerator", AttributeGenerator.class);
 		classes.put("AttributeGeneratorBuild", AttributeGenerator.AttributeGeneratorBuild.class);
+		classes.put("ArcCrafter", ArcCrafter.class);
+		classes.put("ArcCrafterBuild", ArcCrafter.ArcCrafterBuild.class);
 		classes.put("ColiderCrafter", ColiderCrafter.class);
 		classes.put("ColiderCrafterBuild", ColiderCrafter.ColiderCrafterBuild.class);
 		classes.put("FilterCrafter", FilterCrafter.class);

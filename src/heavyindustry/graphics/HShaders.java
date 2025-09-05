@@ -65,7 +65,7 @@ public final class HShaders {
 
 		brine = new Gl30SurfaceShader("general-highp", "brine");
 		originiumFluid = new Gl30SurfaceShader("general-highp", "originium-fluid");
-		deepOriginiumFluid = new BaseSurfaceShader("general-highp", "deep-originium-fluid") {
+		deepOriginiumFluid = new DualSurfaceShader("general-highp", "deep-originium-fluid") {
 			@Override
 			public void loadNoise() {
 				super.loadNoise();
@@ -547,10 +547,10 @@ public final class HShaders {
 		}
 	}
 
-	public static class BaseSurfaceShader extends Gl30SurfaceShader {
+	public static class DualSurfaceShader extends Gl30SurfaceShader {
 		protected Texture noiseTex2;
 
-		public BaseSurfaceShader(String vertex, String fragment) {
+		public DualSurfaceShader(String vertex, String fragment) {
 			super(vertex, fragment);
 		}
 

@@ -294,7 +294,7 @@ public final class HBlocks {
 			mycelium, myceliumSpore, myceliumShrubs, myceliumPine,
 			softRareEarth, patternRareEarth, softRareEarthWall,
 			originiumCrystals,
-			oreOriginium, oreUranium, oreChromium,
+			oreSilicon, oreOriginium, oreUranium, oreChromium,
 	//wall
 	copperWallHuge, copperWallGigantic, armoredWall, armoredWallLarge, armoredWallHuge, armoredWallGigantic, titaniumWallHuge, titaniumWallGigantic, doorHuge, doorGigantic,
 			plastaniumWallHuge, plastaniumWallGigantic, thoriumWallHuge, thoriumWallGigantic, phaseWallHuge, phaseWallGigantic, surgeWallHuge, surgeWallGigantic,
@@ -688,6 +688,9 @@ public final class HBlocks {
 			clipSize = 128f;
 			itemDrop = HItems.originium;
 		}};
+		oreSilicon = new OreBlock("ore-silicon", Items.silicon) {{
+			variants = 3;
+		}};
 		oreOriginium = new OreBlock("ore-originium", HItems.originium) {{
 			variants = 3;
 		}};
@@ -852,7 +855,7 @@ public final class HBlocks {
 			requirements(Category.defense, ItemStack.with(HItems.uranium, 6));
 			size = 1;
 			health = 1680;
-			armor = 24f;
+			armor = 26f;
 			absorbLasers = true;
 			crushDamageMultiplier = 0.8f;
 			buildType = WallBuild::new;
@@ -861,7 +864,7 @@ public final class HBlocks {
 			requirements(Category.defense, ItemStack.mult(uraniumWall.requirements, 4));
 			size = 2;
 			health = 6720;
-			armor = 24f;
+			armor = 26f;
 			absorbLasers = true;
 			crushDamageMultiplier = 0.8f;
 			buildType = WallBuild::new;
@@ -870,7 +873,7 @@ public final class HBlocks {
 			requirements(Category.defense, ItemStack.with(HItems.chromium, 6));
 			size = 1;
 			health = 1770;
-			armor = 36f;
+			armor = 40f;
 			absorbLasers = true;
 			crushDamageMultiplier = 0.7f;
 			buildType = WallBuild::new;
@@ -879,7 +882,7 @@ public final class HBlocks {
 			requirements(Category.defense, ItemStack.mult(chromiumWall.requirements, 4));
 			size = 2;
 			health = 7080;
-			armor = 36f;
+			armor = 40f;
 			absorbLasers = true;
 			crushDamageMultiplier = 0.7f;
 			buildType = WallBuild::new;
@@ -888,7 +891,7 @@ public final class HBlocks {
 			requirements(Category.defense, ItemStack.with(HItems.chromium, 6, Items.silicon, 4));
 			size = 1;
 			health = 1770;
-			armor = 36f;
+			armor = 40f;
 			absorbLasers = true;
 			crushDamageMultiplier = 0.7f;
 			buildType = AutoDoorBuild::new;
@@ -897,7 +900,7 @@ public final class HBlocks {
 			requirements(Category.defense, ItemStack.mult(chromiumDoor.requirements, 4));
 			size = 2;
 			health = 7080;
-			armor = 36f;
+			armor = 40f;
 			absorbLasers = true;
 			crushDamageMultiplier = 0.7f;
 			buildType = AutoDoorBuild::new;
@@ -906,7 +909,7 @@ public final class HBlocks {
 			requirements(Category.defense, ItemStack.with(HItems.heavyAlloy, 6, Items.metaglass, 3, Items.plastanium, 4));
 			size = 1;
 			health = 3220;
-			armor = 48f;
+			armor = 60f;
 			absorbLasers = insulated = true;
 			crushDamageMultiplier = 0.5f;
 			buildType = WallBuild::new;
@@ -916,7 +919,7 @@ public final class HBlocks {
 			requirements(Category.defense, ItemStack.mult(heavyAlloyWall.requirements, 4));
 			size = 2;
 			health = 12880;
-			armor = 48f;
+			armor = 60f;
 			absorbLasers = insulated = true;
 			crushDamageMultiplier = 0.5f;
 			buildType = WallBuild::new;
@@ -926,7 +929,7 @@ public final class HBlocks {
 			requirements(Category.defense, ItemStack.with(HItems.crystallineCircuit, 2, HItems.heavyAlloy, 6, Items.metaglass, 1, Items.plastanium, 4));
 			size = 1;
 			health = 2680;
-			armor = 42f;
+			armor = 52f;
 			absorbLasers = insulated = true;
 			crushDamageMultiplier = 0.5f;
 			healPercent = 3f / 60f;
@@ -938,7 +941,7 @@ public final class HBlocks {
 			requirements(Category.defense, ItemStack.mult(compositeWall.requirements, 4));
 			size = 2;
 			health = 10720;
-			armor = 42f;
+			armor = 52f;
 			absorbLasers = insulated = true;
 			crushDamageMultiplier = 0.5f;
 			healPercent = 3f / 60f;
@@ -1357,9 +1360,11 @@ public final class HBlocks {
 		plastaniumBridge = new StackBridge("plastanium-bridge") {{
 			requirements(Category.distribution, ItemStack.with(Items.lead, 15, Items.silicon, 12, Items.titanium, 15, Items.plastanium, 10));
 			health = 90;
+			hasPower = false;
 			itemCapacity = 10;
 			range = 6;
 			bridgeWidth = 8f;
+			transportTime = 10f;
 		}};
 		stackHelper = new StackHelper("stack-helper") {{
 			requirements(Category.distribution, ItemStack.with(Items.silicon, 20, Items.phaseFabric, 10, Items.plastanium, 20));
@@ -1426,10 +1431,12 @@ public final class HBlocks {
 			requirements(Category.distribution, ItemStack.with(Items.lead, 15, Items.silicon, 12, Items.plastanium, 10, HItems.chromium, 10));
 			health = 420;
 			armor = 4f;
+			hasPower = false;
 			itemCapacity = 20;
 			range = 8;
 			bridgeWidth = 8f;
 			buildCostMultiplier = 0.6f;
+			transportTime = 6f;
 		}};
 		chromiumRouter = new MultiRouter("chromium-router") {{
 			requirements(Category.distribution, ItemStack.with(Items.copper, 3, HItems.chromium, 2));
@@ -1642,7 +1649,7 @@ public final class HBlocks {
 			hasPower = true;
 			conductivePower = true;
 			pumpAmount = 0.8f;
-			liquidCapacity = 60f;
+			liquidCapacity = 120f;
 			buildCostMultiplier = 0.8f;
 			consumePower(0.4f);
 		}};
@@ -1652,7 +1659,7 @@ public final class HBlocks {
 			hasPower = true;
 			conductivePower = true;
 			pumpAmount = 0.8f;
-			liquidCapacity = 240f;
+			liquidCapacity = 480f;
 			buildCostMultiplier = 0.8f;
 			consumePower(1.6f);
 		}};

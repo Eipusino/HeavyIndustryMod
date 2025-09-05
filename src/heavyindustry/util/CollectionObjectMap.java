@@ -17,7 +17,7 @@ import java.util.Set;
 public class CollectionObjectMap<K, V> implements Map<K, V> {
 	protected ObjectMap<K, V> map;
 
-	private final Set<K> keys = new AbstractSet<>() {
+	protected final Set<K> keys = new AbstractSet<>() {
 		@Override
 		public int size() {
 			return map.size;
@@ -54,7 +54,7 @@ public class CollectionObjectMap<K, V> implements Map<K, V> {
 		}
 	};
 
-	private final Collection<V> values = new AbstractCollection<>() {
+	protected final Collection<V> values = new AbstractCollection<>() {
 		@Override
 		public Iterator<V> iterator() {
 			return map.values();
@@ -86,9 +86,9 @@ public class CollectionObjectMap<K, V> implements Map<K, V> {
 		}
 	};
 
-	private final Set<Entry<K, V>> entrySet = new AbstractSet<>() {
-		private final Itr itr = new Itr();
-		private final CollEnt ent = new CollEnt();
+	protected final Set<Entry<K, V>> entrySet = new AbstractSet<>() {
+		public final Itr itr = new Itr();
+		public final CollEnt ent = new CollEnt();
 
 		@Override
 		public int size() {
@@ -108,10 +108,11 @@ public class CollectionObjectMap<K, V> implements Map<K, V> {
 
 		@Override
 		public boolean contains(Object o) {
-			if (!(o instanceof Map.Entry<?, ?> e))
-				return false;
-			Object key = e.getKey();
-			return containsKey(key);
+			if (o instanceof Map.Entry<?, ?> e) {
+				Object key = e.getKey();
+				return containsKey(key);
+			}
+			return false;
 		}
 
 		@Override

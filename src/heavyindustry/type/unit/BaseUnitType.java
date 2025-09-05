@@ -1,13 +1,11 @@
 package heavyindustry.type.unit;
 
 import arc.Core;
-import arc.util.Nullable;
 import arc.util.Strings;
 import heavyindustry.gen.BaseUnit;
 import heavyindustry.world.meta.HStat;
 import mindustry.ai.types.MissileAI;
 import mindustry.content.Items;
-import mindustry.entities.bullet.BulletType;
 import mindustry.gen.EntityMapping;
 import mindustry.gen.Entityc;
 import mindustry.gen.Sounds;
@@ -18,9 +16,8 @@ import mindustry.type.ammo.ItemAmmoType;
 import mindustry.world.meta.Env;
 
 public class BaseUnitType extends UnitType {
-	public @Nullable BulletType destroyBullet;
-
 	public float damageMultiplier = 1f;
+	public float absorption = 0f;
 
 	public BaseUnitType(String name) {
 		super(name);

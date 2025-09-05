@@ -58,6 +58,7 @@ public final class Entitys {
 		register("BaseBuildingTetherLegsUnit", BaseBuildingTetherLegsUnit.class, BaseBuildingTetherLegsUnit::new);
 		register("BaseCrawlUnit", BaseCrawlUnit.class, BaseCrawlUnit::new);
 		register("ChainedChainMechUnit", ChainedChainMechUnit.class, ChainedChainMechUnit::new);
+		register("DamageAbsorbMechUnit", DamageAbsorbMechUnit.class, DamageAbsorbMechUnit::new);
 		register("TractorBeamUnit", TractorBeamUnit.class, TractorBeamUnit::new);
 		register("OrnitopterUnit", OrnitopterUnit.class, OrnitopterUnit::new);
 		register("CopterUnit", CopterUnit.class, CopterUnit::new);

@@ -1,5 +1,5 @@
 package heavyindustry.func;
 
-public interface Doublet {
+public interface DoubleDoublef {
 	double get(double value);
 }

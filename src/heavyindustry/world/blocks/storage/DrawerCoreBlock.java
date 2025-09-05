@@ -28,9 +28,7 @@ public class DrawerCoreBlock extends CoreBlock {
 
 	@Override
 	protected void initBuilding() {
-		if (buildType == null) {
-			buildType = DrawerCoreBuild::new;
-		}
+		if (buildType == null) buildType = DrawerCoreBuild::new;
 	}
 
 	public class DrawerCoreBuild extends CoreBuild {

@@ -62,8 +62,10 @@ public interface MultiBlock {
 			Point2 rotated = calculateRotatedPosition(p, size, s, tile.build.rotation);
 			Tile t = Vars.world.tile(tile.x + rotated.x, tile.y + rotated.y);
 			t.setBlock(HBlocks.placeholderBlock[s - 1], tile.team(), 0);
-			PlaceholderBlock.PlaceholderBuild b = (PlaceholderBlock.PlaceholderBuild) t.build;
-			b.updateLink(tile);
+
+			if (t.build instanceof PlaceholderBlock.PlaceholderBuild b) {
+				b.updateLink(tile);
+			}
 		}
 	}
 

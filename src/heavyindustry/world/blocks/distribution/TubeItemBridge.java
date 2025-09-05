@@ -56,6 +56,7 @@ public class TubeItemBridge extends ItemBridge {
 		hasPower = false;
 		canOverdrive = true;
 		swapDiagonalPlacement = true;
+
 		configClear((TubeItemBridgeBuild tile) -> tile.link = -1);
 	}
 
@@ -160,11 +161,6 @@ public class TubeItemBridge extends ItemBridge {
 		Draw.reset();
 	}
 
-	@Override
-	public TextureRegion[] getGeneratedIcons() {
-		return super.getGeneratedIcons();
-	}
-
 	/** Change its connection method to range connection. */
 	@Override
 	public boolean linkValid(Tile tile, Tile other) {
@@ -207,7 +203,6 @@ public class TubeItemBridge extends ItemBridge {
 					if (!positionsValid(tile.x, tile.y, other.x, other.y)) break check;
 					boolean b3 = other.team() == tile.team() || tile.block() != this;
 					if (other.block() == this) {
-						other.block();
 						boolean b4 = !checkDouble || !(other.build instanceof ItemBridgeBuild b && b.link == tile.pos());
 						return b2 && b3 && b4;
 					} else {

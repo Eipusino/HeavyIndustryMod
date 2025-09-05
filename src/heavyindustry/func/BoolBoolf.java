@@ -1,5 +1,5 @@
 package heavyindustry.func;
 
-public interface Boolt {
+public interface BoolBoolf {
 	boolean get(boolean value);
 }

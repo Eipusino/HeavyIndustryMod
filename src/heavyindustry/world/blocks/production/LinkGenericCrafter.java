@@ -142,9 +142,7 @@ public class LinkGenericCrafter extends GenericCrafter implements MultiBlock {
 
 	@Override
 	protected void initBuilding() {
-		if (buildType == null) {
-			buildType = LinkGenericCrafterBuild::new;
-		}
+		if (buildType == null) buildType = LinkGenericCrafterBuild::new;
 	}
 
 	public class LinkGenericCrafterBuild extends GenericCrafterBuild implements MultiBuild {

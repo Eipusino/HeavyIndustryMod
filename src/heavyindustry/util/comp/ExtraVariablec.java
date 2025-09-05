@@ -1,14 +1,14 @@
 package heavyindustry.util.comp;
 
 import arc.func.Boolp;
+import arc.func.FloatFloatf;
 import arc.func.Floatp;
 import arc.func.Func;
 import arc.func.Intp;
 import arc.func.Prov;
-import heavyindustry.func.Boolt;
+import heavyindustry.func.BoolBoolf;
 import heavyindustry.func.Doublep;
-import heavyindustry.func.Doublet;
-import heavyindustry.func.Floatt;
+import heavyindustry.func.DoubleDoublef;
 import heavyindustry.func.Intt;
 import heavyindustry.func.Longp;
 import heavyindustry.func.Longt;
@@ -190,7 +190,7 @@ public interface ExtraVariablec {
 	 * @throws ClassCastException If the variable already exists and is not a boolean wrapper type or atomized reference
 	 * @see ExtraVariablec#handleVar(String, Func, Object)
 	 */
-	default boolean handleVar(String field, Boolt handle, boolean def) {
+	default boolean handleVar(String field, BoolBoolf handle, boolean def) {
 		boolean b;
 		setVar(field, b = handle.get(getVar(field, def)));
 
@@ -409,7 +409,7 @@ public interface ExtraVariablec {
 	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or a single element float array
 	 * @see ExtraVariablec#handleVar(String, Func, Object)
 	 */
-	default float handleVar(String field, Floatt handle, float def) {
+	default float handleVar(String field, FloatFloatf handle, float def) {
 		float trans;
 		setVar(field, trans = handle.get(getVar(field, def)));
 
@@ -482,7 +482,7 @@ public interface ExtraVariablec {
 	 * @throws ClassCastException If the variable already exists and is not a double wrapper type or a single element double array
 	 * @see ExtraVariablec#handleVar(String, Func, Object)
 	 */
-	default double handleVar(String field, Doublet handle, double def) {
+	default double handleVar(String field, DoubleDoublef handle, double def) {
 		double d;
 		setVar(field, d = handle.get(getVar(field, def)));
 
