@@ -320,16 +320,6 @@ public final class HTrails {
 		}
 
 		@Override
-		public float width() {
-			return lastW;
-		}
-
-		@Override
-		public void clear() {
-			points.clear();
-		}
-
-		@Override
 		public int size() {
 			return points.size / 4;
 		}

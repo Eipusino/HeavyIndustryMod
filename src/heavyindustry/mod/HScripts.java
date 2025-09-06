@@ -28,12 +28,14 @@ public final class HScripts {
 	/** Don't let anyone instantiate this class. */
 	private HScripts() {}
 
-	/** Initializes the Mod JS. Main-thread only! */
+	/** Initializes the Mod JS. */
 	public static void init() {
-		try {//declare heavy-industry java script APIs
-			importDefaults((ImporterTopLevel) Vars.mods.getScripts().scope);
-		} catch (Exception e) {
-			Log.err("js initial error, stack trace", e);
+		try {
+			if (Vars.mods.getScripts().scope instanceof ImporterTopLevel imp) {
+				importDefaults(imp);
+			}
+		} catch (Throwable e) {
+			Log.err(e);
 		}
 	}
 
@@ -43,7 +45,9 @@ public final class HScripts {
 	 *			  another custom scope.
 	 */
 	public static void importDefaults(ImporterTopLevel scope) {
-		for (String pack : HVars.packages) importPackage(scope, pack);
+		for (String pack : HVars.packages) {
+			importPackage(scope, pack);
+		}
 	}
 
 	/**
@@ -64,7 +68,11 @@ public final class HScripts {
 	}
 
 	public static void importClass(ImporterTopLevel scope, String canonical) {
-		importClass(scope, Reflects.findClass(canonical, true));
+		try {
+			importClass(scope, Class.forName(canonical));
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static void importClass(ImporterTopLevel scope, Class<?> type) {

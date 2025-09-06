@@ -175,28 +175,6 @@ public final class Unsafer {
 				unsafe.getLong(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
-	public static char getChar(Class<?> type, String name, Object object) {
-		try {
-			return getChar(type.getDeclaredField(name), object);
-		} catch (NoSuchFieldException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static char getChar(Field field, Object object) {
-		if (field.getType() != char.class) throw new IllegalArgumentException("Method 'getChar' does not support field other than char types");
-
-		int modifiers = field.getModifiers();
-		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
-
-		Class<?> type = field.getDeclaringClass();
-
-		return Modifier.isVolatile(modifiers) ?
-				unsafe.getCharVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
-				unsafe.getChar(isStatic ? type : requireNonNullInstance(type, object), offset);
-	}
-
 	public static float getFloat(Class<?> type, String name, Object object) {
 		try {
 			return getFloat(type.getDeclaredField(name), object);
@@ -239,6 +217,28 @@ public final class Unsafer {
 		return Modifier.isVolatile(modifiers) ?
 				unsafe.getDoubleVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
 				unsafe.getDouble(isStatic ? type : requireNonNullInstance(type, object), offset);
+	}
+
+	public static char getChar(Class<?> type, String name, Object object) {
+		try {
+			return getChar(type.getDeclaredField(name), object);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static char getChar(Field field, Object object) {
+		if (field.getType() != char.class) throw new IllegalArgumentException("Method 'getChar' does not support field other than char types");
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		return Modifier.isVolatile(modifiers) ?
+				unsafe.getCharVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				unsafe.getChar(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
 	public static void setObject(Class<?> type, String name, Object object, Object value) {
@@ -394,30 +394,6 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setChar(Class<?> type, String name, Object object, char value) {
-		try {
-			setChar(type.getDeclaredField(name), object, value);
-		} catch (NoSuchFieldException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void setChar(Field field, Object object, char value) {
-		if (field.getType() != char.class) throw new IllegalArgumentException("Method 'setChar' does not support field other than char types");
-
-		int modifiers = field.getModifiers();
-		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
-
-		Class<?> type = field.getDeclaringClass();
-
-		if (Modifier.isVolatile(modifiers)) {
-			unsafe.putCharVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
-		} else {
-			unsafe.putChar(isStatic ? type : requireNonNullInstance(type, object), offset, value);
-		}
-	}
-
 	public static void setFloat(Class<?> type, String name, Object object, float value) {
 		try {
 			setFloat(type.getDeclaredField(name), object, value);
@@ -463,6 +439,30 @@ public final class Unsafer {
 			unsafe.putDoubleVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		} else {
 			unsafe.putDouble(isStatic ? type : requireNonNullInstance(type, object), offset, value);
+		}
+	}
+
+	public static void setChar(Class<?> type, String name, Object object, char value) {
+		try {
+			setChar(type.getDeclaredField(name), object, value);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void setChar(Field field, Object object, char value) {
+		if (field.getType() != char.class) throw new IllegalArgumentException("Method 'setChar' does not support field other than char types");
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		if (Modifier.isVolatile(modifiers)) {
+			unsafe.putCharVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
+		} else {
+			unsafe.putChar(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		}
 	}
 

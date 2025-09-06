@@ -12,24 +12,17 @@ import mindustry.gen.Bullet;
 import mindustry.graphics.Drawf;
 
 public class LightningLaserBulletType extends LaserBulletType {
-	public boolean drawLine = false;
+	public boolean drawLightning = false;
 	public int boltNum = 2;
 	public float liWidth = PositionLightning.WIDTH - 1f;
-
-	public LightningLaserBulletType(float damage) {
-		super(damage);
-	}
-
-	public LightningLaserBulletType() {
-		super();
-	}
 
 	@Override
 	public void init(Bullet b) {
 		super.init(b);
-		PositionLightning.createEffect(b, b.fdata * 0.95f, b.rotation(), hitColor, boltNum, liWidth);
+		if (drawLightning) PositionLightning.createEffect(b, b.fdata * 0.95f, b.rotation(), hitColor, boltNum, liWidth);
 	}
 
+	//same with LaserBulletType, removed Lines.lineAngle(b.x, b.y, b.rotation(), baseLen);
 	@Override
 	public void draw(Bullet b) {
 		float realLength = b.fdata;
@@ -39,13 +32,13 @@ public class LightningLaserBulletType extends LaserBulletType {
 		float cwidth = width;
 		float compound = 1f;
 
-		if (drawLine) Lines.lineAngle(b.x, b.y, b.rotation(), baseLen);
+		if (!drawLightning) Lines.lineAngle(b.x, b.y, b.rotation(), baseLen);
 		for (Color color : colors) {
 			Draw.color(color);
 			Lines.stroke((cwidth *= lengthFalloff) * b.fout());
 			Lines.lineAngle(b.x, b.y, b.rotation(), baseLen, false);
 			Tmp.v1.trns(b.rotation(), baseLen);
-			Drawf.tri(b.x + Tmp.v1.x, b.y + Tmp.v1.y, Lines.getStroke() * 1.22f, cwidth * 2f + width / 2f, b.rotation());
+			Drawf.tri(b.x + Tmp.v1.x, b.y + Tmp.v1.y, Lines.getStroke(), cwidth * 2f + width / 2f, b.rotation());
 
 			Fill.circle(b.x, b.y, 1f * cwidth * b.fout());
 			for (int i : Mathf.signs) {

@@ -41,7 +41,7 @@ public class TypeListPlugin implements Plugin {
 						@Override
 						public Void visitVariable(VariableTree node, Void unused) {
 							ExpressionTree init = node.getInitializer();
-							if (init != null && init.toString().startsWith("with(")) {
+							if (init != null && init.toString().contains("(")) {
 								if (node.getModifiers().getAnnotations().stream().anyMatch(a -> a.getAnnotationType().toString().equals(ListClasses.class.getSimpleName()))) {
 									classes.add((JCMethodInvocation) init);
 								} else if (node.getModifiers().getAnnotations().stream().anyMatch(a -> a.getAnnotationType().toString().equals(ListPackages.class.getSimpleName()))) {

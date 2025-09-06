@@ -38,15 +38,11 @@ public class BombLauncher extends CommandableAttackerBlock {
 
 	public BombLauncher(String name) {
 		super(name);
+
 		storage = 4;
 		range = 800f;
 		spread = 80f;
 		prepareDelay = 30f;
-	}
-
-	@Override
-	public void setStats() {
-		super.setStats();
 	}
 
 	@Override

@@ -30,9 +30,9 @@ public final class HVars {
 	public static final String LINK_GIT_HUB = "https://github.com/Eipusino/HeavyIndustryMod";
 
 	/** Lists all the mod's classes by their canonical names. Generated at compile-time. */
-	public static final @ListClasses String[] classes = with();
+	public static final @ListClasses String[] classes = of();
 	/** Lists all the mod's packages by their canonical names. Generated at compile-time. */
-	public static final @ListPackages String[] packages = with();
+	public static final @ListPackages String[] packages = of();
 
 	public static ReflectImpl reflectImpl;
 
@@ -83,7 +83,7 @@ public final class HVars {
 		root.children.each(HVars::resetTree);
 	}
 
-	static String[] with(String... arg) {
+	public static String[] of(String... arg) {
 		return arg;
 	}
 }

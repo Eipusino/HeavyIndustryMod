@@ -41,7 +41,6 @@ import arc.util.Nullable;
 import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
-import heavyindustry.ui.dialogs.FlowrateVoidDialog;
 import heavyindustry.ui.dialogs.GameDataDialog;
 import heavyindustry.ui.dialogs.PowerGraphInfoDialog;
 import mindustry.Vars;
@@ -68,7 +67,6 @@ public final class Elements {
 
 	public static PowerGraphInfoDialog powerInfoDialog;
 	public static GameDataDialog gameDataDialog;
-	public static FlowrateVoidDialog flowrateVoidDialog;
 
 	private static final Vec2 ctrlVec = new Vec2();
 	private static final Vec2 point = new Vec2(-1, -1);
@@ -90,7 +88,6 @@ public final class Elements {
 		powerInfoDialog = new PowerGraphInfoDialog();
 
 		gameDataDialog = new GameDataDialog();
-		flowrateVoidDialog = new FlowrateVoidDialog();
 	}
 
 	/** Based on {@link UI#formatAmount(long)} but for floats. */

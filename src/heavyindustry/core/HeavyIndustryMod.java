@@ -148,9 +148,7 @@ public final class HeavyIndustryMod extends Mod {
 			}
 		});
 
-		if (!Core.app.isIOS()) {
-			Core.app.post(HScripts::init);
-		}
+		Core.app.post(HScripts::init);
 	}
 
 	@Override
@@ -191,19 +189,19 @@ public final class HeavyIndustryMod extends Mod {
 		if (Vars.ui != null) {
 			if (Vars.ui.settings != null) {
 				//add heavy-industry settings
-				Vars.ui.settings.addCategory(Core.bundle.format("hi-settings"), HIcon.reactionIcon, t -> {
-					t.checkPref("hi-closed-dialog", false);
-					t.checkPref("hi-floating-text", true);
-					t.checkPref("hi-animated-shields", true);
-					t.sliderPref("hi-strobe-speed", 3, 1, 20, 1, s -> Strings.autoFixed(s / 2f, 2));
-					t.pref(new Setting(Core.bundle.get("hi-game-data")) {
+				Vars.ui.settings.addCategory(Core.bundle.format("hi-settings"), HIcon.reactionIcon, table -> {
+					table.checkPref("hi-closed-dialog", false);
+					table.checkPref("hi-floating-text", true);
+					table.checkPref("hi-animated-shields", true);
+					table.sliderPref("hi-strobe-speed", 3, 1, 20, 1, s -> Strings.autoFixed(s / 2f, 2));
+					table.pref(new Setting(Core.bundle.get("hi-game-data")) {
 						@Override
 						public void add(SettingsTable table) {
 							table.button(name, Elements.gameDataDialog::show).margin(14).width(200f).pad(6);
 							table.row();
 						}
 					});
-					t.pref(new Setting(Core.bundle.get("hi-export-data")) {
+					table.pref(new Setting(Core.bundle.get("hi-export-data")) {
 						@Override
 						public void add(SettingsTable table) {
 							table.button(name, Worlds::exportBlockData).margin(14).width(200f).pad(6);
@@ -222,15 +220,15 @@ public final class HeavyIndustryMod extends Mod {
 					if (Vars.ui.research != null) Vars.ui.research.hide();
 				});
 			});
+
+			if (!Vars.headless && !HMods.isEnabled("extra-utilities") && !HMods.isX() && Core.settings.getBool("hi-floating-text")) {
+				String massage = Core.bundle.get("hi-random-massage");
+				String[] massageSplit = massage.split("&");
+
+				floatingText = new FloatingText(massageSplit[Mathf.random(massageSplit.length - 1)]);
+				floatingText.build(Vars.ui.menuGroup);
+			}
 		}
-
-		if (Vars.headless || Vars.ui == null || HMods.isEnabled("extra-utilities") || !Core.settings.getBool("hi-floating-text")) return;
-
-		String massage = Core.bundle.get("hi-random-massage");
-		String[] massageSplit = massage.split("&");
-
-		floatingText = new FloatingText(massageSplit[Mathf.random(massageSplit.length - 1)]);
-		floatingText.build(Vars.ui.menuGroup);
 	}
 
 	public static Class<?> loadLibrary(String fileName, String mainClassName, boolean showError) {

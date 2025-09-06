@@ -1,6 +1,7 @@
 package heavyindustry.ai;
 
 import arc.struct.ObjectSet;
+import arc.util.Nullable;
 import mindustry.Vars;
 import mindustry.ai.types.CargoAI;
 import mindustry.gen.Building;
@@ -11,7 +12,7 @@ import mindustry.world.meta.BlockFlag;
 public class TargetCargoAI extends CargoAI {
 	public static ObjectSet<Building> pendingLoaders = new ObjectSet<>();
 
-	public Building loadTarget;
+	public @Nullable Building loadTarget = null;
 
 	@Override
 	public void updateMovement() {

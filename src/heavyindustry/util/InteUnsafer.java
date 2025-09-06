@@ -13,7 +13,7 @@ import static heavyindustry.util.Utils.requireNonNullInstance;
  * inconsistently on different devices, and is not recommended for non-essential use.
  * <p>The {@link #internalUnsafe} field of this class is public, but it is generally recommended to use the static
  * methods provided by the class, which perform some security check packaging on the methods inside the
- * {@link Unsafe} to avoid causing strange bugs or even <strong>JVM crashes</strong>. Unless you
+ * {@link Unsafe} to avoid causing strange bugs or even <b>JVM crashes</b>. Unless you
  * are very clear about what you are doing at this moment, it is not recommended to use the {@link #internalUnsafe} field directly.
  *
  * @author Eipusino

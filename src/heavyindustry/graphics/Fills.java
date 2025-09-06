@@ -5,13 +5,13 @@ import arc.math.geom.Vec2;
 import arc.struct.FloatSeq;
 
 /** Extended Fill */
-public final class Fillf {
+public final class Fills {
 	private static final Vec2 vector = new Vec2();
 	private static final FloatSeq floats = new FloatSeq(20);
 	private static final DonutEllipseDraw donutEllipseDraw = new DonutEllipseDraw();
 
 	/** Don't let anyone instantiate this class. */
-	private Fillf() {}
+	private Fills() {}
 
 	//region ellipse
 	public static void polyCircle(float x, float y, float radius) {

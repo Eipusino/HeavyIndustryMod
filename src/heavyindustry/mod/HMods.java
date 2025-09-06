@@ -4,6 +4,8 @@ import mindustry.Vars;
 import mindustry.ctype.Content;
 import mindustry.mod.Mods.LoadedMod;
 
+import java.lang.reflect.Field;
+
 import static heavyindustry.HVars.MOD_NAME;
 
 public final class HMods {
@@ -27,8 +29,34 @@ public final class HMods {
 		return loaded;
 	}
 
+	/** @return Check if the mod is enabled based on its name */
 	public static boolean isEnabled(String name) {
 		LoadedMod mod = Vars.mods.getMod(name);
 		return mod != null && mod.isSupported() && mod.enabled();
+	}
+
+	/** MindustryX exists in the form of mod, so we can directly search for it in {@code Vars.mods.getMod(name)}. */
+	public static boolean isX() {
+		return isEnabled("mindustryx");
+	}
+
+	/**
+	 * @deprecated Due to the discontinuation of maintenance on the Arc client, the heavy industry mod will
+	 * hardly run on the Arc client, making this method almost useless.
+	 */
+	@Deprecated
+	public static boolean isArc() {
+		Field[] fields = Vars.class.getDeclaredFields();
+		for (Field field : fields) {
+			if ("arcVersion".equals(field.getName())) return true;
+		}
+
+		return false;
+	}
+
+	/** @deprecated I couldn't find the FOO client version v151.1 and above. */
+	@Deprecated
+	public static boolean isFoo() {
+		return false;
 	}
 }

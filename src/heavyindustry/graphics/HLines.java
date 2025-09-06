@@ -6,7 +6,7 @@ import arc.math.geom.Vec2;
 import arc.struct.FloatSeq;
 
 /** Extended Lines */
-public final class Linesf {
+public final class HLines {
 	private static final FloatSeq floats = new FloatSeq(20);
 	private static final Vec2 tmp1 = new Vec2();
 	private static final float[] rectPoints = {
@@ -17,7 +17,7 @@ public final class Linesf {
 	};
 
 	/** Don't let anyone instantiate this class. */
-	private Linesf() {}
+	private HLines() {}
 
 	public static void arc(float x, float y, float radius, float finion) {
 		arc(x, y, radius, finion, 0f);
@@ -26,7 +26,7 @@ public final class Linesf {
 	public static void arc(float x, float y, float radius, float finion, float angle) {
 		float stroke = Lines.getStroke();
 		float halfStroke = stroke / 2f;
-		Fillf.donut(x, y, radius - halfStroke, radius + halfStroke, finion, angle);
+		Fills.donut(x, y, radius - halfStroke, radius + halfStroke, finion, angle);
 	}
 
 	//region rect
@@ -47,7 +47,7 @@ public final class Linesf {
 			rectCorner(i, x, y, width - doubleStroke, height - doubleStroke, originX, originY, rotation);
 			rectCorner(nextI, x, y, width - doubleStroke, height - doubleStroke, originX, originY, rotation);
 			rectCorner(nextI, x, y, width, height, originX, originY, rotation);
-			Fillf.quad(floats);
+			Fills.quad(floats);
 		}
 		floats.clear();
 	}

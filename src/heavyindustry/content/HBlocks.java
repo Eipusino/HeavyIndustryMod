@@ -4089,9 +4089,9 @@ public final class HBlocks {
 					for (int i = 0; i < 4; i++) {
 						rand.setSeed(b.id * 2l + i);
 						float lenScl = rand.random(0.5f, 1f);
-						int fi = i;
+						int j = i;
 						b.scaled(b.lifetime * lenScl, e -> {
-							Angles.randLenVectors(e.id + fi - 1, e.fin(Interp.pow4Out), (int) (2 * intensity), 35f * intensity, e.rotation, 20, (x, y, in, out) -> {
+							Angles.randLenVectors(e.id + j - 1, e.fin(Interp.pow4Out), (int) (2 * intensity), 35f * intensity, e.rotation, 20, (x, y, in, out) -> {
 								float fout = e.fout(Interp.pow5Out) * rand.random(0.5f, 1f);
 								float rad = fout * ((2f + intensity) * 1.75f);
 
@@ -4103,10 +4103,10 @@ public final class HBlocks {
 				});
 				hitEffect = new MultiEffect(HFx.largeTechBlueHit, HFx.blast(Pal.techBlue, 140f), HFx.largeTechBlueHitCircle, HFx.subEffect(150, splashDamageRadius * 0.66f, 13, 34f, Interp.pow2Out, ((i, x, y, rot, fin) -> {
 					float fout = Interp.pow2Out.apply(1 - fin);
-					float finpow = Interp.pow3Out.apply(fin);
-					Tmp.v1.trns(rot, 25 * finpow);
+					float finPow = Interp.pow3Out.apply(fin);
+					Tmp.v1.trns(rot, 25 * finPow);
 					for (int s : Mathf.signs) {
-						Drawf.tri(x, y, 12 * fout, 45 * Mathf.curve(finpow, 0, 0.3f) * HFx.fout(fin, 0.15f), rot + s * 90);
+						Drawf.tri(x, y, 12 * fout, 45 * Mathf.curve(finPow, 0, 0.3f) * HFx.fout(fin, 0.15f), rot + s * 90);
 					}
 				})));
 			}});
@@ -4114,7 +4114,7 @@ public final class HBlocks {
 				barrels = new float[]{
 						22, -12, 25,
 						-22, -12, -25,
-						0, -22, 0,
+						0, -22, 0
 				};
 				firstShotDelay = HFx.techBlueChargeBegin.lifetime;
 				shots = 3;
@@ -4165,7 +4165,7 @@ public final class HBlocks {
 			recoil = 3;
 			shootY = -13.5f;
 			shootSound = HSounds.flak;
-			consumePowerCond(160f, TurretBuild::isActive);
+			consumePower(160f);
 			enableDrawStatus = false;
 			drawer = new DrawTurret() {{
 				parts.addAll(new RegionPart("-additional") {{
@@ -4355,7 +4355,7 @@ public final class HBlocks {
 			health = 28000;
 			armor = 15f;
 			heatColor = Pal.techBlue;
-			consumePowerCond(180f, TurretBuild::isActive);
+			consumePower(180f);
 			reload = 420f;
 			range = 780f;
 			trackingRange = range * 1.4f;
@@ -4386,7 +4386,7 @@ public final class HBlocks {
 				};
 			}};
 			shootType = HBullets.executor;
-			consumePowerCond(1000f, TurretBuild::isActive);
+			consumePower(1000f);
 			drawer = new DrawTurret() {{
 				parts.add(new RegionPart("-backwings") {{
 					outline = true;
@@ -4485,7 +4485,7 @@ public final class HBlocks {
 			shootSound = Sounds.laserblast;
 			shootCone = 5f;
 			maxAmmo = 80;
-			consumePowerCond(800f, TurretBuild::isActive);
+			consumePower(800f);
 			reload = 1800f;
 			shootType = HBullets.arc9000hyper;
 			requirements(Category.turret, ItemStack.with(HItems.crystallineCircuit, 2200, HItems.crystallineElectronicUnit, 1100, HItems.heavyAlloy, 5500));

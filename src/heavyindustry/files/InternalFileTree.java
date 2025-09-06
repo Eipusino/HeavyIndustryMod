@@ -35,4 +35,13 @@ public class InternalFileTree {
 		}
 		return out;
 	}
+
+	public Fi children(String... name) {
+		Fi out = root;
+		for (String s : name) {
+			if (!s.isEmpty())
+				out = out.child(s);
+		}
+		return out;
+	}
 }

@@ -3,8 +3,6 @@ package heavyindustry.util;
 import arc.func.Prov;
 import arc.struct.ObjectMap;
 import arc.struct.Seq;
-import arc.util.Nullable;
-import mindustry.Vars;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -62,6 +60,150 @@ public final class Reflects {
 		};
 	}
 
+	public static boolean getBool(Class<?> type, Object object, String name) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return field.getBoolean(object);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static boolean getBool(Object object, String name) {
+		return getBool(object.getClass(), object, name);
+	}
+
+	public static boolean getBool(Class<?> type, String name) {
+		return getBool(type, null, name);
+	}
+
+	public static byte getByte(Class<?> type, Object object, String name) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return field.getByte(object);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static byte getByte(Object object, String name) {
+		return getByte(object.getClass(), object, name);
+	}
+
+	public static byte getByte(Class<?> type, String name) {
+		return getByte(type, null, name);
+	}
+
+	public static short getShort(Class<?> type, Object object, String name) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return field.getShort(object);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static short getShort(Object object, String name) {
+		return getShort(object.getClass(), object, name);
+	}
+
+	public static short getShort(Class<?> type, String name) {
+		return getShort(type, null, name);
+	}
+
+	public static int getInt(Class<?> type, Object object, String name) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return field.getInt(object);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static int getInt(Object object, String name) {
+		return getInt(object.getClass(), object, name);
+	}
+
+	public static int getInt(Class<?> type, String name) {
+		return getInt(type, null, name);
+	}
+
+	public static long getLong(Class<?> type, Object object, String name) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return field.getLong(object);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static long getLong(Object object, String name) {
+		return getLong(object.getClass(), object, name);
+	}
+
+	public static long getLong(Class<?> type, String name) {
+		return getLong(type, null, name);
+	}
+
+	public static float getFloat(Class<?> type, Object object, String name) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return field.getFloat(object);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static float getFloat(Object object, String name) {
+		return getFloat(object.getClass(), object, name);
+	}
+
+	public static float getFloat(Class<?> type, String name) {
+		return getFloat(type, null, name);
+	}
+
+	public static double getDouble(Class<?> type, Object object, String name) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return field.getDouble(object);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static double getDouble(Object object, String name) {
+		return getDouble(object.getClass(), object, name);
+	}
+
+	public static double getDouble(Class<?> type, String name) {
+		return getDouble(type, null, name);
+	}
+
+	public static char getChar(Class<?> type, Object object, String name) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return field.getChar(object);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static char getChar(Object object, String name) {
+		return getChar(object.getClass(), object, name);
+	}
+
+	public static char getChar(Class<?> type, String name) {
+		return getChar(type, null, name);
+	}
+
 	@SuppressWarnings("unchecked")
 	public static <T> T getForName(String type, Object object, String name) {
 		try {
@@ -94,6 +236,150 @@ public final class Reflects {
 
 	public static <T> T getOrDefault(Class<?> type, String name, T def) {
 		return getOrDefault(type, null, name, def);
+	}
+
+	public static void setBool(Class<?> type, Object object, String name, boolean value) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			field.setBoolean(object, value);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void setBool(Object object, String name, boolean value) {
+		setBool(object.getClass(), object, name, value);
+	}
+
+	public static void setBool(Class<?> type, String name, boolean value) {
+		setBool(type, null, name, value);
+	}
+
+	public static void setByte(Class<?> type, Object object, String name, byte value) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			field.setByte(object, value);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void setByte(Object object, String name, byte value) {
+		setByte(object.getClass(), object, name, value);
+	}
+
+	public static void setByte(Class<?> type, String name, byte value) {
+		setByte(type, null, name, value);
+	}
+
+	public static void setShort(Class<?> type, Object object, String name, short value) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			field.setShort(object, value);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void setShort(Object object, String name, short value) {
+		setShort(object.getClass(), object, name, value);
+	}
+
+	public static void setShort(Class<?> type, String name, short value) {
+		setShort(type, null, name, value);
+	}
+
+	public static void setInt(Class<?> type, Object object, String name, int value) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			field.setInt(object, value);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void setInt(Object object, String name, int value) {
+		setInt(object.getClass(), object, name, value);
+	}
+
+	public static void setInt(Class<?> type, String name, int value) {
+		setInt(type, null, name, value);
+	}
+
+	public static void setLong(Class<?> type, Object object, String name, long value) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			field.setLong(object, value);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void setLong(Object object, String name, long value) {
+		setLong(object.getClass(), object, name, value);
+	}
+
+	public static void setLong(Class<?> type, String name, long value) {
+		setLong(type, null, name, value);
+	}
+
+	public static void setFloat(Class<?> type, Object object, String name, float value) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			field.setFloat(object, value);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void setFloat(Object object, String name, float value) {
+		setFloat(object.getClass(), object, name, value);
+	}
+
+	public static void setFloat(Class<?> type, String name, float value) {
+		setFloat(type, null, name, value);
+	}
+
+	public static void setDouble(Class<?> type, Object object, String name, double value) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			field.setDouble(object, value);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void setDouble(Object object, String name, double value) {
+		setDouble(object.getClass(), object, name, value);
+	}
+
+	public static void setDouble(Class<?> type, String name, double value) {
+		setDouble(type, null, name, value);
+	}
+
+	public static void setChar(Class<?> type, Object object, String name, char value) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			field.setChar(object, value);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void setChar(Object object, String name, char value) {
+		setDouble(object.getClass(), object, name, value);
+	}
+
+	public static void setChar(Class<?> type, String name, char value) {
+		setDouble(type, null, name, value);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -178,9 +464,7 @@ public final class Reflects {
 
 	public static Field getField(Class<?> type, String name) {
 		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			return field;
+			return type.getDeclaredField(name);
 		} catch (NoSuchFieldException e) {
 			throw new RuntimeException(e);
 		}
@@ -188,15 +472,47 @@ public final class Reflects {
 
 	/** Gets a field of a model without throwing exceptions. */
 	public static Field getField(Object object, String name) {
-		return getField(object.getClass(), name);
+		try {
+			return object.getClass().getDeclaredField(name);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/** Gets a value from a field of an model without throwing exceptions. */
 	@SuppressWarnings("unchecked")
 	public static <T> T getField(Object object, Field field) {
 		try {
+			field.setAccessible(true);
 			return (T) field.get(object);
-		} catch (Exception e) {
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static boolean getBoolField(Object object, Field field) {
+		try {
+			field.setAccessible(true);
+			return field.getBoolean(object);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static float getFloatField(Object object, Field field) {
+		try {
+			field.setAccessible(true);
+			return field.getFloat(object);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static int getIntField(Object object, Field field) {
+		try {
+			field.setAccessible(true);
+			return field.getInt(object);
+		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -436,54 +752,38 @@ public final class Reflects {
 
 	/** Finds a class from the parent classes that has a specific field. */
 	public static Class<?> findContainsFieldClass(Class<?> type, final String name) {
-		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
+		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != Object.class; type = type.getSuperclass()) {
 			Field[] fields = type.getDeclaredFields();
 			for (Field field : fields) {
 				if (field.getName().equals(name)) return type;
 			}
 		}
 
-		return type;
+		return null;
 	}
 
 	/** Finds a class from the parent classes that has a specific method. */
 	public static Class<?> findContainsMethodClass(Class<?> type, final String name, Class<?>... args) {
-		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
+		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != Object.class; type = type.getSuperclass()) {
 			Method[] methods = type.getDeclaredMethods();
 			for (Method method : methods) {
 				if (method.getName().equals(name) && Arrays.equals(method.getParameterTypes(), args)) return type;
 			}
 		}
 
-		return type;
+		return null;
 	}
 
 	/** Finds a class from the parent classes that has a specific constructor. */
 	public static Class<?> findContainsConstructorClass(Class<?> type, Class<?>... args) {
-		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
+		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != Object.class; type = type.getSuperclass()) {
 			Constructor<?>[] constructors = type.getDeclaredConstructors();
 			for (Constructor<?> constructor : constructors) {
 				if (Arrays.equals(constructor.getParameterTypes(), args)) return type;
 			}
 		}
 
-		return type;
-	}
-
-	/**
-	 * Finds and casts a class with the specified name using Mindustry's mod class loader.
-	 *
-	 * @param name The class' binary name, as per {@link Class#getName()}.
-	 * @param <T>  The arbitrary type parameter to cast the class into.
-	 * @return The casted class, or {@code null} if not found.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> @Nullable Class<T> findClass(String name, boolean initialize) {
-		try {
-			return (Class<T>) Class.forName(name, initialize, Vars.mods.mainLoader());
-		} catch (ClassNotFoundException e) {
-			return null;
-		}
+		return null;
 	}
 
 	/** Search for class based on class names without throwing exceptions. */
@@ -496,10 +796,10 @@ public final class Reflects {
 		}
 	}
 
-	public static boolean isInstanceButNotSubclass(Object obj, Class<?> clazz) {
-		if (clazz.isInstance(obj)) {
+	public static boolean isInstanceButNotSubclass(Object obj, Class<?> type) {
+		if (type.isInstance(obj)) {
 			try {
-				if (getClassSubclassHierarchy(obj.getClass()).contains(clazz)) {
+				if (getClassSubclassHierarchy(obj.getClass()).contains(type)) {
 					return false;
 				}
 			} catch (ClassCastException e) {
@@ -511,8 +811,8 @@ public final class Reflects {
 		}
 	}
 
-	public static Seq<Class<?>> getClassSubclassHierarchy(Class<?> clazz) {
-		Class<?> c = clazz.getSuperclass();
+	public static Seq<Class<?>> getClassSubclassHierarchy(Class<?> type) {
+		Class<?> c = type.getSuperclass();
 		Seq<Class<?>> hierarchy = new Seq<>(Class.class);
 		while (c != null) {
 			hierarchy.add(c);

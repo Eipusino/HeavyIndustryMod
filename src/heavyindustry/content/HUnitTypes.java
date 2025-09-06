@@ -301,7 +301,7 @@ public final class HUnitTypes {
 			speed = 1.3f;
 			hitSize = 20f;
 			ammoType = new ItemAmmoType(Items.blastCompound);
-			ammoCapacity = 16;
+			ammoCapacity = 80;
 			squareShape = true;
 			omniMovement = false;
 			rotateMoveFirst = false;
@@ -436,7 +436,7 @@ public final class HUnitTypes {
 			treadFrames = 8;
 			treadRects = new Rect[]{new Rect(-67f, -84f, 39f, 167f)};
 			ammoType = new ItemAmmoType(Items.surgeAlloy);
-			ammoCapacity = 120;
+			ammoCapacity = 220;
 			targetAir = true;
 			health = 11000f;
 			armor = 16f;
@@ -603,7 +603,7 @@ public final class HUnitTypes {
 			crushDamage = 6f;
 			treadRects = new Rect[]{new Rect(-86f, -108f, 42f, 112f), new Rect(-72f, -124f, 21f, 16f), new Rect(-86f, 9f, 42f, 119f)};
 			ammoType = new ItemAmmoType(Items.surgeAlloy);
-			ammoCapacity = 50;
+			ammoCapacity = 200;
 			targetAir = true;
 			health = 28000f;
 			armor = 28f;
@@ -739,7 +739,7 @@ public final class HUnitTypes {
 			hitSize = 66f;
 			immunities.add(StatusEffects.burning);
 			ammoType = new ItemAmmoType(Items.surgeAlloy);
-			ammoCapacity = 80;
+			ammoCapacity = 500;
 			targetAir = true;
 			health = 82000f;
 			armor = 36f;
@@ -1304,7 +1304,8 @@ public final class HUnitTypes {
 			shadowElevation = 0.1f;
 			groundLayer = 74f;
 			itemCapacity = 200;
-			ammoType = new ItemAmmoType(HItems.uranium);
+			ammoType = new ItemAmmoType(Items.pyratite);
+			ammoCapacity = 400;
 			abilities.add(new TerritoryFieldAbility(20 * 8f, 90f, 210f) {{
 				open = true;
 			}});
@@ -2317,6 +2318,8 @@ public final class HUnitTypes {
 				outline = false;
 			}});
 			fogRadius = 44f;
+			ammoCapacity = 500;
+			ammoType = new ItemAmmoType(Items.beryllium);
 		}};
 		oracle = new BaseUnitType("oracle") {{
 			erekir();
@@ -2343,6 +2346,7 @@ public final class HUnitTypes {
 			legStraightLength = 1.1f;
 			legMaxLength = 1.2f;
 			ammoType = new PowerAmmoType(2000);
+			ammoCapacity = 500;
 			legSplashDamage = 84;
 			legSplashRange = 46;
 			drownTimeMultiplier = 3f;
@@ -2629,6 +2633,8 @@ public final class HUnitTypes {
 			}});
 			fogRadius = 56f;
 			setEnginesMirror(new UnitEngine(95f / 4f, -56f / 4, 5f, 330f), new UnitEngine(89f / 4, -95f / 4, 4f, 315f));
+			ammoCapacity = 500;
+			ammoType = new ItemAmmoType(Items.beryllium);
 		}};
 		//miner-erekir
 		miner = new BaseUnitType("miner") {{
@@ -2664,6 +2670,8 @@ public final class HUnitTypes {
 			hittable = false;
 			targetPriority = -2;
 			setEnginesMirror(new UnitEngine(24 / 4f, -24 / 4f, 2.3f, 315f));
+			ammoCapacity = 100;
+			ammoType = new PowerAmmoType(600f);
 		}};
 		largeMiner = new BaseUnitType("large-miner") {{
 			erekir();
@@ -2699,6 +2707,8 @@ public final class HUnitTypes {
 			hittable = false;
 			targetPriority = -2;
 			setEnginesMirror(new UnitEngine(40 / 4f, -40 / 4f, 3f, 315f));
+			ammoCapacity = 300;
+			ammoType = new PowerAmmoType(1200f);
 		}};
 		legsMiner = new BaseUnitType("legs-miner") {{
 			erekir();
@@ -2758,6 +2768,8 @@ public final class HUnitTypes {
 			abilities.add(new RegenAbility() {{
 				percentAmount = 1f / (90f * 60f) * 100f;
 			}});
+			ammoCapacity = 100;
+			ammoType = new PowerAmmoType(800f);
 		}};
 		//other
 		vulture = new BaseUnitType("vulture") {{
@@ -2807,6 +2819,8 @@ public final class HUnitTypes {
 				magX = 0.2f;
 				magY = 0.1f;
 			}});
+			ammoCapacity = 100;
+			ammoType = new PowerAmmoType(600f);
 			targetAir = false;
 			maxRange = 200;
 			engineOffset = 14f;
@@ -2911,6 +2925,8 @@ public final class HUnitTypes {
 			mineWalls = true;
 			envDisabled = 0;
 			isEnemy = false;
+			ammoCapacity = 114514;
+			ammoType = new PowerAmmoType(114.514f);
 		}};
 		//elite
 		tiger = new BaseUnitType("tiger") {{
@@ -2927,6 +2943,7 @@ public final class HUnitTypes {
 			armor = 53f;
 			envDisabled = Env.none;
 			ammoType = new PowerAmmoType(3000f);
+			ammoCapacity = 2400;
 			weapons.add(new Weapon(name + "-cannon") {{
 				top = false;
 				rotate = true;
@@ -3146,6 +3163,7 @@ public final class HUnitTypes {
 			treadRects = new Rect[]{new Rect(27 - xo, 152 - yo, 56, 73), new Rect(24 - xo, 51 - 9 - yo, 29, 17), new Rect(59 - xo, 18 - 9 - yo, 39, 19)};
 			hoverable = hovering = true;
 			ammoType = new PowerAmmoType(3000);
+			ammoCapacity = 2600;
 			crushDamage = 20;
 			weapons.add(new Weapon(name + "-weapon") {{
 				x = 0f;
@@ -3331,6 +3349,8 @@ public final class HUnitTypes {
 			targetFlags = BlockFlag.all;
 			drawShields = false;
 			engineSize = 0f;
+			ammoType = new PowerAmmoType(3000);
+			ammoCapacity = 2200;
 			abilities.addAll(new MirrorFieldAbility() {{
 				strength = 350f;
 				max = 15800f;

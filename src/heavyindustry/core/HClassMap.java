@@ -52,6 +52,7 @@ import heavyindustry.entities.bullet.FireWorkBulletType;
 import heavyindustry.entities.bullet.GrenadeBulletType;
 import heavyindustry.entities.bullet.GuidedMissileBulletType;
 import heavyindustry.entities.bullet.HailStoneBulletType;
+import heavyindustry.entities.bullet.LightningLaserBulletType;
 import heavyindustry.entities.bullet.LightningLinkerBulletType;
 import heavyindustry.entities.bullet.LiquidMassDriverBolt;
 import heavyindustry.entities.bullet.MultiBulletType;
@@ -64,6 +65,7 @@ import heavyindustry.entities.bullet.ThermoBulletType;
 import heavyindustry.entities.bullet.TrailFadeBulletType;
 import heavyindustry.entities.bullet.TrailedEnergyBulletType;
 import heavyindustry.entities.bullet.TreeLightningBulletType;
+import heavyindustry.entities.bullet.UpgradePointLaserBulletType;
 import heavyindustry.entities.effect.WrapperEffect;
 import heavyindustry.entities.part.AimPart;
 import heavyindustry.entities.part.ArcCharge;
@@ -278,7 +280,6 @@ import heavyindustry.world.blocks.storage.CoreStorageBlock;
 import heavyindustry.world.blocks.storage.CoreUnloader;
 import heavyindustry.world.blocks.storage.DetectorCoreBlock;
 import heavyindustry.world.blocks.storage.DrawerCoreBlock;
-import heavyindustry.world.blocks.storage.FlowrateVoid;
 import heavyindustry.world.blocks.storage.FrontlineCoreBlock;
 import heavyindustry.world.blocks.storage.GeneratorCoreBlock;
 import heavyindustry.world.blocks.storage.ResourceUnloader;
@@ -394,6 +395,7 @@ final class HClassMap {
 		classes.put("GrenadeBulletType", GrenadeBulletType.class);
 		classes.put("GuidedMissileBulletType", GuidedMissileBulletType.class);
 		classes.put("HailStoneBulletType", HailStoneBulletType.class);
+		classes.put("LightningLaserBulletType", LightningLaserBulletType.class);
 		classes.put("LightningLinkerBulletType", LightningLinkerBulletType.class);
 		classes.put("LiquidMassDriverBolt", LiquidMassDriverBolt.class);
 		classes.put("MultiBulletType", MultiBulletType.class);
@@ -405,6 +407,7 @@ final class HClassMap {
 		classes.put("TrailedEnergyBulletType", TrailedEnergyBulletType.class);
 		classes.put("TrailFadeBulletType", TrailFadeBulletType.class);
 		classes.put("TreeLightningBulletType", TreeLightningBulletType.class);
+		classes.put("UpgradePointLaserBulletType", UpgradePointLaserBulletType.class);
 		//effects
 		classes.put("WrapperEffect", WrapperEffect.class);
 		//parts
@@ -826,8 +829,6 @@ final class HClassMap {
 		classes.put("MultiVoidBuild", MultiVoid.MultiVoidBuild.class);
 		classes.put("ConfigurableContainer", ConfigurableContainer.class);
 		classes.put("ConfigurableContainerBuild", ConfigurableContainer.ConfigurableContainerBuild.class);
-		classes.put("FlowrateVoid", FlowrateVoid.class);
-		classes.put("FlowrateVoidBuild", FlowrateVoid.FlowrateVoidBuild.class);
 		classes.put("SpaceUnloader", SpaceUnloader.class);
 		classes.put("SpaceUnloaderBuild", SpaceUnloader.SpaceUnloaderBuild.class);
 		classes.put("ResourcesDispatchingCenter", ResourcesDispatchingCenter.class);

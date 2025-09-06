@@ -404,7 +404,7 @@ public final class HOverrides {
 
 	public static <T extends UnlockableContent> void overwrite(UnlockableContent target, Cons<T> setter, Class<T> type) {
 		if (type.isInstance(target)) {
-			overwrite(target, setter);
+			setter.get(cast(target));
 		}
 	}
 
