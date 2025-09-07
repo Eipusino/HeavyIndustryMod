@@ -14,6 +14,7 @@ import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
 import mindustry.type.Weapon;
 
+@Deprecated
 public class HealingDefenderAI extends DefenderAI {
 	@Override
 	public void updateTargeting() {

@@ -3,7 +3,7 @@ package heavyindustry.util;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.AccessibleObject;
 
-public interface ReflectImpl {
+public interface PlatformImpl {
 	void setOverride(AccessibleObject override);
 
 	void setPublic(Class<?> type);

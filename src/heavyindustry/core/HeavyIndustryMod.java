@@ -31,7 +31,7 @@ import heavyindustry.gen.HMusics;
 import heavyindustry.gen.HSounds;
 import heavyindustry.graphics.MathRenderer;
 import heavyindustry.graphics.SizedGraphics;
-import heavyindustry.util.ReflectImpl;
+import heavyindustry.util.PlatformImpl;
 import heavyindustry.util.Utils;
 import heavyindustry.world.Worlds;
 import heavyindustry.graphics.HCacheLayer;
@@ -84,9 +84,9 @@ public final class HeavyIndustryMod extends Mod {
 			Log.err(e);
 		}
 
-		if (HVars.reflectImpl == null) {
+		if (HVars.platformImpl == null) {
 			// This situation usually does not occur...
-			HVars.reflectImpl = new DefaultImpl();
+			HVars.platformImpl = new DefaultImpl();
 		}
 	}
 
@@ -111,7 +111,7 @@ public final class HeavyIndustryMod extends Mod {
 					t.image(Core.atlas.find(MOD_NAME + "-cover")).left().size(600f, 403f).pad(3f).row();
 					t.add(Core.bundle.get("hi-version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 					t.add(label).left().row();
-					t.add(Core.bundle.get("hi-class")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
+					t.add(Core.bundle.get("hi-type")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 					t.add(Utils.generateRandomString(10, 20)).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 					t.add(Utils.generateRandomString(100, 200)).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
 				}).grow().center().maxWidth(600f);
@@ -246,6 +246,7 @@ public final class HeavyIndustryMod extends Mod {
 		}
 
 		Log.info("Loading @.jar", fileName);
+
 		Time.mark();
 
 		try {
@@ -276,8 +277,8 @@ public final class HeavyIndustryMod extends Mod {
 	static void loadLibrary() {
 		platformImpl = loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl", true, impl -> {
 			try {
-				if (impl.getConstructor().newInstance() instanceof ReflectImpl core) {
-					HVars.reflectImpl = core;
+				if (impl.getConstructor().newInstance() instanceof PlatformImpl core) {
+					HVars.platformImpl = core;
 				}
 			} catch (Throwable e) {
 				Log.err(e);

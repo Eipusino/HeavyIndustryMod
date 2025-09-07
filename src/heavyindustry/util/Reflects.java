@@ -65,7 +65,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			return field.getBoolean(object);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -83,7 +83,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			return field.getByte(object);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -101,7 +101,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			return field.getShort(object);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -119,7 +119,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			return field.getInt(object);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -137,7 +137,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			return field.getLong(object);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -155,7 +155,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			return field.getFloat(object);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -173,7 +173,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			return field.getDouble(object);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -191,7 +191,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			return field.getChar(object);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -243,7 +243,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			field.setBoolean(object, value);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -261,7 +261,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			field.setByte(object, value);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -279,7 +279,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			field.setShort(object, value);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -297,7 +297,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			field.setInt(object, value);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -315,7 +315,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			field.setLong(object, value);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -333,7 +333,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			field.setFloat(object, value);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -351,7 +351,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			field.setDouble(object, value);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -369,7 +369,7 @@ public final class Reflects {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
 			field.setChar(object, value);
-		} catch (Exception e) {
+		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}

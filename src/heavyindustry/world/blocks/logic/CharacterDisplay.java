@@ -92,7 +92,7 @@ public class CharacterDisplay extends Block {
 	@Override
 	public void load() {
 		super.load();
-		maskRegion = Core.atlas.find(name + "-mask", HVars.whiteRegion);
+		maskRegion = Core.atlas.find(name + "-mask", HVars.whiteAtlas);
 		letterRegions = new TextureRegion[64];
 		for (int i = 0; i < letterRegions.length; i++) {
 			letterRegions[i] = Core.atlas.find("character-overlay" + i);

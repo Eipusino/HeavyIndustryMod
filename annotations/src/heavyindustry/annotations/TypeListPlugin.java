@@ -41,11 +41,11 @@ public class TypeListPlugin implements Plugin {
 						@Override
 						public Void visitVariable(VariableTree node, Void unused) {
 							ExpressionTree init = node.getInitializer();
-							if (init != null && init.toString().contains("(")) {
+							if (init instanceof JCMethodInvocation metInv) {
 								if (node.getModifiers().getAnnotations().stream().anyMatch(a -> a.getAnnotationType().toString().equals(ListClasses.class.getSimpleName()))) {
-									classes.add((JCMethodInvocation) init);
+									classes.add(metInv);
 								} else if (node.getModifiers().getAnnotations().stream().anyMatch(a -> a.getAnnotationType().toString().equals(ListPackages.class.getSimpleName()))) {
-									packages.add((JCMethodInvocation) init);
+									packages.add(metInv);
 								}
 							}
 

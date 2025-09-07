@@ -10,7 +10,7 @@ import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.files.InternalFileTree;
 import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.input.InputAggregator;
-import heavyindustry.util.ReflectImpl;
+import heavyindustry.util.PlatformImpl;
 import mindustry.Vars;
 import mindustry.content.TechTree.TechNode;
 import mindustry.type.Sector;
@@ -34,7 +34,7 @@ public final class HVars {
 	/** Lists all the mod's packages by their canonical names. Generated at compile-time. */
 	public static final @ListPackages String[] packages = of();
 
-	public static ReflectImpl reflectImpl;
+	public static PlatformImpl platformImpl;
 
 	/** jar internal navigation. */
 	public static final InternalFileTree internalTree;
@@ -45,8 +45,9 @@ public final class HVars {
 	/** Modules present in both servers and clients. */
 	public static InputAggregator inputAggregator;
 
-	public static Texture whiteTexture;
+	public static Texture white;
 	public static TextureRegion whiteRegion;
+	public static AtlasRegion whiteAtlas;
 
 	public static final float boardTimeTotal = 60 * 6;
 
@@ -58,8 +59,8 @@ public final class HVars {
 		internalTree = new InternalFileTree(HeavyIndustryMod.class);
 
 		if (!Vars.headless) {
-			whiteTexture = new Texture(internalTree.child("other/textures/white.png"));
-			whiteRegion = new AtlasRegion(new TextureRegion(whiteTexture));
+			whiteAtlas = new AtlasRegion(whiteRegion = new TextureRegion(white = new Texture(internalTree.child("other/textures/white.png"))));
+			whiteAtlas.name = "white";
 		}
 	}
 

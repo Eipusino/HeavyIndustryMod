@@ -35,18 +35,20 @@ public class HFi extends Fi {
 	/**
 	 * Private constructor, create HFi instance from File object.
 	 * @param file Specify the File object of the resource
-	 * @param loader ClassLoader used to load resources, cannot be empty
+	 * @param classLoader ClassLoader used to load resources, cannot be empty
 	 */
-	private HFi(File file, ClassLoader loader) {
+	private HFi(File file, ClassLoader classLoader) {
 		super(file, FileType.classpath);
-		if (loader == null) throw new IllegalArgumentException("loader cannot be null.");
-		this.loader = loader;
+
+		if (classLoader == null) throw new IllegalArgumentException("classLoader cannot be null.");
+		loader = classLoader;
 	}
 
 	/**
 	 * Check if resources exist.
 	 * @return If the resource exists, return true; otherwise, return false
 	 */
+	@Override
 	public boolean exists() {
 		return loader.getResource(path()) != null;
 	}
@@ -55,6 +57,7 @@ public class HFi extends Fi {
 	 * Get the resource path and remove the starting '/'.
 	 * @return The Path of Resources
 	 */
+	@Override
 	public String path() {
 		return super.path().substring(1);
 	}
@@ -64,6 +67,7 @@ public class HFi extends Fi {
 	 * @return Input flow of resources
 	 * @throws UnsupportedOperationException If attempting to read the root path, throw an exception
 	 */
+	@Override
 	public InputStream read() {
 		if (file.getPath().isEmpty()) throw new UnsupportedOperationException("Cannot read the root.");
 		return loader.getResourceAsStream(path());
@@ -74,6 +78,7 @@ public class HFi extends Fi {
 	 * @return OutputStream object, but it will never be reached
 	 * @throws UnsupportedOperationException Always throwing unsupported operation exceptions
 	 */
+	@Override
 	public OutputStream write() {
 		throw new UnsupportedOperationException("HFi cannot write anything.");
 	}
@@ -82,6 +87,7 @@ public class HFi extends Fi {
 	 * Retrieve the parent resource of the current resource
 	 * @return The Fi instance of the parent resource of the current resource
 	 */
+	@Override
 	public Fi parent() {
 		return new HFi(file.getParent(), loader);
 	}
@@ -91,6 +97,7 @@ public class HFi extends Fi {
 	 * @param name Name of sub resource
 	 * @return Fi instances of sub resources of the current resource
 	 */
+	@Override
 	public Fi child(String name) {
 		return new HFi(new File(file, name), loader);
 	}

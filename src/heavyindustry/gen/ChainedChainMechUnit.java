@@ -49,9 +49,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		return Entitys.getId(ChainedChainMechUnit.class);
 	}
 
-	/**
-	 * Add first segments if this unit is not grown.
-	 */
+	/** Add first segments if this unit is not grown. */
 	@Override
 	public void add() {
 		if (added) return;
@@ -95,9 +93,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		return Math.max(Units.getCap(team) * Math.max(ct.growLength, ct.maxSegments), Units.getCap(team));
 	}
 
-	/**
-	 * Wrong cast errors are way too long. So long in fact that the crash box is too small for it.
-	 */
+	/** Wrong cast errors are way too long. So long in fact that the crash box is too small for it. */
 	@Override
 	public ChainedUnitType checkType(UnitType value) {
 		return (ChainedUnitType) value;
@@ -175,9 +171,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		tail = value;
 	}
 
-	/**
-	 * @param cons will run through this unit and it's children recursively.
-	 */
+	/** @param cons will run through this unit and it's children recursively. */
 	public <T extends Unit & Chainedc> void consBackwards(Cons<T> cons) {
 		T current = as();
 		cons.get(current);
@@ -187,9 +181,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		}
 	}
 
-	/**
-	 * @param cons will run through this unit and it's parents recursively.
-	 */
+	/** @param cons will run through this unit and it's parents recursively. */
 	public <T extends Unit & Chainedc> void consForward(Cons<T> cons) {
 		T current = as();
 		cons.get(current);
@@ -199,9 +191,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		}
 	}
 
-	/**
-	 * Force a specific controller on certain parts of the chain.
-	 */
+	/** Force a specific controller on certain parts of the chain. */
 	@Override
 	public void controller(UnitController next) {
 		if (!isHead()) {
@@ -227,9 +217,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		super.controlWeapons(rotate, shoot);
 	}
 
-	/**
-	 * Counts the amount of children from this unit recursively.
-	 */
+	/** Counts the amount of children from this unit recursively. */
 	@Override
 	public <T extends Unit & Chainedc> int countBackwards() {
 		int out = 0;
@@ -243,9 +231,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		return out;
 	}
 
-	/**
-	 * Counts the amount of parents from this unit recursively.
-	 */
+	/** Counts the amount of parents from this unit recursively. */
 	@Override
 	public <T extends Unit & Chainedc> int countForward() {
 		int out = 0;
@@ -259,9 +245,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		return out;
 	}
 
-	/**
-	 * Adds an extra segment to the chain.
-	 */
+	/** Adds an extra segment to the chain. */
 	@Override
 	public <T extends Unit & Chainedc> void grow() {
 		if (!isTail()) {
@@ -286,9 +270,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		return grown;
 	}
 
-	/**
-	 * Self explanatory, they'll return true if it is the head, if it isn't the head nor the tail, or if it is tje tail. Respectively.
-	 */
+	/** Self explanatory, they'll return true if it is the head, if it isn't the head nor the tail, or if it is tje tail. Respectively. */
 	@Override
 	public boolean isHead() {
 		return head == this;
@@ -334,17 +316,13 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		return tail;
 	}
 
-	/**
-	 * It moves whenever the head moves.
-	 */
+	/** It moves whenever the head moves. */
 	@Override
 	public boolean moving() {
 		return head.vel.len() > 0.01f;
 	}
 
-	/**
-	 * Read parent and child id.
-	 */
+	/** Read parent and child id. */
 	@Override
 	public void read(Reads read) {
 		parentID = read.i();
@@ -353,9 +331,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		super.read(read);
 	}
 
-	/**
-	 * Save parent and child id to be read later.
-	 */
+	/** Save parent and child id to be read later. */
 	@Override
 	public void write(Writes write) {
 		write.i(parent == null ? -1 : parent.id);
@@ -380,9 +356,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		super.writeSync(write);
 	}
 
-	/**
-	 * Split the chain or kill the whole chain if an unit is removed.
-	 */
+	/** Split the chain or kill the whole chain if an unit is removed. */
 	@Override
 	public void remove() {
 		if (!added) return;
@@ -441,9 +415,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		}
 	}
 
-	/**
-	 * Updates the mounts to be based on the unit's position in the chain. Called when the chain connects.
-	 */
+	/** Updates the mounts to be based on the unit's position in the chain. Called when the chain connects. */
 	@Override
 	public void setupWeapons(UnitType def) {
 		ChainedUnitType cu = checkType();
@@ -454,9 +426,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		}
 	}
 
-	/**
-	 * Add proper solidity for everything because i can't do it better than this.
-	 */
+	/** Add proper solidity for everything because i can't do it better than this. */
 	@Override
 	public SolidPred solidity() {
 		if (!isHead()) return null;
@@ -466,9 +436,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		return null;
 	}
 
-	/**
-	 * Connect the units together after read.
-	 */
+	/** Connect the units together after read. */
 	@Override
 	public void update() {
 		super.update();
@@ -524,9 +492,7 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 		updateChain();
 	}
 
-	/**
-	 * Updates the position and rotation of each segment in the chain.
-	 */
+	/** Updates the position and rotation of each segment in the chain. */
 	public void updateChain() {
 		ChainedUnitType cu = checkType();
 		if (isHead()) consBackwards(c -> {

@@ -117,4 +117,8 @@ public final class HScripts {
 			return new NativeJavaClass(Vars.mods.getScripts().scope, urlLoader.loadClass(name));
 		}
 	}
+
+	public static <T> Class<T> getClass(Class<T> c) {
+		return c;
+	}
 }

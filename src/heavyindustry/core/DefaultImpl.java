@@ -1,12 +1,12 @@
 package heavyindustry.core;
 
-import heavyindustry.util.ReflectImpl;
+import heavyindustry.util.PlatformImpl;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.AccessibleObject;
 
-public class DefaultImpl implements ReflectImpl {
+public class DefaultImpl implements PlatformImpl {
 	@Override
 	public void setOverride(AccessibleObject override) {
 		override.setAccessible(true);

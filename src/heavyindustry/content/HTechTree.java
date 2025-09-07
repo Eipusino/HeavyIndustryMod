@@ -175,10 +175,10 @@ public final class HTechTree {
 		vanillaNode(kiln, () -> node(largeKiln));
 		vanillaNode(pulverizer, () -> {
 			node(stoneCrusher);
-			node(largePulverizer, () -> {
+			node(largePulverizer, () -> node(originiumSynthesizer, () -> {
 				node(uraniumSynthesizer, Seq.with(new OnSector(SectorPresets.desolateRift)));
 				node(chromiumSynthesizer, Seq.with(new OnSector(SectorPresets.desolateRift)));
-			});
+			}));
 		});
 		vanillaNode(melter, () -> {
 			node(largeMelter);
@@ -282,10 +282,10 @@ public final class HTechTree {
 		//tier6
 		vanillaNode(dagger, () -> node(vanguard, () -> node(striker, () -> node(counterattack, () -> node(crush, () -> node(destruction, () -> node(purgatory)))))));
 		vanillaNode(flare, () -> node(caelifera, () -> node(schistocerca, () -> node(anthophila, () -> node(vespula, () -> node(lepidoptera, () -> node(mantodea)))))));
-		vanillaNode(reign, () -> node(fearless));
+		vanillaNode(reign, () -> node(empire));
 		vanillaNode(corvus, () -> node(supernova));
 		vanillaNode(toxopid, () -> node(cancer));
-		vanillaNode(eclipse, () -> node(sunlit));
+		vanillaNode(eclipse, () -> node(aphelion));
 		vanillaNode(oct, () -> node(windstorm));
 		vanillaNode(omura, () -> node(poseidon));
 		vanillaNode(navanax, () -> node(leviathan));

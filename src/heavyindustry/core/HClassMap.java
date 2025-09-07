@@ -2,7 +2,7 @@ package heavyindustry.core;
 
 import heavyindustry.ai.ChainedAI;
 import heavyindustry.ai.CopterAI;
-import heavyindustry.ai.HealingDefenderAI;
+import heavyindustry.ai.DefenderHealAI;
 import heavyindustry.ai.MinerDepotAI;
 import heavyindustry.ai.MinerPointAI;
 import heavyindustry.ai.NullAI;
@@ -341,7 +341,7 @@ final class HClassMap {
 		classes.put("NullAI", NullAI.class);
 		classes.put("ChainedAI", ChainedAI.class);
 		classes.put("CopterAI", CopterAI.class);
-		classes.put("HealingDefenderAI", HealingDefenderAI.class);
+		classes.put("DefenderHealAI", DefenderHealAI.class);
 		classes.put("SentryAI", SentryAI.class);
 		classes.put("SniperAI", SniperAI.class);
 		classes.put("SurroundAI", SurroundAI.class);

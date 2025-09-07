@@ -119,7 +119,7 @@ import heavyindustry.world.draw.DrawLiquidsOutputs;
 import heavyindustry.world.draw.DrawPowerLight;
 import heavyindustry.world.draw.DrawPrinter;
 import heavyindustry.world.draw.DrawRotator;
-import heavyindustry.world.draw.DrawSpecConstruct;
+import heavyindustry.world.draw.DrawScanLine;
 import heavyindustry.world.meta.HAttribute;
 import heavyindustry.world.meta.HBuildVisibility;
 import mindustry.Vars;
@@ -327,7 +327,7 @@ public final class HBlocks {
 	largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, stoneCrusher, fractionator, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
 			crystallineCircuitConstructor, crystallineCircuitPrinter, originiumActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, corkscrewCompressor,
 			originiumHeater, liquidFuelHeater,
-			atmosphericCollector, atmosphericCooler, uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilPrecipitator, blastReagentMixer, centrifuge, galliumNitrideSmelter,
+			atmosphericCollector, atmosphericCooler, originiumSynthesizer, uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilPrecipitator, blastReagentMixer, centrifuge, galliumNitrideSmelter,
 	//production-erekir
 	ventHeater, chemicalSiliconSmelter, largeElectricHeater, largeOxidationChamber, largeSurgeCrucible, largeCarbideCrucible,
 	//defense
@@ -1811,19 +1811,20 @@ public final class HBlocks {
 			hideDetails = false;
 		}};
 		largeThermalGenerator = new ThermalGenerator("large-thermal-generator") {{
-			requirements(Category.power, ItemStack.with(Items.graphite, 200, Items.metaglass, 150, Items.silicon, 130, Items.plastanium, 80, Items.surgeAlloy, 30));
+			requirements(Category.power, ItemStack.with(Items.graphite, 200, Items.metaglass, 150, Items.silicon, 130, Items.plastanium, 60, Items.surgeAlloy, 20));
 			size = 3;
 			health = 660;
 			buildCostMultiplier = 0.9f;
 			attribute = Attribute.heat;
 			powerProduction = 2.7f;
 			generateEffect = Fx.redgeneratespark;
-			effectChance = 0.08f;
+			effectChance = 0.011f;
 			drawer = new DrawMulti(new DrawDefault(), new DrawFade() {{
 				scale = 10;
 			}});
 			floating = true;
 			ambientSound = Sounds.hum;
+			ambientSoundVolume = 0.06f;
 		}};
 		liquidConsumeGenerator = new ConsumeGenerator("liquid-generator") {{
 			requirements(Category.power, ItemStack.with(Items.graphite, 120, Items.metaglass, 80, Items.silicon, 115));
@@ -2198,27 +2199,92 @@ public final class HBlocks {
 			craftTime = 100f;
 			outputItem = new ItemStack(HItems.crystallineCircuit, 1);
 			craftEffect = Fx.none;
-			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawSpecConstruct(HPal.originiumGreen, HPal.originiumGreen), new DrawDefault());
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawDefault());
 			consumePower(2.5f);
 			consumeItems(ItemStack.with(Items.titanium, 2, Items.silicon, 3, HItems.originium, 1));
 			buildType = GenericCrafterBuild::new;
 		}};
-		crystallineCircuitPrinter = new GenericCrafter("crystalline-circuit-printer") {{
+		crystallineCircuitPrinter = new AdaptiveCrafter("crystalline-circuit-printer") {{
 			requirements(Category.crafting, ItemStack.with(Items.titanium, 600, Items.silicon, 400, Items.plastanium, 350, Items.surgeAlloy, 250, HItems.chromium, 200, HItems.crystallineCircuit, 150, HItems.originium, 150));
 			size = 4;
 			health = 1500;
-			squareSprite = false;
+			armor = 3f;
+			hasItems = true;
 			hasLiquids = true;
 			itemCapacity = 40;
 			liquidCapacity = 60f;
-			craftTime = 150f;
-			outputItem = new ItemStack(HItems.crystallineCircuit, 12);
 			craftEffect = Fx.none;
-			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.cryofluid), new DrawRegion("-mid"), new DrawSpecConstruct(HPal.originiumGreen, HPal.originiumGreen), new DrawDefault());
+			Color senior = Pal.heal.cpy().lerp(Color.green, 0.63f).lerp(Color.white, 0.2f);
+			Color junior = Pal.heal;
+			updateEffectChance = 0.07f;
+			updateEffect = new Effect(30f, e -> {
+				Rand rand = Utils.rand(e.id);
+				Draw.color(senior, Color.white, e.fout() * 0.66f);
+				Draw.alpha(0.55f * e.fout() + 0.5f);
+				Angles.randLenVectors(e.id, 2, 4f + e.finpow() * 16f, (x, y) -> {
+					Fill.square(e.x + x, e.y + y, e.fout() * rand.random(2, 4));
+				});
+
+				Draw.color(junior, Color.white, e.fout() * 0.66f);
+				Draw.alpha(0.55f * e.fout() + 0.5f);
+				Angles.randLenVectors(e.id + 12, 4, 4f + e.finpow() * 16f, (x, y) -> {
+					Fill.square(e.x + x, e.y + y, e.fout() * rand.random(1, 3));
+				});
+			});
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawScanLine() {{
+				colorFrom = junior;
+				//lineLength = 73 / 4f;
+				scanLength = 73 / 4f;
+				scanScl = 15f;
+				scanAngle = 90;
+				lineStroke -= 0.15f;
+				totalProgressMultiplier = 1.25f;
+				phaseOffset = Mathf.random() * 5f;
+			}}, new DrawScanLine() {{
+				colorFrom = junior;
+				//lineLength = 73 / 4f;
+				scanLength = 73 / 4f;
+				scanScl = 15f;
+				scanAngle = 0;
+				totalProgressMultiplier = 1.55f;
+				phaseOffset = Mathf.random() * 5f;
+			}}, new DrawScanLine() {{
+				colorFrom = senior;
+				//lineLength = 73 / 4f;
+				scanLength = 73 / 4f;
+				scanScl = 15f;
+				scanAngle = 90;
+				totalProgressMultiplier = 1.35f;
+				phaseOffset = Mathf.random() * 5f;
+			}}, new DrawScanLine() {{
+				colorFrom = senior;
+				//lineLength = 73 / 4f;
+				scanLength = 73 / 4f;
+				scanScl = 8f;
+				scanAngle = 0;
+				lineStroke -= 0.15f;
+				totalProgressMultiplier = 1.65f;
+				phaseOffset = Mathf.random() * 5f;
+			}}, new DrawRegion("-mid"), new DrawLiquidTile(Liquids.cryofluid, 54 / 4f), new DrawDefault(), new DrawGlowRegion("-glow1") {{
+				color = junior;
+			}}, new DrawGlowRegion("-glow2") {{
+				color = junior;
+			}}, new DrawGlowRegion("-glow3") {{
+				color = junior;
+			}});
+			recipes.add(new Recipe() {{
+				inputItem.add(ItemStack.with(Items.titanium, 6, Items.silicon, 9, HItems.originium, 3));
+				inputLiquid.add(LiquidStack.with(Liquids.cryofluid, 6f / 60f));
+				outputItem.add(ItemStack.with(HItems.crystallineCircuit, 18));
+				craftTime = 150f;
+			}}, new Recipe() {{
+				inputItem.add(ItemStack.with(Items.silicon, 12, HItems.originium, 4, HItems.chromium, 6));
+				inputLiquid.add(LiquidStack.with(Liquids.cryofluid, 18f / 60f));
+				outputItem.add(ItemStack.with(HItems.crystallineElectronicUnit, 6));
+				craftTime = 180f;
+			}});
 			consumePower(25f);
-			consumeLiquid(Liquids.cryofluid, 6f / 60f);
-			consumeItems(ItemStack.with(Items.titanium, 6, Items.silicon, 9, HItems.originium, 3));
-			buildType = GenericCrafterBuild::new;
+			squareSprite = false;
 			hideDetails = false;
 		}};
 		originiumActivator = new GenericCrafter("originium-activator") {{
@@ -2441,6 +2507,21 @@ public final class HBlocks {
 			}}, new DrawDefault());
 			buildType = GenericCrafterBuild::new;
 		}};
+		originiumSynthesizer = new GenericCrafter("originium-synthesizer") {{
+			requirements(Category.crafting, ItemStack.with(Items.graphite, 80, Items.silicon, 100, Items.titanium, 80, Items.thorium, 20));
+			size = 3;
+			health = 450;
+			hasLiquids = true;
+			itemCapacity += 15;
+			liquidCapacity *= 6f;
+			craftTime /= 3f;
+			outputItem = new ItemStack(HItems.originium, 1);
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.nitrogen), new DrawDefault());
+			consumePower(1.75f);
+			consumeItems(ItemStack.with(HItems.stone, 1));
+			consumeLiquid(Liquids.nitrogen, 0.15f);
+			buildType = GenericCrafterBuild::new;
+		}};
 		uraniumSynthesizer = new GenericCrafter("uranium-synthesizer") {{
 			requirements(Category.crafting, ItemStack.with(Items.graphite, 50, Items.silicon, 40, Items.plastanium, 30, Items.phaseFabric, 15, HItems.originium, 10));
 			size = 2;
@@ -2543,7 +2624,7 @@ public final class HBlocks {
 			consumeLiquid(HLiquids.nitratedOil, 36f / 60f);
 			buildType = SeparatorBuild::new;
 		}};
-		blastReagentMixer = new GenericCrafter("blastreagent-mixer") {{
+		blastReagentMixer = new GenericCrafter("blast-reagent-mixer") {{
 			size = 4;
 			armor = 5;
 			health = 660;
@@ -2965,9 +3046,9 @@ public final class HBlocks {
 			scaledHealth = 100f;
 			constructTime = 60f * 60f * 5f;
 			upgrades.addAll(
-					new UnitType[]{UnitTypes.eclipse, HUnitTypes.sunlit},
+					new UnitType[]{UnitTypes.eclipse, HUnitTypes.aphelion},
 					new UnitType[]{UnitTypes.toxopid, HUnitTypes.cancer},
-					new UnitType[]{UnitTypes.reign, HUnitTypes.fearless},
+					new UnitType[]{UnitTypes.reign, HUnitTypes.empire},
 					new UnitType[]{UnitTypes.oct, HUnitTypes.windstorm},
 					new UnitType[]{UnitTypes.corvus, HUnitTypes.supernova},
 					new UnitType[]{UnitTypes.omura, HUnitTypes.poseidon},
@@ -3446,9 +3527,10 @@ public final class HBlocks {
 			buildType = ItemTurretBuild::new;
 		}};
 		breakthrough = new PowerTurret("breakthrough") {{
-			requirements(Category.turret, ItemStack.with(Items.silicon, 130, Items.titanium, 180, Items.thorium, 150, Items.plastanium, 100, Items.phaseFabric, 20));
+			requirements(Category.turret, ItemStack.with(Items.silicon, 320, Items.titanium, 180, Items.thorium, 150, Items.plastanium, 100, Items.phaseFabric, 30));
 			size = 4;
 			health = 2800;
+			armor = 3f;
 			range = 500f;
 			coolantMultiplier = 1.5f;
 			moveWhileCharging = false;
@@ -3478,7 +3560,7 @@ public final class HBlocks {
 			heatColor = Pal.lancerLaser;
 			shootSound = Sounds.laserblast;
 			chargeSound = Sounds.lasercharge;
-			shootType = new LaserBulletType(1200f) {{
+			shootType = new LaserBulletType(1550f) {{
 				ammoMultiplier = 1;
 				drawSize = length * 2f;
 				hitEffect = Fx.hitLiquid;

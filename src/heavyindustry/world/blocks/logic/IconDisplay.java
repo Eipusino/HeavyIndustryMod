@@ -47,7 +47,7 @@ public class IconDisplay extends Block {
 	@Override
 	public void load() {
 		super.load();
-		maskRegion = Core.atlas.find(name + "-mask", HVars.whiteRegion);
+		maskRegion = Core.atlas.find(name + "-mask", HVars.whiteAtlas);
 	}
 
 	@Override
