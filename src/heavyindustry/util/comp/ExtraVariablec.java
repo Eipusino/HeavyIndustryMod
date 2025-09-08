@@ -12,8 +12,8 @@ import heavyindustry.func.DoubleDoublef;
 import heavyindustry.func.Intt;
 import heavyindustry.func.Longp;
 import heavyindustry.func.Longt;
+import heavyindustry.util.BaseMap;
 
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -34,7 +34,7 @@ public interface ExtraVariablec {
 	 * Variable mapping table entry, automatically or manually bound to a mapping object,
 	 * which will serve as a container for storing dynamic variables as objects.
 	 */
-	Map<String, Object> extra();
+	BaseMap<String, Object> extra();
 
 	/**
 	 * Get the value of a dynamic variable, return null if the variable does not exist.
@@ -71,7 +71,7 @@ public interface ExtraVariablec {
 	 */
 	@SuppressWarnings("unchecked")
 	default <T> T getVar(String field, Prov<T> initial) {
-		return (T) extra().computeIfAbsent(field, e -> initial.get());
+		return (T) extra().asComputeIfAbsent(field, e -> initial.get());
 	}
 
 	/**

@@ -118,6 +118,7 @@ public class JumpGate extends Block {
 	@Override
 	public void setBars() {
 		super.setBars();
+
 		addBar("progress", (JumpGateBuild tile) -> new Bar("bar.progress", Pal.ammo, tile::progress));
 		addBar("efficiency", (JumpGateBuild tile) -> new Bar(() -> Core.bundle.format("bar.efficiency", Strings.autoFixed(tile.speedMultiplier * 100f, 0)), () -> Pal.techBlue, () -> tile.speedMultiplier / maxWarmupSpeed));
 		addBar("units", (JumpGateBuild tile) -> new Bar(
@@ -454,6 +455,7 @@ public class JumpGate extends Block {
 		@Override
 		public void write(Writes write) {
 			super.write(write);
+
 			write.f(speedMultiplier);
 			write.f(progress);
 			write.i(recipeIndex);
@@ -463,6 +465,7 @@ public class JumpGate extends Block {
 		@Override
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
+
 			if (revision == 1) {
 				speedMultiplier = read.f();
 				progress = read.f();

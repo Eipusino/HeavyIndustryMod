@@ -85,7 +85,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -1618,7 +1617,6 @@ public final class Utils {
 	 * @since 1.0.7
 	 */
 	public static <K, V> Comparator<Map.Entry<K, V>> comparingByKey(Comparator<? super K> cmp) {
-		Objects.requireNonNull(cmp);
 		return (c1, c2) -> cmp.compare(c1.getKey(), c2.getKey());
 	}
 
@@ -1636,7 +1634,6 @@ public final class Utils {
 	 * @since 1.0.7
 	 */
 	public static <K, V> Comparator<Map.Entry<K, V>> comparingByValue(Comparator<? super V> cmp) {
-		Objects.requireNonNull(cmp);
 		return (c1, c2) -> cmp.compare(c1.getValue(), c2.getValue());
 	}
 
@@ -1800,6 +1797,10 @@ public final class Utils {
 		if (type.isInstance(obj))
 			return def;
 		return (T) obj;
+	}
+
+	public static <T, E extends RuntimeException> T throwable(E e) {
+		throw e;
 	}
 
 	public static <T> T[] copyArray(T[] array, Func<T, T> copy) {

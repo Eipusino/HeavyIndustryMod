@@ -23,7 +23,6 @@ import arc.util.Structs;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.content.HBlocks;
 import heavyindustry.ui.Elements;
 import heavyindustry.world.consumers.ConsumeItem;
 import mindustry.content.Fx;
@@ -43,6 +42,8 @@ import mindustry.type.LiquidStack;
 import mindustry.ui.Bar;
 import mindustry.ui.Styles;
 import mindustry.world.Block;
+import mindustry.world.Tile;
+import mindustry.world.blocks.liquid.Conduit.ConduitBuild;
 import mindustry.world.consumers.Consume;
 import mindustry.world.consumers.ConsumeItems;
 import mindustry.world.consumers.ConsumeLiquid;
@@ -57,6 +58,7 @@ import mindustry.world.meta.StatValues;
 import mindustry.world.meta.Stats;
 
 import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
 /**
  * MultiCrafter. You can freely choose to change the production formula.
@@ -66,6 +68,9 @@ import static mindustry.Vars.tilesize;
  * @since 1.0.6
  */
 public class MultiCrafter extends Block {
+	/** Liquid output directions, specified in the same order as outputLiquids. Use -1 to dump in every direction. Rotations are relative to block. */
+	public int[] liquidOutputDirections = {-1};
+
 	/** PayloadRecipe {@link CraftPlan}. */
 	public Seq<CraftPlan> craftPlans = new Seq<>(CraftPlan.class);
 	/** If {@link MultiCrafter#useBlockDrawer} is false, use the drawer in the recipe for the block. */
@@ -210,6 +215,20 @@ public class MultiCrafter extends Block {
 				super.drawPlanRegion(plan, list);
 			}
 		}
+	}
+
+	@Override
+	public boolean rotatedOutput(int fromX, int fromY, Tile destination) {
+		if (!(destination.build instanceof ConduitBuild)) return false;
+
+		Building crafter = world.build(fromX, fromY);
+		if (crafter == null) return false;
+		int relative = Mathf.mod(crafter.relativeTo(destination) - crafter.rotation, 4);
+		for (int dir : liquidOutputDirections) {
+			if (dir == -1 || dir == relative) return false;
+		}
+
+		return true;
 	}
 
 	@Override

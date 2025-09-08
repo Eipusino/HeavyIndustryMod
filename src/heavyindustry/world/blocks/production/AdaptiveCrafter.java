@@ -1,12 +1,14 @@
 package heavyindustry.world.blocks.production;
 
 import arc.Core;
-import arc.math.geom.Vec2;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
 import arc.scene.ui.Image;
 import arc.scene.ui.layout.Stack;
 import arc.scene.ui.layout.Table;
-import arc.struct.ObjectSet;
+import arc.struct.EnumSet;
 import arc.struct.Seq;
+import arc.util.Eachable;
 import arc.util.Scaling;
 import arc.util.Strings;
 import arc.util.Time;
@@ -17,41 +19,70 @@ import heavyindustry.world.consumers.ConsumeRecipe;
 import mindustry.content.Fx;
 import mindustry.core.UI;
 import mindustry.ctype.UnlockableContent;
+import mindustry.entities.Effect;
+import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.gen.Icon;
+import mindustry.gen.Sounds;
 import mindustry.graphics.Pal;
+import mindustry.logic.LAccess;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.type.Liquid;
 import mindustry.type.LiquidStack;
-import mindustry.type.PayloadSeq;
 import mindustry.type.PayloadStack;
 import mindustry.ui.Bar;
 import mindustry.ui.Styles;
 import mindustry.world.Block;
-import mindustry.world.blocks.payloads.BuildPayload;
-import mindustry.world.blocks.payloads.Payload;
-import mindustry.world.blocks.production.GenericCrafter;
-import mindustry.world.blocks.units.UnitAssembler;
+import mindustry.world.Tile;
+import mindustry.world.blocks.liquid.Conduit.ConduitBuild;
+import mindustry.world.consumers.ConsumePower;
+import mindustry.world.draw.DrawBlock;
+import mindustry.world.draw.DrawDefault;
+import mindustry.world.meta.BlockFlag;
 import mindustry.world.meta.BlockStatus;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 import mindustry.world.meta.StatValue;
 import mindustry.world.meta.StatValues;
 
-public class AdaptiveCrafter extends GenericCrafter {
-	public ObjectSet<UnlockableContent> payloadFilter = new ObjectSet<>();
+import static mindustry.Vars.world;
+
+public class AdaptiveCrafter extends Block {
+	/** Liquid output directions, specified in the same order as outputLiquids. Use -1 to dump in every direction. Rotations are relative to block. */
+	public int[] liquidOutputDirections = {-1};
+
+	/** if true, crafters with multiple liquid outputs will dump excess when there's still space for at least one liquid type */
+	public boolean dumpExtraLiquid = true;
+	public boolean ignoreLiquidFullness = false;
+
+	public float craftTime = 80;
+	public Effect craftEffect = Fx.none;
+	public Effect updateEffect = Fx.none;
+	public float updateEffectChance = 0.04f;
+	public float updateEffectSpread = 4f;
+	public float warmupSpeed = 0.019f;
+
+	public DrawBlock drawer = new DrawDefault();
+
 	public Seq<Recipe> recipes = new Seq<>(Recipe.class);
 
 	public Seq<Item> itemOutput = new Seq<>(Item.class);
 	public Seq<Liquid> liquidOutput = new Seq<>(Liquid.class);
-	public Seq<UnlockableContent> payloadOutput = new Seq<>(UnlockableContent.class);
 
 	public float powerProduction = 0f;
 	public int payloadCapacity = 10;
 
 	public AdaptiveCrafter(String name) {
 		super(name);
+
+		update = true;
+		solid = true;
+		ambientSound = Sounds.machine;
+		sync = true;
+		ambientSoundVolume = 0.03f;
+		flags = EnumSet.of(BlockFlag.factory);
+		drawArrow = false;
 
 		hasItems = true;
 		hasLiquids = true;
@@ -88,29 +119,32 @@ public class AdaptiveCrafter extends GenericCrafter {
 	}
 
 	@Override
+	public void load() {
+		super.load();
+
+		drawer.load(this);
+	}
+
+	@Override
 	public void init() {
 		super.init();
 
 		if (powerProduction > 0f) {
 			consumesPower = false;
 			outputsPower = true;
+
+			// Don't do anything foolish.
+			consPower = null;
+			consumeBuilder.removeAll(c -> c instanceof ConsumePower);
 		}
 
 		recipes.each(recipe -> {
-			recipe.inputItem.each(stack -> itemFilter[stack.item.id] = true);
-			recipe.inputLiquid.each(stack -> liquidFilter[stack.liquid.id] = true);
-			recipe.inputPayload.each(stack -> payloadFilter.add(stack.item));
+			for (ItemStack stack : recipe.inputItem) itemFilter[stack.item.id] = true;
+			for (LiquidStack stack : recipe.inputLiquid) liquidFilter[stack.liquid.id] = true;
 
-			recipe.outputItem.each(stack -> itemOutput.add(stack.item));
-			recipe.outputLiquid.each(stack -> liquidOutput.add(stack.liquid));
-			recipe.outputPayload.each(stack -> payloadOutput.add(stack.item));
+			for (ItemStack stack : recipe.outputItem) itemOutput.add(stack.item);
+			for (LiquidStack stack : recipe.outputLiquid) liquidOutput.add(stack.liquid);
 		});
-
-		outputItem = null;
-		outputLiquid = null;
-
-		outputItems = null;
-		outputLiquids = null;
 
 		craftTime = 60f;
 	}
@@ -149,6 +183,35 @@ public class AdaptiveCrafter extends GenericCrafter {
 		stats.remove(Stat.productionTime);
 	}
 
+	@Override
+	public boolean rotatedOutput(int fromX, int fromY, Tile destination) {
+		if (!(destination.build instanceof ConduitBuild)) return false;
+
+		Building crafter = world.build(fromX, fromY);
+		if (crafter == null) return false;
+		int relative = Mathf.mod(crafter.relativeTo(destination) - crafter.rotation, 4);
+		for (int dir : liquidOutputDirections) {
+			if (dir == -1 || dir == relative) return false;
+		}
+
+		return true;
+	}
+
+	@Override
+	public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list) {
+		drawer.drawPlan(this, plan, list);
+	}
+
+	@Override
+	public TextureRegion[] icons() {
+		return drawer.finalIcons(this);
+	}
+
+	@Override
+	public void getRegionsToOutline(Seq<TextureRegion> out) {
+		drawer.getRegionsToOutline(this, out);
+	}
+
 	public StatValue display() {
 		return table -> {
 			table.row();
@@ -161,16 +224,18 @@ public class AdaptiveCrafter extends GenericCrafter {
 						t.table(inner -> {
 							inner.table(row -> {
 								row.left();
-								recipe.inputItem.each(stack -> row.add(display(stack.item, stack.amount, recipe.craftTime)));
-								recipe.inputLiquid.each(stack -> row.add(display(stack.liquid, stack.amount * Time.toSeconds, 60f)));
-								recipe.inputPayload.each(stack -> row.add(display(stack.item, stack.amount, recipe.craftTime)));
+								for (ItemStack stack : recipe.inputItem)
+									row.add(display(stack.item, stack.amount, recipe.craftTime));
+								for (LiquidStack stack : recipe.inputLiquid)
+									row.add(display(stack.liquid, stack.amount * Time.toSeconds, 60f));
 							}).growX();
 							inner.table(row -> {
 								row.left();
 								row.image(Icon.right).size(32f).padLeft(8f).padRight(12f);
-								recipe.outputItem.each(stack -> row.add(display(stack.item, stack.amount, recipe.craftTime)));
-								recipe.outputLiquid.each(stack -> row.add(display(stack.liquid, stack.amount * Time.toSeconds, 60f)));
-								recipe.outputPayload.each(stack -> row.add(display(stack.item, stack.amount, recipe.craftTime)));
+								for (ItemStack stack : recipe.outputItem)
+									row.add(display(stack.item, stack.amount, recipe.craftTime));
+								for (LiquidStack stack : recipe.outputLiquid)
+									row.add(display(stack.liquid, stack.amount * Time.toSeconds, 60f));
 							}).growX();
 						});
 					}).fillX();
@@ -185,14 +250,22 @@ public class AdaptiveCrafter extends GenericCrafter {
 		if (buildType == null) buildType = AdaptiveCrafterBuild::new;
 	}
 
-	public class AdaptiveCrafterBuild extends GenericCrafterBuild {
-		public PayloadSeq payloads = new PayloadSeq();
+	public class AdaptiveCrafterBuild extends Building {
+		public float progress;
+		public float totalProgress;
+		public float warmup;
 
 		public int recipeIndex = -1;
 
 		@Override
-		public PayloadSeq getPayloads() {
-			return payloads;
+		public void draw() {
+			drawer.draw(this);
+		}
+
+		@Override
+		public void drawLight() {
+			super.drawLight();
+			drawer.drawLight(this);
 		}
 
 		public Recipe getRecipe() {
@@ -266,7 +339,25 @@ public class AdaptiveCrafter extends GenericCrafter {
 		public void updateTile() {
 			if (!validRecipe()) updateRecipe();
 
-			super.updateTile();
+			if (efficiency > 0) {
+				progress += getProgressIncrease(craftTime);
+				warmup = Mathf.approachDelta(warmup, warmupTarget(), warmupSpeed);
+
+				if (wasVisible && Mathf.chanceDelta(updateEffectChance)) {
+					updateEffect.at(x + Mathf.range(size * updateEffectSpread), y + Mathf.range(size * updateEffectSpread));
+				}
+			} else {
+				warmup = Mathf.approachDelta(warmup, 0f, warmupSpeed);
+			}
+
+			//TODO may look bad, revert to edelta() if so
+			totalProgress += warmup * Time.delta;
+
+			if (progress >= 1f) {
+				craft();
+			}
+
+			dumpOutputs();
 
 			Recipe recipe = getRecipe();
 
@@ -280,41 +371,20 @@ public class AdaptiveCrafter extends GenericCrafter {
 			}
 
 			if (recipe == null) return;
-			recipe.outputItem.each(stack -> {
+
+			for (ItemStack stack : recipe.outputItem) {
 				if (items.get(stack.item) >= itemCapacity) {
 					items.set(stack.item, itemCapacity);
 				}
-			});
-			recipe.outputPayload.each(stack -> {
-				if (getPayloads().get(stack.item) >= payloadCapacity) {
-					getPayloads().remove(stack.item, getPayloads().get(stack.item) - payloadCapacity);
-				}
-			});
+			}
 		}
 
-		@Override
 		public void dumpOutputs() {
 			boolean timer = timer(timerDump, dumpTime / timeScale);
 			if (timer) {
 				itemOutput.each(this::dump);
-				payloadOutput.each(output -> {
-					BuildPayload payload = new BuildPayload((Block) output, team);
-					payload.set(x, y, rotdeg());
-					dumpPayload(payload);
-				});
 			}
 			liquidOutput.each(output -> dumpLiquid(output, 2f, -1));
-		}
-
-		@Override
-		public void handlePayload(Building source, Payload payload) {
-			payloads.add(payload.content(), 1);
-			Fx.payloadDeposit.at(payload.x(), payload.y(), payload.angleTo(this), new UnitAssembler.YeetData(new Vec2(x, y), payload.content()));
-		}
-
-		@Override
-		public boolean acceptPayload(Building source, Payload payload) {
-			return payloadFilter.contains(payload.content()) && getPayloads().get(payload.content()) < payloadCapacity;
 		}
 
 		@Override
@@ -334,7 +404,8 @@ public class AdaptiveCrafter extends GenericCrafter {
 				}
 			}
 			if (!ignoreLiquidFullness) {
-				if (recipe.outputLiquid.isEmpty()) return true;
+				if (recipe.outputLiquid.length == 0) return true;
+
 				boolean allFull = true;
 				for (LiquidStack output : recipe.outputLiquid) {
 					if (liquids.get(output.liquid) >= liquidCapacity - 0.001f) {
@@ -364,10 +435,10 @@ public class AdaptiveCrafter extends GenericCrafter {
 			Recipe recipe = getRecipe();
 
 			if (recipe != null) scl = recipe.craftTime / craftTime;
+
 			return super.getProgressIncrease(baseTime) / scl;
 		}
 
-		@Override
 		public void craft() {
 			Recipe recipe = getRecipe();
 
@@ -375,17 +446,45 @@ public class AdaptiveCrafter extends GenericCrafter {
 
 			consume();
 
-			recipe.outputItem.each(stack -> {
+			for (ItemStack stack : recipe.outputItem) {
 				for (int i = 0; i < stack.amount; i++) {
 					offload(stack.item);
 				}
-			});
-			recipe.outputPayload.each(stack -> payloads.add(stack.item, stack.amount));
+			}
 
 			progress %= 1f;
 
 			if (wasVisible) craftEffect.at(x, y);
 			updateRecipe();
+		}
+
+		public float warmupTarget() {
+			return 1f;
+		}
+
+		@Override
+		public float warmup() {
+			return warmup;
+		}
+
+		@Override
+		public float totalProgress() {
+			return totalProgress;
+		}
+
+		@Override
+		public float progress() {
+			return Mathf.clamp(progress);
+		}
+
+		@Override
+		public int getMaximumAccepted(Item item) {
+			return itemCapacity;
+		}
+
+		@Override
+		public boolean shouldAmbientSound() {
+			return efficiency > 0;
 		}
 
 		@Override
@@ -395,24 +494,25 @@ public class AdaptiveCrafter extends GenericCrafter {
 		}
 
 		@Override
-		public byte version() {
-			return 1;
+		public double sense(LAccess sensor) {
+			if (sensor == LAccess.progress) return progress();
+			return super.sense(sensor);
 		}
 
 		@Override
 		public void write(Writes write) {
 			super.write(write);
 
-			payloads.write(write);
+			write.f(progress);
+			write.f(warmup);
 		}
 
 		@Override
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
 
-			if (revision == 1) {
-				payloads.read(read);
-			}
+			progress = read.f();
+			warmup = read.f();
 		}
 	}
 }

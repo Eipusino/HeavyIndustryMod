@@ -49,6 +49,11 @@ public class AugerDrill extends Drill {
 	}
 
 	@Override
+	public boolean rotatedOutput(int x, int y) {
+		return false;
+	}
+
+	@Override
 	protected void initBuilding() {
 		if (buildType == null) buildType = AugerDrillBuild::new;
 	}

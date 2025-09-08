@@ -13,8 +13,10 @@ public class LiquidOverflowValve extends LiquidBlock {
 
 	public LiquidOverflowValve(String name) {
 		super(name);
+
 		canOverdrive = false;
 		instantTransfer = true;
+		liquidCapacity *= 1000f;
 	}
 
 	@Override
@@ -89,7 +91,7 @@ public class LiquidOverflowValve extends LiquidBlock {
 				}
 			}
 
-			return to instanceof LiquidOverfloatValveBuild v ? v.getLiquidDestination(this, liquid) : to;
+			return to instanceof LiquidOverfloatValveBuild valve ? valve.getLiquidDestination(this, liquid) : to;
 		}
 	}
 }

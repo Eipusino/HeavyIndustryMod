@@ -1,36 +1,232 @@
 package heavyindustry.util;
 
-import arc.struct.ObjectMap;
-import arc.struct.OrderedMap;
 import arc.struct.Seq;
+import arc.util.ArcRuntimeException;
+
+import java.util.NoSuchElementException;
 
 /**
- * Implementation of Ordered Map based on {@link OrderedMap} wrapper for Java collection framework
+ * Implementation of Ordered Map based on {@code OrderedMap} wrapper for Java collection framework
  * used in places where Java specifications are required and OrderedMap does not create nodes.
  */
 public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 	public Seq<K> orderedKeys;
 
-	public CollectionOrderedMap() {
-		setMap(16, 0.75f);
+	public CollectionOrderedMap(Class<?> keyType, Class<?> valueType) {
+		super(keyType, valueType, 16, 0.75f);
+		setMap(keyType, 16);
 	}
 
-	public CollectionOrderedMap(int capacity) {
-		setMap(capacity, 0.75f);
+	public CollectionOrderedMap(Class<?> keyType, Class<?> valueType, int capacity) {
+		super(keyType, valueType, capacity, 0.75f);
+		setMap(keyType, capacity);
 	}
 
-	public CollectionOrderedMap(int capacity, float loadFactor) {
-		setMap(capacity, loadFactor);
+	public CollectionOrderedMap(Class<?> keyType, Class<?> valueType, int capacity, float loadFactor) {
+		super(keyType, valueType, capacity, loadFactor);
+		setMap(keyType, capacity);
 	}
 
-	public CollectionOrderedMap(ObjectMap<? extends K, ? extends V> map) {
-		setMap(16, 0.75f);
-		this.map.putAll(map);
+	public CollectionOrderedMap(CollectionOrderedMap<? extends K, ? extends V> map) {
+		super(map);
+		setMap(map.keyComponentType, 16);
+		putAll(map);
+	}
+
+	protected void setMap(Class<?> keyType, int capacity) {
+		orderedKeys = new Seq<>(true, capacity, keyType);
 	}
 
 	@Override
-	protected void setMap(int capacity, float loadFactor) {
-		map = new OrderedMap<>(capacity, loadFactor);
-		orderedKeys = ((OrderedMap<K, V>) map).orderedKeys();
+	public V put(K key, V value) {
+		if (!containsKey(key)) orderedKeys.add(key);
+		return super.put(key, value);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public V remove(Object key) {
+		orderedKeys.remove((K) key, false);
+		return super.remove(key);
+	}
+
+	public V removeIndex(int index) {
+		return super.remove(orderedKeys.remove(index));
+	}
+
+	@Override
+	public void clear(int maximumCapacity) {
+		orderedKeys.clear();
+		super.clear(maximumCapacity);
+	}
+
+	@Override
+	public void clear() {
+		orderedKeys.clear();
+		super.clear();
+	}
+
+	public Seq<K> orderedKeys() {
+		return orderedKeys;
+	}
+
+	@Override
+	public Entries<K, V> entries() {
+		if (entries1 == null) {
+			entries1 = new OrderedMapEntries<>(this);
+			entries2 = new OrderedMapEntries<>(this);
+		}
+		if (!entries1.valid) {
+			entries1.reset();
+			entries1.valid = true;
+			entries2.valid = false;
+			return entries1;
+		}
+		entries2.reset();
+		entries2.valid = true;
+		entries1.valid = false;
+		return entries2;
+	}
+
+
+	/**
+	 * Returns an iterator for the keys in the map. Remove is supported. Note that the same iterator instance is returned each
+	 * time this method is called. Use the {@link OrderedMapKeys} constructor for nested or multithreaded iteration.
+	 */
+	@Override
+	public Keys<K> keySet() {
+		if (keys1 == null) {
+			keys1 = new OrderedMapKeys<>(this);
+			keys2 = new OrderedMapKeys<>(this);
+		}
+		if (!keys1.valid) {
+			keys1.reset();
+			keys1.valid = true;
+			keys2.valid = false;
+			return keys1;
+		}
+		keys2.reset();
+		keys2.valid = true;
+		keys1.valid = false;
+		return keys2;
+	}
+
+	@Override
+	public String toString() {
+		if (size == 0) return "{}";
+		StringBuilder buffer = new StringBuilder(32);
+		buffer.append('{');
+		for (int i = 0, n = orderedKeys.size; i < n; i++) {
+			K key = orderedKeys.get(i);
+			if (i > 0) buffer.append(", ");
+			buffer.append(key);
+			buffer.append('=');
+			buffer.append(get(key));
+		}
+		buffer.append('}');
+		return buffer.toString();
+	}
+
+	public static class OrderedMapEntries<K, V> extends Entries<K, V> {
+		private Seq<K> keys;
+
+		public OrderedMapEntries(CollectionOrderedMap<K, V> map) {
+			super(map);
+			keys = map.orderedKeys;
+		}
+
+		@Override
+		public void reset() {
+			nextIndex = 0;
+			hasNext = map.size > 0;
+		}
+
+		@Override
+		public MapEntry<K, V> next() {
+			if (!hasNext) throw new NoSuchElementException();
+			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
+			entry.key = keys.get(nextIndex);
+			entry.value = map.get(entry.key);
+			nextIndex++;
+			hasNext = nextIndex < map.size;
+			return entry;
+		}
+
+		public void remove() {
+			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
+			map.remove(entry.key);
+			nextIndex--;
+		}
+	}
+
+	public static class OrderedMapKeys<K> extends Keys<K> {
+		private Seq<K> keys;
+
+		public OrderedMapKeys(CollectionOrderedMap<K, ?> map) {
+			super(map);
+			keys = map.orderedKeys;
+		}
+
+		@Override
+		public void reset() {
+			nextIndex = 0;
+			hasNext = map.size > 0;
+		}
+
+		@Override
+		public K next() {
+			if (!hasNext) throw new NoSuchElementException();
+			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
+			K key = keys.get(nextIndex);
+			currentIndex = nextIndex;
+			nextIndex++;
+			hasNext = nextIndex < map.size;
+			return key;
+		}
+
+		@SuppressWarnings("rawtypes")
+		@Override
+		public void remove() {
+			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
+			((CollectionOrderedMap) map).removeIndex(nextIndex - 1);
+			nextIndex = currentIndex;
+			currentIndex = -1;
+		}
+	}
+
+	public static class OrderedMapValues<V> extends Values<V> {
+		@SuppressWarnings("rawtypes")
+		private Seq keys;
+
+		public OrderedMapValues(CollectionOrderedMap<?, V> map) {
+			super(map);
+			keys = map.orderedKeys;
+		}
+
+		@Override
+		public void reset() {
+			nextIndex = 0;
+			hasNext = map.size > 0;
+		}
+
+		@Override
+		public V next() {
+			if (!hasNext) throw new NoSuchElementException();
+			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
+			V value = map.get(keys.get(nextIndex));
+			currentIndex = nextIndex;
+			nextIndex++;
+			hasNext = nextIndex < map.size;
+			return value;
+		}
+
+		@SuppressWarnings("rawtypes")
+		@Override
+		public void remove() {
+			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
+			((CollectionOrderedMap) map).removeIndex(currentIndex);
+			nextIndex = currentIndex;
+			currentIndex = -1;
+		}
 	}
 }

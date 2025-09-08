@@ -1311,7 +1311,7 @@ public final class HUnitTypes {
 			groundLayer = 74f;
 			itemCapacity = 200;
 			ammoType = new ItemAmmoType(Items.pyratite);
-			ammoCapacity = 400;
+			ammoCapacity = 600;
 			abilities.add(new TerritoryFieldAbility(20 * 8f, 90f, 210f) {{
 				open = true;
 			}});
@@ -1773,6 +1773,7 @@ public final class HUnitTypes {
 			itemCapacity = 540;
 			abilities.add(new ForceFieldAbility(180f, 6f, 12000f, 60f * 8, 6, 0f), new RepairFieldAbility(290f, 60f * 2, 160f));
 			ammoType = new PowerAmmoType(2500);
+			ammoCapacity = 100;
 			weapons.add(new HealConeWeapon(name + "-heal-mount") {{
 				x = 33.5f;
 				y = -7.75f;
@@ -3815,6 +3816,8 @@ public final class HUnitTypes {
 			targetAir = targetGround = false;
 			abilities.add(new WitchServiceAbility(), new RegenProjectorAbility());
 			immunities.add(HStatusEffects.apoptosis);
+			ammoCapacity = 99999;
+			ammoType = new PowerAmmoType(9.9999f);
 			weapons.add(new Weapon() {{
 				x = 0f;
 				y = 0f;

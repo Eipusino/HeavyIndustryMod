@@ -88,14 +88,17 @@ public class ConsumeRecipe extends Consume {
 	@Override
 	public void build(Building build, Table table) {
 		Recipe recipe = displays.get(build);
+
 		if (recipe == null) return;
+
 		table.update(() -> {
 			table.clear();
 			table.left();
 
-			ItemStack[] currentItem = recipe.inputItem.toArray(ItemStack.class);
-			LiquidStack[] currentLiquid = recipe.inputLiquid.toArray(LiquidStack.class);
-			PayloadStack[] currentPayload = recipe.inputPayload.toArray(PayloadStack.class);
+			ItemStack[] currentItem = recipe.inputItem;
+			LiquidStack[] currentLiquid = recipe.inputLiquid;
+			PayloadStack[] currentPayload = recipe.inputPayload;
+
 			table.table(cont -> {
 				int i = 0;
 				if (currentItem != null) {

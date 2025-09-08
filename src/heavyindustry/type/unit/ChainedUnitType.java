@@ -160,13 +160,13 @@ public class ChainedUnitType extends BaseUnitType {
 		weaponSeq.set(mapped);
 	}
 
-	public <T extends Unit & Chainedc> void drawWorm(T unit) {
-		float z = (unit.elevation > 0.5f ? (lowAltitude ? Layer.flyingUnitLow : Layer.flyingUnit) : groundLayer + Mathf.clamp(hitSize / 4000f, 0, 0.01f)) + (unit.countForward() * segmentLayerOffset);
+	public void drawWorm(Unit unit, Chainedc chained) {
+		float z = (unit.elevation > 0.5f ? (lowAltitude ? Layer.flyingUnitLow : Layer.flyingUnit) : groundLayer + Mathf.clamp(hitSize / 4000f, 0, 0.01f)) + (chained.countForward() * segmentLayerOffset);
 
 		if (unit.isFlying() || shadowElevation > 0) {
 			TextureRegion tmpShadow = shadowRegion;
-			if (!unit.isHead() || unit.isTail()) {
-				shadowRegion = unit.isTail() ? tailRegion : segmentRegion;
+			if (!chained.isHead() || chained.isTail()) {
+				shadowRegion = chained.isTail() ? tailRegion : segmentRegion;
 			}
 
 			Draw.z(Math.min(Layer.darkness, z - 1f));
@@ -221,20 +221,20 @@ public class ChainedUnitType extends BaseUnitType {
 		Draw.z(z - 0.02f);
 
 		TextureRegion tmp = region, tmpCell = cellRegion, tmpOutline = outlineRegion;
-		if (!unit.isHead()) {
-			region = unit.isTail() ? tailRegion : segmentRegion;
-			cellRegion = unit.isTail() ? tailCellRegion : segmentCellRegion;
-			outlineRegion = unit.isTail() ? tailOutline : segmentOutline;
+		if (!chained.isHead()) {
+			region = chained.isTail() ? tailRegion : segmentRegion;
+			cellRegion = chained.isTail() ? tailCellRegion : segmentCellRegion;
+			outlineRegion = chained.isTail() ? tailOutline : segmentOutline;
 		}
 
 		drawOutline(unit);
 		drawWeaponOutlines(unit);
 
-		if (unit.isTail()) {
+		if (chained.isTail()) {
 			Draw.draw(z + 0.01f, () -> {
 				Tmp.v1.trns(unit.rotation + 180f, segmentOffset).add(unit);
-				Drawf.construct(Tmp.v1.x, Tmp.v1.y, tailRegion, unit.rotation - 90f, unit.growTime() / regenTime, unit.growTime() / regenTime, Time.time);
-				Drawf.construct(unit.x, unit.y, segmentRegion, unit.rotation - 90f, unit.growTime() / regenTime, unit.growTime() / regenTime, Time.time);
+				Drawf.construct(Tmp.v1.x, Tmp.v1.y, tailRegion, unit.rotation - 90f, chained.growTime() / regenTime, chained.growTime() / regenTime, Time.time);
+				Drawf.construct(unit.x, unit.y, segmentRegion, unit.rotation - 90f, chained.growTime() / regenTime, chained.growTime() / regenTime, Time.time);
 			});
 		}
 
@@ -242,7 +242,7 @@ public class ChainedUnitType extends BaseUnitType {
 
 		drawBody(unit);
 		if (drawCell) drawCell(unit);
-		if (chainedDecal != null) chainedDecal.draw(unit, unit.parent());
+		if (chainedDecal != null) chainedDecal.draw(unit, chained.parent());
 
 		cellRegion = tmpCell;
 		region = tmp;
@@ -270,8 +270,8 @@ public class ChainedUnitType extends BaseUnitType {
 
 	@Override
 	public void draw(Unit unit) {
-		if (unit instanceof Chainedc m) {
-			drawWorm((Unit & Chainedc) m);
+		if (unit instanceof Chainedc chained) {
+			drawWorm(unit, chained);
 		} else {
 			super.draw(unit);
 		}

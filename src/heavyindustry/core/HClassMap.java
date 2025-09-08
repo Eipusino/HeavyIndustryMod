@@ -212,6 +212,7 @@ import heavyindustry.world.blocks.payload.CapacityConfigurer;
 import heavyindustry.world.blocks.payload.FanBlock;
 import heavyindustry.world.blocks.payload.PayloadBuffer;
 import heavyindustry.world.blocks.payload.PayloadBurner;
+import heavyindustry.world.blocks.payload.PayloadCrafter;
 import heavyindustry.world.blocks.payload.PayloadCrane;
 import heavyindustry.world.blocks.payload.PayloadJunction;
 import heavyindustry.world.blocks.payload.PayloadManufacturingGrid;
@@ -659,6 +660,8 @@ final class HClassMap {
 		classes.put("ProcessorFanBuild", ProcessorFan.ProcessorFanBuild.class);
 		classes.put("TurretController", TurretController.class);
 		classes.put("TurretControllerBuild", TurretController.TurretControllerBuild.class);
+		classes.put("PayloadCrafter", PayloadCrafter.class);
+		classes.put("PayloadCrafterBuild", PayloadCrafter.PayloadCrafterBuild.class);
 		classes.put("FanBlock", FanBlock.class);
 		classes.put("FanBuild", FanBlock.FanBuild.class);
 		classes.put("ProcessableBlock", ProcessableBlock.class);

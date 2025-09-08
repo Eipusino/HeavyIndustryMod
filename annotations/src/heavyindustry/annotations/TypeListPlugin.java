@@ -17,18 +17,18 @@ import com.sun.tools.javac.code.Symbol.ClassSymbol;
 import com.sun.tools.javac.code.Symbol.PackageSymbol;
 import com.sun.tools.javac.tree.JCTree.JCClassDecl;
 import com.sun.tools.javac.tree.JCTree.JCExpression;
-import com.sun.tools.javac.tree.JCTree.JCMethodInvocation;
+import com.sun.tools.javac.tree.JCTree.JCNewArray;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.List;
 
 /**
- * Gathers all declared non-anonymous classes and packages and appends them to fields with {@code Seq.<String>with()}
+ * Gathers all declared non-anonymous classes and packages and appends them to fields with {@code new String[]{}}
  * initializer and annotated with {@link ListClasses} or {@link ListPackages}
  */
 public class TypeListPlugin implements Plugin {
-	protected Seq<JCMethodInvocation> classes = new Seq<>(JCMethodInvocation.class), packages = new Seq<>(JCMethodInvocation.class);
-	protected Seq<String> classDefs = new Seq<>(String.class), packageDefs = new Seq<>(String.class);
-	protected ObjectMap<JCMethodInvocation, List<JCExpression>> classArgs = new ObjectMap<>(), packArgs = new ObjectMap<>();
+	protected Seq<JCNewArray> classes = new Seq<>(JCNewArray.class), packages = new Seq<>(JCNewArray.class);
+	protected Seq<String> classDefines = new Seq<>(String.class), packageDefines = new Seq<>(String.class);
+	protected ObjectMap<JCNewArray, List<JCExpression>> classArgs = new ObjectMap<>(), packArgs = new ObjectMap<>();
 
 	@Override
 	public void init(JavacTask task, String... args) {
@@ -41,11 +41,11 @@ public class TypeListPlugin implements Plugin {
 						@Override
 						public Void visitVariable(VariableTree node, Void unused) {
 							ExpressionTree init = node.getInitializer();
-							if (init instanceof JCMethodInvocation metInv) {
+							if (init instanceof JCNewArray newArray) {
 								if (node.getModifiers().getAnnotations().stream().anyMatch(a -> a.getAnnotationType().toString().equals(ListClasses.class.getSimpleName()))) {
-									classes.add(metInv);
+									classes.add(newArray);
 								} else if (node.getModifiers().getAnnotations().stream().anyMatch(a -> a.getAnnotationType().toString().equals(ListPackages.class.getSimpleName()))) {
-									packages.add(metInv);
+									packages.add(newArray);
 								}
 							}
 
@@ -72,13 +72,13 @@ public class TypeListPlugin implements Plugin {
 								}
 
 								String cname = builder.toString();
-								if (!classDefs.contains(cname)) {
-									classDefs.add(cname);
+								if (!classDefines.contains(cname)) {
+									classDefines.add(cname);
 								}
 
 								String pname = current.getQualifiedName().toString();
-								if (!packageDefs.contains(pname)) {
-									packageDefs.add(pname);
+								if (!packageDefines.contains(pname)) {
+									packageDefines.add(pname);
 								}
 							}
 
@@ -91,8 +91,8 @@ public class TypeListPlugin implements Plugin {
 			@Override
 			public void started(TaskEvent event) {
 				if (event.getKind() == Kind.ANALYZE) {
-					classes.each(e -> e.args = classArgs.get(e, () -> List.from(Seq.with(e.args).addAll(classDefs.map(maker::Literal)))));
-					packages.each(e -> e.args = packArgs.get(e, () -> List.from(Seq.with(e.args).addAll(packageDefs.map(maker::Literal)))));
+					classes.each(e -> e.elems = classArgs.get(e, () -> List.from(Seq.with(e.elems).addAll(classDefines.map(maker::Literal)))));
+					packages.each(e -> e.elems = packArgs.get(e, () -> List.from(Seq.with(e.elems).addAll(packageDefines.map(maker::Literal)))));
 				}
 			}
 		});

@@ -2273,14 +2273,14 @@ public final class HBlocks {
 				color = junior;
 			}});
 			recipes.add(new Recipe() {{
-				inputItem.add(ItemStack.with(Items.titanium, 6, Items.silicon, 9, HItems.originium, 3));
-				inputLiquid.add(LiquidStack.with(Liquids.cryofluid, 6f / 60f));
-				outputItem.add(ItemStack.with(HItems.crystallineCircuit, 18));
+				inputItem = ItemStack.with(Items.titanium, 6, Items.silicon, 9, HItems.originium, 3);
+				inputLiquid = LiquidStack.with(Liquids.cryofluid, 6f / 60f);
+				outputItem = ItemStack.with(HItems.crystallineCircuit, 18);
 				craftTime = 150f;
 			}}, new Recipe() {{
-				inputItem.add(ItemStack.with(Items.silicon, 12, HItems.originium, 4, HItems.chromium, 6));
-				inputLiquid.add(LiquidStack.with(Liquids.cryofluid, 18f / 60f));
-				outputItem.add(ItemStack.with(HItems.crystallineElectronicUnit, 6));
+				inputItem = ItemStack.with(HItems.galliumNitride, 8, HItems.originium, 4, HItems.chromium, 6);
+				inputLiquid = LiquidStack.with(Liquids.cryofluid, 18f / 60f);
+				outputItem = ItemStack.with(HItems.crystallineElectronicUnit, 6);
 				craftTime = 180f;
 			}});
 			consumePower(25f);
@@ -2431,18 +2431,18 @@ public final class HBlocks {
 				rotateSpeed = 1.125f;
 			}});
 			recipes.add(new Recipe() {{
-				outputItem.add(ItemStack.with(Items.graphite, 5));
-				inputItem.add(ItemStack.with(Items.coal, 8));
-				inputLiquid.add(LiquidStack.with(Liquids.water, 0.8f));
+				outputItem = ItemStack.with(Items.graphite, 5);
+				inputItem = ItemStack.with(Items.coal, 8);
+				inputLiquid = LiquidStack.with(Liquids.water, 0.8f);
 				craftTime = 15f;
 			}}, new Recipe() {{
-				outputLiquid.add(LiquidStack.with(Liquids.oil, 0.8f));
-				inputItem.add(ItemStack.with(Items.sporePod, 4));
+				outputLiquid = LiquidStack.with(Liquids.oil, 0.8f);
+				inputItem = ItemStack.with(Items.sporePod, 4);
 				craftTime = 30f;
 			}}, new Recipe() {{
-				outputItem.add(ItemStack.with(Items.plastanium, 1));
-				inputItem.add(ItemStack.with(Items.titanium, 2));
-				inputLiquid.add(LiquidStack.with(Liquids.oil, 1f));
+				outputItem = ItemStack.with(Items.plastanium, 1);
+				inputItem = ItemStack.with(Items.titanium, 2);
+				inputLiquid = LiquidStack.with(Liquids.oil, 1f);
 				craftTime = 15f;
 			}});
 			consumePower(5.5f);

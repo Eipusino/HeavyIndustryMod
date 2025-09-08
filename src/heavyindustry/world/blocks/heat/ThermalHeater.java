@@ -39,6 +39,11 @@ public class ThermalHeater extends ThermalGenerator {
 	}
 
 	@Override
+	public boolean rotatedOutput(int x, int y) {
+		return false;
+	}
+
+	@Override
 	protected void initBuilding() {
 		if (buildType == null) buildType = ThermalHeaterBuild::new;
 	}

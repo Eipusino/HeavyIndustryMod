@@ -144,8 +144,7 @@ public class AdaptPayloadSource extends PayloadSource {
 		}
 
 		@Override
-		public void damage(float damage) {
-		}
+		public void damage(float damage) {}
 
 		@Override
 		public boolean canPickup() {

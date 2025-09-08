@@ -136,6 +136,7 @@ public final class HOverrides {
 		Blocks.phaseWeaver.itemCapacity = 30;
 		Blocks.disassembler.removeConsumers(c -> c instanceof ConsumeItems);
 		((Separator) Blocks.disassembler).results = ItemStack.with(Items.copper, 1, Items.lead, 1, Items.graphite, 1, Items.titanium, 1, Items.thorium, 1);
+		HOverrides.<ConsumeLiquid>modifier(Blocks.disassembler, c -> c instanceof ConsumeLiquid, c -> c.amount *= 1.5f);
 		//blocks-production-erekir
 		Blocks.oxidationChamber.canOverdrive = true;
 		Blocks.heatReactor.buildVisibility = BuildVisibility.shown;
