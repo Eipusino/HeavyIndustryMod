@@ -2,10 +2,10 @@ package heavyindustry.entities.abilities;
 
 import arc.graphics.Color;
 import arc.math.geom.Rect;
-import arc.struct.ObjectFloatMap;
 import arc.util.Time;
 import heavyindustry.content.HFx;
 import heavyindustry.content.HStatusEffects;
+import heavyindustry.util.BaseObjectFloatMap;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
 import mindustry.entities.Units;
@@ -17,7 +17,7 @@ import mindustry.type.StatusEffect;
 import static mindustry.Vars.tilesize;
 
 public class WitchServiceAbility extends Ability {
-	public ObjectFloatMap<Unit> findMap = new ObjectFloatMap<>();
+	public BaseObjectFloatMap<Unit> findMap = new BaseObjectFloatMap<>(Unit.class);
 
 	public float width = 60f, height = 60f;
 	public StatusEffect effectType = HStatusEffects.apoptosis;
@@ -79,9 +79,7 @@ public class WitchServiceAbility extends Ability {
 				}
 			});
 			for (Unit u : findMap.keys()) {
-				if (u == null) continue;
-
-				if (!u.isValid() || u.hasEffect(effectType)) {
+				if (u == null || !u.isValid() || u.hasEffect(effectType)) {
 					findMap.remove(u, 0f);
 
 					continue;

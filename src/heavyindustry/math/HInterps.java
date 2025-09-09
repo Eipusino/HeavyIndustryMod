@@ -33,6 +33,8 @@ public final class HInterps {
 
 	public static final PowOut pow25Out = new PowOut(25);
 
+	public static final MultiInterp fastFastSlow = new MultiInterp(Interp.pow2In, Interp.pow2);
+
 	/** Don't let anyone instantiate this class. */
 	private HInterps() {}
 }

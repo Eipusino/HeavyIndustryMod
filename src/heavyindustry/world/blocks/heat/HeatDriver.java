@@ -22,6 +22,7 @@ import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.ui.Bar;
 import mindustry.world.Block;
+import mindustry.world.blocks.RotBlock;
 import mindustry.world.blocks.heat.HeatBlock;
 import mindustry.world.blocks.heat.HeatConsumer;
 import mindustry.world.draw.DrawBlock;
@@ -191,7 +192,7 @@ public class HeatDriver extends Block {
 		}
 	}
 
-	public class HeatDriverBuild extends Building implements HeatBlock, HeatConsumer {
+	public class HeatDriverBuild extends Building implements HeatBlock, HeatConsumer, RotBlock {
 		public float rotation = 90f;
 		public float progress = 0f;
 		public float resProgress = 0f;
@@ -382,6 +383,11 @@ public class HeatDriver extends Block {
 			link = read.i();
 			rotation = read.f();
 			progress = read.f();
+		}
+
+		@Override
+		public float buildRotation() {
+			return rotation;
 		}
 	}
 }

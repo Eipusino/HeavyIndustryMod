@@ -1,7 +1,5 @@
 package heavyindustry.util;
 
-import arc.util.Reflect;
-
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -15,14 +13,13 @@ public class HierarchyArray<T> implements Iterable<T> {
 
 	HierarchyIterable<T> iterable;
 
-	@SuppressWarnings("unchecked")
-	public HierarchyArray(int size) {
-		array = (T[]) new Object[size];
-		scores = new float[size];
+	public HierarchyArray(Class<?> arrayType) {
+		this(16, arrayType);
 	}
 
-	public HierarchyArray(int size, Class<T> arrayType) {
-		array = Reflect.newArray(arrayType, size);
+	@SuppressWarnings("unchecked")
+	public HierarchyArray(int size, Class<?> arrayType) {
+		array = (T[]) Array.newInstance(arrayType, size);
 		scores = new float[size];
 	}
 

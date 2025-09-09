@@ -2,9 +2,9 @@ package heavyindustry.world.blocks.distribution;
 
 import arc.Core;
 import arc.graphics.g2d.TextureRegion;
-import arc.struct.ObjectIntMap;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.util.BaseObjectIntMap;
 import mindustry.Vars;
 import mindustry.type.Item;
 import mindustry.world.blocks.distribution.OverflowGate;
@@ -29,7 +29,7 @@ public class TubeGate extends OverflowGate {
 	}
 
 	public class TubeGateBuild extends OverflowGateBuild {
-		public ObjectIntMap<Item> directionalItems = new ObjectIntMap<>();
+		public BaseObjectIntMap<Item> directionalItems = new BaseObjectIntMap<>(Item.class);
 
 		@Override
 		public void read(Reads read, byte revision) {
@@ -48,7 +48,7 @@ public class TubeGate extends OverflowGate {
 			super.write(write);
 
 			write.s(directionalItems.size);
-			directionalItems.keys().toArray().each(item -> {
+			directionalItems.keys().toSeq().each(item -> {
 				write.i(item.id);
 				write.i(directionalItems.get(item));
 			});

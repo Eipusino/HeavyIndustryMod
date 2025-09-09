@@ -8,7 +8,6 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
-import arc.struct.OrderedSet;
 import arc.util.Eachable;
 import arc.util.Time;
 import arc.util.Tmp;
@@ -17,6 +16,8 @@ import arc.util.io.Writes;
 import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import heavyindustry.entities.bullet.LiquidMassDriverBolt;
+import heavyindustry.graphics.Outliner;
+import heavyindustry.util.CollectionOrderedSet;
 import mindustry.content.Fx;
 import mindustry.content.Liquids;
 import mindustry.entities.Effect;
@@ -26,10 +27,12 @@ import mindustry.gen.Bullet;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
+import mindustry.graphics.MultiPacker;
 import mindustry.graphics.Pal;
 import mindustry.logic.LAccess;
 import mindustry.type.Liquid;
 import mindustry.world.Block;
+import mindustry.world.blocks.RotBlock;
 import mindustry.world.draw.DrawBlock;
 import mindustry.world.meta.BlockGroup;
 import mindustry.world.meta.Env;
@@ -94,6 +97,13 @@ public class LiquidMassDriver extends Block {
 	}
 
 	@Override
+	public void createIcons(MultiPacker packer) {
+		super.createIcons(packer);
+
+		if (drawer instanceof DrawLiquidMassDriver driver) driver.createIcons(packer, this);
+	}
+
+	@Override
 	public void setStats() {
 		super.setStats();
 
@@ -153,13 +163,13 @@ public class LiquidMassDriver extends Block {
 		}
 	}
 
-	public class LiquidMassDriverBuild extends Building {
+	public class LiquidMassDriverBuild extends Building implements RotBlock {
 		public int link = -1;
 		public float rotation = 90;
 		public float reloadCounter = 0f;
 		public DriverState state = DriverState.idle;
 		//TODO use queue? this array usually holds about 3 shooters max anyway
-		public OrderedSet<Building> waitingShooters = new OrderedSet<>();
+		public CollectionOrderedSet<Building> waitingShooters = new CollectionOrderedSet<>(Building.class);
 
 		public Building currentShooter() {
 			return waitingShooters.isEmpty() ? null : waitingShooters.first();
@@ -346,7 +356,6 @@ public class LiquidMassDriver extends Block {
 		}
 
 		public void handlePayload(Bullet bullet, LiquidBulletData data) {
-
 			liquids.add(data.liquid, data.amount);
 
 			Effect.shake(shake, shake, this);
@@ -392,6 +401,11 @@ public class LiquidMassDriver extends Block {
 			link = read.i();
 			rotation = read.f();
 			state = DriverState.all[read.b()];
+		}
+
+		@Override
+		public float buildRotation() {
+			return rotation;
 		}
 	}
 
@@ -444,6 +458,10 @@ public class LiquidMassDriver extends Block {
 			bottomRegion = Core.atlas.find(block.name + "-bottom");
 			liquidRegion = Core.atlas.find(block.name + "-liquid");
 			topRegion = Core.atlas.find(block.name + "-top");
+		}
+
+		public void createIcons(MultiPacker packer, Block block) {
+			Outliner.outlineRegion(packer, region, block.outlineColor, block.name + "-region-outline", block.outlineRadius);
 		}
 	}
 }

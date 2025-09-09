@@ -1,13 +1,13 @@
 package heavyindustry.util.pools;
 
 import arc.func.Prov;
-import arc.struct.ObjectMap;
 import arc.struct.Seq;
 import arc.util.pooling.Pool;
+import heavyindustry.util.CollectionObjectMap;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public final class ThreadSafePools {
-	private static final ObjectMap<Class, ThreadSafePool> typePools = new ObjectMap<>();
+	private static final CollectionObjectMap<Class<?>, ThreadSafePool> typePools = new CollectionObjectMap<>(Class.class, ThreadSafePool.class);
 	private static final Object poolCreateLock = new Object();
 	private static final Object poolSetLock = new Object();
 

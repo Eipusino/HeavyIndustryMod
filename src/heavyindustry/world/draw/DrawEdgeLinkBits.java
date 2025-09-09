@@ -15,7 +15,7 @@ import static mindustry.Vars.tilesize;
 public class DrawEdgeLinkBits extends DrawBlock {
 	public static final byte[] empty = new byte[]{0, 0, 0, 0};
 
-	public Func<Building, byte[]> compLinked = e -> empty;
+	public Func<Building, byte[]> compLinked;
 
 	public float layer = -1;
 
@@ -27,7 +27,9 @@ public class DrawEdgeLinkBits extends DrawBlock {
 		compLinked = (Func<Building, byte[]>) compLinks;
 	}
 
-	public DrawEdgeLinkBits() {}
+	public DrawEdgeLinkBits() {
+		this(e -> empty);
+	}
 
 	@Override
 	public void load(Block block) {

@@ -96,6 +96,8 @@ import java.util.regex.Pattern;
  * @author Eipusino
  */
 public final class Utils {
+	public static final int SOFT_MAX_ARRAY_LENGTH = Integer.MAX_VALUE - 8;
+
 	public static final Color
 			c1 = new Color(), c2 = new Color(), c3 = new Color(), c4 = new Color(), c5 = new Color(),
 			c6 = new Color(), c7 = new Color(), c8 = new Color(), c9 = new Color(), c10 = new Color();
@@ -1080,6 +1082,8 @@ public final class Utils {
 		return seq;
 	}
 
+	/** @deprecated Please use {@link #getObjects(QuadTree, Class)} */
+	@Deprecated
 	public static <T extends QuadTreeObject> Seq<T> getObjects(QuadTree<T> tree) {
 		Seq<T> seq = new Seq<>();
 
@@ -1638,13 +1642,13 @@ public final class Utils {
 	}
 
 	/**
-	 * Returns a copy of the given {@code Map.Entry}. The returned instance is not
+	 * Returns a copy of the given {@code Map.MapEntry}. The returned instance is not
 	 * associated with any map. The returned instance has the same characteristics
 	 * as instances returned by the {@link Map#entry Map::entry} method.
 	 *
 	 * @apiNote
 	 * An instance obtained from a map's entry-set view has a connection to that map.
-	 * The {@code copyOf}  method may be used to create a {@code Map.Entry} instance,
+	 * The {@code copyOf}  method may be used to create a {@code Map.MapEntry} instance,
 	 * containing the same key and value, that is independent of any map.
 	 *
 	 * @implNote
@@ -1799,8 +1803,65 @@ public final class Utils {
 		return (T) obj;
 	}
 
-	public static <T, E extends RuntimeException> T throwable(E e) {
-		throw e;
+	@SuppressWarnings("unchecked")
+	public static <T, E extends Throwable> T thrower(Throwable err) throws E {
+		throw (E) err;
+	}
+
+	/**
+	 * Computes a new array length given an array's current length, a minimum growth
+	 * amount, and a preferred growth amount. The computation is done in an overflow-safe
+	 * fashion.
+	 * <p>This method is used by objects that contain an array that might need to be grown
+	 * in order to fulfill some immediate need (the minimum growth amount) but would also
+	 * like to request more space (the preferred growth amount) in order to accommodate
+	 * potential future needs. The returned length is usually clamped at the soft maximum
+	 * length in order to avoid hitting the JVM implementation limit. However, the soft
+	 * maximum will be exceeded if the minimum growth amount requires it.
+	 * <p>If the preferred growth amount is less than the minimum growth amount, the
+	 * minimum growth amount is used as the preferred growth amount.
+	 * <p>The preferred length is determined by adding the preferred growth amount to the
+	 * current length. If the preferred length does not exceed the soft maximum length
+	 * (SOFT_MAX_ARRAY_LENGTH) then the preferred length is returned.
+	 * <p>If the preferred length exceeds the soft maximum, we use the minimum growth
+	 * amount. The minimum required length is determined by adding the minimum growth
+	 * amount to the current length. If the minimum required length exceeds Integer.MAX_VALUE,
+	 * then this method throws OutOfMemoryError. Otherwise, this method returns the greater of
+	 * the soft maximum or the minimum required length.
+	 * <p>Note that this method does not do any array allocation itself; it only does array
+	 * length growth computations. However, it will throw OutOfMemoryError as noted above.
+	 * <p>Note also that this method cannot detect the JVM's implementation limit, and it
+	 * may compute and return a length value up to and including Integer.MAX_VALUE that
+	 * might exceed the JVM's implementation limit. In that case, the caller will likely
+	 * attempt an array allocation with that length and encounter an OutOfMemoryError.
+	 * Of course, regardless of the length value returned from this method, the caller
+	 * may encounter OutOfMemoryError if there is insufficient heap to fulfill the request.
+	 *
+	 * @param oldLength   current length of the array (must be nonnegative)
+	 * @param minGrowth   minimum required growth amount (must be positive)
+	 * @param prefGrowth  preferred growth amount
+	 * @return the new array length
+	 * @throws OutOfMemoryError if the new length would exceed Integer.MAX_VALUE
+	 */
+	public static int newLength(int oldLength, int minGrowth, int prefGrowth) {
+		// preconditions not checked because of inlining
+		// assert oldLength >= 0
+		// assert minGrowth > 0
+
+		int prefLength = oldLength + Math.max(minGrowth, prefGrowth); // might overflow
+		if (0 < prefLength && prefLength <= SOFT_MAX_ARRAY_LENGTH) {
+			return prefLength;
+		}
+		// put code cold in a separate method
+		return hugeLength(oldLength, minGrowth);
+	}
+
+	private static int hugeLength(int oldLength, int minGrowth) {
+		int minLength = oldLength + minGrowth;
+		if (minLength < 0) { // overflow
+			throw new OutOfMemoryError("Required array length " + oldLength + " + " + minGrowth + " is too large");
+		}
+		return Math.max(minLength, SOFT_MAX_ARRAY_LENGTH);
 	}
 
 	public static <T> T[] copyArray(T[] array, Func<T, T> copy) {

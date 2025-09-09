@@ -14,12 +14,12 @@ import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 
 public class DrawRegionDynamic extends DrawBlock {
-	public Floatf<Building> rotation = e -> 0;
-	public Floatf<Building> alpha = e -> 1;
+	public Floatf<Building> rotation;
+	public Floatf<Building> alpha;
 	public Func<Building, Color> color;
 
 	public TextureRegion region;
-	public String suffix = "";
+	public String suffix;
 
 	public boolean spinSprite = false;
 	public boolean drawPlan = false;
@@ -30,18 +30,20 @@ public class DrawRegionDynamic extends DrawBlock {
 
 	public boolean makeIcon = false;
 
-	public DrawRegionDynamic() {}
+	public DrawRegionDynamic() {
+		this(e -> 0, e -> 1, "");
+	}
 
 	public <E extends Building> DrawRegionDynamic(Floatf<E> rotations, Floatf<E> alphas, String fix) {
 		this(rotations, alphas, null, fix);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <E extends Building> DrawRegionDynamic(Floatf<E> rotations, Floatf<E> alphas, Func<E, Color> colors, String fix) {
+	public <E extends Building> DrawRegionDynamic(Floatf<E> rotations, Floatf<E> alphas, Func<E, Color> colors, String name) {
 		rotation = (Floatf<Building>) rotations;
 		alpha = (Floatf<Building>) alphas;
 		color = (Func<Building, Color>) colors;
-		suffix = fix;
+		suffix = name;
 	}
 
 	@Override

@@ -2,9 +2,9 @@ package heavyindustry.gen;
 
 import arc.func.Func;
 import arc.func.Prov;
-import arc.struct.ObjectIntMap;
-import arc.struct.ObjectMap;
 import arc.util.Structs;
+import heavyindustry.util.BaseObjectIntMap;
+import heavyindustry.util.CollectionObjectMap;
 import mindustry.gen.EntityMapping;
 import mindustry.gen.Entityc;
 import mindustry.type.UnitType;
@@ -16,8 +16,8 @@ import mindustry.type.UnitType;
  * @since 1.0.6
  */
 public final class Entitys {
-	private static final ObjectIntMap<Class<? extends Entityc>> classIdMap = new ObjectIntMap<>();
-	private static final ObjectMap<String, Prov<? extends Entityc>> needIdMap = new ObjectMap<>();
+	private static final BaseObjectIntMap<Class<? extends Entityc>> classIdMap = new BaseObjectIntMap<>(Class.class);
+	private static final CollectionObjectMap<String, Prov<? extends Entityc>> needIdMap = new CollectionObjectMap<>(String.class, Prov.class);
 
 	/** Don't let anyone instantiate this class. */
 	private Entitys() {}

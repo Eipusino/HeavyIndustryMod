@@ -10,7 +10,6 @@ import arc.math.geom.Position;
 import arc.math.geom.Vec2;
 import arc.scene.ui.layout.Table;
 import arc.struct.EnumSet;
-import arc.struct.ObjectMap;
 import arc.struct.Seq;
 import arc.util.Nullable;
 import arc.util.Time;
@@ -18,6 +17,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.content.HUnitTypes;
 import heavyindustry.graphics.Drawe;
+import heavyindustry.util.CollectionObjectMap;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
 import mindustry.entities.Units;
@@ -124,7 +124,7 @@ public class UnitMinerDepot extends Block {
 
 		public @Nullable Item targetItem;
 
-		public ObjectMap<Item, Tile> oreTiles = new ObjectMap<>();
+		public CollectionObjectMap<Item, Tile> oreTiles = new CollectionObjectMap<>(Item.class, Tile.class);
 		public boolean oresFound, targetSet;
 
 		@Override

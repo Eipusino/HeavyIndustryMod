@@ -1,10 +1,10 @@
 package heavyindustry.game;
 
 import arc.Events;
-import arc.struct.ObjectMap;
 import arc.util.Log;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.util.CollectionObjectMap;
 import mindustry.Vars;
 import mindustry.ctype.UnlockableContent;
 import mindustry.game.EventType;
@@ -17,7 +17,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 public class TeamPayloadData implements CustomChunk {
-	public ObjectMap<Team, PayloadSeq> teamPayloadData = new ObjectMap<>();
+	public CollectionObjectMap<Team, PayloadSeq> teamPayloadData = new CollectionObjectMap<>(Team.class, PayloadSeq.class);
 
 	public TeamPayloadData() {
 		Events.on(EventType.ResetEvent.class, event -> teamPayloadData.clear());

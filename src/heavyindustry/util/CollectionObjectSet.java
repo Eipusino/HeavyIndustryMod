@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-public class CollectionObjectSet<E> implements Iterable<E>, Eachable<E>, Set<E> {
+public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 	private static final int PRIME1 = 0xbe1f14b1;
 	private static final int PRIME2 = 0xb4b82e39;
 	private static final int PRIME3 = 0xced1c241;
@@ -31,7 +31,7 @@ public class CollectionObjectSet<E> implements Iterable<E>, Eachable<E>, Set<E> 
 	private int stashCapacity;
 	private int pushIterations;
 
-	private @Nullable CollectionObjectSetIterator iterator1, iterator2;
+	@Nullable CollectionObjectSetIterator iterator1, iterator2;
 
 	/** Creates a new set with an initial capacity of 51 and a load factor of 0.8. */
 	public CollectionObjectSet(Class<?> type) {
@@ -94,6 +94,12 @@ public class CollectionObjectSet<E> implements Iterable<E>, Eachable<E>, Set<E> 
 	public static <T> CollectionObjectSet<T> with(Seq<T> array) {
 		CollectionObjectSet<T> set = new CollectionObjectSet<>(array.items.getClass().componentType());
 		set.addAll(array);
+		return set;
+	}
+
+	public static <T> CollectionObjectSet<T> with(CollectionList<T> list) {
+		CollectionObjectSet<T> set = new CollectionObjectSet<>(list.items.getClass().componentType());
+		set.addAll(list);
 		return set;
 	}
 
@@ -706,7 +712,7 @@ public class CollectionObjectSet<E> implements Iterable<E>, Eachable<E>, Set<E> 
 
 		/** Returns a new array containing the remaining values. */
 		public Seq<E> toSeq() {
-			return toSeq(new Seq<>(true, size));
+			return toSeq(new Seq<>(true, size, componentType));
 		}
 	}
 }

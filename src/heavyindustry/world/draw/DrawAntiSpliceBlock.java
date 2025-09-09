@@ -23,7 +23,7 @@ public class DrawAntiSpliceBlock extends DrawBlock {
 
 	public TextureRegion[] drawRegions = new TextureRegion[256];//Space for time, don't use this type too much.
 	public Boolf2<BuildPlan, BuildPlan> planSplicer = (plan, other) -> false;
-	public Intf<Building> splicer = e -> 0;
+	public Intf<Building> splicer;
 
 	public TextureRegion icon;
 
@@ -38,7 +38,9 @@ public class DrawAntiSpliceBlock extends DrawBlock {
 		splicer = (Intf<Building>) splicers;
 	}
 
-	public DrawAntiSpliceBlock() {}
+	public DrawAntiSpliceBlock() {
+		this(e -> 0);
+	}
 
 	@Override
 	public void load(Block block) {

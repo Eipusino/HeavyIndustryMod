@@ -152,6 +152,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 			return entry;
 		}
 
+		@Override
 		public void remove() {
 			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
 			map.remove(entry.key);
@@ -184,11 +185,10 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 			return key;
 		}
 
-		@SuppressWarnings("rawtypes")
 		@Override
 		public void remove() {
 			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
-			((CollectionOrderedMap) map).removeIndex(nextIndex - 1);
+			((CollectionOrderedMap<?, ?>) map).removeIndex(nextIndex - 1);
 			nextIndex = currentIndex;
 			currentIndex = -1;
 		}
@@ -220,11 +220,10 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 			return value;
 		}
 
-		@SuppressWarnings("rawtypes")
 		@Override
 		public void remove() {
 			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
-			((CollectionOrderedMap) map).removeIndex(currentIndex);
+			((CollectionOrderedMap<?, ?>) map).removeIndex(currentIndex);
 			nextIndex = currentIndex;
 			currentIndex = -1;
 		}

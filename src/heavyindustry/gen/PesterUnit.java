@@ -7,8 +7,6 @@ import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
 import arc.math.Rand;
 import arc.math.geom.Vec2;
-import arc.struct.ObjectFloatMap;
-import arc.struct.ObjectIntMap;
 import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
@@ -20,6 +18,8 @@ import heavyindustry.entities.HUnitSorts;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.math.HInterps;
 import heavyindustry.type.unit.PesterUnitType;
+import heavyindustry.util.BaseObjectFloatMap;
+import heavyindustry.util.BaseObjectIntMap;
 import heavyindustry.util.Utils;
 import mindustry.ai.types.MissileAI;
 import mindustry.content.Fx;
@@ -48,7 +48,7 @@ import static mindustry.Vars.state;
 import static mindustry.Vars.world;
 
 public class PesterUnit extends BaseUnit implements Pesterc {
-	public static final ObjectIntMap<Healthc> checked = new ObjectIntMap<>();
+	public static final BaseObjectIntMap<Healthc> checked = new BaseObjectIntMap<>(Healthc.class);
 
 	public static Building tmpBuilding = null;
 
@@ -73,7 +73,7 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 	public transient float salvoReloadLast = 0f;
 	public transient float salvoReloadTarget = 0f;
 
-	public ObjectFloatMap<Healthc> hatred = new ObjectFloatMap<>();
+	public BaseObjectFloatMap<Healthc> hatred = new BaseObjectFloatMap<>(Healthc.class);
 	public Seq<Healthc> nextTargets = new Seq<>(Healthc.class);
 
 	protected Trail[] trails = {};
@@ -215,9 +215,7 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 
 				for (var e : hatred.entries()) {
 					//??Why this happens??
-					if (e.key == null) continue;
-
-					if (!e.key.isValid() || !within(e.key, put.reflectRange) || ((Teamc) e.key).team() == team) {
+					if (e.key == null || !e.key.isValid() || !within(e.key, put.reflectRange) || ((Teamc) e.key).team() == team) {
 						hatred.remove(e.key, 0);
 						continue;
 					}
@@ -479,7 +477,7 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 
 	@Override
 	public boolean isBoss() {
-		return isBoss;
+		return isBoss || super.isBoss();
 	}
 
 	@Override
@@ -553,7 +551,7 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 	}
 
 	@Override
-	public ObjectFloatMap<Healthc> hatred() {
+	public BaseObjectFloatMap<Healthc> hatred() {
 		return hatred;
 	}
 
@@ -643,7 +641,7 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 	}
 
 	@Override
-	public void hatred(ObjectFloatMap<Healthc> value) {
+	public void hatred(BaseObjectFloatMap<Healthc> value) {
 		hatred = value;
 	}
 

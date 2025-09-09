@@ -3,9 +3,7 @@ package heavyindustry.math;
 import arc.math.Interp;
 
 public class MultiInterp implements Interp {
-	public static Interp fastFastSlow = new MultiInterp(Interp.pow2In, Interp.pow2);
-
-	public final Interp[] interps;
+	final Interp[] interps;
 
 	public MultiInterp(Interp... interp) {
 		interps = interp;

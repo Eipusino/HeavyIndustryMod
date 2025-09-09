@@ -18,7 +18,7 @@ import static heavyindustry.graphics.HPixmaps.rotatePixmap90;
 public class DrawPayloadFactory extends DrawDirSpliceBlock {
 	public TextureRegion topRegion, outRegion;
 
-	public Cons<Building> drawPayload = FuncInte.cons();
+	public Cons<Building> drawPayload;
 	public String suffix = "";
 
 	@SuppressWarnings("unchecked")
@@ -27,7 +27,9 @@ public class DrawPayloadFactory extends DrawDirSpliceBlock {
 		drawPayload = (Cons<Building>) draws;
 	}
 
-	public DrawPayloadFactory() {}
+	public DrawPayloadFactory() {
+		this(e -> 0, FuncInte.cons());
+	}
 
 	@Override
 	public void load(Block block) {

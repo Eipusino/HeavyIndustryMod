@@ -1,9 +1,9 @@
 package heavyindustry.gen;
 
 import arc.audio.Music;
-import arc.struct.ObjectMap;
 import arc.struct.Seq;
 import arc.util.Log;
+import heavyindustry.util.CollectionObjectMap;
 
 import static mindustry.Vars.tree;
 
@@ -13,7 +13,7 @@ import static mindustry.Vars.tree;
  * @since 1.0.2
  */
 public final class HMusics {
-	private static final ObjectMap<String, Music[]> musicSets = new ObjectMap<>();
+	private static final CollectionObjectMap<String, Music[]> musicSets = new CollectionObjectMap<>(String.class, Music[].class);
 
 	/** Don't let anyone instantiate this class. */
 	private HMusics() {}

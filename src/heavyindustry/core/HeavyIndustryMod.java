@@ -32,6 +32,7 @@ import heavyindustry.gen.HSounds;
 import heavyindustry.graphics.MathRenderer;
 import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.util.PlatformImpl;
+import heavyindustry.util.UnsupportedPlatformException;
 import heavyindustry.util.Utils;
 import heavyindustry.world.Worlds;
 import heavyindustry.graphics.HCacheLayer;
@@ -91,6 +92,10 @@ public final class HeavyIndustryMod extends Mod {
 	}
 
 	public HeavyIndustryMod() {
+		if (Core.graphics != null && !Core.graphics.isGL30Available()) {
+			Log.warn("HeavyIndustryMod only runs with OpenGL 3.0 (on desktop) or OpenGL ES 3.0 (on android) and above!");
+		}
+
 		Log.info("Loaded HeavyIndustry Mod constructor.");
 
 		HClassMap.load();
@@ -114,6 +119,7 @@ public final class HeavyIndustryMod extends Mod {
 					t.add(Core.bundle.get("hi-type")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 					t.add(Utils.generateRandomString(10, 20)).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 					t.add(Utils.generateRandomString(100, 200)).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
+					t.add(Core.bundle.get("hi-other-contributor")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
 				}).grow().center().maxWidth(600f);
 			}};
 			dialog.show();
@@ -275,7 +281,9 @@ public final class HeavyIndustryMod extends Mod {
 	}
 
 	static void loadLibrary() {
-		platformImpl = loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl", true, impl -> {
+		platformImpl = loadLibrary("Impl", OS.isIos ? Utils.thrower(new UnsupportedPlatformException("what? how do you do load Java mod on IOS?")) :
+				OS.isAndroid ? "heavyindustry.android.AndroidImpl" :
+						"heavyindustry.desktop.DesktopImpl", true, impl -> {
 			try {
 				if (impl.getConstructor().newInstance() instanceof PlatformImpl core) {
 					HVars.platformImpl = core;

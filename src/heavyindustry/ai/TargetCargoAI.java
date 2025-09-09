@@ -1,7 +1,7 @@
 package heavyindustry.ai;
 
-import arc.struct.ObjectSet;
 import arc.util.Nullable;
+import heavyindustry.util.CollectionObjectSet;
 import mindustry.Vars;
 import mindustry.ai.types.CargoAI;
 import mindustry.gen.Building;
@@ -10,7 +10,7 @@ import mindustry.world.meta.BlockFlag;
 
 // cargo AI that doesn't require the unit to be tethered
 public class TargetCargoAI extends CargoAI {
-	public static ObjectSet<Building> pendingLoaders = new ObjectSet<>();
+	public static CollectionObjectSet<Building> pendingLoaders = new CollectionObjectSet<>(Building.class);
 
 	public @Nullable Building loadTarget = null;
 

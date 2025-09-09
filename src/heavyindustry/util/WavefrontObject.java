@@ -9,7 +9,6 @@ import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
-import arc.struct.ObjectMap;
 import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Nullable;
@@ -38,7 +37,7 @@ public class WavefrontObject {
 	public Seq<Vec3> normals = new Seq<>(Vec3.class);
 	public Seq<Face> faces = new Seq<>(Face.class);
 	public String textureName = "";
-	public ObjectMap<String, Material> materials;
+	public CollectionObjectMap<String, Material> materials;
 
 	public ShadingType shadingType = ShadingType.normalAngle;
 	public Color lightColor = Color.white;
@@ -71,7 +70,7 @@ public class WavefrontObject {
 						current = new Material();
 						current.name = line.replaceFirst("newmtl ", "");
 
-						if (materials == null) materials = new ObjectMap<>();
+						if (materials == null) materials = new CollectionObjectMap<>(String.class, Material.class);
 						materials.put(current.name, current);
 						hasMaterial = true;
 					}

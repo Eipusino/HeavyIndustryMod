@@ -14,8 +14,6 @@ import arc.scene.ui.ImageButton;
 import arc.scene.ui.ScrollPane;
 import arc.scene.ui.layout.Table;
 import arc.struct.EnumSet;
-import arc.struct.ObjectMap;
-import arc.struct.OrderedMap;
 import arc.struct.Seq;
 import arc.util.Eachable;
 import arc.util.Nullable;
@@ -24,6 +22,8 @@ import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.ui.Elements;
+import heavyindustry.util.BaseObjectBoolMap;
+import heavyindustry.util.CollectionOrderedMap;
 import heavyindustry.world.consumers.ConsumeItem;
 import mindustry.content.Fx;
 import mindustry.core.UI;
@@ -748,15 +748,15 @@ public class MultiCrafter extends Block {
 		public DrawBlock drawer = new DrawDefault();
 
 		/** Consumption filters. */
-		public ObjectMap<Item, Boolean> itemFilter = new ObjectMap<>();
-		public ObjectMap<Liquid, Boolean> liquidFilter = new ObjectMap<>();
+		public BaseObjectBoolMap<Item> itemFilter = new BaseObjectBoolMap<>(Item.class);
+		public BaseObjectBoolMap<Liquid> liquidFilter = new BaseObjectBoolMap<>(Liquid.class);
 
 		public MultiCrafter owner = null;
 
 		/** List for building-up consumption before init(). */
 		protected Seq<Consume> consumeBuilder = new Seq<>(Consume.class);
 		/** Map of bars by name. */
-		protected OrderedMap<String, Func<Building, Bar>> barMap = new OrderedMap<>();
+		protected CollectionOrderedMap<String, Func<Building, Bar>> barMap = new CollectionOrderedMap<>(String.class, Func.class);
 
 		public void init() {
 			consumers = consumeBuilder.toArray(Consume.class);

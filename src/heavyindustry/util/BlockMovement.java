@@ -4,7 +4,6 @@ import arc.Events;
 import arc.func.Boolf;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
-import arc.struct.ObjectMap;
 import arc.struct.PQueue;
 import arc.struct.Seq;
 import arc.util.Structs;
@@ -282,7 +281,7 @@ public final class BlockMovement {
 		}
 	}
 
-	static ObjectMap<Building, BlockMovementUpdater> currentlyPushing = new ObjectMap<>();
+	static CollectionObjectMap<Building, BlockMovementUpdater> currentlyPushing = new CollectionObjectMap<>(Building.class, BlockMovementUpdater.class);
 
 	//building under animation cannot be pushed.
 	public static boolean isBlockMoving(Building build) {

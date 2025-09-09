@@ -106,8 +106,8 @@ public class SporeFarmBlock extends Block {
 			}
 
 			if (growth != 0f) {
-				Draw.rect(groundRegions[Mathf.floor(growth)], x, y, rrot * 90f);
-				Draw.rect(sporeRegions[Mathf.floor(growth)], x, y, rrot2 * 90f);
+				Draw.rect(groundRegions[Mathf.floor(growth) & groundRegions.length], x, y, rrot * 90f);
+				Draw.rect(sporeRegions[Mathf.floor(growth) & sporeRegions.length], x, y, rrot2 * 90f);
 			}
 
 			tileIndex = 0;
@@ -118,7 +118,7 @@ public class SporeFarmBlock extends Block {
 				}
 			}
 
-			Draw.rect(fenceRegions[TileBitmask.values[tileIndex]], x, y, 8f, 8f);
+			Draw.rect(fenceRegions[TileBitmask.values[tileIndex] & fenceRegions.length], x, y, 8f, 8f);
 			drawTeamTop();
 		}
 

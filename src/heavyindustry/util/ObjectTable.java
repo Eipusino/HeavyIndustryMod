@@ -1,14 +1,24 @@
 package heavyindustry.util;
 
 import arc.func.Prov;
-import arc.struct.ObjectMap;
 
 import java.util.Iterator;
 import java.util.Map;
 
 public class ObjectTable<K, V> implements Iterable<ObjectTable.Entry<K, V>> {
-	protected final ObjectMap<K, V> map12 = new ObjectMap<>();
-	protected final ObjectMap<V, K> map21 = new ObjectMap<>();
+	public final Class<?> keyComponentType;
+	public final Class<?> valueComponentType;
+
+	protected final CollectionObjectMap<K, V> map12;
+	protected final CollectionObjectMap<V, K> map21;
+
+	public ObjectTable(Class<?> keyType, Class<?> valueType) {
+		keyComponentType = keyType;
+		valueComponentType = valueType;
+
+		map12 = new CollectionObjectMap<>(keyComponentType, valueComponentType);
+		map21 = new CollectionObjectMap<>(keyComponentType, valueComponentType);
+	}
 
 	public int size() {
 		return map12.size;
@@ -118,9 +128,9 @@ public class ObjectTable<K, V> implements Iterable<ObjectTable.Entry<K, V>> {
 	}
 
 	public static class TableIterator<K, V> implements Iterator<Entry<K, V>> {
-		protected final ObjectMap.Entries<K, V> iterator;
+		protected final CollectionObjectMap.Entries<K, V> iterator;
 
-		public TableIterator(ObjectMap<K, V> map) {
+		public TableIterator(CollectionObjectMap<K, V> map) {
 			iterator = map.iterator();
 		}
 
@@ -131,7 +141,7 @@ public class ObjectTable<K, V> implements Iterable<ObjectTable.Entry<K, V>> {
 
 		@Override
 		public Entry<K, V> next() {
-			ObjectMap.Entry<K, V> next = iterator.next();
+			CollectionObjectMap.MapEntry<K, V> next = iterator.next();
 			return new Entry<>(next.key, next.value);
 		}
 

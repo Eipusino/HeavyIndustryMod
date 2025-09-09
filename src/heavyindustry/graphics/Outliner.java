@@ -7,6 +7,7 @@ import arc.graphics.Pixmaps;
 import arc.graphics.g2d.PixmapRegion;
 import arc.graphics.g2d.TextureRegion;
 import mindustry.graphics.MultiPacker;
+import mindustry.graphics.MultiPacker.PageType;
 
 public final class Outliner {
 	/** Don't let anyone instantiate this class. */
@@ -20,7 +21,7 @@ public final class Outliner {
 		if (Core.settings.getBool("linear", true)) {
 			Pixmaps.bleed(out);
 		}
-		packer.add(MultiPacker.PageType.main, name, out);
+		packer.add(PageType.main, name, out);
 	}
 
 	public static void outlineRegion(MultiPacker packer, TextureRegion tex, Color outlineColor, String name) {

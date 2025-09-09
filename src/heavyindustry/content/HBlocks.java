@@ -3322,8 +3322,8 @@ public final class HBlocks {
 				homingDelay = 10f;
 				homingRange = 800f;
 				homingPower = 0.15f;
-				backColor = HPal.brightSteelBlue;
-				frontColor = HPal.missileGray;
+				hitColor = backColor = trailColor = Pal.graphiteAmmoBack;
+				frontColor = Pal.graphiteAmmoFront;
 				trailLength = 15;
 				trailWidth = 1.5f;
 				trailColor = Color.white.cpy().a(0.5f);
@@ -3345,8 +3345,8 @@ public final class HBlocks {
 				homingPower = 0.15f;
 				homingDelay = 10f;
 				homingRange = 800f;
-				backColor = Color.valueOf("ffb90f");
-				frontColor = HPal.missileGray;
+				frontColor = Pal.lightishOrange;
+				backColor = Pal.lightOrange;
 				trailLength = 15;
 				trailWidth = 1.5f;
 				trailColor = Color.white.cpy().a(0.5f);
@@ -3367,8 +3367,8 @@ public final class HBlocks {
 				homingPower = 0.15f;
 				homingDelay = 10f;
 				homingRange = 800f;
-				backColor = Color.valueOf("ff7055");
-				frontColor = HPal.missileGray;
+				frontColor = Pal.lightPyraFlame;
+				backColor = Pal.lightFlame;
 				trailLength = 15;
 				trailWidth = 1.5f;
 				trailColor = Color.white.cpy().a(0.5f);
@@ -3392,8 +3392,8 @@ public final class HBlocks {
 				homingPower = 0.15f;
 				homingDelay = 10f;
 				homingRange = 800f;
-				backColor = Color.valueOf("f2e770");
-				frontColor = HPal.missileGray;
+				backColor = hitColor = trailColor = Pal.surgeAmmoBack;
+				frontColor = Pal.surgeAmmoFront;
 				trailLength = 16;
 				trailWidth = 2.5f;
 				trailColor = Color.white.cpy().a(0.5f);

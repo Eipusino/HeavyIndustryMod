@@ -1,27 +1,27 @@
 package heavyindustry.util;
 
 import arc.func.Cons;
-import arc.func.Cons2;
-import arc.func.Prov;
 import arc.math.Mathf;
+import arc.struct.FloatSeq;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
-import arc.util.Eachable;
 
 import java.lang.reflect.Array;
-import java.util.AbstractSet;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 /**
- * Implementation of Java Collection Framework Map based on {@code ObjectMap} wrapper,
- * used in places that require Java specifications and the feature of not creating nodes in ObjectiMap.
+ * An unordered map where the values are floats. This implementation is a cuckoo hash map using 3 hashes, random walking, and a
+ * small stash for problematic keys. Null keys are not allowed. No allocation is done except when growing the table size. <br>
+ * <br>This map performs very fast get, containsKey, and remove (typically O(1), worst case O(log(n))). Put may be a bit slower,
+ * depending on hash collisions. Load factors greater than 0.91 greatly increase the chances the map will have to rehash to the
+ * next higher POT size.
+ * <p><strong>Eipusino modification: add null judgment to some methods to prevent throw NullPointerException.</strong>
+ *
+ * @author Nathan Sweet
+ * @author Eipusino
  */
-public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.MapEntry<K, V>>, Map<K, V>, Eachable<CollectionObjectMap.MapEntry<K, V>> {
+public class BaseObjectFloatMap<K> implements Iterable<BaseObjectFloatMap.MapEntry<K>> {
 	private static final int PRIME1 = 0xbe1f14b1;
 	private static final int PRIME2 = 0xb4b82e39;
 	private static final int PRIME3 = 0xced1c241;
@@ -29,10 +29,9 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 	public int size;
 
 	public final Class<?> keyComponentType;
-	public final Class<?> valueComponentType;
 
 	public K[] keyTable;
-	public V[] valueTable;
+	public float[] valueTable;
 	public int capacity, stashSize;
 
 	private float loadFactor;
@@ -40,24 +39,13 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 	private int stashCapacity;
 	private int pushIterations;
 
-	Entries<K, V> entries1, entries2;
-	Values<V> values1, values2;
-	Keys<K> keys1, keys2;
-
-	@SuppressWarnings("unchecked")
-	public static <K, V> CollectionObjectMap<K, V> of(Class<?> keyType, Class<?> valueType, Object... values) {
-		CollectionObjectMap<K, V> map = new CollectionObjectMap<>(keyType, valueType);
-
-		for (int i = 0; i < values.length / 2; i++) {
-			map.put((K) values[i * 2], (V) values[i * 2 + 1]);
-		}
-
-		return map;
-	}
+	private Entries<K> entries1, entries2;
+	private Values values1, values2;
+	private Keys<K> keys1, keys2;
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
-	public CollectionObjectMap(Class<?> keyType, Class<?> valueType) {
-		this(keyType, valueType, 51, 0.8f);
+	public BaseObjectFloatMap(Class<?> keyType) {
+		this(keyType, 51, 0.8f);
 	}
 
 	/**
@@ -65,8 +53,8 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 	 *
 	 * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
 	 */
-	public CollectionObjectMap(Class<?> keyType, Class<?> valueType, int initialCapacity) {
-		this(keyType, valueType, initialCapacity, 0.8f);
+	public BaseObjectFloatMap(Class<?> keyType, int initialCapacity) {
+		this(keyType, initialCapacity, 0.8f);
 	}
 
 	/**
@@ -76,10 +64,10 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 	 * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
 	 */
 	@SuppressWarnings("unchecked")
-	public CollectionObjectMap(Class<?> keyType, Class<?> valueType, int initialCapacity, float loadFactor) {
+	public BaseObjectFloatMap(Class<?> keyType, int initialCapacity, float loadFactor) {
 		if (initialCapacity < 0) throw new IllegalArgumentException("initialCapacity must be >= 0: " + initialCapacity);
 		initialCapacity = Mathf.nextPowerOfTwo((int) Math.ceil(initialCapacity / loadFactor));
-		if (initialCapacity > 0x40000000)
+		if (initialCapacity > 1 << 30)
 			throw new IllegalArgumentException("initialCapacity is too large: " + initialCapacity);
 		capacity = initialCapacity;
 
@@ -93,78 +81,57 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		pushIterations = Math.max(Math.min(capacity, 8), (int) Math.sqrt(capacity) / 8);
 
 		keyComponentType = keyType;
-		valueComponentType = valueType;
 
 		keyTable = (K[]) Array.newInstance(keyType, capacity + stashCapacity);
-		valueTable = (V[]) Array.newInstance(valueType, keyTable.length);
+		valueTable = new float[keyTable.length];
 	}
 
 	/** Creates a new map identical to the specified map. */
-	public CollectionObjectMap(CollectionObjectMap<? extends K, ? extends V> map) {
-		this(map.keyComponentType, map.valueComponentType, (int) Math.floor(map.capacity * map.loadFactor), map.loadFactor);
+	public BaseObjectFloatMap(BaseObjectFloatMap<? extends K> map) {
+		this(map.keyComponentType, (int) Math.floor(map.capacity * map.loadFactor), map.loadFactor);
 		stashSize = map.stashSize;
 		System.arraycopy(map.keyTable, 0, keyTable, 0, map.keyTable.length);
 		System.arraycopy(map.valueTable, 0, valueTable, 0, map.valueTable.length);
 		size = map.size;
 	}
 
-	/** Iterates through key/value pairs. */
-	public void each(Cons2<? super K, ? super V> cons) {
-		for (MapEntry<K, V> entry : entries()) {
-			cons.get(entry.key, entry.value);
+	public void each(Cons<MapEntry<K>> cons) {
+		for (MapEntry<K> e : this) {
+			cons.get(e);
 		}
 	}
 
-	@Override
-	public void each(Cons<? super MapEntry<K, V>> cons) {
-		for (MapEntry<K, V> entry : this) {
-			cons.get(entry);
-		}
-	}
-
-	public CollectionObjectMap<K, V> copy() {
-		CollectionObjectMap<K, V> out = new CollectionObjectMap<>(keyComponentType, valueComponentType);
-		out.putAll(this);
-		return out;
-	}
-
-	/** Returns the old value associated with the specified key, or null. */
-	@Override
-	public V put(K key, V value) {
-		if (key == null) return null;
+	public void put(K key, float value) {
+		if (key == null) return;
 
 		// Check for existing keys.
 		int hashCode = key.hashCode();
 		int index1 = hashCode & mask;
 		K key1 = keyTable[index1];
 		if (key.equals(key1)) {
-			V oldValue = valueTable[index1];
 			valueTable[index1] = value;
-			return oldValue;
+			return;
 		}
 
 		int index2 = hash2(hashCode);
 		K key2 = keyTable[index2];
 		if (key.equals(key2)) {
-			V oldValue = valueTable[index2];
 			valueTable[index2] = value;
-			return oldValue;
+			return;
 		}
 
 		int index3 = hash3(hashCode);
 		K key3 = keyTable[index3];
 		if (key.equals(key3)) {
-			V oldValue = valueTable[index3];
 			valueTable[index3] = value;
-			return oldValue;
+			return;
 		}
 
 		// Update key in the stash.
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
 			if (key.equals(keyTable[i])) {
-				V oldValue = valueTable[i];
 				valueTable[i] = value;
-				return oldValue;
+				return;
 			}
 		}
 
@@ -173,48 +140,34 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 			keyTable[index1] = key;
 			valueTable[index1] = value;
 			if (size++ >= threshold) resize(capacity << 1);
-			return null;
+			return;
 		}
 
 		if (key2 == null) {
 			keyTable[index2] = key;
 			valueTable[index2] = value;
 			if (size++ >= threshold) resize(capacity << 1);
-			return null;
+			return;
 		}
 
 		if (key3 == null) {
 			keyTable[index3] = key;
 			valueTable[index3] = value;
 			if (size++ >= threshold) resize(capacity << 1);
-			return null;
+			return;
 		}
 
 		push(key, value, index1, key1, index2, key2, index3, key3);
-		return null;
 	}
 
-	public void putAll(CollectionObjectMap<? extends K, ? extends V> map) {
-		ensureCapacity(map.size);
-		for (MapEntry<? extends K, ? extends V> entry : map)
-			put(entry.key, entry.value);
-	}
-
-	@SuppressWarnings("unchecked")
-	public void putAll(Object... values) {
-		for (int i = 0; i < values.length / 2; i++) {
-			put((K) values[i * 2], (V) values[i * 2 + 1]);
-		}
-	}
-
-	/** Put all the keys of this other map into this map, and return this map for chaining. */
-	public CollectionObjectMap<K, V> merge(CollectionObjectMap<? extends K, ? extends V> map) {
-		putAll(map);
-		return this;
+	public void putAll(BaseObjectFloatMap<? extends K> map) {
+		for (MapEntry<? extends K> entry : map.entries()) put(entry.key, entry.value);
 	}
 
 	/** Skips checks for existing keys. */
-	private void putResize(K key, V value) {
+	private void putResize(K key, float value) {
+		if (key == null) return;
+
 		// Check for empty buckets.
 		int hashCode = key.hashCode();
 		int index1 = hashCode & mask;
@@ -247,10 +200,10 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		push(key, value, index1, key1, index2, key2, index3, key3);
 	}
 
-	private void push(K insertKey, V insertValue, int index1, K key1, int index2, K key2, int index3, K key3) {
+	private void push(K insertKey, float insertValue, int index1, K key1, int index2, K key2, int index3, K key3) {
 		// Push keys until an empty bucket is found.
 		K evictedKey;
-		V evictedValue;
+		float evictedValue;
 		int i = 0;
 		do {
 			// Replace the key and value for one of the hashes.
@@ -313,7 +266,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		putStash(evictedKey, evictedValue);
 	}
 
-	private void putStash(K key, V value) {
+	private void putStash(K key, float value) {
 		if (stashSize == stashCapacity) {
 			// Too many pushes occurred and the stash is full, increase the table size.
 			resize(capacity << 1);
@@ -328,46 +281,8 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		size++;
 	}
 
-	public V getThrow(K key, Prov<? extends RuntimeException> error) {
-		if (!containsKey(key)) {
-			throw error.get();
-		}
-		return get(key);
-	}
-
-	/** Tries to get the value. If it does not exist, it creates a new instance using the supplier and places it, returning the value. */
-	public V get(K key, Prov<V> supplier) {
-		V val = get(key);
-		if (val == null) {
-			put(key, val = supplier.get());
-		}
-		return val;
-	}
-
-	/** Get, with a nullable key. */
-	public V getNull(K key) {
-		return key == null ? null : get(key);
-	}
-
-	/** Returns the value for the specified key, or null if the key is not in the map. */
-	@Override
-	public V get(Object key) {
-		if (key == null) return null;
-
-		int hashCode = key.hashCode();
-		int index = hashCode & mask;
-		if (!key.equals(keyTable[index])) {
-			index = hash2(hashCode);
-			if (!key.equals(keyTable[index])) {
-				index = hash3(hashCode);
-				if (!key.equals(keyTable[index])) return getStash(key, null);
-			}
-		}
-		return valueTable[index];
-	}
-
-	/** Returns the value for the specified key, or the default value if the key is not in the map. */
-	public V get(K key, V defaultValue) {
+	/** @param defaultValue Returned if the key was not associated with a value. */
+	public float get(K key, float defaultValue) {
 		if (key == null) return defaultValue;
 
 		int hashCode = key.hashCode();
@@ -382,22 +297,52 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		return valueTable[index];
 	}
 
-	private V getStash(Object key, V defaultValue) {
+	private float getStash(K key, float defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return valueTable[i];
 		return defaultValue;
 	}
 
-	/** Returns the value associated with the key, or null. */
-	public V remove(Object key) {
-		if (key == null) return null;
+	/**
+	 * Returns the key's current value and increments the stored value. If the key is not in the map, defaultValue + increment is
+	 * put into the map.
+	 */
+	public float increment(K key, float defaultValue, float increment) {
+		if (key == null) return defaultValue;
+
+		int hashCode = key.hashCode();
+		int index = hashCode & mask;
+		if (!key.equals(keyTable[index])) {
+			index = hash2(hashCode);
+			if (!key.equals(keyTable[index])) {
+				index = hash3(hashCode);
+				if (!key.equals(keyTable[index])) return getAndIncrementStash(key, defaultValue, increment);
+			}
+		}
+		float value = valueTable[index];
+		valueTable[index] = value + increment;
+		return value;
+	}
+
+	private float getAndIncrementStash(K key, float defaultValue, float increment) {
+		for (int i = capacity, n = i + stashSize; i < n; i++)
+			if (key.equals(keyTable[i])) {
+				float value = valueTable[i];
+				valueTable[i] = value + increment;
+				return value;
+			}
+		put(key, defaultValue + increment);
+		return defaultValue;
+	}
+
+	public float remove(K key, float defaultValue) {
+		if (key == null) return defaultValue;
 
 		int hashCode = key.hashCode();
 		int index = hashCode & mask;
 		if (key.equals(keyTable[index])) {
 			keyTable[index] = null;
-			V oldValue = valueTable[index];
-			valueTable[index] = null;
+			float oldValue = valueTable[index];
 			size--;
 			return oldValue;
 		}
@@ -405,8 +350,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		index = hash2(hashCode);
 		if (key.equals(keyTable[index])) {
 			keyTable[index] = null;
-			V oldValue = valueTable[index];
-			valueTable[index] = null;
+			float oldValue = valueTable[index];
 			size--;
 			return oldValue;
 		}
@@ -414,32 +358,24 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		index = hash3(hashCode);
 		if (key.equals(keyTable[index])) {
 			keyTable[index] = null;
-			V oldValue = valueTable[index];
-			valueTable[index] = null;
+			float oldValue = valueTable[index];
 			size--;
 			return oldValue;
 		}
 
-		return removeStash(key);
+		return removeStash(key, defaultValue);
 	}
 
-	@Override
-	public void putAll(Map<? extends K, ? extends V> m) {
-		for (MapEntry<K, V> set : this) {
-			put(set.getKey(), set.getValue());
-		}
-	}
-
-	V removeStash(Object key) {
+	float removeStash(K key, float defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
 			if (key.equals(keyTable[i])) {
-				V oldValue = valueTable[i];
+				float oldValue = valueTable[i];
 				removeStashIndex(i);
 				size--;
 				return oldValue;
 			}
 		}
-		return null;
+		return defaultValue;
 	}
 
 	void removeStashIndex(int index) {
@@ -450,20 +386,10 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 			keyTable[index] = keyTable[lastIndex];
 			valueTable[index] = valueTable[lastIndex];
 			keyTable[lastIndex] = null;
-			valueTable[lastIndex] = null;
-		} else {
-			keyTable[index] = null;
-			valueTable[index] = null;
 		}
 	}
 
-	@Override
-	public int size() {
-		return size;
-	}
-
 	/** Returns true if the map is empty. */
-	@Override
 	public boolean isEmpty() {
 		return size == 0;
 	}
@@ -480,10 +406,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		resize(maximumCapacity);
 	}
 
-	/**
-	 * Clears the map and reduces the size of the backing arrays to be the specified capacity, if they are larger. The reduction
-	 * is done by allocating new arrays, though for large arrays this can be faster than clearing the existing array.
-	 */
+	/** Clears the map and reduces the size of the backing arrays to be the specified capacity if they are larger. */
 	public void clear(int maximumCapacity) {
 		if (capacity <= maximumCapacity) {
 			clear();
@@ -493,44 +416,25 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		resize(maximumCapacity);
 	}
 
-	/**
-	 * Clears the map, leaving the backing arrays at the current capacity. When the capacity is high and the population is low,
-	 * iteration can be unnecessarily slow. {@link #clear(int)} can be used to reduce the capacity.
-	 */
-	@Override
 	public void clear() {
 		if (size == 0) return;
-		for (int i = capacity + stashSize; i-- > 0; ) {
+		for (int i = capacity + stashSize; i-- > 0; )
 			keyTable[i] = null;
-			valueTable[i] = null;
-		}
 		size = 0;
 		stashSize = 0;
 	}
 
 	/**
-	 * Returns true if the specified value is in the map. Note this traverses the entire map and compares every value, which may
-	 * be an expensive operation.
-	 *
-	 * @param identity If true, uses == to compare the specified value with values in the map. If false, uses
-	 *                 {@link #equals(Object)}.
+	 * Returns true if the specified value is in the map. Note this traverses the entire map and compares every value, which may be
+	 * an expensive operation.
 	 */
-	public boolean containsValue(Object value, boolean identity) {
-		if (value == null) {
-			for (int i = capacity + stashSize; i-- > 0; )
-				if (keyTable[i] != null && valueTable[i] == null) return true;
-		} else if (identity) {
-			for (int i = capacity + stashSize; i-- > 0; )
-				if (valueTable[i] == value) return true;
-		} else {
-			for (int i = capacity + stashSize; i-- > 0; )
-				if (value.equals(valueTable[i])) return true;
-		}
+	public boolean containsValue(float value) {
+		for (int i = capacity + stashSize; i-- > 0; )
+			if (keyTable[i] != null && valueTable[i] == value) return true;
 		return false;
 	}
 
-	@Override
-	public boolean containsKey(Object key) {
+	public boolean containsKey(K key) {
 		if (key == null) return false;
 
 		int hashCode = key.hashCode();
@@ -545,12 +449,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		return true;
 	}
 
-	@Override
-	public boolean containsValue(Object value) {
-		return containsValue(value, false);
-	}
-
-	private boolean containsKeyStash(Object key) {
+	private boolean containsKeyStash(K key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return true;
 		return false;
@@ -559,21 +458,10 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 	/**
 	 * Returns the key for the specified value, or null if it is not in the map. Note this traverses the entire map and compares
 	 * every value, which may be an expensive operation.
-	 *
-	 * @param identity If true, uses == to compare the specified value with values in the map. If false, uses
-	 *                 {@link #equals(Object)}.
 	 */
-	public K findKey(Object value, boolean identity) {
-		if (value == null) {
-			for (int i = capacity + stashSize; i-- > 0; )
-				if (keyTable[i] != null && valueTable[i] == null) return keyTable[i];
-		} else if (identity) {
-			for (int i = capacity + stashSize; i-- > 0; )
-				if (valueTable[i] == value) return keyTable[i];
-		} else {
-			for (int i = capacity + stashSize; i-- > 0; )
-				if (value.equals(valueTable[i])) return keyTable[i];
-		}
+	public K findKey(float value) {
+		for (int i = capacity + stashSize; i-- > 0; )
+			if (keyTable[i] != null && valueTable[i] == value) return keyTable[i];
 		return null;
 	}
 
@@ -600,10 +488,10 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		pushIterations = Math.max(Math.min(newSize, 8), (int) Math.sqrt(newSize) / 8);
 
 		K[] oldKeyTable = keyTable;
-		V[] oldValueTable = valueTable;
+		float[] oldValueTable = valueTable;
 
 		keyTable = (K[]) Array.newInstance(keyComponentType, newSize + stashCapacity);
-		valueTable = (V[]) Array.newInstance(valueComponentType, newSize + stashCapacity);
+		valueTable = new float[newSize + stashCapacity];
 
 		int oldSize = size;
 		size = 0;
@@ -634,47 +522,37 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 			if (key != null) {
 				h += key.hashCode() * 31;
 
-				V value = valueTable[i];
-				if (value != null) {
-					h += value.hashCode();
-				}
+				float value = valueTable[i];
+				h += Float.floatToIntBits(value);
 			}
 		}
 		return h;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) return true;
-		if (!(obj instanceof CollectionObjectMap<?, ?> other)) return false;
+		if (!(obj instanceof BaseObjectFloatMap<?> map) || map.keyComponentType != keyComponentType) return false;
+		BaseObjectFloatMap<K> other = (BaseObjectFloatMap<K>) map;
 		if (other.size != size) return false;
 		for (int i = 0, n = capacity + stashSize; i < n; i++) {
 			K key = keyTable[i];
 			if (key != null) {
-				V value = valueTable[i];
-				if (value == null) {
-					if (!other.containsKey(key) || other.get(key) != null) return false;
-				} else {
-					if (!value.equals(other.get(key))) return false;
-				}
+				float otherValue = other.get(key, 0f);
+				if (otherValue == 0f && !other.containsKey(key)) return false;
+				float value = valueTable[i];
+				if (otherValue != value) return false;
 			}
 		}
 		return true;
 	}
 
-	public String toString(String separator) {
-		return toString(separator, false);
-	}
-
 	@Override
 	public String toString() {
-		return toString(", ", true);
-	}
-
-	public String toString(String separator, boolean braces) {
-		if (size == 0) return braces ? "{}" : "";
+		if (size == 0) return "{}";
 		StringBuilder buffer = new StringBuilder(32);
-		if (braces) buffer.append('{');
+		buffer.append('{');
 		int i = keyTable.length;
 		while (i-- > 0) {
 			K key = keyTable[i];
@@ -687,17 +565,17 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		while (i-- > 0) {
 			K key = keyTable[i];
 			if (key == null) continue;
-			buffer.append(separator);
+			buffer.append(", ");
 			buffer.append(key);
 			buffer.append('=');
 			buffer.append(valueTable[i]);
 		}
-		if (braces) buffer.append('}');
+		buffer.append('}');
 		return buffer.toString();
 	}
 
 	@Override
-	public Entries<K, V> iterator() {
+	public Entries<K> iterator() {
 		return entries();
 	}
 
@@ -705,7 +583,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 	 * Returns an iterator for the entries in the map. Remove is supported. Note that the same iterator instance is returned each
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	public Entries<K, V> entries() {
+	public Entries<K> entries() {
 		if (entries1 == null) {
 			entries1 = new Entries<>(this);
 			entries2 = new Entries<>(this);
@@ -724,13 +602,12 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 
 	/**
 	 * Returns an iterator for the values in the map. Remove is supported. Note that the same iterator instance is returned each
-	 * time this method is called. Use the {@link Values} constructor for nested or multithreaded iteration.
+	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	@Override
-	public Values<V> values() {
+	public Values values() {
 		if (values1 == null) {
-			values1 = new Values<>(this);
-			values2 = new Values<>(this);
+			values1 = new Values(this);
+			values2 = new Values(this);
 		}
 		if (!values1.valid) {
 			values1.reset();
@@ -744,17 +621,11 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		return values2;
 	}
 
-	@Override
-	public Set<Entry<K, V>> entrySet() {
-		return new MapEntrySet<>(this);
-	}
-
 	/**
-	 * Returns an iterator for the keys in the map. Remove is supported. Note that the same iterator instance is returned each
-	 * time this method is called. Use the {@link Keys} constructor for nested or multithreaded iteration.
+	 * Returns an iterator for the keys in the map. Remove is supported. Note that the same iterator instance is returned each time
+	 * this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	@Override
-	public Keys<K> keySet() {
+	public Keys<K> keys() {
 		if (keys1 == null) {
 			keys1 = new Keys<>(this);
 			keys2 = new Keys<>(this);
@@ -771,117 +642,23 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		return keys2;
 	}
 
-	public static class MapEntrySet<K, V> extends AbstractSet<Entry<K, V>> {
-		final CollectionObjectMap<K, V> map;
-
-		private final MapItr itr = new MapItr();
-		private final MapEnt ent = new MapEnt();
-
-		public MapEntrySet(CollectionObjectMap<K, V> map) {
-			this.map = map;
-		}
-
-		public int size() {
-			return map.size;
-		}
-
-		public void clear() {
-			map.clear();
-		}
-
-		@Override
-		public Iterator<Entry<K, V>> iterator() {
-			itr.entries = map.entries();
-			return itr;
-		}
-
-		@Override
-		public boolean contains(Object o) {
-			if (!(o instanceof Map.Entry<?, ?> e))
-				return false;
-			Object key = e.getKey();
-			return map.containsKey(key);
-		}
-
-		@Override
-		public boolean remove(Object o) {
-			if (o instanceof Map.Entry<?, ?> e) {
-				Object key = e.getKey();
-				return map.remove(key) != null;
-			}
-			return false;
-		}
-
-		class MapItr implements Iterator<Entry<K, V>> {
-			Entries<K, V> entries;
-
-			@Override
-			public boolean hasNext() {
-				return entries.hasNext();
-			}
-
-			@Override
-			public Entry<K, V> next() {
-				ent.entry = entries.next();
-				return ent;
-			}
-		}
-
-		class MapEnt implements Entry<K, V> {
-			MapEntry<K, V> entry;
-
-			@Override
-			public K getKey() {
-				return entry.key;
-			}
-
-			@Override
-			public V getValue() {
-				return entry.value;
-			}
-
-			@Override
-			public V setValue(V value) {
-				return map.put(entry.key, value);
-			}
-		}
-	}
-
-	public static class MapEntry<K, V> implements Map.Entry<K, V> {
+	public static class MapEntry<K> {
 		public K key;
-		public V value;
+		public float value;
 
+		@Override
 		public String toString() {
 			return key + "=" + value;
 		}
-
-		@Override
-		public K getKey() {
-			return key;
-		}
-
-		@Override
-		public V getValue() {
-			return value;
-		}
-
-		@Override
-		public V setValue(V v) {
-			value = v;
-
-			return value;
-		}
 	}
 
-	private abstract static class MapIterator<K, V, I> implements Iterable<I>, Iterator<I> {
-		final CollectionObjectMap<K, V> map;
-
+	private static class MapIterator<K> {
+		final BaseObjectFloatMap<K> map;
 		public boolean hasNext;
-
 		int nextIndex, currentIndex;
 		boolean valid = true;
 
-		public MapIterator(CollectionObjectMap<K, V> map) {
+		public MapIterator(BaseObjectFloatMap<K> map) {
 			this.map = map;
 			reset();
 		}
@@ -911,23 +688,22 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 				findNextIndex();
 			} else {
 				map.keyTable[currentIndex] = null;
-				map.valueTable[currentIndex] = null;
 			}
 			currentIndex = -1;
 			map.size--;
 		}
 	}
 
-	public static class Entries<K, V> extends MapIterator<K, V, MapEntry<K, V>> {
-		MapEntry<K, V> entry = new MapEntry<>();
+	public static class Entries<K> extends MapIterator<K> implements Iterable<MapEntry<K>>, Iterator<MapEntry<K>> {
+		private MapEntry<K> entry = new MapEntry<>();
 
-		public Entries(CollectionObjectMap<K, V> map) {
+		public Entries(BaseObjectFloatMap<K> map) {
 			super(map);
 		}
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
-		public MapEntry<K, V> next() {
+		public MapEntry<K> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			K[] keyTable = map.keyTable;
@@ -945,160 +721,58 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		}
 
 		@Override
-		public Entries<K, V> iterator() {
+		public Entries<K> iterator() {
 			return this;
-		}
-	}
-
-	public static class Values<V> extends MapIterator<Object, V, V> implements Collection<V> {
-		@SuppressWarnings("unchecked")
-		public Values(CollectionObjectMap<?, V> map) {
-			super((CollectionObjectMap<Object, V>) map);
 		}
 
 		@Override
+		public void remove() {
+			super.remove();
+		}
+	}
+
+	public static class Values extends MapIterator<Object> {
+		@SuppressWarnings("unchecked")
+		public Values(BaseObjectFloatMap<?> map) {
+			super((BaseObjectFloatMap<Object>) map);
+		}
+
 		public boolean hasNext() {
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			return hasNext;
 		}
 
-		@Override
-		public V next() {
+		public float next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			V value = map.valueTable[nextIndex];
+			float value = map.valueTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return value;
 		}
 
-		@Override
-		public int size() {
-			return map.size;
-		}
-
-		@Override
-		public boolean isEmpty() {
-			return map.isEmpty();
-		}
-
-		@Override
-		public boolean contains(Object o) {
-			return map.containsValue(o);
-		}
-
-		@Override
-		public Values<V> iterator() {
-			return this;
-		}
-
-		@Override
-		public Object[] toArray() {
-			return toSeq().toArray(Object.class);
-		}
-
-		@Override
-		public <T> T[] toArray(T[] a) {
-			if (a.length < map.size)
-				// Make a new array of a's runtime type, but my contents:
-				return (T[]) Arrays.copyOf(map.valueTable, map.size, a.getClass());
-			System.arraycopy(map.valueTable, 0, a, 0, map.size);
-			if (a.length > map.size)
-				a[map.size] = null;
-			return a;
-		}
-
-		@Override
-		public boolean add(V v) {
-			return false;
-		}
-
-		@Override
-		public boolean remove(Object o) {
-			Iterator<V> it = iterator();
-			if (o == null) {
-				while (it.hasNext()) {
-					if (it.next() == null) {
-						it.remove();
-						return true;
-					}
-				}
-			} else {
-				while (it.hasNext()) {
-					if (o.equals(it.next())) {
-						it.remove();
-						return true;
-					}
-				}
-			}
-			return false;
-		}
-
-		@Override
-		public boolean containsAll(Collection<?> c) {
-			for (Object e : c)
-				if (!contains(e))
-					return false;
-			return true;
-		}
-
-		@Override
-		public boolean addAll(Collection<? extends V> c) {
-			boolean modified = false;
-			for (V e : c)
-				if (add(e))
-					modified = true;
-			return modified;
-		}
-
-		@Override
-		public boolean removeAll(Collection<?> c) {
-			boolean modified = false;
-			Iterator<?> it = iterator();
-			while (it.hasNext()) {
-				if (c.contains(it.next())) {
-					it.remove();
-					modified = true;
-				}
-			}
-			return modified;
-		}
-
-		@Override
-		public boolean retainAll(Collection<?> c) {
-			boolean modified = false;
-			Iterator<V> it = iterator();
-			while (it.hasNext()) {
-				if (!c.contains(it.next())) {
-					it.remove();
-					modified = true;
-				}
-			}
-			return modified;
-		}
-
-		@Override
-		public void clear() {
-			map.clear();
-		}
-
 		/** Returns a new array containing the remaining values. */
-		public Seq<V> toSeq() {
-			return toSeq(new Seq<>(true, map.size, map.valueComponentType));
-		}
-
-		/** Adds the remaining values to the specified array. */
-		public Seq<V> toSeq(Seq<V> array) {
+		public FloatSeq toSeq() {
+			FloatSeq array = new FloatSeq(true, map.size);
 			while (hasNext)
 				array.add(next());
 			return array;
 		}
+
+		public float[] toArray() {
+			float[] array = new float[map.size];
+			int i = 0;
+			while (hasNext) {
+				array[i] = next();
+				i++;
+			}
+			return array;
+		}
 	}
 
-	public static class Keys<K> extends MapIterator<K, Object, K> implements Set<K> {
-		@SuppressWarnings("unchecked")
-		public Keys(CollectionObjectMap<K, ?> map) {
-			super((CollectionObjectMap<K, Object>) map);
+	public static class Keys<K> extends MapIterator<K> implements Iterable<K>, Iterator<K> {
+		public Keys(BaseObjectFloatMap<K> map) {
+			super(map);
 		}
 
 		@Override
@@ -1118,115 +792,33 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		}
 
 		@Override
-		public int hashCode() {
-			int h = 0;
-			for (K obj : this) {
-				if (obj != null)
-					h += obj.hashCode();
-			}
-			return h;
-		}
-
-		@Override
-		public int size() {
-			return map.size;
-		}
-
-		@Override
-		public boolean isEmpty() {
-			return map.isEmpty();
-		}
-
-		@Override
-		public boolean contains(Object o) {
-			return map.containsKey(o);
-		}
-
-		@Override
 		public Keys<K> iterator() {
 			return this;
 		}
 
-		@Override
-		public Object[] toArray() {
-			return map.keySet().toSeq().toArray();
+		public Seq<K> toSeq() {
+			Seq<K> seq = new Seq<>(true, map.size, map.keyComponentType);
+			while (hasNext)
+				seq.add(next());
+			return seq;
 		}
 
-		@Override
-		public <T> T[] toArray(T[] a) {
-			return map.keySet().toSeq().toArray(a.getClass().getComponentType());
-		}
-
-		@Override
-		public boolean add(K k) {
-			return false;
-		}
-
-		@Override
-		public boolean remove(Object o) {
-			return map.remove(o) != null;
-		}
-
-		@Override
-		public boolean containsAll(Collection<?> c) {
-			for (Object e : c)
-				if (!contains(e))
-					return false;
-			return true;
-		}
-
-		@Override
-		public boolean addAll(Collection<? extends K> c) {
-			boolean modified = false;
-			for (K e : c)
-				if (add(e))
-					modified = true;
-			return modified;
-		}
-
-		@Override
-		public boolean retainAll(Collection<?> c) {
-			boolean modified = false;
-			Iterator<K> it = iterator();
-			while (it.hasNext()) {
-				if (!c.contains(it.next())) {
-					it.remove();
-					modified = true;
-				}
-			}
-			return modified;
-		}
-
-		@Override
-		public boolean removeAll(Collection<?> c) {
-			boolean modified = false;
-
-			if (size() > c.size()) {
-				for (Object e : c)
-					modified |= remove(e);
-			} else {
-				for (Iterator<?> i = iterator(); i.hasNext(); ) {
-					if (c.contains(i.next())) {
-						i.remove();
-						modified = true;
-					}
-				}
-			}
-			return modified;
-		}
-
-		@Override
-		public void clear() {
-			map.clear();
+		public Seq<K> toSeq(Seq<K> seq) {
+			while (hasNext)
+				seq.add(next());
+			return seq;
 		}
 
 		/** Returns a new array containing the remaining keys. */
-		public Seq<K> toSeq() {
-			return toSeq(new Seq<>(true, map.size, map.keyComponentType));
+		public CollectionList<K> toList() {
+			CollectionList<K> array = new CollectionList<>(true, map.size, map.keyComponentType);
+			while (hasNext)
+				array.add(next());
+			return array;
 		}
 
 		/** Adds the remaining keys to the array. */
-		public Seq<K> toSeq(Seq<K> array) {
+		public CollectionList<K> toList(CollectionList<K> array) {
 			while (hasNext)
 				array.add(next());
 			return array;

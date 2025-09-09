@@ -9,10 +9,6 @@ public class WeightedRandom<T> {
 	Seq<T> items;
 	FloatSeq weights = new FloatSeq();
 
-	public WeightedRandom() {
-		items = new Seq<>();
-	}
-
 	public WeightedRandom(Class<T> componentType) {
 		items = new Seq<>(componentType);
 	}

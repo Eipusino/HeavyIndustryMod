@@ -1,12 +1,12 @@
 package heavyindustry.util;
 
-import arc.struct.ObjectMap;
+import java.util.Map;
 
 public class ValueMap {
 	float floatval;
 	int intval;
 	Object val;
-	ObjectMap<String, ValueMap> map = new ObjectMap<>();
+	Map<String, ValueMap> map = new CollectionObjectMap<>(String.class, ValueMap.class);
 
 	public ValueMap() {}
 

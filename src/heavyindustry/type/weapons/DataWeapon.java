@@ -1,11 +1,12 @@
 package heavyindustry.type.weapons;
 
-import heavyindustry.util.BaseMap;
 import heavyindustry.util.CollectionObjectMap;
 import heavyindustry.util.comp.ExtraVariablec;
 import mindustry.entities.units.WeaponMount;
 import mindustry.gen.Unit;
 import mindustry.type.Weapon;
+
+import java.util.Map;
 
 /**
  * A weapon with an independent variable space that automatically replaces the corresponding
@@ -85,14 +86,14 @@ public class DataWeapon extends Weapon {
 	}
 
 	public static class DataWeaponMount extends WeaponMount implements ExtraVariablec {
-		public BaseMap<String, Object> extraVar = new CollectionObjectMap<>(String.class, Object.class);
+		public Map<String, Object> extraVar = new CollectionObjectMap<>(String.class, Object.class);
 
 		public DataWeaponMount(Weapon weapon) {
 			super(weapon);
 		}
 
 		@Override
-		public BaseMap<String, Object> extra() {
+		public Map<String, Object> extra() {
 			return extraVar;
 		}
 	}

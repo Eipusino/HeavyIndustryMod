@@ -22,7 +22,7 @@ import static heavyindustry.util.Utils.split;
 
 public class DrawDirSpliceBlock extends DrawBlock {
 	public TextureRegion[] regions = new TextureRegion[16];
-	public Intf<Building> spliceBits = e -> 0;
+	public Intf<Building> spliceBits;
 	public Boolf2<BuildPlan, BuildPlan> planSplicer = (plan, other) -> false;
 
 	public int size = 1;
@@ -38,7 +38,9 @@ public class DrawDirSpliceBlock extends DrawBlock {
 		spliceBits = (Intf<Building>) splice;
 	}
 
-	public DrawDirSpliceBlock() {}
+	public DrawDirSpliceBlock() {
+		this(e -> 0);
+	}
 
 	@Override
 	public void load(Block block) {

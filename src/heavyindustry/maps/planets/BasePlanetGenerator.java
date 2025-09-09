@@ -3,10 +3,10 @@ package heavyindustry.maps.planets;
 import arc.graphics.Color;
 import arc.math.Mathf;
 import arc.math.geom.Vec3;
-import arc.struct.ObjectMap;
 import arc.util.Tmp;
 import arc.util.noise.Ridged;
 import arc.util.noise.Simplex;
+import heavyindustry.util.CollectionObjectMap;
 import mindustry.content.Blocks;
 import mindustry.maps.generators.PlanetGenerator;
 import mindustry.world.Block;
@@ -16,9 +16,9 @@ public abstract class BasePlanetGenerator extends PlanetGenerator {
 	public float scl = 0f;
 	public float waterOffset = 0f;
 	public float water = 0f;
-	protected ObjectMap<Block, Block> dec = new ObjectMap<>();
 
-	protected ObjectMap<Block, Block> tars = new ObjectMap<>();
+	protected CollectionObjectMap<Block, Block> dec = new CollectionObjectMap<>(Block.class, Block.class);
+	protected CollectionObjectMap<Block, Block> tars = new CollectionObjectMap<>(Block.class, Block.class);
 
 	public BasePlanetGenerator() {}
 

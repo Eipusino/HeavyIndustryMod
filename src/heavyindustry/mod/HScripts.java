@@ -32,7 +32,7 @@ public final class HScripts {
 	public static void init() {
 		try {
 			if (Vars.mods.getScripts().scope instanceof ImporterTopLevel imp) {
-				importDefaults(imp);
+				importPackages(imp, HVars.packages);
 			}
 		} catch (Throwable e) {
 			Log.err(e);
@@ -44,15 +44,15 @@ public final class HScripts {
 	 * @param scope {@code Vars.mods.getScripts().scope} for the base game's script scope (mod scripts folder and console), or
 	 *			  another custom scope.
 	 */
-	public static void importDefaults(ImporterTopLevel scope) {
-		for (String pack : HVars.packages) {
+	public static void importPackages(ImporterTopLevel scope, String... packages) {
+		for (String pack : packages) {
 			importPackage(scope, pack);
 		}
 	}
 
 	/**
 	 * Imports a single package to the given scope.
-	 * @param scope See {@link #importDefaults(ImporterTopLevel)}.
+	 * @param scope See {@link #importPackages(ImporterTopLevel, String...)}.
 	 * @param name  The package's fully qualified name.
 	 */
 	public static void importPackage(ImporterTopLevel scope, String name) {
@@ -65,6 +65,18 @@ public final class HScripts {
 
 	public static void importPackage(ImporterTopLevel scope, Package pack) {
 		importPackage(scope, pack.getName());
+	}
+
+	public static void importClasses(ImporterTopLevel scope, String... classes) {
+		for (String name : classes) {
+			importClass(scope, name);
+		}
+	}
+
+	public static void importClasses(ImporterTopLevel scope, Class<?>... classes) {
+		for (Class<?> clazz : classes) {
+			importClass(scope, clazz);
+		}
 	}
 
 	public static void importClass(ImporterTopLevel scope, String canonical) {
@@ -104,6 +116,14 @@ public final class HScripts {
 		};
 	}
 
+	public static <T> Class<T> getClass(Class<T> c) {
+		return c;
+	}
+
+	public static NativeJavaClass nativeClass(Class<?> c) {
+		return new NativeJavaClass(Vars.mods.getScripts().scope, c);
+	}
+
 	public static NativeJavaClass getClass(String name) throws ClassNotFoundException {
 		return new NativeJavaClass(Vars.mods.getScripts().scope, Class.forName(name, true, Vars.mods.mainLoader()));
 	}
@@ -116,9 +136,5 @@ public final class HScripts {
 		try (URLClassLoader urlLoader = new URLClassLoader(new URL[]{file.file().toURI().toURL()})) {
 			return new NativeJavaClass(Vars.mods.getScripts().scope, urlLoader.loadClass(name));
 		}
-	}
-
-	public static <T> Class<T> getClass(Class<T> c) {
-		return c;
 	}
 }

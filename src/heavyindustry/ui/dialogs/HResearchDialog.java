@@ -23,14 +23,14 @@ import arc.scene.ui.Label;
 import arc.scene.ui.TextButton.TextButtonStyle;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
-import arc.struct.ObjectMap;
-import arc.struct.ObjectSet;
 import arc.struct.Seq;
 import arc.util.Align;
 import arc.util.Nullable;
 import arc.util.Scaling;
 import arc.util.Structs;
 import heavyindustry.func.FuncInte;
+import heavyindustry.util.CollectionObjectMap;
+import heavyindustry.util.CollectionObjectSet;
 import mindustry.content.TechTree;
 import mindustry.content.TechTree.TechNode;
 import mindustry.core.UI;
@@ -74,7 +74,7 @@ public class HResearchDialog extends BaseDialog {
 	public static boolean debugShowRequirements = false;
 
 	public final float nodeSize = Scl.scl(60f);
-	public ObjectSet<TechTreeNode> nodes = new ObjectSet<>();
+	public CollectionObjectSet<TechTreeNode> nodes = new CollectionObjectSet<>(TechTreeNode.class);
 	public TechTreeNode root = new TechTreeNode(TechTree.roots.first(), null);
 	public TechNode lastNode = root.node;
 	public Rect bounds = new Rect();
@@ -148,7 +148,7 @@ public class HResearchDialog extends BaseDialog {
 			}
 
 			items = new ItemSeq() {
-				final ObjectMap<Sector, ItemSeq> cache = new ObjectMap<>();
+				final CollectionObjectMap<Sector, ItemSeq> cache = new CollectionObjectMap<>(Sector.class, ItemSeq.class);
 			{
 				for (Planet planet : content.planets()) {
 					for (Sector sector : planet.sectors) {

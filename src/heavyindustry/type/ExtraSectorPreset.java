@@ -1,7 +1,7 @@
 package heavyindustry.type;
 
 import arc.Events;
-import arc.struct.ObjectMap;
+import heavyindustry.util.CollectionObjectMap;
 import mindustry.Vars;
 import mindustry.game.EventType;
 import mindustry.type.Planet;
@@ -11,7 +11,7 @@ import mindustry.type.SectorPreset;
 import static heavyindustry.func.FuncInte.RUNNABLE_NOTHING;
 
 public class ExtraSectorPreset extends SectorPreset {
-	public static ObjectMap<Sector, Runnable> scripts = new ObjectMap<>();
+	public static CollectionObjectMap<Sector, Runnable> scripts = new CollectionObjectMap<>(Sector.class, Runnable.class);
 
 	static {
 		Events.run(EventType.Trigger.update, () -> {

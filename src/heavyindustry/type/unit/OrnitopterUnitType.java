@@ -93,6 +93,7 @@ public class OrnitopterUnitType extends BaseUnitType {
 	@Override
 	public void createIcons(MultiPacker packer) {
 		super.createIcons(packer);
+
 		for (Blade blade : blades) {
 			Outliner.outlineRegion(packer, blade.bladeRegion, outlineColor, blade.spriteName + "-outline", outlineRadius);
 			Outliner.outlineRegion(packer, blade.shadeRegion, outlineColor, blade.spriteName + "-top-outline", outlineRadius);

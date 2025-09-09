@@ -4,8 +4,11 @@ import arc.graphics.g2d.Draw;
 import arc.math.Angles;
 import heavyindustry.world.blocks.liquid.LiquidMassDriver.LiquidBulletData;
 import mindustry.content.Fx;
+import mindustry.entities.Damage;
 import mindustry.entities.bullet.BulletType;
 import mindustry.gen.Bullet;
+
+import static mindustry.Vars.state;
 
 public class LiquidMassDriverBolt extends BulletType {
 	public LiquidMassDriverBolt() {
@@ -82,5 +85,14 @@ public class LiquidMassDriverBolt extends BulletType {
 	public void hit(Bullet b, float x, float y) {
 		super.hit(b, x, y);
 		despawned(b);
+		if (b.data instanceof LiquidBulletData data) {
+			float explosiveness = 0f;
+			float flammability = 0f;
+
+			explosiveness += data.liquid.explosiveness * data.amount;
+			flammability += data.liquid.flammability * data.amount;
+
+			Damage.dynamicExplosion(b.x, b.y, flammability / 10f, explosiveness / 10f, 0f, 1f, state.rules.damageExplosions);
+		}
 	}
 }
