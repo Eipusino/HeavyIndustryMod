@@ -22,9 +22,9 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 	public int size;
 	public boolean ordered;
 
-	private Entries<K, V> entries1, entries2;
-	private Values<V> valuesIter1, valuesIter2;
-	private Keys<K> keysIter1, keysIter2;
+	Entries<K, V> entries1, entries2;
+	Values<V> valuesIter1, valuesIter2;
+	Keys<K> keysIter1, keysIter2;
 
 	/** Creates an ordered map with a capacity of 16. */
 	public CollectionArrayMap(Class<?> keyType, Class<?> valueType) {
@@ -87,6 +87,9 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 
 	@Override
 	public void putAll(Map<? extends K, ? extends V> m) {
+		for (var e : m.entrySet()) {
+			put(e.getKey(), e.getValue());
+		}
 	}
 
 	public int put(K key, V value, int index) {
@@ -126,7 +129,7 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 		int i = size - 1;
 		if (key == null) {
 			for (; i >= 0; i--)
-				if (keys[i] == key) return values[i];
+				if (keys[i] == null) return values[i];
 		} else {
 			for (; i >= 0; i--)
 				if (key.equals(keys[i])) return values[i];
@@ -202,7 +205,7 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 		int i = size - 1;
 		if (key == null) {
 			while (i >= 0)
-				if (keys[i--] == key) return true;
+				if (keys[i--] == null) return true;
 		} else {
 			while (i >= 0)
 				if (key.equals(keys[i--])) return true;
@@ -231,7 +234,7 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 	public int indexOfKey(K key) {
 		if (key == null) {
 			for (int i = 0, n = size; i < n; i++)
-				if (keys[i] == key) return i;
+				if (keys[i] == null) return i;
 		} else {
 			for (int i = 0, n = size; i < n; i++)
 				if (key.equals(keys[i])) return i;
@@ -253,7 +256,7 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 	public V removeKey(Object key) {
 		if (key == null) {
 			for (int i = 0, n = size; i < n; i++) {
-				if (keys[i] == key) {
+				if (keys[i] == null) {
 					V value = values[i];
 					removeIndex(i);
 					return value;
@@ -547,26 +550,30 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 	public static class MapEntrySet<K, V> extends AbstractSet<Entry<K, V>> {
 		final CollectionArrayMap<K, V> map;
 
-		private final MapItr itr = new MapItr();
-		private final MapEnt ent = new MapEnt();
+		final MapItr itr = new MapItr();
+		final MapEnt ent = new MapEnt();
 
 		public MapEntrySet(CollectionArrayMap<K, V> map) {
 			this.map = map;
 		}
 
+		@Override
 		public int size() {
 			return map.size;
 		}
 
+		@Override
 		public void clear() {
 			map.clear();
 		}
 
+		@Override
 		public Iterator<Entry<K, V>> iterator() {
 			itr.entries = map.entries();
 			return itr;
 		}
 
+		@Override
 		public boolean contains(Object o) {
 			if (!(o instanceof Map.Entry<?, ?> e))
 				return false;
@@ -574,6 +581,7 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 			return map.containsKey(key);
 		}
 
+		@Override
 		public boolean remove(Object o) {
 			if (o instanceof Map.Entry<?, ?> e) {
 				Object key = e.getKey();
@@ -618,7 +626,8 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 	}
 
 	public static class Entries<K, V> implements Iterable<MapEntry<K, V>>, Iterator<MapEntry<K, V>> {
-		private final CollectionArrayMap<K, V> map;
+		final CollectionArrayMap<K, V> map;
+
 		MapEntry<K, V> entry = new MapEntry<>();
 		int index;
 		boolean valid = true;
@@ -627,16 +636,19 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 			this.map = map;
 		}
 
+		@Override
 		public boolean hasNext() {
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			return index < map.size;
 		}
 
+		@Override
 		public Iterator<MapEntry<K, V>> iterator() {
 			return this;
 		}
 
 		/** Note the same entry instance is returned each time this method is called. */
+		@Override
 		public MapEntry<K, V> next() {
 			if (index >= map.size) throw new NoSuchElementException(String.valueOf(index));
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
@@ -645,6 +657,7 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 			return entry;
 		}
 
+		@Override
 		public void remove() {
 			index--;
 			map.removeIndex(index);
@@ -656,7 +669,8 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 	}
 
 	public static class Values<V> extends AbstractCollection<V> implements Iterator<V> {
-		private final CollectionArrayMap<?, V> map;
+		final CollectionArrayMap<?, V> map;
+
 		int index;
 		boolean valid = true;
 
@@ -709,6 +723,7 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 
 	public static class Keys<K> extends AbstractSet<K> implements Iterable<K>, Iterator<K> {
 		final CollectionArrayMap<K, ?> map;
+
 		int index;
 		boolean valid = true;
 

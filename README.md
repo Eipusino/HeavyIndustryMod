@@ -6,6 +6,8 @@
 
 **Under development.**
 
+- English | [中文](README_zh_CN.md)
+
 ---
 
 ## Other Information
@@ -19,7 +21,7 @@
 
 # Regarding Mod
 
-**[Reflection Library](https://github.com/Eipusino/Template), This is a very important part of the module's reflection function.**
+**[Platform Reflection](https://github.com/Eipusino/Template), Reflection function implemented on multiple platforms in the module section.**
 
 ---
 

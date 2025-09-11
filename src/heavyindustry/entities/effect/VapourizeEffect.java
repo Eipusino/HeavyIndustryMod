@@ -2,10 +2,10 @@ package heavyindustry.entities.effect;
 
 import arc.Events;
 import arc.math.Mathf;
-import arc.struct.IntMap;
 import arc.struct.Seq;
 import arc.util.Time;
 import heavyindustry.gen.VapourizeEffectState;
+import heavyindustry.util.BaseIntMap;
 import mindustry.content.Liquids;
 import mindustry.entities.Puddles;
 import mindustry.game.EventType.Trigger;
@@ -16,8 +16,8 @@ import mindustry.gen.Unit;
 
 public final class VapourizeEffect {
 	private static final Seq<BuildQueue> vapourizeQueue = new Seq<>(true, 512, BuildQueue.class);
-	private static final IntMap<BuildQueue> buildQMap = new IntMap<>();
-	private static final IntMap<VapourizeEffectState> vapourizeMap = new IntMap<>();
+	private static final BaseIntMap<BuildQueue> buildQMap = new BaseIntMap<>(BuildQueue.class);
+	private static final BaseIntMap<VapourizeEffectState> vapourizeMap = new BaseIntMap<>(VapourizeEffectState.class);
 
 	static {
 		Events.on(WorldLoadEvent.class, event -> {

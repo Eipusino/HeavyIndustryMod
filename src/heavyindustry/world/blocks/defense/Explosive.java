@@ -16,6 +16,7 @@ import mindustry.gen.Sounds;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
+import mindustry.logic.Ranged;
 import mindustry.ui.Fonts;
 import mindustry.world.Block;
 import mindustry.world.Tile;
@@ -69,7 +70,7 @@ public class Explosive extends Block {
 		if (buildType == null) buildType = ExplosiveBuild::new;
 	}
 
-	public class ExplosiveBuild extends Building {
+	public class ExplosiveBuild extends Building implements Ranged {
 		public float counter;
 
 		@Override
@@ -112,6 +113,11 @@ public class Explosive extends Block {
 		@Override
 		public void afterDestroyed() {
 			detonate();
+		}
+
+		@Override
+		public float range() {
+			return range;
 		}
 	}
 }

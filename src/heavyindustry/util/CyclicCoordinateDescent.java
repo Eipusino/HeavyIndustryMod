@@ -30,7 +30,7 @@ public final class CyclicCoordinateDescent {
 
 	public static void calculate(DefaultBone[] bones, float targetX, float targetY, float arrivalDist, float angleLimit, float angleLerp, boolean delta) {
 		int numBones = bones.length;
-		if (numBones <= 0) return;
+		if (numBones == 0) return;
 
 		float arrivalDistSqr = arrivalDist * arrivalDist;
 

@@ -273,6 +273,11 @@ public class LinkGenericCrafter extends GenericCrafter implements MultiBlock {
 		}
 
 		@Override
+		public Block block() {
+			return block;
+		}
+
+		@Override
 		public Seq<Building> linkEntities() {
 			return linkEntities;
 		}

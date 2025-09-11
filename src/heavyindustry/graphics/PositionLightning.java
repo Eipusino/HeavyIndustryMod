@@ -2,6 +2,7 @@ package heavyindustry.graphics;
 
 import arc.func.Cons;
 import arc.graphics.Color;
+import arc.math.Angles;
 import arc.math.Mathf;
 import arc.math.Rand;
 import arc.math.geom.Geometry;
@@ -16,6 +17,7 @@ import heavyindustry.util.Vec2Seq;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
 import mindustry.core.World;
+import mindustry.entities.Lightning;
 import mindustry.entities.Units;
 import mindustry.entities.bullet.BulletType;
 import mindustry.game.Team;
@@ -80,15 +82,15 @@ public final class PositionLightning {
 	}
 
 	/** Lightningf's randX. Modify it if needed. */
-	private static float getBoltRandomRange() {
+	static float getBoltRandomRange() {
 		return Mathf.random(1f, 7f);
 	}
 
-	private static Building furthest;
-	private static final Rect rect = new Rect();
-	private static final Rand rand = new Rand();
-	private static final FloatSeq floatSeq = new FloatSeq();
-	private static final Vec2 tmp1 = new Vec2(), tmp2 = new Vec2(), tmp3 = new Vec2();
+	static Building furthest;
+	static final Rect rect = new Rect();
+	static final Rand rand = new Rand();
+	static final FloatSeq floatSeq = new FloatSeq();
+	static final Vec2 tmp1 = new Vec2(), tmp2 = new Vec2(), tmp3 = new Vec2();
 
 	/**
 	 * METHODS
@@ -123,9 +125,9 @@ public final class PositionLightning {
 		if (createSubLightning) {
 			if (owner instanceof Bullet b) {
 				for (int i = 0; i < b.type.lightning; i++)
-					mindustry.entities.Lightning.create(b, color, b.type.lightningDamage < 0f ? b.damage : b.type.lightningDamage, sureTarget.getX(), sureTarget.getY(), b.rotation() + Mathf.range(b.type.lightningCone / 2f) + b.type.lightningAngle, b.type.lightningLength + Mathf.random(b.type.lightningLengthRand));
+					Lightning.create(b, color, b.type.lightningDamage < 0f ? b.damage : b.type.lightningDamage, sureTarget.getX(), sureTarget.getY(), b.rotation() + Mathf.range(b.type.lightningCone / 2f) + b.type.lightningAngle, b.type.lightningLength + Mathf.random(b.type.lightningLengthRand));
 			} else for (int i = 0; i < 3; i++)
-				mindustry.entities.Lightning.create(team, color, damage <= 0f ? 1f : damage, sureTarget.getX(), sureTarget.getY(), Mathf.random(360f), subLightningLength);
+				Lightning.create(team, color, damage <= 0f ? 1f : damage, sureTarget.getX(), sureTarget.getY(), Mathf.random(360f), subLightningLength);
 		}
 
 		float realDamage = damage;
@@ -168,6 +170,28 @@ public final class PositionLightning {
 		createEffect(from, tmp2.trns(angle, length).add(from), color, lightningNum, width);
 	}
 
+	public static void createEffect(float fromX, float fromY, float toX, float toY, Color color, int lightningNum, float width) {
+		if (headless) return;
+
+		if (lightningNum < 1) {
+			Fx.chainLightning.at(fromX, fromY, 0, color, new Vec2().set(toX, toY));
+		} else {
+			float dst = Mathf.dst(fromX, fromY, toX, toY);
+
+			for (int i = 0; i < lightningNum; i++) {
+				float len = getBoltRandomRange();
+				float randRange = len * RANGE_RAND;
+
+				floatSeq.clear();
+				FloatSeq randomArray = floatSeq;
+				for (int num = 0; num < dst / (ROT_DST * len) + 1; num++) {
+					randomArray.add(Mathf.range(randRange) / (num * 0.025f + 1));
+				}
+				createBoltEffect(color, width, computeVectors(randomArray, fromX, fromY, toX, toY));
+			}
+		}
+	}
+
 	public static void createEffect(Position from, Position to, Color color, int lightningNum, float width) {
 		if (headless) return;
 
@@ -203,7 +227,7 @@ public final class PositionLightning {
 	}
 
 	/** Add proper unit into the to hit Seq. */
-	private static void whetherAdd(Seq<Healthc> points, Team team, Rect selectRect, int maxHit, boolean targetGround, boolean targetAir) {
+	static void whetherAdd(Seq<Healthc> points, Team team, Rect selectRect, int maxHit, boolean targetGround, boolean targetAir) {
 		Units.nearbyEnemies(team, selectRect, unit -> {
 			if (unit.checkTarget(targetAir, targetGround)) points.add(unit);
 		});
@@ -227,7 +251,22 @@ public final class PositionLightning {
 		HFx.posLightning.at((vets.firstTmp().x + vets.peekTmp().x) / 2f, (vets.firstTmp().y + vets.peekTmp().y) / 2f, width, color, vets);
 	}
 
-	private static Vec2Seq computeVectors(FloatSeq randomVec, Position from, Position to) {
+	static Vec2Seq computeVectors(FloatSeq randomVec, float fromX, float fromY, float toX, float toY) {
+		int param = randomVec.size;
+		float angle = Angles.angle(fromX, fromY, toX, toY);
+
+		Vec2Seq lines = new Vec2Seq(param);
+		tmp1.trns(angle, Mathf.dst(fromX, fromY, toX, toY) / (param - 1));
+
+		lines.add(fromX, fromY);
+		for (int i = 1; i < param - 2; i++)
+			lines.add(tmp3.trns(angle - 90, randomVec.get(i)).add(tmp1, i).add(fromX, fromY));
+		lines.add(toX, toY);
+
+		return lines;
+	}
+
+	static Vec2Seq computeVectors(FloatSeq randomVec, Position from, Position to) {
 		int param = randomVec.size;
 		float angle = from.angleTo(to);
 

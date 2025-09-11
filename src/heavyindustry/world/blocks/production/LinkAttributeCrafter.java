@@ -295,6 +295,11 @@ public class LinkAttributeCrafter extends AttributeCrafter implements MultiBlock
 		}
 
 		@Override
+		public Block block() {
+			return block;
+		}
+
+		@Override
 		public Seq<Building> linkEntities() {
 			return linkEntities;
 		}

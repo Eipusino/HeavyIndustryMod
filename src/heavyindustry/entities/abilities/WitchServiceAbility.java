@@ -58,6 +58,7 @@ public class WitchServiceAbility extends Ability {
 		super.update(unit);
 
 		Rect r = getRect(unit, rect);
+
 		if ((reload += Time.delta) >= timeApply) {
 			Units.nearbyEnemies(unit.team, r, u -> {
 				if (u.targetable(unit.team) && !u.inFogTo(unit.team)) {

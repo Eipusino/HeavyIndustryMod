@@ -80,7 +80,7 @@ public final class HTechTree {
 		vanillaNode(phaseWallLarge, () -> node(phaseWallHuge, () -> node(phaseWallGigantic)));
 		vanillaNode(surgeWall, () -> node(heavyAlloyWall, () -> {
 			node(heavyAlloyWallLarge);
-			node(compositeWall, () -> node(compositeWallLarge));
+			node(chargeWall, () -> node(chargeWallLarge));
 		}));
 		vanillaNode(surgeWallLarge, () -> node(surgeWallHuge, () -> node(surgeWallGigantic)));
 		//wall-erekir
@@ -271,7 +271,7 @@ public final class HTechTree {
 			node(cloudbreaker);
 		});
 		vanillaNode(scorch, () -> node(dragonBreath));
-		vanillaNode(arc, () -> node(hurricane));
+		vanillaNode(arc, () -> node(coilBlaster, () -> node(hurricane)));
 		vanillaNode(lancer, () -> node(breakthrough));
 		vanillaNode(salvo, () -> node(minigun));
 		vanillaNode(tsunami, () -> node(ironStream));

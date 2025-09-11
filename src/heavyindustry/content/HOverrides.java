@@ -5,6 +5,7 @@ import arc.func.Cons;
 import arc.graphics.Color;
 import arc.struct.ObjectFloatMap;
 import heavyindustry.graphics.HPal;
+import heavyindustry.util.Utils;
 import heavyindustry.world.meta.HAttribute;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
@@ -63,8 +64,6 @@ import mindustry.world.consumers.ConsumeItems;
 import mindustry.world.consumers.ConsumeLiquid;
 import mindustry.world.meta.Attribute;
 import mindustry.world.meta.BuildVisibility;
-
-import static heavyindustry.util.Utils.cast;
 
 /**
  * Covering the original content.
@@ -400,12 +399,12 @@ public final class HOverrides {
 	}
 
 	public static <T extends UnlockableContent> void overwrite(UnlockableContent target, Cons<T> setter) {
-		setter.get(cast(target));
+		setter.get(Utils.cast(target));
 	}
 
 	public static <T extends UnlockableContent> void overwrite(UnlockableContent target, Cons<T> setter, Class<T> type) {
 		if (type.isInstance(target)) {
-			setter.get(cast(target));
+			setter.get(Utils.cast(target));
 		}
 	}
 

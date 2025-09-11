@@ -13,7 +13,6 @@ import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
 import arc.math.geom.Vec2;
 import arc.struct.IntIntMap;
-import arc.struct.IntMap;
 import arc.struct.Queue;
 import arc.struct.Seq;
 import arc.util.Eachable;
@@ -24,6 +23,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.content.HFx;
 import heavyindustry.ui.CraftGridImage;
+import heavyindustry.util.BaseIntMap;
 import heavyindustry.world.meta.HStat;
 import mindustry.Vars;
 import mindustry.content.Fx;
@@ -137,7 +137,9 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 							}
 						}
 					} else {
-						image.items.putAll(recipe.requirements);
+						for (var entry : recipe.requirements) {
+							image.items.put(entry.key, entry.value);
+						}
 					}
 
 					t.table(requirements -> {
@@ -547,7 +549,7 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 	}
 
 	public static class PayloadManufacturingRecipe {
-		public IntMap<UnlockableContent> requirements = new IntMap<>();
+		public BaseIntMap<UnlockableContent> requirements = new BaseIntMap<>(UnlockableContent.class);
 		// if not null then this recipe is shapeless
 		public PayloadStack[] shapelessRequirements;
 		public UnlockableContent result;

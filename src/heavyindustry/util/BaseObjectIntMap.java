@@ -33,14 +33,14 @@ public class BaseObjectIntMap<K> implements Iterable<BaseObjectIntMap.MapEntry<K
 	public int[] valueTable;
 	public int capacity, stashSize;
 
-	private float loadFactor;
-	private int hashShift, mask, threshold;
-	private int stashCapacity;
-	private int pushIterations;
+	float loadFactor;
+	int hashShift, mask, threshold;
+	int stashCapacity;
+	int pushIterations;
 
-	private Entries<K> entries1, entries2;
-	private Values values1, values2;
-	private Keys<K> keys1, keys2;
+	Entries<K> entries1, entries2;
+	Values values1, values2;
+	Keys<K> keys1, keys2;
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
 	public BaseObjectIntMap(Class<?> keyType) {
@@ -674,6 +674,7 @@ public class BaseObjectIntMap<K> implements Iterable<BaseObjectIntMap.MapEntry<K
 		final BaseObjectIntMap<K> map;
 
 		public boolean hasNext;
+
 		int nextIndex, currentIndex;
 		boolean valid = true;
 
@@ -714,13 +715,13 @@ public class BaseObjectIntMap<K> implements Iterable<BaseObjectIntMap.MapEntry<K
 	}
 
 	public static class Entries<K> extends MapIterator<K> implements Iterable<MapEntry<K>>, Iterator<MapEntry<K>> {
-		private MapEntry<K> entry = new MapEntry<>();
+		MapEntry<K> entry = new MapEntry<>();
 
 		public Entries(BaseObjectIntMap<K> map) {
 			super(map);
 		}
 
-		public CollectionList<MapEntry<K>> toArray() {
+		public CollectionList<MapEntry<K>> toList() {
 			CollectionList<MapEntry<K>> out = new CollectionList<>(map.keyComponentType);
 			for (MapEntry<K> entry : this) {
 				MapEntry<K> e = new MapEntry<>();

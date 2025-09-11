@@ -2,13 +2,13 @@ package heavyindustry.ui.dialogs;
 
 import arc.Core;
 import arc.scene.ui.layout.Table;
-import arc.struct.IntMap;
 import arc.struct.IntSeq;
 import arc.struct.IntSet;
 import arc.struct.Seq;
 import arc.util.Time;
 import heavyindustry.ui.PowerInfoGroup;
 import heavyindustry.ui.PowerInfoGroup.InfoToggled;
+import heavyindustry.util.BaseIntMap;
 import mindustry.gen.Building;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
@@ -20,9 +20,9 @@ public class PowerGraphInfoDialog extends BaseDialog {
 	protected final float updateInterval = 60; //Update every second
 
 	protected final IntSet opened = new IntSet();
-	protected final IntMap<Seq<Building>> producers = new IntMap<>();
-	protected final IntMap<Seq<Building>> consumers = new IntMap<>();
-	protected final IntMap<Seq<Building>> batteries = new IntMap<>();
+	protected final BaseIntMap<Seq<Building>> producers = new BaseIntMap<>(Seq.class);
+	protected final BaseIntMap<Seq<Building>> consumers = new BaseIntMap<>(Seq.class);
+	protected final BaseIntMap<Seq<Building>> batteries = new BaseIntMap<>(Seq.class);
 	protected final InfoToggled collToggled = (int id, boolean open) -> {
 		if (open) {
 			opened.add(id);
@@ -114,7 +114,7 @@ public class PowerGraphInfoDialog extends BaseDialog {
 
 		switch (currType) {
 			case producer -> {
-				IntSeq prodKeys = producers.keys().toArray();
+				IntSeq prodKeys = producers.keys().toSeq();
 				prodKeys.sort();
 				prodKeys.each(id -> {
 					infoTable.add(new PowerInfoGroup(producers.get(id), PowerInfoType.producer, opened.contains(id), collToggled)).growX().top().padBottom(6f);
@@ -122,7 +122,7 @@ public class PowerGraphInfoDialog extends BaseDialog {
 				});
 			}
 			case consumer -> {
-				IntSeq consKeys = consumers.keys().toArray();
+				IntSeq consKeys = consumers.keys().toSeq();
 				consKeys.sort();
 				consKeys.each(id -> {
 					infoTable.add(new PowerInfoGroup(consumers.get(id), PowerInfoType.consumer, opened.contains(id), collToggled)).growX().top().padBottom(6f);
@@ -130,7 +130,7 @@ public class PowerGraphInfoDialog extends BaseDialog {
 				});
 			}
 			case battery -> {
-				IntSeq battKeys = batteries.keys().toArray();
+				IntSeq battKeys = batteries.keys().toSeq();
 				battKeys.sort();
 				battKeys.each(id -> {
 					infoTable.add(new PowerInfoGroup(batteries.get(id), PowerInfoType.battery, opened.contains(id), collToggled)).growX().top().padBottom(6f);

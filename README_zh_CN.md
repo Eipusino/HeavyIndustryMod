@@ -6,6 +6,8 @@
 
 **正在开发中。**
 
+- [English](README.md) | 中文
+
 ---
 
 ## 其他信息
@@ -19,7 +21,7 @@
 
 # 关于模组
 
-**[反射库](https://github.com/Eipusino/Template)，模组反射功能非常重要的部分。**
+**[平台反射](https://github.com/Eipusino/Template)，模组部分反射功能多平台实现。**
 
 ---
 

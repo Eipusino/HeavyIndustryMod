@@ -133,7 +133,7 @@ public final class Drawn {
 	public static void link(Building from, Building to, Color color) {
 		float sin = Mathf.absin(Time.time * sinScl, 6f, 1f);
 		float r1 = from.block.size / 2f * tilesize + sin;
-		float x1 = from.getX(), x2 = to.getX(), y1 = from.getY(), y2 = to.getY();
+		float x1 = from.x, x2 = to.x, y1 = from.y, y2 = to.y;
 		float r2 = to.block.size / 2f * tilesize + sin;
 
 		Draw.color(color);
@@ -776,6 +776,18 @@ public final class Drawn {
 		Lines.stroke(12f * scale);
 		Lines.line(line, x + vx, y + vy, x2 - vx, y2 - vy, false);
 		Lines.stroke(1f);
+	}
+
+	public static void laser(TextureRegion line, TextureRegion edge, float x, float y, float x2, float y2) {
+		laser(line, edge, edge, x, y, x2, y2, 1f);
+	}
+
+	public static void laser(TextureRegion line, TextureRegion start, TextureRegion end, float x, float y, float x2, float y2) {
+		laser(line, start, end, x, y, x2, y2, 1f);
+	}
+
+	public static void laser(TextureRegion line, TextureRegion edge, float x, float y, float x2, float y2, float scale) {
+		laser(line, edge, edge, x, y, x2, y2, scale);
 	}
 
 	public static void blockBuild(float x, float y, TextureRegion region, float rotation, float progress) {

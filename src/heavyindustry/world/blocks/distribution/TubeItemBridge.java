@@ -11,12 +11,12 @@ import arc.math.Angles;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
 import arc.math.geom.Vec2;
-import arc.struct.OrderedMap;
 import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.util.CollectionOrderedMap;
 import mindustry.core.Renderer;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -355,7 +355,7 @@ public class TubeItemBridge extends ItemBridge {
 			Drawf.dashCircle(x, y, (range) * 8f, Pal.accent);
 			Draw.color();
 			if (!canReLink() && !canLinked() && realConnections() >= maxConnections - 1) return;
-			OrderedMap<Building, Boolean> orderedMap = new OrderedMap<>();
+			CollectionOrderedMap<Building, Boolean> orderedMap = new CollectionOrderedMap<>(Building.class, Boolean.class);
 			for (int x = -range; x <= range; ++x) {
 				for (int y = -range; y <= range; ++y) {
 					Tile other = tile.nearby(x, y);

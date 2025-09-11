@@ -4,8 +4,7 @@ import arc.struct.Seq;
 import mindustry.gen.Building;
 import mindustry.gen.Buildingc;
 
-public interface MultiBuild extends Buildingc {
-	Building build();
+public interface MultiBuild extends BaseBuild {
 
 	Seq<Building> linkEntities();
 

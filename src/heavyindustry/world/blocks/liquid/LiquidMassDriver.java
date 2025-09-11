@@ -33,7 +33,6 @@ import mindustry.logic.LAccess;
 import mindustry.type.Liquid;
 import mindustry.world.Block;
 import mindustry.world.blocks.RotBlock;
-import mindustry.world.draw.DrawBlock;
 import mindustry.world.meta.BlockGroup;
 import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
@@ -44,22 +43,25 @@ import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
 public class LiquidMassDriver extends Block {
+	public TextureRegion prefRegion, baseRegion, bottomRegion, liquidRegion, topRegion;
+
 	public float range;
 	public float rotateSpeed = 5f;
 	public float translation = 7f;
 	public int minDistribute = 50;
 	public float knockback = 4f;
 	public float reload = 100f;
+
 	public LiquidMassDriverBolt bullet = new LiquidMassDriverBolt();
+
 	public float bulletSpeed = 5.5f;
 	public float bulletLifetime = 200f;
+
 	public Effect shootEffect = Fx.shootBig2;
 	public Effect smokeEffect = Fx.shootBigSmoke2;
 	public Effect receiveEffect = Fx.mineBig;
 	public Sound shootSound = Sounds.shootBig;
 	public float shake = 3f;
-
-	public DrawBlock drawer = new DrawLiquidMassDriver();
 
 	public LiquidMassDriver(String name) {
 		super(name);
@@ -83,24 +85,32 @@ public class LiquidMassDriver extends Block {
 	@Override
 	public void load() {
 		super.load();
-		drawer.load(this);
+
+		baseRegion = Core.atlas.find(name + "-base");
+		prefRegion = Core.atlas.find(name + "-pref");
+		bottomRegion = Core.atlas.find(name + "-bottom");
+		liquidRegion = Core.atlas.find(name + "-liquid");
+		topRegion = Core.atlas.find(name + "-top");
 	}
 
 	@Override
 	protected TextureRegion[] icons() {
-		return drawer.finalIcons(this);
+		return new TextureRegion[]{baseRegion, bottomRegion, prefRegion, topRegion};
 	}
 
 	@Override
 	public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list) {
-		drawer.drawPlan(this, plan, list);
+		Draw.rect(baseRegion, plan.drawx(), plan.drawy());
+		Draw.rect(bottomRegion, plan.drawx(), plan.drawy());
+		Draw.rect(prefRegion, plan.drawx(), plan.drawy());
+		Draw.rect(topRegion, plan.drawx(), plan.drawy());
 	}
 
 	@Override
 	public void createIcons(MultiPacker packer) {
-		super.createIcons(packer);
+		Outliner.outlineRegion(packer, prefRegion, outlineColor, name + "-pref-outline", outlineRadius);
 
-		if (drawer instanceof DrawLiquidMassDriver driver) driver.createIcons(packer, this);
+		super.createIcons(packer);
 	}
 
 	@Override
@@ -275,7 +285,27 @@ public class LiquidMassDriver extends Block {
 
 		@Override
 		public void draw() {
-			drawer.draw(this);
+			Draw.rect(baseRegion, x, y);
+			Draw.z(Layer.turret);
+			Drawf.shadow(prefRegion,
+					x + Angles.trnsx(rotation + 180, reloadCounter * knockback) - (size / 2f),
+					y + Angles.trnsy(rotation + 180, reloadCounter * knockback) - (size / 2f), rotation - 90);
+			Draw.rect(bottomRegion,
+					x + Angles.trnsx(rotation + 180, reloadCounter * knockback),
+					y + Angles.trnsy(rotation + 180, reloadCounter * knockback), rotation - 90);
+			Draw.rect(prefRegion,
+					x + Angles.trnsx(rotation + 180, reloadCounter * knockback),
+					y + Angles.trnsy(rotation + 180, reloadCounter * knockback), rotation - 90);
+			Draw.color(liquids.current().color);
+			Draw.alpha(Math.min(liquidTotal() / liquidCapacity, 1));
+			Draw.rect(liquidRegion,
+					x + Angles.trnsx(rotation + 180, reloadCounter * knockback),
+					y + Angles.trnsy(rotation + 180, reloadCounter * knockback), rotation - 90);
+			Draw.color();
+			Draw.alpha(1);
+			Draw.rect(topRegion,
+					x + Angles.trnsx(rotation + 180, reloadCounter * knockback),
+					y + Angles.trnsy(rotation + 180, reloadCounter * knockback), rotation - 90);
 		}
 
 		@Override
@@ -406,62 +436,6 @@ public class LiquidMassDriver extends Block {
 		@Override
 		public float buildRotation() {
 			return rotation;
-		}
-	}
-
-	public static class DrawLiquidMassDriver extends DrawBlock {
-		public TextureRegion region, baseRegion, bottomRegion, liquidRegion, topRegion;
-
-		@Override
-		public TextureRegion[] icons(Block block) {
-			return new TextureRegion[]{baseRegion, bottomRegion, region, topRegion};
-		}
-
-		@Override
-		public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list) {
-			Draw.rect(baseRegion, plan.drawx(), plan.drawy());
-			Draw.rect(bottomRegion, plan.drawx(), plan.drawy());
-			Draw.rect(region, plan.drawx(), plan.drawy());
-			Draw.rect(topRegion, plan.drawx(), plan.drawy());
-		}
-
-		@Override
-		public void draw(Building build) {
-			if (!(build instanceof LiquidMassDriverBuild bu && build.block instanceof LiquidMassDriver bl)) return;
-			Draw.rect(baseRegion, bu.x, bu.y);
-			Draw.z(Layer.turret);
-			Drawf.shadow(region,
-					bu.x + Angles.trnsx(bu.rotation + 180, bu.reloadCounter * bl.knockback) - (bl.size / 2f),
-					bu.y + Angles.trnsy(bu.rotation + 180, bu.reloadCounter * bl.knockback) - (bl.size / 2f), bu.rotation - 90);
-			Draw.rect(bottomRegion,
-					bu.x + Angles.trnsx(bu.rotation + 180, bu.reloadCounter * bl.knockback),
-					bu.y + Angles.trnsy(bu.rotation + 180, bu.reloadCounter * bl.knockback), bu.rotation - 90);
-			Draw.rect(region,
-					bu.x + Angles.trnsx(bu.rotation + 180, bu.reloadCounter * bl.knockback),
-					bu.y + Angles.trnsy(bu.rotation + 180, bu.reloadCounter * bl.knockback), bu.rotation - 90);
-			Draw.color(bu.liquids.current().color);
-			Draw.alpha(Math.min(bu.liquidTotal() / bl.liquidCapacity, 1));
-			Draw.rect(liquidRegion,
-					bu.x + Angles.trnsx(bu.rotation + 180, bu.reloadCounter * bl.knockback),
-					bu.y + Angles.trnsy(bu.rotation + 180, bu.reloadCounter * bl.knockback), bu.rotation - 90);
-			Draw.color();
-			Draw.alpha(1);
-			Draw.rect(topRegion,
-					bu.x + Angles.trnsx(bu.rotation + 180, bu.reloadCounter * bl.knockback),
-					bu.y + Angles.trnsy(bu.rotation + 180, bu.reloadCounter * bl.knockback), bu.rotation - 90);
-		}
-
-		@Override
-		public void load(Block block) {
-			baseRegion = Core.atlas.find(block.name + "-base");
-			region = Core.atlas.find(block.name + "-region");
-			bottomRegion = Core.atlas.find(block.name + "-bottom");
-			liquidRegion = Core.atlas.find(block.name + "-liquid");
-			topRegion = Core.atlas.find(block.name + "-top");
-		}
-
-		public void createIcons(MultiPacker packer, Block block) {
-			Outliner.outlineRegion(packer, region, block.outlineColor, block.name + "-region-outline", block.outlineRadius);
 		}
 	}
 }

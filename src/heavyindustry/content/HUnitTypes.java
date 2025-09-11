@@ -50,13 +50,13 @@ import heavyindustry.func.Floatff2;
 import heavyindustry.func.Floatff3;
 import heavyindustry.gen.BaseBuildingTetherLegsUnit;
 import heavyindustry.gen.BaseBuildingTetherUnit;
+import heavyindustry.gen.BaseLegsUnit;
 import heavyindustry.gen.BaseMechUnit;
 import heavyindustry.gen.BasePayloadUnit;
 import heavyindustry.gen.BaseTankUnit;
 import heavyindustry.gen.BaseUnit;
 import heavyindustry.gen.BaseUnitWaterMove;
 import heavyindustry.gen.CopterUnit;
-import heavyindustry.gen.BaseLegsUnit;
 import heavyindustry.gen.DPSMechUnit;
 import heavyindustry.gen.DamageAbsorbMechUnit;
 import heavyindustry.gen.HSounds;
@@ -760,7 +760,8 @@ public final class HUnitTypes {
 					shotDelay = 8f;
 					barrels = new float[]{
 							-9f, 40f, 0f,
-							9f, 40f, 0f};
+							9f, 40f, 0f
+					};
 				}};
 				cooldownTime = 100f;
 				rotate = true;
@@ -3798,7 +3799,7 @@ public final class HUnitTypes {
 			engineOffset = 0f;
 			itemCapacity = 999;
 			armor = 9f;
-			speed = 3.75f;
+			speed = 5.25f;
 			drawShields = false;
 			isEnemy = false;
 			flying = true;
@@ -3806,7 +3807,7 @@ public final class HUnitTypes {
 			hittable = false;
 			targetable = false;
 			faceTarget = false;
-			targetPriority = -9;
+			targetPriority = -9999f;
 			mineWalls = true;
 			mineFloor = true;
 			mineHardnessScaling = false;

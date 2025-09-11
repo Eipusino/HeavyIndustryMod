@@ -22,14 +22,14 @@ public class BaseObjectBoolMap<K> implements Iterable<BaseObjectBoolMap.MapEntry
 	public boolean[] valueTable;
 	public int capacity, stashSize;
 
-	private float loadFactor;
-	private int hashShift, mask, threshold;
-	private int stashCapacity;
-	private int pushIterations;
+	float loadFactor;
+	int hashShift, mask, threshold;
+	int stashCapacity;
+	int pushIterations;
 
-	private Entries<K> entries1, entries2;
-	private Values values1, values2;
-	private Keys<K> keys1, keys2;
+	Entries<K> entries1, entries2;
+	Values values1, values2;
+	Keys<K> keys1, keys2;
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
 	public BaseObjectBoolMap(Class<?> keyType) {
@@ -623,6 +623,7 @@ public class BaseObjectBoolMap<K> implements Iterable<BaseObjectBoolMap.MapEntry
 		final BaseObjectBoolMap<K> map;
 
 		public boolean hasNext;
+
 		int nextIndex, currentIndex;
 		boolean valid = true;
 
@@ -663,7 +664,7 @@ public class BaseObjectBoolMap<K> implements Iterable<BaseObjectBoolMap.MapEntry
 	}
 
 	public static class Entries<K> extends MapIterator<K> implements Iterable<MapEntry<K>>, Iterator<MapEntry<K>> {
-		private MapEntry<K> entry = new MapEntry<>();
+		MapEntry<K> entry = new MapEntry<>();
 
 		public Entries(BaseObjectBoolMap<K> map) {
 			super(map);

@@ -2,9 +2,9 @@ package heavyindustry.world.blocks.defense.turrets;
 
 import arc.math.Angles;
 import arc.math.Mathf;
-import arc.struct.IntMap;
-import arc.struct.ObjectMap;
 import arc.util.Time;
+import heavyindustry.util.BaseIntMap;
+import heavyindustry.util.CollectionObjectMap;
 import mindustry.entities.Effect;
 import mindustry.entities.Mover;
 import mindustry.entities.bullet.BulletType;
@@ -15,14 +15,14 @@ import mindustry.world.blocks.defense.turrets.ItemTurret;
 /** Shoot Match Turret */
 public class ShootMatchTurret extends ItemTurret {
 	public float lifeRnd = 0;
-	public IntMap<ShootPattern> shooterMap = new IntMap<>();
+	public BaseIntMap<ShootPattern> shooterMap = new BaseIntMap<>(ShootPattern.class);
 
 	public ShootMatchTurret(String name) {
 		super(name);
 	}
 
 	public void shooter(Object... objects) {
-		ObjectMap<Item, ShootPattern> mapper = ObjectMap.of(objects);
+		CollectionObjectMap<Item, ShootPattern> mapper = CollectionObjectMap.of(Item.class, ShootPattern.class, objects);
 
 		for (var entry : ammoTypes.entries()) {
 			shooterMap.put(entry.value.id, mapper.get(entry.key, shoot));

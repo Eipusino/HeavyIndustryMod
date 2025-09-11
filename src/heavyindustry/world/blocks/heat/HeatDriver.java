@@ -25,8 +25,6 @@ import mindustry.world.Block;
 import mindustry.world.blocks.RotBlock;
 import mindustry.world.blocks.heat.HeatBlock;
 import mindustry.world.blocks.heat.HeatConsumer;
-import mindustry.world.draw.DrawBlock;
-import mindustry.world.draw.DrawDefault;
 import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
@@ -37,9 +35,14 @@ import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
 public class HeatDriver extends Block {
+	public TextureRegion turretPart, turretLine, rPart, rLine, effect, arrow, preview;
+
+	public float arrowSpacing = 4f, arrowOffset = 2f, arrowPeriod = 0.4f, arrowTimeScl = 6.2f;
+
+	public Color dc1 = Color.valueOf("ea8878");
+
 	public int range = 240;
 	public float visualMaxHeat = 15f;
-	public DrawBlock drawer = new DrawDefault();
 	public boolean splitHeat = false;
 
 	public HeatDriver(String name) {
@@ -79,117 +82,28 @@ public class HeatDriver extends Block {
 	public void load() {
 		super.load();
 
-		drawer.load(this);
+		turretPart = Core.atlas.find(name + "-turret");
+		turretLine = Core.atlas.find(name + "-turret-outline");
+		rPart = Core.atlas.find(name + "-reflect");
+		rLine = Core.atlas.find(name + "-reflect-outline");
+		effect = Core.atlas.find(name + "-effect", MOD_NAME + "-heat-driver-effect");
+		arrow = Core.atlas.find(name + "-arrow", MOD_NAME + "-heat-driver-arrow");
+		preview = Core.atlas.find(name + "-preview");
 	}
 
 	@Override
 	public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list) {
-		drawer.drawPlan(this, plan, list);
+		Draw.rect(preview, plan.drawx(), plan.drawy());
 	}
 
 	@Override
 	public TextureRegion[] icons() {
-		return drawer.finalIcons(this);
+		return new TextureRegion[]{preview};
 	}
 
 	@Override
 	protected void initBuilding() {
 		if (buildType == null) buildType = HeatDriverBuild::new;
-	}
-
-	public static class DrawHeatDriver extends DrawBlock {
-		public TextureRegion turretPart, turretLine, rPart, rLine, effect, arrow, preview;
-
-		public float arrowSpacing = 4f, arrowOffset = 2f, arrowPeriod = 0.4f, arrowTimeScl = 6.2f;
-
-		public Color dc1 = Color.valueOf("ea8878");
-
-		@Override
-		public void draw(Building build) {
-			if (!(build instanceof HeatDriverBuild bu && build.block instanceof HeatDriver bl)) return;
-
-			float progress = bu.progress;
-			float rotation = bu.rotation;
-			float resProgress = bu.resProgress;
-
-			Draw.z(Layer.turret);
-
-			float move = 3f * progress;
-
-			Drawf.shadow(turretPart, bu.x, bu.y, rotation - 90f);
-
-			Drawf.shadow(rPart, bu.x + Angles.trnsx(rotation + 180f, 0f, move) - bl.size / 2f, bu.y + Angles.trnsy(rotation + 180f, 0f, move) - bl.size / 2f, rotation - 90f);
-
-			Draw.rect(rLine, bu.x + Angles.trnsx(rotation + 180f, 0f, move), bu.y + Angles.trnsy(rotation + 180f, 0f, move), rotation - 90f);
-
-			Draw.rect(turretLine, bu.x, bu.y, rotation - 90f);
-			Draw.rect(turretPart, bu.x, bu.y, rotation - 90f);
-
-			Draw.rect(rPart, bu.x + Angles.trnsx(rotation + 180f, 0f, move), bu.y + Angles.trnsy(rotation + 180f, 0f, move), rotation - 90f);
-
-			float p = Math.min((bu.heat / bl.visualMaxHeat) * bu.power.status, 1);
-
-			Draw.color(dc1);
-			Draw.alpha(p);
-			Draw.z(Layer.effect);
-
-			if (progress > 0.01f) {
-				Draw.rect(effect, bu.x + Angles.trnsx(rotation + 180f, -8f), bu.y + Angles.trnsy(rotation + 180f, -8f), 10f * progress, 10f * progress, rotation - 90f - Time.time * 2);
-				Draw.rect(effect, bu.x + Angles.trnsx(rotation + 180f, -8f), bu.y + Angles.trnsy(rotation + 180f, -8f), 6f * progress, 6f * progress, rotation - 90f + Time.time * 2);
-
-				for (int i = 0; i < 4; i++) {
-					float angle = i * 360f / 4;
-					Drawf.tri(bu.x + Angles.trnsx(rotation + 180f, -8f) + Angles.trnsx(angle + Time.time, 5f), bu.y + Angles.trnsy(rotation + 180f, -8f) + Angles.trnsy(angle + Time.time, 5f), 6f, 2f * progress, angle + Time.time);
-				}
-			}
-
-			if (resProgress > 0.01f) {
-				Draw.alpha(1);
-				Lines.stroke(1 * resProgress);
-				Lines.circle(bu.x + Angles.trnsx(rotation + 180f, 10f), bu.y + Angles.trnsy(rotation + 180f, 10f), 5);
-				Lines.circle(bu.x + Angles.trnsx(rotation + 180f, 10f), bu.y + Angles.trnsy(rotation + 180f, 10f), 3);
-
-				for (int i = 0; i < 3; i++) {
-					float angle = i * 360f / 3;
-					Drawf.tri(bu.x + Angles.trnsx(rotation + 180f, 10f) + Angles.trnsx(angle - Time.time, 5), bu.y + Angles.trnsy(rotation + 180f, 10f) + Angles.trnsy(angle - Time.time, 5f), 4f, -2f * resProgress, angle - Time.time);
-					Drawf.tri(bu.x + Angles.trnsx(rotation + 180f, 10f) + Angles.trnsx(angle + Time.time, 3), bu.y + Angles.trnsy(rotation + 180f, 10f) + Angles.trnsy(angle + Time.time, 3f), 3f, 1 * resProgress, angle + Time.time);
-				}
-			}
-
-			if (bu.linkValid()) {
-				Building other = world.build(bu.link);
-				if (!Angles.near(rotation, bu.angleTo(other), 2f)) return;
-				Draw.color();
-				float dist = bu.dst(other) / arrowSpacing - bl.size;
-				int arrows = (int) (dist / arrowSpacing);
-
-				for (int a = 0; a < arrows; a++) {
-					Draw.alpha(Mathf.absin(a - Time.time / arrowTimeScl, arrowPeriod, 1f) * progress * Renderer.bridgeOpacity * p);
-					Draw.rect(arrow, bu.x + Angles.trnsx(rotation + 180f, -arrowSpacing) * (tilesize / 2f + a * arrowSpacing + arrowOffset), bu.y + Angles.trnsy(rotation + 180f, -arrowSpacing) * (tilesize / 2f + a * arrowSpacing + arrowOffset), 25f, 25f, rotation);
-				}
-			}
-		}
-
-		@Override
-		public void load(Block block) {
-			turretPart = Core.atlas.find(block.name + "-turret");
-			turretLine = Core.atlas.find(block.name + "-turret-outline");
-			rPart = Core.atlas.find(block.name + "-reflect");
-			rLine = Core.atlas.find(block.name + "-reflect-outline");
-			effect = Core.atlas.find(block.name + "-effect", MOD_NAME + "-heat-driver-effect");
-			arrow = Core.atlas.find(block.name + "-arrow", MOD_NAME + "-heat-driver-arrow");
-			preview = Core.atlas.find(block.name + "-preview");
-		}
-
-		@Override
-		public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list) {
-			Draw.rect(preview, plan.drawx(), plan.drawy());
-		}
-
-		@Override
-		public TextureRegion[] icons(Block block) {
-			return new TextureRegion[]{preview};
-		}
 	}
 
 	public class HeatDriverBuild extends Building implements HeatBlock, HeatConsumer, RotBlock {
@@ -206,13 +120,62 @@ public class HeatDriver extends Block {
 
 		@Override
 		public void draw() {
-			drawer.draw(this);
-		}
+			Draw.z(Layer.turret);
 
-		@Override
-		public void drawLight() {
-			super.drawLight();
-			drawer.drawLight(this);
+			float move = 3f * progress;
+
+			Drawf.shadow(turretPart, x, y, rotation - 90f);
+
+			Drawf.shadow(rPart, x + Angles.trnsx(rotation + 180f, 0f, move) - size / 2f, y + Angles.trnsy(rotation + 180f, 0f, move) - size / 2f, rotation - 90f);
+
+			Draw.rect(rLine, x + Angles.trnsx(rotation + 180f, 0f, move), y + Angles.trnsy(rotation + 180f, 0f, move), rotation - 90f);
+
+			Draw.rect(turretLine, x, y, rotation - 90f);
+			Draw.rect(turretPart, x, y, rotation - 90f);
+
+			Draw.rect(rPart, x + Angles.trnsx(rotation + 180f, 0f, move), y + Angles.trnsy(rotation + 180f, 0f, move), rotation - 90f);
+
+			float p = Math.min(heat / visualMaxHeat * power.status, 1);
+
+			Draw.color(dc1);
+			Draw.alpha(p);
+			Draw.z(Layer.effect);
+
+			if (progress > 0.01f) {
+				Draw.rect(effect, x + Angles.trnsx(rotation + 180f, -8f), y + Angles.trnsy(rotation + 180f, -8f), 10f * progress, 10f * progress, rotation - 90f - Time.time * 2);
+				Draw.rect(effect, x + Angles.trnsx(rotation + 180f, -8f), y + Angles.trnsy(rotation + 180f, -8f), 6f * progress, 6f * progress, rotation - 90f + Time.time * 2);
+
+				for (int i = 0; i < 4; i++) {
+					float angle = i * 360f / 4;
+					Drawf.tri(x + Angles.trnsx(rotation + 180f, -8f) + Angles.trnsx(angle + Time.time, 5f), y + Angles.trnsy(rotation + 180f, -8f) + Angles.trnsy(angle + Time.time, 5f), 6f, 2f * progress, angle + Time.time);
+				}
+			}
+
+			if (resProgress > 0.01f) {
+				Draw.alpha(1);
+				Lines.stroke(1 * resProgress);
+				Lines.circle(x + Angles.trnsx(rotation + 180f, 10f), y + Angles.trnsy(rotation + 180f, 10f), 5);
+				Lines.circle(x + Angles.trnsx(rotation + 180f, 10f), y + Angles.trnsy(rotation + 180f, 10f), 3);
+
+				for (int i = 0; i < 3; i++) {
+					float angle = i * 360f / 3;
+					Drawf.tri(x + Angles.trnsx(rotation + 180f, 10f) + Angles.trnsx(angle - Time.time, 5), y + Angles.trnsy(rotation + 180f, 10f) + Angles.trnsy(angle - Time.time, 5f), 4f, -2f * resProgress, angle - Time.time);
+					Drawf.tri(x + Angles.trnsx(rotation + 180f, 10f) + Angles.trnsx(angle + Time.time, 3), y + Angles.trnsy(rotation + 180f, 10f) + Angles.trnsy(angle + Time.time, 3f), 3f, 1 * resProgress, angle + Time.time);
+				}
+			}
+
+			if (linkValid()) {
+				Building other = world.build(link);
+				if (!Angles.near(rotation, angleTo(other), 2f)) return;
+				Draw.color();
+				float dist = dst(other) / arrowSpacing - size;
+				int arrows = (int) (dist / arrowSpacing);
+
+				for (int a = 0; a < arrows; a++) {
+					Draw.alpha(Mathf.absin(a - Time.time / arrowTimeScl, arrowPeriod, 1f) * progress * Renderer.bridgeOpacity * p);
+					Draw.rect(arrow, x + Angles.trnsx(rotation + 180f, -arrowSpacing) * (tilesize / 2f + a * arrowSpacing + arrowOffset), y + Angles.trnsy(rotation + 180f, -arrowSpacing) * (tilesize / 2f + a * arrowSpacing + arrowOffset), 25f, 25f, rotation);
+				}
+			}
 		}
 
 		@Override

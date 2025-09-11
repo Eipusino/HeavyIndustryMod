@@ -7,7 +7,6 @@ import arc.func.ConsT;
 import arc.graphics.Pixmap;
 import arc.graphics.Texture;
 import arc.graphics.g2d.TextureRegion;
-import arc.struct.OrderedMap;
 import arc.util.Http;
 import arc.util.Log;
 
@@ -15,7 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public final class URLDownloader {
-	private static final OrderedMap<String, String> urlReplacers = new OrderedMap<>();
+	private static final CollectionOrderedMap<String, String> urlReplacers = new CollectionOrderedMap<>(String.class, String.class);
 
 	/** Don't let anyone instantiate this class. */
 	private URLDownloader() {}

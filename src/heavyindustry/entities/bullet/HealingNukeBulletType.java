@@ -69,7 +69,7 @@ public class HealingNukeBulletType extends BulletType {
 				if (u.team == b.team) {
 					u.heal((healPercent / 100f) * u.maxHealth);
 					u.apply(allyStatus, allyStatusDuration);
-				} else {
+				} else if (u.hittable()) {
 					u.damage(damage * b.damageMultiplier());
 					u.apply(status, statusDuration);
 				}
@@ -84,6 +84,7 @@ public class HealingNukeBulletType extends BulletType {
 		if (b.data instanceof float[] data) {
 			Draw.color(Pal.heal);
 			Draw.alpha(0.3f * b.fout());
+
 			for (int i = 0; i < data.length; i++) {
 				float ang1 = i * (360f / data.length),
 						ang2 = (i + 1f) * (360f / data.length),

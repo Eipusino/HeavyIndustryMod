@@ -7,7 +7,6 @@ import arc.scene.ui.ImageButton;
 import arc.scene.ui.ScrollPane;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
-import arc.struct.IntSeq;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.util.Utils;
@@ -43,11 +42,13 @@ public class IndestructibleUnitFactory extends UnitFactory {
 			tile.progress = 0f;
 			tile.payload = null;
 		});
-		config(IntSeq.class, (IndestructibleUnitFactoryBuild tile, IntSeq index) -> {
-			int get = index.get(0);
+		config(int[].class, (IndestructibleUnitFactoryBuild tile, int[] index) -> {
+			if (index.length < 2) return;
+
+			int get = index[0];
 			tile.currentPlan = get < 0 || get >= plans.size ? -1 : get;
 			tile.progress = 0f;
-			tile.targetTeam = Team.get(index.get(1));
+			tile.targetTeam = Team.get(index[1]);
 			tile.payload = null;
 		});
 	}
@@ -57,7 +58,9 @@ public class IndestructibleUnitFactory extends UnitFactory {
 		plans = content.<UnitType>getBy(ContentType.unit)
 				.map(unit -> new UnitPlan(unit, 1f, consItems))
 				.retainAll(plan -> plan.unit.isHidden());
+
 		super.init();
+
 		itemCapacity = 1;
 		capacities[Items.copper.id] = 1;
 	}
@@ -85,8 +88,7 @@ public class IndestructibleUnitFactory extends UnitFactory {
 			int i = 0;
 
 			for (Team t : Utils.baseTeams) {
-				ImageButton button = cont.button(Tex.whiteui, Styles.clearTogglei, 24f, () -> {
-				}).group(group).get();
+				ImageButton button = cont.button(Tex.whiteui, Styles.clearTogglei, 24f, () -> {}).group(group).get();
 				button.changed(() -> targetTeam = button.isChecked() ? t : null);
 				if (Tex.whiteui instanceof TextureRegionDrawable w) {
 					button.getStyle().imageUp = w.tint(t.color.r, t.color.g, t.color.b, t.color.a);
@@ -130,8 +132,8 @@ public class IndestructibleUnitFactory extends UnitFactory {
 		}
 
 		@Override
-		public Object config() {
-			return IntSeq.with(currentPlan, targetTeam.id);
+		public int[] config() {
+			return new int[]{currentPlan, targetTeam.id};
 		}
 
 		@Override

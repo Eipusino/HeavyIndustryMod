@@ -18,7 +18,6 @@ import arc.math.geom.Position;
 import arc.math.geom.Rect;
 import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
-import arc.struct.IntMap;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.entities.abilities.MirrorFieldAbility;
@@ -27,14 +26,15 @@ import heavyindustry.graphics.Drawm;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.Draws;
 import heavyindustry.graphics.Draws.DrawAcceptor;
+import heavyindustry.graphics.HLayer;
 import heavyindustry.graphics.HPal;
 import heavyindustry.graphics.HTrails.CritTrail;
 import heavyindustry.graphics.HTrails.DriftTrail;
-import heavyindustry.graphics.HLayer;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.math.Math3d;
-import heavyindustry.util.Vec2Seq;
+import heavyindustry.util.BaseIntMap;
 import heavyindustry.util.Utils;
+import heavyindustry.util.Vec2Seq;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
@@ -61,7 +61,7 @@ public final class HFx {
 	public static final Rand rand = new Rand(), rand0 = new Rand(0), rand1 = new Rand(), rand2 = new Rand(), rand3 = new Rand();
 	public static final Vec2 v7 = new Vec2(), v8 = new Vec2(), v9 = new Vec2();
 
-	public static final IntMap<Effect> same = new IntMap<>();
+	public static final BaseIntMap<Effect> same = new BaseIntMap<>(Effect.class);
 
 	private static float percent = 0;
 

@@ -72,6 +72,7 @@ public class JumpGate extends Block {
 
 	public JumpGate(String name) {
 		super(name);
+
 		solid = true;
 		sync = true;
 		breakable = true;

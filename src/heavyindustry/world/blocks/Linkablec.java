@@ -15,11 +15,7 @@ import mindustry.graphics.Drawf;
 import mindustry.logic.Ranged;
 import mindustry.world.Block;
 
-public interface Linkablec extends Ranged, Buildingc {
-	Building build();
-
-	Block block();
-
+public interface Linkablec extends Ranged, BaseBuild {
 	/*default boolean onConfigureBuildTapped(Building other) {
 		if (this == other || linkPos() == other.pos()) {
 			configure(Tmp.p1.set(-1, -1));

@@ -1,6 +1,5 @@
 package heavyindustry.entities.abilities;
 
-import arc.Core;
 import arc.scene.ui.layout.Table;
 import arc.util.Strings;
 import arc.util.Time;

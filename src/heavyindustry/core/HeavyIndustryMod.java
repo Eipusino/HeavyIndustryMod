@@ -29,24 +29,22 @@ import heavyindustry.gen.Entitys;
 import heavyindustry.gen.HIcon;
 import heavyindustry.gen.HMusics;
 import heavyindustry.gen.HSounds;
+import heavyindustry.graphics.HCacheLayer;
+import heavyindustry.graphics.HShaders;
+import heavyindustry.graphics.HTextures;
 import heavyindustry.graphics.MathRenderer;
-import heavyindustry.graphics.SizedGraphics;
+import heavyindustry.mod.HMods;
+import heavyindustry.mod.HScripts;
+import heavyindustry.net.HCall;
+import heavyindustry.ui.Elements;
+import heavyindustry.ui.HFonts;
+import heavyindustry.ui.HStyles;
+import heavyindustry.ui.dialogs.HResearchDialog;
+import heavyindustry.util.IconLoader;
 import heavyindustry.util.PlatformImpl;
 import heavyindustry.util.UnsupportedPlatformException;
 import heavyindustry.util.Utils;
 import heavyindustry.world.Worlds;
-import heavyindustry.graphics.HCacheLayer;
-import heavyindustry.graphics.HShaders;
-import heavyindustry.graphics.HTextures;
-import heavyindustry.input.InputAggregator;
-import heavyindustry.mod.HMods;
-import heavyindustry.mod.HScripts;
-import heavyindustry.net.HCall;
-import heavyindustry.ui.HFonts;
-import heavyindustry.ui.HStyles;
-import heavyindustry.ui.Elements;
-import heavyindustry.ui.dialogs.HResearchDialog;
-import heavyindustry.util.IconLoader;
 import mindustry.Vars;
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.game.EventType.DisposeEvent;
@@ -135,9 +133,6 @@ public final class HeavyIndustryMod extends Mod {
 					HShaders.onClient();
 					HCacheLayer.onClient();
 					MathRenderer.onClient();
-
-					HVars.sizedGraphics = new SizedGraphics();
-					HVars.inputAggregator = new InputAggregator();
 				});
 			}
 		});
@@ -199,6 +194,7 @@ public final class HeavyIndustryMod extends Mod {
 					table.checkPref("hi-closed-dialog", false);
 					table.checkPref("hi-floating-text", true);
 					table.checkPref("hi-animated-shields", true);
+					table.checkPref("hi-tesla-range", true);
 					table.sliderPref("hi-strobe-speed", 3, 1, 20, 1, s -> Strings.autoFixed(s / 2f, 2));
 					table.pref(new Setting(Core.bundle.get("hi-game-data")) {
 						@Override

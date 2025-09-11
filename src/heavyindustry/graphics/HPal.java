@@ -71,6 +71,7 @@ public final class HPal {
 			leipLight = Color.valueOf("9b9dCf"),
 			missileGray = Color.valueOf("e3e3e3"),
 			missileYellow = Color.valueOf("ffe176"),
+			missileYellowBack = Color.valueOf("ffb90f"),
 			smoke = Color.valueOf("737373"),
 			energyYellow = Color.valueOf("feebb3"),
 			energySky = Color.valueOf("c0ecff"),

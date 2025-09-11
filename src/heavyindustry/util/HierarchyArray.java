@@ -90,7 +90,8 @@ public class HierarchyArray<T> implements Iterable<T> {
 
 	public static class HierarchyIterable<T> implements Iterable<T> {
 		final HierarchyArray<T> array;
-		private final HierarchyIterator iterator1 = new HierarchyIterator(), iterator2 = new HierarchyIterator();
+
+		HierarchyIterator iterator1, iterator2;
 
 		HierarchyIterable(HierarchyArray<T> ar) {
 			array = ar;
@@ -98,11 +99,15 @@ public class HierarchyArray<T> implements Iterable<T> {
 
 		@Override
 		public Iterator<T> iterator() {
+			if (iterator1 == null) iterator1 = new HierarchyIterator();
+
 			if (iterator1.done) {
 				iterator1.index = 0;
 				iterator1.done = false;
 				return iterator1;
 			}
+
+			if (iterator2 == null) iterator2 = new HierarchyIterator();
 
 			if (iterator2.done) {
 				iterator2.index = 0;
@@ -113,7 +118,7 @@ public class HierarchyArray<T> implements Iterable<T> {
 			return new HierarchyIterator();
 		}
 
-		private class HierarchyIterator implements Iterator<T> {
+		class HierarchyIterator implements Iterator<T> {
 			int index = 0;
 			boolean done = true;
 

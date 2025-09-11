@@ -1,6 +1,5 @@
 package heavyindustry.util;
 
-import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 
 import java.util.NoSuchElementException;
@@ -10,7 +9,7 @@ import java.util.NoSuchElementException;
  * used in places where Java specifications are required and OrderedMap does not create nodes.
  */
 public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
-	public Seq<K> orderedKeys;
+	public CollectionList<K> orderedKeys;
 
 	public CollectionOrderedMap(Class<?> keyType, Class<?> valueType) {
 		super(keyType, valueType, 16, 0.75f);
@@ -34,7 +33,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 	}
 
 	protected void setMap(Class<?> keyType, int capacity) {
-		orderedKeys = new Seq<>(true, capacity, keyType);
+		orderedKeys = new CollectionList<>(true, capacity, keyType);
 	}
 
 	@Override
@@ -66,7 +65,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 		super.clear();
 	}
 
-	public Seq<K> orderedKeys() {
+	public CollectionList<K> orderedKeys() {
 		return orderedKeys;
 	}
 
@@ -94,7 +93,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 	 * time this method is called. Use the {@link OrderedMapKeys} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public Keys<K> keySet() {
+	public Keys<K, V> keySet() {
 		if (keys1 == null) {
 			keys1 = new OrderedMapKeys<>(this);
 			keys2 = new OrderedMapKeys<>(this);
@@ -109,6 +108,24 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 		keys2.valid = true;
 		keys1.valid = false;
 		return keys2;
+	}
+
+	@Override
+	public Values<K, V> values() {
+		if (values1 == null) {
+			values1 = new OrderedMapValues<>(this);
+			values2 = new OrderedMapValues<>(this);
+		}
+		if (!values1.valid) {
+			values1.reset();
+			values1.valid = true;
+			values2.valid = false;
+			return values1;
+		}
+		values2.reset();
+		values2.valid = true;
+		values1.valid = false;
+		return values2;
 	}
 
 	@Override
@@ -128,7 +145,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 	}
 
 	public static class OrderedMapEntries<K, V> extends Entries<K, V> {
-		private Seq<K> keys;
+		CollectionList<K> keys;
 
 		public OrderedMapEntries(CollectionOrderedMap<K, V> map) {
 			super(map);
@@ -160,10 +177,10 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 		}
 	}
 
-	public static class OrderedMapKeys<K> extends Keys<K> {
-		private Seq<K> keys;
+	public static class OrderedMapKeys<K, V> extends Keys<K, V> {
+		CollectionList<K> keys;
 
-		public OrderedMapKeys(CollectionOrderedMap<K, ?> map) {
+		public OrderedMapKeys(CollectionOrderedMap<K, V> map) {
 			super(map);
 			keys = map.orderedKeys;
 		}
@@ -194,11 +211,10 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 		}
 	}
 
-	public static class OrderedMapValues<V> extends Values<V> {
-		@SuppressWarnings("rawtypes")
-		private Seq keys;
+	public static class OrderedMapValues<K, V> extends Values<K, V> {
+		CollectionList<K> keys;
 
-		public OrderedMapValues(CollectionOrderedMap<?, V> map) {
+		public OrderedMapValues(CollectionOrderedMap<K, V> map) {
 			super(map);
 			keys = map.orderedKeys;
 		}

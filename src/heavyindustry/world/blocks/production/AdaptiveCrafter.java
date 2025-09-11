@@ -88,9 +88,6 @@ public class AdaptiveCrafter extends Block {
 		hasLiquids = true;
 		hasPower = true;
 
-		acceptsPayload = true;
-		outputsPayload = true;
-
 		consume(new ConsumeRecipe(AdaptiveCrafterBuild::getRecipe, AdaptiveCrafterBuild::getDisplayRecipe));
 	}
 
@@ -127,8 +124,6 @@ public class AdaptiveCrafter extends Block {
 
 	@Override
 	public void init() {
-		super.init();
-
 		if (powerProduction > 0f) {
 			consumesPower = false;
 			outputsPower = true;
@@ -137,6 +132,8 @@ public class AdaptiveCrafter extends Block {
 			consPower = null;
 			consumeBuilder.removeAll(c -> c instanceof ConsumePower);
 		}
+
+		super.init();
 
 		recipes.each(recipe -> {
 			for (ItemStack stack : recipe.inputItem) itemFilter[stack.item.id] = true;
@@ -361,16 +358,14 @@ public class AdaptiveCrafter extends Block {
 
 			Recipe recipe = getRecipe();
 
+			if (recipe == null) return;
+
 			if (efficiency > 0) {
-				if (recipe != null) {
-					float inc = getProgressIncrease(1f);
-					for (LiquidStack output : recipe.outputLiquid) {
-						handleLiquid(this, output.liquid, Math.min(output.amount * inc, liquidCapacity - liquids.get(output.liquid)));
-					}
+				float inc = getProgressIncrease(1f);
+				for (LiquidStack output : recipe.outputLiquid) {
+					handleLiquid(this, output.liquid, Math.min(output.amount * inc, liquidCapacity - liquids.get(output.liquid)));
 				}
 			}
-
-			if (recipe == null) return;
 
 			for (ItemStack stack : recipe.outputItem) {
 				if (items.get(stack.item) >= itemCapacity) {
@@ -395,11 +390,6 @@ public class AdaptiveCrafter extends Block {
 
 			for (ItemStack output : recipe.outputItem) {
 				if (items.get(output.item) + output.amount > itemCapacity) {
-					return powerProduction > 0;
-				}
-			}
-			for (PayloadStack output : recipe.outputPayload) {
-				if (getPayloads().get(output.item) + output.amount > payloadCapacity) {
 					return powerProduction > 0;
 				}
 			}

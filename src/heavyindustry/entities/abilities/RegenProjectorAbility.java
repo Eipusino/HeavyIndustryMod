@@ -37,6 +37,8 @@ public class RegenProjectorAbility extends Ability {
 	public boolean anyTargets = false;
 	public boolean didRegen = false;
 
+	public RegenProjectorAbility() {}
+
 	@Override
 	public void addStats(Table t) {
 		super.addStats(t);

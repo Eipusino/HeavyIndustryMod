@@ -2,7 +2,6 @@ package heavyindustry.world.blocks.defense.turrets;
 
 import arc.Core;
 import arc.math.Mathf;
-import arc.util.Strings;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;

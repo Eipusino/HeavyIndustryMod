@@ -26,10 +26,10 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 	public E[] keyTable;
 	public int capacity, stashSize;
 
-	private float loadFactor;
-	private int hashShift, mask, threshold;
-	private int stashCapacity;
-	private int pushIterations;
+	float loadFactor;
+	int hashShift, mask, threshold;
+	int stashCapacity;
+	int pushIterations;
 
 	@Nullable CollectionObjectSetIterator iterator1, iterator2;
 
@@ -130,7 +130,6 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 	@Override
 	public boolean add(E key) {
 		if (key == null) return false;
-		E[] keyTable = this.keyTable;
 
 		// Check for existing keys.
 		int hashCode = key.hashCode();
@@ -271,7 +270,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 	}
 
 	/** Skips checks for existing keys. */
-	private void addResize(E key) {
+	void addResize(E key) {
 		// Check for empty buckets.
 		int hashCode = key.hashCode();
 		int index1 = hashCode & mask;
@@ -301,7 +300,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 		push(key, index1, key1, index2, key2, index3, key3);
 	}
 
-	private void push(E insertKey, int index1, E key1, int index2, E key2, int index3, E key3) {
+	void push(E insertKey, int index1, E key1, int index2, E key2, int index3, E key3) {
 		// Push keys until an empty bucket is found.
 		E evictedKey;
 		int i = 0;
@@ -356,7 +355,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 		addStash(evictedKey);
 	}
 
-	private void addStash(E key) {
+	void addStash(E key) {
 		if (stashSize == stashCapacity) {
 			// Too many pushes occurred and the stash is full, increase the table size.
 			resize(capacity << 1);
@@ -500,7 +499,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 		return found;
 	}
 
-	private E getKeyStash(Object key) {
+	E getKeyStash(Object key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return keyTable[i];
 		return null;
@@ -524,7 +523,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void resize(int newSize) {
+	void resize(int newSize) {
 		int oldEndIndex = capacity + stashSize;
 
 		capacity = newSize;
@@ -549,12 +548,12 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 		}
 	}
 
-	private int hash2(int h) {
+	int hash2(int h) {
 		h *= PRIME2;
 		return (h ^ h >>> hashShift) & mask;
 	}
 
-	private int hash3(int h) {
+	int hash3(int h) {
 		h *= PRIME3;
 		return (h ^ h >>> hashShift) & mask;
 	}
@@ -627,13 +626,11 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 		return Arrays.copyOf(keyTable, size);
 	}
 
-	// terrible!
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T[] toArray(T[] a) {
 		if (a.length < size)
 			return (T[]) Arrays.copyOf(keyTable, size, a.getClass());
-
 		System.arraycopy(keyTable, 0, a, 0, size);
 		if (a.length > size)
 			a[size] = null;
@@ -657,7 +654,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 			done = false;
 		}
 
-		private void findNextIndex() {
+		void findNextIndex() {
 			hasNext = false;
 			for (int n = capacity + stashSize; ++nextIndex < n; ) {
 				if (keyTable[nextIndex] != null) {

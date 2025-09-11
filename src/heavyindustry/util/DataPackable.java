@@ -1,7 +1,6 @@
 package heavyindustry.util;
 
 import arc.func.Func;
-import arc.struct.LongMap;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import arc.util.serialization.SerializationException;
@@ -63,7 +62,7 @@ import java.io.DataOutputStream;
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
 public interface DataPackable {
-	LongMap<Func> objectProvMap = new LongMap<>();
+	BaseLongMap<Func> objectProvMap = new BaseLongMap<>(Func.class);
 
 	/**
 	 * Register a constructor of a wrapper type that takes an array of objects

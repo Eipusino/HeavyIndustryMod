@@ -20,6 +20,7 @@ import arc.util.Select;
 import arc.util.Structs;
 
 import java.lang.reflect.Array;
+import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
@@ -34,7 +35,7 @@ import java.util.NoSuchElementException;
  *
  * @author Nathan Sweet
  */
-public class CollectionList<E> implements List<E>, Eachable<E> {
+public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 	/** Debugging variable to count total number of iterators allocated. */
 	public static int iteratorsAllocated = 0;
 
@@ -48,21 +49,21 @@ public class CollectionList<E> implements List<E>, Eachable<E> {
 	public int size;
 	public boolean ordered;
 
-	private @Nullable SeqIterable<E> iterable;
+	@Nullable SeqIterable<E> iterable;
 
 	/** Creates an ordered array with a capacity of 16. */
-	public CollectionList(Class<?> arrayType) {
-		this(true, 16, arrayType);
+	public CollectionList(Class<?> type) {
+		this(true, 16, type);
 	}
 
 	/** Creates an ordered array with the specified capacity. */
-	public CollectionList(int capacity, Class<?> arrayType) {
-		this(true, capacity, arrayType);
+	public CollectionList(int capacity, Class<?> type) {
+		this(true, capacity, type);
 	}
 
 	/** Creates an ordered/unordered array with the specified capacity. */
-	public CollectionList(boolean ordered, Class<?> arrayType) {
-		this(ordered, 16, arrayType);
+	public CollectionList(boolean ordered, Class<?> type) {
+		this(ordered, 16, type);
 	}
 
 	/**
@@ -73,10 +74,10 @@ public class CollectionList<E> implements List<E>, Eachable<E> {
 	 * @param capacity Any elements added beyond this will cause the backing array to be grown.
 	 */
 	@SuppressWarnings("unchecked")
-	public CollectionList(boolean ordered, int capacity, Class<?> arrayType) {
+	public CollectionList(boolean ordered, int capacity, Class<?> type) {
 		this.ordered = ordered;
-		componentType = arrayType;
-		items = (E[]) Array.newInstance(arrayType, capacity);
+		componentType = type;
+		items = (E[]) Array.newInstance(type, capacity);
 	}
 
 	/**
@@ -537,7 +538,7 @@ public class CollectionList<E> implements List<E>, Eachable<E> {
 	 * @throws OutOfMemoryError if minCapacity is less than zero
 	 */
 	@SuppressWarnings("unchecked")
-	private Object[] grow(int minCapacity) {
+	Object[] grow(int minCapacity) {
 		int oldCapacity = items.length;
 		if (oldCapacity > 0) {
 			int newCapacity = Utils.newLength(oldCapacity,
@@ -549,7 +550,7 @@ public class CollectionList<E> implements List<E>, Eachable<E> {
 		}
 	}
 
-	private Object[] grow() {
+	Object[] grow() {
 		return grow(size + 1);
 	}
 
@@ -648,11 +649,6 @@ public class CollectionList<E> implements List<E>, Eachable<E> {
 		if (index > size || index < 0)
 			throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
 		return iterator();
-	}
-
-	@Override
-	public List<E> subList(int fromIndex, int toIndex) {
-		return List.of();
 	}
 
 	/**
@@ -1248,6 +1244,14 @@ public class CollectionList<E> implements List<E>, Eachable<E> {
 		return iterable.iterator();
 	}
 
+	public Seq<E> toSeq() {
+		Seq<E> seq = new Seq<>(true, size, componentType);
+		for (E e : this) {
+			seq.add(e);
+		}
+		return seq;
+	}
+
 	public static class SeqIterable<T> implements Iterable<T> {
 		final CollectionList<T> array;
 		final boolean allowRemove;
@@ -1279,7 +1283,7 @@ public class CollectionList<E> implements List<E>, Eachable<E> {
 			return new SeqIterator();
 		}
 
-		private class SeqIterator implements ListIterator<T> {
+		class SeqIterator implements ListIterator<T> {
 			int index;
 			boolean done = true;
 

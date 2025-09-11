@@ -28,11 +28,6 @@ public class SwingContinuousTurret extends ContinuousTurret {
 		drawer = new DrawSwingTurret();
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = SwingContinuousTurretBuild::new;
-	}
-
 	public class SwingContinuousTurretBuild extends ContinuousTurretBuild {
 		public float realRotateSpeed, rotateSpeedf;
 		public boolean slowing;
@@ -57,7 +52,7 @@ public class SwingContinuousTurret extends ContinuousTurret {
 		}
 
 		protected void updateBullet(BulletEntry entry) {
-			if (!(entry instanceof SwingBulletEntry sbe)) return;
+			if (!(entry instanceof SwingBulletEntry s)) return;
 
 			float
 					bulletX = x + Angles.trnsx(rotation - 90, shootX + entry.x, shootY + entry.y),
@@ -77,10 +72,10 @@ public class SwingContinuousTurret extends ContinuousTurret {
 			} else {
 				//update aim change speed
 				float targetSpeed = aimChangeSpeed * Mathf.sign(shootLength - curLength);
-				sbe.aimChangeSpeed = Mathf.approachDelta(sbe.aimChangeSpeed, targetSpeed, aimChangeSpeedAccel * efficiency);
-				sbe.aimChangeSpeed *= Math.max(1f - aimChangeSpeedDrag * Time.delta, 0);
+				s.aimChangeSpeed = Mathf.approachDelta(s.aimChangeSpeed, targetSpeed, aimChangeSpeedAccel * efficiency);
+				s.aimChangeSpeed *= Math.max(1f - aimChangeSpeedDrag * Time.delta, 0);
 				//resulting length of the bullet (smoothed)
-				resultLength = Math.max(curLength + sbe.aimChangeSpeed, shootY);
+				resultLength = Math.max(curLength + s.aimChangeSpeed, shootY);
 			}
 			//actual aim end point based on length
 			Tmp.v1.trns(rotation, lastLength = resultLength).add(x, y);
@@ -136,42 +131,41 @@ public class SwingContinuousTurret extends ContinuousTurret {
 
 	/** Passes the rotation speed fract into the life param for draw parts. */
 	public static class DrawSwingTurret extends DrawTurret {
-		public DrawSwingTurret(String basePrefix) {
-			this.basePrefix = basePrefix;
+		public DrawSwingTurret(String baseName) {
+			basePrefix = baseName;
 		}
 
 		public DrawSwingTurret() {}
 
 		@Override
 		public void draw(Building build) {
-			if (!(build instanceof SwingContinuousTurretBuild tb) || !(build.block instanceof SwingContinuousTurret turret))
-				return;
+			if (!(build.block instanceof SwingContinuousTurret turret) || !(build instanceof SwingContinuousTurretBuild turretBuild)) return;
 
 			Draw.rect(base, build.x, build.y);
 			Draw.color();
 
 			Draw.z(Layer.turret - 0.5f);
 
-			Drawf.shadow(preview, build.x + tb.recoilOffset.x - turret.elevation, build.y + tb.recoilOffset.y - turret.elevation, tb.drawrot());
+			Drawf.shadow(preview, build.x + turretBuild.recoilOffset.x - turret.elevation, build.y + turretBuild.recoilOffset.y - turret.elevation, turretBuild.drawrot());
 
 			Draw.z(Layer.turret);
 
-			drawTurret(turret, tb);
-			drawHeat(turret, tb);
+			drawTurret(turret, turretBuild);
+			drawHeat(turret, turretBuild);
 
 			if (parts.size > 0) {
 				if (outline.found()) {
 					//draw outline under everything when parts are involved
 					Draw.z(Layer.turret - 0.01f);
-					Draw.rect(outline, build.x + tb.recoilOffset.x, build.y + tb.recoilOffset.y, tb.drawrot());
+					Draw.rect(outline, build.x + turretBuild.recoilOffset.x, build.y + turretBuild.recoilOffset.y, turretBuild.drawrot());
 					Draw.z(Layer.turret);
 				}
 
-				float progress = tb.progress();
+				float progress = turretBuild.progress();
 
 				//TODO no smooth reload
-				PartParams params = DrawPart.params.set(build.warmup(), 1f - progress, 1f - progress, tb.heat, tb.curRecoil, tb.charge, tb.x + tb.recoilOffset.x, tb.y + tb.recoilOffset.y, tb.rotation);
-				params.life = tb.rotateSpeedf;
+				PartParams params = DrawPart.params.set(build.warmup(), 1f - progress, 1f - progress, turretBuild.heat, turretBuild.curRecoil, turretBuild.charge, turretBuild.x + turretBuild.recoilOffset.x, turretBuild.y + turretBuild.recoilOffset.y, turretBuild.rotation);
+				params.life = turretBuild.rotateSpeedf;
 
 				for (DrawPart part : parts) {
 					part.draw(params);

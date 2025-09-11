@@ -24,10 +24,10 @@ import arc.scene.ui.layout.Table;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.entities.HUnitSorts;
+import heavyindustry.entities.bullet.ConeFlameBulletType;
 import heavyindustry.entities.bullet.CritBulletType;
 import heavyindustry.entities.bullet.CtrlMissileBulletType;
 import heavyindustry.entities.bullet.EffectBulletType;
-import heavyindustry.entities.bullet.ConeFlameBulletType;
 import heavyindustry.entities.bullet.PositionLightningBulletType;
 import heavyindustry.entities.effect.WrapperEffect;
 import heavyindustry.entities.part.ArcCharge;
@@ -46,15 +46,17 @@ import heavyindustry.world.blocks.PlaceholderBlock;
 import heavyindustry.world.blocks.defense.AparajitoWall;
 import heavyindustry.world.blocks.defense.AssignOverdrive;
 import heavyindustry.world.blocks.defense.BombLauncher;
+import heavyindustry.world.blocks.defense.ChargeWall;
 import heavyindustry.world.blocks.defense.DPSWall;
 import heavyindustry.world.blocks.defense.Explosive;
 import heavyindustry.world.blocks.defense.IndestructibleWall;
 import heavyindustry.world.blocks.defense.InsulationWall;
-import heavyindustry.world.blocks.defense.RegenWall;
 import heavyindustry.world.blocks.defense.ShapedWall;
+import heavyindustry.world.blocks.defense.turrets.Cobweb;
 import heavyindustry.world.blocks.defense.turrets.MinigunTurret;
 import heavyindustry.world.blocks.defense.turrets.PlatformTurret;
 import heavyindustry.world.blocks.defense.turrets.SpeedupTurret;
+import heavyindustry.world.blocks.defense.turrets.TeslaTurret;
 import heavyindustry.world.blocks.distribution.AdaptConveyor;
 import heavyindustry.world.blocks.distribution.AdaptDirectionalUnloader;
 import heavyindustry.world.blocks.distribution.CoveredRouter;
@@ -64,23 +66,24 @@ import heavyindustry.world.blocks.distribution.MultiRouter;
 import heavyindustry.world.blocks.distribution.MultiSorter;
 import heavyindustry.world.blocks.distribution.NodeBridge;
 import heavyindustry.world.blocks.distribution.RailItemBridge;
+import heavyindustry.world.blocks.distribution.RailStackBridge;
 import heavyindustry.world.blocks.distribution.StackBridge;
 import heavyindustry.world.blocks.distribution.StackHelper;
 import heavyindustry.world.blocks.distribution.TubeConveyor;
 import heavyindustry.world.blocks.distribution.TubeDistributor;
 import heavyindustry.world.blocks.distribution.TubeSorter;
 import heavyindustry.world.blocks.environment.ConnectedFloor;
-import heavyindustry.world.blocks.environment.DepthCliffHelper;
-import heavyindustry.world.blocks.environment.DepthCliff;
 import heavyindustry.world.blocks.environment.ConnectedStaticWall;
+import heavyindustry.world.blocks.environment.DepthCliff;
+import heavyindustry.world.blocks.environment.DepthCliffHelper;
 import heavyindustry.world.blocks.heat.FuelHeater;
 import heavyindustry.world.blocks.heat.ThermalHeater;
 import heavyindustry.world.blocks.liquid.ConnectedPump;
 import heavyindustry.world.blocks.liquid.LiquidDirectionalUnloader;
+import heavyindustry.world.blocks.liquid.LiquidExtractor;
 import heavyindustry.world.blocks.liquid.LiquidMassDriver;
 import heavyindustry.world.blocks.liquid.LiquidOverflowValve;
 import heavyindustry.world.blocks.liquid.LiquidUnloader;
-import heavyindustry.world.blocks.liquid.LiquidExtractor;
 import heavyindustry.world.blocks.liquid.RailLiquidBridge;
 import heavyindustry.world.blocks.liquid.SortLiquidRouter;
 import heavyindustry.world.blocks.logic.CharacterDisplay;
@@ -100,17 +103,16 @@ import heavyindustry.world.blocks.power.SmartBeamNode;
 import heavyindustry.world.blocks.power.SmartPowerNode;
 import heavyindustry.world.blocks.production.AdaptiveCrafter;
 import heavyindustry.world.blocks.production.AugerDrill;
+import heavyindustry.world.blocks.production.AugerSoildPump;
 import heavyindustry.world.blocks.production.Centrifuge;
 import heavyindustry.world.blocks.production.LaserBeamDrill;
-import heavyindustry.world.blocks.production.AugerSoildPump;
-import heavyindustry.world.blocks.distribution.RailStackBridge;
+import heavyindustry.world.blocks.production.SporeFarmBlock;
 import heavyindustry.world.blocks.production.UnitMinerDepot;
 import heavyindustry.world.blocks.production.UnitMinerPoint;
-import heavyindustry.world.blocks.production.SporeFarmBlock;
 import heavyindustry.world.blocks.sandbox.AdaptiveSource;
 import heavyindustry.world.blocks.sandbox.RandomSource;
-import heavyindustry.world.blocks.storage.CoreStorageBlock;
 import heavyindustry.world.blocks.storage.AdaptUnloader;
+import heavyindustry.world.blocks.storage.CoreStorageBlock;
 import heavyindustry.world.blocks.units.AdaptPayloadSource;
 import heavyindustry.world.blocks.units.UnitIniter;
 import heavyindustry.world.draw.DrawAnim;
@@ -146,13 +148,13 @@ import mindustry.entities.bullet.RailBulletType;
 import mindustry.entities.effect.MultiEffect;
 import mindustry.entities.effect.ParticleEffect;
 import mindustry.entities.effect.RadialEffect;
+import mindustry.entities.effect.WaveEffect;
 import mindustry.entities.effect.WrapEffect;
 import mindustry.entities.part.HaloPart;
 import mindustry.entities.part.RegionPart;
 import mindustry.entities.part.ShapePart;
 import mindustry.entities.pattern.ShootAlternate;
 import mindustry.entities.pattern.ShootBarrel;
-import mindustry.entities.pattern.ShootPattern;
 import mindustry.entities.pattern.ShootSpread;
 import mindustry.game.Team;
 import mindustry.gen.Building;
@@ -298,7 +300,7 @@ public final class HBlocks {
 	//wall
 	copperWallHuge, copperWallGigantic, armoredWall, armoredWallLarge, armoredWallHuge, armoredWallGigantic, titaniumWallHuge, titaniumWallGigantic, doorHuge, doorGigantic,
 			plastaniumWallHuge, plastaniumWallGigantic, thoriumWallHuge, thoriumWallGigantic, phaseWallHuge, phaseWallGigantic, surgeWallHuge, surgeWallGigantic,
-			uraniumWall, uraniumWallLarge, chromiumWall, chromiumWallLarge, chromiumDoor, chromiumDoorLarge, heavyAlloyWall, heavyAlloyWallLarge, compositeWall, compositeWallLarge, shapedWall,
+			uraniumWall, uraniumWallLarge, chromiumWall, chromiumWallLarge, chromiumDoor, chromiumDoorLarge, heavyAlloyWall, heavyAlloyWallLarge, chargeWall, chargeWallLarge, shapedWall,
 			oldTracks,
 	//wall-erekir
 	berylliumWallHuge, berylliumWallGigantic, tungstenWallHuge, tungstenWallGigantic, blastDoorLarge, blastDoorHuge, reinforcedSurgeWallHuge, reinforcedSurgeWallGigantic, carbideWallHuge, carbideWallGigantic, shieldedWallLarge, shieldedWallHuge,
@@ -352,7 +354,7 @@ public final class HBlocks {
 	//logic-erekir
 	reinforcedIconDisplay, reinforcedIconDisplayLarge, reinforcedCharacterDisplay, reinforcedCharacterDisplayLarge,
 	//turret
-	dissipation, rocketLauncher, largeRocketLauncher, rocketSilo,
+	dissipation, cobweb, coilBlaster, rocketLauncher, largeRocketLauncher, rocketSilo,
 			dragonBreath, breakthrough, cloudbreaker, ironStream, minigun,
 			hurricane, judgement, evilSpirits,
 			solstice, starfall, annihilate, executor, heatDeath,
@@ -381,16 +383,16 @@ public final class HBlocks {
 		placeholderBlock = new PlaceholderBlock[maxsize];
 
 		for (int i = 0; i < maxsize; i++) {
-			int tz = i + 1;
-			linkBlock[i] = new LinkBlock("link-block-" + tz) {{
-				size = tz;
+			int j = i + 1;
+			linkBlock[i] = new LinkBlock("link-block-" + j) {{
+				size = j;
 			}};
-			linkBlockLiquid[i] = new LinkBlock("link-block-liquid-" + tz) {{
-				size = tz;
+			linkBlockLiquid[i] = new LinkBlock("link-block-liquid-" + j) {{
+				size = j;
 				outputsLiquid = true;
 			}};
-			placeholderBlock[i] = new PlaceholderBlock("placeholder-block-" + tz) {{
-				size = tz;
+			placeholderBlock[i] = new PlaceholderBlock("placeholder-block-" + j) {{
+				size = j;
 			}};
 		}
 	}
@@ -857,7 +859,7 @@ public final class HBlocks {
 			health = 1680;
 			armor = 26f;
 			absorbLasers = true;
-			crushDamageMultiplier = 0.8f;
+			crushDamageMultiplier = 0.7f;
 			buildType = WallBuild::new;
 		}};
 		uraniumWallLarge = new Wall("uranium-wall-large") {{
@@ -866,52 +868,52 @@ public final class HBlocks {
 			health = 6720;
 			armor = 26f;
 			absorbLasers = true;
-			crushDamageMultiplier = 0.8f;
+			crushDamageMultiplier = 0.7f;
 			buildType = WallBuild::new;
 		}};
 		chromiumWall = new Wall("chromium-wall") {{
 			requirements(Category.defense, ItemStack.with(HItems.chromium, 6));
 			size = 1;
-			health = 1770;
+			health = 1920;
 			armor = 40f;
 			absorbLasers = true;
-			crushDamageMultiplier = 0.7f;
+			crushDamageMultiplier = 0.5f;
 			buildType = WallBuild::new;
 		}};
 		chromiumWallLarge = new Wall("chromium-wall-large") {{
 			requirements(Category.defense, ItemStack.mult(chromiumWall.requirements, 4));
 			size = 2;
-			health = 7080;
+			health = 7680;
 			armor = 40f;
 			absorbLasers = true;
-			crushDamageMultiplier = 0.7f;
+			crushDamageMultiplier = 0.5f;
 			buildType = WallBuild::new;
 		}};
 		chromiumDoor = new AutoDoor("chromium-door") {{
 			requirements(Category.defense, ItemStack.with(HItems.chromium, 6, Items.silicon, 4));
 			size = 1;
-			health = 1770;
+			health = 1920;
 			armor = 40f;
 			absorbLasers = true;
-			crushDamageMultiplier = 0.7f;
+			crushDamageMultiplier = 0.5f;
 			buildType = AutoDoorBuild::new;
 		}};
 		chromiumDoorLarge = new AutoDoor("chromium-door-large") {{
 			requirements(Category.defense, ItemStack.mult(chromiumDoor.requirements, 4));
 			size = 2;
-			health = 7080;
+			health = 7680;
 			armor = 40f;
 			absorbLasers = true;
-			crushDamageMultiplier = 0.7f;
+			crushDamageMultiplier = 0.5f;
 			buildType = AutoDoorBuild::new;
 		}};
 		heavyAlloyWall = new Wall("heavy-alloy-wall") {{
 			requirements(Category.defense, ItemStack.with(HItems.heavyAlloy, 6, Items.metaglass, 3, Items.plastanium, 4));
 			size = 1;
 			health = 3220;
-			armor = 60f;
+			armor = 72f;
 			absorbLasers = insulated = true;
-			crushDamageMultiplier = 0.5f;
+			crushDamageMultiplier = 0.25f;
 			buildType = WallBuild::new;
 			hideDetails = false;
 		}};
@@ -919,34 +921,28 @@ public final class HBlocks {
 			requirements(Category.defense, ItemStack.mult(heavyAlloyWall.requirements, 4));
 			size = 2;
 			health = 12880;
-			armor = 60f;
+			armor = 72f;
 			absorbLasers = insulated = true;
-			crushDamageMultiplier = 0.5f;
+			crushDamageMultiplier = 0.25f;
 			buildType = WallBuild::new;
 			hideDetails = false;
 		}};
-		compositeWall = new RegenWall("composite-wall") {{
-			requirements(Category.defense, ItemStack.with(HItems.crystallineCircuit, 2, HItems.heavyAlloy, 6, Items.metaglass, 1, Items.plastanium, 4));
+		chargeWall = new ChargeWall("charge-wall") {{
+			requirements(Category.defense, ItemStack.with(HItems.crystallineElectronicUnit, 2, HItems.heavyAlloy, 6, Items.metaglass, 1, Items.plastanium, 4));
 			size = 1;
-			health = 2680;
+			health = 3110;
 			armor = 52f;
 			absorbLasers = insulated = true;
-			crushDamageMultiplier = 0.5f;
-			healPercent = 3f / 60f;
-			chanceHeal = 0.15f;
-			regenPercent = 0.5f;
+			crushDamageMultiplier = 0.25f;
 			hideDetails = false;
 		}};
-		compositeWallLarge = new RegenWall("composite-wall-large") {{
-			requirements(Category.defense, ItemStack.mult(compositeWall.requirements, 4));
+		chargeWallLarge = new ChargeWall("charge-wall-large") {{
+			requirements(Category.defense, ItemStack.mult(chargeWall.requirements, 4));
 			size = 2;
-			health = 10720;
+			health = 12440;
 			armor = 52f;
 			absorbLasers = insulated = true;
-			crushDamageMultiplier = 0.5f;
-			healPercent = 3f / 60f;
-			chanceHeal = 0.15f;
-			regenPercent = 0.5f;
+			crushDamageMultiplier = 0.25f;
 			hideDetails = false;
 		}};
 		shapedWall = new ShapedWall("shaped-wall") {{
@@ -2280,8 +2276,8 @@ public final class HBlocks {
 			}}, new Recipe() {{
 				inputItem = ItemStack.with(HItems.galliumNitride, 8, HItems.originium, 4, HItems.chromium, 6);
 				inputLiquid = LiquidStack.with(Liquids.cryofluid, 18f / 60f);
-				outputItem = ItemStack.with(HItems.crystallineElectronicUnit, 6);
-				craftTime = 180f;
+				outputItem = ItemStack.with(HItems.crystallineElectronicUnit, 9);
+				craftTime = 150f;
 			}});
 			consumePower(25f);
 			squareSprite = false;
@@ -3177,14 +3173,43 @@ public final class HBlocks {
 			consumePower(12f);
 			buildType = PointDefenseBuild::new;
 		}};
+		cobweb = new Cobweb("cobweb") {{
+			requirements(Category.turret, ItemStack.with(Items.silicon, 200, Items.graphite, 200, Items.surgeAlloy, 50, Items.phaseFabric, 50));
+			hasPower = true;
+			size = 3;
+			force = 30f;
+			scaledForce = 12f;
+			range = 320f;
+			damage = 1.5f;
+			scaledHealth = 200;
+			rotateSpeed = 10;
+			laserWidth = 1;
+			shootLength = 10;
+			coolant = consumeCoolant(0.3f);
+			coolantMulti = 4;
+			consumePower(6f);
+		}};
+		coilBlaster = new TeslaTurret("coil-blaster") {{
+			requirements(Category.turret, ItemStack.with(Items.copper, 120, Items.lead, 80, Items.graphite, 30));
+			rings.add(new TeslaRing(2f), new TeslaRing(6f));
+			size = 2;
+			scaledHealth = 200;
+			reload = 20f;
+			range = 130f;
+			maxTargets = 5;
+			damage = 23f;
+			status = StatusEffects.shocked;
+			consumePower(4.8f);
+			coolant = consumeCoolant(0.2f);
+		}};
 		rocketLauncher = new ItemTurret("rocket-launcher") {{
 			requirements(Category.turret, ItemStack.with(Items.copper, 60, Items.lead, 40, Items.graphite, 30));
 			ammo(Items.graphite, new MissileBulletType(3.6f, 30f) {{
 				splashDamage = 15f;
 				splashDamageRadius = 18f;
 				drag = -0.028f;
-				backColor = trailColor = HPal.brightSteelBlue;
-				frontColor = HPal.missileGray;
+				hitColor = backColor = trailColor = Pal.graphiteAmmoBack;
+				frontColor = Pal.graphiteAmmoFront;
 				lifetime = 36;
 				homingPower = 0.045f;
 				homingRange = 40f;
@@ -3197,8 +3222,8 @@ public final class HBlocks {
 				splashDamageRadius = 22f;
 				drag = -0.028f;
 				makeFire = true;
-				backColor = trailColor = Color.valueOf("ffb90f");
-				frontColor = HPal.missileGray;
+				frontColor = Pal.lightishOrange;
+				backColor = Pal.lightOrange;
 				lifetime = 36;
 				homingPower = 0.03f;
 				homingRange = 40f;
@@ -3210,8 +3235,8 @@ public final class HBlocks {
 				splashDamage = 47f;
 				splashDamageRadius = 32f;
 				drag = -0.026f;
-				backColor = trailColor = HPal.orangeBack;
-				frontColor = HPal.missileGray;
+				hitColor = backColor = trailColor = Pal.blastAmmoBack;
+				frontColor = Pal.blastAmmoFront;
 				lifetime = 38;
 				homingPower = 0.03f;
 				homingRange = 40f;
@@ -3246,9 +3271,8 @@ public final class HBlocks {
 				splashDamageRadius = 36f;
 				lifetime = 38f;
 				hitShake = 2;
-				backColor = trailColor = Color.valueOf("ffb90f");
-				frontColor = HPal.missileGray;
-				hitColor = HPal.missileYellow;
+				frontColor = Pal.lightishOrange;
+				backColor = Pal.lightOrange;
 				status = StatusEffects.burning;
 				statusDuration = 600;
 				width = 16;
@@ -3256,7 +3280,31 @@ public final class HBlocks {
 				ammoMultiplier = 3;
 				shootEffect = new MultiEffect(Fx.shootBig2, Fx.shootPyraFlame, Fx.shootPyraFlame);
 				despawnEffect = Fx.flakExplosion;
-				hitEffect = new MultiEffect(HFx.explodeImpWaveSmall, HFx.impactWave);
+				hitEffect = new MultiEffect(new ParticleEffect() {{
+					particles = 8;
+					sizeFrom = 8;
+					sizeTo = 0;
+					length = 15;
+					baseLength = 15;
+					lifetime = 35;
+					colorFrom = colorTo = HPal.smoke;
+				}}, new ParticleEffect() {{
+					particles = 12;
+					line = true;
+					length = 30;
+					baseLength = 8;
+					lifetime = 22;
+					colorFrom = Color.white;
+					colorTo = HPal.missileYellow;
+				}}, new WaveEffect() {{
+					lifetime = 10;
+					sizeFrom = 1;
+					sizeTo = 36;
+					strokeFrom = 8;
+					strokeTo = 0;
+					colorFrom = HPal.missileYellow;
+					colorTo = HPal.missileYellowBack;
+				}});
 			}}, Items.blastCompound, new MissileBulletType(10f, 46f, MOD_NAME + "-missile") {{
 				recoil = 1;
 				shrinkY = 0;
@@ -3267,8 +3315,8 @@ public final class HBlocks {
 				splashDamageRadius = 76f;
 				lifetime = 38f;
 				hitShake = 2;
-				hitColor = backColor = trailColor = HPal.orangeBack;
-				frontColor = HPal.missileGray;
+				hitColor = backColor = trailColor = Pal.blastAmmoBack;
+				frontColor = Pal.blastAmmoFront;
 				status = StatusEffects.burning;
 				statusDuration = 600;
 				width = 14;
@@ -3277,7 +3325,36 @@ public final class HBlocks {
 				ammoMultiplier = 3;
 				shootEffect = new MultiEffect(Fx.shootBig2, Fx.shootPyraFlame, Fx.shootPyraFlame);
 				despawnEffect = Fx.flakExplosion;
-				hitEffect = new MultiEffect(HFx.explodeImpWave, HFx.impactWave);
+				hitEffect = new MultiEffect(new ParticleEffect() {{
+					particles = 12;
+					sizeFrom = 10;
+					sizeTo = 0;
+					length = 35;
+					baseLength = 33;
+					lifetime = 35;
+					colorFrom = HPal.smoke;
+					colorTo = HPal.smoke.cpy().a(0.5f);
+				}}, new ParticleEffect() {{
+					particles = 12;
+					line = true;
+					interp = Interp.pow10Out;
+					strokeFrom = 2f;
+					strokeTo = 1.5f;
+					lenFrom = 16f;
+					lenTo = 0f;
+					length = 43f;
+					baseLength = 23f;
+					lifetime = 11f;
+					colorFrom = Color.white;
+					colorTo = HPal.missileYellow;
+				}}, new WaveEffect() {{
+					lifetime = 10;
+					sizeFrom = 1;
+					sizeTo = 78;
+					strokeFrom = 8;
+					strokeTo = 0;
+					colorFrom = colorTo = HPal.missileYellow;
+				}});
 			}});
 			size = 3;
 			health = 350;
@@ -3299,7 +3376,20 @@ public final class HBlocks {
 					moveRot = 0f;
 				}});
 			}};
-			smokeEffect = HFx.shootSmokeMissileSmall;
+			smokeEffect = new ParticleEffect() {{
+				particles = 8;
+				sizeFrom = 3;
+				sizeTo = 0;
+				length = -35;
+				baseLength = -15;
+				lifetime = 65;
+				colorFrom = Color.white;
+				colorTo = HPal.missileGray.cpy().a(0.4f);
+				layer = 49;
+				interp = Interp.pow5Out;
+				sizeInterp = Interp.pow10In;
+				cone = 10;
+			}};
 			shoot = new ShootAlternate() {{
 				barrels = 2;
 				spread = 11f;
@@ -3367,8 +3457,8 @@ public final class HBlocks {
 				homingPower = 0.15f;
 				homingDelay = 10f;
 				homingRange = 800f;
-				frontColor = Pal.lightPyraFlame;
-				backColor = Pal.lightFlame;
+				hitColor = backColor = trailColor = Pal.blastAmmoBack;
+				frontColor = Pal.blastAmmoFront;
 				trailLength = 15;
 				trailWidth = 1.5f;
 				trailColor = Color.white.cpy().a(0.5f);
@@ -3775,6 +3865,7 @@ public final class HBlocks {
 				};
 			}};
 			ammoUseEffect = HFx.casing(32f);
+			coolant = consumeCoolant(0.2f);
 		}};
 		hurricane = new SpeedupTurret("hurricane") {{
 			requirements(Category.turret, ItemStack.with(Items.lead, 80, Items.graphite, 100, Items.silicon, 250, Items.plastanium, 120, Items.surgeAlloy, 80, Items.phaseFabric, 150));
@@ -4057,8 +4148,8 @@ public final class HBlocks {
 				hitSize = 5f;
 				width = 16.8f;
 				height = 23.52f;
-				frontColor = Pal.lightPyraFlame;
-				backColor = Pal.lightFlame;
+				hitColor = backColor = trailColor = Pal.blastAmmoBack;
+				frontColor = Pal.blastAmmoFront;
 				status = StatusEffects.blasted;
 				hitEffect = Fx.flakExplosionBig;
 				shootEffect = Fx.shootBig;
@@ -4285,7 +4376,7 @@ public final class HBlocks {
 					heatColor = Color.red;
 					heatProgress = PartProgress.warmup;
 					heatLightOpacity = 0.55f;
-					moves.add(new PartMove(PartProgress.recoil, -1.75f, -8, -2.12f));
+					moves.add(new PartMove(PartProgress.recoil, -1.75f, -8f, -2.12f));
 					moveY = 6f;
 					moveX = 7.75f;
 					moveRot = 3.6f;
@@ -4296,7 +4387,7 @@ public final class HBlocks {
 					moveY = -4f;
 					moveX = 2f;
 				}}, new DrawArrowSequence() {{
-					x = 0;
+					x = 0f;
 					y = 2f;
 					arrows = 9;
 					color = HPal.ancientLightMid;
@@ -4315,7 +4406,7 @@ public final class HBlocks {
 					strokeTo = 3.4f;
 					radius = 8f;
 					radiusTo = 14.5f;
-					haloRadius = 0;
+					haloRadius = 0f;
 					haloRotateSpeed = 2f;
 				}}, new HaloPart() {{
 					y = -52f;
@@ -4324,12 +4415,12 @@ public final class HBlocks {
 					colorTo = HPal.ancientLightMid;
 					tri = true;
 					shapes = 2;
-					radius = -1;
+					radius = -1f;
 					radiusTo = 4.2f;
-					triLength = 6;
-					triLengthTo = 18;
-					haloRadius = 14;
-					haloRadiusTo = 25;
+					triLength = 6f;
+					triLengthTo = 18f;
+					haloRadius = 14f;
+					haloRadiusTo = 25f;
 					haloRotateSpeed = 1.5f;
 				}}, new HaloPart() {{
 					y = -52f;
@@ -4338,13 +4429,13 @@ public final class HBlocks {
 					colorTo = HPal.ancientLightMid;
 					tri = true;
 					shapes = 2;
-					radius = -1;
+					radius = -1f;
 					radiusTo = 4.2f;
-					triLength = 0;
-					triLengthTo = 4;
-					haloRadius = 14;
-					haloRadiusTo = 25;
-					shapeRotation = 180;
+					triLength = 0f;
+					triLengthTo = 4f;
+					haloRadius = 14f;
+					haloRadiusTo = 25f;
+					shapeRotation = 180f;
 					haloRotateSpeed = 1.5f;
 				}}, new HaloPart() {{
 					y = -52f;
@@ -4355,10 +4446,10 @@ public final class HBlocks {
 					shapes = 2;
 					radius = -1;
 					radiusTo = 5f;
-					triLength = 10;
-					triLengthTo = 24;
-					haloRadius = 15;
-					haloRadiusTo = 28;
+					triLength = 10f;
+					triLengthTo = 24f;
+					haloRadius = 15f;
+					haloRadiusTo = 28f;
 					haloRotateSpeed = -1f;
 				}}, new HaloPart() {{
 					y = -52f;
@@ -4367,13 +4458,13 @@ public final class HBlocks {
 					colorTo = HPal.ancientLightMid;
 					tri = true;
 					shapes = 2;
-					radius = -1;
+					radius = -1f;
 					radiusTo = 5f;
-					triLength = 0;
-					triLengthTo = 6;
-					haloRadius = 15;
-					haloRadiusTo = 28;
-					shapeRotation = 180;
+					triLength = 0f;
+					triLengthTo = 6f;
+					haloRadius = 15f;
+					haloRadiusTo = 28f;
+					shapeRotation = 180f;
 					haloRotateSpeed = -1f;
 				}});
 			}};
@@ -4423,9 +4514,7 @@ public final class HBlocks {
 					progress = PartProgress.warmup.blend(PartProgress.recoil, 0.5f);
 				}});
 			}};
-			shoot = new ShootPattern() {{
-				firstShotDelay = HFx.techBlueChargeBegin.lifetime;
-			}};
+			shoot.firstShotDelay = HFx.techBlueChargeBegin.lifetime;
 			chargeSound = Sounds.none;
 			requirements(Category.turret, ItemStack.with(Items.plastanium, 1500, Items.surgeAlloy, 1100, HItems.crystallineCircuit, 400, HItems.chromium, 800));
 			shootType = HBullets.arc9000;
@@ -4463,8 +4552,8 @@ public final class HBlocks {
 			shoot = new ShootBarrel() {{
 				shots = 2;
 				barrels = new float[]{
-						-25, 21, 0,
-						25, 21, 0
+						-25f, 21f, 0f,
+						25f, 21f, 0f
 				};
 			}};
 			shootType = HBullets.executor;
@@ -4525,7 +4614,6 @@ public final class HBlocks {
 					shootY = t -> 90 * curve.apply(1 - t.smoothReload);
 				}});
 			}};
-			shoot = new ShootPattern();
 			inaccuracy = 0;
 			ammoPerShot = 40;
 			rotateSpeed = 0.25f;
@@ -5071,8 +5159,7 @@ public final class HBlocks {
 					Table cont = new Table();
 					cont.defaults().size(55);
 					for (Team bt : Utils.baseTeams) {
-						ImageButton button = cont.button(((TextureRegionDrawable) Tex.whiteui).tint(bt.color), Styles.clearTogglei, 35, () -> {
-						}).group(bg).get();
+						ImageButton button = cont.button(((TextureRegionDrawable) Tex.whiteui).tint(bt.color), Styles.clearTogglei, 35, () -> {}).group(bg).get();
 						button.changed(() -> {
 							if (button.isChecked()) {
 								if (Vars.player.team() == team) {
@@ -5094,12 +5181,12 @@ public final class HBlocks {
 				@Override
 				public void configured(Unit builder, Object value) {
 					if (builder != null && builder.isPlayer() && value instanceof Number number) {
-						Team t = Team.get(number.intValue());
-						builder.team = t;
-						builder.getPlayer().team(t);
+						Team to = Team.get(number.intValue());
+						builder.team = to;
+						builder.getPlayer().team(to);
 
 						onRemoved();
-						team = t;
+						team = to;
 						onProximityUpdate();
 					}
 				}

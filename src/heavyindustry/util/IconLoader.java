@@ -6,7 +6,6 @@ import arc.graphics.g2d.Font;
 import arc.graphics.g2d.Font.Glyph;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Vec2;
-import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Scaling;
 import mindustry.ui.Fonts;
@@ -18,9 +17,9 @@ public final class IconLoader {
 	private IconLoader() {}
 
 	public static void loadIcons(Fi file) {
-		if (!file.exists()) return;
+		if (!file.exists() || file.isDirectory()) return;
 
-		Seq<Font> availableFonts = Seq.with(Fonts.def, Fonts.outline);
+		Font[] availableFonts = new Font[]{Fonts.def, Fonts.outline};
 		int fontSize = (int) (Fonts.def.getData().lineHeight / Fonts.def.getData().scaleY);
 
 		Properties iconProperties = new Properties();

@@ -35,14 +35,14 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 	public V[] valueTable;
 	public int capacity, stashSize;
 
-	private float loadFactor;
-	private int hashShift, mask, threshold;
-	private int stashCapacity;
-	private int pushIterations;
+	float loadFactor;
+	int hashShift, mask, threshold;
+	int stashCapacity;
+	int pushIterations;
 
 	Entries<K, V> entries1, entries2;
-	Values<V> values1, values2;
-	Keys<K> keys1, keys2;
+	Values<K, V> values1, values2;
+	Keys<K, V> keys1, keys2;
 
 	@SuppressWarnings("unchecked")
 	public static <K, V> CollectionObjectMap<K, V> of(Class<?> keyType, Class<?> valueType, Object... values) {
@@ -214,7 +214,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 	}
 
 	/** Skips checks for existing keys. */
-	private void putResize(K key, V value) {
+	void putResize(K key, V value) {
 		// Check for empty buckets.
 		int hashCode = key.hashCode();
 		int index1 = hashCode & mask;
@@ -247,7 +247,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		push(key, value, index1, key1, index2, key2, index3, key3);
 	}
 
-	private void push(K insertKey, V insertValue, int index1, K key1, int index2, K key2, int index3, K key3) {
+	void push(K insertKey, V insertValue, int index1, K key1, int index2, K key2, int index3, K key3) {
 		// Push keys until an empty bucket is found.
 		K evictedKey;
 		V evictedValue;
@@ -313,7 +313,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		putStash(evictedKey, evictedValue);
 	}
 
-	private void putStash(K key, V value) {
+	void putStash(K key, V value) {
 		if (stashSize == stashCapacity) {
 			// Too many pushes occurred and the stash is full, increase the table size.
 			resize(capacity << 1);
@@ -382,13 +382,14 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		return valueTable[index];
 	}
 
-	private V getStash(Object key, V defaultValue) {
+	V getStash(Object key, V defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return valueTable[i];
 		return defaultValue;
 	}
 
 	/** Returns the value associated with the key, or null. */
+	@Override
 	public V remove(Object key) {
 		if (key == null) return null;
 
@@ -550,7 +551,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		return containsValue(value, false);
 	}
 
-	private boolean containsKeyStash(Object key) {
+	boolean containsKeyStash(Object key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return true;
 		return false;
@@ -589,7 +590,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 	}
 
 	@SuppressWarnings("unchecked")
-	private void resize(int newSize) {
+	void resize(int newSize) {
 		int oldEndIndex = capacity + stashSize;
 
 		capacity = newSize;
@@ -616,12 +617,12 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		}
 	}
 
-	private int hash2(int h) {
+	int hash2(int h) {
 		h *= PRIME2;
 		return (h ^ h >>> hashShift) & mask;
 	}
 
-	private int hash3(int h) {
+	int hash3(int h) {
 		h *= PRIME3;
 		return (h ^ h >>> hashShift) & mask;
 	}
@@ -727,7 +728,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 	 * time this method is called. Use the {@link Values} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public Values<V> values() {
+	public Values<K, V> values() {
 		if (values1 == null) {
 			values1 = new Values<>(this);
 			values2 = new Values<>(this);
@@ -754,7 +755,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 	 * time this method is called. Use the {@link Keys} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public Keys<K> keySet() {
+	public Keys<K, V> keySet() {
 		if (keys1 == null) {
 			keys1 = new Keys<>(this);
 			keys2 = new Keys<>(this);
@@ -774,17 +775,19 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 	public static class MapEntrySet<K, V> extends AbstractSet<Entry<K, V>> {
 		final CollectionObjectMap<K, V> map;
 
-		private final MapItr itr = new MapItr();
-		private final MapEnt ent = new MapEnt();
+		final MapItr itr = new MapItr();
+		final MapEnt ent = new MapEnt();
 
 		public MapEntrySet(CollectionObjectMap<K, V> map) {
 			this.map = map;
 		}
 
+		@Override
 		public int size() {
 			return map.size;
 		}
 
+		@Override
 		public void clear() {
 			map.clear();
 		}
@@ -873,7 +876,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		}
 	}
 
-	private abstract static class MapIterator<K, V, I> implements Iterable<I>, Iterator<I> {
+	abstract static class MapIterator<K, V, I> implements Iterable<I>, Iterator<I> {
 		final CollectionObjectMap<K, V> map;
 
 		public boolean hasNext;
@@ -903,6 +906,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 			}
 		}
 
+		@Override
 		public void remove() {
 			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
 			if (currentIndex >= map.capacity) {
@@ -950,10 +954,9 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		}
 	}
 
-	public static class Values<V> extends MapIterator<Object, V, V> implements Collection<V> {
-		@SuppressWarnings("unchecked")
-		public Values(CollectionObjectMap<?, V> map) {
-			super((CollectionObjectMap<Object, V>) map);
+	public static class Values<K, V> extends MapIterator<K, V, V> implements Collection<V> {
+		public Values(CollectionObjectMap<K, V> map) {
+			super(map);
 		}
 
 		@Override
@@ -988,15 +991,16 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		}
 
 		@Override
-		public Values<V> iterator() {
+		public Values<K, V> iterator() {
 			return this;
 		}
 
 		@Override
-		public Object[] toArray() {
-			return toSeq().toArray(Object.class);
+		public V[] toArray() {
+			return toSeq().toArray();
 		}
 
+		@SuppressWarnings("unchecked")
 		@Override
 		public <T> T[] toArray(T[] a) {
 			if (a.length < map.size)
@@ -1014,19 +1018,23 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		}
 
 		@Override
+		public boolean addAll(Collection<? extends V> c) {
+			return false;
+		}
+
+		@Override
 		public boolean remove(Object o) {
-			Iterator<V> it = iterator();
 			if (o == null) {
-				while (it.hasNext()) {
-					if (it.next() == null) {
-						it.remove();
+				while (hasNext()) {
+					if (next() == null) {
+						remove();
 						return true;
 					}
 				}
 			} else {
-				while (it.hasNext()) {
-					if (o.equals(it.next())) {
-						it.remove();
+				while (hasNext()) {
+					if (o.equals(next())) {
+						remove();
 						return true;
 					}
 				}
@@ -1043,21 +1051,11 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		}
 
 		@Override
-		public boolean addAll(Collection<? extends V> c) {
-			boolean modified = false;
-			for (V e : c)
-				if (add(e))
-					modified = true;
-			return modified;
-		}
-
-		@Override
 		public boolean removeAll(Collection<?> c) {
 			boolean modified = false;
-			Iterator<?> it = iterator();
-			while (it.hasNext()) {
-				if (c.contains(it.next())) {
-					it.remove();
+			while (hasNext()) {
+				if (c.contains(next())) {
+					remove();
 					modified = true;
 				}
 			}
@@ -1067,10 +1065,9 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		@Override
 		public boolean retainAll(Collection<?> c) {
 			boolean modified = false;
-			Iterator<V> it = iterator();
-			while (it.hasNext()) {
-				if (!c.contains(it.next())) {
-					it.remove();
+			while (hasNext()) {
+				if (!c.contains(next())) {
+					remove();
 					modified = true;
 				}
 			}
@@ -1095,10 +1092,9 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		}
 	}
 
-	public static class Keys<K> extends MapIterator<K, Object, K> implements Set<K> {
-		@SuppressWarnings("unchecked")
-		public Keys(CollectionObjectMap<K, ?> map) {
-			super((CollectionObjectMap<K, Object>) map);
+	public static class Keys<K, V> extends MapIterator<K, V, K> implements Set<K> {
+		public Keys(CollectionObjectMap<K, V> map) {
+			super(map);
 		}
 
 		@Override
@@ -1143,7 +1139,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		}
 
 		@Override
-		public Keys<K> iterator() {
+		public Keys<K, V> iterator() {
 			return this;
 		}
 

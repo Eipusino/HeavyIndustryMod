@@ -47,6 +47,7 @@ public class IconDisplay extends Block {
 	@Override
 	public void load() {
 		super.load();
+
 		maskRegion = Core.atlas.find(name + "-mask", HVars.whiteAtlas);
 	}
 
@@ -76,7 +77,7 @@ public class IconDisplay extends Block {
 			tmpSeq.add(content.planets().select(p -> !p.accessible));
 			tmpSeq.add(content.statusEffects().select(e -> !e.isHidden()));
 			tmpSeq.add(content.sectors().select(s -> !s.isHidden()));
-			return tmpSeq.as();
+			return tmpSeq;
 		}
 
 		@Override
@@ -99,9 +100,9 @@ public class IconDisplay extends Block {
 				type = UnlockableContent.class;
 				cont = (UnlockableContent) value;
 			}
-			if (value instanceof Long num) {
-				int typeId = Point2.unpack(Math.toIntExact(num)).x;
-				int contId = Point2.unpack(Math.toIntExact(num)).y;
+			if (value instanceof Number num) {
+				int typeId = Point2.unpack(Math.toIntExact(num.longValue())).x;
+				int contId = Point2.unpack(Math.toIntExact(num.longValue())).y;
 				if (content != null && typeId < content.getContentMap().length && content.getContentMap()[typeId].get(contId) instanceof UnlockableContent uc) {
 					type = UnlockableContent.class;
 					cont = uc;

@@ -29,6 +29,9 @@ public class PayloadCrafter extends AdaptiveCrafter {
 
 	public PayloadCrafter(String name) {
 		super(name);
+
+		acceptsPayload = true;
+		outputsPayload = true;
 	}
 
 	@Override
@@ -113,6 +116,42 @@ public class PayloadCrafter extends AdaptiveCrafter {
 				});
 			}
 			liquidOutput.each(output -> dumpLiquid(output, 2f, -1));
+		}
+
+		@Override
+		public boolean shouldConsume() {
+			Recipe recipe = getRecipe();
+
+			if (recipe == null) return false;
+
+			for (ItemStack output : recipe.outputItem) {
+				if (items.get(output.item) + output.amount > itemCapacity) {
+					return powerProduction > 0;
+				}
+			}
+			for (PayloadStack output : recipe.outputPayload) {
+				if (getPayloads().get(output.item) + output.amount > payloadCapacity) {
+					return powerProduction > 0;
+				}
+			}
+			if (!ignoreLiquidFullness) {
+				if (recipe.outputLiquid.length == 0) return true;
+
+				boolean allFull = true;
+				for (LiquidStack output : recipe.outputLiquid) {
+					if (liquids.get(output.liquid) >= liquidCapacity - 0.001f) {
+						if (!dumpExtraLiquid) {
+							return false;
+						}
+					} else {
+						allFull = false;
+					}
+				}
+				if (allFull) {
+					return false;
+				}
+			}
+			return enabled;
 		}
 
 		@Override

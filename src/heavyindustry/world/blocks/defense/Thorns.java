@@ -19,6 +19,8 @@ public class Thorns extends Block {
 
 	public Thorns(String name) {
 		super(name);
+
+		sync = true;
 	}
 
 	@Override

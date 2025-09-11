@@ -1,11 +1,11 @@
 package heavyindustry.io;
 
 import arc.math.geom.Point2;
-import arc.struct.Seq;
+import arc.util.Reflect;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.input.InputAggregator.TapResult;
 import heavyindustry.util.Utils;
+import mindustry.Vars;
 import mindustry.content.TechTree.TechNode;
 import mindustry.ctype.ContentType;
 import mindustry.ctype.UnlockableContent;
@@ -17,8 +17,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
-import static mindustry.Vars.content;
 
 public final class HTypeIO {
 	/** Don't let anyone instantiate this class. */
@@ -54,20 +52,7 @@ public final class HTypeIO {
 	}
 
 	public static TechNode readTechNode(Reads read) {
-		return content.<UnlockableContent>getByID(ContentType.all[read.i()], read.s()).techNode;
-	}
-
-	public static void writeStrings(Writes write, Seq<String> array) {
-		write.i(array.size);
-		for (String s : array) write.str(s);
-	}
-
-	public static Seq<String> readStrings(Reads read) {
-		int size = read.i();
-		Seq<String> out = new Seq<>(true, size, String.class);
-
-		for (int i = 0; i < size; i++) out.add(read.str());
-		return out;
+		return Vars.content.<UnlockableContent>getByID(ContentType.all[read.i()], read.s()).techNode;
 	}
 
 	public static void writeItemConsumers(Writes writes, Itemsc[] itemscs) {
@@ -86,25 +71,17 @@ public final class HTypeIO {
 		return itemscs;
 	}
 
-	public static <T extends Enum<T>> void writeEnums(Writes write, Seq<T> array) {
-		write.i(array.size);
+	public static <T extends Enum<T>> void writeEnums(Writes write, T[] array) {
+		write.i(array.length);
 		for (T t : array) write.b(t.ordinal());
 	}
 
-	public static <T extends Enum<T>> Seq<T> readEnums(Reads read, FromOrdinal<T> prov, Class<T> type) {
+	public static <T extends Enum<T>> T[] readEnums(Reads read, FromOrdinal<T> prov, Class<T> type) {
 		int size = read.i();
-		Seq<T> out = new Seq<>(true, size, type);
+		T[] out = Reflect.newArray(type, size);
 
-		for (int i = 0; i < size; i++) out.add(prov.get(read.b()));
+		for (int i = 0; i < size; i++) out[i] = prov.get(read.b());
 		return out;
-	}
-
-	public static void writeTaps(Writes write, Seq<TapResult> array) {
-		writeEnums(write, array);
-	}
-
-	public static Seq<TapResult> readTaps(Reads read) {
-		return readEnums(read, ordinal -> TapResult.all[ordinal], TapResult.class);
 	}
 
 	public static void writeObject(Writes write, Object object) {
