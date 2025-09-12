@@ -75,8 +75,6 @@ import heavyindustry.world.blocks.environment.ConnectedFloor;
 import heavyindustry.world.blocks.environment.ConnectedStaticWall;
 import heavyindustry.world.blocks.environment.DepthCliff;
 import heavyindustry.world.blocks.environment.DepthCliffHelper;
-import heavyindustry.world.blocks.heat.FuelHeater;
-import heavyindustry.world.blocks.heat.SolarHeaterGenerator;
 import heavyindustry.world.blocks.heat.ThermalHeater;
 import heavyindustry.world.blocks.liquid.ConnectedPump;
 import heavyindustry.world.blocks.liquid.LiquidDirectionalUnloader;
@@ -328,7 +326,6 @@ public final class HBlocks {
 	//production
 	largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, stoneCrusher, fractionator, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
 			crystallineCircuitConstructor, crystallineCircuitPrinter, crystalActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, corkscrewCompressor,
-			electricHeater, crystalHeater, solarHeaterPanel, liquidFuelHeater,
 			atmosphericCollector, atmosphericCooler, crystalSynthesizer, uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilPrecipitator, blastReagentMixer, centrifuge, galliumNitrideSmelter,
 	//production-erekir
 	ventHeater, chemicalSiliconSmelter, largeElectricHeater, largeOxidationChamber, largeSurgeCrucible, largeCarbideCrucible,
@@ -2434,44 +2431,6 @@ public final class HBlocks {
 				craftTime = 15f;
 			}});
 			consumePower(5.5f);
-		}};
-		electricHeater = new HeatProducer("electric-heater") {{
-			requirements(Category.crafting, ItemStack.with(Items.graphite, 40, Items.titanium, 30));
-			size = 2;
-			health = 110;
-			drawer = new DrawMulti(new DrawDefault(), new DrawHeatOutput());
-			rotateDraw = false;
-			regionRotated1 = 1;
-			ambientSound = Sounds.hum;
-			consumePower(100f / 60f);
-			heatOutput = 3f;
-			buildType = HeatProducerBuild::new;
-		}};
-		solarHeaterPanel = new SolarHeaterGenerator("solar-heater-panel") {{
-			requirements(Category.crafting, ItemStack.with(Items.lead, 60, Items.graphite, 30, Items.silicon, 70, Items.phaseFabric, 5));
-			size = 3;
-			powerProduction = 0.5f;
-			heatOutput = 5f;
-		}};
-		crystalHeater = new HeatProducer("crystal-heater") {{
-			requirements(Category.crafting, ItemStack.with(Items.graphite, 50, Items.thorium, 30, HItems.crystal, 15));
-			size = 2;
-			health = 220;
-			drawer = new DrawMulti(new DrawDefault(), new DrawHeatOutput());
-			rotateDraw = false;
-			regionRotated1 = 1;
-			ambientSound = Sounds.hum;
-			consumePower(50f / 60f);
-			heatOutput = 8f;
-			buildType = HeatProducerBuild::new;
-		}};
-		liquidFuelHeater = new FuelHeater("liquid-fuel-heater") {{
-			requirements(Category.crafting, ItemStack.with(Items.graphite, 120, Items.metaglass, 80, Items.titanium, 60, Items.plastanium, 30));
-			size = 3;
-			heatOutput = 10;
-			liquidCapacity = 60;
-			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(), new DrawDefault(), new DrawHeatOutput());
-			consume(new ConsumeLiquidFlammable(7.5f / 60f));
 		}};
 		atmosphericCollector = new AttributeCrafter("atmospheric-collector") {{
 			requirements(Category.crafting, ItemStack.with(Items.copper, 40, Items.metaglass, 20, Items.silicon, 40, Items.titanium, 30));

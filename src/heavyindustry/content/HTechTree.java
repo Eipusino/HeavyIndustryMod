@@ -2,7 +2,6 @@ package heavyindustry.content;
 
 import arc.struct.Seq;
 import heavyindustry.func.FuncInte;
-import mindustry.content.Blocks;
 import mindustry.content.Items;
 import mindustry.content.Liquids;
 import mindustry.content.SectorPresets;
@@ -175,11 +174,6 @@ public final class HTechTree {
 		//production
 		vanillaNode(kiln, () -> node(largeKiln));
 		vanillaNode(pulverizer, () -> {
-			node(HBlocks.electricHeater, () -> {
-				node(solarHeaterPanel);
-				node(crystalHeater);
-				node(liquidFuelHeater);
-			});
 			node(stoneCrusher);
 			node(largePulverizer, () -> node(crystalSynthesizer, () -> {
 				node(uraniumSynthesizer, Seq.with(new OnSector(SectorPresets.desolateRift)));
@@ -216,7 +210,7 @@ public final class HTechTree {
 			node(chemicalSiliconSmelter, ItemStack.with(Items.graphite, 2800, Items.silicon, 1000, Items.tungsten, 2400, Items.oxide, 50));
 			node(ventHeater);
 		});
-		vanillaNode(Blocks.electricHeater, () -> {
+		vanillaNode(electricHeater, () -> {
 			node(largeElectricHeater, ItemStack.with(Items.tungsten, 3000, Items.oxide, 2400, Items.carbide, 800));
 			node(heatReactor);
 		});

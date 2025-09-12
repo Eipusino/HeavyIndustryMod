@@ -2,8 +2,8 @@ package heavyindustry.world.blocks.liquid;
 
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
-import arc.struct.Queue;
 import arc.struct.Seq;
+import heavyindustry.util.BaseQueue;
 import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.type.Liquid;
@@ -11,7 +11,7 @@ import mindustry.world.blocks.liquid.LiquidBlock;
 import mindustry.world.modules.LiquidModule;
 
 public class MergingLiquidBlock extends LiquidBlock {
-	public static final Queue<MergingLiquidBuild> buildQueue = new Queue<>(16, MergingLiquidBuild.class);
+	public static final BaseQueue<MergingLiquidBuild> buildQueue = new BaseQueue<>(16, MergingLiquidBuild.class);
 	// terrible
 	public static final LiquidModule tmpLiquids = new LiquidModule();
 
