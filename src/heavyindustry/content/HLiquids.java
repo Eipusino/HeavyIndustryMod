@@ -18,10 +18,10 @@ import mindustry.type.Liquid;
  * @author Eipusino
  */
 public final class HLiquids {
-	private static final int originiumFluidId = Draws.nextTaskId();
+	private static final int crystalFluidId = Draws.nextTaskId();
 
 	public static Liquid
-			brine, gas, lightOil, nitratedOil, blastReagent, originiumFluid;
+			brine, gas, lightOil, nitratedOil, blastReagent, crystalFluid;
 
 	/** Don't let anyone instantiate this class. */
 	private HLiquids() {}
@@ -65,7 +65,7 @@ public final class HLiquids {
 			viscosity = 0.8f;
 			explosiveness = 3f;
 		}};
-		originiumFluid = new MultiCellLiquid("originium-fluid", HPal.originiumGreen) {{
+		crystalFluid = new MultiCellLiquid("crystal-fluid", HPal.crystalGreen) {{
 			heatCapacity = 2.5f;
 			lightColor = color.cpy().a(0.3f);
 			particleSpacing = 10;
@@ -76,8 +76,8 @@ public final class HLiquids {
 		}
 			@Override
 			public void drawPuddle(Puddle puddle) {
-				Draws.drawTask(originiumFluidId, puddle, HShaders.wave, s -> {
-					s.waveMix = HPal.originiumGreenBright;
+				Draws.drawTask(crystalFluidId, puddle, HShaders.wave, s -> {
+					s.waveMix = HPal.crystalGreenBright;
 					s.mixAlpha = 0.2f + Mathf.absin(5, 0.2f);
 					s.waveScl = 0.2f;
 					s.maxThreshold = 1f;

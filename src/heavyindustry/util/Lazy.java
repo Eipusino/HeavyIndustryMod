@@ -3,8 +3,8 @@ package heavyindustry.util;
 import arc.func.Prov;
 
 public class Lazy<T> {
-	T t;
-	Prov<T> prov;
+	T value;
+	volatile Prov<T> prov;
 
 	public Lazy(Prov<T> p) {
 		if (p == null) throw new IllegalArgumentException("The prov cannot be null.");
@@ -16,14 +16,18 @@ public class Lazy<T> {
 	}
 
 	public T get() {
-		if (prov == null) return t;
-
-		t = prov.get();
-		prov = null;
-		return t;
+		if (prov != null) {
+			synchronized (this) {
+				if (prov != null) {
+					value = prov.get();
+					prov = null;
+				}
+			}
+		}
+		return value;
 	}
 
-	public void set(T value) {
-		t = value;
+	public void set(T v) {
+		value = v;
 	}
 }

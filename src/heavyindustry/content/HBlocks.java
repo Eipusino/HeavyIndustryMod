@@ -70,13 +70,13 @@ import heavyindustry.world.blocks.distribution.RailStackBridge;
 import heavyindustry.world.blocks.distribution.StackBridge;
 import heavyindustry.world.blocks.distribution.StackHelper;
 import heavyindustry.world.blocks.distribution.TubeConveyor;
-import heavyindustry.world.blocks.distribution.TubeDistributor;
 import heavyindustry.world.blocks.distribution.TubeSorter;
 import heavyindustry.world.blocks.environment.ConnectedFloor;
 import heavyindustry.world.blocks.environment.ConnectedStaticWall;
 import heavyindustry.world.blocks.environment.DepthCliff;
 import heavyindustry.world.blocks.environment.DepthCliffHelper;
 import heavyindustry.world.blocks.heat.FuelHeater;
+import heavyindustry.world.blocks.heat.SolarHeaterGenerator;
 import heavyindustry.world.blocks.heat.ThermalHeater;
 import heavyindustry.world.blocks.liquid.ConnectedPump;
 import heavyindustry.world.blocks.liquid.LiquidDirectionalUnloader;
@@ -288,15 +288,15 @@ public final class HBlocks {
 			darkPanel7, darkPanel8, darkPanel9, darkPanel10, darkPanel11, darkPanelDamaged, asphalt, asphaltTiles,
 			shaleVent, basaltSpikes, basaltWall, basaltGraphiticWall, basaltPyratiticWall, snowySand, snowySandWall, arkyciteSand, arkyciteSandWall, arkyciteSandBoulder, darksandBoulder,
 			concreteBlank, concreteFill, concreteNumber, concreteStripe, concrete, stoneFullTiles, stoneFull, stoneHalf, stoneTiles, concreteWall, pit, waterPit,
-			brine, originiumFluid, deepOriginiumFluid,
+			brine, crystalFluid, deepCrystalFluid,
 			metalFloorWater, metalFloorWater2, metalFloorWater3, metalFloorWater4, metalFloorWater5, metalFloorDamagedWater,
 			stoneWater, shaleWater, basaltWater, mudWater,
 			overgrownGrass, overgrownShrubs, overgrownPine,
 			corruptedMoss, corruptedSporeMoss, corruptedSporeRocks, corruptedSporePine, corruptedSporeFern, corruptedSporePlant, corruptedSporeTree,
 			mycelium, myceliumSpore, myceliumShrubs, myceliumPine,
 			softRareEarth, patternRareEarth, softRareEarthWall,
-			originiumCrystals,
-			oreSilicon, oreOriginium, oreUranium, oreChromium,
+			crystals,
+			oreSilicon, oreCrystal, oreUranium, oreChromium,
 	//wall
 	copperWallHuge, copperWallGigantic, armoredWall, armoredWallLarge, armoredWallHuge, armoredWallGigantic, titaniumWallHuge, titaniumWallGigantic, doorHuge, doorGigantic,
 			plastaniumWallHuge, plastaniumWallGigantic, thoriumWallHuge, thoriumWallGigantic, phaseWallHuge, phaseWallGigantic, surgeWallHuge, surgeWallGigantic,
@@ -312,7 +312,7 @@ public final class HBlocks {
 	heavyPlasmaBore, unitMinerPoint, unitMinerCenter, unitMinerDepot,
 	//distribution
 	invertedJunction, itemLiquidJunction, multiSorter, plastaniumRouter, plastaniumBridge, stackHelper,
-			chromiumEfficientConveyor, chromiumArmorConveyor, chromiumTubeConveyor, chromiumTubeDistributor, chromiumTubeSorter, chromiumStackConveyor, chromiumStackRouter, chromiumStackBridge, chromiumJunction, chromiumRouter, chromiumItemBridge,
+			chromiumEfficientConveyor, chromiumArmorConveyor, chromiumTubeConveyor, chromiumTubeSorter, chromiumStackConveyor, chromiumStackRouter, chromiumStackBridge, chromiumJunction, chromiumRouter, chromiumItemBridge,
 			phaseItemNode, rapidDirectionalUnloader,
 	//distribution-erekir
 	ductJunction, ductDistributor, ductMultiSorter, armoredDuctBridge, rapidDuctUnloader,
@@ -327,9 +327,9 @@ public final class HBlocks {
 	smartBeamNode, beamDiode, beamInsulator, reinforcedPowerAnalyzer,
 	//production
 	largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, stoneCrusher, fractionator, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
-			crystallineCircuitConstructor, crystallineCircuitPrinter, originiumActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, corkscrewCompressor,
-			originiumHeater, liquidFuelHeater,
-			atmosphericCollector, atmosphericCooler, originiumSynthesizer, uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilPrecipitator, blastReagentMixer, centrifuge, galliumNitrideSmelter,
+			crystallineCircuitConstructor, crystallineCircuitPrinter, crystalActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, corkscrewCompressor,
+			electricHeater, crystalHeater, solarHeaterPanel, liquidFuelHeater,
+			atmosphericCollector, atmosphericCooler, crystalSynthesizer, uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilPrecipitator, blastReagentMixer, centrifuge, galliumNitrideSmelter,
 	//production-erekir
 	ventHeater, chemicalSiliconSmelter, largeElectricHeater, largeOxidationChamber, largeSurgeCrucible, largeCarbideCrucible,
 	//defense
@@ -537,27 +537,27 @@ public final class HBlocks {
 			cacheLayer = HCacheLayer.brine;
 			albedo = 1f;
 		}};
-		originiumFluid = new Floor("pooled-originium-fluid", 0) {{
+		crystalFluid = new Floor("pooled-crystal-fluid", 0) {{
 			status = HStatusEffects.regenerating;
 			statusDuration = 60f;
 			drownTime = 160f;
 			speedMultiplier = 0.8f;
-			liquidDrop = HLiquids.originiumFluid;
+			liquidDrop = HLiquids.crystalFluid;
 			isLiquid = true;
-			cacheLayer = HCacheLayer.originiumFluid;
+			cacheLayer = HCacheLayer.crystalFluid;
 			liquidMultiplier = 0.5f;
 			emitLight = true;
 			lightRadius = 20f;
 			lightColor = Color.green.cpy().a(0.19f);
 		}};
-		deepOriginiumFluid = new Floor("pooled-deep-originium-fluid", 0) {{
+		deepCrystalFluid = new Floor("pooled-deep-crystal-fluid", 0) {{
 			status = HStatusEffects.regenerating;
 			statusDuration = 180f;
 			drownTime = 120f;
 			speedMultiplier = 0.6f;
-			liquidDrop = HLiquids.originiumFluid;
+			liquidDrop = HLiquids.crystalFluid;
 			isLiquid = true;
-			cacheLayer = HCacheLayer.deepOriginiumFluid;
+			cacheLayer = HCacheLayer.deepCrystalFluid;
 			emitLight = true;
 			lightRadius = 30f;
 			lightColor = Color.green.cpy().a(0.19f);
@@ -685,15 +685,15 @@ public final class HBlocks {
 		myceliumPine = new StaticWall("mycelium-pine") {{
 			variants = 2;
 		}};
-		originiumCrystals = new TallBlock("originium-crystals") {{
+		crystals = new TallBlock("crystals") {{
 			variants = 3;
 			clipSize = 128f;
-			itemDrop = HItems.originium;
+			itemDrop = HItems.crystal;
 		}};
 		oreSilicon = new OreBlock("ore-silicon", Items.silicon) {{
 			variants = 3;
 		}};
-		oreOriginium = new OreBlock("ore-originium", HItems.originium) {{
+		oreCrystal = new OreBlock("ore-crystal", HItems.crystal) {{
 			variants = 3;
 		}};
 		oreUranium = new OreBlock("ore-uranium", HItems.uranium) {{
@@ -1108,7 +1108,7 @@ public final class HBlocks {
 			size = 2;
 			drillTime = 340f;
 			tier = 4;
-			consumeLiquid(Liquids.water, 0.06f).boost();
+			consumeLiquid(Liquids.water, 0.06f).optional(true, true);
 			buildType = DrillBuild::new;
 		}};
 		largeWaterExtractor = new SolidPump("large-water-extractor") {{
@@ -1295,7 +1295,7 @@ public final class HBlocks {
 			drillMultipliers.put(Items.pyratite, 1.5f);
 			consumePower(390f / 60f);
 			consumeLiquid(Liquids.hydrogen, 1.5f / 60f);
-			consumeLiquid(Liquids.nitrogen, 7.5f / 60f).boost();
+			consumeLiquid(Liquids.nitrogen, 7.5f / 60f).optional(true, true);
 			buildType = BeamDrillBuild::new;
 		}};
 		unitMinerPoint = new UnitMinerPoint("unit-miner-point") {{
@@ -1391,14 +1391,6 @@ public final class HBlocks {
 			placeableLiquid = true;
 			displayFlow = true;
 			hideDetails = false;
-		}};
-		chromiumTubeDistributor = new TubeDistributor("chromium-tube-distributor") {{
-			requirements(Category.distribution, ItemStack.with(Items.copper, 1, Items.metaglass, 1, HItems.chromium, 1));
-			health = 450;
-			armor = 4f;
-			speed = 0.18f;
-			placeableLiquid = true;
-			displayFlow = true;
 		}};
 		chromiumTubeSorter = new TubeSorter("chromium-tube-sorter") {{
 			requirements(Category.distribution, ItemStack.with(Items.copper, 1, Items.metaglass, 1, HItems.chromium, 1));
@@ -1929,18 +1921,18 @@ public final class HBlocks {
 			ambientSoundVolume = 0.1f;
 			consumePower(65f);
 			consumeItem(Items.phaseFabric, 1);
-			consumeLiquid(HLiquids.originiumFluid, 0.25f);
+			consumeLiquid(HLiquids.crystalFluid, 0.25f);
 			buildCostMultiplier = 0.6f;
 		}};
 		hugeBattery = new Battery("huge-battery") {{
-			requirements(Category.power, ItemStack.with(HItems.originium, 110, Items.graphite, 125, Items.phaseFabric, 80, Items.thorium, 110, Items.plastanium, 100));
+			requirements(Category.power, ItemStack.with(HItems.crystal, 110, Items.graphite, 125, Items.phaseFabric, 80, Items.thorium, 110, Items.plastanium, 100));
 			size = 5;
 			health = 1600;
 			consumePowerBuffered(750000f);
 			buildType = BatteryBuild::new;
 		}};
 		armoredCoatedBattery = new Battery("armored-coated-battery") {{
-			requirements(Category.power, ItemStack.with(HItems.originium, 70, Items.silicon, 180, Items.plastanium, 120, HItems.chromium, 100, Items.phaseFabric, 50));
+			requirements(Category.power, ItemStack.with(HItems.crystal, 70, Items.silicon, 180, Items.plastanium, 120, HItems.chromium, 100, Items.phaseFabric, 50));
 			size = 4;
 			health = 8400;
 			armor = 28f;
@@ -2189,7 +2181,7 @@ public final class HBlocks {
 			hideDetails = false;
 		}};
 		crystallineCircuitConstructor = new GenericCrafter("crystalline-circuit-constructor") {{
-			requirements(Category.crafting, ItemStack.with(Items.copper, 120, Items.titanium, 45, Items.silicon, 35, HItems.originium, 20));
+			requirements(Category.crafting, ItemStack.with(Items.copper, 120, Items.titanium, 45, Items.silicon, 35, HItems.crystal, 20));
 			size = 2;
 			itemCapacity = 15;
 			craftTime = 100f;
@@ -2197,11 +2189,11 @@ public final class HBlocks {
 			craftEffect = Fx.none;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawDefault());
 			consumePower(2.5f);
-			consumeItems(ItemStack.with(Items.titanium, 2, Items.silicon, 3, HItems.originium, 1));
+			consumeItems(ItemStack.with(Items.titanium, 2, Items.silicon, 3, HItems.crystal, 1));
 			buildType = GenericCrafterBuild::new;
 		}};
 		crystallineCircuitPrinter = new AdaptiveCrafter("crystalline-circuit-printer") {{
-			requirements(Category.crafting, ItemStack.with(Items.titanium, 600, Items.silicon, 400, Items.plastanium, 350, Items.surgeAlloy, 250, HItems.chromium, 200, HItems.crystallineCircuit, 150, HItems.originium, 150));
+			requirements(Category.crafting, ItemStack.with(Items.titanium, 600, Items.silicon, 400, Items.plastanium, 350, Items.surgeAlloy, 250, HItems.chromium, 200, HItems.crystallineCircuit, 150, HItems.crystal, 150));
 			size = 4;
 			health = 1500;
 			armor = 3f;
@@ -2269,12 +2261,12 @@ public final class HBlocks {
 				color = junior;
 			}});
 			recipes.add(new Recipe() {{
-				inputItem = ItemStack.with(Items.titanium, 6, Items.silicon, 9, HItems.originium, 3);
+				inputItem = ItemStack.with(Items.titanium, 6, Items.silicon, 9, HItems.crystal, 3);
 				inputLiquid = LiquidStack.with(Liquids.cryofluid, 6f / 60f);
 				outputItem = ItemStack.with(HItems.crystallineCircuit, 18);
 				craftTime = 150f;
 			}}, new Recipe() {{
-				inputItem = ItemStack.with(HItems.galliumNitride, 8, HItems.originium, 4, HItems.chromium, 6);
+				inputItem = ItemStack.with(HItems.galliumNitride, 8, HItems.crystal, 4, HItems.chromium, 6);
 				inputLiquid = LiquidStack.with(Liquids.cryofluid, 18f / 60f);
 				outputItem = ItemStack.with(HItems.crystallineElectronicUnit, 9);
 				craftTime = 150f;
@@ -2283,7 +2275,7 @@ public final class HBlocks {
 			squareSprite = false;
 			hideDetails = false;
 		}};
-		originiumActivator = new GenericCrafter("originium-activator") {{
+		crystalActivator = new GenericCrafter("crystal-activator") {{
 			requirements(Category.crafting, ItemStack.with(Items.titanium, 90, Items.silicon, 80, HItems.crystallineCircuit, 30, Items.plastanium, 60));
 			size = 2;
 			health = 360;
@@ -2293,12 +2285,12 @@ public final class HBlocks {
 			itemCapacity = 15;
 			liquidCapacity = 24f;
 			craftTime = 100f;
-			craftEffect = HFx.square(HPal.originiumGreenBright, 38, 3, 24, 3.2f);
-			outputLiquid = new LiquidStack(HLiquids.originiumFluid, 18f / 60f);
-			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.water), new DrawLiquidTile(HLiquids.originiumFluid), new DrawRotator(1.5f), new DrawDefault(), new DrawRegion("-top"));
-			lightLiquid = HLiquids.originiumFluid;
+			craftEffect = HFx.square(HPal.crystalGreenBright, 38, 3, 24, 3.2f);
+			outputLiquid = new LiquidStack(HLiquids.crystalFluid, 18f / 60f);
+			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.water), new DrawLiquidTile(HLiquids.crystalFluid), new DrawRotator(1.5f), new DrawDefault(), new DrawRegion("-top"));
+			lightLiquid = HLiquids.crystalFluid;
 			consumePower(3f);
-			consumeItem(HItems.originium, 1);
+			consumeItem(HItems.crystal, 1);
 			consumeLiquid(Liquids.water, 18f / 60f);
 			buildType = GenericCrafterBuild::new;
 			hideDetails = false;
@@ -2443,16 +2435,34 @@ public final class HBlocks {
 			}});
 			consumePower(5.5f);
 		}};
-		originiumHeater = new HeatProducer("originium-heater") {{
-			requirements(Category.crafting, ItemStack.with(Items.graphite, 50, Items.thorium, 30, HItems.originium, 15));
+		electricHeater = new HeatProducer("electric-heater") {{
+			requirements(Category.crafting, ItemStack.with(Items.graphite, 40, Items.titanium, 30));
+			size = 2;
+			health = 110;
+			drawer = new DrawMulti(new DrawDefault(), new DrawHeatOutput());
+			rotateDraw = false;
+			regionRotated1 = 1;
+			ambientSound = Sounds.hum;
+			consumePower(100f / 60f);
+			heatOutput = 3f;
+			buildType = HeatProducerBuild::new;
+		}};
+		solarHeaterPanel = new SolarHeaterGenerator("solar-heater-panel") {{
+			requirements(Category.crafting, ItemStack.with(Items.lead, 60, Items.graphite, 30, Items.silicon, 70, Items.phaseFabric, 5));
+			size = 3;
+			powerProduction = 0.5f;
+			heatOutput = 5f;
+		}};
+		crystalHeater = new HeatProducer("crystal-heater") {{
+			requirements(Category.crafting, ItemStack.with(Items.graphite, 50, Items.thorium, 30, HItems.crystal, 15));
 			size = 2;
 			health = 220;
 			drawer = new DrawMulti(new DrawDefault(), new DrawHeatOutput());
 			rotateDraw = false;
 			regionRotated1 = 1;
 			ambientSound = Sounds.hum;
-			consumePower(120f / 60f);
-			heatOutput = 6f;
+			consumePower(50f / 60f);
+			heatOutput = 8f;
 			buildType = HeatProducerBuild::new;
 		}};
 		liquidFuelHeater = new FuelHeater("liquid-fuel-heater") {{
@@ -2503,7 +2513,7 @@ public final class HBlocks {
 			}}, new DrawDefault());
 			buildType = GenericCrafterBuild::new;
 		}};
-		originiumSynthesizer = new GenericCrafter("originium-synthesizer") {{
+		crystalSynthesizer = new GenericCrafter("crystal-synthesizer") {{
 			requirements(Category.crafting, ItemStack.with(Items.graphite, 80, Items.silicon, 100, Items.titanium, 80, Items.thorium, 20));
 			size = 3;
 			health = 450;
@@ -2511,7 +2521,7 @@ public final class HBlocks {
 			itemCapacity += 15;
 			liquidCapacity *= 6f;
 			craftTime /= 3f;
-			outputItem = new ItemStack(HItems.originium, 1);
+			outputItem = new ItemStack(HItems.crystal, 1);
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.nitrogen), new DrawDefault());
 			consumePower(1.75f);
 			consumeItems(ItemStack.with(HItems.stone, 1));
@@ -2519,7 +2529,7 @@ public final class HBlocks {
 			buildType = GenericCrafterBuild::new;
 		}};
 		uraniumSynthesizer = new GenericCrafter("uranium-synthesizer") {{
-			requirements(Category.crafting, ItemStack.with(Items.graphite, 50, Items.silicon, 40, Items.plastanium, 30, Items.phaseFabric, 15, HItems.originium, 10));
+			requirements(Category.crafting, ItemStack.with(Items.graphite, 50, Items.silicon, 40, Items.plastanium, 30, Items.phaseFabric, 15, HItems.crystal, 10));
 			size = 2;
 			health = 350;
 			craftTime = 60f;
@@ -2534,7 +2544,7 @@ public final class HBlocks {
 			buildType = GenericCrafterBuild::new;
 		}};
 		chromiumSynthesizer = new GenericCrafter("chromium-synthesizer") {{
-			requirements(Category.crafting, ItemStack.with(Items.metaglass, 30, Items.silicon, 40, Items.plastanium, 50, Items.phaseFabric, 25, HItems.originium, 15));
+			requirements(Category.crafting, ItemStack.with(Items.metaglass, 30, Items.silicon, 40, Items.plastanium, 50, Items.phaseFabric, 25, HItems.crystal, 15));
 			size = 3;
 			health = 650;
 			hasLiquids = true;
@@ -2822,7 +2832,7 @@ public final class HBlocks {
 			phaseRangeBoost = 75;
 			scaledHealth = 240;
 			consumePower(2.5f);
-			consumeItem(Items.phaseFabric, 1).boost();
+			consumeItem(Items.phaseFabric, 1).optional(true, true);
 			buildType = MendBuild::new;
 		}};
 		sectorStructureMender = new RegenProjector("sector-structure-mender") {{
@@ -2835,7 +2845,7 @@ public final class HBlocks {
 			optionalUseTime = 3600;
 			optionalMultiplier = 6;
 			effectChance = 0.5f;
-			effect = WrapperEffect.wrap(HFx.polyParticle, HPal.originiumGreen);
+			effect = WrapperEffect.wrap(HFx.polyParticle, HPal.crystalGreen);
 			drawer = new DrawMulti(new DrawDefault(), new DrawPulseShape() {{
 				layer = 110;
 				stroke = 3f;
@@ -2849,7 +2859,7 @@ public final class HBlocks {
 				color = HPal.regenerating;
 			}});
 			consumePower(20f);
-			consumeItem(HItems.crystallineCircuit, 10).boost();
+			consumeItem(HItems.crystallineCircuit, 10).optional(true, true);
 			buildType = RegenProjectorBuild::new;
 		}};
 		assignOverdrive = new AssignOverdrive("assign-overdrive") {{
@@ -2865,7 +2875,7 @@ public final class HBlocks {
 			strokeOffset = -0.05f;
 			strokeClamp = 0.06f;
 			consumePower(14f);
-			consumeItem(Items.phaseFabric).boost();
+			consumeItem(Items.phaseFabric).optional(true, true);
 			squareSprite = false;
 			hideDetails = false;
 		}};
@@ -2877,7 +2887,7 @@ public final class HBlocks {
 			cooldownNormal = 12f;
 			cooldownLiquid = 6f;
 			cooldownBrokenBase = 9f;
-			itemConsumer = consumeItem(Items.phaseFabric).boost();
+			itemConsumer = consumeItem(Items.phaseFabric).optional(true, true);
 			phaseUseTime = 180f;
 			phaseRadiusBoost = 100f;
 			phaseShieldBoost = 15000f;
@@ -3032,7 +3042,7 @@ public final class HBlocks {
 			glowMag = 0.4f;
 			glowScl = 12f;
 			consumePower(18f);
-			consumeLiquid(HLiquids.originiumFluid, 0.6f);
+			consumeLiquid(HLiquids.crystalFluid, 0.6f);
 			buildType = RepairTowerBuild::new;
 		}};
 		titanReconstructor = new Reconstructor("titan-reconstructor") {{
@@ -3897,7 +3907,7 @@ public final class HBlocks {
 			canOverdrive = false;
 		}};
 		judgement = new ContinuousTurret("judgement") {{
-			requirements(Category.turret, ItemStack.with(Items.silicon, 1200, Items.metaglass, 400, Items.plastanium, 800, Items.surgeAlloy, 650, HItems.originium, 350, HItems.galliumNitride, 360, HItems.crystallineElectronicUnit, 180, HItems.heavyAlloy, 600));
+			requirements(Category.turret, ItemStack.with(Items.silicon, 1200, Items.metaglass, 400, Items.plastanium, 800, Items.surgeAlloy, 650, HItems.crystal, 350, HItems.galliumNitride, 360, HItems.crystallineElectronicUnit, 180, HItems.heavyAlloy, 600));
 			shootType = new PointLaserBulletType() {{
 				damage = 100f;
 				hitEffect = HFx.hitSpark;
@@ -4107,7 +4117,7 @@ public final class HBlocks {
 			unitSort = UnitSorts.strongest;
 			buildCostMultiplier = 0.8f;
 			consumePower(26f);
-			consumeLiquid(HLiquids.originiumFluid, 12f / 60f);
+			consumeLiquid(HLiquids.crystalFluid, 12f / 60f);
 			buildType = ContinuousTurretBuild::new;
 		}};
 		evilSpirits = new ItemTurret("evil-spirits") {{
@@ -4477,7 +4487,7 @@ public final class HBlocks {
 			shootCone = 15f;
 			unitSort = UnitSorts.strongest;
 			warmupMaintainTime = 50f;
-			coolant = consume(new ConsumeLiquid(HLiquids.originiumFluid, 20f / 60f));
+			coolant = consume(new ConsumeLiquid(HLiquids.crystalFluid, 20f / 60f));
 			coolantMultiplier = 1.5f;
 			moveWhileCharging = false;
 			canOverdrive = false;
@@ -4573,7 +4583,7 @@ public final class HBlocks {
 			range = 1200;
 			heatColor = Pal.techBlue;
 			unitSort = HUnitSorts.regionalHPMaximumAll;
-			coolant = consume(new ConsumeLiquid(HLiquids.originiumFluid, 1f));
+			coolant = consume(new ConsumeLiquid(HLiquids.crystalFluid, 1f));
 			coolantMultiplier = 0.5f;
 			liquidCapacity = 120;
 			buildCostMultiplier = 0.8f;
@@ -5313,7 +5323,7 @@ public final class HBlocks {
 					return 0f;
 				}
 			};
-			itemConsumer = consumeItem(Items.phaseFabric).boost();
+			itemConsumer = consumeItem(Items.phaseFabric).optional(true, true);
 		}
 			@Override
 			protected TextureRegion[] icons() {

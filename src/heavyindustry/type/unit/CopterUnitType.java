@@ -120,8 +120,6 @@ public class CopterUnitType extends BaseUnitType {
 			}
 
 			for (TextureRegion outlineTarget : outlineRotors) {
-				if (!outlineTarget.found()) continue;
-
 				makeOutline(PageType.main, packer, outlineTarget, alwaysCreateOutline, outlineColor, outlineRadius);
 			}
 		}

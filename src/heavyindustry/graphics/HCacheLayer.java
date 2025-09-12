@@ -9,7 +9,7 @@ import mindustry.graphics.CacheLayer.ShaderLayer;
  * @author Eipusino
  */
 public final class HCacheLayer {
-	public static ShaderLayer brine, originiumFluid, deepOriginiumFluid, pit, waterPit;
+	public static ShaderLayer brine, crystalFluid, deepCrystalFluid, pit, waterPit;
 
 	/** Don't let anyone instantiate this class. */
 	private HCacheLayer() {}
@@ -17,11 +17,11 @@ public final class HCacheLayer {
 	/** Loads the cache layers. */
 	public static void onClient() {
 		brine = new ShaderLayer(HShaders.brine);
-		originiumFluid = new ShaderLayer(HShaders.originiumFluid);
-		deepOriginiumFluid = new ShaderLayer(HShaders.deepOriginiumFluid);
+		crystalFluid = new ShaderLayer(HShaders.crystalFluid);
+		deepCrystalFluid = new ShaderLayer(HShaders.deepCrystalFluid);
 		pit = new ShaderLayer(HShaders.pit);
 		waterPit = new ShaderLayer(HShaders.waterPit);
 
-		CacheLayer.add(brine, originiumFluid, deepOriginiumFluid, pit, waterPit);
+		CacheLayer.add(brine, crystalFluid, deepCrystalFluid, pit, waterPit);
 	}
 }

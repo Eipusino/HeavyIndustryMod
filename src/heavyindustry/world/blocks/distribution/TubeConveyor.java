@@ -49,6 +49,7 @@ public class TubeConveyor extends AdaptConveyor {
 	@Override
 	public void load() {
 		super.load();
+
 		topRegion = splitLayers(name + "-sheet", 32, 2);
 		capRegion = new TextureRegion[]{topRegion[1][0], topRegion[1][1]};
 		editorRegion = Core.atlas.find(name + "-editor");
@@ -127,7 +128,7 @@ public class TubeConveyor extends AdaptConveyor {
 			for (int i = 0; i < 4; i++) {
 				if ((blending & (1 << i)) != 0) {
 					int dir = rotation - i;
-					float rot = i == 0 ? rotation * 90 : (dir) * 90;
+					float rot = i == 0 ? rotation * 90 : dir * 90;
 
 					Draw.rect(sliced(regions[frame][0], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * tilesize * 0.75f, y + Geometry.d4y(dir) * tilesize * 0.75f, rot);
 					Draw.rect(sliced(topRegion[0][1], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * tilesize * 0.75f, y + Geometry.d4y(dir) * tilesize * 0.75f, rot);
@@ -187,10 +188,12 @@ public class TubeConveyor extends AdaptConveyor {
 			super.onProximityUpdate();
 
 			tiling = 0;
+
 			for (int i = 0; i < 4; i++) {
-				Building otherBlock = nearby(i);
-				if (otherBlock == null) continue;
-				if ((otherBlock.block instanceof Conveyor ? (rotation == i || (otherBlock.rotation + 2) % 4 == i) : !noSideBlend && ((rotation == i && otherBlock.block.acceptsItems) || (rotation != i && otherBlock.block.outputsItems())))) {
+				Building other = nearby(i);
+
+				if (other == null) continue;
+				if (other.block instanceof Conveyor ? (rotation == i || (other.rotation + 2) % 4 == i) : !noSideBlend && ((rotation == i && other.block.acceptsItems) || (rotation != i && other.block.outputsItems()))) {
 					tiling |= (1 << i);
 				}
 			}

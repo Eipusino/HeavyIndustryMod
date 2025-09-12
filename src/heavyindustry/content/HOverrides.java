@@ -159,7 +159,7 @@ public final class HOverrides {
 			drag = 0.01f;
 			layer = Layer.bullet - 2f;
 		}});
-		((LiquidTurret) Blocks.wave).ammoTypes.put(HLiquids.originiumFluid, new LiquidBulletType(HLiquids.originiumFluid) {{
+		((LiquidTurret) Blocks.wave).ammoTypes.put(HLiquids.crystalFluid, new LiquidBulletType(HLiquids.crystalFluid) {{
 			drag = 0.01f;
 			healPercent = 5f;
 			collidesTeam = true;
@@ -193,7 +193,7 @@ public final class HOverrides {
 			damage = 0.2f;
 			layer = Layer.bullet - 2f;
 		}});
-		((LiquidTurret) Blocks.tsunami).ammoTypes.put(HLiquids.originiumFluid, new LiquidBulletType(HLiquids.originiumFluid) {{
+		((LiquidTurret) Blocks.tsunami).ammoTypes.put(HLiquids.crystalFluid, new LiquidBulletType(HLiquids.crystalFluid) {{
 			lifetime = 49f;
 			speed = 4f;
 			knockback = 1.3f;
@@ -381,7 +381,7 @@ public final class HOverrides {
 		Liquids.hydrogen.explosiveness = 1.5f;
 		Liquids.ozone.flammability = 0f;
 		Liquids.ozone.explosiveness = 0f;
-		Liquids.neoplasm.canStayOn.addAll(HLiquids.originiumFluid, HLiquids.lightOil, HLiquids.nitratedOil, HLiquids.blastReagent);
+		Liquids.neoplasm.canStayOn.addAll(HLiquids.crystalFluid, HLiquids.lightOil, HLiquids.nitratedOil, HLiquids.blastReagent);
 		Liquids.neoplasm.capPuddles = true;
 		Liquids.gallium.hidden = false;
 		//items
@@ -392,8 +392,8 @@ public final class HOverrides {
 		Items.surgeAlloy.hardness = 6;
 		Items.phaseFabric.hardness = 3;
 		Items.carbide.hardness = 6;
-		Items.serpuloItems.addAll(HItems.stone, HItems.agglomerateSalt, HItems.rareEarth, HItems.galliumNitride, HItems.crystallineCircuit, HItems.gold, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.originium);
-		Items.erekirItems.addAll(HItems.uranium, HItems.chromium, HItems.originium);
+		Items.serpuloItems.addAll(HItems.stone, HItems.agglomerateSalt, HItems.rareEarth, HItems.galliumNitride, HItems.crystallineCircuit, HItems.gold, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.crystal);
+		Items.erekirItems.addAll(HItems.uranium, HItems.chromium, HItems.crystal);
 		//planet
 		Planets.serpulo.allowSectorInvasion = false;
 	}

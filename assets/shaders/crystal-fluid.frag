@@ -1,6 +1,6 @@
 #define HIGHP
 
-//shades of originium-fluid
+//shades of crystal-fluid
 #define S1 vec3(49.5, 82.6, 53.4) / 100.0
 #define S2 vec3(58.5, 89.7, 62.4) / 100.0
 #define NSCALE 100.0 / 2.0

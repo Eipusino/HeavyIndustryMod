@@ -13,7 +13,7 @@ public final class HItems {
 	public static Item
 			stone, agglomerateSalt, rareEarth,
 			galliumNitride, crystallineCircuit, crystallineElectronicUnit,
-			originium,
+			crystal,
 			gold, uranium, chromium, heavyAlloy;
 
 	/** Don't let anyone instantiate this class. */
@@ -40,7 +40,7 @@ public final class HItems {
 			cost = 1.2f;
 			hardness = 3;
 		}};
-		crystallineCircuit = new Item("crystalline-circuit", HPal.originiumGreen) {{
+		crystallineCircuit = new Item("crystalline-circuit", HPal.crystalGreen) {{
 			cost = -0.75f;
 			hardness = 4;
 		}};
@@ -48,7 +48,7 @@ public final class HItems {
 			cost = -1.75f;
 			hardness = 7;
 		}};
-		originium = new Item("originium", HPal.originiumGreen) {{
+		crystal = new Item("crystal", HPal.crystalGreen) {{
 			cost = 1.25f;
 			flammability = 0.2f;
 			explosiveness = 0.3f;

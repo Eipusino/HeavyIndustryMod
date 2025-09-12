@@ -6,17 +6,17 @@ import arc.util.io.Writes;
 import mindustry.graphics.Pal;
 import mindustry.ui.Bar;
 import mindustry.world.blocks.heat.HeatBlock;
-import mindustry.world.blocks.power.ThermalGenerator;
+import mindustry.world.blocks.power.SolarGenerator;
 import mindustry.world.draw.DrawDefault;
 import mindustry.world.draw.DrawHeatOutput;
 import mindustry.world.draw.DrawMulti;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
-public class ThermalHeater extends ThermalGenerator {
+public class SolarHeaterGenerator extends SolarGenerator {
 	public float heatOutput = 5f, warmupRate = 0.15f;
 
-	public ThermalHeater(String name) {
+	public SolarHeaterGenerator(String name) {
 		super(name);
 
 		drawer = new DrawMulti(new DrawDefault(), new DrawHeatOutput());
@@ -35,20 +35,15 @@ public class ThermalHeater extends ThermalGenerator {
 	@Override
 	public void setBars() {
 		super.setBars();
-		addBar("heat", (ThermalHeaterBuild tile) -> new Bar("bar.heat", Pal.lightOrange, () -> Math.min(tile.heat / heatOutput, 1f)));
-	}
-
-	@Override
-	public boolean rotatedOutput(int x, int y) {
-		return false;
+		addBar("heat", (SolarHeaterGeneratorBuild tile) -> new Bar("bar.heat", Pal.lightOrange, () -> Math.min(tile.heat / heatOutput, 1f)));
 	}
 
 	@Override
 	protected void initBuilding() {
-		if (buildType == null) buildType = ThermalHeaterBuild::new;
+		if (buildType == null) buildType = SolarHeaterGeneratorBuild::new;
 	}
 
-	public class ThermalHeaterBuild extends ThermalGeneratorBuild implements HeatBlock {
+	public class SolarHeaterGeneratorBuild extends SolarGeneratorBuild implements HeatBlock {
 		public float heat;
 
 		@Override

@@ -53,22 +53,13 @@ public final class Worlds {
 			}
 		}
 
-		blocks.sort(Structs.comparingInt(pair -> pair.value.id))
-				.each(pair -> {
-					String name = pair.key;
-					Block block = pair.value;
+		blocks.sort(Structs.comparingInt(pair -> pair.value.id));
+		blocks.each(pair -> {
+			String name = pair.key;
+			Block block = pair.value;
 
-					data.append(name)
-							.append(' ')
-							.append(block.synthetic() ? '1' : '0')
-							.append(' ')
-							.append(block.solid ? '1' : '0')
-							.append(' ')
-							.append(block.size)
-							.append(' ')
-							.append(block.mapColor.rgba() >>> 8)
-							.append('\n');
-				});
+			data.append(name).append(' ').append(block.synthetic() ? '1' : '0').append(' ').append(block.solid ? '1' : '0').append(' ').append(block.size).append(' ').append(block.mapColor.rgba() >>> 8).append('\n');
+		});
 
 		Fi file = Core.settings.getDataDirectory().child("tile.dat");
 

@@ -100,12 +100,12 @@ public class Pipe extends MergingLiquidBlock implements Autotiler {
 		}
 	}
 
-	@Override
+	/*@Override
 	public void init() {
 		super.init();
 
-		//if (bridgeReplacement == null) bridgeReplacement = HBlocks.pipeBridge;
-	}
+		if (bridgeReplacement == null) bridgeReplacement = HBlocks.pipeBridge;
+	}*/
 
 	@Override
 	public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list) {

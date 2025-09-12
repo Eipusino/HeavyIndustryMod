@@ -2925,6 +2925,7 @@ public final class HUnitTypes {
 			mineWalls = true;
 			envDisabled = 0;
 			isEnemy = false;
+			bounded = false;
 		}};
 		dpsTesterLand = new BaseUnitType("dps-tester-land") {{
 			constructor = DPSMechUnit::new;
@@ -3808,6 +3809,7 @@ public final class HUnitTypes {
 			targetable = false;
 			faceTarget = false;
 			targetPriority = -9999f;
+			bounded = false;
 			mineWalls = true;
 			mineFloor = true;
 			mineHardnessScaling = false;

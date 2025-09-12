@@ -45,6 +45,8 @@ import static mindustry.Vars.world;
 public class LiquidMassDriver extends Block {
 	public TextureRegion prefRegion, baseRegion, bottomRegion, liquidRegion, topRegion;
 
+	public boolean outline;
+
 	public float range;
 	public float rotateSpeed = 5f;
 	public float translation = 7f;
@@ -65,6 +67,7 @@ public class LiquidMassDriver extends Block {
 
 	public LiquidMassDriver(String name) {
 		super(name);
+
 		update = true;
 		solid = true;
 		configurable = true;
@@ -87,7 +90,7 @@ public class LiquidMassDriver extends Block {
 		super.load();
 
 		baseRegion = Core.atlas.find(name + "-base");
-		prefRegion = Core.atlas.find(name + "-pref");
+		prefRegion = Core.atlas.find(name + (outline ? "-pref" : "-pref-outline"));
 		bottomRegion = Core.atlas.find(name + "-bottom");
 		liquidRegion = Core.atlas.find(name + "-liquid");
 		topRegion = Core.atlas.find(name + "-top");
@@ -95,7 +98,7 @@ public class LiquidMassDriver extends Block {
 
 	@Override
 	protected TextureRegion[] icons() {
-		return new TextureRegion[]{baseRegion, bottomRegion, prefRegion, topRegion};
+		return new TextureRegion[]{fullIcon};
 	}
 
 	@Override
@@ -108,7 +111,8 @@ public class LiquidMassDriver extends Block {
 
 	@Override
 	public void createIcons(MultiPacker packer) {
-		Outliner.outlineRegion(packer, prefRegion, outlineColor, name + "-pref-outline", outlineRadius);
+		// TODO It doesn't work, I still don't understand, so don't use it temporarily.
+		if (outline) Outliner.outlineRegion(packer, prefRegion, outlineColor, name + "-pref-outline", outlineRadius);
 
 		super.createIcons(packer);
 	}
@@ -293,9 +297,6 @@ public class LiquidMassDriver extends Block {
 			Draw.rect(bottomRegion,
 					x + Angles.trnsx(rotation + 180, reloadCounter * knockback),
 					y + Angles.trnsy(rotation + 180, reloadCounter * knockback), rotation - 90);
-			Draw.rect(prefRegion,
-					x + Angles.trnsx(rotation + 180, reloadCounter * knockback),
-					y + Angles.trnsy(rotation + 180, reloadCounter * knockback), rotation - 90);
 			Draw.color(liquids.current().color);
 			Draw.alpha(Math.min(liquidTotal() / liquidCapacity, 1));
 			Draw.rect(liquidRegion,
@@ -303,6 +304,9 @@ public class LiquidMassDriver extends Block {
 					y + Angles.trnsy(rotation + 180, reloadCounter * knockback), rotation - 90);
 			Draw.color();
 			Draw.alpha(1);
+			Draw.rect(prefRegion,
+					x + Angles.trnsx(rotation + 180, reloadCounter * knockback),
+					y + Angles.trnsy(rotation + 180, reloadCounter * knockback), rotation - 90);
 			Draw.rect(topRegion,
 					x + Angles.trnsx(rotation + 180, reloadCounter * knockback),
 					y + Angles.trnsy(rotation + 180, reloadCounter * knockback), rotation - 90);

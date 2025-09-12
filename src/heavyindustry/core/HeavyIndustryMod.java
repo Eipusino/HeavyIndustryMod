@@ -39,7 +39,6 @@ import heavyindustry.net.HCall;
 import heavyindustry.ui.Elements;
 import heavyindustry.ui.HFonts;
 import heavyindustry.ui.HStyles;
-import heavyindustry.ui.dialogs.HResearchDialog;
 import heavyindustry.util.IconLoader;
 import heavyindustry.util.PlatformImpl;
 import heavyindustry.util.UnsupportedPlatformException;
@@ -215,19 +214,12 @@ public final class HeavyIndustryMod extends Mod {
 
 			// Replace the original technology ResearchDialog
 			// This is a rather foolish approach, but there is nothing we can do about it.
-			HResearchDialog dialog = new HResearchDialog();
-			Vars.ui.research.shown(() -> {
-				dialog.show();
-				Time.runTask(1f, () -> {
-					if (Vars.ui.research != null) Vars.ui.research.hide();
-				});
-			});
 
 			if (!Vars.headless && !HMods.isEnabled("extra-utilities") && !HMods.isX() && Core.settings.getBool("hi-floating-text")) {
 				String massage = Core.bundle.get("hi-random-massage");
-				String[] massageSplit = massage.split("&");
+				String[] massages = massage.split("&");
 
-				floatingText = new FloatingText(massageSplit[Mathf.random(massageSplit.length - 1)]);
+				floatingText = new FloatingText(massages[Mathf.random(massages.length - 1)]);
 				floatingText.build(Vars.ui.menuGroup);
 			}
 		}
@@ -281,7 +273,9 @@ public final class HeavyIndustryMod extends Mod {
 				OS.isAndroid ? "heavyindustry.android.AndroidImpl" :
 						"heavyindustry.desktop.DesktopImpl", true, impl -> {
 			try {
-				if (impl.getConstructor().newInstance() instanceof PlatformImpl core) {
+				Object instance = impl.getConstructor().newInstance();
+
+				if (instance instanceof PlatformImpl core) {
 					HVars.platformImpl = core;
 				}
 			} catch (Throwable e) {

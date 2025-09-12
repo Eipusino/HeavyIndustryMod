@@ -5,7 +5,9 @@ import arc.graphics.Color;
 import arc.graphics.Pixmap;
 import arc.graphics.Pixmaps;
 import arc.graphics.g2d.PixmapRegion;
+import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.graphics.g2d.TextureRegion;
+import mindustry.graphics.Drawf;
 import mindustry.graphics.MultiPacker;
 import mindustry.graphics.MultiPacker.PageType;
 
@@ -14,14 +16,16 @@ public final class Outliner {
 	private Outliner() {}
 
 	/** Outlines a given textureRegion. Run in createIcons. */
-	public static void outlineRegion(MultiPacker packer, TextureRegion texture, Color outlineColor, String name, int outlineRadius) {
-		if (texture == null) return;
-		PixmapRegion region = Core.atlas.getPixmap(texture);
-		Pixmap out = Pixmaps.outline(region, outlineColor, outlineRadius);
-		if (Core.settings.getBool("linear", true)) {
-			Pixmaps.bleed(out);
-		}
+	public static void outlineRegion(MultiPacker packer, TextureRegion region, Color outlineColor, String name, int outlineRadius) {
+		if (!(region instanceof AtlasRegion at) || !region.found()) return;
+
+		PixmapRegion base = Core.atlas.getPixmap(at);
+		Pixmap out = Pixmaps.outline(base, outlineColor, outlineRadius);
+
+		Drawf.checkBleed(out);
+
 		packer.add(PageType.main, name, out);
+		out.dispose();
 	}
 
 	public static void outlineRegion(MultiPacker packer, TextureRegion tex, Color outlineColor, String name) {

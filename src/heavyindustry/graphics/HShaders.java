@@ -34,7 +34,7 @@ public final class HShaders {
 	public static DepthScreenspaceShader depthScreenspace;
 	public static DepthAtmosphereShader depthAtmosphere;
 	public static AlphaShader alphaShader;
-	public static Gl30SurfaceShader brine, originiumFluid, deepOriginiumFluid, boundWater, pit, waterPit;
+	public static Gl30SurfaceShader brine, crystalFluid, deepCrystalFluid, boundWater, pit, waterPit;
 	public static AberrationShader aberration;
 	public static MaskShader alphaMask;
 	public static WaveShader wave;
@@ -64,8 +64,8 @@ public final class HShaders {
 		alphaShader = new AlphaShader();
 
 		brine = new Gl30SurfaceShader("general-highp", "brine");
-		originiumFluid = new Gl30SurfaceShader("general-highp", "originium-fluid");
-		deepOriginiumFluid = new DualSurfaceShader("general-highp", "deep-originium-fluid") {
+		crystalFluid = new Gl30SurfaceShader("general-highp", "crystal-fluid");
+		deepCrystalFluid = new DualSurfaceShader("general-highp", "deep-crystal-fluid") {
 			@Override
 			public void loadNoise() {
 				super.loadNoise();
@@ -109,7 +109,7 @@ public final class HShaders {
 
 	public static void dispose() {
 		brine.dispose();
-		originiumFluid.dispose();
+		crystalFluid.dispose();
 		boundWater.dispose();
 		pit.dispose();
 		waterPit.dispose();
