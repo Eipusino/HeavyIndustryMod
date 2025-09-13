@@ -94,10 +94,4 @@ public class MultiCellLiquid extends CellLiquid {
 	public float react(Liquid other, float amount, Tile tile, float x, float y) {
 		return spreadTargets.contains(other) ? amount : 0f;
 	}
-
-	@Override
-	public void drawPuddle(Puddle puddle) {
-		super.drawPuddle(puddle);
-		//TODO shader
-	}
 }

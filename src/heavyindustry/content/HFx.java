@@ -2419,7 +2419,7 @@ public final class HFx {
 				Fill.circle(e.x + x * i, e.y + y * i, size * e.fout(Interp.pow5Out));
 			});
 			Draw.z(Layer.effect);
-			Draw.color(HPal.graphiteGrey);
+			Draw.color(Pal.graphiteAmmoBack);
 			Angles.randLenVectors(e.id + 1, (int) (density * 0.65f), radius, (x, y) -> {
 				float size = Mathf.randomSeed((int) (e.id + x), 7, 10);
 				size *= e.fout(Interp.pow4In);

@@ -67,7 +67,7 @@ public final class HStatusEffects {
 			parentizeEffect = true;
 			effect = new Effect(36, e -> {
 				if (!(e.data instanceof Unit unit)) return;
-				Lines.stroke(2 * e.foutpow(), HPal.blastRed);
+				Lines.stroke(2 * e.foutpow(), Pal.blastAmmoBack);
 				for (int i = 0; i < 3; i++) {
 					float a = 360 / 3f * i + e.time * 6;
 					float x = Utils.dx(e.x, Math.max(6, unit.hitSize / 2f), a), y = Utils.dy(e.y, Math.max(6, unit.hitSize / 2f), a);

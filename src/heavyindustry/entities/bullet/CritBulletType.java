@@ -1,5 +1,6 @@
 package heavyindustry.entities.bullet;
 
+import arc.graphics.Color;
 import arc.math.Angles;
 import arc.math.Mathf;
 import arc.math.Rand;
@@ -25,11 +26,13 @@ public class CritBulletType extends BasicBulletType {
 	protected static Rand critRand = new Rand();
 
 	public float critChance = 0.15f, critMultiplier = 5f;
+	public Color critColor = Pal.ammo;
 	public Effect critEffect = HFx.crit;
 	public boolean bouncing, despawnHitEffects = true;
 
 	public CritBulletType(float speed, float damage, String sprite) {
 		super(speed, damage, sprite);
+
 		pierce = true;
 		pierceBuilding = true;
 		impact = true;
@@ -81,7 +84,7 @@ public class CritBulletType extends BasicBulletType {
 		}
 
 		if (Mathf.chanceDelta(1) && isCrit(b)) {
-			critEffect.at(b.x, b.y, b.rotation(), b.team.color);
+			critEffect.at(b.x, b.y, b.rotation(), critColor);
 		}
 
 		if (homingPower > 0.0001f && b.time >= homingDelay) {
@@ -97,7 +100,13 @@ public class CritBulletType extends BasicBulletType {
 
 		if (trailChance > 0) {
 			if (Mathf.chanceDelta(trailChance)) {
-				trailEffect.at(b.x, b.y, trailParam, trailColor);
+				trailEffect.at(b.x, b.y, trailRotation ? b.rotation() : trailParam, trailColor);
+			}
+		}
+
+		if (trailInterval > 0) {
+			if (b.timer(0, trailInterval)) {
+				trailEffect.at(b.x, b.y, trailRotation ? b.rotation() : trailParam, trailColor);
 			}
 		}
 	}
@@ -121,6 +130,7 @@ public class CritBulletType extends BasicBulletType {
 	@Override
 	public void despawned(Bullet b) {
 		b.fdata = 1f;
+
 		super.despawned(b);
 	}
 

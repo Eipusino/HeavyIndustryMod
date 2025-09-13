@@ -40,7 +40,7 @@ public final class HItems {
 			cost = 1.2f;
 			hardness = 3;
 		}};
-		crystallineCircuit = new Item("crystalline-circuit", HPal.crystalGreen) {{
+		crystallineCircuit = new Item("crystalline-circuit", HPal.crystalAmmoBack) {{
 			cost = -0.75f;
 			hardness = 4;
 		}};
@@ -48,24 +48,24 @@ public final class HItems {
 			cost = -1.75f;
 			hardness = 7;
 		}};
-		crystal = new Item("crystal", HPal.crystalGreen) {{
+		crystal = new Item("crystal", HPal.crystalAmmoBack) {{
 			cost = 1.25f;
 			flammability = 0.2f;
 			explosiveness = 0.3f;
 			radioactivity = 0.1f;
 			hardness = 5;
 		}};
-		gold = new Item("gold", HPal.goldYellow) {{
+		gold = new Item("gold", HPal.goldAmmoBack) {{
 			cost = 0.9f;
 			hardness = 1;
 		}};
-		uranium = new Item("uranium", HPal.uraniumGrey) {{
+		uranium = new Item("uranium", HPal.uraniumAmmoBack) {{
 			cost = 3f;
 			hardness = 7;
 			healthScaling = 1.4f;
 			radioactivity = 2f;
 		}};
-		chromium = new Item("chromium", HPal.chromiumGrey) {{
+		chromium = new Item("chromium", HPal.chromiumAmmoBack) {{
 			cost = 5f;
 			hardness = 9;
 			healthScaling = 1.8f;

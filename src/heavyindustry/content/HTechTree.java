@@ -193,7 +193,7 @@ public final class HTechTree {
 		vanillaNode(pyratiteMixer, () -> node(largePyratiteMixer, Seq.with(new SectorComplete(SectorPresets.facility32m))));
 		vanillaNode(blastMixer, () -> node(largeBlastMixer));
 		vanillaNode(cultivator, () -> node(largeCultivator, Seq.with(new SectorComplete(SectorPresets.taintedWoods))));
-		vanillaNode(plastaniumCompressor, () -> node(largePlastaniumCompressor, Seq.with(new SectorComplete(SectorPresets.facility32m)), () -> node(corkscrewCompressor)));
+		vanillaNode(plastaniumCompressor, () -> node(largePlastaniumCompressor, () -> node(corkscrewCompressor)));
 		vanillaNode(surgeSmelter, () -> node(largeSurgeSmelter));
 		vanillaNode(siliconCrucible, () -> node(blastSiliconSmelter));
 		vanillaNode(siliconSmelter, () -> node(crystallineCircuitConstructor, Seq.with(new SectorComplete(SectorPresets.impact0078)), () -> node(crystallineCircuitPrinter)));
@@ -273,13 +273,28 @@ public final class HTechTree {
 			});
 			node(cloudbreaker);
 		});
+		vanillaNode(scatter, () -> node(stabber));
 		vanillaNode(scorch, () -> node(dragonBreath));
-		vanillaNode(arc, () -> node(coilBlaster, () -> node(hurricane)));
-		vanillaNode(lancer, () -> node(breakthrough));
-		vanillaNode(salvo, () -> node(minigun));
+		vanillaNode(arc, () -> node(coilBlaster, () -> {
+			node(electromagneticStorm);
+			node(hurricane);
+		}));
+		vanillaNode(hail, () -> node(mammoth));
+		vanillaNode(lancer, () -> {
+			node(electricArrow, () -> node(frost));
+			node(breakthrough);
+		});
+		vanillaNode(salvo, () -> {
+			node(autocannonB6);
+			node(autocannonF2);
+			node(shellshock, () -> node(minigun));
+		});
 		vanillaNode(parallax, () -> node(cobweb));
 		vanillaNode(segment, () -> node(dissipation));
-		vanillaNode(tsunami, () -> node(ironStream));
+		vanillaNode(tsunami, () -> {
+			node(turbulence);
+			node(ironStream);
+		});
 		vanillaNode(spectre, () -> node(evilSpirits));
 		vanillaNode(meltdown, () -> node(judgement));
 		//turret-erekir
@@ -319,39 +334,27 @@ public final class HTechTree {
 		}
 	}
 
-	public static TechNode nodeRoot(String name, UnlockableContent content, Runnable children) {
-		return nodeRoot(name, content, false, children);
+	public static void node(UnlockableContent content) {
+		node(content, content.researchRequirements(), FuncInte.RUNNABLE_NOTHING);
 	}
 
-	public static TechNode nodeRoot(String name, UnlockableContent content, boolean requireUnlock, Runnable children) {
-		TechNode root = node(content, content.researchRequirements(), children);
-		root.name = name;
-		root.requiresUnlock = requireUnlock;
-		TechTree.roots.add(root);
-		return root;
+	public static void node(UnlockableContent content, Runnable children) {
+		node(content, content.researchRequirements(), children);
 	}
 
-	public static TechNode node(UnlockableContent content) {
-		return node(content, content.researchRequirements(), FuncInte.RUNNABLE_NOTHING);
+	public static void node(UnlockableContent content, ItemStack[] requirements) {
+		node(content, requirements, null, FuncInte.RUNNABLE_NOTHING);
 	}
 
-	public static TechNode node(UnlockableContent content, Runnable children) {
-		return node(content, content.researchRequirements(), children);
+	public static void node(UnlockableContent content, ItemStack[] requirements, Runnable children) {
+		node(content, requirements, null, children);
 	}
 
-	public static TechNode node(UnlockableContent content, ItemStack[] requirements) {
-		return node(content, requirements, null, FuncInte.RUNNABLE_NOTHING);
+	public static void node(UnlockableContent content, ItemStack[] requirements, Seq<Objective> objectives) {
+		node(content, requirements, objectives, FuncInte.RUNNABLE_NOTHING);
 	}
 
-	public static TechNode node(UnlockableContent content, ItemStack[] requirements, Runnable children) {
-		return node(content, requirements, null, children);
-	}
-
-	public static TechNode node(UnlockableContent content, ItemStack[] requirements, Seq<Objective> objectives) {
-		return node(content, requirements, objectives, FuncInte.RUNNABLE_NOTHING);
-	}
-
-	public static TechNode node(UnlockableContent content, ItemStack[] requirements, Seq<Objective> objectives, Runnable children) {
+	public static void node(UnlockableContent content, ItemStack[] requirements, Seq<Objective> objectives, Runnable children) {
 		TechNode node = new TechNode(context, content, requirements);
 		if (objectives != null) node.objectives.addAll(objectives);
 
@@ -359,46 +362,44 @@ public final class HTechTree {
 		context = node;
 		children.run();
 		context = prev;
-
-		return node;
 	}
 
-	public static TechNode node(UnlockableContent content, Seq<Objective> objectives, Runnable children) {
-		return node(content, content.researchRequirements(), objectives, children);
+	public static void node(UnlockableContent content, Seq<Objective> objectives, Runnable children) {
+		node(content, content.researchRequirements(), objectives, children);
 	}
 
-	public static TechNode node(UnlockableContent content, Seq<Objective> objectives) {
-		return node(content, content.researchRequirements(), objectives, FuncInte.RUNNABLE_NOTHING);
+	public static void node(UnlockableContent content, Seq<Objective> objectives) {
+		node(content, content.researchRequirements(), objectives, FuncInte.RUNNABLE_NOTHING);
 	}
 
-	public static TechNode nodeProduce(UnlockableContent content, Seq<Objective> objectives, Runnable children) {
-		return node(content, content.researchRequirements(), objectives.add(new Produce(content)), children);
+	public static void nodeProduce(UnlockableContent content, Seq<Objective> objectives, Runnable children) {
+		node(content, content.researchRequirements(), objectives.add(new Produce(content)), children);
 	}
 
-	public static TechNode nodeProduce(UnlockableContent content, Runnable children) {
-		return nodeProduce(content, Seq.with(), children);
+	public static void nodeProduce(UnlockableContent content, Runnable children) {
+		nodeProduce(content, Seq.with(), children);
 	}
 
-	public static TechNode nodeProduce(UnlockableContent content) {
-		return nodeProduce(content, Seq.with(), FuncInte.RUNNABLE_NOTHING);
+	public static void nodeProduce(UnlockableContent content) {
+		nodeProduce(content, Seq.with(), FuncInte.RUNNABLE_NOTHING);
 	}
 
 	// -----legacy-addToResearch-----
 
-	public static TechNode research(UnlockableContent content, UnlockableContent parentContent) {
-		return research(content, parentContent, ItemStack.empty, Seq.with());
+	public static void research(UnlockableContent content, UnlockableContent parentContent) {
+		research(content, parentContent, ItemStack.empty, Seq.with());
 	}
 
-	public static TechNode research(UnlockableContent content, UnlockableContent parentContent, Seq<Objective> objectives) {
-		return research(content, parentContent, ItemStack.empty, objectives);
+	public static void research(UnlockableContent content, UnlockableContent parentContent, Seq<Objective> objectives) {
+		research(content, parentContent, ItemStack.empty, objectives);
 	}
 
-	public static TechNode research(UnlockableContent content, UnlockableContent parentContent, ItemStack[] customRequirements) {
-		return research(content, parentContent, customRequirements, Seq.with());
+	public static void research(UnlockableContent content, UnlockableContent parentContent, ItemStack[] customRequirements) {
+		research(content, parentContent, customRequirements, Seq.with());
 	}
 
-	public static TechNode research(UnlockableContent content, UnlockableContent parentContent, ItemStack[] customRequirements, Seq<Objective> objectives) {
-		if (content == null || parentContent == null) return null;
+	public static void research(UnlockableContent content, UnlockableContent parentContent, ItemStack[] customRequirements, Seq<Objective> objectives) {
+		if (content == null || parentContent == null) return;
 
 		TechNode lastNode = TechTree.all.find(t -> t.content == content);
 		if (lastNode != null) {
@@ -418,7 +419,7 @@ public final class HTechTree {
 		// find parent node.
 		TechNode parent = TechTree.all.find(t -> t.content == parentContent);
 
-		if (parent == null) return null;
+		if (parent == null) return;
 
 		// add this node to the parent
 		if (!parent.children.contains(node)) {
@@ -426,7 +427,5 @@ public final class HTechTree {
 		}
 		// reparent the node
 		node.parent = parent;
-
-		return parent;
 	}
 }

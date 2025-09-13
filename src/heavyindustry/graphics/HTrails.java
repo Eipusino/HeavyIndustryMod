@@ -471,7 +471,8 @@ public final class HTrails {
 	}
 
 	public static class LightTrail extends Trail {
-		private final Color drawColor = new Color();
+		final Color drawColor = new Color();
+
 		public float lightOpacity;
 
 		public LightTrail(int length, float lightOpacity) {
@@ -486,6 +487,7 @@ public final class HTrails {
 			out.lastX = lastX;
 			out.lastY = lastY;
 			out.lastAngle = lastAngle;
+			out.drawColor.set(drawColor);
 			return out;
 		}
 
@@ -551,10 +553,9 @@ public final class HTrails {
 			return Pools.obtain(PoolableTrail.class, () -> new PoolableTrail(length));
 		}
 
-		/** Do not call this method, otherwise it will directly result in a null pointer. */
 		@Override
-		public Trail copy() {
-			return null;
+		public PoolableTrail copy() {
+			return copy(length);
 		}
 
 		@Override
