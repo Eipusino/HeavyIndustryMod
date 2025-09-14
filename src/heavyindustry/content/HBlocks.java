@@ -138,6 +138,7 @@ import mindustry.entities.Units;
 import mindustry.entities.bullet.ArtilleryBulletType;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.BulletType;
+import mindustry.entities.bullet.FlakBulletType;
 import mindustry.entities.bullet.LaserBulletType;
 import mindustry.entities.bullet.LiquidBulletType;
 import mindustry.entities.bullet.MissileBulletType;
@@ -198,7 +199,6 @@ import mindustry.world.blocks.defense.turrets.ItemTurret;
 import mindustry.world.blocks.defense.turrets.LiquidTurret;
 import mindustry.world.blocks.defense.turrets.PointDefenseTurret;
 import mindustry.world.blocks.defense.turrets.PowerTurret;
-import mindustry.world.blocks.distribution.Duct;
 import mindustry.world.blocks.distribution.DuctBridge;
 import mindustry.world.blocks.distribution.DuctJunction;
 import mindustry.world.blocks.distribution.StackConveyor;
@@ -352,8 +352,9 @@ public final class HBlocks {
 	//logic-erekir
 	reinforcedIconDisplay, reinforcedIconDisplayLarge, reinforcedCharacterDisplay, reinforcedCharacterDisplayLarge,
 	//turret
-	dissipation, cobweb, coilBlaster, electromagneticStorm, frost, electricArrow, stabber, autocannonB6, autocannonF2, shellshock, rocketLauncher, largeRocketLauncher, rocketSilo, mammoth,
-			dragonBreath, breakthrough, cloudbreaker, turbulence, ironStream, minigun,
+	dissipation, cobweb, coilBlaster, electromagneticStorm, frost, electricArrow, stabber, autocannonB6, autocannonF2, shellshock,
+			rocketLauncher, largeRocketLauncher, rocketSilo, caelum, mammoth,
+			dragonBreath, breakthrough, cloudBreaker, turbulence, ironStream, minigun,
 			hurricane, judgement, evilSpirits,
 			solstice, starfall, annihilate, executor, heatDeath,
 	//turret-erekir
@@ -1440,9 +1441,6 @@ public final class HBlocks {
 			armor = 4f;
 			speed = 12;
 			capacity = itemCapacity = 12;
-			((AdaptConveyor) chromiumEfficientConveyor).junctionReplacement = this;
-			((AdaptConveyor) chromiumArmorConveyor).junctionReplacement = this;
-			((TubeConveyor) chromiumTubeConveyor).junctionReplacement = this;
 		}};
 		chromiumItemBridge = new RailItemBridge("chromium-item-bridge") {{
 			requirements(Category.distribution, ItemStack.with(Items.graphite, 6, Items.silicon, 8, Items.plastanium, 4, HItems.chromium, 3));
@@ -1454,9 +1452,6 @@ public final class HBlocks {
 			arrowSpacing = 6;
 			bridgeWidth = 8;
 			buildCostMultiplier = 0.8f;
-			((AdaptConveyor) chromiumEfficientConveyor).bridgeReplacement = this;
-			((AdaptConveyor) chromiumArmorConveyor).bridgeReplacement = this;
-			((TubeConveyor) chromiumTubeConveyor).bridgeReplacement = this;
 		}};
 		phaseItemNode = new NodeBridge("phase-item-node") {{
 			requirements(Category.distribution, ItemStack.with(Items.lead, 30, HItems.chromium, 10, Items.silicon, 15, Items.phaseFabric, 10));
@@ -1502,7 +1497,6 @@ public final class HBlocks {
 			speed = 4;
 			buildCostMultiplier = 2;
 			buildType = DuctBridgeBuild::new;
-			((Duct) Blocks.armoredDuct).bridgeReplacement = this;
 		}};
 		rapidDuctUnloader = new AdaptDirectionalUnloader("rapid-duct-unloader") {{
 			requirements(Category.distribution, ItemStack.with(Items.graphite, 25, Items.silicon, 30, Items.tungsten, 20, Items.oxide, 15));
@@ -1598,7 +1592,6 @@ public final class HBlocks {
 			liquidCapacity = 200f;
 			arrowSpacing = 6;
 			bridgeWidth = 8f;
-			((ArmoredConduit) chromiumArmorConduit).bridgeReplacement = this;
 		}};
 		chromiumArmorLiquidContainer = new LiquidRouter("chromium-armor-liquid-container") {{
 			requirements(Category.liquid, ItemStack.with(Items.metaglass, 15, HItems.chromium, 6));
@@ -1888,7 +1881,7 @@ public final class HBlocks {
 					});
 
 					Draw.color(Color.white, HPal.uraniumAmmoBack, e.fin());
-					Lines.stroke((2f * e.fout()));
+					Lines.stroke(2f * e.fout());
 
 					Draw.z(Layer.effect + 0.001f);
 					Angles.randLenVectors(e.id + 1, e.finpow() + 0.001f, (int) (8 * intensity), 30f * intensity, (x, y, in, out) -> {
@@ -3173,7 +3166,7 @@ public final class HBlocks {
 			coolant = consumeCoolant(0.2f);
 		}};
 		electromagneticStorm = new TeslaTurret("electromagnetic-storm") {{
-			requirements(Category.turret, ItemStack.with(Items.copper, 120, Items.lead, 150, Items.graphite, 55, Items.silicon, 105, Items.titanium, 90, Items.thorium, 50, Items.surgeAlloy, 40));
+			requirements(Category.turret, ItemStack.with(Items.copper, 120, Items.lead, 150, Items.graphite, 55, Items.titanium, 90, Items.thorium, 50, Items.surgeAlloy, 40));
 			size = 3;
 			float spinSpeed = 12f;
 			//Center
@@ -4052,8 +4045,246 @@ public final class HBlocks {
 			consumePowerCond(6f, TurretBuild::isActive);
 			buildType = ItemTurretBuild::new;
 		}};
+		caelum = new ItemTurret("caelum") {{
+			requirements(Category.turret, ItemStack.with(Items.copper, 560, Items.graphite, 500, Items.silicon, 400, Items.titanium, 400, Items.plastanium, 170));
+			health = 5500;
+			size = 4;
+			reload = 26f;
+			range = 640f;
+			fogRadiusMultiplier = 0.25f;
+			maxAmmo = 20;
+			ammoPerShot = 2;
+			recoil = 4f;
+			ammoUseEffect = new ParticleEffect() {{
+				particles = 9;
+				interp = Interp.pow10Out;
+				sizeInterp = Interp.pow5In;
+				sizeFrom = 5.5f;
+				sizeTo = 0f;
+				length = 30f;
+				baseLength = 0f;
+				lifetime = 55f;
+				colorFrom = colorTo = HPal.smoke.cpy().a(0.525f);
+				layer = 49f;
+			}};
+			canOverdrive = false;
+			shoot = new ShootAlternate() {{
+				barrels = 2;
+				spread = 18;
+			}};
+			xRand = 4;
+			coolant = consumeCoolant(0.5f);
+			coolant.optional = true;
+			shootSound = HSounds.dd1;
+			targetGround = false;
+			targetAir = true;
+			hasLiquids = true;
+			inaccuracy = 7.77f;
+			shootCone = 270f;
+			shake = 4f;
+			rotateSpeed = 0.85f;
+			Color caelumAmmo = Color.valueOf("eeee00");
+			ammo(Items.blastCompound, new FlakBulletType(6f, 33f) {{
+				damage = 33;
+				splashDamageRadius = 64f;
+				splashDamage = 255f;
+				knockback = 10f;
+				hitSize = 50f;
+				shrinkY = 0;
+				hitSound = Sounds.explosionbig;
+				hitSoundVolume = 2f;
+				speed = 6f;
+				lifetime = 135f;
+				status = StatusEffects.blasted;
+				homingDelay = 15f;
+				homingPower = 0.08f;
+				homingRange = 120f;
+				width = 15f;
+				height = 55f;
+				sprite = MOD_NAME + "-missile";
+				backColor = Pal.blastAmmoBack;
+				frontColor = HPal.missileGray;
+				trailLength = 40;
+				trailWidth = 2f;
+				trailColor = Color.white.cpy().a(0.5f);
+				trailChance = 1f;
+				trailInterval = 16f;
+				trailEffect = new ParticleEffect() {{
+					particles = 3;
+					length = 16f;
+					baseLength = 1f;
+					lifetime = 45f;
+					colorFrom = colorTo = HPal.missileGray.cpy().a(0.475f);
+					sizeFrom = 3f;
+					sizeTo = 0f;
+				}};
+				hitShake = 2.5f;
+				ammoMultiplier = 4f;
+				reloadMultiplier = 1.7f;
+				shootEffect = Fx.shootTitan;
+				smokeEffect = Fx.shootPyraFlame;
+				hitEffect = new MultiEffect(new ParticleEffect() {{
+					particles = 18;
+					sizeFrom = 10f;
+					sizeTo = 0f;
+					length = 35f;
+					baseLength = 43f;
+					lifetime = 35f;
+					colorFrom = colorTo = HPal.smoke;
+				}}, new ParticleEffect() {{
+					particles = 32;
+					line = true;
+					sizeFrom = 9f;
+					sizeTo = 0f;
+					length = 43f;
+					baseLength = 33f;
+					lifetime = 22f;
+					colorFrom = Color.white;
+					colorTo = HPal.missileYellow;
+				}}, new WaveEffect() {{
+					lifetime = 15;
+					sizeFrom = 1f;
+					sizeTo = 70f;
+					strokeFrom = 8f;
+					strokeTo = 0f;
+					colorFrom = HPal.missileYellow;
+					colorTo = Color.white;
+				}});
+			}}, Items.surgeAlloy, new FlakBulletType(7f, 50f) {{
+				splashDamageRadius = 40f;
+				splashDamage = 250f;
+				lightningDamage = 38f;
+				lightning = 5;
+				lightningLength = 6;
+				lightningLengthRand = 2;
+				shrinkY = 0f;
+				hitSize = 30f;
+				homingDelay = 15f;
+				homingPower = 0.09f;
+				homingRange = 120f;
+				lifetime = 115;
+				hitSound = Sounds.explosion;
+				hitSoundVolume = 5f;
+				width = 16f;
+				height = 56f;
+				ammoMultiplier = 6f;
+				hitShake = 1.6f;
+				sprite = MOD_NAME + "-rocket";
+				backColor = caelumAmmo;
+				frontColor = HPal.missileGray;
+				trailLength = 40;
+				trailWidth = 2f;
+				trailColor = Color.white.cpy().a(0.5f);
+				trailChance = 1f;
+				trailInterval = 16f;
+				trailEffect = new ParticleEffect() {{
+					particles = 3;
+					length = 16f;
+					baseLength = 1f;
+					lifetime = 45f;
+					colorFrom = colorTo = HPal.missileGray.cpy().a(0.475f);
+					sizeFrom = 3f;
+					sizeTo = 0f;
+				}};
+				shootEffect = Fx.shootTitan;
+				smokeEffect = Fx.shootPyraFlame;
+				hitEffect = new MultiEffect(new ParticleEffect() {{
+					particles = 10;
+					sizeFrom = 10f;
+					sizeTo = 0f;
+					length = 5f;
+					baseLength = 33f;
+					lifetime = 35f;
+					colorFrom = caelumAmmo.cpy().a(0.71f);
+					colorTo = HPal.smoke;
+				}}, new ParticleEffect() {{
+					particles = 12;
+					line = true;
+					sizeFrom = 9f;
+					sizeTo = 0f;
+					length = 13f;
+					baseLength = 43f;
+					lifetime = 22f;
+					colorFrom = caelumAmmo;
+					colorTo = HPal.missileYellow;
+				}}, new WaveEffect() {{
+					lifetime = 10f;
+					sizeFrom = 1f;
+					sizeTo = 43f;
+					strokeFrom = 8f;
+					strokeTo = 0f;
+					colorFrom = caelumAmmo;
+					colorTo = Color.white;
+				}});
+			}}, HItems.uranium, new BasicBulletType(10f, 340f, MOD_NAME + "-rocket") {{
+				collidesGround = false;
+				status = StatusEffects.melting;
+				statusDuration = 180f;
+				pierceArmor = true;
+				hitShake = 1.2f;
+				homingDelay = 15f;
+				homingPower = 0.12f;
+				homingRange = 160f;
+				lifetime = 88f;
+				hitSound = Sounds.shotgun;
+				hitSoundVolume = 0.2f;
+				width = 15f;
+				height = 53f;
+				shrinkY = 0f;
+				ammoMultiplier = 1f;
+				backColor = HPal.ferium;
+				frontColor = HPal.missileGray;
+				trailLength = 20;
+				trailWidth = 1.7f;
+				trailColor = Color.white;
+				trailChance = 1f;
+				trailInterval = 1;
+				trailRotation = true;
+				trailEffect = new ParticleEffect() {{
+					particles = 2;
+					length = -40f;
+					baseLength = 0f;
+					lifetime = 15f;
+					cone = 20f;
+					colorFrom = HPal.missileYellow;
+					colorTo = HPal.missileYellow.cpy().a(0.47f);
+					sizeFrom = 1f;
+					sizeTo = 5f;
+					shootEffect = Fx.shootTitan;
+					smokeEffect = Fx.shootPyraFlame;
+					hitEffect = new MultiEffect(new ParticleEffect() {{
+						particles = 9;
+						sizeFrom = 3f;
+						sizeTo = 0f;
+						length = 33f;
+						baseLength = 6f;
+						lifetime = 25f;
+						colorFrom = colorTo = HPal.smoke;
+					}}, new ParticleEffect() {{
+						particles = 15;
+						line = true;
+						strokeFrom = 4f;
+						strokeTo = lenFrom = 0f;
+						lenTo = 10f;
+						length = 83f;
+						baseLength = 3f;
+						lifetime = 10f;
+						colorFrom = Color.white;
+						colorTo = HPal.missileYellow;
+						cone = 40f;
+					}}, new WaveEffect() {{
+						lifetime = 10f;
+						sizeFrom = 1f;
+						sizeTo = strokeFrom = strokeTo = 0f;
+						colorFrom = caelumAmmo;
+						colorTo = Color.white;
+					}});
+				}};
+			}});
+			buildType = ItemTurretBuild::new;
+		}};
 		mammoth = new ItemTurret("mammoth") {{
-			requirements(Category.turret, ItemStack.with(Items.copper, 1));
+			requirements(Category.turret, ItemStack.with(Items.copper, 95, Items.graphite, 55, Items.titanium, 65));
 			health = 1200;
 			size = 2;
 			reload = 60f;
@@ -4290,7 +4521,7 @@ public final class HBlocks {
 			buildType = PowerTurretBuild::new;
 			hideDetails = false;
 		}};
-		cloudbreaker = new ItemTurret("cloudbreaker") {{
+		cloudBreaker = new ItemTurret("cloud-breaker") {{
 			requirements(Category.turret, ItemStack.with(Items.graphite, 230, Items.titanium, 220, Items.thorium, 150));
 			ammo(Items.titanium, new CritBulletType(14f, 220f) {{
 				lifetime = 25f;
@@ -6527,5 +6758,12 @@ public final class HBlocks {
 				}
 			};
 		}};
+		((AdaptConveyor) chromiumEfficientConveyor).junctionReplacement = chromiumJunction;
+		((AdaptConveyor) chromiumArmorConveyor).junctionReplacement = chromiumJunction;
+		((TubeConveyor) chromiumTubeConveyor).junctionReplacement = chromiumJunction;
+		((AdaptConveyor) chromiumEfficientConveyor).bridgeReplacement = chromiumItemBridge;
+		((AdaptConveyor) chromiumArmorConveyor).bridgeReplacement = chromiumItemBridge;
+		((TubeConveyor) chromiumTubeConveyor).bridgeReplacement = chromiumItemBridge;
+		((ArmoredConduit) chromiumArmorConduit).bridgeReplacement = chromiumLiquidBridge;
 	}
 }

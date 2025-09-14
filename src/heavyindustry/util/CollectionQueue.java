@@ -17,7 +17,7 @@ import java.util.NoSuchElementException;
  * wrap back to the beginning, making add and remove at the beginning and end O(1) (unless the backing array needs to resize when
  * adding). Deque functionality is provided via {@link #removeLast()} and {@link #addFirst(Object)}.
  */
-public class BaseQueue<E> extends AbstractQueue<E> implements Eachable<E> {
+public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> {
 	public final Class<E> componentType;
 
 	/** Number of elements in the queue. */
@@ -35,7 +35,7 @@ public class BaseQueue<E> extends AbstractQueue<E> implements Eachable<E> {
 	@Nullable QueueIterable<E> iterable;
 
 	/** Creates a new Queue which can hold 16 values without needing to resize backing array. */
-	public BaseQueue(Class<E> type) {
+	public CollectionQueue(Class<E> type) {
 		this(16, type);
 	}
 
@@ -44,7 +44,7 @@ public class BaseQueue<E> extends AbstractQueue<E> implements Eachable<E> {
 	 * backing array of the specified type via reflection, which is necessary only when accessing the backing array directly.
 	 */
 	@SuppressWarnings("unchecked")
-	public BaseQueue(int initialSize, Class<E> type) {
+	public CollectionQueue(int initialSize, Class<E> type) {
 		componentType = type;
 
 		values = (E[]) Array.newInstance(type, initialSize);
@@ -509,7 +509,7 @@ public class BaseQueue<E> extends AbstractQueue<E> implements Eachable<E> {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof BaseQueue<?> q)) return false;
+		if (!(o instanceof CollectionQueue<?> q)) return false;
 
 		if (q.size != size) return false;
 
@@ -534,15 +534,15 @@ public class BaseQueue<E> extends AbstractQueue<E> implements Eachable<E> {
 	}
 
 	public static class QueueIterable<T> implements Iterable<T> {
-		final BaseQueue<T> queue;
+		final CollectionQueue<T> queue;
 		final boolean allowRemove;
 		private QueueIterator iterator1, iterator2;
 
-		public QueueIterable(BaseQueue<T> queue) {
+		public QueueIterable(CollectionQueue<T> queue) {
 			this(queue, true);
 		}
 
-		public QueueIterable(BaseQueue<T> queue, boolean allowRemove) {
+		public QueueIterable(CollectionQueue<T> queue, boolean allowRemove) {
 			this.queue = queue;
 			this.allowRemove = allowRemove;
 		}

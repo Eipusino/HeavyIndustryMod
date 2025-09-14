@@ -272,9 +272,8 @@ public final class HBullets {
 			});
 			despawnEffect = new MultiEffect(HFx.hitSparkHuge, HFx.instHit(backColor, 3, 120f));
 			fragBullets = 3;
-			fragBullet = new LaserBulletType() {{
+			fragBullet = new LaserBulletType(4060f) {{
 				length = 460f;
-				damage = 4060f;
 				width = 45f;
 				statusDuration = 120f;
 				lifetime = 65f;

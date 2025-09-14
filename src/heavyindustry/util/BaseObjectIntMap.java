@@ -39,7 +39,7 @@ public class BaseObjectIntMap<K> implements Iterable<BaseObjectIntMap.MapEntry<K
 	int pushIterations;
 
 	Entries<K> entries1, entries2;
-	Values values1, values2;
+	Values<K> values1, values2;
 	Keys<K> keys1, keys2;
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
@@ -622,10 +622,10 @@ public class BaseObjectIntMap<K> implements Iterable<BaseObjectIntMap.MapEntry<K
 	 * Returns an iterator for the values in the map. Remove is supported. Note that the same iterator instance is returned each
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	public Values values() {
+	public Values<K> values() {
 		if (values1 == null) {
-			values1 = new Values(this);
-			values2 = new Values(this);
+			values1 = new Values<>(this);
+			values2 = new Values<>(this);
 		}
 		if (!values1.valid) {
 			values1.reset();
@@ -757,10 +757,9 @@ public class BaseObjectIntMap<K> implements Iterable<BaseObjectIntMap.MapEntry<K
 		}
 	}
 
-	public static class Values extends MapIterator<Object> {
-		@SuppressWarnings("unchecked")
-		public Values(BaseObjectIntMap<?> map) {
-			super((BaseObjectIntMap<Object>) map);
+	public static class Values<K> extends MapIterator<K> {
+		public Values(BaseObjectIntMap<K> map) {
+			super(map);
 		}
 
 		public boolean hasNext() {

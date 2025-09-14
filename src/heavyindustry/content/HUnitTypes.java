@@ -2784,8 +2784,7 @@ public final class HUnitTypes {
 				rotateSpeed = 35f;
 				reload = 35f;
 				shootSound = Sounds.laser;
-				bullet = new LaserBulletType() {{
-					damage = 45f;
+				bullet = new LaserBulletType(45f) {{
 					sideAngle = 30f;
 					sideWidth = 1f;
 					sideLength = 5.25f * 8;
@@ -3428,8 +3427,7 @@ public final class HUnitTypes {
 				layerOffset = 0.1f;
 				shootSound = Sounds.laser;
 				shake = 3;
-				bullet = new LaserBulletType() {{
-					damage = 165f;
+				bullet = new LaserBulletType(165f) {{
 					lifetime = 20;
 					sideAngle = 90f;
 					sideWidth = 1.25f;

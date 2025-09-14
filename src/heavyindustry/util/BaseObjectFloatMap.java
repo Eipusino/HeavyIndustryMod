@@ -40,7 +40,7 @@ public class BaseObjectFloatMap<K> implements Iterable<BaseObjectFloatMap.MapEnt
 	int pushIterations;
 
 	Entries<K> entries1, entries2;
-	Values values1, values2;
+	Values<K> values1, values2;
 	Keys<K> keys1, keys2;
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
@@ -434,7 +434,7 @@ public class BaseObjectFloatMap<K> implements Iterable<BaseObjectFloatMap.MapEnt
 		return false;
 	}
 
-	public boolean containsKey(K key) {
+	public boolean containsKey(Object key) {
 		if (key == null) return false;
 
 		int hashCode = key.hashCode();
@@ -449,7 +449,7 @@ public class BaseObjectFloatMap<K> implements Iterable<BaseObjectFloatMap.MapEnt
 		return true;
 	}
 
-	private boolean containsKeyStash(K key) {
+	private boolean containsKeyStash(Object key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return true;
 		return false;
@@ -604,10 +604,10 @@ public class BaseObjectFloatMap<K> implements Iterable<BaseObjectFloatMap.MapEnt
 	 * Returns an iterator for the values in the map. Remove is supported. Note that the same iterator instance is returned each
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	public Values values() {
+	public Values<K> values() {
 		if (values1 == null) {
-			values1 = new Values(this);
-			values2 = new Values(this);
+			values1 = new Values<>(this);
+			values2 = new Values<>(this);
 		}
 		if (!values1.valid) {
 			values1.reset();
@@ -726,17 +726,11 @@ public class BaseObjectFloatMap<K> implements Iterable<BaseObjectFloatMap.MapEnt
 		public Entries<K> iterator() {
 			return this;
 		}
-
-		@Override
-		public void remove() {
-			super.remove();
-		}
 	}
 
-	public static class Values extends MapIterator<Object> {
-		@SuppressWarnings("unchecked")
-		public Values(BaseObjectFloatMap<?> map) {
-			super((BaseObjectFloatMap<Object>) map);
+	public static class Values<K> extends MapIterator<K> {
+		public Values(BaseObjectFloatMap<K> map) {
+			super(map);
 		}
 
 		public boolean hasNext() {
@@ -823,6 +817,17 @@ public class BaseObjectFloatMap<K> implements Iterable<BaseObjectFloatMap.MapEnt
 		public CollectionList<K> toList(CollectionList<K> array) {
 			while (hasNext)
 				array.add(next());
+			return array;
+		}
+
+		@SuppressWarnings("unchecked")
+		public K[] toArray() {
+			K[] array = (K[]) Array.newInstance(map.keyComponentType, map.size);
+			int i = 0;
+			while (hasNext) {
+				array[i] = next();
+				i++;
+			}
 			return array;
 		}
 	}

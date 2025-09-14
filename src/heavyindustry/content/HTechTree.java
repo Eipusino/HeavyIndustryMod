@@ -268,10 +268,11 @@ public final class HTechTree {
 		//turret
 		vanillaNode(duo, () -> {
 			node(rocketLauncher, Seq.with(new SectorComplete(SectorPresets.ruinousShores)), () -> {
+				node(caelum);
 				node(largeRocketLauncher, Seq.with(new Research(swarmer), new SectorComplete(SectorPresets.facility32m)));
 				node(rocketSilo, Seq.with(new SectorComplete(SectorPresets.tarFields)));
 			});
-			node(cloudbreaker);
+			node(cloudBreaker);
 		});
 		vanillaNode(scatter, () -> node(stabber));
 		vanillaNode(scorch, () -> node(dragonBreath));

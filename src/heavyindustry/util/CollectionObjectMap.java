@@ -19,7 +19,9 @@ import java.util.Set;
 
 /**
  * Implementation of Java Collection Framework Map based on {@code ObjectMap} wrapper,
- * used in places that require Java specifications and the feature of not creating nodes in ObjectiMap.
+ * used in places that require Java specifications and the feature of not creating nodes in ObjectMap.
+ *
+ * @author Eipusino
  */
 public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.MapEntry<K, V>>, Map<K, V>, Eachable<CollectionObjectMap.MapEntry<K, V>> {
 	private static final int PRIME1 = 0xbe1f14b1;

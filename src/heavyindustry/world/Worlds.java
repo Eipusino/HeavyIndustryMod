@@ -3,11 +3,10 @@ package heavyindustry.world;
 import arc.Core;
 import arc.Events;
 import arc.files.Fi;
-import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Structs;
 import heavyindustry.game.TeamPayloadData;
-import heavyindustry.game.WorldData;
+import heavyindustry.util.CollectionList;
 import heavyindustry.util.Pair;
 import heavyindustry.world.blocks.defense.CommandableBlock;
 import mindustry.Vars;
@@ -20,27 +19,29 @@ import java.io.BufferedWriter;
 import static heavyindustry.HVars.MOD_NAME;
 
 public final class Worlds {
-	public static final Seq<CommandableBlock.CommandableBuild> commandableBuilds = new Seq<>(CommandableBlock.CommandableBuild.class);
+	public static final CollectionList<CommandableBlock.CommandableBuild> commandableBuilds = new CollectionList<>(CommandableBlock.CommandableBuild.class);
 
-	public static WorldData worldData = new WorldData();
 	public static TeamPayloadData teamPayloadData = new TeamPayloadData();
 
 	/** Don't let anyone instantiate this class. */
 	private Worlds() {}
 
 	public static void load() {
-		Events.on(ResetEvent.class, event -> commandableBuilds.clear());
+		Events.on(ResetEvent.class, event -> {
+			commandableBuilds.clear();
+		});
 	}
 
+	/** @deprecated Not needed for now. */
+	@Deprecated
 	public static void init() {
-		SaveVersion.addCustomChunk(MOD_NAME + "-world-data", worldData);
 		SaveVersion.addCustomChunk(MOD_NAME + "-team-payload-data", teamPayloadData);
 	}
 
 	public static void exportBlockData() {
 		StringBuilder data = new StringBuilder();
 
-		Seq<Pair<String, Block>> blocks = new Seq<>(Pair.class);
+		CollectionList<Pair<String, Block>> blocks = new CollectionList<>(Pair.class);
 
 		for (Block block : Vars.content.blocks()) {
 			blocks.add(new Pair<>(block.name, block));

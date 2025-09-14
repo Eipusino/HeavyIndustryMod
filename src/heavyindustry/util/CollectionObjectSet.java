@@ -14,6 +14,16 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+/**
+ * An unordered set where the keys are objects. This implementation uses cuckoo hashing using 3 hashes, random walking, and a
+ * small stash for problematic keys. Null keys are not allowed. No allocation is done except when growing the table size.<br>
+ * <br>This set performs very fast contains and remove (typically O(1), worst case O(log(n))). Add may be a bit slower, depending on
+ * hash collisions. Load factors greater than 0.91 greatly increase the chances the set will have to rehash to the next higher POT
+ * size.<br><br>Iteration can be very slow for a set with a large capacity. {@link #clear(int)} and {@link #shrink(int)} can be used to reduce
+ * the capacity. {@link CollectionOrderedSet} provides much faster iteration.
+ *
+ * @author Nathan Sweet
+ */
 public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 	private static final int PRIME1 = 0xbe1f14b1;
 	private static final int PRIME2 = 0xb4b82e39;

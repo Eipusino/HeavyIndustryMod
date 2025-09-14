@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
@@ -34,6 +33,7 @@ import java.util.NoSuchElementException;
  * last element is moved to the removed element's position).
  *
  * @author Nathan Sweet
+ * @author Eipusino
  */
 public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 	/** Debugging variable to count total number of iterators allocated. */

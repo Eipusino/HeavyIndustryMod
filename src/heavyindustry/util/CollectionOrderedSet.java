@@ -4,6 +4,16 @@ import arc.struct.Seq;
 
 import java.util.NoSuchElementException;
 
+/**
+ * An {@link CollectionObjectSet} that also stores keys in an {@link Seq} using the insertion order. {@link #iterator() Iteration} is
+ * ordered and faster than an unordered set. Keys can also be accessed and the order changed using {@link #orderedItems()}. There
+ * is some additional overhead for put and remove. When used for faster iteration versus ObjectSet and the order does not actually
+ * matter, copying during remove can be greatly reduced by setting {@link Seq#ordered} to false for
+ * {@link CollectionOrderedSet#orderedItems()}.
+ *
+ * @author Nathan Sweet
+ * @author Eipusino
+ */
 public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
 	public Seq<E> orderedItems;
 

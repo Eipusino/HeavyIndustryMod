@@ -111,7 +111,6 @@ import heavyindustry.world.blocks.defense.AdjustableOverdrive;
 import heavyindustry.world.blocks.defense.AdjustableShieldWall;
 import heavyindustry.world.blocks.defense.AirRaider;
 import heavyindustry.world.blocks.defense.AparajitoWall;
-import heavyindustry.world.blocks.defense.AssignOverdrive;
 import heavyindustry.world.blocks.defense.BatteryWall;
 import heavyindustry.world.blocks.defense.BombLauncher;
 import heavyindustry.world.blocks.defense.CliffExplosive;
@@ -471,8 +470,6 @@ final class HClassMap {
 		classes.put("StaticNodeBuild", StaticNode.StaticNodeBuild.class);
 		classes.put("EffectZone", EffectZone.class);
 		classes.put("EffectZoneBuild", EffectZone.EffectZoneBuild.class);
-		classes.put("AssignOverdrive", AssignOverdrive.class);
-		classes.put("AssignOverdriveBuild", AssignOverdrive.AssignOverdriveBuild.class);
 		classes.put("AdjustableOverdrive", AdjustableOverdrive.class);
 		classes.put("AdjustableOverdriveBuild", AdjustableOverdrive.AdjustableOverdriveBuild.class);
 		classes.put("AdjustableShieldWall", AdjustableShieldWall.class);

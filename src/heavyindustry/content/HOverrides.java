@@ -3,9 +3,8 @@ package heavyindustry.content;
 import arc.func.Boolf;
 import arc.func.Cons;
 import arc.graphics.Color;
-import arc.struct.ObjectFloatMap;
+import arc.math.Interp;
 import heavyindustry.graphics.HPal;
-import heavyindustry.util.Utils;
 import heavyindustry.world.meta.HAttribute;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
@@ -14,20 +13,21 @@ import mindustry.content.Liquids;
 import mindustry.content.Planets;
 import mindustry.content.StatusEffects;
 import mindustry.content.UnitTypes;
-import mindustry.ctype.UnlockableContent;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.ContinuousFlameBulletType;
 import mindustry.entities.bullet.ContinuousLaserBulletType;
+import mindustry.entities.bullet.LaserBulletType;
 import mindustry.entities.bullet.LiquidBulletType;
 import mindustry.entities.bullet.RailBulletType;
 import mindustry.entities.bullet.ShrapnelBulletType;
 import mindustry.entities.effect.ExplosionEffect;
 import mindustry.entities.effect.MultiEffect;
+import mindustry.entities.effect.ParticleEffect;
 import mindustry.entities.effect.WaveEffect;
+import mindustry.entities.effect.WrapEffect;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
-import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.type.PayloadStack;
@@ -40,6 +40,7 @@ import mindustry.world.blocks.defense.turrets.ItemTurret;
 import mindustry.world.blocks.defense.turrets.LaserTurret;
 import mindustry.world.blocks.defense.turrets.LiquidTurret;
 import mindustry.world.blocks.defense.turrets.PowerTurret;
+import mindustry.world.blocks.distribution.Duct;
 import mindustry.world.blocks.distribution.MassDriver;
 import mindustry.world.blocks.distribution.StackConveyor;
 import mindustry.world.blocks.payloads.Constructor;
@@ -73,8 +74,6 @@ import mindustry.world.meta.BuildVisibility;
  * @author Eipusino
  */
 public final class HOverrides {
-	private static final ObjectFloatMap<Item> drillMultipliers = new ObjectFloatMap<>();
-
 	/** Don't let anyone instantiate this class. */
 	private HOverrides() {}
 
@@ -101,48 +100,76 @@ public final class HOverrides {
 		Blocks.thoriumWall.armor = Blocks.thoriumWallLarge.armor = 8f;
 		Blocks.phaseWall.armor = Blocks.phaseWallLarge.armor = 3f;
 		Blocks.surgeWall.armor = Blocks.surgeWallLarge.armor = 12f;
-		((Wall) Blocks.surgeWall).lightningChance = ((Wall) Blocks.surgeWallLarge).lightningChance = 0.1f;
-		((Wall) Blocks.surgeWall).lightningDamage = ((Wall) Blocks.surgeWallLarge).lightningDamage = 25f;
+		if (Blocks.surgeWall instanceof Wall wall && Blocks.surgeWallLarge instanceof Wall large) {
+			large.lightningChance = wall.lightningChance = 0.1f;
+			large.lightningDamage = wall.lightningDamage = 25f;
+		}
 		//blocks-wall-erekir
-		((Wall) Blocks.reinforcedSurgeWall).lightningChance = 0.1f;
-		((Wall) Blocks.reinforcedSurgeWallLarge).lightningChance = 0.1f;
+		if (Blocks.reinforcedSurgeWall instanceof Wall wall && Blocks.reinforcedSurgeWallLarge instanceof Wall large) wall.lightningChance = large.lightningChance = 0.1f;
 		//Blocks-distribution
-		((StackConveyor) Blocks.plastaniumConveyor).outputRouter = false;
-		((MassDriver) Blocks.massDriver).reload = 150f;
+		if (Blocks.plastaniumConveyor instanceof StackConveyor conveyor) conveyor.outputRouter = false;
+		if (Blocks.massDriver instanceof MassDriver driver) driver.reload = 150f;
+		//Blocks-distribution-erekir
+		if (Blocks.armoredDuct instanceof Duct duct) duct.bridgeReplacement = HBlocks.armoredDuctBridge;
 		//blocks-liquid
-		((Pump) Blocks.impulsePump).pumpAmount = 0.3f;
+		if (Blocks.impulsePump instanceof Pump pump) pump.pumpAmount = 0.3f;
 		Blocks.phaseConduit.liquidCapacity = 16f;
 		//blocks-liquid-erekir
 		Blocks.reinforcedLiquidRouter.liquidCapacity = 40f;
 		//Blocks-drill
-		((Drill) Blocks.blastDrill).hardnessDrillMultiplier = 40f;
+		if (Blocks.blastDrill instanceof Drill drill) drill.hardnessDrillMultiplier = 40f;
 		//Blocks-drill-erekir
 		Blocks.largeCliffCrusher.requirements = ItemStack.with(Items.graphite, 120, Items.silicon, 80, Items.oxide, 30, Items.beryllium, 100, Items.tungsten, 50);
 		HOverrides.<ConsumeLiquid>modifier(Blocks.largeCliffCrusher, c -> c instanceof ConsumeLiquid, c -> c.amount = 0.5f / 60f);
 		Blocks.impactDrill.liquidCapacity *= 2f;
 		Blocks.eruptionDrill.liquidCapacity *= 2f;
-		((BurstDrill) Blocks.impactDrill).drillMultipliers.putAll(drillMultipliers());
-		((BurstDrill) Blocks.eruptionDrill).drillMultipliers.putAll(drillMultipliers());
-		((BeamDrill) Blocks.largePlasmaBore).drillMultipliers.put(Items.beryllium, 1.5f);
-		((BeamDrill) Blocks.largePlasmaBore).drillMultipliers.put(Items.graphite, 1.5f);
+		if (Blocks.impactDrill instanceof BurstDrill drill) {
+			drill.drillMultipliers.put(Items.sand, 3.5f);
+			drill.drillMultipliers.put(Items.scrap, 3.5f);
+			drill.drillMultipliers.put(Items.copper, 3f);
+			drill.drillMultipliers.put(Items.lead, 3f);
+			drill.drillMultipliers.put(HItems.stone, 3f);
+			drill.drillMultipliers.put(HItems.rareEarth, 3f);
+			drill.drillMultipliers.put(Items.coal, 2.5f);
+			drill.drillMultipliers.put(Items.titanium, 2f);
+			drill.drillMultipliers.put(HItems.uranium, 0.5f);
+			drill.drillMultipliers.put(HItems.chromium, 0.5f);
+		}
+		if (Blocks.eruptionDrill instanceof BurstDrill drill) {
+			drill.drillMultipliers.put(Items.sand, 3.5f);
+			drill.drillMultipliers.put(Items.scrap, 3.5f);
+			drill.drillMultipliers.put(Items.copper, 3f);
+			drill.drillMultipliers.put(Items.lead, 3f);
+			drill.drillMultipliers.put(HItems.stone, 3f);
+			drill.drillMultipliers.put(HItems.rareEarth, 3f);
+			drill.drillMultipliers.put(Items.coal, 2.5f);
+			drill.drillMultipliers.put(Items.titanium, 2f);
+			drill.drillMultipliers.put(HItems.uranium, 0.5f);
+			drill.drillMultipliers.put(HItems.chromium, 0.5f);
+		}
+		if (Blocks.largePlasmaBore instanceof BeamDrill drill) {
+			drill.drillMultipliers.put(Items.pyratite, 1.5f);
+			drill.drillMultipliers.put(Items.beryllium, 1.5f);
+			drill.drillMultipliers.put(Items.graphite, 1.5f);
+		}
 		//blocks-power
-		((PowerNode) Blocks.surgeTower).maxNodes = 3;
-		((ConsumeGenerator) Blocks.differentialGenerator).powerProduction = 28f;
-		((NuclearReactor) Blocks.thoriumReactor).powerProduction = 18f;
+		if (Blocks.surgeTower instanceof PowerNode node) node.maxNodes = 3;
+		if (Blocks.differentialGenerator instanceof ConsumeGenerator generator) generator.powerProduction = 28f;
+		if (Blocks.thoriumReactor instanceof NuclearReactor reactor) reactor.powerProduction = 18f;
 		Blocks.impactReactor.liquidCapacity = 80f;
 		Blocks.neoplasiaReactor.canOverdrive = true;
 		//blocks-production
 		Blocks.phaseWeaver.itemCapacity = 30;
 		Blocks.disassembler.removeConsumers(c -> c instanceof ConsumeItems);
-		((Separator) Blocks.disassembler).results = ItemStack.with(Items.copper, 1, Items.lead, 1, Items.graphite, 1, Items.titanium, 1, Items.thorium, 1);
+		if (Blocks.disassembler instanceof Separator separator) separator.results = ItemStack.with(Items.copper, 1, Items.lead, 1, Items.graphite, 1, Items.titanium, 1, Items.thorium, 1);
 		HOverrides.<ConsumeLiquid>modifier(Blocks.disassembler, c -> c instanceof ConsumeLiquid, c -> c.amount *= 1.5f);
 		//blocks-production-erekir
 		Blocks.oxidationChamber.canOverdrive = true;
 		Blocks.heatReactor.buildVisibility = BuildVisibility.shown;
-		((AttributeCrafter) Blocks.ventCondenser).maxBoost = 3f;
-		((GenericCrafter) Blocks.electrolyzer).outputLiquids = LiquidStack.with(Liquids.ozone, 4f / 60f, Liquids.hydrogen, 8f / 60f);
+		if (Blocks.ventCondenser instanceof AttributeCrafter crafter) crafter.maxBoost = 3f;
+		if (Blocks.electrolyzer instanceof GenericCrafter crafter) crafter.outputLiquids = LiquidStack.with(Liquids.ozone, 4f / 60f, Liquids.hydrogen, 8f / 60f);
 		HOverrides.<ConsumeLiquid>modifier(Blocks.cyanogenSynthesizer, c -> c instanceof ConsumeLiquid, c -> c.amount = 20f / 60f);
-		((HeatCrafter) Blocks.cyanogenSynthesizer).outputLiquid = new LiquidStack(Liquids.cyanogen, 4f / 60f);
+		if (Blocks.cyanogenSynthesizer instanceof HeatCrafter crafter) crafter.outputLiquid = new LiquidStack(Liquids.cyanogen, 4f / 60f);
 		//blocks-defense
 		Blocks.shockMine.underBullets = true;
 		//blocks-storage
@@ -155,16 +182,18 @@ public final class HOverrides {
 		Blocks.coreNucleus.armor = 11f;
 		Blocks.reinforcedContainer.itemCapacity = 160;
 		//blocks-turret
-		((LiquidTurret) Blocks.wave).ammoTypes.put(HLiquids.nitratedOil, new LiquidBulletType(HLiquids.nitratedOil) {{
-			drag = 0.01f;
-			layer = Layer.bullet - 2f;
-		}});
-		((LiquidTurret) Blocks.wave).ammoTypes.put(HLiquids.crystalFluid, new LiquidBulletType(HLiquids.crystalFluid) {{
-			drag = 0.01f;
-			healPercent = 5f;
-			collidesTeam = true;
-		}});
-		((ItemTurret) Blocks.salvo).ammoTypes.put(HItems.uranium, new BasicBulletType(5f, 39, "bullet") {{
+		if (Blocks.wave instanceof LiquidTurret turret) {
+			turret.ammoTypes.put(HLiquids.nitratedOil, new LiquidBulletType(HLiquids.nitratedOil) {{
+				drag = 0.01f;
+				layer = Layer.bullet - 2f;
+			}});
+			turret.ammoTypes.put(HLiquids.crystalFluid, new LiquidBulletType(HLiquids.crystalFluid) {{
+				drag = 0.01f;
+				healPercent = 5f;
+				collidesTeam = true;
+			}});
+		}
+		if (Blocks.salvo instanceof ItemTurret turret) turret.ammoTypes.put(HItems.uranium, new BasicBulletType(5f, 39, "bullet") {{
 			width = 10f;
 			height = 13f;
 			pierceCap = 2;
@@ -174,39 +203,41 @@ public final class HOverrides {
 			ammoMultiplier = 4f;
 			lifetime = 50f;
 		}});
-		((ItemTurret) Blocks.fuse).ammoTypes.put(HItems.uranium, new ShrapnelBulletType() {{
+		if (Blocks.fuse instanceof ItemTurret turret) turret.ammoTypes.put(HItems.uranium, new ShrapnelBulletType() {{
 			length = 100f;
 			damage = 135f;
 			ammoMultiplier = 6f;
 			toColor = Color.valueOf("a5b2c2");
 			shootEffect = smokeEffect = HFx.shoot(HPal.uraniumAmmoBack);
 		}});
-		((LiquidTurret) Blocks.tsunami).ammoTypes.put(HLiquids.nitratedOil, new LiquidBulletType(HLiquids.nitratedOil) {{
-			lifetime = 49f;
-			speed = 4f;
-			knockback = 1.3f;
-			puddleSize = 8f;
-			orbSize = 4f;
-			drag = 0.001f;
-			ammoMultiplier = 0.4f;
-			statusDuration = 60f * 4f;
-			damage = 0.2f;
-			layer = Layer.bullet - 2f;
-		}});
-		((LiquidTurret) Blocks.tsunami).ammoTypes.put(HLiquids.crystalFluid, new LiquidBulletType(HLiquids.crystalFluid) {{
-			lifetime = 49f;
-			speed = 4f;
-			knockback = 1.3f;
-			puddleSize = 8f;
-			orbSize = 4f;
-			drag = 0.001f;
-			ammoMultiplier = 1.2f;
-			statusDuration = 60f * 4f;
-			healPercent = 5f;
-			collidesTeam = true;
-			damage = 0.2f;
-		}});
-		((ItemTurret) Blocks.foreshadow).ammo(Items.surgeAlloy, new RailBulletType() {{
+		if (Blocks.tsunami instanceof LiquidTurret turret) {
+			turret.ammoTypes.put(HLiquids.nitratedOil, new LiquidBulletType(HLiquids.nitratedOil) {{
+				lifetime = 49f;
+				speed = 4f;
+				knockback = 1.3f;
+				puddleSize = 8f;
+				orbSize = 4f;
+				drag = 0.001f;
+				ammoMultiplier = 0.4f;
+				statusDuration = 60f * 4f;
+				damage = 0.2f;
+				layer = Layer.bullet - 2f;
+			}});
+			turret.ammoTypes.put(HLiquids.crystalFluid, new LiquidBulletType(HLiquids.crystalFluid) {{
+				lifetime = 49f;
+				speed = 4f;
+				knockback = 1.3f;
+				puddleSize = 8f;
+				orbSize = 4f;
+				drag = 0.001f;
+				ammoMultiplier = 1.2f;
+				statusDuration = 60f * 4f;
+				healPercent = 5f;
+				collidesTeam = true;
+				damage = 0.2f;
+			}});
+		}
+		if (Blocks.foreshadow instanceof ItemTurret turret) turret.ammo(Items.surgeAlloy, new RailBulletType() {{
 			shootEffect = Fx.railShoot;
 			length = 600f;
 			pointEffectSpace = 60f;
@@ -218,72 +249,170 @@ public final class HOverrides {
 			damage = 1450f;
 			pierceDamageFactor = 0.5f;
 			buildingDamageMultiplier = 0.3f;
-		}});
-		((ItemTurret) Blocks.spectre).range = 280f;
-		((ItemTurret) Blocks.spectre).ammoTypes.put(HItems.uranium, new BasicBulletType(9f, 105f) {{
-			rangeChange = 5f;
-			hitSize = 5f;
+		}}, Items.phaseFabric, new BasicBulletType(12f, 550f) {{
+			hittable = false;
+			absorbable = false;
+			shootEffect = new ParticleEffect() {{
+				particles = 16;
+				interp = Interp.pow10Out;
+				sizeInterp = Interp.pow5In;
+				sizeFrom = 4f;
+				sizeTo = 0f;
+				length = 65f;
+				baseLength = 9f;
+				lifetime = 60f;
+				colorFrom = HPal.discDark;
+				colorTo = HPal.discDark.cpy().a(0.47f);
+				cone = 20f;
+			}};
+			despawnEffect = new WrapEffect(Fx.dynamicSpikes, HPal.discDark, 50f);
+			hitEffect = new MultiEffect(new ParticleEffect() {{
+				particles = 9;
+				sizeFrom = 8f;
+				sizeTo = 0f;
+				length = 65f;
+				baseLength = 9f;
+				lifetime = 60f;
+				interp = Interp.pow10Out;
+				sizeInterp = Interp.pow10In;
+				colorFrom = colorTo = HPal.discDark;
+			}}, new WaveEffect() {{
+				interp = Interp.circleOut;
+				lifetime = 60f;
+				sizeFrom = 2f;
+				sizeTo = 60f;
+				strokeFrom = 5f;
+				strokeTo = 0f;
+				colorFrom = colorTo = HPal.discDark;
+			}});
+			hitSound = Sounds.laser;
+			shrinkY = 0f;
 			width = 16f;
-			height = 23f;
-			shootEffect = Fx.shootBig;
-			pierceCap = 3;
-			pierceArmor = pierceBuilding = true;
-			knockback = 0.7f;
-			status = StatusEffects.melting;
-			statusDuration = 270f;
-			lifetime = 37.5f;
-		}});
-		((LaserTurret) Blocks.meltdown).range = 235;
-		((LaserTurret) Blocks.meltdown).shootType = new ContinuousLaserBulletType(96f) {{
-			length = 240f;
-			hitEffect = Fx.hitMeltdown;
-			hitColor = Pal.meltdownHit;
-			status = StatusEffects.melting;
-			drawSize = 420f;
-			timescaleDamage = true;
-			incendChance = 0.4f;
-			incendSpread = 5f;
-			incendAmount = 1;
+			height = 28f;
+			frontColor = Color.white;
+			backColor = trailColor = HPal.discDark;
+			trailLength = 9;
+			trailWidth = 3f;
+			lifetime = 40f;
+			splashDamageRadius = 50f;
+			splashDamage = 100f;
 			ammoMultiplier = 1f;
-		}};
+			pierce = true;
+			pierceBuilding = true;
+			bulletInterval = 2f;
+			intervalBullets = 1;
+			intervalDelay = 10f;
+			intervalBullet = new BasicBulletType(0.01f, 1f, "circle-bullet") {{
+				hitEffect = new WrapEffect(Fx.dynamicSpikes, HPal.discDark, 30f);
+				despawnEffect = Fx.none;
+				hitSound = Sounds.laser;
+				lightningColor = HPal.discDark;
+				lightningDamage = 166f;
+				lightning = 1;
+				lightningLength = 5;
+				lightningLengthRand = 5;
+				spin = 0.6f;
+				width = 12f;
+				height = 8f;
+				lifetime = 20f;
+				pierceArmor = true;
+				hittable = false;
+				splashDamageRadius = 40f;
+				splashDamage = 45f;
+			}};
+			fragBullets = 5;
+			fragRandomSpread = 0f;
+			fragBullet = new LaserBulletType(110f) {{
+				pierceArmor = true;
+				hitEffect = new ParticleEffect() {{
+					particles = 5;
+					line = true;
+					interp = Interp.pow5Out;
+					sizeInterp = Interp.pow5In;
+					length = 25;
+					baseLength = 0;
+					lifetime = 35;
+					colorFrom = Color.white;
+					colorTo = HPal.discDark;
+				}};
+				colors = new Color[]{HPal.discDark.cpy().a(0.6f), HPal.discDark.cpy().a(0.7f), HPal.discDark};
+				despawnEffect = Fx.none;
+				width = 16f;
+				length = 220f;
+				lifetime = 30f;
+			}};
+		}});
+		if (Blocks.spectre instanceof ItemTurret turret) {
+			turret.range = 280f;
+			turret.ammoTypes.put(HItems.uranium, new BasicBulletType(9f, 105f) {{
+				rangeChange = 5f;
+				hitSize = 5f;
+				width = 16f;
+				height = 23f;
+				shootEffect = Fx.shootBig;
+				pierceCap = 3;
+				pierceArmor = pierceBuilding = true;
+				knockback = 0.7f;
+				status = StatusEffects.melting;
+				statusDuration = 270f;
+				lifetime = 37.5f;
+			}});
+		}
+		if (Blocks.meltdown instanceof LaserTurret turret) {
+			turret.range = 235f;
+			turret.shootType = new ContinuousLaserBulletType(96f) {{
+				length = 240f;
+				hitEffect = Fx.hitMeltdown;
+				hitColor = Pal.meltdownHit;
+				status = StatusEffects.melting;
+				drawSize = 420f;
+				timescaleDamage = true;
+				incendChance = 0.4f;
+				incendSpread = 5f;
+				incendAmount = 1;
+				ammoMultiplier = 1f;
+			}};
+		}
 		//blocks-turret-erekir
 		Blocks.breach.armor = 2f;
 		Blocks.diffuse.armor = 3f;
 		Blocks.sublimate.armor = 4f;
-		((ContinuousLiquidTurret) Blocks.sublimate).range = 130f;
-		((ContinuousLiquidTurret) Blocks.sublimate).ammo(HLiquids.gas, new ContinuousFlameBulletType() {{
-			damage = 90f;
-			rangeChange = 30f;
-			length = 160f;
-			knockback = 1f;
-			pierceCap = 2;
-			buildingDamageMultiplier = 0.3f;
-			colors = new Color[]{Color.valueOf("ffd37fa1"), Color.valueOf("ffd37fcc"), Color.valueOf("ffd37f"), Color.valueOf("ffe6b7"), Color.valueOf("d8e2ff")};
-			lightColor = flareColor = Color.valueOf("fbd367");
-			hitColor = Color.valueOf("ffd367");
-		}}, Liquids.hydrogen, new ContinuousFlameBulletType() {{
-			damage = 60f;
-			length = 130f;
-			knockback = 1f;
-			pierceCap = 2;
-			buildingDamageMultiplier = 0.3f;
-			colors = new Color[]{Color.valueOf("92abff7f"), Color.valueOf("92abffa2"), Color.valueOf("92abffd3"), Color.valueOf("92abff"), Color.valueOf("d4e0ff")};
-			lightColor = hitColor = flareColor = Color.valueOf("92abff");
-		}}, Liquids.cyanogen, new ContinuousFlameBulletType() {{
-			damage = 130f;
-			rangeChange = 70f;
-			length = 200f;
-			knockback = 2f;
-			pierceCap = 3;
-			buildingDamageMultiplier = 0.3f;
-			colors = new Color[]{Color.valueOf("465ab888"), Color.valueOf("66a6d2a0"), Color.valueOf("89e8b6b0"), Color.valueOf("cafcbe"), Color.white};
-			lightColor = hitColor = flareColor = Color.valueOf("89e8b6");
-		}});
+		if (Blocks.sublimate instanceof ContinuousLiquidTurret turret) {
+			turret.range = 130f;
+			turret.ammo(HLiquids.gas, new ContinuousFlameBulletType() {{
+				damage = 90f;
+				rangeChange = 30f;
+				length = 160f;
+				knockback = 1f;
+				pierceCap = 2;
+				buildingDamageMultiplier = 0.3f;
+				colors = new Color[]{Color.valueOf("ffd37fa1"), Color.valueOf("ffd37fcc"), Color.valueOf("ffd37f"), Color.valueOf("ffe6b7"), Color.valueOf("d8e2ff")};
+				lightColor = flareColor = Color.valueOf("fbd367");
+				hitColor = Color.valueOf("ffd367");
+			}}, Liquids.hydrogen, new ContinuousFlameBulletType() {{
+				damage = 60f;
+				length = 130f;
+				knockback = 1f;
+				pierceCap = 2;
+				buildingDamageMultiplier = 0.3f;
+				colors = new Color[]{Color.valueOf("92abff7f"), Color.valueOf("92abffa2"), Color.valueOf("92abffd3"), Color.valueOf("92abff"), Color.valueOf("d4e0ff")};
+				lightColor = hitColor = flareColor = Color.valueOf("92abff");
+			}}, Liquids.cyanogen, new ContinuousFlameBulletType() {{
+				damage = 130f;
+				rangeChange = 70f;
+				length = 200f;
+				knockback = 2f;
+				pierceCap = 3;
+				buildingDamageMultiplier = 0.3f;
+				colors = new Color[]{Color.valueOf("465ab888"), Color.valueOf("66a6d2a0"), Color.valueOf("89e8b6b0"), Color.valueOf("cafcbe"), Color.white};
+				lightColor = hitColor = flareColor = Color.valueOf("89e8b6");
+			}});
+		}
 		Blocks.titan.armor = 13f;
 		Blocks.titan.researchCost = ItemStack.with(Items.thorium, 4000, Items.silicon, 3000, Items.tungsten, 2500);
 		Blocks.disperse.armor = 9f;
 		Blocks.afflict.armor = 16f;
-		((PowerTurret) Blocks.afflict).shootType = new BasicBulletType(5f, 180f, "large-orb") {{
+		if (Blocks.afflict instanceof PowerTurret turret) turret.shootType = new BasicBulletType(5f, 180f, "large-orb") {{
 			shootEffect = new MultiEffect(Fx.shootTitan, new WaveEffect() {{
 				colorTo = Pal.surge;
 				sizeTo = 26f;
@@ -346,28 +475,32 @@ public final class HOverrides {
 		Blocks.lustre.armor = 15f;
 		Blocks.scathe.armor = 15f;
 		Blocks.smite.armor = 21f;
-		((ItemTurret) Blocks.smite).minWarmup = 0.98f;
-		((ItemTurret) Blocks.smite).warmupMaintainTime = 45f;
+		if (Blocks.smite instanceof ItemTurret turret) {
+			turret.minWarmup = 0.98f;
+			turret.warmupMaintainTime = 45f;
+		}
 		Blocks.malign.armor = 19f;
-		((PowerTurret) Blocks.malign).minWarmup = 0.98f;
-		((PowerTurret) Blocks.malign).warmupMaintainTime = 45f;
+		if (Blocks.malign instanceof PowerTurret turret) {
+			turret.minWarmup = 0.98f;
+			turret.warmupMaintainTime = 45f;
+		}
 		//blocks-units
-		((UnitFactory) Blocks.groundFactory).plans.add(new UnitPlan(HUnitTypes.vanguard, 1200f, ItemStack.with(Items.lead, 25, Items.titanium, 25, Items.silicon, 30)));
-		((UnitFactory) Blocks.airFactory).plans.add(new UnitPlan(HUnitTypes.caelifera, 1200f, ItemStack.with(Items.lead, 35, Items.titanium, 15, Items.silicon, 30)));
-		((Reconstructor) Blocks.additiveReconstructor).upgrades.add(new UnitType[]{HUnitTypes.vanguard, HUnitTypes.striker}, new UnitType[]{HUnitTypes.caelifera, HUnitTypes.schistocerca});
-		((Reconstructor) Blocks.multiplicativeReconstructor).upgrades.add(new UnitType[]{HUnitTypes.striker, HUnitTypes.counterattack}, new UnitType[]{HUnitTypes.schistocerca, HUnitTypes.anthophila});
-		((Reconstructor) Blocks.exponentialReconstructor).upgrades.add(new UnitType[]{HUnitTypes.counterattack, HUnitTypes.crush}, new UnitType[]{HUnitTypes.anthophila, HUnitTypes.vespula});
-		((Reconstructor) Blocks.tetrativeReconstructor).upgrades.add(new UnitType[]{HUnitTypes.crush, HUnitTypes.destruction}, new UnitType[]{HUnitTypes.vespula, HUnitTypes.lepidoptera});
+		if (Blocks.groundFactory instanceof UnitFactory factory) factory.plans.add(new UnitPlan(HUnitTypes.vanguard, 1200f, ItemStack.with(Items.lead, 25, Items.titanium, 25, Items.silicon, 30)));
+		if (Blocks.airFactory instanceof UnitFactory factory) factory.plans.add(new UnitPlan(HUnitTypes.caelifera, 1200f, ItemStack.with(Items.lead, 35, Items.titanium, 15, Items.silicon, 30)));
+		if (Blocks.additiveReconstructor instanceof Reconstructor reconstructor) reconstructor.upgrades.add(new UnitType[]{HUnitTypes.vanguard, HUnitTypes.striker}, new UnitType[]{HUnitTypes.caelifera, HUnitTypes.schistocerca});
+		if (Blocks.multiplicativeReconstructor instanceof Reconstructor reconstructor) reconstructor.upgrades.add(new UnitType[]{HUnitTypes.striker, HUnitTypes.counterattack}, new UnitType[]{HUnitTypes.schistocerca, HUnitTypes.anthophila});
+		if (Blocks.exponentialReconstructor instanceof Reconstructor reconstructor) reconstructor.upgrades.add(new UnitType[]{HUnitTypes.counterattack, HUnitTypes.crush}, new UnitType[]{HUnitTypes.anthophila, HUnitTypes.vespula});
+		if (Blocks.tetrativeReconstructor instanceof Reconstructor reconstructor) reconstructor.upgrades.add(new UnitType[]{HUnitTypes.crush, HUnitTypes.destruction}, new UnitType[]{HUnitTypes.vespula, HUnitTypes.lepidoptera});
 		//blocks-units-erekir
-		((Constructor) Blocks.constructor).filter.clear();
-		((UnitAssembler) Blocks.tankAssembler).plans.add(new AssemblerUnitPlan(HUnitTypes.dominate, 60f * 60f * 4f, PayloadStack.list(UnitTypes.precept, 4, HBlocks.aparajitoLarge, 20)));
-		((UnitAssembler) Blocks.shipAssembler).plans.add(new AssemblerUnitPlan(HUnitTypes.havoc, 60f * 60f * 4f, PayloadStack.list(UnitTypes.obviate, 4, HBlocks.aparajitoLarge, 20)));
-		((UnitAssembler) Blocks.mechAssembler).plans.add(new AssemblerUnitPlan(HUnitTypes.oracle, 60f * 60f * 4f, PayloadStack.list(UnitTypes.anthicus, 4, HBlocks.aparajitoLarge, 20)));
+		if (Blocks.constructor instanceof Constructor constructor) constructor.filter.clear();
+		if (Blocks.tankAssembler instanceof UnitAssembler assembler) assembler.plans.add(new AssemblerUnitPlan(HUnitTypes.dominate, 60f * 60f * 4f, PayloadStack.list(UnitTypes.precept, 4, HBlocks.aparajitoLarge, 20)));
+		if (Blocks.shipAssembler instanceof UnitAssembler assembler) assembler.plans.add(new AssemblerUnitPlan(HUnitTypes.havoc, 60f * 60f * 4f, PayloadStack.list(UnitTypes.obviate, 4, HBlocks.aparajitoLarge, 20)));
+		if (Blocks.mechAssembler instanceof UnitAssembler assembler) assembler.plans.add(new AssemblerUnitPlan(HUnitTypes.oracle, 60f * 60f * 4f, PayloadStack.list(UnitTypes.anthicus, 4, HBlocks.aparajitoLarge, 20)));
 		//blocks-campaign
 
 		//I can't figure out how this thing consumes so much water...
 		//Anuke's recent mental state has been very poor. I can't figure out how this kind of thing came up with.
-		((LandingPad) Blocks.landingPad).consumeLiquidAmount /= 150f;
+		if (Blocks.landingPad instanceof LandingPad pad) pad.consumeLiquidAmount /= 100f;
 		//unit types
 		UnitTypes.alpha.coreUnitDock = true;
 		UnitTypes.beta.coreUnitDock = true;
@@ -393,19 +526,9 @@ public final class HOverrides {
 		Items.phaseFabric.hardness = 3;
 		Items.carbide.hardness = 6;
 		Items.serpuloItems.addAll(HItems.stone, HItems.agglomerateSalt, HItems.rareEarth, HItems.galliumNitride, HItems.crystallineCircuit, HItems.gold, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.crystal);
-		Items.erekirItems.addAll(HItems.uranium, HItems.chromium, HItems.crystal);
+		Items.erekirItems.addAll(HItems.stone, HItems.uranium, HItems.chromium, HItems.crystal);
 		//planet
 		Planets.serpulo.allowSectorInvasion = false;
-	}
-
-	public static <T extends UnlockableContent> void overwrite(UnlockableContent target, Cons<T> setter) {
-		setter.get(Utils.cast(target));
-	}
-
-	public static <T extends UnlockableContent> void overwrite(UnlockableContent target, Cons<T> setter, Class<T> type) {
-		if (type.isInstance(target)) {
-			setter.get(Utils.cast(target));
-		}
 	}
 
 	//Is this really necessary?
@@ -414,22 +537,5 @@ public final class HOverrides {
 		if (consume != null) {
 			modifier.get(consume);
 		}
-	}
-
-	public static ObjectFloatMap<Item> drillMultipliers() {
-		if (drillMultipliers.isEmpty()) {
-			drillMultipliers.put(Items.sand, 3.5f);
-			drillMultipliers.put(Items.scrap, 3.5f);
-			drillMultipliers.put(Items.copper, 3f);
-			drillMultipliers.put(Items.lead, 3f);
-			drillMultipliers.put(HItems.stone, 3f);
-			drillMultipliers.put(HItems.rareEarth, 3f);
-			drillMultipliers.put(Items.coal, 2.5f);
-			drillMultipliers.put(Items.titanium, 2f);
-			drillMultipliers.put(HItems.uranium, 0.5f);
-			drillMultipliers.put(HItems.chromium, 0.5f);
-		}
-
-		return drillMultipliers;
 	}
 }

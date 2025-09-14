@@ -10,10 +10,8 @@ import arc.util.Time;
 import heavyindustry.graphics.Drawn;
 import mindustry.Vars;
 import mindustry.gen.Building;
-import mindustry.gen.Buildingc;
 import mindustry.graphics.Drawf;
 import mindustry.logic.Ranged;
-import mindustry.world.Block;
 
 public interface Linkablec extends Ranged, BaseBuild {
 	/*default boolean onConfigureBuildTapped(Building other) {
