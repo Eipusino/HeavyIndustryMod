@@ -171,14 +171,14 @@ public class PayloadLegsUnit extends BaseLegsUnit implements Payloadc {
 
 	@Override
 	public boolean dropUnit(UnitPayload payload) {
-		Unit u = payload.unit;
+		Unit unit = payload.unit;
 
 		//add random offset to prevent unit stacking
 		Tmp.v1.rnd(Mathf.random(2f));
 
 		//can't drop ground units
 		//allow stacking for small units for now - otherwise, unit transfer would get annoying
-		if (!u.canPass(World.toTile(x + Tmp.v1.x), World.toTile(y + Tmp.v1.y)) || Units.count(x, y, u.physicSize(), o -> o.isGrounded() && o.hitSize > 14f) > 1) {
+		if (!unit.canPass(World.toTile(x + Tmp.v1.x), World.toTile(y + Tmp.v1.y)) || Units.count(x, y, unit.physicSize(), o -> o.isGrounded() && o.hitSize > 14f) > 1) {
 			return false;
 		}
 
@@ -187,15 +187,15 @@ public class PayloadLegsUnit extends BaseLegsUnit implements Payloadc {
 		//clients do not drop payloads
 		if (Vars.net.client()) return true;
 
-		u.set(x + Tmp.v1.x, y + Tmp.v1.y);
-		u.rotation(rotation);
+		unit.set(x + Tmp.v1.x, y + Tmp.v1.y);
+		unit.rotation(rotation);
 		//reset the ID to a new value to make sure it's synced
-		u.id = EntityGroup.nextId();
+		unit.id = EntityGroup.nextId();
 		//decrement count to prevent double increment
-		if (!u.isAdded()) u.team.data().updateCount(u.type, -1);
-		u.add();
-		u.unloaded();
-		Events.fire(new PayloadDropEvent(this, u));
+		if (!unit.isAdded()) unit.team.data().updateCount(unit.type, -1);
+		unit.add();
+		unit.unloaded();
+		Events.fire(new PayloadDropEvent(this, unit));
 
 		return true;
 	}

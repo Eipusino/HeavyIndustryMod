@@ -3,12 +3,8 @@ package heavyindustry.entities;
 import arc.Core;
 import arc.audio.Sound;
 import arc.func.Boolf;
-import arc.func.Boolf2;
-import arc.func.Boolf3;
 import arc.func.Cons;
 import arc.func.Cons2;
-import arc.func.Cons3;
-import arc.func.Cons4;
 import arc.func.Floatc;
 import arc.func.Floatc2;
 import arc.func.Floatf;
@@ -722,15 +718,15 @@ public final class HDamage {
 				float dst2 = Mathf.dst2(ofX, ofY);
 				if (dst2 < dst && dst2 < range * range && Mathm.angleDist(Angles.angle(ofX, ofY), angle) < cone) {
 					Tile tile = Vars.world.tile(x, y);
-					Building building = null;
+					Building build = null;
 					if (tile != null) {
 						Building b = Vars.world.build(x, y);
 						if (b != null && !collidedBlocks.contains(b.id)) {
-							building = b;
+							build = b;
 							collidedBlocks.add(b.id);
 						}
 
-						consBuilding.get(building, tile);
+						consBuilding.get(build, tile);
 					}
 				}
 			}
@@ -740,15 +736,15 @@ public final class HDamage {
 		return ref;
 	}
 
-	public static void castCone(float wx, float wy, float range, float angle, float cone, Cons4<Tile, Building, Float, Float> consTile) {
+	public static void castCone(float wx, float wy, float range, float angle, float cone, BuildCone consTile) {
 		castCone(wx, wy, range, angle, cone, consTile, null);
 	}
 
-	public static void castCone(float wx, float wy, float range, float angle, float cone, Cons3<Unit, Float, Float> consUnit) {
+	public static void castCone(float wx, float wy, float range, float angle, float cone, UnitCone consUnit) {
 		castCone(wx, wy, range, angle, cone, null, consUnit);
 	}
 
-	public static void castCone(float wx, float wy, float range, float angle, float cone, Cons4<Tile, Building, Float, Float> consTile, Cons3<Unit, Float, Float> consUnit) {
+	public static void castCone(float wx, float wy, float range, float angle, float cone, BuildCone consTile, UnitCone consUnit) {
 		collidedBlocks.clear();
 		float expand = 3;
 		float rangeSquare = range * range;
@@ -830,7 +826,7 @@ public final class HDamage {
 		return cast;
 	}
 
-	public static void collideLineRawEnemyRatio(Team team, float x, float y, float x2, float y2, float width, Boolf3<Building, Float, Boolean> buildingCons, Boolf2<Unit, Float> unitCons, Floatc2 effectHandler) {
+	public static void collideLineRawEnemyRatio(Team team, float x, float y, float x2, float y2, float width, BuildCollide buildingCons, UnitCollide unitCons, Floatc2 effectHandler) {
 		float minRatio = 0.05f;
 		collideLineRawEnemy(team, x, y, x2, y2, width, (building, direct) -> {
 			float size = (building.block.size * Vars.tilesize / 2f);
@@ -847,50 +843,50 @@ public final class HDamage {
 		collideLineRaw(x, y, x2, y2, width, width, b -> b.team != team, u -> u.team != team, hitTiles, hitUnits, h -> h.dst2(x, y), handler, stopSort);
 	}
 
-	public static void collideLineRawEnemy(Team team, float x, float y, float x2, float y2, Boolf2<Building, Boolean> buildingCons, Cons<Unit> unitCons, Floatc2 effectHandler, boolean stopSort) {
+	public static void collideLineRawEnemy(Team team, float x, float y, float x2, float y2, BuildBoolf2 buildingCons, Cons<Unit> unitCons, Floatc2 effectHandler, boolean stopSort) {
 		collideLineRaw(x, y, x2, y2, 3f, b -> b.team != team, u -> u.team != team, buildingCons, unitCons, healthc -> healthc.dst2(x, y), effectHandler, stopSort);
 	}
 
-	public static void collideLineRawEnemy(Team team, float x, float y, float x2, float y2, float width, Boolf2<Building, Boolean> buildingCons, Boolf<Unit> unitCons, Floatc2 effectHandler, boolean stopSort) {
+	public static void collideLineRawEnemy(Team team, float x, float y, float x2, float y2, float width, BuildBoolf2 buildingCons, Boolf<Unit> unitCons, Floatc2 effectHandler, boolean stopSort) {
 		collideLineRaw(x, y, x2, y2, width, width, b -> b.team != team, u -> u.team != team, buildingCons, unitCons, healthc -> healthc.dst2(x, y), effectHandler, stopSort);
 	}
 
-	public static void collideLineRawEnemy(Team team, float x, float y, float x2, float y2, float width, Boolf2<Building, Boolean> buildingCons, Boolf<Unit> unitCons, Floatf<Healthc> sort, Floatc2 effectHandler, boolean stopSort) {
+	public static void collideLineRawEnemy(Team team, float x, float y, float x2, float y2, float width, BuildBoolf2 buildingCons, Boolf<Unit> unitCons, Floatf<Healthc> sort, Floatc2 effectHandler, boolean stopSort) {
 		collideLineRaw(x, y, x2, y2, width, width, b -> b.team != team, u -> u.team != team, buildingCons, unitCons, sort, effectHandler, stopSort);
 	}
 
-	public static void collideLineRawEnemy(Team team, float x, float y, float x2, float y2, float unitWidth, float tileWidth, Boolf2<Building, Boolean> buildingCons, Boolf<Unit> unitCons, Floatc2 effectHandler, boolean stopSort) {
+	public static void collideLineRawEnemy(Team team, float x, float y, float x2, float y2, float unitWidth, float tileWidth, BuildBoolf2 buildingCons, Boolf<Unit> unitCons, Floatc2 effectHandler, boolean stopSort) {
 		collideLineRaw(x, y, x2, y2, unitWidth, tileWidth, b -> b.team != team, u -> u.team != team, buildingCons, unitCons, healthc -> healthc.dst2(x, y), effectHandler, stopSort);
 	}
 
-	public static void collideLineRawEnemy(Team team, float x, float y, float x2, float y2, Boolf2<Building, Boolean> buildingCons, Boolf<Unit> unitCons, Floatc2 effectHandler, boolean stopSort) {
+	public static void collideLineRawEnemy(Team team, float x, float y, float x2, float y2, BuildBoolf2 buildingCons, Boolf<Unit> unitCons, Floatc2 effectHandler, boolean stopSort) {
 		collideLineRaw(x, y, x2, y2, 3f, b -> b.team != team, u -> u.team != team, buildingCons, unitCons, healthc -> healthc.dst2(x, y), effectHandler, stopSort);
 	}
 
-	public static void collideLineRawEnemy(Team team, float x, float y, float x2, float y2, Boolf2<Building, Boolean> buildingCons, Cons<Unit> unitCons, Floatf<Healthc> sort, Floatc2 effectHandler) {
+	public static void collideLineRawEnemy(Team team, float x, float y, float x2, float y2, BuildBoolf2 buildingCons, Cons<Unit> unitCons, Floatf<Healthc> sort, Floatc2 effectHandler) {
 		collideLineRaw(x, y, x2, y2, 3f, b -> b.team != team, u -> u.team != team, buildingCons, unitCons, sort, effectHandler);
 	}
 
-	public static void collideLineRawEnemy(Team team, float x, float y, float x2, float y2, float width, Boolf<Healthc> pred, Boolf2<Building, Boolean> buildingCons, Boolf<Unit> unitCons, Floatc2 effectHandler, boolean stopSort) {
+	public static void collideLineRawEnemy(Team team, float x, float y, float x2, float y2, float width, Boolf<Healthc> pred, BuildBoolf2 buildingCons, Boolf<Unit> unitCons, Floatc2 effectHandler, boolean stopSort) {
 		collideLineRaw(x, y, x2, y2, width, width, b -> b.team != team && pred.get(b), u -> u.team != team && pred.get(u), buildingCons, unitCons, healthc -> healthc.dst2(x, y), effectHandler, stopSort);
 	}
 
-	public static void collideLineRaw(float x, float y, float x2, float y2, float unitWidth, Boolf<Building> buildingFilter, Boolf<Unit> unitFilter, Boolf2<Building, Boolean> buildingCons, Cons<Unit> unitCons, Floatf<Healthc> sort, Floatc2 effectHandler) {
+	public static void collideLineRaw(float x, float y, float x2, float y2, float unitWidth, Boolf<Building> buildingFilter, Boolf<Unit> unitFilter, BuildBoolf2 buildingCons, Cons<Unit> unitCons, Floatf<Healthc> sort, Floatc2 effectHandler) {
 		collideLineRaw(x, y, x2, y2, unitWidth, buildingFilter, unitFilter, buildingCons, unitCons, sort, effectHandler, false);
 	}
 
-	public static void collideLineRaw(float x, float y, float x2, float y2, float unitWidth, Boolf<Building> buildingFilter, Boolf<Unit> unitFilter, Boolf2<Building, Boolean> buildingCons, Cons<Unit> unitCons, Floatf<Healthc> sort, Floatc2 effectHandler, boolean stopSort) {
+	public static void collideLineRaw(float x, float y, float x2, float y2, float unitWidth, Boolf<Building> buildingFilter, Boolf<Unit> unitFilter, BuildBoolf2 buildingCons, Cons<Unit> unitCons, Floatf<Healthc> sort, Floatc2 effectHandler, boolean stopSort) {
 		collideLineRaw(x, y, x2, y2, unitWidth, buildingFilter, unitFilter, buildingCons, unitCons == null ? null : unit -> {
 			unitCons.get(unit);
 			return false;
 		}, sort, effectHandler, stopSort);
 	}
 
-	public static void collideLineRaw(float x, float y, float x2, float y2, float unitWidth, Boolf<Building> buildingFilter, Boolf<Unit> unitFilter, Boolf2<Building, Boolean> buildingCons, Boolf<Unit> unitCons, Floatf<Healthc> sort, Floatc2 effectHandler, boolean stopSort) {
+	public static void collideLineRaw(float x, float y, float x2, float y2, float unitWidth, Boolf<Building> buildingFilter, Boolf<Unit> unitFilter, BuildBoolf2 buildingCons, Boolf<Unit> unitCons, Floatf<Healthc> sort, Floatc2 effectHandler, boolean stopSort) {
 		collideLineRaw(x, y, x2, y2, unitWidth, 0f, buildingFilter, unitFilter, buildingCons, unitCons, sort, effectHandler, stopSort);
 	}
 
-	public static void collideLineRaw(float x, float y, float x2, float y2, float unitWidth, float tileWidth, Boolf<Building> buildingFilter, Boolf<Unit> unitFilter, Boolf2<Building, Boolean> buildingCons, Boolf<Unit> unitCons, Floatf<Healthc> sort, Floatc2 effectHandler, boolean stopSort) {
+	public static void collideLineRaw(float x, float y, float x2, float y2, float unitWidth, float tileWidth, Boolf<Building> buildingFilter, Boolf<Unit> unitFilter, BuildBoolf2 buildingCons, Boolf<Unit> unitCons, Floatf<Healthc> sort, Floatc2 effectHandler, boolean stopSort) {
 		collideLineRaw(x, y, x2, y2, unitWidth, tileWidth,
 				buildingFilter, unitFilter, buildingCons != null, unitCons != null,
 				sort, (ex, ey, ent, direct) -> {
@@ -1156,6 +1152,26 @@ public final class HDamage {
 			return defaultVal;
 		}
 		return o.getFloat(key);
+	}
+
+	public interface BuildBoolf2 {
+		boolean get(Building a, boolean b);
+	}
+
+	public interface BuildCollide {
+		boolean get(Building build, float a, boolean b);
+	}
+
+	public interface UnitCollide {
+		boolean get(Unit unit, float a);
+	}
+
+	public interface UnitCone {
+		void get(Unit unit, float dst, float angDelta);
+	}
+
+	public interface BuildCone {
+		void get(Tile tile, Building build, float dst, float angDamage);
 	}
 
 	public interface HitHandler {

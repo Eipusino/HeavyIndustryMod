@@ -33,13 +33,14 @@ public class SporeFarmBlock extends Block {
 	public Liquid liquid = Liquids.water;
 	public Attribute attribute = Attribute.spores;
 
-	protected int timer;
+	protected int timerGrowth;
 
 	public SporeFarmBlock(String name) {
 		super(name);
 
+		hasItems = true;
 		update = true;
-		timer = timers++;
+		timerGrowth = timers++;
 	}
 
 	@Override
@@ -63,14 +64,14 @@ public class SporeFarmBlock extends Block {
 		protected int tileIndex = 0;
 
 		protected boolean randomChk() {
-			Tile tiled = Vars.world.tile(tileX() + Mathf.range(3), tileY() + Mathf.range(3));
+			Tile t = Vars.world.tile(tileX() + Mathf.range(3), tileY() + Mathf.range(3));
 
-			return tiled != null && tiled.floor().liquidDrop == liquid;
+			return t != null && t.floor().liquidDrop == liquid;
 		}
 
 		@Override
 		public void updateTile() {
-			if (timer(SporeFarmBlock.this.timer, (60f + delay) * 5f)) {
+			if (timer(timerGrowth, (60f + delay) * 5f)) {
 				if (delay == -1) {
 					delay = (tileX() * 89f + tileY() * 13f) % 21f;
 				} else {

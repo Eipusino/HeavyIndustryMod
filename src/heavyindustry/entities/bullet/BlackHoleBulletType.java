@@ -133,7 +133,7 @@ public class BlackHoleBulletType extends EffectBulletType {
 		if (!Mathf.chance(createChance)) return null;
 		if (ignoreSpawnAngle) angle = 0;
 
-		BlackHoleBullet bullet = BlackHoleBullet.obtain();
+		BlackHoleBullet bullet = BlackHoleBullet.createBlackHole();
 		if (bullet.sizeds.size > 0) bullet.sizeds.clear();
 		return Utils.anyOtherCreate(bullet, this, shooter, owner, team, x, y, angle, damage, velocityScl, lifetimeScl, data, mover, aimX, aimY, target);
 	}

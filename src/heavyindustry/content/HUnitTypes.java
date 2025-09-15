@@ -59,9 +59,10 @@ import heavyindustry.gen.BaseUnitWaterMove;
 import heavyindustry.gen.CopterUnit;
 import heavyindustry.gen.DPSMechUnit;
 import heavyindustry.gen.DamageAbsorbMechUnit;
+import heavyindustry.gen.EipusinoUnit;
+import heavyindustry.gen.GuiYUnit;
 import heavyindustry.gen.HSounds;
 import heavyindustry.gen.InvincibleShipUnit;
-import heavyindustry.gen.NucleoidUnit;
 import heavyindustry.gen.UltFire;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.Draws;
@@ -176,7 +177,7 @@ public final class HUnitTypes {
 	//elite
 	tiger, thunder, eagle,
 	//special
-	eipusino;
+	eipusino, guiY;
 
 	/** Don't let anyone instantiate this class. */
 	private HUnitTypes() {}
@@ -1835,7 +1836,7 @@ public final class HUnitTypes {
 				active = false;
 			}});
 			immunities.add(HStatusEffects.territoryFieldSuppress);
-			weapons.addAll(new LimitedAngleWeapon(name + "-front-cannon") {{
+			weapons.add(new LimitedAngleWeapon(name + "-front-cannon") {{
 				layerOffset = -0.01f;
 				x = 22f;
 				y = 26f;
@@ -1906,7 +1907,8 @@ public final class HUnitTypes {
 				shootSound = Sounds.missile;
 				angleCone = 135f;
 				bullet = HBullets.basicMissile;
-			}}, new PointDefenceMultiBarrelWeapon(name + "-flak-turret") {{
+			}});
+			weapons.add(new PointDefenceMultiBarrelWeapon(name + "-flak-turret") {{
 				x = 23f;
 				y = 15f;
 				shootY = 15.75f;
@@ -1994,7 +1996,7 @@ public final class HUnitTypes {
 				particles = 10;
 				color = particleColor = effectColor = Pal.heal;
 			}}, new BatteryAbility(80000f, 120f, 120f, 0f, -15f));
-			weapons.addAll(new Weapon("emp-cannon-mount") {{
+			weapons.add(new Weapon("emp-cannon-mount") {{
 				rotate = true;
 				x = 18f;
 				y = 7f;
@@ -2205,7 +2207,7 @@ public final class HUnitTypes {
 				x = 0;
 				y = -1f;
 				minWarmup = 0.9f;
-				parts.addAll(new PartBow() {{
+				parts.add(new PartBow() {{
 					color = Color.valueOf("feb380");
 					turretTk = 6f;
 					bowFY = -4f;
@@ -2237,7 +2239,8 @@ public final class HUnitTypes {
 					radius = 14f;
 					layer = Layer.effect;
 					y = -21f;
-				}}, new AimPart() {{
+				}});
+				parts.add(new AimPart() {{
 					layer = Layer.effect;
 					y = 15f;
 					width = 0.9f;
@@ -2761,7 +2764,8 @@ public final class HUnitTypes {
 			mineSpeed = 6f;
 			mineWalls = true;
 			mineItems.remove(Items.thorium);
-			mineItems.addAll(Items.beryllium, Items.graphite, Items.tungsten, HItems.stone, HItems.rareEarth, HItems.gold);
+			mineItems.add(Items.beryllium, Items.graphite, Items.tungsten, HItems.stone);
+			mineItems.add(HItems.rareEarth, HItems.gold);
 			allowLegStep = true;
 			legCount = 6;
 			legGroupSize = 3;
@@ -3348,7 +3352,7 @@ public final class HUnitTypes {
 					super.addStats(u, t);
 				}
 			});
-			abilities.addAll(new MirrorArmorAbility() {{
+			abilities.add(new MirrorArmorAbility() {{
 				strength = 240f;
 				max = 16400f;
 				regen = 5.5f;
@@ -3379,7 +3383,7 @@ public final class HUnitTypes {
 			engineSize = 0f;
 			ammoType = new PowerAmmoType(3000);
 			ammoCapacity = 2200;
-			abilities.addAll(new MirrorFieldAbility() {{
+			abilities.add(new MirrorFieldAbility() {{
 				strength = 350f;
 				max = 15800f;
 				regen = 8f;
@@ -3440,7 +3444,8 @@ public final class HUnitTypes {
 					hitColor = colors[0];
 				}};
 			}};
-			weapons.addAll(laser.get(19.25f, 16f), laser.get(13.5f, 33.5f), new Weapon() {{
+			weapons.add(laser.get(19.25f, 16f), laser.get(13.5f, 33.5f));
+			weapons.add(new Weapon() {{
 				x = 30.5f;
 				y = -3.5f;
 				mirror = true;
@@ -3785,14 +3790,14 @@ public final class HUnitTypes {
 		eipusino = new NucleoidUnitType("eipusino") {{
 			outlines = false;
 			envDisabled = Env.none;
-			constructor = NucleoidUnit::new;
-			aiController = NullAI::new;
+			constructor = EipusinoUnit::new;
+			aiController = NullAI::new; // Don't let AI manipulate it.
 			drawArrow = false;
 			createScorch = false;
 			deathExplosionEffect = Fx.none;
 			deathSound = HSounds.jumpIn;
 			damageMultiplier = 0.01f;
-			health = 999;
+			health = 999; // Tzenetch Holy Number?
 			engineSize = 0f;
 			buildSpeed = 9f;
 			engineOffset = 0f;
@@ -3800,7 +3805,7 @@ public final class HUnitTypes {
 			armor = 9f;
 			speed = 5.25f;
 			drawShields = false;
-			isEnemy = false;
+			isEnemy = false; // Prevent players from being unable to complete the game due to various reasons appearing in the enemy.
 			flying = true;
 			killable = false;
 			hittable = false;
@@ -3813,11 +3818,11 @@ public final class HUnitTypes {
 			mineHardnessScaling = false;
 			mineSpeed = 9f;
 			mineTier = 99;
-			fallEffect = HFx.blast(HPal.thurmixRed, 120f);
+			fallEffect = HFx.blast(Pal.heal, 120f);
 			targetAir = targetGround = false;
-			abilities.add(new WitchServiceAbility(), new RegenProjectorAbility());
+			abilities.add(new RegenProjectorAbility());
 			immunities.add(HStatusEffects.apoptosis);
-			ammoCapacity = 99999;
+			ammoCapacity = 999999;
 			ammoType = new PowerAmmoType(9.9999f);
 			weapons.add(new Weapon() {{
 				x = 0f;
@@ -3850,6 +3855,43 @@ public final class HUnitTypes {
 				};
 			}});
 		}};
+		guiY = new NucleoidUnitType("gui-y") {{
+			outlines = false;
+			envDisabled = Env.none;
+			constructor = GuiYUnit::new;
+			aiController = NullAI::new; // Don't let AI manipulate it.
+			drawArrow = false;
+			createScorch = false;
+			deathExplosionEffect = Fx.none;
+			deathSound = HSounds.jumpIn;
+			damageMultiplier = 0.01f;
+			health = 2226;
+			engineSize = 0f;
+			buildSpeed = 2.226f;
+			engineOffset = 0f;
+			itemCapacity = 2226;
+			armor = 22.26f;
+			speed = 5.25f;
+			drawShields = false;
+			isEnemy = false;
+			flying = true;
+			killable = false;
+			hittable = false;
+			targetable = false;
+			faceTarget = false;
+			targetPriority = -2226f;
+			bounded = false;
+			mineWalls = true;
+			mineFloor = true;
+			mineHardnessScaling = false;
+			mineSpeed = 22f;
+			mineTier = 26;
+			fallEffect = HFx.blast(Pal.reactorPurple, 120f);
+			targetAir = targetGround = false;
+			abilities.add(new WitchServiceAbility(), new RegenProjectorAbility());
+			ammoCapacity = 2226;
+			ammoType = new PowerAmmoType(2.226f);
+		}};
 	}
 
 	public static void loadImmunities() {
@@ -3857,6 +3899,7 @@ public final class HUnitTypes {
 		poseidon.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> s.reloadMultiplier >= 1 && !s.disarm));
 		leviathan.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> (s == StatusEffects.none || s.healthMultiplier > 1 || s.damage < 0 || s.reloadMultiplier > 1 || s.damageMultiplier > 1 || s.speedMultiplier > 1) && !s.disarm));
 		eipusino.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> s == StatusEffects.none || (s.healthMultiplier >= 1 && s.damage <= 0 && s.reloadMultiplier >= 1 && s.damageMultiplier >= 1 && s.speedMultiplier >= 1 && !s.disarm)));
+		guiY.immunities.addAll(eipusino.immunities);
 	}
 
 	public static class Shooter {

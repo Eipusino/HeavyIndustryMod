@@ -3,7 +3,7 @@ package heavyindustry.type;
 import arc.Events;
 import heavyindustry.util.CollectionObjectMap;
 import mindustry.Vars;
-import mindustry.game.EventType;
+import mindustry.game.EventType.Trigger;
 import mindustry.type.Planet;
 import mindustry.type.Sector;
 import mindustry.type.SectorPreset;
@@ -14,7 +14,7 @@ public class ExtraSectorPreset extends SectorPreset {
 	public static CollectionObjectMap<Sector, Runnable> scripts = new CollectionObjectMap<>(Sector.class, Runnable.class);
 
 	static {
-		Events.run(EventType.Trigger.update, () -> {
+		Events.run(Trigger.update, () -> {
 			if (Vars.state.getSector() != null) scripts.get(Vars.state.getSector(), RUNNABLE_NOTHING).run();
 		});
 	}

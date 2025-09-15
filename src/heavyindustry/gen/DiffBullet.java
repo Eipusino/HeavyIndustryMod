@@ -8,7 +8,7 @@ import mindustry.gen.Healthc;
 public class DiffBullet extends Bullet {
 	public Seq<Healthc> healthcs = new Seq<>(Healthc.class);
 
-	public static DiffBullet obtain() {
+	public static DiffBullet createDiff() {
 		return Pools.obtain(DiffBullet.class, DiffBullet::new);
 	}
 

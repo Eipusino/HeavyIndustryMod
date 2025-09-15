@@ -14,7 +14,8 @@ import heavyindustry.type.unit.TractorBeamUnitType;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.core.World;
-import mindustry.game.EventType;
+import mindustry.game.EventType.PayloadDropEvent;
+import mindustry.game.EventType.PickupEvent;
 import mindustry.gen.Building;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
@@ -113,7 +114,7 @@ public class TractorBeamUnit extends BasePayloadUnit {
 			if (Vars.net.client()) {
 				Vars.netClient.clearRemovedEntity(unit.id);
 			}
-			Events.fire(new EventType.PickupEvent(this, unit));
+			Events.fire(new PickupEvent(this, unit));
 		}
 	}
 
@@ -126,7 +127,7 @@ public class TractorBeamUnit extends BasePayloadUnit {
 			build.afterPickedUp();
 			beamHeld = new BuildPayload(build);
 			Fx.unitPickup.at(build);
-			Events.fire(new EventType.PickupEvent(this, build));
+			Events.fire(new PickupEvent(this, build));
 		}
 	}
 
@@ -173,7 +174,7 @@ public class TractorBeamUnit extends BasePayloadUnit {
 		Tile on = Vars.world.tile(mouseTileX, mouseTileY);
 		if (on != null && Build.validPlace(payBuild.block, payBuild.team, mouseTileX, mouseTileY, payBuild.rotation, false)) {
 			payload.place(on, payBuild.rotation);
-			Events.fire(new EventType.PayloadDropEvent(this, payBuild));
+			Events.fire(new PayloadDropEvent(this, payBuild));
 
 			if (getControllerName() != null) {
 				payload.build.lastAccessed = getControllerName();

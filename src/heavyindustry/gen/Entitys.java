@@ -3,11 +3,14 @@ package heavyindustry.gen;
 import arc.func.Func;
 import arc.func.Prov;
 import arc.util.Structs;
+import heavyindustry.entities.effect.VapourizeEffect.VapourizeEffectState;
 import heavyindustry.util.BaseObjectIntMap;
 import heavyindustry.util.CollectionObjectMap;
 import mindustry.gen.EntityMapping;
 import mindustry.gen.Entityc;
 import mindustry.type.UnitType;
+
+import java.util.Map;
 
 /**
  * Each Entity class requires an independent {@link Entityc#classId()} in order to be saved properly in the map.
@@ -17,7 +20,7 @@ import mindustry.type.UnitType;
  */
 public final class Entitys {
 	private static final BaseObjectIntMap<Class<? extends Entityc>> classIdMap = new BaseObjectIntMap<>(Class.class);
-	private static final CollectionObjectMap<String, Prov<? extends Entityc>> needIdMap = new CollectionObjectMap<>(String.class, Prov.class);
+	private static final Map<String, Prov<? extends Entityc>> needIdMap = new CollectionObjectMap<>(String.class, Prov.class);
 
 	/** Don't let anyone instantiate this class. */
 	private Entitys() {}
@@ -68,6 +71,8 @@ public final class Entitys {
 		register("EnergyUnit", EnergyUnit.class, EnergyUnit::new);
 		register("PesterUnit", PesterUnit.class, PesterUnit::new);
 		register("NucleoidUnit", NucleoidUnit.class, NucleoidUnit::new);
+		register("EipusinoUnit", EipusinoUnit.class, EipusinoUnit::new);
+		register("GuiYUnit", GuiYUnit.class, GuiYUnit::new);
 		register("DPSMechUnit", DPSMechUnit.class, DPSMechUnit::new);
 		register("InvincibleShipUnit", InvincibleShipUnit.class, InvincibleShipUnit::new);
 		register("UltFire", UltFire.class, UltFire::new);

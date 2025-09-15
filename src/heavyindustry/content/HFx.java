@@ -20,6 +20,8 @@ import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.entities.EdesspEntry;
+import heavyindustry.entities.UnitPointEntry;
 import heavyindustry.entities.abilities.MirrorFieldAbility;
 import heavyindustry.entities.bullet.HailStoneBulletType;
 import heavyindustry.graphics.Drawm;
@@ -341,6 +343,19 @@ public final class HFx {
 					Fill.circle(e.x + x, e.y + y, e.fout() * 7f);
 				});
 				Drawf.light(e.x, e.y, e.fout() * 70f, e.color, 0.7f);
+			}),
+			hyperInstall = new Effect(30f, e -> {
+				Draw.color(e.color, Color.white, e.fout() * 0.55f);
+				Lines.stroke(2.5f * e.fout());
+				Lines.circle(e.x, e.y, 75f * e.fin());
+
+				Lines.stroke(1.3f * e.fslope());
+				Lines.circle(e.x, e.y, 45f * e.fin());
+
+				for (int i = 0; i < 4; i++) {
+					Drawn.tri(e.x, e.y, e.rotation * (e.fout() + 1) / 3, e.rotation * 27f * Mathf.curve(e.fin(), 0, 0.12f) * e.fout(), i * 90);
+				}
+				Drawf.light(e.x, e.y, e.fout() * 80f, e.color, 0.7f);
 			}),
 			ultFireBurn = new Effect(25f, e -> {
 				Draw.color(Pal.techBlue, Color.gray, e.fin() * 0.75f);
@@ -2247,8 +2262,18 @@ public final class HFx {
 					Fill.tri(Tmp.v1.x + e.x, Tmp.v1.y + e.y, -Tmp.v1.x + e.x, -Tmp.v1.y + e.y, Tmp.v2.x + e.x, Tmp.v2.y + e.y);
 				}
 			}),
+			evaporateDeath = new Effect(64f, 800f, e -> {
+				if (e.data instanceof UnitPointEntry temp) {
+					Unit unit = temp.unit;
+					float curve = Interp.exp5In.apply(e.fin());
+					Tmp.c1.set(Color.black);
+					Tmp.c1.a = e.fout();
+					Draw.color(Tmp.c1);
+					Draw.rect(unit.type.region, unit.x + temp.vec.x * curve, unit.y + temp.vec.y * curve, unit.rotation - 90f);
+				}
+			}),
 			vaporation = new Effect(23f, e -> {
-				if (e.data instanceof Position[] temp) {
+				if (e.data instanceof Position[] temp && temp.length >= 3) {
 					Tmp.v1.set(temp[0]);
 					Tmp.v1.lerp(temp[1], e.fin());
 					Draw.color(Pal.darkFlame, Pal.darkerGray, e.fin());
@@ -2498,9 +2523,9 @@ public final class HFx {
 
 	public static Effect edessp(float lifetime) {
 		return new Effect(lifetime, e -> {
-			if (e.data instanceof Object[] objects && objects.length == 4 && objects[0] instanceof TextureRegion region && objects[1] instanceof Float range && objects[2] instanceof Float rot && objects[3] instanceof Float rRot) {
-				float ex = e.x + Angles.trnsx(e.rotation + rRot * e.fin(), range * e.fout()), ey = e.y + Angles.trnsy(e.rotation + rRot * e.fin(), range * e.fout());
-				Draw.rect(region, ex, ey, region.width / 3f * e.fin(), region.height / 3f * e.fin(), rot);
+			if (e.data instanceof EdesspEntry entry) {
+				float ex = e.x + Angles.trnsx(e.rotation + entry.rRot * e.fin(), entry.range * e.fout()), ey = e.y + Angles.trnsy(e.rotation + entry.rRot * e.fin(), entry.range * e.fout());
+				Draw.rect(entry.region, ex, ey, entry.region.width / 3f * e.fin(), entry.region.height / 3f * e.fin(), entry.rot);
 			}
 		}).followParent(true);
 	}

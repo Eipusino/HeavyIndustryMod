@@ -8,7 +8,7 @@ import mindustry.gen.Bullet;
 public class BlackHoleBullet extends Bullet {
 	public Seq<Sized> sizeds = new Seq<>(Sized.class);
 
-	public static BlackHoleBullet obtain() {
+	public static BlackHoleBullet createBlackHole() {
 		return Pools.obtain(BlackHoleBullet.class, BlackHoleBullet::new);
 	}
 

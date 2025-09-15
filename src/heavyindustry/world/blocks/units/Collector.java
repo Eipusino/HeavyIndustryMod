@@ -5,10 +5,10 @@ import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.struct.Seq;
 import arc.util.io.Reads;
-import heavyindustry.graphics.HPal;
 import mindustry.content.Fx;
 import mindustry.content.Items;
-import mindustry.game.EventType;
+import mindustry.game.EventType.ResetEvent;
+import mindustry.game.EventType.UnitDestroyEvent;
 import mindustry.gen.Building;
 import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
@@ -29,7 +29,7 @@ public class Collector extends Block {
 		update = true;
 		destructible = true;
 
-		Events.on(EventType.UnitDestroyEvent.class, event -> {
+		Events.on(UnitDestroyEvent.class, event -> {
 			Unit unit = event.unit;
 			Building build = Geometry.findClosest(unit.x, unit.y, existing);
 
@@ -42,7 +42,7 @@ public class Collector extends Block {
 			}
 		});
 
-		Events.on(EventType.ResetEvent.class, event -> {
+		Events.on(ResetEvent.class, event -> {
 			existing.clear();
 		});
 	}

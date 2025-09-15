@@ -72,6 +72,7 @@ public class UnitMinerPoint extends Block {
 
 	public UnitMinerPoint(String name) {
 		super(name);
+
 		size = 3;
 		solid = true;
 		update = true;
@@ -132,14 +133,16 @@ public class UnitMinerPoint extends Block {
 	@Override
 	public void setStats() {
 		super.setStats();
+
 		stats.add(Stat.drillTier, StatValues.blocks(block -> {
 			if (block instanceof Floor floor) {
-				return (floor.wallOre && floor.itemDrop != null && !blockedItems.contains(floor.itemDrop) && floor.itemDrop.hardness <= tier) || (!floor.wallOre && floor.itemDrop != null && floor.itemDrop.hardness <= tier && !blockedItems.contains(floor.itemDrop) && (Vars.indexer.isBlockPresent(floor) || Vars.state.isMenu()));
+				return (floor.wallOre && floor.itemDrop != null && !blockedItems.contains(floor.itemDrop) && floor.itemDrop.hardness <= tier) ||
+						(!floor.wallOre && floor.itemDrop != null && floor.itemDrop.hardness <= tier && !blockedItems.contains(floor.itemDrop) &&
+								(Vars.indexer.isBlockPresent(floor) || Vars.state.isMenu()));
 			} else if (block instanceof StaticWall wall) {
 				return wall.itemDrop != null && !blockedItems.contains(wall.itemDrop) && wall.itemDrop.hardness <= tier;
-			} else {
-				return false;
 			}
+			return false;
 		}));
 		stats.add(Stat.range, range);
 		stats.remove(Stat.buildTime);

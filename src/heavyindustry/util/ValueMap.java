@@ -3,23 +3,23 @@ package heavyindustry.util;
 import java.util.Map;
 
 public class ValueMap {
-	float floatval;
-	int intval;
-	Object val;
+	float floatValue;
+	int intValue;
+	Object value;
 	Map<String, ValueMap> map = new CollectionObjectMap<>(String.class, ValueMap.class);
 
 	public ValueMap() {}
 
-	public ValueMap(float value) {
-		floatval = value;
+	public ValueMap(float v) {
+		floatValue = v;
 	}
 
-	public ValueMap(int value) {
-		intval = value;
+	public ValueMap(int v) {
+		intValue = v;
 	}
 
-	public ValueMap(Object value) {
-		val = value;
+	public ValueMap(Object v) {
+		value = v;
 	}
 
 	public ValueMap put(String s, float t) {
@@ -28,7 +28,7 @@ public class ValueMap {
 	}
 
 	public float getFloat(String s) {
-		return map.get(s).floatval;
+		return map.get(s).floatValue;
 	}
 
 	public void put(String s, int t) {
@@ -36,7 +36,7 @@ public class ValueMap {
 	}
 
 	public int getInt(String s) {
-		return map.get(s).intval;
+		return map.get(s).intValue;
 	}
 
 	public void put(String s, Object t) {
@@ -45,7 +45,7 @@ public class ValueMap {
 
 	@SuppressWarnings("unchecked")
 	public <T> T get(String s) {
-		return (T) map.get(s).val;
+		return (T) map.get(s).value;
 	}
 
 	public ValueList getList(String s) {

@@ -29,6 +29,7 @@ import heavyindustry.entities.bullet.CritBulletType;
 import heavyindustry.entities.bullet.CtrlMissileBulletType;
 import heavyindustry.entities.bullet.EffectBulletType;
 import heavyindustry.entities.bullet.PositionLightningBulletType;
+import heavyindustry.entities.bullet.SparkingContinuousLaserBulletType;
 import heavyindustry.entities.effect.WrapperEffect;
 import heavyindustry.entities.part.ArcCharge;
 import heavyindustry.entities.part.DrawArrowSequence;
@@ -196,6 +197,7 @@ import mindustry.world.blocks.defense.ShockMine;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.defense.turrets.ContinuousTurret;
 import mindustry.world.blocks.defense.turrets.ItemTurret;
+import mindustry.world.blocks.defense.turrets.LaserTurret;
 import mindustry.world.blocks.defense.turrets.LiquidTurret;
 import mindustry.world.blocks.defense.turrets.PointDefenseTurret;
 import mindustry.world.blocks.defense.turrets.PowerTurret;
@@ -356,6 +358,7 @@ public final class HBlocks {
 			rocketLauncher, largeRocketLauncher, rocketSilo, caelum, mammoth,
 			dragonBreath, breakthrough, cloudBreaker, turbulence, ironStream, minigun,
 			hurricane, judgement, evilSpirits,
+			extinction,
 			solstice, starfall, annihilate, executor, heatDeath,
 	//turret-erekir
 	rupture, rift,
@@ -1137,10 +1140,10 @@ public final class HBlocks {
 			consumePower(3.5f);
 		}};
 		oilRig = new Fracker("oil-rig") {{
-			requirements(Category.production, ItemStack.with(Items.lead, 220, Items.graphite, 200, Items.silicon, 100, Items.thorium, 180, Items.plastanium, 120, Items.phaseFabric, 30));
+			requirements(Category.production, ItemStack.with(Items.lead, 220, Items.graphite, 200, Items.silicon, 100, Items.thorium, 180, Items.plastanium, 120, Items.surgeAlloy, 60));
 			size = 4;
 			itemCapacity = 20;
-			liquidCapacity = 100f;
+			liquidCapacity *= 40f;
 			result = Liquids.oil;
 			attribute = Attribute.oil;
 			updateEffect = Fx.pulverize;
@@ -1175,7 +1178,6 @@ public final class HBlocks {
 		blastWell = new BurstDrill("blast-ore-well") {{
 			requirements(Category.production, ItemStack.with(Items.lead, 80, Items.graphite, 180, Items.thorium, 110, Items.plastanium, 80, Items.surgeAlloy, 60));
 			size = 5;
-			hasLiquids = hasItems = true;
 			itemCapacity = 50;
 			liquidCapacity = 20;
 			drillTime = 100;
@@ -1202,7 +1204,7 @@ public final class HBlocks {
 			hideDetails = false;
 		}};
 		ionDrill = new Drill("ion-drill") {{
-			requirements(Category.production, ItemStack.with(Items.copper, 30, Items.silicon, 60, Items.thorium, 50, Items.plastanium, 25, Items.surgeAlloy, 15));
+			requirements(Category.production, ItemStack.with(Items.graphite, 80, Items.silicon, 60, Items.thorium, 50, Items.plastanium, 35, Items.surgeAlloy, 25, Items.phaseFabric, 15));
 			size = 3;
 			health = 640;
 			armor = 3f;
@@ -1224,7 +1226,7 @@ public final class HBlocks {
 			hideDetails = false;
 		}};
 		cuttingDrill = new Drill("cutting-drill") {{
-			requirements(Category.production, ItemStack.with(Items.copper, 320, Items.silicon, 180, Items.thorium, 50, Items.plastanium, 60, Items.surgeAlloy, 80, Items.phaseFabric, 15));
+			requirements(Category.production, ItemStack.with(Items.copper, 320, Items.silicon, 180, Items.thorium, 50, Items.plastanium, 70, Items.surgeAlloy, 80, HItems.uranium, 30));
 			size = 4;
 			health = 1070;
 			armor = 6f;
@@ -1273,7 +1275,6 @@ public final class HBlocks {
 		sporeFarm = new SporeFarmBlock("spore-farm") {{
 			requirements(Category.production, ItemStack.with(Items.copper, 5, Items.lead, 5));
 			health = 50;
-			hasItems = true;
 			buildCostMultiplier = 0.01f;
 			breakSound = Sounds.splash;
 			hideDetails = false;
@@ -2117,7 +2118,7 @@ public final class HBlocks {
 			hideDetails = false;
 		}};
 		largePlastaniumCompressor = new GenericCrafter("large-plastanium-compressor") {{
-			requirements(Category.crafting, ItemStack.with(Items.silicon, 150, Items.lead, 220, Items.graphite, 120, Items.titanium, 150, Items.thorium, 100));
+			requirements(Category.crafting, ItemStack.with(Items.silicon, 180, Items.lead, 220, Items.graphite, 120, Items.titanium, 150, Items.thorium, 100));
 			hasLiquids = true;
 			itemCapacity = 20;
 			liquidCapacity = 80f;
@@ -5376,6 +5377,39 @@ public final class HBlocks {
 			consumePowerCond(30f, TurretBuild::isActive);
 			enableDrawStatus = false;
 			buildType = ItemTurretBuild::new;
+		}};
+		extinction = new LaserTurret("extinction") {{
+			requirements(Category.turret, ItemStack.with(Items.copper, 3800, Items.lead, 4100, Items.graphite, 3200, Items.titanium, 4200, Items.surgeAlloy, 3800, Items.silicon, 4300, Items.thorium, 2400, HItems.uranium, 1700, HItems.crystal, 900, HItems.crystallineCircuit, 500));
+			size = 14;
+			health = 89500;
+			range = 520f;
+			reload = 380f;
+			coolantMultiplier = 0.4f;
+			shootCone = 12f;
+			shootDuration = 360f;
+			shake = 4f;
+			firingMoveFract = 0.09f;
+			shootEffect = Fx.shootBigSmoke2;
+			recoil = 7f;
+			heatColor = Color.white;
+			rotateSpeed = 0.82f;
+			shootSound = HSounds.extinctionShoot;
+			loopSound = HSounds.beamIntenseHighpitchTone;
+			loopSoundVolume = 2f;
+			shootType = new SparkingContinuousLaserBulletType(770f) {{
+				length = 560f;
+				lightStroke = 90f;
+				incendChance = 0.7f;
+				incendSpread = 9f;
+				incendAmount = 2;
+				extinction = true;
+				timescaleDamage = true;
+				status = StatusEffects.melting;
+				status2 = HStatusEffects.radiation;
+			}};
+			consumePower(175f);
+			coolant = consumeCoolant(2.5f);
+			coolant.update(false);
 		}};
 		solstice = new PowerTurret("solstice") {{
 			size = 8;

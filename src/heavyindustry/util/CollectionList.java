@@ -86,7 +86,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 	 * elements added will cause the backing array to be grown.
 	 */
 	public CollectionList(CollectionList<? extends E> array) {
-		this(array.ordered, array.size, array.items.getClass().getComponentType());
+		this(array.ordered, array.size, array.componentType);
 		size = array.size;
 		System.arraycopy(array.items, 0, items, 0, size);
 	}

@@ -13,9 +13,10 @@ import arc.math.geom.Vec2;
 import arc.struct.EnumSet;
 import arc.util.Tmp;
 import heavyindustry.content.HFx;
+import heavyindustry.entities.EdesspEntry;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
-import mindustry.game.EventType;
+import mindustry.game.EventType.UnitCreateEvent;
 import mindustry.game.Team;
 import mindustry.gen.Sounds;
 import mindustry.gen.Unit;
@@ -93,7 +94,7 @@ public class DerivativeUnitFactory extends UnitFactory {
 	}
 
 	public class DerivativeUnitFactoryBuild extends UnitFactoryBuild {
-		protected final Object[] objects = new Object[4];
+		protected final EdesspEntry entry = new EdesspEntry();
 		protected final Effect espEffect = HFx.edessp(24);
 
 		public Vec2 v1 = new Vec2();
@@ -143,12 +144,8 @@ public class DerivativeUnitFactory extends UnitFactory {
 						Vec2 v = getUnitSpawn();
 						float dst = v.dst(this);
 						float a = angleTo(v);
-						objects[0] = unit.type.fullIcon;
-						objects[1] = dst;
-						objects[2] = 90f * rotation - 90f;
-						objects[3] = 180f;
 						espEffect.lifetime = 24 / (timeScale + 0.001f);
-						espEffect.at(x, y, a, objects);
+						espEffect.at(x, y, a, entry.set(unit.type.fullIcon, dst, 90f * rotation - 90f, 180f));
 					}
 					if (commandPos != null && unit.isCommandable()) {
 						unit.command().commandPosition(commandPos);
@@ -156,7 +153,7 @@ public class DerivativeUnitFactory extends UnitFactory {
 					payload = new UnitPayload(unit);
 					payVector.setZero();
 					consume();
-					Events.fire(new EventType.UnitCreateEvent(payload.unit, this));
+					Events.fire(new UnitCreateEvent(payload.unit, this));
 				}
 
 				progress = Mathf.clamp(progress, 0, plan.time);

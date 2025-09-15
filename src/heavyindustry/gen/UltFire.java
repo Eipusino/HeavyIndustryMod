@@ -97,7 +97,7 @@ public class UltFire extends Fire {
 			fire.lifetime = baseLifetime;
 			fire.time = 0f;
 		} else {
-			fire = UltFire.obtain();
+			fire = UltFire.createUlt();
 			fire.tile = tile;
 			fire.lifetime = baseLifetime;
 			fire.set(tile.worldx(), tile.worldy());
@@ -106,7 +106,7 @@ public class UltFire extends Fire {
 		}
 	}
 
-	public static UltFire obtain() {
+	public static UltFire createUlt() {
 		return Pools.obtain(UltFire.class, UltFire::new);
 	}
 

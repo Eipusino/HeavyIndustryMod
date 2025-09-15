@@ -1,11 +1,10 @@
 package heavyindustry.util;
 
-import arc.struct.Seq;
-
 import java.util.Iterator;
+import java.util.List;
 
 public class ValueList extends ValueMap implements Iterable<ValueMap> {
-	Seq<ValueMap> list = new Seq<>(ValueMap.class);
+	List<ValueMap> list = new CollectionList<>(ValueMap.class);
 
 	public ValueMap getMap(int index) {
 		return list.get(index);
@@ -20,7 +19,7 @@ public class ValueList extends ValueMap implements Iterable<ValueMap> {
 	}
 
 	public float getFloat(int t) {
-		return list.get(t).floatval;
+		return list.get(t).floatValue;
 	}
 
 	public void addInt(int f) {
@@ -28,7 +27,7 @@ public class ValueList extends ValueMap implements Iterable<ValueMap> {
 	}
 
 	public float getInt(int t) {
-		return list.get(t).intval;
+		return list.get(t).intValue;
 	}
 
 	public void add(Object f) {
@@ -38,7 +37,7 @@ public class ValueList extends ValueMap implements Iterable<ValueMap> {
 
 	@SuppressWarnings("unchecked")
 	public <T> T get(int t) {
-		return (T) list.get(t).val;
+		return (T) list.get(t).value;
 	}
 
 	public void set(int index, ValueMap f) {
@@ -51,6 +50,6 @@ public class ValueList extends ValueMap implements Iterable<ValueMap> {
 	}
 
 	public int length() {
-		return list.size;
+		return list.size();
 	}
 }

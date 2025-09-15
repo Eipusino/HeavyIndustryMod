@@ -58,7 +58,7 @@ public final class HTypeIO {
 	public static void writeItemConsumers(Writes writes, Itemsc[] itemscs) {
 		writes.i(itemscs.length);
 		for (Itemsc itemsc : itemscs) {
-			TypeIO.writeObject(writes, itemsc);
+			TypeIO.writeEntity(writes, itemsc);
 		}
 	}
 

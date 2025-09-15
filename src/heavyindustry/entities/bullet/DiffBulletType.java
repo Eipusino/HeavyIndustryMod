@@ -91,7 +91,7 @@ public class DiffBulletType extends BulletType {
 
 	@Override
 	public Bullet create(Entityc owner, Entityc shooter, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY, Teamc target) {
-		DiffBullet bullet = DiffBullet.obtain();
+		DiffBullet bullet = DiffBullet.createDiff();
 		if (bullet.healthcs.size > 0) bullet.healthcs.clear();
 		return Utils.anyOtherCreate(bullet, this, shooter, owner, team, x, y, angle, damage, velocityScl, lifetimeScl, data, mover, aimX, aimY, target);
 	}

@@ -7,7 +7,7 @@ import arc.util.io.Writes;
 import heavyindustry.util.CollectionObjectMap;
 import mindustry.Vars;
 import mindustry.ctype.UnlockableContent;
-import mindustry.game.EventType;
+import mindustry.game.EventType.ResetEvent;
 import mindustry.game.Team;
 import mindustry.io.SaveFileReader.CustomChunk;
 import mindustry.type.PayloadSeq;
@@ -20,7 +20,7 @@ public class TeamPayloadData implements CustomChunk {
 	public CollectionObjectMap<Team, PayloadSeq> teamPayloadData = new CollectionObjectMap<>(Team.class, PayloadSeq.class);
 
 	public TeamPayloadData() {
-		Events.on(EventType.ResetEvent.class, event -> teamPayloadData.clear());
+		Events.on(ResetEvent.class, event -> teamPayloadData.clear());
 	}
 
 	public void addPayload(Team team, UnlockableContent content, int count) {

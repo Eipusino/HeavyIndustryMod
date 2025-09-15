@@ -16,7 +16,7 @@ import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.Units;
 import mindustry.entities.bullet.BulletType;
-import mindustry.game.EventType;
+import mindustry.game.EventType.Trigger;
 import mindustry.gen.Bullet;
 import mindustry.gen.Call;
 import mindustry.gen.Hitboxc;
@@ -229,7 +229,7 @@ public class LightenGenerator extends NuclearReactor {
 			heat = Mathf.clamp(heat);
 
 			if (heat >= 0.999f) {
-				Events.fire(EventType.Trigger.thoriumReactorOverheat);
+				Events.fire(Trigger.thoriumReactorOverheat);
 				if (deathBullet != null) Call.createBullet(deathBullet, team, x, y, 0, -1, 1, 1);
 				kill();
 			}

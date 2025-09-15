@@ -154,13 +154,12 @@ public class LabelMessageBlock extends MessageBlock {
 
 		public void addLabel() {
 			if (!Vars.net.client() && targetPos != -1) {
-				WorldLabel l = Pools.obtain(WorldLabel.class, WorldLabel::create);
-				String s = message.toString();
-				if (s.startsWith("@")) l.text = Core.bundle.get(s.replaceFirst("@", ""));
-				else l.text = s;
+				WorldLabel label = Pools.obtain(WorldLabel.class, WorldLabel::create);
+				String mess = message.toString();
+				label.text = mess.startsWith("@") ? Core.bundle.get(mess.replaceFirst("@", "")) : mess;
 				Tmp.p1.set(Point2.unpack(targetPos));
-				l.set(Tmp.p1.x * tilesize, Tmp.p1.y * tilesize);
-				l.add();
+				label.set(Tmp.p1.x * tilesize, Tmp.p1.y * tilesize);
+				label.add();
 			}
 		}
 

@@ -15,7 +15,7 @@ import heavyindustry.graphics.DrawText;
 import mindustry.content.Fx;
 import mindustry.core.World;
 import mindustry.entities.Effect;
-import mindustry.game.EventType;
+import mindustry.game.EventType.TapEvent;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
@@ -34,8 +34,9 @@ public class LaserRuler extends Block {
 	protected static Tile lastTaped;
 
 	static {
-		Events.on(EventType.TapEvent.class, event -> {
+		Events.on(TapEvent.class, event -> {
 			lastTaped = event.tile;
+
 			Building selectedTile = control.input.config.getSelected();
 			if (selectedTile instanceof LaserRulerBuild build) {
 				if (build.tile == lastTaped) {
@@ -131,6 +132,7 @@ public class LaserRuler extends Block {
 		@Override
 		public void draw() {
 			super.draw();
+
 			if (!validTarget(target)) return;
 
 			Tile target = targetTile();
@@ -207,8 +209,8 @@ public class LaserRuler extends Block {
 
 		protected float dstToTarget() {
 			if (!validTarget(target)) return -1;
-			Tile ti = world.tile(target);
-			return Mathf.dst(ti.worldx(), ti.worldy(), tile.worldx(), tile.worldy()) - 8f;
+			Tile t = world.tile(target);
+			return Mathf.dst(t.worldx(), t.worldy(), tile.worldx(), tile.worldy()) - 8f;
 		}
 
 		public void setTarget(int tar) {

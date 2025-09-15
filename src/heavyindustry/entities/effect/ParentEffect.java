@@ -78,16 +78,16 @@ public class ParentEffect extends Effect {
 			super.update();
 
 			if (parent != null) {
-				float rotationA = 0f;
+				float rot = 0f;
 				if (parent instanceof Rotc rotc) {
-					rotationA = rotc.rotation();
+					rot = rotc.rotation();
 				} else if (parent instanceof BaseTurretBuild turret) {
-					rotationA = turret.rotation;
+					rot = turret.rotation;
 				}
-				rotation = rotationA - originalRotation;
+				rotation = rot - originalRotation;
 				//float angle = Mathf.angle(offsetX, offsetY);
 				float len = (float) Math.sqrt(offsetX * offsetX + offsetY * offsetY);
-				Tmp.v1.trns(rotationA - positionRotation, len).add(parent);
+				Tmp.v1.trns(rot - positionRotation, len).add(parent);
 				x = Tmp.v1.x;
 				y = Tmp.v1.y;
 			}

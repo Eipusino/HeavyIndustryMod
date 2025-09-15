@@ -19,7 +19,7 @@ import mindustry.content.Items;
 import mindustry.entities.Effect;
 import mindustry.entities.Mover;
 import mindustry.entities.bullet.BulletType;
-import mindustry.game.EventType;
+import mindustry.game.EventType.Trigger;
 import mindustry.gen.Building;
 import mindustry.gen.Teamc;
 import mindustry.graphics.Pal;
@@ -172,11 +172,11 @@ public class MultiBulletTurret extends Turret {
 		@Override
 		public void handleItem(Building source, Item item) {
 			if (item == Items.pyratite) {
-				Events.fire(EventType.Trigger.flameAmmo);
+				Events.fire(Trigger.flameAmmo);
 			}
 
 			if (totalAmmo == 0) {
-				Events.fire(EventType.Trigger.resupplyTurret);
+				Events.fire(Trigger.resupplyTurret);
 			}
 
 			BulletType[] types = ammoTypes.get(item);

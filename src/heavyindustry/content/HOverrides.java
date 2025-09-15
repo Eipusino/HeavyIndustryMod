@@ -3,7 +3,6 @@ package heavyindustry.content;
 import arc.func.Boolf;
 import arc.func.Cons;
 import arc.graphics.Color;
-import arc.math.Interp;
 import heavyindustry.graphics.HPal;
 import heavyindustry.world.meta.HAttribute;
 import mindustry.content.Blocks;
@@ -16,15 +15,12 @@ import mindustry.content.UnitTypes;
 import mindustry.entities.bullet.BasicBulletType;
 import mindustry.entities.bullet.ContinuousFlameBulletType;
 import mindustry.entities.bullet.ContinuousLaserBulletType;
-import mindustry.entities.bullet.LaserBulletType;
 import mindustry.entities.bullet.LiquidBulletType;
 import mindustry.entities.bullet.RailBulletType;
 import mindustry.entities.bullet.ShrapnelBulletType;
 import mindustry.entities.effect.ExplosionEffect;
 import mindustry.entities.effect.MultiEffect;
-import mindustry.entities.effect.ParticleEffect;
 import mindustry.entities.effect.WaveEffect;
-import mindustry.entities.effect.WrapEffect;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
@@ -237,111 +233,22 @@ public final class HOverrides {
 				damage = 0.2f;
 			}});
 		}
-		if (Blocks.foreshadow instanceof ItemTurret turret) turret.ammo(Items.surgeAlloy, new RailBulletType() {{
-			shootEffect = Fx.railShoot;
-			length = 600f;
-			pointEffectSpace = 60f;
-			pierceEffect = Fx.railHit;
-			pointEffect = Fx.railTrail;
-			hitEffect = Fx.massiveExplosion;
-			ammoMultiplier = 1f;
-			smokeEffect = Fx.smokeCloud;
-			damage = 1450f;
-			pierceDamageFactor = 0.5f;
-			buildingDamageMultiplier = 0.3f;
-		}}, Items.phaseFabric, new BasicBulletType(12f, 550f) {{
-			hittable = false;
-			absorbable = false;
-			shootEffect = new ParticleEffect() {{
-				particles = 16;
-				interp = Interp.pow10Out;
-				sizeInterp = Interp.pow5In;
-				sizeFrom = 4f;
-				sizeTo = 0f;
-				length = 65f;
-				baseLength = 9f;
-				lifetime = 60f;
-				colorFrom = HPal.discDark;
-				colorTo = HPal.discDark.cpy().a(0.47f);
-				cone = 20f;
-			}};
-			despawnEffect = new WrapEffect(Fx.dynamicSpikes, HPal.discDark, 50f);
-			hitEffect = new MultiEffect(new ParticleEffect() {{
-				particles = 9;
-				sizeFrom = 8f;
-				sizeTo = 0f;
-				length = 65f;
-				baseLength = 9f;
-				lifetime = 60f;
-				interp = Interp.pow10Out;
-				sizeInterp = Interp.pow10In;
-				colorFrom = colorTo = HPal.discDark;
-			}}, new WaveEffect() {{
-				interp = Interp.circleOut;
-				lifetime = 60f;
-				sizeFrom = 2f;
-				sizeTo = 60f;
-				strokeFrom = 5f;
-				strokeTo = 0f;
-				colorFrom = colorTo = HPal.discDark;
+		if (Blocks.foreshadow instanceof ItemTurret turret) {
+			turret.ammoTypes.clear();
+			turret.ammoTypes.put(Items.surgeAlloy, new RailBulletType() {{
+				shootEffect = Fx.railShoot;
+				length = 600f;
+				pointEffectSpace = 60f;
+				pierceEffect = Fx.railHit;
+				pointEffect = Fx.railTrail;
+				hitEffect = Fx.massiveExplosion;
+				ammoMultiplier = 1f;
+				smokeEffect = Fx.smokeCloud;
+				damage = 1450f;
+				pierceDamageFactor = 0.5f;
+				buildingDamageMultiplier = 0.3f;
 			}});
-			hitSound = Sounds.laser;
-			shrinkY = 0f;
-			width = 16f;
-			height = 28f;
-			frontColor = Color.white;
-			backColor = trailColor = HPal.discDark;
-			trailLength = 9;
-			trailWidth = 3f;
-			lifetime = 40f;
-			splashDamageRadius = 50f;
-			splashDamage = 100f;
-			ammoMultiplier = 1f;
-			pierce = true;
-			pierceBuilding = true;
-			bulletInterval = 2f;
-			intervalBullets = 1;
-			intervalDelay = 10f;
-			intervalBullet = new BasicBulletType(0.01f, 1f, "circle-bullet") {{
-				hitEffect = new WrapEffect(Fx.dynamicSpikes, HPal.discDark, 30f);
-				despawnEffect = Fx.none;
-				hitSound = Sounds.laser;
-				lightningColor = HPal.discDark;
-				lightningDamage = 166f;
-				lightning = 1;
-				lightningLength = 5;
-				lightningLengthRand = 5;
-				spin = 0.6f;
-				width = 12f;
-				height = 8f;
-				lifetime = 20f;
-				pierceArmor = true;
-				hittable = false;
-				splashDamageRadius = 40f;
-				splashDamage = 45f;
-			}};
-			fragBullets = 5;
-			fragRandomSpread = 0f;
-			fragBullet = new LaserBulletType(110f) {{
-				pierceArmor = true;
-				hitEffect = new ParticleEffect() {{
-					particles = 5;
-					line = true;
-					interp = Interp.pow5Out;
-					sizeInterp = Interp.pow5In;
-					length = 25;
-					baseLength = 0;
-					lifetime = 35;
-					colorFrom = Color.white;
-					colorTo = HPal.discDark;
-				}};
-				colors = new Color[]{HPal.discDark.cpy().a(0.6f), HPal.discDark.cpy().a(0.7f), HPal.discDark};
-				despawnEffect = Fx.none;
-				width = 16f;
-				length = 220f;
-				lifetime = 30f;
-			}};
-		}});
+		}
 		if (Blocks.spectre instanceof ItemTurret turret) {
 			turret.range = 280f;
 			turret.ammoTypes.put(HItems.uranium, new BasicBulletType(9f, 105f) {{
@@ -379,7 +286,8 @@ public final class HOverrides {
 		Blocks.sublimate.armor = 4f;
 		if (Blocks.sublimate instanceof ContinuousLiquidTurret turret) {
 			turret.range = 130f;
-			turret.ammo(HLiquids.gas, new ContinuousFlameBulletType() {{
+			turret.ammoTypes.clear();
+			turret.ammoTypes.put(HLiquids.gas, new ContinuousFlameBulletType() {{
 				damage = 90f;
 				rangeChange = 30f;
 				length = 160f;
@@ -389,7 +297,8 @@ public final class HOverrides {
 				colors = new Color[]{Color.valueOf("ffd37fa1"), Color.valueOf("ffd37fcc"), Color.valueOf("ffd37f"), Color.valueOf("ffe6b7"), Color.valueOf("d8e2ff")};
 				lightColor = flareColor = Color.valueOf("fbd367");
 				hitColor = Color.valueOf("ffd367");
-			}}, Liquids.hydrogen, new ContinuousFlameBulletType() {{
+			}});
+			turret.ammoTypes.put(Liquids.hydrogen, new ContinuousFlameBulletType() {{
 				damage = 60f;
 				length = 130f;
 				knockback = 1f;
@@ -397,7 +306,8 @@ public final class HOverrides {
 				buildingDamageMultiplier = 0.3f;
 				colors = new Color[]{Color.valueOf("92abff7f"), Color.valueOf("92abffa2"), Color.valueOf("92abffd3"), Color.valueOf("92abff"), Color.valueOf("d4e0ff")};
 				lightColor = hitColor = flareColor = Color.valueOf("92abff");
-			}}, Liquids.cyanogen, new ContinuousFlameBulletType() {{
+			}});
+			turret.ammoTypes.put(Liquids.cyanogen, new ContinuousFlameBulletType() {{
 				damage = 130f;
 				rangeChange = 70f;
 				length = 200f;

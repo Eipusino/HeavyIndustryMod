@@ -24,8 +24,8 @@ import java.util.Set;
  * @author Eipusino
  */
 public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K, V> {
-	public final Class<?> keyArrayType;
-	public final Class<?> valueArrayType;
+	public final Class<?> keyComponentType;
+	public final Class<?> valueComponentType;
 
 	public K[] keys;
 	public V[] values;
@@ -57,8 +57,8 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 	public CollectionArrayMap(boolean ordered, int capacity, Class<?> keyType, Class<?> valueType) {
 		this.ordered = ordered;
 
-		keyArrayType = keyType;
-		valueArrayType = valueType;
+		keyComponentType = keyType;
+		valueComponentType = valueType;
 
 		keys = (K[]) Array.newInstance(keyType, capacity);
 		values = (V[]) Array.newInstance(valueType, capacity);
@@ -70,7 +70,7 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 	 * added will cause the backing arrays to be grown.
 	 */
 	public CollectionArrayMap(CollectionArrayMap<? extends K, ? extends V> array) {
-		this(array.ordered, array.size, array.keys.getClass().getComponentType(), array.values.getClass().getComponentType());
+		this(array.ordered, array.size, array.keyComponentType, array.valueComponentType);
 		size = array.size;
 		System.arraycopy(array.keys, 0, keys, 0, size);
 		System.arraycopy(array.values, 0, values, 0, size);
@@ -449,7 +449,7 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) return true;
-		if (!(obj instanceof CollectionArrayMap<?, ?> map) || map.keyArrayType != keyArrayType || map.valueArrayType != valueArrayType)
+		if (!(obj instanceof CollectionArrayMap<?, ?> map) || map.keyComponentType != keyComponentType || map.valueComponentType != valueComponentType)
 			return false;
 		CollectionArrayMap<K, V> other = (CollectionArrayMap<K, V>) map;
 		if (other.size != size) return false;

@@ -30,7 +30,7 @@ import mindustry.content.Fx;
 import mindustry.ctype.UnlockableContent;
 import mindustry.entities.Effect;
 import mindustry.entities.units.BuildPlan;
-import mindustry.game.EventType;
+import mindustry.game.EventType.UnitCreateEvent;
 import mindustry.gen.Building;
 import mindustry.gen.Icon;
 import mindustry.gen.Sounds;
@@ -325,7 +325,7 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 										if (recipe.result instanceof UnitType unitResult) {
 											Unit unit = unitResult.create(team);
 											payload = new UnitPayload(unit);
-											Events.fire(new EventType.UnitCreateEvent(unit, this));
+											Events.fire(new UnitCreateEvent(unit, this));
 										} else if (recipe.result instanceof Block blockResult) {
 											payload = new BuildPayload(blockResult, team);
 										}

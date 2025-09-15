@@ -19,7 +19,7 @@ import mindustry.world.Tile;
 import mindustry.world.meta.Env;
 
 public class UltPuddle extends Puddle {
-	public static UltPuddle obtain() {
+	public static UltPuddle createUlt() {
 		return Pools.obtain(UltPuddle.class, UltPuddle::new);
 	}
 
@@ -64,7 +64,7 @@ public class UltPuddle extends Puddle {
 		if (p == null || p.liquid == null) {
 			if (!Vars.net.client()) {
 				//do not create puddles clientside as that destroys syncing
-				UltPuddle puddle = UltPuddle.obtain();
+				UltPuddle puddle = createUlt();
 				puddle.tile = tile;
 				puddle.liquid = liquid;
 				puddle.amount = Math.min(amount, Puddles.maxLiquid);

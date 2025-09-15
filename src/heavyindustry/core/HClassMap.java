@@ -73,7 +73,6 @@ import heavyindustry.entities.part.ArcCharge;
 import heavyindustry.entities.part.BowHalo;
 import heavyindustry.entities.part.ConstructPart;
 import heavyindustry.entities.part.CustomPart;
-import heavyindustry.entities.part.HPartProgress;
 import heavyindustry.entities.part.PartBow;
 import heavyindustry.entities.part.RangeCirclePart;
 import heavyindustry.entities.pattern.FlipShootHelix;
@@ -416,7 +415,6 @@ final class HClassMap {
 		classes.put("PartBow", PartBow.class);
 		classes.put("RunningLight", RunningLight.class);
 		classes.put("ArcCharge", ArcCharge.class);
-		classes.put("HIDrawPart", HPartProgress.class);
 		classes.put("ConstructPart", ConstructPart.class);
 		classes.put("CustomPart", CustomPart.class);
 		classes.put("RangeCirclePart", RangeCirclePart.class);

@@ -8,11 +8,13 @@ import arc.math.Mathf;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.graphics.HPal;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.Utils;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
 import mindustry.entities.units.StatusEntry;
+import mindustry.entities.units.WeaponMount;
 import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.MultiPacker;
@@ -29,7 +31,7 @@ import mindustry.world.meta.StatUnit;
  */
 public final class HStatusEffects {
 	public static StatusEffect
-			overheat, regenerating, breached, flamePoint, ultFireBurn,
+			overheat, regenerating, breached, radiation, flamePoint, ultFireBurn,
 			territoryFieldIncrease, territoryFieldSuppress, apoptosis;
 
 	/** Don't let anyone instantiate this class. */
@@ -61,6 +63,26 @@ public final class HStatusEffects {
 			transitionDamage = 220f;
 			permanent = true;
 		}};
+		radiation = new BaseStatusEffect("radiation") {{
+			damage = 1.6f;
+		}
+			@Override
+			public void update(Unit unit, StatusEntry entry) {
+				super.update(unit, entry);
+
+				if (Mathf.chanceDelta(0.008f * Mathf.clamp(entry.time / 120f))) unit.damage(unit.maxHealth * 0.125f);
+
+				for (WeaponMount temp : unit.mounts) {
+					if (temp == null) continue;
+
+					float strength = Mathm.clamp(entry.time / 120f, 0f, 1f);
+
+					if (Mathf.chanceDelta(0.12f))
+						temp.reload = Math.min(temp.reload + Time.delta * 1.5f * strength, temp.weapon.reload);
+					temp.rotation += Mathf.range(12f * strength);
+				}
+			}
+		};
 		flamePoint = new BaseStatusEffect("flame-point") {{
 			damage = 0.2f;
 			color = Pal.lightFlame;

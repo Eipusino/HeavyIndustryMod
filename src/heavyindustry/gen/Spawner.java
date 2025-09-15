@@ -8,7 +8,6 @@ import arc.math.Interp;
 import arc.math.Mathf;
 import arc.math.geom.Position;
 import arc.math.geom.Vec2;
-import arc.struct.Seq;
 import arc.util.Interval;
 import arc.util.Time;
 import arc.util.Tmp;
@@ -16,6 +15,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.content.HFx;
 import heavyindustry.graphics.Drawn;
+import heavyindustry.util.CollectionList;
 import heavyindustry.util.Utils;
 import mindustry.Vars;
 import mindustry.ai.types.CommandAI;
@@ -26,7 +26,7 @@ import mindustry.content.UnitTypes;
 import mindustry.entities.Effect;
 import mindustry.entities.Units;
 import mindustry.entities.units.StatusEntry;
-import mindustry.game.EventType;
+import mindustry.game.EventType.UnitCreateEvent;
 import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.gen.Groups;
@@ -46,13 +46,14 @@ import mindustry.type.UnitType;
 import mindustry.ui.Fonts;
 
 import java.nio.FloatBuffer;
+import java.util.List;
 
 import static heavyindustry.HVars.MOD_NAME;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.tilesize;
 
 public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
-	public final Seq<Trail> trails = Seq.with(new Trail(30), new Trail(50), new Trail(70));
+	public final List<Trail> trails = CollectionList.with(new Trail(30), new Trail(50), new Trail(70));
 
 	public Team team = Team.derelict;
 	public UnitType type = UnitTypes.alpha;
@@ -150,9 +151,9 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 			if (!headless) {
 				trailProgress += Time.delta * (0.45f + fin(Interp.pow3In) * 2f);
 
-				for (int i = 0; i < trails.size; i++) {
+				for (int i = 0; i < trails.size(); i++) {
 					Trail trail = trails.get(i);
-					Tmp.v1.trns(trailProgress * (i + 1) * 1.5f + i * 360f / trails.size + Mathf.randomSeed(id, 360), ((fin() + 1) / 2 * drawSize * (1 + 0.5f * i) + Mathf.sinDeg(trailProgress * (1 + 0.5f * i)) * drawSize / 2) * (fout(Interp.pow3) * 7 + 1) / 8, fin(Interp.swing) * fout(Interp.swingOut) * drawSize / 3 * fout()).add(this);
+					Tmp.v1.trns(trailProgress * (i + 1) * 1.5f + i * 360f / trails.size() + Mathf.randomSeed(id, 360), ((fin() + 1) / 2 * drawSize * (1 + 0.5f * i) + Mathf.sinDeg(trailProgress * (1 + 0.5f * i)) * drawSize / 2) * (fout(Interp.pow3) * 7 + 1) / 8, fin(Interp.swing) * fout(Interp.swingOut) * drawSize / 3 * fout()).add(this);
 					trail.update(Tmp.v1.x, Tmp.v1.y, (fout(0.25f) * 2 + 1) / 3);
 				}
 			}
@@ -188,7 +189,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 		}
 
 		if (!headless) {
-			for (int i = 0; i < trails.size; i++) {
+			for (int i = 0; i < trails.size(); i++) {
 				Trail trail = trails.get(i);
 				Fx.trailFade.at(x, y, trailWidth, team.color, trail.copy());
 			}
@@ -215,7 +216,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 			}
 		}
 
-		Events.fire(new EventType.UnitCreateEvent(toSpawn, null));
+		Events.fire(new UnitCreateEvent(toSpawn, null));
 	}
 
 	public boolean canCreate() {

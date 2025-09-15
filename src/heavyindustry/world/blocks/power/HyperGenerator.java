@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.power;
 
+import arc.Events;
 import arc.func.Cons;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
@@ -20,6 +21,7 @@ import mindustry.entities.Damage;
 import mindustry.entities.Effect;
 import mindustry.entities.Units;
 import mindustry.entities.bullet.BulletType;
+import mindustry.game.EventType.Trigger;
 import mindustry.game.Team;
 import mindustry.gen.Bullet;
 import mindustry.gen.Sounds;
@@ -29,6 +31,7 @@ import mindustry.graphics.Pal;
 import mindustry.world.blocks.power.ImpactReactor;
 import mindustry.world.meta.BlockFlag;
 
+import static mindustry.Vars.headless;
 import static mindustry.Vars.tilesize;
 
 /**
@@ -63,6 +66,7 @@ public class HyperGenerator extends ImpactReactor {
 
 	public HyperGenerator(String name) {
 		super(name);
+
 		explosionRadius = 220;
 		explosionDamage = 14000;
 		baseExplosiveness = 1000f;
@@ -73,10 +77,9 @@ public class HyperGenerator extends ImpactReactor {
 	@Override
 	public void init() {
 		super.init();
+
 		if (consPower == null) consumePower(0f);
-		if (destroyed == null) destroyed = new EffectBulletType(600f) {
-			final Effect updateEffect1, updateEffect2;
-		{
+		if (destroyed == null) destroyed = new EffectBulletType(600f) {{
 			absorbable = hittable = false;
 			speed = 0;
 			lightningLen = lightningLenRand = 4;
@@ -89,15 +92,16 @@ public class HyperGenerator extends ImpactReactor {
 
 			despawnEffect = HFx.circleOut(hitColor, lightningRange * 1.5f);
 			hitEffect = HFx.collapserBulletExplode;
-			updateEffect2 = HFx.blast(hitColor, lightningRange / 2f);
-			updateEffect1 = HFx.circleOut(effectColor, lightningRange * 0.75f);
 
 			hitShake = despawnShake = 80f;
 			despawnSound = HSounds.hugeBlast;
 		}
+			public final Effect updateEffect1 = HFx.circleOut(effectColor, lightningRange * 0.75f), updateEffect2 = HFx.blast(hitColor, lightningRange / 2f);
+
 			@Override
 			public void init(Bullet b) {
 				super.init(b);
+
 				Units.nearby(Tmp.r1.setCenter(b.x, b.y).setSize(lightningRange * 4), unit -> {
 					unit.impulse(Tmp.v3.set(unit).sub(b.x, b.y).nor().scl(b.dst(unit) * unit.mass() / 160f));
 				});
@@ -106,6 +110,7 @@ public class HyperGenerator extends ImpactReactor {
 			@Override
 			public void draw(Bullet b) {
 				super.draw(b);
+
 				float f = Mathf.curve(b.fout(), 0, 0.15f);
 				float f2 = Mathf.curve(b.fin(), 0, 0.1f);
 				Draw.color(effectColor);
@@ -127,40 +132,50 @@ public class HyperGenerator extends ImpactReactor {
 			@Override
 			public void update(Bullet b) {
 				super.update(b);
+
 				Units.nearby(Tmp.r1.setCenter(b.x, b.y).setSize(lightningRange * 3f), unit -> {
 					unit.impulse(Tmp.v3.set(unit).sub(b.x, b.y).nor().scl(-attract * 100f));
 				});
 
-				if (Mathf.chanceDelta((b.fin() * 3 + 1) / 4f * 0.65f)) {
-					Drawn.randFadeLightningEffect(b.x, b.y, lightningRange * 1.5f, Mathf.random(12f, 20f), lightningColor, Mathf.chance(0.5));
+				if (!headless) {
+					if (Mathf.chanceDelta((b.fin() * 3 + 1) / 4f * 0.65f)) {
+						Drawn.randFadeLightningEffect(b.x, b.y, lightningRange * 1.5f, Mathf.random(12f, 20f), lightningColor, Mathf.chance(0.5));
+					}
+
+					if (Mathf.chanceDelta(0.2)) {
+						updateEffect2.at(b.x + Mathf.range(size * tilesize * 0.75f), b.y + Mathf.range(size * tilesize * 0.75f));
+					}
+
+					if (Mathf.chanceDelta(0.075)) {
+						updateEffect1.at(b.x + Mathf.range(size * tilesize), b.y + Mathf.range(size * tilesize));
+					}
+
+					Effect.shake(10f, 30f, b);
 				}
 
-				if (Mathf.chanceDelta(0.2)) {
-					updateEffect2.at(b.x + Mathf.range(size * tilesize * 0.75f), b.y + Mathf.range(size * tilesize * 0.75f));
-				}
-
-				if (Mathf.chanceDelta(0.075)) {
-					updateEffect1.at(b.x + Mathf.range(size * tilesize), b.y + Mathf.range(size * tilesize));
-				}
-
-				Effect.shake(10f, 30f, b);
-
-				if (b.timer(3, 8))
+				if (b.timer(3, 8)) {
 					PositionLightning.createRange(b, b, Team.derelict, lightningRange * 2f, 255, effectColor, true, lightningDamage, subNum + Mathf.random(subNumRand), PositionLightning.WIDTH, updateLightning + Mathf.random(updateLightningRand), point -> {
-						HFx.lightningHitSmall.at(point);
+						if (!headless) {
+							HFx.lightningHitSmall.at(point);
+						}
 						Damage.damage(point.getX(), point.getY(), splashDamageRadius, splashDamage);
 					});
+				}
 
 				if (b.timer(4, 5)) {
-					float range = size * tilesize / 1.5f;
-					HFx.hyperExplode.at(b.x + Mathf.range(range), b.y + Mathf.range(range), effectColor);
-					Sounds.explosionbig.at(b);
+					if (!headless) {
+						float range = size * tilesize / 1.5f;
+						HFx.hyperExplode.at(b.x + Mathf.range(range), b.y + Mathf.range(range), effectColor);
+						Sounds.explosionbig.at(b);
+					}
 					HBullets.hyperBlast.create(b, Team.derelict, b.x, b.y, Mathf.random(360), HBullets.hyperBlast.damage * baseExplosiveness, Mathf.random(minVelScl, maxVelScl), Mathf.random(minTimeScl, maxTimeScl), new Object());
 				}
 
 				if (b.timer(5, 8)) {
-					float range = size * tilesize / 1.5f;
-					HFx.hitSparkLarge.at(b.x + Mathf.range(range), b.y + Mathf.range(range), effectColor);
+					if (!headless) {
+						float range = size * tilesize / 1.5f;
+						HFx.hitSparkLarge.at(b.x + Mathf.range(range), b.y + Mathf.range(range), effectColor);
+					}
 					HBullets.hyperBlastLinker.create(b, Team.derelict, b.x, b.y, Mathf.random(360), HBullets.hyperBlast.damage * baseExplosiveness, Mathf.random(minVelScl, maxVelScl), Mathf.random(minTimeScl, maxTimeScl), new Object());
 				}
 			}
@@ -168,6 +183,7 @@ public class HyperGenerator extends ImpactReactor {
 			@Override
 			public void despawned(Bullet b) {
 				super.despawned(b);
+
 				Units.nearby(Tmp.r1.setCenter(b.x, b.y).setSize(lightningRange * 4), unit -> {
 					if (unit.hittable()) {
 						unit.vel.set(Tmp.v1.set(unit).sub(b).nor().scl(6));
@@ -193,10 +209,39 @@ public class HyperGenerator extends ImpactReactor {
 
 	public class HyperGeneratorBuild extends ImpactReactorBuild {
 		@Override
+		public void updateTile() {
+			if (efficiency >= 0.9999f && power.status >= 0.99f) {
+				boolean prevOut = getPowerProduction() <= consPower.requestedPower(this);
+
+				warmup = Mathf.lerpDelta(warmup, 1f, warmupSpeed * timeScale);
+				if (Mathf.equal(warmup, 1f, 0.001f)) {
+					warmup = 1f;
+				}
+
+				if (!prevOut && (getPowerProduction() > consPower.requestedPower(this))) {
+					Events.fire(Trigger.impactPower);
+				}
+
+				if (timer(timerUse, itemDuration / timeScale)) {
+					consume();
+				}
+			} else {
+				warmup = Mathf.lerpDelta(warmup, 0f, 0.001f);
+			}
+
+			totalProgress += warmup * Time.delta;
+
+			productionEfficiency = Mathf.pow(warmup, 5f);
+		}
+
+		@Override
 		public void onDestroyed() {
 			super.onDestroyed();
+
 			if (warmup < destroyedExplodeLimit) return;
+
 			explodeAction.get(this);
+
 			int i;
 
 			destroyed.create(this, Team.derelict, x, y, 0);

@@ -99,7 +99,11 @@ public final class HTechTree {
 			node(largeWaterExtractor);
 			node(slagExtractor);
 		});
-		vanillaNode(blastDrill, () -> node(beamDrill, Seq.with(new SectorComplete(SectorPresets.impact0078))));
+		vanillaNode(laserDrill, () -> node(ionDrill, () -> node(beamDrill, Seq.with(new SectorComplete(SectorPresets.impact0078)))));
+		vanillaNode(blastDrill, () -> {
+			node(blastWell);
+			node(cuttingDrill);
+		});
 		vanillaNode(oilExtractor, () -> node(oilRig));
 		//drill-erekir
 		vanillaNode(largePlasmaBore, () -> node(heavyPlasmaBore, ItemStack.with(Items.silicon, 6000, Items.oxide, 3000, Items.beryllium, 7000, Items.tungsten, 5000, Items.carbide, 2000)));

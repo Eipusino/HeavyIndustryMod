@@ -26,7 +26,7 @@ import mindustry.core.UI;
 import mindustry.ctype.UnlockableContent;
 import mindustry.entities.Effect;
 import mindustry.entities.EntityGroup;
-import mindustry.game.EventType;
+import mindustry.game.EventType.BlockBuildEndEvent;
 import mindustry.gen.Building;
 import mindustry.gen.Teamc;
 import mindustry.graphics.Drawf;
@@ -123,8 +123,10 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 					);
 				});
 			});
+
 		super.init();
-		Events.on(EventType.BlockBuildEndEvent.class, (event -> {
+
+		Events.on(BlockBuildEndEvent.class, (event -> {
 			if (!event.breaking) {
 				rdcGroup.each(cen -> {
 					if (cen instanceof ResourcesDispatchingCenterBuild rdc)
