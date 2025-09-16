@@ -40,11 +40,6 @@ public final class HMods {
 		return isEnabled("mindustryx");
 	}
 
-	/**
-	 * @deprecated Due to the discontinuation of maintenance on the Arc client, the heavy industry mod will
-	 * hardly run on the Arc client, making this method almost useless.
-	 */
-	@Deprecated
 	public static boolean isArc() {
 		Field[] fields = Vars.class.getDeclaredFields();
 		for (Field field : fields) {

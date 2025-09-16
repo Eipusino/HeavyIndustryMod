@@ -43,7 +43,7 @@ public final class HStyles {
 	/** Don't let anyone instantiate this class. */
 	private HStyles() {}
 
-	public static void onClient() {
+	public static void load() {
 		//drawable
 		buttonLeft = drawable("button-left");
 		buttonLeftDown = drawable("button-left-down");

@@ -53,7 +53,7 @@ public final class HShaders {
 	private HShaders() {}
 
 	/** Loads the shaders. */
-	public static void onClient() {
+	public static void load() {
 		String prevVert = Shader.prependVertexCode, prevFrag = Shader.prependFragmentCode;
 		Shader.prependVertexCode = Shader.prependFragmentCode = "";
 

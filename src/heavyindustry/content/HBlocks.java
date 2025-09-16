@@ -1212,7 +1212,7 @@ public final class HBlocks {
 			updateEffect = Fx.mineBig;
 			updateEffectChance = 0.03f;
 			drawRim = true;
-			drillTime = 180f;
+			drillTime = 140f;
 			drillEffect = Fx.mineBig;
 			rotateSpeed = 2f;
 			warmupSpeed = 0.06f;

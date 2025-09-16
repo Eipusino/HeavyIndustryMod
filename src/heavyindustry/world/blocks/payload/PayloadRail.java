@@ -469,8 +469,7 @@ public class PayloadRail extends PayloadBlock {
 			this.y = y;
 		}
 
-		public RailPayload() {
-		}
+		public RailPayload() {}
 
 		@Override
 		public float getX() {

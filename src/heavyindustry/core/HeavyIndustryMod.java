@@ -124,21 +124,21 @@ public final class HeavyIndustryMod extends Mod {
 
 		Events.on(FileTreeInitEvent.class, event -> {
 			if (!Vars.headless) {
-				HFonts.onClient();
-				HSounds.onClient();
+				HFonts.load();
+				HSounds.load();
 
 				Core.app.post(() -> {
-					HTextures.onClient();
-					HShaders.onClient();
-					HCacheLayer.onClient();
-					MathRenderer.onClient();
+					HTextures.load();
+					HShaders.load();
+					HCacheLayer.load();
+					MathRenderer.load();
 				});
 			}
 		});
 
 		Events.on(MusicRegisterEvent.class, event -> {
 			if (!Vars.headless) {
-				HMusics.onClient();
+				HMusics.load();
 			}
 		});
 
@@ -178,10 +178,10 @@ public final class HeavyIndustryMod extends Mod {
 		HUnitTypes.loadImmunities();
 
 		if (!Vars.headless) {
-			HIcon.onClient();
+			HIcon.load();
 
-			HStyles.onClient();
-			Elements.onClient();
+			HStyles.load();
+			Elements.load();
 		}
 
 		IconLoader.loadIcons(HVars.internalTree.child("other/icons.properties"));
@@ -211,9 +211,6 @@ public final class HeavyIndustryMod extends Mod {
 					});
 				});
 			}
-
-			// Replace the original technology ResearchDialog
-			// This is a rather foolish approach, but there is nothing we can do about it.
 
 			if (!Vars.headless && !HMods.isEnabled("extra-utilities") && !HMods.isX() && Core.settings.getBool("hi-floating-text")) {
 				String massage = Core.bundle.get("hi-random-massage");

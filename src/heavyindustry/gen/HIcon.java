@@ -25,7 +25,7 @@ public final class HIcon {
 	/** Don't let anyone instantiate this class. */
 	private HIcon() {}
 
-	public static void onClient() {
+	public static void load() {
 		keplerIcon = texture("kepler-icon");
 		aboutIcon = texture("about-icon");
 		artistIcon = texture("artist-icon");

@@ -47,11 +47,11 @@ public final class Draws {
 	public static final int sharedUponFlyUnitBloomId = nextTaskId();
 	public static final int sharedUnderFlyUnitBloomId = nextTaskId();
 
-	private static final Rect rect = new Rect();
-	private static DrawTask[] drawTasks = new DrawTask[16];
-	private static FrameBuffer[] taskBuffer = new FrameBuffer[16];
-	private static Bloom[] blooms = new Bloom[16];
-	private static int idCount = 0;
+	static final Rect rect = new Rect();
+	static DrawTask[] drawTasks = new DrawTask[16];
+	static FrameBuffer[] taskBuffer = new FrameBuffer[16];
+	static Bloom[] blooms = new Bloom[16];
+	static int idCount = 0;
 
 	static {
 		Events.run(Trigger.draw, () -> {
@@ -547,7 +547,7 @@ public final class Draws {
 		Draw.z(z);
 	}
 
-	private static void crystalEdge(float x, float y, boolean w, boolean r, float edgeLayer, float botLayer, Vec3 v) {
+	static void crystalEdge(float x, float y, boolean w, boolean r, float edgeLayer, float botLayer, Vec3 v) {
 		Draw.z(r || w ? edgeLayer : botLayer - 0.01f);
 
 		Lines.line(x + v.x, y + v.y, x + v31.x, y + v31.y);
@@ -863,7 +863,7 @@ public final class Draws {
 		Draw.reset();
 	}
 
-	private static void drawArcPart(boolean light, Color colorLight, Color darkColor, float layer, float darkLayer, float x, float y, Vec3 vec1, Vec3 vec2, float rotation) {
+	static void drawArcPart(boolean light, Color colorLight, Color darkColor, float layer, float darkLayer, float x, float y, Vec3 vec1, Vec3 vec2, float rotation) {
 		if (light) {
 			Draw.color(colorLight);
 			Draw.z(layer);

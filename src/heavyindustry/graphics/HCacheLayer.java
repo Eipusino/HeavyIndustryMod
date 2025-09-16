@@ -15,7 +15,7 @@ public final class HCacheLayer {
 	private HCacheLayer() {}
 
 	/** Loads the cache layers. */
-	public static void onClient() {
+	public static void load() {
 		brine = new ShaderLayer(HShaders.brine);
 		crystalFluid = new ShaderLayer(HShaders.crystalFluid);
 		deepCrystalFluid = new ShaderLayer(HShaders.deepCrystalFluid);

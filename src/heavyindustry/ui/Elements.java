@@ -84,7 +84,7 @@ public final class Elements {
 		return value ? "[heal]" + Core.bundle.get("yes") + "[]" : "[#ff7b69]" + Core.bundle.get("no") + "[]";
 	}
 
-	public static void onClient() {
+	public static void load() {
 		powerInfoDialog = new PowerGraphInfoDialog();
 
 		gameDataDialog = new GameDataDialog();

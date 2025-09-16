@@ -45,7 +45,7 @@ public final class HSounds {
 	/** Don't let anyone instantiate this class. */
 	private HSounds() {}
 
-	public static void onClient() {
+	public static void load() {
 		ct1 = new Sound(ogg("ct1"));
 		dbz1 = new Sound(ogg("dbz1"));
 		dd1 = new Sound(ogg("dd1"));

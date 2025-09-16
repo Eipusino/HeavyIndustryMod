@@ -36,6 +36,7 @@ import arc.util.Eachable;
 import arc.util.Log;
 import arc.util.Nullable;
 import arc.util.Reflect;
+import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.pooling.Pools;
@@ -450,6 +451,18 @@ public final class Utils {
 		String end = repeat("0", Math.max(0, retain - realRetain));
 
 		return (isNegative ? "-" : "") + arr[0] + (retain == 0 ? "" : "." + arr[1].substring(0, realRetain) + end + byteUnit[index]);
+	}
+
+	public static String toStoreSize(float num) {
+		var v = num;
+		var n = 0;
+
+		while (v > 1024) {
+			v /= 1024;
+			n++;
+		}
+
+		return Strings.fixed(v, 2) + "[lightgray]" + byteUnit[n];
 	}
 
 	public static Vec2 vecSetLine(Vec2 vec, Vec2 pos, float rotation, float length) {

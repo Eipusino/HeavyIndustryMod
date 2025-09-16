@@ -44,7 +44,7 @@ public final class MathRenderer {
 		return blank;
 	}
 
-	public static void onClient() {
+	public static void load() {
 		sinShader = new MathShader(1, 2,
 				"y - sin(x * arg0 + arg1)",
 				"sqrt(1.0 + pow(arg0 * cos(x * arg0 + arg1), 2.0))",

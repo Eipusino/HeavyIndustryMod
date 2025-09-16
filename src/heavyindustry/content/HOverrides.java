@@ -1,7 +1,5 @@
 package heavyindustry.content;
 
-import arc.func.Boolf;
-import arc.func.Cons;
 import arc.graphics.Color;
 import heavyindustry.graphics.HPal;
 import heavyindustry.world.meta.HAttribute;
@@ -28,7 +26,6 @@ import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.type.PayloadStack;
 import mindustry.type.UnitType;
-import mindustry.world.Block;
 import mindustry.world.blocks.campaign.LandingPad;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.defense.turrets.ContinuousLiquidTurret;
@@ -56,7 +53,6 @@ import mindustry.world.blocks.units.UnitAssembler;
 import mindustry.world.blocks.units.UnitAssembler.AssemblerUnitPlan;
 import mindustry.world.blocks.units.UnitFactory;
 import mindustry.world.blocks.units.UnitFactory.UnitPlan;
-import mindustry.world.consumers.Consume;
 import mindustry.world.consumers.ConsumeItems;
 import mindustry.world.consumers.ConsumeLiquid;
 import mindustry.world.meta.Attribute;
@@ -116,7 +112,8 @@ public final class HOverrides {
 		if (Blocks.blastDrill instanceof Drill drill) drill.hardnessDrillMultiplier = 40f;
 		//Blocks-drill-erekir
 		Blocks.largeCliffCrusher.requirements = ItemStack.with(Items.graphite, 120, Items.silicon, 80, Items.oxide, 30, Items.beryllium, 100, Items.tungsten, 50);
-		HOverrides.<ConsumeLiquid>modifier(Blocks.largeCliffCrusher, c -> c instanceof ConsumeLiquid, c -> c.amount = 0.5f / 60f);
+		Blocks.largeCliffCrusher.removeConsumers(c -> c instanceof ConsumeLiquid);
+		Blocks.largeCliffCrusher.consumeLiquid(Liquids.hydrogen, 0.5f / 60f);
 		Blocks.impactDrill.liquidCapacity *= 2f;
 		Blocks.eruptionDrill.liquidCapacity *= 2f;
 		if (Blocks.impactDrill instanceof BurstDrill drill) {
@@ -156,16 +153,17 @@ public final class HOverrides {
 		Blocks.neoplasiaReactor.canOverdrive = true;
 		//blocks-production
 		Blocks.phaseWeaver.itemCapacity = 30;
-		Blocks.disassembler.removeConsumers(c -> c instanceof ConsumeItems);
 		if (Blocks.disassembler instanceof Separator separator) separator.results = ItemStack.with(Items.copper, 1, Items.lead, 1, Items.graphite, 1, Items.titanium, 1, Items.thorium, 1);
-		HOverrides.<ConsumeLiquid>modifier(Blocks.disassembler, c -> c instanceof ConsumeLiquid, c -> c.amount *= 1.5f);
+		Blocks.disassembler.removeConsumers(c -> c instanceof ConsumeItems || c instanceof ConsumeLiquid);
+		Blocks.disassembler.consumeLiquid(Liquids.slag, 0.18f);
 		//blocks-production-erekir
 		Blocks.oxidationChamber.canOverdrive = true;
 		Blocks.heatReactor.buildVisibility = BuildVisibility.shown;
 		if (Blocks.ventCondenser instanceof AttributeCrafter crafter) crafter.maxBoost = 3f;
 		if (Blocks.electrolyzer instanceof GenericCrafter crafter) crafter.outputLiquids = LiquidStack.with(Liquids.ozone, 4f / 60f, Liquids.hydrogen, 8f / 60f);
-		HOverrides.<ConsumeLiquid>modifier(Blocks.cyanogenSynthesizer, c -> c instanceof ConsumeLiquid, c -> c.amount = 20f / 60f);
 		if (Blocks.cyanogenSynthesizer instanceof HeatCrafter crafter) crafter.outputLiquid = new LiquidStack(Liquids.cyanogen, 4f / 60f);
+		Blocks.cyanogenSynthesizer.removeConsumers(c -> c instanceof ConsumeLiquid);
+		Blocks.cyanogenSynthesizer.consumeLiquid(Liquids.cyanogen, 20f / 60f);
 		//blocks-defense
 		Blocks.shockMine.underBullets = true;
 		//blocks-storage
@@ -439,13 +437,5 @@ public final class HOverrides {
 		Items.erekirItems.addAll(HItems.stone, HItems.uranium, HItems.chromium, HItems.crystal);
 		//planet
 		Planets.serpulo.allowSectorInvasion = false;
-	}
-
-	//Is this really necessary?
-	public static <T extends Consume> void modifier(Block block, Boolf<Consume> filter, Cons<T> modifier) {
-		T consume = block.findConsumer(filter);
-		if (consume != null) {
-			modifier.get(consume);
-		}
 	}
 }

@@ -809,6 +809,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 	}
 
 	/** Removes the items between the specified indices, inclusive. */
+	@Override
 	public void removeRange(int start, int end) {
 		if (end >= size) throw new IndexOutOfBoundsException("end can't be >= size: " + end + " >= " + size);
 		if (start > end) throw new IndexOutOfBoundsException("start can't be > end: " + start + " > " + end);

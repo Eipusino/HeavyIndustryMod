@@ -22,7 +22,7 @@ public final class HFonts {
 	/** Don't let anyone instantiate this class. */
 	private HFonts() {}
 
-	public static void onClient() {
+	public static void load() {
 		Core.assets.setLoader(FreeTypeFontGenerator.class, loaderSuffix, new FreeTypeFontGeneratorLoader(Vars.tree) {
 			@Override
 			public FreeTypeFontGenerator load(AssetManager assetManager, String fileName, Fi file, FreeTypeFontGeneratorParameters parameter) {
