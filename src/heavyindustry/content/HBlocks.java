@@ -45,9 +45,10 @@ import heavyindustry.util.Utils;
 import heavyindustry.world.blocks.LinkBlock;
 import heavyindustry.world.blocks.PlaceholderBlock;
 import heavyindustry.world.blocks.defense.AparajitoWall;
-import heavyindustry.world.blocks.defense.AssignOverdrive;
 import heavyindustry.world.blocks.defense.BombLauncher;
 import heavyindustry.world.blocks.defense.ChargeWall;
+import heavyindustry.world.blocks.defense.ConfigurableMendProjector;
+import heavyindustry.world.blocks.defense.ConfigurableOverdriveProjector;
 import heavyindustry.world.blocks.defense.DPSWall;
 import heavyindustry.world.blocks.defense.Explosive;
 import heavyindustry.world.blocks.defense.IndestructibleWall;
@@ -112,6 +113,7 @@ import heavyindustry.world.blocks.sandbox.AdaptiveSource;
 import heavyindustry.world.blocks.sandbox.RandomSource;
 import heavyindustry.world.blocks.storage.AdaptUnloader;
 import heavyindustry.world.blocks.storage.CoreStorageBlock;
+import heavyindustry.world.blocks.storage.CrashCore;
 import heavyindustry.world.blocks.units.AdaptPayloadSource;
 import heavyindustry.world.blocks.units.UnitIniter;
 import heavyindustry.world.draw.DrawAnim;
@@ -189,7 +191,6 @@ import mindustry.world.blocks.defense.BaseShield;
 import mindustry.world.blocks.defense.Door;
 import mindustry.world.blocks.defense.ForceProjector;
 import mindustry.world.blocks.defense.MendProjector;
-import mindustry.world.blocks.defense.OverdriveProjector;
 import mindustry.world.blocks.defense.Radar;
 import mindustry.world.blocks.defense.RegenProjector;
 import mindustry.world.blocks.defense.ShieldWall;
@@ -323,21 +324,22 @@ public final class HBlocks {
 	//liquid-erekir
 	reinforcedLiquidOverflowValve, reinforcedLiquidUnderflowValve, reinforcedLiquidUnloader, reinforcedLiquidSorter, reinforcedLiquidValve, smallReinforcedPump, largeReinforcedPump,
 	//power
-	networkPowerNode, smartPowerNode, microArmoredPowerNode, heavyArmoredPowerNode, powerAnalyzer, largeThermalGenerator, liquidConsumeGenerator, uraniumReactor, hyperMagneticReactor, hugeBattery, armoredCoatedBattery,
+	networkPowerNode, smartPowerNode, microArmoredPowerNode, heavyArmoredPowerNode, powerAnalyzer,
+			gasGenerator, coalPyrolyzer, largeThermalGenerator, liquidConsumeGenerator, uraniumReactor, hyperMagneticReactor, hugeBattery, armoredCoatedBattery,
 	//power-erekir
 	smartBeamNode, beamDiode, beamInsulator, reinforcedPowerAnalyzer,
 	//production
-	largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, stoneCrusher, fractionator, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
+	largeSiliconSmelter, largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, stoneCrusher, fractionator, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
 			crystallineCircuitConstructor, crystallineCircuitPrinter, crystalActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, corkscrewCompressor,
 			atmosphericCollector, atmosphericCooler, crystalSynthesizer, uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilPrecipitator, blastReagentMixer, centrifuge, galliumNitrideSmelter,
 	//production-erekir
 	ventHeater, chemicalSiliconSmelter, largeElectricHeater, largeOxidationChamber, largeSurgeCrucible, largeCarbideCrucible,
 	//defense
-	lighthouse, mendDome, sectorStructureMender, assignOverdrive, largeShieldGenerator, paralysisMine, detonator, bombLauncher,
+	lighthouse, mendDome, sectorStructureMender, largeShieldGenerator, paralysisMine, detonator, bombLauncher,
 	//defense-erekir
 	largeRadar,
 	//storage
-	cargo, bin, machineryUnloader, rapidUnloader, coreStorage,
+	cargo, bin, machineryUnloader, rapidUnloader, coreStorage, coreShatter,
 	//storage-erekir
 	reinforcedCoreStorage,
 	//payload
@@ -365,7 +367,8 @@ public final class HBlocks {
 	//sandbox
 	unitIniter,
 			reinforcedItemSource, reinforcedLiquidSource, reinforcedPowerSource, reinforcedPayloadSource, adaptiveSource, randomSource,
-			staticDrill, omniNode, overloadProjector, ultraAssignOverdrive,
+			staticDrill, omniNode,
+			configurableMendProjector, configurableOverdriveProjector,
 			teamChanger, barrierProjector, entityRemove,
 			invincibleWall, invincibleWallLarge, invincibleWallHuge, invincibleWallGigantic,
 			dpsWall, dpsWallLarge, dpsWallHuge, dpsWallGigantic,
@@ -1182,9 +1185,9 @@ public final class HBlocks {
 			liquidCapacity = 20;
 			drillTime = 100;
 			tier = 10;
-			arrows = 4;
-			arrowSpacing = 1.5f;
-			arrowOffset = 0;
+			arrows = 12;
+			arrowSpacing = 0.5f;
+			arrowOffset = 0f;
 			arrowColor = Color.valueOf("fec59e80");
 			drillMultipliers.put(Items.sand, 2f);
 			drillMultipliers.put(Items.scrap, 2f);
@@ -1790,6 +1793,43 @@ public final class HBlocks {
 			displayLength = 24f / 4f;
 			hideDetails = false;
 		}};
+		gasGenerator = new ConsumeGenerator("gas-generator") {{
+			size = 1;
+			requirements(Category.power, ItemStack.with(Items.metaglass, 30, Items.titanium, 40));
+			hasLiquids = true;
+			powerProduction = 3.6f;
+			consumeLiquid(HLiquids.gas, 0.1f);
+			generateEffect = Fx.steam;
+			effectChance = 0.01f;
+			drawer = new DrawMulti(new DrawDefault(), new DrawWarmupRegion());
+			ambientSound = Sounds.steam;
+			ambientSoundVolume = 0.02f;
+		}};
+		coalPyrolyzer = new ConsumeGenerator("coal-pyrolyzer") {{
+			size = 3;
+			health = 460;
+			requirements(Category.power, ItemStack.with(Items.silicon, 70, Items.metaglass, 100, Items.titanium, 80, Items.thorium, 90));
+			hasItems = hasLiquids = true;
+			liquidCapacity = 60f;
+			itemCapacity = 15;
+			itemDuration = 60f;
+			powerProduction = 11.5f;
+			consumeLiquid(Liquids.water, 0.3f);
+			consumeItem(Items.coal, 2);
+			outputLiquid = new LiquidStack(HLiquids.gas, 0.6f);
+			generateEffect = new MultiEffect(Fx.steam, Fx.generatespark);
+			effectChance = 0.02f;
+			drawer = new DrawMulti(new DrawDefault(), new DrawRegion("-rot1") {{
+				rotation = 60f;
+				rotateSpeed = 9f;
+			}}, new DrawRegion("-rot2") {{
+				rotation = 45f;
+				rotateSpeed = -1.25f;
+				spinSprite = true;
+			}}, new DrawRegion("-top"), new DrawLiquidRegion(Liquids.water), new DrawLiquidRegion(HLiquids.gas));
+			ambientSound = Sounds.steam;
+			ambientSoundVolume = 0.04f;
+		}};
 		largeThermalGenerator = new ThermalGenerator("large-thermal-generator") {{
 			requirements(Category.power, ItemStack.with(Items.graphite, 200, Items.metaglass, 150, Items.silicon, 130, Items.plastanium, 60, Items.surgeAlloy, 20));
 			size = 3;
@@ -1964,6 +2004,25 @@ public final class HBlocks {
 			squareSprite = false;
 		}};
 		//production
+		largeSiliconSmelter = new GenericCrafter("large-silicon-smelter") {{
+			requirements(Category.crafting, ItemStack.with(Items.lead, 50, Items.graphite, 50, Items.titanium, 50, Items.thorium, 25));
+			health = 360;
+			outputItem = new ItemStack(Items.silicon, 3);
+			itemCapacity = 40;
+			size = 3;
+			hasPower = hasItems = true;
+			craftTime = 40f;
+			updateEffect = Fx.none;
+			craftEffect = Fx.smeltsmoke;
+			drawer = new DrawMulti(new DrawDefault(), new DrawFlame() {{
+				flameRadius = 0f;
+				flameRadiusIn = 0f;
+				flameRadiusMag = 0f;
+				flameRadiusInMag = 0f;
+			}});
+			consumePower(2.5f);
+			consumeItems(ItemStack.with(Items.sand, 5, Items.coal, 2));
+		}};
 		largeKiln = new GenericCrafter("large-kiln") {{
 			requirements(Category.crafting, ItemStack.with(Items.graphite, 60, Items.silicon, 35, Items.thorium, 40, Items.plastanium, 30));
 			craftEffect = Fx.smeltsmoke;
@@ -2816,23 +2875,6 @@ public final class HBlocks {
 			consumeItem(HItems.crystallineCircuit, 10).optional(true, true);
 			buildType = RegenProjectorBuild::new;
 		}};
-		assignOverdrive = new AssignOverdrive("assign-overdrive") {{
-			requirements(Category.effect, ItemStack.with(Items.silicon, 150, Items.thorium, 120, Items.plastanium, 100, Items.surgeAlloy, 60, HItems.chromium, 80));
-			size = 3;
-			range = 240f;
-			phaseRangeBoost = 0f;
-			speedBoost = 2.75f;
-			speedBoostPhase = 1.25f;
-			useTime = 400f;
-			maxLink = 9;
-			hasBoost = true;
-			strokeOffset = -0.05f;
-			strokeClamp = 0.06f;
-			consumePower(14f);
-			consumeItem(Items.phaseFabric).optional(true, true);
-			squareSprite = false;
-			hideDetails = false;
-		}};
 		largeShieldGenerator = new ForceProjector("large-shield-generator") {{
 			requirements(Category.effect, ItemStack.with(Items.silicon, 120, Items.lead, 250, Items.graphite, 180, Items.plastanium, 150, Items.phaseFabric, 40, HItems.chromium, 60));
 			size = 4;
@@ -2950,14 +2992,27 @@ public final class HBlocks {
 			group = BlockGroup.transportation;
 		}};
 		coreStorage = new CoreStorageBlock("core-storage") {{
-			requirements(Category.effect, ItemStack.with(Items.lead, 600, Items.titanium, 400, Items.silicon, 300, Items.thorium, 150, Items.plastanium, 120));
+			requirements(Category.effect, ItemStack.with(Items.lead, 600, Items.titanium, 400, Items.silicon, 800, Items.thorium, 400, Items.plastanium, 300));
 			size = 3;
+			range = 40;
 			hideDetails = false;
+		}};
+		coreShatter = new CrashCore("core-cripple") {{
+			requirements(Category.effect, BuildVisibility.shown, ItemStack.with(Items.copper, 400, Items.lead, 150));
+			unitType = UnitTypes.alpha;
+			health = 500;
+			itemCapacity = 1500;
+			size = 2;
+			explosionSoundVolume = 4f;
+			thrusterLength = 2f;
+			unitCapModifier = 3;
+			alwaysUnlocked = true;
 		}};
 		//storage-erekir
 		reinforcedCoreStorage = new CoreStorageBlock("reinforced-core-storage") {{
-			requirements(Category.effect, ItemStack.with(Items.beryllium, 400, Items.tungsten, 200, Items.thorium, 220, Items.silicon, 300, Items.oxide, 100, Items.carbide, 150));
+			requirements(Category.effect, ItemStack.with(Items.beryllium, 600, Items.tungsten, 400, Items.thorium, 350, Items.silicon, 800, Items.oxide, 200, Items.carbide, 150));
 			size = 3;
+			range = 40;
 			squareSprite = false;
 		}};
 		//payload
@@ -6206,34 +6261,16 @@ public final class HBlocks {
 			transportTime = 1f;
 			squareSprite = false;
 		}};
-		overloadProjector = new OverdriveProjector("overload-projector") {{
+		configurableMendProjector = new ConfigurableMendProjector("infini-mender") {{
 			requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.empty);
-			size = 3;
 			health = 1000;
-			armor = 10f;
-			hasItems = false;
-			hasPower = false;
-			range = 180f;
-			phaseRangeBoost = 0f;
-			speedBoost = 35f;
-			speedBoostPhase = 0f;
-			hasBoost = false;
+			range = 80f;
+			reload = 30f;
+			healPercent = 2f;
 		}};
-		ultraAssignOverdrive = new AssignOverdrive("ultra-assign-overdrive") {{
+		configurableOverdriveProjector = new ConfigurableOverdriveProjector("infini-overdrive") {{
 			requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.empty);
-			size = 2;
 			health = 1000;
-			armor = 10f;
-			hasItems = false;
-			hasPower = false;
-			range = 360f;
-			phaseRangeBoost = 0f;
-			speedBoost = 35f;
-			speedBoostPhase = 0f;
-			maxLink = 30;
-			hasBoost = false;
-			strokeOffset = -0.05f;
-			strokeClamp = 0.06f;
 		}};
 		teamChanger = new CoreBlock("team-changer") {{
 			requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.empty);

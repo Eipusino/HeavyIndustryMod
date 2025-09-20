@@ -10,6 +10,7 @@ import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -21,7 +22,9 @@ import java.util.NoSuchElementException;
  * @see FloatSeq
  * @see Vec2
  */
-public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
+public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2>, Serializable {
+	private static final long serialVersionUID = 3768890102461469179l;
+
 	private final FloatSeq coordinates;
 
 	private final Vec2 tmp = new Vec2();

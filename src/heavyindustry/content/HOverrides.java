@@ -3,6 +3,7 @@ package heavyindustry.content;
 import arc.graphics.Color;
 import heavyindustry.graphics.HPal;
 import heavyindustry.world.meta.HAttribute;
+import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
 import mindustry.content.Items;
@@ -26,7 +27,9 @@ import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.type.PayloadStack;
 import mindustry.type.UnitType;
+import mindustry.world.Block;
 import mindustry.world.blocks.campaign.LandingPad;
+import mindustry.world.blocks.defense.OverdriveProjector;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.defense.turrets.ContinuousLiquidTurret;
 import mindustry.world.blocks.defense.turrets.ItemTurret;
@@ -152,6 +155,7 @@ public final class HOverrides {
 		Blocks.impactReactor.liquidCapacity = 80f;
 		Blocks.neoplasiaReactor.canOverdrive = true;
 		//blocks-production
+		Blocks.siliconSmelter.consumePower(0.25f);
 		Blocks.phaseWeaver.itemCapacity = 30;
 		if (Blocks.disassembler instanceof Separator separator) separator.results = ItemStack.with(Items.copper, 1, Items.lead, 1, Items.graphite, 1, Items.titanium, 1, Items.thorium, 1);
 		Blocks.disassembler.removeConsumers(c -> c instanceof ConsumeItems || c instanceof ConsumeLiquid);
@@ -163,7 +167,7 @@ public final class HOverrides {
 		if (Blocks.electrolyzer instanceof GenericCrafter crafter) crafter.outputLiquids = LiquidStack.with(Liquids.ozone, 4f / 60f, Liquids.hydrogen, 8f / 60f);
 		if (Blocks.cyanogenSynthesizer instanceof HeatCrafter crafter) crafter.outputLiquid = new LiquidStack(Liquids.cyanogen, 4f / 60f);
 		Blocks.cyanogenSynthesizer.removeConsumers(c -> c instanceof ConsumeLiquid);
-		Blocks.cyanogenSynthesizer.consumeLiquid(Liquids.cyanogen, 20f / 60f);
+		Blocks.cyanogenSynthesizer.consumeLiquid(Liquids.arkycite, 20f / 60f);
 		//blocks-defense
 		Blocks.shockMine.underBullets = true;
 		//blocks-storage
@@ -437,5 +441,13 @@ public final class HOverrides {
 		Items.erekirItems.addAll(HItems.stone, HItems.uranium, HItems.chromium, HItems.crystal);
 		//planet
 		Planets.serpulo.allowSectorInvasion = false;
+	}
+
+	public static void init() {
+		for (Block block : Vars.content.blocks()) {
+			if (block instanceof OverdriveProjector) {
+				block.buildVisibility = BuildVisibility.sandboxOnly;
+			}
+		}
 	}
 }

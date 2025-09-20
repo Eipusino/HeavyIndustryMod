@@ -119,11 +119,11 @@ public final class BlockMovement {
 	//if obstructed does not push multiple tiles.
 	//returns false if its blocked, otherwise true.
 	//used as a subtorutine for the function that actually does push all obstructed tiles.
-    /*
-        params:
-        build - the building to be pushed. DO NOT CALL FROM WITHIN THE BUILDING.
-        direction - number from 0-4 same direction as the block rotation to push the building in.
-    */
+	/*
+		params:
+		build - the building to be pushed. DO NOT CALL FROM WITHIN THE BUILDING.
+		direction - number from 0-4 same direction as the block rotation to push the building in.
+	*/
 
 	/*algorithm:
 		scan forward tiles for blockage
@@ -159,13 +159,13 @@ public final class BlockMovement {
 
 	/// gets all buildings connected to each other in the push direction sorted
 	//if group cannot be pushed because its too large or an unpushable block exists it returns null.
-    /*
-        params:
-        root - the building to be scanned from
-        direction - number from 0-4 same direction as the block rotation to push the building in.
-        max - max number of blocks to scan
-        bool - boolf consumer as a custom selection criteria.
-    */
+	/*
+		params:
+		root - the building to be scanned from
+		direction - number from 0-4 same direction as the block rotation to push the building in.
+		max - max number of blocks to scan
+		bool - boolf consumer as a custom selection criteria.
+	*/
 	//usage:
 	//this.global.facdustrio.functions.getAllContacted(Vars.world.tile(197,212).build,0,99,null)
 	//this.global.facdustrio.functions.getAllContacted(Vars.world.tile(197,212).build,0,99,null).each(b=>{print(b
@@ -204,11 +204,11 @@ public final class BlockMovement {
 
 				queue.add(b);
 
-                /*if (next instanceof ConnectedBlock) {
-                    for (int dir = 0; dir < 4; dir++) {
-                        if(dir == direction) continue outer;
-                    }
-                }*/
+				/*if (next instanceof ConnectedBlock) {
+					for (int dir = 0; dir < 4; dir++) {
+						if (dir == direction) continue outer;
+					}
+				}*/
 			}
 		}
 
@@ -220,13 +220,13 @@ public final class BlockMovement {
 	}
 
 	//pushes a single building and pushes all buildings behind the pushed block., unlike the previous.
-    /*
-        params:
-        build - the building to be pushed from
-        direction - number from 0-4 same direction as the block rotation to push the building in.
-        maxBlocks - max number of blocks to push
-        speed - anything > 0 will be animated push., measured in tiles per second.
-    */
+	/*
+		params:
+		build - the building to be pushed from
+		direction - number from 0-4 same direction as the block rotation to push the building in.
+		maxBlocks - max number of blocks to push
+		speed - anything > 0 will be animated push., measured in tiles per second.
+	*/
 	//usage: BlockMovement.pushBlock(Vars.world.tile(203,208).build,0,99,1)
 	public static boolean pushBlock(Building build, int direction, int maxBlocks, float speed, Boolf<Building> bool) {
 		Seq<Building> pushing = getAllContacted(build, direction, maxBlocks, bool);

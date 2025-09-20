@@ -60,7 +60,6 @@ import heavyindustry.gen.CopterUnit;
 import heavyindustry.gen.DPSMechUnit;
 import heavyindustry.gen.DamageAbsorbMechUnit;
 import heavyindustry.gen.EipusinoUnit;
-import heavyindustry.gen.GuiYUnit;
 import heavyindustry.gen.HSounds;
 import heavyindustry.gen.InvincibleShipUnit;
 import heavyindustry.gen.UltFire;
@@ -177,7 +176,7 @@ public final class HUnitTypes {
 	//elite
 	tiger, thunder, eagle,
 	//special
-	eipusino, guiY;
+	eipusino;
 
 	/** Don't let anyone instantiate this class. */
 	private HUnitTypes() {}
@@ -3797,7 +3796,7 @@ public final class HUnitTypes {
 			deathExplosionEffect = Fx.none;
 			deathSound = HSounds.jumpIn;
 			damageMultiplier = 0.01f;
-			health = 999; // Tzenetch Holy Number?
+			health = 999;
 			engineSize = 0f;
 			buildSpeed = 9f;
 			engineOffset = 0f;
@@ -3820,7 +3819,7 @@ public final class HUnitTypes {
 			mineTier = 99;
 			fallEffect = HFx.blast(Pal.heal, 120f);
 			targetAir = targetGround = false;
-			abilities.add(new RegenProjectorAbility());
+			abilities.add(new WitchServiceAbility(), new RegenProjectorAbility());
 			immunities.add(HStatusEffects.apoptosis);
 			ammoCapacity = 999999;
 			ammoType = new PowerAmmoType(9.9999f);
@@ -3855,43 +3854,6 @@ public final class HUnitTypes {
 				};
 			}});
 		}};
-		guiY = new NucleoidUnitType("gui-y") {{
-			outlines = false;
-			envDisabled = Env.none;
-			constructor = GuiYUnit::new;
-			aiController = NullAI::new; // Don't let AI manipulate it.
-			drawArrow = false;
-			createScorch = false;
-			deathExplosionEffect = Fx.none;
-			deathSound = HSounds.jumpIn;
-			damageMultiplier = 0.01f;
-			health = 2226;
-			engineSize = 0f;
-			buildSpeed = 2.226f;
-			engineOffset = 0f;
-			itemCapacity = 2226;
-			armor = 22.26f;
-			speed = 5.25f;
-			drawShields = false;
-			isEnemy = false;
-			flying = true;
-			killable = false;
-			hittable = false;
-			targetable = false;
-			faceTarget = false;
-			targetPriority = -2226f;
-			bounded = false;
-			mineWalls = true;
-			mineFloor = true;
-			mineHardnessScaling = false;
-			mineSpeed = 22f;
-			mineTier = 26;
-			fallEffect = HFx.blast(Pal.reactorPurple, 120f);
-			targetAir = targetGround = false;
-			abilities.add(new WitchServiceAbility(), new RegenProjectorAbility());
-			ammoCapacity = 2226;
-			ammoType = new PowerAmmoType(2.226f);
-		}};
 	}
 
 	public static void loadImmunities() {
@@ -3899,7 +3861,6 @@ public final class HUnitTypes {
 		poseidon.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> s.reloadMultiplier >= 1 && !s.disarm));
 		leviathan.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> (s == StatusEffects.none || s.healthMultiplier > 1 || s.damage < 0 || s.reloadMultiplier > 1 || s.damageMultiplier > 1 || s.speedMultiplier > 1) && !s.disarm));
 		eipusino.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> s == StatusEffects.none || (s.healthMultiplier >= 1 && s.damage <= 0 && s.reloadMultiplier >= 1 && s.damageMultiplier >= 1 && s.speedMultiplier >= 1 && !s.disarm)));
-		guiY.immunities.addAll(eipusino.immunities);
 	}
 
 	public static class Shooter {

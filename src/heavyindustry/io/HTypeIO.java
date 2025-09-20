@@ -17,6 +17,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 public final class HTypeIO {
 	/** Don't let anyone instantiate this class. */
@@ -84,7 +85,7 @@ public final class HTypeIO {
 		return out;
 	}
 
-	public static void writeObject(Writes write, Object object) {
+	public static void writeObject(Writes write, Serializable object) {
 		try (ByteArrayOutputStream bout = new ByteArrayOutputStream(); ObjectOutputStream out = new ObjectOutputStream(bout)) {
 			out.writeObject(object);
 			byte[] bytes = bout.toByteArray();
@@ -95,7 +96,7 @@ public final class HTypeIO {
 		}
 	}
 
-	public static <T> T readObject(Reads read, Class<T> type) {
+	public static <T extends Serializable> T readObject(Reads read, Class<T> type) {
 		int length = read.i();
 		byte[] bytes = read.b(length);
 		try (ByteArrayInputStream bin = new ByteArrayInputStream(bytes); ObjectInputStream in = new ObjectInputStream(bin)) {

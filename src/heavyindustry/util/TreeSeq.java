@@ -16,7 +16,7 @@ import java.util.TreeSet;
  * When traversing this set, the elements obtained are ordered.
  */
 public class TreeSeq<T> implements Iterable<T> {
-	private final LinkedList<T> tmp = new LinkedList<>();
+	final LinkedList<T> tmp = new LinkedList<>();
 
 	Comparator<T> comparator;
 

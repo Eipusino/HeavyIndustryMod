@@ -14,7 +14,6 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.graphics.Drawn;
 import mindustry.content.Fx;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -24,7 +23,6 @@ import mindustry.world.blocks.defense.MendProjector;
 import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 
-import static heavyindustry.HVars.MOD_NAME;
 import static mindustry.Vars.indexer;
 import static mindustry.Vars.player;
 import static mindustry.Vars.tilesize;
@@ -32,32 +30,19 @@ import static mindustry.Vars.tilesize;
 public class ConfigurableMendProjector extends MendProjector {
 	protected static final Vec2 configs = new Vec2();
 
-	public TextureRegion colorRegion;
-
 	public ConfigurableMendProjector(String name) {
 		super(name);
 
 		envEnabled = Env.any;
 
-		health = 400;
 		configurable = saveConfig = true;
 		hasPower = hasItems = false;
 		suppressable = false;
-		range = 80f;
-		reload = 30f;
-		healPercent = 2f;
 
 		config(Vec2.class, (ConfigurableMendBuild tile, Vec2 values) -> {
 			tile.repairTime = values.x;
 			tile.setRange = values.y;
 		});
-	}
-
-	@Override
-	public void load() {
-		super.load();
-
-		colorRegion = Core.atlas.find(name + "strobe", MOD_NAME + "-effect-strobe" + size);
 	}
 
 	@Override
@@ -113,9 +98,6 @@ public class ConfigurableMendProjector extends MendProjector {
 		@Override
 		public void draw() {
 			Draw.rect(region, x, y);
-			Drawn.setStrobeColor();
-			Draw.rect(colorRegion, x, y);
-			Draw.color();
 
 			float f = 1f - (Time.time / 100f) % 1f;
 

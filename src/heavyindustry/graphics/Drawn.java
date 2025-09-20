@@ -1118,16 +1118,6 @@ public final class Drawn {
 		return (-b - Mathf.sqrt(b * b - 4)) / 2;
 	}
 
-	public static void setStrobeColor() {
-		Draw.color(applyStrobeHue(Tmp.c1.set(Color.red)));
-	}
-
-	public static Color applyStrobeHue(Color color) {
-		float speed = Core.settings.getInt("hi-strobespeed", 3) / 2f;
-		color.shiftHue(Time.time * speed);
-		return color;
-	}
-
 	public static void crectUi(float x, float y, float w, float h) {
 		Draw.rect(Core.atlas.find("whiteui"), x + w / 2f, y + h / 2f, w, h);
 	}

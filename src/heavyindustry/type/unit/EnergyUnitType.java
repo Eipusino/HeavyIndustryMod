@@ -116,13 +116,19 @@ public class EnergyUnitType extends AncientUnitType {
 	@Override
 	public void load() {
 		super.load();
-		shadowRegion = uiIcon = fullIcon = Core.atlas.find(MOD_NAME + "-jump-gate-pointer");
+
+		shadowRegion = Core.atlas.find(MOD_NAME + "-jump-gate-pointer");
 	}
 
 	@Override
+	public void loadIcon() {
+		uiIcon = fullIcon = Core.atlas.find(MOD_NAME + "-jump-gate-pointer");
+	}
+
+	/*@Override
 	public void draw(Unit unit) {
 		super.draw(unit);
-	}
+	}*/
 
 	@Override
 	public void drawBody(Unit unit) {

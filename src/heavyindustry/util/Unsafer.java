@@ -73,6 +73,14 @@ public final class Unsafer {
 		}
 	}
 
+	/**
+	 * Retrieve the value of a field through {@code Unsafe}. If the field is {@code static}, object can be {@code null}.
+	 * Otherwise, {@code object} must not be {@code null} and be an instance of {@code field.getDeclaringClass()}.
+	 *
+	 * @throws IllegalArgumentException If the field type is not boolean.
+	 * @throws ClassCastException If the field is not {@code static} and the {@code object} is not an
+	 *                                  instance of {@code field.getDeclaringClass()} or {@code null}.
+	 */
 	public static boolean getBool(Field field, Object object) {
 		if (field.getType() != boolean.class) throw new IllegalArgumentException("Method 'getBool' does not support field other than boolean types");
 

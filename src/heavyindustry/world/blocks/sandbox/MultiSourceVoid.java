@@ -1,9 +1,5 @@
 package heavyindustry.world.blocks.sandbox;
 
-import arc.Core;
-import arc.graphics.g2d.Draw;
-import arc.graphics.g2d.TextureRegion;
-import heavyindustry.graphics.Drawn;
 import mindustry.gen.Building;
 import mindustry.type.Item;
 import mindustry.type.Liquid;
@@ -12,21 +8,12 @@ import mindustry.world.meta.BlockGroup;
 import mindustry.world.meta.Env;
 
 public class MultiSourceVoid extends MultiSource {
-	public TextureRegion rainbow;
-
 	public MultiSourceVoid(String name) {
 		super(name);
 
 		envEnabled = Env.any;
 
 		acceptsItems = hasLiquids = true;
-	}
-
-	@Override
-	public void load() {
-		super.load();
-
-		rainbow = Core.atlas.find(name + "-rainbow");
 	}
 
 	@Override
@@ -42,14 +29,6 @@ public class MultiSourceVoid extends MultiSource {
 	}
 
 	public class MultiSourceVoidBuild extends MultiSourceBuild {
-		@Override
-		public void draw() {
-			super.draw();
-			Drawn.setStrobeColor();
-			Draw.rect(rainbow, x, y);
-			Draw.color();
-		}
-
 		@Override
 		public boolean acceptItem(Building source, Item item) {
 			return enabled;

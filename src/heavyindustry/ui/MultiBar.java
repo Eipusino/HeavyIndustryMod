@@ -20,10 +20,11 @@ import mindustry.ui.Fonts;
 import static heavyindustry.func.FuncInte.RUNNABLE_NOTHING;
 
 public class MultiBar extends Bar {
-	private static final Rect scissor = new Rect();
+	static final Rect scissor = new Rect();
+
 	Seq<BarPart> barParts;
 
-	private String name = "";
+	String name = "";
 
 	public MultiBar(String bun, Seq<BarPart> bar) {
 		barParts = bar;
@@ -50,6 +51,7 @@ public class MultiBar extends Bar {
 		return f;
 	}
 
+	@Override
 	public void reset(float value) {
 		float valueSize = value / barParts.size;
 		for (BarPart part : barParts) {
@@ -97,7 +99,7 @@ public class MultiBar extends Bar {
 		}
 	}
 
-	public static class BarPart {
+	public static class BarPart implements Cloneable {
 		public float lastValue;
 		public float blink = 0;
 		public float value;
@@ -174,6 +176,14 @@ public class MultiBar extends Bar {
 				} else {
 					offset = x;
 				}
+			}
+		}
+
+		public BarPart copy() {
+			try {
+				return (BarPart) super.clone();
+			} catch (CloneNotSupportedException e) {
+				throw new RuntimeException(e);
 			}
 		}
 	}

@@ -254,9 +254,9 @@ public class ChainedUnitType extends BaseUnitType {
 			drawShield(unit);
 		}
 
-//      if (mech != null) {
-//          unit.trns(-legOffsetB.x, -legOffsetB.y);
-//      }
+//		if (mech != null) {
+//			unit.trns(-legOffsetB.x, -legOffsetB.y);
+//		}
 
 		if (unit.abilities.length > 0) {
 			for (Ability a : unit.abilities) {

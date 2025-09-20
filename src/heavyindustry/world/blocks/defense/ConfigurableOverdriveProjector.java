@@ -15,7 +15,6 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.graphics.Drawn;
 import mindustry.entities.units.BuildPlan;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Pal;
@@ -25,7 +24,6 @@ import mindustry.world.blocks.defense.OverdriveProjector;
 import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 
-import static heavyindustry.HVars.MOD_NAME;
 import static mindustry.Vars.indexer;
 import static mindustry.Vars.player;
 import static mindustry.Vars.tilesize;
@@ -33,14 +31,11 @@ import static mindustry.Vars.tilesize;
 public class ConfigurableOverdriveProjector extends OverdriveProjector {
 	protected static final Vec2 configs = new Vec2();
 
-	public TextureRegion colorRegion;
-
 	public ConfigurableOverdriveProjector(String name) {
 		super(name);
 
 		envEnabled = Env.any;
 
-		health = 400;
 		configurable = saveConfig = true;
 		hasPower = hasItems = hasBoost = false;
 
@@ -48,13 +43,6 @@ public class ConfigurableOverdriveProjector extends OverdriveProjector {
 			tile.boost = values.x;
 			tile.setRange = values.y;
 		});
-	}
-
-	@Override
-	public void load() {
-		super.load();
-
-		colorRegion = Core.atlas.find(name + "strobe", MOD_NAME + "-effect-strobe" + size);
 	}
 
 	@Override
@@ -111,9 +99,6 @@ public class ConfigurableOverdriveProjector extends OverdriveProjector {
 		@Override
 		public void draw() {
 			Draw.rect(region, x, y);
-			Drawn.setStrobeColor();
-			Draw.rect(colorRegion, x, y);
-			Draw.color();
 
 			float f = 1f - (Time.time / 100f) % 1f;
 

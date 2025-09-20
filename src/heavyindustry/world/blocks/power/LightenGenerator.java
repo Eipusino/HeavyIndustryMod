@@ -238,7 +238,7 @@ public class LightenGenerator extends NuclearReactor {
 
 		@Override
 		public void createExplosion() {
-			//if(deathBullet != null) Call.createBullet(deathBullet, team, x, y, 0, -1, 1, 1);
+			//if (deathBullet != null) Call.createBullet(deathBullet, team, x, y, 0, -1, 1, 1);
 		}
 
 		@Override

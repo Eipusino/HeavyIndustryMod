@@ -10,7 +10,6 @@ import arc.util.Strings;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.util.Utils;
-import heavyindustry.world.draw.DrawStrobe;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.ui.Styles;
@@ -25,7 +24,7 @@ import mindustry.world.meta.Env;
 import mindustry.world.meta.StatUnit;
 
 public class ConfigurableHeatSource extends Block {
-	public DrawBlock drawer = new DrawMulti(new DrawDefault(), new DrawStrobe(), new DrawHeatOutput());
+	public DrawBlock drawer = new DrawMulti(new DrawDefault(), new DrawHeatOutput());
 
 	public ConfigurableHeatSource(String name) {
 		super(name);

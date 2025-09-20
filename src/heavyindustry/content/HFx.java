@@ -84,7 +84,7 @@ public final class HFx {
 				float speed = -900f;
 				int times = 13;
 				for (int i = 0; i < particles; i++) {
-					float phaseOffset = Mathf.randomSeed(e.id * 17 + i * 43) * 360f;
+					float phaseOffset = Mathf.randomSeed(e.id * 17l + i * 43l) * 360f;
 					float angle = t * speed + phaseOffset;
 					float rad = angle * Mathf.degreesToRadians;
 					float interpRadius = baseRadius * (1f + Mathf.absin(t * 5f, 0.1f));
@@ -2314,6 +2314,44 @@ public final class HFx {
 				Draw.alpha(e.fout() * 1);
 				Fill.square(e.x, e.y, e.rotation * Vars.tilesize / 2f);
 			}).followParent(true).layer(Layer.blockOver + 0.05f),
+			missileExplosion = new Effect(30, 500f, e -> {
+				float intensity = 2f;
+				float baseLifetime = 25f + intensity * 15f;
+				e.lifetime = 50f + intensity * 64f;
+
+				Draw.color(Color.darkGray);
+				Draw.alpha(0.9f);
+				for (int i = 0; i < 5; i++) {
+					rand.setSeed(e.id * 2L + i);
+					float lenScl = rand.random(0.25f, 1f);
+					int fi = i;
+					e.scaled(e.lifetime * lenScl, s -> {
+						Angles.randLenVectors(s.id + fi - 1, s.fin(Interp.pow10Out), (int) (2.8f * intensity), 25f * intensity, (x, y, in, out) -> {
+							float fout = s.fout(Interp.pow5Out) * rand.random(0.5f, 1f);
+							float rad = fout * ((2f + intensity) * 2.35f);
+							Fill.circle(s.x + x, s.y + y, rad);
+						});
+					});
+				}
+
+				e.scaled(baseLifetime, s -> {
+					Draw.color(Color.gray);
+					s.scaled(3 + intensity * 2f, i -> {
+						Lines.stroke((3.1f + intensity / 5f) * i.fout());
+						Lines.circle(s.x, s.y, (3f + i.fin() * 14f) * intensity);
+						Drawf.light(s.x, s.y, i.fin() * 28f * 2f * intensity, Color.white, 0.9f * i.fout());
+					});
+
+					Draw.color(Pal.lighterOrange, Pal.lightOrange, Pal.redSpark, s.fin());
+					Lines.stroke((2f * s.fout()));
+
+					Draw.z(Layer.effect + 0.001f);
+					Angles.randLenVectors(s.id + 1, s.finpow() + 0.001f, (int) (8 * intensity), 30f * intensity, (x, y, in, out) -> {
+						Lines.lineAngleCenter(s.x + x, s.y + y, Angles.angle(x, y), 1f + out * 4 * (4f + intensity));
+						Drawf.light(s.x + x, s.y + y, (out * 4 * (3f + intensity)) * 3.5f, Draw.getColor(), 0.8f);
+					});
+				});
+			}).layer(Layer.bullet - 0.021f),
 			flowrateAbsorb = new Effect(60f, e -> {
 				Lines.stroke(e.fout(), e.color);
 				Lines.circle(e.x, e.y, 2f * e.fin(Interp.pow3Out));

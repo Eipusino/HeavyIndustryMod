@@ -5,7 +5,6 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Time;
 import arc.util.Tmp;
-import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.HPal;
 import mindustry.Vars;
 import mindustry.gen.Building;
@@ -13,12 +12,10 @@ import mindustry.world.Block;
 import mindustry.world.meta.BlockGroup;
 import mindustry.world.meta.Env;
 
-import static heavyindustry.HVars.MOD_NAME;
-
 public class EverythingLiquidSource extends Block {
 	public float ticksPerItemColor = 90f;
 
-	public TextureRegion strobeRegion, centerRegion;
+	public TextureRegion centerRegion;
 
 	public EverythingLiquidSource(String name) {
 		super(name);
@@ -37,7 +34,7 @@ public class EverythingLiquidSource extends Block {
 	@Override
 	public void load() {
 		super.load();
-		strobeRegion = Core.atlas.find(name + "-strobe", MOD_NAME + "-source-strobe");
+
 		centerRegion = Core.atlas.find(name + "-center", "center");
 	}
 
@@ -57,9 +54,6 @@ public class EverythingLiquidSource extends Block {
 		@Override
 		public void draw() {
 			super.draw();
-
-			Drawn.setStrobeColor();
-			Draw.rect(strobeRegion, x, y);
 
 			Draw.color(Tmp.c1.lerp(HPal.liquidColors, Time.time / (ticksPerItemColor * HPal.liquidColors.length) % 1f));
 			Draw.rect(centerRegion, x, y);

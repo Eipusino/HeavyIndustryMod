@@ -1,8 +1,6 @@
 package heavyindustry.world.blocks.storage;
 
 import arc.Core;
-import arc.graphics.g2d.Draw;
-import arc.graphics.g2d.TextureRegion;
 import arc.scene.ui.CheckBox;
 import arc.scene.ui.TextField.TextFieldFilter;
 import arc.scene.ui.layout.Table;
@@ -11,7 +9,6 @@ import arc.struct.Seq;
 import arc.util.Strings;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.graphics.Drawn;
 import heavyindustry.util.Utils;
 import mindustry.core.UI;
 import mindustry.ctype.UnlockableContent;
@@ -33,7 +30,6 @@ public class ConfigurableContainer extends StorageBlock {
 	protected static int storageCapacitySetting;
 
 	public int initialStorageCapacity = 1000;
-	public TextureRegion colorRegion;
 
 	public ConfigurableContainer(String name) {
 		super(name);
@@ -61,12 +57,6 @@ public class ConfigurableContainer extends StorageBlock {
 	}
 
 	@Override
-	public void load() {
-		super.load();
-		colorRegion = Core.atlas.find(name + "-strobe");
-	}
-
-	@Override
 	public void setBars() {
 		super.setBars();
 
@@ -81,6 +71,7 @@ public class ConfigurableContainer extends StorageBlock {
 	@Override
 	public void init() {
 		super.init();
+
 		coreMerge = false; //No compatibility, CoreBlocks don't check for dynamic item capacity.
 	}
 
@@ -92,15 +83,6 @@ public class ConfigurableContainer extends StorageBlock {
 	public class ConfigurableContainerBuild extends StorageBuild {
 		public int storageCapacity = initialStorageCapacity;
 		public boolean incinerate = false;
-
-		@Override
-		public void draw() {
-			super.draw();
-
-			Drawn.setStrobeColor();
-			Draw.rect(colorRegion, x, y);
-			Draw.color();
-		}
 
 		@Override
 		public void handleItem(Building source, Item item) {

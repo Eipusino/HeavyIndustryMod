@@ -47,8 +47,8 @@ public class PayloadRail extends PayloadBlock {
 	public float clawWarmupRate = 0.08f;
 	public float warmupSpeed = 0.05f;
 
-	protected TextureRegion railEndRegion, arrowRegion;
-	protected TextureRegion[] railRegions, clawRegions;
+	public TextureRegion railEndRegion, arrowRegion;
+	public TextureRegion[] railRegions, clawRegions;
 
 	public PayloadRail(String name) {
 		super(name);

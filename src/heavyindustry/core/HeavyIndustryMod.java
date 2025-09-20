@@ -16,6 +16,7 @@ import heavyindustry.content.HBlocks;
 import heavyindustry.content.HBullets;
 import heavyindustry.content.HItems;
 import heavyindustry.content.HLiquids;
+import heavyindustry.content.HLoadouts;
 import heavyindustry.content.HOverrides;
 import heavyindustry.content.HPlanets;
 import heavyindustry.content.HSectorPresets;
@@ -33,6 +34,7 @@ import heavyindustry.graphics.HCacheLayer;
 import heavyindustry.graphics.HShaders;
 import heavyindustry.graphics.HTextures;
 import heavyindustry.graphics.MathRenderer;
+import heavyindustry.graphics.ScreenSampler;
 import heavyindustry.mod.HMods;
 import heavyindustry.mod.HScripts;
 import heavyindustry.net.HCall;
@@ -69,6 +71,8 @@ import static heavyindustry.HVars.MOD_NAME;
  * @see HVars
  */
 public final class HeavyIndustryMod extends Mod {
+	public static Mod instance;
+
 	static ClassLoader lastLoader;
 	static Class<?> platformImpl;
 
@@ -89,6 +93,8 @@ public final class HeavyIndustryMod extends Mod {
 	}
 
 	public HeavyIndustryMod() {
+		instance = this;
+
 		if (Core.graphics != null && !Core.graphics.isGL30Available()) {
 			Log.warn("HeavyIndustryMod only runs with OpenGL 3.0 (on desktop) or OpenGL ES 3.0 (on android) and above!");
 		}
@@ -149,6 +155,8 @@ public final class HeavyIndustryMod extends Mod {
 		});
 
 		Core.app.post(HScripts::init);
+
+		ScreenSampler.resetMark();
 	}
 
 	@Override
@@ -171,6 +179,7 @@ public final class HeavyIndustryMod extends Mod {
 		HPlanets.load();
 		HSectorPresets.load();
 		HTechTree.load();
+		HLoadouts.load();
 	}
 
 	@Override
@@ -182,6 +191,8 @@ public final class HeavyIndustryMod extends Mod {
 
 			HStyles.load();
 			Elements.load();
+
+			ScreenSampler.setup();
 		}
 
 		IconLoader.loadIcons(HVars.internalTree.child("other/icons.properties"));
@@ -194,7 +205,6 @@ public final class HeavyIndustryMod extends Mod {
 					table.checkPref("hi-floating-text", true);
 					table.checkPref("hi-animated-shields", true);
 					table.checkPref("hi-tesla-range", true);
-					table.sliderPref("hi-strobe-speed", 3, 1, 20, 1, s -> Strings.autoFixed(s / 2f, 2));
 					table.pref(new Setting(Core.bundle.get("hi-game-data")) {
 						@Override
 						public void add(SettingsTable table) {

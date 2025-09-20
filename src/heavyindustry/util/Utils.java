@@ -82,6 +82,7 @@ import mindustry.world.draw.DrawMulti;
 import mindustry.world.draw.DrawRegion;
 import mindustry.world.meta.StatUnit;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -1881,6 +1882,30 @@ public final class Utils {
 		T[] out = array.clone();
 		for (int i = 0, len = out.length; i < len; i++) out[i] = copy.get(out[i]);
 		return out;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T[] insertElementAtFirst(T[] originalArray, T element) {
+		return insertElementAtFirst(originalArray, element, (Class<T>) originalArray.getClass().componentType());
+	}
+
+	/**
+	 * Insert an element at the first position of the array. Low performance.
+	 *
+	 * @param originalArray the source array.
+	 * @param element       Inserted elements.
+	 * @param clazz         Types of array.
+	 * @return Array after inserting elements.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T[] insertElementAtFirst(T[] originalArray, T element, Class<T> clazz) {
+		T[] newArray = (T[]) Array.newInstance(clazz, originalArray.length + 1);
+
+		newArray[0] = element;
+
+		System.arraycopy(originalArray, 0, newArray, 1, originalArray.length);
+
+		return newArray;
 	}
 
 	public static <T> boolean any(T[] array, Boolf<T> pred) {

@@ -293,8 +293,10 @@ public class UnitMinerPoint extends Block {
 			}
 			for (int i = 0; i < units.size; i++) {
 				Unit unit = units.get(i);
-				MinerPointAI ai = (MinerPointAI) unit.controller();
-				ai.ore = alwaysCons ? efficiency > 0.4 ? sortTile : null : sortTile;
+
+				if (unit.controller() instanceof MinerPointAI ai) {
+					ai.ore = alwaysCons ? efficiency > 0.4 ? sortTile : null : sortTile;
+				}
 			}
 		}
 

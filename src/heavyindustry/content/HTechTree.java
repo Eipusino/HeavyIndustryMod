@@ -162,6 +162,7 @@ public final class HTechTree {
 		//power
 		vanillaNode(powerNode, () -> node(smartPowerNode, () -> node(powerAnalyzer)));
 		vanillaNode(powerNodeLarge, () -> node(heavyArmoredPowerNode, () -> node(microArmoredPowerNode)));
+		vanillaNode(steamGenerator, () -> node(coalPyrolyzer, () -> node(gasGenerator)));
 		vanillaNode(thermalGenerator, () -> node(largeThermalGenerator));
 		vanillaNode(thoriumReactor, () -> node(uraniumReactor));
 		vanillaNode(impactReactor, () -> node(hyperMagneticReactor));
@@ -200,7 +201,10 @@ public final class HTechTree {
 		vanillaNode(plastaniumCompressor, () -> node(largePlastaniumCompressor, () -> node(corkscrewCompressor)));
 		vanillaNode(surgeSmelter, () -> node(largeSurgeSmelter));
 		vanillaNode(siliconCrucible, () -> node(blastSiliconSmelter));
-		vanillaNode(siliconSmelter, () -> node(crystallineCircuitConstructor, Seq.with(new SectorComplete(SectorPresets.impact0078)), () -> node(crystallineCircuitPrinter)));
+		vanillaNode(siliconSmelter, () -> {
+			node(largeSiliconSmelter);
+			node(crystallineCircuitConstructor, Seq.with(new SectorComplete(SectorPresets.impact0078)), () -> node(crystallineCircuitPrinter));
+		});
 		vanillaNode(sporePress, () -> {
 			node(atmosphericCollector, () -> node(atmosphericCooler));
 			node(nitrificationReactor, () -> {
@@ -226,17 +230,21 @@ public final class HTechTree {
 		vanillaNode(illuminator, () -> node(lighthouse));
 		vanillaNode(shockMine, () -> node(paralysisMine));
 		vanillaNode(mendProjector, () -> node(mendDome, () -> node(sectorStructureMender)));
-		vanillaNode(overdriveDome, () -> node(assignOverdrive));
+		removeNode(overdriveDome);
+		removeNode(overdriveProjector);
 		vanillaNode(forceProjector, () -> node(largeShieldGenerator));
 		//defense-erekir
 		vanillaNode(radar, () -> node(largeRadar, ItemStack.with(Items.graphite, 3600, Items.silicon, 3200, Items.beryllium, 600, Items.tungsten, 200, Items.oxide, 10), Seq.with(new OnSector(SectorPresets.stronghold))));
 		//storage
+		vanillaNode(coreShard, () -> node(coreShatter));
 		vanillaNode(router, () -> node(bin, ItemStack.with(Items.copper, 550, Items.lead, 350), () -> node(machineryUnloader, ItemStack.with(Items.copper, 300, Items.lead, 200))));
 		vanillaNode(vault, () -> {
 			node(cargo);
 			node(coreStorage);
 		});
 		vanillaNode(unloader, () -> node(rapidUnloader, () -> node(rapidDirectionalUnloader)));
+		//storage-erekir
+		vanillaNode(reinforcedVault, () -> node(reinforcedCoreStorage));
 		//payload
 		vanillaNode(payloadConveyor, () -> {
 			node(payloadJunction);
@@ -411,7 +419,7 @@ public final class HTechTree {
 			lastNode.remove();
 		}
 
-		TechNode node = new TechNode(null, content, customRequirements != null ? customRequirements : content.researchRequirements());
+		TechNode node = new TechNode(null, content, customRequirements == null ? content.researchRequirements() : customRequirements);
 
 		if (objectives != null) {
 			node.objectives.addAll(objectives);

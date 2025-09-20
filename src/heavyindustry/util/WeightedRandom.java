@@ -21,7 +21,7 @@ public class WeightedRandom<T> {
 	}
 
 	public T get() {
-		double rnd = Mathf.rand.nextDouble() * lastValue;
+		float rnd = Mathf.rand.nextFloat() * lastValue;
 		int size = items.size;
 		for (int i = 0; i < size; i++) {
 			float lw = i == 0 ? -1f : weights.items[i - 1];

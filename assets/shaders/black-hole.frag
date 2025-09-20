@@ -26,7 +26,7 @@ bool intersectSphere(vec3 origin, vec3 dir, float radius, out vec2 result) {
 	float c = dot(origin, origin) - radius * radius;
 
 	float d = b * b - c;
-	if(d < 0.0) return false;
+	if (d < 0.0) return false;
 
 	d = sqrt(d);
 	float near = -b - d;

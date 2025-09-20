@@ -42,7 +42,7 @@ public final class CyclicCoordinateDescent {
 		root.angle = bones[0].angle;
 		worldBones.add(root);
 
-		//for( int boneIdx = 1; boneIdx < numBones; boneIdx++ )
+		//for (int boneIdx = 1; boneIdx < numBones; boneIdx++)
 		for (int i = 1; i < numBones; i++) {
 			WorldBone prevWorldBone = worldBones.get(i - 1);
 			DefaultBone curLocalBone = bones[i];

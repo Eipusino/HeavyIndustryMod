@@ -1,5 +1,6 @@
 package heavyindustry.util;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -22,9 +23,15 @@ import java.util.Map;
  * @see Map#ofEntries Map.ofEntries()
  * @since 1.0.7
  */
-public class Pair<K, V> implements Map.Entry<K, V>, Cloneable {
+public class Pair<K, V> implements Map.Entry<K, V>, Cloneable, Serializable {
+	private static final long serialVersionUID = 1672812535964436320l;
+
 	public K key;
 	public V value;
+
+	public Pair() {
+		this(null, null);
+	}
 
 	public Pair(K k, V v) {
 		key = k;

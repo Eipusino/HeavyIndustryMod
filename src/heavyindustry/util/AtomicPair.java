@@ -1,9 +1,12 @@
 package heavyindustry.util;
 
+import java.io.Serializable;
 import java.util.Map;
 
 /** @since 1.0.7 */
-public class AtomicPair<K, V> implements Map.Entry<K, V>, Cloneable {
+public class AtomicPair<K, V> implements Map.Entry<K, V>, Cloneable, Serializable {
+	private static final long serialVersionUID = 2414191644768483639l;
+
 	public volatile K key;
 	public volatile V value;
 

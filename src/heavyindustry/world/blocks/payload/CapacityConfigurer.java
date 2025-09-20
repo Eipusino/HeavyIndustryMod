@@ -1,6 +1,5 @@
 package heavyindustry.world.blocks.payload;
 
-import arc.Core;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
@@ -11,7 +10,6 @@ import arc.util.Strings;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.content.HFx;
-import heavyindustry.graphics.Drawn;
 import heavyindustry.util.Utils;
 import heavyindustry.world.blocks.power.ConfigurableBattery;
 import heavyindustry.world.blocks.storage.ConfigurableContainer;
@@ -27,8 +25,6 @@ import mindustry.world.meta.Env;
 import mindustry.world.meta.StatUnit;
 
 public class CapacityConfigurer extends PayloadBlock {
-	public TextureRegion colorRegion, topColorRegion;
-
 	public CapacityConfigurer(String name) {
 		super(name);
 
@@ -46,14 +42,6 @@ public class CapacityConfigurer extends PayloadBlock {
 			tile.configItemCap = (int) config[0];
 			tile.configBatteryCap = (float) config[1];
 		});
-	}
-
-	@Override
-	public void load() {
-		super.load();
-
-		colorRegion = Core.atlas.find(name + "-strobe", "extra-sand-redux-factory-strobe-" + size + regionSuffix);
-		topColorRegion = Core.atlas.find(name + "-top-strobe", "extra-sand-redux-factory-top-strobe-" + size + regionSuffix);
 	}
 
 	@Override
@@ -92,9 +80,6 @@ public class CapacityConfigurer extends PayloadBlock {
 		@Override
 		public void draw() {
 			Draw.rect(region, x, y);
-			Drawn.setStrobeColor();
-			Draw.rect(colorRegion, x, y);
-			Draw.color();
 
 			//draw input
 			boolean fallback = true;
@@ -112,9 +97,6 @@ public class CapacityConfigurer extends PayloadBlock {
 
 			Draw.z(Layer.blockOver + 0.1f);
 			Draw.rect(topRegion, x, y);
-			Drawn.setStrobeColor();
-			Draw.rect(topColorRegion, x, y);
-			Draw.color();
 		}
 
 		@Override

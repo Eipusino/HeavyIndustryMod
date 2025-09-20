@@ -54,7 +54,7 @@ public class SandboxWall extends Block {
 	public boolean flashHit = true;
 	public Color flashColor = Color.white;
 	public Sound deflectSound = Sounds.none;
-	public TextureRegion colorRegion, lightningRegion, deflectRegion, insulatingRegion, armorRegion;
+	public TextureRegion lightningRegion, deflectRegion, insulatingRegion, armorRegion;
 
 	public SandboxWall(String name) {
 		super(name);
@@ -90,8 +90,6 @@ public class SandboxWall extends Block {
 	@Override
 	public void load() {
 		super.load();
-
-		colorRegion = Core.atlas.find(name + "-color");
 
 		lightningRegion = Core.atlas.find(name + "-lightning");
 		deflectRegion = Core.atlas.find(name + "-deflection");
@@ -269,9 +267,6 @@ public class SandboxWall extends Block {
 		public void draw() {
 			if (variants == 0) {
 				Draw.rect(region, x, y);
-				Drawn.setStrobeColor();
-				Draw.rect(colorRegion, x, y);
-				Draw.color();
 			}
 
 			//draw flashing white overlay if enabled

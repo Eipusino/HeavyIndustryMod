@@ -185,7 +185,7 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 			if (dirty) {
 				Tmp.p1.set(0, 0);
 				Tmp.p2.set(0, 0);
-				for (IntIntMap.Entry entry : ingredients) {
+				for (var entry : ingredients) {
 					int ix = Point2.x(entry.key), iy = Point2.y(entry.key);
 
 					Tmp.p1.set(Math.min(ix, Tmp.p1.x), Math.min(iy, Tmp.p1.y));
@@ -230,7 +230,7 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 								// merge ingredients
 								if (front() instanceof PayloadManufacturingGridBuild next && merge) {
 									Point2 add = Geometry.d4(next.relativeTo(this));
-									for (IntIntMap.Entry entry : ingredients) {
+									for (var entry : ingredients) {
 										int ix = Point2.x(entry.key) + add.x, iy = Point2.y(entry.key) + add.y;
 										next.ingredients.put(Point2.pack(ix, iy), entry.value);
 									}
@@ -263,7 +263,7 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 
 									Seq<PayloadStack> accumulated = new Seq<>(PayloadStack.class);
 
-									for (IntIntMap.Entry entry : ingredients) {
+									for (var entry : ingredients) {
 										Building build = Vars.world.build(entry.value);
 
 										if (build instanceof PayloadManufacturingGridBuild grid && grid.payload != null) {
@@ -420,7 +420,7 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 			float z = Draw.z();
 
 			Draw.z(z);
-			for (IntIntMap.Entry entry : ingredients) {
+			for (var entry : ingredients) {
 				Building build = Vars.world.build(entry.value);
 
 				if (build instanceof PayloadManufacturingGridBuild grid && grid.payload != null) {
@@ -521,7 +521,7 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 
 			write.i(ingredients.size);
 
-			for (IntIntMap.Entry entry : ingredients) {
+			for (var entry : ingredients) {
 				write.i(entry.key);
 				write.i(entry.value);
 			}

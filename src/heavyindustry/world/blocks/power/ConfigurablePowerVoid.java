@@ -1,14 +1,10 @@
 package heavyindustry.world.blocks.power;
 
-import arc.Core;
-import arc.graphics.g2d.Draw;
-import arc.graphics.g2d.TextureRegion;
 import arc.scene.ui.TextField.TextFieldFilter;
 import arc.scene.ui.layout.Table;
 import arc.util.Strings;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.graphics.Drawn;
 import heavyindustry.util.Utils;
 import mindustry.gen.Building;
 import mindustry.ui.Styles;
@@ -18,7 +14,6 @@ import mindustry.world.meta.StatUnit;
 
 public class ConfigurablePowerVoid extends PowerBlock {
 	public float initialPowerConsumption = 1000f;
-	public TextureRegion colorRegion;
 
 	public ConfigurablePowerVoid(String name) {
 		super(name);
@@ -36,27 +31,12 @@ public class ConfigurablePowerVoid extends PowerBlock {
 	}
 
 	@Override
-	public void load() {
-		super.load();
-		colorRegion = Core.atlas.find(name + "-strobe");
-	}
-
-	@Override
 	protected void initBuilding() {
 		if (buildType == null) buildType = ConfigurablePowerVoidBuild::new;
 	}
 
 	public class ConfigurablePowerVoidBuild extends Building {
 		public float powerConsumption = initialPowerConsumption;
-
-		@Override
-		public void draw() {
-			super.draw();
-
-			Drawn.setStrobeColor();
-			Draw.rect(colorRegion, x, y);
-			Draw.color();
-		}
 
 		@Override
 		public void buildConfiguration(Table table) {

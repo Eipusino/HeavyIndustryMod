@@ -10,8 +10,6 @@ import arc.util.io.Writes;
 import heavyindustry.ui.Elements;
 import heavyindustry.util.Utils;
 import heavyindustry.world.consumers.ConsumeBufferedPowerDynamic;
-import heavyindustry.world.draw.DrawStrobe;
-import heavyindustry.world.draw.DrawStrobePower;
 import mindustry.gen.Icon;
 import mindustry.graphics.Pal;
 import mindustry.ui.Bar;
@@ -19,6 +17,7 @@ import mindustry.ui.Styles;
 import mindustry.world.blocks.power.Battery;
 import mindustry.world.draw.DrawDefault;
 import mindustry.world.draw.DrawMulti;
+import mindustry.world.draw.DrawPower;
 import mindustry.world.draw.DrawRegion;
 import mindustry.world.meta.Env;
 import mindustry.world.meta.StatUnit;
@@ -36,7 +35,7 @@ public class ConfigurableBattery extends Battery {
 		configurable = saveConfig = true;
 		update = true;
 
-		drawer = new DrawMulti(new DrawDefault(), new DrawStrobePower(), new DrawRegion("-top"), new DrawStrobe());
+		drawer = new DrawMulti(new DrawDefault(), new DrawPower(), new DrawRegion("-top"));
 
 		consume(new ConsumeBufferedPowerDynamic((ConfigurableBatteryBuild tile) -> tile.powerCapacity));
 

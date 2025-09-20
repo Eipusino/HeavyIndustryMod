@@ -5,7 +5,6 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Time;
 import arc.util.Tmp;
-import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.HPal;
 import mindustry.Vars;
 import mindustry.gen.Building;
@@ -18,7 +17,6 @@ import mindustry.world.meta.Env;
 public class EverythingSourceVoid extends Block {
 	public float ticksPerItemColor = 90f;
 
-	public TextureRegion strobeRegion;
 	public TextureRegion[] center = new TextureRegion[2];
 
 	public EverythingSourceVoid(String name) {
@@ -36,7 +34,7 @@ public class EverythingSourceVoid extends Block {
 	@Override
 	public void load() {
 		super.load();
-		strobeRegion = Core.atlas.find(name + "-strobe", "extra-sand-redux-source-strobe");
+
 		center[0] = Core.atlas.find(name + "-center-0");
 		center[1] = Core.atlas.find(name + "-center-1");
 	}
@@ -58,9 +56,6 @@ public class EverythingSourceVoid extends Block {
 		@Override
 		public void draw() {
 			super.draw();
-
-			Drawn.setStrobeColor();
-			Draw.rect(strobeRegion, x, y);
 
 			Draw.color(Tmp.c1.lerp(HPal.itemColors, Time.time / (ticksPerItemColor * HPal.itemColors.length) % 1f));
 			Draw.rect(center[0], x, y);
