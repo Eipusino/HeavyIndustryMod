@@ -3796,11 +3796,11 @@ public final class HUnitTypes {
 			deathExplosionEffect = Fx.none;
 			deathSound = HSounds.jumpIn;
 			damageMultiplier = 0.01f;
-			health = 999;
+			health = 3000;
 			engineSize = 0f;
 			buildSpeed = 9f;
 			engineOffset = 0f;
-			itemCapacity = 999;
+			itemCapacity = 2000;
 			armor = 9f;
 			speed = 5.25f;
 			drawShields = false;
@@ -3810,19 +3810,19 @@ public final class HUnitTypes {
 			hittable = false;
 			targetable = false;
 			faceTarget = false;
-			targetPriority = -9999f;
+			targetPriority = -13f;
 			bounded = false;
 			mineWalls = true;
 			mineFloor = true;
 			mineHardnessScaling = false;
-			mineSpeed = 9f;
-			mineTier = 99;
+			mineSpeed = 13f;
+			mineTier = 13;
 			fallEffect = HFx.blast(Pal.heal, 120f);
 			targetAir = targetGround = false;
 			abilities.add(new WitchServiceAbility(), new RegenProjectorAbility());
 			immunities.add(HStatusEffects.apoptosis);
-			ammoCapacity = 999999;
-			ammoType = new PowerAmmoType(9.9999f);
+			ammoCapacity = 100000;
+			ammoType = new PowerAmmoType(0.1f);
 			weapons.add(new Weapon() {{
 				x = 0f;
 				y = 0f;

@@ -2,8 +2,8 @@ package heavyindustry.world;
 
 import arc.Core;
 import arc.Events;
-import arc.files.Fi;
 import arc.util.Log;
+import arc.util.Strings;
 import arc.util.Structs;
 import heavyindustry.game.TeamPayloadData;
 import heavyindustry.util.CollectionList;
@@ -13,8 +13,6 @@ import mindustry.Vars;
 import mindustry.game.EventType.ResetEvent;
 import mindustry.io.SaveVersion;
 import mindustry.world.Block;
-
-import java.io.BufferedWriter;
 
 import static heavyindustry.HVars.MOD_NAME;
 
@@ -59,25 +57,18 @@ public final class Worlds {
 			String name = pair.key;
 			Block block = pair.value;
 
-			data.append(name).append(' ').append(block.synthetic() ? '1' : '0').append(' ').append(block.solid ? '1' : '0').append(' ').append(block.size).append(' ').append(block.mapColor.rgba() >>> 8).append('\n');
+			data.append(name).append(' ').append(block.synthetic() ? 1 : 0).append(' ').append(block.solid ? 1 : 0).append(' ').append(block.size).append(' ').append(block.mapColor.rgba() >>> 8).append('\n');
 		});
 
-		Fi file = Core.settings.getDataDirectory().child("tile.dat");
+		Vars.platform.showFileChooser(false, Core.bundle.get("hi-export-data"), "dat", file -> {
+			try {
+				file.writeBytes(data.toString().getBytes(Strings.utf8), false);
+				Core.app.post(() -> Vars.ui.showInfo(Core.bundle.format("hi-export-data-format", file.name())));
+			} catch (Throwable e) {
+				Log.err(e);
 
-		try (BufferedWriter writer = new BufferedWriter(file.writer(false))) {
-			writer.write(data.toString());
-			Core.app.post(() -> Vars.ui.showInfo(Core.bundle.format("hi-export-data-format", file.file().getName())));
-		} catch (Throwable e) {
-			Log.err(e);
-
-			Vars.ui.showException(e);
-		}
-
-		// This cannot be saved on Android, it's strange.
-		/*Vars.platform.showFileChooser(false, "Export Block Data", "dat", file -> {
-			if (file == null || !file.exists()) return;
-			file.writeString(data.toString(), false);
-			Core.app.post(() -> Vars.ui.showInfo(Core.bundle.format("hi-export-data-format", file.name())));
-		});*/
+				Vars.ui.showException(e);
+			}
+		});
 	}
 }

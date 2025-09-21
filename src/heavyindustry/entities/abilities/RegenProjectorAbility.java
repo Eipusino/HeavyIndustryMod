@@ -86,7 +86,7 @@ public class RegenProjectorAbility extends Ability {
 		if (lastUpdateFrame != state.updateId) {
 			lastUpdateFrame = state.updateId;
 
-			for (IntFloatMap.Entry entry : mendMap.entries()) {
+			for (var entry : mendMap.entries()) {
 				Building build = world.build(entry.key);
 				if (build != null) {
 					build.heal(entry.value);

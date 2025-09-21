@@ -6,13 +6,9 @@ import mindustry.gen.Building;
 import mindustry.gen.Unit;
 
 public final class HTeam {
-	public static final Team slaanesh, nurgle, khorne, tzeentch, none;
+	public static final Team none;
 
 	static {
-		slaanesh = Team.get(6);
-		nurgle = Team.get(7);
-		khorne = Team.get(8);
-		tzeentch = Team.get(9);
 		none = Team.get(255);
 	}
 
@@ -20,16 +16,12 @@ public final class HTeam {
 	private HTeam() {}
 
 	public static void load() {
-		team(slaanesh.id, "slaanesh", Color.purple);
-		team(nurgle.id, "nurgle", Color.green);
-		team(khorne.id, "khorne", Color.red);
-		team(tzeentch.id, "tzeentch", Color.blue);
 		team(none.id, "none", Color.clear);
 	}
 
 	@Deprecated
 	public static void team(Building build, Team team) {
-		build.team(team);
+		build.team = team;
 	}
 
 	public static void team(Unit unit, Team team) {
