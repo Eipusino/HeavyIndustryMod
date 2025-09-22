@@ -289,7 +289,7 @@ public class UnitMinerDepot extends Block {
 		}
 
 		@Override
-		public Item config() {
+		public Object config() {
 			return targetItem;
 		}
 

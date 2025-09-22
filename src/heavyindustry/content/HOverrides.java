@@ -156,6 +156,12 @@ public final class HOverrides {
 		Blocks.neoplasiaReactor.canOverdrive = true;
 		//blocks-production
 		Blocks.siliconSmelter.consumePower(0.25f);
+		Blocks.siliconCrucible.itemCapacity = 40;
+		Blocks.siliconCrucible.floating = true;
+		if (Blocks.siliconCrucible instanceof AttributeCrafter crafter) {
+			crafter.maxBoost = 3f;
+			crafter.outputItem = new ItemStack(Items.silicon, 10);
+		}
 		Blocks.phaseWeaver.itemCapacity = 30;
 		if (Blocks.disassembler instanceof Separator separator) separator.results = ItemStack.with(Items.copper, 1, Items.lead, 1, Items.graphite, 1, Items.titanium, 1, Items.thorium, 1);
 		Blocks.disassembler.removeConsumers(c -> c instanceof ConsumeItems || c instanceof ConsumeLiquid);

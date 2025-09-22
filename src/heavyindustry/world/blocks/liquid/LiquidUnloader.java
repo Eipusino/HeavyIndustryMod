@@ -118,7 +118,7 @@ public class LiquidUnloader extends Block {
 		}
 
 		@Override
-		public Liquid config() {
+		public Object config() {
 			return sortLiquid;
 		}
 

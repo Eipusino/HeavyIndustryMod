@@ -459,7 +459,7 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 		}
 
 		@Override
-		public IntSeq config() {
+		public Object config() {
 			IntSeq output = new IntSeq(links.size * 2);
 			for (int i = 0; i < links.size; i++) {
 				int pos = links.get(i);

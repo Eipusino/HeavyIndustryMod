@@ -406,7 +406,7 @@ public class JumpGate extends Block {
 		}
 
 		@Override
-		public UnitType config() {
+		public Object config() {
 			return unitType();
 		}
 

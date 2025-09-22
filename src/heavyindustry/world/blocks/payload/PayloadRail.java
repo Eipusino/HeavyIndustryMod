@@ -424,7 +424,7 @@ public class PayloadRail extends PayloadBlock {
 		}
 
 		@Override
-		public Point2 config() {
+		public Object config() {
 			if (tile == null) return null;
 			return Point2.unpack(link).sub(tile.x, tile.y);
 		}

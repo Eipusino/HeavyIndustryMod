@@ -160,7 +160,7 @@ public class ConfigurableOverdriveProjector extends OverdriveProjector {
 				t.field(String.valueOf(boost), text -> {
 					float newBoost = boost;
 					if (Strings.canParsePositiveFloat(text)) {
-						newBoost = Strings.parseFloat(text);
+						newBoost = Math.min(Strings.parseFloat(text), 100000f);// Avoid excessive numerical values that may cause OutOfCacheError
 					}
 					configure(configs.set(newBoost, setRange));
 				}).width(120).get().setFilter(TextFieldFilter.floatsOnly);
@@ -171,7 +171,7 @@ public class ConfigurableOverdriveProjector extends OverdriveProjector {
 				t.field(String.valueOf(setRange / 8f), text -> {
 					float newRange = setRange;
 					if (Strings.canParsePositiveFloat(text)) {
-						newRange = Strings.parseFloat(text) * 8f;
+						newRange = Math.min(Strings.parseFloat(text), 1000f) * 8f;
 					}
 					configure(configs.set(boost, newRange));
 				}).width(120).get().setFilter(TextFieldFilter.floatsOnly);

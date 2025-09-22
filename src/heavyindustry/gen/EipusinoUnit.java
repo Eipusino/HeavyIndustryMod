@@ -1,12 +1,21 @@
 package heavyindustry.gen;
 
 import mindustry.Vars;
+import mindustry.game.Team;
 import mindustry.gen.Groups;
 
 public class EipusinoUnit extends NucleoidUnit {
 	@Override
 	public int classId() {
 		return Entitys.getId(EipusinoUnit.class);
+	}
+
+	@Override
+	public void update() {
+		Team t = Vars.state.rules.defaultTeam;
+		if (team() != t) team(t);
+
+		super.update();
 	}
 
 	@Override

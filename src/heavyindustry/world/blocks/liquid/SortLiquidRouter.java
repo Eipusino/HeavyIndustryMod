@@ -82,7 +82,7 @@ public class SortLiquidRouter extends LiquidRouter {
 		}
 
 		@Override
-		public Liquid config() {
+		public Object config() {
 			return sortLiquid;
 		}
 

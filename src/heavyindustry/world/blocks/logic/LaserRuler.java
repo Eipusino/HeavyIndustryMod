@@ -74,7 +74,7 @@ public class LaserRuler extends Block {
 		public int target = -1;
 
 		@Override
-		public Point2 config() {
+		public Object config() {
 			return Point2.unpack(target).sub(tile.x, tile.y);
 		}
 

@@ -144,7 +144,7 @@ public class InvertedJunction extends Junction {
 		}
 
 		@Override
-		public Integer config() {
+		public Object config() {
 			return loc;
 		}
 

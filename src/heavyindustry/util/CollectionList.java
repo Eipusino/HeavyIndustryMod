@@ -376,7 +376,8 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 		return result;
 	}
 
-	public @Nullable E find(Boolf<E> predicate) {
+	@Nullable
+	public E find(Boolf<E> predicate) {
 		for (int i = 0; i < size; i++) {
 			if (predicate.get(items[i])) {
 				return items[i];

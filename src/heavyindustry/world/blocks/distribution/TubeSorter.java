@@ -137,7 +137,7 @@ public class TubeSorter extends Block {
 		}
 
 		@Override
-		public int[] config() {
+		public Object config() {
 			return data.config();
 		}
 

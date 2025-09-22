@@ -108,12 +108,16 @@ public class UnitIniter extends Block {
 		}
 
 		public UnitType type() {
-			return content.getByName(ContentType.unit, config().split(divKey)[0]);
+			return content.getByName(ContentType.unit, get().split(divKey)[0]);
+		}
+
+		public String get() {
+			return toSpawnType.name + divKey + angle + divKey + delay;
 		}
 
 		@Override
-		public String config() {
-			return toSpawnType.name + divKey + angle + divKey + delay;
+		public Object config() {
+			return get();
 		}
 
 		@Override

@@ -437,7 +437,7 @@ public class UnitMinerPoint extends Block {
 		}
 
 		@Override
-		public Integer config() {
+		public Object config() {
 			return sort;
 		}
 

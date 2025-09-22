@@ -21,6 +21,7 @@ public final class IOUtils {
 		}
 	}
 
+	/** @see Utils#thrower(Throwable) */
 	public static void ioUnchecked(IORunnable run) {
 		try {
 			run.run();
@@ -30,13 +31,8 @@ public final class IOUtils {
 			// The result is, the code fools the compiler into thinking it's throwing `RuntimeException` and not have its
 			// method signature explicitly throw `IOException`, even though it actually does.
 			// Such is the way of Java...
-			thrower(e);
+			Utils.thrower(e);
 		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private static <T extends Throwable> void thrower(Throwable err) throws T {
-		throw (T) err;
 	}
 
 	public interface IORunnable {

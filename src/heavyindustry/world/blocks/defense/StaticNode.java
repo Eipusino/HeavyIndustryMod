@@ -488,7 +488,7 @@ public class StaticNode extends Block {
 		}
 
 		@Override
-		public Point2[] config() {
+		public Object config() {
 			Point2[] out = new Point2[links.size];
 			for (int i = 0; i < out.length; i++) {
 				out[i] = Point2.unpack(links.get(i)).sub(tile.x, tile.y);

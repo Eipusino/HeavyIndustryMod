@@ -3849,7 +3849,7 @@ public final class HUnitTypes {
 					public Bullet create(Entityc owner, Entityc shooter, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY, Teamc target) {
 						Bullet bullet = Bullet.create();
 
-						return Utils.anyOtherCreate(bullet, this, shooter, null, team, x, y, angle, damage, velocityScl, lifetimeScl, data, mover, aimX, aimY, target);
+						return Utils.anyOtherCreate(bullet, this, null, null, team, x, y, angle, damage, velocityScl, lifetimeScl, data, mover, aimX, aimY, target);
 					}
 				};
 			}});

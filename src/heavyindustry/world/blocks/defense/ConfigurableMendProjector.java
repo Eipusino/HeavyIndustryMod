@@ -83,7 +83,7 @@ public class ConfigurableMendProjector extends MendProjector {
 	}
 
 	float extractHealPercent(float repairTime) {
-		if (repairTime == 0) return 1f; //No dividing by 0 on my watch.
+		if (repairTime == 0) return 1f; // No dividing by 0 on my watch.
 		return 1f / (repairTime * 60f / reload);
 	}
 
@@ -159,7 +159,7 @@ public class ConfigurableMendProjector extends MendProjector {
 				t.field(String.valueOf(setRange / 8f), text -> {
 					float newRange = setRange;
 					if (Strings.canParsePositiveFloat(text)) {
-						newRange = Strings.parseFloat(text) * 8f;
+						newRange = Math.min(Strings.parseFloat(text), 1000f) * 8f;
 					}
 					configure(configs.set(repairTime, newRange));
 				}).width(120).get().setFilter(TextFieldFilter.floatsOnly);

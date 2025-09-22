@@ -110,7 +110,7 @@ public class InsulationWall extends Wall {
 		}
 
 		@Override
-		public Boolean config() {
+		public Object config() {
 			return open;
 		}
 

@@ -146,7 +146,7 @@ public class AdaptLiquidDirectionalUnloader extends Block {
 		}
 
 		@Override
-		public Liquid config() {
+		public Object config() {
 			return unloadLiquid;
 		}
 

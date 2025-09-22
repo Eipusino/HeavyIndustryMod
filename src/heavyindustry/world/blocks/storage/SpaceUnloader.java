@@ -471,7 +471,7 @@ public class SpaceUnloader extends StorageBlock {
 		}
 
 		@Override
-		public IntSeq config() {
+		public Object config() {
 			IntSeq seq = new IntSeq(links.size * 2 + 2);
 			seq.add(itemType == null ? -1 : itemType.id);
 			seq.add(links.size);

@@ -83,12 +83,16 @@ public class IconDisplay extends Block {
 		@Override
 		public void buildConfiguration(Table table) {
 			ItemSelection.buildTable(block, table, displayContents(),
-					this::config, this::configure, selectionRows, selectionColumns);
+					this::get, this::configure, selectionRows, selectionColumns);
+		}
+
+		public UnlockableContent get() {
+			return displayContent;
 		}
 
 		@Override
-		public UnlockableContent config() {
-			return displayContent;
+		public Object config() {
+			return get();
 		}
 
 		@SuppressWarnings("unchecked")

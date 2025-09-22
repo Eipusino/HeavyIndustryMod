@@ -56,11 +56,13 @@ public class DepthFrameBufferCubemap extends FrameBufferCubemap {
 		for (CubemapSide side : sides) Gl.framebufferTexture2D(Gl.framebuffer, attachment, side.glEnum, glHandle, 0);
 	}
 
-	public @Nullable Cubemap getDepthTexture() {
+	@Nullable
+	public Cubemap getDepthTexture() {
 		return hasDepth ? textureAttachments.get(1) : null;
 	}
 
-	public @Nullable Cubemap getStencilTexture() {
+	@Nullable
+	public Cubemap getStencilTexture() {
 		return hasStencil ? textureAttachments.get(hasDepth ? 2 : 1) : null;
 	}
 

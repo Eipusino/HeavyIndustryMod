@@ -43,11 +43,13 @@ public class DepthFrameBuffer extends FrameBuffer {
 		create(format, width, height, hasDepth, hasStencil);
 	}
 
-	public @Nullable Texture getDepthTexture() {
+	@Nullable
+	public Texture getDepthTexture() {
 		return hasDepth ? textureAttachments.get(1) : null;
 	}
 
-	public @Nullable Texture getStencilTexture() {
+	@Nullable
+	public Texture getStencilTexture() {
 		return hasStencil ? textureAttachments.get(hasDepth ? 2 : 1) : null;
 	}
 

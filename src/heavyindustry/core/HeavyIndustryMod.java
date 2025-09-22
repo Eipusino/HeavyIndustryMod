@@ -276,13 +276,14 @@ public final class HeavyIndustryMod extends Mod {
 	}
 
 	static void loadLibrary() {
-		platformImpl = loadLibrary("Impl", OS.isIos ? Utils.thrower(new UnsupportedPlatformException("what? how do you do load Java mod on IOS?")) :
-				OS.isAndroid ? "heavyindustry.android.AndroidImpl" :
-						"heavyindustry.desktop.DesktopImpl", true, impl -> {
-			try {
-				Object instance = impl.getConstructor().newInstance();
+		if (OS.isIos) throw new UnsupportedPlatformException("what? how do you do load Java mod on IOS?");
 
-				if (instance instanceof PlatformImpl core) {
+		platformImpl = loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" :
+				"heavyindustry.desktop.DesktopImpl", true, clazz -> {
+			try {
+				Object cstr = clazz.getConstructor().newInstance();
+
+				if (cstr instanceof PlatformImpl core) {
 					HVars.platformImpl = core;
 				}
 			} catch (Throwable e) {

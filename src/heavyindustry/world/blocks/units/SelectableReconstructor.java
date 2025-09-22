@@ -120,7 +120,7 @@ public class SelectableReconstructor extends Reconstructor {
 		}
 
 		@Override
-		public Integer config() {
+		public Object config() {
 			return currentPlan;
 		}
 

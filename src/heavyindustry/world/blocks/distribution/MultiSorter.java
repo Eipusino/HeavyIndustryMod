@@ -244,25 +244,30 @@ public class MultiSorter extends Block {
 			switch (selectionDir) {
 				case 1 -> ItemSelection.buildTable(block, table, content.items(), () -> frontSort, i -> {
 					frontSort = i;
-					configure(config());
+					configure(get());
 				}, false, selectionRows, selectionColumns);
 				case 2 -> ItemSelection.buildTable(block, table, content.items(), () -> rightSort, i -> {
 					rightSort = i;
-					configure(config());
+					configure(get());
 				}, false, selectionRows, selectionColumns);
 				default -> ItemSelection.buildTable(block, table, content.items(), () -> leftSort, i -> {
 					leftSort = i;
-					configure(config());
+					configure(get());
 				}, false, selectionRows, selectionColumns);
 			}
 		}
 
-		public int[] config() {
+		public int[] get() {
 			return new int[]{
 					leftSort == null ? -1 : leftSort.id,
 					frontSort == null ? -1 : frontSort.id,
 					rightSort == null ? -1 : rightSort.id
 			};
+		}
+
+		@Override
+		public Object config() {
+			return get();
 		}
 
 		@Override

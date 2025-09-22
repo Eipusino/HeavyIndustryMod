@@ -677,7 +677,7 @@ public class MultiCrafter extends Block {
 		}
 
 		@Override
-		public int[] config() {
+		public Object config() {
 			return configs;
 		}
 

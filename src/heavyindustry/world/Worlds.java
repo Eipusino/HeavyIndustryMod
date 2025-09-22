@@ -11,6 +11,7 @@ import heavyindustry.util.Pair;
 import heavyindustry.world.blocks.defense.CommandableBlock;
 import mindustry.Vars;
 import mindustry.game.EventType.ResetEvent;
+import mindustry.io.SaveFileReader;
 import mindustry.io.SaveVersion;
 import mindustry.world.Block;
 
@@ -45,7 +46,7 @@ public final class Worlds {
 			blocks.add(new Pair<>(block.name, block));
 		}
 
-		for (var entry : SaveVersion.fallback) {
+		for (var entry : SaveFileReader.fallback) {
 			Block block = Vars.content.block(entry.value);
 			if (block != null) {
 				blocks.add(new Pair<>(entry.key, block));

@@ -127,7 +127,7 @@ public final class Utils {
 
 	static final IntSeq amounts = new IntSeq();
 	static final String[] byteUnit = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"};
-	static final char[] printableCharacters = {' ', '!', '\"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~'};
+	static final char[] printableChars = {' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ':', ';', '<', '=', '>', '?', '@', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '[', '\\', ']', '^', '_', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '{', '|', '}', '~'};
 
 	static Tile tileParma;
 	static Building tmpBuilding;
@@ -383,13 +383,13 @@ public final class Utils {
 		if (min < 0 || max < min || max > 100000) return "";
 
 		int length = min + Mathf.random(max - min + 1);
-		return generateRandomString0(length);
+		return generateRandomString(length);
 	}
 
-	private static String generateRandomString0(int length) {
+	public static String generateRandomString(int length) {
 		char[] chars = new char[length];
 		for (int i = 0; i < length; i++) {
-			chars[i] = printableCharacters[Mathf.random(printableCharacters.length - 1)];
+			chars[i] = printableChars[Mathf.random(printableChars.length - 1)];
 		}
 		return String.valueOf(chars);
 	}
@@ -639,7 +639,7 @@ public final class Utils {
 
 	//use for cst bullet
 	public static Bullet anyOtherCreate(Bullet bullet, BulletType type, Entityc shooter, Entityc owner, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY, @Nullable Teamc target) {
-		if (type == null) return null;
+		if (bullet == null || type == null) return null;
 		bullet.type = type;
 		bullet.owner = owner;
 		bullet.shooter = (shooter == null ? owner : shooter);
@@ -1817,6 +1817,12 @@ public final class Utils {
 		return (T) obj;
 	}
 
+	/**
+	 * Deceiving the compiler does not require throwing checked exceptions when throws or try cache are
+	 * included.
+	 *
+	 * @see IOUtils#ioUnchecked(IOUtils.IORunnable)
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T, E extends Throwable> T thrower(Throwable err) throws E {
 		throw (E) err;

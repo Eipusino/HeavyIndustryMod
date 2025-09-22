@@ -132,7 +132,7 @@ public class IndestructibleUnitFactory extends UnitFactory {
 		}
 
 		@Override
-		public int[] config() {
+		public Object config() {
 			return new int[]{currentPlan, targetTeam.id};
 		}
 

@@ -217,7 +217,7 @@ public class MultiSource extends Block {
 		}
 
 		@Override
-		public Integer config() {
+		public Object config() {
 			return data.pack();
 		}
 

@@ -154,7 +154,7 @@ public class CharacterDisplay extends Block {
 		}
 
 		@Override
-		public String config() {
+		public Object config() {
 			return displayColor + "@" + displayCharacter;
 		}
 

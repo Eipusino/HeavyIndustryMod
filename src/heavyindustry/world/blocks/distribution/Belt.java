@@ -74,13 +74,13 @@ public class Belt extends Block implements Autotiler {
 		}
 	}
 
-	@Override
+	/*@Override
 	public void init() {
 		super.init();
 
-		//if (mergerReplacement == null) mergerReplacement = HBlocks.beltMerger;
-		//if (bridgeReplacement == null) bridgeReplacement = HBlocks.beltBridge;
-	}
+		if (mergerReplacement == null) mergerReplacement = HBlocks.beltMerger;
+		if (bridgeReplacement == null) bridgeReplacement = HBlocks.beltBridge;
+	}*/
 
 	@Override
 	protected TextureRegion[] icons() {
