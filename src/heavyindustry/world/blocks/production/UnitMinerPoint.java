@@ -62,7 +62,7 @@ public class UnitMinerPoint extends Block {
 	public float polyStroke = 1.8f, polyRadius = 8f;
 	public int polySides = 6;
 	public float polyRotateSpeed = 1f;
-	public Color polyColor = Color.valueOf("92dd7e");
+	public Color polyColor = new Color(0x92dd7eff);
 	public boolean alwaysCons = false;
 	public boolean limitSize = true;
 

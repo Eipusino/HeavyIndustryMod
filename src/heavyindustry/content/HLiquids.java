@@ -28,12 +28,12 @@ public final class HLiquids {
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
-		brine = new Liquid("brine", Color.valueOf("b8c89f")) {{
+		brine = new Liquid("brine", new Color(0xb8c89fff)) {{
 			coolant = false;
 			viscosity = 0.8f;
 			explosiveness = 0.1f;
 		}};
-		gas = new Liquid("gas", Color.valueOf("fbd367")) {{
+		gas = new Liquid("gas", new Color(0xfbd367ff)) {{
 			gasColor = barColor = lightColor = color;
 			gas = true;
 			flammability = 1.25f;
@@ -50,7 +50,7 @@ public final class HLiquids {
 			effect = StatusEffects.muddy;
 			coolant = false;
 		}};
-		nitratedOil = new Liquid("nitrated-oil", Color.valueOf("3c3e45")) {{
+		nitratedOil = new Liquid("nitrated-oil", new Color(0x3c3e45ff)) {{
 			temperature = 0.5f;
 			viscosity = 0.8f;
 			flammability = 1.5f;
@@ -59,7 +59,7 @@ public final class HLiquids {
 			canStayOn.add(Liquids.water);
 			coolant = false;
 		}};
-		blastReagent = new Liquid("blast-reagent", Color.valueOf("d97c7c")) {{
+		blastReagent = new Liquid("blast-reagent", new Color(0xd97c7cff)) {{
 			flammability = 0.75f;
 			temperature = 0.5f;
 			viscosity = 0.8f;

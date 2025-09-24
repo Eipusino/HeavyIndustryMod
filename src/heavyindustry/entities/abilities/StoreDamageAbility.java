@@ -16,6 +16,7 @@ public class StoreDamageAbility extends Ability {
 	public Effect applyEffect = Fx.shieldApply;
 	public float heal, healReload, timer = 0, shield, shieldRange;
 
+	@Override
 	public void addStats(Table t) {
 		t.add("[lightgray]" + Stat.repairSpeed.localized() + ": [white]" + Strings.autoFixed(heal / healReload * 60, 0));
 		t.row();
@@ -24,6 +25,7 @@ public class StoreDamageAbility extends Ability {
 		t.add("[lightgray]" + Stat.range.localized() + ": [white]" + Strings.autoFixed(shieldRange / 8, 2) + " " + StatUnit.blocks.localized());
 	}
 
+	@Override
 	public void update(Unit unit) {
 		if (nowHealth == 0) {
 			nowHealth = unit.health;
@@ -40,11 +42,12 @@ public class StoreDamageAbility extends Ability {
 		}
 	}
 
+	@Override
 	public void death(Unit u) {
 		Units.nearby(u.team, u.x, u.y, shieldRange, other -> {
 			if (other.shield < shield) {
 				other.shield = Math.min(other.shield + shield * storedDamage / maxStored, shield);
-				applyEffect.at(other.x, other.y, 0f, Color.valueOf("8deebb"));
+				applyEffect.at(other.x, other.y, 0f, new Color(0x8deebbff));
 			}
 		});
 	}

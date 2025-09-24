@@ -28,8 +28,9 @@ public class CopyMemoryBlock extends MemoryBlock {
 		}
 
 		@Override
-		public Object[] config() {
+		public Object config() {
 			updateMemory();
+
 			return objects;
 		}
 	}

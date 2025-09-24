@@ -26,7 +26,7 @@ import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
 public class PowerTower extends BeamNode {
-	public Color baseColor = Color.valueOf("d4e1ff");
+	public Color baseColor = new Color(0xd4e1ffff);
 	public int range = 8;
 	public int linkRange = 5;
 

@@ -40,7 +40,7 @@ public class BeamDiode extends Block {
 	public int range = 5;
 
 	public Color laserColor1 = Color.white;
-	public Color laserColor2 = Color.valueOf("ffd9c2");
+	public Color laserColor2 = new Color(0xffd9c2ff);
 	public float pulseScl = 7, pulseMag = 0.05f;
 	public float laserWidth = 0.4f;
 

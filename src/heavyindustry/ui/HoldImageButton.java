@@ -14,12 +14,12 @@ import arc.scene.ui.Image;
 import arc.scene.ui.ImageButton;
 import arc.util.Time;
 import heavyindustry.HVars;
-import heavyindustry.func.FuncInte;
+import heavyindustry.util.Constant;
 
 public class HoldImageButton extends ImageButton {
-	public Boolp canHold = FuncInte.BOOLP_TRUE;
+	public Boolp canHold = Constant.BOOLP_TRUE;
 
-	protected Runnable held = FuncInte.RUNNABLE_NOTHING;
+	protected Runnable held = Constant.RUNNABLE_NOTHING;
 	protected boolean heldAct;
 	protected HoldImageButtonStyle style;
 	protected boolean repeat = false;

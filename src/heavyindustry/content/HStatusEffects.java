@@ -40,7 +40,7 @@ public final class HStatusEffects {
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
 		overheat = new BaseStatusEffect("overheat") {{
-			color = Color.valueOf("ffdcd8");
+			color = new Color(0xffdcd8ff);
 			disarm = true;
 			dragMultiplier = 1f;
 			speedMultiplier = 0.5f;
@@ -56,7 +56,7 @@ public final class HStatusEffects {
 			init(() -> opposite(StatusEffects.sapped, StatusEffects.slow, breached));
 		}};
 		breached = new BaseStatusEffect("breached") {{
-			color = Color.valueOf("666484");
+			color = new Color(0x666484ff);
 			healthMultiplier = 0.9f;
 			speedMultiplier = 0.8f;
 			reloadMultiplier = 0.9f;
@@ -125,7 +125,7 @@ public final class HStatusEffects {
 			}
 		};
 		territoryFieldIncrease = new BaseStatusEffect("territory-field-increase") {{
-			color = Color.valueOf("ea8878");
+			color = new Color(0xea8878ff);
 			buildSpeedMultiplier = 1.5f;
 			speedMultiplier = 1.1f;
 			reloadMultiplier = 1.2f;
@@ -134,7 +134,7 @@ public final class HStatusEffects {
 			effect = Fx.overclocked;
 		}};
 		territoryFieldSuppress = new BaseStatusEffect("territory-field-suppress") {{
-			color = Color.valueOf("8b9bb4");
+			color = new Color(0x8b9bb4ff);
 			speedMultiplier = 0.85f;
 			reloadMultiplier = 0.8f;
 			damage = 15 / 60f;
@@ -142,7 +142,7 @@ public final class HStatusEffects {
 			effect = Fx.overclocked;
 		}};
 		apoptosis = new BaseStatusEffect("apoptosis") {{
-			color = Color.valueOf("88a4ff");
+			color = new Color(0x88a4ffff);
 			damage = -1;
 			parentizeApplyEffect = true;
 			applyColor = Pal.techBlue;

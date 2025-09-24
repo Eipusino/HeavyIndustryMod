@@ -35,8 +35,8 @@ public class LaserBeamDrill extends Drill {
 	public TextureRegion laser;
 	public TextureRegion laserEnd;
 
-	public Color laserColor = Color.valueOf("f58349");
-	public Color arcColor = Color.valueOf("f2d585");
+	public Color laserColor = new Color(0xf58349ff);
+	public Color arcColor = new Color(0xf2d585ff);
 
 	public float laserAlpha = 0.75f;
 	public float laserAlphaSine = 0.2f;

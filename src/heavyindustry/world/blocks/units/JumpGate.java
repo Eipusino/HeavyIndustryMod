@@ -20,10 +20,10 @@ import arc.util.Strings;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.entities.HEntity;
 import heavyindustry.gen.Spawner;
 import heavyindustry.type.Recipe;
 import heavyindustry.ui.DelaySlideTable;
-import heavyindustry.util.Utils;
 import heavyindustry.world.Worlds;
 import heavyindustry.world.consumers.ConsumeRecipe;
 import mindustry.content.Fx;
@@ -301,7 +301,7 @@ public class JumpGate extends Block {
 		}
 
 		public void findTiles() {
-			tiles = Utils.ableToSpawn(unitType(), x, y, maxRadius);
+			tiles = HEntity.ableToSpawn(unitType(), x, y, maxRadius);
 		}
 
 		public void spawnUnit() {

@@ -56,7 +56,7 @@ public class UnitMinerDepot extends Block {
 	public float polyStroke = 1.8f, polyRadius = 6.75f, polyRotateSpeed = 1f;
 	public float polyStrokeScl = 1.75f, polyStrokeSclSpeed = 0.03f, polyStrokeTime = 120f;
 	public int polySides = 6;
-	public Color polyColor = Color.valueOf("92dd7e");
+	public Color polyColor = new Color(0x92dd7eff);
 
 	public UnitMinerDepot(String name) {
 		super(name);
@@ -142,7 +142,7 @@ public class UnitMinerDepot extends Block {
 			}
 
 			warmup = Mathf.approachDelta(warmup, efficiency, 1f / 60f);
-			readyness = Mathf.approachDelta(readyness, unit != null ? 1f : 0f, 1f / 60f);
+			readyness = Mathf.approachDelta(readyness, unit == null ? 0f : 1f, 1f / 60f);
 			float scl = 1 + (1 - Interp.pow3Out.apply((Time.time % polyStrokeTime) / polyStrokeTime)) * (polyStrokeScl - 1);
 			strokeScl = Mathf.approachDelta(strokeScl, scl, polyStrokeSclSpeed);
 

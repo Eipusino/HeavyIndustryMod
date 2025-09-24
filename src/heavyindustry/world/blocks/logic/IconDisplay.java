@@ -83,16 +83,16 @@ public class IconDisplay extends Block {
 		@Override
 		public void buildConfiguration(Table table) {
 			ItemSelection.buildTable(block, table, displayContents(),
-					this::get, this::configure, selectionRows, selectionColumns);
+					this::getContent, this::configure, selectionRows, selectionColumns);
 		}
 
-		public UnlockableContent get() {
+		public UnlockableContent getContent() {
 			return displayContent;
 		}
 
 		@Override
 		public Object config() {
-			return get();
+			return getContent();
 		}
 
 		@SuppressWarnings("unchecked")
@@ -122,7 +122,7 @@ public class IconDisplay extends Block {
 
 		@Override
 		public double sense(LAccess sensor) {
-			return sensor == LAccess.config && displayContent != null ? Point2.pack(displayContent.getContentType().ordinal(), displayContent.id) : super.sense(sensor);
+			return sensor == LAccess.config && displayContent == null ? super.sense(sensor) : Point2.pack(displayContent.getContentType().ordinal(), displayContent.id);
 		}
 
 		@Override

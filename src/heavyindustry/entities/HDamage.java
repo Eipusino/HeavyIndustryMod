@@ -1105,7 +1105,7 @@ public final class HDamage {
 		for (Teams.TeamData data : Vars.state.teams.present) {
 			if (data.team != team) {
 				if (data.unitTree != null) {
-					Utils.intersectLine(data.unitTree, width, x1, y1, x2, y2, (t, x, y) -> {
+					HEntity.intersectLine(data.unitTree, width, x1, y1, x2, y2, (t, x, y) -> {
 						if (within != null && !within.get(t)) return;
 						Hit h = hPool.obtain();
 						h.entity = t;
@@ -1115,7 +1115,7 @@ public final class HDamage {
 					});
 				}
 				if (data.buildingTree != null) {
-					Utils.intersectLine(data.buildingTree, width, x1, y1, x2, y2, (t, x, y) -> {
+					HEntity.intersectLine(data.buildingTree, width, x1, y1, x2, y2, (t, x, y) -> {
 						if (within != null && !within.get(t)) return;
 						Hit h = hPool.obtain();
 						h.entity = t;

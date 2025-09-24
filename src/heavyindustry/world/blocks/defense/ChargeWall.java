@@ -91,6 +91,7 @@ public class ChargeWall extends Block {
 
 	public ChargeWall(String name) {
 		super(name);
+
 		update = true;
 
 		category = Category.defense;
@@ -111,26 +112,23 @@ public class ChargeWall extends Block {
 	@Override
 	public void setBars() {
 		super.setBars();
-		addBar("Energy",
-				(ChargeWallBuild entity) -> new Bar(
-						() -> "Energy",
-						() -> effectColor,
-						() -> entity.energy / maxEnergy
-				)
-		);
+		addBar("Energy", (ChargeWallBuild tile) -> new Bar(
+				() -> "Energy",
+				() -> effectColor,
+				() -> tile.energy / maxEnergy
+		));
 
-		addBar("Heat",
-				(ChargeWallBuild entity) -> new Bar(
-						() -> "Heat",
-						() -> Color.valueOf("#FF732A"),
-						() -> entity.heat / maxHeat
-				)
-		);
+		addBar("Heat", (ChargeWallBuild tile) -> new Bar(
+				() -> "Heat",
+				() -> new Color(0xff732aff),
+				() -> tile.heat / maxHeat
+		));
 	}
 
 	@Override
 	public void load() {
 		super.load();
+
 		heatRegion = Core.atlas.find(name + "-heat");
 		lightRegion = Core.atlas.find(name + "-light");
 	}
@@ -196,6 +194,7 @@ public class ChargeWall extends Block {
 		@Override
 		public void onDestroyed() {
 			super.onDestroyed();
+
 			destroyAct.get(this);
 			if (target != null) closestTargetAct.get(this);
 		}

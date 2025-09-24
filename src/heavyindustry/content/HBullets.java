@@ -13,6 +13,7 @@ import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.entities.HEntity;
 import heavyindustry.entities.bullet.AccelBulletType;
 import heavyindustry.entities.bullet.BlackHoleBulletType;
 import heavyindustry.entities.bullet.BoidBulletType;
@@ -309,7 +310,7 @@ public final class HBullets {
 
 				@Override
 				public void init(Bullet b) {
-					Vec2 p = new Vec2().set(Utils.collideBuildOnLength(b.team, b.x, b.y, length, b.rotation(), bu -> true));
+					Vec2 p = new Vec2().set(HEntity.collideBuildOnLength(b.team, b.x, b.y, length, b.rotation(), bu -> true));
 
 					float resultLength = b.dst(p), rot = b.rotation();
 
@@ -1031,7 +1032,7 @@ public final class HBullets {
 				Draw.reset();
 				float rotation = dataRot ? b.fdata : b.rotation() + getRotation(b);
 				float maxRangeFout = maxRange * fout;
-				float realLength = Utils.findLaserLength(b, rotation, maxRangeFout);
+				float realLength = HEntity.findLaserLength(b, rotation, maxRangeFout);
 				Tmp.v1.trns(rotation, realLength);
 				Tmp.v2.trns(rotation, 0f, width / 2f * fout);
 				Tmp.v3.setZero();

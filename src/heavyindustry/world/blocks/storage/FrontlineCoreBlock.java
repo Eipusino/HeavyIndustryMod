@@ -18,7 +18,7 @@ public class FrontlineCoreBlock extends CoreBlock {
 	public boolean maxKill = false;
 
 	public String showLabel = "oh no";
-	public Color showColor = Color.valueOf("ff5b5b");
+	public Color showColor = new Color(0xff5b5bff);
 
 	public FrontlineCoreBlock(String name) {
 		super(name);

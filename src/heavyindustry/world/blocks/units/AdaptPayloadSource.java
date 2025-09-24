@@ -103,16 +103,16 @@ public class AdaptPayloadSource extends PayloadSource {
 			ItemSelection.buildTable(block, table,
 					content.blocks().select(AdaptPayloadSource.this::canProduce).<UnlockableContent>as()
 							.add(content.units().select(AdaptPayloadSource.this::canProduce).as()),
-					this::get, this::configure, false, selectionRows, selectionColumns);
+					this::getContent, this::configure, false, selectionRows, selectionColumns);
 		}
 
-		public UnlockableContent get() {
+		public UnlockableContent getContent() {
 			return unit == null ? configBlock : unit;
 		}
 
 		@Override
 		public Object config() {
-			return get();
+			return getContent();
 		}
 
 		@Override

@@ -28,7 +28,7 @@ public class AdjustableOverdrive extends Block {
 
 	public float lastNumber = 200f;
 	public float range = 120f, reload = 30f;
-	public Color baseColor = Color.valueOf("feb380"), phaseColor = Color.valueOf("ff9ed5");
+	public Color baseColor = Pal.redLight, phaseColor = new Color(0xff9ed5ff);
 
 	public AdjustableOverdrive(String name) {
 		super(name);

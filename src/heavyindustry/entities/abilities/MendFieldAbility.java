@@ -13,8 +13,8 @@ import mindustry.graphics.Drawf;
 import static mindustry.Vars.indexer;
 
 public class MendFieldAbility extends Ability {
-	public Color baseColor = Color.valueOf("84f491");
-	public Color phaseColor = Color.valueOf("ffd59e");
+	public Color baseColor = new Color(0x84f491ff);
+	public Color phaseColor = new Color(0xffd59eff);
 
 	public float range = 180f;
 	public float reload = 60f;

@@ -6,9 +6,7 @@ import arc.struct.Seq;
 import heavyindustry.maps.ColorPass;
 import heavyindustry.maps.HeightPass;
 import mindustry.content.Blocks;
-import mindustry.type.Sector;
 import mindustry.world.Block;
-import mindustry.world.Tiles;
 
 public class KeplerPlanetGenerator extends BasePlanetGenerator {
 	public Seq<HeightPass> heights = new Seq<>(HeightPass.class);

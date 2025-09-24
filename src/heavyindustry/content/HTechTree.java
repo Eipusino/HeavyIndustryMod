@@ -1,7 +1,7 @@
 package heavyindustry.content;
 
 import arc.struct.Seq;
-import heavyindustry.func.FuncInte;
+import heavyindustry.util.Constant;
 import mindustry.content.Items;
 import mindustry.content.Liquids;
 import mindustry.content.SectorPresets;
@@ -348,7 +348,7 @@ public final class HTechTree {
 	}
 
 	public static void node(UnlockableContent content) {
-		node(content, content.researchRequirements(), FuncInte.RUNNABLE_NOTHING);
+		node(content, content.researchRequirements(), Constant.RUNNABLE_NOTHING);
 	}
 
 	public static void node(UnlockableContent content, Runnable children) {
@@ -356,7 +356,7 @@ public final class HTechTree {
 	}
 
 	public static void node(UnlockableContent content, ItemStack[] requirements) {
-		node(content, requirements, null, FuncInte.RUNNABLE_NOTHING);
+		node(content, requirements, null, Constant.RUNNABLE_NOTHING);
 	}
 
 	public static void node(UnlockableContent content, ItemStack[] requirements, Runnable children) {
@@ -364,7 +364,7 @@ public final class HTechTree {
 	}
 
 	public static void node(UnlockableContent content, ItemStack[] requirements, Seq<Objective> objectives) {
-		node(content, requirements, objectives, FuncInte.RUNNABLE_NOTHING);
+		node(content, requirements, objectives, Constant.RUNNABLE_NOTHING);
 	}
 
 	public static void node(UnlockableContent content, ItemStack[] requirements, Seq<Objective> objectives, Runnable children) {
@@ -382,7 +382,7 @@ public final class HTechTree {
 	}
 
 	public static void node(UnlockableContent content, Seq<Objective> objectives) {
-		node(content, content.researchRequirements(), objectives, FuncInte.RUNNABLE_NOTHING);
+		node(content, content.researchRequirements(), objectives, Constant.RUNNABLE_NOTHING);
 	}
 
 	public static void nodeProduce(UnlockableContent content, Seq<Objective> objectives, Runnable children) {
@@ -394,7 +394,7 @@ public final class HTechTree {
 	}
 
 	public static void nodeProduce(UnlockableContent content) {
-		nodeProduce(content, Seq.with(), FuncInte.RUNNABLE_NOTHING);
+		nodeProduce(content, Seq.with(), Constant.RUNNABLE_NOTHING);
 	}
 
 	// -----legacy-addToResearch-----

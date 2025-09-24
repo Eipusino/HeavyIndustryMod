@@ -24,6 +24,8 @@ import heavyindustry.entities.EdesspEntry;
 import heavyindustry.entities.UnitPointEntry;
 import heavyindustry.entities.abilities.MirrorFieldAbility;
 import heavyindustry.entities.bullet.HailStoneBulletType;
+import heavyindustry.entities.skill.ParrySkill.ParryData;
+import heavyindustry.gen.EffectData;
 import heavyindustry.graphics.Drawm;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.Draws;
@@ -62,15 +64,17 @@ public final class HFx {
 
 	public static final Rand rand = new Rand(), rand0 = new Rand(0), rand1 = new Rand(), rand2 = new Rand(), rand3 = new Rand();
 	public static final Vec2 v7 = new Vec2(), v8 = new Vec2(), v9 = new Vec2();
+	public static final Color c1 = new Color();
 
 	public static final BaseIntMap<Effect> same = new BaseIntMap<>(Effect.class);
 
 	private static float percent = 0;
+	private static int index = 0;
 
 	public static final Effect
 			trailParticleEffect = new Effect(8f, e -> {
 				float life = Interp.pow2Out.apply(1f - e.fin());
-				Color dropColor = Color.valueOf("db96eb").cpy().a(0.7f * life);
+				Color dropColor = new Color(0xdb96ebff).a(0.7f * life);
 
 				Draw.color(dropColor);
 				Fill.circle(e.x, e.y, (1f - e.fin()));
@@ -96,7 +100,7 @@ public final class HFx {
 					float orbSize = Interp.pow2Out.apply(0.8f * pulse);
 					float trailWidth = orbSize * 1.5f;
 					float trailLength = Interp.sineOut.apply(19f * pulse);
-					Color c = Color.valueOf("b697c2").cpy().a(alpha);
+					Color c = new Color(0xb697c2ff).a(alpha);
 					Draw.color(c);
 					Fill.circle(e.x + x, e.y + y, orbSize);
 					Drawf.tri(e.x + x, e.y + y, trailWidth, trailLength, speedAngle);
@@ -2357,7 +2361,7 @@ public final class HFx {
 				Lines.circle(e.x, e.y, 2f * e.fin(Interp.pow3Out));
 			}).layer(Layer.block - 0.005f),
 			eviscerationCharge = new Effect(150f, 1600f, e -> {
-				Color[] colors = {Color.valueOf("D99F6B55"), Color.valueOf("E8D174aa"), Color.valueOf("F3E979"), Color.valueOf("ffffff")};
+				Color[] colors = {new Color(0xd99f6b55), new Color(0xe8d174aa), new Color(0xf3e979ff), new Color(0xffffffff)};
 				float[] tscales = {1f, 0.7f, 0.5f, 0.2f};
 				float[] strokes = {2f, 1.5f, 1, 0.3f};
 				float[] lenscales = {1, 1.12f, 1.15f, 1.17f};
@@ -2400,11 +2404,46 @@ public final class HFx {
 			}),
 			//[circle radius, distance]
 			everythingGunSwirl = new Effect(120f, 1600f, e -> {
-				float[] data = (float[]) e.data;
-				Tmp.v1.trns(Mathf.randomSeed(e.id, 360f) + e.rotation * e.fin(), (16f + data[1]) * e.fin());
-				Draw.color(e.color, Color.black, 0.25f + e.fin() * 0.75f);
-				Fill.circle(e.x + Tmp.v1.x, e.y + Tmp.v1.y, data[0] * e.fout());
-			}).layer(Layer.bullet - 0.00999f);
+				if (e.data instanceof float[] data && data.length >= 2) {
+					Tmp.v1.trns(Mathf.randomSeed(e.id, 360f) + e.rotation * e.fin(), (16f + data[1]) * e.fin());
+					Draw.color(e.color, Color.black, 0.25f + e.fin() * 0.75f);
+					Fill.circle(e.x + Tmp.v1.x, e.y + Tmp.v1.y, data[0] * e.fout());
+				}
+			}).layer(Layer.bullet - 0.00999f),
+			parry = new Effect(36f, e -> {
+				if (!(e.data instanceof EffectData fx && fx.data instanceof ParryData data)) return;
+				float rot = 180f * Mathf.sign(!data.clockwise) * e.fin(Interp.pow3Out);
+
+				index = 0;
+				Angles.randLenVectors(e.id, 8, data.unit.hitSize + data.offset, 4f, (x, y) -> {
+					rand.setSeed(e.id + index++);
+
+					Lines.stroke((1f + rand.range(0.5f)) * e.fout());
+					Draw.color(HPal.monolithMid, HPal.monolithLight, HPal.monolithLighter, rand.random(0f, 1f));
+					Lines.arc(e.x, e.y, Mathf.dst(x, y), 0.2f + rand.range(0.1f), rand.random(360f) + rot + rand.range(45f));
+				});
+
+				Draw.z(Layer.flyingUnitLow);
+				Draw.blend(Blending.additive);
+				Draw.color();
+
+				for (int i = 0, len = Math.max(Mathf.roundPositive(Angles.angleDist(data.fromRot, data.toRot) / 45f), 2); i < len; i++) {
+					float f = i / (len - 1f);
+					Draw.alpha((i + 1f) / len * 0.5f);
+
+					e.scaled(24f * f, s -> {
+						Draw.mixcol(c1.set(HPal.monolithDarker).lerp(HPal.monolithLighter, f), Color.black, s.fin(Interp.pow2In));
+						Draw.rect(data.unit.type.fullIcon, e.x, e.y, Mathf.slerp(data.fromRot, data.toRot, f) - 90f);
+					});
+				}
+
+				Draw.alpha(e.fin(Interp.pow2Out));
+				e.scaled(24f, s -> {
+					Draw.mixcol(HPal.monolithLighter, Color.black, s.fin(Interp.pow2In));
+					Draw.rect(data.unit.type.fullIcon, e.x, e.y, Mathf.slerp(data.fromRot, data.toRot, s.fin(Interp.pow3Out)) - 90f);
+				});
+				Draw.blend();
+			});
 
 	/** Don't let anyone instantiate this class. */
 	private HFx() {}

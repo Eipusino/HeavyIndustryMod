@@ -125,6 +125,7 @@ import heavyindustry.world.blocks.defense.IndestructibleWall;
 import heavyindustry.world.blocks.defense.InsulationWall;
 import heavyindustry.world.blocks.defense.RegenWall;
 import heavyindustry.world.blocks.defense.ReleaseShieldWall;
+import heavyindustry.world.blocks.defense.SandboxWall;
 import heavyindustry.world.blocks.defense.ShapedWall;
 import heavyindustry.world.blocks.defense.StaticNode;
 import heavyindustry.world.blocks.defense.Thorns;
@@ -487,6 +488,8 @@ final class HClassMap {
 		classes.put("ReleaseShieldWallBuild", ReleaseShieldWall.ReleaseShieldWallBuild.class);
 		classes.put("ConnectedWall", ConnectedWall.class);
 		classes.put("ConnectedWallBuild", ConnectedWall.ConnectedWallBuild.class);
+		classes.put("SandboxWall", SandboxWall.class);
+		classes.put("SandboxWallBuild", SandboxWall.SandboxWallBuild.class);
 		classes.put("ShapedWall", ShapedWall.class);
 		classes.put("ShapedWallBuild", ShapedWall.ShapedWallBuild.class);
 		classes.put("AparajitoWall", AparajitoWall.class);

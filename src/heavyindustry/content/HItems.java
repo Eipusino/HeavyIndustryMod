@@ -21,7 +21,7 @@ public final class HItems {
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
-		stone = new Item("stone", Color.valueOf("8a8a8a")) {{
+		stone = new Item("stone", new Color(0x8a8a8aff)) {{
 			hardness = 1;
 			cost = 0.4f;
 			lowPriority = true;
@@ -30,13 +30,13 @@ public final class HItems {
 			cost = 1.1f;
 			hardness = 2;
 		}};
-		rareEarth = new Item("rare-earth", Color.valueOf("b1bd99")) {{
+		rareEarth = new Item("rare-earth", new Color(0xb1bd99ff)) {{
 			hardness = 1;
 			radioactivity = 0.1f;
 			buildable = false;
 			lowPriority = true;
 		}};
-		galliumNitride = new Item("gallium-nitride", Color.valueOf("bff3ff")) {{
+		galliumNitride = new Item("gallium-nitride", new Color(0xbff3ffff)) {{
 			cost = 1.2f;
 			hardness = 3;
 		}};
@@ -70,7 +70,7 @@ public final class HItems {
 			hardness = 9;
 			healthScaling = 1.8f;
 		}};
-		heavyAlloy = new Item("heavy-alloy", Color.valueOf("686b7b")) {{
+		heavyAlloy = new Item("heavy-alloy", HPal.heavyAlloyAmmoBack) {{
 			cost = 4f;
 			hardness = 10;
 			healthScaling = 2.2f;

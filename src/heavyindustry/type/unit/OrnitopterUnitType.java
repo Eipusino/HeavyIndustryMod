@@ -24,7 +24,7 @@ public class OrnitopterUnitType extends BaseUnitType {
 	public OrnitopterUnitType(String name) {
 		super(name);
 		engineSize = 0f;
-		outlineColor = Color.valueOf("454552");
+		outlineColor = new Color(0x454552ff);
 		envDisabled = Env.space;
 	}
 

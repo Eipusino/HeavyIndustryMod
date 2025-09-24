@@ -146,7 +146,7 @@ public abstract class CommandableBlock extends Block {
 
 		public Vec2 target() {
 			Tile tile = world.tile(target);
-			return tile != null ? targetVec.set(tile) : targetVec.set(this);
+			return tile == null ?  targetVec.set(this) : targetVec.set(tile);
 		}
 
 		@Override

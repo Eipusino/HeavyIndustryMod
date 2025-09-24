@@ -45,7 +45,7 @@ public final class MultiItemSelection {
 		Runnable rebuild = () -> {
 			cont.clearChildren();
 
-			String text = search != null ? search.getText() : "";
+			String text = search == null ? "" : search.getText();
 			int i = 0;
 			rowCount = 0;
 

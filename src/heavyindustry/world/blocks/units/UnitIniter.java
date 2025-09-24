@@ -6,8 +6,8 @@ import arc.scene.ui.layout.Table;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.entities.HEntity;
 import heavyindustry.graphics.Drawn;
-import heavyindustry.util.Utils;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.content.UnitTypes;
@@ -108,16 +108,16 @@ public class UnitIniter extends Block {
 		}
 
 		public UnitType type() {
-			return content.getByName(ContentType.unit, get().split(divKey)[0]);
+			return content.getByName(ContentType.unit, getKey().split(divKey)[0]);
 		}
 
-		public String get() {
+		public String getKey() {
 			return toSpawnType.name + divKey + angle + divKey + delay;
 		}
 
 		@Override
 		public Object config() {
-			return get();
+			return getKey();
 		}
 
 		@Override
@@ -176,7 +176,7 @@ public class UnitIniter extends Block {
 		}
 
 		public void addUnit() {
-			if (Utils.spawnUnit(team, x, y, angle, spawnRange, delay, 0, toSpawnType, 1)) {
+			if (HEntity.spawnUnit(team, x, y, angle, spawnRange, delay, 0, toSpawnType, 1)) {
 				kill();
 				addUnit = true;
 			}

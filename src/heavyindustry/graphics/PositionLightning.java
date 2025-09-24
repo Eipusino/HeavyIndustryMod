@@ -223,7 +223,7 @@ public final class PositionLightning {
 				World.toTile(target.getX()),
 				World.toTile(target.getY()),
 				(x, y) -> (furthest = world.build(x, y)) != null && furthest.team() != fromTeam && furthest.block.insulated
-		) && furthest != null ? furthest : target;
+		) && furthest == null ? target : furthest;
 	}
 
 	/** Add proper unit into the to hit Seq. */

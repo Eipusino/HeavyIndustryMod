@@ -18,7 +18,7 @@ public class HailStormWeather extends SpawnerWeather {
 	public float yspeed = 5f, xspeed = 1.5f, density = 900f, stroke = 0.75f, sizeMin = 8f, sizeMax = 40f, splashTimeScale = 22f;
 	public Liquid liquid = Liquids.water;
 	public TextureRegion[] splashes = new TextureRegion[12];
-	public Color color = Color.valueOf("596ab8");
+	public Color color = new Color(0x596ab8ff);
 
 	public boolean drawRain = true;
 

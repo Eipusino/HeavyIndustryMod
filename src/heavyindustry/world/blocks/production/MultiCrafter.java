@@ -292,7 +292,7 @@ public class MultiCrafter extends Block {
 
 		@Override
 		public float getPowerProduction() {
-			return craftPlan != null ? craftPlan.powerProduction : 0f;
+			return craftPlan == null ? 0f : craftPlan.powerProduction;
 		}
 
 		@Override

@@ -43,6 +43,7 @@ public class AdaptiveSource extends Block {
 		update = true;
 		displayFlow = false;
 		canOverdrive = true;
+		createRubble = false;
 	}
 
 	@Override

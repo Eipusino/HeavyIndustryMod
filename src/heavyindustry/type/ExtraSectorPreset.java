@@ -8,7 +8,7 @@ import mindustry.type.Planet;
 import mindustry.type.Sector;
 import mindustry.type.SectorPreset;
 
-import static heavyindustry.func.FuncInte.RUNNABLE_NOTHING;
+import static heavyindustry.util.Constant.RUNNABLE_NOTHING;
 
 public class ExtraSectorPreset extends SectorPreset {
 	public static CollectionObjectMap<Sector, Runnable> scripts = new CollectionObjectMap<>(Sector.class, Runnable.class);

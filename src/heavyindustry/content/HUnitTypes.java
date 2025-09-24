@@ -1349,7 +1349,7 @@ public final class HUnitTypes {
 					layer = Layer.bullet - 0.001f;
 					status = StatusEffects.melting;
 					smokeColors = new Color[]{Pal.darkFlame, Color.darkGray, Color.gray};
-					colors = new Color[]{Color.white, Color.valueOf("fff4ac"), Pal.lightFlame, Pal.darkFlame, Color.gray};
+					colors = new Color[]{Color.white, new Color(0xfff4acff), Pal.lightFlame, Pal.darkFlame, Color.gray};
 				}};
 			}}, new LimitedAngleWeapon(name + "-mount") {{
 				x = 17.75f;
@@ -1662,7 +1662,7 @@ public final class HUnitTypes {
 			ammoType = new ItemAmmoType(HItems.uranium);
 			itemCapacity = 460;
 			abilities.add(new EnergyFieldAbility(220f, 90f, 192f) {{
-				color = Color.valueOf("ffa665");
+				color = new Color(0xffa665ff);
 				status = StatusEffects.burning;
 				statusDuration = 180f;
 				maxTargets = 30;
@@ -2207,7 +2207,7 @@ public final class HUnitTypes {
 				y = -1f;
 				minWarmup = 0.9f;
 				parts.add(new PartBow() {{
-					color = Color.valueOf("feb380");
+					color = Pal.redLight;
 					turretTk = 6f;
 					bowFY = -4f;
 					bowMoveY = -33f - bowFY;
@@ -2215,7 +2215,7 @@ public final class HUnitTypes {
 					bowWidth = 28f;
 					bowHeight = 12f;
 				}}, new BowHalo() {{
-					color = Color.valueOf("feb380");
+					color = Pal.redLight;
 					stroke = 3f;
 					radius = 9f;
 					w1 = 2.8f;
@@ -2225,12 +2225,12 @@ public final class HUnitTypes {
 					y = -21f;
 					sinWave = false;
 				}}, new RegionPart("-glow") {{
-					color = Color.valueOf("feb380");
+					color = Pal.redLight;
 					blending = Blending.additive;
 					outline = mirror = false;
 				}}, new ShapePart() {{
 					progress = PartProgress.warmup.delay(0.5f);
-					color = Color.valueOf("feb380");
+					color = Pal.redLight;
 					circle = true;
 					hollow = true;
 					stroke = 0f;
@@ -2245,7 +2245,7 @@ public final class HUnitTypes {
 					width = 0.9f;
 					length = 10f * 8;
 					spacing = 10f;
-					color = Color.valueOf("feb380");
+					color = Pal.redLight;
 				}});
 				bullet = new BasicBulletType(10f, 360f) {{
 					hitSound = despawnSound = Sounds.explosionbig;
@@ -2257,12 +2257,12 @@ public final class HUnitTypes {
 						waveStroke = 5f;
 						waveLife = 10f;
 						waveRad = splashDamageRadius;
-						waveColor = Color.valueOf("feb380");
+						waveColor = Pal.redLight;
 						smokes = 7;
 						smokeSize = 13f;
-						smokeColor = Color.valueOf("feb380");
+						smokeColor = Pal.redLight;
 						smokeRad = splashDamageRadius;
-						sparkColor = Color.valueOf("feb380");
+						sparkColor = Pal.redLight;
 						sparks = 14;
 						sparkRad = splashDamageRadius;
 						sparkLen = 6f;
@@ -2273,7 +2273,7 @@ public final class HUnitTypes {
 					pierceBuilding = true;
 					trailWidth = 7f;
 					trailLength = 12;
-					trailColor = Color.valueOf("feb380");
+					trailColor = Pal.redLight;
 					healPercent = -1f;
 					despawnHit = true;
 					keepVelocity = false;
@@ -2282,7 +2282,7 @@ public final class HUnitTypes {
 					@Override
 					public void draw(Bullet b) {
 						super.draw(b);
-						Draw.color(Color.valueOf("feb380"));
+						Draw.color(Pal.redLight);
 						Drawf.tri(b.x, b.y, 13f, 12f, b.rotation());
 					}
 				};
@@ -2309,7 +2309,7 @@ public final class HUnitTypes {
 						pierceCap = 2;
 						pierce = true;
 						pierceBuilding = true;
-						hitColor = backColor = trailColor = Color.valueOf("feb380");
+						hitColor = backColor = trailColor = Pal.redLight;
 						frontColor = Color.white;
 						trailWidth = 2.8f;
 						trailLength = 8;
@@ -2331,7 +2331,7 @@ public final class HUnitTypes {
 							pierceCap = 3;
 							pierce = true;
 							pierceBuilding = true;
-							hitColor = backColor = trailColor = Color.valueOf("feb380");
+							hitColor = backColor = trailColor = Pal.redLight;
 							frontColor = Color.white;
 							trailWidth = 1.7f;
 							trailLength = 3;
@@ -2612,7 +2612,7 @@ public final class HUnitTypes {
 				parts.add(new RegionPart("-blade") {{
 					heatProgress = PartProgress.warmup;
 					progress = PartProgress.warmup.blend(PartProgress.reload, 0.15f);
-					heatColor = Color.valueOf("9c50ff");
+					heatColor = new Color(0x9c50ffff);
 					x = 5 / 4f;
 					y = 0f;
 					moveRot = -33f;

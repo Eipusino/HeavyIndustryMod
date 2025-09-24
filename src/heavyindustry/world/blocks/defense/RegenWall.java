@@ -46,20 +46,8 @@ public class RegenWall extends Wall {
 		crushDamageMultiplier = 5f;
 		update = true;
 		hasPower = false;
-		hasItems = false;
 		canOverdrive = false;
 		envEnabled = Env.any;
-	}
-
-	@Override
-	public void drawPlace(int x, int y, int rotation, boolean valid) {
-		drawPotentialLinks(x, y);
-		drawOverlay(x * tilesize + offset, y * tilesize + offset, rotation);
-	}
-
-	@Override
-	public boolean outputsItems() {
-		return false;
 	}
 
 	@Override
@@ -97,9 +85,7 @@ public class RegenWall extends Wall {
 			anyTargets = false;
 
 			//no healing when suppressed
-			if (checkSuppression()) {
-				return;
-			}
+			if (checkSuppression()) return;
 
 			anyTargets = targets.contains(Building::damaged);
 

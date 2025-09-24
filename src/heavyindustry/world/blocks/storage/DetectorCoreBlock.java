@@ -46,7 +46,7 @@ public class DetectorCoreBlock extends CoreBlock {
 	/** Radar location speed, in degrees per tick. */
 	public float speed = 0.3f;
 	/** Effect color. */
-	public Color effectColor = Color.valueOf("4b95ff");
+	public Color effectColor = new Color(0x4b95ffff);
 
 	/** Player respawn cooldown. */
 	public float spawnCooldown = 5f * 60f;

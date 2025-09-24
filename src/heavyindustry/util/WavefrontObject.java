@@ -435,11 +435,11 @@ public class WavefrontObject {
 
 		protected void draw() {
 			AtlasRegion atlas = texture, region = Core.atlas.white();
-			for (int f = 0; f < (mat != null && mat.emitTex != null ? 2 : 1); f++) {
+			for (int f = 0; f < (mat != null && mat.emitTex == null ? 1 : 2); f++) {
 				boolean emit = f > 0;
 
 				if (mat != null) {
-					atlas = f <= 0 ? mat.diffTex : mat.emitTex;
+					atlas = f == 0 ? mat.diffTex : mat.emitTex;
 				}
 
 				for (int i = 0; i < verts.length; i++) {
@@ -472,6 +472,8 @@ public class WavefrontObject {
 		zMedian,
 		zDistance,
 		normalAngle,
-		noShading
+		noShading;
+
+		public static final ShadingType[] all = values();
 	}
 }

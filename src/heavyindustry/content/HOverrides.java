@@ -186,6 +186,31 @@ public final class HOverrides {
 		Blocks.coreNucleus.armor = 11f;
 		Blocks.reinforcedContainer.itemCapacity = 160;
 		//blocks-turret
+		if (Blocks.duo instanceof ItemTurret turret) {
+			turret.ammoTypes.put(Items.thorium, new BasicBulletType(4f, 25f){{
+				width = 8f;
+				height = 13f;
+				shootEffect = Fx.shootBig;
+				smokeEffect = Fx.shootBigSmoke;
+				ammoMultiplier = 4;
+				lifetime = 60f;
+				hitEffect = despawnEffect = Fx.hitBulletColor;
+				backColor = hitColor = trailColor = Pal.thoriumAmmoBack;
+				frontColor = Pal.thoriumAmmoFront;
+			}});
+			turret.ammoTypes.put(HItems.uranium, new BasicBulletType(5f, 36f) {{
+				rangeChange = 10f;
+				width = 10f;
+				height = 13f;
+				lifetime = 60f;
+				pierceCap = 2;
+				pierceArmor = true;
+				ammoMultiplier = 8f;
+				hitEffect = despawnEffect = Fx.hitBulletColor;
+				hitColor = backColor = trailColor = HPal.uraniumAmmoBack;
+				frontColor = HPal.uraniumAmmoFront;
+			}});
+		}
 		if (Blocks.wave instanceof LiquidTurret turret) {
 			turret.ammoTypes.put(HLiquids.nitratedOil, new LiquidBulletType(HLiquids.nitratedOil) {{
 				drag = 0.01f;
@@ -197,7 +222,8 @@ public final class HOverrides {
 				collidesTeam = true;
 			}});
 		}
-		if (Blocks.salvo instanceof ItemTurret turret) turret.ammoTypes.put(HItems.uranium, new BasicBulletType(5f, 39, "bullet") {{
+		if (Blocks.salvo instanceof ItemTurret turret) turret.ammoTypes.put(HItems.uranium, new BasicBulletType(5f, 39f, "bullet") {{
+			rangeChange = 10f;
 			width = 10f;
 			height = 13f;
 			pierceCap = 2;
@@ -205,13 +231,16 @@ public final class HOverrides {
 			shootEffect = Fx.shootBig;
 			smokeEffect = Fx.shootBigSmoke;
 			ammoMultiplier = 4f;
-			lifetime = 50f;
+			lifetime = 60f;
+			hitEffect = despawnEffect = Fx.hitBulletColor;
+			hitColor = backColor = trailColor = HPal.uraniumAmmoBack;
+			frontColor = HPal.uraniumAmmoFront;
 		}});
 		if (Blocks.fuse instanceof ItemTurret turret) turret.ammoTypes.put(HItems.uranium, new ShrapnelBulletType() {{
 			length = 100f;
 			damage = 135f;
 			ammoMultiplier = 6f;
-			toColor = Color.valueOf("a5b2c2");
+			toColor = new Color(0xa5b2c2ff);
 			shootEffect = smokeEffect = HFx.shoot(HPal.uraniumAmmoBack);
 		}});
 		if (Blocks.tsunami instanceof LiquidTurret turret) {
@@ -302,9 +331,9 @@ public final class HOverrides {
 				knockback = 1f;
 				pierceCap = 2;
 				buildingDamageMultiplier = 0.3f;
-				colors = new Color[]{Color.valueOf("ffd37fa1"), Color.valueOf("ffd37fcc"), Color.valueOf("ffd37f"), Color.valueOf("ffe6b7"), Color.valueOf("d8e2ff")};
-				lightColor = flareColor = Color.valueOf("fbd367");
-				hitColor = Color.valueOf("ffd367");
+				colors = new Color[]{new Color(0xffd37fa1), new Color(0xffd37fcc), new Color(0xffd37fff), new Color(0xffe6b7ff), new Color(0xd8e2ffff)};
+				lightColor = flareColor = new Color(0xfbd367ff);
+				hitColor = new Color(0xffd367ff);
 			}});
 			turret.ammoTypes.put(Liquids.hydrogen, new ContinuousFlameBulletType() {{
 				damage = 60f;
@@ -312,8 +341,8 @@ public final class HOverrides {
 				knockback = 1f;
 				pierceCap = 2;
 				buildingDamageMultiplier = 0.3f;
-				colors = new Color[]{Color.valueOf("92abff7f"), Color.valueOf("92abffa2"), Color.valueOf("92abffd3"), Color.valueOf("92abff"), Color.valueOf("d4e0ff")};
-				lightColor = hitColor = flareColor = Color.valueOf("92abff");
+				colors = new Color[]{new Color(0x92abff7f), new Color(0x92abffa2), new Color(0x92abffd3), new Color(0x92abffff), new Color(0xd4e0ffff)};
+				lightColor = hitColor = flareColor = new Color(0x92abffff);
 			}});
 			turret.ammoTypes.put(Liquids.cyanogen, new ContinuousFlameBulletType() {{
 				damage = 130f;
@@ -322,8 +351,8 @@ public final class HOverrides {
 				knockback = 2f;
 				pierceCap = 3;
 				buildingDamageMultiplier = 0.3f;
-				colors = new Color[]{Color.valueOf("465ab888"), Color.valueOf("66a6d2a0"), Color.valueOf("89e8b6b0"), Color.valueOf("cafcbe"), Color.white};
-				lightColor = hitColor = flareColor = Color.valueOf("89e8b6");
+				colors = new Color[]{new Color(0x465ab888), new Color(0x66a6d2a0), new Color(0x89e8b6b0), new Color(0xcafcbeff), Color.white};
+				lightColor = hitColor = flareColor = new Color(0x89e8b6ff);
 			}});
 		}
 		Blocks.titan.armor = 13f;

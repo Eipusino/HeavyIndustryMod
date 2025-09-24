@@ -49,7 +49,7 @@ public class ToxicAbility extends Ability {
 			Fx.titanSmoke.at(
 					unit.x + Mathf.range(range * 0.7071f),
 					unit.y + Mathf.range(range * 0.7071f),
-					Color.valueOf("92ab117f")
+					new Color(0x92ab117f)
 			);
 			j -= 15f;
 		}

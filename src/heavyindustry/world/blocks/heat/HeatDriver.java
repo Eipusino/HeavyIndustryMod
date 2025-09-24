@@ -39,7 +39,7 @@ public class HeatDriver extends Block {
 
 	public float arrowSpacing = 4f, arrowOffset = 2f, arrowPeriod = 0.4f, arrowTimeScl = 6.2f;
 
-	public Color dc1 = Color.valueOf("ea8878");
+	public Color dc1 = new Color(0xea8878ff);
 
 	public int range = 240;
 	public float visualMaxHeat = 15f;

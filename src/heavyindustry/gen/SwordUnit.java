@@ -12,9 +12,13 @@ import arc.util.Tmp;
 import heavyindustry.content.HFx;
 import heavyindustry.graphics.HTrails.DriftTrail;
 import heavyindustry.type.unit.SwordUnitType;
+import mindustry.Vars;
+import mindustry.content.Fx;
 import mindustry.core.World;
 import mindustry.entities.Units;
+import mindustry.entities.units.WeaponMount;
 import mindustry.gen.Building;
+import mindustry.gen.Groups;
 import mindustry.gen.Unit;
 
 import static mindustry.Vars.state;
@@ -76,7 +80,39 @@ public class SwordUnit extends BaseUnit implements Swordc {
 
 	@Override
 	public void remove() {
-		super.remove();
+		if (!added) return;
+
+		Groups.all.removeIndex(this, index__all);
+		index__all = -1;
+		Groups.unit.removeIndex(this, index__unit);
+		index__unit = -1;
+		Groups.sync.removeIndex(this, index__sync);
+		index__sync = -1;
+		Groups.draw.removeIndex(this, index__draw);
+		index__draw = -1;
+
+		added = false;
+
+		if (Vars.net.client()) {
+			Vars.netClient.addRemovedEntity(id());
+		}
+
+		team.data().updateCount(type, -1);
+		controller.removed(this);
+		if (trail != null && trail.size() > 0) {
+			Fx.trailFade.at(x, y, trail.width(), type.trailColor == null ? team.color : type.trailColor, trail.copy());
+		}
+
+		for (WeaponMount mount : mounts) {
+			if (mount.weapon.continuous && mount.bullet != null && mount.bullet.owner == this) {
+				mount.bullet.time = mount.bullet.lifetime - 10f;
+				mount.bullet = null;
+			}
+			if (mount.sound != null) {
+				mount.sound.stop();
+			}
+		}
+
 		if (driftTrails != null) {
 			for (DriftTrail trail : driftTrails) {
 				if (trail.size() > 0) HFx.driftTrailFade.at(x, y, type.trailScl, type.trailColor, trail.copy());

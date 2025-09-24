@@ -4,8 +4,6 @@ import mindustry.Vars;
 import mindustry.ctype.Content;
 import mindustry.mod.Mods.LoadedMod;
 
-import java.lang.reflect.Field;
-
 import static heavyindustry.HVars.MOD_NAME;
 
 public final class HMods {
@@ -41,17 +39,6 @@ public final class HMods {
 	}
 
 	public static boolean isArc() {
-		Field[] fields = Vars.class.getDeclaredFields();
-		for (Field field : fields) {
-			if ("arcVersion".equals(field.getName())) return true;
-		}
-
-		return false;
-	}
-
-	/** @deprecated I couldn't find the FOO client version v151.1 and above. */
-	@Deprecated
-	public static boolean isFoo() {
 		return false;
 	}
 }

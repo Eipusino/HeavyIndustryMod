@@ -25,7 +25,23 @@ public final class Entitys {
 	/** Don't let anyone instantiate this class. */
 	private Entitys() {}
 
+	public static Prov<? extends Entityc> get(Class<? extends Entityc> type) {
+		return get(type.getSimpleName());
+	}
+
+	public static Prov<? extends Entityc> get(String name) {
+		return needIdMap.get(name);
+	}
+
+	@Deprecated
 	public static <T extends Entityc> void register(String name, Class<T> type, Prov<T> prov) {
+		needIdMap.put(name, prov);
+		classIdMap.put(type, EntityMapping.register(name, prov));
+	}
+
+	public static <T extends Entityc> void register(Class<T> type, Prov<T> prov) {
+		String name = type.getSimpleName();
+
 		needIdMap.put(name, prov);
 		classIdMap.put(type, EntityMapping.register(name, prov));
 	}
@@ -47,38 +63,39 @@ public final class Entitys {
 	}
 
 	public static void load() {
-		register("BaseUnit", BaseUnit.class, BaseUnit::new);
-		register("BaseMechUnit", BaseMechUnit.class, BaseMechUnit::new);
-		register("BaseLegsUnit", BaseLegsUnit.class, BaseLegsUnit::new);
-		register("BasePayloadUnit", BasePayloadUnit.class, BasePayloadUnit::new);
-		register("BaseTankUnit", BaseTankUnit.class, BaseTankUnit::new);
-		register("BaseElevationMoveUnit", BaseElevationMoveUnit.class, BaseElevationMoveUnit::new);
-		register("BaseBuildingTetherPayloadUnit", BaseBuildingTetherPayloadUnit.class, BaseBuildingTetherPayloadUnit::new);
-		register("BaseBuildingTetherUnit", BaseBuildingTetherUnit.class, BaseBuildingTetherUnit::new);
-		register("BaseUnitWaterMove", BaseUnitWaterMove.class, BaseUnitWaterMove::new);
-		register("BaseTimedKillUnit", BaseTimedKillUnit.class, BaseTimedKillUnit::new);
-		register("PayloadLegsUnit", PayloadLegsUnit.class, PayloadLegsUnit::new);
-		register("BaseBuildingTetherLegsUnit", BaseBuildingTetherLegsUnit.class, BaseBuildingTetherLegsUnit::new);
-		register("BaseCrawlUnit", BaseCrawlUnit.class, BaseCrawlUnit::new);
-		register("ChainedChainMechUnit", ChainedChainMechUnit.class, ChainedChainMechUnit::new);
-		register("DamageAbsorbMechUnit", DamageAbsorbMechUnit.class, DamageAbsorbMechUnit::new);
-		register("TractorBeamUnit", TractorBeamUnit.class, TractorBeamUnit::new);
-		register("OrnitopterUnit", OrnitopterUnit.class, OrnitopterUnit::new);
-		register("CopterUnit", CopterUnit.class, CopterUnit::new);
-		register("FloatMechCoreUnit", FloatMechCoreUnit.class, FloatMechCoreUnit::new);
-		register("SentryUnit", SentryUnit.class, SentryUnit::new);
-		register("SwordUnit", SwordUnit.class, SwordUnit::new);
-		register("EnergyUnit", EnergyUnit.class, EnergyUnit::new);
-		register("PesterUnit", PesterUnit.class, PesterUnit::new);
-		register("NucleoidUnit", NucleoidUnit.class, NucleoidUnit::new);
-		register("EipusinoUnit", EipusinoUnit.class, EipusinoUnit::new);
-		register("DPSMechUnit", DPSMechUnit.class, DPSMechUnit::new);
-		register("InvincibleShipUnit", InvincibleShipUnit.class, InvincibleShipUnit::new);
-		register("UltFire", UltFire.class, UltFire::new);
-		register("UltPuddle", UltPuddle.class, UltPuddle::new);
-		register("DiffBullet", DiffBullet.class, DiffBullet::new);
-		register("BlackHoleBullet", BlackHoleBullet.class, BlackHoleBullet::new);
-		register("Spawner", Spawner.class, Spawner::new);
-		register("VapourizeEffectState", VapourizeEffectState.class, VapourizeEffectState::new);
+		register(BaseUnit.class, BaseUnit::new);
+		register(BaseMechUnit.class, BaseMechUnit::new);
+		register(BaseLegsUnit.class, BaseLegsUnit::new);
+		register(BasePayloadUnit.class, BasePayloadUnit::new);
+		register(BaseTankUnit.class, BaseTankUnit::new);
+		register(BaseElevationMoveUnit.class, BaseElevationMoveUnit::new);
+		register(BaseBuildingTetherPayloadUnit.class, BaseBuildingTetherPayloadUnit::new);
+		register(BaseBuildingTetherUnit.class, BaseBuildingTetherUnit::new);
+		register(BaseUnitWaterMove.class, BaseUnitWaterMove::new);
+		register(BaseTimedKillUnit.class, BaseTimedKillUnit::new);
+		register(PayloadLegsUnit.class, PayloadLegsUnit::new);
+		register(BaseBuildingTetherLegsUnit.class, BaseBuildingTetherLegsUnit::new);
+		register(BaseCrawlUnit.class, BaseCrawlUnit::new);
+		register(ChainedChainMechUnit.class, ChainedChainMechUnit::new);
+		register(DamageAbsorbMechUnit.class, DamageAbsorbMechUnit::new);
+		register(TractorBeamUnit.class, TractorBeamUnit::new);
+		register(OrnitopterUnit.class, OrnitopterUnit::new);
+		register(CopterUnit.class, CopterUnit::new);
+		register(FloatMechCoreUnit.class, FloatMechCoreUnit::new);
+		register(SentryUnit.class, SentryUnit::new);
+		register(SwordUnit.class, SwordUnit::new);
+		register(SkillUnit.class, SkillUnit::new);
+		register(EnergyUnit.class, EnergyUnit::new);
+		register(PesterUnit.class, PesterUnit::new);
+		register(NucleoidUnit.class, NucleoidUnit::new);
+		register(EipusinoUnit.class, EipusinoUnit::new);
+		register(DPSMechUnit.class, DPSMechUnit::new);
+		register(InvincibleShipUnit.class, InvincibleShipUnit::new);
+		register(UltFire.class, UltFire::new);
+		register(UltPuddle.class, UltPuddle::new);
+		register(DiffBullet.class, DiffBullet::new);
+		register(BlackHoleBullet.class, BlackHoleBullet::new);
+		register(Spawner.class, Spawner::new);
+		register(VapourizeEffectState.class, VapourizeEffectState::new);
 	}
 }

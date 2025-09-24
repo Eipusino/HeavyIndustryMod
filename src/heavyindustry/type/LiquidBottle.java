@@ -5,6 +5,7 @@ import arc.graphics.Pixmap;
 import arc.util.Tmp;
 import heavyindustry.HVars;
 import mindustry.graphics.MultiPacker;
+import mindustry.graphics.MultiPacker.PageType;
 import mindustry.type.Item;
 import mindustry.type.Liquid;
 
@@ -22,6 +23,7 @@ public class LiquidBottle extends Item {
 
 	public LiquidBottle(String name, Liquid liq) {
 		super(name, liq.color);
+
 		liquid = liq;
 
 		explosiveness = liq.explosiveness * 0.8f;
@@ -47,6 +49,8 @@ public class LiquidBottle extends Item {
 		pixmap.draw(bottom);
 		pixmap.draw(top, true);
 
-		packer.add(MultiPacker.PageType.main, name, pixmap);
+		packer.add(PageType.main, name, pixmap);
+
+		pixmap.dispose();
 	}
 }

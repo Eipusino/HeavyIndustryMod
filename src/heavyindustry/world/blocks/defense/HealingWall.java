@@ -35,7 +35,7 @@ public class HealingWall extends Wall {
 			canHeal = true;
 			charge += Time.delta;
 
-			if (charge >= healReload && canHeal && health() < maxHealth()) {
+			if (charge >= healReload && health() < maxHealth()) {
 				charge = 0f;
 				if (health() >= maxHealth()) canHeal = false;
 

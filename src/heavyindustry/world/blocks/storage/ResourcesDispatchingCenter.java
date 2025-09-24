@@ -43,7 +43,7 @@ import mindustry.world.blocks.storage.StorageBlock;
 public class ResourcesDispatchingCenter extends StorageBlock {
 	public static final EntityGroup<Building> rdcGroup = new EntityGroup<>(Building.class, false, false);
 
-	public Color color = Color.valueOf("fea947");
+	public Color color = new Color(0xfea947ff);
 	public Effect outEffect = Fx.none;
 
 	/** max loop per frame */

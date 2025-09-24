@@ -95,7 +95,7 @@ public class TurretController extends Block {
 	public enum ControlState {
 		off(Pal.darkerGray),
 		on(Pal.heal),
-		disable(Color.valueOf("ff4545"));
+		disable(new Color(0xff4545ff));
 
 		public static final ControlState[] all = values();
 		public final Color modeColor;

@@ -20,23 +20,23 @@ public final class ExtraEffect {
 	private static final BaseIntMap<VapourizeEffectState> vapourizeMap = new BaseIntMap<>(VapourizeEffectState.class);
 
 	static {
-		Events.on(WorldLoadEvent.class, e -> {
+		Events.on(WorldLoadEvent.class, event -> {
 			vapourizeQueue.clear();
 			buildQMap.clear();
 			vapourizeMap.clear();
 		});
 		Events.run(Trigger.update, () -> {
-			vapourizeQueue.each(buildq -> {
-				Building temp = buildq.build;
+			vapourizeQueue.each(queue -> {
+				Building temp = queue.build;
 				if (!temp.isValid()) {
 					int size = temp.block.size;
 					Puddles.deposit(temp.tile, Liquids.slag, size * size * 2 + 6);
 				}
-				buildq.time -= Time.delta;
+				queue.time -= Time.delta;
 			});
-			vapourizeQueue.removeAll(buildq -> {
-				boolean b = buildq.build.dead || buildq.time <= 0f;
-				if (b) buildQMap.remove(buildq.build.id);
+			vapourizeQueue.removeAll(queue -> {
+				boolean b = queue.build.dead || queue.time <= 0f;
+				if (b) buildQMap.remove(queue.build.id);
 				return b;
 			});
 		});

@@ -79,7 +79,7 @@ public final class HWeathers {
 				fallingRadius = 30f;
 				minDistanceFallingCollide = 15f;
 				hitFallingEffect = HFx.bigExplosionStone;
-				hitFallingColor = Color.valueOf("5867ac");
+				hitFallingColor = new Color(0x5867acff);
 			}}, 1 / 1600f, new HailStoneBulletType(MOD_NAME + "-hailstone-middle", 2) {{
 				hitEffect = Fx.dynamicWave.layer(Layer.power);
 				despawnEffect = HFx.fellStone;
@@ -90,7 +90,7 @@ public final class HWeathers {
 				fallingRadius = 15f;
 				minDistanceFallingCollide = 5f;
 				hitFallingEffect = HFx.explosionStone;
-				hitFallingColor = Color.valueOf("5867ac");
+				hitFallingColor = new Color(0x5867acff);
 			}}, 1 / 12f, new HailStoneBulletType(MOD_NAME + "-hailstone-small", 5) {{
 				hitEffect = Fx.none;
 				despawnEffect = HFx.fellStone;
@@ -104,7 +104,7 @@ public final class HWeathers {
 			noisePath = "distortAlpha";
 			inBounceCam = drawRain = false;
 			useWindVector = drawNoise = true;
-			noiseColor = Color.valueOf("8c8c8c");
+			noiseColor = new Color(0x8c8c8cff);
 			baseSpeed = 5.4f;
 			duration = 15f * Time.toMinutes;
 			bulletChange = 0.5f;
@@ -124,7 +124,7 @@ public final class HWeathers {
 				fallingRadius = 30f;
 				minDistanceFallingCollide = 15f;
 				hitFallingEffect = HFx.bigExplosionStone;
-				hitFallingColor = Color.valueOf("5e9098");
+				hitFallingColor = new Color(0x5e9098ff);
 			}}, 1 / 1600f, new HailStoneBulletType(MOD_NAME + "-stone-storm-middle", 2) {{
 				speed = 4f;
 				hitEffect = Fx.none;
@@ -137,7 +137,7 @@ public final class HWeathers {
 				fallingRadius = 15f;
 				minDistanceFallingCollide = 5f;
 				hitFallingEffect = HFx.explosionStone;
-				hitFallingColor = Color.valueOf("5e9098");
+				hitFallingColor = new Color(0x5e9098ff);
 			}}, 1 / 12f, new HailStoneBulletType(MOD_NAME + "-stone-storm-small", 5) {{
 				speed = 4f;
 				immovable = false;

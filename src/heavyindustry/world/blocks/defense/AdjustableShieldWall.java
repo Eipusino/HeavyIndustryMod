@@ -26,7 +26,7 @@ public class AdjustableShieldWall extends Wall {
 	// break cooldown
 	public float breakCooldown = 850f;
 	public float regenSpeed = 2f;
-	public Color glowColor = Color.valueOf("ff7531").a(0.5f);
+	public Color glowColor = new Color(0xff753188);
 	public float glowMag = 0.6f;
 	public float glowScl = 8f;
 	public TextureRegion glowRegion;

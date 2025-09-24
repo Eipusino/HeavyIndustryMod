@@ -8,7 +8,6 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.PixmapRegion;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Eachable;
-import heavyindustry.func.FuncInte;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
@@ -24,11 +23,12 @@ public class DrawPayloadFactory extends DrawDirSpliceBlock {
 	@SuppressWarnings("unchecked")
 	public <E extends Building> DrawPayloadFactory(Intf<E> splice, Cons<E> draws) {
 		super(splice);
+
 		drawPayload = (Cons<Building>) draws;
 	}
 
 	public DrawPayloadFactory() {
-		this(e -> 0, FuncInte.cons());
+		this(e -> 0, e -> {});
 	}
 
 	@Override

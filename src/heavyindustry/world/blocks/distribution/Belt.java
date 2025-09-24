@@ -404,7 +404,7 @@ public class Belt extends Block implements Autotiler {
 
 			// this might be bad
 			for (int i = 0; i < ids.length; i++) {
-				write.i(ids[i] != null ? ids[i].id : -1);
+				write.i(ids[i] == null ? -1 : ids[i].id);
 				write.f(progresses[i]);
 			}
 		}

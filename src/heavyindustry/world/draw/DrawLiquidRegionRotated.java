@@ -14,7 +14,7 @@ public class DrawLiquidRegionRotated extends DrawLiquidRegion {
 
 	@Override
 	public void draw(Building build) {
-		Liquid drawn = drawLiquid != null ? drawLiquid : build.liquids.current();
+		Liquid drawn = drawLiquid == null ? build.liquids.current() : drawLiquid;
 		Drawf.liquid(liquid, build.x, build.y,
 				build.liquids.get(drawn) / build.block.liquidCapacity * alpha,
 				drawn.color, build.rotdeg()

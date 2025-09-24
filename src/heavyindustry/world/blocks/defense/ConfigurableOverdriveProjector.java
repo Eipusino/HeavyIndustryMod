@@ -81,7 +81,7 @@ public class ConfigurableOverdriveProjector extends OverdriveProjector {
 
 	@Override
 	public void drawPlanConfig(BuildPlan plan, Eachable<BuildPlan> list) {
-		float realRange = plan.config != null ? ((Vec2) plan.config).y : range;
+		float realRange = plan.config instanceof Vec2 v ? v.y : range;
 
 		Drawf.dashCircle(plan.drawx(), plan.drawy(), realRange, baseColor);
 

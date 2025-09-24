@@ -43,7 +43,6 @@ import mindustry.world.meta.Stat;
 import static mindustry.Vars.state;
 import static mindustry.Vars.tilesize;
 
-@Deprecated
 public class SandboxWall extends Block {
 	protected static final Vec2 configVec = new Vec2();
 

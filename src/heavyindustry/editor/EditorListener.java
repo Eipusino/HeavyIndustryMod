@@ -17,15 +17,15 @@ public abstract class EditorListener {
 	protected EditorListener() {
 		Events.run(Trigger.update, () -> valid(this::update));
 		Events.run(Trigger.drawOver, () -> valid(this::draw));
-		Events.on(StateChangeEvent.class, e -> {
-			if (e.from == State.menu && e.to == State.playing && Vars.state.isEditor()) {
+		Events.on(StateChangeEvent.class, event -> {
+			if (event.from == State.menu && event.to == State.playing && Vars.state.isEditor()) {
 				if (shouldAttach()) {
 					Vars.state.map.tags.put("name", Vars.editor.tags.get("name"));
 
 					attached = true;
 					enter();
 				}
-			} else if (attached && e.to == State.menu) {
+			} else if (attached && event.to == State.menu) {
 				exit();
 				attached = false;
 			}

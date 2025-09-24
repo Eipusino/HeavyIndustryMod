@@ -137,7 +137,7 @@ public class LaserRuler extends Block {
 
 			Tile target = targetTile();
 			Color tenColor = Color.red.cpy().lerp(Color.white, 0.5f);
-			Color color = Color.valueOf("877bad");//bf92f8 8a73c6 665c9f
+			Color color = new Color(0x877badff);//bf92f8 8a73c6 665c9f
 			drawSelectedTile(target, color);
 			drawRunners.clear();
 			int counter = 0;
@@ -178,7 +178,7 @@ public class LaserRuler extends Block {
 			return switch (sensor) {
 				case shootX -> tile == null ? -1 : tile.x;
 				case shootY -> tile == null ? -1 : tile.y;
-				case shooting -> tile != null ? 1 : 0;
+				case shooting -> tile == null ? 0 : 1;
 				default -> super.sense(sensor);
 			};
 		}

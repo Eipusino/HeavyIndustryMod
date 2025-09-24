@@ -45,11 +45,11 @@ public class HeatMultiCrafter extends MultiCrafter {
 	public void setBars() {
 		super.setBars();
 
-		if (outputHeat) addBar("heatoutput", (HeatMultiCrafterBuild tile) -> new Bar("bar.heat", Pal.lightOrange, () -> tile.craftPlan != null ? tile.heat / tile.craftPlan.heatOutput : 0));
+		if (outputHeat) addBar("heatoutput", (HeatMultiCrafterBuild tile) -> new Bar("bar.heat", Pal.lightOrange, () -> tile.craftPlan == null ? 0f : tile.heat / tile.craftPlan.heatOutput));
 		if (consumeHeat) addBar("heatconsume", (HeatMultiCrafterBuild tile) -> new Bar(
-				() -> Core.bundle.format("bar.heatpercent", tile.heatRequirement, tile.craftPlan != null ? Math.min((tile.heatRequirement / tile.craftPlan.heatRequirement * 100), tile.craftPlan.maxHeatEfficiency) : 0),
+				() -> Core.bundle.format("bar.heatpercent", tile.heatRequirement, tile.craftPlan == null ? 0f : Math.min((tile.heatRequirement / tile.craftPlan.heatRequirement * 100), tile.craftPlan.maxHeatEfficiency)),
 				() -> Pal.lightOrange,
-				() -> tile.craftPlan != null ? tile.heatRequirement / tile.craftPlan.heatRequirement : 0)
+				() -> tile.craftPlan == null ? 0f : tile.heatRequirement / tile.craftPlan.heatRequirement)
 		);
 	}
 
@@ -92,7 +92,7 @@ public class HeatMultiCrafter extends MultiCrafter {
 
 		@Override
 		public float heatFrac() {
-			return craftPlan != null ? heat / craftPlan.heatOutput : 0f;
+			return craftPlan == null ? 0f : heat / craftPlan.heatOutput;
 		}
 
 		@Override
@@ -102,7 +102,7 @@ public class HeatMultiCrafter extends MultiCrafter {
 
 		@Override
 		public float heatRequirement() {
-			return craftPlan != null ? craftPlan.heatRequirement : 0f;
+			return craftPlan == null ? 0f : craftPlan.heatRequirement;
 		}
 
 		@Override

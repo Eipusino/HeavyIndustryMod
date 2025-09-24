@@ -1099,10 +1099,10 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 
 	public CollectionList<E> shuffle() {
 		for (int i = size - 1; i >= 0; i--) {
-			int ii = Mathf.random(i);
+			int j = Mathf.random(i);
 			E temp = items[i];
-			items[i] = items[ii];
-			items[ii] = temp;
+			items[i] = items[j];
+			items[j] = temp;
 		}
 
 		return this;
@@ -1257,7 +1257,8 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 	public static class SeqIterable<T> implements Iterable<T> {
 		final CollectionList<T> array;
 		final boolean allowRemove;
-		final SeqIterator iterator1 = new SeqIterator(), iterator2 = new SeqIterator();
+
+		SeqIterator iterator1, iterator2;
 
 		public SeqIterable(CollectionList<T> array) {
 			this(array, true);
@@ -1270,11 +1271,15 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 
 		@Override
 		public ListIterator<T> iterator() {
+			if (iterator1 == null) iterator1 = new SeqIterator();
+
 			if (iterator1.done) {
 				iterator1.index = 0;
 				iterator1.done = false;
 				return iterator1;
 			}
+
+			if (iterator2 == null) iterator2 = new SeqIterator();
 
 			if (iterator2.done) {
 				iterator2.index = 0;
@@ -1289,11 +1294,8 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 			int index;
 			boolean done = true;
 
-			{
-				iteratorsAllocated++;
-			}
-
 			SeqIterator() {
+				iteratorsAllocated++;
 			}
 
 			@Override

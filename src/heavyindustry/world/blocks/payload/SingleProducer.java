@@ -17,7 +17,7 @@ public class SingleProducer extends BlockProducer {
 	public SingleProducer(String name) {
 		super(name);
 
-		consumeBuilder.add(new ConsumeItemDynamic((SingleProducerBuild tile) -> tile.tehRecipe != null ? tile.tehRecipe.requirements : ItemStack.empty));
+		consumeBuilder.add(new ConsumeItemDynamic((SingleProducerBuild tile) -> tile.tehRecipe == null ? ItemStack.empty : tile.tehRecipe.requirements));
 	}
 
 	@Override

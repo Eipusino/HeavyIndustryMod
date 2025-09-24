@@ -8,6 +8,7 @@ import heavyindustry.annotations.ListClasses;
 import heavyindustry.annotations.ListPackages;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.files.InternalFileTree;
+import heavyindustry.input.InputAggregator;
 import heavyindustry.util.PlatformImpl;
 import mindustry.Vars;
 import mindustry.content.TechTree.TechNode;
@@ -36,6 +37,8 @@ public final class HVars {
 
 	/** jar internal navigation. */
 	public static final InternalFileTree internalTree;
+
+	public static InputAggregator inputAggregator;
 
 	public static Texture white;
 	public static TextureRegion whiteRegion;

@@ -105,7 +105,7 @@ public class ArcCrafter extends AttributeCrafter {
 
 	@Override
 	public boolean canPlaceOn(Tile tile, Team team, int rotation) {
-		float sum = tile.getLinkedTilesAs(this, tempTiles).sumf(t -> canPump(t) ? baseEfficiency + (attribute != null ? t.floor().attributes.get(attribute) : 0f) : 0f);
+		float sum = tile.getLinkedTilesAs(this, tempTiles).sumf(t -> canPump(t) ? baseEfficiency + (attribute == null ? 0f : t.floor().attributes.get(attribute)) : 0f);
 		return boostItem != null || sum > 0.00001f;
 	}
 
@@ -195,7 +195,7 @@ public class ArcCrafter extends AttributeCrafter {
 			if (tmpFloor != null || boostItem != null) {
 				Draw.mixcol(Tmp.c4, Mathf.absin(11f, 0.6f * warmup2));
 				Draw.colorl(0.9f);
-				TextureRegion reg = tmpFloor != null ? tmpFloor.fullIcon : boostItem.item.fullIcon;
+				TextureRegion reg = tmpFloor == null ? boostItem.item.fullIcon : tmpFloor.fullIcon;
 				if (drawLarge) {
 					int n = tmpFloor == null ? Math.min(4, items.get(boostItem.item)) : 4;
 					for (int i = 0; i < n; i++) {

@@ -60,7 +60,7 @@ public final class BlockMovement {
 
 		Events.run(Trigger.update, BlockMovement::onUpdate);
 
-		Events.on(WorldLoadEvent.class, e -> onMapLoad());
+		Events.on(WorldLoadEvent.class, event -> onMapLoad());
 	}
 
 	public static Point2 getNearbyPosition(Block block, int direction, int index) {

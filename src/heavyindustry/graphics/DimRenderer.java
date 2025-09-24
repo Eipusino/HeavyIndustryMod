@@ -29,7 +29,7 @@ public final class DimRenderer {
 	private DimRenderer() {}
 
 	public static void load() {
-		Events.on(ResetEvent.class, e -> dimAlpha = 0);
+		Events.on(ResetEvent.class, event -> dimAlpha = 0f);
 	}
 
 	public static void updateAlpha(float alpha) {

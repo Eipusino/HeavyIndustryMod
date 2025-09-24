@@ -25,13 +25,9 @@ public final class HRenders {
 		DimRenderer.load();
 		SlashRenderer.init();
 
-		Events.on(ResetEvent.class, e -> {
-			flashReduction = flashTime = 0;
-		});
+		Events.on(ResetEvent.class, event -> flashReduction = flashTime = 0);
 
-		Events.run(Trigger.update, () -> {
-			flashIntensity -= flashReduction * Time.delta;
-		});
+		Events.run(Trigger.update, () -> flashIntensity -= flashReduction * Time.delta);
 
 		Events.run(Trigger.drawOver, () -> {
 			Draw.draw(Layer.playerName + 1.5f, () -> {

@@ -115,15 +115,13 @@ public class LightenGenerator extends NuclearReactor {
 
 				@Override
 				public void update(Bullet b) {
-					if (b.time > 18) {
-						Teamc target = Units.closestTarget(b.team, ((LightenGeneratorBuild) b.owner).x, ((LightenGeneratorBuild) b.owner).y, enemyRange,
+					if (b.time > 18 && b.owner instanceof LightenGeneratorBuild build) {
+						Teamc target = Units.closestTarget(b.team, build.x, build.y, enemyRange,
 								e -> (e.isGrounded() && collidesGround) || (e.isFlying() && collidesAir),
 								t -> collidesGround);
-						Teamc targetTo = target != null ? target : (Teamc) b.owner;
+						Teamc targetTo = target == null ? build : target;
 						float homingPower = target == null ? 0.08f : 0.5f;
-						if (targetTo != null) {
-							b.vel.setAngle(Mathf.slerpDelta(b.rotation() + 0.01f, b.angleTo(targetTo), homingPower));
-						}
+						b.vel.setAngle(Mathf.slerpDelta(b.rotation() + 0.01f, b.angleTo(targetTo), homingPower));
 					}
 					trailEffect.at(b.x, b.y, b.rotation(), b.time);
 				}

@@ -29,7 +29,7 @@ import static mindustry.Vars.tilesize;
 public class InvertedJunction extends Junction {
 	public final int size = 1;
 	public String placeSprite;
-	public Color[] colors = {Color.valueOf("bf92f9"), Color.valueOf("c0ecff"), Color.valueOf("84f491"), Color.valueOf("fffa763")};
+	public Color[] colors = {new Color(0xbf92f9ff), new Color(0xc0ecffff), new Color(0x84f491ff), new Color(0xfffa763)};
 
 	public TextureRegion place, arrow1, arrow2, flip;
 	public TextureRegion[] locs;

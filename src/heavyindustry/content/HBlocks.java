@@ -208,7 +208,9 @@ import mindustry.world.blocks.distribution.StackConveyor;
 import mindustry.world.blocks.distribution.StackRouter;
 import mindustry.world.blocks.environment.Floor;
 import mindustry.world.blocks.environment.OreBlock;
+import mindustry.world.blocks.environment.OverlayFloor;
 import mindustry.world.blocks.environment.Prop;
+import mindustry.world.blocks.environment.StaticTree;
 import mindustry.world.blocks.environment.StaticWall;
 import mindustry.world.blocks.environment.SteamVent;
 import mindustry.world.blocks.environment.TallBlock;
@@ -288,16 +290,21 @@ public final class HBlocks {
 			//environment
 			cliff, cliffHelper,
 			darkPanel7, darkPanel8, darkPanel9, darkPanel10, darkPanel11, darkPanelDamaged, asphalt, asphaltTiles,
-			shaleVent, basaltSpikes, basaltWall, basaltGraphiticWall, basaltPyratiticWall, snowySand, snowySandWall, arkyciteSand, arkyciteSandWall, arkyciteSandBoulder, darksandBoulder,
+			shaleVent, basaltSpikes, basaltPlates, basaltRock, basaltWall, basaltGraphiticWall, basaltPyratiticWall, snowySand, snowySandWall, arkyciteSand, arkyciteSandWall, arkyciteSandBoulder, darksandBoulder,
 			concreteBlank, concreteFill, concreteNumber, concreteStripe, concrete, stoneFullTiles, stoneFull, stoneHalf, stoneTiles, concreteWall, pit, waterPit,
 			brine, crystalFluid, deepCrystalFluid,
 			metalFloorWater, metalFloorWater2, metalFloorWater3, metalFloorWater4, metalFloorWater5, metalFloorDamagedWater,
 			stoneWater, shaleWater, basaltWater, mudWater,
-			overgrownGrass, overgrownShrubs, overgrownPine,
 			corruptedMoss, corruptedSporeMoss, corruptedSporeRocks, corruptedSporePine, corruptedSporeFern, corruptedSporePlant, corruptedSporeTree,
 			mycelium, myceliumSpore, myceliumShrubs, myceliumPine,
+			arsenide, arsenideLayers, arsenideBoulder, arsenideOutcrop, arsenideWall,
+			blueSand, blueSandWater, blueSandBoulder, blueSandWall,
+			boric, boricDense, boricBoulder, boricWall,
+			breccia, smoothBreccia, brecciaBoulder, brecciaWall,
+			chert, chertPlates, chertBoulder, chertOutcrop, chertWall,
+			feldspar, feldsparRubble, feldsparPebbles, feldsparVent, feldsparBoulder, feldsparOutcrop, feldsparWall,
 			softRareEarth, patternRareEarth, softRareEarthWall,
-			crystals,
+			crystals, crystalsBoulder,
 			oreSilicon, oreCrystal, oreUranium, oreChromium,
 	//wall
 	copperWallHuge, copperWallGigantic, armoredWall, armoredWallLarge, armoredWallHuge, armoredWallGigantic, titaniumWallHuge, titaniumWallGigantic, doorHuge, doorGigantic,
@@ -425,6 +432,16 @@ public final class HBlocks {
 		}};
 		basaltSpikes = new Floor("basalt-spikes", 4) {{
 			attributes.set(Attribute.water, -0.3f);
+		}};
+		basaltPlates = new Floor("basalt-plates") {{
+			tilingVariants = 2;
+			tilingSize = 4;
+			attributes.set(Attribute.water, -0.3f);
+		}};
+		basaltRock = new TallBlock("basalt-rock") {{
+			clipSize = 120f;
+			variants = 2;
+			attributes.set(Attribute.sand, 0.7f);
 		}};
 		basaltWall = new StaticWall("basalt-wall") {{
 			variants = 3;
@@ -647,16 +664,6 @@ public final class HBlocks {
 			albedo = 0.9f;
 			supportsOverlay = true;
 		}};
-		overgrownGrass = new Floor("overgrown-grass", 3) {{
-			speedMultiplier = 0.9f;
-		}};
-		overgrownShrubs = new StaticWall("overgrown-shrubs") {{
-			variants = 2;
-			overgrownGrass.asFloor().wall = this;
-		}};
-		overgrownPine = new StaticWall("overgrown-pine") {{
-			variants = 2;
-		}};
 		corruptedMoss = new Floor("corrupted-moss", 3) {{
 			speedMultiplier = 0.9f;
 			attributes.set(Attribute.water, 0.1f);
@@ -690,9 +697,108 @@ public final class HBlocks {
 		myceliumPine = new StaticWall("mycelium-pine") {{
 			variants = 2;
 		}};
+		arsenide = new Floor("arsenide", 4);
+		arsenideLayers = new Floor("arsenide-layers", 4);
+		arsenideBoulder = new Prop("arsenide-boulder") {{
+			variants = 3;
+		}};
+		arsenideOutcrop = new StaticTree("arsenide-outcrop") {{
+			variants = 3;
+			attributes.set(Attribute.sand, 0.7f);
+		}};
+		arsenideWall = new StaticWall("arsenide-wall") {{
+			variants = 3;
+			attributes.set(Attribute.sand, 0.7f);
+		}};
+		blueSand = new Floor("blue-sand", 3) {{
+			itemDrop = Items.sand;
+			playerUnmineable = true;
+		}};
+		blueSandWater = new Floor("blue-sand-water", 3) {{
+			liquidDrop = Liquids.water;
+			liquidMultiplier = 0.75f;
+			speedMultiplier = 0.8f;
+			cacheLayer = CacheLayer.water;
+			shallow = true;
+		}};
+		blueSandBoulder = new Prop("blue-sand-boulder") {{
+			variants = 2;
+			blueSand.asFloor().decoration = this;
+		}};
+		blueSandWall = new StaticWall("blue-sand-wall") {{
+			variants = 2;
+			attributes.set(Attribute.sand, 2f);
+			blueSand.asFloor().wall = blueSandWater.asFloor().wall = this;
+		}};
+		boric = new Floor("boric", 4);
+		boricDense = new Floor("boric-dense", 4);
+		boricBoulder = new Prop("boric-boulder") {{
+			variants = 1;
+		}};
+		boricWall = new StaticWall("boric-wall") {{
+			variants = 3;
+			attributes.set(Attribute.sand, 1.5f);
+			boric.asFloor().wall = boricDense.asFloor().wall = this;
+		}};
+		breccia = new Floor("breccia", 4);
+		smoothBreccia = new Floor("smooth-breccia", 4);
+		brecciaBoulder = new Prop("breccia-boulder") {{
+			variants = 2;
+			breccia.asFloor().decoration = this;
+		}};
+		brecciaWall = new StaticWall("breccia-wall") {{
+			variants = 2;
+			attributes.set(Attribute.sand, 1f);
+		}};
+		chert = new Floor("chert", 4);
+		chertPlates = new Floor("chert-plates", 4);
+		chertBoulder = new Prop("chert-boulder") {{
+			variants = 3;
+			chert.asFloor().decoration = this;
+		}};
+		chertOutcrop = new StaticTree("chert-outcrop") {{
+			variants = 3;
+			attributes.set(Attribute.sand, 1.2f);
+		}};
+		chertWall = new StaticWall("chert-wall") {{
+			variants = 2;
+			attributes.set(Attribute.sand, 1.2f);
+			chert.asFloor().wall = chertPlates.asFloor().wall = this;
+		}};
+		feldspar = new Floor("feldspar", 5);
+		feldsparRubble = new Floor("feldspar-rubble") {{
+			tilingVariants = 2;
+			tilingSize = 3;
+		}};
+		feldsparPebbles = new OverlayFloor("feldspar-pebbles") {{
+			variants = 4;
+		}};
+		feldsparVent = new SteamVent("feldspar-vent") {{
+			attributes.set(Attribute.steam, 1f);
+			variants = 3;
+			parent = blendGroup = feldspar;
+		}};
+		feldsparBoulder = new Prop("feldspar-boulder") {{
+			variants = 3;
+			feldspar.asFloor().decoration = feldsparRubble.asFloor().decoration = this;
+		}};
+		feldsparOutcrop = new StaticTree("feldspar-outcrop") {{
+			attributes.set(Attribute.sand, 1.5f);
+			variants = 2;
+		}};
+		feldsparWall = new StaticWall("feldspar-wall") {{
+			attributes.set(Attribute.sand, 1.5f);
+			variants = 3;
+			feldspar.asFloor().wall = this;
+		}};
 		crystals = new TallBlock("crystals") {{
 			variants = 3;
 			clipSize = 128f;
+			itemDrop = HItems.crystal;
+		}};
+		crystalsBoulder = new TallBlock("crystals-boulder") {{
+			variants = 3;
+			clipSize = 96f;
 			itemDrop = HItems.crystal;
 		}};
 		oreSilicon = new OreBlock("ore-silicon", Items.silicon) {{
@@ -1188,7 +1294,7 @@ public final class HBlocks {
 			arrows = 12;
 			arrowSpacing = 0.5f;
 			arrowOffset = 0f;
-			arrowColor = Color.valueOf("fec59e80");
+			arrowColor = new Color(0xfec59e80);
 			drillMultipliers.put(Items.sand, 2f);
 			drillMultipliers.put(Items.scrap, 2f);
 			drillMultipliers.put(HItems.stone, 2f);
@@ -1199,7 +1305,7 @@ public final class HBlocks {
 			liquidBoostIntensity = 1;
 			drillEffect = new MultiEffect(new WrapEffect() {{
 				effect = Fx.dynamicExplosion;
-				color = Color.valueOf("fec59ef1");
+				color = new Color(0xfec59ef1);
 				rotation = 1.5f;
 			}}, Fx.mineImpactWave.wrap(Pal.blastAmmoBack, 45f));
 			consumeLiquid(HLiquids.blastReagent, 0.1f);
@@ -1855,8 +1961,9 @@ public final class HBlocks {
 				sinMag = 0;
 				sinScl = 1;
 			}}, new DrawLiquidRegion());
+			Color generateColor = new Color(0x6e685aff);
 			generateEffect = new RadialEffect(new Effect(160f, e -> {
-				Draw.color(Color.valueOf("6e685a"));
+				Draw.color(generateColor);
 				Draw.alpha(0.6f);
 				Rand rand = Fx.rand;
 				Vec2 v = Fx.v;
@@ -1969,8 +2076,8 @@ public final class HBlocks {
 			health = 8400;
 			armor = 28f;
 			drawer = new DrawMulti(new DrawDefault(), new DrawPower() {{
-				emptyLightColor = Color.valueOf("18473f");
-				fullLightColor = Color.valueOf("ffd197");
+				emptyLightColor = new Color(0x18473fff);
+				fullLightColor = new Color(0xffd197ff);
 			}}, new DrawRegion("-top"));
 			consumePowerBuffered(425000f);
 			buildType = BatteryBuild::new;
@@ -2030,7 +2137,7 @@ public final class HBlocks {
 			craftTime = 40f;
 			size = 3;
 			hasPower = hasItems = true;
-			drawer = new DrawMulti(new DrawDefault(), new DrawFlame(Color.valueOf("ffc099")));
+			drawer = new DrawMulti(new DrawDefault(), new DrawFlame(new Color(0xffc099ff)));
 			ambientSound = Sounds.smelter;
 			ambientSoundVolume = 0.14f;
 			consumeItems(ItemStack.with(Items.lead, 3, Items.sand, 3));
@@ -2202,7 +2309,7 @@ public final class HBlocks {
 			craftTime = 90f;
 			craftEffect = Fx.smeltsmoke;
 			outputItem = new ItemStack(Items.surgeAlloy, 3);
-			drawer = new DrawMulti(new DrawDefault(), new DrawPowerLight(Color.valueOf("f3e979")), new DrawFlame(Color.valueOf("ffef99")));
+			drawer = new DrawMulti(new DrawDefault(), new DrawPowerLight(new Color(0xf3e979ff)), new DrawFlame(new Color(0xffef99ff)));
 			consumePower(6);
 			consumeItems(ItemStack.with(Items.copper, 5, Items.lead, 6, Items.titanium, 5, Items.silicon, 4));
 			buildType = GenericCrafterBuild::new;
@@ -2218,11 +2325,11 @@ public final class HBlocks {
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawDefault(), new DrawGlowRegion() {{
 				alpha = 0.9f;
 				glowScale = 3.14f;
-				color = Color.valueOf("ff0000");
+				color = new Color(0xff0000ff);
 			}}, new DrawGlowRegion("-glow1") {{
 				alpha = 0.9f;
 				glowScale = 3.14f;
-				color = Color.valueOf("eb564b");
+				color = new Color(0xeb564bff);
 			}});
 			ambientSound = Sounds.smelter;
 			ambientSoundVolume = 0.21f;
@@ -2382,7 +2489,7 @@ public final class HBlocks {
 			outputItem = new ItemStack(Items.phaseFabric, 5);
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawRegion("-bottom-2"), new DrawCrucibleFlame() {{
 				flameColor = Pal.accent;
-				midColor = Color.valueOf("2e2f34");
+				midColor = new Color(0x2e2f34ff);
 				circleStroke = 1.05f;
 				circleSpace = 2.65f;
 			}
@@ -2431,7 +2538,7 @@ public final class HBlocks {
 			liquidCapacity = 90;
 			outputLiquid = new LiquidStack(Liquids.water, 0.35f);
 			outputItem = new ItemStack(HItems.agglomerateSalt, 1);
-			Color color1 = Color.valueOf("85966a"), color2 = Color.valueOf("f1ffdc"), color3 = Color.valueOf("728259");
+			Color color1 = new Color(0x85966aff), color2 = new Color(0xf1ffdcff), color3 = new Color(0x728259ff);
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(HLiquids.brine, 2), new DrawCultivator() {{
 				timeScl = 120;
 				bottomColor = color1;
@@ -2728,8 +2835,8 @@ public final class HBlocks {
 			consumeLiquids(LiquidStack.with(Liquids.hydrogen, 3f / 60f));
 			consumePower(3f);
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidRegion(Liquids.hydrogen), new DrawCrucibleFlame() {{
-				midColor = Color.valueOf("97a5f7");
-				flameColor = Color.valueOf("d1e4ff");
+				midColor = new Color(0x97a5f7ff);
+				flameColor = new Color(0xd1e4ffff);
 				flameRad = 4.45f;
 				circleSpace = 3f;
 				flameRadiusScl = 16f;
@@ -2797,12 +2904,12 @@ public final class HBlocks {
 			ambientSoundVolume = 1.8f;
 			craftEffect = new RadialEffect(Fx.surgeCruciSmoke, 4, 90, 5);
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawCircles() {{
-				color = Color.valueOf("ffc073");
+				color = new Color(0xffc073ff);
 				strokeMax = 2.5f;
 				radius = 10;
 				amount = 3;
 			}}, new DrawLiquidRegion(Liquids.slag), new DrawDefault(), new DrawHeatInput(), new DrawHeatRegion() {{
-				color = Color.valueOf("ff6060");
+				color = new Color(0xff6060ff);
 			}}, new DrawHeatRegion("-vents"));
 			consumeItem(Items.silicon, 8);
 			consumeLiquid(Liquids.slag, 80f / 60f);
@@ -2949,7 +3056,7 @@ public final class HBlocks {
 			requirements(Category.effect, BuildVisibility.fogOnly, ItemStack.with(Items.graphite, 180, Items.silicon, 160, Items.beryllium, 30, Items.tungsten, 10, Items.oxide, 20));
 			health = 180;
 			size = 3;
-			outlineColor = Color.valueOf("4a4b53");
+			outlineColor = new Color(0x4a4b53ff);
 			fogRadius = 86;
 			consumePower(1.2f);
 			buildType = RadarBuild::new;
@@ -3354,7 +3461,7 @@ public final class HBlocks {
 			inaccuracy = 0f;
 			recoil = 2f;
 			recoilTime = 10f;
-			Color back = Color.valueOf("ff8c00"), front = Color.valueOf("ffd700");
+			Color back = new Color(0xff8c00ff), front = new Color(0xffd700ff);
 			shootType = new BasicBulletType(20f, 60f) {{
 				splashDamageRadius = 45f;
 				splashDamage = 50f;
@@ -4139,7 +4246,7 @@ public final class HBlocks {
 			shootCone = 270f;
 			shake = 4f;
 			rotateSpeed = 0.85f;
-			Color caelumAmmo = Color.valueOf("eeee00");
+			Color caelumAmmo = new Color(0xeeee00ff);
 			ammo(Items.blastCompound, new FlakBulletType(6f, 33f) {{
 				damage = 33;
 				splashDamageRadius = 64f;

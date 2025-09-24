@@ -4,10 +4,11 @@ import arc.Core;
 import arc.Events;
 import arc.files.Fi;
 import arc.flabel.FLabel;
-import arc.func.Cons;
+import arc.func.ConsT;
 import arc.math.Mathf;
 import arc.util.Align;
 import arc.util.Log;
+import arc.util.Nullable;
 import arc.util.OS;
 import arc.util.Strings;
 import arc.util.Time;
@@ -35,6 +36,7 @@ import heavyindustry.graphics.HShaders;
 import heavyindustry.graphics.HTextures;
 import heavyindustry.graphics.MathRenderer;
 import heavyindustry.graphics.ScreenSampler;
+import heavyindustry.input.InputAggregator;
 import heavyindustry.mod.HMods;
 import heavyindustry.mod.HScripts;
 import heavyindustry.net.HCall;
@@ -73,10 +75,10 @@ import static heavyindustry.HVars.MOD_NAME;
 public final class HeavyIndustryMod extends Mod {
 	public static Mod instance;
 
-	static ClassLoader lastLoader;
-	static Class<?> platformImpl;
+	public static ClassLoader lastLoader;
+	public static Class<?> platformImplType;
 
-	static FloatingText floatingText;
+	public static @Nullable FloatingText floatingText;
 
 	static {
 		try {
@@ -138,6 +140,8 @@ public final class HeavyIndustryMod extends Mod {
 					HShaders.load();
 					HCacheLayer.load();
 					MathRenderer.load();
+
+					HVars.inputAggregator = new InputAggregator();
 				});
 			}
 		});
@@ -236,7 +240,7 @@ public final class HeavyIndustryMod extends Mod {
 		return loadLibrary(fileName, mainClassName, showError, c -> {});
 	}
 
-	public static Class<?> loadLibrary(String fileName, String mainClassName, boolean showError, Cons<Class<?>> callback) {
+	public static Class<?> loadLibrary(String fileName, String mainClassName, boolean showError, ConsT<Class<?>, Throwable> callback) {
 		ClassLoader mainLoader = Vars.mods.mainLoader();
 
 		Fi sourceFile = HVars.internalTree.child("libs").child(fileName + ".jar");
@@ -252,7 +256,9 @@ public final class HeavyIndustryMod extends Mod {
 
 		try {
 			Fi toFile = Vars.dataDirectory.child("tmp/heavy-industry/" + fileName + ".jar");
+
 			HFiles.delete(toFile);
+
 			sourceFile.copyTo(toFile);
 			ClassLoader loader = Vars.platform.loadJar(toFile, mainLoader);
 
@@ -278,16 +284,12 @@ public final class HeavyIndustryMod extends Mod {
 	static void loadLibrary() {
 		if (OS.isIos) throw new UnsupportedPlatformException("what? how do you do load Java mod on IOS?");
 
-		platformImpl = loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" :
+		platformImplType = loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" :
 				"heavyindustry.desktop.DesktopImpl", true, clazz -> {
-			try {
-				Object cstr = clazz.getConstructor().newInstance();
+			Object object = clazz.getConstructor().newInstance();
 
-				if (cstr instanceof PlatformImpl core) {
-					HVars.platformImpl = core;
-				}
-			} catch (Throwable e) {
-				Log.err(e);
+			if (object instanceof PlatformImpl core) {
+				HVars.platformImpl = core;
 			}
 		});
 	}

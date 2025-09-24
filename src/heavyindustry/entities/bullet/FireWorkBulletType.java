@@ -27,7 +27,7 @@ public class FireWorkBulletType extends BulletType {
 	public boolean colorful = false, childColorful = true, outline = false;
 
 	public Color color;
-	public Color[] colors = new Color[]{Color.valueOf("ff4b4b"), Color.valueOf("feff4a"), Color.valueOf("724aff"), Color.valueOf("89c2ff"), Color.valueOf("39c5bb"), Color.white};
+	public Color[] colors = new Color[]{new Color(0xff4b4bff), new Color(0xfeff4aff), new Color(0x724affff), new Color(0x89c2ffff), new Color(0x39c5bbff), Color.white};
 
 	public float width = 15f, height = 15f;
 
