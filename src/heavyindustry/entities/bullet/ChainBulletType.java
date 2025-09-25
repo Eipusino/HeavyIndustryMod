@@ -27,8 +27,8 @@ public class ChainBulletType extends BulletType {
 	public float thick = 2f;
 	public int boltNum = 2;
 	public boolean quietShoot = false;
-	public Cons2<Position, Position> effectController = (f, t) -> {
-		PositionLightning.createEffect(f, t, hitColor, boltNum, thick);
+	public Cons2<Position, Position> effectController = (from, to) -> {
+		PositionLightning.createEffect(from, to, hitColor, boltNum, thick);
 	};
 
 	public ChainBulletType(float damage) {

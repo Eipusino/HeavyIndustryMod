@@ -193,7 +193,7 @@ public final class HOverrides {
 				shootEffect = Fx.shootBig;
 				smokeEffect = Fx.shootBigSmoke;
 				ammoMultiplier = 4;
-				lifetime = 60f;
+				lifetime = 55f;
 				hitEffect = despawnEffect = Fx.hitBulletColor;
 				backColor = hitColor = trailColor = Pal.thoriumAmmoBack;
 				frontColor = Pal.thoriumAmmoFront;
@@ -202,7 +202,7 @@ public final class HOverrides {
 				rangeChange = 10f;
 				width = 10f;
 				height = 13f;
-				lifetime = 60f;
+				lifetime = 50f;
 				pierceCap = 2;
 				pierceArmor = true;
 				ammoMultiplier = 8f;

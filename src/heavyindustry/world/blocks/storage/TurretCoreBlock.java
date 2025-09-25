@@ -3,8 +3,10 @@ package heavyindustry.world.blocks.storage;
 import mindustry.content.Blocks;
 import mindustry.content.Items;
 import mindustry.game.Team;
+import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Pal;
+import mindustry.logic.Ranged;
 import mindustry.type.Item;
 import mindustry.world.Block;
 import mindustry.world.blocks.defense.turrets.BaseTurret;
@@ -32,38 +34,43 @@ public class TurretCoreBlock extends CoreBlock {
 		if (buildType == null) buildType = TurretCoreBuild::new;
 	}
 
-	public class TurretCoreBuild extends CoreBuild {
-		public BuildPayload payload = new BuildPayload(turret, Team.derelict);
+	public class TurretCoreBuild extends CoreBuild implements Ranged {
+		public BuildPayload payload;
+
+		@Override
+		public Building create(Block block, Team team) {
+			payload = new BuildPayload(turret, team);
+
+			return super.create(block, team);
+		}
 
 		@Override
 		public void updateTile() {
 			super.updateTile();
-			if (payload.build.team != team) {
-				payload.build.team = team;
-			}
+
 			payload.update(null, this);
 
+			Building build = payload.build;
+
 			if (team.core().items.get(ammo) >= 1) {
-				if (payload.build.acceptItem(this, ammo)) {
+				if (build.acceptItem(this, ammo)) {
 					team.core().items.remove(ammo, 1);
-					payload.build.handleItem(this, ammo);
+					build.handleItem(this, ammo);
 				}
 			}
-			payload.set(x, y, payload.build.payloadRotation);
+			payload.set(x, y, build.payloadRotation);
 		}
 
 		@Override
 		public void draw() {
 			super.draw();
+
 			payload.draw();
 		}
 
 		@Override
-		public void drawSelect() {
-			super.drawSelect();
-			if (turret instanceof BaseTurret t) {
-				Drawf.dashCircle(x, y, t.range, Pal.accent);
-			}
+		public float range() {
+			return turret instanceof BaseTurret t ? t.range : 0f;
 		}
 	}
 }

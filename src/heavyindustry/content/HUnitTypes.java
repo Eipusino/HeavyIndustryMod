@@ -46,8 +46,8 @@ import heavyindustry.entities.part.AimPart;
 import heavyindustry.entities.part.BowHalo;
 import heavyindustry.entities.part.CustomPart;
 import heavyindustry.entities.part.PartBow;
-import heavyindustry.func.Floatff2;
-import heavyindustry.func.Floatff3;
+import heavyindustry.func.Floatt2;
+import heavyindustry.func.Floatt3;
 import heavyindustry.gen.BaseBuildingTetherLegsUnit;
 import heavyindustry.gen.BaseBuildingTetherUnit;
 import heavyindustry.gen.BaseLegsUnit;
@@ -1237,7 +1237,7 @@ public final class HUnitTypes {
 			fallRotateSpeed = 0.8f;
 			rotateSpeed = 2.2f;
 			ammoType = new ItemAmmoType(Items.surgeAlloy);
-			Floatff3<Weapon> gun = (dx, dy, rel) -> new Weapon(name + "-gun") {{
+			Floatt3<Weapon> gun = (dx, dy, rel) -> new Weapon(name + "-gun") {{
 				mirror = true;
 				rotate = false;
 				x = dx;
@@ -3131,7 +3131,7 @@ public final class HUnitTypes {
 					hitSound = Sounds.plasmaboom;
 				}};
 			}});
-			Floatff2<Weapon> cannon = (dx, dy) -> new PointDefenseWeapon(name + "-cannon-small") {{
+			Floatt2<Weapon> cannon = (dx, dy) -> new PointDefenseWeapon(name + "-cannon-small") {{
 				x = dx;
 				y = dy;
 				color = Pal.techBlue;
@@ -3392,7 +3392,7 @@ public final class HUnitTypes {
 				rotation = false;
 				shieldArmor = 22f;
 				nearRadius = 160f;
-				Floatff2<ShieldShape> alpha = (ofx, ofy) -> new ShieldShape(6, 0, 0, 0, 24) {{
+				Floatt2<ShieldShape> alpha = (ofx, ofy) -> new ShieldShape(6, 0, 0, 0, 24) {{
 					movement = new ShapeMove() {{
 						x = ofx;
 						y = ofy;
@@ -3402,7 +3402,7 @@ public final class HUnitTypes {
 						}};
 					}};
 				}};
-				Floatff2<ShieldShape> beta = (ofx, ofy) -> new ShieldShape(5, 0, 0, 0, 24) {{
+				Floatt2<ShieldShape> beta = (ofx, ofy) -> new ShieldShape(5, 0, 0, 0, 24) {{
 					movement = new ShapeMove() {{
 						x = ofx;
 						y = ofy;
@@ -3418,7 +3418,7 @@ public final class HUnitTypes {
 					}};
 				}}, alpha.get(45f, 0f), alpha.get(-45f, 0f), alpha.get(0f, 45f), alpha.get(0f, -45f), beta.get(50f, 0f), beta.get(-50f, 0f), beta.get(0f, 50f), beta.get(0f, -50f));
 			}});
-			Floatff2<Weapon> laser = (dx, dy) -> new Weapon(name + "-laser") {{
+			Floatt2<Weapon> laser = (dx, dy) -> new Weapon(name + "-laser") {{
 				x = dx;
 				y = dy;
 				mirror = true;

@@ -32,6 +32,7 @@ import static mindustry.Vars.tilesize;
 
 public class ChargeWall extends Block {
 	public TextureRegion heatRegion, lightRegion;
+
 	public float maxEnergy = 3000;
 	public float maxHeat = 400;
 	public float heatPerRise = 50f;
@@ -69,22 +70,26 @@ public class ChargeWall extends Block {
 		width = 0.62f;
 		lifetime = 35f;
 	}};
-	Cons<ChargeWallBuild> closestTargetAct = tile -> PositionLightning.create(tile, tile.team, tile, tile.target, effectColor, true, shootDamage, 4, PositionLightning.WIDTH, 2, target -> {
-		hitEffect.at(target.getX(), target.getY(), tile.angleTo(target), effectColor);
-		shootEffect.at(tile.x, tile.y, effectColor);
-		releaseType.create(tile, tile.team, tile.x, tile.y, tile.angleTo(target));
-	});
-	Cons<ChargeWallBuild> maxChargeAct = tile -> {
+	protected Cons<ChargeWallBuild> closestTargetAct = tile -> {
+		PositionLightning.create(tile, tile.team, tile, tile.target, effectColor, true, shootDamage, 4, PositionLightning.WIDTH, 2, target -> {
+			if (target == null) return;
+
+			hitEffect.at(target.getX(), target.getY(), tile.angleTo(target), effectColor);
+			shootEffect.at(tile.x, tile.y, effectColor);
+			releaseType.create(tile, tile.team, tile.x, tile.y, tile.angleTo(target));
+		});
+	};
+	protected Cons<ChargeWallBuild> maxChargeAct = tile -> {
 		chargeActEffect.at(tile.x, tile.y, effectColor);
 
-		PositionLightning.createRandom(tile.team, tile, tile.range(), effectColor, true, shootDamage, 8, PositionLightning.WIDTH, 3, p -> {
+		PositionLightning.createRandom(tile.team, tile, tile.range(), effectColor, true, shootDamage, 8, PositionLightning.WIDTH, 3, target -> {
 			HFx.lightningHitSmall.at(tile.x, tile.y, effectColor);
 		});
 	};
-	Cons<ChargeWallBuild> destroyAct = tile -> {
+	protected Cons<ChargeWallBuild> destroyAct = tile -> {
 		onDestroyedEffect.at(tile.x, tile.y, effectColor);
 
-		PositionLightning.createRandomRange(tile.team, tile, tile.range(), effectColor, true, shootDamage * 3, 10, PositionLightning.WIDTH, 3, 8, p -> {
+		PositionLightning.createRandomRange(tile.team, tile, tile.range(), effectColor, true, shootDamage * 3, 10, PositionLightning.WIDTH, 3, 8, target -> {
 			HFx.lightningHitLarge.at(tile.x, tile.y, effectColor);
 		});
 	};

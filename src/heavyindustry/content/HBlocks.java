@@ -697,14 +697,18 @@ public final class HBlocks {
 		myceliumPine = new StaticWall("mycelium-pine") {{
 			variants = 2;
 		}};
-		arsenide = new Floor("arsenide", 4);
-		arsenideLayers = new Floor("arsenide-layers", 4);
+		arsenide = new Floor("arsenide", 4) {{
+			itemDrop = HItems.stone;
+		}};
+		arsenideLayers = new Floor("arsenide-layers", 4) {{
+			itemDrop = HItems.stone;
+		}};
 		arsenideBoulder = new Prop("arsenide-boulder") {{
 			variants = 3;
 		}};
 		arsenideOutcrop = new StaticTree("arsenide-outcrop") {{
 			variants = 3;
-			attributes.set(Attribute.sand, 0.7f);
+			attributes.set(Attribute.sand, 1f);
 		}};
 		arsenideWall = new StaticWall("arsenide-wall") {{
 			variants = 3;
@@ -737,11 +741,14 @@ public final class HBlocks {
 		}};
 		boricWall = new StaticWall("boric-wall") {{
 			variants = 3;
-			attributes.set(Attribute.sand, 1.5f);
 			boric.asFloor().wall = boricDense.asFloor().wall = this;
 		}};
-		breccia = new Floor("breccia", 4);
-		smoothBreccia = new Floor("smooth-breccia", 4);
+		breccia = new Floor("breccia", 4) {{
+			itemDrop = HItems.stone;
+		}};
+		smoothBreccia = new Floor("smooth-breccia", 4) {{
+			itemDrop = HItems.stone;
+		}};
 		brecciaBoulder = new Prop("breccia-boulder") {{
 			variants = 2;
 			breccia.asFloor().decoration = this;
@@ -750,8 +757,12 @@ public final class HBlocks {
 			variants = 2;
 			attributes.set(Attribute.sand, 1f);
 		}};
-		chert = new Floor("chert", 4);
-		chertPlates = new Floor("chert-plates", 4);
+		chert = new Floor("chert", 4) {{
+			itemDrop = HItems.stone;
+		}};
+		chertPlates = new Floor("chert-plates", 4) {{
+			itemDrop = HItems.stone;
+		}};
 		chertBoulder = new Prop("chert-boulder") {{
 			variants = 3;
 			chert.asFloor().decoration = this;
@@ -765,10 +776,13 @@ public final class HBlocks {
 			attributes.set(Attribute.sand, 1.2f);
 			chert.asFloor().wall = chertPlates.asFloor().wall = this;
 		}};
-		feldspar = new Floor("feldspar", 5);
+		feldspar = new Floor("feldspar", 5) {{
+			itemDrop = HItems.stone;
+		}};
 		feldsparRubble = new Floor("feldspar-rubble") {{
 			tilingVariants = 2;
 			tilingSize = 3;
+			itemDrop = HItems.stone;
 		}};
 		feldsparPebbles = new OverlayFloor("feldspar-pebbles") {{
 			variants = 4;
@@ -782,7 +796,7 @@ public final class HBlocks {
 			variants = 3;
 			feldspar.asFloor().decoration = feldsparRubble.asFloor().decoration = this;
 		}};
-		feldsparOutcrop = new StaticTree("feldspar-outcrop") {{
+		feldsparOutcrop = new TallBlock("feldspar-outcrop") {{
 			attributes.set(Attribute.sand, 1.5f);
 			variants = 2;
 		}};

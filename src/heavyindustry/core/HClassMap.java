@@ -283,6 +283,7 @@ import heavyindustry.world.blocks.storage.DetectorCoreBlock;
 import heavyindustry.world.blocks.storage.DrawerCoreBlock;
 import heavyindustry.world.blocks.storage.FrontlineCoreBlock;
 import heavyindustry.world.blocks.storage.GeneratorCoreBlock;
+import heavyindustry.world.blocks.storage.MultiTurretCoreBlock;
 import heavyindustry.world.blocks.storage.ResourceUnloader;
 import heavyindustry.world.blocks.storage.ResourcesDispatchingCenter;
 import heavyindustry.world.blocks.storage.SpaceUnloader;
@@ -805,6 +806,8 @@ final class HClassMap {
 		classes.put("FrontlineCoreBuild", FrontlineCoreBlock.FrontlineCoreBuild.class);
 		classes.put("TurretCoreBlock", TurretCoreBlock.class);
 		classes.put("TurretCoreBuild", TurretCoreBlock.TurretCoreBuild.class);
+		classes.put("MultiTurretCoreBlock", MultiTurretCoreBlock.class);
+		classes.put("MultiTurretCoreBuild", MultiTurretCoreBlock.MultiTurretCoreBuild.class);
 		classes.put("CoreStorageBlock", CoreStorageBlock.class);
 		classes.put("CoreStorageBuild", CoreStorageBlock.CoreStorageBuild.class);
 		classes.put("CoreUnloader", CoreUnloader.class);

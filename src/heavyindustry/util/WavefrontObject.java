@@ -435,7 +435,7 @@ public class WavefrontObject {
 
 		protected void draw() {
 			AtlasRegion atlas = texture, region = Core.atlas.white();
-			for (int f = 0; f < (mat != null && mat.emitTex == null ? 1 : 2); f++) {
+			for (int f = 0; f < (mat != null && mat.emitTex != null ? 2 : 1); f++) {
 				boolean emit = f > 0;
 
 				if (mat != null) {

@@ -36,7 +36,7 @@ public class CrashCore extends CoreBlock {
 				c.landed = false;
 
 				// Since the thruster time is never set to 1, separately handle exploding when the animation is skipped.
-				if (!(!Core.settings.getBool("skipcoreanimation") && !Vars.state.rules.pvp)) {
+				if (Core.settings.getBool("skipcoreanimation") || Vars.state.rules.pvp) {
 					b.explode(c);
 				}
 			}

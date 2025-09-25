@@ -13,6 +13,8 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.HVars;
 import heavyindustry.graphics.Drawn;
+import mindustry.Vars;
+import mindustry.ctype.Content;
 import mindustry.ctype.UnlockableContent;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -22,8 +24,6 @@ import mindustry.io.TypeIO;
 import mindustry.logic.LAccess;
 import mindustry.world.Block;
 import mindustry.world.blocks.ItemSelection;
-
-import static mindustry.Vars.content;
 
 public class IconDisplay extends Block {
 	public TextureRegion maskRegion;
@@ -70,13 +70,13 @@ public class IconDisplay extends Block {
 
 		public Seq<UnlockableContent> displayContents() {
 			tmpSeq.clear();
-			tmpSeq.add(content.items().select(i -> !i.isHidden()));
-			tmpSeq.add(content.liquids().select(l -> !l.isHidden()));
-			tmpSeq.add(content.units().select(u -> !u.isHidden()));
-			tmpSeq.add(content.blocks().select(b -> !b.isHidden()));
-			tmpSeq.add(content.planets().select(p -> !p.accessible));
-			tmpSeq.add(content.statusEffects().select(e -> !e.isHidden()));
-			tmpSeq.add(content.sectors().select(s -> !s.isHidden()));
+			tmpSeq.add(Vars.content.items().select(i -> !i.isHidden()));
+			tmpSeq.add(Vars.content.liquids().select(l -> !l.isHidden()));
+			tmpSeq.add(Vars.content.units().select(u -> !u.isHidden()));
+			tmpSeq.add(Vars.content.blocks().select(b -> !b.isHidden()));
+			tmpSeq.add(Vars.content.planets().select(p -> !p.accessible));
+			tmpSeq.add(Vars.content.statusEffects().select(e -> !e.isHidden()));
+			tmpSeq.add(Vars.content.sectors().select(s -> !s.isHidden()));
 			return tmpSeq;
 		}
 
@@ -100,14 +100,14 @@ public class IconDisplay extends Block {
 		public void configured(Unit builder, Object value) {
 			Class<?> type = value == null ? void.class : value.getClass().isAnonymousClass() ? value.getClass().getSuperclass() : value.getClass();
 			UnlockableContent cont = null;
-			if (value instanceof UnlockableContent) {
+			if (value instanceof UnlockableContent uc) {
 				type = UnlockableContent.class;
-				cont = (UnlockableContent) value;
+				cont = uc;
 			}
 			if (value instanceof Number num) {
 				int typeId = Point2.unpack(Math.toIntExact(num.longValue())).x;
 				int contId = Point2.unpack(Math.toIntExact(num.longValue())).y;
-				if (content != null && typeId < content.getContentMap().length && content.getContentMap()[typeId].get(contId) instanceof UnlockableContent uc) {
+				if (Vars.content != null && typeId < Vars.content.getContentMap().length && Vars.content.getContentMap()[typeId].get(contId) instanceof UnlockableContent uc) {
 					type = UnlockableContent.class;
 					cont = uc;
 				}
@@ -115,14 +115,14 @@ public class IconDisplay extends Block {
 			if (builder != null && builder.isPlayer()) {
 				lastAccessed = builder.getPlayer().coloredName();
 			}
-			if (configurations.containsKey(type) && content != null) {
+			if (configurations.containsKey(type) && Vars.content != null) {
 				configurations.get(type).get(this, cont);
 			}
 		}
 
 		@Override
 		public double sense(LAccess sensor) {
-			return sensor == LAccess.config && displayContent == null ? super.sense(sensor) : Point2.pack(displayContent.getContentType().ordinal(), displayContent.id);
+			return sensor == LAccess.config && displayContent != null ? Point2.pack(displayContent.getContentType().ordinal(), displayContent.id) : super.sense(sensor);
 		}
 
 		@Override
@@ -134,7 +134,7 @@ public class IconDisplay extends Block {
 				Draw.rect(maskRegion, x, y);
 				Tmp.v1.set(Scaling.bounded.apply(displayContent.uiIcon.width, displayContent.uiIcon.height, 6f * size, 6f * size));
 				Draw.rect(displayContent.uiIcon, x, y, Tmp.v1.x, Tmp.v1.y);
-				if (size == 2) Drawn.drawText(displayContent.localizedName, x, y + 8);
+				if (size >= 2) Drawn.drawText(displayContent.localizedName, x, y + 8);
 			}
 		}
 
@@ -153,7 +153,8 @@ public class IconDisplay extends Block {
 			super.read(read, revision);
 
 			if (read.bool()) {
-				displayContent = (UnlockableContent) TypeIO.readContent(read);
+				Content c = TypeIO.readContent(read);
+				if (c instanceof UnlockableContent uc) displayContent = uc;
 			}
 		}
 	}

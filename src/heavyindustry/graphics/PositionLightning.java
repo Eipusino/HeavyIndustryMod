@@ -1,6 +1,7 @@
 package heavyindustry.graphics;
 
 import arc.func.Cons;
+import arc.func.Floatc2;
 import arc.graphics.Color;
 import arc.math.Angles;
 import arc.math.Mathf;
@@ -86,7 +87,10 @@ public final class PositionLightning {
 		return Mathf.random(1f, 7f);
 	}
 
-	static Building furthest;
+	static volatile Building furthest = null;
+
+	static final Seq<Healthc> entities = new Seq<>(Healthc.class);
+
 	static final Rect rect = new Rect();
 	static final Rand rand = new Rand();
 	static final FloatSeq floatSeq = new FloatSeq();
@@ -102,10 +106,11 @@ public final class PositionLightning {
 	}
 
 	public static void createRange(Bullet owner, boolean hitAir, boolean hitGround, Position from, Team team, float range, int maxHit, Color color, boolean createSubLightning, float damage, int subLightningLength, float width, int lightningNum, Cons<Position> hitPointMovement) {
-		Seq<Healthc> entities = new Seq<>(Healthc.class);
+		entities.clear();
+
 		whetherAdd(entities, team, rect.setSize(range * 2f).setCenter(from.getX(), from.getY()), maxHit, hitGround, hitAir);
-		for (Healthc p : entities)
-			create(owner, team, from, p, color, createSubLightning, damage, subLightningLength, width, lightningNum, hitPointMovement);
+
+		entities.each(p -> create(owner, team, from, p, color, createSubLightning, damage, subLightningLength, width, lightningNum, hitPointMovement));
 	}
 
 	public static void createRange(Bullet owner, Position from, Team team, float range, int maxHit, Color color, boolean createSubLightning, float damage, int subLightningLength, float width, int lightningNum, Cons<Position> hitPointMovement) {
@@ -119,15 +124,18 @@ public final class PositionLightning {
 	/** A create method that with a Bullet owner. */
 	public static void create(Entityc owner, Team team, Position from, Position target, Color color, boolean createSubLightning, float damage, int subLightningLength, float lightningWidth, int lightningNum, Cons<Position> hitPointMovement) {
 		if (!Mathf.chance(trueHitChance)) return;
+
 		Position sureTarget = findInterceptedPoint(from, target, team);
 		hitPointMovement.get(sureTarget);
 
 		if (createSubLightning) {
 			if (owner instanceof Bullet b) {
-				for (int i = 0; i < b.type.lightning; i++)
+				for (int i = 0; i < b.type.lightning; i++) {
 					Lightning.create(b, color, b.type.lightningDamage < 0f ? b.damage : b.type.lightningDamage, sureTarget.getX(), sureTarget.getY(), b.rotation() + Mathf.range(b.type.lightningCone / 2f) + b.type.lightningAngle, b.type.lightningLength + Mathf.random(b.type.lightningLengthRand));
-			} else for (int i = 0; i < 3; i++)
+				}
+			} else for (int i = 0; i < 3; i++) {
 				Lightning.create(team, color, damage <= 0f ? 1f : damage, sureTarget.getX(), sureTarget.getY(), Mathf.random(360f), subLightningLength);
+			}
 		}
 
 		float realDamage = damage;
@@ -135,12 +143,62 @@ public final class PositionLightning {
 		if (realDamage <= 0) {
 			if (owner instanceof Bullet b) {
 				realDamage = b.damage > 0 ? b.damage : 1;
-			} else realDamage = 1;
+			} else {
+				realDamage = 1;
+			}
 		}
 
 		hitter.create(owner, team, sureTarget.getX(), sureTarget.getY(), 1).damage(realDamage);
 
 		createEffect(from, sureTarget, color, lightningNum, lightningWidth);
+	}
+
+	public static void create(Entityc owner, Team team, float fromX, float fromY, float targetX, float targetY, Color color, boolean createSubLightning, float damage, int subLightningLength, float lightningWidth, int lightningNum, Floatc2 hitPointMovement) {
+		if (!Mathf.chance(trueHitChance)) return;
+
+		float sureTargetX, sureTargetY;
+
+		furthest = null;
+
+		if (Geometry.raycast(
+				World.toTile(fromX),
+				World.toTile(fromY),
+				World.toTile(targetX),
+				World.toTile(targetY),
+				(x, y) -> (furthest = world.build(x, y)) != null && furthest.team() != team && furthest.block.insulated
+		) && furthest != null) {
+			sureTargetX = furthest.x;
+			sureTargetY = furthest.y;
+		} else {
+			sureTargetX = targetX;
+			sureTargetY = targetY;
+		}
+
+		hitPointMovement.get(sureTargetX, sureTargetY);
+
+		if (createSubLightning) {
+			if (owner instanceof Bullet b) {
+				for (int i = 0; i < b.type.lightning; i++) {
+					Lightning.create(b, color, b.type.lightningDamage < 0f ? b.damage : b.type.lightningDamage, sureTargetX, sureTargetY, b.rotation() + Mathf.range(b.type.lightningCone / 2f) + b.type.lightningAngle, b.type.lightningLength + Mathf.random(b.type.lightningLengthRand));
+				}
+			} else for (int i = 0; i < 3; i++) {
+				Lightning.create(team, color, damage <= 0f ? 1f : damage, sureTargetX, sureTargetY, Mathf.random(360f), subLightningLength);
+			}
+		}
+
+		float realDamage = damage;
+
+		if (realDamage <= 0) {
+			if (owner instanceof Bullet b) {
+				realDamage = b.damage > 0 ? b.damage : 1;
+			} else {
+				realDamage = 1;
+			}
+		}
+
+		hitter.create(owner, team, sureTargetX, sureTargetY, 1).damage(realDamage);
+
+		createEffect(fromX, fromY, sureTargetX, sureTargetY, color, lightningNum, lightningWidth);
 	}
 
 	public static void createRandom(Bullet owner, Team team, Position from, float rand, Color color, boolean createSubLightning, float damage, int subLightningLength, float width, int lightningNum, Cons<Position> hitPointMovement) {
@@ -174,7 +232,7 @@ public final class PositionLightning {
 		if (headless) return;
 
 		if (lightningNum < 1) {
-			Fx.chainLightning.at(fromX, fromY, 0, color, new Vec2().set(toX, toY));
+			Fx.chainLightning.at(fromX, fromY, 0f, color, new Vec2().set(toX, toY));
 		} else {
 			float dst = Mathf.dst(fromX, fromY, toX, toY);
 
@@ -183,11 +241,11 @@ public final class PositionLightning {
 				float randRange = len * RANGE_RAND;
 
 				floatSeq.clear();
-				FloatSeq randomArray = floatSeq;
+
 				for (int num = 0; num < dst / (ROT_DST * len) + 1; num++) {
-					randomArray.add(Mathf.range(randRange) / (num * 0.025f + 1));
+					floatSeq.add(Mathf.range(randRange) / (num * 0.025f + 1));
 				}
-				createBoltEffect(color, width, computeVectors(randomArray, fromX, fromY, toX, toY));
+				createBoltEffect(color, width, computeVectors(floatSeq, fromX, fromY, toX, toY));
 			}
 		}
 	}
@@ -196,7 +254,7 @@ public final class PositionLightning {
 		if (headless) return;
 
 		if (lightningNum < 1) {
-			Fx.chainLightning.at(from.getX(), from.getY(), 0, color, new Vec2().set(to));
+			Fx.chainLightning.at(from.getX(), from.getY(), 0f, color, new Vec2().set(to));
 		} else {
 			float dst = from.dst(to);
 
@@ -205,11 +263,11 @@ public final class PositionLightning {
 				float randRange = len * RANGE_RAND;
 
 				floatSeq.clear();
-				FloatSeq randomArray = floatSeq;
+
 				for (int num = 0; num < dst / (ROT_DST * len) + 1; num++) {
-					randomArray.add(Mathf.range(randRange) / (num * 0.025f + 1));
+					floatSeq.add(Mathf.range(randRange) / (num * 0.025f + 1));
 				}
-				createBoltEffect(color, width, computeVectors(randomArray, from, to));
+				createBoltEffect(color, width, computeVectors(floatSeq, from, to));
 			}
 		}
 	}
@@ -217,13 +275,14 @@ public final class PositionLightning {
 	/** Compute the proper hit position. */
 	public static Position findInterceptedPoint(Position from, Position target, Team fromTeam) {
 		furthest = null;
+
 		return Geometry.raycast(
 				World.toTile(from.getX()),
 				World.toTile(from.getY()),
 				World.toTile(target.getX()),
 				World.toTile(target.getY()),
 				(x, y) -> (furthest = world.build(x, y)) != null && furthest.team() != fromTeam && furthest.block.insulated
-		) && furthest == null ? target : furthest;
+		) && furthest != null ? furthest : target;
 	}
 
 	/** Add proper unit into the to hit Seq. */

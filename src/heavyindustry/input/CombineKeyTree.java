@@ -7,8 +7,6 @@ import arc.input.KeyCode;
 import heavyindustry.util.CollectionObjectMap;
 import heavyindustry.util.Pair;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 public class CombineKeyTree<R> {
 	public final Class<R> recType;
 
@@ -22,6 +20,8 @@ public class CombineKeyTree<R> {
 	CollectionObjectMap<CombinedKeys, R> ctrlShiftBindings;
 	CollectionObjectMap<CombinedKeys, R> altShiftBindings;
 	CollectionObjectMap<CombinedKeys, R> altCtrlShiftBindings;
+
+	R rec = null;
 
 	public CombineKeyTree(Class<R> type) {
 		recType = type;
@@ -187,30 +187,30 @@ public class CombineKeyTree<R> {
 	}
 
 	public R checkDown(Input input) {
-		AtomicReference<R> rec = new AtomicReference<>();
+		rec = null;
 
 		eachTargetBindings(input, (k, r) -> {
-			if (input.keyDown(k.key)) rec.set(r);
+			if (input.keyDown(k.key)) rec = r;
 		});
-		return rec.get();
+		return rec;
 	}
 
 	public R checkRelease(Input input) {
-		AtomicReference<R> rec = new AtomicReference<>();
+		rec = null;
 
 		eachTargetBindings(input, (k, r) -> {
-			if (input.keyRelease(k.key)) rec.set(r);
+			if (input.keyRelease(k.key)) rec = r;
 		});
-		return rec.get();
+		return rec;
 	}
 
 	public R checkTap(Input input) {
-		AtomicReference<R> rec = new AtomicReference<>();
+		rec = null;
 
 		eachTargetBindings(input, (k, r) -> {
-			if (input.keyTap(k.key)) rec.set(r);
+			if (input.keyTap(k.key)) rec = r;
 		});
-		return rec.get();
+		return rec;
 	}
 
 	@Override
