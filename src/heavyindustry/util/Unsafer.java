@@ -576,7 +576,7 @@ public final class Unsafer {
 	 *
 	 * @see #getOffset(Field) getOffset
 	 */
-	static long objectOffset(Field field) {
+	public static long objectOffset(Field field) {
 		return OS.isAndroid ? FieldUtils.getFieldOffset(field) : unsafe.objectFieldOffset(field);
 	}
 
@@ -585,7 +585,7 @@ public final class Unsafer {
 	 *
 	 * @see #getOffset(Field) getOffset
 	 */
-	static long staticOffset(Field field) {
+	public static long staticOffset(Field field) {
 		return OS.isAndroid ? FieldUtils.getFieldOffset(field) : unsafe.staticFieldOffset(field);
 	}
 }

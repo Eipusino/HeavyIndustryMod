@@ -1,5 +1,6 @@
 package heavyindustry.util;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
@@ -25,5 +26,14 @@ public interface PlatformImpl {
 
 	default Constructor<?>[] getConstructors(Class<?> cls) {
 		return cls.getDeclaredConstructors();
+	}
+
+	@SuppressWarnings("unchecked")
+	default <T> T invoke(MethodHandle handle, Object... args) {
+		try {
+			return (T) handle.invokeWithArguments(args);
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

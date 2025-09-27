@@ -11,7 +11,7 @@ import heavyindustry.util.Unsafer;
 import java.lang.reflect.Field;
 
 public final class HScriptCache {
-	static Field pixmapField;
+	static final Field pixmapField;
 
 	static {
 		try {
@@ -28,7 +28,7 @@ public final class HScriptCache {
 			return ptd.consumePixmap();
 		}
 		if (texture.getTextureData() instanceof FileTextureData ftd) {
-			return HVars.hasUnsafe ? Unsafer.getObject(pixmapField, ftd) : Reflects.getField(ftd, pixmapField);
+			return Reflects.getField(ftd, pixmapField);
 		}
 		return null;
 	}

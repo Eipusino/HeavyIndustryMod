@@ -238,6 +238,7 @@ public class LaserRuler extends Block {
 		@Override
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
+
 			if (revision == 0) return;
 			target = read.i();
 		}
