@@ -230,8 +230,6 @@ public final class HTechTree {
 		vanillaNode(illuminator, () -> node(lighthouse));
 		vanillaNode(shockMine, () -> node(paralysisMine));
 		vanillaNode(mendProjector, () -> node(mendDome, () -> node(sectorStructureMender)));
-		removeNode(overdriveDome);
-		removeNode(overdriveProjector);
 		vanillaNode(forceProjector, () -> node(largeShieldGenerator));
 		//defense-erekir
 		vanillaNode(radar, () -> node(largeRadar, ItemStack.with(Items.graphite, 3600, Items.silicon, 3200, Items.beryllium, 600, Items.tungsten, 200, Items.oxide, 10), Seq.with(new OnSector(SectorPresets.stronghold))));

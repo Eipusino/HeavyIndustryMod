@@ -8,9 +8,7 @@ uniform vec2 u_campos;
 uniform vec2 u_resolution;
 uniform float u_time;
 
-in vec2 v_texCoords;
-
-out vec4 fragColor;
+varying vec2 v_texCoords;
 
 const float samplelen = 20.0;
 const float epsilonp1 = 1.01;
@@ -38,11 +36,11 @@ float noise(vec2 p) {
 
 vec4 textureRegion(vec4 region, vec2 param, float variants, float variant) {
 	vec2 rsize = vec2((region.z - region.x) / variants, region.w - region.y);
-	return texture(u_texture2, region.xy + rsize * param + vec2(rsize.x * variant, 0.0));
+	return texture2D(u_texture2, region.xy + rsize * param + vec2(rsize.x * variant, 0.0));
 }
 
 vec4 textureRegion(vec4 region, vec2 param) {
-	return texture(u_texture2, mix(region.xy, region.zw, param));
+	return texture2D(u_texture2, mix(region.xy, region.zw, param));
 }
 
 float sqaureRay(vec2 rorg, vec2 invrdir) {
@@ -67,7 +65,7 @@ float tileMarch(vec2 tpos, vec2 rdir, float maxlen, vec2 tile, vec2 tilestep) {
 		tile += floor(tpos) * tilestep;
 		tpos = l;
 		len += st;
-		if (texture(u_texture, tile).a < 0.9 || len > maxlen) {
+		if (texture2D(u_texture, tile).a < 0.9 || len > maxlen) {
 			break;
 		}
 	}
@@ -96,7 +94,7 @@ float fade2(vec2 bcoords, vec2 v) {
 }
 
 void main() {
-	vec4 tex = texture(u_texture, v_texCoords);
+	vec4 tex = texture2D(u_texture, v_texCoords);
 	if (tex.a < 1.0) {
 		discard;
 	}
@@ -131,20 +129,20 @@ void main() {
 	}
 	col *= (1.0 - length * z / (slen * 8.0));
 
-	fragColor = vec4(col * fade(bcoords, v), 1.0);
+	gl_FragColor = vec4(col * fade(bcoords, v), 1.0);
 
 	if (az >= samplelen * 7.95) { //glowy
 		vec2 tpos = coords + dir * samplelen * 16.0 * length;
 		vec2 offset = vec2(sin(btime + tpos.x * 0.01), cos(btime + tpos.y * 0.01));
-		vec2 offset2 = vec2(texture(u_noise, offset).r, texture(u_noise, offset + vec2(0.67, 0.13)).r) - vec2(0.5);
-		float truss = texture(u_texture, (tpos - u_campos + offset2 * 16.0) * v).a;
-		fragColor.rgb = vec3(0.4, 0.2, 0.1) * fade2(tpos, v) * truss;
+		vec2 offset2 = vec2(texture2D(u_noise, offset).r, texture2D(u_noise, offset + vec2(0.67, 0.13)).r) - vec2(0.5);
+		float truss = texture2D(u_texture, (tpos - u_campos + offset2 * 16.0) * v).a;
+        gl_FragColor.rgb = vec3(0.4, 0.2, 0.1) * fade2(tpos, v) * truss;
 	}
 	if (az >= 60.0) { //truss bottom
 		tileMarch(tile, dir, slen, tiletexv, vec2(8.0) * v);
 		vec2 tpos = coords + dir * 60.0 * length;
 		vec4 truss = textureRegion(u_truss, fract(tpos / 24.0)).rgba;
-		fragColor.rgb = mix(fragColor.rgb, truss.rgb * fade(tpos, v) * 0.5, truss.a);
+        gl_FragColor.rgb = mix(gl_FragColor.rgb, truss.rgb * fade(tpos, v) * 0.5, truss.a);
 	}
 	if (az >= 52.0) { //truss top
 		vec2 tpos = coords + dir * 52.0 * length;
@@ -154,6 +152,6 @@ void main() {
 		if (sz < shadlen - 1.0) {
 			truss.rgb *= 0.5;
 		}
-		fragColor.rgb = mix(fragColor.rgb, truss.rgb * fade(tpos, v), truss.a);
+        gl_FragColor.rgb = mix(gl_FragColor.rgb, truss.rgb * fade(tpos, v), truss.a);
 	}
 }

@@ -10,9 +10,7 @@ uniform vec2 u_uv;
 uniform vec2 u_uv2;
 uniform vec2 u_texsize;
 
-in vec2 v_texCoords;
-
-out vec4 fragColor;
+varying vec2 v_texCoords;
 
 float absin(float t) {
 	return (sin(t) + 1.0) / 2.0;
@@ -28,7 +26,7 @@ void main() {
 	float bottom = clamp(p - u_offset, 0.0, 1.0);
 
 	float y = 1.0 - coords.y;
-	vec4 c = texture(u_texture, v_texCoords.xy);
+	vec4 c = texture2D(u_texture, v_texCoords.xy);
 	if (y > top) {
 		c.a = 0.0;
 	} else if (y > bottom) {
@@ -39,5 +37,5 @@ void main() {
 		c.a *= 0.22;
 	}
 
-	fragColor = c;
+	gl_FragColor = c;
 }

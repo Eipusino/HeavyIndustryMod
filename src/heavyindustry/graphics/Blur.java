@@ -5,7 +5,6 @@ import arc.graphics.Color;
 import arc.graphics.Gl;
 import arc.graphics.gl.FrameBuffer;
 import arc.graphics.gl.Shader;
-import heavyindustry.graphics.gl.Gl30Shader;
 
 public class Blur {
 	public static final float[] default1 = {
@@ -51,13 +50,13 @@ public class Blur {
 
 	private static final String vertTemplate =
 			"""
-			in vec4 a_position;
-			in vec2 a_texCoord0;
+			attribute vec4 a_position;
+			attribute vec2 a_texCoord0;
 			
 			uniform vec2 dir;
 			uniform vec2 size;
 			
-			out vec2 v_texCoords;
+			varying vec2 v_texCoords;
 			
 			%varying%
 			
@@ -77,25 +76,23 @@ public class Blur {
 			
 			uniform lowp float def_alpha;
 			
-			in vec2 v_texCoords;
-			
-			out vec4 fragColor;
+			varying vec2 v_texCoords;
 			
 			%varying%
 			
 			void main() {
-				vec4 blur = texture(u_texture0, v_texCoords);
-				vec3 color = texture(u_texture1, v_texCoords).rgb;
+				vec4 blur = texture2D(u_texture0, v_texCoords);
+				vec3 color = texture2D(u_texture1, v_texCoords).rgb;
 			
 				if (blur.a > 0.0) {
 					vec3 blurColor =
-					%convolution%
+						%convolution%
 			
-					fragColor.rgb = mix(color, blurColor, blur.a);
-					fragColor.a = 1.0;
+					gl_FragColor.rgb = mix(color, blurColor, blur.a);
+					gl_FragColor.a = 1.0;
 				} else {
-					fragColor.rgb = color;
-					fragColor.a = def_alpha;
+					gl_FragColor.rgb = color;
+					gl_FragColor.a = def_alpha;
 				}
 			}
 			""";
@@ -136,7 +133,7 @@ public class Blur {
 		int c = 0;
 		int half = convLen / 2;
 		for (float v : convolutions) {
-			varyings.append("out vec2 v_texCoords")
+			varyings.append("varying vec2 v_texCoords")
 					.append(c)
 					.append(";")
 					.append(System.lineSeparator());
@@ -146,16 +143,16 @@ public class Blur {
 					.append(" = ")
 					.append("a_texCoord0");
 			if (c - half != 0) {
-				assignVar.append(c - half > 0 ? "+" : "-")
+				assignVar.append(c - half > 0 ? " + " : " - ")
 						.append(Math.abs((float) c - half))
-						.append("*len");
+						.append(" * len");
 			}
 			assignVar.append(";")
 					.append(System.lineSeparator()).append("  ");
 
 			if (c > 0) convolution.append("        + ");
 			convolution.append(v)
-					.append(" * texture(u_texture1, v_texCoords")
+					.append(" * texture2D(u_texture1, v_texCoords")
 					.append(c)
 					.append(")")
 					.append(".rgb")
@@ -166,9 +163,9 @@ public class Blur {
 		convolution.append(";");
 
 		String vertexShader = vertTemplate.replace("%varying%", varyings.toString()).replace("%assignVar%", assignVar);
-		String fragmentShader = fragmentTemplate.replace("%varying%", varyings.toString().replace("out", "in")).replace("%convolution%", convolution);
+		String fragmentShader = fragmentTemplate.replace("%varying%", varyings.toString()).replace("%convolution%", convolution);
 
-		return new Gl30Shader(vertexShader, fragmentShader);
+		return new Shader(vertexShader, fragmentShader);
 	}
 
 	public void resize(int width, int height) {

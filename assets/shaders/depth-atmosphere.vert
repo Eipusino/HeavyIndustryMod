@@ -1,8 +1,8 @@
 #define HIGHP
 
-in vec3 a_position;
+attribute vec3 a_position;
 
-out vec3 v_position;
+varying vec3 v_position;
 
 uniform mat4 u_proj;
 uniform mat4 u_trans;

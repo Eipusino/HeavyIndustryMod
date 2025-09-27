@@ -3,7 +3,6 @@ package heavyindustry.content;
 import arc.graphics.Color;
 import heavyindustry.graphics.HPal;
 import heavyindustry.world.meta.HAttribute;
-import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
 import mindustry.content.Items;
@@ -27,9 +26,7 @@ import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.type.PayloadStack;
 import mindustry.type.UnitType;
-import mindustry.world.Block;
 import mindustry.world.blocks.campaign.LandingPad;
-import mindustry.world.blocks.defense.OverdriveProjector;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.defense.turrets.ContinuousLiquidTurret;
 import mindustry.world.blocks.defense.turrets.ItemTurret;
@@ -476,13 +473,5 @@ public final class HOverrides {
 		Items.erekirItems.addAll(HItems.stone, HItems.uranium, HItems.chromium, HItems.crystal);
 		//planet
 		Planets.serpulo.allowSectorInvasion = false;
-	}
-
-	public static void init() {
-		for (Block block : Vars.content.blocks()) {
-			if (block instanceof OverdriveProjector) {
-				block.buildVisibility = BuildVisibility.sandboxOnly;
-			}
-		}
 	}
 }

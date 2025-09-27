@@ -20,9 +20,7 @@ uniform float min_threshold;
 
 uniform float side_len;
 
-in lowp vec2 v_texCoords;
-
-out vec4 fragColor;
+varying lowp vec2 v_texCoords;
 
 const float tr = 1.73205;
 const float tb = 3.0;
@@ -67,15 +65,15 @@ float random (vec2 st) {
 }
 
 void main(void) {
-	vec4 baseColor = texture(u_texture, v_texCoords);
+	vec4 baseColor = texture2D(u_texture, v_texCoords);
 
 	vec2 v = 1.0 / u_resolution;
 
 	vec4 maxed = max(max(max(
-		texture(u_texture, v_texCoords + vec2(0, u_step) * v),
-		texture(u_texture, v_texCoords + vec2(0, -u_step) * v)),
-		texture(u_texture, v_texCoords + vec2(u_step, 0) * v)),
-		texture(u_texture, v_texCoords + vec2(-u_step, 0) * v));
+		texture2D(u_texture, v_texCoords + vec2(0, u_step) * v),
+		texture2D(u_texture, v_texCoords + vec2(0, -u_step) * v)),
+		texture2D(u_texture, v_texCoords + vec2(u_step, 0) * v)),
+		texture2D(u_texture, v_texCoords + vec2(-u_step, 0) * v));
 
 	vec2 worldCoord = vec2(v_texCoords.x * u_resolution.x + u_campos.x, v_texCoords.y * u_resolution.y + u_campos.y);
 	worldCoord += offset;
@@ -88,11 +86,11 @@ void main(void) {
 		sin((-worldCoord.x - worldCoord.y) * 0.03432 + time);
 		a = (a / 4.0 + 1.0) / 2.0;
 
-	if (texture(u_texture, v_texCoords).a < 0.9 && maxed.a > 0.9) {
-		fragColor = mix(vec4(maxed.rgb, 1.0), vec4(mix_color.rgb, 1.0), a);
+	if (texture2D(u_texture, v_texCoords).a < 0.9 && maxed.a > 0.9) {
+		gl_FragColor = mix(vec4(maxed.rgb, 1.0), vec4(mix_color.rgb, 1.0), a);
 	} else {
 		if (baseColor.a <= 0.0) {
-			fragColor = vec4(0.0);
+			gl_FragColor = vec4(0.0);
 		} else {
 			vec2 coords = selectCenter(worldCoord);
 
@@ -102,14 +100,14 @@ void main(void) {
 			float realRad = tr * side_len / (sin(2.0 * PI / 3.0 - angle));
 
 			if (realRad - dst < u_stroke) {
-				fragColor = mix(vec4(baseColor.rgb, u_alpha), mix_color, a);
+				gl_FragColor = mix(vec4(baseColor.rgb, u_alpha), mix_color, a);
 			} else {
 				float stime = u_time * wave_scl;
 				float res = (sin(stime * (0.5 + random(coords)) + random(coords) * PI * 2.0) + 1.0) / 2.0;
 
 				float alpha = max(min((res - min_threshold) / (max_threshold - min_threshold), 1.0), 0.0);
 
-				fragColor = mix(vec4(baseColor.rgb, u_alpha), vec4(mix_color.rgb, mix_alpha), alpha);
+				gl_FragColor = mix(vec4(baseColor.rgb, u_alpha), vec4(mix_color.rgb, mix_alpha), alpha);
 			}
 		}
 	}

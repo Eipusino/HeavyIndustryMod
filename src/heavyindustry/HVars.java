@@ -35,6 +35,9 @@ public final class HVars {
 
 	public static PlatformImpl platformImpl;
 
+	/** Is the Unsafe class available. */
+	public static boolean hasUnsafe = false;
+
 	/** jar internal navigation. */
 	public static final InternalFileTree internalTree;
 

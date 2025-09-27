@@ -9,6 +9,7 @@ import arc.graphics.gl.Shader;
  *
  * @since 1.0.6
  */
+@Deprecated
 public class Gl30Shader extends Shader {
 	public Gl30Shader(Fi vertexShader, Fi fragmentShader) {
 		super(vertexShader, fragmentShader);

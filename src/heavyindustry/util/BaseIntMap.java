@@ -10,6 +10,10 @@ import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import static heavyindustry.util.Constant.EMPTY;
+import static heavyindustry.util.Constant.PRIME2;
+import static heavyindustry.util.Constant.PRIME3;
+
 /**
  * An unordered map that uses int keys. This implementation is a cuckoo hash map using 3 hashes, random walking, and a small
  * stash for problematic keys. Null values are allowed. No allocation is done except when growing the table size.<br>
@@ -20,12 +24,7 @@ import java.util.NoSuchElementException;
  * @author Nathan Sweet
  */
 public class BaseIntMap<V> implements Iterable<BaseIntMap.Entry<V>> {
-	private static final int PRIME1 = 0xbe1f14b1;
-	private static final int PRIME2 = 0xb4b82e39;
-	private static final int PRIME3 = 0xced1c241;
-	private static final int EMPTY = 0;
-
-	public final Class<?> keyComponentType;
+	public final Class<?> valueComponentType;
 
 	public int size;
 
@@ -94,7 +93,7 @@ public class BaseIntMap<V> implements Iterable<BaseIntMap.Entry<V>> {
 		stashCapacity = Math.max(3, (int) Math.ceil(Math.log(capacity)) * 2);
 		pushIterations = Math.max(Math.min(capacity, 8), (int) Math.sqrt(capacity) / 8);
 
-		keyComponentType = keyType;
+		valueComponentType = keyType;
 
 		keyTable = new int[capacity + stashCapacity];
 		valueTable = (V[]) Array.newInstance(keyType, keyTable.length);
@@ -102,7 +101,7 @@ public class BaseIntMap<V> implements Iterable<BaseIntMap.Entry<V>> {
 
 	/** Creates a new map identical to the specified map. */
 	public BaseIntMap(BaseIntMap<? extends V> map) {
-		this((int) Math.floor(map.capacity * map.loadFactor), map.loadFactor, map.keyComponentType);
+		this((int) Math.floor(map.capacity * map.loadFactor), map.loadFactor, map.valueComponentType);
 		stashSize = map.stashSize;
 		System.arraycopy(map.keyTable, 0, keyTable, 0, map.keyTable.length);
 		System.arraycopy(map.valueTable, 0, valueTable, 0, map.valueTable.length);
@@ -551,7 +550,7 @@ public class BaseIntMap<V> implements Iterable<BaseIntMap.Entry<V>> {
 		V[] oldValueTable = valueTable;
 
 		keyTable = new int[newSize + stashCapacity];
-		valueTable = (V[]) Array.newInstance(keyComponentType, newSize + stashCapacity);
+		valueTable = (V[]) Array.newInstance(valueComponentType, newSize + stashCapacity);
 
 		int oldSize = size;
 		size = hasZeroValue ? 1 : 0;
@@ -596,7 +595,7 @@ public class BaseIntMap<V> implements Iterable<BaseIntMap.Entry<V>> {
 	@SuppressWarnings("unchecked")
 	public boolean equals(Object obj) {
 		if (obj == this) return true;
-		if (!(obj instanceof BaseIntMap<?> map) || map.keyComponentType != keyComponentType) return false;
+		if (!(obj instanceof BaseIntMap<?> map) || map.valueComponentType != valueComponentType) return false;
 		BaseIntMap<V> other = (BaseIntMap<V>) map;
 		if (other.size != size) return false;
 		if (other.hasZeroValue != hasZeroValue) return false;
@@ -857,7 +856,7 @@ public class BaseIntMap<V> implements Iterable<BaseIntMap.Entry<V>> {
 
 		/** Returns a new array containing the remaining values. */
 		public Seq<V> toSeq() {
-			Seq<V> array = new Seq<>(true, map.size, map.keyComponentType);
+			Seq<V> array = new Seq<>(true, map.size, map.valueComponentType);
 			while (hasNext)
 				array.add(next());
 			return array;

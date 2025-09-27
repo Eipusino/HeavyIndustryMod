@@ -11,13 +11,12 @@ import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class BaseLongMap<V> implements Iterable<BaseLongMap.Entry<V>> {
-	private static final int PRIME1 = 0xbe1f14b1;
-	private static final int PRIME2 = 0xb4b82e39;
-	private static final int PRIME3 = 0xced1c241;
-	private static final int EMPTY = 0;
+import static heavyindustry.util.Constant.EMPTY;
+import static heavyindustry.util.Constant.PRIME2;
+import static heavyindustry.util.Constant.PRIME3;
 
-	public final Class<?> keyComponentType;
+public class BaseLongMap<V> implements Iterable<BaseLongMap.Entry<V>> {
+	public final Class<?> valueComponentType;
 
 	public int size;
 
@@ -73,7 +72,7 @@ public class BaseLongMap<V> implements Iterable<BaseLongMap.Entry<V>> {
 		stashCapacity = Math.max(3, (int) Math.ceil(Math.log(capacity)) * 2);
 		pushIterations = Math.max(Math.min(capacity, 8), (int) Math.sqrt(capacity) / 8);
 
-		keyComponentType = keyType;
+		valueComponentType = keyType;
 
 		keyTable = new long[capacity + stashCapacity];
 		valueTable = (V[]) Array.newInstance(keyType, keyTable.length);
@@ -81,7 +80,7 @@ public class BaseLongMap<V> implements Iterable<BaseLongMap.Entry<V>> {
 
 	/** Creates a new map identical to the specified map. */
 	public BaseLongMap(BaseLongMap<? extends V> map) {
-		this((int) Math.floor(map.capacity * map.loadFactor), map.loadFactor, map.keyComponentType);
+		this((int) Math.floor(map.capacity * map.loadFactor), map.loadFactor, map.valueComponentType);
 		stashSize = map.stashSize;
 		System.arraycopy(map.keyTable, 0, keyTable, 0, map.keyTable.length);
 		System.arraycopy(map.valueTable, 0, valueTable, 0, map.valueTable.length);
@@ -520,7 +519,7 @@ public class BaseLongMap<V> implements Iterable<BaseLongMap.Entry<V>> {
 		V[] oldValueTable = valueTable;
 
 		keyTable = new long[newSize + stashCapacity];
-		valueTable = (V[]) Array.newInstance(keyComponentType, newSize + stashCapacity);
+		valueTable = (V[]) Array.newInstance(valueComponentType, newSize + stashCapacity);
 
 		int oldSize = size;
 		size = hasZeroValue ? 1 : 0;
@@ -566,7 +565,7 @@ public class BaseLongMap<V> implements Iterable<BaseLongMap.Entry<V>> {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) return true;
-		if (!(obj instanceof BaseLongMap<?> map) || map.keyComponentType != keyComponentType) return false;
+		if (!(obj instanceof BaseLongMap<?> map) || map.valueComponentType != valueComponentType) return false;
 		BaseLongMap<V> other = (BaseLongMap<V>) map;
 		if (other.size != size) return false;
 		if (other.hasZeroValue != hasZeroValue) return false;
@@ -847,7 +846,7 @@ public class BaseLongMap<V> implements Iterable<BaseLongMap.Entry<V>> {
 
 		/** Returns a new array containing the remaining values. */
 		public Seq<V> toArray() {
-			Seq<V> array = new Seq<>(true, map.size, map.keyComponentType);
+			Seq<V> array = new Seq<>(true, map.size, map.valueComponentType);
 			while (hasNext)
 				array.add(next());
 			return array;

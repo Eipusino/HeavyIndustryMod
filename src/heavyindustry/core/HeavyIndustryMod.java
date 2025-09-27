@@ -43,6 +43,7 @@ import heavyindustry.net.HCall;
 import heavyindustry.ui.Elements;
 import heavyindustry.ui.HFonts;
 import heavyindustry.ui.HStyles;
+import heavyindustry.util.CollectionList;
 import heavyindustry.util.IconLoader;
 import heavyindustry.util.PlatformImpl;
 import heavyindustry.util.UnsupportedPlatformException;
@@ -58,6 +59,8 @@ import mindustry.mod.ModClassLoader;
 import mindustry.ui.dialogs.BaseDialog;
 import mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable;
 import mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable.Setting;
+
+import java.util.List;
 
 import static heavyindustry.HVars.AUTHOR;
 import static heavyindustry.HVars.LINK_GIT_HUB;
@@ -80,6 +83,8 @@ public final class HeavyIndustryMod extends Mod {
 
 	public static @Nullable FloatingText floatingText;
 
+	static final List<Throwable> errors = new CollectionList<>(Throwable.class);
+
 	static {
 		try {
 			// Load Impl.jar from the libs path inside the mod, This is a very important part of the mod's reflection function.
@@ -91,6 +96,8 @@ public final class HeavyIndustryMod extends Mod {
 		if (HVars.platformImpl == null) {
 			// This situation usually does not occur...
 			HVars.platformImpl = new DefaultImpl();
+		} else {
+			HVars.hasUnsafe = true;
 		}
 	}
 
@@ -98,7 +105,7 @@ public final class HeavyIndustryMod extends Mod {
 		instance = this;
 
 		if (Core.graphics != null && !Core.graphics.isGL30Available()) {
-			Log.warn("HeavyIndustryMod only runs with OpenGL 3.0 (on desktop) or OpenGL ES 3.0 (on android) and above!");
+			Log.warn("The current device does not support OpenGL 3.0 (on desktop) or OpenGL ES 3.0 (on android)!");
 		}
 
 		Log.info("Loaded HeavyIndustry Mod constructor.");
@@ -272,6 +279,8 @@ public final class HeavyIndustryMod extends Mod {
 			return clazz;
 		} catch (Throwable e) {
 			if (showError) {
+				errors.add(e);
+
 				Log.err(Strings.format("Unexpected exception when loading '@'", sourceFile), e);
 			}
 
@@ -281,8 +290,8 @@ public final class HeavyIndustryMod extends Mod {
 		}
 	}
 
-	static void loadLibrary() {
-		if (OS.isIos) throw new UnsupportedPlatformException("what? how do you do load Java mod on IOS?");
+	static void loadLibrary() throws UnsupportedPlatformException {
+		if (OS.isIos) throw new UnsupportedPlatformException("Not supporting loading Impl.jar on IOS platform");
 
 		platformImplType = loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" :
 				"heavyindustry.desktop.DesktopImpl", true, clazz -> {

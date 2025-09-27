@@ -699,9 +699,11 @@ public final class HBlocks {
 		}};
 		arsenide = new Floor("arsenide", 4) {{
 			itemDrop = HItems.stone;
+			playerUnmineable = true;
 		}};
 		arsenideLayers = new Floor("arsenide-layers", 4) {{
 			itemDrop = HItems.stone;
+			playerUnmineable = true;
 		}};
 		arsenideBoulder = new Prop("arsenide-boulder") {{
 			variants = 3;
@@ -745,9 +747,11 @@ public final class HBlocks {
 		}};
 		breccia = new Floor("breccia", 4) {{
 			itemDrop = HItems.stone;
+			playerUnmineable = true;
 		}};
 		smoothBreccia = new Floor("smooth-breccia", 4) {{
 			itemDrop = HItems.stone;
+			playerUnmineable = true;
 		}};
 		brecciaBoulder = new Prop("breccia-boulder") {{
 			variants = 2;
@@ -759,9 +763,11 @@ public final class HBlocks {
 		}};
 		chert = new Floor("chert", 4) {{
 			itemDrop = HItems.stone;
+			playerUnmineable = true;
 		}};
 		chertPlates = new Floor("chert-plates", 4) {{
 			itemDrop = HItems.stone;
+			playerUnmineable = true;
 		}};
 		chertBoulder = new Prop("chert-boulder") {{
 			variants = 3;
@@ -778,11 +784,13 @@ public final class HBlocks {
 		}};
 		feldspar = new Floor("feldspar", 5) {{
 			itemDrop = HItems.stone;
+			playerUnmineable = true;
 		}};
 		feldsparRubble = new Floor("feldspar-rubble") {{
 			tilingVariants = 2;
 			tilingSize = 3;
 			itemDrop = HItems.stone;
+			playerUnmineable = true;
 		}};
 		feldsparPebbles = new OverlayFloor("feldspar-pebbles") {{
 			variants = 4;

@@ -8,7 +8,6 @@ import arc.graphics.gl.Shader;
 import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.Tmp;
-import heavyindustry.graphics.gl.Gl30Shader;
 
 import static mindustry.Vars.renderer;
 
@@ -104,7 +103,7 @@ public final class SlashRenderer {
 		}
 	}
 
-	private static class SlashShader extends Gl30Shader {
+	private static class SlashShader extends Shader {
 		public float[] slashes;
 
 		SlashShader() {

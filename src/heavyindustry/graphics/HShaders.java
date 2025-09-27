@@ -16,8 +16,6 @@ import arc.scene.ui.layout.Scl;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.HVars;
-import heavyindustry.graphics.gl.DepthFrameBuffer;
-import heavyindustry.graphics.gl.Gl30Shader;
 import heavyindustry.type.AtmospherePlanet;
 import mindustry.Vars;
 import mindustry.type.Planet;
@@ -31,10 +29,9 @@ import static heavyindustry.HVars.MOD_NAME;
  */
 public final class HShaders {
 	public static DepthShader depth;
-	public static DepthScreenspaceShader depthScreenspace;
 	public static DepthAtmosphereShader depthAtmosphere;
 	public static AlphaShader alphaShader;
-	public static Gl30SurfaceShader brine, crystalFluid, deepCrystalFluid, boundWater, pit, waterPit;
+	public static HSurfaceShader brine, crystalFluid, deepCrystalFluid, boundWater, pit, waterPit;
 	public static AberrationShader aberration;
 	public static MaskShader alphaMask;
 	public static WaveShader wave;
@@ -45,7 +42,7 @@ public final class HShaders {
 	public static TractorConeShader tractorCone;
 	public static DimShader dimShader;
 	public static SmallSpaceShader smallSpaceShader;
-	public static Gl30Shader distBase, passThrough;
+	public static Shader distBase, passThrough;
 	public static TilerShader tiler;
 	public static PlanetTextureShader planetTexture;
 
@@ -58,13 +55,12 @@ public final class HShaders {
 		Shader.prependVertexCode = Shader.prependFragmentCode = "";
 
 		depth = new DepthShader();
-		depthScreenspace = new DepthScreenspaceShader();
 		depthAtmosphere = new DepthAtmosphereShader();
 
 		alphaShader = new AlphaShader();
 
-		brine = new Gl30SurfaceShader("general-highp", "brine");
-		crystalFluid = new Gl30SurfaceShader("general-highp", "crystal-fluid");
+		brine = new HSurfaceShader("general-highp", "brine");
+		crystalFluid = new HSurfaceShader("general-highp", "crystal-fluid");
 		deepCrystalFluid = new DualSurfaceShader("general-highp", "deep-crystal-fluid") {
 			@Override
 			public void loadNoise() {
@@ -79,7 +75,7 @@ public final class HShaders {
 				return HTextures.smooth;
 			}
 		};
-		boundWater = new Gl30SurfaceShader("general-highp", "bound-water");
+		boundWater = new HSurfaceShader("general-highp", "bound-water");
 		pit = new PitShader("general-highp", "pit", MOD_NAME + "-concrete-blank1", MOD_NAME + "-stone-sheet", MOD_NAME + "-truss");
 		waterPit = new PitShader("general-highp", "water-pit", MOD_NAME + "-concrete-blank1", MOD_NAME + "-stone-sheet", MOD_NAME + "-truss");
 
@@ -96,8 +92,8 @@ public final class HShaders {
 		dimShader = new DimShader();
 		smallSpaceShader = new SmallSpaceShader();
 
-		distBase = new Gl30Shader(msv("general"), msf("dist-base"));
-		passThrough = new Gl30Shader(msv("general-highp"), msf("pass-through"));
+		distBase = new Shader(msv("general"), msf("dist-base"));
+		passThrough = new Shader(msv("general-highp"), msf("pass-through"));
 
 		tiler = new TilerShader();
 
@@ -138,7 +134,7 @@ public final class HShaders {
 	}
 
 	/** Specialized mesh shader to capture fragment depths. */
-	public static class DepthShader extends Gl30Shader {
+	public static class DepthShader extends Shader {
 		public Camera3D camera;
 
 		/** The only instance of this class: {@link #depth}. */
@@ -153,29 +149,11 @@ public final class HShaders {
 		}
 	}
 
-	public static class DepthScreenspaceShader extends Gl30Shader {
-		public DepthFrameBuffer buffer;
-
-		/** The only instance of this class: {@link #depthScreenspace}. */
-		DepthScreenspaceShader() {
-			super(msv("general-highp"), msf("depth-screenspace"));
-		}
-
-		@Override
-		public void apply() {
-			buffer.getTexture().bind(1);
-			buffer.getDepthTexture().bind(0);
-
-			setUniformi("u_color", 1);
-			setUniformi("u_depth", 0);
-		}
-	}
-
 	/**
 	 * An atmosphere shader that incorporates the planet shape in a form of depth texture. Better quality, but at the little
 	 * cost of performance.
 	 */
-	public static class DepthAtmosphereShader extends Gl30Shader {
+	public static class DepthAtmosphereShader extends Shader {
 		private static final Mat3D mat = new Mat3D();
 
 		public Camera3D camera;
@@ -207,7 +185,7 @@ public final class HShaders {
 		}
 	}
 
-	public static class PlanetTextureShader extends Gl30Shader {
+	public static class PlanetTextureShader extends Shader {
 		public Vec3 lightDir = new Vec3(1, 1, 1).nor();
 		public Color ambientColor = Color.white.cpy();
 		public Vec3 camDir = new Vec3();
@@ -238,7 +216,7 @@ public final class HShaders {
 		}
 	}
 
-	public static class TilerShader extends Gl30Shader {
+	public static class TilerShader extends Shader {
 		public Texture texture = Core.atlas.white().texture;
 		public float scl = 4f;
 
@@ -260,7 +238,7 @@ public final class HShaders {
 		}
 	}
 
-	public static class AlphaShader extends Gl30Shader {
+	public static class AlphaShader extends Shader {
 		public float alpha = 1f;
 
 		/** The only instance of this class: {@link #alphaShader}. */
@@ -274,7 +252,7 @@ public final class HShaders {
 		}
 	}
 
-	public static class WaveShader extends Gl30Shader {
+	public static class WaveShader extends Shader {
 		public Color waveMix = Color.white;
 		public float mixAlpha = 0.4f;
 		public float mixOmiga = 0.75f;
@@ -302,7 +280,7 @@ public final class HShaders {
 		}
 	}
 
-	public static class MirrorFieldShader extends Gl30Shader {
+	public static class MirrorFieldShader extends Shader {
 		public Color waveMix = Color.white;
 		public Vec2 offset = new Vec2(0, 0);
 		public float stroke = 2;
@@ -338,7 +316,7 @@ public final class HShaders {
 		}
 	}
 
-	public static final class MaskShader extends Gl30Shader {
+	public static final class MaskShader extends Shader {
 		public Texture texture;
 
 		/** The only instance of this class: {@link #alphaMask}. */
@@ -355,7 +333,7 @@ public final class HShaders {
 		}
 	}
 
-	public static final class AberrationShader extends Gl30Shader {
+	public static final class AberrationShader extends Shader {
 		AberrationShader() {
 			super(msv("general"), msf("aberration"));
 		}
@@ -371,7 +349,7 @@ public final class HShaders {
 		}
 	}
 
-	public static class MaterializeShader extends Gl30Shader {
+	public static class MaterializeShader extends Shader {
 		public float progress, offset, time;
 		public int shadow;
 		public Color color = new Color();
@@ -395,7 +373,7 @@ public final class HShaders {
 		}
 	}
 
-	public static class VerticalBuildShader extends Gl30Shader {
+	public static class VerticalBuildShader extends Shader {
 		public float progress, time;
 		public Color color = new Color();
 		public TextureRegion region;
@@ -415,7 +393,7 @@ public final class HShaders {
 		}
 	}
 
-	public static class BlockBuildCenterShader extends Gl30Shader {
+	public static class BlockBuildCenterShader extends Shader {
 		public float progress;
 		public TextureRegion region;
 		public float time;
@@ -434,7 +412,7 @@ public final class HShaders {
 		}
 	}
 
-	public static class TractorConeShader extends Gl30Shader {
+	public static class TractorConeShader extends Shader {
 		public float cx, cy;
 		public float time, spacing, thickness;
 
@@ -463,7 +441,7 @@ public final class HShaders {
 		}
 	}
 
-	public static class DimShader extends Gl30Shader {
+	public static class DimShader extends Shader {
 		public float alpha;
 
 		DimShader() {
@@ -476,7 +454,7 @@ public final class HShaders {
 		}
 	}
 
-	public static class SmallSpaceShader extends Gl30Shader {
+	public static class SmallSpaceShader extends Shader {
 		Texture texture;
 
 		SmallSpaceShader() {
@@ -504,7 +482,7 @@ public final class HShaders {
 	}
 
 	/** SurfaceShader but uses a mod fragment asset. */
-	public static class PitShader extends Gl30SurfaceShader {
+	public static class PitShader extends HSurfaceShader {
 		protected TextureRegion topLayer, bottomLayer, truss;
 		protected String topLayerName, bottomLayerName, trussName;
 
@@ -547,7 +525,7 @@ public final class HShaders {
 		}
 	}
 
-	public static class DualSurfaceShader extends Gl30SurfaceShader {
+	public static class DualSurfaceShader extends HSurfaceShader {
 		protected Texture noiseTex2;
 
 		public DualSurfaceShader(String vertex, String fragment) {
@@ -588,10 +566,10 @@ public final class HShaders {
 		}
 	}
 
-	public static class Gl30SurfaceShader extends Gl30Shader {
+	public static class HSurfaceShader extends Shader {
 		protected Texture noiseTex;
 
-		public Gl30SurfaceShader(String vertex, String fragment) {
+		public HSurfaceShader(String vertex, String fragment) {
 			super(msv(vertex), msf(fragment));
 			loadNoise();
 		}

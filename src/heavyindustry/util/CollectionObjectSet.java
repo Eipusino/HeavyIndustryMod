@@ -14,6 +14,9 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import static heavyindustry.util.Constant.PRIME2;
+import static heavyindustry.util.Constant.PRIME3;
+
 /**
  * An unordered set where the keys are objects. This implementation uses cuckoo hashing using 3 hashes, random walking, and a
  * small stash for problematic keys. Null keys are not allowed. No allocation is done except when growing the table size.<br>
@@ -25,13 +28,9 @@ import java.util.Set;
  * @author Nathan Sweet
  */
 public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
-	private static final int PRIME1 = 0xbe1f14b1;
-	private static final int PRIME2 = 0xb4b82e39;
-	private static final int PRIME3 = 0xced1c241;
-
 	public int size;
 
-	public final Class<?> componentType;
+	public final Class<?> keyComponentType;
 
 	public E[] keyTable;
 	public int capacity, stashSize;
@@ -82,13 +81,13 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 		stashCapacity = Math.max(3, (int) Math.ceil(Math.log(capacity)) * 2);
 		pushIterations = Math.max(Math.min(capacity, 8), (int) Math.sqrt(capacity) / 8);
 
-		componentType = type;
+		keyComponentType = type;
 		keyTable = (E[]) Array.newInstance(type, capacity + stashCapacity);
 	}
 
 	/** Creates a new set identical to the specified set. */
 	public CollectionObjectSet(CollectionObjectSet<? extends E> set) {
-		this(set.componentType, (int) Math.floor(set.capacity * set.loadFactor), set.loadFactor);
+		this(set.keyComponentType, (int) Math.floor(set.capacity * set.loadFactor), set.loadFactor);
 		stashSize = set.stashSize;
 		System.arraycopy(set.keyTable, 0, keyTable, 0, set.keyTable.length);
 		size = set.size;
@@ -115,7 +114,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 
 	/** Allocates a new set with all elements that match the predicate. */
 	public CollectionObjectSet<E> select(Boolf<E> predicate) {
-		CollectionObjectSet<E> arr = new CollectionObjectSet<>(componentType);
+		CollectionObjectSet<E> arr = new CollectionObjectSet<>(keyComponentType);
 		for (E e : this) {
 			if (predicate.get(e)) arr.add(e);
 		}
@@ -545,7 +544,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 
 		E[] oldKeyTable = keyTable;
 
-		keyTable = (E[]) Array.newInstance(componentType, newSize + stashCapacity);
+		keyTable = (E[]) Array.newInstance(keyComponentType, newSize + stashCapacity);
 
 		int oldSize = size;
 		size = 0;
@@ -719,7 +718,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 
 		/** Returns a new array containing the remaining values. */
 		public Seq<E> toSeq() {
-			return toSeq(new Seq<>(true, size, componentType));
+			return toSeq(new Seq<>(true, size, keyComponentType));
 		}
 	}
 }

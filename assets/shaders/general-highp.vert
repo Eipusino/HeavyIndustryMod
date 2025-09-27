@@ -1,9 +1,9 @@
 #define HIGHP
 
-in vec4 a_position;
-in vec2 a_texCoord0;
+attribute vec4 a_position;
+attribute vec2 a_texCoord0;
 
-out vec2 v_texCoords;
+varying vec2 v_texCoords;
 
 void main() {
 	v_texCoords = a_texCoord0;

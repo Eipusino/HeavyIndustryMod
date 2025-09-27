@@ -7,7 +7,6 @@ import arc.graphics.g2d.Lines;
 import arc.graphics.gl.FrameBuffer;
 import arc.graphics.gl.Shader;
 import arc.util.Disposable;
-import heavyindustry.graphics.gl.Gl30Shader;
 
 import static heavyindustry.graphics.Drawn.c1;
 import static heavyindustry.graphics.Drawn.v1;
@@ -25,7 +24,7 @@ public class Distortion implements Disposable {
 	boolean capturing, disposed;
 
 	public Distortion() {
-		distortion = new Gl30Shader(HShaders.msv("general"), HShaders.msf("distortion"));
+		distortion = new Shader(HShaders.msv("general"), HShaders.msf("distortion"));
 
 		buffer = new FrameBuffer();
 

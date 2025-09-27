@@ -15,6 +15,7 @@ import arc.util.Nullable;
  *
  * @since 1.0.6
  */
+@Deprecated
 public class DepthFrameBufferCubemap extends FrameBufferCubemap {
 	protected Format format;
 	protected boolean hasDepth, hasStencil;

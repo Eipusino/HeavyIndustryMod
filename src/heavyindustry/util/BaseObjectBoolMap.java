@@ -9,11 +9,10 @@ import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class BaseObjectBoolMap<K> implements Iterable<BaseObjectBoolMap.MapEntry<K>> {
-	private static final int PRIME1 = 0xbe1f14b1;
-	private static final int PRIME2 = 0xb4b82e39;
-	private static final int PRIME3 = 0xced1c241;
+import static heavyindustry.util.Constant.PRIME2;
+import static heavyindustry.util.Constant.PRIME3;
 
+public class BaseObjectBoolMap<K> implements Iterable<BaseObjectBoolMap.MapEntry<K>> {
 	public int size;
 
 	public final Class<?> keyComponentType;

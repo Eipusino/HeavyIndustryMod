@@ -7,7 +7,6 @@ import arc.graphics.gl.FrameBuffer;
 import arc.graphics.gl.Shader;
 import arc.util.Time;
 import heavyindustry.graphics.HShaders;
-import heavyindustry.graphics.gl.Gl30Shader;
 
 public class RangeExtractor {
 	public FrameBuffer buffer;
@@ -26,7 +25,7 @@ public class RangeExtractor {
 	}
 
 	public void setupShader() {
-		extractShader = new Gl30Shader(HShaders.msv("general-highp"), HShaders.msf(low ? "range-low" : "range"));
+		extractShader = new Shader(HShaders.msv("general-highp"), HShaders.msf(low ? "range-low" : "range"));
 
 		if (low) buffer.resize(Core.graphics.getWidth() / 2, Core.graphics.getHeight() / 2);
 		else buffer.resize(Core.graphics.getWidth(), Core.graphics.getHeight());

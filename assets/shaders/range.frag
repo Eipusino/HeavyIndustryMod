@@ -9,9 +9,7 @@ uniform float u_stroke;
 uniform float u_alpha;
 uniform vec4 u_color;
 
-in vec2 v_texCoords;
-
-out vec4 fragColor;
+varying vec2 v_texCoords;
 
 const float threshold = 0.01;
 const float PI = 3.14159265359;
@@ -19,14 +17,14 @@ const float PI = 3.14159265359;
 void main() {
 	vec2 v = u_stroke * (1.0 / u_resolution);
 
-	vec4 base = texture(u_texture, v_texCoords);
+	vec4 base = texture2D(u_texture, v_texCoords);
 	vec2 worldCoord = vec2(v_texCoords.x * u_resolution.x + u_campos.x, v_texCoords.y * u_resolution.y + u_campos.y);
 
 	float m = min(min(min(
-			texture(u_texture, v_texCoords + vec2(1.0, 0.0) * v).a,
-			texture(u_texture, v_texCoords + vec2(0.0, 1.0) * v).a),
-			texture(u_texture, v_texCoords + vec2(-1.0, 0.0) * v).a),
-			texture(u_texture, v_texCoords + vec2(0.0, -1.0) * v).a);
+			texture2D(u_texture, v_texCoords + vec2(1.0, 0.0) * v).a,
+			texture2D(u_texture, v_texCoords + vec2(0.0, 1.0) * v).a),
+			texture2D(u_texture, v_texCoords + vec2(-1.0, 0.0) * v).a),
+			texture2D(u_texture, v_texCoords + vec2(0.0, -1.0) * v).a);
 
 	float time = u_time * 0.1;
 	float a =
@@ -49,6 +47,6 @@ void main() {
 	vec4 c1 = vec4(base.rgb, u_alpha);
 	vec4 c2 = vec4(vec3(1.0), u_alpha);
 
-	fragColor = (vec4(u_color.rgb * stepS + base.rgb * (1.0 - stepS), a)) * con1
+	gl_FragColor = (vec4(u_color.rgb * stepS + base.rgb * (1.0 - stepS), a)) * con1
 		+ (mix(c1, c2, a) * stepS + c1 * (1.0 - stepS)) * con2;
 }

@@ -8,12 +8,12 @@ import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.graphics.g2d.TextureRegion;
 import arc.graphics.gl.FrameBuffer;
+import arc.graphics.gl.Shader;
 import arc.math.Mat;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
 import arc.util.Tmp;
-import heavyindustry.graphics.gl.Gl30Shader;
 
 public final class MathRenderer {
 	public static final FrameBuffer buffer = new FrameBuffer();
@@ -145,16 +145,16 @@ public final class MathRenderer {
 		Draw.shader();
 	}
 
-	public static class MathShader extends Gl30Shader {
+	public static class MathShader extends Shader {
 		private static final String vert = """
 					uniform mat4 u_projTrans;
 					
-					in vec4 a_position;
-					in vec2 a_texCoord0;
-					in vec4 a_color;
+					attribute vec4 a_position;
+					attribute vec2 a_texCoord0;
+					attribute vec4 a_color;
 					
-					out vec4 v_color;
-					out vec2 v_texCoords;
+					varying vec4 v_color;
+					varying vec2 v_texCoords;
 					
 					void main() {
 						gl_Position = u_projTrans * a_position;
@@ -177,17 +177,15 @@ public final class MathRenderer {
 					
 					%args%
 					
-					in vec4 v_color;
-					in vec2 v_texCoords;
-					
-					out vec4 fragColor;
+					varying vec4 v_color;
+					varying vec2 v_texCoords;
 					
 					void main() {
 						float x = (v_texCoords.x - 0.5) * %wScl% * sclX;
 						float y = (v_texCoords.y - 0.5) * %hScl% * sclY;
 					
-						vec4 c = texture(u_texture, v_texCoords);
-						vec4 mixed = v_color*c;
+						vec4 c = texture2D(u_texture, v_texCoords);
+						vec4 mixed = v_color * c;
 					
 						%perVar%
 					
@@ -196,7 +194,7 @@ public final class MathRenderer {
 					
 						alpha = max(min((alpha - minThreshold) / (maxThreshold - minThreshold), 1.0), 0.0) * mixed.a;
 					
-						fragColor = vec4(mixed.r, mixed.g, mixed.b, alpha);
+						gl_FragColor = vec4(mixed.r, mixed.g, mixed.b, alpha);
 					}
 					""";
 

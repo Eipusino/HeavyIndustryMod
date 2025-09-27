@@ -637,19 +637,14 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 
 	@Override
 	public int lastIndexOf(Object o) {
-		return indexOf(o, false);
-	}
-
-	@Override
-	public ListIterator<E> listIterator() {
-		return iterator();
-	}
-
-	@Override
-	public ListIterator<E> listIterator(int index) {
-		if (index > size || index < 0)
-			throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
-		return iterator();
+		if (o == null) {
+			for (int i = size; i >= 0; i--)
+				if (items[i] == null) return i;
+		} else {
+			for (int i = size; i >= 0; i--)
+				if (o.equals(items[i])) return i;
+		}
+		return -1;
 	}
 
 	/**
@@ -847,15 +842,15 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 	 * @return true if this array was modified.
 	 */
 	public boolean removeAll(CollectionList<? extends E> array, boolean identity) {
-		int size = this.size;
-		int startSize = size;
+		int localSize = size;
+		int startSize = localSize;
 		if (identity) {
 			for (int i = 0, n = array.size; i < n; i++) {
 				E item = array.get(i);
-				for (int ii = 0; ii < size; ii++) {
+				for (int ii = 0; ii < localSize; ii++) {
 					if (item == items[ii]) {
 						remove(ii);
-						size--;
+						localSize--;
 						break;
 					}
 				}
@@ -863,16 +858,16 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 		} else {
 			for (int i = 0, n = array.size; i < n; i++) {
 				E item = array.get(i);
-				for (int ii = 0; ii < size; ii++) {
+				for (int ii = 0; ii < localSize; ii++) {
 					if (item.equals(items[ii])) {
 						remove(ii);
-						size--;
+						localSize--;
 						break;
 					}
 				}
 			}
 		}
-		return size != startSize;
+		return localSize != startSize;
 	}
 
 	/**
@@ -1241,9 +1236,19 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 	 * Note that calling 'break' while iterating will permanently clog this iterator, falling back to an implementation that allocates new ones.
 	 */
 	@Override
-	public ListIterator<E> iterator() {
+	public Iterator<E> iterator() {
 		if (iterable == null) iterable = new SeqIterable<>(this);
 		return iterable.iterator();
+	}
+
+	@Override
+	public ListIterator<E> listIterator(int index) {
+		if (index > size || index < 0)
+			throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
+
+		if (iterable == null) iterable = new SeqIterable<>(this);
+
+		return iterable.listIterator(index);
 	}
 
 	public Seq<E> toSeq() {
@@ -1258,23 +1263,23 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 		final CollectionList<T> array;
 		final boolean allowRemove;
 
-		SeqIterator iterator1, iterator2;
+		SeqIterator iterator1, iterator2, lastIterator1;
 
 		public SeqIterable(CollectionList<T> array) {
 			this(array, true);
 		}
 
-		public SeqIterable(CollectionList<T> array, boolean allowRemove) {
-			this.array = array;
-			this.allowRemove = allowRemove;
+		public SeqIterable(CollectionList<T> arr, boolean remove) {
+			array = arr;
+			allowRemove = remove;
 		}
 
 		@Override
-		public ListIterator<T> iterator() {
+		public Iterator<T> iterator() {
 			if (iterator1 == null) iterator1 = new SeqIterator();
 
 			if (iterator1.done) {
-				iterator1.index = 0;
+				iterator1.cursor = 0;
 				iterator1.done = false;
 				return iterator1;
 			}
@@ -1282,7 +1287,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 			if (iterator2 == null) iterator2 = new SeqIterator();
 
 			if (iterator2.done) {
-				iterator2.index = 0;
+				iterator2.cursor = 0;
 				iterator2.done = false;
 				return iterator2;
 			}
@@ -1290,9 +1295,26 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 			return new SeqIterator();
 		}
 
+		public ListIterator<T> listIterator(int index) {
+			if (lastIterator1 == null) lastIterator1 = new SeqIterator(index);
+
+			if (lastIterator1.done) {
+				lastIterator1.cursor = index;
+				lastIterator1.done = false;
+				return lastIterator1;
+			}
+
+			return new SeqIterator(index);
+		}
+
 		class SeqIterator implements ListIterator<T> {
-			int index;
+			int cursor;
 			boolean done = true;
+
+			SeqIterator(int index) {
+				cursor = index;
+				iteratorsAllocated++;
+			}
 
 			SeqIterator() {
 				iteratorsAllocated++;
@@ -1300,46 +1322,46 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 
 			@Override
 			public boolean hasNext() {
-				if (index >= array.size) done = true;
-				return index < array.size;
+				if (cursor >= array.size) done = true;
+				return cursor < array.size;
 			}
 
 			@Override
 			public T next() {
-				if (index >= array.size) throw new NoSuchElementException(String.valueOf(index));
-				return array.items[index++];
+				if (cursor >= array.size) throw new NoSuchElementException(String.valueOf(cursor));
+				return array.items[cursor++];
 			}
 
 			@Override
 			public boolean hasPrevious() {
-				return index > 0;
+				return cursor > 0;
 			}
 
 			@Override
 			public T previous() {
-				return array.items[index - 1];
+				return array.items[cursor - 1];
 			}
 
 			@Override
 			public int nextIndex() {
-				return index;
+				return cursor;
 			}
 
 			@Override
 			public int previousIndex() {
-				return index - 1;
+				return cursor - 1;
 			}
 
 			@Override
 			public void remove() {
 				if (!allowRemove) throw new ArcRuntimeException("Remove not allowed.");
-				index--;
-				array.remove(index);
+				cursor--;
+				array.remove(cursor);
 			}
 
 			@Override
 			public void set(T t) {
-				array.set(index, t);
+				array.set(cursor, t);
 			}
 
 			@Override

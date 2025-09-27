@@ -17,6 +17,9 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+import static heavyindustry.util.Constant.PRIME2;
+import static heavyindustry.util.Constant.PRIME3;
+
 /**
  * Implementation of Java Collection Framework Map based on {@code ObjectMap} wrapper,
  * used in places that require Java specifications and the feature of not creating nodes in ObjectMap.
@@ -24,10 +27,6 @@ import java.util.Set;
  * @author Eipusino
  */
 public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.MapEntry<K, V>>, Map<K, V>, Eachable<CollectionObjectMap.MapEntry<K, V>> {
-	private static final int PRIME1 = 0xbe1f14b1;
-	private static final int PRIME2 = 0xb4b82e39;
-	private static final int PRIME3 = 0xced1c241;
-
 	public int size;
 
 	public final Class<?> keyComponentType;

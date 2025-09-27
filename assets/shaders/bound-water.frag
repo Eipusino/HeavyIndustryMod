@@ -6,9 +6,7 @@ uniform vec2 u_campos;
 uniform vec2 u_resolution;
 uniform float u_time;
 
-in vec2 v_texCoords;
-
-out vec4 fragColor;
+varying vec2 v_texCoords;
 
 const float mscl = 40.0;
 const float mth = 7.0;
@@ -20,9 +18,9 @@ void main() {
 
 	float stime = u_time / 5.0;
 
-	vec4 tc = texture(u_texture, c, 0.0).rgba;
+	vec4 tc = texture2D(u_texture, c, 0.0).rgba;
 	if (tc.a > 0.0) {
-		vec4 color = texture(u_texture, c + vec2(sin(stime/3.0 + coords.y/0.75) * v.x, 0.0)).rgba * vec4(0.9, 0.9, 1, 1);
+		vec4 color = texture2D(u_texture, c + vec2(sin(stime/3.0 + coords.y/0.75) * v.x, 0.0)).rgba * vec4(0.9, 0.9, 1, 1);
 		float tester = mod((coords.x + coords.y * 1.1 + sin(stime / 8.0 + coords.x / 5.0 - coords.y / 100.0) * 2.0) +
 			sin(stime / 20.0 + coords.y / 3.0) * 1.0 +
 			sin(stime / 10.0 - coords.y / 2.0) * 2.0 +
@@ -37,5 +35,5 @@ void main() {
 		tc = color;
 	}
 
-	fragColor = tc;
+	gl_FragColor = tc;
 }

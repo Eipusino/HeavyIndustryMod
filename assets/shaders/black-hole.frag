@@ -1,8 +1,6 @@
 #define HIGHP
 
-in vec2 v_texCoords;
-
-out vec4 fragColor;
+varying vec2 v_texCoords;
 
 uniform vec3 u_camPos;
 uniform vec2 u_viewport;
@@ -62,7 +60,7 @@ void main() {
 	int faceIndex = cubeIndex(ray);
 	float near = u_depthRange.x, far = u_depthRange.y;
 
-	float zCamera = (near * far) / (far + (near - far) * texture(u_depth, ray).r);
+	float zCamera = (near * far) / (far + (near - far) * texture2D(u_depth, ray).r);
 	vec3 rayDirCameraSpace = (u_cubeView[faceIndex] * vec4(ray, 0.0)).xyz;
 	vec3 worldPos = (u_cubeInvView[faceIndex] * vec4(zCamera * rayDirCameraSpace, 1.0)).xyz;
 
@@ -77,7 +75,7 @@ void main() {
 		float dist = length(hit) / u_radius;
 		float inner = 1.0 - smoothstep(0.0, 1.0, pow(1.0 - max(-dist + u_horizon, 0.0) / u_horizon, 30.0));
 
-		fragColor = mix(texture(u_ref, rotate(ray, axis, 2.0944 * pow(1.0 - dist, 3.0))), vec4(vec3(0.0), 1.0), inner);
+		gl_FragColor = mix(texture2D(u_ref, rotate(ray, axis, 2.0944 * pow(1.0 - dist, 3.0))), vec4(vec3(0.0), 1.0), inner);
 	} else {
 		discard;
 	}

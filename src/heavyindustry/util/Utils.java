@@ -1077,25 +1077,60 @@ public final class Utils {
 	 * @param <V> the type of the value
 	 * @param e the entry to be copied
 	 * @return a map entry equal to the given entry
-	 * @throws NullPointerException if e is null or if either of its key or value is null
+	 * @throws NullPointerException if e is null
 	 * @since 1.0.7
 	 */
 	@SuppressWarnings("unchecked")
 	public static <K, V> Map.Entry<K, V> copyOf(Map.Entry<? extends K, ? extends V> e) {
-		if (e instanceof Pair<? extends K, ? extends V>) {
-			return (Map.Entry<K, V>) e;
+		if (e instanceof Pair<? extends K, ? extends V> p) {
+			return (Map.Entry<K, V>) p;
 		} else {
-			return entry(e.getKey(), e.getValue());
+			return new Pair<>(e.getKey(), e.getValue());
 		}
 	}
 
-	static <K, V> Map.Entry<K, V> entry(K k, V v) {
-		// Pair checks for nulls
-		return new Pair<>(k, v);
-	}
-
+	/**
+	 * Returns the index of the first occurrence of the specified element in this list, or -1 if this list does not
+	 * contain the element. More formally, returns the lowest index {@code i} such that {@code Objects.equals(o,
+	 * get(i))}, or -1 if there is no such index.
+	 *
+	 * @return the index of the first occurrence of the specified element in this list, or -1 if this list does
+	 * not contain the element
+	 */
 	public static <T> int indexOf(T[] array, T element) {
 		for (int i = 0; i < array.length; i++) {
+			if (equals(array[i], element)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * @param src starting position
+	 * @param end final position
+	 * @since 1.0.8
+	 */
+	public static <T> int indexOf(T[] array, int src, int end, T element) {
+		for (int i = Math.max(0, src); i < Math.min(array.length, end); i++) {
+			if (equals(array[i], element)) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the index of the last occurrence of the specified element in this list, or -1 if this list does not
+	 * contain the element. More formally, returns the highest index {@code i} such that {@code Objects.equals(o,
+	 * get(i))}, or -1 if there is no such index.
+	 *
+	 * @return the index of the last occurrence of the specified element in this list, or -1 if this list does
+	 * not contain the element
+	 * @since 1.0.8
+	 */
+	public static <T> int lastIndexOf(T[] array, T element) {
+		for (int i = array.length - 1; i >= 0; i--) {
 			if (equals(array[i], element)) {
 				return i;
 			}
@@ -1160,6 +1195,24 @@ public final class Utils {
 	public static int indexOf(double[] array, double element) {
 		for (int i = 0; i < array.length; i++) {
 			if (Double.compare(array[i], element) == 0) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOf(float[] array, float element, float epsilon) {
+		for (int i = 0; i < array.length; i++) {
+			if (Math.abs(array[i] - element) <= epsilon) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOf(double[] array, double element, double epsilon) {
+		for (int i = 0; i < array.length; i++) {
+			if (Math.abs(array[i] - element) <= epsilon) {
 				return i;
 			}
 		}

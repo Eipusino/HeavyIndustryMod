@@ -10,6 +10,9 @@ import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import static heavyindustry.util.Constant.PRIME2;
+import static heavyindustry.util.Constant.PRIME3;
+
 /**
  * An unordered map where the values are floats. This implementation is a cuckoo hash map using 3 hashes, random walking, and a
  * small stash for problematic keys. Null keys are not allowed. No allocation is done except when growing the table size. <br>
@@ -22,10 +25,6 @@ import java.util.NoSuchElementException;
  * @author Eipusino
  */
 public class BaseObjectFloatMap<K> implements Iterable<BaseObjectFloatMap.MapEntry<K>> {
-	private static final int PRIME1 = 0xbe1f14b1;
-	private static final int PRIME2 = 0xb4b82e39;
-	private static final int PRIME3 = 0xced1c241;
-
 	public int size;
 
 	public final Class<?> keyComponentType;

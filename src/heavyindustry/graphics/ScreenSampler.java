@@ -162,6 +162,12 @@ public final class ScreenSampler {
 	}
 
 	private static void blitBuffer(FrameBuffer from, FrameBuffer to) {
+		if (Core.gl30 == null) {
+			from.blit(HShaders.distBase);
+
+			return;
+		}
+
 		try {
 			GLFrameBuffer<?> target = to == null ? (GLFrameBuffer<?>) lastBoundFramebufferField.get(from) : to;
 			Gl.bindFramebuffer(GL30.GL_READ_FRAMEBUFFER, from.getFramebufferHandle());
@@ -189,6 +195,12 @@ public final class ScreenSampler {
 
 		if (clear) target.begin(Color.clear);
 		else target.begin();
+
+		if (Core.gl30 == null) {
+			currBuffer.blit(HShaders.distBase);
+
+			return;
+		}
 
 		Gl.bindFramebuffer(GL30.GL_READ_FRAMEBUFFER, currBuffer.getFramebufferHandle());
 		Gl.bindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, target.getFramebufferHandle());

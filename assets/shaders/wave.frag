@@ -14,12 +14,10 @@ uniform float wave_scl;
 uniform float max_threshold;
 uniform float min_threshold;
 
-in vec2 v_texCoords;
-
-out vec4 fragColor;
+varying vec2 v_texCoords;
 
 void main() {
-	vec4 col = texture(u_texture, v_texCoords).rgba;
+	vec4 col = texture2D(u_texture, v_texCoords).rgba;
 
 	if (col.a > 0.0) {
 		vec2 c = v_texCoords;
@@ -31,8 +29,8 @@ void main() {
 
 		float alpha = max(min((res - min_threshold)/(max_threshold - min_threshold), 1.0), 0.0) * mix_alpha;
 
-		fragColor = mix(col, mix_color, alpha);
+		gl_FragColor = mix(col, mix_color, alpha);
 	} else {
-		fragColor = col;
+		gl_FragColor = col;
 	}
 }

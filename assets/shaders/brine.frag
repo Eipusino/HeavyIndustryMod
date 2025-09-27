@@ -17,9 +17,7 @@ uniform vec2 u_campos;
 uniform vec2 u_resolution;
 uniform float u_time;
 
-in vec2 v_texCoords;
-
-out vec4 fragColor;
+varying vec2 v_texCoords;
 
 void main() {
 	vec2 c = v_texCoords.xy;
@@ -28,18 +26,18 @@ void main() {
 	float btime = u_time / 8000.0;
 
 	// First noise layer with original scale
-	float noise1 = (texture(u_noise, (coords) / NSCALE + vec2(btime) * vec2(-0.9, 0.8)).r +
-					texture(u_noise, (coords) / NSCALE + vec2(btime * 1.1) * vec2(-0.8, -1.0)).r) / 2.0;
+	float noise1 = (texture2D(u_noise, (coords) / NSCALE + vec2(btime) * vec2(-0.9, 0.8)).r +
+					texture2D(u_noise, (coords) / NSCALE + vec2(btime * 1.1) * vec2(-0.8, -1.0)).r) / 2.0;
 
 	// Second noise layer, scaled differently
-	float noise2 = (texture(u_noise, (coords) / (NSCALE * 1.5) + vec2(btime) * vec2(1.0, -0.5)).r +
-					texture(u_noise, (coords) / (NSCALE * 1.5) + vec2(btime * 1.2) * vec2(0.6, 1.0)).r) / 2.0;
+	float noise2 = (texture2D(u_noise, (coords) / (NSCALE * 1.5) + vec2(btime) * vec2(1.0, -0.5)).r +
+					texture2D(u_noise, (coords) / (NSCALE * 1.5) + vec2(btime * 1.2) * vec2(0.6, 1.0)).r) / 2.0;
 
 	// Third noise layer, even smaller scale
-	float noise3 = (texture(u_noise, (coords) / (NSCALE * 2.5) + vec2(btime) * vec2(-0.7, 0.9)).r +
-					texture(u_noise, (coords) / (NSCALE * 2.5) + vec2(btime * 0.9) * vec2(0.4, -0.8)).r) / 2.0;
+	float noise3 = (texture2D(u_noise, (coords) / (NSCALE * 2.5) + vec2(btime) * vec2(-0.7, 0.9)).r +
+					texture2D(u_noise, (coords) / (NSCALE * 2.5) + vec2(btime * 0.9) * vec2(0.4, -0.8)).r) / 2.0;
 
-	vec4 color = texture(u_texture, c);
+	vec4 color = texture2D(u_texture, c);
 
 	if (noise1 > 0.54 && noise1 < 0.57) {
 		color.rgb = S2;
@@ -57,5 +55,5 @@ void main() {
 		color.rgb = S5;
 	}
 
-	fragColor = color;
+	gl_FragColor = color;
 }

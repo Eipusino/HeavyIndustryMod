@@ -1,8 +1,6 @@
 #define HIGHP
 
-in vec2 v_texCoords;
-
-out vec4 fragColor;
+varying vec2 v_texCoords;
 
 uniform mat4 u_invProj;
 uniform mat4 u_invProjView;
@@ -36,13 +34,13 @@ void main() {
 	vec4 view = u_invProjView * vec4(ndc, -1.0, 1.0);
 	vec3 ray = normalize(view.xyz / view.w - u_camPos);
 
-	float srcDepth = texture(u_srcDepth, uv).r;
+	float srcDepth = texture2D(u_srcDepth, uv).r;
 	vec4 viewDepth = u_invProj * vec4(uv.x * 2.0 - 1.0, uv.y * 2.0 - 1.0, srcDepth * 2.0 - 1.0, 1.0);
 	float depth = length(viewDepth.xyz / viewDepth.w);
 
 	vec2 bound;
 	if (intersectSphere(u_relCamPos, ray, u_radius, bound) && depth > bound.x) {
-		fragColor = texture(u_src, v_texCoords);
+		gl_FragColor = texture2D(u_src, v_texCoords);
 		gl_FragDepth = srcDepth;
 	} else {
 		discard;
