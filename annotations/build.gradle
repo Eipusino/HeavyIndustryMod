@@ -19,8 +19,9 @@ java {
 }
 
 dependencies {
-	implementation "com.github.Anuken.Arc:arc-core:$mindustryVersion"
-	implementation "com.github.Anuken.Mindustry:core:$mindustryVersion"
+	//implementation "com.github.Anuken.Arc:arc-core:$mindustryVersion"
+	//implementation "com.github.Anuken.Mindustry:core:$mindustryVersion"
+	implementation files("${project(":").projectDir}/libs/mindustry-v8-150.1.jar")
 }
 
 tasks.withType(JavaCompile).configureEach {

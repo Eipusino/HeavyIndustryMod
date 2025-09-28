@@ -322,7 +322,7 @@ public final class Utils {
 		return -1;
 	}
 
-	/** See {@code String.repeat(int)}. */
+	/** @see String#repeat(int) */
 	public static String repeat(String key, int count) {
 		if (count <= 0 || key.isEmpty()) return "";
 		if (count == 1) return key;
@@ -364,8 +364,10 @@ public final class Utils {
 
 	public static String generateRandomString(int length) {
 		char[] chars = new char[length];
+		int range = printableChars.length - 1;
+
 		for (int i = 0; i < length; i++) {
-			chars[i] = printableChars[Mathf.random(printableChars.length - 1)];
+			chars[i] = printableChars[Mathf.random(range)];
 		}
 		return String.valueOf(chars);
 	}
@@ -1352,26 +1354,33 @@ public final class Utils {
 		return out;
 	}
 
-	@SuppressWarnings("unchecked")
-	public static <T> T[] insertElementAtFirst(T[] originalArray, T element) {
-		return insertElementAtFirst(originalArray, element, (Class<T>) originalArray.getClass().componentType());
-	}
-
 	/**
 	 * Insert an element at the first position of the array. Low performance.
 	 *
 	 * @param originalArray the source array.
 	 * @param element       Inserted elements.
-	 * @param clazz         Types of array.
 	 * @return Array after inserting elements.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T[] insertElementAtFirst(T[] originalArray, T element, Class<T> clazz) {
-		T[] newArray = (T[]) Array.newInstance(clazz, originalArray.length + 1);
+	public static <T> T[] insertAtFirst(T[] originalArray, T element) {
+		T[] newArray = (T[]) Array.newInstance(originalArray.getClass().componentType(), originalArray.length + 1);
 
 		newArray[0] = element;
 
 		System.arraycopy(originalArray, 0, newArray, 1, originalArray.length);
+
+		return newArray;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T[] removeFirst(T[] originalArray) {
+		if (originalArray.length <= 1) {
+			return (T[]) Array.newInstance(originalArray.getClass().componentType(), 0);
+		}
+
+		T[] newArray = (T[]) Array.newInstance(originalArray.getClass().componentType(), originalArray.length - 1);
+
+		System.arraycopy(originalArray, 1, newArray, 0, originalArray.length - 1);
 
 		return newArray;
 	}

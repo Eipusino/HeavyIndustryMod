@@ -36,6 +36,7 @@ import heavyindustry.graphics.HShaders;
 import heavyindustry.graphics.HTextures;
 import heavyindustry.graphics.MathRenderer;
 import heavyindustry.graphics.ScreenSampler;
+import heavyindustry.graphics.g2d.RangeExtractor;
 import heavyindustry.input.InputAggregator;
 import heavyindustry.mod.HMods;
 import heavyindustry.mod.HScripts;
@@ -46,7 +47,6 @@ import heavyindustry.ui.HStyles;
 import heavyindustry.util.CollectionList;
 import heavyindustry.util.IconLoader;
 import heavyindustry.util.PlatformImpl;
-import heavyindustry.util.UnsupportedPlatformException;
 import heavyindustry.util.Utils;
 import heavyindustry.world.Worlds;
 import mindustry.Vars;
@@ -147,6 +147,7 @@ public final class HeavyIndustryMod extends Mod {
 					HShaders.load();
 					HCacheLayer.load();
 					MathRenderer.load();
+					RangeExtractor.load();
 
 					HVars.inputAggregator = new InputAggregator();
 				});
@@ -165,7 +166,9 @@ public final class HeavyIndustryMod extends Mod {
 			}
 		});
 
-		Core.app.post(HScripts::init);
+		if (!OS.isIos) {
+			Core.app.post(HScripts::init);
+		}
 
 		ScreenSampler.resetMark();
 	}
@@ -290,11 +293,12 @@ public final class HeavyIndustryMod extends Mod {
 		}
 	}
 
-	static void loadLibrary() throws UnsupportedPlatformException {
-		if (OS.isIos) throw new UnsupportedPlatformException("Not supporting loading Impl.jar on IOS platform");
+	static void loadLibrary() throws Throwable {
+		if (OS.isIos) throw new UnsupportedOperationException("Not supporting loading Impl.jar on IOS platform");
 
-		platformImplType = loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" :
-				"heavyindustry.desktop.DesktopImpl", true, clazz -> {
+		Log.info("Use @", Class.forName("sun.misc.Unsafe"));// Ensure that the Unsafe class exists.
+
+		platformImplType = loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl", true, clazz -> {
 			Object object = clazz.getConstructor().newInstance();
 
 			if (object instanceof PlatformImpl core) {

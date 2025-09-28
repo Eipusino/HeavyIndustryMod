@@ -6,6 +6,7 @@ import arc.func.Intf;
 import arc.graphics.Pixmap;
 import arc.graphics.Pixmaps;
 import arc.graphics.Texture;
+import arc.graphics.Texture.TextureFilter;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Point2;
@@ -89,7 +90,7 @@ public class DrawAntiSpliceBlock extends DrawBlock {
 
 		Pixmaps.bleed(pixmap, 2);
 		Texture texture = new Texture(pixmap);
-		texture.setFilter(Texture.TextureFilter.linear);
+		texture.setFilter(TextureFilter.linear);
 		return new TextureRegion(texture);
 	}
 

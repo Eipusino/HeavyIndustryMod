@@ -6,6 +6,7 @@ import arc.func.Intf;
 import arc.graphics.Pixmap;
 import arc.graphics.Pixmaps;
 import arc.graphics.Texture;
+import arc.graphics.Texture.TextureFilter;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.PixmapRegion;
 import arc.graphics.g2d.TextureRegion;
@@ -86,7 +87,7 @@ public class DrawDirSpliceBlock extends DrawBlock {
 
 		Pixmaps.bleed(map, 2);
 		Texture tex = new Texture(map);
-		tex.setFilter(Texture.TextureFilter.linear);
+		tex.setFilter(TextureFilter.linear);
 		return new TextureRegion(tex);
 	}
 

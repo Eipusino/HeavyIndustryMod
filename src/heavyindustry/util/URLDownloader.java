@@ -6,6 +6,7 @@ import arc.func.Cons;
 import arc.func.ConsT;
 import arc.graphics.Pixmap;
 import arc.graphics.Texture;
+import arc.graphics.Texture.TextureFilter;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Http;
 import arc.util.Log;
@@ -79,7 +80,7 @@ public final class URLDownloader {
 			Core.app.post(() -> {
 				try {
 					Texture tex = new Texture(pix);
-					tex.setFilter(Texture.TextureFilter.linear);
+					tex.setFilter(TextureFilter.linear);
 					result.set(tex);
 					pix.dispose();
 				} catch (Exception e) {

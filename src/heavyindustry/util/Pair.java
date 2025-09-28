@@ -59,15 +59,15 @@ public class Pair<K, V> implements Map.Entry<K, V>, Cloneable, Serializable {
 	}
 
 	/**
-	 * If modifiable is true, replace the given value with the current value.
+	 * Replaces the value corresponding to this entry with the specified value.
 	 *
-	 * @param v value
-	 * @return the value
+	 * @return old value corresponding to the entry
 	 */
 	@Override
-	public V setValue(V v) {
-		value = v;
-		return value;
+	public V setValue(V newValue) {
+		V oldValue = value;
+		value = newValue;
+		return oldValue;
 	}
 
 	@SuppressWarnings("unchecked")

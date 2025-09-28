@@ -12,8 +12,10 @@ public interface PlatformImpl {
 
 	void setPublic(Class<?> type);
 
+	/** @return The caller class of the current method. */
 	Class<?> callerClass();
 
+	/** @return The highest authority lookup. */
 	Lookup lookup();
 
 	default Field[] getFields(Class<?> cls) {
@@ -28,8 +30,12 @@ public interface PlatformImpl {
 		return cls.getDeclaredConstructors();
 	}
 
+	/**
+	 * Call {@link MethodHandle#invokeWithArguments(Object[])} without throwing an exception. Poor performance, not
+	 * recommended for use.
+	 */
 	@SuppressWarnings("unchecked")
-	default <T> T invoke(MethodHandle handle, Object... args) {
+	default <T> T invokeWithArguments(MethodHandle handle, Object... args) {
 		try {
 			return (T) handle.invokeWithArguments(args);
 		} catch (Throwable e) {

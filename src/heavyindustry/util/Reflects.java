@@ -3,6 +3,7 @@ package heavyindustry.util;
 import arc.func.Prov;
 import arc.struct.Seq;
 import arc.util.Nullable;
+import heavyindustry.HVars;
 import mindustry.Vars;
 
 import java.lang.reflect.Constructor;
@@ -23,7 +24,7 @@ import static heavyindustry.util.Utils.requireNonNull;
  * @since 1.0.6
  */
 public final class Reflects {
-	public static Map<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
+	public static final Map<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
 
 	/** Don't let anyone instantiate this class. */
 	private Reflects() {}
@@ -465,27 +466,43 @@ public final class Reflects {
 	}
 
 	public static Field getField(Class<?> type, String name) {
+		return getField(type, name, true);
+	}
+
+	public static Field getField(Class<?> type, String name, boolean access) {
 		try {
-			return type.getDeclaredField(name);
+			Field field = type.getDeclaredField(name);
+			if (access) field.setAccessible(true);
+			return field;
 		} catch (NoSuchFieldException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public static Field getField(Object object, String name) {
+		return getField(object, name, true);
 	}
 
 	/** Gets a field of a model without throwing exceptions. */
-	public static Field getField(Object object, String name) {
+	public static Field getField(Object object, String name, boolean access) {
 		try {
-			return object.getClass().getDeclaredField(name);
+			Field field = object.getClass().getDeclaredField(name);
+			if (access) field.setAccessible(true);
+			return field;
 		} catch (NoSuchFieldException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	/** Gets a value from a field of an model without throwing exceptions. */
+	/**
+	 * Gets a value from a field of an model without throwing exceptions.
+	 * <p>This method does not call the {@link Field#setAccessible(boolean)} method, and it is necessary to
+	 * ensure that the field is accessible or has been set to be accessible. This is due to performance
+	 * considerations.
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getField(Object object, Field field) {
 		try {
-			field.setAccessible(true);
 			return (T) field.get(object);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
@@ -494,17 +511,23 @@ public final class Reflects {
 
 	public static boolean getBoolField(Object object, Field field) {
 		try {
-			field.setAccessible(true);
 			return field.getBoolean(object);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public static float getFloatField(Object object, Field field) {
+	public static byte getByteField(Object object, Field field) {
 		try {
-			field.setAccessible(true);
-			return field.getFloat(object);
+			return field.getByte(object);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static short getShortField(Object object, Field field) {
+		try {
+			return field.getShort(object);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
@@ -512,8 +535,39 @@ public final class Reflects {
 
 	public static int getIntField(Object object, Field field) {
 		try {
-			field.setAccessible(true);
 			return field.getInt(object);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static long getLongField(Object object, Field field) {
+		try {
+			return field.getLong(object);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static float getFloatField(Object object, Field field) {
+		try {
+			return field.getFloat(object);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static double getDoubleField(Object object, Field field) {
+		try {
+			return field.getDouble(object);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static char getCharField(Object object, Field field) {
+		try {
+			return field.getChar(object);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
@@ -570,6 +624,11 @@ public final class Reflects {
 		return invokeMethod(method, object, arrayOf());
 	}
 
+	/**
+	 * Call {@link Method#invoke(Object, Object[])} without throwing an exception.
+	 * <p>This method will not call {@link Method#setAccessible(boolean)}, please ensure that the method is
+	 * accessible or set to accessible. This is due to performance considerations.
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T invokeMethod(Method method, Object object, Object[] args) {
 		try {
@@ -850,48 +909,49 @@ public final class Reflects {
 	}
 
 	public static void copyProperties(Object source, Object target) {
-		try {
-			targetFieldMap.clear();
+		targetFieldMap.clear();
 
-			Class<?> targetClass = target.getClass();
-			while (targetClass != null) {
-				for (Field field : targetClass.getDeclaredFields()) {
-					if (!Modifier.isFinal(field.getModifiers())) {
-						field.setAccessible(true);
-						targetFieldMap.put(field.getName(), field);
+		Class<?> targetClass = target.getClass();
+		while (targetClass != null) {
+			for (Field field : targetClass.getDeclaredFields()) {
+				if (!Modifier.isFinal(field.getModifiers())) {
+					if (!HVars.hasUnsafe) field.setAccessible(true);
+					targetFieldMap.put(field.getName(), field);
+				}
+			}
+			if (targetClass == Object.class) break;
+
+			targetClass = targetClass.getSuperclass();
+		}
+
+		targetFieldMap.remove("id");
+
+		Class<?> sourceClass = source.getClass();
+		while (sourceClass != null) {
+			for (Field sourceField : sourceClass.getDeclaredFields()) {
+				if (Modifier.isFinal(sourceField.getModifiers())) {
+					continue;
+				}
+				if (!HVars.hasUnsafe) sourceField.setAccessible(true);
+
+				Field targetField = targetFieldMap.get(sourceField.getName());
+				if (targetField != null && isAssignable(sourceField.getType(), targetField.getType())) {
+					if (HVars.hasUnsafe) {
+						Object value = Unsafer.get(sourceField, source);
+						Unsafer.set(targetField, target, value);
+					} else {
+						Object value = getField(source, sourceField);
+						setField(target, targetField, value);
 					}
 				}
-				if (targetClass == Object.class) break;
-
-				targetClass = targetClass.getSuperclass();
 			}
+			if (sourceClass == Object.class) break;
 
-			targetFieldMap.remove("id");
-
-			Class<?> sourceClass = source.getClass();
-			while (sourceClass != null) {
-				for (Field sourceField : sourceClass.getDeclaredFields()) {
-					if (Modifier.isFinal(sourceField.getModifiers())) {
-						continue;
-					}
-					sourceField.setAccessible(true);
-
-					Field targetField = targetFieldMap.get(sourceField.getName());
-					if (targetField != null && isAssignable(sourceField.getType(), targetField.getType())) {
-						Object value = sourceField.get(source);
-						targetField.set(target, value);
-					}
-				}
-				if (sourceClass == Object.class) break;
-
-				sourceClass = sourceClass.getSuperclass();
-			}
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			throw new RuntimeException(e);
+			sourceClass = sourceClass.getSuperclass();
 		}
 	}
 
-	private static boolean isAssignable(Class<?> sourceType, Class<?> targetType) {
+	static boolean isAssignable(Class<?> sourceType, Class<?> targetType) {
 		return targetType.isAssignableFrom(sourceType);
 	}
 }

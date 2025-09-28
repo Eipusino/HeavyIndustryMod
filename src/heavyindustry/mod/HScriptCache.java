@@ -2,11 +2,10 @@ package heavyindustry.mod;
 
 import arc.graphics.Pixmap;
 import arc.graphics.Texture;
+import arc.graphics.TextureData;
 import arc.graphics.gl.FileTextureData;
 import arc.graphics.gl.PixmapTextureData;
-import heavyindustry.HVars;
 import heavyindustry.util.Reflects;
-import heavyindustry.util.Unsafer;
 
 import java.lang.reflect.Field;
 
@@ -16,6 +15,7 @@ public final class HScriptCache {
 	static {
 		try {
 			pixmapField = FileTextureData.class.getDeclaredField("pixmap");
+			pixmapField.setAccessible(true);
 		} catch (NoSuchFieldException e) {
 			throw new RuntimeException();
 		}
@@ -24,12 +24,11 @@ public final class HScriptCache {
 	private HScriptCache() {}
 
 	public static Pixmap pixmapOf(Texture texture) {
-		if (texture.getTextureData() instanceof PixmapTextureData ptd) {
-			return ptd.consumePixmap();
-		}
-		if (texture.getTextureData() instanceof FileTextureData ftd) {
-			return Reflects.getField(ftd, pixmapField);
-		}
+		TextureData data = texture.getTextureData();
+
+		if (data instanceof PixmapTextureData ptd) return ptd.consumePixmap();
+		if (data instanceof FileTextureData ftd) return Reflects.getField(ftd, pixmapField);
+
 		return null;
 	}
 }

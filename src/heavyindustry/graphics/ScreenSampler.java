@@ -19,11 +19,10 @@ import mindustry.graphics.Pixelator;
 import java.lang.reflect.Field;
 
 public final class ScreenSampler {
-	private static final Field lastBoundFramebufferField, bufferField;
+	static final Field lastBoundFramebufferField, bufferField;
 
-	private static FrameBuffer worldBuffer, uiBuffer, currBuffer;
-
-	private static final Lazy<FrameBuffer> pixelatorBuffer;
+	static FrameBuffer worldBuffer, uiBuffer, currBuffer;
+	static final Lazy<FrameBuffer> pixelatorBuffer;
 
 	private static boolean activity = false;
 
