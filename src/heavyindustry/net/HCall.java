@@ -2,9 +2,11 @@ package heavyindustry.net;
 
 import arc.struct.Seq;
 import heavyindustry.input.InputAggregator.TapResult;
+import heavyindustry.world.blocks.production.UnitMinerPoint.UnitMinerPointBuild;
 import mindustry.Vars;
 import mindustry.gen.Player;
 import mindustry.net.Net;
+import mindustry.world.Tile;
 
 import static heavyindustry.HVars.inputAggregator;
 
@@ -56,6 +58,28 @@ public final class HCall {
 				inputAggregator.tap(player, x, y, targets, accepted);
 			}
 
+			Vars.net.send(packet, true);
+		}
+	}
+
+	public static void releaseShieldWallBuildSync(Tile tile, float damage) {
+		if (Vars.net.server()) {
+			ReleaseShieldWallBuildSyncPacket packet = new ReleaseShieldWallBuildSyncPacket();
+			packet.tile = tile;
+			packet.damage = damage;
+			Vars.net.send(packet, true);
+		}
+	}
+
+	public static void minerPointDroneSpawned(Tile tile, int id) {
+		if ((Vars.net.server() || !Vars.net.active()) && tile != null && tile.build instanceof UnitMinerPointBuild build) {
+			build.spawned(id);
+		}
+
+		if (Vars.net.server()) {
+			DroneSpawnedCallPacket packet = new DroneSpawnedCallPacket();
+			packet.tile = tile;
+			packet.id = id;
 			Vars.net.send(packet, true);
 		}
 	}

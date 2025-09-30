@@ -7,6 +7,7 @@ import arc.util.Time;
 import heavyindustry.entities.HEntity;
 import mindustry.entities.EntityCollisions;
 import mindustry.entities.EntityCollisions.SolidPred;
+import mindustry.gen.Groups;
 import mindustry.graphics.Layer;
 
 public class YggdrasilUnit extends BaseUnit {
@@ -119,29 +120,39 @@ public class YggdrasilUnit extends BaseUnit {
 
 	@Override
 	public void add() {
-		if (!isAdded()) {
-			legs.clear();
-			for (int i = 0; i < 32; i++) {
-				YggdrasilLeg leg = new YggdrasilLeg();
-				leg.set(this);
-				legs.add(leg);
-			}
-			legs.sort(l -> l.length);
+		if (added || count() >= 1) return;
 
-			for (int i = 0; i < groupSize; i++) {
-				for (int j = i; j < legs.size; j += groupSize) {
-					YggdrasilLeg l = legs.get(j);
-					l.group = i;
-				}
-			}
+		legs.clear();
+		for (int i = 0; i < 32; i++) {
+			YggdrasilLeg leg = new YggdrasilLeg();
+			leg.set(this);
+			legs.add(leg);
+		}
+		legs.sort(l -> l.length);
 
-			for (int i = 0; i < 24; i++) {
-				YggdrasilTentacle t = new YggdrasilTentacle();
-				//t.set(this, (360f / 12f) * i);
-				t.set(this, Mathf.random(360f));
-				tentacles.add(t);
+		for (int i = 0; i < groupSize; i++) {
+			for (int j = i; j < legs.size; j += groupSize) {
+				YggdrasilLeg l = legs.get(j);
+				l.group = i;
 			}
 		}
-		super.add();
+
+		for (int i = 0; i < 24; i++) {
+			YggdrasilTentacle t = new YggdrasilTentacle();
+			//t.set(this, (360f / 12f) * i);
+			t.set(this, Mathf.random(360f));
+			tentacles.add(t);
+		}
+
+		index__all = Groups.all.addIndex(this);
+		index__unit = Groups.unit.addIndex(this);
+		index__sync = Groups.sync.addIndex(this);
+		index__draw = Groups.draw.addIndex(this);
+
+		added = true;
+
+		updateLastPosition();
+
+		team.data().updateCount(type, 1);
 	}
 }

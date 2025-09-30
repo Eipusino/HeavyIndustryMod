@@ -17,6 +17,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.ai.MinerPointAI;
 import heavyindustry.content.HUnitTypes;
+import heavyindustry.net.HCall;
 import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
@@ -29,8 +30,6 @@ import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
-import mindustry.io.TypeIO;
-import mindustry.net.Packet;
 import mindustry.type.Item;
 import mindustry.type.UnitType;
 import mindustry.ui.Bar;
@@ -167,41 +166,6 @@ public class UnitMinerPoint extends Block {
 		if (buildType == null) buildType = UnitMinerPointBuild::new;
 	}
 
-	public static class DroneSpawnedCallPacket extends Packet {
-		public Tile tile;
-		public int id;
-		private byte[] data;
-
-		public DroneSpawnedCallPacket() {
-			data = NODATA;
-		}
-
-		@Override
-		public void write(Writes write) {
-			TypeIO.writeTile(write, tile);
-			write.i(id);
-		}
-
-		@Override
-		public void read(Reads read, int length) {
-			data = read.b(length);
-		}
-
-		@Override
-		public void handled() {
-			BAIS.setBytes(data);
-			tile = TypeIO.readTile(READ);
-			id = READ.i();
-		}
-
-		@Override
-		public void handleClient() {
-			if (tile != null && tile.build instanceof UnitMinerPointBuild miner) {
-				miner.spawned(id);
-			}
-		}
-	}
-
 	public class UnitMinerPointBuild extends Building {
 		public @Nullable Tile sortTile = null;
 
@@ -284,7 +248,7 @@ public class UnitMinerPoint extends Block {
 					unit.rotation = 90f;
 					unit.add();
 					units.add(unit);
-					droneSpawned(tile, unit.id);
+					HCall.minerPointDroneSpawned(tile, unit.id);
 				}
 			}
 
@@ -297,17 +261,6 @@ public class UnitMinerPoint extends Block {
 				if (unit.controller() instanceof MinerPointAI ai) {
 					ai.ore = alwaysCons ? efficiency > 0.4 ? sortTile : null : sortTile;
 				}
-			}
-		}
-
-		protected void droneSpawned(Tile tile, int id) {
-			if ((Vars.net.server() || !Vars.net.active()) && tile != null && tile.build instanceof UnitMinerPointBuild ti) ti.spawned(id);
-
-			if (Vars.net.server()) {
-				DroneSpawnedCallPacket packet = new DroneSpawnedCallPacket();
-				packet.tile = tile;
-				packet.id = id;
-				Vars.net.send(packet, true);
 			}
 		}
 

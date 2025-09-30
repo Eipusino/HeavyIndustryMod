@@ -5,6 +5,7 @@ import heavyindustry.entities.HEntity;
 import heavyindustry.math.Mathm;
 import mindustry.entities.EntityCollisions;
 import mindustry.entities.EntityCollisions.SolidPred;
+import mindustry.gen.Groups;
 import mindustry.type.UnitType;
 
 public class DespondencyUnit extends BaseLegsUnit {
@@ -80,11 +81,22 @@ public class DespondencyUnit extends BaseLegsUnit {
 
 	@Override
 	public void add() {
-		if (!added) {
-			trueHealth = type.health;
-			HEntity.exclude(this);
-		}
-		super.add();
+		if (added || count() >= 1) return;
+
+		trueHealth = type.health;
+		HEntity.exclude(this);
+
+		index__all = Groups.all.addIndex(this);
+		index__unit = Groups.unit.addIndex(this);
+		index__sync = Groups.sync.addIndex(this);
+		index__draw = Groups.draw.addIndex(this);
+
+		added = true;
+
+		updateLastPosition();
+		resetLegs();
+
+		team.data().updateCount(type, 1);
 	}
 
 	@Override

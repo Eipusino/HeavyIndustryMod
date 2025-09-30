@@ -41,7 +41,7 @@ public class EipusinoUnit extends NucleoidUnit {
 
 	@Override
 	public void remove() {
-		if (added) HEntity.removeExclude(this);;
+		if (added) HEntity.removeExclude(this);
 		HEntity.eipusino = null;
 
 		super.remove();

@@ -10,14 +10,12 @@ import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.content.HFx;
-import mindustry.Vars;
+import heavyindustry.net.HCall;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.bullet.BulletType;
 import mindustry.gen.Bullet;
 import mindustry.gen.Groups;
-import mindustry.io.TypeIO;
-import mindustry.net.Packet;
 import mindustry.ui.Bar;
 import mindustry.world.Tile;
 import mindustry.world.blocks.defense.Wall;
@@ -60,48 +58,9 @@ public class ReleaseShieldWall extends Wall {
 		((ReleaseShieldWallBuild) tile.build).setDamage(damage);
 	}
 
-	public static void releaseShieldWallBuildSync(Tile tile, float damage) {
-		if (Vars.net.server()) {
-			ReleaseShieldWallBuildSyncPacket packet = new ReleaseShieldWallBuildSyncPacket();
-			packet.tile = tile;
-			packet.damage = damage;
-			Vars.net.send(packet, true);
-		}
-	}
-
 	@Override
 	protected void initBuilding() {
 		if (buildType == null) buildType = ReleaseShieldWallBuild::new;
-	}
-
-	public static class ReleaseShieldWallBuildSyncPacket extends Packet {
-		private byte[] data;
-
-		public Tile tile;
-		public float damage;
-
-		@Override
-		public void write(Writes write) {
-			TypeIO.writeTile(write, tile);
-			write.f(damage);
-		}
-
-		@Override
-		public void read(Reads read, int length) {
-			data = read.b(length);
-		}
-
-		@Override
-		public void handled() {
-			BAIS.setBytes(data);
-			tile = TypeIO.readTile(READ);
-			damage = READ.f();
-		}
-
-		@Override
-		public void handleClient() {
-			ReleaseShieldWall.setDamage(tile, damage);
-		}
 	}
 
 	public class ReleaseShieldWallBuild extends WallBuild {
@@ -121,7 +80,7 @@ public class ReleaseShieldWall extends Wall {
 			rePacketTimer = Math.min(rePacketTimer + Time.delta, 60);
 			timeScale = getCharge();
 			if (totalDamage > maxHandle) {
-				releaseShieldWallBuildSync(tile, totalDamage);
+				HCall.releaseShieldWallBuildSync(tile, totalDamage);
 				shieldBullet = new ShieldBullet(size * 64).create(tile.build, team, x, y, 0);
 				shieldLife = lifetime;
 				acceptDamage = false;

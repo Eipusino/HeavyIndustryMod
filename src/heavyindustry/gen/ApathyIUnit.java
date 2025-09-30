@@ -26,6 +26,7 @@ import heavyindustry.util.Utils;
 import mindustry.audio.SoundLoop;
 import mindustry.gen.Bullet;
 import mindustry.gen.Call;
+import mindustry.gen.Groups;
 import mindustry.gen.Hitboxc;
 import mindustry.graphics.Layer;
 import mindustry.type.UnitType;
@@ -106,6 +107,7 @@ public class ApathyIUnit extends BaseUnit {
 	@Override
 	public void rawDamage(float amount) {
 		super.rawDamage(amount);
+
 		if (sentryHealTime > 1) {
 			sentryHealTime -= Math.min(10f, amount / 60f);
 			if (sentryHealTime < 1) sentryHealTime = 1f;
@@ -322,6 +324,7 @@ public class ApathyIUnit extends BaseUnit {
 	@Override
 	public void destroy() {
 		super.destroy();
+
 		BloodSplatter.explosion(95, x, y, hitSize / 2, 400f, 45f);
 		BloodSplatter.explosion(40, x, y, hitSize / 2.5f, 200f, 45f);
 
@@ -405,6 +408,22 @@ public class ApathyIUnit extends BaseUnit {
 		last = current;
 		current = h;
 		shifting = true;
+	}
+
+	@Override
+	public void add() {
+		if (added || count() >= 1) return;
+
+		index__all = Groups.all.addIndex(this);
+		index__unit = Groups.unit.addIndex(this);
+		index__sync = Groups.sync.addIndex(this);
+		index__draw = Groups.draw.addIndex(this);
+
+		added = true;
+
+		updateLastPosition();
+
+		team.data().updateCount(type, 1);
 	}
 
 	@Override
