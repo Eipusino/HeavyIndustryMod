@@ -8,6 +8,10 @@ import heavyindustry.annotations.ListClasses;
 import heavyindustry.annotations.ListPackages;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.files.InternalFileTree;
+import heavyindustry.graphics.g2d.CutBatch;
+import heavyindustry.graphics.g2d.DevastationBatch;
+import heavyindustry.graphics.g2d.FragmentationBatch;
+import heavyindustry.graphics.g2d.VaporizeBatch;
 import heavyindustry.input.InputAggregator;
 import heavyindustry.util.PlatformImpl;
 import mindustry.Vars;
@@ -46,6 +50,13 @@ public final class HVars {
 	public static Texture white;
 	public static TextureRegion whiteRegion;
 	public static AtlasRegion whiteAtlas;
+
+	public static FragmentationBatch fragBatch;
+	public static CutBatch cutBatch;
+	public static VaporizeBatch vaporBatch;
+	public static DevastationBatch devasBatch;
+
+	public static HeavyIndustryListener listener;
 
 	public static final float boardTimeTotal = 60 * 6;
 

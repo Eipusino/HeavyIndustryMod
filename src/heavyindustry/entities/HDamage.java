@@ -32,6 +32,7 @@ import arc.util.pooling.Pool;
 import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import heavyindustry.content.HFx;
+import heavyindustry.entities.HEntity.LineHitHandler;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.BoolGrid;
 import heavyindustry.util.Utils;
@@ -47,7 +48,7 @@ import mindustry.entities.Units;
 import mindustry.entities.Units.Sortf;
 import mindustry.game.EventType.UnitDamageEvent;
 import mindustry.game.Team;
-import mindustry.game.Teams;
+import mindustry.game.Teams.TeamData;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.gen.Groups;
@@ -1095,14 +1096,14 @@ public final class HDamage {
 		return tmpUnit;
 	}
 
-	public static float hitLaser(Team team, float width, float x1, float y1, float x2, float y2, Boolf<Healthc> within, Boolf<Healthc> stop, Utils.LineHitHandler<Healthc> cons) {
+	public static float hitLaser(Team team, float width, float x1, float y1, float x2, float y2, Boolf<Healthc> within, Boolf<Healthc> stop, LineHitHandler<Healthc> cons) {
 		hseq.removeAll(h -> {
 			hPool.free(h);
 			return true;
 		});
 		float ll = Mathf.dst(x1, y1, x2, y2);
 
-		for (Teams.TeamData data : Vars.state.teams.present) {
+		for (TeamData data : Vars.state.teams.present) {
 			if (data.team != team) {
 				if (data.unitTree != null) {
 					HEntity.intersectLine(data.unitTree, width, x1, y1, x2, y2, (t, x, y) -> {

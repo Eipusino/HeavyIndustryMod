@@ -5,12 +5,15 @@ import arc.Events;
 import arc.util.Log;
 import arc.util.Strings;
 import arc.util.Structs;
+import heavyindustry.entities.HEntity;
+import heavyindustry.entities.bullet.ApathyAoEBulletType;
 import heavyindustry.game.TeamPayloadData;
 import heavyindustry.util.CollectionList;
 import heavyindustry.util.Pair;
 import heavyindustry.world.blocks.defense.CommandableBlock;
 import mindustry.Vars;
 import mindustry.game.EventType.ResetEvent;
+import mindustry.game.EventType.WorldLoadEvent;
 import mindustry.io.SaveFileReader;
 import mindustry.io.SaveVersion;
 import mindustry.world.Block;
@@ -28,6 +31,11 @@ public final class Worlds {
 	public static void load() {
 		Events.on(ResetEvent.class, event -> {
 			commandableBuilds.clear();
+
+			HEntity.reset();
+		});
+		Events.on(WorldLoadEvent.class, event -> {
+			ApathyAoEBulletType.initTree();
 		});
 	}
 

@@ -62,7 +62,7 @@ import java.io.DataOutputStream;
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
 public interface DataPackable {
-	BaseLongMap<Func> objectProvMap = new BaseLongMap<>(Func.class);
+	LongMapf<Func> objectProvMap = new LongMapf<>(Func.class);
 
 	/**
 	 * Register a constructor of a wrapper type that takes an array of objects

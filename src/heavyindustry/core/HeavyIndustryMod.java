@@ -13,6 +13,7 @@ import arc.util.OS;
 import arc.util.Strings;
 import arc.util.Time;
 import heavyindustry.HVars;
+import heavyindustry.HeavyIndustryListener;
 import heavyindustry.content.HBlocks;
 import heavyindustry.content.HBullets;
 import heavyindustry.content.HItems;
@@ -25,6 +26,7 @@ import heavyindustry.content.HStatusEffects;
 import heavyindustry.content.HTechTree;
 import heavyindustry.content.HUnitTypes;
 import heavyindustry.content.HWeathers;
+import heavyindustry.entities.HEntity;
 import heavyindustry.files.HFiles;
 import heavyindustry.game.HTeam;
 import heavyindustry.gen.Entitys;
@@ -36,7 +38,11 @@ import heavyindustry.graphics.HShaders;
 import heavyindustry.graphics.HTextures;
 import heavyindustry.graphics.MathRenderer;
 import heavyindustry.graphics.ScreenSampler;
+import heavyindustry.graphics.g2d.CutBatch;
+import heavyindustry.graphics.g2d.DevastationBatch;
+import heavyindustry.graphics.g2d.FragmentationBatch;
 import heavyindustry.graphics.g2d.RangeExtractor;
+import heavyindustry.graphics.g2d.VaporizeBatch;
 import heavyindustry.input.InputAggregator;
 import heavyindustry.mod.HMods;
 import heavyindustry.mod.HScripts;
@@ -149,6 +155,11 @@ public final class HeavyIndustryMod extends Mod {
 					MathRenderer.load();
 					RangeExtractor.load();
 
+					HVars.fragBatch = new FragmentationBatch();
+					HVars.cutBatch = new CutBatch();
+					HVars.vaporBatch = new VaporizeBatch();
+					HVars.devasBatch = new DevastationBatch();
+
 					HVars.inputAggregator = new InputAggregator();
 				});
 			}
@@ -171,6 +182,8 @@ public final class HeavyIndustryMod extends Mod {
 		}
 
 		ScreenSampler.resetMark();
+
+		HVars.listener = new HeavyIndustryListener();
 	}
 
 	@Override
@@ -198,7 +211,7 @@ public final class HeavyIndustryMod extends Mod {
 
 	@Override
 	public void init() {
-		HUnitTypes.loadImmunities();
+		HUnitTypes.init();
 
 		if (!Vars.headless) {
 			HIcon.load();

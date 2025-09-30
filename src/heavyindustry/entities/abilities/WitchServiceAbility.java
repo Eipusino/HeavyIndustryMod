@@ -5,7 +5,7 @@ import arc.math.geom.Rect;
 import arc.util.Time;
 import heavyindustry.content.HFx;
 import heavyindustry.content.HStatusEffects;
-import heavyindustry.util.BaseObjectFloatMap;
+import heavyindustry.util.ObjectFloatMapf;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
 import mindustry.entities.Units;
@@ -17,7 +17,7 @@ import mindustry.type.StatusEffect;
 import static mindustry.Vars.tilesize;
 
 public class WitchServiceAbility extends Ability {
-	public BaseObjectFloatMap<Unit> findMap = new BaseObjectFloatMap<>(Unit.class);
+	public ObjectFloatMapf<Unit> findMap = new ObjectFloatMapf<>(Unit.class);
 
 	public float width = 60f, height = 60f;
 	public StatusEffect effectType = HStatusEffects.apoptosis;

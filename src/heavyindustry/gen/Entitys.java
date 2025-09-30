@@ -4,7 +4,7 @@ import arc.func.Func;
 import arc.func.Prov;
 import arc.util.Structs;
 import heavyindustry.entities.effect.VapourizeEffect.VapourizeEffectState;
-import heavyindustry.util.BaseObjectIntMap;
+import heavyindustry.util.ObjectIntMapf;
 import heavyindustry.util.CollectionObjectMap;
 import mindustry.gen.EntityMapping;
 import mindustry.gen.Entityc;
@@ -19,7 +19,7 @@ import java.util.Map;
  * @since 1.0.6
  */
 public final class Entitys {
-	private static final BaseObjectIntMap<Class<? extends Entityc>> classIdMap = new BaseObjectIntMap<>(Class.class);
+	private static final ObjectIntMapf<Class<? extends Entityc>> classIdMap = new ObjectIntMapf<>(Class.class);
 	private static final Map<String, Prov<? extends Entityc>> needIdMap = new CollectionObjectMap<>(String.class, Prov.class);
 
 	/** Don't let anyone instantiate this class. */
@@ -91,6 +91,10 @@ public final class Entitys {
 		register(EipusinoUnit.class, EipusinoUnit::new);
 		register(DPSMechUnit.class, DPSMechUnit::new);
 		register(InvincibleShipUnit.class, InvincibleShipUnit::new);
+		register(ApathyIUnit.class, ApathyIUnit::new);
+		register(ApathySentryUnit.class, ApathySentryUnit::new);
+		register(DespondencyUnit.class, DespondencyUnit::new);
+		register(YggdrasilUnit.class, YggdrasilUnit::new);
 		register(UltFire.class, UltFire::new);
 		register(UltPuddle.class, UltPuddle::new);
 		register(DiffBullet.class, DiffBullet::new);

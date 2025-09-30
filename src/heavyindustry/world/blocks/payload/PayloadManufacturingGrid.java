@@ -23,7 +23,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.content.HFx;
 import heavyindustry.ui.CraftGridImage;
-import heavyindustry.util.BaseIntMap;
+import heavyindustry.util.IntMapf;
 import heavyindustry.world.meta.HStat;
 import mindustry.Vars;
 import mindustry.content.Fx;
@@ -549,7 +549,7 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 	}
 
 	public static class PayloadManufacturingRecipe {
-		public BaseIntMap<UnlockableContent> requirements = new BaseIntMap<>(UnlockableContent.class);
+		public IntMapf<UnlockableContent> requirements = new IntMapf<>(UnlockableContent.class);
 		// if not null then this recipe is shapeless
 		public PayloadStack[] shapelessRequirements;
 		public UnlockableContent result;

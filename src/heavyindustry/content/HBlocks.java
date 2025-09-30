@@ -41,6 +41,7 @@ import heavyindustry.graphics.HLayer;
 import heavyindustry.graphics.HPal;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.type.Recipe;
+import heavyindustry.util.Constant;
 import heavyindustry.util.Utils;
 import heavyindustry.world.blocks.LinkBlock;
 import heavyindustry.world.blocks.PlaceholderBlock;
@@ -6424,7 +6425,7 @@ public final class HBlocks {
 					Table cont = new Table();
 					cont.defaults().size(55);
 					for (Team bt : Utils.baseTeams) {
-						ImageButton button = cont.button(((TextureRegionDrawable) Tex.whiteui).tint(bt.color), Styles.clearTogglei, 35, () -> {}).group(bg).get();
+						ImageButton button = cont.button(((TextureRegionDrawable) Tex.whiteui).tint(bt.color), Styles.clearTogglei, 35, Constant.RUNNABLE_NOTHING).group(bg).get();
 						button.changed(() -> {
 							if (button.isChecked()) {
 								if (Vars.player.team() == team) {

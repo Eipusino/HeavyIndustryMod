@@ -22,7 +22,7 @@ import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.ui.Elements;
-import heavyindustry.util.BaseObjectBoolMap;
+import heavyindustry.util.ObjectBoolMapf;
 import heavyindustry.util.CollectionOrderedMap;
 import heavyindustry.world.consumers.ConsumeItem;
 import mindustry.content.Fx;
@@ -748,8 +748,8 @@ public class MultiCrafter extends Block {
 		public DrawBlock drawer = new DrawDefault();
 
 		/** Consumption filters. */
-		public BaseObjectBoolMap<Item> itemFilter = new BaseObjectBoolMap<>(Item.class);
-		public BaseObjectBoolMap<Liquid> liquidFilter = new BaseObjectBoolMap<>(Liquid.class);
+		public ObjectBoolMapf<Item> itemFilter = new ObjectBoolMapf<>(Item.class);
+		public ObjectBoolMapf<Liquid> liquidFilter = new ObjectBoolMapf<>(Liquid.class);
 
 		public MultiCrafter owner = null;
 

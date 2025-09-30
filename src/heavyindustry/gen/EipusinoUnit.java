@@ -1,5 +1,6 @@
 package heavyindustry.gen;
 
+import heavyindustry.entities.HEntity;
 import mindustry.Vars;
 import mindustry.game.Team;
 import mindustry.gen.Groups;
@@ -22,6 +23,8 @@ public class EipusinoUnit extends NucleoidUnit {
 	public void add() {
 		// Only for use by the default team, and the quantity is limited to one.
 		if (!added && team == Vars.state.rules.defaultTeam && count() < 1) {
+			HEntity.exclude(this);
+
 			index__all = Groups.all.addIndex(this);
 			index__unit = Groups.unit.addIndex(this);
 			index__sync = Groups.sync.addIndex(this);
@@ -33,5 +36,12 @@ public class EipusinoUnit extends NucleoidUnit {
 
 			team.data().updateCount(type, 1);
 		}
+	}
+
+	@Override
+	public void remove() {
+		if (added) HEntity.removeExclude(this);;
+
+		super.remove();
 	}
 }

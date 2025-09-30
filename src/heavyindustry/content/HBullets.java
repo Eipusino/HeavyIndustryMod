@@ -15,9 +15,16 @@ import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.entities.HEntity;
 import heavyindustry.entities.bullet.AccelBulletType;
+import heavyindustry.entities.bullet.ApathyAoEBulletType;
+import heavyindustry.entities.bullet.ApathyBigLaserBulletType;
+import heavyindustry.entities.bullet.ApathySmallLaserBulletType;
+import heavyindustry.entities.bullet.ApathySweepLaserBulletType;
 import heavyindustry.entities.bullet.BlackHoleBulletType;
 import heavyindustry.entities.bullet.BoidBulletType;
 import heavyindustry.entities.bullet.EffectBulletType;
+import heavyindustry.entities.bullet.EmpathyPinBulletType;
+import heavyindustry.entities.bullet.EmpathySwordBulletType;
+import heavyindustry.entities.bullet.EmpathyTrackerBulletType;
 import heavyindustry.entities.bullet.LightningLinkerBulletType;
 import heavyindustry.entities.bullet.ShieldBreakerType;
 import heavyindustry.entities.bullet.StrafeLaserBulletType;
@@ -78,7 +85,8 @@ public final class HBullets {
 			ultFireball, basicSkyFrag, annMissile, singularityBulletStrafeLaser, singularityBulletAccel, singularityBulletLightningBall,
 			hyperBlast, hyperBlastLinker,
 			arc9000frag, arc9000, arc9000hyper,
-			collapseFrag, collapse;
+			collapseFrag, collapse,
+			smallLaser, sweep, aoe, bigLaser, sentryLaser, pin, tracker, sword;
 
 	/** Don't let anyone instantiate this class. */
 	private HBullets() {}
@@ -1523,5 +1531,17 @@ public final class HBullets {
 				Draw.z(z);
 			}
 		};
+		smallLaser = new ApathySmallLaserBulletType();
+		sweep = new ApathySweepLaserBulletType();
+		aoe = new ApathyAoEBulletType();
+		bigLaser = new ApathyBigLaserBulletType();
+		sentryLaser = new LaserBulletType(900f) {{
+			length = 1400f;
+			colors = new Color[]{Color.white};
+			width = 5f;
+		}};
+		pin = new EmpathyPinBulletType();
+		tracker = new EmpathyTrackerBulletType();
+		sword = new EmpathySwordBulletType();
 	}
 }

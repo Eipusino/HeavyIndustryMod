@@ -78,7 +78,7 @@ public class CharSeq {
 
 	/** Converts this char array to a Vec2 array, with pairs used for coordinates. */
 	public Seq<Vec2> toVec2Array() {
-		Seq<Vec2> out = new Seq<>(size / 2);
+		Seq<Vec2> out = new Seq<>(true, size / 2, Vec2.class);
 		for (int i = 0; i < size; i += 2) {
 			out.add(new Vec2(items[i], items[i + 1]));
 		}

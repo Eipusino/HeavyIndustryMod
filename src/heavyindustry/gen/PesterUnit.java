@@ -18,8 +18,8 @@ import heavyindustry.entities.HUnitSorts;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.math.HInterps;
 import heavyindustry.type.unit.PesterUnitType;
-import heavyindustry.util.BaseObjectFloatMap;
-import heavyindustry.util.BaseObjectIntMap;
+import heavyindustry.util.ObjectFloatMapf;
+import heavyindustry.util.ObjectIntMapf;
 import heavyindustry.util.Utils;
 import mindustry.ai.types.MissileAI;
 import mindustry.content.Fx;
@@ -48,7 +48,7 @@ import static mindustry.Vars.state;
 import static mindustry.Vars.world;
 
 public class PesterUnit extends BaseUnit implements Pesterc {
-	public static final BaseObjectIntMap<Healthc> checked = new BaseObjectIntMap<>(Healthc.class);
+	public static final ObjectIntMapf<Healthc> checked = new ObjectIntMapf<>(Healthc.class);
 
 	public static Building tmpBuilding = null;
 
@@ -73,7 +73,7 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 	public transient float salvoReloadLast = 0f;
 	public transient float salvoReloadTarget = 0f;
 
-	public BaseObjectFloatMap<Healthc> hatred = new BaseObjectFloatMap<>(Healthc.class);
+	public ObjectFloatMapf<Healthc> hatred = new ObjectFloatMapf<>(Healthc.class);
 	public Seq<Healthc> nextTargets = new Seq<>(Healthc.class);
 
 	protected Trail[] trails = {};
@@ -551,7 +551,7 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 	}
 
 	@Override
-	public BaseObjectFloatMap<Healthc> hatred() {
+	public ObjectFloatMapf<Healthc> hatred() {
 		return hatred;
 	}
 
@@ -641,7 +641,7 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 	}
 
 	@Override
-	public void hatred(BaseObjectFloatMap<Healthc> value) {
+	public void hatred(ObjectFloatMapf<Healthc> value) {
 		hatred = value;
 	}
 

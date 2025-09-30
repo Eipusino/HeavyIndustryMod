@@ -6,7 +6,6 @@ import arc.graphics.Pixmap;
 import arc.graphics.Pixmaps;
 import arc.graphics.g2d.PixmapRegion;
 import arc.math.Mathf;
-import heavyindustry.util.Utils;
 
 public final class HPixmaps {
 	private HPixmaps() {}
@@ -113,7 +112,7 @@ public final class HPixmaps {
 		}
 	}
 
-	public static PixmapRegion color(PixmapRegion pixmap, Utils.ColorBool cond, Utils.Int2Color to) {
+	public static PixmapRegion color(PixmapRegion pixmap, ColorBool cond, Int2Color to) {
 		pixmap.pixmap.each((x, y) -> {
 			if (x >= pixmap.x && x < pixmap.x + pixmap.width && y >= pixmap.y && y < pixmap.y + pixmap.height &&
 					cond.get(pixmap.pixmap.get(x, y))) {
@@ -125,5 +124,13 @@ public final class HPixmaps {
 
 	public static PixmapRegion color(PixmapRegion pixmap, Color from, Color to) {
 		return color(pixmap, c -> c == from.rgba(), (x, y) -> to);
+	}
+
+	public interface ColorBool {
+		boolean get(int c);
+	}
+
+	public interface Int2Color {
+		Color get(int x, int y);
 	}
 }

@@ -3,7 +3,9 @@ package heavyindustry.gen;
 import arc.math.geom.Position;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import mindustry.Vars;
 import mindustry.entities.EntityGroup;
+import mindustry.gen.Building;
 import mindustry.gen.Drawc;
 import mindustry.gen.Entityc;
 import mindustry.gen.Groups;
@@ -18,6 +20,12 @@ public abstract class BaseEntity implements Drawc {
 	public float x = 0, y = 0, drawSize = 40;
 	public boolean added;
 	public transient int id = EntityGroup.nextId();
+
+	@Override
+	public void afterReadAll() {}
+
+	@Override
+	public void beforeWrite() {}
 
 	@Override
 	public float clipSize() {
@@ -181,6 +189,11 @@ public abstract class BaseEntity implements Drawc {
 	@Override
 	public void id(int v) {
 		id = v;
+	}
+
+	@Override
+	public Building buildOn() {
+		return Vars.world.buildWorld(x, y);
 	}
 
 	@Override

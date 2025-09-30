@@ -2,6 +2,8 @@ package heavyindustry.util;
 
 import arc.func.Boolc;
 import arc.func.Boolp;
+import arc.func.Floatc;
+import arc.func.Floatc2;
 import arc.func.Floatp;
 import heavyindustry.func.Doublep;
 
@@ -12,6 +14,8 @@ public final class Constant {
 	public static final Boolc BOOLC_NOTHING = b -> {};
 	public static final Boolp BOOLP_TRUE = () -> true;
 	public static final Boolp BOOLP_FALSE = () -> false;
+	public static final Floatc FLOATC_NOTHING = a -> {};
+	public static final Floatc2 FLOATC2_NOTHING = (a, b) -> {};
 
 	// ----------- Collection FIELD -------------
 

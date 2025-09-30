@@ -857,7 +857,7 @@ public class CharMap<V> implements Iterable<CharMap.Entry<V>> {
 
 		/** Returns a new array containing the remaining values. */
 		public Seq<V> toArray() {
-			Seq<V> array = new Seq<>(true, map.size);
+			Seq<V> array = new Seq<>(true, map.size, map.valueComponentType);
 			while (hasNext)
 				array.add(next());
 			return array;

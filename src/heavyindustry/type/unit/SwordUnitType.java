@@ -19,6 +19,7 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.type.StatusEffect;
+import mindustry.world.meta.Env;
 
 import static mindustry.Vars.iconMed;
 
@@ -45,7 +46,7 @@ public class SwordUnitType extends BaseUnitType {
 		aiController = FlyingAI::new;
 		isEnemy = false;
 		allowedInPayloads = logicControllable = playerControllable = false;
-		envDisabled = 0;
+		envDisabled = Env.none;
 		payloadCapacity = 0;
 
 		hittable = targetable = physics = useUnitCap = false;

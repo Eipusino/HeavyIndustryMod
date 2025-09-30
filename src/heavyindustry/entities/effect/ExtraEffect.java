@@ -4,7 +4,7 @@ import arc.Events;
 import arc.math.Mathf;
 import arc.util.Time;
 import heavyindustry.entities.effect.VapourizeEffect.VapourizeEffectState;
-import heavyindustry.util.BaseIntMap;
+import heavyindustry.util.IntMapf;
 import heavyindustry.util.CollectionList;
 import mindustry.content.Liquids;
 import mindustry.entities.Puddles;
@@ -16,8 +16,8 @@ import mindustry.gen.Unit;
 
 public final class ExtraEffect {
 	private static final CollectionList<BuildQueue> vapourizeQueue = new CollectionList<>(512, BuildQueue.class);
-	private static final BaseIntMap<BuildQueue> buildQMap = new BaseIntMap<>(BuildQueue.class);
-	private static final BaseIntMap<VapourizeEffectState> vapourizeMap = new BaseIntMap<>(VapourizeEffectState.class);
+	private static final IntMapf<BuildQueue> buildQMap = new IntMapf<>(BuildQueue.class);
+	private static final IntMapf<VapourizeEffectState> vapourizeMap = new IntMapf<>(VapourizeEffectState.class);
 
 	static {
 		Events.on(WorldLoadEvent.class, event -> {

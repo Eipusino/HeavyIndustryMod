@@ -4,6 +4,7 @@ import arc.func.Boolf;
 import arc.func.Cons;
 import arc.func.Intc2;
 import arc.graphics.Color;
+import arc.graphics.g2d.Lines;
 import arc.math.Angles;
 import arc.math.Mathf;
 import arc.math.Rand;
@@ -15,6 +16,7 @@ import arc.math.geom.QuadTree;
 import arc.math.geom.QuadTree.QuadTreeObject;
 import arc.math.geom.Rect;
 import arc.math.geom.Vec2;
+import arc.struct.IntIntMap;
 import arc.struct.IntSet;
 import arc.struct.Seq;
 import arc.util.Nullable;
@@ -23,7 +25,6 @@ import arc.util.Tmp;
 import arc.util.pooling.Pools;
 import heavyindustry.content.HFx;
 import heavyindustry.gen.Spawner;
-import heavyindustry.util.Utils;
 import mindustry.Vars;
 import mindustry.core.World;
 import mindustry.entities.Effect;
@@ -49,12 +50,16 @@ public final class HEntity {
 	public static final Vec2 v1 = new Vec2(), v2 = new Vec2(), v3 = new Vec2(), v4 = new Vec2(), v11 = new Vec2(), v12 = new Vec2(), v13 = new Vec2();
 	public static final Rect rect = new Rect(), hitRect = new Rect(), rect1 = new Rect(), rect2 = new Rect();
 	public static final Rand rand = new Rand();
+	public static final Seq<Building> buildings = new Seq<>(Building.class);
 
 	static final Seq<Unit> units = new Seq<>(Unit.class);
 	static final IntSet collided = new IntSet(), collided2 = new IntSet();
-	public static final Seq<Building> buildings = new Seq<>(Building.class);
 	static final IntSet collidedBlocks = new IntSet();
 	static Tile tileParma;
+
+	static final IntSet exclude = new IntSet();
+	static final Seq<Unit> excludeSeq = new Seq<>(Unit.class), queueExcludeRemoval = new Seq<>(Unit.class), excludeReAdd = new Seq<>(Unit.class);
+	static final IntIntMap excludeTime = new IntIntMap();
 
 	private HEntity() {}
 
@@ -510,7 +515,7 @@ public final class HEntity {
 		}
 	}
 
-	public static <T extends QuadTreeObject> void scanQuadTree(QuadTree<T> tree, Utils.QuadTreeHandler within, Cons<T> cons) {
+	public static <T extends QuadTreeObject> void scanQuadTree(QuadTree<T> tree, QuadTreeHandler within, Cons<T> cons) {
 		if (within.get(tree.bounds, true)) {
 			for (T t : tree.objects) {
 				t.hitbox(rect2);
@@ -528,7 +533,7 @@ public final class HEntity {
 		}
 	}
 
-	public static <T extends QuadTreeObject> void intersectLine(QuadTree<T> tree, float width, float x1, float y1, float x2, float y2, Utils.LineHitHandler<T> cons) {
+	public static <T extends QuadTreeObject> void intersectLine(QuadTree<T> tree, float width, float x1, float y1, float x2, float y2, LineHitHandler<T> cons) {
 		rect1.set(tree.bounds).grow(width);
 		if (Intersector.intersectSegmentRectangle(x1, y1, x2, y2, rect1)) {
 			for (T t : tree.objects) {
@@ -621,5 +626,99 @@ public final class HEntity {
 		tree.getObjects(seq);
 
 		return seq;
+	}
+
+	public static void update() {
+		if (!queueExcludeRemoval.isEmpty()) {
+			for (Unit u : queueExcludeRemoval) {
+				if (u == null) continue;
+
+				exclude.remove(u.id);
+				excludeSeq.remove(u);
+				excludeTime.remove(u.id);
+			}
+			queueExcludeRemoval.clear();
+		}
+	}
+
+	public static void reset() {
+		units.clear();
+		exclude.clear();
+		excludeSeq.clear();
+		queueExcludeRemoval.clear();
+		excludeReAdd.clear();
+		excludeTime.clear();
+	}
+
+	public static void progressiveStar(float x, float y, float rad, float rot, int count, int stellation, float fin) {
+		int c = Mathf.ceil(count * fin);
+		for (int i = 0; i < c; i++) {
+			//360f * (1f / count) * i * stellation + rotation;
+			float r1 = 360f * (1f / count) * stellation * i + rot;
+			float r2 = 360f * (1f / count) * stellation * (i + 1f) + rot;
+
+			float rx1 = Mathf.cosDeg(r1) * rad + x, ry1 = Mathf.sinDeg(r1) * rad + y;
+			float rx2 = Mathf.cosDeg(r2) * rad + x, ry2 = Mathf.sinDeg(r2) * rad + y;
+
+			if (fin >= 1f || (i < (c - 1))) {
+				Lines.line(rx1, ry1, rx2, ry2);
+			} else {
+				float f = fin < 1f ? (fin * count) % 1f : 1f;
+				float lx = Mathf.lerp(rx1, rx2, f), ly = Mathf.lerp(ry1, ry2, f);
+				Lines.line(rx1, ry1, lx, ly);
+			}
+		}
+	}
+
+	public static void progressiveCircle(float x, float y, float rad, float rot, float fin) {
+		if (fin < 0.9999f) {
+			if (fin < 0.001f) return;
+			int r = Lines.circleVertices(rad * fin);
+			//if (r <= 0) return;
+			Lines.beginLine();
+			for (int i = 0; i < r; i++) {
+				float ang = (360f / (r - 1)) * fin * i + rot;
+				float sx = Mathf.cosDeg(ang) * rad, sy = Mathf.sinDeg(ang) * rad;
+				Lines.linePoint(sx + x, sy + y);
+			}
+			Lines.endLine();
+		} else {
+			Lines.circle(x, y, rad);
+		}
+	}
+
+	public static void exclude(Unit unit) {
+		if (exclude.add(unit.id)) {
+			excludeSeq.add(unit);
+			excludeTime.put(unit.id, (int) (Time.millis() / 1000));
+		}
+	}
+
+	public static boolean removeExclude(Unit unit) {
+		if (!queueExcludeRemoval.contains(unit) && ((int) (Time.millis() / 1000) - 30) > excludeTime.get(unit.id, 0xffffffff)) {
+			queueExcludeRemoval.add(unit);
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean containsExclude(int id) {
+		return exclude.contains(id);
+	}
+
+	public static void clearExclude() {
+		exclude.clear();
+		excludeSeq.clear();
+		queueExcludeRemoval.clear();
+		excludeReAdd.clear();
+		excludeTime.clear();
+	}
+
+	public interface LineHitHandler<T> {
+		void get(T t, float x, float y);
+	}
+
+	public interface QuadTreeHandler {
+		boolean get(Rect rect, boolean tree);
 	}
 }

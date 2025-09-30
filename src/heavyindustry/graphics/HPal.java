@@ -82,7 +82,18 @@ public final class HPal {
 			energyGreen = new Color(0xf2ff9cff),
 			enemyRedLight = new Color(0xff6464ff),
 			enemyRedDark = new Color(0xc93b3bff),
-			darkOutline = new Color(0x383848ff);
+			darkOutline = new Color(0x383848ff),
+
+			primary = new Color(0x9a75ffff),
+			blood = new Color(0.5f, 0.1f, 0.1f),
+			paleYellow = new Color(1f, 1f, 0.5f),
+			empathy = new Color(0xffcae9ff),
+			empathyAdd = new Color(0xff7dbcff),
+			empathyDark = new Color(0xff2e93ff),
+			red = new Color(0xf53036ff),
+			redLight = red.cpy().mul(2f),
+			darkRed = new Color(0.5f, 0f, 0f),
+			melt = new Color(0xffa20aff);
 
 	/** Don't let anyone instantiate this class. */
 	private HPal() {}

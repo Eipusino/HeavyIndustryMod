@@ -2,7 +2,7 @@ package heavyindustry.gen;
 
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
-import heavyindustry.util.BaseObjectFloatMap;
+import heavyindustry.util.ObjectFloatMapf;
 import mindustry.gen.Entityc;
 import mindustry.gen.Healthc;
 import mindustry.gen.Teamc;
@@ -47,7 +47,7 @@ public interface Pesterc extends BaseUnitc {
 
 	float salvoReloadTarget();
 
-	BaseObjectFloatMap<Healthc> hatred();
+	ObjectFloatMapf<Healthc> hatred();
 
 	Seq<Healthc> nextTargets();
 
@@ -83,7 +83,7 @@ public interface Pesterc extends BaseUnitc {
 
 	void salvoReloadTarget(float value);
 
-	void hatred(BaseObjectFloatMap<Healthc> value);
+	void hatred(ObjectFloatMapf<Healthc> value);
 
 	void nextTargets(Seq<Healthc> value);
 

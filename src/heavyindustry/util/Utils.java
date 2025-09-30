@@ -87,7 +87,10 @@ public final class Utils {
 			c1 = new Color(), c2 = new Color(), c3 = new Color(), c4 = new Color(), c5 = new Color(),
 			c6 = new Color(), c7 = new Color(), c8 = new Color(), c9 = new Color(), c10 = new Color();
 
-	public static final Rand rand = new Rand();
+	public static Rect r = new Rect(), r2 = new Rect();
+	public static Vec2 v = new Vec2(), vv = new Vec2();
+
+	public static final Rand rand = new Rand(), rand2 = new Rand();
 
 	public static final Team[] baseTeams = {Team.derelict, Team.sharded, Team.crux, Team.green, Team.malis, Team.blue};
 
@@ -1576,22 +1579,6 @@ public final class Utils {
 			while (first.hasNext()) cons.get(first.next());
 			while (second.hasNext()) cons.get(second.next());
 		}
-	}
-
-	public interface ColorBool {
-		boolean get(int c);
-	}
-
-	public interface Int2Color {
-		Color get(int x, int y);
-	}
-
-	public interface LineHitHandler<T> {
-		void get(T t, float x, float y);
-	}
-
-	public interface QuadTreeHandler {
-		boolean get(Rect rect, boolean tree);
 	}
 
 	public static class ExtPos implements Position {
