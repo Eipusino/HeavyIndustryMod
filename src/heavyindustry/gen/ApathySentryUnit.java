@@ -8,6 +8,7 @@ import arc.math.Mathf;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.content.HBullets;
+import heavyindustry.entities.HEntity;
 import heavyindustry.entities.effect.BloodSplatter;
 import mindustry.entities.Units;
 import mindustry.gen.Sounds;
@@ -43,6 +44,8 @@ public class ApathySentryUnit extends BaseUnit {
 
 	@Override
 	public void update() {
+		if (HEntity.eipusino != null && team != HEntity.eipusino.team) team = HEntity.eipusino.team;
+
 		super.update();
 
 		if (owner == null || !owner.isValid()) {

@@ -65,6 +65,11 @@ public class DesSpearEntity extends BaseEntity {
 	}
 
 	@Override
+	public int classId() {
+		return Entitys.getId(DesSpearEntity.class);
+	}
+
+	@Override
 	public void update() {
 		time += Time.delta;
 
@@ -154,7 +159,6 @@ public class DesSpearEntity extends BaseEntity {
 	public void add() {
 		if (added) return;
 		Groups.all.add(this);
-		Groups.draw.add(this);
 		if (draw) Groups.draw.add(this);
 		added = true;
 	}
@@ -162,7 +166,6 @@ public class DesSpearEntity extends BaseEntity {
 	@Override
 	public void remove() {
 		if (!added) return;
-		Groups.draw.remove(this);
 		Groups.all.remove(this);
 		if (draw) Groups.draw.remove(this);
 		added = false;

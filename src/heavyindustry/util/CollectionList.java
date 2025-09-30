@@ -511,6 +511,11 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 		return items[index];
 	}
 
+	public E get(int index, E def) {
+		if (index >= size || index <= 0) return def;
+		return items[index];
+	}
+
 	@Override
 	public E set(int index, E value) {
 		if (index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);

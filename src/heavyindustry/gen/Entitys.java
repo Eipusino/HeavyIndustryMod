@@ -84,7 +84,6 @@ public final class Entitys {
 		register(FloatMechCoreUnit.class, FloatMechCoreUnit::new);
 		register(SentryUnit.class, SentryUnit::new);
 		register(SwordUnit.class, SwordUnit::new);
-		register(SkillUnit.class, SkillUnit::new);
 		register(EnergyUnit.class, EnergyUnit::new);
 		register(PesterUnit.class, PesterUnit::new);
 		register(NucleoidUnit.class, NucleoidUnit::new);
@@ -100,6 +99,10 @@ public final class Entitys {
 		register(DiffBullet.class, DiffBullet::new);
 		register(BlackHoleBullet.class, BlackHoleBullet::new);
 		register(Spawner.class, Spawner::new);
+		register(DesSpearEntity.class, DesSpearEntity::new);
+		register(DesShockWaveEntity.class, DesShockWaveEntity::new);
+		register(RenderGroupEntity.class, RenderGroupEntity::new);
+		register(ShrapnelEntity.class, ShrapnelEntity::new);
 		register(VapourizeEffectState.class, VapourizeEffectState::new);
 	}
 }

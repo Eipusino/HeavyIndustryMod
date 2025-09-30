@@ -5,6 +5,7 @@ import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.HVars;
 import heavyindustry.entities.HEntity;
 import heavyindustry.math.Mathm;
 import heavyindustry.type.unit.DespondencyUnitType;
@@ -255,7 +256,7 @@ public class DespondencyAI extends AIController {
 		}
 
 		if (target instanceof Unit u && !death && !HEntity.containsExclude(u.id) && unit.within(u, unit.range() * 0.8f + u.hitSize / 2.5f) && reloadTime <= 0f) {
-			float scr = (u.type.estimateDps() + u.maxHealth * u.healthMultiplier);
+			float scr = (HVars.listener.getUnitDps(u.type) + u.maxHealth * u.healthMultiplier);
 			if (Mathm.isNaNInfinite(scr) || scr > 1000000f || (u.hitSize > 100f && scr > 200000f)) {
 				death = true;
 			}
@@ -270,7 +271,7 @@ public class DespondencyAI extends AIController {
 				if (data.team != unit.team && data.team != Team.derelict) {
 					for (Unit u : data.units) {
 						if (u instanceof TimedKillc) continue;
-						double s = (((double) u.type.estimateDps()) + (double) (u.maxHealth * u.healthMultiplier)) - (u.dst(unit) / 1000f);
+						double s = (((double) HVars.listener.getUnitDps(u.type)) + (double) (u.maxHealth * u.healthMultiplier)) - (u.dst(unit) / 1000f);
 						if (t == null || s > score) {
 							t = u;
 							score = s;
@@ -298,10 +299,10 @@ public class DespondencyAI extends AIController {
 							float reloadSpeed = ((Turret) tb.block).reload;
 							if (!(build instanceof PowerTurretBuild)) {
 								for (AmmoEntry ammo : tb.ammo) {
-									max = (Math.max(max, ammo.type().estimateDPS()) / reloadSpeed) * ammo.amount;
+									max = (Math.max(max, HVars.listener.getBulletDps(ammo.type())) / reloadSpeed) * ammo.amount;
 								}
 							} else {
-								max = Math.max(max, ((PowerTurret) tb.block).shootType.estimateDPS());
+								max = Math.max(max, HVars.listener.getBulletDps(((PowerTurret) tb.block).shootType));
 							}
 							max *= build.efficiency;
 

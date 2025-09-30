@@ -14,6 +14,7 @@ import arc.util.Tmp;
 import heavyindustry.ai.ApathyIAI;
 import heavyindustry.content.HFx;
 import heavyindustry.content.HUnitTypes;
+import heavyindustry.entities.HEntity;
 import heavyindustry.entities.effect.BloodSplatter;
 import heavyindustry.entities.shift.PrismShift;
 import heavyindustry.entities.shift.ShiftHandler;
@@ -64,6 +65,7 @@ public class ApathyIUnit extends BaseUnit {
 	@Override
 	public void setType(UnitType type) {
 		super.setType(type);
+
 		ApathyUnitType u = (ApathyUnitType) type;
 		current = u.handlers.get(0);
 	}
@@ -120,6 +122,8 @@ public class ApathyIUnit extends BaseUnit {
 
 	@Override
 	public void update() {
+		if (HEntity.eipusino != null && team != HEntity.eipusino.team) team = HEntity.eipusino.team;
+
 		if (health < 0f) health = 0f;
 		super.update();
 		float stressScaled = getStressScaled();
@@ -223,7 +227,7 @@ public class ApathyIUnit extends BaseUnit {
 		updateSentries();
 	}
 
-	void updateSentries() {
+	public void updateSentries() {
 		//if (sentrySpawnDelay2 > 0) createSentries = false;
 		if (createSentries && sentrySpawnDelay2 <= 0f) {
 			if (sentrySpawnDelay <= 0f) {
@@ -289,7 +293,7 @@ public class ApathyIUnit extends BaseUnit {
 		}
 	}
 
-	void repositionSentries(boolean heal) {
+	public void repositionSentries(boolean heal) {
 		int idx = 0;
 		//ApathyIAI ai = (ApathyIAI)controller;
 
@@ -329,7 +333,7 @@ public class ApathyIUnit extends BaseUnit {
 		HSounds.apathyDeath.play(1f);
 	}
 
-	float getHeartBeat() {
+	public float getHeartBeat() {
 		if (heartBeatTimer > 1) return 0f;
 		float f = heartBeatTimer;
 		float p = Mathf.curve(f, 0.1f, 0.25f);

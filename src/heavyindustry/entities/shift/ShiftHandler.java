@@ -11,10 +11,15 @@ import arc.struct.Seq;
 import arc.util.Tmp;
 import heavyindustry.gen.ApathyIUnit;
 import heavyindustry.gen.HSounds;
+import heavyindustry.util.CollectionList;
 
 import static heavyindustry.HVars.MOD_PREFIX;
 
-public class ShiftHandler {
+public class ShiftHandler implements Comparable<ShiftHandler> {
+	public static final CollectionList<ShiftHandler> all = new CollectionList<>(true, 5, ShiftHandler.class);
+
+	public final int id;
+
 	public TextureRegion[] regions;
 	public int regionLength;
 	public String name;
@@ -30,9 +35,17 @@ public class ShiftHandler {
 
 	public float[] critPoints;
 
-	public ShiftHandler(String name, int regionLength) {
-		this.name = name;
-		this.regionLength = regionLength;
+	public ShiftHandler(String theName, int theRegionLength) {
+		name = theName;
+		regionLength = theRegionLength;
+
+		id = all.size;
+		all.add(this);
+	}
+
+	@Override
+	public int compareTo(ShiftHandler o) {
+		return Integer.compare(id, o.id);
 	}
 
 	public void load() {
@@ -109,7 +122,6 @@ public class ShiftHandler {
 			//
 		}
 
-		@SuppressWarnings("CopyConstructorMissesField")
 		public ShiftPanel(ShiftPanel from) {
 			x1 = from.x2;
 			y1 = from.y2;

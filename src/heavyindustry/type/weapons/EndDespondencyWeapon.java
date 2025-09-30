@@ -14,6 +14,7 @@ import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.HVars;
 import heavyindustry.ai.DespondencyAI;
 import heavyindustry.gen.DesShockWaveEntity;
 import heavyindustry.gen.DesSpearEntity;
@@ -333,12 +334,12 @@ public class EndDespondencyWeapon extends Weapon {
 			float offset = ((unit.hitSize / 2f) / (1f + Mathf.pow(sc, 2f))) * sside;
 
 			Vec2 v = Tmp.v1.set(0f, offset).rotate(unit.rotation), v2 = Tmp.v2.rnd(Mathf.random(u.hitSize / 2.1f)), v3 = Tmp.v3.trns(unit.rotation, (unit.hitSize / 2f) * 1.6f);
-			float val = 1f / (1f + m.spears.size / 2f);
+			float value = 1f / (1f + m.spears.size / 2f);
 
 			//DesSpearEntity spear = DesSpearEntity.create(u, v.x + unit.x, v.y + unit.y, v.angleTo(u.x + v2.x, u.y + v2.y), false);
 			DesSpearEntity spear = DesSpearEntity.create(u, v.x + unit.x + v3.x, v.y + unit.y + v3.y, Angles.angle(unit.x + v.x + v3.x, unit.y + v.y + v3.y, u.x + v2.x, u.y + v2.y), false);
-			spear.forceScl = val;
-			spear.damageScl = val / 4f;
+			spear.forceScl = value;
+			spear.damageScl = value / 4f;
 			spear.tx = v2.x;
 			spear.ty = v2.y;
 			//spear.size *= Mathf.random(0.9f, 1.1f);
@@ -396,8 +397,8 @@ public class EndDespondencyWeapon extends Weapon {
 	}
 
 	public static boolean isStray(Unit unit) {
-		float v = (unit.type.estimateDps() + unit.maxHealth * unit.healthMultiplier);
-		return v < 140000 && !Mathm.isNaNInfinite(v);
+		float value = (HVars.listener.getUnitDps(unit.type) + unit.maxHealth * unit.healthMultiplier);
+		return value < 140000 && !Mathm.isNaNInfinite(value);
 	}
 
 	@Override

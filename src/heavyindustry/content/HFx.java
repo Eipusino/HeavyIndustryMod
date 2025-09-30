@@ -24,8 +24,6 @@ import heavyindustry.entities.EdesspEntry;
 import heavyindustry.entities.UnitPointEntry;
 import heavyindustry.entities.abilities.MirrorFieldAbility;
 import heavyindustry.entities.bullet.HailStoneBulletType;
-import heavyindustry.entities.skill.ParrySkill.ParryData;
-import heavyindustry.gen.EffectData;
 import heavyindustry.graphics.Drawm;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.Draws;
@@ -71,7 +69,6 @@ public final class HFx {
 	public static final IntMapf<Effect> same = new IntMapf<>(Effect.class);
 
 	private static float percent = 0;
-	private static int index = 0;
 
 	public static final Effect
 			trailParticleEffect = new Effect(8f, e -> {
@@ -2412,40 +2409,6 @@ public final class HFx {
 					Fill.circle(e.x + Tmp.v1.x, e.y + Tmp.v1.y, data[0] * e.fout());
 				}
 			}).layer(Layer.bullet - 0.00999f),
-			parry = new Effect(36f, e -> {
-				if (!(e.data instanceof EffectData fx && fx.data instanceof ParryData data)) return;
-				float rot = 180f * Mathf.sign(!data.clockwise) * e.fin(Interp.pow3Out);
-
-				index = 0;
-				Angles.randLenVectors(e.id, 8, data.unit.hitSize + data.offset, 4f, (x, y) -> {
-					rand.setSeed(e.id + index++);
-
-					Lines.stroke((1f + rand.range(0.5f)) * e.fout());
-					Draw.color(HPal.monolithMid, HPal.monolithLight, HPal.monolithLighter, rand.random(0f, 1f));
-					Lines.arc(e.x, e.y, Mathf.dst(x, y), 0.2f + rand.range(0.1f), rand.random(360f) + rot + rand.range(45f));
-				});
-
-				Draw.z(Layer.flyingUnitLow);
-				Draw.blend(Blending.additive);
-				Draw.color();
-
-				for (int i = 0, len = Math.max(Mathf.roundPositive(Angles.angleDist(data.fromRot, data.toRot) / 45f), 2); i < len; i++) {
-					float f = i / (len - 1f);
-					Draw.alpha((i + 1f) / len * 0.5f);
-
-					e.scaled(24f * f, s -> {
-						Draw.mixcol(c1.set(HPal.monolithDarker).lerp(HPal.monolithLighter, f), Color.black, s.fin(Interp.pow2In));
-						Draw.rect(data.unit.type.fullIcon, e.x, e.y, Mathf.slerp(data.fromRot, data.toRot, f) - 90f);
-					});
-				}
-
-				Draw.alpha(e.fin(Interp.pow2Out));
-				e.scaled(24f, s -> {
-					Draw.mixcol(HPal.monolithLighter, Color.black, s.fin(Interp.pow2In));
-					Draw.rect(data.unit.type.fullIcon, e.x, e.y, Mathf.slerp(data.fromRot, data.toRot, s.fin(Interp.pow3Out)) - 90f);
-				});
-				Draw.blend();
-			}),
 			shield = new Effect(30f, e -> {
 				Draw.blend(Blending.additive);
 				Draw.color(Tmp.c1.set(HPal.primary).a(Mathf.absin(e.fin(Interp.pow2Out), 1f / 50f, 1f) * 0.5f * e.fout()));

@@ -6,8 +6,6 @@ import arc.util.Reflect;
 import arc.util.io.Reads;
 import arc.util.io.ReusableByteOutStream;
 import arc.util.io.Writes;
-import heavyindustry.entities.skill.Skill;
-import heavyindustry.entities.skill.Skill.SkillState;
 import heavyindustry.input.InputAggregator.TapResult;
 import heavyindustry.util.Utils;
 import mindustry.Vars;
@@ -28,8 +26,6 @@ import java.io.Serializable;
 public final class HTypeIO {
 	private static final ReusableByteOutStream bytes = new ReusableByteOutStream();
 	private static final Writes out = new Writes(new DataOutputStream(bytes));
-
-	private static final SkillState[] emptyStates = new SkillState[0];
 
 	/** Don't let anyone instantiate this class. */
 	private HTypeIO() {}
@@ -56,50 +52,6 @@ public final class HTypeIO {
 
 		for (int i = 0; i < len; i++) out[i] = Point2.unpack(read.i());
 		return out;
-	}
-
-	public static void writeSkills(Writes write, SkillState[] skills) {
-		write.s(skills.length);
-		for (SkillState skill : skills) {
-			write.str(skill.type().name);
-
-			bytes.reset();
-			out.b(skill.revision());
-			skill.write(out);
-
-			int len = bytes.size();
-			write.s(len);
-			write.b(bytes.getBytes(), 0, len);
-		}
-	}
-
-	public static SkillState[] readSkills(Reads read, SkillState[] skills) {
-		int len = read.s();
-		if (skills.length != len) skills = Utils.resize(skills, SkillState[]::new, len, null);
-
-		for (int i = 0; i < len; i++) {
-			String name = read.str();
-			read.s();
-
-			SkillState skill = skills[i];
-			if (skill == null || !skill.type().name.equals(name)) {
-				if (skill != null && skill.unit != null) skill.removed();
-				skill = skills[i] = Skill.create(name);
-			}
-
-			skill.read(read, read.b());
-		}
-
-		return skills;
-	}
-
-	public static SkillState[] readSkills(Reads read) {
-		for (int i = 0, len = read.s(); i < len; i++) {
-			read.str();
-			read.skip(read.s());
-		}
-
-		return emptyStates;
 	}
 
 	public static void writeStrings(Writes write, Seq<String> array) {

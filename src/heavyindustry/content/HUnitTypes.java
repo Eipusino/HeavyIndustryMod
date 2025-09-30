@@ -4005,7 +4005,7 @@ public final class HUnitTypes {
 					public void hitEntity(Bullet b, Hitboxc entity, float health) {
 						super.hitEntity(b, entity, health);
 
-						if (entity instanceof Unit u && !u.dead()) {
+						if (entity instanceof Unit u && !u.dead() && u.health > 0f) {
 							u.health = -1f;
 							u.maxHealth = -1f;
 						}

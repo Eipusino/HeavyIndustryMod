@@ -44,6 +44,11 @@ public class DesShockWaveEntity extends BaseEntity {
 	}
 
 	@Override
+	public int classId() {
+		return Entitys.getId(DesShockWaveEntity.class);
+	}
+
+	@Override
 	public void update() {
 		float lrange = time > 0 ? getRange() : 0f;
 		time += Time.delta / 120f;

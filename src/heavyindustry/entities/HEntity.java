@@ -24,6 +24,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.pooling.Pools;
 import heavyindustry.content.HFx;
+import heavyindustry.gen.EipusinoUnit;
 import heavyindustry.gen.Spawner;
 import mindustry.Vars;
 import mindustry.core.World;
@@ -60,6 +61,8 @@ public final class HEntity {
 	static final IntSet exclude = new IntSet();
 	static final Seq<Unit> excludeSeq = new Seq<>(Unit.class), queueExcludeRemoval = new Seq<>(Unit.class), excludeReAdd = new Seq<>(Unit.class);
 	static final IntIntMap excludeTime = new IntIntMap();
+
+	public static EipusinoUnit eipusino = null;
 
 	private HEntity() {}
 

@@ -4,6 +4,7 @@ import arc.graphics.g2d.Draw;
 import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.Time;
+import heavyindustry.entities.HEntity;
 import mindustry.entities.EntityCollisions;
 import mindustry.entities.EntityCollisions.SolidPred;
 import mindustry.graphics.Layer;
@@ -31,6 +32,8 @@ public class YggdrasilUnit extends BaseUnit {
 
 	@Override
 	public void update() {
+		if (HEntity.eipusino != null && team != HEntity.eipusino.team) team = HEntity.eipusino.team;
+
 		float maxProg = 0f;
 		//int lastGroup = Mathf.mod(group - (groupSize / 2 + 1), groupSize);
 		int cgroup = Mathf.mod(group, groupSize);

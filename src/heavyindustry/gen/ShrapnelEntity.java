@@ -23,10 +23,10 @@ import mindustry.graphics.Layer;
 
 public class ShrapnelEntity extends BaseEntity implements Poolable {
 	public IntSet collided = new IntSet();
-	TextureRegion region = new TextureRegion();
-	float[] verts = new float[4 * 4];
+	public TextureRegion region = new TextureRegion();
+	public float[] verts = new float[4 * 4];
 	public float damage;
-	float hitSize;
+	public float hitSize;
 
 	public float vx, vy, vr;
 	public float rotation;
@@ -64,6 +64,11 @@ public class ShrapnelEntity extends BaseEntity implements Poolable {
 		s.add();
 
 		return s;
+	}
+
+	@Override
+	public int classId() {
+		return Entitys.getId(ShrapnelEntity.class);
 	}
 
 	@Override

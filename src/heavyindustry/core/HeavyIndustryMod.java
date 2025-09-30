@@ -26,7 +26,6 @@ import heavyindustry.content.HStatusEffects;
 import heavyindustry.content.HTechTree;
 import heavyindustry.content.HUnitTypes;
 import heavyindustry.content.HWeathers;
-import heavyindustry.entities.HEntity;
 import heavyindustry.files.HFiles;
 import heavyindustry.game.HTeam;
 import heavyindustry.gen.Entitys;
@@ -90,6 +89,8 @@ public final class HeavyIndustryMod extends Mod {
 	public static @Nullable FloatingText floatingText;
 
 	static final List<Throwable> errors = new CollectionList<>(Throwable.class);
+
+	static boolean test = false;
 
 	static {
 		try {
@@ -177,7 +178,8 @@ public final class HeavyIndustryMod extends Mod {
 			}
 		});
 
-		if (!OS.isIos) {
+		// To prevent damage to other mod, it can only be enabled during testing
+		if (test && !OS.isIos) {
 			Core.app.post(HScripts::init);
 		}
 
@@ -211,6 +213,8 @@ public final class HeavyIndustryMod extends Mod {
 
 	@Override
 	public void init() {
+		HVars.listener.updateInit();
+
 		HUnitTypes.init();
 
 		if (!Vars.headless) {

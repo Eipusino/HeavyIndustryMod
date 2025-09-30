@@ -16,13 +16,13 @@ import heavyindustry.entities.HDamage.BasicPool;
 import mindustry.gen.Groups;
 
 public class RenderGroupEntity extends BaseEntity implements Poolable {
-	float bounds = 0f;
-	Seq<DrawnRegion> regions = new Seq<>(DrawnRegion.class);
+	public float bounds = 0f;
+	public Seq<DrawnRegion> regions = new Seq<>(DrawnRegion.class);
 
-	static RenderGroupEntity active;
-	static float minX, minY, maxX, maxY;
-	static float[] tmpVert = new float[4 * 6];
-	static Pool<DrawnRegion> regionPool = new BasicPool<>(DrawnRegion::new);
+	public static RenderGroupEntity active;
+	public static float minX, minY, maxX, maxY;
+	public static float[] tmpVert = new float[4 * 6];
+	public static Pool<DrawnRegion> regionPool = new BasicPool<>(DrawnRegion::new);
 
 	public static void capture() {
 		if (active != null) return;
@@ -50,7 +50,7 @@ public class RenderGroupEntity extends BaseEntity implements Poolable {
 		active = null;
 	}
 
-	static void updateBounds(float x, float y) {
+	public static void updateBounds(float x, float y) {
 		minX = Math.min(x, minX);
 		minY = Math.min(y, minY);
 
@@ -81,6 +81,11 @@ public class RenderGroupEntity extends BaseEntity implements Poolable {
 		}
 
 		return r;
+	}
+
+	@Override
+	public int classId() {
+		return Entitys.getId(RenderGroupEntity.class);
 	}
 
 	@Override

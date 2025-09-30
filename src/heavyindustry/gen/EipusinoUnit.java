@@ -22,8 +22,9 @@ public class EipusinoUnit extends NucleoidUnit {
 	@Override
 	public void add() {
 		// Only for use by the default team, and the quantity is limited to one.
-		if (!added && team == Vars.state.rules.defaultTeam && count() < 1) {
+		if (!added && HEntity.eipusino == null && team == Vars.state.rules.defaultTeam && count() < 1) {
 			HEntity.exclude(this);
+			HEntity.eipusino = this;
 
 			index__all = Groups.all.addIndex(this);
 			index__unit = Groups.unit.addIndex(this);
@@ -41,6 +42,7 @@ public class EipusinoUnit extends NucleoidUnit {
 	@Override
 	public void remove() {
 		if (added) HEntity.removeExclude(this);;
+		HEntity.eipusino = null;
 
 		super.remove();
 	}

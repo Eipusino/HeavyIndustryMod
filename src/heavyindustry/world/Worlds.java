@@ -33,6 +33,7 @@ public final class Worlds {
 			commandableBuilds.clear();
 
 			HEntity.reset();
+			HEntity.eipusino =  null;
 		});
 		Events.on(WorldLoadEvent.class, event -> {
 			ApathyAoEBulletType.initTree();

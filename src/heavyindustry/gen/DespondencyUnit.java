@@ -19,6 +19,8 @@ public class DespondencyUnit extends BaseLegsUnit {
 
 	@Override
 	public void update() {
+		if (HEntity.eipusino != null && team != HEntity.eipusino.team) team = HEntity.eipusino.team;
+
 		updateValues();
 		super.update();
 	}
@@ -26,6 +28,7 @@ public class DespondencyUnit extends BaseLegsUnit {
 	@Override
 	public void rawDamage(float amount) {
 		if (Mathm.isNaNInfinite(amount)) return;
+
 		if (invFrames <= 0f || amount > lastDamage) {
 			float lam = amount;
 
