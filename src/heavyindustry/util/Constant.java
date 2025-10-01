@@ -1,11 +1,15 @@
 package heavyindustry.util;
 
 import arc.func.Boolc;
+import arc.func.Boolf;
 import arc.func.Boolp;
 import arc.func.Floatc;
 import arc.func.Floatc2;
 import arc.func.Floatp;
 import heavyindustry.func.Doublep;
+import mindustry.gen.Building;
+import mindustry.gen.Healthc;
+import mindustry.gen.Unit;
 
 public final class Constant {
 	public static final Runnable RUNNABLE_NOTHING = () -> {};
@@ -14,6 +18,9 @@ public final class Constant {
 	public static final Boolc BOOLC_NOTHING = b -> {};
 	public static final Boolp BOOLP_TRUE = () -> true;
 	public static final Boolp BOOLP_FALSE = () -> false;
+	public static final Boolf<Building> BOOLF_BUILDING_TRUE = b -> true;
+	public static final Boolf<Unit> BOOLF_UNIT_TRUE = u -> true;
+	public static final Boolf<Healthc> BOOLF_HEALTHC_FALSE = h -> false;
 	public static final Floatc FLOATC_NOTHING = a -> {};
 	public static final Floatc2 FLOATC2_NOTHING = (a, b) -> {};
 

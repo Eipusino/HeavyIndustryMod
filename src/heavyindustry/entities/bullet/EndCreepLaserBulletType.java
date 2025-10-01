@@ -18,6 +18,7 @@ import heavyindustry.entities.HDamage;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.HPal;
 import heavyindustry.type.weapons.LaserWeapon.LaserRange;
+import heavyindustry.util.Constant;
 import heavyindustry.util.Utils;
 import mindustry.Vars;
 import mindustry.content.Fx;
@@ -152,7 +153,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
 		float fly = getFlyingScl(b);
 		//float rot = b.rotation();
 
-		HDamage.hitLaser(b.team, 4f, b.x, b.y, v.x, v.y, null, h -> false, (h, x, y) -> {
+		HDamage.hitLaser(b.team, 4f, b.x, b.y, v.x, v.y, null, Constant.BOOLF_HEALTHC_FALSE, (h, x, y) -> {
 			//hit(b, x, y);
 
 			boolean near = (data.hitTime <= 0f) && Mathf.within(x, y, vx, vy, 140f + (len - b.fdata));

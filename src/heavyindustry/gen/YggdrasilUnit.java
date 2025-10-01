@@ -4,7 +4,10 @@ import arc.graphics.g2d.Draw;
 import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.Time;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
 import heavyindustry.entities.HEntity;
+import mindustry.Vars;
 import mindustry.entities.EntityCollisions;
 import mindustry.entities.EntityCollisions.SolidPred;
 import mindustry.gen.Groups;
@@ -120,7 +123,7 @@ public class YggdrasilUnit extends BaseUnit {
 
 	@Override
 	public void add() {
-		if (added || count() >= 1) return;
+		if (added || (count() > cap() && !spawnedByCore && !dead && !Vars.state.rules.editor)) return;
 
 		legs.clear();
 		for (int i = 0; i < 32; i++) {
@@ -154,5 +157,37 @@ public class YggdrasilUnit extends BaseUnit {
 		updateLastPosition();
 
 		team.data().updateCount(type, 1);
+	}
+
+	@Override
+	public void write(Writes write) {
+		write.f(smoothProgress);
+		write.i(tentacleIdx);
+
+		super.write(write);
+	}
+
+	@Override
+	public void read(Reads read) {
+		smoothProgress = read.f();
+		tentacleIdx = read.i();
+
+		super.read(read);
+	}
+
+	@Override
+	public void writeSync(Writes write) {
+		write.f(smoothProgress);
+		write.i(tentacleIdx);
+
+		super.writeSync(write);
+	}
+
+	@Override
+	public void readSync(Reads read) {
+		smoothProgress = read.f();
+		tentacleIdx = read.i();
+
+		super.readSync(read);
 	}
 }

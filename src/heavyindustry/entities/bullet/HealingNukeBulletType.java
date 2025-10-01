@@ -6,6 +6,7 @@ import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.util.Tmp;
 import heavyindustry.entities.HDamage;
+import heavyindustry.util.Constant;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Units;
@@ -50,12 +51,12 @@ public class HealingNukeBulletType extends BulletType {
 
 	@Override
 	public void init(Bullet b) {
-		float[] data = HDamage.castCircle(b.x, b.y, radius, rays, bd -> true, building -> {
-			if (building.team == b.team) {
-				Fx.healBlockFull.at(building.x, building.y, building.block.size, Pal.heal);
-				building.heal((healPercent / 100f) * building.maxHealth);
+		float[] data = HDamage.castCircle(b.x, b.y, radius, rays, Constant.BOOLF_BUILDING_TRUE, build -> {
+			if (build.team == b.team) {
+				Fx.healBlockFull.at(build.x, build.y, build.block.size, Pal.heal);
+				build.heal((healPercent / 100f) * build.maxHealth);
 			} else {
-				building.damage(damage * b.damageMultiplier() * buildingDamageMultiplier);
+				build.damage(damage * b.damageMultiplier() * buildingDamageMultiplier);
 			}
 		}, tile -> tile.block().absorbLasers && tile.team() != b.team);
 

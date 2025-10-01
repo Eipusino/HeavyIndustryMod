@@ -83,12 +83,11 @@ public class DespondencyAI extends AIController {
 		if (!(unit.type instanceof DespondencyUnitType type)) return;
 		float rotation = unit.rotation - 90;
 		WeaponMount main = unit.mounts[type.mainWeaponIdx];
-		if (!(main instanceof DespondencyMount dm)) return;
 
 		unit.isShooting = false;
 		if (reloadTime > 0) reloadTime -= Time.delta;
 
-		if (!death || (target == null && dm.stage <= 2) || reloadTime > 0) {
+		if (!death || (target == null && main instanceof DespondencyMount mount && mount.stage <= 2) || reloadTime > 0) {
 			main.shoot = false;
 			main.target = null;
 
@@ -208,8 +207,8 @@ public class DespondencyAI extends AIController {
 
 			deathTime += Time.delta;
 
-			if (deathTime >= 30f) {
-				dm.activeTime += Time.delta;
+			if (deathTime >= 30f && main instanceof DespondencyMount mount) {
+				mount.activeTime += Time.delta;
 			}
 
 			/*if (dm.finished) {

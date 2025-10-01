@@ -10,6 +10,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.util.Constant;
 import mindustry.gen.Building;
 import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
@@ -112,7 +113,7 @@ public class AdjustableOverdrive extends Block {
 
 		@Override
 		public void updateTile() {
-			indexer.eachBlock(this, range, pared -> true, other -> other.applySlowdown(1f, reload + 1f));
+			indexer.eachBlock(this, range, Constant.BOOLF_BUILDING_TRUE, other -> other.applySlowdown(1f, reload + 1f));
 		}
 
 		@Override

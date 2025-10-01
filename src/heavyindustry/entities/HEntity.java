@@ -19,30 +19,40 @@ import arc.math.geom.Vec2;
 import arc.struct.IntIntMap;
 import arc.struct.IntSet;
 import arc.struct.Seq;
+import arc.util.Log;
 import arc.util.Nullable;
 import arc.util.Time;
 import arc.util.Tmp;
+import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import heavyindustry.content.HFx;
-import heavyindustry.gen.EipusinoUnit;
 import heavyindustry.gen.Spawner;
+import heavyindustry.util.Reflects;
 import mindustry.Vars;
+import mindustry.audio.SoundLoop;
 import mindustry.core.World;
 import mindustry.entities.Effect;
 import mindustry.entities.Sized;
 import mindustry.entities.Units;
+import mindustry.entities.units.WeaponMount;
 import mindustry.game.Team;
 import mindustry.game.Teams;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
+import mindustry.gen.Drawc;
+import mindustry.gen.EffectState;
+import mindustry.gen.Entityc;
 import mindustry.gen.Groups;
+import mindustry.gen.Syncc;
 import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
 import mindustry.gen.WaterMovec;
 import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
 import mindustry.world.Tile;
+import mindustry.world.blocks.defense.turrets.Turret.TurretBuild;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import static heavyindustry.entities.HDamage.tmpBuilding;
@@ -58,11 +68,13 @@ public final class HEntity {
 	static final IntSet collidedBlocks = new IntSet();
 	static Tile tileParma;
 
+	static final Seq<Entityc> toRemove = new Seq<>(Entityc.class);
+
 	static final IntSet exclude = new IntSet();
 	static final Seq<Unit> excludeSeq = new Seq<>(Unit.class), queueExcludeRemoval = new Seq<>(Unit.class), excludeReAdd = new Seq<>(Unit.class);
 	static final IntIntMap excludeTime = new IntIntMap();
 
-	public static EipusinoUnit eipusino = null;
+	public static Unit eipusino, despondency, apathy;
 
 	private HEntity() {}
 
@@ -645,6 +657,12 @@ public final class HEntity {
 	}
 
 	public static void reset() {
+		eipusino =  null;
+		despondency = null;
+		apathy = null;
+
+		toRemove.clear();
+
 		units.clear();
 		exclude.clear();
 		excludeSeq.clear();
@@ -715,6 +733,126 @@ public final class HEntity {
 		queueExcludeRemoval.clear();
 		excludeReAdd.clear();
 		excludeTime.clear();
+	}
+
+	public static void annihilate(Entityc entity, boolean setNaN) {
+		Groups.all.remove(entity);
+
+		if (entity instanceof Drawc d) Groups.draw.remove(d);
+		if (entity instanceof Syncc s) Groups.sync.remove(s);
+
+		if (entity instanceof Unit unit) {
+			setAdded(unit, false);
+
+			if (setNaN) {
+				unit.x = unit.y = unit.rotation = Float.NaN;
+				unit.vel.x = unit.vel.y = Float.NaN;
+				for (WeaponMount mount : unit.mounts) {
+					mount.reload = Float.NaN;
+				}
+			}
+
+			if (Vars.net.client()) {
+				Vars.netClient.addRemovedEntity(unit.id());
+			}
+
+			unit.team.data().updateCount(unit.type, -1);
+			unit.controller().removed(unit);
+
+			Groups.unit.remove(unit);
+
+			for (WeaponMount mount : unit.mounts) {
+				if (mount.bullet != null) {
+					mount.bullet.time = mount.bullet.lifetime;
+					mount.bullet = null;
+				}
+				if (mount.sound != null) {
+					mount.sound.stop();
+				}
+			}
+
+			unit.setIndex__all(-1);
+			unit.setIndex__unit(-1);
+			unit.setIndex__draw(-1);
+			unit.setIndex__sync(-1);
+		}
+		if (entity instanceof Building build) {
+			Groups.build.remove(build);
+			build.tile.remove();
+			if (setNaN) {
+				build.x = build.y = Float.NaN;
+			}
+			if (build instanceof TurretBuild tb) {
+				tb.ammo.clear();
+				if (setNaN) {
+					tb.rotation = Float.NaN;
+					tb.reloadCounter = Float.NaN;
+				}
+			}
+
+			setAdded(build, false);
+
+			//if (build.sound != null) build.sound.stop();
+			findSound(build, sl -> {
+				if (sl != null) {
+					sl.stop();
+				}
+			});
+
+			build.setIndex__all(-1);
+			build.setIndex__build(-1);
+		}
+		if (entity instanceof Bullet bullet) {
+			Groups.bullet.remove(bullet);
+
+			setAdded(bullet, false);
+
+			bullet.setIndex__all(-1);
+			bullet.setIndex__draw(-1);
+			bullet.setIndex__bullet(-1);
+		}
+		if (entity instanceof Poolable p) Groups.queueFree(p);
+	}
+
+	public static void handleAdditions(int start, Entityc exclude, Entityc exclude2, Seq<Building> proxy) {
+		toRemove.clear();
+		int size = Groups.all.size();
+		for (int i = start; i < size; i++) {
+			Entityc e = Groups.all.index(i);
+			if (e != exclude && e != exclude2 && (proxy == null || !proxy.contains(b -> e == b)) && !(e instanceof EffectState))
+				toRemove.add(e);
+		}
+
+		for (Entityc e : toRemove) {
+			annihilate(e, false);
+		}
+		//Log.info("addition handled:" + toRemove.toString());
+		toRemove.clear();
+	}
+
+	public static void setAdded(Entityc entity, boolean value) {
+		Field field = Reflects.findClassField(entity.getClass(), "added");
+		if (field != null) {
+			try {
+				field.setAccessible(true);
+				field.setBoolean(entity, value);
+			} catch (Exception e) {
+				Log.err(e);
+			}
+		}
+	}
+
+	@Nullable
+	public static void findSound(Building build, Cons<SoundLoop> cons) {
+		Field field = Reflects.findClassField(build.getClass(), "sound");
+		if (field != null) {
+			try {
+				field.setAccessible(true);
+				cons.get((SoundLoop) field.get(build));
+			} catch (Exception e) {
+				Log.err(e);
+			}
+		}
 	}
 
 	public interface LineHitHandler<T> {

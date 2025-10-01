@@ -94,7 +94,7 @@ public class YggdrasilTentacle {
 		float ax = Mathf.lerp(x1, x2, n1), ay = Mathf.lerp(y1, y2, n1);
 		float ang = Angles.angle(attackX, attackY, ax, ay);
 
-		Utils.hitLaser(unit.team, 2f, attackX, attackY, ax, ay, null, h -> false, (h, x, y) -> {
+		Utils.hitLaser(unit.team, 2f, attackX, attackY, ax, ay, null, Constant.BOOLF_HEALTHC_FALSE, (h, x, y) -> {
 			Fx.hitBulletBig.at(x, y, ang);
 
 			h.damagePierce((2000f + h.maxHealth() / 200f) * Time.delta);

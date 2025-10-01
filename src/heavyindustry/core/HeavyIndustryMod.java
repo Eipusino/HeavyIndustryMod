@@ -236,6 +236,7 @@ public final class HeavyIndustryMod extends Mod {
 					table.checkPref("hi-floating-text", true);
 					table.checkPref("hi-animated-shields", true);
 					table.checkPref("hi-tesla-range", true);
+					table.sliderPref("hi-vaporize-batch", 300, 0, 1000, 1, s -> Strings.autoFixed(s, 2));
 					table.pref(new Setting(Core.bundle.get("hi-game-data")) {
 						@Override
 						public void add(SettingsTable table) {

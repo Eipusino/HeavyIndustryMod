@@ -7,14 +7,18 @@ import arc.math.Angles;
 import arc.math.Mathf;
 import arc.util.Time;
 import arc.util.Tmp;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
 import heavyindustry.content.HBullets;
 import heavyindustry.entities.HEntity;
 import heavyindustry.entities.effect.BloodSplatter;
 import mindustry.entities.Units;
 import mindustry.gen.Sounds;
 import mindustry.gen.Teamc;
+import mindustry.gen.Unit;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
+import mindustry.io.TypeIO;
 
 public class ApathySentryUnit extends BaseUnit {
 	public float moveX, moveY, moveTime;
@@ -35,11 +39,6 @@ public class ApathySentryUnit extends BaseUnit {
 	@Override
 	public int classId() {
 		return Entitys.getId(ApathySentryUnit.class);
-	}
-
-	@Override
-	public boolean serialize() {
-		return false;
 	}
 
 	@Override
@@ -98,6 +97,7 @@ public class ApathySentryUnit extends BaseUnit {
 	@Override
 	public void destroy() {
 		super.destroy();
+
 		BloodSplatter.explosion(20, x, y, hitSize / 2, 80f, 35f);
 	}
 
@@ -122,5 +122,30 @@ public class ApathySentryUnit extends BaseUnit {
 		Draw.rect(r, x, y, r.width * Draw.scl * 0.5f, r.height * Draw.scl * 0.5f, rotation - 90f);
 		Draw.color();
 		Draw.mixcol();
+	}
+
+	@Override
+	public void write(Writes write) {
+		write.f(moveX);
+		write.f(moveY);
+
+		write.bool(active);
+
+		TypeIO.writeUnit(write, owner);
+
+		super.write(write);
+	}
+
+	@Override
+	public void read(Reads read) {
+		moveX = read.f();
+		moveY = read.f();
+
+		active = read.bool();
+
+		Unit unit = TypeIO.readUnit(read);
+		if (unit instanceof ApathyIUnit aiu) owner = aiu;
+
+		super.read(read);
 	}
 }

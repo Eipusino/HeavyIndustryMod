@@ -38,6 +38,7 @@ import heavyindustry.graphics.HLayer;
 import heavyindustry.graphics.HPal;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.math.HInterps;
+import heavyindustry.util.Constant;
 import heavyindustry.util.Utils;
 import mindustry.Vars;
 import mindustry.content.Fx;
@@ -318,7 +319,7 @@ public final class HBullets {
 
 				@Override
 				public void init(Bullet b) {
-					Vec2 p = new Vec2().set(HEntity.collideBuildOnLength(b.team, b.x, b.y, length, b.rotation(), bu -> true));
+					Vec2 p = new Vec2().set(HEntity.collideBuildOnLength(b.team, b.x, b.y, length, b.rotation(), Constant.BOOLF_BUILDING_TRUE));
 
 					float resultLength = b.dst(p), rot = b.rotation();
 

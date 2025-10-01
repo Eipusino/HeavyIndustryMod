@@ -8,6 +8,7 @@ import arc.math.geom.Vec2;
 import arc.util.Tmp;
 import heavyindustry.entities.HDamage;
 import heavyindustry.graphics.HPal;
+import heavyindustry.util.Constant;
 import mindustry.content.Fx;
 import mindustry.entities.bullet.BulletType;
 import mindustry.gen.Building;
@@ -47,7 +48,7 @@ public class EmpathySwordBulletType extends BulletType {
 			float length = 40 / 2f;
 			float dam = 370f;
 			Vec2 v = Tmp.v1.trns(b.rotation(), length);
-			HDamage.hitLaser(b.team, 2f, -v.x + b.x, -v.y + b.y, v.x + b.x, v.y + b.y, null, h -> false, (h, x, y) -> {
+			HDamage.hitLaser(b.team, 2f, -v.x + b.x, -v.y + b.y, v.x + b.x, v.y + b.y, null, Constant.BOOLF_HEALTHC_FALSE, (h, x, y) -> {
 				hit(b, x, y);
 				float tdam = Math.max(dam, h.maxHealth() / 700f);
 				h.health(h.health() - tdam);

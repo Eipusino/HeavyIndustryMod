@@ -13,6 +13,7 @@ import arc.struct.Seq;
 import arc.util.Eachable;
 import arc.util.pooling.Pool;
 import heavyindustry.net.HCall;
+import heavyindustry.util.Constant;
 import mindustry.Vars;
 import mindustry.game.EventType.Trigger;
 import mindustry.gen.Player;
@@ -117,7 +118,7 @@ public class InputAggregator implements Eachable<String> {
 		protected TapListener listener;
 
 		protected boolean enabled = true, removed = false;
-		protected Boolp predicate = () -> true;
+		protected Boolp predicate = Constant.BOOLP_TRUE;
 
 		public void enabled(Boolp predicate) {
 			this.predicate = predicate;

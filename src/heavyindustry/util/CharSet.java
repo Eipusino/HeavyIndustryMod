@@ -459,7 +459,7 @@ public class CharSet {
 		buffer.append('[');
 		int i = keyTable.length;
 		if (hasZeroValue)
-			buffer.append("0");
+			buffer.append('0');
 		else {
 			while (i-- > 0) {
 				int key = keyTable[i];
@@ -502,7 +502,9 @@ public class CharSet {
 	public static class CharSetIterator {
 		static final int INDEX_ILLEGAL = -2;
 		static final int INDEX_ZERO = -1;
+
 		final CharSet set;
+
 		public boolean hasNext;
 		int nextIndex, currentIndex;
 		boolean valid = true;

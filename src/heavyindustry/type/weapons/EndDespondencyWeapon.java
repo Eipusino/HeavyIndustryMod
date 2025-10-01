@@ -188,54 +188,56 @@ public class EndDespondencyWeapon extends Weapon {
 
 	@Override
 	public void update(Unit unit, WeaponMount mount) {
-		DespondencyMount m = (DespondencyMount) mount;
+		if (mount instanceof DespondencyMount dm) updateDespondency(unit, dm);
+	}
 
+	public void updateDespondency(Unit unit, DespondencyMount mount) {
 		//boolean shoot = (mount.shoot || m.active) && unit.controller() instanceof DespondencyAI && ((mount.target instanceof Unit uu && uu.isValid()) || m.stage > 2);
-		boolean shoot = (mount.shoot || m.active) && unit.controller() instanceof DespondencyAI && (mount.target instanceof Unit uu && uu.isValid() || m.targetDestroyed);
+		boolean shoot = (mount.shoot || mount.active) && unit.controller() instanceof DespondencyAI && (mount.target instanceof Unit uu && uu.isValid() || mount.targetDestroyed);
 		if (shoot) {
-			m.time += Time.delta;
+			mount.time += Time.delta;
 			for (DespondencyArm arm : arms) {
-				if (m.time >= arm.delay) {
-					m.times[arm.id] = Mathf.lerpDelta(m.times[arm.id], 1f, arm.speed);
+				if (mount.time >= arm.delay) {
+					mount.times[arm.id] = Mathf.lerpDelta(mount.times[arm.id], 1f, arm.speed);
 				}
 			}
-			m.magicIn = Mathf.clamp(m.magicIn + Time.delta / 180f);
-			m.magicOut = Mathf.clamp(m.magicOut - Time.delta / 30f);
+			mount.magicIn = Mathf.clamp(mount.magicIn + Time.delta / 180f);
+			mount.magicOut = Mathf.clamp(mount.magicOut - Time.delta / 30f);
 
 			//1: destroy strays.
 			//2: destroy large enemies
 			//3: destroy main
 			//(target != null && Angles.within(unit.rotation, unit.angleTo(target), 15f))
 
-			//if (m.activeTime > 120)
-			if ((mount.target != null && Angles.within(unit.rotation, unit.angleTo(mount.target), 15f) && m.activeTime > 120f) || m.stage > 0 || m.activeTime > 5f * 60f) {
-				m.stageTime -= Time.delta;
-				if (!m.active) m.active = true;
-				if (m.stageTime <= 0f) {
-					switch (m.stage) {
+			//if (mount.activeTime > 120)
+			if ((mount.target != null && Angles.within(unit.rotation, unit.angleTo(mount.target), 15f) && mount.activeTime > 120f) || mount.stage > 0 || mount.activeTime > 5f * 60f) {
+				mount.stageTime -= Time.delta;
+				if (!mount.active) mount.active = true;
+				if (mount.stageTime <= 0f) {
+					switch (mount.stage) {
 						case 0 -> {
-							destroyStrays(unit, m);
-							m.stageTime = 1.5f * 60f;
+							destroyStrays(unit, mount);
+							mount.stageTime = 1.5f * 60f;
 							//Log.info("des s1");
 						}
 						case 1 -> {
-							destroyStrong(unit, m);
-							m.stageTime = 2f * 60f;
+							destroyStrong(unit, mount);
+							mount.stageTime = 2f * 60f;
 							//Log.info("des s2");
 						}
 						case 2 -> {
-							destroyMain(unit, m);
+							destroyMain(unit, mount);
 							//m.stageTime = 10f * 60f;
-							m.stageTime = 25f * 60f;
-							m.finalActive = true;
+							mount.stageTime = 25f * 60f;
+							mount.finalActive = true;
 							//Log.info("des s3");
 						}
 						case 3 -> {
-							m.stage = 0;
-							m.stageTime = 0f;
-							m.active = false;
+							mount.stage = 0;
+							mount.stageTime = 0f;
+							mount.active = false;
 
-							endFinal(m);
+							endFinal(mount);
 
 							if (unit.controller() instanceof DespondencyAI ai) ai.endDeath();
 							//Log.info("des s4");
@@ -243,53 +245,53 @@ public class EndDespondencyWeapon extends Weapon {
 							return;
 						}
 					}
-					m.stage++;
+					mount.stage++;
 				}
 			}
-			if (m.finalActive) updateFinal(unit, m);
+			if (mount.finalActive) updateFinal(unit, mount);
 		} else {
-			if (m.stage > 2) {
-				endFinal(m);
+			if (mount.stage > 2) {
+				endFinal(mount);
 				if (unit.controller() instanceof DespondencyAI ai) ai.endDeathFailed();
 			}
-			m.time = 0f;
-			for (int i = 0; i < m.times.length; i++) {
-				m.times[i] = Mathf.lerpDelta(m.times[i], 0f, 0.07f);
+			mount.time = 0f;
+			for (int i = 0; i < mount.times.length; i++) {
+				mount.times[i] = Mathf.lerpDelta(mount.times[i], 0f, 0.07f);
 			}
-			m.activeTime = Math.max(Math.min(m.activeTime - (m.activeTime / 76f) * Time.delta, m.activeTime - Time.delta), 0f);
-			m.stage = 0;
-			m.stageTime = 0f;
-			m.active = false;
+			mount.activeTime = Math.max(Math.min(mount.activeTime - (mount.activeTime / 76f) * Time.delta, mount.activeTime - Time.delta), 0f);
+			mount.stage = 0;
+			mount.stageTime = 0f;
+			mount.active = false;
 
-			if (m.magicIn > 0) {
-				m.magicOut = Mathf.clamp(m.magicOut + Time.delta / 60f);
-				if (m.magicOut >= 1f) {
-					m.magicIn = 0f;
-					m.magicOut = 0f;
+			if (mount.magicIn > 0) {
+				mount.magicOut = Mathf.clamp(mount.magicOut + Time.delta / 60f);
+				if (mount.magicOut >= 1f) {
+					mount.magicIn = 0f;
+					mount.magicOut = 0f;
 				}
 			}
 		}
-		if (!m.spears.isEmpty()) {
-			m.spears.removeAll(s -> {
-				if (s.spear != m.lastSpear && m.lastSpear != null && m.lastSpear.collided && m.lastSpear.isAdded()) {
-					s.spear.cx = m.lastSpear.cx;
-					s.spear.cy = m.lastSpear.cy;
-					s.spear.cr = m.lastSpear.cr;
+		if (!mount.spears.isEmpty()) {
+			mount.spears.removeAll(s -> {
+				if (s.spear != mount.lastSpear && mount.lastSpear != null && mount.lastSpear.collided && mount.lastSpear.isAdded()) {
+					s.spear.cx = mount.lastSpear.cx;
+					s.spear.cy = mount.lastSpear.cy;
+					s.spear.cr = mount.lastSpear.cr;
 				}
-				if (m.finalActive && s.spear.collided) {
-					m.spearCollided = true;
+				if (mount.finalActive && s.spear.collided) {
+					mount.spearCollided = true;
 				}
-				s.fade = Mathf.approachDelta(s.fade, (s.spear.fading() || !s.spear.isAdded() || !m.finalActive) ? -0.001f : 1f, 1f / 12f);
+				s.fade = Mathf.approachDelta(s.fade, (s.spear.fading() || !s.spear.isAdded() || !mount.finalActive) ? -0.001f : 1f, 1f / 12f);
 				return s.fade < 0f;
 			});
 		}
-		if (!m.fragHands.isEmpty()) {
-			for (FragmentHands h : m.fragHands) {
-				h.update(unit, m);
+		if (!mount.fragHands.isEmpty()) {
+			for (FragmentHands h : mount.fragHands) {
+				h.update(unit, mount);
 			}
-			m.fragHands.remove(h -> {
+			mount.fragHands.remove(h -> {
 				//h.update(unit);
-				//h.update(unit, m);
+				//h.update(unit, mount);
 				return h.fade >= 1f;
 			});
 		}
@@ -305,7 +307,7 @@ public class EndDespondencyWeapon extends Weapon {
 			if (u.team != unit.team && !(isStray(unit)) && u != mount.target) {
 				float ang = unit.angleTo(u);
 				mount.strongAngles.add(ang);
-				EmpathyDamage.damageUnit(u, u.maxHealth + 1000f, true, () -> SpecialDeathEffects.get(u.type).deathUnit(u, u.x, u.y, ang));
+				u.health -= u.maxHealth + 1000f;
 			}
 		}
 		mount.strongTime = 60f;*/
@@ -322,78 +324,79 @@ public class EndDespondencyWeapon extends Weapon {
 		//
 	}
 
-	public void updateFinal(Unit unit, DespondencyMount m) {
-		if (!(m.target instanceof Unit u)) return;
+	public void updateFinal(Unit unit, DespondencyMount mount) {
+		if (!(mount.target instanceof Unit target)) return;
 
-		m.finalTime += Time.delta;
-		m.spearTime -= Time.delta;
-		if (m.spearTime <= 0f && !m.spearFinal) {
-			int sc = m.spears.size / 2;
-			int sside = m.spears.size % 2 == 0 ? 1 : -1;
+		mount.finalTime += Time.delta;
+		mount.spearTime -= Time.delta;
+		if (mount.spearTime <= 0f && !mount.spearFinal) {
+			int sc = mount.spears.size / 2;
+			int sside = mount.spears.size % 2 == 0 ? 1 : -1;
 
 			float offset = ((unit.hitSize / 2f) / (1f + Mathf.pow(sc, 2f))) * sside;
 
-			Vec2 v = Tmp.v1.set(0f, offset).rotate(unit.rotation), v2 = Tmp.v2.rnd(Mathf.random(u.hitSize / 2.1f)), v3 = Tmp.v3.trns(unit.rotation, (unit.hitSize / 2f) * 1.6f);
-			float value = 1f / (1f + m.spears.size / 2f);
+			Vec2 v = Tmp.v1.set(0f, offset).rotate(unit.rotation), v2 = Tmp.v2.rnd(Mathf.random(target.hitSize / 2.1f)), v3 = Tmp.v3.trns(unit.rotation, (unit.hitSize / 2f) * 1.6f);
+			float value = 1f / (1f + mount.spears.size / 2f);
 
-			//DesSpearEntity spear = DesSpearEntity.create(u, v.x + unit.x, v.y + unit.y, v.angleTo(u.x + v2.x, u.y + v2.y), false);
-			DesSpearEntity spear = DesSpearEntity.create(u, v.x + unit.x + v3.x, v.y + unit.y + v3.y, Angles.angle(unit.x + v.x + v3.x, unit.y + v.y + v3.y, u.x + v2.x, u.y + v2.y), false);
+			//DesSpearEntity spear = DesSpearEntity.create(target, v.x + unit.x, v.y + unit.y, v.angleTo(target.x + v2.x, target.y + v2.y), false);
+			DesSpearEntity spear = DesSpearEntity.create(target, v.x + unit.x + v3.x, v.y + unit.y + v3.y, Angles.angle(unit.x + v.x + v3.x, unit.y + v.y + v3.y, target.x + v2.x, target.y + v2.y), false);
 			spear.forceScl = value;
 			spear.damageScl = value / 4f;
 			spear.tx = v2.x;
 			spear.ty = v2.y;
 			//spear.size *= Mathf.random(0.9f, 1.1f);
 			spear.size *= 1f + sc / 8f;
-			spear.crySound = m.spears.isEmpty();
+			spear.crySound = mount.spears.isEmpty();
 
-			if (m.lastSpear != null) {
-				spear.last = m.lastSpear;
+			if (mount.lastSpear != null) {
+				spear.last = mount.lastSpear;
 			}
 
 			v.rotate(-unit.rotation);
 
-			//m.spears.add(spear);
-			SpearHolder sh = new SpearHolder(spear, v.x, v.y, (v.dst(u) - u.hitSize / 2f) * 0.6f);
+			//mount.spears.add(spear);
+			SpearHolder sh = new SpearHolder(spear, v.x, v.y, (v.dst(target) - target.hitSize / 2f) * 0.6f);
 			sh.flipped = v.y < 0;
-			m.spears.add(sh);
-			m.lastSpear = spear;
+			mount.spears.add(sh);
+			mount.lastSpear = spear;
 
-			m.spearTime = Mathf.random(7f, 15f);
+			mount.spearTime = Mathf.random(7f, 15f);
 		}
 
-		if (m.spears.size >= 6 && !m.spearFinal) {
-			m.spearFinal = true;
+		if (mount.spears.size >= 6 && !mount.spearFinal) {
+			mount.spearFinal = true;
 		}
-		if (m.spearFinal && m.spearCollided && m.lastSpear != null) {
-			m.spearCollidedTime = Mathf.clamp(m.spearCollidedTime + Time.delta / 120f);
+		if (mount.spearFinal && mount.spearCollided && mount.lastSpear != null) {
+			mount.spearCollidedTime = Mathf.clamp(mount.spearCollidedTime + Time.delta / 120f);
 
-			DesSpearEntity spr = m.lastSpear;
+			DesSpearEntity spr = mount.lastSpear;
 			Vec2 v = Tmp.v1.trns(unit.rotation, 480f).add(unit.x, unit.y);
-			float dx = -(spr.cx - v.x) * 0.05f * m.spearCollidedTime, dy = -(spr.cy - v.y) * 0.05f * m.spearCollidedTime;
+			float dx = -(spr.cx - v.x) * 0.05f * mount.spearCollidedTime, dy = -(spr.cy - v.y) * 0.05f * mount.spearCollidedTime;
 			spr.cx += dx;
 			spr.cy += dy;
 		}
 
-		if (m.finalTime >= 6f * 60f && m.stageTime > 4f * 60f + 90f) {
-			u.health -= u.maxHealth + 1000f;
-			m.stageTime = 120f;
-			m.targetDestroyed = true;
+		if (mount.finalTime >= 6f * 60f && mount.stageTime > 4f * 60f + 90f) {
+			target.health -= target.maxHealth + 1000f;
+			HEntity.annihilate(target, true);
+			mount.stageTime = 120f;
+			mount.targetDestroyed = true;
 		}
 	}
 
-	public void endFinal(DespondencyMount m) {
-		m.spears.clear();
-		m.finalTime = 0f;
-		m.spearTime = 0f;
-		m.lastSpear = null;
-		m.spearFinal = false;
+	public void endFinal(DespondencyMount mount) {
+		mount.spears.clear();
+		mount.finalTime = 0f;
+		mount.spearTime = 0f;
+		mount.lastSpear = null;
+		mount.spearFinal = false;
 
-		m.spearCollided = false;
-		m.spearCollidedTime = 0f;
+		mount.spearCollided = false;
+		mount.spearCollidedTime = 0f;
 
-		m.finalActive = false;
-		m.targetDestroyed = false;
-		m.finalTime = 0f;
+		mount.finalActive = false;
+		mount.targetDestroyed = false;
+		mount.finalTime = 0f;
 	}
 
 	public static boolean isStray(Unit unit) {
@@ -403,22 +406,25 @@ public class EndDespondencyWeapon extends Weapon {
 
 	@Override
 	public void draw(Unit unit, WeaponMount mount) {
+		if (mount instanceof DespondencyMount dm) drawDespondency(unit, dm);
+	}
+
+	public void drawDespondency(Unit unit, DespondencyMount mount) {
 		//drawMain(unit, mount);
-		DespondencyMount m = (DespondencyMount) mount;
 		float z = Draw.z();
 
 		Draw.z(Layer.bullet);
 
-		/*if (m.strongTime > 0) {
+		/*if (mount.strongTime > 0) {
 			for (int i = 0; i < size; i++) {
 				float ang = angles[i];
 				int seed = i ^ (unit.id << 8);
 
 				Vec2 v = Tmp.v1.trns(ang, 50f).add(unit.x, unit.y);
-				drawLasers(seed, v.x, v.y, ang, m.strongTime / 60f);
+				drawLasers(seed, v.x, v.y, ang, mount.strongTime / 60f);
 			}
 		}*/
-		if (m.magicIn > 0) drawMagic(unit, m);
+		if (mount.magicIn > 0) drawMagic(unit, mount);
 
 		Draw.z(z);
 	}
@@ -492,13 +498,13 @@ public class EndDespondencyWeapon extends Weapon {
 
 	@Override
 	public void drawOutline(Unit unit, WeaponMount mount) {
-		drawMain(unit, mount);
+		if (mount instanceof DespondencyMount dm) drawMain(unit, dm);
 	}
 
-	public void drawMagic(Unit unit, DespondencyMount m) {
+	public void drawMagic(Unit unit, DespondencyMount mount) {
 		Draw.color(HPal.redLight);
-		float fout = 1f - m.magicOut;
-		float fin = m.magicIn;
+		float fout = 1f - mount.magicOut;
+		float fin = mount.magicIn;
 
 		float rad1 = 150f + fin * 150f;
 		Lines.stroke(3f * fout);
@@ -537,15 +543,13 @@ public class EndDespondencyWeapon extends Weapon {
 		Draw.reset();
 	}
 
-	public void drawMain(Unit unit, WeaponMount mount) {
-		if (!(mount instanceof DespondencyMount m)) return;
-
+	public void drawMain(Unit unit, DespondencyMount mount) {
 		unit.type.applyColor(unit);
 
-		if (!m.spears.isEmpty()) {
+		if (!mount.spears.isEmpty()) {
 			float z = Draw.z();
-			for (SpearHolder spear : m.spears) {
-				float fade = spear.fade * (1f - Mathf.clamp((m.finalTime - 4f * 60f) / 12f));
+			for (SpearHolder spear : mount.spears) {
+				float fade = spear.fade * (1f - Mathf.clamp((mount.finalTime - 4f * 60f) / 12f));
 				float dz = Math.min(spear.spear.getZ(), z);
 
 				Draw.z(dz);
@@ -555,16 +559,16 @@ public class EndDespondencyWeapon extends Weapon {
 			}
 			Draw.z(z);
 		}
-		if (!m.fragHands.isEmpty()) {
-			for (FragmentHands h : m.fragHands) {
+		if (!mount.fragHands.isEmpty()) {
+			for (FragmentHands h : mount.fragHands) {
 				h.draw(unit);
 			}
 		}
 
 		for (DespondencyArm arm : arms) {
-			if (m.times[arm.id] <= 0.001f) continue;
+			if (mount.times[arm.id] <= 0.001f) continue;
 			for (int i = 0; i < 2; i++) {
-				arm.draw(unit, m.times[arm.id], i == 1);
+				arm.draw(unit, mount.times[arm.id], i == 1);
 			}
 		}
 		Draw.reset();
@@ -646,10 +650,10 @@ public class EndDespondencyWeapon extends Weapon {
 
 		public float magicIn, magicOut;
 
-		public DespondencyMount(Weapon w) {
-			super(w);
+		public DespondencyMount(Weapon weapon) {
+			super(weapon);
 
-			times = new float[((EndDespondencyWeapon) w).arms.size];
+			times = new float[((EndDespondencyWeapon) weapon).arms.size];
 		}
 	}
 
@@ -676,8 +680,8 @@ public class EndDespondencyWeapon extends Weapon {
 		public float delay;
 		public float scl;
 
-		public FragmentHands(Unit owner, float x, float y, Unit target, FragmentEntity f) {
-			frag = f;
+		public FragmentHands(Unit owner, float x, float y, Unit target, FragmentEntity entity) {
+			frag = entity;
 
 			tx = target.x;
 			ty = target.y;
@@ -688,10 +692,10 @@ public class EndDespondencyWeapon extends Weapon {
 			sx = x;
 			sy = y;
 
-			length = f.dst(v.x, v.y) * 1.1f;
+			length = entity.dst(v.x, v.y) * 1.1f;
 			flipped = y < 0;
 			delay = Mathf.random(60f);
-			scl = Math.min(Mathf.pow((f.boundSize / 24f), 0.5f), 2f);
+			scl = Math.min(Mathf.pow((entity.boundSize / 24f), 0.5f), 2f);
 		}
 
 		public void update(Unit unit, DespondencyMount mount) {

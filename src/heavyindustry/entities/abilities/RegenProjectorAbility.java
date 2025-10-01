@@ -8,6 +8,7 @@ import arc.struct.Seq;
 import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.util.Constant;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.abilities.Ability;
@@ -52,7 +53,7 @@ public class RegenProjectorAbility extends Ability {
 	public void updateTargets(Unit unit) {
 		targets.clear();
 		taken.clear();
-		indexer.eachBlock(unit.team, Tmp.r1.setCentered(unit.x, unit.y, range * tilesize), b -> true, targets::add);
+		indexer.eachBlock(unit.team, Tmp.r1.setCentered(unit.x, unit.y, range * tilesize), Constant.BOOLF_BUILDING_TRUE, targets::add);
 	}
 
 	@Override

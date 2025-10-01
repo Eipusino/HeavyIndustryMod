@@ -19,7 +19,7 @@ public class ItemDisplay extends Table {
 	}
 
 	public ItemDisplay(Item it, int am, boolean sh) {
-		add(new ItemImage(new ItemStack(it, am)));
+		add(Elements.itemImage(new ItemStack(it, am)));
 		if (sh) add(it.localizedName).padLeft(4 + am > 99 ? 4 : 0);
 
 		item = it;
@@ -32,7 +32,7 @@ public class ItemDisplay extends Table {
 
 	/** Displays the item with a "/sec" qualifier based on the time period, in ticks. */
 	public ItemDisplay(Item it, int am, float ti, boolean sh) {
-		add(new ItemImage(it.uiIcon, am));
+		add(Elements.itemImage(it.uiIcon, am));
 		add((sh ? it.localizedName + "\n" : "") + "[lightgray]" + Strings.autoFixed(am / (ti / 60f), 2) + StatUnit.perSecond.localized()).padLeft(2).padRight(5).style(Styles.outlineLabel);
 
 		item = it;

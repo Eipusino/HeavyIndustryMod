@@ -32,12 +32,14 @@ import arc.scene.ui.ImageButton.ImageButtonStyle;
 import arc.scene.ui.Label;
 import arc.scene.ui.Tooltip;
 import arc.scene.ui.layout.Collapser;
+import arc.scene.ui.layout.Stack;
 import arc.scene.ui.layout.Table;
 import arc.struct.OrderedMap;
 import arc.struct.Seq;
 import arc.util.Align;
 import arc.util.Log;
 import arc.util.Nullable;
+import arc.util.Scaling;
 import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
@@ -52,6 +54,7 @@ import mindustry.gen.Icon;
 import mindustry.gen.Tex;
 import mindustry.graphics.Pal;
 import mindustry.type.ItemStack;
+import mindustry.type.PayloadStack;
 import mindustry.ui.Links;
 import mindustry.ui.Styles;
 import mindustry.world.meta.Stat;
@@ -170,6 +173,33 @@ public final class Elements {
 	public static boolean hasMouse() {
 		Element e = Core.scene.hit(Core.input.mouseX(), Core.input.mouseY(), false);
 		return e != null && !e.fillParent;
+	}
+
+	public static Stack itemImage(TextureRegion region, int amount) {
+		Stack stack = new Stack();
+
+		stack.add(new Table(o -> {
+			o.left();
+			o.add(new Image(region)).size(32f).scaling(Scaling.fit);
+		}));
+
+		if (amount > 0) {
+			stack.add(new Table(t -> {
+				t.left().bottom();
+				t.add(amount >= 1000 ? formatAmount(amount) : amount + "").style(Styles.outlineLabel);
+				t.pack();
+			}));
+		}
+
+		return stack;
+	}
+
+	public static Stack itemImage(ItemStack stack) {
+		return itemImage(stack.item.uiIcon, stack.amount);
+	}
+
+	public static Stack itemImage(PayloadStack stack) {
+		return itemImage(stack.item.uiIcon, stack.amount);
 	}
 
 	public static void collapseTextToTable(Table t, String text) {

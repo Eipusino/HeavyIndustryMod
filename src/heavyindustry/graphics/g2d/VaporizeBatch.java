@@ -21,13 +21,13 @@ import heavyindustry.entities.effect.Disintegration.DisintegrationEntity;
 public class VaporizeBatch extends Batch {
 	protected final Color color = new Color(1f, 1f, 1f, 1f);
 
-	public VaporizeHandler cons;
-	public SpriteHandler spriteHandler;
+	public VaporizeHandler vaporize;
+	public SpriteHandler sprite;
 	public Cons<Disintegration> discon;
 
 	final static Rect tr = new Rect();
 
-	public void switchBatch(Runnable drawer, SpriteHandler handler, VaporizeHandler cons) {
+	public void switchBatch(Runnable drawer, SpriteHandler spriteCons, VaporizeHandler vaporizeCons) {
 		Batch last = Core.batch;
 		GL20 lgl = Core.gl;
 		Core.batch = this;
@@ -35,8 +35,8 @@ public class VaporizeBatch extends Batch {
 		Lines.useLegacyLine = true;
 		RenderGroupEntity.capture();
 
-		this.cons = cons;
-		spriteHandler = handler;
+		vaporize = vaporizeCons;
+		sprite = spriteCons;
 		drawer.run();
 
 		RenderGroupEntity.end();
@@ -44,10 +44,10 @@ public class VaporizeBatch extends Batch {
 		Core.batch = last;
 		Core.gl = lgl;
 		discon = null;
-		spriteHandler = null;
+		sprite = null;
 	}
 
-	public void switchBatch(float x1, float y1, float x2, float y2, float width, Runnable drawer, VaporizeHandler cons) {
+	public void switchBatch(float x1, float y1, float x2, float y2, float width, Runnable drawer, VaporizeHandler vaporizeCons) {
 		Batch last = Core.batch;
 		GL20 lgl = Core.gl;
 		Core.batch = this;
@@ -55,8 +55,8 @@ public class VaporizeBatch extends Batch {
 		Lines.useLegacyLine = true;
 		RenderGroupEntity.capture();
 
-		this.cons = cons;
-		spriteHandler = (x, y, w, h, r) -> {
+		vaporize = vaporizeCons;
+		sprite = (x, y, w, h, r) -> {
 			float isin = Mathf.sinDeg(-r), icos = Mathf.cosDeg(-r);
 			float lx1 = x1 - x, ly1 = y1 - y;
 			float lx2 = x2 - x, ly2 = y2 - y;
@@ -76,7 +76,7 @@ public class VaporizeBatch extends Batch {
 		Core.batch = last;
 		Core.gl = lgl;
 		discon = null;
-		spriteHandler = null;
+		sprite = null;
 	}
 
 	@Override
@@ -114,7 +114,7 @@ public class VaporizeBatch extends Batch {
 			return;
 		}
 
-		boolean contain = (spriteHandler == null || spriteHandler.get(bx, by, width, height, rotation));
+		boolean contain = (sprite == null || sprite.get(bx, by, width, height, rotation));
 
 		if (color.a <= 0.9f) {
 			/*RejectedRegion r = new RejectedRegion();
@@ -146,10 +146,10 @@ public class VaporizeBatch extends Batch {
 			//boolean intersected = Intersector.intersectSegmentRectangle(vx1, vy1, vx2, vy2, tr);
 			Disintegration dis = Disintegration.generate(region, bx, by, rotation, width, height, d -> {
 				//Vec2 n = Intersector.nearestSegmentPoint(laserX1, laserY1, laserX2, laserY2, d.x, d.y, vec);
-				boolean c = spriteHandler == null || spriteHandler.get(d.x, d.y, d.getSize() / 2f, d.getSize() / 2f, 0);
+				boolean c = sprite == null || sprite.get(d.x, d.y, d.getSize() / 2f, d.getSize() / 2f, 0);
 
 				//cons.get(d, n.within(d.x, d.y, (d.getSize() + laserWidth) / 2f));
-				cons.get(d, c);
+				vaporize.get(d, c);
 			});
 			dis.z = z;
 			dis.drawnColor.set(color);

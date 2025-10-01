@@ -8,6 +8,7 @@ import heavyindustry.content.HFx;
 import heavyindustry.entities.HEntity;
 import heavyindustry.graphics.HPal;
 import heavyindustry.type.weapons.EndLauncherWeapon.EndLauncherData;
+import heavyindustry.util.Constant;
 import mindustry.content.Fx;
 import mindustry.entities.Units;
 import mindustry.entities.bullet.BasicBulletType;
@@ -48,7 +49,7 @@ public class EndMissileBulletType extends BasicBulletType {
 
 		if (data.ret <= 0f) {
 			Teamc target = Units.closestTarget(b.team, b.x, b.y, 520f, u -> !data.mount.targets.containsKey(u), bl -> !data.mount.targets.containsKey(bl));
-			if (target == null) target = Units.closestTarget(b.team, b.x, b.y, 520f, u -> true, bl -> true);
+			if (target == null) target = Units.closestTarget(b.team, b.x, b.y, 520f, Constant.BOOLF_UNIT_TRUE, Constant.BOOLF_BUILDING_TRUE);
 
 			if (target instanceof Building bl) {
 				b.aimTile = bl.tile;

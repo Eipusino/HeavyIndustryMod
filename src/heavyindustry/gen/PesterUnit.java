@@ -18,6 +18,7 @@ import heavyindustry.entities.HUnitSorts;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.math.HInterps;
 import heavyindustry.type.unit.PesterUnitType;
+import heavyindustry.util.Constant;
 import heavyindustry.util.ObjectFloatMapf;
 import heavyindustry.util.ObjectIntMapf;
 import heavyindustry.util.Utils;
@@ -163,7 +164,7 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 			if (bossTargetSearchReload < 0 && isBoss) {
 				bossTargetSearchReload = put.checkBossReload;
 
-				bossTarget = Units.bestTarget(team, x, y, put.bossWeaponRange, e -> true, e -> !(e.block.group == BlockGroup.walls), HUnitSorts.regionalHPMaximumAll);
+				bossTarget = Units.bestTarget(team, x, y, put.bossWeaponRange, Constant.BOOLF_UNIT_TRUE, e -> !(e.block.group == BlockGroup.walls), HUnitSorts.regionalHPMaximumAll);
 			}
 
 			if (bossTarget != null) {

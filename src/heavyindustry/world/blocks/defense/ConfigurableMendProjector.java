@@ -14,6 +14,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.util.Constant;
 import mindustry.content.Fx;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -137,7 +138,7 @@ public class ConfigurableMendProjector extends MendProjector {
 
 		@Override
 		public void drawSelect() {
-			indexer.eachBlock(this, setRange, other -> true, other -> Drawf.selected(other, Tmp.c1.set(baseColor).a(Mathf.absin(4f, 1f))));
+			indexer.eachBlock(this, setRange, Constant.BOOLF_BUILDING_TRUE, other -> Drawf.selected(other, Tmp.c1.set(baseColor).a(Mathf.absin(4f, 1f))));
 
 			Drawf.dashCircle(x, y, setRange, baseColor);
 		}

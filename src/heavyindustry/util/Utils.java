@@ -773,11 +773,11 @@ public final class Utils {
 	}
 
 	public static void extinguish(Team team, float x, float y, float range, float intensity) {
-		Vars.indexer.eachBlock(team, x, y, range, b -> true, b -> Fires.extinguish(b.tile, intensity));
+		Vars.indexer.eachBlock(team, x, y, range, Constant.BOOLF_BUILDING_TRUE, b -> Fires.extinguish(b.tile, intensity));
 	}
 
 	public static void extinguish(Teamc teamc, float range, float intensity) {
-		Vars.indexer.eachBlock(teamc.team(), teamc.x(), teamc.y(), range, b -> true, b -> Fires.extinguish(b.tile, intensity));
+		Vars.indexer.eachBlock(teamc.team(), teamc.x(), teamc.y(), range, Constant.BOOLF_BUILDING_TRUE, b -> Fires.extinguish(b.tile, intensity));
 	}
 
 	public static Unit teleportUnitNet(Unit before, float x, float y, float angle, Player player) {

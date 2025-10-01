@@ -25,6 +25,7 @@ import heavyindustry.ai.MinerPointAI;
 import heavyindustry.ai.NullAI;
 import heavyindustry.ai.SurroundAI;
 import heavyindustry.ai.YggdrasilAI;
+import heavyindustry.entities.HEntity;
 import heavyindustry.entities.abilities.BatteryAbility;
 import heavyindustry.entities.abilities.InvincibleForceFieldAbility;
 import heavyindustry.entities.abilities.JavelinAbility;
@@ -3073,6 +3074,8 @@ public final class HUnitTypes {
 			legSplashRange = 100f;
 			legSplashDamage = 5400f;
 			clipSize = 114514.191981f;
+			ammoCapacity = 100000;
+			ammoType = new PowerAmmoType(0.1f);
 			weapons.addAll(new EndAntiAirWeapon(name + "-anti-air") {{
 				x = 45.75f;
 				y = 15.5f;
@@ -3962,6 +3965,7 @@ public final class HUnitTypes {
 			deathExplosionEffect = Fx.none;
 			deathSound = HSounds.jumpIn;
 			damageMultiplier = 0.01f;
+			maxOnceDamage = 100f;
 			health = 3000;
 			engineSize = 0f;
 			buildSpeed = 9f;
@@ -3999,16 +4003,13 @@ public final class HUnitTypes {
 				bullet = new PointBulletType() {{
 					trailEffect = shootEffect = despawnEffect = hitEffect = smokeEffect = Fx.none;
 					hitSize *= 2f;
-					lifetime *= 2.2f;
+					lifetime *= 10f;
 				}
 					@Override
 					public void hitEntity(Bullet b, Hitboxc entity, float health) {
 						super.hitEntity(b, entity, health);
 
-						if (entity instanceof Unit u && !u.dead() && u.health > 0f) {
-							u.health = -1f;
-							u.maxHealth = -1f;
-						}
+						HEntity.annihilate(entity, false);
 					}
 
 					@Override

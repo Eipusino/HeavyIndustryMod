@@ -7,6 +7,7 @@ import arc.struct.IntSet;
 import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.util.Constant;
 import mindustry.entities.Damage;
 import mindustry.entities.TargetPriority;
 import mindustry.game.EventType.BuildingBulletDestroyEvent;
@@ -68,7 +69,7 @@ public class RegenWall extends Wall {
 		public void updateTargets() {
 			targets.clear();
 			taken.clear();
-			indexer.eachBlock(team, Tmp.r1.setCentered(x, y, tilesize), b -> true, targets::add);
+			indexer.eachBlock(team, Tmp.r1.setCentered(x, y, tilesize), Constant.BOOLF_BUILDING_TRUE, targets::add);
 		}
 
 		@Override

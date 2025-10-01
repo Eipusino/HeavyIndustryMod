@@ -11,6 +11,7 @@ import arc.util.Tmp;
 import heavyindustry.content.HFx;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.type.unit.EnergyUnitType;
+import heavyindustry.util.Constant;
 import mindustry.content.Fx;
 import mindustry.entities.Lightning;
 import mindustry.entities.Units;
@@ -117,7 +118,7 @@ public class EnergyUnit extends BaseUnit implements Energyc {
 		if (!isPlayer() && type instanceof EnergyUnitType eType) {
 			reloadValue += Time.delta;
 
-			Teamc target = Units.closestEnemy(team, x, y, eType.teleportRange * 2f, b -> true);
+			Teamc target = Units.closestEnemy(team, x, y, eType.teleportRange * 2f, Constant.BOOLF_UNIT_TRUE);
 			int[] num = {0};
 			float[] damage = {0};
 

@@ -1,6 +1,9 @@
 package heavyindustry.gen;
 
+import arc.Core;
 import arc.util.Time;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
 import heavyindustry.entities.HEntity;
 import heavyindustry.math.Mathm;
 import mindustry.entities.EntityCollisions;
@@ -23,6 +26,7 @@ public class DespondencyUnit extends BaseLegsUnit {
 		if (HEntity.eipusino != null && team != HEntity.eipusino.team) team = HEntity.eipusino.team;
 
 		updateValues();
+
 		super.update();
 	}
 
@@ -81,7 +85,9 @@ public class DespondencyUnit extends BaseLegsUnit {
 
 	@Override
 	public void add() {
-		if (added || count() >= 1) return;
+		if (added || count() >= 1 || HEntity.despondency != null) return;
+
+		HEntity.despondency = this;
 
 		trueHealth = type.health;
 		HEntity.exclude(this);
@@ -101,14 +107,54 @@ public class DespondencyUnit extends BaseLegsUnit {
 
 	@Override
 	public void remove() {
-		if (trueHealth > 0 && HEntity.containsExclude(id)) return;
-		if (added) {
-			boolean valid = HEntity.removeExclude(this);
-			if (valid) {
-				super.remove();
-			} else {
-				trueHealth = trueMaxHealth = type.health;
-			}
+		if ((trueHealth > 0 && HEntity.containsExclude(id)) || !added) {
+			Core.app.post(() -> {
+				if (Groups.unit.find(u -> u == this) == null) index__unit = Groups.unit.addIndex(this);
+			});
+
+			return;
 		}
+
+		boolean valid = HEntity.removeExclude(this);
+
+		if (valid) {
+			HEntity.despondency = null;
+
+			super.remove();
+		} else {
+			trueHealth = trueMaxHealth = type.health;
+		}
+	}
+
+	@Override
+	public void write(Writes write) {
+		write.f(trueHealth);
+		write.f(trueMaxHealth);
+
+		super.write(write);
+	}
+
+	@Override
+	public void read(Reads read) {
+		trueHealth = read.f();
+		trueMaxHealth = read.f();
+
+		super.read(read);
+	}
+
+	@Override
+	public void writeSync(Writes write) {
+		write.f(trueHealth);
+		write.f(trueMaxHealth);
+
+		super.writeSync(write);
+	}
+
+	@Override
+	public void readSync(Reads read) {
+		trueHealth = read.f();
+		trueMaxHealth = read.f();
+
+		super.readSync(read);
 	}
 }

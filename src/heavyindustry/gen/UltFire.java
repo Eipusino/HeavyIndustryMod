@@ -10,6 +10,7 @@ import arc.util.Time;
 import arc.util.pooling.Pools;
 import heavyindustry.content.HBullets;
 import heavyindustry.content.HStatusEffects;
+import heavyindustry.util.Constant;
 import mindustry.core.World;
 import mindustry.entities.Damage;
 import mindustry.entities.Effect;
@@ -73,7 +74,7 @@ public class UltFire extends Fire {
 	}
 
 	public static void create(float x, float y, float range) {
-		indexer.eachBlock(null, x, y, range, other -> true, other -> UltFire.create(other.tile));
+		indexer.eachBlock(null, x, y, range, Constant.BOOLF_BUILDING_TRUE, other -> UltFire.create(other.tile));
 	}
 
 	public static void create(Teamc teamc, float range) {

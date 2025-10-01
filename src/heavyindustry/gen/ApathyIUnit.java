@@ -11,6 +11,8 @@ import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
 import heavyindustry.ai.ApathyIAI;
 import heavyindustry.content.HFx;
 import heavyindustry.content.HUnitTypes;
@@ -23,15 +25,21 @@ import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.HPal;
 import heavyindustry.type.unit.ApathyUnitType;
 import heavyindustry.util.Utils;
+import mindustry.Vars;
 import mindustry.audio.SoundLoop;
+import mindustry.content.Fx;
 import mindustry.gen.Bullet;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.gen.Hitboxc;
+import mindustry.gen.Unit;
 import mindustry.graphics.Layer;
+import mindustry.io.TypeIO;
 import mindustry.type.UnitType;
 
 public class ApathyIUnit extends BaseUnit {
+	public static final float shieldMaxHealth = 10000f;
+
 	public ShiftHandler current, last;
 	public float shiftProgress = 0f;
 	public boolean shifting = false;
@@ -55,8 +63,6 @@ public class ApathyIUnit extends BaseUnit {
 	public float sentrySpawnDelay, sentrySpawnDelay2, sentryRepositionTime;
 
 	public float sentryHealTime = 0f;
-
-	public static final float shieldMaxHealth = 10000f;
 
 	@Override
 	public int classId() {
@@ -266,7 +272,9 @@ public class ApathyIUnit extends BaseUnit {
 		if (sentries.size < 8) sentrySpawnDelay2 -= Time.delta;
 
 		sentries.removeAll(s -> !s.isValid());
+
 		boolean heal = false;
+
 		if (sentryHealTime > 0) {
 			sentryHealTime -= Time.delta;
 			if (sentryHealTime <= 0f) {
@@ -297,7 +305,7 @@ public class ApathyIUnit extends BaseUnit {
 
 	public void repositionSentries(boolean heal) {
 		int idx = 0;
-		//ApathyIAI ai = (ApathyIAI)controller;
+		//ApathyIAI ai = (ApathyIAI) controller;
 
 		for (ApathySentryUnit s : sentries) {
 			if (s.healDelay > 0) continue;
@@ -412,7 +420,9 @@ public class ApathyIUnit extends BaseUnit {
 
 	@Override
 	public void add() {
-		if (added || count() >= 1) return;
+		if (added || count() >= 1 || HEntity.apathy != null) return;
+
+		HEntity.apathy = this;
 
 		index__all = Groups.all.addIndex(this);
 		index__unit = Groups.unit.addIndex(this);
@@ -428,12 +438,126 @@ public class ApathyIUnit extends BaseUnit {
 
 	@Override
 	public void remove() {
-		super.remove();
+		if (!added) return;
+
+		HEntity.apathy = null;
+
+		Groups.all.removeIndex(this, index__all);
+		index__all = -1;
+		Groups.unit.removeIndex(this, index__unit);
+		index__unit = -1;
+		Groups.sync.removeIndex(this, index__sync);
+		index__sync = -1;
+		Groups.draw.removeIndex(this, index__draw);
+		index__draw = -1;
+
+		added = false;
+
+		if (Vars.net.client()) {
+			Vars.netClient.addRemovedEntity(id());
+		}
+
+		team.data().updateCount(type, -1);
+		controller.removed(this);
+
+		if (trail != null && trail.size() > 0) {
+			Fx.trailFade.at(x, y, trail.width(), type.trailColor == null ? team.color : type.trailColor, trail.copy());
+		}
 
 		if (index__all != -1 && controller instanceof ApathyIAI ai && ai.sounds != null) {
 			for (SoundLoop sl : ai.sounds) {
 				sl.stop();
 			}
 		}
+	}
+
+	@Override
+	public void write(Writes write) {
+		write.f(shiftProgress);
+		write.bool(shifting);
+		write.f(stress);
+		write.f(shieldHealth);
+		write.f(shiftRotation);
+		write.bool(createSentries);
+
+		writeShiftHandler(write);
+		writeApathySentry(write);
+
+		super.write(write);
+	}
+
+	@Override
+	public void read(Reads read) {
+		shiftProgress = read.f();
+		shifting = read.bool();
+		stress = read.f();
+		shieldHealth = read.f();
+		shiftRotation = read.f();
+		createSentries = read.bool();
+
+		readShiftHandler(read);
+		readApathySentry(read, true);
+
+		super.read(read);
+	}
+
+	@Override
+	public void writeSync(Writes write) {
+		write.f(shiftProgress);
+		write.bool(shifting);
+		write.f(stress);
+		write.f(shieldHealth);
+		write.f(shiftRotation);
+		write.bool(createSentries);
+
+		writeShiftHandler(write);
+		writeApathySentry(write);
+
+		super.writeSync(write);
+	}
+
+	@Override
+	public void readSync(Reads read) {
+		shiftProgress = read.f();
+		shifting = read.bool();
+		stress = read.f();
+		shieldHealth = read.f();
+		shiftRotation = read.f();
+		createSentries = read.bool();
+
+		readShiftHandler(read);
+		readApathySentry(read, false);
+
+		super.readSync(read);
+	}
+
+	protected void writeApathySentry(Writes write) {
+		int size = sentries.size;
+
+		write.i(size);
+
+		for (int i = 0; i < size; i++) {
+			Unit unit = sentries.get(i);
+
+			TypeIO.writeUnit(write, unit);
+		}
+	}
+
+	protected void readApathySentry(Reads read, boolean map) {
+		int size = read.i();
+
+		for (int i = 0; i < size; i++) {
+			Unit unit = TypeIO.readUnit(read);
+
+			if (unit instanceof ApathySentryUnit asu && (map || !sentries.contains(asu, true))) sentries.add(asu);
+		}
+	}
+
+	protected void writeShiftHandler(Writes write) {
+		// TODO What shall I do?
+	}
+
+	protected void readShiftHandler(Reads read) {
+		// TODO What shall I do?
 	}
 }
