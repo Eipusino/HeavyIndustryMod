@@ -12,7 +12,10 @@ import mindustry.Vars;
 import mindustry.content.TechTree.TechNode;
 import mindustry.ctype.ContentType;
 import mindustry.ctype.UnlockableContent;
+import mindustry.gen.Entityc;
+import mindustry.gen.Groups;
 import mindustry.gen.Itemsc;
+import mindustry.gen.Teamc;
 import mindustry.io.TypeIO;
 
 import java.io.ByteArrayInputStream;

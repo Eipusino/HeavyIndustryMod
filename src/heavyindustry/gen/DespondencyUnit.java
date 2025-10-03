@@ -11,14 +11,28 @@ import mindustry.entities.EntityCollisions.SolidPred;
 import mindustry.gen.Groups;
 import mindustry.type.UnitType;
 
-public class DespondencyUnit extends BaseLegsUnit {
+public class DespondencyUnit extends BaseLegsUnit implements TrueHealthc {
 	public float trueHealth, trueMaxHealth;
-	public float invFrames;
+	public transient float invFrames;
 	public float lastDamage = 0f;
 
 	@Override
 	public int classId() {
 		return Entitys.getId(DespondencyUnit.class);
+	}
+
+	@Override
+	public void setType(UnitType type) {
+		super.setType(type);
+
+		trueMaxHealth = type.health;
+	}
+
+	@Override
+	public void heal() {
+		super.heal();
+
+		trueHealth = trueMaxHealth;
 	}
 
 	@Override
@@ -78,18 +92,11 @@ public class DespondencyUnit extends BaseLegsUnit {
 	}
 
 	@Override
-	public void setType(UnitType type) {
-		super.setType(type);
-		trueMaxHealth = type.health;
-	}
-
-	@Override
 	public void add() {
 		if (added || count() >= 1 || HEntity.despondency != null) return;
 
 		HEntity.despondency = this;
 
-		trueHealth = type.health;
 		HEntity.exclude(this);
 
 		index__all = Groups.all.addIndex(this);
@@ -156,5 +163,25 @@ public class DespondencyUnit extends BaseLegsUnit {
 		trueMaxHealth = read.f();
 
 		super.readSync(read);
+	}
+
+	@Override
+	public float trueHealth() {
+		return trueHealth;
+	}
+
+	@Override
+	public float trueMaxHealth() {
+		return trueMaxHealth;
+	}
+
+	@Override
+	public void trueHealth(float value) {
+		trueHealth = value;
+	}
+
+	@Override
+	public void trueMaxHealth(float value) {
+		trueMaxHealth = value;
 	}
 }

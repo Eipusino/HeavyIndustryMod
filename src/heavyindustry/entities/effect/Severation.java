@@ -38,33 +38,33 @@ import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
 
 public class Severation extends BaseEntity implements QuadTreeObject {
-	static FloatSeq intersections = new FloatSeq(), side1 = new FloatSeq(), side2 = new FloatSeq();
-	static Seq<CutTri> returnTri = new Seq<>(CutTri.class), tmpTris = new Seq<>(CutTri.class), tmpTris2 = new Seq<>(CutTri.class);
-	static Seq<Severation> tmpCuts = new Seq<>(Severation.class);
-	static Vec2 tmpVec = new Vec2(), tmpVec2 = new Vec2(), tmpVec3 = new Vec2();
-	static float[] tmpVerts = new float[24];
-	static float minArea = 4f * 4f;
+	protected static FloatSeq intersections = new FloatSeq(), side1 = new FloatSeq(), side2 = new FloatSeq();
+	protected static Seq<CutTri> returnTri = new Seq<>(CutTri.class), tmpTris = new Seq<>(CutTri.class), tmpTris2 = new Seq<>(CutTri.class);
+	protected static Seq<Severation> tmpCuts = new Seq<>(Severation.class);
+	protected static Vec2 tmpVec = new Vec2(), tmpVec2 = new Vec2(), tmpVec3 = new Vec2();
+	protected static float[] tmpVerts = new float[24];
+	protected static float minArea = 4f * 4f;
 
-	static int slashIDs = 0;
-	static QuadTree<Severation> cutTree;
-	static Seq<Severation> cutsSeq = new Seq<>(Severation.class);
-	static Seq<Slash> slashes = new Seq<>(Slash.class);
-	static Pool<Slash> slashPool = new BasicPool<>(Slash::new);
+	public static int slashIds = 0;
+	public static QuadTree<Severation> cutTree;
+	public static Seq<Severation> cutsSeq = new Seq<>(Severation.class);
+	public static Seq<Slash> slashes = new Seq<>(Slash.class);
+	public static Pool<Slash> slashPool = new BasicPool<>(Slash::new);
 
-	Seq<CutTri> tris = new Seq<>(CutTri.class);
-	float bounds = 0f, area = 0f;
-	float centerX, centerY;
-	float rotation;
-	float width, height;
-	TextureRegion region = new TextureRegion();
-	IntSet collided = new IntSet();
+	public Seq<CutTri> tris = new Seq<>(CutTri.class);
+	public float bounds = 0f, area = 0f;
+	public float centerX, centerY;
+	public float rotation;
+	public float width, height;
+	public TextureRegion region = new TextureRegion();
+	public IntSet collided = new IntSet();
 
 	public float color = Color.whiteFloatBits;
 	public float z = Layer.flyingUnit, shadowZ, zTime;
 	public Effect explosionEffect = HFx.fragmentExplosion;
 	public Sound explosionSound = Sounds.none;
 
-	float time = 0f, lifetime = 3f * 60f;
+	public float time = 0f, lifetime = 3f * 60f;
 	public float vx, vy, vr;
 	public float drag = 0.05f;
 	public boolean wasCut = false;
@@ -85,7 +85,7 @@ public class Severation extends BaseEntity implements QuadTreeObject {
 					cutTree.insert(cuts);
 				}
 			}
-			if (!slashes.isEmpty()) {
+			if (slashes.any()) {
 				slashes.removeAll(s -> {
 					HEntity.intersectLine(cutTree, 1f, s.x1, s.y1, s.x2, s.y2, (c, x, y) -> {
 						Rect b = Tmp.r3;
@@ -209,7 +209,7 @@ public class Severation extends BaseEntity implements QuadTreeObject {
 		eff.at(v.x, v.y, 0, col.rand());*/
 
 		Seq<Severation> s = cut(x1, y1, x2, y2);
-		if (!s.isEmpty()) {
+		if (s.any()) {
 			for (Severation c : s) {
 				//if (c.area < 4f * 4f) continue;
 				c.explosionEffect = explosionEffect;
@@ -231,6 +231,11 @@ public class Severation extends BaseEntity implements QuadTreeObject {
 			wasCut = true;
 			remove();
 		}
+	}
+
+	@Override
+	public boolean serialize() {
+		return false;
 	}
 
 	@Override
@@ -266,7 +271,7 @@ public class Severation extends BaseEntity implements QuadTreeObject {
 		out.setCentered(x, y, bounds);
 	}
 
-	Vec2 unproject(float x, float y) {
+	public Vec2 unproject(float x, float y) {
 		return Tmp.v1.set((x - centerX) * width, (y - centerY) * height).rotate(rotation).add(this.x, this.y);
 	}
 
@@ -381,14 +386,14 @@ public class Severation extends BaseEntity implements QuadTreeObject {
 		return bounds * 2f;
 	}
 
-	Seq<Severation> cut(float x1, float y1, float x2, float y2) {
+	public Seq<Severation> cut(float x1, float y1, float x2, float y2) {
 		tmpTris.clear();
 		tmpTris2.clear();
 		tmpCuts.clear();
 		boolean hasCut = false;
 		for (CutTri t : tris) {
 			Seq<CutTri> ts = t.cut(x1, y1, x2, y2);
-			if (!ts.isEmpty()) {
+			if (ts.any()) {
 				hasCut = true;
 			} else {
 				tmpTris2.add(t);
@@ -445,7 +450,7 @@ public class Severation extends BaseEntity implements QuadTreeObject {
 		return tmpCuts;
 	}
 
-	void updateBounds() {
+	public void updateBounds() {
 		float maxW = 0, minW = 1;
 		float maxH = 0, minH = 1;
 		float cx = 0, cy = 0;
@@ -493,14 +498,14 @@ public class Severation extends BaseEntity implements QuadTreeObject {
 		added = false;
 	}
 
-	static class CutTri {
+	public static class CutTri {
 		//0-1
-		float[] pos = new float[3 * 2];
-		float area = 0f;
+		public float[] pos = new float[3 * 2];
+		public float area = 0f;
 		//used for return
-		int side = 0;
+		public int side = 0;
 
-		Seq<CutTri> cut(float x1, float y1, float x2, float y2) {
+		public Seq<CutTri> cut(float x1, float y1, float x2, float y2) {
 			intersections.clear();
 			side1.clear();
 			side2.clear();
@@ -514,7 +519,7 @@ public class Severation extends BaseEntity implements QuadTreeObject {
 				float lx2 = pos[i2], ly2 = pos[i2 + 1];
 				//intersectSegments
 				if (Intersector.intersectSegments(lx1, ly1, lx2, ly2, x1, y1, x2, y2, tmpVec)) {
-					//if (intersectSegments(lx1 * rsl, ly1 * rsl, lx2 * rsl, ly2 * rsl, x1 * rsl, y1 * rsl, x2 * rsl, y2 * rsl, tmpVec)){
+					//if (intersectSegments(lx1 * rsl, ly1 * rsl, lx2 * rsl, ly2 * rsl, x1 * rsl, y1 * rsl, x2 * rsl, y2 * rsl, tmpVec)) {
 					intersections.add(tmpVec.x, tmpVec.y);
 				}
 			}
@@ -633,7 +638,7 @@ public class Severation extends BaseEntity implements QuadTreeObject {
 			return returnTri;
 		}
 
-		float[][] triangulate(float[] arr, int size) {
+		public float[][] triangulate(float[] arr, int size) {
 			float[][] ret = new float[size - 2][3 * 2];
 			for (int i = 0; i < size - 2; i++) {
 				float[] ar = ret[i];
@@ -652,16 +657,16 @@ public class Severation extends BaseEntity implements QuadTreeObject {
 		}
 	}
 
-	static class Slash implements Poolable {
-		float x1, y1, x2, y2;
-		float time;
-		int id = slashIDs++;
+	public static class Slash implements Poolable {
+		public float x1, y1, x2, y2;
+		public float time;
+		public int id = slashIds++;
 
 		@Override
 		public void reset() {
 			x1 = y1 = x2 = y2 = 0f;
 			time = 0f;
-			id = slashIDs++;
+			id = slashIds++;
 		}
 	}
 }

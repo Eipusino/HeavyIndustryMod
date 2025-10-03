@@ -15,6 +15,7 @@ import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.HVars;
+import heavyindustry.ai.BaseCommand;
 import heavyindustry.ai.DespondencyAI;
 import heavyindustry.gen.DesShockWaveEntity;
 import heavyindustry.gen.DesSpearEntity;
@@ -192,8 +193,9 @@ public class EndDespondencyWeapon extends Weapon {
 	}
 
 	public void updateDespondency(Unit unit, DespondencyMount mount) {
-		//boolean shoot = (mount.shoot || m.active) && unit.controller() instanceof DespondencyAI && ((mount.target instanceof Unit uu && uu.isValid()) || m.stage > 2);
-		boolean shoot = (mount.shoot || mount.active) && unit.controller() instanceof DespondencyAI && (mount.target instanceof Unit uu && uu.isValid() || mount.targetDestroyed);
+		//boolean shoot = (mount.shoot || m.active) && controller instanceof DespondencyAI && ((mount.target instanceof Unit uu && uu.isValid()) || m.stage > 2);
+		boolean shoot = (mount.shoot || mount.active) && (unit.controller() instanceof DespondencyAI || (unit.controller() instanceof BaseCommand ai && ai.controller() instanceof DespondencyAI)) && (mount.target instanceof Unit uu && uu.isValid() || mount.targetDestroyed);
+
 		if (shoot) {
 			mount.time += Time.delta;
 			for (DespondencyArm arm : arms) {
@@ -240,6 +242,7 @@ public class EndDespondencyWeapon extends Weapon {
 							endFinal(mount);
 
 							if (unit.controller() instanceof DespondencyAI ai) ai.endDeath();
+							else if (unit.controller() instanceof BaseCommand command && command.controller() instanceof DespondencyAI ai) ai.endDeath();
 							//Log.info("des s4");
 							mount.target = null;
 							return;
@@ -252,7 +255,9 @@ public class EndDespondencyWeapon extends Weapon {
 		} else {
 			if (mount.stage > 2) {
 				endFinal(mount);
+
 				if (unit.controller() instanceof DespondencyAI ai) ai.endDeathFailed();
+				else if (unit.controller() instanceof BaseCommand command && command.controller() instanceof DespondencyAI ai) ai.endDeathFailed();
 			}
 			mount.time = 0f;
 			for (int i = 0; i < mount.times.length; i++) {
@@ -271,7 +276,7 @@ public class EndDespondencyWeapon extends Weapon {
 				}
 			}
 		}
-		if (!mount.spears.isEmpty()) {
+		if (mount.spears.any()) {
 			mount.spears.removeAll(s -> {
 				if (s.spear != mount.lastSpear && mount.lastSpear != null && mount.lastSpear.collided && mount.lastSpear.isAdded()) {
 					s.spear.cx = mount.lastSpear.cx;
@@ -285,7 +290,7 @@ public class EndDespondencyWeapon extends Weapon {
 				return s.fade < 0f;
 			});
 		}
-		if (!mount.fragHands.isEmpty()) {
+		if (mount.fragHands.any()) {
 			for (FragmentHands h : mount.fragHands) {
 				h.update(unit, mount);
 			}
@@ -311,6 +316,7 @@ public class EndDespondencyWeapon extends Weapon {
 			}
 		}
 		mount.strongTime = 60f;*/
+
 		for (Unit u : Groups.unit) {
 			if (u.team != unit.team && !isStray(u) && u != mount.target) {
 				float ang = unit.angleTo(u);
@@ -329,6 +335,7 @@ public class EndDespondencyWeapon extends Weapon {
 
 		mount.finalTime += Time.delta;
 		mount.spearTime -= Time.delta;
+
 		if (mount.spearTime <= 0f && !mount.spearFinal) {
 			int sc = mount.spears.size / 2;
 			int sside = mount.spears.size % 2 == 0 ? 1 : -1;
@@ -400,8 +407,8 @@ public class EndDespondencyWeapon extends Weapon {
 	}
 
 	public static boolean isStray(Unit unit) {
-		float value = (HVars.listener.getUnitDps(unit.type) + unit.maxHealth * unit.healthMultiplier);
-		return value < 140000 && !Mathm.isNaNInfinite(value);
+		float scr = (HVars.listener.getUnitDps(unit.type) + unit.maxHealth * unit.healthMultiplier);
+		return scr < 140000 && !Mathm.isNaNInfinite(scr);
 	}
 
 	@Override
@@ -546,7 +553,7 @@ public class EndDespondencyWeapon extends Weapon {
 	public void drawMain(Unit unit, DespondencyMount mount) {
 		unit.type.applyColor(unit);
 
-		if (!mount.spears.isEmpty()) {
+		if (mount.spears.any()) {
 			float z = Draw.z();
 			for (SpearHolder spear : mount.spears) {
 				float fade = spear.fade * (1f - Mathf.clamp((mount.finalTime - 4f * 60f) / 12f));
@@ -559,7 +566,7 @@ public class EndDespondencyWeapon extends Weapon {
 			}
 			Draw.z(z);
 		}
-		if (!mount.fragHands.isEmpty()) {
+		if (mount.fragHands.any()) {
 			for (FragmentHands h : mount.fragHands) {
 				h.draw(unit);
 			}

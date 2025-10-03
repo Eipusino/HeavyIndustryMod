@@ -184,7 +184,7 @@ public final class HOverrides {
 		Blocks.reinforcedContainer.itemCapacity = 160;
 		//blocks-turret
 		if (Blocks.duo instanceof ItemTurret turret) {
-			turret.ammoTypes.put(Items.thorium, new BasicBulletType(4f, 25f){{
+			turret.ammoTypes.put(Items.thorium, new BasicBulletType(4f, 25f) {{
 				width = 8f;
 				height = 13f;
 				shootEffect = Fx.shootBig;

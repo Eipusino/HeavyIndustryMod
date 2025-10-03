@@ -14,6 +14,7 @@ import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.ai.ApathyIAI;
+import heavyindustry.ai.BaseCommand;
 import heavyindustry.content.HFx;
 import heavyindustry.content.HUnitTypes;
 import heavyindustry.entities.HEntity;
@@ -99,6 +100,7 @@ public class ApathyIUnit extends BaseUnit {
 						stress += dps / 2f;
 
 						if (controller instanceof ApathyIAI ai) ai.criticalHit(dps * 10f);
+						else if (controller instanceof BaseCommand command && command.controller() instanceof ApathyIAI ai) ai.criticalHit(dps * 10f);
 
 						if (dps * 10 > 500000f) HFx.apathyCrit.at(x, y, rotation, this);
 						break;
@@ -287,13 +289,26 @@ public class ApathyIUnit extends BaseUnit {
 
 		boolean allHealing = false;
 
-		if (controller instanceof ApathyIAI ai){
+		if (controller instanceof ApathyIAI ai) {
 			for (ApathySentryUnit s : sentries) {
 				s.target = ai.strongest;
 				allHealing |= s.healDelay > 0;
 			}
 
-			if (!sentries.isEmpty() && !createSentries && !allHealing) {
+			if (sentries.any() && !createSentries && !allHealing) {
+				sentryRepositionTime += Time.delta;
+				if (sentryRepositionTime >= 3f * 60f || heal) {
+					repositionSentries(heal);
+					sentryRepositionTime = 0f;
+				}
+			}
+		} else if (controller instanceof BaseCommand command && command.controller() instanceof ApathyIAI ai) {
+			for (ApathySentryUnit s : sentries) {
+				s.target = ai.strongest;
+				allHealing |= s.healDelay > 0;
+			}
+
+			if (sentries.any() && !createSentries && !allHealing) {
 				sentryRepositionTime += Time.delta;
 				if (sentryRepositionTime >= 3f * 60f || heal) {
 					repositionSentries(heal);
@@ -464,9 +479,15 @@ public class ApathyIUnit extends BaseUnit {
 			Fx.trailFade.at(x, y, trail.width(), type.trailColor == null ? team.color : type.trailColor, trail.copy());
 		}
 
-		if (index__all != -1 && controller instanceof ApathyIAI ai && ai.sounds != null) {
-			for (SoundLoop sl : ai.sounds) {
-				sl.stop();
+		if (index__all != -1 ) {
+			if (controller instanceof ApathyIAI ai && ai.sounds != null) {
+				for (SoundLoop sl : ai.sounds) {
+					sl.stop();
+				}
+			} else if (controller instanceof BaseCommand command && command.controller() instanceof ApathyIAI ai) {
+				for (SoundLoop sl : ai.sounds) {
+					sl.stop();
+				}
 			}
 		}
 	}

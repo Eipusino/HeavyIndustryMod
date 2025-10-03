@@ -49,7 +49,18 @@ public class DesShockWaveEntity extends BaseEntity {
 	}
 
 	@Override
+	public boolean serialize() {
+		return false;
+	}
+
+	@Override
 	public void update() {
+		if (targeting == null) {
+			remove();
+
+			return;
+		}
+
 		float lrange = time > 0 ? getRange() : 0f;
 		time += Time.delta / 120f;
 		float crange = getRange();
@@ -120,6 +131,6 @@ public class DesShockWaveEntity extends BaseEntity {
 
 	@Override
 	public float clipSize() {
-		return 114514.191981f;
+		return range;
 	}
 }

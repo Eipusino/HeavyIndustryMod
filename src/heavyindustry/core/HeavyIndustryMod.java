@@ -13,7 +13,7 @@ import arc.util.OS;
 import arc.util.Strings;
 import arc.util.Time;
 import heavyindustry.HVars;
-import heavyindustry.HeavyIndustryListener;
+import heavyindustry.content.HUnitCommands;
 import heavyindustry.content.HBlocks;
 import heavyindustry.content.HBullets;
 import heavyindustry.content.HItems;
@@ -194,6 +194,8 @@ public final class HeavyIndustryMod extends Mod {
 
 		Entitys.load();
 		Worlds.load();
+
+		HUnitCommands.loadAll();
 
 		HBullets.load();
 		HTeam.load();

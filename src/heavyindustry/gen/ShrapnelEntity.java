@@ -72,6 +72,11 @@ public class ShrapnelEntity extends BaseEntity implements Poolable {
 	}
 
 	@Override
+	public boolean serialize() {
+		return false;
+	}
+
+	@Override
 	public void update() {
 		x += vx * Time.delta;
 		y += vy * Time.delta;

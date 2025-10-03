@@ -139,7 +139,7 @@ public final class BeltPlacement {
 			i++;
 		}
 
-		if (!addedLast && !base.isEmpty()) result.add(base.peek());
+		if (!addedLast && base.any()) result.add(base.peek());
 
 		points.clear();
 		points.addAll(result);

@@ -25,6 +25,8 @@ import mindustry.graphics.Layer;
 public class EndNukeBulletType extends BasicBulletType {
 	public static int lastUnit, lastBuilding;
 
+	public static volatile int lastMax;
+
 	public EndNukeBulletType() {
 		super(17f, 50000f, "missile-large");
 
@@ -80,7 +82,7 @@ public class EndNukeBulletType extends BasicBulletType {
 			if (bl.health <= 0f) bl.kill();
 		}, arr);
 
-		int lastMax = Vars.headless ? -1 : Core.settings.getInt("hi-vaporize-batch", 100);
+		lastMax = Vars.headless ? -1 : Core.settings.getInt("hi-vaporize-batch", 100);
 
 		HEntity.scanEnemies(b.team, b.x, b.y, 480f, true, true, t -> {
 			if (t instanceof Unit u) {

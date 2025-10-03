@@ -312,7 +312,7 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 									}
 
 									// successful recipe
-									if (!possibleRecipes.isEmpty()) {
+									if (possibleRecipes.any()) {
 										PayloadManufacturingRecipe recipe = possibleRecipes.first();
 
 										// clear all

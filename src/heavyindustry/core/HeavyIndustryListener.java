@@ -1,4 +1,4 @@
-package heavyindustry;
+package heavyindustry.core;
 
 import arc.ApplicationCore;
 import arc.ApplicationListener;
@@ -14,7 +14,7 @@ import mindustry.type.Weapon;
 public class HeavyIndustryListener implements ApplicationListener {
 	private static float[] bulletDps, unitDps;
 
-	public HeavyIndustryListener() {
+	HeavyIndustryListener() {
 		if (Vars.platform instanceof ApplicationCore core) {
 			core.add(this);
 		}
@@ -62,7 +62,7 @@ public class HeavyIndustryListener implements ApplicationListener {
 				}
 				damage += d + (Mathf.pow(unit.hitSize, 0.75f) * unit.crashDamageMultiplier);
 			}
-			unitDps[unit.id] = damage;
+			unitDps[unit.id] = powerful(unit.name, damage);
 		}
 		return unitDps[unit.id];
 	}
@@ -80,7 +80,7 @@ public class HeavyIndustryListener implements ApplicationListener {
 			if (type.intervalBullet != null) {
 				damage += (updateBullet(type.intervalBullet) * type.intervalBullets) / type.bulletInterval;
 			}
-			//if(type.instantDisappear)
+			//if (type.instantDisappear)
 			if (type.spawnUnit != null) {
 				damage += updateUnit(type.spawnUnit);
 			}
@@ -90,5 +90,12 @@ public class HeavyIndustryListener implements ApplicationListener {
 			bulletDps[type.id] = Math.max(0.00001f, damage);
 		}
 		return bulletDps[type.id];
+	}
+
+	public float powerful(String name, float damage) {
+		return switch (name) {
+			case "extra-utilities-regency", "new-horizon-guardian", "new-horizon-pester", "new-horizon-nucleoid" -> 1145141919810f;
+			default -> damage;
+		};
 	}
 }

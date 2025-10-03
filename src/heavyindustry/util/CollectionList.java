@@ -795,6 +795,27 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 		return false;
 	}
 
+	public boolean removeAll(Object value, boolean identity) {
+		boolean modified = false;
+
+		if (identity || value == null) {
+			for (int i = 0, n = size; i < n; i++) {
+				if (items[i] == value) {
+					remove(i);
+					modified = true;
+				}
+			}
+		} else {
+			for (int i = 0, n = size; i < n; i++) {
+				if (value.equals(items[i])) {
+					remove(i);
+					modified = true;
+				}
+			}
+		}
+		return modified;
+	}
+
 	/** Removes and returns the item at the specified index. */
 	@Override
 	public E remove(int index) {
@@ -902,6 +923,16 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 	/** Returns the first item. */
 	public E first() {
 		if (size == 0) throw new IllegalStateException("Array is empty.");
+		return items[0];
+	}
+
+	public E peek(Prov<E> constructor) {
+		if (size == 0) return constructor.get();
+		return items[size - 1];
+	}
+
+	public E first(Prov<E> constructor) {
+		if (size == 0) return constructor.get();
 		return items[0];
 	}
 

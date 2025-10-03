@@ -161,18 +161,23 @@ public class Disintegration implements Poolable {
 
 	public static class DisintegrationEntity extends BaseEntity implements Poolable, Sized {
 		public Disintegration source;
-		int idx = 0;
+		public int idx = 0;
 
-		float rotation = 0f;
-		float offsetX, offsetY;
+		public float rotation = 0f;
+		public float offsetX, offsetY;
 
 		public float vx, vy, vr, drag = 0.05f;
 		public float time, lifetime;
 		public float zOverride = -1f;
 		public boolean disintegrating = false;
 
-		static DisintegrationEntity create() {
+		public static DisintegrationEntity create() {
 			return Pools.obtain(DisintegrationEntity.class, DisintegrationEntity::new);
+		}
+
+		@Override
+		public boolean serialize() {
+			return false;
 		}
 
 		public float getSize() {

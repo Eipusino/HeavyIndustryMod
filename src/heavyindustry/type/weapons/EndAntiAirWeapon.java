@@ -9,6 +9,7 @@ import arc.math.Interp;
 import arc.math.Mathf;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.ai.BaseCommand;
 import heavyindustry.ai.DespondencyAI;
 import heavyindustry.entities.HEntity;
 import heavyindustry.graphics.Drawn;
@@ -43,40 +44,43 @@ public class EndAntiAirWeapon extends Weapon {
 
 	@Override
 	public void update(Unit unit, WeaponMount mount) {
+		if (mount instanceof EndAntiAirMount eam) updateEndAntiAir(unit, eam);
+	}
+
+	public void updateEndAntiAir(Unit unit, EndAntiAirMount mount) {
 		boolean can = unit.canShoot();
 
 		float mountX = unit.x + Angles.trnsx(unit.rotation - 90, x, y),
 				mountY = unit.y + Angles.trnsy(unit.rotation - 90, x, y);
 
-		EndAntiAirMount aa = (EndAntiAirMount) mount;
-		Teamc main = unit.controller() instanceof DespondencyAI ai ? ai.mainTarget() : null;
+		Teamc main = unit.controller() instanceof DespondencyAI ai ? ai.mainTarget() : unit.controller() instanceof BaseCommand command && command.controller() instanceof DespondencyAI ai ? ai.mainTarget() : null;
 		//Teamc main = unit;
 
 		if ((mount.retarget -= Time.delta) <= 0f) {
 			//mount.retarget = mount.target == null ? targetInterval : targetSwitchInterval;
-			mount.retarget = aa.targetCount <= 0 ? targetInterval : targetSwitchInterval;
+			mount.retarget = mount.targetCount <= 0 ? targetInterval : targetSwitchInterval;
 
 			HEntity.scanEnemies(unit.team, mountX, mountY, targetingRange, true, false, u -> {
-				if ((u instanceof Unit un && (un.type.speed > (un.type.circleTarget ? 1.1f : 2.4f))) && u != main && !aa.contains(u)) {
-					aa.addTarget(u);
+				if ((u instanceof Unit un && (un.type.speed > (un.type.circleTarget ? 1.1f : 2.4f))) && u != main && !mount.contains(u)) {
+					mount.addTarget(u);
 				}
 			});
 		}
 
-		for (int i = 0; i < aa.targetCount; i++) {
-			Teamc t = aa.targets[i];
+		for (int i = 0; i < mount.targetCount; i++) {
+			Teamc t = mount.targets[i];
 
 			if (t == null || !t.isAdded() || (t instanceof Healthc h && !h.isValid()) || !Mathf.within(mountX, mountY, t.x(), t.y(), targetingRange + (t instanceof Sized s ? s.hitSize() / 2f : 0f))) {
-				aa.removeIdx(i);
+				mount.removeIdx(i);
 				i--;
 				continue;
 			}
 
-			aa.targetWarmups[i] = Mathf.approachDelta(aa.targetWarmups[i], 1f, 1f / 30f);
+			mount.targetWarmups[i] = Mathf.approachDelta(mount.targetWarmups[i], 1f, 1f / 30f);
 		}
 
 		if (can) {
-			if (aa.targetCount > 0) {
+			if (mount.targetCount > 0) {
 				mount.reload = Math.min(mount.reload + Time.delta * unit.reloadMultiplier, reload);
 			} else {
 				mount.reload = 0f;
@@ -84,8 +88,8 @@ public class EndAntiAirWeapon extends Weapon {
 		}
 
 		if (mount.reload >= reload) {
-			for (int i = 0; i < aa.targetCount; i++) {
-				Teamc t = aa.targets[i];
+			for (int i = 0; i < mount.targetCount; i++) {
+				Teamc t = mount.targets[i];
 
 				float mx = (mountX + t.x()) / 2f;
 				float my = (mountY + t.y()) / 2f;

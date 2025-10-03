@@ -104,6 +104,11 @@ public class Devastation extends BaseEntity implements Poolable {
 		return Math.max(width, height) * 2.5f;
 	}
 
+	@Override
+	public boolean serialize() {
+		return false;
+	}
+
 	public void set(TextureRegion tex, float x, float y, float width, float height, float rotation) {
 		//main = tex;
 		main.set(tex);

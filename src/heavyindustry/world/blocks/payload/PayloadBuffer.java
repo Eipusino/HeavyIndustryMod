@@ -47,7 +47,7 @@ public class PayloadBuffer extends PayloadBlock {
 		public void updateTile() {
 			super.updateTile();
 			if (next != null && current() != null && next.acceptPayload(this, current())) {
-				if (payload == null && !inventory.isEmpty()) {
+				if (payload == null && inventory.any()) {
 					payVector.setZero();
 					payload = inventory.pop();
 					payloadUsed -= paySize();
@@ -79,7 +79,7 @@ public class PayloadBuffer extends PayloadBlock {
 
 		public Payload current() {
 			if (payload != null) return payload;
-			else if (!inventory.isEmpty()) return inventory.peek();
+			else if (inventory.any()) return inventory.peek();
 			return null;
 		}
 
@@ -100,7 +100,7 @@ public class PayloadBuffer extends PayloadBlock {
 
 		@Override
 		public Payload takePayload() {
-			if (payload == null && !inventory.isEmpty()) {
+			if (payload == null && inventory.any()) {
 				payload = inventory.pop();
 				payloadUsed -= paySize();
 			}

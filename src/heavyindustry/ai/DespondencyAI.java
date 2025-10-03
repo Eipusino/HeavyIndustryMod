@@ -235,11 +235,11 @@ public class DespondencyAI extends AIController {
 
 	@Override
 	public void updateTargeting() {
-		if (target != null && (target instanceof Healthc h && !h.isValid())) {
+		if (target instanceof Healthc h && !h.isValid()) {
 			target = null;
 			timer.reset(0, 0f);
 		}
-		if (moveTarget != null && !((Healthc) moveTarget).isValid()) {
+		if (moveTarget instanceof Healthc h && !h.isValid()) {
 			moveTarget = null;
 			distractionTime = 0f;
 			altTarget = false;
@@ -249,14 +249,16 @@ public class DespondencyAI extends AIController {
 		Iterator<Teamc> iter = targets.iterator();
 		while (iter.hasNext()) {
 			Teamc t = iter.next();
-			if (!((Healthc) t).isValid()) {
+
+			if (t instanceof Healthc h && !h.isValid()) {
 				iter.remove();
 			}
 		}
 
 		if (target instanceof Unit u && !death && !HEntity.containsExclude(u.id) && unit.within(u, unit.range() * 0.8f + u.hitSize / 2.5f) && reloadTime <= 0f) {
-			float scr = (HVars.listener.getUnitDps(u.type) + u.maxHealth * u.healthMultiplier);
-			if (Mathm.isNaNInfinite(scr) || scr > 1000000f || (u.hitSize > 100f && scr > 200000f)) {
+			float scr = HVars.listener.getUnitDps(u.type) + u.maxHealth * u.healthMultiplier;
+
+			if (Mathm.isNaNInfinite(scr) || scr > 200000f || (u.hitSize > 100f && scr > 100000f)) {
 				death = true;
 			}
 		}
@@ -270,12 +272,14 @@ public class DespondencyAI extends AIController {
 				if (data.team != unit.team && data.team != Team.derelict) {
 					for (Unit u : data.units) {
 						if (u instanceof TimedKillc) continue;
+
 						double s = (((double) HVars.listener.getUnitDps(u.type)) + (double) (u.maxHealth * u.healthMultiplier)) - (u.dst(unit) / 1000f);
+
 						if (t == null || s > score) {
 							t = u;
 							score = s;
 						}
-						if ((mt == null || s > score2) && (u.type.speed < 2.2f) && (s > 200000f || (u.hitSize > 100f))) {
+						if ((mt == null || s > score2) && u.type.speed < 2.2f && (s > 100000f || u.hitSize > 100f)) {
 							mt = u;
 							score2 = s;
 						}
@@ -290,18 +294,20 @@ public class DespondencyAI extends AIController {
 					}
 					for (Building build : data.buildings) {
 						if (build.tile.build != build) continue;
+
 						float s = build.maxHealth;
 						Block block = build.block;
 
 						if (build instanceof TurretBuild tb) {
 							float max = 0f;
 							float reloadSpeed = ((Turret) tb.block).reload;
-							if (!(build instanceof PowerTurretBuild)) {
+
+							if (build instanceof PowerTurretBuild) {
+								max = Math.max(max, HVars.listener.getBulletDps(((PowerTurret) tb.block).shootType));
+							} else {
 								for (AmmoEntry ammo : tb.ammo) {
 									max = (Math.max(max, HVars.listener.getBulletDps(ammo.type())) / reloadSpeed) * ammo.amount;
 								}
-							} else {
-								max = Math.max(max, HVars.listener.getBulletDps(((PowerTurret) tb.block).shootType));
 							}
 							max *= build.efficiency;
 

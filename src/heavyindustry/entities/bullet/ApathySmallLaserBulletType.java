@@ -10,6 +10,7 @@ import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.ai.ApathyIAI;
+import heavyindustry.ai.BaseCommand;
 import heavyindustry.content.HFx;
 import heavyindustry.entities.HDamage;
 import heavyindustry.gen.ApathyIUnit;
@@ -18,6 +19,7 @@ import heavyindustry.util.Utils;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
 import mindustry.entities.bullet.BulletType;
+import mindustry.entities.units.UnitController;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.gen.Healthc;
@@ -65,7 +67,7 @@ public class ApathySmallLaserBulletType extends BulletType {
 		knockback = 40f;
 	}
 
-	void handleData(ApathyData d, Healthc target) {
+	public void handleData(ApathyData d, Healthc target) {
 		// && !(d.wasDead && !d.target.dead())
 		if (d.target == null || (d.target.dead() || !d.target.isAdded() || d.resetTimer <= 0f)) {
 			if (d.target != null && (d.target.dead() || !d.target.isAdded())) {
@@ -114,8 +116,14 @@ public class ApathySmallLaserBulletType extends BulletType {
 			Object td = b.data;
 			if (td != null && !(td instanceof ApathyData)) {
 				td = null;
-				if (b.owner instanceof ApathyIUnit au && au.controller() instanceof ApathyIAI ai) {
-					ai.strongLaserScore += 1000000;
+				if (b.owner instanceof ApathyIUnit au ) {
+					UnitController cont = au.controller();
+
+					if (cont instanceof ApathyIAI ai) {
+						ai.strongLaserScore += 1000000f;
+					} else if (cont instanceof BaseCommand command && command.controller() instanceof ApathyIAI ai) {
+						ai.strongLaserScore += 1000000f;
+					}
 				}
 			}
 			Object d = td;
@@ -195,9 +203,7 @@ public class ApathySmallLaserBulletType extends BulletType {
 	}
 
 	@Override
-	public void drawLight(Bullet b) {
-
-	}
+	public void drawLight(Bullet b) {}
 
 	public static class ApathyData {
 		float lastHealth = -1f, resetTimer = 0f;

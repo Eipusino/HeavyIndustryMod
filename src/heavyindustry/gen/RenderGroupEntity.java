@@ -35,6 +35,11 @@ public class RenderGroupEntity extends BaseEntity implements Poolable {
 		active = Pools.obtain(RenderGroupEntity.class, RenderGroupEntity::new);
 	}
 
+	@Override
+	public boolean serialize() {
+		return false;
+	}
+
 	public static void end() {
 		if (active == null || active.regions.isEmpty()) {
 			active = null;
@@ -229,7 +234,7 @@ public class RenderGroupEntity extends BaseEntity implements Poolable {
 			fadeCurveOut = 1f;
 		}
 
-		void draw() {
+		public void draw() {
 			float fin = 1f - Mathf.curve(time / lifetime, fadeCurveIn, fadeCurveOut);
 
 			Draw.z(z);

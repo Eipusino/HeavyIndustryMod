@@ -2,6 +2,7 @@ package heavyindustry.type.unit;
 
 import arc.Core;
 import arc.graphics.g2d.TextureRegion;
+import heavyindustry.content.HUnitCommands;
 import mindustry.Vars;
 import mindustry.content.StatusEffects;
 
@@ -18,6 +19,8 @@ public class YggdrasilUnitType extends BaseUnitType {
 		super.init();
 		allowLegStep = true;
 		range = maxRange = 720f;
+
+		commands.add(HUnitCommands.yggdrasilUnitCommand);
 
 		immunities.addAll(Vars.content.statusEffects());
 		immunities.remove(StatusEffects.burning);

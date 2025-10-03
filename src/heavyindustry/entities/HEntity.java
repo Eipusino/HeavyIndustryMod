@@ -644,7 +644,7 @@ public final class HEntity {
 	}
 
 	public static void update() {
-		if (!queueExcludeRemoval.isEmpty()) {
+		if (queueExcludeRemoval.any()) {
 			for (Unit u : queueExcludeRemoval) {
 				if (u == null) continue;
 

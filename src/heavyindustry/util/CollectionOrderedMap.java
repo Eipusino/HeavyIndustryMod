@@ -42,10 +42,9 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 		return super.put(key, value);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public V remove(Object key) {
-		orderedKeys.remove((K) key, false);
+		orderedKeys.remove(key, false);
 		return super.remove(key);
 	}
 

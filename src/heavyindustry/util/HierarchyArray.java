@@ -1,11 +1,16 @@
 package heavyindustry.util;
 
+import arc.func.Cons;
+import arc.util.Eachable;
+
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class HierarchyArray<T> implements Iterable<T> {
+public class HierarchyArray<T> implements Iterable<T>, Eachable<T> {
+	public final Class<?> componentType;
+
 	public final T[] array;
 	public final float[] scores;
 
@@ -19,6 +24,8 @@ public class HierarchyArray<T> implements Iterable<T> {
 
 	@SuppressWarnings("unchecked")
 	public HierarchyArray(int size, Class<?> arrayType) {
+		componentType = arrayType;
+
 		array = (T[]) Array.newInstance(arrayType, size);
 		scores = new float[size];
 	}
@@ -83,6 +90,13 @@ public class HierarchyArray<T> implements Iterable<T> {
 	}
 
 	@Override
+	public void each(Cons<? super T> cons) {
+		for (int i = 0; i < size; i++) {
+			cons.get(array[i]);
+		}
+	}
+
+	@Override
 	public Iterator<T> iterator() {
 		if (iterable == null) iterable = new HierarchyIterable<>(this);
 		return iterable.iterator();
@@ -93,8 +107,8 @@ public class HierarchyArray<T> implements Iterable<T> {
 
 		HierarchyIterator iterator1, iterator2;
 
-		HierarchyIterable(HierarchyArray<T> ar) {
-			array = ar;
+		HierarchyIterable(HierarchyArray<T> hr) {
+			array = hr;
 		}
 
 		@Override
@@ -118,7 +132,7 @@ public class HierarchyArray<T> implements Iterable<T> {
 			return new HierarchyIterator();
 		}
 
-		class HierarchyIterator implements Iterator<T> {
+		public class HierarchyIterator implements Iterator<T> {
 			int index = 0;
 			boolean done = true;
 

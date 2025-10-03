@@ -19,7 +19,7 @@ import java.util.NoSuchElementException;
  * @since 1.0.8
  */
 public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> {
-	transient final E[] items;
+	final E[] items;
 
 	final int size;
 

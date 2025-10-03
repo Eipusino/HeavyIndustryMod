@@ -11,9 +11,10 @@ import static heavyindustry.HVars.MOD_NAME;
 public class PointTrail {
 	public TextureRegion swordTrail;
 
-	FloatSeq points = new FloatSeq();
-	int length = 20;
-	static float[] verts = new float[4 * 6];
+	public FloatSeq points = new FloatSeq();
+	public int length = 20;
+
+	public static float[] verts = new float[4 * 6];
 
 	public void update(float x, float y, float x2, float y2) {
 		if (points.size >= length * 4) points.removeRange(0, 3);

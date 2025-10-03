@@ -127,7 +127,7 @@ public class ChainedUnitType extends BaseUnitType {
 
 		for (Seq<Weapon> ws : chainWeapons) {
 			sortSegWeapons(ws);
-			if (weapons.isEmpty() && !ws.isEmpty()) weapons.add(ws.first());
+			if (weapons.isEmpty() && ws.any()) weapons.add(ws.first());
 			ws.each(Weapon::init);
 		}
 	}
@@ -279,6 +279,6 @@ public class ChainedUnitType extends BaseUnitType {
 
 	@Override
 	public boolean hasWeapons() {
-		return chainWeapons.contains(w -> !w.isEmpty());
+		return chainWeapons.contains(Seq::any);
 	}
 }

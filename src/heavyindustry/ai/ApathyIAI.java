@@ -25,7 +25,6 @@ import mindustry.ai.types.MissileAI;
 import mindustry.audio.SoundLoop;
 import mindustry.entities.Sized;
 import mindustry.entities.Units;
-import mindustry.entities.units.UnitController;
 import mindustry.game.Teams.TeamData;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
@@ -42,8 +41,11 @@ import mindustry.world.blocks.storage.CoreBlock.CoreBuild;
 
 import java.util.Arrays;
 
-public class ApathyIAI implements UnitController {
-	public ApathyIUnit unit;
+public class ApathyIAI extends NullAI {
+	protected static final Vec2 vec2 = new Vec2();
+
+	public ApathyIUnit apathy;
+	public ApathyUnitType apathyType;
 	public Interval scanTimer = new Interval(2);
 
 	public int currentTransformation = 0;
@@ -84,7 +86,6 @@ public class ApathyIAI implements UnitController {
 	public SoundLoop[] sounds;
 	public boolean[] soundPlaying;
 	public float data1 = 0f, data2 = 0f;
-	public Vec2 vec = new Vec2();
 
 	public float stressScaled = 0f;
 
@@ -108,14 +109,14 @@ public class ApathyIAI implements UnitController {
 		initSounds();
 	}
 
-	public void initSounds() {
+	protected void initSounds() {
 		sounds = new SoundLoop[]{new SoundLoop(HSounds.laserSmall, 2f), new SoundLoop(HSounds.laserBig, 2.5f)};
 		soundPlaying = new boolean[2];
 	}
 
 	@Override
 	public void updateUnit() {
-		if (unit.dead) {
+		if (apathy.dead) {
 			if (laser != null) {
 				laser.time = Math.max(laser.lifetime - 48f, laser.time);
 			}
@@ -124,7 +125,7 @@ public class ApathyIAI implements UnitController {
 			}
 			return;
 		}
-		stressScaled = unit.getStressScaled();
+		stressScaled = apathy.getStressScaled();
 
 		for (int i = 0; i < shiftUseTimes.length; i++) {
 			shiftUseTimes[i] = Math.max(0, shiftUseTimes[i] - Time.delta);
@@ -148,7 +149,7 @@ public class ApathyIAI implements UnitController {
 
 		Arrays.fill(soundPlaying, false);
 
-		if (!unit.shifting) {
+		if (!apathy.shifting) {
 			boolean f = true;
 			if (transformationTime <= 0f) {
 				float lc = currentTransformation;
@@ -159,7 +160,7 @@ public class ApathyIAI implements UnitController {
 				f = currentTransformation == lc;
 			}
 			if (transformationTime > 0f && f) {
-				float ttspeed = ((ApathyUnitType) unit.type).handlers.get(currentTransformation).stressAffected ? (1 + stressScaled / 2f) : 1f;
+				float ttspeed = apathyType.handlers.get(currentTransformation).stressAffected ? (1 + stressScaled / 2f) : 1f;
 				transformationTime -= Time.delta * ttspeed * transformationSpeed;
 				transformationSpeed = 1f;
 
@@ -185,7 +186,7 @@ public class ApathyIAI implements UnitController {
 		for (int i = 0; i < sounds.length; i++) {
 			if (!soundPlaying[i]) {
 				if (Float.isNaN(laserX) || Float.isNaN(laserY)) {
-					sounds[i].update(unit.x, unit.y, false);
+					sounds[i].update(apathy.x, apathy.y, false);
 				} else {
 					sounds[i].update(laserX, laserY, false);
 				}
@@ -195,9 +196,9 @@ public class ApathyIAI implements UnitController {
 		if (critStun > 0) critStun -= Time.delta;
 
 		if (currentTransformation == 0) {
-			distance += unit.deltaLen();
+			distance += apathy.deltaLen();
 			if (distance >= 128f) {
-				HSounds.idle.at(unit.x, unit.y, 1f);
+				HSounds.idle.at(apathy.x, apathy.y, 1f);
 				distance = 0f;
 			}
 		}
@@ -217,17 +218,17 @@ public class ApathyIAI implements UnitController {
 
 	public void updateLargeLaser() {
 		if (strongest != null) {
-			float ato = unit.angleTo(strongest);
+			float ato = apathy.angleTo(strongest);
 			//float adst = laser == null ? Math.max(Angles.angleDist(unit.rotation, ato) / 5f, 3f) : 0.05f;
-			float adst = laser == null ? Math.max(Angles.angleDist(unit.rotation, ato) / 5f, 3f) : (laser.time < 140f ? 0.05f : 0.005f);
+			float adst = laser == null ? Math.max(Angles.angleDist(apathy.rotation, ato) / 5f, 3f) : (laser.time < 140f ? 0.05f : 0.005f);
 
-			unit.rotation = Angles.moveToward(unit.rotation, ato, adst * Time.delta * (1 + stressScaled / 3f));
+			apathy.rotation = Angles.moveToward(apathy.rotation, ato, adst * Time.delta * (1 + stressScaled / 3f));
 
-			if (Angles.within(unit.rotation, ato, 0.1f) && data2 <= 0f && laser == null) {
+			if (Angles.within(apathy.rotation, ato, 0.1f) && data2 <= 0f && laser == null) {
 				data2 = HFx.bigLaserCharge.lifetime;
-				HSounds.bigCharge.at(unit.x, unit.y, 1f);
+				HSounds.bigCharge.at(apathy.x, apathy.y, 1f);
 				transformationTime = Math.max(transformationTime, data2 * 3f);
-				HFx.bigLaserCharge.at(unit.x, unit.y, unit.rotation, unit);
+				HFx.bigLaserCharge.at(apathy.x, apathy.y, apathy.rotation, apathy);
 			}
 		}
 		if (transformationTime <= 0f) {
@@ -235,13 +236,13 @@ public class ApathyIAI implements UnitController {
 				laser.time = laser.type.lifetime - 80;
 		}
 		if (laser != null) {
-			if (!laser.isAdded() || laser.owner != unit || laser.type != HBullets.bigLaser) {
+			if (!laser.isAdded() || laser.owner != apathy || laser.type != HBullets.bigLaser) {
 				laser = null;
 				transformationTime = 0f;
 			} else {
-				Vec2 v = Utils.v.trns(unit.rotation, 40f).add(unit);
+				Vec2 v = Utils.v.trns(apathy.rotation, 40f).add(apathy);
 				laser.set(v.x, v.y);
-				laser.rotation(unit.rotation);
+				laser.rotation(apathy.rotation);
 				laser.damage = laser.type.damage * (1 + stressScaled / 4f);
 				transformationSpeed = 0f;
 
@@ -267,10 +268,10 @@ public class ApathyIAI implements UnitController {
 		if (data2 > 0 && laser == null) {
 			data2 -= Time.delta;
 			if (data2 <= 0f) {
-				Vec2 v = Utils.v.trns(unit.rotation, 40f).add(unit);
-				laser = HBullets.bigLaser.create(unit, unit.team, v.x, v.y, unit.rotation);
-				HFx.bigLaserFlash.at(unit.x, unit.y, unit.rotation);
-				HSounds.laserCharge.at(unit.x, unit.y, 2f);
+				Vec2 v = Utils.v.trns(apathy.rotation, 40f).add(apathy);
+				laser = HBullets.bigLaser.create(apathy, apathy.team, v.x, v.y, apathy.rotation);
+				HFx.bigLaserFlash.at(apathy.x, apathy.y, apathy.rotation);
+				HSounds.laserCharge.at(apathy.x, apathy.y, 2f);
 			}
 		}
 	}
@@ -286,13 +287,13 @@ public class ApathyIAI implements UnitController {
 
 	public void updateSmallLaser() {
 		if (strongest != null) {
-			float ato = unit.angleTo(strongest);
-			float adst = laser == null ? Math.max(Angles.angleDist(unit.rotation, ato) / 5f, 3f) : 0.25f;
-			unit.rotation = Angles.moveToward(unit.rotation, ato, adst * Time.delta * (1 + stressScaled / 3f));
-			if (Angles.within(unit.rotation, ato, 0.1f) && data2 <= 0f && laser == null) {
+			float ato = apathy.angleTo(strongest);
+			float adst = laser == null ? Math.max(Angles.angleDist(apathy.rotation, ato) / 5f, 3f) : 0.25f;
+			apathy.rotation = Angles.moveToward(apathy.rotation, ato, adst * Time.delta * (1 + stressScaled / 3f));
+			if (Angles.within(apathy.rotation, ato, 0.1f) && data2 <= 0f && laser == null) {
 				data2 = 20f;
 			}
-			if (Angles.within(unit.rotation, ato, 40f)) {
+			if (Angles.within(apathy.rotation, ato, 40f)) {
 				data1 = 30f;
 			}
 		} else if (data1 <= 0f) {
@@ -300,12 +301,12 @@ public class ApathyIAI implements UnitController {
 		}
 		if (laser != null) {
 			if (laser.type == HBullets.smallLaser) {
-				Vec2 v = Utils.v.trns(unit.rotation, 40f).add(unit);
+				Vec2 v = Utils.v.trns(apathy.rotation, 40f).add(apathy);
 				laser.set(v.x, v.y);
-				laser.rotation(unit.rotation);
+				laser.rotation(apathy.rotation);
 				laser.damage = laser.type.damage * (1 + stressScaled / 4f);
 
-				if (Units.invalidateTarget(strongest, unit.team, unit.x, unit.y) || data1 >= 10f) {
+				if (Units.invalidateTarget(strongest, apathy.team, apathy.x, apathy.y) || data1 >= 10f) {
 					laser.time = Math.min(laser.time, ApathySmallLaserBulletType.inEnd);
 					transformationSpeed = 0.5f;
 				}
@@ -323,7 +324,7 @@ public class ApathyIAI implements UnitController {
 				}
 			}
 
-			if (!laser.isAdded() || laser.owner != unit || laser.type != HBullets.smallLaser) {
+			if (!laser.isAdded() || laser.owner != apathy || laser.type != HBullets.smallLaser) {
 				laser = null;
 				transformationTime = 0f;
 			}
@@ -331,14 +332,14 @@ public class ApathyIAI implements UnitController {
 		if (laser == null && data2 > 0f) {
 			data2 -= Time.delta;
 			if (data2 <= 0f) {
-				Vec2 v = Utils.v.trns(unit.rotation, 40f).add(unit);
-				laser = HBullets.smallLaser.create(unit, unit.team, v.x, v.y, unit.rotation);
+				Vec2 v = Utils.v.trns(apathy.rotation, 40f).add(apathy);
+				laser = HBullets.smallLaser.create(apathy, apathy.team, v.x, v.y, apathy.rotation);
 				ApathyData d = new ApathyData();
 				d.ai = this;
 				laser.data = d;
 				//HSounds.laserCharge.at(v.x, v.y);
 				HSounds.laserCharge.play(1f, 1f, HSounds.laserCharge.calcPan(v.x, v.y));
-				HFx.bigLaserFlash.at(v.x, v.y, unit.rotation);
+				HFx.bigLaserFlash.at(v.x, v.y, apathy.rotation);
 			}
 		}
 		if (data1 >= 0f) data1 -= Time.delta;
@@ -350,8 +351,8 @@ public class ApathyIAI implements UnitController {
 		//data1 = unit.angleTo(strongest);
 		data2 = 0f;
 
-		laser = HBullets.sweep.create(unit, unit.team, unit.x, unit.y, data1);
-		HSounds.laserCharge.play(0.5f, 1.5f, HSounds.laserCharge.calcPan(unit.x, unit.y));
+		laser = HBullets.sweep.create(apathy, apathy.team, apathy.x, apathy.y, data1);
+		HSounds.laserCharge.play(0.5f, 1.5f, HSounds.laserCharge.calcPan(apathy.x, apathy.y));
 		//laser.lifetime = HBullets.sweep.lifetime / (1 + stressScaled / 3f);
 		laser.fdata = data1;
 	}
@@ -361,9 +362,9 @@ public class ApathyIAI implements UnitController {
 		if (laser != null) {
 			if (laser.type == HBullets.sweep) {
 				float rotation = data1 + (360f + 45f) * Interp.pow2.apply(Interp.pow2In.apply(data2 / laser.lifetime));
-				laser.set(unit);
+				laser.set(apathy);
 				laser.rotation(rotation);
-				laser.team = unit.team;
+				laser.team = apathy.team;
 
 				data2 = Math.min(data2 + Time.delta * (1 + stressScaled / 3f), laser.lifetime);
 				transformationSpeed = 0f;
@@ -371,7 +372,7 @@ public class ApathyIAI implements UnitController {
 				if (!Vars.headless) {
 					Vec2 cpos = Core.camera.position;
 					Vec2 v2 = Tmp.v1.trns(laser.rotation(), 1300f);
-					Vec2 iv = Intersector.nearestSegmentPoint(unit.x, unit.y, unit.x + v2.x, unit.y + v2.y, cpos.x, cpos.y, Tmp.v2);
+					Vec2 iv = Intersector.nearestSegmentPoint(apathy.x, apathy.y, apathy.x + v2.x, apathy.y + v2.y, cpos.x, cpos.y, Tmp.v2);
 
 					laserX = iv.x;
 					laserY = iv.y;
@@ -394,26 +395,26 @@ public class ApathyIAI implements UnitController {
 		if (unchanged) return;
 		data1 = 0f;
 		data2 = 0f;
-		vec.set(0f, 0f);
+		vec2.set(0f, 0f);
 	}
 
 	public void updateAoE() {
 		Vision t = getVisionAngle();
 
 		if (nearest != null) {
-			float dst = unit.dst(nearest);
+			float dst = apathy.dst(nearest);
 			if (dst < 250f) {
 				//
 				Vec2 vec = Tmp.v1;
-				vec.set(nearest).sub(unit);
+				vec.set(nearest).sub(apathy);
 
 				float length = Mathf.clamp((dst - 250f) / 100f, -1f, 0f);
 
-				vec.setLength(unit.speed() * (1.25f + stressScaled / 4f));
+				vec.setLength(apathy.speed() * (1.25f + stressScaled / 4f));
 				vec.scl(length);
 
 				if (!(vec.isNaN() || vec.isInfinite() || vec.isZero())) {
-					unit.movePref(vec);
+					apathy.movePref(vec);
 				}
 			}
 		}
@@ -421,45 +422,45 @@ public class ApathyIAI implements UnitController {
 		if ((t.score > 10f || data2 <= 0f) && t.idx != -1) {
 			float angle = t.angle;
 			if (scanTimer.get(1, 5f)) {
-				vec.set(0f, 0f);
-				Vec2 v = Utils.v.trns(angle, scanRange).add(unit);
+				vec2.set(0f, 0f);
+				Vec2 v = Utils.v.trns(angle, scanRange).add(apathy);
 
 				found = false;
 				for (TeamData data : Vars.state.teams.present) {
-					if (data.team != unit.team) {
+					if (data.team != apathy.team) {
 						//found = false;
 						if (data.unitTree != null) {
-							HEntity.intersectLine(data.unitTree, 250f, unit.x, unit.y, v.x, v.y, (u, x, y) -> {
+							HEntity.intersectLine(data.unitTree, 250f, apathy.x, apathy.y, v.x, v.y, (u, x, y) -> {
 								if (u.isGrounded()) {
-									vec.x += (u.x - unit.x);
-									vec.y += (u.y - unit.y);
+									vec2.x += (u.x - apathy.x);
+									vec2.y += (u.y - apathy.y);
 									found = true;
 								}
 							});
 						}
 						if (data.turretTree != null) {
-							HEntity.intersectLine(data.turretTree, 250f, unit.x, unit.y, v.x, v.y, (tr, x, y) -> {
-								vec.x += (tr.x - unit.x);
-								vec.y += (tr.y - unit.y);
+							HEntity.intersectLine(data.turretTree, 250f, apathy.x, apathy.y, v.x, v.y, (tr, x, y) -> {
+								vec2.x += (tr.x - apathy.x);
+								vec2.y += (tr.y - apathy.y);
 								found = true;
 							});
 						}
 						if (!found && data.buildingTree != null) {
-							HEntity.intersectLine(data.buildingTree, 250f, unit.x, unit.y, v.x, v.y, (b, x, y) -> {
-								vec.x += (b.x - unit.x) / 25f;
-								vec.y += (b.y - unit.y) / 25f;
+							HEntity.intersectLine(data.buildingTree, 250f, apathy.x, apathy.y, v.x, v.y, (b, x, y) -> {
+								vec2.x += (b.x - apathy.x) / 25f;
+								vec2.y += (b.y - apathy.y) / 25f;
 							});
 						}
 					}
 				}
 			}
-			if (!vec.isZero()) {
-				unit.rotation = Angles.moveToward(unit.rotation, vec.angle(), 15f * Time.delta * (1 + stressScaled));
+			if (!vec2.isZero()) {
+				apathy.rotation = Angles.moveToward(apathy.rotation, vec2.angle(), 15f * Time.delta * (1 + stressScaled));
 				//
-				if (Angles.within(unit.rotation, vec.angle(), 0.25f) && data1 <= 0f) {
+				if (Angles.within(apathy.rotation, vec2.angle(), 0.25f) && data1 <= 0f) {
 					//
-					Vec2 v = Utils.v.trns(vec.angle(), 50f).add(unit);
-					HBullets.aoe.create(unit, v.x, v.y, vec.angle());
+					Vec2 v = Utils.v.trns(vec2.angle(), 50f).add(apathy);
+					HBullets.aoe.create(apathy, v.x, v.y, vec2.angle());
 					HSounds.aoeShoot.play(1f, Mathf.random(0.9f, 1.1f), HSounds.apathyDeath.calcPan(v.x, v.y));
 					data1 = 90f / (1f + stressScaled / 1.5f);
 					data2++;
@@ -509,7 +510,7 @@ public class ApathyIAI implements UnitController {
 				}
 			}
 
-			unit.switchShift(((ApathyUnitType) unit.type).handlers.get(currentTransformation));
+			apathy.switchShift(apathyType.handlers.get(currentTransformation));
 			//init = true;
 			//data1 = Mathf.random(360f);
 		} else {
@@ -524,47 +525,47 @@ public class ApathyIAI implements UnitController {
 		Arrays.fill(directionalBias, 0);
 		Arrays.fill(vision, 0);
 
-		float srad = unit.getShieldRadius();
+		float srad = apathy.getShieldRadius();
 		int dbl = directionalBias.length;
 		int vl = vision.length;
-		Rect r = tr.setCentered(unit.x, unit.y, scanRange * 2f);
+		Rect r = tr.setCentered(apathy.x, apathy.y, scanRange * 2f);
 
 		Groups.bullet.intersect(r.x, r.y, r.width, r.height, b -> {
-			float dst = unit.dst(b);
-			if (dst < scanRange && b.team != unit.team) {
+			float dst = apathy.dst(b);
+			if (dst < scanRange && b.team != apathy.team) {
 				float dps = b.type.estimateDPS();
 
-				int angIdx = (int) Mathf.mod(unit.angleTo(b) / (360f / dbl), dbl);
+				int angIdx = (int) Mathf.mod(apathy.angleTo(b) / (360f / dbl), dbl);
 				directionalBias[angIdx] += dps;
 
 				bulletCount += dps;
 
-				if (unit.shieldStun <= 0f && dst < srad && !b.vel.isZero()) {
+				if (apathy.shieldStun <= 0f && dst < srad && !b.vel.isZero()) {
 					//
 					if (b.vel.len() < 8f) {
 						b.hit = true;
 						b.remove();
 					} else {
-						float angC = (((unit.angleTo(b) + 90f) * 2f) - b.rotation()) + Mathf.range(5f);
+						float angC = (((apathy.angleTo(b) + 90f) * 2f) - b.rotation()) + Mathf.range(5f);
 						b.rotation(angC);
 						b.vel.scl(0.75f);
-						b.team = unit.team;
+						b.team = apathy.team;
 
 						if (b.owner instanceof Sized s && b.owner instanceof Posc p) {
 							b.aimX = p.x() + Mathf.range(s.hitSize() / 4f);
 							b.aimY = p.y() + Mathf.range(s.hitSize() / 4f);
 						}
 					}
-					HFx.shield.at(b.x, b.y, b.angleTo(unit));
+					HFx.shield.at(b.x, b.y, b.angleTo(apathy));
 
-					unit.shieldHealth -= Math.min(dps / 2f, 500f);
-					if (unit.shieldHealth <= 0f) {
-						unit.shieldStun = 4f * 60f;
+					apathy.shieldHealth -= Math.min(dps / 2f, 500f);
+					if (apathy.shieldHealth <= 0f) {
+						apathy.shieldStun = 4f * 60f;
 					}
 
-					unit.stress += dps / 750f;
+					apathy.stress += dps / 750f;
 				} else {
-					unit.stress += dps * b.vel.len() / 1000f;
+					apathy.stress += dps * b.vel.len() / 1000f;
 				}
 			}
 		});
@@ -575,13 +576,13 @@ public class ApathyIAI implements UnitController {
 		nts = 0f;
 
 		for (TeamData td : Vars.state.teams.present) {
-			if (td.team != unit.team) {
+			if (td.team != apathy.team) {
 				if (td.unitTree != null) {
 					td.unitTree.intersect(r.x, r.y, r.width, r.height, e -> {
-						float dst = unit.dst(e);
+						float dst = apathy.dst(e);
 						if (dst - e.hitSize / 2 < scanRange) {
 							float dps = e.type.estimateDps();
-							float angleTo = unit.angleTo(e);
+							float angleTo = apathy.angleTo(e);
 
 							int angIdx = (int) Mathf.mod(angleTo / (360f / dbl), dbl);
 							directionalBias[angIdx] += dps;
@@ -610,10 +611,10 @@ public class ApathyIAI implements UnitController {
 								} else {
 									flyingCount += dps;
 								}
-								unit.stress += dps / 1100f;
+								apathy.stress += dps / 1100f;
 							} else {
 								bulletCount += dps;
-								if (unit.shieldStun <= 0f && dst < srad) {
+								if (apathy.shieldStun <= 0f && dst < srad) {
 									//
 									if (e.vel.len() < 6f) {
 										//e.hit = false;
@@ -621,20 +622,20 @@ public class ApathyIAI implements UnitController {
 										e.type.deathSound.at(e.x, e.y);
 										e.remove();
 									} else {
-										float angC = (((unit.angleTo(e) + 90f) * 2f) - e.rotation()) + Mathf.range(5f);
+										float angC = (((apathy.angleTo(e) + 90f) * 2f) - e.rotation()) + Mathf.range(5f);
 										e.rotation(angC);
 										e.vel.scl(0.75f);
-										e.team = unit.team;
+										e.team = apathy.team;
 									}
-									HFx.shield.at(e.x, e.y, e.angleTo(unit));
+									HFx.shield.at(e.x, e.y, e.angleTo(apathy));
 
-									unit.shieldHealth -= Math.min(dps / 2f, 500f);
+									apathy.shieldHealth -= Math.min(dps / 2f, 500f);
 
-									if (unit.shieldHealth <= 0f) {
-										unit.shieldStun = 4f * 60f;
+									if (apathy.shieldHealth <= 0f) {
+										apathy.shieldStun = 4f * 60f;
 									}
 
-									unit.stress += dps / 750f;
+									apathy.stress += dps / 750f;
 								}
 							}
 						}
@@ -643,7 +644,7 @@ public class ApathyIAI implements UnitController {
 				if (td.turretTree != null) {
 					td.turretTree.intersect(r.x, r.y, r.width, r.height, e -> {
 						if (!(e instanceof TurretBuild t)) return;
-						float dst = unit.dst(e);
+						float dst = apathy.dst(e);
 						if (dst - e.hitSize() / 2 < scanRange) {
 							noEnemyTime = 0f;
 							float dps = 0;
@@ -658,7 +659,7 @@ public class ApathyIAI implements UnitController {
 							dps += e.health / 500f;
 							groundCount += dps;
 
-							float angleTo = unit.angleTo(e);
+							float angleTo = apathy.angleTo(e);
 
 							int angIdx = (int) Mathf.mod(angleTo / (360f / dbl), dbl);
 							directionalBias[angIdx] += dps;
@@ -702,10 +703,10 @@ public class ApathyIAI implements UnitController {
 			//sts = 0f;
 
 			for (TeamData td : Vars.state.teams.active) {
-				if (td.team != unit.team) {
+				if (td.team != apathy.team) {
 					for (Unit u : td.units) {
 						if (u.dead) continue;
-						float dst = unit.dst(u);
+						float dst = apathy.dst(u);
 						float dps = u.type.estimateDps() + u.health / 500f;
 						float sscr = dps - dst / 1500f;
 
@@ -723,7 +724,7 @@ public class ApathyIAI implements UnitController {
 						Building b = td.buildings.get(idx);
 
 						if (b instanceof TurretBuild) {
-							float scr = (b.health / 500f) - (unit.dst(b) / 1500f);
+							float scr = (b.health / 500f) - (apathy.dst(b) / 1500f);
 
 							if (st == null || scr > sts) {
 								st = b;
@@ -738,7 +739,7 @@ public class ApathyIAI implements UnitController {
 				} else {
 					for (Building b : td.buildings) {
 						if (b instanceof TurretBuild) {
-							float scr = (b.health / 500f) - (unit.dst(b) / 1500f);
+							float scr = (b.health / 500f) - (apathy.dst(b) / 1500f);
 
 							if (st == null || scr > sts) {
 								st = b;
@@ -750,7 +751,7 @@ public class ApathyIAI implements UnitController {
 			}
 		}
 		if (bulletCount > 0 || flyingCount > 0 || groundCount > 0) {
-			unit.conflict = 60f * 5f;
+			apathy.conflict = 60f * 5f;
 		}
 
 		if (strongest != null && (!strongest.isAdded() || (strongest instanceof Healthc hh && hh.dead()))) {
@@ -799,7 +800,7 @@ public class ApathyIAI implements UnitController {
 
 			float v = Math.max(groundCount, flyingCount) * conc;
 
-			if (unit.health > unit.maxHealth / 3f && (Math.max(groundCount, flyingCount)) < 1000000f) {
+			if (apathy.health > apathy.maxHealth / 3f && (Math.max(groundCount, flyingCount)) < 1000000f) {
 				shiftScore[1] = v;
 				shiftScore[4] = v * 0.1f + strongLaserScore;
 			} else {
@@ -816,7 +817,7 @@ public class ApathyIAI implements UnitController {
 			if (currentTransformation == 4 && laser != null && laser.type != null)
 				laser.time = laser.type.lifetime - 80;
 			transformationTime = 0f;
-			unit.extraShiftSpeed = 2f;
+			apathy.extraShiftSpeed = 2f;
 			critStun = 4f * 60f;
 		}
 		critDamage += damage / 2f;
@@ -824,7 +825,7 @@ public class ApathyIAI implements UnitController {
 
 		int count = Math.min((int) (damage / 100000f) + 1, 25);
 		float range = Mathf.sqrt(damage / 600f) + 12f;
-		BloodSplatter.explosion(count, unit.x, unit.y, 5f, range, (32f - 5f) * Mathf.clamp(damage / 1000f) + 5f);
+		BloodSplatter.explosion(count, apathy.x, apathy.y, 5f, range, (32f - 5f) * Mathf.clamp(damage / 1000f) + 5f);
 	}
 
 	public Vision getVisionAngle() {
@@ -894,15 +895,15 @@ public class ApathyIAI implements UnitController {
 
 	public void moveTo() {
 		if (strongest != null && (strongestValue > 1000f || nearestCore == null)) {
-			float dst = unit.dst(strongest);
+			float dst = apathy.dst(strongest);
 			if (dst > scanRange - 100f) {
 				Vec2 vec = Tmp.v1;
 
-				vec.set(strongest).sub(unit);
-				vec.setLength(unit.speed());
+				vec.set(strongest).sub(apathy);
+				vec.setLength(apathy.speed());
 
-				unit.movePref(vec);
-				unit.lookAt(unit.angleTo(strongest));
+				apathy.movePref(vec);
+				apathy.lookAt(apathy.angleTo(strongest));
 			}
 			return;
 		}
@@ -912,9 +913,9 @@ public class ApathyIAI implements UnitController {
 			Teamc core = null;
 
 			for (TeamData td : Vars.state.teams.active) {
-				if (td.team != unit.team) {
+				if (td.team != apathy.team) {
 					for (CoreBuild cores : td.cores) {
-						float cd = unit.dst2(cores);
+						float cd = apathy.dst2(cores);
 						if (core == null || cd < dst) {
 							core = cores;
 							dst = cd;
@@ -927,28 +928,43 @@ public class ApathyIAI implements UnitController {
 		if (nearestCore != null) {
 			Vec2 vec = Tmp.v1;
 
-			vec.set(nearestCore).sub(unit);
+			vec.set(nearestCore).sub(apathy);
 
-			float length = Mathf.clamp((unit.dst(nearestCore) - 220f) / 100f, -1f, 1f);
+			float length = Mathf.clamp((apathy.dst(nearestCore) - 220f) / 100f, -1f, 1f);
 
-			vec.setLength(unit.speed());
+			vec.setLength(apathy.speed());
 			vec.scl(length);
 
 			if (vec.isNaN() || vec.isInfinite() || vec.isZero()) return;
 
-			unit.movePref(vec);
-			unit.lookAt(unit.angleTo(nearestCore));
+			apathy.movePref(vec);
+			apathy.lookAt(apathy.angleTo(nearestCore));
 		}
 	}
 
 	@Override
+	public void removed(Unit unit) {
+		if (laser != null) {
+			laser.time = Math.max(laser.lifetime - 48f, laser.time);
+		}
+		for (SoundLoop sl : sounds) {
+			sl.stop();
+		}
+
+		apathy.switchShift(apathyType.handlers.get(0));
+	}
+
+	@Override
 	public void unit(Unit unit) {
-		this.unit = (ApathyIUnit) unit;
+		super.unit(unit);
+
+		if (apathy != unit) apathy = (ApathyIUnit) unit;
+		if (apathyType != unit.type) apathyType = (ApathyUnitType) unit.type;
 	}
 
 	@Override
 	public Unit unit() {
-		return unit;
+		return apathy;
 	}
 
 	public static class Vision {

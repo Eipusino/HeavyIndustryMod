@@ -14,6 +14,8 @@ import mindustry.gen.Groups;
 import mindustry.graphics.Layer;
 
 public class YggdrasilUnit extends BaseUnit {
+	public static final int groupSize = 4;
+
 	public Seq<YggdrasilLeg> legs = new Seq<>(YggdrasilLeg.class);
 	public Seq<YggdrasilTentacle> tentacles = new Seq<>(YggdrasilTentacle.class);
 	public int group;
@@ -21,8 +23,6 @@ public class YggdrasilUnit extends BaseUnit {
 
 	public int tentacleIdx = 0;
 	public float tentacleReload = 0f;
-
-	public static final int groupSize = 4;
 
 	@Override
 	public int classId() {

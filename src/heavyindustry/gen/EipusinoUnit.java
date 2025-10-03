@@ -12,10 +12,10 @@ import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.type.UnitType;
 
-public class EipusinoUnit extends NucleoidUnit {
-	protected float trueHealth, trueMaxHealth;
-	protected float damageTaken, maxDamageTaken, damageDelay;
-	protected float invFrames;
+public class EipusinoUnit extends NucleoidUnit implements TrueHealthc {
+	public float trueHealth, trueMaxHealth;
+	public float damageTaken, maxDamageTaken, damageDelay;
+	public transient float invFrames;
 
 	@Override
 	public int classId() {
@@ -25,7 +25,15 @@ public class EipusinoUnit extends NucleoidUnit {
 	@Override
 	public void setType(UnitType type) {
 		super.setType(type);
+
 		trueMaxHealth = type.health;
+	}
+
+	@Override
+	public void heal() {
+		super.heal();
+
+		trueHealth = trueMaxHealth;
 	}
 
 	@Override
@@ -129,8 +137,6 @@ public class EipusinoUnit extends NucleoidUnit {
 	public void add() {
 		// Only for use by the default team, and the quantity is limited to one.
 		if (!added && HEntity.eipusino == null && team == Vars.state.rules.defaultTeam && count() < 1) {
-			trueHealth = type.health;
-
 			HEntity.exclude(this);
 			HEntity.eipusino = this;
 
@@ -220,5 +226,25 @@ public class EipusinoUnit extends NucleoidUnit {
 		damageDelay = read.f();
 
 		super.readSync(read);
+	}
+
+	@Override
+	public float trueHealth() {
+		return trueHealth;
+	}
+
+	@Override
+	public float trueMaxHealth() {
+		return trueMaxHealth;
+	}
+
+	@Override
+	public void trueHealth(float value) {
+		trueHealth = value;
+	}
+
+	@Override
+	public void trueMaxHealth(float value) {
+		trueMaxHealth = value;
 	}
 }

@@ -352,11 +352,11 @@ public class Fragmentation {
 
 	public static class FragmentEntity extends BaseEntity {
 		public Fragmentation main;
-		int island;
+		public int island;
 		public boolean impact = false;
 
-		float offsetX = 0f;
-		float offsetY = 0f;
+		public float offsetX = 0f;
+		public float offsetY = 0f;
 		public float boundSize = 0f;
 		public float area = 0f;
 
@@ -366,10 +366,10 @@ public class Fragmentation {
 		public float rotation = 0f;
 		public float vx, vy, vz, vr;
 
-		FloatSeq goreLines;
-		float gx, gy, gr;
+		public FloatSeq goreLines;
+		public float gx, gy, gr;
 
-		void calculateArea() {
+		public void calculateArea() {
 			int size = main.islands.get(island).size;
 			area = Mathf.sqrt((((float) size) / ((main.width - 1f) * (main.height - 1f))) * (Math.abs(main.drawWidth) * Math.abs(main.drawHeight))) * 1.5f;
 			//area = (size / Math.min((main.width - 1f), (main.height - 1f))) * Math.min(main.drawWidth, main.drawHeight);
@@ -388,6 +388,11 @@ public class Fragmentation {
 				tmpVec.rnd(Mathf.random(boundSize / 2f));
 				goreLines.add(tmpVec.x, tmpVec.y, Math.max(1.1f, Mathf.random(0.8f, 1.2f) * (boundSize / 12f)), Mathf.random(0.9f, 1.5f));
 			}
+		}
+
+		@Override
+		public boolean serialize() {
+			return false;
 		}
 
 		@Override

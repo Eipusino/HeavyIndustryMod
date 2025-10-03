@@ -114,6 +114,7 @@ public class ShiftHandler implements Comparable<ShiftHandler> {
 		public boolean mirror = true;
 		public boolean renderFinish = true, renderOut = true;
 		public int idx = 0;
+
 		protected TextureRegion region;
 
 		public ShiftPanel out;

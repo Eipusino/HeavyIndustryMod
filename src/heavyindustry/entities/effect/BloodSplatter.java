@@ -203,6 +203,11 @@ public class BloodSplatter extends BaseEntity implements Poolable {
 		color.set(HPal.blood);
 	}
 
+	@Override
+	public boolean serialize() {
+		return false;
+	}
+
 	public static class DynamicPowOut implements Interp {
 		public float power = 1f;
 

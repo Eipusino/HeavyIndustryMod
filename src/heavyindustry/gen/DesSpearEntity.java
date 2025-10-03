@@ -11,6 +11,7 @@ import arc.util.Tmp;
 import heavyindustry.content.HFx;
 import heavyindustry.entities.HEntity;
 import heavyindustry.util.Utils;
+import mindustry.Vars;
 import mindustry.entities.units.WeaponMount;
 import mindustry.gen.Groups;
 import mindustry.gen.Unit;
@@ -44,11 +45,12 @@ public class DesSpearEntity extends BaseEntity {
 	public static float offset = -40f;
 
 	public static DesSpearEntity create(Unit unit, float x, float y, float rotation, boolean draw) {
-		if (region == null) region = Core.atlas.find(MOD_NAME + "-despondency-spear");
-		float ts = Math.max(unit.hitSize / 2f, ((Math.min(unit.type.region.width, unit.type.region.height) * Draw.scl) / 2f) * 0.8f);
-		float ts2 = Math.max(unit.hitSize / 2f, ((Math.min(unit.type.region.width, unit.type.region.height) * Draw.scl) / 2f)) * 1.6f;
+		if (!Vars.headless && region == null) region = Core.atlas.find(MOD_NAME + "-despondency-spear");
+
+		float ts = Vars.headless ? unit.hitSize / 2f : Math.max(unit.hitSize / 2f, ((Math.min(unit.type.region.width, unit.type.region.height) * Draw.scl) / 2f) * 0.8f);
+		float ts2 = Vars.headless ? unit.hitSize / 2f : Math.max(unit.hitSize / 2f, ((Math.min(unit.type.region.width, unit.type.region.height) * Draw.scl) / 2f)) * 1.6f;
 		//float scl = Mathf.clamp(ts / (region.height * Draw.scl)) * (1f + ts / 100f);
-		float scl = Math.max(Mathf.clamp(ts2 / (region.height * Draw.scl)), (ts / (region.height * Draw.scl)) / 3.5f) * (1f + ts / 70f);
+		float scl = Vars.headless ? 1f : Math.max(Mathf.clamp(ts2 / (region.height * Draw.scl)), (ts / (region.height * Draw.scl)) / 3.5f) * (1f + ts / 70f);
 
 		DesSpearEntity e = new DesSpearEntity();
 		e.x = x;
@@ -65,6 +67,11 @@ public class DesSpearEntity extends BaseEntity {
 	}
 
 	@Override
+	public boolean serialize() {
+		return false;
+	}
+
+	@Override
 	public int classId() {
 		return Entitys.getId(DesSpearEntity.class);
 	}
@@ -73,8 +80,15 @@ public class DesSpearEntity extends BaseEntity {
 	public void update() {
 		time += Time.delta;
 
-		if (!collided)
+		if (unit == null) {
+			remove();
+
+			return;
+		}
+
+		if (!collided) {
 			rotation = Angles.moveToward(rotation, Angles.angle(x, y, unit.x + tx, unit.y + ty), 180f * Mathf.clamp(time / 120f));
+		}
 
 		if (time > 20f && unit.isAdded() && !collided) {
 			float speed = (time - 20f) / 3f + Mathf.pow(Mathf.clamp((time - 20f) / 30f), 2f) * 12f + 20f;
@@ -85,6 +99,7 @@ public class DesSpearEntity extends BaseEntity {
 			y += v.y;
 
 			Vec2 col = HEntity.intersectCircle(lx, ly, x, y, unit.x, unit.y, targetSize);
+
 			if (col != null) {
 				x = col.x;
 				y = col.y;
@@ -152,7 +167,7 @@ public class DesSpearEntity extends BaseEntity {
 
 	@Override
 	public float clipSize() {
-		return 1000f * size;
+		return 10f * size;
 	}
 
 	@Override

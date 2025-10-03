@@ -2996,7 +2996,6 @@ public final class HUnitTypes {
 			handlers.add(new PrismShift("apathy"), new WeakLaserShift("apathy-weak-laser"), new AoEShift("apathy-aoe"), new SweepShift("apathy-sweep"));
 			handlers.add(new StrongLaserShift("apathy-strong-laser"));
 			aiController = ApathyIAI::new;
-			controller = u -> new ApathyIAI();
 			fallEffect = fallEngineEffect = Fx.none;
 			fallSpeed = 0f;
 			deathExplosionEffect = Fx.none;

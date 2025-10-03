@@ -78,14 +78,14 @@ public class MultiBulletTurret extends Turret {
 				MultiReqImage image = new MultiReqImage();
 				content.items().each(i -> filter.get(i) && i.unlockedNow(),
 						item -> image.add(new ReqImage(new Image(item.uiIcon),
-								() -> build instanceof MultiBulletTurretBuild mbt && !mbt.ammo.isEmpty() && mbt.ammo.peek().item == item)));
+								() -> build instanceof MultiBulletTurretBuild mbt && mbt.ammo.any() && mbt.ammo.peek().item == item)));
 
 				table.add(image).size(8 * 4);
 			}
 
 			@Override
 			public float efficiency(Building build) {
-				return build instanceof MultiBulletTurretBuild mbt && !mbt.ammo.isEmpty() ? 1f : 0f;
+				return build instanceof MultiBulletTurretBuild mbt && mbt.ammo.any() ? 1f : 0f;
 			}
 
 			@Override

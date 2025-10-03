@@ -7,6 +7,8 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.util.Tmp;
+import heavyindustry.ai.BaseCommandAI;
+import heavyindustry.content.HUnitCommands;
 import heavyindustry.type.weapons.EndDespondencyWeapon;
 import mindustry.entities.Leg;
 import mindustry.gen.Legsc;
@@ -15,13 +17,14 @@ import mindustry.graphics.Pal;
 import mindustry.type.Weapon;
 
 public class DespondencyUnitType extends BaseUnitType {
-	protected static Vec2 legOff = new Vec2();
+	protected static Vec2 legOffset = new Vec2();
 
 	public TextureRegion legShadowRegion, legShadowBaseRegion;
 	public int mainWeaponIdx = -1;
 
 	public DespondencyUnitType(String name) {
 		super(name);
+		controller = u -> !playerControllable || (u.team.isAI() && !u.team.rules().rtsAi) ? aiController.get() : new BaseCommandAI();
 	}
 
 	@Override
@@ -36,6 +39,8 @@ public class DespondencyUnitType extends BaseUnitType {
 			}
 			idx++;
 		}
+
+		commands.add(HUnitCommands.despondencyUnitCommand);
 	}
 
 	@Override
@@ -65,7 +70,7 @@ public class DespondencyUnitType extends BaseUnitType {
 				}
 				float mid = (elev / 2f + 0.5f) * scl;
 
-				Vec2 position = unit.legOffset(legOff, i).add(unit);
+				Vec2 position = unit.legOffset(legOffset, i).add(unit);
 
 				Vec2 v1 = Tmp.v1.set(leg.base).sub(leg.joint).inv().setLength(legExtension).add(leg.joint);
 

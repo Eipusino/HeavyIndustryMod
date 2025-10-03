@@ -67,7 +67,7 @@ public class ChainBulletType extends BulletType {
 			Vars.indexer.eachBlock(null, confirm.getX(), confirm.getY(), chainRange, t -> t.team != b.team, points::add);
 		}
 
-		if (!quietShoot || !points.isEmpty()) {
+		if (!quietShoot || points.any()) {
 			Utils.shuffle(points);
 			points.truncate(maxHit);
 			points.insert(0, b);

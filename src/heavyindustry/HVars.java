@@ -6,6 +6,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.struct.Seq;
 import heavyindustry.annotations.ListClasses;
 import heavyindustry.annotations.ListPackages;
+import heavyindustry.core.HeavyIndustryListener;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.files.InternalFileTree;
 import heavyindustry.graphics.g2d.CutBatch;

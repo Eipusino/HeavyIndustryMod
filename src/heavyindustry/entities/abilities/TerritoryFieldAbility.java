@@ -4,6 +4,7 @@ import arc.Core;
 import arc.scene.ui.layout.Table;
 import arc.util.Time;
 import heavyindustry.content.HStatusEffects;
+import heavyindustry.entities.HEntity;
 import mindustry.entities.Damage;
 import mindustry.entities.Units;
 import mindustry.entities.abilities.Ability;
@@ -71,7 +72,7 @@ public class TerritoryFieldAbility extends Ability {
 
 		if (open) {
 			Units.nearbyEnemies(unit.team, unit.x, unit.y, range * 2, u -> {
-				if (!u.dead && u.type != null && (u.health > unit.type.health * 2 || u.type.armor >= unit.type.armor * 2)) {
+				if (!HEntity.containsExclude(u.id) && !u.dead && u.type != null && (u.health > unit.type.health * 2 || u.type.armor >= unit.type.armor * 2)) {
 					u.health -= u.health;
 					u.remove();
 				}
