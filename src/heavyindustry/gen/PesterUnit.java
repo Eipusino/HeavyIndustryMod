@@ -283,6 +283,7 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 
 		if (!headless && isBoss) {
 			Rand rand = Utils.rand;
+
 			for (int i = 0; i < trails.length; i++) {
 				Trail trail = trails[i];
 

@@ -106,7 +106,8 @@ public class EndMissileBulletType extends BasicBulletType {
 	public void removed(Bullet b) {
 		super.removed(b);
 
-		if (!(b.data instanceof EndLauncherData data)) return;
-		if (data.current != null) data.mount.removeTarget(data.current);
+		if (b.data instanceof EndLauncherData data) {
+			if (data.current != null) data.mount.removeTarget(data.current);
+		}
 	}
 }

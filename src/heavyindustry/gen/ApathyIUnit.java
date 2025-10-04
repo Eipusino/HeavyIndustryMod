@@ -170,17 +170,16 @@ public class ApathyIUnit extends BaseUnit {
 			}
 			deathTimer += Time.delta;
 			if (deathTimer > 45f) {
-				Rand r = Utils.rand;
-				r.setSeed(id * 531L);
+				Rand rand = Utils.rand(id * 531l);
 
 				int count = (int) (Mathf.pow((deathTimer - 45) / (4f * 60f - 45), 2) * 16) + 1;
 				for (int i = 0; i < count; i++) {
 					float fin = (i / 16f) * 0.5f + 0.5f;
 
-					Vec2 v = Tmp.v1.trns(r.random(360f), r.random(hitSize / 2));
+					Vec2 v = Tmp.v1.trns(rand.random(360f), rand.random(hitSize / 2));
 					Color tc = Tmp.c1;
-					tc.r = r.random(80f, 120f) * fin;
-					tc.g = r.random(380f, 420f) * fin;
+					tc.r = rand.random(80f, 120f) * fin;
+					tc.g = rand.random(380f, 420f) * fin;
 
 					float angle = v.angle();
 

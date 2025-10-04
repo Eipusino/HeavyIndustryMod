@@ -231,8 +231,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
 
 	@Override
 	public void draw(Bullet b) {
-		Rand rand = Utils.rand, rand2 = Utils.rand2;
-		rand.setSeed(b.id);
+		Rand rand = Utils.rand(b.id), rand2 = Utils.rand2;
 
 		float len = getLength(b.time);
 		float fade = Mathf.clamp(b.time / 15f) * Mathf.clamp((b.lifetime - b.time) / (2.5f * 60));

@@ -264,29 +264,28 @@ public class ApathyBigLaserBulletType extends BulletType {
 		}
 		if (b.time > 140f) {
 			float scl = Interp.pow2Out.apply(Mathf.clamp((b.time - 140f) / 5)) * Interp.pow3In.apply(Mathf.clamp((lifetime - b.time) / 80f));
-			Rand r = Utils.rand, r2 = Utils.rand2;
-			r.setSeed(b.id + 1236);
+			Rand rand = Utils.rand(b.id + 1236), rand2 = Utils.rand2;
 
 			for (int i = 0; i < 75; i++) {
-				float d = r.random(20f, 40f);
-				float time = (Time.time + r.random(d));
+				float d = rand.random(20f, 40f);
+				float time = (Time.time + rand.random(d));
 				float dtime = (time % d) / d;
 				float slope = Interp.pow2Out.apply(Mathf.curve(dtime, 0f, 0.05f) * Mathf.curve(1 - dtime, 0f, 0.05f));
 
-				int seed = (int) (time / d) + r.nextInt();
+				int seed = (int) (time / d) + rand.nextInt();
 
-				r2.setSeed(seed);
+				rand2.setSeed(seed);
 
-				//float dw = r2.random(15f, 30f) * scl * slope;
-				float dh = r2.random(120f, 220f);
-				float dw = dh * r2.random(0.05f, 0.15f) * scl * slope;
+				//float dw = rand2.random(15f, 30f) * scl * slope;
+				float dh = rand2.random(120f, 220f);
+				float dw = dh * rand2.random(0.05f, 0.15f) * scl * slope;
 				//float yp = (dtime * (length - dh)) + dh;
-				float rx = r2.range(Math.max(w - dw, 0f)) / 2f;
+				float rx = rand2.range(Math.max(w - dw, 0f)) / 2f;
 				float arx = Math.abs(rx);
 				//float yp = dtime * length + dh;
 				float xp = rx * getLaserWidth(dtime * (length - dh) + dh);
 				float yp = dtime * ((length - (end + this.width / 2)) + (w - arx) * 4.5f) + dh;
-				Color rc = r2.chance(0.1f + Interp.pow3In.apply((w - arx) / w) * 0.7f) ? Color.white : HPal.primary;
+				Color rc = rand2.chance(0.1f + Interp.pow3In.apply((w - arx) / w) * 0.7f) ? Color.white : HPal.primary;
 
 				Draw.color(rc);
 				v.trns(b.rotation(), (yp + end / 1.5f) - (w - arx) * 1.5f, xp).add(b.x, b.y);

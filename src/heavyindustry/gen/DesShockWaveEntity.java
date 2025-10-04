@@ -119,10 +119,10 @@ public class DesShockWaveEntity extends BaseEntity {
 		Lines.stroke(30f * fout);
 		Lines.circle(x, y, getRange());
 
-		Rand r = Utils.rand;
-		r.setSeed(id);
+		Rand rand = Utils.rand(id);
+
 		for (int i = 0; i < 20; i++) {
-			float rot = r.random(360f);
+			float rot = rand.random(360f);
 			Vec2 v = Tmp.v1.trns(rot, getRange()).add(x, y);
 			Drawf.tri(v.x, v.y, 30f * fout, 100f + 500f * time, rot + 180f);
 		}

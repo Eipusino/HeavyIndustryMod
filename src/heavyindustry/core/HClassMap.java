@@ -32,6 +32,7 @@ import heavyindustry.entities.abilities.SuspiciousAbility;
 import heavyindustry.entities.abilities.SwapHealthAbility;
 import heavyindustry.entities.abilities.TerritoryFieldAbility;
 import heavyindustry.entities.abilities.ToxicAbility;
+import heavyindustry.entities.abilities.WitchServiceAbility;
 import heavyindustry.entities.bullet.AccelBulletType;
 import heavyindustry.entities.bullet.AimToPosBulletType;
 import heavyindustry.entities.bullet.AntiBulletFlakBulletType;
@@ -373,6 +374,7 @@ final class HClassMap {
 		classes.put("SwapHealthAbility", SwapHealthAbility.class);
 		classes.put("TerritoryFieldAbility", TerritoryFieldAbility.class);
 		classes.put("ToxicAbility", ToxicAbility.class);
+		classes.put("WitchServiceAbility", WitchServiceAbility.class);
 		//bullets
 		classes.put("AccelBulletType", AccelBulletType.class);
 		classes.put("AimToPosBulletType", AimToPosBulletType.class);

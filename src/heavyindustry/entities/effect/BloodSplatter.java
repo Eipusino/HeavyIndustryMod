@@ -160,8 +160,7 @@ public class BloodSplatter extends BaseEntity implements Poolable {
 			float len = Mathf.pow(length * ((lifetime - lifetime2) / lifetime), 1f / out.power);
 			int count = (int) (len / 10);
 
-			Rand r = Utils.rand;
-			r.setSeed(id);
+			Rand rand = Utils.rand(id);
 
 			Fill.circle(x2, y2, fin4 * fout * size);
 			float s = size * 0.75f;
@@ -170,8 +169,8 @@ public class BloodSplatter extends BaseEntity implements Poolable {
 				float t = Mathf.clamp((timeOff - i * 8f) / 15f);
 				float l = i / (float) count;
 
-				Vec2 v = Tmp.v1.trns(angle + r.range(10f), r.random(len * l, len * (l + 1))).add(x2, y2);
-				Fill.circle(v.x, v.y, s * t * fout * r.random(0.9f, 1.1f));
+				Vec2 v = Tmp.v1.trns(angle + rand.range(10f), rand.random(len * l, len * (l + 1))).add(x2, y2);
+				Fill.circle(v.x, v.y, s * t * fout * rand.random(0.9f, 1.1f));
 
 				s *= 0.6f;
 			}

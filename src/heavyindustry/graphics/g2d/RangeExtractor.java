@@ -20,7 +20,7 @@ public class RangeExtractor {
 
 	private boolean capturing = false, loaded = false;
 
-	public RangeExtractor(boolean isLow) {
+	protected RangeExtractor(boolean isLow) {
 		low = isLow;
 
 		buffer = new FrameBuffer();

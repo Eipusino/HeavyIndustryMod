@@ -8,6 +8,7 @@ import arc.struct.Seq;
 import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.Constant;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
@@ -37,6 +38,7 @@ public class RegenProjectorAbility extends Ability {
 	public int lastChange = -2;
 	public boolean anyTargets = false;
 	public boolean didRegen = false;
+	public boolean suppressed = false;
 
 	public RegenProjectorAbility() {}
 
@@ -70,14 +72,14 @@ public class RegenProjectorAbility extends Ability {
 
 		//use Math.max to prevent stacking
 		for (Building build : targets) {
-			if (!build.damaged() || build.isHealSuppressed()) continue;
+			if (!build.damaged() || (suppressed && build.isHealSuppressed())) continue;
 
 			didRegen = true;
 
 			int pos = build.pos();
 			//TODO periodic effect
 			float value = mendMap.get(pos);
-			mendMap.put(pos, Math.min(Math.max(value, healPercent * Time.delta * build.block.health / 100f), build.block.health - build.health));
+			mendMap.put(pos, Mathm.clamp(value, build.block.health - build.health, healPercent * Time.delta * build.block.health / 100f));
 
 			if (value <= 0 && Mathf.chanceDelta(effectChance * build.block.size * build.block.size)) {
 				effect.at(build.x + Mathf.range(build.block.size * tilesize / 2f - 1f), build.y + Mathf.range(build.block.size * tilesize / 2f - 1f));

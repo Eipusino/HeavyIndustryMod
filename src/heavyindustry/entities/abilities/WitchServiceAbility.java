@@ -17,6 +17,8 @@ import mindustry.type.StatusEffect;
 import static mindustry.Vars.tilesize;
 
 public class WitchServiceAbility extends Ability {
+	protected static Rect tmpRect = new Rect();
+
 	public ObjectFloatMapf<Unit> findMap = new ObjectFloatMapf<>(Unit.class);
 
 	public float width = 60f, height = 60f;
@@ -30,20 +32,24 @@ public class WitchServiceAbility extends Ability {
 	public float reload = timeApply;
 
 	public Effect work, applyIn, applyOut;
-	public Color workColor = Pal.techBlue;
+
+	public Color color;
 
 	public boolean working = false;
 
-	protected Rect rect = new Rect();
-
 	public WitchServiceAbility() {
-		this(HFx.witchServiceWork, HFx.witchServiceApplyIn, HFx.witchServiceApplyOut);
+		this(Pal.techBlue);
 	}
 
-	public WitchServiceAbility(Effect wk, Effect in, Effect out) {
+	public WitchServiceAbility(Color col) {
+		this(HFx.witchServiceWork, HFx.witchServiceApplyIn, HFx.witchServiceApplyOut, col);
+	}
+
+	public WitchServiceAbility(Effect wk, Effect in, Effect out, Color col) {
 		work = wk;
 		applyIn = in;
 		applyOut = out;
+		color = col;
 	}
 
 	protected Rect getRect(Unit unit, Rect rect) {
@@ -57,10 +63,10 @@ public class WitchServiceAbility extends Ability {
 	public void update(Unit unit) {
 		super.update(unit);
 
-		Rect r = getRect(unit, rect);
+		Rect rect = getRect(unit, tmpRect);
 
 		if ((reload += Time.delta) >= timeApply) {
-			Units.nearbyEnemies(unit.team, r, u -> {
+			Units.nearbyEnemies(unit.team, rect, u -> {
 				if (u.targetable(unit.team) && !u.inFogTo(unit.team)) {
 					if (!u.hasEffect(effectType) && !u.isImmune(effectType)) {
 						if (!findMap.containsKey(u)) {
@@ -70,28 +76,28 @@ public class WitchServiceAbility extends Ability {
 						}
 
 						working = true;
-						applyIn.at(u.x, u.y, u.rotation, u);
+						applyIn.at(u.x, u.y, u.rotation, color, u);
 						u.apply(applyEffect, timeApply / 2f);
 					} else {
 						if (u.isValid() && findMap.containsKey(u)) {
-							findMap.remove(u, 0f);
+							findMap.remove(u);
 						}
 					}
 				}
 			});
 			for (Unit u : findMap.keys()) {
 				if (u == null || !u.isValid() || u.hasEffect(effectType)) {
-					findMap.remove(u, 0f);
+					findMap.remove(u);
 
 					continue;
 				}
 
 				findMap.put(u, findMap.get(u, 0f) + applyMultiplier);
-				applyOut.at(u.x, u.y, u.rotation, u);
+				applyOut.at(u.x, u.y, u.rotation, color, u);
 
 				if (findMap.get(u, 0f) >= 1) {
 					u.apply(effectType, effectTime);
-					findMap.remove(u, 0f);
+					findMap.remove(u);
 				}
 			}
 
@@ -99,7 +105,7 @@ public class WitchServiceAbility extends Ability {
 		}
 
 		if (working) {
-			work.at(unit.x, unit.y, unit.rotation, workColor, r);
+			work.at(unit.x, unit.y, unit.rotation, color, rect);
 			working = false;
 		}
 	}

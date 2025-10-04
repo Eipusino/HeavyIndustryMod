@@ -23,7 +23,7 @@ import static heavyindustry.util.Utils.requireNonNullInstance;
  * functions provided by this class.</strong>
  *
  * @author Eipusino
- * @see InteUnsafer
+ * @see Unsaferf
  * @since 1.0.7
  */
 public final class Unsafer {
@@ -484,8 +484,8 @@ public final class Unsafer {
 
 	public static Object get(Field field, Object object) {
 		long offset = getOffset(field);
-		Class<?> type = field.getType(), clazz = field.getDeclaringClass();
-		Object o = Modifier.isStatic(field.getModifiers()) ? clazz : requireNonNullInstance(clazz, object);
+		Class<?> type = field.getType(), base = field.getDeclaringClass();
+		Object o = Modifier.isStatic(field.getModifiers()) ? base : requireNonNullInstance(base, object);
 
 		if (Modifier.isVolatile(field.getModifiers())) {
 			if (type.isPrimitive()) {
@@ -528,8 +528,8 @@ public final class Unsafer {
 
 	public static void set(Field field, Object object, Object value) {
 		long offset = getOffset(field);
-		Class<?> type = field.getType(), clazz = field.getDeclaringClass();
-		Object o = Modifier.isStatic(field.getModifiers()) ? clazz : requireNonNullInstance(clazz, object);
+		Class<?> type = field.getType(), base = field.getDeclaringClass();
+		Object o = Modifier.isStatic(field.getModifiers()) ? base : requireNonNullInstance(base, object);
 
 		if (Modifier.isVolatile(field.getModifiers())) {
 			if (type.isPrimitive()) {

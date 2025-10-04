@@ -127,7 +127,7 @@ public final class HFx {
 				if (e.data instanceof Rect r) {
 					float z = Draw.z();
 					Draw.z(Layer.blockUnder);
-					Draw.color(Pal.techBlue);
+					Draw.color(e.color);
 					Draw.alpha(e.foutpow() * 0.5f);
 					Fill.rect(r);
 
@@ -145,7 +145,7 @@ public final class HFx {
 						for (int r = 0; r < 15; r++) {
 							float dx = Utils.dx(e.x, size * e.foutpow() + size * 0.01f * r * e.foutpow(), 360 * e.foutpow() + 180 * i + r * size / 24),
 									dy = Utils.dy(e.y, size * e.foutpow() + size * 0.01f * r * e.foutpow(), 360 * e.foutpow() + 180 * i + r * size / 24);
-							Draw.color(Pal.techBlue);
+							Draw.color(e.color);
 							Fill.circle(dx, dy, size / 16 * ((15 - r) / 15f));
 						}
 					}
@@ -154,7 +154,7 @@ public final class HFx {
 			witchServiceApplyOut = new Effect(30, e -> {
 				if (e.data instanceof Unit u && u.isAdded() && !u.dead) {
 					float size = u.hitSize * 2;
-					Lines.stroke(size / 16 * e.finpow(), Pal.techBlue);
+					Lines.stroke(size / 16 * e.finpow(), e.color);
 					Lines.square(e.x, e.y, size * e.foutpow(), 135 * e.finpow());
 					float z = Draw.z();
 					if (u.type != null && u.type.fullIcon != null) {
@@ -2430,21 +2430,20 @@ public final class HFx {
 				float z = Draw.z();
 				Draw.z(z - 0.001f);
 
-				Rand r = Utils.rand;
-				r.setSeed(e.id * 31L);
+				Rand rand = Utils.rand(e.id * 31l);
 
 				Draw.color(Color.gray);
 				Draw.alpha(0.9f);
 				for (int i = 0; i < 3; i++) {
-					float lenScl = r.random(0.4f, 1f);
+					float lenScl = rand.random(0.4f, 1f);
 					float time = Mathf.clamp(e.time / (e.lifetime * lenScl));
 
 					float l = Interp.pow10Out.apply(time) * 100f;
 
 					for (int j = 0; j < 4; j++) {
-						float len = r.random(0.4f, 1f) * l;
-						float ang = r.random(360f);
-						float fout = Interp.pow5Out.apply(1 - time) * r.random(0.5f, 1f);
+						float len = rand.random(0.4f, 1f) * l;
+						float ang = rand.random(360f);
+						float fout = Interp.pow5Out.apply(1 - time) * rand.random(0.5f, 1f);
 
 						Vec2 v = Tmp.v1.trns(ang, len).add(e.x, e.y);
 						//Fill.circle(e.x + x, e.y + y, fout * ((2f + intensity) * 1.8f));
@@ -2458,9 +2457,9 @@ public final class HFx {
 				Draw.color(HPal.primary, Pal.lightOrange, Color.gray, e.fin());
 				Lines.stroke(2.72f * e.fout());
 				for (int i = 0; i < 8; i++) {
-					//float c = r.random(0.2f);
-					float l = r.random(20f, 150f) * e.finpow() + 0.1f;
-					float a = r.random(360f);
+					//float c = rand.random(0.2f);
+					float l = rand.random(20f, 150f) * e.finpow() + 0.1f;
+					float a = rand.random(360f);
 					Vec2 v = Tmp.v1.trns(a, l);
 					//lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), 1f + out * 4 * (3f + intensity));
 					Lines.lineAngle(v.x + e.x, v.y + e.y, Mathf.angle(v.x, v.y), 1f + e.fout() * 12f);
@@ -2475,21 +2474,21 @@ public final class HFx {
 				}
 			}),
 			apathyCrit = new Effect(80f, e -> {
-				Rand r = Utils.rand;
-				r.setSeed(e.id * 31L);
+				Rand rand = Utils.rand(e.id * 31l);
+
 				for (int i = 0; i < 45; i++) {
 					float offd = 0.4f;
 
-					float ra = Interp.pow3Out.apply(r.random(1f)) / 2f + 0.5f;
+					float ra = Interp.pow3Out.apply(rand.random(1f)) / 2f + 0.5f;
 
 					float in = (i / 45f) * ra * (1 - offd);
 
-					//float of = r.random(1f - offd);
+					//float of = rand.random(1f - offd);
 					//float time = Mathf.curve(e.fin(), of, of + offd);
 					float time = Mathf.curve(e.fin(), in, in + offd);
-					float angle = r.random(360f);
-					float length = r.random(15f, 135f);
-					float size = r.random(12f, 25f);
+					float angle = rand.random(360f);
+					float length = rand.random(15f, 135f);
+					float size = rand.random(12f, 25f);
 
 					if (time <= 0 || time >= 1) continue;
 
@@ -2501,15 +2500,15 @@ public final class HFx {
 			apathyBleed = new Effect(15f, e -> {
 				//Draw.color(HPalettes.primary, HPalettes.blood, Interp.pow2Out.apply(e.fin()));
 				Draw.color(HPal.blood);
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
+
 				float minRange = e.color.r;
 				float maxRange = e.color.g;
 
 				for (int i = 0; i < 6; i++) {
-					float angle = e.rotation + Interp.pow2In.apply(r.nextFloat()) * (r.chance(0.5f) ? -1f : 1f) * 15f;
-					float len = r.random(minRange, maxRange) * e.fin(Interp.pow2Out);
-					float s = r.random(6f, 10f) * Interp.pow3Out.apply(e.fout());
+					float angle = e.rotation + Interp.pow2In.apply(rand.nextFloat()) * (rand.chance(0.5f) ? -1f : 1f) * 15f;
+					float len = rand.random(minRange, maxRange) * e.fin(Interp.pow2Out);
+					float s = rand.random(6f, 10f) * Interp.pow3Out.apply(e.fout());
 
 					Tmp.v1.trns(angle, len).add(e.x, e.y);
 					Fill.circle(Tmp.v1.x, Tmp.v1.y, s);
@@ -2517,17 +2516,16 @@ public final class HFx {
 			}).rotWithParent(true).layer(Layer.flyingUnit + 0.01f),
 			apathyDeath = new Effect(30f, e -> {
 				Draw.color(HPal.blood);
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
 
 				Fill.circle(e.x, e.y, (1f - Mathf.curve(e.fin(), 0f, 0.4f)) * e.rotation * 2f);
 
 				for (int i = 0; i < 70; i++) {
-					float fin = Mathf.curve(e.fin(), r.random(0.1f), 1 - r.random(0.5f));
-					float angle = r.random(360f);
-					float length = r.random(220f, 460f);
-					float size = r.random(9f, 15f) * Interp.pow2Out.apply(Utils.biasSlope(fin, 0.1f));
-					float offset = r.random(e.rotation);
+					float fin = Mathf.curve(e.fin(), rand.random(0.1f), 1 - rand.random(0.5f));
+					float angle = rand.random(360f);
+					float length = rand.random(220f, 460f);
+					float size = rand.random(9f, 15f) * Interp.pow2Out.apply(Utils.biasSlope(fin, 0.1f));
+					float offset = rand.random(e.rotation);
 
 					if (fin > 0f && fin < 1f) {
 						Tmp.v1.trns(angle, offset + length * Interp.pow3Out.apply(fin)).add(e.x, e.y);
@@ -2564,15 +2562,15 @@ public final class HFx {
 					Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fslope() * 9f + 0.5f);
 				});
 
-				Rand r = Utils.rand;
-				r.setSeed(e.id + 642);
+				Rand rand = Utils.rand(e.id + 642);
+
 				float c = 0.4f;
 				for (int i = 0; i < 6; i++) {
 					float id = i / 5f;
 					float f = Mathf.curve(e.fin(), c * id, c * id + (1 - c));
-					float ang = e.rotation + r.range(60f);
-					float len = r.random(57f, 92f) * Interp.pow2Out.apply(f);
-					float size = r.random(5f, 9f) * (1 - f);
+					float ang = e.rotation + rand.range(60f);
+					float len = rand.random(57f, 92f) * Interp.pow2Out.apply(f);
+					float size = rand.random(5f, 9f) * (1 - f);
 					if (f > 0.001f) {
 						Draw.color(Color.white, HPal.primary, f);
 						Vec2 v = Tmp.v1.trns(ang, len);
@@ -2588,12 +2586,12 @@ public final class HFx {
 				//float size = e.data instanceof Float ? ((float)e.data) / 2f : 50f;
 				float size = (e.data instanceof Float fdata ? fdata : (e.data instanceof Sized s ? s.hitSize() : 50f)) * 1.25f;
 
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
+
 				for (int i = 0; i < 16; i++) {
-					float w = r.range(size);
-					float l = r.random(180f, 310f);
-					float s = r.random(8f, 30f);
+					float w = rand.range(size);
+					float l = rand.random(180f, 310f);
+					float s = rand.random(8f, 30f);
 
 					float ic = i / 15f;
 					float c = 0.3f;
@@ -2628,21 +2626,20 @@ public final class HFx {
 				Drawn.drawShockWave(e.x, e.y, -75f, 0f, -e.rotation - 90f, nsize * e.finpow() + 10, 16f * e.finpow() + 4f, 16, 1f);
 			}).layer((Layer.bullet + Layer.effect) / 2),
 			fragmentGroundImpact = new Effect(40f, 300f, e -> {
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
 
 				Draw.color(e.color);
 
 				float size = e.rotation;
 				int iter = ((int) (size / 8f)) + 6;
 				for (int i = 0; i < iter; i++) {
-					Vec2 v = Tmp.v1.trns(r.random(360f), r.random(size) + (r.random(0.5f, 1f) * size * 0.5f + 20f) * e.finpow()).add(e.x, e.y);
-					Fill.circle(v.x, v.y, r.random(5f, 16f) * e.fout());
+					Vec2 v = Tmp.v1.trns(rand.random(360f), rand.random(size) + (rand.random(0.5f, 1f) * size * 0.5f + 20f) * e.finpow()).add(e.x, e.y);
+					Fill.circle(v.x, v.y, rand.random(5f, 16f) * e.fout());
 				}
 			}).layer(Layer.debris),
 			fragmentExplosion = new Effect(40f, 300f, e -> {
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
+
 				float size = e.rotation;
 				e.lifetime = size / 1.5f + 10f;
 
@@ -2652,13 +2649,13 @@ public final class HFx {
 				//alpha(0.9f);
 				for (int i = 0; i < iter3; i++) {
 					//
-					Vec2 v = Tmp.v1.trns(r.random(360f), r.random(size / 2f) * e.finpow());
-					float s = r.random(size / 2.75f, size / 2f) * e.fout();
+					Vec2 v = Tmp.v1.trns(rand.random(360f), rand.random(size / 2f) * e.finpow());
+					float s = rand.random(size / 2.75f, size / 2f) * e.fout();
 					Fill.circle(v.x + e.x, v.y + e.y, s);
 				}
 				for (int i = 0; i < iter; i++) {
-					Vec2 v = Tmp.v1.trns(r.random(360f), r.random(size) + (r.random(0.25f, 2f) * size) * e.finpow());
-					float s = r.random(size / 3.5f, size / 2.5f) * e.fout();
+					Vec2 v = Tmp.v1.trns(rand.random(360f), rand.random(size) + (rand.random(0.25f, 2f) * size) * e.finpow());
+					float s = rand.random(size / 3.5f, size / 2.5f) * e.fout();
 					Fill.circle(v.x + e.x, v.y + e.y, s);
 					Fill.circle(v.x / 2 + e.x, v.y / 2 + e.y, s * 0.5f);
 				}
@@ -2674,14 +2671,14 @@ public final class HFx {
 					Draw.z(Layer.effect + 0.001f);
 
 					for (int i = 0; i < iter2; i++) {
-						Vec2 v = Tmp.v1.trns(r.random(360f), r.random(0.001f, size / 2f) + (r.random(0.4f, 2.2f) * size) * Interp.pow2Out.apply(sfin));
+						Vec2 v = Tmp.v1.trns(rand.random(360f), rand.random(0.001f, size / 2f) + (rand.random(0.4f, 2.2f) * size) * Interp.pow2Out.apply(sfin));
 						Lines.lineAngle(e.x + v.x, e.y + v.y, Mathf.angle(v.x, v.y), 1f + sfout * 3 * (1f + size / 50f));
 					}
 				}
 			}),
 			fragmentExplosionSmoke = new Effect(40f, 300f, e -> {
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
+
 				float size = e.rotation;
 
 				e.lifetime = size / 1.5f + 10f;
@@ -2690,20 +2687,20 @@ public final class HFx {
 				int iter3 = ((int) (size / 14.5f)) + 12;
 				Draw.color(Color.gray);
 				for (int i = 0; i < iter3; i++) {
-					Vec2 v = Tmp.v1.trns(r.random(360f), r.random(size / 2f) * e.finpow());
-					float s = r.random(size / 2.75f, size / 2f) * e.fout();
+					Vec2 v = Tmp.v1.trns(rand.random(360f), rand.random(size / 2f) * e.finpow());
+					float s = rand.random(size / 2.75f, size / 2f) * e.fout();
 					Fill.circle(v.x + e.x, v.y + e.y, s);
 				}
 				for (int i = 0; i < iter; i++) {
-					Vec2 v = Tmp.v1.trns(r.random(360f), r.random(size) + (r.random(0.25f, 2f) * size) * e.finpow());
-					float s = r.random(size / 3.5f, size / 2.5f) * e.fout();
+					Vec2 v = Tmp.v1.trns(rand.random(360f), rand.random(size) + (rand.random(0.25f, 2f) * size) * e.finpow());
+					float s = rand.random(size / 3.5f, size / 2.5f) * e.fout();
 					Fill.circle(v.x + e.x, v.y + e.y, s);
 					Fill.circle(v.x / 2 + e.x, v.y / 2 + e.y, s * 0.5f);
 				}
 			}),
 			fragmentExplosionSpark = new Effect(26f, 300f, e -> {
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
+
 				float size = e.rotation;
 				e.lifetime = size / 1.5f + 10f;
 
@@ -2718,13 +2715,13 @@ public final class HFx {
 				Draw.z(Layer.effect + 0.001f);
 
 				for (int i = 0; i < iter2; i++) {
-					Vec2 v = Tmp.v1.trns(r.random(360f), r.random(0.001f, size / 2f) + (r.random(0.4f, 2.2f) * size) * Interp.pow2Out.apply(sfin));
+					Vec2 v = Tmp.v1.trns(rand.random(360f), rand.random(0.001f, size / 2f) + (rand.random(0.4f, 2.2f) * size) * Interp.pow2Out.apply(sfin));
 					Lines.lineAngle(e.x + v.x, e.y + v.y, Mathf.angle(v.x, v.y), 1f + sfout * 3 * (1f + size / 50f));
 				}
 			}),
 			destroySparks = new Effect(40f, 1200f, e -> {
-				Rand r = Utils.rand;
-				r.setSeed(e.id + 64331);
+				Rand rand = Utils.rand(e.id + 64331);
+
 				float size = (float) e.data;
 				int isize = (int) (size * 1.75f) + 12;
 				int isize2 = (int) (size * 1.5f) + 9;
@@ -2734,22 +2731,22 @@ public final class HFx {
 
 				Lines.stroke(Math.max(2f, Mathf.sqrt(size) / 8f));
 				for (int i = 0; i < isize2; i++) {
-					float f = Mathf.curve(fin1, 0f, r.random(0.8f, 1f));
-					Vec2 v = Tmp.v1.trns(r.random(360f), 1f + (size * r.nextFloat() + 10f) * 1.5f * Interp.pow3Out.apply(f));
-					float rsize = r.random(0.5f, 1.5f);
+					float f = Mathf.curve(fin1, 0f, rand.random(0.8f, 1f));
+					Vec2 v = Tmp.v1.trns(rand.random(360f), 1f + (size * rand.nextFloat() + 10f) * 1.5f * Interp.pow3Out.apply(f));
+					float rsize = rand.random(0.5f, 1.5f);
 					if (f < 1) {
 						Draw.color(HPal.paleYellow, Pal.lightOrange, Color.gray, f);
 						Lines.lineAngle(v.x + e.x, v.y + e.y, v.angle(), (size / 5f) * rsize * (1 - f));
 					}
 				}
 				for (int i = 0; i < isize; i++) {
-					float f = Mathf.curve(e.fin(), 0f, r.random(0.5f, 1f));
-					float re = Mathf.pow(r.nextFloat(), 1.5f);
-					float ang = re * 90f * (r.nextFloat() > 0.5f ? 1 : -1);
-					//float dst = (1f - Math.abs(ang / 90f) / 1.5f) * (50f + size * 3f * r.nextFloat()) * pow3Out.apply(f);
-					float dst = (50f + ((size * 3f) / (1f + re / 5f)) * Mathf.pow(r.nextFloat(), (1f + re / 2f))) * Interp.pow3Out.apply(f);
+					float f = Mathf.curve(e.fin(), 0f, rand.random(0.5f, 1f));
+					float re = Mathf.pow(rand.nextFloat(), 1.5f);
+					float ang = re * 90f * (rand.nextFloat() > 0.5f ? 1 : -1);
+					//float dst = (1f - Math.abs(ang / 90f) / 1.5f) * (50f + size * 3f * rand.nextFloat()) * pow3Out.apply(f);
+					float dst = (50f + ((size * 3f) / (1f + re / 5f)) * Mathf.pow(rand.nextFloat(), (1f + re / 2f))) * Interp.pow3Out.apply(f);
 					Vec2 v = Tmp.v1.trns(e.rotation + ang, 1f + dst);
-					float rsize = r.random(0.75f, 1.5f);
+					float rsize = rand.random(0.75f, 1.5f);
 
 					if (f < 1) {
 						Draw.color(HPal.paleYellow, Pal.lightOrange, Color.gray, Interp.pow2In.apply(f));
@@ -2769,8 +2766,8 @@ public final class HFx {
 				Fill.circle(e.x, e.y, e.rotation * fin);
 			}),
 			heavyDebris = new Effect(4f * 60f, 1200f, e -> {
-				Rand r = Utils.rand;
-				r.setSeed(e.id + 644331);
+				Rand rand = Utils.rand(e.id + 644331);
+
 				float size = (float) e.data;
 				float sizeTime = (size) + 15f;
 				int isize = (int) (size * 1.75f) + 12;
@@ -2779,19 +2776,19 @@ public final class HFx {
 				float fout = Mathf.clamp((e.lifetime - e.time) / 60f);
 				Lines.stroke(3f);
 				for (int i = 0; i < isize; i++) {
-					Vec2 v = Tmp.v1.trns(r.random(360f), Mathf.sqrt(r.nextFloat()) * size * 0.75f).add(e.x, e.y);
-					float f = Mathf.curve(fin, 0f, r.random(0.5f, 1f));
-					float angle = Mathf.pow(r.nextFloat(), 1.25f) * (r.random(1f) < 0.5f ? -1f : 1f) * 60f;
-					//float angle = r.range(35f);
-					float dst = r.random((220f + size * 4.5f) * Interp.pow3Out.apply(f)) * (1 - Math.abs(angle / 60f) / 1.5f);
-					float s = r.chance(0.25f) ? (size / 3f) * r.random(0.5f, 1f) : Math.min(r.random(5f, 9f), size / 4f);
-					float rrot = r.random(360f);
-					int sides = r.random(3, 6);
+					Vec2 v = Tmp.v1.trns(rand.random(360f), Mathf.sqrt(rand.nextFloat()) * size * 0.75f).add(e.x, e.y);
+					float f = Mathf.curve(fin, 0f, rand.random(0.5f, 1f));
+					float angle = Mathf.pow(rand.nextFloat(), 1.25f) * (rand.random(1f) < 0.5f ? -1f : 1f) * 60f;
+					//float angle = rand.range(35f);
+					float dst = rand.random((220f + size * 4.5f) * Interp.pow3Out.apply(f)) * (1 - Math.abs(angle / 60f) / 1.5f);
+					float s = rand.chance(0.25f) ? (size / 3f) * rand.random(0.5f, 1f) : Math.min(rand.random(5f, 9f), size / 4f);
+					float rrot = rand.random(360f);
+					int sides = rand.random(3, 6);
 					Vec2 v2 = Tmp.v2.trns(angle + e.rotation, dst);
 
-					Draw.color(Tmp.c1.set(e.color).mul(r.random(0.9f, 1.2f)).a(fout));
+					Draw.color(Tmp.c1.set(e.color).mul(rand.random(0.9f, 1.2f)).a(fout));
 
-					if (r.chance(0.75f)) {
+					if (rand.chance(0.75f)) {
 						Fill.poly(v.x + v2.x, v.y + v2.y, sides, s, rrot);
 					} else {
 						Lines.poly(v.x + v2.x, v.y + v2.y, sides, s, rrot);
@@ -2807,13 +2804,13 @@ public final class HFx {
 				float bh = b2 / region.texture.height;
 				float bscl = bounds * Draw.scl;
 				int ib = (int) (bscl * 1.5f) + 8;
-				Rand r = Utils.rand;
-				r.setSeed(e.id + 46241);
+
+				Rand rand = Utils.rand(e.id + 46241);
 
 				Draw.color(e.color);
 				for (int i = 0; i < ib; i++) {
-					float u = Mathf.lerp(region.u, (region.u2 - bw), r.nextFloat());
-					float v = Mathf.lerp(region.v, (region.v2 - bh), r.nextFloat());
+					float u = Mathf.lerp(region.u, (region.u2 - bw), rand.nextFloat());
+					float v = Mathf.lerp(region.v, (region.v2 - bh), rand.nextFloat());
 					float u2 = u + bw;
 					float v2 = v + bh;
 
@@ -2821,12 +2818,12 @@ public final class HFx {
 					tr.texture = region.texture;
 					tr.set(u, v, u2, v2);
 
-					float f = Mathf.curve(e.fin(), 0f, r.random(0.8f, 1f));
+					float f = Mathf.curve(e.fin(), 0f, rand.random(0.8f, 1f));
 
-					Vec2 base = Tmp.v1.trns(r.random(360f), bscl / 2f).add(e.x, e.y);
-					Vec2 off = Tmp.v2.trns(e.rotation + r.range(30f), 120f * r.nextFloat() * Interp.pow2Out.apply(f));
+					Vec2 base = Tmp.v1.trns(rand.random(360f), bscl / 2f).add(e.x, e.y);
+					Vec2 off = Tmp.v2.trns(e.rotation + rand.range(30f), 120f * rand.nextFloat() * Interp.pow2Out.apply(f));
 
-					float rrot = r.random(360f) + r.range(180f) * f;
+					float rrot = rand.random(360f) + rand.range(180f) * f;
 
 					if (f < 1) {
 						Draw.alpha(1f - Mathf.curve(f, 0.8f, 1f));
@@ -2854,10 +2851,9 @@ public final class HFx {
 				float fin1 = Mathf.curve(e.fin(), 0f, 0.65f);
 				float size = e.rotation;
 
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
 
-				e.lifetime = 50f + r.range(4f);
+				e.lifetime = 50f + rand.range(4f);
 
 				int base = (int) ((size * size) / 34f) + 2;
 				int base2 = (int) ((size * size) / 16f) + 4;
@@ -2866,31 +2862,31 @@ public final class HFx {
 				Draw.color(HPal.darkRed, HPal.empathy, Mathf.curve(Interp.pow2Out.apply(fin1), 0f, 0.5f));
 
 				for (int i = 0; i < base; i++) {
-					Vec2 v = Tmp.v1.trns(r.random(360f), Mathf.sqrt(r.nextFloat()) * size + ((20f + size * 4f) * Interp.pow2Out.apply(fin1) * r.nextFloat()));
-					float s = r.random(0.5f, 1.1f) * (size * 0.4f + 8f) * (1f - fin1);
+					Vec2 v = Tmp.v1.trns(rand.random(360f), Mathf.sqrt(rand.nextFloat()) * size + ((20f + size * 4f) * Interp.pow2Out.apply(fin1) * rand.nextFloat()));
+					float s = rand.random(0.5f, 1.1f) * (size * 0.4f + 8f) * (1f - fin1);
 					if (fin1 < 1f) Fill.circle(v.x + e.x, v.y + e.y, s);
 				}
 				Draw.color(HPal.darkRed, HPal.empathy, Mathf.curve(Interp.pow2Out.apply(e.fin()), 0f, 0.5f));
 				for (int i = 0; i < base2; i++) {
-					float sin = Mathf.sin(r.random(7f, 11f), r.random(size * 2f)) * e.fin();
-					Vec2 v = Tmp.v1.trns(r.random(360f), Mathf.sqrt(r.nextFloat()) * size + ((40f + size * 8f) * Interp.pow2In.apply(e.fin()) * r.nextFloat()), sin);
-					float s = r.random(0.5f, 1.1f) * (size * 0.25f + 3f) * (1f - Interp.pow4In.apply(e.fin()));
+					float sin = Mathf.sin(rand.random(7f, 11f), rand.random(size * 2f)) * e.fin();
+					Vec2 v = Tmp.v1.trns(rand.random(360f), Mathf.sqrt(rand.nextFloat()) * size + ((40f + size * 8f) * Interp.pow2In.apply(e.fin()) * rand.nextFloat()), sin);
+					float s = rand.random(0.5f, 1.1f) * (size * 0.25f + 3f) * (1f - Interp.pow4In.apply(e.fin()));
 					Fill.circle(v.x + e.x, v.y + e.y, s);
 				}
 			}),
 			endSplash = new Effect(35f, 800f, e -> {
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
-				e.lifetime = 50f + r.range(16f);
+				Rand rand = Utils.rand(e.id);
+
+				e.lifetime = 50f + rand.range(16f);
 
 				Draw.color(HPal.darkRed);
-				int am = r.random(5, 9);
+				int am = rand.random(5, 9);
 				for (int i = 0; i < am; i++) {
 					float of = 0.3f / (am - 1f);
 					float c = Mathf.curve(e.fin(), of * i, (1 - 0.3f) + (of * i));
-					float ang = r.range(40f) + e.rotation;
-					float scl = r.random(0.6f, 1.4f) * 200f;
-					float len = r.random(350f, 900f);
+					float ang = rand.range(40f) + e.rotation;
+					float scl = rand.random(0.6f, 1.4f) * 200f;
+					float len = rand.random(350f, 900f);
 
 					if (c > 0.0001f && c < 0.9999f) {
 						Tmp.v1.trns(ang, len * Interp.pow2Out.apply(c)).add(e.x, e.y);
@@ -2899,37 +2895,35 @@ public final class HFx {
 				}
 			}).layer(Layer.darkness + 1f),
 			coloredHit = new Effect(15f, e -> {
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
 
 				Draw.color(Color.white, HPal.red, e.fin());
 				Lines.stroke(0.5f + e.fout());
 
 				for (int i = 0; i < 8; i++) {
-					float ang = r.range(12f) + e.rotation;
-					float len = r.random(40f) * e.fin();
+					float ang = rand.range(12f) + e.rotation;
+					float len = rand.random(40f) * e.fin();
 					Vec2 v = Tmp.v1.trns(ang, len).add(e.x, e.y);
 
 					Lines.lineAngle(v.x, v.y, ang, e.fout() * 8f + 1f);
 				}
 			}),
 			desGroundHit = new Effect(30f, 250f, e -> {
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
 
-				int amount = r.random(4, 12);
-				int amount2 = r.random(7, 14);
-				float c = r.random(0.1f, 0.6f);
-				float c2 = r.random(0.1f, 0.3f);
+				int amount = rand.random(4, 12);
+				int amount2 = rand.random(7, 14);
+				float c = rand.random(0.1f, 0.6f);
+				float c2 = rand.random(0.1f, 0.3f);
 
 				Draw.z(Layer.groundUnit);
 				Draw.color(Color.gray);
 				for (int i = 0; i < amount2; i++) {
 					float l = (i / (amount2 - 1f)) * c2;
 					float f = Mathf.curve(e.fin(), l, (1f - c2) + l);
-					float ang = r.random(360f);
-					float len = r.random(80f) * e.rotation;
-					float scl = r.random(8.5f, 19f) * e.rotation;
+					float ang = rand.random(360f);
+					float len = rand.random(80f) * e.rotation;
+					float scl = rand.random(8.5f, 19f) * e.rotation;
 					if (f > 0f && f < 1f) {
 						float f2 = Interp.pow2Out.apply(f) * 0.6f + f * 0.4f;
 						Vec2 v = Tmp.v1.trns(ang, len * f2).add(e.x, e.y);
@@ -2942,9 +2936,9 @@ public final class HFx {
 				for (int i = 0; i < amount; i++) {
 					float l = (i / (amount - 1f)) * c;
 					float f = Mathf.curve(e.fin(), l, (1f - c) + l);
-					float ang = r.random(360f);
-					float len = r.random(100f) * e.rotation;
-					float scl = r.random(3f, 13f) * e.rotation;
+					float ang = rand.random(360f);
+					float len = rand.random(100f) * e.rotation;
+					float scl = rand.random(3f, 13f) * e.rotation;
 					if (f > 0f && f < 1f) {
 						float f2 = Interp.pow2Out.apply(f) * 0.4f + f * 0.6f;
 						Vec2 v = Tmp.v1.trns(ang, len * f2).add(e.x, e.y);
@@ -2953,8 +2947,7 @@ public final class HFx {
 				}
 			}).layer(Layer.groundUnit),
 			desGroundHitMain = new Effect(90f, 900f, e -> {
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
 
 				float arange = 25f;
 				float scl = 1f;
@@ -2962,12 +2955,12 @@ public final class HFx {
 
 				Draw.color(Color.gray, 0.8f);
 				for (int i = 0; i < 4; i++) {
-					int count = r.random(15, 23);
+					int count = rand.random(15, 23);
 					for (int k = 0; k < count; k++) {
-						float f = Mathf.curve(e.fin(), 0f, 1f - r.random(0.2f));
-						float rr = r.range(arange) + e.rotation;
-						float len = r.random(range) * Interp.pow4Out.apply(e.fin());
-						float sscl = r.random(21f, 43f) * scl * Interp.pow2.apply(1f - f) * Mathf.clamp(e.time / 8f);
+						float f = Mathf.curve(e.fin(), 0f, 1f - rand.random(0.2f));
+						float rr = rand.range(arange) + e.rotation;
+						float len = rand.random(range) * Interp.pow4Out.apply(e.fin());
+						float sscl = rand.random(21f, 43f) * scl * Interp.pow2.apply(1f - f) * Mathf.clamp(e.time / 8f);
 
 						if (f < 1) {
 							Vec2 v = Tmp.v1.trns(rr, len).add(e.x, e.y);
@@ -2985,10 +2978,10 @@ public final class HFx {
 					int count = 20;
 					Draw.color(Pal.lighterOrange);
 					for (int i = 0; i < count; i++) {
-						float f = Mathf.curve(fin2, 0f, 1f - r.random(0.2f));
-						float ang = r.range(40f) + e.rotation;
-						float off = r.random(70f) + r.random(15f) * f;
-						float len = r.random(190f, 450f);
+						float f = Mathf.curve(fin2, 0f, 1f - rand.random(0.2f));
+						float ang = rand.range(40f) + e.rotation;
+						float off = rand.random(70f) + rand.random(15f) * f;
+						float len = rand.random(190f, 450f);
 
 						if (f < 1) {
 							Vec2 v = Tmp.v1.trns(ang, off).add(e.x, e.y);
@@ -3001,16 +2994,15 @@ public final class HFx {
 			desCreepHit = new Effect(20f, e -> {
 				float angr = 90f;
 				float len = 1f;
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
 
 				Draw.color(HPal.red);
 				Lines.stroke(1.75f);
 				for (int i = 0; i < 4; i++) {
 					for (int j = 0; j < 10; j++) {
-						float f = Mathf.curve(e.fin(), 0f, 1f - r.random(0.2f));
-						float tlen = r.random(32f) * len * f + r.random(15f);
-						float rot = r.range(angr) + e.rotation;
+						float f = Mathf.curve(e.fin(), 0f, 1f - rand.random(0.2f));
+						float tlen = rand.random(32f) * len * f + rand.random(15f);
+						float rot = rand.range(angr) + e.rotation;
 						float slope = Interp.pow2Out.apply(Mathf.slope(f)) * 24f * len;
 						Vec2 v = Tmp.v1.trns(rot, tlen).add(e.x, e.y);
 						Lines.lineAngle(v.x, v.y, rot, slope, false);
@@ -3024,8 +3016,7 @@ public final class HFx {
 			desCreepHeavyHit = new Effect(300f, 1200f, e -> {
 				float sizeScl = e.data instanceof Float ? (float) e.data : 1f;
 
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
 
 				float scl = Mathf.clamp(e.time / 8f);
 				float range = 32f;
@@ -3037,14 +3028,14 @@ public final class HFx {
 					float arange = 180f;
 					float range2 = 1f;
 					for (int j = 0; j < 5; j++) {
-						int count = (int) (r.random(12, 15) * countScl);
+						int count = (int) (rand.random(12, 15) * countScl);
 						for (int k = 0; k < count; k++) {
-							float f = Mathf.curve(e.fin(), 0f, 1f - r.random(0.3f));
-							float ang = r.range(arange) + e.rotation;
-							float len = r.random(range * range2) * sizeScl * 0.5f;
-							float size = r.random(10f, 24f) * scl * sizeScl * 0.5f;
+							float f = Mathf.curve(e.fin(), 0f, 1f - rand.random(0.3f));
+							float ang = rand.range(arange) + e.rotation;
+							float len = rand.random(range * range2) * sizeScl * 0.5f;
+							float size = rand.random(10f, 24f) * scl * sizeScl * 0.5f;
 
-							Draw.z(z - r.random(0.002f));
+							Draw.z(z - rand.random(0.002f));
 							if (f < 1f) {
 								Vec2 v = Tmp.v1.trns(ang, len * Interp.pow5Out.apply(f)).add(e.x, e.y);
 								Fill.circle(v.x, v.y, size * (1f - Interp.pow10In.apply(f)));
@@ -3070,7 +3061,7 @@ public final class HFx {
 				Lines.circle(e.x, e.y, shock);
 
 				for (int i = 0; i < 16; i++) {
-					float ang = r.random(360f);
+					float ang = rand.random(360f);
 					Vec2 v = Tmp.v1.trns(ang, shock).add(e.x, e.y);
 					Drawf.tri(v.x, v.y, 8f * e.fout() * sizeScl, (70f + 25f * e.fin()) * sizeScl, ang + 180f);
 				}
@@ -3080,13 +3071,13 @@ public final class HFx {
 				float range2 = 1f;
 				Lines.stroke(3f);
 				for (int i = 0; i < 6; i++) {
-					int count = r.random(8, 12);
+					int count = rand.random(8, 12);
 					for (int k = 0; k < count; k++) {
-						float f = Mathf.curve(e.fin(), 0f, 1f - r.random(0.3f));
+						float f = Mathf.curve(e.fin(), 0f, 1f - rand.random(0.3f));
 						float f2 = Interp.pow5Out.apply(f);
-						float rot = e.rotation + r.range(arange);
-						float len = range2 * r.random(120f) * sizeScl * f2 + r.random(50f * sizeScl);
-						float str = r.random(34f, 60f) * range2 * sizeScl * Interp.pow2Out.apply(Mathf.slope(f2));
+						float rot = e.rotation + rand.range(arange);
+						float len = range2 * rand.random(120f) * sizeScl * f2 + rand.random(50f * sizeScl);
+						float str = rand.random(34f, 60f) * range2 * sizeScl * Interp.pow2Out.apply(Mathf.slope(f2));
 						if (f < 1f) {
 							Vec2 v = Tmp.v1.trns(rot, len).add(e.x, e.y);
 							Lines.lineAngle(v.x, v.y, rot, str);
@@ -3116,8 +3107,7 @@ public final class HFx {
 			desRailHit = new Effect(80f, 900f, e -> {
 				float sizeScl = e.data instanceof Float ? (float) e.data : 1f;
 
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
 
 				float ang = 180f;
 				float rscl = 0.7f * sizeScl;
@@ -3125,10 +3115,10 @@ public final class HFx {
 				for (int i = 0; i < 5; i++) {
 					int count = (int) (10 * rscl);
 					for (int j = 0; j < count; j++) {
-						float fin = Mathf.curve(e.fin(), 0f, 1f - r.random(0.2f));
-						float rot = r.range(ang) + e.rotation;
-						float off = r.random(22f * rscl) + r.random(50f * Mathf.pow(rscl, 1.5f)) * Interp.pow4Out.apply(fin);
-						float sscl = r.random(0.7f, 1.2f);
+						float fin = Mathf.curve(e.fin(), 0f, 1f - rand.random(0.2f));
+						float rot = rand.range(ang) + e.rotation;
+						float off = rand.random(22f * rscl) + rand.random(50f * Mathf.pow(rscl, 1.5f)) * Interp.pow4Out.apply(fin);
+						float sscl = rand.random(0.7f, 1.2f);
 
 						float wid = 12f * sscl * rscl * (1f - Interp.pow4In.apply(fin));
 						float hei = 52f * sscl * Mathf.pow(rscl, 1.5f) * Interp.pow5Out.apply(fin);
@@ -3149,11 +3139,11 @@ public final class HFx {
 				for (int i = 0; i < 7; i++) {
 					int count = 12;
 					for (int j = 0; j < count; j++) {
-						float fin = Mathf.curve(e.fin(), 0f, 1f - r.random(0.2f));
-						float rot = r.range(ang) + e.rotation;
-						float off = r.random(30f * rscl) + r.random(40f * Mathf.pow(rscl, 1.6f)) * Interp.pow5Out.apply(fin);
+						float fin = Mathf.curve(e.fin(), 0f, 1f - rand.random(0.2f));
+						float rot = rand.range(ang) + e.rotation;
+						float off = rand.random(30f * rscl) + rand.random(40f * Mathf.pow(rscl, 1.6f)) * Interp.pow5Out.apply(fin);
 
-						float len = r.random(20f, 40f) * Mathf.pow(rscl, 1.6f) * Interp.sineOut.apply(Mathf.slope(Interp.pow5Out.apply(fin)));
+						float len = rand.random(20f, 40f) * Mathf.pow(rscl, 1.6f) * Interp.sineOut.apply(Mathf.slope(Interp.pow5Out.apply(fin)));
 
 						Vec2 v = Tmp.v1.trns(rot, off).add(e.x, e.y);
 						Lines.lineAngle(v.x, v.y, rot, len, false);
@@ -3179,8 +3169,7 @@ public final class HFx {
 				if (!(e.data instanceof float[] arr)) return;
 				float size = e.rotation;
 
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
 
 				float scl = 1f;
 				Tmp.c2.set(Color.gray).a(0.8f);
@@ -3188,11 +3177,11 @@ public final class HFx {
 					float cf = k / 5f;
 					Draw.color(Tmp.c2, Pal.lightOrange, cf);
 					for (int i = 0; i < 40; i++) {
-						float f = Mathf.curve(e.fin(), 0f, 1f - r.random(0.2f));
-						float len = r.random(size * scl * 0.75f) * Interp.pow5Out.apply(f) + r.random(size / 5f);
-						float ang = r.random(360f);
+						float f = Mathf.curve(e.fin(), 0f, 1f - rand.random(0.2f));
+						float len = rand.random(size * scl * 0.75f) * Interp.pow5Out.apply(f) + rand.random(size / 5f);
+						float ang = rand.random(360f);
 						float psize = size / 5f;
-						float rad = r.random(psize * (scl * 0.5f + 0.5f) * 0.87f, psize) * scl * (1f - Interp.pow5In.apply(f));
+						float rad = rand.random(psize * (scl * 0.5f + 0.5f) * 0.87f, psize) * scl * (1f - Interp.pow5In.apply(f));
 						if (f < 1f) {
 							Tmp.v1.trns(ang, len).add(e.x, e.y);
 							Fill.circle(Tmp.v1.x, Tmp.v1.y, rad);
@@ -3205,10 +3194,10 @@ public final class HFx {
 				Lines.stroke(3f);
 				for (int i = 0; i < 4; i++) {
 					for (int j = 0; j < 20; j++) {
-						float f = Mathf.curve(e.fin(), 0f, 1f - r.random(0.2f));
-						float ang = r.random(360f);
-						float len = r.random(size * scl * 0.5f) * Interp.pow5Out.apply(f) + r.random(size / 5f);
-						float line = r.random(22f, 45f) * Mathf.pow(scl, 1.1f) * Interp.pow2Out.apply(Mathf.slope(Interp.pow5Out.apply(f)));
+						float f = Mathf.curve(e.fin(), 0f, 1f - rand.random(0.2f));
+						float ang = rand.random(360f);
+						float len = rand.random(size * scl * 0.5f) * Interp.pow5Out.apply(f) + rand.random(size / 5f);
+						float line = rand.random(22f, 45f) * Mathf.pow(scl, 1.1f) * Interp.pow2Out.apply(Mathf.slope(Interp.pow5Out.apply(f)));
 
 						if (f < 1f) {
 							Tmp.v1.trns(ang, len).add(e.x, e.y);
@@ -3243,18 +3232,17 @@ public final class HFx {
 			}),
 			desNukeShoot = new Effect(35f, e -> {
 				float ang = 90f, len = 1f;
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
 
 				//Draw.color(FlamePal.red, Color.white, e.fin());
 				Lines.stroke(2f);
 				for (int i = 0; i < 5; i++) {
 					for (int j = 0; j < 7; j++) {
-						float f = Mathf.curve(e.fin(), 0f, 1f - r.random(0.2f));
-						float rot = e.rotation + r.range(ang);
+						float f = Mathf.curve(e.fin(), 0f, 1f - rand.random(0.2f));
+						float rot = e.rotation + rand.range(ang);
 						Draw.color(HPal.red, Color.white, f);
-						Vec2 v = Tmp.v1.trns(rot, r.random(40f) * Interp.pow2Out.apply(f) * len).add(e.x, e.y);
-						Lines.lineAngle(v.x, v.y, rot, f * 40f * r.random(0.75f, 1f) * len * Interp.pow2Out.apply(Mathf.slope(f)), false);
+						Vec2 v = Tmp.v1.trns(rot, rand.random(40f) * Interp.pow2Out.apply(f) * len).add(e.x, e.y);
+						Lines.lineAngle(v.x, v.y, rot, f * 40f * rand.random(0.75f, 1f) * len * Interp.pow2Out.apply(Mathf.slope(f)), false);
 					}
 					ang *= 0.5f;
 					len *= 1.4f;
@@ -3263,17 +3251,16 @@ public final class HFx {
 			desNukeVaporize = new Effect(40f, 1200f, e -> {
 				float size = e.data instanceof Float ? (float) e.data : 10f;
 
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
 
 				int count = 20 + (int) (size * size * 0.5f);
 				float c = 0.25f;
 				for (int i = 0; i < count; i++) {
-					float l = r.nextFloat() * c;
-					float f = Mathf.curve(e.fin(), l, ((1f - c) + l) * r.random(0.8f, 1f));
-					float len = r.random(0.5f, 1f) * (80f + size * 10f) * Interp.pow2In.apply(f);
-					float off = Mathf.sqrt(r.nextFloat()) * size, ang = r.random(360f), rng = r.range(10f);
-					float scl = (size / 2f) * r.random(0.9f, 1.1f) * Utils.biasSlope(f, 0.1f);
+					float l = rand.nextFloat() * c;
+					float f = Mathf.curve(e.fin(), l, ((1f - c) + l) * rand.random(0.8f, 1f));
+					float len = rand.random(0.5f, 1f) * (80f + size * 10f) * Interp.pow2In.apply(f);
+					float off = Mathf.sqrt(rand.nextFloat()) * size, ang = rand.random(360f), rng = rand.range(10f);
+					float scl = (size / 2f) * rand.random(0.9f, 1.1f) * Utils.biasSlope(f, 0.1f);
 
 					if (f > 0 && f < 1) {
 						Vec2 v1 = Tmp.v1.trns(ang, off).add(e.x, e.y).add(Tmp.v2.trns(e.rotation + rng, len));
@@ -3283,17 +3270,16 @@ public final class HFx {
 				}
 			}).layer(Layer.flyingUnit),
 			desNukeShockSmoke = new Effect(40f, 800f, e -> {
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
 
 				int count = 10;
 				float c = 0.4f;
 				for (int i = 0; i < count; i++) {
-					float l = r.nextFloat() * c;
-					float f = Mathf.curve(e.fin(), l, ((1f - c) + l) * r.random(0.8f, 1f));
-					float len = r.random(0.75f, 1f) * 160f * Interp.pow2In.apply(f);
-					float off = Mathf.sqrt(r.nextFloat()) * Vars.tilesize / 2f, ang = r.random(360f), rng = r.range(10f);
-					float scl = r.random(4f, 6f) * (1f - Interp.pow2In.apply(f));
+					float l = rand.nextFloat() * c;
+					float f = Mathf.curve(e.fin(), l, ((1f - c) + l) * rand.random(0.8f, 1f));
+					float len = rand.random(0.75f, 1f) * 160f * Interp.pow2In.apply(f);
+					float off = Mathf.sqrt(rand.nextFloat()) * Vars.tilesize / 2f, ang = rand.random(360f), rng = rand.range(10f);
+					float scl = rand.random(4f, 6f) * (1f - Interp.pow2In.apply(f));
 
 					if (f > 0 && f < 1) {
 						Vec2 v1 = Tmp.v1.trns(ang, off).add(e.x, e.y).add(Tmp.v2.trns(e.rotation + rng, len));
@@ -3303,8 +3289,7 @@ public final class HFx {
 				}
 			}),
 			desMissileHit = new Effect(50f, 800f, e -> {
-				Rand r = Utils.rand;
-				r.setSeed(e.id);
+				Rand rand = Utils.rand(e.id);
 
 				Tmp.c2.set(Color.gray).a(0.8f);
 				//Tmp.c3.set(FlamePal.red).mul(2f);
@@ -3320,11 +3305,11 @@ public final class HFx {
 					Draw.color(Tmp.c2, HPal.red, i / 3f);
 					for (int j = 0; j < 5; j++) {
 						for (int k = 0; k < 9; k++) {
-							float f = Mathf.curve(e.fin(), 0f, 1f - r.random(0.3f));
-							float rot = e.rotation + r.range(ang);
-							//float ll = r.random(45f) * len * pow10Out.apply(f) * scl1;
-							float ll = r.random(45f) * len * Interp.pow5Out.apply(f);
-							float scl = r.random(0.666f, 1f) * scl2 * scl1 * 18f * (1f - Interp.pow10In.apply(f));
+							float f = Mathf.curve(e.fin(), 0f, 1f - rand.random(0.3f));
+							float rot = e.rotation + rand.range(ang);
+							//float ll = rand.random(45f) * len * pow10Out.apply(f) * scl1;
+							float ll = rand.random(45f) * len * Interp.pow5Out.apply(f);
+							float scl = rand.random(0.666f, 1f) * scl2 * scl1 * 18f * (1f - Interp.pow10In.apply(f));
 
 							Vec2 v = Tmp.v1.trns(rot, ll).add(e.x, e.y);
 							Fill.circle(v.x, v.y, scl);
@@ -3344,10 +3329,10 @@ public final class HFx {
 				angScl = 180f;
 				for (int i = 0; i < 5; i++) {
 					for (int j = 0; j < 6; j++) {
-						float f = Mathf.curve(e.fin(), 0f, 1f - r.random(0.3f));
-						float rot = e.rotation + r.range(angScl);
-						float ll = r.random(20f) * scl3 * Interp.pow2Out.apply(f);
-						float size = r.random(5f, 10f);
+						float f = Mathf.curve(e.fin(), 0f, 1f - rand.random(0.3f));
+						float rot = e.rotation + rand.range(angScl);
+						float ll = rand.random(20f) * scl3 * Interp.pow2Out.apply(f);
+						float size = rand.random(5f, 10f);
 						float wid = size * scl1 * Utils.biasSlope(f, 0.2f);
 						float len = wid * 3f + size * 7f * Mathf.pow(scl1, 1.2f) * Interp.pow5Out.apply(f);
 

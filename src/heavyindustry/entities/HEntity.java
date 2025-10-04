@@ -811,12 +811,14 @@ public final class HEntity {
 			bullet.setIndex__draw(-1);
 			bullet.setIndex__bullet(-1);
 		}
-		if (entity instanceof Poolable p) Groups.queueFree(p);
+		if (entity instanceof Poolable pool) Groups.queueFree(pool);
 	}
 
 	public static void handleAdditions(int start, Entityc exclude, Entityc exclude2, Seq<Building> proxy) {
 		toRemove.clear();
+
 		int size = Groups.all.size();
+
 		for (int i = start; i < size; i++) {
 			Entityc e = Groups.all.index(i);
 			if (e != exclude && e != exclude2 && (proxy == null || !proxy.contains(b -> e == b)) && !(e instanceof EffectState))

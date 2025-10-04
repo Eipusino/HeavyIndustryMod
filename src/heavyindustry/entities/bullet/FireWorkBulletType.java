@@ -170,8 +170,8 @@ public class FireWorkBulletType extends BulletType {
 		@Override
 		public void draw(Bullet b) {
 			super.draw(b);
-			if (!(b.data instanceof Color)) return;
-			Draw.color(b.data == Color.white ? Utils.c8.set(HPal.rainBowRed).shiftHue(b.time * 2) : (Color) b.data);
+			if (!(b.data instanceof Color dat)) return;
+			Draw.color(b.data == Color.white ? Utils.c8.set(HPal.rainBowRed).shiftHue(b.time * 2) : dat);
 			Draw.z(Layer.bullet);
 			for (int i = 0; i < 4; i++) {
 				Drawf.tri(b.x, b.y, 1.6f, 2.2f, b.rotation() + 90 * i);

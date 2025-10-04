@@ -334,6 +334,34 @@ public class ObjectFloatMapf<K> implements Iterable<ObjectFloatMapf.MapEntry<K>>
 		return defaultValue;
 	}
 
+	public void remove(K key) {
+		if (key == null) return;
+
+		int hashCode = key.hashCode();
+		int index = hashCode & mask;
+		if (key.equals(keyTable[index])) {
+			keyTable[index] = null;
+			size--;
+			return;
+		}
+
+		index = hash2(hashCode);
+		if (key.equals(keyTable[index])) {
+			keyTable[index] = null;
+			size--;
+			return;
+		}
+
+		index = hash3(hashCode);
+		if (key.equals(keyTable[index])) {
+			keyTable[index] = null;
+			size--;
+			return;
+		}
+
+		removeStash(key);
+	}
+
 	public float remove(K key, float defaultValue) {
 		if (key == null) return defaultValue;
 
@@ -363,6 +391,16 @@ public class ObjectFloatMapf<K> implements Iterable<ObjectFloatMapf.MapEntry<K>>
 		}
 
 		return removeStash(key, defaultValue);
+	}
+
+	void removeStash(K key) {
+		for (int i = capacity, n = i + stashSize; i < n; i++) {
+			if (key.equals(keyTable[i])) {
+				removeStashIndex(i);
+				size--;
+				break;
+			}
+		}
 	}
 
 	float removeStash(K key, float defaultValue) {

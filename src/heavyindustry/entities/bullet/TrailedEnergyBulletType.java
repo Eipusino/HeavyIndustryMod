@@ -97,9 +97,8 @@ public class TrailedEnergyBulletType extends AccelBulletType {
 	@Override
 	public void update(Bullet b) {
 		super.update(b);
-		if (!Vars.headless && b.timer(2, tracerUpdateSpacing)) {
-			if (!(b.data instanceof Vec2Seq[])) return;
-			Vec2Seq[] points = (Vec2Seq[]) b.data();
+
+		if (!Vars.headless && b.timer(2, tracerUpdateSpacing) && b.data instanceof Vec2Seq[] points) {
 			for (Vec2Seq seq : points) {
 				v2.trns(b.rotation(), 0, rand.range(tracerRandX));
 				v1.setToRandomDirection(rand).scl(tracerSpacing);

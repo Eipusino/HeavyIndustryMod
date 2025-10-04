@@ -487,9 +487,13 @@ public final class Mathm {
 		return Mathf.rand.nextFloat() < d * Time.delta;
 	}
 
-	public static boolean isNaNInfinite(float... fields) {
-		for (float field : fields) {
-			if (Float.isNaN(field) || Float.isInfinite(field) || field >= Float.MAX_VALUE) return true;
+	public static boolean isNaNInfinite(float value) {
+		return Float.isNaN(value) || Float.isInfinite(value) || value >= Float.MAX_VALUE;
+	}
+
+	public static boolean isNaNInfinities(float... values) {
+		for (float value : values) {
+			if (Float.isNaN(value) || Float.isInfinite(value) || value >= Float.MAX_VALUE) return true;
 		}
 		return false;
 	}

@@ -10,7 +10,7 @@ import static heavyindustry.util.Utils.requireInstance;
 import static heavyindustry.util.Utils.requireNonNullInstance;
 
 /**
- * JDK-Internal-Unsafe class. It may become invalid in future Java or Android versions or behave
+ * JDK-Internal-Unsafe class. It may become invalid in future Java or Android versions.
  * inconsistently on different devices, and is not recommended for non-essential use.
  * <p>The {@link #internalUnsafe} field of this class is public, but it is generally recommended to use the static
  * methods provided by the class, which perform some security check packaging on the methods inside the
@@ -21,11 +21,11 @@ import static heavyindustry.util.Utils.requireNonNullInstance;
  * @see Unsafer
  * @since 1.0.8
  */
-public final class InteUnsafer {
+public final class Unsaferf {
 	/** Initialize in libs/Impl.jar in the mod resource package. */
 	public static Unsafe internalUnsafe;
 
-	private InteUnsafer() {}
+	private Unsaferf() {}
 
 	public static <T> T getObject(Class<?> type, String name, Object object) {
 		try {
@@ -102,8 +102,8 @@ public final class InteUnsafer {
 
 	public static Object get(Field field, Object object) {
 		long offset = getOffset(field);
-		Class<?> type = field.getType(), clazz = field.getDeclaringClass();
-		Object o = Modifier.isStatic(field.getModifiers()) ? clazz : requireNonNullInstance(clazz, object);
+		Class<?> type = field.getType(), base = field.getDeclaringClass();
+		Object o = Modifier.isStatic(field.getModifiers()) ? base : requireNonNullInstance(base, object);
 
 		if (Modifier.isVolatile(field.getModifiers())) {
 			if (type.isPrimitive()) {
@@ -146,8 +146,8 @@ public final class InteUnsafer {
 
 	public static void set(Field field, Object object, Object value) {
 		long offset = getOffset(field);
-		Class<?> type = field.getType(), clazz = field.getDeclaringClass();
-		Object o = Modifier.isStatic(field.getModifiers()) ? clazz : requireNonNullInstance(clazz, object);
+		Class<?> type = field.getType(), base = field.getDeclaringClass();
+		Object o = Modifier.isStatic(field.getModifiers()) ? base : requireNonNullInstance(base, object);
 
 		if (Modifier.isVolatile(field.getModifiers())) {
 			if (type.isPrimitive()) {

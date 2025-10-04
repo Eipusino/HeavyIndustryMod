@@ -64,7 +64,7 @@ public class EipusinoUnit extends NucleoidUnit implements TrueHealthc {
 		maxDamageTaken = Math.max(maxDamageTaken, damageTaken);
 		damageDelay = 60f;
 
-		if (damageTaken >= 2000f || Mathm.isNaNInfinite(damageTaken, maxDamageTaken)) {
+		if (damageTaken >= 2000f || Mathm.isNaNInfinities(damageTaken, maxDamageTaken)) {
 			damageTaken = 0f;
 			maxDamageTaken = 0f;
 		}

@@ -475,27 +475,27 @@ public class EndDespondencyWeapon extends Weapon {
 		width *= wScl;
 		endLength *= wScl;
 
-		Rand r = Utils.rand, r2 = Utils.rand2;
-		r.setSeed(id);
+		Rand rand = Utils.rand(id), rand2 = Utils.rand2;
+
 		for (int i = 0; i < 75; i++) {
-			float dur = r.random(30f, 45f);
-			float t = (Time.time + r.random(dur)) / dur;
+			float dur = rand.random(30f, 45f);
+			float t = (Time.time + rand.random(dur)) / dur;
 			float mt = t % 1f;
-			int seed = (int) (t) + r.nextInt();
+			int seed = (int) (t) + rand.nextInt();
 
 			float slope = Interp.pow2Out.apply(Mathf.curve(Mathf.slope(mt), 0f, 0.1f));
 
-			r2.setSeed(seed);
-			float ofs = r2.range(1f);
-			float rwid = r2.random(width / 2f, width / 1.6f) * fout * slope;
-			//float rheight = rwid * 5f + r2.random(100f, 140f);
-			float rheight = rwid * 5f + r2.random(310f, length / 12f);
+			rand2.setSeed(seed);
+			float ofs = rand2.range(1f);
+			float rwid = rand2.random(width / 2f, width / 1.6f) * fout * slope;
+			//float rheight = rwid * 5f + rand2.random(100f, 140f);
+			float rheight = rwid * 5f + rand2.random(310f, length / 12f);
 			float widoff = ((width * fout) - rwid / 2f) * ofs;
 			float lenoff = Interp.circleIn.apply(Math.abs(ofs)) * trns + rheight;
 			float endoff = length + endLength * (1f - Interp.circleIn.apply(Math.abs(ofs))) - rheight / 1.5f;
 
-			//Color tmc = Tmp.c1.set(colors[1]).lerp(colors[2], r2.nextFloat());
-			Color tmc = Tmp.c1.set(HPal.red).lerp(Color.white, Interp.pow2.apply(r2.nextFloat()));
+			//Color tmc = Tmp.c1.set(colors[1]).lerp(colors[2], rand2.nextFloat());
+			Color tmc = Tmp.c1.set(HPal.red).lerp(Color.white, Interp.pow2.apply(rand2.nextFloat()));
 
 			Draw.color(tmc);
 			Vec2 p1 = Tmp.v1.trns(rotation, Mathf.lerp(lenoff, endoff, mt), widoff + Mathf.range(2f * fout)).add(x, y);

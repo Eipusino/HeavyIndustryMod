@@ -258,7 +258,7 @@ public class DespondencyAI extends AIController {
 		if (target instanceof Unit u && !death && !HEntity.containsExclude(u.id) && unit.within(u, unit.range() * 0.8f + u.hitSize / 2.5f) && reloadTime <= 0f) {
 			float scr = HVars.listener.getUnitDps(u.type) + u.maxHealth * u.healthMultiplier;
 
-			if (Mathm.isNaNInfinite(scr) || scr > 200000f || (u.hitSize > 100f && scr > 100000f)) {
+			if (Mathm.isNaNInfinite(scr) || scr > 200000f || (u.hitSize > 100f && scr > 100000f) || HVars.listener.getPowerful(u.type)) {
 				death = true;
 			}
 		}

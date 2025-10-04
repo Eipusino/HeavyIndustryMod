@@ -41,8 +41,9 @@ public final class HScripts {
 
 	/**
 	 * Imports packages defined by this mod into the script scope.
+	 *
 	 * @param scope {@code Vars.mods.getScripts().scope} for the base game's script scope (mod scripts folder and console), or
-	 *			  another custom scope.
+	 *              another custom scope.
 	 */
 	public static void importPackages(ImporterTopLevel scope, String... packages) {
 		for (String pack : packages) {
@@ -52,6 +53,7 @@ public final class HScripts {
 
 	/**
 	 * Imports a single package to the given scope.
+	 *
 	 * @param scope See {@link #importPackages(ImporterTopLevel, String...)}.
 	 * @param name  The package's fully qualified name.
 	 */

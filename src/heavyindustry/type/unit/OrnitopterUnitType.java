@@ -114,7 +114,7 @@ public class OrnitopterUnitType extends BaseUnitType {
 		}
 	}
 
-	public static class Blade {
+	public static class Blade implements Cloneable {
 		public final String spriteName;
 
 		public TextureRegion bladeRegion, blurRegion, bladeOutlineRegion, shadeRegion;
@@ -146,7 +146,11 @@ public class OrnitopterUnitType extends BaseUnitType {
 
 		// For mirroring
 		public Blade copy() {
-			return JsonIO.copy(this, new Blade(spriteName));
+			try {
+				return (Blade) super.clone();
+			} catch (CloneNotSupportedException e) {
+				return JsonIO.copy(this, new Blade(spriteName));
+			}
 		}
 	}
 

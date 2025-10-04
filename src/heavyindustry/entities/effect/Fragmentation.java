@@ -311,8 +311,8 @@ public class Fragmentation {
 	}
 
 	public void draw() {
-		Rand r = Utils.rand;
-		r.setSeed(462 + (int) (Time.time / 120f));
+		Rand rand = Utils.rand(462 + (int) (Time.time / 120f));
+
 		float lz = Draw.z();
 		Draw.z(Layer.flyingUnit);
 		TextureRegion region = UnitTypes.eclipse.region;
@@ -321,7 +321,7 @@ public class Fragmentation {
 		float mcolr = Draw.getMixColor().toFloatBits();
 
 		for (IntSeq island : islands) {
-			Draw.color(Tmp.c1.set(r.nextFloat(), r.nextFloat(), 0.5f));
+			Draw.color(Tmp.c1.set(rand.nextFloat(), rand.nextFloat(), 0.5f));
 			float color = Tmp.c1.toFloatBits();
 
 			int[] items = island.items;

@@ -1260,8 +1260,8 @@ public final class Drawn {
 		float fc2 = 1 - fc;
 		float minUv = 0.125f;
 
-		Rand r = Utils.rand, r2 = Utils.rand2;
-		r.setSeed(seed);
+		Rand rand = Utils.rand(seed), rand2 = Utils.rand2;
+
 		Color outC = HPal.blood;
 
 		Draw.color(Color.white, outC, deathTime2);
@@ -1276,21 +1276,21 @@ public final class Drawn {
 
 		Draw.rect(region, x, y, region.width * Draw.scl * fout1, region.height * Draw.scl * fout1, rotation - 90f);
 		for (int i = 0; i < 50; i++) {
-			float coff = ((1f - (i / 50f)) + r.range(0.125f) + 0.125f) / 1.25f;
+			float coff = ((1f - (i / 50f)) + rand.range(0.125f) + 0.125f) / 1.25f;
 			float ff = coff * fc;
-			float f = Mathf.curve(deathTime, ff, Mathf.clamp(ff + fc2 + r.range(0.05f), ff + 0.125f, 1f));
-			float size = r.random(0.75f, 1.5f) * Mathf.lerp(300f, 110f, (i / 50f));
-			int nseed = r.nextInt();
+			float f = Mathf.curve(deathTime, ff, Mathf.clamp(ff + fc2 + rand.range(0.05f), ff + 0.125f, 1f));
+			float size = rand.random(0.75f, 1.5f) * Mathf.lerp(300f, 110f, (i / 50f));
+			int nseed = rand.nextInt();
 			if (f > 0.001f) {
 				tf.clear();
-				r2.setSeed(nseed);
-				float angle = r2.random(360f);
+				rand2.setSeed(nseed);
+				float angle = rand2.random(360f);
 
-				//float x1 = r2.random(0.1f, 0.325f);
-				//float y1 = r2.random(0f, 0.7f);
+				//float x1 = rand2.random(0.1f, 0.325f);
+				//float y1 = rand2.random(0f, 0.7f);
 
-				//float x2 = -r2.random(0.1f, 0.325f);
-				//float y2 = r2.random(0f, 0.7f);
+				//float x2 = -rand2.random(0.1f, 0.325f);
+				//float y2 = rand2.random(0f, 0.7f);
 
 				for (int j = 0; j < 4; j++) {
 					float dx = x;
@@ -1298,8 +1298,8 @@ public final class Drawn {
 					float c = color;
 					switch (j) {
 						case 1 -> {
-							float y1 = r2.random(0.1f, 0.325f);
-							float x1 = r2.random(0f, 0.7f);
+							float y1 = rand2.random(0.1f, 0.325f);
+							float x1 = rand2.random(0f, 0.7f);
 							v2.trns(angle, x1 * size * f, y1 * size * f);
 							dx = v2.x + x;
 							dy = v2.y + y;
@@ -1312,16 +1312,16 @@ public final class Drawn {
 							c = color3;
 						}
 						case 3 -> {
-							float y1 = -r2.random(0.1f, 0.325f);
-							float x1 = r2.random(0f, 0.7f);
+							float y1 = -rand2.random(0.1f, 0.325f);
+							float x1 = rand2.random(0f, 0.7f);
 							v2.trns(angle, x1 * size * f, y1 * size * f);
 							dx = v2.x + x;
 							dy = v2.y + y;
 							c = color2;
 						}
 					}
-					float u = Mathf.lerp(region.u, region.u2, r2.random(minUv, 1 - minUv));
-					float v = Mathf.lerp(region.v, region.v2, r2.random(minUv, 1 - minUv));
+					float u = Mathf.lerp(region.u, region.u2, rand2.random(minUv, 1 - minUv));
+					float v = Mathf.lerp(region.v, region.v2, rand2.random(minUv, 1 - minUv));
 					tf.addAll(dx, dy, c, u, v, mcolor);
 				}
 				Draw.vert(region.texture, tf.items, 0, tf.size);

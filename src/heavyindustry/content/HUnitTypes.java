@@ -25,7 +25,6 @@ import heavyindustry.ai.MinerPointAI;
 import heavyindustry.ai.NullAI;
 import heavyindustry.ai.SurroundAI;
 import heavyindustry.ai.YggdrasilAI;
-import heavyindustry.entities.HEntity;
 import heavyindustry.entities.abilities.BatteryAbility;
 import heavyindustry.entities.abilities.InvincibleForceFieldAbility;
 import heavyindustry.entities.abilities.JavelinAbility;
@@ -39,6 +38,7 @@ import heavyindustry.entities.bullet.AntiBulletFlakBulletType;
 import heavyindustry.entities.bullet.ArrowBulletType;
 import heavyindustry.entities.bullet.CtrlMissileBulletType;
 import heavyindustry.entities.bullet.EdgeFragBulletType;
+import heavyindustry.entities.bullet.EipusinoPointBulletType;
 import heavyindustry.entities.bullet.EndCreepLaserBulletType;
 import heavyindustry.entities.bullet.EndNukeBulletType;
 import heavyindustry.entities.bullet.EndRailBulletType;
@@ -102,7 +102,6 @@ import heavyindustry.type.weapons.LaserWeapon;
 import heavyindustry.type.weapons.LimitedAngleWeapon;
 import heavyindustry.type.weapons.PointDefenceMultiBarrelWeapon;
 import heavyindustry.ui.Elements;
-import heavyindustry.util.Utils;
 import mindustry.Vars;
 import mindustry.ai.ControlPathfinder;
 import mindustry.ai.UnitCommand;
@@ -112,7 +111,6 @@ import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
-import mindustry.entities.Mover;
 import mindustry.entities.Units;
 import mindustry.entities.abilities.EnergyFieldAbility;
 import mindustry.entities.abilities.ForceFieldAbility;
@@ -146,11 +144,9 @@ import mindustry.entities.pattern.ShootPattern;
 import mindustry.entities.pattern.ShootSine;
 import mindustry.entities.pattern.ShootSpread;
 import mindustry.entities.units.WeaponMount;
-import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.gen.Call;
-import mindustry.gen.Entityc;
 import mindustry.gen.Healthc;
 import mindustry.gen.Hitboxc;
 import mindustry.gen.Shieldc;
@@ -2788,8 +2784,8 @@ public final class HUnitTypes {
 			mineSpeed = 6f;
 			mineWalls = true;
 			mineItems.remove(Items.thorium);
-			mineItems.add(Items.beryllium, Items.graphite, Items.tungsten, HItems.stone);
-			mineItems.add(HItems.rareEarth, HItems.gold);
+			mineItems.add(Items.beryllium, Items.graphite, Items.tungsten);
+			mineItems.add(HItems.stone, HItems.rareEarth, HItems.gold);
 			allowLegStep = true;
 			legCount = 6;
 			legGroupSize = 3;
@@ -3048,6 +3044,7 @@ public final class HUnitTypes {
 			lockLegBase = true;
 			lowAltitude = true;
 			canDrown = false;
+			wobble = false;
 			shadowElevation = 8f;
 			groundLayer = Layer.darkness + 1f;
 			health = 1750000f;
@@ -3988,10 +3985,10 @@ public final class HUnitTypes {
 			mineTier = 13;
 			fallEffect = HFx.blast(Pal.heal, 120f);
 			targetAir = targetGround = false;
-			abilities.add(new WitchServiceAbility(), new RegenProjectorAbility());
+			abilities.add(new WitchServiceAbility(Pal.muddy), new RegenProjectorAbility());
 			immunities.add(HStatusEffects.apoptosis);
 			ammoCapacity = 100000;
-			ammoType = new PowerAmmoType(0.1f);
+			ammoType = new PowerAmmoType(1f);
 			weapons.add(new Weapon() {{
 				x = 0f;
 				y = 0f;
@@ -3999,25 +3996,11 @@ public final class HUnitTypes {
 				rotate = true;
 				mirror = false;
 				shootSound = Sounds.none;
-				bullet = new PointBulletType() {{
+				bullet = new EipusinoPointBulletType() {{
 					trailEffect = shootEffect = despawnEffect = hitEffect = smokeEffect = Fx.none;
 					hitSize *= 2f;
 					lifetime *= 10f;
-				}
-					@Override
-					public void hitEntity(Bullet b, Hitboxc entity, float health) {
-						super.hitEntity(b, entity, health);
-
-						HEntity.annihilate(entity, false);
-					}
-
-					@Override
-					public Bullet create(Entityc owner, Entityc shooter, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY, Teamc target) {
-						Bullet bullet = Bullet.create();
-
-						return Utils.anyOtherCreate(bullet, this, null, null, team, x, y, angle, damage, velocityScl, lifetimeScl, data, mover, aimX, aimY, target);
-					}
-				};
+				}};
 			}});
 		}};
 	}

@@ -26,15 +26,14 @@ import mindustry.graphics.Drawf;
 public class EndRailBulletType extends BulletType {
 	public float length = 2400f;
 	public Effect pointEffect = new Effect(15f, e -> {
-		Rand r = Utils.rand;
-		r.setSeed(e.id);
+		Rand rand = Utils.rand(e.id);
 
 		Draw.color(HPal.red, Color.white, e.fin());
 		Lines.stroke(1.25f);
 		for (int i = 0; i < 2; i++) {
-			float rot = r.range(12f) + e.rotation;
-			float dst = r.random(12f) + r.random(60f) * e.fin();
-			float len = r.random(10f, 15f) * Mathf.slope(e.fin());
+			float rot = rand.range(12f) + e.rotation;
+			float dst = rand.random(12f) + rand.random(60f) * e.fin();
+			float len = rand.random(10f, 15f) * Mathf.slope(e.fin());
 
 			Vec2 v = Tmp.v1.trns(rot, dst).add(e.x, e.y);
 			Lines.lineAngle(v.x, v.y, rot, len);
@@ -167,20 +166,19 @@ public class EndRailBulletType extends BulletType {
 		//float lenScl = 1f;
 		Draw.color(HPal.red, Color.white, b.fin());
 
-		Rand r = Utils.rand;
-		r.setSeed(b.id + (int) (b.time / 3f));
+		Rand rand = Utils.rand(b.id + (int) (b.time / 3f));
 
 		Lines.stroke(4f * b.fout());
 		Lines.beginLine();
-		/*for float i = 0f; i < len; i += r.random(4f, 10f) * lenScl) {
-			Vec2 v = Tmp.v1.trns(b.rotation(), i, r.range(4f)).add(b.x, b.y);
+		/*for float i = 0f; i < len; i += rand.random(4f, 10f) * lenScl) {
+			Vec2 v = Tmp.v1.trns(b.rotation(), i, rand.range(4f)).add(b.x, b.y);
 			Lines.linePoint(v.x, v.y);
 
 			lenScl *= 1.01f;
 		}*/
 		for (int i = 0; i < count; i++) {
 			float fin = i / (count - 1f);
-			Vec2 v = Tmp.v1.trns(b.rotation(), (fin * fin * fin) * len, r.range(4f)).add(b.x, b.y);
+			Vec2 v = Tmp.v1.trns(b.rotation(), (fin * fin * fin) * len, rand.range(4f)).add(b.x, b.y);
 			Lines.linePoint(v.x, v.y);
 		}
 		Lines.endLine(false);

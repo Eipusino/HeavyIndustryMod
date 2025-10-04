@@ -137,9 +137,11 @@ public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
 
 			((Chainedc) head).consBackwards(u -> {
 				u.setupWeapons(u.type);
-				if (!(u.controller() instanceof Player)) {
+				if (u.controller() instanceof Player) {
+					head.controller(u.controller());
+				} else {
 					u.resetController();
-				} else head.controller(u.controller());
+				}
 			});
 		} else {
 			((Chainedc) tail).connect(to);

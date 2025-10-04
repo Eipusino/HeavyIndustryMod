@@ -78,19 +78,22 @@ public class HoldImageButton extends ImageButton {
 		this(new HoldImageButtonStyle(null, null, null, imageUp, imageDown, imageChecked, imageHeld));
 	}
 
+	@Override
 	public HoldImageButtonStyle getStyle() {
 		return style;
 	}
 
-	public void setStyle(ButtonStyle style) {
-		if (!(style instanceof HoldImageButtonStyle s)) {
-			throw new IllegalArgumentException("style must be a HoldImageButtonStyle.");
-		} else {
-			super.setStyle(style);
-			this.style = s;
+	@Override
+	public void setStyle(ButtonStyle bs) {
+		if (bs instanceof HoldImageButtonStyle hibs) {
+			super.setStyle(bs);
+
+			style = hibs;
 			if (getImage() != null) {
 				updateImage();
 			}
+		} else {
+			throw new IllegalArgumentException("style must be a HoldImageButtonStyle.");
 		}
 	}
 
@@ -104,9 +107,11 @@ public class HoldImageButton extends ImageButton {
 		return this;
 	}
 
+	@Override
 	public ClickListener clicked(Cons<ClickListener> tweaker, final Cons<ClickListener> runner) {
 		ClickListener click;
 		addListener(click = new ClickListener() {
+			@Override
 			public void clicked(InputEvent event, float x, float y) {
 				if (runner != null && !isDisabled() && !heldAct) {
 					runner.get(this);

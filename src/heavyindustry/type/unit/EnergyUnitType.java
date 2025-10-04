@@ -61,48 +61,48 @@ public class EnergyUnitType extends AncientUnitType {
 	@Override
 	public void init() {
 		super.init();
+
 		if (teleport == Fx.none)
 			teleport = new Effect(45, 600, e -> {
-				if (!(e.data instanceof Vec2 v)) return;
-
-				float angle = Angles.angle(e.x, e.y, v.x, v.y);
-				float dst = Mathf.dst(e.x, e.y, v.x, v.y);
-				Rand rand = HFx.rand3;
-				rand.setSeed(e.id);
-				Tmp.v1.set(v).sub(e.x, e.y).nor().scl(tilesize * 3f);
-				Lines.stroke(Mathf.curve(e.fout(), 0, 0.3f) * 1.75f);
-				Draw.color(e.color, Color.white, e.fout() * 0.75f);
-				for (int i = 1; i < dst / tilesize / 3f; i++) {
-					for (int j = 0; j < (int) e.rotation / 3; j++) {
-						Tmp.v4.trns(angle, rand.random(e.rotation / 4, e.rotation / 2), rand.range(e.rotation));
-						Tmp.v3.set(Tmp.v2.set(Tmp.v1)).scl(i).add(Tmp.v2.scl(rand.range(0.5f))).add(Tmp.v4).add(e.x, e.y);
-						Lines.lineAngle(Tmp.v3.x, Tmp.v3.y, angle - 180, e.fout(Interp.pow2Out) * 18 + 8);
+				if (e.data instanceof Vec2 vec) {
+					float angle = Angles.angle(e.x, e.y, vec.x, vec.y);
+					float dst = Mathf.dst(e.x, e.y, vec.x, vec.y);
+					Rand rand = HFx.rand3;
+					rand.setSeed(e.id);
+					Tmp.v1.set(vec).sub(e.x, e.y).nor().scl(tilesize * 3f);
+					Lines.stroke(Mathf.curve(e.fout(), 0, 0.3f) * 1.75f);
+					Draw.color(e.color, Color.white, e.fout() * 0.75f);
+					for (int i = 1; i < dst / tilesize / 3f; i++) {
+						for (int j = 0; j < (int) e.rotation / 3; j++) {
+							Tmp.v4.trns(angle, rand.random(e.rotation / 4, e.rotation / 2), rand.range(e.rotation));
+							Tmp.v3.set(Tmp.v2.set(Tmp.v1)).scl(i).add(Tmp.v2.scl(rand.range(0.5f))).add(Tmp.v4).add(e.x, e.y);
+							Lines.lineAngle(Tmp.v3.x, Tmp.v3.y, angle - 180, e.fout(Interp.pow2Out) * 18 + 8);
+						}
 					}
 				}
 			});
 		if (teleportTrans == Fx.none)
 			teleportTrans = new Effect(45, 600, e -> {
-				if (!(e.data instanceof Vec2 v)) return;
-
-				float angle = Angles.angle(e.x, e.y, v.x, v.y);
-				float dst = Mathf.dst(e.x, e.y, v.x, v.y);
-				Rand rand = HFx.rand3;
-				rand.setSeed(e.id);
-				Tmp.v1.set(v).sub(e.x, e.y).nor().scl(tilesize * 3f);
-				Lines.stroke(Mathf.curve(e.fout(), 0, 0.3f) * 1.75f);
-				Draw.color(e.color, Color.white, e.fout() * 0.75f);
-				for (int i = 1; i < dst / tilesize / 3f; i++) {
-					for (int j = 0; j < (int) e.rotation / 3; j++) {
-						Tmp.v4.trns(angle, rand.random(e.rotation / 4, e.rotation / 2), rand.range(e.rotation));
-						Tmp.v3.set(Tmp.v2.set(Tmp.v1)).scl(i).add(Tmp.v2.scl(rand.range(0.5f))).add(Tmp.v4).add(e.x, e.y);
-						Lines.lineAngle(Tmp.v3.x, Tmp.v3.y, angle - 180, e.fout(Interp.pow2Out) * 18 + 8);
+				if (e.data instanceof Vec2 vec) {
+					float angle = Angles.angle(e.x, e.y, vec.x, vec.y);
+					float dst = Mathf.dst(e.x, e.y, vec.x, vec.y);
+					Rand rand = HFx.rand3;
+					rand.setSeed(e.id);
+					Tmp.v1.set(vec).sub(e.x, e.y).nor().scl(tilesize * 3f);
+					Lines.stroke(Mathf.curve(e.fout(), 0, 0.3f) * 1.75f);
+					Draw.color(e.color, Color.white, e.fout() * 0.75f);
+					for (int i = 1; i < dst / tilesize / 3f; i++) {
+						for (int j = 0; j < (int) e.rotation / 3; j++) {
+							Tmp.v4.trns(angle, rand.random(e.rotation / 4, e.rotation / 2), rand.range(e.rotation));
+							Tmp.v3.set(Tmp.v2.set(Tmp.v1)).scl(i).add(Tmp.v2.scl(rand.range(0.5f))).add(Tmp.v4).add(e.x, e.y);
+							Lines.lineAngle(Tmp.v3.x, Tmp.v3.y, angle - 180, e.fout(Interp.pow2Out) * 18 + 8);
+						}
 					}
 				}
 			});
 		if (trailLength < 0) trailLength = (int) bodySize * 4;
 		if (slopeEffect == HFx.boolSelector) slopeEffect = new Effect(30, b -> {
-			if (!(b.data instanceof Number n)) return;
-			int i = n.intValue();
+			int i = b.data instanceof Number num ? num.intValue() : -1;
 			Draw.color(b.color);
 			Angles.randLenVectors(b.id, (int) (b.rotation / 8f), b.rotation / 4f + b.rotation * 2f * b.fin(), (x, y) -> Fill.circle(b.x + x, b.y + y, b.fout() * b.rotation / 2.25f));
 			Lines.stroke((i < 0 ? b.fin(Interp.pow2InInverse) : b.fout(Interp.pow2Out)) * 2f);

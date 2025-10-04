@@ -74,6 +74,7 @@ public class DoubleLegMechUnitType extends BaseUnitType {
 	@Override
 	public void load() {
 		super.load();
+
 		leg2Region = Core.atlas.find(name + "leg-2");
 	}
 }

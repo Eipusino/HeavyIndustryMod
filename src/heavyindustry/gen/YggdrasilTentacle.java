@@ -285,8 +285,7 @@ public class YggdrasilTentacle {
 		YggdrasilUnitType type = (YggdrasilUnitType) unit.type;
 
 		TextureRegion region = type.tentacleEndRegion;
-		Rand r = Utils.rand;
-		r.setSeed(randSeed);
+		Rand rand = Utils.rand(randSeed);
 
 		float c = (region.width * Draw.scl) / segments;
 		float lc = 0f;
@@ -294,7 +293,7 @@ public class YggdrasilTentacle {
 			float c1 = Mathf.clamp(lc - fout);
 			float c2 = Mathf.clamp((lc + c) - fout);
 
-			int ridx = r.random(0, 2);
+			int ridx = rand.random(0, 2);
 
 			if (c2 > c1) {
 				TextureRegion tex = (lc + c) < 1 ? type.tentacleRegions[ridx] : type.tentacleEndRegion;

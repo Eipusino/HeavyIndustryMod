@@ -8,22 +8,35 @@ import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.util.Time;
 import arc.util.Tmp;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
 import heavyindustry.content.HFx;
 import heavyindustry.entities.HEntity;
 import heavyindustry.util.Utils;
 import mindustry.Vars;
 import mindustry.entities.units.WeaponMount;
 import mindustry.gen.Groups;
+import mindustry.gen.Player;
+import mindustry.gen.Rotc;
+import mindustry.gen.Syncc;
+import mindustry.gen.Timedc;
 import mindustry.gen.Unit;
 import mindustry.graphics.Layer;
+import mindustry.io.TypeIO;
 import mindustry.type.UnitType;
+
+import java.nio.FloatBuffer;
 
 import static heavyindustry.HVars.MOD_NAME;
 
-public class DesSpearEntity extends BaseEntity {
+public class DesSpearEntity extends BaseEntity implements Syncc, Timedc, Rotc {
+	public static TextureRegion region;
+
 	public boolean collided;
 	public float cx, cy, cr;
 	public Unit unit;
+
+	public long lastUpdated, updateSpacing;
 
 	public float time;
 	public float rotation;
@@ -40,9 +53,8 @@ public class DesSpearEntity extends BaseEntity {
 	public boolean crySound = true;
 	public boolean draw;
 
-	public static TextureRegion region;
-	public static float lifetime = 15f * 60f;
-	public static float offset = -40f;
+	public float lifetime = 15f * 60f;
+	public float offset = -40f;
 
 	public static DesSpearEntity create(Unit unit, float x, float y, float rotation, boolean draw) {
 		if (!Vars.headless && region == null) region = Core.atlas.find(MOD_NAME + "-despondency-spear");
@@ -64,11 +76,6 @@ public class DesSpearEntity extends BaseEntity {
 		e.add();
 
 		return e;
-	}
-
-	@Override
-	public boolean serialize() {
-		return false;
 	}
 
 	@Override
@@ -174,6 +181,7 @@ public class DesSpearEntity extends BaseEntity {
 	public void add() {
 		if (added) return;
 		Groups.all.add(this);
+		Groups.sync.add(this);
 		if (draw) Groups.draw.add(this);
 		added = true;
 	}
@@ -182,6 +190,7 @@ public class DesSpearEntity extends BaseEntity {
 	public void remove() {
 		if (!added) return;
 		Groups.all.remove(this);
+		Groups.sync.remove(this);
 		if (draw) Groups.draw.remove(this);
 		added = false;
 	}
@@ -215,5 +224,132 @@ public class DesSpearEntity extends BaseEntity {
 	public float getZ() {
 		UnitType type = unit.type;
 		return (unit.elevation > 0.5f ? (type.lowAltitude ? Layer.flyingUnitLow : Layer.flyingUnit) : type.groundLayer + Mathf.clamp(type.hitSize / 4000f, 0f, 0.01f)) - 0.01f;
+	}
+
+	@Override
+	public void snapSync() {}
+
+	@Override
+	public void snapInterpolation() {}
+
+	@Override
+	public void read(Reads read) {
+		super.read(read);
+
+		unit = TypeIO.readUnit(read);
+
+		rotation = read.f();
+
+		last = TypeIO.readEntity(read);
+	}
+
+	@Override
+	public void write(Writes write) {
+		super.write(write);
+
+		TypeIO.writeUnit(write, unit);
+
+		write.f(rotation);
+
+		TypeIO.writeEntity(write, last);
+	}
+
+	@Override
+	public void writeSync(Writes write) {
+		write.f(x);
+		write.f(y);
+
+		TypeIO.writeUnit(write, unit);
+
+		write.f(rotation);
+
+		TypeIO.writeEntity(write, last);
+	}
+
+	@Override
+	public void readSync(Reads read) {
+		x = read.f();
+		y = read.f();
+
+		unit = TypeIO.readUnit(read);
+
+		rotation = read.f();
+
+		last = TypeIO.readEntity(read);
+	}
+
+	@Override
+	public void readSyncManual(FloatBuffer buffer) {}
+
+	@Override
+	public void writeSyncManual(FloatBuffer buffer) {}
+
+	@Override
+	public void afterSync() {}
+
+	@Override
+	public void handleSyncHidden() {}
+
+	@Override
+	public void interpolate() {}
+
+	@Override
+	public boolean isSyncHidden(Player player) {
+		return false;
+	}
+
+	@Override
+	public long lastUpdated() {
+		return lastUpdated;
+	}
+
+	@Override
+	public void lastUpdated(long l) {
+		lastUpdated = l;
+	}
+
+	@Override
+	public long updateSpacing() {
+		return updateSpacing;
+	}
+
+	@Override
+	public void updateSpacing(long l) {
+		updateSpacing = l;
+	}
+
+	@Override
+	public float fin() {
+		return time / lifetime;
+	}
+
+	@Override
+	public float time() {
+		return time;
+	}
+
+	@Override
+	public void time(float v) {
+		time = v;
+	}
+
+	@Override
+	public float lifetime() {
+		return lifetime;
+	}
+
+	@Override
+	public void lifetime(float v) {
+		lifetime = v;
+	}
+
+	@Override
+	public float rotation() {
+		return rotation;
+	}
+
+	@Override
+	public void rotation(float v) {
+		rotation = v;
 	}
 }

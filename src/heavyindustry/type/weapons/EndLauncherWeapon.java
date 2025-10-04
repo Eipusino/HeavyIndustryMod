@@ -30,6 +30,7 @@ public class EndLauncherWeapon extends Weapon {
 
 	public EndLauncherWeapon(String name) {
 		super(name);
+
 		mirror = false;
 		alternate = false;
 		top = false;
@@ -171,15 +172,15 @@ public class EndLauncherWeapon extends Weapon {
 
 		public void updateTarget() {
 			targetSeq.removeAll(t -> {
-				float v = targets.increment(t, 0f, -Time.delta);
-				boolean re = v <= 0f || (t instanceof Healthc h && !h.isValid());
-				if (re) targets.remove(t, 0f);
+				float value = targets.increment(t, 0f, -Time.delta);
+				boolean re = value <= 0f || (t instanceof Healthc h && !h.isValid());
+				if (re) targets.remove(t);
 				return re;
 			});
 		}
 
 		public void removeTarget(Teamc target) {
-			targets.remove(target, 0f);
+			targets.remove(target);
 			targetSeq.remove(target);
 		}
 

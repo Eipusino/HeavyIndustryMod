@@ -6,10 +6,12 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
 import arc.math.Mathf;
 import arc.struct.Seq;
+import arc.util.Log;
 import heavyindustry.gen.Copterc;
 import mindustry.gen.Unit;
 import mindustry.graphics.MultiPacker;
 import mindustry.graphics.MultiPacker.PageType;
+import mindustry.io.JsonIO;
 
 public class CopterUnitType extends BaseUnitType {
 	public final Seq<Rotor> rotors = new Seq<>(true, 2, Rotor.class);
@@ -155,10 +157,12 @@ public class CopterUnitType extends BaseUnitType {
 		}
 
 		public Rotor copy() {
-			try {//This is definitely the most disgusting, stupid, and insulting design in Java!
+			try {
 				return (Rotor) super.clone();
 			} catch (CloneNotSupportedException suck) {
-				throw new RuntimeException("very good language design", suck);
+				Log.err("very good language design", suck);
+
+				return JsonIO.copy(this, new Rotor(name));
 			}
 		}
 	}

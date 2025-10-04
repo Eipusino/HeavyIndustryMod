@@ -12,7 +12,8 @@ import mindustry.type.UnitType;
 import mindustry.type.Weapon;
 
 public class HeavyIndustryListener implements ApplicationListener {
-	private static float[] bulletDps, unitDps;
+	static float[] bulletDps, unitDps;
+	static boolean[] powerful;
 
 	HeavyIndustryListener() {
 		if (Vars.platform instanceof ApplicationCore core) {
@@ -35,16 +36,26 @@ public class HeavyIndustryListener implements ApplicationListener {
 		return bulletDps[bullet.id];
 	}
 
+	public boolean getPowerful(UnitType unit) {
+		if (unit.id >= powerful.length) return false;
+		return powerful[unit.id];
+	}
+
 	public void updateInit() {
 		Seq<BulletType> bullets = Vars.content.bullets();
 		Seq<UnitType> units = Vars.content.units();
+
 		bulletDps = new float[bullets.size];
 		unitDps = new float[units.size];
+
+		powerful = new boolean[units.size];
+
 		for (BulletType b : bullets) {
 			updateBullet(b);
 		}
 		for (UnitType u : units) {
 			updateUnit(u);
+			updatePowerful(u);
 		}
 	}
 
@@ -62,7 +73,7 @@ public class HeavyIndustryListener implements ApplicationListener {
 				}
 				damage += d + (Mathf.pow(unit.hitSize, 0.75f) * unit.crashDamageMultiplier);
 			}
-			unitDps[unit.id] = powerful(unit.name, damage);
+			unitDps[unit.id] = damage;
 		}
 		return unitDps[unit.id];
 	}
@@ -92,10 +103,10 @@ public class HeavyIndustryListener implements ApplicationListener {
 		return bulletDps[type.id];
 	}
 
-	public float powerful(String name, float damage) {
-		return switch (name) {
-			case "extra-utilities-regency", "new-horizon-guardian", "new-horizon-pester", "new-horizon-nucleoid" -> 1145141919810f;
-			default -> damage;
-		};
+	void updatePowerful(UnitType type) {
+		switch (type.name) {
+			case "extra-utilities-regency", "new-horizon-guardian", "new-horizon-pester", "new-horizon-nucleoid" -> powerful[type.id] = true;
+			default -> powerful[type.id] = false;
+		}
 	}
 }

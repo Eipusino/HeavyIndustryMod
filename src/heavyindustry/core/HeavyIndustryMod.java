@@ -109,6 +109,8 @@ public final class HeavyIndustryMod extends Mod {
 	}
 
 	public HeavyIndustryMod() {
+		if (instance != null) return;
+
 		instance = this;
 
 		if (Core.graphics != null && !Core.graphics.isGL30Available()) {
