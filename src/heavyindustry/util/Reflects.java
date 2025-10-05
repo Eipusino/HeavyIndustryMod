@@ -14,8 +14,8 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Map;
 
-import static heavyindustry.util.Utils.arrayOf;
-import static heavyindustry.util.Utils.requireNonNull;
+import static heavyindustry.util.ArrayUtils.arrayOf;
+import static heavyindustry.util.ObjectUtils.requireNonNull;
 
 /**
  * Reflection utilities, mainly for wrapping reflective operations to eradicate checked exceptions.
@@ -832,7 +832,7 @@ public final class Reflects {
 	/** Finds a class from the parent classes that has a specific field. */
 	@Nullable
 	public static Class<?> findContainsFieldClass(Class<?> type, final String name) {
-		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != Object.class; type = type.getSuperclass()) {
+		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
 			Field[] fields = type.getDeclaredFields();
 			for (Field field : fields) {
 				if (field.getName().equals(name)) return type;
@@ -845,7 +845,7 @@ public final class Reflects {
 	/** Finds a class from the parent classes that has a specific method. */
 	@Nullable
 	public static Class<?> findContainsMethodClass(Class<?> type, final String name, Class<?>... args) {
-		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != Object.class; type = type.getSuperclass()) {
+		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
 			Method[] methods = type.getDeclaredMethods();
 			for (Method method : methods) {
 				if (method.getName().equals(name) && Arrays.equals(method.getParameterTypes(), args)) return type;
@@ -858,7 +858,7 @@ public final class Reflects {
 	/** Finds a class from the parent classes that has a specific constructor. */
 	@Nullable
 	public static Class<?> findContainsConstructorClass(Class<?> type, Class<?>... args) {
-		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != Object.class; type = type.getSuperclass()) {
+		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
 			Constructor<?>[] constructors = type.getDeclaredConstructors();
 			for (Constructor<?> constructor : constructors) {
 				if (Arrays.equals(constructor.getParameterTypes(), args)) return type;
@@ -901,8 +901,6 @@ public final class Reflects {
 			Class<?>[] interfaces = c.getInterfaces();
 			hierarchy.addAll(Arrays.asList(interfaces));
 
-			if (c == Object.class) break;
-
 			c = c.getSuperclass();
 		}
 		return hierarchy;
@@ -919,7 +917,6 @@ public final class Reflects {
 					targetFieldMap.put(field.getName(), field);
 				}
 			}
-			if (targetClass == Object.class) break;
 
 			targetClass = targetClass.getSuperclass();
 		}
@@ -945,7 +942,6 @@ public final class Reflects {
 					}
 				}
 			}
-			if (sourceClass == Object.class) break;
 
 			sourceClass = sourceClass.getSuperclass();
 		}

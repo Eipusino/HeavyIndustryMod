@@ -13,7 +13,7 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Floor;
 import mindustry.world.blocks.environment.SteamVent;
 
-import static heavyindustry.util.Utils.resize;
+import static heavyindustry.util.ArrayUtils.resize;
 import static heavyindustry.util.Utils.split;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;

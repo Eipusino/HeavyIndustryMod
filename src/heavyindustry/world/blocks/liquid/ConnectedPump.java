@@ -4,7 +4,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
-import heavyindustry.util.Sprites;
+import heavyindustry.util.SpriteUtils;
 import heavyindustry.util.Utils;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
@@ -44,8 +44,8 @@ public class ConnectedPump extends Pump {
 
 			if (size == 1) {
 				drawIndex = 0;
-				for (int i = 0; i < Sprites.orthogonalPos.length; i++) {
-					Point2 p = Sprites.orthogonalPos[i];
+				for (int i = 0; i < SpriteUtils.orthogonalPos.length; i++) {
+					Point2 p = SpriteUtils.orthogonalPos[i];
 					if (isValidPump(world.build(tileX() + p.x, tileY() + p.y))) {
 						drawIndex += 1 << i;
 					}

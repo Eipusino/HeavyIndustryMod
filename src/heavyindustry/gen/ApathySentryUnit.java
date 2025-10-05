@@ -11,7 +11,6 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.content.HBullets;
 import heavyindustry.entities.HEntity;
-import heavyindustry.entities.effect.BloodSplatter;
 import mindustry.entities.Units;
 import mindustry.gen.Sounds;
 import mindustry.gen.Teamc;
@@ -92,13 +91,6 @@ public class ApathySentryUnit extends BaseUnit {
 	@Override
 	public float clipSize() {
 		return 2000f;
-	}
-
-	@Override
-	public void destroy() {
-		super.destroy();
-
-		BloodSplatter.explosion(20, x, y, hitSize / 2, 80f, 35f);
 	}
 
 	@Override

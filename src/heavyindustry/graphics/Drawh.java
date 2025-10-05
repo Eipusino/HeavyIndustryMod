@@ -15,7 +15,7 @@ import static heavyindustry.graphics.Drawn.v2;
 import static heavyindustry.graphics.Drawn.v3;
 import static heavyindustry.graphics.Drawn.v4;
 import static heavyindustry.graphics.Drawn.v5;
-import static heavyindustry.util.Utils.arrayOf;
+import static heavyindustry.util.ArrayUtils.arrayOf;
 
 public final class Drawh {
 	static float[] circleOffset24;

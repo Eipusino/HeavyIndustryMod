@@ -7,7 +7,7 @@ import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
 
 public class PointDefenceMultiBarrelWeapon extends MultiBarrelWeapon {
-	protected static WeaponMount tmp;
+	protected static WeaponMount tmpMount;
 
 	public PointDefenceMultiBarrelWeapon() {
 		this("");
@@ -19,7 +19,7 @@ public class PointDefenceMultiBarrelWeapon extends MultiBarrelWeapon {
 
 	@Override
 	public void update(Unit unit, WeaponMount mount) {
-		tmp = mount;
+		tmpMount = mount;
 		super.update(unit, mount);
 	}
 
@@ -31,7 +31,7 @@ public class PointDefenceMultiBarrelWeapon extends MultiBarrelWeapon {
 	@Override
 	protected boolean checkTarget(Unit unit, Teamc target, float x, float y, float range) {
 		boolean bullet = target instanceof Bullet b && (b.hitSize <= 0f || b.type == null);
-		if (bullet) tmp.retarget = 5f;
+		if (bullet && tmpMount != null) tmpMount.retarget = 5f;
 		return super.checkTarget(unit, target, x, y, range) || bullet;
 	}
 }

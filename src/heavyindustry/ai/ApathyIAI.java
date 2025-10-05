@@ -15,7 +15,6 @@ import heavyindustry.content.HFx;
 import heavyindustry.entities.HEntity;
 import heavyindustry.entities.bullet.ApathySmallLaserBulletType;
 import heavyindustry.entities.bullet.ApathySmallLaserBulletType.ApathyData;
-import heavyindustry.entities.effect.BloodSplatter;
 import heavyindustry.gen.ApathyIUnit;
 import heavyindustry.gen.HSounds;
 import heavyindustry.type.unit.ApathyUnitType;
@@ -822,10 +821,6 @@ public class ApathyIAI extends NullAI {
 		}
 		critDamage += damage / 2f;
 		maxCritDamage = Math.max(critDamage, maxCritDamage);
-
-		int count = Math.min((int) (damage / 100000f) + 1, 25);
-		float range = Mathf.sqrt(damage / 600f) + 12f;
-		BloodSplatter.explosion(count, apathy.x, apathy.y, 5f, range, (32f - 5f) * Mathf.clamp(damage / 1000f) + 5f);
 	}
 
 	public Vision getVisionAngle() {

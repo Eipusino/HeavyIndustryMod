@@ -18,4 +18,8 @@ public interface BaseUnitc extends Unitc {
 	default <T extends Entityc> Prov<T> provSelf() {
 		return this::self;
 	}
+
+	default <T> Prov<T> provAs() {
+		return this::as;
+	}
 }

@@ -104,12 +104,12 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 
 	@Override
 	public int indexOf(Object o) {
-		return Utils.indexOf(items, o);
+		return ArrayUtils.indexOf(items, o);
 	}
 
 	@Override
 	public int lastIndexOf(Object o) {
-		return Utils.lastIndexOf(items, o);
+		return ArrayUtils.lastIndexOf(items, o);
 	}
 
 	@Override
@@ -259,7 +259,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 		final int subSize;
 
 		public SubList(UnmodifiableList<T> array, int from, int to) {
-			super(Utils.arrayOf());
+			super(ArrayUtils.arrayOf());
 
 			parent = array;
 			offset = from;

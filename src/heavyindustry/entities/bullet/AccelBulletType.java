@@ -11,12 +11,10 @@ public class AccelBulletType extends BasicBulletType {
 
 	public Interp accelInterp = Interp.linear;
 
-	public AccelBulletType() {
-		super();
-	}
+	public AccelBulletType() {}
 
-	public AccelBulletType(float velBeg, float velInc, Interp accInt, float dmg, String bulSpr) {
-		super(1, dmg, bulSpr);
+	public AccelBulletType(float velBeg, float velInc, Interp accInt, float damage, String bulletSprite) {
+		super(1, damage, bulletSprite);
 		velocityBegin = velBeg;
 		velocityIncrease = velInc;
 		accelInterp = accInt;

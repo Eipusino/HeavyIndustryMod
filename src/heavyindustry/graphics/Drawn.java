@@ -1262,24 +1262,24 @@ public final class Drawn {
 
 		Rand rand = Utils.rand(seed), rand2 = Utils.rand2;
 
-		Color outC = HPal.blood;
+		Color outColor = Color.clear;
 
-		Draw.color(Color.white, outC, deathTime2);
+		Draw.color(Color.white, outColor, deathTime2);
 
 		float color = Draw.getColor().toFloatBits();
-		Tmp.c1.set(Color.white).lerp(outC, Interp.pow2Out.apply(deathTime2));
+		Tmp.c1.set(Color.white).lerp(outColor, Interp.pow2Out.apply(deathTime2));
 		float color2 = Tmp.c1.toFloatBits();
-		Tmp.c1.set(Color.white).lerp(outC, Interp.pow3Out.apply(deathTime2));
+		Tmp.c1.set(Color.white).lerp(outColor, Interp.pow3Out.apply(deathTime2));
 		float color3 = Tmp.c1.toFloatBits();
 
-		float mcolor = Draw.getMixColor().toFloatBits();
+		float mixColor = Draw.getMixColor().toFloatBits();
 
 		Draw.rect(region, x, y, region.width * Draw.scl * fout1, region.height * Draw.scl * fout1, rotation - 90f);
 		for (int i = 0; i < 50; i++) {
 			float coff = ((1f - (i / 50f)) + rand.range(0.125f) + 0.125f) / 1.25f;
 			float ff = coff * fc;
 			float f = Mathf.curve(deathTime, ff, Mathf.clamp(ff + fc2 + rand.range(0.05f), ff + 0.125f, 1f));
-			float size = rand.random(0.75f, 1.5f) * Mathf.lerp(300f, 110f, (i / 50f));
+			float size = rand.random(0.75f, 1.5f) * Mathf.lerp(150f, 55f, (i / 50f));
 			int nseed = rand.nextInt();
 			if (f > 0.001f) {
 				tf.clear();
@@ -1322,7 +1322,7 @@ public final class Drawn {
 					}
 					float u = Mathf.lerp(region.u, region.u2, rand2.random(minUv, 1 - minUv));
 					float v = Mathf.lerp(region.v, region.v2, rand2.random(minUv, 1 - minUv));
-					tf.addAll(dx, dy, c, u, v, mcolor);
+					tf.addAll(dx, dy, c, u, v, mixColor);
 				}
 				Draw.vert(region.texture, tf.items, 0, tf.size);
 			}

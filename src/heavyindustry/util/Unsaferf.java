@@ -6,8 +6,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.security.ProtectionDomain;
 
-import static heavyindustry.util.Utils.requireInstance;
-import static heavyindustry.util.Utils.requireNonNullInstance;
+import static heavyindustry.util.ObjectUtils.requireInstance;
+import static heavyindustry.util.ObjectUtils.requireNonNullInstance;
 
 /**
  * JDK-Internal-Unsafe class. It may become invalid in future Java or Android versions.

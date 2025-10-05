@@ -467,6 +467,14 @@ public final class Mathm {
 		return (a <= b) ? a : b;
 	}
 
+	public static char max(char a, char b) {
+		return (a >= b) ? a : b;
+	}
+
+	public static char min(char a, char b) {
+		return (a <= b) ? a : b;
+	}
+
 	public static int clamp(int value, int min, int max) {
 		return value > max ? max : value < min ? min : value;
 	}
@@ -480,6 +488,10 @@ public final class Mathm {
 	}
 
 	public static double clamp(double value, double min, double max) {
+		return value > max ? max : value < min ? min : value;
+	}
+
+	public static char clamp(char value, char min, char max) {
 		return value > max ? max : value < min ? min : value;
 	}
 

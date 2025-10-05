@@ -16,12 +16,12 @@ public final class IOUtils {
 		try {
 			run.run();
 		} catch (Throwable t) {
-			if (t instanceof IOException err) throw err;
-			throw new IOException(message, t);
+			if (t instanceof IOException e) throw e;
+			else throw new IOException(message, t);
 		}
 	}
 
-	/** @see Utils#thrower(Throwable) */
+	/** @see ObjectUtils#thrower(Throwable) */
 	public static void ioUnchecked(IORunnable run) {
 		try {
 			run.run();
@@ -31,7 +31,7 @@ public final class IOUtils {
 			// The result is, the code fools the compiler into thinking it's throwing `RuntimeException` and not have its
 			// method signature explicitly throw `IOException`, even though it actually does.
 			// Such is the way of Java...
-			Utils.thrower(e);
+			ObjectUtils.thrower(e);
 		}
 	}
 

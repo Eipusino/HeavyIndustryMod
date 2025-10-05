@@ -547,7 +547,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 	Object[] grow(int minCapacity) {
 		int oldCapacity = items.length;
 		if (oldCapacity > 0) {
-			int newCapacity = Utils.newLength(oldCapacity,
+			int newCapacity = ArrayUtils.newLength(oldCapacity,
 					minCapacity - oldCapacity, // minimum growth
 					oldCapacity >> 1);// preferred growth
 			return items = Arrays.copyOf(items, newCapacity);

@@ -10,7 +10,7 @@ import arc.struct.IntIntMap;
  *
  * @since 1.0.4
  */
-public final class Sprites {
+public final class SpriteUtils {
 	public static final Point2[] orthogonalPos = {
 			new Point2(0, 1),
 			new Point2(1, 0),
@@ -91,7 +91,7 @@ public final class Sprites {
 		}
 	}
 
-	private Sprites() {}
+	private SpriteUtils() {}
 
 	public static TextureRegion[][] split(TextureRegion region, int size, int pad) {
 		int x = region.getX();

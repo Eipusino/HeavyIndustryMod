@@ -142,29 +142,28 @@ public final class HStatusEffects {
 			effect = Fx.overclocked;
 		}};
 		apoptosis = new BaseStatusEffect("apoptosis") {{
-			color = new Color(0x88a4ffff);
+			color = applyColor = Pal.regen;
 			damage = -1;
 			parentizeApplyEffect = true;
-			applyColor = Pal.techBlue;
 			applyEffect = new Effect(45, e -> {
-				if (!(e.data instanceof Unit u)) return;
-
-				float size = u.hitSize * 2;
-				Fx.rand.setSeed(e.id);
-				float pin = (1 - e.foutpow());
-				Lines.stroke(size / 24 * e.foutpow(), e.color);
-				Lines.circle(e.x, e.y, size * pin);
-				for (int i = 0; i < 5; i++) {
-					float a = Fx.rand.random(180);
-					float lx = Utils.dx(e.x, size * pin, a);
-					float ly = Utils.dy(e.y, size * pin, a);
-					Drawf.tri(lx, ly, size / 32 * e.foutpow(), (size + Fx.rand.random(-size, size)) * e.foutpow(), a + 180);
-				}
-				for (int i = 0; i < 5; i++) {
-					float a = 180 + Fx.rand.random(180);
-					float lx = Utils.dx(e.x, size * pin, a);
-					float ly = Utils.dy(e.y, size * pin, a);
-					Drawf.tri(lx, ly, size / 32 * e.foutpow(), (size + Fx.rand.random(-size, size)) * e.foutpow(), a + 180);
+				if (e.data instanceof Unit u) {
+					float size = u.hitSize * 2;
+					Fx.rand.setSeed(e.id);
+					float pin = (1 - e.foutpow());
+					Lines.stroke(size / 24 * e.foutpow(), e.color);
+					Lines.circle(e.x, e.y, size * pin);
+					for (int i = 0; i < 5; i++) {
+						float a = Fx.rand.random(180);
+						float lx = Utils.dx(e.x, size * pin, a);
+						float ly = Utils.dy(e.y, size * pin, a);
+						Drawf.tri(lx, ly, size / 32 * e.foutpow(), (size + Fx.rand.random(-size, size)) * e.foutpow(), a + 180);
+					}
+					for (int i = 0; i < 5; i++) {
+						float a = 180 + Fx.rand.random(180);
+						float lx = Utils.dx(e.x, size * pin, a);
+						float ly = Utils.dy(e.y, size * pin, a);
+						Drawf.tri(lx, ly, size / 32 * e.foutpow(), (size + Fx.rand.random(-size, size)) * e.foutpow(), a + 180);
+					}
 				}
 			});
 		}

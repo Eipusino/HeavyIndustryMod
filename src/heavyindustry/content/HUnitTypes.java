@@ -3985,7 +3985,7 @@ public final class HUnitTypes {
 			mineTier = 13;
 			fallEffect = HFx.blast(Pal.heal, 120f);
 			targetAir = targetGround = false;
-			abilities.add(new WitchServiceAbility(Pal.muddy), new RegenProjectorAbility());
+			abilities.add(new WitchServiceAbility(), new RegenProjectorAbility());
 			immunities.add(HStatusEffects.apoptosis);
 			ammoCapacity = 100000;
 			ammoType = new PowerAmmoType(1f);

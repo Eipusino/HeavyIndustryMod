@@ -7,15 +7,12 @@ import arc.util.io.Reads;
 import arc.util.io.ReusableByteOutStream;
 import arc.util.io.Writes;
 import heavyindustry.input.InputAggregator.TapResult;
-import heavyindustry.util.Utils;
+import heavyindustry.util.ObjectUtils;
 import mindustry.Vars;
 import mindustry.content.TechTree.TechNode;
 import mindustry.ctype.ContentType;
 import mindustry.ctype.UnlockableContent;
-import mindustry.gen.Entityc;
-import mindustry.gen.Groups;
 import mindustry.gen.Itemsc;
-import mindustry.gen.Teamc;
 import mindustry.io.TypeIO;
 
 import java.io.ByteArrayInputStream;
@@ -132,7 +129,7 @@ public final class HTypeIO {
 		byte[] bytes = read.b(length);
 		try (ByteArrayInputStream bin = new ByteArrayInputStream(bytes); ObjectInputStream in = new ObjectInputStream(bin)) {
 			Object object = in.readObject();
-			return Utils.cast(object, type, null);
+			return ObjectUtils.cast(object, type, null);
 		} catch (IOException | ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}

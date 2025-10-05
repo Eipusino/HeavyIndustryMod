@@ -7,8 +7,8 @@ import sun.misc.Unsafe;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import static heavyindustry.util.Utils.requireInstance;
-import static heavyindustry.util.Utils.requireNonNullInstance;
+import static heavyindustry.util.ObjectUtils.requireInstance;
+import static heavyindustry.util.ObjectUtils.requireNonNullInstance;
 
 /**
  * {@code Unsafe} reflection tool. Mainly provides functions for modifying or setting field values.

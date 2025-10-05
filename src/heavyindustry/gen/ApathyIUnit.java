@@ -18,7 +18,6 @@ import heavyindustry.ai.BaseCommand;
 import heavyindustry.content.HFx;
 import heavyindustry.content.HUnitTypes;
 import heavyindustry.entities.HEntity;
-import heavyindustry.entities.effect.BloodSplatter;
 import heavyindustry.entities.shift.PrismShift;
 import heavyindustry.entities.shift.ShiftHandler;
 import heavyindustry.entities.shift.StrongLaserShift;
@@ -181,12 +180,6 @@ public class ApathyIUnit extends BaseUnit {
 					tc.r = rand.random(80f, 120f) * fin;
 					tc.g = rand.random(380f, 420f) * fin;
 
-					float angle = v.angle();
-
-					if (Mathf.chanceDelta(0.75f)) {
-						HFx.apathyBleed.at(x + v.x, y + v.y, angle, tc, this);
-					}
-
 					if (i >= deathSoundIdx) {
 						HSounds.apathyBleed.at(x + v.x, y + v.y, Mathf.random(0.9f, 1.1f), 1f);
 						deathSoundIdx++;
@@ -347,13 +340,6 @@ public class ApathyIUnit extends BaseUnit {
 	public void destroy() {
 		super.destroy();
 
-		BloodSplatter.explosion(95, x, y, hitSize / 2, 400f, 45f);
-		BloodSplatter.explosion(40, x, y, hitSize / 2.5f, 200f, 45f);
-
-		BloodSplatter.explosion(40, x, y, hitSize / 2, 550f, 35f, 60f, HPal.blood, 0.2f);
-
-		//HFx.apathyDeath.at(x, y, hitSize / 2f);
-		HFx.apathyDeath.at(x, y, hitSize * 2f);
 		//HSounds.apathyDeath.at(x, y, 1, 3);
 		HSounds.apathyDeath.play(1f);
 	}

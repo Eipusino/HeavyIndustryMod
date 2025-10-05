@@ -39,18 +39,9 @@ public class TractorBeamUnit extends BasePayloadUnit {
 	public boolean movingIn = false;
 	public float beamRange = 8f * 8f;
 
-	private TractorBeamUnitType tractorBeamType;
-
 	@Override
-	public void setType(UnitType type) {
-		tractorBeamType = checkType(type);
-
-		super.setType(type);
-	}
-
-	@Override
-	public TractorBeamUnitType checkType(UnitType value) {
-		return (TractorBeamUnitType) value;
+	public TractorBeamUnitType checkType() {
+		return (TractorBeamUnitType) type;
 	}
 
 	public void moveIn() {
@@ -258,7 +249,7 @@ public class TractorBeamUnit extends BasePayloadUnit {
 			team.data().updateCount(type, -1);
 		}
 
-		beamRange = tractorBeamType.tractorBeamRange;
+		beamRange = checkType().tractorBeamRange;
 	}
 
 	@Override

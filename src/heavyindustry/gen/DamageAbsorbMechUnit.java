@@ -12,6 +12,7 @@ public class DamageAbsorbMechUnit extends BaseMechUnit implements DamageAbsorbc 
 		return Entitys.getId(DamageAbsorbMechUnit.class);
 	}
 
+	@Override
 	public float realDamage(boolean isStatus, float amount) {
 		return !isStatus && type instanceof BaseUnitType fu ? amount * Mathf.clamp(1 - fu.absorption) : amount;
 	}
@@ -21,6 +22,7 @@ public class DamageAbsorbMechUnit extends BaseMechUnit implements DamageAbsorbc 
 		damage(false, amount);
 	}
 
+	@Override
 	public void damage(boolean isStatus, float amount) {
 		rawDamage(Damage.applyArmor(realDamage(isStatus, amount), armor) / healthMultiplier / Vars.state.rules.unitHealthMultiplier);
 	}
@@ -30,6 +32,7 @@ public class DamageAbsorbMechUnit extends BaseMechUnit implements DamageAbsorbc 
 		damagePierce(false, amount, withEffect);
 	}
 
+	@Override
 	public void damagePierce(boolean isStatus, float amount, boolean withEffect) {
 		float pre = hitTime;
 		rawDamage(realDamage(isStatus, amount) / healthMultiplier / Vars.state.rules.unitHealth(team));
@@ -43,6 +46,7 @@ public class DamageAbsorbMechUnit extends BaseMechUnit implements DamageAbsorbc 
 		damageContinuous(false, amount);
 	}
 
+	@Override
 	public void damageContinuous(boolean isStatus, float amount) {
 		damage(realDamage(isStatus, amount) * Time.delta, hitTime <= -10 + hitDuration);
 	}
@@ -52,6 +56,7 @@ public class DamageAbsorbMechUnit extends BaseMechUnit implements DamageAbsorbc 
 		damageContinuousPierce(false, amount);
 	}
 
+	@Override
 	public void damageContinuousPierce(boolean isStatus, float amount) {
 		damagePierce(realDamage(isStatus, amount) * Time.delta, hitTime <= -20 + hitDuration);
 	}

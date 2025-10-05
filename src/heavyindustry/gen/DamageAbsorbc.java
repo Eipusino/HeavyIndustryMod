@@ -10,7 +10,7 @@ import mindustry.gen.Unitc;
 
 public interface DamageAbsorbc extends Unitc {
 	default float realDamage(boolean isStatus, float amount) {
-		return !isStatus && type() instanceof BaseUnitType fu ? amount * Mathf.clamp(1 - fu.absorption) : amount;
+		return !isStatus && type() instanceof BaseUnitType bu ? amount * Mathf.clamp(1 - bu.absorption) : amount;
 	}
 
 	@Override

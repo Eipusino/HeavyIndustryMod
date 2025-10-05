@@ -33,23 +33,18 @@ public class WitchServiceAbility extends Ability {
 
 	public Effect work, applyIn, applyOut;
 
-	public Color color;
+	public Color color = Pal.reactorPurple;
 
 	public boolean working = false;
 
 	public WitchServiceAbility() {
-		this(Pal.techBlue);
+		this(HFx.witchServiceWork, HFx.witchServiceApplyIn, HFx.witchServiceApplyOut);
 	}
 
-	public WitchServiceAbility(Color col) {
-		this(HFx.witchServiceWork, HFx.witchServiceApplyIn, HFx.witchServiceApplyOut, col);
-	}
-
-	public WitchServiceAbility(Effect wk, Effect in, Effect out, Color col) {
+	public WitchServiceAbility(Effect wk, Effect in, Effect out) {
 		work = wk;
 		applyIn = in;
 		applyOut = out;
-		color = col;
 	}
 
 	protected Rect getRect(Unit unit, Rect rect) {

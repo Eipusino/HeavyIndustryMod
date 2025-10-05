@@ -23,8 +23,8 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Trail;
 
 import static heavyindustry.HVars.MOD_NAME;
-import static heavyindustry.util.Utils.copyArray;
-import static heavyindustry.util.Utils.sumi;
+import static heavyindustry.util.ArrayUtils.copyArray;
+import static heavyindustry.util.ArrayUtils.sumi;
 
 public final class HTrails {
 	/** Don't let anyone instantiate this class. */

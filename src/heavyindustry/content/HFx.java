@@ -36,6 +36,7 @@ import heavyindustry.graphics.PositionLightning;
 import heavyindustry.graphics.g2d.CutBatch.RejectedRegion;
 import heavyindustry.math.Math3d;
 import heavyindustry.util.IntMapf;
+import heavyindustry.util.ObjectUtils;
 import heavyindustry.util.Utils;
 import heavyindustry.util.Vec2Seq;
 import mindustry.Vars;
@@ -169,9 +170,8 @@ public final class HFx {
 			}),
 			hitOut = new Effect(60f, e -> {
 				if (e.data instanceof Unit u) {
-					UnitType type = u.type;
-					if (type != null) {
-						TextureRegion rg = type.fullIcon;
+					if (u.type != null) {
+						TextureRegion rg = u.type.fullIcon;
 						float w = rg.width * rg.scl() * Draw.xscl;
 						float h = rg.height * rg.scl() * Draw.yscl;
 						float dx = Utils.dx(e.x, Math.max(w, h) * 0.3f * e.finpow(), e.rotation), dy = Utils.dy(e.y, Math.max(w, h) * 0.3f * e.finpow(), e.rotation);
@@ -2497,43 +2497,6 @@ public final class HFx {
 					Fill.circle(v.x, v.y, size * Interp.pow2Out.apply(Interp.slope.apply(Interp.pow2In.apply(time))));
 				}
 			}).layer(Layer.flyingUnit + 0.01f),
-			apathyBleed = new Effect(15f, e -> {
-				//Draw.color(HPalettes.primary, HPalettes.blood, Interp.pow2Out.apply(e.fin()));
-				Draw.color(HPal.blood);
-				Rand rand = Utils.rand(e.id);
-
-				float minRange = e.color.r;
-				float maxRange = e.color.g;
-
-				for (int i = 0; i < 6; i++) {
-					float angle = e.rotation + Interp.pow2In.apply(rand.nextFloat()) * (rand.chance(0.5f) ? -1f : 1f) * 15f;
-					float len = rand.random(minRange, maxRange) * e.fin(Interp.pow2Out);
-					float s = rand.random(6f, 10f) * Interp.pow3Out.apply(e.fout());
-
-					Tmp.v1.trns(angle, len).add(e.x, e.y);
-					Fill.circle(Tmp.v1.x, Tmp.v1.y, s);
-				}
-			}).rotWithParent(true).layer(Layer.flyingUnit + 0.01f),
-			apathyDeath = new Effect(30f, e -> {
-				Draw.color(HPal.blood);
-				Rand rand = Utils.rand(e.id);
-
-				Fill.circle(e.x, e.y, (1f - Mathf.curve(e.fin(), 0f, 0.4f)) * e.rotation * 2f);
-
-				for (int i = 0; i < 70; i++) {
-					float fin = Mathf.curve(e.fin(), rand.random(0.1f), 1 - rand.random(0.5f));
-					float angle = rand.random(360f);
-					float length = rand.random(220f, 460f);
-					float size = rand.random(9f, 15f) * Interp.pow2Out.apply(Utils.biasSlope(fin, 0.1f));
-					float offset = rand.random(e.rotation);
-
-					if (fin > 0f && fin < 1f) {
-						Tmp.v1.trns(angle, offset + length * Interp.pow3Out.apply(fin)).add(e.x, e.y);
-						Drawn.tri(Tmp.v1.x, Tmp.v1.y, e.x, e.y, size, angle);
-						Drawf.tri(Tmp.v1.x, Tmp.v1.y, size, size * 2f, angle);
-					}
-				}
-			}),
 			bigLaserCharge = new Effect(120f, e -> {
 				Draw.color();
 				float scl = (1f + Mathf.absin(e.fin(Interp.pow2In), 1f / 100f, 1f)) * 180f * e.fin();
@@ -3768,7 +3731,7 @@ public final class HFx {
 	}
 
 	public static Effect get(String m, Color c, Effect effect) {
-		int hash = Utils.hash(m, c);
+		int hash = ObjectUtils.hash(m, c);
 		Effect or = same.get(hash);
 		if (or == null) same.put(hash, effect);
 		return or == null ? effect : or;

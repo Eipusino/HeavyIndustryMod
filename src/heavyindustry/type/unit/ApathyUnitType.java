@@ -28,6 +28,7 @@ public class ApathyUnitType extends BaseUnitType {
 	@Override
 	public void load() {
 		super.load();
+
 		for (ShiftHandler h : handlers) {
 			h.load();
 		}
