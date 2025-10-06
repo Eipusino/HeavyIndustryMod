@@ -21,7 +21,7 @@ import mindustry.gen.Unitc;
 import mindustry.world.Tile;
 
 public class Devastation extends BaseEntity implements Poolable {
-	TextureRegion main = new TextureRegion();
+	public TextureRegion main = new TextureRegion();
 	public float rotation, width, height;
 	public float vx, vy, vr;
 	public float health;
@@ -33,8 +33,8 @@ public class Devastation extends BaseEntity implements Poolable {
 	public Team team = Team.derelict;
 	public boolean collides = true;
 
-	float collisionDelay = 0f;
-	float contagiousTime = 0f;
+	public float collisionDelay = 0f;
+	public float contagiousTime = 0f;
 
 	public static Devastation create() {
 		return Pools.obtain(Devastation.class, Devastation::new);

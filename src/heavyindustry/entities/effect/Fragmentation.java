@@ -33,31 +33,31 @@ import mindustry.world.Tile;
 import java.util.Arrays;
 
 public class Fragmentation {
-	float[] xs, ys;
-	int width, height;
-	float drawWidth, drawHeight;
-	Seq<IntSeq> islands = new Seq<>(IntSeq.class);
-	TextureRegion region = new TextureRegion();
-	public Cons<FragmentEntity> onDeath;
-	public Effect trailEffect = HFx.debrisSmoke, explosionEffect = HFx.fragmentExplosion;
-	public Color effectColor = Color.white, drawnColor = Color.white.cpy(), goreColor = Color.white.cpy();
-	public Sound explosionSound = Sounds.none;
-	public boolean fadeOut = false;
-	float shadowElevation = 0f;
-	float layer = Layer.flyingUnit;
-
-	static int[] returnArr = new int[3];
-	static boolean[] occupied = new boolean[4];
-	static FloatSeq fseq = new FloatSeq();
-	static IntSeq intSeq1 = new IntSeq(), intSeq2 = new IntSeq();
-	static int maxDimension = 150;
-	static Vec2 tmpVec = new Vec2();
-	static int[] arr = {
+	public static int[] returnArr = new int[3];
+	public static boolean[] occupied = new boolean[4];
+	public static FloatSeq fseq = new FloatSeq();
+	public static IntSeq intSeq1 = new IntSeq(), intSeq2 = new IntSeq();
+	public static int maxDimension = 150;
+	public static Vec2 tmpVec = new Vec2();
+	public static int[] arr = {
 			0, 0,
 			1, 0,
 			1, 1,
 			0, 1
 	};
+
+	public float[] xs, ys;
+	public int width, height;
+	public float drawWidth, drawHeight;
+	public Seq<IntSeq> islands = new Seq<>(IntSeq.class);
+	public TextureRegion region = new TextureRegion();
+	public Cons<FragmentEntity> onDeath;
+	public Effect trailEffect = HFx.debrisSmoke, explosionEffect = HFx.fragmentExplosion;
+	public Color effectColor = Color.white, drawnColor = Color.white.cpy(), goreColor = Color.white.cpy();
+	public Sound explosionSound = Sounds.none;
+	public boolean fadeOut = false;
+	public float shadowElevation = 0f;
+	public float layer = Layer.flyingUnit;
 
 	public Fragmentation(TextureRegion region) {
 		this(region, Math.max(3, (int) ((20f / 320) * region.width)), Math.max(3, (int) ((20f / 320) * region.height)), Math.max(2, Math.min((int) ((6f / (320f * 320f)) * region.width * region.height), 30)));

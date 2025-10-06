@@ -5,6 +5,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Geometry;
 import arc.util.Tmp;
 import heavyindustry.content.HBlocks;
+import heavyindustry.util.SpriteUtils;
 import mindustry.content.Blocks;
 import mindustry.game.Team;
 import mindustry.gen.Call;
@@ -12,7 +13,6 @@ import mindustry.graphics.CacheLayer;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 
-import static heavyindustry.util.Utils.split;
 import static mindustry.Vars.world;
 
 public class DepthCliff extends Block {
@@ -82,7 +82,7 @@ public class DepthCliff extends Block {
 	public void load() {
 		super.load();
 
-		cliffs = split(name + "-sheet", 48, 0);
+		cliffs = SpriteUtils.splitLayer(name + "-sheet", 48, 0);
 	}
 
 	@Override

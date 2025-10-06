@@ -18,7 +18,7 @@ import arc.util.io.Writes;
 import arc.util.pooling.Pool;
 import arc.util.pooling.Pools;
 import heavyindustry.ui.Elements;
-import heavyindustry.util.Utils.ExtPos;
+import heavyindustry.util.Utils.Pos;
 import heavyindustry.world.meta.HStatValues;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Units;
@@ -134,7 +134,7 @@ public class UnitBoost extends Block {
 
 	public class UnitBoostBuild extends Building implements HeatConsumer {
 		protected final Seq<Float[]> pos = new Seq<>(Float[].class);
-		protected final Pool<ExtPos> posPool = Pools.get(ExtPos.class, ExtPos::new);
+		protected final Pool<Pos> posPool = Pools.get(Pos.class, Pos::new);
 
 		public float[] sideHeat = new float[4];
 		public float heat = 0f;
@@ -233,7 +233,7 @@ public class UnitBoost extends Block {
 				float ox = pos.get(i)[0], oy = pos.get(i)[1];
 				float ex = pos.get((i + 2) % pos.size)[0], ey = pos.get((i + 2) % pos.size)[1];
 
-				ExtPos og = posPool.obtain().set(ox, oy);
+				Pos og = posPool.obtain().set(ox, oy);
 				float dst = og.dst(ex, ey);
 				float angle = og.angleTo(ex, ey);
 				Lines.lineAngle(ox, oy, angle, dst * phaseHeat * ps);
@@ -271,7 +271,7 @@ public class UnitBoost extends Block {
 				float ox = pos.get(i)[0], oy = pos.get(i)[1];
 				float ex = pos.get((i + 1) % pos.size)[0], ey = pos.get((i + 1) % pos.size)[1];
 
-				ExtPos og = posPool.obtain().set(ox, oy);
+				Pos og = posPool.obtain().set(ox, oy);
 				float dst = og.dst(ex, ey);
 				float angle = og.angleTo(ex, ey);
 				if (!change1_2) {

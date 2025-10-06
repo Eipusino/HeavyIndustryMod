@@ -142,7 +142,7 @@ public final class HStatusEffects {
 			effect = Fx.overclocked;
 		}};
 		apoptosis = new BaseStatusEffect("apoptosis") {{
-			color = applyColor = Pal.regen;
+			color = applyColor = Pal.thoriumAmmoBack;
 			damage = -1;
 			parentizeApplyEffect = true;
 			applyEffect = new Effect(45, e -> {

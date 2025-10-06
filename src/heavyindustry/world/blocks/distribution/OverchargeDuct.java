@@ -7,7 +7,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.util.Tmp;
-import heavyindustry.util.Utils;
+import heavyindustry.util.SpriteUtils;
 import heavyindustry.world.meta.HStat;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
@@ -34,7 +34,7 @@ public class OverchargeDuct extends Duct {
 	public void init() {
 		super.init();
 
-		glowRegions = Utils.split(name + "-glow", 32, 0);
+		glowRegions = SpriteUtils.splitLayer(name + "-glow", 32, 0);
 	}
 
 	@Override

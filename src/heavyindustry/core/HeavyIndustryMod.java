@@ -90,7 +90,7 @@ public final class HeavyIndustryMod extends Mod {
 
 	static final List<Throwable> errors = new CollectionList<>(Throwable.class);
 
-	static boolean test = false;
+	static boolean test = true;
 
 	static {
 		try {

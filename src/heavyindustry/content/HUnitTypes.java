@@ -16,15 +16,12 @@ import arc.scene.ui.layout.Table;
 import arc.util.Interval;
 import arc.util.Time;
 import arc.util.Tmp;
-import heavyindustry.ai.ApathyIAI;
 import heavyindustry.ai.CopterAI;
 import heavyindustry.ai.DefenderHealAI;
-import heavyindustry.ai.DespondencyAI;
 import heavyindustry.ai.MinerDepotAI;
 import heavyindustry.ai.MinerPointAI;
 import heavyindustry.ai.NullAI;
 import heavyindustry.ai.SurroundAI;
-import heavyindustry.ai.YggdrasilAI;
 import heavyindustry.entities.abilities.BatteryAbility;
 import heavyindustry.entities.abilities.InvincibleForceFieldAbility;
 import heavyindustry.entities.abilities.JavelinAbility;
@@ -38,10 +35,7 @@ import heavyindustry.entities.bullet.AntiBulletFlakBulletType;
 import heavyindustry.entities.bullet.ArrowBulletType;
 import heavyindustry.entities.bullet.CtrlMissileBulletType;
 import heavyindustry.entities.bullet.EdgeFragBulletType;
-import heavyindustry.entities.bullet.EipusinoPointBulletType;
-import heavyindustry.entities.bullet.EndCreepLaserBulletType;
-import heavyindustry.entities.bullet.EndNukeBulletType;
-import heavyindustry.entities.bullet.EndRailBulletType;
+import heavyindustry.entities.bullet.AnnihilatePointBulletType;
 import heavyindustry.entities.bullet.GuidedMissileBulletType;
 import heavyindustry.entities.bullet.HealConeBulletType;
 import heavyindustry.entities.bullet.HealingNukeBulletType;
@@ -53,13 +47,8 @@ import heavyindustry.entities.part.AimPart;
 import heavyindustry.entities.part.BowHalo;
 import heavyindustry.entities.part.CustomPart;
 import heavyindustry.entities.part.PartBow;
-import heavyindustry.entities.shift.AoEShift;
-import heavyindustry.entities.shift.SweepShift;
-import heavyindustry.entities.shift.WeakLaserShift;
 import heavyindustry.func.Floatt2;
 import heavyindustry.func.Floatt3;
-import heavyindustry.gen.ApathyIUnit;
-import heavyindustry.gen.ApathySentryUnit;
 import heavyindustry.gen.BaseBuildingTetherLegsUnit;
 import heavyindustry.gen.BaseBuildingTetherUnit;
 import heavyindustry.gen.BaseLegsUnit;
@@ -71,39 +60,27 @@ import heavyindustry.gen.BaseUnitWaterMove;
 import heavyindustry.gen.CopterUnit;
 import heavyindustry.gen.DPSMechUnit;
 import heavyindustry.gen.DamageAbsorbMechUnit;
-import heavyindustry.gen.DespondencyUnit;
 import heavyindustry.gen.EipusinoUnit;
 import heavyindustry.gen.HSounds;
 import heavyindustry.gen.InvincibleShipUnit;
-import heavyindustry.entities.shift.PrismShift;
-import heavyindustry.entities.shift.StrongLaserShift;
 import heavyindustry.gen.UltFire;
-import heavyindustry.gen.YggdrasilUnit;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.Draws;
 import heavyindustry.graphics.HPal;
 import heavyindustry.graphics.MathRenderer;
 import heavyindustry.math.Mathm;
-import heavyindustry.type.unit.ApathyUnitType;
 import heavyindustry.type.unit.BaseUnitType;
 import heavyindustry.type.unit.CopterUnitType;
-import heavyindustry.type.unit.DespondencyUnitType;
 import heavyindustry.type.unit.NucleoidUnitType;
-import heavyindustry.type.unit.YggdrasilUnitType;
 import heavyindustry.type.weapons.AcceleratingWeapon;
 import heavyindustry.type.weapons.BoostWeapon;
 import heavyindustry.type.weapons.DataWeapon;
-import heavyindustry.type.weapons.EndAntiAirWeapon;
-import heavyindustry.type.weapons.EndDespondencyWeapon;
-import heavyindustry.type.weapons.EndLauncherWeapon;
 import heavyindustry.type.weapons.EnergyChargeWeapon;
 import heavyindustry.type.weapons.HealConeWeapon;
-import heavyindustry.type.weapons.LaserWeapon;
 import heavyindustry.type.weapons.LimitedAngleWeapon;
 import heavyindustry.type.weapons.PointDefenceMultiBarrelWeapon;
 import heavyindustry.ui.Elements;
 import mindustry.Vars;
-import mindustry.ai.ControlPathfinder;
 import mindustry.ai.UnitCommand;
 import mindustry.ai.types.FlyingAI;
 import mindustry.ai.types.FlyingFollowAI;
@@ -193,7 +170,6 @@ public final class HUnitTypes {
 	miner, largeMiner, legsMiner,
 	//other
 	vulture, invincibleShip, dpsTesterLand,
-			apathy, apathySentry, yggdrasil, despondency,
 	//elite
 	tiger, thunder, eagle,
 	//special
@@ -2980,150 +2956,6 @@ public final class HUnitTypes {
 			ammoCapacity = 114514;
 			ammoType = new PowerAmmoType(114.514f);
 		}};
-		apathy = new ApathyUnitType("apathy") {{
-			health = 1200000;
-			armor = 60f;
-			speed = 0.45f;
-			outlines = false;
-			constructor = ApathyIUnit::new;
-			flying = true;
-			hitSize = 75f;
-			drag = 0.06f;
-			handlers.add(new PrismShift("apathy"), new WeakLaserShift("apathy-weak-laser"), new AoEShift("apathy-aoe"), new SweepShift("apathy-sweep"));
-			handlers.add(new StrongLaserShift("apathy-strong-laser"));
-			aiController = ApathyIAI::new;
-			fallEffect = fallEngineEffect = Fx.none;
-			fallSpeed = 0f;
-			deathExplosionEffect = Fx.none;
-			createScorch = false;
-			envEnabled = Env.any;
-			envDisabled = Env.none;
-			hideDetails = false;
-		}};
-		apathySentry = new BaseUnitType("apathy-sweep-0") {{
-			outlines = false;
-			hidden = true;
-			useUnitCap = false;
-			health = 9000f;
-			drag = 0.5f;
-			hitSize = 10f;
-			controller = u -> new NullAI();
-			constructor = ApathySentryUnit::new;
-			fallEffect = fallEngineEffect = Fx.none;
-			deathExplosionEffect = Fx.none;
-			createScorch = false;
-			flying = true;
-			envEnabled = Env.any;
-			envDisabled = Env.none;
-		}};
-		yggdrasil = new YggdrasilUnitType("yggdrasil") {{
-			constructor = YggdrasilUnit::new;
-			aiController = YggdrasilAI::new;
-			outlines = false;
-			health = 225000f;
-			drag = 0.1f;
-			hitSize = 25f;
-			speed = 5f;
-			rotateSpeed = 2f;
-			armor = 20f;
-			groundLayer = Layer.legUnit;
-			hovering = true;
-			allowLegStep = true;
-			drawCell = false;
-			pathCost = ControlPathfinder.costLegs;
-			envEnabled = Env.any;
-			envDisabled = Env.none;
-		}};
-		despondency = new DespondencyUnitType("despondency") {{
-			envDisabled = Env.none;
-			envEnabled = Env.any;
-			outlines = false;
-			flying = true;
-			drawCell = false;
-			hovering = true;
-			lockLegBase = true;
-			lowAltitude = true;
-			canDrown = false;
-			wobble = false;
-			shadowElevation = 8f;
-			groundLayer = Layer.darkness + 1f;
-			health = 1750000f;
-			speed = 2f;
-			drag = 0.16f;
-			armor = 200f;
-			hitSize = 217f;
-			rotateSpeed = 0.5f;
-			constructor = DespondencyUnit::new;
-			aiController = DespondencyAI::new;
-			legForwardScl = 0.75f;
-			legLength = 672f;
-			legExtension = -48f;
-			legCount = 8;
-			legGroupSize = 2;
-			legPairOffset = 1f;
-			legMoveSpace = 0.33f;
-			legBaseOffset = 51.25f / 4f;
-			legLengthScl = 0.9f;
-			baseLegStraightness = 1f;
-			legStraightness = 0.01f;
-			legStraightLength = 4f;
-			legSplashRange = 100f;
-			legSplashDamage = 5400f;
-			clipSize = 114514.191981f;
-			ammoCapacity = 100000;
-			ammoType = new PowerAmmoType(0.1f);
-			weapons.addAll(new EndAntiAirWeapon(name + "-anti-air") {{
-				x = 45.75f;
-				y = 15.5f;
-				mirror = true;
-				useAmmo = false;
-				reload = 3f * 60f;
-				bullet = new BulletType(0f, 9000f);
-			}}, new LaserWeapon(name + "-laser") {{
-				x = 54.5f;
-				y = -15f;
-				mirror = true;
-				useAmmo = false;
-				continuous = true;
-				rotate = true;
-				alternate = false;
-				reload = 8f * 60f;
-				rotationLimit = 190f;
-				rotateSpeed = 3.5f;
-				//rotateSpeed = 0.5f;
-				shootCone = 2f;
-				shootSound = HSounds.desLaser;
-				laserShootSound = HSounds.desLaserShoot;
-				bullet = new EndCreepLaserBulletType();
-			}}, new Weapon(name + "-railgun") {{
-				x = 63f;
-				y = -34f;
-				shootY = 12f;
-				mirror = true;
-				useAmmo = false;
-				rotate = true;
-				alternate = true;
-				reload = 110f;
-				rotateSpeed = 1.6f;
-				shootCone = 2.5f;
-				shootSound = HSounds.desRailgun;
-				bullet = new EndRailBulletType();
-			}}, new Weapon(name + "-cannon") {{
-				x = 56f;
-				y = -62.75f;
-				shootY = 12f;
-				mirror = true;
-				useAmmo = false;
-				rotate = true;
-				alternate = true;
-				reload = 8.5f * 60 * 2f;
-				rotateSpeed = 1.2f;
-				shootCone = 5f;
-				shootSound = HSounds.desNukeShoot;
-				bullet = new EndNukeBulletType();
-			}}, new EndDespondencyWeapon(), new EndLauncherWeapon(name + "-missile"));
-			hideDetails = false;
-		}};
 		//elite
 		tiger = new BaseUnitType("tiger") {{
 			constructor = DamageAbsorbMechUnit::new;
@@ -3996,7 +3828,7 @@ public final class HUnitTypes {
 				rotate = true;
 				mirror = false;
 				shootSound = Sounds.none;
-				bullet = new EipusinoPointBulletType() {{
+				bullet = new AnnihilatePointBulletType() {{
 					trailEffect = shootEffect = despawnEffect = hitEffect = smokeEffect = Fx.none;
 					hitSize *= 2f;
 					lifetime *= 10f;
@@ -4009,8 +3841,6 @@ public final class HUnitTypes {
 		empire.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> !empire.immunities.contains(s) && (s.reloadMultiplier >= 1 && !s.disarm)));
 		poseidon.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> s.reloadMultiplier >= 1 && !s.disarm));
 		leviathan.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> (s == StatusEffects.none || s.healthMultiplier > 1 || s.damage < 0 || s.reloadMultiplier > 1 || s.damageMultiplier > 1 || s.speedMultiplier > 1) && !s.disarm));
-		despondency.immunities.addAll(Vars.content.statusEffects());
-		despondency.immunities.remove(HStatusEffects.apoptosis);
 		eipusino.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> s == StatusEffects.none || (s.healthMultiplier >= 1 && s.damage <= 0 && s.reloadMultiplier >= 1 && s.damageMultiplier >= 1 && s.speedMultiplier >= 1 && !s.disarm)));
 	}
 

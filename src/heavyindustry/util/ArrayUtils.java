@@ -9,9 +9,6 @@ import arc.func.Func2;
 import arc.func.Intf;
 import arc.util.Eachable;
 import arc.util.Reflect;
-import heavyindustry.util.Utils.ArrayCreator;
-import heavyindustry.util.Utils.ReduceFloat;
-import heavyindustry.util.Utils.ReduceInt;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -25,6 +22,8 @@ public final class ArrayUtils {
 	/**
 	 * Convert vararg to an array.
 	 * Returns an array containing the specified elements.
+	 *
+	 * @apiNote Never use for generic array fields.
 	 */
 	@SafeVarargs
 	public static <T> T[] arrayOf(T... elements) {
@@ -59,6 +58,10 @@ public final class ArrayUtils {
 		return doubles;
 	}
 
+	public static <T> int indexOf(T[] array, T element) {
+		return indexOf(array, element, true);
+	}
+
 	/**
 	 * Returns the index of the first occurrence of the specified element in this list, or -1 if this list does not
 	 * contain the element. More formally, returns the lowest index {@code i} such that {@code Objects.equals(o,
@@ -67,13 +70,25 @@ public final class ArrayUtils {
 	 * @return the index of the first occurrence of the specified element in this list, or -1 if this list does
 	 * not contain the element
 	 */
-	public static <T> int indexOf(T[] array, T element) {
-		for (int i = 0; i < array.length; i++) {
-			if (ObjectUtils.equals(array[i], element)) {
-				return i;
+	public static <T> int indexOf(T[] array, T element, boolean identity) {
+		if (identity || element == null) {
+			for (int i = 0; i < array.length; i++) {
+				if (array[i] == element) {
+					return i;
+				}
+			}
+		} else {
+			for (int i = 0; i < array.length; i++) {
+				if (element.equals(array[i])) {
+					return i;
+				}
 			}
 		}
 		return -1;
+	}
+
+	public static <T> int indexOf(T[] array, int src, int end, T element) {
+		return indexOf(array, src, end, element, true);
 	}
 
 	/**
@@ -81,10 +96,20 @@ public final class ArrayUtils {
 	 * @param end final position
 	 * @since 1.0.8
 	 */
-	public static <T> int indexOf(T[] array, int src, int end, T element) {
-		for (int i = Math.max(0, src); i < Math.min(array.length, end); i++) {
-			if (ObjectUtils.equals(array[i], element)) {
-				return i;
+	public static <T> int indexOf(T[] array, int src, int end, T element, boolean identity) {
+		int a = Math.max(0, src), b = Math.min(array.length, end);
+
+		if (identity || element == null) {
+			for (int i = a; i < b; i++) {
+				if (array[i] == element) {
+					return i;
+				}
+			}
+		} else {
+			for (int i = a; i < b; i++) {
+				if (element.equals(array[i])) {
+					return i;
+				}
 			}
 		}
 		return -1;
@@ -100,9 +125,30 @@ public final class ArrayUtils {
 	 * @since 1.0.8
 	 */
 	public static <T> int lastIndexOf(T[] array, T element) {
-		for (int i = array.length - 1; i >= 0; i--) {
-			if (ObjectUtils.equals(array[i], element)) {
-				return i;
+		return lastIndexOf(array, element, true);
+	}
+
+	/**
+	 * Returns the index of the last occurrence of the specified element in this list, or -1 if this list does not
+	 * contain the element. More formally, returns the highest index {@code i} such that {@code Objects.equals(o,
+	 * get(i))}, or -1 if there is no such index.
+	 *
+	 * @return the index of the last occurrence of the specified element in this list, or -1 if this list does
+	 * not contain the element
+	 * @since 1.0.8
+	 */
+	public static <T> int lastIndexOf(T[] array, T element, boolean identity) {
+		if (identity || element == null) {
+			for (int i = array.length - 1; i >= 0; i--) {
+				if (array[i] == element) {
+					return i;
+				}
+			}
+		} else {
+			for (int i = array.length - 1; i >= 0; i--) {
+				if (element.equals(array[i])) {
+					return i;
+				}
 			}
 		}
 		return -1;
@@ -280,6 +326,239 @@ public final class ArrayUtils {
 		System.arraycopy(originalArray, 1, newArray, 0, originalArray.length - 1);
 
 		return newArray;
+	}
+
+	public static int[] sort(int[] arr) {
+		for (int i = 1; i < arr.length; i++) {
+			int tmp = arr[i];
+
+			int j = i;
+			while (j > 0 && tmp < arr[j - 1]) {
+				arr[j] = arr[j - 1];
+				j--;
+			}
+
+			if (j != i) {
+				arr[j] = tmp;
+			}
+		}
+		return arr;
+	}
+
+	public static void shellSort(int[] arr) {
+		int temp;
+		for (int step = arr.length / 2; step >= 1; step /= 2) {
+			for (int i = step; i < arr.length; i++) {
+				temp = arr[i];
+				int j = i - step;
+				while (j >= 0 && arr[j] > temp) {
+					arr[j + step] = arr[j];
+					j -= step;
+				}
+				arr[j + step] = temp;
+			}
+		}
+	}
+
+	/** Used to avoid performance overhead caused by creating an instance of {@link StringBuilder}. */
+	public static void append(StringBuilder b, boolean[] a) {
+		if (a == null) {
+			b.append("null");
+			return;
+		}
+		int max = a.length - 1;
+		if (max == -1) {
+			b.append("[]");
+			return;
+		}
+
+		b.append('[');
+		for (int i = 0; i < a.length; i++) {
+			b.append(a[i]);
+			if (i == max) {
+				b.append(']');
+				break;
+			}
+			b.append(", ");
+		}
+	}
+
+	public static void append(StringBuilder b, byte[] a) {
+		if (a == null) {
+			b.append("null");
+			return;
+		}
+		int max = a.length - 1;
+		if (max == -1) {
+			b.append("[]");
+			return;
+		}
+
+		b.append('[');
+		for (int i = 0; i < a.length; i++) {
+			b.append(a[i]);
+			if (i == max) {
+				b.append(']');
+				break;
+			}
+			b.append(", ");
+		}
+	}
+
+	public static void append(StringBuilder b, short[] a) {
+		if (a == null) {
+			b.append("null");
+			return;
+		}
+		int max = a.length - 1;
+		if (max == -1) {
+			b.append("[]");
+			return;
+		}
+
+		b.append('[');
+		for (int i = 0; i < a.length; i++) {
+			b.append(a[i]);
+			if (i == max) {
+				b.append(']');
+				break;
+			}
+			b.append(", ");
+		}
+	}
+
+	public static void append(StringBuilder b, int[] a) {
+		if (a == null) {
+			b.append("null");
+			return;
+		}
+		int max = a.length - 1;
+		if (max == -1) {
+			b.append("[]");
+			return;
+		}
+
+		b.append('[');
+		for (int i = 0; i < a.length; i++) {
+			b.append(a[i]);
+			if (i == max) {
+				b.append(']');
+				break;
+			}
+			b.append(", ");
+		}
+	}
+
+	public static void append(StringBuilder b, long[] a) {
+		if (a == null) {
+			b.append("null");
+			return;
+		}
+		int max = a.length - 1;
+		if (max == -1) {
+			b.append("[]");
+			return;
+		}
+
+		b.append('[');
+		for (int i = 0; i < a.length; i++) {
+			b.append(a[i]);
+			if (i == max) {
+				b.append(']');
+				break;
+			}
+			b.append(", ");
+		}
+	}
+
+	public static void append(StringBuilder b, char[] a) {
+		if (a == null) {
+			b.append("null");
+			return;
+		}
+		int max = a.length - 1;
+		if (max == -1) {
+			b.append("[]");
+			return;
+		}
+
+		b.append('[');
+
+		for (int i = 0; i < a.length; i++) {
+			b.append(a[i]);
+			if (i == max) {
+				b.append(']');
+				break;
+			}
+			b.append(", ");
+		}
+	}
+
+	public static void append(StringBuilder b, float[] a) {
+		if (a == null) {
+			b.append("null");
+			return;
+		}
+		int max = a.length - 1;
+		if (max == -1) {
+			b.append("[]");
+			return;
+		}
+
+		b.append('[');
+		for (int i = 0; i < a.length; i++) {
+			b.append(a[i]);
+			if (i == max) {
+				b.append(']');
+				break;
+			}
+			b.append(", ");
+		}
+	}
+
+	public static void append(StringBuilder b, double[] a) {
+		if (a == null) {
+			b.append("null");
+			return;
+		}
+		int max = a.length - 1;
+		if (max == -1) {
+			b.append("[]");
+			return;
+		}
+
+		b.append('[');
+		for (int i = 0; i < a.length; i++) {
+			b.append(a[i]);
+			if (i == max) {
+				b.append(']');
+				break;
+			}
+			b.append(", ");
+		}
+	}
+
+	public static void append(StringBuilder b, Object[] a) {
+		if (a == null) {
+			b.append("null");
+			return;
+		}
+
+		int max = a.length - 1;
+		if (max == -1) {
+			b.append("[]");
+			return;
+		}
+
+		b.append('[');
+		for (int i = 0; i < a.length; i++) {
+			b.append(a[i]);
+			if (i == max) {
+				b.append(']');
+				break;
+			}
+			b.append(", ");
+		}
 	}
 
 	public static <T> boolean any(T[] array, Boolf<T> pred) {
@@ -461,5 +740,17 @@ public final class ArrayUtils {
 			while (first.hasNext()) cons.get(first.next());
 			while (second.hasNext()) cons.get(second.next());
 		}
+	}
+
+	public interface ReduceInt<T> {
+		int get(T item, int accum);
+	}
+
+	public interface ReduceFloat<T> {
+		float get(T item, float accum);
+	}
+
+	public interface ArrayCreator<T> {
+		T[] get(int size);
 	}
 }

@@ -8,6 +8,8 @@ import arc.math.geom.Point2;
 import arc.util.Eachable;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.util.SpriteUtils;
+import heavyindustry.util.Utils;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.gen.Teamc;
@@ -16,8 +18,6 @@ import mindustry.graphics.Layer;
 import mindustry.type.Item;
 import mindustry.world.blocks.distribution.Conveyor;
 
-import static heavyindustry.util.Utils.reverse;
-import static heavyindustry.util.Utils.splitLayers;
 import static mindustry.Vars.itemSize;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
@@ -50,7 +50,7 @@ public class TubeConveyor extends AdaptConveyor {
 	public void load() {
 		super.load();
 
-		topRegion = splitLayers(name + "-sheet", 32, 2);
+		topRegion = SpriteUtils.splitLayers(name + "-sheet", 32, 2);
 		capRegion = new TextureRegion[]{topRegion[1][0], topRegion[1][1]};
 		editorRegion = Core.atlas.find(name + "-editor");
 	}
@@ -167,8 +167,8 @@ public class TubeConveyor extends AdaptConveyor {
 
 		@Override
 		public int acceptStack(Item item, int amount, Teamc source) {
-			if (isEnd(reverse(rotation)) && items.total() >= 2) return 0;
-			if (isEnd(reverse(rotation)) && isEnd(rotation) && items.total() >= 1) return 0;
+			if (isEnd(Utils.reverse(rotation)) && items.total() >= 2) return 0;
+			if (isEnd(Utils.reverse(rotation)) && isEnd(rotation) && items.total() >= 1) return 0;
 			return Math.min((int) (minitem / itemSpace), amount);
 		}
 

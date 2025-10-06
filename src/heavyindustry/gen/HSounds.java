@@ -50,10 +50,6 @@ public final class HSounds {
 			laserCharge = new Sound(),
 			laserSmall = new Sound(),
 			laserBig = new Sound(),
-			aoeShoot = new Sound(),
-			apathyBleed = new Sound(),
-			apathyDeath = new Sound(),
-			apathyDeathCry = new Sound(),
 			desSpearHit = new Sound(),
 			desSpearCry = new Sound(),
 			desLaser = new Sound(),
@@ -114,10 +110,6 @@ public final class HSounds {
 		laserCharge = new Sound(ogg("laserCharge"));
 		laserSmall = new Sound(ogg("laserSmall"));
 		laserBig = new Sound(ogg("laserBig"));
-		aoeShoot = new Sound(ogg("aoeShoot"));
-		apathyBleed = new Sound(ogg("apathyBleed"));
-		apathyDeath = new Sound(ogg("apathyDeath"));
-		apathyDeathCry = new Sound(ogg("apathyDeathCry"));
 		desSpearHit = new Sound(ogg("desSpearHit"));
 		desSpearCry = new Sound(ogg("desSpearCry"));
 		desLaser = new Sound(ogg("desLaser"));

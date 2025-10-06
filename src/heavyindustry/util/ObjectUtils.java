@@ -4,14 +4,20 @@ import arc.func.Cons;
 import arc.func.ConsT;
 import arc.util.Log;
 import arc.util.Nullable;
+import arc.util.OS;
 import heavyindustry.HVars;
 import heavyindustry.func.ProvT;
 import heavyindustry.func.RunT;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 
+/**
+ * A utility assembly for objects.
+ *
+ * @author Eipusino
+ * @since 1.0.8
+ */
 public final class ObjectUtils {
 	private ObjectUtils() {}
 
@@ -35,18 +41,21 @@ public final class ObjectUtils {
 		return result;
 	}
 
+	/** Used to optimize code conciseness in specific situations. */
 	public static <T> T requireInstance(Class<?> type, T obj) {
 		if (obj != null && !type.isInstance(obj))
 			throw new ClassCastException();
 		return obj;
 	}
 
+	/** Used to optimize code conciseness in specific situations. */
 	public static <T> T requireNonNullInstance(Class<?> type, T obj) {
 		if (!type.isInstance(obj))
 			throw new ClassCastException();
 		return obj;
 	}
 
+	/** Used to optimize code conciseness in specific situations. */
 	public static <T> T requireNonNull(T obj) {
 		if (obj == null)
 			throw new NullPointerException();
@@ -63,6 +72,7 @@ public final class ObjectUtils {
 		return obj;
 	}
 
+	/** Used to optimize code conciseness in specific situations. */
 	public static void run(RunT<Throwable> cons) {
 		try {
 			cons.run();
@@ -71,6 +81,7 @@ public final class ObjectUtils {
 		}
 	}
 
+	/** Used to optimize code conciseness in specific situations. */
 	public static <T> void get(ConsT<T, Throwable> cons, T obj) {
 		try {
 			cons.get(obj);
@@ -79,6 +90,7 @@ public final class ObjectUtils {
 		}
 	}
 
+	/** Used to optimize code conciseness in specific situations. */
 	public static <T> T get(ProvT<T, Throwable> prov, T def) {
 		try {
 			return prov.get();
@@ -89,6 +101,7 @@ public final class ObjectUtils {
 		}
 	}
 
+	/** Used to optimize code conciseness in specific situations. */
 	public static <T> T get(ProvT<T, Throwable> prov, ConsT<T, Throwable> cons, T def) {
 		try {
 			T t = prov.get();
@@ -101,11 +114,13 @@ public final class ObjectUtils {
 		}
 	}
 
+	/** Used to optimize code conciseness in specific situations. */
 	@SuppressWarnings("unchecked")
 	public static <T> T cast(Object obj) {
 		return (T) obj;
 	}
 
+	/** Used to optimize code conciseness in specific situations. */
 	@SuppressWarnings("unchecked")
 	public static <T> T cast(Object obj, Class<T> type, T def) {
 		if (obj != null && !type.isInstance(obj))
@@ -125,7 +140,7 @@ public final class ObjectUtils {
 	/**
 	 * Returns a string reporting the value of each declared field, via reflection.
 	 * <p>Static fields are automatically skipped. Produces output like:
-	 * <p>{@code "SimpleClassName[integer = 1234, string = "hello", character = 'c', intArray = [1, 2, 3], object = null]"}.
+	 * <p>{@code "SimpleClassName[integer = 1234, string = "hello", character = 'c', intArray = [1, 2, 3], none = null]"}.
 	 * <p>If there is an exception in obtaining the value of a certain field, it will result in:
 	 * <p>{@code "SimpleClassName[unknown = ???]"}.
 	 *
@@ -136,7 +151,7 @@ public final class ObjectUtils {
 		StringBuilder sb = new StringBuilder();
 		sb.append(c.getSimpleName()).append('[');
 		int i = 0;
-		while (c != Object.class) {
+		while (c != null) {
 			for (Field f : c.getDeclaredFields()) {
 				if (Modifier.isStatic(f.getModifiers())) {
 					continue;
@@ -152,7 +167,8 @@ public final class ObjectUtils {
 				try {
 					Object value;
 
-					if (HVars.hasUnsafe) {
+					// On the Android platform, the reflection performance is not low, so there is no need to use Unsafe.
+					if (!OS.isAndroid && HVars.hasUnsafe) {
 						value = Unsafer.get(f, o);
 					} else {
 						f.setAccessible(true);
@@ -168,28 +184,27 @@ public final class ObjectUtils {
 					Class<?> type = value.getClass();
 
 					if (type.isArray()) {
+						// I think using instanceof would be better.
 						if (value instanceof float[] a) {
-							sb.append(Arrays.toString(a)); // I think using instanceof would be better.
+							ArrayUtils.append(sb, a);
 						} else if (value instanceof int[] a) {
-							sb.append(Arrays.toString(a));
+							ArrayUtils.append(sb, a);
 						} else if (value instanceof boolean[] a) {
-							sb.append(Arrays.toString(a));
+							ArrayUtils.append(sb, a);
 						} else if (value instanceof byte[] a) {
-							sb.append(Arrays.toString(a));
+							ArrayUtils.append(sb, a);
 						} else if (value instanceof char[] a) {
-							//sb.append(Arrays.toString(a));
-							append(sb, a);
+							ArrayUtils.append(sb, a);
 						} else if (value instanceof double[] a) {
-							sb.append(Arrays.toString(a));
+							ArrayUtils.append(sb, a);
 						} else if (value instanceof long[] a) {
-							sb.append(Arrays.toString(a));
+							ArrayUtils.append(sb, a);
 						} else if (value instanceof short[] a) {
-							sb.append(Arrays.toString(a));
-						} else if (value instanceof String[] a) {
-							append(sb, a);
+							ArrayUtils.append(sb, a);
 						} else if (value instanceof Object[] a) {
-							sb.append(Arrays.toString(a));
+							ArrayUtils.append(sb, a);
 						} else {
+							// It shouldn't have happened...
 							sb.append("???");
 						}
 					} else if (value instanceof Character h) {
@@ -204,55 +219,9 @@ public final class ObjectUtils {
 				}
 			}
 
-			c = last ? c.getSuperclass() : Object.class;
+			c = last ? c.getSuperclass() : null;
 		}
 		sb.append("]");
 		return sb.toString();
-	}
-
-	public static void append(StringBuilder b, char[] a) {
-		if (a == null) {
-			b.append("null");
-			return;
-		}
-		int iMax = a.length - 1;
-		if (iMax == -1) {
-			b.append("[]");
-			return;
-		}
-
-		b.append('[');
-
-		for (int i = 0; i < a.length; i++) {
-			b.append('\'').append(a[i]).append('\'');
-			if (i == iMax) {
-				b.append(']');
-				break;
-			}
-			b.append(", ");
-		}
-	}
-
-	public static void append(StringBuilder b, String[] a) {
-		if (a == null) {
-			b.append("null");
-			return;
-		}
-
-		int iMax = a.length - 1;
-		if (iMax == -1) {
-			b.append("[]");
-			return;
-		}
-
-		b.append('[');
-		for (int i = 0; i < a.length; i++) {
-			b.append('"').append(a[i]).append('"');
-			if (i == iMax) {
-				b.append(']');
-				break;
-			}
-			b.append(", ");
-		}
 	}
 }

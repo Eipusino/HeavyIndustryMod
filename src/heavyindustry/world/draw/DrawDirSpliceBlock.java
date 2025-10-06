@@ -13,13 +13,13 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Point2;
 import arc.util.Eachable;
 import heavyindustry.util.DirEdges;
+import heavyindustry.util.SpriteUtils;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 
 import static heavyindustry.graphics.HPixmaps.rotatePixmap90;
-import static heavyindustry.util.Utils.split;
 
 public class DrawDirSpliceBlock extends DrawBlock {
 	public TextureRegion[] regions = new TextureRegion[16];
@@ -46,7 +46,7 @@ public class DrawDirSpliceBlock extends DrawBlock {
 	@Override
 	public void load(Block block) {
 		if (split) {
-			regions = split(block.name + suffix, size * 32, 0);
+			regions = SpriteUtils.splitLayer(block.name + suffix, size * 32, 0);
 		} else {
 			Pixmap[] splicers = new Pixmap[4];
 

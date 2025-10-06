@@ -11,6 +11,7 @@ import arc.util.pooling.Pools;
 import heavyindustry.content.HBullets;
 import heavyindustry.content.HStatusEffects;
 import heavyindustry.util.Constant;
+import heavyindustry.util.SpriteUtils;
 import mindustry.core.World;
 import mindustry.entities.Damage;
 import mindustry.entities.Effect;
@@ -29,7 +30,6 @@ import mindustry.world.Tile;
 import mindustry.world.meta.Attribute;
 
 import static heavyindustry.HVars.MOD_NAME;
-import static heavyindustry.util.Utils.split;
 import static mindustry.Vars.control;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.indexer;
@@ -48,7 +48,7 @@ public class UltFire extends Fire {
 	});
 
 	static {
-		ultRegion = split(MOD_NAME + "-ult-fire", 160, 10, 4);
+		ultRegion = SpriteUtils.split(MOD_NAME + "-ult-fire", 160, 10, 4);
 	}
 
 	public static void create(float x, float y, Team team) {

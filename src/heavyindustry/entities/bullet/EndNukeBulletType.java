@@ -22,13 +22,17 @@ import mindustry.gen.Healthc;
 import mindustry.gen.Unit;
 import mindustry.graphics.Layer;
 
-public class EndNukeBulletType extends BasicBulletType {
-	public static int lastUnit, lastBuilding;
+import static heavyindustry.HVars.MOD_NAME;
 
-	public static volatile int lastMax;
+public class EndNukeBulletType extends BasicBulletType {
+	public static int lastMax, lastUnit, lastBuilding;
 
 	public EndNukeBulletType() {
-		super(17f, 50000f, "missile-large");
+		this(17f, 50000f, MOD_NAME + "-large-missile");
+	}
+
+	public EndNukeBulletType(float speed, float damage, String bulletSprite) {
+		super(speed, damage, bulletSprite);
 
 		backColor = trailColor = hitColor = HPal.red;
 		frontColor = HPal.red.cpy().mul(2f);
@@ -40,11 +44,17 @@ public class EndNukeBulletType extends BasicBulletType {
 		trailLength = 5;
 		trailWidth = 5f;
 
-		lifetime = 60f;
+		lifetime = 180f;
 
 		despawnHit = true;
 		collidesTiles = false;
 		scaleLife = true;
+
+		shieldDamageMultiplier += 1.75f;
+
+		reflectable = false;
+		hittable = false;
+		absorbable = false;
 
 		hitEffect = Fx.none;
 		despawnEffect = Fx.none;
@@ -56,6 +66,7 @@ public class EndNukeBulletType extends BasicBulletType {
 	@Override
 	public void hit(Bullet b, float x, float y) {
 		super.hit(b, x, y);
+
 		float bx = b.x, by = b.y;
 		Team team = b.team;
 
@@ -85,12 +96,12 @@ public class EndNukeBulletType extends BasicBulletType {
 		lastMax = Vars.headless ? -1 : Core.settings.getInt("hi-vaporize-batch", 100);
 
 		HEntity.scanEnemies(b.team, b.x, b.y, 480f, true, true, t -> {
-			if (t instanceof Unit u) {
+			if (t instanceof Unit u && u.hittable()) {
 				//float damageScl = 1f;
 				//if (u.isGrounded()) damageScl = HEntity.inRayCastCircle(bx, by, arr, u);
 				float damageScl = HEntity.inRayCastCircle(bx, by, arr, u);
 
-				if (damageScl > 0) {
+				if (damageScl > 0f) {
 					Tmp.v2.trns(Angles.angle(bx, by, u.x, u.y), (16f + 5f / u.mass()) * damageScl);
 					u.vel.add(Tmp.v2);
 
@@ -167,18 +178,5 @@ public class EndNukeBulletType extends BasicBulletType {
 		HFx.desNuke.at(b.x, b.y, 479f, arr);
 
 		lastBuilding = lastUnit = 0;
-
-		/*HVars.listener.impactFrames(bx, by, b.rotation(), 23f, false, () -> {
-			for (int i = 0; i < arr.length; i++) {
-				float len1 = arr[i], len2 = arr[(i + 1) % arr.length];
-				float ang1 = (i / (float)arr.length) * 360f;
-				float ang2 = ((i + 1f) / arr.length) * 360f;
-
-				float x1 = Mathf.cosDeg(ang1) * len1, y1 = Mathf.sinDeg(ang1) * len1;
-				float x2 = Mathf.cosDeg(ang2) * len2, y2 = Mathf.sinDeg(ang2) * len2;
-
-				Fill.tri(bx, by, bx + x1, by + y1, bx + x2, by + y2);
-			}
-		});*/
 	}
 }

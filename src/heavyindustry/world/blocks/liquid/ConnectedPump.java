@@ -5,7 +5,6 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
 import heavyindustry.util.SpriteUtils;
-import heavyindustry.util.Utils;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
 import mindustry.type.Liquid;
@@ -25,7 +24,7 @@ public class ConnectedPump extends Pump {
 	public void load() {
 		super.load();
 
-		splits = Utils.split(name + "-autotile", 32, 4, 4);
+		splits = SpriteUtils.split(name + "-autotile", 32, 4, 4);
 	}
 
 	@Override

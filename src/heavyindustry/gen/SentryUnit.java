@@ -47,15 +47,15 @@ public class SentryUnit extends BaseTimedKillUnit implements Sentryc {
 
 			anchorDrag = sType.anchorDrag * (isGrounded() ? floorOn().dragMultiplier : 1f) * dragMultiplier * Vars.state.rules.dragMultiplier;
 
-			//Pull unit to anchor.
-			//Similar to impulseNet, does not factor in mass
+			// Pull unit to anchor.
+			// Similar to impulseNet, does not factor in mass
 			Tmp.v1.set(anchorX, anchorY).sub(x, y).limit(dst(anchorX, anchorY) * sType.pullScale * Time.delta);
 			vel.add(Tmp.v1);
 
-			//manually move units to simulate velocity for remote players
+			// Manually move units to simulate velocity for remote players
 			if (isRemote()) move(Tmp.v1);
 
-			//Pull anchor to unit
+			// Pull anchor to unit
 			Tmp.v1.set(x, y).sub(anchorX, anchorY).limit(dst(anchorX, anchorY) * sType.anchorPullScale * Time.delta);
 			anchorVel.add(Tmp.v1);
 

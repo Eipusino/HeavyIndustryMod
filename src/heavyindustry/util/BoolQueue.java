@@ -3,7 +3,7 @@ package heavyindustry.util;
 import java.util.NoSuchElementException;
 
 /** Queue for booleans. */
-public class BoolQueuef {
+public class BoolQueue {
 	/** Number of elements in the queue. */
 	public int size = 0;
 	/** Contains the values in the queue. Head and tail indices go in a circle around this array, wrapping at the end. */
@@ -17,12 +17,12 @@ public class BoolQueuef {
 	protected int tail = 0;
 
 	/** Creates a new Queue which can hold 16 values without needing to resize backing array. */
-	public BoolQueuef() {
+	public BoolQueue() {
 		this(16);
 	}
 
 	/** Creates a new Queue which can hold the specified number of values without needing to resize backing array. */
-	public BoolQueuef(int initialSize) {
+	public BoolQueue(int initialSize) {
 		values = new boolean[initialSize];
 	}
 

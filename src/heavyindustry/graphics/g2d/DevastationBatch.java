@@ -17,7 +17,7 @@ import mindustry.graphics.Layer;
 public class DevastationBatch extends Batch {
 	protected final Color color = new Color(1, 1, 1, 1);
 
-	Cons<Devastation> cons;
+	public Cons<Devastation> cons;
 	public float baseZ = Layer.block;
 
 	//public void switchBatch(Runnable drawer, SpriteHandler handler, VaporizeHandler cons)

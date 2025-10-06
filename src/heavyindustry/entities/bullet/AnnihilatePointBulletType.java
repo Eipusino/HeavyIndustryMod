@@ -16,9 +16,13 @@ import mindustry.gen.Hitboxc;
 import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
 
-public class EipusinoPointBulletType extends PointBulletType {
+public class AnnihilatePointBulletType extends PointBulletType {
 	protected static float cdist = 0f;
 	protected static Unit result;
+
+	public AnnihilatePointBulletType() {
+		reflectable = false;
+	}
 
 	@Override
 	public void hitEntity(Bullet b, Hitboxc entity, float health) {

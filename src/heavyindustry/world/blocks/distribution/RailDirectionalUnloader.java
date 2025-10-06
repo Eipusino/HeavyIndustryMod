@@ -8,7 +8,7 @@ import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.Eachable;
 import arc.util.Time;
-import heavyindustry.util.Utils;
+import heavyindustry.util.SpriteUtils;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.graphics.Layer;
@@ -31,7 +31,7 @@ public class RailDirectionalUnloader extends DirectionalUnloader {
 	public void load() {
 		super.load();
 
-		regions = Utils.split(name + "-base", 32, 0);
+		regions = SpriteUtils.splitLayer(name + "-base", 32, 0);
 	}
 
 	@Override

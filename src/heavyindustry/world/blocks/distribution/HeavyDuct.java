@@ -9,6 +9,7 @@ import arc.math.geom.Point2;
 import arc.struct.Seq;
 import arc.util.Eachable;
 import arc.util.Tmp;
+import heavyindustry.util.SpriteUtils;
 import mindustry.content.Blocks;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -20,7 +21,6 @@ import mindustry.world.blocks.distribution.Junction;
 import mindustry.world.blocks.sandbox.ItemSource;
 import mindustry.world.blocks.sandbox.ItemVoid;
 
-import static heavyindustry.util.Utils.split;
 import static mindustry.Vars.itemSize;
 import static mindustry.Vars.tilesize;
 
@@ -42,7 +42,7 @@ public class HeavyDuct extends Duct {
 	@Override
 	public void load() {
 		super.load();
-		regions = split(name + "-sheet", 32, 0);
+		regions = SpriteUtils.splitLayer(name + "-sheet", 32, 0);
 	}
 
 	@Override

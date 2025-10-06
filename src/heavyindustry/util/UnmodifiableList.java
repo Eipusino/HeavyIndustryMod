@@ -117,7 +117,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 		int h = 1;
 		for (int i = 0; i < size; i++) {
 			h *= 31;
-			Object item = items[i];
+			E item = items[i];
 			if (item != null) h += item.hashCode();
 		}
 		return h;

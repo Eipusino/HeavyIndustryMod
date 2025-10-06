@@ -7,7 +7,7 @@ import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.util.Utils;
+import heavyindustry.util.SpriteUtils;
 import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Items;
@@ -47,10 +47,10 @@ public class SporeFarmBlock extends Block {
 	public void load() {
 		super.load();
 
-		sporeRegions = Utils.split(name + "-spore", 32, 5, 1);
-		groundRegions = Utils.split(name + "-ground", 32, 5, 1);
+		sporeRegions = SpriteUtils.split(name + "-spore", 32, 5, 1);
+		groundRegions = SpriteUtils.split(name + "-ground", 32, 5, 1);
 
-		fenceRegions = Utils.split(name + "-fence", 32, 12, 4);
+		fenceRegions = SpriteUtils.split(name + "-fence", 32, 12, 4);
 		cageFloor = Core.atlas.find(name + "-floor");
 	}
 

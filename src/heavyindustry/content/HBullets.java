@@ -15,16 +15,9 @@ import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.entities.HEntity;
 import heavyindustry.entities.bullet.AccelBulletType;
-import heavyindustry.entities.bullet.ApathyAoEBulletType;
-import heavyindustry.entities.bullet.ApathyBigLaserBulletType;
-import heavyindustry.entities.bullet.ApathySmallLaserBulletType;
-import heavyindustry.entities.bullet.ApathySweepLaserBulletType;
 import heavyindustry.entities.bullet.BlackHoleBulletType;
 import heavyindustry.entities.bullet.BoidBulletType;
 import heavyindustry.entities.bullet.EffectBulletType;
-import heavyindustry.entities.bullet.EmpathyPinBulletType;
-import heavyindustry.entities.bullet.EmpathySwordBulletType;
-import heavyindustry.entities.bullet.EmpathyTrackerBulletType;
 import heavyindustry.entities.bullet.LightningLinkerBulletType;
 import heavyindustry.entities.bullet.ShieldBreakerType;
 import heavyindustry.entities.bullet.StrafeLaserBulletType;
@@ -86,8 +79,7 @@ public final class HBullets {
 			ultFireball, basicSkyFrag, annMissile, singularityBulletStrafeLaser, singularityBulletAccel, singularityBulletLightningBall,
 			hyperBlast, hyperBlastLinker,
 			arc9000frag, arc9000, arc9000hyper,
-			collapseFrag, collapse,
-			smallLaser, sweep, aoe, bigLaser, sentryLaser, pin, tracker, sword;
+			collapseFrag, collapse;
 
 	/** Don't let anyone instantiate this class. */
 	private HBullets() {}
@@ -194,6 +186,7 @@ public final class HBullets {
 			scaledSplashDamage = true;
 			despawnHit = true;
 			collides = false;
+			reflectable = false;
 			shrinkY = shrinkX = 0.33f;
 			width = 17f;
 			height = 55f;
@@ -329,8 +322,7 @@ public final class HBullets {
 					if (lightningSpacing > 0) {
 						int idx = 0;
 						for (float i = 0; i <= resultLength; i += lightningSpacing) {
-							float cx = b.x + Angles.trnsx(rot, i),
-									cy = b.y + Angles.trnsy(rot, i);
+							float cx = b.x + Angles.trnsx(rot, i), cy = b.y + Angles.trnsy(rot, i);
 
 							int f = idx++;
 
@@ -338,7 +330,7 @@ public final class HBullets {
 								Time.run(f * lightningDelay, () -> {
 									if (b.isAdded() && b.type == this) {
 										Lightning.create(b, lightningColor,
-												lightningDamage < 0 ? damage : lightningDamage,
+												lightningDamage < 0f ? damage : lightningDamage,
 												cx, cy, rot + 90 * s + Mathf.range(lightningAngleRand),
 												lightningLength + Mathf.random(lightningLengthRand));
 									}
@@ -606,6 +598,7 @@ public final class HBullets {
 			hitEffect = new MultiEffect(HFx.hitSpark(backColor, 75f, 24, 90f, 2f, 12f), HFx.square45_6_45, HFx.lineCircleOut(backColor, 18f, 20, 2), HFx.sharpBlast(backColor, frontColor, 120f, 40f));
 			hittable = false;
 			absorbable = false;
+			reflectable = false;
 		}
 			@Override
 			public void createFrags(Bullet b, float x, float y) {
@@ -1133,6 +1126,7 @@ public final class HBullets {
 			lifetime = 90f;
 			width = 17f;
 			height = 42f;
+			reflectable = false;
 			hittable = false;
 			absorbable = false;
 			collidesTiles = false;
@@ -1172,6 +1166,7 @@ public final class HBullets {
 			lightningDamage = 375f;
 			hittable = false;
 			collidesTiles = true;
+			reflectable = false;
 			pierce = false;
 			collides = false;
 			absorbable = false;
@@ -1218,6 +1213,7 @@ public final class HBullets {
 			width = height = shrinkX = shrinkY = 0;
 			collides = false;
 			despawnHit = false;
+			reflectable = false;
 			collidesAir = collidesGround = collidesTiles = true;
 			splashDamage = 4000f;
 			velocityBegin = 6f;
@@ -1532,17 +1528,5 @@ public final class HBullets {
 				Draw.z(z);
 			}
 		};
-		smallLaser = new ApathySmallLaserBulletType();
-		sweep = new ApathySweepLaserBulletType();
-		aoe = new ApathyAoEBulletType();
-		bigLaser = new ApathyBigLaserBulletType();
-		sentryLaser = new LaserBulletType(900f) {{
-			length = 1400f;
-			colors = new Color[]{Color.white};
-			width = 5f;
-		}};
-		pin = new EmpathyPinBulletType();
-		tracker = new EmpathyTrackerBulletType();
-		sword = new EmpathySwordBulletType();
 	}
 }

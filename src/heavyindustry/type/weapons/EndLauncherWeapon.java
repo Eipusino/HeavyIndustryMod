@@ -21,7 +21,7 @@ import mindustry.type.Weapon;
 
 public class EndLauncherWeapon extends Weapon {
 	//x, y, rotation
-	protected static float[] targets = {
+	public float[] targets = {
 			-8f, 0f, -45f,
 			12f, 10f, -35f,
 			25f, 20f, -25f,

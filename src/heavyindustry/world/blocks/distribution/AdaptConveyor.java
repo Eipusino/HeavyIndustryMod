@@ -8,6 +8,7 @@ import arc.math.geom.Point2;
 import arc.util.Eachable;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.util.SpriteUtils;
 import mindustry.entities.units.BuildPlan;
 import mindustry.game.Team;
 import mindustry.gen.Building;
@@ -18,7 +19,6 @@ import mindustry.world.Edges;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Conveyor;
 
-import static heavyindustry.util.Utils.splitUnLayers;
 import static mindustry.Vars.itemSize;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
@@ -45,8 +45,8 @@ public class AdaptConveyor extends Conveyor {
 			teamRegions[team.id] = teamRegion.found() && team.hasPalette ? Core.atlas.find(name + "-team-" + team.name, teamRegion) : teamRegion;
 		}
 
-		regions = splitUnLayers(Core.atlas.find(name + "-base"), 32);
-		edgeRegions = splitUnLayers(Core.atlas.find(name + "-edge"), 32);
+		regions = SpriteUtils.split(Core.atlas.find(name + "-base"), 32);
+		edgeRegions = SpriteUtils.split(Core.atlas.find(name + "-edge"), 32);
 	}
 
 	@Override

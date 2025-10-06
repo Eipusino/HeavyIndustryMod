@@ -4,11 +4,10 @@ import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Log;
+import heavyindustry.util.SpriteUtils;
 import mindustry.Vars;
 import mindustry.game.Team;
 import mindustry.world.blocks.environment.Floor;
-
-import static heavyindustry.util.Utils.split;
 
 public class ConnectedFloor extends Floor {
 	public ConnectedFloor(String name) {
@@ -55,21 +54,21 @@ public class ConnectedFloor extends Floor {
 		}
 
 		if (variants > 0) {
-			variantRegions = split(name + "-sheet", 32, 0);
+			variantRegions = SpriteUtils.splitLayer(name + "-sheet", 32, 0);
 		} else {
 			variantRegions = new TextureRegion[]{region};
 		}
 
 		if (autotile) {
-			autotileRegions = split(name + "-autotile", 32, 12, 4);
+			autotileRegions = SpriteUtils.split(name + "-autotile", 32, 12, 4);
 			if (autotileVariants > 1) {
 				autotileVariantRegions = new TextureRegion[variants][];
 				for (int i = 0; i < variants; i++) {
-					autotileVariantRegions[i] = split(name + "-" + (i + 1) + "-autotile", 32, 12, 4);
+					autotileVariantRegions[i] = SpriteUtils.split(name + "-" + (i + 1) + "-autotile", 32, 12, 4);
 				}
 			}
 			if (autotileMidVariants > 1) {
-				autotileMidRegions = split(name + "-mid", 32, 0);
+				autotileMidRegions = SpriteUtils.splitLayer(name + "-mid", 32, 0);
 			}
 		}
 

@@ -6,7 +6,6 @@ import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
-import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
 import arc.math.Interp;
@@ -17,6 +16,7 @@ import arc.math.geom.Rect;
 import arc.math.geom.Vec2;
 import arc.struct.IntSeq;
 import arc.struct.IntSet;
+import arc.struct.IntSet.IntSetIterator;
 import arc.struct.ObjectMap;
 import arc.struct.Seq;
 import arc.util.Nullable;
@@ -109,161 +109,24 @@ public final class Utils {
 		};
 	}
 
-	/**
-	 * Gets multiple regions inside a {@link TextureRegion}.
-	 *
-	 * @param name       sprite name
-	 * @param size       split size, pixels per grid
-	 * @param layerCount Total number of segmentation layers
-	 * @throws NullPointerException       If the {@code name} is {@code null}.
-	 * @throws NegativeArraySizeException If {@code size} or {@code layerCount} is negative.
-	 * @apiNote The element returned by this method cannot be used in situations where it will be
-	 * forcibly converted to {@link AtlasRegion}.
-	 */
-	public static TextureRegion[][] splitLayers(String name, int size, int layerCount) {
-		TextureRegion[][] layers = new TextureRegion[layerCount][];
-
-		for (int i = 0; i < layerCount; i++) {
-			layers[i] = split(name, size, i);
-		}
-		return layers;
-	}
-
-	public static TextureRegion[][] splitUnLayers(String name, int size) {
-		return splitUnLayers(Core.atlas.find(name), size);
-	}
-
-	public static TextureRegion[][] splitUnLayers(TextureRegion region, int size) {
-		int x = region.getX();
-		int y = region.getY();
-		int width = region.width;
-		int height = region.height;
-
-		int sw = width / size;
-		int sh = height / size;
-
-		int startX = x;
-		TextureRegion[][] tiles = new TextureRegion[sw][sh];
-		for (int cy = 0; cy < sh; cy++, y += size) {
-			x = startX;
-			for (int cx = 0; cx < sw; cx++, x += size) {
-				tiles[cx][cy] = new TextureRegion(region.texture, x, y, size, size);
-			}
-		}
-
-		return tiles;
-	}
-
-	/**
-	 * Gets multiple regions inside a {@link TextureRegion}.
-	 *
-	 * @param name  sprite name
-	 * @param size  split size, pixels per grid
-	 * @param layer Number of segmentation layers
-	 * @return Split sprites by size and layer parameter ratio.
-	 * @throws NullPointerException	   If the {@code name} is {@code null}.
-	 * @throws IllegalArgumentException If {@code size} or {@code layer} is negative.
-	 * @apiNote The element returned by this method cannot be used in situations where it will be
-	 * forcibly converted to {@link AtlasRegion}.
-	 */
-	public static TextureRegion[] split(String name, int size, int layer) {
-		TextureRegion textures = Core.atlas.find(name);
-		int margin = 0;
-		int countX = textures.width / size;
-		TextureRegion[] tiles = new TextureRegion[countX];
-
-		for (int i = 0; i < countX; i++) {
-			tiles[i] = new TextureRegion(textures, i * (margin + size), layer * (margin + size), size, size);
-		}
-		return tiles;
-	}
-
-	/**
-	 * Gets multiple regions inside a {@link TextureRegion}.
-	 *
-	 * @param name   sprite name
-	 * @param size   split size, pixels per grid
-	 * @param width  The amount of regions horizontally.
-	 * @param height The amount of regions vertically.
-	 */
-	public static TextureRegion[] split(String name, int size, int width, int height) {
-		TextureRegion reg = Core.atlas.find(name);
-		int textureSize = width * height;
-		TextureRegion[] regions = new TextureRegion[textureSize];
-
-		float tileWidth = (reg.u2 - reg.u) / width;
-		float tileHeight = (reg.v2 - reg.v) / height;
-
-		for (int i = 0; i < textureSize; i++) {
-			float tileX = ((float) (i % width)) / width;
-			float tileY = ((float) (i / width)) / height;
-			TextureRegion region = new TextureRegion(reg);
-
-			//start coordinate
-			region.u = Mathf.map(tileX, 0f, 1f, region.u, region.u2) + tileWidth * 0.02f;
-			region.v = Mathf.map(tileY, 0f, 1f, region.v, region.v2) + tileHeight * 0.02f;
-			//end coordinate
-			region.u2 = region.u + tileWidth * 0.96f;
-			region.v2 = region.v + tileHeight * 0.96f;
-
-			region.width = region.height = size;
-
-			regions[i] = region;
-		}
-		return regions;
-	}
-
-	public static int[] sort(int[] arr) {
-		for (int i = 1; i < arr.length; i++) {
-			int tmp = arr[i];
-
-			int j = i;
-			while (j > 0 && tmp < arr[j - 1]) {
-				arr[j] = arr[j - 1];
-				j--;
-			}
-
-			if (j != i) {
-				arr[j] = tmp;
-			}
-		}
-		return arr;
-	}
-
-	public static void shellSort(int[] arr) {
-		int temp;
-		for (int step = arr.length / 2; step >= 1; step /= 2) {
-			for (int i = step; i < arr.length; i++) {
-				temp = arr[i];
-				int j = i - step;
-				while (j >= 0 && arr[j] > temp) {
-					arr[j + step] = arr[j];
-					j -= step;
-				}
-				arr[j + step] = temp;
-			}
-		}
-	}
-
 	public static int getByIndex(IntSet intSet, int index) {
 		if (index < 0 || index >= intSet.size) {
-			throw new IndexOutOfBoundsException();
+			return -1;
 		}
 
-		int[] value = {0};
-		int[] counter = {0};
-		intSet.each((item) -> {
-			if (counter[0] == index) {
-				value[0] = item;
+		int value = 0;
+		int counter = 0;
+
+		IntSetIterator iter = intSet.iterator();
+		while (iter.hasNext) {
+			int item = iter.next();
+			if (counter == index) {
+				value = item;
 			}
-			counter[0]++;
-		});
-
-		if (counter[0] > index) {
-			return value[0];
-		} else {
-			throw new IllegalArgumentException();
+			counter++;
 		}
+
+		return counter > index ? value : -1;
 	}
 
 	public static void bubbles(int seed, float x, float y, int bubblesAmount, float bubblesSize, float baseLife, float baseSize) {
@@ -344,13 +207,19 @@ public final class Utils {
 		}
 	}
 
+	/** Randomly generate a string of length within the specified range. */
 	public static String generateRandomString(int min, int max) {
-		if (min < 0 || max < min || max > 100000) return "";
+		if (min < 0 || max < min || max > 1000000) return "";
 
 		int length = min + Mathf.random(max - min + 1);
 		return generateRandomString(length);
 	}
 
+	/**
+	 * Randomly generate a string of specified length.
+	 *
+	 * @throws NegativeArraySizeException If the length is negative.
+	 */
 	public static String generateRandomString(int length) {
 		char[] chars = new char[length];
 		int range = printableChars.length - 1;
@@ -422,8 +291,8 @@ public final class Utils {
 	}
 
 	public static String toStoreSize(float num) {
-		var v = num;
-		var n = 0;
+		float v = num;
+		int n = 0;
 
 		while (v > 1024) {
 			v /= 1024;
@@ -571,17 +440,7 @@ public final class Utils {
 	}
 
 	public static Position pos(float x, float y) {
-		return new Position() {
-			@Override
-			public float getX() {
-				return x;
-			}
-
-			@Override
-			public float getY() {
-				return y;
-			}
-		};
+		return new Pos(x, y);
 	}
 
 	public static float dx(float px, float r, float angle) {
@@ -833,15 +692,15 @@ public final class Utils {
 	}
 
 	public static float bulletDamage(BulletType b, float lifetime) {
-		if (b.spawnUnit != null) { //Missile unit damage
+		if (b.spawnUnit != null) { // Missile unit damage
 			if (b.spawnUnit.weapons.isEmpty()) return 0f;
 			Weapon uW = b.spawnUnit.weapons.first();
 			return bulletDamage(uW.bullet, uW.bullet.lifetime) * uW.shoot.shots;
 		} else {
-			float damage = b.damage + b.splashDamage; //Base Damage
-			damage += b.lightningDamage * b.lightning * b.lightningLength; //Lightning Damage
+			float damage = b.damage + b.splashDamage; // Base Damage
+			damage += b.lightningDamage * b.lightning * b.lightningLength; // Lightning Damage
 
-			if (b.fragBullet != null) { //Frag Bullet Damage
+			if (b.fragBullet != null) { // Frag Bullet Damage
 				damage += bulletDamage(b.fragBullet, b.fragBullet.lifetime) * b.fragBullets;
 			}
 
@@ -1005,22 +864,17 @@ public final class Utils {
 		}
 	}
 
-	public interface ReduceInt<T> {
-		int get(T item, int accum);
-	}
-
-	public interface ReduceFloat<T> {
-		float get(T item, float accum);
-	}
-
-	public interface ArrayCreator<T> {
-		T[] get(int size);
-	}
-
-	public static class ExtPos implements Position {
+	public static class Pos implements Position {
 		public float x, y;
 
-		public ExtPos set(float dx, float dy) {
+		public Pos() {}
+
+		public Pos(float dx, float dy) {
+			x = dx;
+			y = dy;
+		}
+
+		public Pos set(float dx, float dy) {
 			x = dx;
 			y = dy;
 			return this;

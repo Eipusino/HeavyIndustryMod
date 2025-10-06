@@ -28,6 +28,7 @@ import heavyindustry.entities.bullet.ConeFlameBulletType;
 import heavyindustry.entities.bullet.CritBulletType;
 import heavyindustry.entities.bullet.CtrlMissileBulletType;
 import heavyindustry.entities.bullet.EffectBulletType;
+import heavyindustry.entities.bullet.EndNukeBulletType;
 import heavyindustry.entities.bullet.PositionLightningBulletType;
 import heavyindustry.entities.bullet.SparkingContinuousLaserBulletType;
 import heavyindustry.entities.effect.WrapperEffect;
@@ -368,7 +369,7 @@ public final class HBlocks {
 			rocketLauncher, largeRocketLauncher, rocketSilo, caelum, mammoth,
 			dragonBreath, breakthrough, cloudBreaker, turbulence, ironStream, minigun,
 			hurricane, judgement, evilSpirits,
-			extinction,
+			extinction, nukeLauncherPlatform,
 			solstice, starfall, annihilate, executor, heatDeath,
 	//turret-erekir
 	rupture, rift,
@@ -5473,7 +5474,7 @@ public final class HBlocks {
 			lightColor = HPal.ancientLightMid;
 			clipSize = 6 * 24;
 			outlineColor = Pal.darkOutline;
-			ammo(HItems.uranium, new CtrlMissileBulletType(4.2f, 2800f, MOD_NAME + "-large-missile") {{
+			ammo(HItems.chromium, new CtrlMissileBulletType(4.2f, 2800f, MOD_NAME + "-large-missile") {{
 				hitSize *= 10f;
 				accel = 0.32f;
 				drag /= 2;
@@ -5596,10 +5597,38 @@ public final class HBlocks {
 			coolant = consumeCoolant(2.5f);
 			coolant.update(false);
 		}};
+		nukeLauncherPlatform = new ItemTurret("nuke-launcher-platform") {{
+			requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.with(Items.silicon, 1500, Items.plastanium, 3000, HItems.uranium, 2000, HItems.heavyAlloy, 2000));
+			size = 6;
+			health = 55000;
+			armor = 75f;
+			ammo(HItems.uranium, new EndNukeBulletType());
+			maxAmmo = 30;
+			ammoPerShot = 10;
+			unitSort = UnitSorts.strongest;
+			reload = 550f;
+			range = 1350f;
+			fogRadiusMultiplier = 0.667f;
+			recoilTime = 180f;
+			recoil = 4f;
+			shootSound = Sounds.missileLaunch;
+			insulated = true;
+			absorbLasers = true;
+			shootWarmupSpeed = 0.08f;
+			warmupMaintainTime = 600f;
+			minWarmup = 0.9f;
+			shootY = 8;
+			targetGround = true;
+			targetAir = true;
+			canOverdrive = false;
+			accurateDelay = false;
+			inaccuracy = 0;
+			rotateSpeed = 1.25f;
+			shootCone = 360f;
+		}};
 		solstice = new PowerTurret("solstice") {{
 			size = 8;
 			destructible = false;
-			sync = true;
 			health = 45000;
 			armor = 120;
 			lightColor = HPal.ancientLightMid;

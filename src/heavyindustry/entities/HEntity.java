@@ -74,7 +74,7 @@ public final class HEntity {
 	static final Seq<Unit> excludeSeq = new Seq<>(Unit.class), queueExcludeRemoval = new Seq<>(Unit.class), excludeReAdd = new Seq<>(Unit.class);
 	static final IntIntMap excludeTime = new IntIntMap();
 
-	public static Unit eipusino, despondency, apathy;
+	public static Unit eipusino;
 
 	private HEntity() {}
 
@@ -658,8 +658,6 @@ public final class HEntity {
 
 	public static void reset() {
 		eipusino =  null;
-		despondency = null;
-		apathy = null;
 
 		toRemove.clear();
 

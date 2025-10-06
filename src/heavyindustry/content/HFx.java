@@ -2473,30 +2473,6 @@ public final class HFx {
 					Drawf.light(e.x, e.y, e.rotation * 2.5f, Color.white, 0.9f);
 				}
 			}),
-			apathyCrit = new Effect(80f, e -> {
-				Rand rand = Utils.rand(e.id * 31l);
-
-				for (int i = 0; i < 45; i++) {
-					float offd = 0.4f;
-
-					float ra = Interp.pow3Out.apply(rand.random(1f)) / 2f + 0.5f;
-
-					float in = (i / 45f) * ra * (1 - offd);
-
-					//float of = rand.random(1f - offd);
-					//float time = Mathf.curve(e.fin(), of, of + offd);
-					float time = Mathf.curve(e.fin(), in, in + offd);
-					float angle = rand.random(360f);
-					float length = rand.random(15f, 135f);
-					float size = rand.random(12f, 25f);
-
-					if (time <= 0 || time >= 1) continue;
-
-					Vec2 v = Tmp.v1.trns(angle, length * Interp.pow2In.apply(time)).add(e.x, e.y);
-					Draw.color(HPal.primary, HPal.blood, Interp.pow2.apply(time));
-					Fill.circle(v.x, v.y, size * Interp.pow2Out.apply(Interp.slope.apply(Interp.pow2In.apply(time))));
-				}
-			}).layer(Layer.flyingUnit + 0.01f),
 			bigLaserCharge = new Effect(120f, e -> {
 				Draw.color();
 				float scl = (1f + Mathf.absin(e.fin(Interp.pow2In), 1f / 100f, 1f)) * 180f * e.fin();

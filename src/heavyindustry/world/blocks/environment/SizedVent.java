@@ -5,6 +5,8 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
 import arc.util.Time;
+import heavyindustry.util.ArrayUtils;
+import heavyindustry.util.SpriteUtils;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
@@ -13,8 +15,6 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Floor;
 import mindustry.world.blocks.environment.SteamVent;
 
-import static heavyindustry.util.ArrayUtils.resize;
-import static heavyindustry.util.Utils.split;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
@@ -49,7 +49,7 @@ public class SizedVent extends SteamVent {
 	@Override
 	public void load() {
 		super.load();
-		splitRegion = split(name + "-sheet", size * 32, 0);
+		splitRegion = SpriteUtils.splitLayer(name + "-sheet", size * 32, 0);
 	}
 
 	@Override
@@ -115,7 +115,7 @@ public class SizedVent extends SteamVent {
 		int index = size - 1;
 		if (index >= offsets.length) {
 			int from = offsets.length;
-			offsets = resize(offsets, index + 1, null);
+			offsets = ArrayUtils.resize(offsets, index + 1, null);
 
 			for (int i = from; i < offsets.length; i++) offsets[i] = createOffsets(i + 1);
 		}

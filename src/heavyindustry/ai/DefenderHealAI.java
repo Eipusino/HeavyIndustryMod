@@ -34,7 +34,8 @@ public class DefenderHealAI extends DefenderAI {
 		} else {
 			unit.controlWeapons(false);
 		}
-		if (target != null && unit.type != null) {//move to reach the target
+		if (target != null && unit.type != null) {
+			// Move to reach the target
 			if (unit.type.flying) {
 				if (!target.within(unit, unit.type.range * 0.7f)) {
 					moveTo(target, unit.type.range * 0.7f);

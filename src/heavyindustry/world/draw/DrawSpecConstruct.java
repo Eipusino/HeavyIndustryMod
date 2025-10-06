@@ -4,13 +4,12 @@ import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import heavyindustry.graphics.Drawn;
+import heavyindustry.util.SpriteUtils;
 import mindustry.gen.Building;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
-
-import static heavyindustry.util.Utils.split;
 
 /**
  * Display multi-layer textures in sequence according to the progress of the building.
@@ -51,6 +50,6 @@ public class DrawSpecConstruct extends DrawBlock {
 
 	@Override
 	public void load(Block block) {
-		constructRegions = split(block.name + "-construct", (size > 0 ? size : block.size) * 32, 0);
+		constructRegions = SpriteUtils.splitLayer(block.name + "-construct", (size > 0 ? size : block.size) * 32, 0);
 	}
 }

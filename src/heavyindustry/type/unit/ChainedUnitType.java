@@ -32,6 +32,7 @@ import mindustry.world.blocks.environment.Floor;
 public class ChainedUnitType extends BaseUnitType {
 	//Legs extra
 	protected static Vec2 legOffsetB = new Vec2();
+
 	public final Seq<Seq<Weapon>> chainWeapons = new Seq<>(Seq.class);
 	public TextureRegion
 			segmentRegion, tailRegion,

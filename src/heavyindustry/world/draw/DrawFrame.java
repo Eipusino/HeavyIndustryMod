@@ -5,11 +5,10 @@ import arc.func.Floatf;
 import arc.func.Intf;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
+import heavyindustry.util.SpriteUtils;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
-
-import static heavyindustry.util.Utils.split;
 
 public class DrawFrame extends DrawBlock {
 	public int frames = 3;
@@ -48,7 +47,7 @@ public class DrawFrame extends DrawBlock {
 	@Override
 	public void load(Block block) {
 		if (split) {
-			regions = split(block.name + "-frame", (size > 0 ? size : block.size) * 32, 0);
+			regions = SpriteUtils.splitLayer(block.name + "-frame", (size > 0 ? size : block.size) * 32, 0);
 		} else {
 			regions = new TextureRegion[frames];
 			for (int i = 0; i < frames; i++) {

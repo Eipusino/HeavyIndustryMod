@@ -2,10 +2,9 @@ package heavyindustry.world.blocks.environment;
 
 import arc.Core;
 import arc.graphics.g2d.TextureRegion;
+import heavyindustry.util.SpriteUtils;
 import mindustry.game.Team;
 import mindustry.world.blocks.environment.StaticWall;
-
-import static heavyindustry.util.Utils.split;
 
 public class ConnectedStaticWall extends StaticWall {
 	public ConnectedStaticWall(String name) {
@@ -56,7 +55,7 @@ public class ConnectedStaticWall extends StaticWall {
 		}
 
 		if (autotile) {
-			autotileRegions = split(name + "-autotile", 32, 12, 4);
+			autotileRegions = SpriteUtils.split(name + "-autotile", 32, 12, 4);
 		}
 	}
 

@@ -19,6 +19,8 @@ import mindustry.gen.Posc;
 
 /** @since 1.0.4 */
 public final class Mathm {
+	public static final double radiansToDegrees = 180 / Math.PI;
+
 	static final int aSinBits = 14; //16KB. Adjust for accuracy.
 	static final int aSinMask = ~(-1 << aSinBits);
 	static final int aSinCount = aSinMask + 1;
@@ -29,8 +31,9 @@ public final class Mathm {
 	static final Rand seedr = new Rand();
 
 	static {
-		for (int i = 0; i < aSinCount; i++)
+		for (int i = 0; i < aSinCount; i++) {
 			aSinTable[i] = (float) (Math.asin((i + 0.5f) / aSinCount * 2 - 1) + radFull);
+		}
 
 		aSinTable[0] = radFull - Mathf.halfPi;
 		aSinTable[aSinTable.length - 1] = radFull + Mathf.halfPi;
@@ -246,8 +249,22 @@ public final class Mathm {
 		return b - a > 180 ? b - a - 360 : b - a < -180 ? b - a + 360 : b - a;
 	}
 
+	public static boolean confine(float d, float min, float max) {
+		return d < min || d > max;
+	}
+
 	public static boolean confine(double d, double min, double max) {
 		return d < min || d > max;
+	}
+
+	/** An asymptotic function that approximates from a specified starting point to a target point. */
+	public static float lerp(float origin, float dest, float rate, float x) {
+		float a = 1 - rate;
+		float b = rate * dest;
+
+		float powered = Mathf.pow(a, x - 1);
+
+		return origin * powered + (b * powered - b / a) / (1 - 1 / a);
 	}
 
 	/** An asymptotic function that approximates from a specified starting point to a target point. */
@@ -261,11 +278,28 @@ public final class Mathm {
 	}
 
 	/** The function corresponding to an S-shaped curve. */
+	public static float sCurve(float left, float right, float dx, float dy, float rate, float x) {
+		float diff = right - left;
+		float xValue = dx * rate;
+
+		return diff / Mathf.pow(2, xValue - rate * x) + dy + left;
+	}
+
+	/** The function corresponding to an S-shaped curve. */
 	public static double sCurve(double left, double right, double dx, double dy, double rate, double x) {
 		double diff = right - left;
 		double xValue = dx * rate;
 
 		return diff / Math.pow(2, xValue - rate * x) + dy + left;
+	}
+
+	/**
+	 * Increase and decrease the curve,reaching the highest point at the most suitable value,and decreasing on both sides.
+	 * The parameters can control the left and right attenuation rates separately.
+	 */
+	public static float lerpIncrease(float lerpLeft, float lerpRight, float max, float optimal, float x) {
+		if (x < 0) return 0;
+		return x >= 0 && x < optimal ? -max * Mathf.pow(1 - x / optimal, lerpLeft) + max : -max * Mathf.pow(1 - optimal / x, lerpRight) + max;
 	}
 
 	/**
@@ -307,7 +341,7 @@ public final class Mathm {
 	}
 
 	public static float atan(float tan) {
-		return round(Mathf.radiansToDegrees * Math.atan(tan));
+		return round(radiansToDegrees * Math.atan(tan));
 	}
 
 	public static float bound(float in, float from, float to, float start, float end, Interp interpolation) {

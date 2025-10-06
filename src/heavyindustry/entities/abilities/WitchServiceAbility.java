@@ -33,7 +33,7 @@ public class WitchServiceAbility extends Ability {
 
 	public Effect work, applyIn, applyOut;
 
-	public Color color = Pal.reactorPurple;
+	public Color color = Pal.thoriumAmmoBack;
 
 	public boolean working = false;
 

@@ -3,7 +3,7 @@ package heavyindustry.world.blocks.defense;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Geometry;
-import heavyindustry.util.Utils;
+import heavyindustry.util.SpriteUtils;
 import mindustry.world.Tile;
 import mindustry.world.blocks.TileBitmask;
 import mindustry.world.blocks.defense.Wall;
@@ -21,7 +21,7 @@ public class ConnectedWall extends Wall {
 
 		super.load();
 
-		autotileRegions = Utils.split(name + "-autotile", 32, 12, 4);
+		autotileRegions = SpriteUtils.split(name + "-autotile", 32, 12, 4);
 	}
 
 	@Override

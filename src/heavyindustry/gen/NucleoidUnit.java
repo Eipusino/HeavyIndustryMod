@@ -100,7 +100,6 @@ public class NucleoidUnit extends BaseUnit implements Nucleoidc {
 		}
 
 		Draw.z(z);
-
 	}
 
 	@Override

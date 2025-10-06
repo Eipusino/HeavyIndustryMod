@@ -90,17 +90,11 @@ public final class Entitys {
 		register(EipusinoUnit.class, EipusinoUnit::new);
 		register(DPSMechUnit.class, DPSMechUnit::new);
 		register(InvincibleShipUnit.class, InvincibleShipUnit::new);
-		register(ApathyIUnit.class, ApathyIUnit::new);
-		register(ApathySentryUnit.class, ApathySentryUnit::new);
-		register(DespondencyUnit.class, DespondencyUnit::new);
-		register(YggdrasilUnit.class, YggdrasilUnit::new);
 		register(UltFire.class, UltFire::new);
 		register(UltPuddle.class, UltPuddle::new);
 		register(DiffBullet.class, DiffBullet::new);
 		register(BlackHoleBullet.class, BlackHoleBullet::new);
 		register(Spawner.class, Spawner::new);
-		register(DesSpearEntity.class, DesSpearEntity::new);
-		register(DesShockWaveEntity.class, DesShockWaveEntity::new);
 		register(RenderGroupEntity.class, RenderGroupEntity::new);
 		register(ShrapnelEntity.class, ShrapnelEntity::new);
 		register(VapourizeEffectState.class, VapourizeEffectState::new);
