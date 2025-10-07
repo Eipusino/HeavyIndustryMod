@@ -93,7 +93,7 @@ public class HoldImageButton extends ImageButton {
 				updateImage();
 			}
 		} else {
-			throw new IllegalArgumentException("style must be a HoldImageButtonStyle.");
+			throw new IllegalArgumentException("Style must be a HoldImageButtonStyle.");
 		}
 	}
 

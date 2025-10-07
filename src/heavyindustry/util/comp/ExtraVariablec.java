@@ -94,7 +94,7 @@ public interface ExtraVariablec {
 	@SuppressWarnings("unchecked")
 	default <T> T getVarThr(String field) throws NoSuchFieldException {
 		if (!extra().containsKey(field))
-			throw new NoSuchFieldException("no such field with name: " + field);
+			throw new NoSuchFieldException("No such field with name: " + field);
 
 		return (T) extra().get(field);
 	}

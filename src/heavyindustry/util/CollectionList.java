@@ -49,7 +49,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 	public int size;
 	public boolean ordered;
 
-	@Nullable SeqIterable<E> iterable;
+	Iter<E> iterator1, iterator2, lastIterator1, lastIterator2;
 
 	/** Creates an ordered array with a capacity of 16. */
 	public CollectionList(Class<?> type) {
@@ -1273,18 +1273,47 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 	 */
 	@Override
 	public Iterator<E> iterator() {
-		if (iterable == null) iterable = new SeqIterable<>(this);
-		return iterable.iterator();
+		if (iterator1 == null) iterator1 = new Iter<>(this);
+
+		if (iterator1.done) {
+			iterator1.cursor = 0;
+			iterator1.done = false;
+			return iterator1;
+		}
+
+		if (iterator2 == null) iterator2 = new Iter<>(this);
+
+		if (iterator2.done) {
+			iterator2.cursor = 0;
+			iterator2.done = false;
+			return iterator2;
+		}
+		//allocate new iterator in the case of 3+ nested loops.
+		return new Iter<>(this);
 	}
 
 	@Override
-	public ListIterator<E> listIterator(int index) {
+	public ListIterator<E> listIterator(final int index) {
 		if (index > size || index < 0)
 			throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
 
-		if (iterable == null) iterable = new SeqIterable<>(this);
+		if (lastIterator1 == null) lastIterator1 = new Iter<>(this, index);
 
-		return iterable.listIterator(index);
+		if (lastIterator1.done) {
+			lastIterator1.cursor = index;
+			lastIterator1.done = false;
+			return lastIterator1;
+		}
+
+		if (lastIterator2 == null) lastIterator2 = new Iter<>(this, index);
+
+		if (lastIterator2.done) {
+			lastIterator2.cursor = index;
+			lastIterator2.done = false;
+			return lastIterator2;
+		}
+
+		return new Iter<>(this, index);
 	}
 
 	public Seq<E> toSeq() {
@@ -1295,115 +1324,70 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 		return seq;
 	}
 
-	public static class SeqIterable<T> implements Iterable<T> {
-		final CollectionList<T> array;
-		final boolean allowRemove;
+	static class Iter<T> implements ListIterator<T> {
+		CollectionList<T> array;
 
-		SeqIterator iterator1, iterator2, lastIterator1;
+		int cursor;
+		boolean done = true;
 
-		public SeqIterable(CollectionList<T> array) {
-			this(array, true);
+		Iter(CollectionList<T> arr, int index) {
+			array = arr;
+			cursor = index;
+			iteratorsAllocated++;
 		}
 
-		public SeqIterable(CollectionList<T> arr, boolean remove) {
+		Iter(CollectionList<T> arr) {
 			array = arr;
-			allowRemove = remove;
+			iteratorsAllocated++;
 		}
 
 		@Override
-		public Iterator<T> iterator() {
-			if (iterator1 == null) iterator1 = new SeqIterator();
-
-			if (iterator1.done) {
-				iterator1.cursor = 0;
-				iterator1.done = false;
-				return iterator1;
-			}
-
-			if (iterator2 == null) iterator2 = new SeqIterator();
-
-			if (iterator2.done) {
-				iterator2.cursor = 0;
-				iterator2.done = false;
-				return iterator2;
-			}
-			//allocate new iterator in the case of 3+ nested loops.
-			return new SeqIterator();
+		public boolean hasNext() {
+			if (cursor >= array.size) done = true;
+			return cursor < array.size;
 		}
 
-		public ListIterator<T> listIterator(int index) {
-			if (lastIterator1 == null) lastIterator1 = new SeqIterator(index);
-
-			if (lastIterator1.done) {
-				lastIterator1.cursor = index;
-				lastIterator1.done = false;
-				return lastIterator1;
-			}
-
-			return new SeqIterator(index);
+		@Override
+		public T next() {
+			if (cursor >= array.size) throw new NoSuchElementException(String.valueOf(cursor));
+			return array.items[cursor++];
 		}
 
-		class SeqIterator implements ListIterator<T> {
-			int cursor;
-			boolean done = true;
+		@Override
+		public boolean hasPrevious() {
+			return cursor > 0;
+		}
 
-			SeqIterator(int index) {
-				cursor = index;
-				iteratorsAllocated++;
-			}
+		@Override
+		public T previous() {
+			if (!hasPrevious()) throw new NoSuchElementException("No previous");
+			return array.items[cursor - 1];
+		}
 
-			SeqIterator() {
-				iteratorsAllocated++;
-			}
+		@Override
+		public int nextIndex() {
+			return cursor;
+		}
 
-			@Override
-			public boolean hasNext() {
-				if (cursor >= array.size) done = true;
-				return cursor < array.size;
-			}
+		@Override
+		public int previousIndex() {
+			return cursor - 1;
+		}
 
-			@Override
-			public T next() {
-				if (cursor >= array.size) throw new NoSuchElementException(String.valueOf(cursor));
-				return array.items[cursor++];
-			}
+		@Override
+		public void remove() {
+			cursor--;
+			array.remove(cursor);
+		}
 
-			@Override
-			public boolean hasPrevious() {
-				return cursor > 0;
-			}
+		@Override
+		public void set(T t) {
+			array.set(cursor, t);
+		}
 
-			@Override
-			public T previous() {
-				return array.items[cursor - 1];
-			}
-
-			@Override
-			public int nextIndex() {
-				return cursor;
-			}
-
-			@Override
-			public int previousIndex() {
-				return cursor - 1;
-			}
-
-			@Override
-			public void remove() {
-				if (!allowRemove) throw new ArcRuntimeException("Remove not allowed.");
-				cursor--;
-				array.remove(cursor);
-			}
-
-			@Override
-			public void set(T t) {
-				array.set(cursor, t);
-			}
-
-			@Override
-			public void add(T t) {
-				array.add(t);
-			}
+		@Override
+		public void add(T t) {
+			array.add(t);
 		}
 	}
 }

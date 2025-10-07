@@ -28,11 +28,13 @@ public class EndNukeBulletType extends BasicBulletType {
 	public static int lastMax, lastUnit, lastBuilding;
 
 	public EndNukeBulletType() {
-		this(17f, 50000f, MOD_NAME + "-large-missile");
+		this(17f, 3000f, MOD_NAME + "-large-missile");
 	}
 
 	public EndNukeBulletType(float speed, float damage, String bulletSprite) {
 		super(speed, damage, bulletSprite);
+
+		splashDamage = 10000f;
 
 		backColor = trailColor = hitColor = HPal.red;
 		frontColor = HPal.red.cpy().mul(2f);
@@ -45,6 +47,8 @@ public class EndNukeBulletType extends BasicBulletType {
 		trailWidth = 5f;
 
 		lifetime = 180f;
+
+		pierceArmor = true;
 
 		despawnHit = true;
 		collidesTiles = false;
@@ -105,7 +109,7 @@ public class EndNukeBulletType extends BasicBulletType {
 					Tmp.v2.trns(Angles.angle(bx, by, u.x, u.y), (16f + 5f / u.mass()) * damageScl);
 					u.vel.add(Tmp.v2);
 
-					u.health -= (u.maxHealth / 10f + 10000f) * damageScl;
+					u.health -= (u.maxHealth / 10f + splashDamage) * damageScl;
 
 					if (lastUnit < lastMax && u.health <= 0f) {
 						HVars.vaporBatch.discon = null;
@@ -137,7 +141,7 @@ public class EndNukeBulletType extends BasicBulletType {
 			} else if (t instanceof Building bl) {
 				float damageScl = HEntity.inRayCastCircle(bx, by, arr, bl);
 				if (damageScl > 0) {
-					bl.health -= (bl.maxHealth / 10f + 10000f) * damageScl;
+					bl.health -= (bl.maxHealth / 10f + splashDamage) * damageScl;
 					if (bl.health <= 0f) {
 						if (lastBuilding < lastMax && t.within(bx, by, 150f + bl.hitSize() / 2f)) {
 							HVars.vaporBatch.discon = null;
@@ -169,7 +173,7 @@ public class EndNukeBulletType extends BasicBulletType {
 					}
 				}
 			} else if (t instanceof Healthc h) {
-				h.health(h.health() - (h.maxHealth() / 10f + 10000f));
+				h.health(h.health() - (h.maxHealth() / 10f + splashDamage));
 			}
 		});
 

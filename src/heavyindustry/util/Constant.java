@@ -11,6 +11,7 @@ import mindustry.gen.Building;
 import mindustry.gen.Healthc;
 import mindustry.gen.Unit;
 
+/** Provide some commonly used lambda functions with simple structures. */
 public final class Constant {
 	public static final Runnable RUNNABLE_NOTHING = () -> {};
 	public static final Floatp FLOATP_ZERO_FLT = () -> 0f;

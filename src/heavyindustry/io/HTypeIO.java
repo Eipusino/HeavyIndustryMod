@@ -17,16 +17,12 @@ import mindustry.io.TypeIO;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 public final class HTypeIO {
-	private static final ReusableByteOutStream bytes = new ReusableByteOutStream();
-	private static final Writes out = new Writes(new DataOutputStream(bytes));
-
 	/** Don't let anyone instantiate this class. */
 	private HTypeIO() {}
 

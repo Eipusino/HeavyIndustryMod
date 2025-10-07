@@ -18,7 +18,7 @@ public final class CyclicCoordinateDescent {
 
 	private CyclicCoordinateDescent() {}
 
-	static float simplifyAngle(float angle) {
+	public static float simplifyAngle(float angle) {
 		angle = angle % 360f;
 		if (angle < -180f) {
 			angle += 360f;
@@ -107,14 +107,12 @@ public final class CyclicCoordinateDescent {
 		public float angle, x, y;
 	}
 
-	static class WorldBone {
-		float x, y, angle;
-
-		float cosAngle() {
+	public static class WorldBone extends DefaultBone {
+		public float cosAngle() {
 			return Mathf.cosDeg(angle);
 		}
 
-		float sinAngle() {
+		public float sinAngle() {
 			return Mathf.sinDeg(angle);
 		}
 	}

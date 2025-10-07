@@ -3538,8 +3538,6 @@ public final class HBlocks {
 		}};
 		stabber = new ItemTurret("stabber") {{
 			requirements(Category.turret, ItemStack.with(Items.copper, 85, Items.titanium, 60, Items.silicon, 70));
-			targetAir = true;
-			targetGround = true;
 			health = 900;
 			size = 2;
 			shootSound = Sounds.shootBig;
@@ -3551,7 +3549,6 @@ public final class HBlocks {
 			shootEffect = Fx.shootBig;
 			maxAmmo = 30;
 			ammo(Items.graphite, new PointBulletType() {{
-				collidesGround = false;
 				trailEffect = Fx.none;
 				hitEffect = Fx.none;
 				despawnEffect = Fx.none;
@@ -3563,7 +3560,6 @@ public final class HBlocks {
 				ammoMultiplier = 1f;
 				fragBullets = 4;
 				fragBullet = new PointBulletType() {{
-					collidesGround = false;
 					trailEffect = Fx.none;
 					hitEffect = Fx.flakExplosion;
 					despawnEffect = Fx.flakExplosion;
@@ -5598,16 +5594,16 @@ public final class HBlocks {
 			coolant.update(false);
 		}};
 		nukeLauncherPlatform = new ItemTurret("nuke-launcher-platform") {{
-			requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.with(Items.silicon, 1500, Items.plastanium, 3000, HItems.uranium, 2000, HItems.heavyAlloy, 2000));
+			requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.with(Items.silicon, 1500, Items.plastanium, 3000, Items.surgeAlloy, 3000, HItems.crystal, 1200, HItems.uranium, 2000, HItems.heavyAlloy, 2000));
 			size = 6;
 			health = 55000;
 			armor = 75f;
 			ammo(HItems.uranium, new EndNukeBulletType());
-			maxAmmo = 30;
-			ammoPerShot = 10;
+			maxAmmo = 45;
+			ammoPerShot = 15;
 			unitSort = UnitSorts.strongest;
 			reload = 550f;
-			range = 1350f;
+			range = 1220f;
 			fogRadiusMultiplier = 0.667f;
 			recoilTime = 180f;
 			recoil = 4f;

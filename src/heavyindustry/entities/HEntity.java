@@ -27,6 +27,7 @@ import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import heavyindustry.content.HFx;
 import heavyindustry.gen.Spawner;
+import heavyindustry.util.CollectionList;
 import heavyindustry.util.Reflects;
 import mindustry.Vars;
 import mindustry.audio.SoundLoop;
@@ -61,17 +62,18 @@ public final class HEntity {
 	public static final Vec2 v1 = new Vec2(), v2 = new Vec2(), v3 = new Vec2(), v4 = new Vec2(), v11 = new Vec2(), v12 = new Vec2(), v13 = new Vec2();
 	public static final Rect rect = new Rect(), hitRect = new Rect(), rect1 = new Rect(), rect2 = new Rect();
 	public static final Rand rand = new Rand();
-	public static final Seq<Building> buildings = new Seq<>(Building.class);
 
-	static final Seq<Unit> units = new Seq<>(Unit.class);
+	static final CollectionList<Building> buildings = new CollectionList<>(Building.class);
+	static final CollectionList<Unit> units = new CollectionList<>(Unit.class);
+
 	static final IntSet collided = new IntSet(), collided2 = new IntSet();
 	static final IntSet collidedBlocks = new IntSet();
 	static Tile tileParma;
 
-	static final Seq<Entityc> toRemove = new Seq<>(Entityc.class);
+	static final CollectionList<Entityc> toRemove = new CollectionList<>(Entityc.class);
 
 	static final IntSet exclude = new IntSet();
-	static final Seq<Unit> excludeSeq = new Seq<>(Unit.class), queueExcludeRemoval = new Seq<>(Unit.class), excludeReAdd = new Seq<>(Unit.class);
+	static final CollectionList<Unit> excludeSeq = new CollectionList<>(Unit.class), queueExcludeRemoval = new CollectionList<>(Unit.class), excludeReAdd = new CollectionList<>(Unit.class);
 	static final IntIntMap excludeTime = new IntIntMap();
 
 	public static Unit eipusino;
@@ -449,19 +451,19 @@ public final class HEntity {
 	}
 
 	public static Seq<Tile> ableToSpawn(UnitType type, float x, float y, float range) {
-		Seq<Tile> tSeq = new Seq<>(Tile.class);
+		Seq<Tile> tiles = new Seq<>(Tile.class);
 
 		Boolf<Tile> boolf = ableToSpawn(type);
 
-		return tSeq.addAll(getAcceptableTiles(World.toTile(x), World.toTile(y), World.toTile(range), boolf));
+		return tiles.addAll(getAcceptableTiles(World.toTile(x), World.toTile(y), World.toTile(range), boolf));
 	}
 
 	public static boolean ableToSpawnPoints(Seq<Vec2> spawnPoints, UnitType type, float x, float y, float range, int num, long seed) {
-		Seq<Tile> tSeq = ableToSpawn(type, x, y, range);
+		Seq<Tile> tiles = ableToSpawn(type, x, y, range);
 
 		rand.setSeed(seed);
 		for (int i = 0; i < num; i++) {
-			Tile[] positions = tSeq.shrink();
+			Tile[] positions = tiles.shrink();
 			if (positions.length < num) return false;
 			spawnPoints.add(new Vec2().set(positions[rand.nextInt(positions.length)]));
 		}
@@ -773,8 +775,7 @@ public final class HEntity {
 			unit.setIndex__unit(-1);
 			unit.setIndex__draw(-1);
 			unit.setIndex__sync(-1);
-		}
-		if (entity instanceof Building build) {
+		} else if (entity instanceof Building build) {
 			Groups.build.remove(build);
 			build.tile.remove();
 			if (setNaN) {
@@ -799,8 +800,7 @@ public final class HEntity {
 
 			build.setIndex__all(-1);
 			build.setIndex__build(-1);
-		}
-		if (entity instanceof Bullet bullet) {
+		} else if (entity instanceof Bullet bullet) {
 			Groups.bullet.remove(bullet);
 
 			setAdded(bullet, false);
@@ -812,7 +812,7 @@ public final class HEntity {
 		if (entity instanceof Poolable pool) Groups.queueFree(pool);
 	}
 
-	public static void handleAdditions(int start, Entityc exclude, Entityc exclude2, Seq<Building> proxy) {
+	public static void handleAdditions(int start, Entityc exclude, Entityc exclude2, CollectionList<Building> proxy) {
 		toRemove.clear();
 
 		int size = Groups.all.size();
@@ -823,9 +823,8 @@ public final class HEntity {
 				toRemove.add(e);
 		}
 
-		for (Entityc e : toRemove) {
-			annihilate(e, false);
-		}
+		toRemove.each(e -> annihilate(e, false));
+
 		//Log.info("addition handled:" + toRemove.toString());
 		toRemove.clear();
 	}

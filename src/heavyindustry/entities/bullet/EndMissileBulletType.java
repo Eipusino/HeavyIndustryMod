@@ -43,7 +43,11 @@ public class EndMissileBulletType extends BasicBulletType {
 
 	@Override
 	public void updateHoming(Bullet b) {
-		if (!(b.data instanceof EndLauncherData data)) return;
+		if (!(b.data instanceof EndLauncherData data)) {
+			super.updateHoming(b);
+
+			return;
+		}
 
 		data.ret -= Time.delta;
 

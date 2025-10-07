@@ -73,7 +73,7 @@ public interface DataPackable {
 	 */
 	static void assignType(long typeID, Func<Object[], Object> constructor) {
 		if (objectProvMap.put(typeID, constructor) != null)
-			throw new SerializationException("conflicting id, type id: " + typeID + "was assigned");
+			throw new SerializationException("Conflicting id, type id: " + typeID + "was assigned");
 	}
 
 	/**
@@ -85,7 +85,7 @@ public interface DataPackable {
 		long id = new Reads(new DataInputStream(new ByteArrayInputStream(bytes))).l();
 		Func<Object[], T> objProv = (Func<Object[], T>) objectProvMap.get(id);
 		if (objProv == null)
-			throw new SerializationException("type id: " + id + " was not assigned");
+			throw new SerializationException("Type id: " + id + " was not assigned");
 
 		T result = objProv.get(param);
 		result.read(bytes);
@@ -134,7 +134,7 @@ public interface DataPackable {
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
 		Reads read = new Reads(new DataInputStream(inputStream));
 		if (read.l() != typeID())
-			throw new SerializationException("type id was unequal marked type id");
+			throw new SerializationException("Type id was unequal marked type id");
 		read(read);
 	}
 }
