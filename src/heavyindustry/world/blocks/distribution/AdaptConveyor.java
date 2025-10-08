@@ -56,8 +56,8 @@ public class AdaptConveyor extends Conveyor {
 		if (bits == null) return;
 
 		TextureRegion conveyor = regions[0][bits[0]], edge = edgeRegions[0][bits[0]];
-		for (TextureRegion i : new TextureRegion[]{conveyor, edge}) {
-			Draw.rect(i, plan.drawx(), plan.drawy(), i.width * bits[1] * i.scl(), i.height * bits[2] * i.scl(), plan.rotation * 90);
+		for (TextureRegion region : new TextureRegion[]{conveyor, edge}) {
+			Draw.rect(region, plan.drawx(), plan.drawy(), region.width * bits[1] * region.scl(), region.height * bits[2] * region.scl(), plan.rotation * 90);
 		}
 	}
 

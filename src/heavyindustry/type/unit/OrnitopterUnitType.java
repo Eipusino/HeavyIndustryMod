@@ -7,12 +7,13 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
 import arc.math.Mathf;
 import arc.struct.Seq;
+import arc.util.Log;
 import heavyindustry.gen.Ornitopterc;
 import heavyindustry.graphics.Outliner;
+import heavyindustry.util.Reflects;
 import mindustry.gen.Unit;
 import mindustry.graphics.Layer;
 import mindustry.graphics.MultiPacker;
-import mindustry.io.JsonIO;
 import mindustry.world.meta.Env;
 
 public class OrnitopterUnitType extends BaseUnitType {
@@ -32,6 +33,7 @@ public class OrnitopterUnitType extends BaseUnitType {
 		float z = unit.elevation > 0.5f ? (lowAltitude ? Layer.flyingUnitLow : Layer.flyingUnit) : groundLayer + Mathf.clamp(hitSize / 4000f, 0, 0.01f);
 
 		applyColor(unit);
+
 		if (unit instanceof Ornitopterc copter) {
 			for (int sign : Mathf.signs) {
 				long seedOffset = 0;
@@ -149,7 +151,9 @@ public class OrnitopterUnitType extends BaseUnitType {
 			try {
 				return (Blade) super.clone();
 			} catch (CloneNotSupportedException e) {
-				return JsonIO.copy(this, new Blade(spriteName));
+				Log.err("java sucks", e);
+
+				return Reflects.copyProperties(this, new Blade(spriteName));
 			}
 		}
 	}

@@ -8,10 +8,10 @@ import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.Log;
 import heavyindustry.gen.Copterc;
+import heavyindustry.util.Reflects;
 import mindustry.gen.Unit;
 import mindustry.graphics.MultiPacker;
 import mindustry.graphics.MultiPacker.PageType;
-import mindustry.io.JsonIO;
 
 public class CopterUnitType extends BaseUnitType {
 	public final Seq<Rotor> rotors = new Seq<>(true, 2, Rotor.class);
@@ -162,7 +162,7 @@ public class CopterUnitType extends BaseUnitType {
 			} catch (CloneNotSupportedException suck) {
 				Log.err("very good language design", suck);
 
-				return JsonIO.copy(this, new Rotor(name));
+				return Reflects.copyProperties(this, new Rotor(name));
 			}
 		}
 	}

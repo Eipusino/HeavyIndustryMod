@@ -6,6 +6,7 @@ import arc.func.Boolp;
 import arc.func.Floatc;
 import arc.func.Floatc2;
 import arc.func.Floatp;
+import arc.func.Prov;
 import heavyindustry.func.Doublep;
 import mindustry.gen.Building;
 import mindustry.gen.Healthc;
@@ -24,6 +25,7 @@ public final class Constant {
 	public static final Boolf<Healthc> BOOLF_HEALTHC_FALSE = h -> false;
 	public static final Floatc FLOATC_NOTHING = a -> {};
 	public static final Floatc2 FLOATC2_NOTHING = (a, b) -> {};
+	public static final Prov<Building> PROV_BUILDING = Building::create;
 
 	// ----------- Collection FIELD -------------
 

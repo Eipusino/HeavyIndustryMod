@@ -23,6 +23,7 @@ import static heavyindustry.util.Constant.PRIME3;
 /**
  * Implementation of Java Collection Framework Map based on {@code ObjectMap} wrapper,
  * used in places that require Java specifications and the feature of not creating nodes in ObjectMap.
+ * <p><strong>It is not recommended to use primitive types.</strong>
  *
  * @author Eipusino
  */
@@ -34,6 +35,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 
 	public K[] keyTable;
 	public V[] valueTable;
+
 	public int capacity, stashSize;
 
 	float loadFactor;
@@ -427,7 +429,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 
 	@Override
 	public void putAll(Map<? extends K, ? extends V> m) {
-		for (MapEntry<K, V> set : this) {
+		for (MapEntry<K, V> set : entries()) {
 			put(set.getKey(), set.getValue());
 		}
 	}

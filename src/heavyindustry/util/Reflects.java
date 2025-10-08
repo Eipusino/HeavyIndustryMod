@@ -2,6 +2,7 @@ package heavyindustry.util;
 
 import arc.func.Prov;
 import arc.struct.Seq;
+import arc.util.Log;
 import arc.util.Nullable;
 import heavyindustry.HVars;
 import mindustry.Vars;
@@ -906,48 +907,71 @@ public final class Reflects {
 		return hierarchy;
 	}
 
-	public static void copyProperties(Object source, Object target) {
+	public static <T> T copyProperties(T source, T target, String... filler) {
+		return copyProperties(source, target, false, filler);
+	}
+
+	/**
+	 * Copy the properties of an object field to another object.
+	 *
+	 * @param source Source Object
+	 * @param target Target Object
+	 * @param print  If true, any exceptions that occur during the process of copying field properties will
+	 *               be output to the Logger
+	 * @param filler Excluded field names
+	 */
+	public static <T> T copyProperties(T source, T target, boolean print, String... filler) {
+		if (source == null || target == null) return target;
+
 		targetFieldMap.clear();
 
 		Class<?> targetClass = target.getClass();
 		while (targetClass != null) {
 			for (Field field : targetClass.getDeclaredFields()) {
-				if (!Modifier.isFinal(field.getModifiers())) {
-					if (!HVars.hasUnsafe) field.setAccessible(true);
-					targetFieldMap.put(field.getName(), field);
-				}
+				if (Modifier.isFinal(field.getModifiers())) continue;
+
+				targetFieldMap.put(field.getName(), field);
 			}
 
 			targetClass = targetClass.getSuperclass();
 		}
 
-		targetFieldMap.remove("id");
+		for (String name : filler) {
+			targetFieldMap.remove(name);
+		}
 
 		Class<?> sourceClass = source.getClass();
 		while (sourceClass != null) {
 			for (Field sourceField : sourceClass.getDeclaredFields()) {
-				if (Modifier.isFinal(sourceField.getModifiers())) {
-					continue;
-				}
-				if (!HVars.hasUnsafe) sourceField.setAccessible(true);
+				if (Modifier.isFinal(sourceField.getModifiers())) continue;
 
 				Field targetField = targetFieldMap.get(sourceField.getName());
-				if (targetField != null && isAssignable(sourceField.getType(), targetField.getType())) {
+
+				if (targetField == null || !isAssignable(sourceField, targetField)) continue;
+
+				try {
 					if (HVars.hasUnsafe) {
 						Object value = Unsafer.get(sourceField, source);
 						Unsafer.set(targetField, target, value);
 					} else {
-						Object value = getField(source, sourceField);
-						setField(target, targetField, value);
+						sourceField.setAccessible(true);
+						targetField.setAccessible(true);
+
+						Object value = sourceField.get(source);
+						targetField.set(target, value);
 					}
+				} catch (Exception e) {
+					if (print) Log.err(e);
 				}
 			}
 
 			sourceClass = sourceClass.getSuperclass();
 		}
+
+		return target;
 	}
 
-	static boolean isAssignable(Class<?> sourceType, Class<?> targetType) {
-		return targetType.isAssignableFrom(sourceType);
+	public static boolean isAssignable(Field sourceType, Field targetType) {
+		return sourceType != null && targetType != null && targetType.getType().isAssignableFrom(sourceType.getType());
 	}
 }

@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
@@ -1293,6 +1294,11 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 	}
 
 	@Override
+	public ListIterator<E> listIterator() {
+		return listIterator(0);
+	}
+
+	@Override
 	public ListIterator<E> listIterator(final int index) {
 		if (index > size || index < 0)
 			throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
@@ -1316,6 +1322,11 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 		return new Iter<>(this, index);
 	}
 
+	@Override
+	public List<E> subList(int fromIndex, int toIndex) {
+		return super.subList(fromIndex, toIndex);
+	}
+
 	public Seq<E> toSeq() {
 		Seq<E> seq = new Seq<>(true, size, componentType);
 		for (E e : this) {
@@ -1325,7 +1336,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 	}
 
 	static class Iter<T> implements ListIterator<T> {
-		CollectionList<T> array;
+		final CollectionList<T> array;
 
 		int cursor;
 		boolean done = true;

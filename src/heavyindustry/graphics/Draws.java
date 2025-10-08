@@ -184,19 +184,6 @@ public final class Draws {
 	}
 
 	/**
-	 * The task of publishing the cache and drawing it on the z-axis during the initial release, some of the parameters passed only have an effect during initialization and are selectively ignored afterwards.
-	 * <p><strong>If the calling frequency of this method is very high and the lambda expression describing the drawing behavior needs to access local variables, then in order to optimize heap occupancy, please use{@link Draws#drawTask(int, Object, Shader, DrawAcceptor)}</strong>
-	 *
-	 * @param taskId The identification ID of the task, used to distinguish the task cache.
-	 * @param shader <strong>Selective parameter, if the task has already been initialized, this parameter is invalid</strong>, The shader used for drawing in this set of tasks.
-	 * @param draw   The drawing task added to the task cache, which is the operation of this drawing.
-	 */
-	@SuppressWarnings("unchecked")
-	public static void drawTask(int taskId, Shader shader, DrawDefault draw) {
-		drawTask(taskId, null, shader, draw);
-	}
-
-	/**
 	 * Publish the task of caching and draw it on the z-axis during the initial release.
 	 *
 	 * @param taskId The identification ID of the task, used to distinguish the task cache.
@@ -218,31 +205,6 @@ public final class Draws {
 			Draw.draw(Draw.z(), task::flush);
 		}
 		task.addTask(target, draw);
-	}
-
-	/**
-	 * Publish the task of caching and draw it on the z-axis during the initial release.
-	 * <p><strong>If the calling frequency of this method is very high and the lambda expression describing the drawing behavior needs to access local variables, then in order to optimize heap occupancy, please use{@link Draws#drawTask(int, Object, DrawAcceptor)}</strong>
-	 *
-	 * @param taskId The identification ID of the task, used to distinguish the task cache.
-	 * @param draw   The drawing task added to the task cache, which is the operation of this drawing.
-	 */
-	@SuppressWarnings("unchecked")
-	public static void drawTask(int taskId, DrawDefault draw) {
-		while (taskId >= drawTasks.length) {
-			drawTasks = Arrays.copyOf(drawTasks, drawTasks.length * 2);
-		}
-
-		DrawTask task = drawTasks[taskId];
-		if (task == null) {
-			task = drawTasks[taskId] = new DrawTask();
-		}
-
-		if (!task.init) {
-			task.init = true;
-			Draw.draw(Draw.z(), task::flush);
-		}
-		task.addTask(null, draw);
 	}
 
 	public static <T, B extends FrameBuffer> void drawToBuffer(int taskId, B buffer, T target, DrawAcceptor<T> draw) {
@@ -285,12 +247,6 @@ public final class Draws {
 	}
 
 	/** @see Draws#drawBloom(int, Object, DrawAcceptor) */
-	@SuppressWarnings("unchecked")
-	public static void drawBloom(int taskId, DrawDefault draw) {
-		drawBloom(taskId, (DrawAcceptor<Bloom>) draw);
-	}
-
-	/** @see Draws#drawBloom(int, Object, DrawAcceptor) */
 	public static void drawBloom(int taskId, DrawAcceptor<Bloom> draw) {
 		while (taskId >= blooms.length) {
 			blooms = Arrays.copyOf(blooms, blooms.length * 2);
@@ -309,11 +265,6 @@ public final class Draws {
 		}, Bloom::render, draw);
 	}
 
-	/** @see Draws#drawBloomUnderBlock(Object, DrawAcceptor) */
-	public static void drawBloomUnderBlock(DrawDefault draw) {
-		drawBloomUnderBlock(null, (DrawAcceptor<?>) draw);
-	}
-
 	/**
 	 * Publish a flood drawing task in the shared flood drawing group, with the drawn layer located below the square({@link Layer#block}-1, 29)
 	 * <p>Regarding the task of flood drawing, please refer to{@link Draws#drawBloom(int, Object, DrawAcceptor)}
@@ -329,14 +280,6 @@ public final class Draws {
 	}
 
 	/**
-	 * @see Draws#drawBloomUponFlyUnit(Object, DrawAcceptor)
-	 */
-	@SuppressWarnings("unchecked")
-	public static void drawBloomUponFlyUnit(DrawDefault draw) {
-		drawBloomUponFlyUnit(null, draw);
-	}
-
-	/**
 	 * Publish a flood drawing task in the shared flood drawing group, with the drawn layer located below the square({@link Layer#flyingUnit}+1, 116)
 	 * <p>Regarding the task of flood drawing, please refer to{@link Draws#drawBloom(int, Object, DrawAcceptor)}
 	 *
@@ -348,14 +291,6 @@ public final class Draws {
 		Draw.z(Layer.flyingUnit + 1);
 		drawBloom(sharedUponFlyUnitBloomId, target, draw);
 		Draw.z(z);
-	}
-
-	/**
-	 * @see Draws#drawBloomUnderFlyUnit(Object, DrawAcceptor)
-	 */
-	@SuppressWarnings("unchecked")
-	public static void drawBloomUnderFlyUnit(DrawDefault draw) {
-		drawBloomUnderFlyUnit(null, draw);
 	}
 
 	/**
@@ -893,20 +828,10 @@ public final class Draws {
 		void draw(T accept);
 	}
 
-	@SuppressWarnings("rawtypes")
-	public interface DrawDefault extends DrawAcceptor {
-		@Override
-		default void draw(Object accept) {
-			draw();
-		}
-
-		void draw();
-	}
-
 	static class DrawTask {
-		protected Object defaultTarget;
-		protected DrawAcceptor<?>[] tasks = new DrawAcceptor<?>[16];
-		protected Object[] dataTarget = new Object[16];
+		Object defaultTarget;
+		DrawAcceptor<?>[] tasks = new DrawAcceptor<?>[16];
+		Object[] dataTarget = new Object[16];
 
 		DrawAcceptor<?> defaultFirstTask, defaultLastTask;
 		int taskCounter;

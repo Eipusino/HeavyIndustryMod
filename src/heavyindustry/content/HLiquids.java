@@ -71,7 +71,7 @@ public final class HLiquids {
 			particleSpacing = 10;
 			particleEffect = WrapperEffect.wrap(HFx.glowParticle, color);
 			effect = StatusEffects.electrified;
-			spreadTargets.addAll(Liquids.neoplasm);
+			spreadTargets.add(Liquids.neoplasm);
 			canStayOn.addAll(Liquids.water, Liquids.cryofluid, Liquids.oil, Liquids.arkycite, Liquids.neoplasm);
 		}
 			@Override

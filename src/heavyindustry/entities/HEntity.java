@@ -68,6 +68,7 @@ public final class HEntity {
 
 	static final IntSet collided = new IntSet(), collided2 = new IntSet();
 	static final IntSet collidedBlocks = new IntSet();
+
 	static Tile tileParma;
 
 	static final CollectionList<Entityc> toRemove = new CollectionList<>(Entityc.class);
@@ -102,7 +103,7 @@ public final class HEntity {
 		boolean found = World.raycast(b.tileX(), b.tileY(), World.toTile(b.x + Tmp.v1.x), World.toTile(b.y + Tmp.v1.y),
 				(x, y) -> (tileParma = Vars.world.tile(x, y)) != null && tileParma.team() != b.team && tileParma.block().absorbLasers);
 
-		return found && tileParma == null ? length : Math.max(6f, b.dst(tileParma.worldx(), tileParma.worldy()));
+		return found && tileParma != null ? Math.max(6f, b.dst(tileParma.worldx(), tileParma.worldy())) : length;
 	}
 
 	public static void collideLine(Bullet hitter, Team team, Effect effect, float x, float y, float angle, float length, boolean large, boolean laser) {
@@ -659,6 +660,7 @@ public final class HEntity {
 	}
 
 	public static void reset() {
+		tileParma = null;
 		eipusino =  null;
 
 		toRemove.clear();

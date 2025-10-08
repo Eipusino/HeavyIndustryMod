@@ -104,8 +104,6 @@ import heavyindustry.world.blocks.power.PowerAnalyzer;
 import heavyindustry.world.blocks.power.SmartBeamNode;
 import heavyindustry.world.blocks.power.SmartPowerNode;
 import heavyindustry.world.blocks.production.AdaptiveCrafter;
-import heavyindustry.world.blocks.production.AugerDrill;
-import heavyindustry.world.blocks.production.AugerSoildPump;
 import heavyindustry.world.blocks.production.Centrifuge;
 import heavyindustry.world.blocks.production.LaserBeamDrill;
 import heavyindustry.world.blocks.production.SporeFarmBlock;
@@ -317,7 +315,7 @@ public final class HBlocks {
 	berylliumWallHuge, berylliumWallGigantic, tungstenWallHuge, tungstenWallGigantic, blastDoorLarge, blastDoorHuge, reinforcedSurgeWallHuge, reinforcedSurgeWallGigantic, carbideWallHuge, carbideWallGigantic, shieldedWallLarge, shieldedWallHuge,
 			aparajito, aparajitoLarge,
 	//drill
-	titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, augerWaterExtractor, augerDrill, blastWell, ionDrill, cuttingDrill, beamDrill,
+	titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, blastWell, ionDrill, cuttingDrill, beamDrill,
 			sporeFarm,
 	//drill-erekir
 	heavyPlasmaBore, unitMinerPoint, unitMinerCenter, unitMinerDepot,
@@ -414,109 +412,157 @@ public final class HBlocks {
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
 		//environment
-		cliff = new DepthCliff("cliff");
-		cliffHelper = new DepthCliffHelper("cliff-helper");
-		darkPanel7 = new Floor("dark-panel-7", 0);
-		darkPanel8 = new Floor("dark-panel-8", 0);
-		darkPanel9 = new Floor("dark-panel-9", 0);
-		darkPanel10 = new Floor("dark-panel-10", 0);
-		darkPanel11 = new Floor("dark-panel-11", 0);
-		darkPanelDamaged = new Floor("dark-panel-damaged", 3);
-		asphalt = new Floor("asphalt", 0);
+		cliff = new DepthCliff("cliff") {{
+			buildType = Constant.PROV_BUILDING;
+		}};
+		cliffHelper = new DepthCliffHelper("cliff-helper") {{
+			buildType = Constant.PROV_BUILDING;
+		}};
+		darkPanel7 = new Floor("dark-panel-7", 0) {{
+			buildType = Constant.PROV_BUILDING;
+		}};
+		darkPanel8 = new Floor("dark-panel-8", 0) {{
+			buildType = Constant.PROV_BUILDING;
+		}};
+		darkPanel9 = new Floor("dark-panel-9", 0) {{
+			buildType = Constant.PROV_BUILDING;
+		}};
+		darkPanel10 = new Floor("dark-panel-10", 0) {{
+			buildType = Constant.PROV_BUILDING;
+		}};
+		darkPanel11 = new Floor("dark-panel-11", 0) {{
+			buildType = Constant.PROV_BUILDING;
+		}};
+		darkPanelDamaged = new Floor("dark-panel-damaged", 3) {{
+			buildType = Constant.PROV_BUILDING;
+		}};
+		asphalt = new Floor("asphalt", 0) {{
+			buildType = Constant.PROV_BUILDING;
+		}};
 		asphaltTiles = new ConnectedFloor("asphalt-tiles") {{
 			autotile = true;
 			blendGroup = asphalt;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		shaleVent = new SteamVent("shale-vent") {{
 			variants = 3;
 			parent = blendGroup = Blocks.shale;
 			attributes.set(Attribute.steam, 1f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		basaltSpikes = new Floor("basalt-spikes", 4) {{
 			attributes.set(Attribute.water, -0.3f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		basaltPlates = new Floor("basalt-plates") {{
 			tilingVariants = 2;
 			tilingSize = 4;
 			attributes.set(Attribute.water, -0.3f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		basaltRock = new TallBlock("basalt-rock") {{
 			clipSize = 120f;
 			variants = 2;
 			attributes.set(Attribute.sand, 0.7f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		basaltWall = new StaticWall("basalt-wall") {{
 			variants = 3;
 			attributes.set(Attribute.sand, 0.7f);
 			basaltSpikes.asFloor().wall = Blocks.basalt.asFloor().wall = Blocks.hotrock.asFloor().wall = Blocks.magmarock.asFloor().wall = this;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		basaltGraphiticWall = new StaticWall("basalt-graphitic-wall") {{
 			itemDrop = Items.graphite;
 			variants = 3;
 			attributes.set(Attribute.sand, 0.7f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		basaltPyratiticWall = new StaticWall("basalt-pyratitic-wall") {{
 			itemDrop = Items.pyratite;
 			variants = 3;
 			attributes.set(Attribute.sand, 0.7f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		snowySand = new Floor("snowy-sand", 3) {{
 			itemDrop = Items.sand;
 			attributes.set(Attribute.water, 0.2f);
 			attributes.set(Attribute.oil, 0.5f);
+			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		snowySandWall = new StaticWall("snowy-sand-wall") {{
 			variants = 2;
 			attributes.set(Attribute.sand, 2f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		arkyciteSand = new Floor("arkycite-sand", 3) {{
 			itemDrop = Items.sand;
 			attributes.set(HAttribute.arkycite, 1);
+			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		arkyciteSandWall = new StaticWall("arkycite-sand-wall") {{
 			variants = 2;
 			attributes.set(Attribute.sand, 2f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		arkyciteSandBoulder = new Prop("arkycite-sand-boulder") {{
 			variants = 2;
 			arkyciteSand.asFloor().decoration = this;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		darksandBoulder = new Prop("darksand-boulder") {{
 			variants = 2;
 			Blocks.darksand.asFloor().decoration = this;
+			buildType = Constant.PROV_BUILDING;
 		}};
-		concreteBlank = new Floor("concrete-blank", 3);
-		concreteFill = new Floor("concrete-fill", 0);
-		concreteNumber = new Floor("concrete-number", 10);
-		concreteStripe = new Floor("concrete-stripe", 3);
-		concrete = new Floor("concrete", 3);
+		concreteBlank = new Floor("concrete-blank", 3) {{
+			buildType = Constant.PROV_BUILDING;
+		}};
+		concreteFill = new Floor("concrete-fill", 0) {{
+			buildType = Constant.PROV_BUILDING;
+		}};
+		concreteNumber = new Floor("concrete-number", 10) {{
+			buildType = Constant.PROV_BUILDING;
+		}};
+		concreteStripe = new Floor("concrete-stripe", 3) {{
+			buildType = Constant.PROV_BUILDING;
+		}};
+		concrete = new Floor("concrete", 3) {{
+			buildType = Constant.PROV_BUILDING;
+		}};
 		stoneFullTiles = new Floor("stone-full-tiles", 3) {{
 			itemDrop = HItems.stone;
+			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		stoneFull = new Floor("stone-full", 3) {{
 			itemDrop = HItems.stone;
+			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		stoneHalf = new Floor("stone-half", 3) {{
 			itemDrop = HItems.stone;
+			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		stoneTiles = new Floor("stone-tiles", 3) {{
 			itemDrop = HItems.stone;
+			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		concreteWall = new ConnectedStaticWall("concrete-wall") {{
 			autotile = true;
 			variants = 0;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		pit = new Floor("pit", 0) {{
 			cacheLayer = HCacheLayer.pit;
 			placeableOn = false;
 			canShadow = false;
 			solid = true;
+			buildType = Constant.PROV_BUILDING;
 		}
 			@Override
 			public TextureRegion[] icons() {
@@ -532,6 +578,7 @@ public final class HBlocks {
 			status = StatusEffects.wet;
 			statusDuration = 120f;
 			liquidDrop = Liquids.water;
+			buildType = Constant.PROV_BUILDING;
 		}
 			@Override
 			public TextureRegion[] icons() {
@@ -540,16 +587,19 @@ public final class HBlocks {
 		};
 		softRareEarth = new Floor("soft-rare-earth", 3) {{
 			itemDrop = HItems.rareEarth;
+			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		patternRareEarth = new Floor("pattern-rare-earth", 4) {{
 			itemDrop = HItems.rareEarth;
+			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		softRareEarthWall = new StaticWall("soft-rare-earth-wall") {{
 			variants = 2;
 			itemDrop = HItems.rareEarth;
 			softRareEarth.asFloor().wall = patternRareEarth.asFloor().wall = this;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		brine = new Floor("pooled-brine", 0) {{
 			drownTime = 200f;
@@ -560,6 +610,7 @@ public final class HBlocks {
 			isLiquid = true;
 			cacheLayer = HCacheLayer.brine;
 			albedo = 1f;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		crystalFluid = new Floor("pooled-crystal-fluid", 0) {{
 			status = HStatusEffects.regenerating;
@@ -573,6 +624,7 @@ public final class HBlocks {
 			emitLight = true;
 			lightRadius = 20f;
 			lightColor = Color.green.cpy().a(0.19f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		deepCrystalFluid = new Floor("pooled-deep-crystal-fluid", 0) {{
 			status = HStatusEffects.regenerating;
@@ -585,6 +637,7 @@ public final class HBlocks {
 			emitLight = true;
 			lightRadius = 30f;
 			lightColor = Color.green.cpy().a(0.19f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		metalFloorWater = new Floor("metal-floor-water", 0) {{
 			speedMultiplier = 0.6f;
@@ -593,6 +646,7 @@ public final class HBlocks {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		metalFloorWater2 = new Floor("metal-floor-water-2", 0) {{
 			speedMultiplier = 0.6f;
@@ -601,6 +655,7 @@ public final class HBlocks {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		metalFloorWater3 = new Floor("metal-floor-water-3", 0) {{
 			speedMultiplier = 0.6f;
@@ -609,6 +664,7 @@ public final class HBlocks {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		metalFloorWater4 = new Floor("metal-floor-water-4", 0) {{
 			speedMultiplier = 0.6f;
@@ -617,6 +673,7 @@ public final class HBlocks {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		metalFloorWater5 = new Floor("metal-floor-water-5", 0) {{
 			speedMultiplier = 0.6f;
@@ -625,6 +682,7 @@ public final class HBlocks {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		metalFloorDamagedWater = new Floor("metal-floor-damaged-water", 3) {{
 			speedMultiplier = 0.6f;
@@ -633,6 +691,7 @@ public final class HBlocks {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		stoneWater = new Floor("stone-water", 3) {{
 			speedMultiplier = 0.6f;
@@ -641,6 +700,7 @@ public final class HBlocks {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		shaleWater = new Floor("shale-water", 3) {{
 			speedMultiplier = 0.6f;
@@ -649,6 +709,7 @@ public final class HBlocks {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		basaltWater = new Floor("basalt-water", 3) {{
 			speedMultiplier = 0.6f;
@@ -657,6 +718,7 @@ public final class HBlocks {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		mudWater = new Floor("mud-water", 0) {{
 			speedMultiplier = 0.5f;
@@ -665,61 +727,82 @@ public final class HBlocks {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		corruptedMoss = new Floor("corrupted-moss", 3) {{
 			speedMultiplier = 0.9f;
 			attributes.set(Attribute.water, 0.1f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		corruptedSporeMoss = new Floor("corrupted-spore-moss", 3) {{
 			speedMultiplier = 0.85f;
 			attributes.set(Attribute.water, 0.1f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		corruptedSporeRocks = new StaticWall("corrupted-spore-rocks") {{
 			variants = 2;
 			corruptedSporeMoss.asFloor().wall = this;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		corruptedSporePine = new StaticWall("corrupted-spore-pine") {{
 			variants = 2;
+			buildType = Constant.PROV_BUILDING;
 		}};
-		corruptedSporeFern = new TreeBlock("corrupted-spore-fern");
-		corruptedSporePlant = new TreeBlock("corrupted-spore-plant");
-		corruptedSporeTree = new TreeBlock("corrupted-spore-tree");
+		corruptedSporeFern = new TreeBlock("corrupted-spore-fern") {{
+			buildType = Constant.PROV_BUILDING;
+		}};
+		corruptedSporePlant = new TreeBlock("corrupted-spore-plant") {{
+			buildType = Constant.PROV_BUILDING;
+		}};
+		corruptedSporeTree = new TreeBlock("corrupted-spore-tree") {{
+			buildType = Constant.PROV_BUILDING;
+		}};
 		mycelium = new Floor("mycelium", 3) {{
 			speedMultiplier = 0.9f;
 			attributes.set(Attribute.water, 0.1f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		myceliumSpore = new Floor("mycelium-spore", 3) {{
 			speedMultiplier = 0.9f;
 			attributes.set(Attribute.water, 0.1f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		myceliumShrubs = new StaticWall("mycelium-shrubs") {{
 			variants = 2;
 			mycelium.asFloor().wall = myceliumSpore.asFloor().wall = this;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		myceliumPine = new StaticWall("mycelium-pine") {{
 			variants = 2;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		arsenide = new Floor("arsenide", 4) {{
 			itemDrop = HItems.stone;
+			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		arsenideLayers = new Floor("arsenide-layers", 4) {{
 			itemDrop = HItems.stone;
+			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		arsenideBoulder = new Prop("arsenide-boulder") {{
 			variants = 3;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		arsenideOutcrop = new StaticTree("arsenide-outcrop") {{
 			variants = 3;
 			attributes.set(Attribute.sand, 1f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		arsenideWall = new StaticWall("arsenide-wall") {{
 			variants = 3;
 			attributes.set(Attribute.sand, 0.7f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		blueSand = new Floor("blue-sand", 3) {{
 			itemDrop = Items.sand;
+			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		blueSandWater = new Floor("blue-sand-water", 3) {{
@@ -728,120 +811,151 @@ public final class HBlocks {
 			speedMultiplier = 0.8f;
 			cacheLayer = CacheLayer.water;
 			shallow = true;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		blueSandBoulder = new Prop("blue-sand-boulder") {{
 			variants = 2;
 			blueSand.asFloor().decoration = this;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		blueSandWall = new StaticWall("blue-sand-wall") {{
 			variants = 2;
 			attributes.set(Attribute.sand, 2f);
 			blueSand.asFloor().wall = blueSandWater.asFloor().wall = this;
+			buildType = Constant.PROV_BUILDING;
 		}};
-		boric = new Floor("boric", 4);
-		boricDense = new Floor("boric-dense", 4);
+		boric = new Floor("boric", 4) {{
+			buildType = Constant.PROV_BUILDING;
+		}};
+		boricDense = new Floor("boric-dense", 4) {{
+			buildType = Constant.PROV_BUILDING;
+		}};
 		boricBoulder = new Prop("boric-boulder") {{
 			variants = 1;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		boricWall = new StaticWall("boric-wall") {{
 			variants = 3;
 			boric.asFloor().wall = boricDense.asFloor().wall = this;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		breccia = new Floor("breccia", 4) {{
 			itemDrop = HItems.stone;
+			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		smoothBreccia = new Floor("smooth-breccia", 4) {{
 			itemDrop = HItems.stone;
+			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		brecciaBoulder = new Prop("breccia-boulder") {{
 			variants = 2;
 			breccia.asFloor().decoration = this;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		brecciaWall = new StaticWall("breccia-wall") {{
 			variants = 2;
 			attributes.set(Attribute.sand, 1f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		chert = new Floor("chert", 4) {{
 			itemDrop = HItems.stone;
+			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		chertPlates = new Floor("chert-plates", 4) {{
 			itemDrop = HItems.stone;
+			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		chertBoulder = new Prop("chert-boulder") {{
 			variants = 3;
 			chert.asFloor().decoration = this;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		chertOutcrop = new StaticTree("chert-outcrop") {{
 			variants = 3;
 			attributes.set(Attribute.sand, 1.2f);
+			buildType = Constant.PROV_BUILDING;
 		}};
 		chertWall = new StaticWall("chert-wall") {{
 			variants = 2;
 			attributes.set(Attribute.sand, 1.2f);
 			chert.asFloor().wall = chertPlates.asFloor().wall = this;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		feldspar = new Floor("feldspar", 5) {{
 			itemDrop = HItems.stone;
+			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		feldsparRubble = new Floor("feldspar-rubble") {{
 			tilingVariants = 2;
 			tilingSize = 3;
 			itemDrop = HItems.stone;
+			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		feldsparPebbles = new OverlayFloor("feldspar-pebbles") {{
 			variants = 4;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		feldsparVent = new SteamVent("feldspar-vent") {{
 			attributes.set(Attribute.steam, 1f);
 			variants = 3;
 			parent = blendGroup = feldspar;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		feldsparBoulder = new Prop("feldspar-boulder") {{
 			variants = 3;
 			feldspar.asFloor().decoration = feldsparRubble.asFloor().decoration = this;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		feldsparOutcrop = new TallBlock("feldspar-outcrop") {{
 			attributes.set(Attribute.sand, 1.5f);
 			variants = 2;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		feldsparWall = new StaticWall("feldspar-wall") {{
 			attributes.set(Attribute.sand, 1.5f);
 			variants = 3;
 			feldspar.asFloor().wall = this;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		crystals = new TallBlock("crystals") {{
 			variants = 3;
 			clipSize = 128f;
 			itemDrop = HItems.crystal;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		crystalsBoulder = new TallBlock("crystals-boulder") {{
 			variants = 3;
 			clipSize = 96f;
 			itemDrop = HItems.crystal;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		oreSilicon = new OreBlock("ore-silicon", Items.silicon) {{
 			variants = 3;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		oreCrystal = new OreBlock("ore-crystal", HItems.crystal) {{
 			variants = 3;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		oreUranium = new OreBlock("ore-uranium", HItems.uranium) {{
 			variants = 3;
 			oreDefault = true;
 			oreThreshold = 0.89f;
 			oreScale = 33;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		oreChromium = new OreBlock("ore-chromium", HItems.chromium) {{
 			variants = 3;
 			oreDefault = true;
 			oreThreshold = 0.9f;
 			oreScale = 32;
+			buildType = Constant.PROV_BUILDING;
 		}};
 		//wall
 		copperWallHuge = new Wall("copper-wall-huge") {{
@@ -1262,7 +1376,7 @@ public final class HBlocks {
 		slagExtractor = new LiquidExtractor("slag-extractor") {{
 			requirements(Category.production, ItemStack.with(Items.graphite, 60, Items.titanium, 35, Items.metaglass, 80, Items.silicon, 80, Items.thorium, 45));
 			size = 3;
-			liquidCapacity = 30;
+			liquidCapacity = 120f;
 			result = Liquids.slag;
 			attribute = Attribute.heat;
 			updateEffect = Fx.redgeneratespark;
@@ -1290,29 +1404,11 @@ public final class HBlocks {
 			buildType = FrackerBuild::new;
 			buildCostMultiplier = 0.8f;
 		}};
-		augerWaterExtractor = new AugerSoildPump("auger-water-extractor") {{
-			requirements(Category.production, ItemStack.with(Items.lead, 100, Items.copper, 75, Items.graphite, 35));
-			result = Liquids.water;
-			size = 3;
-			pumpAmount = 0.4f;
-			liquidCapacity = 100f;
-			attribute = Attribute.water;
-			envRequired |= Env.groundWater;
-			consumePower(1.10f);
-		}};
-		augerDrill = new AugerDrill("auger-drill") {{
-			requirements(Category.production, ItemStack.with(Items.lead, 100, Items.copper, 75, Items.graphite, 35));
-			size = 3;
-			tier = 3;
-			drillTime = 350f;
-			consumePower(0.55f);
-			consumeLiquid(Liquids.water, 0.07f).optional(true, true);
-		}};
 		blastWell = new BurstDrill("blast-ore-well") {{
 			requirements(Category.production, ItemStack.with(Items.lead, 80, Items.graphite, 180, Items.thorium, 110, Items.plastanium, 80, Items.surgeAlloy, 60));
 			size = 5;
 			itemCapacity = 50;
-			liquidCapacity = 20;
+			liquidCapacity = 30;
 			drillTime = 100;
 			tier = 10;
 			arrows = 12;
@@ -1927,7 +2023,7 @@ public final class HBlocks {
 			size = 1;
 			requirements(Category.power, ItemStack.with(Items.metaglass, 30, Items.titanium, 40));
 			hasLiquids = true;
-			powerProduction = 3.6f;
+			powerProduction = 3.5f;
 			consumeLiquid(HLiquids.gas, 0.1f);
 			generateEffect = Fx.steam;
 			effectChance = 0.01f;
@@ -1943,7 +2039,7 @@ public final class HBlocks {
 			liquidCapacity = 60f;
 			itemCapacity = 15;
 			itemDuration = 60f;
-			powerProduction = 11.5f;
+			powerProduction = 22.5f;
 			consumeLiquid(Liquids.water, 0.3f);
 			consumeItem(Items.coal, 2);
 			outputLiquid = new LiquidStack(HLiquids.gas, 0.6f);

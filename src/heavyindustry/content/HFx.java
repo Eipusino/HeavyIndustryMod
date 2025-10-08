@@ -1800,14 +1800,13 @@ public final class HFx {
 				});
 			}),
 			constructSpark = new Effect(24, e -> {
-				Color c = e.color;
 				float fin = e.fin();
 				float fs = e.fslope();
 				float ex = e.x, ey = e.y;
 				int id = e.id;
 
-				Draws.drawBloomUponFlyUnit(() -> {
-					Draw.color(Color.white, c, fin);
+				Draws.drawBloomUponFlyUnit(e, c -> {
+					Draw.color(Color.white, c.color, fin);
 					Lines.stroke((1 - fin) * 0.8f + 0.2f);
 
 					Angles.randLenVectors(id, 22, 4f * fin, 12f, (x, y) -> {
