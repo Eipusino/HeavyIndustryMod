@@ -9,7 +9,6 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
-import arc.math.geom.Vec2;
 import arc.scene.ui.CheckBox;
 import arc.scene.ui.TextField.TextFieldFilter;
 import arc.scene.ui.layout.Table;
@@ -21,6 +20,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.ui.Elements;
+import heavyindustry.util.IntFloatPair;
 import mindustry.entities.Damage;
 import mindustry.entities.Lightning;
 import mindustry.entities.TargetPriority;
@@ -44,9 +44,10 @@ import static mindustry.Vars.state;
 import static mindustry.Vars.tilesize;
 
 public class SandboxWall extends Block {
-	protected static final Vec2 configVec = new Vec2();
+	protected static final IntFloatPair configVec = new IntFloatPair();
 
-	public final int DPSUpdateTime = timers++;
+	public int dpsUpdateTime = timers++;
+
 	public float resetTime = 120f;
 	public Color lightningColor = Pal.surge;
 	public Sound lightningSound = Sounds.spark;
@@ -72,15 +73,15 @@ public class SandboxWall extends Block {
 		schematicPriority = 10;
 		configurable = saveConfig = update = noUpdateDisabled = true;
 
-		config(int[].class, (SandboxWallBuild tile, int[] data) -> tile.data.readIntArray(data));
+		config(SandboxWallRetry.class, (SandboxWallBuild tile, SandboxWallRetry data) -> tile.data.readRetry(data));
 		config(Integer.class, (SandboxWallBuild tile, Integer tog) -> {
 			tile.toggle(tog);
 			if (tog == 1 && tile.deflection()) {
 				tile.hit = 0f;
 			}
 		});
-		config(Vec2.class, (SandboxWallBuild tile, Vec2 data) -> {
-			tile.data.configure((int) data.x, data.y);
+		config(IntFloatPair.class, (SandboxWallBuild tile, IntFloatPair data) -> {
+			tile.data.configure(data.key, data.value);
 		});
 
 		configClear(SandboxWallBuild::resetModes);
@@ -109,27 +110,27 @@ public class SandboxWall extends Block {
 		super.setBars();
 		removeBar("health");
 
-		addBar("hi-dps", (SandboxWallBuild entity) -> new Bar(
-				() -> entity.displayDPS(false),
+		addBar("hi-dps", (SandboxWallBuild tile) -> new Bar(
+				() -> tile.displayDPS(false),
 				() -> Pal.ammo,
-				() -> 1f - (entity.reset / resetTime)
+				() -> 1f - (tile.reset / resetTime)
 		));
 	}
 
 	@Override
 	public void drawPlanConfig(BuildPlan req, Eachable<BuildPlan> list) {
-		if (req.config instanceof int[] modes) {
+		if (req.config instanceof SandboxWallRetry modes) {
 			//draw floating items to represent active mode
-			if (modes[0] == 1) {
+			if (modes.lightning) {
 				Draw.rect(lightningRegion, req.drawx(), req.drawy());
 			}
-			if (modes[1] == 1) {
+			if (modes.deflecting) {
 				Draw.rect(deflectRegion, req.drawx(), req.drawy());
 			}
-			if (modes[2] == 1) {
+			if (modes.insulated) {
 				Draw.rect(insulatingRegion, req.drawx(), req.drawy());
 			}
-			if (modes[3] == 1 && Float.intBitsToFloat(modes[8]) > 0) {
+			if (modes.dpsTesting && modes.armor > 0) {
 				Draw.rect(armorRegion, req.drawx(), req.drawy());
 			}
 		}
@@ -179,21 +180,38 @@ public class SandboxWall extends Block {
 			};
 		}
 
-		public void readIntArray(int[] data) {
-			if (data.length != 9) return;
+		public SandboxWallRetry toRetry() {
+			SandboxWallRetry retry = new SandboxWallRetry();
 
-			lightning = !Mathf.booleans[data[0]];
-			deflecting = !Mathf.booleans[data[1]];
-			insulated = !Mathf.booleans[data[2]];
-			dpsTesting = !Mathf.booleans[data[3]];
+			retry.lightning = lightning;
+			retry.deflecting = deflecting;
+			retry.insulated = insulated;
+			retry.dpsTesting = dpsTesting;
 
-			lightningChance = Float.intBitsToFloat(data[4]);
-			lightningDamage = Float.intBitsToFloat(data[5]);
-			lightningLength = data[6];
+			retry.lightningChance = lightningChance;
+			retry.lightningDamage = lightningDamage;
+			retry.lightningLength = lightningLength;
 
-			deflectChance = Float.intBitsToFloat(data[7]);
+			retry.deflectChance = deflectChance;
 
-			armor = Float.intBitsToFloat(data[8]);
+			retry.armor = armor;
+
+			return retry;
+		}
+
+		public void readRetry(SandboxWallRetry retry) {
+			lightning = retry.lightning;
+			deflecting = retry.deflecting;
+			insulated = retry.insulated;
+			dpsTesting = retry.dpsTesting;
+
+			lightningChance = retry.lightningChance;
+			lightningDamage = retry.lightningDamage;
+			lightningLength = retry.lightningLength;
+
+			deflectChance = retry.deflectChance;
+
+			armor = retry.armor;
 		}
 
 		public void configure(int value, float data) {
@@ -239,9 +257,20 @@ public class SandboxWall extends Block {
 		}
 	}
 
+	public static class SandboxWallRetry {
+		public boolean lightning, deflecting, insulated, dpsTesting;
+
+		public float lightningChance, lightningDamage;
+		public int lightningLength;
+
+		public float deflectChance;
+
+		public float armor;
+	}
+
 	public class SandboxWallBuild extends Building {
 		public float hit;
-		public float total, reset = resetTime, time, DPS;
+		public float total, reset = resetTime, time, dps;
 		public SandboxWallData data = new SandboxWallData();
 
 		@Override
@@ -252,12 +281,12 @@ public class SandboxWall extends Block {
 				time += Time.delta;
 				reset += Time.delta;
 
-				if (timer(DPSUpdateTime, 20)) DPS = total / time * 60f;
+				if (timer(dpsUpdateTime, 20)) dps = total / time * 60f;
 
 				if (reset >= resetTime) {
 					total = 0f;
 					time = 0f;
-					DPS = 0f;
+					dps = 0f;
 				}
 			}
 		}
@@ -305,7 +334,7 @@ public class SandboxWall extends Block {
 				return "[lightgray]" + Iconc.cancel;
 			} else if (time > 0) {
 				float damage = state.rules.blockHealth(team);
-				return (Mathf.zero(damage) ? "Infinity" : (round ? (DPS > 0 ? Mathf.round(DPS) : "---") : Strings.autoFixed(total / time * 60f, 2))) + " DPS";
+				return (Mathf.zero(damage) ? "Infinity" : (round ? (dps > 0 ? Mathf.round(dps) : "---") : Strings.autoFixed(total / time * 60f, 2))) + " DPS";
 			} else {
 				return "--- DPS";
 			}
@@ -492,7 +521,7 @@ public class SandboxWall extends Block {
 
 		@Override
 		public Object config() {
-			return data.toIntArray();
+			return data.toRetry();
 		}
 
 		public void toggle(int i) {
@@ -502,7 +531,7 @@ public class SandboxWall extends Block {
 			if (i == 3 && dpsTesting()) {
 				total = 0f;
 				time = 0f;
-				DPS = 0f;
+				dps = 0f;
 				reset = resetTime;
 			}
 		}

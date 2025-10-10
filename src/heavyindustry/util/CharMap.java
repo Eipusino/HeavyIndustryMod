@@ -1,9 +1,11 @@
 package heavyindustry.util;
 
+import arc.func.Cons;
 import arc.func.Prov;
 import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
+import arc.util.Eachable;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;
@@ -23,7 +25,7 @@ import static heavyindustry.util.Constant.PRIME3;
  *
  * @author Nathan Sweet
  */
-public class CharMap<V> implements Iterable<CharMap.Entry<V>> {
+public class CharMap<V> implements Iterable<CharPair<V>>, Eachable<CharPair<V>> {
 	public int size;
 
 	public final Class<?> valueComponentType;
@@ -110,6 +112,13 @@ public class CharMap<V> implements Iterable<CharMap.Entry<V>> {
 		hasZeroValue = map.hasZeroValue;
 	}
 
+	@Override
+	public void each(Cons<? super CharPair<V>> cons) {
+		for (CharPair<V> entry : entries()) {
+			cons.get(entry);
+		}
+	}
+
 	public V put(char key, V value) {
 		if (key == 0) {
 			V oldValue = zeroValue;
@@ -182,7 +191,7 @@ public class CharMap<V> implements Iterable<CharMap.Entry<V>> {
 	}
 
 	public void putAll(CharMap<? extends V> map) {
-		for (Entry<? extends V> entry : map.entries())
+		for (CharPair<? extends V> entry : map.entries())
 			put(entry.key, entry.value);
 	}
 
@@ -654,7 +663,7 @@ public class CharMap<V> implements Iterable<CharMap.Entry<V>> {
 	}
 
 	@Override
-	public Iterator<Entry<V>> iterator() {
+	public Iterator<CharPair<V>> iterator() {
 		return entries();
 	}
 
@@ -721,16 +730,6 @@ public class CharMap<V> implements Iterable<CharMap.Entry<V>> {
 		return keys2;
 	}
 
-	public static class Entry<V> {
-		public char key;
-		public V value;
-
-		@Override
-		public String toString() {
-			return key + "=" + value;
-		}
-	}
-
 	static class MapIterator<V> {
 		static final int INDEX_ILLEGAL = -2;
 		static final int INDEX_ZERO = -1;
@@ -783,8 +782,8 @@ public class CharMap<V> implements Iterable<CharMap.Entry<V>> {
 		}
 	}
 
-	public static class Entries<V> extends MapIterator<V> implements Iterable<Entry<V>>, Iterator<Entry<V>> {
-		Entry<V> entry = new Entry<>();
+	public static class Entries<V> extends MapIterator<V> implements Iterable<CharPair<V>>, Iterator<CharPair<V>> {
+		CharPair<V> entry = new CharPair<>();
 
 		public Entries(CharMap<V> map) {
 			super(map);
@@ -792,7 +791,7 @@ public class CharMap<V> implements Iterable<CharMap.Entry<V>> {
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
-		public Entry<V> next() {
+		public CharPair<V> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			char[] keyTable = map.keyTable;
@@ -815,7 +814,7 @@ public class CharMap<V> implements Iterable<CharMap.Entry<V>> {
 		}
 
 		@Override
-		public Iterator<Entry<V>> iterator() {
+		public Iterator<CharPair<V>> iterator() {
 			return this;
 		}
 

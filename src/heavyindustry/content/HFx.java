@@ -35,8 +35,7 @@ import heavyindustry.graphics.HTrails.DriftTrail;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.graphics.g2d.CutBatch.RejectedRegion;
 import heavyindustry.math.Math3d;
-import heavyindustry.util.IntMapf;
-import heavyindustry.util.ObjectUtils;
+import heavyindustry.util.IntMap2;
 import heavyindustry.util.Utils;
 import heavyindustry.util.Vec2Seq;
 import mindustry.Vars;
@@ -67,7 +66,7 @@ public final class HFx {
 	public static final Vec2 v7 = new Vec2(), v8 = new Vec2(), v9 = new Vec2();
 	public static final Color c1 = new Color();
 
-	public static final IntMapf<Effect> same = new IntMapf<>(Effect.class);
+	public static final IntMap2<Effect> same = new IntMap2<>(Effect.class);
 
 	private static float percent = 0;
 
@@ -3706,7 +3705,7 @@ public final class HFx {
 	}
 
 	public static Effect get(String m, Color c, Effect effect) {
-		int hash = ObjectUtils.hash(m, c);
+		int hash = m.hashCode() ^ c.hashCode();
 		Effect or = same.get(hash);
 		if (or == null) same.put(hash, effect);
 		return or == null ? effect : or;

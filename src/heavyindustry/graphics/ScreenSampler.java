@@ -33,7 +33,7 @@ public final class ScreenSampler {
 			bufferField = Pixelator.class.getDeclaredField("buffer");
 			bufferField.setAccessible(true);
 
-			pixelatorBuffer = new Lazy<>(() -> {
+			pixelatorBuffer = Lazy.of(() -> {
 				try {
 					return (FrameBuffer) bufferField.get(Vars.renderer.pixelator);
 				} catch (IllegalAccessException e) {

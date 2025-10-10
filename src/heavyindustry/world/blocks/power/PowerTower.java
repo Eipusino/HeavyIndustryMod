@@ -1,5 +1,6 @@
 package heavyindustry.world.blocks.power;
 
+import arc.func.Cons;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.math.Mathf;
@@ -20,15 +21,12 @@ import mindustry.world.meta.StatUnit;
 
 import java.util.Arrays;
 
-import static mindustry.Vars.indexer;
-import static mindustry.Vars.player;
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
-
 public class PowerTower extends BeamNode {
 	public Color baseColor = new Color(0xd4e1ffff);
 	public int range = 8;
 	public int linkRange = 5;
+
+	public Cons<Building> selected = t -> Drawf.selected(t, Tmp.c1.set(baseColor).a(Mathf.absin(4f, 1f)));
 
 	public PowerTower(String name) {
 		super(name);
@@ -43,7 +41,7 @@ public class PowerTower extends BeamNode {
 			int dx = dir.x, dy = dir.y;
 			int offset = size / 2;
 			for (int j = 1 + offset; j <= range + offset; j++) {
-				Building other = world.build(x + j * dir.x, y + j * dir.y);
+				Building other = Vars.world.build(x + j * dir.x, y + j * dir.y);
 
 				//hit insulated wall
 				if (other != null && other.isInsulated()) {
@@ -58,26 +56,24 @@ public class PowerTower extends BeamNode {
 			}
 
 			Drawf.dashLine(Pal.placing,
-					x * tilesize + dx * (tilesize * size / 2f + 2),
-					y * tilesize + dy * (tilesize * size / 2f + 2),
-					x * tilesize + dx * (maxLen) * tilesize,
-					y * tilesize + dy * (maxLen) * tilesize
+					x * Vars.tilesize + dx * (Vars.tilesize * size / 2f + 2),
+					y * Vars.tilesize + dy * (Vars.tilesize * size / 2f + 2),
+					x * Vars.tilesize + dx * (maxLen) * Vars.tilesize,
+					y * Vars.tilesize + dy * (maxLen) * Vars.tilesize
 			);
 
 			if (dest != null) {
-				Drawf.square(dest.x, dest.y, dest.block.size * tilesize / 2f + 2.5f, 0f);
+				Drawf.square(dest.x, dest.y, dest.block.size * Vars.tilesize / 2f + 2.5f, 0f);
 			}
 		}
 
-		x *= tilesize;
-		y *= tilesize;
+		x *= Vars.tilesize;
+		y *= Vars.tilesize;
 		x += offset;
 		y += offset;
 
-		Drawf.dashSquare(baseColor, x, y, linkRange * tilesize);
-		indexer.eachBlock(player.team(), Tmp.r1.setCentered(x, y, linkRange * tilesize), b -> (b.power != null) && !(b instanceof PowerTowerBuild), t ->
-				Drawf.selected(t, Tmp.c1.set(baseColor).a(Mathf.absin(4f, 1f)))
-		);
+		Drawf.dashSquare(baseColor, x, y, linkRange * Vars.tilesize);
+		Vars.indexer.eachBlock(Vars.player.team(), Tmp.r1.setCentered(x, y, linkRange * Vars.tilesize), b -> b.power != null && !(b instanceof PowerTowerBuild), selected);
 	}
 
 	@Override
@@ -98,8 +94,8 @@ public class PowerTower extends BeamNode {
 
 		@Override
 		public void updateTile() {
-			if (lastChange != world.tileChanges) {
-				lastChange = world.tileChanges;
+			if (lastChange != Vars.world.tileChanges) {
+				lastChange = Vars.world.tileChanges;
 				updateLink();
 				updateDirections();
 			}
@@ -115,7 +111,7 @@ public class PowerTower extends BeamNode {
 				int offset = size / 2;
 				//find first block with power in range
 				for (int j = 1 + offset; j <= range + offset; j++) {
-					Building other = world.build(tile.x + j * dir.x, tile.y + j * dir.y);
+					Building other = Vars.world.build(tile.x + j * dir.x, tile.y + j * dir.y);
 
 					//hit insulated wall
 					if (other != null && other.isInsulated()) {
@@ -125,7 +121,7 @@ public class PowerTower extends BeamNode {
 					//power nodes do NOT play nice with beam nodes, do not touch them as that forcefully modifies their links
 					if (other != null && other.block.hasPower && other.block.connectedPower && other.team == team && other.block instanceof PowerTower) {
 						links[i] = other;
-						dests[i] = world.tile(tile.x + j * dir.x, tile.y + j * dir.y);
+						dests[i] = Vars.world.tile(tile.x + j * dir.x, tile.y + j * dir.y);
 						break;
 					}
 				}
@@ -184,7 +180,7 @@ public class PowerTower extends BeamNode {
 		public void updateLink() {
 			//I know this is meaningless and stupid.
 			Seq<Building> newTargets = new Seq<>(Building.class);
-			indexer.eachBlock(player.team(), Tmp.r1.setCentered(x, y, linkRange * tilesize), b -> (b.power != null) && !(b instanceof PowerTowerBuild), newTargets::add);
+			Vars.indexer.eachBlock(Vars.player.team(), Tmp.r1.setCentered(x, y, linkRange * Vars.tilesize), b -> b.power != null && !(b instanceof PowerTowerBuild), newTargets::add);
 			for (Building build : newTargets) {
 				if (!targets.contains(build)) {
 					targets.addUnique(build);
@@ -223,7 +219,7 @@ public class PowerTower extends BeamNode {
 		public void drawSelect() {
 			super.drawSelect();
 
-			Drawf.dashSquare(baseColor, x, y, linkRange * tilesize);
+			Drawf.dashSquare(baseColor, x, y, linkRange * Vars.tilesize);
 		}
 
 		@Override
@@ -244,7 +240,7 @@ public class PowerTower extends BeamNode {
 					//don't draw lasers for adjacent blocks
 					if (dst > 1 + size / 2) {
 						Point2 point = Geometry.d4[i];
-						float poff = tilesize / 2f;
+						float poff = Vars.tilesize / 2f;
 						Drawf.laser(laser, laserEnd, x + poff * size * point.x, y + poff * size * point.y, dests[i].worldx() - poff * point.x, dests[i].worldy() - poff * point.y, w);
 					}
 				}

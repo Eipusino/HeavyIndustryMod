@@ -774,8 +774,8 @@ public final class Utils {
 	 * <p>The returned comparator is serializable and throws {@link
 	 * NullPointerException} when comparing an entry with a null key.
 	 *
-	 * @param  <K> the {@link Comparable} type of then map keys
-	 * @param  <V> the type of the map values
+	 * @param <K> the {@link Comparable} type of then map keys
+	 * @param <V> the type of the map values
 	 * @return a comparator that compares {@link Map.Entry} in natural order on key.
 	 * @see Comparable
 	 * @since 1.0.7
@@ -786,7 +786,6 @@ public final class Utils {
 
 	/**
 	 * Returns a comparator that compares {@link Map.Entry} in natural order on value.
-	 *
 	 * <p>The returned comparator is serializable and throws {@link
 	 * NullPointerException} when comparing an entry with null values.
 	 *
@@ -801,15 +800,13 @@ public final class Utils {
 	}
 
 	/**
-	 * Returns a comparator that compares {@link Map.Entry} by key using the given
-	 * {@link Comparator}.
-	 *
+	 * Returns a comparator that compares {@link Map.Entry} by key using the given {@link Comparator}.
 	 * <p>The returned comparator is serializable if the specified comparator
 	 * is also serializable.
 	 *
-	 * @param  <K> the type of the map keys
-	 * @param  <V> the type of the map values
-	 * @param  cmp the key {@link Comparator}
+	 * @param <K> the type of the map keys
+	 * @param <V> the type of the map values
+	 * @param cmp the key {@link Comparator}
 	 * @return a comparator that compares {@link Map.Entry} by the key.
 	 * @since 1.0.7
 	 */
@@ -818,15 +815,13 @@ public final class Utils {
 	}
 
 	/**
-	 * Returns a comparator that compares {@link Map.Entry} by value using the given
-	 * {@link Comparator}.
-	 *
+	 * Returns a comparator that compares {@link Map.Entry} by value using the given {@link Comparator}.
 	 * <p>The returned comparator is serializable if the specified comparator
 	 * is also serializable.
 	 *
-	 * @param  <K> the type of the map keys
-	 * @param  <V> the type of the map values
-	 * @param  cmp the value {@link Comparator}
+	 * @param <K> the type of the map keys
+	 * @param <V> the type of the map values
+	 * @param cmp the value {@link Comparator}
 	 * @return a comparator that compares {@link Map.Entry} by the value.
 	 * @since 1.0.7
 	 */
@@ -835,32 +830,28 @@ public final class Utils {
 	}
 
 	/**
-	 * Returns a copy of the given {@code Map.MapEntry}. The returned instance is not
-	 * associated with any map. The returned instance has the same characteristics
-	 * as instances returned by the {@link Map#entry Map::entry} method.
-	 *
-	 * @apiNote
-	 * An instance obtained from a map's entry-set view has a connection to that map.
-	 * The {@code copyOf}  method may be used to create a {@code Map.MapEntry} instance,
-	 * containing the same key and value, that is independent of any map.
-	 *
-	 * @implNote
-	 * If the given entry was obtained from a call to {@code copyOf} or {@code Map::entry},
-	 * calling {@code copyOf} will generally not create another copy.
+	 * Returns a copy of the given {@code Map.MapEntry}. The returned instance is not associated with any map.
+	 * The returned instance has the same characteristics as instances returned by the {@link Map#entry Map::entry}
+	 * method.
 	 *
 	 * @param <K> the type of the key
 	 * @param <V> the type of the value
-	 * @param e the entry to be copied
+	 * @param e   the entry to be copied
 	 * @return a map entry equal to the given entry
 	 * @throws NullPointerException if e is null
+	 * @apiNote An instance obtained from a map's entry-set view has a connection to that map.
+	 * The {@code copyOf}  method may be used to create a {@code Map.MapEntry} instance,
+	 * containing the same key and value, that is independent of any map.
+	 * @implNote If the given entry was obtained from a call to {@code copyOf} or {@code Map::entry},
+	 * calling {@code copyOf} will generally not create another copy.
 	 * @since 1.0.7
 	 */
 	@SuppressWarnings("unchecked")
 	public static <K, V> Map.Entry<K, V> copyOf(Map.Entry<? extends K, ? extends V> e) {
-		if (e instanceof Pair<? extends K, ? extends V> p) {
+		if (e instanceof ObjectPair<? extends K, ? extends V> p) {
 			return (Map.Entry<K, V>) p;
 		} else {
-			return new Pair<>(e.getKey(), e.getValue());
+			return new ObjectPair<>(e.getKey(), e.getValue());
 		}
 	}
 

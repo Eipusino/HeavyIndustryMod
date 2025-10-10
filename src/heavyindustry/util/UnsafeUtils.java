@@ -23,15 +23,15 @@ import static heavyindustry.util.ObjectUtils.requireNonNullInstance;
  * functions provided by this class.</strong>
  *
  * @author Eipusino
- * @see Unsaferf
+ * @see InternalUtils
  * @since 1.0.7
  */
-public final class Unsafer {
+public final class UnsafeUtils {
 	/** Initialize in libs/Impl.jar in the mod resource package. */
 	public static Unsafe unsafe;
 
 	/** Do not call. */
-	private Unsafer() {}
+	private UnsafeUtils() {}
 
 	public static <T> T getObject(Class<?> type, String name, Object object) {
 		try {

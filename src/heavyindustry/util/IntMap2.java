@@ -1,10 +1,12 @@
 package heavyindustry.util;
 
+import arc.func.Cons;
 import arc.func.Prov;
 import arc.math.Mathf;
 import arc.struct.IntSeq;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
+import arc.util.Eachable;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;
@@ -23,7 +25,7 @@ import static heavyindustry.util.Constant.PRIME3;
  *
  * @author Nathan Sweet
  */
-public class IntMapf<V> implements Iterable<IntMapf.Entry<V>> {
+public class IntMap2<V> implements Iterable<IntPair<V>>, Eachable<IntPair<V>> {
 	public final Class<?> valueComponentType;
 
 	public int size;
@@ -44,8 +46,8 @@ public class IntMapf<V> implements Iterable<IntMapf.Entry<V>> {
 	Keys<V> keys1, keys2;
 
 	@SuppressWarnings("unchecked")
-	public static <V> IntMapf<V> of(Class<V> keyType, Object... values) {
-		IntMapf<V> map = new IntMapf<>(keyType);
+	public static <V> IntMap2<V> of(Class<V> keyType, Object... values) {
+		IntMap2<V> map = new IntMap2<>(keyType);
 
 		for (int i = 0; i < values.length / 2; i++) {
 			Object key = values[i * 2];
@@ -57,7 +59,7 @@ public class IntMapf<V> implements Iterable<IntMapf.Entry<V>> {
 	}
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
-	public IntMapf(Class<?> keyType) {
+	public IntMap2(Class<?> keyType) {
 		this(51, 0.8f, keyType);
 	}
 
@@ -66,7 +68,7 @@ public class IntMapf<V> implements Iterable<IntMapf.Entry<V>> {
 	 *
 	 * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
 	 */
-	public IntMapf(int initialCapacity, Class<?> keyType) {
+	public IntMap2(int initialCapacity, Class<?> keyType) {
 		this(initialCapacity, 0.8f, keyType);
 	}
 
@@ -77,7 +79,7 @@ public class IntMapf<V> implements Iterable<IntMapf.Entry<V>> {
 	 * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
 	 */
 	@SuppressWarnings("unchecked")
-	public IntMapf(int initialCapacity, float loadFactor, Class<?> keyType) {
+	public IntMap2(int initialCapacity, float loadFactor, Class<?> keyType) {
 		if (initialCapacity < 0) throw new IllegalArgumentException("initialCapacity must be >= 0: " + initialCapacity);
 		initialCapacity = Mathf.nextPowerOfTwo((int) Math.ceil(initialCapacity / loadFactor));
 		if (initialCapacity > 1 << 30)
@@ -100,7 +102,7 @@ public class IntMapf<V> implements Iterable<IntMapf.Entry<V>> {
 	}
 
 	/** Creates a new map identical to the specified map. */
-	public IntMapf(IntMapf<? extends V> map) {
+	public IntMap2(IntMap2<? extends V> map) {
 		this((int) Math.floor(map.capacity * map.loadFactor), map.loadFactor, map.valueComponentType);
 		stashSize = map.stashSize;
 		System.arraycopy(map.keyTable, 0, keyTable, 0, map.keyTable.length);
@@ -108,6 +110,13 @@ public class IntMapf<V> implements Iterable<IntMapf.Entry<V>> {
 		size = map.size;
 		zeroValue = map.zeroValue;
 		hasZeroValue = map.hasZeroValue;
+	}
+
+	@Override
+	public void each(Cons<? super IntPair<V>> cons) {
+		for (IntPair<V> entry : entries()) {
+			cons.get(entry);
+		}
 	}
 
 	public V put(int key, V value) {
@@ -181,8 +190,8 @@ public class IntMapf<V> implements Iterable<IntMapf.Entry<V>> {
 		return null;
 	}
 
-	public void putAll(IntMapf<? extends V> map) {
-		for (Entry<? extends V> entry : map.entries())
+	public void putAll(IntMap2<? extends V> map) {
+		for (IntPair<? extends V> entry : map.entries())
 			put(entry.key, entry.value);
 	}
 
@@ -595,8 +604,8 @@ public class IntMapf<V> implements Iterable<IntMapf.Entry<V>> {
 	@SuppressWarnings("unchecked")
 	public boolean equals(Object obj) {
 		if (obj == this) return true;
-		if (!(obj instanceof IntMapf<?> map) || map.valueComponentType != valueComponentType) return false;
-		IntMapf<V> other = (IntMapf<V>) map;
+		if (!(obj instanceof IntMap2<?> map) || map.valueComponentType != valueComponentType) return false;
+		IntMap2<V> other = (IntMap2<V>) map;
 		if (other.size != size) return false;
 		if (other.hasZeroValue != hasZeroValue) return false;
 		if (hasZeroValue) {
@@ -652,7 +661,7 @@ public class IntMapf<V> implements Iterable<IntMapf.Entry<V>> {
 	}
 
 	@Override
-	public Iterator<Entry<V>> iterator() {
+	public Iterator<IntPair<V>> iterator() {
 		return entries();
 	}
 
@@ -719,27 +728,17 @@ public class IntMapf<V> implements Iterable<IntMapf.Entry<V>> {
 		return keys2;
 	}
 
-	public static class Entry<V> {
-		public int key;
-		public V value;
-
-		@Override
-		public String toString() {
-			return key + "=" + value;
-		}
-	}
-
 	private static class MapIterator<V> {
 		static final int INDEX_ILLEGAL = -2;
 		static final int INDEX_ZERO = -1;
-		final IntMapf<V> map;
+		final IntMap2<V> map;
 
 		public boolean hasNext;
 
 		int nextIndex, currentIndex;
 		boolean valid = true;
 
-		public MapIterator(IntMapf<V> map) {
+		public MapIterator(IntMap2<V> map) {
 			this.map = map;
 			reset();
 		}
@@ -783,16 +782,16 @@ public class IntMapf<V> implements Iterable<IntMapf.Entry<V>> {
 		}
 	}
 
-	public static class Entries<V> extends MapIterator<V> implements Iterable<Entry<V>>, Iterator<Entry<V>> {
-		Entry<V> entry = new Entry<>();
+	public static class Entries<V> extends MapIterator<V> implements Iterable<IntPair<V>>, Iterator<IntPair<V>> {
+		IntPair<V> entry = new IntPair<>();
 
-		public Entries(IntMapf<V> map) {
+		public Entries(IntMap2<V> map) {
 			super(map);
 		}
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
-		public Entry<V> next() {
+		public IntPair<V> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			int[] keyTable = map.keyTable;
@@ -815,7 +814,7 @@ public class IntMapf<V> implements Iterable<IntMapf.Entry<V>> {
 		}
 
 		@Override
-		public Iterator<Entry<V>> iterator() {
+		public Iterator<IntPair<V>> iterator() {
 			return this;
 		}
 
@@ -825,7 +824,7 @@ public class IntMapf<V> implements Iterable<IntMapf.Entry<V>> {
 	}
 
 	public static class Values<V> extends MapIterator<V> implements Iterable<V>, Iterator<V> {
-		public Values(IntMapf<V> map) {
+		public Values(IntMap2<V> map) {
 			super(map);
 		}
 
@@ -864,7 +863,7 @@ public class IntMapf<V> implements Iterable<IntMapf.Entry<V>> {
 	}
 
 	public static class Keys<V> extends MapIterator<V> {
-		public Keys(IntMapf<V> map) {
+		public Keys(IntMap2<V> map) {
 			super(map);
 		}
 

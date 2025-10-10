@@ -3,12 +3,16 @@ package heavyindustry.util;
 import arc.func.Boolf;
 import arc.func.Boolf2;
 import arc.func.Cons;
+import arc.func.FloatFloatf;
 import arc.func.Floatf;
 import arc.func.Func;
 import arc.func.Func2;
+import arc.func.IntIntf;
 import arc.func.Intf;
 import arc.util.Eachable;
 import arc.util.Reflect;
+import heavyindustry.func.BoolBoolf;
+import heavyindustry.func.ByteBytef;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -154,7 +158,8 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(boolean[] array, boolean element) {
+	// To prevent JS from being unable to match methods, it is necessary to distinguish them.
+	public static int indexOfZ(boolean[] array, boolean element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -163,7 +168,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(byte[] array, byte element) {
+	public static int indexOfB(byte[] array, byte element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -172,7 +177,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(short[] array, short element) {
+	public static int indexOfS(short[] array, short element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -181,7 +186,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(int[] array, int element) {
+	public static int indexOfI(int[] array, int element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -190,7 +195,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(long[] array, long element) {
+	public static int indexOfJ(long[] array, long element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -199,7 +204,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(float[] array, float element) {
+	public static int indexOfF(float[] array, float element) {
 		for (int i = 0; i < array.length; i++) {
 			if (Float.compare(array[i], element) == 0) {
 				return i;
@@ -208,7 +213,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(double[] array, double element) {
+	public static int indexOfD(double[] array, double element) {
 		for (int i = 0; i < array.length; i++) {
 			if (Double.compare(array[i], element) == 0) {
 				return i;
@@ -217,7 +222,16 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(float[] array, float element, float epsilon) {
+	public static int indexOfC(char[] array, char element) {
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == element) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOfF(float[] array, float element, float epsilon) {
 		for (int i = 0; i < array.length; i++) {
 			if (Math.abs(array[i] - element) <= epsilon) {
 				return i;
@@ -226,7 +240,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(double[] array, double element, double epsilon) {
+	public static int indexOfD(double[] array, double element, double epsilon) {
 		for (int i = 0; i < array.length; i++) {
 			if (Math.abs(array[i] - element) <= epsilon) {
 				return i;
@@ -297,6 +311,30 @@ public final class ArrayUtils {
 		return out;
 	}
 
+	public static boolean[] copyZArray(boolean[] array, BoolBoolf copy) {
+		boolean[] out = array.clone();
+		for (int i = 0, len = out.length; i < len; i++) out[i] = copy.get(out[i]);
+		return out;
+	}
+
+	public static byte[] copyBArray(byte[] array, ByteBytef copy) {
+		byte[] out = array.clone();
+		for (int i = 0, len = out.length; i < len; i++) out[i] = copy.get(out[i]);
+		return out;
+	}
+
+	public static int[] copyIArray(int[] array, IntIntf copy) {
+		int[] out = array.clone();
+		for (int i = 0, len = out.length; i < len; i++) out[i] = copy.get(out[i]);
+		return out;
+	}
+
+	public static float[] copyFArray(float[] array, FloatFloatf copy) {
+		float[] out = array.clone();
+		for (int i = 0, len = out.length; i < len; i++) out[i] = copy.get(out[i]);
+		return out;
+	}
+
 	/**
 	 * Insert an element at the first position of the array. Low performance.
 	 *
@@ -328,7 +366,7 @@ public final class ArrayUtils {
 		return newArray;
 	}
 
-	public static int[] sort(int[] arr) {
+	public static int[] sortI(int[] arr) {
 		for (int i = 1; i < arr.length; i++) {
 			int tmp = arr[i];
 
@@ -345,7 +383,7 @@ public final class ArrayUtils {
 		return arr;
 	}
 
-	public static void shellSort(int[] arr) {
+	public static void shellSortI(int[] arr) {
 		int temp;
 		for (int step = arr.length / 2; step >= 1; step /= 2) {
 			for (int i = step; i < arr.length; i++) {
@@ -361,7 +399,7 @@ public final class ArrayUtils {
 	}
 
 	/** Used to avoid performance overhead caused by creating an instance of {@link StringBuilder}. */
-	public static void append(StringBuilder b, boolean[] a) {
+	public static void appendZ(StringBuilder b, boolean... a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -383,7 +421,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void append(StringBuilder b, byte[] a) {
+	public static void appendB(StringBuilder b, byte... a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -405,7 +443,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void append(StringBuilder b, short[] a) {
+	public static void appendS(StringBuilder b, short... a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -427,7 +465,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void append(StringBuilder b, int[] a) {
+	public static void appendI(StringBuilder b, int... a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -449,7 +487,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void append(StringBuilder b, long[] a) {
+	public static void appendJ(StringBuilder b, long... a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -471,7 +509,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void append(StringBuilder b, char[] a) {
+	public static void appendC(StringBuilder b, char... a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -494,7 +532,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void append(StringBuilder b, float[] a) {
+	public static void appendF(StringBuilder b, float... a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -516,7 +554,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void append(StringBuilder b, double[] a) {
+	public static void appendD(StringBuilder b, double... a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -538,7 +576,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void append(StringBuilder b, Object[] a) {
+	public static void append(StringBuilder b, Object... a) {
 		if (a == null) {
 			b.append("null");
 			return;

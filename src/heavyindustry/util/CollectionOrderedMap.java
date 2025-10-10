@@ -158,7 +158,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 		}
 
 		@Override
-		public MapEntry<K, V> next() {
+		public ObjectPair<K, V> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			entry.key = keys.get(nextIndex);

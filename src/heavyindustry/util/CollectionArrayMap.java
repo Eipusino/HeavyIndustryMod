@@ -1,9 +1,10 @@
 package heavyindustry.util;
 
+import arc.func.Cons;
 import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
-import heavyindustry.util.CollectionObjectMap.MapEntry;
+import arc.util.Eachable;
 
 import java.lang.reflect.Array;
 import java.util.AbstractCollection;
@@ -23,7 +24,7 @@ import java.util.Set;
  * @author Nathan Sweet
  * @author Eipusino
  */
-public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K, V> {
+public class CollectionArrayMap<K, V> implements Iterable<ObjectPair<K, V>>, Map<K, V>, Eachable<ObjectPair<K, V>> {
 	public final Class<?> keyComponentType;
 	public final Class<?> valueComponentType;
 
@@ -74,6 +75,13 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 		size = array.size;
 		System.arraycopy(array.keys, 0, keys, 0, size);
 		System.arraycopy(array.values, 0, values, 0, size);
+	}
+
+	@Override
+	public void each(Cons<? super ObjectPair<K, V>> cons) {
+		for (ObjectPair<K, V> entry : entries()) {
+			cons.get(entry);
+		}
 	}
 
 	@Override
@@ -484,7 +492,7 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 	}
 
 	@Override
-	public Iterator<MapEntry<K, V>> iterator() {
+	public Iterator<ObjectPair<K, V>> iterator() {
 		return entries();
 	}
 
@@ -616,7 +624,7 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 		}
 
 		class MapEnt implements Entry<K, V> {
-			MapEntry<K, V> entry;
+			ObjectPair<K, V> entry;
 
 			@Override
 			public K getKey() {
@@ -635,10 +643,10 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 		}
 	}
 
-	public static class Entries<K, V> implements Iterable<MapEntry<K, V>>, Iterator<MapEntry<K, V>> {
+	public static class Entries<K, V> implements Iterable<ObjectPair<K, V>>, Iterator<ObjectPair<K, V>> {
 		final CollectionArrayMap<K, V> map;
 
-		MapEntry<K, V> entry = new MapEntry<>();
+		ObjectPair<K, V> entry = new ObjectPair<>();
 		int index;
 		boolean valid = true;
 
@@ -653,13 +661,13 @@ public class CollectionArrayMap<K, V> implements Iterable<MapEntry<K, V>>, Map<K
 		}
 
 		@Override
-		public Iterator<MapEntry<K, V>> iterator() {
+		public Iterator<ObjectPair<K, V>> iterator() {
 			return this;
 		}
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
-		public MapEntry<K, V> next() {
+		public ObjectPair<K, V> next() {
 			if (index >= map.size) throw new NoSuchElementException(String.valueOf(index));
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			entry.key = map.keys[index];

@@ -1,43 +1,51 @@
 package heavyindustry.util;
 
-
 import arc.func.Cons;
 import arc.math.Mathf;
-import arc.struct.LongSeq;
+import arc.struct.IntSeq;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
+import arc.util.Eachable;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import static heavyindustry.util.Constant.EMPTY;
 import static heavyindustry.util.Constant.PRIME2;
 import static heavyindustry.util.Constant.PRIME3;
 
-public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
-	public final Class<?> valueComponentType;
-
+/**
+ * An unordered map where the values are ints. This implementation is a cuckoo hash map using 3 hashes, random walking, and a
+ * small stash for problematic keys. Null keys are not allowed. No allocation is done except when growing the table size. <br>
+ * <br>This map performs very fast get, containsKey, and remove (typically O(1), worst case O(log(n))). Put may be a bit slower,
+ * depending on hash collisions. Load factors greater than 0.91 greatly increase the chances the map will have to rehash to the
+ * next higher POT size.
+ * <p><strong>Eipusino modification: add null judgment to some methods to prevent throw NullPointerException.</strong>
+ *
+ * @author Nathan Sweet
+ * @author Eipusino
+ */
+public class ObjectIntMap2<K> implements Iterable<ObjectIntPair<K>>, Eachable<ObjectIntPair<K>> {
 	public int size;
 
-	public long[] keyTable;
-	public V[] valueTable;
+	public final Class<?> keyComponentType;
+
+	public K[] keyTable;
+	public int[] valueTable;
 	public int capacity, stashSize;
-	public V zeroValue;
-	public boolean hasZeroValue;
 
 	float loadFactor;
 	int hashShift, mask, threshold;
 	int stashCapacity;
 	int pushIterations;
 
-	Entries<V> entries1, entries2;
-	Values<V> values1, values2;
-	Keys<V> keys1, keys2;
+	Entries<K> entries1, entries2;
+	Values<K> values1, values2;
+	Keys<K> keys1, keys2;
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
-	public LongMapf(Class<?> keyType) {
-		this(51, 0.8f, keyType);
+	public ObjectIntMap2(Class<?> keyType) {
+		this(keyType, 51, 0.8f);
 	}
 
 	/**
@@ -45,8 +53,8 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 	 *
 	 * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
 	 */
-	public LongMapf(int initialCapacity, Class<?> keyType) {
-		this(initialCapacity, 0.8f, keyType);
+	public ObjectIntMap2(Class<?> keyType, int initialCapacity) {
+		this(keyType, initialCapacity, 0.8f);
 	}
 
 	/**
@@ -56,7 +64,7 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 	 * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
 	 */
 	@SuppressWarnings("unchecked")
-	public LongMapf(int initialCapacity, float loadFactor, Class<?> keyType) {
+	public ObjectIntMap2(Class<?> keyType, int initialCapacity, float loadFactor) {
 		if (initialCapacity < 0) throw new IllegalArgumentException("initialCapacity must be >= 0: " + initialCapacity);
 		initialCapacity = Mathf.nextPowerOfTwo((int) Math.ceil(initialCapacity / loadFactor));
 		if (initialCapacity > 1 << 30)
@@ -68,135 +76,130 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 
 		threshold = (int) (capacity * loadFactor);
 		mask = capacity - 1;
-		hashShift = 63 - Long.numberOfTrailingZeros(capacity);
+		hashShift = 31 - Integer.numberOfTrailingZeros(capacity);
 		stashCapacity = Math.max(3, (int) Math.ceil(Math.log(capacity)) * 2);
 		pushIterations = Math.max(Math.min(capacity, 8), (int) Math.sqrt(capacity) / 8);
 
-		valueComponentType = keyType;
+		keyComponentType = keyType;
 
-		keyTable = new long[capacity + stashCapacity];
-		valueTable = (V[]) Array.newInstance(keyType, keyTable.length);
+		keyTable = (K[]) Array.newInstance(keyType, capacity + stashCapacity);
+		valueTable = new int[keyTable.length];
 	}
 
 	/** Creates a new map identical to the specified map. */
-	public LongMapf(LongMapf<? extends V> map) {
-		this((int) Math.floor(map.capacity * map.loadFactor), map.loadFactor, map.valueComponentType);
+	public ObjectIntMap2(ObjectIntMap2<? extends K> map) {
+		this(map.keyComponentType, (int) Math.floor(map.capacity * map.loadFactor), map.loadFactor);
 		stashSize = map.stashSize;
 		System.arraycopy(map.keyTable, 0, keyTable, 0, map.keyTable.length);
 		System.arraycopy(map.valueTable, 0, valueTable, 0, map.valueTable.length);
 		size = map.size;
-		zeroValue = map.zeroValue;
-		hasZeroValue = map.hasZeroValue;
 	}
 
-	public V put(long key, V value) {
-		if (key == 0) {
-			V oldValue = zeroValue;
-			zeroValue = value;
-			if (!hasZeroValue) {
-				hasZeroValue = true;
-				size++;
-			}
-			return oldValue;
+	@Override
+	public void each(Cons<? super ObjectIntPair<K>> cons) {
+		for (ObjectIntPair<K> entry : entries()) {
+			cons.get(entry);
 		}
+	}
 
-		long[] keyTable = this.keyTable;
+	public void put(K key, int value) {
+		if (key == null) return;
 
 		// Check for existing keys.
-		int index1 = (int) (key & mask);
-		long key1 = keyTable[index1];
-		if (key1 == key) {
-			V oldValue = valueTable[index1];
+		int hashCode = key.hashCode();
+		int index1 = hashCode & mask;
+		K key1 = keyTable[index1];
+		if (key.equals(key1)) {
 			valueTable[index1] = value;
-			return oldValue;
+			return;
 		}
 
-		int index2 = hash2(key);
-		long key2 = keyTable[index2];
-		if (key2 == key) {
-			V oldValue = valueTable[index2];
+		int index2 = hash2(hashCode);
+		K key2 = keyTable[index2];
+		if (key.equals(key2)) {
 			valueTable[index2] = value;
-			return oldValue;
+			return;
 		}
 
-		int index3 = hash3(key);
-		long key3 = keyTable[index3];
-		if (key3 == key) {
-			V oldValue = valueTable[index3];
+		int index3 = hash3(hashCode);
+		K key3 = keyTable[index3];
+		if (key.equals(key3)) {
 			valueTable[index3] = value;
-			return oldValue;
+			return;
 		}
 
 		// Update key in the stash.
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
-			if (keyTable[i] == key) {
-				V oldValue = valueTable[i];
+			if (key.equals(keyTable[i])) {
 				valueTable[i] = value;
-				return oldValue;
+				return;
 			}
 		}
 
 		// Check for empty buckets.
-		if (key1 == EMPTY) {
+		if (key1 == null) {
 			keyTable[index1] = key;
 			valueTable[index1] = value;
 			if (size++ >= threshold) resize(capacity << 1);
-			return null;
+			return;
 		}
 
-		if (key2 == EMPTY) {
+		if (key2 == null) {
 			keyTable[index2] = key;
 			valueTable[index2] = value;
 			if (size++ >= threshold) resize(capacity << 1);
-			return null;
+			return;
 		}
 
-		if (key3 == EMPTY) {
+		if (key3 == null) {
 			keyTable[index3] = key;
 			valueTable[index3] = value;
 			if (size++ >= threshold) resize(capacity << 1);
-			return null;
+			return;
 		}
 
 		push(key, value, index1, key1, index2, key2, index3, key3);
-		return null;
 	}
 
-	public void putAll(LongMapf<? extends V> map) {
-		for (Entry<? extends V> entry : map.entries())
+	public void putAll(ObjectIntMap2<? extends K> map) {
+		for (ObjectIntPair<? extends K> entry : map.entries())
 			put(entry.key, entry.value);
 	}
 
-	/** Skips checks for existing keys. */
-	private void putResize(long key, V value) {
-		if (key == 0) {
-			zeroValue = value;
-			hasZeroValue = true;
-			return;
+	@SuppressWarnings("unchecked")
+	public void putAll(Object... values) {
+		for (int i = 0; i < values.length / 2; i++) {
+			put((K) values[i * 2], (int) values[i * 2 + 1]);
 		}
+	}
+
+	/** Skips checks for existing keys. */
+	private void putResize(K key, int value) {
+		if (key == null) return;
 
 		// Check for empty buckets.
-		int index1 = (int) (key & mask);
-		long key1 = keyTable[index1];
-		if (key1 == EMPTY) {
+		int hashCode = key.hashCode();
+		int index1 = hashCode & mask;
+		K key1 = keyTable[index1];
+		if (key1 == null) {
 			keyTable[index1] = key;
 			valueTable[index1] = value;
 			if (size++ >= threshold) resize(capacity << 1);
 			return;
 		}
 
-		int index2 = hash2(key);
-		long key2 = keyTable[index2];
-		if (key2 == EMPTY) {
+		int index2 = hash2(hashCode);
+		K key2 = keyTable[index2];
+		if (key2 == null) {
 			keyTable[index2] = key;
 			valueTable[index2] = value;
 			if (size++ >= threshold) resize(capacity << 1);
 			return;
 		}
 
-		int index3 = hash3(key);
-		long key3 = keyTable[index3];
-		if (key3 == EMPTY) {
+		int index3 = hash3(hashCode);
+		K key3 = keyTable[index3];
+		if (key3 == null) {
 			keyTable[index3] = key;
 			valueTable[index3] = value;
 			if (size++ >= threshold) resize(capacity << 1);
@@ -206,10 +209,10 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 		push(key, value, index1, key1, index2, key2, index3, key3);
 	}
 
-	private void push(long insertKey, V insertValue, int index1, long key1, int index2, long key2, int index3, long key3) {
+	private void push(K insertKey, int insertValue, int index1, K key1, int index2, K key2, int index3, K key3) {
 		// Push keys until an empty bucket is found.
-		long evictedKey;
-		V evictedValue;
+		K evictedKey;
+		int evictedValue;
 		int i = 0;
 		do {
 			// Replace the key and value for one of the hashes.
@@ -235,27 +238,28 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 			}
 
 			// If the evicted key hashes to an empty bucket, put it there and stop.
-			index1 = (int) (evictedKey & mask);
+			int hashCode = evictedKey.hashCode();
+			index1 = hashCode & mask;
 			key1 = keyTable[index1];
-			if (key1 == EMPTY) {
+			if (key1 == null) {
 				keyTable[index1] = evictedKey;
 				valueTable[index1] = evictedValue;
 				if (size++ >= threshold) resize(capacity << 1);
 				return;
 			}
 
-			index2 = hash2(evictedKey);
+			index2 = hash2(hashCode);
 			key2 = keyTable[index2];
-			if (key2 == EMPTY) {
+			if (key2 == null) {
 				keyTable[index2] = evictedKey;
 				valueTable[index2] = evictedValue;
 				if (size++ >= threshold) resize(capacity << 1);
 				return;
 			}
 
-			index3 = hash3(evictedKey);
+			index3 = hash3(hashCode);
 			key3 = keyTable[index3];
-			if (key3 == EMPTY) {
+			if (key3 == null) {
 				keyTable[index3] = evictedKey;
 				valueTable[index3] = evictedValue;
 				if (size++ >= threshold) resize(capacity << 1);
@@ -271,7 +275,7 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 		putStash(evictedKey, evictedValue);
 	}
 
-	private void putStash(long key, V value) {
+	private void putStash(K key, int value) {
 		if (stashSize == stashCapacity) {
 			// Too many pushes occurred and the stash is full, increase the table size.
 			resize(capacity << 1);
@@ -286,94 +290,117 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 		size++;
 	}
 
-	public V get(long key) {
-		if (key == 0) {
-			if (!hasZeroValue) return null;
-			return zeroValue;
-		}
-		int index = (int) (key & mask);
-		if (keyTable[index] != key) {
-			index = hash2(key);
-			if (keyTable[index] != key) {
-				index = hash3(key);
-				if (keyTable[index] != key) return getStash(key, null);
+	public int get(K key) {
+		return get(key, 0);
+	}
+
+	/** @param defaultValue Returned if the key was not associated with a value. */
+	public int get(K key, int defaultValue) {
+		if (key == null) return defaultValue;
+
+		int hashCode = key.hashCode();
+		int index = hashCode & mask;
+		if (!key.equals(keyTable[index])) {
+			index = hash2(hashCode);
+			if (!key.equals(keyTable[index])) {
+				index = hash3(hashCode);
+				if (!key.equals(keyTable[index])) return getStash(key, defaultValue);
 			}
 		}
 		return valueTable[index];
 	}
 
-	public V get(long key, V defaultValue) {
-		if (key == 0) {
-			if (!hasZeroValue) return defaultValue;
-			return zeroValue;
-		}
-		int index = (int) (key & mask);
-		if (keyTable[index] != key) {
-			index = hash2(key);
-			if (keyTable[index] != key) {
-				index = hash3(key);
-				if (keyTable[index] != key) return getStash(key, defaultValue);
-			}
-		}
-		return valueTable[index];
-	}
-
-	private V getStash(long key, V defaultValue) {
+	private int getStash(K key, int defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
-			if (keyTable[i] == key) return valueTable[i];
+			if (key.equals(keyTable[i])) return valueTable[i];
 		return defaultValue;
 	}
 
-	public V remove(long key) {
-		if (key == 0) {
-			if (!hasZeroValue) return null;
-			V oldValue = zeroValue;
-			zeroValue = null;
-			hasZeroValue = false;
-			size--;
-			return oldValue;
-		}
-
-		int index = (int) (key & mask);
-		if (keyTable[index] == key) {
-			keyTable[index] = EMPTY;
-			V oldValue = valueTable[index];
-			valueTable[index] = null;
-			size--;
-			return oldValue;
-		}
-
-		index = hash2(key);
-		if (keyTable[index] == key) {
-			keyTable[index] = EMPTY;
-			V oldValue = valueTable[index];
-			valueTable[index] = null;
-			size--;
-			return oldValue;
-		}
-
-		index = hash3(key);
-		if (keyTable[index] == key) {
-			keyTable[index] = EMPTY;
-			V oldValue = valueTable[index];
-			valueTable[index] = null;
-			size--;
-			return oldValue;
-		}
-
-		return removeStash(key);
+	public int increment(K key) {
+		return increment(key, 0, 1);
 	}
 
-	V removeStash(long key) {
+	public int increment(K key, int amount) {
+		return increment(key, 0, amount);
+	}
+
+	/**
+	 * Returns the key's current value and increments the stored value. If the key is not in the map, defaultValue + increment is
+	 * put into the map.
+	 */
+	public int increment(K key, int defaultValue, int increment) {
+		if (key == null) return defaultValue;
+
+		int hashCode = key.hashCode();
+		int index = hashCode & mask;
+		if (!key.equals(keyTable[index])) {
+			index = hash2(hashCode);
+			if (!key.equals(keyTable[index])) {
+				index = hash3(hashCode);
+				if (!key.equals(keyTable[index])) return getAndIncrementStash(key, defaultValue, increment);
+			}
+		}
+		int value = valueTable[index];
+		valueTable[index] = value + increment;
+		return value;
+	}
+
+	private int getAndIncrementStash(K key, int defaultValue, int increment) {
+		for (int i = capacity, n = i + stashSize; i < n; i++)
+			if (key.equals(keyTable[i])) {
+				int value = valueTable[i];
+				valueTable[i] = value + increment;
+				return value;
+			}
+		put(key, defaultValue + increment);
+		return defaultValue;
+	}
+
+	/** @return 0 as default value. */
+	public int remove(K key) {
+		return remove(key, 0);
+	}
+
+	/** @return the value that was removed, or defaultValue. */
+	public int remove(K key, int defaultValue) {
+		int hashCode = key.hashCode();
+		int index = hashCode & mask;
+		if (key.equals(keyTable[index])) {
+			keyTable[index] = null;
+			int oldValue = valueTable[index];
+			size--;
+			return oldValue;
+		}
+
+		index = hash2(hashCode);
+		if (key.equals(keyTable[index])) {
+			keyTable[index] = null;
+			int oldValue = valueTable[index];
+			size--;
+			return oldValue;
+		}
+
+		index = hash3(hashCode);
+		if (key.equals(keyTable[index])) {
+			keyTable[index] = null;
+			int oldValue = valueTable[index];
+			size--;
+			return oldValue;
+		}
+
+		return removeStash(key, defaultValue);
+	}
+
+	int removeStash(K key, int defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
-			if (keyTable[i] == key) {
-				V oldValue = valueTable[i];
+			if (key.equals(keyTable[i])) {
+				int oldValue = valueTable[i];
 				removeStashIndex(i);
 				size--;
 				return oldValue;
 			}
 		}
-		return null;
+		return defaultValue;
 	}
 
 	void removeStashIndex(int index) {
@@ -383,9 +410,8 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 		if (index < lastIndex) {
 			keyTable[index] = keyTable[lastIndex];
 			valueTable[index] = valueTable[lastIndex];
-			valueTable[lastIndex] = null;
-		} else
-			valueTable[index] = null;
+			keyTable[lastIndex] = null;
+		}
 	}
 
 	/** Returns true if the map is empty. */
@@ -411,86 +437,58 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 			clear();
 			return;
 		}
-		zeroValue = null;
-		hasZeroValue = false;
 		size = 0;
 		resize(maximumCapacity);
 	}
 
 	public void clear() {
 		if (size == 0) return;
-		for (int i = capacity + stashSize; i-- > 0; ) {
-			keyTable[i] = EMPTY;
-			valueTable[i] = null;
-		}
+		for (int i = capacity + stashSize; i-- > 0; )
+			keyTable[i] = null;
 		size = 0;
 		stashSize = 0;
-		zeroValue = null;
-		hasZeroValue = false;
 	}
 
 	/**
-	 * Returns true if the specified value is in the map. Note this traverses the entire map and compares every value, which may
-	 * be an expensive operation.
+	 * Returns true if the specified value is in the map. Note this traverses the entire map and compares every value, which may be
+	 * an expensive operation.
 	 */
-	public boolean containsValue(Object value, boolean identity) {
-		if (value == null) {
-			if (hasZeroValue && zeroValue == null) return true;
-			for (int i = capacity + stashSize; i-- > 0; )
-				if (keyTable[i] != EMPTY && valueTable[i] == null) return true;
-		} else if (identity) {
-			if (value == zeroValue) return true;
-			for (int i = capacity + stashSize; i-- > 0; )
-				if (valueTable[i] == value) return true;
-		} else {
-			if (hasZeroValue && value.equals(zeroValue)) return true;
-			for (int i = capacity + stashSize; i-- > 0; )
-				if (value.equals(valueTable[i])) return true;
-		}
+	public boolean containsValue(int value) {
+		for (int i = capacity + stashSize; i-- > 0; )
+			if (keyTable[i] != null && valueTable[i] == value) return true;
 		return false;
+
 	}
 
-	public boolean containsKey(long key) {
-		if (key == 0) return hasZeroValue;
-		int index = (int) (key & mask);
-		if (keyTable[index] != key) {
-			index = hash2(key);
-			if (keyTable[index] != key) {
-				index = hash3(key);
-				if (keyTable[index] != key) return containsKeyStash(key);
+	public boolean containsKey(K key) {
+		if (key == null) return false;
+
+		int hashCode = key.hashCode();
+		int index = hashCode & mask;
+		if (!key.equals(keyTable[index])) {
+			index = hash2(hashCode);
+			if (!key.equals(keyTable[index])) {
+				index = hash3(hashCode);
+				if (!key.equals(keyTable[index])) return containsKeyStash(key);
 			}
 		}
 		return true;
 	}
 
-	private boolean containsKeyStash(long key) {
+	private boolean containsKeyStash(K key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
-			if (keyTable[i] == key) return true;
+			if (key.equals(keyTable[i])) return true;
 		return false;
 	}
 
 	/**
-	 * Returns the key for the specified value, or <tt>notFound</tt> if it is not in the map. Note this traverses the entire map
-	 * and compares every value, which may be an expensive operation.
-	 *
-	 * @param identity If true, uses == to compare the specified value with values in the map. If false, uses
-	 *                 {@link #equals(Object)}.
+	 * Returns the key for the specified value, or null if it is not in the map. Note this traverses the entire map and compares
+	 * every value, which may be an expensive operation.
 	 */
-	public long findKey(Object value, boolean identity, long notFound) {
-		if (value == null) {
-			if (hasZeroValue && zeroValue == null) return 0;
-			for (int i = capacity + stashSize; i-- > 0; )
-				if (keyTable[i] != EMPTY && valueTable[i] == null) return keyTable[i];
-		} else if (identity) {
-			if (value == zeroValue) return 0;
-			for (int i = capacity + stashSize; i-- > 0; )
-				if (valueTable[i] == value) return keyTable[i];
-		} else {
-			if (hasZeroValue && value.equals(zeroValue)) return 0;
-			for (int i = capacity + stashSize; i-- > 0; )
-				if (value.equals(valueTable[i])) return keyTable[i];
-		}
-		return notFound;
+	public K findKey(int value) {
+		for (int i = capacity + stashSize; i-- > 0; )
+			if (keyTable[i] != null && valueTable[i] == value) return keyTable[i];
+		return null;
 	}
 
 	/**
@@ -511,51 +509,47 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 		capacity = newSize;
 		threshold = (int) (newSize * loadFactor);
 		mask = newSize - 1;
-		hashShift = 63 - Long.numberOfTrailingZeros(newSize);
+		hashShift = 31 - Integer.numberOfTrailingZeros(newSize);
 		stashCapacity = Math.max(3, (int) Math.ceil(Math.log(newSize)) * 2);
 		pushIterations = Math.max(Math.min(newSize, 8), (int) Math.sqrt(newSize) / 8);
 
-		long[] oldKeyTable = keyTable;
-		V[] oldValueTable = valueTable;
+		K[] oldKeyTable = keyTable;
+		int[] oldValueTable = valueTable;
 
-		keyTable = new long[newSize + stashCapacity];
-		valueTable = (V[]) Array.newInstance(valueComponentType, newSize + stashCapacity);
+		keyTable = (K[]) Array.newInstance(keyComponentType, newSize + stashCapacity);
+		valueTable = new int[newSize + stashCapacity];
 
 		int oldSize = size;
-		size = hasZeroValue ? 1 : 0;
+		size = 0;
 		stashSize = 0;
 		if (oldSize > 0) {
 			for (int i = 0; i < oldEndIndex; i++) {
-				long key = oldKeyTable[i];
-				if (key != EMPTY) putResize(key, oldValueTable[i]);
+				K key = oldKeyTable[i];
+				if (key != null) putResize(key, oldValueTable[i]);
 			}
 		}
 	}
 
-	private int hash2(long h) {
+	private int hash2(int h) {
 		h *= PRIME2;
-		return (int) ((h ^ h >>> hashShift) & mask);
+		return (h ^ h >>> hashShift) & mask;
 	}
 
-	private int hash3(long h) {
+	private int hash3(int h) {
 		h *= PRIME3;
-		return (int) ((h ^ h >>> hashShift) & mask);
+		return (h ^ h >>> hashShift) & mask;
 	}
 
+	@Override
 	public int hashCode() {
 		int h = 0;
-		if (hasZeroValue && zeroValue != null) {
-			h += zeroValue.hashCode();
-		}
 		for (int i = 0, n = capacity + stashSize; i < n; i++) {
-			long key = keyTable[i];
-			if (key != EMPTY) {
-				h += (int) (key ^ (key >>> 32)) * 31;
+			K key = keyTable[i];
+			if (key != null) {
+				h += key.hashCode() * 31;
 
-				V value = valueTable[i];
-				if (value != null) {
-					h += value.hashCode();
-				}
+				int value = valueTable[i];
+				h += value;
 			}
 		}
 		return h;
@@ -565,26 +559,16 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) return true;
-		if (!(obj instanceof LongMapf<?> map) || map.valueComponentType != valueComponentType) return false;
-		LongMapf<V> other = (LongMapf<V>) map;
+		if (!(obj instanceof ObjectIntMap2<?> map) || map.keyComponentType != keyComponentType) return false;
+		ObjectIntMap2<K> other = (ObjectIntMap2<K>) map;
 		if (other.size != size) return false;
-		if (other.hasZeroValue != hasZeroValue) return false;
-		if (hasZeroValue) {
-			if (other.zeroValue == null) {
-				if (zeroValue != null) return false;
-			} else {
-				if (!other.zeroValue.equals(zeroValue)) return false;
-			}
-		}
 		for (int i = 0, n = capacity + stashSize; i < n; i++) {
-			long key = keyTable[i];
-			if (key != EMPTY) {
-				V value = valueTable[i];
-				if (value == null) {
-					if (!other.containsKey(key) || other.get(key) != null) return false;
-				} else {
-					if (!value.equals(other.get(key))) return false;
-				}
+			K key = keyTable[i];
+			if (key != null) {
+				int otherValue = other.get(key, 0);
+				if (otherValue == 0 && !other.containsKey(key)) return false;
+				int value = valueTable[i];
+				if (otherValue != value) return false;
 			}
 		}
 		return true;
@@ -592,32 +576,32 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 
 	@Override
 	public String toString() {
-		if (size == 0) return "[]";
+		if (size == 0) return "{}";
 		StringBuilder buffer = new StringBuilder(32);
-		buffer.append('[');
+		buffer.append('{');
 		int i = keyTable.length;
 		while (i-- > 0) {
-			long key = keyTable[i];
-			if (key == EMPTY) continue;
+			K key = keyTable[i];
+			if (key == null) continue;
 			buffer.append(key);
 			buffer.append('=');
 			buffer.append(valueTable[i]);
 			break;
 		}
 		while (i-- > 0) {
-			long key = keyTable[i];
-			if (key == EMPTY) continue;
+			K key = keyTable[i];
+			if (key == null) continue;
 			buffer.append(", ");
 			buffer.append(key);
 			buffer.append('=');
 			buffer.append(valueTable[i]);
 		}
-		buffer.append(']');
+		buffer.append('}');
 		return buffer.toString();
 	}
 
 	@Override
-	public Iterator<Entry<V>> iterator() {
+	public Entries<K> iterator() {
 		return entries();
 	}
 
@@ -625,7 +609,7 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 	 * Returns an iterator for the entries in the map. Remove is supported. Note that the same iterator instance is returned each
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	public Entries<V> entries() {
+	public Entries<K> entries() {
 		if (entries1 == null) {
 			entries1 = new Entries<>(this);
 			entries2 = new Entries<>(this);
@@ -646,7 +630,7 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 	 * Returns an iterator for the values in the map. Remove is supported. Note that the same iterator instance is returned each
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	public Values<V> values() {
+	public Values<K> values() {
 		if (values1 == null) {
 			values1 = new Values<>(this);
 			values2 = new Values<>(this);
@@ -663,41 +647,11 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 		return values2;
 	}
 
-	public void eachValue(Cons<V> cons) {
-		boolean hasNext = false;
-		final int INDEX_ZERO = -1;
-
-		int nextIndex = INDEX_ZERO;
-
-		if (hasZeroValue) {
-			hasNext = true;
-		} else {
-			for (int n = capacity + stashSize; ++nextIndex < n; ) {
-				if (keyTable[nextIndex] != EMPTY) {
-					hasNext = true;
-					break;
-				}
-			}
-		}
-
-		while (hasNext) {
-			cons.get(nextIndex == INDEX_ZERO ? zeroValue : valueTable[nextIndex]);
-
-			hasNext = false;
-			for (int n = capacity + stashSize; ++nextIndex < n; ) {
-				if (keyTable[nextIndex] != EMPTY) {
-					hasNext = true;
-					break;
-				}
-			}
-		}
-	}
-
 	/**
-	 * Returns an iterator for the keys in the map. Remove is supported. Note that the same iterator instance is returned each
-	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
+	 * Returns an iterator for the keys in the map. Remove is supported. Note that the same iterator instance is returned each time
+	 * this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	public Keys<V> keys() {
+	public Keys<K> keys() {
 		if (keys1 == null) {
 			keys1 = new Keys<>(this);
 			keys2 = new Keys<>(this);
@@ -714,44 +668,30 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 		return keys2;
 	}
 
-	public static class Entry<V> {
-		public long key;
-		public V value;
-
-		public String toString() {
-			return key + "=" + value;
-		}
-	}
-
-	private static class MapIterator<V> {
-		static final int INDEX_ILLEGAL = -2;
-		static final int INDEX_ZERO = -1;
-		final LongMapf<V> map;
+	private static class MapIterator<K> {
+		final ObjectIntMap2<K> map;
 
 		public boolean hasNext;
 
 		int nextIndex, currentIndex;
 		boolean valid = true;
 
-		public MapIterator(LongMapf<V> map) {
+		public MapIterator(ObjectIntMap2<K> map) {
 			this.map = map;
 			reset();
 		}
 
 		public void reset() {
-			currentIndex = INDEX_ILLEGAL;
-			nextIndex = INDEX_ZERO;
-			if (map.hasZeroValue)
-				hasNext = true;
-			else
-				findNextIndex();
+			currentIndex = -1;
+			nextIndex = -1;
+			findNextIndex();
 		}
 
 		void findNextIndex() {
 			hasNext = false;
-			long[] keyTable = map.keyTable;
+			K[] keyTable = map.keyTable;
 			for (int n = map.capacity + map.stashSize; ++nextIndex < n; ) {
-				if (keyTable[nextIndex] != EMPTY) {
+				if (keyTable[nextIndex] != null) {
 					hasNext = true;
 					break;
 				}
@@ -759,44 +699,45 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 		}
 
 		public void remove() {
-			if (currentIndex == INDEX_ZERO && map.hasZeroValue) {
-				map.zeroValue = null;
-				map.hasZeroValue = false;
-			} else if (currentIndex < 0) {
-				throw new IllegalStateException("next must be called before remove.");
-			} else if (currentIndex >= map.capacity) {
+			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
+			if (currentIndex >= map.capacity) {
 				map.removeStashIndex(currentIndex);
 				nextIndex = currentIndex - 1;
 				findNextIndex();
 			} else {
-				map.keyTable[currentIndex] = EMPTY;
-				map.valueTable[currentIndex] = null;
+				map.keyTable[currentIndex] = null;
 			}
-			currentIndex = INDEX_ILLEGAL;
+			currentIndex = -1;
 			map.size--;
 		}
 	}
 
-	public static class Entries<V> extends MapIterator<V> implements Iterable<Entry<V>>, Iterator<Entry<V>> {
-		Entry<V> entry = new Entry<>();
+	public static class Entries<K> extends MapIterator<K> implements Iterable<ObjectIntPair<K>>, Iterator<ObjectIntPair<K>> {
+		ObjectIntPair<K> entry = new ObjectIntPair<>();
 
-		public Entries(LongMapf<V> map) {
+		public Entries(ObjectIntMap2<K> map) {
 			super(map);
+		}
+
+		public CollectionList<ObjectIntPair<K>> toList() {
+			CollectionList<ObjectIntPair<K>> out = new CollectionList<>(map.keyComponentType);
+			for (ObjectIntPair<K> entry : this) {
+				ObjectIntPair<K> e = new ObjectIntPair<>();
+				e.key = entry.key;
+				e.value = entry.value;
+				out.add(e);
+			}
+			return out;
 		}
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
-		public Entry<V> next() {
+		public ObjectIntPair<K> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			long[] keyTable = map.keyTable;
-			if (nextIndex == INDEX_ZERO) {
-				entry.key = 0;
-				entry.value = map.zeroValue;
-			} else {
-				entry.key = keyTable[nextIndex];
-				entry.value = map.valueTable[nextIndex];
-			}
+			K[] keyTable = map.keyTable;
+			entry.key = keyTable[nextIndex];
+			entry.value = map.valueTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return entry;
@@ -809,13 +750,51 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 		}
 
 		@Override
-		public Iterator<Entry<V>> iterator() {
+		public Entries<K> iterator() {
 			return this;
 		}
 	}
 
-	public static class Values<V> extends MapIterator<V> implements Iterable<V>, Iterator<V> {
-		public Values(LongMapf<V> map) {
+	public static class Values<K> extends MapIterator<K> {
+		public Values(ObjectIntMap2<K> map) {
+			super(map);
+		}
+
+		public boolean hasNext() {
+			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
+			return hasNext;
+		}
+
+		public int next() {
+			if (!hasNext) throw new NoSuchElementException();
+			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
+			int value = map.valueTable[nextIndex];
+			currentIndex = nextIndex;
+			findNextIndex();
+			return value;
+		}
+
+		/** Returns a new array containing the remaining values. */
+		public IntSeq toSeq() {
+			IntSeq array = new IntSeq(true, map.size);
+			while (hasNext)
+				array.add(next());
+			return array;
+		}
+
+		public int[] toArray() {
+			int[] array = new int[map.size];
+			int i = 0;
+			while (hasNext) {
+				array[i] = next();
+				i++;
+			}
+			return array;
+		}
+	}
+
+	public static class Keys<K> extends MapIterator<K> implements Iterable<K>, Iterator<K> {
+		public Keys(ObjectIntMap2<K> map) {
 			super(map);
 		}
 
@@ -826,50 +805,43 @@ public class LongMapf<V> implements Iterable<LongMapf.Entry<V>> {
 		}
 
 		@Override
-		public V next() {
+		public K next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			V value;
-			if (nextIndex == INDEX_ZERO)
-				value = map.zeroValue;
-			else
-				value = map.valueTable[nextIndex];
-			currentIndex = nextIndex;
-			findNextIndex();
-			return value;
-		}
-
-		@Override
-		public Iterator<V> iterator() {
-			return this;
-		}
-
-		/** Returns a new array containing the remaining values. */
-		public Seq<V> toArray() {
-			Seq<V> array = new Seq<>(true, map.size, map.valueComponentType);
-			while (hasNext)
-				array.add(next());
-			return array;
-		}
-	}
-
-	public static class Keys<V> extends MapIterator<V> {
-		public Keys(LongMapf<V> map) {
-			super(map);
-		}
-
-		public long next() {
-			if (!hasNext) throw new NoSuchElementException();
-			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			long key = nextIndex == INDEX_ZERO ? 0 : map.keyTable[nextIndex];
+			K key = map.keyTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return key;
 		}
 
-		/** Returns a new array containing the remaining values. */
-		public LongSeq toArray() {
-			LongSeq array = new LongSeq(true, map.size);
+		@Override
+		public Keys<K> iterator() {
+			return this;
+		}
+
+		public Seq<K> toSeq() {
+			Seq<K> seq = new Seq<>(true, map.size, map.keyComponentType);
+			while (hasNext)
+				seq.add(next());
+			return seq;
+		}
+
+		public Seq<K> toSeq(Seq<K> seq) {
+			while (hasNext)
+				seq.add(next());
+			return seq;
+		}
+
+		/** Returns a new array containing the remaining keys. */
+		public CollectionList<K> toList() {
+			CollectionList<K> array = new CollectionList<>(true, map.size, map.keyComponentType);
+			while (hasNext)
+				array.add(next());
+			return array;
+		}
+
+		/** Adds the remaining keys to the array. */
+		public CollectionList<K> toList(CollectionList<K> array) {
 			while (hasNext)
 				array.add(next());
 			return array;

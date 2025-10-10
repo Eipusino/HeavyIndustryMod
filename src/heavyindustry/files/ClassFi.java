@@ -8,36 +8,36 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * The HFi class extends the Fi class to handle resources in the class path.
+ * The ClassFi class extends the Fi class to handle resources in the class path.
  * <p>It locates and loads resources through ClassLoader and does not support write operations.
  */
-public class HFi extends Fi {
+public class ClassFi extends Fi {
 	/** ClassLoader for loading class path resources */
 	public final ClassLoader loader;
 
 	/**
-	 * Constructor, create an HFi instance using the specified ClassLoader
+	 * Constructor, create an ClassFi instance using the specified ClassLoader
 	 * @param loader ClassLoader used to load resources, cannot be empty
 	 */
-	public HFi(ClassLoader loader) {
+	public ClassFi(ClassLoader loader) {
 		this("", loader);
 	}
 
 	/**
-	 * Private constructor to create HFi instance from path string
+	 * Private constructor to create ClassFi instance from path string
 	 * @param path resource path
 	 * @param loader ClassLoader used to load resources, cannot be empty
 	 */
-	private HFi(String path, ClassLoader loader) {
+	private ClassFi(String path, ClassLoader loader) {
 		this(new File(path), loader);
 	}
 
 	/**
-	 * Private constructor, create HFi instance from File object.
+	 * Private constructor, create ClassFi instance from File object.
 	 * @param file Specify the File object of the resource
 	 * @param classLoader ClassLoader used to load resources, cannot be empty
 	 */
-	private HFi(File file, ClassLoader classLoader) {
+	private ClassFi(File file, ClassLoader classLoader) {
 		super(file, FileType.classpath);
 
 		if (classLoader == null) throw new IllegalArgumentException("classLoader cannot be null.");
@@ -80,7 +80,7 @@ public class HFi extends Fi {
 	 */
 	@Override
 	public OutputStream write() {
-		throw new UnsupportedOperationException("HFi cannot write anything.");
+		throw new UnsupportedOperationException("ClassFi cannot write anything.");
 	}
 
 	/**
@@ -89,7 +89,7 @@ public class HFi extends Fi {
 	 */
 	@Override
 	public Fi parent() {
-		return new HFi(file.getParent(), loader);
+		return new ClassFi(file.getParent(), loader);
 	}
 
 	/**
@@ -99,6 +99,6 @@ public class HFi extends Fi {
 	 */
 	@Override
 	public Fi child(String name) {
-		return new HFi(new File(file, name), loader);
+		return new ClassFi(new File(file, name), loader);
 	}
 }

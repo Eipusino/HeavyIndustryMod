@@ -4,7 +4,7 @@ import arc.func.Func;
 import arc.func.Prov;
 import arc.util.Structs;
 import heavyindustry.entities.effect.VapourizeEffect.VapourizeEffectState;
-import heavyindustry.util.ObjectIntMapf;
+import heavyindustry.util.ObjectIntMap2;
 import heavyindustry.util.CollectionObjectMap;
 import mindustry.gen.EntityMapping;
 import mindustry.gen.Entityc;
@@ -19,7 +19,7 @@ import java.util.Map;
  * @since 1.0.6
  */
 public final class Entitys {
-	private static final ObjectIntMapf<Class<? extends Entityc>> classIdMap = new ObjectIntMapf<>(Class.class);
+	private static final ObjectIntMap2<Class<? extends Entityc>> classIdMap = new ObjectIntMap2<>(Class.class);
 	private static final Map<String, Prov<? extends Entityc>> needIdMap = new CollectionObjectMap<>(String.class, Prov.class);
 
 	/** Don't let anyone instantiate this class. */

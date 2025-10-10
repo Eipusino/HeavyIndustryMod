@@ -4,7 +4,7 @@ import arc.files.Fi;
 import arc.func.Func;
 import arc.util.Log;
 import heavyindustry.HVars;
-import heavyindustry.util.Reflects;
+import heavyindustry.util.ReflectUtils;
 import mindustry.Vars;
 import rhino.Context;
 import rhino.Function;
@@ -106,10 +106,10 @@ public final class HScripts {
 
 	@SuppressWarnings("unchecked")
 	public static <T> Func<Object[], T> requireType(Function func, Context context, Scriptable scope, Class<T> returnType) {
-		Class<?> type = Reflects.box(returnType);
+		Class<?> type = ReflectUtils.box(returnType);
 		return args -> {
 			Object res = func.call(context, scope, scope, args);
-			if (type == void.class || type == Void.class) return null;
+			if (type == Void.class) return null;
 
 			if (res instanceof Wrapper w) res = w.unwrap();
 			if (!type.isAssignableFrom(res.getClass()))

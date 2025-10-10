@@ -23,17 +23,15 @@ import java.util.Map;
  * @see Map#ofEntries Map.ofEntries()
  * @since 1.0.7
  */
-public class Pair<K, V> implements Map.Entry<K, V>, Cloneable, Serializable {
+public class ObjectPair<K, V> implements Map.Entry<K, V>, Cloneable, Serializable {
 	private static final long serialVersionUID = 1672812535964436320l;
 
 	public K key;
 	public V value;
 
-	public Pair() {
-		this(null, null);
-	}
+	public ObjectPair() {}
 
-	public Pair(K k, V v) {
+	public ObjectPair(K k, V v) {
 		key = k;
 		value = v;
 	}
@@ -70,13 +68,20 @@ public class Pair<K, V> implements Map.Entry<K, V>, Cloneable, Serializable {
 		return oldValue;
 	}
 
+	public ObjectPair<K, V> set(K k, V v) {
+		key = k;
+		value = v;
+
+		return this;
+	}
+
 	@SuppressWarnings("unchecked")
-	public Pair<K, V> copy() {
+	public ObjectPair<K, V> copy() {
 		try {
-			return (Pair<K, V>) super.clone();
+			return (ObjectPair<K, V>) super.clone();
 		} catch (CloneNotSupportedException e) {
 			//this shouldn't happen, since we are Cloneable
-			return new Pair<>(key, value);
+			return new ObjectPair<>(key, value);
 		}
 	}
 
@@ -88,19 +93,12 @@ public class Pair<K, V> implements Map.Entry<K, V>, Cloneable, Serializable {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof Map.Entry<?, ?> e
-				&& key.equals(e.getKey())
-				&& value.equals(e.getValue());
+		return o instanceof Map.Entry<?, ?> e && ObjectUtils.equals(key, e.getKey()) && ObjectUtils.equals(value, e.getValue());
 	}
 
-	/**
-	 * Returns the hash code value for this map entry. The hash code
-	 * is {@code key.hashCode() ^ value.hashCode()}. Note that key and
-	 * value are non-null, so hashCode() can be called safely on them.
-	 */
 	@Override
 	public int hashCode() {
-		return key.hashCode() ^ value.hashCode();
+		return ObjectUtils.hashCode(key) ^ ObjectUtils.hashCode(value);
 	}
 
 	/**

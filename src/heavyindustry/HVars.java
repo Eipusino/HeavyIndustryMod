@@ -42,6 +42,8 @@ public final class HVars {
 
 	/** Is the Unsafe class available. */
 	public static boolean hasUnsafe = false;
+	public static boolean hasJDKUnsafe = false;
+	public static boolean hasImplLookup = false;
 
 	/** jar internal navigation. */
 	public static final InternalFileTree internalTree;

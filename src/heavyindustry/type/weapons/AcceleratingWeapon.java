@@ -23,30 +23,33 @@ public class AcceleratingWeapon extends Weapon {
 
 	@Override
 	public void update(Unit unit, WeaponMount mount) {
-		if (!(mount instanceof AcceleratingMount amo)) return;
+		if (mount instanceof AcceleratingMount amo) updateAccelerating(unit, amo);
 
-		float r = ((amo.accel / reload) * unit.reloadMultiplier * Time.delta) * (reload - minReload);
+		super.update(unit, mount);
+	}
+
+	public void updateAccelerating(Unit unit, AcceleratingMount mount) {
+		float r = ((mount.accel / reload) * unit.reloadMultiplier * Time.delta) * (reload - minReload);
 		if (!alternate || otherSide == -1) {
 			mount.reload -= r;
 		} else {
 			WeaponMount other = unit.mounts[otherSide];
 			other.reload -= r / 2f;
 			mount.reload -= r / 2f;
-			if (other instanceof AcceleratingMount aM) {
-				float accel = unit.isShooting() && unit.canShoot() ? Math.max(aM.accel, amo.accel) : Math.min(aM.accel, amo.accel);
-				float wTime = unit.isShooting() && unit.canShoot() ? Math.max(aM.waitTime, amo.waitTime) : Math.min(aM.waitTime, amo.waitTime);
-				aM.accel = accel;
-				aM.waitTime = wTime;
-				amo.accel = accel;
-				amo.waitTime = wTime;
+			if (other instanceof AcceleratingMount aMount) {
+				float accel = unit.isShooting() && unit.canShoot() ? Math.max(aMount.accel, mount.accel) : Math.min(aMount.accel, mount.accel);
+				float wTime = unit.isShooting() && unit.canShoot() ? Math.max(aMount.waitTime, mount.waitTime) : Math.min(aMount.waitTime, mount.waitTime);
+				aMount.accel = accel;
+				aMount.waitTime = wTime;
+				mount.accel = accel;
+				mount.waitTime = wTime;
 			}
 		}
-		if (amo.waitTime <= 0f) {
-			amo.accel = Math.max(0f, amo.accel - (minReload / accelCooldownTime) * Time.delta);
+		if (mount.waitTime <= 0f) {
+			mount.accel = Math.max(0f, mount.accel - (minReload / accelCooldownTime) * Time.delta);
 		} else {
-			amo.waitTime -= Time.delta;
+			mount.waitTime -= Time.delta;
 		}
-		super.update(unit, mount);
 	}
 
 	@Override

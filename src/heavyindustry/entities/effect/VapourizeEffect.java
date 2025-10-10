@@ -11,7 +11,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.content.HFx;
 import heavyindustry.gen.Entitys;
-import heavyindustry.util.IntMapf;
+import heavyindustry.util.IntMap2;
 import heavyindustry.util.Utils;
 import mindustry.content.Liquids;
 import mindustry.entities.Puddles;
@@ -29,8 +29,8 @@ import mindustry.type.UnitType;
 
 public final class VapourizeEffect {
 	private static final Seq<BuildQueue> vapourizeQueue = new Seq<>(true, 512, BuildQueue.class);
-	private static final IntMapf<BuildQueue> buildQMap = new IntMapf<>(BuildQueue.class);
-	private static final IntMapf<VapourizeEffectState> vapourizeMap = new IntMapf<>(VapourizeEffectState.class);
+	private static final IntMap2<BuildQueue> buildQMap = new IntMap2<>(BuildQueue.class);
+	private static final IntMap2<VapourizeEffectState> vapourizeMap = new IntMap2<>(VapourizeEffectState.class);
 
 	static {
 		Events.on(WorldLoadEvent.class, event -> {

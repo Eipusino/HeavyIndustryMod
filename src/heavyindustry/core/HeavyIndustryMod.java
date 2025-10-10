@@ -93,18 +93,11 @@ public final class HeavyIndustryMod extends Mod {
 	static boolean test = true;
 
 	static {
-		try {
-			// Load Impl.jar from the libs path inside the mod, This is a very important part of the mod's reflection function.
-			loadLibrary();
-		} catch (Throwable e) {
-			Log.err(e);
-		}
+		loadLibrary();
 
 		if (HVars.platformImpl == null) {
 			// This situation usually does not occur...
 			HVars.platformImpl = new DefaultImpl();
-		} else {
-			HVars.hasUnsafe = true;
 		}
 	}
 
@@ -217,7 +210,7 @@ public final class HeavyIndustryMod extends Mod {
 
 	@Override
 	public void init() {
-		HVars.listener.updateInit();
+		HeavyIndustryListener.updateInit();
 
 		HUnitTypes.init();
 
@@ -315,10 +308,8 @@ public final class HeavyIndustryMod extends Mod {
 		}
 	}
 
-	static void loadLibrary() throws Throwable {
-		if (OS.isIos) throw new UnsupportedOperationException("Not supporting loading Impl.jar on IOS platform");
-
-		Log.info("Use @", Class.forName("sun.misc.Unsafe"));// Ensure that the Unsafe class exists.
+	static void loadLibrary() {
+		if (OS.isIos) return;
 
 		platformImplType = loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl", true, clazz -> {
 			Object object = clazz.getConstructor().newInstance();

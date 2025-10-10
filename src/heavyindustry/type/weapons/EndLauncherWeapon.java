@@ -9,7 +9,7 @@ import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.entities.bullet.EndMissileBulletType;
-import heavyindustry.util.ObjectFloatMapf;
+import heavyindustry.util.ObjectFloatMap2;
 import mindustry.entities.Effect;
 import mindustry.entities.units.WeaponMount;
 import mindustry.gen.Bullet;
@@ -162,7 +162,7 @@ public class EndLauncherWeapon extends Weapon {
 
 	public static class EndLauncherMount extends WeaponMount {
 		public Seq<Teamc> targetSeq = new Seq<>(Teamc.class);
-		public ObjectFloatMapf<Teamc> targets = new ObjectFloatMapf<>(Teamc.class);
+		public ObjectFloatMap2<Teamc> targets = new ObjectFloatMap2<>(Teamc.class);
 		public int burstCount = 0;
 		public float burstTime = 0f;
 

@@ -141,6 +141,11 @@ public class CharSeq {
 		return items[index];
 	}
 
+	public char get(int index, char def) {
+		if (index >= size) return def;
+		return items[index];
+	}
+
 	public void set(int index, char value) {
 		if (index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
 		items[index] = value;
@@ -377,7 +382,7 @@ public class CharSeq {
 		if (!ordered) return super.hashCode();
 		int h = 1;
 		for (int i = 0, n = size; i < n; i++)
-			h = h * 31 + items[i];
+			h = h * 31 + (int) items[i];
 		return h;
 	}
 

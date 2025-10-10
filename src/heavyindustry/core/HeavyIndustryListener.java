@@ -26,22 +26,22 @@ public class HeavyIndustryListener implements ApplicationListener {
 		HEntity.update();
 	}
 
-	public float getUnitDps(UnitType unit) {
+	public static float getUnitDps(UnitType unit) {
 		if (unit.id >= unitDps.length) return 0f;
 		return unitDps[unit.id];
 	}
 
-	public float getBulletDps(BulletType bullet) {
+	public static float getBulletDps(BulletType bullet) {
 		if (bullet.id >= bulletDps.length) return 0f;
 		return bulletDps[bullet.id];
 	}
 
-	public boolean getPowerful(UnitType unit) {
+	public static boolean getPowerful(UnitType unit) {
 		if (unit.id >= powerful.length) return false;
 		return powerful[unit.id];
 	}
 
-	public void updateInit() {
+	public static void updateInit() {
 		Seq<BulletType> bullets = Vars.content.bullets();
 		Seq<UnitType> units = Vars.content.units();
 
@@ -59,7 +59,7 @@ public class HeavyIndustryListener implements ApplicationListener {
 		}
 	}
 
-	float updateUnit(UnitType unit) {
+	static float updateUnit(UnitType unit) {
 		if (unitDps[unit.id] == 0f) {
 			unitDps[unit.id] = 0.000001f;
 			float damage = 0f;
@@ -78,7 +78,7 @@ public class HeavyIndustryListener implements ApplicationListener {
 		return unitDps[unit.id];
 	}
 
-	float updateBullet(BulletType type) {
+	static float updateBullet(BulletType type) {
 		if (bulletDps[type.id] == 0f) {
 			//recursion
 			bulletDps[type.id] = type.damage;
@@ -103,7 +103,7 @@ public class HeavyIndustryListener implements ApplicationListener {
 		return bulletDps[type.id];
 	}
 
-	void updatePowerful(UnitType type) {
+	static void updatePowerful(UnitType type) {
 		switch (type.name) {
 			case "extra-utilities-regency", "new-horizon-guardian", "new-horizon-pester", "new-horizon-nucleoid" -> powerful[type.id] = true;
 			default -> powerful[type.id] = false;

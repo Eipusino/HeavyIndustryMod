@@ -3,9 +3,8 @@ package heavyindustry.util;
 import arc.func.Prov;
 
 import java.util.Iterator;
-import java.util.Map;
 
-public class ObjectTable<K, V> implements Iterable<ObjectTable.Entry<K, V>> {
+public class ObjectTable<K, V> implements Iterable<ObjectPair<K, V>> {
 	public final Class<?> keyComponentType;
 	public final Class<?> valueComponentType;
 
@@ -28,7 +27,7 @@ public class ObjectTable<K, V> implements Iterable<ObjectTable.Entry<K, V>> {
 		return map21.get(key);
 	}
 
-	public K getKey(V key, Prov<Entry<K, V>> supplier) {
+	public K getKey(V key, Prov<ObjectPair<K, V>> supplier) {
 		K res = getKey(key);
 		if (res == null) {
 			put(supplier.get());
@@ -41,7 +40,7 @@ public class ObjectTable<K, V> implements Iterable<ObjectTable.Entry<K, V>> {
 		return map12.get(key);
 	}
 
-	public V getValue(K key, Prov<Entry<K, V>> supplier) {
+	public V getValue(K key, Prov<ObjectPair<K, V>> supplier) {
 		V res = getValue(key);
 		if (res == null) {
 			put(supplier.get());
@@ -56,7 +55,7 @@ public class ObjectTable<K, V> implements Iterable<ObjectTable.Entry<K, V>> {
 		map21.put(a2, a1);
 	}
 
-	public void put(Entry<K, V> entry) {
+	public void put(ObjectPair<K, V> entry) {
 		put(entry.key, entry.value);
 	}
 
@@ -73,7 +72,7 @@ public class ObjectTable<K, V> implements Iterable<ObjectTable.Entry<K, V>> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Object get(Object key, Prov<Entry<K, V>> supplier, boolean argT1) {
+	public Object get(Object key, Prov<ObjectPair<K, V>> supplier, boolean argT1) {
 		return argT1 ? getValue((K) key, supplier) : getKey((V) key, supplier);
 	}
 
@@ -86,7 +85,7 @@ public class ObjectTable<K, V> implements Iterable<ObjectTable.Entry<K, V>> {
 	}
 
 	@Override
-	public Iterator<Entry<K, V>> iterator() {
+	public Iterator<ObjectPair<K, V>> iterator() {
 		return new TableIterator<>(map12);
 	}
 
@@ -102,32 +101,7 @@ public class ObjectTable<K, V> implements Iterable<ObjectTable.Entry<K, V>> {
 		map21.clear();
 	}
 
-	public static class Entry<K, V> implements Map.Entry<K, V> {
-		public final K key;
-		public final V value;
-
-		public Entry(K a1, V a2) {
-			key = a1;
-			value = a2;
-		}
-
-		@Override
-		public K getKey() {
-			return key;
-		}
-
-		@Override
-		public V getValue() {
-			return value;
-		}
-
-		@Override
-		public V setValue(Object v) {
-			return value;
-		}
-	}
-
-	public static class TableIterator<K, V> implements Iterator<Entry<K, V>> {
+	public static class TableIterator<K, V> implements Iterator<ObjectPair<K, V>> {
 		protected final CollectionObjectMap.Entries<K, V> iterator;
 
 		public TableIterator(CollectionObjectMap<K, V> map) {
@@ -140,9 +114,9 @@ public class ObjectTable<K, V> implements Iterable<ObjectTable.Entry<K, V>> {
 		}
 
 		@Override
-		public Entry<K, V> next() {
-			CollectionObjectMap.MapEntry<K, V> next = iterator.next();
-			return new Entry<>(next.key, next.value);
+		public ObjectPair<K, V> next() {
+			ObjectPair<K, V> next = iterator.next();
+			return new ObjectPair<>(next.key, next.value);
 		}
 
 		@Override

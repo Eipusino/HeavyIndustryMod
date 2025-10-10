@@ -87,7 +87,7 @@ public final class PositionLightning {
 		return Mathf.random(1f, 7f);
 	}
 
-	static volatile Building furthest = null;
+	static Building furthest = null;
 
 	static final Seq<Healthc> entities = new Seq<>(Healthc.class);
 
@@ -286,7 +286,7 @@ public final class PositionLightning {
 	}
 
 	/** Add proper unit into the to hit Seq. */
-	static void whetherAdd(Seq<Healthc> points, Team team, Rect selectRect, int maxHit, boolean targetGround, boolean targetAir) {
+	public static void whetherAdd(Seq<Healthc> points, Team team, Rect selectRect, int maxHit, boolean targetGround, boolean targetAir) {
 		Units.nearbyEnemies(team, selectRect, unit -> {
 			if (unit.checkTarget(targetAir, targetGround)) points.add(unit);
 		});
@@ -310,7 +310,7 @@ public final class PositionLightning {
 		HFx.posLightning.at((vets.firstTmp().x + vets.peekTmp().x) / 2f, (vets.firstTmp().y + vets.peekTmp().y) / 2f, width, color, vets);
 	}
 
-	static Vec2Seq computeVectors(FloatSeq randomVec, float fromX, float fromY, float toX, float toY) {
+	public static Vec2Seq computeVectors(FloatSeq randomVec, float fromX, float fromY, float toX, float toY) {
 		int param = randomVec.size;
 		float angle = Angles.angle(fromX, fromY, toX, toY);
 
@@ -318,14 +318,15 @@ public final class PositionLightning {
 		tmp1.trns(angle, Mathf.dst(fromX, fromY, toX, toY) / (param - 1));
 
 		lines.add(fromX, fromY);
-		for (int i = 1; i < param - 2; i++)
+		for (int i = 1; i < param - 2; i++) {
 			lines.add(tmp3.trns(angle - 90, randomVec.get(i)).add(tmp1, i).add(fromX, fromY));
+		}
 		lines.add(toX, toY);
 
 		return lines;
 	}
 
-	static Vec2Seq computeVectors(FloatSeq randomVec, Position from, Position to) {
+	public static Vec2Seq computeVectors(FloatSeq randomVec, Position from, Position to) {
 		int param = randomVec.size;
 		float angle = from.angleTo(to);
 
@@ -333,10 +334,15 @@ public final class PositionLightning {
 		tmp1.trns(angle, from.dst(to) / (param - 1));
 
 		lines.add(from);
-		for (int i = 1; i < param - 2; i++)
+		for (int i = 1; i < param - 2; i++) {
 			lines.add(tmp3.trns(angle - 90, randomVec.get(i)).add(tmp1, i).add(from.getX(), from.getY()));
+		}
 		lines.add(to);
 
 		return lines;
+	}
+
+	public static void reset() {
+		furthest = null;
 	}
 }

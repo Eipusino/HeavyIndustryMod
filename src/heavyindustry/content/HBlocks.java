@@ -55,6 +55,7 @@ import heavyindustry.world.blocks.defense.DPSWall;
 import heavyindustry.world.blocks.defense.Explosive;
 import heavyindustry.world.blocks.defense.IndestructibleWall;
 import heavyindustry.world.blocks.defense.InsulationWall;
+import heavyindustry.world.blocks.defense.RectOverdriveProjector;
 import heavyindustry.world.blocks.defense.ShapedWall;
 import heavyindustry.world.blocks.defense.turrets.Cobweb;
 import heavyindustry.world.blocks.defense.turrets.MinigunTurret;
@@ -344,7 +345,7 @@ public final class HBlocks {
 	//defense
 	lighthouse, mendDome, sectorStructureMender, largeShieldGenerator, paralysisMine, detonator, bombLauncher,
 	//defense-erekir
-	largeRadar,
+	largeRadar, reinforcedOverdriveProjector,
 	//storage
 	cargo, bin, machineryUnloader, rapidUnloader, coreStorage, coreShatter,
 	//storage-erekir
@@ -2039,7 +2040,7 @@ public final class HBlocks {
 			liquidCapacity = 60f;
 			itemCapacity = 15;
 			itemDuration = 60f;
-			powerProduction = 22.5f;
+			powerProduction = 17.5f;
 			consumeLiquid(Liquids.water, 0.3f);
 			consumeItem(Items.coal, 2);
 			outputLiquid = new LiquidStack(HLiquids.gas, 0.6f);
@@ -3180,6 +3181,21 @@ public final class HBlocks {
 			fogRadius = 86;
 			consumePower(1.2f);
 			buildType = RadarBuild::new;
+		}};
+		reinforcedOverdriveProjector = new RectOverdriveProjector("reinforced-overdrive-projector") {{
+			requirements(Category.effect, ItemStack.with(Items.silicon, 100, Items.oxide, 80, Items.phaseFabric, 20, Items.surgeAlloy, 60, Items.tungsten, 90, Items.carbide, 25));
+			health = 1040;
+			size = 3;
+			range = 150f;
+			reload = 90f;
+			phaseRangeBoost = 0f;
+			speedBoostPhase = 0.3f;
+			speedBoost = 1.5f;
+			hasBoost = true;
+			consumePower(6f);
+			consumeLiquid(Liquids.hydrogen, 0.05f);
+			consumeItem(Items.phaseFabric, 1).optional(true, true);
+			squareSprite = false;
 		}};
 		//storage
 		bin = new StorageBlock("bin") {{

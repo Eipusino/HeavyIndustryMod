@@ -3,7 +3,7 @@ package heavyindustry.world.blocks.defense.turrets;
 import arc.math.Angles;
 import arc.math.Mathf;
 import arc.util.Time;
-import heavyindustry.util.IntMapf;
+import heavyindustry.util.IntMap2;
 import heavyindustry.util.CollectionObjectMap;
 import mindustry.entities.Effect;
 import mindustry.entities.Mover;
@@ -15,7 +15,7 @@ import mindustry.world.blocks.defense.turrets.ItemTurret;
 /** Shoot Match Turret */
 public class ShootMatchTurret extends ItemTurret {
 	public float lifeRnd = 0;
-	public IntMapf<ShootPattern> shooterMap = new IntMapf<>(ShootPattern.class);
+	public IntMap2<ShootPattern> shooterMap = new IntMap2<>(ShootPattern.class);
 
 	public ShootMatchTurret(String name) {
 		super(name);

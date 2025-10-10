@@ -1,9 +1,11 @@
 package heavyindustry.util;
 
+import arc.func.Cons;
 import arc.math.Mathf;
-import arc.struct.BoolSeq;
+import arc.struct.FloatSeq;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
+import arc.util.Eachable;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;
@@ -12,13 +14,24 @@ import java.util.NoSuchElementException;
 import static heavyindustry.util.Constant.PRIME2;
 import static heavyindustry.util.Constant.PRIME3;
 
-public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
+/**
+ * An unordered map where the values are floats. This implementation is a cuckoo hash map using 3 hashes, random walking, and a
+ * small stash for problematic keys. Null keys are not allowed. No allocation is done except when growing the table size. <br>
+ * <br>This map performs very fast get, containsKey, and remove (typically O(1), worst case O(log(n))). Put may be a bit slower,
+ * depending on hash collisions. Load factors greater than 0.91 greatly increase the chances the map will have to rehash to the
+ * next higher POT size.
+ * <p><strong>Eipusino modification: add null judgment to some methods to prevent throw NullPointerException.</strong>
+ *
+ * @author Nathan Sweet
+ * @author Eipusino
+ */
+public class ObjectFloatMap2<K> implements Iterable<ObjectFloatPair<K>>, Eachable<ObjectFloatPair<K>> {
 	public int size;
 
 	public final Class<?> keyComponentType;
 
 	public K[] keyTable;
-	public boolean[] valueTable;
+	public float[] valueTable;
 	public int capacity, stashSize;
 
 	float loadFactor;
@@ -31,7 +44,7 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 	Keys<K> keys1, keys2;
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
-	public ObjectBoolMapf(Class<?> keyType) {
+	public ObjectFloatMap2(Class<?> keyType) {
 		this(keyType, 51, 0.8f);
 	}
 
@@ -40,7 +53,7 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 	 *
 	 * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
 	 */
-	public ObjectBoolMapf(Class<?> keyType, int initialCapacity) {
+	public ObjectFloatMap2(Class<?> keyType, int initialCapacity) {
 		this(keyType, initialCapacity, 0.8f);
 	}
 
@@ -51,7 +64,7 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 	 * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
 	 */
 	@SuppressWarnings("unchecked")
-	public ObjectBoolMapf(Class<?> keyType, int initialCapacity, float loadFactor) {
+	public ObjectFloatMap2(Class<?> keyType, int initialCapacity, float loadFactor) {
 		if (initialCapacity < 0) throw new IllegalArgumentException("initialCapacity must be >= 0: " + initialCapacity);
 		initialCapacity = Mathf.nextPowerOfTwo((int) Math.ceil(initialCapacity / loadFactor));
 		if (initialCapacity > 1 << 30)
@@ -70,11 +83,11 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 		keyComponentType = keyType;
 
 		keyTable = (K[]) Array.newInstance(keyType, capacity + stashCapacity);
-		valueTable = new boolean[keyTable.length];
+		valueTable = new float[keyTable.length];
 	}
 
 	/** Creates a new map identical to the specified map. */
-	public ObjectBoolMapf(ObjectBoolMapf<? extends K> map) {
+	public ObjectFloatMap2(ObjectFloatMap2<? extends K> map) {
 		this(map.keyComponentType, (int) Math.floor(map.capacity * map.loadFactor), map.loadFactor);
 		stashSize = map.stashSize;
 		System.arraycopy(map.keyTable, 0, keyTable, 0, map.keyTable.length);
@@ -82,7 +95,14 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 		size = map.size;
 	}
 
-	public void put(K key, boolean value) {
+	@Override
+	public void each(Cons<? super ObjectFloatPair<K>> cons) {
+		for (ObjectFloatPair<K> e : entries()) {
+			cons.get(e);
+		}
+	}
+
+	public void put(K key, float value) {
 		if (key == null) return;
 
 		// Check for existing keys.
@@ -141,20 +161,12 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 		push(key, value, index1, key1, index2, key2, index3, key3);
 	}
 
-	public void putAll(ObjectBoolMapf<? extends K> map) {
-		for (MapEntry<? extends K> entry : map.entries())
-			put(entry.key, entry.value);
-	}
-
-	@SuppressWarnings("unchecked")
-	public void putAll(Object... values) {
-		for (int i = 0; i < values.length / 2; i++) {
-			put((K) values[i * 2], (boolean) values[i * 2 + 1]);
-		}
+	public void putAll(ObjectFloatMap2<? extends K> map) {
+		for (ObjectFloatPair<? extends K> entry : map.entries()) put(entry.key, entry.value);
 	}
 
 	/** Skips checks for existing keys. */
-	private void putResize(K key, boolean value) {
+	private void putResize(K key, float value) {
 		if (key == null) return;
 
 		// Check for empty buckets.
@@ -189,10 +201,10 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 		push(key, value, index1, key1, index2, key2, index3, key3);
 	}
 
-	private void push(K insertKey, boolean insertValue, int index1, K key1, int index2, K key2, int index3, K key3) {
+	private void push(K insertKey, float insertValue, int index1, K key1, int index2, K key2, int index3, K key3) {
 		// Push keys until an empty bucket is found.
 		K evictedKey;
-		boolean evictedValue;
+		float evictedValue;
 		int i = 0;
 		do {
 			// Replace the key and value for one of the hashes.
@@ -255,7 +267,7 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 		putStash(evictedKey, evictedValue);
 	}
 
-	private void putStash(K key, boolean value) {
+	private void putStash(K key, float value) {
 		if (stashSize == stashCapacity) {
 			// Too many pushes occurred and the stash is full, increase the table size.
 			resize(capacity << 1);
@@ -270,12 +282,8 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 		size++;
 	}
 
-	public boolean get(K key) {
-		return get(key, false);
-	}
-
 	/** @param defaultValue Returned if the key was not associated with a value. */
-	public boolean get(K key, boolean defaultValue) {
+	public float get(K key, float defaultValue) {
 		if (key == null) return defaultValue;
 
 		int hashCode = key.hashCode();
@@ -290,24 +298,80 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 		return valueTable[index];
 	}
 
-	private boolean getStash(K key, boolean defaultValue) {
+	private float getStash(K key, float defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return valueTable[i];
 		return defaultValue;
 	}
 
-	/** @return 0 as default value. */
-	public boolean remove(K key) {
-		return remove(key, false);
+	/**
+	 * Returns the key's current value and increments the stored value. If the key is not in the map, defaultValue + increment is
+	 * put into the map.
+	 */
+	public float increment(K key, float defaultValue, float increment) {
+		if (key == null) return defaultValue;
+
+		int hashCode = key.hashCode();
+		int index = hashCode & mask;
+		if (!key.equals(keyTable[index])) {
+			index = hash2(hashCode);
+			if (!key.equals(keyTable[index])) {
+				index = hash3(hashCode);
+				if (!key.equals(keyTable[index])) return getAndIncrementStash(key, defaultValue, increment);
+			}
+		}
+		float value = valueTable[index];
+		valueTable[index] = value + increment;
+		return value;
 	}
 
-	/** @return the value that was removed, or defaultValue. */
-	public boolean remove(K key, boolean defaultValue) {
+	private float getAndIncrementStash(K key, float defaultValue, float increment) {
+		for (int i = capacity, n = i + stashSize; i < n; i++)
+			if (key.equals(keyTable[i])) {
+				float value = valueTable[i];
+				valueTable[i] = value + increment;
+				return value;
+			}
+		put(key, defaultValue + increment);
+		return defaultValue;
+	}
+
+	public void remove(K key) {
+		if (key == null) return;
+
 		int hashCode = key.hashCode();
 		int index = hashCode & mask;
 		if (key.equals(keyTable[index])) {
 			keyTable[index] = null;
-			boolean oldValue = valueTable[index];
+			size--;
+			return;
+		}
+
+		index = hash2(hashCode);
+		if (key.equals(keyTable[index])) {
+			keyTable[index] = null;
+			size--;
+			return;
+		}
+
+		index = hash3(hashCode);
+		if (key.equals(keyTable[index])) {
+			keyTable[index] = null;
+			size--;
+			return;
+		}
+
+		removeStash(key);
+	}
+
+	public float remove(K key, float defaultValue) {
+		if (key == null) return defaultValue;
+
+		int hashCode = key.hashCode();
+		int index = hashCode & mask;
+		if (key.equals(keyTable[index])) {
+			keyTable[index] = null;
+			float oldValue = valueTable[index];
 			size--;
 			return oldValue;
 		}
@@ -315,7 +379,7 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 		index = hash2(hashCode);
 		if (key.equals(keyTable[index])) {
 			keyTable[index] = null;
-			boolean oldValue = valueTable[index];
+			float oldValue = valueTable[index];
 			size--;
 			return oldValue;
 		}
@@ -323,7 +387,7 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 		index = hash3(hashCode);
 		if (key.equals(keyTable[index])) {
 			keyTable[index] = null;
-			boolean oldValue = valueTable[index];
+			float oldValue = valueTable[index];
 			size--;
 			return oldValue;
 		}
@@ -331,10 +395,20 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 		return removeStash(key, defaultValue);
 	}
 
-	boolean removeStash(K key, boolean defaultValue) {
+	void removeStash(K key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
 			if (key.equals(keyTable[i])) {
-				boolean oldValue = valueTable[i];
+				removeStashIndex(i);
+				size--;
+				break;
+			}
+		}
+	}
+
+	float removeStash(K key, float defaultValue) {
+		for (int i = capacity, n = i + stashSize; i < n; i++) {
+			if (key.equals(keyTable[i])) {
+				float oldValue = valueTable[i];
 				removeStashIndex(i);
 				size--;
 				return oldValue;
@@ -393,14 +467,13 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 	 * Returns true if the specified value is in the map. Note this traverses the entire map and compares every value, which may be
 	 * an expensive operation.
 	 */
-	public boolean containsValue(boolean value) {
+	public boolean containsValue(float value) {
 		for (int i = capacity + stashSize; i-- > 0; )
 			if (keyTable[i] != null && valueTable[i] == value) return true;
 		return false;
-
 	}
 
-	public boolean containsKey(K key) {
+	public boolean containsKey(Object key) {
 		if (key == null) return false;
 
 		int hashCode = key.hashCode();
@@ -415,7 +488,7 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 		return true;
 	}
 
-	private boolean containsKeyStash(K key) {
+	private boolean containsKeyStash(Object key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return true;
 		return false;
@@ -425,7 +498,7 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 	 * Returns the key for the specified value, or null if it is not in the map. Note this traverses the entire map and compares
 	 * every value, which may be an expensive operation.
 	 */
-	public K findKey(boolean value) {
+	public K findKey(float value) {
 		for (int i = capacity + stashSize; i-- > 0; )
 			if (keyTable[i] != null && valueTable[i] == value) return keyTable[i];
 		return null;
@@ -454,10 +527,10 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 		pushIterations = Math.max(Math.min(newSize, 8), (int) Math.sqrt(newSize) / 8);
 
 		K[] oldKeyTable = keyTable;
-		boolean[] oldValueTable = valueTable;
+		float[] oldValueTable = valueTable;
 
 		keyTable = (K[]) Array.newInstance(keyComponentType, newSize + stashCapacity);
-		valueTable = new boolean[newSize + stashCapacity];
+		valueTable = new float[newSize + stashCapacity];
 
 		int oldSize = size;
 		size = 0;
@@ -488,8 +561,8 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 			if (key != null) {
 				h += key.hashCode() * 31;
 
-				boolean value = valueTable[i];
-				h += value ? 1231 : 1237;
+				float value = valueTable[i];
+				h += Float.floatToIntBits(value);
 			}
 		}
 		return h;
@@ -499,15 +572,15 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) return true;
-		if (!(obj instanceof ObjectBoolMapf<?> map) || map.keyComponentType != keyComponentType) return false;
-		ObjectBoolMapf<K> other = (ObjectBoolMapf<K>) map;
+		if (!(obj instanceof ObjectFloatMap2<?> map) || map.keyComponentType != keyComponentType) return false;
+		ObjectFloatMap2<K> other = (ObjectFloatMap2<K>) map;
 		if (other.size != size) return false;
 		for (int i = 0, n = capacity + stashSize; i < n; i++) {
 			K key = keyTable[i];
 			if (key != null) {
-				boolean otherValue = other.get(key, false);
-				if (!otherValue && !other.containsKey(key)) return false;
-				boolean value = valueTable[i];
+				float otherValue = other.get(key, 0f);
+				if (otherValue == 0f && !other.containsKey(key)) return false;
+				float value = valueTable[i];
 				if (otherValue != value) return false;
 			}
 		}
@@ -608,25 +681,15 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 		return keys2;
 	}
 
-	public static class MapEntry<K> {
-		public K key;
-		public boolean value;
-
-		@Override
-		public String toString() {
-			return key + "=" + value;
-		}
-	}
-
 	private static class MapIterator<K> {
-		final ObjectBoolMapf<K> map;
+		final ObjectFloatMap2<K> map;
 
 		public boolean hasNext;
 
 		int nextIndex, currentIndex;
 		boolean valid = true;
 
-		public MapIterator(ObjectBoolMapf<K> map) {
+		public MapIterator(ObjectFloatMap2<K> map) {
 			this.map = map;
 			reset();
 		}
@@ -662,38 +725,16 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 		}
 	}
 
-	public static class Entries<K> extends MapIterator<K> implements Iterable<MapEntry<K>>, Iterator<MapEntry<K>> {
-		MapEntry<K> entry = new MapEntry<>();
+	public static class Entries<K> extends MapIterator<K> implements Iterable<ObjectFloatPair<K>>, Iterator<ObjectFloatPair<K>> {
+		ObjectFloatPair<K> entry = new ObjectFloatPair<>();
 
-		public Entries(ObjectBoolMapf<K> map) {
+		public Entries(ObjectFloatMap2<K> map) {
 			super(map);
-		}
-
-		public Seq<MapEntry<K>> toSeq() {
-			Seq<MapEntry<K>> seq = new Seq<>(map.keyComponentType);
-			for (MapEntry<K> entry : this) {
-				MapEntry<K> e = new MapEntry<>();
-				e.key = entry.key;
-				e.value = entry.value;
-				seq.add(e);
-			}
-			return seq;
-		}
-
-		public CollectionList<MapEntry<K>> toList() {
-			CollectionList<MapEntry<K>> out = new CollectionList<>(map.keyComponentType);
-			for (MapEntry<K> entry : this) {
-				MapEntry<K> e = new MapEntry<>();
-				e.key = entry.key;
-				e.value = entry.value;
-				out.add(e);
-			}
-			return out;
 		}
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
-		public MapEntry<K> next() {
+		public ObjectFloatPair<K> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			K[] keyTable = map.keyTable;
@@ -717,7 +758,7 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 	}
 
 	public static class Values<K> extends MapIterator<K> {
-		public Values(ObjectBoolMapf<K> map) {
+		public Values(ObjectFloatMap2<K> map) {
 			super(map);
 		}
 
@@ -726,25 +767,25 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 			return hasNext;
 		}
 
-		public boolean next() {
+		public float next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			boolean value = map.valueTable[nextIndex];
+			float value = map.valueTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return value;
 		}
 
 		/** Returns a new array containing the remaining values. */
-		public BoolSeq toSeq() {
-			BoolSeq array = new BoolSeq(true, map.size);
+		public FloatSeq toSeq() {
+			FloatSeq array = new FloatSeq(true, map.size);
 			while (hasNext)
 				array.add(next());
 			return array;
 		}
 
-		public boolean[] toArray() {
-			boolean[] array = new boolean[map.size];
+		public float[] toArray() {
+			float[] array = new float[map.size];
 			int i = 0;
 			while (hasNext) {
 				array[i] = next();
@@ -755,7 +796,7 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 	}
 
 	public static class Keys<K> extends MapIterator<K> implements Iterable<K>, Iterator<K> {
-		public Keys(ObjectBoolMapf<K> map) {
+		public Keys(ObjectFloatMap2<K> map) {
 			super(map);
 		}
 
@@ -805,6 +846,17 @@ public class ObjectBoolMapf<K> implements Iterable<ObjectBoolMapf.MapEntry<K>> {
 		public CollectionList<K> toList(CollectionList<K> array) {
 			while (hasNext)
 				array.add(next());
+			return array;
+		}
+
+		@SuppressWarnings("unchecked")
+		public K[] toArray() {
+			K[] array = (K[]) Array.newInstance(map.keyComponentType, map.size);
+			int i = 0;
+			while (hasNext) {
+				array[i] = next();
+				i++;
+			}
 			return array;
 		}
 	}

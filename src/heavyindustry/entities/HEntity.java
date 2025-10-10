@@ -28,7 +28,7 @@ import arc.util.pooling.Pools;
 import heavyindustry.content.HFx;
 import heavyindustry.gen.Spawner;
 import heavyindustry.util.CollectionList;
-import heavyindustry.util.Reflects;
+import heavyindustry.util.ReflectUtils;
 import mindustry.Vars;
 import mindustry.audio.SoundLoop;
 import mindustry.core.World;
@@ -718,7 +718,7 @@ public final class HEntity {
 	}
 
 	public static boolean removeExclude(Unit unit) {
-		if (!queueExcludeRemoval.contains(unit) && ((int) (Time.millis() / 1000) - 30) > excludeTime.get(unit.id, 0xffffffff)) {
+		if (((int) (Time.millis() / 1000) - 30) > excludeTime.get(unit.id, 0xffffffff)) {
 			queueExcludeRemoval.add(unit);
 			return true;
 		}
@@ -814,7 +814,7 @@ public final class HEntity {
 		if (entity instanceof Poolable pool) Groups.queueFree(pool);
 	}
 
-	public static void handleAdditions(int start, Entityc exclude, Entityc exclude2, CollectionList<Building> proxy) {
+	public static void handleAdditions(int start, Entityc exclude, Entityc exclude2, Seq<Building> proxy) {
 		toRemove.clear();
 
 		int size = Groups.all.size();
@@ -832,7 +832,7 @@ public final class HEntity {
 	}
 
 	public static void setAdded(Entityc entity, boolean value) {
-		Field field = Reflects.findClassField(entity.getClass(), "added");
+		Field field = ReflectUtils.findClassField(entity.getClass(), "added");
 		if (field != null) {
 			try {
 				field.setAccessible(true);
@@ -845,7 +845,7 @@ public final class HEntity {
 
 	@Nullable
 	public static void findSound(Building build, Cons<SoundLoop> cons) {
-		Field field = Reflects.findClassField(build.getClass(), "sound");
+		Field field = ReflectUtils.findClassField(build.getClass(), "sound");
 		if (field != null) {
 			try {
 				field.setAccessible(true);

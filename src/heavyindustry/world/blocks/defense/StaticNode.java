@@ -79,8 +79,8 @@ public class StaticNode extends Block {
 		noUpdateDisabled = false;
 		swapDiagonalPlacement = true;
 
-		config(Integer.class, (StaticNodeBuild entity, Integer value) -> {
-			IntSeq links = entity.links;
+		config(Integer.class, (StaticNodeBuild tile, Integer value) -> {
+			IntSeq links = tile.links;
 			Building other = world.build(value);
 			boolean contains = links.contains(value);
 
@@ -88,17 +88,17 @@ public class StaticNode extends Block {
 			if (contains) {
 				//unlink
 				links.removeValue(value);
-				if (other instanceof StaticNodeBuild node) node.links.removeValue(entity.pos());
-			} else if (linkValid(entity, other) && other instanceof StaticNodeBuild node && links.size < maxNodes) {
+				if (other instanceof StaticNodeBuild node) node.links.removeValue(tile.pos());
+			} else if (linkValid(tile, other) && other instanceof StaticNodeBuild node && links.size < maxNodes) {
 				//add other to self
 				if (!links.contains(node.pos())) {
 					links.add(node.pos());
 				}
 
 				//add self to other
-				if (node.team == entity.team) {
-					if (!node.links.contains(entity.pos())) {
-						node.links.add(entity.pos());
+				if (node.team == tile.team) {
+					if (!node.links.contains(tile.pos())) {
+						node.links.add(tile.pos());
 					}
 				}
 			}

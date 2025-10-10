@@ -5,12 +5,12 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.math.geom.Point2;
 import arc.scene.Element;
-import heavyindustry.util.IntMapf;
+import heavyindustry.util.IntMap2;
 import mindustry.ctype.UnlockableContent;
 import mindustry.graphics.Pal;
 
 public class CraftGridImage extends Element {
-	public IntMapf<UnlockableContent> items = new IntMapf<>(UnlockableContent.class);
+	public IntMap2<UnlockableContent> items = new IntMap2<>(UnlockableContent.class);
 	public float scl = 80f, imgScl = 60f;
 
 	public float itemsWidth() {

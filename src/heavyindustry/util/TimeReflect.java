@@ -19,11 +19,11 @@ public final class TimeReflect {
 	private TimeReflect() {}
 
 	public static void init() {
-		runs = Reflects.findField(Time.class, "runs", true);
-		trueRuns = Reflects.getField(null, runs);
+		runs = ReflectUtils.findField(Time.class, "runs", true);
+		trueRuns = ReflectUtils.getField(null, runs);
 
-		delay = Reflects.findField(DelayRun.class, "delay", true);
-		finish = Reflects.findField(DelayRun.class, "finish", true);
+		delay = ReflectUtils.findField(DelayRun.class, "delay", true);
+		finish = ReflectUtils.findField(DelayRun.class, "finish", true);
 	}
 
 	public static void swapRuns(Seq<DelayRun> newRuns) {
@@ -55,7 +55,7 @@ public final class TimeReflect {
 			float time = delay.getFloat(run);
 			time -= Time.delta;
 			if (time <= 0f) {
-				Runnable r = Reflects.getField(run, finish);
+				Runnable r = ReflectUtils.getField(run, finish);
 				r.run();
 				removes.add(run);
 				Pools.free(run);

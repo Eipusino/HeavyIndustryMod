@@ -24,44 +24,52 @@ import static heavyindustry.util.ObjectUtils.requireNonNull;
  * @author Eipusino
  * @since 1.0.6
  */
-public final class Reflects {
+public final class ReflectUtils {
 	public static final Map<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
 
 	/** Don't let anyone instantiate this class. */
-	private Reflects() {}
+	private ReflectUtils() {}
 
 	public static Class<?> box(Class<?> type) {
-		if (type == boolean.class) return Boolean.class;
-		if (type == byte.class) return Byte.class;
-		if (type == char.class) return Character.class;
-		if (type == short.class) return Short.class;
-		if (type == int.class) return Integer.class;
-		if (type == float.class) return Float.class;
-		if (type == long.class) return Long.class;
-		if (type == double.class) return Double.class;
-		return type;
+		if (type == void.class) return Void.class;
+		else if (type == boolean.class) return Boolean.class;
+		else if (type == byte.class) return Byte.class;
+		else if (type == char.class) return Character.class;
+		else if (type == short.class) return Short.class;
+		else if (type == int.class) return Integer.class;
+		else if (type == float.class) return Float.class;
+		else if (type == long.class) return Long.class;
+		else if (type == double.class) return Double.class;
+		else return type;
 	}
 
 	public static Class<?> unbox(Class<?> type) {
-		if (type == Boolean.class) return boolean.class;
-		if (type == Byte.class) return byte.class;
-		if (type == Character.class) return char.class;
-		if (type == Short.class) return short.class;
-		if (type == Integer.class) return int.class;
-		if (type == Float.class) return float.class;
-		if (type == Long.class) return long.class;
-		if (type == Double.class) return double.class;
-		return type;
+		if (type == Void.class) return void.class;
+		else if (type == Boolean.class) return boolean.class;
+		else if (type == Byte.class) return byte.class;
+		else if (type == Character.class) return char.class;
+		else if (type == Short.class) return short.class;
+		else if (type == Integer.class) return int.class;
+		else if (type == Float.class) return float.class;
+		else if (type == Long.class) return long.class;
+		else if (type == Double.class) return double.class;
+		else return type;
 	}
 
 	public static String def(Class<?> type) {
-		String t = unbox(type).getSimpleName();
-		return switch (t) {
-			case "boolean" -> "false";
-			case "byte", "char", "short", "int", "long" -> "0";
-			case "float", "double" -> "0.0";
-			default -> "null";
-		};
+		// boolean
+		if (type == boolean.class || type == Boolean.class) return "false";
+		// integer
+		if (type == byte.class || type == Byte.class ||
+				type == short.class || type == Short.class ||
+				type == int.class || type == Integer.class ||
+				type == long.class || type == Long.class ||
+				type == char.class || type == Character.class) return "0";
+		// float
+		if (type == float.class || type == Float.class ||
+				type == double.class || type == Double.class) return "0.0";
+		// reference or void
+		return "null";
 	}
 
 	public static boolean getBool(Class<?> type, Object object, String name) {
@@ -947,12 +955,12 @@ public final class Reflects {
 
 				Field targetField = targetFieldMap.get(sourceField.getName());
 
-				if (targetField == null || !isAssignable(sourceField, targetField)) continue;
+				if (!isAssignable(sourceField, targetField)) continue;
 
 				try {
 					if (HVars.hasUnsafe) {
-						Object value = Unsafer.get(sourceField, source);
-						Unsafer.set(targetField, target, value);
+						Object value = UnsafeUtils.get(sourceField, source);
+						UnsafeUtils.set(targetField, target, value);
 					} else {
 						sourceField.setAccessible(true);
 						targetField.setAccessible(true);

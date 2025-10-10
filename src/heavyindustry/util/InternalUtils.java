@@ -18,14 +18,14 @@ import static heavyindustry.util.ObjectUtils.requireNonNullInstance;
  * are very clear about what you are doing at this moment, it is not recommended to use the {@link #internalUnsafe} field directly.
  *
  * @author Eipusino
- * @see Unsafer
+ * @see UnsafeUtils
  * @since 1.0.8
  */
-public final class Unsaferf {
+public final class InternalUtils {
 	/** Initialize in libs/Impl.jar in the mod resource package. */
 	public static Unsafe internalUnsafe;
 
-	private Unsaferf() {}
+	private InternalUtils() {}
 
 	public static <T> T getObject(Class<?> type, String name, Object object) {
 		try {

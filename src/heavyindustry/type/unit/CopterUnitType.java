@@ -8,7 +8,7 @@ import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.Log;
 import heavyindustry.gen.Copterc;
-import heavyindustry.util.Reflects;
+import heavyindustry.util.ReflectUtils;
 import mindustry.gen.Unit;
 import mindustry.graphics.MultiPacker;
 import mindustry.graphics.MultiPacker.PageType;
@@ -162,7 +162,7 @@ public class CopterUnitType extends BaseUnitType {
 			} catch (CloneNotSupportedException suck) {
 				Log.err("very good language design", suck);
 
-				return Reflects.copyProperties(this, new Rotor(name));
+				return ReflectUtils.copyProperties(this, new Rotor(name));
 			}
 		}
 	}

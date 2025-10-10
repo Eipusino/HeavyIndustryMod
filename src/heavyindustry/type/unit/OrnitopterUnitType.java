@@ -10,7 +10,7 @@ import arc.struct.Seq;
 import arc.util.Log;
 import heavyindustry.gen.Ornitopterc;
 import heavyindustry.graphics.Outliner;
-import heavyindustry.util.Reflects;
+import heavyindustry.util.ReflectUtils;
 import mindustry.gen.Unit;
 import mindustry.graphics.Layer;
 import mindustry.graphics.MultiPacker;
@@ -153,7 +153,7 @@ public class OrnitopterUnitType extends BaseUnitType {
 			} catch (CloneNotSupportedException e) {
 				Log.err("java sucks", e);
 
-				return Reflects.copyProperties(this, new Blade(spriteName));
+				return ReflectUtils.copyProperties(this, new Blade(spriteName));
 			}
 		}
 	}

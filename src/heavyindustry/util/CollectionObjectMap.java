@@ -27,7 +27,7 @@ import static heavyindustry.util.Constant.PRIME3;
  *
  * @author Eipusino
  */
-public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.MapEntry<K, V>>, Map<K, V>, Eachable<CollectionObjectMap.MapEntry<K, V>> {
+public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Map<K, V>, Eachable<ObjectPair<K, V>> {
 	public int size;
 
 	public final Class<?> keyComponentType;
@@ -113,14 +113,14 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 
 	/** Iterates through key/value pairs. */
 	public void each(Cons2<? super K, ? super V> cons) {
-		for (MapEntry<K, V> entry : entries()) {
+		for (ObjectPair<K, V> entry : entries()) {
 			cons.get(entry.key, entry.value);
 		}
 	}
 
 	@Override
-	public void each(Cons<? super MapEntry<K, V>> cons) {
-		for (MapEntry<K, V> entry : this) {
+	public void each(Cons<? super ObjectPair<K, V>> cons) {
+		for (ObjectPair<K, V> entry : entries()) {
 			cons.get(entry);
 		}
 	}
@@ -197,9 +197,13 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		return null;
 	}
 
+	public V put(Entry<? extends K, ? extends V> entry) {
+		return put(entry.getKey(), entry.getValue());
+	}
+
 	public void putAll(CollectionObjectMap<? extends K, ? extends V> map) {
 		ensureCapacity(map.size);
-		for (MapEntry<? extends K, ? extends V> entry : map)
+		for (ObjectPair<? extends K, ? extends V> entry : map)
 			put(entry.key, entry.value);
 	}
 
@@ -429,7 +433,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 
 	@Override
 	public void putAll(Map<? extends K, ? extends V> m) {
-		for (MapEntry<K, V> set : entries()) {
+		for (ObjectPair<K, V> set : entries()) {
 			put(set.getKey(), set.getValue());
 		}
 	}
@@ -834,7 +838,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		}
 
 		class MapEnt implements Entry<K, V> {
-			MapEntry<K, V> entry;
+			ObjectPair<K, V> entry;
 
 			@Override
 			public K getKey() {
@@ -850,32 +854,6 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 			public V setValue(V value) {
 				return map.put(entry.key, value);
 			}
-		}
-	}
-
-	public static class MapEntry<K, V> implements Map.Entry<K, V> {
-		public K key;
-		public V value;
-
-		public String toString() {
-			return key + "=" + value;
-		}
-
-		@Override
-		public K getKey() {
-			return key;
-		}
-
-		@Override
-		public V getValue() {
-			return value;
-		}
-
-		@Override
-		public V setValue(V v) {
-			value = v;
-
-			return value;
 		}
 	}
 
@@ -925,8 +903,8 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 		}
 	}
 
-	public static class Entries<K, V> extends MapIterator<K, V, MapEntry<K, V>> {
-		MapEntry<K, V> entry = new MapEntry<>();
+	public static class Entries<K, V> extends MapIterator<K, V, ObjectPair<K, V>> {
+		ObjectPair<K, V> entry = new ObjectPair<>();
 
 		public Entries(CollectionObjectMap<K, V> map) {
 			super(map);
@@ -934,12 +912,13 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
-		public MapEntry<K, V> next() {
+		public ObjectPair<K, V> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			K[] keyTable = map.keyTable;
-			entry.key = keyTable[nextIndex];
+
+			entry.key = map.keyTable[nextIndex];
 			entry.value = map.valueTable[nextIndex];
+
 			currentIndex = nextIndex;
 			findNextIndex();
 			return entry;
@@ -1000,7 +979,7 @@ public class CollectionObjectMap<K, V> implements Iterable<CollectionObjectMap.M
 
 		@Override
 		public V[] toArray() {
-			return toSeq().toArray();
+			return Arrays.copyOf(map.valueTable, map.size);
 		}
 
 		@SuppressWarnings("unchecked")

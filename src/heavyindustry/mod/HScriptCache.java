@@ -5,7 +5,7 @@ import arc.graphics.Texture;
 import arc.graphics.TextureData;
 import arc.graphics.gl.FileTextureData;
 import arc.graphics.gl.PixmapTextureData;
-import heavyindustry.util.Reflects;
+import heavyindustry.util.ReflectUtils;
 
 import java.lang.reflect.Field;
 
@@ -27,7 +27,7 @@ public final class HScriptCache {
 		TextureData data = texture.getTextureData();
 
 		if (data instanceof PixmapTextureData ptd) return ptd.consumePixmap();
-		if (data instanceof FileTextureData ftd) return Reflects.getField(ftd, pixmapField);
+		if (data instanceof FileTextureData ftd) return ReflectUtils.getField(ftd, pixmapField);
 
 		return null;
 	}

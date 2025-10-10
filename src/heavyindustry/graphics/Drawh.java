@@ -8,7 +8,7 @@ import arc.graphics.g2d.Lines;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
-import heavyindustry.util.Pair;
+import heavyindustry.util.ObjectPair;
 
 import static heavyindustry.graphics.Drawn.v1;
 import static heavyindustry.graphics.Drawn.v2;
@@ -26,7 +26,7 @@ public final class Drawh {
 	static float[] circleVertices36;
 	static float[] circleVertices60;
 
-	static Pair<float[], float[]>[] verts;
+	static ObjectPair<float[], float[]>[] verts;
 
 	static {
 		circleOffset24 = prepareCircleOffset(24);
@@ -37,7 +37,7 @@ public final class Drawh {
 		circleVertices36 = prepareCircleVertices(36);
 		circleVertices60 = prepareCircleVertices(60);
 
-		verts = arrayOf(new Pair<>(circleOffset24, circleVertices24), new Pair<>(circleOffset36, circleVertices36), new Pair<>(circleOffset60, circleVertices60));
+		verts = arrayOf(new ObjectPair<>(circleOffset24, circleVertices24), new ObjectPair<>(circleOffset36, circleVertices36), new ObjectPair<>(circleOffset60, circleVertices60));
 	}
 
 	private Drawh() {}
@@ -90,7 +90,7 @@ public final class Drawh {
 	public static void fillCircle(float x, float y, float radius, int level) {
 		float color = Draw.getColorPacked();
 
-		Pair<float[], float[]> vert = verts[level & 3];
+		ObjectPair<float[], float[]> vert = verts[level & 3];
 
 		float[] offset = vert.key;
 		float[] vertices = vert.value;
@@ -135,7 +135,7 @@ public final class Drawh {
 		float c1 = innerColor.toFloatBits();
 		float c2 = color.toFloatBits();
 
-		Pair<float[], float[]> vert = verts[level & 3];
+		ObjectPair<float[], float[]> vert = verts[level & 3];
 
 		float[] offset = vert.key;
 		float[] vertices = vert.value;
@@ -185,7 +185,7 @@ public final class Drawh {
 		float stroke = Lines.getStroke();
 		float color = Draw.getColorPacked();
 
-		Pair<float[], float[]> vert = verts[level & 3];
+		ObjectPair<float[], float[]> vert = verts[level & 3];
 
 		float[] offset = vert.key;
 		float[] vertices = vert.value;

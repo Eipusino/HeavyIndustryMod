@@ -7,8 +7,9 @@ import arc.util.Strings;
 import arc.util.Structs;
 import heavyindustry.entities.HEntity;
 import heavyindustry.game.TeamPayloadData;
+import heavyindustry.graphics.PositionLightning;
 import heavyindustry.util.CollectionList;
-import heavyindustry.util.Pair;
+import heavyindustry.util.ObjectPair;
 import heavyindustry.world.blocks.defense.CommandableBlock;
 import mindustry.Vars;
 import mindustry.game.EventType.ResetEvent;
@@ -30,6 +31,8 @@ public final class Worlds {
 		Events.on(ResetEvent.class, event -> {
 			commandableBuilds.clear();
 
+			PositionLightning.reset();
+
 			HEntity.reset();
 		});
 	}
@@ -43,16 +46,16 @@ public final class Worlds {
 	public static void exportBlockData() {
 		StringBuilder data = new StringBuilder();
 
-		CollectionList<Pair<String, Block>> blocks = new CollectionList<>(Pair.class);
+		CollectionList<ObjectPair<String, Block>> blocks = new CollectionList<>(ObjectPair.class);
 
 		for (Block block : Vars.content.blocks()) {
-			blocks.add(new Pair<>(block.name, block));
+			blocks.add(new ObjectPair<>(block.name, block));
 		}
 
 		for (var entry : SaveFileReader.fallback) {
 			Block block = Vars.content.block(entry.value);
 			if (block != null) {
-				blocks.add(new Pair<>(entry.key, block));
+				blocks.add(new ObjectPair<>(entry.key, block));
 			}
 		}
 

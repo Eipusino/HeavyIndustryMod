@@ -400,8 +400,8 @@ public class LiquidMassDriver extends Block {
 		}
 
 		protected boolean shooterValid(Building other) {
-			if (other instanceof LiquidMassDriverBuild entity && other.isValid() && other.efficiency > 0) {
-				return entity.block == block && entity.link == pos() && within(other, range);
+			if (other instanceof LiquidMassDriverBuild build && other.isValid() && other.efficiency > 0) {
+				return build.block == block && build.link == pos() && within(other, range);
 			}
 			return false;
 		}

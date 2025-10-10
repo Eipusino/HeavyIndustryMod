@@ -8,7 +8,7 @@ import arc.struct.Seq;
 import arc.util.Time;
 import heavyindustry.ui.PowerInfoGroup;
 import heavyindustry.ui.PowerInfoGroup.InfoToggled;
-import heavyindustry.util.IntMapf;
+import heavyindustry.util.IntMap2;
 import mindustry.gen.Building;
 import mindustry.ui.Styles;
 import mindustry.ui.dialogs.BaseDialog;
@@ -20,9 +20,9 @@ public class PowerGraphInfoDialog extends BaseDialog {
 	protected final float updateInterval = 60; //Update every second
 
 	protected final IntSet opened = new IntSet();
-	protected final IntMapf<Seq<Building>> producers = new IntMapf<>(Seq.class);
-	protected final IntMapf<Seq<Building>> consumers = new IntMapf<>(Seq.class);
-	protected final IntMapf<Seq<Building>> batteries = new IntMapf<>(Seq.class);
+	protected final IntMap2<Seq<Building>> producers = new IntMap2<>(Seq.class);
+	protected final IntMap2<Seq<Building>> consumers = new IntMap2<>(Seq.class);
+	protected final IntMap2<Seq<Building>> batteries = new IntMap2<>(Seq.class);
 	protected final InfoToggled collToggled = (int id, boolean open) -> {
 		if (open) {
 			opened.add(id);

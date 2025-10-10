@@ -128,6 +128,7 @@ import heavyindustry.world.blocks.defense.Explosive;
 import heavyindustry.world.blocks.defense.HealingWall;
 import heavyindustry.world.blocks.defense.IndestructibleWall;
 import heavyindustry.world.blocks.defense.InsulationWall;
+import heavyindustry.world.blocks.defense.RectOverdriveProjector;
 import heavyindustry.world.blocks.defense.RegenWall;
 import heavyindustry.world.blocks.defense.ReleaseShieldWall;
 import heavyindustry.world.blocks.defense.SandboxWall;
@@ -485,6 +486,8 @@ final class HClassMap {
 		classes.put("EffectZoneBuild", EffectZone.EffectZoneBuild.class);
 		classes.put("AdjustableOverdrive", AdjustableOverdrive.class);
 		classes.put("AdjustableOverdriveBuild", AdjustableOverdrive.AdjustableOverdriveBuild.class);
+		classes.put("RectOverdriveProjector", RectOverdriveProjector.class);
+		classes.put("RectOverdriveBuild", RectOverdriveProjector.RectOverdriveBuild.class);
 		classes.put("AdjustableShieldWall", AdjustableShieldWall.class);
 		classes.put("AdjustableShieldWallBuild", AdjustableShieldWall.AdjustableShieldWallBuild.class);
 		classes.put("HealingWall", HealingWall.class);

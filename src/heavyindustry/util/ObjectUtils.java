@@ -29,14 +29,33 @@ public final class ObjectUtils {
 		return obj == null ? 0 : obj.hashCode();
 	}
 
+	// To prevent JS from being unable to match methods, it is necessary to distinguish them.
+
+	// boolean Z
+	// byte B
+	// short S
+	// int I
+	// long J
+	// float F
+	// double D
+	// char C
+
+	public static int hashCodeZ(boolean value) {
+		return value ? 1231 : 1237;
+	}
+
+	public static int hashCodeJ(long value) {
+		return (int) (value ^ (value >>> 32));
+	}
+
 	public static int hash(Object... values) {
-		if (values == null)
-			return 0;
+		if (values == null) return 0;
 
 		int result = 1;
 
-		for (Object element : values)
+		for (Object element : values) {
 			result = 31 * result + (element == null ? 0 : element.hashCode());
+		}
 
 		return result;
 	}
@@ -147,6 +166,8 @@ public final class ObjectUtils {
 	 * @param last Should the fields of the super class be retrieved.
 	 */
 	public static String toString(Object o, boolean last) {
+		if (o == null) return "null";
+
 		Class<?> c = o.getClass();
 		StringBuilder sb = new StringBuilder();
 		sb.append(c.getSimpleName()).append('[');
@@ -169,7 +190,7 @@ public final class ObjectUtils {
 
 					// On the Android platform, the reflection performance is not low, so there is no need to use Unsafe.
 					if (!OS.isAndroid && HVars.hasUnsafe) {
-						value = Unsafer.get(f, o);
+						value = UnsafeUtils.get(f, o);
 					} else {
 						f.setAccessible(true);
 						value = f.get(o);
@@ -186,21 +207,21 @@ public final class ObjectUtils {
 					if (type.isArray()) {
 						// I think using instanceof would be better.
 						if (value instanceof float[] a) {
-							ArrayUtils.append(sb, a);
+							ArrayUtils.appendF(sb, a);
 						} else if (value instanceof int[] a) {
-							ArrayUtils.append(sb, a);
+							ArrayUtils.appendI(sb, a);
 						} else if (value instanceof boolean[] a) {
-							ArrayUtils.append(sb, a);
+							ArrayUtils.appendZ(sb, a);
 						} else if (value instanceof byte[] a) {
-							ArrayUtils.append(sb, a);
+							ArrayUtils.appendB(sb, a);
 						} else if (value instanceof char[] a) {
-							ArrayUtils.append(sb, a);
+							ArrayUtils.appendC(sb, a);
 						} else if (value instanceof double[] a) {
-							ArrayUtils.append(sb, a);
+							ArrayUtils.appendD(sb, a);
 						} else if (value instanceof long[] a) {
-							ArrayUtils.append(sb, a);
+							ArrayUtils.appendJ(sb, a);
 						} else if (value instanceof short[] a) {
-							ArrayUtils.append(sb, a);
+							ArrayUtils.appendS(sb, a);
 						} else if (value instanceof Object[] a) {
 							ArrayUtils.append(sb, a);
 						} else {
@@ -223,5 +244,32 @@ public final class ObjectUtils {
 		}
 		sb.append("]");
 		return sb.toString();
+	}
+
+	/**
+	 * Convert Class object to JVM type descriptor.
+	 *
+	 * @param c The Class object to be converted
+	 * @return JVM type descriptor string
+	 */
+	public static String toDescriptor(Class<?> c) {
+		if (c == null) throw new NullPointerException("param 'c' is null");
+
+		if (c.isArray()) return "[" + toDescriptor(c.getComponentType());
+
+		if (c.isPrimitive()) {
+			if (c == void.class) return "V";
+			else if (c == boolean.class) return "Z";
+			else if (c == byte.class) return "B";
+			else if (c == short.class) return "S";
+			else if (c == int.class) return "I";
+			else if (c == long.class) return "J";
+			else if (c == float.class) return "F";
+			else if (c == double.class) return "D";
+			else if (c == char.class) return "C";
+			else throw new IllegalArgumentException("unknown type of " + c);
+		}
+
+		return "L" + c.getName().replace('.', '/') + ";";
 	}
 }
