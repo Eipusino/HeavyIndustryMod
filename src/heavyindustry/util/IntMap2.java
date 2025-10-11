@@ -7,8 +7,10 @@ import arc.struct.IntSeq;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
+import heavyindustry.util.pair.IntPair;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -25,7 +27,7 @@ import static heavyindustry.util.Constant.PRIME3;
  *
  * @author Nathan Sweet
  */
-public class IntMap2<V> implements Iterable<IntPair<V>>, Eachable<IntPair<V>> {
+public class IntMap2<V> implements Iterable<IntPair<V>>, Eachable<IntPair<V>>, Cloneable {
 	public final Class<?> valueComponentType;
 
 	public int size;
@@ -56,6 +58,22 @@ public class IntMap2<V> implements Iterable<IntPair<V>>, Eachable<IntPair<V>> {
 		}
 
 		return map;
+	}
+
+	@SuppressWarnings("unchecked")
+	public IntMap2<V> copy() {
+		try {
+			IntMap2<V> map = (IntMap2<V>) super.clone();
+			map.keyTable = Arrays.copyOf(keyTable, keyTable.length);
+			map.valueTable = Arrays.copyOf(valueTable, valueTable.length);
+
+			map.entries1 = map.entries2 = null;
+			map.keys1 = map.keys2 = null;
+			map.values1 = map.values2 = null;
+			return map;
+		} catch (CloneNotSupportedException e) {
+			return new IntMap2<>(this);
+		}
 	}
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */

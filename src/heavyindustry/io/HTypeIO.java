@@ -4,8 +4,8 @@ import arc.math.geom.Point2;
 import arc.struct.Seq;
 import arc.util.Reflect;
 import arc.util.io.Reads;
-import arc.util.io.ReusableByteOutStream;
 import arc.util.io.Writes;
+import heavyindustry.annotations.Annotations.TypeIOHandler;
 import heavyindustry.input.InputAggregator.TapResult;
 import heavyindustry.util.ObjectUtils;
 import mindustry.Vars;
@@ -22,6 +22,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
+@TypeIOHandler
 public final class HTypeIO {
 	/** Don't let anyone instantiate this class. */
 	private HTypeIO() {}

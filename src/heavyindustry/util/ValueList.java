@@ -1,10 +1,9 @@
 package heavyindustry.util;
 
 import java.util.Iterator;
-import java.util.List;
 
 public class ValueList extends ValueMap implements Iterable<ValueMap> {
-	List<ValueMap> list = new CollectionList<>(ValueMap.class);
+	CollectionList<ValueMap> list = new CollectionList<>(ValueMap.class);
 
 	public ValueMap getMap(int index) {
 		return list.get(index);
@@ -34,7 +33,6 @@ public class ValueList extends ValueMap implements Iterable<ValueMap> {
 		list.add(new ValueMap(f));
 	}
 
-
 	@SuppressWarnings("unchecked")
 	public <T> T get(int t) {
 		return (T) list.get(t).value;
@@ -51,5 +49,17 @@ public class ValueList extends ValueMap implements Iterable<ValueMap> {
 
 	public int length() {
 		return list.size();
+	}
+
+	@Override
+	public ValueList copy() {
+		try {
+			ValueList out = (ValueList) super.clone();
+			out.map = map.copy();
+			out.list = list.copy();
+			return out;
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

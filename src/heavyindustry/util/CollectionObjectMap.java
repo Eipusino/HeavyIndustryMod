@@ -7,6 +7,7 @@ import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
+import heavyindustry.util.pair.ObjectPair;
 
 import java.lang.reflect.Array;
 import java.util.AbstractSet;
@@ -27,7 +28,7 @@ import static heavyindustry.util.Constant.PRIME3;
  *
  * @author Eipusino
  */
-public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Map<K, V>, Eachable<ObjectPair<K, V>> {
+public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Map<K, V>, Eachable<ObjectPair<K, V>>, Cloneable {
 	public int size;
 
 	public final Class<?> keyComponentType;
@@ -125,10 +126,22 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public CollectionObjectMap<K, V> copy() {
-		CollectionObjectMap<K, V> out = new CollectionObjectMap<>(keyComponentType, valueComponentType);
-		out.putAll(this);
-		return out;
+		try {
+			CollectionObjectMap<K, V> out = (CollectionObjectMap<K, V>) super.clone();
+			out.keyTable = Arrays.copyOf(keyTable, keyTable.length);
+			out.valueTable = Arrays.copyOf(valueTable, valueTable.length);
+			// Do not copy these fields.
+			out.entries1 = out.entries2 = null;
+			out.keys1 = out.keys2 = null;
+			out.values1 = out.values2 = null;
+			return out;
+		} catch (CloneNotSupportedException e) {
+			CollectionObjectMap<K, V> out = new CollectionObjectMap<>(keyComponentType, valueComponentType);
+			out.putAll(this);
+			return out;
+		}
 	}
 
 	/** Returns the old value associated with the specified key, or null. */

@@ -6,6 +6,7 @@ import arc.struct.BoolSeq;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
+import heavyindustry.util.pair.ObjectBoolPair;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;

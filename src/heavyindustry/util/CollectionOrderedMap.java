@@ -1,6 +1,7 @@
 package heavyindustry.util;
 
 import arc.util.ArcRuntimeException;
+import heavyindustry.util.pair.ObjectPair;
 
 import java.util.NoSuchElementException;
 

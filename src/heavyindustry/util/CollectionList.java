@@ -36,7 +36,7 @@ import java.util.NoSuchElementException;
  * @author Nathan Sweet
  * @author Eipusino
  */
-public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
+public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, Cloneable {
 	/** Debugging variable to count total number of iterators allocated. */
 	public static int iteratorsAllocated = 0;
 
@@ -168,8 +168,19 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E> {
 		return CollectionObjectSet.with(this);
 	}
 
+	@SuppressWarnings("unchecked")
 	public CollectionList<E> copy() {
-		return new CollectionList<>(this);
+		try {
+			CollectionList<E> list = (CollectionList<E>) super.clone();
+			list.size = size;
+			list.items = Arrays.copyOf(items, items.length);
+
+			list.iterator1 = list.iterator2 = null;
+			list.lastIterator1 = list.lastIterator2 = null;
+			return list;
+		} catch (CloneNotSupportedException e) {
+			return new CollectionList<>(this);
+		}
 	}
 
 	public float sumf(Floatf<E> summer) {

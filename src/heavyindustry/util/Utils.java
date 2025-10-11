@@ -24,6 +24,7 @@ import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.graphics.HPal;
+import heavyindustry.util.pair.ObjectPair;
 import mindustry.Vars;
 import mindustry.content.StatusEffects;
 import mindustry.core.UI;

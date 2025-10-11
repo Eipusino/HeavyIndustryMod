@@ -1,4 +1,6 @@
-package heavyindustry.util;
+package heavyindustry.util.pair;
+
+import heavyindustry.util.ObjectUtils;
 
 public class IntPair<V> implements Cloneable {
 	public int key;

@@ -26,7 +26,7 @@ import heavyindustry.content.HStatusEffects;
 import heavyindustry.content.HTechTree;
 import heavyindustry.content.HUnitTypes;
 import heavyindustry.content.HWeathers;
-import heavyindustry.files.HFiles;
+import heavyindustry.files.FileUtils;
 import heavyindustry.game.HTeam;
 import heavyindustry.gen.Entitys;
 import heavyindustry.gen.HIcon;
@@ -90,6 +90,10 @@ public final class HeavyIndustryMod extends Mod {
 
 	static final List<Throwable> errors = new CollectionList<>(Throwable.class);
 
+	/**
+	 * If true, all APIs within the mod will be imported into {@code Vars.mods.getScripts().scope} for testing
+	 * some APIs on the console.
+	 */
 	static boolean test = true;
 
 	static {
@@ -282,7 +286,7 @@ public final class HeavyIndustryMod extends Mod {
 		try {
 			Fi toFile = Vars.dataDirectory.child("tmp/heavy-industry/" + fileName + ".jar");
 
-			HFiles.delete(toFile);
+			FileUtils.delete(toFile);
 
 			sourceFile.copyTo(toFile);
 			ClassLoader loader = Vars.platform.loadJar(toFile, mainLoader);

@@ -7,8 +7,10 @@ import arc.struct.LongSeq;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
+import heavyindustry.util.pair.LongPair;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -16,7 +18,7 @@ import static heavyindustry.util.Constant.EMPTY;
 import static heavyindustry.util.Constant.PRIME2;
 import static heavyindustry.util.Constant.PRIME3;
 
-public class LongMap2<V> implements Iterable<LongPair<V>>, Eachable<LongPair<V>> {
+public class LongMap2<V> implements Iterable<LongPair<V>>, Eachable<LongPair<V>>, Cloneable {
 	public final Class<?> valueComponentType;
 
 	public int size;
@@ -88,6 +90,22 @@ public class LongMap2<V> implements Iterable<LongPair<V>>, Eachable<LongPair<V>>
 		size = map.size;
 		zeroValue = map.zeroValue;
 		hasZeroValue = map.hasZeroValue;
+	}
+
+	@SuppressWarnings("unchecked")
+	public LongMap2<V> copy() {
+		try {
+			LongMap2<V> map = (LongMap2<V>) super.clone();
+			map.keyTable = Arrays.copyOf(keyTable, keyTable.length);
+			map.valueTable = Arrays.copyOf(valueTable, valueTable.length);
+
+			map.entries1 = map.entries2 = null;
+			map.keys1 = map.keys2 = null;
+			map.values1 = map.values2 = null;
+			return map;
+		} catch (CloneNotSupportedException e) {
+			return new LongMap2<>(this);
+		}
 	}
 
 	@Override

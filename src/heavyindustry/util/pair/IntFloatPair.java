@@ -1,6 +1,6 @@
-package heavyindustry.util;
+package heavyindustry.util.pair;
 
-public class IntFloatPair {
+public class IntFloatPair implements Cloneable {
 	public int key;
 	public float value;
 
@@ -26,5 +26,13 @@ public class IntFloatPair {
 	@Override
 	public String toString() {
 		return key + "=" + value;
+	}
+
+	public IntFloatPair copy() {
+		try {
+			return (IntFloatPair) super.clone();
+		} catch (CloneNotSupportedException e) {
+			return new IntFloatPair(key, value);
+		}
 	}
 }

@@ -33,6 +33,8 @@ public interface PlatformImpl {
 	/**
 	 * Call {@link MethodHandle#invokeWithArguments(Object[])} without throwing an exception. Poor performance, not
 	 * recommended for use.
+	 *
+	 * @throws NoSuchMethodError Cannot be used on the IOS platform.
 	 */
 	@SuppressWarnings("unchecked")
 	default <T> T invokeWithArguments(MethodHandle handle, Object... args) {

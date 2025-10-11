@@ -1,4 +1,4 @@
-package heavyindustry.annotations;
+package heavyindustry.annotations.plugin;
 
 import arc.struct.ObjectMap;
 import arc.struct.Seq;
@@ -20,6 +20,8 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.List;
+import heavyindustry.annotations.Annotations.ListClasses;
+import heavyindustry.annotations.Annotations.ListPackages;
 
 /**
  * Gathers all declared non-anonymous classes and packages and appends them to fields with {@code new String[]{}}

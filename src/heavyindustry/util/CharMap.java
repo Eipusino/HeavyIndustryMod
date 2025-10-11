@@ -6,8 +6,10 @@ import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
+import heavyindustry.util.pair.CharPair;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -25,7 +27,7 @@ import static heavyindustry.util.Constant.PRIME3;
  *
  * @author Nathan Sweet
  */
-public class CharMap<V> implements Iterable<CharPair<V>>, Eachable<CharPair<V>> {
+public class CharMap<V> implements Iterable<CharPair<V>>, Eachable<CharPair<V>>, Cloneable {
 	public int size;
 
 	public final Class<?> valueComponentType;
@@ -110,6 +112,22 @@ public class CharMap<V> implements Iterable<CharPair<V>>, Eachable<CharPair<V>> 
 		size = map.size;
 		zeroValue = map.zeroValue;
 		hasZeroValue = map.hasZeroValue;
+	}
+
+	@SuppressWarnings("unchecked")
+	public CharMap<V> copy() {
+		try {
+			CharMap<V> map = (CharMap<V>) super.clone();
+			map.keyTable = Arrays.copyOf(keyTable, keyTable.length);
+			map.valueTable = Arrays.copyOf(valueTable, valueTable.length);
+
+			map.entries1 = map.entries2 = null;
+			map.keys1 = map.keys2 = null;
+			map.values1 = map.values2 = null;
+			return map;
+		} catch (CloneNotSupportedException e) {
+			return new CharMap<>(this);
+		}
 	}
 
 	@Override

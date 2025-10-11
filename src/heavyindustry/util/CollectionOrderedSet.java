@@ -133,7 +133,7 @@ public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
 		return orderedItems.toString(separator);
 	}
 
-	public class CollectionOrderedSetIterator extends CollectionObjectSetIterator {
+	public class CollectionOrderedSetIterator extends Iter {
 		@Override
 		public void reset() {
 			super.reset();

@@ -1,6 +1,7 @@
 package heavyindustry.util;
 
 import arc.func.Prov;
+import heavyindustry.util.pair.ObjectPair;
 
 import java.util.Iterator;
 
@@ -16,7 +17,7 @@ public class ObjectTable<K, V> implements Iterable<ObjectPair<K, V>> {
 		valueComponentType = valueType;
 
 		map12 = new CollectionObjectMap<>(keyComponentType, valueComponentType);
-		map21 = new CollectionObjectMap<>(keyComponentType, valueComponentType);
+		map21 = new CollectionObjectMap<>(valueComponentType, keyComponentType);
 	}
 
 	public int size() {

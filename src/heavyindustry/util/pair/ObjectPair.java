@@ -1,7 +1,8 @@
-package heavyindustry.util;
+package heavyindustry.util.pair;
 
-import java.io.Serializable;
-import java.util.Map;
+import heavyindustry.util.ObjectUtils;
+
+import java.util.Map.Entry;
 
 /**
  * An immutable container for a key and a value, suitable for use
@@ -16,16 +17,14 @@ import java.util.Map;
  * @param <K> the key type
  * @param <V> the value type
  * @apiNote This class is not public. Instances can be created using the
- * {@link Map#entry Map.entry(k, v)} factory method, which is public.
+ * {@link java.util.Map#entry Map.entry(k, v)} factory method, which is public.
  *
  * <p>This class differs from AbstractMap.SimpleImmutableEntry in the following ways:
  * it is not serializable, it is final, and its key and value must be non-null.
- * @see Map#ofEntries Map.ofEntries()
+ * @see java.util.Map#ofEntries Map.ofEntries()
  * @since 1.0.7
  */
-public class ObjectPair<K, V> implements Map.Entry<K, V>, Cloneable, Serializable {
-	private static final long serialVersionUID = 1672812535964436320l;
-
+public class ObjectPair<K, V> implements Entry<K, V>, Cloneable {
 	public K key;
 	public V value;
 
@@ -93,7 +92,7 @@ public class ObjectPair<K, V> implements Map.Entry<K, V>, Cloneable, Serializabl
 	 */
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof Map.Entry<?, ?> e && ObjectUtils.equals(key, e.getKey()) && ObjectUtils.equals(value, e.getValue());
+		return o instanceof Entry<?, ?> e && ObjectUtils.equals(key, e.getKey()) && ObjectUtils.equals(value, e.getValue());
 	}
 
 	@Override

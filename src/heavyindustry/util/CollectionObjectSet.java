@@ -27,7 +27,7 @@ import static heavyindustry.util.Constant.PRIME3;
  *
  * @author Nathan Sweet
  */
-public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
+public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	public int size;
 
 	public final Class<?> keyComponentType;
@@ -40,7 +40,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 	int stashCapacity;
 	int pushIterations;
 
-	@Nullable CollectionObjectSetIterator iterator1, iterator2;
+	@Nullable Iter iterator1, iterator2;
 
 	/** Creates a new set with an initial capacity of 51 and a load factor of 0.8. */
 	public CollectionObjectSet(Class<?> type) {
@@ -62,7 +62,6 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 	 *
 	 * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
 	 * @param type This value must be equal to generic E, otherwise a ClassCastException will be thrown at runtime.
-	 * @throws ClassCastException If the type of type is different from the type of generic E.
 	 */
 	@SuppressWarnings("unchecked")
 	public CollectionObjectSet(Class<?> type, int initialCapacity, float loadFactor) {
@@ -119,6 +118,18 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 			if (predicate.get(e)) arr.add(e);
 		}
 		return arr;
+	}
+
+	@SuppressWarnings("unchecked")
+	public CollectionObjectSet<E> copy() {
+		try {
+			CollectionObjectSet<E> set = (CollectionObjectSet<E>) super.clone();
+			set.keyTable = Arrays.copyOf(keyTable, keyTable.length);
+			set.iterator1 = set.iterator2 = null;
+			return set;
+		} catch (CloneNotSupportedException e) {
+			return new CollectionObjectSet<>(this);
+		}
 	}
 
 	public Seq<E> toSeq() {
@@ -610,12 +621,12 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 
 	/**
 	 * Returns an iterator for the keys in the set. Remove is supported. Note that the same iterator instance is returned each
-	 * time this method is called. Use the {@link CollectionObjectSetIterator} constructor for nested or multithreaded iteration.
+	 * time this method is called. Use the {@link Iter} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public CollectionObjectSetIterator iterator() {
-		if (iterator1 == null) iterator1 = new CollectionObjectSetIterator();
-		if (iterator2 == null) iterator2 = new CollectionObjectSetIterator();
+	public Iter iterator() {
+		if (iterator1 == null) iterator1 = new Iter();
+		if (iterator2 == null) iterator2 = new Iter();
 
 		if (iterator1.done) {
 			iterator1.reset();
@@ -627,7 +638,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 			return iterator2;
 		}
 		// no finished iterators
-		return new CollectionObjectSetIterator();
+		return new Iter();
 	}
 
 	@Override
@@ -646,12 +657,12 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 		return a;
 	}
 
-	public class CollectionObjectSetIterator implements Iterable<E>, Iterator<E> {
+	public class Iter implements Iterable<E>, Iterator<E> {
 		public boolean hasNext;
 		int nextIndex, currentIndex;
 		boolean done;
 
-		public CollectionObjectSetIterator() {
+		public Iter() {
 			reset();
 			done = true;
 		}
@@ -705,7 +716,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E> {
 		}
 
 		@Override
-		public CollectionObjectSetIterator iterator() {
+		public Iter iterator() {
 			return this;
 		}
 

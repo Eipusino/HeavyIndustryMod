@@ -1,12 +1,10 @@
 package heavyindustry.util;
 
-import java.util.Map;
-
-public class ValueMap {
+public class ValueMap implements Cloneable {
 	float floatValue;
 	int intValue;
 	Object value;
-	Map<String, ValueMap> map = new CollectionObjectMap<>(String.class, ValueMap.class);
+	CollectionObjectMap<String, ValueMap> map = new CollectionObjectMap<>(String.class, ValueMap.class);
 
 	public ValueMap() {}
 
@@ -20,6 +18,16 @@ public class ValueMap {
 
 	public ValueMap(Object v) {
 		value = v;
+	}
+
+	public ValueMap copy() {
+		try {
+			ValueMap out = (ValueMap) super.clone();
+			out.map = map.copy();
+			return out;
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public ValueMap put(String s, float t) {

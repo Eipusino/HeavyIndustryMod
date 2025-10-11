@@ -20,7 +20,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.ui.Elements;
-import heavyindustry.util.IntFloatPair;
+import heavyindustry.util.pair.IntFloatPair;
 import mindustry.entities.Damage;
 import mindustry.entities.Lightning;
 import mindustry.entities.TargetPriority;

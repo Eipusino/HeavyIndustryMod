@@ -48,7 +48,7 @@ public final class ObjectUtils {
 		return (int) (value ^ (value >>> 32));
 	}
 
-	public static int hash(Object... values) {
+	public static int hashCodes(Object... values) {
 		if (values == null) return 0;
 
 		int result = 1;

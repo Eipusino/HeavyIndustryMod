@@ -1,4 +1,6 @@
-package heavyindustry.util;
+package heavyindustry.util.pair;
+
+import heavyindustry.util.ObjectUtils;
 
 public class LongPair<V> implements Cloneable {
 	public long key;

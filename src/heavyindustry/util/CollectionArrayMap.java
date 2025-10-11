@@ -5,10 +5,12 @@ import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
+import heavyindustry.util.pair.ObjectPair;
 
 import java.lang.reflect.Array;
 import java.util.AbstractCollection;
 import java.util.AbstractSet;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -24,7 +26,7 @@ import java.util.Set;
  * @author Nathan Sweet
  * @author Eipusino
  */
-public class CollectionArrayMap<K, V> implements Iterable<ObjectPair<K, V>>, Map<K, V>, Eachable<ObjectPair<K, V>> {
+public class CollectionArrayMap<K, V> implements Iterable<ObjectPair<K, V>>, Map<K, V>, Eachable<ObjectPair<K, V>>, Cloneable {
 	public final Class<?> keyComponentType;
 	public final Class<?> valueComponentType;
 
@@ -75,6 +77,23 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectPair<K, V>>, Map
 		size = array.size;
 		System.arraycopy(array.keys, 0, keys, 0, size);
 		System.arraycopy(array.values, 0, values, 0, size);
+	}
+
+	@SuppressWarnings("unchecked")
+	public CollectionArrayMap<K, V> copy() {
+		try {
+			CollectionArrayMap<K, V> map = (CollectionArrayMap<K, V>) super.clone();
+			map.size = size;
+			map.keys = Arrays.copyOf(keys, keys.length);
+			map.values = Arrays.copyOf(values, values.length);
+
+			map.entries1 = map.entries2 = null;
+			map.keysIter1 = map.keysIter2 = null;
+			map.valuesIter1 = map.valuesIter2 = null;
+			return map;
+		} catch (CloneNotSupportedException e) {
+			return new CollectionArrayMap<>(this);
+		}
 	}
 
 	@Override

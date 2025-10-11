@@ -1,4 +1,6 @@
-package heavyindustry.util;
+package heavyindustry.util.pair;
+
+import heavyindustry.util.ObjectUtils;
 
 public class ObjectBoolPair<K> implements Cloneable {
 	public K key;

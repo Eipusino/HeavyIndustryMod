@@ -1,6 +1,6 @@
 package heavyindustry.util;
 
-import arc.util.UnsafeRunnable;
+import heavyindustry.func.RunT;
 
 import java.io.IOException;
 
@@ -12,7 +12,7 @@ public final class IOUtils {
 	/** Don't let anyone instantiate this class. */
 	private IOUtils() {}
 
-	public static void ioErr(UnsafeRunnable run, String message) throws IOException {
+	public static void ioErr(RunT<Throwable> run, String message) throws IOException {
 		try {
 			run.run();
 		} catch (Throwable t) {
