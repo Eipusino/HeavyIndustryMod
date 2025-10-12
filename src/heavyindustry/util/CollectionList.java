@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
@@ -118,7 +117,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	public static <T> CollectionList<T> withArrays(Class<?> arrayType, Object... arrays) {
 		CollectionList<T> result = new CollectionList<>(arrayType);
 		for (Object a : arrays) {
-			if (a instanceof CollectionList) {
+			if (a instanceof CollectionList<?>) {
 				result.addAll((CollectionList<? extends T>) a);
 			} else {
 				result.add((T) a);
@@ -529,50 +528,19 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	@Override
-	public E set(int index, E value) {
+	public E set(int index, E element) {
 		if (index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
-		items[index] = value;
+		E value = items[index];
+		items[index] = element;
 		return value;
 	}
 
 	@Override
 	public void add(int index, E element) {
-		final int s;
-		Object[] elementData;
-		if ((s = size) == (elementData = items).length)
-			elementData = grow();
-		System.arraycopy(elementData, index,
-				elementData, index + 1,
-				s - index);
-		elementData[index] = element;
-		size = s + 1;
+		insert(index, element);
 	}
 
-	/**
-	 * Increases the capacity to ensure that it can hold at least the
-	 * number of elements specified by the minimum capacity argument.
-	 *
-	 * @param minCapacity the desired minimum capacity
-	 * @throws OutOfMemoryError if minCapacity is less than zero
-	 */
-	@SuppressWarnings("unchecked")
-	Object[] grow(int minCapacity) {
-		int oldCapacity = items.length;
-		if (oldCapacity > 0) {
-			int newCapacity = ArrayUtils.newLength(oldCapacity,
-					minCapacity - oldCapacity, // minimum growth
-					oldCapacity >> 1);// preferred growth
-			return items = Arrays.copyOf(items, newCapacity);
-		} else {
-			return items = (E[]) Array.newInstance(componentType, Math.max(16, minCapacity));
-		}
-	}
-
-	Object[] grow() {
-		return grow(size + 1);
-	}
-
-	public void insert(int index, E value) {
+	public void insert(int index, E element) {
 		if (index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
 		if (size == items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
 		if (ordered)
@@ -580,7 +548,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		else
 			items[size] = items[index];
 		size++;
-		items[index] = value;
+		items[index] = element;
 	}
 
 	public void swap(int first, int second) {
@@ -607,15 +575,15 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	/** @return whether this sequence contains every other element in the other sequence. */
-	public boolean containsAll(CollectionList<E> seq) {
-		return containsAll(seq, false);
+	public boolean containsAll(CollectionList<E> list) {
+		return containsAll(list, false);
 	}
 
 	/** @return whether this sequence contains every other element in the other sequence. */
-	public boolean containsAll(CollectionList<E> seq, boolean identity) {
-		E[] others = seq.items;
+	public boolean containsAll(CollectionList<E> list, boolean identity) {
+		E[] others = list.items;
 
-		for (int i = 0; i < seq.size; i++) {
+		for (int i = 0; i < list.size; i++) {
 			if (!contains(others[i], identity)) {
 				return false;
 			}
@@ -624,32 +592,32 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	@Override
-	public boolean contains(Object value) {
-		return contains(value, false);
+	public boolean contains(Object o) {
+		return contains(o, false);
 	}
 
 	/**
 	 * Returns if this array contains value.
 	 *
-	 * @param value    May be null.
+	 * @param o    May be null.
 	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
 	 * @return true if array contains value, false if it doesn't
 	 */
-	public boolean contains(Object value, boolean identity) {
+	public boolean contains(Object o, boolean identity) {
 		int i = size - 1;
-		if (identity || value == null) {
+		if (identity || o == null) {
 			while (i >= 0)
-				if (items[i--] == value) return true;
+				if (items[i--] == o) return true;
 		} else {
 			while (i >= 0)
-				if (value.equals(items[i--])) return true;
+				if (o.equals(items[i--])) return true;
 		}
 		return false;
 	}
 
 	@Override
-	public int indexOf(Object value) {
-		return indexOf(value, false);
+	public int indexOf(Object o) {
+		return indexOf(o, false);
 	}
 
 	@Override
@@ -667,17 +635,17 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	/**
 	 * Returns the index of first occurrence of value in the array, or -1 if no such value exists.
 	 *
-	 * @param value    May be null.
+	 * @param o    May be null.
 	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
 	 * @return An index of first occurrence of value in array or -1 if no such value exists
 	 */
-	public int indexOf(Object value, boolean identity) {
-		if (identity || value == null) {
+	public int indexOf(Object o, boolean identity) {
+		if (identity || o == null) {
 			for (int i = 0, n = size; i < n; i++)
-				if (items[i] == value) return i;
+				if (items[i] == o) return i;
 		} else {
 			for (int i = 0, n = size; i < n; i++)
-				if (value.equals(items[i])) return i;
+				if (o.equals(items[i])) return i;
 		}
 		return -1;
 	}
@@ -692,24 +660,24 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	 * Returns an index of last occurrence of value in array or -1 if no such value exists. Search is started from the end of an
 	 * array.
 	 *
-	 * @param value    May be null.
+	 * @param o    May be null.
 	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
 	 * @return An index of last occurrence of value in array or -1 if no such value exists
 	 */
-	public int lastIndexOf(E value, boolean identity) {
-		if (identity || value == null) {
+	public int lastIndexOf(Object o, boolean identity) {
+		if (identity || o == null) {
 			for (int i = size - 1; i >= 0; i--)
-				if (items[i] == value) return i;
+				if (items[i] == o) return i;
 		} else {
 			for (int i = size - 1; i >= 0; i--)
-				if (value.equals(items[i])) return i;
+				if (o.equals(items[i])) return i;
 		}
 		return -1;
 	}
 
 	/** Removes a value, without using identity. */
-	public boolean remove(Object value) {
-		return remove(value, false);
+	public boolean remove(Object o) {
+		return remove(o, false);
 	}
 
 	@Override
@@ -784,21 +752,21 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	/**
 	 * Removes the first instance of the specified value in the array.
 	 *
-	 * @param value    May be null.
+	 * @param o    May be null.
 	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
 	 * @return true if value was found and removed, false otherwise
 	 */
-	public boolean remove(Object value, boolean identity) {
-		if (identity || value == null) {
+	public boolean remove(Object o, boolean identity) {
+		if (identity || o == null) {
 			for (int i = 0, n = size; i < n; i++) {
-				if (items[i] == value) {
+				if (items[i] == o) {
 					remove(i);
 					return true;
 				}
 			}
 		} else {
 			for (int i = 0, n = size; i < n; i++) {
-				if (value.equals(items[i])) {
+				if (o.equals(items[i])) {
 					remove(i);
 					return true;
 				}
@@ -807,19 +775,19 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		return false;
 	}
 
-	public boolean removeAll(Object value, boolean identity) {
+	public boolean removeAll(Object o, boolean identity) {
 		boolean modified = false;
 
-		if (identity || value == null) {
+		if (identity || o == null) {
 			for (int i = 0, n = size; i < n; i++) {
-				if (items[i] == value) {
+				if (items[i] == o) {
 					remove(i);
 					modified = true;
 				}
 			}
 		} else {
 			for (int i = 0, n = size; i < n; i++) {
-				if (value.equals(items[i])) {
+				if (o.equals(items[i])) {
 					remove(i);
 					modified = true;
 				}
@@ -1333,11 +1301,6 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		return new Iter<>(this, index);
 	}
 
-	@Override
-	public List<E> subList(int fromIndex, int toIndex) {
-		return super.subList(fromIndex, toIndex);
-	}
-
 	public Seq<E> toSeq() {
 		Seq<E> seq = new Seq<>(true, size, componentType);
 		for (E e : this) {
@@ -1346,33 +1309,33 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		return seq;
 	}
 
-	static class Iter<T> implements ListIterator<T> {
-		final CollectionList<T> array;
+	public static class Iter<T> implements ListIterator<T> {
+		final CollectionList<T> list;
 
 		int cursor;
 		boolean done = true;
 
-		Iter(CollectionList<T> arr, int index) {
-			array = arr;
+		public Iter(CollectionList<T> arr, int index) {
+			list = arr;
 			cursor = index;
 			iteratorsAllocated++;
 		}
 
-		Iter(CollectionList<T> arr) {
-			array = arr;
+		public Iter(CollectionList<T> arr) {
+			list = arr;
 			iteratorsAllocated++;
 		}
 
 		@Override
 		public boolean hasNext() {
-			if (cursor >= array.size) done = true;
-			return cursor < array.size;
+			if (cursor >= list.size) done = true;
+			return cursor < list.size;
 		}
 
 		@Override
 		public T next() {
-			if (cursor >= array.size) throw new NoSuchElementException(String.valueOf(cursor));
-			return array.items[cursor++];
+			if (cursor >= list.size) throw new NoSuchElementException(String.valueOf(cursor));
+			return list.items[cursor++];
 		}
 
 		@Override
@@ -1383,7 +1346,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		@Override
 		public T previous() {
 			if (!hasPrevious()) throw new NoSuchElementException("No previous");
-			return array.items[cursor - 1];
+			return list.items[cursor - 1];
 		}
 
 		@Override
@@ -1399,17 +1362,17 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		@Override
 		public void remove() {
 			cursor--;
-			array.remove(cursor);
+			list.remove(cursor);
 		}
 
 		@Override
 		public void set(T t) {
-			array.set(cursor, t);
+			list.set(cursor, t);
 		}
 
 		@Override
 		public void add(T t) {
-			array.add(t);
+			list.add(t);
 		}
 	}
 }

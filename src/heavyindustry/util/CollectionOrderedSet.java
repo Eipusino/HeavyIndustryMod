@@ -1,21 +1,19 @@
 package heavyindustry.util;
 
-import arc.struct.Seq;
-
 import java.util.NoSuchElementException;
 
 /**
- * An {@link CollectionObjectSet} that also stores keys in an {@link Seq} using the insertion order. {@link #iterator() Iteration} is
+ * An {@link CollectionObjectSet} that also stores keys in an {@link CollectionList} using the insertion order. {@link #iterator() Iteration} is
  * ordered and faster than an unordered set. Keys can also be accessed and the order changed using {@link #orderedItems()}. There
  * is some additional overhead for put and remove. When used for faster iteration versus ObjectSet and the order does not actually
- * matter, copying during remove can be greatly reduced by setting {@link Seq#ordered} to false for
+ * matter, copying during remove can be greatly reduced by setting {@link CollectionList#ordered} to false for
  * {@link CollectionOrderedSet#orderedItems()}.
  *
  * @author Nathan Sweet
  * @author Eipusino
  */
 public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
-	public Seq<E> orderedItems;
+	public CollectionList<E> orderedItems;
 
 	public CollectionOrderedSet(Class<?> type) {
 		super(type);
@@ -38,7 +36,7 @@ public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
 	}
 
 	protected void setSet(Class<?> keyType, int capacity) {
-		orderedItems = new Seq<>(true, capacity, keyType);
+		orderedItems = new CollectionList<>(true, capacity, keyType);
 	}
 
 	@Override
@@ -89,28 +87,27 @@ public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
 		super.clear();
 	}
 
-	public Seq<E> orderedItems() {
+	public CollectionList<E> orderedItems() {
 		return orderedItems;
 	}
 
 	@Override
-	public CollectionOrderedSetIterator iterator() {
-		if (iterator1 == null) {
-			iterator1 = new CollectionOrderedSetIterator();
-			iterator2 = new CollectionOrderedSetIterator();
-		}
+	public CollectionOrderedSetIterator<E> iterator() {
+		if (iterator1 == null) iterator1 = new CollectionOrderedSetIterator<>(this);
 
 		if (iterator1.done) {
 			iterator1.reset();
-			return (CollectionOrderedSetIterator) iterator1;
+			return (CollectionOrderedSetIterator<E>) iterator1;
 		}
+
+		if (iterator2 == null) iterator2 = new CollectionOrderedSetIterator<>(this);
 
 		if (iterator2.done) {
 			iterator2.reset();
-			return (CollectionOrderedSetIterator) iterator2;
+			return (CollectionOrderedSetIterator<E>) iterator2;
 		}
 
-		return new CollectionOrderedSetIterator();
+		return new CollectionOrderedSetIterator<>(this);
 	}
 
 	@Override
@@ -133,20 +130,27 @@ public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
 		return orderedItems.toString(separator);
 	}
 
-	public class CollectionOrderedSetIterator extends Iter {
+	public static class CollectionOrderedSetIterator<E> extends Iter<E> {
+		final CollectionOrderedSet<E> set;
+
+		public CollectionOrderedSetIterator(CollectionOrderedSet<E> s) {
+			super(s);
+			set = s;
+		}
+
 		@Override
 		public void reset() {
 			super.reset();
 			nextIndex = 0;
-			hasNext = size > 0;
+			hasNext = set.size > 0;
 		}
 
 		@Override
 		public E next() {
 			if (!hasNext) throw new NoSuchElementException();
-			E key = orderedItems.get(nextIndex);
+			E key = set.orderedItems.get(nextIndex);
 			nextIndex++;
-			hasNext = nextIndex < size;
+			hasNext = nextIndex < set.size;
 			return key;
 		}
 
@@ -154,7 +158,7 @@ public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
 		public void remove() {
 			if (nextIndex < 0) throw new IllegalStateException("next must be called before remove.");
 			nextIndex--;
-			removeIndex(nextIndex);
+			set.removeIndex(nextIndex);
 		}
 	}
 }

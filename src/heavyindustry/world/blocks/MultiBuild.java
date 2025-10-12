@@ -4,7 +4,6 @@ import arc.struct.Seq;
 import mindustry.gen.Building;
 
 public interface MultiBuild extends BaseBuild {
-
 	Seq<Building> linkEntities();
 
 	Seq<Building[]> linkProximityMap();

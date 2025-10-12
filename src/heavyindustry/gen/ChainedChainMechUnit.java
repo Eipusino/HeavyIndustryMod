@@ -31,7 +31,7 @@ import mindustry.type.Weapon;
 import static mindustry.Vars.net;
 import static mindustry.Vars.state;
 
-public class ChainedChainMechUnit extends BaseUnit implements ChainMechc {
+public class ChainedChainMechUnit extends Unit2 implements ChainMechc {
 	public transient Unit head, tail, parent, child;
 
 	public transient float growTime = 0, chainTime = 0;

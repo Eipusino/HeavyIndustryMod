@@ -8,12 +8,12 @@ import mindustry.gen.BuildingTetherc;
 import mindustry.gen.Call;
 import mindustry.io.TypeIO;
 
-public class BaseBuildingTetherUnit extends BaseUnit implements BuildingTetherc {
+public class BuildingTetherLegsUnit2 extends LegsUnit2 implements BuildingTetherc {
 	public @Nullable Building building;
 
 	@Override
 	public int classId() {
-		return Entitys.getId(BaseBuildingTetherUnit.class);
+		return Entitys.getId(BuildingTetherLegsUnit2.class);
 	}
 
 	@Override

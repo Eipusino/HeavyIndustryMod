@@ -9,6 +9,7 @@ import mindustry.entities.Damage;
 import mindustry.entities.Units;
 import mindustry.entities.abilities.Ability;
 import mindustry.gen.Unit;
+import mindustry.type.UnitType;
 
 import static mindustry.Vars.tilesize;
 
@@ -56,6 +57,9 @@ public class TerritoryFieldAbility extends Ability {
 			t.add(Core.bundle.get("ability.territory-field-ability-suppression"));
 		}
 	}
+
+	@Override
+	public void init(UnitType type) {}
 
 	@Override
 	public void update(Unit unit) {

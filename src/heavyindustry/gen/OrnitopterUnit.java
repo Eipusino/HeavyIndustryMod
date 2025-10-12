@@ -9,7 +9,7 @@ import heavyindustry.type.unit.OrnitopterUnitType.BladeMount;
 import mindustry.content.Fx;
 import mindustry.type.UnitType;
 
-public class OrnitopterUnit extends BaseUnit implements Ornitopterc {
+public class OrnitopterUnit extends Unit2 implements Ornitopterc {
 	public BladeMount[] blades;
 	public float bladeMoveSpeedScl = 1f;
 	public long drawSeed = 0;

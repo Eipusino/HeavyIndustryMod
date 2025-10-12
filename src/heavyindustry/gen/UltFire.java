@@ -155,7 +155,8 @@ public class UltFire extends Fire {
 
 				if (flammability > 0f && (fireballTimer += Time.delta * Mathf.clamp(flammability / 10f, 0f, 1.5f)) >= 40f) {
 					fireballTimer = 0f;
-					HBullets.ultFireball.createNet(Team.derelict, x, y, Mathf.random(360f), 1f, 1f, 1f);
+
+					if (HBullets.ultFireball != null) HBullets.ultFireball.createNet(Team.derelict, x, y, Mathf.random(360f), 1f, 1f, 1f);
 				}
 
 				if ((damageTimer += Time.delta) >= 40f) {
@@ -166,7 +167,7 @@ public class UltFire extends Fire {
 						entity.damage(25f);
 					}
 
-					Damage.damageUnits(null, tile.worldx(), tile.worldy(), 8f, 15f, (unit) -> !unit.isFlying() && !unit.isImmune(HStatusEffects.ultFireBurn), (unit) -> {
+					Damage.damageUnits(null, tile.worldx(), tile.worldy(), 8f, 15f, (unit) -> HStatusEffects.ultFireBurn != null && !unit.isFlying() && !unit.isImmune(HStatusEffects.ultFireBurn), (unit) -> {
 						unit.apply(HStatusEffects.ultFireBurn, 300f);
 					});
 				}

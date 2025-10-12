@@ -878,8 +878,8 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 		int nextIndex, currentIndex;
 		boolean valid = true;
 
-		public MapIterator(CollectionObjectMap<K, V> map) {
-			this.map = map;
+		public MapIterator(CollectionObjectMap<K, V> m) {
+			map = m;
 			reset();
 		}
 

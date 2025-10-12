@@ -3,7 +3,7 @@ package heavyindustry.gen;
 import arc.struct.IntSeq;
 import heavyindustry.graphics.HTrails.DriftTrail;
 
-public interface Swordc extends BaseUnitc {
+public interface Swordc extends Unitc2 {
 	void unitRayCast(float x1, float y1, float x2, float y2);
 
 	void tileRayCast(int x1, int y1, int x2, int y2);

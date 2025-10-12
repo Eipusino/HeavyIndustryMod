@@ -13,6 +13,18 @@ import mindustry.world.Tile;
 
 //i guess some method here are terrible and should use sizeOffset
 public interface MultiBlock {
+	default Block linkBlock(int index) {
+		return HBlocks.linkBlock[index];
+	}
+
+	default Block linkBlockLiquid(int index) {
+		return HBlocks.linkBlockLiquid[index];
+	}
+
+	default Block placeholderBlock(int index) {
+		return HBlocks.placeholderBlock[index];
+	}
+
 	Seq<Point2> linkBlockPos();
 
 	IntSeq linkBlockSize();
@@ -46,7 +58,7 @@ public interface MultiBlock {
 			Point2 p = linkBlockPos().get(i);
 			int s = linkBlockSize().get(i);
 			Point2 rotated = calculateRotatedPosition(p, size, s, rotation);
-			if (!Build.validPlace(HBlocks.linkBlock[s - 1], team, tile.x + rotated.x, tile.y + rotated.y, 0, false)) {
+			if (!Build.validPlace(linkBlock(s - 1), team, tile.x + rotated.x, tile.y + rotated.y, 0, false)) {
 				return false;
 			}
 		}
@@ -61,7 +73,7 @@ public interface MultiBlock {
 			int s = linkBlockSize().get(i);
 			Point2 rotated = calculateRotatedPosition(p, size, s, tile.build.rotation);
 			Tile t = Vars.world.tile(tile.x + rotated.x, tile.y + rotated.y);
-			t.setBlock(HBlocks.placeholderBlock[s - 1], tile.team(), 0);
+			t.setBlock(placeholderBlock(s - 1), tile.team(), 0);
 
 			if (t.build instanceof PlaceholderBlock.PlaceholderBuild b) {
 				b.updateLink(tile);
@@ -78,9 +90,9 @@ public interface MultiBlock {
 			Tile t = Vars.world.tile(tile.x + rotated.x, tile.y + rotated.y);
 
 			if (!block.outputsLiquid) {
-				t.setBlock(HBlocks.linkBlock[s - 1], team, 0);
+				t.setBlock(linkBlock(s - 1), team, 0);
 			} else {
-				t.setBlock(HBlocks.linkBlockLiquid[s - 1], team, 0);
+				t.setBlock(linkBlockLiquid(s - 1), team, 0);
 			}
 			LinkBlock.LinkBuild b = (LinkBlock.LinkBuild) t.build;
 			b.updateLink(building);

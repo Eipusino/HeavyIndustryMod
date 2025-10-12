@@ -30,7 +30,7 @@ import static mindustry.Vars.net;
 import static mindustry.Vars.state;
 import static mindustry.Vars.world;
 
-public class EnergyUnit extends BaseUnit implements Energyc {
+public class EnergyUnit extends Unit2 implements Energyc {
 	protected transient Vec2 lastPos = new Vec2();
 	protected float reloadValue = 0;
 	protected float lastHealth = 0;

@@ -29,7 +29,7 @@ import mindustry.graphics.Layer;
 import mindustry.type.Weapon;
 import mindustry.world.blocks.environment.Floor;
 
-public class ChainedUnitType extends BaseUnitType {
+public class ChainedUnitType extends UnitType2 {
 	//Legs extra
 	protected static Vec2 legOffsetB = new Vec2();
 

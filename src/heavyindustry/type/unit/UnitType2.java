@@ -2,7 +2,7 @@ package heavyindustry.type.unit;
 
 import arc.Core;
 import arc.util.Strings;
-import heavyindustry.gen.BaseUnit;
+import heavyindustry.gen.Unit2;
 import heavyindustry.world.meta.HStat;
 import mindustry.ai.types.MissileAI;
 import mindustry.content.Items;
@@ -15,11 +15,11 @@ import mindustry.type.UnitType;
 import mindustry.type.ammo.ItemAmmoType;
 import mindustry.world.meta.Env;
 
-public class BaseUnitType extends UnitType {
+public class UnitType2 extends UnitType {
 	public float damageMultiplier = 1f;
 	public float absorption = 0f;
 
-	public BaseUnitType(String name) {
+	public UnitType2(String name) {
 		super(name);
 	}
 
@@ -80,7 +80,7 @@ public class BaseUnitType extends UnitType {
 	@Override
 	protected void checkEntityMapping(Unit example) {
 		if (constructor == null) {
-			constructor = BaseUnit::new;
+			constructor = Unit2::new;
 
 			arc.util.Log.warn(Strings.format("""
 					No constructor set up for unit '@': Assign `constructor = [your unit constructor]`. Vanilla defaults are:

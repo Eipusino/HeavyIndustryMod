@@ -29,7 +29,7 @@ import mindustry.ui.Bar;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
-public class SentryUnitType extends BaseUnitType {
+public class SentryUnitType extends UnitType2 {
 	public float startElevation = 0.5f, riseSpeed = -1f;
 	public float anchorDrag = 0.15f;
 	public float pullScale = 0.01f, anchorPullScale = 0.003f;

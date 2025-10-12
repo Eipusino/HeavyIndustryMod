@@ -3,7 +3,7 @@ package heavyindustry.gen;
 import arc.func.Cons;
 import mindustry.gen.Unit;
 
-public interface Chainedc extends BaseUnitc {
+public interface Chainedc extends Unitc2 {
 	<T extends Unit & Chainedc> int countBackwards();
 
 	<T extends Unit & Chainedc> int countForward();

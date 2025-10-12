@@ -17,7 +17,7 @@ import static mindustry.Vars.player;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
-public class FloatMechCoreUnit extends BaseUnit implements Corec, FloatMechc {
+public class FloatMechCoreUnit extends Unit2 implements Corec, FloatMechc {
 	public float baseRotation;
 	public transient float walkTime, walkExtension;
 	public transient boolean walked;

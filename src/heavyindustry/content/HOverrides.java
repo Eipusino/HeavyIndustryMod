@@ -1,6 +1,7 @@
 package heavyindustry.content;
 
 import arc.graphics.Color;
+import heavyindustry.HVars;
 import heavyindustry.graphics.HPal;
 import heavyindustry.world.meta.HAttribute;
 import mindustry.content.Blocks;
@@ -74,6 +75,8 @@ public final class HOverrides {
 	 * <p>Remember not to execute it a second time, I did not take any precautionary measures.
 	 */
 	public static void load() {
+		if (HVars.isPlugin) return;
+
 		//blocks-environment
 		Blocks.stone.itemDrop = Blocks.craters.itemDrop = Blocks.charr.itemDrop = Blocks.basalt.itemDrop = Blocks.dacite.itemDrop = HItems.stone;
 		Blocks.stone.playerUnmineable = Blocks.craters.playerUnmineable = Blocks.charr.playerUnmineable = Blocks.basalt.playerUnmineable = Blocks.dacite.playerUnmineable = true;
@@ -441,15 +444,12 @@ public final class HOverrides {
 		if (Blocks.shipAssembler instanceof UnitAssembler assembler) assembler.plans.add(new AssemblerUnitPlan(HUnitTypes.havoc, 60f * 60f * 4f, PayloadStack.list(UnitTypes.obviate, 4, HBlocks.aparajitoLarge, 20)));
 		if (Blocks.mechAssembler instanceof UnitAssembler assembler) assembler.plans.add(new AssemblerUnitPlan(HUnitTypes.oracle, 60f * 60f * 4f, PayloadStack.list(UnitTypes.anthicus, 4, HBlocks.aparajitoLarge, 20)));
 		//blocks-campaign
-
-		//I can't figure out how this thing consumes so much water...
-		//Anuke's recent mental state has been very poor. I can't figure out how this kind of thing came up with.
-		if (Blocks.landingPad instanceof LandingPad pad) pad.consumeLiquidAmount /= 100f;
-		//unit types
+		if (Blocks.landingPad instanceof LandingPad pad) pad.consumeLiquidAmount /= 2.5f;
+		//units
 		UnitTypes.alpha.coreUnitDock = true;
 		UnitTypes.beta.coreUnitDock = true;
 		UnitTypes.gamma.coreUnitDock = true;
-		//unit types-erekir
+		//units-erekir
 		UnitTypes.tecta.armor = 11f;
 		UnitTypes.collaris.armor = 15f;
 		//liquids
@@ -471,7 +471,7 @@ public final class HOverrides {
 		Items.carbide.hardness = 6;
 		Items.serpuloItems.addAll(HItems.stone, HItems.agglomerateSalt, HItems.rareEarth, HItems.galliumNitride, HItems.crystallineCircuit, HItems.gold, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.crystal);
 		Items.erekirItems.addAll(HItems.stone, HItems.uranium, HItems.chromium, HItems.crystal);
-		//planet
+		//planets
 		Planets.serpulo.allowSectorInvasion = false;
 	}
 }

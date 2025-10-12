@@ -13,6 +13,7 @@ import mindustry.entities.Units;
 import mindustry.entities.abilities.Ability;
 import mindustry.gen.Unit;
 import mindustry.type.StatusEffect;
+import mindustry.type.UnitType;
 
 import static mindustry.Vars.tilesize;
 
@@ -52,6 +53,11 @@ public class WitchServiceAbility extends Ability {
 		rect.setCentered(unit.x, unit.y, w, h);
 
 		return rect;
+	}
+
+	@Override
+	public void init(UnitType type) {
+		if (applyEffect == null) applyEffect = StatusEffects.none;
 	}
 
 	@Override

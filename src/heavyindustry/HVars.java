@@ -4,6 +4,7 @@ import arc.graphics.Texture;
 import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.graphics.g2d.TextureRegion;
 import arc.struct.Seq;
+import arc.util.serialization.Jval;
 import heavyindustry.annotations.Annotations.ListClasses;
 import heavyindustry.annotations.Annotations.ListPackages;
 import heavyindustry.core.HeavyIndustryListener;
@@ -44,6 +45,10 @@ public final class HVars {
 	public static boolean hasUnsafe = false;
 	public static boolean hasJDKUnsafe = false;
 	public static boolean hasImplLookup = false;
+
+	public static Jval info;
+
+	public static boolean isPlugin;
 
 	/** jar internal navigation. */
 	public static final InternalFileTree internalTree;

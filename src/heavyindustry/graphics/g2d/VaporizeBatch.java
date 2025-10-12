@@ -13,10 +13,10 @@ import arc.graphics.gl.Shader;
 import arc.math.Mathf;
 import arc.math.geom.Intersector;
 import arc.math.geom.Rect;
-import heavyindustry.gen.RenderGroupEntity;
-import heavyindustry.gen.RenderGroupEntity.DrawnRegion;
 import heavyindustry.entities.effect.Disintegration;
 import heavyindustry.entities.effect.Disintegration.DisintegrationEntity;
+import heavyindustry.gen.RenderGroupEntity;
+import heavyindustry.gen.RenderGroupEntity.DrawnRegion;
 
 public class VaporizeBatch extends Batch {
 	protected final Color color = new Color(1f, 1f, 1f, 1f);

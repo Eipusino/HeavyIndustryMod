@@ -11,7 +11,7 @@ import heavyindustry.ui.HoldImageButton.HoldImageButtonStyle;
 import mindustry.gen.Tex;
 import mindustry.ui.Styles;
 
-import static heavyindustry.gen.HIcon.drawable;
+import static heavyindustry.ui.HIcon.drawable;
 
 public final class HStyles {
 	public static Drawable

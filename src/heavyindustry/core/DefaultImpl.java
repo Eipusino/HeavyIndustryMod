@@ -6,7 +6,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.AccessibleObject;
 
-class DefaultImpl implements PlatformImpl {
+public class DefaultImpl implements PlatformImpl {
 	@Override
 	public void setOverride(AccessibleObject override) {
 		override.setAccessible(true);

@@ -7,7 +7,6 @@ import arc.math.geom.Position;
 import arc.math.geom.Vec2;
 import arc.struct.FloatSeq;
 import arc.struct.Seq;
-import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 
 import java.util.Iterator;
@@ -22,12 +21,12 @@ import java.util.NoSuchElementException;
  * @see Vec2
  */
 public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
-	private final FloatSeq coordinates;
+	final FloatSeq coordinates;
 
-	private final Vec2 tmp = new Vec2();
+	final Vec2 tmp = new Vec2();
 
-	private Seq<Vec2> seq;
-	private Vec2SeqIterable iterable;
+	Seq<Vec2> seq;
+	Iter iterator1, iterator2;
 
 	public Vec2Seq() {
 		coordinates = new FloatSeq(true, 8);
@@ -222,71 +221,51 @@ public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 	 */
 	@Override
 	public Iterator<Vec2> iterator() {
-		if (iterable == null) iterable = new Vec2SeqIterable(this);
-		return iterable.iterator();
-	}
+		if (iterator1 == null) iterator1 = new Iter(this);
 
-	// is this necessary?
-	public static class Vec2SeqIterable implements Iterable<Vec2> {
-		final Vec2Seq array;
-		final boolean allowRemove;
-
-		Vec2SeqIterator iterator1, iterator2;
-
-		public Vec2SeqIterable(Vec2Seq array) {
-			this(array, true);
+		if (iterator1.done) {
+			iterator1.index = 0;
+			iterator1.done = false;
+			return iterator1;
 		}
 
-		public Vec2SeqIterable(Vec2Seq arr, boolean remove) {
-			array = arr;
-			allowRemove = remove;
+		if (iterator2 == null) iterator2 = new Iter(this);
+
+		if (iterator2.done) {
+			iterator2.index = 0;
+			iterator2.done = false;
+			return iterator2;
+		}
+		// allocate new iterator in the case of 3+ nested loops.
+		return new Iter(this);
+	}
+
+	public static class Iter implements Iterator<Vec2> {
+		final Vec2Seq array;
+
+		int index;
+		boolean done = true;
+
+		public Iter(Vec2Seq seq) {
+			array = seq;
 		}
 
 		@Override
-		public Iterator<Vec2> iterator() {
-			if (iterator1 == null) iterator1 = new Vec2SeqIterator();
-
-			if (iterator1.done) {
-				iterator1.index = 0;
-				iterator1.done = false;
-				return iterator1;
-			}
-
-			if (iterator2 == null) iterator2 = new Vec2SeqIterator();
-
-			if (iterator2.done) {
-				iterator2.index = 0;
-				iterator2.done = false;
-				return iterator2;
-			}
-			// allocate new iterator in the case of 3+ nested loops.
-			return new Vec2SeqIterator();
+		public boolean hasNext() {
+			if (index >= array.size()) done = true;
+			return index < array.size();
 		}
 
-		public class Vec2SeqIterator implements Iterator<Vec2> {
-			int index;
-			boolean done = true;
+		@Override
+		public Vec2 next() {
+			if (index >= array.size()) throw new NoSuchElementException(String.valueOf(index));
+			return array.newVec2(index++);
+		}
 
-			Vec2SeqIterator() {}
-
-			@Override
-			public boolean hasNext() {
-				if (index >= array.size()) done = true;
-				return index < array.size();
-			}
-
-			@Override
-			public Vec2 next() {
-				if (index >= array.size()) throw new NoSuchElementException(String.valueOf(index));
-				return array.newVec2(index++);
-			}
-
-			@Override
-			public void remove() {
-				if (!allowRemove) throw new ArcRuntimeException("Remove not allowed.");
-				index--;
-				array.remove(index);
-			}
+		@Override
+		public void remove() {
+			index--;
+			array.remove(index);
 		}
 	}
 }

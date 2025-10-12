@@ -1,22 +1,22 @@
 package heavyindustry.gen;
 
 import heavyindustry.entities.abilities.ICollideBlockerAbility;
-import heavyindustry.type.unit.BaseUnitType;
+import heavyindustry.type.unit.UnitType2;
 import mindustry.Vars;
 import mindustry.entities.Damage;
 import mindustry.entities.abilities.Ability;
 import mindustry.gen.Hitboxc;
-import mindustry.gen.MechUnit;
+import mindustry.gen.TimedKillUnit;
 
-public class BaseMechUnit extends MechUnit implements BaseUnitc {
+public class TimedKillUnit2 extends TimedKillUnit implements Unitc2 {
 	@Override
 	public int classId() {
-		return Entitys.getId(BaseMechUnit.class);
+		return Entitys.getId(TimedKillUnit2.class);
 	}
 
 	@Override
-	public BaseUnitType checkType() {
-		return (BaseUnitType) type;
+	public UnitType2 checkType() {
+		return (UnitType2) type;
 	}
 
 	@Override

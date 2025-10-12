@@ -24,7 +24,7 @@ import mindustry.gen.Unit;
 import static mindustry.Vars.state;
 import static mindustry.Vars.world;
 
-public class SwordUnit extends BaseUnit implements Swordc {
+public class SwordUnit extends Unit2 implements Swordc {
 	public IntSeq collided = new IntSeq();
 	public float lastBaseX = Float.NEGATIVE_INFINITY, lastBaseY;
 	public int orbitPos;

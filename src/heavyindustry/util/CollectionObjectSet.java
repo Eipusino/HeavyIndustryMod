@@ -40,7 +40,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	int stashCapacity;
 	int pushIterations;
 
-	@Nullable Iter iterator1, iterator2;
+	@Nullable Iter<E> iterator1, iterator2;
 
 	/** Creates a new set with an initial capacity of 51 and a load factor of 0.8. */
 	public CollectionObjectSet(Class<?> type) {
@@ -624,21 +624,22 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	 * time this method is called. Use the {@link Iter} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public Iter iterator() {
-		if (iterator1 == null) iterator1 = new Iter();
-		if (iterator2 == null) iterator2 = new Iter();
+	public Iter<E> iterator() {
+		if (iterator1 == null) iterator1 = new Iter<>(this);
 
 		if (iterator1.done) {
 			iterator1.reset();
 			return iterator1;
 		}
 
+		if (iterator2 == null) iterator2 = new Iter<>(this);
+
 		if (iterator2.done) {
 			iterator2.reset();
 			return iterator2;
 		}
 		// no finished iterators
-		return new Iter();
+		return new Iter<>(this);
 	}
 
 	@Override
@@ -657,12 +658,15 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 		return a;
 	}
 
-	public class Iter implements Iterable<E>, Iterator<E> {
+	public static class Iter<E> implements Iterable<E>, Iterator<E> {
+		final CollectionObjectSet<E> set;
+
 		public boolean hasNext;
 		int nextIndex, currentIndex;
 		boolean done;
 
-		public Iter() {
+		public Iter(CollectionObjectSet<E> s) {
+			set = s;
 			reset();
 			done = true;
 		}
@@ -676,8 +680,8 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 
 		void findNextIndex() {
 			hasNext = false;
-			for (int n = capacity + stashSize; ++nextIndex < n; ) {
-				if (keyTable[nextIndex] != null) {
+			for (int n = set.capacity + set.stashSize; ++nextIndex < n; ) {
+				if (set.keyTable[nextIndex] != null) {
 					hasNext = true;
 					break;
 				}
@@ -687,15 +691,15 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 		@Override
 		public void remove() {
 			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
-			if (currentIndex >= capacity) {
-				removeStashIndex(currentIndex);
+			if (currentIndex >= set.capacity) {
+				set.removeStashIndex(currentIndex);
 				nextIndex = currentIndex - 1;
 				findNextIndex();
 			} else {
-				keyTable[currentIndex] = null;
+				set.keyTable[currentIndex] = null;
 			}
 			currentIndex = -1;
-			size--;
+			set.size--;
 		}
 
 		@Override
@@ -709,14 +713,14 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 		@Override
 		public E next() {
 			if (!hasNext) throw new NoSuchElementException();
-			E key = keyTable[nextIndex];
+			E key = set.keyTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return key;
 		}
 
 		@Override
-		public Iter iterator() {
+		public Iter<E> iterator() {
 			return this;
 		}
 
@@ -729,7 +733,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 
 		/** Returns a new array containing the remaining values. */
 		public Seq<E> toSeq() {
-			return toSeq(new Seq<>(true, size, keyComponentType));
+			return toSeq(new Seq<>(true, set.size, set.keyComponentType));
 		}
 	}
 }

@@ -16,7 +16,7 @@ import mindustry.graphics.Layer;
 import mindustry.graphics.MultiPacker;
 import mindustry.world.meta.Env;
 
-public class OrnitopterUnitType extends BaseUnitType {
+public class OrnitopterUnitType extends UnitType2 {
 	public final Seq<Blade> blades = new Seq<>(Blade.class);
 
 	public float bladeDeathMoveSlowdown = 0.01f, fallDriftScl = 60f;

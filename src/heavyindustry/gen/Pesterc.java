@@ -8,7 +8,7 @@ import mindustry.gen.Healthc;
 import mindustry.gen.Teamc;
 import mindustry.graphics.Trail;
 
-public interface Pesterc extends BaseUnitc {
+public interface Pesterc extends Unitc2 {
 	Healthc findOwner(Entityc ent);
 
 	void shootBossTarget();

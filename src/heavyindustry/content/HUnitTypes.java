@@ -16,12 +16,14 @@ import arc.scene.ui.layout.Table;
 import arc.util.Interval;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.HVars;
 import heavyindustry.ai.CopterAI;
 import heavyindustry.ai.DefenderHealAI;
 import heavyindustry.ai.MinerDepotAI;
 import heavyindustry.ai.MinerPointAI;
 import heavyindustry.ai.NullAI;
 import heavyindustry.ai.SurroundAI;
+import heavyindustry.audio.HSounds;
 import heavyindustry.entities.abilities.BatteryAbility;
 import heavyindustry.entities.abilities.InvincibleForceFieldAbility;
 import heavyindustry.entities.abilities.JavelinAbility;
@@ -31,11 +33,11 @@ import heavyindustry.entities.abilities.RegenProjectorAbility;
 import heavyindustry.entities.abilities.TerritoryFieldAbility;
 import heavyindustry.entities.abilities.WitchServiceAbility;
 import heavyindustry.entities.bullet.AccelBulletType;
+import heavyindustry.entities.bullet.AnnihilatePointBulletType;
 import heavyindustry.entities.bullet.AntiBulletFlakBulletType;
 import heavyindustry.entities.bullet.ArrowBulletType;
 import heavyindustry.entities.bullet.CtrlMissileBulletType;
 import heavyindustry.entities.bullet.EdgeFragBulletType;
-import heavyindustry.entities.bullet.AnnihilatePointBulletType;
 import heavyindustry.entities.bullet.GuidedMissileBulletType;
 import heavyindustry.entities.bullet.HealConeBulletType;
 import heavyindustry.entities.bullet.HealingNukeBulletType;
@@ -49,29 +51,28 @@ import heavyindustry.entities.part.CustomPart;
 import heavyindustry.entities.part.PartBow;
 import heavyindustry.func.Floatt2;
 import heavyindustry.func.Floatt3;
-import heavyindustry.gen.BaseBuildingTetherLegsUnit;
-import heavyindustry.gen.BaseBuildingTetherUnit;
-import heavyindustry.gen.BaseLegsUnit;
-import heavyindustry.gen.BaseMechUnit;
-import heavyindustry.gen.BasePayloadUnit;
-import heavyindustry.gen.BaseTankUnit;
-import heavyindustry.gen.BaseUnit;
-import heavyindustry.gen.BaseUnitWaterMove;
+import heavyindustry.gen.BuildingTetherLegsUnit2;
+import heavyindustry.gen.BuildingTetherUnit2;
 import heavyindustry.gen.CopterUnit;
 import heavyindustry.gen.DPSMechUnit;
 import heavyindustry.gen.DamageAbsorbMechUnit;
 import heavyindustry.gen.EipusinoUnit;
-import heavyindustry.gen.HSounds;
 import heavyindustry.gen.InvincibleShipUnit;
+import heavyindustry.gen.LegsUnit2;
+import heavyindustry.gen.MechUnit2;
+import heavyindustry.gen.PayloadUnit2;
+import heavyindustry.gen.TankUnit2;
 import heavyindustry.gen.UltFire;
+import heavyindustry.gen.Unit2;
+import heavyindustry.gen.UnitWaterMove2;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.Draws;
 import heavyindustry.graphics.HPal;
 import heavyindustry.graphics.MathRenderer;
 import heavyindustry.math.Mathm;
-import heavyindustry.type.unit.BaseUnitType;
 import heavyindustry.type.unit.CopterUnitType;
 import heavyindustry.type.unit.NucleoidUnitType;
+import heavyindustry.type.unit.UnitType2;
 import heavyindustry.type.weapons.AcceleratingWeapon;
 import heavyindustry.type.weapons.BoostWeapon;
 import heavyindustry.type.weapons.DataWeapon;
@@ -157,7 +158,7 @@ public final class HUnitTypes {
 	public static final String PHASE = "phase";
 	public static final String SHOOTERS = "shooters";
 
-	public static BaseUnitType
+	public static UnitType2
 			//vanilla-tank
 			vanguard, striker, counterattack, crush, destruction, purgatory,
 	//vanilla-copter
@@ -180,9 +181,11 @@ public final class HUnitTypes {
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
+		if (HVars.isPlugin) return;
+
 		//vanilla-tank
-		vanguard = new BaseUnitType("vanguard") {{
-			constructor = BaseTankUnit::new;
+		vanguard = new UnitType2("vanguard") {{
+			constructor = TankUnit2::new;
 			squareShape = true;
 			omniMovement = false;
 			rotateMoveFirst = false;
@@ -220,8 +223,8 @@ public final class HUnitTypes {
 				}};
 			}});
 		}};
-		striker = new BaseUnitType("striker") {{
-			constructor = BaseTankUnit::new;
+		striker = new UnitType2("striker") {{
+			constructor = TankUnit2::new;
 			squareShape = true;
 			omniMovement = false;
 			rotateMoveFirst = false;
@@ -294,8 +297,8 @@ public final class HUnitTypes {
 				}};
 			}});
 		}};
-		counterattack = new BaseUnitType("counterattack") {{
-			constructor = BaseTankUnit::new;
+		counterattack = new UnitType2("counterattack") {{
+			constructor = TankUnit2::new;
 			treadFrames = 8;
 			treadPullOffset = 8;
 			treadRects = new Rect[]{new Rect(-45f, -45f, 24f, 88f)};
@@ -424,8 +427,8 @@ public final class HUnitTypes {
 				}};
 			}});
 		}};
-		crush = new BaseUnitType("crush") {{
-			constructor = BaseTankUnit::new;
+		crush = new UnitType2("crush") {{
+			constructor = TankUnit2::new;
 			squareShape = true;
 			omniMovement = false;
 			rotateMoveFirst = false;
@@ -593,8 +596,8 @@ public final class HUnitTypes {
 				}};
 			}});
 		}};
-		destruction = new BaseUnitType("destruction") {{
-			constructor = BaseTankUnit::new;
+		destruction = new UnitType2("destruction") {{
+			constructor = TankUnit2::new;
 			squareShape = true;
 			omniMovement = false;
 			rotateMoveFirst = false;
@@ -728,8 +731,8 @@ public final class HUnitTypes {
 				}});
 			}});
 		}};
-		purgatory = new BaseUnitType("purgatory") {{
-			constructor = BaseTankUnit::new;
+		purgatory = new UnitType2("purgatory") {{
+			constructor = TankUnit2::new;
 			squareShape = true;
 			omniMovement = false;
 			rotateMoveFirst = false;
@@ -1291,8 +1294,8 @@ public final class HUnitTypes {
 			hideDetails = false;
 		}};
 		//vanilla-tier6
-		empire = new BaseUnitType("empire") {{
-			constructor = BaseMechUnit::new;
+		empire = new UnitType2("empire") {{
+			constructor = MechUnit2::new;
 			speed = 0.4f;
 			hitSize = 40f;
 			rotateSpeed = 1.65f;
@@ -1389,8 +1392,8 @@ public final class HUnitTypes {
 				}};
 			}});
 		}};
-		supernova = new BaseUnitType("supernova") {{
-			constructor = BaseLegsUnit::new;
+		supernova = new UnitType2("supernova") {{
+			constructor = LegsUnit2::new;
 			hitSize = 37f;
 			health = 59000f;
 			armor = 32f;
@@ -1521,8 +1524,8 @@ public final class HUnitTypes {
 			}});
 			hideDetails = false;
 		}};
-		cancer = new BaseUnitType("cancer") {{
-			constructor = BaseLegsUnit::new;
+		cancer = new UnitType2("cancer") {{
+			constructor = LegsUnit2::new;
 			speed = 0.5f;
 			hitSize = 33f;
 			health = 54000f;
@@ -1640,8 +1643,8 @@ public final class HUnitTypes {
 				}};
 			}});
 		}};
-		aphelion = new BaseUnitType("aphelion") {{
-			constructor = BaseUnit::new;
+		aphelion = new UnitType2("aphelion") {{
+			constructor = Unit2::new;
 			aiController = FlyingAI::new;
 			speed = 0.55f;
 			accel = 0.04f;
@@ -1749,8 +1752,8 @@ public final class HUnitTypes {
 				}};
 			}});
 		}};
-		windstorm = new BaseUnitType("windstorm") {{
-			constructor = BasePayloadUnit::new;
+		windstorm = new UnitType2("windstorm") {{
+			constructor = PayloadUnit2::new;
 			aiController = DefenderHealAI::new;
 			armor = 41f;
 			health = 61000f;
@@ -1813,8 +1816,8 @@ public final class HUnitTypes {
 				}};
 			}});
 		}};
-		poseidon = new BaseUnitType("poseidon") {{
-			constructor = BaseUnitWaterMove::new;
+		poseidon = new UnitType2("poseidon") {{
+			constructor = UnitWaterMove2::new;
 			trailLength = 70;
 			waveTrailX = 25f;
 			waveTrailY = -32f;
@@ -1973,8 +1976,8 @@ public final class HUnitTypes {
 				}};
 			}});
 		}};
-		leviathan = new BaseUnitType("leviathan") {{
-			constructor = BaseUnitWaterMove::new;
+		leviathan = new UnitType2("leviathan") {{
+			constructor = UnitWaterMove2::new;
 			armor = 48f;
 			drag = 0.2f;
 			speed = 0.7f;
@@ -2178,10 +2181,10 @@ public final class HUnitTypes {
 			});
 		}};
 		//vanilla-tier6-erekir
-		dominate = new BaseUnitType("dominate") {{
+		dominate = new UnitType2("dominate") {{
 			erekir();
 			tank();
-			constructor = BaseTankUnit::new;
+			constructor = TankUnit2::new;
 			hitSize = 57f;
 			treadPullOffset = 1;
 			speed = 0.48f;
@@ -2348,9 +2351,9 @@ public final class HUnitTypes {
 			ammoCapacity = 500;
 			ammoType = new ItemAmmoType(Items.beryllium);
 		}};
-		oracle = new BaseUnitType("oracle") {{
+		oracle = new UnitType2("oracle") {{
 			erekir();
-			constructor = BaseLegsUnit::new;
+			constructor = LegsUnit2::new;
 			drag = 0.1f;
 			speed = 0.9f;
 			hitSize = 50f;
@@ -2552,9 +2555,9 @@ public final class HUnitTypes {
 			}});
 			fogRadius = 52f;
 		}};
-		havoc = new BaseUnitType("havoc") {{
+		havoc = new UnitType2("havoc") {{
 			erekir();
-			constructor = BasePayloadUnit::new;
+			constructor = PayloadUnit2::new;
 			aiController = FlyingFollowAI::new;
 			envDisabled = Env.none;
 			lowAltitude = false;
@@ -2664,9 +2667,9 @@ public final class HUnitTypes {
 			ammoType = new ItemAmmoType(Items.beryllium);
 		}};
 		//miner-erekir
-		miner = new BaseUnitType("miner") {{
+		miner = new UnitType2("miner") {{
 			erekir();
-			constructor = BaseBuildingTetherUnit::new;
+			constructor = BuildingTetherUnit2::new;
 			defaultCommand = UnitCommand.mineCommand;
 			controller = u -> new MinerPointAI();
 			flying = true;
@@ -2700,9 +2703,9 @@ public final class HUnitTypes {
 			ammoCapacity = 100;
 			ammoType = new PowerAmmoType(600f);
 		}};
-		largeMiner = new BaseUnitType("large-miner") {{
+		largeMiner = new UnitType2("large-miner") {{
 			erekir();
-			constructor = BaseBuildingTetherUnit::new;
+			constructor = BuildingTetherUnit2::new;
 			defaultCommand = UnitCommand.mineCommand;
 			controller = u -> new MinerPointAI();
 			flying = true;
@@ -2737,10 +2740,10 @@ public final class HUnitTypes {
 			ammoCapacity = 300;
 			ammoType = new PowerAmmoType(1200f);
 		}};
-		legsMiner = new BaseUnitType("legs-miner") {{
+		legsMiner = new UnitType2("legs-miner") {{
 			erekir();
 			controller = u -> new MinerDepotAI();
-			constructor = BaseBuildingTetherLegsUnit::new;
+			constructor = BuildingTetherLegsUnit2::new;
 			isEnemy = false;
 			allowedInPayloads = false;
 			logicControllable = false;
@@ -2799,8 +2802,8 @@ public final class HUnitTypes {
 			ammoType = new PowerAmmoType(800f);
 		}};
 		//other
-		vulture = new BaseUnitType("vulture") {{
-			constructor = BaseUnit::new;
+		vulture = new UnitType2("vulture") {{
+			constructor = Unit2::new;
 			aiController = SurroundAI::new;
 			weapons.add(new Weapon() {{
 				top = false;
@@ -2864,7 +2867,7 @@ public final class HUnitTypes {
 			flying = true;
 			hideDetails = false;
 		}};
-		invincibleShip = new BaseUnitType("invincible-ship") {{
+		invincibleShip = new UnitType2("invincible-ship") {{
 			constructor = InvincibleShipUnit::new;
 			abilities.add(new RepairFieldAbility(11451.4191981f, 60, 8 * 8), new InvincibleForceFieldAbility(60, 114.514191981f, 1145141919.81f, 300));
 			aiController = NullAI::new;
@@ -2926,7 +2929,7 @@ public final class HUnitTypes {
 			isEnemy = false;
 			bounded = false;
 		}};
-		dpsTesterLand = new BaseUnitType("dps-tester-land") {{
+		dpsTesterLand = new UnitType2("dps-tester-land") {{
 			constructor = DPSMechUnit::new;
 			aiController = NullAI::new;
 			armor = 10f;
@@ -2957,7 +2960,7 @@ public final class HUnitTypes {
 			ammoType = new PowerAmmoType(114.514f);
 		}};
 		//elite
-		tiger = new BaseUnitType("tiger") {{
+		tiger = new UnitType2("tiger") {{
 			constructor = DamageAbsorbMechUnit::new;
 			absorption = 0.2f;
 			damageMultiplier = 0.9f;
@@ -3175,10 +3178,10 @@ public final class HUnitTypes {
 			fogRadius = 72f;
 			immunities.addAll(StatusEffects.unmoving, StatusEffects.blasted, StatusEffects.corroded, StatusEffects.sporeSlowed, StatusEffects.disarmed, StatusEffects.electrified);
 		}};
-		thunder = new BaseUnitType("thunder") {{
+		thunder = new UnitType2("thunder") {{
 			tank();
 			drawShields = false;
-			constructor = BaseTankUnit::new;
+			constructor = TankUnit2::new;
 			damageMultiplier = 0.5f;
 			health = 52500f;
 			armor = 79f;
@@ -3361,8 +3364,8 @@ public final class HUnitTypes {
 			fogRadius = 68f;
 			immunities.addAll(StatusEffects.unmoving, StatusEffects.blasted, StatusEffects.corroded, StatusEffects.sporeSlowed, StatusEffects.disarmed, StatusEffects.electrified);
 		}};
-		eagle = new BaseUnitType("eagle") {{
-			constructor = BaseUnit::new;
+		eagle = new UnitType2("eagle") {{
+			constructor = Unit2::new;
 			health = 32500f;
 			armor = 39f;
 			envDisabled = Env.none;

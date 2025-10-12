@@ -4,8 +4,8 @@ import arc.func.Func;
 import arc.func.Prov;
 import arc.util.Structs;
 import heavyindustry.entities.effect.VapourizeEffect.VapourizeEffectState;
-import heavyindustry.util.ObjectIntMap2;
 import heavyindustry.util.CollectionObjectMap;
+import heavyindustry.util.ObjectIntMap2;
 import mindustry.gen.EntityMapping;
 import mindustry.gen.Entityc;
 import mindustry.type.UnitType;
@@ -21,6 +21,8 @@ import java.util.Map;
 public final class Entitys {
 	private static final ObjectIntMap2<Class<? extends Entityc>> classIdMap = new ObjectIntMap2<>(Class.class);
 	private static final Map<String, Prov<? extends Entityc>> needIdMap = new CollectionObjectMap<>(String.class, Prov.class);
+
+	private static boolean registered = false;
 
 	/** Don't let anyone instantiate this class. */
 	private Entitys() {}
@@ -63,19 +65,23 @@ public final class Entitys {
 	}
 
 	public static void load() {
-		register(BaseUnit.class, BaseUnit::new);
-		register(BaseMechUnit.class, BaseMechUnit::new);
-		register(BaseLegsUnit.class, BaseLegsUnit::new);
-		register(BasePayloadUnit.class, BasePayloadUnit::new);
-		register(BaseTankUnit.class, BaseTankUnit::new);
-		register(BaseElevationMoveUnit.class, BaseElevationMoveUnit::new);
-		register(BaseBuildingTetherPayloadUnit.class, BaseBuildingTetherPayloadUnit::new);
-		register(BaseBuildingTetherUnit.class, BaseBuildingTetherUnit::new);
-		register(BaseUnitWaterMove.class, BaseUnitWaterMove::new);
-		register(BaseTimedKillUnit.class, BaseTimedKillUnit::new);
+		if (registered) return;
+
+		registered = true;
+
+		register(Unit2.class, Unit2::new);
+		register(MechUnit2.class, MechUnit2::new);
+		register(LegsUnit2.class, LegsUnit2::new);
+		register(PayloadUnit2.class, PayloadUnit2::new);
+		register(TankUnit2.class, TankUnit2::new);
+		register(ElevationMoveUnit2.class, ElevationMoveUnit2::new);
+		register(BuildingTetherPayloadUnit2.class, BuildingTetherPayloadUnit2::new);
+		register(BuildingTetherUnit2.class, BuildingTetherUnit2::new);
+		register(UnitWaterMove2.class, UnitWaterMove2::new);
+		register(TimedKillUnit2.class, TimedKillUnit2::new);
 		register(PayloadLegsUnit.class, PayloadLegsUnit::new);
-		register(BaseBuildingTetherLegsUnit.class, BaseBuildingTetherLegsUnit::new);
-		register(BaseCrawlUnit.class, BaseCrawlUnit::new);
+		register(BuildingTetherLegsUnit2.class, BuildingTetherLegsUnit2::new);
+		register(CrawlUnit2.class, CrawlUnit2::new);
 		register(ChainedChainMechUnit.class, ChainedChainMechUnit::new);
 		register(DamageAbsorbMechUnit.class, DamageAbsorbMechUnit::new);
 		register(TractorBeamUnit.class, TractorBeamUnit::new);

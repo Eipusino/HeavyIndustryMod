@@ -10,6 +10,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.audio.HSounds;
 import heavyindustry.content.HFx;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.type.unit.NucleoidUnitType;
@@ -24,7 +25,7 @@ import mindustry.type.UnitType;
 
 import static mindustry.Vars.headless;
 
-public class NucleoidUnit extends BaseUnit implements Nucleoidc {
+public class NucleoidUnit extends Unit2 implements Nucleoidc {
 	public float recentDamage = 0f;
 	public float reinforcementsReload = 0f;
 

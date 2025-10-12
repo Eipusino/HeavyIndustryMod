@@ -4,6 +4,7 @@ import arc.func.Prov;
 import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Nullable;
+import arc.util.OS;
 import heavyindustry.HVars;
 import mindustry.Vars;
 
@@ -915,7 +916,7 @@ public final class ReflectUtils {
 		return hierarchy;
 	}
 
-	public static <T> T copyProperties(T source, T target, String... filler) {
+	public static <T> T copyProperties(Object source, T target, String... filler) {
 		return copyProperties(source, target, false, filler);
 	}
 
@@ -928,7 +929,7 @@ public final class ReflectUtils {
 	 *               be output to the Logger
 	 * @param filler Excluded field names
 	 */
-	public static <T> T copyProperties(T source, T target, boolean print, String... filler) {
+	public static <T> T copyProperties(Object source, T target, boolean print, String... filler) {
 		if (source == null || target == null) return target;
 
 		targetFieldMap.clear();
@@ -958,7 +959,7 @@ public final class ReflectUtils {
 				if (!isAssignable(sourceField, targetField)) continue;
 
 				try {
-					if (HVars.hasUnsafe) {
+					if (!OS.isAndroid && HVars.hasUnsafe) {
 						Object value = UnsafeUtils.get(sourceField, source);
 						UnsafeUtils.set(targetField, target, value);
 					} else {

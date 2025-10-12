@@ -2,11 +2,11 @@ package heavyindustry.gen;
 
 import arc.math.Mathf;
 import arc.util.Time;
-import heavyindustry.type.unit.BaseUnitType;
+import heavyindustry.type.unit.UnitType2;
 import mindustry.Vars;
 import mindustry.entities.Damage;
 
-public class DamageAbsorbMechUnit extends BaseMechUnit implements DamageAbsorbc {
+public class DamageAbsorbMechUnit extends MechUnit2 implements DamageAbsorbc {
 	@Override
 	public int classId() {
 		return Entitys.getId(DamageAbsorbMechUnit.class);
@@ -14,7 +14,7 @@ public class DamageAbsorbMechUnit extends BaseMechUnit implements DamageAbsorbc 
 
 	@Override
 	public float realDamage(boolean isStatus, float amount) {
-		return !isStatus && type instanceof BaseUnitType fu ? amount * Mathf.clamp(1 - fu.absorption) : amount;
+		return !isStatus && type instanceof UnitType2 fu ? amount * Mathf.clamp(1 - fu.absorption) : amount;
 	}
 
 	@Override

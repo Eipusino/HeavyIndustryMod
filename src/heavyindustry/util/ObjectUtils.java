@@ -2,6 +2,7 @@ package heavyindustry.util;
 
 import arc.func.Cons;
 import arc.func.ConsT;
+import arc.func.Prov;
 import arc.util.Log;
 import arc.util.Nullable;
 import arc.util.OS;
@@ -74,10 +75,146 @@ public final class ObjectUtils {
 		return obj;
 	}
 
-	/** Used to optimize code conciseness in specific situations. */
+	/**
+	 * Checks that the specified object reference is not {@code null}. This
+	 * method is designed primarily for doing parameter validation in methods
+	 * and constructors, as demonstrated below:
+	 * <blockquote><pre>
+	 * public Foo(Bar bar) {
+	 *     this.bar = Objects.requireNonNull(bar);
+	 * }
+	 * </pre></blockquote>
+	 *
+	 * @param obj the object reference to check for nullity
+	 * @param <T> the type of the reference
+	 * @return {@code obj} if not {@code null}
+	 * @throws NullPointerException if {@code obj} is {@code null}
+	 */
 	public static <T> T requireNonNull(T obj) {
 		if (obj == null)
 			throw new NullPointerException();
+		return obj;
+	}
+
+	/**
+	 * Checks that the specified object reference is not {@code null} and
+	 * throws a customized {@link NullPointerException} if it is. This method
+	 * is designed primarily for doing parameter validation in methods and
+	 * constructors with multiple parameters, as demonstrated below:
+	 * <blockquote><pre>
+	 * public Foo(Bar bar, Baz baz) {
+	 *     this.bar = Objects.requireNonNull(bar, "bar must not be null");
+	 *     this.baz = Objects.requireNonNull(baz, "baz must not be null");
+	 * }
+	 * </pre></blockquote>
+	 *
+	 * @param obj     the object reference to check for nullity
+	 * @param message detail message to be used in the event that a {@code
+	 *                NullPointerException} is thrown
+	 * @param <T>     the type of the reference
+	 * @return {@code obj} if not {@code null}
+	 * @throws NullPointerException if {@code obj} is {@code null}
+	 */
+	public static <T> T requireNonNull(T obj, String message) {
+		if (obj == null)
+			throw new NullPointerException(message);
+		return obj;
+	}
+
+	/**
+	 * Returns {@code true} if the provided reference is {@code null} otherwise
+	 * returns {@code false}.
+	 *
+	 * @param obj a reference to be checked against {@code null}
+	 * @return {@code true} if the provided reference is {@code null} otherwise
+	 * {@code false}
+	 * @apiNote This method exists to be used as a
+	 * {@link arc.func.Boolf}, {@code filter(Objects::isNull)}
+	 * @see arc.func.Boolf
+	 * @since 1.0.8
+	 */
+	public static boolean isNull(Object obj) {
+		return obj == null;
+	}
+
+	/**
+	 * Returns {@code true} if the provided reference is non-{@code null}
+	 * otherwise returns {@code false}.
+	 *
+	 * @param obj a reference to be checked against {@code null}
+	 * @return {@code true} if the provided reference is non-{@code null}
+	 * otherwise {@code false}
+	 * @apiNote This method exists to be used as a
+	 * {@link arc.func.Boolf}, {@code filter(Objects::nonNull)}
+	 * @see arc.func.Boolf
+	 * @since 1.0.8
+	 */
+	public static boolean nonNull(Object obj) {
+		return obj != null;
+	}
+
+	/**
+	 * Returns the first argument if it is non-{@code null} and
+	 * otherwise returns the non-{@code null} second argument.
+	 *
+	 * @param obj        an object
+	 * @param defaultObj a non-{@code null} object to return if the first argument
+	 *                   is {@code null}
+	 * @param <T>        the type of the reference
+	 * @return the first argument if it is non-{@code null} and
+	 * otherwise the second argument if it is non-{@code null}
+	 * @throws NullPointerException if both {@code obj} is null and
+	 *                              {@code defaultObj} is {@code null}
+	 * @since 1.0.8
+	 */
+	public static <T> T requireNonNullElse(T obj, T defaultObj) {
+		return (obj != null) ? obj : requireNonNull(defaultObj, "defaultObj");
+	}
+
+	/**
+	 * Returns the first argument if it is non-{@code null} and otherwise
+	 * returns the non-{@code null} value of {@code supplier.get()}.
+	 *
+	 * @param obj      an object
+	 * @param supplier of a non-{@code null} object to return if the first argument
+	 *                 is {@code null}
+	 * @param <T>      the type of the first argument and return type
+	 * @return the first argument if it is non-{@code null} and otherwise
+	 * the value from {@code supplier.get()} if it is non-{@code null}
+	 * @throws NullPointerException if both {@code obj} is null and
+	 *                              either the {@code supplier} is {@code null} or
+	 *                              the {@code supplier.get()} value is {@code null}
+	 * @since 1.0.8
+	 */
+	public static <T> T requireNonNullElseGet(T obj, Prov<? extends T> supplier) {
+		return (obj != null) ? obj
+				: requireNonNull(requireNonNull(supplier, "supplier").get(), "supplier.get()");
+	}
+
+	/**
+	 * Checks that the specified object reference is not {@code null} and
+	 * throws a customized {@link NullPointerException} if it is.
+	 *
+	 * <p>Unlike the method {@link #requireNonNull(Object, String)},
+	 * this method allows creation of the message to be deferred until
+	 * after the null check is made. While this may confer a
+	 * performance advantage in the non-null case, when deciding to
+	 * call this method care should be taken that the costs of
+	 * creating the message supplier are less than the cost of just
+	 * creating the string message directly.
+	 *
+	 * @param obj             the object reference to check for nullity
+	 * @param messageSupplier supplier of the detail message to be
+	 *                        used in the event that a {@code NullPointerException} is thrown
+	 * @param <T>             the type of the reference
+	 * @return {@code obj} if not {@code null}
+	 * @throws NullPointerException if {@code obj} is {@code null}
+	 * @since 1.0.8
+	 */
+	public static <T> T requireNonNull(T obj, Prov<String> messageSupplier) {
+		if (obj == null)
+			throw new NullPointerException(messageSupplier == null ?
+					null : messageSupplier.get());
 		return obj;
 	}
 
@@ -169,6 +306,7 @@ public final class ObjectUtils {
 		if (o == null) return "null";
 
 		Class<?> c = o.getClass();
+
 		StringBuilder sb = new StringBuilder();
 		sb.append(c.getSimpleName()).append('[');
 		int i = 0;
@@ -248,9 +386,20 @@ public final class ObjectUtils {
 
 	/**
 	 * Convert Class object to JVM type descriptor.
+	 * <p>Example:
+	 * <ul>
+	 *     <li>boolean -> Z
+	 *     <li>int -> I
+	 *     <li>long -> J
+	 *     <li>float[] -> [F
+	 *     <li>java.lang.Object -> Ljava/lang/Object;
+	 *     <li>java.lang.invoke.MethodHandles.Lookup -> Ljava/lang/invoke/MethodHandles$Lookup;
+	 *     <li>mindustry.world.Tile[][] -> [[Lmindustry/world/Tile;
+	 * </ul>
 	 *
 	 * @param c The Class object to be converted
 	 * @return JVM type descriptor string
+	 * @throws NullPointerException If parameter 'c' is null.
 	 */
 	public static String toDescriptor(Class<?> c) {
 		if (c == null) throw new NullPointerException("param 'c' is null");
@@ -267,7 +416,7 @@ public final class ObjectUtils {
 			else if (c == float.class) return "F";
 			else if (c == double.class) return "D";
 			else if (c == char.class) return "C";
-			else throw new IllegalArgumentException("unknown type of " + c);
+			else throw new IllegalArgumentException("unknown type of " + c);// should not happen
 		}
 
 		return "L" + c.getName().replace('.', '/') + ";";

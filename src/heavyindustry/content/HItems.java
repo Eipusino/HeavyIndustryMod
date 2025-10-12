@@ -1,6 +1,7 @@
 package heavyindustry.content;
 
 import arc.graphics.Color;
+import heavyindustry.HVars;
 import heavyindustry.graphics.HPal;
 import mindustry.type.Item;
 
@@ -21,6 +22,8 @@ public final class HItems {
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
+		if (HVars.isPlugin) return;
+
 		stone = new Item("stone", new Color(0x8a8a8aff)) {{
 			hardness = 1;
 			cost = 0.4f;

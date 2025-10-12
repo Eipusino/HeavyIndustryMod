@@ -12,6 +12,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.audio.HSounds;
 import heavyindustry.content.HBullets;
 import heavyindustry.content.HFx;
 import heavyindustry.entities.HUnitSorts;
@@ -48,7 +49,7 @@ import static mindustry.Vars.net;
 import static mindustry.Vars.state;
 import static mindustry.Vars.world;
 
-public class PesterUnit extends BaseUnit implements Pesterc {
+public class PesterUnit extends Unit2 implements Pesterc {
 	public static final ObjectIntMap2<Healthc> checked = new ObjectIntMap2<>(Healthc.class);
 
 	public static Building tmpBuilding = null;
@@ -378,8 +379,10 @@ public class PesterUnit extends BaseUnit implements Pesterc {
 				Lines.lineAngleCenter(lastTargetPos.x + d, lastTargetPos.y + phi, 45, (188 + i * 20) * fout + 80);
 			}
 
-			Lines.stroke(str / 2.2f);
-			Lines.spikes(lastTargetPos.x, lastTargetPos.y, HBullets.ncBlackHole.splashDamageRadius, 12 * fade, 30, Time.time * 0.38f);
+			if (HBullets.ncBlackHole != null) {
+				Lines.stroke(str / 2.2f);
+				Lines.spikes(lastTargetPos.x, lastTargetPos.y, HBullets.ncBlackHole.splashDamageRadius, 12 * fade, 30, Time.time * 0.38f);
+			}
 		}
 	}
 

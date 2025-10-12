@@ -35,7 +35,6 @@ import heavyindustry.content.HFx;
 import heavyindustry.entities.HEntity.LineHitHandler;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.BoolGrid;
-import heavyindustry.util.Utils;
 import heavyindustry.util.ValueMap;
 import mindustry.Vars;
 import mindustry.ai.types.MissileAI;

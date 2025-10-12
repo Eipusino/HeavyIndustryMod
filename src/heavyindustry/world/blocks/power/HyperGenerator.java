@@ -11,10 +11,10 @@ import arc.math.geom.Position;
 import arc.struct.EnumSet;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.audio.HSounds;
 import heavyindustry.content.HBullets;
 import heavyindustry.content.HFx;
 import heavyindustry.entities.bullet.EffectBulletType;
-import heavyindustry.gen.HSounds;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.PositionLightning;
 import mindustry.entities.Damage;
@@ -61,7 +61,7 @@ public class HyperGenerator extends ImpactReactor {
 	public float triLength = 100f;
 	public Color effectColor = Pal.techBlue;
 
-	public BulletType destroyed;
+	public BulletType destroyed, blast, blastLinker;
 	public float attract = 8f;
 
 	public HyperGenerator(String name) {
@@ -79,6 +79,10 @@ public class HyperGenerator extends ImpactReactor {
 		super.init();
 
 		if (consPower == null) consumePower(0f);
+
+		if (blast == null) blast = HBullets.hyperBlast;
+		if (blastLinker == null) blastLinker = HBullets.hyperBlastLinker;
+
 		if (destroyed == null) destroyed = new EffectBulletType(600f) {{
 			absorbable = hittable = false;
 			speed = 0;
@@ -162,13 +166,15 @@ public class HyperGenerator extends ImpactReactor {
 					});
 				}
 
+				if (blast == null || blastLinker == null) return;
+
 				if (b.timer(4, 5)) {
 					if (!headless) {
 						float range = size * tilesize / 1.5f;
 						HFx.hyperExplode.at(b.x + Mathf.range(range), b.y + Mathf.range(range), effectColor);
 						Sounds.explosionbig.at(b);
 					}
-					HBullets.hyperBlast.create(b, Team.derelict, b.x, b.y, Mathf.random(360), HBullets.hyperBlast.damage * baseExplosiveness, Mathf.random(minVelScl, maxVelScl), Mathf.random(minTimeScl, maxTimeScl), new Object());
+					blast.create(b, Team.derelict, b.x, b.y, Mathf.random(360), blast.damage * baseExplosiveness, Mathf.random(minVelScl, maxVelScl), Mathf.random(minTimeScl, maxTimeScl), new Object());
 				}
 
 				if (b.timer(5, 8)) {
@@ -176,7 +182,7 @@ public class HyperGenerator extends ImpactReactor {
 						float range = size * tilesize / 1.5f;
 						HFx.hitSparkLarge.at(b.x + Mathf.range(range), b.y + Mathf.range(range), effectColor);
 					}
-					HBullets.hyperBlastLinker.create(b, Team.derelict, b.x, b.y, Mathf.random(360), HBullets.hyperBlast.damage * baseExplosiveness, Mathf.random(minVelScl, maxVelScl), Mathf.random(minTimeScl, maxTimeScl), new Object());
+					blastLinker.create(b, Team.derelict, b.x, b.y, Mathf.random(360), blast.damage * baseExplosiveness, Mathf.random(minVelScl, maxVelScl), Mathf.random(minTimeScl, maxTimeScl), new Object());
 				}
 			}
 

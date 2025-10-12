@@ -2,7 +2,7 @@ package heavyindustry.gen;
 
 import mindustry.gen.UnitEntityLegacyAlpha;
 
-public class InvincibleShipUnit extends UnitEntityLegacyAlpha implements BaseUnitc {
+public class InvincibleShipUnit extends UnitEntityLegacyAlpha implements Unitc2 {
 	@Override
 	public int classId() {
 		return Entitys.getId(InvincibleShipUnit.class);

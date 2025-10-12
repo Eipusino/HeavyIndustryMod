@@ -12,8 +12,10 @@ import arc.util.Nullable;
 import arc.util.OS;
 import arc.util.Strings;
 import arc.util.Time;
+import arc.util.serialization.Jval;
 import heavyindustry.HVars;
-import heavyindustry.content.HUnitCommands;
+import heavyindustry.audio.HMusics;
+import heavyindustry.audio.HSounds;
 import heavyindustry.content.HBlocks;
 import heavyindustry.content.HBullets;
 import heavyindustry.content.HItems;
@@ -24,14 +26,12 @@ import heavyindustry.content.HPlanets;
 import heavyindustry.content.HSectorPresets;
 import heavyindustry.content.HStatusEffects;
 import heavyindustry.content.HTechTree;
+import heavyindustry.content.HUnitCommands;
 import heavyindustry.content.HUnitTypes;
 import heavyindustry.content.HWeathers;
 import heavyindustry.files.FileUtils;
 import heavyindustry.game.HTeam;
 import heavyindustry.gen.Entitys;
-import heavyindustry.gen.HIcon;
-import heavyindustry.gen.HMusics;
-import heavyindustry.gen.HSounds;
 import heavyindustry.graphics.HCacheLayer;
 import heavyindustry.graphics.HShaders;
 import heavyindustry.graphics.HTextures;
@@ -45,9 +45,11 @@ import heavyindustry.graphics.g2d.VaporizeBatch;
 import heavyindustry.input.InputAggregator;
 import heavyindustry.mod.HMods;
 import heavyindustry.mod.HScripts;
+import heavyindustry.mod.ModGetter;
 import heavyindustry.net.HCall;
 import heavyindustry.ui.Elements;
 import heavyindustry.ui.HFonts;
+import heavyindustry.ui.HIcon;
 import heavyindustry.ui.HStyles;
 import heavyindustry.util.CollectionList;
 import heavyindustry.util.IconLoader;
@@ -103,6 +105,17 @@ public final class HeavyIndustryMod extends Mod {
 			// This situation usually does not occur...
 			HVars.platformImpl = new DefaultImpl();
 		}
+
+		ModGetter.checkModFormat(HVars.internalTree.root, file -> {
+			try {
+				HVars.info = Jval.read(file.reader());
+				HVars.isPlugin = HVars.info.getBool("hidden", false);
+			} catch (Throwable e) {
+				Log.err(e);
+
+				HVars.isPlugin = false;
+			}
+		});
 	}
 
 	public HeavyIndustryMod() {
@@ -119,7 +132,7 @@ public final class HeavyIndustryMod extends Mod {
 		HClassMap.load();
 
 		Events.on(ClientLoadEvent.class, event -> {
-			if (Vars.headless || Core.settings.getBool("hi-closed-dialog")) return;
+			if (Vars.headless || HVars.isPlugin || Core.settings.getBool("hi-closed-dialog")) return;
 
 			FLabel label = new FLabel(Core.bundle.get("hi-author") + AUTHOR);
 			BaseDialog dialog = new BaseDialog(Core.bundle.get("hi-name")) {{
@@ -189,6 +202,8 @@ public final class HeavyIndustryMod extends Mod {
 
 	@Override
 	public void loadContent() {
+		if (HVars.isPlugin) return;
+
 		HCall.init();
 
 		Entitys.load();
@@ -196,8 +211,8 @@ public final class HeavyIndustryMod extends Mod {
 
 		HUnitCommands.loadAll();
 
-		HBullets.load();
 		HTeam.load();
+		HBullets.load();
 		HItems.load();
 		HStatusEffects.load();
 		HLiquids.load();
@@ -216,7 +231,9 @@ public final class HeavyIndustryMod extends Mod {
 	public void init() {
 		HeavyIndustryListener.updateInit();
 
-		HUnitTypes.init();
+		if (!HVars.isPlugin) {
+			HUnitTypes.init();
+		}
 
 		if (!Vars.headless) {
 			HIcon.load();
@@ -310,6 +327,10 @@ public final class HeavyIndustryMod extends Mod {
 		} finally {
 			Log.info("Loaded '@' in @ms", sourceFile.name(), Time.elapsed());
 		}
+	}
+
+	public static void addErr(Throwable t) {
+		if (t != null) errors.add(t);
 	}
 
 	static void loadLibrary() {

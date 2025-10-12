@@ -23,6 +23,8 @@ import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.HVars;
+import heavyindustry.audio.HSounds;
 import heavyindustry.entities.HUnitSorts;
 import heavyindustry.entities.bullet.ConeFlameBulletType;
 import heavyindustry.entities.bullet.CritBulletType;
@@ -35,7 +37,6 @@ import heavyindustry.entities.effect.WrapperEffect;
 import heavyindustry.entities.part.ArcCharge;
 import heavyindustry.entities.part.DrawArrowSequence;
 import heavyindustry.entities.part.FlipRegionPart;
-import heavyindustry.gen.HSounds;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.HCacheLayer;
 import heavyindustry.graphics.HLayer;
@@ -187,6 +188,8 @@ import mindustry.type.UnitType;
 import mindustry.ui.Styles;
 import mindustry.world.Block;
 import mindustry.world.Tile;
+import mindustry.world.blocks.campaign.LandingPad;
+import mindustry.world.blocks.campaign.LaunchPad;
 import mindustry.world.blocks.defense.AutoDoor;
 import mindustry.world.blocks.defense.BaseShield;
 import mindustry.world.blocks.defense.Door;
@@ -372,6 +375,8 @@ public final class HBlocks {
 			solstice, starfall, annihilate, executor, heatDeath,
 	//turret-erekir
 	rupture, rift,
+	//campaign
+	largeLaunchPad, largeLandingPad,
 	//sandbox
 	unitIniter,
 			reinforcedItemSource, reinforcedLiquidSource, reinforcedPowerSource, reinforcedPayloadSource, adaptiveSource, randomSource,
@@ -387,10 +392,16 @@ public final class HBlocks {
 	public static LinkBlock[] linkBlock, linkBlockLiquid;
 	public static PlaceholderBlock[] placeholderBlock;
 
+	private static boolean loadedInternal;
+
 	/** Don't let anyone instantiate this class. */
 	private HBlocks() {}
 
 	public static void loadInternal() {
+		if (loadedInternal) return;
+
+		loadedInternal = true;
+
 		linkBlock = new LinkBlock[maxsize];
 		linkBlockLiquid = new LinkBlock[maxsize];
 		placeholderBlock = new PlaceholderBlock[maxsize];
@@ -412,6 +423,8 @@ public final class HBlocks {
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
+		if (HVars.isPlugin) return;
+
 		//environment
 		cliff = new DepthCliff("cliff") {{
 			buildType = Constant.PROV_BUILDING;
@@ -6454,6 +6467,29 @@ public final class HBlocks {
 			}});
 			buildType = ItemTurretBuild::new;
 			squareSprite = false;
+		}};
+		//campaign
+		largeLaunchPad = new LaunchPad("large-launch-pad") {{
+			requirements(Category.effect, BuildVisibility.notLegacyLaunchPadOnly, ItemStack.with(HItems.uranium, 200, HItems.crystal, 100, Items.metaglass, 100, Items.silicon, 250, Items.surgeAlloy, 120, Items.phaseFabric, 100));
+			health = 5200;
+			armor = 25f;
+			size = 5;
+			itemCapacity = 750;
+			launchTime = 1800f;
+			hasPower = true;
+			lightColor = HPal.energyYellow.cpy().a(0.65f);
+			acceptMultipleItems = true;
+			consumePower(18f);
+			buildCostMultiplier = 0.8f;
+		}};
+		largeLandingPad = new LandingPad("large-landing-pad") {{
+			requirements(Category.effect, BuildVisibility.notLegacyLaunchPadOnly, ItemStack.with(HItems.uranium, 150, HItems.crystal, 120, Items.metaglass, 180, Items.plastanium, 250, Items.silicon, 350, Items.phaseFabric, 120));
+			size = 5;
+			itemCapacity = 750;
+			liquidCapacity = 300f;
+			consumeLiquidAmount = 60f;
+			consumeLiquid = Liquids.cryofluid;
+			buildCostMultiplier = 0.7f;
 		}};
 		//sandbox
 		unitIniter = new UnitIniter("unit-initer");

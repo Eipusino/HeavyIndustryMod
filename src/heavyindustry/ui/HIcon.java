@@ -1,4 +1,4 @@
-package heavyindustry.gen;
+package heavyindustry.ui;
 
 import arc.Core;
 import arc.graphics.g2d.NinePatch;

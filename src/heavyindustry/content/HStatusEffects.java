@@ -7,6 +7,7 @@ import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.HVars;
 import heavyindustry.graphics.HPal;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.Utils;
@@ -39,6 +40,8 @@ public final class HStatusEffects {
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
+		if (HVars.isPlugin) return;
+
 		overheat = new BaseStatusEffect("overheat") {{
 			color = new Color(0xffdcd8ff);
 			disarm = true;

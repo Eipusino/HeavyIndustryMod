@@ -11,7 +11,7 @@ import mindustry.gen.Groups;
 import static mindustry.Vars.net;
 import static mindustry.Vars.state;
 
-public class CopterUnit extends BaseUnit implements Copterc {
+public class CopterUnit extends Unit2 implements Copterc {
 	protected transient RotorMount[] rotors = {};
 	protected transient float rotorSpeedScl = 1f;
 

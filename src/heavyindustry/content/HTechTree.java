@@ -1,6 +1,7 @@
 package heavyindustry.content;
 
 import arc.struct.Seq;
+import heavyindustry.HVars;
 import heavyindustry.util.Constant;
 import mindustry.content.Items;
 import mindustry.content.Liquids;
@@ -33,6 +34,8 @@ public final class HTechTree {
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
+		if (HVars.isPlugin) return;
+
 		//items,liquids
 		vanillaNode(Liquids.water, () -> {
 			nodeProduce(HLiquids.brine);
@@ -275,6 +278,9 @@ public final class HTechTree {
 			node(reinforcedCharacterDisplayLarge);
 			node(reinforcedIconDisplay, () -> node(reinforcedIconDisplayLarge));
 		}));
+		//campaign
+		vanillaNode(launchPad, () -> node(largeLaunchPad));
+		vanillaNode(landingPad, () -> node(largeLandingPad));
 		//turret
 		vanillaNode(duo, () -> {
 			node(rocketLauncher, Seq.with(new SectorComplete(SectorPresets.ruinousShores)), () -> {

@@ -2,8 +2,9 @@ package heavyindustry.content;
 
 import arc.graphics.Color;
 import arc.util.Time;
+import heavyindustry.HVars;
+import heavyindustry.audio.HSounds;
 import heavyindustry.entities.bullet.HailStoneBulletType;
-import heavyindustry.gen.HSounds;
 import heavyindustry.type.weather.EffectWeather;
 import heavyindustry.type.weather.HailStormWeather;
 import mindustry.content.Fx;
@@ -28,6 +29,8 @@ public final class HWeathers {
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
+		if (HVars.isPlugin) return;
+
 		wind = new EffectWeather("wind") {{
 			weatherFx = HFx.windTail;
 			particleRegion = "particle";

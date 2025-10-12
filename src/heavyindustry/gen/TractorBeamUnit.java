@@ -23,7 +23,6 @@ import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Pal;
 import mindustry.io.TypeIO;
-import mindustry.type.UnitType;
 import mindustry.world.Build;
 import mindustry.world.Tile;
 import mindustry.world.blocks.payloads.BuildPayload;
@@ -32,7 +31,7 @@ import mindustry.world.blocks.payloads.UnitPayload;
 
 import static mindustry.Vars.state;
 
-public class TractorBeamUnit extends BasePayloadUnit {
+public class TractorBeamUnit extends PayloadUnit2 {
 	public Payload beamHeld;
 	public Vec2 mouse = new Vec2(), payPos = new Vec2(), unitPos = new Vec2();
 	public int mouseTileX, mouseTileY;

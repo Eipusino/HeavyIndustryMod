@@ -90,7 +90,6 @@ import heavyindustry.type.MultiCellLiquid;
 import heavyindustry.type.Recipe;
 import heavyindustry.type.ammo.VanityAmmoType;
 import heavyindustry.type.unit.AncientUnitType;
-import heavyindustry.type.unit.BaseUnitType;
 import heavyindustry.type.unit.CopterUnitType;
 import heavyindustry.type.unit.DoubleLegMechUnitType;
 import heavyindustry.type.unit.EnergyUnitType;
@@ -100,6 +99,7 @@ import heavyindustry.type.unit.PesterUnitType;
 import heavyindustry.type.unit.SentryUnitType;
 import heavyindustry.type.unit.SwordUnitType;
 import heavyindustry.type.unit.TractorBeamUnitType;
+import heavyindustry.type.unit.UnitType2;
 import heavyindustry.type.weapons.AcceleratingWeapon;
 import heavyindustry.type.weapons.BoostWeapon;
 import heavyindustry.type.weapons.EnergyChargeWeapon;
@@ -440,7 +440,7 @@ final class HClassMap {
 		classes.put("ShootBursts", ShootBursts.class);
 		classes.put("FlipShootHelix", FlipShootHelix.class);
 		//types-unit
-		classes.put("BaseUnitType", BaseUnitType.class);
+		classes.put("UnitType2", UnitType2.class);
 		classes.put("AncientUnitType", AncientUnitType.class);
 		classes.put("CopterUnitType", CopterUnitType.class);
 		classes.put("DoubleLegMechUnitType", DoubleLegMechUnitType.class);

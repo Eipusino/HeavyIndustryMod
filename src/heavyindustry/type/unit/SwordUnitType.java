@@ -23,7 +23,7 @@ import mindustry.world.meta.Env;
 
 import static mindustry.Vars.iconMed;
 
-public class SwordUnitType extends BaseUnitType {
+public class SwordUnitType extends UnitType2 {
 	public float travelSpeed = -1f, curveRnd = -1f;
 
 	//Hit stuff

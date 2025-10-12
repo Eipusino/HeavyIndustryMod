@@ -5,7 +5,7 @@ import arc.graphics.Blending;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
-import heavyindustry.gen.HSounds;
+import heavyindustry.audio.HSounds;
 
 public class ProcessorFan extends ProcessorCooler {
 	public TextureRegion spinnerRegion;

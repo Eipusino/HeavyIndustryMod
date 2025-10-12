@@ -1,22 +1,22 @@
 package heavyindustry.gen;
 
 import heavyindustry.entities.abilities.ICollideBlockerAbility;
-import heavyindustry.type.unit.BaseUnitType;
+import heavyindustry.type.unit.UnitType2;
 import mindustry.Vars;
 import mindustry.entities.Damage;
 import mindustry.entities.abilities.Ability;
 import mindustry.gen.BuildingTetherPayloadUnit;
 import mindustry.gen.Hitboxc;
 
-public class BaseBuildingTetherPayloadUnit extends BuildingTetherPayloadUnit implements BaseUnitc {
+public class BuildingTetherPayloadUnit2 extends BuildingTetherPayloadUnit implements Unitc2 {
 	@Override
 	public int classId() {
-		return Entitys.getId(BaseBuildingTetherPayloadUnit.class);
+		return Entitys.getId(BuildingTetherPayloadUnit2.class);
 	}
 
 	@Override
-	public BaseUnitType checkType() {
-		return (BaseUnitType) type;
+	public UnitType2 checkType() {
+		return (UnitType2) type;
 	}
 
 	@Override

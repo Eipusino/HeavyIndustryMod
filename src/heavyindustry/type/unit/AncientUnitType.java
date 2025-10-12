@@ -14,7 +14,7 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Pal;
 import mindustry.type.UnitType;
 
-public class AncientUnitType extends BaseUnitType {
+public class AncientUnitType extends UnitType2 {
 	public AncientUnitType(String name) {
 		super(name);
 

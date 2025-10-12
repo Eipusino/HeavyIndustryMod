@@ -669,8 +669,8 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectPair<K, V>>, Map
 		int index;
 		boolean valid = true;
 
-		public Entries(CollectionArrayMap<K, V> map) {
-			this.map = map;
+		public Entries(CollectionArrayMap<K, V> m) {
+			map = m;
 		}
 
 		@Override
@@ -711,8 +711,8 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectPair<K, V>>, Map
 		int index;
 		boolean valid = true;
 
-		public Values(CollectionArrayMap<?, V> map) {
-			this.map = map;
+		public Values(CollectionArrayMap<?, V> m) {
+			map = m;
 		}
 
 		@Override
@@ -764,8 +764,8 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectPair<K, V>>, Map
 		int index;
 		boolean valid = true;
 
-		public Keys(CollectionArrayMap<K, ?> map) {
-			this.map = map;
+		public Keys(CollectionArrayMap<K, ?> m) {
+			map = m;
 		}
 
 		@Override

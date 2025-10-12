@@ -1,9 +1,12 @@
-package heavyindustry.gen;
+package heavyindustry.audio;
 
+import arc.Events;
 import arc.audio.Music;
 import arc.struct.Seq;
 import arc.util.Log;
 import heavyindustry.util.CollectionObjectMap;
+import mindustry.Vars;
+import mindustry.game.EventType.ClientLoadEvent;
 
 import static mindustry.Vars.tree;
 
@@ -13,12 +16,20 @@ import static mindustry.Vars.tree;
  * @since 1.0.2
  */
 public final class HMusics {
-	private static final CollectionObjectMap<String, Music[]> musicSets = new CollectionObjectMap<>(String.class, Music[].class);
+	static final CollectionObjectMap<String, Music[]> musicSets = new CollectionObjectMap<>(String.class, Music[].class);
 
 	/** Don't let anyone instantiate this class. */
 	private HMusics() {}
 
-	public static void load() {}
+	public static void load() {
+		try {
+			// no
+		} catch (Exception e) {
+			Log.err(e);
+
+			Events.on(ClientLoadEvent.class, event -> Vars.ui.showException(e));
+		}
+	}
 
 	/**
 	 * Loads a set of music tracks from a specified base path.

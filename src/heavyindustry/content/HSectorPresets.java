@@ -1,5 +1,6 @@
 package heavyindustry.content;
 
+import heavyindustry.HVars;
 import mindustry.content.Planets;
 import mindustry.type.SectorPreset;
 
@@ -19,6 +20,8 @@ public final class HSectorPresets {
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
+		if (HVars.isPlugin) return;
+
 		//serpulo
 		volcanicArchipelago = new SectorPreset("volcanicArchipelago", Planets.serpulo, 14) {{
 			captureWave = 55;
