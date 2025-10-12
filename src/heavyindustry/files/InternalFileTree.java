@@ -3,6 +3,7 @@ package heavyindustry.files;
 import arc.files.Fi;
 import arc.files.ZipFi;
 import arc.util.OS;
+import heavyindustry.util.ObjectUtils;
 
 /**
  * Use for jar internal navigation.
@@ -19,7 +20,7 @@ public class InternalFileTree {
 	public InternalFileTree(Class<?> owner) {
 		anchorClass = owner;
 
-		String classPath = anchorClass.getResource("").getFile().replaceAll("%20", " ");
+		String classPath = ObjectUtils.requireNonNull(anchorClass.getResource(""), "oh no").getFile().replaceAll("%20", " ");
 		classPath = classPath.substring(classPath.indexOf(":") + 2);
 		String jarPath = (OS.isLinux ? "/" : "") + classPath.substring(0, classPath.indexOf("!"));
 

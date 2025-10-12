@@ -4,12 +4,16 @@ import arc.Core;
 import arc.files.Fi;
 import arc.files.ZipFi;
 import arc.func.Boolf2;
+import arc.func.Cons;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
+import arc.util.Log;
 import arc.util.serialization.Jval;
 import mindustry.mod.Mod;
 
 public final class ModGetter {
+	static final String[] metaFiles = {"mod.json", "mod.hjson", "plugin.json", "plugin.hjson"};
+
 	/** Mod folder location. */
 	public static final Fi modDirectory = Core.settings.getDataDirectory().child("mods");
 
@@ -18,24 +22,46 @@ public final class ModGetter {
 	/**
 	 * Pass in a file and check if it is a mod file. If it is, return the mod's meta file. If not, throw {@link ArcRuntimeException}.
 	 *
-	 * @param modFile Check the file, which can be a directory
+	 * @param file Check the file, which can be a directory
 	 * @return The main meta file of this mod
 	 * @throws ArcRuntimeException If this file is not a mod
 	 */
-	public static Fi checkModFormat(Fi modFile) throws ArcRuntimeException {
+	public static Fi checkModFormat(Fi file) throws ArcRuntimeException {
 		try {
-			if (!(modFile instanceof ZipFi) && !modFile.isDirectory()) modFile = new ZipFi(modFile);
+			if (!(file instanceof ZipFi) && !file.isDirectory()) file = new ZipFi(file);
 		} catch (Throwable e) {
 			throw new ArcRuntimeException("file was not a valid zipped file");
 		}
 
-		Fi meta = modFile.child("mod.json").exists() ? modFile.child("mod.json") :
-				modFile.child("mod.hjson").exists() ? modFile.child("mod.hjson") :
-						modFile.child("plugin.json").exists() ? modFile.child("plugin.json") : modFile.child("plugin.hjson");
+		Fi meta = null;
+		for (String name : metaFiles) {
+			if ((meta = file.child(name)).exists()) {
+				break;
+			}
+		}
 
 		if (!meta.exists()) throw new ArcRuntimeException("mod format error: mod meta was not found");
 
 		return meta;
+	}
+
+	public static void checkModFormat(Fi file, Cons<Fi> cons) {
+		try {
+			if (!(file instanceof ZipFi) && !file.isDirectory()) file = new ZipFi(file);
+		} catch (Throwable e) {
+			Log.err("file was not a valid zipped file", e);
+
+			return;
+		}
+
+		Fi meta = null;
+		for (String name : metaFiles) {
+			if ((meta = file.child(name)).exists()) {
+				break;
+			}
+		}
+
+		if (meta.exists()) cons.get(meta);
 	}
 
 	/**
