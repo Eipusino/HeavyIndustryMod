@@ -24,9 +24,9 @@ import java.net.URLClassLoader;
  *
  * @since 1.0.6
  */
-public final class HScripts {
+public final class ScriptUtils {
 	/** Don't let anyone instantiate this class. */
-	private HScripts() {}
+	private ScriptUtils() {}
 
 	/** Initializes the Mod JS. */
 	public static void init() {
@@ -138,5 +138,61 @@ public final class HScripts {
 		try (URLClassLoader urlLoader = new URLClassLoader(new URL[]{file.file().toURI().toURL()})) {
 			return new NativeJavaClass(Vars.mods.getScripts().scope, urlLoader.loadClass(name));
 		}
+	}
+
+	public static boolean bool(boolean bool) {
+		return bool;
+	}
+
+	public static byte b(byte b) {
+		return b;
+	}
+
+	public static short s(short s) {
+		return s;
+	}
+
+	public static int i(int i) {
+		return i;
+	}
+
+	public static float f(float f) {
+		return f;
+	}
+
+	public static double d(double d) {
+		return d;
+	}
+
+	public static char c(char c) {
+		return c;
+	}
+
+	public static boolean[] bool(boolean[] bool) {
+		return bool;
+	}
+
+	public static byte[] b(byte[] b) {
+		return b;
+	}
+
+	public static short[] s(short[] s) {
+		return s;
+	}
+
+	public static int[] i(int[] i) {
+		return i;
+	}
+
+	public static float[] f(float[] f) {
+		return f;
+	}
+
+	public static double[] d(double[] d) {
+		return d;
+	}
+
+	public static char[] c(char[] c) {
+		return c;
 	}
 }

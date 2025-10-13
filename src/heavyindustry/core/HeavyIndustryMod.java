@@ -43,8 +43,8 @@ import heavyindustry.graphics.g2d.FragmentationBatch;
 import heavyindustry.graphics.g2d.RangeExtractor;
 import heavyindustry.graphics.g2d.VaporizeBatch;
 import heavyindustry.input.InputAggregator;
-import heavyindustry.mod.HMods;
-import heavyindustry.mod.HScripts;
+import heavyindustry.mod.ModUtils;
+import heavyindustry.mod.ScriptUtils;
 import heavyindustry.mod.ModGetter;
 import heavyindustry.net.HCall;
 import heavyindustry.ui.Elements;
@@ -54,7 +54,7 @@ import heavyindustry.ui.HStyles;
 import heavyindustry.util.CollectionList;
 import heavyindustry.util.IconLoader;
 import heavyindustry.util.PlatformImpl;
-import heavyindustry.util.Utils;
+import heavyindustry.util.StringUtils;
 import heavyindustry.world.Worlds;
 import mindustry.Vars;
 import mindustry.game.EventType.ClientLoadEvent;
@@ -148,8 +148,8 @@ public final class HeavyIndustryMod extends Mod {
 					t.add(Core.bundle.get("hi-version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 					t.add(label).left().row();
 					t.add(Core.bundle.get("hi-type")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
-					t.add(Utils.generateRandomString(10, 20)).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
-					t.add(Utils.generateRandomString(100, 200)).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
+					t.add(StringUtils.generateRandomString(10, 20)).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
+					t.add(StringUtils.generateRandomString(100, 200)).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
 					t.add(Core.bundle.get("hi-other-contributor")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
 				}).grow().center().maxWidth(600f);
 			}};
@@ -192,7 +192,7 @@ public final class HeavyIndustryMod extends Mod {
 
 		// To prevent damage to other mod, it can only be enabled during testing
 		if (test && !OS.isIos) {
-			Core.app.post(HScripts::init);
+			Core.app.post(ScriptUtils::init);
 		}
 
 		ScreenSampler.resetMark();
@@ -272,7 +272,7 @@ public final class HeavyIndustryMod extends Mod {
 				});
 			}
 
-			if (!Vars.headless && !HMods.isEnabled("extra-utilities") && !HMods.isX() && Core.settings.getBool("hi-floating-text")) {
+			if (!Vars.headless && !ModUtils.isEnabled("extra-utilities") && !ModUtils.isX() && Core.settings.getBool("hi-floating-text")) {
 				String massage = Core.bundle.get("hi-random-massage");
 				String[] massages = massage.split("&");
 

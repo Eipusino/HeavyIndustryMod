@@ -306,7 +306,7 @@ public final class HBlocks {
 			boric, boricDense, boricBoulder, boricWall,
 			breccia, smoothBreccia, brecciaBoulder, brecciaWall,
 			chert, chertPlates, chertBoulder, chertOutcrop, chertWall,
-			feldspar, feldsparRubble, feldsparPebbles, feldsparVent, feldsparBoulder, feldsparOutcrop, feldsparWall,
+			feldspar, smoothFeldspar, feldsparRubble, feldsparPebbles, feldsparVent, feldsparBoulder, feldsparOutcrop, feldsparWall,
 			softRareEarth, patternRareEarth, softRareEarthWall,
 			crystals, crystalsBoulder,
 			oreSilicon, oreCrystal, oreUranium, oreChromium,
@@ -904,6 +904,11 @@ public final class HBlocks {
 			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
+		smoothFeldspar = new Floor("smooth-feldspar", 6) {{
+			itemDrop = HItems.stone;
+			buildType = Constant.PROV_BUILDING;
+			playerUnmineable = true;
+		}};
 		feldsparRubble = new Floor("feldspar-rubble") {{
 			tilingVariants = 2;
 			tilingSize = 3;
@@ -923,7 +928,7 @@ public final class HBlocks {
 		}};
 		feldsparBoulder = new Prop("feldspar-boulder") {{
 			variants = 3;
-			feldspar.asFloor().decoration = feldsparRubble.asFloor().decoration = this;
+			feldspar.asFloor().decoration = smoothFeldspar.asFloor().decoration = feldsparRubble.asFloor().decoration = this;
 			buildType = Constant.PROV_BUILDING;
 		}};
 		feldsparOutcrop = new TallBlock("feldspar-outcrop") {{
@@ -934,7 +939,7 @@ public final class HBlocks {
 		feldsparWall = new StaticWall("feldspar-wall") {{
 			attributes.set(Attribute.sand, 1.5f);
 			variants = 3;
-			feldspar.asFloor().wall = this;
+			feldspar.asFloor().wall = smoothFeldspar.asFloor().wall = feldsparRubble.asFloor().wall = this;
 			buildType = Constant.PROV_BUILDING;
 		}};
 		crystals = new TallBlock("crystals") {{

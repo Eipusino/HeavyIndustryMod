@@ -9,7 +9,7 @@ import heavyindustry.util.ReflectUtils;
 
 import java.lang.reflect.Field;
 
-public final class HScriptCache {
+public final class ScriptCache {
 	static final Field pixmapField;
 
 	static {
@@ -21,7 +21,7 @@ public final class HScriptCache {
 		}
 	}
 
-	private HScriptCache() {}
+	private ScriptCache() {}
 
 	public static Pixmap pixmapOf(Texture texture) {
 		TextureData data = texture.getTextureData();

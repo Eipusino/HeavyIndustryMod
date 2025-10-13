@@ -499,7 +499,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolPair<K>>, Eachable<O
 				h += key.hashCode() * 31;
 
 				boolean value = valueTable[i];
-				h += ObjectUtils.hashCodeZ(value);
+				h += ObjectUtils.hashCode(value);
 			}
 		}
 		return h;

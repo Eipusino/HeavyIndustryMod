@@ -20,11 +20,9 @@ import arc.struct.IntSet.IntSetIterator;
 import arc.struct.ObjectMap;
 import arc.struct.Seq;
 import arc.util.Nullable;
-import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.graphics.HPal;
-import heavyindustry.util.pair.ObjectPair;
 import mindustry.Vars;
 import mindustry.content.StatusEffects;
 import mindustry.core.UI;
@@ -54,10 +52,6 @@ import mindustry.world.draw.DrawMulti;
 import mindustry.world.draw.DrawRegion;
 import mindustry.world.meta.StatUnit;
 
-import java.util.Comparator;
-import java.util.Map;
-import java.util.regex.Pattern;
-
 /**
  * Input-output utilities, providing very specific functions that aren't really commonly used, but often
  * enough to require me to write a class for it.
@@ -82,20 +76,6 @@ public final class Utils {
 	static final Seq<Item> items = new Seq<>(Item.class);
 
 	static final IntSeq amounts = new IntSeq();
-
-	static final String[] byteUnit = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"};
-
-	static final char[] printableChars = {
-			' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/',
-			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-			':', ';', '<', '=', '>', '?', '@',
-			'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-			'[', '\\', ']', '^', '_', '`',
-			'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-			'{', '|', '}', '~'
-	};
-
-	static Pattern numeric;
 
 	/** Don't let anyone instantiate this class. */
 	private Utils() {}
@@ -172,135 +152,6 @@ public final class Utils {
 		if (from.x > to.x && from.y == to.y) return (6 - from.rotation) % 4;
 		if (from.x < to.x && from.y == to.y) return (4 - from.rotation) % 4;
 		return -1;
-	}
-
-	/** @see String#repeat(int) */
-	public static String repeat(String key, int count) {
-		if (count <= 0 || key.isEmpty()) return "";
-		if (count == 1) return key;
-
-		StringBuilder builder = new StringBuilder(key.length() * count);
-		for (int i = 0; i < count; i++) {
-			builder.append(key);
-		}
-		return builder.toString();
-	}
-
-	/** Determine whether the string is composed entirely of numbers. */
-	public static boolean isNumeric4(String key) {
-		return key != null && key.chars().allMatch(Character::isDigit);
-	}
-
-	/** Determine whether the string is composed of {@code Number} and {@code . }. */
-	public static boolean isNumeric(String key) {
-		if (key == null) return false;
-
-		if (numeric == null) numeric = Pattern.compile("[0-9]*");
-
-		if (key.indexOf(".") > 0) {//Determine if there is a decimal point
-			if (key.indexOf(".") == key.lastIndexOf(".") && key.split("\\.").length == 2) { //Determine if there is only one decimal point
-				return numeric.matcher(key.replace(".", "")).matches();
-			} else {
-				return false;
-			}
-		} else {
-			return numeric.matcher(key).matches();
-		}
-	}
-
-	/** Randomly generate a string of length within the specified range. */
-	public static String generateRandomString(int min, int max) {
-		if (min < 0 || max < min || max > 1000000) return "";
-
-		int length = min + Mathf.random(max - min + 1);
-		return generateRandomString(length);
-	}
-
-	/**
-	 * Randomly generate a string of specified length.
-	 *
-	 * @throws NegativeArraySizeException If the length is negative.
-	 */
-	public static String generateRandomString(int length) {
-		char[] chars = new char[length];
-		int range = printableChars.length - 1;
-
-		for (int i = 0; i < length; i++) {
-			chars[i] = printableChars[Mathf.random(range)];
-		}
-		return String.valueOf(chars);
-	}
-
-	/**
-	 * Convert numbers to computer storage capacity count representation without units.
-	 *
-	 * @param number The number to be converted
-	 * @param retain Reserved decimal places
-	 */
-	public static String toByteFixNonUnit(double number, int retain) {
-		boolean isNegative = false;
-		if (number < 0) {
-			number = -number;
-			isNegative = true;
-		}
-
-		double base = 1d;
-		for (int i = 0; i < byteUnit.length; i++) {
-			if (base * 1024 > number) {
-				break;
-			}
-			base *= 1024;
-		}
-
-		String[] arr = Double.toString(number / base).split("\\.");
-		int realRetain = Math.min(retain, arr[1].length());
-
-		String end = repeat("0", Math.max(0, retain - realRetain));
-
-		return (isNegative ? "-" : "") + arr[0] + (retain == 0 ? "" : "." + arr[1].substring(0, realRetain) + end);
-	}
-
-	/**
-	 * Convert numbers to computer storage capacity count representation.
-	 *
-	 * @param number The number to be converted
-	 * @param retain Reserved decimal places
-	 */
-	public static String toByteFix(double number, int retain) {
-		boolean isNegative = false;
-		if (number < 0) {
-			number = -number;
-			isNegative = true;
-		}
-
-		int index = 0;
-		double base = 1;
-		for (int i = 0; i < byteUnit.length; i++) {
-			if (base * 1024 > number) {
-				break;
-			}
-			base *= 1024;
-			index++;
-		}
-
-		String[] arr = Double.toString(number / base).split("\\.");
-		int realRetain = Math.min(retain, arr[1].length());
-
-		String end = repeat("0", Math.max(0, retain - realRetain));
-
-		return (isNegative ? "-" : "") + arr[0] + (retain == 0 ? "" : "." + arr[1].substring(0, realRetain) + end + byteUnit[index]);
-	}
-
-	public static String toStoreSize(float num) {
-		float v = num;
-		int n = 0;
-
-		while (v > 1024) {
-			v /= 1024;
-			n++;
-		}
-
-		return Strings.fixed(v, 2) + "[lightgray]" + byteUnit[n];
 	}
 
 	public static Vec2 vecSetLine(Vec2 vec, Vec2 pos, float rotation, float length) {
@@ -715,144 +566,6 @@ public final class Utils {
 			} else {
 				return damage;
 			}
-		}
-	}
-
-	public static boolean canParseLong(String s, long def) {
-		return parseLong(s, def) != def;
-	}
-
-	public static long parseLong(String s, long def) {
-		return parseLong(s, 10, def);
-	}
-
-	public static long parseLong(String s, int radix, long def) {
-		return parseLong(s, radix, 0, s.length(), def);
-	}
-
-	public static long parseLong(String s, int radix, int start, int end, long def) {
-		boolean negative = false;
-		int i = start, len = end - start;
-		long limit = -9223372036854775807l;
-		if (len <= 0) {
-			return def;
-		} else {
-			char firstChar = s.charAt(i);
-			if (firstChar < '0') {
-				if (firstChar == '-') {
-					negative = true;
-					limit = -9223372036854775808l;
-				} else if (firstChar != '+') {
-					return def;
-				}
-
-				if (len == 1) return def;
-
-				++i;
-			}
-
-			long result;
-			int digit;
-			for (result = 0l; i < end; result -= digit) {
-				digit = Character.digit(s.charAt(i++), radix);
-				if (digit < 0) {
-					return def;
-				}
-
-				result *= radix;
-				if (result < limit + (long) digit) {
-					return def;
-				}
-			}
-
-			return negative ? result : -result;
-		}
-	}
-
-	/**
-	 * Returns a comparator that compares {@link Map.Entry} in natural order on key.
-	 *
-	 * <p>The returned comparator is serializable and throws {@link
-	 * NullPointerException} when comparing an entry with a null key.
-	 *
-	 * @param <K> the {@link Comparable} type of then map keys
-	 * @param <V> the type of the map values
-	 * @return a comparator that compares {@link Map.Entry} in natural order on key.
-	 * @see Comparable
-	 * @since 1.0.7
-	 */
-	public static <K extends Comparable<? super K>, V> Comparator<Map.Entry<K, V>> comparingByKey() {
-		return (c1, c2) -> c1.getKey().compareTo(c2.getKey());
-	}
-
-	/**
-	 * Returns a comparator that compares {@link Map.Entry} in natural order on value.
-	 * <p>The returned comparator is serializable and throws {@link
-	 * NullPointerException} when comparing an entry with null values.
-	 *
-	 * @param <K> the type of the map keys
-	 * @param <V> the {@link Comparable} type of the map values
-	 * @return a comparator that compares {@link Map.Entry} in natural order on value.
-	 * @see Comparable
-	 * @since 1.0.7
-	 */
-	public static <K, V extends Comparable<? super V>> Comparator<Map.Entry<K, V>> comparingByValue() {
-		return (c1, c2) -> c1.getValue().compareTo(c2.getValue());
-	}
-
-	/**
-	 * Returns a comparator that compares {@link Map.Entry} by key using the given {@link Comparator}.
-	 * <p>The returned comparator is serializable if the specified comparator
-	 * is also serializable.
-	 *
-	 * @param <K> the type of the map keys
-	 * @param <V> the type of the map values
-	 * @param cmp the key {@link Comparator}
-	 * @return a comparator that compares {@link Map.Entry} by the key.
-	 * @since 1.0.7
-	 */
-	public static <K, V> Comparator<Map.Entry<K, V>> comparingByKey(Comparator<? super K> cmp) {
-		return (c1, c2) -> cmp.compare(c1.getKey(), c2.getKey());
-	}
-
-	/**
-	 * Returns a comparator that compares {@link Map.Entry} by value using the given {@link Comparator}.
-	 * <p>The returned comparator is serializable if the specified comparator
-	 * is also serializable.
-	 *
-	 * @param <K> the type of the map keys
-	 * @param <V> the type of the map values
-	 * @param cmp the value {@link Comparator}
-	 * @return a comparator that compares {@link Map.Entry} by the value.
-	 * @since 1.0.7
-	 */
-	public static <K, V> Comparator<Map.Entry<K, V>> comparingByValue(Comparator<? super V> cmp) {
-		return (c1, c2) -> cmp.compare(c1.getValue(), c2.getValue());
-	}
-
-	/**
-	 * Returns a copy of the given {@code Map.MapEntry}. The returned instance is not associated with any map.
-	 * The returned instance has the same characteristics as instances returned by the {@link Map#entry Map::entry}
-	 * method.
-	 *
-	 * @param <K> the type of the key
-	 * @param <V> the type of the value
-	 * @param e   the entry to be copied
-	 * @return a map entry equal to the given entry
-	 * @throws NullPointerException if e is null
-	 * @apiNote An instance obtained from a map's entry-set view has a connection to that map.
-	 * The {@code copyOf}  method may be used to create a {@code Map.MapEntry} instance,
-	 * containing the same key and value, that is independent of any map.
-	 * @implNote If the given entry was obtained from a call to {@code copyOf} or {@code Map::entry},
-	 * calling {@code copyOf} will generally not create another copy.
-	 * @since 1.0.7
-	 */
-	@SuppressWarnings("unchecked")
-	public static <K, V> Map.Entry<K, V> copyOf(Map.Entry<? extends K, ? extends V> e) {
-		if (e instanceof ObjectPair<? extends K, ? extends V> p) {
-			return (Map.Entry<K, V>) p;
-		} else {
-			return new ObjectPair<>(e.getKey(), e.getValue());
 		}
 	}
 

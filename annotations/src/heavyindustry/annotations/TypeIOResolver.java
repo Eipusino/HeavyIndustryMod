@@ -13,13 +13,8 @@ import com.sun.tools.javac.util.List;
 import heavyindustry.annotations.Annotations.TypeIOHandler;
 import mindustry.io.TypeIO;
 
-import static heavyindustry.annotations.BaseProcessor.fName;
-import static heavyindustry.annotations.BaseProcessor.fixName;
-import static heavyindustry.annotations.BaseProcessor.is;
-import static heavyindustry.annotations.BaseProcessor.name;
-import static javax.lang.model.element.Modifier.PUBLIC;
-import static javax.lang.model.element.Modifier.STATIC;
-import static javax.lang.model.type.TypeKind.VOID;
+import javax.lang.model.element.Modifier;
+import javax.lang.model.type.TypeKind;
 
 public final class TypeIOResolver {
 	private TypeIOResolver() {}
@@ -32,19 +27,19 @@ public final class TypeIOResolver {
 			for (Symbol e : handler.getEnclosedElements()) {
 				if (!(e instanceof MethodSymbol m)) continue;
 
-				if (is(m, PUBLIC, STATIC)) {
+				if (BaseProcessor.is(m, Modifier.PUBLIC, Modifier.STATIC)) {
 					List<VarSymbol> params = m.params;
 					int size = params.size();
 
 					if (size == 0) continue;
-					String sig = fName(handler) + "." + name(m), ret = fixName(m.getReturnType().toString());
+					String sig = BaseProcessor.fName(handler) + "." + BaseProcessor.name(m), ret = BaseProcessor.fixName(m.getReturnType().toString());
 
-					boolean isVoid = m.getReturnType().getKind() == VOID;
+					boolean isVoid = m.getReturnType().getKind() == TypeKind.VOID;
 					Type f = params.get(0).type;
 					ClassSymbol w = proc.conv(Writes.class), r = proc.conv(Reads.class);
 
 					if (size == 2 && proc.same(f, w)) {
-						(sig.endsWith("Net") ? out.netWriters : out.writers).put(fixName(params.get(1).type.toString()), sig);
+						(sig.endsWith("Net") ? out.netWriters : out.writers).put(BaseProcessor.fixName(params.get(1).type.toString()), sig);
 					} else if (size == 1 && proc.same(f, r) && !isVoid) {
 						out.readers.put(ret, sig);
 					} else if (size == 2 && proc.same(f, r) && !isVoid && proc.same(m.getReturnType(), params.get(1).type)) {

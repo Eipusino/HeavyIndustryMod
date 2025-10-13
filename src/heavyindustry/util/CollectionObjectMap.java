@@ -767,7 +767,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 
 	@Override
 	public Set<Entry<K, V>> entrySet() {
-		return new MapEntrySet<>(this);
+		return new EntrySet<>(this);
 	}
 
 	/**
@@ -792,14 +792,14 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 		return keys2;
 	}
 
-	public static class MapEntrySet<K, V> extends AbstractSet<Entry<K, V>> {
+	public static class EntrySet<K, V> extends AbstractSet<Entry<K, V>> {
 		final CollectionObjectMap<K, V> map;
 
 		final MapItr itr = new MapItr();
 		final MapEnt ent = new MapEnt();
 
-		public MapEntrySet(CollectionObjectMap<K, V> map) {
-			this.map = map;
+		public EntrySet(CollectionObjectMap<K, V> m) {
+			map = m;
 		}
 
 		@Override
@@ -820,7 +820,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 
 		@Override
 		public boolean contains(Object o) {
-			if (!(o instanceof Map.Entry<?, ?> e))
+			if (!(o instanceof Entry<?, ?> e))
 				return false;
 			Object key = e.getKey();
 			return map.containsKey(key);
@@ -828,7 +828,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 
 		@Override
 		public boolean remove(Object o) {
-			if (o instanceof Map.Entry<?, ?> e) {
+			if (o instanceof Entry<?, ?> e) {
 				Object key = e.getKey();
 				return map.remove(key) != null;
 			}
@@ -1139,13 +1139,13 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 		}
 
 		@Override
-		public Object[] toArray() {
-			return map.keySet().toSeq().toArray();
+		public K[] toArray() {
+			return toSeq().toArray();
 		}
 
 		@Override
 		public <T> T[] toArray(T[] a) {
-			return map.keySet().toSeq().toArray(a.getClass().getComponentType());
+			return toSeq().toArray(a.getClass().getComponentType());
 		}
 
 		@Override

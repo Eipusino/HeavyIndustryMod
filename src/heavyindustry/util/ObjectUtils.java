@@ -41,11 +41,12 @@ public final class ObjectUtils {
 	// double D
 	// char C
 
-	public static int hashCodeZ(boolean value) {
+	// 'Boolean.hashCode(boolean)' may not be compatible with Android.
+	public static int hashCode(boolean value) {
 		return value ? 1231 : 1237;
 	}
 
-	public static int hashCodeJ(long value) {
+	public static int hashCode(long value) {
 		return (int) (value ^ (value >>> 32));
 	}
 
@@ -81,7 +82,7 @@ public final class ObjectUtils {
 	 * and constructors, as demonstrated below:
 	 * <blockquote><pre>
 	 * public Foo(Bar bar) {
-	 *     this.bar = Objects.requireNonNull(bar);
+	 *     this.bar = ObjectUtils.requireNonNull(bar);
 	 * }
 	 * </pre></blockquote>
 	 *
@@ -103,8 +104,8 @@ public final class ObjectUtils {
 	 * constructors with multiple parameters, as demonstrated below:
 	 * <blockquote><pre>
 	 * public Foo(Bar bar, Baz baz) {
-	 *     this.bar = Objects.requireNonNull(bar, "bar must not be null");
-	 *     this.baz = Objects.requireNonNull(baz, "baz must not be null");
+	 *     this.bar = ObjectUtils.requireNonNull(bar, "bar must not be null");
+	 *     this.baz = ObjectUtils.requireNonNull(baz, "baz must not be null");
 	 * }
 	 * </pre></blockquote>
 	 *
@@ -129,7 +130,7 @@ public final class ObjectUtils {
 	 * @return {@code true} if the provided reference is {@code null} otherwise
 	 * {@code false}
 	 * @apiNote This method exists to be used as a
-	 * {@link arc.func.Boolf}, {@code filter(Objects::isNull)}
+	 * {@link arc.func.Boolf}, {@code filter(ObjectUtils::isNull)}
 	 * @see arc.func.Boolf
 	 * @since 1.0.8
 	 */
@@ -145,7 +146,7 @@ public final class ObjectUtils {
 	 * @return {@code true} if the provided reference is non-{@code null}
 	 * otherwise {@code false}
 	 * @apiNote This method exists to be used as a
-	 * {@link arc.func.Boolf}, {@code filter(Objects::nonNull)}
+	 * {@link arc.func.Boolf}, {@code filter(ObjectUtils::nonNull)}
 	 * @see arc.func.Boolf
 	 * @since 1.0.8
 	 */
@@ -296,9 +297,9 @@ public final class ObjectUtils {
 	/**
 	 * Returns a string reporting the value of each declared field, via reflection.
 	 * <p>Static fields are automatically skipped. Produces output like:
-	 * <p>{@code "SimpleClassName[integer = 1234, string = "hello", character = 'c', intArray = [1, 2, 3], none = null]"}.
+	 * <p>{@code "SimpleClassName[integer=1234, string="hello", character='c', intArray=[1, 2, 3], object=java.lang.Object@1234abcd, none=null]"}.
 	 * <p>If there is an exception in obtaining the value of a certain field, it will result in:
-	 * <p>{@code "SimpleClassName[unknown = ???]"}.
+	 * <p>{@code "SimpleClassName[unknown=???]"}.
 	 *
 	 * @param last Should the fields of the super class be retrieved.
 	 */
@@ -321,7 +322,7 @@ public final class ObjectUtils {
 				}
 
 				sb.append(f.getName());
-				sb.append(" = ");
+				sb.append('=');
 
 				try {
 					Object value;
@@ -345,21 +346,21 @@ public final class ObjectUtils {
 					if (type.isArray()) {
 						// I think using instanceof would be better.
 						if (value instanceof float[] a) {
-							ArrayUtils.appendF(sb, a);
+							ArrayUtils.append(sb, a);
 						} else if (value instanceof int[] a) {
-							ArrayUtils.appendI(sb, a);
+							ArrayUtils.append(sb, a);
 						} else if (value instanceof boolean[] a) {
-							ArrayUtils.appendZ(sb, a);
+							ArrayUtils.append(sb, a);
 						} else if (value instanceof byte[] a) {
-							ArrayUtils.appendB(sb, a);
+							ArrayUtils.append(sb, a);
 						} else if (value instanceof char[] a) {
-							ArrayUtils.appendC(sb, a);
+							ArrayUtils.append(sb, a);
 						} else if (value instanceof double[] a) {
-							ArrayUtils.appendD(sb, a);
+							ArrayUtils.append(sb, a);
 						} else if (value instanceof long[] a) {
-							ArrayUtils.appendJ(sb, a);
+							ArrayUtils.append(sb, a);
 						} else if (value instanceof short[] a) {
-							ArrayUtils.appendS(sb, a);
+							ArrayUtils.append(sb, a);
 						} else if (value instanceof Object[] a) {
 							ArrayUtils.append(sb, a);
 						} else {
@@ -380,7 +381,7 @@ public final class ObjectUtils {
 
 			c = last ? c.getSuperclass() : null;
 		}
-		sb.append("]");
+		sb.append(']');
 		return sb.toString();
 	}
 

@@ -13,10 +13,13 @@ import arc.util.Eachable;
 import arc.util.Reflect;
 import heavyindustry.func.BoolBoolf;
 import heavyindustry.func.ByteBytef;
+import heavyindustry.util.pair.ObjectPair;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 public final class ArrayUtils {
 	private ArrayUtils() {}
@@ -60,7 +63,7 @@ public final class ArrayUtils {
 		return doubles;
 	}
 
-	public static <T> int indexOf(T[] array, T element) {
+	public static <T> int indexOf(T[] array, Object element) {
 		return indexOf(array, element, true);
 	}
 
@@ -72,7 +75,7 @@ public final class ArrayUtils {
 	 * @return the index of the first occurrence of the specified element in this list, or -1 if this list does
 	 * not contain the element
 	 */
-	public static <T> int indexOf(T[] array, T element, boolean identity) {
+	public static <T> int indexOf(T[] array, Object element, boolean identity) {
 		if (identity || element == null) {
 			for (int i = 0; i < array.length; i++) {
 				if (array[i] == element) {
@@ -157,7 +160,7 @@ public final class ArrayUtils {
 	}
 
 	// To prevent JS from being unable to match methods, it is necessary to distinguish them.
-	public static int indexOfZ(boolean[] array, boolean element) {
+	public static int indexOf(boolean[] array, boolean element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -166,7 +169,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOfB(byte[] array, byte element) {
+	public static int indexOf(byte[] array, byte element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -175,7 +178,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOfS(short[] array, short element) {
+	public static int indexOf(short[] array, short element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -184,7 +187,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOfI(int[] array, int element) {
+	public static int indexOf(int[] array, int element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -193,7 +196,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOfJ(long[] array, long element) {
+	public static int indexOf(long[] array, long element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -202,7 +205,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOfF(float[] array, float element) {
+	public static int indexOf(float[] array, float element) {
 		for (int i = 0; i < array.length; i++) {
 			if (Float.compare(array[i], element) == 0) {
 				return i;
@@ -211,7 +214,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOfD(double[] array, double element) {
+	public static int indexOf(double[] array, double element) {
 		for (int i = 0; i < array.length; i++) {
 			if (Double.compare(array[i], element) == 0) {
 				return i;
@@ -220,7 +223,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOfC(char[] array, char element) {
+	public static int indexOf(char[] array, char element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -229,7 +232,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOfF(float[] array, float element, float epsilon) {
+	public static int indexOf(float[] array, float element, float epsilon) {
 		for (int i = 0; i < array.length; i++) {
 			if (Math.abs(array[i] - element) <= epsilon) {
 				return i;
@@ -238,7 +241,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOfD(double[] array, double element, double epsilon) {
+	public static int indexOf(double[] array, double element, double epsilon) {
 		for (int i = 0; i < array.length; i++) {
 			if (Math.abs(array[i] - element) <= epsilon) {
 				return i;
@@ -253,25 +256,25 @@ public final class ArrayUtils {
 		return out;
 	}
 
-	public static boolean[] copyZArray(boolean[] array, BoolBoolf copy) {
+	public static boolean[] copyArray(boolean[] array, BoolBoolf copy) {
 		boolean[] out = array.clone();
 		for (int i = 0, len = out.length; i < len; i++) out[i] = copy.get(out[i]);
 		return out;
 	}
 
-	public static byte[] copyBArray(byte[] array, ByteBytef copy) {
+	public static byte[] copyArray(byte[] array, ByteBytef copy) {
 		byte[] out = array.clone();
 		for (int i = 0, len = out.length; i < len; i++) out[i] = copy.get(out[i]);
 		return out;
 	}
 
-	public static int[] copyIArray(int[] array, IntIntf copy) {
+	public static int[] copyArray(int[] array, IntIntf copy) {
 		int[] out = array.clone();
 		for (int i = 0, len = out.length; i < len; i++) out[i] = copy.get(out[i]);
 		return out;
 	}
 
-	public static float[] copyFArray(float[] array, FloatFloatf copy) {
+	public static float[] copyArray(float[] array, FloatFloatf copy) {
 		float[] out = array.clone();
 		for (int i = 0, len = out.length; i < len; i++) out[i] = copy.get(out[i]);
 		return out;
@@ -308,7 +311,7 @@ public final class ArrayUtils {
 		return newArray;
 	}
 
-	public static int[] sortI(int[] arr) {
+	public static int[] sort(int[] arr) {
 		for (int i = 1; i < arr.length; i++) {
 			int tmp = arr[i];
 
@@ -325,7 +328,7 @@ public final class ArrayUtils {
 		return arr;
 	}
 
-	public static void shellSortI(int[] arr) {
+	public static void shellSort(int[] arr) {
 		int temp;
 		for (int step = arr.length / 2; step >= 1; step /= 2) {
 			for (int i = step; i < arr.length; i++) {
@@ -340,8 +343,95 @@ public final class ArrayUtils {
 		}
 	}
 
+	/**
+	 * Returns a comparator that compares {@link Entry} in natural order on key.
+	 *
+	 * <p>The returned comparator is serializable and throws {@link
+	 * NullPointerException} when comparing an entry with a null key.
+	 *
+	 * @param <K> the {@link Comparable} type of then map keys
+	 * @param <V> the type of the map values
+	 * @return a comparator that compares {@link Entry} in natural order on key.
+	 * @see Comparable
+	 * @since 1.0.7
+	 */
+	public static <K extends Comparable<? super K>, V> Comparator<Entry<K, V>> comparingByKey() {
+		return (c1, c2) -> c1.getKey().compareTo(c2.getKey());
+	}
+
+	/**
+	 * Returns a comparator that compares {@link Entry} in natural order on value.
+	 * <p>The returned comparator is serializable and throws {@link
+	 * NullPointerException} when comparing an entry with null values.
+	 *
+	 * @param <K> the type of the map keys
+	 * @param <V> the {@link Comparable} type of the map values
+	 * @return a comparator that compares {@link Entry} in natural order on value.
+	 * @see Comparable
+	 * @since 1.0.7
+	 */
+	public static <K, V extends Comparable<? super V>> Comparator<Entry<K, V>> comparingByValue() {
+		return (c1, c2) -> c1.getValue().compareTo(c2.getValue());
+	}
+
+	/**
+	 * Returns a comparator that compares {@link Entry} by key using the given {@link Comparator}.
+	 * <p>The returned comparator is serializable if the specified comparator
+	 * is also serializable.
+	 *
+	 * @param <K> the type of the map keys
+	 * @param <V> the type of the map values
+	 * @param cmp the key {@link Comparator}
+	 * @return a comparator that compares {@link Entry} by the key.
+	 * @since 1.0.7
+	 */
+	public static <K, V> Comparator<Entry<K, V>> comparingByKey(Comparator<? super K> cmp) {
+		return (c1, c2) -> cmp.compare(c1.getKey(), c2.getKey());
+	}
+
+	/**
+	 * Returns a comparator that compares {@link Entry} by value using the given {@link Comparator}.
+	 * <p>The returned comparator is serializable if the specified comparator
+	 * is also serializable.
+	 *
+	 * @param <K> the type of the map keys
+	 * @param <V> the type of the map values
+	 * @param cmp the value {@link Comparator}
+	 * @return a comparator that compares {@link Entry} by the value.
+	 * @since 1.0.7
+	 */
+	public static <K, V> Comparator<Entry<K, V>> comparingByValue(Comparator<? super V> cmp) {
+		return (c1, c2) -> cmp.compare(c1.getValue(), c2.getValue());
+	}
+
+	/**
+	 * Returns a copy of the given {@code Map.MapEntry}. The returned instance is not associated with any map.
+	 * The returned instance has the same characteristics as instances returned by the {@link java.util.Map#entry Map::entry}
+	 * method.
+	 *
+	 * @param <K> the type of the key
+	 * @param <V> the type of the value
+	 * @param e   the entry to be copied
+	 * @return a map entry equal to the given entry
+	 * @throws NullPointerException if e is null
+	 * @apiNote An instance obtained from a map's entry-set view has a connection to that map.
+	 * The {@code copyOf}  method may be used to create a {@code Map.MapEntry} instance,
+	 * containing the same key and value, that is independent of any map.
+	 * @implNote If the given entry was obtained from a call to {@code copyOf} or {@code Map::entry},
+	 * calling {@code copyOf} will generally not create another copy.
+	 * @since 1.0.7
+	 */
+	@SuppressWarnings("unchecked")
+	public static <K, V> Entry<K, V> copyOf(Entry<? extends K, ? extends V> e) {
+		if (e instanceof ObjectPair<? extends K, ? extends V> p) {
+			return (Entry<K, V>) p;
+		} else {
+			return new ObjectPair<>(e.getKey(), e.getValue());
+		}
+	}
+
 	/** Used to avoid performance overhead caused by creating an instance of {@link StringBuilder}. */
-	public static void appendZ(StringBuilder b, boolean... a) {
+	public static void append(StringBuilder b, boolean... a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -363,7 +453,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void appendB(StringBuilder b, byte... a) {
+	public static void append(StringBuilder b, byte... a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -385,7 +475,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void appendS(StringBuilder b, short... a) {
+	public static void append(StringBuilder b, short... a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -407,7 +497,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void appendI(StringBuilder b, int... a) {
+	public static void append(StringBuilder b, int... a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -429,7 +519,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void appendJ(StringBuilder b, long... a) {
+	public static void append(StringBuilder b, long... a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -451,7 +541,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void appendC(StringBuilder b, char... a) {
+	public static void append(StringBuilder b, char... a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -474,7 +564,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void appendF(StringBuilder b, float... a) {
+	public static void append(StringBuilder b, float... a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -496,7 +586,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void appendD(StringBuilder b, double... a) {
+	public static void append(StringBuilder b, double... a) {
 		if (a == null) {
 			b.append("null");
 			return;
