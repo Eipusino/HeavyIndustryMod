@@ -70,7 +70,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 	}
 
 	@Override
-	public Entries<K, V> entries() {
+	public Entries<K, V> iterator() {
 		if (entries1 == null) {
 			entries1 = new OrderedMapEntries<>(this);
 			entries2 = new OrderedMapEntries<>(this);

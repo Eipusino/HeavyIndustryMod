@@ -32,21 +32,12 @@ public final class ObjectUtils {
 
 	// To prevent JS from being unable to match methods, it is necessary to distinguish them.
 
-	// boolean Z
-	// byte B
-	// short S
-	// int I
-	// long J
-	// float F
-	// double D
-	// char C
-
 	// 'Boolean.hashCode(boolean)' may not be compatible with Android.
-	public static int hashCode(boolean value) {
+	public static int hashCodeBool(boolean value) {
 		return value ? 1231 : 1237;
 	}
 
-	public static int hashCode(long value) {
+	public static int hashCodeLong(long value) {
 		return (int) (value ^ (value >>> 32));
 	}
 
@@ -56,7 +47,31 @@ public final class ObjectUtils {
 		int result = 1;
 
 		for (Object element : values) {
-			result = 31 * result + (element == null ? 0 : element.hashCode());
+			result = 31 * result + hashCode(element);
+		}
+
+		return result;
+	}
+
+	public static int hashCodeBools(boolean... values) {
+		if (values == null) return 0;
+
+		int result = 1;
+
+		for (boolean element : values) {
+			result = 31 * result + hashCodeBool(element);
+		}
+
+		return result;
+	}
+
+	public static int hashCodeLongs(long... values) {
+		if (values == null) return 0;
+
+		int result = 1;
+
+		for (long element : values) {
+			result = 31 * result + hashCodeLong(element);
 		}
 
 		return result;
@@ -346,21 +361,21 @@ public final class ObjectUtils {
 					if (type.isArray()) {
 						// I think using instanceof would be better.
 						if (value instanceof float[] a) {
-							ArrayUtils.append(sb, a);
+							ArrayUtils.appendFloat(sb, a);
 						} else if (value instanceof int[] a) {
-							ArrayUtils.append(sb, a);
+							ArrayUtils.appendInt(sb, a);
 						} else if (value instanceof boolean[] a) {
-							ArrayUtils.append(sb, a);
+							ArrayUtils.appendBool(sb, a);
 						} else if (value instanceof byte[] a) {
-							ArrayUtils.append(sb, a);
+							ArrayUtils.appendByte(sb, a);
 						} else if (value instanceof char[] a) {
-							ArrayUtils.append(sb, a);
+							ArrayUtils.appendChar(sb, a);
 						} else if (value instanceof double[] a) {
-							ArrayUtils.append(sb, a);
+							ArrayUtils.appendDouble(sb, a);
 						} else if (value instanceof long[] a) {
-							ArrayUtils.append(sb, a);
+							ArrayUtils.appendLong(sb, a);
 						} else if (value instanceof short[] a) {
-							ArrayUtils.append(sb, a);
+							ArrayUtils.appendShort(sb, a);
 						} else if (value instanceof Object[] a) {
 							ArrayUtils.append(sb, a);
 						} else {

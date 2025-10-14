@@ -114,14 +114,14 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 
 	/** Iterates through key/value pairs. */
 	public void each(Cons2<? super K, ? super V> cons) {
-		for (ObjectPair<K, V> entry : entries()) {
+		for (ObjectPair<K, V> entry : iterator()) {
 			cons.get(entry.key, entry.value);
 		}
 	}
 
 	@Override
 	public void each(Cons<? super ObjectPair<K, V>> cons) {
-		for (ObjectPair<K, V> entry : entries()) {
+		for (ObjectPair<K, V> entry : iterator()) {
 			cons.get(entry);
 		}
 	}
@@ -446,7 +446,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 
 	@Override
 	public void putAll(Map<? extends K, ? extends V> m) {
-		for (ObjectPair<K, V> set : entries()) {
+		for (ObjectPair<K, V> set : iterator()) {
 			put(set.getKey(), set.getValue());
 		}
 	}
@@ -719,14 +719,6 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 
 	@Override
 	public Entries<K, V> iterator() {
-		return entries();
-	}
-
-	/**
-	 * Returns an iterator for the entries in the map. Remove is supported. Note that the same iterator instance is returned each
-	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
-	 */
-	public Entries<K, V> entries() {
 		if (entries1 == null) {
 			entries1 = new Entries<>(this);
 			entries2 = new Entries<>(this);
@@ -741,6 +733,15 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 		entries2.valid = true;
 		entries1.valid = false;
 		return entries2;
+	}
+
+	/**
+	 * Returns an iterator for the entries in the map. Remove is supported. Note that the same iterator instance is returned each
+	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
+	 */
+	@Deprecated
+	public Entries<K, V> entries() {
+		return iterator();
 	}
 
 	/**
@@ -814,7 +815,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 
 		@Override
 		public Iterator<Entry<K, V>> iterator() {
-			itr.entries = map.entries();
+			itr.entries = map.iterator();
 			return itr;
 		}
 

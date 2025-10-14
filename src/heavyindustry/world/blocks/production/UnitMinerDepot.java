@@ -302,7 +302,7 @@ public class UnitMinerDepot extends Block {
 			TypeIO.writeVecNullable(write, commandPos);
 
 			write.i(oreTiles.size);
-			for (var entry : oreTiles.entries()) {
+			for (var entry : oreTiles.iterator()) {
 				write.s(entry.key.id);
 				write.i(entry.value == null ? -1 : entry.value.pos());
 			}

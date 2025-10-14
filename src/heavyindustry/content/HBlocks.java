@@ -212,9 +212,7 @@ import mindustry.world.blocks.distribution.StackConveyor;
 import mindustry.world.blocks.distribution.StackRouter;
 import mindustry.world.blocks.environment.Floor;
 import mindustry.world.blocks.environment.OreBlock;
-import mindustry.world.blocks.environment.OverlayFloor;
 import mindustry.world.blocks.environment.Prop;
-import mindustry.world.blocks.environment.StaticTree;
 import mindustry.world.blocks.environment.StaticWall;
 import mindustry.world.blocks.environment.SteamVent;
 import mindustry.world.blocks.environment.TallBlock;
@@ -301,12 +299,6 @@ public final class HBlocks {
 			stoneWater, shaleWater, basaltWater, mudWater,
 			corruptedMoss, corruptedSporeMoss, corruptedSporeRocks, corruptedSporePine, corruptedSporeFern, corruptedSporePlant, corruptedSporeTree,
 			mycelium, myceliumSpore, myceliumShrubs, myceliumPine,
-			arsenide, arsenideLayers, arsenideBoulder, arsenideOutcrop, arsenideWall,
-			blueSand, blueSandWater, blueSandBoulder, blueSandWall,
-			boric, boricDense, boricBoulder, boricWall,
-			breccia, smoothBreccia, brecciaBoulder, brecciaWall,
-			chert, chertPlates, chertBoulder, chertOutcrop, chertWall,
-			feldspar, smoothFeldspar, feldsparRubble, feldsparPebbles, feldsparVent, feldsparBoulder, feldsparOutcrop, feldsparWall,
 			softRareEarth, patternRareEarth, softRareEarthWall,
 			crystals, crystalsBoulder,
 			oreSilicon, oreCrystal, oreUranium, oreChromium,
@@ -788,158 +780,6 @@ public final class HBlocks {
 		}};
 		myceliumPine = new StaticWall("mycelium-pine") {{
 			variants = 2;
-			buildType = Constant.PROV_BUILDING;
-		}};
-		arsenide = new Floor("arsenide", 4) {{
-			itemDrop = HItems.stone;
-			buildType = Constant.PROV_BUILDING;
-			playerUnmineable = true;
-		}};
-		arsenideLayers = new Floor("arsenide-layers", 4) {{
-			itemDrop = HItems.stone;
-			buildType = Constant.PROV_BUILDING;
-			playerUnmineable = true;
-		}};
-		arsenideBoulder = new Prop("arsenide-boulder") {{
-			variants = 3;
-			buildType = Constant.PROV_BUILDING;
-		}};
-		arsenideOutcrop = new StaticTree("arsenide-outcrop") {{
-			variants = 3;
-			attributes.set(Attribute.sand, 1f);
-			buildType = Constant.PROV_BUILDING;
-		}};
-		arsenideWall = new StaticWall("arsenide-wall") {{
-			variants = 3;
-			attributes.set(Attribute.sand, 0.7f);
-			buildType = Constant.PROV_BUILDING;
-		}};
-		blueSand = new Floor("blue-sand", 3) {{
-			itemDrop = Items.sand;
-			buildType = Constant.PROV_BUILDING;
-			playerUnmineable = true;
-		}};
-		blueSandWater = new Floor("blue-sand-water", 3) {{
-			liquidDrop = Liquids.water;
-			liquidMultiplier = 0.75f;
-			speedMultiplier = 0.8f;
-			cacheLayer = CacheLayer.water;
-			shallow = true;
-			buildType = Constant.PROV_BUILDING;
-		}};
-		blueSandBoulder = new Prop("blue-sand-boulder") {{
-			variants = 2;
-			blueSand.asFloor().decoration = this;
-			buildType = Constant.PROV_BUILDING;
-		}};
-		blueSandWall = new StaticWall("blue-sand-wall") {{
-			variants = 2;
-			attributes.set(Attribute.sand, 2f);
-			blueSand.asFloor().wall = blueSandWater.asFloor().wall = this;
-			buildType = Constant.PROV_BUILDING;
-		}};
-		boric = new Floor("boric", 4) {{
-			buildType = Constant.PROV_BUILDING;
-		}};
-		boricDense = new Floor("boric-dense", 4) {{
-			buildType = Constant.PROV_BUILDING;
-		}};
-		boricBoulder = new Prop("boric-boulder") {{
-			variants = 1;
-			buildType = Constant.PROV_BUILDING;
-		}};
-		boricWall = new StaticWall("boric-wall") {{
-			variants = 3;
-			boric.asFloor().wall = boricDense.asFloor().wall = this;
-			buildType = Constant.PROV_BUILDING;
-		}};
-		breccia = new Floor("breccia", 4) {{
-			itemDrop = HItems.stone;
-			buildType = Constant.PROV_BUILDING;
-			playerUnmineable = true;
-		}};
-		smoothBreccia = new Floor("smooth-breccia", 4) {{
-			itemDrop = HItems.stone;
-			buildType = Constant.PROV_BUILDING;
-			playerUnmineable = true;
-		}};
-		brecciaBoulder = new Prop("breccia-boulder") {{
-			variants = 2;
-			breccia.asFloor().decoration = this;
-			buildType = Constant.PROV_BUILDING;
-		}};
-		brecciaWall = new StaticWall("breccia-wall") {{
-			variants = 2;
-			attributes.set(Attribute.sand, 1f);
-			buildType = Constant.PROV_BUILDING;
-		}};
-		chert = new Floor("chert", 4) {{
-			itemDrop = HItems.stone;
-			buildType = Constant.PROV_BUILDING;
-			playerUnmineable = true;
-		}};
-		chertPlates = new Floor("chert-plates", 4) {{
-			itemDrop = HItems.stone;
-			buildType = Constant.PROV_BUILDING;
-			playerUnmineable = true;
-		}};
-		chertBoulder = new Prop("chert-boulder") {{
-			variants = 3;
-			chert.asFloor().decoration = this;
-			buildType = Constant.PROV_BUILDING;
-		}};
-		chertOutcrop = new StaticTree("chert-outcrop") {{
-			variants = 3;
-			attributes.set(Attribute.sand, 1.2f);
-			buildType = Constant.PROV_BUILDING;
-		}};
-		chertWall = new StaticWall("chert-wall") {{
-			variants = 2;
-			attributes.set(Attribute.sand, 1.2f);
-			chert.asFloor().wall = chertPlates.asFloor().wall = this;
-			buildType = Constant.PROV_BUILDING;
-		}};
-		feldspar = new Floor("feldspar", 5) {{
-			itemDrop = HItems.stone;
-			buildType = Constant.PROV_BUILDING;
-			playerUnmineable = true;
-		}};
-		smoothFeldspar = new Floor("smooth-feldspar", 6) {{
-			itemDrop = HItems.stone;
-			buildType = Constant.PROV_BUILDING;
-			playerUnmineable = true;
-		}};
-		feldsparRubble = new Floor("feldspar-rubble") {{
-			tilingVariants = 2;
-			tilingSize = 3;
-			itemDrop = HItems.stone;
-			buildType = Constant.PROV_BUILDING;
-			playerUnmineable = true;
-		}};
-		feldsparPebbles = new OverlayFloor("feldspar-pebbles") {{
-			variants = 4;
-			buildType = Constant.PROV_BUILDING;
-		}};
-		feldsparVent = new SteamVent("feldspar-vent") {{
-			attributes.set(Attribute.steam, 1f);
-			variants = 3;
-			parent = blendGroup = feldspar;
-			buildType = Constant.PROV_BUILDING;
-		}};
-		feldsparBoulder = new Prop("feldspar-boulder") {{
-			variants = 3;
-			feldspar.asFloor().decoration = smoothFeldspar.asFloor().decoration = feldsparRubble.asFloor().decoration = this;
-			buildType = Constant.PROV_BUILDING;
-		}};
-		feldsparOutcrop = new TallBlock("feldspar-outcrop") {{
-			attributes.set(Attribute.sand, 1.5f);
-			variants = 2;
-			buildType = Constant.PROV_BUILDING;
-		}};
-		feldsparWall = new StaticWall("feldspar-wall") {{
-			attributes.set(Attribute.sand, 1.5f);
-			variants = 3;
-			feldspar.asFloor().wall = smoothFeldspar.asFloor().wall = feldsparRubble.asFloor().wall = this;
 			buildType = Constant.PROV_BUILDING;
 		}};
 		crystals = new TallBlock("crystals") {{
@@ -2147,7 +1987,7 @@ public final class HBlocks {
 				Draw.color(HPal.uraniumAmmoBack);
 				Draw.alpha(0.8f);
 				for (int i = 0; i < 5; i++) {
-					Fx.rand.setSeed(b.id * 2l + i);
+					Fx.rand.setSeed(b.id * 2 + i);
 					float lenScl = Fx.rand.random(0.25f, 1f);
 					int j = i;
 					b.scaled(b.lifetime * lenScl, e -> Angles.randLenVectors(e.id + j - 1, e.fin(Interp.pow10Out), (int) (2.8f * intensity), 25f * intensity, (x, y, in, out) -> {
@@ -5638,7 +5478,7 @@ public final class HBlocks {
 
 					Draw.color(b.color, 0.7f);
 					for (int i = 0; i < 4; i++) {
-						rand.setSeed(b.id * 2l + i);
+						rand.setSeed(b.id * 2 + i);
 						float lenScl = rand.random(0.5f, 1f);
 						int j = i;
 						b.scaled(b.lifetime * lenScl, e -> {

@@ -118,7 +118,8 @@ public final class ScriptUtils {
 		};
 	}
 
-	public static <T> Class<T> getClass(Class<T> c) {
+	/** Example code: {@code SimpleClass.__javaObject__.getSimpleName()} */
+	public static <T> Class<T> c(Class<T> c) {
 		return c;
 	}
 
@@ -156,6 +157,10 @@ public final class ScriptUtils {
 		return i;
 	}
 
+	public static long l(long i) {
+		return i;
+	}
+
 	public static float f(float f) {
 		return f;
 	}
@@ -181,6 +186,10 @@ public final class ScriptUtils {
 	}
 
 	public static int[] i(int[] i) {
+		return i;
+	}
+
+	public static long[] l(long[] i) {
 		return i;
 	}
 

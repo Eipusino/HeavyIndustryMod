@@ -27,7 +27,7 @@ public class LongPair<V> implements Cloneable {
 
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(key) ^ ObjectUtils.hashCode(value);
+		return ObjectUtils.hashCodeLong(key) ^ ObjectUtils.hashCode(value);
 	}
 
 	@Override

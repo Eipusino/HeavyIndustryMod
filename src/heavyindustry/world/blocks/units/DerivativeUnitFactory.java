@@ -13,7 +13,7 @@ import arc.math.geom.Vec2;
 import arc.struct.EnumSet;
 import arc.util.Tmp;
 import heavyindustry.content.HFx;
-import heavyindustry.entities.EdesspEntry;
+import heavyindustry.content.HFx.EdesspEntry;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.game.EventType.UnitCreateEvent;

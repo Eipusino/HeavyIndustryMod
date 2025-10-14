@@ -92,22 +92,22 @@ public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
 	}
 
 	@Override
-	public CollectionOrderedSetIterator<E> iterator() {
-		if (iterator1 == null) iterator1 = new CollectionOrderedSetIterator<>(this);
+	public Iter<E> iterator() {
+		if (iterator1 == null) iterator1 = new OrderedIter<>(this);
 
 		if (iterator1.done) {
 			iterator1.reset();
-			return (CollectionOrderedSetIterator<E>) iterator1;
+			return iterator1;
 		}
 
-		if (iterator2 == null) iterator2 = new CollectionOrderedSetIterator<>(this);
+		if (iterator2 == null) iterator2 = new OrderedIter<>(this);
 
 		if (iterator2.done) {
 			iterator2.reset();
-			return (CollectionOrderedSetIterator<E>) iterator2;
+			return iterator2;
 		}
 
-		return new CollectionOrderedSetIterator<>(this);
+		return new OrderedIter<>(this);
 	}
 
 	@Override
@@ -130,10 +130,10 @@ public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
 		return orderedItems.toString(separator);
 	}
 
-	public static class CollectionOrderedSetIterator<E> extends Iter<E> {
+	public static class OrderedIter<E> extends Iter<E> {
 		final CollectionOrderedSet<E> set;
 
-		public CollectionOrderedSetIterator(CollectionOrderedSet<E> s) {
+		public OrderedIter(CollectionOrderedSet<E> s) {
 			super(s);
 			set = s;
 		}

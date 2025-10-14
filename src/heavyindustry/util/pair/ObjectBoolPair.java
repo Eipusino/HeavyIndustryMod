@@ -27,7 +27,7 @@ public class ObjectBoolPair<K> implements Cloneable {
 
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(key) ^ ObjectUtils.hashCode(value);
+		return ObjectUtils.hashCode(key) ^ ObjectUtils.hashCodeBool(value);
 	}
 
 	@Override

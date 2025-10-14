@@ -244,7 +244,6 @@ public class LiquidMassDriver extends Block {
 				//align to shooter rotation
 				rotation = Angles.moveToward(rotation, angleTo(currentShooter()), rotateSpeed * efficiency);
 			} else if (state == DriverState.shooting) {
-
 				if (!hasLink || (!waitingShooters.isEmpty() && (liquidCapacity - liquidTotal() >= minDistribute))) {
 					state = DriverState.idle;
 					return;

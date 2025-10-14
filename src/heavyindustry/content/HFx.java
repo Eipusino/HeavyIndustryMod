@@ -20,7 +20,6 @@ import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
 import arc.util.Time;
 import arc.util.Tmp;
-import heavyindustry.entities.EdesspEntry;
 import heavyindustry.entities.UnitPointEntry;
 import heavyindustry.entities.abilities.MirrorFieldAbility;
 import heavyindustry.entities.bullet.HailStoneBulletType;
@@ -87,7 +86,7 @@ public final class HFx {
 				float speed = -900f;
 				int times = 13;
 				for (int i = 0; i < particles; i++) {
-					float phaseOffset = Mathf.randomSeed(e.id * 17l + i * 43l) * 360f;
+					float phaseOffset = Mathf.randomSeed(e.id * 17 + i * 43) * 360f;
 					float angle = t * speed + phaseOffset;
 					float rad = angle * Mathf.degreesToRadians;
 					float interpRadius = baseRadius * (1f + Mathf.absin(t * 5f, 0.1f));
@@ -1859,7 +1858,7 @@ public final class HFx {
 
 				int amo = Mathf.randomSeed(e.id, 2, 5);
 				for (int i = 0; i < amo; i++) {
-					float len = Mathf.randomSeed(e.id + i * 2l, 40) * e.fin();
+					float len = Mathf.randomSeed(e.id + i * 2, 40) * e.fin();
 					float off = Mathf.randomSeed(e.id + i, -8, 8);
 					float x = Angles.trnsx(e.rotation, len) + Angles.trnsx(e.rotation + 90, off);
 					float y = Angles.trnsy(e.rotation, len) + Angles.trnsy(e.rotation + 90, off);
@@ -2005,7 +2004,7 @@ public final class HFx {
 				});
 
 				e.scaled(120, ef -> {
-					Angles.randLenVectors(e.id * 2l, 9, 40, 154, (x, y) -> {
+					Angles.randLenVectors(e.id * 2, 9, 40, 154, (x, y) -> {
 						float lerp = Mathf.clamp((ef.fin(Interp.pow4Out) - 0.2f) / 0.8f);
 						float si = Mathf.len(x, y) * Mathf.randomSeed((long) (x + y), 0.7f, 0.9f);
 						Draws.drawDiamond(e.x + x * lerp, e.y + y * lerp, si, si / 10 * ef.fout(Interp.pow2Out), Mathf.angle(x, y) - 90);
@@ -2013,7 +2012,7 @@ public final class HFx {
 				});
 
 				e.scaled(140, ef -> {
-					Angles.randLenVectors(e.id * 2l, 10, 36, 150, (x, y) -> {
+					Angles.randLenVectors(e.id * 2, 10, 36, 150, (x, y) -> {
 						float lerp = Mathf.clamp((ef.fin(Interp.pow4Out) - 0.4f) / 0.6f);
 						float si = Mathf.len(x, y) * Mathf.randomSeed((long) (x + y), 0.7f, 0.9f);
 						Draws.drawDiamond(e.x + x * lerp, e.y + y * lerp, si, si / 10 * ef.fout(Interp.pow2Out), Mathf.angle(x, y) - 90);
@@ -2021,14 +2020,14 @@ public final class HFx {
 				});
 
 				e.scaled(160, ef -> {
-					Angles.randLenVectors(e.id * 3l, 12, 32, 144, (x, y) -> {
+					Angles.randLenVectors(e.id * 3, 12, 32, 144, (x, y) -> {
 						float lerp = Mathf.clamp((ef.fin(Interp.pow4Out) - 0.5f) / 0.5f);
 						float si = Mathf.len(x, y) * Mathf.randomSeed((long) (x + y), 0.9f, 1f);
 						Draws.drawDiamond(e.x + x * lerp, e.y + y * lerp, si, si / 10 * ef.fout(Interp.pow2Out), Mathf.angle(x, y) - 90);
 					});
 
 					Lines.stroke(4 * ef.fout());
-					Angles.randLenVectors(e.id * 4l, ef.finpow() + 0.001f, 58, size * 1.2f, (dx, dy, in, out) -> {
+					Angles.randLenVectors(e.id * 4, ef.finpow() + 0.001f, 58, size * 1.2f, (dx, dy, in, out) -> {
 						Lines.lineAngle(e.x + dx, e.y + dy, Mathf.angle(dx, dy), 8 + out * 64f);
 						Drawf.light(e.x + dx, e.y + dy, out * size / 2, Draw.getColor(), 0.8f);
 					});
@@ -2091,7 +2090,7 @@ public final class HFx {
 				});
 
 				e.scaled(56, ef -> {
-					Angles.randLenVectors(e.id * 2l, 8, 20, 82, (x, y) -> {
+					Angles.randLenVectors(e.id * 2, 8, 20, 82, (x, y) -> {
 						float le = Mathf.clamp((ef.fin(Interp.pow4Out) - 0.3f) / 0.7f);
 						float si = Mathf.len(x, y) * Mathf.randomSeed((long) (x + y), 0.7f, 0.9f);
 						Draws.drawDiamond(e.x + x * le, e.y + y * le, si, si / 10 * ef.fout(Interp.pow2Out), Mathf.angle(x, y) - 90);
@@ -2099,14 +2098,14 @@ public final class HFx {
 				});
 
 				e.scaled(75, ef -> {
-					Angles.randLenVectors(e.id * 3l, 9, 14, 69, (x, y) -> {
+					Angles.randLenVectors(e.id * 3, 9, 14, 69, (x, y) -> {
 						float le = Mathf.clamp((ef.fin(Interp.pow4Out) - 0.5f) / 0.5f);
 						float si = Mathf.len(x, y) * Mathf.randomSeed((long) (x + y), 0.9f, 1f);
 						Draws.drawDiamond(e.x + x * le, e.y + y * le, si, si / 10 * ef.fout(Interp.pow2Out), Mathf.angle(x, y) - 90);
 					});
 
 					Lines.stroke(3 * ef.fout());
-					Angles.randLenVectors(e.id * 4l, ef.finpow() + 0.001f, 48, 102, (dx, dy, in, out) -> {
+					Angles.randLenVectors(e.id * 4, ef.finpow() + 0.001f, 48, 102, (dx, dy, in, out) -> {
 						Lines.lineAngle(e.x + dx, e.y + dy, Mathf.angle(dx, dy), 4 + out * 34f);
 						Drawf.light(e.x + dx, e.y + dy, out * 96, Draw.getColor(), 0.8f);
 					});
@@ -2428,7 +2427,7 @@ public final class HFx {
 				float z = Draw.z();
 				Draw.z(z - 0.001f);
 
-				Rand rand = Utils.rand(e.id * 31l);
+				Rand rand = Utils.rand(e.id * 31);
 
 				Draw.color(Color.gray);
 				Draw.alpha(0.9f);
@@ -4019,7 +4018,7 @@ public final class HFx {
 
 				Tmp.c1.set(e.color).lerp(Color.white, fout * 0.7f);
 				Draw.color(Tmp.c1);
-				effect.draw(e.id + s + 9999l, e.x + v9.x, e.y + v9.y, Mathf.radiansToDegrees * theta, fin);
+				effect.draw(e.id + s + 9999, e.x + v9.x, e.y + v9.y, Mathf.radiansToDegrees * theta, fin);
 			}
 		});
 	}
@@ -4133,5 +4132,31 @@ public final class HFx {
 		float segLength();
 
 		float arc();
+	}
+
+	/** @see #edessp(float) */
+	public static class EdesspEntry {
+		public TextureRegion region;
+		public float range;
+		public float rot;
+		public float rRot;
+
+		public EdesspEntry() {}
+
+		/*public EdesspEntry(TextureRegion reg, float ran, float rt, float rrt) {
+			region = reg;
+			range = ran;
+			rot = rt;
+			rRot = rrt;
+		}*/
+
+		public EdesspEntry set(TextureRegion reg, float ran, float rt, float rrt) {
+			region = reg;
+			range = ran;
+			rot = rt;
+			rRot = rrt;
+
+			return this;
+		}
 	}
 }

@@ -160,7 +160,7 @@ public final class ArrayUtils {
 	}
 
 	// To prevent JS from being unable to match methods, it is necessary to distinguish them.
-	public static int indexOf(boolean[] array, boolean element) {
+	public static int indexOfBool(boolean[] array, boolean element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -169,7 +169,16 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(byte[] array, byte element) {
+	public static int lastIndexOfBool(boolean[] array, boolean element) {
+		for (int i = array.length -1; i >= 0; i--) {
+			if (array[i] == element) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public static int indexOfByte(byte[] array, byte element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -178,7 +187,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(short[] array, short element) {
+	public static int indexOfShort(short[] array, short element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -187,7 +196,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(int[] array, int element) {
+	public static int indexOfInt(int[] array, int element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -196,7 +205,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(long[] array, long element) {
+	public static int indexOfLong(long[] array, long element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -205,7 +214,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(float[] array, float element) {
+	public static int indexOfFloat(float[] array, float element) {
 		for (int i = 0; i < array.length; i++) {
 			if (Float.compare(array[i], element) == 0) {
 				return i;
@@ -214,7 +223,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(double[] array, double element) {
+	public static int indexOfDouble(double[] array, double element) {
 		for (int i = 0; i < array.length; i++) {
 			if (Double.compare(array[i], element) == 0) {
 				return i;
@@ -223,7 +232,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(char[] array, char element) {
+	public static int indexOfChar(char[] array, char element) {
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == element) {
 				return i;
@@ -232,7 +241,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(float[] array, float element, float epsilon) {
+	public static int indexOfFloat(float[] array, float element, float epsilon) {
 		for (int i = 0; i < array.length; i++) {
 			if (Math.abs(array[i] - element) <= epsilon) {
 				return i;
@@ -241,7 +250,7 @@ public final class ArrayUtils {
 		return -1;
 	}
 
-	public static int indexOf(double[] array, double element, double epsilon) {
+	public static int indexOfDouble(double[] array, double element, double epsilon) {
 		for (int i = 0; i < array.length; i++) {
 			if (Math.abs(array[i] - element) <= epsilon) {
 				return i;
@@ -430,190 +439,190 @@ public final class ArrayUtils {
 		}
 	}
 
-	/** Used to avoid performance overhead caused by creating an instance of {@link StringBuilder}. */
-	public static void append(StringBuilder b, boolean... a) {
-		if (a == null) {
-			b.append("null");
-			return;
-		}
-		int max = a.length - 1;
-		if (max == -1) {
-			b.append("[]");
-			return;
-		}
-
-		b.append('[');
-		for (int i = 0; i < a.length; i++) {
-			b.append(a[i]);
-			if (i == max) {
-				b.append(']');
-				break;
-			}
-			b.append(", ");
-		}
-	}
-
-	public static void append(StringBuilder b, byte... a) {
-		if (a == null) {
-			b.append("null");
-			return;
-		}
-		int max = a.length - 1;
-		if (max == -1) {
-			b.append("[]");
-			return;
-		}
-
-		b.append('[');
-		for (int i = 0; i < a.length; i++) {
-			b.append(a[i]);
-			if (i == max) {
-				b.append(']');
-				break;
-			}
-			b.append(", ");
-		}
-	}
-
-	public static void append(StringBuilder b, short... a) {
-		if (a == null) {
-			b.append("null");
-			return;
-		}
-		int max = a.length - 1;
-		if (max == -1) {
-			b.append("[]");
-			return;
-		}
-
-		b.append('[');
-		for (int i = 0; i < a.length; i++) {
-			b.append(a[i]);
-			if (i == max) {
-				b.append(']');
-				break;
-			}
-			b.append(", ");
-		}
-	}
-
-	public static void append(StringBuilder b, int... a) {
-		if (a == null) {
-			b.append("null");
-			return;
-		}
-		int max = a.length - 1;
-		if (max == -1) {
-			b.append("[]");
-			return;
-		}
-
-		b.append('[');
-		for (int i = 0; i < a.length; i++) {
-			b.append(a[i]);
-			if (i == max) {
-				b.append(']');
-				break;
-			}
-			b.append(", ");
-		}
-	}
-
-	public static void append(StringBuilder b, long... a) {
-		if (a == null) {
-			b.append("null");
-			return;
-		}
-		int max = a.length - 1;
-		if (max == -1) {
-			b.append("[]");
-			return;
-		}
-
-		b.append('[');
-		for (int i = 0; i < a.length; i++) {
-			b.append(a[i]);
-			if (i == max) {
-				b.append(']');
-				break;
-			}
-			b.append(", ");
-		}
-	}
-
-	public static void append(StringBuilder b, char... a) {
-		if (a == null) {
-			b.append("null");
-			return;
-		}
-		int max = a.length - 1;
-		if (max == -1) {
-			b.append("[]");
-			return;
-		}
-
-		b.append('[');
-
-		for (int i = 0; i < a.length; i++) {
-			b.append(a[i]);
-			if (i == max) {
-				b.append(']');
-				break;
-			}
-			b.append(", ");
-		}
-	}
-
-	public static void append(StringBuilder b, float... a) {
-		if (a == null) {
-			b.append("null");
-			return;
-		}
-		int max = a.length - 1;
-		if (max == -1) {
-			b.append("[]");
-			return;
-		}
-
-		b.append('[');
-		for (int i = 0; i < a.length; i++) {
-			b.append(a[i]);
-			if (i == max) {
-				b.append(']');
-				break;
-			}
-			b.append(", ");
-		}
-	}
-
-	public static void append(StringBuilder b, double... a) {
-		if (a == null) {
-			b.append("null");
-			return;
-		}
-		int max = a.length - 1;
-		if (max == -1) {
-			b.append("[]");
-			return;
-		}
-
-		b.append('[');
-		for (int i = 0; i < a.length; i++) {
-			b.append(a[i]);
-			if (i == max) {
-				b.append(']');
-				break;
-			}
-			b.append(", ");
-		}
-	}
-
 	public static void append(StringBuilder b, Object... a) {
 		if (a == null) {
 			b.append("null");
 			return;
 		}
 
+		int max = a.length - 1;
+		if (max == -1) {
+			b.append("[]");
+			return;
+		}
+
+		b.append('[');
+		for (int i = 0; i < a.length; i++) {
+			b.append(a[i]);
+			if (i == max) {
+				b.append(']');
+				break;
+			}
+			b.append(", ");
+		}
+	}
+
+	/** Used to avoid performance overhead caused by creating an instance of {@link StringBuilder}. */
+	public static void appendBool(StringBuilder b, boolean... a) {
+		if (a == null) {
+			b.append("null");
+			return;
+		}
+		int max = a.length - 1;
+		if (max == -1) {
+			b.append("[]");
+			return;
+		}
+
+		b.append('[');
+		for (int i = 0; i < a.length; i++) {
+			b.append(a[i]);
+			if (i == max) {
+				b.append(']');
+				break;
+			}
+			b.append(", ");
+		}
+	}
+
+	public static void appendByte(StringBuilder b, byte... a) {
+		if (a == null) {
+			b.append("null");
+			return;
+		}
+		int max = a.length - 1;
+		if (max == -1) {
+			b.append("[]");
+			return;
+		}
+
+		b.append('[');
+		for (int i = 0; i < a.length; i++) {
+			b.append(a[i]);
+			if (i == max) {
+				b.append(']');
+				break;
+			}
+			b.append(", ");
+		}
+	}
+
+	public static void appendShort(StringBuilder b, short... a) {
+		if (a == null) {
+			b.append("null");
+			return;
+		}
+		int max = a.length - 1;
+		if (max == -1) {
+			b.append("[]");
+			return;
+		}
+
+		b.append('[');
+		for (int i = 0; i < a.length; i++) {
+			b.append(a[i]);
+			if (i == max) {
+				b.append(']');
+				break;
+			}
+			b.append(", ");
+		}
+	}
+
+	public static void appendInt(StringBuilder b, int... a) {
+		if (a == null) {
+			b.append("null");
+			return;
+		}
+		int max = a.length - 1;
+		if (max == -1) {
+			b.append("[]");
+			return;
+		}
+
+		b.append('[');
+		for (int i = 0; i < a.length; i++) {
+			b.append(a[i]);
+			if (i == max) {
+				b.append(']');
+				break;
+			}
+			b.append(", ");
+		}
+	}
+
+	public static void appendLong(StringBuilder b, long... a) {
+		if (a == null) {
+			b.append("null");
+			return;
+		}
+		int max = a.length - 1;
+		if (max == -1) {
+			b.append("[]");
+			return;
+		}
+
+		b.append('[');
+		for (int i = 0; i < a.length; i++) {
+			b.append(a[i]);
+			if (i == max) {
+				b.append(']');
+				break;
+			}
+			b.append(", ");
+		}
+	}
+
+	public static void appendChar(StringBuilder b, char... a) {
+		if (a == null) {
+			b.append("null");
+			return;
+		}
+		int max = a.length - 1;
+		if (max == -1) {
+			b.append("[]");
+			return;
+		}
+
+		b.append('[');
+
+		for (int i = 0; i < a.length; i++) {
+			b.append(a[i]);
+			if (i == max) {
+				b.append(']');
+				break;
+			}
+			b.append(", ");
+		}
+	}
+
+	public static void appendFloat(StringBuilder b, float... a) {
+		if (a == null) {
+			b.append("null");
+			return;
+		}
+		int max = a.length - 1;
+		if (max == -1) {
+			b.append("[]");
+			return;
+		}
+
+		b.append('[');
+		for (int i = 0; i < a.length; i++) {
+			b.append(a[i]);
+			if (i == max) {
+				b.append(']');
+				break;
+			}
+			b.append(", ");
+		}
+	}
+
+	public static void appendDouble(StringBuilder b, double... a) {
+		if (a == null) {
+			b.append("null");
+			return;
+		}
 		int max = a.length - 1;
 		if (max == -1) {
 			b.append("[]");
