@@ -32,7 +32,6 @@ import heavyindustry.entities.bullet.CtrlMissileBulletType;
 import heavyindustry.entities.bullet.EffectBulletType;
 import heavyindustry.entities.bullet.EndNukeBulletType;
 import heavyindustry.entities.bullet.PositionLightningBulletType;
-import heavyindustry.entities.bullet.SparkingContinuousLaserBulletType;
 import heavyindustry.entities.effect.WrapperEffect;
 import heavyindustry.entities.part.ArcCharge;
 import heavyindustry.entities.part.DrawArrowSequence;
@@ -202,7 +201,6 @@ import mindustry.world.blocks.defense.ShockMine;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.defense.turrets.ContinuousTurret;
 import mindustry.world.blocks.defense.turrets.ItemTurret;
-import mindustry.world.blocks.defense.turrets.LaserTurret;
 import mindustry.world.blocks.defense.turrets.LiquidTurret;
 import mindustry.world.blocks.defense.turrets.PointDefenseTurret;
 import mindustry.world.blocks.defense.turrets.PowerTurret;
@@ -291,9 +289,13 @@ public final class HBlocks {
 	public static Block
 			//environment
 			cliff, cliffHelper,
-			darkPanel7, darkPanel8, darkPanel9, darkPanel10, darkPanel11, darkPanelDamaged, asphalt, asphaltTiles,
+			coreZoneCenter, coreZoneDot,
+			darkPanel7, darkPanel8, darkPanel9, darkPanel10, darkPanel11, darkPanelDamaged, metalTiles15, metalTiles16, metalTiles17, metalTiles18,
+			asphalt, asphaltTiles,
 			shaleVent, basaltSpikes, basaltPlates, basaltRock, basaltWall, basaltGraphiticWall, basaltPyratiticWall, snowySand, snowySandWall, arkyciteSand, arkyciteSandWall, arkyciteSandBoulder, darksandBoulder,
 			concreteBlank, concreteFill, concreteNumber, concreteStripe, concrete, stoneFullTiles, stoneFull, stoneHalf, stoneTiles, concreteWall, pit, waterPit,
+			gravel,
+			deepSlate, deepSlateBrick, deepSlateWall, deepSlateBrickWall,
 			brine, crystalFluid, deepCrystalFluid,
 			metalFloorWater, metalFloorWater2, metalFloorWater3, metalFloorWater4, metalFloorWater5, metalFloorDamagedWater,
 			stoneWater, shaleWater, basaltWater, mudWater,
@@ -363,7 +365,7 @@ public final class HBlocks {
 			rocketLauncher, largeRocketLauncher, rocketSilo, caelum, mammoth,
 			dragonBreath, breakthrough, cloudBreaker, turbulence, ironStream, minigun,
 			hurricane, judgement, evilSpirits,
-			extinction, nukeLauncherPlatform,
+			nukeLauncherPlatform,
 			solstice, starfall, annihilate, executor, heatDeath,
 	//turret-erekir
 	rupture, rift,
@@ -415,13 +417,21 @@ public final class HBlocks {
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
-		if (HVars.isPlugin) return;
+		if (HVars.isPlugin) return;//Do not load content in plugin mode.
 
 		//environment
 		cliff = new DepthCliff("cliff") {{
 			buildType = Constant.PROV_BUILDING;
 		}};
 		cliffHelper = new DepthCliffHelper("cliff-helper") {{
+			buildType = Constant.PROV_BUILDING;
+		}};
+		coreZoneCenter = new Floor("core-zone-center", 0) {{
+			allowCorePlacement = true;
+			buildType = Constant.PROV_BUILDING;
+		}};
+		coreZoneDot = new Floor("core-zone-dot", 0) {{
+			allowCorePlacement = true;
 			buildType = Constant.PROV_BUILDING;
 		}};
 		darkPanel7 = new Floor("dark-panel-7", 0) {{
@@ -442,11 +452,39 @@ public final class HBlocks {
 		darkPanelDamaged = new Floor("dark-panel-damaged", 3) {{
 			buildType = Constant.PROV_BUILDING;
 		}};
+		metalTiles15 = new ConnectedFloor("metal-tiles-15") {{
+			autotile = true;
+			drawEdgeOut = false;
+			drawEdgeIn = false;
+			buildType = Constant.PROV_BUILDING;
+		}};
+		metalTiles16 = new ConnectedFloor("metal-tiles-16") {{
+			autotile = true;
+			drawEdgeOut = false;
+			drawEdgeIn = false;
+			buildType = Constant.PROV_BUILDING;
+		}};
+		metalTiles17 = new ConnectedFloor("metal-tiles-17") {{
+			autotile = true;
+			drawEdgeOut = false;
+			drawEdgeIn = false;
+			buildType = Constant.PROV_BUILDING;
+		}};
+		metalTiles18 = new ConnectedFloor("metal-tiles-18") {{
+			autotile = true;
+			drawEdgeOut = false;
+			drawEdgeIn = false;
+			buildType = Constant.PROV_BUILDING;
+		}};
 		asphalt = new Floor("asphalt", 0) {{
+			drawEdgeOut = false;
+			drawEdgeIn = false;
 			buildType = Constant.PROV_BUILDING;
 		}};
 		asphaltTiles = new ConnectedFloor("asphalt-tiles") {{
 			autotile = true;
+			drawEdgeOut = false;
+			drawEdgeIn = false;
 			blendGroup = asphalt;
 			buildType = Constant.PROV_BUILDING;
 		}};
@@ -457,12 +495,16 @@ public final class HBlocks {
 			buildType = Constant.PROV_BUILDING;
 		}};
 		basaltSpikes = new Floor("basalt-spikes", 4) {{
+			itemDrop = HItems.stone;
+			playerUnmineable = true;
 			attributes.set(Attribute.water, -0.3f);
 			buildType = Constant.PROV_BUILDING;
 		}};
 		basaltPlates = new Floor("basalt-plates") {{
 			tilingVariants = 2;
 			tilingSize = 4;
+			itemDrop = HItems.stone;
+			playerUnmineable = true;
 			attributes.set(Attribute.water, -0.3f);
 			buildType = Constant.PROV_BUILDING;
 		}};
@@ -540,28 +582,33 @@ public final class HBlocks {
 		}};
 		stoneFullTiles = new Floor("stone-full-tiles", 3) {{
 			itemDrop = HItems.stone;
-			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
+			buildType = Constant.PROV_BUILDING;
+			wall = Blocks.stoneWall;
 		}};
 		stoneFull = new Floor("stone-full", 3) {{
 			itemDrop = HItems.stone;
-			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
+			buildType = Constant.PROV_BUILDING;
+			wall = Blocks.stoneWall;
 		}};
 		stoneHalf = new Floor("stone-half", 3) {{
 			itemDrop = HItems.stone;
-			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
+			buildType = Constant.PROV_BUILDING;
+			wall = Blocks.stoneWall;
 		}};
 		stoneTiles = new Floor("stone-tiles", 3) {{
 			itemDrop = HItems.stone;
-			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
+			buildType = Constant.PROV_BUILDING;
+			wall = Blocks.stoneWall;
 		}};
 		concreteWall = new ConnectedStaticWall("concrete-wall") {{
 			autotile = true;
 			variants = 0;
 			buildType = Constant.PROV_BUILDING;
+			concreteBlank.asFloor().wall = concreteFill.asFloor().wall = concreteNumber.asFloor().wall = concreteStripe.asFloor().wall = concrete.asFloor().wall = this;
 		}};
 		pit = new Floor("pit", 0) {{
 			cacheLayer = HCacheLayer.pit;
@@ -591,6 +638,34 @@ public final class HBlocks {
 				return new TextureRegion[]{fullIcon};
 			}
 		};
+		gravel = new Floor("gravel", 5) {{
+			itemDrop = HItems.stone;
+			playerUnmineable = true;
+			buildType = Constant.PROV_BUILDING;
+			wall = Blocks.stoneWall;
+		}};
+		deepSlate = new Floor("deep-slate", 8) {{
+			itemDrop = HItems.stone;
+			playerUnmineable = true;
+			buildType = Constant.PROV_BUILDING;
+		}};
+		deepSlateBrick = new Floor("deep-slate-brick", 8) {{
+			itemDrop = HItems.stone;
+			playerUnmineable = true;
+			buildType = Constant.PROV_BUILDING;
+		}};
+		deepSlateWall = new StaticWall("deep-slate-wall") {{
+			variants = 4;
+			attributes.set(Attribute.sand, 0.7f);
+			buildType = Constant.PROV_BUILDING;
+			deepSlate.asFloor().wall = this;
+		}};
+		deepSlateBrickWall = new StaticWall("deep-slate-brick-wall") {{
+			variants = 5;
+			attributes.set(Attribute.sand, 0.7f);
+			buildType = Constant.PROV_BUILDING;
+			deepSlateBrick.asFloor().wall = this;
+		}};
 		softRareEarth = new Floor("soft-rare-earth", 3) {{
 			itemDrop = HItems.rareEarth;
 			buildType = Constant.PROV_BUILDING;
@@ -5530,39 +5605,6 @@ public final class HBlocks {
 			enableDrawStatus = false;
 			buildType = ItemTurretBuild::new;
 		}};
-		extinction = new LaserTurret("extinction") {{
-			requirements(Category.turret, ItemStack.with(Items.copper, 3800, Items.lead, 4100, Items.graphite, 3200, Items.titanium, 4200, Items.surgeAlloy, 3800, Items.silicon, 4300, Items.thorium, 2400, HItems.uranium, 1700, HItems.crystal, 900, HItems.crystallineCircuit, 500));
-			size = 14;
-			health = 89500;
-			range = 520f;
-			reload = 380f;
-			coolantMultiplier = 0.4f;
-			shootCone = 12f;
-			shootDuration = 360f;
-			shake = 4f;
-			firingMoveFract = 0.09f;
-			shootEffect = Fx.shootBigSmoke2;
-			recoil = 7f;
-			heatColor = Color.white;
-			rotateSpeed = 0.82f;
-			shootSound = HSounds.extinctionShoot;
-			loopSound = HSounds.beamIntenseHighpitchTone;
-			loopSoundVolume = 2f;
-			shootType = new SparkingContinuousLaserBulletType(770f) {{
-				length = 560f;
-				lightStroke = 90f;
-				incendChance = 0.7f;
-				incendSpread = 9f;
-				incendAmount = 2;
-				extinction = true;
-				timescaleDamage = true;
-				status = StatusEffects.melting;
-				status2 = HStatusEffects.radiation;
-			}};
-			consumePower(175f);
-			coolant = consumeCoolant(2.5f);
-			coolant.update(false);
-		}};
 		nukeLauncherPlatform = new ItemTurret("nuke-launcher-platform") {{
 			requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.with(Items.silicon, 1500, Items.plastanium, 3000, Items.surgeAlloy, 3000, HItems.crystal, 1200, HItems.uranium, 2000, HItems.heavyAlloy, 2000));
 			size = 6;
@@ -5577,7 +5619,8 @@ public final class HBlocks {
 			fogRadiusMultiplier = 0.667f;
 			recoilTime = 180f;
 			recoil = 4f;
-			shootSound = Sounds.missileLaunch;
+			shootCone = 360f;
+			shootSound = HSounds.desNukeShoot;
 			insulated = true;
 			absorbLasers = true;
 			shootWarmupSpeed = 0.08f;
@@ -5590,7 +5633,6 @@ public final class HBlocks {
 			accurateDelay = false;
 			inaccuracy = 0;
 			rotateSpeed = 1.25f;
-			shootCone = 360f;
 		}};
 		solstice = new PowerTurret("solstice") {{
 			size = 8;
@@ -6328,11 +6370,11 @@ public final class HBlocks {
 			buildCostMultiplier = 0.8f;
 		}};
 		largeLandingPad = new LandingPad("large-landing-pad") {{
-			requirements(Category.effect, BuildVisibility.notLegacyLaunchPadOnly, ItemStack.with(HItems.uranium, 150, HItems.crystal, 120, Items.metaglass, 180, Items.plastanium, 250, Items.silicon, 350, Items.phaseFabric, 120));
+			requirements(Category.effect, BuildVisibility.notLegacyLaunchPadOnly, ItemStack.with(HItems.uranium, 100, HItems.crystal, 120, Items.metaglass, 180, Items.plastanium, 250, Items.silicon, 300, Items.phaseFabric, 80));
 			size = 5;
 			itemCapacity = 750;
-			liquidCapacity = 300f;
-			consumeLiquidAmount = 60f;
+			liquidCapacity = 360f;
+			consumeLiquidAmount = 180f;
 			consumeLiquid = Liquids.cryofluid;
 			buildCostMultiplier = 0.7f;
 		}};

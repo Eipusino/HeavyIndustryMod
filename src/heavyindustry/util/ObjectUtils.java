@@ -309,10 +309,14 @@ public final class ObjectUtils {
 		throw (E) err;
 	}
 
+	public static String toString(Object o) {
+		return toString(o, true);
+	}
+
 	/**
 	 * Returns a string reporting the value of each declared field, via reflection.
 	 * <p>Static fields are automatically skipped. Produces output like:
-	 * <p>{@code "SimpleClassName[integer=1234, string="hello", character='c', intArray=[1, 2, 3], object=java.lang.Object@1234abcd, none=null]"}.
+	 * <p>{@code "SimpleClassName[integer=1234, string=hello, character=c, intArray=[1, 2, 3], object=java.lang.Object@1234abcd, none=null]"}.
 	 * <p>If there is an exception in obtaining the value of a certain field, it will result in:
 	 * <p>{@code "SimpleClassName[unknown=???]"}.
 	 *
@@ -382,10 +386,6 @@ public final class ObjectUtils {
 							// It shouldn't have happened...
 							sb.append("???");
 						}
-					} else if (value instanceof Character h) {
-						sb.append('\'').append(h.charValue()).append('\'');
-					} else if (value instanceof String s) {
-						sb.append('"').append(s).append('"');
 					} else {
 						sb.append(value);
 					}

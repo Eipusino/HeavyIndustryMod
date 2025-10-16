@@ -1,7 +1,6 @@
 package heavyindustry.util;
 
 import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -14,9 +13,6 @@ public interface PlatformImpl {
 
 	/** @return The caller class of the current method. */
 	Class<?> callerClass();
-
-	/** @return The highest authority lookup. */
-	Lookup lookup();
 
 	default Field[] getFields(Class<?> cls) {
 		return cls.getDeclaredFields();

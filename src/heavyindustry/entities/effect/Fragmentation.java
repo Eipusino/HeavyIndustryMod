@@ -549,7 +549,7 @@ public class Fragmentation {
 
 		@Override
 		public float clipSize() {
-			if (goreLines != null) return 9999999f;
+			if (goreLines != null) return 114514f;
 			int max = Math.max(main.region.width, main.region.height);
 			return max * Draw.scl * 1.5f;
 		}

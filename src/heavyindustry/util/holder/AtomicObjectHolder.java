@@ -1,15 +1,17 @@
-package heavyindustry.util.pair;
+package heavyindustry.util.holder;
+
+import heavyindustry.util.ObjectUtils;
 
 import java.util.Map.Entry;
 
 /** @since 1.0.7 */
-public class AtomicObjectPair<K, V> implements Entry<K, V>, Cloneable {
+public class AtomicObjectHolder<K, V> implements Entry<K, V>, Cloneable {
 	public volatile K key;
 	public volatile V value;
 
-	public AtomicObjectPair() {}
+	public AtomicObjectHolder() {}
 
-	public AtomicObjectPair(K k, V v) {
+	public AtomicObjectHolder(K k, V v) {
 		key = k;
 		value = v;
 	}
@@ -20,13 +22,18 @@ public class AtomicObjectPair<K, V> implements Entry<K, V>, Cloneable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public AtomicObjectPair<K, V> copy() {
+	public AtomicObjectHolder<K, V> copy() {
 		try {
-			return (AtomicObjectPair<K, V>) super.clone();
+			return (AtomicObjectHolder<K, V>) super.clone();
 		} catch (CloneNotSupportedException e) {
 			//this shouldn't happen, since we are Cloneable
-			return new AtomicObjectPair<>(key, value);
+			return new AtomicObjectHolder<>(key, value);
 		}
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		return o instanceof AtomicObjectHolder<?, ?> that && ObjectUtils.equals(key, that.key) && ObjectUtils.equals(value, that.value);
 	}
 
 	@Override

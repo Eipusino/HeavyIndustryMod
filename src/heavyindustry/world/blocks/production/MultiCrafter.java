@@ -827,11 +827,11 @@ public class MultiCrafter extends Block {
 		}
 
 		public boolean getConsumeItem(Item item) {
-			return itemFilter.containsKey(item) && itemFilter.get(item);
+			return itemFilter.get(item);
 		}
 
 		public boolean getConsumeLiquid(Liquid liquid) {
-			return liquidFilter.containsKey(liquid) && liquidFilter.get(liquid);
+			return liquidFilter.get(liquid);
 		}
 
 		public void consumeLiquid(Liquid liquid, float amount) {

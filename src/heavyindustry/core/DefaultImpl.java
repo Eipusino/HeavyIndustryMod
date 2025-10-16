@@ -2,8 +2,6 @@ package heavyindustry.core;
 
 import heavyindustry.util.PlatformImpl;
 
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.AccessibleObject;
 
 public class DefaultImpl implements PlatformImpl {
@@ -27,10 +25,5 @@ public class DefaultImpl implements PlatformImpl {
 		} catch (ClassNotFoundException e) {
 			return null;
 		}
-	}
-
-	@Override
-	public Lookup lookup() {
-		return MethodHandles.lookup();
 	}
 }

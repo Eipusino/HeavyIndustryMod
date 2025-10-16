@@ -27,7 +27,6 @@ import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.type.PayloadStack;
 import mindustry.type.UnitType;
-import mindustry.world.blocks.campaign.LandingPad;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.blocks.defense.turrets.ContinuousLiquidTurret;
 import mindustry.world.blocks.defense.turrets.ItemTurret;
@@ -443,8 +442,6 @@ public final class HOverrides {
 		if (Blocks.tankAssembler instanceof UnitAssembler assembler) assembler.plans.add(new AssemblerUnitPlan(HUnitTypes.dominate, 60f * 60f * 4f, PayloadStack.list(UnitTypes.precept, 4, HBlocks.aparajitoLarge, 20)));
 		if (Blocks.shipAssembler instanceof UnitAssembler assembler) assembler.plans.add(new AssemblerUnitPlan(HUnitTypes.havoc, 60f * 60f * 4f, PayloadStack.list(UnitTypes.obviate, 4, HBlocks.aparajitoLarge, 20)));
 		if (Blocks.mechAssembler instanceof UnitAssembler assembler) assembler.plans.add(new AssemblerUnitPlan(HUnitTypes.oracle, 60f * 60f * 4f, PayloadStack.list(UnitTypes.anthicus, 4, HBlocks.aparajitoLarge, 20)));
-		//blocks-campaign
-		if (Blocks.landingPad instanceof LandingPad pad) pad.consumeLiquidAmount /= 2.5f;
 		//units
 		UnitTypes.alpha.coreUnitDock = true;
 		UnitTypes.beta.coreUnitDock = true;

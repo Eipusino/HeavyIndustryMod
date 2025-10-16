@@ -7,7 +7,7 @@ import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
-import heavyindustry.util.pair.ObjectPair;
+import heavyindustry.util.holder.ObjectHolder;
 
 import java.lang.reflect.Array;
 import java.util.AbstractSet;
@@ -28,7 +28,7 @@ import static heavyindustry.util.Constant.PRIME3;
  *
  * @author Eipusino
  */
-public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Map<K, V>, Eachable<ObjectPair<K, V>>, Cloneable {
+public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, Map<K, V>, Eachable<ObjectHolder<K, V>>, Cloneable {
 	public int size;
 
 	public final Class<?> keyComponentType;
@@ -114,14 +114,14 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 
 	/** Iterates through key/value pairs. */
 	public void each(Cons2<? super K, ? super V> cons) {
-		for (ObjectPair<K, V> entry : iterator()) {
+		for (ObjectHolder<K, V> entry : iterator()) {
 			cons.get(entry.key, entry.value);
 		}
 	}
 
 	@Override
-	public void each(Cons<? super ObjectPair<K, V>> cons) {
-		for (ObjectPair<K, V> entry : iterator()) {
+	public void each(Cons<? super ObjectHolder<K, V>> cons) {
+		for (ObjectHolder<K, V> entry : iterator()) {
 			cons.get(entry);
 		}
 	}
@@ -216,7 +216,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 
 	public void putAll(CollectionObjectMap<? extends K, ? extends V> map) {
 		ensureCapacity(map.size);
-		for (ObjectPair<? extends K, ? extends V> entry : map)
+		for (ObjectHolder<? extends K, ? extends V> entry : map)
 			put(entry.key, entry.value);
 	}
 
@@ -446,7 +446,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 
 	@Override
 	public void putAll(Map<? extends K, ? extends V> m) {
-		for (ObjectPair<K, V> set : iterator()) {
+		for (ObjectHolder<K, V> set : iterator()) {
 			put(set.getKey(), set.getValue());
 		}
 	}
@@ -665,9 +665,9 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) return true;
-		if (!(obj instanceof CollectionObjectMap<?, ?> other)) return false;
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if (!(o instanceof CollectionObjectMap<?, ?> other)) return false;
 		if (other.size != size) return false;
 		for (int i = 0, n = capacity + stashSize; i < n; i++) {
 			K key = keyTable[i];
@@ -852,7 +852,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 		}
 
 		class MapEnt implements Entry<K, V> {
-			ObjectPair<K, V> entry;
+			ObjectHolder<K, V> entry;
 
 			@Override
 			public K getKey() {
@@ -917,8 +917,8 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 		}
 	}
 
-	public static class Entries<K, V> extends MapIterator<K, V, ObjectPair<K, V>> {
-		ObjectPair<K, V> entry = new ObjectPair<>();
+	public static class Entries<K, V> extends MapIterator<K, V, ObjectHolder<K, V>> {
+		ObjectHolder<K, V> entry = new ObjectHolder<>();
 
 		public Entries(CollectionObjectMap<K, V> map) {
 			super(map);
@@ -926,7 +926,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectPair<K, V>>, Ma
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
-		public ObjectPair<K, V> next() {
+		public ObjectHolder<K, V> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 

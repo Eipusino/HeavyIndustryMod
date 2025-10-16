@@ -7,6 +7,7 @@ import arc.util.Log;
 import heavyindustry.HVars;
 import mindustry.Vars;
 import mindustry.game.EventType.ClientLoadEvent;
+import mindustry.gen.Sounds;
 
 public final class HSounds {
 	public static Sound
@@ -42,7 +43,6 @@ public final class HSounds {
 			flowrateAbosrb = new Sound(),
 			eviscerationCharge = new Sound(),
 			eviscerationBlast = new Sound(),
-			extinctionShoot = new Sound(),
 			beamIntenseHighpitchTone = new Sound(),
 
 			transform = new Sound(),
@@ -71,61 +71,60 @@ public final class HSounds {
 
 	public static void load() {
 		try {
-			ct1 = new Sound(ogg("ct1"));
-			dbz1 = new Sound(ogg("dbz1"));
-			dd1 = new Sound(ogg("dd1"));
-			fj = new Sound(ogg("fj"));
-			jg1 = new Sound(ogg("jg1"));
-			flak = new Sound(mp3("flak"));
-			flak2 = new Sound(ogg("flak2"));
-			launch = new Sound(ogg("launch"));
-			shock = new Sound(ogg("shock"));
-			jumpIn = new Sound(ogg("jumpIn"));
-			gauss = new Sound(ogg("gauss"));
-			radar = new Sound(mp3("radar"));
-			fissure = new Sound(ogg("fissure"));
-			blaster = new Sound(ogg("blaster"));
-			hugeShoot = new Sound(ogg("hugeShoot"));
-			hugeBlast = new Sound(ogg("hugeBlast"));
-			largeBeam = new Sound(ogg("largeBeam"));
-			metalPipe = new Sound(ogg("metalPipe"));
-			metalWalk = new Sound(ogg("metalWalk"));
-			alert2 = new Sound(ogg("alert2"));
-			hammer = new Sound(ogg("hammer"));
-			coolingFan = new Sound(ogg("coolingFan"));
-			hailRain = new Sound(ogg("hailRain"));
-			bigHailstoneHit = new Sound(ogg("bigHailstoneHit"));
-			giantHailstoneHit = new Sound(ogg("giantHailstoneHit"));
-			railGunBlast = new Sound(ogg("railGunBlast"));
-			railGunCharge = new Sound(ogg("railGunCharge"));
-			shootAltHeavy = new Sound(ogg("shootAltHeavy"));
-			shootAltLight = new Sound(ogg("shootAltLight"));
-			flowrateAbosrb = new Sound(ogg("flowrateAbsorb"));
-			eviscerationCharge = new Sound(ogg("eviscerationCharge"));
-			eviscerationBlast = new Sound(ogg("eviscerationBlast"));
-			extinctionShoot = new Sound(ogg("extinctionShoot"));
-			beamIntenseHighpitchTone = new Sound(ogg("beamIntenseHighpitchTone"));
+			ct1 = load("ct1.ogg");
+			dbz1 = load("dbz1.ogg");
+			dd1 = load("dd1.ogg");
+			fj = load("fj.ogg");
+			jg1 = load("jg1.ogg");
+			flak = load("flak.mp3");
+			flak2 = load("flak2.ogg");
+			launch = load("launch.ogg");
+			shock = load("shock.ogg");
+			jumpIn = load("jumpIn.ogg");
+			gauss = load("gauss.ogg");
+			radar = load("radar.mp3");
+			fissure = load("fissure.ogg");
+			blaster = load("blaster.ogg");
+			hugeShoot = load("hugeShoot.ogg");
+			hugeBlast = load("hugeBlast.ogg");
+			largeBeam = load("largeBeam.ogg");
+			metalPipe = load("metalPipe.ogg");
+			metalWalk = load("metalWalk.ogg");
+			alert2 = load("alert2.ogg");
+			hammer = load("hammer.ogg");
+			coolingFan = load("coolingFan.ogg");
+			hailRain = load("hailRain.ogg");
+			bigHailstoneHit = load("bigHailstoneHit.ogg");
+			giantHailstoneHit = load("giantHailstoneHit.ogg");
+			railGunBlast = load("railGunBlast.ogg");
+			railGunCharge = load("railGunCharge.ogg");
+			shootAltHeavy = load("shootAltHeavy.ogg");
+			shootAltLight = load("shootAltLight.ogg");
+			flowrateAbosrb = load("flowrateAbsorb.ogg");
+			eviscerationCharge = load("eviscerationCharge.ogg");
+			eviscerationBlast = load("eviscerationBlast.ogg");
+			beamIntenseHighpitchTone = load("beamIntenseHighpitchTone.ogg");
 
-			transform = new Sound(ogg("transform"));
-			largeTransform = new Sound(ogg("transformLarge"));
-			idle = new Sound(ogg("idle"));
-			clang = new Sound(ogg("clang"));
-			bigCharge = new Sound(ogg("bigCharge"));
-			laserCharge = new Sound(ogg("laserCharge"));
-			laserSmall = new Sound(ogg("laserSmall"));
-			laserBig = new Sound(ogg("laserBig"));
-			desSpearHit = new Sound(ogg("desSpearHit"));
-			desSpearCry = new Sound(ogg("desSpearCry"));
-			desLaser = new Sound(ogg("desLaser"));
-			desLaserShoot = new Sound(ogg("desLaserShoot"));
-			desRailgun = new Sound(ogg("desRailgun"));
-			desRailHit = new Sound(ogg("desRailHit"));
-			desNukeShoot = new Sound(ogg("desNukeShoot"));
-			desNukeHit = new Sound(ogg("desNukeHit"));
-			desNukeHitFar = new Sound(ogg("desNukeHitFar"));
-			expElectric = new Sound(ogg("expElectric"));
-			expExotic = new Sound(ogg("expExotic"));
-			expOrganic = new Sound(ogg("expOrganic"));
+			transform = load("transform.ogg");
+			largeTransform = load("transformLarge.ogg");
+			idle = load("idle.ogg");
+			clang = load("clang.ogg");
+			bigCharge = load("bigCharge.ogg");
+			laserCharge = load("laserCharge.ogg");
+			laserSmall = load("laserSmall.ogg");
+			laserBig = load("laserBig.ogg");
+			desSpearHit = load("desSpearHit.ogg");
+			desSpearCry = load("desSpearCry.ogg");
+			desLaser = load("desLaser.ogg");
+			desLaserShoot = load("desLaserShoot.ogg");
+			desRailgun = load("desRailgun.ogg");
+			desRailHit = load("desRailHit.ogg");
+			desNukeShoot = load("desNukeShoot.ogg");
+			desNukeHit = load("desNukeHit.ogg");
+			desNukeHitFar = load("desNukeHitFar.ogg");
+			expElectric = load("expElectric.ogg");
+			expExotic = load("expExotic.ogg");
+			expOrganic = load("expOrganic.ogg");
 		} catch (Exception e) {
 			Log.err(e);
 
@@ -136,6 +135,18 @@ public final class HSounds {
 	public static void alertLoop() {
 		if (!Vars.headless) {
 			Vars.control.sound.loop(alert2, 2f);
+		}
+	}
+
+	public static Sound load(String name) {
+		Fi file = HVars.internalTree.child("sounds/" + name);
+
+		if (file.exists()) {
+			return new Sound(file);
+		} else {
+			Log.warn("The path @ does not exist!", file.name());
+
+			return Sounds.back;
 		}
 	}
 

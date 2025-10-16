@@ -7,7 +7,7 @@ import arc.struct.IntSeq;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
-import heavyindustry.util.pair.IntPair;
+import heavyindustry.util.holder.IntHolder;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -27,7 +27,7 @@ import static heavyindustry.util.Constant.PRIME3;
  *
  * @author Nathan Sweet
  */
-public class IntMap2<V> implements Iterable<IntPair<V>>, Eachable<IntPair<V>>, Cloneable {
+public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>>, Cloneable {
 	public final Class<?> valueComponentType;
 
 	public int size;
@@ -53,7 +53,7 @@ public class IntMap2<V> implements Iterable<IntPair<V>>, Eachable<IntPair<V>>, C
 
 		for (int i = 0; i < values.length / 2; i++) {
 			Object key = values[i * 2];
-			int keyInt = (key instanceof Character ? ((Character) key).charValue() : (Integer) key);
+			int keyInt = (key instanceof Character character ? character.charValue() : (Integer) key);
 			map.put(keyInt, (V) values[i * 2 + 1]);
 		}
 
@@ -131,8 +131,8 @@ public class IntMap2<V> implements Iterable<IntPair<V>>, Eachable<IntPair<V>>, C
 	}
 
 	@Override
-	public void each(Cons<? super IntPair<V>> cons) {
-		for (IntPair<V> entry : entries()) {
+	public void each(Cons<? super IntHolder<V>> cons) {
+		for (IntHolder<V> entry : entries()) {
 			cons.get(entry);
 		}
 	}
@@ -209,7 +209,7 @@ public class IntMap2<V> implements Iterable<IntPair<V>>, Eachable<IntPair<V>>, C
 	}
 
 	public void putAll(IntMap2<? extends V> map) {
-		for (IntPair<? extends V> entry : map.entries())
+		for (IntHolder<? extends V> entry : map.entries())
 			put(entry.key, entry.value);
 	}
 
@@ -619,18 +619,18 @@ public class IntMap2<V> implements Iterable<IntPair<V>>, Eachable<IntPair<V>>, C
 		return h;
 	}
 
-	@SuppressWarnings("unchecked")
-	public boolean equals(Object obj) {
-		if (obj == this) return true;
-		if (!(obj instanceof IntMap2<?> map) || map.valueComponentType != valueComponentType) return false;
-		IntMap2<V> other = (IntMap2<V>) map;
-		if (other.size != size) return false;
-		if (other.hasZeroValue != hasZeroValue) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if (!(o instanceof IntMap2<?> map) || map.valueComponentType != valueComponentType) return false;
+
+		if (map.size != size) return false;
+		if (map.hasZeroValue != hasZeroValue) return false;
 		if (hasZeroValue) {
-			if (other.zeroValue == null) {
+			if (map.zeroValue == null) {
 				if (zeroValue != null) return false;
 			} else {
-				if (!other.zeroValue.equals(zeroValue)) return false;
+				if (!map.zeroValue.equals(zeroValue)) return false;
 			}
 		}
 		for (int i = 0, n = capacity + stashSize; i < n; i++) {
@@ -638,9 +638,9 @@ public class IntMap2<V> implements Iterable<IntPair<V>>, Eachable<IntPair<V>>, C
 			if (key != EMPTY) {
 				V value = valueTable[i];
 				if (value == null) {
-					if (!other.containsKey(key) || other.get(key) != null) return false;
+					if (!map.containsKey(key) || map.get(key) != null) return false;
 				} else {
-					if (!value.equals(other.get(key))) return false;
+					if (!value.equals(map.get(key))) return false;
 				}
 			}
 		}
@@ -679,7 +679,7 @@ public class IntMap2<V> implements Iterable<IntPair<V>>, Eachable<IntPair<V>>, C
 	}
 
 	@Override
-	public Iterator<IntPair<V>> iterator() {
+	public Iterator<IntHolder<V>> iterator() {
 		return entries();
 	}
 
@@ -800,8 +800,8 @@ public class IntMap2<V> implements Iterable<IntPair<V>>, Eachable<IntPair<V>>, C
 		}
 	}
 
-	public static class Entries<V> extends MapIterator<V> implements Iterable<IntPair<V>>, Iterator<IntPair<V>> {
-		IntPair<V> entry = new IntPair<>();
+	public static class Entries<V> extends MapIterator<V> implements Iterable<IntHolder<V>>, Iterator<IntHolder<V>> {
+		IntHolder<V> entry = new IntHolder<>();
 
 		public Entries(IntMap2<V> map) {
 			super(map);
@@ -809,7 +809,7 @@ public class IntMap2<V> implements Iterable<IntPair<V>>, Eachable<IntPair<V>>, C
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
-		public IntPair<V> next() {
+		public IntHolder<V> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			int[] keyTable = map.keyTable;
@@ -832,7 +832,7 @@ public class IntMap2<V> implements Iterable<IntPair<V>>, Eachable<IntPair<V>>, C
 		}
 
 		@Override
-		public Iterator<IntPair<V>> iterator() {
+		public Iterator<IntHolder<V>> iterator() {
 			return this;
 		}
 

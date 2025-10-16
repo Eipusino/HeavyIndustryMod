@@ -44,8 +44,8 @@ public class Lazy<T> {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		return obj == this || obj instanceof Lazy<?> lazy && ObjectUtils.equals(value, lazy.value);
+	public boolean equals(Object o) {
+		return o == this || o instanceof Lazy<?> lazy && ObjectUtils.equals(value, lazy.value);
 	}
 
 	@Override

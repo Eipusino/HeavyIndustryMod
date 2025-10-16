@@ -1,19 +1,19 @@
-package heavyindustry.util.pair;
+package heavyindustry.util.holder;
 
 import heavyindustry.util.ObjectUtils;
 
-public class LongPair<V> implements Cloneable {
+public class LongHolder<V> implements Cloneable {
 	public long key;
 	public V value;
 
-	public LongPair() {}
+	public LongHolder() {}
 
-	public LongPair(long k, V v) {
+	public LongHolder(long k, V v) {
 		key = k;
 		value = v;
 	}
 
-	public LongPair<V> set(long k, V v) {
+	public LongHolder<V> set(long k, V v) {
 		key = k;
 		value = v;
 
@@ -21,8 +21,8 @@ public class LongPair<V> implements Cloneable {
 	}
 
 	@Override
-	public boolean equals(Object object) {
-		return object instanceof LongPair<?> pair && key == pair.key && ObjectUtils.equals(value, pair.value);
+	public boolean equals(Object o) {
+		return o instanceof LongHolder<?> that && key == that.key && ObjectUtils.equals(value, that.value);
 	}
 
 	@Override
@@ -36,11 +36,11 @@ public class LongPair<V> implements Cloneable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public LongPair<V> copy() {
+	public LongHolder<V> copy() {
 		try {
-			return (LongPair<V>) super.clone();
+			return (LongHolder<V>) super.clone();
 		} catch (CloneNotSupportedException suck) {
-			return new LongPair<>(key, value);
+			return new LongHolder<>(key, value);
 		}
 	}
 }

@@ -443,8 +443,8 @@ public class CharSet {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof CharSet other)) return false;
+	public boolean equals(Object o) {
+		if (!(o instanceof CharSet other)) return false;
 		if (other.size != size) return false;
 		if (other.hasZeroValue != hasZeroValue) return false;
 		for (int i = 0, n = capacity + stashSize; i < n; i++)

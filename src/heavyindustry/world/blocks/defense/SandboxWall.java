@@ -20,7 +20,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.ui.Elements;
-import heavyindustry.util.pair.IntFloatPair;
+import heavyindustry.util.holder.IntFloatHolder;
 import mindustry.entities.Damage;
 import mindustry.entities.Lightning;
 import mindustry.entities.TargetPriority;
@@ -44,7 +44,7 @@ import static mindustry.Vars.state;
 import static mindustry.Vars.tilesize;
 
 public class SandboxWall extends Block {
-	protected static final IntFloatPair configVec = new IntFloatPair();
+	protected static final IntFloatHolder configVec = new IntFloatHolder();
 
 	public int dpsUpdateTime = timers++;
 
@@ -80,7 +80,7 @@ public class SandboxWall extends Block {
 				tile.hit = 0f;
 			}
 		});
-		config(IntFloatPair.class, (SandboxWallBuild tile, IntFloatPair data) -> {
+		config(IntFloatHolder.class, (SandboxWallBuild tile, IntFloatHolder data) -> {
 			tile.data.configure(data.key, data.value);
 		});
 

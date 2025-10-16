@@ -6,7 +6,7 @@ import arc.struct.FloatSeq;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
-import heavyindustry.util.pair.ObjectFloatPair;
+import heavyindustry.util.holder.ObjectFloatHolder;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;
@@ -26,7 +26,7 @@ import static heavyindustry.util.Constant.PRIME3;
  * @author Nathan Sweet
  * @author Eipusino
  */
-public class ObjectFloatMap2<K> implements Iterable<ObjectFloatPair<K>>, Eachable<ObjectFloatPair<K>> {
+public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eachable<ObjectFloatHolder<K>> {
 	public int size;
 
 	public final Class<?> keyComponentType;
@@ -97,8 +97,8 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatPair<K>>, Eachabl
 	}
 
 	@Override
-	public void each(Cons<? super ObjectFloatPair<K>> cons) {
-		for (ObjectFloatPair<K> e : entries()) {
+	public void each(Cons<? super ObjectFloatHolder<K>> cons) {
+		for (ObjectFloatHolder<K> e : entries()) {
 			cons.get(e);
 		}
 	}
@@ -163,7 +163,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatPair<K>>, Eachabl
 	}
 
 	public void putAll(ObjectFloatMap2<? extends K> map) {
-		for (ObjectFloatPair<? extends K> entry : map.entries()) put(entry.key, entry.value);
+		for (ObjectFloatHolder<? extends K> entry : map.entries()) put(entry.key, entry.value);
 	}
 
 	/** Skips checks for existing keys. */
@@ -284,7 +284,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatPair<K>>, Eachabl
 	}
 
 	/** @param defaultValue Returned if the key was not associated with a value. */
-	public float get(K key, float defaultValue) {
+	public float get(Object key, float defaultValue) {
 		if (key == null) return defaultValue;
 
 		int hashCode = key.hashCode();
@@ -299,7 +299,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatPair<K>>, Eachabl
 		return valueTable[index];
 	}
 
-	private float getStash(K key, float defaultValue) {
+	private float getStash(Object key, float defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return valueTable[i];
 		return defaultValue;
@@ -569,18 +569,17 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatPair<K>>, Eachabl
 		return h;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) return true;
-		if (!(obj instanceof ObjectFloatMap2<?> map) || map.keyComponentType != keyComponentType) return false;
-		ObjectFloatMap2<K> other = (ObjectFloatMap2<K>) map;
-		if (other.size != size) return false;
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if (!(o instanceof ObjectFloatMap2<?> map) || map.keyComponentType != keyComponentType) return false;
+
+		if (map.size != size) return false;
 		for (int i = 0, n = capacity + stashSize; i < n; i++) {
 			K key = keyTable[i];
 			if (key != null) {
-				float otherValue = other.get(key, 0f);
-				if (otherValue == 0f && !other.containsKey(key)) return false;
+				float otherValue = map.get(key, 0f);
+				if (otherValue == 0f && !map.containsKey(key)) return false;
 				float value = valueTable[i];
 				if (otherValue != value) return false;
 			}
@@ -726,8 +725,8 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatPair<K>>, Eachabl
 		}
 	}
 
-	public static class Entries<K> extends MapIterator<K> implements Iterable<ObjectFloatPair<K>>, Iterator<ObjectFloatPair<K>> {
-		ObjectFloatPair<K> entry = new ObjectFloatPair<>();
+	public static class Entries<K> extends MapIterator<K> implements Iterable<ObjectFloatHolder<K>>, Iterator<ObjectFloatHolder<K>> {
+		ObjectFloatHolder<K> entry = new ObjectFloatHolder<>();
 
 		public Entries(ObjectFloatMap2<K> map) {
 			super(map);
@@ -735,7 +734,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatPair<K>>, Eachabl
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
-		public ObjectFloatPair<K> next() {
+		public ObjectFloatHolder<K> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			K[] keyTable = map.keyTable;

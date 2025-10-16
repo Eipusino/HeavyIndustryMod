@@ -447,16 +447,16 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 		return a;
 	}
 
-	<T> T[] toArray(Class<T[]> klazz) {
+	<T> T[] toArray(Class<T[]> c) {
 		final E[] es = values;
 		final T[] a;
 		final int end;
 		if ((end = tail + ((head <= tail) ? 0 : es.length)) >= 0) {
 			// Uses null extension feature of copyOfRange
-			a = Arrays.copyOfRange(es, head, end, klazz);
+			a = Arrays.copyOfRange(es, head, end, c);
 		} else {
 			// integer overflow!
-			a = Arrays.copyOfRange(es, 0, end - head, klazz);
+			a = Arrays.copyOfRange(es, 0, end - head, c);
 			System.arraycopy(es, head, a, 0, es.length - head);
 		}
 		if (end != tail)
@@ -509,26 +509,21 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof CollectionQueue<?> q)) return false;
+		if (!(o instanceof CollectionQueue<?> other)) return false;
 
-		if (q.size != size) return false;
+		if (other.size != size) return false;
 
-		final E[] myValues = values;
-		final int myBackingLength = myValues.length;
-		final Object[] itsValues = q.values;
-		final int itsBackingLength = itsValues.length;
-
-		int myIndex = head;
-		int itsIndex = q.head;
+		int index = head;
+		int itsIndex = other.head;
 		for (int s = 0; s < size; s++) {
-			E myValue = myValues[myIndex];
-			Object itsValue = itsValues[itsIndex];
+			E myValue = values[index];
+			Object itsValue = other.values[itsIndex];
 
 			if (!(myValue == null ? itsValue == null : myValue.equals(itsValue))) return false;
-			myIndex++;
+			index++;
 			itsIndex++;
-			if (myIndex == myBackingLength) myIndex = 0;
-			if (itsIndex == itsBackingLength) itsIndex = 0;
+			if (index == values.length) index = 0;
+			if (itsIndex == other.values.length) itsIndex = 0;
 		}
 		return true;
 	}

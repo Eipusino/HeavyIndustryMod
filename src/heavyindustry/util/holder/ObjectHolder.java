@@ -1,4 +1,4 @@
-package heavyindustry.util.pair;
+package heavyindustry.util.holder;
 
 import heavyindustry.util.ObjectUtils;
 
@@ -24,13 +24,13 @@ import java.util.Map.Entry;
  * @see java.util.Map#ofEntries Map.ofEntries()
  * @since 1.0.7
  */
-public class ObjectPair<K, V> implements Entry<K, V>, Cloneable {
+public class ObjectHolder<K, V> implements Entry<K, V>, Cloneable {
 	public K key;
 	public V value;
 
-	public ObjectPair() {}
+	public ObjectHolder() {}
 
-	public ObjectPair(K k, V v) {
+	public ObjectHolder(K k, V v) {
 		key = k;
 		value = v;
 	}
@@ -67,7 +67,7 @@ public class ObjectPair<K, V> implements Entry<K, V>, Cloneable {
 		return oldValue;
 	}
 
-	public ObjectPair<K, V> set(K k, V v) {
+	public ObjectHolder<K, V> set(K k, V v) {
 		key = k;
 		value = v;
 
@@ -75,12 +75,12 @@ public class ObjectPair<K, V> implements Entry<K, V>, Cloneable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public ObjectPair<K, V> copy() {
+	public ObjectHolder<K, V> copy() {
 		try {
-			return (ObjectPair<K, V>) super.clone();
+			return (ObjectHolder<K, V>) super.clone();
 		} catch (CloneNotSupportedException e) {
 			//this shouldn't happen, since we are Cloneable
-			return new ObjectPair<>(key, value);
+			return new ObjectHolder<>(key, value);
 		}
 	}
 
@@ -92,7 +92,7 @@ public class ObjectPair<K, V> implements Entry<K, V>, Cloneable {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof Entry<?, ?> e && ObjectUtils.equals(key, e.getKey()) && ObjectUtils.equals(value, e.getValue());
+		return o instanceof Entry<?, ?> that && ObjectUtils.equals(key, that.getKey()) && ObjectUtils.equals(value, that.getValue());
 	}
 
 	@Override

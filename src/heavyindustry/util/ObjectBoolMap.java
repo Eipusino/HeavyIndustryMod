@@ -6,7 +6,7 @@ import arc.struct.BoolSeq;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
-import heavyindustry.util.pair.ObjectBoolPair;
+import heavyindustry.util.holder.ObjectBoolHolder;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;
@@ -15,7 +15,7 @@ import java.util.NoSuchElementException;
 import static heavyindustry.util.Constant.PRIME2;
 import static heavyindustry.util.Constant.PRIME3;
 
-public class ObjectBoolMap<K> implements Iterable<ObjectBoolPair<K>>, Eachable<ObjectBoolPair<K>> {
+public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable<ObjectBoolHolder<K>> {
 	public int size;
 
 	public final Class<?> keyComponentType;
@@ -86,8 +86,8 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolPair<K>>, Eachable<O
 	}
 
 	@Override
-	public void each(Cons<? super ObjectBoolPair<K>> cons) {
-		for (ObjectBoolPair<K> entry : entries()) {
+	public void each(Cons<? super ObjectBoolHolder<K>> cons) {
+		for (ObjectBoolHolder<K> entry : entries()) {
 			cons.get(entry);
 		}
 	}
@@ -152,7 +152,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolPair<K>>, Eachable<O
 	}
 
 	public void putAll(ObjectBoolMap<? extends K> map) {
-		for (ObjectBoolPair<? extends K> entry : map.entries())
+		for (ObjectBoolHolder<? extends K> entry : map.entries())
 			put(entry.key, entry.value);
 	}
 
@@ -280,12 +280,12 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolPair<K>>, Eachable<O
 		size++;
 	}
 
-	public boolean get(K key) {
+	public boolean get(Object key) {
 		return get(key, false);
 	}
 
 	/** @param defaultValue Returned if the key was not associated with a value. */
-	public boolean get(K key, boolean defaultValue) {
+	public boolean get(Object key, boolean defaultValue) {
 		if (key == null) return defaultValue;
 
 		int hashCode = key.hashCode();
@@ -300,7 +300,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolPair<K>>, Eachable<O
 		return valueTable[index];
 	}
 
-	private boolean getStash(K key, boolean defaultValue) {
+	private boolean getStash(Object key, boolean defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return valueTable[i];
 		return defaultValue;
@@ -410,7 +410,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolPair<K>>, Eachable<O
 
 	}
 
-	public boolean containsKey(K key) {
+	public boolean containsKey(Object key) {
 		if (key == null) return false;
 
 		int hashCode = key.hashCode();
@@ -425,7 +425,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolPair<K>>, Eachable<O
 		return true;
 	}
 
-	private boolean containsKeyStash(K key) {
+	private boolean containsKeyStash(Object key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return true;
 		return false;
@@ -505,18 +505,17 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolPair<K>>, Eachable<O
 		return h;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) return true;
-		if (!(obj instanceof ObjectBoolMap<?> map) || map.keyComponentType != keyComponentType) return false;
-		ObjectBoolMap<K> other = (ObjectBoolMap<K>) map;
-		if (other.size != size) return false;
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if (!(o instanceof ObjectBoolMap<?> map) || map.keyComponentType != keyComponentType) return false;
+
+		if (map.size != size) return false;
 		for (int i = 0, n = capacity + stashSize; i < n; i++) {
 			K key = keyTable[i];
 			if (key != null) {
-				boolean otherValue = other.get(key, false);
-				if (!otherValue && !other.containsKey(key)) return false;
+				boolean otherValue = map.get(key, false);
+				if (!otherValue && !map.containsKey(key)) return false;
 				boolean value = valueTable[i];
 				if (otherValue != value) return false;
 			}
@@ -662,17 +661,17 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolPair<K>>, Eachable<O
 		}
 	}
 
-	public static class Entries<K> extends MapIterator<K> implements Iterable<ObjectBoolPair<K>>, Iterator<ObjectBoolPair<K>> {
-		ObjectBoolPair<K> entry = new ObjectBoolPair<>();
+	public static class Entries<K> extends MapIterator<K> implements Iterable<ObjectBoolHolder<K>>, Iterator<ObjectBoolHolder<K>> {
+		ObjectBoolHolder<K> entry = new ObjectBoolHolder<>();
 
 		public Entries(ObjectBoolMap<K> map) {
 			super(map);
 		}
 
-		public Seq<ObjectBoolPair<K>> toSeq() {
-			Seq<ObjectBoolPair<K>> seq = new Seq<>(map.keyComponentType);
-			for (ObjectBoolPair<K> entry : this) {
-				ObjectBoolPair<K> e = new ObjectBoolPair<>();
+		public Seq<ObjectBoolHolder<K>> toSeq() {
+			Seq<ObjectBoolHolder<K>> seq = new Seq<>(map.keyComponentType);
+			for (ObjectBoolHolder<K> entry : this) {
+				ObjectBoolHolder<K> e = new ObjectBoolHolder<>();
 				e.key = entry.key;
 				e.value = entry.value;
 				seq.add(e);
@@ -680,10 +679,10 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolPair<K>>, Eachable<O
 			return seq;
 		}
 
-		public CollectionList<ObjectBoolPair<K>> toList() {
-			CollectionList<ObjectBoolPair<K>> out = new CollectionList<>(map.keyComponentType);
-			for (ObjectBoolPair<K> entry : this) {
-				ObjectBoolPair<K> e = new ObjectBoolPair<>();
+		public CollectionList<ObjectBoolHolder<K>> toList() {
+			CollectionList<ObjectBoolHolder<K>> out = new CollectionList<>(map.keyComponentType);
+			for (ObjectBoolHolder<K> entry : this) {
+				ObjectBoolHolder<K> e = new ObjectBoolHolder<>();
 				e.key = entry.key;
 				e.value = entry.value;
 				out.add(e);
@@ -693,7 +692,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolPair<K>>, Eachable<O
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
-		public ObjectBoolPair<K> next() {
+		public ObjectBoolHolder<K> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			K[] keyTable = map.keyTable;

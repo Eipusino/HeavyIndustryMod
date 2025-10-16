@@ -361,7 +361,7 @@ public class JumpGate extends Block {
 				inner.image().size(320, 4).color(Pal.accent).padTop(12f).padBottom(8f).growX().row();
 				inner.pane(selectionTable -> {
 					for (int i = 0; i < recipeList.size; i++) {
-						int finalI = i;
+						int l = i;
 						UnitRecipe unitRecipe = recipeList.get(i);
 						UnitType type = unitRecipe.unitType;
 						selectionTable.button(button -> {
@@ -398,7 +398,7 @@ public class JumpGate extends Block {
 									button.setChecked(unitRecipe == unitRecipe());
 								}
 							});
-						}, Styles.underlineb, () -> configure(finalI)).expandX().fillX().margin(0).pad(4);
+						}, Styles.underlineb, () -> configure(l)).expandX().fillX().margin(0).pad(4);
 						selectionTable.row();
 					}
 				}).scrollX(false).width(342).maxHeight(400).padRight(2).row();

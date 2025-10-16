@@ -344,16 +344,16 @@ public final class HStatValues {
 		return table -> {
 			table.row();
 			for (int i = 0; i < abs; i++) {
-				int finalI = i;
+				int j = i;
 				table.table(c -> {
 					c.add(
-							Core.bundle.format("stat-" + "abi", finalI + 1) + " " +
-									Core.bundle.get("stat-" + name + ".abi-" + finalI + ".name")
+							Core.bundle.format("stat-" + "abi", j + 1) + " " +
+									Core.bundle.get("stat-" + name + ".abi-" + j + ".name")
 					).padRight(10).left().top();
 				}).left();
 				table.row();
 				table.table(c -> {
-					c.add(Core.bundle.get("stat-" + name + ".abi-" + finalI + ".description")).padRight(10).left().top();
+					c.add(Core.bundle.get("stat-" + name + ".abi-" + j + ".description")).padRight(10).left().top();
 					c.row();
 					c.background(Tex.underline);
 				}).left();

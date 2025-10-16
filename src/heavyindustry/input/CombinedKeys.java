@@ -68,12 +68,12 @@ public class CombinedKeys implements Serializable {
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		return other == this || other instanceof CombinedKeys ck
-				&& ck.key == key
-				&& ck.isCtrl == isCtrl
-				&& ck.isAlt == isAlt
-				&& ck.isShift == isShift;
+	public boolean equals(Object o) {
+		return o == this || o instanceof CombinedKeys keys
+				&& keys.key == key
+				&& keys.isCtrl == isCtrl
+				&& keys.isAlt == isAlt
+				&& keys.isShift == isShift;
 	}
 
 	public static boolean isControllerKey(KeyCode key) {

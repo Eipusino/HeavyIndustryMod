@@ -1199,10 +1199,10 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	@Override
-	public boolean equals(Object object) {
-		if (object == this) return true;
+	public boolean equals(Object o) {
+		if (o == this) return true;
 		if (!ordered) return false;
-		if (!(object instanceof CollectionList<?> array)) return false;
+		if (!(o instanceof CollectionList<?> array)) return false;
 		if (!array.ordered) return false;
 		int n = size;
 		if (n != array.size) return false;

@@ -129,6 +129,11 @@ public class RenderGroupEntity extends BaseEntity implements Poolable {
 		regions.clear();
 	}
 
+	@Override
+	public boolean serialize() {
+		return false;
+	}
+
 	public static class DrawnRegion implements Poolable {
 		public float[] data = new float[4 * 6];
 		public float z;

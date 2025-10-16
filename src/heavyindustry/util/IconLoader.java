@@ -17,7 +17,11 @@ public final class IconLoader {
 	private IconLoader() {}
 
 	public static void loadIcons(Fi file) {
-		if (!file.exists() || file.isDirectory()) return;
+		if (!file.exists() || file.isDirectory()) {
+			Log.warn("The path @ does not exist!", file.name());
+
+			return;
+		}
 
 		Font[] availableFonts = new Font[]{Fonts.def, Fonts.outline};
 		int fontSize = (int) (Fonts.def.getData().lineHeight / Fonts.def.getData().scaleY);

@@ -387,15 +387,12 @@ public class CharSeq {
 	}
 
 	@Override
-	public boolean equals(Object object) {
-		if (object == this) return true;
-		if (!ordered) return false;
-		if (!(object instanceof CharSeq array)) return false;
-		if (!array.ordered) return false;
-		int n = size;
-		if (n != array.size) return false;
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if (!ordered || !(o instanceof CharSeq array) || !array.ordered) return false;
+		if (size != array.size) return false;
 		char[] items2 = array.items;
-		for (int i = 0; i < n; i++)
+		for (int i = 0; i < size; i++)
 			if (items[i] != items2[i]) return false;
 		return true;
 	}

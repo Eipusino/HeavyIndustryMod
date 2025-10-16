@@ -6,7 +6,7 @@ import arc.struct.IntSeq;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
-import heavyindustry.util.pair.ObjectIntPair;
+import heavyindustry.util.holder.ObjectIntHolder;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;
@@ -26,7 +26,7 @@ import static heavyindustry.util.Constant.PRIME3;
  * @author Nathan Sweet
  * @author Eipusino
  */
-public class ObjectIntMap2<K> implements Iterable<ObjectIntPair<K>>, Eachable<ObjectIntPair<K>> {
+public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<ObjectIntHolder<K>> {
 	public int size;
 
 	public final Class<?> keyComponentType;
@@ -97,8 +97,8 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntPair<K>>, Eachable<Ob
 	}
 
 	@Override
-	public void each(Cons<? super ObjectIntPair<K>> cons) {
-		for (ObjectIntPair<K> entry : entries()) {
+	public void each(Cons<? super ObjectIntHolder<K>> cons) {
+		for (ObjectIntHolder<K> entry : entries()) {
 			cons.get(entry);
 		}
 	}
@@ -163,7 +163,7 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntPair<K>>, Eachable<Ob
 	}
 
 	public void putAll(ObjectIntMap2<? extends K> map) {
-		for (ObjectIntPair<? extends K> entry : map.entries())
+		for (ObjectIntHolder<? extends K> entry : map.entries())
 			put(entry.key, entry.value);
 	}
 
@@ -291,12 +291,12 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntPair<K>>, Eachable<Ob
 		size++;
 	}
 
-	public int get(K key) {
+	public int get(Object key) {
 		return get(key, 0);
 	}
 
 	/** @param defaultValue Returned if the key was not associated with a value. */
-	public int get(K key, int defaultValue) {
+	public int get(Object key, int defaultValue) {
 		if (key == null) return defaultValue;
 
 		int hashCode = key.hashCode();
@@ -311,7 +311,7 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntPair<K>>, Eachable<Ob
 		return valueTable[index];
 	}
 
-	private int getStash(K key, int defaultValue) {
+	private int getStash(Object key, int defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return valueTable[i];
 		return defaultValue;
@@ -461,7 +461,7 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntPair<K>>, Eachable<Ob
 
 	}
 
-	public boolean containsKey(K key) {
+	public boolean containsKey(Object key) {
 		if (key == null) return false;
 
 		int hashCode = key.hashCode();
@@ -476,7 +476,7 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntPair<K>>, Eachable<Ob
 		return true;
 	}
 
-	private boolean containsKeyStash(K key) {
+	private boolean containsKeyStash(Object key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return true;
 		return false;
@@ -556,18 +556,17 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntPair<K>>, Eachable<Ob
 		return h;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) return true;
-		if (!(obj instanceof ObjectIntMap2<?> map) || map.keyComponentType != keyComponentType) return false;
-		ObjectIntMap2<K> other = (ObjectIntMap2<K>) map;
-		if (other.size != size) return false;
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if (!(o instanceof ObjectIntMap2<?> map) || map.keyComponentType != keyComponentType) return false;
+
+		if (map.size != size) return false;
 		for (int i = 0, n = capacity + stashSize; i < n; i++) {
 			K key = keyTable[i];
 			if (key != null) {
-				int otherValue = other.get(key, 0);
-				if (otherValue == 0 && !other.containsKey(key)) return false;
+				int otherValue = map.get(key, 0);
+				if (otherValue == 0 && !map.containsKey(key)) return false;
 				int value = valueTable[i];
 				if (otherValue != value) return false;
 			}
@@ -713,17 +712,17 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntPair<K>>, Eachable<Ob
 		}
 	}
 
-	public static class Entries<K> extends MapIterator<K> implements Iterable<ObjectIntPair<K>>, Iterator<ObjectIntPair<K>> {
-		ObjectIntPair<K> entry = new ObjectIntPair<>();
+	public static class Entries<K> extends MapIterator<K> implements Iterable<ObjectIntHolder<K>>, Iterator<ObjectIntHolder<K>> {
+		ObjectIntHolder<K> entry = new ObjectIntHolder<>();
 
 		public Entries(ObjectIntMap2<K> map) {
 			super(map);
 		}
 
-		public CollectionList<ObjectIntPair<K>> toList() {
-			CollectionList<ObjectIntPair<K>> out = new CollectionList<>(map.keyComponentType);
-			for (ObjectIntPair<K> entry : this) {
-				ObjectIntPair<K> e = new ObjectIntPair<>();
+		public CollectionList<ObjectIntHolder<K>> toList() {
+			CollectionList<ObjectIntHolder<K>> out = new CollectionList<>(map.keyComponentType);
+			for (ObjectIntHolder<K> entry : this) {
+				ObjectIntHolder<K> e = new ObjectIntHolder<>();
 				e.key = entry.key;
 				e.value = entry.value;
 				out.add(e);
@@ -733,7 +732,7 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntPair<K>>, Eachable<Ob
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
-		public ObjectIntPair<K> next() {
+		public ObjectIntHolder<K> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			K[] keyTable = map.keyTable;

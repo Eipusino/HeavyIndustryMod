@@ -3,7 +3,7 @@ package heavyindustry.util;
 import arc.func.Cons;
 import arc.struct.Seq;
 import arc.util.Eachable;
-import heavyindustry.util.pair.ObjectPair;
+import heavyindustry.util.holder.ObjectHolder;
 
 import java.lang.reflect.Array;
 import java.util.AbstractMap;
@@ -14,7 +14,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
-public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements Iterable<ObjectPair<K, V>>, Eachable<ObjectPair<K, V>>, Cloneable {
+public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements Iterable<ObjectHolder<K, V>>, Eachable<ObjectHolder<K, V>>, Cloneable {
 	public final Class<K> keyComponentType;
 	public final Class<?> valueComponentType;
 
@@ -38,8 +38,8 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 	}
 
 	@Override
-	public void each(Cons<? super ObjectPair<K, V>> cons) {
-		for (ObjectPair<K, V> entry : iterator()) {
+	public void each(Cons<? super ObjectHolder<K, V>> cons) {
+		for (ObjectHolder<K, V> entry : iterator()) {
 			cons.get(entry);
 		}
 	}
@@ -316,20 +316,20 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		}
 	}
 
-	public static class Entries<K extends Enum<K>, V> extends MapIterator<K, V, ObjectPair<K, V>> {
-		ObjectPair<K, V> entry = new ObjectPair<>();
+	public static class Entries<K extends Enum<K>, V> extends MapIterator<K, V, ObjectHolder<K, V>> {
+		ObjectHolder<K, V> entry = new ObjectHolder<>();
 
 		public Entries(CollectionEnumMap<K, V> m) {
 			super(m);
 		}
 
 		@Override
-		public Iterator<ObjectPair<K, V>> iterator() {
+		public Iterator<ObjectHolder<K, V>> iterator() {
 			return this;
 		}
 
 		@Override
-		public ObjectPair<K, V> next() {
+		public ObjectHolder<K, V> next() {
 			if (!hasNext()) throw new NoSuchElementException();
 
 			int index = nextIndex++;
@@ -588,7 +588,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		}
 
 		class MapEnt implements Entry<K, V> {
-			ObjectPair<K, V> entry;
+			ObjectHolder<K, V> entry;
 
 			@Override
 			public K getKey() {

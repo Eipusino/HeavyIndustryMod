@@ -41,13 +41,17 @@ public final class HVars {
 
 	public static PlatformImpl platformImpl;
 
-	/** Is the Unsafe class available. */
+	/** Is {@code sun.misc.Unsafe} class available. */
 	public static boolean hasUnsafe = false;
+	/** Is {@code jdk.internal.misc.Unsafe} class available. */
 	public static boolean hasJDKUnsafe = false;
+	/** Is {@code java.lang.invoke.MethodHandles.Lookup.IMPL_LOOKUP} looker available. */
 	public static boolean hasImplLookup = false;
 
+	/** Link {@code mod.json} of this mod */
 	public static Jval info;
 
+	/** Whether the mod is running in hidden mode. */
 	public static boolean isPlugin;
 
 	/** jar internal navigation. */
@@ -55,9 +59,13 @@ public final class HVars {
 
 	public static InputAggregator inputAggregator;
 
-	public static Texture white;
-	public static TextureRegion whiteRegion;
-	public static AtlasRegion whiteAtlas;
+	/**
+	 * Blank image placeholder, used in Kotlin to prevent {@code lateinit var} and {@code NullPointerException}.
+	 * <p>Please note that these variables will still not initialize in {@code headless}.
+	 */
+	public static Texture white, clear;
+	public static TextureRegion whiteRegion, clearRegion;
+	public static AtlasRegion whiteAtlas, clearAtlas;
 
 	public static FragmentationBatch fragBatch;
 	public static CutBatch cutBatch;
@@ -78,6 +86,9 @@ public final class HVars {
 		if (!Vars.headless) {
 			whiteAtlas = new AtlasRegion(whiteRegion = new TextureRegion(white = new Texture(internalTree.child("other/textures/white.png"))));
 			whiteAtlas.name = "white";
+
+			clearAtlas = new AtlasRegion(clearRegion = new TextureRegion(clear = new Texture(internalTree.child("other/textures/clear.png"))));
+			clearAtlas.name = "clear";
 		}
 	}
 

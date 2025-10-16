@@ -13,7 +13,7 @@ import arc.util.Eachable;
 import arc.util.Reflect;
 import heavyindustry.func.BoolBoolf;
 import heavyindustry.func.ByteBytef;
-import heavyindustry.util.pair.ObjectPair;
+import heavyindustry.util.holder.ObjectHolder;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -432,13 +432,18 @@ public final class ArrayUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <K, V> Entry<K, V> copyOf(Entry<? extends K, ? extends V> e) {
-		if (e instanceof ObjectPair<? extends K, ? extends V> p) {
-			return (Entry<K, V>) p;
+		if (e instanceof ObjectHolder<? extends K, ? extends V>) {
+			return (Entry<K, V>) e;
 		} else {
-			return new ObjectPair<>(e.getKey(), e.getValue());
+			return new ObjectHolder<>(e.getKey(), e.getValue());
 		}
 	}
 
+	/**
+	 * Used to avoid performance overhead caused by creating an instance of {@link StringBuilder}.
+	 *
+	 * @see Arrays#toString(Object[])
+	 */
 	public static void append(StringBuilder b, Object... a) {
 		if (a == null) {
 			b.append("null");
@@ -462,7 +467,6 @@ public final class ArrayUtils {
 		}
 	}
 
-	/** Used to avoid performance overhead caused by creating an instance of {@link StringBuilder}. */
 	public static void appendBool(StringBuilder b, boolean... a) {
 		if (a == null) {
 			b.append("null");
@@ -680,22 +684,22 @@ public final class ArrayUtils {
 		return initial;
 	}
 
-	public static <T> int reducei(T[] array, int initial, ReduceInt<T> reduce) {
+	public static <T> int reduceInt(T[] array, int initial, ReduceInt<T> reduce) {
 		for (T item : array) initial = reduce.get(item, initial);
 		return initial;
 	}
 
-	public static <T> int sumi(T[] array, Intf<T> extract) {
-		return reducei(array, 0, (item, accum) -> accum + extract.get(item));
+	public static <T> int sumInt(T[] array, Intf<T> extract) {
+		return reduceInt(array, 0, (item, accum) -> accum + extract.get(item));
 	}
 
-	public static <T> float reducef(T[] array, float initial, ReduceFloat<T> reduce) {
+	public static <T> float reduceFloat(T[] array, float initial, ReduceFloat<T> reduce) {
 		for (T item : array) initial = reduce.get(item, initial);
 		return initial;
 	}
 
 	public static <T> float average(T[] array, Floatf<T> extract) {
-		return reducef(array, 0f, (item, accum) -> accum + extract.get(item)) / array.length;
+		return reduceFloat(array, 0f, (item, accum) -> accum + extract.get(item)) / array.length;
 	}
 
 	public static <T> T[] resize(T[] array, int newSize, T fill) {
@@ -712,10 +716,10 @@ public final class ArrayUtils {
 		return out;
 	}
 
-	public static <T> boolean arrayEq(T[] first, T[] second, Boolf2<T, T> eq) {
+	public static <T> boolean arrayEquals(T[] first, T[] second, Boolf2<T, T> equals) {
 		if (first.length != second.length) return false;
 		for (int i = 0; i < first.length; i++) {
-			if (!eq.get(first[i], second[i])) return false;
+			if (!equals.get(first[i], second[i])) return false;
 		}
 		return true;
 	}

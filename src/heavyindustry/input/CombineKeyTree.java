@@ -5,7 +5,7 @@ import arc.func.Cons;
 import arc.func.Cons2;
 import arc.input.KeyCode;
 import heavyindustry.util.CollectionObjectMap;
-import heavyindustry.util.pair.ObjectPair;
+import heavyindustry.util.holder.ObjectHolder;
 
 public class CombineKeyTree<R> {
 	public final Class<R> recType;
@@ -52,8 +52,8 @@ public class CombineKeyTree<R> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public void putKeyBinds(ObjectPair<CombinedKeys, R>... bindings) {
-		for (ObjectPair<CombinedKeys, R> binding : bindings) {
+	public void putKeyBinds(ObjectHolder<CombinedKeys, R>... bindings) {
+		for (ObjectHolder<CombinedKeys, R> binding : bindings) {
 			putKeyBinding(binding.key, binding.value);
 		}
 	}

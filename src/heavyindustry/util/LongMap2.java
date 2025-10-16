@@ -7,7 +7,7 @@ import arc.struct.LongSeq;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
-import heavyindustry.util.pair.LongPair;
+import heavyindustry.util.holder.LongHolder;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -18,7 +18,7 @@ import static heavyindustry.util.Constant.EMPTY;
 import static heavyindustry.util.Constant.PRIME2;
 import static heavyindustry.util.Constant.PRIME3;
 
-public class LongMap2<V> implements Iterable<LongPair<V>>, Eachable<LongPair<V>>, Cloneable {
+public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder<V>>, Cloneable {
 	public final Class<?> valueComponentType;
 
 	public int size;
@@ -109,8 +109,8 @@ public class LongMap2<V> implements Iterable<LongPair<V>>, Eachable<LongPair<V>>
 	}
 
 	@Override
-	public void each(Cons<? super LongPair<V>> cons) {
-		for (LongPair<V> entry : entries()) {
+	public void each(Cons<? super LongHolder<V>> cons) {
+		for (LongHolder<V> entry : entries()) {
 			cons.get(entry);
 		}
 	}
@@ -189,7 +189,7 @@ public class LongMap2<V> implements Iterable<LongPair<V>>, Eachable<LongPair<V>>
 	}
 
 	public void putAll(LongMap2<? extends V> map) {
-		for (LongPair<? extends V> entry : map.entries())
+		for (LongHolder<? extends V> entry : map.entries())
 			put(entry.key, entry.value);
 	}
 
@@ -587,19 +587,18 @@ public class LongMap2<V> implements Iterable<LongPair<V>>, Eachable<LongPair<V>>
 		return h;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) return true;
-		if (!(obj instanceof LongMap2<?> map) || map.valueComponentType != valueComponentType) return false;
-		LongMap2<V> other = (LongMap2<V>) map;
-		if (other.size != size) return false;
-		if (other.hasZeroValue != hasZeroValue) return false;
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if (!(o instanceof LongMap2<?> map) || map.valueComponentType != valueComponentType) return false;
+
+		if (map.size != size) return false;
+		if (map.hasZeroValue != hasZeroValue) return false;
 		if (hasZeroValue) {
-			if (other.zeroValue == null) {
+			if (map.zeroValue == null) {
 				if (zeroValue != null) return false;
 			} else {
-				if (!other.zeroValue.equals(zeroValue)) return false;
+				if (!map.zeroValue.equals(zeroValue)) return false;
 			}
 		}
 		for (int i = 0, n = capacity + stashSize; i < n; i++) {
@@ -607,9 +606,9 @@ public class LongMap2<V> implements Iterable<LongPair<V>>, Eachable<LongPair<V>>
 			if (key != EMPTY) {
 				V value = valueTable[i];
 				if (value == null) {
-					if (!other.containsKey(key) || other.get(key) != null) return false;
+					if (!map.containsKey(key) || map.get(key) != null) return false;
 				} else {
-					if (!value.equals(other.get(key))) return false;
+					if (!value.equals(map.get(key))) return false;
 				}
 			}
 		}
@@ -643,7 +642,7 @@ public class LongMap2<V> implements Iterable<LongPair<V>>, Eachable<LongPair<V>>
 	}
 
 	@Override
-	public Iterator<LongPair<V>> iterator() {
+	public Iterator<LongHolder<V>> iterator() {
 		return entries();
 	}
 
@@ -794,8 +793,8 @@ public class LongMap2<V> implements Iterable<LongPair<V>>, Eachable<LongPair<V>>
 		}
 	}
 
-	public static class Entries<V> extends MapIterator<V> implements Iterable<LongPair<V>>, Iterator<LongPair<V>> {
-		LongPair<V> entry = new LongPair<>();
+	public static class Entries<V> extends MapIterator<V> implements Iterable<LongHolder<V>>, Iterator<LongHolder<V>> {
+		LongHolder<V> entry = new LongHolder<>();
 
 		public Entries(LongMap2<V> map) {
 			super(map);
@@ -803,7 +802,7 @@ public class LongMap2<V> implements Iterable<LongPair<V>>, Eachable<LongPair<V>>
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
-		public LongPair<V> next() {
+		public LongHolder<V> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 
@@ -826,7 +825,7 @@ public class LongMap2<V> implements Iterable<LongPair<V>>, Eachable<LongPair<V>>
 		}
 
 		@Override
-		public Iterator<LongPair<V>> iterator() {
+		public Iterator<LongHolder<V>> iterator() {
 			return this;
 		}
 	}

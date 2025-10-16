@@ -6,7 +6,7 @@ import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
-import heavyindustry.util.pair.CharPair;
+import heavyindustry.util.holder.CharHolder;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -27,7 +27,7 @@ import static heavyindustry.util.Constant.PRIME3;
  *
  * @author Nathan Sweet
  */
-public class CharMap<V> implements Iterable<CharPair<V>>, Eachable<CharPair<V>>, Cloneable {
+public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<V>>, Cloneable {
 	public int size;
 
 	public final Class<?> valueComponentType;
@@ -131,8 +131,8 @@ public class CharMap<V> implements Iterable<CharPair<V>>, Eachable<CharPair<V>>,
 	}
 
 	@Override
-	public void each(Cons<? super CharPair<V>> cons) {
-		for (CharPair<V> entry : entries()) {
+	public void each(Cons<? super CharHolder<V>> cons) {
+		for (CharHolder<V> entry : entries()) {
 			cons.get(entry);
 		}
 	}
@@ -209,7 +209,7 @@ public class CharMap<V> implements Iterable<CharPair<V>>, Eachable<CharPair<V>>,
 	}
 
 	public void putAll(CharMap<? extends V> map) {
-		for (CharPair<? extends V> entry : map.entries())
+		for (CharHolder<? extends V> entry : map.entries())
 			put(entry.key, entry.value);
 	}
 
@@ -620,19 +620,17 @@ public class CharMap<V> implements Iterable<CharPair<V>>, Eachable<CharPair<V>>,
 		return h;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) return true;
-		if (!(obj instanceof CharMap<?> map) || map.valueComponentType != valueComponentType) return false;
-		CharMap<V> other = (CharMap<V>) map;
-		if (other.size != size) return false;
-		if (other.hasZeroValue != hasZeroValue) return false;
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if (!(o instanceof CharMap<?> map) || map.valueComponentType != valueComponentType) return false;
+		if (map.size != size) return false;
+		if (map.hasZeroValue != hasZeroValue) return false;
 		if (hasZeroValue) {
-			if (other.zeroValue == null) {
+			if (map.zeroValue == null) {
 				if (zeroValue != null) return false;
 			} else {
-				if (!other.zeroValue.equals(zeroValue)) return false;
+				if (!map.zeroValue.equals(zeroValue)) return false;
 			}
 		}
 		for (int i = 0, n = capacity + stashSize; i < n; i++) {
@@ -640,9 +638,9 @@ public class CharMap<V> implements Iterable<CharPair<V>>, Eachable<CharPair<V>>,
 			if (key != EMPTY) {
 				V value = valueTable[i];
 				if (value == null) {
-					if (!other.containsKey(key) || other.get(key) != null) return false;
+					if (!map.containsKey(key) || map.get(key) != null) return false;
 				} else {
-					if (!value.equals(other.get(key))) return false;
+					if (!value.equals(map.get(key))) return false;
 				}
 			}
 		}
@@ -681,7 +679,7 @@ public class CharMap<V> implements Iterable<CharPair<V>>, Eachable<CharPair<V>>,
 	}
 
 	@Override
-	public Iterator<CharPair<V>> iterator() {
+	public Iterator<CharHolder<V>> iterator() {
 		return entries();
 	}
 
@@ -800,8 +798,8 @@ public class CharMap<V> implements Iterable<CharPair<V>>, Eachable<CharPair<V>>,
 		}
 	}
 
-	public static class Entries<V> extends MapIterator<V> implements Iterable<CharPair<V>>, Iterator<CharPair<V>> {
-		CharPair<V> entry = new CharPair<>();
+	public static class Entries<V> extends MapIterator<V> implements Iterable<CharHolder<V>>, Iterator<CharHolder<V>> {
+		CharHolder<V> entry = new CharHolder<>();
 
 		public Entries(CharMap<V> map) {
 			super(map);
@@ -809,7 +807,7 @@ public class CharMap<V> implements Iterable<CharPair<V>>, Eachable<CharPair<V>>,
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
-		public CharPair<V> next() {
+		public CharHolder<V> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			char[] keyTable = map.keyTable;
@@ -832,7 +830,7 @@ public class CharMap<V> implements Iterable<CharPair<V>>, Eachable<CharPair<V>>,
 		}
 
 		@Override
-		public Iterator<CharPair<V>> iterator() {
+		public Iterator<CharHolder<V>> iterator() {
 			return this;
 		}
 

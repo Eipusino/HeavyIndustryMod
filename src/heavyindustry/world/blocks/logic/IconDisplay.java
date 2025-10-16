@@ -48,7 +48,7 @@ public class IconDisplay extends Block {
 	public void load() {
 		super.load();
 
-		maskRegion = Core.atlas.find(name + "-mask", HVars.whiteAtlas);
+		maskRegion = Core.atlas.find(name + "-mask", HVars.clearAtlas);
 	}
 
 	@Override
@@ -105,8 +105,8 @@ public class IconDisplay extends Block {
 				cont = uc;
 			}
 			if (value instanceof Number num) {
-				int typeId = Point2.unpack(Math.toIntExact(num.longValue())).x;
-				int contId = Point2.unpack(Math.toIntExact(num.longValue())).y;
+				int typeId = Point2.unpack(num.intValue()).x;
+				int contId = Point2.unpack(num.intValue()).y;
 				if (Vars.content != null && typeId < Vars.content.getContentMap().length && Vars.content.getContentMap()[typeId].get(contId) instanceof UnlockableContent uc) {
 					type = UnlockableContent.class;
 					cont = uc;

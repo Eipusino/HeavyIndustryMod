@@ -5,7 +5,7 @@ import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
-import heavyindustry.util.pair.ObjectPair;
+import heavyindustry.util.holder.ObjectHolder;
 
 import java.lang.reflect.Array;
 import java.util.AbstractCollection;
@@ -26,7 +26,7 @@ import java.util.Set;
  * @author Nathan Sweet
  * @author Eipusino
  */
-public class CollectionArrayMap<K, V> implements Iterable<ObjectPair<K, V>>, Map<K, V>, Eachable<ObjectPair<K, V>>, Cloneable {
+public class CollectionArrayMap<K, V> implements Iterable<ObjectHolder<K, V>>, Map<K, V>, Eachable<ObjectHolder<K, V>>, Cloneable {
 	public final Class<?> keyComponentType;
 	public final Class<?> valueComponentType;
 
@@ -97,8 +97,8 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectPair<K, V>>, Map
 	}
 
 	@Override
-	public void each(Cons<? super ObjectPair<K, V>> cons) {
-		for (ObjectPair<K, V> entry : entries()) {
+	public void each(Cons<? super ObjectHolder<K, V>> cons) {
+		for (ObjectHolder<K, V> entry : entries()) {
 			cons.get(entry);
 		}
 	}
@@ -472,21 +472,19 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectPair<K, V>>, Map
 		return h;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public boolean equals(Object obj) {
-		if (obj == this) return true;
-		if (!(obj instanceof CollectionArrayMap<?, ?> map) || map.keyComponentType != keyComponentType || map.valueComponentType != valueComponentType)
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if (!(o instanceof CollectionArrayMap<?, ?> map) || map.keyComponentType != keyComponentType || map.valueComponentType != valueComponentType)
 			return false;
-		CollectionArrayMap<K, V> other = (CollectionArrayMap<K, V>) map;
-		if (other.size != size) return false;
+		if (map.size != size) return false;
 		for (int i = 0, n = size; i < n; i++) {
 			K key = keys[i];
 			V value = values[i];
 			if (value == null) {
-				if (!other.containsKey(key) || other.get(key) != null) return false;
+				if (!map.containsKey(key) || map.get(key) != null) return false;
 			} else {
-				if (!value.equals(other.get(key))) return false;
+				if (!value.equals(map.get(key))) return false;
 			}
 		}
 		return true;
@@ -511,7 +509,7 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectPair<K, V>>, Map
 	}
 
 	@Override
-	public Iterator<ObjectPair<K, V>> iterator() {
+	public Iterator<ObjectHolder<K, V>> iterator() {
 		return entries();
 	}
 
@@ -643,7 +641,7 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectPair<K, V>>, Map
 		}
 
 		class MapEnt implements Entry<K, V> {
-			ObjectPair<K, V> entry;
+			ObjectHolder<K, V> entry;
 
 			@Override
 			public K getKey() {
@@ -662,10 +660,10 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectPair<K, V>>, Map
 		}
 	}
 
-	public static class Entries<K, V> implements Iterable<ObjectPair<K, V>>, Iterator<ObjectPair<K, V>> {
+	public static class Entries<K, V> implements Iterable<ObjectHolder<K, V>>, Iterator<ObjectHolder<K, V>> {
 		final CollectionArrayMap<K, V> map;
 
-		ObjectPair<K, V> entry = new ObjectPair<>();
+		ObjectHolder<K, V> entry = new ObjectHolder<>();
 		int index;
 		boolean valid = true;
 
@@ -680,13 +678,13 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectPair<K, V>>, Map
 		}
 
 		@Override
-		public Iterator<ObjectPair<K, V>> iterator() {
+		public Iterator<ObjectHolder<K, V>> iterator() {
 			return this;
 		}
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
-		public ObjectPair<K, V> next() {
+		public ObjectHolder<K, V> next() {
 			if (index >= map.size) throw new NoSuchElementException(String.valueOf(index));
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			entry.key = map.keys[index];

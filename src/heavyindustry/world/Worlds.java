@@ -9,7 +9,7 @@ import heavyindustry.entities.HEntity;
 import heavyindustry.game.TeamPayloadData;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.util.CollectionList;
-import heavyindustry.util.pair.ObjectPair;
+import heavyindustry.util.holder.ObjectHolder;
 import heavyindustry.world.blocks.defense.CommandableBlock;
 import mindustry.Vars;
 import mindustry.game.EventType.ResetEvent;
@@ -46,23 +46,23 @@ public final class Worlds {
 	public static void exportBlockData() {
 		StringBuilder data = new StringBuilder();
 
-		CollectionList<ObjectPair<String, Block>> blocks = new CollectionList<>(ObjectPair.class);
+		CollectionList<ObjectHolder<String, Block>> blocks = new CollectionList<>(ObjectHolder.class);
 
 		for (Block block : Vars.content.blocks()) {
-			blocks.add(new ObjectPair<>(block.name, block));
+			blocks.add(new ObjectHolder<>(block.name, block));
 		}
 
 		for (var entry : SaveFileReader.fallback) {
 			Block block = Vars.content.block(entry.value);
 			if (block != null) {
-				blocks.add(new ObjectPair<>(entry.key, block));
+				blocks.add(new ObjectHolder<>(entry.key, block));
 			}
 		}
 
-		blocks.sort(Structs.comparingInt(pair -> pair.value.id));
-		blocks.each(pair -> {
-			String name = pair.key;
-			Block block = pair.value;
+		blocks.sort(Structs.comparingInt(holder -> holder.value.id));
+		blocks.each(holder -> {
+			String name = holder.key;
+			Block block = holder.value;
 
 			data.append(name).append(' ')
 				.append(block.synthetic() ? '1' : '0').append(' ')

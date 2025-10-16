@@ -93,7 +93,7 @@ public class CharacterDisplay extends Block {
 	public void load() {
 		super.load();
 
-		maskRegion = Core.atlas.find(name + "-mask", HVars.whiteAtlas);
+		maskRegion = Core.atlas.find(name + "-mask", HVars.clearAtlas);
 		letterRegions = new TextureRegion[64];
 		for (int i = 0; i < letterRegions.length; i++) {
 			letterRegions[i] = Core.atlas.find("character-overlay" + i);
@@ -126,8 +126,7 @@ public class CharacterDisplay extends Block {
 				TextField text = new TextField(queueText);
 				text.update(() -> queueText = text.getText());
 				input.add(text).growX();
-				input.button(Icon.pick, Styles.clearNonei, () -> ui.picker.show(
-						Tmp.c1.set(displayColor), c -> configure(c.rgba() + "@" + displayCharacter)));
+				input.button(Icon.pick, Styles.clearNonei, () -> ui.picker.show(Tmp.c1.set(displayColor), c -> configure(c.rgba() + "@" + displayCharacter)));
 			}).growX().row();
 
 			Table cont = new Table().top();

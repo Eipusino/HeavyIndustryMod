@@ -1,11 +1,11 @@
 package heavyindustry.util;
 
 import arc.func.Prov;
-import heavyindustry.util.pair.ObjectPair;
+import heavyindustry.util.holder.ObjectHolder;
 
 import java.util.Iterator;
 
-public class ObjectTable<K, V> implements Iterable<ObjectPair<K, V>> {
+public class ObjectTable<K, V> implements Iterable<ObjectHolder<K, V>> {
 	public final Class<?> keyComponentType;
 	public final Class<?> valueComponentType;
 
@@ -28,7 +28,7 @@ public class ObjectTable<K, V> implements Iterable<ObjectPair<K, V>> {
 		return map21.get(key);
 	}
 
-	public K getKey(V key, Prov<ObjectPair<K, V>> supplier) {
+	public K getKey(V key, Prov<ObjectHolder<K, V>> supplier) {
 		K res = getKey(key);
 		if (res == null) {
 			put(supplier.get());
@@ -41,7 +41,7 @@ public class ObjectTable<K, V> implements Iterable<ObjectPair<K, V>> {
 		return map12.get(key);
 	}
 
-	public V getValue(K key, Prov<ObjectPair<K, V>> supplier) {
+	public V getValue(K key, Prov<ObjectHolder<K, V>> supplier) {
 		V res = getValue(key);
 		if (res == null) {
 			put(supplier.get());
@@ -56,7 +56,7 @@ public class ObjectTable<K, V> implements Iterable<ObjectPair<K, V>> {
 		map21.put(a2, a1);
 	}
 
-	public void put(ObjectPair<K, V> entry) {
+	public void put(ObjectHolder<K, V> entry) {
 		put(entry.key, entry.value);
 	}
 
@@ -73,7 +73,7 @@ public class ObjectTable<K, V> implements Iterable<ObjectPair<K, V>> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Object get(Object key, Prov<ObjectPair<K, V>> supplier, boolean argT1) {
+	public Object get(Object key, Prov<ObjectHolder<K, V>> supplier, boolean argT1) {
 		return argT1 ? getValue((K) key, supplier) : getKey((V) key, supplier);
 	}
 
@@ -86,7 +86,7 @@ public class ObjectTable<K, V> implements Iterable<ObjectPair<K, V>> {
 	}
 
 	@Override
-	public Iterator<ObjectPair<K, V>> iterator() {
+	public Iterator<ObjectHolder<K, V>> iterator() {
 		return new TableIterator<>(map12);
 	}
 
@@ -102,7 +102,7 @@ public class ObjectTable<K, V> implements Iterable<ObjectPair<K, V>> {
 		map21.clear();
 	}
 
-	public static class TableIterator<K, V> implements Iterator<ObjectPair<K, V>> {
+	public static class TableIterator<K, V> implements Iterator<ObjectHolder<K, V>> {
 		protected final CollectionObjectMap.Entries<K, V> iterator;
 
 		public TableIterator(CollectionObjectMap<K, V> map) {
@@ -115,9 +115,9 @@ public class ObjectTable<K, V> implements Iterable<ObjectPair<K, V>> {
 		}
 
 		@Override
-		public ObjectPair<K, V> next() {
-			ObjectPair<K, V> next = iterator.next();
-			return new ObjectPair<>(next.key, next.value);
+		public ObjectHolder<K, V> next() {
+			ObjectHolder<K, V> next = iterator.next();
+			return new ObjectHolder<>(next.key, next.value);
 		}
 
 		@Override

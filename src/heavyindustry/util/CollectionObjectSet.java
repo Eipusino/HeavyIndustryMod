@@ -587,8 +587,8 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof CollectionObjectSet<?> other)) return false;
+	public boolean equals(Object o) {
+		if (!(o instanceof CollectionObjectSet<?> other)) return false;
 		if (other.size != size) return false;
 		for (int i = 0, n = capacity + stashSize; i < n; i++)
 			if (keyTable[i] != null && !other.contains(keyTable[i])) return false;

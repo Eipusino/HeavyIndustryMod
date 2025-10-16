@@ -1,7 +1,7 @@
 package heavyindustry.util;
 
 import arc.util.ArcRuntimeException;
-import heavyindustry.util.pair.ObjectPair;
+import heavyindustry.util.holder.ObjectHolder;
 
 import java.util.NoSuchElementException;
 
@@ -159,7 +159,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 		}
 
 		@Override
-		public ObjectPair<K, V> next() {
+		public ObjectHolder<K, V> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			entry.key = keys.get(nextIndex);
