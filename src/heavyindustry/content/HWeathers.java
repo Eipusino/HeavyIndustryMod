@@ -22,7 +22,9 @@ import static heavyindustry.HVars.MOD_NAME;
  * @author Eipusino
  */
 public final class HWeathers {
-	public static Weather wind, blizzard, hailStone, stoneStorm;
+	public static EffectWeather wind;
+	public static ParticleWeather blizzard;
+	public static HailStormWeather hailStone, stoneStorm;
 
 	/** Don't let anyone instantiate this class. */
 	private HWeathers() {}

@@ -158,23 +158,22 @@ public final class HUnitTypes {
 	public static final String PHASE = "phase";
 	public static final String SHOOTERS = "shooters";
 
-	public static UnitType2
-			//vanilla-tank
-			vanguard, striker, counterattack, crush, destruction, purgatory,
+	//vanilla-tank
+	public static UnitType2 vanguard, striker, counterattack, crush, destruction, purgatory;
 	//vanilla-copter
-	caelifera, schistocerca, anthophila, vespula, lepidoptera, mantodea,
+	public static CopterUnitType caelifera, schistocerca, anthophila, vespula, lepidoptera, mantodea;
 	//vanilla-tier6
-	empire, supernova, cancer, aphelion, windstorm, poseidon, leviathan,
+	public static UnitType2 empire, supernova, cancer, aphelion, windstorm, poseidon, leviathan;
 	//vanilla-tier6-erekir
-	dominate, oracle, havoc,
+	public static UnitType2 dominate, oracle, havoc;
 	//miner-erekir
-	miner, largeMiner, legsMiner,
+	public static UnitType2 miner, largeMiner, legsMiner;
 	//other
-	vulture, invincibleShip, dpsTesterLand,
+	public static UnitType2 vulture, invincibleShip, dpsTesterLand;
 	//elite
-	tiger, thunder, eagle,
+	public static UnitType2 tiger, thunder, eagle;
 	//special
-	eipusino;
+	public static NucleoidUnitType eipusino;
 
 	/** Don't let anyone instantiate this class. */
 	private HUnitTypes() {}

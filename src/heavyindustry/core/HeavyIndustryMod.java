@@ -85,8 +85,8 @@ import static heavyindustry.HVars.MOD_NAME;
 public final class HeavyIndustryMod extends Mod {
 	public static Mod instance;
 
-	public static ClassLoader lastLoader;
-	public static Class<?> platformImplType;
+	public static @Nullable ClassLoader lastLoader;
+	public static @Nullable Class<?> platformImplType;
 
 	public static @Nullable FloatingText floatingText;
 
@@ -282,11 +282,11 @@ public final class HeavyIndustryMod extends Mod {
 		}
 	}
 
-	public static Class<?> loadLibrary(String fileName, String mainClassName, boolean showError) {
+	public static @Nullable Class<?> loadLibrary(String fileName, String mainClassName, boolean showError) {
 		return loadLibrary(fileName, mainClassName, showError, c -> {});
 	}
 
-	public static Class<?> loadLibrary(String fileName, String mainClassName, boolean showError, ConsT<Class<?>, Throwable> callback) {
+	public static @Nullable Class<?> loadLibrary(String fileName, String mainClassName, boolean showError, ConsT<Class<?>, Throwable> callback) {
 		ClassLoader mainLoader = Vars.mods.mainLoader();
 
 		Fi sourceFile = HVars.internalTree.child("libs").child(fileName + ".jar");
@@ -337,9 +337,9 @@ public final class HeavyIndustryMod extends Mod {
 		if (OS.isIos) return;
 
 		platformImplType = loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl", true, clazz -> {
-			Object object = clazz.getConstructor().newInstance();
+			Object instance = clazz.getConstructor().newInstance();
 
-			if (object instanceof PlatformImpl core) {
+			if (instance instanceof PlatformImpl core) {
 				HVars.platformImpl = core;
 			}
 		});

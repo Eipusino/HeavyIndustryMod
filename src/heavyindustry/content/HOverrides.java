@@ -94,12 +94,12 @@ public final class HOverrides {
 		Blocks.thoriumWall.armor = Blocks.thoriumWallLarge.armor = 8f;
 		Blocks.phaseWall.armor = Blocks.phaseWallLarge.armor = 3f;
 		Blocks.surgeWall.armor = Blocks.surgeWallLarge.armor = 12f;
-		if (Blocks.surgeWall instanceof Wall wall && Blocks.surgeWallLarge instanceof Wall large) {
-			large.lightningChance = wall.lightningChance = 0.1f;
-			large.lightningDamage = wall.lightningDamage = 25f;
+		if (Blocks.surgeWall instanceof Wall small && Blocks.surgeWallLarge instanceof Wall large) {
+			large.lightningChance = small.lightningChance = 0.1f;
+			large.lightningDamage = small.lightningDamage = 25f;
 		}
 		//blocks-wall-erekir
-		if (Blocks.reinforcedSurgeWall instanceof Wall wall && Blocks.reinforcedSurgeWallLarge instanceof Wall large) wall.lightningChance = large.lightningChance = 0.1f;
+		if (Blocks.reinforcedSurgeWall instanceof Wall small && Blocks.reinforcedSurgeWallLarge instanceof Wall large) small.lightningChance = large.lightningChance = 0.1f;
 		//Blocks-distribution
 		if (Blocks.plastaniumConveyor instanceof StackConveyor conveyor) conveyor.outputRouter = false;
 		if (Blocks.massDriver instanceof MassDriver driver) driver.reload = 150f;

@@ -20,7 +20,7 @@ import heavyindustry.entities.bullet.BlackHoleBulletType;
 import heavyindustry.entities.bullet.BoidBulletType;
 import heavyindustry.entities.bullet.EffectBulletType;
 import heavyindustry.entities.bullet.LightningLinkerBulletType;
-import heavyindustry.entities.bullet.ShieldBreakerType;
+import heavyindustry.entities.bullet.ShieldBreakerBulletType;
 import heavyindustry.entities.bullet.StrafeLaserBulletType;
 import heavyindustry.entities.bullet.TrailFadeBulletType;
 import heavyindustry.entities.effect.WrapperEffect;
@@ -71,15 +71,14 @@ import static heavyindustry.HVars.MOD_NAME;
  * @author Eipusino
  */
 public final class HBullets {
-	public static BulletType
-			basicMissile, boidMissile, sapArtilleryFrag, continuousSapLaser,
-			heavyArtilleryProjectile,
-			ancientBall, ancientStd,
-			hitter, ncBlackHole, nuBlackHole, executor,
-			ultFireball, basicSkyFrag, annMissile, singularityBulletStrafeLaser, singularityBulletAccel, singularityBulletLightningBall,
-			hyperBlast, hyperBlastLinker,
-			arc9000frag, arc9000, arc9000hyper,
-			collapseFrag, collapse;
+	public static BulletType basicMissile, boidMissile, sapArtilleryFrag, continuousSapLaser;
+	public static BulletType heavyArtilleryProjectile;
+	public static BulletType ancientBall, ancientStd;
+	public static BulletType hitter, ncBlackHole, nuBlackHole, executor;
+	public static BulletType ultFireball, basicSkyFrag, annMissile, singularityBulletStrafeLaser, singularityBulletAccel, singularityBulletLightningBall;
+	public static BulletType hyperBlast, hyperBlastLinker;
+	public static BulletType arc9000frag, arc9000, arc9000hyper;
+	public static BulletType collapseFrag, collapse;
 
 	/** Don't let anyone instantiate this class. */
 	private HBullets() {}
@@ -166,7 +165,7 @@ public final class HBullets {
 				}
 			}
 		};
-		heavyArtilleryProjectile = new ShieldBreakerType(7f, 6000f, "missile-large", 7000f) {{
+		heavyArtilleryProjectile = new ShieldBreakerBulletType(7f, 6000f, "missile-large", 7000f) {{
 			backColor = trailColor = lightColor = lightningColor = hitColor = HPal.ancientLightMid;
 			frontColor = HPal.ancientLight;
 			trailEffect = HFx.hugeTrail;

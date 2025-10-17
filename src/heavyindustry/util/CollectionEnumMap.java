@@ -14,6 +14,11 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
+/**
+ * {@code Map} based on enumeration index. allow null values.
+ *
+ * @since 1.0.8
+ */
 public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> implements Iterable<ObjectHolder<K, V>>, Eachable<ObjectHolder<K, V>>, Cloneable {
 	public final Class<K> keyComponentType;
 	public final Class<?> valueComponentType;
@@ -23,6 +28,8 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 
 	public K[] keyTable; // Do not modify
 	public V[] valueTable;
+
+	public boolean[] enableTable;
 
 	Entries<K, V> entries1, entries2;
 	Values<K, V> values1, values2;
@@ -35,6 +42,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 
 		keyTable = keyType.getEnumConstants();
 		valueTable = (V[]) Array.newInstance(valueType, keyTable.length);
+		enableTable = new boolean[keyTable.length];
 	}
 
 	@Override
@@ -45,8 +53,11 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 	}
 
 	public void eachValue(Cons<? super V> cons) {
-		for (V value : valueTable) {
-			if (value != null) cons.get(value);
+		for (int i = 0; i < valueTable.length; i++) {
+			if (enableTable[i]) {
+				V value = valueTable[i];
+				cons.get(value);
+			}
 		}
 	}
 
@@ -97,6 +108,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		int index = key.ordinal();
 		V oldValue = valueTable[index];
 		valueTable[index] = value;
+		enableTable[index] = true;
 
 		resize();
 
@@ -110,6 +122,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		int index = ((Enum<?>) key).ordinal();
 		V oldValue = valueTable[index];
 		valueTable[index] = null;
+		enableTable[index] = false;
 
 		resize();
 
@@ -119,8 +132,8 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 	void resize() {
 		size = 0;
 
-		for (V v : valueTable) {
-			if (v != null)
+		for (boolean enable : enableTable) {
+			if (enable)
 				size++;
 		}
 	}
@@ -128,6 +141,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 	@Override
 	public void clear() {
 		Arrays.fill(valueTable, null);
+		Arrays.fill(enableTable, false);
 		size = 0;
 	}
 
@@ -184,7 +198,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		int h = 0;
 
 		for (int i = 0; i < keyTable.length; i++) {
-			if (valueTable[i] != null) {
+			if (enableTable[i] && valueTable[i] != null) {
 				h += entryHashCode(i);
 			}
 		}
@@ -205,22 +219,20 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		if (size == 0) return braces ? "{}" : "";
 		StringBuilder buffer = new StringBuilder(32);
 		if (braces) buffer.append('{');
-		int i = keyTable.length - 1;
-
-		V firstValue = valueTable[i];
-		if (firstValue != null) {
+		int i = keyTable.length;
+		while (i-- > 0) {
+			if (enableTable[i]) continue;
 			buffer.append(keyTable[i]);
 			buffer.append('=');
 			buffer.append(valueTable[i]);
+			break;
 		}
-
 		while (i-- > 0) {
-			V value = valueTable[i];
-			if (value == null) continue;
+			if (enableTable[i]) continue;
 			buffer.append(separator);
 			buffer.append(keyTable[i]);
 			buffer.append('=');
-			buffer.append(value);
+			buffer.append(valueTable[i]);
 		}
 		if (braces) buffer.append('}');
 		return buffer.toString();
@@ -299,7 +311,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 
 		@Override
 		public boolean hasNext() {
-			while (nextIndex < map.valueTable.length && map.valueTable[nextIndex] == null)
+			while (nextIndex < map.valueTable.length && map.enableTable[nextIndex])
 				nextIndex++;
 			return valid && nextIndex != map.valueTable.length;
 		}
@@ -308,10 +320,10 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		public void remove() {
 			if (currentIndex < 0) return;
 
-			if (map.valueTable[currentIndex] != null) {
-				map.valueTable[currentIndex] = null;
-				map.resize();
-			}
+			map.valueTable[currentIndex] = null;
+			map.enableTable[currentIndex] = false;
+			map.resize();
+
 			currentIndex = -1;
 		}
 	}

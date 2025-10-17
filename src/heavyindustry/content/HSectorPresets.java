@@ -10,10 +10,10 @@ import mindustry.type.SectorPreset;
  * @author Eipusino
  */
 public final class HSectorPresets {
-	public static SectorPreset
-			//serpulo
-			volcanicArchipelago, ironBridgeCoast, moltenRiftValley, frozenPlateau;
-			//erekir
+	//serpulo
+	public static SectorPreset volcanicArchipelago, ironBridgeCoast, moltenRiftValley, frozenPlateau;
+	//erekir
+	//public static SectorPreset no;
 
 	/** Don't let anyone instantiate this class. */
 	private HSectorPresets() {}

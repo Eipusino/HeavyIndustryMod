@@ -7,17 +7,17 @@ import mindustry.world.blocks.distribution.DirectionalUnloader;
  *
  * @author Eipusino
  */
-public class AdaptDirectionalUnloader extends DirectionalUnloader {
-	public AdaptDirectionalUnloader(String name) {
+public class DirectionalUnloader2 extends DirectionalUnloader {
+	public DirectionalUnloader2(String name) {
 		super(name);
 	}
 
 	@Override
 	protected void initBuilding() {
-		if (buildType == null) buildType = AdaptDirectionalUnloaderBuild::new;
+		if (buildType == null) buildType = DirectionalUnloaderBuild2::new;
 	}
 
-	public class AdaptDirectionalUnloaderBuild extends DirectionalUnloaderBuild {
+	public class DirectionalUnloaderBuild2 extends DirectionalUnloaderBuild {
 		public float counter;
 
 		@Override

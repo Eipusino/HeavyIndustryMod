@@ -1,6 +1,5 @@
 package heavyindustry.content;
 
-import arc.Core;
 import arc.graphics.Blending;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
@@ -63,8 +62,8 @@ import heavyindustry.world.blocks.defense.turrets.PlatformTurret;
 import heavyindustry.world.blocks.defense.turrets.SpeedupTurret;
 import heavyindustry.world.blocks.defense.turrets.TeslaTurret;
 import heavyindustry.world.blocks.distribution.AdaptConveyor;
-import heavyindustry.world.blocks.distribution.AdaptDirectionalUnloader;
 import heavyindustry.world.blocks.distribution.CoveredRouter;
+import heavyindustry.world.blocks.distribution.DirectionalUnloader2;
 import heavyindustry.world.blocks.distribution.InvertedJunction;
 import heavyindustry.world.blocks.distribution.MultiJunction;
 import heavyindustry.world.blocks.distribution.MultiRouter;
@@ -98,6 +97,7 @@ import heavyindustry.world.blocks.logic.ProcessorCooler;
 import heavyindustry.world.blocks.logic.ProcessorFan;
 import heavyindustry.world.blocks.payload.PayloadJunction;
 import heavyindustry.world.blocks.payload.PayloadRail;
+import heavyindustry.world.blocks.power.ArmoredPowerNode;
 import heavyindustry.world.blocks.power.BeamDiode;
 import heavyindustry.world.blocks.power.GlowNuclearReactor;
 import heavyindustry.world.blocks.power.HyperGenerator;
@@ -111,10 +111,11 @@ import heavyindustry.world.blocks.production.SporeFarmBlock;
 import heavyindustry.world.blocks.production.UnitMinerDepot;
 import heavyindustry.world.blocks.production.UnitMinerPoint;
 import heavyindustry.world.blocks.sandbox.AdaptiveSource;
+import heavyindustry.world.blocks.sandbox.NextWave;
 import heavyindustry.world.blocks.sandbox.RandomSource;
-import heavyindustry.world.blocks.storage.AdaptUnloader;
 import heavyindustry.world.blocks.storage.CoreStorageBlock;
 import heavyindustry.world.blocks.storage.CrashCore;
+import heavyindustry.world.blocks.storage.Unloader2;
 import heavyindustry.world.blocks.units.AdaptPayloadSource;
 import heavyindustry.world.blocks.units.UnitIniter;
 import heavyindustry.world.draw.DrawAnim;
@@ -168,7 +169,6 @@ import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.gen.Healthc;
 import mindustry.gen.Hitboxc;
-import mindustry.gen.Icon;
 import mindustry.gen.Sounds;
 import mindustry.gen.Teamc;
 import mindustry.gen.Tex;
@@ -178,7 +178,6 @@ import mindustry.graphics.CacheLayer;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
-import mindustry.net.Packets.AdminAction;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.type.Liquid;
@@ -286,103 +285,283 @@ import static heavyindustry.HVars.MOD_NAME;
  * @author Eipusino
  */
 public final class HBlocks {
-	public static Block
-			//environment
-			cliff, cliffHelper,
-			coreZoneCenter, coreZoneDot,
-			darkPanel7, darkPanel8, darkPanel9, darkPanel10, darkPanel11, darkPanelDamaged, metalTiles15, metalTiles16, metalTiles17, metalTiles18,
-			asphalt, asphaltTiles,
-			shaleVent, basaltSpikes, basaltPlates, basaltRock, basaltWall, basaltGraphiticWall, basaltPyratiticWall, snowySand, snowySandWall, arkyciteSand, arkyciteSandWall, arkyciteSandBoulder, darksandBoulder,
-			concreteBlank, concreteFill, concreteNumber, concreteStripe, concrete, stoneFullTiles, stoneFull, stoneHalf, stoneTiles, concreteWall, pit, waterPit,
-			gravel,
-			deepSlate, deepSlateBrick, deepSlateWall, deepSlateBrickWall,
-			brine, crystalFluid, deepCrystalFluid,
-			metalFloorWater, metalFloorWater2, metalFloorWater3, metalFloorWater4, metalFloorWater5, metalFloorDamagedWater,
-			stoneWater, shaleWater, basaltWater, mudWater,
-			corruptedMoss, corruptedSporeMoss, corruptedSporeRocks, corruptedSporePine, corruptedSporeFern, corruptedSporePlant, corruptedSporeTree,
-			mycelium, myceliumSpore, myceliumShrubs, myceliumPine,
-			softRareEarth, patternRareEarth, softRareEarthWall,
-			crystals, crystalsBoulder,
-			oreSilicon, oreCrystal, oreUranium, oreChromium,
+	//environment
+	public static DepthCliff cliff;
+	public static DepthCliffHelper cliffHelper;
+	public static Floor coreZoneCenter, coreZoneDot, darkPanel7, darkPanel8, darkPanel9, darkPanel10, darkPanel11, darkPanelDamaged;
+	public static ConnectedFloor metalTiles15, metalTiles16, metalTiles17, metalTiles18;
+	public static Floor asphalt;
+	public static ConnectedFloor asphaltTiles;
+	public static SteamVent shaleVent;
+	public static Floor basaltSpikes, basaltPlates;
+	public static TallBlock basaltRock;
+	public static StaticWall basaltWall, basaltGraphiticWall, basaltPyratiticWall;
+	public static Floor snowySand;
+	public static StaticWall snowySandWall;
+	public static Floor arkyciteSand;
+	public static StaticWall arkyciteSandWall;
+	public static Prop arkyciteSandBoulder;
+	public static Prop darksandBoulder;
+	public static Floor concreteBlank, concreteFill, concreteNumber, concreteStripe, concrete;
+	public static Floor stoneFullTiles, stoneFull, stoneHalf, stoneTiles;
+	public static ConnectedStaticWall concreteWall;
+	public static Floor pit, waterPit;
+	public static Floor gravel;
+	public static Floor deepSlate, deepSlateBrick;
+	public static StaticWall deepSlateWall, deepSlateBrickWall;
+	public static Floor brine;
+	public static Floor crystalFluid, deepCrystalFluid;
+	public static Floor metalFloorWater, metalFloorWater2, metalFloorWater3;
+	public static Floor metalFloorWater4, metalFloorWater5, metalFloorDamagedWater;
+	public static Floor stoneWater;
+	public static Floor shaleWater;
+	public static Floor basaltWater;
+	public static Floor mudWater;
+	public static Floor corruptedMoss, corruptedSporeMoss;
+	public static StaticWall corruptedSporeRocks, corruptedSporePine;
+	public static TreeBlock corruptedSporeFern, corruptedSporePlant, corruptedSporeTree;
+	public static Floor mycelium, myceliumSpore;
+	public static StaticWall myceliumShrubs, myceliumPine;
+	public static Floor softRareEarth, patternRareEarth;
+	public static StaticWall softRareEarthWall;
+	public static TallBlock crystals, crystalsBoulder;
+	public static OreBlock oreSilicon, oreCrystal, oreUranium, oreChromium;
 	//wall
-	copperWallHuge, copperWallGigantic, armoredWall, armoredWallLarge, armoredWallHuge, armoredWallGigantic, titaniumWallHuge, titaniumWallGigantic, doorHuge, doorGigantic,
-			plastaniumWallHuge, plastaniumWallGigantic, thoriumWallHuge, thoriumWallGigantic, phaseWallHuge, phaseWallGigantic, surgeWallHuge, surgeWallGigantic,
-			uraniumWall, uraniumWallLarge, chromiumWall, chromiumWallLarge, chromiumDoor, chromiumDoorLarge, heavyAlloyWall, heavyAlloyWallLarge, chargeWall, chargeWallLarge, shapedWall,
-			oldTracks,
+	public static Wall copperWallHuge, copperWallGigantic;
+	public static Wall armoredWall, armoredWallLarge, armoredWallHuge, armoredWallGigantic;
+	public static Wall titaniumWallHuge, titaniumWallGigantic;
+	public static Door doorHuge, doorGigantic;
+	public static Wall plastaniumWallHuge, plastaniumWallGigantic;
+	public static Wall thoriumWallHuge, thoriumWallGigantic;
+	public static Wall phaseWallHuge, phaseWallGigantic;
+	public static Wall surgeWallHuge, surgeWallGigantic;
+	public static Wall uraniumWall, uraniumWallLarge;
+	public static Wall chromiumWall, chromiumWallLarge;
+	public static AutoDoor chromiumDoor, chromiumDoorLarge;
+	public static Wall heavyAlloyWall, heavyAlloyWallLarge;
+	public static ChargeWall chargeWall, chargeWallLarge;
+	public static ShapedWall shapedWall;
+	public static Wall oldTracks;
 	//wall-erekir
-	berylliumWallHuge, berylliumWallGigantic, tungstenWallHuge, tungstenWallGigantic, blastDoorLarge, blastDoorHuge, reinforcedSurgeWallHuge, reinforcedSurgeWallGigantic, carbideWallHuge, carbideWallGigantic, shieldedWallLarge, shieldedWallHuge,
-			aparajito, aparajitoLarge,
+	public static Wall berylliumWallHuge, berylliumWallGigantic;
+	public static Wall tungstenWallHuge, tungstenWallGigantic;
+	public static AutoDoor blastDoorLarge, blastDoorHuge;
+	public static Wall reinforcedSurgeWallHuge, reinforcedSurgeWallGigantic;
+	public static Wall carbideWallHuge, carbideWallGigantic;
+	public static Wall shieldedWallLarge, shieldedWallHuge;
+	public static AparajitoWall aparajito, aparajitoLarge;
 	//drill
-	titaniumDrill, largeWaterExtractor, slagExtractor, oilRig, blastWell, ionDrill, cuttingDrill, beamDrill,
-			sporeFarm,
+	public static Drill titaniumDrill;
+	public static SolidPump largeWaterExtractor;
+	public static LiquidExtractor slagExtractor;
+	public static Fracker oilRig;
+	public static BurstDrill blastWell;
+	public static Drill ionDrill, cuttingDrill;
+	public static LaserBeamDrill beamDrill;
+	public static SporeFarmBlock sporeFarm;
 	//drill-erekir
-	heavyPlasmaBore, unitMinerPoint, unitMinerCenter, unitMinerDepot,
+	public static BeamDrill heavyPlasmaBore;
+	public static UnitMinerPoint unitMinerPoint, unitMinerCenter;
+	public static UnitMinerDepot unitMinerDepot;
 	//distribution
-	invertedJunction, itemLiquidJunction, multiSorter, plastaniumRouter, plastaniumBridge, stackHelper,
-			chromiumEfficientConveyor, chromiumArmorConveyor, chromiumTubeConveyor, chromiumTubeSorter, chromiumStackConveyor, chromiumStackRouter, chromiumStackBridge, chromiumJunction, chromiumRouter, chromiumItemBridge,
-			phaseItemNode, rapidDirectionalUnloader,
+	public static InvertedJunction invertedJunction;
+	public static MultiJunction itemLiquidJunction;
+	public static MultiSorter multiSorter;
+	public static StackRouter plastaniumRouter;
+	public static StackBridge plastaniumBridge;
+	public static StackHelper stackHelper;
+	public static AdaptConveyor chromiumEfficientConveyor, chromiumArmorConveyor;
+	public static TubeConveyor chromiumTubeConveyor;
+	public static TubeSorter chromiumTubeSorter;
+	public static StackConveyor chromiumStackConveyor;
+	public static StackRouter chromiumStackRouter;
+	public static RailStackBridge chromiumStackBridge;
+	public static MultiJunction chromiumJunction;
+	public static MultiRouter chromiumRouter;
+	public static RailItemBridge chromiumItemBridge;
+	public static NodeBridge phaseItemNode;
+	public static DirectionalUnloader2 rapidDirectionalUnloader;
 	//distribution-erekir
-	ductJunction, ductDistributor, ductMultiSorter, armoredDuctBridge, rapidDuctUnloader,
+	public static DuctJunction ductJunction;
+	public static CoveredRouter ductDistributor;
+	public static MultiSorter ductMultiSorter;
+	public static DuctBridge armoredDuctBridge;
+	public static DirectionalUnloader2 rapidDuctUnloader;
 	//liquid
-	liquidSorter, liquidValve, liquidOverflowValve, liquidUnderflowValve, liquidUnloader, liquidMassDriver, turboPumpSmall, turboPump, phaseLiquidNode,
-			chromiumArmorConduit, chromiumLiquidBridge, chromiumArmorLiquidContainer, chromiumArmorLiquidTank,
+	public static SortLiquidRouter liquidSorter, liquidValve;
+	public static LiquidOverflowValve liquidOverflowValve, liquidUnderflowValve;
+	public static LiquidUnloader liquidUnloader;
+	public static LiquidMassDriver liquidMassDriver;
+	public static ConnectedPump turboPumpSmall, turboPump;
+	public static NodeBridge phaseLiquidNode;
+	public static ArmoredConduit chromiumArmorConduit;
+	public static RailLiquidBridge chromiumLiquidBridge;
+	public static LiquidRouter chromiumArmorLiquidContainer, chromiumArmorLiquidTank;
 	//liquid-erekir
-	reinforcedLiquidOverflowValve, reinforcedLiquidUnderflowValve, reinforcedLiquidUnloader, reinforcedLiquidSorter, reinforcedLiquidValve, smallReinforcedPump, largeReinforcedPump,
+	public static LiquidOverflowValve reinforcedLiquidOverflowValve, reinforcedLiquidUnderflowValve;
+	public static LiquidDirectionalUnloader reinforcedLiquidUnloader;
+	public static SortLiquidRouter reinforcedLiquidSorter, reinforcedLiquidValve;
+	public static Pump smallReinforcedPump, largeReinforcedPump;
 	//power
-	networkPowerNode, smartPowerNode, microArmoredPowerNode, heavyArmoredPowerNode, powerAnalyzer,
-			gasGenerator, coalPyrolyzer, largeThermalGenerator, liquidConsumeGenerator, uraniumReactor, hyperMagneticReactor, hugeBattery, armoredCoatedBattery,
+	public static PowerNode networkPowerNode;
+	public static SmartPowerNode smartPowerNode;
+	public static ArmoredPowerNode microArmoredPowerNode, heavyArmoredPowerNode;
+	public static PowerAnalyzer powerAnalyzer;
+	public static ConsumeGenerator gasGenerator;
+	public static ConsumeGenerator coalPyrolyzer;
+	public static ThermalGenerator largeThermalGenerator;
+	public static ConsumeGenerator liquidConsumeGenerator;
+	public static GlowNuclearReactor uraniumReactor;
+	public static HyperGenerator hyperMagneticReactor;
+	public static Battery hugeBattery, armoredCoatedBattery;
 	//power-erekir
-	smartBeamNode, beamDiode, beamInsulator, reinforcedPowerAnalyzer,
+	public static SmartBeamNode smartBeamNode;
+	public static BeamDiode beamDiode;
+	public static InsulationWall beamInsulator;
+	public static PowerAnalyzer reinforcedPowerAnalyzer;
 	//production
-	largeSiliconSmelter, largeKiln, largePulverizer, largeMelter, largeCryofluidMixer, largePyratiteMixer, largeBlastMixer, largeCultivator, stoneCrusher, fractionator, largePlastaniumCompressor, largeSurgeSmelter, blastSiliconSmelter,
-			crystallineCircuitConstructor, crystallineCircuitPrinter, crystalActivator, largePhaseWeaver, phaseFusionInstrument, clarifier, corkscrewCompressor,
-			atmosphericCollector, atmosphericCooler, crystalSynthesizer, uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter, metalAnalyzer, nitrificationReactor, nitratedOilPrecipitator, blastReagentMixer, centrifuge, galliumNitrideSmelter,
+	public static GenericCrafter largeSiliconSmelter;
+	public static GenericCrafter largeKiln;
+	public static GenericCrafter largePulverizer;
+	public static GenericCrafter largeMelter;
+	public static GenericCrafter largeCryofluidMixer;
+	public static GenericCrafter largePyratiteMixer;
+	public static GenericCrafter largeBlastMixer;
+	public static AttributeCrafter largeCultivator;
+	public static GenericCrafter stoneCrusher;
+	public static GenericCrafter fractionator;
+	public static GenericCrafter largePlastaniumCompressor;
+	public static GenericCrafter largeSurgeSmelter;
+	public static GenericCrafter blastSiliconSmelter;
+	public static GenericCrafter crystallineCircuitConstructor;
+	public static AdaptiveCrafter crystallineCircuitPrinter;
+	public static GenericCrafter crystalActivator;
+	public static GenericCrafter largePhaseWeaver;
+	public static GenericCrafter phaseFusionInstrument;
+	public static GenericCrafter clarifier;
+	public static AdaptiveCrafter corkscrewCompressor;
+	public static AttributeCrafter atmosphericCollector;
+	public static GenericCrafter atmosphericCooler;
+	public static GenericCrafter crystalSynthesizer;
+	public static GenericCrafter uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter;
+	public static Separator metalAnalyzer;
+	public static GenericCrafter nitrificationReactor;
+	public static Separator nitratedOilPrecipitator;
+	public static GenericCrafter blastReagentMixer;
+	public static Centrifuge centrifuge;
+	public static GenericCrafter galliumNitrideSmelter;
 	//production-erekir
-	ventHeater, chemicalSiliconSmelter, largeElectricHeater, largeOxidationChamber, largeSurgeCrucible, largeCarbideCrucible,
+	public static ThermalHeater ventHeater;
+	public static GenericCrafter chemicalSiliconSmelter;
+	public static HeatProducer largeElectricHeater;
+	public static HeatProducer largeOxidationChamber;
+	public static HeatCrafter largeSurgeCrucible;
+	public static HeatCrafter largeCarbideCrucible;
 	//defense
-	lighthouse, mendDome, sectorStructureMender, largeShieldGenerator, paralysisMine, detonator, bombLauncher,
+	public static LightBlock lighthouse;
+	public static MendProjector mendDome;
+	public static RegenProjector sectorStructureMender;
+	public static ForceProjector largeShieldGenerator;
+	public static ShockMine paralysisMine;
+	public static Explosive detonator;
+	public static BombLauncher bombLauncher;
 	//defense-erekir
-	largeRadar, reinforcedOverdriveProjector,
+	public static Radar largeRadar;
+	public static RectOverdriveProjector reinforcedOverdriveProjector;
 	//storage
-	cargo, bin, machineryUnloader, rapidUnloader, coreStorage, coreShatter,
+	public static StorageBlock cargo;
+	public static StorageBlock bin;
+	public static Unloader machineryUnloader;
+	public static Unloader2 rapidUnloader;
+	public static CoreStorageBlock coreStorage;
+	public static CrashCore coreShatter;
 	//storage-erekir
-	reinforcedCoreStorage,
+	public static CoreStorageBlock reinforcedCoreStorage;
 	//payload
-	payloadJunction, payloadRail,
+	public static PayloadJunction payloadJunction;
+	public static PayloadRail payloadRail;
 	//payload-erekir
-	reinforcedPayloadJunction, reinforcedPayloadRail,
+	public static PayloadJunction reinforcedPayloadJunction;
+	public static PayloadRail reinforcedPayloadRail;
 	//unit
-	unitMaintenanceDepot, titanReconstructor,
+	public static RepairTower unitMaintenanceDepot;
+	public static Reconstructor titanReconstructor;
 	//unit-erekir
-	largeUnitRepairTower, seniorAssemblerModule,
+	public static RepairTower largeUnitRepairTower;
+	public static UnitAssemblerModule seniorAssemblerModule;
 	//logic
-	matrixProcessor, hugeLogicDisplay, buffrerdMemoryCell, buffrerdMemoryBank, heatSink, heatFan, heatSinkLarge, laserRuler,
-			labelMessage, iconDisplay, iconDisplayLarge, characterDisplay, characterDisplayLarge,
+	public static LogicBlock matrixProcessor;
+	public static LogicDisplay hugeLogicDisplay;
+	public static CopyMemoryBlock buffrerdMemoryCell, buffrerdMemoryBank;
+	public static ProcessorCooler heatSink;
+	public static ProcessorFan heatFan;
+	public static ProcessorCooler heatSinkLarge;
+	public static LaserRuler laserRuler;
+	public static LabelMessageBlock labelMessage;
+	public static IconDisplay iconDisplay, iconDisplayLarge;
+	public static CharacterDisplay characterDisplay, characterDisplayLarge;
 	//logic-erekir
-	reinforcedIconDisplay, reinforcedIconDisplayLarge, reinforcedCharacterDisplay, reinforcedCharacterDisplayLarge,
+	public static IconDisplay reinforcedIconDisplay, reinforcedIconDisplayLarge;
+	public static CharacterDisplay reinforcedCharacterDisplay, reinforcedCharacterDisplayLarge;
 	//turret
-	dissipation, cobweb, coilBlaster, electromagneticStorm, frost, electricArrow, stabber, autocannonB6, autocannonF2, shellshock,
-			rocketLauncher, largeRocketLauncher, rocketSilo, caelum, mammoth,
-			dragonBreath, breakthrough, cloudBreaker, turbulence, ironStream, minigun,
-			hurricane, judgement, evilSpirits,
-			nukeLauncherPlatform,
-			solstice, starfall, annihilate, executor, heatDeath,
+	public static PointDefenseTurret dissipation;
+	public static Cobweb cobweb;
+	public static TeslaTurret coilBlaster, electromagneticStorm;
+	public static PowerTurret frost;
+	public static PowerTurret electricArrow;
+	public static ItemTurret stabber;
+	public static ItemTurret autocannonB6;
+	public static ItemTurret autocannonF2;
+	public static ItemTurret shellshock;
+	public static ItemTurret rocketLauncher;
+	public static ItemTurret largeRocketLauncher;
+	public static ItemTurret rocketSilo;
+	public static ItemTurret caelum;
+	public static ItemTurret mammoth;
+	public static ItemTurret dragonBreath;
+	public static PowerTurret breakthrough;
+	public static ItemTurret cloudBreaker;
+	public static LiquidTurret turbulence;
+	public static LiquidTurret ironStream;
+	public static MinigunTurret minigun;
+	public static SpeedupTurret hurricane;
+	public static ContinuousTurret judgement;
+	public static ItemTurret evilSpirits;
+	public static ItemTurret nukeLauncherPlatform;
+	public static PowerTurret solstice;
+	public static ItemTurret starfall;
+	public static PowerTurret annihilate;
+	public static PowerTurret executor;
+	public static PowerTurret heatDeath;
 	//turret-erekir
-	rupture, rift,
+	public static ItemTurret rupture;
+	public static ItemTurret rift;
 	//campaign
-	largeLaunchPad, largeLandingPad,
+	public static LaunchPad largeLaunchPad;
+	public static LandingPad largeLandingPad;
 	//sandbox
-	unitIniter,
-			reinforcedItemSource, reinforcedLiquidSource, reinforcedPowerSource, reinforcedPayloadSource, adaptiveSource, randomSource,
-			staticDrill, omniNode,
-			configurableMendProjector, configurableOverdriveProjector,
-			teamChanger, barrierProjector, entityRemove,
-			invincibleWall, invincibleWallLarge, invincibleWallHuge, invincibleWallGigantic,
-			dpsWall, dpsWallLarge, dpsWallHuge, dpsWallGigantic,
-			mustDieTurret, oneShotTurret, pointTurret,
-			nextWave;
+	public static UnitIniter unitIniter;
+	public static ItemSource reinforcedItemSource;
+	public static LiquidSource reinforcedLiquidSource;
+	public static PowerSource reinforcedPowerSource;
+	public static AdaptPayloadSource reinforcedPayloadSource;
+	public static AdaptiveSource adaptiveSource;
+	public static RandomSource randomSource;
+	public static Drill staticDrill;
+	public static NodeBridge omniNode;
+	public static ConfigurableMendProjector configurableMendProjector;
+	public static ConfigurableOverdriveProjector configurableOverdriveProjector;
+	public static CoreBlock teamChanger;
+	public static BaseShield barrierProjector;
+	public static ForceProjector entityRemove;
+	public static IndestructibleWall invincibleWall, invincibleWallLarge, invincibleWallHuge, invincibleWallGigantic;
+	public static DPSWall dpsWall, dpsWallLarge, dpsWallHuge, dpsWallGigantic;
+	public static PlatformTurret mustDieTurret, oneShotTurret, pointTurret;
+	public static NextWave nextWave;
 
+	//intrernal
 	public static final int maxsize = 4;
+
 	public static LinkBlock[] linkBlock, linkBlockLiquid;
 	public static PlaceholderBlock[] placeholderBlock;
 
@@ -517,7 +696,7 @@ public final class HBlocks {
 		basaltWall = new StaticWall("basalt-wall") {{
 			variants = 3;
 			attributes.set(Attribute.sand, 0.7f);
-			basaltSpikes.asFloor().wall = Blocks.basalt.asFloor().wall = Blocks.hotrock.asFloor().wall = Blocks.magmarock.asFloor().wall = this;
+			basaltSpikes.wall = Blocks.basalt.asFloor().wall = Blocks.hotrock.asFloor().wall = Blocks.magmarock.asFloor().wall = this;
 			buildType = Constant.PROV_BUILDING;
 		}};
 		basaltGraphiticWall = new StaticWall("basalt-graphitic-wall") {{
@@ -557,7 +736,7 @@ public final class HBlocks {
 		}};
 		arkyciteSandBoulder = new Prop("arkycite-sand-boulder") {{
 			variants = 2;
-			arkyciteSand.asFloor().decoration = this;
+			arkyciteSand.decoration = this;
 			buildType = Constant.PROV_BUILDING;
 		}};
 		darksandBoulder = new Prop("darksand-boulder") {{
@@ -608,7 +787,7 @@ public final class HBlocks {
 			autotile = true;
 			variants = 0;
 			buildType = Constant.PROV_BUILDING;
-			concreteBlank.asFloor().wall = concreteFill.asFloor().wall = concreteNumber.asFloor().wall = concreteStripe.asFloor().wall = concrete.asFloor().wall = this;
+			concreteBlank.wall = concreteFill.wall = concreteNumber.wall = concreteStripe.wall = concrete.wall = this;
 		}};
 		pit = new Floor("pit", 0) {{
 			cacheLayer = HCacheLayer.pit;
@@ -658,13 +837,13 @@ public final class HBlocks {
 			variants = 4;
 			attributes.set(Attribute.sand, 0.7f);
 			buildType = Constant.PROV_BUILDING;
-			deepSlate.asFloor().wall = this;
+			deepSlate.wall = this;
 		}};
 		deepSlateBrickWall = new StaticWall("deep-slate-brick-wall") {{
 			variants = 5;
 			attributes.set(Attribute.sand, 0.7f);
 			buildType = Constant.PROV_BUILDING;
-			deepSlateBrick.asFloor().wall = this;
+			deepSlateBrick.wall = this;
 		}};
 		softRareEarth = new Floor("soft-rare-earth", 3) {{
 			itemDrop = HItems.rareEarth;
@@ -679,7 +858,7 @@ public final class HBlocks {
 		softRareEarthWall = new StaticWall("soft-rare-earth-wall") {{
 			variants = 2;
 			itemDrop = HItems.rareEarth;
-			softRareEarth.asFloor().wall = patternRareEarth.asFloor().wall = this;
+			softRareEarth.wall = patternRareEarth.wall = this;
 			buildType = Constant.PROV_BUILDING;
 		}};
 		brine = new Floor("pooled-brine", 0) {{
@@ -850,7 +1029,7 @@ public final class HBlocks {
 		}};
 		myceliumShrubs = new StaticWall("mycelium-shrubs") {{
 			variants = 2;
-			mycelium.asFloor().wall = myceliumSpore.asFloor().wall = this;
+			mycelium.wall = myceliumSpore.wall = this;
 			buildType = Constant.PROV_BUILDING;
 		}};
 		myceliumPine = new StaticWall("mycelium-pine") {{
@@ -1111,10 +1290,10 @@ public final class HBlocks {
 			hideDetails = false;
 		}};
 		chargeWall = new ChargeWall("charge-wall") {{
-			requirements(Category.defense, ItemStack.with(HItems.crystallineElectronicUnit, 2, HItems.heavyAlloy, 6, Items.metaglass, 1, Items.plastanium, 4));
+			requirements(Category.defense, ItemStack.with(HItems.crystallineElectronicUnit, 2, HItems.heavyAlloy, 4, Items.metaglass, 1, Items.plastanium, 4));
 			size = 1;
-			health = 3110;
-			armor = 52f;
+			health = 2960;
+			armor = 48f;
 			absorbLasers = insulated = true;
 			crushDamageMultiplier = 0.25f;
 			hideDetails = false;
@@ -1122,8 +1301,8 @@ public final class HBlocks {
 		chargeWallLarge = new ChargeWall("charge-wall-large") {{
 			requirements(Category.defense, ItemStack.mult(chargeWall.requirements, 4));
 			size = 2;
-			health = 12440;
-			armor = 52f;
+			health = 11840;
+			armor = 48f;
 			absorbLasers = insulated = true;
 			crushDamageMultiplier = 0.25f;
 			hideDetails = false;
@@ -1628,7 +1807,7 @@ public final class HBlocks {
 			transportTime = 1f;
 			consumePower(0.5f);
 		}};
-		rapidDirectionalUnloader = new AdaptDirectionalUnloader("rapid-directional-unloader") {{
+		rapidDirectionalUnloader = new DirectionalUnloader2("rapid-directional-unloader") {{
 			requirements(Category.distribution, ItemStack.with(Items.silicon, 40, Items.plastanium, 25, HItems.chromium, 15, Items.phaseFabric, 5));
 			speed = 1f;
 			squareSprite = false;
@@ -1662,7 +1841,7 @@ public final class HBlocks {
 			buildCostMultiplier = 2;
 			buildType = DuctBridgeBuild::new;
 		}};
-		rapidDuctUnloader = new AdaptDirectionalUnloader("rapid-duct-unloader") {{
+		rapidDuctUnloader = new DirectionalUnloader2("rapid-duct-unloader") {{
 			requirements(Category.distribution, ItemStack.with(Items.graphite, 25, Items.silicon, 30, Items.tungsten, 20, Items.oxide, 15));
 			health = 240;
 			speed = 2f;
@@ -1703,7 +1882,7 @@ public final class HBlocks {
 			requirements(Category.liquid, ItemStack.with(Items.titanium, 15, Items.metaglass, 10, Items.silicon, 15));
 			health = 70;
 			hideDetails = false;
-			liquidCapacity = 60f;
+			liquidCapacity = 220f;
 		}};
 		chromiumArmorConduit = new ArmoredConduit("chromium-armor-conduit") {{
 			requirements(Category.liquid, ItemStack.with(Items.metaglass, 2, HItems.chromium, 2));
@@ -1845,7 +2024,7 @@ public final class HBlocks {
 			researchCostMultiplier = 1;
 			solid = false;
 			underBullets = true;
-			liquidCapacity = 150f;
+			liquidCapacity = 360f;
 		}};
 		reinforcedLiquidSorter = new SortLiquidRouter("reinforced-liquid-sorter") {{
 			requirements(Category.liquid, ItemStack.with(Items.silicon, 8, Items.beryllium, 4));
@@ -1899,30 +2078,18 @@ public final class HBlocks {
 			maxNodes = 10;
 			laserRange = 6;
 		}};
-		heavyArmoredPowerNode = new PowerNode("heavy-armored-power-node") {{
+		heavyArmoredPowerNode = new ArmoredPowerNode("heavy-armored-power-node") {{
 			requirements(Category.power, ItemStack.with(Items.plastanium, 30, Items.phaseFabric, 15, HItems.galliumNitride, 10, HItems.heavyAlloy, 25));
 			size = 3;
 			health = 3350;
-			armor = 30f;
+			armor = 35f;
 			absorbLasers = true;
 			maxNodes = 28;
 			laserRange = 36f;
-			timers++;
 			update = true;
-			buildType = () -> new PowerNodeBuild() {
-				@Override
-				public void updateTile() {
-					if (damaged() && power.graph.getSatisfaction() > 0.5f) {
-						if (timer.get(90f)) {
-							Fx.healBlockFull.at(x, y, 0, Pal.powerLight, block);
-							healFract(5 * power.graph.getSatisfaction());
-						}
-					}
-				}
-			};
 			hideDetails = false;
 		}};
-		microArmoredPowerNode = new PowerNode("micro-armored-power-node") {{
+		microArmoredPowerNode = new ArmoredPowerNode("micro-armored-power-node") {{
 			requirements(Category.power, ItemStack.with(Items.plastanium, 5, Items.phaseFabric, 10, HItems.galliumNitride, 5, HItems.heavyAlloy, 10));
 			size = 1;
 			health = 1150;
@@ -1930,19 +2097,7 @@ public final class HBlocks {
 			absorbLasers = true;
 			maxNodes = 12;
 			laserRange = 32f;
-			timers++;
 			update = true;
-			buildType = () -> new PowerNodeBuild() {
-				@Override
-				public void updateTile() {
-					if (damaged() && power.graph.getSatisfaction() > 0.5f) {
-						if (timer.get(90f)) {
-							Fx.healBlockFull.at(x, y, 0, Pal.powerLight, block);
-							healFract(5 * power.graph.getSatisfaction());
-						}
-					}
-				}
-			};
 			hideDetails = false;
 		}};
 		powerAnalyzer = new PowerAnalyzer("power-analyzer") {{
@@ -3162,7 +3317,7 @@ public final class HBlocks {
 			group = BlockGroup.transportation;
 			buildType = UnloaderBuild::new;
 		}};
-		rapidUnloader = new AdaptUnloader("rapid-unloader") {{
+		rapidUnloader = new Unloader2("rapid-unloader") {{
 			requirements(Category.effect, ItemStack.with(Items.silicon, 35, Items.plastanium, 15, HItems.crystallineCircuit, 10, HItems.chromium, 15));
 			speed = 1f;
 			group = BlockGroup.transportation;
@@ -6983,48 +7138,14 @@ public final class HBlocks {
 				}
 			};
 		}};
-		nextWave = new Block("next-wave") {{
+		nextWave = new NextWave("next-wave") {{
 			requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.empty);
 			size = 2;
 			health = 1000;
 			armor = 10f;
-			update = true;
-			solid = false;
-			targetable = false;
-			hasItems = false;
-			configurable = true;
-			buildType = () -> new Building() {
-				@Override
-				public void buildConfiguration(Table table) {
-					table.button(Icon.upOpen, Styles.cleari, () -> configure(0)).size(50f).tooltip(Core.bundle.get("hi-next-wave-1"));
-					table.button(Icon.warningSmall, Styles.cleari, () -> configure(1)).size(50f).tooltip(Core.bundle.get("hi-next-wave-10"));
-				}
-
-				@Override
-				public void configured(Unit builder, Object value) {
-					if (value instanceof Number index) {
-						switch (index.intValue()) {
-							case 0 -> {
-								if (Vars.net.client()) Call.adminRequest(Vars.player, AdminAction.wave, null);
-								else Vars.state.wavetime = 0f;
-							}
-							case 1 -> {
-								for (int i = 10; i > 0; i--) {
-									if (Vars.net.client()) Call.adminRequest(Vars.player, AdminAction.wave, null);
-									else Vars.logic.runWave();
-								}
-							}
-						}
-					}
-				}
-			};
 		}};
-		((AdaptConveyor) chromiumEfficientConveyor).junctionReplacement = chromiumJunction;
-		((AdaptConveyor) chromiumArmorConveyor).junctionReplacement = chromiumJunction;
-		((TubeConveyor) chromiumTubeConveyor).junctionReplacement = chromiumJunction;
-		((AdaptConveyor) chromiumEfficientConveyor).bridgeReplacement = chromiumItemBridge;
-		((AdaptConveyor) chromiumArmorConveyor).bridgeReplacement = chromiumItemBridge;
-		((TubeConveyor) chromiumTubeConveyor).bridgeReplacement = chromiumItemBridge;
-		((ArmoredConduit) chromiumArmorConduit).bridgeReplacement = chromiumLiquidBridge;
+		chromiumEfficientConveyor.junctionReplacement =  chromiumArmorConveyor.junctionReplacement =  chromiumTubeConveyor.junctionReplacement = chromiumJunction;
+		chromiumEfficientConveyor.bridgeReplacement =  chromiumArmorConveyor.bridgeReplacement =  chromiumTubeConveyor.bridgeReplacement = chromiumItemBridge;
+		chromiumArmorConduit.bridgeReplacement = chromiumLiquidBridge;
 	}
 }

@@ -11,11 +11,10 @@ import mindustry.type.Item;
  * @author Eipusino
  */
 public final class HItems {
-	public static Item
-			stone, agglomerateSalt, rareEarth,
-			galliumNitride, crystallineCircuit, crystallineElectronicUnit,
-			crystal,
-			gold, uranium, chromium, heavyAlloy;
+	public static Item stone, agglomerateSalt, rareEarth;
+	public static Item galliumNitride, crystallineCircuit, crystallineElectronicUnit;
+	public static Item crystal;
+	public static Item gold, uranium, chromium, heavyAlloy;
 
 	/** Don't let anyone instantiate this class. */
 	private HItems() {}

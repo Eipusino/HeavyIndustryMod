@@ -7,7 +7,6 @@ import heavyindustry.HVars;
 import mindustry.Vars;
 import mindustry.game.Schematic;
 import mindustry.game.Schematics;
-import mindustry.world.blocks.storage.CoreBlock;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -22,7 +21,7 @@ public final class HLoadouts {
 
 		try {
 			basicCripple = readBase64("bXNjaAF4nC3MQQqAIBRF0ZdEg2oHTdqAq2jcCqKB2YcE+4paINHeC+pOLxwIiBIlq53QDi5QPwTjvSXU2nEiTqPyENeNZqWo35eMYwCVVQvZCDHNBbqN1Jml4fWIKWSpX0jqHwIKfD2LRx4M");
-			Vars.schematics.getLoadouts().get((CoreBlock) HBlocks.coreShatter, () -> new Seq<>(Schematic.class)).add(basicCripple);
+			Vars.schematics.getLoadouts().get(HBlocks.coreShatter, () -> new Seq<>(Schematic.class)).add(basicCripple);
 		} catch (Exception e) {
 			Log.err(e);
 		}

@@ -46,7 +46,7 @@ import static mindustry.Vars.tilesize;
 public class SandboxWall extends Block {
 	protected static final IntFloatHolder configVec = new IntFloatHolder();
 
-	public int dpsUpdateTime = timers++;
+	public final int dpsUpdateTime = timers++;
 
 	public float resetTime = 120f;
 	public Color lightningColor = Pal.surge;

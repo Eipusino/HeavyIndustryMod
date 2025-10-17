@@ -320,7 +320,7 @@ public final class ArrayUtils {
 		return newArray;
 	}
 
-	public static int[] sort(int[] arr) {
+	public static int[] sortInt(int[] arr) {
 		for (int i = 1; i < arr.length; i++) {
 			int tmp = arr[i];
 
@@ -337,7 +337,7 @@ public final class ArrayUtils {
 		return arr;
 	}
 
-	public static void shellSort(int[] arr) {
+	public static void shellSortInt(int[] arr) {
 		int temp;
 		for (int step = arr.length / 2; step >= 1; step /= 2) {
 			for (int i = step; i < arr.length; i++) {

@@ -16,7 +16,6 @@ import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
 import mindustry.entities.Units;
 import mindustry.entities.bullet.BulletType;
-import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.gen.Posc;
 import mindustry.graphics.Drawf;
@@ -25,12 +24,12 @@ import mindustry.graphics.Pal;
 import mindustry.logic.Ranged;
 import mindustry.type.Category;
 import mindustry.ui.Bar;
-import mindustry.world.Block;
+import mindustry.world.blocks.defense.Wall;
 import mindustry.world.meta.BlockGroup;
 
 import static mindustry.Vars.tilesize;
 
-public class ChargeWall extends Block {
+public class ChargeWall extends Wall {
 	public TextureRegion heatRegion, lightRegion;
 
 	public float maxEnergy = 3000;
@@ -143,10 +142,10 @@ public class ChargeWall extends Block {
 		if (buildType == null) buildType = ChargeWallBuild::new;
 	}
 
-	public class ChargeWallBuild extends Building implements Ranged {
+	public class ChargeWallBuild extends WallBuild implements Ranged {
 		public float energy;
 		public float healReload;
-		public float dmgScl = 1;
+		public float damageScl = 1;
 		public float heat;
 		public float shootHeat;
 		public float shootReload;
@@ -161,14 +160,14 @@ public class ChargeWall extends Block {
 
 		@Override
 		public float handleDamage(float amount) {
-			return amount * dmgScl;
+			return amount * damageScl;
 		}
 
 		@Override
 		public boolean collision(Bullet other) {
-			float dmg = other.damage() * other.type().buildingDamageMultiplier;
-			damage(dmg);
-			energy += chargeCoefficient * dmg * dmgScl;
+			float damage = other.damage() * other.type().buildingDamageMultiplier;
+			damage(damage);
+			energy += chargeCoefficient * damage * damageScl;
 			return true;
 		}
 

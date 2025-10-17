@@ -38,7 +38,7 @@ public class TileGenerator extends AdvancedConsumeGenerator {
 	@Override
 	public boolean canPlaceOn(Tile tile, Team team, int rotation) {
 		for (Block floor : filter) {
-			if (tile.floor() == floor.asFloor()) {
+			if (tile.floor() == floor) {
 				return true;
 			}
 		}

@@ -21,8 +21,9 @@ import mindustry.type.Liquid;
 public final class HLiquids {
 	private static final int crystalFluidId = Draws.nextTaskId();
 
-	public static Liquid
-			brine, gas, lightOil, nitratedOil, blastReagent, crystalFluid;
+	public static Liquid brine;
+	public static Liquid gas, lightOil, nitratedOil, blastReagent;
+	public static MultiCellLiquid crystalFluid;
 
 	/** Don't let anyone instantiate this class. */
 	private HLiquids() {}

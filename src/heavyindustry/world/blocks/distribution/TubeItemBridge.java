@@ -16,7 +16,8 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.util.CollectionOrderedMap;
+import heavyindustry.util.ObjectBoolOrderedMap;
+import heavyindustry.util.holder.ObjectBoolHolder;
 import mindustry.core.Renderer;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -39,7 +40,8 @@ import static mindustry.Vars.world;
  * A bridge with the same connection method as the power node.
  */
 public class TubeItemBridge extends ItemBridge {
-	public final int timerAccept;
+	//public final int timerAccept = timers++;
+
 	public Prov<Seq<Block>> connectBlocksGetter = () -> new Seq<>(Block.class);
 	public byte maxConnections = 3;
 	public int bufferCapacity;
@@ -51,7 +53,6 @@ public class TubeItemBridge extends ItemBridge {
 	public TubeItemBridge(String name) {
 		super(name);
 		hasItems = true;
-		timerAccept = timers++;
 		bufferCapacity = 50;
 		hasPower = false;
 		canOverdrive = true;
@@ -236,6 +237,7 @@ public class TubeItemBridge extends ItemBridge {
 
 	public class TubeItemBridgeBuild extends ItemBridgeBuild {
 		protected ItemBuffer buffer = new ItemBuffer(bufferCapacity);
+		protected ObjectBoolOrderedMap<Building> orderedMap = new ObjectBoolOrderedMap<>(Building.class);
 
 		public void drawBase() {
 			Draw.rect(block.region, x, y, block.rotate ? rotdeg() : 0f);
@@ -355,7 +357,7 @@ public class TubeItemBridge extends ItemBridge {
 			Drawf.dashCircle(x, y, (range) * 8f, Pal.accent);
 			Draw.color();
 			if (!canReLink() && !canLinked() && realConnections() >= maxConnections - 1) return;
-			CollectionOrderedMap<Building, Boolean> orderedMap = new CollectionOrderedMap<>(Building.class, Boolean.class);
+			orderedMap.clear();
 			for (int x = -range; x <= range; ++x) {
 				for (int y = -range; y <= range; ++y) {
 					Tile other = tile.nearby(x, y);
@@ -372,9 +374,9 @@ public class TubeItemBridge extends ItemBridge {
 			} else {
 				configure(-1);
 			}
-			if (orderedMap.containsKey(this)) orderedMap.remove(this);
-			for (var ord : orderedMap) {
-				Drawf.select(ord.key.x, ord.key.y, (ord.key.block.size * 8f) / 2f + 2f + (ord.value ? 0f : Mathf.absin(Time.time, 4f, 1f)), ord.value ? Pal.place : Pal.breakInvalid);
+			orderedMap.remove(this);
+			for (ObjectBoolHolder<Building> ordered : orderedMap) {
+				Drawf.select(ordered.key.x, ordered.key.y, (ordered.key.block.size * 8f) / 2f + 2f + (ordered.value ? 0f : Mathf.absin(Time.time, 4f, 1f)), ordered.value ? Pal.place : Pal.breakInvalid);
 			}
 		}
 

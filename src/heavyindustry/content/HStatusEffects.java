@@ -31,9 +31,8 @@ import mindustry.world.meta.StatUnit;
  * @author Eipusino
  */
 public final class HStatusEffects {
-	public static StatusEffect
-			overheat, regenerating, breached, radiation, flamePoint, ultFireBurn,
-			territoryFieldIncrease, territoryFieldSuppress, apoptosis;
+	public static StatusEffect2 overheat, regenerating, breached, radiation, flamePoint, ultFireBurn;
+	public static StatusEffect2 territoryFieldIncrease, territoryFieldSuppress, apoptosis;
 
 	/** Don't let anyone instantiate this class. */
 	private HStatusEffects() {}
@@ -42,7 +41,7 @@ public final class HStatusEffects {
 	public static void load() {
 		if (HVars.isPlugin) return;
 
-		overheat = new BaseStatusEffect("overheat") {{
+		overheat = new StatusEffect2("overheat") {{
 			color = new Color(0xffdcd8ff);
 			disarm = true;
 			dragMultiplier = 1f;
@@ -51,14 +50,14 @@ public final class HStatusEffects {
 			effectChance = 0.35f;
 			effect = HFx.glowParticle;
 		}};
-		regenerating = new BaseStatusEffect("regenerating") {{
+		regenerating = new StatusEffect2("regenerating") {{
 			color = HPal.regenerating;
 			damage = -4;
 			effectChance = 0.3f;
 			effect = HFx.glowParticle;
 			init(() -> opposite(StatusEffects.sapped, StatusEffects.slow, breached));
 		}};
-		breached = new BaseStatusEffect("breached") {{
+		breached = new StatusEffect2("breached") {{
 			color = new Color(0x666484ff);
 			healthMultiplier = 0.9f;
 			speedMultiplier = 0.8f;
@@ -66,7 +65,7 @@ public final class HStatusEffects {
 			transitionDamage = 220f;
 			permanent = true;
 		}};
-		radiation = new BaseStatusEffect("radiation") {{
+		radiation = new StatusEffect2("radiation") {{
 			damage = 1.6f;
 		}
 			@Override
@@ -86,7 +85,7 @@ public final class HStatusEffects {
 				}
 			}
 		};
-		flamePoint = new BaseStatusEffect("flame-point") {{
+		flamePoint = new StatusEffect2("flame-point") {{
 			damage = 0.2f;
 			color = Pal.lightFlame;
 			parentizeEffect = true;
@@ -111,7 +110,7 @@ public final class HStatusEffects {
 				}
 			}
 		};
-		ultFireBurn = new BaseStatusEffect("ult-fire-burn") {{
+		ultFireBurn = new StatusEffect2("ult-fire-burn") {{
 			color = Pal.techBlue;
 			damage = 6.5f;
 			speedMultiplier = 1.2f;
@@ -127,7 +126,7 @@ public final class HStatusEffects {
 				}
 			}
 		};
-		territoryFieldIncrease = new BaseStatusEffect("territory-field-increase") {{
+		territoryFieldIncrease = new StatusEffect2("territory-field-increase") {{
 			color = new Color(0xea8878ff);
 			buildSpeedMultiplier = 1.5f;
 			speedMultiplier = 1.1f;
@@ -136,7 +135,7 @@ public final class HStatusEffects {
 			effectChance = 0.07f;
 			effect = Fx.overclocked;
 		}};
-		territoryFieldSuppress = new BaseStatusEffect("territory-field-suppress") {{
+		territoryFieldSuppress = new StatusEffect2("territory-field-suppress") {{
 			color = new Color(0x8b9bb4ff);
 			speedMultiplier = 0.85f;
 			reloadMultiplier = 0.8f;
@@ -144,7 +143,7 @@ public final class HStatusEffects {
 			effectChance = 0.07f;
 			effect = Fx.overclocked;
 		}};
-		apoptosis = new BaseStatusEffect("apoptosis") {{
+		apoptosis = new StatusEffect2("apoptosis") {{
 			color = applyColor = HPal.titaniumAmmoBack;
 			damage = -1;
 			parentizeApplyEffect = true;
@@ -204,10 +203,10 @@ public final class HStatusEffects {
 		};
 	}
 
-	public static class BaseStatusEffect extends StatusEffect {
+	public static class StatusEffect2 extends StatusEffect {
 		public Color outlineColor = Pal.gray;
 
-		public BaseStatusEffect(String name) {
+		public StatusEffect2(String name) {
 			super(name);
 
 			outline = true;

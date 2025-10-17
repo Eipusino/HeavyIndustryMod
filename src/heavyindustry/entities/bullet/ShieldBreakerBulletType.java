@@ -11,7 +11,7 @@ import mindustry.gen.Sounds;
 
 import static mindustry.Vars.tilesize;
 
-public class ShieldBreakerType extends BasicBulletType {
+public class ShieldBreakerBulletType extends BasicBulletType {
 	protected static BulletType breakType = new EffectBulletType(3f) {{
 		absorbable = true;
 		collides = false;
@@ -32,18 +32,18 @@ public class ShieldBreakerType extends BasicBulletType {
 	public float fragSpawnSpacing = 5;
 	public float maxShieldDamage;
 
-	public ShieldBreakerType(float speed, float damage, String bulletSprite, float shieldDamage) {
+	public ShieldBreakerBulletType(float speed, float damage, String bulletSprite, float shieldDamage) {
 		super(speed, damage, bulletSprite);
 		splashDamage = splashDamageRadius = -1f;
 		maxShieldDamage = shieldDamage;
 		absorbable = false;
 	}
 
-	public ShieldBreakerType(float speed, float damage, float shieldDamage) {
+	public ShieldBreakerBulletType(float speed, float damage, float shieldDamage) {
 		this(speed, damage, "bullet", shieldDamage);
 	}
 
-	public ShieldBreakerType() {
+	public ShieldBreakerBulletType() {
 		this(1f, 1f, "bullet", 500f);
 	}
 

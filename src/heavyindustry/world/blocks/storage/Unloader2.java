@@ -8,8 +8,8 @@ import mindustry.world.blocks.storage.Unloader;
  *
  * @author Eipusino
  */
-public class AdaptUnloader extends Unloader {
-	public AdaptUnloader(String name) {
+public class Unloader2 extends Unloader {
+	public Unloader2(String name) {
 		super(name);
 	}
 
@@ -20,10 +20,10 @@ public class AdaptUnloader extends Unloader {
 
 	@Override
 	protected void initBuilding() {
-		if (buildType == null) buildType = AdaptUnloaderBuild::new;
+		if (buildType == null) buildType = UnloaderBuild2::new;
 	}
 
-	public class AdaptUnloaderBuild extends UnloaderBuild {
+	public class UnloaderBuild2 extends UnloaderBuild {
 		public float counter;
 
 		@Override

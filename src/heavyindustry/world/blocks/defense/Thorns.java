@@ -9,7 +9,7 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
 public class Thorns extends Block {
-	public int timerDamage = timers++;
+	public final int timerDamage = timers++;
 
 	public float cooldown = 30f;
 	public float damage = 8f;
