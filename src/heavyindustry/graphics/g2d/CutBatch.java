@@ -17,9 +17,7 @@ import heavyindustry.content.HFx;
 import heavyindustry.entities.effect.Severation;
 import mindustry.entities.Effect;
 
-public class CutBatch extends Batch {
-	protected final Color color = new Color(1, 1, 1, 1);
-
+public class CutBatch extends BaseBatch {
 	public Effect explosionEffect;
 	public Cons<Severation> cutHandler;
 	public Sound sound;
@@ -42,6 +40,12 @@ public class CutBatch extends Batch {
 
 		return returnEntities;
 	}
+
+	@Override
+	protected void setMixColor(Color tint) {}
+
+	@Override
+	protected void setMixColor(float r, float g, float b, float a) {}
 
 	@Override
 	protected void setPackedMixColor(float packedColor) {}

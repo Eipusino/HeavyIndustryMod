@@ -15,7 +15,6 @@ import arc.util.Strings;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.HVars;
 import mindustry.ctype.UnlockableContent;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -93,7 +92,7 @@ public class CharacterDisplay extends Block {
 	public void load() {
 		super.load();
 
-		maskRegion = Core.atlas.find(name + "-mask", HVars.clearAtlas);
+		maskRegion = Core.atlas.find(name + "-mask");
 		letterRegions = new TextureRegion[64];
 		for (int i = 0; i < letterRegions.length; i++) {
 			letterRegions[i] = Core.atlas.find("character-overlay" + i);
@@ -164,7 +163,9 @@ public class CharacterDisplay extends Block {
 
 			if (displayCharacter >= 0 && displayCharacter < letterRegions.length) {
 				Draw.z(Layer.blockOver);
-				Draw.rect(maskRegion, x, y);
+
+				if (maskRegion.found()) Draw.rect(maskRegion, x, y);
+
 				TextureRegion character = letterRegions[displayCharacter];
 				Draw.color(Tmp.c1);
 				Draw.rect(character, x, y, character.width * 0.16f * size, character.height * 0.16f * size);

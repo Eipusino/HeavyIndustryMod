@@ -100,20 +100,20 @@ public class EndNukeBulletType extends BasicBulletType {
 		lastMax = Vars.headless ? -1 : Core.settings.getInt("hi-vaporize-batch", 100);
 
 		HEntity.scanEnemies(b.team, b.x, b.y, 480f, true, true, t -> {
-			if (t instanceof Unit u && u.hittable()) {
+			if (t instanceof Unit unit && unit.hittable()) {
 				//float damageScl = 1f;
-				//if (u.isGrounded()) damageScl = HEntity.inRayCastCircle(bx, by, arr, u);
-				float damageScl = HEntity.inRayCastCircle(bx, by, arr, u);
+				//if (unit.isGrounded()) damageScl = HEntity.inRayCastCircle(bx, by, arr, unit);
+				float damageScl = HEntity.inRayCastCircle(bx, by, arr, unit);
 
 				if (damageScl > 0f) {
-					Tmp.v2.trns(Angles.angle(bx, by, u.x, u.y), (16f + 5f / u.mass()) * damageScl);
-					u.vel.add(Tmp.v2);
+					Tmp.v2.trns(Angles.angle(bx, by, unit.x, unit.y), (16f + 5f / unit.mass()) * damageScl);
+					unit.vel.add(Tmp.v2);
 
-					u.health -= (u.maxHealth / 10f + splashDamage) * damageScl;
+					unit.health -= (unit.maxHealth / 10f + splashDamage) * damageScl;
 
-					if (lastUnit < lastMax && u.health <= 0f) {
+					if (lastUnit < lastMax && unit.health <= 0f) {
 						HVars.vaporBatch.discon = null;
-						HVars.vaporBatch.switchBatch(u::draw, null, (d, w) -> {
+						HVars.vaporBatch.switchBatch(unit::draw, null, (d, w) -> {
 							float with = HEntity.inRayCastCircle(bx, by, arr, d);
 							if (with > 0.5f) {
 								d.disintegrating = true;
@@ -133,19 +133,19 @@ public class EndNukeBulletType extends BasicBulletType {
 							}
 						});
 
-						HFx.desNukeVaporize.at(u.x, u.y, u.angleTo(bx, by) + 180f, u.hitSize / 2f);
+						HFx.desNukeVaporize.at(unit.x, unit.y, unit.angleTo(bx, by) + 180f, unit.hitSize / 2f);
 
 						lastUnit++;
 					}
 				}
-			} else if (t instanceof Building bl) {
-				float damageScl = HEntity.inRayCastCircle(bx, by, arr, bl);
+			} else if (t instanceof Building build) {
+				float damageScl = HEntity.inRayCastCircle(bx, by, arr, build);
 				if (damageScl > 0) {
-					bl.health -= (bl.maxHealth / 10f + splashDamage) * damageScl;
-					if (bl.health <= 0f) {
-						if (lastBuilding < lastMax && t.within(bx, by, 150f + bl.hitSize() / 2f)) {
+					build.health -= (build.maxHealth / 10f + splashDamage) * damageScl;
+					if (build.health <= 0f) {
+						if (lastBuilding < lastMax && t.within(bx, by, 150f + build.hitSize() / 2f)) {
 							HVars.vaporBatch.discon = null;
-							HVars.vaporBatch.switchBatch(bl::draw, null, (d, w) -> {
+							HVars.vaporBatch.switchBatch(build::draw, null, (d, w) -> {
 								d.disintegrating = true;
 								float dx = d.x - bx, dy = d.y - by;
 								float len = Mathf.sqrt(dx * dx + dy * dy);
@@ -163,13 +163,12 @@ public class EndNukeBulletType extends BasicBulletType {
 								d.vr = Mathf.range((force / 3f) * 5f);
 								d.zOverride = Layer.turret + 1f;
 							});
-							//HFx.desNukeVaporize.at(u.x, u.y, u.angleTo(bx, by) + 180f, u.hitSize / 2f);
-							HFx.desNukeVaporize.at(bl.x, bl.y, bl.angleTo(bx, by) + 180f, bl.hitSize() / 2f);
+							HFx.desNukeVaporize.at(build.x, build.y, build.angleTo(bx, by) + 180f, build.hitSize() / 2f);
 
 							lastBuilding++;
 						}
 
-						bl.kill();
+						build.kill();
 					}
 				}
 			} else if (t instanceof Healthc h) {

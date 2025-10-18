@@ -39,7 +39,7 @@ public class ShortHolder<V> implements Cloneable {
 	public ShortHolder<V> copy() {
 		try {
 			return (ShortHolder<V>) super.clone();
-		} catch (CloneNotSupportedException suck) {
+		} catch (CloneNotSupportedException awful) {
 			return new ShortHolder<>(key, value);
 		}
 	}

@@ -30,13 +30,13 @@ import mindustry.world.meta.StatUnit;
 import static mindustry.Vars.content;
 import static mindustry.Vars.state;
 
-public class AdaptLiquidDirectionalUnloader extends Block {
+public class LiquidDirectionalUnloader2 extends Block {
 	public TextureRegion[] topRegions = new TextureRegion[4];
 	public TextureRegion baseRegion, liquidRegion;
 
 	public float speed = 5f;
 
-	public AdaptLiquidDirectionalUnloader(String name) {
+	public LiquidDirectionalUnloader2(String name) {
 		super(name);
 
 		group = BlockGroup.liquids;
@@ -54,8 +54,8 @@ public class AdaptLiquidDirectionalUnloader extends Block {
 		liquidCapacity = 50;
 		outputsLiquid = true;
 
-		config(Liquid.class, (AdaptLiquidDirectionalUnloaderBuild tile, Liquid Liquid) -> tile.unloadLiquid = Liquid);
-		configClear((AdaptLiquidDirectionalUnloaderBuild tile) -> tile.unloadLiquid = null);
+		config(Liquid.class, (LiquidDirectionalUnloaderBuild2 tile, Liquid Liquid) -> tile.unloadLiquid = Liquid);
+		configClear((LiquidDirectionalUnloaderBuild2 tile) -> tile.unloadLiquid = null);
 	}
 
 	@Override
@@ -106,10 +106,10 @@ public class AdaptLiquidDirectionalUnloader extends Block {
 
 	@Override
 	protected void initBuilding() {
-		if (buildType == null) buildType = AdaptLiquidDirectionalUnloaderBuild::new;
+		if (buildType == null) buildType = LiquidDirectionalUnloaderBuild2::new;
 	}
 
-	public class AdaptLiquidDirectionalUnloaderBuild extends Building {
+	public class LiquidDirectionalUnloaderBuild2 extends Building {
 		public float unloadTimer = 0f;
 		public Liquid unloadLiquid = null;
 		public int offset = 0;

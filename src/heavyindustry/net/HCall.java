@@ -1,6 +1,7 @@
 package heavyindustry.net;
 
 import arc.struct.Seq;
+import heavyindustry.entities.HEntity;
 import heavyindustry.input.InputAggregator.TapResult;
 import heavyindustry.world.blocks.production.UnitMinerPoint.UnitMinerPointBuild;
 import mindustry.Vars;
@@ -80,6 +81,18 @@ public final class HCall {
 			DroneSpawnedCallPacket packet = new DroneSpawnedCallPacket();
 			packet.tile = tile;
 			packet.id = id;
+			Vars.net.send(packet, true);
+		}
+	}
+
+	public static void removeUnit(int uid) {
+		if (Vars.net.server() || !Vars.net.active()) {
+			HEntity.unitRemove(uid);
+		}
+
+		if (Vars.net.server()) {
+			UnitRemoveCallPacket packet = new UnitRemoveCallPacket();
+			packet.uid = uid;
 			Vars.net.send(packet, true);
 		}
 	}

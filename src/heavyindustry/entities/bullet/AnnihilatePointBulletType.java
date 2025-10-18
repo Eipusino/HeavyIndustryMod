@@ -3,6 +3,7 @@ package heavyindustry.entities.bullet;
 import arc.math.geom.Geometry;
 import arc.util.Tmp;
 import heavyindustry.entities.HEntity;
+import heavyindustry.net.HCall;
 import heavyindustry.util.Utils;
 import mindustry.Vars;
 import mindustry.entities.Mover;
@@ -12,6 +13,7 @@ import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.gen.Entityc;
+import mindustry.gen.Healthc;
 import mindustry.gen.Hitboxc;
 import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
@@ -26,7 +28,9 @@ public class AnnihilatePointBulletType extends PointBulletType {
 
 	@Override
 	public void hitEntity(Bullet b, Hitboxc entity, float health) {
-		HEntity.annihilate(entity, false);
+		if (entity instanceof Healthc h && !h.dead()) {
+			HCall.removeUnit(h.id());
+		}
 	}
 
 	@Override
@@ -67,7 +71,7 @@ public class AnnihilatePointBulletType extends PointBulletType {
 		});
 
 		if (result != null) {
-			HEntity.annihilate(result, false);
+			HCall.removeUnit(result.id);
 		} else if (collidesTiles) {
 			Building build = Vars.world.buildWorld(px, py);
 			if (build != null && build.team != b.team) {

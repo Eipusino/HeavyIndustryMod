@@ -6,10 +6,8 @@ public class CopyMemoryBlock extends MemoryBlock {
 	public CopyMemoryBlock(String name) {
 		super(name);
 
-		config(Object[].class, (CopyMemoryBuild tile, Object[] ds) -> {
-			for (int i = 0; i < ds.length; i++) {
-				if (ds[i] instanceof Double d) tile.memory[i] = d;
-			}
+		config(double[].class, (CopyMemoryBuild tile, double[] ds) -> {
+			System.arraycopy(ds, 0, tile.memory, 0, ds.length);
 		});
 	}
 
@@ -19,19 +17,17 @@ public class CopyMemoryBlock extends MemoryBlock {
 	}
 
 	public class CopyMemoryBuild extends MemoryBuild {
-		public Object[] objects = new Object[memoryCapacity];
+		public double[] buffer = new double[memoryCapacity];
 
 		public void updateMemory() {
-			for (int i = 0; i < memory.length; i++) {
-				objects[i] = memory[i];
-			}
+			System.arraycopy(memory, 0, buffer, 0, memory.length);
 		}
 
 		@Override
 		public Object config() {
 			updateMemory();
 
-			return objects;
+			return buffer;
 		}
 	}
 }

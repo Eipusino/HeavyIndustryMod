@@ -62,7 +62,7 @@ public class ShockWaveAbility extends Ability {
 
 	public ShockWaveAbility status(Object... values) {
 		for (int i = 0; i < values.length / 2; i++) {
-			status.put((StatusEffect) values[i * 2], (Float) values[i * 2 + 1]);
+			status.put((StatusEffect) values[i * 2], (float) values[i * 2 + 1]);
 		}
 
 		return this;

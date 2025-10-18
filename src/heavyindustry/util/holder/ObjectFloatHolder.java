@@ -39,7 +39,7 @@ public class ObjectFloatHolder<K> implements Cloneable {
 	public ObjectFloatHolder<K> copy() {
 		try {
 			return (ObjectFloatHolder<K>) super.clone();
-		} catch (CloneNotSupportedException suck) {
+		} catch (CloneNotSupportedException awful) {
 			return new ObjectFloatHolder<>(key, value);
 		}
 	}

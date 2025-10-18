@@ -129,7 +129,7 @@ public final class Fills {
 			floats.add(vector.x + x, vector.y + y);
 		}
 
-		private void apply1(Float ix) {
+		private void apply1(float ix) {
 			addPoints(360f * finion / max * ix, width, height, width2, height2);
 		}
 	}

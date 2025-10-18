@@ -10,11 +10,17 @@
 
 ---
 
-## Other Information
+## Basic Information
+
+**Content expansion mod based on vanilla.**
+
+**It can also be used as a hidden mod that does not load content and only serves as a pre development library, providing various tools and methods.**
+
+**The current mod is in the development stage, and most APIs are extremely unstable and may change at any time in future updates. It is not recommended to use it as a dependency for now.**
 
 + **Mod Version: 1.0.7-beta**
 + **Mod Type: Java**
-+ **Mindustry Version: 151.1**
++ **Mindustry Version: 152.2**
 + **Compatible Platform: Android, Desktop, macOS, Linux。.**
 
 ---

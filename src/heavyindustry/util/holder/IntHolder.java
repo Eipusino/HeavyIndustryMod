@@ -39,7 +39,7 @@ public class IntHolder<V> implements Cloneable {
 	public IntHolder<V> copy() {
 		try {
 			return (IntHolder<V>) super.clone();
-		} catch (CloneNotSupportedException suck) {
+		} catch (CloneNotSupportedException awful) {
 			return new IntHolder<>(key, value);
 		}
 	}

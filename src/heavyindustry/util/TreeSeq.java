@@ -1,6 +1,6 @@
 package heavyindustry.util;
 
-import arc.func.Func;
+import arc.func.Boolf;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -65,7 +65,7 @@ public class TreeSeq<T> implements Iterable<T> {
 		return size;
 	}
 
-	public boolean removeIf(Func<T, Boolean> boolf) {
+	public boolean removeIf(Boolf<T> boolf) {
 		boolean test = false;
 		TreeItr itr = iterator();
 		T item;

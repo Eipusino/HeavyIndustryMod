@@ -18,7 +18,7 @@ import mindustry.gen.Unit;
 import mindustry.type.Weapon;
 
 public class EnergyChargeWeapon extends Weapon {
-	public Cons3<Unit, WeaponMount, Float> drawCharge = (unit, mount, charge) -> {};
+	public DrawChargeCons drawCharge = (unit, mount, charge) -> {};
 	/** Uses reload as charge. */
 	public Cons2<Unit, WeaponMount> chargeCondition;
 	public boolean drawTop = true, startUncharged = true, drawRegion = true;
@@ -172,5 +172,9 @@ public class EnergyChargeWeapon extends Weapon {
 		public ChargeMount(Weapon weapon) {
 			super(weapon);
 		}
+	}
+
+	public interface DrawChargeCons {
+		void get(Unit unit, WeaponMount mount, float charge);
 	}
 }

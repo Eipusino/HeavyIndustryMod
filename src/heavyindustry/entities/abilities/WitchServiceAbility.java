@@ -5,13 +5,13 @@ import arc.math.geom.Rect;
 import arc.util.Time;
 import heavyindustry.content.HFx;
 import heavyindustry.content.HStatusEffects;
-import heavyindustry.graphics.HPal;
 import heavyindustry.util.ObjectFloatMap2;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
 import mindustry.entities.Units;
 import mindustry.entities.abilities.Ability;
 import mindustry.gen.Unit;
+import mindustry.graphics.Pal;
 import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
 
@@ -34,7 +34,7 @@ public class WitchServiceAbility extends Ability {
 
 	public Effect work, applyIn, applyOut;
 
-	public Color color = HPal.titaniumAmmoBack;
+	public Color color = Pal.reactorPurple;
 
 	public boolean working = false;
 

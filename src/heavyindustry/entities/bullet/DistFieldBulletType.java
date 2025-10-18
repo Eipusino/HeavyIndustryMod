@@ -6,6 +6,8 @@ import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.math.Angles;
 import arc.math.Mathf;
+import mindustry.content.Fx;
+import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
 import mindustry.entities.Units;
 import mindustry.entities.bullet.BulletType;
@@ -15,9 +17,9 @@ import mindustry.graphics.Pal;
 import mindustry.type.StatusEffect;
 
 public class DistFieldBulletType extends BulletType {
-	public Color centerColor, edgeColor;
-	public Effect distSplashFx, distStart;
-	public StatusEffect distStatus;
+	public Color centerColor = Color.white, edgeColor = Color.white;
+	public Effect distSplashFx = Fx.none, distStart = Fx.none;
+	public StatusEffect distStatus = StatusEffects.none;
 	public float radius, radiusInc;
 	public float damageLimit, distDamage;
 	public float bulletSlow, bulletSlowInc;
@@ -77,7 +79,7 @@ public class DistFieldBulletType extends BulletType {
 		float radius = getRadius(b);
 
 		if (b.time() % temp <= 1 && b.lifetime() - b.time() > 100) {
-			distSplashFx.at(b.x, b.y, 0, new Float[]{radius, temp});
+			distSplashFx.at(b.x, b.y, 0, new float[]{radius, temp});
 		}
 
 		Units.nearbyEnemies(b.team, b.x, b.y, radius, e -> {

@@ -24,14 +24,14 @@ import mindustry.world.blocks.liquid.LiquidJunction;
 import static mindustry.Vars.player;
 import static mindustry.Vars.renderer;
 
-public class AdaptConduit extends Conduit {
+public class Conduit2 extends Conduit {
 	public TextureRegion[] topMaskRegions;
 
-	public AdaptConduit(String name) {
+	public Conduit2(String name) {
 		super(name);
 		canOverdrive = false;
 		placeableLiquid = true;
-		config(Boolean.class, (AdaptConduitBuild build, Boolean armored) -> build.armored = armored);
+		config(Boolean.class, (ConduitBuild2 build, Boolean armored) -> build.armored = armored);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class AdaptConduit extends Conduit {
 
 	@Override
 	public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock) {
-		if (tile.build instanceof AdaptConduitBuild && ((AdaptConduitBuild) tile.build).armored)
+		if (tile.build instanceof ConduitBuild2 && ((ConduitBuild2) tile.build).armored)
 			return (otherblock.outputsLiquid && blendsArmored(tile, rotation, otherx, othery, otherrot, otherblock)) ||
 					(lookingAt(tile, rotation, otherx, othery, otherblock) && otherblock.hasLiquids) || otherblock instanceof LiquidJunction;
 		return super.blends(tile, rotation, otherx, othery, otherrot, otherblock);
@@ -65,10 +65,10 @@ public class AdaptConduit extends Conduit {
 
 	@Override
 	protected void initBuilding() {
-		if (buildType == null) buildType = AdaptConduitBuild::new;
+		if (buildType == null) buildType = ConduitBuild2::new;
 	}
 
-	public class AdaptConduitBuild extends ConduitBuild {
+	public class ConduitBuild2 extends ConduitBuild {
 		public boolean armored = false;
 
 		@Override

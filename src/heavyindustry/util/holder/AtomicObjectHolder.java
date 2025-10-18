@@ -25,7 +25,7 @@ public class AtomicObjectHolder<K, V> implements Entry<K, V>, Cloneable {
 	public AtomicObjectHolder<K, V> copy() {
 		try {
 			return (AtomicObjectHolder<K, V>) super.clone();
-		} catch (CloneNotSupportedException e) {
+		} catch (CloneNotSupportedException awful) {
 			//this shouldn't happen, since we are Cloneable
 			return new AtomicObjectHolder<>(key, value);
 		}

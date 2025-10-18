@@ -12,7 +12,6 @@ import arc.util.Nullable;
 import arc.util.OS;
 import arc.util.Strings;
 import arc.util.Time;
-import arc.util.serialization.Jval;
 import heavyindustry.HVars;
 import heavyindustry.audio.HMusics;
 import heavyindustry.audio.HSounds;
@@ -45,7 +44,6 @@ import heavyindustry.graphics.g2d.VaporizeBatch;
 import heavyindustry.input.InputAggregator;
 import heavyindustry.mod.ModUtils;
 import heavyindustry.mod.ScriptUtils;
-import heavyindustry.mod.ModGetter;
 import heavyindustry.net.HCall;
 import heavyindustry.ui.Elements;
 import heavyindustry.ui.HFonts;
@@ -105,17 +103,6 @@ public final class HeavyIndustryMod extends Mod {
 			// This situation usually does not occur...
 			HVars.platformImpl = new DefaultImpl();
 		}
-
-		ModGetter.checkModFormat(HVars.internalTree.root, file -> {
-			try {
-				HVars.info = Jval.read(file.reader());
-				HVars.isPlugin = HVars.info.getBool("hidden", false);
-			} catch (Throwable e) {
-				Log.err(e);
-
-				HVars.isPlugin = false;
-			}
-		});
 	}
 
 	public HeavyIndustryMod() {

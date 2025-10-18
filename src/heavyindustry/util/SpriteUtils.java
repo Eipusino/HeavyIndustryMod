@@ -45,7 +45,7 @@ public final class SpriteUtils {
 		4   2
 		  3
 	*/
-	public static final int[] index4r4 = {
+	public static final int[] index4x4 = {
 			0, 2, 10, 8,
 			4, 6, 14, 12,
 			5, 7, 15, 13,
@@ -57,28 +57,28 @@ public final class SpriteUtils {
 		4   2
 		7 3 6
 	*/
-	public static final int[] index4r12raw = {
+	public static final int[] index4x12raw = {
 			0, 2, 10, 8, 143, 46, 78, 31, 38, 111, 110, 76,
 			4, 6, 14, 12, 39, 127, 239, 77, 55, 95, 175, 207,
 			5, 7, 15, 13, 23, 191, 223, 141, 63, 255, 240, 205,
 			1, 3, 11, 9, 79, 27, 139, 47, 19, 155, 159, 137
 	};
 
-	public static final int[] index4r12 = new int[index4r12raw.length];
+	public static final int[] index4x12 = new int[index4x12raw.length];
 	public static final IntIntMap index4r12map = new IntIntMap();
 
 	static {
-		int[] indices = new int[index4r12raw.length];
-		for (int i = 0; i < index4r12raw.length; i++) {
+		int[] indices = new int[index4x12raw.length];
+		for (int i = 0; i < index4x12raw.length; i++) {
 			indices[i] = i;
 		}
 
 		for (int i = 1; i < indices.length; i++) {
 			int key = indices[i];
-			int keyValue = index4r12raw[key];
+			int keyValue = index4x12raw[key];
 			int j = i - 1;
 
-			while (j >= 0 && index4r12raw[indices[j]] > keyValue) {
+			while (j >= 0 && index4x12raw[indices[j]] > keyValue) {
 				indices[j + 1] = indices[j];
 				j = j - 1;
 			}
@@ -86,11 +86,11 @@ public final class SpriteUtils {
 		}
 
 		for (int i = 0; i < indices.length; i++) {
-			index4r12[indices[i]] = i;
+			index4x12[indices[i]] = i;
 		}
 
-		for (int i = 0; i < index4r12raw.length; i++) {
-			index4r12map.put(index4r12raw[i], index4r12[i]);
+		for (int i = 0; i < index4x12raw.length; i++) {
+			index4r12map.put(index4x12raw[i], index4x12[i]);
 		}
 	}
 
@@ -225,15 +225,15 @@ public final class SpriteUtils {
 		return tiles;
 	}
 
-	public static TextureRegion[] splitInLayers(TextureRegion region, int size) {
-		return splitInLayers(region, size, 0);
+	public static TextureRegion[] splitArray(TextureRegion region, int size) {
+		return splitArray(region, size, 0);
 	}
 
-	public static TextureRegion[] splitInLayers(TextureRegion region, int size, int pad) {
-		return splitInLayers(region, size, pad, null);
+	public static TextureRegion[] splitArray(TextureRegion region, int size, int pad) {
+		return splitArray(region, size, pad, null);
 	}
 
-	public static TextureRegion[] splitInLayers(TextureRegion region, int size, int pad, int[] indexMap) {
+	public static TextureRegion[] splitArray(TextureRegion region, int size, int pad, int[] indexMap) {
 		int x = region.getX();
 		int y = region.getY();
 		int width = region.width;

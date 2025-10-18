@@ -4,6 +4,7 @@ import arc.graphics.Texture;
 import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.graphics.g2d.TextureRegion;
 import arc.struct.Seq;
+import arc.util.Log;
 import arc.util.serialization.Jval;
 import heavyindustry.annotations.Annotations.ListClasses;
 import heavyindustry.annotations.Annotations.ListPackages;
@@ -15,6 +16,7 @@ import heavyindustry.graphics.g2d.DevastationBatch;
 import heavyindustry.graphics.g2d.FragmentationBatch;
 import heavyindustry.graphics.g2d.VaporizeBatch;
 import heavyindustry.input.InputAggregator;
+import heavyindustry.mod.ModGetter;
 import heavyindustry.util.PlatformImpl;
 import mindustry.Vars;
 import mindustry.content.TechTree.TechNode;
@@ -63,9 +65,9 @@ public final class HVars {
 	 * Blank image placeholder, used in Kotlin to prevent {@code lateinit var} and {@code NullPointerException}.
 	 * <p>Please note that these variables will still not initialize in {@code headless}.
 	 */
-	public static Texture white, clear;
-	public static TextureRegion whiteRegion, clearRegion;
-	public static AtlasRegion whiteAtlas, clearAtlas;
+	public static Texture white;
+	public static TextureRegion whiteRegion;
+	public static AtlasRegion whiteAtlas;
 
 	public static FragmentationBatch fragBatch;
 	public static CutBatch cutBatch;
@@ -86,10 +88,18 @@ public final class HVars {
 		if (!Vars.headless) {
 			whiteAtlas = new AtlasRegion(whiteRegion = new TextureRegion(white = new Texture(internalTree.child("other/textures/white.png"))));
 			whiteAtlas.name = "white";
-
-			clearAtlas = new AtlasRegion(clearRegion = new TextureRegion(clear = new Texture(internalTree.child("other/textures/clear.png"))));
-			clearAtlas.name = "clear";
 		}
+
+		ModGetter.checkModFormat(internalTree.root, file -> {
+			try {
+				info = Jval.read(file.reader());
+				isPlugin = info.getBool("hidden", false);
+			} catch (Throwable e) {
+				Log.err(e);
+
+				isPlugin = false;
+			}
+		});
 	}
 
 	/** Don't let anyone instantiate this class. */

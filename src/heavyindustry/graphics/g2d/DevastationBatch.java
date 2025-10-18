@@ -3,7 +3,6 @@ package heavyindustry.graphics.g2d;
 import arc.Core;
 import arc.func.Cons;
 import arc.graphics.Blending;
-import arc.graphics.Color;
 import arc.graphics.GL20;
 import arc.graphics.Texture;
 import arc.graphics.g2d.Batch;
@@ -14,9 +13,7 @@ import arc.math.Mathf;
 import heavyindustry.entities.effect.Devastation;
 import mindustry.graphics.Layer;
 
-public class DevastationBatch extends Batch {
-	protected final Color color = new Color(1, 1, 1, 1);
-
+public class DevastationBatch extends BaseBatch {
 	public Cons<Devastation> cons;
 	public float baseZ = Layer.block;
 
@@ -39,9 +36,7 @@ public class DevastationBatch extends Batch {
 	}
 
 	@Override
-	protected void draw(Texture texture, float[] spriteVertices, int offset, int count) {
-
-	}
+	protected void draw(Texture texture, float[] spriteVertices, int offset, int count) {}
 
 	@Override
 	protected void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float rotation) {
@@ -72,7 +67,5 @@ public class DevastationBatch extends Batch {
 	}
 
 	@Override
-	protected void flush() {
-
-	}
+	protected void flush() {}
 }

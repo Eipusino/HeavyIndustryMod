@@ -22,7 +22,7 @@ import static mindustry.Vars.world;
  * @author Eipusino
  * @since 1.0.4
  */
-public class CoveredConveyor extends AdaptConveyor {
+public class CoveredConveyor extends Conveyor2 {
 	public TextureRegion inputRegion, outputRegion;
 
 	public CoveredConveyor(String name) {
@@ -46,7 +46,7 @@ public class CoveredConveyor extends AdaptConveyor {
 		if (buildType == null) buildType = CoveredConveyorBuild::new;
 	}
 
-	public class CoveredConveyorBuild extends AdaptConveyorBuild {
+	public class CoveredConveyorBuild extends ConveyorBuild2 {
 		public boolean backCap, leftCap, rightCap, frontCap;
 
 		@Override

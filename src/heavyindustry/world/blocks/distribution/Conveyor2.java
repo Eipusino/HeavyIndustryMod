@@ -24,10 +24,10 @@ import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
 // 20 textures were a bit troublesome, so I integrated them into one texture to load.
-public class AdaptConveyor extends Conveyor {
+public class Conveyor2 extends Conveyor {
 	public TextureRegion[][] edgeRegions;
 
-	public AdaptConveyor(String name) {
+	public Conveyor2(String name) {
 		super(name);
 	}
 
@@ -78,10 +78,10 @@ public class AdaptConveyor extends Conveyor {
 
 	@Override
 	protected void initBuilding() {
-		if (buildType == null) buildType = AdaptConveyorBuild::new;
+		if (buildType == null) buildType = ConveyorBuild2::new;
 	}
 
-	public class AdaptConveyorBuild extends ConveyorBuild {
+	public class ConveyorBuild2 extends ConveyorBuild {
 		@Override
 		public boolean acceptItem(Building source, Item item) {
 			return super.acceptItem(source, item) && (!noSideBlend || (source.block instanceof Conveyor || Edges.getFacingEdge(source.tile, tile).relativeTo(tile) == rotation));

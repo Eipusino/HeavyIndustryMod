@@ -11,7 +11,7 @@ import mindustry.entities.pattern.ShootPattern;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
 
-public class HeavyIndustryListener implements ApplicationListener {
+public final class HeavyIndustryListener implements ApplicationListener {
 	static float[] bulletDps, unitDps;
 	static boolean[] powerful;
 

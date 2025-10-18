@@ -36,7 +36,7 @@ public class IntFloatHolder implements Cloneable {
 	public IntFloatHolder copy() {
 		try {
 			return (IntFloatHolder) super.clone();
-		} catch (CloneNotSupportedException e) {
+		} catch (CloneNotSupportedException awful) {
 			return new IntFloatHolder(key, value);
 		}
 	}

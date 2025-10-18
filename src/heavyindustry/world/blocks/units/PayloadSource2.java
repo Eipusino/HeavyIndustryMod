@@ -22,8 +22,8 @@ import static mindustry.Vars.content;
 import static mindustry.Vars.player;
 import static mindustry.Vars.state;
 
-public class AdaptPayloadSource extends PayloadSource {
-	public AdaptPayloadSource(String name) {
+public class PayloadSource2 extends PayloadSource {
+	public PayloadSource2(String name) {
 		super(name);
 		noUpdateDisabled = false;
 		unitCapModifier = 1;
@@ -31,7 +31,7 @@ public class AdaptPayloadSource extends PayloadSource {
 		underBullets = true;
 		destructible = false;
 
-		config(Block.class, (AdaptPayloadSourceBuild tile, Block block) -> {
+		config(Block.class, (PayloadSourceBuild2 tile, Block block) -> {
 			if (canProduce(block) && tile.configBlock != block) {
 				tile.configBlock = block;
 				tile.unit = null;
@@ -40,7 +40,7 @@ public class AdaptPayloadSource extends PayloadSource {
 			}
 		});
 
-		config(UnitType.class, (AdaptPayloadSourceBuild tile, UnitType unit) -> {
+		config(UnitType.class, (PayloadSourceBuild2 tile, UnitType unit) -> {
 			if (canProduce(unit) && tile.unit != unit) {
 				tile.unit = unit;
 				tile.configBlock = null;
@@ -49,14 +49,14 @@ public class AdaptPayloadSource extends PayloadSource {
 			}
 		});
 
-		config(Integer.class, (AdaptPayloadSourceBuild tile, Integer index) -> {
+		config(Integer.class, (PayloadSourceBuild2 tile, Integer index) -> {
 			tile.unit = null;
 			tile.configBlock = null;
 			tile.payload = null;
 			tile.scl = 0;
 		});
 
-		configClear((AdaptPayloadSourceBuild tile) -> {
+		configClear((PayloadSourceBuild2 tile) -> {
 			tile.configBlock = null;
 			tile.unit = null;
 			tile.payload = null;
@@ -71,10 +71,10 @@ public class AdaptPayloadSource extends PayloadSource {
 
 	@Override
 	protected void initBuilding() {
-		if (buildType == null) buildType = AdaptPayloadSourceBuild::new;
+		if (buildType == null) buildType = PayloadSourceBuild2::new;
 	}
 
-	public class AdaptPayloadSourceBuild extends PayloadSourceBuild {
+	public class PayloadSourceBuild2 extends PayloadSourceBuild {
 		@Override
 		public void updateTile() {
 			enabled = true;
@@ -101,8 +101,8 @@ public class AdaptPayloadSource extends PayloadSource {
 			table.add(cont).maxHeight(Scl.scl(55 * 2)).left();
 			table.row();
 			ItemSelection.buildTable(block, table,
-					content.blocks().select(AdaptPayloadSource.this::canProduce).<UnlockableContent>as()
-							.add(content.units().select(AdaptPayloadSource.this::canProduce).as()),
+					content.blocks().select(PayloadSource2.this::canProduce).<UnlockableContent>as()
+							.add(content.units().select(PayloadSource2.this::canProduce).as()),
 					this::getContent, this::configure, false, selectionRows, selectionColumns);
 		}
 
@@ -149,6 +149,11 @@ public class AdaptPayloadSource extends PayloadSource {
 
 		@Override
 		public void damage(float damage) {}
+
+		@Override
+		public float handleDamage(float amount) {
+			return 0f;
+		}
 
 		@Override
 		public boolean canPickup() {

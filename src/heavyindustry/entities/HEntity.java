@@ -737,6 +737,18 @@ public final class HEntity {
 		excludeTime.clear();
 	}
 
+	public static void unitRemove(int uid) {
+		Unit unit = Groups.unit.getByID(uid);
+
+		if (Vars.netClient != null) {
+			Vars.netClient.addRemovedEntity(uid);
+		}
+
+		if (unit != null) {
+			annihilate(unit, false);
+		}
+	}
+
 	public static void annihilate(Entityc entity, boolean setNaN) {
 		Groups.all.remove(entity);
 
@@ -843,7 +855,6 @@ public final class HEntity {
 		}
 	}
 
-	@Nullable
 	public static void findSound(Building build, Cons<SoundLoop> cons) {
 		Field field = ReflectUtils.findClassField(build.getClass(), "sound");
 		if (field != null) {

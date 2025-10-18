@@ -1,5 +1,6 @@
 package heavyindustry.util;
 
+import arc.func.Cons;
 import arc.func.Prov;
 import arc.struct.Seq;
 import arc.util.Log;
@@ -218,7 +219,7 @@ public final class ReflectUtils {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> T getForName(String type, Object object, String name) {
+	public static <T> T getName(String type, Object object, String name) {
 		try {
 			Field field = Class.forName(type).getDeclaredField(name);
 			field.setAccessible(true);
@@ -228,8 +229,8 @@ public final class ReflectUtils {
 		}
 	}
 
-	public static <T> T getForName(String type, String name) {
-		return getForName(type, null, name);
+	public static <T> T getName(String type, String name) {
+		return getName(type, null, name);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -249,6 +250,25 @@ public final class ReflectUtils {
 
 	public static <T> T getOrDefault(Class<?> type, String name, T def) {
 		return getOrDefault(type, null, name, def);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> void getToCons(Class<?> type, Object object, String name, Cons<T> cons) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			cons.get((T) field.get(object));
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			Log.err(e);
+		}
+	}
+
+	public static <T> void getToCons(Object object, String name, Cons<T> cons) {
+		getToCons(object.getClass(), object, name, cons);
+	}
+
+	public static <T> void getToCons(Class<?> type, String name, Cons<T> cons) {
+		getToCons(type, null, name, cons);
 	}
 
 	public static void setBool(Class<?> type, Object object, String name, boolean value) {
@@ -428,32 +448,6 @@ public final class ReflectUtils {
 			Method method = type.getDeclaredMethod(name, parameterTypes);
 			method.setAccessible(true);
 			return (T) method.invoke(object, args);
-		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void invokeVoid(Object object, String name) {
-		invokeVoid(object.getClass(), object, name);
-	}
-
-	public static void invokeVoid(Class<?> type, Object object, String name) {
-		invokeVoid(type, object, name, arrayOf(), arrayOf());
-	}
-
-	public static void invokeVoid(Class<?> type, String name) {
-		invokeVoid(type, name, arrayOf(), arrayOf());
-	}
-
-	public static void invokeVoid(Class<?> type, String name, Object[] args, Class<?>[] parameterTypes) {
-		invokeVoid(type, null, name, args, parameterTypes);
-	}
-
-	public static void invokeVoid(Class<?> type, Object object, String name, Object[] args, Class<?>[] parameterTypes) {
-		try {
-			Method method = type.getDeclaredMethod(name, parameterTypes);
-			method.setAccessible(true);
-			method.invoke(object, args);
 		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);
 		}

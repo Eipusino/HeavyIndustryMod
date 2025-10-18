@@ -31,7 +31,7 @@ import static mindustry.Vars.player;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
-public class RailConveyor extends AdaptConveyor {
+public class RailConveyor extends Conveyor2 {
 	public TextureRegion[] edgeRegions, armorRegions, arrowRegions, pulseRegions;
 	public float framePeriod = 8f;
 
@@ -111,7 +111,7 @@ public class RailConveyor extends AdaptConveyor {
 		if (buildType == null) buildType = RailConveyorBuild::new;
 	}
 
-	public class RailConveyorBuild extends AdaptConveyorBuild {
+	public class RailConveyorBuild extends ConveyorBuild2 {
 		public int drawIndex = 0;
 		public boolean armored = false;
 

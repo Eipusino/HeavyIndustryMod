@@ -53,7 +53,7 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 
 		for (int i = 0; i < values.length / 2; i++) {
 			Object key = values[i * 2];
-			char keyInt = (Character) key;
+			char keyInt = (char) key;
 			map.put(keyInt, (V) values[i * 2 + 1]);
 		}
 

@@ -11,7 +11,6 @@ import arc.util.Scaling;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.HVars;
 import heavyindustry.graphics.Drawn;
 import mindustry.Vars;
 import mindustry.ctype.Content;
@@ -48,7 +47,7 @@ public class IconDisplay extends Block {
 	public void load() {
 		super.load();
 
-		maskRegion = Core.atlas.find(name + "-mask", HVars.clearAtlas);
+		maskRegion = Core.atlas.find(name + "-mask");
 	}
 
 	@Override
@@ -131,7 +130,9 @@ public class IconDisplay extends Block {
 
 			if (displayContent != null) {
 				Draw.z(Layer.blockOver);
-				Draw.rect(maskRegion, x, y);
+
+				if (maskRegion.found()) Draw.rect(maskRegion, x, y);
+
 				Tmp.v1.set(Scaling.bounded.apply(displayContent.uiIcon.width, displayContent.uiIcon.height, 6f * size, 6f * size));
 				Draw.rect(displayContent.uiIcon, x, y, Tmp.v1.x, Tmp.v1.y);
 				if (size >= 2) Drawn.drawText(displayContent.localizedName, x, y + 8);

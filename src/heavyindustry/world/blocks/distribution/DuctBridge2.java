@@ -15,11 +15,11 @@ import static mindustry.Vars.player;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
-public class AdaptDuctBridge extends DirectionBridge {
+public class DuctBridge2 extends DirectionBridge {
 	public float speed = 5f;
 	public boolean dirFlip = false;
 
-	public AdaptDuctBridge(String name) {
+	public DuctBridge2(String name) {
 		super(name);
 
 		itemCapacity = 4;
@@ -77,10 +77,10 @@ public class AdaptDuctBridge extends DirectionBridge {
 
 	@Override
 	protected void initBuilding() {
-		if (buildType == null) buildType = AdaptDuctBridgeBuild::new;
+		if (buildType == null) buildType = DuctBridgeBuild2::new;
 	}
 
-	public class AdaptDuctBridgeBuild extends DirectionBridgeBuild {
+	public class DuctBridgeBuild2 extends DirectionBridgeBuild {
 		public float progress = 0f;
 		public boolean transporter = false;
 

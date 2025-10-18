@@ -17,7 +17,6 @@ import arc.math.geom.Vec2;
 import arc.struct.IntSeq;
 import arc.struct.IntSet;
 import arc.struct.IntSet.IntSetIterator;
-import arc.struct.ObjectMap;
 import arc.struct.Seq;
 import arc.util.Nullable;
 import arc.util.Time;
@@ -346,11 +345,11 @@ public final class Utils {
 		}
 		bullet.add();
 
-		if (type.keepVelocity && owner instanceof Velc v) bullet.vel.add(v.vel());
+		if (type.keepVelocity && owner instanceof Velc vel) bullet.vel.add(vel.vel());
 		return bullet;
 	}
 
-	public static void liquid(ObjectMap<Integer, Cons<Liquid>> cons, String name, Color color, float exp, float fla, float htc, float vis, float temp) {
+	public static void liquid(IntMap2<Cons<Liquid>> cons, String name, Color color, float exp, float fla, float htc, float vis, float temp) {
 		for (int i = 1; i < 10; i++) {
 			int j = i;
 			Liquid liquid = new Liquid(name + j, color) {{
@@ -370,7 +369,7 @@ public final class Utils {
 		liquid(null, name, color, exp, fla, htc, vis, temp);
 	}
 
-	public static void item(ObjectMap<Integer, Cons<Item>> cons, String name, Color color, float exp, float fla, float cos, float radio, float chg, float health) {
+	public static void item(IntMap2<Cons<Item>> cons, String name, Color color, float exp, float fla, float cos, float radio, float chg, float health) {
 		for (int i = 1; i < 10; i++) {
 			int j = i;
 			Item item = new Item(name + j, color) {{

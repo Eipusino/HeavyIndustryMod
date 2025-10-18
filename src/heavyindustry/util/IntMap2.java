@@ -53,7 +53,7 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 
 		for (int i = 0; i < values.length / 2; i++) {
 			Object key = values[i * 2];
-			int keyInt = (key instanceof Character character ? character.charValue() : (Integer) key);
+			int keyInt = (key instanceof Character character ? character.charValue() : (int) key);
 			map.put(keyInt, (V) values[i * 2 + 1]);
 		}
 

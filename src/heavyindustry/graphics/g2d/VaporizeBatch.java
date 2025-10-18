@@ -18,14 +18,12 @@ import heavyindustry.entities.effect.Disintegration.DisintegrationEntity;
 import heavyindustry.gen.RenderGroupEntity;
 import heavyindustry.gen.RenderGroupEntity.DrawnRegion;
 
-public class VaporizeBatch extends Batch {
-	protected final Color color = new Color(1f, 1f, 1f, 1f);
-
+public class VaporizeBatch extends BaseBatch {
 	public VaporizeHandler vaporize;
 	public SpriteHandler sprite;
 	public Cons<Disintegration> discon;
 
-	final static Rect tr = new Rect();
+	protected final static Rect rect = new Rect();
 
 	public void switchBatch(Runnable drawer, SpriteHandler spriteCons, VaporizeHandler vaporizeCons) {
 		Batch last = Core.batch;
@@ -64,10 +62,10 @@ public class VaporizeBatch extends Batch {
 			float vx1 = (icos * lx1 - isin * ly1) + x, vy1 = (isin * lx1 + icos * ly1) + y;
 			float vx2 = (icos * lx2 - isin * ly2) + x, vy2 = (isin * lx2 + icos * ly2) + y;
 
-			tr.setCentered(x, y, w, h);
-			tr.grow(width);
+			rect.setCentered(x, y, w, h);
+			rect.grow(width);
 
-			return Intersector.intersectSegmentRectangle(vx1, vy1, vx2, vy2, tr);
+			return Intersector.intersectSegmentRectangle(vx1, vy1, vx2, vy2, rect);
 		};
 		drawer.run();
 
@@ -178,6 +176,12 @@ public class VaporizeBatch extends Batch {
 			reg.fadeCurveIn = 0.7f;
 		}
 	}
+
+	@Override
+	protected void setMixColor(Color tint) {}
+
+	@Override
+	protected void setMixColor(float r, float g, float b, float a) {}
 
 	@Override
 	protected void setPackedMixColor(float packedColor) {}

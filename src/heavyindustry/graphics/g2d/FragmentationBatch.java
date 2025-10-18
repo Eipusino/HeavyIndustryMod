@@ -19,9 +19,7 @@ import heavyindustry.entities.effect.Fragmentation.FragmentEntity;
 import mindustry.entities.Effect;
 import mindustry.graphics.Pal;
 
-public class FragmentationBatch extends Batch {
-	protected final Color color = new Color(1, 1, 1, 1);
-
+public class FragmentationBatch extends BaseBatch {
 	public float baseElevation;
 	public Cons<FragmentEntity> fragFunc = e -> {}, onDeathFunc = null;
 	public Cons<Fragmentation> fragDataFunc = null;
@@ -67,9 +65,7 @@ public class FragmentationBatch extends Batch {
 	protected void setPackedMixColor(float packedColor) {}
 
 	@Override
-	protected void draw(Texture texture, float[] spriteVertices, int offset, int count) {
-		//does nothing
-	}
+	protected void draw(Texture texture, float[] spriteVertices, int offset, int count) {}
 
 	@Override
 	protected void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float rotation) {

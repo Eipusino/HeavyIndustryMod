@@ -133,7 +133,7 @@ public class UnitBoost extends Block {
 	}
 
 	public class UnitBoostBuild extends Building implements HeatConsumer {
-		protected final Seq<Float[]> pos = new Seq<>(Float[].class);
+		protected final Seq<float[]> pos = new Seq<>(float[].class);
 		protected final Pool<Pos> posPool = Pools.get(Pos.class, Pos::new);
 
 		public float[] sideHeat = new float[4];
@@ -225,7 +225,7 @@ public class UnitBoost extends Block {
 
 				if (phaseHeat < 0.99f) Lines.arc(x, y, rd, 1 / 3f * (1 - phaseHeat + 0.05f), rt);
 				float ex = x + Angles.trnsx(rt, rd), ey = y + Angles.trnsy(rt, rd);
-				Float[] p = {ex, ey};
+				float[] p = {ex, ey};
 				pos.add(p);
 			}
 
@@ -263,7 +263,7 @@ public class UnitBoost extends Block {
 			for (Point2 q : Geometry.d8edge) {
 				float lx = x + realRange / 2 * tilesize * q.x;
 				float ly = y + realRange / 2 * tilesize * q.y;
-				Float[] p = {lx, ly};
+				float[] p = {lx, ly};
 				pos.add(p);
 			}
 

@@ -39,7 +39,7 @@ public class CharHolder<V> implements Cloneable {
 	public CharHolder<V> copy() {
 		try {
 			return (CharHolder<V>) super.clone();
-		} catch (CloneNotSupportedException suck) {
+		} catch (CloneNotSupportedException awful) {
 			return new CharHolder<>(key, value);
 		}
 	}

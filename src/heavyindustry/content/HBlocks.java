@@ -61,7 +61,7 @@ import heavyindustry.world.blocks.defense.turrets.MinigunTurret;
 import heavyindustry.world.blocks.defense.turrets.PlatformTurret;
 import heavyindustry.world.blocks.defense.turrets.SpeedupTurret;
 import heavyindustry.world.blocks.defense.turrets.TeslaTurret;
-import heavyindustry.world.blocks.distribution.AdaptConveyor;
+import heavyindustry.world.blocks.distribution.Conveyor2;
 import heavyindustry.world.blocks.distribution.CoveredRouter;
 import heavyindustry.world.blocks.distribution.DirectionalUnloader2;
 import heavyindustry.world.blocks.distribution.InvertedJunction;
@@ -116,7 +116,7 @@ import heavyindustry.world.blocks.sandbox.RandomSource;
 import heavyindustry.world.blocks.storage.CoreStorageBlock;
 import heavyindustry.world.blocks.storage.CrashCore;
 import heavyindustry.world.blocks.storage.Unloader2;
-import heavyindustry.world.blocks.units.AdaptPayloadSource;
+import heavyindustry.world.blocks.units.PayloadSource2;
 import heavyindustry.world.blocks.units.UnitIniter;
 import heavyindustry.world.draw.DrawAnim;
 import heavyindustry.world.draw.DrawHeat;
@@ -370,7 +370,7 @@ public final class HBlocks {
 	public static StackRouter plastaniumRouter;
 	public static StackBridge plastaniumBridge;
 	public static StackHelper stackHelper;
-	public static AdaptConveyor chromiumEfficientConveyor, chromiumArmorConveyor;
+	public static Conveyor2 chromiumEfficientConveyor, chromiumArmorConveyor;
 	public static TubeConveyor chromiumTubeConveyor;
 	public static TubeSorter chromiumTubeSorter;
 	public static StackConveyor chromiumStackConveyor;
@@ -443,7 +443,8 @@ public final class HBlocks {
 	public static AttributeCrafter atmosphericCollector;
 	public static GenericCrafter atmosphericCooler;
 	public static GenericCrafter crystalSynthesizer;
-	public static GenericCrafter uraniumSynthesizer, chromiumSynthesizer, heavyAlloySmelter;
+	public static GenericCrafter uraniumSynthesizer, chromiumSynthesizer;
+	public static GenericCrafter heavyAlloySmelter;
 	public static Separator metalAnalyzer;
 	public static GenericCrafter nitrificationReactor;
 	public static Separator nitratedOilPrecipitator;
@@ -507,14 +508,11 @@ public final class HBlocks {
 	public static PointDefenseTurret dissipation;
 	public static Cobweb cobweb;
 	public static TeslaTurret coilBlaster, electromagneticStorm;
-	public static PowerTurret frost;
-	public static PowerTurret electricArrow;
+	public static PowerTurret frost, electricArrow;
 	public static ItemTurret stabber;
-	public static ItemTurret autocannonB6;
-	public static ItemTurret autocannonF2;
+	public static ItemTurret autocannonB6, autocannonF2;
 	public static ItemTurret shellshock;
-	public static ItemTurret rocketLauncher;
-	public static ItemTurret largeRocketLauncher;
+	public static ItemTurret rocketLauncher, largeRocketLauncher;
 	public static ItemTurret rocketSilo;
 	public static ItemTurret caelum;
 	public static ItemTurret mammoth;
@@ -544,7 +542,7 @@ public final class HBlocks {
 	public static ItemSource reinforcedItemSource;
 	public static LiquidSource reinforcedLiquidSource;
 	public static PowerSource reinforcedPowerSource;
-	public static AdaptPayloadSource reinforcedPayloadSource;
+	public static PayloadSource2 reinforcedPayloadSource;
 	public static AdaptiveSource adaptiveSource;
 	public static RandomSource randomSource;
 	public static Drill staticDrill;
@@ -1708,14 +1706,14 @@ public final class HBlocks {
 			requirements(Category.distribution, ItemStack.with(Items.silicon, 20, Items.phaseFabric, 10, Items.plastanium, 20));
 			health = 90;
 		}};
-		chromiumEfficientConveyor = new AdaptConveyor("chromium-efficient-conveyor") {{
+		chromiumEfficientConveyor = new Conveyor2("chromium-efficient-conveyor") {{
 			requirements(Category.distribution, ItemStack.with(Items.lead, 1, HItems.chromium, 1));
 			health = 240;
 			armor = 3f;
 			speed = 0.18f;
 			displayedSpeed = 18;
 		}};
-		chromiumArmorConveyor = new AdaptConveyor("chromium-armor-conveyor") {{
+		chromiumArmorConveyor = new Conveyor2("chromium-armor-conveyor") {{
 			requirements(Category.distribution, ItemStack.with(Items.metaglass, 1, Items.thorium, 1, Items.plastanium, 1, HItems.chromium, 1));
 			health = 560;
 			armor = 5f;
@@ -1784,6 +1782,7 @@ public final class HBlocks {
 			armor = 4f;
 			speed = 12;
 			capacity = itemCapacity = 12;
+			chromiumEfficientConveyor.junctionReplacement =  chromiumArmorConveyor.junctionReplacement =  chromiumTubeConveyor.junctionReplacement = this;
 		}};
 		chromiumItemBridge = new RailItemBridge("chromium-item-bridge") {{
 			requirements(Category.distribution, ItemStack.with(Items.graphite, 6, Items.silicon, 8, Items.plastanium, 4, HItems.chromium, 3));
@@ -1795,6 +1794,7 @@ public final class HBlocks {
 			arrowSpacing = 6;
 			bridgeWidth = 8;
 			buildCostMultiplier = 0.8f;
+			chromiumEfficientConveyor.bridgeReplacement =  chromiumArmorConveyor.bridgeReplacement =  chromiumTubeConveyor.bridgeReplacement = this;
 		}};
 		phaseItemNode = new NodeBridge("phase-item-node") {{
 			requirements(Category.distribution, ItemStack.with(Items.lead, 30, HItems.chromium, 10, Items.silicon, 15, Items.phaseFabric, 10));
@@ -1935,6 +1935,7 @@ public final class HBlocks {
 			liquidCapacity = 200f;
 			arrowSpacing = 6;
 			bridgeWidth = 8f;
+			chromiumArmorConduit.bridgeReplacement = this;
 		}};
 		chromiumArmorLiquidContainer = new LiquidRouter("chromium-armor-liquid-container") {{
 			requirements(Category.liquid, ItemStack.with(Items.metaglass, 15, HItems.chromium, 6));
@@ -6098,7 +6099,7 @@ public final class HBlocks {
 
 			shootEffect = new Effect(120f, 2000f, e -> {
 				float scl = 1f;
-				if (e.data instanceof Float) scl *= (float) e.data;
+				if (e.data instanceof Float fdata) scl *= fdata;
 				Draw.color(heatColor, Color.white, e.fout() * 0.25f);
 
 				float rand = Mathf.randomSeed(e.id, 60f);
@@ -6556,7 +6557,7 @@ public final class HBlocks {
 			powerProduction = 10000000f / 60f;
 			buildType = PowerSourceBuild::new;
 		}};
-		reinforcedPayloadSource = new AdaptPayloadSource("reinforced-payload-source") {{
+		reinforcedPayloadSource = new PayloadSource2("reinforced-payload-source") {{
 			requirements(Category.units, BuildVisibility.sandboxOnly, ItemStack.empty);
 			size = 5;
 			health = 1000;
@@ -7144,8 +7145,5 @@ public final class HBlocks {
 			health = 1000;
 			armor = 10f;
 		}};
-		chromiumEfficientConveyor.junctionReplacement =  chromiumArmorConveyor.junctionReplacement =  chromiumTubeConveyor.junctionReplacement = chromiumJunction;
-		chromiumEfficientConveyor.bridgeReplacement =  chromiumArmorConveyor.bridgeReplacement =  chromiumTubeConveyor.bridgeReplacement = chromiumItemBridge;
-		chromiumArmorConduit.bridgeReplacement = chromiumLiquidBridge;
 	}
 }

@@ -8,6 +8,7 @@ import arc.math.Mathf;
 import arc.math.geom.Point2;
 import arc.util.Eachable;
 import arc.util.Nullable;
+import heavyindustry.func.Intg2;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;
@@ -42,7 +43,7 @@ public class Map2D<T> implements Iterable<T>, Eachable<T> {
 		}
 	}
 
-	public void fill(Func2<Integer, Integer, T> constructor) {
+	public void fill(Intg2<T> constructor) {
 		for (int i = 0; i < array.length; i++) {
 			array[i] = constructor.get(i % width, i / width);
 		}

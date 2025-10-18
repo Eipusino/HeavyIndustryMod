@@ -39,7 +39,7 @@ public class LongHolder<V> implements Cloneable {
 	public LongHolder<V> copy() {
 		try {
 			return (LongHolder<V>) super.clone();
-		} catch (CloneNotSupportedException suck) {
+		} catch (CloneNotSupportedException awful) {
 			return new LongHolder<>(key, value);
 		}
 	}
