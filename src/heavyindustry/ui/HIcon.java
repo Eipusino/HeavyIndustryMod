@@ -82,7 +82,7 @@ public final class HIcon {
 	public static Drawable drawable(String name) {
 		AtlasRegion region = Core.atlas.find(MOD_PREFIX + name);
 
-		if (region.splits != null && region.pads != null) {
+		if (region.splits != null) {
 			int[] splits = region.splits;
 			NinePatch patch = new NinePatch(region, splits[0], splits[1], splits[2], splits[3]);
 			int[] pads = region.pads;

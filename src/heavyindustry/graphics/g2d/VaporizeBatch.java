@@ -19,11 +19,11 @@ import heavyindustry.gen.RenderGroupEntity;
 import heavyindustry.gen.RenderGroupEntity.DrawnRegion;
 
 public class VaporizeBatch extends BaseBatch {
+	protected final static Rect rect = new Rect();
+
 	public VaporizeHandler vaporize;
 	public SpriteHandler sprite;
 	public Cons<Disintegration> discon;
-
-	protected final static Rect rect = new Rect();
 
 	public void switchBatch(Runnable drawer, SpriteHandler spriteCons, VaporizeHandler vaporizeCons) {
 		Batch last = Core.batch;
@@ -56,11 +56,9 @@ public class VaporizeBatch extends BaseBatch {
 		vaporize = vaporizeCons;
 		sprite = (x, y, w, h, r) -> {
 			float isin = Mathf.sinDeg(-r), icos = Mathf.cosDeg(-r);
-			float lx1 = x1 - x, ly1 = y1 - y;
-			float lx2 = x2 - x, ly2 = y2 - y;
+			float lx1 = x1 - x, ly1 = y1 - y, lx2 = x2 - x, ly2 = y2 - y;
 
-			float vx1 = (icos * lx1 - isin * ly1) + x, vy1 = (isin * lx1 + icos * ly1) + y;
-			float vx2 = (icos * lx2 - isin * ly2) + x, vy2 = (isin * lx2 + icos * ly2) + y;
+			float vx1 = (icos * lx1 - isin * ly1) + x, vy1 = (isin * lx1 + icos * ly1) + y, vx2 = (icos * lx2 - isin * ly2) + x, vy2 = (isin * lx2 + icos * ly2) + y;
 
 			rect.setCentered(x, y, w, h);
 			rect.grow(width);
@@ -85,16 +83,12 @@ public class VaporizeBatch extends BaseBatch {
 
 	@Override
 	protected void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float rotation) {
-		float midX = (width / 2f);
-		float midY = (height / 2f);
+		float midX = (width / 2f), midY = (height / 2f);
 
-		float cos = Mathf.cosDeg(rotation);
-		float sin = Mathf.sinDeg(rotation);
-		float dx = midX - originX;
-		float dy = midY - originY;
+		float cos = Mathf.cosDeg(rotation), sin = Mathf.sinDeg(rotation);
+		float dx = midX - originX, dy = midY - originY;
 
-		float bx = (cos * dx - sin * dy) + (x + originX);
-		float by = (sin * dx + cos * dy) + (y + originY);
+		float bx = (cos * dx - sin * dy) + (x + originX), by = (sin * dx + cos * dy) + (y + originY);
 
 		//color.a <= 0.9f ||
 		if (region == FragmentationBatch.updateCircle() || blending != Blending.normal || region == Core.atlas.white() || !region.found()) {

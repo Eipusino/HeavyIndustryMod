@@ -20,6 +20,9 @@ import mindustry.entities.Effect;
 import mindustry.graphics.Pal;
 
 public class FragmentationBatch extends BaseBatch {
+	protected static TextureRegion circle;
+	protected static GL20 mock = new MockGL20();
+
 	public float baseElevation;
 	public Cons<FragmentEntity> fragFunc = e -> {}, onDeathFunc = null;
 	public Cons<Fragmentation> fragDataFunc = null;
@@ -30,8 +33,6 @@ public class FragmentationBatch extends BaseBatch {
 	public float resScale = 1f, islandScl = 1f;
 	public Sound sound = null;
 	//public Floatc2 altFunc = (x, y) -> {};
-	static TextureRegion circle;
-	static GL20 mock = new MockGL20();
 
 	public static TextureRegion updateCircle() {
 		if (circle == null || circle.texture.isDisposed()) {
@@ -75,28 +76,20 @@ public class FragmentationBatch extends BaseBatch {
 		//int dim = Math.max(region.width, region.height);
 		float dim = Math.max(width, height) / Draw.scl;
 
-		//float midX = (width / 2f) * region.scl();
-		//float midY = (height / 2f) * region.scl();
-		float midX = (width / 2f);
-		float midY = (height / 2f);
+		//float midX = (width / 2f) * region.scl(), midY = (height / 2f) * region.scl();
+		float midX = (width / 2f), midY = (height / 2f);
 
 		//float worldOriginX = originX;
 		//float worldOriginY = originY;
 
 		//Fix alignment
-		float cos = Mathf.cosDeg(rotation);
-		float sin = Mathf.sinDeg(rotation);
-		float dx = midX - originX;
-		float dy = midY - originY;
-		//float dx = originX - midX;
-		//float dy = originY - midY;
-		//float dx = -midX;
-		//float dy = -midY;
+		float cos = Mathf.cosDeg(rotation), sin = Mathf.sinDeg(rotation);
+		float dx = midX - originX, dy = midY - originY;
+		//float dx = originX - midX, dy = originY - midY;
+		//float dx = -midX, dy = -midY;
 
-		float bx = (cos * dx - sin * dy) + (x + originX);
-		float by = (sin * dx + cos * dy) + (y + originY);
-		//float bx = (cos * dx - sin * dy) + (x + Math.abs(midX * cos - midY * sin));
-		//float by = (sin * dx + cos * dy) + (y + Math.abs(midX * sin + midY * cos));
+		float bx = (cos * dx - sin * dy) + (x + originX), by = (sin * dx + cos * dy) + (y + originY);
+		//float bx = (cos * dx - sin * dy) + (x + Math.abs(midX * cos - midY * sin)), by = (sin * dx + cos * dy) + (y + Math.abs(midX * sin + midY * cos));
 
 		if (dim >= (4 * 32) || !useAlt) {
 			Fragmentation frag = Fragmentation.generate(bx, by, rotation, width, height, z, baseElevation, resScale, islandScl, region, genGore ? fr -> {

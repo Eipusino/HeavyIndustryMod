@@ -13,6 +13,10 @@ public class GameDataDialog extends BaseDialog {
 	public GameDataDialog() {
 		super("@settings.hi-cleardata");
 
+		init();
+	}
+
+	protected void init() {
 		addCloseButton();
 
 		cont.table(Tex.button, cat -> {

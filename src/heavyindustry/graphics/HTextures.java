@@ -1,5 +1,6 @@
 package heavyindustry.graphics;
 
+import arc.Core;
 import arc.func.Cons;
 import arc.graphics.Texture;
 import arc.graphics.Texture.TextureFilter;
@@ -7,12 +8,17 @@ import arc.graphics.Texture.TextureWrap;
 import heavyindustry.HVars;
 
 public final class HTextures {
+	public static Texture noise;
 	public static Texture smooth, particle, darker, gaussian, median, armor;
 
 	/** Don't let anyone instantiate this class. */
 	private HTextures() {}
 
 	public static void load() {
+		noise = new Texture(Core.files.internal("sprites/noise.png"));
+		noise.setFilter(TextureFilter.linear);
+		noise.setWrap(TextureWrap.repeat);
+
 		smooth = loadTexture("smooth-noise", TextureFilter.linear, TextureWrap.repeat);
 		particle = loadTexture("particle-noise", TextureFilter.linear, TextureWrap.repeat);
 		darker = loadTexture("darker-noise", TextureFilter.linear, TextureWrap.repeat);

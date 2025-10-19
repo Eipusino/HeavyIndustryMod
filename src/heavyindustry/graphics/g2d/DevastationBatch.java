@@ -40,20 +40,14 @@ public class DevastationBatch extends BaseBatch {
 
 	@Override
 	protected void draw(TextureRegion region, float x, float y, float originX, float originY, float width, float height, float rotation) {
-		if (color.a <= 0.9f || region == FragmentationBatch.updateCircle() || blending != Blending.normal || region == Core.atlas.white() || !region.found()) {
-			return;
-		}
+		if (color.a <= 0.9f || region == FragmentationBatch.updateCircle() || blending != Blending.normal || region == Core.atlas.white() || !region.found()) return;
 
-		float midX = (width / 2f);
-		float midY = (height / 2f);
+		float midX = (width / 2f), midY = (height / 2f);
 
-		float cos = Mathf.cosDeg(rotation);
-		float sin = Mathf.sinDeg(rotation);
-		float dx = midX - originX;
-		float dy = midY - originY;
+		float cos = Mathf.cosDeg(rotation), sin = Mathf.sinDeg(rotation);
+		float dx = midX - originX, dy = midY - originY;
 
-		float bx = (cos * dx - sin * dy) + (x + originX);
-		float by = (sin * dx + cos * dy) + (y + originY);
+		float bx = (cos * dx - sin * dy) + (x + originX), by = (sin * dx + cos * dy) + (y + originY);
 
 		Devastation d = Devastation.create();
 		d.set(region, bx, by, width, height, rotation);

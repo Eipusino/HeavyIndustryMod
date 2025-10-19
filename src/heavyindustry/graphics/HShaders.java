@@ -31,7 +31,7 @@ public final class HShaders {
 	public static DepthShader depth;
 	public static DepthAtmosphereShader depthAtmosphere;
 	public static AlphaShader alphaShader;
-	public static HSurfaceShader brine, crystalFluid, deepCrystalFluid, boundWater, pit, waterPit;
+	public static SurfaceShader2 brine, crystalFluid, deepCrystalFluid, boundWater, pit, waterPit;
 	public static AberrationShader aberration;
 	public static MaskShader alphaMask;
 	public static WaveShader wave;
@@ -59,25 +59,22 @@ public final class HShaders {
 
 		alphaShader = new AlphaShader();
 
-		brine = new HSurfaceShader("general-highp", "brine");
-		crystalFluid = new HSurfaceShader("general-highp", "crystal-fluid");
-		deepCrystalFluid = new DualSurfaceShader("general-highp", "deep-crystal-fluid") {
+		brine = new SurfaceShader2(vert("general-highp"), frag("brine"));
+		crystalFluid = new SurfaceShader2(vert("general-highp"), frag("crystal-fluid"));
+		deepCrystalFluid = new DualSurfaceShader(vert("general-highp"), frag("deep-crystal-fluid")) {
 			@Override
-			public void loadNoise() {
-				super.loadNoise();
-
-				noiseTex2 = HTextures.darker;
-				noiseTex = HTextures.smooth;
-			}
-
-			@Override
-			public Texture getTexture() {
+			public Texture noise() {
 				return HTextures.smooth;
 			}
+
+			@Override
+			public Texture noise2() {
+				return HTextures.darker;
+			}
 		};
-		boundWater = new HSurfaceShader("general-highp", "bound-water");
-		pit = new PitShader("general-highp", "pit", MOD_NAME + "-concrete-blank1", MOD_NAME + "-stone-sheet", MOD_NAME + "-truss");
-		waterPit = new PitShader("general-highp", "water-pit", MOD_NAME + "-concrete-blank1", MOD_NAME + "-stone-sheet", MOD_NAME + "-truss");
+		boundWater = new SurfaceShader2(vert("general-highp"), frag("bound-water"));
+		pit = new PitShader(vert("general-highp"), frag("pit"), MOD_NAME + "-concrete-blank1", MOD_NAME + "-stone-sheet", MOD_NAME + "-truss");
+		waterPit = new PitShader(vert("general-highp"), frag("water-pit"), MOD_NAME + "-concrete-blank1", MOD_NAME + "-stone-sheet", MOD_NAME + "-truss");
 
 		aberration = new AberrationShader();
 
@@ -92,8 +89,8 @@ public final class HShaders {
 		dimShader = new DimShader();
 		smallSpaceShader = new SmallSpaceShader();
 
-		distBase = new Shader(msv("general"), msf("dist-base"));
-		passThrough = new Shader(msv("general-highp"), msf("pass-through"));
+		distBase = new Shader(vert("general"), frag("dist-base"));
+		passThrough = new Shader(vert("general-highp"), frag("pass-through"));
 
 		tiler = new TilerShader();
 
@@ -117,19 +114,11 @@ public final class HShaders {
 	 * @param name The shader file name, e.g. {@code my-shader.frag}.
 	 * @return The shader file, located inside {@code shaders/}.
 	 */
-	public static Fi dsf(String name) {
-		return Core.files.internal("shaders/" + name + ".frag");
-	}
-
-	public static Fi dsv(String name) {
-		return Core.files.internal("shaders/" + name + ".vert");
-	}
-
-	public static Fi msf(String name) {
+	public static Fi frag(String name) {
 		return HVars.internalTree.child("shaders/" + name + ".frag");
 	}
 
-	public static Fi msv(String name) {
+	public static Fi vert(String name) {
 		return HVars.internalTree.child("shaders/" + name + ".vert");
 	}
 
@@ -139,7 +128,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #depth}. */
 		DepthShader() {
-			super(msv("depth"), msf("depth"));
+			super(vert("depth"), frag("depth"));
 		}
 
 		@Override
@@ -161,7 +150,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #depthAtmosphere}. */
 		DepthAtmosphereShader() {
-			super(msv("depth-atmosphere"), msf("depth-atmosphere"));
+			super(vert("depth-atmosphere"), frag("depth-atmosphere"));
 		}
 
 		@Override
@@ -194,7 +183,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #planetTexture}. */
 		PlanetTextureShader() {
-			super(msv("circle-mesh"), msf("circle-mesh"));
+			super(vert("circle-mesh"), frag("circle-mesh"));
 		}
 
 		@Override
@@ -222,7 +211,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #tiler}. */
 		TilerShader() {
-			super(msv("general-highp"), msf("tiler"));
+			super(vert("general-highp"), frag("tiler"));
 		}
 
 		@Override
@@ -243,7 +232,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #alphaShader}. */
 		AlphaShader() {
-			super(msv("general-highp"), msf("post-alpha"));
+			super(vert("general-highp"), frag("post-alpha"));
 		}
 
 		@Override
@@ -262,7 +251,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #wave}. */
 		WaveShader() {
-			super(msv("general-highp"), msf("wave"));
+			super(vert("general-highp"), frag("wave"));
 		}
 
 		@Override
@@ -294,7 +283,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #mirrorField}. */
 		MirrorFieldShader() {
-			super(msv("general-highp"), msf("mirror-field"));
+			super(vert("general-highp"), frag("mirror-field"));
 		}
 
 		@Override
@@ -321,7 +310,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #alphaMask}. */
 		MaskShader() {
-			super(msv("general"), msf("alpha-mask"));
+			super(vert("general"), frag("alpha-mask"));
 		}
 
 		@Override
@@ -335,7 +324,7 @@ public final class HShaders {
 
 	public static final class AberrationShader extends Shader {
 		AberrationShader() {
-			super(msv("general"), msf("aberration"));
+			super(vert("general"), frag("aberration"));
 		}
 
 		@Override
@@ -356,7 +345,7 @@ public final class HShaders {
 		public TextureRegion region;
 
 		MaterializeShader() {
-			super(msv("materialize"), msf("materialize"));
+			super(vert("materialize"), frag("materialize"));
 		}
 
 		@Override
@@ -379,7 +368,7 @@ public final class HShaders {
 		public TextureRegion region;
 
 		VerticalBuildShader() {
-			super(msv("vertical-build"), msf("vertical-build"));
+			super(vert("vertical-build"), frag("vertical-build"));
 		}
 
 		@Override
@@ -399,7 +388,7 @@ public final class HShaders {
 		public float time;
 
 		BlockBuildCenterShader() {
-			super(msv("block-build-center"), msf("block-build-center"));
+			super(vert("block-build-center"), frag("block-build-center"));
 		}
 
 		@Override
@@ -417,7 +406,7 @@ public final class HShaders {
 		public float time, spacing, thickness;
 
 		TractorConeShader() {
-			super(msv("general-highp"), msf("tractor-cone"));
+			super(vert("general-highp"), frag("tractor-cone"));
 		}
 
 		@Override
@@ -445,7 +434,7 @@ public final class HShaders {
 		public float alpha;
 
 		DimShader() {
-			super(msv("general"), msf("dim"));
+			super(vert("general"), frag("dim"));
 		}
 
 		@Override
@@ -458,7 +447,7 @@ public final class HShaders {
 		Texture texture;
 
 		SmallSpaceShader() {
-			super(msv("general-highp"), msf("small-space"));
+			super(vert("general-highp"), frag("small-space"));
 		}
 
 		@Override
@@ -482,11 +471,11 @@ public final class HShaders {
 	}
 
 	/** SurfaceShader but uses a mod fragment asset. */
-	public static class PitShader extends HSurfaceShader {
+	public static class PitShader extends SurfaceShader2 {
 		protected TextureRegion topLayer, bottomLayer, truss;
 		protected String topLayerName, bottomLayerName, trussName;
 
-		public PitShader(String vertex, String fragment, String topLayer, String bottomLayer, String truss) {
+		public PitShader(Fi vertex, Fi fragment, String topLayer, String bottomLayer, String truss) {
 			super(vertex, fragment);
 			topLayerName = topLayer;
 			bottomLayerName = bottomLayer;
@@ -506,7 +495,7 @@ public final class HShaders {
 				truss = Core.atlas.find(trussName);
 
 			if (noiseTex == null)
-				noiseTex = Core.assets.get("sprites/" + textureName() + ".png", Texture.class);
+				noiseTex = noise();
 
 			setUniformf("u_campos", Core.camera.position.x - Core.camera.width / 2, Core.camera.position.y - Core.camera.height / 2);
 			setUniformf("u_resolution", Core.camera.width, Core.camera.height);
@@ -525,15 +514,19 @@ public final class HShaders {
 		}
 	}
 
-	public static class DualSurfaceShader extends HSurfaceShader {
+	public static class DualSurfaceShader extends SurfaceShader2 {
 		protected Texture noiseTex2;
+
+		public DualSurfaceShader(Fi vertex, Fi fragment) {
+			super(vertex, fragment);
+		}
 
 		public DualSurfaceShader(String vertex, String fragment) {
 			super(vertex, fragment);
 		}
 
-		public Texture getTexture() {
-			return null;
+		public Texture noise2() {
+			return HTextures.noise;
 		}
 
 		@Override
@@ -544,7 +537,7 @@ public final class HShaders {
 
 			if (hasUniform("u_noise")) {
 				if (noiseTex == null) {
-					noiseTex = getTexture() == null ? Core.assets.get("sprites/" + textureName() + ".png", Texture.class) : getTexture();
+					noiseTex = noise();
 				}
 
 				noiseTex.bind(1);
@@ -555,7 +548,7 @@ public final class HShaders {
 
 			if (hasUniform("u_noise_2")) {
 				if (noiseTex2 == null) {
-					noiseTex2 = Core.assets.get("sprites/" + "noise" + ".png", Texture.class);
+					noiseTex2 = noise2();
 				}
 
 				noiseTex2.bind(1);
@@ -566,23 +559,19 @@ public final class HShaders {
 		}
 	}
 
-	public static class HSurfaceShader extends Shader {
+	public static class SurfaceShader2 extends Shader {
 		protected Texture noiseTex;
 
-		public HSurfaceShader(String vertex, String fragment) {
-			super(msv(vertex), msf(fragment));
-			loadNoise();
+		public SurfaceShader2(Fi vertex, Fi fragment) {
+			super(vertex, fragment);
 		}
 
-		public String textureName() {
-			return "noise";
+		public SurfaceShader2(String vertex, String fragment) {
+			super(vertex, fragment);
 		}
 
-		public void loadNoise() {
-			Core.assets.load("sprites/" + textureName() + ".png", Texture.class).loaded = t -> {
-				t.setFilter(TextureFilter.linear);
-				t.setWrap(TextureWrap.repeat);
-			};
+		public Texture noise() {
+			return HTextures.noise;
 		}
 
 		@Override
@@ -593,7 +582,7 @@ public final class HShaders {
 
 			if (hasUniform("u_noise")) {
 				if (noiseTex == null) {
-					noiseTex = Core.assets.get("sprites/" + textureName() + ".png", Texture.class);
+					noiseTex = noise();
 				}
 
 				noiseTex.bind(1);

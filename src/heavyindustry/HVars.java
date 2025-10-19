@@ -4,7 +4,6 @@ import arc.graphics.Texture;
 import arc.graphics.g2d.TextureAtlas.AtlasRegion;
 import arc.graphics.g2d.TextureRegion;
 import arc.struct.Seq;
-import arc.util.Log;
 import arc.util.serialization.Jval;
 import heavyindustry.annotations.Annotations.ListClasses;
 import heavyindustry.annotations.Annotations.ListPackages;
@@ -91,14 +90,8 @@ public final class HVars {
 		}
 
 		ModGetter.checkModFormat(internalTree.root, file -> {
-			try {
-				info = Jval.read(file.reader());
-				isPlugin = info.getBool("hidden", false);
-			} catch (Throwable e) {
-				Log.err(e);
-
-				isPlugin = false;
-			}
+			info = Jval.read(file.reader());
+			isPlugin = info.getBool("hidden", false);
 		});
 	}
 

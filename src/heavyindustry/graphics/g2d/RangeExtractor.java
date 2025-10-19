@@ -37,7 +37,7 @@ public class RangeExtractor {
 
 		loaded = true;
 
-		extractShader = new Shader(HShaders.msv("general-highp"), HShaders.msf(low ? "range-low" : "range"));
+		extractShader = new Shader(HShaders.vert("general-highp"), HShaders.frag(low ? "range-low" : "range"));
 
 		if (low) buffer.resize(Core.graphics.getWidth() / 2, Core.graphics.getHeight() / 2);
 		else buffer.resize(Core.graphics.getWidth(), Core.graphics.getHeight());

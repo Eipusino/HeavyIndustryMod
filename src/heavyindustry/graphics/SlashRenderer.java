@@ -107,7 +107,7 @@ public final class SlashRenderer {
 		public float[] slashes;
 
 		SlashShader() {
-			super(HShaders.msv("general-highp"), HShaders.msf("slash"));
+			super(HShaders.vert("general-highp"), HShaders.frag("slash"));
 		}
 
 		@Override
