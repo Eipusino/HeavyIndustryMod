@@ -38,4 +38,9 @@ public class PitchedSoundLoop {
 			baseVolume = -1f;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return sound.toString();
+	}
 }

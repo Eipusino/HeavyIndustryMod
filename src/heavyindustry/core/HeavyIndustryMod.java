@@ -231,7 +231,7 @@ public final class HeavyIndustryMod extends Mod {
 			ScreenSampler.setup();
 		}
 
-		IconLoader.loadIcons(HVars.internalTree.child("other/icons.properties"));
+		IconLoader.loadIcons(HVars.internalTree.children("other", "icons.properties"));
 
 		if (Vars.ui != null) {
 			if (Vars.ui.settings != null) {

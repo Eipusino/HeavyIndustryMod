@@ -44,17 +44,13 @@ public class DataWeapon extends Weapon {
 	}
 
 	/** Initialization of weapons, this method is typically used to allocate initial variables for weapons. */
-	public void init(Unit unit, DataWeaponMount mount) {
-
-	}
+	public void init(Unit unit, DataWeaponMount mount) {}
 
 	/**
 	 * The behavior of accessing variables should be described in the coverage of the update method that
 	 * has undergone type checking and conversion.
 	 */
-	public void update(Unit unit, DataWeaponMount mount) {
-
-	}
+	public void update(Unit unit, DataWeaponMount mount) {}
 
 	@Override
 	public void draw(Unit unit, WeaponMount mount) {
@@ -68,9 +64,7 @@ public class DataWeapon extends Weapon {
 	 * The draw method that has undergone type checking and conversion should describe the drawing
 	 * behavior of accessing variables in its coverage.
 	 */
-	public void draw(Unit unit, DataWeaponMount mount) {
-
-	}
+	public void draw(Unit unit, DataWeaponMount mount) {}
 
 	@Override
 	protected void shoot(Unit unit, WeaponMount mount, float shootX, float shootY, float rotation) {
@@ -81,9 +75,7 @@ public class DataWeapon extends Weapon {
 		}
 	}
 
-	protected void shoot(Unit unit, DataWeaponMount mount, float shootX, float shootY, float rotation) {
-
-	}
+	protected void shoot(Unit unit, DataWeaponMount mount, float shootX, float shootY, float rotation) {}
 
 	public static class DataWeaponMount extends WeaponMount implements ExtraVariablec {
 		public Map<String, Object> extraVar = new CollectionObjectMap<>(String.class, Object.class);

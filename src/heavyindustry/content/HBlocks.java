@@ -6673,7 +6673,7 @@ public final class HBlocks {
 					}
 				}
 			};
-			unitType = UnitTypes.evoke;
+			unitType = HUnitTypes.invincibleShip;
 		}
 			@Override
 			public boolean canBreak(Tile tile) {

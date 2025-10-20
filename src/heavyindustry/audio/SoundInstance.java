@@ -39,4 +39,9 @@ public class SoundInstance {
 	public int id() {
 		return id;
 	}
+
+	@Override
+	public String toString() {
+		return sound.toString();
+	}
 }

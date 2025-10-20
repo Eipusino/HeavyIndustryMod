@@ -609,7 +609,7 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 		for (int i = 0, n = capacity + stashSize; i < n; i++) {
 			char key = keyTable[i];
 			if (key != EMPTY) {
-				h += key * 31;
+				h += (int) key * 31;
 
 				V value = valueTable[i];
 				if (value != null) {

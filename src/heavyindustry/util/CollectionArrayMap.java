@@ -610,7 +610,7 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectHolder<K, V>>, M
 
 		@Override
 		public boolean contains(Object o) {
-			if (!(o instanceof Map.Entry<?, ?> e))
+			if (!(o instanceof Entry<?, ?> e))
 				return false;
 			Object key = e.getKey();
 			return map.containsKey(key);
@@ -618,7 +618,7 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectHolder<K, V>>, M
 
 		@Override
 		public boolean remove(Object o) {
-			if (o instanceof Map.Entry<?, ?> e) {
+			if (o instanceof Entry<?, ?> e) {
 				Object key = e.getKey();
 				return map.remove(key) != null;
 			}

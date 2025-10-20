@@ -444,7 +444,7 @@ public final class ArrayUtils {
 	 *
 	 * @see Arrays#toString(Object[])
 	 */
-	public static void append(StringBuilder b, Object... a) {
+	public static void append(StringBuilder b, Object[] a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -467,7 +467,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void appendBool(StringBuilder b, boolean... a) {
+	public static void appendBool(StringBuilder b, boolean[] a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -489,7 +489,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void appendByte(StringBuilder b, byte... a) {
+	public static void appendByte(StringBuilder b, byte[] a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -511,7 +511,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void appendShort(StringBuilder b, short... a) {
+	public static void appendShort(StringBuilder b, short[] a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -533,7 +533,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void appendInt(StringBuilder b, int... a) {
+	public static void appendInt(StringBuilder b, int[] a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -555,7 +555,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void appendLong(StringBuilder b, long... a) {
+	public static void appendLong(StringBuilder b, long[] a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -577,7 +577,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void appendChar(StringBuilder b, char... a) {
+	public static void appendChar(StringBuilder b, char[] a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -600,7 +600,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void appendFloat(StringBuilder b, float... a) {
+	public static void appendFloat(StringBuilder b, float[] a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -622,7 +622,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	public static void appendDouble(StringBuilder b, double... a) {
+	public static void appendDouble(StringBuilder b, double[] a) {
 		if (a == null) {
 			b.append("null");
 			return;
@@ -642,6 +642,18 @@ public final class ArrayUtils {
 			}
 			b.append(", ");
 		}
+	}
+
+	public static int hashCodes(Object[] values) {
+		if (values == null) return 0;
+
+		int result = 1;
+
+		for (Object element : values) {
+			result = 31 * result + ObjectUtils.hashCode(element);
+		}
+
+		return result;
 	}
 
 	public static <T> boolean any(T[] array, Boolf<T> pred) {

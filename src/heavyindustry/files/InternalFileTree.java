@@ -20,7 +20,7 @@ public class InternalFileTree {
 	public InternalFileTree(Class<?> owner) {
 		anchorClass = owner;
 
-		String classPath = ObjectUtils.requireNonNull(anchorClass.getResource(""), "oh no").getFile().replaceAll("%20", " ");
+		String classPath = ObjectUtils.requireNonNull(anchorClass.getResource(""), "Unable to retrieve class resource.").getFile().replaceAll("%20", " ");
 		classPath = classPath.substring(classPath.indexOf(":") + 2);
 		String jarPath = (OS.isLinux ? "/" : "") + classPath.substring(0, classPath.indexOf("!"));
 
@@ -44,5 +44,10 @@ public class InternalFileTree {
 				out = out.child(s);
 		}
 		return out;
+	}
+
+	@Override
+	public String toString() {
+		return anchorClass + ": " + file.toString();
 	}
 }

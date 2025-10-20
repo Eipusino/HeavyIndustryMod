@@ -85,7 +85,7 @@ public final class HVars {
 		internalTree = new InternalFileTree(HeavyIndustryMod.class);
 
 		if (!Vars.headless) {
-			whiteAtlas = new AtlasRegion(whiteRegion = new TextureRegion(white = new Texture(internalTree.child("other/textures/white.png"))));
+			whiteAtlas = new AtlasRegion(whiteRegion = new TextureRegion(white = new Texture(internalTree.children("other", "textures", "white.png"))));
 			whiteAtlas.name = "white";
 		}
 

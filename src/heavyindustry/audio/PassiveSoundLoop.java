@@ -112,4 +112,9 @@ public class PassiveSoundLoop {
 	public float y() {
 		return y;
 	}
+
+	@Override
+	public String toString() {
+		return sound.toString();
+	}
 }

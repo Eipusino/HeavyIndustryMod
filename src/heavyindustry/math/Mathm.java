@@ -19,14 +19,14 @@ import mindustry.gen.Posc;
 
 /** @since 1.0.4 */
 public final class Mathm {
-	public static final double radiansToDegrees = 180 / Math.PI;
+	public static final double radiansToDegrees = 180.0 / Math.PI;
 
 	static final int aSinBits = 14; //16KB. Adjust for accuracy.
 	static final int aSinMask = ~(-1 << aSinBits);
 	static final int aSinCount = aSinMask + 1;
 	static final float[] aSinTable = new float[aSinCount];
 	static final float sinToIndex = aSinCount / 2f;
-	static final float radFull = Mathf.PI * 2;
+	static final float radFull = Mathf.PI * 2f;
 	static final Vec2 bezOut = new Vec2(), p1 = new Vec2(), p2 = new Vec2(), p3 = new Vec2(), p4 = new Vec2(), p5 = new Vec2(), tmp = new Vec2();
 	static final Rand seedr = new Rand();
 

@@ -149,12 +149,4 @@ public final class HSounds {
 			return Sounds.back;
 		}
 	}
-
-	public static Fi ogg(String name) {
-		return HVars.internalTree.child("sounds/" + name + ".ogg");
-	}
-
-	public static Fi mp3(String name) {
-		return HVars.internalTree.child("sounds/" + name + ".mp3");
-	}
 }
