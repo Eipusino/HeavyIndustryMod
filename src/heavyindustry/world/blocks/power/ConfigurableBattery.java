@@ -41,6 +41,7 @@ public class ConfigurableBattery extends Battery {
 
 		config(Float.class, (ConfigurableBatteryBuild tile, Float capacity) -> {
 			float amount = tile.powerCapacity * tile.power.status;
+
 			tile.powerCapacity = capacity;
 			tile.block.consPower.update(tile);
 			tile.power.status = Math.min(amount, tile.powerCapacity) / tile.powerCapacity;
@@ -80,7 +81,7 @@ public class ConfigurableBattery extends Battery {
 				}).width(120).valid(text -> Strings.canParseFloat(text) && Strings.parseFloat(text) > 0).get().setFilter(TextFieldFilter.floatsOnly);
 				t.add(Utils.statUnitName(StatUnit.powerUnits)).left();
 				t.button(Icon.save, () -> configure(powerCapacitySetting)).padLeft(6);
-				t.button(Icon.trash, () -> configure(false)).tooltip("@hi-storage.delete-contents");
+				t.button(Icon.trash, () -> configure(Boolean.FALSE)).tooltip("@hi-storage.delete-contents");
 			});
 		}
 

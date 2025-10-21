@@ -127,7 +127,7 @@ public class JumpGate extends Block {
 						Core.bundle.format("bar.unitcap",
 								Fonts.getUnicodeStr(tile.unitType().name),
 								tile.team.data().countType(tile.unitType()),
-								tile.unitType() == null ? Units.getStringCap(tile.team) : (tile.unitType().useUnitCap ? Units.getStringCap(tile.team) : "∞")
+								tile.unitType() == null ? Units.getStringCap(tile.team) : (tile.unitType().useUnitCap ? Units.getStringCap(tile.team) : "-")
 						),
 				() -> Pal.power,
 				() -> tile.unitType() == null ? 0f : (tile.unitType().useUnitCap ? (float) tile.team.data().countType(tile.unitType()) / Units.getCap(tile.team) : 1f)
@@ -371,7 +371,7 @@ public class JumpGate extends Block {
 											() -> "          " + Core.bundle.format("bar.unitcap",
 													type.localizedName,
 													team.data().countType(type),
-													type.useUnitCap ? Units.getStringCap(team) : "∞"),
+													type.useUnitCap ? Units.getStringCap(team) : "-"),
 											() -> type.useUnitCap ? (float) team.data().countType(type) / Units.getCap(team) : 1f),
 									new Table(image -> image.image(type.uiIcon).scaling(Scaling.fit).size(48, 48).padTop(6f).padBottom(6f).padLeft(8f)).left(),
 									new Table(req -> {

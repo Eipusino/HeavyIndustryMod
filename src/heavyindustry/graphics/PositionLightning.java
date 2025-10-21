@@ -344,5 +344,7 @@ public final class PositionLightning {
 
 	public static void reset() {
 		furthest = null;
+
+		entities.clear();
 	}
 }

@@ -227,13 +227,13 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		}
 	}
 
-	/** Put all the keys of this other map into this map, and return this map for chaining. */
+	/// Put all the keys of this other map into this map, and return this map for chaining.
 	public CollectionObjectMap<K, V> merge(CollectionObjectMap<? extends K, ? extends V> map) {
 		putAll(map);
 		return this;
 	}
 
-	/** Skips checks for existing keys. */
+	/// Skips checks for existing keys.
 	void putResize(K key, V value) {
 		// Check for empty buckets.
 		int hashCode = key.hashCode();
@@ -355,7 +355,10 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		return get(key);
 	}
 
-	/** Tries to get the value. If it does not exist, it creates a new instance using the supplier and places it, returning the value. */
+	/**
+	 * Tries to get the value. If it does not exist, it creates a new instance using the supplier and places it,
+	 * returning the value.
+	 */
 	public V get(K key, Prov<V> supplier) {
 		V val = get(key);
 		if (val == null) {
@@ -364,12 +367,12 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		return val;
 	}
 
-	/** Get, with a nullable key. */
+	/// Get, with a nullable key.
 	public V getNull(K key) {
 		return key == null ? null : get(key);
 	}
 
-	/** Returns the value for the specified key, or null if the key is not in the map. */
+	/// Returns the value for the specified key, or null if the key is not in the map.
 	@Override
 	public V get(Object key) {
 		if (key == null) return null;
@@ -386,7 +389,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		return valueTable[index];
 	}
 
-	/** Returns the value for the specified key, or the default value if the key is not in the map. */
+	/// Returns the value for the specified key, or the default value if the key is not in the map.
 	public V get(K key, V defaultValue) {
 		if (key == null) return defaultValue;
 
@@ -408,7 +411,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		return defaultValue;
 	}
 
-	/** Returns the value associated with the key, or null. */
+	/// Returns the value associated with the key, or null.
 	@Override
 	public V remove(Object key) {
 		if (key == null) return null;
@@ -717,6 +720,10 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		return buffer.toString();
 	}
 
+	/**
+	 * Returns an iterator for the entries in the map. Remove is supported. Note that the same iterator instance is returned each
+	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
+	 */
 	@Override
 	public Entries<K, V> iterator() {
 		if (entries1 == null) {
@@ -735,10 +742,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		return entries2;
 	}
 
-	/**
-	 * Returns an iterator for the entries in the map. Remove is supported. Note that the same iterator instance is returned each
-	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
-	 */
+	/// @deprecated see {@link #iterator()}.
 	@Deprecated
 	public Entries<K, V> entries() {
 		return iterator();

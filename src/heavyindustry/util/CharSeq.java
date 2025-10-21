@@ -3,6 +3,7 @@ package heavyindustry.util;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
+import arc.util.Strings;
 
 import java.util.Arrays;
 
@@ -13,7 +14,7 @@ import java.util.Arrays;
  * @author Nathan Sweet
  * @author Eipusino
  */
-public class CharSeq {
+public class CharSeq implements CharSequence {
 	public char[] items;
 	public int size;
 	public boolean ordered;
@@ -274,7 +275,27 @@ public class CharSeq {
 		return items[0];
 	}
 
+	@Override
+	public char charAt(int index) {
+		return items[index];
+	}
+
+	@Override
+	public CharSequence subSequence(int start, int end) {
+		if (start < 0 || start > end || end > size)
+			throw new IndexOutOfBoundsException(Strings.format("start: @, end: @, the items size: @.", start, end, size));
+		if (start == end) return "";
+
+		return String.valueOf(Arrays.copyOfRange(items, start, end));
+	}
+
+	@Override
+	public int length() {
+		return size;
+	}
+
 	/** Returns true if the array is empty. */
+	@Override
 	public boolean isEmpty() {
 		return size == 0;
 	}

@@ -28,7 +28,7 @@ public class EndNukeBulletType extends BasicBulletType {
 	public static int lastMax, lastUnit, lastBuilding;
 
 	public EndNukeBulletType() {
-		this(17f, 3000f, MOD_NAME + "-large-missile");
+		this(17f, 1000f, MOD_NAME + "-large-missile");
 	}
 
 	public EndNukeBulletType(float speed, float damage, String bulletSprite) {
@@ -48,6 +48,7 @@ public class EndNukeBulletType extends BasicBulletType {
 
 		lifetime = 180f;
 
+		pierce = true;
 		pierceArmor = true;
 
 		despawnHit = true;

@@ -74,7 +74,7 @@ public class PlaceableCore extends CoreBlock {
 		@Override
 		public void buildConfiguration(Table table) {
 			table.table(t -> {
-				ImageButton ib = t.button(Icon.add, Styles.flati, () -> configure(true)).fillX().height(32f).disabled(b -> toPlace == null).get();
+				ImageButton ib = t.button(Icon.add, Styles.flati, () -> configure(Boolean.TRUE)).fillX().height(32f).disabled(b -> toPlace == null).get();
 				ib.getStyle().disabled = ib.getStyle().over;
 				ib.add("@hi-placeable-core-place").padLeft(16f);
 				t.row();

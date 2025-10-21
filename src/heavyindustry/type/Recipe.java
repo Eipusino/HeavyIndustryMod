@@ -20,8 +20,6 @@ public class Recipe {
 
 	@Override
 	public String toString() {
-		if (this == empty) return "EmptyRecipe";
-
 		StringBuilder builder = new StringBuilder();
 		builder.append("Recipe{").append("inputItem=");
 		ArrayUtils.append(builder, inputItem);

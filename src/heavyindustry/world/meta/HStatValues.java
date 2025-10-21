@@ -733,9 +733,16 @@ public final class HStatValues {
 	}
 
 	//for AmmoListValue
+	@Deprecated
 	public static Cell<Label> sep(Table table, String text) {
 		table.row();
 		return table.add(text);
+	}
+
+	//???
+	@Deprecated
+	public static TextureRegion icon(UnlockableContent content) {
+		return content.uiIcon;
 	}
 
 	//for AmmoListValue

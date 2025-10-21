@@ -123,8 +123,8 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 	@Override
 	public void remove() {
 		if (!added) return;
-		Groups.draw.remove(this);
 		Groups.all.remove(this);
+		Groups.draw.remove(this);
 		Groups.sync.remove(this);
 
 		if (Vars.net.client()) {
@@ -368,8 +368,8 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 	}
 
 	@Override
-	public void lastUpdated(long l) {
-		lastUpdated = l;
+	public void lastUpdated(long value) {
+		lastUpdated = value;
 	}
 
 	@Override
@@ -378,8 +378,8 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 	}
 
 	@Override
-	public void updateSpacing(long l) {
-		updateSpacing = l;
+	public void updateSpacing(long value) {
+		updateSpacing = value;
 	}
 
 	@Override
@@ -393,8 +393,8 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 	}
 
 	@Override
-	public void time(float v) {
-		time = v;
+	public void time(float value) {
+		time = value;
 	}
 
 	@Override
@@ -403,8 +403,8 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 	}
 
 	@Override
-	public void lifetime(float v) {
-		lifetime = v;
+	public void lifetime(float value) {
+		lifetime = value;
 	}
 
 	@Override
@@ -413,7 +413,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 	}
 
 	@Override
-	public void rotation(float v) {
-		rotation = v;
+	public void rotation(float value) {
+		rotation = value;
 	}
 }

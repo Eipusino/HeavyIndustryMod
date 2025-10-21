@@ -265,8 +265,8 @@ public class Disintegration implements Poolable {
 		@Override
 		public void remove() {
 			if (!added) return;
-			Groups.draw.remove(this);
 			Groups.all.remove(this);
+			Groups.draw.remove(this);
 			Groups.queueFree(this);
 			source.uses--;
 			if (source.uses <= 0) {

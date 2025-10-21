@@ -1,5 +1,6 @@
 package heavyindustry.files;
 
+import arc.assets.loaders.FileHandleResolver;
 import arc.files.Fi;
 import arc.files.ZipFi;
 import arc.util.OS;
@@ -10,7 +11,7 @@ import heavyindustry.util.ObjectUtils;
  *
  * @since 1.0.6
  */
-public class InternalFileTree {
+public class InternalFileTree implements FileHandleResolver {
 	public final Class<?> anchorClass;
 
 	public final ZipFi root;
@@ -29,17 +30,22 @@ public class InternalFileTree {
 	}
 
 	public Fi child(String name) {
+		return root.child(name);
+	}
+
+	public Fi resolves(String... splitName) {
 		Fi out = root;
-		for (String s : name.split("/")) {
+		for (String s : splitName) {
 			if (!s.isEmpty())
 				out = out.child(s);
 		}
 		return out;
 	}
 
-	public Fi children(String... name) {
+	@Override
+	public Fi resolve(String fileName) {
 		Fi out = root;
-		for (String s : name) {
+		for (String s : fileName.split("/")) {
 			if (!s.isEmpty())
 				out = out.child(s);
 		}

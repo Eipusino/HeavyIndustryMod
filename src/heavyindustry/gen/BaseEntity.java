@@ -35,8 +35,8 @@ public abstract class BaseEntity implements Drawc {
 	@Override
 	public void remove() {
 		if (!added) return;
-		Groups.draw.remove(this);
 		Groups.all.remove(this);
+		Groups.draw.remove(this);
 		added = false;
 	}
 

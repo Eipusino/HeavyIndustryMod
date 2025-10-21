@@ -15,8 +15,8 @@ public class LiquidBottle extends Item {
 	public static Pixmap bottom;
 
 	static {
-		top = new Pixmap(HVars.internalTree.children("sprites", "items", "bottle.png"));
-		bottom = new Pixmap(HVars.internalTree.children("sprites", "items", "bottle-liquid.png"));
+		top = new Pixmap(HVars.internalTree.resolves("sprites", "items", "bottle.png"));
+		bottom = new Pixmap(HVars.internalTree.resolves("sprites", "items", "bottle-liquid.png"));
 	}
 
 	public Liquid liquid;

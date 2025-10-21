@@ -492,8 +492,8 @@ public class Severation extends BaseEntity implements QuadTreeObject {
 	@Override
 	public void remove() {
 		if (!added) return;
-		Groups.draw.remove(this);
 		Groups.all.remove(this);
+		Groups.draw.remove(this);
 		cutsSeq.remove(this);
 		added = false;
 	}

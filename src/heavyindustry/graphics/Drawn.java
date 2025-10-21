@@ -52,7 +52,7 @@ public final class Drawn {
 	public static final float sinScl = 1f;
 	public static final float[] v = new float[6];
 
-	public static float[] verts = new float[4 * 6];
+	public static float[] verts = new float[24];
 
 	static final Vec3[] tmpV = new Vec3[4];
 	static final Mat3D matT = new Mat3D();

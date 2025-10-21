@@ -27,35 +27,35 @@ import mindustry.type.Sector;
  * @since 1.0.6
  */
 public final class HVars {
-	/** Commonly used static read-only String. Do not change unless you know what you're doing. */
+	/// Commonly used static read-only String. Do not change unless you know what you're doing.
 	public static final String MOD_NAME = "heavy-industry";
 	public static final String MOD_PREFIX = "heavy-industry-";
-	/** The author of this mod. */
+	/// The author of this mod.
 	public static final String AUTHOR = "Eipusino";
-	/** The GitHub address of this mod. */
+	/// The GitHub address of this mod.
 	public static final String LINK_GIT_HUB = "https://github.com/Eipusino/HeavyIndustryMod";
 
-	/** Lists all the mod's classes by their canonical names. Generated at compile-time. */
+	/// Lists all the mod's classes by their canonical names. Generated at compile-time.
 	public static final @ListClasses String[] classes = {};
-	/** Lists all the mod's packages by their canonical names. Generated at compile-time. */
+	/// Lists all the mod's packages by their canonical names. Generated at compile-time.
 	public static final @ListPackages String[] packages = {};
 
 	public static PlatformImpl platformImpl;
 
-	/** Is {@code sun.misc.Unsafe} class available. */
+	/// Is {@code sun.misc.Unsafe} class available.
 	public static boolean hasUnsafe = false;
-	/** Is {@code jdk.internal.misc.Unsafe} class available. */
+	/// Is {@code jdk.internal.misc.Unsafe} class available.
 	public static boolean hasJDKUnsafe = false;
-	/** Is {@code java.lang.invoke.MethodHandles.Lookup.IMPL_LOOKUP} looker available. */
+	/// Is {@code java.lang.invoke.MethodHandles.Lookup.IMPL_LOOKUP} looker available.
 	public static boolean hasImplLookup = false;
 
-	/** Link {@code mod.json} of this mod */
+	/// Link {@code mod.json} of this mod.
 	public static Jval info;
 
-	/** Whether the mod is running in hidden mode. */
+	/// Whether the mod is running in hidden mode.
 	public static boolean isPlugin;
 
-	/** jar internal navigation. */
+	/// jar internal navigation.
 	public static final InternalFileTree internalTree;
 
 	public static InputAggregator inputAggregator;
@@ -85,7 +85,7 @@ public final class HVars {
 		internalTree = new InternalFileTree(HeavyIndustryMod.class);
 
 		if (!Vars.headless) {
-			whiteAtlas = new AtlasRegion(whiteRegion = new TextureRegion(white = new Texture(internalTree.children("other", "textures", "white.png"))));
+			whiteAtlas = new AtlasRegion(whiteRegion = new TextureRegion(white = new Texture(internalTree.resolves("other", "textures", "white.png"))));
 			whiteAtlas.name = "white";
 		}
 
@@ -95,10 +95,13 @@ public final class HVars {
 		});
 	}
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HVars() {}
 
-	/** Clear all occupied sectors of the specified Planet. Use with caution, as this will completely disrupt the player's game progress. */
+	/**
+	 * Clear all occupied sectors of the specified Planet. Use with caution, as this will completely disrupt the
+	 * player's game progress.
+	 */
 	public static void resetSaves(Seq<Sector> sectors) {
 		sectors.each(sector -> {
 			if (sector.hasSave()) {
@@ -108,7 +111,10 @@ public final class HVars {
 		});
 	}
 
-	/** Clear all tech nodes under the specified root node. Use with caution, as this will completely disrupt the player's game progress. */
+	/**
+	 * Clear all tech nodes under the specified root node. Use with caution, as this will completely disrupt
+	 * the player's game progress.
+	 */
 	public static void resetTree(TechNode root) {
 		root.reset();
 		root.content.clearUnlock();

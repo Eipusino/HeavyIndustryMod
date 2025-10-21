@@ -187,8 +187,8 @@ public class BloodSplatter extends BaseEntity implements Poolable {
 	@Override
 	public void remove() {
 		if (!added) return;
-		Groups.draw.remove(this);
 		Groups.all.remove(this);
+		Groups.draw.remove(this);
 		Groups.queueFree(this);
 		added = false;
 	}

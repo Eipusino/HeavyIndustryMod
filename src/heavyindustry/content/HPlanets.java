@@ -14,6 +14,6 @@ public final class HPlanets {
 	}
 
 	public static Texture rings(String name) {
-		return new Texture(HVars.internalTree.children("sprites", "planets", "rings", name + ".png"));
+		return new Texture(HVars.internalTree.resolves("sprites", "planets", "rings", name + ".png"));
 	}
 }

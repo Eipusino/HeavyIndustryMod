@@ -24,7 +24,7 @@ import mindustry.graphics.Layer;
 public class ShrapnelEntity extends BaseEntity implements Poolable {
 	public IntSet collided = new IntSet();
 	public TextureRegion region = new TextureRegion();
-	public float[] verts = new float[4 * 4];
+	public float[] verts = new float[16];
 	public float damage;
 	public float hitSize;
 
@@ -163,8 +163,8 @@ public class ShrapnelEntity extends BaseEntity implements Poolable {
 	@Override
 	public void remove() {
 		if (!added) return;
-		Groups.draw.remove(this);
 		Groups.all.remove(this);
+		Groups.draw.remove(this);
 		Groups.queueFree(this);
 		added = false;
 	}

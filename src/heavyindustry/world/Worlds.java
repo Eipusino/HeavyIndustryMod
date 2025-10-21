@@ -30,6 +30,7 @@ public final class Worlds {
 	public static void load() {
 		Events.on(ResetEvent.class, event -> {
 			commandableBuilds.clear();
+			teamPayloadData.teamPayloadData.clear();
 
 			PositionLightning.reset();
 

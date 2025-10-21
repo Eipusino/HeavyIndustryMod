@@ -115,11 +115,11 @@ public final class HShaders {
 	 * @return The shader file, located inside {@code shaders/}.
 	 */
 	public static Fi frag(String name) {
-		return HVars.internalTree.children("shaders", name + ".frag");
+		return HVars.internalTree.resolves("shaders", name + ".frag");
 	}
 
 	public static Fi vert(String name) {
-		return HVars.internalTree.children("shaders", name + ".vert");
+		return HVars.internalTree.resolves("shaders", name + ".vert");
 	}
 
 	/** Specialized mesh shader to capture fragment depths. */
@@ -453,7 +453,7 @@ public final class HShaders {
 		@Override
 		public void apply() {
 			if (texture == null) {
-				texture = new Texture(HVars.internalTree.children("other", "textures", "small-space.png"));
+				texture = new Texture(HVars.internalTree.resolves("other", "textures", "small-space.png"));
 				texture.setFilter(TextureFilter.linear);
 				texture.setWrap(TextureWrap.repeat);
 			}
