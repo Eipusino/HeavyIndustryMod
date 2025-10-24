@@ -44,16 +44,11 @@ public class InternalFileTree implements FileHandleResolver {
 
 	@Override
 	public Fi resolve(String fileName) {
-		Fi out = root;
-		for (String s : fileName.split("/")) {
-			if (!s.isEmpty())
-				out = out.child(s);
-		}
-		return out;
+		return resolves(fileName.split("/"));
 	}
 
 	@Override
 	public String toString() {
-		return anchorClass + ": " + file.toString();
+		return anchorClass + ": " + file;
 	}
 }

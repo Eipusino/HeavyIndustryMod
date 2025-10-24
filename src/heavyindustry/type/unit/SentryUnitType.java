@@ -40,7 +40,6 @@ public class SentryUnitType extends UnitType2 {
 
 	public SentryUnitType(String name) {
 		super(name);
-		erekir();
 
 		aiController = SentryAI::new;
 

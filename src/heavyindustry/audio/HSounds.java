@@ -143,10 +143,10 @@ public final class HSounds {
 
 		if (file.exists()) {
 			return new Sound(file);
-		} else {
-			Log.warn("The path @ does not exist!", file.name());
-
-			return Sounds.back;
 		}
+
+		Log.warn("The path @ does not exist!", file.name());
+
+		return Sounds.back;
 	}
 }

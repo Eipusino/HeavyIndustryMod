@@ -825,10 +825,11 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 
 		@Override
 		public boolean contains(Object o) {
-			if (!(o instanceof Entry<?, ?> e))
-				return false;
-			Object key = e.getKey();
-			return map.containsKey(key);
+			if (o instanceof Entry<?, ?> e) {
+				Object key = e.getKey();
+				return map.containsKey(key);
+			}
+			return false;
 		}
 
 		@Override

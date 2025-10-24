@@ -281,12 +281,16 @@ public class CharSeq implements CharSequence {
 	}
 
 	@Override
-	public CharSequence subSequence(int start, int end) {
+	public CharSeq subSequence(int start, int end) {
 		if (start < 0 || start > end || end > size)
 			throw new IndexOutOfBoundsException(Strings.format("start: @, end: @, the items size: @.", start, end, size));
-		if (start == end) return "";
+		if (start == end) return new CharSeq();// size 0
 
-		return String.valueOf(Arrays.copyOfRange(items, start, end));
+		CharSeq seq = new CharSeq( end - start);
+		for (int i = start; i < end; i++) {
+			seq.add(items[i]);
+		}
+		return seq;
 	}
 
 	@Override
@@ -420,6 +424,11 @@ public class CharSeq implements CharSequence {
 
 	@Override
 	public String toString() {
+		// We need to implement the requirements of the CharSequence interface.
+		return String.valueOf(Arrays.copyOfRange(items, 0, size));
+	}
+
+	public String asString() {
 		if (size == 0) return "[]";
 		StringBuilder buffer = new StringBuilder(32);
 		buffer.append('[');
@@ -429,17 +438,6 @@ public class CharSeq implements CharSequence {
 			buffer.append(items[i]);
 		}
 		buffer.append(']');
-		return buffer.toString();
-	}
-
-	public String toString(String separator) {
-		if (size == 0) return "";
-		StringBuilder buffer = new StringBuilder(32);
-		buffer.append(items[0]);
-		for (int i = 1; i < size; i++) {
-			buffer.append(separator);
-			buffer.append(items[i]);
-		}
 		return buffer.toString();
 	}
 }

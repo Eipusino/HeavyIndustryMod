@@ -2,13 +2,18 @@ package heavyindustry.audio;
 
 import arc.Events;
 import arc.audio.Music;
+import arc.files.Fi;
 import arc.struct.Seq;
 import arc.util.Log;
+import heavyindustry.HVars;
 import heavyindustry.util.CollectionObjectMap;
 import mindustry.Vars;
 import mindustry.game.EventType.ClientLoadEvent;
+import mindustry.gen.Musics;
 
-import static mindustry.Vars.tree;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Map;
 
 /**
  * Manages music, including vanilla and custom tracks.
@@ -16,7 +21,7 @@ import static mindustry.Vars.tree;
  * @since 1.0.2
  */
 public final class HMusics {
-	static final CollectionObjectMap<String, Music[]> musicSets = new CollectionObjectMap<>(String.class, Music[].class);
+	static final Map<String, Music[]> musicSets = new CollectionObjectMap<>(String.class, Music[].class);
 
 	/** Don't let anyone instantiate this class. */
 	private HMusics() {}
@@ -31,6 +36,18 @@ public final class HMusics {
 		}
 	}
 
+	public static Music load(String name) throws Exception {
+		Fi file = HVars.internalTree.resolve("musics/" + name);
+
+		if (file.exists()) {
+			return new Music(file);
+		}
+
+		Log.warn("The path @ does not exist!", file.name());
+
+		return Musics.menu;
+	}
+
 	/**
 	 * Loads a set of music tracks from a specified base path.
 	 *
@@ -39,16 +56,24 @@ public final class HMusics {
 	 */
 	public static void loadMusicSet(Class<?> clazz, String basePath, String[] tracks) {
 		for (String track : tracks) {
-			Music music = tree.loadMusic(basePath + track);
+			Music music = Vars.tree.loadMusic(basePath + track);
 			try {
-				clazz.getField(track).set(null, music);
+				Field field = clazz.getField(track);
+
+				if (field.getType() != Music.class || !Modifier.isStatic(field.getModifiers())) {
+					Log.warn("Failed to load music: @, @", track, field);
+
+					continue;
+				}
+
+				field.set(null, music);
 			} catch (Exception e) {
 				Log.err("Failed to load music: " + track, e);
 			}
 		}
 	}
 
-	private static void loadMusicSet(String basePath, String[] tracks) {
+	static void loadMusicSet(String basePath, String[] tracks) {
 		loadMusicSet(HMusics.class, basePath, tracks);
 	}
 

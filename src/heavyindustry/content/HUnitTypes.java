@@ -1399,7 +1399,8 @@ public final class HUnitTypes {
 			flying = false;
 			mineSpeed = 7f;
 			mineTier = 5;
-			buildSpeed = 3f;
+			mineRange = 150f;
+			buildSpeed = 6f;
 			stepShake = 1.8f;
 			rotateSpeed = 1.8f;
 			mechLandShake = 1.5f;
@@ -1766,7 +1767,10 @@ public final class HUnitTypes {
 			faceTarget = false;
 			hitSize = 66f;
 			payloadCapacity = (6.5f * 6.5f) * Vars.tilePayload;
-			buildSpeed = 4f;
+			buildSpeed = 6f;
+			mineSpeed = 7f;
+			mineTier = 5;
+			mineRange = 150f;
 			drawShields = false;
 			lowAltitude = true;
 			buildBeamOffset = 43f;

@@ -57,6 +57,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import static heavyindustry.entities.HDamage.tmpBuilding;
+import static heavyindustry.util.ArrayUtils.arrayOf;
 
 public final class HEntity {
 	public static final Vec2 v1 = new Vec2(), v2 = new Vec2(), v3 = new Vec2(), v4 = new Vec2(), v11 = new Vec2(), v12 = new Vec2(), v13 = new Vec2();
@@ -76,6 +77,13 @@ public final class HEntity {
 	static final IntSet exclude = new IntSet();
 	static final CollectionList<Unit> excludeSeq = new CollectionList<>(Unit.class), queueExcludeRemoval = new CollectionList<>(Unit.class), excludeReAdd = new CollectionList<>(Unit.class);
 	static final IntIntMap excludeTime = new IntIntMap();
+
+	// [0] for flying, [1] for navy, [2] for ground.
+	static Boolf<Tile>[] formats = arrayOf(
+			t -> Vars.world.getQuadBounds(Tmp.r1).contains(t.getBounds(Tmp.r2)),
+			t -> t.floor().isLiquid && !t.cblock().solid && !t.floor().solid && !t.overlay().solid && !t.block().solidifes,
+			t -> !t.floor().isDeep() && !t.cblock().solid && !t.floor().solid && !t.overlay().solid && !t.block().solidifes
+	);
 
 	public static Unit eipusino;
 
@@ -404,19 +412,6 @@ public final class HEntity {
 		return intersected ? v2.set(nearX, nearY) : null;
 	}
 
-	/** [0]For flying, [1] for navy, [2] for ground */
-	public static Seq<Boolf<Tile>> formats() {
-		Seq<Boolf<Tile>> seq = new Seq<>(true, 3, Boolf.class);
-
-		seq.add(
-				t -> Vars.world.getQuadBounds(Tmp.r1).contains(t.getBounds(Tmp.r2)),
-				t -> t.floor().isLiquid && !t.cblock().solid && !t.floor().solid && !t.overlay().solid && !t.block().solidifes,
-				t -> !t.floor().isDeep() && !t.cblock().solid && !t.floor().solid && !t.overlay().solid && !t.block().solidifes
-		);
-
-		return seq;
-	}
-
 	/**
 	 * @param x	 the abscissa of search center.
 	 * @param y	 the ordinate of search center.
@@ -438,14 +433,14 @@ public final class HEntity {
 	public static Boolf<Tile> ableToSpawn(UnitType type) {
 		Boolf<Tile> boolf;
 
-		Seq<Boolf<Tile>> boolves = formats();
+		Boolf<Tile>[] boolves = formats;
 
 		if (type.flying) {
-			boolf = boolves.get(0);
+			boolf = boolves[0];
 		} else if (WaterMovec.class.isAssignableFrom(type.constructor.get().getClass())) {
-			boolf = boolves.get(1);
+			boolf = boolves[1];
 		} else {
-			boolf = boolves.get(2);
+			boolf = boolves[2];
 		}
 
 		return boolf;

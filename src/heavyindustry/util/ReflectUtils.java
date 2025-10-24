@@ -2,7 +2,6 @@ package heavyindustry.util;
 
 import arc.func.Cons;
 import arc.func.Prov;
-import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Nullable;
 import arc.util.OS;
@@ -29,7 +28,7 @@ import static heavyindustry.util.ObjectUtils.requireNonNull;
 public final class ReflectUtils {
 	public static final Map<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private ReflectUtils() {}
 
 	public static Class<?> box(Class<?> type) {
@@ -84,10 +83,6 @@ public final class ReflectUtils {
 		}
 	}
 
-	public static boolean getBool(Object object, String name) {
-		return getBool(object.getClass(), object, name);
-	}
-
 	public static boolean getBool(Class<?> type, String name) {
 		return getBool(type, null, name);
 	}
@@ -100,10 +95,6 @@ public final class ReflectUtils {
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public static byte getByte(Object object, String name) {
-		return getByte(object.getClass(), object, name);
 	}
 
 	public static byte getByte(Class<?> type, String name) {
@@ -120,10 +111,6 @@ public final class ReflectUtils {
 		}
 	}
 
-	public static short getShort(Object object, String name) {
-		return getShort(object.getClass(), object, name);
-	}
-
 	public static short getShort(Class<?> type, String name) {
 		return getShort(type, null, name);
 	}
@@ -136,10 +123,6 @@ public final class ReflectUtils {
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public static int getInt(Object object, String name) {
-		return getInt(object.getClass(), object, name);
 	}
 
 	public static int getInt(Class<?> type, String name) {
@@ -156,10 +139,6 @@ public final class ReflectUtils {
 		}
 	}
 
-	public static long getLong(Object object, String name) {
-		return getLong(object.getClass(), object, name);
-	}
-
 	public static long getLong(Class<?> type, String name) {
 		return getLong(type, null, name);
 	}
@@ -172,10 +151,6 @@ public final class ReflectUtils {
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public static float getFloat(Object object, String name) {
-		return getFloat(object.getClass(), object, name);
 	}
 
 	public static float getFloat(Class<?> type, String name) {
@@ -192,10 +167,6 @@ public final class ReflectUtils {
 		}
 	}
 
-	public static double getDouble(Object object, String name) {
-		return getDouble(object.getClass(), object, name);
-	}
-
 	public static double getDouble(Class<?> type, String name) {
 		return getDouble(type, null, name);
 	}
@@ -208,10 +179,6 @@ public final class ReflectUtils {
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public static char getChar(Object object, String name) {
-		return getChar(object.getClass(), object, name);
 	}
 
 	public static char getChar(Class<?> type, String name) {
@@ -244,10 +211,6 @@ public final class ReflectUtils {
 		}
 	}
 
-	public static <T> T getOrDefault(Object object, String name, T def) {
-		return getOrDefault(object.getClass(), object, name, def);
-	}
-
 	public static <T> T getOrDefault(Class<?> type, String name, T def) {
 		return getOrDefault(type, null, name, def);
 	}
@@ -261,10 +224,6 @@ public final class ReflectUtils {
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			Log.err(e);
 		}
-	}
-
-	public static <T> void getToCons(Object object, String name, Cons<T> cons) {
-		getToCons(object.getClass(), object, name, cons);
 	}
 
 	public static <T> void getToCons(Class<?> type, String name, Cons<T> cons) {
@@ -281,10 +240,6 @@ public final class ReflectUtils {
 		}
 	}
 
-	public static void setBool(Object object, String name, boolean value) {
-		setBool(object.getClass(), object, name, value);
-	}
-
 	public static void setBool(Class<?> type, String name, boolean value) {
 		setBool(type, null, name, value);
 	}
@@ -297,10 +252,6 @@ public final class ReflectUtils {
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public static void setByte(Object object, String name, byte value) {
-		setByte(object.getClass(), object, name, value);
 	}
 
 	public static void setByte(Class<?> type, String name, byte value) {
@@ -317,10 +268,6 @@ public final class ReflectUtils {
 		}
 	}
 
-	public static void setShort(Object object, String name, short value) {
-		setShort(object.getClass(), object, name, value);
-	}
-
 	public static void setShort(Class<?> type, String name, short value) {
 		setShort(type, null, name, value);
 	}
@@ -333,10 +280,6 @@ public final class ReflectUtils {
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public static void setInt(Object object, String name, int value) {
-		setInt(object.getClass(), object, name, value);
 	}
 
 	public static void setInt(Class<?> type, String name, int value) {
@@ -353,10 +296,6 @@ public final class ReflectUtils {
 		}
 	}
 
-	public static void setLong(Object object, String name, long value) {
-		setLong(object.getClass(), object, name, value);
-	}
-
 	public static void setLong(Class<?> type, String name, long value) {
 		setLong(type, null, name, value);
 	}
@@ -369,10 +308,6 @@ public final class ReflectUtils {
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public static void setFloat(Object object, String name, float value) {
-		setFloat(object.getClass(), object, name, value);
 	}
 
 	public static void setFloat(Class<?> type, String name, float value) {
@@ -389,10 +324,6 @@ public final class ReflectUtils {
 		}
 	}
 
-	public static void setDouble(Object object, String name, double value) {
-		setDouble(object.getClass(), object, name, value);
-	}
-
 	public static void setDouble(Class<?> type, String name, double value) {
 		setDouble(type, null, name, value);
 	}
@@ -405,10 +336,6 @@ public final class ReflectUtils {
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public static void setChar(Object object, String name, char value) {
-		setDouble(object.getClass(), object, name, value);
 	}
 
 	public static void setChar(Class<?> type, String name, char value) {
@@ -434,14 +361,6 @@ public final class ReflectUtils {
 		return invoke(type, name, arrayOf(), arrayOf(), def);
 	}
 
-	public static <T> T invoke(Object object, String name, Object[] args, Class<?>[] parameterTypes, T def) {
-		return invoke(object.getClass(), object, name, args, parameterTypes, def);
-	}
-
-	public static <T> T invoke(Object object, String name, T def) {
-		return invoke(object, name, arrayOf(), arrayOf(), def);
-	}
-
 	@SuppressWarnings("unchecked")
 	public static <T> T invoke(Class<?> type, Object object, String name, Object[] args, Class<?>[] parameterTypes) {
 		try {
@@ -461,14 +380,6 @@ public final class ReflectUtils {
 		return invoke(type, name, arrayOf(), arrayOf());
 	}
 
-	public static <T> T invoke(Object object, String name, Object[] args, Class<?>[] parameterTypes) {
-		return invoke(object.getClass(), object, name, args, parameterTypes);
-	}
-
-	public static <T> T invoke(Object object, String name) {
-		return invoke(object, name, arrayOf(), arrayOf());
-	}
-
 	public static Field getField(Class<?> type, String name) {
 		return getField(type, name, true);
 	}
@@ -476,21 +387,6 @@ public final class ReflectUtils {
 	public static Field getField(Class<?> type, String name, boolean access) {
 		try {
 			Field field = type.getDeclaredField(name);
-			if (access) field.setAccessible(true);
-			return field;
-		} catch (NoSuchFieldException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static Field getField(Object object, String name) {
-		return getField(object, name, true);
-	}
-
-	/** Gets a field of a model without throwing exceptions. */
-	public static Field getField(Object object, String name, boolean access) {
-		try {
-			Field field = object.getClass().getDeclaredField(name);
 			if (access) field.setAccessible(true);
 			return field;
 		} catch (NoSuchFieldException e) {
@@ -833,7 +729,7 @@ public final class ReflectUtils {
 		return null;
 	}
 
-	/** Finds a class from the parent classes that has a specific field. */
+	/// Finds a class from the parent classes that has a specific field.
 	@Nullable
 	public static Class<?> findContainsFieldClass(Class<?> type, final String name) {
 		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
@@ -846,7 +742,7 @@ public final class ReflectUtils {
 		return null;
 	}
 
-	/** Finds a class from the parent classes that has a specific method. */
+	/// Finds a class from the parent classes that has a specific method.
 	@Nullable
 	public static Class<?> findContainsMethodClass(Class<?> type, final String name, Class<?>... args) {
 		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
@@ -859,7 +755,7 @@ public final class ReflectUtils {
 		return null;
 	}
 
-	/** Finds a class from the parent classes that has a specific constructor. */
+	/// Finds a class from the parent classes that has a specific constructor.
 	@Nullable
 	public static Class<?> findContainsConstructorClass(Class<?> type, Class<?>... args) {
 		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
@@ -872,7 +768,7 @@ public final class ReflectUtils {
 		return null;
 	}
 
-	/** Search for class based on class names without throwing exceptions. */
+	/// Search for class based on class names without throwing exceptions.
 	@SuppressWarnings("unchecked")
 	public static <T> Class<T> forClass(String name) {
 		try {
@@ -892,26 +788,26 @@ public final class ReflectUtils {
 				return false;
 			}
 			return true;
-		} else {
-			return false;
 		}
+
+		return false;
 	}
 
-	public static Seq<Class<?>> getClassSubclassHierarchy(Class<?> type) {
+	public static CollectionObjectSet<Class<?>> getClassSubclassHierarchy(Class<?> type) {
 		Class<?> c = type.getSuperclass();
-		Seq<Class<?>> hierarchy = new Seq<>(Class.class);
+		CollectionObjectSet<Class<?>> hierarchy = new CollectionObjectSet<>(Class.class);
 		while (c != null) {
 			hierarchy.add(c);
 			Class<?>[] interfaces = c.getInterfaces();
-			hierarchy.addAll(Arrays.asList(interfaces));
+			hierarchy.addAll(interfaces);
 
 			c = c.getSuperclass();
 		}
 		return hierarchy;
 	}
 
-	public static <T> T copyProperties(Object source, T target, String... filler) {
-		return copyProperties(source, target, false, filler);
+	public static <T> T copyProperties(Object source, T target) {
+		return copyProperties(source, target, arrayOf("id"));
 	}
 
 	/**
@@ -919,11 +815,9 @@ public final class ReflectUtils {
 	 *
 	 * @param source Source Object
 	 * @param target Target Object
-	 * @param print  If true, any exceptions that occur during the process of copying field properties will
-	 *               be output to the Logger
 	 * @param filler Excluded field names
 	 */
-	public static <T> T copyProperties(Object source, T target, boolean print, String... filler) {
+	public static <T> T copyProperties(Object source, T target, String[] filler) {
 		if (source == null || target == null) return target;
 
 		targetFieldMap.clear();
@@ -964,7 +858,7 @@ public final class ReflectUtils {
 						targetField.set(target, value);
 					}
 				} catch (Exception e) {
-					if (print) Log.err(e);
+					Log.err(e);
 				}
 			}
 

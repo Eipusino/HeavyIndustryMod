@@ -29,64 +29,62 @@ public class OrnitopterUnitType extends UnitType2 {
 		envDisabled = Env.space;
 	}
 
-	public void drawBlade(Unit unit) {
+	public void drawBlade(Unit unit, Ornitopterc copter) {
 		float z = unit.elevation > 0.5f ? (lowAltitude ? Layer.flyingUnitLow : Layer.flyingUnit) : groundLayer + Mathf.clamp(hitSize / 4000f, 0, 0.01f);
 
 		applyColor(unit);
 
-		if (unit instanceof Ornitopterc copter) {
-			for (int sign : Mathf.signs) {
-				long seedOffset = 0;
-				for (BladeMount mount : copter.blades()) {
-					Blade blade = mount.blade;
-					float rx = unit.x + Angles.trnsx(unit.rotation - 90, blade.x * sign, blade.y);
-					float ry = unit.y + Angles.trnsy(unit.rotation - 90, blade.x * sign, blade.y);
-					float bladeScl = Draw.scl * blade.bladeSizeScl;
-					float shadeScl = Draw.scl * blade.shadeSizeScl;
+		for (int sign : Mathf.signs) {
+			long seedOffset = 0;
+			for (BladeMount mount : copter.blades()) {
+				Blade blade = mount.blade;
+				float rx = unit.x + Angles.trnsx(unit.rotation - 90, blade.x * sign, blade.y);
+				float ry = unit.y + Angles.trnsy(unit.rotation - 90, blade.x * sign, blade.y);
+				float bladeScl = Draw.scl * blade.bladeSizeScl;
+				float shadeScl = Draw.scl * blade.shadeSizeScl;
 
 
-					if (blade.bladeRegion.found()) {
-						Draw.z(z + blade.layerOffset);
-						Draw.alpha(blade.blurRegion.found() ? 1 - (copter.bladeMoveSpeedScl() / 0.8f) : 1);
-						Draw.rect(
-								blade.bladeOutlineRegion, rx, ry,
-								blade.bladeOutlineRegion.width * bladeScl * sign,
-								blade.bladeOutlineRegion.height * bladeScl,
-								unit.rotation - 90 + sign * Mathf.randomSeed(copter.drawSeed() + (seedOffset++), blade.bladeMaxMoveAngle, -blade.bladeMinMoveAngle)
-						);
-						Draw.mixcol(Color.white, unit.hitTime);
-						Draw.rect(blade.bladeRegion, rx, ry,
-								blade.bladeRegion.width * bladeScl * sign,
-								blade.bladeRegion.height * bladeScl,
-								unit.rotation - 90 + sign * Mathf.randomSeed(copter.drawSeed() + (seedOffset++), blade.bladeMaxMoveAngle, -blade.bladeMinMoveAngle)
-						);
-						Draw.reset();
-					}
+				if (blade.bladeRegion.found()) {
+					Draw.z(z + blade.layerOffset);
+					Draw.alpha(blade.blurRegion.found() ? 1 - (copter.bladeMoveSpeedScl() / 0.8f) : 1);
+					Draw.rect(
+							blade.bladeOutlineRegion, rx, ry,
+							blade.bladeOutlineRegion.width * bladeScl * sign,
+							blade.bladeOutlineRegion.height * bladeScl,
+							unit.rotation - 90 + sign * Mathf.randomSeed(copter.drawSeed() + (seedOffset++), blade.bladeMaxMoveAngle, -blade.bladeMinMoveAngle)
+					);
+					Draw.mixcol(Color.white, unit.hitTime);
+					Draw.rect(blade.bladeRegion, rx, ry,
+							blade.bladeRegion.width * bladeScl * sign,
+							blade.bladeRegion.height * bladeScl,
+							unit.rotation - 90 + sign * Mathf.randomSeed(copter.drawSeed() + (seedOffset++), blade.bladeMaxMoveAngle, -blade.bladeMinMoveAngle)
+					);
+					Draw.reset();
+				}
 
-					if (blade.blurRegion.found()) {
-						Draw.z(z + blade.layerOffset);
-						Draw.alpha(copter.bladeMoveSpeedScl() * blade.blurAlpha * (copter.dead() ? copter.bladeMoveSpeedScl() * 0.5f : 1));
-						Draw.rect(
-								blade.blurRegion, rx, ry,
-								blade.blurRegion.width * bladeScl * sign,
-								blade.blurRegion.height * bladeScl,
-								unit.rotation - 90 + sign * Mathf.randomSeed(copter.drawSeed() + (seedOffset++), blade.bladeMaxMoveAngle, -blade.bladeMinMoveAngle)
-						);
-						Draw.reset();
-					}
+				if (blade.blurRegion.found()) {
+					Draw.z(z + blade.layerOffset);
+					Draw.alpha(copter.bladeMoveSpeedScl() * blade.blurAlpha * (unit.dead() ? copter.bladeMoveSpeedScl() * 0.5f : 1));
+					Draw.rect(
+							blade.blurRegion, rx, ry,
+							blade.blurRegion.width * bladeScl * sign,
+							blade.blurRegion.height * bladeScl,
+							unit.rotation - 90 + sign * Mathf.randomSeed(copter.drawSeed() + (seedOffset++), blade.bladeMaxMoveAngle, -blade.bladeMinMoveAngle)
+					);
+					Draw.reset();
+				}
 
-					if (blade.shadeRegion.found()) {
-						Draw.z(z + blade.layerOffset + 0.001f);
-						Draw.alpha(copter.bladeMoveSpeedScl() * blade.blurAlpha * (copter.dead() ? copter.bladeMoveSpeedScl() * 0.5f : 1));
-						Draw.rect(
-								blade.shadeRegion, rx, ry,
-								blade.shadeRegion.width * shadeScl * sign,
-								blade.shadeRegion.height * shadeScl,
-								unit.rotation - 90 + sign * Mathf.randomSeed(copter.drawSeed() + (seedOffset++), blade.bladeMaxMoveAngle, -blade.bladeMinMoveAngle)
-						);
-						Draw.mixcol(Color.white, unit.hitTime);
-						Draw.reset();
-					}
+				if (blade.shadeRegion.found()) {
+					Draw.z(z + blade.layerOffset + 0.001f);
+					Draw.alpha(copter.bladeMoveSpeedScl() * blade.blurAlpha * (unit.dead() ? copter.bladeMoveSpeedScl() * 0.5f : 1));
+					Draw.rect(
+							blade.shadeRegion, rx, ry,
+							blade.shadeRegion.width * shadeScl * sign,
+							blade.shadeRegion.height * shadeScl,
+							unit.rotation - 90 + sign * Mathf.randomSeed(copter.drawSeed() + (seedOffset++), blade.bladeMaxMoveAngle, -blade.bladeMinMoveAngle)
+					);
+					Draw.mixcol(Color.white, unit.hitTime);
+					Draw.reset();
 				}
 			}
 		}
@@ -105,7 +103,10 @@ public class OrnitopterUnitType extends UnitType2 {
 	@Override
 	public void draw(Unit unit) {
 		super.draw(unit);
-		drawBlade(unit);
+
+		if (unit instanceof Ornitopterc copter) {
+			drawBlade(unit, copter);
+		}
 	}
 
 	@Override

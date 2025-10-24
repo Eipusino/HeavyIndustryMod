@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
  * adding). Deque functionality is provided via {@link #removeLast()} and {@link #addFirst(Object)}.
  */
 public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> {
-	public final Class<E> componentType;
+	public final Class<?> componentType;
 
 	/** Number of elements in the queue. */
 	public int size = 0;
@@ -35,7 +35,7 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 	@Nullable QueueIterable<E> iterable;
 
 	/** Creates a new Queue which can hold 16 values without needing to resize backing array. */
-	public CollectionQueue(Class<E> type) {
+	public CollectionQueue(Class<?> type) {
 		this(16, type);
 	}
 
@@ -44,7 +44,7 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 	 * backing array of the specified type via reflection, which is necessary only when accessing the backing array directly.
 	 */
 	@SuppressWarnings("unchecked")
-	public CollectionQueue(int initialSize, Class<E> type) {
+	public CollectionQueue(int initialSize, Class<?> type) {
 		componentType = type;
 
 		values = (E[]) Array.newInstance(type, initialSize);

@@ -184,15 +184,15 @@ public class EnergyUnitType extends AncientUnitType {
 		for (int i = 0; i < 4; i++) {
 			float rotation = Time.time * 1.5f + i * 90;
 			Tmp.v1.trns(rotation, bodySize * 1.5f).add(unit);
-			Draw.rect(Core.atlas.find(name("jump-gate-arrow")), Tmp.v1.x, Tmp.v1.y, rotation + 90);
+			Draw.rect(Core.atlas.find(MOD_NAME + "-jump-gate-arrow"), Tmp.v1.x, Tmp.v1.y, rotation + 90);
 		}
 		Draw.reset();
 	}*/
 
-	@Override
+	/*@Override
 	public void drawItems(Unit unit) {
 		super.drawItems(unit);
-	}
+	}*/
 
 	@Override
 	public void drawLight(Unit unit) {

@@ -42,6 +42,7 @@ import heavyindustry.graphics.g2d.FragmentationBatch;
 import heavyindustry.graphics.g2d.RangeExtractor;
 import heavyindustry.graphics.g2d.VaporizeBatch;
 import heavyindustry.input.InputAggregator;
+import heavyindustry.mod.AdaptiveCoreDatabase;
 import heavyindustry.mod.ModUtils;
 import heavyindustry.mod.ScriptUtils;
 import heavyindustry.net.HCall;
@@ -267,6 +268,8 @@ public final class HeavyIndustryMod extends Mod {
 				floatingText.build(Vars.ui.menuGroup);
 			}
 		}
+
+		AdaptiveCoreDatabase.init();
 	}
 
 	public static @Nullable Class<?> loadLibrary(String fileName, String mainClassName, boolean showError) {

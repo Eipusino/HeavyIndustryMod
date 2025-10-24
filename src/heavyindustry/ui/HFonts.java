@@ -13,7 +13,6 @@ import arc.graphics.g2d.Font;
 import arc.struct.Seq;
 import mindustry.Vars;
 
-@SuppressWarnings("rawtypes")
 public final class HFonts {
 	public static Font consolas, inconsoiata, jetbrainsmonomedium;
 
@@ -40,6 +39,7 @@ public final class HFonts {
 						.generateFont(parameter.fontParameters);
 			}
 
+			@SuppressWarnings("rawtypes")
 			@Override
 			public Seq<AssetDescriptor> getDependencies(String fileName, Fi file, FreeTypeFontLoaderParameter parameter) {
 				return Seq.with(new AssetDescriptor<>(parameter.fontFileName + loaderSuffix, FreeTypeFontGenerator.class));
@@ -50,7 +50,6 @@ public final class HFonts {
 			size = 20;
 			incremental = true;
 			renderCount = 1;
-			characters = FreeTypeFontGenerator.DEFAULT_CHARS;
 		}})).loaded = f -> {
 			f.setFixedWidthGlyphs(FreeTypeFontGenerator.DEFAULT_CHARS);
 			consolas = f;
@@ -60,7 +59,6 @@ public final class HFonts {
 			size = 20;
 			incremental = true;
 			renderCount = 1;
-			characters = FreeTypeFontGenerator.DEFAULT_CHARS;
 		}})).loaded = f -> {
 			f.setFixedWidthGlyphs(FreeTypeFontGenerator.DEFAULT_CHARS);
 			inconsoiata = f;
@@ -70,7 +68,6 @@ public final class HFonts {
 			size = 22;
 			incremental = true;
 			renderCount = 1;
-			characters = FreeTypeFontGenerator.DEFAULT_CHARS;
 		}})).loaded = f -> {
 			f.setFixedWidthGlyphs(FreeTypeFontGenerator.DEFAULT_CHARS);
 			jetbrainsmonomedium = f;

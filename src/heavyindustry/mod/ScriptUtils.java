@@ -25,10 +25,10 @@ import java.net.URLClassLoader;
  * @since 1.0.6
  */
 public final class ScriptUtils {
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private ScriptUtils() {}
 
-	/** Initializes the Mod JS. */
+	/// Initializes the Mod JS.
 	public static void init() {
 		try {
 			if (Vars.mods.getScripts().scope instanceof ImporterTopLevel imp) {
@@ -113,12 +113,12 @@ public final class ScriptUtils {
 
 			if (res instanceof Wrapper w) res = w.unwrap();
 			if (!type.isAssignableFrom(res.getClass()))
-				throw new IllegalStateException("Incompatible return type: Expected '" + returnType + "', but got '" + res.getClass() + "'!");
+				throw new IllegalArgumentException("Incompatible return type: Expected '" + returnType + "', but got '" + res.getClass() + "'!");
 			return (T) res;
 		};
 	}
 
-	/** Example code: {@code SimpleClass.__javaObject__.getSimpleName()} */
+	/// see {@code SimpleClass.__javaObject__.getSimpleName()}
 	public static <T> Class<T> c(Class<T> c) {
 		return c;
 	}

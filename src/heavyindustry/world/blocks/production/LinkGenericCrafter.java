@@ -268,13 +268,44 @@ public class LinkGenericCrafter extends GenericCrafter implements MultiBlock {
 		}
 
 		@Override
-		public Building build() {
-			return this;
+		public void updateLinkProximity() {
+			if (linkEntities() != null) {
+				linkProximityMap().clear();
+				//add link entity's proximity
+				for (Building link : linkEntities()) {
+					for (Building linkProx : link.proximity) {
+						if (linkProx != this && !linkEntities().contains(linkProx)) {
+							if (checkValidPair(linkProx, link)) {
+								linkProximityMap().add(new Building[]{linkProx, link});
+							}
+						}
+					}
+				}
+
+				//add self entity's proximity
+				for (Building prox : proximity) {
+					if (!linkEntities().contains(prox)) {
+						if (checkValidPair(prox, this)) {
+							linkProximityMap().add(new Building[]{prox, this});
+						}
+					}
+				}
+			}
 		}
 
 		@Override
-		public Block block() {
-			return block;
+		public boolean checkValidPair(Building target, Building source) {
+			for (Building[] pair : linkProximityMap) {
+				Building pairTarget = pair[0];
+				Building pairSource = pair[1];
+
+				if (target == pairTarget) {
+					if (target.relativeTo(pairSource) == target.relativeTo(source)) {
+						return false;
+					}
+				}
+			}
+			return true;
 		}
 
 		@Override
