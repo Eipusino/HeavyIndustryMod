@@ -7,6 +7,7 @@ import arc.math.geom.Vec2;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.math.Mathm;
+import mindustry.Vars;
 import mindustry.audio.SoundLoop;
 import mindustry.entities.Predict;
 import mindustry.entities.Sized;
@@ -17,10 +18,6 @@ import mindustry.gen.Sounds;
 import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
 import mindustry.type.Weapon;
-
-import static mindustry.Vars.headless;
-import static mindustry.Vars.net;
-import static mindustry.Vars.state;
 
 public class LimitedAngleWeapon extends Weapon {
 	public float angleCone = 45f;
@@ -95,7 +92,7 @@ public class LimitedAngleWeapon extends Weapon {
 				mount.bullet.set(bulletX, bulletY);
 				mount.reload = reload;
 				unit.vel.add(Tmp.v1.trns(unit.rotation + 180f, mount.bullet.type.recoil));
-				if (shootSound != Sounds.none && !headless) {
+				if (shootSound != Sounds.none && !Vars.headless) {
 					if (mount.sound == null) mount.sound = new SoundLoop(shootSound, 1f);
 					mount.sound.update(bulletX, bulletY, true);
 				}
@@ -131,9 +128,9 @@ public class LimitedAngleWeapon extends Weapon {
 
 		if (mount.shoot &&
 				can &&
-				(!useAmmo || unit.ammo > 0 || !state.rules.unitAmmo || unit.team.rules().infiniteAmmo) && //check ammo
+				(!useAmmo || unit.ammo > 0 || !Vars.state.rules.unitAmmo || unit.team.rules().infiniteAmmo) && //check ammo
 				(!alternate || mount.side == flipSprite) &&
-				(unit.vel.len() >= mount.weapon.minShootVelocity || (net.active() && !unit.isLocal())) && //check velocity requirements
+				(unit.vel.len() >= mount.weapon.minShootVelocity || (Vars.net.active() && !unit.isLocal())) && //check velocity requirements
 				mount.reload <= 0.0001f &&
 				Angles.within(rotate ? mount.rotation : unit.rotation, mount.targetRotation, mount.weapon.shootCone) //has to be within the cone
 		) {

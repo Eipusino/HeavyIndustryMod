@@ -4,10 +4,19 @@ import arc.func.Intc2;
 import arc.graphics.Color;
 import arc.graphics.Pixmap;
 import arc.graphics.Pixmaps;
+import arc.graphics.Texture;
+import arc.graphics.TextureData;
 import arc.graphics.g2d.PixmapRegion;
+import arc.graphics.gl.FileTextureData;
+import arc.graphics.gl.PixmapTextureData;
 import arc.math.Mathf;
+import arc.util.Log;
+
+import java.lang.reflect.Field;
 
 public final class HPixmaps {
+	static Field pixmapField;
+
 	private HPixmaps() {}
 
 	/**
@@ -124,6 +133,27 @@ public final class HPixmaps {
 
 	public static PixmapRegion color(PixmapRegion pixmap, Color from, Color to) {
 		return color(pixmap, c -> c == from.rgba(), (x, y) -> to);
+	}
+
+	public static Pixmap pixmapOf(Texture texture) {
+		TextureData data = texture.getTextureData();
+
+		if (data instanceof PixmapTextureData) return data.consumePixmap();
+		if (data instanceof FileTextureData) {
+			try {
+				if (!data.isPrepared()) data.prepare();
+				if (pixmapField == null) {
+					pixmapField = FileTextureData.class.getDeclaredField("pixmap");
+					pixmapField.setAccessible(true);
+				}
+
+				return (Pixmap) pixmapField.get(data);
+			} catch (Exception e) {
+				Log.err(e);// This shouldn't have happened.
+			}
+		}
+
+		return null;
 	}
 
 	public interface ColorBool {

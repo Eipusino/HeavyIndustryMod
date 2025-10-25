@@ -76,7 +76,7 @@ public final class Utils {
 
 	static final IntSeq amounts = new IntSeq();
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private Utils() {}
 
 	public static int reverse(int rotation) {

@@ -9,16 +9,12 @@ import arc.struct.Seq;
 import heavyindustry.content.HFx;
 import heavyindustry.util.SpriteUtils;
 import heavyindustry.world.meta.HStat;
+import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.gen.Call;
 import mindustry.graphics.Layer;
 import mindustry.world.meta.StatUnit;
-
-import static mindustry.Vars.net;
-import static mindustry.Vars.state;
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
 
 /**
  * Shaped Wall
@@ -92,7 +88,7 @@ public class ShapedWall extends ConnectedWall {
 			connectedWalls.clear();
 
 			for (Point2 point : SpriteUtils.proximityPos) {
-				Building other = world.build(tile.x + point.x, tile.y + point.y);
+				Building other = Vars.world.build(tile.x + point.x, tile.y + point.y);
 				if (other == null || other.team != team) continue;
 				if (checkWall(other)) {
 					connectedWalls.add((ShapedWallBuild) other);
@@ -133,13 +129,13 @@ public class ShapedWall extends ConnectedWall {
 		//todo healthChanged sometimes not trigger properly
 		public void damageShared(Building building, float damage) {
 			if (building.dead()) return;
-			float dm = state.rules.blockHealth(team);
+			float dm = Vars.state.rules.blockHealth(team);
 			if (Mathf.zero(dm)) {
 				damage = building.health + 1;
 			} else {
 				damage /= dm;
 			}
-			if (!net.client()) {
+			if (!Vars.net.client()) {
 				building.health -= damage;
 			}
 			if (damaged()) {
@@ -148,7 +144,7 @@ public class ShapedWall extends ConnectedWall {
 			if (building.health <= 0) {
 				Call.buildDestroyed(building);
 			}
-			HFx.shareDamage.at(building.x, building.y, building.block.size * tilesize / 2f, team.color, Mathf.clamp(damage / (block.health * 0.1f)));
+			HFx.shareDamage.at(building.x, building.y, building.block.size * Vars.tilesize / 2f, team.color, Mathf.clamp(damage / (block.health * 0.1f)));
 		}
 
 		@Override

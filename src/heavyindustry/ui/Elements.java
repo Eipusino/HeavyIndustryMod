@@ -89,7 +89,7 @@ public final class Elements {
 
 	private static Field clickListenerField;
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private Elements() {}
 
 	public static String judge(boolean value) {
@@ -102,7 +102,7 @@ public final class Elements {
 		gameDataDialog = new GameDataDialog();
 	}
 
-	/** Based on {@link UI#formatAmount(long)} but for floats. */
+	/// Based on {@link UI#formatAmount(long)} but for floats.
 	public static String formatAmount(float num) {
 		if (Float.isNaN(num)) return "NaN";
 		if (num == Float.MAX_VALUE) return "Infinite";
@@ -121,7 +121,7 @@ public final class Elements {
 		}
 	}
 
-	/** Similar to {@link UI#formatAmount(long)} but for floats. */
+	/// Similar to {@link UI#formatAmount(long)} but for floats.
 	public static String round(float num) {
 		if (Float.isNaN(num)) return "NaN";
 		if (num == Float.MAX_VALUE) return "Infinite";
@@ -239,27 +239,27 @@ public final class Elements {
 		divider(t, label, color, 1);
 	}
 
-	/** Adds a boxed tooltip, similar to in the Database. */
+	/// Adds a boxed tooltip, similar to in the Database.
 	public static void boxTooltip(Element e, Prov<CharSequence> text) {
 		e.addListener(baseTooltip(t -> t.background(Tex.button).label(text)));
 	}
 
-	/** Adds a boxed tooltip, similar to in the Database. */
+	/// Adds a boxed tooltip, similar to in the Database.
 	public static void boxTooltip(Element e, String text) {
 		e.addListener(baseTooltip(t -> t.background(Tex.button).add(text)));
 	}
 
-	/** Adds a flat tooltip, similar to setting descriptions. */
+	/// Adds a flat tooltip, similar to setting descriptions.
 	public static void flatTooltip(Element e, Prov<CharSequence> text) {
 		e.addListener(baseTooltip(t -> t.background(Styles.black8).margin(4f).label(text)));
 	}
 
-	/** Adds a flat tooltip, similar to setting descriptions. */
+	/// Adds a flat tooltip, similar to setting descriptions.
 	public static void flatTooltip(Element e, String text) {
 		e.addListener(baseTooltip(t -> t.background(Styles.black8).margin(4f).add(text)));
 	}
 
-	/** Creates a tooltip. Snaps to corner of parent element. */
+	/// Creates a tooltip. Snaps to corner of parent element.
 	public static Tooltip baseTooltip(Cons<Table> content) {
 		return new BaseTooltip(content);
 	}
@@ -624,7 +624,7 @@ public final class Elements {
 		}
 	}
 
-	/** Adds '\n' if text not within maxWidth. */
+	/// Adds '\n' if text not within maxWidth.
 	public static String wrapText(String originalString, Font font, float maxWidth) {
 		GlyphLayout obtain = GlyphLayout.obtain();
 

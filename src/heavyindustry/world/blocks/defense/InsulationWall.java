@@ -10,16 +10,13 @@ import arc.math.Mathf;
 import arc.util.Eachable;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Sounds;
 import mindustry.logic.LAccess;
 import mindustry.world.blocks.defense.Wall;
-
-import static mindustry.Vars.net;
-import static mindustry.Vars.player;
-import static mindustry.Vars.world;
 
 /**
  * A wall with insulation properties that change with opening and closing.
@@ -40,7 +37,7 @@ public class InsulationWall extends Wall {
 			doorSound.at(tile);
 			tile.effect();
 			tile.open = open;
-			world.tileChanges++;
+			Vars.world.tileChanges++;
 		});
 	}
 
@@ -75,7 +72,7 @@ public class InsulationWall extends Wall {
 			if (type == LAccess.enabled) {
 				boolean shouldOpen = !Mathf.zero(p1);
 
-				if (net.client() || open == shouldOpen || timer(timerToggle, 60f)) {
+				if (Vars.net.client() || open == shouldOpen || timer(timerToggle, 60f)) {
 					return;
 				}
 
@@ -94,7 +91,7 @@ public class InsulationWall extends Wall {
 
 		@Override
 		public Cursor getCursor() {
-			return interactable(player.team()) ? SystemCursor.hand : SystemCursor.arrow;
+			return interactable(Vars.player.team()) ? SystemCursor.hand : SystemCursor.arrow;
 		}
 
 		@Override

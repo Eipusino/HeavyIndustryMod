@@ -7,15 +7,10 @@ import arc.math.geom.Point2;
 import arc.math.geom.Vec2;
 import arc.util.Time;
 import arc.util.Tmp;
+import mindustry.Vars;
 import mindustry.entities.Effect;
 import mindustry.entities.EntityCollisions.SolidPred;
 import mindustry.world.blocks.environment.Floor;
-
-import static mindustry.Vars.headless;
-import static mindustry.Vars.net;
-import static mindustry.Vars.player;
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
 
 public class FloatMechCoreUnit extends Unit2 implements Corec, FloatMechc {
 	public float baseRotation;
@@ -34,7 +29,7 @@ public class FloatMechCoreUnit extends Unit2 implements Corec, FloatMechc {
 		elevation = Mathf.approachDelta(elevation, onSolid() ? 1f : 0f, type.riseSpeed);
 
 		//trigger animation only when walking manually
-		if (walked || net.client()) {
+		if (walked || Vars.net.client()) {
 			float len = deltaLen();
 			baseRotation = Angles.moveToward(baseRotation, deltaAngle(), type().baseRotateSpeed * Mathf.clamp(len / type().speed / Time.delta) * Time.delta);
 			walkTime += len;
@@ -48,7 +43,7 @@ public class FloatMechCoreUnit extends Unit2 implements Corec, FloatMechc {
 
 		float lastExtend = walkExtension;
 
-		if (!headless && extendScl < lastExtend && base % 2f > 1f && !isFlying() && !inFogTo(player.team())) {
+		if (!Vars.headless && extendScl < lastExtend && base % 2f > 1f && !isFlying() && !inFogTo(Vars.player.team())) {
 			int side = -Mathf.sign(extend);
 			float width = hitSize / 2f * side, length = type.mechStride * 1.35f;
 
@@ -72,7 +67,7 @@ public class FloatMechCoreUnit extends Unit2 implements Corec, FloatMechc {
 		//large mechs can only drown when all the nearby floors are deep
 		if (hitSize >= 12 && canDrown()) {
 			for (Point2 p : Geometry.d8) {
-				Floor f = world.floorWorld(x + p.x * tilesize, y + p.y * tilesize);
+				Floor f = Vars.world.floorWorld(x + p.x * Vars.tilesize, y + p.y * Vars.tilesize);
 				if (!f.isDeep()) {
 					return null;
 				}

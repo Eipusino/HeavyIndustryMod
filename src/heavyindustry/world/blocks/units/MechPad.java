@@ -35,10 +35,6 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.ControlBlock;
 import mindustry.world.meta.Stat;
 
-import static mindustry.Vars.control;
-import static mindustry.Vars.net;
-import static mindustry.Vars.state;
-
 public class MechPad extends Block {
 	public UnitType unitType = UnitTypes.dagger;
 	public float buildTime = 60 * 5;
@@ -58,7 +54,7 @@ public class MechPad extends Block {
 
 	public static void spawnMech(UnitType unitType, Tile tile, Player player) {
 		//do not try to respawn in unsupported environments at all
-		if (!unitType.supportsEnv(state.rules.env)) return;
+		if (!unitType.supportsEnv(Vars.state.rules.env)) return;
 
 		if (Vars.net.server() || !Vars.net.active()) {
 			playerSpawn(tile, player);
@@ -84,7 +80,7 @@ public class MechPad extends Block {
 
 		player.set(pad);
 
-		if (!net.client()) {
+		if (!Vars.net.client()) {
 			Unit unit = block.unitType.create(tile.team());
 			unit.set(pad);
 			unit.rotation(90f);
@@ -94,7 +90,7 @@ public class MechPad extends Block {
 			unit.add();
 		}
 
-		if (state.isCampaign() && player == Vars.player) {
+		if (Vars.state.isCampaign() && player == Vars.player) {
 			block.unitType.unlock();
 		}
 	}
@@ -155,7 +151,7 @@ public class MechPad extends Block {
 		}
 
 		consumeItems(mechReqs);
-		consumeBuilder.each(c -> c.multiplier = b -> state.rules.unitCost(b.team));
+		consumeBuilder.each(c -> c.multiplier = b -> Vars.state.rules.unitCost(b.team));
 
 		super.init();
 	}
@@ -198,8 +194,8 @@ public class MechPad extends Block {
 
 				Fx.spawn.at(player);
 				spawnSound.at(player);
-				if (net.client() && player == Vars.player) {
-					control.input.controlledType = null;
+				if (Vars.net.client() && player == Vars.player) {
+					Vars.control.input.controlledType = null;
 				}
 
 				consume();

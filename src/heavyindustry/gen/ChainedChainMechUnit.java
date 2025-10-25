@@ -28,9 +28,6 @@ import mindustry.gen.WaterMovec;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
 
-import static mindustry.Vars.net;
-import static mindustry.Vars.state;
-
 public class ChainedChainMechUnit extends Unit2 implements ChainMechc {
 	public transient Unit head, tail, parent, child;
 
@@ -63,7 +60,7 @@ public class ChainedChainMechUnit extends Unit2 implements ChainMechc {
 		updateLastPosition();
 
 		team.data().updateCount(type, 1);
-		if (type.useUnitCap && count() > cap() && !spawnedByCore && !dead && !state.rules.editor) {
+		if (type.useUnitCap && count() > cap() && !spawnedByCore && !dead && !Vars.state.rules.editor) {
 			Call.unitCapDeath(this);
 			team.data().updateCount(type, -1);
 		}
@@ -443,7 +440,7 @@ public class ChainedChainMechUnit extends Unit2 implements ChainMechc {
 	public void update() {
 		super.update();
 
-		if ((moving() || net.client())) {
+		if ((moving() || Vars.net.client())) {
 			float len = deltaLen();
 			walk += len;
 			baseRotation = Angles.moveToward(baseRotation, deltaAngle(), type().baseRotateSpeed * Mathf.clamp(len / type().speed / Time.delta) * Time.delta);

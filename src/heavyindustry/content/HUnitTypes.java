@@ -29,11 +29,8 @@ import heavyindustry.entities.abilities.InvincibleForceFieldAbility;
 import heavyindustry.entities.abilities.JavelinAbility;
 import heavyindustry.entities.abilities.MirrorArmorAbility;
 import heavyindustry.entities.abilities.MirrorFieldAbility;
-import heavyindustry.entities.abilities.RegenProjectorAbility;
 import heavyindustry.entities.abilities.TerritoryFieldAbility;
-import heavyindustry.entities.abilities.WitchServiceAbility;
 import heavyindustry.entities.bullet.AccelBulletType;
-import heavyindustry.entities.bullet.AnnihilatePointBulletType;
 import heavyindustry.entities.bullet.AntiBulletFlakBulletType;
 import heavyindustry.entities.bullet.ArrowBulletType;
 import heavyindustry.entities.bullet.CtrlMissileBulletType;
@@ -56,7 +53,6 @@ import heavyindustry.gen.BuildingTetherUnit2;
 import heavyindustry.gen.CopterUnit;
 import heavyindustry.gen.DPSMechUnit;
 import heavyindustry.gen.DamageAbsorbMechUnit;
-import heavyindustry.gen.EipusinoUnit;
 import heavyindustry.gen.InvincibleShipUnit;
 import heavyindustry.gen.LegsUnit2;
 import heavyindustry.gen.MechUnit2;
@@ -71,7 +67,6 @@ import heavyindustry.graphics.HPal;
 import heavyindustry.graphics.MathRenderer;
 import heavyindustry.math.Mathm;
 import heavyindustry.type.unit.CopterUnitType;
-import heavyindustry.type.unit.NucleoidUnitType;
 import heavyindustry.type.unit.UnitType2;
 import heavyindustry.type.weapons.AcceleratingWeapon;
 import heavyindustry.type.weapons.BoostWeapon;
@@ -172,8 +167,6 @@ public final class HUnitTypes {
 	public static UnitType2 vulture, invincibleShip, dpsTesterLand;
 	//elite
 	public static UnitType2 tiger, thunder, eagle;
-	//special
-	public static NucleoidUnitType eipusino;
 
 	/** Don't let anyone instantiate this class. */
 	private HUnitTypes() {}
@@ -3789,65 +3782,12 @@ public final class HUnitTypes {
 				}
 			});
 		}};
-		eipusino = new NucleoidUnitType("eipusino") {{
-			outlines = false;
-			envDisabled = Env.none;
-			constructor = EipusinoUnit::new;
-			aiController = NullAI::new; // Don't let AI manipulate it.
-			drawArrow = false;
-			createScorch = false;
-			deathExplosionEffect = Fx.none;
-			deathSound = HSounds.jumpIn;
-			damageMultiplier = 0.01f;
-			maxOnceDamage = 100f;
-			health = 3000;
-			engineSize = 0f;
-			buildSpeed = 9f;
-			engineOffset = 0f;
-			itemCapacity = 2000;
-			armor = 9f;
-			speed = 5.25f;
-			drawShields = false;
-			isEnemy = false; // Prevent players from being unable to complete the game due to various reasons appearing in the enemy.
-			flying = true;
-			killable = false;
-			hittable = false;
-			targetable = false;
-			faceTarget = false;
-			targetPriority = -13f;
-			bounded = false;
-			mineWalls = true;
-			mineFloor = true;
-			mineHardnessScaling = false;
-			mineSpeed = 13f;
-			mineTier = 13;
-			fallEffect = HFx.blast(Pal.heal, 120f);
-			targetAir = targetGround = false;
-			abilities.add(new WitchServiceAbility(), new RegenProjectorAbility());
-			immunities.add(HStatusEffects.apoptosis);
-			ammoCapacity = 100000;
-			ammoType = new PowerAmmoType(1f);
-			weapons.add(new Weapon() {{
-				x = 0f;
-				y = 0f;
-				top = false;
-				rotate = true;
-				mirror = false;
-				shootSound = Sounds.none;
-				bullet = new AnnihilatePointBulletType() {{
-					trailEffect = shootEffect = despawnEffect = hitEffect = smokeEffect = Fx.none;
-					hitSize *= 2f;
-					lifetime *= 10f;
-				}};
-			}});
-		}};
 	}
 
 	public static void init() {
 		empire.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> !empire.immunities.contains(s) && (s.reloadMultiplier >= 1 && !s.disarm)));
 		poseidon.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> s.reloadMultiplier >= 1 && !s.disarm));
 		leviathan.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> (s == StatusEffects.none || s.healthMultiplier > 1 || s.damage < 0 || s.reloadMultiplier > 1 || s.damageMultiplier > 1 || s.speedMultiplier > 1) && !s.disarm));
-		eipusino.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> s == StatusEffects.none || (s.healthMultiplier >= 1 && s.damage <= 0 && s.reloadMultiplier >= 1 && s.damageMultiplier >= 1 && s.speedMultiplier >= 1 && !s.disarm)));
 	}
 
 	public static class Shooter {

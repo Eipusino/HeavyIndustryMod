@@ -4,11 +4,10 @@ import arc.graphics.Color;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.graphics.Pal;
 import mindustry.world.blocks.defense.Wall;
-
-import static mindustry.Vars.net;
 
 public class AparajitoWall extends Wall {
 	public float hitHealAmount = 0.05f, hitHealReload = 0.5f * 60;
@@ -46,7 +45,7 @@ public class AparajitoWall extends Wall {
 
 			timerHeal = Math.max(0, timerHeal - Time.delta);
 			if (timerHeal <= 0 && health < maxHealth - 1e-5f) {
-				if (!net.client()) {
+				if (!Vars.net.client()) {
 					heal(maxHealth() * healRadio / 60f * Time.delta);
 				}
 				if (timer.get(60)) {
@@ -59,7 +58,7 @@ public class AparajitoWall extends Wall {
 		public void damage(float damage) {
 			timerHeal = healTimer;
 			if (!wasInReload) {
-				if (!net.client()) {
+				if (!Vars.net.client()) {
 					heal(maxHealth() * hitHealAmount);
 				}
 				Fx.healBlockFull.at(x, y, 0, healColor, block);

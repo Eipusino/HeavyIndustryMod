@@ -22,6 +22,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.entities.HDamage;
 import heavyindustry.world.meta.HStatValues;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
 import mindustry.core.Renderer;
@@ -41,11 +42,6 @@ import mindustry.world.Edges;
 import mindustry.world.Tile;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
-
-import static mindustry.Vars.net;
-import static mindustry.Vars.player;
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
 
 public class StaticNode extends Block {
 	protected static BuildPlan otherReq;
@@ -81,7 +77,7 @@ public class StaticNode extends Block {
 
 		config(Integer.class, (StaticNodeBuild tile, Integer value) -> {
 			IntSeq links = tile.links;
-			Building other = world.build(value);
+			Building other = Vars.world.build(value);
 			boolean contains = links.contains(value);
 
 			// (t) = target, (b) = base
@@ -141,8 +137,8 @@ public class StaticNode extends Block {
 
 	@Override
 	public void init() {
-		consumePowerDynamic(b -> ((StaticNodeBuild) b).powerUse());
-		clipSize = Math.max(clipSize, (laserRange + 1f) * tilesize * 2f);
+		consumePowerDynamic(b -> b instanceof StaticNodeBuild s ? s.powerUse() : 0f);
+		clipSize = Math.max(clipSize, (laserRange + 1f) * Vars.tilesize * 2f);
 
 		super.init();
 
@@ -180,19 +176,19 @@ public class StaticNode extends Block {
 	public void drawPlace(int x, int y, int rotation, boolean valid) {
 		drawPotentialLinks(x, y);
 
-		Tile tile = world.tile(x, y);
+		Tile tile = Vars.world.tile(x, y);
 
 		if (tile == null) return;
 
 		Lines.stroke(1f);
 		Draw.color(Pal.placing);
-		Drawf.circles(x * tilesize + offset, y * tilesize + offset, laserRange * tilesize);
+		Drawf.circles(x * Vars.tilesize + offset, y * Vars.tilesize + offset, laserRange * Vars.tilesize);
 
-		getPotentialLinks(tile, player.team(), other -> {
-			Draw.color(Tmp.c1.set(player.team().color), Renderer.laserOpacity);
-			staticLine(tile.team(), x * tilesize + offset, y * tilesize + offset, other.x, other.y, size, other.block.size, true, false);
+		getPotentialLinks(tile, Vars.player.team(), other -> {
+			Draw.color(Tmp.c1.set(Vars.player.team().color), Renderer.laserOpacity);
+			staticLine(tile.team(), x * Vars.tilesize + offset, y * Vars.tilesize + offset, other.x, other.y, size, other.block.size, true, false);
 
-			Drawf.square(other.x, other.y, other.block.size * tilesize / 2f + 2f, Pal.place);
+			Drawf.square(other.x, other.y, other.block.size * Vars.tilesize / 2f + 2f, Pal.place);
 		});
 
 		Draw.reset();
@@ -200,12 +196,12 @@ public class StaticNode extends Block {
 
 	@Override
 	public void changePlacementPath(Seq<Point2> points, int rotation) {
-		Placement.calculateNodes(points, this, rotation, (point, other) -> overlaps(world.tile(point.x, point.y), world.tile(other.x, other.y)));
+		Placement.calculateNodes(points, this, rotation, (point, other) -> overlaps(Vars.world.tile(point.x, point.y), Vars.world.tile(other.x, other.y)));
 	}
 
 	public boolean staticLine(Team team, float x1, float y1, float x2, float y2, int size1, int size2, boolean drawLaser, boolean drawOther, boolean attack) {
 		float angle1 = Angles.angle(x1, y1, x2, y2),
-				len1 = size1 * tilesize / 2f - 1.5f, len2 = size2 * tilesize / 2f - 1.5f;
+				len1 = size1 * Vars.tilesize / 2f - 1.5f, len2 = size2 * Vars.tilesize / 2f - 1.5f;
 		Tmp.v1.trns(angle1, len1);
 		Tmp.v2.trns(angle1, len2);
 
@@ -255,7 +251,7 @@ public class StaticNode extends Block {
 
 	protected boolean overlaps(float srcx, float srcy, Tile other, Block otherBlock, float range) {
 		return Intersector.overlaps(Tmp.cr1.set(srcx, srcy, range), Tmp.r1.setCentered(other.worldx() + otherBlock.offset, other.worldy() + otherBlock.offset,
-				otherBlock.size * tilesize, otherBlock.size * tilesize));
+				otherBlock.size * Vars.tilesize, otherBlock.size * Vars.tilesize));
 	}
 
 	protected boolean overlaps(float srcx, float srcy, Tile other, float range) {
@@ -272,22 +268,22 @@ public class StaticNode extends Block {
 
 	public boolean overlaps(@Nullable Tile src, @Nullable Tile other) {
 		if (src == null || other == null) return true;
-		return Intersector.overlaps(Tmp.cr1.set(src.worldx() + offset, src.worldy() + offset, laserRange * tilesize), Tmp.r1.setSize(size * tilesize).setCenter(other.worldx() + offset, other.worldy() + offset));
+		return Intersector.overlaps(Tmp.cr1.set(src.worldx() + offset, src.worldy() + offset, laserRange * Vars.tilesize), Tmp.r1.setSize(size * Vars.tilesize).setCenter(other.worldx() + offset, other.worldy() + offset));
 	}
 
 	protected void getPotentialLinks(Tile tile, Team team, Cons<Building> others) {
 		Boolf<Building> valid = other -> other != null && other.tile != tile && other.block == this &&
-				overlaps(tile.x * tilesize + offset, tile.y * tilesize + offset, other.tile, laserRange * tilesize) && other.team == team &&
+				overlaps(tile.x * Vars.tilesize + offset, tile.y * Vars.tilesize + offset, other.tile, laserRange * Vars.tilesize) && other.team == team &&
 				!(other instanceof StaticNodeBuild obuild && obuild.links.size >= ((StaticNode) obuild.block).maxNodes) &&
 				!Structs.contains(Edges.getEdges(size), p -> { //do not link to adjacent buildings
-					Tile t = world.tile(tile.x + p.x, tile.y + p.y);
+					Tile t = Vars.world.tile(tile.x + p.x, tile.y + p.y);
 					return t != null && t.build == other;
 				});
 
 		tempBuilds.clear();
 
 		Geometry.circle(tile.x, tile.y, laserRange + 2, (x, y) -> {
-			Building other = world.build(x, y);
+			Building other = Vars.world.build(x, y);
 			if (valid.get(other) && !tempBuilds.contains(other)) {
 				tempBuilds.add(other);
 			}
@@ -311,7 +307,7 @@ public class StaticNode extends Block {
 	@Override
 	public void drawPlanConfigTop(BuildPlan req, Eachable<BuildPlan> list) {
 		if (req.config instanceof Point2[] ps) {
-			Draw.color(Tmp.c1.set(player.team().color), Renderer.laserOpacity);
+			Draw.color(Tmp.c1.set(Vars.player.team().color), Renderer.laserOpacity);
 			for (Point2 point : ps) {
 				int px = req.x + point.x, py = req.y + point.y;
 				otherReq = null;
@@ -325,7 +321,7 @@ public class StaticNode extends Block {
 
 				if (otherReq == null || otherReq.block == null) continue;
 
-				staticLine(player == null ? Team.sharded : player.team(), req.drawx(), req.drawy(), otherReq.drawx(), otherReq.drawy(), size, otherReq.block.size, true, false);
+				staticLine(Vars.player == null ? Team.sharded : Vars.player.team(), req.drawx(), req.drawy(), otherReq.drawx(), otherReq.drawy(), size, otherReq.block.size, true, false);
 			}
 			Draw.color();
 		}
@@ -339,7 +335,7 @@ public class StaticNode extends Block {
 		if (tile == link || link == null || !(link.block instanceof StaticNode node) || tile.team != link.team || tile.block != link.block)
 			return false;
 
-		if (overlaps(tile, link, laserRange * tilesize) || overlaps(link, tile, node.laserRange * tilesize)) {
+		if (overlaps(tile, link, laserRange * Vars.tilesize) || overlaps(link, tile, node.laserRange * Vars.tilesize)) {
 			if (checkMaxNodes) {
 				StaticNodeBuild n = (StaticNodeBuild) link;
 				return n.links.size < node.maxNodes || n.links.contains(tile.pos());
@@ -360,7 +356,7 @@ public class StaticNode extends Block {
 
 		@Override
 		public void placed() {
-			if (net.client()) return;
+			if (Vars.net.client()) return;
 
 			getPotentialLinks(tile, team, other -> {
 				if (!links.contains(other.pos())) {
@@ -392,7 +388,7 @@ public class StaticNode extends Block {
 
 			if (canConsume() && Groups.unit.contains(u -> u.team != team) && timer(shockTimer, reload / efficiency)) {
 				for (int i : links.items) {
-					Building link = world.build(i);
+					Building link = Vars.world.build(i);
 
 					if (linked(link)) {
 						active = staticLine(team, x, y, link.x, link.y, size, link.block.size, false, true);
@@ -440,22 +436,22 @@ public class StaticNode extends Block {
 			Lines.stroke(1f);
 
 			Draw.color(team.color);
-			Drawf.circles(x, y, laserRange * tilesize);
+			Drawf.circles(x, y, laserRange * Vars.tilesize);
 			Draw.reset();
 		}
 
 		@Override
 		public void drawConfigure() {
-			Drawf.circles(x, y, tile.block().size * tilesize / 2f + 1f + Mathf.absin(Time.time, 4f, 1f));
-			Drawf.circles(x, y, laserRange * tilesize);
+			Drawf.circles(x, y, tile.block().size * Vars.tilesize / 2f + 1f + Mathf.absin(Time.time, 4f, 1f));
+			Drawf.circles(x, y, laserRange * Vars.tilesize);
 
 			Draw.color(team.color);
 
 			for (int i : links.items) {
-				Building link = world.build(i);
+				Building link = Vars.world.build(i);
 
 				if (link != this && linkValid(this, link, false) && linked(link)) {
-					Drawf.square(link.x, link.y, link.block.size * tilesize / 2f + 1f, Pal.place);
+					Drawf.square(link.x, link.y, link.block.size * Vars.tilesize / 2f + 1f, Pal.place);
 				}
 			}
 
@@ -471,7 +467,7 @@ public class StaticNode extends Block {
 			Draw.z(Layer.power);
 
 			for (int i : links.items) {
-				Building link = world.build(i);
+				Building link = Vars.world.build(i);
 
 				if (!linkValid(this, link) || !linked(link)) continue;
 

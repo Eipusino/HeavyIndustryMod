@@ -26,6 +26,7 @@ import heavyindustry.type.Recipe;
 import heavyindustry.ui.DelaySlideTable;
 import heavyindustry.world.Worlds;
 import heavyindustry.world.consumers.ConsumeRecipe;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.content.UnitTypes;
 import mindustry.core.UI;
@@ -55,9 +56,6 @@ import mindustry.world.meta.StatValues;
 import mindustry.world.modules.ItemModule;
 
 import static heavyindustry.HVars.MOD_NAME;
-import static mindustry.Vars.net;
-import static mindustry.Vars.state;
-import static mindustry.Vars.tilesize;
 
 public class JumpGate extends Block {
 	public Seq<UnitRecipe> recipeList = new Seq<>(UnitRecipe.class);
@@ -256,7 +254,7 @@ public class JumpGate extends Block {
 		}
 
 		public float costMultiplier() {
-			return state.rules.teams.get(team).unitCostMultiplier * spawnCount;
+			return Vars.state.rules.teams.get(team).unitCostMultiplier * spawnCount;
 		}
 
 		public boolean canSpawn() {
@@ -308,7 +306,7 @@ public class JumpGate extends Block {
 			if (unitRecipe() == null) return;
 			if (unitType() == null) return;
 
-			if (!net.client()) {
+			if (!Vars.net.client()) {
 				float rot = core() == null ? Angles.angle(x, y, command.x, command.y) : Angles.angle(core().x, core().y, x, y);
 				Spawner spawner = new Spawner();
 				Tile t = tiles.random();
@@ -431,17 +429,17 @@ public class JumpGate extends Block {
 
 			Draw.color(team.color);
 			Lines.stroke(8f * scl);
-			Lines.square(x, y, size * tilesize / 2.5f, -rot);
-			Lines.square(x, y, size * tilesize / 2f, rot);
+			Lines.square(x, y, size * Vars.tilesize / 2.5f, -rot);
+			Lines.square(x, y, size * Vars.tilesize / 2f, rot);
 			for (int i = 0; i < 4; i++) {
-				float length = tilesize * size / 2f + 8f;
+				float length = Vars.tilesize * size / 2f + 8f;
 				float rotation = i * 90;
-				float sin = Mathf.absin(totalProgress(), 16f, tilesize);
+				float sin = Mathf.absin(totalProgress(), 16f, Vars.tilesize);
 				float signSize = 0.75f + Mathf.absin(totalProgress() + 8f, 8f, 0.15f);
 
 				Tmp.v1.trns(rotation + rot, -length);
 				Draw.rect(arrowRegion, x + Tmp.v1.x, y + Tmp.v1.y, arrowRegion.width * scl, arrowRegion.height * scl, rotation + 90 + rot);
-				length = tilesize * size / 2f + 3 + sin;
+				length = Vars.tilesize * size / 2f + 3 + sin;
 				Tmp.v1.trns(rotation, -length);
 				Draw.rect(pointerRegion, x + Tmp.v1.x, y + Tmp.v1.y, pointerRegion.width * signSize * scl, pointerRegion.height * signSize * scl, rotation + 90);
 			}

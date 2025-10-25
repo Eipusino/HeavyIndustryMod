@@ -23,6 +23,7 @@ import heavyindustry.util.Constant;
 import heavyindustry.util.ObjectFloatMap2;
 import heavyindustry.util.ObjectIntMap2;
 import heavyindustry.util.Utils;
+import mindustry.Vars;
 import mindustry.ai.types.MissileAI;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
@@ -42,12 +43,6 @@ import mindustry.graphics.Layer;
 import mindustry.graphics.Trail;
 import mindustry.type.UnitType;
 import mindustry.world.meta.BlockGroup;
-
-import static mindustry.Vars.headless;
-import static mindustry.Vars.mobile;
-import static mindustry.Vars.net;
-import static mindustry.Vars.state;
-import static mindustry.Vars.world;
 
 public class PesterUnit extends Unit2 implements Pesterc {
 	public static final ObjectIntMap2<Healthc> checked = new ObjectIntMap2<>(Healthc.class);
@@ -88,9 +83,9 @@ public class PesterUnit extends Unit2 implements Pesterc {
 	@Override
 	public void setType(UnitType type) {
 		super.setType(type);
-		if (!net.active()) lastTargetPos.set(x, y);
+		if (!Vars.net.active()) lastTargetPos.set(x, y);
 
-		if (!headless && trails.length != 4) {
+		if (!Vars.headless && trails.length != 4) {
 			trails = new Trail[4];
 			for (int i = 0; i < trails.length; i++) {
 				trails[i] = new Trail(type.trailLength);
@@ -264,7 +259,7 @@ public class PesterUnit extends Unit2 implements Pesterc {
 			tmpBuilding = null;
 
 			boolean found = World.raycast(World.toTile(ex), World.toTile(ey), World.toTile(hel.getX()), World.toTile(hel.getY()),
-					(x, y) -> (tmpBuilding = world.build(x, y)) != null && tmpBuilding.team != team && checked.get(tmpBuilding, 0) < 2);
+					(x, y) -> (tmpBuilding = Vars.world.build(x, y)) != null && tmpBuilding.team != team && checked.get(tmpBuilding, 0) < 2);
 
 			Healthc t = found ? tmpBuilding : hel;
 			int c = checked.increment(t, 0, 1);
@@ -277,12 +272,12 @@ public class PesterUnit extends Unit2 implements Pesterc {
 
 		nextTargets.clear();
 
-		if (!headless && itr > 0) {
+		if (!Vars.headless && itr > 0) {
 			HSounds.hugeShoot.at(ex, ey);
 			HFx.crossSpinBlast.at(ex, ey, 0, team.color, this);
 		}
 
-		if (!headless && isBoss) {
+		if (!Vars.headless && isBoss) {
 			Rand rand = Utils.rand;
 
 			for (int i = 0; i < trails.length; i++) {
@@ -305,12 +300,12 @@ public class PesterUnit extends Unit2 implements Pesterc {
 
 	@Override
 	public void shoot(Healthc h) {
-		if (state.isGame() && h.isValid() && type instanceof PesterUnitType put) {
+		if (Vars.state.isGame() && h.isValid() && type instanceof PesterUnitType put) {
 			put.toBeBlastedEffect.at(h.getX(), h.getY(), h instanceof Sized s ? s.hitSize() : 30f, team.color, h);
 			Fx.chainLightning.at(x, y, 0, team.color, h);
 
 			Time.run(put.shootDelay, () -> {
-				if (state.isGame() && h.isValid()) {
+				if (Vars.state.isGame() && h.isValid()) {
 					put.hitterBullet.create(this, team, h.getX(), h.getY(), 0);
 					heal(500);
 				}
@@ -406,7 +401,7 @@ public class PesterUnit extends Unit2 implements Pesterc {
 			if (isBoss) {
 				Tmp.v1.trns(rotation, -type.engineOffset).add(x, y);
 
-				float cameraFin = (1 + 2 * Drawn.cameraDstScl(Tmp.v1.x, Tmp.v1.y, mobile ? 200 : 320)) / 3f;
+				float cameraFin = (1 + 2 * Drawn.cameraDstScl(Tmp.v1.x, Tmp.v1.y, Vars.mobile ? 200 : 320)) / 3f;
 				float triWidth = hitSize * 0.033f * cameraFin;
 
 				for (int i : Mathf.signs) {

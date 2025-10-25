@@ -5,11 +5,9 @@ import arc.util.Time;
 import heavyindustry.type.unit.CopterUnitType;
 import heavyindustry.type.unit.CopterUnitType.Rotor;
 import heavyindustry.type.unit.CopterUnitType.RotorMount;
+import mindustry.Vars;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
-
-import static mindustry.Vars.net;
-import static mindustry.Vars.state;
 
 public class CopterUnit extends Unit2 implements Copterc {
 	protected transient RotorMount[] rotors = {};
@@ -35,7 +33,7 @@ public class CopterUnit extends Unit2 implements Copterc {
 		team.data().updateCount(type, 1);
 
 		//check if over unit cap
-		if (type.useUnitCap && count() > cap() && !spawnedByCore && !dead && !state.rules.editor) {
+		if (type.useUnitCap && count() > cap() && !spawnedByCore && !dead && !Vars.state.rules.editor) {
 			Call.unitCapDeath(this);
 			team.data().updateCount(type, -1);
 		}
@@ -57,7 +55,7 @@ public class CopterUnit extends Unit2 implements Copterc {
 		super.update();
 		if (type instanceof CopterUnitType cType) {
 			if (dead || health < 0f) {
-				if (!net.client() || isLocal()) rotation += cType.fallRotateSpeed * Mathf.signs[id % 2] * Time.delta;
+				if (!Vars.net.client() || isLocal()) rotation += cType.fallRotateSpeed * Mathf.signs[id % 2] * Time.delta;
 
 				rotorSpeedScl = Mathf.lerpDelta(rotorSpeedScl, 0f, cType.rotorDeathSlowdown);
 			} else {

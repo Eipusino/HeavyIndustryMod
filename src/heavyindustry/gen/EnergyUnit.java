@@ -12,6 +12,7 @@ import heavyindustry.content.HFx;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.type.unit.EnergyUnitType;
 import heavyindustry.util.Constant;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Lightning;
 import mindustry.entities.Units;
@@ -22,13 +23,6 @@ import mindustry.gen.Teamc;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Trail;
 import mindustry.type.UnitType;
-
-import static mindustry.Vars.finalWorldBounds;
-import static mindustry.Vars.headless;
-import static mindustry.Vars.mobile;
-import static mindustry.Vars.net;
-import static mindustry.Vars.state;
-import static mindustry.Vars.world;
 
 public class EnergyUnit extends Unit2 implements Energyc {
 	protected transient Vec2 lastPos = new Vec2();
@@ -93,7 +87,7 @@ public class EnergyUnit extends Unit2 implements Energyc {
 		team.data().updateCount(type, 1);
 
 		//check if over unit cap
-		if (type.useUnitCap && count() > cap() && !spawnedByCore && !dead && !state.rules.editor) {
+		if (type.useUnitCap && count() > cap() && !spawnedByCore && !dead && !Vars.state.rules.editor) {
 			Call.unitCapDeath(this);
 			team.data().updateCount(type, -1);
 		}
@@ -132,10 +126,10 @@ public class EnergyUnit extends Unit2 implements Energyc {
 					damage[0] += bullet.damage();
 				});
 
-			if (teleportValid(eType) && (target != null || ((hitTime > 0 || num[0] > 4 || damage[0] > eType.reload / 2))) && (!isLocal() || mobile)) {
+			if (teleportValid(eType) && (target != null || ((hitTime > 0 || num[0] > 4 || damage[0] > eType.reload / 2))) && (!isLocal() || Vars.mobile)) {
 				float dst = target == null ? eType.teleportRange + eType.teleportMinRange : dst(target) / 2f;
 				float angle = target == null ? rotation : angleTo(target);
-				Tmp.v2.trns(angle + Mathf.range(1) * 45, dst * Mathf.random(1, 2), Mathf.range(0.2f) * dst).clamp(eType.teleportMinRange, eType.teleportRange).add(this).clamp(-finalWorldBounds, -finalWorldBounds, world.unitHeight() + finalWorldBounds, world.unitWidth() + finalWorldBounds);
+				Tmp.v2.trns(angle + Mathf.range(1) * 45, dst * Mathf.random(1, 2), Mathf.range(0.2f) * dst).clamp(eType.teleportMinRange, eType.teleportRange).add(this).clamp(-Vars.finalWorldBounds, -Vars.finalWorldBounds, Vars.world.unitHeight() + Vars.finalWorldBounds, Vars.world.unitWidth() + Vars.finalWorldBounds);
 
 				teleport(Tmp.v2.x, Tmp.v2.y);
 			}
@@ -157,7 +151,7 @@ public class EnergyUnit extends Unit2 implements Energyc {
 	public void update() {
 		super.update();
 		if (type instanceof EnergyUnitType eType) {
-			if (!headless && lastPos.dst(this) > eType.effectTriggerLen) {
+			if (!Vars.headless && lastPos.dst(this) > eType.effectTriggerLen) {
 				Sounds.plasmaboom.at(this);
 				Sounds.plasmaboom.at(lastPos);
 
@@ -176,7 +170,7 @@ public class EnergyUnit extends Unit2 implements Energyc {
 			Rand rand = HFx.rand1;
 			rand.setSeed(id);
 
-			if (!headless) {
+			if (!Vars.headless) {
 				for (int i = 0; i < trails.length; i++) {
 					Trail trail = trails[i];
 
@@ -197,7 +191,7 @@ public class EnergyUnit extends Unit2 implements Energyc {
 			if (Mathf.chanceDelta(0.15) && healthf() < 0.6f)
 				Drawn.randFadeLightningEffect(x, y, Mathf.range(hitSize, hitSize * 4), Mathf.range(hitSize / 4, hitSize / 2), team.color, Mathf.chance(0.5));
 
-			if (!net.client() || isLocal()) updateTeleport();
+			if (!Vars.net.client() || isLocal()) updateTeleport();
 		}
 	}
 

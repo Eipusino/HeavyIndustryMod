@@ -8,6 +8,7 @@ import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.Eachable;
 import arc.util.Time;
+import mindustry.Vars;
 import mindustry.ctype.UnlockableContent;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -19,9 +20,6 @@ import mindustry.graphics.Pal;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 import mindustry.world.draw.DrawDefault;
-
-import static mindustry.Vars.net;
-import static mindustry.Vars.player;
 
 public class CaptureBlock extends Block {
 	public float captureTime = 60f * 60f, captureRadius = 20f * 8f, warmupSpeed = 0.019f, idleProgressDecrease = 0.5f;
@@ -87,9 +85,9 @@ public class CaptureBlock extends Block {
 		}
 
 		public boolean playerCheck() {
-			if (!net.active()) {
+			if (!Vars.net.active()) {
 				capturingFrac = 1;
-				return player.unit().isEnemy() && player.unit().within(this, captureRadius);
+				return Vars.player.unit().isEnemy() && Vars.player.unit().within(this, captureRadius);
 			}
 
 			players.clear();

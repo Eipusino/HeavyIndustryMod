@@ -4,6 +4,7 @@ import arc.Core;
 import arc.graphics.Color;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
+import mindustry.Vars;
 import mindustry.content.Liquids;
 import mindustry.entities.bullet.BulletType;
 import mindustry.game.Team;
@@ -11,8 +12,6 @@ import mindustry.gen.WeatherState;
 import mindustry.type.Liquid;
 
 import java.util.Arrays;
-
-import static mindustry.Vars.net;
 
 public class HailStormWeather extends SpawnerWeather {
 	public float yspeed = 5f, xspeed = 1.5f, density = 900f, stroke = 0.75f, sizeMin = 8f, sizeMax = 40f, splashTimeScale = 22f;
@@ -43,7 +42,7 @@ public class HailStormWeather extends SpawnerWeather {
 	public void spawnAt(WeatherState state, float x, float y) {
 		BulletType b = getBullet();
 
-		if (!net.client()) {
+		if (!Vars.net.client()) {
 			b.createNet(bulletTeam, x, y, useWindVector ? state.windVector.angle() : 0, b.damage, 1f, 1f);
 		}
 	}

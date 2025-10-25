@@ -41,10 +41,12 @@ public class CenterBar extends Bar {
 
 	public CenterBar() {}
 
+	@Override
 	public void reset(float v) {
 		value = lastValue = blink = v;
 	}
 
+	@Override
 	public void set(Prov<String> get, Floatp frac, Color color) {
 		fraction = frac;
 		lastValue = frac.get();
@@ -53,20 +55,24 @@ public class CenterBar extends Bar {
 		update(() -> name = get.get());
 	}
 
+	@Override
 	public void snap() {
 		lastValue = value = fraction.get();
 	}
 
+	@Override
 	public Bar outline(Color color, float stroke) {
 		outlineColor.set(color);
 		outlineRadius = Scl.scl(stroke);
 		return this;
 	}
 
+	@Override
 	public void flash() {
 		blink = 1f;
 	}
 
+	@Override
 	public Bar blink(Color color) {
 		blinkColor.set(color);
 		return this;
@@ -77,7 +83,6 @@ public class CenterBar extends Bar {
 		if (fraction == null) return;
 
 		float computed = Mathf.clamp(fraction.get(), -1f, 1f);
-
 
 		if (lastValue > computed) {
 			blink = 1f;

@@ -834,7 +834,7 @@ public final class HEntity {
 
 		toRemove.each(e -> annihilate(e, false));
 
-		//Log.info("addition handled:" + toRemove.toString());
+		//Log.info("addition handled:" + toRemove);
 		toRemove.clear();
 	}
 

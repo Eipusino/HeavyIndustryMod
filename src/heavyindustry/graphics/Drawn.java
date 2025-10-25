@@ -42,10 +42,6 @@ import mindustry.graphics.Shaders;
 import mindustry.ui.Fonts;
 
 import static heavyindustry.HVars.MOD_NAME;
-import static mindustry.Vars.headless;
-import static mindustry.Vars.net;
-import static mindustry.Vars.renderer;
-import static mindustry.Vars.tilesize;
 
 public final class Drawn {
 	public static final int[] oneArr = {1};
@@ -138,24 +134,24 @@ public final class Drawn {
 
 	public static void link(Building from, Building to, Color color) {
 		float sin = Mathf.absin(Time.time * sinScl, 6f, 1f);
-		float r1 = from.block.size / 2f * tilesize + sin;
+		float r1 = from.block.size / 2f * Vars.tilesize + sin;
 		float x1 = from.x, x2 = to.x, y1 = from.y, y2 = to.y;
-		float r2 = to.block.size / 2f * tilesize + sin;
+		float r2 = to.block.size / 2f * Vars.tilesize + sin;
 
 		Draw.color(color);
 
-		Lines.square(x2, y2, to.block.size * tilesize / 2f + 1f);
+		Lines.square(x2, y2, to.block.size * Vars.tilesize / 2f + 1f);
 
 		Tmp.v1.trns(from.angleTo(to), r1);
 		Tmp.v2.trns(to.angleTo(from), r2);
-		int signs = (int) (from.dst(to) / tilesize);
+		int signs = (int) (from.dst(to) / Vars.tilesize);
 
 		Lines.stroke(4, Pal.gray);
 		Lines.dashLine(x1 + Tmp.v1.x, y1 + Tmp.v1.y, x2 + Tmp.v2.x, y2 + Tmp.v2.y, signs);
 		Lines.stroke(2, color);
 		Lines.dashLine(x1 + Tmp.v1.x, y1 + Tmp.v1.y, x2 + Tmp.v2.x, y2 + Tmp.v2.y, signs);
 
-		Drawf.arrow(x1, y1, x2, y2, from.block.size * tilesize / 2f + sin, 4 + sin, color);
+		Drawf.arrow(x1, y1, x2, y2, from.block.size * Vars.tilesize / 2f + sin, 4 + sin, color);
 
 		Drawf.circles(x2, y2, r2, color);
 	}
@@ -331,7 +327,7 @@ public final class Drawn {
 	}
 
 	public static void teleportUnitNet(Unit before, float x, float y, float angle, Player player) {
-		if (net.active() || headless) {
+		if (Vars.net.active() || Vars.headless) {
 			if (player != null) {
 				player.set(x, y);
 				player.snapInterpolation();
@@ -350,7 +346,7 @@ public final class Drawn {
 	}
 
 	public static void construct(Building t, TextureRegion region, Color color1, Color color2, float rotation, float progress, float alpha, float time) {
-		construct(t, region, color1, color2, rotation, progress, alpha, time, t.block.size * tilesize - 4f);
+		construct(t, region, color1, color2, rotation, progress, alpha, time, t.block.size * Vars.tilesize - 4f);
 	}
 
 	public static void construct(Building t, TextureRegion region, Color color1, Color color2, float rotation, float progress, float alpha, float time, float size) {
@@ -761,7 +757,7 @@ public final class Drawn {
 
 	public static void light(float x, float y, TextureRegion region, float rotation, Color color, float opacity, boolean flip) {
 		float res = color.toFloatBits();
-		renderer.lights.add(() -> {
+		Vars.renderer.lights.add(() -> {
 			Draw.color(res);
 			Draw.alpha(opacity);
 			Draw.rect(region, x, y, region.width / 4f * Mathf.sign(flip), region.height / 4f, rotation);
@@ -972,7 +968,7 @@ public final class Drawn {
 	public static void spinSprite(TextureRegion[] regions, float x, float y, float w, float h, float r, float alpha) {
 		float xScl = Draw.xscl, yScl = Draw.yscl;
 		if (alpha < 0.99f) {
-			FrameBuffer buffer = renderer.effectBuffer;
+			FrameBuffer buffer = Vars.renderer.effectBuffer;
 			float z = Draw.z();
 			Draw.draw(z, () -> {
 				buffer.begin(Color.clear);
@@ -1024,7 +1020,7 @@ public final class Drawn {
 	 * @author sunny, customization by MEEP
 	 */
 	public static void flash(Color fromColor, Color toColor, float seconds, Interp fade) {
-		if (!headless) {
+		if (!Vars.headless) {
 			Image flash = new Image();
 			flash.touchable = Touchable.disabled;
 			flash.setColor(fromColor);
@@ -1148,7 +1144,7 @@ public final class Drawn {
 	}
 
 	public static void tractorCone(float cx, float cy, float time, float spacing, float thickness, Runnable draw) {
-		FrameBuffer buffer = renderer.effectBuffer;
+		FrameBuffer buffer = Vars.renderer.effectBuffer;
 		float z = Draw.z();
 		Draw.draw(z, () -> {
 			buffer.begin(Color.clear);

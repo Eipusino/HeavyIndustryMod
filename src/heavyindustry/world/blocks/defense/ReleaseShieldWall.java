@@ -11,6 +11,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.content.HFx;
 import heavyindustry.net.HCall;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.bullet.BulletType;
@@ -20,8 +21,6 @@ import mindustry.ui.Bar;
 import mindustry.world.Tile;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.meta.Stat;
-
-import static mindustry.Vars.net;
 
 public class ReleaseShieldWall extends Wall {
 	public float chargeChance = 0.8f;
@@ -72,7 +71,7 @@ public class ReleaseShieldWall extends Wall {
 		public float rePacketTimer = 0;
 
 		public float getCharge() {
-			return (net.client() ? clientDamage : totalDamage) / maxHandle;
+			return (Vars.net.client() ? clientDamage : totalDamage) / maxHandle;
 		}
 
 		@Override
@@ -103,7 +102,7 @@ public class ReleaseShieldWall extends Wall {
 		public void damage(float damage) {
 			super.damage(damage);
 			if (acceptDamage) {
-				if (!net.client()) {
+				if (!Vars.net.client()) {
 					if (Mathf.chance(chargeChance)) totalDamage += damage;
 				} else {
 					if (Mathf.chance(chargeChance)) clientDamage += damage;
@@ -112,7 +111,7 @@ public class ReleaseShieldWall extends Wall {
 		}
 
 		public void setDamage(float v) {
-			if (net.client()) {
+			if (Vars.net.client()) {
 				totalDamage = v;
 			}
 		}

@@ -18,6 +18,7 @@ import arc.util.io.Writes;
 import heavyindustry.content.HUnitTypes;
 import heavyindustry.graphics.Drawe;
 import heavyindustry.util.CollectionObjectMap;
+import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
 import mindustry.entities.Units;
@@ -42,12 +43,6 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.ItemSelection;
 import mindustry.world.blocks.UnitTetherBlock;
 import mindustry.world.meta.BlockFlag;
-
-import static mindustry.Vars.content;
-import static mindustry.Vars.indexer;
-import static mindustry.Vars.net;
-import static mindustry.Vars.player;
-import static mindustry.Vars.world;
 
 public class UnitMinerDepot extends Block {
 	public UnitType minerUnit = HUnitTypes.legsMiner;
@@ -103,7 +98,7 @@ public class UnitMinerDepot extends Block {
 	public void drawPlace(int x, int y, int rotation, boolean valid) {
 		super.drawPlace(x, y, rotation, valid);
 
-		if (!Units.canCreate(player.team(), minerUnit)) {
+		if (!Units.canCreate(Vars.player.team(), minerUnit)) {
 			drawPlaceText(Core.bundle.get("bar.cargounitcap"), x, y, valid);
 		}
 	}
@@ -136,7 +131,7 @@ public class UnitMinerDepot extends Block {
 
 			if (readUnitId != -1) {
 				unit = Groups.unit.getByID(readUnitId);
-				if (unit != null || !net.client()) {
+				if (unit != null || !Vars.net.client()) {
 					readUnitId = -1;
 				}
 			}
@@ -147,7 +142,7 @@ public class UnitMinerDepot extends Block {
 			strokeScl = Mathf.approachDelta(strokeScl, scl, polyStrokeSclSpeed);
 
 			if (!targetSet && targetItem != null && commandPos != null) {
-				Tile t = world.tileWorld(commandPos.x, commandPos.y);
+				Tile t = Vars.world.tileWorld(commandPos.x, commandPos.y);
 				if (t != null && oreDrop(t) == targetItem) {
 					oreTiles.put(targetItem, t);
 					targetSet = true;
@@ -171,7 +166,7 @@ public class UnitMinerDepot extends Block {
 				totalProgress += edelta();
 
 				if (buildProgress >= 1f) {
-					if (!net.client()) {
+					if (!Vars.net.client()) {
 						unit = minerUnit.create(team);
 						if (unit instanceof BuildingTetherc bt) {
 							bt.building(this);
@@ -192,8 +187,8 @@ public class UnitMinerDepot extends Block {
 		}
 
 		public Tile oreTile(float xp, float yp, Item item) {
-			Tile floor = indexer.findClosestOre(xp, yp, item);
-			Tile wall = indexer.findClosestWallOre(xp, yp, item);
+			Tile floor = Vars.indexer.findClosestOre(xp, yp, item);
+			Tile wall = Vars.indexer.findClosestWallOre(xp, yp, item);
 
 			if (floor != null && wall != null) {
 				return floor.dst2(xp, yp) < wall.dst2(xp, yp) ? floor : wall;
@@ -228,7 +223,7 @@ public class UnitMinerDepot extends Block {
 		public void spawned(int id) {
 			Fx.spawn.at(x, y);
 			buildProgress = 0f;
-			if (net.client()) {
+			if (Vars.net.client()) {
 				readUnitId = id;
 			}
 		}
@@ -284,7 +279,7 @@ public class UnitMinerDepot extends Block {
 
 		@Override
 		public void buildConfiguration(Table table) {
-			Seq<Item> targets = minerUnit.mineItems.select(item -> indexer.hasOre(item) || indexer.hasWallOre(item));
+			Seq<Item> targets = minerUnit.mineItems.select(item -> Vars.indexer.hasOre(item) || Vars.indexer.hasWallOre(item));
 			ItemSelection.buildTable(block, table, targets, () -> targetItem, this::configure);
 		}
 
@@ -318,9 +313,9 @@ public class UnitMinerDepot extends Block {
 
 			int size = read.i();
 			for (int i = 0; i < size; i++) {
-				Item item = content.item(read.s());
+				Item item = Vars.content.item(read.s());
 				int pos = read.i();
-				Tile ore = pos != -1 ? world.tile(pos) : null;
+				Tile ore = pos != -1 ? Vars.world.tile(pos) : null;
 				if (item != null && ore != null) {
 					oreTiles.put(item, ore);
 				}

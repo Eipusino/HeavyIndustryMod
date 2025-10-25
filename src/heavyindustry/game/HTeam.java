@@ -12,7 +12,7 @@ public final class HTeam {
 		none = Team.get(255);
 	}
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HTeam() {}
 
 	public static void load() {

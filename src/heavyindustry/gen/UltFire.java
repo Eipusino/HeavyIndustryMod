@@ -12,6 +12,7 @@ import heavyindustry.content.HBullets;
 import heavyindustry.content.HStatusEffects;
 import heavyindustry.util.Constant;
 import heavyindustry.util.SpriteUtils;
+import mindustry.Vars;
 import mindustry.core.World;
 import mindustry.entities.Damage;
 import mindustry.entities.Effect;
@@ -30,13 +31,6 @@ import mindustry.world.Tile;
 import mindustry.world.meta.Attribute;
 
 import static heavyindustry.HVars.MOD_NAME;
-import static mindustry.Vars.control;
-import static mindustry.Vars.headless;
-import static mindustry.Vars.indexer;
-import static mindustry.Vars.net;
-import static mindustry.Vars.netClient;
-import static mindustry.Vars.state;
-import static mindustry.Vars.world;
 
 public class UltFire extends Fire {
 	public static final float baseLifetime = 1200f;
@@ -52,7 +46,7 @@ public class UltFire extends Fire {
 	}
 
 	public static void create(float x, float y, Team team) {
-		Tile tile = world.tile(World.toTile(x), World.toTile(y));
+		Tile tile = Vars.world.tile(World.toTile(x), World.toTile(y));
 
 		if (tile != null && tile.build != null && tile.build.team != team) create(tile);
 	}
@@ -62,23 +56,23 @@ public class UltFire extends Fire {
 	}
 
 	public static void createChance(float x, float y, float range, float chance, Team team) {
-		indexer.eachBlock(null, x, y, range, other -> other.team != team && Mathf.chanceDelta(chance), other -> UltFire.create(other.tile));
+		Vars.indexer.eachBlock(null, x, y, range, other -> other.team != team && Mathf.chanceDelta(chance), other -> UltFire.create(other.tile));
 	}
 
 	public static void createChance(Teamc teamc, float range, float chance) {
-		indexer.eachBlock(null, teamc.x(), teamc.y(), range, other -> other.team != teamc.team() && Mathf.chanceDelta(chance), other -> UltFire.create(other.tile));
+		Vars.indexer.eachBlock(null, teamc.x(), teamc.y(), range, other -> other.team != teamc.team() && Mathf.chanceDelta(chance), other -> UltFire.create(other.tile));
 	}
 
 	public static void create(float x, float y, float range, Team team) {
-		indexer.eachBlock(null, x, y, range, other -> other.team != team, other -> UltFire.create(other.tile));
+		Vars.indexer.eachBlock(null, x, y, range, other -> other.team != team, other -> UltFire.create(other.tile));
 	}
 
 	public static void create(float x, float y, float range) {
-		indexer.eachBlock(null, x, y, range, Constant.BOOLF_BUILDING_TRUE, other -> UltFire.create(other.tile));
+		Vars.indexer.eachBlock(null, x, y, range, Constant.BOOLF_BUILDING_TRUE, other -> UltFire.create(other.tile));
 	}
 
 	public static void create(Teamc teamc, float range) {
-		indexer.eachBlock(null, teamc.x(), teamc.y(), range, other -> other.team != teamc.team(), other -> UltFire.create(other.tile));
+		Vars.indexer.eachBlock(null, teamc.x(), teamc.y(), range, other -> other.team != teamc.team(), other -> UltFire.create(other.tile));
 	}
 
 	public static void create(Position position) {
@@ -86,11 +80,11 @@ public class UltFire extends Fire {
 	}
 
 	public static void create(int x, int y) {
-		create(world.tile(x, y));
+		create(Vars.world.tile(x, y));
 	}
 
 	public static void create(Tile tile) {
-		if (net.client() || tile == null || !state.rules.fire) return; //not clientside.
+		if (Vars.net.client() || tile == null || !Vars.state.rules.fire) return; //not clientside.
 
 		Fire fire = Fires.get(tile.x, tile.y);
 
@@ -126,13 +120,13 @@ public class UltFire extends Fire {
 		animation += Time.delta / 2.25f;
 		warmup += Time.delta;
 		animation %= 40f;
-		if (!headless) {
-			control.sound.loop(Sounds.fire, this, 0.07F);
+		if (!Vars.headless) {
+			Vars.control.sound.loop(Sounds.fire, this, 0.07F);
 		}
 
-		float speedMultiplier = 1f + Math.max(state.envAttrs.get(Attribute.water) * 10f, 0f);
+		float speedMultiplier = 1f + Math.max(Vars.state.envAttrs.get(Attribute.water) * 10f, 0f);
 		time = Mathf.clamp(time + Time.delta * speedMultiplier, 0f, lifetime);
-		if (!net.client()) {
+		if (!Vars.net.client()) {
 			if (!(time >= lifetime) && tile != null && !Float.isNaN(lifetime)) {
 				Building entity = tile.build;
 				boolean damage = entity != null;
@@ -149,7 +143,7 @@ public class UltFire extends Fire {
 				if (flammability > 1f && (spreadTimer += Time.delta * Mathf.clamp(flammability / 5f, 0.5f, 1f)) >= 22f) {
 					spreadTimer = 0f;
 					Point2 p = Geometry.d4[Mathf.random(3)];
-					Tile other = world.tile(tile.x + p.x, tile.y + p.y);
+					Tile other = Vars.world.tile(tile.x + p.x, tile.y + p.y);
 					UltFire.create(other);
 				}
 
@@ -176,7 +170,7 @@ public class UltFire extends Fire {
 			}
 		}
 
-		if (net.client() && !isLocal() || isRemote()) {
+		if (Vars.net.client() && !isLocal() || isRemote()) {
 			interpolate();
 		}
 
@@ -201,8 +195,8 @@ public class UltFire extends Fire {
 			Groups.fire.remove(this);
 			removeEffect();
 
-			if (net.client()) {
-				netClient.addRemovedEntity(id());
+			if (Vars.net.client()) {
+				Vars.netClient.addRemovedEntity(id());
 			}
 
 			added = false;
