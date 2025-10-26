@@ -339,9 +339,9 @@ import heavyindustry.world.draw.RunningLight;
 
 import static mindustry.mod.ClassMap.classes;
 
-/** Generated class. Maps simple class names to concrete classes. For use in JSON attached mods. */
+/// Generated class. Maps simple class names to concrete classes. For use in JSON attached mods.
 final class HClassMap {
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HClassMap() {}
 
 	static void load() {

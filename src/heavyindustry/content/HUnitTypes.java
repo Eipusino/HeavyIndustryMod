@@ -12,6 +12,7 @@ import arc.math.Mathf;
 import arc.math.Rand;
 import arc.math.geom.Rect;
 import arc.math.geom.Vec2;
+import arc.scene.ui.layout.Collapser;
 import arc.scene.ui.layout.Table;
 import arc.util.Interval;
 import arc.util.Time;
@@ -76,6 +77,7 @@ import heavyindustry.type.weapons.HealConeWeapon;
 import heavyindustry.type.weapons.LimitedAngleWeapon;
 import heavyindustry.type.weapons.PointDefenceMultiBarrelWeapon;
 import heavyindustry.ui.Elements;
+import heavyindustry.world.meta.HStatValues;
 import mindustry.Vars;
 import mindustry.ai.UnitCommand;
 import mindustry.ai.types.FlyingAI;
@@ -122,6 +124,7 @@ import mindustry.gen.Bullet;
 import mindustry.gen.Call;
 import mindustry.gen.Healthc;
 import mindustry.gen.Hitboxc;
+import mindustry.gen.Icon;
 import mindustry.gen.Shieldc;
 import mindustry.gen.Sounds;
 import mindustry.gen.Teamc;
@@ -136,6 +139,7 @@ import mindustry.type.ammo.ItemAmmoType;
 import mindustry.type.ammo.PowerAmmoType;
 import mindustry.type.weapons.PointDefenseWeapon;
 import mindustry.type.weapons.RepairBeamWeapon;
+import mindustry.ui.Styles;
 import mindustry.world.meta.BlockFlag;
 import mindustry.world.meta.Env;
 
@@ -3702,14 +3706,16 @@ public final class HUnitTypes {
 					}
 				}
 
-				/*@Override
+				@Override
 				public void addStats(UnitType u, Table t) {
 					super.addStats(u, t);
 
 					t.row();
 
 					Table ic = new Table();
-					HStatValues.ammo(ic, subBull);
+
+					HStatValues.ammo3(ic, subBull);
+
 					Collapser coll = new Collapser(ic, true);
 					coll.setDuration(0.1f);
 
@@ -3721,7 +3727,7 @@ public final class HUnitTypes {
 					});
 					t.row();
 					t.add(coll).padLeft(16);
-				}*/
+				}
 
 				@Override
 				protected void shoot(Unit unit, DataWeaponMount mount, float shootX, float shootY, float rotation) {
@@ -3792,13 +3798,11 @@ public final class HUnitTypes {
 
 	public static class Shooter {
 		public final Trail trail = new Trail(45);
-		public final float[] param;
+		public final float[] param = new float[9];
 
 		public float x, y;
 
 		public Shooter() {
-			param = new float[9];
-
 			for (int d = 0; d < 3; d++) {
 				param[d * 3] = Mathf.random(0.5f, 3f) / (d + 1) * Mathf.randomSign();
 				param[d * 3 + 1] = Mathf.random(0f, 360f);

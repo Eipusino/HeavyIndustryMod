@@ -14,7 +14,7 @@ import java.util.Arrays;
  * @author Nathan Sweet
  * @author Eipusino
  */
-public class CharSeq implements CharSequence {
+public class CharSeq implements CharSequence, Appendable {
 	public char[] items;
 	public int size;
 	public boolean ordered;
@@ -135,6 +135,10 @@ public class CharSeq implements CharSequence {
 		if (sizeNeeded > items.length) items = resize(Math.max(8, (int) (sizeNeeded * 1.75f)));
 		System.arraycopy(array, offset, items, size, length);
 		size += length;
+	}
+
+	public void addAll(String str) {
+		addAll(str.toCharArray());
 	}
 
 	public char get(int index) {
@@ -302,6 +306,38 @@ public class CharSeq implements CharSequence {
 	@Override
 	public boolean isEmpty() {
 		return size == 0;
+	}
+
+	@Override
+	public CharSeq append(char c) {
+		add(c);
+		return this;
+	}
+
+	@Override
+	public CharSeq append(CharSequence csq) {
+		if (csq == null) {
+			addAll("null");
+		} else {
+			for (int i = 0; i < csq.length(); i++) {
+				add(csq.charAt(i));
+			}
+		}
+
+		return this;
+	}
+
+	@Override
+	public CharSeq append(CharSequence csq, int start, int end) {
+		if (csq == null) {
+			addAll("null");
+		} else {
+			for (int i = start; i < end; i++) {
+				add(csq.charAt(i));
+			}
+		}
+
+		return this;
 	}
 
 	public void clear() {

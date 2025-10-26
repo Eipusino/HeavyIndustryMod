@@ -1,5 +1,6 @@
 package heavyindustry.util;
 
+import arc.func.Boolf;
 import arc.func.Cons;
 import arc.func.Prov;
 import arc.util.Log;
@@ -14,7 +15,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
-import java.util.Map;
 
 import static heavyindustry.util.ArrayUtils.arrayOf;
 import static heavyindustry.util.ObjectUtils.requireNonNull;
@@ -26,7 +26,7 @@ import static heavyindustry.util.ObjectUtils.requireNonNull;
  * @since 1.0.6
  */
 public final class ReflectUtils {
-	public static final Map<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
+	private static final CollectionObjectMap<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
 
 	/// Don't let anyone instantiate this class.
 	private ReflectUtils() {}
@@ -71,6 +71,32 @@ public final class ReflectUtils {
 				type == double.class || type == Double.class) return "0.0";
 		// reference or void
 		return "null";
+	}
+
+	public static Object as(Class<?> type) {
+		if (type == boolean.class || type == Boolean.class) return false;
+		else if (type == byte.class || type == Byte.class) return (byte) 0;
+		else if (type == short.class || type == Short.class) return (short) 0;
+		else if (type == int.class || type == Integer.class) return 0;
+		else if (type == long.class || type == Long.class) return 0l;
+		else if (type == char.class || type == Character.class) return '\u0000';
+		else if (type == float.class || type == Float.class) return 0f;
+		else if (type == double.class || type == Double.class) return 0d;
+		else return null;
+	}
+
+	public static Object getObject(Class<?> type, Object object, String name) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return field.get(object);
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static Object getObject(Class<?> type, String name) {
+		return getObject(type, null, name);
 	}
 
 	public static boolean getBool(Class<?> type, Object object, String name) {
@@ -693,24 +719,42 @@ public final class ReflectUtils {
 	}
 
 	@Nullable
-	public static Field findClassField(Class<?> type, final String name) {
-		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
+	public static Field findClassField(Class<?> type, String name) {
+		while (type != null) {
 			Field[] fields = type.getDeclaredFields();
 			for (Field field : fields) {
 				if (field.getName().equals(name)) return field;
 			}
+
+			type = type.getSuperclass();
 		}
 
 		return null;
 	}
 
 	@Nullable
-	public static Method findClassMethod(Class<?> type, final String name, Class<?>... args) {
-		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
+	public static Field findClassField(Class<?> type, Boolf<Field> name) {
+		while (type != null) {
+			Field[] fields = type.getDeclaredFields();
+			for (Field field : fields) {
+				if (name.get(field)) return field;
+			}
+
+			type = type.getSuperclass();
+		}
+
+		return null;
+	}
+
+	@Nullable
+	public static Method findClassMethod(Class<?> type, String name, Class<?>... args) {
+		while (type != null) {
 			Method[] methods = type.getDeclaredMethods();
 			for (Method method : methods) {
 				if (method.getName().equals(name) && Arrays.equals(method.getParameterTypes(), args)) return method;
 			}
+
+			type = type.getSuperclass();
 		}
 
 		return null;
@@ -796,6 +840,12 @@ public final class ReflectUtils {
 
 		for (String name : filler) {
 			targetFieldMap.remove(name);
+		}
+
+		// These fields cannot be copied
+		if (OS.isAndroid) {
+			targetFieldMap.remove("shadow$_klass_");
+			targetFieldMap.remove("shadow$_monitor_");
 		}
 
 		Class<?> sourceClass = source.getClass();

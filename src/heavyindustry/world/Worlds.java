@@ -24,7 +24,7 @@ public final class Worlds {
 
 	public static TeamPayloadData teamPayloadData = new TeamPayloadData();
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private Worlds() {}
 
 	public static void load() {

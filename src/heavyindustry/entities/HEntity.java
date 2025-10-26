@@ -28,6 +28,7 @@ import arc.util.pooling.Pools;
 import heavyindustry.content.HFx;
 import heavyindustry.gen.Spawner;
 import heavyindustry.util.CollectionList;
+import heavyindustry.util.CollectionObjectMap;
 import heavyindustry.util.ReflectUtils;
 import mindustry.Vars;
 import mindustry.audio.SoundLoop;
@@ -85,7 +86,8 @@ public final class HEntity {
 			t -> !t.floor().isDeep() && !t.cblock().solid && !t.floor().solid && !t.overlay().solid && !t.block().solidifes
 	);
 
-	public static Unit eipusino;
+	static CollectionObjectMap<Class<? extends Entityc>, Field> addedFieldMap = new CollectionObjectMap<>(Class.class, Field.class);
+	static CollectionObjectMap<Class<? extends Building>, Field> soundFieldMap = new CollectionObjectMap<>(Class.class, Field.class);
 
 	private HEntity() {}
 
@@ -656,7 +658,6 @@ public final class HEntity {
 
 	public static void reset() {
 		tileParma = null;
-		eipusino =  null;
 
 		toRemove.clear();
 
@@ -839,7 +840,8 @@ public final class HEntity {
 	}
 
 	public static void setAdded(Entityc entity, boolean value) {
-		Field field = ReflectUtils.findClassField(entity.getClass(), "added");
+		Field field = addedFieldMap.get(entity.getClass(), () -> ReflectUtils.findClassField(entity.getClass(), "added"));
+
 		if (field != null) {
 			try {
 				field.setAccessible(true);
@@ -851,7 +853,8 @@ public final class HEntity {
 	}
 
 	public static void findSound(Building build, Cons<SoundLoop> cons) {
-		Field field = ReflectUtils.findClassField(build.getClass(), "sound");
+		Field field = soundFieldMap.get(build.getClass(), () -> ReflectUtils.findClassField(build.getClass(), f -> f.getType() == SoundLoop.class));
+
 		if (field != null) {
 			try {
 				field.setAccessible(true);

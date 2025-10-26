@@ -9,6 +9,7 @@ Events.on(ClientLoadEvent, cons(ignored => {
 
 	if (mod != null && loadFailed) {
 		Log.err("Load Mod <Heavy Industry> Failed::Mod ClassLoader Missing");
+
 		let dialog = new BaseDialog("Missing ClassLoader");
 		dialog.addCloseButton();
 		dialog.cont.pane(cons(table => {

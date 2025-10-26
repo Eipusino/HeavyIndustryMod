@@ -144,13 +144,12 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 	/** Returns the hash code value for this list. */
 	@Override
 	public int hashCode() {
-		int h = 1;
+		int hashCode = 1;
 		for (int i = 0; i < size; i++) {
-			h *= 31;
 			E item = items[i];
-			if (item != null) h += item.hashCode();
+			hashCode = 31 * hashCode + (item == null ? 0 : item.hashCode());
 		}
-		return h;
+		return hashCode;
 	}
 
 	/**
@@ -376,13 +375,12 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 
 		@Override
 		public int hashCode() {
-			int h = 1;
+			int hashCode = 1;
 			for (int i = offset; i < size; i++) {
-				h *= 31;
 				T item = parent.items[i];
-				if (item != null) h += item.hashCode();
+				hashCode = 31 * hashCode + (item == null ? 0 : item.hashCode());
 			}
-			return h;
+			return hashCode;
 		}
 
 		@Override

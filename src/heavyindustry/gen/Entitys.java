@@ -24,7 +24,7 @@ public final class Entitys {
 
 	private static boolean registered = false;
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private Entitys() {}
 
 	public static Prov<? extends Entityc> get(Class<? extends Entityc> type) {

@@ -1166,12 +1166,9 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	 * Returns the items as an array. Note the array is typed, so the {@link #CollectionList(Class)} constructor must have been used.
 	 * Otherwise use {@link #toArray()} to specify the array type.
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public E[] toArray() {
-		E[] result = (E[]) Array.newInstance(componentType, size);
-		System.arraycopy(items, 0, result, 0, size);
-		return result;
+		return Arrays.copyOfRange(items, 0, size);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1189,13 +1186,13 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	@Override
 	public int hashCode() {
 		if (!ordered) return super.hashCode();
-		int h = 1;
-		for (int i = 0, n = size; i < n; i++) {
-			h *= 31;
-			Object item = items[i];
-			if (item != null) h += item.hashCode();
+
+		int hashCode = 1;
+		for (int i = 0; i < size; i++) {
+			E item = items[i];
+			hashCode = 31 * hashCode + (item == null ? 0 : item.hashCode());
 		}
-		return h;
+		return hashCode;
 	}
 
 	@Override
