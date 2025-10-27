@@ -76,7 +76,8 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 
 	@Override
 	public boolean offer(E e) {
-		return false;
+		addLast(e);
+		return true;
 	}
 
 	@Override

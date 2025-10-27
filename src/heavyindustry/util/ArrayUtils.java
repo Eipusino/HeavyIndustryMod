@@ -10,7 +10,6 @@ import arc.func.Func2;
 import arc.func.IntIntf;
 import arc.func.Intf;
 import arc.util.Eachable;
-import arc.util.Reflect;
 import heavyindustry.func.BoolBoolf;
 import heavyindustry.func.ByteBytef;
 import heavyindustry.util.holder.ObjectHolder;
@@ -714,8 +713,9 @@ public final class ArrayUtils {
 		return reduceFloat(array, 0f, (item, accum) -> accum + extract.get(item)) / array.length;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T> T[] resize(T[] array, int newSize, T fill) {
-		return resize(array, size -> Reflect.newArray(array, newSize), newSize, fill);
+		return resize(array, size -> (T[]) Array.newInstance(array.getClass().componentType(), newSize), newSize, fill);
 	}
 
 	public static <T> T[] resize(T[] array, ArrayCreator<T> create, int newSize, T fill) {

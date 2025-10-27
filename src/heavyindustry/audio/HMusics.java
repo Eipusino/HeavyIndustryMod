@@ -39,9 +39,7 @@ public final class HMusics {
 	public static Music load(String name) throws Exception {
 		Fi file = HVars.internalTree.resolve("musics/" + name);
 
-		if (file.exists()) {
-			return new Music(file);
-		}
+		if (file.exists()) return new Music(file);
 
 		Log.warn("The path @ does not exist!", file.name());
 

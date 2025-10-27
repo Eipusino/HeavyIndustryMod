@@ -286,15 +286,21 @@ public final class ObjectUtils {
 		}
 	}
 
-	/** Used to optimize code conciseness in specific situations. */
+	/**
+	 * Used to optimize code conciseness in specific situations.
+	 * <p>You must ensure that {@code obj} can be safely converted to {@link T}.
+	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T cast(Object obj) {
+	public static <T> T as(Object obj) {
 		return (T) obj;
 	}
 
-	/** Used to optimize code conciseness in specific situations. */
+	/**
+	 * Used to optimize code conciseness in specific situations.
+	 * <p>If {@code obj} cannot be converted to {@link T}, return {@code def}.
+	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T cast(Object obj, Class<T> type, T def) {
+	public static <T> T as(Object obj, Class<T> type, T def) {
 		if (obj != null && !type.isInstance(obj))
 			return def;
 		return (T) obj;

@@ -86,8 +86,8 @@ public final class HEntity {
 			t -> !t.floor().isDeep() && !t.cblock().solid && !t.floor().solid && !t.overlay().solid && !t.block().solidifes
 	);
 
-	static CollectionObjectMap<Class<? extends Entityc>, Field> addedFieldMap = new CollectionObjectMap<>(Class.class, Field.class);
-	static CollectionObjectMap<Class<? extends Building>, Field> soundFieldMap = new CollectionObjectMap<>(Class.class, Field.class);
+	static final CollectionObjectMap<Class<? extends Entityc>, Field> addedFieldMap = new CollectionObjectMap<>(Class.class, Field.class);
+	static final CollectionObjectMap<Class<? extends Building>, Field> soundFieldMap = new CollectionObjectMap<>(Class.class, Field.class);
 
 	private HEntity() {}
 
@@ -658,9 +658,11 @@ public final class HEntity {
 
 	public static void reset() {
 		tileParma = null;
+		tmpBuilding = null;
 
 		toRemove.clear();
 
+		buildings.clear();
 		units.clear();
 		exclude.clear();
 		excludeSeq.clear();
@@ -828,9 +830,11 @@ public final class HEntity {
 		int size = Groups.all.size();
 
 		for (int i = start; i < size; i++) {
-			Entityc e = Groups.all.index(i);
-			if (e != exclude && e != exclude2 && (proxy == null || !proxy.contains(b -> e == b)) && !(e instanceof EffectState))
-				toRemove.add(e);
+			Entityc entity = Groups.all.index(i);
+
+			if (entity != exclude && entity != exclude2 && (proxy == null || !proxy.contains(b -> entity == b)) && !(entity instanceof EffectState)) {
+				toRemove.add(entity);
+			}
 		}
 
 		toRemove.each(e -> annihilate(e, false));

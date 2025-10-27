@@ -441,10 +441,10 @@ public class CharSeq implements CharSequence, Appendable {
 	@Override
 	public int hashCode() {
 		if (!ordered) return super.hashCode();
-		int h = 1;
-		for (int i = 0, n = size; i < n; i++)
-			h = h * 31 + (int) items[i];
-		return h;
+		int hashCode = 1;
+		for (int i = 0; i < size; i++)
+			hashCode = hashCode * 31 + (int) items[i];
+		return hashCode;
 	}
 
 	@Override
@@ -452,9 +452,9 @@ public class CharSeq implements CharSequence, Appendable {
 		if (o == this) return true;
 		if (!ordered || !(o instanceof CharSeq array) || !array.ordered) return false;
 		if (size != array.size) return false;
-		char[] items2 = array.items;
+		char[] otherItems = array.items;
 		for (int i = 0; i < size; i++)
-			if (items[i] != items2[i]) return false;
+			if (items[i] != otherItems[i]) return false;
 		return true;
 	}
 

@@ -2,7 +2,6 @@ package heavyindustry.io;
 
 import arc.math.geom.Point2;
 import arc.struct.Seq;
-import arc.util.Reflect;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.input.InputAggregator.TapResult;
@@ -20,6 +19,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 
 public final class HTypeIO {
 	/** Don't let anyone instantiate this class. */
@@ -92,9 +92,10 @@ public final class HTypeIO {
 		for (T t : array) write.b(t.ordinal());
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T extends Enum<T>> T[] readEnums(Reads read, FromOrdinal<T> prov, Class<T> type) {
 		int size = read.i();
-		T[] out = Reflect.newArray(type, size);
+		T[] out = (T[]) Array.newInstance(type, size);
 
 		for (int i = 0; i < size; i++) out[i] = prov.get(read.b());
 		return out;
@@ -124,7 +125,7 @@ public final class HTypeIO {
 		byte[] bytes = read.b(length);
 		try (ByteArrayInputStream bin = new ByteArrayInputStream(bytes); ObjectInputStream in = new ObjectInputStream(bin)) {
 			Object object = in.readObject();
-			return ObjectUtils.cast(object, type, null);
+			return ObjectUtils.as(object, type, null);
 		} catch (IOException | ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}

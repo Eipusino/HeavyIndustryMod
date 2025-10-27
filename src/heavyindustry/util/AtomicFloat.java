@@ -18,8 +18,7 @@ public class AtomicFloat extends Number {
 	}
 
 	public final float addAndGet(float delta) {
-		float expect;
-		float update;
+		float expect, update;
 		do {
 			expect = get();
 			update = expect + delta;
@@ -29,8 +28,7 @@ public class AtomicFloat extends Number {
 	}
 
 	public final float getAndAdd(float delta) {
-		float expect;
-		float update;
+		float expect, update;
 		do {
 			expect = get();
 			update = expect + delta;
@@ -83,7 +81,7 @@ public class AtomicFloat extends Number {
 
 	@Override
 	public double doubleValue() {
-		return floatValue();
+		return get();
 	}
 
 	@Override
