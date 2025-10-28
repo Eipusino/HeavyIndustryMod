@@ -5,8 +5,8 @@ import arc.func.Prov;
 public class Lazy<T> {
 	public final boolean modifiable;
 
-	T value;
-	volatile Prov<T> prov;
+	protected T value;
+	protected volatile Prov<T> prov;
 
 	public Lazy(Prov<T> init) {
 		this(init, true);

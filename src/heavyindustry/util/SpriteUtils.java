@@ -105,7 +105,7 @@ public final class SpriteUtils {
 	 * @throws NullPointerException       If the {@code name} is {@code null}.
 	 * @throws NegativeArraySizeException If {@code size} or {@code layerCount} is negative.
 	 * @apiNote The element returned by this method cannot be used in situations where it will be
-	 * forcibly converted to {@link AtlasRegion}.
+	 * forcibly cast to {@link AtlasRegion}.
 	 */
 	public static TextureRegion[][] splitLayers(String name, int size, int layerCount) {
 		TextureRegion[][] layers = new TextureRegion[layerCount][];
@@ -126,7 +126,7 @@ public final class SpriteUtils {
 	 * @throws NullPointerException	   If the {@code name} is {@code null}.
 	 * @throws IllegalArgumentException If {@code size} or {@code layer} is negative.
 	 * @apiNote The element returned by this method cannot be used in situations where it will be
-	 * forcibly converted to {@link AtlasRegion}.
+	 * forcibly cast to {@link AtlasRegion}.
 	 */
 	public static TextureRegion[] splitLayer(String name, int size, int layer) {
 		TextureRegion textures = Core.atlas.find(name);

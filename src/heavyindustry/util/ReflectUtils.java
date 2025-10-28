@@ -1,7 +1,6 @@
 package heavyindustry.util;
 
 import arc.func.Boolf;
-import arc.func.Cons;
 import arc.func.Prov;
 import arc.util.Log;
 import arc.util.Nullable;
@@ -16,11 +15,25 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
-import static heavyindustry.util.ArrayUtils.arrayOf;
-import static heavyindustry.util.ObjectUtils.requireNonNull;
-
 /**
  * Reflection utilities, mainly for wrapping reflective operations to eradicate checked exceptions.
+ * <p>You should never frequently perform repetitive operations on the same Field/Method/Constructor for
+ * performance reasons.
+ * <blockquote><pre>
+ *     private static Field theField;
+ *
+ *     public static Object getValue(Object obj) {
+ *         try {
+ *             if (theField == null) {
+ *                 theField = MyClass.class.getDeclaredField("myField");
+ *                 theField.setAccessible(true);
+ *             }
+ *             return theField.get(obj);
+ *         } catch (NoSuchFieldException | IllegalAccessException e) {
+ *             throw new RuntimeException(e);
+ *         }
+ *     }
+ * </pre></blockquote>
  *
  * @author Eipusino
  * @since 1.0.6
@@ -85,584 +98,8 @@ public final class ReflectUtils {
 		else return null;
 	}
 
-	public static Object getObject(Class<?> type, Object object, String name) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			return field.get(object);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static Object getObject(Class<?> type, String name) {
-		return getObject(type, null, name);
-	}
-
-	public static boolean getBool(Class<?> type, Object object, String name) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			return field.getBoolean(object);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static boolean getBool(Class<?> type, String name) {
-		return getBool(type, null, name);
-	}
-
-	public static byte getByte(Class<?> type, Object object, String name) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			return field.getByte(object);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static byte getByte(Class<?> type, String name) {
-		return getByte(type, null, name);
-	}
-
-	public static short getShort(Class<?> type, Object object, String name) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			return field.getShort(object);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static short getShort(Class<?> type, String name) {
-		return getShort(type, null, name);
-	}
-
-	public static int getInt(Class<?> type, Object object, String name) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			return field.getInt(object);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static int getInt(Class<?> type, String name) {
-		return getInt(type, null, name);
-	}
-
-	public static long getLong(Class<?> type, Object object, String name) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			return field.getLong(object);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static long getLong(Class<?> type, String name) {
-		return getLong(type, null, name);
-	}
-
-	public static float getFloat(Class<?> type, Object object, String name) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			return field.getFloat(object);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static float getFloat(Class<?> type, String name) {
-		return getFloat(type, null, name);
-	}
-
-	public static double getDouble(Class<?> type, Object object, String name) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			return field.getDouble(object);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static double getDouble(Class<?> type, String name) {
-		return getDouble(type, null, name);
-	}
-
-	public static char getChar(Class<?> type, Object object, String name) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			return field.getChar(object);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static char getChar(Class<?> type, String name) {
-		return getChar(type, null, name);
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T> T getName(String type, Object object, String name) {
-		try {
-			Field field = Class.forName(type).getDeclaredField(name);
-			field.setAccessible(true);
-			return (T) field.get(object);
-		} catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static <T> T getName(String type, String name) {
-		return getName(type, null, name);
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T> T getOrDefault(Class<?> type, Object object, String name, T def) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			return (T) field.get(object);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			return def;
-		}
-	}
-
-	public static <T> T getOrDefault(Class<?> type, String name, T def) {
-		return getOrDefault(type, null, name, def);
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T> void getToCons(Class<?> type, Object object, String name, Cons<T> cons) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			cons.get((T) field.get(object));
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			Log.err(e);
-		}
-	}
-
-	public static <T> void getToCons(Class<?> type, String name, Cons<T> cons) {
-		getToCons(type, null, name, cons);
-	}
-
-	public static void setBool(Class<?> type, Object object, String name, boolean value) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			field.setBoolean(object, value);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void setBool(Class<?> type, String name, boolean value) {
-		setBool(type, null, name, value);
-	}
-
-	public static void setByte(Class<?> type, Object object, String name, byte value) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			field.setByte(object, value);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void setByte(Class<?> type, String name, byte value) {
-		setByte(type, null, name, value);
-	}
-
-	public static void setShort(Class<?> type, Object object, String name, short value) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			field.setShort(object, value);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void setShort(Class<?> type, String name, short value) {
-		setShort(type, null, name, value);
-	}
-
-	public static void setInt(Class<?> type, Object object, String name, int value) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			field.setInt(object, value);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void setInt(Class<?> type, String name, int value) {
-		setInt(type, null, name, value);
-	}
-
-	public static void setLong(Class<?> type, Object object, String name, long value) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			field.setLong(object, value);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void setLong(Class<?> type, String name, long value) {
-		setLong(type, null, name, value);
-	}
-
-	public static void setFloat(Class<?> type, Object object, String name, float value) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			field.setFloat(object, value);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void setFloat(Class<?> type, String name, float value) {
-		setFloat(type, null, name, value);
-	}
-
-	public static void setDouble(Class<?> type, Object object, String name, double value) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			field.setDouble(object, value);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void setDouble(Class<?> type, String name, double value) {
-		setDouble(type, null, name, value);
-	}
-
-	public static void setChar(Class<?> type, Object object, String name, char value) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			field.setChar(object, value);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void setChar(Class<?> type, String name, char value) {
-		setDouble(type, null, name, value);
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T> T invoke(Class<?> type, Object object, String name, Object[] args, Class<?>[] parameterTypes, T def) {
-		try {
-			Method method = type.getDeclaredMethod(name, parameterTypes);
-			method.setAccessible(true);
-			return (T) method.invoke(object, args);
-		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-			return def;
-		}
-	}
-
-	public static <T> T invoke(Class<?> type, String name, Object[] args, Class<?>[] parameterTypes, T def) {
-		return invoke(type, null, name, args, parameterTypes, def);
-	}
-
-	public static <T> T invoke(Class<?> type, String name, T def) {
-		return invoke(type, name, arrayOf(), arrayOf(), def);
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T> T invoke(Class<?> type, Object object, String name, Object[] args, Class<?>[] parameterTypes) {
-		try {
-			Method method = type.getDeclaredMethod(name, parameterTypes);
-			method.setAccessible(true);
-			return (T) method.invoke(object, args);
-		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static <T> T invoke(Class<?> type, String name, Object[] args, Class<?>[] parameterTypes) {
-		return invoke(type, null, name, args, parameterTypes);
-	}
-
-	public static <T> T invoke(Class<?> type, String name) {
-		return invoke(type, name, arrayOf(), arrayOf());
-	}
-
-	public static Field getField(Class<?> type, String name) {
-		return getField(type, name, true);
-	}
-
-	public static Field getField(Class<?> type, String name, boolean access) {
-		try {
-			Field field = type.getDeclaredField(name);
-			if (access) field.setAccessible(true);
-			return field;
-		} catch (NoSuchFieldException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	/**
-	 * Gets a value from a field of an model without throwing exceptions.
-	 * <p>This method does not call the {@link Field#setAccessible(boolean)} method, and it is necessary to
-	 * ensure that the field is accessible or has been set to be accessible. This is due to performance
-	 * considerations.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> T getField(Object object, Field field) {
-		try {
-			return (T) field.get(object);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static boolean getBoolField(Object object, Field field) {
-		try {
-			return field.getBoolean(object);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static byte getByteField(Object object, Field field) {
-		try {
-			return field.getByte(object);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static short getShortField(Object object, Field field) {
-		try {
-			return field.getShort(object);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static int getIntField(Object object, Field field) {
-		try {
-			return field.getInt(object);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static long getLongField(Object object, Field field) {
-		try {
-			return field.getLong(object);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static float getFloatField(Object object, Field field) {
-		try {
-			return field.getFloat(object);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static double getDoubleField(Object object, Field field) {
-		try {
-			return field.getDouble(object);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static char getCharField(Object object, Field field) {
-		try {
-			return field.getChar(object);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	/** A utility function to find a field without throwing exceptions. */
-	public static Field findField(Class<?> type, String name, boolean access) {
-		Field field = requireNonNull(findClassField(type, name), "Field not found: " + name);
-		if (access) field.setAccessible(true);
-
-		return field;
-	}
-
-	/** Sets a field of an model without throwing exceptions. */
-	public static void setField(Object object, Field field, Object value) {
-		try {
-			field.set(object, value);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static Method getMethod(Class<?> type, String name) {
-		return getMethod(type, name, arrayOf());
-	}
-
-	public static Method getMethod(Class<?> type, String name, Class<?>[] parameterTypes) {
-		try {
-			Method method = type.getDeclaredMethod(name, parameterTypes);
-			method.setAccessible(true);
-			return method;
-		} catch (NoSuchMethodException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	/** A utility function to find a method without throwing exceptions. */
-	public static Method findMethod(Class<?> type, String name, boolean access, Class<?>... args) {
-		Method method = requireNonNull(findClassMethod(type, name, args), "Method not found: " + name + " " + Arrays.toString(args));
-		if (access) method.setAccessible(true);
-
-		return method;
-	}
-
-	public static <T> T invokeMethod(Method method) {
-		return invokeMethod(method, null, arrayOf());
-	}
-
-	public static <T> T invokeMethod(Method method, Object[] object) {
-		return invokeMethod(method, null, object);
-	}
-
-	public static <T> T invokeMethod(Method method, Object object) {
-		return invokeMethod(method, object, arrayOf());
-	}
-
-	/**
-	 * Call {@link Method#invoke(Object, Object[])} without throwing an exception.
-	 * <p>This method will not call {@link Method#setAccessible(boolean)}, please ensure that the method is
-	 * accessible or set to accessible. This is due to performance considerations.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> T invokeMethod(Method method, Object object, Object[] args) {
-		try {
-			return (T) method.invoke(object, args);
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static void invokeVoidMethod(Method method) {
-		invokeVoidMethod(method, null, arrayOf());
-	}
-
-	public static void invokeVoidMethod(Method method, Object[] args) {
-		invokeVoidMethod(method, null, args);
-	}
-
-	public static void invokeVoidMethod(Method method, Object object) {
-		invokeVoidMethod(method, object, arrayOf());
-	}
-
-	public static void invokeVoidMethod(Method method, Object object, Object[] args) {
-		try {
-			method.invoke(object, args);
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static boolean getBool(Object object, String name, boolean def) {
-		return getBool(object.getClass(), object, name, def);
-	}
-
-	public static boolean getBool(Class<?> type, String name, boolean def) {
-		return getBool(type, null, name, def);
-	}
-
-	public static boolean getBool(Class<?> type, Object object, String name, boolean def) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			return field.getBoolean(object);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			return def;
-		}
-	}
-
-	public static int getInt(Object object, String name, int def) {
-		return getInt(object.getClass(), object, name, def);
-	}
-
-	public static int getInt(Class<?> type, String name, int def) {
-		return getInt(type, null, name, def);
-	}
-
-	public static int getInt(Class<?> type, Object object, String name, int def) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			return field.getInt(object);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			return def;
-		}
-	}
-
-	public static float getFloat(Object object, String name, float def) {
-		return getFloat(object.getClass(), object, name, def);
-	}
-
-	public static float getFloat(Class<?> type, String name, float def) {
-		return getFloat(type, null, name, def);
-	}
-
-	public static float getFloat(Class<?> type, Object object, String name, float def) {
-		try {
-			Field field = type.getDeclaredField(name);
-			field.setAccessible(true);
-			return field.getFloat(object);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			return def;
-		}
-	}
-
-	public static <T> Constructor<T> getConstructor(Class<T> type, Class<?>... args) {
-		return getConstructor(type, true, args);
-	}
-
-	/** A utility function to find a constructor without throwing exceptions. */
-	public static <T> Constructor<T> getConstructor(Class<T> type, boolean access, Class<?>... args) {
-		try {
-			Constructor<T> cons = type.getDeclaredConstructor(args);
-			if (access) cons.setAccessible(true);
-			return cons;
-		} catch (NoSuchMethodException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	/** A utility function to find a constructor without throwing exceptions. */
-	public static <T> Constructor<T> findConstructor(Class<T> type, boolean access, Class<?>... args) {
-		Constructor<T> constructor = requireNonNull(findClassConstructor(type, args), "Constructor not found: " + Arrays.toString(args));
-		if (access) constructor.setAccessible(true);
-
-		return constructor;
-	}
-
 	public static <T> T make(Class<T> type) {
-		return make(type, arrayOf(), arrayOf());
+		return make(type, ArrayUtils.arrayOf(), ArrayUtils.arrayOf());
 	}
 
 	/** Reflectively instantiates a type without throwing exceptions. */
@@ -685,7 +122,7 @@ public final class ReflectUtils {
 	}
 
 	public static <T> Prov<T> supply(Class<T> type) {
-		return supply(type, arrayOf(), arrayOf());
+		return supply(type, ArrayUtils.arrayOf(), ArrayUtils.arrayOf());
 	}
 
 	public static <T> Prov<T> supply(Class<T> type, Object[] args, Class<?>[] parameterTypes) {
@@ -709,17 +146,17 @@ public final class ReflectUtils {
 	 * @param name The class' binary name, as per {@link Class#getName()}.
 	 * @return The class, or {@code null} if not found.
 	 */
-	@Nullable
-	public static Class<?> findClass(String name) {
+	@SuppressWarnings("unchecked")
+	public static <T> Class<T> findClass(String name) {
 		try {
-			return Class.forName(name, true, Vars.mods.mainLoader());
+			return (Class<T>) Class.forName(name, true, Vars.mods.mainLoader());
 		} catch (ClassNotFoundException e) {
 			return null;
 		}
 	}
 
 	@Nullable
-	public static Field findClassField(Class<?> type, String name) {
+	public static Field findField(Class<?> type, String name) {
 		while (type != null) {
 			Field[] fields = type.getDeclaredFields();
 			for (Field field : fields) {
@@ -732,8 +169,9 @@ public final class ReflectUtils {
 		return null;
 	}
 
+	/// A utility function to find a field without throwing exceptions.
 	@Nullable
-	public static Field findClassField(Class<?> type, Boolf<Field> name) {
+	public static Field findField(Class<?> type, Boolf<Field> name) {
 		while (type != null) {
 			Field[] fields = type.getDeclaredFields();
 			for (Field field : fields) {
@@ -746,8 +184,9 @@ public final class ReflectUtils {
 		return null;
 	}
 
+	/// A utility function to find a method without throwing exceptions.
 	@Nullable
-	public static Method findClassMethod(Class<?> type, String name, Class<?>... args) {
+	public static Method findMethod(Class<?> type, String name, Class<?>... args) {
 		while (type != null) {
 			Method[] methods = type.getDeclaredMethods();
 			for (Method method : methods) {
@@ -760,9 +199,10 @@ public final class ReflectUtils {
 		return null;
 	}
 
+	/// A utility function to find a constructor without throwing exceptions.
 	@SuppressWarnings("unchecked")
 	@Nullable
-	public static <T> Constructor<T> findClassConstructor(Class<?> type, Class<?>... args) {
+	public static <T> Constructor<T> findConstructor(Class<?> type, Class<?>... args) {
 		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
 			Constructor<?>[] constructors = type.getDeclaredConstructors();
 			for (Constructor<?> constructor : constructors) {
@@ -771,16 +211,6 @@ public final class ReflectUtils {
 		}
 
 		return null;
-	}
-
-	/// Search for class based on class names without throwing exceptions.
-	@SuppressWarnings("unchecked")
-	public static <T> Class<T> forClass(String name) {
-		try {
-			return (Class<T>) Class.forName(name);
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	public static boolean isInstanceButNotSubclass(Object obj, Class<?> type) {
@@ -812,7 +242,7 @@ public final class ReflectUtils {
 	}
 
 	public static <T> T copyProperties(Object source, T target) {
-		return copyProperties(source, target, arrayOf("id"));
+		return copyProperties(source, target, ArrayUtils.arrayOf("id"));
 	}
 
 	/**

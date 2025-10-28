@@ -5,10 +5,10 @@ import java.lang.reflect.Array;
 public class CircularQueue<T> {
 	public final Class<?> componentType;
 
-	private final T[] queue;
-	private int head;
-	private int tail;
-	private final int capacity;
+	protected final T[] queue;
+	protected int head;
+	protected int tail;
+	protected final int capacity;
 
 	@SuppressWarnings("unchecked")
 	public CircularQueue(int cap, Class<?> type) {

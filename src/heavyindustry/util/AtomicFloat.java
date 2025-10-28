@@ -7,6 +7,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * <p>Android API level 14 cannot use VarHandle, so Bits conversion is used.
  */
 public class AtomicFloat extends Number {
+	private static final long serialVersionUID = 4906256511037633568l;
+
 	protected final AtomicInteger bits;
 
 	public AtomicFloat() {
@@ -92,6 +94,16 @@ public class AtomicFloat extends Number {
 	@Override
 	public long longValue() {
 		return (long) get();
+	}
+
+	@Override
+	public byte byteValue() {
+		return (byte) get();
+	}
+
+	@Override
+	public short shortValue() {
+		return (short) get();
 	}
 
 	@Override

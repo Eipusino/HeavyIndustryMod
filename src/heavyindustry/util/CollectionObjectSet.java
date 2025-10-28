@@ -35,12 +35,12 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	public E[] keyTable;
 	public int capacity, stashSize;
 
-	float loadFactor;
-	int hashShift, mask, threshold;
-	int stashCapacity;
-	int pushIterations;
+	protected float loadFactor;
+	protected int hashShift, mask, threshold;
+	protected int stashCapacity;
+	protected int pushIterations;
 
-	@Nullable Iter<E> iterator1, iterator2;
+	protected @Nullable Iter<E> iterator1, iterator2;
 
 	/** Creates a new set with an initial capacity of 51 and a load factor of 0.8. */
 	public CollectionObjectSet(Class<?> type) {
@@ -290,7 +290,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	}
 
 	/** Skips checks for existing keys. */
-	void addResize(E key) {
+	protected void addResize(E key) {
 		// Check for empty buckets.
 		int hashCode = key.hashCode();
 		int index1 = hashCode & mask;
@@ -320,7 +320,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 		push(key, index1, key1, index2, key2, index3, key3);
 	}
 
-	void push(E insertKey, int index1, E key1, int index2, E key2, int index3, E key3) {
+	protected void push(E insertKey, int index1, E key1, int index2, E key2, int index3, E key3) {
 		// Push keys until an empty bucket is found.
 		E evictedKey;
 		int i = 0;
@@ -375,7 +375,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 		addStash(evictedKey);
 	}
 
-	void addStash(E key) {
+	protected void addStash(E key) {
 		if (stashSize == stashCapacity) {
 			// Too many pushes occurred and the stash is full, increase the table size.
 			resize(capacity << 1);
@@ -417,7 +417,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 		return removeStash(key);
 	}
 
-	boolean removeStash(Object key) {
+	protected boolean removeStash(Object key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
 			if (key.equals(keyTable[i])) {
 				removeStashIndex(i);
@@ -428,7 +428,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 		return false;
 	}
 
-	void removeStashIndex(int index) {
+	protected void removeStashIndex(int index) {
 		// If the removed location was not last, move the last tuple to the removed location.
 		stashSize--;
 		int lastIndex = capacity + stashSize;
@@ -519,7 +519,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 		return found;
 	}
 
-	E getKeyStash(Object key) {
+	protected E getKeyStash(Object key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return keyTable[i];
 		return null;
@@ -543,7 +543,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	}
 
 	@SuppressWarnings("unchecked")
-	void resize(int newSize) {
+	protected void resize(int newSize) {
 		int oldEndIndex = capacity + stashSize;
 
 		capacity = newSize;
@@ -568,12 +568,12 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 		}
 	}
 
-	int hash2(int h) {
+	protected int hash2(int h) {
 		h *= PRIME2;
 		return (h ^ h >>> hashShift) & mask;
 	}
 
-	int hash3(int h) {
+	protected int hash3(int h) {
 		h *= PRIME3;
 		return (h ^ h >>> hashShift) & mask;
 	}
@@ -659,11 +659,12 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	}
 
 	public static class Iter<E> implements Iterable<E>, Iterator<E> {
-		final CollectionObjectSet<E> set;
+		protected final CollectionObjectSet<E> set;
 
 		public boolean hasNext;
-		int nextIndex, currentIndex;
-		boolean done;
+
+		protected int nextIndex, currentIndex;
+		protected boolean done;
 
 		public Iter(CollectionObjectSet<E> s) {
 			set = s;
@@ -678,7 +679,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 			done = false;
 		}
 
-		void findNextIndex() {
+		protected void findNextIndex() {
 			hasNext = false;
 			for (int n = set.capacity + set.stashSize; ++nextIndex < n; ) {
 				if (set.keyTable[nextIndex] != null) {

@@ -32,7 +32,7 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 	 */
 	protected int tail = 0;
 
-	@Nullable QueueIterable<E> iterable;
+	protected @Nullable QueueIterable<E> iterable;
 
 	/** Creates a new Queue which can hold 16 values without needing to resize backing array. */
 	public CollectionQueue(Class<?> type) {
@@ -448,7 +448,7 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 		return a;
 	}
 
-	<T> T[] toArray(Class<T[]> c) {
+	protected <T> T[] toArray(Class<T[]> c) {
 		final E[] es = values;
 		final T[] a;
 		final int end;
@@ -530,9 +530,10 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 	}
 
 	public static class QueueIterable<T> implements Iterable<T> {
-		final CollectionQueue<T> queue;
-		final boolean allowRemove;
-		private QueueIterator iterator1, iterator2;
+		protected final CollectionQueue<T> queue;
+		protected final boolean allowRemove;
+
+		protected QueueIterator iterator1, iterator2;
 
 		public QueueIterable(CollectionQueue<T> queue) {
 			this(queue, true);
@@ -565,11 +566,11 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 			return new QueueIterator();
 		}
 
-		class QueueIterator implements Iterator<T>, Iterable<T> {
-			int index;
-			boolean done = true;
+		protected class QueueIterator implements Iterator<T>, Iterable<T> {
+			protected int index;
+			protected boolean done = true;
 
-			QueueIterator() {}
+			protected QueueIterator() {}
 
 			@Override
 			public boolean hasNext() {

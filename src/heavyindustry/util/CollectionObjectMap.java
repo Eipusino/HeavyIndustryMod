@@ -39,14 +39,14 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 
 	public int capacity, stashSize;
 
-	float loadFactor;
-	int hashShift, mask, threshold;
-	int stashCapacity;
-	int pushIterations;
+	protected float loadFactor;
+	protected int hashShift, mask, threshold;
+	protected int stashCapacity;
+	protected int pushIterations;
 
-	Entries<K, V> entries1, entries2;
-	Values<K, V> values1, values2;
-	Keys<K, V> keys1, keys2;
+	protected Entries<K, V> entries1, entries2;
+	protected Values<K, V> values1, values2;
+	protected Keys<K, V> keys1, keys2;
 
 	@SuppressWarnings("unchecked")
 	public static <K, V> CollectionObjectMap<K, V> of(Class<?> keyType, Class<?> valueType, Object... values) {
@@ -234,7 +234,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	}
 
 	/// Skips checks for existing keys.
-	void putResize(K key, V value) {
+	protected void putResize(K key, V value) {
 		// Check for empty buckets.
 		int hashCode = key.hashCode();
 		int index1 = hashCode & mask;
@@ -267,7 +267,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		push(key, value, index1, key1, index2, key2, index3, key3);
 	}
 
-	void push(K insertKey, V insertValue, int index1, K key1, int index2, K key2, int index3, K key3) {
+	protected void push(K insertKey, V insertValue, int index1, K key1, int index2, K key2, int index3, K key3) {
 		// Push keys until an empty bucket is found.
 		K evictedKey;
 		V evictedValue;
@@ -333,7 +333,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		putStash(evictedKey, evictedValue);
 	}
 
-	void putStash(K key, V value) {
+	protected void putStash(K key, V value) {
 		if (stashSize == stashCapacity) {
 			// Too many pushes occurred and the stash is full, increase the table size.
 			resize(capacity << 1);
@@ -405,7 +405,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		return valueTable[index];
 	}
 
-	V getStash(Object key, V defaultValue) {
+	protected V getStash(Object key, V defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return valueTable[i];
 		return defaultValue;
@@ -454,7 +454,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		}
 	}
 
-	V removeStash(Object key) {
+	protected V removeStash(Object key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
 			if (key.equals(keyTable[i])) {
 				V oldValue = valueTable[i];
@@ -466,7 +466,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		return null;
 	}
 
-	void removeStashIndex(int index) {
+	protected void removeStashIndex(int index) {
 		// If the removed location was not last, move the last tuple to the removed location.
 		stashSize--;
 		int lastIndex = capacity + stashSize;
@@ -574,7 +574,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		return containsValue(value, false);
 	}
 
-	boolean containsKeyStash(Object key) {
+	protected boolean containsKeyStash(Object key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return true;
 		return false;
@@ -613,7 +613,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	}
 
 	@SuppressWarnings("unchecked")
-	void resize(int newSize) {
+	protected void resize(int newSize) {
 		int oldEndIndex = capacity + stashSize;
 
 		capacity = newSize;
@@ -640,12 +640,12 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		}
 	}
 
-	int hash2(int h) {
+	protected int hash2(int h) {
 		h *= PRIME2;
 		return (h ^ h >>> hashShift) & mask;
 	}
 
-	int hash3(int h) {
+	protected int hash3(int h) {
 		h *= PRIME3;
 		return (h ^ h >>> hashShift) & mask;
 	}
@@ -798,10 +798,10 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	}
 
 	public static class EntrySet<K, V> extends AbstractSet<Entry<K, V>> {
-		final CollectionObjectMap<K, V> map;
+		protected final CollectionObjectMap<K, V> map;
 
-		final MapItr itr = new MapItr();
-		final MapEnt ent = new MapEnt();
+		protected final MapItr itr = new MapItr();
+		protected final MapEnt ent = new MapEnt();
 
 		public EntrySet(CollectionObjectMap<K, V> m) {
 			map = m;
@@ -841,7 +841,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 			return false;
 		}
 
-		class MapItr implements Iterator<Entry<K, V>> {
+		protected class MapItr implements Iterator<Entry<K, V>> {
 			Entries<K, V> entries;
 
 			@Override
@@ -856,7 +856,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 			}
 		}
 
-		class MapEnt implements Entry<K, V> {
+		protected class MapEnt implements Entry<K, V> {
 			ObjectHolder<K, V> entry;
 
 			@Override
@@ -876,13 +876,13 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		}
 	}
 
-	abstract static class MapIterator<K, V, I> implements Iterable<I>, Iterator<I> {
-		final CollectionObjectMap<K, V> map;
+	protected abstract static class MapIterator<K, V, I> implements Iterable<I>, Iterator<I> {
+		protected final CollectionObjectMap<K, V> map;
 
 		public boolean hasNext;
 
-		int nextIndex, currentIndex;
-		boolean valid = true;
+		protected int nextIndex, currentIndex;
+		protected boolean valid = true;
 
 		public MapIterator(CollectionObjectMap<K, V> m) {
 			map = m;
@@ -895,7 +895,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 			findNextIndex();
 		}
 
-		void findNextIndex() {
+		protected void findNextIndex() {
 			hasNext = false;
 			K[] keyTable = map.keyTable;
 			for (int n = map.capacity + map.stashSize; ++nextIndex < n; ) {
@@ -923,7 +923,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	}
 
 	public static class Entries<K, V> extends MapIterator<K, V, ObjectHolder<K, V>> {
-		ObjectHolder<K, V> entry = new ObjectHolder<>();
+		protected ObjectHolder<K, V> entry = new ObjectHolder<>();
 
 		public Entries(CollectionObjectMap<K, V> map) {
 			super(map);

@@ -31,9 +31,9 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 
 	public boolean[] enableTable;
 
-	Entries<K, V> entries1, entries2;
-	Values<K, V> values1, values2;
-	Keys<K, V> keys1, keys2;
+	protected Entries<K, V> entries1, entries2;
+	protected Values<K, V> values1, values2;
+	protected Keys<K, V> keys1, keys2;
 
 	@SuppressWarnings("unchecked")
 	public CollectionEnumMap(Class<K> keyType, Class<?> valueType) {
@@ -129,7 +129,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		return oldValue;
 	}
 
-	void resize() {
+	protected void resize() {
 		size = 0;
 
 		for (boolean enable : enableTable) {
@@ -206,7 +206,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		return h;
 	}
 
-	int entryHashCode(int index) {
+	protected int entryHashCode(int index) {
 		return keyTable[index].hashCode() ^ valueTable[index].hashCode();
 	}
 
@@ -292,14 +292,14 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		return values2;
 	}
 
-	abstract static class MapIterator<K extends Enum<K>, V, I> implements Iterable<I>, Iterator<I> {
-		final CollectionEnumMap<K, V> map;
+	protected abstract static class MapIterator<K extends Enum<K>, V, I> implements Iterable<I>, Iterator<I> {
+		protected final CollectionEnumMap<K, V> map;
 
-		int nextIndex, currentIndex;
+		protected int nextIndex, currentIndex;
 
-		boolean valid = true;
+		protected boolean valid = true;
 
-		MapIterator(CollectionEnumMap<K, V> m) {
+		protected MapIterator(CollectionEnumMap<K, V> m) {
 			map = m;
 			reset();
 		}
@@ -329,7 +329,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 	}
 
 	public static class Entries<K extends Enum<K>, V> extends MapIterator<K, V, ObjectHolder<K, V>> {
-		ObjectHolder<K, V> entry = new ObjectHolder<>();
+		protected ObjectHolder<K, V> entry = new ObjectHolder<>();
 
 		public Entries(CollectionEnumMap<K, V> m) {
 			super(m);
@@ -542,10 +542,10 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 	}
 
 	public static class EntrySet<K extends Enum<K>, V> extends AbstractSet<Entry<K, V>> {
-		final CollectionEnumMap<K, V> map;
+		protected final CollectionEnumMap<K, V> map;
 
-		final MapItr itr = new MapItr();
-		final MapEnt ent = new MapEnt();
+		protected final MapItr itr = new MapItr();
+		protected final MapEnt ent = new MapEnt();
 
 		public EntrySet(CollectionEnumMap<K, V> m) {
 			map = m;
@@ -584,7 +584,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 			return false;
 		}
 
-		class MapItr implements Iterator<Entry<K, V>> {
+		protected class MapItr implements Iterator<Entry<K, V>> {
 			Entries<K, V> entries;
 
 			@Override
@@ -599,7 +599,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 			}
 		}
 
-		class MapEnt implements Entry<K, V> {
+		protected class MapEnt implements Entry<K, V> {
 			ObjectHolder<K, V> entry;
 
 			@Override

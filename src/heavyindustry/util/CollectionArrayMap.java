@@ -35,9 +35,9 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectHolder<K, V>>, M
 	public int size;
 	public boolean ordered;
 
-	Entries<K, V> entries1, entries2;
-	Values<V> valuesIter1, valuesIter2;
-	Keys<K> keysIter1, keysIter2;
+	protected Entries<K, V> entries1, entries2;
+	protected Values<V> valuesIter1, valuesIter2;
+	protected Keys<K> keysIter1, keysIter2;
 
 	/** Creates an ordered map with a capacity of 16. */
 	public CollectionArrayMap(Class<?> keyType, Class<?> valueType) {
@@ -583,10 +583,10 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectHolder<K, V>>, M
 	}
 
 	public static class MapEntrySet<K, V> extends AbstractSet<Entry<K, V>> {
-		final CollectionArrayMap<K, V> map;
+		protected final CollectionArrayMap<K, V> map;
 
-		final MapItr itr = new MapItr();
-		final MapEnt ent = new MapEnt();
+		protected final MapItr itr = new MapItr();
+		protected final MapEnt ent = new MapEnt();
 
 		public MapEntrySet(CollectionArrayMap<K, V> map) {
 			this.map = map;
@@ -625,7 +625,7 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectHolder<K, V>>, M
 			return false;
 		}
 
-		class MapItr implements Iterator<Entry<K, V>> {
+		protected class MapItr implements Iterator<Entry<K, V>> {
 			Entries<K, V> entries;
 
 			@Override
@@ -640,7 +640,7 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectHolder<K, V>>, M
 			}
 		}
 
-		class MapEnt implements Entry<K, V> {
+		protected class MapEnt implements Entry<K, V> {
 			ObjectHolder<K, V> entry;
 
 			@Override
@@ -661,11 +661,11 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectHolder<K, V>>, M
 	}
 
 	public static class Entries<K, V> implements Iterable<ObjectHolder<K, V>>, Iterator<ObjectHolder<K, V>> {
-		final CollectionArrayMap<K, V> map;
+		protected final CollectionArrayMap<K, V> map;
 
-		ObjectHolder<K, V> entry = new ObjectHolder<>();
-		int index;
-		boolean valid = true;
+		protected ObjectHolder<K, V> entry = new ObjectHolder<>();
+		protected int index;
+		protected boolean valid = true;
 
 		public Entries(CollectionArrayMap<K, V> m) {
 			map = m;
@@ -704,10 +704,10 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectHolder<K, V>>, M
 	}
 
 	public static class Values<V> extends AbstractCollection<V> implements Iterator<V> {
-		final CollectionArrayMap<?, V> map;
+		protected final CollectionArrayMap<?, V> map;
 
-		int index;
-		boolean valid = true;
+		protected int index;
+		protected boolean valid = true;
 
 		public Values(CollectionArrayMap<?, V> m) {
 			map = m;
@@ -757,10 +757,10 @@ public class CollectionArrayMap<K, V> implements Iterable<ObjectHolder<K, V>>, M
 	}
 
 	public static class Keys<K> extends AbstractSet<K> implements Iterable<K>, Iterator<K> {
-		final CollectionArrayMap<K, ?> map;
+		protected final CollectionArrayMap<K, ?> map;
 
-		int index;
-		boolean valid = true;
+		protected int index;
+		protected boolean valid = true;
 
 		public Keys(CollectionArrayMap<K, ?> m) {
 			map = m;

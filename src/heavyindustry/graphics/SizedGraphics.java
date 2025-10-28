@@ -28,18 +28,6 @@ public class SizedGraphics extends Graphics {
 	protected int overrideWidth, overrideHeight;
 	protected Graphics delegate;
 
-	static {
-		try {
-			setCursorMethod = Graphics.class.getDeclaredMethod("setCursor", Cursor.class);
-			setSystemCursorMethod = Graphics.class.getDeclaredMethod("setSystemCursor", SystemCursor.class);
-
-			setCursorMethod.setAccessible(true);
-			setSystemCursorMethod.setAccessible(true);
-		} catch (NoSuchMethodException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
 	/** @see #override(int, int, Runnable) */
 	public void override(int dimension, Runnable run) {
 		override(dimension, dimension, run);
@@ -284,8 +272,12 @@ public class SizedGraphics extends Graphics {
 	@Override
 	protected void setCursor(Cursor cursor) {
 		try {
+			if (setCursorMethod == null) {
+				setCursorMethod = Graphics.class.getDeclaredMethod("setCursor", Cursor.class);
+				setCursorMethod.setAccessible(true);
+			}
 			setCursorMethod.invoke(delegate, cursor);
-		} catch (InvocationTargetException | IllegalAccessException e) {
+		} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -293,8 +285,12 @@ public class SizedGraphics extends Graphics {
 	@Override
 	protected void setSystemCursor(Cursor.SystemCursor systemCursor) {
 		try {
+			if (setSystemCursorMethod == null) {
+				setSystemCursorMethod = Graphics.class.getDeclaredMethod("setSystemCursor", SystemCursor.class);
+				setSystemCursorMethod.setAccessible(true);
+			}
 			setSystemCursorMethod.invoke(delegate, systemCursor);
-		} catch (InvocationTargetException | IllegalAccessException e) {
+		} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}

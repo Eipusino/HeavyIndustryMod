@@ -39,9 +39,10 @@ public final class InternalUtils {
 	 * Retrieve the value of a field through {@code Unsafe}. If the field is {@code static}, object can be {@code null}.
 	 * Otherwise, {@code object} must not be {@code null} and be an instance of {@code field.getDeclaringClass()}.
 	 *
-	 * @throws IllegalArgumentException If the field type is a primitive type.
-	 * @throws ClassCastException If the field is not {@code static} and the {@code object} is not an
-	 *                                  instance of {@code field.getDeclaringClass()} or {@code null}.
+	 * @throws IllegalArgumentException If any of the following  is true:
+	 *                                  <ul><li>If the field type is a primitive type.
+	 *                                  <li>If the field is not {@code static} and the {@code object} is not an
+	 *                                                                   instance of {@code field.getDeclaringClass()} or {@code null}.</ul>
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getObject(Field field, Object object) {
@@ -71,9 +72,10 @@ public final class InternalUtils {
 	 * Set the value of a field through {@code Unsafe}. If the field is {@code static}, object can be {@code null}.
 	 * Otherwise, {@code object} must not be {@code null} and be an instance of {@code field.getDeclaringClass()}.
 	 *
-	 * @throws IllegalArgumentException If the field type is a primitive type.
-	 * @throws ClassCastException If the field is not {@code static} and the {@code object} is not an
-	 *                                  instance of {@code field.getDeclaringClass()} or {@code null}.
+	 * @throws IllegalArgumentException If any of the following  is true:
+	 *                                  <ul><li>If the field type is a primitive type.
+	 *                                  <li>If the field is not {@code static} and the {@code object} is not an
+	 *                                                                   instance of {@code field.getDeclaringClass()} or {@code null}.</ul>
 	 */
 	public static void setObject(Field field, Object object, Object value) {
 		if (field.getType().isPrimitive()) throw new IllegalArgumentException("Method 'getObject' does not support field of primitive types");

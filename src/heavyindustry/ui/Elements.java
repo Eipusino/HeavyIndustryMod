@@ -725,7 +725,10 @@ public final class Elements {
 		button.removeListener(button.getClickListener());
 
 		try {
-			if (clickListenerField == null) clickListenerField = Button.class.getDeclaredField("clickListener");
+			if (clickListenerField == null) {
+				clickListenerField = Button.class.getDeclaredField("clickListener");
+				clickListenerField.setAccessible(true);
+			}
 			clickListenerField.set(button, newListener);
 			button.addListener(newListener);
 		} catch (NoSuchFieldException | IllegalAccessException e) {

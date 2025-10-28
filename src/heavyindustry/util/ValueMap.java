@@ -1,10 +1,10 @@
 package heavyindustry.util;
 
 public class ValueMap implements Cloneable {
-	float floatValue;
-	int intValue;
-	Object value;
-	CollectionObjectMap<String, ValueMap> map = new CollectionObjectMap<>(String.class, ValueMap.class);
+	protected float floatValue;
+	protected int intValue;
+	protected Object value;
+	protected CollectionObjectMap<String, ValueMap> map = new CollectionObjectMap<>(String.class, ValueMap.class);
 
 	public ValueMap() {}
 

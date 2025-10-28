@@ -15,6 +15,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import static heavyindustry.util.Constant.EMPTY;
+import static heavyindustry.util.Constant.INDEX_ILLEGAL;
+import static heavyindustry.util.Constant.INDEX_ZERO;
 import static heavyindustry.util.Constant.PRIME2;
 import static heavyindustry.util.Constant.PRIME3;
 
@@ -38,14 +40,14 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 	public V zeroValue;
 	public boolean hasZeroValue;
 
-	float loadFactor;
-	int hashShift, mask, threshold;
-	int stashCapacity;
-	int pushIterations;
+	protected float loadFactor;
+	protected int hashShift, mask, threshold;
+	protected int stashCapacity;
+	protected int pushIterations;
 
-	Entries<V> entries1, entries2;
-	Values<V> values1, values2;
-	Keys<V> keys1, keys2;
+	protected Entries<V> entries1, entries2;
+	protected Values<V> values1, values2;
+	protected Keys<V> keys1, keys2;
 
 	@SuppressWarnings("unchecked")
 	public static <V> IntMap2<V> of(Class<V> keyType, Object... values) {
@@ -214,7 +216,7 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 	}
 
 	/** Skips checks for existing keys. */
-	private void putResize(int key, V value) {
+	protected void putResize(int key, V value) {
 		if (key == 0) {
 			zeroValue = value;
 			hasZeroValue = true;
@@ -252,7 +254,7 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 		push(key, value, index1, key1, index2, key2, index3, key3);
 	}
 
-	private void push(int insertKey, V insertValue, int index1, int key1, int index2, int key2, int index3, int key3) {
+	protected void push(int insertKey, V insertValue, int index1, int key1, int index2, int key2, int index3, int key3) {
 		// Push keys until an empty bucket is found.
 		int evictedKey;
 		V evictedValue;
@@ -317,7 +319,7 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 		putStash(evictedKey, evictedValue);
 	}
 
-	private void putStash(int key, V value) {
+	protected void putStash(int key, V value) {
 		if (stashSize == stashCapacity) {
 			// Too many pushes occurred and the stash is full, increase the table size.
 			resize(capacity << 1);
@@ -373,7 +375,7 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 		return valueTable[index];
 	}
 
-	private V getStash(int key, V defaultValue) {
+	protected V getStash(int key, V defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (keyTable[i] == key) return valueTable[i];
 		return defaultValue;
@@ -419,7 +421,7 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 		return removeStash(key);
 	}
 
-	V removeStash(int key) {
+	protected V removeStash(int key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
 			if (keyTable[i] == key) {
 				V oldValue = valueTable[i];
@@ -431,7 +433,7 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 		return null;
 	}
 
-	void removeStashIndex(int index) {
+	protected void removeStashIndex(int index) {
 		// If the removed location was not last, move the last tuple to the removed location.
 		stashSize--;
 		int lastIndex = capacity + stashSize;
@@ -521,7 +523,7 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 		return true;
 	}
 
-	private boolean containsKeyStash(int key) {
+	protected boolean containsKeyStash(int key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (keyTable[i] == key) return true;
 		return false;
@@ -563,7 +565,7 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 	}
 
 	@SuppressWarnings("unchecked")
-	private void resize(int newSize) {
+	protected void resize(int newSize) {
 		int oldEndIndex = capacity + stashSize;
 
 		capacity = newSize;
@@ -590,12 +592,12 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 		}
 	}
 
-	private int hash2(int h) {
+	protected int hash2(int h) {
 		h *= PRIME2;
 		return (h ^ h >>> hashShift) & mask;
 	}
 
-	private int hash3(int h) {
+	protected int hash3(int h) {
 		h *= PRIME3;
 		return (h ^ h >>> hashShift) & mask;
 	}
@@ -746,15 +748,13 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 		return keys2;
 	}
 
-	private static class MapIterator<V> {
-		static final int INDEX_ILLEGAL = -2;
-		static final int INDEX_ZERO = -1;
-		final IntMap2<V> map;
+	protected static class MapIterator<V> {
+		protected final IntMap2<V> map;
 
 		public boolean hasNext;
 
-		int nextIndex, currentIndex;
-		boolean valid = true;
+		protected int nextIndex, currentIndex;
+		protected boolean valid = true;
 
 		public MapIterator(IntMap2<V> map) {
 			this.map = map;
@@ -770,7 +770,7 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 				findNextIndex();
 		}
 
-		void findNextIndex() {
+		protected void findNextIndex() {
 			hasNext = false;
 			int[] keyTable = map.keyTable;
 			for (int n = map.capacity + map.stashSize; ++nextIndex < n; ) {
@@ -801,7 +801,7 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 	}
 
 	public static class Entries<V> extends MapIterator<V> implements Iterable<IntHolder<V>>, Iterator<IntHolder<V>> {
-		IntHolder<V> entry = new IntHolder<>();
+		protected IntHolder<V> entry = new IntHolder<>();
 
 		public Entries(IntMap2<V> map) {
 			super(map);

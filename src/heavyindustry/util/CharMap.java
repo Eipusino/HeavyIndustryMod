@@ -14,6 +14,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import static heavyindustry.util.Constant.EMPTY;
+import static heavyindustry.util.Constant.INDEX_ILLEGAL;
+import static heavyindustry.util.Constant.INDEX_ZERO;
 import static heavyindustry.util.Constant.PRIME2;
 import static heavyindustry.util.Constant.PRIME3;
 
@@ -32,20 +34,20 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 
 	public final Class<?> valueComponentType;
 
-	char[] keyTable;
-	V[] valueTable;
-	int capacity, stashSize;
-	V zeroValue;
-	boolean hasZeroValue;
+	protected char[] keyTable;
+	protected V[] valueTable;
+	protected int capacity, stashSize;
+	protected V zeroValue;
+	protected boolean hasZeroValue;
 
-	float loadFactor;
-	int hashShift, mask, threshold;
-	int stashCapacity;
-	int pushIterations;
+	protected float loadFactor;
+	protected int hashShift, mask, threshold;
+	protected int stashCapacity;
+	protected int pushIterations;
 
-	Entries<V> entries1, entries2;
-	Values<V> values1, values2;
-	Keys<V> keys1, keys2;
+	protected Entries<V> entries1, entries2;
+	protected Values<V> values1, values2;
+	protected Keys<V> keys1, keys2;
 
 	@SuppressWarnings("unchecked")
 	public static <V> CharMap<V> of(Class<V> valueType, Object... values) {
@@ -214,7 +216,7 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 	}
 
 	/** Skips checks for existing keys. */
-	void putResize(char key, V value) {
+	protected void putResize(char key, V value) {
 		if (key == 0) {
 			zeroValue = value;
 			hasZeroValue = true;
@@ -252,7 +254,7 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 		push(key, value, index1, key1, index2, key2, index3, key3);
 	}
 
-	void push(char insertKey, V insertValue, int index1, char key1, int index2, char key2, int index3, char key3) {
+	protected void push(char insertKey, V insertValue, int index1, char key1, int index2, char key2, int index3, char key3) {
 		// Push keys until an empty bucket is found.
 		char evictedKey;
 		V evictedValue;
@@ -317,7 +319,7 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 		putStash(evictedKey, evictedValue);
 	}
 
-	void putStash(char key, V value) {
+	protected void putStash(char key, V value) {
 		if (stashSize == stashCapacity) {
 			// Too many pushes occurred and the stash is full, increase the table size.
 			resize(capacity << 1);
@@ -373,7 +375,7 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 		return valueTable[index];
 	}
 
-	V getStash(char key, V defaultValue) {
+	protected V getStash(char key, V defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (keyTable[i] == key) return valueTable[i];
 		return defaultValue;
@@ -419,7 +421,7 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 		return removeStash(key);
 	}
 
-	V removeStash(char key) {
+	protected V removeStash(char key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
 			if (keyTable[i] == key) {
 				V oldValue = valueTable[i];
@@ -431,7 +433,7 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 		return null;
 	}
 
-	void removeStashIndex(int index) {
+	protected void removeStashIndex(int index) {
 		// If the removed location was not last, move the last tuple to the removed location.
 		stashSize--;
 		int lastIndex = capacity + stashSize;
@@ -521,7 +523,7 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 		return true;
 	}
 
-	boolean containsKeyStash(char key) {
+	protected boolean containsKeyStash(char key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (keyTable[i] == key) return true;
 		return false;
@@ -563,7 +565,7 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 	}
 
 	@SuppressWarnings("unchecked")
-	void resize(int newSize) {
+	protected void resize(int newSize) {
 		int oldEndIndex = capacity + stashSize;
 
 		capacity = newSize;
@@ -590,12 +592,12 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 		}
 	}
 
-	int hash2(int h) {
+	protected int hash2(int h) {
 		h *= PRIME2;
 		return (h ^ h >>> hashShift) & mask;
 	}
 
-	int hash3(int h) {
+	protected int hash3(int h) {
 		h *= PRIME3;
 		return (h ^ h >>> hashShift) & mask;
 	}
@@ -746,13 +748,11 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 		return keys2;
 	}
 
-	static class MapIterator<V> {
-		static final int INDEX_ILLEGAL = -2;
-		static final int INDEX_ZERO = -1;
-		final CharMap<V> map;
+	protected static class MapIterator<V> {
+		protected final CharMap<V> map;
 		public boolean hasNext;
-		int nextIndex, currentIndex;
-		boolean valid = true;
+		protected int nextIndex, currentIndex;
+		protected boolean valid = true;
 
 		public MapIterator(CharMap<V> map) {
 			this.map = map;
@@ -799,7 +799,7 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 	}
 
 	public static class Entries<V> extends MapIterator<V> implements Iterable<CharHolder<V>>, Iterator<CharHolder<V>> {
-		CharHolder<V> entry = new CharHolder<>();
+		protected CharHolder<V> entry = new CharHolder<>();
 
 		public Entries(CharMap<V> map) {
 			super(map);

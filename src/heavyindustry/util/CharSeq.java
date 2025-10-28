@@ -1,8 +1,6 @@
 package heavyindustry.util;
 
 import arc.math.Mathf;
-import arc.math.geom.Vec2;
-import arc.struct.Seq;
 import arc.util.Strings;
 
 import java.util.Arrays;
@@ -14,7 +12,7 @@ import java.util.Arrays;
  * @author Nathan Sweet
  * @author Eipusino
  */
-public class CharSeq implements CharSequence, Appendable {
+public class CharSeq implements CharSequence, Appendable, Cloneable {
 	public char[] items;
 	public int size;
 	public boolean ordered;
@@ -77,13 +75,16 @@ public class CharSeq implements CharSequence, Appendable {
 		return new CharSeq(array);
 	}
 
-	/** Converts this char array to a Vec2 array, with pairs used for coordinates. */
-	public Seq<Vec2> toVec2Array() {
-		Seq<Vec2> out = new Seq<>(true, size / 2, Vec2.class);
-		for (int i = 0; i < size; i += 2) {
-			out.add(new Vec2(items[i], items[i + 1]));
+	public CharSeq copy() {
+		try {
+			CharSeq out = (CharSeq) super.clone();
+
+			out.items = new char[size];
+			System.arraycopy(items, 0, out.items, 0, size);
+			return out;
+		} catch (CloneNotSupportedException e) {
+			return new CharSeq(this);
 		}
-		return out;
 	}
 
 	public void add(char value) {
@@ -137,8 +138,45 @@ public class CharSeq implements CharSequence, Appendable {
 		size += length;
 	}
 
-	public void addAll(String str) {
-		addAll(str.toCharArray());
+	public void add(String str) {
+		if (str == null) return;
+
+		add(str, 0, str.length());
+	}
+
+	public void add(String str, int start, int end) {
+		if (str == null || start < 0 || start > end) return;
+
+		int length = end - start;
+		if (length == 0) return;
+
+		int sizeNeeded = size + length;
+		if (sizeNeeded > items.length) resize(Math.max(8, (int) (sizeNeeded * 1.75f)));
+
+		str.getChars(start, end, items, size);
+		size += length;
+	}
+
+	public void addAll(String... array) {
+		if (array == null) return;
+
+		int totalLength = 0;
+		for (String str : array) {
+			totalLength += str == null ? 0 : str.length();
+		}
+
+		if (totalLength == 0) return;
+
+		int sizeNeeded = size + totalLength;
+		if (sizeNeeded > items.length) resize(Math.max(8, (int) (sizeNeeded * 1.75f)));
+
+		for (String str : array) {
+			if (str != null && !str.isEmpty()) {
+				int length = str.length();
+				str.getChars(0, length, items, size);
+				size += length;
+			}
+		}
 	}
 
 	public char get(int index) {
@@ -281,20 +319,21 @@ public class CharSeq implements CharSequence, Appendable {
 
 	@Override
 	public char charAt(int index) {
+		if (index < 0 || index >= size)
+			throw new StringIndexOutOfBoundsException(Strings.format("index @, size @", index, size));
+
 		return items[index];
 	}
 
 	@Override
 	public CharSeq subSequence(int start, int end) {
 		if (start < 0 || start > end || end > size)
-			throw new IndexOutOfBoundsException(Strings.format("start: @, end: @, the items size: @.", start, end, size));
-		if (start == end) return new CharSeq();// size 0
+			throw new IndexOutOfBoundsException(Strings.format("start @, end @, size @", start, end, size));
+		if (start == end) return new CharSeq(0);
 
-		CharSeq seq = new CharSeq( end - start);
-		for (int i = start; i < end; i++) {
-			seq.add(items[i]);
-		}
-		return seq;
+		CharSeq out = new CharSeq( end - start);
+		System.arraycopy(items, start, out.items, 0, end - start);
+		return out;
 	}
 
 	@Override
@@ -317,7 +356,7 @@ public class CharSeq implements CharSequence, Appendable {
 	@Override
 	public CharSeq append(CharSequence csq) {
 		if (csq == null) {
-			addAll("null");
+			add("null");
 		} else {
 			for (int i = 0; i < csq.length(); i++) {
 				add(csq.charAt(i));
@@ -330,7 +369,7 @@ public class CharSeq implements CharSequence, Appendable {
 	@Override
 	public CharSeq append(CharSequence csq, int start, int end) {
 		if (csq == null) {
-			addAll("null");
+			add("null");
 		} else {
 			for (int i = start; i < end; i++) {
 				add(csq.charAt(i));

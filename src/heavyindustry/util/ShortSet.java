@@ -8,22 +8,24 @@ import heavyindustry.func.Shortc;
 import java.util.NoSuchElementException;
 
 import static heavyindustry.util.Constant.EMPTY;
+import static heavyindustry.util.Constant.INDEX_ILLEGAL;
+import static heavyindustry.util.Constant.INDEX_ZERO;
 import static heavyindustry.util.Constant.PRIME2;
 import static heavyindustry.util.Constant.PRIME3;
 
 public class ShortSet {
 	public int size;
 
-	short[] keyTable;
-	int capacity, stashSize;
-	boolean hasZeroValue;
+	protected short[] keyTable;
+	protected int capacity, stashSize;
+	protected boolean hasZeroValue;
 
-	float loadFactor;
-	int hashShift, mask, threshold;
-	int stashCapacity;
-	int pushIterations;
+	protected float loadFactor;
+	protected int hashShift, mask, threshold;
+	protected int stashCapacity;
+	protected int pushIterations;
 
-	ShortSetIterator iterator1, iterator2;
+	protected ShortSetIterator iterator1, iterator2;
 
 	/** Creates a new set with an initial capacity of 51 and a load factor of 0.8. */
 	public ShortSet() {
@@ -163,7 +165,7 @@ public class ShortSet {
 	}
 
 	/** Skips checks for existing keys. */
-	private void addResize(short key) {
+	protected void addResize(short key) {
 		if (key == 0) {
 			hasZeroValue = true;
 			return;
@@ -197,7 +199,7 @@ public class ShortSet {
 		push(key, index1, key1, index2, key2, index3, key3);
 	}
 
-	private void push(short insertKey, int index1, short key1, int index2, short key2, int index3, short key3) {
+	protected void push(short insertKey, int index1, short key1, int index2, short key2, int index3, short key3) {
 		// Push keys until an empty bucket is found.
 		short evictedKey;
 		int i = 0;
@@ -251,7 +253,7 @@ public class ShortSet {
 		addStash(evictedKey);
 	}
 
-	private void addStash(short key) {
+	protected void addStash(short key) {
 		if (stashSize == stashCapacity) {
 			// Too many pushes occurred and the stash is full, increase the table size.
 			resize(capacity << 1);
@@ -298,7 +300,7 @@ public class ShortSet {
 		return removeStash(key);
 	}
 
-	boolean removeStash(short key) {
+	protected boolean removeStash(short key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
 			if (keyTable[i] == key) {
 				removeStashIndex(i);
@@ -309,7 +311,7 @@ public class ShortSet {
 		return false;
 	}
 
-	void removeStashIndex(int index) {
+	protected void removeStashIndex(int index) {
 		// If the removed location was not last, move the last tuple to the removed location.
 		stashSize--;
 		int lastIndex = capacity + stashSize;
@@ -366,7 +368,7 @@ public class ShortSet {
 		return true;
 	}
 
-	private boolean containsKeyStash(short key) {
+	protected boolean containsKeyStash(short key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (keyTable[i] == key) return true;
 		return false;
@@ -390,7 +392,7 @@ public class ShortSet {
 		if (sizeNeeded >= threshold) resize(Mathf.nextPowerOfTwo((int) Math.ceil(sizeNeeded / loadFactor)));
 	}
 
-	private void resize(int newSize) {
+	protected void resize(int newSize) {
 		int oldEndIndex = capacity + stashSize;
 
 		capacity = newSize;
@@ -415,12 +417,12 @@ public class ShortSet {
 		}
 	}
 
-	private int hash2(int h) {
+	protected int hash2(int h) {
 		h *= PRIME2;
 		return (h ^ h >>> hashShift) & mask;
 	}
 
-	private int hash3(int h) {
+	protected int hash3(int h) {
 		h *= PRIME3;
 		return (h ^ h >>> hashShift) & mask;
 	}
@@ -491,12 +493,12 @@ public class ShortSet {
 	}
 
 	public static class ShortSetIterator {
-		static final int INDEX_ILLEGAL = -2;
-		static final int INDEX_ZERO = -1;
-		final ShortSet set;
+		protected final ShortSet set;
+
 		public boolean hasNext;
-		int nextIndex, currentIndex;
-		boolean valid = true;
+
+		protected int nextIndex, currentIndex;
+		protected boolean valid = true;
 
 		public ShortSetIterator(ShortSet set) {
 			this.set = set;
@@ -512,7 +514,7 @@ public class ShortSet {
 				findNextIndex();
 		}
 
-		void findNextIndex() {
+		protected void findNextIndex() {
 			hasNext = false;
 			short[] keyTable = set.keyTable;
 			for (int n = set.capacity + set.stashSize; ++nextIndex < n; ) {

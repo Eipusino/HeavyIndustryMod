@@ -21,12 +21,12 @@ import java.util.NoSuchElementException;
  * @see Vec2
  */
 public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
-	final FloatSeq coordinates;
+	protected final FloatSeq coordinates;
 
-	final Vec2 tmp = new Vec2();
+	protected final Vec2 tmp = new Vec2();
 
-	Seq<Vec2> seq;
-	Iter iterator1, iterator2;
+	protected Seq<Vec2> seq;
+	protected Iter iterator1, iterator2;
 
 	public Vec2Seq() {
 		coordinates = new FloatSeq(true, 8);
@@ -241,10 +241,10 @@ public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 	}
 
 	public static class Iter implements Iterator<Vec2> {
-		final Vec2Seq array;
+		protected final Vec2Seq array;
 
-		int index;
-		boolean done = true;
+		protected int index;
+		protected boolean done = true;
 
 		public Iter(Vec2Seq seq) {
 			array = seq;

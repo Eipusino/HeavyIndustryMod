@@ -7,6 +7,8 @@ import heavyindustry.func.Charc;
 import java.util.NoSuchElementException;
 
 import static heavyindustry.util.Constant.EMPTY;
+import static heavyindustry.util.Constant.INDEX_ILLEGAL;
+import static heavyindustry.util.Constant.INDEX_ZERO;
 import static heavyindustry.util.Constant.PRIME2;
 import static heavyindustry.util.Constant.PRIME3;
 
@@ -23,16 +25,16 @@ import static heavyindustry.util.Constant.PRIME3;
 public class CharSet {
 	public int size;
 
-	char[] keyTable;
-	int capacity, stashSize;
-	boolean hasZeroValue;
+	protected char[] keyTable;
+	protected int capacity, stashSize;
+	protected boolean hasZeroValue;
 
-	float loadFactor;
-	int hashShift, mask, threshold;
-	int stashCapacity;
-	int pushIterations;
+	protected float loadFactor;
+	protected int hashShift, mask, threshold;
+	protected int stashCapacity;
+	protected int pushIterations;
 
-	CharSetIterator iterator1, iterator2;
+	protected CharSetIterator iterator1, iterator2;
 
 	/** Creates a new set with an initial capacity of 51 and a load factor of 0.8. */
 	public CharSet() {
@@ -172,7 +174,7 @@ public class CharSet {
 	}
 
 	/** Skips checks for existing keys. */
-	void addResize(char key) {
+	protected void addResize(char key) {
 		if (key == 0) {
 			hasZeroValue = true;
 			return;
@@ -206,7 +208,7 @@ public class CharSet {
 		push(key, index1, key1, index2, key2, index3, key3);
 	}
 
-	void push(char insertKey, int index1, char key1, int index2, char key2, int index3, char key3) {
+	protected void push(char insertKey, int index1, char key1, int index2, char key2, int index3, char key3) {
 		// Push keys until an empty bucket is found.
 		char evictedKey;
 		int i = 0;
@@ -260,7 +262,7 @@ public class CharSet {
 		addStash(evictedKey);
 	}
 
-	void addStash(char key) {
+	protected void addStash(char key) {
 		if (stashSize == stashCapacity) {
 			// Too many pushes occurred and the stash is full, increase the table size.
 			resize(capacity << 1);
@@ -307,7 +309,7 @@ public class CharSet {
 		return removeStash(key);
 	}
 
-	boolean removeStash(char key) {
+	protected boolean removeStash(char key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
 			if (keyTable[i] == key) {
 				removeStashIndex(i);
@@ -318,7 +320,7 @@ public class CharSet {
 		return false;
 	}
 
-	void removeStashIndex(int index) {
+	protected void removeStashIndex(int index) {
 		// If the removed location was not last, move the last tuple to the removed location.
 		stashSize--;
 		int lastIndex = capacity + stashSize;
@@ -375,7 +377,7 @@ public class CharSet {
 		return true;
 	}
 
-	boolean containsKeyStash(char key) {
+	protected boolean containsKeyStash(char key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (keyTable[i] == key) return true;
 		return false;
@@ -399,7 +401,7 @@ public class CharSet {
 		if (sizeNeeded >= threshold) resize(Mathf.nextPowerOfTwo((int) Math.ceil(sizeNeeded / loadFactor)));
 	}
 
-	void resize(int newSize) {
+	protected void resize(int newSize) {
 		int oldEndIndex = capacity + stashSize;
 
 		capacity = newSize;
@@ -424,12 +426,12 @@ public class CharSet {
 		}
 	}
 
-	int hash2(int h) {
+	protected int hash2(int h) {
 		h *= PRIME2;
 		return (h ^ h >>> hashShift) & mask;
 	}
 
-	int hash3(int h) {
+	protected int hash3(int h) {
 		h *= PRIME3;
 		return (h ^ h >>> hashShift) & mask;
 	}
@@ -500,14 +502,11 @@ public class CharSet {
 	}
 
 	public static class CharSetIterator {
-		static final int INDEX_ILLEGAL = -2;
-		static final int INDEX_ZERO = -1;
-
-		final CharSet set;
+		protected final CharSet set;
 
 		public boolean hasNext;
-		int nextIndex, currentIndex;
-		boolean valid = true;
+		protected int nextIndex, currentIndex;
+		protected boolean valid = true;
 
 		public CharSetIterator(CharSet set) {
 			this.set = set;
@@ -523,7 +522,7 @@ public class CharSet {
 				findNextIndex();
 		}
 
-		void findNextIndex() {
+		protected void findNextIndex() {
 			hasNext = false;
 			char[] keyTable = set.keyTable;
 			for (int n = set.capacity + set.stashSize; ++nextIndex < n; ) {

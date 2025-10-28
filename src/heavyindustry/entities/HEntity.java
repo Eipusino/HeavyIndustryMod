@@ -844,7 +844,7 @@ public final class HEntity {
 	}
 
 	public static void setAdded(Entityc entity, boolean value) {
-		Field field = addedFieldMap.get(entity.getClass(), () -> ReflectUtils.findClassField(entity.getClass(), "added"));
+		Field field = addedFieldMap.get(entity.getClass(), () -> ReflectUtils.findField(entity.getClass(), "added"));
 
 		if (field != null) {
 			try {
@@ -857,7 +857,7 @@ public final class HEntity {
 	}
 
 	public static void findSound(Building build, Cons<SoundLoop> cons) {
-		Field field = soundFieldMap.get(build.getClass(), () -> ReflectUtils.findClassField(build.getClass(), f -> f.getType() == SoundLoop.class));
+		Field field = soundFieldMap.get(build.getClass(), () -> ReflectUtils.findField(build.getClass(), f -> f.getType() == SoundLoop.class));
 
 		if (field != null) {
 			try {

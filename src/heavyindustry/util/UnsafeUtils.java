@@ -45,9 +45,10 @@ public final class UnsafeUtils {
 	 * Retrieve the value of a field through {@code Unsafe}. If the field is {@code static}, object can be {@code null}.
 	 * Otherwise, {@code object} must not be {@code null} and be an instance of {@code field.getDeclaringClass()}.
 	 *
-	 * @throws IllegalArgumentException If the field type is a primitive type.
-	 * @throws ClassCastException If the field is not {@code static} and the {@code object} is not an
-	 *                                  instance of {@code field.getDeclaringClass()} or {@code null}.
+	 * @throws IllegalArgumentException If any of the following  is true:
+	 *                                  <ul><li>If the field type is a primitive type.
+	 *                                  <li>If the field is not {@code static} and the {@code object} is not an
+	 *                                                                   instance of {@code field.getDeclaringClass()} or {@code null}.</ul>
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getObject(Field field, Object object) {
@@ -77,9 +78,10 @@ public final class UnsafeUtils {
 	 * Retrieve the value of a field through {@code Unsafe}. If the field is {@code static}, object can be {@code null}.
 	 * Otherwise, {@code object} must not be {@code null} and be an instance of {@code field.getDeclaringClass()}.
 	 *
-	 * @throws IllegalArgumentException If the field type is not boolean.
-	 * @throws ClassCastException If the field is not {@code static} and the {@code object} is not an
-	 *                                  instance of {@code field.getDeclaringClass()} or {@code null}.
+	 * @throws IllegalArgumentException If any of the following  is true:
+	 *                                  <ul><li>If the field type is not boolean.
+	 *                                  <li>If the field is not {@code static} and the {@code object} is not an
+	 *                                  instance of {@code field.getDeclaringClass()} or {@code null}.</ul>
 	 */
 	public static boolean getBool(Field field, Object object) {
 		if (field.getType() != boolean.class) throw new IllegalArgumentException("Method 'getBool' does not support field other than boolean types");

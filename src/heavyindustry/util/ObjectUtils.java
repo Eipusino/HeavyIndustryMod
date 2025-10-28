@@ -79,16 +79,16 @@ public final class ObjectUtils {
 
 	/** Used to optimize code conciseness in specific situations. */
 	public static <T> T requireInstance(Class<?> type, T obj) {
-		if (obj != null && !type.isInstance(obj))
-			throw new ClassCastException();
-		return obj;
+		if (obj == null || type.isInstance(obj))
+			return obj;
+		throw new IllegalArgumentException("obj cannot be casted to " + type.getName());
 	}
 
 	/** Used to optimize code conciseness in specific situations. */
 	public static <T> T requireNonNullInstance(Class<?> type, T obj) {
-		if (!type.isInstance(obj))
-			throw new ClassCastException();
-		return obj;
+		if (type.isInstance(obj))
+			return obj;
+		throw new IllegalArgumentException("obj is not an instance of " + type.getName());
 	}
 
 	/**
@@ -288,7 +288,7 @@ public final class ObjectUtils {
 
 	/**
 	 * Used to optimize code conciseness in specific situations.
-	 * <p>You must ensure that {@code obj} can be safely converted to {@link T}.
+	 * <p>You must ensure that {@code obj} can be safely cast to {@link T}.
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T as(Object obj) {
@@ -297,7 +297,7 @@ public final class ObjectUtils {
 
 	/**
 	 * Used to optimize code conciseness in specific situations.
-	 * <p>If {@code obj} cannot be converted to {@link T}, return {@code def}.
+	 * <p>If {@code obj} cannot be cast to {@link T}, return {@code def}.
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T as(Object obj, Class<T> type, T def) {

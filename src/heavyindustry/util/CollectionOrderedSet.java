@@ -131,7 +131,7 @@ public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
 	}
 
 	public static class OrderedIter<E> extends Iter<E> {
-		final CollectionOrderedSet<E> set;
+		protected final CollectionOrderedSet<E> set;
 
 		public OrderedIter(CollectionOrderedSet<E> s) {
 			super(s);

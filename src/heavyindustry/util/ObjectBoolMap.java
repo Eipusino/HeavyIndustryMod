@@ -24,14 +24,14 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 	public boolean[] valueTable;
 	public int capacity, stashSize;
 
-	float loadFactor;
-	int hashShift, mask, threshold;
-	int stashCapacity;
-	int pushIterations;
+	protected float loadFactor;
+	protected int hashShift, mask, threshold;
+	protected int stashCapacity;
+	protected int pushIterations;
 
-	Entries<K> entries1, entries2;
-	Values<K> values1, values2;
-	Keys<K> keys1, keys2;
+	protected Entries<K> entries1, entries2;
+	protected Values<K> values1, values2;
+	protected Keys<K> keys1, keys2;
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
 	public ObjectBoolMap(Class<?> keyType) {
@@ -164,7 +164,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 	}
 
 	/** Skips checks for existing keys. */
-	private void putResize(K key, boolean value) {
+	protected void putResize(K key, boolean value) {
 		if (key == null) return;
 
 		// Check for empty buckets.
@@ -199,7 +199,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		push(key, value, index1, key1, index2, key2, index3, key3);
 	}
 
-	private void push(K insertKey, boolean insertValue, int index1, K key1, int index2, K key2, int index3, K key3) {
+	protected void push(K insertKey, boolean insertValue, int index1, K key1, int index2, K key2, int index3, K key3) {
 		// Push keys until an empty bucket is found.
 		K evictedKey;
 		boolean evictedValue;
@@ -265,7 +265,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		putStash(evictedKey, evictedValue);
 	}
 
-	private void putStash(K key, boolean value) {
+	protected void putStash(K key, boolean value) {
 		if (stashSize == stashCapacity) {
 			// Too many pushes occurred and the stash is full, increase the table size.
 			resize(capacity << 1);
@@ -300,7 +300,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		return valueTable[index];
 	}
 
-	private boolean getStash(Object key, boolean defaultValue) {
+	protected boolean getStash(Object key, boolean defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return valueTable[i];
 		return defaultValue;
@@ -341,7 +341,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		return removeStash(key, defaultValue);
 	}
 
-	boolean removeStash(K key, boolean defaultValue) {
+	protected boolean removeStash(K key, boolean defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
 			if (key.equals(keyTable[i])) {
 				boolean oldValue = valueTable[i];
@@ -353,7 +353,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		return defaultValue;
 	}
 
-	void removeStashIndex(int index) {
+	protected void removeStashIndex(int index) {
 		// If the removed location was not last, move the last tuple to the removed location.
 		stashSize--;
 		int lastIndex = capacity + stashSize;
@@ -425,7 +425,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		return true;
 	}
 
-	private boolean containsKeyStash(Object key) {
+	protected boolean containsKeyStash(Object key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return true;
 		return false;
@@ -453,7 +453,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 	}
 
 	@SuppressWarnings("unchecked")
-	private void resize(int newSize) {
+	protected void resize(int newSize) {
 		int oldEndIndex = capacity + stashSize;
 
 		capacity = newSize;
@@ -480,12 +480,12 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		}
 	}
 
-	private int hash2(int h) {
+	protected int hash2(int h) {
 		h *= PRIME2;
 		return (h ^ h >>> hashShift) & mask;
 	}
 
-	private int hash3(int h) {
+	protected int hash3(int h) {
 		h *= PRIME3;
 		return (h ^ h >>> hashShift) & mask;
 	}
@@ -618,12 +618,12 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 	}
 
 	private static class MapIterator<K> {
-		final ObjectBoolMap<K> map;
+		protected final ObjectBoolMap<K> map;
 
 		public boolean hasNext;
 
-		int nextIndex, currentIndex;
-		boolean valid = true;
+		protected int nextIndex, currentIndex;
+		protected boolean valid = true;
 
 		public MapIterator(ObjectBoolMap<K> map) {
 			this.map = map;
@@ -636,7 +636,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 			findNextIndex();
 		}
 
-		void findNextIndex() {
+		protected void findNextIndex() {
 			hasNext = false;
 			K[] keyTable = map.keyTable;
 			for (int n = map.capacity + map.stashSize; ++nextIndex < n; ) {
@@ -662,7 +662,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 	}
 
 	public static class Entries<K> extends MapIterator<K> implements Iterable<ObjectBoolHolder<K>>, Iterator<ObjectBoolHolder<K>> {
-		ObjectBoolHolder<K> entry = new ObjectBoolHolder<>();
+		protected ObjectBoolHolder<K> entry = new ObjectBoolHolder<>();
 
 		public Entries(ObjectBoolMap<K> map) {
 			super(map);

@@ -15,6 +15,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import static heavyindustry.util.Constant.EMPTY;
+import static heavyindustry.util.Constant.INDEX_ILLEGAL;
+import static heavyindustry.util.Constant.INDEX_ZERO;
 import static heavyindustry.util.Constant.PRIME2;
 import static heavyindustry.util.Constant.PRIME3;
 
@@ -29,14 +31,14 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 	public V zeroValue;
 	public boolean hasZeroValue;
 
-	float loadFactor;
-	int hashShift, mask, threshold;
-	int stashCapacity;
-	int pushIterations;
+	protected float loadFactor;
+	protected int hashShift, mask, threshold;
+	protected int stashCapacity;
+	protected int pushIterations;
 
-	Entries<V> entries1, entries2;
-	Values<V> values1, values2;
-	Keys<V> keys1, keys2;
+	protected Entries<V> entries1, entries2;
+	protected Values<V> values1, values2;
+	protected Keys<V> keys1, keys2;
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
 	public LongMap2(Class<?> keyType) {
@@ -194,7 +196,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 	}
 
 	/** Skips checks for existing keys. */
-	private void putResize(long key, V value) {
+	protected void putResize(long key, V value) {
 		if (key == 0) {
 			zeroValue = value;
 			hasZeroValue = true;
@@ -232,7 +234,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		push(key, value, index1, key1, index2, key2, index3, key3);
 	}
 
-	private void push(long insertKey, V insertValue, int index1, long key1, int index2, long key2, int index3, long key3) {
+	protected void push(long insertKey, V insertValue, int index1, long key1, int index2, long key2, int index3, long key3) {
 		// Push keys until an empty bucket is found.
 		long evictedKey;
 		V evictedValue;
@@ -297,7 +299,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		putStash(evictedKey, evictedValue);
 	}
 
-	private void putStash(long key, V value) {
+	protected void putStash(long key, V value) {
 		if (stashSize == stashCapacity) {
 			// Too many pushes occurred and the stash is full, increase the table size.
 			resize(capacity << 1);
@@ -344,7 +346,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		return valueTable[index];
 	}
 
-	private V getStash(long key, V defaultValue) {
+	protected V getStash(long key, V defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (keyTable[i] == key) return valueTable[i];
 		return defaultValue;
@@ -390,7 +392,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		return removeStash(key);
 	}
 
-	V removeStash(long key) {
+	protected V removeStash(long key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
 			if (keyTable[i] == key) {
 				V oldValue = valueTable[i];
@@ -402,7 +404,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		return null;
 	}
 
-	void removeStashIndex(int index) {
+	protected void removeStashIndex(int index) {
 		// If the removed location was not last, move the last tuple to the removed location.
 		stashSize--;
 		int lastIndex = capacity + stashSize;
@@ -489,7 +491,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		return true;
 	}
 
-	private boolean containsKeyStash(long key) {
+	protected boolean containsKeyStash(long key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (keyTable[i] == key) return true;
 		return false;
@@ -531,7 +533,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 	}
 
 	@SuppressWarnings("unchecked")
-	private void resize(int newSize) {
+	protected void resize(int newSize) {
 		int oldEndIndex = capacity + stashSize;
 
 		capacity = newSize;
@@ -558,12 +560,12 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		}
 	}
 
-	private int hash2(long h) {
+	protected int hash2(long h) {
 		h *= PRIME2;
 		return (int) ((h ^ h >>> hashShift) & mask);
 	}
 
-	private int hash3(long h) {
+	protected int hash3(long h) {
 		h *= PRIME3;
 		return (int) ((h ^ h >>> hashShift) & mask);
 	}
@@ -690,7 +692,6 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 
 	public void eachValue(Cons<V> cons) {
 		boolean hasNext = false;
-		final int INDEX_ZERO = -1;
 
 		int nextIndex = INDEX_ZERO;
 
@@ -739,15 +740,13 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		return keys2;
 	}
 
-	private static class MapIterator<V> {
-		static final int INDEX_ILLEGAL = -2;
-		static final int INDEX_ZERO = -1;
-		final LongMap2<V> map;
+	protected static class MapIterator<V> {
+		protected final LongMap2<V> map;
 
 		public boolean hasNext;
 
-		int nextIndex, currentIndex;
-		boolean valid = true;
+		protected int nextIndex, currentIndex;
+		protected boolean valid = true;
 
 		public MapIterator(LongMap2<V> map) {
 			this.map = map;
@@ -763,7 +762,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 				findNextIndex();
 		}
 
-		void findNextIndex() {
+		protected void findNextIndex() {
 			hasNext = false;
 			long[] keyTable = map.keyTable;
 			for (int n = map.capacity + map.stashSize; ++nextIndex < n; ) {
@@ -794,7 +793,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 	}
 
 	public static class Entries<V> extends MapIterator<V> implements Iterable<LongHolder<V>>, Iterator<LongHolder<V>> {
-		LongHolder<V> entry = new LongHolder<>();
+		protected LongHolder<V> entry = new LongHolder<>();
 
 		public Entries(LongMap2<V> map) {
 			super(map);

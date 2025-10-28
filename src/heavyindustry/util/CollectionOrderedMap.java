@@ -145,7 +145,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 	}
 
 	public static class OrderedMapEntries<K, V> extends Entries<K, V> {
-		CollectionList<K> keys;
+		protected CollectionList<K> keys;
 
 		public OrderedMapEntries(CollectionOrderedMap<K, V> map) {
 			super(map);
@@ -178,7 +178,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 	}
 
 	public static class OrderedMapKeys<K, V> extends Keys<K, V> {
-		CollectionList<K> keys;
+		protected CollectionList<K> keys;
 
 		public OrderedMapKeys(CollectionOrderedMap<K, V> map) {
 			super(map);
@@ -212,7 +212,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 	}
 
 	public static class OrderedMapValues<K, V> extends Values<K, V> {
-		CollectionList<K> keys;
+		protected CollectionList<K> keys;
 
 		public OrderedMapValues(CollectionOrderedMap<K, V> map) {
 			super(map);

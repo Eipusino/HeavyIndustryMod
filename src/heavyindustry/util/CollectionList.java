@@ -49,7 +49,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	public int size;
 	public boolean ordered;
 
-	Iter<E> iterator1, iterator2, lastIterator1, lastIterator2;
+	protected Iter<E> iterator1, iterator2, lastIterator1, lastIterator2;
 
 	/** Creates an ordered array with a capacity of 16. */
 	public CollectionList(Class<?> type) {

@@ -3,6 +3,8 @@ package heavyindustry.util;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class AtomicDouble extends Number {
+	private static final long serialVersionUID = 4461617770826287723l;
+
 	protected final AtomicLong bits;
 
 	public AtomicDouble() {
@@ -88,6 +90,16 @@ public class AtomicDouble extends Number {
 	@Override
 	public long longValue() {
 		return (long) get();
+	}
+
+	@Override
+	public byte byteValue() {
+		return (byte) get();
+	}
+
+	@Override
+	public short shortValue() {
+		return (short) get();
 	}
 
 	@Override

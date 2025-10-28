@@ -35,14 +35,14 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 	public float[] valueTable;
 	public int capacity, stashSize;
 
-	float loadFactor;
-	int hashShift, mask, threshold;
-	int stashCapacity;
-	int pushIterations;
+	protected float loadFactor;
+	protected int hashShift, mask, threshold;
+	protected int stashCapacity;
+	protected int pushIterations;
 
-	Entries<K> entries1, entries2;
-	Values<K> values1, values2;
-	Keys<K> keys1, keys2;
+	protected Entries<K> entries1, entries2;
+	protected Values<K> values1, values2;
+	protected Keys<K> keys1, keys2;
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
 	public ObjectFloatMap2(Class<?> keyType) {
@@ -167,7 +167,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 	}
 
 	/** Skips checks for existing keys. */
-	private void putResize(K key, float value) {
+	protected void putResize(K key, float value) {
 		if (key == null) return;
 
 		// Check for empty buckets.
@@ -202,7 +202,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 		push(key, value, index1, key1, index2, key2, index3, key3);
 	}
 
-	private void push(K insertKey, float insertValue, int index1, K key1, int index2, K key2, int index3, K key3) {
+	protected void push(K insertKey, float insertValue, int index1, K key1, int index2, K key2, int index3, K key3) {
 		// Push keys until an empty bucket is found.
 		K evictedKey;
 		float evictedValue;
@@ -268,7 +268,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 		putStash(evictedKey, evictedValue);
 	}
 
-	private void putStash(K key, float value) {
+	protected void putStash(K key, float value) {
 		if (stashSize == stashCapacity) {
 			// Too many pushes occurred and the stash is full, increase the table size.
 			resize(capacity << 1);
@@ -299,7 +299,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 		return valueTable[index];
 	}
 
-	private float getStash(Object key, float defaultValue) {
+	protected float getStash(Object key, float defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return valueTable[i];
 		return defaultValue;
@@ -326,7 +326,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 		return value;
 	}
 
-	private float getAndIncrementStash(K key, float defaultValue, float increment) {
+	protected float getAndIncrementStash(K key, float defaultValue, float increment) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) {
 				float value = valueTable[i];
@@ -396,7 +396,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 		return removeStash(key, defaultValue);
 	}
 
-	void removeStash(K key) {
+	protected void removeStash(K key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
 			if (key.equals(keyTable[i])) {
 				removeStashIndex(i);
@@ -406,7 +406,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 		}
 	}
 
-	float removeStash(K key, float defaultValue) {
+	protected float removeStash(K key, float defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
 			if (key.equals(keyTable[i])) {
 				float oldValue = valueTable[i];
@@ -418,7 +418,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 		return defaultValue;
 	}
 
-	void removeStashIndex(int index) {
+	protected void removeStashIndex(int index) {
 		// If the removed location was not last, move the last tuple to the removed location.
 		stashSize--;
 		int lastIndex = capacity + stashSize;
@@ -489,7 +489,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 		return true;
 	}
 
-	private boolean containsKeyStash(Object key) {
+	protected boolean containsKeyStash(Object key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return true;
 		return false;
@@ -517,7 +517,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 	}
 
 	@SuppressWarnings("unchecked")
-	private void resize(int newSize) {
+	protected void resize(int newSize) {
 		int oldEndIndex = capacity + stashSize;
 
 		capacity = newSize;
@@ -544,12 +544,12 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 		}
 	}
 
-	private int hash2(int h) {
+	protected int hash2(int h) {
 		h *= PRIME2;
 		return (h ^ h >>> hashShift) & mask;
 	}
 
-	private int hash3(int h) {
+	protected int hash3(int h) {
 		h *= PRIME3;
 		return (h ^ h >>> hashShift) & mask;
 	}
@@ -681,13 +681,13 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 		return keys2;
 	}
 
-	private static class MapIterator<K> {
-		final ObjectFloatMap2<K> map;
+	protected static class MapIterator<K> {
+		protected final ObjectFloatMap2<K> map;
 
 		public boolean hasNext;
 
-		int nextIndex, currentIndex;
-		boolean valid = true;
+		protected int nextIndex, currentIndex;
+		protected boolean valid = true;
 
 		public MapIterator(ObjectFloatMap2<K> map) {
 			this.map = map;
@@ -700,7 +700,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 			findNextIndex();
 		}
 
-		void findNextIndex() {
+		protected void findNextIndex() {
 			hasNext = false;
 			K[] keyTable = map.keyTable;
 			for (int n = map.capacity + map.stashSize; ++nextIndex < n; ) {
@@ -726,7 +726,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 	}
 
 	public static class Entries<K> extends MapIterator<K> implements Iterable<ObjectFloatHolder<K>>, Iterator<ObjectFloatHolder<K>> {
-		ObjectFloatHolder<K> entry = new ObjectFloatHolder<>();
+		protected ObjectFloatHolder<K> entry = new ObjectFloatHolder<>();
 
 		public Entries(ObjectFloatMap2<K> map) {
 			super(map);

@@ -16,13 +16,13 @@ import java.util.TreeSet;
  * When traversing this set, the elements obtained are ordered.
  */
 public class TreeSeq<T> implements Iterable<T> {
-	final LinkedList<T> tmp = new LinkedList<>();
+	protected final LinkedList<T> tmp = new LinkedList<>();
 
-	Comparator<T> comparator;
+	protected Comparator<T> comparator;
 
-	int size;
+	protected int size;
 
-	TreeSet<LinkedList<T>> set;
+	protected TreeSet<LinkedList<T>> set;
 
 	public TreeSeq(Comparator<T> comp) {
 		comparator = comp;
@@ -114,9 +114,9 @@ public class TreeSeq<T> implements Iterable<T> {
 	}
 
 	public class TreeItr implements Iterator<T> {
-		Iterator<LinkedList<T>> itr = set.iterator();
-		Iterator<T> listItr;
-		LinkedList<T> curr;
+		protected Iterator<LinkedList<T>> itr = set.iterator();
+		protected Iterator<T> listItr;
+		protected LinkedList<T> curr;
 
 		@Override
 		public boolean hasNext() {

@@ -15,6 +15,8 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import static heavyindustry.util.Constant.EMPTY;
+import static heavyindustry.util.Constant.INDEX_ILLEGAL;
+import static heavyindustry.util.Constant.INDEX_ZERO;
 import static heavyindustry.util.Constant.PRIME2;
 import static heavyindustry.util.Constant.PRIME3;
 
@@ -29,14 +31,14 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 	public V zeroValue;
 	public boolean hasZeroValue;
 
-	float loadFactor;
-	int hashShift, mask, threshold;
-	int stashCapacity;
-	int pushIterations;
+	protected float loadFactor;
+	protected int hashShift, mask, threshold;
+	protected int stashCapacity;
+	protected int pushIterations;
 
-	Entries<V> entries1, entries2;
-	Values<V> values1, values2;
-	Keys<V> keys1, keys2;
+	protected Entries<V> entries1, entries2;
+	protected Values<V> values1, values2;
+	protected Keys<V> keys1, keys2;
 
 	@SuppressWarnings("unchecked")
 	public static <V> ShortMap<V> of(Class<V> keyType, Object... values) {
@@ -205,7 +207,7 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 	}
 
 	/** Skips checks for existing keys. */
-	private void putResize(short key, V value) {
+	protected void putResize(short key, V value) {
 		if (key == 0) {
 			zeroValue = value;
 			hasZeroValue = true;
@@ -243,7 +245,7 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 		push(key, value, index1, key1, index2, key2, index3, key3);
 	}
 
-	private void push(short insertKey, V insertValue, int index1, short key1, int index2, short key2, int index3, short key3) {
+	protected void push(short insertKey, V insertValue, int index1, short key1, int index2, short key2, int index3, short key3) {
 		// Push keys until an empty bucket is found.
 		short evictedKey;
 		V evictedValue;
@@ -308,7 +310,7 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 		putStash(evictedKey, evictedValue);
 	}
 
-	private void putStash(short key, V value) {
+	protected void putStash(short key, V value) {
 		if (stashSize == stashCapacity) {
 			// Too many pushes occurred and the stash is full, increase the table size.
 			resize(capacity << 1);
@@ -364,7 +366,7 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 		return valueTable[index];
 	}
 
-	private V getStash(short key, V defaultValue) {
+	protected V getStash(short key, V defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (keyTable[i] == key) return valueTable[i];
 		return defaultValue;
@@ -410,7 +412,7 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 		return removeStash(key);
 	}
 
-	V removeStash(short key) {
+	protected V removeStash(short key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
 			if (keyTable[i] == key) {
 				V oldValue = valueTable[i];
@@ -422,7 +424,7 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 		return null;
 	}
 
-	void removeStashIndex(int index) {
+	protected void removeStashIndex(int index) {
 		// If the removed location was not last, move the last tuple to the removed location.
 		stashSize--;
 		int lastIndex = capacity + stashSize;
@@ -512,7 +514,7 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 		return true;
 	}
 
-	private boolean containsKeyStash(short key) {
+	protected boolean containsKeyStash(short key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (keyTable[i] == key) return true;
 		return false;
@@ -554,7 +556,7 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 	}
 
 	@SuppressWarnings("unchecked")
-	private void resize(int newSize) {
+	protected void resize(int newSize) {
 		int oldEndIndex = capacity + stashSize;
 
 		capacity = newSize;
@@ -581,12 +583,12 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 		}
 	}
 
-	private int hash2(int h) {
+	protected int hash2(int h) {
 		h *= PRIME2;
 		return (h ^ h >>> hashShift) & mask;
 	}
 
-	private int hash3(int h) {
+	protected int hash3(int h) {
 		h *= PRIME3;
 		return (h ^ h >>> hashShift) & mask;
 	}
@@ -738,15 +740,13 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 		return keys2;
 	}
 
-	private static class MapIterator<V> {
-		static final int INDEX_ILLEGAL = -2;
-		static final int INDEX_ZERO = -1;
-		final ShortMap<V> map;
+	protected static class MapIterator<V> {
+		protected final ShortMap<V> map;
 
 		public boolean hasNext;
 
-		int nextIndex, currentIndex;
-		boolean valid = true;
+		protected int nextIndex, currentIndex;
+		protected boolean valid = true;
 
 		public MapIterator(ShortMap<V> map) {
 			this.map = map;
@@ -762,7 +762,7 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 				findNextIndex();
 		}
 
-		void findNextIndex() {
+		protected void findNextIndex() {
 			hasNext = false;
 			short[] keyTable = map.keyTable;
 			for (int n = map.capacity + map.stashSize; ++nextIndex < n; ) {
@@ -793,7 +793,7 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 	}
 
 	public static class Entries<V> extends MapIterator<V> implements Iterable<ShortHolder<V>>, Iterator<ShortHolder<V>> {
-		ShortHolder<V> entry = new ShortHolder<>();
+		protected ShortHolder<V> entry = new ShortHolder<>();
 
 		public Entries(ShortMap<V> map) {
 			super(map);

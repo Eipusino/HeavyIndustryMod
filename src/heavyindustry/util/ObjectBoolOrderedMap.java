@@ -136,7 +136,7 @@ public class ObjectBoolOrderedMap<K> extends ObjectBoolMap<K> {
 	}
 
 	public static class OrderedMapEntries<K> extends Entries<K> {
-		CollectionList<K> keys;
+		protected CollectionList<K> keys;
 
 		public OrderedMapEntries(ObjectBoolOrderedMap<K> map) {
 			super(map);
@@ -169,7 +169,7 @@ public class ObjectBoolOrderedMap<K> extends ObjectBoolMap<K> {
 	}
 
 	public static class OrderedMapKeys<K> extends Keys<K> {
-		CollectionList<K> keys;
+		protected CollectionList<K> keys;
 
 		public OrderedMapKeys(ObjectBoolOrderedMap<K> map) {
 			super(map);
@@ -203,7 +203,7 @@ public class ObjectBoolOrderedMap<K> extends ObjectBoolMap<K> {
 	}
 
 	public static class OrderedMapValues<K> extends Values<K> {
-		CollectionList<K> keys;
+		protected CollectionList<K> keys;
 
 		public OrderedMapValues(ObjectBoolOrderedMap<K> map) {
 			super(map);

@@ -131,10 +131,6 @@ public final class ScriptUtils {
 		return new NativeJavaClass(Vars.mods.getScripts().scope, Class.forName(name, true, Vars.mods.mainLoader()));
 	}
 
-	public static NativeJavaClass loadClass(String name) throws ClassNotFoundException, IOException {
-		return loadClass(HVars.internalTree.file, name);
-	}
-
 	public static NativeJavaClass loadClass(Fi file, String name) throws ClassNotFoundException, IOException {
 		try (URLClassLoader urlLoader = new URLClassLoader(new URL[]{file.file().toURI().toURL()})) {
 			return new NativeJavaClass(Vars.mods.getScripts().scope, urlLoader.loadClass(name));
