@@ -3,6 +3,7 @@ package heavyindustry.world.blocks.units;
 import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.scene.ui.layout.Table;
+import arc.util.Strings;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
@@ -57,14 +58,14 @@ public class UnitIniter extends Block {
 		config(String.class, (UnitIniterBuild build, String unit) -> {
 			String[] s = unit.split(divKey);
 			if (s.length < 3) return;
-			build.angle = Float.parseFloat(s[1]);
-			build.delay = Float.parseFloat(s[2]);
+			build.angle = Strings.parseFloat(s[1], 0f);
+			build.delay = Strings.parseFloat(s[2], 30f);
 			build.toSpawnType = content.getByName(ContentType.unit, s[0]);
 		});
 		configClear((UnitIniterBuild tile) -> {
 			tile.toSpawnType = UnitTypes.alpha;
-			tile.angle = 0;
-			tile.delay = 30;
+			tile.angle = 0f;
+			tile.delay = 30f;
 		});
 	}
 

@@ -22,7 +22,7 @@ public final class HIcon {
 			alphaChan, alphaChanHit, crawlerChan, crawlerChanHit, zenithChan, zenithChanHit, monoChan, monoChanHit, oxynoeChan, oxynoeChanHit, octChan, octChanHit,
 			seiChan, seiChanHit, quadChan, quadChanHit, boulderChan, boulderChanHit;
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HIcon() {}
 
 	public static void load() {

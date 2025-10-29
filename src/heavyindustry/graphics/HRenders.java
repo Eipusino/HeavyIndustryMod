@@ -11,13 +11,12 @@ import mindustry.game.EventType.Trigger;
 import mindustry.graphics.Layer;
 
 public final class HRenders {
-	private static float
-			//reduction rate of screen flash
-			flashIntensity,
-			//reduction rate of screen flash
-			flashReduction,
-			//current duration of screen flash
-			flashTime;
+	//reduction rate of screen flash
+	private static float flashIntensity;
+	//reduction rate of screen flash
+	private static float flashReduction;
+	//current duration of screen flash
+	private static float flashTime;
 
 	private HRenders() {}
 

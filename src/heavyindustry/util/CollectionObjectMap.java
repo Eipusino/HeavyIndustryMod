@@ -367,11 +367,6 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		return val;
 	}
 
-	/// Get, with a nullable key.
-	public V getNull(K key) {
-		return key == null ? null : get(key);
-	}
-
 	/// Returns the value for the specified key, or null if the key is not in the map.
 	@Override
 	public V get(Object key) {
@@ -1116,12 +1111,12 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 
 		@Override
 		public int hashCode() {
-			int h = 0;
+			int hashCode = 0;
 			for (K obj : this) {
 				if (obj != null)
-					h += obj.hashCode();
+					hashCode += obj.hashCode();
 			}
-			return h;
+			return hashCode;
 		}
 
 		@Override
@@ -1174,11 +1169,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 
 		@Override
 		public boolean addAll(Collection<? extends K> c) {
-			boolean modified = false;
-			for (K e : c)
-				if (add(e))
-					modified = true;
-			return modified;
+			return false;
 		}
 
 		@Override

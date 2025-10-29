@@ -57,7 +57,7 @@ import mindustry.world.blocks.defense.turrets.Turret.TurretBuild;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
-import static heavyindustry.entities.HDamage.tmpBuilding;
+import static heavyindustry.entities.HDamage.tmpBuild;
 import static heavyindustry.util.ArrayUtils.arrayOf;
 
 public final class HEntity {
@@ -79,7 +79,7 @@ public final class HEntity {
 	static final CollectionList<Unit> excludeSeq = new CollectionList<>(Unit.class), queueExcludeRemoval = new CollectionList<>(Unit.class), excludeReAdd = new CollectionList<>(Unit.class);
 	static final IntIntMap excludeTime = new IntIntMap();
 
-	// [0] for flying, [1] for navy, [2] for ground.
+	/// 0 for flying, 1 for navy, 2 for ground.
 	static Boolf<Tile>[] formats = arrayOf(
 			t -> Vars.world.getQuadBounds(Tmp.r1).contains(t.getBounds(Tmp.r2)),
 			t -> t.floor().isLiquid && !t.cblock().solid && !t.floor().solid && !t.overlay().solid && !t.block().solidifes,
@@ -92,12 +92,12 @@ public final class HEntity {
 	private HEntity() {}
 
 	public static Position collideBuild(Team team, float x1, float y1, float x2, float y2, Boolf<Building> boolf) {
-		tmpBuilding = null;
+		tmpBuild = null;
 
 		boolean found = World.raycast(World.toTile(x1), World.toTile(y1), World.toTile(x2), World.toTile(y2),
-				(x, y) -> (tmpBuilding = Vars.world.build(x, y)) != null && tmpBuilding.team != team && boolf.get(tmpBuilding));
+				(x, y) -> (tmpBuild = Vars.world.build(x, y)) != null && tmpBuild.team != team && boolf.get(tmpBuild));
 
-		return found ? tmpBuilding : v1.set(x2, y2);
+		return found ? tmpBuild : v1.set(x2, y2);
 	}
 
 	public static Position collideBuildOnLength(Team team, float x1, float y1, float length, float ang, Boolf<Building> boolf) {
@@ -658,7 +658,7 @@ public final class HEntity {
 
 	public static void reset() {
 		tileParma = null;
-		tmpBuilding = null;
+		tmpBuild = null;
 
 		toRemove.clear();
 

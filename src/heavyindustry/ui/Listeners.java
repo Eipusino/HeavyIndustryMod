@@ -10,7 +10,7 @@ import arc.scene.event.ClickListener;
 import arc.scene.event.InputEvent;
 
 public final class Listeners {
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private Listeners() {}
 
 	/** Invoke action on clicked element on screen */

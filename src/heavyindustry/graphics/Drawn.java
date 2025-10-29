@@ -82,7 +82,7 @@ public final class Drawn {
 		}
 	}
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private Drawn() {}
 
 	public static void drawSnow(float x, float y, float rad, float rot, Color color) {

@@ -10,9 +10,13 @@ import static heavyindustry.math.Mathm.p1;
 import static heavyindustry.math.Mathm.p2;
 import static heavyindustry.math.Mathm.p3;
 
-/** @since 1.0.4 */
+/**
+ * {@link Angles} extension class.
+ *
+ * @since 1.0.4
+ */
 public final class HAngles {
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HAngles() {}
 
 	public static float angle(Posc start, Posc end) {

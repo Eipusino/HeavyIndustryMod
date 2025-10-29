@@ -11,10 +11,10 @@ import mindustry.graphics.CacheLayer.ShaderLayer;
 public final class HCacheLayer {
 	public static ShaderLayer brine, crystalFluid, deepCrystalFluid, pit, waterPit;
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HCacheLayer() {}
 
-	/** Loads the cache layers. */
+	/// Loads the cache layers.
 	public static void load() {
 		brine = new ShaderLayer(HShaders.brine);
 		crystalFluid = new ShaderLayer(HShaders.crystalFluid);

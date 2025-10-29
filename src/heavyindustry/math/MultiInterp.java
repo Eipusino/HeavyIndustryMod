@@ -10,11 +10,11 @@ public class MultiInterp implements Interp {
 	}
 
 	@Override
-	public float apply(float value) {
+	public float apply(float a) {
 		for (Interp interp : interps) {
-			value = interp.apply(value);
+			a = interp.apply(a);
 		}
 
-		return value;
+		return a;
 	}
 }

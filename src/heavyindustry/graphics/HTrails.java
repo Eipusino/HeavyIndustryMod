@@ -26,7 +26,7 @@ import mindustry.graphics.Trail;
 import static heavyindustry.HVars.MOD_NAME;
 
 public final class HTrails {
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HTrails() {}
 
 	public static TexturedTrail singlePhantasmal(String name, int length, TrailAttrib... attributes) {

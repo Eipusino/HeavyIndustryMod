@@ -104,8 +104,8 @@ public class LightenGenerator extends NuclearReactor {
 					trailEffect = new Effect(12, e -> {
 						Draw.color(effectColor);
 						Drawf.tri(e.x, e.y, 4 * e.fout(), 11, e.rotation);
-						if (e.data instanceof Float) {
-							float time = (float) e.data;
+						if (e.data instanceof Number num) {
+							float time = num.floatValue();
 							Drawf.tri(e.x, e.y, 4 * e.fout(), 15 * Math.min(1, time / 8 * 0.8f + 0.2f), e.rotation - 180);
 						}
 					});
@@ -146,8 +146,8 @@ public class LightenGenerator extends NuclearReactor {
 			effect = new Effect(30, e -> {
 				Draw.color(effectColor);
 				Lines.stroke(3 * e.fout());
-				if (e.data instanceof Float) {
-					float range = (float) e.data;
+				if (e.data instanceof Number num) {
+					float range = num.floatValue();
 					Lines.circle(e.x, e.y, range * e.fout());
 				}
 			});

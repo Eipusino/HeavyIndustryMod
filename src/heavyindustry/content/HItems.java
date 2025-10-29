@@ -16,10 +16,10 @@ public final class HItems {
 	public static Item crystal;
 	public static Item gold, uranium, chromium, heavyAlloy;
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HItems() {}
 
-	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
+	/// Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}.
 	public static void load() {
 		if (HVars.isPlugin) return;
 

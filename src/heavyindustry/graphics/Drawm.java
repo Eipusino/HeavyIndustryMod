@@ -22,7 +22,7 @@ import mindustry.world.Block;
 public final class Drawm {
 	private static final Vec2 vec1 = new Vec2(), vec2 = new Vec2(), vec3 = new Vec2(), vec4 = new Vec2();
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private Drawm() {}
 
 	/** Draws an ellipse. */
@@ -65,7 +65,8 @@ public final class Drawm {
 
 	/**
 	 * ONly for blocks with 2 or more team regions.
-	 * Generates all team regions for this region. Call #loadCustomTeamRegion(String) in load() afterward to get the region. Must be followed by a #generateTeamRegion.
+	 * <p>Generates all team regions for this region. Call #loadCustomTeamRegion(String) in load() afterward
+	 * to get the region. Must be followed by a #generateTeamRegion.
 	 */
 	public static void customTeamRegion(MultiPacker packer, String name) {
 		PixmapRegion teamr = Core.atlas.getPixmap(name + "-team");

@@ -30,7 +30,7 @@ public class MinerDepotAI extends AIController {
 
 		if (mining) {
 			if (home.targetItem == null || //No targetted item
-					home.oreTiles.getNull(home.targetItem) == null || //No ore target tile
+					home.oreTiles.get(home.targetItem) == null || //No ore target tile
 					unit.stack.amount >= unit.type.itemCapacity ||
 					(home.targetItem != null && !unit.acceptsItem(home.targetItem)) || //Inventory full
 					home.acceptStack(home.targetItem, 1, unit) == 0 //Depot is full

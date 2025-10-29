@@ -2,6 +2,7 @@ package heavyindustry.io;
 
 import arc.math.geom.Point2;
 import arc.struct.Seq;
+import arc.util.Nullable;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.input.InputAggregator.TapResult;
@@ -22,7 +23,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 
 public final class HTypeIO {
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HTypeIO() {}
 
 	public static void writePoint2(Writes write, Point2 p) {
@@ -120,12 +121,17 @@ public final class HTypeIO {
 		}
 	}
 
+	@Nullable
 	public static <T extends Serializable> T readObject(Reads read, Class<T> type) {
+		return readObject(read, type, null);
+	}
+
+	public static <T extends Serializable> T readObject(Reads read, Class<T> type, T def) {
 		int length = read.i();
 		byte[] bytes = read.b(length);
 		try (ByteArrayInputStream bin = new ByteArrayInputStream(bytes); ObjectInputStream in = new ObjectInputStream(bin)) {
 			Object object = in.readObject();
-			return ObjectUtils.as(object, type, null);
+			return ObjectUtils.as(object, type, def);
 		} catch (IOException | ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}

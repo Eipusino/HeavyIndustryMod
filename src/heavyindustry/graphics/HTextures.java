@@ -11,7 +11,7 @@ public final class HTextures {
 	public static Texture noise;
 	public static Texture smooth, particle, darker, gaussian, median, armor;
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HTextures() {}
 
 	public static void load() {

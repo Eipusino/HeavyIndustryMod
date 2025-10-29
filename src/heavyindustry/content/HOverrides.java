@@ -66,7 +66,7 @@ import mindustry.world.meta.BuildVisibility;
  * @author Eipusino
  */
 public final class HOverrides {
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HOverrides() {}
 
 	/**

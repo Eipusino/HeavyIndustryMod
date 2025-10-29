@@ -1,8 +1,8 @@
 package heavyindustry.world.blocks.distribution;
 
-import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
 import arc.util.Eachable;
@@ -14,11 +14,13 @@ import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
+import mindustry.graphics.BlockRenderer;
 import mindustry.graphics.Layer;
 import mindustry.type.Item;
 import mindustry.world.blocks.distribution.Conveyor;
 
 import static mindustry.Vars.itemSize;
+import static mindustry.Vars.renderer;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
@@ -40,7 +42,6 @@ public class TubeConveyor extends Conveyor2 {
 
 	public TextureRegion[][] topRegion;
 	public TextureRegion[] capRegion;
-	public TextureRegion editorRegion;
 
 	public TubeConveyor(String name) {
 		super(name);
@@ -52,12 +53,11 @@ public class TubeConveyor extends Conveyor2 {
 
 		topRegion = SpriteUtils.splitLayers(name + "-sheet", 32, 2);
 		capRegion = new TextureRegion[]{topRegion[1][0], topRegion[1][1]};
-		editorRegion = Core.atlas.find(name + "-editor");
 	}
 
 	@Override
 	public TextureRegion[] icons() {
-		return new TextureRegion[]{editorRegion};
+		return new TextureRegion[]{fullIcon};
 	}
 
 	@Override
@@ -175,7 +175,14 @@ public class TubeConveyor extends Conveyor2 {
 		@Override
 		public void drawCracks() {
 			Draw.z(Layer.block);
-			super.drawCracks();
+
+			if (drawCracks && damaged() && size <= BlockRenderer.maxCrackSize) {
+				int id = pos();
+				TextureRegion region = renderer.blocks.cracks[size - 1][Mathf.clamp((int) ((1f - healthf()) * BlockRenderer.crackRegions), 0, BlockRenderer.crackRegions - 1)];
+				Draw.colorl(0.2f, 0.1f + (1f - healthf()) * 0.6f);
+				Draw.rect(region, x, y, (id % 4) * 90);
+				Draw.color();
+			}
 		}
 
 		@Override

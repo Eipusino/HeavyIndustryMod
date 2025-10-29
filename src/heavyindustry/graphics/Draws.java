@@ -76,7 +76,7 @@ public final class Draws {
 		});
 	}
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private Draws() {}
 
 	public static int nextTaskId() {

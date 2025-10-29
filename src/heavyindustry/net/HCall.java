@@ -3,11 +3,11 @@ package heavyindustry.net;
 import arc.struct.Seq;
 import heavyindustry.entities.HEntity;
 import heavyindustry.input.InputAggregator.TapResult;
-import heavyindustry.world.blocks.production.UnitMinerPoint.UnitMinerPointBuild;
 import mindustry.Vars;
 import mindustry.gen.Player;
 import mindustry.net.Net;
 import mindustry.world.Tile;
+import mindustry.world.blocks.UnitTetherBlock;
 
 import static heavyindustry.HVars.inputAggregator;
 
@@ -73,7 +73,7 @@ public final class HCall {
 	}
 
 	public static void minerPointDroneSpawned(Tile tile, int id) {
-		if ((Vars.net.server() || !Vars.net.active()) && tile != null && tile.build instanceof UnitMinerPointBuild build) {
+		if ((Vars.net.server() || !Vars.net.active()) && tile != null && tile.build instanceof UnitTetherBlock build) {
 			build.spawned(id);
 		}
 

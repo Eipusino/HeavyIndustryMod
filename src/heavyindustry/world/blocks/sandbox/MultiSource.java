@@ -68,10 +68,10 @@ public class MultiSource extends Block {
 	@Override
 	public void drawPlanConfig(BuildPlan req, Eachable<BuildPlan> list) {
 		Draw.rect(cross, req.drawx(), req.drawy());
-		if (req.config instanceof Integer input) {
-			Point2 data = Point2.unpack(input);
-			drawPlanConfigCenter(req, content.item((short) data.x), name + "-center-0");
-			drawPlanConfigCenter(req, content.liquid((short) data.y), name + "-center-1");
+		if (req.config instanceof Number input) {
+			Point2 data = Point2.unpack(input.intValue());
+			drawPlanConfigCenter(req, content.item(data.x), name + "-center-0");
+			drawPlanConfigCenter(req, content.liquid(data.y), name + "-center-1");
 		}
 	}
 

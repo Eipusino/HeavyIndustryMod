@@ -34,10 +34,10 @@ public final class HStatusEffects {
 	public static StatusEffect2 overheat, regenerating, breached, radiation, flamePoint, ultFireBurn;
 	public static StatusEffect2 territoryFieldIncrease, territoryFieldSuppress, apoptosis;
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HStatusEffects() {}
 
-	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
+	/// Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}.
 	public static void load() {
 		if (HVars.isPlugin) return;
 

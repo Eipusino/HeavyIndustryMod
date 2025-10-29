@@ -36,6 +36,7 @@ import mindustry.ui.Bar;
 import mindustry.ui.Fonts;
 import mindustry.world.Block;
 import mindustry.world.Tile;
+import mindustry.world.blocks.UnitTetherBlock;
 import mindustry.world.blocks.environment.Floor;
 import mindustry.world.blocks.environment.StaticWall;
 import mindustry.world.blocks.storage.CoreBlock.CoreBuild;
@@ -166,7 +167,7 @@ public class UnitMinerPoint extends Block {
 		if (buildType == null) buildType = UnitMinerPointBuild::new;
 	}
 
-	public class UnitMinerPointBuild extends Building {
+	public class UnitMinerPointBuild extends Building implements UnitTetherBlock {
 		public @Nullable Tile sortTile = null;
 
 		public int sort = -1;
@@ -332,6 +333,7 @@ public class UnitMinerPoint extends Block {
 			Drawf.square(sortTile.getX(), sortTile.getY(), 5, Pal.accent);
 		}
 
+		@Override
 		public void spawned(int id) {
 			Fx.spawn.at(x, y);
 			droneProgress = 0f;

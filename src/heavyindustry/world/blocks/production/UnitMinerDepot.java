@@ -18,6 +18,7 @@ import arc.util.io.Writes;
 import heavyindustry.content.HUnitTypes;
 import heavyindustry.graphics.Drawe;
 import heavyindustry.util.CollectionObjectMap;
+import heavyindustry.util.holder.ObjectHolder;
 import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
@@ -297,7 +298,7 @@ public class UnitMinerDepot extends Block {
 			TypeIO.writeVecNullable(write, commandPos);
 
 			write.i(oreTiles.size);
-			for (var entry : oreTiles.iterator()) {
+			for (ObjectHolder<Item, Tile> entry : oreTiles.iterator()) {
 				write.s(entry.key.id);
 				write.i(entry.value == null ? -1 : entry.value.pos());
 			}

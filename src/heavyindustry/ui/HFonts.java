@@ -18,7 +18,7 @@ public final class HFonts {
 
 	public static final String loaderSuffix = ".heavyindustry.gen";
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HFonts() {}
 
 	public static void load() {

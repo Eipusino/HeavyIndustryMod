@@ -3,10 +3,12 @@ package heavyindustry.entities;
 import arc.math.geom.Mat3D;
 import arc.math.geom.Quat;
 import arc.math.geom.Vec3;
-import arc.struct.Seq;
+import heavyindustry.util.CollectionList;
+
+import java.util.List;
 
 public interface Transform {
-	Seq<Transform> tmpStack = new Seq<>(Transform.class);
+	List<Transform> tmpStack = new CollectionList<>(Transform.class);
 
 	Transform parent();
 
@@ -18,17 +20,17 @@ public interface Transform {
 
 	default void updateParentTransform() {
 		if (!parTransformed()) {
-			Seq<Transform> stack = tmpStack.clear();
+			tmpStack.clear();
 
 			Transform curr = this;
 			while (curr != null) {
-				stack.add(curr);
+				tmpStack.add(curr);
 
 				curr = curr.parent();
 			}
 
-			for (int i = stack.size - 1; i >= 0; i--) {
-				Transform obj = stack.get(i);
+			for (int i = tmpStack.size() - 1; i >= 0; i--) {
+				Transform obj = tmpStack.get(i);
 				Transform par = obj.parent();
 				if (par == null) obj.parentTrans().idt();
 				else {

@@ -47,6 +47,7 @@ public class Explosive extends Block {
 		super(name);
 		solid = true;
 		update = true;
+		rebuildable = false;
 	}
 
 	@Override

@@ -80,10 +80,10 @@ public final class HBullets {
 	public static BulletType arc9000frag, arc9000, arc9000hyper;
 	public static BulletType collapseFrag, collapse;
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HBullets() {}
 
-	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
+	/// Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}.
 	public static void load() {
 		basicMissile = new MissileBulletType(4.2f, 15f) {{
 			homingPower = 0.12f;

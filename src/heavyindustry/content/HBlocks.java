@@ -565,7 +565,7 @@ public final class HBlocks {
 
 	private static boolean loadedInternal;
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HBlocks() {}
 
 	public static void loadInternal() {
@@ -592,7 +592,7 @@ public final class HBlocks {
 		}
 	}
 
-	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
+	/// Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}.
 	public static void load() {
 		if (HVars.isPlugin) return;//Do not load content in plugin mode.
 
@@ -6099,7 +6099,7 @@ public final class HBlocks {
 
 			shootEffect = new Effect(120f, 2000f, e -> {
 				float scl = 1f;
-				if (e.data instanceof Float fdata) scl *= fdata;
+				if (e.data instanceof Number num) scl *= num.floatValue();
 				Draw.color(heatColor, Color.white, e.fout() * 0.25f);
 
 				float rand = Mathf.randomSeed(e.id, 60f);

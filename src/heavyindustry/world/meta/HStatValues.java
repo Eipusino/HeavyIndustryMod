@@ -48,7 +48,7 @@ import static mindustry.Vars.tilesize;
 import static mindustry.Vars.ui;
 
 public final class HStatValues {
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HStatValues() {}
 
 	public static <T extends UnlockableContent> StatValue ammo(ObjectMap<T, BulletType[]> map, boolean all) {

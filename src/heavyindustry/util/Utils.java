@@ -60,9 +60,8 @@ import mindustry.world.meta.StatUnit;
  * @author Eipusino
  */
 public final class Utils {
-	public static final Color
-			c1 = new Color(), c2 = new Color(), c3 = new Color(), c4 = new Color(), c5 = new Color(),
-			c6 = new Color(), c7 = new Color(), c8 = new Color(), c9 = new Color(), c10 = new Color();
+	public static final Color c1 = new Color(), c2 = new Color(), c3 = new Color(), c4 = new Color(), c5 = new Color();
+	public static final Color c6 = new Color(), c7 = new Color(), c8 = new Color(), c9 = new Color(), c10 = new Color();
 
 	public static Rect r = new Rect(), r2 = new Rect();
 	public static Vec2 v = new Vec2(), vv = new Vec2();

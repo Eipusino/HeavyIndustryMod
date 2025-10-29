@@ -76,18 +76,18 @@ public final class HDamage {
 	static final Seq<Hit> hitEffects = new Seq<>(Hit.class);
 
 	static Tile furthest;
-	static Building tmpBuilding;
+	static Building tmpBuild;
 	static Unit tmpUnit;
 	static float tmpFloat;
 	static boolean check;
 	static Posc result;
 	static float cdist;
 	static int idx;
-	static boolean hit, hitB;
+	static boolean hit, hit2;
 	static final Seq<Hit> hseq = new Seq<>(Hit.class);
 	static final BasicPool<Hit> hPool = new BasicPool<>(Hit::new);
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HDamage() {}
 
 	public static void chain(Position origin, @Nullable Position targetPos, Team team, Unit current, IntSeq collided, Sound hitSound, Effect hitEffect, float power, float initialPower, float width, float distanceDamageFalloff, float pierceDamageFactor, int branches, float segmentLength, float arc, Color color) {
@@ -261,25 +261,25 @@ public final class HDamage {
 	}
 
 	public static Building findEnemyTile(Team team, float cx, float cy, float x, float y, float range, Boolf<Building> pred) {
-		tmpBuilding = null;
+		tmpBuild = null;
 		tmpFloat = 0;
 
 		trueEachBlock(cx, cy, range, b -> {
 			if (!(b.team() == team || (b.team() == Team.derelict && !Vars.state.rules.coreCapture)) && pred.get(b)) {
 				//if a block has the same priority, the closer one should be targeted
 				float dist = b.dst(x, y) - b.hitSize() / 2f;
-				if (tmpBuilding == null ||
+				if (tmpBuild == null ||
 						//if its closer and is at least equal priority
-						(dist < tmpFloat && b.block.priority >= tmpBuilding.block.priority) ||
+						(dist < tmpFloat && b.block.priority >= tmpBuild.block.priority) ||
 						// block has higher priority (so range doesn't matter)
-						(b.block.priority > tmpBuilding.block.priority)) {
-					tmpBuilding = b;
+						(b.block.priority > tmpBuild.block.priority)) {
+					tmpBuild = b;
 					tmpFloat = dist;
 				}
 			}
 		});
 
-		return tmpBuilding;
+		return tmpBuild;
 	}
 
 	public static boolean collideLine(float damage, Team team, Effect effect, StatusEffect status, float statusDuration, float x, float y, float angle, float length, boolean ground, boolean air) {
@@ -496,7 +496,7 @@ public final class HDamage {
 	public static Vec2 linecast(boolean ground, boolean air, Team team, float x, float y, float angle, float length) {
 		vec.trnsExact(angle, length);
 
-		tmpBuilding = null;
+		tmpBuild = null;
 
 		if (ground) {
 			seg1.set(x, y);
@@ -504,7 +504,7 @@ public final class HDamage {
 			World.raycastEachWorld(x, y, seg2.x, seg2.y, (cx, cy) -> {
 				Building tile = Vars.world.build(cx, cy);
 				if (tile != null && tile.team != team) {
-					tmpBuilding = tile;
+					tmpBuild = tile;
 					Tmp.v1.set(cx * Vars.tilesize, cy * Vars.tilesize);
 					return true;
 				}
@@ -531,11 +531,11 @@ public final class HDamage {
 			}
 		});
 
-		if (tmpBuilding != null && tmpUnit != null) {
+		if (tmpBuild != null && tmpUnit != null) {
 			if (Mathf.dst2(x, y, Tmp.v1.x, Tmp.v1.y) <= Mathf.dst2(x, y, Tmp.v2.x, Tmp.v2.y)) {
 				return Tmp.v1;
 			}
-		} else if (tmpBuilding != null) {
+		} else if (tmpBuild != null) {
 			return Tmp.v1;
 		} else if (tmpUnit != null) {
 			return Tmp.v2;
@@ -913,7 +913,7 @@ public final class HDamage {
 		if (hitTile) {
 			collideLineCollided.clear();
 			Runnable cast = () -> {
-				hitB = false;
+				hit2 = false;
 				lineCast.each(i -> {
 					int tx = Point2.x(i), ty = Point2.y(i);
 					Building build = Vars.world.build(tx, ty);
@@ -932,9 +932,9 @@ public final class HDamage {
 							hitEffects.add(he);
 						}
 
-						if (hit && !hitB) {
+						if (hit && !hit2) {
 							vec2.trns(Angles.angle(x, y, x2, y2), Mathf.dst(x, y, build.x, build.y)).add(x, y);
-							hitB = true;
+							hit2 = true;
 						}
 					}
 
@@ -943,7 +943,7 @@ public final class HDamage {
 						for (Point2 p : Geometry.d8) {
 							int newX = (p.x + tx);
 							int newY = (p.y + ty);
-							boolean within = !hitB || Mathf.within(x / Vars.tilesize, y / Vars.tilesize, newX, newY, vec2.dst(x, y) / Vars.tilesize);
+							boolean within = !hit2 || Mathf.within(x / Vars.tilesize, y / Vars.tilesize, newX, newY, vec2.dst(x, y) / Vars.tilesize);
 							if (segment.within(newX * Vars.tilesize, newY * Vars.tilesize, tileWidth) && collideLineCollided.within(newX, newY) && !collideLineCollided.get(newX, newY) && within) {
 								lineCastNext.add(Point2.pack(newX, newY));
 								collideLineCollided.set(newX, newY, true);
@@ -964,7 +964,7 @@ public final class HDamage {
 				}
 
 				cast.run();
-				return hitB;
+				return hit2;
 			});
 
 			while (!lineCast.isEmpty()) cast.run();
@@ -1031,13 +1031,13 @@ public final class HDamage {
 	public static Healthc linecast(Bullet hitter, float x, float y, float angle, float length) {
 		vec2.trns(angle, length);
 
-		tmpBuilding = null;
+		tmpBuild = null;
 
 		if (hitter.type.collidesGround) {
 			World.raycastEachWorld(x, y, x + vec2.x, y + vec2.y, (cx, cy) -> {
 				Building tile = Vars.world.build(cx, cy);
 				if (tile != null && tile.team != hitter.team) {
-					tmpBuilding = tile;
+					tmpBuild = tile;
 					return true;
 				}
 				return false;
@@ -1084,12 +1084,12 @@ public final class HDamage {
 			}
 		});
 
-		if (tmpBuilding != null && tmpUnit != null) {
-			if (Mathf.dst2(x, y, tmpBuilding.getX(), tmpBuilding.getY()) <= Mathf.dst2(x, y, tmpUnit.getX(), tmpUnit.getY())) {
-				return tmpBuilding;
+		if (tmpBuild != null && tmpUnit != null) {
+			if (Mathf.dst2(x, y, tmpBuild.getX(), tmpBuild.getY()) <= Mathf.dst2(x, y, tmpUnit.getX(), tmpUnit.getY())) {
+				return tmpBuild;
 			}
-		} else if (tmpBuilding != null) {
-			return tmpBuilding;
+		} else if (tmpBuild != null) {
+			return tmpBuild;
 		}
 
 		return tmpUnit;

@@ -2,14 +2,15 @@ package heavyindustry.net;
 
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.world.blocks.production.UnitMinerPoint.UnitMinerPointBuild;
 import mindustry.io.TypeIO;
 import mindustry.net.Packet;
 import mindustry.world.Tile;
+import mindustry.world.blocks.UnitTetherBlock;
 
 public class DroneSpawnedCallPacket extends Packet {
 	public Tile tile;
 	public int id;
+
 	private byte[] data;
 
 	public DroneSpawnedCallPacket() {
@@ -36,7 +37,7 @@ public class DroneSpawnedCallPacket extends Packet {
 
 	@Override
 	public void handleClient() {
-		if (tile != null && tile.build instanceof UnitMinerPointBuild miner) {
+		if (tile != null && tile.build instanceof UnitTetherBlock miner) {
 			miner.spawned(id);
 		}
 	}

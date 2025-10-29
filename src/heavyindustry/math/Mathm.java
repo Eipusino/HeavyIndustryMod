@@ -41,7 +41,7 @@ public final class Mathm {
 		aSinTable[index(0.5f)] = Mathf.pi + Mathf.halfPi + radFull;
 	}
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private Mathm() {}
 
 	/** @return whether x,y is inside the square with radius d centered at cx, cy. */

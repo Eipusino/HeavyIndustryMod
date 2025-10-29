@@ -40,7 +40,7 @@ public final class HStyles {
 			tuHoldImageStyle,
 			teamChanger;
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HStyles() {}
 
 	public static void load() {

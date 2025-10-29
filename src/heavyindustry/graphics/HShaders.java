@@ -46,10 +46,10 @@ public final class HShaders {
 	public static TilerShader tiler;
 	public static PlanetTextureShader planetTexture;
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HShaders() {}
 
-	/** Loads the shaders. */
+	/// Loads the shaders.
 	public static void load() {
 		String prevVert = Shader.prependVertexCode, prevFrag = Shader.prependFragmentCode;
 		Shader.prependVertexCode = Shader.prependFragmentCode = "";

@@ -16,7 +16,7 @@ public final class HLines {
 			0, 0
 	};
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HLines() {}
 
 	public static void arc(float x, float y, float radius, float finion) {

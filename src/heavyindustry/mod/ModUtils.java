@@ -10,7 +10,7 @@ public final class ModUtils {
 	/** If needed, please call {@link #loaded()} for the LoadedMod of this mod. */
 	static LoadedMod loaded;
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private ModUtils() {}
 
 	public static boolean isHeavyIndustry(Content content) {

@@ -9,7 +9,7 @@ import java.io.IOException;
  * require me to write a class for it.
  */
 public final class IOUtils {
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private IOUtils() {}
 
 	public static void ioErr(RunT<Throwable> run, String message) throws IOException {

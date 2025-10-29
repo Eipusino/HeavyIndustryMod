@@ -252,7 +252,7 @@ public final class ReflectUtils {
 	 * @param target Target Object
 	 * @param filler Excluded field names
 	 */
-	public static <T> T copyProperties(Object source, T target, String[] filler) {
+	public static <T> T copyProperties(Object source, T target, @Nullable String[] filler) {
 		if (source == null || target == null) return target;
 
 		targetFieldMap.clear();
@@ -268,8 +268,10 @@ public final class ReflectUtils {
 			targetClass = targetClass.getSuperclass();
 		}
 
-		for (String name : filler) {
-			targetFieldMap.remove(name);
+		if (filler != null) {
+			for (String name : filler) {
+				targetFieldMap.remove(name);
+			}
 		}
 
 		// These fields cannot be copied

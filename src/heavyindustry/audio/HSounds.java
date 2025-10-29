@@ -10,63 +10,48 @@ import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.gen.Sounds;
 
 public final class HSounds {
-	public static Sound
-			ct1 = new Sound(),
-			dbz1 = new Sound(),
-			dd1 = new Sound(),
-			fj = new Sound(),
-			jg1 = new Sound(),
-			flak = new Sound(),
-			flak2 = new Sound(),
-			shock = new Sound(),
-			jumpIn = new Sound(),
-			launch = new Sound(),
-			gauss = new Sound(),
-			radar = new Sound(),
-			fissure = new Sound(),
-			blaster = new Sound(),
-			hugeShoot = new Sound(),
-			hugeBlast = new Sound(),
-			largeBeam = new Sound(),
-			metalPipe = new Sound(),
-			metalWalk = new Sound(),
-			alert2 = new Sound(),
-			hammer = new Sound(),
-			coolingFan = new Sound(),
-			hailRain = new Sound(),
-			bigHailstoneHit = new Sound(),
-			giantHailstoneHit = new Sound(),
-			railGunBlast = new Sound(),
-			railGunCharge = new Sound(),
-			shootAltHeavy = new Sound(),
-			shootAltLight = new Sound(),
-			flowrateAbosrb = new Sound(),
-			eviscerationCharge = new Sound(),
-			eviscerationBlast = new Sound(),
-			beamIntenseHighpitchTone = new Sound(),
+	public static Sound ct1 = new Sound();
+	public static Sound dbz1 = new Sound();
+	public static Sound dd1 = new Sound();
+	public static Sound fj = new Sound();
+	public static Sound jg1 = new Sound();
+	public static Sound flak = new Sound(), flak2 = new Sound();
+	public static Sound shock = new Sound();
+	public static Sound jumpIn = new Sound();
+	public static Sound launch = new Sound();
+	public static Sound gauss = new Sound();
+	public static Sound radar = new Sound();
+	public static Sound fissure = new Sound();
+	public static Sound blaster = new Sound();
+	public static Sound hugeShoot = new Sound();
+	public static Sound hugeBlast = new Sound();
+	public static Sound largeBeam = new Sound();
+	public static Sound metalPipe = new Sound();
+	public static Sound metalWalk = new Sound();
+	public static Sound alert2 = new Sound();
+	public static Sound hammer = new Sound();
+	public static Sound coolingFan = new Sound();
+	public static Sound hailRain = new Sound();
+	public static Sound bigHailstoneHit = new Sound(), giantHailstoneHit = new Sound();
+	public static Sound railGunBlast = new Sound(), railGunCharge = new Sound();
+	public static Sound shootAltHeavy = new Sound(), shootAltLight = new Sound();
+	public static Sound flowrateAbosrb = new Sound();
+	public static Sound eviscerationCharge = new Sound(), eviscerationBlast = new Sound();
+	public static Sound beamIntenseHighpitchTone = new Sound();
 
-			transform = new Sound(),
-			largeTransform = new Sound(),
-			idle = new Sound(),
-			clang = new Sound(),
-			bigCharge = new Sound(),
-			laserCharge = new Sound(),
-			laserSmall = new Sound(),
-			laserBig = new Sound(),
-			desSpearHit = new Sound(),
-			desSpearCry = new Sound(),
-			desLaser = new Sound(),
-			desLaserShoot = new Sound(),
-			desRailgun = new Sound(),
-			desRailHit = new Sound(),
-			desNukeShoot =  new Sound(),
-			desNukeHit = new Sound(),
-			desNukeHitFar = new Sound(),
-			expElectric = new Sound(),
-			expExotic = new Sound(),
-			expOrganic = new Sound();
+	public static Sound transform = new Sound(), largeTransform = new Sound();
+	public static Sound idle = new Sound();
+	public static Sound clang = new Sound();
+	public static Sound bigCharge = new Sound(), laserCharge = new Sound(), laserSmall = new Sound(), laserBig = new Sound();
+	public static Sound desSpearHit = new Sound(), desSpearCry = new Sound();
+	public static Sound desLaser = new Sound(), desLaserShoot = new Sound();
+	public static Sound desRailgun = new Sound(), desRailHit = new Sound();
+	public static Sound desNukeShoot =  new Sound(), desNukeHit = new Sound(), desNukeHitFar = new Sound();
+	public static Sound expElectric = new Sound();
+	public static Sound expExotic = new Sound();
+	public static Sound expOrganic = new Sound();
 
-	/** Don't let anyone instantiate this class. */
+	/// Don't let anyone instantiate this class.
 	private HSounds() {}
 
 	public static void load() {
