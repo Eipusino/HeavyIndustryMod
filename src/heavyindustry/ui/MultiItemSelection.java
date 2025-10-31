@@ -19,8 +19,8 @@ import mindustry.ui.Styles;
 import mindustry.world.Block;
 
 public final class MultiItemSelection {
-	private static TextField search;
-	private static int rowCount;
+	static TextField search;
+	static int rowCount;
 
 	private MultiItemSelection() {}
 

@@ -46,7 +46,7 @@ public final class HVars {
 	public static boolean hasUnsafe = false;
 	/// Is {@code jdk.internal.misc.Unsafe} class available.
 	public static boolean hasJDKUnsafe = false;
-	/// Is {@code java.lang.invoke.MethodHandles.Lookup.IMPL_LOOKUP} looker available.
+	/// Is {@code java.lang.invoke.MethodHandles.Lookup.IMPL_LOOKUP} instance available.
 	public static boolean hasImplLookup = false;
 
 	/// Link {@code mod.json} of this mod.

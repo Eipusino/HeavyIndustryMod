@@ -13,7 +13,7 @@ import java.util.Iterator;
 import static mindustry.Vars.content;
 
 public class MultiItemData implements Iterable<Item>, Eachable<Item> {
-	private final Seq<Item> items = new Seq<>(Item.class);
+	protected final Seq<Item> items = new Seq<>(Item.class);
 
 	public int length() {
 		return items.size;

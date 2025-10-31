@@ -20,7 +20,7 @@ import java.util.Arrays;
  * <p>You should never frequently perform repetitive operations on the same Field/Method/Constructor for
  * performance reasons.
  * <blockquote><pre>
- *     private static Field theField;
+ *     static Field theField;
  *
  *     public static Object getValue(Object obj) {
  *         try {
@@ -39,7 +39,7 @@ import java.util.Arrays;
  * @since 1.0.6
  */
 public final class ReflectUtils {
-	private static final CollectionObjectMap<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
+	static final CollectionObjectMap<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
 
 	/// Don't let anyone instantiate this class.
 	private ReflectUtils() {}
@@ -111,6 +111,11 @@ public final class ReflectUtils {
 		}
 	}
 
+	/**
+	 * Reflectively instantiates a type without throwing exceptions.
+	 *
+	 * @throws RuntimeException Any exception that occurs in reflection.
+	 */
 	public static <T> T make(Class<T> type, Class<?>[] parameterTypes, Object[] args) {
 		try {
 			Constructor<T> cons = type.getDeclaredConstructor(parameterTypes);
@@ -125,6 +130,11 @@ public final class ReflectUtils {
 		return supply(type, ArrayUtils.arrayOf(), ArrayUtils.arrayOf());
 	}
 
+	/**
+	 * Reflectively instantiates a type without throwing exceptions.
+	 *
+	 * @throws RuntimeException Any exception that occurs in reflection.
+	 */
 	public static <T> Prov<T> supply(Class<T> type, Object[] args, Class<?>[] parameterTypes) {
 		try {
 			Constructor<T> cons = type.getDeclaredConstructor(parameterTypes);
@@ -169,7 +179,11 @@ public final class ReflectUtils {
 		return null;
 	}
 
-	/// A utility function to find a field without throwing exceptions.
+	/**
+	 * A utility function to find a field without throwing exceptions.
+	 *
+	 * @return The field, or {@code null} if not found.
+	 */
 	@Nullable
 	public static Field findField(Class<?> type, Boolf<Field> name) {
 		while (type != null) {
@@ -184,7 +198,11 @@ public final class ReflectUtils {
 		return null;
 	}
 
-	/// A utility function to find a method without throwing exceptions.
+	/**
+	 * A utility function to find a method without throwing exceptions.
+	 *
+	 * @return The method, or {@code null} if not found.
+	 */
 	@Nullable
 	public static Method findMethod(Class<?> type, String name, Class<?>... args) {
 		while (type != null) {
@@ -199,7 +217,11 @@ public final class ReflectUtils {
 		return null;
 	}
 
-	/// A utility function to find a constructor without throwing exceptions.
+	/**
+	 * A utility function to find a constructor without throwing exceptions.
+	 *
+	 * @return The constructor, or {@code null} if not found.
+	 */
 	@SuppressWarnings("unchecked")
 	@Nullable
 	public static <T> Constructor<T> findConstructor(Class<?> type, Class<?>... args) {
@@ -312,6 +334,6 @@ public final class ReflectUtils {
 	}
 
 	public static boolean isAssignable(Field sourceType, Field targetType) {
-		return sourceType != null && targetType != null && targetType.getType().isAssignableFrom(sourceType.getType());
+		return sourceType != null && targetType != null && sourceType.getType().isAssignableFrom(targetType.getType());
 	}
 }

@@ -85,8 +85,7 @@ public class SpawnerWeather extends ParticleWeather {
 		}
 	}
 
-	public void spawnAt(WeatherState state, float x, float y) {
-	}
+	public void spawnAt(WeatherState state, float x, float y) {}
 
 	public boolean canSpawn(WeatherState state) {
 		return true;

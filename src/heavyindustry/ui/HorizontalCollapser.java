@@ -11,15 +11,15 @@ import arc.util.ArcRuntimeException;
 import arc.util.Nullable;
 
 public class HorizontalCollapser extends WidgetGroup {
-	Table table;
-	@Nullable Boolp collapsedFunc;
+	protected Table table;
+	protected @Nullable Boolp collapsedFunc;
 
-	private CollapseAction collapseAction = new CollapseAction();
+	protected CollapseAction collapseAction = new CollapseAction();
 
-	boolean collapsed, autoAnimate;
-	boolean actionRunning;
-	float currentWidth;
-	float seconds = 0.4f;
+	protected boolean collapsed, autoAnimate;
+	protected boolean actionRunning;
+	protected float currentWidth;
+	protected float seconds = 0.4f;
 
 	public HorizontalCollapser(Cons<Table> cons, boolean collapsed) {
 		this(new Table(), collapsed);
@@ -91,7 +91,7 @@ public class HorizontalCollapser extends WidgetGroup {
 		setCollapsed(collapse, true);
 	}
 
-	private void updateTouchable() {
+	protected void updateTouchable() {
 		touchable = collapsed ? Touchable.disabled : Touchable.enabled;
 	}
 
@@ -174,8 +174,8 @@ public class HorizontalCollapser extends WidgetGroup {
 		if (getChildren().size > 1) throw new ArcRuntimeException("Only one actor can be added to CollapsibleWidget");
 	}
 
-	private class CollapseAction extends Action {
-		CollapseAction() {}
+	protected class CollapseAction extends Action {
+		protected CollapseAction() {}
 
 		@Override
 		public boolean act(float delta) {

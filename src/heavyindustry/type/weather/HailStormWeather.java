@@ -69,10 +69,7 @@ public class HailStormWeather extends SpawnerWeather {
 			stack[i / 2] = new BulletStack((BulletType) items[i], (float) items[i + 1]);
 		}
 
-		Arrays.sort(stack, (o1, o2) -> {
-			if (o1.change == o2.change) return 0;
-			return o1.change > o2.change ? 1 : -1;
-		});
+		Arrays.sort(stack, (o1, o2) -> Float.compare(o1.change, o2.change));
 
 		bullets = stack;
 	}

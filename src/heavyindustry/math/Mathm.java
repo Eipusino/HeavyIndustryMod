@@ -44,6 +44,26 @@ public final class Mathm {
 	/// Don't let anyone instantiate this class.
 	private Mathm() {}
 
+	public static float dx(float px, float r, float angle) {
+		return px + r * (float) Math.cos(angle * Math.PI / 180);
+	}
+
+	public static float dy(float py, float r, float angle) {
+		return py + r * (float) Math.sin(angle * Math.PI / 180);
+	}
+
+	public static float posX(float x, float length, float angle) {
+		float a = (float) ((Math.PI * angle) / 180);
+		float cos = (float) Math.cos(a);
+		return x + length * cos;
+	}
+
+	public static float posY(float y, float length, float angle) {
+		float a = (float) ((Math.PI * angle) / 180);
+		float sin = (float) Math.sin(a);
+		return y + length * sin;
+	}
+
 	/** @return whether x,y is inside the square with radius d centered at cx, cy. */
 	public static boolean isInSquare(float cx, float cy, float d, float x, float y) {
 		return x > cx - d && x < cx + d && y > cy - d && y < cy + d;
@@ -151,6 +171,27 @@ public final class Mathm {
 	/** Lerp from one angle to another. */
 	public static float lerpAngle(float from, float to, float progress) {
 		return Angles.moveToward(from, to, progress * Angles.angleDist(from, to));
+	}
+
+	/**
+	 * Based on the known angle of a point or line and the x-coordinate of another point, solve for the y-coordinate of that point.
+	 *
+	 * @param x1    The x-coordinate of a known point
+	 * @param y1    The y-coordinate of a known point
+	 * @param angle The angle between the line and the positive x-axis direction (in degrees)
+	 * @param x2    The x-coordinate of another point
+	 * @return The solved y-coordinate
+	 */
+	public float angleY(float x1, float y1, float angle, float x2) {
+		// Handle special cases with angles of 90 degrees or 270 degrees
+		if (angle == 90 || angle == 270) {
+			// If the angle is 90 degrees or 270 degrees, the line is vertical and the y-coordinate is the same as y1
+			return y1;
+		}
+		// Slope
+		float slope = (float) Math.tan(Math.toRadians(angle));
+		// Calculate the y-coordinate and return it
+		return slope * (x2 - x1) + y1;
 	}
 
 	public static Vec2 bezier(float t, float x1, float y1, float x2, float y2, Vec2 h1, Vec2 h2) {

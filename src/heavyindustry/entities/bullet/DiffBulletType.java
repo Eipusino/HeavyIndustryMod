@@ -5,6 +5,7 @@ import arc.graphics.g2d.Lines;
 import arc.math.Angles;
 import heavyindustry.content.HFx;
 import heavyindustry.gen.DiffBullet;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.Utils;
 import mindustry.Vars;
 import mindustry.content.Fx;
@@ -82,8 +83,8 @@ public class DiffBulletType extends BulletType {
 		Lines.stroke(5 * (pfin ? pin : b.foutpow()), color);
 
 		for (float i = b.rotation() - cont; i < b.rotation() + cont; i++) {
-			float lx = Utils.dx(b.x, splashDamageRadius * pin, i);
-			float ly = Utils.dy(b.y, splashDamageRadius * pin, i);
+			float lx = Mathm.dx(b.x, splashDamageRadius * pin, i);
+			float ly = Mathm.dy(b.y, splashDamageRadius * pin, i);
 			Lines.lineAngle(lx, ly, i - 90, splashDamageRadius / (cont * 2) * pin);
 			Lines.lineAngle(lx, ly, i + 90, splashDamageRadius / (cont * 2) * pin);
 		}

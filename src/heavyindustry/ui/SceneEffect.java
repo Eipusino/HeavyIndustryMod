@@ -13,6 +13,7 @@ import arc.util.Time;
 import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import mindustry.entities.Effect;
+import mindustry.entities.Effect.EffectContainer;
 
 /**
  * Scene effects tool, a layout tool used to display {@link Effect} in the UI.
@@ -28,10 +29,10 @@ import mindustry.entities.Effect;
  * effect.scaleY = 4;
  * }</pre>
  */
-public final class SceneEffect extends Element implements Poolable {
+public class SceneEffect extends Element implements Poolable {
 	private static final Rand idRand = new Rand();
 
-	private final Effect.EffectContainer container = new Effect.EffectContainer();
+	private final EffectContainer container = new EffectContainer();
 	private final Mat transform = new Mat(), last = new Mat();
 	private final Color tmpColor = new Color();
 

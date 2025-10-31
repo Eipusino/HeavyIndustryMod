@@ -1,4 +1,4 @@
-package heavyindustry.math.geom;
+package heavyindustry.math;
 
 import arc.math.Mathf;
 import arc.math.geom.Vec2;

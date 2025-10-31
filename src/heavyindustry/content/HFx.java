@@ -34,6 +34,7 @@ import heavyindustry.graphics.HTrails.DriftTrail;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.graphics.g2d.CutBatch.RejectedRegion;
 import heavyindustry.math.Math3d;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.IntMap2;
 import heavyindustry.util.Utils;
 import heavyindustry.util.Vec2Seq;
@@ -141,8 +142,8 @@ public final class HFx {
 			float size = unit.hitSize * 2;
 			for (int i = 0; i < 2; i++) {
 				for (int r = 0; r < 15; r++) {
-					float dx = Utils.dx(e.x, size * e.foutpow() + size * 0.01f * r * e.foutpow(), 360 * e.foutpow() + 180 * i + r * size / 24),
-							dy = Utils.dy(e.y, size * e.foutpow() + size * 0.01f * r * e.foutpow(), 360 * e.foutpow() + 180 * i + r * size / 24);
+					float dx = Mathm.dx(e.x, size * e.foutpow() + size * 0.01f * r * e.foutpow(), 360 * e.foutpow() + 180 * i + r * size / 24),
+							dy = Mathm.dy(e.y, size * e.foutpow() + size * 0.01f * r * e.foutpow(), 360 * e.foutpow() + 180 * i + r * size / 24);
 					Draw.color(e.color);
 					Fill.circle(dx, dy, size / 16 * ((15 - r) / 15f));
 				}
@@ -171,7 +172,7 @@ public final class HFx {
 				TextureRegion rg = unit.type.fullIcon;
 				float w = rg.width * rg.scl() * Draw.xscl;
 				float h = rg.height * rg.scl() * Draw.yscl;
-				float dx = Utils.dx(e.x, Math.max(w, h) * 0.3f * e.finpow(), e.rotation), dy = Utils.dy(e.y, Math.max(w, h) * 0.3f * e.finpow(), e.rotation);
+				float dx = Mathm.dx(e.x, Math.max(w, h) * 0.3f * e.finpow(), e.rotation), dy = Mathm.dy(e.y, Math.max(w, h) * 0.3f * e.finpow(), e.rotation);
 				float z = Draw.z();
 				Draw.z(Layer.effect + 10);
 				Draw.alpha(e.foutpow());
@@ -184,7 +185,7 @@ public final class HFx {
 				TextureRegion rg = type.fullIcon;
 				float w = rg.width * rg.scl() * Draw.xscl;
 				float h = rg.height * rg.scl() * Draw.yscl;
-				float dx = Utils.dx(e.x, h * 0.2f * e.finpow(), e.rotation), dy = Utils.dy(e.y, h * 0.2f * e.finpow(), e.rotation);
+				float dx = Mathm.dx(e.x, h * 0.2f * e.finpow(), e.rotation), dy = Mathm.dy(e.y, h * 0.2f * e.finpow(), e.rotation);
 				float z = Draw.z();
 				Draw.z(Layer.effect + 10);
 				Draw.alpha(e.foutpow());
@@ -1070,7 +1071,7 @@ public final class HFx {
 			Lines.spikes(e.x, e.y, e.rotation / i / 1.5f, e.rotation / 12f, 4, -e.time * 1.25f);
 		}
 
-		TextureRegion arrowRegion = Core.atlas.find(MOD_NAME + "jump-gate-arrow");
+		TextureRegion arrowRegion = Core.atlas.find(MOD_NAME + "-jump-gate-arrow");
 		float scl = Mathf.curve(e.fout(), 0f, 0.1f);
 
 		for (int l = 0; l < 4; l++) {
@@ -3431,7 +3432,7 @@ public final class HFx {
 			Fill.circle(e.x, e.y, r * fin);
 			float ww = r * 2f * fin, hh = r * 2f * fin;
 			Draw.color(e.color.cpy().a(e.time > 10 ? fout : 1));
-			Draw.rect(Core.atlas.find(MOD_NAME + "firebird-light"), e.x, e.y, ww, hh);
+			Draw.rect(Core.atlas.find(MOD_NAME + "-firebird-light"), e.x, e.y, ww, hh);
 		});
 	}
 

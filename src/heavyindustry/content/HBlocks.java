@@ -40,6 +40,7 @@ import heavyindustry.graphics.HCacheLayer;
 import heavyindustry.graphics.HLayer;
 import heavyindustry.graphics.HPal;
 import heavyindustry.graphics.PositionLightning;
+import heavyindustry.math.Mathm;
 import heavyindustry.type.Recipe;
 import heavyindustry.util.Constant;
 import heavyindustry.util.Utils;
@@ -4788,8 +4789,8 @@ public final class HBlocks {
 					Lines.circle(e.x, e.y, baseRd * pin);
 					for (int i = 0; i < 12; i++) {
 						float a = Fx.rand.random(360);
-						float lx = Utils.dx(e.x, baseRd * pin, a);
-						float ly = Utils.dy(e.y, baseRd * pin, a);
+						float lx = Mathm.dx(e.x, baseRd * pin, a);
+						float ly = Mathm.dy(e.y, baseRd * pin, a);
 						Drawf.tri(lx, ly, baseRd / 6f * e.foutpow(), (baseRd / 2f + Fx.rand.random(-randRd, randRd)) * e.foutpow(), a + 180);
 					}
 				});

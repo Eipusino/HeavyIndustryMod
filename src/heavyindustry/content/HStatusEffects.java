@@ -94,7 +94,7 @@ public final class HStatusEffects {
 				Lines.stroke(2 * e.foutpow(), Pal.blastAmmoBack);
 				for (int i = 0; i < 3; i++) {
 					float a = 360 / 3f * i + e.time * 6;
-					float x = Utils.dx(e.x, Math.max(6, unit.hitSize / 2f), a), y = Utils.dy(e.y, Math.max(6, unit.hitSize / 2f), a);
+					float x = Mathm.dx(e.x, Math.max(6, unit.hitSize / 2f), a), y = Mathm.dy(e.y, Math.max(6, unit.hitSize / 2f), a);
 					Lines.lineAngle(x, y, a - 120, Math.max(3, unit.hitSize / 4f) * e.foutpow());
 					Lines.lineAngle(x, y, a + 120, Math.max(3, unit.hitSize / 4f) * e.foutpow());
 				}
@@ -156,14 +156,14 @@ public final class HStatusEffects {
 					Lines.circle(e.x, e.y, size * pin);
 					for (int i = 0; i < 5; i++) {
 						float a = Fx.rand.random(180);
-						float lx = Utils.dx(e.x, size * pin, a);
-						float ly = Utils.dy(e.y, size * pin, a);
+						float lx = Mathm.dx(e.x, size * pin, a);
+						float ly = Mathm.dy(e.y, size * pin, a);
 						Drawf.tri(lx, ly, size / 32 * e.foutpow(), (size + Fx.rand.random(-size, size)) * e.foutpow(), a + 180);
 					}
 					for (int i = 0; i < 5; i++) {
 						float a = 180 + Fx.rand.random(180);
-						float lx = Utils.dx(e.x, size * pin, a);
-						float ly = Utils.dy(e.y, size * pin, a);
+						float lx = Mathm.dx(e.x, size * pin, a);
+						float ly = Mathm.dy(e.y, size * pin, a);
 						Drawf.tri(lx, ly, size / 32 * e.foutpow(), (size + Fx.rand.random(-size, size)) * e.foutpow(), a + 180);
 					}
 				}

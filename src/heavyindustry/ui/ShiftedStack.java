@@ -10,8 +10,8 @@ import arc.struct.SnapshotSeq;
 /** The first is used as a background, the rest are stacked on top at stackX, stackY */
 public class ShiftedStack extends WidgetGroup {
 	protected float stackX, stackY;
-	private float prefWidth, prefHeight, minWidth, minHeight;
-	private boolean sizeInvalid = true;
+	protected float prefWidth, prefHeight, minWidth, minHeight;
+	protected boolean sizeInvalid = true;
 
 	public ShiftedStack() {
 		setTransform(false);
@@ -32,7 +32,7 @@ public class ShiftedStack extends WidgetGroup {
 		sizeInvalid = true;
 	}
 
-	private void computeSize() {
+	protected void computeSize() {
 		sizeInvalid = false;
 		prefWidth = 0;
 		prefHeight = 0;

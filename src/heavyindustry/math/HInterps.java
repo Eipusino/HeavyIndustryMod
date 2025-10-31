@@ -14,7 +14,6 @@ public final class HInterps {
 	public static final Interp artillery = a -> 1 - 2 * (a - 0.5f) * (a - 0.5f);
 	public static final Interp artilleryPlus = a -> 3 * a - 3 * a * a + 0.25f;
 	public static final Interp artilleryPlusReversed = a -> -3 * a + 3 * a * a + 1;
-	public static final Interp zero = a -> 0;
 	public static final Interp inOut = a -> 2 * (0.9f * a + 0.31f) + 1f / (5f * (a + 0.1f)) - 1.6f;
 	public static final Interp inOut2 = a -> 1.6243f * (0.9f * a + 0.46f) + 1 / (10 * (a + 0.1f)) - 1.3f;
 	public static final Interp parabola4 = a -> 4 * (a - 0.5f) * (a - 0.5f);

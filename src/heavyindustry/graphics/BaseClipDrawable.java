@@ -40,7 +40,7 @@ public abstract class BaseClipDrawable implements ClipDrawable {
 	}
 
 	@Override
-	public void stRightWidth(float value) {
+	public void setRightWidth(float value) {
 		rightWidth = value;
 	}
 

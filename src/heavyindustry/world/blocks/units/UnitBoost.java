@@ -10,7 +10,6 @@ import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
 import arc.scene.style.TextureRegionDrawable;
-import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
@@ -18,6 +17,7 @@ import arc.util.io.Writes;
 import arc.util.pooling.Pool;
 import arc.util.pooling.Pools;
 import heavyindustry.ui.Elements;
+import heavyindustry.util.CollectionList;
 import heavyindustry.util.Utils.Pos;
 import heavyindustry.world.meta.HStatValues;
 import mindustry.content.StatusEffects;
@@ -133,7 +133,7 @@ public class UnitBoost extends Block {
 	}
 
 	public class UnitBoostBuild extends Building implements HeatConsumer {
-		protected final Seq<float[]> pos = new Seq<>(float[].class);
+		protected final CollectionList<float[]> pos = new CollectionList<>(float[].class);
 		protected final Pool<Pos> posPool = Pools.get(Pos.class, Pos::new);
 
 		public float[] sideHeat = new float[4];

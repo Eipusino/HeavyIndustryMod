@@ -12,7 +12,7 @@ import arc.scene.event.Touchable;
 import arc.scene.ui.layout.Scl;
 import arc.util.Align;
 import arc.util.Time;
-import heavyindustry.util.Utils;
+import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.ui.Fonts;
 
@@ -45,8 +45,8 @@ public class FloatingText {
 
 			float dst = Mathf.dst(ex, ey, 0, 0);
 			vec2.set(0, 0);
-			float dx = Utils.dx(0, dst, vec2.angleTo(ex, ey) + ang);
-			float dy = Utils.dy(0, dst, vec2.angleTo(ex, ey) + ang);
+			float dx = Mathm.dx(0, dst, vec2.angleTo(ex, ey) + ang);
+			float dy = Mathm.dy(0, dst, vec2.angleTo(ex, ey) + ang);
 
 			reMat.set(Draw.trans());
 

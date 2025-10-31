@@ -22,7 +22,7 @@ import static heavyindustry.util.Constant.PRIME3;
  *
  * @author Nathan Sweet
  */
-public class CharSet {
+public class CharSet implements Cloneable {
 	public int size;
 
 	protected char[] keyTable;
@@ -82,6 +82,18 @@ public class CharSet {
 		System.arraycopy(set.keyTable, 0, keyTable, 0, set.keyTable.length);
 		size = set.size;
 		hasZeroValue = set.hasZeroValue;
+	}
+
+	public CharSet copy() {
+		try {
+			CharSet out = (CharSet) super.clone();
+
+			out.keyTable = new char[size];
+			System.arraycopy(keyTable, 0, out.keyTable, 0, size);
+			return out;
+		} catch (CloneNotSupportedException e) {
+			return new CharSet(this);
+		}
 	}
 
 	public static CharSet with(char... array) {
@@ -171,6 +183,10 @@ public class CharSet {
 		CharSetIterator iterator = set.iterator();
 		while (iterator.hasNext)
 			add(iterator.next());
+	}
+
+	public void add(String str) {
+		addAll(str.toCharArray(), 0, str.length());
 	}
 
 	/** Skips checks for existing keys. */

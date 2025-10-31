@@ -7,8 +7,8 @@ import arc.math.Mathf;
 import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.CollectionList;
-import heavyindustry.util.Utils;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Units;
 import mindustry.gen.Unit;
@@ -183,8 +183,8 @@ public class Cobweb extends TractorBeamTurret {
 				if (target != null) {
 					for (int i = 0; i < webAmount; i++) {
 						float a = 360f / webAmount * i + rotTimer * 1.5f;
-						float lx = Utils.dx(target.x, webRange * strength, a),
-								ly = Utils.dy(target.y, webRange * strength, a);
+						float lx = Mathm.dx(target.x, webRange * strength, a),
+								ly = Mathm.dy(target.y, webRange * strength, a);
 						if (i <= webs.size - 1) {
 							Unit u = webs.get(i);
 							if (u != null) {

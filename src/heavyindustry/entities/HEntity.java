@@ -735,7 +735,7 @@ public final class HEntity {
 		excludeTime.clear();
 	}
 
-	public static void unitRemove(int uid) {
+	public static void unitAnnihilate(int uid) {
 		Unit unit = Groups.unit.getByID(uid);
 
 		if (Vars.netClient != null) {
@@ -750,8 +750,8 @@ public final class HEntity {
 	public static void annihilate(Entityc entity, boolean setNaN) {
 		Groups.all.remove(entity);
 
-		if (entity instanceof Drawc d) Groups.draw.remove(d);
-		if (entity instanceof Syncc s) Groups.sync.remove(s);
+		if (entity instanceof Drawc draw) Groups.draw.remove(draw);
+		if (entity instanceof Syncc sync) Groups.sync.remove(sync);
 
 		if (entity instanceof Unit unit) {
 			setAdded(unit, false);

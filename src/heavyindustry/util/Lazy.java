@@ -3,7 +3,7 @@ package heavyindustry.util;
 import arc.func.Prov;
 
 public class Lazy<T> {
-	public final boolean modifiable;
+	public final boolean allowSet;
 
 	protected T value;
 	protected volatile Prov<T> prov;
@@ -18,7 +18,7 @@ public class Lazy<T> {
 	 */
 	public Lazy(Prov<T> init, boolean mod) {
 		prov = ObjectUtils.requireNonNull(init, "The prov cannot be null.");
-		modifiable = mod;
+		allowSet = mod;
 	}
 
 	public static <T> Lazy<T> of(Prov<T> prov) {
@@ -38,7 +38,7 @@ public class Lazy<T> {
 	}
 
 	public T set(T newValue) {
-		if (modifiable) value = newValue;
+		if (allowSet) value = newValue;
 
 		return value;
 	}
@@ -57,7 +57,7 @@ public class Lazy<T> {
 	public String toString() {
 		return "Lazy{" +
 				"value=" + value +
-				", modifiable=" + modifiable +
+				", modifiable=" + allowSet +
 				'}';
 	}
 }

@@ -25,6 +25,8 @@ public final class DirEdges {
 
 			for (int j = 0; j < 4; j++) {
 				edges[i][j] = new Point2[i];
+				angle[i][j] = new Point2[1];
+
 				for (int m = minOff; m <= rad; m++) {
 					switch (j) {
 						case 0 -> edges[i][j][m + rad - off] = new Point2(rad + 1, m);
@@ -34,15 +36,12 @@ public final class DirEdges {
 					}
 				}
 
-				angle[i][j] = new Point2[]{
-						switch (j) {
-							case 0 -> new Point2(rad + 1, rad + 1);
-							case 1 -> new Point2(-rad - 1 + off, rad + 1);
-							case 2 -> new Point2(-rad - 1 + off, -rad - 1 + off);
-							case 3 -> new Point2(rad + 1, -rad - 1 + off);
-							default -> throw new IllegalStateException("Unexpected value: " + j);
-						}
-				};
+				switch (j) {
+					case 0 -> angle[i][j][0] = new Point2(rad + 1, rad + 1);
+					case 1 -> angle[i][j][0] = new Point2(-rad - 1 + off, rad + 1);
+					case 2 -> angle[i][j][0] = new Point2(-rad - 1 + off, -rad - 1 + off);
+					case 3 -> angle[i][j][0] = new Point2(rad + 1, -rad - 1 + off);
+				}
 
 				Arrays.sort(edges[i][j], (a, b) -> Float.compare(Mathf.angle(a.x, a.y), Mathf.angle(b.x, b.y)));
 			}

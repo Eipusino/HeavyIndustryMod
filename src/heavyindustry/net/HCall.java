@@ -85,13 +85,13 @@ public final class HCall {
 		}
 	}
 
-	public static void removeUnit(int uid) {
+	public static void annihilateUnit(int uid) {
 		if (Vars.net.server() || !Vars.net.active()) {
-			HEntity.unitRemove(uid);
+			HEntity.unitAnnihilate(uid);
 		}
 
 		if (Vars.net.server()) {
-			UnitRemoveCallPacket packet = new UnitRemoveCallPacket();
+			UnitAnnihilateCallPacket packet = new UnitAnnihilateCallPacket();
 			packet.uid = uid;
 			Vars.net.send(packet, true);
 		}

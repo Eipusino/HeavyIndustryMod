@@ -315,8 +315,8 @@ public final class ObjectUtils {
 		throw (E) err;
 	}
 
-	public static String toString(Object o) {
-		return toString(o, true);
+	public static String toString(Object object) {
+		return toString(object, true);
 	}
 
 	/**
@@ -328,82 +328,81 @@ public final class ObjectUtils {
 	 *
 	 * @param last Should the fields of the super class be retrieved.
 	 */
-	public static String toString(Object o, boolean last) {
-		if (o == null) return "null";
+	public static String toString(Object object, boolean last) {
+		if (object == null) return "null";
 
-		Class<?> c = o.getClass();
+		Class<?> type = object.getClass();
 
-		StringBuilder sb = new StringBuilder();
-		sb.append(c.getSimpleName()).append('[');
+		StringBuilder builder = new StringBuilder();
+		builder.append(type.getSimpleName()).append('[');
 		int i = 0;
-		while (c != null) {
-			for (Field f : c.getDeclaredFields()) {
-				if (Modifier.isStatic(f.getModifiers())) {
+		while (type != null) {
+			for (Field field : type.getDeclaredFields()) {
+				if (Modifier.isStatic(field.getModifiers())) {
 					continue;
 				}
 
 				if (i++ > 0) {
-					sb.append(", ");
+					builder.append(", ");
 				}
 
-				sb.append(f.getName());
-				sb.append('=');
+				builder.append(field.getName()).append('=');
 
 				try {
 					Object value;
 
 					// On the Android platform, the reflection performance is not low, so there is no need to use Unsafe.
 					if (!OS.isAndroid && HVars.hasUnsafe) {
-						value = UnsafeUtils.get(f, o);
+						value = UnsafeUtils.get(field, object);
 					} else {
-						f.setAccessible(true);
-						value = f.get(o);
+						field.setAccessible(true);
+						value = field.get(object);
 					}
 
 					if (value == null) {
-						sb.append("null");
+						builder.append("null");
 
 						continue;
 					}
 
-					Class<?> type = value.getClass();
+					Class<?> valueType = value.getClass();
 
-					if (type.isArray()) {
+					if (valueType.isArray()) {
 						// I think using instanceof would be better.
-						if (value instanceof float[] a) {
-							ArrayUtils.appendFloat(sb, a);
-						} else if (value instanceof int[] a) {
-							ArrayUtils.appendInt(sb, a);
-						} else if (value instanceof boolean[] a) {
-							ArrayUtils.appendBool(sb, a);
-						} else if (value instanceof byte[] a) {
-							ArrayUtils.appendByte(sb, a);
-						} else if (value instanceof char[] a) {
-							ArrayUtils.appendChar(sb, a);
-						} else if (value instanceof double[] a) {
-							ArrayUtils.appendDouble(sb, a);
-						} else if (value instanceof long[] a) {
-							ArrayUtils.appendLong(sb, a);
-						} else if (value instanceof short[] a) {
-							ArrayUtils.appendShort(sb, a);
-						} else if (value instanceof Object[] a) {
-							ArrayUtils.append(sb, a);
+						if (value instanceof float[] array) {
+							ArrayUtils.appendFloat(builder, array);
+						} else if (value instanceof int[] array) {
+							ArrayUtils.appendInt(builder, array);
+						} else if (value instanceof boolean[] array) {
+							ArrayUtils.appendBool(builder, array);
+						} else if (value instanceof byte[] array) {
+							ArrayUtils.appendByte(builder, array);
+						} else if (value instanceof char[] array) {
+							ArrayUtils.appendChar(builder, array);
+						} else if (value instanceof double[] array) {
+							ArrayUtils.appendDouble(builder, array);
+						} else if (value instanceof long[] array) {
+							ArrayUtils.appendLong(builder, array);
+						} else if (value instanceof short[] array) {
+							ArrayUtils.appendShort(builder, array);
+						} else if (value instanceof Object[] array) {
+							ArrayUtils.append(builder, array);
 						} else {
 							// It shouldn't have happened...
-							sb.append("???");
+							builder.append("???");
 						}
 					} else {
-						sb.append(value);
+						builder.append(value);
 					}
 				} catch (Exception e) {
-					sb.append("???");
+					builder.append("???");
 				}
 			}
 
-			c = last ? c.getSuperclass() : null;
+			type = last ? type.getSuperclass() : null;
 		}
-		sb.append(']');
-		return sb.toString();
+
+		return builder.append(']').toString();
 	}
 
 	/**
@@ -419,28 +418,28 @@ public final class ObjectUtils {
 	 *     <li>mindustry.world.Tile[][] -> [[Lmindustry/world/Tile;
 	 * </ul>
 	 *
-	 * @param c The Class object to be converted
+	 * @param type The Class object to be converted
 	 * @return JVM type descriptor string
-	 * @throws NullPointerException If parameter 'c' is null.
+	 * @throws NullPointerException If {@code type} is null.
 	 */
-	public static String toDescriptor(Class<?> c) {
-		if (c == null) throw new NullPointerException("param 'c' is null");
+	public static String toDescriptor(Class<?> type) {
+		if (type == null) throw new NullPointerException("param 'type' is null");
 
-		if (c.isArray()) return "[" + toDescriptor(c.getComponentType());
+		if (type.isArray()) return "[" + toDescriptor(type.getComponentType());
 
-		if (c.isPrimitive()) {
-			if (c == void.class) return "V";
-			else if (c == boolean.class) return "Z";
-			else if (c == byte.class) return "B";
-			else if (c == short.class) return "S";
-			else if (c == int.class) return "I";
-			else if (c == long.class) return "J";
-			else if (c == float.class) return "F";
-			else if (c == double.class) return "D";
-			else if (c == char.class) return "C";
-			else throw new IllegalArgumentException("unknown type of " + c);// should not happen
+		if (type.isPrimitive()) {
+			if (type == void.class) return "V";
+			else if (type == boolean.class) return "Z";
+			else if (type == byte.class) return "B";
+			else if (type == short.class) return "S";
+			else if (type == int.class) return "I";
+			else if (type == long.class) return "J";
+			else if (type == float.class) return "F";
+			else if (type == double.class) return "D";
+			else if (type == char.class) return "C";
+			else throw new IllegalArgumentException("unknown type of " + type);// should not happen
 		}
 
-		return "L" + c.getName().replace('.', '/') + ";";
+		return "L" + type.getName().replace('.', '/') + ";";
 	}
 }

@@ -3,8 +3,8 @@ package heavyindustry.util;
 public class DisjointSetUnion {
 	public final int size;
 
-	final int[] father;
-	final int[] sizes;
+	protected final int[] father;
+	protected final int[] sizes;
 
 	public DisjointSetUnion(int v) {
 		size = v;

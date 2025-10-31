@@ -8,7 +8,7 @@ import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
 import arc.struct.Seq;
 import heavyindustry.content.HFx;
-import heavyindustry.util.Utils;
+import heavyindustry.math.Mathm;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
@@ -97,8 +97,8 @@ public class ElectricStormBulletType extends BulletType {
 			if (b.time >= b.lifetime - HFx.chainLightningFade.lifetime) return;
 			for (int i = 0; i < 3; i++) {
 				float a = Mathf.random(360);
-				float x = Utils.dx(b.x, baseRange, a);
-				float y = Utils.dy(b.y, baseRange, a);
+				float x = Mathm.dx(b.x, baseRange, a);
+				float y = Mathm.dy(b.y, baseRange, a);
 				HFx.chainLightningFade.at(x, y, 8, color, b);
 			}
 		}

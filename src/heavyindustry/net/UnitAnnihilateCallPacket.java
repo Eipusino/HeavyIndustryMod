@@ -5,12 +5,12 @@ import arc.util.io.Writes;
 import heavyindustry.entities.HEntity;
 import mindustry.net.Packet;
 
-public class UnitRemoveCallPacket extends Packet {
+public class UnitAnnihilateCallPacket extends Packet {
 	private byte[] data;
 
 	public int uid;
 
-	public UnitRemoveCallPacket() {
+	public UnitAnnihilateCallPacket() {
 		data = NODATA;
 	}
 
@@ -32,6 +32,6 @@ public class UnitRemoveCallPacket extends Packet {
 
 	@Override
 	public void handleClient() {
-		HEntity.unitRemove(uid);
+		HEntity.unitAnnihilate(uid);
 	}
 }

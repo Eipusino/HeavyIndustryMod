@@ -24,7 +24,7 @@ public class SideTooltip extends Tooltip {
 		setContainerPositionInternal(element);
 	}
 
-	private void setContainerPositionInternal(Element element) {
+	protected void setContainerPositionInternal(Element element) {
 		targetActor = element;
 		Scene stage = element.getScene();
 		if (stage == null) return;
