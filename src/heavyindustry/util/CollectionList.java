@@ -16,7 +16,6 @@ import arc.struct.Sort;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import arc.util.Nullable;
-import arc.util.Select;
 import arc.util.Structs;
 
 import java.lang.reflect.Array;
@@ -1074,13 +1073,13 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	 * @param kthLowest  rank of desired object according to comparison, n is based on ordinal numbers, not array indices. for min
 	 *                   value use 1, for max value use size of array, using 0 results in runtime exception.
 	 * @return the value of the Nth lowest ranked object.
-	 * @see Select
+	 * @see arc.util.Select
 	 */
 	public E selectRanked(Comparator<E> comparator, int kthLowest) {
 		if (kthLowest < 1) {
 			throw new ArcRuntimeException("nth_lowest must be greater than 0, 1 = first, 2 = second...");
 		}
-		return Select.instance().select(items, comparator, kthLowest, size);
+		return ArrayUtils.select(items, comparator, kthLowest, size);
 	}
 
 	/**
@@ -1094,7 +1093,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		if (kthLowest < 1) {
 			throw new ArcRuntimeException("nth_lowest must be greater than 0, 1 = first, 2 = second...");
 		}
-		return Select.instance().selectIndex(items, comparator, kthLowest, size);
+		return ArrayUtils.selectIndex(items, comparator, kthLowest, size);
 	}
 
 	public CollectionList<E> reverse() {
