@@ -502,8 +502,8 @@ public class CharSet implements Cloneable {
 	 */
 	public CharSetIterator iterator() {
 		if (iterator1 == null) {
-			iterator1 = new CharSetIterator(this);
-			iterator2 = new CharSetIterator(this);
+			iterator1 = new CharSetIterator();
+			iterator2 = new CharSetIterator();
 		}
 		if (!iterator1.valid) {
 			iterator1.reset();
@@ -517,22 +517,19 @@ public class CharSet implements Cloneable {
 		return iterator2;
 	}
 
-	public static class CharSetIterator {
-		protected final CharSet set;
-
+	public class CharSetIterator {
 		public boolean hasNext;
 		protected int nextIndex, currentIndex;
 		protected boolean valid = true;
 
-		public CharSetIterator(CharSet set) {
-			this.set = set;
+		public CharSetIterator() {
 			reset();
 		}
 
 		public void reset() {
 			currentIndex = INDEX_ILLEGAL;
 			nextIndex = INDEX_ZERO;
-			if (set.hasZeroValue)
+			if (hasZeroValue)
 				hasNext = true;
 			else
 				findNextIndex();
@@ -540,8 +537,8 @@ public class CharSet implements Cloneable {
 
 		protected void findNextIndex() {
 			hasNext = false;
-			char[] keyTable = set.keyTable;
-			for (int n = set.capacity + set.stashSize; ++nextIndex < n; ) {
+			char[] keyTable = CharSet.this.keyTable;
+			for (int n = capacity + stashSize; ++nextIndex < n; ) {
 				if (keyTable[nextIndex] != EMPTY) {
 					hasNext = true;
 					break;
@@ -550,25 +547,25 @@ public class CharSet implements Cloneable {
 		}
 
 		public void remove() {
-			if (currentIndex == INDEX_ZERO && set.hasZeroValue) {
-				set.hasZeroValue = false;
+			if (currentIndex == INDEX_ZERO && hasZeroValue) {
+				hasZeroValue = false;
 			} else if (currentIndex < 0) {
 				throw new IllegalStateException("next must be called before remove.");
-			} else if (currentIndex >= set.capacity) {
-				set.removeStashIndex(currentIndex);
+			} else if (currentIndex >= capacity) {
+				removeStashIndex(currentIndex);
 				nextIndex = currentIndex - 1;
 				findNextIndex();
 			} else {
-				set.keyTable[currentIndex] = EMPTY;
+				keyTable[currentIndex] = EMPTY;
 			}
 			currentIndex = INDEX_ILLEGAL;
-			set.size--;
+			size--;
 		}
 
 		public char next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			char key = nextIndex == INDEX_ZERO ? 0 : set.keyTable[nextIndex];
+			char key = nextIndex == INDEX_ZERO ? 0 : keyTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return key;
@@ -576,7 +573,7 @@ public class CharSet implements Cloneable {
 
 		/** Returns a new array containing the remaining keys. */
 		public CharSeq toArray() {
-			CharSeq array = new CharSeq(true, set.size);
+			CharSeq array = new CharSeq(true, size);
 			while (hasNext)
 				array.add(next());
 			return array;

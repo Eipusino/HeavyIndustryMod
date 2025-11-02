@@ -463,7 +463,7 @@ public final class ArrayUtils {
 			idx = fastMax(items, comp, size);
 		} else {
 			// quickselect a better choice for cases of k between min and max
-			idx = selectIndex0(items, comp, kthLowest, size);
+			idx = selects(items, comp, kthLowest, size);
 		}
 		return idx;
 	}
@@ -492,8 +492,8 @@ public final class ArrayUtils {
 		return highestIdx;
 	}
 
-	private static <T> int selectIndex0(T[] items, Comparator<T> comp, int n, int size) {
-		return selectIndex(items, comp, 0, size - 1, n);
+	public static <T> int selects(T[] items, Comparator<T> comp, int kthLowest, int size) {
+		return selectIndex(items, comp, 0, size - 1, kthLowest);
 	}
 
 	private static <T> int partition(T[] array, Comparator<? super T> comp, int left, int right, int pivot) {

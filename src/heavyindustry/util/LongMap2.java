@@ -36,9 +36,9 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 	protected int stashCapacity;
 	protected int pushIterations;
 
-	protected Entries<V> entries1, entries2;
-	protected Values<V> values1, values2;
-	protected Keys<V> keys1, keys2;
+	protected Entries entries1, entries2;
+	protected Values values1, values2;
+	protected Keys keys1, keys2;
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
 	public LongMap2(Class<?> keyType) {
@@ -100,10 +100,6 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 			LongMap2<V> map = (LongMap2<V>) super.clone();
 			map.keyTable = Arrays.copyOf(keyTable, keyTable.length);
 			map.valueTable = Arrays.copyOf(valueTable, valueTable.length);
-
-			map.entries1 = map.entries2 = null;
-			map.keys1 = map.keys2 = null;
-			map.values1 = map.values2 = null;
 			return map;
 		} catch (CloneNotSupportedException e) {
 			return new LongMap2<>(this);
@@ -570,6 +566,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		return (int) ((h ^ h >>> hashShift) & mask);
 	}
 
+	@Override
 	public int hashCode() {
 		int h = 0;
 		if (hasZeroValue && zeroValue != null) {
@@ -652,10 +649,10 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 	 * Returns an iterator for the entries in the map. Remove is supported. Note that the same iterator instance is returned each
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	public Entries<V> entries() {
+	public Entries entries() {
 		if (entries1 == null) {
-			entries1 = new Entries<>(this);
-			entries2 = new Entries<>(this);
+			entries1 = new Entries();
+			entries2 = new Entries();
 		}
 		if (!entries1.valid) {
 			entries1.reset();
@@ -673,10 +670,10 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 	 * Returns an iterator for the values in the map. Remove is supported. Note that the same iterator instance is returned each
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	public Values<V> values() {
+	public Values values() {
 		if (values1 == null) {
-			values1 = new Values<>(this);
-			values2 = new Values<>(this);
+			values1 = new Values();
+			values2 = new Values();
 		}
 		if (!values1.valid) {
 			values1.reset();
@@ -723,10 +720,10 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 	 * Returns an iterator for the keys in the map. Remove is supported. Note that the same iterator instance is returned each
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	public Keys<V> keys() {
+	public Keys keys() {
 		if (keys1 == null) {
-			keys1 = new Keys<>(this);
-			keys2 = new Keys<>(this);
+			keys1 = new Keys();
+			keys2 = new Keys();
 		}
 		if (!keys1.valid) {
 			keys1.reset();
@@ -740,23 +737,20 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		return keys2;
 	}
 
-	protected static class MapIterator<V> {
-		protected final LongMap2<V> map;
-
+	protected class MapIterator {
 		public boolean hasNext;
 
 		protected int nextIndex, currentIndex;
 		protected boolean valid = true;
 
-		public MapIterator(LongMap2<V> map) {
-			this.map = map;
+		public MapIterator() {
 			reset();
 		}
 
 		public void reset() {
 			currentIndex = INDEX_ILLEGAL;
 			nextIndex = INDEX_ZERO;
-			if (map.hasZeroValue)
+			if (hasZeroValue)
 				hasNext = true;
 			else
 				findNextIndex();
@@ -764,8 +758,8 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 
 		protected void findNextIndex() {
 			hasNext = false;
-			long[] keyTable = map.keyTable;
-			for (int n = map.capacity + map.stashSize; ++nextIndex < n; ) {
+			long[] keyTable = LongMap2.this.keyTable;
+			for (int n = capacity + stashSize; ++nextIndex < n; ) {
 				if (keyTable[nextIndex] != EMPTY) {
 					hasNext = true;
 					break;
@@ -774,30 +768,26 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		}
 
 		public void remove() {
-			if (currentIndex == INDEX_ZERO && map.hasZeroValue) {
-				map.zeroValue = null;
-				map.hasZeroValue = false;
+			if (currentIndex == INDEX_ZERO && hasZeroValue) {
+				zeroValue = null;
+				hasZeroValue = false;
 			} else if (currentIndex < 0) {
 				throw new IllegalStateException("next must be called before remove.");
-			} else if (currentIndex >= map.capacity) {
-				map.removeStashIndex(currentIndex);
+			} else if (currentIndex >= capacity) {
+				removeStashIndex(currentIndex);
 				nextIndex = currentIndex - 1;
 				findNextIndex();
 			} else {
-				map.keyTable[currentIndex] = EMPTY;
-				map.valueTable[currentIndex] = null;
+				keyTable[currentIndex] = EMPTY;
+				valueTable[currentIndex] = null;
 			}
 			currentIndex = INDEX_ILLEGAL;
-			map.size--;
+			size--;
 		}
 	}
 
-	public static class Entries<V> extends MapIterator<V> implements Iterable<LongHolder<V>>, Iterator<LongHolder<V>> {
+	public class Entries extends MapIterator implements Iterable<LongHolder<V>>, Iterator<LongHolder<V>> {
 		protected LongHolder<V> entry = new LongHolder<>();
-
-		public Entries(LongMap2<V> map) {
-			super(map);
-		}
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
@@ -807,10 +797,10 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 
 			if (nextIndex == INDEX_ZERO) {
 				entry.key = 0;
-				entry.value = map.zeroValue;
+				entry.value = zeroValue;
 			} else {
-				entry.key = map.keyTable[nextIndex];
-				entry.value = map.valueTable[nextIndex];
+				entry.key = keyTable[nextIndex];
+				entry.value = valueTable[nextIndex];
 			}
 			currentIndex = nextIndex;
 			findNextIndex();
@@ -829,11 +819,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		}
 	}
 
-	public static class Values<V> extends MapIterator<V> implements Iterable<V>, Iterator<V> {
-		public Values(LongMap2<V> map) {
-			super(map);
-		}
-
+	public class Values extends MapIterator implements Iterable<V>, Iterator<V> {
 		@Override
 		public boolean hasNext() {
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
@@ -846,9 +832,9 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			V value;
 			if (nextIndex == INDEX_ZERO)
-				value = map.zeroValue;
+				value = zeroValue;
 			else
-				value = map.valueTable[nextIndex];
+				value = valueTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return value;
@@ -861,22 +847,18 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 
 		/** Returns a new array containing the remaining values. */
 		public Seq<V> toArray() {
-			Seq<V> array = new Seq<>(true, map.size, map.valueComponentType);
+			Seq<V> array = new Seq<>(true, size, valueComponentType);
 			while (hasNext)
 				array.add(next());
 			return array;
 		}
 	}
 
-	public static class Keys<V> extends MapIterator<V> {
-		public Keys(LongMap2<V> map) {
-			super(map);
-		}
-
+	public class Keys extends MapIterator {
 		public long next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			long key = nextIndex == INDEX_ZERO ? 0 : map.keyTable[nextIndex];
+			long key = nextIndex == INDEX_ZERO ? 0 : keyTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return key;
@@ -884,7 +866,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 
 		/** Returns a new array containing the remaining values. */
 		public LongSeq toArray() {
-			LongSeq array = new LongSeq(true, map.size);
+			LongSeq array = new LongSeq(true, size);
 			while (hasNext)
 				array.add(next());
 			return array;

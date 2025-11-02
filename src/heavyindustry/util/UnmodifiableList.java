@@ -24,8 +24,8 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 
 	final int size;
 
-	Iter<E> iterator1, iterator2;
-	ListIter<E> listIterator1;
+	Iter iterator1, iterator2;
+	ListIter listIterator1;
 
 	/**
 	 * @see #with(E[])
@@ -199,7 +199,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 
 	@Override
 	public Iterator<E> iterator() {
-		if (iterator1 == null) iterator1 = new Iter<>(this);
+		if (iterator1 == null) iterator1 = new Iter();
 
 		if (iterator1.done) {
 			iterator1.cursor = 0;
@@ -207,7 +207,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 			return iterator1;
 		}
 
-		if (iterator2 == null) iterator2 = new Iter<>(this);
+		if (iterator2 == null) iterator2 = new Iter();
 
 		if (iterator2.done) {
 			iterator2.cursor = 0;
@@ -215,12 +215,12 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 			return iterator2;
 		}
 		//allocate new iterator in the case of 3+ nested loops.
-		return new Iter<>(this);
+		return new Iter();
 	}
 
 	@Override
 	public ListIterator<E> listIterator(int index) {
-		if (listIterator1 == null) listIterator1 = new ListIter<>(this, index);
+		if (listIterator1 == null) listIterator1 = new ListIter(index);
 
 		if (listIterator1.done) {
 			listIterator1.cursor = index;
@@ -228,36 +228,31 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 			return listIterator1;
 		}
 
-		return new ListIter<>(this, index);
+		return new ListIter(index);
 	}
 
-	public static class Iter<E> implements Iterator<E> {
-		UnmodifiableList<E> list;
-
+	public class Iter implements Iterator<E> {
 		int cursor = 0;
 		boolean done = true;
 
-		public Iter(UnmodifiableList<E> ls) {
-			list = ls;
-		}
+		public Iter() {}
 
 		@Override
 		public boolean hasNext() {
-			if (cursor >= list.size) done = true;
-			return cursor < list.size;
+			if (cursor >= size) done = true;
+			return cursor < size;
 		}
 
 		@Override
 		public E next() {
-			if (cursor >= list.size) throw new NoSuchElementException(String.valueOf(cursor));
-			return list.items[cursor++];
+			if (cursor >= size) throw new NoSuchElementException(String.valueOf(cursor));
+			return items[cursor++];
 		}
 	}
 
-	public static class ListIter<E> extends Iter<E> implements ListIterator<E> {
-		public ListIter(UnmodifiableList<E> ls, int index) {
-			super(ls);
-			cursor = Mathm.clamp(index, 0, list.size);
+	public class ListIter extends Iter implements ListIterator<E> {
+		public ListIter(int index) {
+			cursor = Mathm.clamp(index, 0, size);
 		}
 
 		@Override
@@ -267,7 +262,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 
 		@Override
 		public E previous() {
-			return list.items[cursor - 1];
+			return items[cursor - 1];
 		}
 
 		@Override

@@ -2,7 +2,6 @@ package heavyindustry.util;
 
 import arc.func.Boolf;
 import arc.func.Cons;
-import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import arc.util.Nullable;
 
@@ -32,7 +31,7 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 	 */
 	protected int tail = 0;
 
-	protected @Nullable QueueIterable<E> iterable;
+	protected @Nullable QueueIterator iterator1, iterator2;
 
 	/** Creates a new Queue which can hold 16 values without needing to resize backing array. */
 	public CollectionQueue(Class<?> type) {
@@ -416,9 +415,25 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 	 * time this method is called. Use the constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public Iterator<E> iterator() {
-		if (iterable == null) iterable = new QueueIterable<>(this);
-		return iterable.iterator();
+	public QueueIterator iterator() {
+		if (iterator1 == null) {
+			iterator1 = new QueueIterator();
+			iterator2 = new QueueIterator();
+		}
+
+		if (iterator1.done) {
+			iterator1.index = 0;
+			iterator1.done = false;
+			return iterator1;
+		}
+
+		if (iterator2.done) {
+			iterator2.index = 0;
+			iterator2.done = false;
+			return iterator2;
+		}
+		//allocate new iterator in the case of 3+ nested loops.
+		return new QueueIterator();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -529,76 +544,37 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 		return true;
 	}
 
-	public static class QueueIterable<T> implements Iterable<T> {
-		protected final CollectionQueue<T> queue;
-		protected final boolean allowRemove;
+	public class QueueIterator implements Iterator<E>, Iterable<E> {
+		protected int index;
+		protected boolean done = true;
 
-		protected QueueIterator iterator1, iterator2;
+		protected QueueIterator() {}
 
-		public QueueIterable(CollectionQueue<T> queue) {
-			this(queue, true);
-		}
-
-		public QueueIterable(CollectionQueue<T> queue, boolean allowRemove) {
-			this.queue = queue;
-			this.allowRemove = allowRemove;
+		@Override
+		public boolean hasNext() {
+			if (index >= size) done = true;
+			return index < size;
 		}
 
 		@Override
-		public Iterator<T> iterator() {
-			if (iterator1 == null) {
-				iterator1 = new QueueIterator();
-				iterator2 = new QueueIterator();
-			}
-
-			if (iterator1.done) {
-				iterator1.index = 0;
-				iterator1.done = false;
-				return iterator1;
-			}
-
-			if (iterator2.done) {
-				iterator2.index = 0;
-				iterator2.done = false;
-				return iterator2;
-			}
-			//allocate new iterator in the case of 3+ nested loops.
-			return new QueueIterator();
+		public E next() {
+			if (index >= size) throw new NoSuchElementException(String.valueOf(index));
+			return get(index++);
 		}
 
-		protected class QueueIterator implements Iterator<T>, Iterable<T> {
-			protected int index;
-			protected boolean done = true;
+		@Override
+		public void remove() {
+			index--;
+			removeIndex(index);
+		}
 
-			protected QueueIterator() {}
+		public void reset() {
+			index = 0;
+		}
 
-			@Override
-			public boolean hasNext() {
-				if (index >= queue.size) done = true;
-				return index < queue.size;
-			}
-
-			@Override
-			public T next() {
-				if (index >= queue.size) throw new NoSuchElementException(String.valueOf(index));
-				return queue.get(index++);
-			}
-
-			@Override
-			public void remove() {
-				if (!allowRemove) throw new ArcRuntimeException("Remove not allowed.");
-				index--;
-				queue.removeIndex(index);
-			}
-
-			public void reset() {
-				index = 0;
-			}
-
-			@Override
-			public Iterator<T> iterator() {
-				return this;
-			}
+		@Override
+		public Iterator<E> iterator() {
+			return this;
 		}
 	}
 }

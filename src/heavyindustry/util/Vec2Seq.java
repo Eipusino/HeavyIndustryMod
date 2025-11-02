@@ -25,7 +25,6 @@ public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 
 	protected final Vec2 tmp = new Vec2();
 
-	protected Seq<Vec2> seq;
 	protected Iter iterator1, iterator2;
 
 	public Vec2Seq() {
@@ -135,7 +134,7 @@ public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 	}
 
 	public Seq<Vec2> asSeq() {
-		if (seq == null) seq = new Seq<>(true, size(), Vec2.class);
+		Seq<Vec2> seq = new Seq<>(true, size(), Vec2.class);
 
 		seq.clear();
 
@@ -220,8 +219,8 @@ public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 	 * @return an Iterator.
 	 */
 	@Override
-	public Iterator<Vec2> iterator() {
-		if (iterator1 == null) iterator1 = new Iter(this);
+	public Iter iterator() {
+		if (iterator1 == null) iterator1 = new Iter();
 
 		if (iterator1.done) {
 			iterator1.index = 0;
@@ -229,7 +228,7 @@ public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 			return iterator1;
 		}
 
-		if (iterator2 == null) iterator2 = new Iter(this);
+		if (iterator2 == null) iterator2 = new Iter();
 
 		if (iterator2.done) {
 			iterator2.index = 0;
@@ -237,35 +236,29 @@ public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 			return iterator2;
 		}
 		// allocate new iterator in the case of 3+ nested loops.
-		return new Iter(this);
+		return new Iter();
 	}
 
-	public static class Iter implements Iterator<Vec2> {
-		protected final Vec2Seq array;
-
+	public class Iter implements Iterator<Vec2> {
 		protected int index;
 		protected boolean done = true;
 
-		public Iter(Vec2Seq seq) {
-			array = seq;
-		}
-
 		@Override
 		public boolean hasNext() {
-			if (index >= array.size()) done = true;
-			return index < array.size();
+			if (index >= size()) done = true;
+			return index < size();
 		}
 
 		@Override
 		public Vec2 next() {
-			if (index >= array.size()) throw new NoSuchElementException(String.valueOf(index));
-			return array.newVec2(index++);
+			if (index >= size()) throw new NoSuchElementException(String.valueOf(index));
+			return newVec2(index++);
 		}
 
 		@Override
 		public void remove() {
 			index--;
-			array.remove(index);
+			Vec2Seq.this.remove(index);
 		}
 	}
 }

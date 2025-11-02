@@ -24,11 +24,11 @@ public class ObjectTable<K, V> implements Iterable<ObjectHolder<K, V>> {
 		return map12.size;
 	}
 
-	public K getKey(V key) {
+	public K getKey(Object key) {
 		return map21.get(key);
 	}
 
-	public K getKey(V key, Prov<ObjectHolder<K, V>> supplier) {
+	public K getKey(Object key, Prov<ObjectHolder<K, V>> supplier) {
 		K res = getKey(key);
 		if (res == null) {
 			put(supplier.get());
@@ -37,11 +37,11 @@ public class ObjectTable<K, V> implements Iterable<ObjectHolder<K, V>> {
 		return res;
 	}
 
-	public V getValue(K key) {
+	public V getValue(Object key) {
 		return map12.get(key);
 	}
 
-	public V getValue(K key, Prov<ObjectHolder<K, V>> supplier) {
+	public V getValue(Object key, Prov<ObjectHolder<K, V>> supplier) {
 		V res = getValue(key);
 		if (res == null) {
 			put(supplier.get());
@@ -72,9 +72,8 @@ public class ObjectTable<K, V> implements Iterable<ObjectHolder<K, V>> {
 		map12.remove(getKey(arg));
 	}
 
-	@SuppressWarnings("unchecked")
 	public Object get(Object key, Prov<ObjectHolder<K, V>> supplier, boolean argT1) {
-		return argT1 ? getValue((K) key, supplier) : getKey((V) key, supplier);
+		return argT1 ? getValue(key, supplier) : getKey(key, supplier);
 	}
 
 	public boolean containsKey(K arg) {
@@ -103,7 +102,7 @@ public class ObjectTable<K, V> implements Iterable<ObjectHolder<K, V>> {
 	}
 
 	public static class TableIterator<K, V> implements Iterator<ObjectHolder<K, V>> {
-		protected final CollectionObjectMap.Entries<K, V> iterator;
+		protected final CollectionObjectMap<K, V>.Entries iterator;
 
 		public TableIterator(CollectionObjectMap<K, V> map) {
 			iterator = map.iterator();

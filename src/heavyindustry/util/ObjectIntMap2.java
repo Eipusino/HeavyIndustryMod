@@ -40,9 +40,9 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 	protected int stashCapacity;
 	protected int pushIterations;
 
-	protected Entries<K> entries1, entries2;
-	protected Values<K> values1, values2;
-	protected Keys<K> keys1, keys2;
+	protected Entries entries1, entries2;
+	protected Values values1, values2;
+	protected Keys keys1, keys2;
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
 	public ObjectIntMap2(Class<?> keyType) {
@@ -601,7 +601,7 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 	}
 
 	@Override
-	public Entries<K> iterator() {
+	public Entries iterator() {
 		return entries();
 	}
 
@@ -609,10 +609,10 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 	 * Returns an iterator for the entries in the map. Remove is supported. Note that the same iterator instance is returned each
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	public Entries<K> entries() {
+	public Entries entries() {
 		if (entries1 == null) {
-			entries1 = new Entries<>(this);
-			entries2 = new Entries<>(this);
+			entries1 = new Entries();
+			entries2 = new Entries();
 		}
 		if (!entries1.valid) {
 			entries1.reset();
@@ -630,10 +630,10 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 	 * Returns an iterator for the values in the map. Remove is supported. Note that the same iterator instance is returned each
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	public Values<K> values() {
+	public Values values() {
 		if (values1 == null) {
-			values1 = new Values<>(this);
-			values2 = new Values<>(this);
+			values1 = new Values();
+			values2 = new Values();
 		}
 		if (!values1.valid) {
 			values1.reset();
@@ -651,10 +651,10 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 	 * Returns an iterator for the keys in the map. Remove is supported. Note that the same iterator instance is returned each time
 	 * this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	public Keys<K> keys() {
+	public Keys keys() {
 		if (keys1 == null) {
-			keys1 = new Keys<>(this);
-			keys2 = new Keys<>(this);
+			keys1 = new Keys();
+			keys2 = new Keys();
 		}
 		if (!keys1.valid) {
 			keys1.reset();
@@ -668,16 +668,13 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 		return keys2;
 	}
 
-	protected static class MapIterator<K> {
-		protected final ObjectIntMap2<K> map;
-
+	protected class MapIterator {
 		public boolean hasNext;
 
 		protected int nextIndex, currentIndex;
 		protected boolean valid = true;
 
-		public MapIterator(ObjectIntMap2<K> map) {
-			this.map = map;
+		public MapIterator() {
 			reset();
 		}
 
@@ -689,8 +686,7 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 
 		protected void findNextIndex() {
 			hasNext = false;
-			K[] keyTable = map.keyTable;
-			for (int n = map.capacity + map.stashSize; ++nextIndex < n; ) {
+			for (int n = capacity + stashSize; ++nextIndex < n; ) {
 				if (keyTable[nextIndex] != null) {
 					hasNext = true;
 					break;
@@ -700,27 +696,23 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 
 		public void remove() {
 			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
-			if (currentIndex >= map.capacity) {
-				map.removeStashIndex(currentIndex);
+			if (currentIndex >= capacity) {
+				removeStashIndex(currentIndex);
 				nextIndex = currentIndex - 1;
 				findNextIndex();
 			} else {
-				map.keyTable[currentIndex] = null;
+				keyTable[currentIndex] = null;
 			}
 			currentIndex = -1;
-			map.size--;
+			size--;
 		}
 	}
 
-	public static class Entries<K> extends MapIterator<K> implements Iterable<ObjectIntHolder<K>>, Iterator<ObjectIntHolder<K>> {
+	public class Entries extends MapIterator implements Iterable<ObjectIntHolder<K>>, Iterator<ObjectIntHolder<K>> {
 		protected ObjectIntHolder<K> entry = new ObjectIntHolder<>();
 
-		public Entries(ObjectIntMap2<K> map) {
-			super(map);
-		}
-
 		public CollectionList<ObjectIntHolder<K>> toList() {
-			CollectionList<ObjectIntHolder<K>> out = new CollectionList<>(map.keyComponentType);
+			CollectionList<ObjectIntHolder<K>> out = new CollectionList<>(keyComponentType);
 			for (ObjectIntHolder<K> entry : this) {
 				ObjectIntHolder<K> e = new ObjectIntHolder<>();
 				e.key = entry.key;
@@ -735,9 +727,8 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 		public ObjectIntHolder<K> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			K[] keyTable = map.keyTable;
 			entry.key = keyTable[nextIndex];
-			entry.value = map.valueTable[nextIndex];
+			entry.value = valueTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return entry;
@@ -750,16 +741,12 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 		}
 
 		@Override
-		public Entries<K> iterator() {
+		public Entries iterator() {
 			return this;
 		}
 	}
 
-	public static class Values<K> extends MapIterator<K> {
-		public Values(ObjectIntMap2<K> map) {
-			super(map);
-		}
-
+	public class Values extends MapIterator {
 		public boolean hasNext() {
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			return hasNext;
@@ -768,7 +755,7 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 		public int next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			int value = map.valueTable[nextIndex];
+			int value = valueTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return value;
@@ -776,14 +763,14 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 
 		/** Returns a new array containing the remaining values. */
 		public IntSeq toSeq() {
-			IntSeq array = new IntSeq(true, map.size);
+			IntSeq array = new IntSeq(true, size);
 			while (hasNext)
 				array.add(next());
 			return array;
 		}
 
 		public int[] toArray() {
-			int[] array = new int[map.size];
+			int[] array = new int[ObjectIntMap2.this.size];
 			int i = 0;
 			while (hasNext) {
 				array[i] = next();
@@ -793,11 +780,7 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 		}
 	}
 
-	public static class Keys<K> extends MapIterator<K> implements Iterable<K>, Iterator<K> {
-		public Keys(ObjectIntMap2<K> map) {
-			super(map);
-		}
-
+	public class Keys extends MapIterator implements Iterable<K>, Iterator<K> {
 		@Override
 		public boolean hasNext() {
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
@@ -808,19 +791,19 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 		public K next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			K key = map.keyTable[nextIndex];
+			K key = keyTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return key;
 		}
 
 		@Override
-		public Keys<K> iterator() {
+		public Keys iterator() {
 			return this;
 		}
 
 		public Seq<K> toSeq() {
-			Seq<K> seq = new Seq<>(true, map.size, map.keyComponentType);
+			Seq<K> seq = new Seq<>(true, size, keyComponentType);
 			while (hasNext)
 				seq.add(next());
 			return seq;
@@ -834,7 +817,7 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 
 		/** Returns a new array containing the remaining keys. */
 		public CollectionList<K> toList() {
-			CollectionList<K> array = new CollectionList<>(true, map.size, map.keyComponentType);
+			CollectionList<K> array = new CollectionList<>(true, size, keyComponentType);
 			while (hasNext)
 				array.add(next());
 			return array;

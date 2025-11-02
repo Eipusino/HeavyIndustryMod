@@ -44,9 +44,9 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	protected int stashCapacity;
 	protected int pushIterations;
 
-	protected Entries<K, V> entries1, entries2;
-	protected Values<K, V> values1, values2;
-	protected Keys<K, V> keys1, keys2;
+	protected Entries entries1, entries2;
+	protected Values values1, values2;
+	protected Keys keys1, keys2;
 
 	@SuppressWarnings("unchecked")
 	public static <K, V> CollectionObjectMap<K, V> of(Class<?> keyType, Class<?> valueType, Object... values) {
@@ -132,10 +132,6 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 			CollectionObjectMap<K, V> out = (CollectionObjectMap<K, V>) super.clone();
 			out.keyTable = Arrays.copyOf(keyTable, keyTable.length);
 			out.valueTable = Arrays.copyOf(valueTable, valueTable.length);
-			// Do not copy these fields.
-			out.entries1 = out.entries2 = null;
-			out.keys1 = out.keys2 = null;
-			out.values1 = out.values2 = null;
 			return out;
 		} catch (CloneNotSupportedException e) {
 			CollectionObjectMap<K, V> out = new CollectionObjectMap<>(keyComponentType, valueComponentType);
@@ -720,10 +716,14 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public Entries<K, V> iterator() {
+	public Entries iterator() {
+		return entries();
+	}
+
+	public Entries entries() {
 		if (entries1 == null) {
-			entries1 = new Entries<>(this);
-			entries2 = new Entries<>(this);
+			entries1 = new Entries();
+			entries2 = new Entries();
 		}
 		if (!entries1.valid) {
 			entries1.reset();
@@ -737,21 +737,15 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		return entries2;
 	}
 
-	/// @deprecated see {@link #iterator()}.
-	@Deprecated
-	public Entries<K, V> entries() {
-		return iterator();
-	}
-
 	/**
 	 * Returns an iterator for the values in the map. Remove is supported. Note that the same iterator instance is returned each
 	 * time this method is called. Use the {@link Values} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public Values<K, V> values() {
+	public Values values() {
 		if (values1 == null) {
-			values1 = new Values<>(this);
-			values2 = new Values<>(this);
+			values1 = new Values();
+			values2 = new Values();
 		}
 		if (!values1.valid) {
 			values1.reset();
@@ -767,7 +761,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 
 	@Override
 	public Set<Entry<K, V>> entrySet() {
-		return new EntrySet<>(this);
+		return new EntrySet();
 	}
 
 	/**
@@ -775,10 +769,10 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	 * time this method is called. Use the {@link Keys} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public Keys<K, V> keySet() {
+	public Keys keySet() {
 		if (keys1 == null) {
-			keys1 = new Keys<>(this);
-			keys2 = new Keys<>(this);
+			keys1 = new Keys();
+			keys2 = new Keys();
 		}
 		if (!keys1.valid) {
 			keys1.reset();
@@ -792,29 +786,23 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		return keys2;
 	}
 
-	public static class EntrySet<K, V> extends AbstractSet<Entry<K, V>> {
-		protected final CollectionObjectMap<K, V> map;
-
+	public class EntrySet extends AbstractSet<Entry<K, V>> {
 		protected final MapItr itr = new MapItr();
 		protected final MapEnt ent = new MapEnt();
 
-		public EntrySet(CollectionObjectMap<K, V> m) {
-			map = m;
-		}
-
 		@Override
 		public int size() {
-			return map.size;
+			return size;
 		}
 
 		@Override
 		public void clear() {
-			map.clear();
+			CollectionObjectMap.this.clear();
 		}
 
 		@Override
 		public Iterator<Entry<K, V>> iterator() {
-			itr.entries = map.iterator();
+			itr.entries = CollectionObjectMap.this.iterator();
 			return itr;
 		}
 
@@ -822,7 +810,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		public boolean contains(Object o) {
 			if (o instanceof Entry<?, ?> e) {
 				Object key = e.getKey();
-				return map.containsKey(key);
+				return containsKey(key);
 			}
 			return false;
 		}
@@ -831,13 +819,13 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		public boolean remove(Object o) {
 			if (o instanceof Entry<?, ?> e) {
 				Object key = e.getKey();
-				return map.remove(key) != null;
+				return CollectionObjectMap.this.remove(key) != null;
 			}
 			return false;
 		}
 
 		protected class MapItr implements Iterator<Entry<K, V>> {
-			Entries<K, V> entries;
+			Entries entries;
 
 			@Override
 			public boolean hasNext() {
@@ -866,21 +854,18 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 
 			@Override
 			public V setValue(V value) {
-				return map.put(entry.key, value);
+				return put(entry.key, value);
 			}
 		}
 	}
 
-	protected abstract static class MapIterator<K, V, I> implements Iterable<I>, Iterator<I> {
-		protected final CollectionObjectMap<K, V> map;
-
+	protected abstract class MapIterator<I> implements Iterable<I>, Iterator<I> {
 		public boolean hasNext;
 
 		protected int nextIndex, currentIndex;
 		protected boolean valid = true;
 
-		public MapIterator(CollectionObjectMap<K, V> m) {
-			map = m;
+		public MapIterator() {
 			reset();
 		}
 
@@ -892,8 +877,8 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 
 		protected void findNextIndex() {
 			hasNext = false;
-			K[] keyTable = map.keyTable;
-			for (int n = map.capacity + map.stashSize; ++nextIndex < n; ) {
+			K[] keyTable = CollectionObjectMap.this.keyTable;
+			for (int n = capacity + stashSize; ++nextIndex < n; ) {
 				if (keyTable[nextIndex] != null) {
 					hasNext = true;
 					break;
@@ -904,25 +889,21 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		@Override
 		public void remove() {
 			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
-			if (currentIndex >= map.capacity) {
-				map.removeStashIndex(currentIndex);
+			if (currentIndex >= capacity) {
+				removeStashIndex(currentIndex);
 				nextIndex = currentIndex - 1;
 				findNextIndex();
 			} else {
-				map.keyTable[currentIndex] = null;
-				map.valueTable[currentIndex] = null;
+				keyTable[currentIndex] = null;
+				valueTable[currentIndex] = null;
 			}
 			currentIndex = -1;
-			map.size--;
+			size--;
 		}
 	}
 
-	public static class Entries<K, V> extends MapIterator<K, V, ObjectHolder<K, V>> {
+	public class Entries extends MapIterator<ObjectHolder<K, V>> {
 		protected ObjectHolder<K, V> entry = new ObjectHolder<>();
-
-		public Entries(CollectionObjectMap<K, V> map) {
-			super(map);
-		}
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
@@ -930,8 +911,8 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 
-			entry.key = map.keyTable[nextIndex];
-			entry.value = map.valueTable[nextIndex];
+			entry.key = keyTable[nextIndex];
+			entry.value = valueTable[nextIndex];
 
 			currentIndex = nextIndex;
 			findNextIndex();
@@ -945,16 +926,12 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		}
 
 		@Override
-		public Entries<K, V> iterator() {
+		public Entries iterator() {
 			return this;
 		}
 	}
 
-	public static class Values<K, V> extends MapIterator<K, V, V> implements Collection<V> {
-		public Values(CollectionObjectMap<K, V> map) {
-			super(map);
-		}
-
+	public class Values extends MapIterator<V> implements Collection<V> {
 		@Override
 		public boolean hasNext() {
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
@@ -965,7 +942,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		public V next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			V value = map.valueTable[nextIndex];
+			V value = valueTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return value;
@@ -973,38 +950,38 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 
 		@Override
 		public int size() {
-			return map.size;
+			return size;
 		}
 
 		@Override
 		public boolean isEmpty() {
-			return map.isEmpty();
+			return CollectionObjectMap.this.isEmpty();
 		}
 
 		@Override
 		public boolean contains(Object o) {
-			return map.containsValue(o);
+			return containsValue(o);
 		}
 
 		@Override
-		public Values<K, V> iterator() {
+		public Values iterator() {
 			return this;
 		}
 
 		@Override
 		public V[] toArray() {
-			return Arrays.copyOf(map.valueTable, map.size);
+			return Arrays.copyOf(valueTable, size);
 		}
 
 		@SuppressWarnings("unchecked")
 		@Override
 		public <T> T[] toArray(T[] a) {
-			if (a.length < map.size)
+			if (a.length < size)
 				// Make a new array of a's runtime type, but my contents:
-				return (T[]) Arrays.copyOf(map.valueTable, map.size, a.getClass());
-			System.arraycopy(map.valueTable, 0, a, 0, map.size);
-			if (a.length > map.size)
-				a[map.size] = null;
+				return (T[]) Arrays.copyOf(valueTable, size, a.getClass());
+			System.arraycopy(valueTable, 0, a, 0, size);
+			if (a.length > size)
+				a[size] = null;
 			return a;
 		}
 
@@ -1072,12 +1049,24 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 
 		@Override
 		public void clear() {
-			map.clear();
+			CollectionObjectMap.this.clear();
+		}
+
+		/** Returns a new array containing the remaining values. */
+		public CollectionList<V> toList() {
+			return toList(new CollectionList<>(true, size, valueComponentType));
+		}
+
+		/** Adds the remaining values to the specified array. */
+		public CollectionList<V> toList(CollectionList<V> array) {
+			while (hasNext)
+				array.add(next());
+			return array;
 		}
 
 		/** Returns a new array containing the remaining values. */
 		public Seq<V> toSeq() {
-			return toSeq(new Seq<>(true, map.size, map.valueComponentType));
+			return toSeq(new Seq<>(true, size, valueComponentType));
 		}
 
 		/** Adds the remaining values to the specified array. */
@@ -1088,11 +1077,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		}
 	}
 
-	public static class Keys<K, V> extends MapIterator<K, V, K> implements Set<K> {
-		public Keys(CollectionObjectMap<K, V> map) {
-			super(map);
-		}
-
+	public class Keys extends MapIterator<K> implements Set<K> {
 		@Override
 		public boolean hasNext() {
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
@@ -1103,7 +1088,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		public K next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			K key = map.keyTable[nextIndex];
+			K key = keyTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return key;
@@ -1121,21 +1106,21 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 
 		@Override
 		public int size() {
-			return map.size;
+			return size;
 		}
 
 		@Override
 		public boolean isEmpty() {
-			return map.isEmpty();
+			return CollectionObjectMap.this.isEmpty();
 		}
 
 		@Override
 		public boolean contains(Object o) {
-			return map.containsKey(o);
+			return containsKey(o);
 		}
 
 		@Override
-		public Keys<K, V> iterator() {
+		public Keys iterator() {
 			return this;
 		}
 
@@ -1156,7 +1141,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 
 		@Override
 		public boolean remove(Object o) {
-			return map.remove(o) != null;
+			return CollectionObjectMap.this.remove(o) != null;
 		}
 
 		@Override
@@ -1205,12 +1190,24 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 
 		@Override
 		public void clear() {
-			map.clear();
+			CollectionObjectMap.this.clear();
+		}
+
+		/** Returns a new array containing the remaining keys. */
+		public CollectionList<K> toList() {
+			return toList(new CollectionList<>(true, size, keyComponentType));
+		}
+
+		/** Adds the remaining keys to the array. */
+		public CollectionList<K> toList(CollectionList<K> array) {
+			while (hasNext)
+				array.add(next());
+			return array;
 		}
 
 		/** Returns a new array containing the remaining keys. */
 		public Seq<K> toSeq() {
-			return toSeq(new Seq<>(true, map.size, map.keyComponentType));
+			return toSeq(new Seq<>(true, size, keyComponentType));
 		}
 
 		/** Adds the remaining keys to the array. */

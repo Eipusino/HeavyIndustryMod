@@ -61,10 +61,10 @@ public class ObjectBoolOrderedMap<K> extends ObjectBoolMap<K> {
 	}
 
 	@Override
-	public Entries<K> iterator() {
+	public Entries iterator() {
 		if (entries1 == null) {
-			entries1 = new OrderedMapEntries<>(this);
-			entries2 = new OrderedMapEntries<>(this);
+			entries1 = new OrderedMapEntries();
+			entries2 = new OrderedMapEntries();
 		}
 		if (!entries1.valid) {
 			entries1.reset();
@@ -84,10 +84,10 @@ public class ObjectBoolOrderedMap<K> extends ObjectBoolMap<K> {
 	 * time this method is called. Use the {@link OrderedMapKeys} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public Keys<K> keys() {
+	public Keys keys() {
 		if (keys1 == null) {
-			keys1 = new OrderedMapKeys<>(this);
-			keys2 = new OrderedMapKeys<>(this);
+			keys1 = new OrderedMapKeys();
+			keys2 = new OrderedMapKeys();
 		}
 		if (!keys1.valid) {
 			keys1.reset();
@@ -102,10 +102,10 @@ public class ObjectBoolOrderedMap<K> extends ObjectBoolMap<K> {
 	}
 
 	@Override
-	public Values<K> values() {
+	public Values values() {
 		if (values1 == null) {
-			values1 = new OrderedMapValues<>(this);
-			values2 = new OrderedMapValues<>(this);
+			values1 = new OrderedMapValues();
+			values2 = new OrderedMapValues();
 		}
 		if (!values1.valid) {
 			values1.reset();
@@ -135,102 +135,81 @@ public class ObjectBoolOrderedMap<K> extends ObjectBoolMap<K> {
 		return buffer.toString();
 	}
 
-	public static class OrderedMapEntries<K> extends Entries<K> {
-		protected CollectionList<K> keys;
-
-		public OrderedMapEntries(ObjectBoolOrderedMap<K> map) {
-			super(map);
-			keys = map.orderedKeys;
-		}
-
+	public class OrderedMapEntries extends Entries {
 		@Override
 		public void reset() {
 			nextIndex = 0;
-			hasNext = map.size > 0;
+			hasNext = size > 0;
 		}
 
 		@Override
 		public ObjectBoolHolder<K> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			entry.key = keys.get(nextIndex);
-			entry.value = map.get(entry.key);
+			entry.key = orderedKeys.get(nextIndex);
+			entry.value = get(entry.key);
 			nextIndex++;
-			hasNext = nextIndex < map.size;
+			hasNext = nextIndex < size;
 			return entry;
 		}
 
 		@Override
 		public void remove() {
 			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
-			map.remove(entry.key);
+			ObjectBoolOrderedMap.this.remove(entry.key);
 			nextIndex--;
 		}
 	}
 
-	public static class OrderedMapKeys<K> extends Keys<K> {
-		protected CollectionList<K> keys;
-
-		public OrderedMapKeys(ObjectBoolOrderedMap<K> map) {
-			super(map);
-			keys = map.orderedKeys;
-		}
-
+	public class OrderedMapKeys extends Keys {
 		@Override
 		public void reset() {
 			nextIndex = 0;
-			hasNext = map.size > 0;
+			hasNext = size > 0;
 		}
 
 		@Override
 		public K next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			K key = keys.get(nextIndex);
+			K key = orderedKeys.get(nextIndex);
 			currentIndex = nextIndex;
 			nextIndex++;
-			hasNext = nextIndex < map.size;
+			hasNext = nextIndex < size;
 			return key;
 		}
 
 		@Override
 		public void remove() {
 			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
-			((ObjectBoolOrderedMap<?>) map).removeIndex(nextIndex - 1);
+			removeIndex(nextIndex - 1);
 			nextIndex = currentIndex;
 			currentIndex = -1;
 		}
 	}
 
-	public static class OrderedMapValues<K> extends Values<K> {
-		protected CollectionList<K> keys;
-
-		public OrderedMapValues(ObjectBoolOrderedMap<K> map) {
-			super(map);
-			keys = map.orderedKeys;
-		}
-
+	public class OrderedMapValues extends Values {
 		@Override
 		public void reset() {
 			nextIndex = 0;
-			hasNext = map.size > 0;
+			hasNext = size > 0;
 		}
 
 		@Override
 		public boolean next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			boolean value = map.get(keys.get(nextIndex));
+			boolean value = get(orderedKeys.get(nextIndex));
 			currentIndex = nextIndex;
 			nextIndex++;
-			hasNext = nextIndex < map.size;
+			hasNext = nextIndex < size;
 			return value;
 		}
 
 		@Override
 		public void remove() {
 			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
-			((ObjectBoolOrderedMap<?>) map).removeIndex(currentIndex);
+			removeIndex(currentIndex);
 			nextIndex = currentIndex;
 			currentIndex = -1;
 		}

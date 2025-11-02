@@ -70,10 +70,10 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 	}
 
 	@Override
-	public Entries<K, V> iterator() {
+	public Entries iterator() {
 		if (entries1 == null) {
-			entries1 = new OrderedMapEntries<>(this);
-			entries2 = new OrderedMapEntries<>(this);
+			entries1 = new OrderedMapEntries();
+			entries2 = new OrderedMapEntries();
 		}
 		if (!entries1.valid) {
 			entries1.reset();
@@ -93,10 +93,10 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 	 * time this method is called. Use the {@link OrderedMapKeys} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public Keys<K, V> keySet() {
+	public Keys keySet() {
 		if (keys1 == null) {
-			keys1 = new OrderedMapKeys<>(this);
-			keys2 = new OrderedMapKeys<>(this);
+			keys1 = new OrderedMapKeys();
+			keys2 = new OrderedMapKeys();
 		}
 		if (!keys1.valid) {
 			keys1.reset();
@@ -111,10 +111,10 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 	}
 
 	@Override
-	public Values<K, V> values() {
+	public Values values() {
 		if (values1 == null) {
-			values1 = new OrderedMapValues<>(this);
-			values2 = new OrderedMapValues<>(this);
+			values1 = new OrderedMapValues();
+			values2 = new OrderedMapValues();
 		}
 		if (!values1.valid) {
 			values1.reset();
@@ -144,102 +144,81 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 		return buffer.toString();
 	}
 
-	public static class OrderedMapEntries<K, V> extends Entries<K, V> {
-		protected CollectionList<K> keys;
-
-		public OrderedMapEntries(CollectionOrderedMap<K, V> map) {
-			super(map);
-			keys = map.orderedKeys;
-		}
-
+	public class OrderedMapEntries extends Entries {
 		@Override
 		public void reset() {
 			nextIndex = 0;
-			hasNext = map.size > 0;
+			hasNext = size > 0;
 		}
 
 		@Override
 		public ObjectHolder<K, V> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			entry.key = keys.get(nextIndex);
-			entry.value = map.get(entry.key);
+			entry.key = orderedKeys.get(nextIndex);
+			entry.value = get(entry.key);
 			nextIndex++;
-			hasNext = nextIndex < map.size;
+			hasNext = nextIndex < size;
 			return entry;
 		}
 
 		@Override
 		public void remove() {
 			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
-			map.remove(entry.key);
+			CollectionOrderedMap.this.remove(entry.key);
 			nextIndex--;
 		}
 	}
 
-	public static class OrderedMapKeys<K, V> extends Keys<K, V> {
-		protected CollectionList<K> keys;
-
-		public OrderedMapKeys(CollectionOrderedMap<K, V> map) {
-			super(map);
-			keys = map.orderedKeys;
-		}
-
+	public class OrderedMapKeys extends Keys {
 		@Override
 		public void reset() {
 			nextIndex = 0;
-			hasNext = map.size > 0;
+			hasNext = size > 0;
 		}
 
 		@Override
 		public K next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			K key = keys.get(nextIndex);
+			K key = orderedKeys.get(nextIndex);
 			currentIndex = nextIndex;
 			nextIndex++;
-			hasNext = nextIndex < map.size;
+			hasNext = nextIndex < size;
 			return key;
 		}
 
 		@Override
 		public void remove() {
 			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
-			((CollectionOrderedMap<?, ?>) map).removeIndex(nextIndex - 1);
+			removeIndex(nextIndex - 1);
 			nextIndex = currentIndex;
 			currentIndex = -1;
 		}
 	}
 
-	public static class OrderedMapValues<K, V> extends Values<K, V> {
-		protected CollectionList<K> keys;
-
-		public OrderedMapValues(CollectionOrderedMap<K, V> map) {
-			super(map);
-			keys = map.orderedKeys;
-		}
-
+	public class OrderedMapValues extends Values {
 		@Override
 		public void reset() {
 			nextIndex = 0;
-			hasNext = map.size > 0;
+			hasNext = size > 0;
 		}
 
 		@Override
 		public V next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			V value = map.get(keys.get(nextIndex));
+			V value = get(orderedKeys.get(nextIndex));
 			currentIndex = nextIndex;
 			nextIndex++;
-			hasNext = nextIndex < map.size;
+			hasNext = nextIndex < size;
 			return value;
 		}
 
 		@Override
 		public void remove() {
 			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
-			((CollectionOrderedMap<?, ?>) map).removeIndex(currentIndex);
+			removeIndex(currentIndex);
 			nextIndex = currentIndex;
 			currentIndex = -1;
 		}

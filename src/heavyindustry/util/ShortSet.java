@@ -477,8 +477,8 @@ public class ShortSet {
 	 */
 	public ShortSetIterator iterator() {
 		if (iterator1 == null) {
-			iterator1 = new ShortSetIterator(this);
-			iterator2 = new ShortSetIterator(this);
+			iterator1 = new ShortSetIterator();
+			iterator2 = new ShortSetIterator();
 		}
 		if (!iterator1.valid) {
 			iterator1.reset();
@@ -492,23 +492,20 @@ public class ShortSet {
 		return iterator2;
 	}
 
-	public static class ShortSetIterator {
-		protected final ShortSet set;
-
+	public class ShortSetIterator {
 		public boolean hasNext;
 
 		protected int nextIndex, currentIndex;
 		protected boolean valid = true;
 
-		public ShortSetIterator(ShortSet set) {
-			this.set = set;
+		public ShortSetIterator() {
 			reset();
 		}
 
 		public void reset() {
 			currentIndex = INDEX_ILLEGAL;
 			nextIndex = INDEX_ZERO;
-			if (set.hasZeroValue)
+			if (hasZeroValue)
 				hasNext = true;
 			else
 				findNextIndex();
@@ -516,8 +513,7 @@ public class ShortSet {
 
 		protected void findNextIndex() {
 			hasNext = false;
-			short[] keyTable = set.keyTable;
-			for (int n = set.capacity + set.stashSize; ++nextIndex < n; ) {
+			for (int n = capacity + stashSize; ++nextIndex < n; ) {
 				if (keyTable[nextIndex] != EMPTY) {
 					hasNext = true;
 					break;
@@ -526,25 +522,25 @@ public class ShortSet {
 		}
 
 		public void remove() {
-			if (currentIndex == INDEX_ZERO && set.hasZeroValue) {
-				set.hasZeroValue = false;
+			if (currentIndex == INDEX_ZERO && hasZeroValue) {
+				hasZeroValue = false;
 			} else if (currentIndex < 0) {
 				throw new IllegalStateException("next must be called before remove.");
-			} else if (currentIndex >= set.capacity) {
-				set.removeStashIndex(currentIndex);
+			} else if (currentIndex >= capacity) {
+				removeStashIndex(currentIndex);
 				nextIndex = currentIndex - 1;
 				findNextIndex();
 			} else {
-				set.keyTable[currentIndex] = EMPTY;
+				keyTable[currentIndex] = EMPTY;
 			}
 			currentIndex = INDEX_ILLEGAL;
-			set.size--;
+			size--;
 		}
 
 		public short next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			short key = nextIndex == INDEX_ZERO ? 0 : set.keyTable[nextIndex];
+			short key = nextIndex == INDEX_ZERO ? 0 : keyTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return key;
@@ -552,7 +548,7 @@ public class ShortSet {
 
 		/** Returns a new array containing the remaining keys. */
 		public ShortSeq toArray() {
-			ShortSeq array = new ShortSeq(true, set.size);
+			ShortSeq array = new ShortSeq(true, size);
 			while (hasNext)
 				array.add(next());
 			return array;

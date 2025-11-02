@@ -36,9 +36,9 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 	protected int stashCapacity;
 	protected int pushIterations;
 
-	protected Entries<V> entries1, entries2;
-	protected Values<V> values1, values2;
-	protected Keys<V> keys1, keys2;
+	protected Entries entries1, entries2;
+	protected Values values1, values2;
+	protected Keys keys1, keys2;
 
 	@SuppressWarnings("unchecked")
 	public static <V> ShortMap<V> of(Class<V> keyType, Object... values) {
@@ -59,10 +59,6 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 			ShortMap<V> map = (ShortMap<V>) super.clone();
 			map.keyTable = Arrays.copyOf(keyTable, keyTable.length);
 			map.valueTable = Arrays.copyOf(valueTable, valueTable.length);
-
-			map.entries1 = map.entries2 = null;
-			map.keys1 = map.keys2 = null;
-			map.values1 = map.values2 = null;
 			return map;
 		} catch (CloneNotSupportedException e) {
 			return new ShortMap<>(this);
@@ -681,10 +677,10 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 	 * Returns an iterator for the entries in the map. Remove is supported. Note that the same iterator instance is returned each
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	public Entries<V> entries() {
+	public Entries entries() {
 		if (entries1 == null) {
-			entries1 = new Entries<>(this);
-			entries2 = new Entries<>(this);
+			entries1 = new Entries();
+			entries2 = new Entries();
 		}
 		if (!entries1.valid) {
 			entries1.reset();
@@ -702,10 +698,10 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 	 * Returns an iterator for the values in the map. Remove is supported. Note that the same iterator instance is returned each
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	public Values<V> values() {
+	public Values values() {
 		if (values1 == null) {
-			values1 = new Values<>(this);
-			values2 = new Values<>(this);
+			values1 = new Values();
+			values2 = new Values();
 		}
 		if (!values1.valid) {
 			values1.reset();
@@ -723,10 +719,10 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 	 * Returns an iterator for the keys in the map. Remove is supported. Note that the same iterator instance is returned each
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	public Keys<V> keys() {
+	public Keys keys() {
 		if (keys1 == null) {
-			keys1 = new Keys<>(this);
-			keys2 = new Keys<>(this);
+			keys1 = new Keys();
+			keys2 = new Keys();
 		}
 		if (!keys1.valid) {
 			keys1.reset();
@@ -740,23 +736,20 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 		return keys2;
 	}
 
-	protected static class MapIterator<V> {
-		protected final ShortMap<V> map;
-
+	protected class MapIterator {
 		public boolean hasNext;
 
 		protected int nextIndex, currentIndex;
 		protected boolean valid = true;
 
-		public MapIterator(ShortMap<V> map) {
-			this.map = map;
+		public MapIterator() {
 			reset();
 		}
 
 		public void reset() {
 			currentIndex = INDEX_ILLEGAL;
 			nextIndex = INDEX_ZERO;
-			if (map.hasZeroValue)
+			if (hasZeroValue)
 				hasNext = true;
 			else
 				findNextIndex();
@@ -764,8 +757,7 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 
 		protected void findNextIndex() {
 			hasNext = false;
-			short[] keyTable = map.keyTable;
-			for (int n = map.capacity + map.stashSize; ++nextIndex < n; ) {
+			for (int n = capacity + stashSize; ++nextIndex < n; ) {
 				if (keyTable[nextIndex] != EMPTY) {
 					hasNext = true;
 					break;
@@ -774,43 +766,38 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 		}
 
 		public void remove() {
-			if (currentIndex == INDEX_ZERO && map.hasZeroValue) {
-				map.zeroValue = null;
-				map.hasZeroValue = false;
+			if (currentIndex == INDEX_ZERO && hasZeroValue) {
+				zeroValue = null;
+				hasZeroValue = false;
 			} else if (currentIndex < 0) {
 				throw new IllegalStateException("next must be called before remove.");
-			} else if (currentIndex >= map.capacity) {
-				map.removeStashIndex(currentIndex);
+			} else if (currentIndex >= capacity) {
+				removeStashIndex(currentIndex);
 				nextIndex = currentIndex - 1;
 				findNextIndex();
 			} else {
-				map.keyTable[currentIndex] = EMPTY;
-				map.valueTable[currentIndex] = null;
+				keyTable[currentIndex] = EMPTY;
+				valueTable[currentIndex] = null;
 			}
 			currentIndex = INDEX_ILLEGAL;
-			map.size--;
+			size--;
 		}
 	}
 
-	public static class Entries<V> extends MapIterator<V> implements Iterable<ShortHolder<V>>, Iterator<ShortHolder<V>> {
+	public class Entries extends MapIterator implements Iterable<ShortHolder<V>>, Iterator<ShortHolder<V>> {
 		protected ShortHolder<V> entry = new ShortHolder<>();
-
-		public Entries(ShortMap<V> map) {
-			super(map);
-		}
 
 		/** Note the same entry instance is returned each time this method is called. */
 		@Override
 		public ShortHolder<V> next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			short[] keyTable = map.keyTable;
 			if (nextIndex == INDEX_ZERO) {
 				entry.key = 0;
-				entry.value = map.zeroValue;
+				entry.value = zeroValue;
 			} else {
 				entry.key = keyTable[nextIndex];
-				entry.value = map.valueTable[nextIndex];
+				entry.value = valueTable[nextIndex];
 			}
 			currentIndex = nextIndex;
 			findNextIndex();
@@ -829,11 +816,7 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 		}
 	}
 
-	public static class Values<V> extends MapIterator<V> implements Iterable<V>, Iterator<V> {
-		public Values(ShortMap<V> map) {
-			super(map);
-		}
-
+	public class Values extends MapIterator implements Iterable<V>, Iterator<V> {
 		@Override
 		public boolean hasNext() {
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
@@ -846,9 +829,9 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			V value;
 			if (nextIndex == INDEX_ZERO)
-				value = map.zeroValue;
+				value = zeroValue;
 			else
-				value = map.valueTable[nextIndex];
+				value = valueTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return value;
@@ -861,22 +844,18 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 
 		/** Returns a new array containing the remaining values. */
 		public Seq<V> toSeq() {
-			Seq<V> array = new Seq<>(true, map.size, map.valueComponentType);
+			Seq<V> array = new Seq<>(true, size, valueComponentType);
 			while (hasNext)
 				array.add(next());
 			return array;
 		}
 	}
 
-	public static class Keys<V> extends MapIterator<V> {
-		public Keys(ShortMap<V> map) {
-			super(map);
-		}
-
+	public class Keys extends MapIterator {
 		public short next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			short key = nextIndex == INDEX_ZERO ? 0 : map.keyTable[nextIndex];
+			short key = nextIndex == INDEX_ZERO ? 0 : keyTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return key;
@@ -884,7 +863,7 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 
 		/** Returns a new array containing the remaining keys. */
 		public ShortSeq toSeq() {
-			ShortSeq array = new ShortSeq(true, map.size);
+			ShortSeq array = new ShortSeq(true, size);
 			while (hasNext)
 				array.add(next());
 			return array;

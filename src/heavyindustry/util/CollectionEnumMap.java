@@ -31,9 +31,9 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 
 	public boolean[] enableTable;
 
-	protected Entries<K, V> entries1, entries2;
-	protected Values<K, V> values1, values2;
-	protected Keys<K, V> keys1, keys2;
+	protected Entries entries1, entries2;
+	protected Values values1, values2;
+	protected Keys keys1, keys2;
 
 	@SuppressWarnings("unchecked")
 	public CollectionEnumMap(Class<K> keyType, Class<?> valueType) {
@@ -146,8 +146,8 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 	}
 
 	@Override
-	public EntrySet<K, V> entrySet() {
-		return new EntrySet<>(this);
+	public EntrySet entrySet() {
+		return new EntrySet();
 	}
 
 	public boolean isValidKey(Object key) {
@@ -163,7 +163,6 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		try {
 			CollectionEnumMap<K, V> map = (CollectionEnumMap<K, V>) super.clone();
 			map.valueTable = map.valueTable.clone();
-			//map.entrySet = null;
 			return map;
 		} catch (CloneNotSupportedException e) {
 			throw new RuntimeException("oh no", e);
@@ -194,6 +193,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 	 * Returns the hash code value for this map.  The hash code of a map is
 	 * defined to be the sum of the hash codes of each entry in the map.
 	 */
+	@Override
 	public int hashCode() {
 		int h = 0;
 
@@ -239,10 +239,10 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 	}
 
 	@Override
-	public Entries<K, V> iterator() {
+	public Entries iterator() {
 		if (entries1 == null) {
-			entries1 = new Entries<>(this);
-			entries2 = new Entries<>(this);
+			entries1 = new Entries();
+			entries2 = new Entries();
 		}
 		if (!entries1.valid) {
 			entries1.reset();
@@ -257,10 +257,10 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 	}
 
 	@Override
-	public Keys<K, V> keySet() {
+	public Keys keySet() {
 		if (keys1 == null) {
-			keys1 = new Keys<>(this);
-			keys2 = new Keys<>(this);
+			keys1 = new Keys();
+			keys2 = new Keys();
 		}
 		if (!keys1.valid) {
 			keys1.reset();
@@ -275,10 +275,10 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 	}
 
 	@Override
-	public Values<K, V> values() {
+	public Values values() {
 		if (values1 == null) {
-			values1 = new Values<>(this);
-			values2 = new Values<>(this);
+			values1 = new Values();
+			values2 = new Values();
 		}
 		if (!values1.valid) {
 			values1.reset();
@@ -292,15 +292,12 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		return values2;
 	}
 
-	protected abstract static class MapIterator<K extends Enum<K>, V, I> implements Iterable<I>, Iterator<I> {
-		protected final CollectionEnumMap<K, V> map;
-
+	protected abstract class MapIterator<I> implements Iterable<I>, Iterator<I> {
 		protected int nextIndex, currentIndex;
 
 		protected boolean valid = true;
 
-		protected MapIterator(CollectionEnumMap<K, V> m) {
-			map = m;
+		protected MapIterator() {
 			reset();
 		}
 
@@ -311,29 +308,25 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 
 		@Override
 		public boolean hasNext() {
-			while (nextIndex < map.valueTable.length && map.enableTable[nextIndex])
+			while (nextIndex < valueTable.length && enableTable[nextIndex])
 				nextIndex++;
-			return valid && nextIndex != map.valueTable.length;
+			return valid && nextIndex != valueTable.length;
 		}
 
 		@Override
 		public void remove() {
 			if (currentIndex < 0) return;
 
-			map.valueTable[currentIndex] = null;
-			map.enableTable[currentIndex] = false;
-			map.resize();
+			valueTable[currentIndex] = null;
+			enableTable[currentIndex] = false;
+			resize();
 
 			currentIndex = -1;
 		}
 	}
 
-	public static class Entries<K extends Enum<K>, V> extends MapIterator<K, V, ObjectHolder<K, V>> {
+	public class Entries extends MapIterator<ObjectHolder<K, V>> {
 		protected ObjectHolder<K, V> entry = new ObjectHolder<>();
-
-		public Entries(CollectionEnumMap<K, V> m) {
-			super(m);
-		}
 
 		@Override
 		public Iterator<ObjectHolder<K, V>> iterator() {
@@ -345,35 +338,31 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 			if (!hasNext()) throw new NoSuchElementException();
 
 			int index = nextIndex++;
-			entry.key = map.keyTable[index];
-			entry.value = map.valueTable[index];
+			entry.key = keyTable[index];
+			entry.value = valueTable[index];
 			return entry;
 		}
 	}
 
-	public static class Keys<K extends Enum<K>, V> extends MapIterator<K, V, K> implements Set<K> {
-		public Keys(CollectionEnumMap<K, V> m) {
-			super(m);
-		}
-
+	public class Keys extends MapIterator<K> implements Set<K> {
 		@Override
 		public int size() {
-			return map.size;
+			return size;
 		}
 
 		@Override
 		public boolean isEmpty() {
-			return map.size == 0;
+			return size == 0;
 		}
 
 		@Override
 		public boolean contains(Object o) {
-			return map.containsKey(o);
+			return containsKey(o);
 		}
 
 		@Override
 		public K[] toArray() {
-			return Arrays.copyOf(map.keyTable, map.keyTable.length);
+			return Arrays.copyOf(keyTable, keyTable.length);
 		}
 
 		@Override
@@ -388,9 +377,9 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 
 		@Override
 		public boolean remove(Object o) {
-			int oldSize = map.size;
-			map.remove(o);
-			return map.size != oldSize;
+			int oldSize = size;
+			CollectionEnumMap.this.remove(o);
+			return size != oldSize;
 		}
 
 		@Override
@@ -419,7 +408,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 
 		@Override
 		public void clear() {
-			map.clear();
+			CollectionEnumMap.this.clear();
 		}
 
 		@Override
@@ -431,12 +420,12 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		public K next() {
 			if (!hasNext()) throw new NoSuchElementException();
 			currentIndex = nextIndex++;
-			return map.keyTable[currentIndex];
+			return keyTable[currentIndex];
 		}
 
 		/** Returns a new array containing the remaining keys. */
 		public Seq<K> toSeq() {
-			return toSeq(new Seq<>(true, map.size, map.keyComponentType));
+			return toSeq(new Seq<>(true, size, keyComponentType));
 		}
 
 		/** Adds the remaining keys to the array. */
@@ -447,29 +436,25 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		}
 	}
 
-	public static class Values<K extends Enum<K>, V> extends MapIterator<K, V, V> implements Collection<V> {
-		public Values(CollectionEnumMap<K, V> m) {
-			super(m);
-		}
-
+	public class Values extends MapIterator<V> implements Collection<V> {
 		@Override
 		public int size() {
-			return map.size;
+			return size;
 		}
 
 		@Override
 		public boolean isEmpty() {
-			return map.size == 0;
+			return size == 0;
 		}
 
 		@Override
 		public boolean contains(Object o) {
-			return map.containsValue(o);
+			return containsValue(o);
 		}
 
 		@Override
 		public V[] toArray() {
-			return toSeq().toArray(map.valueComponentType);
+			return toSeq().toArray(valueComponentType);
 		}
 
 		@Override
@@ -484,7 +469,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 
 		@Override
 		public boolean remove(Object o) {
-			return map.remove(o) != null;
+			return CollectionEnumMap.this.remove(o) != null;
 		}
 
 		@Override
@@ -513,12 +498,12 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 
 		@Override
 		public void clear() {
-			map.clear();
+			CollectionEnumMap.this.clear();
 		}
 
 		/** Returns a new array containing the remaining values. */
 		public Seq<V> toSeq() {
-			return toSeq(new Seq<>(true, map.size, map.valueComponentType));
+			return toSeq(new Seq<>(true, size, valueComponentType));
 		}
 
 		/** Adds the remaining values to the specified array. */
@@ -537,33 +522,27 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		public V next() {
 			if (!hasNext()) throw new NoSuchElementException();
 			currentIndex = nextIndex++;
-			return map.valueTable[currentIndex];
+			return valueTable[currentIndex];
 		}
 	}
 
-	public static class EntrySet<K extends Enum<K>, V> extends AbstractSet<Entry<K, V>> {
-		protected final CollectionEnumMap<K, V> map;
-
+	public class EntrySet extends AbstractSet<Entry<K, V>> {
 		protected final MapItr itr = new MapItr();
 		protected final MapEnt ent = new MapEnt();
 
-		public EntrySet(CollectionEnumMap<K, V> m) {
-			map = m;
-		}
-
 		@Override
 		public int size() {
-			return map.size;
+			return size;
 		}
 
 		@Override
 		public void clear() {
-			map.clear();
+			CollectionEnumMap.this.clear();
 		}
 
 		@Override
 		public Iterator<Entry<K, V>> iterator() {
-			itr.entries = map.iterator();
+			itr.entries = CollectionEnumMap.this.iterator();
 			return itr;
 		}
 
@@ -572,20 +551,20 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 			if (!(o instanceof Entry<?, ?> e))
 				return false;
 			Object key = e.getKey();
-			return map.containsKey(key);
+			return containsKey(key);
 		}
 
 		@Override
 		public boolean remove(Object o) {
 			if (o instanceof Entry<?, ?> e) {
 				Object key = e.getKey();
-				return map.remove(key) != null;
+				return CollectionEnumMap.this.remove(key) != null;
 			}
 			return false;
 		}
 
 		protected class MapItr implements Iterator<Entry<K, V>> {
-			Entries<K, V> entries;
+			Entries entries;
 
 			@Override
 			public boolean hasNext() {
@@ -614,7 +593,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 
 			@Override
 			public V setValue(V value) {
-				return map.put(entry.key, value);
+				return put(entry.key, value);
 			}
 		}
 	}

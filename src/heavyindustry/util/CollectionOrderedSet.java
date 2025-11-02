@@ -92,22 +92,22 @@ public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
 	}
 
 	@Override
-	public Iter<E> iterator() {
-		if (iterator1 == null) iterator1 = new OrderedIter<>(this);
+	public Iter iterator() {
+		if (iterator1 == null) iterator1 = new OrderedIter();
 
 		if (iterator1.done) {
 			iterator1.reset();
 			return iterator1;
 		}
 
-		if (iterator2 == null) iterator2 = new OrderedIter<>(this);
+		if (iterator2 == null) iterator2 = new OrderedIter();
 
 		if (iterator2.done) {
 			iterator2.reset();
 			return iterator2;
 		}
 
-		return new OrderedIter<>(this);
+		return new OrderedIter();
 	}
 
 	@Override
@@ -130,27 +130,20 @@ public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
 		return orderedItems.toString(separator);
 	}
 
-	public static class OrderedIter<E> extends Iter<E> {
-		protected final CollectionOrderedSet<E> set;
-
-		public OrderedIter(CollectionOrderedSet<E> s) {
-			super(s);
-			set = s;
-		}
-
+	public class OrderedIter extends Iter {
 		@Override
 		public void reset() {
 			super.reset();
 			nextIndex = 0;
-			hasNext = set.size > 0;
+			hasNext = size > 0;
 		}
 
 		@Override
 		public E next() {
 			if (!hasNext) throw new NoSuchElementException();
-			E key = set.orderedItems.get(nextIndex);
+			E key = orderedItems.get(nextIndex);
 			nextIndex++;
-			hasNext = nextIndex < set.size;
+			hasNext = nextIndex < size;
 			return key;
 		}
 
@@ -158,7 +151,7 @@ public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
 		public void remove() {
 			if (nextIndex < 0) throw new IllegalStateException("next must be called before remove.");
 			nextIndex--;
-			set.removeIndex(nextIndex);
+			removeIndex(nextIndex);
 		}
 	}
 }

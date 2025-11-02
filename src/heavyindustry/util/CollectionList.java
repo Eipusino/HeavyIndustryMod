@@ -48,7 +48,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	public int size;
 	public boolean ordered;
 
-	protected Iter<E> iterator1, iterator2, lastIterator1, lastIterator2;
+	protected Iter iterator1, iterator2, lastIterator1, lastIterator2;
 
 	/** Creates an ordered array with a capacity of 16. */
 	public CollectionList(Class<?> type) {
@@ -172,9 +172,6 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 			CollectionList<E> list = (CollectionList<E>) super.clone();
 			list.size = size;
 			list.items = Arrays.copyOf(items, items.length);
-
-			list.iterator1 = list.iterator2 = null;
-			list.lastIterator1 = list.lastIterator2 = null;
 			return list;
 		} catch (CloneNotSupportedException e) {
 			return new CollectionList<>(this);
@@ -1207,7 +1204,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		for (int i = 0; i < n; i++) {
 			Object o1 = items1[i];
 			Object o2 = items2[i];
-			if (!(o1 == null ? o2 == null : o1.equals(o2))) return false;
+			if (o1 == null ? o2 != null : !o1.equals(o2)) return false;
 		}
 		return true;
 	}
@@ -1249,7 +1246,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	 */
 	@Override
 	public Iterator<E> iterator() {
-		if (iterator1 == null) iterator1 = new Iter<>(this);
+		if (iterator1 == null) iterator1 = new Iter();
 
 		if (iterator1.done) {
 			iterator1.cursor = 0;
@@ -1257,7 +1254,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 			return iterator1;
 		}
 
-		if (iterator2 == null) iterator2 = new Iter<>(this);
+		if (iterator2 == null) iterator2 = new Iter();
 
 		if (iterator2.done) {
 			iterator2.cursor = 0;
@@ -1265,7 +1262,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 			return iterator2;
 		}
 		//allocate new iterator in the case of 3+ nested loops.
-		return new Iter<>(this);
+		return new Iter();
 	}
 
 	@Override
@@ -1278,7 +1275,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		if (index > size || index < 0)
 			throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
 
-		if (lastIterator1 == null) lastIterator1 = new Iter<>(this, index);
+		if (lastIterator1 == null) lastIterator1 = new Iter(index);
 
 		if (lastIterator1.done) {
 			lastIterator1.cursor = index;
@@ -1286,7 +1283,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 			return lastIterator1;
 		}
 
-		if (lastIterator2 == null) lastIterator2 = new Iter<>(this, index);
+		if (lastIterator2 == null) lastIterator2 = new Iter(index);
 
 		if (lastIterator2.done) {
 			lastIterator2.cursor = index;
@@ -1294,7 +1291,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 			return lastIterator2;
 		}
 
-		return new Iter<>(this, index);
+		return new Iter(index);
 	}
 
 	public Seq<E> toSeq() {
@@ -1305,33 +1302,29 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		return seq;
 	}
 
-	public static class Iter<T> implements ListIterator<T> {
-		final CollectionList<T> list;
-
+	public class Iter implements ListIterator<E> {
 		int cursor;
 		boolean done = true;
 
-		public Iter(CollectionList<T> arr, int index) {
-			list = arr;
+		public Iter(int index) {
 			cursor = index;
 			iteratorsAllocated++;
 		}
 
-		public Iter(CollectionList<T> arr) {
-			list = arr;
+		public Iter() {
 			iteratorsAllocated++;
 		}
 
 		@Override
 		public boolean hasNext() {
-			if (cursor >= list.size) done = true;
-			return cursor < list.size;
+			if (cursor >= size) done = true;
+			return cursor < size;
 		}
 
 		@Override
-		public T next() {
-			if (cursor >= list.size) throw new NoSuchElementException(String.valueOf(cursor));
-			return list.items[cursor++];
+		public E next() {
+			if (cursor >= size) throw new NoSuchElementException(String.valueOf(cursor));
+			return items[cursor++];
 		}
 
 		@Override
@@ -1340,9 +1333,9 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		}
 
 		@Override
-		public T previous() {
+		public E previous() {
 			if (!hasPrevious()) throw new NoSuchElementException("No previous");
-			return list.items[cursor - 1];
+			return items[cursor - 1];
 		}
 
 		@Override
@@ -1358,17 +1351,17 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		@Override
 		public void remove() {
 			cursor--;
-			list.remove(cursor);
+			CollectionList.this.remove(cursor);
 		}
 
 		@Override
-		public void set(T t) {
-			list.set(cursor, t);
+		public void set(E t) {
+			CollectionList.this.set(cursor, t);
 		}
 
 		@Override
-		public void add(T t) {
-			list.add(t);
+		public void add(E t) {
+			CollectionList.this.add(t);
 		}
 	}
 }

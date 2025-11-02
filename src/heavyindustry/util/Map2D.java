@@ -1,7 +1,6 @@
 package heavyindustry.util;
 
 import arc.func.Cons;
-import arc.func.Func2;
 import arc.func.Intc2;
 import arc.func.Prov;
 import arc.math.Mathf;
@@ -19,7 +18,7 @@ public class Map2D<T> implements Iterable<T>, Eachable<T> {
 
 	public final T[] array;
 
-	Iter<T> iterator1, iterator2;
+	protected Iter iterator1, iterator2;
 
 	@SuppressWarnings("unchecked")
 	public Map2D(int wid, int hei, Class<?> type) {
@@ -118,41 +117,35 @@ public class Map2D<T> implements Iterable<T>, Eachable<T> {
 	}
 
 	@Override
-	public Iterator<T> iterator() {
-		if (iterator1 == null) iterator1 = new Iter<>(this);
+	public Iter iterator() {
+		if (iterator1 == null) iterator1 = new Iter();
 
 		if (!iterator1.hasNext()) {
 			iterator1.index = 0;
 			return iterator1;
 		}
 
-		if (iterator2 == null) iterator2 = new Iter<>(this);
+		if (iterator2 == null) iterator2 = new Iter();
 
 		if (!iterator2.hasNext()) {
 			iterator2.index = 0;
 			return iterator2;
 		}
 
-		return new Iter<>(this);
+		return new Iter();
 	}
 
-	public static class Iter<T> implements Iterator<T> {
-		final Map2D<T> map;
-
-		int index = 0;
-
-		public Iter(Map2D<T> m) {
-			map = m;
-		}
+	public class Iter implements Iterator<T> {
+		protected int index = 0;
 
 		@Override
 		public boolean hasNext() {
-			return index < map.array.length;
+			return index < array.length;
 		}
 
 		@Override
 		public T next() {
-			return map.array[index++];
+			return array[index++];
 		}
 	}
 }

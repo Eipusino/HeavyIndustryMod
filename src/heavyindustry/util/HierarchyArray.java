@@ -16,7 +16,7 @@ public class HierarchyArray<T> implements Iterable<T>, Eachable<T> {
 
 	public int size = 0;
 
-	HierarchyIterable<T> iterable;
+	protected HierarchyIterator iterator1, iterator2;
 
 	public HierarchyArray(Class<?> arrayType) {
 		this(16, arrayType);
@@ -97,62 +97,46 @@ public class HierarchyArray<T> implements Iterable<T>, Eachable<T> {
 	}
 
 	@Override
-	public Iterator<T> iterator() {
-		if (iterable == null) iterable = new HierarchyIterable<>(this);
-		return iterable.iterator();
+	public HierarchyIterator iterator() {
+		if (iterator1 == null) iterator1 = new HierarchyIterator();
+
+		if (iterator1.done) {
+			iterator1.index = 0;
+			iterator1.done = false;
+			return iterator1;
+		}
+
+		if (iterator2 == null) iterator2 = new HierarchyIterator();
+
+		if (iterator2.done) {
+			iterator2.index = 0;
+			iterator2.done = false;
+			return iterator2;
+		}
+
+		return new HierarchyIterator();
 	}
 
-	public static class HierarchyIterable<T> implements Iterable<T> {
-		final HierarchyArray<T> array;
+	public class HierarchyIterator implements Iterator<T> {
+		protected int index = 0;
+		protected boolean done = true;
 
-		HierarchyIterator iterator1, iterator2;
-
-		HierarchyIterable(HierarchyArray<T> hr) {
-			array = hr;
+		@Override
+		public boolean hasNext() {
+			if (index >= size) done = true;
+			return index < size;
 		}
 
 		@Override
-		public Iterator<T> iterator() {
-			if (iterator1 == null) iterator1 = new HierarchyIterator();
-
-			if (iterator1.done) {
-				iterator1.index = 0;
-				iterator1.done = false;
-				return iterator1;
-			}
-
-			if (iterator2 == null) iterator2 = new HierarchyIterator();
-
-			if (iterator2.done) {
-				iterator2.index = 0;
-				iterator2.done = false;
-				return iterator2;
-			}
-
-			return new HierarchyIterator();
+		public T next() {
+			if (index >= size) throw new NoSuchElementException(String.valueOf(index));
+			return array[index++];
 		}
 
-		public class HierarchyIterator implements Iterator<T> {
-			int index = 0;
-			boolean done = true;
-
-			@Override
-			public boolean hasNext() {
-				if (index >= array.size) done = true;
-				return index < array.size;
-			}
-
-			@Override
-			public T next() {
-				if (index >= array.size) throw new NoSuchElementException(String.valueOf(index));
-				return array.array[index++];
-			}
-
-			@Override
-			public void remove() {
-				index--;
-				array.remove(index);
-			}
+		@Override
+		public void remove() {
+			index--;
+			HierarchyArray.this.remove(index);
 		}
 	}
 }
