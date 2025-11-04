@@ -14,6 +14,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.content.HFx;
 import heavyindustry.graphics.Drawn;
+import heavyindustry.math.Mathm;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.gen.Mechc;
@@ -139,7 +140,7 @@ public class EnergyUnitType extends AncientUnitType {
 
 		Drawf.light(unit.x, unit.y, unit.hitSize * 4.05f, unit.team.color, 0.68f);
 		Draw.z(Layer.effect + 0.001f);
-		Draw.color(unit.team.color, Color.white, Mathf.absin(4f, 0.3f) + Mathf.clamp(unit.hitTime) / 5f * 3f);
+		Draw.color(unit.team.color, Color.white, Mathf.absin(4f, 0.3f) + Mathm.clamp(unit.hitTime) / 5f * 3f);
 		Draw.alpha(0.65f);
 		Fill.circle(unit.x, unit.y, bodySize * sizeF * 1.1f);
 		Draw.alpha(1f);
@@ -180,7 +181,7 @@ public class EnergyUnitType extends AncientUnitType {
 	/*@Override
 	public void drawControl(Unit unit) {
 		Draw.z(Layer.effect + 0.001f);
-		Draw.color(unit.team.color, Color.white, Mathf.absin(4f, 0.3f) + Mathf.clamp(unit.hitTime) / 5f);
+		Draw.color(unit.team.color, Color.white, Mathf.absin(4f, 0.3f) + Mathm.clamp(unit.hitTime) / 5f);
 		for (int i = 0; i < 4; i++) {
 			float rotation = Time.time * 1.5f + i * 90;
 			Tmp.v1.trns(rotation, bodySize * 1.5f).add(unit);
@@ -221,7 +222,7 @@ public class EnergyUnitType extends AncientUnitType {
 	public void drawShield(Unit unit) {
 		float alpha = unit.shieldAlpha();
 		float radius = unit.hitSize() * 1.3f;
-		Fill.light(unit.x, unit.y, Lines.circleVertices(radius), radius, Tmp.c1.set(Pal.shield), Tmp.c2.set(unit.team.color).a(0.7f).lerp(Color.white, Mathf.clamp(unit.hitTime() / 2f)).a(Pal.shield.a * alpha));
+		Fill.light(unit.x, unit.y, Lines.circleVertices(radius), radius, Tmp.c1.set(Pal.shield), Tmp.c2.set(unit.team.color).a(0.7f).lerp(Color.white, Mathm.clamp(unit.hitTime() / 2f)).a(Pal.shield.a * alpha));
 	}
 
 	@Override

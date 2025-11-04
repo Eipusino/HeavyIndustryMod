@@ -3,6 +3,7 @@ package heavyindustry.util;
 import arc.math.Mathf;
 import arc.util.ArcRuntimeException;
 import heavyindustry.func.Charc;
+import heavyindustry.math.Mathm;
 
 import java.util.NoSuchElementException;
 
@@ -70,7 +71,7 @@ public class CharSet implements Cloneable {
 		mask = capacity - 1;
 		hashShift = 31 - Integer.numberOfTrailingZeros(capacity);
 		stashCapacity = Math.max(3, (int) Math.ceil(Math.log(capacity)) * 2);
-		pushIterations = Math.max(Math.min(capacity, 8), (int) Math.sqrt(capacity) / 8);
+		pushIterations = Mathm.clamp(capacity, 8, (int) Math.sqrt(capacity) / 8);
 
 		keyTable = new char[capacity + stashCapacity];
 	}
@@ -425,7 +426,7 @@ public class CharSet implements Cloneable {
 		mask = newSize - 1;
 		hashShift = 31 - Integer.numberOfTrailingZeros(newSize);
 		stashCapacity = Math.max(3, (int) Math.ceil(Math.log(newSize)) * 2);
-		pushIterations = Math.max(Math.min(newSize, 8), (int) Math.sqrt(newSize) / 8);
+		pushIterations = Mathm.clamp(newSize, 8, (int) Math.sqrt(newSize) / 8);
 
 		char[] oldKeyTable = keyTable;
 

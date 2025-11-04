@@ -5,6 +5,7 @@ import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.struct.Seq;
 import arc.util.io.Reads;
+import heavyindustry.math.Mathm;
 import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.game.EventType.ResetEvent;
@@ -35,7 +36,7 @@ public class Collector extends Block {
 
 			if (build != null) {
 				if (unit.within(build, range)) {
-					float amount = Mathf.clamp(unit.hitSize, 0f, build.getMaximumAccepted(Items.scrap));
+					float amount = Mathm.clamp(unit.hitSize, 0f, build.getMaximumAccepted(Items.scrap));
 					Fx.itemTransfer.at(unit.x, unit.y, amount, Pal.scrapAmmoBack, build);
 					build.items.add(Items.scrap, Mathf.ceil(amount));
 				}

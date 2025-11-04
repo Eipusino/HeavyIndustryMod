@@ -11,6 +11,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.content.HFx;
 import heavyindustry.gen.Entitys;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.IntMap2;
 import heavyindustry.util.Utils;
 import mindustry.content.Liquids;
@@ -80,7 +81,7 @@ public final class VapourizeEffect {
 			vapourizeMap.put(host.id, tmp);
 			tmp.add();
 		} else {
-			tmp.extraAlpha = Mathf.clamp((strength * Time.delta) + tmp.extraAlpha);
+			tmp.extraAlpha = Mathm.clamp((strength * Time.delta) + tmp.extraAlpha);
 			tmp.time = Mathf.lerpDelta(tmp.time, tmp.lifetime / 2f, 0.3f);
 		}
 	}
@@ -141,11 +142,11 @@ public final class VapourizeEffect {
 			if (!(parent instanceof Unit unit)) return;
 			UnitType type = unit.type;
 			float oz = Draw.z();
-			float z = (unit.elevation > 0.5f ? (type.lowAltitude ? Layer.flyingUnitLow : Layer.flyingUnit) : type.groundLayer + Mathf.clamp(type.hitSize / 4000f, 0, 0.01f)) + 0.001f;
+			float z = (unit.elevation > 0.5f ? (type.lowAltitude ? Layer.flyingUnitLow : Layer.flyingUnit) : type.groundLayer + Mathm.clamp(type.hitSize / 4000f, 0, 0.01f)) + 0.001f;
 			float slope = (0.5f - Math.abs(fin() - 0.5f)) * 2f;
 			Draw.z(z);
 			Tmp.c1.set(Color.black);
-			Tmp.c1.a = Mathf.clamp(slope * ((1 - unit.healthf()) + extraAlpha) * 1.4f);
+			Tmp.c1.a = Mathm.clamp(slope * ((1 - unit.healthf()) + extraAlpha) * 1.4f);
 			Draw.color(Tmp.c1);
 			Utils.simpleUnitDrawer(unit);
 			Draw.z(oz);

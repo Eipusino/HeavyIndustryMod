@@ -2,8 +2,8 @@ package heavyindustry.audio;
 
 import arc.Core;
 import arc.audio.Sound;
-import arc.math.Mathf;
 import arc.util.Time;
+import heavyindustry.math.Mathm;
 
 public class PassiveSoundLoop {
 	protected static final float fadeSpeed = 0.075f;
@@ -29,7 +29,7 @@ public class PassiveSoundLoop {
 
 	public void update() {
 		if (!played && id > 0) {
-			volume = Mathf.clamp(volume - fadeSpeed * Time.delta);
+			volume = Mathm.clamp(volume - fadeSpeed * Time.delta);
 
 			if (volume <= 0.001f) {
 				Core.audio.stop(id);
@@ -86,12 +86,12 @@ public class PassiveSoundLoop {
 
 				float d = ((dst2 - dst1) / 3f) / Time.delta;
 				float w = 20f;
-				float delta = Mathf.clamp(w / (w + Math.max(d, -(w - 1f))), 0.5f, 3f);
+				float delta = Mathm.clamp(w / (w + Math.max(d, -(w - 1f))), 0.5f, 3f);
 
 				Core.audio.setPitch(id, delta);
 			}
 		}
-		if (play) volume = Mathf.clamp(volume + fadeSpeed * Time.delta);
+		if (play) volume = Mathm.clamp(volume + fadeSpeed * Time.delta);
 	}
 
 	public void stop() {

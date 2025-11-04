@@ -7,6 +7,7 @@ import arc.graphics.g2d.Lines;
 import arc.math.Interp;
 import arc.math.Mathf;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.entities.part.DrawPart;
 
@@ -29,15 +30,15 @@ public class AimPart extends DrawPart {
 		float z = Draw.z();
 		Draw.color(color);
 		Draw.z(layer);
-		float wp = warmup.getClamp(params);
-		float fout = 1 - progress.getClamp(params);
+		float wp = Mathm.clamp(warmup.get(params));
+		float fout = 1 - Mathm.clamp(progress.get(params));
 		float track = Mathf.curve(fout, 0, 0.25f) * Mathf.curve(fout, 0, 0.3f) * fout;
 
 		Tmp.v1.set(x, y).rotate(params.rotation - 90);
 		float px = params.x + Tmp.v1.x, py = params.y + Tmp.v1.y;
 		for (int i = 0; i <= length / spacing; i++) {
 			Tmp.v1.trns(params.rotation + rt, i * spacing);
-			float f = Interp.pow3Out.apply(Mathf.clamp((fout * length - i * spacing) / spacing)) * (0.6f + track * 0.4f) * wp;
+			float f = Interp.pow3Out.apply(Mathm.clamp((fout * length - i * spacing) / spacing)) * (0.6f + track * 0.4f) * wp;
 			Draw.rect(Core.atlas.find(MOD_NAME + "-aim-shoot"), px + Tmp.v1.x, py + Tmp.v1.y, 120 * Draw.scl * f, 120 * Draw.scl * f, params.rotation - 90 + rt);
 		}
 		if (!drawLine) return;

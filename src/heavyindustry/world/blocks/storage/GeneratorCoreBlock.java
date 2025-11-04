@@ -2,8 +2,8 @@ package heavyindustry.world.blocks.storage;
 
 import arc.Core;
 import arc.func.Func;
-import arc.math.Mathf;
 import arc.util.Strings;
+import heavyindustry.math.Mathm;
 import mindustry.core.UI;
 import mindustry.gen.Building;
 import mindustry.graphics.Pal;
@@ -39,7 +39,7 @@ public class GeneratorCoreBlock extends CoreBlock {
 				() -> Core.bundle.format("bar.powerbalance",
 						((tile.power.graph.getPowerBalance() >= 0 ? "+" : "") + UI.formatAmount((long) (tile.power.graph.getPowerBalance() * 60 + 0.0001f)))),
 				() -> Pal.powerBar,
-				() -> Mathf.clamp(tile.power.graph.getLastPowerProduced() / tile.power.graph.getLastPowerNeeded())
+				() -> Mathm.clamp(tile.power.graph.getLastPowerProduced() / tile.power.graph.getLastPowerNeeded())
 		);
 	}
 

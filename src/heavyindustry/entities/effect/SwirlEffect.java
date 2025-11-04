@@ -9,6 +9,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.pooling.Pools;
 import heavyindustry.graphics.HTrails.LightTrail;
+import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.entities.Effect;
 import mindustry.gen.EffectState;
@@ -105,14 +106,14 @@ public class SwirlEffect extends Effect {
 		} else {
 			dst = Mathf.randomSeed(e.id, minDst, maxDst);
 		}
-		float l = Mathf.clamp(e.time / lifetime);
+		float l = Mathm.clamp(e.time / lifetime);
 		if (colorFrom != null || colorTo != null) {
 			Tmp.c1.set(colorFrom == null ? e.color : colorFrom).lerp(colorTo == null ? e.color : colorTo, l);
 		} else {
 			Tmp.c1.set(e.color);
 		}
 
-		float width = Mathf.clamp(e.time / (e.lifetime - length)) * this.width;
+		float width = Mathm.clamp(e.time / (e.lifetime - length)) * this.width;
 		float dir = spinDirectionOverride != 0 ? Mathf.sign(spinDirectionOverride) : Mathf.sign(e.rotation);
 		float baseRot = Mathf.randomSeed(e.id + 1, 360f), addRot = Mathf.randomSeed(e.id + 2, minRot, maxRot) * dir;
 

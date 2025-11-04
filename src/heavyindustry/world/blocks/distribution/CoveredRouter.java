@@ -3,12 +3,12 @@ package heavyindustry.world.blocks.distribution;
 import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
-import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.util.Nullable;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.math.Mathm;
 import mindustry.gen.Building;
 import mindustry.graphics.Layer;
 import mindustry.type.Item;
@@ -104,7 +104,7 @@ public class CoveredRouter extends Router {
 				Draw.z(Layer.blockUnder + 0.1f);
 				Tmp.v1.set(Geometry.d4x(recDir) * tilesize / 2f, Geometry.d4y(recDir) * tilesize / 2f)
 						.lerp(Geometry.d4x(r) * tilesize / 2f, Geometry.d4y(r) * tilesize / 2f,
-								Mathf.clamp((progress + 1f) / 2f));
+								Mathm.clamp((progress + 1f) / 2f));
 
 				Draw.rect(current.fullIcon, x + Tmp.v1.x, y + Tmp.v1.y, itemSize, itemSize);
 				Draw.reset();

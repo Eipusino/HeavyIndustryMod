@@ -5,6 +5,7 @@ import arc.math.Mathf;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.math.Mathm;
 import mindustry.graphics.Pal;
 import mindustry.ui.Bar;
 import mindustry.world.blocks.heat.HeatConsumer;
@@ -33,7 +34,7 @@ public class HeatGenerator extends PowerGenerator {
 		super.setBars();
 
 		addBar("heat", (HeatGeneratorBuild tile) -> new Bar(
-				() -> Core.bundle.format("bar.heatpercent", Mathf.round(tile.heat()), Mathf.round(Mathf.clamp(tile.heat() / maxHeat) * 100)),
+				() -> Core.bundle.format("bar.heatpercent", Mathf.round(tile.heat()), Mathf.round(Mathm.clamp(tile.heat() / maxHeat) * 100)),
 				() -> Pal.lightOrange,
 				() -> tile.heat() / maxHeat
 		));
@@ -81,8 +82,8 @@ public class HeatGenerator extends PowerGenerator {
 
 		@Override
 		public void updateEfficiencyMultiplier() {
-			efficiency *= Mathf.clamp(heat);
-			productionEfficiency = efficiency * Mathf.clamp(heat, 0f, maxHeat);
+			efficiency *= Mathm.clamp(heat);
+			productionEfficiency = efficiency * Mathm.clamp(heat, 0f, maxHeat);
 		}
 
 		public float heat() {

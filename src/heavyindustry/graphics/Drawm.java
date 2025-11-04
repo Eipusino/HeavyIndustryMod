@@ -12,6 +12,7 @@ import arc.graphics.g2d.PixmapRegion;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
+import heavyindustry.math.Mathm;
 import mindustry.game.Team;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.MultiPacker;
@@ -139,7 +140,7 @@ public final class Drawm {
 	public static void flipSprite(TextureRegion region, float x, float y, float rotation, float roll, float w, float h, Color lightColor, Color darkColor) {
 		roll = Mathf.wrapAngleAroundZero(Mathf.degreesToRadians * roll);
 
-		prepareRollColor(roll, lightColor, darkColor, Mathf.clamp(Mathf.cosDeg(rotation - 45f) * 1.42f, -1f, 1f));
+		prepareRollColor(roll, lightColor, darkColor, Mathm.clamp(Mathf.cosDeg(rotation - 45f) * 1.42f, -1f, 1f));
 		Draw.rect(region, x, y, w * Mathf.cos(roll), h, rotation);
 		Draw.mixcol();
 	}

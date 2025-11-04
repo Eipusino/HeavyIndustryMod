@@ -12,6 +12,7 @@ import arc.util.Strings;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.math.Mathm;
 import heavyindustry.world.meta.HStatValues;
 import mindustry.Vars;
 import mindustry.content.Bullets;
@@ -296,7 +297,7 @@ public class MultiBulletTurret extends Turret {
 			if (all) {
 				for (BulletType b : type) {
 					float shootAngle = rotation + angleOffset + Mathf.range(inaccuracy + b.inaccuracy);
-					float lifeScl = b.scaleLife ? Mathf.clamp(Mathf.dst(bulletX, bulletY, targetPos.x, targetPos.y) / b.range, minRange / b.range, range() / b.range) : 1f;
+					float lifeScl = b.scaleLife ? Mathm.clamp(Mathf.dst(bulletX, bulletY, targetPos.x, targetPos.y) / b.range, minRange / b.range, range() / b.range) : 1f;
 					handleBullet(b.create(this, team, bulletX, bulletY, shootAngle, -1f, (1f - velocityRnd) + Mathf.random(velocityRnd), lifeScl, null, mover, targetPos.x, targetPos.y), xOffset, yOffset, shootAngle - rotation);
 				}
 				(shootEffect == null ? type[0].shootEffect : shootEffect).at(bulletX, bulletY, rotation + angleOffset, type[0].hitColor);
@@ -304,7 +305,7 @@ public class MultiBulletTurret extends Turret {
 			} else {
 				BulletType b = type[bid % type.length];
 				float shootAngle = rotation + angleOffset + Mathf.range(inaccuracy + b.inaccuracy);
-				float lifeScl = b.scaleLife ? Mathf.clamp(Mathf.dst(bulletX, bulletY, targetPos.x, targetPos.y) / b.range, minRange / b.range, range() / b.range) : 1f;
+				float lifeScl = b.scaleLife ? Mathm.clamp(Mathf.dst(bulletX, bulletY, targetPos.x, targetPos.y) / b.range, minRange / b.range, range() / b.range) : 1f;
 				handleBullet(b.create(this, team, bulletX, bulletY, shootAngle, -1f, (1f - velocityRnd) + Mathf.random(velocityRnd), lifeScl, null, mover, targetPos.x, targetPos.y), xOffset, yOffset, shootAngle - rotation);
 				(shootEffect == null ? b.shootEffect : shootEffect).at(bulletX, bulletY, rotation + angleOffset, b.hitColor);
 				(smokeEffect == null ? b.smokeEffect : smokeEffect).at(bulletX, bulletY, rotation + angleOffset, b.hitColor);

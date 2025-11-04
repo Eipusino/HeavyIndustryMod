@@ -443,7 +443,7 @@ public class ChainedChainMechUnit extends Unit2 implements ChainMechc {
 		if ((moving() || Vars.net.client())) {
 			float len = deltaLen();
 			walk += len;
-			baseRotation = Angles.moveToward(baseRotation, deltaAngle(), type().baseRotateSpeed * Mathf.clamp(len / type().speed / Time.delta) * Time.delta);
+			baseRotation = Angles.moveToward(baseRotation, deltaAngle(), type().baseRotateSpeed * Mathm.clamp(len / type().speed / Time.delta) * Time.delta);
 		}
 
 		if (parentID != -1) {

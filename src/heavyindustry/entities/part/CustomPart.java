@@ -1,9 +1,9 @@
 package heavyindustry.entities.part;
 
 import arc.graphics.g2d.Draw;
-import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
+import heavyindustry.math.Mathm;
 import mindustry.entities.part.DrawPart;
 
 public class CustomPart extends DrawPart {
@@ -21,7 +21,7 @@ public class CustomPart extends DrawPart {
 
 	@Override
 	public void draw(PartParams params) {
-		float prog = Mathf.clamp(progress.get(params));
+		float prog = Mathm.clamp(progress.get(params));
 		float z = Draw.z();
 
 		float dx = 0, dy = 0, dr = 0;

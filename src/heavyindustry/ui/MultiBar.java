@@ -13,6 +13,7 @@ import arc.math.geom.Rect;
 import arc.scene.style.Drawable;
 import arc.struct.Seq;
 import arc.util.pooling.Pools;
+import heavyindustry.math.Mathm;
 import mindustry.gen.Tex;
 import mindustry.ui.Bar;
 import mindustry.ui.Fonts;
@@ -120,7 +121,7 @@ public class MultiBar extends Bar {
 		public BarPart(Prov<Color> col, Floatp floatp) {
 			fraction = floatp;
 
-			lastValue = value = Mathf.clamp(floatp.get());
+			lastValue = value = Mathm.clamp(floatp.get());
 
 			update(() -> {
 				blinkColor.set(col.get());
@@ -143,7 +144,7 @@ public class MultiBar extends Bar {
 				width = w;
 				height = h;
 
-				float computed = Mathf.clamp(fraction.get());
+				float computed = Mathm.clamp(fraction.get());
 
 				if (lastValue > computed) {
 					blink = 1f;

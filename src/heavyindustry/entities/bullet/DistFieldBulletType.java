@@ -6,6 +6,7 @@ import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.math.Angles;
 import arc.math.Mathf;
+import heavyindustry.math.Mathm;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
@@ -35,7 +36,7 @@ public class DistFieldBulletType extends BulletType {
 
 		Draw.color(Pal.lancerLaser);
 		Lines.stroke(1);
-		Lines.circle(b.x, b.y, Mathf.clamp((1 - b.fin()) * 20) * radius);
+		Lines.circle(b.x, b.y, Mathm.clamp((1 - b.fin()) * 20) * radius);
 
 		float centerf = centerColor.toFloatBits();
 		float edgef = edgeColor.cpy().a(0.3f + 0.25f * Mathf.sin(b.time() * 0.05f)).toFloatBits();
@@ -43,12 +44,12 @@ public class DistFieldBulletType extends BulletType {
 		float space = 360f / sides;
 		float dp = 5;
 		for (int i = 0; i < sides; i += 2) {
-			float px = Angles.trnsx(space * i, Mathf.clamp((1 - b.fin()) * dp) * radius);
-			float py = Angles.trnsy(space * i, Mathf.clamp((1 - b.fin()) * dp) * radius);
-			float px2 = Angles.trnsx(space * (i + 1), Mathf.clamp((1 - b.fin()) * dp) * radius);
-			float py2 = Angles.trnsy(space * (i + 1), Mathf.clamp((1 - b.fin()) * dp) * radius);
-			float px3 = Angles.trnsx(space * (i + 2), Mathf.clamp((1 - b.fin()) * dp) * radius);
-			float py3 = Angles.trnsy(space * (i + 2), Mathf.clamp((1 - b.fin()) * dp) * radius);
+			float px = Angles.trnsx(space * i, Mathm.clamp((1 - b.fin()) * dp) * radius);
+			float py = Angles.trnsy(space * i, Mathm.clamp((1 - b.fin()) * dp) * radius);
+			float px2 = Angles.trnsx(space * (i + 1), Mathm.clamp((1 - b.fin()) * dp) * radius);
+			float py2 = Angles.trnsy(space * (i + 1), Mathm.clamp((1 - b.fin()) * dp) * radius);
+			float px3 = Angles.trnsx(space * (i + 2), Mathm.clamp((1 - b.fin()) * dp) * radius);
+			float py3 = Angles.trnsy(space * (i + 2), Mathm.clamp((1 - b.fin()) * dp) * radius);
 			Fill.quad(b.x, b.y, centerf, b.x + px, b.y + py, edgef, b.x + px2, b.y + py2, edgef, b.x + px3, b.y + py3, edgef);
 		}
 
@@ -89,7 +90,7 @@ public class DistFieldBulletType extends BulletType {
 
 		Groups.bullet.intersect(b.x - radius, b.y - radius, radius * 2f, radius * 2f, e -> {
 			if (e.team != b.team && e.type.hittable && e.dst2(b.x, b.y) <= radius * radius) { //slow down bullets which is not from kami
-				e.vel.scl(1f - Mathf.clamp(getBulletSlow(b)));
+				e.vel.scl(1f - Mathm.clamp(getBulletSlow(b)));
 			}
 		});
 

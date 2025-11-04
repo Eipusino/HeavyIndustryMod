@@ -14,6 +14,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.content.UnitTypes;
@@ -223,7 +224,7 @@ public class PayloadCrane extends Block {
 
 			// update crane stuff . i dont like how linear it is.... but Oh well
 			craneRotation = Angles.moveToward(craneRotation, angleTo(target), rotateSpeed * edelta());
-			extension = Mathf.approach(extension, Mathf.clamp(dst(target) - hookOffset, -hookOffset + minExtension, maxExtension), extensionSpeed * edelta());
+			extension = Mathf.approach(extension, Mathm.clamp(dst(target) - hookOffset, -hookOffset + minExtension, maxExtension), extensionSpeed * edelta());
 
 			// payload stuff
 			if (payload != null) {

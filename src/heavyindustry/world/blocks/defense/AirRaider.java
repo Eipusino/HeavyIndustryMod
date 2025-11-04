@@ -6,6 +6,7 @@ import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.Mover;
@@ -73,7 +74,7 @@ public class AirRaider extends CommandableAttackerBlock {
 					aimAngle = angleTo(lastConfirmedTarget),
 					bulletX = x + Angles.trnsx(aimAngle, xOffset, yOffset) + Mathf.range(shootSpread),
 					bulletY = y + Angles.trnsy(aimAngle, xOffset, yOffset) + Mathf.range(shootSpread),
-					lifeScl = bullet.scaleLife ? Mathf.clamp(Mathf.dst(bulletX, bulletY, Tmp.v5.x, Tmp.v5.y) / bullet.range) : 1f,
+					lifeScl = bullet.scaleLife ? Mathm.clamp(Mathf.dst(bulletX, bulletY, Tmp.v5.x, Tmp.v5.y) / bullet.range) : 1f,
 					angle = aimAngle + Mathf.range(inaccuracy);
 
 			bullet.create(this, team, bulletX, bulletY, angle, -1f, (1f - velocityRnd) + Mathf.random(velocityRnd), lifeScl, null, mover, Tmp.v5.x, Tmp.v5.y);

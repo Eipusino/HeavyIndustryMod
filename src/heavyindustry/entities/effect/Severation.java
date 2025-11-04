@@ -27,6 +27,7 @@ import heavyindustry.entities.HEntity;
 import heavyindustry.gen.BaseEntity;
 import heavyindustry.gen.RenderGroupEntity;
 import heavyindustry.gen.RenderGroupEntity.DrawnRegion;
+import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.entities.Effect;
 import mindustry.game.EventType.ResetEvent;
@@ -244,7 +245,7 @@ public class Severation extends BaseEntity implements QuadTreeObject {
 		y += vy * Time.delta;
 		rotation += vr * Time.delta;
 
-		zTime = Mathf.clamp(zTime + Time.delta / 40f);
+		zTime = Mathm.clamp(zTime + Time.delta / 40f);
 		float drg = zTime < 1 ? drag : 0.2f;
 
 		vx *= 1f - drg * Time.delta;
@@ -256,9 +257,9 @@ public class Severation extends BaseEntity implements QuadTreeObject {
 			explosionEffect.at(x, y, b);
 			float shake = b / 3f;
 			Effect.shake(shake, shake, x, y);
-			//if (explosionSound != Sounds.none) explosionSound.at(x, y, 1f, Mathf.clamp(b / 1.1f));
+			//if (explosionSound != Sounds.none) explosionSound.at(x, y, 1f, Mathm.clamp(b / 1.1f));
 			if (explosionSound != Sounds.none)
-				explosionSound.at(x, y, Mathf.random(0.9f, 1.1f) * Math.max(1f / (1f + (b - 8f) / 70f), 0.5f), Mathf.clamp(b / 1.1f));
+				explosionSound.at(x, y, Mathf.random(0.9f, 1.1f) * Math.max(1f / (1f + (b - 8f) / 70f), 0.5f), Mathm.clamp(b / 1.1f));
 
 			remove();
 		}

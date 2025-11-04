@@ -79,7 +79,7 @@ public final class CyclicCoordinateDescent {
 				sinRotAng = (curToEndX * curToTargetY - curToEndY * curToTargetX) / endTargetMag;
 			}
 
-			float rotAng = (float) Math.acos(Mathf.clamp(cosRotAng, -1f, 1f));
+			float rotAng = (float) Math.acos(Mathm.clamp(cosRotAng, -1f, 1f));
 			if (sinRotAng < 0f) rotAng = -rotAng;
 			rotAng *= Mathf.radDeg;
 
@@ -87,7 +87,7 @@ public final class CyclicCoordinateDescent {
 			endY = worldBones.get(i).y + (sinRotAng * curToEndX) + (cosRotAng * curToEndY);
 
 			//float offAngle = angleLerp >= 1f ? simplifyAngle(bones[i].angle() + (rotAng * Mathf.radDeg)) : (!delta ? Mathf.slerp(bones[i].angle(), simplifyAngle(bones[i].angle() + (rotAng * Mathf.radDeg)), angleLerp) : Mathf.slerpDelta(bones[i].angle(), simplifyAngle(bones[i].angle() + (rotAng * Mathf.radDeg)), angleLerp));
-			float lerpAngle = Mathf.slerp(simplifyAngle(bones[i].angle), simplifyAngle(bones[i].angle + rotAng), Mathf.clamp(angleLerp * (delta ? Time.delta : 1f)));
+			float lerpAngle = Mathf.slerp(simplifyAngle(bones[i].angle), simplifyAngle(bones[i].angle + rotAng), Mathm.clamp(angleLerp * (delta ? Time.delta : 1f)));
 			float offAngle = angleLerp >= 1f ? simplifyAngle(bones[i].angle + rotAng) : lerpAngle;
 
 			//bones[i].angle(simplifyAngle(bones[i].angle() + (rotAng * Mathf.radDeg)));

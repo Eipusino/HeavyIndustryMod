@@ -7,6 +7,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.bullet.BulletType;
@@ -88,7 +89,7 @@ public class GrenadeBulletType extends BulletType {
 	@Override
 	public void draw(Bullet b) {
 		if (b.fin() < 0.15 && b.timer.get(0, (3 + b.fslope() * 2))) {
-			trailEffect.at(b.x, b.y, b.fslope() * 4f * Mathf.clamp(b.fout()), backColor);
+			trailEffect.at(b.x, b.y, b.fslope() * 4f * Mathm.clamp(b.fout()), backColor);
 		}
 
 		float scl = getZ(b) + 1;

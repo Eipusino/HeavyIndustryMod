@@ -10,6 +10,7 @@ import arc.struct.Seq;
 import arc.util.Log;
 import heavyindustry.gen.Ornitopterc;
 import heavyindustry.graphics.Outliner;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.ReflectUtils;
 import mindustry.gen.Unit;
 import mindustry.graphics.Layer;
@@ -30,7 +31,7 @@ public class OrnitopterUnitType extends UnitType2 {
 	}
 
 	public void drawBlade(Unit unit, Ornitopterc copter) {
-		float z = unit.elevation > 0.5f ? (lowAltitude ? Layer.flyingUnitLow : Layer.flyingUnit) : groundLayer + Mathf.clamp(hitSize / 4000f, 0, 0.01f);
+		float z = unit.elevation > 0.5f ? (lowAltitude ? Layer.flyingUnitLow : Layer.flyingUnit) : groundLayer + Mathm.clamp(hitSize / 4000f, 0, 0.01f);
 
 		applyColor(unit);
 

@@ -14,6 +14,7 @@ import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.input.BeltPlacement;
+import heavyindustry.math.Mathm;
 import heavyindustry.world.draw.DrawBeltUnder.BeltUnderBlending;
 import mindustry.Vars;
 import mindustry.entities.TargetPriority;
@@ -390,7 +391,7 @@ public class Belt extends Block implements Autotiler {
 
 					Tmp.v1.set(Geometry.d4x(inputDir) * Vars.tilesize / 2f, Geometry.d4y(inputDir) * Vars.tilesize / 2f)
 							.lerp(Geometry.d4x(rotation) * Vars.tilesize / 2f, Geometry.d4y(rotation) * Vars.tilesize / 2f,
-									(Mathf.clamp(progresses[i]) * scl) + (0.75f - (scl * i)));
+									(Mathm.clamp(progresses[i]) * scl) + (0.75f - (scl * i)));
 
 					Draw.z(layer + ((x + Tmp.v1.x) / wwidth + (y + Tmp.v1.y) / wheight) * scaling);
 					Draw.rect(item.fullIcon, x + Tmp.v1.x, y + Tmp.v1.y, Vars.itemSize, Vars.itemSize);

@@ -16,6 +16,7 @@ import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import heavyindustry.entities.HDamage.BasicPool;
 import heavyindustry.gen.BaseEntity;
+import heavyindustry.math.Mathm;
 import mindustry.entities.Sized;
 import mindustry.gen.Groups;
 import mindustry.graphics.Layer;
@@ -107,8 +108,8 @@ public class Disintegration implements Poolable {
 	}
 
 	public void set(int width, int height) {
-		width = Mathf.clamp(width, 3, maxDimension);
-		height = Mathf.clamp(height, 3, maxDimension);
+		width = Mathm.clamp(width, 3, maxDimension);
+		height = Mathm.clamp(height, 3, maxDimension);
 		int size = width * height;
 
 		this.width = width;
@@ -218,7 +219,7 @@ public class Disintegration implements Poolable {
 
 			if (disintegrating) {
 				Tmp.c1.set(source.drawnColor).lerp(source.scorchColor, Mathf.curve(time / lifetime, 0f, 0.75f));
-				scl = Interp.pow5Out.apply(1f - Mathf.clamp(time / lifetime));
+				scl = Interp.pow5Out.apply(1f - Mathm.clamp(time / lifetime));
 			} else {
 				Tmp.c1.set(source.drawnColor).a(1f - Mathf.curve(time / lifetime, 0.7f, 1f));
 			}

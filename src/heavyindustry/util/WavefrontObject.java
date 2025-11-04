@@ -14,6 +14,7 @@ import arc.util.Log;
 import arc.util.Nullable;
 import arc.util.Strings;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.graphics.Layer;
 
@@ -343,7 +344,7 @@ public class WavefrontObject {
 		}
 
 		float angle = (Math.abs(tmp.angleRad(Vec3.Z)) / (45f * Mathf.degRad)) / shadingSmoothness;
-		Tmp.c1.set(matB ? Tmp.c3 : lightColor).lerp(matB ? Tmp.c2 : shadeColor, Mathf.clamp(angle));
+		Tmp.c1.set(matB ? Tmp.c3 : lightColor).lerp(matB ? Tmp.c2 : shadeColor, Mathm.clamp(angle));
 		Draw.color(Tmp.c1);
 	}
 
@@ -356,7 +357,7 @@ public class WavefrontObject {
 		}
 		indexerZ /= indexerA;
 
-		Tmp.c1.set(lightColor).lerp(shadeColor, Mathf.clamp(indexerZ / face.shadingValue / (shadingSmoothness * defaultScl)));
+		Tmp.c1.set(lightColor).lerp(shadeColor, Mathm.clamp(indexerZ / face.shadingValue / (shadingSmoothness * defaultScl)));
 		Draw.color(Tmp.c1);
 	}
 
@@ -376,7 +377,7 @@ public class WavefrontObject {
 		}
 		indexerZ /= indexerA;
 
-		Tmp.c1.set(lightColor).lerp(shadeColor, Mathf.clamp(indexerZ));
+		Tmp.c1.set(lightColor).lerp(shadeColor, Mathm.clamp(indexerZ));
 		Draw.color(Tmp.c1);
 	}
 

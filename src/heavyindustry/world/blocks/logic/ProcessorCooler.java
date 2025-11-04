@@ -7,6 +7,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.util.Nullable;
+import heavyindustry.math.Mathm;
 import mindustry.gen.Building;
 import mindustry.graphics.Pal;
 import mindustry.type.Liquid;
@@ -116,7 +117,7 @@ public class ProcessorCooler extends Block {
 				}
 			}
 			usedLinks = count;
-			heat = Mathf.lerpDelta(heat, Mathf.clamp(((float) count) / maxProcessors), 0.03f);
+			heat = Mathf.lerpDelta(heat, Mathm.clamp(((float) count) / maxProcessors), 0.03f);
 		}
 
 		@Override

@@ -14,6 +14,7 @@ import arc.math.geom.Vec2;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.graphics.Drawn;
+import heavyindustry.math.Mathm;
 import mindustry.entities.part.DrawPart;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
@@ -48,7 +49,7 @@ public class ArcCharge extends DrawPart {
 		Draw.color(color);
 		float x = params.x, y = params.y, rotation = params.rotation;
 
-		float fin = progress.getClamp(params);
+		float fin = Mathm.clamp(progress.get(params));
 
 		Lines.stroke(3f * Mathf.curve(fin, 0.1f, 0.2f));
 		tr2.trns(rotation, chargeY.get(params));

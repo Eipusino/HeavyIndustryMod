@@ -17,6 +17,7 @@ import heavyindustry.content.HFx;
 import heavyindustry.entities.HDamage;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.HPal;
+import heavyindustry.math.Mathm;
 import heavyindustry.type.weapons.LaserWeapon.LaserRange;
 import heavyindustry.util.Constant;
 import heavyindustry.util.Utils;
@@ -80,11 +81,11 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
 
 		if (!(b.data instanceof CreepLaserData data)) return;
 
-		//float llen = baseLength / Math.max(1f - Mathf.clamp((b.time - Time.delta) / creepTime), baseLength / length);
-		//float len = baseLength / Math.max(1f - Mathf.clamp(b.time / creepTime), baseLength / length);
+		//float llen = baseLength / Math.max(1f - Mathm.clamp((b.time - Time.delta) / creepTime), baseLength / length);
+		//float len = baseLength / Math.max(1f - Mathm.clamp(b.time / creepTime), baseLength / length);
 		float len = getLength(b.time);
 		float grnd = getGroundScl(b);
-		float scl = (1f + Mathf.clamp(1f - (b.time / 16f)) * 1.1f) * grnd;
+		float scl = (1f + Mathm.clamp(1f - (b.time / 16f)) * 1.1f) * grnd;
 
 		if (Mathf.chanceDelta(0.75f) && grnd > 0) {
 			Vec2 v = Utils.v.trns(b.rotation(), len).add(b.x, b.y).lerp(data.lastX, data.lastY, Mathf.random());
@@ -123,16 +124,16 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
 	}
 
 	float getGroundScl(Bullet b) {
-		return 1f - Mathf.clamp((b.time - creepTime / 1.4f) / (creepTime / 4f));
+		return 1f - Mathm.clamp((b.time - creepTime / 1.4f) / (creepTime / 4f));
 	}
 
 	float getFlyingScl(Bullet b) {
-		return Mathf.clamp((b.time - creepTime / 1.7f) / (creepTime / 3f));
+		return Mathm.clamp((b.time - creepTime / 1.7f) / (creepTime / 3f));
 	}
 
 	float getLength(float time) {
-		//float len = baseLength / Math.max(1f - Mathf.clamp(b.time / creepTime), baseLength / length);
-		return baseLength / Math.max(1f - Interp.sineIn.apply(Mathf.clamp(time / creepTime)), baseLength / length);
+		//float len = baseLength / Math.max(1f - Mathm.clamp(b.time / creepTime), baseLength / length);
+		return baseLength / Math.max(1f - Interp.sineIn.apply(Mathm.clamp(time / creepTime)), baseLength / length);
 	}
 
 	@Override
@@ -234,11 +235,11 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
 		Rand rand = Utils.rand(b.id), rand2 = Utils.rand2;
 
 		float len = getLength(b.time);
-		float fade = Mathf.clamp(b.time / 15f) * Mathf.clamp((b.lifetime - b.time) / (2.5f * 60));
+		float fade = Mathm.clamp(b.time / 15f) * Mathm.clamp((b.lifetime - b.time) / (2.5f * 60));
 
 		float base = baseLength;
 		float tipHeight = (width / 2f) * (1f + ((len - base) / (length - base)) * 10f);
-		float flare = Mathf.clamp(b.time / 80f);
+		float flare = Mathm.clamp(b.time / 80f);
 		float w2 = 8f * fade;
 		float sclen = (len - base) / (length - base);
 

@@ -8,6 +8,7 @@ import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
 import arc.util.Eachable;
+import heavyindustry.math.Mathm;
 import mindustry.core.Renderer;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -167,7 +168,7 @@ public class BeamDiode extends Block {
 			if (backStored > frontStored) {
 				float amount = backGraph.getBatteryStored() * (backStored - frontStored) / 2;
 
-				amount = Mathf.clamp(amount, 0, frontGraph.getTotalBatteryCapacity() * (1 - frontStored));
+				amount = Mathm.clamp(amount, 0, frontGraph.getTotalBatteryCapacity() * (1 - frontStored));
 
 				backGraph.transferPower(-amount);
 				frontGraph.transferPower(amount);

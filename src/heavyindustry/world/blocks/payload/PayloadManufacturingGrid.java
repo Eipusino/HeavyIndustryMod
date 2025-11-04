@@ -22,6 +22,7 @@ import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.content.HFx;
+import heavyindustry.math.Mathm;
 import heavyindustry.ui.CraftGridImage;
 import heavyindustry.util.IntMap2;
 import heavyindustry.world.meta.HStat;
@@ -95,7 +96,7 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 			if (pitchSeq > 30) {
 				pitchSeq = 0;
 			}
-			return 1f + Mathf.clamp(pitchSeq / 30f) * 1.9f;
+			return 1f + Mathm.clamp(pitchSeq / 30f) * 1.9f;
 		} else {
 			pitchSeq = 0;
 			lastTime = Time.millis();

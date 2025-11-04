@@ -3556,7 +3556,7 @@ public final class HUnitTypes {
 
 									b.set(bulletX, bulletY);
 									Tmp.v2.set(mount.aimX - bulletX, mount.aimY - bulletY);
-									float angle = Mathf.clamp(Tmp.v2.angle() - u.rotation, -shootCone, shootCone);
+									float angle = Mathm.clamp(Tmp.v2.angle() - u.rotation, -shootCone, shootCone);
 									Tmp.v2.setAngle(u.rotation).rotate(angle);
 
 									Tmp.v1.set(b.aimX - bulletX, b.aimY - bulletY).lerpDelta(Tmp.v2, 0.1f).clampLength(80, range);

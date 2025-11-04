@@ -15,6 +15,7 @@ import arc.util.pooling.Pools;
 import heavyindustry.gen.BaseEntity;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.HPal;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.Utils;
 import mindustry.gen.Groups;
 import mindustry.graphics.Drawf;
@@ -131,8 +132,8 @@ public class BloodSplatter extends BaseEntity implements Poolable {
 		float z = Draw.z();
 		//Draw.z(Layer.floor + 0.001f);
 		float life = lifetime2;
-		float fin1 = Mathf.clamp(time / life);
-		float fin2 = Mathf.clamp((time - life / 1.75f) / life);
+		float fin1 = Mathm.clamp(time / life);
+		float fin2 = Mathm.clamp((time - life / 1.75f) / life);
 
 		Draw.z(Layer.flyingUnitLow);
 		if (fin2 < 1) {
@@ -152,10 +153,10 @@ public class BloodSplatter extends BaseEntity implements Poolable {
 		float offz = (id % 16) * 0.0001f;
 		Draw.z((Layer.debris - 1f) + offz);
 		if (time > life * 0.9f) {
-			//float fin3 = Mathf.clamp((time - life * 0.9f) / (lifetime - (life * 0.9f)));
+			//float fin3 = Mathm.clamp((time - life * 0.9f) / (lifetime - (life * 0.9f)));
 			float timeOff = time - life * 0.9f;
-			float fout = 1f - Mathf.curve(Mathf.clamp(timeOff / (lifetime - (life * 0.9f))), 0.5f, 1f);
-			float fin4 = Mathf.clamp((time - life * 0.9f) / 10f);
+			float fout = 1f - Mathf.curve(Mathm.clamp(timeOff / (lifetime - (life * 0.9f))), 0.5f, 1f);
+			float fin4 = Mathm.clamp((time - life * 0.9f) / 10f);
 			//float len = Mathf.pow(length * 0.4f, 1f / out.power);
 			float len = Mathf.pow(length * ((lifetime - lifetime2) / lifetime), 1f / out.power);
 			int count = (int) (len / 10);
@@ -166,7 +167,7 @@ public class BloodSplatter extends BaseEntity implements Poolable {
 			float s = size * 0.75f;
 
 			for (int i = 0; i < count; i++) {
-				float t = Mathf.clamp((timeOff - i * 8f) / 15f);
+				float t = Mathm.clamp((timeOff - i * 8f) / 15f);
 				float l = i / (float) count;
 
 				Vec2 v = Tmp.v1.trns(angle + rand.range(10f), rand.random(len * l, len * (l + 1))).add(x2, y2);

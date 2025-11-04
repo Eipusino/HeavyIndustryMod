@@ -3,6 +3,7 @@ package heavyindustry.world.blocks.defense.turrets;
 import arc.math.Angles;
 import arc.math.Mathf;
 import arc.util.Time;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.CollectionObjectMap;
 import heavyindustry.util.IntMap2;
 import mindustry.entities.Effect;
@@ -79,7 +80,7 @@ public class ShootMatchTurret extends ItemTurret {
 					bulletY = y + Angles.trnsy(rotation - 90, shootX + xOffset + xSpread, shootY + yOffset),
 					shootAngle = rotation + angleOffset + Mathf.range(inaccuracy + type.inaccuracy);
 
-			float lifeScl = type.scaleLife ? Mathf.clamp(Mathf.dst(bulletX, bulletY, targetPos.x, targetPos.y) / type.range, minRange / type.range, range() / type.range) : 1f;
+			float lifeScl = type.scaleLife ? Mathm.clamp(Mathf.dst(bulletX, bulletY, targetPos.x, targetPos.y) / type.range, minRange / type.range, range() / type.range) : 1f;
 
 			if (lifeRnd > 0) lifeScl += Mathf.range(lifeRnd);
 

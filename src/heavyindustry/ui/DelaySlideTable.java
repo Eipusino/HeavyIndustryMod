@@ -15,6 +15,7 @@ import arc.math.Mathf;
 import arc.scene.ui.layout.Table;
 import arc.util.Tmp;
 import arc.util.pooling.Pools;
+import heavyindustry.math.Mathm;
 import mindustry.graphics.Pal;
 import mindustry.ui.Fonts;
 
@@ -94,7 +95,7 @@ public class DelaySlideTable extends Table {
 	public void act(float delta) {
 		super.act(delta);
 
-		currentValue = Mathf.clamp(valueGetter.get(), 0 + Mathf.FLOAT_ROUNDING_ERROR, maxValue.get());
+		currentValue = Mathm.clamp(valueGetter.get(), 0 + Mathf.FLOAT_ROUNDING_ERROR, maxValue.get());
 
 		if (snapWhileIncrease && lastValue < currentValue && stableValue < lastValue) stableValue = lastValue;
 

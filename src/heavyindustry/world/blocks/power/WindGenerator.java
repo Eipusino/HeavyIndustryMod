@@ -10,6 +10,7 @@ import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.graphics.Drawm;
+import heavyindustry.math.Mathm;
 import heavyindustry.type.weather.EffectWeather;
 import mindustry.entities.units.BuildPlan;
 import mindustry.game.Team;
@@ -133,7 +134,7 @@ public class WindGenerator extends PowerGenerator {
 		public float baseRotation() {
 			float currentTime = Time.time / baseRotateSpeed;
 			float progress = (currentTime - startTime) / rotChangeTime;
-			progress = Mathf.clamp(progress, 0, 1);
+			progress = Mathm.clamp(progress, 0, 1);
 
 			WeatherState w = Groups.weather.find(ws -> ws.weather instanceof EffectWeather e && e.useWindVector);
 

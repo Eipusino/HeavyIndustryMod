@@ -12,6 +12,7 @@ import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.graphics.Drawn;
+import heavyindustry.math.Mathm;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.Units;
@@ -224,7 +225,7 @@ public class LightenGenerator extends NuclearReactor {
 				}
 			}
 
-			heat = Mathf.clamp(heat);
+			heat = Mathm.clamp(heat);
 
 			if (heat >= 0.999f) {
 				Events.fire(Trigger.thoriumReactorOverheat);

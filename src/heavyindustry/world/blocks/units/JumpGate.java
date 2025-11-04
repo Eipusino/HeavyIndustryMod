@@ -22,6 +22,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.entities.HEntity;
 import heavyindustry.gen.Spawner;
+import heavyindustry.math.Mathm;
 import heavyindustry.type.Recipe;
 import heavyindustry.ui.DelaySlideTable;
 import heavyindustry.world.Worlds;
@@ -285,7 +286,7 @@ public class JumpGate extends Block {
 
 		public void changePlan(int idx) {
 			if (idx == -1) return;
-			idx = Mathf.clamp(idx, 0, recipeList.size - 1);
+			idx = Mathm.clamp(idx, 0, recipeList.size - 1);
 			if (idx == recipeIndex) return;
 			progress = 0f;
 			recipeIndex = idx;
@@ -293,7 +294,7 @@ public class JumpGate extends Block {
 		}
 
 		public void changeSpawnCount(float count) {
-			spawnCount = Mathf.round(Mathf.clamp(count, 1, maxSpawnCount));
+			spawnCount = Mathf.round(Mathm.clamp(count, 1, maxSpawnCount));
 			progress = 0f;
 			speedMultiplier = 1f;
 		}
@@ -311,12 +312,12 @@ public class JumpGate extends Block {
 				Spawner spawner = new Spawner();
 				Tile t = tiles.random();
 				Tmp.v1.set(t.worldx(), t.worldy());
-				spawner.init(unitType(), team, Tmp.v1, rot, Mathf.clamp(unitRecipe().craftTime / maxWarmupSpeed, 5f * 60, 15f * 60));
+				spawner.init(unitType(), team, Tmp.v1, rot, Mathm.clamp(unitRecipe().craftTime / maxWarmupSpeed, 5f * 60, 15f * 60));
 				if (command != null) spawner.commandPos.set(command.cpy());
 				spawner.add();
 			}
 
-			speedMultiplier = Mathf.clamp(speedMultiplier + warmupPerSpawn, 1, maxWarmupSpeed);
+			speedMultiplier = Mathm.clamp(speedMultiplier + warmupPerSpawn, 1, maxWarmupSpeed);
 		}
 
 		@Override

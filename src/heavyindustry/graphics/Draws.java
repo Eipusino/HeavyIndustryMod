@@ -22,6 +22,7 @@ import arc.util.Nullable;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.func.Floatc3;
+import heavyindustry.math.Mathm;
 import mindustry.game.EventType.Trigger;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
@@ -607,7 +608,7 @@ public final class Draws {
 	}
 
 	public static void gradientFan(float x, float y, int edges, float radius, Color color, float gradientCenterX, float gradientCenterY, float offset, Color gradientColor, float fanAngle, float rotation) {
-		fanAngle = Mathf.clamp(fanAngle, 0, 360);
+		fanAngle = Mathm.clamp(fanAngle, 0, 360);
 
 		v1.set(gradientCenterX - x, gradientCenterY - y).rotate(rotation);
 		gradientCenterX = x + v1.x;

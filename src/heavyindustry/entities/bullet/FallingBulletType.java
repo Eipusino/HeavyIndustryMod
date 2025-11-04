@@ -9,6 +9,7 @@ import arc.math.geom.Vec2;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.math.Math3d;
+import heavyindustry.math.Mathm;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Damage;
@@ -95,7 +96,7 @@ public class FallingBulletType extends BulletType {
 
 		Draw.z(Layer.flyingUnit + Math3d.layerOffset(pos.x, pos.y));
 		Draw.color(col);
-		Draw.alpha(Mathf.clamp(b.fin() * 1.5f));
+		Draw.alpha(Mathm.clamp(b.fin() * 1.5f));
 		Draw.scl(sclFall);
 		Draw.rect(region, pos.x, pos.y, rot);
 		Draw.reset();

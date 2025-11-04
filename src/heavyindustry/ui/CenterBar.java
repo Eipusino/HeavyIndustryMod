@@ -11,6 +11,7 @@ import arc.math.Mathf;
 import arc.scene.style.Drawable;
 import arc.scene.ui.layout.Scl;
 import arc.util.pooling.Pools;
+import heavyindustry.math.Mathm;
 import mindustry.gen.Tex;
 import mindustry.ui.Bar;
 import mindustry.ui.Fonts;
@@ -31,7 +32,7 @@ public class CenterBar extends Bar {
 
 	public CenterBar(Prov<CharSequence> get, Prov<Color> color, Floatp frac) {
 		fraction = frac;
-		lastValue = value = Mathf.clamp(frac.get());
+		lastValue = value = Mathm.clamp(frac.get());
 		update(() -> {
 			name = get.get();
 			blinkColor.set(color.get());
@@ -82,7 +83,7 @@ public class CenterBar extends Bar {
 	public void draw() {
 		if (fraction == null) return;
 
-		float computed = Mathf.clamp(fraction.get(), -1f, 1f);
+		float computed = Mathm.clamp(fraction.get(), -1f, 1f);
 
 		if (lastValue > computed) {
 			blink = 1f;

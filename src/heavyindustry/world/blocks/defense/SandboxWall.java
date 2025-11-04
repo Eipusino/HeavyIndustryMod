@@ -19,6 +19,7 @@ import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.graphics.Drawn;
+import heavyindustry.math.Mathm;
 import heavyindustry.ui.Elements;
 import heavyindustry.util.holder.IntFloatHolder;
 import mindustry.entities.Damage;
@@ -306,7 +307,7 @@ public class SandboxWall extends Block {
 				Draw.blend();
 				Draw.reset();
 
-				hit = Mathf.clamp(hit - Time.delta / 10f);
+				hit = Mathm.clamp(hit - Time.delta / 10f);
 			}
 
 			if (lightning()) {

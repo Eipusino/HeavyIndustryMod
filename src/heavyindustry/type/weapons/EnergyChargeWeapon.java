@@ -1,12 +1,12 @@
 package heavyindustry.type.weapons;
 
 import arc.func.Cons2;
-import arc.func.Cons3;
 import arc.math.Angles;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.audio.SoundLoop;
 import mindustry.entities.Predict;
@@ -45,11 +45,11 @@ public class EnergyChargeWeapon extends Weapon {
 	@Override
 	public void draw(Unit unit, WeaponMount mount) {
 		float tmp = mount.reload;
-		mount.reload = Mathf.clamp(mount.reload, 0f, reload);
-		if (!drawTop) drawCharge.get(unit, mount, 1f - Mathf.clamp(mount.reload / reload));
+		mount.reload = Mathm.clamp(mount.reload, 0f, reload);
+		if (!drawTop) drawCharge.get(unit, mount, 1f - Mathm.clamp(mount.reload / reload));
 		if (drawRegion) super.draw(unit, mount);
 		mount.reload = tmp;
-		if (drawTop) drawCharge.get(unit, mount, 1f - Mathf.clamp(mount.reload / reload));
+		if (drawTop) drawCharge.get(unit, mount, 1f - Mathm.clamp(mount.reload / reload));
 	}
 
 	@Override

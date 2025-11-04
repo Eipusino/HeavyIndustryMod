@@ -8,6 +8,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Interp;
 import arc.math.Mathf;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import mindustry.entities.part.DrawPart;
 import mindustry.graphics.Layer;
 
@@ -49,7 +50,7 @@ public class DrawArrowSequence extends DrawPart {
 		Draw.z(Draw.z() + layerOffset);
 
 		float prevZ = Draw.z();
-		float fin = progress.getClamp(params);
+		float fin = Mathm.clamp(progress.get(params));
 		float fout = 1 - fin;
 
 		Tmp.v5.trns(params.rotation, y, x).add(params.x, params.y);
@@ -62,7 +63,7 @@ public class DrawArrowSequence extends DrawPart {
 
 		for (int i = 0; i < arrows; i++) {
 			Tmp.v1.trns(params.rotation + rotation, i * spacing).add(Tmp.v5);
-			float f = Interp.pow3Out.apply(Mathf.clamp(fin * arrows - i)) * (0.6f + railFin * 0.4f);
+			float f = Interp.pow3Out.apply(Mathm.clamp(fin * arrows - i)) * (0.6f + railFin * 0.4f);
 			Draw.rect(arrowRegion, Tmp.v1.x, Tmp.v1.y, arrowRegion.width * Draw.scl * f, arrowRegion.height * Draw.scl * f, params.rotation - 90);
 		}
 

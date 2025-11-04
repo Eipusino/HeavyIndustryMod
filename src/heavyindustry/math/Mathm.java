@@ -562,6 +562,10 @@ public final class Mathm {
 		return value > max ? max : value < min ? min : value;
 	}
 
+	public static float clamp(float value) {
+		return clamp(value, 0f, 1f);
+	}
+
 	public static double clamp(double value, double min, double max) {
 		return value > max ? max : value < min ? min : value;
 	}

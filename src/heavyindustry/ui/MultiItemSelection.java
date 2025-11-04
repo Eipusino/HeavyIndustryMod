@@ -2,7 +2,6 @@ package heavyindustry.ui;
 
 import arc.func.Boolf;
 import arc.func.Cons;
-import arc.math.Mathf;
 import arc.scene.style.TextureRegionDrawable;
 import arc.scene.ui.ImageButton;
 import arc.scene.ui.ScrollPane;
@@ -10,6 +9,7 @@ import arc.scene.ui.TextField;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
 import arc.util.Nullable;
+import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.ctype.UnlockableContent;
 import mindustry.gen.Icon;
@@ -53,7 +53,7 @@ public final class MultiItemSelection {
 			for (T item : list) {
 				if (!item.unlockedNow() || item.isHidden()) continue;
 
-				ImageButton button = cont.button(Tex.whiteui, Styles.clearNoneTogglei, Mathf.clamp(item.selectionSize, 0f, 40f), () -> {
+				ImageButton button = cont.button(Tex.whiteui, Styles.clearNoneTogglei, Mathm.clamp(item.selectionSize, 0f, 40f), () -> {
 				}).tooltip(item.localizedName).get();
 				button.changed(() -> toggle.get(item));
 				button.getStyle().imageUp = new TextureRegionDrawable(item.uiIcon);

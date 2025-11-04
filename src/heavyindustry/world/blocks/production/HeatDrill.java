@@ -1,7 +1,7 @@
 package heavyindustry.world.blocks.production;
 
 import arc.Core;
-import arc.math.Mathf;
+import heavyindustry.math.Mathm;
 import mindustry.graphics.Pal;
 import mindustry.ui.Bar;
 import mindustry.world.blocks.heat.HeatConsumer;
@@ -54,7 +54,7 @@ public class HeatDrill extends DrawerDrill {
 		}
 
 		public float warmupTarget() {
-			return Mathf.clamp(heat / heatRequirement);
+			return Mathm.clamp(heat / heatRequirement);
 		}
 
 		@Override

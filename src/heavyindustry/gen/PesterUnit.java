@@ -18,6 +18,7 @@ import heavyindustry.content.HFx;
 import heavyindustry.entities.HUnitSorts;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.math.HInterps;
+import heavyindustry.math.Mathm;
 import heavyindustry.type.unit.PesterUnitType;
 import heavyindustry.util.Constant;
 import heavyindustry.util.ObjectFloatMap2;
@@ -143,7 +144,7 @@ public class PesterUnit extends Unit2 implements Pesterc {
 			Healthc target = findOwner(bullet);
 
 			if (target != null) {
-				float v = Mathf.clamp(bullet.damage / bullet.type.damage, 0.75f, 1.25f) * (bullet.type.damage + bullet.type.splashDamage + bullet.type.lightningDamage);
+				float v = Mathm.clamp(bullet.damage / bullet.type.damage, 0.75f, 1.25f) * (bullet.type.damage + bullet.type.splashDamage + bullet.type.lightningDamage);
 				hatred.increment(target, v, v);
 			}
 		}
@@ -204,7 +205,7 @@ public class PesterUnit extends Unit2 implements Pesterc {
 						Healthc target = findOwner(bullet);
 
 						if (target != null) {
-							float v = Mathf.clamp(bullet.damage / bullet.type.damage, 0.75f, 1.25f) * (bullet.type.damage + bullet.type.splashDamage + bullet.type.lightningDamage);
+							float v = Mathm.clamp(bullet.damage / bullet.type.damage, 0.75f, 1.25f) * (bullet.type.damage + bullet.type.splashDamage + bullet.type.lightningDamage);
 							hatred.increment(target, v, v);
 						}
 					}
@@ -416,7 +417,7 @@ public class PesterUnit extends Unit2 implements Pesterc {
 
 			if (isBoss) {
 				for (int i = 0; i < trails.length; i++) {
-					Tmp.c1.set(team.color).mul(1 + i * 0.005f).lerp(Color.white, 0.015f * i + Mathf.absin(4f, 0.3f) + Mathf.clamp(hitTime) / 5f);
+					Tmp.c1.set(team.color).mul(1 + i * 0.005f).lerp(Color.white, 0.015f * i + Mathf.absin(4f, 0.3f) + Mathm.clamp(hitTime) / 5f);
 					trails[i].drawCap(Tmp.c1, type.trailScl);
 					trails[i].draw(Tmp.c1, type.trailScl);
 				}

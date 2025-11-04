@@ -4,6 +4,7 @@ import arc.Events;
 import arc.math.Mathf;
 import arc.util.Time;
 import heavyindustry.entities.effect.VapourizeEffect.VapourizeEffectState;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.CollectionList;
 import heavyindustry.util.IntMap2;
 import mindustry.content.Liquids;
@@ -71,7 +72,7 @@ public final class ExtraEffect {
 			tmp.add();
 		} else {
 			//tmp.time = Math.min(tmp.lifetime / 2f, tmp.time);
-			tmp.extraAlpha = Mathf.clamp((strength * Time.delta) + tmp.extraAlpha);
+			tmp.extraAlpha = Mathm.clamp((strength * Time.delta) + tmp.extraAlpha);
 			tmp.time = Mathf.lerpDelta(tmp.time, tmp.lifetime / 2f, 0.3f);
 		}
 		//new VapourizeEffectState(x, y, host, influence).add();

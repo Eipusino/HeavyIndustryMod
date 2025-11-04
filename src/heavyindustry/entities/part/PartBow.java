@@ -28,14 +28,14 @@ public class PartBow extends DrawPart {
 
 	@Override
 	public void draw(PartParams params) {
-		float warmup = progressWarmup.getClamp(params);
-		float p = 1 - progressReload.getClamp(params);
-		float rot = params.rotation - 90;
+		float warmup = Mathm.clamp(progressWarmup.get(params));
+		float p = 1f - Mathm.clamp(progressReload.get(params));
+		float rot = params.rotation - 90f;
 		if (warmup < 0.001) return;
 		float rp = Math.min(p * 1.2f, 1);
-		float bx = params.x + Angles.trnsx(rot, 0, bowHeight), by = params.y + Angles.trnsy(rot, 0, bowHeight);
-		float rx = bx + Angles.trnsx(rot, 0, bowMoveY * rp + bowFY), ry = by + Angles.trnsy(rot, 0, bowMoveY * rp + bowFY);
-		Draw.z(Layer.bullet - 5 + 15 * warmup);
+		float bx = params.x + Angles.trnsx(rot, 0f, bowHeight), by = params.y + Angles.trnsy(rot, 0f, bowHeight);
+		float rx = bx + Angles.trnsx(rot, 0f, bowMoveY * rp + bowFY), ry = by + Angles.trnsy(rot, 0f, bowMoveY * rp + bowFY);
+		Draw.z(Layer.bullet - 5f + 15f * warmup);
 		Draw.color(color);
 		Fill.circle(rx, ry, 3 * warmup);
 		Lines.stroke(3 * warmup);
@@ -43,7 +43,7 @@ public class PartBow extends DrawPart {
 			Tmp.v2.set(turretTk * i, bowHeight).rotate(rot);
 			Tmp.v3.set(turretTk * i, bowHeight + bowTk).rotate(rot);
 			float x1 = params.x + Tmp.v2.x, x2 = params.x + Tmp.v3.x, y1 = params.y + Tmp.v2.y, y2 = params.y + Tmp.v3.y;
-			float dx = Mathm.dx(x1, bowWidth, rot + 270 + (70 * warmup - visRad * rp * warmup) * i), dy = Mathm.dy(y1, bowWidth, rot + 270 + (70 * warmup - visRad * rp * warmup) * i);
+			float dx = Mathm.dx(x1, bowWidth, rot + 270f + (70f * warmup - visRad * rp * warmup) * i), dy = Mathm.dy(y1, bowWidth, rot + 270f + (70f * warmup - visRad * rp * warmup) * i);
 			Tmp.v1.set(bowTk / 2f * warmup * i, 0).rotate(rot);
 			float dx1 = dx + Tmp.v1.x, dy1 = dy + Tmp.v1.y;
 			Fill.tri(x1, y1, x2, y2, dx, dy);
@@ -51,7 +51,7 @@ public class PartBow extends DrawPart {
 			Lines.line(dx, dy, rx, ry);
 		}
 		Draw.z(Layer.effect);
-		Tmp.v1.set(0, bowMoveY + bowFY).rotate(rot);
+		Tmp.v1.set(0f, bowMoveY + bowFY).rotate(rot);
 		float pullx = bx + Tmp.v1.x, pully = by + Tmp.v1.y;
 		Lines.stroke(2 * warmup);
 		Lines.circle(pullx, pully, 4);

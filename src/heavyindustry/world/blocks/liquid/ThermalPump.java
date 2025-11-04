@@ -7,6 +7,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.util.Nullable;
 import arc.util.Time;
+import heavyindustry.math.Mathm;
 import mindustry.game.Team;
 import mindustry.logic.LAccess;
 import mindustry.type.Liquid;
@@ -214,7 +215,7 @@ public class ThermalPump extends LiquidBlock {
 
 		@Override
 		public float progress() {
-			return Mathf.clamp(consTimer / consumeTime);
+			return Mathm.clamp(consTimer / consumeTime);
 		}
 
 		@Override

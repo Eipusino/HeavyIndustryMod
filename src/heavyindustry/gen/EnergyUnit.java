@@ -10,6 +10,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.content.HFx;
 import heavyindustry.graphics.Drawn;
+import heavyindustry.math.Mathm;
 import heavyindustry.type.unit.EnergyUnitType;
 import heavyindustry.util.Constant;
 import mindustry.Vars;
@@ -100,7 +101,7 @@ public class EnergyUnit extends Unit2 implements Energyc {
 		Draw.z(Layer.bullet);
 
 		for (int i = 0; i < trails.length; i++) {
-			Tmp.c1.set(team.color).mul(1 + i * 0.005f).lerp(Color.white, 0.015f * i + Mathf.absin(4f, 0.3f) + Mathf.clamp(hitTime) / 5f);
+			Tmp.c1.set(team.color).mul(1 + i * 0.005f).lerp(Color.white, 0.015f * i + Mathf.absin(4f, 0.3f) + Mathm.clamp(hitTime) / 5f);
 			trails[i].drawCap(Tmp.c1, type.trailScl);
 			trails[i].draw(Tmp.c1, type.trailScl);
 		}

@@ -26,6 +26,10 @@ public final class ObjectUtils {
 		return a == b || a != null && a.equals(b);
 	}
 
+	public static boolean unequals(Object a, Object b) {
+		return a == null ? b != null : !a.equals(b);
+	}
+
 	public static int hashCode(Object obj) {
 		return obj == null ? 0 : obj.hashCode();
 	}
@@ -309,6 +313,11 @@ public final class ObjectUtils {
 	/**
 	 * Deceiving the compiler does not require throwing checked exceptions when throws or try cache are
 	 * included.
+	 * <p>This deduces the generic type to be `RuntimeException`, which is actually not assignable from `IOException`.
+	 * <br>However, type erasure will erase all static casts anyway.
+	 * <br>The result is, the code fools the compiler into thinking it's throwing `RuntimeException` and not have its
+	 * method signature explicitly throw `IOException`, even though it actually does.
+	 * <br>Such is the way of Java...
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T, E extends Throwable> T thrower(Throwable err) throws E {

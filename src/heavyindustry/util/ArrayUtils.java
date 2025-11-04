@@ -9,6 +9,8 @@ import arc.func.Func;
 import arc.func.Func2;
 import arc.func.IntIntf;
 import arc.func.Intf;
+import arc.func.Prov;
+import arc.struct.Seq;
 import arc.util.Eachable;
 import heavyindustry.func.BoolBoolf;
 import heavyindustry.func.ByteBytef;
@@ -301,7 +303,7 @@ public final class ArrayUtils {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T[] insertAtFirst(T[] originalArray, T element) {
-		T[] newArray = (T[]) Array.newInstance(originalArray.getClass().componentType(), originalArray.length + 1);
+		T[] newArray = (T[]) Array.newInstance(originalArray.getClass().getComponentType(), originalArray.length + 1);
 
 		newArray[0] = element;
 
@@ -313,14 +315,76 @@ public final class ArrayUtils {
 	@SuppressWarnings("unchecked")
 	public static <T> T[] removeFirst(T[] originalArray) {
 		if (originalArray.length <= 1) {
-			return (T[]) Array.newInstance(originalArray.getClass().componentType(), 0);
+			return (T[]) Array.newInstance(originalArray.getClass().getComponentType(), 0);
 		}
 
-		T[] newArray = (T[]) Array.newInstance(originalArray.getClass().componentType(), originalArray.length - 1);
+		T[] newArray = (T[]) Array.newInstance(originalArray.getClass().getComponentType(), originalArray.length - 1);
 
 		System.arraycopy(originalArray, 1, newArray, 0, originalArray.length - 1);
 
 		return newArray;
+	}
+
+	public static <T> T get(T[] array, int index, T def) {
+		return index < 0 || index >= array.length ? def : array[index];
+	}
+
+	public static <T> T getNull(T[] array, int index) {
+		return index < 0 || index >= array.length ? null : array[index];
+	}
+
+	public static boolean getBool(boolean[] array, int index, boolean def) {
+		return index < 0 || index >= array.length ? def : array[index];
+	}
+
+	public static byte getByte(byte[] array, int index, byte def) {
+		return index < 0 || index >= array.length ? def : array[index];
+	}
+
+	public static short getShort(short[] array, int index, short def) {
+		return index < 0 || index >= array.length ? def : array[index];
+	}
+
+	public static int getInt(int[] array, int index, int def) {
+		return index < 0 || index >= array.length ? def : array[index];
+	}
+
+	public static long getLong(long[] array, int index, long def) {
+		return index < 0 || index >= array.length ? def : array[index];
+	}
+
+	public static float getFloat(float[] array, int index, float def) {
+		return index < 0 || index >= array.length ? def : array[index];
+	}
+
+	public static double getDouble(double[] array, int index, double def) {
+		return index < 0 || index >= array.length ? def : array[index];
+	}
+
+	public static char getChar(char[] array, int index, char def) {
+		return index < 0 || index >= array.length ? def : array[index];
+	}
+
+	public static <T> T get(T[] array, int index, Prov<T> def) {
+		return index < 0 || index >= array.length ? def.get() : array[index];
+	}
+
+	public static <T> Seq<T> asSeq(Seq<T> seq, T[] newArray) {
+		if (seq.items.getClass().getComponentType() == newArray.getClass().getComponentType()) return seq;
+
+		System.arraycopy(seq.items, 0, newArray, 0, Math.min(newArray.length, seq.items.length));
+		seq.items = newArray;
+		return seq;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> Seq<T> asSeq(Seq<T> seq, Class<?> type) {
+		if (seq.items.getClass().getComponentType() == type) return seq;
+
+		T[] newArray = (T[]) Array.newInstance(type, seq.items.length);
+		System.arraycopy(seq.items, 0, newArray, 0, newArray.length);
+		seq.items = newArray;
+		return seq;
 	}
 
 	public static int[] sortInt(int[] arr) {
@@ -838,7 +902,7 @@ public final class ArrayUtils {
 
 	@SuppressWarnings("unchecked")
 	public static <T> T[] resize(T[] array, int newSize, T fill) {
-		return resize(array, size -> (T[]) Array.newInstance(array.getClass().componentType(), newSize), newSize, fill);
+		return resize(array, size -> (T[]) Array.newInstance(array.getClass().getComponentType(), newSize), newSize, fill);
 	}
 
 	public static <T> T[] resize(T[] array, ArrayCreator<T> create, int newSize, T fill) {

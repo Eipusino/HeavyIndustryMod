@@ -7,6 +7,7 @@ import arc.struct.IntSet;
 import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.Constant;
 import mindustry.entities.Damage;
 import mindustry.entities.TargetPriority;
@@ -119,7 +120,7 @@ public class RegenWall extends Wall {
 				mendMap.clear();
 			}
 
-			hit = Mathf.clamp(hit - Time.delta / 10f);
+			hit = Mathm.clamp(hit - Time.delta / 10f);
 
 			if (damaged() && heals) {
 				heals = false;

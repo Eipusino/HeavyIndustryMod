@@ -6,6 +6,7 @@ import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.Eachable;
 import arc.util.Nullable;
+import heavyindustry.math.Mathm;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -78,7 +79,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 		mask = capacity - 1;
 		hashShift = 31 - Integer.numberOfTrailingZeros(capacity);
 		stashCapacity = Math.max(3, (int) Math.ceil(Math.log(capacity)) * 2);
-		pushIterations = Math.max(Math.min(capacity, 8), (int) Math.sqrt(capacity) / 8);
+		pushIterations = Mathm.clamp(capacity, 8, (int) Math.sqrt(capacity) / 8);
 
 		keyComponentType = type;
 		keyTable = (E[]) Array.newInstance(type, capacity + stashCapacity);
@@ -94,19 +95,19 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 
 	@SuppressWarnings("unchecked")
 	public static <T> CollectionObjectSet<T> with(T... array) {
-		CollectionObjectSet<T> set = new CollectionObjectSet<>(array.getClass().componentType());
+		CollectionObjectSet<T> set = new CollectionObjectSet<>(array.getClass().getComponentType());
 		set.addAll(array);
 		return set;
 	}
 
 	/*public static <T> CollectionObjectSet<T> with(Seq<T> array) {
-		CollectionObjectSet<T> set = new CollectionObjectSet<>(array.items.getClass().componentType());
+		CollectionObjectSet<T> set = new CollectionObjectSet<>(array.items.getClass().getComponentType());
 		set.addAll(array);
 		return set;
 	}*/
 
 	public static <T> CollectionObjectSet<T> with(CollectionList<T> list) {
-		CollectionObjectSet<T> set = new CollectionObjectSet<>(list.items.getClass().componentType());
+		CollectionObjectSet<T> set = new CollectionObjectSet<>(list.items.getClass().getComponentType());
 		set.addAll(list);
 		return set;
 	}
@@ -550,7 +551,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 		mask = newSize - 1;
 		hashShift = 31 - Integer.numberOfTrailingZeros(newSize);
 		stashCapacity = Math.max(3, (int) Math.ceil(Math.log(newSize)) * 2);
-		pushIterations = Math.max(Math.min(newSize, 8), (int) Math.sqrt(newSize) / 8);
+		pushIterations = Mathm.clamp(newSize, 8, (int) Math.sqrt(newSize) / 8);
 
 		E[] oldKeyTable = keyTable;
 
@@ -660,8 +661,8 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	public class Iter implements Iterable<E>, Iterator<E> {
 		public boolean hasNext;
 
-		protected int nextIndex, currentIndex;
-		protected boolean done;
+		public int nextIndex, currentIndex;
+		public boolean done;
 
 		public Iter() {
 			reset();

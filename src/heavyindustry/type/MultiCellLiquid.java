@@ -7,6 +7,7 @@ import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
 import arc.struct.Seq;
 import arc.util.Time;
+import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.content.Liquids;
 import mindustry.entities.Puddles;
@@ -31,7 +32,7 @@ public class MultiCellLiquid extends CellLiquid {
 	public void update(Puddle puddle) {
 		if (!Vars.state.rules.fire || spreadTargets.isEmpty()) return;
 
-		float scaling = Mathf.pow(Mathf.clamp(puddle.amount / Puddles.maxLiquid), 2f);
+		float scaling = Mathf.pow(Mathm.clamp(puddle.amount / Puddles.maxLiquid), 2f);
 		boolean reacted = false;
 
 		for (Point2 point : Geometry.d4c) {

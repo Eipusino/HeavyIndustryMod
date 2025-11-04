@@ -10,6 +10,7 @@ import arc.math.geom.Vec2;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.math.Mathm;
 import heavyindustry.type.unit.TractorBeamUnitType;
 import mindustry.Vars;
 import mindustry.content.Fx;
@@ -67,7 +68,7 @@ public class TractorBeamUnit extends PayloadUnit2 {
 
 	public void updateHeld() {
 		if (beamHeld == null || Vars.state.isPaused()) return;
-		mouse.set(Mathf.clamp(aimX, 0, Vars.world.height() * 8f), Mathf.clamp(aimY, 0f, Vars.world.width() * 8f));
+		mouse.set(Mathm.clamp(aimX, 0f, Vars.world.height() * 8f), Mathm.clamp(aimY, 0f, Vars.world.width() * 8f));
 
 		if (mouse.dst(unitPos) > beamRange) {
 			mouse.set(mouse.sub(unitPos).setLength(beamRange).add(unitPos));
@@ -76,14 +77,14 @@ public class TractorBeamUnit extends PayloadUnit2 {
 		mouseTileY = World.toTile(mouse.y);
 
 		if (beamHeld instanceof BuildPayload) {
-			payPos.approach(movingIn ? unitPos : mouse, Mathf.clamp(payPos.dst(movingIn ? unitPos : mouse) * 0.1f, movingIn ? 2f : 0.1f, movingIn ? 32f : 16f) * Time.delta);
+			payPos.approach(movingIn ? unitPos : mouse, Mathm.clamp(payPos.dst(movingIn ? unitPos : mouse) * 0.1f, movingIn ? 2f : 0.1f, movingIn ? 32f : 16f) * Time.delta);
 		} else {
 			payPos.set(unitPos);
 		}
 
 		beamHeld.update(this, null);
-		beamHeld.set(payPos.x, payPos.y, beamHeld instanceof BuildPayload ? ((BuildPayload) beamHeld).build.rotation : rotation);
-		if (beamHeld instanceof BuildPayload && ((BuildPayload) beamHeld).build.health <= 0) { //todo FUCK
+		beamHeld.set(payPos.x, payPos.y, beamHeld instanceof BuildPayload bp ? bp.build.rotation : rotation);
+		if (beamHeld instanceof BuildPayload bp && bp.build.health <= 0) { //todo FUCK
 			beamHeld = null;
 		}
 
@@ -203,8 +204,8 @@ public class TractorBeamUnit extends PayloadUnit2 {
 			Draw.z(35f);
 			beamHeld.draw();
 
-			if (beamHeld instanceof BuildPayload) {
-				Building b = ((BuildPayload) beamHeld).build;
+			if (beamHeld instanceof BuildPayload bp) {
+				Building b = bp.build;
 				float size = b.block.size;
 
 				Draw.z(29f);

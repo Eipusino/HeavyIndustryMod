@@ -16,6 +16,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.ai.SentryAI;
 import heavyindustry.gen.Sentryc;
+import heavyindustry.math.Mathm;
 import heavyindustry.world.meta.HStat;
 import mindustry.ai.types.LogicAI;
 import mindustry.content.Blocks;
@@ -141,7 +142,7 @@ public class SentryUnitType extends UnitType2 {
 	public void update(Unit unit) {
 		if (unit instanceof Sentryc sentry) {
 			if (unit.elevation < 1 && !unit.dead && unit.health > 0)
-				unit.elevation = Mathf.clamp(unit.elevation + riseSpeed * Time.delta);
+				unit.elevation = Mathm.clamp(unit.elevation + riseSpeed * Time.delta);
 
 			if (unit.health == Float.POSITIVE_INFINITY) { //I want Testing Utilities invincibility to work.
 				sentry.time(0);

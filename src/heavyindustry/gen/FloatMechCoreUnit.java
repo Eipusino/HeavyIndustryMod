@@ -7,6 +7,7 @@ import arc.math.geom.Point2;
 import arc.math.geom.Vec2;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.entities.Effect;
 import mindustry.entities.EntityCollisions.SolidPred;
@@ -31,7 +32,7 @@ public class FloatMechCoreUnit extends Unit2 implements Corec, FloatMechc {
 		//trigger animation only when walking manually
 		if (walked || Vars.net.client()) {
 			float len = deltaLen();
-			baseRotation = Angles.moveToward(baseRotation, deltaAngle(), type().baseRotateSpeed * Mathf.clamp(len / type().speed / Time.delta) * Time.delta);
+			baseRotation = Angles.moveToward(baseRotation, deltaAngle(), type().baseRotateSpeed * Mathm.clamp(len / type().speed / Time.delta) * Time.delta);
 			walkTime += len;
 			walked = false;
 		}

@@ -85,7 +85,6 @@ public final class HeavyIndustryMod extends Mod {
 	public static Mod instance;
 
 	public static @Nullable ClassLoader lastLoader;
-	public static @Nullable Class<?> platformImplType;
 
 	public static @Nullable FloatingText floatingText;
 
@@ -326,7 +325,7 @@ public final class HeavyIndustryMod extends Mod {
 	static void loadLibrary() {
 		if (OS.isIos) return;
 
-		platformImplType = loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl", true, clazz -> {
+		loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl", true, clazz -> {
 			Object instance = clazz.getConstructor().newInstance();
 
 			if (instance instanceof PlatformImpl core) {

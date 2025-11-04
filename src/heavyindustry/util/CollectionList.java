@@ -17,6 +17,7 @@ import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import arc.util.Nullable;
 import arc.util.Structs;
+import heavyindustry.math.Mathm;
 
 import java.lang.reflect.Array;
 import java.util.AbstractList;
@@ -218,7 +219,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	/** Flattens this array of arrays into one array. Allocates a new instance. */
 	@SuppressWarnings("unchecked")
 	public <R> CollectionList<R> flatten() {
-		CollectionList<R> arr = new CollectionList<>(componentType);
+		CollectionList<R> arr = new CollectionList<>(size, componentType);
 		for (int i = 0; i < size; i++) {
 			arr.addAll((CollectionList<R>) items[i]);
 		}
@@ -482,10 +483,9 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		return this;
 	}
 
-	@SuppressWarnings("unchecked")
 	public CollectionList<E> addAll(Iterable<? extends E> items) {
-		if (items instanceof CollectionList) {
-			addAll((CollectionList<E>) items);
+		if (items instanceof CollectionList<? extends E> list) {
+			addAll(list);
 		} else {
 			for (E t : items) {
 				add(t);
@@ -509,7 +509,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	@Nullable
 	public E getFrac(float index) {
 		if (isEmpty()) return null;
-		return get(Mathf.clamp((int) (index * size), 0, size - 1));
+		return get(Mathm.clamp((int) (index * size), 0, size - 1));
 	}
 
 	@Override
@@ -982,7 +982,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	@SuppressWarnings("unchecked")
 	protected E[] resize(int newSize) {
 		//avoid reflection when possible
-		E[] newItems = (E[]) (items.getClass() == Object[].class ? new Object[newSize] : Array.newInstance(items.getClass().getComponentType(), newSize));
+		E[] newItems = (E[]) Array.newInstance(componentType, newSize);
 		System.arraycopy(items, 0, newItems, 0, Math.min(size, newItems.length));
 		items = newItems;
 		return newItems;
@@ -1204,7 +1204,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		for (int i = 0; i < n; i++) {
 			Object o1 = items1[i];
 			Object o2 = items2[i];
-			if (o1 == null ? o2 != null : !o1.equals(o2)) return false;
+			if (ObjectUtils.unequals(o1, o2)) return false;
 		}
 		return true;
 	}
@@ -1296,15 +1296,14 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 
 	public Seq<E> toSeq() {
 		Seq<E> seq = new Seq<>(true, size, componentType);
-		for (E e : this) {
-			seq.add(e);
-		}
+		seq.size = size;
+		System.arraycopy(items, 0, seq.items, 0, size);
 		return seq;
 	}
 
 	public class Iter implements ListIterator<E> {
-		int cursor;
-		boolean done = true;
+		public int cursor;
+		public boolean done = true;
 
 		public Iter(int index) {
 			cursor = index;

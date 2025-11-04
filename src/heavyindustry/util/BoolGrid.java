@@ -1,6 +1,6 @@
 package heavyindustry.util;
 
-import arc.math.Mathf;
+import heavyindustry.math.Mathm;
 
 import java.util.Arrays;
 
@@ -37,11 +37,11 @@ public class BoolGrid {
 	}
 
 	public int clampX(int x) {
-		return Mathf.clamp(x, 0, width - 1);
+		return Mathm.clamp(x, 0, width - 1);
 	}
 
 	public int clampY(int y) {
-		return Mathf.clamp(y, 0, height - 1);
+		return Mathm.clamp(y, 0, height - 1);
 	}
 
 	public void set(int x, int y, boolean b) {

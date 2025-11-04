@@ -7,6 +7,7 @@ import arc.struct.LongSeq;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.holder.LongHolder;
 
 import java.lang.reflect.Array;
@@ -75,7 +76,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		mask = capacity - 1;
 		hashShift = 63 - Long.numberOfTrailingZeros(capacity);
 		stashCapacity = Math.max(3, (int) Math.ceil(Math.log(capacity)) * 2);
-		pushIterations = Math.max(Math.min(capacity, 8), (int) Math.sqrt(capacity) / 8);
+		pushIterations = Mathm.clamp(capacity, 8, (int) Math.sqrt(capacity) / 8);
 
 		valueComponentType = keyType;
 
@@ -537,7 +538,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		mask = newSize - 1;
 		hashShift = 63 - Long.numberOfTrailingZeros(newSize);
 		stashCapacity = Math.max(3, (int) Math.ceil(Math.log(newSize)) * 2);
-		pushIterations = Math.max(Math.min(newSize, 8), (int) Math.sqrt(newSize) / 8);
+		pushIterations = Mathm.clamp(newSize, 8, (int) Math.sqrt(newSize) / 8);
 
 		long[] oldKeyTable = keyTable;
 		V[] oldValueTable = valueTable;

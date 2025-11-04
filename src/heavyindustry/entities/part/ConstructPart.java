@@ -6,6 +6,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
 import arc.util.Nullable;
 import arc.util.Time;
+import heavyindustry.math.Mathm;
 import mindustry.entities.part.DrawPart;
 import mindustry.graphics.Drawf;
 
@@ -44,7 +45,7 @@ public class ConstructPart extends DrawPart {
 				dx = params.x + Angles.trnsx(params.rotation - 90f, x, y),
 				dy = params.y + Angles.trnsy(params.rotation - 90f, x, y),
 				dr = params.rotation + rot - 90,
-				prog = progress.getClamp(params);
+				prog = Mathm.clamp(progress.get(params));
 		Draw.z(z + outlineLayerOffset);
 		Draw.rect(outlineRegion, dx, dy, dr);
 		Draw.z(z + layerOffset);

@@ -5,6 +5,7 @@ import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
 import arc.util.Time;
 import arc.util.pooling.Pools;
+import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Bullets;
@@ -83,7 +84,7 @@ public class UltPuddle extends Puddle {
 			float added = reactPuddle(p.liquid, liquid, amount, p.tile, (p.x + source.worldx()) / 2f, (p.y + source.worldy()) / 2f);
 
 			if (cap) {
-				added = Mathf.clamp(Puddles.maxLiquid - p.amount, 0f, added);
+				added = Mathm.clamp(Puddles.maxLiquid - p.amount, 0f, added);
 			}
 
 			p.amount += added;
@@ -147,7 +148,7 @@ public class UltPuddle extends Puddle {
 		}
 
 		if (liquid.capPuddles) {
-			amount = Mathf.clamp(amount, 0, Puddles.maxLiquid);
+			amount = Mathm.clamp(amount, 0f, Puddles.maxLiquid);
 		}
 
 		if (amount <= 0f) {
@@ -168,7 +169,7 @@ public class UltPuddle extends Puddle {
 		if (amount >= Puddles.maxLiquid / 2f && updateTime <= 0f) {
 			paramPuddle = this;
 
-			Units.nearby(rect.setSize(Mathf.clamp(amount / (Puddles.maxLiquid / 1.5f)) * 10f).setCenter(x, y), unitCons);
+			Units.nearby(rect.setSize(Mathm.clamp(amount / (Puddles.maxLiquid / 1.5f)) * 10f).setCenter(x, y), unitCons);
 
 			if (liquid.temperature > 0.7f && tile.build != null && Mathf.chance(0.5)) {
 				UltFire.create(tile);
@@ -183,7 +184,7 @@ public class UltPuddle extends Puddle {
 
 		if (!Vars.headless && liquid.particleEffect != Fx.none) {
 			if ((effectTime += Time.delta) >= liquid.particleSpacing) {
-				float size = Mathf.clamp(amount / (Puddles.maxLiquid / 1.5f)) * 4f;
+				float size = Mathm.clamp(amount / (Puddles.maxLiquid / 1.5f)) * 4f;
 				liquid.particleEffect.at(x + Mathf.range(size), y + Mathf.range(size));
 				effectTime = 0f;
 			}

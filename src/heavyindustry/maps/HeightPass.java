@@ -5,6 +5,7 @@ import arc.math.Mathf;
 import arc.math.geom.Vec3;
 import arc.struct.Seq;
 import arc.util.noise.Simplex;
+import heavyindustry.math.Mathm;
 
 /**
  * a pass for custom height for a planet mesh
@@ -68,7 +69,7 @@ public abstract class HeightPass {
 
 		@Override
 		public float height(Vec3 pos, float height) {
-			return Mathf.clamp(height, min, max);
+			return Mathm.clamp(height, min, max);
 		}
 	}
 

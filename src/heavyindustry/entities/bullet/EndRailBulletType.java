@@ -13,6 +13,7 @@ import heavyindustry.audio.HSounds;
 import heavyindustry.content.HFx;
 import heavyindustry.entities.HDamage;
 import heavyindustry.graphics.HPal;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.Utils;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
@@ -115,8 +116,8 @@ public class EndRailBulletType extends BulletType {
 		float len = b.fdata = HDamage.hitLaser(b.team, 4f, b.x, b.y, vx, vy, null, h -> (bulletHealth -= h.maxHealth()) <= 0, (h, x, y) -> {
 			hit(b, x, y);
 			//float hscl = h instanceof Sized s ? s.hitSize() : 0f;
-			//hitEnd(b, x, y, Mathf.clamp(hscl / 90f) + Mathf.sqrt(hscl / 400f));
-			hitEnd(b, h, x, y, Mathf.clamp(h.maxHealth() / 40000f) + Mathf.sqrt((h.maxHealth() / 120000f) / 2f) / 1000f);
+			//hitEnd(b, x, y, Mathm.clamp(hscl / 90f) + Mathf.sqrt(hscl / 400f));
+			hitEnd(b, h, x, y, Mathm.clamp(h.maxHealth() / 40000f) + Mathf.sqrt((h.maxHealth() / 120000f) / 2f) / 1000f);
 
 			if (h instanceof Unit u) {
 				u.armor -= 100 + Math.abs(u.armor / 10);

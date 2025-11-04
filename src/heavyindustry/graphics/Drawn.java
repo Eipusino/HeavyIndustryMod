@@ -30,6 +30,7 @@ import arc.util.Tmp;
 import arc.util.pooling.Pools;
 import heavyindustry.content.HFx;
 import heavyindustry.math.HInterps;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.Utils;
 import mindustry.Vars;
 import mindustry.gen.Building;
@@ -96,7 +97,7 @@ public final class Drawn {
 	}
 
 	public static void circlePercent(float x, float y, float rad, float percent, float angle) {
-		float p = Mathf.clamp(percent);
+		float p = Mathm.clamp(percent);
 
 		int sides = Lines.circleVertices(rad);
 
@@ -159,7 +160,7 @@ public final class Drawn {
 	public static float cameraDstScl(float x, float y, float norDst) {
 		v6.set(Core.camera.position);
 		float dst = Mathf.dst(x, y, v6.x, v6.y);
-		return 1 - Mathf.clamp(dst / norDst);
+		return 1 - Mathm.clamp(dst / norDst);
 	}
 
 	public static void tri(float x, float y, float width, float length, float angle) {
@@ -531,7 +532,7 @@ public final class Drawn {
 				Draw.color(Pal.turretHeat, a);
 			}
 		} else {
-			a = 1f - Mathf.clamp(temp / 273.15f);
+			a = 1f - Mathm.clamp(temp / 273.15f);
 			if (a < 0.01f) return;
 			Draw.color(HPal.coldcolor, a);
 		}
@@ -929,7 +930,7 @@ public final class Drawn {
 
 	public static void materialize(float x, float y, TextureRegion region, Color color, float rotation, float offset, float progress, float time, boolean shadow) {
 		HShaders.materialize.region = region;
-		HShaders.materialize.progress = Mathf.clamp(progress);
+		HShaders.materialize.progress = Mathm.clamp(progress);
 		HShaders.materialize.color.set(color);
 		HShaders.materialize.time = time;
 		HShaders.materialize.offset = offset;
@@ -1235,7 +1236,7 @@ public final class Drawn {
 				z += v31.z;
 				tf.add(v31.x + x, v31.y + y);
 			}
-			//float tz = Mathf.clamp((z / 4f) / sizeDepth) * zRange + zz;
+			//float tz = Mathm.clamp((z / 4f) / sizeDepth) * zRange + zz;
 			float tz = (z < 0f ? -zRange : zRange) + zz;
 			Draw.z(tz);
 			Fill.polyBegin();
@@ -1274,7 +1275,7 @@ public final class Drawn {
 		for (int i = 0; i < 50; i++) {
 			float coff = ((1f - (i / 50f)) + rand.range(0.125f) + 0.125f) / 1.25f;
 			float ff = coff * fc;
-			float f = Mathf.curve(deathTime, ff, Mathf.clamp(ff + fc2 + rand.range(0.05f), ff + 0.125f, 1f));
+			float f = Mathf.curve(deathTime, ff, Mathm.clamp(ff + fc2 + rand.range(0.05f), ff + 0.125f, 1f));
 			float size = rand.random(0.75f, 1.5f) * Mathf.lerp(150f, 55f, (i / 50f));
 			int nseed = rand.nextInt();
 			if (f > 0.001f) {

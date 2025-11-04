@@ -12,6 +12,7 @@ import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import heavyindustry.entities.HEntity;
 import heavyindustry.graphics.Drawn;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.Utils;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
@@ -99,7 +100,7 @@ public class ShrapnelEntity extends BaseEntity implements Poolable {
 					h.damage(damage);
 					explosion.at(x, y, hitSize / 2f);
 
-					float drag = 1f - Mathf.clamp(((size.hitSize() / 2f) / hitSize) / 30f);
+					float drag = 1f - Mathm.clamp(((size.hitSize() / 2f) / hitSize) / 30f);
 
 					vx *= drag;
 					vy *= drag;

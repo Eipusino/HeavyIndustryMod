@@ -7,6 +7,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
 import arc.math.Mathf;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import mindustry.entities.units.WeaponMount;
 import mindustry.gen.Unit;
 import mindustry.type.Weapon;
@@ -57,7 +58,7 @@ public class MortarWeapon extends Weapon {
 	public void update(Unit unit, WeaponMount mount) {
 		MortarMount mMount = (MortarMount) mount;
 		float r = bullet.range;
-		mMount.incline = Mathf.approachDelta(mMount.incline, Mathf.clamp(unit.dst(mount.aimX, mount.aimY) / r), barrelSpeed / r);
+		mMount.incline = Mathf.approachDelta(mMount.incline, Mathm.clamp(unit.dst(mount.aimX, mount.aimY) / r), barrelSpeed / r);
 		super.update(unit, mount);
 	}
 

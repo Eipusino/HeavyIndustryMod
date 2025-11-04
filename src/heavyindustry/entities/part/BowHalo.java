@@ -7,6 +7,7 @@ import arc.math.Angles;
 import arc.math.Mathf;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import mindustry.entities.part.DrawPart;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
@@ -25,7 +26,7 @@ public class BowHalo extends DrawPart {
 
 	@Override
 	public void draw(PartParams params) {
-		float warmup = progress.getClamp(params);
+		float warmup = Mathm.clamp(progress.get(params));
 		Lines.stroke(stroke * warmup);
 		float sin = Mathf.absin(Time.time, 10, 1.5f);
 		float realR = radius + (sinWave ? sin : 0);

@@ -713,7 +713,7 @@ public final class HDamage {
 		for (int x = tx; x <= tw; x++) {
 			for (int y = ty; y <= th; y++) {
 				float ofX = (x * Vars.tilesize) - wx, ofY = (y * Vars.tilesize) - wy;
-				int angIdx = Mathf.clamp(Mathf.round(((Mathm.angleDistSigned(Angles.angle(ofX, ofY), angle) + cone) / (cone * 2f)) * (ref.length - 1)), 0, ref.length - 1);
+				int angIdx = Mathm.clamp(Mathf.round(((Mathm.angleDistSigned(Angles.angle(ofX, ofY), angle) + cone) / (cone * 2f)) * (ref.length - 1)), 0, ref.length - 1);
 				float dst = ref[angIdx];
 				float dst2 = Mathf.dst2(ofX, ofY);
 				if (dst2 < dst && dst2 < range * range && Mathm.angleDist(Angles.angle(ofX, ofY), angle) < cone) {
@@ -830,11 +830,11 @@ public final class HDamage {
 		float minRatio = 0.05f;
 		collideLineRawEnemy(team, x, y, x2, y2, width, (building, direct) -> {
 			float size = (building.block.size * Vars.tilesize / 2f);
-			float dst = Mathf.clamp(1f - ((Intersector.distanceSegmentPoint(x, y, x2, y2, building.x, building.y) - width) / size), minRatio, 1f);
+			float dst = Mathm.clamp(1f - ((Intersector.distanceSegmentPoint(x, y, x2, y2, building.x, building.y) - width) / size), minRatio, 1f);
 			return buildingCons.get(building, dst, direct);
 		}, unit -> {
 			float size = (unit.hitSize / 2f);
-			float dst = Mathf.clamp(1f - ((Intersector.distanceSegmentPoint(x, y, x2, y2, unit.x, unit.y) - width) / size), minRatio, 1f);
+			float dst = Mathm.clamp(1f - ((Intersector.distanceSegmentPoint(x, y, x2, y2, unit.x, unit.y) - width) / size), minRatio, 1f);
 			return unitCons.get(unit, dst);
 		}, effectHandler, true);
 	}

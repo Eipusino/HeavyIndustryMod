@@ -20,6 +20,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.content.HFx;
 import heavyindustry.gen.BaseEntity;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.Utils;
 import mindustry.Vars;
 import mindustry.content.UnitTypes;
@@ -149,7 +150,7 @@ public class Fragmentation {
 				int[] data = unpack(items[i]);
 
 				int sss = islands.get(data[2]).size;
-				float chance = Mathf.clamp((sss - minimumWeight) / (totalWeight - minimumWeight));
+				float chance = Mathm.clamp((sss - minimumWeight) / (totalWeight - minimumWeight));
 
 				if (fragType) {
 					if (Mathf.chance(0.75f * (1f - chance))) {
@@ -428,7 +429,7 @@ public class Fragmentation {
 			vr *= 1 - drag;
 
 			if (Mathf.chance(0.6f) && z > 0) {
-				int size = Mathf.clamp((int) ((boundSize * boundSize) / 900f), 1, 15);
+				int size = Mathm.clamp((int) ((boundSize * boundSize) / 900f), 1, 15);
 				for (int i = 0; i < size; i++) {
 					Tmp.v1.rnd(Mathf.random(boundSize / 3f)).add(x, y);
 					main.trailEffect.at(Tmp.v1.x, Tmp.v1.y, Mathf.random(5f, 9f), main.effectColor);
@@ -440,9 +441,9 @@ public class Fragmentation {
 				if (!main.fadeOut) {
 					main.explosionEffect.at(x, y, area / 2, main.effectColor);
 					Effect.shake(area / 3f, area / 4f, x, y);
-					//if (main.explosionSound != Sounds.none) main.explosionSound.at(x, y, 1f, Mathf.clamp(area / 1.1f));
+					//if (main.explosionSound != Sounds.none) main.explosionSound.at(x, y, 1f, Mathm.clamp(area / 1.1f));
 					if (main.explosionSound != Sounds.none)
-						main.explosionSound.at(x, y, Mathf.random(0.9f, 1.1f) * Math.max(1f / (1f + (area - 8f) / 70f), 0.5f), Mathf.clamp(area / 1.1f));
+						main.explosionSound.at(x, y, Mathf.random(0.9f, 1.1f) * Math.max(1f / (1f + (area - 8f) / 70f), 0.5f), Mathm.clamp(area / 1.1f));
 					//Log.info(main.explosionSound);
 					if (main.onDeath != null) main.onDeath.get(this);
 				}
@@ -492,7 +493,7 @@ public class Fragmentation {
 
 		@Override
 		public void draw() {
-			float zl = goreLines == null ? Mathf.clamp(Mathf.lerp(Math.min(Layer.groundUnit, main.layer), main.layer, z), Layer.blockUnder, Layer.flyingUnit + 1f) : main.layer;
+			float zl = goreLines == null ? Mathm.clamp(Mathf.lerp(Math.min(Layer.groundUnit, main.layer), main.layer, z), Layer.blockUnder, Layer.flyingUnit + 1f) : main.layer;
 			if (zl > Layer.bullet - 0.021f) {
 				zl = Math.max(Layer.effect + 0.021f, zl);
 			}
@@ -500,12 +501,12 @@ public class Fragmentation {
 			Draw.color(Pal.shadow);
 
 			if ((z * main.shadowElevation) > 0.001f) {
-				//float e = Mathf.clamp(unit.elevation, shadowElevation, 1f) * shadowElevationScl * (1f - unit.drownTime);
+				//float e = Mathm.clamp(unit.elevation, shadowElevation, 1f) * shadowElevationScl * (1f - unit.drownTime);
 				float e = z * main.shadowElevation;
 				float sx = x + UnitType.shadowTX * e, sy = y + UnitType.shadowTY * e;
 				drawFragment(sx, sy);
 			}
-			//float z = isPayload ? Draw.z() : unit.elevation > 0.5f ? (lowAltitude ? Layer.flyingUnitLow : Layer.flyingUnit) : groundLayer + Mathf.clamp(hitSize / 4000f, 0, 0.01f);
+			//float z = isPayload ? Draw.z() : unit.elevation > 0.5f ? (lowAltitude ? Layer.flyingUnitLow : Layer.flyingUnit) : groundLayer + Mathm.clamp(hitSize / 4000f, 0, 0.01f);
 
 			Draw.color();
 			Draw.z(zl);
@@ -520,10 +521,10 @@ public class Fragmentation {
 					if (b.within(e, 4f)) continue;
 					float dst = b.dst(e);
 
-					float fin = Mathf.clamp(time / lifetime);
-					float fout = Mathf.clamp((lifetime - time) / 32f);
+					float fin = Mathm.clamp(time / lifetime);
+					float fout = Mathm.clamp((lifetime - time) / 32f);
 
-					Lines.stroke(arr[i + 2] * fout * Mathf.clamp(time / 12f) * Mathf.clamp((dst - 4f) / 9f));
+					Lines.stroke(arr[i + 2] * fout * Mathm.clamp(time / 12f) * Mathm.clamp((dst - 4f) / 9f));
 					Lines.beginLine();
 					for (int j = 0; j < 16; j++) {
 						float s = Interp.sineOut.apply(Mathf.slope(j / 15f)) * Interp.pow2Out.apply(fin) * (dst * 0.2f * arr[i + 3]);
@@ -539,7 +540,7 @@ public class Fragmentation {
 			if (!main.fadeOut) {
 				Draw.color(main.drawnColor);
 			} else {
-				float fout = Mathf.clamp((lifetime - time) / 120f);
+				float fout = Mathm.clamp((lifetime - time) / 120f);
 
 				Draw.color(Tmp.c2.set(main.drawnColor).a(fout));
 			}

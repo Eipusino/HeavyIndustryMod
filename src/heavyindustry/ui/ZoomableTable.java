@@ -1,7 +1,6 @@
 package heavyindustry.ui;
 
 import arc.input.KeyCode;
-import arc.math.Mathf;
 import arc.scene.Action;
 import arc.scene.Element;
 import arc.scene.event.ElementGestureListener;
@@ -12,6 +11,7 @@ import arc.scene.event.Touchable;
 import arc.scene.ui.layout.Cell;
 import arc.scene.ui.layout.Table;
 import arc.util.Align;
+import heavyindustry.math.Mathm;
 
 public class ZoomableTable extends Table {
 	public float maxZoom = 1.5f, minZoom = 0.5f;
@@ -36,7 +36,7 @@ public class ZoomableTable extends Table {
 			@Override
 			public boolean scrolled(InputEvent event, float x, float y, float amountX, float amountY) {
 				if (zoomable) {
-					zoomCont.setScale(Mathf.clamp(zoomCont.scaleX - amountY / 10f * zoomCont.scaleX, minZoom, maxZoom));
+					zoomCont.setScale(Mathm.clamp(zoomCont.scaleX - amountY / 10f * zoomCont.scaleX, minZoom, maxZoom));
 					zoomCont.setOrigin(Align.center);
 				}
 				return true;
@@ -62,7 +62,7 @@ public class ZoomableTable extends Table {
 			@Override
 			public void zoom(InputEvent event, float initialDistance, float distance) {
 				if (zoomable) {
-					zoomCont.setScale(Mathf.clamp(distance / initialDistance * lastZoom, minZoom, maxZoom));
+					zoomCont.setScale(Mathm.clamp(distance / initialDistance * lastZoom, minZoom, maxZoom));
 					zoomCont.setOrigin(Align.center);
 				}
 			}

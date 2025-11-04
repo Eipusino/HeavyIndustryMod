@@ -225,7 +225,7 @@ public final class HFx {
 		Draw.color(e.color, Color.white, e.fout() * 0.3f);
 		Lines.stroke(e.fout() * 2.2F);
 
-		Angles.randLenVectors(e.id, (int) Mathf.clamp(len / 12, 10, 40), e.finpow() * len, e.rotation, 360f, (x, y) -> {
+		Angles.randLenVectors(e.id, (int) Mathm.clamp(len / 12, 10, 40), e.finpow() * len, e.rotation, 360f, (x, y) -> {
 			float ang = Mathf.angle(x, y);
 			Lines.lineAngle(e.x + x, e.y + y, ang, e.fout() * len * 0.15f + len * 0.025f);
 		});
@@ -241,7 +241,7 @@ public final class HFx {
 		Draw.color(e.color, Color.white, e.fout() * 0.3f);
 		Lines.stroke(e.fout() * 2.2F);
 
-		Angles.randLenVectors(e.id, (int) Mathf.clamp(len / 12, 10, 40), e.finpow() * len, e.rotation, 360f, (x, y) -> {
+		Angles.randLenVectors(e.id, (int) Mathm.clamp(len / 12, 10, 40), e.finpow() * len, e.rotation, 360f, (x, y) -> {
 			float ang = Mathf.angle(x, y);
 			Lines.lineAngle(e.x + x, e.y + y, ang, e.fout() * len * 0.15f + len * 0.025f);
 		});
@@ -270,7 +270,7 @@ public final class HFx {
 		Draw.color(e.color);
 		v7.trns(e.rotation - 90, (len + Mathf.randomSeed(e.id, 0, len)) * e.fin(Interp.circleOut));
 		for (int i : Mathf.signs)
-			Drawn.tri(e.x + v7.x, e.y + v7.y, Mathf.clamp(len / 8, 8, 25) * (f + e.fout(0.2f) * 2f) / 3.5f, len * 1.75f * e.fin(Interp.circleOut), e.rotation + 90 + i * 90);
+			Drawn.tri(e.x + v7.x, e.y + v7.y, Mathm.clamp(len / 8, 8, 25) * (f + e.fout(0.2f) * 2f) / 3.5f, len * 1.75f * e.fin(Interp.circleOut), e.rotation + 90 + i * 90);
 	});
 	public static final Effect line = new Effect(30f, e -> {
 		Draw.color(e.color, Color.white, e.fout() * 0.75f);
@@ -283,7 +283,7 @@ public final class HFx {
 		if (e.data instanceof Number num) {
 			int size = num.intValue();
 			float f = e.fout();
-			float r = Math.max(0f, Mathf.clamp(2f - f * 2f) * size * Vars.tilesize / 2f - f - 0.2f), w = Mathf.clamp(0.5f - f) * size * Vars.tilesize;
+			float r = Math.max(0f, Mathm.clamp(2f - f * 2f) * size * Vars.tilesize / 2f - f - 0.2f), w = Mathm.clamp(0.5f - f) * size * Vars.tilesize;
 			Lines.stroke(3f * f, e.color);
 			Lines.beginLine();
 			for (int i = 0; i < 4; i++) {
@@ -304,7 +304,7 @@ public final class HFx {
 	});
 	public static final Effect circle = new Effect(25f, e -> {
 		Draw.color(e.color, Color.white, e.fout() * 0.65f);
-		Lines.stroke(Mathf.clamp(e.rotation / 18f, 2, 6) * e.fout());
+		Lines.stroke(Mathm.clamp(e.rotation / 18f, 2, 6) * e.fout());
 		Lines.circle(e.x, e.y, e.rotation * e.finpow());
 	});
 	public static final Effect circleOut = new Effect(60f, 500f, e -> {
@@ -485,7 +485,7 @@ public final class HFx {
 
 			Draw.color(e.color);
 			for (int i = 1; i < vec2s.size() - 1; i++) {
-				Lines.stroke(Mathf.clamp((i + fadeOffset / 2f) / vec2s.size() * (strokeOffset - (vec2s.size() - i)) / strokeOffset) * stroke);
+				Lines.stroke(Mathm.clamp((i + fadeOffset / 2f) / vec2s.size() * (strokeOffset - (vec2s.size() - i)) / strokeOffset) * stroke);
 				Vec2 from = vec2s.setVec2(i - 1, Tmp.v1);
 				Vec2 to = vec2s.setVec2(i, Tmp.v2);
 				Lines.line(from.x, from.y, to.x, to.y, false);
@@ -867,7 +867,7 @@ public final class HFx {
 			}
 
 			if (i < links) {
-				float f = Mathf.clamp(fin * links % 1);
+				float f = Mathm.clamp(fin * links % 1);
 				float len = (i + 1) * spacing;
 				Tmp.v1.setToRandomDirection(rand).scl(range / 2f);
 				Tmp.v2.set(nx, ny);
@@ -920,7 +920,7 @@ public final class HFx {
 			}
 
 			if (i < links) {
-				float f = Mathf.clamp(fin * links % 1);
+				float f = Mathm.clamp(fin * links % 1);
 				float len = (i + 1) * spacing;
 				Tmp.v1.setToRandomDirection(rand).scl(range / 2f);
 				Tmp.v2.set(nx, ny);
@@ -1335,7 +1335,7 @@ public final class HFx {
 			Vec3 v1 = windTailPoints[i];
 			Vec3 v2 = windTailPoints[i + 1];
 
-			Draw.alpha(Mathf.clamp(v1.z, 0.04f, 0.1f));
+			Draw.alpha(Mathm.clamp(v1.z, 0.04f, 0.1f));
 			Lines.stroke(v1.z);
 			Lines.line(v1.x, v1.y, v2.x, v2.y);
 		}
@@ -1646,8 +1646,8 @@ public final class HFx {
 	public static final Effect reactorExplode = new MultiEffect(Fx.reactorExplosion, new Effect(180, e -> {
 		float size = e.data instanceof Number num ? num.floatValue() : 120f;
 
-		float fin1 = Mathf.clamp(e.fin() / 0.1f);
-		float fin2 = Mathf.clamp((e.fin() - 0.1f) / 0.3f);
+		float fin1 = Mathm.clamp(e.fin() / 0.1f);
+		float fin2 = Mathm.clamp((e.fin() - 0.1f) / 0.3f);
 
 		Draw.color(Pal.reactorPurple);
 		Lines.stroke(6 * e.fout());
@@ -1960,8 +1960,8 @@ public final class HFx {
 	public static final Effect laserBlastWeaveLarge = new Effect(280, 200, e -> {
 		float size = 140;
 
-		float fin1 = Mathf.clamp(e.fin() / 0.1f);
-		float fin2 = Mathf.clamp((e.fin() - 0.1f) / 0.3f);
+		float fin1 = Mathm.clamp(e.fin() / 0.1f);
+		float fin2 = Mathm.clamp((e.fin() - 0.1f) / 0.3f);
 
 		Draw.color(e.color);
 		float radius = size * e.fin(Interp.pow4Out);
@@ -2003,7 +2003,7 @@ public final class HFx {
 
 		e.scaled(120, ef -> {
 			Angles.randLenVectors(e.id * 2, 9, 40, 154, (x, y) -> {
-				float lerp = Mathf.clamp((ef.fin(Interp.pow4Out) - 0.2f) / 0.8f);
+				float lerp = Mathm.clamp((ef.fin(Interp.pow4Out) - 0.2f) / 0.8f);
 				float si = Mathf.len(x, y) * Mathf.randomSeed((long) (x + y), 0.7f, 0.9f);
 				Draws.drawDiamond(e.x + x * lerp, e.y + y * lerp, si, si / 10 * ef.fout(Interp.pow2Out), Mathf.angle(x, y) - 90);
 			});
@@ -2011,7 +2011,7 @@ public final class HFx {
 
 		e.scaled(140, ef -> {
 			Angles.randLenVectors(e.id * 2, 10, 36, 150, (x, y) -> {
-				float lerp = Mathf.clamp((ef.fin(Interp.pow4Out) - 0.4f) / 0.6f);
+				float lerp = Mathm.clamp((ef.fin(Interp.pow4Out) - 0.4f) / 0.6f);
 				float si = Mathf.len(x, y) * Mathf.randomSeed((long) (x + y), 0.7f, 0.9f);
 				Draws.drawDiamond(e.x + x * lerp, e.y + y * lerp, si, si / 10 * ef.fout(Interp.pow2Out), Mathf.angle(x, y) - 90);
 			});
@@ -2019,7 +2019,7 @@ public final class HFx {
 
 		e.scaled(160, ef -> {
 			Angles.randLenVectors(e.id * 3, 12, 32, 144, (x, y) -> {
-				float lerp = Mathf.clamp((ef.fin(Interp.pow4Out) - 0.5f) / 0.5f);
+				float lerp = Mathm.clamp((ef.fin(Interp.pow4Out) - 0.5f) / 0.5f);
 				float si = Mathf.len(x, y) * Mathf.randomSeed((long) (x + y), 0.9f, 1f);
 				Draws.drawDiamond(e.x + x * lerp, e.y + y * lerp, si, si / 10 * ef.fout(Interp.pow2Out), Mathf.angle(x, y) - 90);
 			});
@@ -2089,7 +2089,7 @@ public final class HFx {
 
 		e.scaled(56, ef -> {
 			Angles.randLenVectors(e.id * 2, 8, 20, 82, (x, y) -> {
-				float le = Mathf.clamp((ef.fin(Interp.pow4Out) - 0.3f) / 0.7f);
+				float le = Mathm.clamp((ef.fin(Interp.pow4Out) - 0.3f) / 0.7f);
 				float si = Mathf.len(x, y) * Mathf.randomSeed((long) (x + y), 0.7f, 0.9f);
 				Draws.drawDiamond(e.x + x * le, e.y + y * le, si, si / 10 * ef.fout(Interp.pow2Out), Mathf.angle(x, y) - 90);
 			});
@@ -2097,7 +2097,7 @@ public final class HFx {
 
 		e.scaled(75, ef -> {
 			Angles.randLenVectors(e.id * 3, 9, 14, 69, (x, y) -> {
-				float le = Mathf.clamp((ef.fin(Interp.pow4Out) - 0.5f) / 0.5f);
+				float le = Mathm.clamp((ef.fin(Interp.pow4Out) - 0.5f) / 0.5f);
 				float si = Mathf.len(x, y) * Mathf.randomSeed((long) (x + y), 0.9f, 1f);
 				Draws.drawDiamond(e.x + x * le, e.y + y * le, si, si / 10 * ef.fout(Interp.pow2Out), Mathf.angle(x, y) - 90);
 			});
@@ -2431,7 +2431,7 @@ public final class HFx {
 		Draw.alpha(0.9f);
 		for (int i = 0; i < 3; i++) {
 			float lenScl = rand.random(0.4f, 1f);
-			float time = Mathf.clamp(e.time / (e.lifetime * lenScl));
+			float time = Mathm.clamp(e.time / (e.lifetime * lenScl));
 
 			float l = Interp.pow10Out.apply(time) * 100f;
 
@@ -2660,8 +2660,8 @@ public final class HFx {
 		int isize = (int) (size * 1.75f) + 12;
 		int isize2 = (int) (size * 1.5f) + 9;
 
-		float fin1 = Mathf.clamp(e.time / 20f);
-		float fin2 = Mathf.clamp(e.time / 10f);
+		float fin1 = Mathm.clamp(e.time / 20f);
+		float fin2 = Mathm.clamp(e.time / 10f);
 
 		Lines.stroke(Math.max(2f, Mathf.sqrt(size) / 8f));
 		for (int i = 0; i < isize2; i++) {
@@ -2706,8 +2706,8 @@ public final class HFx {
 		float sizeTime = (size) + 15f;
 		int isize = (int) (size * 1.75f) + 12;
 
-		float fin = Mathf.clamp(e.time / sizeTime);
-		float fout = Mathf.clamp((e.lifetime - e.time) / 60f);
+		float fin = Mathm.clamp(e.time / sizeTime);
+		float fout = Mathm.clamp((e.lifetime - e.time) / 60f);
 		Lines.stroke(3f);
 		for (int i = 0; i < isize; i++) {
 			Vec2 v = Tmp.v1.trns(rand.random(360f), Mathf.sqrt(rand.nextFloat()) * size * 0.75f).add(e.x, e.y);
@@ -2894,7 +2894,7 @@ public final class HFx {
 				float f = Mathf.curve(e.fin(), 0f, 1f - rand.random(0.2f));
 				float rr = rand.range(arange) + e.rotation;
 				float len = rand.random(range) * Interp.pow4Out.apply(e.fin());
-				float sscl = rand.random(21f, 43f) * scl * Interp.pow2.apply(1f - f) * Mathf.clamp(e.time / 8f);
+				float sscl = rand.random(21f, 43f) * scl * Interp.pow2.apply(1f - f) * Mathm.clamp(e.time / 8f);
 
 				if (f < 1) {
 					Vec2 v = Tmp.v1.trns(rr, len).add(e.x, e.y);
@@ -2906,7 +2906,7 @@ public final class HFx {
 			scl *= 1.12f;
 			range *= 0.6f;
 		}
-		float fin2 = Mathf.clamp(e.time / 18f);
+		float fin2 = Mathm.clamp(e.time / 18f);
 
 		if (fin2 < 1) {
 			int count = 20;
@@ -2952,7 +2952,7 @@ public final class HFx {
 
 		Rand rand = Utils.rand(e.id);
 
-		float scl = Mathf.clamp(e.time / 8f);
+		float scl = Mathm.clamp(e.time / 8f);
 		float range = 32f;
 		float countScl = 1f;
 		float z = Draw.z();
@@ -3028,14 +3028,14 @@ public final class HFx {
 		//Draw.blend(Blending.additive);
 		float fout = Mathf.curve(e.fout(), 0f, 0.333f);
 
-		Fill.circle(e.x, e.y, e.rotation * Mathf.clamp(e.time / 6f) * fout);
+		Fill.circle(e.x, e.y, e.rotation * Mathm.clamp(e.time / 6f) * fout);
 
 		//Draw.blend();
 		Draw.z(Layer.debris + 0.05f);
 
 		Draw.color(HPal.melt);
 		Draw.blend(Blending.additive);
-		Fill.circle(e.x, e.y, e.rotation * Mathf.clamp(e.time / 6f) * fout);
+		Fill.circle(e.x, e.y, e.rotation * Mathm.clamp(e.time / 6f) * fout);
 		Draw.blend();
 	}).layer(Layer.debris);
 	public static final Effect desRailHit = new Effect(80f, 900f, e -> {
@@ -3141,7 +3141,7 @@ public final class HFx {
 			scl *= 1.4f;
 		}
 
-		float fin = Mathf.clamp(e.time / 10f);
+		float fin = Mathm.clamp(e.time / 10f);
 		if (fin < 1) {
 			Tmp.c2.set(Pal.lightOrange).a(0f);
 			Draw.color(Pal.lighterOrange, Tmp.c2, fin);
@@ -3227,7 +3227,7 @@ public final class HFx {
 
 		Tmp.c2.set(Color.gray).a(0.8f);
 		//Tmp.c3.set(FlamePal.red).mul(2f);
-		float scl1 = Mathf.clamp(e.time / 3f);
+		float scl1 = Mathm.clamp(e.time / 3f);
 		float scl3 = 1.1f;
 		float angScl = 0.6f;
 		for (int i = 0; i < 4; i++) {
@@ -3337,7 +3337,7 @@ public final class HFx {
 		return new Effect(lifeTime, e -> {
 			Draw.z(Layer.effect);
 			Draw.color(color == null ? e.color : color);
-			Draw.alpha(1 - Mathf.clamp((e.fin() - 0.75f) / 0.25f));
+			Draw.alpha(1f - Mathm.clamp((e.fin() - 0.75f) / 0.25f));
 
 			Angles.randLenVectors(e.id, 2, radius, (x, y) -> {
 				float size = Mathf.randomSeed(e.id, maxSize);
@@ -3413,7 +3413,7 @@ public final class HFx {
 		return new Effect(life, e -> {
 			float f = e.fout();
 			if (f < 1e-4f) return;
-			float r = Math.max(0f, Mathf.clamp(2f - f * 2f) * size * Vars.tilesize / 2f - f - 0.2f), w = Mathf.clamp(0.5f - f) * size * Vars.tilesize;
+			float r = Math.max(0f, Mathm.clamp(2f - f * 2f) * size * Vars.tilesize / 2f - f - 0.2f), w = Mathm.clamp(0.5f - f) * size * Vars.tilesize;
 			Lines.stroke(3f * f, color);
 			Lines.beginLine();
 			for (int i = 0; i < 4; i++) {
@@ -3499,14 +3499,14 @@ public final class HFx {
 	}
 
 	public static Effect circleOut(Color color, float range) {
-		return new Effect(Mathf.clamp(range / 2, 45f, 360f), range * 1.5f, e -> {
+		return new Effect(Mathm.clamp(range / 2, 45f, 360f), range * 1.5f, e -> {
 			rand.setSeed(e.id);
 
 			Draw.color(Color.white, color, e.fin() + 0.6f);
 			float circleRad = e.fin(Interp.circleOut) * range;
-			Lines.stroke(Mathf.clamp(range / 24, 4, 20) * e.fout());
+			Lines.stroke(Mathm.clamp(range / 24, 4, 20) * e.fout());
 			Lines.circle(e.x, e.y, circleRad);
-			for (int i = 0; i < Mathf.clamp(range / 12, 9, 60); i++) {
+			for (int i = 0; i < Mathm.clamp(range / 12, 9, 60); i++) {
 				Tmp.v1.set(1, 0).setToRandomDirection(rand).scl(circleRad);
 				Drawn.tri(e.x + Tmp.v1.x, e.y + Tmp.v1.y, rand.random(circleRad / 16, circleRad / 12) * e.fout(), rand.random(circleRad / 4, circleRad / 1.5f) * (1 + e.fin()) / 2, Tmp.v1.angle() - 180);
 			}
@@ -3538,7 +3538,7 @@ public final class HFx {
 	}
 
 	public static Effect blast(Color color, float range) {
-		float lifetime = Mathf.clamp(range * 1.5f, 90f, 600f);
+		float lifetime = Mathm.clamp(range * 1.5f, 90f, 600f);
 		return new Effect(lifetime, range * 2.5f, e -> {
 			Draw.color(color);
 			Drawf.light(e.x, e.y, e.fout() * range, color, 0.7f);
@@ -3551,15 +3551,15 @@ public final class HFx {
 			e.scaled(lifetime / 2, t -> {
 				Fill.circle(t.x, t.y, t.fout() * 8f);
 				Angles.randLenVectors(t.id + 1, (int) (range / 13), 2 + range * 0.75f * t.finpow(), (x, y) -> {
-					Fill.circle(t.x + x, t.y + y, t.fout(Interp.pow2Out) * Mathf.clamp(range / 15f, 3f, 14f));
-					Drawf.light(t.x + x, t.y + y, t.fout(Interp.pow2Out) * Mathf.clamp(range / 15f, 3f, 14f), color, 0.5f);
+					Fill.circle(t.x + x, t.y + y, t.fout(Interp.pow2Out) * Mathm.clamp(range / 15f, 3f, 14f));
+					Drawf.light(t.x + x, t.y + y, t.fout(Interp.pow2Out) * Mathm.clamp(range / 15f, 3f, 14f), color, 0.5f);
 				});
 			});
 
 			Draw.z(Layer.bullet - 0.001f);
 			Draw.color(Color.gray);
 			Draw.alpha(0.85f);
-			float intensity = Mathf.clamp(range / 10f, 5f, 25f);
+			float intensity = Mathm.clamp(range / 10f, 5f, 25f);
 			for (int i = 0; i < 4; i++) {
 				rand.setSeed(((long) e.id << 1) + i);
 				float lenScl = rand.random(0.4f, 1f);
@@ -3615,7 +3615,7 @@ public final class HFx {
 	}
 
 	public static Effect crossBlast(Color color, float size, float rotate) {
-		return new Effect(Mathf.clamp(size / 3f, 35f, 240f), size * 2, e -> {
+		return new Effect(Mathm.clamp(size / 3f, 35f, 240f), size * 2, e -> {
 			Draw.color(color, Color.white, e.fout() * 0.55f);
 			Drawf.light(e.x, e.y, e.fout() * size, color, 0.7f);
 			e.scaled(10f, i -> {
@@ -3653,7 +3653,7 @@ public final class HFx {
 
 			for (int i = 0; i <= length / spacing; i++) {
 				Tmp.v1.trns(e.rotation, i * spacing);
-				float f = Interp.pow3Out.apply(Mathf.clamp((e.fin() * length - i * spacing) / spacing)) * (0.6f + railFout * 0.4f);
+				float f = Interp.pow3Out.apply(Mathm.clamp((e.fin() * length - i * spacing) / spacing)) * (0.6f + railFout * 0.4f);
 				Draw.rect(arrowRegion, e.x + Tmp.v1.x, e.y + Tmp.v1.y, arrowRegion.width * Draw.scl * f, arrowRegion.height * Draw.scl * f, e.rotation - 90);
 			}
 
@@ -3709,8 +3709,8 @@ public final class HFx {
 	}
 
 	public static Effect shootLine(float size, float angleRange) {
-		int num = Mathf.clamp((int) size / 6, 6, 20);
-		float thick = Mathf.clamp(0.75f, 2f, size / 22f);
+		int num = Mathm.clamp((int) size / 6, 6, 20);
+		float thick = Mathm.clamp(0.75f, 2f, size / 22f);
 
 		return new Effect(37f, e -> {
 			Draw.color(e.color, Color.white, e.fout() * 0.7f);
@@ -3771,7 +3771,7 @@ public final class HFx {
 
 	public static Effect sharpBlast(Color colorExternal, Color colorInternal, float lifetime, float range) {
 		return new Effect(lifetime, range * 2, e -> {
-			Angles.randLenVectors(e.id, (int) Mathf.clamp(range / 8, 4, 18), range / 8, range * (1 + e.fout(Interp.pow2OutInverse)) / 2f, (x, y) -> {
+			Angles.randLenVectors(e.id, (int) Mathm.clamp(range / 8, 4, 18), range / 8, range * (1 + e.fout(Interp.pow2OutInverse)) / 2f, (x, y) -> {
 				float angle = Mathf.angle(x, y);
 				float width = e.foutpowdown() * rand.random(range / 6, range / 3) / 2 * e.fout();
 
@@ -3794,7 +3794,7 @@ public final class HFx {
 
 	public static Effect sharpBlastRand(Color colorExternal, Color colorInternal, float rotation, float ranAngle, float lifetime, float range) {
 		return new Effect(lifetime, range * 2, e -> {
-			Angles.randLenVectors(e.id, (int) Mathf.clamp(range / 8, 2, 6), (1 + e.fout(Interp.pow2OutInverse)) / 2f, rotation, ranAngle, (x, y) -> {
+			Angles.randLenVectors(e.id, (int) Mathm.clamp(range / 8, 2, 6), (1 + e.fout(Interp.pow2OutInverse)) / 2f, rotation, ranAngle, (x, y) -> {
 				float angle = Mathf.angle(x, y);
 				float width = e.foutpowdown() * rand.random(range / 6, range / 3) / 2 * e.fout();
 

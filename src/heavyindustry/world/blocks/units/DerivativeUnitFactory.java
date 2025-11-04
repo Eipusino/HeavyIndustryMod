@@ -14,6 +14,7 @@ import arc.struct.EnumSet;
 import arc.util.Tmp;
 import heavyindustry.content.HFx;
 import heavyindustry.content.HFx.EdesspEntry;
+import heavyindustry.math.Mathm;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.game.EventType.UnitCreateEvent;
@@ -156,7 +157,7 @@ public class DerivativeUnitFactory extends UnitFactory {
 					Events.fire(new UnitCreateEvent(payload.unit, this));
 				}
 
-				progress = Mathf.clamp(progress, 0, plan.time);
+				progress = Mathm.clamp(progress, 0, plan.time);
 			} else {
 				progress = 0f;
 			}

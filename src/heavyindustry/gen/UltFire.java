@@ -10,6 +10,7 @@ import arc.util.Time;
 import arc.util.pooling.Pools;
 import heavyindustry.content.HBullets;
 import heavyindustry.content.HStatusEffects;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.Constant;
 import heavyindustry.util.SpriteUtils;
 import mindustry.Vars;
@@ -108,11 +109,11 @@ public class UltFire extends Fire {
 	@Override
 	public void draw() {
 		Draw.alpha(0.35f);
-		Draw.alpha(Mathf.clamp(warmup / 20f));
+		Draw.alpha(Mathm.clamp(warmup / 20f));
 		Draw.z(110f);
 		Draw.rect(ultRegion[Math.min((int) animation, ultRegion.length - 1)], x + Mathf.randomSeedRange((int) y, 2f), y + Mathf.randomSeedRange((int) x, 2f));
 		Draw.reset();
-		Drawf.light(x, y, 50f + Mathf.absin(5f, 5f), Pal.techBlue, 0.6f * Mathf.clamp(warmup / 20f));
+		Drawf.light(x, y, 50f + Mathf.absin(5f, 5f), Pal.techBlue, 0.6f * Mathm.clamp(warmup / 20f));
 	}
 
 	@Override
@@ -125,7 +126,7 @@ public class UltFire extends Fire {
 		}
 
 		float speedMultiplier = 1f + Math.max(Vars.state.envAttrs.get(Attribute.water) * 10f, 0f);
-		time = Mathf.clamp(time + Time.delta * speedMultiplier, 0f, lifetime);
+		time = Mathm.clamp(time + Time.delta * speedMultiplier, 0f, lifetime);
 		if (!Vars.net.client()) {
 			if (!(time >= lifetime) && tile != null && !Float.isNaN(lifetime)) {
 				Building entity = tile.build;
@@ -137,17 +138,17 @@ public class UltFire extends Fire {
 				}
 
 				if (damage) {
-					lifetime += Mathf.clamp(flammability / 16f, 0.1f, 0.5f) * Time.delta;
+					lifetime += Mathm.clamp(flammability / 16f, 0.1f, 0.5f) * Time.delta;
 				}
 
-				if (flammability > 1f && (spreadTimer += Time.delta * Mathf.clamp(flammability / 5f, 0.5f, 1f)) >= 22f) {
+				if (flammability > 1f && (spreadTimer += Time.delta * Mathm.clamp(flammability / 5f, 0.5f, 1f)) >= 22f) {
 					spreadTimer = 0f;
 					Point2 p = Geometry.d4[Mathf.random(3)];
 					Tile other = Vars.world.tile(tile.x + p.x, tile.y + p.y);
 					UltFire.create(other);
 				}
 
-				if (flammability > 0f && (fireballTimer += Time.delta * Mathf.clamp(flammability / 10f, 0f, 1.5f)) >= 40f) {
+				if (flammability > 0f && (fireballTimer += Time.delta * Mathm.clamp(flammability / 10f, 0f, 1.5f)) >= 40f) {
 					fireballTimer = 0f;
 
 					if (HBullets.ultFireball != null) HBullets.ultFireball.createNet(Team.derelict, x, y, Mathf.random(360f), 1f, 1f, 1f);

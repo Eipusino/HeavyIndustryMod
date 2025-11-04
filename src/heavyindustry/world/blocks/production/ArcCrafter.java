@@ -11,6 +11,7 @@ import arc.util.Nullable;
 import arc.util.Structs;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
@@ -212,14 +213,14 @@ public class ArcCrafter extends AttributeCrafter {
 			if (heat >= 0.001f) {
 				Draw.z(Layer.bullet - 0.01f);
 
-				Draw.color(Color.white, Tmp.c4, Mathf.clamp(heat * 3f - 2f));
-				Draw.alpha(Mathf.clamp(heat * 1.5f));
+				Draw.color(Color.white, Tmp.c4, Mathm.clamp(heat * 3f - 2f));
+				Draw.alpha(Mathm.clamp(heat * 1.5f));
 				Draw.rect(lightRegion, x, y);
 			}
 			Draw.z(Layer.blockOver);
 			Draw.blend(Blending.additive);
 			if (heat >= 0.001f) {
-				Draw.alpha(Mathf.clamp(heat * 1.5f) * 0.2f);
+				Draw.alpha(Mathm.clamp(heat * 1.5f) * 0.2f);
 				Draw.rect(heatRegion, x, y);
 			}
 			Draw.alpha(Mathf.absin(11f, 0.2f * warmup2));
@@ -231,7 +232,7 @@ public class ArcCrafter extends AttributeCrafter {
 		@Override
 		public void drawLight() {
 			setFlameColor(Tmp.c4);
-			Drawf.light(x, y, (lightRadius * (1f + Mathf.clamp(heat) * 0.1f) + Mathf.absin(10f, 5f)) * warmup2 * block.size, Tmp.c4, 0.65f);
+			Drawf.light(x, y, (lightRadius * (1f + Mathm.clamp(heat) * 0.1f) + Mathf.absin(10f, 5f)) * warmup2 * block.size, Tmp.c4, 0.65f);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package heavyindustry.util;
 
+import heavyindustry.func.ProvT;
 import heavyindustry.func.RunT;
 
 import java.io.IOException;
@@ -21,21 +22,19 @@ public final class IOUtils {
 		}
 	}
 
-	/** @see ObjectUtils#thrower(Throwable) */
-	public static void ioUnchecked(IORunnable run) {
+	public static void ioUnchecked(RunT<IOException> run) {
 		try {
 			run.run();
 		} catch (IOException e) {
-			// This deduces the generic type to be `RuntimeException`, which is actually not assignable from `IOException`.
-			// However, type erasure will erase all static casts anyway.
-			// The result is, the code fools the compiler into thinking it's throwing `RuntimeException` and not have its
-			// method signature explicitly throw `IOException`, even though it actually does.
-			// Such is the way of Java...
 			ObjectUtils.thrower(e);
 		}
 	}
 
-	public interface IORunnable {
-		void run() throws IOException;
+	public static <T> T ioUnchecked(ProvT<T, IOException> prov) {
+		try {
+			return prov.get();
+		} catch (IOException e) {
+			return ObjectUtils.thrower(e);
+		}
 	}
 }

@@ -6,6 +6,7 @@ import arc.struct.FloatSeq;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.holder.ObjectFloatHolder;
 
 import java.lang.reflect.Array;
@@ -79,7 +80,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 		mask = capacity - 1;
 		hashShift = 31 - Integer.numberOfTrailingZeros(capacity);
 		stashCapacity = Math.max(3, (int) Math.ceil(Math.log(capacity)) * 2);
-		pushIterations = Math.max(Math.min(capacity, 8), (int) Math.sqrt(capacity) / 8);
+		pushIterations = Mathm.clamp(capacity, 8, (int) Math.sqrt(capacity) / 8);
 
 		keyComponentType = keyType;
 
@@ -525,7 +526,7 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 		mask = newSize - 1;
 		hashShift = 31 - Integer.numberOfTrailingZeros(newSize);
 		stashCapacity = Math.max(3, (int) Math.ceil(Math.log(newSize)) * 2);
-		pushIterations = Math.max(Math.min(newSize, 8), (int) Math.sqrt(newSize) / 8);
+		pushIterations = Mathm.clamp(newSize, 8, (int) Math.sqrt(newSize) / 8);
 
 		K[] oldKeyTable = keyTable;
 		float[] oldValueTable = valueTable;

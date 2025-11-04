@@ -9,6 +9,7 @@ import arc.math.geom.Vec2;
 import arc.util.Tmp;
 import heavyindustry.content.HFx;
 import heavyindustry.graphics.PositionLightning;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.Vec2Seq;
 import mindustry.Vars;
 import mindustry.gen.Bullet;
@@ -118,7 +119,7 @@ public class TrailedEnergyBulletType extends AccelBulletType {
 				Draw.color(hitColor);
 				for (int i = 1; i < points.size(); i++) {
 //					Draw.alpha(((float)(i + fadeOffset) / points.size));
-					Lines.stroke(Mathf.clamp((i + tracerFadeOffset / 2f) / points.size() * (tracerStrokeOffset - (points.size() - i)) / tracerStrokeOffset) * tracerStroke);
+					Lines.stroke(Mathm.clamp((i + tracerFadeOffset / 2f) / points.size() * (tracerStrokeOffset - (points.size() - i)) / tracerStrokeOffset) * tracerStroke);
 					Vec2 from = points.setVec2(i - 1, Tmp.v1);
 					Vec2 to = points.setVec2(i, Tmp.v2);
 					Lines.line(from.x, from.y, to.x, to.y, false);

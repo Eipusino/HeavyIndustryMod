@@ -4,12 +4,12 @@ import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
-import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
 import arc.struct.Seq;
 import arc.util.Eachable;
 import heavyindustry.input.BeltPlacement;
+import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.core.Renderer;
 import mindustry.entities.units.BuildPlan;
@@ -137,7 +137,7 @@ public class PipeBridge extends MergingLiquidBlock {
 		interrupted = false;
 		Point2 d = Geometry.d4(plan.rotation);
 		list.each(other -> {
-			if (!interrupted && other.block == this && plan != other && Mathf.clamp(other.x - plan.x, -1, 1) == d.x && Mathf.clamp(other.y - plan.y, -1, 1) == d.y) {
+			if (!interrupted && other.block == this && plan != other && Mathm.clamp(other.x - plan.x, -1, 1) == d.x && Mathm.clamp(other.y - plan.y, -1, 1) == d.y) {
 				if (other.rotation == plan.rotation) {
 					interrupted = true;
 					return;

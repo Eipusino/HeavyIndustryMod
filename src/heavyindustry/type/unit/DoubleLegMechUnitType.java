@@ -7,6 +7,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
 import arc.math.Mathf;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import mindustry.content.Blocks;
 import mindustry.gen.Mechc;
 import mindustry.gen.Unit;
@@ -38,7 +39,7 @@ public class DoubleLegMechUnitType extends UnitType2 {
 		}
 
 		for (int i : Mathf.signs) {
-			Draw.mixcol(Tmp.c1.set(mechLegColor).lerp(Color.white, Mathf.clamp(unit.hitTime)), Math.max(Math.max(0, i * extension / mechStride), unit.hitTime));
+			Draw.mixcol(Tmp.c1.set(mechLegColor).lerp(Color.white, Mathm.clamp(unit.hitTime)), Math.max(Math.max(0, i * extension / mechStride), unit.hitTime));
 
 			Draw.rect(legRegion,
 					unit.x + Angles.trnsx(mech.baseRotation(), extension * i - boostTrns, -boostTrns * i),
@@ -48,7 +49,7 @@ public class DoubleLegMechUnitType extends UnitType2 {
 					mech.baseRotation() - 90 + 35f * i * e);
 		}
 		for (int g : Mathf.signs) {
-			Draw.mixcol(Tmp.c1.set(mechLegColor).lerp(Color.white, Mathf.clamp(unit.hitTime)), Math.max(Math.max(0, g * (mechStride * 3 - extension) / mechStride), unit.hitTime));
+			Draw.mixcol(Tmp.c1.set(mechLegColor).lerp(Color.white, Mathm.clamp(unit.hitTime)), Math.max(Math.max(0, g * (mechStride * 3 - extension) / mechStride), unit.hitTime));
 
 			Draw.rect(leg2Region,
 					unit.x + Angles.trnsx(mech.baseRotation(), (mechStride * 3 - extension) * g - boostTrns, -boostTrns * g),

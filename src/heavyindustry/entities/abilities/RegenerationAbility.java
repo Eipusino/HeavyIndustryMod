@@ -1,8 +1,8 @@
 package heavyindustry.entities.abilities;
 
-import arc.math.Mathf;
 import arc.scene.ui.layout.Table;
 import arc.util.Time;
+import heavyindustry.math.Mathm;
 import mindustry.entities.abilities.Ability;
 import mindustry.gen.Unit;
 import mindustry.world.meta.Stat;
@@ -37,6 +37,6 @@ public class RegenerationAbility extends Ability {
 	}
 
 	public void clampHealth(Unit unit) {
-		unit.health(Mathf.clamp(unit.health, 0, unit.maxHealth));
+		unit.health(Mathm.clamp(unit.health, 0, unit.maxHealth));
 	}
 }

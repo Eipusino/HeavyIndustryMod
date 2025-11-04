@@ -10,6 +10,7 @@ import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
 import arc.util.Strings;
 import arc.util.Time;
+import heavyindustry.math.Mathm;
 import heavyindustry.world.meta.HStat;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
@@ -94,7 +95,7 @@ public class JavelinAbility extends Ability {
 	@Override
 	public void draw(Unit unit) {
 		if (drawOverlay) {
-			float scl = Mathf.clamp(Mathf.map(unit.vel().len(), minSpeed, maxSpeed, 0f, 1f));
+			float scl = Mathm.clamp(Mathf.map(unit.vel().len(), minSpeed, maxSpeed, 0f, 1f));
 
 			if (overlayRegion == null) overlayRegion = Core.atlas.find(name);
 			float
@@ -119,7 +120,7 @@ public class JavelinAbility extends Ability {
 
 	@Override
 	public void update(Unit unit) {
-		float scl = Mathf.clamp(Mathf.map(unit.vel().len(), minSpeed, maxSpeed, 0f, 1f));
+		float scl = Mathm.clamp(Mathf.map(unit.vel().len(), minSpeed, maxSpeed, 0f, 1f));
 		if (scl <= 0) return;
 		if (timer >= damageInterval) {
 			float ax = unit.x + x, ay = unit.y + y;

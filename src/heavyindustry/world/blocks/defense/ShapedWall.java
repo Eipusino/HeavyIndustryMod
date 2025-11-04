@@ -7,6 +7,7 @@ import arc.math.geom.Point2;
 import arc.struct.Queue;
 import arc.struct.Seq;
 import heavyindustry.content.HFx;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.SpriteUtils;
 import heavyindustry.world.meta.HStat;
 import mindustry.Vars;
@@ -144,7 +145,7 @@ public class ShapedWall extends ConnectedWall {
 			if (building.health <= 0) {
 				Call.buildDestroyed(building);
 			}
-			HFx.shareDamage.at(building.x, building.y, building.block.size * Vars.tilesize / 2f, team.color, Mathf.clamp(damage / (block.health * 0.1f)));
+			HFx.shareDamage.at(building.x, building.y, building.block.size * Vars.tilesize / 2f, team.color, Mathm.clamp(damage / (block.health * 0.1f)));
 		}
 
 		@Override

@@ -9,6 +9,7 @@ import arc.math.geom.Point2;
 import arc.struct.Seq;
 import arc.util.Eachable;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.SpriteUtils;
 import mindustry.content.Blocks;
 import mindustry.entities.units.BuildPlan;
@@ -93,7 +94,7 @@ public class HeavyDuct extends Duct {
 				Draw.z(Layer.blockUnder + 0.1f);
 				Tmp.v1.set(Geometry.d4x(recDir) * tilesize / 2f, Geometry.d4y(recDir) * tilesize / 2f)
 						.lerp(Geometry.d4x(rotation) * tilesize / 2f, Geometry.d4y(rotation) * tilesize / 2f,
-								Mathf.clamp((progress + 1f) / 2f));
+								Mathm.clamp((progress + 1f) / 2f));
 
 				Draw.rect(current.fullIcon, x + Tmp.v1.x, y + Tmp.v1.y, itemSize, itemSize);
 			}

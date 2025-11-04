@@ -16,6 +16,7 @@ import arc.struct.Seq;
 import arc.util.Nullable;
 import arc.util.Time;
 import heavyindustry.graphics.HLayer;
+import heavyindustry.math.Mathm;
 import mindustry.gen.Bullet;
 import mindustry.gen.Groups;
 import mindustry.gen.Unit;
@@ -90,7 +91,7 @@ public class MirrorFieldAbility extends MirrorShieldAbility {
 	@Override
 	public void draw(Unit unit) {
 		if (unit.shield > 0) {
-			Draw.color(unit.team.color, Color.white, Mathf.clamp(alpha));
+			Draw.color(unit.team.color, Color.white, Mathm.clamp(alpha));
 			Draw.z(HLayer.mirrorField + 0.001f * alpha);
 
 			for (ShieldShape shape : shapes) {
@@ -133,7 +134,7 @@ public class MirrorFieldAbility extends MirrorShieldAbility {
 			float drawX = unit.x + moveOffsetX + Angles.trnsx(rotation, x * scl, y * scl);
 			float drawY = unit.y + moveOffsetY + Angles.trnsy(rotation, x * scl, y * scl);
 
-			Draw.color(unit.team.color, Color.white, Mathf.clamp(alpha));
+			Draw.color(unit.team.color, Color.white, Mathm.clamp(alpha));
 
 			if (Core.settings.getBool("hi-animated-shields")) {
 				Draw.z(HLayer.mirrorField + 0.001f * alpha);

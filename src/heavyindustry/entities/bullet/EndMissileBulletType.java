@@ -7,6 +7,7 @@ import arc.util.Time;
 import heavyindustry.content.HFx;
 import heavyindustry.entities.HEntity;
 import heavyindustry.graphics.HPal;
+import heavyindustry.math.Mathm;
 import heavyindustry.type.weapons.EndLauncherWeapon.EndLauncherData;
 import heavyindustry.util.Constant;
 import mindustry.content.Fx;
@@ -86,7 +87,7 @@ public class EndMissileBulletType extends BasicBulletType {
 
 		float ang = Angles.angle(b.x, b.y, b.aimX, b.aimY);
 
-		b.vel.setAngle(Angles.moveToward(b.rotation(), ang, (10f + b.fin() * 8f) * (1f + Mathf.absin(b.time, 4f, 0.5f)) * Interp.pow2.apply(Mathf.clamp(b.time / 30f)) * Time.delta));
+		b.vel.setAngle(Angles.moveToward(b.rotation(), ang, (10f + b.fin() * 8f) * (1f + Mathf.absin(b.time, 4f, 0.5f)) * Interp.pow2.apply(Mathm.clamp(b.time / 30f)) * Time.delta));
 	}
 
 	@Override

@@ -15,6 +15,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.gen.ChainMechc;
 import heavyindustry.gen.Chainedc;
+import heavyindustry.math.Mathm;
 import heavyindustry.type.ChainedDecal;
 import mindustry.content.Blocks;
 import mindustry.entities.abilities.Ability;
@@ -162,7 +163,7 @@ public class ChainedUnitType extends UnitType2 {
 	}
 
 	public void drawWorm(Unit unit, Chainedc chained) {
-		float z = (unit.elevation > 0.5f ? (lowAltitude ? Layer.flyingUnitLow : Layer.flyingUnit) : groundLayer + Mathf.clamp(hitSize / 4000f, 0, 0.01f)) + (chained.countForward() * segmentLayerOffset);
+		float z = (unit.elevation > 0.5f ? (lowAltitude ? Layer.flyingUnitLow : Layer.flyingUnit) : groundLayer + Mathm.clamp(hitSize / 4000f, 0, 0.01f)) + (chained.countForward() * segmentLayerOffset);
 
 		if (unit.isFlying() || shadowElevation > 0) {
 			TextureRegion tmpShadow = shadowRegion;
@@ -188,7 +189,7 @@ public class ChainedUnitType extends UnitType2 {
 			}
 
 			for (int i : Mathf.signs) {
-				Draw.mixcol(Tmp.c1.set(mechLegColor).lerp(Color.white, Mathf.clamp(unit.hitTime)), Math.max(Math.max(0f, i * extension / mechStride), unit.hitTime));
+				Draw.mixcol(Tmp.c1.set(mechLegColor).lerp(Color.white, Mathm.clamp(unit.hitTime)), Math.max(Math.max(0f, i * extension / mechStride), unit.hitTime));
 				Draw.rect(
 						legRegion,
 						unit.x + Angles.trnsx(mech.baseRotation(), extension * i - boostTrns, -boostTrns * i),

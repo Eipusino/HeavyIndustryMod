@@ -14,6 +14,7 @@ import arc.util.Strings;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.math.Mathm;
 import heavyindustry.type.Recipe;
 import heavyindustry.world.consumers.ConsumeRecipe;
 import mindustry.content.Fx;
@@ -464,7 +465,7 @@ public class AdaptiveCrafter extends Block {
 
 		@Override
 		public float progress() {
-			return Mathf.clamp(progress);
+			return Mathm.clamp(progress);
 		}
 
 		@Override

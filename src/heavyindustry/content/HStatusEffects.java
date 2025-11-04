@@ -10,7 +10,6 @@ import arc.util.Tmp;
 import heavyindustry.HVars;
 import heavyindustry.graphics.HPal;
 import heavyindustry.math.Mathm;
-import heavyindustry.util.Utils;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
@@ -72,7 +71,7 @@ public final class HStatusEffects {
 			public void update(Unit unit, StatusEntry entry) {
 				super.update(unit, entry);
 
-				if (Mathf.chanceDelta(0.008f * Mathf.clamp(entry.time / 120f))) unit.damage(unit.maxHealth * 0.125f);
+				if (Mathf.chanceDelta(0.008f * Mathm.clamp(entry.time / 120f))) unit.damage(unit.maxHealth * 0.125f);
 
 				for (WeaponMount temp : unit.mounts) {
 					if (temp == null) continue;

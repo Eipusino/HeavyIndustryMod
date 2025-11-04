@@ -6,6 +6,7 @@ import arc.math.geom.Vec3;
 import arc.util.Tmp;
 import arc.util.noise.Ridged;
 import arc.util.noise.Simplex;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.CollectionObjectMap;
 import mindustry.content.Blocks;
 import mindustry.maps.generators.PlanetGenerator;
@@ -37,15 +38,15 @@ public abstract class BasePlanetGenerator extends PlanetGenerator {
 		Tmp.v31.set(pos);
 		pos = Tmp.v33.set(pos).scl(scl);
 		float rad = scl;
-		float temp = Mathf.clamp(Math.abs(pos.y * 2) / rad);
+		float temp = Mathm.clamp(Math.abs(pos.y * 2) / rad);
 		float tnoise = Simplex.noise3d(seed, 7d, 0.56d, 1d / 3d, pos.x, pos.y + 999d, pos.z);
 		temp = Mathf.lerp(temp, tnoise, 0.5f);
 		height *= 0.9f;
-		height = Mathf.clamp(height);
+		height = Mathm.clamp(height);
 
 		float tar = Simplex.noise3d(seed, 4, 0.55, 0.5, pos.x, pos.y + 999, pos.z) * 0.3f + Tmp.v31.dst(0, 0, 1) * 0.2f;
 		Block[][] arr = arr();
-		Block res = arr[Mathf.clamp(Mathf.floor(temp * arr.length), 0, arr[0].length - 1)][Mathf.clamp(Mathf.floor(height * arr[0].length), 0, arr[0].length - 1)];
+		Block res = arr[Mathm.clamp(Mathf.floor(temp * arr.length), 0, arr[0].length - 1)][Mathm.clamp(Mathf.floor(height * arr[0].length), 0, arr[0].length - 1)];
 
 		if (tar > 0.5) {
 			return tars.get(res, res);

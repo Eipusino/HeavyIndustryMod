@@ -10,6 +10,7 @@ import heavyindustry.audio.HSounds;
 import heavyindustry.content.HFx;
 import heavyindustry.entities.HEntity;
 import heavyindustry.graphics.HPal;
+import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
@@ -77,13 +78,13 @@ public class EndNukeBulletType extends BasicBulletType {
 
 		int sid1 = HSounds.desNukeHit.at(bx, by, 1f, 2f);
 		Core.audio.protect(sid1, true);
-		float fall = Mathf.pow(Mathf.clamp(1f - HSounds.desNukeHit.calcFalloff(bx, by) * 1.1f), 1.5f);
+		float fall = Mathf.pow(Mathm.clamp(1f - HSounds.desNukeHit.calcFalloff(bx, by) * 1.1f), 1.5f);
 		int sid2 = HSounds.desNukeHitFar.play(fall * 2f, 1f, HSounds.desNukeHit.calcPan(bx, by));
 		Core.audio.protect(sid2, true);
 
 		float[] arr = new float[360 * 3];
 		HEntity.rayCastCircle(b.x, b.y, 480f, t -> t.build != null && t.build.team != team && !Mathf.within(b.x, b.y, t.worldx(), t.worldy(), 150f), t -> {
-			float dst = 1f - Mathf.clamp(Mathf.dst(bx, by, t.x * Vars.tilesize, t.y * Vars.tilesize) / 480f);
+			float dst = 1f - Mathm.clamp(Mathf.dst(bx, by, t.x * Vars.tilesize, t.y * Vars.tilesize) / 480f);
 			if (Mathf.chance(Mathf.pow(dst, 2f) * 0.75f)) Fires.create(t);
 		}, t -> {
 			float nx = t.x * Vars.tilesize, ny = t.y * Vars.tilesize;
@@ -124,7 +125,7 @@ public class EndNukeBulletType extends BasicBulletType {
 
 								Vec2 v = Tmp.v1.set(dx, dy).nor().setLength(force * Mathf.random(0.9f, 1f));
 
-								d.lifetime = Mathf.random(60f, 90f) * Mathf.lerp(1f, 0.5f, Mathf.clamp(len / 480f));
+								d.lifetime = Mathf.random(60f, 90f) * Mathf.lerp(1f, 0.5f, Mathm.clamp(len / 480f));
 								d.drag = -0.015f;
 
 								d.vx = v.x;
@@ -156,7 +157,7 @@ public class EndNukeBulletType extends BasicBulletType {
 
 								Vec2 v = Tmp.v1.set(dx, dy).nor().setLength(force * Mathf.random(0.9f, 1f));
 
-								d.lifetime = Mathf.random(60f, 90f) * Mathf.lerp(1f, 0.5f, Mathf.clamp(len / 150f));
+								d.lifetime = Mathf.random(60f, 90f) * Mathf.lerp(1f, 0.5f, Mathm.clamp(len / 150f));
 								d.drag = -0.03f;
 
 								d.vx = v.x;

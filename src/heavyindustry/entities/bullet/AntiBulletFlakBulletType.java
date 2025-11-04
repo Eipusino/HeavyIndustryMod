@@ -4,6 +4,7 @@ import arc.math.Interp;
 import arc.math.Mathf;
 import arc.math.geom.Rect;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import mindustry.entities.bullet.FlakBulletType;
 import mindustry.gen.Bullet;
 import mindustry.gen.Groups;
@@ -27,7 +28,7 @@ public class AntiBulletFlakBulletType extends FlakBulletType {
 		Rect r1 = Tmp.r1.setSize(bulletRadius * 2f).setCenter(b.x, b.y);
 		Groups.bullet.intersect(r1.x, r1.y, r1.width, r1.height, bl -> {
 			if (b.team != bl.team && bl.type.hittable && b.within(bl, bulletRadius)) {
-				float in = interp.apply(Mathf.clamp((bulletRadius - b.dst(bl)) / bulletRadius));
+				float in = interp.apply(Mathm.clamp((bulletRadius - b.dst(bl)) / bulletRadius));
 				bl.vel.scl(Mathf.lerp(1f, bulletSlowDownScl, in));
 				bl.damage -= bulletDamage * in;
 				if (bl.damage <= 0f) bl.remove();

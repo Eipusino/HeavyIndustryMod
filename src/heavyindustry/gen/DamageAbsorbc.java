@@ -1,7 +1,7 @@
 package heavyindustry.gen;
 
-import arc.math.Mathf;
 import arc.util.Time;
+import heavyindustry.math.Mathm;
 import heavyindustry.type.unit.UnitType2;
 import mindustry.Vars;
 import mindustry.entities.Damage;
@@ -10,7 +10,7 @@ import mindustry.gen.Unitc;
 
 public interface DamageAbsorbc extends Unitc {
 	default float realDamage(boolean isStatus, float amount) {
-		return !isStatus && type() instanceof UnitType2 bu ? amount * Mathf.clamp(1 - bu.absorption) : amount;
+		return !isStatus && type() instanceof UnitType2 bu ? amount * Mathm.clamp(1 - bu.absorption) : amount;
 	}
 
 	@Override

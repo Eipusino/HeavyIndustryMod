@@ -9,6 +9,7 @@ import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import heavyindustry.content.HFx;
 import heavyindustry.gen.BaseEntity;
+import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
@@ -58,7 +59,7 @@ public class Devastation extends BaseEntity implements Poolable {
 			health -= lh * scl;
 			//health -= healthc.health() * scl;
 
-			float ratio = Mathf.clamp((lh / lh2) * scl) * slowDownAmount;
+			float ratio = Mathm.clamp((lh / lh2) * scl) * slowDownAmount;
 
 			vx *= 1f - ratio;
 			vy *= 1f - ratio;

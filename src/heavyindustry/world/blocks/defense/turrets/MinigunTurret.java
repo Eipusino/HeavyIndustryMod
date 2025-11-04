@@ -13,6 +13,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.math.Mathm;
 import mindustry.entities.bullet.BulletType;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
@@ -80,7 +81,7 @@ public class MinigunTurret extends ItemTurret {
 					Lines.stroke(barStroke);
 					for (int i = 0; i < 2; i++) {
 						v.trns(m.drawrot(), barX * Mathf.signs[i], barY).add(m.recoilOffset);
-						Lines.lineAngle(m.x + v.x, m.y + v.y, m.rotation, barLength * Mathf.clamp(m.speedf()), false);
+						Lines.lineAngle(m.x + v.x, m.y + v.y, m.rotation, barLength * Mathm.clamp(m.speedf()), false);
 					}
 				}
 			}

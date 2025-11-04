@@ -3,11 +3,11 @@ package heavyindustry.util;
 import arc.func.Cons;
 import arc.func.Intc2;
 import arc.func.Prov;
-import arc.math.Mathf;
 import arc.math.geom.Point2;
 import arc.util.Eachable;
 import arc.util.Nullable;
 import heavyindustry.func.Intg2;
+import heavyindustry.math.Mathm;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;
@@ -93,8 +93,8 @@ public class Map2D<T> implements Iterable<T>, Eachable<T> {
 
 	/** @return a tile at coordinates, clamped. */
 	public T getClamp(int x, int y) {
-		x = Mathf.clamp(x, 0, width - 1);
-		y = Mathf.clamp(y, 0, height - 1);
+		x = Mathm.clamp(x, 0, width - 1);
+		y = Mathm.clamp(y, 0, height - 1);
 		return array[y * width + x];
 	}
 

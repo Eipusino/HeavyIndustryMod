@@ -17,6 +17,7 @@ import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import heavyindustry.entities.bullet.LiquidMassDriverBolt;
 import heavyindustry.graphics.Outliner;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.CollectionOrderedSet;
 import mindustry.content.Fx;
 import mindustry.content.Liquids;
@@ -204,7 +205,7 @@ public class LiquidMassDriver extends Block {
 
 			//reload regardless of state
 			if (reloadCounter > 0f) {
-				reloadCounter = Mathf.clamp(reloadCounter - edelta() / reload);
+				reloadCounter = Mathm.clamp(reloadCounter - edelta() / reload);
 			}
 
 			Building current = currentShooter();
@@ -282,7 +283,7 @@ public class LiquidMassDriver extends Block {
 
 		@Override
 		public double sense(LAccess sensor) {
-			if (sensor == LAccess.progress) return Mathf.clamp(1f - reloadCounter / reload);
+			if (sensor == LAccess.progress) return Mathm.clamp(1f - reloadCounter / reload);
 			return super.sense(sensor);
 		}
 

@@ -27,6 +27,7 @@ import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import heavyindustry.content.HFx;
 import heavyindustry.gen.Spawner;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.CollectionList;
 import heavyindustry.util.CollectionObjectMap;
 import heavyindustry.util.ReflectUtils;
@@ -228,7 +229,7 @@ public final class HEntity {
 			float range = in[mi];
 
 			if ((dst - hsize) < range) {
-				amount += Mathf.clamp((range - (dst - hsize)) / hsize);
+				amount += Mathm.clamp((range - (dst - hsize)) / hsize);
 			}
 			collision++;
 		}

@@ -8,6 +8,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.scene.ui.layout.Table;
 import arc.util.Time;
+import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Lightning;
@@ -51,7 +52,7 @@ public class LightSpeedAbility extends Ability { //Combined of V5 and V7 coding 
 	}
 
 	protected float scld(Unit unit) { //make a similar method
-		return Mathf.clamp((unit.vel().len() - minSpeed) / (maxSpeed - minSpeed));
+		return Mathm.clamp((unit.vel().len() - minSpeed) / (maxSpeed - minSpeed));
 	}
 
 	@Override

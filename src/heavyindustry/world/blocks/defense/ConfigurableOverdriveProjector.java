@@ -15,6 +15,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.math.Mathm;
 import mindustry.entities.units.BuildPlan;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Pal;
@@ -108,7 +109,7 @@ public class ConfigurableOverdriveProjector extends OverdriveProjector {
 			Draw.alpha(1f);
 			Lines.stroke((2f * f + 0.1f) * heat);
 
-			float r = Math.max(0f, Mathf.clamp(2f - f * 2f) * size * tilesize / 2f - f - 0.2f), w = Mathf.clamp(0.5f - f) * size * tilesize;
+			float r = Math.max(0f, Mathm.clamp(2f - f * 2f) * size * tilesize / 2f - f - 0.2f), w = Mathm.clamp(0.5f - f) * size * tilesize;
 			Lines.beginLine();
 			for (int i = 0; i < 4; i++) {
 				Lines.linePoint(x + Geometry.d4(i).x * r + Geometry.d4(i).y * w, y + Geometry.d4(i).y * r - Geometry.d4(i).x * w);

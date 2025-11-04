@@ -12,6 +12,7 @@ import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import mindustry.game.EventType.ResetEvent;
 
 /** Based on LightRenderer. Dims the entire screen. */
@@ -33,7 +34,7 @@ public final class DimRenderer {
 	}
 
 	public static void updateAlpha(float alpha) {
-		dimAlpha = Mathf.clamp(Math.max(dimAlpha, alpha));
+		dimAlpha = Mathm.clamp(Math.max(dimAlpha, alpha));
 	}
 
 	public static void add(Runnable run) {

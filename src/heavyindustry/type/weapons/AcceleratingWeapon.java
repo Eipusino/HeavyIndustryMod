@@ -1,7 +1,7 @@
 package heavyindustry.type.weapons;
 
-import arc.math.Mathf;
 import arc.util.Time;
+import heavyindustry.math.Mathm;
 import mindustry.entities.units.WeaponMount;
 import mindustry.gen.Unit;
 import mindustry.type.Weapon;
@@ -36,11 +36,11 @@ public class AcceleratingWeapon extends Weapon {
 			WeaponMount other = unit.mounts[otherSide];
 			other.reload -= r / 2f;
 			mount.reload -= r / 2f;
-			if (other instanceof AcceleratingMount aMount) {
-				float accel = unit.isShooting() && unit.canShoot() ? Math.max(aMount.accel, mount.accel) : Math.min(aMount.accel, mount.accel);
-				float wTime = unit.isShooting() && unit.canShoot() ? Math.max(aMount.waitTime, mount.waitTime) : Math.min(aMount.waitTime, mount.waitTime);
-				aMount.accel = accel;
-				aMount.waitTime = wTime;
+			if (other instanceof AcceleratingMount am) {
+				float accel = unit.isShooting() && unit.canShoot() ? Math.max(am.accel, mount.accel) : Math.min(am.accel, mount.accel);
+				float wTime = unit.isShooting() && unit.canShoot() ? Math.max(am.waitTime, mount.waitTime) : Math.min(am.waitTime, mount.waitTime);
+				am.accel = accel;
+				am.waitTime = wTime;
 				mount.accel = accel;
 				mount.waitTime = wTime;
 			}
@@ -54,9 +54,10 @@ public class AcceleratingWeapon extends Weapon {
 
 	@Override
 	protected void shoot(Unit unit, WeaponMount mount, float shootX, float shootY, float rotation) {
-		AcceleratingMount aMount = (AcceleratingMount) mount;
-		aMount.accel = Mathf.clamp(aMount.accel + accelPerShot, 0f, minReload);
-		aMount.waitTime = accelCooldownWaitTime;
+		if (mount instanceof AcceleratingMount am) {
+			am.accel = Mathm.clamp(am.accel + accelPerShot, 0f, minReload);
+			am.waitTime = accelCooldownWaitTime;
+		}
 		super.shoot(unit, mount, shootX, shootY, rotation);
 	}
 

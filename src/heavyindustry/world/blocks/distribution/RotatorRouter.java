@@ -3,10 +3,10 @@ package heavyindustry.world.blocks.distribution;
 import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
-import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.util.Nullable;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import mindustry.gen.Building;
 import mindustry.type.Item;
 import mindustry.world.blocks.distribution.Duct;
@@ -87,7 +87,7 @@ public class RotatorRouter extends Duct {
 			if (current != null) {
 				Tmp.v1.set(Geometry.d4x(recDir) * tilesize / 2f, Geometry.d4y(recDir) * tilesize / 2f)
 						.lerp(Geometry.d4x(rotation) * tilesize / 2f, Geometry.d4y(rotation) * tilesize / 2f,
-								Mathf.clamp((progress + 1f) / 2f));
+								Mathm.clamp((progress + 1f) / 2f));
 
 				Draw.rect(current.fullIcon, x + Tmp.v1.x, y + Tmp.v1.y, itemSize, itemSize);
 			}

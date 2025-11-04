@@ -5,6 +5,7 @@ import arc.math.Angles;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import mindustry.content.Fx;
 import mindustry.entities.bullet.BulletType;
 import mindustry.entities.units.WeaponMount;
@@ -84,9 +85,9 @@ public class MultiBulletType extends BulletType {
 
 	@Override
 	public void despawned(Bullet b) {
-		if (bullets.length > 0 && b.owner instanceof Unit e && e.isAdded()) {
+		if (bullets.length > 0 && b.owner instanceof Unit unit && unit.isAdded()) {
 			for (MultiBulletData data : bullets) {
-				float scl = data.type.scaleLife ? Mathf.clamp(b.fdata / data.type.range) : 1f;
+				float scl = data.type.scaleLife ? Mathm.clamp(b.fdata / data.type.range) : 1f;
 				Tmp.v1.trns(b.rotation(), data.x, data.y).add(b);
 				data.type.create(b.owner, b.team, Tmp.v1.x, Tmp.v1.y, b.rotation() + data.rotation, 1f, scl);
 				data.type.shootEffect.at(Tmp.v1.x, Tmp.v1.y, b.rotation() + data.rotation);

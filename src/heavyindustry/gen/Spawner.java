@@ -16,6 +16,7 @@ import arc.util.io.Writes;
 import heavyindustry.audio.HSounds;
 import heavyindustry.content.HFx;
 import heavyindustry.graphics.Drawn;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.CollectionList;
 import heavyindustry.util.Utils;
 import mindustry.Vars;
@@ -85,7 +86,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 		rotation = rot;
 		team = t;
 		drawSize = unit.hitSize;
-		trailWidth = Mathf.clamp(drawSize / 15f, 1.25f, 4f);
+		trailWidth = Mathm.clamp(drawSize / 15f, 1.25f, 4f);
 		set(pos);
 
 		return this;
@@ -251,7 +252,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 			Draw.z(Layer.effect);
 			Draw.color(Pal.ammo);
 
-			float s = Mathf.clamp(drawSize / 4f, 12f, 20f);
+			float s = Mathm.clamp(drawSize / 4f, 12f, 20f);
 			Draw.rect(Icon.warning.getRegion(), x, y, s, s);
 		}
 

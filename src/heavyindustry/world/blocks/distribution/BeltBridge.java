@@ -12,6 +12,7 @@ import arc.util.Eachable;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.input.BeltPlacement;
+import heavyindustry.math.Mathm;
 import heavyindustry.world.draw.DrawBeltUnder.BeltUnderBlending;
 import mindustry.Vars;
 import mindustry.entities.units.BuildPlan;
@@ -134,7 +135,7 @@ public class BeltBridge extends DuctBridge {
 		interrupted = false;
 		Point2 d = Geometry.d4(plan.rotation);
 		list.each(other -> {
-			if (!interrupted && other.block == this && plan != other && Mathf.clamp(other.x - plan.x, -1, 1) == d.x && Mathf.clamp(other.y - plan.y, -1, 1) == d.y) {
+			if (!interrupted && other.block == this && plan != other && Mathm.clamp(other.x - plan.x, -1, 1) == d.x && Mathm.clamp(other.y - plan.y, -1, 1) == d.y) {
 				if (other.config != Boolean.TRUE) {
 					interrupted = true;
 					return;

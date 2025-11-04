@@ -219,7 +219,7 @@ public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 	 * @return an Iterator.
 	 */
 	@Override
-	public Iter iterator() {
+	public Iterator<Vec2> iterator() {
 		if (iterator1 == null) iterator1 = new Iter();
 
 		if (iterator1.done) {
@@ -239,9 +239,9 @@ public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 		return new Iter();
 	}
 
-	public class Iter implements Iterator<Vec2> {
-		protected int index;
-		protected boolean done = true;
+	protected class Iter implements Iterator<Vec2> {
+		public int index;
+		public boolean done = true;
 
 		@Override
 		public boolean hasNext() {
@@ -257,8 +257,7 @@ public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 
 		@Override
 		public void remove() {
-			index--;
-			Vec2Seq.this.remove(index);
+			Vec2Seq.this.remove(--index);
 		}
 	}
 }

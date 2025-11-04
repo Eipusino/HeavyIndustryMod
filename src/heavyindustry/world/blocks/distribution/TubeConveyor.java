@@ -2,12 +2,12 @@ package heavyindustry.world.blocks.distribution;
 
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
-import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
 import arc.util.Eachable;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.math.Mathm;
 import heavyindustry.util.SpriteUtils;
 import heavyindustry.util.Utils;
 import mindustry.entities.units.BuildPlan;
@@ -178,7 +178,7 @@ public class TubeConveyor extends Conveyor2 {
 
 			if (drawCracks && damaged() && size <= BlockRenderer.maxCrackSize) {
 				int id = pos();
-				TextureRegion region = renderer.blocks.cracks[size - 1][Mathf.clamp((int) ((1f - healthf()) * BlockRenderer.crackRegions), 0, BlockRenderer.crackRegions - 1)];
+				TextureRegion region = renderer.blocks.cracks[size - 1][Mathm.clamp((int) ((1f - healthf()) * BlockRenderer.crackRegions), 0, BlockRenderer.crackRegions - 1)];
 				Draw.colorl(0.2f, 0.1f + (1f - healthf()) * 0.6f);
 				Draw.rect(region, x, y, (id % 4) * 90);
 				Draw.color();

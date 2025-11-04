@@ -7,6 +7,7 @@ import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
 import heavyindustry.math.Math3d;
+import heavyindustry.math.Mathm;
 import mindustry.game.EventType.Trigger;
 
 import static mindustry.Vars.headless;
@@ -103,7 +104,7 @@ public final class Perspective {
 		} else if (z > vz) { //Behind viewport, should be 0
 			return 0f;
 		} else {
-			return Interp.pow5In.apply(Mathf.clamp(dst / fade));
+			return Interp.pow5In.apply(Mathm.clamp(dst / fade));
 		}
 	}
 

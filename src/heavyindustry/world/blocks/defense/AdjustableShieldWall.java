@@ -11,6 +11,7 @@ import arc.scene.ui.layout.Table;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.gen.Icon;
 import mindustry.graphics.Drawf;
@@ -69,12 +70,12 @@ public class AdjustableShieldWall extends Wall {
 				if (shieldRadius > 0f) {
 					float radiusN = shieldRadius * 8f * (float) size / 2f * radius;
 					Draw.z(125f);
-					Draw.color(team.color, Color.white, Mathf.clamp(hit));
+					Draw.color(team.color, Color.white, Mathm.clamp(hit));
 					if (Vars.renderer.animateShields) {
 						Fill.square(x, y, radiusN);
 					} else {
 						Lines.stroke(1.5f);
-						Draw.alpha(0.09f + Mathf.clamp(0.08f * hit));
+						Draw.alpha(0.09f + Mathm.clamp(0.08f * hit));
 						Fill.square(x, y, radiusN);
 						Draw.alpha(1f);
 						Lines.poly(x, y, 4, radiusN, 45f);
@@ -93,7 +94,7 @@ public class AdjustableShieldWall extends Wall {
 				if (breakTimer > 0f) {
 					breakTimer -= Time.delta;
 				} else {
-					shield = Mathf.clamp(shield + regenSpeed * edelta(), 0f, shieldHealth);
+					shield = Mathm.clamp(shield + regenSpeed * edelta(), 0f, shieldHealth);
 				}
 
 				if (hit > 0f) {
