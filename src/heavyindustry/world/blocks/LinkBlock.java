@@ -24,7 +24,7 @@ import mindustry.world.modules.LiquidModule;
 
 /**
  * Inner building that are linked to a specific building.
- * <p>Handle items, liquids, damage and so on a passed to the main building to handle.
+ * <br>Handle items, liquids, damage and so on a passed to the main building to handle.
  * <p>NEVER SUPPOSED TO USE OUTSIDE MULTI BLOCK!
  */
 public class LinkBlock extends Block {
@@ -74,8 +74,32 @@ public class LinkBlock extends Block {
 
 	@Override
 	public void load() {
-		super.load();
 		region = Core.atlas.find("status-blasted");
+
+		customShadowRegion = Core.atlas.find(name + "-shadow");
+		teamRegion = Core.atlas.find(name + "-team");
+
+		//load specific team regions
+		teamRegions = new TextureRegion[Team.all.length];
+		for (Team team : Team.all) {
+			teamRegions[team.id] = teamRegion.found() && team.hasPalette ? Core.atlas.find(name + "-team-" + team.name, teamRegion) : teamRegion;
+		}
+
+		if (variants > 0) {
+			variantRegions = new TextureRegion[variants];
+
+			for (int i = 0; i < variants; i++) {
+				variantRegions[i] = Core.atlas.find(name + (i + 1));
+			}
+			region = variantRegions[0];
+
+			if (customShadow) {
+				variantShadowRegions = new TextureRegion[variants];
+				for (int i = 0; i < variants; i++) {
+					variantShadowRegions[i] = Core.atlas.find(name + "-shadow" + (i + 1));
+				}
+			}
+		}
 	}
 
 	@Override
@@ -117,8 +141,7 @@ public class LinkBlock extends Block {
 
 		//skip draw
 		@Override
-		public void draw() {
-		}
+		public void draw() {}
 
 		@Override
 		public void drawSelect() {
@@ -164,29 +187,17 @@ public class LinkBlock extends Block {
 
 		@Override
 		public boolean acceptItem(Building source, Item item) {
-			if (linkBuild != null) {
-				return linkBuild.acceptItem(source, item);
-			} else {
-				return false;
-			}
+			return linkBuild != null && linkBuild.acceptItem(source, item);
 		}
 
 		@Override
 		public int acceptStack(Item item, int amount, Teamc source) {
-			if (linkBuild != null) {
-				return linkBuild.acceptStack(item, amount, source);
-			} else {
-				return 0;
-			}
+			return linkBuild == null ? 0 : linkBuild.acceptStack(item, amount, source);
 		}
 
 		@Override
 		public boolean acceptLiquid(Building source, Liquid liquid) {
-			if (linkBuild != null) {
-				return linkBuild.acceptLiquid(source, liquid);
-			} else {
-				return false;
-			}
+			return linkBuild != null && linkBuild.acceptLiquid(source, liquid);
 		}
 
 		@Override
@@ -197,11 +208,7 @@ public class LinkBlock extends Block {
 
 		@Override
 		public float handleDamage(float amount) {
-			if (linkBuild != null) {
-				return linkBuild.handleDamage(amount);
-			} else {
-				return 0;
-			}
+			return linkBuild == null ? 0f : linkBuild.handleDamage(amount);
 		}
 
 		@Override

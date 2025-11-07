@@ -25,6 +25,7 @@ public class DamageSpawnAbility extends UnitSpawnAbility {
 
 	public DamageSpawnAbility() {}
 
+	@Override
 	public void addStats(Table t) {
 		t.add("[lightgray]" + Stat.damage.localized() + ": [white]" + Strings.autoFixed(damage, 2));
 		t.row();

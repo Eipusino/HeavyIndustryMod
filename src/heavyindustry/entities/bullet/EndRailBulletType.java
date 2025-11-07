@@ -119,17 +119,17 @@ public class EndRailBulletType extends BulletType {
 			//hitEnd(b, x, y, Mathm.clamp(hscl / 90f) + Mathf.sqrt(hscl / 400f));
 			hitEnd(b, h, x, y, Mathm.clamp(h.maxHealth() / 40000f) + Mathf.sqrt((h.maxHealth() / 120000f) / 2f) / 1000f);
 
-			if (h instanceof Unit u) {
-				u.armor -= 100 + Math.abs(u.armor / 10);
-				u.shield -= 900;
-				if (u.shield < -2000f) u.shield = -2000f;
-				Tmp.v2.trns(b.rotation(), 6f + 5f / u.mass());
-				u.vel.add(Tmp.v2);
+			if (h instanceof Unit unit) {
+				unit.armor -= 100 + Math.abs(unit.armor / 10);
+				unit.shield -= 900;
+				if (unit.shield < -2000f) unit.shield = -2000f;
+				Tmp.v2.trns(b.rotation(), 6f + 5f / unit.mass());
+				unit.vel.add(Tmp.v2);
 
-				u.health -= 32000f + u.maxHealth / 40f;
-			} else if (h instanceof Building bl) {
-				bl.health -= 32000f + bl.maxHealth / 40f;
-				if (bl.health <= 0f) bl.kill();
+				unit.health -= 32000f + unit.maxHealth / 40f;
+			} else if (h instanceof Building build && !build.block.privileged) {
+				build.health -= 32000f + build.maxHealth / 40f;
+				if (build.health <= 0f) build.kill();
 			} else {
 				h.health(h.health() - (32000f + h.maxHealth() / 40f));
 			}
@@ -152,7 +152,7 @@ public class EndRailBulletType extends BulletType {
 
 		HFx.desRailHit.at(x, y, b.rotation(), Mathf.pow(scl, 1.5f));
 
-		TextureRegion cur = (h instanceof Unit u ? u.type.region : (h instanceof Building bl ? bl.block.region : null));
+		TextureRegion cur = (h instanceof Unit u ? u.type.region : (h instanceof Building build ? build.block.region : null));
 		int count = (int) (scl * 20);
 		if (cur != null && count > 5) {
 			HSounds.desRailHit.at(x, y, Mathf.random(0.95f, 1.05f), scl);

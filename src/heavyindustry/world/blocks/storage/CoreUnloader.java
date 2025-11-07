@@ -53,7 +53,7 @@ public class CoreUnloader extends Unloader {
 			int amount = block.itemCapacity;
 			var core = team.core();
 			fire = Vars.state.rules.coreIncinerates ? 20 : 1;
-			if (sortItem != null) {
+			if (sortItem != null && core != null) {
 				if (output) {
 					if (items.get(sortItem) == 0 && core.items.get(sortItem) > amount - 1) {
 						core.items.remove(sortItem, amount);

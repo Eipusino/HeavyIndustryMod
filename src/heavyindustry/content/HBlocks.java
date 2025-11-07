@@ -558,7 +558,7 @@ public final class HBlocks {
 	public static PlatformTurret mustDieTurret, oneShotTurret, pointTurret;
 	public static NextWave nextWave;
 
-	//intrernal
+	//internal
 	public static final int maxsize = 4;
 
 	public static LinkBlock[] linkBlock, linkBlockLiquid;
@@ -605,10 +605,12 @@ public final class HBlocks {
 			buildType = Constant.PROV_BUILDING;
 		}};
 		coreZoneCenter = new Floor("core-zone-center", 0) {{
+			blendGroup = Blocks.coreZone;
 			allowCorePlacement = true;
 			buildType = Constant.PROV_BUILDING;
 		}};
 		coreZoneDot = new Floor("core-zone-dot", 0) {{
+			blendGroup = Blocks.coreZone;
 			allowCorePlacement = true;
 			buildType = Constant.PROV_BUILDING;
 		}};

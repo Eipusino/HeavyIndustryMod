@@ -163,22 +163,22 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
 
 			//firstHit = true;
 
-			if (h instanceof Unit u) {
+			if (h instanceof Unit unit) {
 				//boolean near2 = Mathf.within(x, y, vx, vy, 200f + (len - b.fdata));
-				boolean near2 = Intersector.distanceLinePoint(bx, by, vx, vy, u.x, u.y) < (u.hitSize / 2f) / 2.5f;
-				float dam = u.isFlying() ? fly : ground;
+				boolean near2 = Intersector.distanceLinePoint(bx, by, vx, vy, unit.x, unit.y) < (unit.hitSize / 2f) / 2.5f;
+				float dam = unit.isFlying() ? fly : ground;
 
 				if (dam > 0) {
-					u.health -= (damage + u.maxHealth / 390f) * dam;
+					unit.health -= (damage + unit.maxHealth / 390f) * dam;
 					hitt = true;
-					if (u.isGrounded()) groundHit = true;
+					if (unit.isGrounded()) groundHit = true;
 				}
-			} else if (h instanceof Building bl) {
+			} else if (h instanceof Building build) {
 				if (ground > 0) {
-					bl.health -= (damage + bl.maxHealth / 390f) * ground;
+					build.health -= (damage + build.maxHealth / 390f) * ground;
 					hitt = true;
-					if ((bl.health / bl.maxHealth) > 0.68f) groundHit = true;
-					if (bl.health <= 0f) bl.kill();
+					if ((build.health / build.maxHealth) > 0.68f) groundHit = true;
+					if (build.health <= 0f) build.kill();
 				}
 			} else {
 				h.health(h.health() - (damage + h.maxHealth() / 390f));
@@ -200,12 +200,12 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
 		float range = 230f * scl;
 		HFx.desCreepHeavyHit.at(x, y, b.rotation(), scl);
 
-		Rect r = Utils.r.setCentered(x, y, range * 2f);
+		Rect rect = Utils.r.setCentered(x, y, range * 2f);
 
 		buildings.clear();
-		Groups.unit.intersect(r.x, r.y, r.width, r.height, u -> {
-			if (u.team != b.team && Mathf.within(x, y, u.x, u.y, range + u.hitSize / 2f) && u.checkTarget(false, true)) {
-				u.health -= 12000f + u.maxHealth / 50f;
+		Groups.unit.intersect(rect.x, rect.y, rect.width, rect.height, unit -> {
+			if (unit.team != b.team && Mathf.within(x, y, unit.x, unit.y, range + unit.hitSize / 2f) && unit.checkTarget(false, true)) {
+				unit.health -= 12000f + unit.maxHealth / 50f;
 			}
 		});
 
@@ -213,7 +213,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
 
 		for (TeamData data : Vars.state.teams.present) {
 			if (data.team != b.team && data.buildingTree != null) {
-				data.buildingTree.intersect(r, bl -> {
+				data.buildingTree.intersect(rect, bl -> {
 					if (Mathf.within(x, y, bl.x, bl.y, range + bl.hitSize() / 2f)) {
 						buildings.add(bl);
 					}
@@ -221,11 +221,11 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
 			}
 		}
 
-		for (Building bl : buildings) {
+		for (Building build : buildings) {
 			boolean lethal = Mathf.chance(0.3f);
-			float d = lethal ? 12000f + bl.maxHealth / 20f : bl.health / 1.5f;
-			bl.health -= d;
-			if (bl.health <= 0f) bl.kill();
+			float d = lethal ? 12000f + build.maxHealth / 20f : build.health / 1.5f;
+			build.health -= d;
+			if (build.health <= 0f) build.kill();
 		}
 		buildings.clear();
 	}

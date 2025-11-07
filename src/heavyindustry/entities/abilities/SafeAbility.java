@@ -42,6 +42,7 @@ public class SafeAbility extends Ability {
 		readyTrail = tfx;
 	}
 
+	@Override
 	public void addStats(Table t) {
 		if (safeShield != 0) {
 			t.add("[lightgray]" + Stat.shieldHealth.localized() + ": [white]" + Strings.autoFixed(safeShield, 0));
@@ -66,10 +67,12 @@ public class SafeAbility extends Ability {
 		}
 	}
 
+	@Override
 	public void displayBars(Unit unit, Table bars) {
 		bars.add(new Bar("stat.cooldownsafe", Pal.slagOrange, () -> Math.min(safeTimer / reload, 1))).row();
 	}
 
+	@Override
 	public void update(Unit unit) {
 		if (unit.health / unit.maxHealth <= threshold && safeTimer >= reload && unit.shield == 0) {
 			if (safeShield != 0) {

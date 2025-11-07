@@ -68,7 +68,7 @@ public class ChainBulletType extends BulletType {
 		}
 
 		if (!quietShoot || points.any()) {
-			Utils.shuffle(points);
+			points.shuffle();
 			points.truncate(maxHit);
 			points.insert(0, b);
 			points.insert(1, target);

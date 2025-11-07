@@ -21,6 +21,13 @@ public class AtomicObjectHolder<K, V> implements Entry<K, V>, Cloneable {
 		value = null;
 	}
 
+	public AtomicObjectHolder<K, V> set(K k, V v) {
+		key = k;
+		value = v;
+
+		return this;
+	}
+
 	@SuppressWarnings("unchecked")
 	public AtomicObjectHolder<K, V> copy() {
 		try {
@@ -34,6 +41,16 @@ public class AtomicObjectHolder<K, V> implements Entry<K, V>, Cloneable {
 	@Override
 	public boolean equals(Object o) {
 		return o instanceof AtomicObjectHolder<?, ?> that && ObjectUtils.equals(key, that.key) && ObjectUtils.equals(value, that.value);
+	}
+
+	@Override
+	public int hashCode() {
+		return ObjectUtils.hashCode(key) ^ ObjectUtils.hashCode(value);
+	}
+
+	@Override
+	public String toString() {
+		return key + "=" + value;
 	}
 
 	@Override

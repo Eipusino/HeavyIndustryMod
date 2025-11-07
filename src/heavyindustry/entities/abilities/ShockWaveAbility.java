@@ -118,4 +118,9 @@ public class ShockWaveAbility extends Ability {
 	public void draw(Unit unit) {
 		super.draw(unit);
 	}
+
+	@Override
+	public String getBundle() {
+		return "ability.shock-wave";
+	}
 }

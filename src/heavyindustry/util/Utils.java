@@ -1,3 +1,16 @@
+/*
+	Copyright (c) Eipusino 2021
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
 package heavyindustry.util;
 
 import arc.Core;
@@ -43,6 +56,7 @@ import mindustry.type.ItemStack;
 import mindustry.type.Liquid;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
+import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.defense.turrets.ItemTurret;
 import mindustry.world.draw.DrawBlock;
@@ -468,14 +482,12 @@ public final class Utils {
 		return type.hitSize / Vars.tilesize / Vars.tilesize / 3.25f;
 	}
 
-	public static <T> void shuffle(Seq<T> seq) {
-		T[] items = seq.items;
-		for (int i = seq.size - 1; i >= 0; i--) {
-			int j = Mathf.random(i);
-			T temp = items[i];
-			items[i] = items[j];
-			items[j] = temp;
-		}
+	public static boolean equals(Block floor, int rx, int ry) {
+		return rx < Vars.world.width() - 1 && ry < Vars.world.height() - 1
+				&& Vars.world.tile(rx + 1, ry).floor() == floor
+				&& Vars.world.tile(rx, ry + 1).floor() == floor
+				&& Vars.world.tile(rx, ry).floor() == floor
+				&& Vars.world.tile(rx + 1, ry + 1).floor() == floor;
 	}
 
 	public static Rand rand(long id) {
@@ -496,8 +508,8 @@ public final class Utils {
 		return Tmp.v1.setToRandomDirection().setLength(r);
 	}
 
-	public static String statUnitName(StatUnit statUnit) {
-		return statUnit.icon == null ? statUnit.localized() : statUnit.icon + " " + statUnit.localized();
+	public static String statUnitName(StatUnit stat) {
+		return stat.icon == null ? stat.localized() : stat.icon + " " + stat.localized();
 	}
 
 	public static float bulletDamage(BulletType b, float lifetime) {

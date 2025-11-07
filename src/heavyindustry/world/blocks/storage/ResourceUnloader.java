@@ -49,8 +49,9 @@ public class ResourceUnloader extends Unloader {
 	public class ResourceUnloaderBuild extends UnloaderBuild {
 		@Override
 		public void updateTile() {
-			if (sortItem != null && items.get(sortItem) < getMaximumAccepted(sortItem) && team.core().items.get(sortItem) > 0) {
-				team.core().items.remove(sortItem, 1);
+			var core = team.core();
+			if (sortItem != null && core != null && items.get(sortItem) < getMaximumAccepted(sortItem) && core.items.get(sortItem) > 0) {
+				core.items.remove(sortItem, 1);
 				items.add(sortItem, 1);
 			}
 			Vars.indexer.eachBlock(this, range, other -> other.block.hasItems, other -> {

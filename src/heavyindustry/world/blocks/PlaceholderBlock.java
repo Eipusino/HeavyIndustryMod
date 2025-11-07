@@ -42,8 +42,32 @@ public class PlaceholderBlock extends Block {
 
 	@Override
 	public void load() {
-		super.load();
 		region = Core.atlas.find("status-blasted");
+
+		customShadowRegion = Core.atlas.find(name + "-shadow");
+		teamRegion = Core.atlas.find(name + "-team");
+
+		//load specific team regions
+		teamRegions = new TextureRegion[Team.all.length];
+		for (Team team : Team.all) {
+			teamRegions[team.id] = teamRegion.found() && team.hasPalette ? Core.atlas.find(name + "-team-" + team.name, teamRegion) : teamRegion;
+		}
+
+		if (variants > 0) {
+			variantRegions = new TextureRegion[variants];
+
+			for (int i = 0; i < variants; i++) {
+				variantRegions[i] = Core.atlas.find(name + (i + 1));
+			}
+			region = variantRegions[0];
+
+			if (customShadow) {
+				variantShadowRegions = new TextureRegion[variants];
+				for (int i = 0; i < variants; i++) {
+					variantShadowRegions[i] = Core.atlas.find(name + "-shadow" + (i + 1));
+				}
+			}
+		}
 	}
 
 	@Override
@@ -70,8 +94,7 @@ public class PlaceholderBlock extends Block {
 		}
 
 		@Override
-		public void draw() {
-		}
+		public void draw() {}
 
 		@Override
 		public void updateTile() {
@@ -100,11 +123,7 @@ public class PlaceholderBlock extends Block {
 
 		@Override
 		public float handleDamage(float amount) {
-			if (linkBuild != null) {
-				return linkBuild.handleDamage(amount);
-			} else {
-				return 0;
-			}
+			return linkBuild == null ? 0f : linkBuild.handleDamage(amount);
 		}
 
 		@Override

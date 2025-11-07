@@ -94,9 +94,10 @@ public interface MultiBlock {
 			} else {
 				t.setBlock(linkBlockLiquid(s - 1), team, 0);
 			}
-			LinkBlock.LinkBuild b = (LinkBlock.LinkBuild) t.build;
-			b.updateLink(building);
-			out.add(b);
+			if (t.build instanceof LinkBlock.LinkBuild b) {
+				b.updateLink(building);
+				out.add(b);
+			}
 		}
 		return out;
 	}

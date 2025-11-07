@@ -56,8 +56,8 @@ public class EndMissileBulletType extends BasicBulletType {
 			Teamc target = Units.closestTarget(b.team, b.x, b.y, 520f, u -> !data.mount.targets.containsKey(u), bl -> !data.mount.targets.containsKey(bl));
 			if (target == null) target = Units.closestTarget(b.team, b.x, b.y, 520f, Constant.BOOLF_UNIT_TRUE, Constant.BOOLF_BUILDING_TRUE);
 
-			if (target instanceof Building bl) {
-				b.aimTile = bl.tile;
+			if (target instanceof Building build) {
+				b.aimTile = build.tile;
 			} else {
 				b.aimTile = null;
 			}
@@ -102,7 +102,7 @@ public class EndMissileBulletType extends BasicBulletType {
 			if (t instanceof Healthc h) {
 				h.health(h.health() - dam + h.maxHealth() / 110f);
 
-				if (h instanceof Building bl && bl.health <= 0f) bl.kill();
+				if (h instanceof Building build && build.health <= 0f) build.kill();
 			}
 		});
 	}

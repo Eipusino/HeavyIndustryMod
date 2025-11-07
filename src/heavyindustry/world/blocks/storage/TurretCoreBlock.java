@@ -52,9 +52,11 @@ public class TurretCoreBlock extends CoreBlock {
 
 			Building build = payload.build;
 
-			if (team.core().items.get(ammo) >= 1) {
+			var core = team.core();
+
+			if (core != null && core.items.get(ammo) >= 1) {
 				if (build.acceptItem(this, ammo)) {
-					team.core().items.remove(ammo, 1);
+					core.items.remove(ammo, 1);
 					build.handleItem(this, ammo);
 				}
 			}

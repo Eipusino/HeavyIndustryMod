@@ -28,6 +28,7 @@ public class DamageFieldAbility extends Ability {
 
 	protected float timer;
 
+	@Override
 	public void addStats(Table t) {
 		t.add("[lightgray]" + Stat.damage.localized() + ": [white]" + Strings.autoFixed(damage * reload / 60, 2) + " " + StatUnit.perSecond.localized());
 		t.row();
