@@ -1,6 +1,5 @@
 package heavyindustry.util;
 
-import java.lang.invoke.MethodHandle;
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -14,30 +13,9 @@ public interface PlatformImpl {
 	/** @return The caller class of the current method. */
 	Class<?> callerClass();
 
-	default Field[] getFields(Class<?> cls) {
-		return cls.getDeclaredFields();
-	}
+	Field[] getFields(Class<?> cls);
 
-	default Method[] getMethods(Class<?> cls) {
-		return cls.getDeclaredMethods();
-	}
+	Method[] getMethods(Class<?> cls);
 
-	default Constructor<?>[] getConstructors(Class<?> cls) {
-		return cls.getDeclaredConstructors();
-	}
-
-	/**
-	 * Call {@link MethodHandle#invokeWithArguments(Object[])} without throwing an exception. Poor performance, not
-	 * recommended for use.
-	 *
-	 * @throws NoSuchMethodError Cannot be used on the IOS platform.
-	 */
-	@SuppressWarnings("unchecked")
-	default <T> T invokeWithArguments(MethodHandle handle, Object... args) {
-		try {
-			return (T) handle.invokeWithArguments(args);
-		} catch (Throwable e) {
-			throw new RuntimeException(e);
-		}
-	}
+	Constructor<?>[] getConstructors(Class<?> cls);
 }

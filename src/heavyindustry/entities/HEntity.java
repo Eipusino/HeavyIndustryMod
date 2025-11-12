@@ -30,7 +30,7 @@ import heavyindustry.gen.Spawner;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.CollectionList;
 import heavyindustry.util.CollectionObjectMap;
-import heavyindustry.util.ReflectUtils;
+import heavyindustry.util.Reflects;
 import mindustry.Vars;
 import mindustry.audio.SoundLoop;
 import mindustry.core.World;
@@ -500,8 +500,7 @@ public final class HEntity {
 
 	public static boolean spawnUnit(Team team, float x, float y, float angle, float spawnRange, float spawnReloadTime, float spawnDelay, UnitType type, int spawnNum, StatusEffect statusEffect, float statusDuration, double frag) {
 		return spawnUnit(team, x, y, angle, spawnRange, spawnReloadTime, spawnDelay, type, spawnNum, s -> {
-			s.setStatus(statusEffect, statusDuration);
-			s.flagToApply = frag;
+			s.setStatus(statusEffect, statusDuration).flagToApply = frag;
 		});
 	}
 
@@ -845,7 +844,7 @@ public final class HEntity {
 	}
 
 	public static void setAdded(Entityc entity, boolean value) {
-		Field field = addedFieldMap.get(entity.getClass(), () -> ReflectUtils.findField(entity.getClass(), "added"));
+		Field field = addedFieldMap.get(entity.getClass(), () -> Reflects.findField(entity.getClass(), "added"));
 
 		if (field != null) {
 			try {
@@ -858,7 +857,7 @@ public final class HEntity {
 	}
 
 	public static void findSound(Building build, Cons<SoundLoop> cons) {
-		Field field = soundFieldMap.get(build.getClass(), () -> ReflectUtils.findField(build.getClass(), f -> f.getType() == SoundLoop.class));
+		Field field = soundFieldMap.get(build.getClass(), () -> Reflects.findField(build.getClass(), f -> f.getType() == SoundLoop.class));
 
 		if (field != null) {
 			try {

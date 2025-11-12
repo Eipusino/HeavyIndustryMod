@@ -546,7 +546,7 @@ public final class ArrayUtils {
 	}
 
 	/** Faster than quickselect for n = min */
-	private static <T> int fastMin(T[] items, Comparator<T> comp, int size) {
+	static <T> int fastMin(T[] items, Comparator<T> comp, int size) {
 		int lowestIdx = 0;
 		for (int i = 1; i < size; i++) {
 			int comparison = comp.compare(items[i], items[lowestIdx]);
@@ -558,7 +558,7 @@ public final class ArrayUtils {
 	}
 
 	/** Faster than quickselect for n = max */
-	private static <T> int fastMax(T[] items, Comparator<T> comp, int size) {
+	static <T> int fastMax(T[] items, Comparator<T> comp, int size) {
 		int highestIdx = 0;
 		for (int i = 1; i < size; i++) {
 			int comparison = comp.compare(items[i], items[highestIdx]);
@@ -573,7 +573,7 @@ public final class ArrayUtils {
 		return selectIndex(items, comp, 0, size - 1, kthLowest);
 	}
 
-	private static <T> int partition(T[] array, Comparator<? super T> comp, int left, int right, int pivot) {
+	static <T> int partition(T[] array, Comparator<? super T> comp, int left, int right, int pivot) {
 		T pivotValue = array[pivot];
 		swap(array, right, pivot);
 		int storage = left;
@@ -587,7 +587,7 @@ public final class ArrayUtils {
 		return storage;
 	}
 
-	private static <T> int selectIndex(T[] array, Comparator<? super T> comp, int left, int right, int kthLowest) {
+	static <T> int selectIndex(T[] array, Comparator<? super T> comp, int left, int right, int kthLowest) {
 		if (left == right) return left;
 		int pivotIndex = medianOfThreePivot(array, comp, left, right);
 		int pivotNewIndex = partition(array, comp, left, right, pivotIndex);
@@ -604,7 +604,7 @@ public final class ArrayUtils {
 	}
 
 	/** Median of Three has the potential to outperform a random pivot, especially for partially sorted arrays */
-	private static <T> int medianOfThreePivot(T[] array, Comparator<? super T> comp, int leftIdx, int rightIdx) {
+	static <T> int medianOfThreePivot(T[] array, Comparator<? super T> comp, int leftIdx, int rightIdx) {
 		T left = array[leftIdx];
 		int midIdx = (leftIdx + rightIdx) / 2;
 		T mid = array[midIdx];
@@ -631,7 +631,7 @@ public final class ArrayUtils {
 		}
 	}
 
-	private static <T> void swap(T[] array, int left, int right) {
+	static <T> void swap(T[] array, int left, int right) {
 		T tmp = array[left];
 		array[left] = array[right];
 		array[right] = tmp;
@@ -909,7 +909,11 @@ public final class ArrayUtils {
 		return initial;
 	}
 
-	public static <T> float average(T[] array, Floatf<T> extract) {
+	public static <T> float sumFloat(T[] array, Floatf<T> extract) {
+		return reduceFloat(array, 0, (item, accum) -> accum + extract.get(item));
+	}
+
+	public static <T> float averageFloat(T[] array, Floatf<T> extract) {
 		return reduceFloat(array, 0f, (item, accum) -> accum + extract.get(item)) / array.length;
 	}
 

@@ -84,6 +84,7 @@ public final class HOverrides {
 		Blocks.deepTaintedWater.asFloor().liquidMultiplier = 1.5f;
 		Blocks.oxidationChamber.canOverdrive = Blocks.neoplasiaReactor.canOverdrive = true;
 		Blocks.slag.attributes.set(Attribute.heat, 1f);
+		Blocks.oreThorium.attributes.set(HAttribute.radioactivity, 1f);
 		//blocks-environment-erekir
 		Blocks.yellowStonePlates.attributes.set(Attribute.water, -1f);
 		Blocks.beryllicStone.attributes.set(HAttribute.arkycite, 0.7f);
@@ -151,6 +152,12 @@ public final class HOverrides {
 		if (Blocks.surgeTower instanceof PowerNode node) node.maxNodes = 3;
 		if (Blocks.differentialGenerator instanceof ConsumeGenerator generator) generator.powerProduction = 28f;
 		if (Blocks.thoriumReactor instanceof NuclearReactor reactor) reactor.powerProduction = 18f;
+		if (Blocks.rtgGenerator instanceof ConsumeGenerator generator) {
+			//generator.itemDurationMultipliers.put(HItems.rareEarth, 5f);
+			//generator.itemDurationMultipliers.put(HItems.crystal, 35f);
+			generator.itemDurationMultipliers.put(HItems.uranium, 2f);
+			//generator.itemDurationMultipliers.put(HItems.heavyAlloy, 115f);
+		}
 		Blocks.impactReactor.liquidCapacity = 80f;
 		Blocks.neoplasiaReactor.canOverdrive = true;
 		//blocks-production

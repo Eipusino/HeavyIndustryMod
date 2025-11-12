@@ -1,4 +1,4 @@
-package heavyindustry.world.blocks.heat;
+package heavyindustry.world.blocks.distribution;
 
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
@@ -12,17 +12,24 @@ import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.Edges;
 import mindustry.world.Tile;
-import mindustry.world.blocks.Autotiler;
-import mindustry.world.blocks.distribution.ChainedBuilding;
-import mindustry.world.blocks.heat.HeatConductor;
 
 import java.util.Arrays;
 
-public class HeatPipe extends HeatConductor implements Autotiler {
+/**
+ * Debug testing class. Do not use, otherwise it will directly cause a {@code LinkageError} on the Android platform.
+ * <p>Why doesn't Anuke use Android API level 24+ (Android 5) for Mindustry?
+ * <br>Why are Anuke still using 14 (Android 4)?
+ * <br>Why does R8 change the default methods in the interface that have not been rewritten to final?
+ *
+ * @since 1.0.8
+ * @deprecated Do not use it, any use of this class on the Android platform will cause a {@code LinkageError}.
+ */
+@Deprecated
+public class Conveyor3 extends Conveyor2 {
 	protected static final int[] blendresult = new int[5];
 	protected static final BuildPlan[] directionals = new BuildPlan[4];
 
-	public HeatPipe(String name) {
+	public Conveyor3(String name) {
 		super(name);
 	}
 
@@ -153,14 +160,6 @@ public class HeatPipe extends HeatConductor implements Autotiler {
 	}
 
 	@Override
-	public boolean blendsArmored(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock) {
-		return Point2.equals(tile.x + Geometry.d4(rotation).x, tile.y + Geometry.d4(rotation).y, otherx, othery)
-				|| ((!otherblock.rotatedOutput(otherx, othery, tile) && Edges.getFacingEdge(otherblock, otherx, othery, tile) != null &&
-				Edges.getFacingEdge(otherblock, otherx, othery, tile).relativeTo(tile) == rotation) ||
-				(otherblock.rotatedOutput(otherx, othery, tile) && Point2.equals(otherx + Geometry.d4(otherrot).x, othery + Geometry.d4(otherrot).y, tile.x, tile.y)));
-	}
-
-	@Override
 	public boolean notLookingAt(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock) {
 		return !(otherblock.rotatedOutput(otherx, othery, tile) && Point2.equals(otherx + Geometry.d4(otherrot).x, othery + Geometry.d4(otherrot).y, tile.x, tile.y));
 	}
@@ -181,25 +180,5 @@ public class HeatPipe extends HeatConductor implements Autotiler {
 		Tile facing = Edges.getFacingEdge(otherblock, otherx, othery, tile);
 		return facing != null &&
 				Point2.equals(tile.x + Geometry.d4(rotation).x, tile.y + Geometry.d4(rotation).y, facing.x, facing.y);
-	}
-
-	@Override
-	public boolean blends(Tile tile, int i, int i1, int i2, int i3, Block block) {
-		return false;
-	}
-
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = HeatPipeBuild::new;
-	}
-
-	public class HeatPipeBuild extends HeatConductorBuild implements ChainedBuilding {
-		public @Nullable Building next;
-		public @Nullable HeatPipeBuild nextc;
-
-		@Override
-		public Building next() {
-			return nextc;
-		}
 	}
 }

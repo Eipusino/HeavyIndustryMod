@@ -1015,11 +1015,11 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 
 	public CollectionList<E> selectFrom(CollectionList<E> base, Boolf<E> predicate) {
 		clear();
-		base.each(t -> {
-			if (predicate.get(t)) {
-				add(t);
+		for (E e : base.items) {
+			if (predicate.get(e)) {
+				add(e);
 			}
-		});
+		}
 		return this;
 	}
 

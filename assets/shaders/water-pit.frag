@@ -186,7 +186,7 @@ void main() {
 		wd = wd + sin(wd * 14.0 + btime * 60.0 + texture2D(u_noise, soffset + vec2(0.42,0.69)).r * 15.0) * 0.25;
 		gl_FragColor = vec4(col, 1.0);
 		if (wd + (texture2D(u_noise, offset).r - 0.5) * 0.5 < 0.3) {
-            gl_FragColor.rgb = mix(gl_FragColor.rgb,vec3(89.0 / 256.0, 106.0 / 256.0, 184.0 / 256.0), 0.5);
+            gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(89.0 / 256.0, 106.0 / 256.0, 184.0 / 256.0), 0.5);
 		}
         gl_FragColor.rgb *= fade(bcoords.xy, v);
 	} else {

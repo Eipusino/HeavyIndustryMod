@@ -10,16 +10,16 @@ import arc.math.Mathf;
 
 /** @since 1.0.1 */
 public final class HInterps {
-	public static final Interp upThenFastDown = a -> 1.0115f * (1.833f * (0.9991f * a - 1.1f) + 0.2f / (0.9991f * a - 1.1f) + 2.2f);
-	public static final Interp artillery = a -> 1 - 2 * (a - 0.5f) * (a - 0.5f);
-	public static final Interp artilleryPlus = a -> 3 * a - 3 * a * a + 0.25f;
-	public static final Interp artilleryPlusReversed = a -> -3 * a + 3 * a * a + 1;
-	public static final Interp inOut = a -> 2 * (0.9f * a + 0.31f) + 1f / (5f * (a + 0.1f)) - 1.6f;
-	public static final Interp inOut2 = a -> 1.6243f * (0.9f * a + 0.46f) + 1 / (10 * (a + 0.1f)) - 1.3f;
-	public static final Interp parabola4 = a -> 4 * (a - 0.5f) * (a - 0.5f);
-	public static final Interp parabola4Reversed = a -> -4 * (a - 0.5f) * (a - 0.5f) + 1;
-	public static final Interp parabola4ReversedX4 = a -> (-4 * (a - 0.5f) * (a - 0.5f) + 1) * 2.75f;
-	public static final Interp laser = a -> Interp.pow10Out.apply(a * 1.5f) * Mathf.curve(1 - a, 0, 0.085f);
+	public static final Interp upThenFastDown = new UpThenFastDown();//a -> 1.0115f * (1.833f * (0.9991f * a - 1.1f) + 0.2f / (0.9991f * a - 1.1f) + 2.2f);
+	public static final Interp artillery = new Artillery();//a -> 1 - 2 * (a - 0.5f) * (a - 0.5f);
+	public static final Interp artilleryPlus = new ArtilleryPlus();//a -> 3 * a - 3 * a * a + 0.25f;
+	public static final Interp artilleryPlusReversed = new ArtilleryPlusReversed();//a -> -3 * a + 3 * a * a + 1;
+	public static final Interp inOut = new InOut();//a -> 2 * (0.9f * a + 0.31f) + 1f / (5f * (a + 0.1f)) - 1.6f;
+	public static final Interp inOut2 = new InOut2();//a -> 1.6243f * (0.9f * a + 0.46f) + 1 / (10 * (a + 0.1f)) - 1.3f;
+	public static final Interp parabola4 = new Parabola4();//a -> 4 * (a - 0.5f) * (a - 0.5f);
+	public static final Interp parabola4Reversed = new Parabola4Reversed();//a -> -4 * (a - 0.5f) * (a - 0.5f) + 1;
+	public static final Interp parabola4ReversedX4 = new Parabola4ReversedX4();//a -> (-4 * (a - 0.5f) * (a - 0.5f) + 1) * 2.75f;
+	public static final Interp laser = new Laser();//a -> Interp.pow10Out.apply(a * 1.5f) * Mathf.curve(1 - a, 0, 0.085f);
 
 	public static final BounceOut bounce5Out = new BounceOut(5);
 
@@ -35,4 +35,74 @@ public final class HInterps {
 
 	/// Don't let anyone instantiate this class.
 	private HInterps() {}
+
+	static class UpThenFastDown extends AbstractInterp {
+		@Override
+		public float apply(float a) {
+			return 1.0115f * (1.833f * (0.9991f * a - 1.1f) + 0.2f / (0.9991f * a - 1.1f) + 2.2f);
+		}
+	}
+
+	static class Artillery extends AbstractInterp {
+		@Override
+		public float apply(float a) {
+			return 1 - 2 * (a - 0.5f) * (a - 0.5f);
+		}
+	}
+
+	static class ArtilleryPlus extends AbstractInterp {
+		@Override
+		public float apply(float a) {
+			return 3 * a - 3 * a * a + 0.25f;
+		}
+	}
+
+	static class ArtilleryPlusReversed extends AbstractInterp {
+		@Override
+		public float apply(float a) {
+			return -3 * a + 3 * a * a + 1;
+		}
+	}
+
+	static class InOut extends AbstractInterp {
+		@Override
+		public float apply(float a) {
+			return 2 * (0.9f * a + 0.31f) + 1f / (5f * (a + 0.1f)) - 1.6f;
+		}
+	}
+
+	static class InOut2 extends AbstractInterp {
+		@Override
+		public float apply(float a) {
+			return 1.6243f * (0.9f * a + 0.46f) + 1 / (10 * (a + 0.1f)) - 1.3f;
+		}
+	}
+
+	static class Parabola4 extends AbstractInterp {
+		@Override
+		public float apply(float a) {
+			return 4 * (a - 0.5f) * (a - 0.5f);
+		}
+	}
+
+	static class Parabola4Reversed extends AbstractInterp {
+		@Override
+		public float apply(float a) {
+			return -4 * (a - 0.5f) * (a - 0.5f) + 1;
+		}
+	}
+
+	static class Parabola4ReversedX4 extends AbstractInterp {
+		@Override
+		public float apply(float a) {
+			return (-4 * (a - 0.5f) * (a - 0.5f) + 1) * 2.75f;
+		}
+	}
+
+	static class Laser extends AbstractInterp {
+		@Override
+		public float apply(float a) {
+			return Interp.pow10Out.apply(a * 1.5f) * Mathf.curve(1 - a, 0, 0.085f);
+		}
+	}
 }

@@ -27,7 +27,7 @@ void main() {
 
 		float res = (sin((coords.x + coords.y) * mix_omiga + stime) + 1.0) / 2.0;
 
-		float alpha = max(min((res - min_threshold)/(max_threshold - min_threshold), 1.0), 0.0) * mix_alpha;
+		float alpha = max(min((res - min_threshold) / (max_threshold - min_threshold), 1.0), 0.0) * mix_alpha;
 
 		gl_FragColor = mix(col, mix_color, alpha);
 	} else {

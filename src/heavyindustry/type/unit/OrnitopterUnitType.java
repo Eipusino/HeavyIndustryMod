@@ -11,7 +11,7 @@ import arc.util.Log;
 import heavyindustry.gen.Ornitopterc;
 import heavyindustry.graphics.Outliner;
 import heavyindustry.math.Mathm;
-import heavyindustry.util.ReflectUtils;
+import heavyindustry.util.Reflects;
 import mindustry.gen.Unit;
 import mindustry.graphics.Layer;
 import mindustry.graphics.MultiPacker;
@@ -155,7 +155,7 @@ public class OrnitopterUnitType extends UnitType2 {
 			} catch (CloneNotSupportedException e) {
 				Log.err("java sucks", e);
 
-				return ReflectUtils.copyProperties(this, new Blade(spriteName));
+				return Reflects.copyProperties(this, new Blade(spriteName));
 			}
 		}
 	}

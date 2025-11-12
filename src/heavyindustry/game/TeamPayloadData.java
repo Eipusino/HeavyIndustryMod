@@ -81,4 +81,19 @@ public class TeamPayloadData implements CustomChunk {
 			}
 		}
 	}
+
+	@Override
+	public void read(DataInput stream, int length) throws IOException {
+		read(stream);
+	}
+
+	@Override
+	public boolean shouldWrite() {
+		return true;
+	}
+
+	@Override
+	public boolean writeNet() {
+		return true;
+	}
 }

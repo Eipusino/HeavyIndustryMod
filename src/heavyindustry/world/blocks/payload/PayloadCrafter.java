@@ -1,11 +1,11 @@
 package heavyindustry.world.blocks.payload;
 
 import arc.math.geom.Vec2;
-import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.type.Recipe;
+import heavyindustry.util.CollectionList;
 import heavyindustry.util.CollectionObjectSet;
 import heavyindustry.world.blocks.production.AdaptiveCrafter;
 import mindustry.content.Fx;
@@ -25,7 +25,9 @@ import mindustry.world.meta.StatValue;
 public class PayloadCrafter extends AdaptiveCrafter {
 	public CollectionObjectSet<UnlockableContent> payloadFilter = new CollectionObjectSet<>(UnlockableContent.class);
 
-	public Seq<UnlockableContent> payloadOutput = new Seq<>(UnlockableContent.class);
+	public CollectionList<UnlockableContent> payloadOutput = new CollectionList<>(UnlockableContent.class);
+
+	public int payloadCapacity = 10;
 
 	public PayloadCrafter(String name) {
 		super(name);
@@ -87,6 +89,56 @@ public class PayloadCrafter extends AdaptiveCrafter {
 		@Override
 		public PayloadSeq getPayloads() {
 			return payloads;
+		}
+
+		@Override
+		public boolean validRecipe() {
+			if (recipeIndex < 0) return false;
+
+			Recipe recipe = recipes.get(recipeIndex);
+
+			for (PayloadStack input : recipe.inputPayload) {
+				if (getPayloads().get(input.item) < input.amount) {
+					return false;
+				}
+			}
+			return super.validRecipe();
+		}
+
+		@Override
+		public void updateRecipe() {
+			for (int i = recipes.size - 1; i >= 0; i--) {
+				boolean valid = true;
+
+				Recipe recipe = recipes.get(i);
+
+				for (ItemStack input : recipe.inputItem) {
+					if (items.get(input.item) < input.amount) {
+						valid = false;
+						break;
+					}
+				}
+
+				for (LiquidStack input : recipe.inputLiquid) {
+					if (liquids.get(input.liquid) < input.amount * Time.delta) {
+						valid = false;
+						break;
+					}
+				}
+
+				for (PayloadStack input : recipe.inputPayload) {
+					if (getPayloads().get(input.item) < input.amount) {
+						valid = false;
+						break;
+					}
+				}
+
+				if (valid) {
+					recipeIndex = i;
+					return;
+				}
+			}
+			recipeIndex = -1;
 		}
 
 		@Override

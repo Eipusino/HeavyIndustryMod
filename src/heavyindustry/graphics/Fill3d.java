@@ -10,7 +10,7 @@ import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
 import arc.util.Tmp;
 
-public class Fill3d {
+public final class Fill3d {
 	public static final Vec2 vec = new Vec2();
 
 	private static final Color tmpCol = new Color();

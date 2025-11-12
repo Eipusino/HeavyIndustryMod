@@ -375,7 +375,7 @@ public final class ObjectUtils {
 
 					// On the Android platform, the reflection performance is not low, so there is no need to use Unsafe.
 					if (!OS.isAndroid && HVars.hasUnsafe) {
-						value = UnsafeUtils.get(field, object);
+						value = Unsafer.get(field, object);
 					} else {
 						field.setAccessible(true);
 						value = field.get(object);
@@ -447,7 +447,7 @@ public final class ObjectUtils {
 	public static String toDescriptor(Class<?> type) {
 		if (type == null) throw new NullPointerException("param 'type' is null");
 
-		if (type.isArray()) return "[" + toDescriptor(type.getComponentType());
+		if (type.isArray()) return '[' + toDescriptor(type.getComponentType());
 
 		if (type.isPrimitive()) {
 			if (type == void.class) return "V";
@@ -462,6 +462,6 @@ public final class ObjectUtils {
 			else throw new IllegalArgumentException("unknown type of " + type);// should not happen
 		}
 
-		return "L" + type.getName().replace('.', '/') + ";";
+		return 'L' + type.getName().replace('.', '/') + ';';
 	}
 }

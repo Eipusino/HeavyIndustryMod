@@ -102,6 +102,7 @@ import heavyindustry.world.blocks.power.ArmoredPowerNode;
 import heavyindustry.world.blocks.power.BeamDiode;
 import heavyindustry.world.blocks.power.GlowNuclearReactor;
 import heavyindustry.world.blocks.power.HyperGenerator;
+import heavyindustry.world.blocks.power.OverlayGenerator;
 import heavyindustry.world.blocks.power.PowerAnalyzer;
 import heavyindustry.world.blocks.power.SmartBeamNode;
 import heavyindustry.world.blocks.power.SmartPowerNode;
@@ -410,7 +411,7 @@ public final class HBlocks {
 	public static PowerAnalyzer powerAnalyzer;
 	public static ConsumeGenerator gasGenerator;
 	public static ConsumeGenerator coalPyrolyzer;
-	public static ThermalGenerator largeThermalGenerator;
+	public static ThermalGenerator largeThermalGenerator, radiationGenerator;
 	public static ConsumeGenerator liquidConsumeGenerator;
 	public static GlowNuclearReactor uraniumReactor;
 	public static HyperGenerator hyperMagneticReactor;
@@ -848,11 +849,13 @@ public final class HBlocks {
 		}};
 		softRareEarth = new Floor("soft-rare-earth", 3) {{
 			itemDrop = HItems.rareEarth;
+			attributes.set(HAttribute.radioactivity, 0.1f);
 			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		patternRareEarth = new Floor("pattern-rare-earth", 4) {{
 			itemDrop = HItems.rareEarth;
+			attributes.set(HAttribute.radioactivity, 0.1f);
 			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
@@ -1062,6 +1065,7 @@ public final class HBlocks {
 			oreDefault = true;
 			oreThreshold = 0.89f;
 			oreScale = 33;
+			attributes.set(HAttribute.radioactivity, 2f);
 			buildType = Constant.PROV_BUILDING;
 		}};
 		oreChromium = new OreBlock("ore-chromium", HItems.chromium) {{
@@ -2165,6 +2169,19 @@ public final class HBlocks {
 			ambientSound = Sounds.hum;
 			ambientSoundVolume = 0.06f;
 		}};
+		radiationGenerator = new OverlayGenerator("radiation-generator") {{
+			requirements(Category.power, ItemStack.with(Items.lead, 120, Items.thorium, 80, Items.surgeAlloy, 30, Items.phaseFabric, 60));
+			size = 2;
+			health = 400;
+			buildCostMultiplier = 0.9f;
+			attribute = HAttribute.radioactivity;
+			envEnabled = Env.any;
+			powerProduction = 2f;
+			generateEffect = Fx.generatespark;
+			drawer = new DrawMulti(new DrawDefault(), new DrawFade() {{
+				scale = 10;
+			}});
+		}};
 		liquidConsumeGenerator = new ConsumeGenerator("liquid-generator") {{
 			requirements(Category.power, ItemStack.with(Items.graphite, 120, Items.metaglass, 80, Items.silicon, 115));
 			size = 3;
@@ -2887,13 +2904,10 @@ public final class HBlocks {
 			outputItem = new ItemStack(HItems.chromium, 5);
 			craftEffect = Fx.smeltsmoke;
 			drawer = new DrawMulti(new DrawDefault(), new DrawLiquidRegion(Liquids.slag), new DrawGlowRegion() {{
-				glowScale = 8;
+				glowScale = 8f;
 				alpha = 0.8f;
 			}}, new DrawFlame() {{
-				flameRadius = 0;
-				flameRadiusIn = 0;
-				flameRadiusMag = 0;
-				flameRadiusInMag = 0;
+				flameRadius = flameRadiusIn = flameRadiusMag = flameRadiusInMag = 0f;
 			}});
 			consumePower(7.5f);
 			consumeLiquid(Liquids.slag, 12f / 60f);
@@ -2953,7 +2967,7 @@ public final class HBlocks {
 			health = 680;
 			armor = 8f;
 			itemCapacity = 15;
-			liquidCapacity = 54;
+			liquidCapacity = 54f;
 			results = ItemStack.with(Items.pyratite, 1, Items.blastCompound, 4);
 			craftTime = 12f;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(HLiquids.nitratedOil), new DrawRotator(), new DrawRegion("-middle"), new DrawDefault());
@@ -2969,15 +2983,15 @@ public final class HBlocks {
 			health = 660;
 			requirements(Category.crafting, ItemStack.with(Items.lead, 100, Items.metaglass, 160, Items.titanium, 80, Items.thorium, 60, HItems.chromium, 30));
 			hasPower = hasItems = hasLiquids = true;
-			liquidCapacity = 180;
-			craftTime = 60;
+			liquidCapacity = 180f;
+			craftTime = 60f;
 			outputLiquid = new LiquidStack(HLiquids.blastReagent, 1.25f * 2);
 			consumePower(2.25f);
 			consumeItem(HItems.rareEarth, 3);
 			consumeLiquid(HLiquids.nitratedOil, 2f);
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(HLiquids.nitratedOil), new DrawLiquidTile(HLiquids.blastReagent), new DrawRegion("-rotator") {{
 				rotateSpeed = -0.8f;
-				rotation = 45;
+				rotation = 45f;
 				spinSprite = true;
 			}}, new DrawDefault());
 			buildType = GenericCrafterBuild::new;
@@ -7112,11 +7126,11 @@ public final class HBlocks {
 				protected void shoot(BulletType type) {
 					if (isControlled() || logicShooting) {
 						super.shoot(type);
-					} else if (target != null && type instanceof PointBulletType p) {
-						if (target instanceof Buildingc b) {
-							b.killed();
-						} else if (target instanceof Unitc u) {
-							Call.unitDestroy(u.id());
+					} else if (target != null && type instanceof PointBulletType point) {
+						if (target instanceof Buildingc build) {
+							build.killed();
+						} else if (target instanceof Unitc unitc) {
+							Call.unitDestroy(unitc.id());
 						}
 						totalShots += 1;
 						float bulletX = x + Angles.trnsx(rotation - 90, shootX, shootY), bulletY = y + Angles.trnsy(rotation - 90, shootX, shootY);
@@ -7125,7 +7139,7 @@ public final class HBlocks {
 						ammoUseEffect.at(x - Angles.trnsx(rotation, ammoEjectBack), y - Angles.trnsy(rotation, ammoEjectBack), rotation * Mathf.sign(0));
 
 						float angle = Mathf.angle(target.getX() - bulletX, target.getY() - bulletY);
-						Geometry.iterateLine(0f, bulletX, bulletY, target.getX(), target.getY(), p.trailSpacing, (x, y) -> p.trailEffect.at(x, y, angle));
+						Geometry.iterateLine(0f, bulletX, bulletY, target.getX(), target.getY(), point.trailSpacing, (x, y) -> point.trailEffect.at(x, y, angle));
 
 						if (shootEffect != null) {
 							shootEffect.at(bulletX, bulletY, angle, Pal.spore);

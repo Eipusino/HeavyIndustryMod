@@ -87,4 +87,9 @@ public class LazyDrawable implements Drawable {
 	public void setMinHeight(float value) {
 		if (drawable != null) drawable.setMinHeight(value);
 	}
+
+	@Override
+	public float imageSize() {
+		return getMinWidth();
+	}
 }

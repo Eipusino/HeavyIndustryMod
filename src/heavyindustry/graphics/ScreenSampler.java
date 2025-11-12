@@ -203,7 +203,8 @@ public final class ScreenSampler {
 
 		Gl.bindFramebuffer(GL30.GL_READ_FRAMEBUFFER, currBuffer.getFramebufferHandle());
 		Gl.bindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, target.getFramebufferHandle());
-		Core.gl30.glBlitFramebuffer(0, 0,
+		Core.gl30.glBlitFramebuffer(
+				0, 0,
 				currBuffer.getWidth(), currBuffer.getHeight(),
 				0, 0,
 				target.getWidth(), target.getHeight(),

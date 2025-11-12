@@ -4,6 +4,11 @@ public abstract class BaseStripDrawable implements StripDrawable {
 	public float leftOff, rightOff, outerWidth, innerWidth, minOffset, minWidth = 0f;
 
 	@Override
+	public void draw(float originX, float originY, float stripWidth, float angleDelta) {
+		draw(originX, originY, 0f, 0f, angleDelta, stripWidth);
+	}
+
+	@Override
 	public float getLeftOff() {
 		return leftOff;
 	}

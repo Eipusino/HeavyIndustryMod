@@ -66,10 +66,10 @@ public final class Worlds {
 			Block block = holder.value;
 
 			data.append(name).append(' ')
-				.append(block.synthetic() ? '1' : '0').append(' ')
-				.append(block.solid ? '1' : '0').append(' ')
-				.append(block.size).append(' ')
-				.append(block.mapColor.rgba() >>> 8).append('\n');
+					.append(block.synthetic() ? '1' : '0').append(' ')
+					.append(block.solid ? '1' : '0').append(' ')
+					.append(block.size).append(' ')
+					.append(block.mapColor.rgba() >>> 8).append('\n');
 		});
 
 		Vars.platform.showFileChooser(false, Core.bundle.get("hi-export-data"), "dat", file -> {

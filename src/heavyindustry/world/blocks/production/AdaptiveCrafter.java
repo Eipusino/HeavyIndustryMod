@@ -16,6 +16,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.math.Mathm;
 import heavyindustry.type.Recipe;
+import heavyindustry.util.CollectionList;
 import heavyindustry.world.consumers.ConsumeRecipe;
 import mindustry.content.Fx;
 import mindustry.core.UI;
@@ -31,7 +32,6 @@ import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.type.Liquid;
 import mindustry.type.LiquidStack;
-import mindustry.type.PayloadStack;
 import mindustry.ui.Bar;
 import mindustry.ui.Styles;
 import mindustry.world.Block;
@@ -66,13 +66,12 @@ public class AdaptiveCrafter extends Block {
 
 	public DrawBlock drawer = new DrawDefault();
 
-	public Seq<Recipe> recipes = new Seq<>(Recipe.class);
+	public CollectionList<Recipe> recipes = new CollectionList<>(Recipe.class);
 
-	public Seq<Item> itemOutput = new Seq<>(Item.class);
-	public Seq<Liquid> liquidOutput = new Seq<>(Liquid.class);
+	public CollectionList<Item> itemOutput = new CollectionList<>(Item.class);
+	public CollectionList<Liquid> liquidOutput = new CollectionList<>(Liquid.class);
 
 	public float powerProduction = 0f;
-	public int payloadCapacity = 10;
 
 	public AdaptiveCrafter(String name) {
 		super(name);
@@ -282,22 +281,17 @@ public class AdaptiveCrafter extends Block {
 			for (int i = recipes.size - 1; i >= 0; i--) {
 				boolean valid = true;
 
-				for (ItemStack input : recipes.get(i).inputItem) {
+				Recipe recipe = recipes.get(i);
+
+				for (ItemStack input : recipe.inputItem) {
 					if (items.get(input.item) < input.amount) {
 						valid = false;
 						break;
 					}
 				}
 
-				for (LiquidStack input : recipes.get(i).inputLiquid) {
+				for (LiquidStack input : recipe.inputLiquid) {
 					if (liquids.get(input.liquid) < input.amount * Time.delta) {
-						valid = false;
-						break;
-					}
-				}
-
-				for (PayloadStack input : recipes.get(i).inputPayload) {
-					if (getPayloads().get(input.item) < input.amount) {
 						valid = false;
 						break;
 					}
@@ -313,20 +307,17 @@ public class AdaptiveCrafter extends Block {
 
 		public boolean validRecipe() {
 			if (recipeIndex < 0) return false;
-			for (ItemStack input : recipes.get(recipeIndex).inputItem) {
+
+			Recipe recipe = recipes.get(recipeIndex);
+
+			for (ItemStack input : recipe.inputItem) {
 				if (items.get(input.item) < input.amount) {
 					return false;
 				}
 			}
 
-			for (LiquidStack input : recipes.get(recipeIndex).inputLiquid) {
+			for (LiquidStack input : recipe.inputLiquid) {
 				if (liquids.get(input.liquid) < input.amount * Time.delta) {
-					return false;
-				}
-			}
-
-			for (PayloadStack input : recipes.get(recipeIndex).inputPayload) {
-				if (getPayloads().get(input.item) < input.amount) {
 					return false;
 				}
 			}

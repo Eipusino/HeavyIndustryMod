@@ -2,6 +2,7 @@ package heavyindustry.core;
 
 import arc.ApplicationCore;
 import arc.ApplicationListener;
+import arc.files.Fi;
 import arc.math.Mathf;
 import arc.struct.Seq;
 import heavyindustry.entities.HEntity;
@@ -22,9 +23,30 @@ public final class HeavyIndustryListener implements ApplicationListener {
 	}
 
 	@Override
+	public void init() {}
+
+	@Override
+	public void resize(int width, int height) {}
+
+	@Override
 	public void update() {
 		HEntity.update();
 	}
+
+	@Override
+	public void pause() {}
+
+	@Override
+	public void resume() {}
+
+	@Override
+	public void dispose() {}
+
+	@Override
+	public void exit() {}
+
+	@Override
+	public void fileDropped(Fi file) {}
 
 	public static float getUnitDps(UnitType unit) {
 		if (unit.id >= unitDps.length) return 0f;

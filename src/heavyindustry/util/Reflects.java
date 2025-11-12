@@ -21,6 +21,7 @@ import arc.util.OS;
 import heavyindustry.HVars;
 import mindustry.Vars;
 
+import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -51,11 +52,13 @@ import java.util.Arrays;
  * @author Eipusino
  * @since 1.0.6
  */
-public final class ReflectUtils {
-	static final CollectionObjectMap<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
+public final class Reflects {
+	public static Lookup lookup;
+
+	private static final CollectionObjectMap<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
 
 	/// Don't let anyone instantiate this class.
-	private ReflectUtils() {}
+	private Reflects() {}
 
 	public static Class<?> box(Class<?> type) {
 		if (type == void.class) return Void.class;
@@ -326,8 +329,8 @@ public final class ReflectUtils {
 
 				try {
 					if (!OS.isAndroid && HVars.hasUnsafe) {
-						Object value = UnsafeUtils.get(sourceField, source);
-						UnsafeUtils.set(targetField, target, value);
+						Object value = Unsafer.get(sourceField, source);
+						Unsafer.set(targetField, target, value);
 					} else {
 						sourceField.setAccessible(true);
 						targetField.setAccessible(true);

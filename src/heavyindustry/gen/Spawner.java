@@ -17,7 +17,6 @@ import heavyindustry.audio.HSounds;
 import heavyindustry.content.HFx;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.math.Mathm;
-import heavyindustry.util.CollectionList;
 import heavyindustry.util.Utils;
 import mindustry.Vars;
 import mindustry.ai.types.CommandAI;
@@ -47,14 +46,13 @@ import mindustry.type.UnitType;
 import mindustry.ui.Fonts;
 
 import java.nio.FloatBuffer;
-import java.util.List;
 
 import static heavyindustry.HVars.MOD_NAME;
 import static mindustry.Vars.headless;
 import static mindustry.Vars.tilesize;
 
 public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
-	public final List<Trail> trails = CollectionList.with(new Trail(30), new Trail(50), new Trail(70));
+	public final Trail[] trails = {new Trail(30), new Trail(50), new Trail(70)};
 
 	public Team team = Team.derelict;
 	public UnitType type = UnitTypes.alpha;
@@ -146,9 +144,9 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 			if (!headless) {
 				trailProgress += Time.delta * (0.45f + fin(Interp.pow3In) * 2f);
 
-				for (int i = 0; i < trails.size(); i++) {
-					Trail trail = trails.get(i);
-					Tmp.v1.trns(trailProgress * (i + 1) * 1.5f + i * 360f / trails.size() + Mathf.randomSeed(id, 360), ((fin() + 1) / 2 * drawSize * (1 + 0.5f * i) + Mathf.sinDeg(trailProgress * (1 + 0.5f * i)) * drawSize / 2) * (fout(Interp.pow3) * 7 + 1) / 8, fin(Interp.swing) * fout(Interp.swingOut) * drawSize / 3 * fout()).add(this);
+				for (int i = 0; i < trails.length; i++) {
+					Trail trail = trails[i];
+					Tmp.v1.trns(trailProgress * (i + 1) * 1.5f + i * 360f / trails.length + Mathf.randomSeed(id, 360), ((fin() + 1) / 2 * drawSize * (1 + 0.5f * i) + Mathf.sinDeg(trailProgress * (1 + 0.5f * i)) * drawSize / 2) * (fout(Interp.pow3) * 7 + 1) / 8, fin(Interp.swing) * fout(Interp.swingOut) * drawSize / 3 * fout()).add(this);
 					trail.update(Tmp.v1.x, Tmp.v1.y, (fout(0.25f) * 2 + 1) / 3);
 				}
 			}
@@ -184,8 +182,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 		}
 
 		if (!headless) {
-			for (int i = 0; i < trails.size(); i++) {
-				Trail trail = trails.get(i);
+			for (Trail trail : trails) {
 				Fx.trailFade.at(x, y, trailWidth, team.color, trail.copy());
 			}
 		}
@@ -240,9 +237,9 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 		}
 
 		if (can) {
-			for (Trail t : trails) {
-				t.drawCap(team.color, trailWidth);
-				t.draw(team.color, trailWidth);
+			for (Trail trail : trails) {
+				trail.drawCap(team.color, trailWidth);
+				trail.draw(team.color, trailWidth);
 			}
 		}
 

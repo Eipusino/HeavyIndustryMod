@@ -17,7 +17,7 @@ import arc.files.Fi;
 import arc.func.Func;
 import arc.util.Log;
 import heavyindustry.HVars;
-import heavyindustry.util.ReflectUtils;
+import heavyindustry.util.Reflects;
 import mindustry.Vars;
 import rhino.Context;
 import rhino.Function;
@@ -119,7 +119,7 @@ public final class ScriptUtils {
 
 	@SuppressWarnings("unchecked")
 	public static <T> Func<Object[], T> requireType(Function func, Context context, Scriptable scope, Class<T> returnType) {
-		Class<?> type = ReflectUtils.box(returnType);
+		Class<?> type = Reflects.box(returnType);
 		return args -> {
 			Object res = func.call(context, scope, scope, args);
 			if (type == Void.class) return null;

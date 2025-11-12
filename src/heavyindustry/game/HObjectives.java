@@ -1,6 +1,7 @@
 package heavyindustry.game;
 
 import arc.Core;
+import arc.scene.ui.layout.Table;
 import mindustry.game.Objectives.Objective;
 import mindustry.world.Block;
 
@@ -16,7 +17,6 @@ public final class HObjectives {
 
 		@Override
 		public boolean complete() {
-			// lol
 			return false;
 		}
 
@@ -24,5 +24,8 @@ public final class HObjectives {
 		public String display() {
 			return Core.bundle.format("requirement.launchsector", requiredCore.localizedName);
 		}
+
+		@Override
+		public void build(Table table) {}
 	}
 }

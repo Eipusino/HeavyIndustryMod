@@ -3,6 +3,7 @@ package heavyindustry.gen;
 import arc.util.Nullable;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.type.unit.UnitType2;
 import mindustry.gen.Building;
 import mindustry.gen.BuildingTetherc;
 import mindustry.gen.Call;

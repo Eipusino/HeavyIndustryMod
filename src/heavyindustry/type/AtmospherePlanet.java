@@ -107,5 +107,10 @@ public class AtmospherePlanet extends Planet {
 		public void dispose() {
 			mesh.dispose();
 		}
+
+		@Override
+		public boolean isDisposed() {
+			return false;
+		}
 	}
 }

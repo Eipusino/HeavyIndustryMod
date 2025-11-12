@@ -65,7 +65,7 @@ public class RailConveyor extends Conveyor2 {
 
 	@Override
 	public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock) {
-		boolean armored = (tile.build instanceof RailConveyorBuild && ((RailConveyorBuild) tile.build).armored);
+		boolean armored = (tile.build instanceof RailConveyorBuild conveyor && conveyor.armored);
 		if (!armored)
 			return (otherblock.outputsItems() || (lookingAt(tile, rotation, otherx, othery, otherblock) && otherblock.hasItems))
 					&& lookingAtEither(tile, rotation, otherx, othery, otherrot, otherblock);
@@ -97,7 +97,7 @@ public class RailConveyor extends Conveyor2 {
 	}
 
 	public int pulseFrame() {
-		int value = (int) ((Time.time / 4f) % 4f);
+		int value = (int) ((Time.time / 4) % 4);
 		return switch (value) {
 			case 1 -> 1;
 			case 2 -> 2;

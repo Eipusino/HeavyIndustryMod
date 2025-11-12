@@ -92,11 +92,6 @@ public class ChainedChainMechUnit extends Unit2 implements ChainMechc {
 
 	/** Wrong cast errors are way too long. So long in fact that the crash box is too small for it. */
 	@Override
-	public ChainedUnitType checkType(UnitType value) {
-		return (ChainedUnitType) value;
-	}
-
-	@Override
 	public ChainedUnitType checkType() {
 		return (ChainedUnitType) type;
 	}

@@ -1,6 +1,5 @@
 package heavyindustry.type.weapons;
 
-import arc.util.Log;
 import heavyindustry.util.CollectionObjectMap;
 import heavyindustry.util.comp.ExtraVariablec;
 import mindustry.entities.units.WeaponMount;

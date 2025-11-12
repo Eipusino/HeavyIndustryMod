@@ -2,7 +2,7 @@ package heavyindustry.math;
 
 import arc.math.Interp;
 
-public class MultiInterp implements Interp {
+public class MultiInterp extends AbstractInterp {
 	final Interp[] interps;
 
 	public MultiInterp(Interp... interp) {
