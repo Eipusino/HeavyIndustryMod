@@ -4,7 +4,7 @@ import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import heavyindustry.graphics.Drawn;
-import heavyindustry.util.SpriteUtils;
+import heavyindustry.util.Sprites;
 import mindustry.gen.Building;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
@@ -50,6 +50,6 @@ public class DrawSpecConstruct extends DrawBlock {
 
 	@Override
 	public void load(Block block) {
-		constructRegions = SpriteUtils.splitLayer(block.name + "-construct", (size > 0 ? size : block.size) * 32, 0);
+		constructRegions = Sprites.splitLayer(block.name + "-construct", (size > 0 ? size : block.size) * 32, 0);
 	}
 }

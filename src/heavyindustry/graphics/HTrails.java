@@ -18,7 +18,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
-import heavyindustry.util.ArrayUtils;
+import heavyindustry.util.Arrays2;
 import mindustry.gen.Rotc;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Trail;
@@ -640,7 +640,7 @@ public final class HTrails {
 
 		@Override
 		protected TexturedTrail copyBlank() {
-			return new TexturedTrail(length, name, rotation, ArrayUtils.copyArray(attributes, TrailAttrib::copy));
+			return new TexturedTrail(length, name, rotation, Arrays2.copyArray(attributes, TrailAttrib::copy));
 		}
 
 		@Override
@@ -878,7 +878,7 @@ public final class HTrails {
 			attributes = att;
 			rotation = rot;
 
-			stride = baseStride() + ArrayUtils.sumInt(att, t -> t.count);
+			stride = baseStride() + Arrays2.sumInt(att, t -> t.count);
 			points.items = new float[length * stride];
 
 			lastX = lastY = lastW = lastAngle = Float.NaN;

@@ -4,7 +4,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
-import heavyindustry.util.SpriteUtils;
+import heavyindustry.util.Sprites;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
 import mindustry.type.Liquid;
@@ -24,7 +24,7 @@ public class ConnectedPump extends Pump {
 	public void load() {
 		super.load();
 
-		splits = SpriteUtils.split(name + "-autotile", 32, 4, 4);
+		splits = Sprites.split(name + "-autotile", 32, 4, 4);
 	}
 
 	@Override
@@ -43,8 +43,8 @@ public class ConnectedPump extends Pump {
 
 			if (size == 1) {
 				drawIndex = 0;
-				for (int i = 0; i < SpriteUtils.orthogonalPos.length; i++) {
-					Point2 p = SpriteUtils.orthogonalPos[i];
+				for (int i = 0; i < Sprites.orthogonalPos.length; i++) {
+					Point2 p = Sprites.orthogonalPos[i];
 					if (isValidPump(world.build(tileX() + p.x, tileY() + p.y))) {
 						drawIndex += 1 << i;
 					}

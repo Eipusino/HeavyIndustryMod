@@ -8,8 +8,8 @@ import arc.util.Eachable;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.math.Mathm;
-import heavyindustry.util.SpriteUtils;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
+import heavyindustry.util.Sprites;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.gen.Teamc;
@@ -51,7 +51,7 @@ public class TubeConveyor extends Conveyor2 {
 	public void load() {
 		super.load();
 
-		topRegion = SpriteUtils.splitLayers(name + "-sheet", 32, 2);
+		topRegion = Sprites.splitLayers(name + "-sheet", 32, 2);
 		capRegion = new TextureRegion[]{topRegion[1][0], topRegion[1][1]};
 	}
 
@@ -167,8 +167,8 @@ public class TubeConveyor extends Conveyor2 {
 
 		@Override
 		public int acceptStack(Item item, int amount, Teamc source) {
-			if (isEnd(Utils.reverse(rotation)) && items.total() >= 2) return 0;
-			if (isEnd(Utils.reverse(rotation)) && isEnd(rotation) && items.total() >= 1) return 0;
+			if (isEnd(Get.reverse(rotation)) && items.total() >= 2) return 0;
+			if (isEnd(Get.reverse(rotation)) && isEnd(rotation) && items.total() >= 1) return 0;
 			return Math.min((int) (minitem / itemSpace), amount);
 		}
 

@@ -672,6 +672,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	/** Removes a value, without using identity. */
+	@Override
 	public boolean remove(Object o) {
 		return remove(o, false);
 	}
@@ -707,7 +708,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	@Override
 	public boolean removeAll(Collection<?> c) {
 		boolean modified = false;
-		Iterator<?> it = iterator();
+		Iterator<E> it = iterator();
 		while (it.hasNext()) {
 			if (c.contains(it.next())) {
 				it.remove();
@@ -1076,7 +1077,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		if (kthLowest < 1) {
 			throw new ArcRuntimeException("nth_lowest must be greater than 0, 1 = first, 2 = second...");
 		}
-		return ArrayUtils.select(items, comparator, kthLowest, size);
+		return Arrays2.select(items, comparator, kthLowest, size);
 	}
 
 	/**
@@ -1090,7 +1091,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		if (kthLowest < 1) {
 			throw new ArcRuntimeException("nth_lowest must be greater than 0, 1 = first, 2 = second...");
 		}
-		return ArrayUtils.selectIndex(items, comparator, kthLowest, size);
+		return Arrays2.selectIndex(items, comparator, kthLowest, size);
 	}
 
 	public CollectionList<E> reverse() {
@@ -1204,7 +1205,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		for (int i = 0; i < n; i++) {
 			Object o1 = items1[i];
 			Object o2 = items2[i];
-			if (ObjectUtils.unequals(o1, o2)) return false;
+			if (Objects2.unequals(o1, o2)) return false;
 		}
 		return true;
 	}

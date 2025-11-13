@@ -8,7 +8,7 @@ import arc.math.geom.Point2;
 import arc.util.Eachable;
 import arc.util.Time;
 import arc.util.Tmp;
-import heavyindustry.util.SpriteUtils;
+import heavyindustry.util.Sprites;
 import mindustry.entities.units.BuildPlan;
 import mindustry.game.Team;
 import mindustry.gen.Building;
@@ -45,8 +45,8 @@ public class Conveyor2 extends Conveyor {
 			teamRegions[team.id] = teamRegion.found() && team.hasPalette ? Core.atlas.find(name + "-team-" + team.name, teamRegion) : teamRegion;
 		}
 
-		regions = SpriteUtils.split(Core.atlas.find(name + "-base"), 32);
-		edgeRegions = SpriteUtils.split(Core.atlas.find(name + "-edge"), 32);
+		regions = Sprites.split(Core.atlas.find(name + "-base"), 32);
+		edgeRegions = Sprites.split(Core.atlas.find(name + "-edge"), 32);
 	}
 
 	@Override

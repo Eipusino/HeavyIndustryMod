@@ -3,7 +3,7 @@ package heavyindustry.input;
 import arc.Input;
 import arc.input.KeyCode;
 import arc.util.Structs;
-import heavyindustry.util.ObjectUtils;
+import heavyindustry.util.Objects2;
 
 import java.io.Serializable;
 
@@ -61,9 +61,9 @@ public class CombinedKeys implements Serializable {
 	@Override
 	public int hashCode() {
 		int res = key.hashCode();
-		res = res * 31 + ObjectUtils.hashCodeBool(isShift);
-		res = res * 31 + ObjectUtils.hashCodeBool(isAlt);
-		res = res * 31 + ObjectUtils.hashCodeBool(isCtrl);
+		res = res * 31 + Objects2.hashCodeBool(isShift);
+		res = res * 31 + Objects2.hashCodeBool(isAlt);
+		res = res * 31 + Objects2.hashCodeBool(isCtrl);
 		return res;
 	}
 

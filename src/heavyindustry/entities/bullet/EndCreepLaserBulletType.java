@@ -20,7 +20,7 @@ import heavyindustry.graphics.HPal;
 import heavyindustry.math.Mathm;
 import heavyindustry.type.weapons.LaserWeapon.LaserRange;
 import heavyindustry.util.Constant;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.content.Liquids;
@@ -67,7 +67,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
 		b.fdata = baseLength;
 		CreepLaserData data = new CreepLaserData();
 
-		Vec2 v = Utils.v.trns(b.rotation(), baseLength).add(b.x, b.y);
+		Vec2 v = Get.v.trns(b.rotation(), baseLength).add(b.x, b.y);
 		HFx.desGroundHitMain.at(v.x, v.y, b.rotation());
 
 		data.lastX = v.x;
@@ -88,7 +88,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
 		float scl = (1f + Mathm.clamp(1f - (b.time / 16f)) * 1.1f) * grnd;
 
 		if (Mathf.chanceDelta(0.75f) && grnd > 0) {
-			Vec2 v = Utils.v.trns(b.rotation(), len).add(b.x, b.y).lerp(data.lastX, data.lastY, Mathf.random());
+			Vec2 v = Get.v.trns(b.rotation(), len).add(b.x, b.y).lerp(data.lastX, data.lastY, Mathf.random());
 
 			Tile ground = Vars.world.tileWorld(v.x, v.y);
 			if (ground != null) {
@@ -102,7 +102,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
 			}
 		}
 
-		Vec2 v = Utils.v.trns(b.rotation(), len).add(b.x, b.y);
+		Vec2 v = Get.v.trns(b.rotation(), len).add(b.x, b.y);
 
 		if (scl > 0) {
 			float dst = Mathf.dst(b.x, b.y, data.lastX, data.lastY);
@@ -146,7 +146,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
 		if (!(b.data instanceof CreepLaserData data)) return;
 
 		float len = getLength(b.time);
-		Vec2 v = Utils.v.trns(b.rotation(), len).add(b.x, b.y), v2 = Utils.vv.trns(b.rotation(), length + 100f).add(b.x, b.y);
+		Vec2 v = Get.v.trns(b.rotation(), len).add(b.x, b.y), v2 = Get.vv.trns(b.rotation(), length + 100f).add(b.x, b.y);
 		float vx = v.x, vy = v.y;
 		//float v2x = v2.x, v2y = v2.y;
 		float bx = b.x, by = b.y;
@@ -200,7 +200,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
 		float range = 230f * scl;
 		HFx.desCreepHeavyHit.at(x, y, b.rotation(), scl);
 
-		Rect rect = Utils.r.setCentered(x, y, range * 2f);
+		Rect rect = Get.r.setCentered(x, y, range * 2f);
 
 		buildings.clear();
 		Groups.unit.intersect(rect.x, rect.y, rect.width, rect.height, unit -> {
@@ -232,7 +232,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
 
 	@Override
 	public void draw(Bullet b) {
-		Rand rand = Utils.rand(b.id), rand2 = Utils.rand2;
+		Rand rand = Get.rand(b.id), rand2 = Get.rand2;
 
 		float len = getLength(b.time);
 		float fade = Mathm.clamp(b.time / 15f) * Mathm.clamp((b.lifetime - b.time) / (2.5f * 60));
@@ -276,7 +276,7 @@ public class EndCreepLaserBulletType extends ContinuousBulletType implements Las
 			rand2.setSeed(seed);
 
 			float l = (len / (rand2.random(8f, 12f) * (1f + sclen * 2f))) * (f * 0.25f + 0.75f);
-			float w = (width / 4f) * Utils.biasSlope(0.3f, f) * fade;
+			float w = (width / 4f) * Get.biasSlope(0.3f, f) * fade;
 			float off = ((len - l * 2f) * f) + l;
 			Vec2 v = Tmp.v2.trns(b.rotation(), off, rand2.range(width * (1 - 1f / 4f) * fade - w) / 2f).add(b.x, b.y);
 

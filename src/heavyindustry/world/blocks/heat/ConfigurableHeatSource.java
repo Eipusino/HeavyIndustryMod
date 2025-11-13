@@ -9,7 +9,7 @@ import arc.util.Eachable;
 import arc.util.Strings;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.ui.Styles;
@@ -94,7 +94,7 @@ public class ConfigurableHeatSource extends Block {
 				t.field(String.valueOf(heat), text -> {
 					configure(Strings.parseFloat(text));
 				}).width(120).valid(Strings::canParsePositiveFloat).get().setFilter(TextFieldFilter.floatsOnly);
-				t.add(Utils.statUnitName(StatUnit.heatUnits)).left();
+				t.add(Get.statUnitName(StatUnit.heatUnits)).left();
 			});
 		}
 

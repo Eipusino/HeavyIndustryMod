@@ -23,7 +23,7 @@ import heavyindustry.type.unit.PesterUnitType;
 import heavyindustry.util.Constant;
 import heavyindustry.util.ObjectFloatMap2;
 import heavyindustry.util.ObjectIntMap2;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.Vars;
 import mindustry.ai.types.MissileAI;
 import mindustry.content.Fx;
@@ -279,7 +279,7 @@ public class PesterUnit extends Unit2 implements Pesterc {
 		}
 
 		if (!Vars.headless && isBoss) {
-			Rand rand = Utils.rand;
+			Rand rand = Get.rand;
 
 			for (int i = 0; i < trails.length; i++) {
 				Trail trail = trails[i];

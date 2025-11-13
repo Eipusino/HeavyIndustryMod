@@ -17,7 +17,7 @@ import heavyindustry.audio.HSounds;
 import heavyindustry.content.HFx;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.math.Mathm;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.Vars;
 import mindustry.ai.types.CommandAI;
 import mindustry.audio.SoundLoop;
@@ -226,7 +226,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 
 		boolean can = canCreate();
 
-		float regSize = Utils.regSize(type);
+		float regSize = Get.regSize(type);
 		Draw.color(can ? team.color : Tmp.c1.set(team.color).lerp(Pal.ammo, Mathf.absin(Time.time * Drawn.sinScl, 8f, 0.3f) + 0.1f));
 
 		for (int i = -4; i <= 4; i++) {

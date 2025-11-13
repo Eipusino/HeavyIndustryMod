@@ -18,7 +18,7 @@ import arc.util.pooling.Pool;
 import arc.util.pooling.Pools;
 import heavyindustry.ui.Elements;
 import heavyindustry.util.CollectionList;
-import heavyindustry.util.Utils.Pos;
+import heavyindustry.util.Get.Pos;
 import heavyindustry.world.meta.HStatValues;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Units;

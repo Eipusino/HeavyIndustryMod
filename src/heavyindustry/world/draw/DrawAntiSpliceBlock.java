@@ -12,7 +12,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Point2;
 import arc.util.Eachable;
 import heavyindustry.util.DirEdges;
-import heavyindustry.util.SpriteUtils;
+import heavyindustry.util.Sprites;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
@@ -47,7 +47,7 @@ public class DrawAntiSpliceBlock extends DrawBlock {
 		icon = Core.atlas.find(block.name + "-icon");
 
 		if (split) {
-			drawRegions = SpriteUtils.split(block.name + "-sheet", 32, 16, 16);
+			drawRegions = Sprites.split(block.name + "-sheet", 32, 16, 16);
 		} else {
 			Pixmap[] regions = new Pixmap[8];
 			Pixmap[] inner = new Pixmap[4];

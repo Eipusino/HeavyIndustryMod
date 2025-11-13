@@ -1,6 +1,6 @@
 package heavyindustry.type;
 
-import heavyindustry.util.ArrayUtils;
+import heavyindustry.util.Arrays2;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.type.PayloadStack;
@@ -22,17 +22,17 @@ public class Recipe {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Recipe{").append("inputItem=");
-		ArrayUtils.append(builder, inputItem);
+		Arrays2.append(builder, inputItem);
 		builder.append(", inputLiquid=");
-		ArrayUtils.append(builder, inputLiquid);
+		Arrays2.append(builder, inputLiquid);
 		builder.append(", inputPayload=");
-		ArrayUtils.append(builder, inputPayload);
+		Arrays2.append(builder, inputPayload);
 		builder.append(", outputItem=");
-		ArrayUtils.append(builder, outputItem);
+		Arrays2.append(builder, outputItem);
 		builder.append(", outputLiquid=");
-		ArrayUtils.append(builder, outputLiquid);
+		Arrays2.append(builder, outputLiquid);
 		builder.append(", outputPayload=");
-		ArrayUtils.append(builder, outputPayload);
+		Arrays2.append(builder, outputPayload);
 
 		return builder.append(", craftTime=").append(craftTime).append('}').toString();
 	}

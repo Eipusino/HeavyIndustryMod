@@ -17,7 +17,7 @@ public class Lazy<T> {
 	 * @param mod Whether the value can be modified
 	 */
 	public Lazy(Prov<T> init, boolean mod) {
-		prov = ObjectUtils.requireNonNull(init, "The prov cannot be null.");
+		prov = Objects2.requireNonNull(init, "The prov cannot be null.");
 		allowSet = mod;
 	}
 
@@ -45,7 +45,7 @@ public class Lazy<T> {
 
 	@Override
 	public boolean equals(Object o) {
-		return o == this || o instanceof Lazy<?> lazy && ObjectUtils.equals(value, lazy.value);
+		return o == this || o instanceof Lazy<?> lazy && Objects2.equals(value, lazy.value);
 	}
 
 	@Override

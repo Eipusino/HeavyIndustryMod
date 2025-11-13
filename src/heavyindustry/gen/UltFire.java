@@ -12,7 +12,7 @@ import heavyindustry.content.HBullets;
 import heavyindustry.content.HStatusEffects;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.Constant;
-import heavyindustry.util.SpriteUtils;
+import heavyindustry.util.Sprites;
 import mindustry.Vars;
 import mindustry.core.World;
 import mindustry.entities.Damage;
@@ -43,7 +43,7 @@ public class UltFire extends Fire {
 	});
 
 	static {
-		ultRegion = SpriteUtils.split(MOD_NAME + "-ult-fire", 160, 10, 4);
+		ultRegion = Sprites.split(MOD_NAME + "-ult-fire", 160, 10, 4);
 	}
 
 	public static void create(float x, float y, Team team) {

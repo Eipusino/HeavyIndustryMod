@@ -11,7 +11,7 @@ import mindustry.gen.Unit;
 import mindustry.graphics.Layer;
 import mindustry.type.Item;
 
-import static heavyindustry.util.Utils.relativeDirection;
+import static heavyindustry.util.Get.relativeDirection;
 import static mindustry.Vars.itemSize;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;

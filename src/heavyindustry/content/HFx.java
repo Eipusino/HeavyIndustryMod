@@ -35,8 +35,8 @@ import heavyindustry.graphics.PositionLightning;
 import heavyindustry.graphics.g2d.CutBatch.RejectedRegion;
 import heavyindustry.math.Math3d;
 import heavyindustry.math.Mathm;
+import heavyindustry.util.Get;
 import heavyindustry.util.IntMap2;
-import heavyindustry.util.Utils;
 import heavyindustry.util.Vec2Seq;
 import mindustry.Vars;
 import mindustry.content.Fx;
@@ -2425,7 +2425,7 @@ public final class HFx {
 		float z = Draw.z();
 		Draw.z(z - 0.001f);
 
-		Rand rand = Utils.rand(e.id * 31);
+		Rand rand = Get.rand(e.id * 31);
 
 		Draw.color(Color.gray);
 		Draw.alpha(0.9f);
@@ -2496,7 +2496,7 @@ public final class HFx {
 			Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fslope() * 9f + 0.5f);
 		});
 
-		Rand rand = Utils.rand(e.id + 642);
+		Rand rand = Get.rand(e.id + 642);
 
 		float c = 0.4f;
 		for (int i = 0; i < 6; i++) {
@@ -2520,7 +2520,7 @@ public final class HFx {
 		//float size = e.data instanceof Float ? ((float)e.data) / 2f : 50f;
 		float size = (e.data instanceof Number num ? num.floatValue() : (e.data instanceof Sized s ? s.hitSize() : 50f)) * 1.25f;
 
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		for (int i = 0; i < 16; i++) {
 			float w = rand.range(size);
@@ -2560,7 +2560,7 @@ public final class HFx {
 		Drawn.drawShockWave(e.x, e.y, -75f, 0f, -e.rotation - 90f, nsize * e.finpow() + 10, 16f * e.finpow() + 4f, 16, 1f);
 	}).layer((Layer.bullet + Layer.effect) / 2);
 	public static final Effect fragmentGroundImpact = new Effect(40f, 300f, e -> {
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		Draw.color(e.color);
 
@@ -2572,7 +2572,7 @@ public final class HFx {
 		}
 	}).layer(Layer.debris);
 	public static final Effect fragmentExplosion = new Effect(40f, 300f, e -> {
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		float size = e.rotation;
 		e.lifetime = size / 1.5f + 10f;
@@ -2611,7 +2611,7 @@ public final class HFx {
 		}
 	});
 	public static final Effect fragmentExplosionSmoke = new Effect(40f, 300f, e -> {
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		float size = e.rotation;
 
@@ -2633,7 +2633,7 @@ public final class HFx {
 		}
 	});
 	public static final Effect fragmentExplosionSpark = new Effect(26f, 300f, e -> {
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		float size = e.rotation;
 		e.lifetime = size / 1.5f + 10f;
@@ -2654,7 +2654,7 @@ public final class HFx {
 		}
 	});
 	public static final Effect destroySparks = new Effect(40f, 1200f, e -> {
-		Rand rand = Utils.rand(e.id + 64331);
+		Rand rand = Get.rand(e.id + 64331);
 
 		float size = (float) e.data;
 		int isize = (int) (size * 1.75f) + 12;
@@ -2696,11 +2696,11 @@ public final class HFx {
 	}).layer(Layer.effect + 0.005f);
 	public static final Effect debrisSmoke = new Effect(40f, e -> {
 		Draw.color(Color.gray);
-		float fin = Utils.biasSlope(e.fin(), 0.075f);
+		float fin = Get.biasSlope(e.fin(), 0.075f);
 		Fill.circle(e.x, e.y, e.rotation * fin);
 	});
 	public static final Effect heavyDebris = new Effect(4f * 60f, 1200f, e -> {
-		Rand rand = Utils.rand(e.id + 644331);
+		Rand rand = Get.rand(e.id + 644331);
 
 		float size = (float) e.data;
 		float sizeTime = (size) + 15f;
@@ -2739,7 +2739,7 @@ public final class HFx {
 		float bscl = bounds * Draw.scl;
 		int ib = (int) (bscl * 1.5f) + 8;
 
-		Rand rand = Utils.rand(e.id + 46241);
+		Rand rand = Get.rand(e.id + 46241);
 
 		Draw.color(e.color);
 		for (int i = 0; i < ib; i++) {
@@ -2785,7 +2785,7 @@ public final class HFx {
 		float fin1 = Mathf.curve(e.fin(), 0f, 0.65f);
 		float size = e.rotation;
 
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		e.lifetime = 50f + rand.range(4f);
 
@@ -2809,7 +2809,7 @@ public final class HFx {
 		}
 	});
 	public static final Effect endSplash = new Effect(35f, 800f, e -> {
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		e.lifetime = 50f + rand.range(16f);
 
@@ -2829,7 +2829,7 @@ public final class HFx {
 		}
 	}).layer(Layer.darkness + 1f);
 	public static final Effect coloredHit = new Effect(15f, e -> {
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		Draw.color(Color.white, HPal.red, e.fin());
 		Lines.stroke(0.5f + e.fout());
@@ -2843,7 +2843,7 @@ public final class HFx {
 		}
 	});
 	public static final Effect desGroundHit = new Effect(30f, 250f, e -> {
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		int amount = rand.random(4, 12);
 		int amount2 = rand.random(7, 14);
@@ -2881,7 +2881,7 @@ public final class HFx {
 		}
 	}).layer(Layer.groundUnit);
 	public static final Effect desGroundHitMain = new Effect(90f, 900f, e -> {
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		float arange = 25f;
 		float scl = 1f;
@@ -2928,7 +2928,7 @@ public final class HFx {
 	public static final Effect desCreepHit = new Effect(20f, e -> {
 		float angr = 90f;
 		float len = 1f;
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		Draw.color(HPal.red);
 		Lines.stroke(1.75f);
@@ -2950,7 +2950,7 @@ public final class HFx {
 	public static final Effect desCreepHeavyHit = new Effect(300f, 1200f, e -> {
 		float sizeScl = e.data instanceof Number num ? num.floatValue() : 1f;
 
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		float scl = Mathm.clamp(e.time / 8f);
 		float range = 32f;
@@ -3041,7 +3041,7 @@ public final class HFx {
 	public static final Effect desRailHit = new Effect(80f, 900f, e -> {
 		float sizeScl = e.data instanceof Number num ? num.floatValue() : 1f;
 
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		float ang = 180f;
 		float rscl = 0.7f * sizeScl;
@@ -3103,7 +3103,7 @@ public final class HFx {
 		if (!(e.data instanceof float[] arr)) return;
 		float size = e.rotation;
 
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		float scl = 1f;
 		Tmp.c2.set(Color.gray).a(0.8f);
@@ -3166,7 +3166,7 @@ public final class HFx {
 	});
 	public static final Effect desNukeShoot = new Effect(35f, e -> {
 		float ang = 90f, len = 1f;
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		//Draw.color(FlamePal.red, Color.white, e.fin());
 		Lines.stroke(2f);
@@ -3185,7 +3185,7 @@ public final class HFx {
 	public static final Effect desNukeVaporize = new Effect(40f, 1200f, e -> {
 		float size = e.data instanceof Number num ? num.floatValue() : 10f;
 
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		int count = 20 + (int) (size * size * 0.5f);
 		float c = 0.25f;
@@ -3194,7 +3194,7 @@ public final class HFx {
 			float f = Mathf.curve(e.fin(), l, ((1f - c) + l) * rand.random(0.8f, 1f));
 			float len = rand.random(0.5f, 1f) * (80f + size * 10f) * Interp.pow2In.apply(f);
 			float off = Mathf.sqrt(rand.nextFloat()) * size, ang = rand.random(360f), rng = rand.range(10f);
-			float scl = (size / 2f) * rand.random(0.9f, 1.1f) * Utils.biasSlope(f, 0.1f);
+			float scl = (size / 2f) * rand.random(0.9f, 1.1f) * Get.biasSlope(f, 0.1f);
 
 			if (f > 0 && f < 1) {
 				Vec2 v1 = Tmp.v1.trns(ang, off).add(e.x, e.y).add(Tmp.v2.trns(e.rotation + rng, len));
@@ -3204,7 +3204,7 @@ public final class HFx {
 		}
 	}).layer(Layer.flyingUnit);
 	public static final Effect desNukeShockSmoke = new Effect(40f, 800f, e -> {
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		int count = 10;
 		float c = 0.4f;
@@ -3223,7 +3223,7 @@ public final class HFx {
 		}
 	});
 	public static final Effect desMissileHit = new Effect(50f, 800f, e -> {
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		Tmp.c2.set(Color.gray).a(0.8f);
 		//Tmp.c3.set(FlamePal.red).mul(2f);
@@ -3267,7 +3267,7 @@ public final class HFx {
 				float rot = e.rotation + rand.range(angScl);
 				float ll = rand.random(20f) * scl3 * Interp.pow2Out.apply(f);
 				float size = rand.random(5f, 10f);
-				float wid = size * scl1 * Utils.biasSlope(f, 0.2f);
+				float wid = size * scl1 * Get.biasSlope(f, 0.2f);
 				float len = wid * 3f + size * 7f * Mathf.pow(scl1, 1.2f) * Interp.pow5Out.apply(f);
 
 				Vec2 v = Tmp.v1.trns(rot, wid * 2f + ll).add(e.x, e.y);
@@ -3448,7 +3448,7 @@ public final class HFx {
 	public static Effect fireworksShoot(float r) {
 		return new Effect(30, e -> {
 			Draw.z(Layer.effect - 0.1f);
-			Draw.color(Utils.c7.set(HPal.rainBowRed).shiftHue(Time.time * 2f));
+			Draw.color(Get.c7.set(HPal.rainBowRed).shiftHue(Time.time * 2f));
 			Angles.randLenVectors(e.id, 1, e.fin() * 20f, e.rotation + r, 0, (x, y) -> {
 				Fill.circle(e.x + x, e.y + y, 2 * e.fout());
 			});

@@ -59,7 +59,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 
 import static heavyindustry.entities.HDamage.tmpBuild;
-import static heavyindustry.util.ArrayUtils.arrayOf;
+import static heavyindustry.util.Arrays2.arrayOf;
 
 public final class HEntity {
 	public static final Vec2 v1 = new Vec2(), v2 = new Vec2(), v3 = new Vec2(), v4 = new Vec2(), v11 = new Vec2(), v12 = new Vec2(), v13 = new Vec2();
@@ -80,12 +80,12 @@ public final class HEntity {
 	static final CollectionList<Unit> excludeSeq = new CollectionList<>(Unit.class), queueExcludeRemoval = new CollectionList<>(Unit.class), excludeReAdd = new CollectionList<>(Unit.class);
 	static final IntIntMap excludeTime = new IntIntMap();
 
+	static Boolf<Tile> formatFlying = t -> Vars.world.getQuadBounds(Tmp.r1).contains(t.getBounds(Tmp.r2));
+	static Boolf<Tile> formatNavy = t -> t.floor().isLiquid && !t.cblock().solid && !t.floor().solid && !t.overlay().solid && !t.block().solidifes;
+	static Boolf<Tile> formatGround = t -> !t.floor().isDeep() && !t.cblock().solid && !t.floor().solid && !t.overlay().solid && !t.block().solidifes;
+
 	/// 0 for flying, 1 for navy, 2 for ground.
-	static Boolf<Tile>[] formats = arrayOf(
-			t -> Vars.world.getQuadBounds(Tmp.r1).contains(t.getBounds(Tmp.r2)),
-			t -> t.floor().isLiquid && !t.cblock().solid && !t.floor().solid && !t.overlay().solid && !t.block().solidifes,
-			t -> !t.floor().isDeep() && !t.cblock().solid && !t.floor().solid && !t.overlay().solid && !t.block().solidifes
-	);
+	static @Deprecated Boolf<Tile>[] formats = arrayOf(formatFlying, formatNavy, formatGround);
 
 	static final CollectionObjectMap<Class<? extends Entityc>, Field> addedFieldMap = new CollectionObjectMap<>(Class.class, Field.class);
 	static final CollectionObjectMap<Class<? extends Building>, Field> soundFieldMap = new CollectionObjectMap<>(Class.class, Field.class);
@@ -434,19 +434,13 @@ public final class HEntity {
 	}
 
 	public static Boolf<Tile> ableToSpawn(UnitType type) {
-		Boolf<Tile> boolf;
-
-		Boolf<Tile>[] boolves = formats;
-
 		if (type.flying) {
-			boolf = boolves[0];
+			return formatFlying;
 		} else if (WaterMovec.class.isAssignableFrom(type.constructor.get().getClass())) {
-			boolf = boolves[1];
+			return formatNavy;
 		} else {
-			boolf = boolves[2];
+			return formatGround;
 		}
-
-		return boolf;
 	}
 
 	public static Seq<Tile> ableToSpawn(UnitType type, float x, float y, float range) {

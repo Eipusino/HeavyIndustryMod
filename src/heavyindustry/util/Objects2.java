@@ -32,8 +32,8 @@ import java.lang.reflect.Modifier;
  * @author Eipusino
  * @since 1.0.8
  */
-public final class ObjectUtils {
-	private ObjectUtils() {}
+public final class Objects2 {
+	private Objects2() {}
 
 	public static boolean equals(Object a, Object b) {
 		return a == b || a != null && a.equals(b);
@@ -114,7 +114,7 @@ public final class ObjectUtils {
 	 * and constructors, as demonstrated below:
 	 * <blockquote><pre>
 	 * public Foo(Bar bar) {
-	 *     this.bar = ObjectUtils.requireNonNull(bar);
+	 *     this.bar = Objects2.requireNonNull(bar);
 	 * }
 	 * </pre></blockquote>
 	 *
@@ -136,8 +136,8 @@ public final class ObjectUtils {
 	 * constructors with multiple parameters, as demonstrated below:
 	 * <blockquote><pre>
 	 * public Foo(Bar bar, Baz baz) {
-	 *     this.bar = ObjectUtils.requireNonNull(bar, "bar must not be null");
-	 *     this.baz = ObjectUtils.requireNonNull(baz, "baz must not be null");
+	 *     this.bar = Objects2.requireNonNull(bar, "bar must not be null");
+	 *     this.baz = Objects2.requireNonNull(baz, "baz must not be null");
 	 * }
 	 * </pre></blockquote>
 	 *
@@ -162,7 +162,7 @@ public final class ObjectUtils {
 	 * @return {@code true} if the provided reference is {@code null} otherwise
 	 * {@code false}
 	 * @apiNote This method exists to be used as a
-	 * {@link arc.func.Boolf}, {@code filter(ObjectUtils::isNull)}
+	 * {@link arc.func.Boolf}, {@code filter(Objects2::isNull)}
 	 * @see arc.func.Boolf
 	 * @since 1.0.8
 	 */
@@ -178,7 +178,7 @@ public final class ObjectUtils {
 	 * @return {@code true} if the provided reference is non-{@code null}
 	 * otherwise {@code false}
 	 * @apiNote This method exists to be used as a
-	 * {@link arc.func.Boolf}, {@code filter(ObjectUtils::nonNull)}
+	 * {@link arc.func.Boolf}, {@code filter(Objects2::nonNull)}
 	 * @see arc.func.Boolf
 	 * @since 1.0.8
 	 */
@@ -392,23 +392,23 @@ public final class ObjectUtils {
 					if (valueType.isArray()) {
 						// I think using instanceof would be better.
 						if (value instanceof float[] array) {
-							ArrayUtils.appendFloat(builder, array);
+							Arrays2.appendFloat(builder, array);
 						} else if (value instanceof int[] array) {
-							ArrayUtils.appendInt(builder, array);
+							Arrays2.appendInt(builder, array);
 						} else if (value instanceof boolean[] array) {
-							ArrayUtils.appendBool(builder, array);
+							Arrays2.appendBool(builder, array);
 						} else if (value instanceof byte[] array) {
-							ArrayUtils.appendByte(builder, array);
+							Arrays2.appendByte(builder, array);
 						} else if (value instanceof char[] array) {
-							ArrayUtils.appendChar(builder, array);
+							Arrays2.appendChar(builder, array);
 						} else if (value instanceof double[] array) {
-							ArrayUtils.appendDouble(builder, array);
+							Arrays2.appendDouble(builder, array);
 						} else if (value instanceof long[] array) {
-							ArrayUtils.appendLong(builder, array);
+							Arrays2.appendLong(builder, array);
 						} else if (value instanceof short[] array) {
-							ArrayUtils.appendShort(builder, array);
+							Arrays2.appendShort(builder, array);
 						} else if (value instanceof Object[] array) {
-							ArrayUtils.append(builder, array);
+							Arrays2.append(builder, array);
 						} else {
 							// It shouldn't have happened...
 							builder.append("???");

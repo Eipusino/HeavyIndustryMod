@@ -8,7 +8,7 @@ import arc.util.Strings;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.ui.Elements;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import heavyindustry.world.consumers.ConsumeBufferedPowerDynamic;
 import mindustry.gen.Icon;
 import mindustry.graphics.Pal;
@@ -79,7 +79,7 @@ public class ConfigurableBattery extends Battery {
 				t.field(String.valueOf(powerCapacitySetting), text -> {
 					powerCapacitySetting = Strings.parseFloat(text);
 				}).width(120).valid(text -> Strings.canParseFloat(text) && Strings.parseFloat(text) > 0).get().setFilter(TextFieldFilter.floatsOnly);
-				t.add(Utils.statUnitName(StatUnit.powerUnits)).left();
+				t.add(Get.statUnitName(StatUnit.powerUnits)).left();
 				t.button(Icon.save, () -> configure(powerCapacitySetting)).padLeft(6);
 				t.button(Icon.trash, () -> configure(Boolean.FALSE)).tooltip("@hi-storage.delete-contents");
 			});

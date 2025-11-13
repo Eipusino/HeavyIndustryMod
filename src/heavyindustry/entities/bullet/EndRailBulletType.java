@@ -14,7 +14,7 @@ import heavyindustry.content.HFx;
 import heavyindustry.entities.HDamage;
 import heavyindustry.graphics.HPal;
 import heavyindustry.math.Mathm;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.bullet.BulletType;
@@ -27,7 +27,7 @@ import mindustry.graphics.Drawf;
 public class EndRailBulletType extends BulletType {
 	public float length = 2400f;
 	public Effect pointEffect = new Effect(15f, e -> {
-		Rand rand = Utils.rand(e.id);
+		Rand rand = Get.rand(e.id);
 
 		Draw.color(HPal.red, Color.white, e.fin());
 		Lines.stroke(1.25f);
@@ -167,7 +167,7 @@ public class EndRailBulletType extends BulletType {
 		//float lenScl = 1f;
 		Draw.color(HPal.red, Color.white, b.fin());
 
-		Rand rand = Utils.rand(b.id + (int) (b.time / 3f));
+		Rand rand = Get.rand(b.id + (int) (b.time / 3f));
 
 		Lines.stroke(4f * b.fout());
 		Lines.beginLine();

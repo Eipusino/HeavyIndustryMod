@@ -6,7 +6,6 @@ import arc.math.geom.Vec2;
 import arc.struct.Seq;
 import arc.util.Tmp;
 import heavyindustry.graphics.PositionLightning;
-import heavyindustry.util.Utils;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Damage;

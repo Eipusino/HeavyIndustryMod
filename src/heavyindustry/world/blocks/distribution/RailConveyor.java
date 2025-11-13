@@ -12,7 +12,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.util.SpriteUtils;
+import heavyindustry.util.Sprites;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.units.BuildPlan;
@@ -49,10 +49,10 @@ public class RailConveyor extends Conveyor2 {
 	public void load() {
 		super.load();
 
-		edgeRegions = SpriteUtils.split(name + "-edge", 32, 5, 1);
-		armorRegions = SpriteUtils.split(name + "-edge-armored", 32, 5, 1);
-		arrowRegions = SpriteUtils.split(name + "-arrow", 32, 16, 2);
-		pulseRegions = SpriteUtils.split(name + "-pulse", 32, 5, 3);
+		edgeRegions = Sprites.split(name + "-edge", 32, 5, 1);
+		armorRegions = Sprites.split(name + "-edge-armored", 32, 5, 1);
+		arrowRegions = Sprites.split(name + "-arrow", 32, 16, 2);
+		pulseRegions = Sprites.split(name + "-pulse", 32, 5, 3);
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import arc.util.Nullable;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.input.InputAggregator.TapResult;
-import heavyindustry.util.ObjectUtils;
+import heavyindustry.util.Objects2;
 import mindustry.Vars;
 import mindustry.content.TechTree.TechNode;
 import mindustry.ctype.ContentType;
@@ -131,7 +131,7 @@ public final class HTypeIO {
 		byte[] bytes = read.b(length);
 		try (ByteArrayInputStream bin = new ByteArrayInputStream(bytes); ObjectInputStream in = new ObjectInputStream(bin)) {
 			Object object = in.readObject();
-			return ObjectUtils.as(object, type, def);
+			return Objects2.as(object, type, def);
 		} catch (IOException | ClassNotFoundException e) {
 			throw new RuntimeException(e);
 		}

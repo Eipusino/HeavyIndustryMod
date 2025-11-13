@@ -5,7 +5,7 @@ import arc.scene.ui.layout.Table;
 import arc.util.Strings;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.gen.Building;
 import mindustry.ui.Styles;
 import mindustry.world.blocks.power.PowerBlock;
@@ -45,7 +45,7 @@ public class ConfigurablePowerVoid extends PowerBlock {
 				t.field(String.valueOf(powerConsumption), text -> {
 					configure(Strings.parseFloat(text));
 				}).width(120).valid(Strings::canParsePositiveFloat).get().setFilter(TextFieldFilter.floatsOnly);
-				t.add(Utils.statUnitName(StatUnit.powerSecond)).left();
+				t.add(Get.statUnitName(StatUnit.powerSecond)).left();
 			});
 		}
 

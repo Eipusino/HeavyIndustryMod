@@ -31,7 +31,7 @@ import arc.util.pooling.Pools;
 import heavyindustry.content.HFx;
 import heavyindustry.math.HInterps;
 import heavyindustry.math.Mathm;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.gen.Player;
@@ -1257,7 +1257,7 @@ public final class Drawn {
 		float fc2 = 1 - fc;
 		float minUv = 0.125f;
 
-		Rand rand = Utils.rand(seed), rand2 = Utils.rand2;
+		Rand rand = Get.rand(seed), rand2 = Get.rand2;
 
 		Color outColor = Color.clear;
 

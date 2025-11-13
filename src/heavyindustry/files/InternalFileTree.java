@@ -4,7 +4,7 @@ import arc.assets.loaders.FileHandleResolver;
 import arc.files.Fi;
 import arc.files.ZipFi;
 import arc.util.OS;
-import heavyindustry.util.ObjectUtils;
+import heavyindustry.util.Objects2;
 
 /**
  * Use for jar internal navigation.
@@ -21,7 +21,7 @@ public class InternalFileTree implements FileHandleResolver {
 	public InternalFileTree(Class<?> owner) {
 		anchorClass = owner;
 
-		String classPath = ObjectUtils.requireNonNull(anchorClass.getResource(""), "Unable to retrieve class resource.").getFile().replaceAll("%20", " ");
+		String classPath = Objects2.requireNonNull(anchorClass.getResource(""), "Unable to retrieve class resource.").getFile().replaceAll("%20", " ");
 		classPath = classPath.substring(classPath.indexOf(":") + 2);
 		String jarPath = (OS.isLinux ? "/" : "") + classPath.substring(0, classPath.indexOf("!"));
 

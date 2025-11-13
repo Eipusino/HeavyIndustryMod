@@ -32,7 +32,7 @@ import heavyindustry.graphics.HPal;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.math.HInterps;
 import heavyindustry.util.Constant;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
@@ -763,7 +763,7 @@ public final class HBullets {
 			public void init(Bullet b) {
 				super.init(b);
 
-				b.vel.rotate(Utils.rand(b.id).random(360));
+				b.vel.rotate(Get.rand(b.id).random(360));
 			}
 
 			@Override

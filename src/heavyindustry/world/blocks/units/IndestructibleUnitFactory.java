@@ -10,7 +10,7 @@ import arc.scene.ui.layout.Table;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.util.Constant;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.content.Items;
 import mindustry.ctype.ContentType;
 import mindustry.game.Team;
@@ -88,7 +88,7 @@ public class IndestructibleUnitFactory extends UnitFactory {
 			cont.defaults().size(40f);
 			int i = 0;
 
-			for (Team t : Utils.baseTeams) {
+			for (Team t : Get.baseTeams) {
 				ImageButton button = cont.button(Tex.whiteui, Styles.clearTogglei, 24f, Constant.RUNNABLE_NOTHING).group(group).get();
 				button.changed(() -> targetTeam = button.isChecked() ? t : null);
 				if (Tex.whiteui instanceof TextureRegionDrawable w) {

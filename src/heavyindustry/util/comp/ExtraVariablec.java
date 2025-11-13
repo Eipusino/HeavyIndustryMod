@@ -18,9 +18,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static heavyindustry.util.ArrayUtils.doubleOf;
-import static heavyindustry.util.ArrayUtils.floatOf;
-
 /**
  * The appended variable interface is used to provide dynamic append variables for types,
  * providing operations such as {@code get}, {@code set}, {@code handle} on variables, but non-removable variables.
@@ -368,10 +365,10 @@ public interface ExtraVariablec {
 			a[0] = value;
 			return r;
 		} else if (res instanceof Number n) {
-			extra().put(field, floatOf(value));
+			extra().put(field, new float[]{value});
 			return n.floatValue();
 		} else if (res == null) {
-			extra().put(field, floatOf(value));
+			extra().put(field, new float[]{value});
 			return 0f;
 		}
 
@@ -404,7 +401,7 @@ public interface ExtraVariablec {
 		Object res = getVar(field);
 		if (res == null) {
 			float f = initial.get();
-			extra().put(field, floatOf(f));
+			extra().put(field, new float[]{f});
 			return f;
 		}
 
@@ -441,10 +438,10 @@ public interface ExtraVariablec {
 			a[0] = value;
 			return r;
 		} else if (res instanceof Number n) {
-			extra().put(field, doubleOf(value));
+			extra().put(field, new double[]{value});
 			return n.doubleValue();
 		} else if (res == null) {
-			extra().put(field, doubleOf(value));
+			extra().put(field, new double[]{value});
 			return 0;
 		}
 
@@ -477,7 +474,7 @@ public interface ExtraVariablec {
 		Object res = getVar(field);
 		if (res == null) {
 			double d = initial.get();
-			extra().put(field, doubleOf(d));
+			extra().put(field, new double[]{d});
 			return d;
 		}
 

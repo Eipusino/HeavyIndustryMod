@@ -6,7 +6,7 @@ import arc.scene.ui.ButtonGroup;
 import arc.scene.ui.ImageButton;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.ctype.UnlockableContent;
 import mindustry.game.Team;
 import mindustry.gen.Tex;
@@ -86,7 +86,7 @@ public class PayloadSource2 extends PayloadSource {
 			ButtonGroup<ImageButton> g = new ButtonGroup<>();
 			Table cont = new Table();
 			cont.defaults().size(55);
-			for (Team bt : Utils.baseTeams) {
+			for (Team bt : Get.baseTeams) {
 				ImageButton button = cont.button(((TextureRegionDrawable) Tex.whiteui).tint(bt.color), Styles.clearTogglei, 35, () -> {
 				}).group(g).get();
 				button.changed(() -> {

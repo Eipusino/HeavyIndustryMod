@@ -17,7 +17,7 @@ import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.HPal;
 import heavyindustry.math.AbstractInterp;
 import heavyindustry.math.Mathm;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.gen.Groups;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
@@ -162,7 +162,7 @@ public class BloodSplatter extends BaseEntity implements Poolable {
 			float len = Mathf.pow(length * ((lifetime - lifetime2) / lifetime), 1f / out.power);
 			int count = (int) (len / 10);
 
-			Rand rand = Utils.rand(id);
+			Rand rand = Get.rand(id);
 
 			Fill.circle(x2, y2, fin4 * fout * size);
 			float s = size * 0.75f;

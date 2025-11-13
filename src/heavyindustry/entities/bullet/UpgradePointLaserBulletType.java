@@ -11,7 +11,7 @@ import arc.util.Tmp;
 import heavyindustry.content.HFx;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.PositionLightning;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.Vars;
 import mindustry.entities.Damage;
 import mindustry.entities.bullet.PointLaserBulletType;
@@ -110,7 +110,7 @@ public class UpgradePointLaserBulletType extends PointLaserBulletType {
 		int particles = 44;
 		float particleLife = 74f;
 		float particleLen = 7.5f;
-		Rand rand = Utils.rand(b.id);
+		Rand rand = Get.rand(b.id);
 
 		float base = (Time.time / particleLife);
 		for (int i = 0; i < particles; i++) {

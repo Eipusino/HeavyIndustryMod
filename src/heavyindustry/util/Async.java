@@ -14,8 +14,8 @@ import java.util.concurrent.locks.ReadWriteLock;
  *
  * @since 1.0.7
  */
-public final class AsyncUtils {
-	private AsyncUtils() {}
+public final class Async {
+	private Async() {}
 
 	public static <T> T get(Future<T> future) {
 		try {

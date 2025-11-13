@@ -33,8 +33,8 @@ import java.util.Arrays;
  * Reflection utilities, mainly for wrapping reflective operations to eradicate checked exceptions.
  * <p>You should never frequently perform repetitive operations on the same Field/Method/Constructor for
  * performance reasons.
- * <blockquote><pre>
- *     static Field theField;
+ * <pre>{@code
+ *     private static Field theField;
  *
  *     public static Object getValue(Object obj) {
  *         try {
@@ -47,7 +47,7 @@ import java.util.Arrays;
  *             throw new RuntimeException(e);
  *         }
  *     }
- * </pre></blockquote>
+ * }</pre>
  *
  * @author Eipusino
  * @since 1.0.6
@@ -115,7 +115,7 @@ public final class Reflects {
 	}
 
 	public static <T> T make(Class<T> type) {
-		return make(type, ArrayUtils.arrayOf(), ArrayUtils.arrayOf());
+		return make(type, Arrays2.arrayOf(), Arrays2.arrayOf());
 	}
 
 	/** Reflectively instantiates a type without throwing exceptions. */
@@ -143,7 +143,7 @@ public final class Reflects {
 	}
 
 	public static <T> Prov<T> supply(Class<T> type) {
-		return supply(type, ArrayUtils.arrayOf(), ArrayUtils.arrayOf());
+		return supply(type, Arrays2.arrayOf(), Arrays2.arrayOf());
 	}
 
 	/**
@@ -280,7 +280,7 @@ public final class Reflects {
 	}
 
 	public static <T> T copyProperties(Object source, T target) {
-		return copyProperties(source, target, ArrayUtils.arrayOf("id"));
+		return copyProperties(source, target, Arrays2.arrayOf("id"));
 	}
 
 	/**

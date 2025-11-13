@@ -1,6 +1,6 @@
 package heavyindustry.util.holder;
 
-import heavyindustry.util.ObjectUtils;
+import heavyindustry.util.Objects2;
 
 import java.util.Map.Entry;
 
@@ -40,12 +40,12 @@ public class AtomicObjectHolder<K, V> implements Entry<K, V>, Cloneable {
 
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof AtomicObjectHolder<?, ?> that && ObjectUtils.equals(key, that.key) && ObjectUtils.equals(value, that.value);
+		return o instanceof AtomicObjectHolder<?, ?> that && Objects2.equals(key, that.key) && Objects2.equals(value, that.value);
 	}
 
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(key) ^ ObjectUtils.hashCode(value);
+		return Objects2.hashCode(key) ^ Objects2.hashCode(value);
 	}
 
 	@Override

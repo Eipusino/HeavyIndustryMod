@@ -21,7 +21,7 @@ import arc.util.Tmp;
 import heavyindustry.content.HFx;
 import heavyindustry.gen.BaseEntity;
 import heavyindustry.math.Mathm;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.Vars;
 import mindustry.content.UnitTypes;
 import mindustry.entities.Effect;
@@ -312,7 +312,7 @@ public class Fragmentation {
 	}
 
 	public void draw() {
-		Rand rand = Utils.rand(462 + (int) (Time.time / 120f));
+		Rand rand = Get.rand(462 + (int) (Time.time / 120f));
 
 		float lz = Draw.z();
 		Draw.z(Layer.flyingUnit);

@@ -9,7 +9,7 @@ import arc.math.Mathf;
 import heavyindustry.content.HBullets;
 import heavyindustry.content.HFx;
 import heavyindustry.gen.BlackHoleBullet;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.Vars;
 import mindustry.entities.Effect;
 import mindustry.entities.Lightning;
@@ -135,6 +135,6 @@ public class BlackHoleBulletType extends EffectBulletType {
 
 		BlackHoleBullet bullet = BlackHoleBullet.createBlackHole();
 		if (bullet.sizeds.size > 0) bullet.sizeds.clear();
-		return Utils.anyOtherCreate(bullet, this, shooter, owner, team, x, y, angle, damage, velocityScl, lifetimeScl, data, mover, aimX, aimY, target);
+		return Get.anyOtherCreate(bullet, this, shooter, owner, team, x, y, angle, damage, velocityScl, lifetimeScl, data, mover, aimX, aimY, target);
 	}
 }

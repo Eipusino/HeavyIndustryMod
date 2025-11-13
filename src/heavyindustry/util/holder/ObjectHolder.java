@@ -1,6 +1,6 @@
 package heavyindustry.util.holder;
 
-import heavyindustry.util.ObjectUtils;
+import heavyindustry.util.Objects2;
 
 import java.util.Map.Entry;
 
@@ -92,12 +92,12 @@ public class ObjectHolder<K, V> implements Entry<K, V>, Cloneable {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof Entry<?, ?> that && ObjectUtils.equals(key, that.getKey()) && ObjectUtils.equals(value, that.getValue());
+		return o instanceof Entry<?, ?> that && Objects2.equals(key, that.getKey()) && Objects2.equals(value, that.getValue());
 	}
 
 	@Override
 	public int hashCode() {
-		return ObjectUtils.hashCode(key) ^ ObjectUtils.hashCode(value);
+		return Objects2.hashCode(key) ^ Objects2.hashCode(value);
 	}
 
 	/**

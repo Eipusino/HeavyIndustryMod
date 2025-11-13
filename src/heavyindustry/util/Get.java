@@ -73,7 +73,7 @@ import mindustry.world.meta.StatUnit;
  *
  * @author Eipusino
  */
-public final class Utils {
+public final class Get {
 	public static final Color c1 = new Color(), c2 = new Color(), c3 = new Color(), c4 = new Color(), c5 = new Color();
 	public static final Color c6 = new Color(), c7 = new Color(), c8 = new Color(), c9 = new Color(), c10 = new Color();
 
@@ -90,7 +90,7 @@ public final class Utils {
 	static final IntSeq amounts = new IntSeq();
 
 	/// Don't let anyone instantiate this class.
-	private Utils() {}
+	private Get() {}
 
 	public static int reverse(int rotation) {
 		return switch (rotation) {

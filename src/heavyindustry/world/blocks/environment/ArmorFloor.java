@@ -5,7 +5,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Floor;
 
@@ -51,7 +51,7 @@ public class ArmorFloor extends Floor {
 		int rx = tile.x / 2 * 2;
 		int ry = tile.y / 2 * 2;
 
-		if (Core.atlas.isFound(large) && Utils.equals(this, rx, ry) && Mathf.randomSeed(Point2.pack(rx, ry)) < 0.5) {
+		if (Core.atlas.isFound(large) && Get.equals(this, rx, ry) && Mathf.randomSeed(Point2.pack(rx, ry)) < 0.5) {
 			Draw.rect(split[tile.x % 2][1 - tile.y % 2], tile.worldx(), tile.worldy());
 		} else {
 			Draw.rect(variantRegions[Mathf.randomSeed(tile.pos(), 0, Math.max(0, variantRegions.length - 1))], tile.worldx(), tile.worldy());

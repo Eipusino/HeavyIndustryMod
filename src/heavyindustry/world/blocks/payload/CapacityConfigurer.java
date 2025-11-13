@@ -10,7 +10,7 @@ import arc.util.Strings;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.content.HFx;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import heavyindustry.world.blocks.power.ConfigurableBattery;
 import heavyindustry.world.blocks.storage.ConfigurableContainer;
 import mindustry.entities.units.BuildPlan;
@@ -136,14 +136,14 @@ public class CapacityConfigurer extends PayloadBlock {
 				t.field(String.valueOf(configItemCap), text -> {
 					configure(Strings.parseInt(text));
 				}).width(120).valid(Strings::canParsePositiveInt).padLeft(8f).get().setFilter(TextFieldFilter.digitsOnly);
-				t.add(Utils.statUnitName(StatUnit.items)).left();
+				t.add(Get.statUnitName(StatUnit.items)).left();
 				t.row();
 				t.add("@block.extra-sand-redux-configurable-battery.name").colspan(2);
 				t.row();
 				t.field(String.valueOf(configBatteryCap), text -> {
 					configure(Strings.parseFloat(text));
 				}).width(120).valid(text -> Strings.canParseFloat(text) && Strings.parseFloat(text) > 0).padLeft(8f).get().setFilter(TextFieldFilter.floatsOnly);
-				t.add(Utils.statUnitName(StatUnit.powerUnits)).left();
+				t.add(Get.statUnitName(StatUnit.powerUnits)).left();
 			});
 		}
 

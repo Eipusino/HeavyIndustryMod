@@ -9,7 +9,7 @@ import arc.struct.Seq;
 import arc.util.Strings;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.core.UI;
 import mindustry.ctype.UnlockableContent;
 import mindustry.gen.Building;
@@ -112,7 +112,7 @@ public class ConfigurableContainer extends StorageBlock {
 				t.field(String.valueOf(storageCapacitySetting), text -> {
 					storageCapacitySetting = Strings.parseInt(text);
 				}).width(120).valid(Strings::canParsePositiveInt).get().setFilter(TextFieldFilter.digitsOnly);
-				t.add(Utils.statUnitName(StatUnit.items)).left();
+				t.add(Get.statUnitName(StatUnit.items)).left();
 				t.button(Icon.save, () -> configure(storageCapacitySetting)).padLeft(6);
 				t.button(Icon.trash, () -> {
 					int cap = storageCapacity;

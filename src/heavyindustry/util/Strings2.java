@@ -6,7 +6,7 @@ import arc.util.Strings;
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-public final class StringUtils {
+public final class Strings2 {
 	static final String[] byteUnit = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"};
 
 	static final char[] printableChars = {
@@ -21,7 +21,7 @@ public final class StringUtils {
 
 	static Pattern numeric, numeric4;
 
-	private StringUtils() {}
+	private Strings2() {}
 
 	public static String repeat(char key, int count) {
 		if (count <= 0) return "";

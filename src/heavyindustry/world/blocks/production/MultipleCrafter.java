@@ -12,7 +12,7 @@ import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.math.Mathm;
-import heavyindustry.util.ArrayUtils;
+import heavyindustry.util.Arrays2;
 import heavyindustry.util.CollectionList;
 import mindustry.Vars;
 import mindustry.content.Fx;
@@ -652,11 +652,11 @@ public class MultipleCrafter extends Block {
 		public String toString() {
 			StringBuilder builder = new StringBuilder();
 			builder.append("Formula{").append("input=");
-			ArrayUtils.append(builder, inputs);
+			Arrays2.append(builder, inputs);
 			builder.append(", outputItems=");
-			ArrayUtils.append(builder, outputItems);
+			Arrays2.append(builder, outputItems);
 			builder.append(", outputLiquids=");
-			ArrayUtils.append(builder, outputLiquids);
+			Arrays2.append(builder, outputLiquids);
 			return builder.append(", craftTime=").append(craftTime).append(", powerProduction=").append(powerProduction).append('}').toString();
 		}
 	}

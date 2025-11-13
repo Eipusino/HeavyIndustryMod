@@ -35,14 +35,16 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-public final class ArrayUtils {
-	private ArrayUtils() {}
+public final class Arrays2 {
+	private Arrays2() {}
 
 	/**
 	 * Convert vararg to an array.
 	 * Returns an array containing the specified elements.
-	 *
-	 * @apiNote Never use for generic array fields.
+	 * <p>Can be used to create arrays with generic types, avoiding {@code @SuppressWarnings("unchecked")}.
+	 * <p>Example: <pre>{@code
+	 *     public Seq<Object>[] seqs = arrayOf(new Seq<>(), new Seq<>());
+	 * }</pre>
 	 */
 	@SafeVarargs
 	public static <T> T[] arrayOf(T... elements) {
@@ -849,7 +851,7 @@ public final class ArrayUtils {
 		int result = 1;
 
 		for (Object element : values) {
-			result = 31 * result + ObjectUtils.hashCode(element);
+			result = 31 * result + Objects2.hashCode(element);
 		}
 
 		return result;

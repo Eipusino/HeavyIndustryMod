@@ -7,7 +7,7 @@ import arc.util.Eachable;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.util.SpriteUtils;
+import heavyindustry.util.Sprites;
 import mindustry.content.Fx;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -37,7 +37,7 @@ public class Conduit2 extends Conduit {
 	@Override
 	public void load() {
 		super.load();
-		topMaskRegions = SpriteUtils.split(name + "-top", 32, 5, 2);
+		topMaskRegions = Sprites.split(name + "-top", 32, 5, 2);
 	}
 
 	@Override

@@ -13,7 +13,7 @@ import heavyindustry.content.HFx;
 import heavyindustry.gen.Entitys;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.IntMap2;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.content.Liquids;
 import mindustry.entities.Puddles;
 import mindustry.game.EventType.Trigger;
@@ -148,7 +148,7 @@ public final class VapourizeEffect {
 			Tmp.c1.set(Color.black);
 			Tmp.c1.a = Mathm.clamp(slope * ((1 - unit.healthf()) + extraAlpha) * 1.4f);
 			Draw.color(Tmp.c1);
-			Utils.simpleUnitDrawer(unit);
+			Get.simpleUnitDrawer(unit);
 			Draw.z(oz);
 		}
 

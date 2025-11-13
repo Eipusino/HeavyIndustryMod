@@ -133,12 +133,12 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 
 	@Override
 	public int indexOf(Object o) {
-		return ArrayUtils.indexOf(items, o);
+		return Arrays2.indexOf(items, o);
 	}
 
 	@Override
 	public int lastIndexOf(Object o) {
-		return ArrayUtils.lastIndexOf(items, o);
+		return Arrays2.lastIndexOf(items, o);
 	}
 
 	/** Returns the hash code value for this list. */
@@ -360,12 +360,12 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 
 		@Override
 		public int indexOf(Object o) {
-			return ArrayUtils.indexOf(parent.items, o, offset, size);
+			return Arrays2.indexOf(parent.items, o, offset, size);
 		}
 
 		@Override
 		public int lastIndexOf(Object o) {
-			return ArrayUtils.lastIndexOf(parent.items, o);
+			return Arrays2.lastIndexOf(parent.items, o);
 		}
 
 		@Override

@@ -10,7 +10,7 @@ import arc.struct.Seq;
 import arc.util.Eachable;
 import arc.util.Tmp;
 import heavyindustry.math.Mathm;
-import heavyindustry.util.SpriteUtils;
+import heavyindustry.util.Sprites;
 import mindustry.content.Blocks;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -43,7 +43,7 @@ public class HeavyDuct extends Duct {
 	@Override
 	public void load() {
 		super.load();
-		regions = SpriteUtils.splitLayer(name + "-sheet", 32, 0);
+		regions = Sprites.splitLayer(name + "-sheet", 32, 0);
 	}
 
 	@Override

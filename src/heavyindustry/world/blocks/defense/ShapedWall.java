@@ -8,7 +8,7 @@ import arc.struct.Queue;
 import arc.struct.Seq;
 import heavyindustry.content.HFx;
 import heavyindustry.math.Mathm;
-import heavyindustry.util.SpriteUtils;
+import heavyindustry.util.Sprites;
 import heavyindustry.world.meta.HStat;
 import mindustry.Vars;
 import mindustry.gen.Building;
@@ -88,7 +88,7 @@ public class ShapedWall extends ConnectedWall {
 		public void updateProximityWall() {
 			connectedWalls.clear();
 
-			for (Point2 point : SpriteUtils.proximityPos) {
+			for (Point2 point : Sprites.proximityPos) {
 				Building other = Vars.world.build(tile.x + point.x, tile.y + point.y);
 				if (other == null || other.team != team) continue;
 				if (checkWall(other)) {

@@ -9,9 +9,9 @@ import java.io.IOException;
  * Input-output utilities, providing very specific functions that aren't really commonly used, but often enough to
  * require me to write a class for it.
  */
-public final class IOUtils {
+public final class InputOutput {
 	/// Don't let anyone instantiate this class.
-	private IOUtils() {}
+	private InputOutput() {}
 
 	public static void ioErr(RunT<Throwable> run, String message) throws IOException {
 		try {
@@ -26,7 +26,7 @@ public final class IOUtils {
 		try {
 			run.run();
 		} catch (IOException e) {
-			ObjectUtils.thrower(e);
+			Objects2.thrower(e);
 		}
 	}
 
@@ -34,7 +34,7 @@ public final class IOUtils {
 		try {
 			return prov.get();
 		} catch (IOException e) {
-			return ObjectUtils.thrower(e);
+			return Objects2.thrower(e);
 		}
 	}
 }

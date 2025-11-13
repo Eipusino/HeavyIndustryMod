@@ -9,11 +9,11 @@ import arc.struct.IntIntMap;
 
 /**
  * The utility set for split sprite.
- * <p>This class may be considered for merging into {@link Utils} in future versions.
+ * <p>This class may be considered for merging into {@link Get} in future versions.
  *
  * @since 1.0.4
  */
-public final class SpriteUtils {
+public final class Sprites {
 	public static final Point2[] orthogonalPos = {
 			new Point2(0, 1),
 			new Point2(1, 0),
@@ -94,7 +94,7 @@ public final class SpriteUtils {
 		}
 	}
 
-	private SpriteUtils() {}
+	private Sprites() {}
 
 	/**
 	 * Gets multiple regions inside a {@link TextureRegion}.

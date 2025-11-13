@@ -1,6 +1,6 @@
 package heavyindustry.util.holder;
 
-import heavyindustry.util.ObjectUtils;
+import heavyindustry.util.Objects2;
 
 public class CharHolder<V> implements Cloneable {
 	public char key;
@@ -22,12 +22,12 @@ public class CharHolder<V> implements Cloneable {
 
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof CharHolder<?> that && key == that.key && ObjectUtils.equals(value, that.value);
+		return o instanceof CharHolder<?> that && key == that.key && Objects2.equals(value, that.value);
 	}
 
 	@Override
 	public int hashCode() {
-		return (int) key ^ ObjectUtils.hashCode(value);
+		return (int) key ^ Objects2.hashCode(value);
 	}
 
 	@Override

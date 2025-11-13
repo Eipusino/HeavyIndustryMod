@@ -6,7 +6,7 @@ import arc.math.Angles;
 import heavyindustry.content.HFx;
 import heavyindustry.gen.DiffBullet;
 import heavyindustry.math.Mathm;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Mover;
@@ -94,6 +94,6 @@ public class DiffBulletType extends BulletType {
 	public Bullet create(Entityc owner, Entityc shooter, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY, Teamc target) {
 		DiffBullet bullet = DiffBullet.createDiff();
 		if (bullet.healthcs.size > 0) bullet.healthcs.clear();
-		return Utils.anyOtherCreate(bullet, this, shooter, owner, team, x, y, angle, damage, velocityScl, lifetimeScl, data, mover, aimX, aimY, target);
+		return Get.anyOtherCreate(bullet, this, shooter, owner, team, x, y, angle, damage, velocityScl, lifetimeScl, data, mover, aimX, aimY, target);
 	}
 }

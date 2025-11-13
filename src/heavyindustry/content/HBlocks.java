@@ -43,7 +43,7 @@ import heavyindustry.graphics.PositionLightning;
 import heavyindustry.math.Mathm;
 import heavyindustry.type.Recipe;
 import heavyindustry.util.Constant;
-import heavyindustry.util.Utils;
+import heavyindustry.util.Get;
 import heavyindustry.world.blocks.LinkBlock;
 import heavyindustry.world.blocks.PlaceholderBlock;
 import heavyindustry.world.blocks.defense.AparajitoWall;
@@ -2594,7 +2594,7 @@ public final class HBlocks {
 			Color junior = Pal.heal;
 			updateEffectChance = 0.07f;
 			updateEffect = new Effect(30f, e -> {
-				Rand rand = Utils.rand(e.id);
+				Rand rand = Get.rand(e.id);
 				Draw.color(senior, Color.white, e.fout() * 0.66f);
 				Draw.alpha(0.55f * e.fout() + 0.5f);
 				Angles.randLenVectors(e.id, 2, 4f + e.finpow() * 16f, (x, y) -> {
@@ -6657,7 +6657,7 @@ public final class HBlocks {
 					ButtonGroup<Button> bg = new ButtonGroup<>();
 					Table cont = new Table();
 					cont.defaults().size(55);
-					for (Team bt : Utils.baseTeams) {
+					for (Team bt : Get.baseTeams) {
 						ImageButton button = cont.button(((TextureRegionDrawable) Tex.whiteui).tint(bt.color), Styles.clearTogglei, 35, Constant.RUNNABLE_NOTHING).group(bg).get();
 						button.changed(() -> {
 							if (button.isChecked()) {
