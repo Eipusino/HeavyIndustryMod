@@ -59,7 +59,7 @@ public final class DirEdges {
 	 */
 	public static Point2[] get(int size, int direction) {
 		if (size < 0 || size > maxBlockSize)
-			throw new IllegalArgumentException("Piece size must be between 0 and " + maxBlockSize);
+			throw new IllegalArgumentException("Block size must be between 0 and " + maxBlockSize);
 
 		return edges[size][Mathf.mod(direction, 4)];
 	}
@@ -72,7 +72,7 @@ public final class DirEdges {
 	 */
 	public static Point2[] get8(int size, int direction) {
 		if (size < 0 || size > maxBlockSize)
-			throw new IllegalArgumentException("Piece size must be between 0 and " + maxBlockSize);
+			throw new IllegalArgumentException("Block size must be between 0 and " + maxBlockSize);
 
 		int dir = Mathf.mod(direction, 8);
 		return dir % 2 == 0 ? edges[size][dir / 2] : angle[size][dir / 2];

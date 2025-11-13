@@ -48,7 +48,7 @@ public class DrawRegionRotated extends DrawBlock {
 	}
 
 	/*@Override
-	public TextureRegion[] icons(Piece block) {
+	public TextureRegion[] icons(Block block) {
 		return super.icons(block);
 	}*/
 
