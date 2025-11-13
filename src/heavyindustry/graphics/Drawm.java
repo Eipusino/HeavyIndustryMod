@@ -42,7 +42,7 @@ public final class Drawm {
 		}
 	}
 
-	/** Generates all team regions for this block. Call #getTeamRegion(Block) afterward to get the region. */
+	/** Generates all team regions for this block. Call #getTeamRegion(Piece) afterward to get the region. */
 	public static void generateTeamRegion(MultiPacker packer, Block b) {
 		PixmapRegion teamr = Core.atlas.getPixmap(b.name + "-team");
 

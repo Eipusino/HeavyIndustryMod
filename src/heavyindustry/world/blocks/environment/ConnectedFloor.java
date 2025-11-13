@@ -47,7 +47,7 @@ public class ConnectedFloor extends Floor {
 
 			for (int i = 0; i < tilingVariants; i++) {
 				if (tilingRegions[i].length != tilingSize || tilingRegions[i][0].length != tilingSize) {
-					Log.warn("Block: @: In order to prevent crashes, tiling regions must all be valid regions with the same size. Tiling has been disabled. Sprite '@' has a width or height inconsistent with other tiles.", name, name + "-tile" + (i + 1));
+					Log.warn("Piece: @: In order to prevent crashes, tiling regions must all be valid regions with the same size. Tiling has been disabled. Sprite '@' has a width or height inconsistent with other tiles.", name, name + "-tile" + (i + 1));
 					tilingVariants = 0;
 				}
 			}

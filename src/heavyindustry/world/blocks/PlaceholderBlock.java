@@ -88,8 +88,8 @@ public class PlaceholderBlock extends Block {
 
 		public void updateLink(Tile tile) {
 			linkTile = tile;
-			if (tile.build instanceof ConstructBlock.ConstructBuild) {
-				linkBuild = (ConstructBlock.ConstructBuild) tile.build;
+			if (tile.build instanceof ConstructBlock.ConstructBuild construct) {
+				linkBuild = construct;
 			}
 		}
 

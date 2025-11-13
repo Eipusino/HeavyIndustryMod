@@ -4,7 +4,7 @@ import mindustry.gen.Building;
 import mindustry.world.draw.DrawBlock;
 
 /**
- * Draw a TeamTop for the Block. JSON specific.
+ * Draw a TeamTop for the Piece. JSON specific.
  *
  * @since 1.0.6
  */

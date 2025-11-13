@@ -93,7 +93,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 		size = set.size;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SafeVarargs
 	public static <T> CollectionObjectSet<T> with(T... array) {
 		CollectionObjectSet<T> set = new CollectionObjectSet<>(array.getClass().getComponentType());
 		set.addAll(array);

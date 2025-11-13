@@ -3,6 +3,9 @@ package heavyindustry.world.blocks;
 import arc.struct.Seq;
 import mindustry.gen.Building;
 
+/**
+ * @author LaoHuaJi
+ */
 public interface MultiBuild {
 	Seq<Building> linkEntities();
 

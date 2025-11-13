@@ -2,7 +2,6 @@ package heavyindustry.gen;
 
 import arc.func.Cons;
 import arc.math.Angles;
-import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;

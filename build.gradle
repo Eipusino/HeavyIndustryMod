@@ -40,6 +40,11 @@ dependencies {
 	compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
 	compileOnly project(":annotations")
 
+	implementation "org.commonmark:commonmark:$commonmarkVersion"
+	implementation "org.commonmark:commonmark-ext-gfm-tables:$commonmarkVersion"
+	implementation "org.commonmark:commonmark-ext-gfm-strikethrough:$commonmarkVersion"
+	implementation "org.commonmark:commonmark-ext-ins:$commonmarkVersion"
+
 	implementation files("libs/field-utils.jar")
 
 	annotationProcessor project(":annotations")

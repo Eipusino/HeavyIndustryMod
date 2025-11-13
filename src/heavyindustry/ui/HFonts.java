@@ -65,9 +65,11 @@ public final class HFonts {
 		};
 
 		Core.assets.load("jetbrainsmonomedium-heavyindustry", Font.class, new FreeTypeFontLoaderParameter("fonts/jetbrainsmonomedium.ttf", new FreeTypeFontParameter() {{
-			size = 22;
+			size = 19;
+			borderWidth = 0.3f;
+			shadowOffsetY = 2;
 			incremental = true;
-			renderCount = 1;
+			borderColor = color;
 		}})).loaded = f -> {
 			f.setFixedWidthGlyphs(FreeTypeFontGenerator.DEFAULT_CHARS);
 			jetbrainsmonomedium = f;

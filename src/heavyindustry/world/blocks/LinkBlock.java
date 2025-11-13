@@ -26,6 +26,8 @@ import mindustry.world.modules.LiquidModule;
  * Inner building that are linked to a specific building.
  * <br>Handle items, liquids, damage and so on a passed to the main building to handle.
  * <p>NEVER SUPPOSED TO USE OUTSIDE MULTI BLOCK!
+ *
+ * @author LaoHuaJi
  */
 public class LinkBlock extends Block {
 	public LinkBlock(String name) {

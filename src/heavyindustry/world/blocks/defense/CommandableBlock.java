@@ -39,7 +39,7 @@ import static mindustry.Vars.state;
 import static mindustry.Vars.world;
 
 /**
- * Basic Commandable Block.
+ * Basic Commandable Piece.
  * <p>This is an abstract class, you should not use it directly.
  *
  * @see BombLauncher

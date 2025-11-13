@@ -11,7 +11,11 @@ import mindustry.world.Block;
 import mindustry.world.Build;
 import mindustry.world.Tile;
 
-//i guess some method here are terrible and should use sizeOffset
+/**
+ * I guess some method here are terrible and should use sizeOffset
+ *
+ * @author LaoHuaJi
+ */
 public interface MultiBlock {
 	default Block linkBlock(int index) {
 		return HBlocks.linkBlock[index];

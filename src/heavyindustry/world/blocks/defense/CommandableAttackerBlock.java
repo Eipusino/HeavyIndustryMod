@@ -39,7 +39,7 @@ import static mindustry.Vars.player;
 import static mindustry.Vars.tilesize;
 
 /**
- * Basic Commandable Attacker Block.
+ * Basic Commandable Attacker Piece.
  *
  * @see BombLauncher
  * @see AirRaider
