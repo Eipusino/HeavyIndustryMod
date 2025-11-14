@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 /**
  * LuaHighlight
  */
-public final class LuaHighlight extends DSL {
+public final class LuaHighlight extends Highlight {
 	private LuaHighlight() {}
 
 	static Capture modifiersCapture() {
@@ -333,7 +333,8 @@ public final class LuaHighlight extends DSL {
 						"|[\\\\.+\\-*/%&|!<>~^=,;:(){}\"'\\[\\]]"
 		);
 
-		res//RAW CONTEXT
+		res
+				//RAW CONTEXT
 				.addRawContextPattern("line_comment", block(Default.COMMENT,
 						of(token(2, "-")),
 						of(line(Default.COMMENT))
@@ -342,7 +343,6 @@ public final class LuaHighlight extends DSL {
 						of(token(Default.COMMENT, "--"), token(Default.COMMENT, "[[")),
 						of(token(Default.COMMENT, "]]"))
 				))
-
 				.addPattern("keywords", serial(-100, token(
 						Default.KEYWORD,
 						"local",

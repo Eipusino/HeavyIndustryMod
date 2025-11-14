@@ -12,7 +12,7 @@ import org.commonmark.node.AbstractVisitor;
 import org.commonmark.node.CustomBlock;
 import org.commonmark.node.CustomNode;
 
-public abstract class AbsExtensionVisitor extends AbstractVisitor {
+public abstract class AbstractExtensionVisitor extends AbstractVisitor {
 	@Override
 	public void visit(CustomNode customNode) {
 		if (customNode instanceof TableBody body) visit(body);

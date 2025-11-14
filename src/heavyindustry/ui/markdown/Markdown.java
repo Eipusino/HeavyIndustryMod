@@ -73,7 +73,8 @@ public class Markdown extends WidgetGroup {
 	public Markdown(List<Extension> extensions, String md, MarkdownStyle style) {
 		checkExtensions(extensions);
 
-		this.extensions = new ArrayList<>(extensions);
+		this.extensions = new ArrayList<>(extensions.size());
+		this.extensions.addAll(extensions);
 		parser = Parser.builder().extensions(extensions).extensions(defaultExtensions).build();
 		renderer = MDLayoutRenderer.builder().extensions(extensions).extensions(defaultExtensions).build();
 		rendererContext = renderer.createContext(this);
@@ -90,7 +91,7 @@ public class Markdown extends WidgetGroup {
 	 * @hidden
 	 */
 	public Markdown(Markdown parent, Node node) {
-		this.extensions = new ArrayList<>(parent.extensions);
+		extensions = new ArrayList<>(parent.extensions.size());
 		parser = null;
 		renderer = MDLayoutRenderer.builder().extensions(parent.extensions).extensions(defaultExtensions).build();
 		rendererContext = renderer.createContext(this);
@@ -98,7 +99,7 @@ public class Markdown extends WidgetGroup {
 		this.node = node;
 		touchable = Touchable.childrenOnly;
 
-		this.style = parent.getStyle();
+		style = parent.getStyle();
 	}
 
 	public void setDocument(String string) {

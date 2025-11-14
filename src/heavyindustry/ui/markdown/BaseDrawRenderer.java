@@ -126,7 +126,7 @@ public class BaseDrawRenderer extends AbstractVisitor implements NodeRenderer {
 		context.listLayer++;
 
 		Markdown.MarkdownStyle style = context.element.getStyle();
-		bulletList.accept(new AbsExtensionVisitor() {
+		bulletList.accept(new AbstractExtensionVisitor() {
 			@Override
 			protected void visitChildren(Node parent) {
 				Node node = parent.getFirstChild();
@@ -285,7 +285,7 @@ public class BaseDrawRenderer extends AbstractVisitor implements NodeRenderer {
 
 		context.currFontColor = style.linkColor;
 
-		link.accept(new AbsExtensionVisitor() {
+		link.accept(new AbstractExtensionVisitor() {
 			@Override
 			public void visit(Text text) {
 				context.makeStr(text.getLiteral().trim(), context.currFont, context.currFontColor, link.getDestination());

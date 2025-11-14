@@ -53,8 +53,7 @@ public class SelectionCapture extends Capture {
 					hit = capt;
 
 					break;
-				} catch (TokenMatcher.MatchFailed ignored) {
-				}
+				} catch (TokenMatcher.MatchFailed ignored) {}
 			}
 
 			if (hit == null) {

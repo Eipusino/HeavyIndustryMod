@@ -10,8 +10,7 @@ public class SerialMatcher implements TokenMatcher {
 
 	private int[] lens;
 
-	private SerialMatcher() {
-	}
+	protected SerialMatcher() {}
 
 	public static SerialMatcher create(Capture... captures) {
 		SerialMatcher res = new SerialMatcher();
@@ -94,8 +93,7 @@ public class SerialMatcher implements TokenMatcher {
 				off += len;
 				ended.run();
 				break;
-			} catch (TokenMatcher.MatchFailed ignored) {
-			}
+			} catch (TokenMatcher.MatchFailed ignored) {}
 
 			try {
 				int len = capture.match(context, curr);

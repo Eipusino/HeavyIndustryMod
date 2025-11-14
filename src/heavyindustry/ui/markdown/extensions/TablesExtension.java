@@ -7,7 +7,6 @@ import heavyindustry.ui.markdown.LayoutNodeRenderer;
 import heavyindustry.ui.markdown.MDLayoutRenderer;
 import heavyindustry.ui.markdown.Markdown;
 import heavyindustry.ui.markdown.elemdraw.DrawTable;
-import heavyindustry.util.CollectionObjectSet;
 import org.commonmark.Extension;
 import org.commonmark.ext.gfm.tables.TableBlock;
 import org.commonmark.ext.gfm.tables.TableBody;
@@ -18,6 +17,8 @@ import org.commonmark.ext.gfm.tables.internal.TableBlockParser;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 public class TablesExtension implements Parser.ParserExtension, MDLayoutRenderer.DrawRendererExtension {
@@ -38,13 +39,13 @@ public class TablesExtension implements Parser.ParserExtension, MDLayoutRenderer
 	}
 
 	private static class TableRenderer extends LayoutNodeRenderer {
-		private static final Set<Class<? extends Node>> typeSet = CollectionObjectSet.with(
+		private static final Set<Class<? extends Node>> typeSet = new HashSet<>(Arrays.asList(
 				TableBlock.class,
 				TableHead.class,
 				TableBody.class,
 				TableRow.class,
 				TableCell.class
-		);
+		));
 
 		private Table currentTable;
 

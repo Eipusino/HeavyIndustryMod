@@ -4,8 +4,11 @@ import arc.struct.Seq;
 import heavyindustry.entities.HEntity;
 import heavyindustry.input.InputAggregator.TapResult;
 import mindustry.Vars;
+import mindustry.gen.Building;
 import mindustry.gen.Player;
 import mindustry.net.Net;
+import mindustry.net.NetConnection;
+import mindustry.type.Item;
 import mindustry.world.Tile;
 import mindustry.world.blocks.UnitTetherBlock;
 
@@ -22,6 +25,7 @@ public final class HCall {
 
 	public static void init() {
 		Net.registerPacket(TapPacket::new);
+		Net.registerPacket(RemoveStackPacket::new);
 	}
 
 	/**
@@ -94,6 +98,35 @@ public final class HCall {
 			UnitAnnihilateCallPacket packet = new UnitAnnihilateCallPacket();
 			packet.uid = uid;
 			Vars.net.send(packet, true);
+		}
+	}
+
+	public static void removeStack(Building build, Item item, int amount) {
+		buildRemoveStack(build, item, amount);
+		if (Vars.net.server() || Vars.net.client()) {
+			RemoveStackPacket packet = new RemoveStackPacket();
+
+			packet.build = build;
+			packet.item = item;
+			packet.amount = amount;
+			Vars.net.send(packet, true);
+		}
+	}
+
+	public static void removeStack(NetConnection con, Building build, Item item, int amount) {
+		if (Vars.net.server() || Vars.net.client()) {
+			RemoveStackPacket packet = new RemoveStackPacket();
+
+			packet.build = build;
+			packet.item = item;
+			packet.amount = amount;
+			Vars.net.sendExcept(con, packet, true);
+		}
+	}
+
+	public static void buildRemoveStack(Building build, Item item, int amount) {
+		if (build != null && item != null && amount > 0) {
+			build.removeStack(item, amount);
 		}
 	}
 }

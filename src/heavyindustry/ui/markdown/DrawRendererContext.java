@@ -9,12 +9,13 @@ import arc.scene.Element;
 import arc.scene.actions.Actions;
 import arc.scene.style.Drawable;
 import arc.scene.ui.Tooltip;
-import arc.struct.ObjectMap;
-import arc.struct.Seq;
+import heavyindustry.ui.markdown.Markdown.DrawObj;
 import heavyindustry.ui.markdown.elemdraw.DrawBoard;
 import heavyindustry.ui.markdown.elemdraw.DrawClickable;
 import heavyindustry.ui.markdown.elemdraw.DrawCode;
 import heavyindustry.ui.markdown.elemdraw.DrawStr;
+import heavyindustry.util.CollectionList;
+import heavyindustry.util.CollectionObjectMap;
 import mindustry.ui.Fonts;
 import org.commonmark.node.Image;
 import org.commonmark.node.Node;
@@ -22,8 +23,8 @@ import org.commonmark.node.Node;
 public abstract class DrawRendererContext {
 	public final Markdown element;
 
-	private final Seq<Markdown.DrawObj> drawObjs = new Seq<>();
-	private final ObjectMap<Node, TextureRegion> imgCache = new ObjectMap<>();
+	private final CollectionList<DrawObj> drawObjs = new CollectionList<>(Markdown.DrawObj.class);
+	private final CollectionObjectMap<Node, TextureRegion> imgCache = new CollectionObjectMap<>(Node.class, TextureRegion.class);
 
 	public boolean prefSizeCalculating;
 

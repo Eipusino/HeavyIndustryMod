@@ -5,9 +5,9 @@ import arc.struct.FloatSeq;
 import arc.struct.Seq;
 
 public class WeightedRandom<T> {
-	float lastValue = 0f;
-	Seq<T> items;
-	FloatSeq weights = new FloatSeq();
+	protected float lastValue = 0f;
+	protected Seq<T> items;
+	protected FloatSeq weights = new FloatSeq();
 
 	public WeightedRandom(Class<T> componentType) {
 		items = new Seq<>(componentType);

@@ -1,8 +1,8 @@
 package heavyindustry.ui.markdown.highlighter;
 
-import heavyindustry.util.CollectionObjectSet;
-
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +78,7 @@ public class PieceMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
 	@Override
 	public List<TokenMatcher> indexes(String... names) {
 		List<TokenMatcher> list = new ArrayList<>();
-		Set<String> set = CollectionObjectSet.with(names);
+		Set<String> set = new HashSet<>(Arrays.asList(names));
 		for (Map.Entry<String, TokenMatcher> entry : children.entrySet()) {
 			if (set.contains(entry.getKey())) list.add(entry.getValue());
 		}

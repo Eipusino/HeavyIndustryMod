@@ -19,9 +19,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public abstract class DSL {
-	protected DSL() {}
+public abstract class Highlight {
+	protected Highlight() {}
 
+	//@SuppressWarnings("unchecked")
 	@SafeVarargs
 	protected static <T> List<T> of(T... elements) {
 		return Arrays.asList(elements);

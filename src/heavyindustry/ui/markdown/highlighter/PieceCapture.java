@@ -56,8 +56,7 @@ public class PieceCapture extends Capture {
 					len += n;
 
 					continue c;
-				} catch (TokenMatcher.MatchFailed ignored) {
-				}
+				} catch (TokenMatcher.MatchFailed ignored) {}
 			}
 
 			try {
@@ -67,8 +66,7 @@ public class PieceCapture extends Capture {
 				len += endLen;
 
 				break;
-			} catch (TokenMatcher.MatchFailed ignored) {
-			}
+			} catch (TokenMatcher.MatchFailed ignored) {}
 		}
 
 		return len;

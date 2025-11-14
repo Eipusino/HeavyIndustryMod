@@ -127,7 +127,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	/** @see #CollectionList(Object[]) */
-	@SuppressWarnings("unchecked")
+	@SafeVarargs
 	public static <T> CollectionList<T> with(T... array) {
 		return new CollectionList<>(array);
 	}

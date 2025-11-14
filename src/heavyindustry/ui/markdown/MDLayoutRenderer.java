@@ -12,7 +12,7 @@ public class MDLayoutRenderer {
 	private final List<DrawRendererFactory> nodeRendererFactories;
 	private RendererContext context;
 
-	private MDLayoutRenderer(Builder builder) {
+	MDLayoutRenderer(Builder builder) {
 		nodeRendererFactories = new ArrayList<>(builder.nodeRendererFactories.size() + 1);
 		nodeRendererFactories.addAll(builder.nodeRendererFactories);
 

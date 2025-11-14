@@ -9,7 +9,7 @@ import arc.math.geom.Vec2;
  */
 public interface GravitySystem {
 	/** The gravitational field excited by the system. */
-	GravityField field();
+	GravityField field();//gravityField
 
 	/**
 	 * The total mass of the system, measured in kilotons (kt), is allowed to be negative.

@@ -8,7 +8,7 @@ import heavyindustry.ui.markdown.highlighter.SelectionCapture;
 
 import java.util.regex.Pattern;
 
-public final class JavaHighlight extends DSL {
+public final class JavaHighlight extends Highlight {
 	private JavaHighlight() {}
 
 	static Capture modifiersCapture() {

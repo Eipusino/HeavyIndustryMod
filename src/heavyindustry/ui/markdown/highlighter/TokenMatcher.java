@@ -1,5 +1,7 @@
 package heavyindustry.ui.markdown.highlighter;
 
+import heavyindustry.util.Failed;
+
 import java.util.List;
 
 public interface TokenMatcher extends Comparable<TokenMatcher> {
@@ -11,6 +13,7 @@ public interface TokenMatcher extends Comparable<TokenMatcher> {
 
 	int getPriority();
 
+	@Override
 	default int compareTo(TokenMatcher o) {
 		return Integer.compare(o.getPriority(), getPriority());
 	}
@@ -19,10 +22,11 @@ public interface TokenMatcher extends Comparable<TokenMatcher> {
 		List<TokenMatcher> asMatchers();
 	}
 
-	class MatchFailed extends Throwable {
+	class MatchFailed extends Failed {
+		private static final long serialVersionUID = 3458499504960611300l;
+
 		public static final MatchFailed INSTANCE = new MatchFailed();
 
-		private MatchFailed() {
-		}
+		protected MatchFailed() {}
 	}
 }

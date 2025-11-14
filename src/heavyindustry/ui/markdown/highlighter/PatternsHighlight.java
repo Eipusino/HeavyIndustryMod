@@ -1,9 +1,10 @@
 package heavyindustry.ui.markdown.highlighter;
 
 import arc.func.Cons;
-import heavyindustry.util.CollectionObjectSet;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,13 +26,13 @@ public class PatternsHighlight implements LanguageHighlight<MatcherContext>, Nam
 	}
 
 	public PatternsHighlight addPattern(String patternName, TokenMatcher matcher) {
-		this.matchers.put(patternName, matcher.create());
+		matchers.put(patternName, matcher.create());
 
 		return this;
 	}
 
 	public PatternsHighlight addRawContextPattern(String patternName, TokenMatcher matcher) {
-		this.rawContextMatchers.put(patternName, matcher.create());
+		rawContextMatchers.put(patternName, matcher.create());
 
 		return this;
 	}
@@ -39,7 +40,7 @@ public class PatternsHighlight implements LanguageHighlight<MatcherContext>, Nam
 	@Override
 	public List<TokenMatcher> indexes(String... names) {
 		List<TokenMatcher> list = new ArrayList<>();
-		Set<String> set = CollectionObjectSet.with(names);
+		Set<String> set = new HashSet<>(Arrays.asList(names));
 		for (Map.Entry<String, TokenMatcher> entry : matchers.entrySet()) {
 			if (set.contains(entry.getKey())) list.add(entry.getValue());
 		}
@@ -147,8 +148,7 @@ public class PatternsHighlight implements LanguageHighlight<MatcherContext>, Nam
 				matcher.apply(context, token);
 
 				return n;
-			} catch (TokenMatcher.MatchFailed ignored) {
-			}
+			} catch (TokenMatcher.MatchFailed ignored) {}
 		}
 
 		return 1;

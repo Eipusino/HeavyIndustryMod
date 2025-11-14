@@ -141,15 +141,15 @@ public class MarkdownStyles {
 						case 4 -> new Color(0xfc976aff);
 						case 5 -> new Color(0x85aaffff);
 						case 6 -> new Color(0xffc37aff);
-						default -> throw new AssertionError();
+						default -> Color.clear;
 					});
-			//.put(new Color(0xfe767cff),    new RainbowSeparator(0, Default.SEPARATOR))
-			//.put(new Color(0x8cdef5ff),    new RainbowSeparator(1, Default.SEPARATOR))
-			//.put(new Color(0xf5a4dfff),    new RainbowSeparator(2, Default.SEPARATOR))
-			//.put(new Color(0xc6e88dff),    new RainbowSeparator(3, Default.SEPARATOR))
-			//.put(new Color(0xfc976aff),    new RainbowSeparator(4, Default.SEPARATOR))
-			//.put(new Color(0x85aaffff),    new RainbowSeparator(5, Default.SEPARATOR))
-			//.put(new Color(0xffc37aff),    new RainbowSeparator(6, Default.SEPARATOR));
+			//.put(new Color(0xfe767cff), new RainbowSeparator(0, Default.SEPARATOR))
+			//.put(new Color(0x8cdef5ff), new RainbowSeparator(1, Default.SEPARATOR))
+			//.put(new Color(0xf5a4dfff), new RainbowSeparator(2, Default.SEPARATOR))
+			//.put(new Color(0xc6e88dff), new RainbowSeparator(3, Default.SEPARATOR))
+			//.put(new Color(0xfc976aff), new RainbowSeparator(4, Default.SEPARATOR))
+			//.put(new Color(0x85aaffff), new RainbowSeparator(5, Default.SEPARATOR))
+			//.put(new Color(0xffc37aff), new RainbowSeparator(6, Default.SEPARATOR));
 		}};
 	}
 }

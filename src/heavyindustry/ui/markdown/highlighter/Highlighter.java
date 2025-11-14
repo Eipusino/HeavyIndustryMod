@@ -1,11 +1,10 @@
 package heavyindustry.ui.markdown.highlighter;
 
-import heavyindustry.util.CollectionObjectMap;
-
+import java.util.HashMap;
 import java.util.Map;
 
 public class Highlighter {
-	private final Map<String, LanguageHighlight<?>> languages = new CollectionObjectMap<>(String.class, LanguageHighlight.class);
+	private final Map<String, LanguageHighlight<?>> languages = new HashMap<>();
 
 	public Highlighter addLanguage(LanguageHighlight<?> highlight) {
 		languages.put(highlight.language().toLowerCase(), highlight);
@@ -37,11 +36,17 @@ public class Highlighter {
 			}
 		}
 
-		context.getTokensRaw().forEach(e -> {
+		// Android cannot use forEach.
+		/*context.getTokensRaw().forEach(e -> {
 			if (e.scope == null) {
 				e.scope = Scope.Default.NONE;
 			}
-		});
+		});*/
+		for (Token e : context.getTokensRaw()) {
+			if (e.scope == null) {
+				e.scope = Scope.Default.NONE;
+			}
+		}
 
 		return context;
 	}

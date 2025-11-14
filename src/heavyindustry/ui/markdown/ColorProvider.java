@@ -4,14 +4,14 @@ import arc.func.Boolf;
 import arc.func.Func;
 import arc.graphics.Color;
 import heavyindustry.ui.markdown.highlighter.Scope;
-import heavyindustry.util.CollectionObjectMap;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class ColorProvider {
 	public Color defaultColor = Color.white;
 
-	private final Map<String, ColorMap> languages = new CollectionObjectMap<>(String.class, ColorMap.class);
+	private final Map<String, ColorMap> languages = new HashMap<>();
 
 	/** Get the color assigned to the scope in the specified language. */
 	public Color getColor(String language, Scope scope) {
@@ -39,8 +39,8 @@ public class ColorProvider {
 	}
 
 	public static class ColorMap {
-		private final Map<Scope, Color> colorMap = new CollectionObjectMap<>(Scope.class, Color.class);
-		private final Map<Boolf<Scope>, Func<Scope, Color>> colorMapProvider = new CollectionObjectMap<>(Boolf.class, Func.class);
+		private final Map<Scope, Color> colorMap = new HashMap<>();
+		private final Map<Boolf<Scope>, Func<Scope, Color>> colorMapProvider = new HashMap<>();
 
 		public ColorMap put(Color color, Scope... scopes) {
 			for (Scope scope : scopes) {
