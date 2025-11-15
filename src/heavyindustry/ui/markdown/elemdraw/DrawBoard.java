@@ -5,12 +5,12 @@ import arc.util.pooling.Pools;
 import heavyindustry.ui.markdown.Markdown;
 
 public class DrawBoard extends Markdown.DrawObj {
-	float height;
-	Drawable drawable;
-	int lay;
+	protected float height;
+	protected Drawable drawable;
+	protected int lay;
 
 	//use get
-	DrawBoard() {}
+	protected DrawBoard() {}
 
 	public static DrawBoard get(Markdown owner, Drawable drawable, int layer, float height, float offX, float offY) {
 		DrawBoard res = Pools.obtain(DrawBoard.class, DrawBoard::new);

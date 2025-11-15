@@ -9,14 +9,16 @@ import java.util.Map;
 import java.util.Set;
 
 public class PieceMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
-	private Scope scope;
-	private int priority = 0;
-	private List<Capture> beginCaptures;
-	private List<Capture> endCaptures;
-	private final Map<String, TokenMatcher> children = new LinkedHashMap<>();
+	protected Scope scope;
+	protected int priority = 0;
+	protected List<Capture> beginCaptures;
+	protected List<Capture> endCaptures;
+	protected final Map<String, TokenMatcher> children = new LinkedHashMap<>();
 
-	private int[] beginLens;
-	private int[] endLens;
+	protected int[] beginLens;
+	protected int[] endLens;
+
+	protected PieceMatcher() {}
 
 	public static PieceMatcher create(List<Capture> beginCaptures, List<Capture> endCaptures) {
 		return create(null, beginCaptures, endCaptures);
@@ -65,7 +67,9 @@ public class PieceMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
 	@Override
 	public TokenMatcher create() {
 		PieceMatcher res = create(priority, scope, beginCaptures, endCaptures);
-		children.forEach(res::addChildPattern);
+		for (Map.Entry<String, TokenMatcher> entry : children.entrySet()) {
+			res.addChildPattern(entry.getKey(), entry.getValue());
+		}
 		return res;
 	}
 
@@ -90,7 +94,7 @@ public class PieceMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
 		return new ArrayList<>(children.values());
 	}
 
-	private class InnerBlockMatcher implements TokenMatcher {
+	protected class InnerBlockMatcher implements TokenMatcher {
 		@Override
 		public int match(MatcherContext context, Token token) throws MatchFailed {
 			return SerialMatcher.matchCapture(endCaptures, endLens, context, token);

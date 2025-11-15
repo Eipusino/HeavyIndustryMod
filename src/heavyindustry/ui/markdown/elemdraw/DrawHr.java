@@ -7,10 +7,10 @@ import arc.util.pooling.Pools;
 import heavyindustry.ui.markdown.Markdown;
 
 public class DrawHr extends Markdown.DrawObj {
-	Color color;
+	protected Color color;
 
 	//use get
-	DrawHr() {}
+	protected DrawHr() {}
 
 	public static DrawHr get(Markdown owner, Color color, float offY) {
 		DrawHr res = Pools.obtain(DrawHr.class, DrawHr::new);

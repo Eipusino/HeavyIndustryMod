@@ -8,7 +8,7 @@ import org.commonmark.parser.delimiter.DelimiterProcessor;
 import org.commonmark.parser.delimiter.DelimiterRun;
 
 public class CurtainDelimiterProcessor implements DelimiterProcessor {
-	private static final char delem = '$';
+	public static final char delem = '$';
 
 	@Override
 	public char getOpeningCharacter() {

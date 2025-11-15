@@ -25,7 +25,7 @@ public interface TokenMatcher extends Comparable<TokenMatcher> {
 	class MatchFailed extends Failed {
 		private static final long serialVersionUID = 3458499504960611300l;
 
-		public static final MatchFailed INSTANCE = new MatchFailed();
+		public static final MatchFailed instance = new MatchFailed();
 
 		protected MatchFailed() {}
 	}

@@ -10,10 +10,10 @@ import heavyindustry.ui.markdown.Markdown;
 import mindustry.ui.Styles;
 
 public class DrawClickable extends DrawStr implements Markdown.ActivityDrawer {
-	TextButton openUrl;
+	protected TextButton openUrl;
 
 	//use get
-	DrawClickable() {}
+	protected DrawClickable() {}
 
 	public static DrawClickable get(Markdown owner, String str, Font strFont, Runnable clicked, Tooltip tooltip, Color color, float ox, float oy, float scl) {
 		DrawClickable res = Pools.obtain(DrawClickable.class, DrawClickable::new);
@@ -38,8 +38,7 @@ public class DrawClickable extends DrawStr implements Markdown.ActivityDrawer {
 	}
 
 	@Override
-	protected void draw() {
-	}
+	protected void draw() {}
 
 	@Override
 	public Element getElem() {

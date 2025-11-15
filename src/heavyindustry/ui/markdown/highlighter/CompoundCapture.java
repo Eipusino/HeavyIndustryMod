@@ -5,14 +5,14 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CompoundCapture extends Capture {
-	private final int minMatch;
-	private final int maxMatch;
-	private final List<Capture> captures;
-	private Capture endCapture;
+	protected final int minMatch;
+	protected final int maxMatch;
+	protected final List<Capture> captures;
+	protected Capture endCapture;
 
-	private final List<List<Capture>> cap = new ArrayList<>();
-	private final List<int[]> lens = new ArrayList<>();
-	private final List<Integer> off = new ArrayList<>();
+	protected final List<List<Capture>> cap = new ArrayList<>();
+	protected final List<int[]> lens = new ArrayList<>();
+	protected final List<Integer> off = new ArrayList<>();
 
 	public CompoundCapture(Capture... captures) {
 		this(1, captures);
@@ -44,7 +44,7 @@ public class CompoundCapture extends Capture {
 		int max = context.getTokensCountInContext();
 		for (int i = 0; i < maxMatch; i++) {
 			if (token.getIndexInContext(context) + off >= max) {
-				if (i < minMatch) throw TokenMatcher.MatchFailed.INSTANCE;
+				if (i < minMatch) throw TokenMatcher.MatchFailed.instance;
 				else break;
 			}
 

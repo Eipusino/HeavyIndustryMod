@@ -1,11 +1,11 @@
 package heavyindustry.ui.markdown.highlighter;
 
-public interface LanguageHighlight<C extends TokensContext> {
+public interface LanguageHighlight<T extends TokensContext> {
 	String language();
 
-	C initContext();
+	T initContext();
 
 	void splitTokens(TokensContext context, String text);
 
-	int flowScope(C context, Token token);
+	int flowScope(T context, Token token);
 }

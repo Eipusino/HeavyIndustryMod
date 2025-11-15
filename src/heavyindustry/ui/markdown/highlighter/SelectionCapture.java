@@ -5,12 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SelectionCapture extends Capture {
-	private final int minMatch;
-	private final int maxMatch;
-	private final List<Capture> captures;
+	protected final int minMatch;
+	protected final int maxMatch;
+	protected final List<Capture> captures;
 
-	private final List<Capture> hits = new ArrayList<>();
-	private final List<Integer> hitLens = new ArrayList<>();
+	protected final List<Capture> hits = new ArrayList<>();
+	protected final List<Integer> hitLens = new ArrayList<>();
 
 	public SelectionCapture(Capture... captures) {
 		this(1, captures);
@@ -35,7 +35,7 @@ public class SelectionCapture extends Capture {
 		int max = context.getTokensCountInContext();
 		for (int i = 0; i < maxMatch; i++) {
 			if (token.getIndexInContext(context) + off >= max) {
-				if (i < minMatch) throw TokenMatcher.MatchFailed.INSTANCE;
+				if (i < minMatch) throw TokenMatcher.MatchFailed.instance;
 				else break;
 			}
 
@@ -57,7 +57,7 @@ public class SelectionCapture extends Capture {
 			}
 
 			if (hit == null) {
-				if (i < minMatch) throw TokenMatcher.MatchFailed.INSTANCE;
+				if (i < minMatch) throw TokenMatcher.MatchFailed.instance;
 				else break;
 			}
 		}

@@ -3,9 +3,9 @@ package heavyindustry.ui.markdown.highlighter;
 import arc.func.Prov;
 
 public class LazyCapture extends Capture {
-	private final Prov<Capture> captureProv;
+	protected final Prov<Capture> captureProv;
 
-	private Capture capture;
+	protected Capture capture;
 
 	public LazyCapture(Prov<Capture> captureProv) {
 		this.captureProv = captureProv;

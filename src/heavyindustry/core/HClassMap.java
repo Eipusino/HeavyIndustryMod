@@ -1,6 +1,5 @@
 package heavyindustry.core;
 
-import heavyindustry.ai.ChainedAI;
 import heavyindustry.ai.CopterAI;
 import heavyindustry.ai.DefenderHealAI;
 import heavyindustry.ai.MinerDepotAI;
@@ -97,7 +96,6 @@ import heavyindustry.type.unit.NucleoidUnitType;
 import heavyindustry.type.unit.OrnitopterUnitType;
 import heavyindustry.type.unit.PesterUnitType;
 import heavyindustry.type.unit.SentryUnitType;
-import heavyindustry.type.unit.SwordUnitType;
 import heavyindustry.type.unit.TractorBeamUnitType;
 import heavyindustry.type.unit.UnitType2;
 import heavyindustry.type.weapons.AcceleratingWeapon;
@@ -344,7 +342,6 @@ final class HClassMap {
 	static void load() {
 		//ai
 		classes.put("NullAI", NullAI.class);
-		classes.put("ChainedAI", ChainedAI.class);
 		classes.put("CopterAI", CopterAI.class);
 		classes.put("DefenderHealAI", DefenderHealAI.class);
 		classes.put("SentryAI", SentryAI.class);
@@ -446,7 +443,6 @@ final class HClassMap {
 		classes.put("OrnitopterUnitType", OrnitopterUnitType.class);
 		classes.put("PesterUnitType", PesterUnitType.class);
 		classes.put("SentryUnitType", SentryUnitType.class);
-		classes.put("SwordUnitType", SwordUnitType.class);
 		classes.put("TractorBeamUnitType", TractorBeamUnitType.class);
 		//types-weapon
 		classes.put("AcceleratingWeapon", AcceleratingWeapon.class);

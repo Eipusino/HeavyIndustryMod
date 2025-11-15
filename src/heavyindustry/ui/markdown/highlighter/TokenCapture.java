@@ -7,11 +7,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class TokenCapture extends Capture {
-	private final Set<String> tokens;
-	private final Scope scope;
+	protected final Set<String> tokens;
+	protected final Scope scope;
 
-	private final int minMatch;
-	private final int maxMatch;
+	protected final int minMatch;
+	protected final int maxMatch;
 
 	public TokenCapture(String... tokens) {
 		this(1, null, tokens);
@@ -44,7 +44,7 @@ public class TokenCapture extends Capture {
 		while (off < max) {
 			Token curr = context.getTokenInContext(token.getIndexInContext(context) + off);
 			if (!tokens.contains(curr.text)) {
-				if (off < minMatch) throw MatchFailed.INSTANCE;
+				if (off < minMatch) throw MatchFailed.instance;
 				else break;
 			}
 

@@ -3,10 +3,10 @@ package heavyindustry.ui.markdown.highlighter;
 import java.util.Stack;
 
 public class MatcherContext extends TokensContext {
-	private final Stack<Piece> pieceStack = new Stack<>();
-	private final Stack<Piece> rawContextPieceStack = new Stack<>();
+	protected final Stack<Piece> pieceStack = new Stack<>();
+	protected final Stack<Piece> rawContextPieceStack = new Stack<>();
 
-	private int currentIndex = 0;
+	protected int currentIndex = 0;
 
 	public void pushPiece(Piece piece) {
 		(inRawContext ? rawContextPieceStack : pieceStack).push(piece);

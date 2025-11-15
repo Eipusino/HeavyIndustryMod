@@ -84,14 +84,14 @@ public final class Elements {
 	public static PowerGraphInfoDialog powerInfoDialog;
 	public static GameDataDialog gameDataDialog;
 
-	private static final Vec2 ctrlVec = new Vec2();
-	private static final Vec2 point = new Vec2(-1, -1);
-	private static final Table starter = new Table(Tex.paneSolid);
+	static final Vec2 ctrlVec = new Vec2();
+	static final Vec2 point = new Vec2(-1, -1);
+	static final Table starter = new Table(Tex.paneSolid);
 
-	private static long lastToast;
-	private static Table pTable = new Table(), floatTable = new Table();
+	static long lastToast;
+	static Table pTable = new Table(), floatTable = new Table();
 
-	private static Field clickListenerField;
+	static Field clickListenerField;
 
 	/// Don't let anyone instantiate this class.
 	private Elements() {}
@@ -427,7 +427,7 @@ public final class Elements {
 		});
 	}
 
-	private static boolean pointValid() {
+	static boolean pointValid() {
 		return point.x >= 0 && point.y >= 0 && point.x <= Vars.world.width() * Vars.tilesize && point.y <= Vars.world.height() * Vars.tilesize;
 	}
 
@@ -478,27 +478,27 @@ public final class Elements {
 
 	public static void itemStack(Table parent, ItemStack stack, ItemModule itemModule) {
 		float size = LEN - OFFSET;
-		parent.table(t -> {
-			t.image(stack.item.fullIcon).size(size).left();
-			t.table(n -> {
-				Label l = new Label("");
-				n.add(stack.item.localizedName + " ").left();
-				n.add(l).left();
-				n.add("/" + UI.formatAmount(stack.amount)).left().growX();
-				n.update(() -> {
+		parent.table(table -> {
+			table.image(stack.item.fullIcon).size(size).left();
+			table.table(table1 -> {
+				Label label = new Label("");
+				table1.add(stack.item.localizedName + " ").left();
+				table1.add(label).left();
+				table1.add("/" + UI.formatAmount(stack.amount)).left().growX();
+				table1.update(() -> {
 					int amount = itemModule == null ? 0 : itemModule.get(stack.item);
-					l.setText(UI.formatAmount(amount));
-					l.setColor(amount < stack.amount ? Pal.redderDust : Color.white);
+					label.setText(UI.formatAmount(amount));
+					label.setColor(amount < stack.amount ? Pal.redderDust : Color.white);
 				});
 			}).growX().height(size).padLeft(OFFSET / 2).left();
 		}).growX().height(size).left().row();
 	}
 
-	public static void selectPos(Table parentT, Cons<Point2> cons) {
-		Prov<Touchable> original = parentT.touchablility;
-		Touchable parentTouchable = parentT.touchable;
+	public static void selectPos(Table parentTable, Cons<Point2> cons) {
+		Prov<Touchable> original = parentTable.touchablility;
+		Touchable parentTouchable = parentTable.touchable;
 
-		parentT.touchablility = () -> Touchable.disabled;
+		parentTable.touchablility = () -> Touchable.disabled;
 
 		if (!pTable.hasParent()) ctrlVec.set(Core.camera.unproject(Core.input.mouse()));
 
@@ -522,7 +522,7 @@ public final class Elements {
 				drawLines();
 			}
 
-			private void drawLines() {
+			void drawLines() {
 				Lines.square(x, y, 28, 45);
 				Lines.line(x - OFFSET * 4, y, 0, y);
 				Lines.line(x + OFFSET * 4, y, Core.graphics.getWidth(), y);
@@ -549,17 +549,17 @@ public final class Elements {
 
 		pTable.button(Icon.cancel, Styles.emptyi, () -> {
 			cons.get(Tmp.p1.set(World.toTile(ctrlVec.x), World.toTile(ctrlVec.y)));
-			parentT.touchablility = original;
-			parentT.touchable = parentTouchable;
+			parentTable.touchablility = original;
+			parentTable.touchable = parentTouchable;
 			pTable.remove();
 			floatTable.remove();
 		}).center();
 
-		Core.scene.root.addChildAt(Math.max(parentT.getZIndex() - 1, 0), pTable);
-		Core.scene.root.addChildAt(Math.max(parentT.getZIndex() - 2, 0), floatTable);
+		Core.scene.root.addChildAt(Math.max(parentTable.getZIndex() - 1, 0), pTable);
+		Core.scene.root.addChildAt(Math.max(parentTable.getZIndex() - 2, 0), floatTable);
 	}
 
-	private static void scheduleToast(Runnable run) {
+	static void scheduleToast(Runnable run) {
 		long duration = (int) (3.5 * 1000);
 		long since = Time.timeSinceMillis(lastToast);
 		if (since > duration) {
@@ -571,14 +571,14 @@ public final class Elements {
 		}
 	}
 
-	public static void countdown(Element e, Floatp remainTime) {
-		e.addListener(new Tooltip(t2 -> {
-			t2.background(Tex.bar);
-			t2.color.set(Color.black);
-			t2.color.a = 0.35f;
-			t2.add("Remain Time: 00:00 ").update(l -> {
+	public static void countdown(Element element, Floatp remainTime) {
+		element.addListener(new Tooltip(table -> {
+			table.background(Tex.bar);
+			table.color.set(Color.black);
+			table.color.a = 0.35f;
+			table.add("Remain Time: 00:00 ").update(label -> {
 				float remain = remainTime.get();
-				l.setText("[gray]Remain Time: " + ((remain / Time.toSeconds > 15) ? "[]" : "[accent]") + Mathf.floor(remain / Time.toMinutes) + ":" + Mathf.floor((remain % Time.toMinutes) / Time.toSeconds));
+				label.setText("[gray]Remain Time: " + ((remain / Time.toSeconds > 15) ? "[]" : "[accent]") + Mathf.floor(remain / Time.toMinutes) + ":" + Mathf.floor((remain % Time.toMinutes) / Time.toSeconds));
 			}).left().fillY().growX().row();
 		}));
 	}
@@ -614,63 +614,6 @@ public final class Elements {
 
 	public static void link(Table parent, Links.LinkEntry link) {
 		parent.add(new LinkTable(link)).size(LinkTable.w + OFFSET * 2f, LinkTable.h).padTop(OFFSET / 2f).row();
-	}
-
-	private static class Inner extends Table {
-		Inner() {
-			name = "INNER";
-			background(Tex.paneSolid);
-
-			left();
-			table(table -> {
-				table.button(Icon.cancel, Styles.cleari, () -> {
-					actions(Actions.touchable(Touchable.disabled), Actions.moveBy(-width, 0, 0.4f, Interp.pow3In), Actions.remove());
-				}).width(LEN).growY();
-			}).growY().fillX().padRight(OFFSET);
-		}
-
-		public void init(float wid) {
-			setSize(wid, starter.getHeight());
-			setPosition(-width, starter.originY);
-		}
-	}
-
-	public static class LinkTable extends Table {
-		protected static float h = Core.graphics.isPortrait() ? 90f : 80f;
-		protected static float w = Core.graphics.isPortrait() ? 330f : 600f;
-
-		public LinkTable(Links.LinkEntry link) {
-			background(Tex.underline);
-			margin(0);
-			table(img -> {
-				img.image().height(h - OFFSET / 2).width(LEN).color(link.color);
-				img.row();
-				img.image().height(OFFSET / 2).width(LEN).color(link.color.cpy().mul(0.8f, 0.8f, 0.8f, 1f));
-			}).expandY();
-
-			table(i -> {
-				i.background(Tex.buttonEdge3);
-				i.image(link.icon);
-			}).size(h - OFFSET / 2, h);
-
-			table(inset -> {
-				inset.add("[accent]" + link.title).growX().left();
-				inset.row();
-				inset.labelWrap(link.description).width(w - LEN).color(Color.lightGray).growX();
-			}).padLeft(OFFSET / 1.5f);
-
-			button(Icon.link, () -> {
-				if (!Core.app.openURI(link.link)) {
-					Vars.ui.showErrorMessage("@linkfail");
-					Core.app.setClipboardText(link.link);
-				}
-			}).size(h);
-		}
-
-		public static void sync() {
-			h = Core.graphics.isPortrait() ? 90f : 80f;
-			w = Core.graphics.isPortrait() ? 300f : 600f;
-		}
 	}
 
 	/// Adds '\n' if text not within maxWidth.
@@ -805,6 +748,67 @@ public final class Elements {
 			float pX = offRight ? pos.x + element.getWidth() : pos.x;
 			container.setPosition(pX, pY, (offBottom ? Align.bottom : Align.top) | (offRight ? Align.right : Align.left));
 			container.setOrigin(offRight ? container.getWidth() : 0, offBottom ? 0 : container.getHeight());
+		}
+	}
+
+	static class Inner extends Table {
+		public Inner() {
+			init();
+		}
+
+		public void init() {
+			name = "INNER";
+			background(Tex.paneSolid);
+
+			left();
+			table(table -> {
+				table.button(Icon.cancel, Styles.cleari, () -> {
+					actions(Actions.touchable(Touchable.disabled), Actions.moveBy(-width, 0, 0.4f, Interp.pow3In), Actions.remove());
+				}).width(LEN).growY();
+			}).growY().fillX().padRight(OFFSET);
+		}
+
+		public void init(float wid) {
+			setSize(wid, starter.getHeight());
+			setPosition(-width, starter.originY);
+		}
+	}
+
+	public static class LinkTable extends Table {
+		protected static float h = Core.graphics.isPortrait() ? 90f : 80f;
+		protected static float w = Core.graphics.isPortrait() ? 330f : 600f;
+
+		public LinkTable(Links.LinkEntry link) {
+			background(Tex.underline);
+			margin(0);
+			table(img -> {
+				img.image().height(h - OFFSET / 2).width(LEN).color(link.color);
+				img.row();
+				img.image().height(OFFSET / 2).width(LEN).color(link.color.cpy().mul(0.8f, 0.8f, 0.8f, 1f));
+			}).expandY();
+
+			table(i -> {
+				i.background(Tex.buttonEdge3);
+				i.image(link.icon);
+			}).size(h - OFFSET / 2, h);
+
+			table(inset -> {
+				inset.add("[accent]" + link.title).growX().left();
+				inset.row();
+				inset.labelWrap(link.description).width(w - LEN).color(Color.lightGray).growX();
+			}).padLeft(OFFSET / 1.5f);
+
+			button(Icon.link, () -> {
+				if (!Core.app.openURI(link.link)) {
+					Vars.ui.showErrorMessage("@linkfail");
+					Core.app.setClipboardText(link.link);
+				}
+			}).size(h);
+		}
+
+		public static void sync() {
+			h = Core.graphics.isPortrait() ? 90f : 80f;
+			w = Core.graphics.isPortrait() ? 300f : 600f;
 		}
 	}
 }

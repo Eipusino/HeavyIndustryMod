@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PieceCapture extends Capture {
-	private final Capture beginCapture;
-	private final Capture endCapture;
+	protected final Capture beginCapture;
+	protected final Capture endCapture;
 
-	private final List<TokenMatcher> children = new ArrayList<>();
-	private List<TokenMatcher> list;
+	protected final List<TokenMatcher> children = new ArrayList<>();
+	protected List<TokenMatcher> list;
 
 	public PieceCapture(Capture beginCapture, Capture endCapture) {
 		this.beginCapture = beginCapture;

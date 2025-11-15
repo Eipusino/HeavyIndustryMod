@@ -8,13 +8,13 @@ import arc.util.pooling.Pools;
 import heavyindustry.ui.markdown.Markdown;
 
 public class DrawCurtain extends Markdown.DrawObj implements Markdown.ActivityDrawer {
-	float width, height;
-	Drawable drawable;
+	protected float width, height;
+	protected Drawable drawable;
 
-	Image image;
+	protected Image image;
 
 	//use get
-	DrawCurtain() {}
+	protected DrawCurtain() {}
 
 	public static DrawCurtain get(Markdown owner, Drawable drawable, float offX, float offY, float width, float height) {
 		DrawCurtain res = Pools.obtain(DrawCurtain.class, DrawCurtain::new);
@@ -57,8 +57,7 @@ public class DrawCurtain extends Markdown.DrawObj implements Markdown.ActivityDr
 	}
 
 	@Override
-	protected void draw() {
-	}
+	protected void draw() {}
 
 	@Override
 	public Element getElem() {

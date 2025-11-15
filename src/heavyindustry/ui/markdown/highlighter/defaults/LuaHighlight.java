@@ -353,9 +353,9 @@ public final class LuaHighlight extends Highlight {
 						"nil", "true", "false",
 						"self", "function"
 				)))
-				.addPattern("statement", serial(-10, statementCapture(0)))
+				.addPattern("statement", serial(-10, statementCapture(0)));
 				/*.addPattern("function", serial(functionCapture()))
-				.addPattern("variable", serial(variableCapture()))*/;
+				.addPattern("variable", serial(variableCapture()));*/
 		return res;
 	}
 

@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SerialMatcher implements TokenMatcher {
-	private List<Capture> captures;
-	private int priority = 0;
+	protected List<Capture> captures;
+	protected int priority = 0;
 
-	private int[] lens;
+	protected int[] lens;
 
 	protected SerialMatcher() {}
 

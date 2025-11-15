@@ -3,8 +3,8 @@ package heavyindustry.ui.markdown.highlighter;
 import java.util.regex.Pattern;
 
 public class LinesCapture extends Capture {
-	private final Pattern lineSep;
-	private final Scope scope;
+	protected final Pattern lineSep;
+	protected final Scope scope;
 
 	public LinesCapture() {
 		this.scope = null;
@@ -27,7 +27,7 @@ public class LinesCapture extends Capture {
 			return 1;
 
 		if (!lineSep.matcher(context.getTokensRaw().get(token.rawIndex + (context.inRawContext ? 0 : 1)).text).find())
-			throw TokenMatcher.MatchFailed.INSTANCE;
+			throw TokenMatcher.MatchFailed.instance;
 
 		return 1;
 	}

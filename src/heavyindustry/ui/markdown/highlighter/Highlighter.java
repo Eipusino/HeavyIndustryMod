@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Highlighter {
-	private final Map<String, LanguageHighlight<?>> languages = new HashMap<>();
+	protected final Map<String, LanguageHighlight<?>> languages = new HashMap<>();
 
 	public Highlighter addLanguage(LanguageHighlight<?> highlight) {
 		languages.put(highlight.language().toLowerCase(), highlight);

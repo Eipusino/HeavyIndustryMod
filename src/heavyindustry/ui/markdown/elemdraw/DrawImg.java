@@ -9,13 +9,13 @@ import arc.util.pooling.Pools;
 import heavyindustry.ui.markdown.Markdown;
 
 public class DrawImg extends Markdown.DrawObj {
-	String title;
-	Font titleFont;
-	Color titleColor;
-	TextureRegion region;
+	protected String title;
+	protected Font titleFont;
+	protected Color titleColor;
+	protected TextureRegion region;
 
 	//use get
-	DrawImg() {}
+	protected DrawImg() {}
 
 	public static DrawImg get(Markdown owner, TextureRegion region, String title, float offY, Font titleFont, Color titleColor) {
 		DrawImg res = Pools.obtain(DrawImg.class, DrawImg::new);

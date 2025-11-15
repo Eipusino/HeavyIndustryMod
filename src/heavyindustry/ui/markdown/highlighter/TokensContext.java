@@ -10,7 +10,7 @@ public abstract class TokensContext {
 
 	public boolean inRawContext;
 
-	private int cursor;
+	protected int cursor;
 
 	public Token getTokenInContext(int index) {
 		return inRawContext ? getTokenRaw(index) : getToken(index);

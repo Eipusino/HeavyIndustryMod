@@ -6,11 +6,11 @@ import arc.util.pooling.Pools;
 import heavyindustry.ui.markdown.Markdown;
 
 public class DrawLine extends Markdown.DrawObj {
-	float width;
-	Color color;
+	protected float width;
+	protected Color color;
 
 	//use get
-	DrawLine() {}
+	protected DrawLine() {}
 
 	public static DrawLine get(Markdown owner, Color color, float offX, float offY, float width) {
 		DrawLine res = Pools.obtain(DrawLine.class, DrawLine::new);

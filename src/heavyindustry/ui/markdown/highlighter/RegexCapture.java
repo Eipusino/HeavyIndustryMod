@@ -5,11 +5,11 @@ import heavyindustry.ui.markdown.highlighter.TokenMatcher.MatchFailed;
 import java.util.regex.Pattern;
 
 public class RegexCapture extends Capture {
-	private final Pattern pattern;
-	private final Scope scope;
+	protected final Pattern pattern;
+	protected final Scope scope;
 
-	private final int minMatch;
-	private final int maxMatch;
+	protected final int minMatch;
+	protected final int maxMatch;
 
 	public RegexCapture(Pattern pattern) {
 		this(1, null, pattern);
@@ -42,14 +42,14 @@ public class RegexCapture extends Capture {
 		while (off < max) {
 			Token curr = context.getTokenInContext(token.getIndexInContext(context) + off);
 			if (!pattern.matcher(curr.text).matches()) {
-				if (off < minMatch) throw MatchFailed.INSTANCE;
+				if (off < minMatch) throw MatchFailed.instance;
 				else break;
 			}
 
 			off++;
 		}
 
-		if (off < minMatch) throw MatchFailed.INSTANCE;
+		if (off < minMatch) throw MatchFailed.instance;
 
 		return off;
 	}

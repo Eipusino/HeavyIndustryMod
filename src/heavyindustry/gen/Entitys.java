@@ -82,14 +82,11 @@ public final class Entitys {
 		register(PayloadLegsUnit.class, PayloadLegsUnit::new);
 		register(BuildingTetherLegsUnit2.class, BuildingTetherLegsUnit2::new);
 		register(CrawlUnit2.class, CrawlUnit2::new);
-		register(ChainedChainMechUnit.class, ChainedChainMechUnit::new);
 		register(DamageAbsorbMechUnit.class, DamageAbsorbMechUnit::new);
 		register(TractorBeamUnit.class, TractorBeamUnit::new);
 		register(OrnitopterUnit.class, OrnitopterUnit::new);
 		register(CopterUnit.class, CopterUnit::new);
-		register(FloatMechCoreUnit.class, FloatMechCoreUnit::new);
 		register(SentryUnit.class, SentryUnit::new);
-		register(SwordUnit.class, SwordUnit::new);
 		register(EnergyUnit.class, EnergyUnit::new);
 		register(PesterUnit.class, PesterUnit::new);
 		register(NucleoidUnit.class, NucleoidUnit::new);

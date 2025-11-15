@@ -31,7 +31,7 @@ public final class HShaders {
 	public static DepthShader depth;
 	public static DepthAtmosphereShader depthAtmosphere;
 	public static AlphaShader alphaShader;
-	public static SurfaceShader2 brine, crystalFluid, deepCrystalFluid, boundWater, pit, waterPit;
+	public static SurfaceShader2 brine, glacium, crystalFluid, deepCrystalFluid, boundWater, pit, waterPit;
 	public static AberrationShader aberration;
 	public static MaskShader alphaMask;
 	public static WaveShader wave;
@@ -60,6 +60,7 @@ public final class HShaders {
 		alphaShader = new AlphaShader();
 
 		brine = new SurfaceShader2(vert("general-highp"), frag("brine"));
+		glacium = new SurfaceShader2(vert("general-highp"), frag("glacium"));
 		crystalFluid = new SurfaceShader2(vert("general-highp"), frag("crystal-fluid"));
 		deepCrystalFluid = new DualSurfaceShader(vert("general-highp"), frag("deep-crystal-fluid")) {
 			@Override

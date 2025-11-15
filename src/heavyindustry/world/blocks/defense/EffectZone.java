@@ -14,7 +14,6 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.gen.Swordc;
 import heavyindustry.graphics.Fill3d;
 import mindustry.entities.Units;
 import mindustry.gen.Building;
@@ -130,7 +129,7 @@ public class EffectZone extends Block {
 			all.clear();
 			Units.nearby(affectEnemyTeam ? null : team, x, y, range, other -> {
 				if (
-						!other.dead && !(other instanceof Swordc) &&
+						!other.dead &&
 								(affectOwnTeam && other.team == team || affectEnemyTeam && team != other.team)
 				) all.add(other);
 			});

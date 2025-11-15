@@ -23,8 +23,8 @@ import org.commonmark.node.Node;
 public abstract class DrawRendererContext {
 	public final Markdown element;
 
-	private final CollectionList<DrawObj> drawObjs = new CollectionList<>(Markdown.DrawObj.class);
-	private final CollectionObjectMap<Node, TextureRegion> imgCache = new CollectionObjectMap<>(Node.class, TextureRegion.class);
+	protected final CollectionList<DrawObj> drawObjs = new CollectionList<>(Markdown.DrawObj.class);
+	protected final CollectionObjectMap<Node, TextureRegion> imgCache = new CollectionObjectMap<>(Node.class, TextureRegion.class);
 
 	public boolean prefSizeCalculating;
 

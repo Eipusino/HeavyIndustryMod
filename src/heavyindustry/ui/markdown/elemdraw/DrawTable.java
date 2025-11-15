@@ -8,11 +8,11 @@ import heavyindustry.ui.markdown.Markdown;
 import mindustry.ui.Styles;
 
 public class DrawTable extends Markdown.DrawObj implements Markdown.ActivityDrawer {
-	Table table;
-	ScrollPane pane;
+	protected Table table;
+	protected ScrollPane pane;
 
 	//use get
-	DrawTable() {}
+	protected DrawTable() {}
 
 	public static DrawTable get(Markdown owner, Table table, float ox, float oy) {
 		DrawTable res = Pools.obtain(DrawTable.class, DrawTable::new);

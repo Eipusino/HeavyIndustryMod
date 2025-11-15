@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Piece {
-	private final Scope scope;
-	private final TokenMatcher ownerMatcher;
-	private final List<TokenMatcher> matchers;
+	protected final Scope scope;
+	protected final TokenMatcher ownerMatcher;
+	protected final List<TokenMatcher> matchers;
 
 	public Piece(Scope scope, List<TokenMatcher> matchers) {
 		this.scope = scope;

@@ -3,9 +3,9 @@ package heavyindustry.ui.markdown.highlighter;
 import java.util.List;
 
 public class MatcherReference implements TokenMatcher, TokenMatcher.MatcherGroup {
-	private final int priority;
-	private final NameIndexer<TokenMatcher> nameIndexer;
-	private final String[] patternNames;
+	protected final int priority;
+	protected final NameIndexer<TokenMatcher> nameIndexer;
+	protected final String[] patternNames;
 
 	public MatcherReference(NameIndexer<TokenMatcher> map, String... patternNames) {
 		this.priority = 0;
@@ -38,7 +38,7 @@ public class MatcherReference implements TokenMatcher, TokenMatcher.MatcherGroup
 
 	@Override
 	public int match(MatcherContext context, Token token) throws MatchFailed {
-		throw MatchFailed.INSTANCE;
+		throw MatchFailed.instance;
 	}
 
 	@Override

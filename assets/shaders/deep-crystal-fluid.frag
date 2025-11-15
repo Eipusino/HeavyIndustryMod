@@ -1,7 +1,5 @@
 #define HIGHP
 
-const vec4 base_color = vec4(150.0, 230.0, 160.0, 255.0) / 255.0;
-
 #define NSCALE 100.0 / 5.75
 
 uniform sampler2D u_texture;
@@ -13,6 +11,8 @@ uniform vec2 u_resolution;
 uniform float u_time;
 
 varying vec2 v_texCoords;
+
+const vec4 baseColor = vec4(150.0, 230.0, 160.0, 255.0) / 255.0;
 
 void main() {
 	vec2 c = v_texCoords.xy;
@@ -33,7 +33,7 @@ void main() {
 	color.g *= lerp + 0.4 + wave / 3.0 * sin(btime * 2.5);
 	color.b *= lerp + 0.45 + wave * sin(btime * 3.5);
 
-	color.rgb = mix(color.rgb, base_color.rgb, noise2);
+	color.rgb = mix(color.rgb, baseColor.rgb, noise2);
 
 	color.rgb *= lerp * 0.3 + 1.0 + noise2 * 0.66 - noise3;
 

@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MDLayoutRenderer {
-	private final List<DrawRendererFactory> nodeRendererFactories;
-	private RendererContext context;
+	protected final List<DrawRendererFactory> nodeRendererFactories;
+	protected RendererContext context;
 
-	MDLayoutRenderer(Builder builder) {
+	protected MDLayoutRenderer(Builder builder) {
 		nodeRendererFactories = new ArrayList<>(builder.nodeRendererFactories.size() + 1);
 		nodeRendererFactories.addAll(builder.nodeRendererFactories);
 
@@ -35,7 +35,7 @@ public class MDLayoutRenderer {
 	}
 
 	public static class Builder {
-		private final List<DrawRendererFactory> nodeRendererFactories = new ArrayList<>();
+		protected final List<DrawRendererFactory> nodeRendererFactories = new ArrayList<>();
 
 		public MDLayoutRenderer build() {
 			return new MDLayoutRenderer(this);
@@ -69,7 +69,7 @@ public class MDLayoutRenderer {
 	public class RendererContext extends DrawRendererContext {
 		protected final NodeRendererMap nodeRendererMap = new NodeRendererMap();
 
-		private RendererContext(Markdown element) {
+		protected RendererContext(Markdown element) {
 			super(element);
 
 			for (int i = nodeRendererFactories.size() - 1; i >= 0; i--) {

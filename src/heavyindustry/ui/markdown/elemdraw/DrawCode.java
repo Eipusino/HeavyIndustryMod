@@ -10,11 +10,11 @@ import heavyindustry.ui.markdown.Markdown;
 import heavyindustry.ui.markdown.highlighter.TokensContext;
 
 public class DrawCode extends Markdown.DrawObj implements Markdown.ActivityDrawer {
-	ScrollPane pane;
-	Label label;
+	protected ScrollPane pane;
+	protected Label label;
 
 	//use get
-	DrawCode() {}
+	protected DrawCode() {}
 
 	public static DrawCode get(Markdown owner, String language, String code, Font textFont, float ox, float oy, ScrollPane.ScrollPaneStyle paneStyle) {
 		DrawCode res = Pools.obtain(DrawCode.class, DrawCode::new);

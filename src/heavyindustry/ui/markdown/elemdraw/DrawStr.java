@@ -11,17 +11,17 @@ import arc.util.pooling.Pools;
 import heavyindustry.ui.markdown.Markdown;
 
 public class DrawStr extends Markdown.DrawObj {
-	String text;
-	Font font;
-	float scl;
-	Color color;
-	Drawable drawable;
+	protected String text;
+	protected Font font;
+	protected float scl;
+	protected Color color;
+	protected Drawable drawable;
 
-	private FontCache cache;
-	private GlyphLayout layout;
+	protected FontCache cache;
+	protected GlyphLayout layout;
 
 	//use get
-	DrawStr() {}
+	protected DrawStr() {}
 
 	public static DrawStr get(Markdown owner, String str, Font font, Color color, float ox, float oy, float scl, Drawable background) {
 		DrawStr res = Pools.obtain(DrawStr.class, DrawStr::new);

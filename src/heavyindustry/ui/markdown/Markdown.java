@@ -33,22 +33,22 @@ public class Markdown extends WidgetGroup {
 			"data:image/jpeg;base64,"
 	};
 
-	private static final List<Extension> defaultExtensions = new ArrayList<>(Arrays.asList(
+	protected static final List<Extension> defaultExtensions = new ArrayList<>(Arrays.asList(
 			TablesExtension.create(),
 			InsExtension.create(),
 			StrikethroughExtension.create(),
 			CurtainExtension.create()
 	));
 
-	private final Seq<DrawObj> drawObjs = new Seq<>();
+	protected final Seq<DrawObj> drawObjs = new Seq<>();
 
-	private Node node;
-	private MarkdownStyle style;
+	protected Node node;
+	protected MarkdownStyle style;
 
-	float prefWidth, prefHeight;
-	boolean prefInvalid = true;
-	boolean contentWrap = true;
-	float lastPrefHeight;
+	protected float prefWidth, prefHeight;
+	protected boolean prefInvalid = true;
+	protected boolean contentWrap = true;
+	protected float lastPrefHeight;
 
 	protected final List<Extension> extensions;
 	protected final Parser parser;
@@ -119,7 +119,7 @@ public class Markdown extends WidgetGroup {
 		contentWrap = wrap;
 	}
 
-	private void calculatePrefSize(boolean layoutStep) {
+	protected void calculatePrefSize(boolean layoutStep) {
 		rendererContext.prefSizeCalculating = !layoutStep;
 
 		prefHeight = prefWidth = 0;
@@ -194,7 +194,7 @@ public class Markdown extends WidgetGroup {
 		super.drawChildren();
 	}
 
-	private static void checkExtensions(List<Extension> extensions) {
+	protected static void checkExtensions(List<Extension> extensions) {
 		for (Extension extension : extensions) {
 			if (!(extension instanceof MDLayoutRenderer.DrawRendererExtension)
 					|| !(extension instanceof Parser.ParserExtension))
@@ -230,7 +230,7 @@ public class Markdown extends WidgetGroup {
 			offsetX = offsetY = 0;
 		}
 
-		void free() {
+		protected void free() {
 			Pools.free(this);
 		}
 	}

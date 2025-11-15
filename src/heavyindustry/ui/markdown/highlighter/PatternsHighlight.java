@@ -13,9 +13,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class PatternsHighlight implements LanguageHighlight<MatcherContext>, NameIndexer<TokenMatcher> {
-	private final String language;
-	private final Map<String, TokenMatcher> matchers = new LinkedHashMap<>();
-	private final Map<String, TokenMatcher> rawContextMatchers = new LinkedHashMap<>();
+	protected final String language;
+	protected final Map<String, TokenMatcher> matchers = new LinkedHashMap<>();
+	protected final Map<String, TokenMatcher> rawContextMatchers = new LinkedHashMap<>();
 
 	public Pattern tokensSplit;
 	public Pattern rawTokenMatcher;

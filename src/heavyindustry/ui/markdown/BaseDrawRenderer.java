@@ -374,7 +374,7 @@ public class BaseDrawRenderer extends AbstractVisitor implements NodeRenderer {
 		context.row();
 	}
 
-	private static TextureRegion downloadImg(String url, TextureRegion errDef) {
+	protected static TextureRegion downloadImg(String url, TextureRegion errDef) {
 		TextureRegion result = new TextureRegion(errDef);
 
 		retryDown(url, res -> {
@@ -394,7 +394,7 @@ public class BaseDrawRenderer extends AbstractVisitor implements NodeRenderer {
 		return result;
 	}
 
-	private static void retryDown(String url, ConsT<Http.HttpResponse, Exception> resultHandler, int maxRetry, Cons<Throwable> errHandler) {
+	protected static void retryDown(String url, ConsT<Http.HttpResponse, Exception> resultHandler, int maxRetry, Cons<Throwable> errHandler) {
 		int[] counter = {0};
 		Runnable[] get = new Runnable[1];
 
