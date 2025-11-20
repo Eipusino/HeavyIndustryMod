@@ -92,7 +92,7 @@ public class UltPuddle extends Puddle {
 	}
 
 	/** Reacts two liquids together at a location. */
-	private static float reactPuddle(Liquid dest, Liquid liquid, float amount, Tile tile, float x, float y) {
+	static float reactPuddle(Liquid dest, Liquid liquid, float amount, Tile tile, float x, float y) {
 		if (dest == null) return 0f;
 
 		if ((dest.flammability > 0.3f && liquid.temperature > 0.7f) ||

@@ -12,10 +12,10 @@ public final class Annotations {
 	/** Fills a {@code new String[]{}}'s arg with the list of compiled classes with their qualified names. */
 	@Target({ElementType.FIELD, ElementType.LOCAL_VARIABLE})
 	@Retention(RetentionPolicy.SOURCE)
-	public @interface ListClasses { }
+	public @interface ListClasses {}
 
 	/** Fills a {@code new String[]{}}'s arg with the list of compiled packages. */
 	@Target({ElementType.FIELD, ElementType.LOCAL_VARIABLE})
 	@Retention(RetentionPolicy.SOURCE)
-	public @interface ListPackages { }
+	public @interface ListPackages {}
 }

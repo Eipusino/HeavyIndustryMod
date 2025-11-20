@@ -12,6 +12,8 @@ import mindustry.entities.pattern.ShootPattern;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
 
+import static heavyindustry.HVars.MOD_PREFIX;
+
 public final class HeavyIndustryListener implements ApplicationListener {
 	static float[] bulletDps, unitDps;
 	static boolean[] powerful;
@@ -48,6 +50,11 @@ public final class HeavyIndustryListener implements ApplicationListener {
 	@Override
 	public void fileDropped(Fi file) {}
 
+	@Override
+	public String toString() {
+		return MOD_PREFIX + "listener";
+	}
+
 	public static float getUnitDps(UnitType unit) {
 		if (unit.id >= unitDps.length) return 0f;
 		return unitDps[unit.id];
@@ -63,7 +70,7 @@ public final class HeavyIndustryListener implements ApplicationListener {
 		return powerful[unit.id];
 	}
 
-	public static void updateInit() {
+	static void updateInit() {
 		Seq<BulletType> bullets = Vars.content.bullets();
 		Seq<UnitType> units = Vars.content.units();
 

@@ -8,6 +8,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Vec2;
 import arc.util.Log;
 import arc.util.Scaling;
+import arc.util.Strings;
 import mindustry.ui.Fonts;
 
 import java.io.Reader;
@@ -36,31 +37,33 @@ public final class IconLoader {
 		}
 
 		for (var entry : iconProperties.entrySet()) {
-			if (entry.getKey() instanceof String codePointStr && entry.getValue() instanceof String getValue) {
+			Object key = entry.getKey(), value = entry.getValue();
+			if (key instanceof String codePointStr && value instanceof String getValue) {
 				String[] valueParts = getValue.split("\\|");
 				if (valueParts.length < 2) {
 					continue;
 				}
 
-				try {
-					int codePoint = Integer.parseInt(codePointStr);
-					String textureName = valueParts[1];
-					TextureRegion region = Core.atlas.find(textureName);
+				int codePoint = Strings.parseInt(codePointStr, -1);
 
-					Vec2 scaledSize = Scaling.fit.apply(region.width, region.height, fontSize, fontSize);
-					Glyph glyph = constructGlyph(codePoint, region, scaledSize, fontSize);
+				if (codePoint == -1) continue;
 
-					for (Font font : availableFonts) {
-						font.getData().setGlyph(codePoint, glyph);
-					}
-				} catch (Exception e) {
-					Log.warn("Analysis exception: " + codePointStr);
+				String textureName = valueParts[1];
+				TextureRegion region = Core.atlas.find(textureName);
+
+				Vec2 scaledSize = Scaling.fit.apply(region.width, region.height, fontSize, fontSize);
+				Glyph glyph = constructGlyph(codePoint, region, scaledSize, fontSize);
+
+				for (Font font : availableFonts) {
+					font.getData().setGlyph(codePoint, glyph);
 				}
+			} else {
+				Log.warn("Illegal property: " + key + "=" + value);
 			}
 		}
 	}
 
-	private static Glyph constructGlyph(int id, TextureRegion region, Vec2 size, int fontSize) {
+	static Glyph constructGlyph(int id, TextureRegion region, Vec2 size, int fontSize) {
 		Glyph glyph = new Glyph();
 		glyph.id = id;
 		glyph.srcX = 0;

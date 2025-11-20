@@ -1,8 +1,5 @@
 package heavyindustry;
 
-import arc.graphics.Texture;
-import arc.graphics.g2d.TextureAtlas.AtlasRegion;
-import arc.graphics.g2d.TextureRegion;
 import arc.struct.Seq;
 import arc.util.serialization.Jval;
 import heavyindustry.annotations.Annotations.ListClasses;
@@ -17,7 +14,6 @@ import heavyindustry.graphics.g2d.VaporizeBatch;
 import heavyindustry.input.InputAggregator;
 import heavyindustry.mod.ModGetter;
 import heavyindustry.util.PlatformImpl;
-import mindustry.Vars;
 import mindustry.content.TechTree.TechNode;
 import mindustry.type.Sector;
 
@@ -29,7 +25,7 @@ import mindustry.type.Sector;
 public final class HVars {
 	/// Commonly used static read-only String. Do not change unless you know what you're doing.
 	public static final String MOD_NAME = "heavy-industry";
-	public static final String MOD_PREFIX = "heavy-industry-";
+	public static final String MOD_PREFIX = MOD_NAME + '-';
 	/// The author of this mod.
 	public static final String AUTHOR = "Eipusino";
 	/// The GitHub address of this mod.
@@ -60,14 +56,6 @@ public final class HVars {
 
 	public static InputAggregator inputAggregator;
 
-	/**
-	 * Blank image placeholder, used in Kotlin to prevent {@code lateinit var} and {@code NullPointerException}.
-	 * <p>Please note that these variables will still not initialize in {@code headless}.
-	 */
-	public static Texture white;
-	public static TextureRegion whiteRegion;
-	public static AtlasRegion whiteAtlas;
-
 	public static FragmentationBatch fragBatch;
 	public static CutBatch cutBatch;
 	public static VaporizeBatch vaporBatch;
@@ -83,11 +71,6 @@ public final class HVars {
 
 	static {
 		internalTree = new InternalFileTree(HeavyIndustryMod.class);
-
-		if (!Vars.headless) {
-			whiteAtlas = new AtlasRegion(whiteRegion = new TextureRegion(white = new Texture(internalTree.resolves("other", "textures", "white.png"))));
-			whiteAtlas.name = "white";
-		}
 
 		ModGetter.checkModFormat(internalTree.root, file -> {
 			info = Jval.read(file.reader());

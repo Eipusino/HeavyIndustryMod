@@ -8,6 +8,12 @@ import arc.graphics.Texture.TextureWrap;
 import heavyindustry.HVars;
 
 public final class HTextures {
+	/**
+	 * Blank image placeholder, used in Kotlin to prevent {@code lateinit var} and {@code NullPointerException}.
+	 * <p>Please note that these variables will still not initialize in {@code headless}.
+	 */
+	public static Texture white;
+
 	public static Texture noise;
 	public static Texture smooth, particle, darker, gaussian, median, armor;
 
@@ -19,12 +25,18 @@ public final class HTextures {
 		noise.setFilter(TextureFilter.linear);
 		noise.setWrap(TextureWrap.repeat);
 
+		white = loadTexture("white");
+
 		smooth = loadTexture("smooth-noise", TextureFilter.linear, TextureWrap.repeat);
 		particle = loadTexture("particle-noise", TextureFilter.linear, TextureWrap.repeat);
 		darker = loadTexture("darker-noise", TextureFilter.linear, TextureWrap.repeat);
 		gaussian = loadTexture("gaussian-noise", TextureFilter.linear, TextureWrap.repeat);
 		median = loadTexture("median-noise", TextureFilter.linear, TextureWrap.repeat);
 		armor = loadTexture("armor", TextureFilter.nearest, TextureWrap.repeat);
+	}
+
+	public static Texture loadTexture(String name) {
+		return new Texture(HVars.internalTree.resolves("other", "textures", name + ".png"));
 	}
 
 	public static Texture loadTexture(String name, TextureFilter filter, TextureWrap wrap) {

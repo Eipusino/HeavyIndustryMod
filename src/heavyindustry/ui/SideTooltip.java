@@ -8,7 +8,7 @@ import arc.scene.ui.Tooltip;
 import arc.scene.ui.layout.Table;
 
 public class SideTooltip extends Tooltip {
-	private static final Vec2 tmp = new Vec2();
+	static final Vec2 tmp = new Vec2();
 
 	public final int align;
 	public final int invertedAlign;

@@ -45,6 +45,7 @@ import heavyindustry.files.FileUtils;
 import heavyindustry.game.HTeam;
 import heavyindustry.gen.Entitys;
 import heavyindustry.graphics.HCacheLayer;
+import heavyindustry.graphics.HRegions;
 import heavyindustry.graphics.HShaders;
 import heavyindustry.graphics.HTextures;
 import heavyindustry.graphics.MathRenderer;
@@ -163,6 +164,7 @@ public final class HeavyIndustryMod extends Mod {
 
 				Core.app.post(() -> {
 					HTextures.load();
+					HRegions.load();
 					HShaders.load();
 					HCacheLayer.load();
 					MathRenderer.load();
@@ -202,6 +204,8 @@ public final class HeavyIndustryMod extends Mod {
 
 	@Override
 	public void loadContent() {
+		HRegions.addAll();
+
 		if (HVars.isPlugin) return;
 
 		HCall.init();

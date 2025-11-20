@@ -30,11 +30,11 @@ import mindustry.entities.Effect.EffectContainer;
  * }</pre>
  */
 public class SceneEffect extends Element implements Poolable {
-	private static final Rand idRand = new Rand();
+	protected static final Rand idRand = new Rand();
 
-	private final EffectContainer container = new EffectContainer();
-	private final Mat transform = new Mat(), last = new Mat();
-	private final Color tmpColor = new Color();
+	protected final EffectContainer container = new EffectContainer();
+	protected final Mat transform = new Mat(), last = new Mat();
+	protected final Color tmpColor = new Color();
 
 	public int id;
 	public Effect effect;
@@ -122,7 +122,7 @@ public class SceneEffect extends Element implements Poolable {
 		return setDefAttr(fx, x, y, rotation, color, data, e);
 	}
 
-	private static SceneEffect setDefAttr(Effect fx, float x, float y, float rotation, Color color, Object data, SceneEffect e) {
+	protected static SceneEffect setDefAttr(Effect fx, float x, float y, float rotation, Color color, Object data, SceneEffect e) {
 		idRand.setSeed(System.nanoTime());
 		e.id = idRand.nextInt();
 		e.effect = fx;

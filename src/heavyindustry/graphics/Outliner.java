@@ -17,9 +17,9 @@ public final class Outliner {
 
 	/** Outlines a given textureRegion. Run in createIcons. */
 	public static void outlineRegion(MultiPacker packer, TextureRegion region, Color outlineColor, String name, int outlineRadius) {
-		if (!(region instanceof AtlasRegion at) || !region.found()) return;
+		if (!(region instanceof AtlasRegion atlas) || !region.found()) return;
 
-		PixmapRegion base = Core.atlas.getPixmap(at);
+		PixmapRegion base = Core.atlas.getPixmap(atlas);
 		Pixmap out = Pixmaps.outline(base, outlineColor, outlineRadius);
 
 		Drawf.checkBleed(out);

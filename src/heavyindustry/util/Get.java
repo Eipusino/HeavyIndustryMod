@@ -48,6 +48,7 @@ import mindustry.gen.Building;
 import mindustry.gen.Bullet;
 import mindustry.gen.Entityc;
 import mindustry.gen.Player;
+import mindustry.gen.Posc;
 import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
 import mindustry.gen.Velc;
@@ -64,6 +65,7 @@ import mindustry.world.draw.DrawDefault;
 import mindustry.world.draw.DrawMulti;
 import mindustry.world.draw.DrawRegion;
 import mindustry.world.meta.StatUnit;
+import org.jetbrains.annotations.Contract;
 
 /**
  * Input-output utilities, providing very specific functions that aren't really commonly used, but often
@@ -90,6 +92,7 @@ public final class Get {
 	/// Don't let anyone instantiate this class.
 	private Get() {}
 
+	@Contract(pure = true)
 	public static int reverse(int rotation) {
 		return switch (rotation) {
 			case 0 -> 2;
@@ -301,6 +304,7 @@ public final class Get {
 		return result;
 	}
 
+	@Contract(value = "_, _ -> new", pure = true)
 	public static Position pos(float x, float y) {
 		return new Pos(x, y);
 	}
@@ -378,34 +382,34 @@ public final class Get {
 	}
 
 	/**
-	 * Moving bullets
+	 * Moving Positions
 	 *
-	 * @param b     Bullets to be moved
+	 * @param pos   Position to be moved
 	 * @param endX  End coordinate X
 	 * @param endY  End coordinate Y
 	 * @param speed Speed
 	 */
-	public static void movePoint(Bullet b, float endX, float endY, float speed) {
+	public static void movePoint(Posc pos, float endX, float endY, float speed) {
 		// Calculate the distance between two points
-		float distance = (float) Math.sqrt(Math.pow(endX - b.x, 2) + Math.pow(endY - b.y, 2));
+		float distance = (float) Math.sqrt(Math.pow(endX - pos.x(), 2) + Math.pow(endY - pos.y(), 2));
 
 		float moveSpeed = distance * speed;
 
 		// Calculate the unit vector for the direction of movement
-		float dx = (endX - b.x) / distance;
-		float dy = (endY - b.y) / distance;
+		float dx = (endX - pos.x()) / distance;
+		float dy = (endY - pos.y()) / distance;
 
 		// Calculate the distance moved within each tick
 		float moveDistance = moveSpeed * Time.delta;
 
-		// Update the position of bullets
-		b.x += dx * moveDistance;
-		b.y += dy * moveDistance;
+		// Update the position
+		pos.x(pos.x() + dx * moveDistance);
+		pos.y(pos.y() + dy * moveDistance);
 
 		// Check if the destination has been reached or exceeded
-		if (Math.abs(b.x - endX) < 0.0001f && Math.abs(b.y - endY) < 0.0001f) {
-			b.x = endX;
-			b.y = endY;
+		if (Math.abs(pos.x() - endX) < 0.0001f && Math.abs(pos.y() - endY) < 0.0001f) {
+			pos.x(endX);
+			pos.y(endY);
 		}
 	}
 

@@ -17,8 +17,8 @@ import static mindustry.Vars.tilesize;
 public final class Math3d {
 	public static final float horiToVerti = 1f / 48f;
 
-	private static final Vec2 vec = new Vec2(), vresult = new Vec2();
-	private static final Vec3 axis = new Vec3(), rim = new Vec3();
+	static final Vec2 vec = new Vec2(), vresult = new Vec2();
+	static final Vec3 axis = new Vec3(), rim = new Vec3();
 
 	/// Don't let anyone instantiate this class.
 	private Math3d() {}

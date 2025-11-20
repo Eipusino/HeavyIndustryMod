@@ -8,13 +8,13 @@ import arc.scene.style.TextureRegionDrawable;
 import heavyindustry.util.Lazy;
 
 public final class DefaultBackground {
-	private static final Lazy<Drawable> white = Lazy.of(() -> {
+	static final Lazy<Drawable> white = Lazy.of(() -> {
 		Pixmap pixmap = new Pixmap(1, 1);
 		pixmap.set(0, 0, Color.whiteRgba);
 
 		return new TextureRegionDrawable(Core.atlas.white());
 	});
-	private static final Lazy<Drawable> black6 = Lazy.of(() -> new TextureRegionDrawable(Core.atlas.white()).tint(0, 0, 0, 0.6f));
+	static final Lazy<Drawable> black6 = Lazy.of(() -> new TextureRegionDrawable(Core.atlas.white()).tint(0, 0, 0, 0.6f));
 
 	/// Don't let anyone instantiate this class.
 	private DefaultBackground() {}

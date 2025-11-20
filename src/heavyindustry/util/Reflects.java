@@ -55,7 +55,7 @@ import java.util.Arrays;
 public final class Reflects {
 	public static Lookup lookup;
 
-	private static final CollectionObjectMap<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
+	static final CollectionObjectMap<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
 
 	/// Don't let anyone instantiate this class.
 	private Reflects() {}
