@@ -10,5 +10,6 @@
 	"java": true,
 	"hidden": false,
 	"minGameVersion": 152,
-	"dependencies": []
+	"dependencies": [],
+	"hideBrowser": true
 }

@@ -3,7 +3,7 @@ package heavyindustry.type;
 import arc.graphics.Color;
 import arc.graphics.Pixmap;
 import arc.util.Tmp;
-import heavyindustry.HVars;
+import heavyindustry.graphics.HPixmaps;
 import mindustry.graphics.MultiPacker;
 import mindustry.graphics.MultiPacker.PageType;
 import mindustry.type.Item;
@@ -11,14 +11,6 @@ import mindustry.type.Liquid;
 
 /** Must be created via {@link LiquidBottle#LiquidBottle(String, Liquid)} and after loading mods. **/
 public class LiquidBottle extends Item {
-	public static Pixmap top;
-	public static Pixmap bottom;
-
-	static {
-		top = new Pixmap(HVars.internalTree.resolves("sprites", "items", "bottle.png"));
-		bottom = new Pixmap(HVars.internalTree.resolves("sprites", "items", "bottle-liquid.png"));
-	}
-
 	public Liquid liquid;
 
 	public LiquidBottle(String name, Liquid liq) {
@@ -37,6 +29,8 @@ public class LiquidBottle extends Item {
 	@Override
 	public void createIcons(MultiPacker packer) {
 		super.createIcons(packer);
+
+		Pixmap top = HPixmaps.bottleTop, bottom = HPixmaps.bottleBottom;
 
 		Pixmap pixmap = new Pixmap(32, 32);
 

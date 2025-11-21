@@ -11,13 +11,24 @@ import arc.graphics.gl.FileTextureData;
 import arc.graphics.gl.PixmapTextureData;
 import arc.math.Mathf;
 import arc.util.Log;
+import heavyindustry.HVars;
 
 import java.lang.reflect.Field;
 
 public final class HPixmaps {
+	public static Pixmap white;
+	public static Pixmap bottleTop, bottleBottom;
+
 	static Field pixmapField;
 
 	private HPixmaps() {}
+
+	public static void load() {
+		white = new Pixmap(HVars.internalTree.resolves("other", "textures", "white.png"));
+
+		bottleTop = new Pixmap(HVars.internalTree.resolves("sprites", "items", "bottle.png"));
+		bottleBottom = new Pixmap(HVars.internalTree.resolves("sprites", "items", "bottle-liquid.png"));
+	}
 
 	/**
 	 * Rotate one {@link Pixmap} by a multiple of 90 degrees. This method does not change the original pixmap
