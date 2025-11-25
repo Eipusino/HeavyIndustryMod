@@ -27,18 +27,18 @@ public class CustomPatternShape implements Shape {
 			return;
 		}
 
-		PixmapRegion pixmap = Core.atlas.getPixmap(Core.atlas.find(maskName));
+		PixmapRegion region = Core.atlas.getPixmap(Core.atlas.find(maskName));
 
-		if (pixmap == null) {
+		if (region == null) {
 			Log.err("Pixmap for CustomPatternShape is null for mask: @", maskName);
 			return;
 		}
 
-		width = pixmap.width;
-		height = pixmap.height;
+		width = region.width;
+		height = region.height;
 		blocks = new BitWordList(width * height, BitWordList.WordLength.two);
 
-		HPixmaps.readTexturePixels(pixmap, (color, index) -> {
+		HPixmaps.readTexturePixels(region, (color, index) -> {
 			// from CustomShapeProp
 			// 2815 = blue, center
 			// 255 = black, part of shape

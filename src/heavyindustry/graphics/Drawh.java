@@ -8,7 +8,7 @@ import arc.graphics.g2d.Lines;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
-import heavyindustry.util.holder.ObjectHolder;
+import heavyindustry.util.concurrent.holder.ObjectHolder;
 
 import static heavyindustry.graphics.Drawn.v1;
 import static heavyindustry.graphics.Drawn.v2;

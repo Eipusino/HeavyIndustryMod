@@ -25,7 +25,7 @@ public class ItemImageDynamic extends Stack {
 			t.left().bottom();
 			t.label(() -> {
 				int amount = amountp.get();
-				return amount >= 1000 ? UI.formatAmount(amount) : amount + "";
+				return amount >= 1000 ? UI.formatAmount(amount) : String.valueOf(amount);
 			}).style(Styles.outlineLabel).color(colorProv.get());
 			t.pack();
 		}));

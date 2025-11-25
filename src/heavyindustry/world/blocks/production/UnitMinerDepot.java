@@ -18,7 +18,7 @@ import arc.util.io.Writes;
 import heavyindustry.content.HUnitTypes;
 import heavyindustry.graphics.Drawe;
 import heavyindustry.util.CollectionObjectMap;
-import heavyindustry.util.holder.ObjectHolder;
+import heavyindustry.util.concurrent.holder.ObjectHolder;
 import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;

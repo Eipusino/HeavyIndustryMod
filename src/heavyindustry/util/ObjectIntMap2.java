@@ -7,7 +7,7 @@ import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import heavyindustry.math.Mathm;
-import heavyindustry.util.holder.ObjectIntHolder;
+import heavyindustry.util.concurrent.holder.ObjectIntHolder;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;

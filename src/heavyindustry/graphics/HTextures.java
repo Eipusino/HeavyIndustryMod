@@ -8,10 +8,7 @@ import arc.graphics.Texture.TextureWrap;
 import heavyindustry.HVars;
 
 public final class HTextures {
-	/**
-	 * Blank image placeholder, used in Kotlin to prevent {@code lateinit var} and {@code NullPointerException}.
-	 * <p>Please note that these variables will still not initialize in {@code headless}.
-	 */
+	/// Blank image placeholder, used in Kotlin to prevent {@code lateinit var}.
 	public static Texture white;
 
 	public static Texture noise;
@@ -25,7 +22,7 @@ public final class HTextures {
 		noise.setFilter(TextureFilter.linear);
 		noise.setWrap(TextureWrap.repeat);
 
-		white = loadTexture("white");
+		white = new Texture(HPixmaps.white);
 
 		smooth = loadTexture("smooth-noise", TextureFilter.linear, TextureWrap.repeat);
 		particle = loadTexture("particle-noise", TextureFilter.linear, TextureWrap.repeat);

@@ -9,7 +9,7 @@ import mindustry.type.AmmoType;
 public class VanityAmmoType implements AmmoType {
 	@Override
 	public String icon() {
-		return Iconc.units + "";
+		return String.valueOf(Iconc.units);
 	}
 
 	@Override

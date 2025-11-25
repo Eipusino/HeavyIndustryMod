@@ -167,7 +167,7 @@ public final class Elements {
 			t.left();
 			t.add(text).left().padRight(5)
 					.update(a -> a.setColor(condition.get() ? Color.white : Color.gray));
-			t.field((integer ? (int) prov.get() : prov.get()) + "", s -> cons.get(Strings.parseFloat(s)))
+			t.field(String.valueOf(integer ? (int) prov.get() : prov.get()), s -> cons.get(Strings.parseFloat(s)))
 					.padRight(100f)
 					.update(a -> a.setDisabled(!condition.get()))
 					.valid(f -> Strings.canParsePositiveFloat(f) && Strings.parseFloat(f) >= min && Strings.parseFloat(f) <= max).width(120f).left();
@@ -180,7 +180,7 @@ public final class Elements {
 			t.left();
 			t.add(text).left().padRight(5)
 					.update(a -> a.setColor(condition.get() ? Color.white : Color.gray));
-			t.field((prov.get()) + "", s -> cons.get(Strings.parseInt(s)))
+			t.field(String.valueOf(prov.get()), s -> cons.get(Strings.parseInt(s)))
 					.update(a -> a.setDisabled(!condition.get()))
 					.padRight(100f)
 					.valid(f -> Strings.parseInt(f) >= min && Strings.parseInt(f) <= max).width(120f).left();
@@ -337,7 +337,7 @@ public final class Elements {
 		if (amount > 0) {
 			stack.add(new Table(t -> {
 				t.left().bottom();
-				t.add(amount >= 1000 ? formatAmount(amount) : amount + "").style(Styles.outlineLabel);
+				t.add(amount >= 1000 ? formatAmount(amount) : String.valueOf(amount)).style(Styles.outlineLabel);
 				t.pack();
 			}));
 		}

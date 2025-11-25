@@ -133,7 +133,7 @@ public class AdaptiveCoreDatabase {
 		}
 	}
 
-	private static class Meta {
+	public static class Meta {
 		public Root[] root;
 
 		@Override
@@ -144,7 +144,7 @@ public class AdaptiveCoreDatabase {
 		}
 	}
 
-	private static class Root {
+	public static class Root {
 		public String planet;
 		public String[] items;
 		public String[] liquids;

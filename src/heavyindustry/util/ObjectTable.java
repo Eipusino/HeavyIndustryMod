@@ -1,7 +1,7 @@
 package heavyindustry.util;
 
 import arc.func.Prov;
-import heavyindustry.util.holder.ObjectHolder;
+import heavyindustry.util.concurrent.holder.ObjectHolder;
 
 import java.util.Iterator;
 

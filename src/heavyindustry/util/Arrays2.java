@@ -27,7 +27,7 @@ import arc.struct.Seq;
 import arc.util.Eachable;
 import heavyindustry.func.BoolBoolf;
 import heavyindustry.func.ByteBytef;
-import heavyindustry.util.holder.ObjectHolder;
+import heavyindustry.util.concurrent.holder.ObjectHolder;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;

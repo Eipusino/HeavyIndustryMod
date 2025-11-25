@@ -5,7 +5,7 @@ import arc.func.Cons;
 import arc.func.Cons2;
 import arc.input.KeyCode;
 import heavyindustry.util.CollectionObjectMap;
-import heavyindustry.util.holder.ObjectHolder;
+import heavyindustry.util.concurrent.holder.ObjectHolder;
 
 public class CombineKeyTree<R> {
 	public final Class<R> recType;

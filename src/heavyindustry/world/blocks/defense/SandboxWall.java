@@ -21,7 +21,7 @@ import arc.util.io.Writes;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.math.Mathm;
 import heavyindustry.ui.Elements;
-import heavyindustry.util.holder.IntFloatHolder;
+import heavyindustry.util.concurrent.holder.IntFloatHolder;
 import mindustry.entities.Damage;
 import mindustry.entities.Lightning;
 import mindustry.entities.TargetPriority;
@@ -434,11 +434,11 @@ public class SandboxWall extends Block {
 					b.row();
 					b.table(f -> {
 						f.defaults().left();
-						addTextField(f, addColon("hi-sandbox-wall.lightning.chance"), "" + data.lightningChance, TextFieldFilter.floatsOnly, 4);
+						addTextField(f, addColon("hi-sandbox-wall.lightning.chance"), String.valueOf(data.lightningChance), TextFieldFilter.floatsOnly, 4);
 						f.row();
-						addTextField(f, addColon("hi-sandbox-wall.lightning.damage"), "" + data.lightningDamage, TextFieldFilter.floatsOnly, 5);
+						addTextField(f, addColon("hi-sandbox-wall.lightning.damage"), String.valueOf(data.lightningDamage), TextFieldFilter.floatsOnly, 5);
 						f.row();
-						addTextField(f, addColon("hi-sandbox-wall.lightning.length"), "" + data.lightningLength, TextFieldFilter.digitsOnly, 6);
+						addTextField(f, addColon("hi-sandbox-wall.lightning.length"), String.valueOf(data.lightningLength), TextFieldFilter.digitsOnly, 6);
 						f.row();
 					});
 				}).padLeft(32f);
@@ -456,7 +456,7 @@ public class SandboxWall extends Block {
 					b.row();
 					b.table(f -> {
 						f.defaults().left();
-						addTextField(f, addColon("hi-sandbox-wall.deflection.chance"), "" + data.deflectChance, TextFieldFilter.floatsOnly, 7);
+						addTextField(f, addColon("hi-sandbox-wall.deflection.chance"), String.valueOf(data.deflectChance), TextFieldFilter.floatsOnly, 7);
 					});
 				}).padLeft(32f);
 				t.row();
@@ -485,7 +485,7 @@ public class SandboxWall extends Block {
 					b.row();
 					b.table(f -> {
 						f.defaults().left();
-						addTextField(f, addColon("stat.armor"), "" + data.armor, TextFieldFilter.floatsOnly, 8);
+						addTextField(f, addColon("stat.armor"), String.valueOf(data.armor), TextFieldFilter.floatsOnly, 8);
 					});
 				}).padLeft(32f);
 			}).top().grow().margin(8f);

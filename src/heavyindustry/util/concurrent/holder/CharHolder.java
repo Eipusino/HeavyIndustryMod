@@ -1,4 +1,4 @@
-package heavyindustry.util.holder;
+package heavyindustry.util.concurrent.holder;
 
 import heavyindustry.util.Objects2;
 

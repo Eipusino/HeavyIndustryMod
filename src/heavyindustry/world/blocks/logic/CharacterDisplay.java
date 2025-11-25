@@ -78,7 +78,7 @@ public class CharacterDisplay extends Block {
 			if (config instanceof String conf) {
 				try {
 					String[] split = conf.split("@");
-					split[1] = CharacterOverlay.charToData(queueText.charAt(0)) + "";
+					split[1] = String.valueOf(CharacterOverlay.charToData(queueText.charAt(0)));
 					tile.build.configure(split[0] + "@" + split[1]);
 				} catch (Exception e) {
 					Log.err(e);

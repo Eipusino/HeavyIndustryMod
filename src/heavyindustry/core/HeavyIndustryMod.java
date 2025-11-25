@@ -45,6 +45,7 @@ import heavyindustry.files.FileUtils;
 import heavyindustry.game.HTeam;
 import heavyindustry.gen.Entitys;
 import heavyindustry.graphics.HCacheLayer;
+import heavyindustry.graphics.HPixmaps;
 import heavyindustry.graphics.HRegions;
 import heavyindustry.graphics.HShaders;
 import heavyindustry.graphics.HTextures;
@@ -163,6 +164,7 @@ public final class HeavyIndustryMod extends Mod {
 				HSounds.load();
 
 				Core.app.post(() -> {
+					HPixmaps.load();
 					HTextures.load();
 					HRegions.load();
 					HShaders.load();
@@ -342,11 +344,13 @@ public final class HeavyIndustryMod extends Mod {
 	static void loadLibrary() {
 		if (OS.isIos) return;
 
-		loadLibrary("Impl", OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl", true, clazz -> {
+		String main = OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl";
+
+		loadLibrary("Impl", main, true, clazz -> {
 			Object instance = clazz.getConstructor().newInstance();
 
-			if (instance instanceof PlatformImpl core) {
-				HVars.platformImpl = core;
+			if (instance instanceof PlatformImpl impl) {
+				HVars.platformImpl = impl;
 			}
 		});
 	}

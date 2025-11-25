@@ -110,8 +110,8 @@ public final class HPixmaps {
 		Color a = new Color(), b = new Color(), c = new Color(), d = new Color();
 		out.each((x, y) -> {
 			float fracX = x / (float) w * src.width, fracY = y / (float) h * src.height;
-			int fx = (int) fracX, tx = Math.min(fx + 1, src.width - 1),
-					fy = (int) fracY, ty = Math.min(fy + 1, src.height - 1);
+			int fx = (int) fracX, tx = Math.min(fx + 1, src.width - 1);
+			int fy = (int) fracY, ty = Math.min(fy + 1, src.height - 1);
 			fracX -= fx;
 			fracY -= fy;
 
@@ -124,35 +124,37 @@ public final class HPixmaps {
 	}
 
 	/** reads every single pixel on a textureRegion from bottom left to top right. */
-	public static void readTexturePixels(PixmapRegion pixmap, Intc2 cons) {
-		for (int j = 0; j < pixmap.height; j++) {
-			for (int i = 0; i < pixmap.width; i++) {
-				cons.get(pixmap.get(i, j), i + pixmap.width * (pixmap.height - 1 - j));
+	public static void readTexturePixels(PixmapRegion region, Intc2 cons) {
+		for (int j = 0; j < region.height; j++) {
+			for (int i = 0; i < region.width; i++) {
+				cons.get(region.get(i, j), i + region.width * (region.height - 1 - j));
 			}
 		}
 	}
 
-	public static PixmapRegion color(PixmapRegion pixmap, ColorBool cond, Int2Color to) {
-		pixmap.pixmap.each((x, y) -> {
-			if (x >= pixmap.x && x < pixmap.x + pixmap.width && y >= pixmap.y && y < pixmap.y + pixmap.height &&
-					cond.get(pixmap.pixmap.get(x, y))) {
-				pixmap.pixmap.set(x, y, to.get(x, y));
+	public static PixmapRegion color(PixmapRegion region, ColorBool cond, Int2Color to) {
+		region.pixmap.each((x, y) -> {
+			if (x >= region.x && x < region.x + region.width && y >= region.y && y < region.y + region.height && cond.get(region.pixmap.get(x, y))) {
+				region.pixmap.set(x, y, to.get(x, y));
 			}
 		});
-		return pixmap;
+		return region;
 	}
 
-	public static PixmapRegion color(PixmapRegion pixmap, Color from, Color to) {
-		return color(pixmap, c -> c == from.rgba(), (x, y) -> to);
+	public static PixmapRegion color(PixmapRegion region, Color from, Color to) {
+		return color(region, c -> c == from.rgba(), (x, y) -> to);
 	}
 
-	public static Pixmap pixmapOf(Texture texture) {
+	public static Pixmap pixmapOf(Texture texture, boolean prepare) {
+		if (texture == null) return null;
+
 		TextureData data = texture.getTextureData();
 
 		if (data instanceof PixmapTextureData) return data.consumePixmap();
 		if (data instanceof FileTextureData) {
 			try {
-				if (!data.isPrepared()) data.prepare();
+				if (prepare && !data.isPrepared()) data.prepare();
+
 				if (pixmapField == null) {
 					pixmapField = FileTextureData.class.getDeclaredField("pixmap");
 					pixmapField.setAccessible(true);

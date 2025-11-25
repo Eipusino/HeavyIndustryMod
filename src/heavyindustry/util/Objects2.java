@@ -94,6 +94,14 @@ public final class Objects2 {
 		return result;
 	}
 
+	public static int asInt(Object obj, int def) {
+		return obj instanceof Number num ? num.intValue() : def;
+	}
+
+	public static float asFloat(Object obj, float def) {
+		return obj instanceof Number num ? num.floatValue() : def;
+	}
+
 	/** Used to optimize code conciseness in specific situations. */
 	public static <T> T requireInstance(Class<?> type, T obj) {
 		if (obj == null || type.isInstance(obj))

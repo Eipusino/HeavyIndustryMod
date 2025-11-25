@@ -205,7 +205,7 @@ public class WavefrontObject {
 					int[] i = {0};
 					for (String segment : segments) {
 						String[] faceIndex = segment.split("/");
-						//Log.info(faceIndex.length + "");
+						//Log.info(String.valueOf(faceIndex.length));
 						Vertex vert = drawnVertices.get(getFaceVal(faceIndex[0]));
 						face.verts[i[0]] = vert;
 						if (hasNormal) {

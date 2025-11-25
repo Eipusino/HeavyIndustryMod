@@ -132,8 +132,8 @@ public class TurretController extends Block {
 			if (front() instanceof TurretBuild b && b.team == team) {
 				targetSetting.set(b.angleTo(target), b.dst(target) / tilesize);
 				if (angField != null) {
-					angField.setText("" + targetSetting.x);
-					dstField.setText("" + targetSetting.y);
+					angField.setText(String.valueOf(targetSetting.x));
+					dstField.setText(String.valueOf(targetSetting.y));
 				}
 			}
 		}
@@ -195,13 +195,13 @@ public class TurretController extends Block {
 				//Target
 				t.table(tar -> { //TODO target using a click. Command mode probably.
 					tar.add("@hi-turret-controller-angle").right();
-					angField = tar.field("" + targetSetting.x, TextFieldFilter.floatsOnly, s -> {
+					angField = tar.field(String.valueOf(targetSetting.x), TextFieldFilter.floatsOnly, s -> {
 						targetSetting.x = Strings.parseFloat(s);
 						configure(targetSetting);
 					}).get();
 					tar.row();
 					tar.add("@hi-turret-controller-distance").right();
-					dstField = tar.field("" + targetSetting.y, TextFieldFilter.floatsOnly, s -> {
+					dstField = tar.field(String.valueOf(targetSetting.y), TextFieldFilter.floatsOnly, s -> {
 						targetSetting.y = Strings.parseFloat(s);
 						configure(targetSetting);
 					}).get();

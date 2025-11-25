@@ -7,7 +7,6 @@ import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
 import arc.math.Rand;
 import arc.math.geom.Vec2;
-import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
@@ -20,6 +19,7 @@ import heavyindustry.graphics.Drawn;
 import heavyindustry.math.HInterps;
 import heavyindustry.math.Mathm;
 import heavyindustry.type.unit.PesterUnitType;
+import heavyindustry.util.CollectionList;
 import heavyindustry.util.Constant;
 import heavyindustry.util.Get;
 import heavyindustry.util.ObjectFloatMap2;
@@ -72,7 +72,7 @@ public class PesterUnit extends Unit2 implements Pesterc {
 	public transient float salvoReloadTarget = 0f;
 
 	public ObjectFloatMap2<Healthc> hatred = new ObjectFloatMap2<>(Healthc.class);
-	public Seq<Healthc> nextTargets = new Seq<>(Healthc.class);
+	public CollectionList<Healthc> nextTargets = new CollectionList<>(Healthc.class);
 
 	protected Trail[] trails = {};
 
@@ -557,7 +557,7 @@ public class PesterUnit extends Unit2 implements Pesterc {
 	}
 
 	@Override
-	public Seq<Healthc> nextTargets() {
+	public CollectionList<Healthc> nextTargets() {
 		return nextTargets;
 	}
 
@@ -647,7 +647,7 @@ public class PesterUnit extends Unit2 implements Pesterc {
 	}
 
 	@Override
-	public void nextTargets(Seq<Healthc> value) {
+	public void nextTargets(CollectionList<Healthc> value) {
 		nextTargets = value;
 	}
 

@@ -204,7 +204,7 @@ public abstract class CommandableAttackerBlock extends CommandableBlock {
 				if (build.team == team && sameGroup(build.block) && build.canCommand(pos)) {
 					build.command(pos);
 					participantsTmp.add(build);
-					build.lastAccessed = Iconc.modeAttack + "";
+					build.lastAccessed = String.valueOf(Iconc.modeAttack);
 				}
 			}
 

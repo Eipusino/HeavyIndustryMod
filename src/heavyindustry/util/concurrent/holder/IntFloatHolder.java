@@ -1,4 +1,4 @@
-package heavyindustry.util.holder;
+package heavyindustry.util.concurrent.holder;
 
 public class IntFloatHolder implements Cloneable {
 	public int key;
