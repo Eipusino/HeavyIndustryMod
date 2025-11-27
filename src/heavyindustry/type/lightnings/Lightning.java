@@ -25,7 +25,7 @@ import mindustry.graphics.Drawf;
 public class Lightning implements Poolable {
 	private static final Vec2 last = new Vec2(), self = new Vec2(), next = new Vec2();
 
-	public final Seq<LightningVertex> vertices = new Seq<>();
+	public final Seq<LightningVertex> vertices = new Seq<>(LightningVertex.class);
 	/** 闪电的持续时间 */
 	public float lifeTime;
 	/** 闪电消逝的过渡时间 */

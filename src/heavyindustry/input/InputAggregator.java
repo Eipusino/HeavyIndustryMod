@@ -87,7 +87,7 @@ public class InputAggregator implements Eachable<String> {
 		results.clear();
 		for (int i = 0; i < targets.size; i++) {
 			TapHandle handle = handles.get(targets.get(i));
-			results.add((handle == null || !handle.enabled) ? TapResult.disabled : handle.listener.canTap(player, x, y) ? TapResult.accepted : TapResult.rejected);
+			results.add(handle == null || !handle.enabled ? TapResult.disabled : handle.listener.canTap(player, x, y) ? TapResult.accepted : TapResult.rejected);
 		}
 
 		return results;

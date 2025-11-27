@@ -54,7 +54,7 @@ public class LightningContainer implements Iterable<Lightning> {
 
 	protected float clipSize;
 
-	protected final Seq<Lightning> lightnings = new Seq<>();
+	protected final Seq<Lightning> lightnings = new Seq<>(Lightning.class);
 
 	/** 使用给出的闪电生成器在容器中创建一道新的闪电 */
 	public void create(LightningGenerator generator) {

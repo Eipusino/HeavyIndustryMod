@@ -11,7 +11,7 @@ import mindustry.graphics.Layer;
 
 public class DrawPartsParticle extends ParticleModel {
 	public float layer = Layer.effect;
-	public Seq<DrawPart> parts = new Seq<>();
+	public Seq<DrawPart> parts = new Seq<>(DrawPartsParticle.class);
 
 	DrawPart.PartParams params = new DrawPart.PartParams();
 

@@ -40,7 +40,7 @@ public class Markdown extends WidgetGroup {
 			CurtainExtension.create()
 	));
 
-	protected final Seq<DrawObj> drawObjs = new Seq<>();
+	protected final Seq<DrawObj> drawObjs = new Seq<>(DrawObj.class);
 
 	protected Node node;
 	protected MarkdownStyle style;

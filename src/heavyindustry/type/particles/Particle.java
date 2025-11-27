@@ -34,7 +34,7 @@ public class Particle extends Decal implements ExtraVariablec, Iterable<Particle
 	public static int maxAmount = 1024;
 
 	protected static final ObjectSet<Particle> all = new ObjectSet<>();
-	protected static final Seq<Particle> temp = new Seq<>();
+	protected static final Seq<Particle> temp = new Seq<>(Particle.class);
 
 	protected Vec2 startPos = new Vec2();
 	protected float clipSize;
