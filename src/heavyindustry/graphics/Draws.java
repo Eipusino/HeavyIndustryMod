@@ -81,7 +81,6 @@ public final class Draws {
 	private Draws() {}
 
 	public static int nextTaskId() {
-		if (idCount >= Integer.MAX_VALUE - 2) idCount = 0;
 		return idCount++;
 	}
 
@@ -638,7 +637,36 @@ public final class Draws {
 	}
 
 	public static void arc(float x, float y, float radius, float innerAngel, float rotate) {
-		dashCircle(x, y, radius, 1, innerAngel, rotate);
+		arc(x, y, radius, 1.8f, innerAngel, rotate);
+	}
+
+	public static void arc(float x, float y, float radius, float scaleFactor, float innerAngel, float rotate) {
+		int sides = 40 + (int) (radius * scaleFactor);
+
+		float step = 360f / sides;
+		int sing = innerAngel > 0 ? 1 : -1;
+		innerAngel = Math.min(Math.abs(innerAngel), 360f);
+
+		Lines.beginLine();
+
+		float overed = 0;
+		for (float ang = 0; ang <= innerAngel - step; ang += step) {
+			overed += step;
+			v1.set(radius, 0).setAngle(ang * sing + rotate);
+			Lines.linePoint(x + v1.x, y + v1.y);
+		}
+
+		if (innerAngel >= 360f - 0.01f) {
+			Lines.endLine(true);
+			return;
+		}
+
+		if (overed < innerAngel) {
+			v1.set(radius, 0).setAngle(innerAngel * sing + rotate);
+			Lines.linePoint(x + v1.x, y + v1.y);
+		}
+
+		Lines.endLine();
 	}
 
 	public static void dashCircle(float x, float y, float radius) {
@@ -654,6 +682,8 @@ public final class Draws {
 	}
 
 	public static void dashCircle(float x, float y, float radius, float scaleFactor, int dashes, float totalDashDeg, float rotate) {
+		if (Mathf.equal(totalDashDeg, 0)) return;
+
 		int sides = 40 + (int) (radius * scaleFactor);
 		if (sides % 2 == 1) sides++;
 
@@ -665,17 +695,29 @@ public final class Draws {
 		float dashDeg = totalDashDeg / dashes;
 		float empDeg = rem / dashes;
 
-		for (int i = 0; i < sides; i++) {
-			if (i * Math.abs(per) % (dashDeg + empDeg) > dashDeg) continue;
+		Lines.beginLine();
+		v1.set(radius, 0).setAngle(rotate + 90);
+		Lines.linePoint(v1.x + x, v1.y + y);
 
-			v1.set(radius, 0).setAngle(rotate + per * i + 90);
+		boolean drawing = true;
+		for (int i = 0; i < sides; i++) {
+			if (i * Math.abs(per) % (dashDeg + empDeg) > dashDeg) {
+				if (drawing) {
+					Lines.endLine();
+					drawing = false;
+				}
+				continue;
+			}
+
+			if (!drawing) Lines.beginLine();
+			drawing = true;
+			v1.set(radius, 0).setAngle(rotate + per * (i + 1) + 90);
 			float x1 = v1.x;
 			float y1 = v1.y;
 
-			v1.set(radius, 0).setAngle(rotate + per * (i + 1) + 90);
-
-			Lines.line(x1 + x, y1 + y, v1.x + x, v1.y + y);
+			Lines.linePoint(x1 + x, y1 + y);
 		}
+		if (drawing) Lines.endLine();
 	}
 
 	public static void drawLaser(float originX, float originY, float otherX, float otherY, TextureRegion linkRegion, TextureRegion capRegion, float stoke) {
@@ -720,7 +762,6 @@ public final class Draws {
 			default -> {
 				return;
 			}
-
 		}
 
 		Fill.quad(originX + v1.x, originY + v1.y, c1, originX - v1.x, originY - v1.y, c2, targetX - v1.x, targetY - v1.y, c3, targetX + v1.x, targetY + v1.y, c4);
@@ -823,6 +864,45 @@ public final class Draws {
 
 		Fill.quad(x + v1.x, y + v1.y, x + v2.x, y + v2.y, x + v3.x, y + v3.y, x + v1.x, y + v1.y);
 		Fill.quad(x - v1.x, y - v1.y, x + v2.x, y + v2.y, x + v3.x, y + v3.y, x - v1.x, y - v1.y);
+	}
+
+	public static void drawCircleProgress(float x, float y, float radius, float stroke, float progress, Color color, Color backColor) {
+		drawCircleProgress(x, y, radius, stroke, stroke / 2f, progress, 0, color, backColor);
+	}
+
+	public static void drawCircleProgress(float x, float y, float radius, float frameStroke, float barStroke, float progress, Color color, Color backColor) {
+		drawCircleProgress(x, y, radius, frameStroke, barStroke, progress, 0, color, backColor);
+	}
+
+	public static void drawCircleProgress(float x, float y, float radius, float frameStroke, float barStroke, float progress, float subProgress, Color color, Color backColor) {
+		float parentAlpha = Draw.getColor().a;
+		float rad = radius - frameStroke / 2f;
+
+		Draw.color(Color.black, parentAlpha);
+		Lines.stroke(frameStroke);
+		Lines.circle(x, y, rad);
+		Draw.color(backColor, 0.6f * parentAlpha);
+		Lines.circle(x, y, rad);
+		Draw.color(Color.black, 0.6f * parentAlpha);
+		Lines.stroke(barStroke);
+		Lines.circle(x, y, rad);
+
+		if (progress > 0) {
+			Lines.stroke(barStroke);
+			Draw.color(color, parentAlpha);
+			arc(x, y, rad, -360f * progress, 90);
+		}
+
+		if (subProgress > 0) {
+			Lines.stroke(frameStroke);
+			Draw.color(backColor, 0.5f * parentAlpha);
+			float angel = -360f * Math.min(subProgress, 1 - progress);
+			arc(x, y, rad, angel, 90 - progress * 360f);
+
+			Draw.color(Color.black, 0.2f * parentAlpha);
+			Lines.stroke(frameStroke / 3f);
+			arc(x, y, rad, angel, 90 - progress * 360f);
+		}
 	}
 
 	public interface DrawAcceptor<T> {

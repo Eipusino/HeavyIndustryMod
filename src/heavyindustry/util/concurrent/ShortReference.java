@@ -7,6 +7,12 @@ public class ShortReference implements Serializable {
 
 	public short element;
 
+	public ShortReference() {}
+
+	public ShortReference(short initialElement) {
+		element = initialElement;
+	}
+
 	@Override
 	public String toString() {
 		return String.valueOf(element);

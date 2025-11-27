@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 public final class Strings2 {
 	static final String[] byteUnit = {"B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"};
 
+	static final String printableString = " !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~";
 	static final char[] printableChars = {
 			' ', '!', '"', '#', '$', '%', '&', '\'', '(', ')', '*', '+', ',', '-', '.', '/',
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -218,5 +219,59 @@ public final class Strings2 {
 
 			return negative ? result : -result;
 		}
+	}
+
+	public static boolean isPureAscii(String str) {
+		if (str == null) return false;
+
+		for (int i = 0; i < str.length(); i++) {
+			if (str.charAt(i) > 127) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static String removeNonAscii(String str) {
+		if (str == null) return null;
+
+		StringBuilder sb = new StringBuilder(str.length());
+		for (int i = 0; i < str.length(); i++) {
+			char c = str.charAt(i);
+			if (c <= 127) {
+				sb.append(c);
+			}
+		}
+		return sb.toString();
+	}
+
+	public static String stringToAsciiCodes(String str) {
+		if (str == null) return null;
+
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < str.length(); i++) {
+			if (i > 0) sb.append(" ");
+			sb.append((int) str.charAt(i));
+		}
+		return sb.toString();
+	}
+
+	public static String asciiCodesToString(String asciiCodes) {
+		if (asciiCodes == null) return null;
+
+		String[] codes = asciiCodes.split("\\s+");
+		StringBuilder sb = new StringBuilder();
+
+		for (String code : codes) {
+			try {
+				int asciiValue = Integer.parseInt(code);
+				if (asciiValue >= 0 && asciiValue <= 127) {
+					sb.append((char) asciiValue);
+				}
+			} catch (NumberFormatException e) {
+				// 忽略无效的数字
+			}
+		}
+		return sb.toString();
 	}
 }

@@ -3,10 +3,6 @@ package heavyindustry.world.draw;
 import arc.Core;
 import arc.func.Boolf2;
 import arc.func.Intf;
-import arc.graphics.Pixmap;
-import arc.graphics.Pixmaps;
-import arc.graphics.Texture;
-import arc.graphics.Texture.TextureFilter;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Point2;
@@ -21,7 +17,8 @@ import mindustry.world.draw.DrawBlock;
 public class DrawAntiSpliceBlock extends DrawBlock {
 	protected static final String[] splices = {"right", "right-top", "top", "left-top", "left", "left-bot", "bot", "right-bot"};
 
-	public TextureRegion[] drawRegions = new TextureRegion[256];//Space for time, don't use this type too much.
+	public TextureRegion[] regions = new TextureRegion[8];
+	public TextureRegion[] inner = new TextureRegion[4];
 	public Boolf2<BuildPlan, BuildPlan> planSplicer = (plan, other) -> false;
 	public Intf<Building> splicer;
 
@@ -47,20 +44,15 @@ public class DrawAntiSpliceBlock extends DrawBlock {
 		icon = Core.atlas.find(block.name + "-icon");
 
 		if (split) {
-			drawRegions = Sprites.split(block.name + "-sheet", 32, 16, 16);
+			regions = Sprites.split(block.name + "-sheet", 32, 16, 16);
 		} else {
-			Pixmap[] regions = new Pixmap[8];
-			Pixmap[] inner = new Pixmap[4];
+			icon = Core.atlas.find(block.name + "_icon");
 
 			for (int i = 0; i < regions.length; i++) {
-				regions[i] = Core.atlas.getPixmap(block.name + "-" + splices[i]).crop();
+				regions[i] = Core.atlas.find(block.name + "_" + splices[i]);
 			}
 			for (int i = 0; i < inner.length; i++) {
-				inner[i] = Core.atlas.getPixmap(block.name + "-" + splices[i * 2 + 1] + "-inner").crop();
-			}
-
-			for (int i = 0; i < drawRegions.length; i++) {
-				drawRegions[i] = getRegionWithBit(regions, inner, i);
+				inner[i] = Core.atlas.find(block.name + "_" + splices[i * 2 + 1] + "_inner");
 			}
 		}
 	}
@@ -70,34 +62,27 @@ public class DrawAntiSpliceBlock extends DrawBlock {
 		return new TextureRegion[]{icon};
 	}
 
-	protected TextureRegion getRegionWithBit(Pixmap[] regions, Pixmap[] inner, int index) {
-		Pixmap pixmap = new Pixmap(regions[0].width, regions[0].height);
-
-		for (int i = 0; i < 8; i++) {
-			if (i % 2 == 0 && (index & (1 << i)) == 0) {
-				pixmap.draw(regions[i], true);
+	protected void drawSplice(float x, float y, int bits) {
+		for (int dir = 0; dir < 8; dir++) {
+			if (dir % 2 == 0) {
+				if ((bits & (1 << dir)) == 0) Draw.rect(regions[dir], x, y);
 			}
 		}
-		for (int i = 0; i < 8; i++) {
-			if ((i + 1) % 2 == 0) {
-				int dirBit = 1 << (i + 1) % 8 | 1 << (i - 1);
-				if ((index & dirBit) == 0) pixmap.draw(regions[i], true);
-				else if ((index & dirBit) == dirBit && (interConner || (index & (1 << i)) == 0))
-					pixmap.draw(inner[i / 2], true);
+		for (int dir = 0; dir < 8; dir++) {
+			if ((dir + 1) % 2 == 0) {
+				int dirBit = 1 << (dir + 1) % 8 | 1 << (dir - 1);
+				if ((bits & dirBit) == 0) Draw.rect(regions[dir], x, y);
+				else if ((bits & dirBit) == dirBit && (interConner || (bits & (1 << dir)) == 0))
+					Draw.rect(inner[dir / 2], x, y);
 			}
 		}
-
-		Pixmaps.bleed(pixmap, 2);
-		Texture texture = new Texture(pixmap);
-		texture.setFilter(TextureFilter.linear);
-		return new TextureRegion(texture);
 	}
 
 	@Override
 	public void draw(Building build) {
 		float z = Draw.z();
 		Draw.z(z + layerOffset);
-		Draw.rect(drawRegions[splicer.get(build)], build.x, build.y);
+		drawSplice(build.x, build.y, splicer.get(build));
 		if (layerRec) Draw.z(z);
 	}
 
@@ -136,6 +121,6 @@ public class DrawAntiSpliceBlock extends DrawBlock {
 			data |= 1 << i;
 		}
 
-		Draw.rect(drawRegions[data], plan.drawx(), plan.drawy());
+		drawSplice(plan.drawx(), plan.drawy(), data);
 	}
 }

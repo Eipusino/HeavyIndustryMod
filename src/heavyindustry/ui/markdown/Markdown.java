@@ -9,7 +9,7 @@ import arc.scene.style.Drawable;
 import arc.scene.ui.ScrollPane;
 import arc.scene.ui.layout.WidgetGroup;
 import arc.struct.Seq;
-import arc.util.pooling.Pool;
+import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import heavyindustry.ui.markdown.extensions.CurtainExtension;
 import heavyindustry.ui.markdown.extensions.InsExtension;
@@ -213,7 +213,7 @@ public class Markdown extends WidgetGroup {
 		public ColorProvider codeColorProvider;
 	}
 
-	public abstract static class DrawObj implements Pool.Poolable {
+	public abstract static class DrawObj implements Poolable {
 		protected static final Color tmp1 = new Color(), tmp2 = new Color();
 
 		protected Markdown parent;

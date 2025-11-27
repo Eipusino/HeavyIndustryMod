@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class PieceMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
+public class BlockMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
 	protected Scope scope;
 	protected int priority = 0;
 	protected List<Capture> beginCaptures;
@@ -18,22 +18,22 @@ public class PieceMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
 	protected int[] beginLens;
 	protected int[] endLens;
 
-	protected PieceMatcher() {}
+	protected BlockMatcher() {}
 
-	public static PieceMatcher create(List<Capture> beginCaptures, List<Capture> endCaptures) {
+	public static BlockMatcher create(List<Capture> beginCaptures, List<Capture> endCaptures) {
 		return create(null, beginCaptures, endCaptures);
 	}
 
-	public static PieceMatcher create(Scope scope, List<Capture> beginCaptures, List<Capture> endCaptures) {
+	public static BlockMatcher create(Scope scope, List<Capture> beginCaptures, List<Capture> endCaptures) {
 		return create(0, scope, beginCaptures, endCaptures);
 	}
 
-	public static PieceMatcher create(int priority, List<Capture> beginCaptures, List<Capture> endCaptures) {
+	public static BlockMatcher create(int priority, List<Capture> beginCaptures, List<Capture> endCaptures) {
 		return create(priority, null, beginCaptures, endCaptures);
 	}
 
-	public static PieceMatcher create(int priority, Scope scope, List<Capture> beginCaptures, List<Capture> endCaptures) {
-		PieceMatcher res = new PieceMatcher();
+	public static BlockMatcher create(int priority, Scope scope, List<Capture> beginCaptures, List<Capture> endCaptures) {
+		BlockMatcher res = new BlockMatcher();
 		res.scope = scope;
 		res.priority = priority;
 		res.beginCaptures = beginCaptures;
@@ -45,7 +45,7 @@ public class PieceMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
 		return res;
 	}
 
-	public PieceMatcher addChildPattern(String patternName, TokenMatcher matcher) {
+	public BlockMatcher addChildPattern(String patternName, TokenMatcher matcher) {
 		children.put(patternName, matcher.create());
 		return this;
 	}
@@ -61,12 +61,12 @@ public class PieceMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
 
 		List<TokenMatcher> matchers = new ArrayList<>(children.values());
 		matchers.add(new InnerBlockMatcher());
-		context.pushPiece(new Piece(scope, this, matchers));
+		context.pushBlock(new Block(scope, this, matchers));
 	}
 
 	@Override
 	public TokenMatcher create() {
-		PieceMatcher res = create(priority, scope, beginCaptures, endCaptures);
+		BlockMatcher res = create(priority, scope, beginCaptures, endCaptures);
 		for (Map.Entry<String, TokenMatcher> entry : children.entrySet()) {
 			res.addChildPattern(entry.getKey(), entry.getValue());
 		}
@@ -103,7 +103,7 @@ public class PieceMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
 		@Override
 		public void apply(MatcherContext context, Token token) {
 			SerialMatcher.applyCapture(scope, endCaptures, endLens, context, token);
-			context.popPiece();
+			context.popBlock();
 		}
 
 		@Override

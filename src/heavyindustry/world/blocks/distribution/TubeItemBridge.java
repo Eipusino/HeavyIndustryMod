@@ -25,6 +25,7 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.input.Placement;
+import mindustry.mod.NoPatch;
 import mindustry.ui.Bar;
 import mindustry.world.Block;
 import mindustry.world.ItemBuffer;
@@ -46,7 +47,7 @@ public class TubeItemBridge extends ItemBridge {
 	public byte maxConnections = 3;
 	public int bufferCapacity;
 
-	protected Seq<Block> connectibleBlocks = new Seq<>(Block.class);
+	protected @NoPatch Seq<Block> connectibleBlocks = new Seq<>(Block.class);
 
 	public Boolf<Building> connectFilter = building -> connectibleBlocks.contains(building.block);
 

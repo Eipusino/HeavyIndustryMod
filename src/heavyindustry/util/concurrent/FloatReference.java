@@ -7,6 +7,12 @@ public class FloatReference implements Serializable {
 
 	public float element;
 
+	public FloatReference() {}
+
+	public FloatReference(float initialElement) {
+		element = initialElement;
+	}
+
 	@Override
 	public String toString() {
 		return String.valueOf(element);

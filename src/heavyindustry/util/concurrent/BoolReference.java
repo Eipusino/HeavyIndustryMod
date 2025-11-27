@@ -9,6 +9,12 @@ public class BoolReference implements Serializable {
 
 	public boolean element;
 
+	public BoolReference() {}
+
+	public BoolReference(boolean initialElement) {
+		element = initialElement;
+	}
+
 	@Override
 	public String toString() {
 		return String.valueOf(element);

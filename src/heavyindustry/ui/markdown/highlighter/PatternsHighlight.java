@@ -66,14 +66,14 @@ public class PatternsHighlight implements LanguageHighlight<MatcherContext>, Nam
 		for (TokenMatcher tokenMatcher : matchers.values()) {
 			list.add(tokenMatcher.create());
 		}
-		res.pushPiece(new Piece(null, list));
+		res.pushBlock(new Block(null, list));
 
 		res.inRawContext = true;
 		List<TokenMatcher> raw = new ArrayList<>();
 		for (TokenMatcher tokenMatcher : rawContextMatchers.values()) {
 			raw.add(tokenMatcher.create());
 		}
-		res.pushPiece(new Piece(null, raw));
+		res.pushBlock(new Block(null, raw));
 
 		res.inRawContext = false;
 		return res;
@@ -135,11 +135,11 @@ public class PatternsHighlight implements LanguageHighlight<MatcherContext>, Nam
 
 	@Override
 	public int flowScope(MatcherContext context, Token token) {
-		Piece piece = context.peekPiece();
-		Scope scope = piece.scope();
+		Block block = context.peekBlock();
+		Scope scope = block.scope();
 		if (scope != null) token.scope = scope;
 
-		List<TokenMatcher> mats = piece.matchers();
+		List<TokenMatcher> mats = block.matchers();
 		mats.sort(TokenMatcher::compareTo);
 
 		for (TokenMatcher matcher : mats) {

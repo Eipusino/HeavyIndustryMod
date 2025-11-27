@@ -28,6 +28,7 @@ import mindustry.gen.Icon;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Pal;
 import mindustry.logic.LAccess;
+import mindustry.mod.NoPatch;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.type.Liquid;
@@ -68,8 +69,8 @@ public class AdaptiveCrafter extends Block {
 
 	public CollectionList<Recipe> recipes = new CollectionList<>(Recipe.class);
 
-	public CollectionList<Item> itemOutput = new CollectionList<>(Item.class);
-	public CollectionList<Liquid> liquidOutput = new CollectionList<>(Liquid.class);
+	public @NoPatch CollectionList<Item> itemOutput = new CollectionList<>(Item.class);
+	public @NoPatch CollectionList<Liquid> liquidOutput = new CollectionList<>(Liquid.class);
 
 	public float powerProduction = 0f;
 

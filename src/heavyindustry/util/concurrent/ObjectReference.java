@@ -9,6 +9,12 @@ public class ObjectReference<T> implements Serializable {
 
 	public T element;
 
+	public ObjectReference() {}
+
+	public ObjectReference(T initialElement) {
+		element = initialElement;
+	}
+
 	@Override
 	public String toString() {
 		return String.valueOf(element);

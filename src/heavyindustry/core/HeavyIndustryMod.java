@@ -59,7 +59,6 @@ import heavyindustry.graphics.g2d.VaporizeBatch;
 import heavyindustry.input.InputAggregator;
 import heavyindustry.mod.AdaptiveCoreDatabase;
 import heavyindustry.mod.ModUtils;
-import heavyindustry.mod.ScriptUtils;
 import heavyindustry.net.HCall;
 import heavyindustry.ui.Elements;
 import heavyindustry.ui.HFonts;
@@ -193,11 +192,6 @@ public final class HeavyIndustryMod extends Mod {
 				HShaders.dispose();
 			}
 		});
-
-		// To prevent damage to other mod, it can only be enabled during testing
-		if (test && !OS.isIos) {
-			Core.app.post(ScriptUtils::init);
-		}
 
 		ScreenSampler.resetMark();
 

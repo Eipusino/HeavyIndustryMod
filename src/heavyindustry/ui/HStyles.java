@@ -14,31 +14,29 @@ import mindustry.ui.Styles;
 import static heavyindustry.ui.HIcon.drawable;
 
 public final class HStyles {
-	public static Drawable
-			buttonLeft, buttonLeftDown, buttonLeftOver,
-			buttonCenter, buttonCenterDown, buttonCenterOver, buttonCenterDisabled,
-			buttonRight, buttonRightOver, buttonRightDown,
-			paneBottom;
+	public static Drawable buttonLeft, buttonLeftDown, buttonLeftOver;
+	public static Drawable buttonCenter, buttonCenterDown, buttonCenterOver, buttonCenterDisabled;
+	public static Drawable buttonRight, buttonRightOver, buttonRightDown;
+	public static Drawable paneBottom;
+
 	public static TextFieldStyle scriptArea;
 	public static ButtonStyle right;
 	public static TextButtonStyle round, toggleCentert;
-	public static ImageButtonStyle
-			modImageStyle,
 
-			clearToggle,
+	public static ImageButtonStyle modImageStyle;
 
-			tuImageStyle,
-			togglei,
-			lefti, toggleLefti,
-			righti, toggleRighti,
-			centeri;
+	public static ImageButtonStyle clearToggle;
 
-	public static HoldImageButtonStyle
-			defaultHoldi,
-			modHoldImageStyle,
+	public static ImageButtonStyle tuImageStyle;
+	public static ImageButtonStyle togglei;
+	public static ImageButtonStyle lefti, toggleLefti;
+	public static ImageButtonStyle righti, toggleRighti;
+	public static ImageButtonStyle centeri;
 
-			tuHoldImageStyle,
-			teamChanger;
+	public static HoldImageButtonStyle defaultHoldi, modHoldImageStyle;
+
+	public static HoldImageButtonStyle tuHoldImageStyle;
+	public static HoldImageButtonStyle teamChanger;
 
 	/// Don't let anyone instantiate this class.
 	private HStyles() {}

@@ -27,7 +27,6 @@ import static mindustry.Vars.tilesize;
  * Inverted Junction
  */
 public class InvertedJunction extends Junction {
-	public final int size = 1;
 	public String placeSprite;
 	public Color[] colors = {new Color(0xbf92f9ff), new Color(0xc0ecffff), new Color(0x84f491ff), new Color(0xfffa763)};
 

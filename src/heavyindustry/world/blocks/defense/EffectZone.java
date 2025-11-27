@@ -31,6 +31,7 @@ import static mindustry.Vars.tilesize;
 
 public class EffectZone extends Block {
 	protected static final Seq<Unit> all = new Seq<>(Unit.class);
+
 	public final int timerSearch = timers++;
 	/** Ticks between an attempt at finding a target. */
 	public float searchInterval = 20;

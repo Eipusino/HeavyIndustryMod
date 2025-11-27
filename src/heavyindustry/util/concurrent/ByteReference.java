@@ -7,6 +7,12 @@ public class ByteReference implements Serializable {
 
 	public byte element;
 
+	public ByteReference() {}
+
+	public ByteReference(byte initialElement) {
+		element = initialElement;
+	}
+
 	@Override
 	public String toString() {
 		return String.valueOf(element);

@@ -1,5 +1,6 @@
 package heavyindustry.content;
 
+import arc.func.Func;
 import arc.graphics.Blending;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
@@ -19,6 +20,7 @@ import heavyindustry.entities.bullet.AccelBulletType;
 import heavyindustry.entities.bullet.BlackHoleBulletType;
 import heavyindustry.entities.bullet.BoidBulletType;
 import heavyindustry.entities.bullet.EffectBulletType;
+import heavyindustry.entities.bullet.LightningBulletType2;
 import heavyindustry.entities.bullet.LightningLinkerBulletType;
 import heavyindustry.entities.bullet.ShieldBreakerBulletType;
 import heavyindustry.entities.bullet.StrafeLaserBulletType;
@@ -31,6 +33,10 @@ import heavyindustry.graphics.HLayer;
 import heavyindustry.graphics.HPal;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.math.HInterps;
+import heavyindustry.type.lightnings.LightningContainer;
+import heavyindustry.type.lightnings.generator.LightningGenerator;
+import heavyindustry.type.particles.SglParticleModels;
+import heavyindustry.type.particles.models.RandDeflectParticle;
 import heavyindustry.util.Constant;
 import heavyindustry.util.Get;
 import mindustry.Vars;
@@ -48,6 +54,7 @@ import mindustry.entities.bullet.ContinuousLaserBulletType;
 import mindustry.entities.bullet.FireBulletType;
 import mindustry.entities.bullet.FlakBulletType;
 import mindustry.entities.bullet.LaserBulletType;
+import mindustry.entities.bullet.LightningBulletType;
 import mindustry.entities.bullet.MissileBulletType;
 import mindustry.entities.effect.MultiEffect;
 import mindustry.game.Team;
@@ -79,6 +86,8 @@ public final class HBullets {
 	public static BulletType hyperBlast, hyperBlastLinker;
 	public static BulletType arc9000frag, arc9000, arc9000hyper;
 	public static BulletType collapseFrag, collapse;
+
+	public static BulletType spilloverEnergy;
 
 	/// Don't let anyone instantiate this class.
 	private HBullets() {}
@@ -1525,6 +1534,109 @@ public final class HBullets {
 				Draw.color(HPal.thurmixRedDark);
 				Fill.circle(b.x, b.y, rad * fin * circleFout * 0.8f / 2f);
 				Draw.z(z);
+			}
+		};
+		spilloverEnergy = new BulletType() {{
+			collides = false;
+			absorbable = false;
+
+			splashDamage = 120;
+			splashDamageRadius = 40;
+			speed = 4.4f;
+			lifetime = 64;
+
+			hitShake = 4;
+			hitSize = 3;
+
+			despawnHit = true;
+			hitEffect = new MultiEffect(HFx.explodeImpWaveSmall, HFx.diamondSpark);
+			hitColor = HPal.matrixNet;
+
+			trailColor = HPal.matrixNet;
+			trailEffect = HFx.movingCrystalFrag;
+			trailRotation = true;
+			trailInterval = 4f;
+
+			fragBullet = new LightningBulletType() {{
+				lightningLength = 14;
+				lightningLengthRand = 4;
+				damage = 24;
+			}};
+			fragBullets = 1;
+		}
+			@Override
+			public void update(Bullet b) {
+				super.update(b);
+
+				b.vel.lerp(0, 0, 0.012f);
+
+				if (b.timer(4, 3)) {
+					Angles.randLenVectors(System.nanoTime(), 2, 2.2f,
+							(x, y) -> SglParticleModels.floatParticle.create(b.x, b.y, HPal.matrixNet, x, y, 2.2f).setVar(RandDeflectParticle.STRENGTH, 0.3f)
+					);
+				}
+			}
+
+			@Override
+			public void draw(Bullet b) {
+				Draw.color(hitColor);
+				float fout = b.fout(Interp.pow3Out);
+				Fill.circle(b.x, b.y, 5f * fout);
+				Draw.color(Color.black);
+				Fill.circle(b.x, b.y, 2.6f * fout);
+			}
+		};
+	}
+
+	public static BulletType lightning(float lifeTime, float damage, float size, Color color, boolean gradient, Func<Bullet, LightningGenerator> generator) {
+		return lightning(lifeTime, gradient ? lifeTime / 2 : 0, damage, size, color, generator);
+	}
+
+	public static BulletType lightning(float lifeTime, float time, float damage, float size, Color color, Func<Bullet, LightningGenerator> generator) {
+		return new LightningBulletType2(0, damage) {{
+			lifetime = lifeTime;
+			collides = false;
+			hittable = false;
+			absorbable = false;
+			reflectable = false;
+
+			hitColor = color;
+			hitEffect = Fx.hitLancer;
+			shootEffect = Fx.none;
+			despawnEffect = Fx.none;
+			smokeEffect = Fx.none;
+
+			status = StatusEffects.shocked;
+			statusDuration = 18;
+
+			drawSize = 120;
+		}
+			@Override
+			public void init(Bullet b, LightningContainer container) {
+				container.time = time;
+				container.lifeTime = lifeTime;
+				container.maxWidth = size;
+				container.minWidth = size * 0.85f;
+				container.lerp = Interp.linear;
+
+				container.trigger = (last, vert) -> {
+					if (!b.isAdded()) return;
+					Tmp.v1.set(vert.x - last.x, vert.y - last.y);
+					float resultLength = Damage.findPierceLength(b, pierceCap, Tmp.v1.len());
+
+					Damage.collideLine(b, b.team, b.x + last.x, b.y + last.y, Tmp.v1.angle(), resultLength, false, false, pierceCap);
+
+					b.fdata = resultLength;
+				};
+
+				LightningGenerator gen = generator.get(b);
+				gen.blockNow = (last, vertex) -> {
+					Building abs = Damage.findAbsorber(b.team, b.x + last.x, b.y + last.y, b.x + vertex.x, b.y + vertex.y);
+					if (abs == null) return -1f;
+					float ox = b.x + last.x, oy = b.y + last.y;
+					return Mathf.len(abs.x - ox, abs.y - oy);
+				};
+				container.create(gen);
 			}
 		};
 	}

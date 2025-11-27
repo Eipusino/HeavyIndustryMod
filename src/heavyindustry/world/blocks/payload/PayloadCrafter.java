@@ -12,6 +12,7 @@ import mindustry.content.Fx;
 import mindustry.ctype.UnlockableContent;
 import mindustry.gen.Building;
 import mindustry.gen.Icon;
+import mindustry.mod.NoPatch;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.type.PayloadSeq;
@@ -23,9 +24,9 @@ import mindustry.world.blocks.units.UnitAssembler;
 import mindustry.world.meta.StatValue;
 
 public class PayloadCrafter extends AdaptiveCrafter {
-	public CollectionObjectSet<UnlockableContent> payloadFilter = new CollectionObjectSet<>(UnlockableContent.class);
+	public @NoPatch CollectionObjectSet<UnlockableContent> payloadFilter = new CollectionObjectSet<>(UnlockableContent.class);
 
-	public CollectionList<UnlockableContent> payloadOutput = new CollectionList<>(UnlockableContent.class);
+	public @NoPatch CollectionList<UnlockableContent> payloadOutput = new CollectionList<>(UnlockableContent.class);
 
 	public int payloadCapacity = 10;
 

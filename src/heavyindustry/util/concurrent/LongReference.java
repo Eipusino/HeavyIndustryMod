@@ -9,6 +9,12 @@ public class LongReference implements Serializable {
 
 	public long element;
 
+	public LongReference() {}
+
+	public LongReference(long initialElement) {
+		element = initialElement;
+	}
+
 	@Override
 	public String toString() {
 		return String.valueOf(element);

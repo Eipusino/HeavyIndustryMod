@@ -26,6 +26,7 @@ import mindustry.gen.Timedc;
 import mindustry.gen.Unitc;
 import mindustry.io.TypeIO;
 import mindustry.logic.Ranged;
+import mindustry.mod.NoPatch;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Floor;
@@ -56,7 +57,7 @@ public abstract class CommandableBlock extends Block {
 	public float reloadTime = 60;
 	public float configureChargeTime = 60;
 
-	protected int commandPos = -1;
+	protected @NoPatch int commandPos = -1;
 
 	public CommandableBlock(String name) {
 		super(name);

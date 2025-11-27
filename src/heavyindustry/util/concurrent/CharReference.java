@@ -7,6 +7,12 @@ public class CharReference implements Serializable {
 
 	public char element;
 
+	public CharReference() {}
+
+	public CharReference(char initialElement) {
+		element = initialElement;
+	}
+
 	@Override
 	public String toString() {
 		return String.valueOf(element);

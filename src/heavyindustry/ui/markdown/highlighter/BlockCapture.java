@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class PieceCapture extends Capture {
+public class BlockCapture extends Capture {
 	protected final Capture beginCapture;
 	protected final Capture endCapture;
 
 	protected final List<TokenMatcher> children = new ArrayList<>();
 	protected List<TokenMatcher> list;
 
-	public PieceCapture(Capture beginCapture, Capture endCapture) {
+	public BlockCapture(Capture beginCapture, Capture endCapture) {
 		this.beginCapture = beginCapture;
 		this.endCapture = endCapture;
 	}
 
-	public PieceCapture addChildPatterns(TokenMatcher... matchers) {
+	public BlockCapture addChildPatterns(TokenMatcher... matchers) {
 		children.addAll(Arrays.asList(matchers));
 		return this;
 	}
@@ -34,16 +34,16 @@ public class PieceCapture extends Capture {
 
 		MatcherContext subContext = context.subContext();
 		subContext.forwardCursor(len);
-		subContext.pushPiece(new Piece(null, list));
+		subContext.pushBlock(new Block(null, list));
 
 		c:
 		while (subContext.currCursor() < subContext.getTokensCountInContext()) {
 			Token curr = subContext.getTokenInContext(subContext.currCursor());
 
-			Piece piece = subContext.peekPiece();
-			Scope scope = piece.scope();
+			Block block = subContext.peekBlock();
+			Scope scope = block.scope();
 
-			List<TokenMatcher> mats = piece.matchers();
+			List<TokenMatcher> mats = block.matchers();
 			mats.sort(TokenMatcher::compareTo);
 
 			for (TokenMatcher matcher : mats) {
@@ -61,7 +61,7 @@ public class PieceCapture extends Capture {
 
 			try {
 				int endLen = endCapture.match(subContext, curr);
-				subContext.popPiece();
+				subContext.popBlock();
 				subContext.forwardCursor(endLen);
 				len += endLen;
 
@@ -78,6 +78,6 @@ public class PieceCapture extends Capture {
 
 	@Override
 	public Capture create() {
-		return new PieceCapture(beginCapture, endCapture).addChildPatterns(children.toArray(new TokenMatcher[0]));
+		return new BlockCapture(beginCapture, endCapture).addChildPatterns(children.toArray(new TokenMatcher[0]));
 	}
 }

@@ -51,7 +51,7 @@ public abstract class CommandableAttackerBlock extends CommandableBlock {
 	public int storage = 1;
 	public ShootPattern shoot = new ShootPattern();
 
-	protected BulletType bullet = Bullets.placeholder;
+	public BulletType bullet = Bullets.placeholder;
 
 	public CommandableAttackerBlock(String name) {
 		super(name);

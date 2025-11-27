@@ -7,6 +7,12 @@ public class IntReference implements Serializable {
 
 	public int element;
 
+	public IntReference() {}
+
+	public IntReference(int initialElement) {
+		element = initialElement;
+	}
+
 	@Override
 	public String toString() {
 		return String.valueOf(element);

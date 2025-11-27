@@ -11,6 +11,7 @@ import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.Mover;
 import mindustry.gen.Sounds;
+import mindustry.mod.NoPatch;
 
 public class AirRaider extends CommandableAttackerBlock {
 	public float shootSpread = 38f;
@@ -25,8 +26,8 @@ public class AirRaider extends CommandableAttackerBlock {
 	public float inaccuracy = 3f;
 	public float cooldownSpeed = 0.075f;
 
-	protected int totalShots = 0;
-	protected Vec2 tr = new Vec2();
+	protected @NoPatch int totalShots = 0;
+	protected @NoPatch Vec2 tr = new Vec2();
 
 	public AirRaider(String name) {
 		super(name);

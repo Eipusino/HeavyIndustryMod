@@ -10,17 +10,17 @@ import arc.scene.style.TextureRegionDrawable;
 import static heavyindustry.HVars.MOD_PREFIX;
 
 public final class HIcon {
-	public static TextureRegionDrawable
-			keplerIcon, aboutIcon, artistIcon, configureIcon, contributeIcon, databaseIcon, debuggingIcon, defaultShowIcon, fullSwordIcon, gasesIcon,
-			holdIcon, matrixIcon, nuclearIcon, programIcon, publicInfoIcon, reactionIcon, showInfosIcon, showRangeIcon, musicsIcon,
-			soundsIcon, sounds2Icon, startIcon, telegramIcon, timeIcon, translateIcon, unShowInfosIcon,
-			javaIcon, javaScriptIcon, networkErrorIcon,
-			//small
-			resetIconSmall, timeIconSmall,
-			//
-			//animdustry
-			alphaChan, alphaChanHit, crawlerChan, crawlerChanHit, zenithChan, zenithChanHit, monoChan, monoChanHit, oxynoeChan, oxynoeChanHit, octChan, octChanHit,
-			seiChan, seiChanHit, quadChan, quadChanHit, boulderChan, boulderChanHit;
+	public static TextureRegionDrawable keplerIcon, aboutIcon, artistIcon, configureIcon, contributeIcon, databaseIcon, debuggingIcon, defaultShowIcon, fullSwordIcon, gasesIcon;
+	public static TextureRegionDrawable holdIcon, matrixIcon, nuclearIcon, programIcon, publicInfoIcon, reactionIcon, showInfosIcon, showRangeIcon, musicsIcon;
+	public static TextureRegionDrawable soundsIcon, sounds2Icon, startIcon, telegramIcon, timeIcon, translateIcon, unShowInfosIcon;
+	public static TextureRegionDrawable javaIcon, javaScriptIcon, networkErrorIcon;
+	//small
+	public static TextureRegionDrawable resetIconSmall, timeIconSmall;
+	//animdustry
+	public static TextureRegionDrawable alphaChan, alphaChanHit, crawlerChan, crawlerChanHit, zenithChan, zenithChanHit, monoChan, monoChanHit, oxynoeChan, oxynoeChanHit, octChan, octChanHit;
+	public static TextureRegionDrawable seiChan, seiChanHit, quadChan, quadChanHit, boulderChan, boulderChanHit;
+	//other
+	public static TextureRegionDrawable matrixArrow;
 
 	/// Don't let anyone instantiate this class.
 	private HIcon() {}
@@ -77,6 +77,8 @@ public final class HIcon {
 		quadChanHit = texture("quad-chan-hit");
 		boulderChan = texture("boulder-chan");
 		boulderChanHit = texture("boulder-chan-hit");
+		//other
+		matrixArrow = texture("matrix-arrow");
 	}
 
 	public static Drawable drawable(String name) {

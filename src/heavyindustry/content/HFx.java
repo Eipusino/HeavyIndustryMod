@@ -20,6 +20,7 @@ import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
 import arc.util.Time;
 import arc.util.Tmp;
+import arc.util.pooling.Pools;
 import heavyindustry.entities.UnitPointEntry;
 import heavyindustry.entities.abilities.MirrorFieldAbility;
 import heavyindustry.entities.bullet.HailStoneBulletType;
@@ -35,6 +36,8 @@ import heavyindustry.graphics.PositionLightning;
 import heavyindustry.graphics.g2d.CutBatch.RejectedRegion;
 import heavyindustry.math.Math3d;
 import heavyindustry.math.Mathm;
+import heavyindustry.type.lightnings.LightningContainer;
+import heavyindustry.type.lightnings.generator.RandomGenerator;
 import heavyindustry.util.Get;
 import heavyindustry.util.IntMap2;
 import heavyindustry.util.Vec2Seq;
@@ -52,6 +55,7 @@ import mindustry.type.UnitType;
 import mindustry.world.Block;
 import mindustry.world.blocks.payloads.Payload;
 
+import static arc.math.Mathf.random;
 import static heavyindustry.HVars.MOD_NAME;
 
 /**
@@ -2031,6 +2035,93 @@ public final class HFx {
 			});
 		});
 	});
+	public final static Effect randomLightning = new LightningEffect() {
+		final RandomGenerator branch = new RandomGenerator();
+
+		final RandomGenerator generator = new RandomGenerator() {{
+			branchChance = 0.15f;
+			branchMaker = (vert, str) -> {
+				branch.originAngle = vert.angle + random(-90, 90);
+
+				branch.maxLength = 60 * str;
+
+				return branch;
+			};
+		}};
+	{
+		branch.maxDeflect = 60;
+		lifetime = 60;
+	}
+		@Override
+		public void render(EffectContainer e) {
+			if (e.data == null) return;
+			LightningContainer con = e.data();
+			Draw.color(e.color);
+			Draw.z(Layer.effect);
+			if (!Vars.state.isPaused()) con.update();
+			con.draw(e.x, e.y);
+		}
+
+		@Override
+		public LightningContainer createLightning(float x, float y) {
+			if (!(data instanceof Number)) data = 90f;
+			LightningContainer.PoolLightningContainer lightning = LightningContainer.PoolLightningContainer.create(lifetime, 1.4f, 2.5f);
+
+			lightning.lerp = Interp.pow2Out;
+			lightning.time = lifetime / 2;
+			generator.maxLength = random(((float) data) / 2, (float) data);
+			lightning.create(generator);
+
+			Time.run(lifetime + 5, () -> Pools.free(lightning));
+			return lightning;
+		}
+	};
+	public final static Effect spreadLightning = new LightningEffect() {
+		final RandomGenerator branch = new RandomGenerator() {{
+			maxDeflect = 50;
+		}};
+
+		final RandomGenerator generator = new RandomGenerator() {{
+			maxDeflect = 60;
+			branchChance = 0.15f;
+			branchMaker = (vert, str) -> {
+				branch.originAngle = vert.angle + random(-90, 90);
+				branch.maxLength = 60 * str;
+
+				return branch;
+			};
+		}};
+	{
+		lifetime = 45;
+	}
+		@Override
+		public void render(EffectContainer e) {
+			if (e.data == null) return;
+			LightningContainer con = e.data();
+			Draw.color(e.color);
+			Draw.z(Layer.effect);
+			Fill.circle(e.x, e.y, 2.5f * e.fout());
+			Lines.stroke(1 * e.fout());
+			Lines.circle(e.x, e.y, 6 * e.fout());
+			if (!Vars.state.isPaused()) con.update();
+			con.draw(e.x, e.y);
+		}
+
+		public LightningContainer createLightning(float x, float y) {
+			LightningContainer.PoolLightningContainer lightning = LightningContainer.PoolLightningContainer.create(lifetime, 1.5f, 2.6f);
+
+			lightning.lerp = Interp.pow2Out;
+			lightning.time = lifetime / 2;
+			int amount = random(4, 6);
+			for (int i = 0; i < amount; i++) {
+				generator.maxLength = random(50, 75);
+				lightning.create(generator);
+			}
+
+			Time.run(lifetime + 5, () -> Pools.free(lightning));
+			return lightning;
+		}
+	};
 	public static final Effect shrinkIceParticleSmall = new Effect(120, e -> {
 		Draw.color(HPal.winter);
 
@@ -2154,6 +2245,14 @@ public final class HFx {
 
 		Lines.stroke(8f * e.fout());
 		Lines.square(e.x, e.y, 18 * e.fin(Interp.pow2Out), 45);
+	});
+	public final static Effect lightningCont = new Effect(200, e -> {
+		if (e.data instanceof LightningContainer cont) {
+			cont.update();
+
+			Draw.color(e.color);
+			cont.draw(e.x, e.y);
+		}
 	});
 	public static final Effect colorLaserCharge = new Effect(38f, e -> {
 		Draw.color(e.color);
@@ -4156,5 +4255,44 @@ public final class HFx {
 
 			return this;
 		}
+	}
+
+	public static abstract class LightningEffect extends Effect {
+		protected Object data;
+
+		public void at(Position pos) {
+			create(pos.getX(), pos.getY(), 0, Color.white, createLightning(pos.getX(), pos.getY()));
+		}
+
+		public void at(Position pos, boolean parentize) {
+			create(pos.getX(), pos.getY(), 0, Color.white, createLightning(pos.getX(), pos.getY()));
+		}
+
+		public void at(Position pos, float rotation) {
+			create(pos.getX(), pos.getY(), rotation, Color.white, createLightning(pos.getX(), pos.getY()));
+		}
+
+		public void at(float x, float y) {
+			create(x, y, 0, Color.white, createLightning(x, y));
+		}
+
+		public void at(float x, float y, float rotation) {
+			create(x, y, rotation, Color.white, createLightning(x, y));
+		}
+
+		public void at(float x, float y, float rotation, Color color) {
+			create(x, y, rotation, color, createLightning(x, y));
+		}
+
+		public void at(float x, float y, Color color) {
+			create(x, y, 0, color, createLightning(x, y));
+		}
+
+		public void at(float x, float y, float rotation, Color color, Object data) {
+			this.data = data;
+			create(x, y, rotation, color, createLightning(x, y));
+		}
+
+		public abstract LightningContainer createLightning(float x, float y);
 	}
 }

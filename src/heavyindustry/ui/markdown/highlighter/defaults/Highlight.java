@@ -1,7 +1,7 @@
 package heavyindustry.ui.markdown.highlighter.defaults;
 
 import arc.func.Prov;
-import heavyindustry.ui.markdown.highlighter.PieceMatcher;
+import heavyindustry.ui.markdown.highlighter.BlockMatcher;
 import heavyindustry.ui.markdown.highlighter.Capture;
 import heavyindustry.ui.markdown.highlighter.CompoundCapture;
 import heavyindustry.ui.markdown.highlighter.LazyCapture;
@@ -36,16 +36,16 @@ public abstract class Highlight {
 		return SerialMatcher.create(priority, captures);
 	}
 
-	protected static PieceMatcher block(List<Capture> begin, List<Capture> end) {
-		return PieceMatcher.create(begin, end);
+	protected static BlockMatcher block(List<Capture> begin, List<Capture> end) {
+		return BlockMatcher.create(begin, end);
 	}
 
-	protected static PieceMatcher block(Scope scope, List<Capture> begin, List<Capture> end) {
-		return PieceMatcher.create(scope, begin, end);
+	protected static BlockMatcher block(Scope scope, List<Capture> begin, List<Capture> end) {
+		return BlockMatcher.create(scope, begin, end);
 	}
 
-	protected static PieceMatcher block(int priority, Scope scope, List<Capture> begin, List<Capture> end) {
-		return PieceMatcher.create(priority, scope, begin, end);
+	protected static BlockMatcher block(int priority, Scope scope, List<Capture> begin, List<Capture> end) {
+		return BlockMatcher.create(priority, scope, begin, end);
 	}
 
 	protected static MatcherReference reference(NameIndexer<TokenMatcher> map) {

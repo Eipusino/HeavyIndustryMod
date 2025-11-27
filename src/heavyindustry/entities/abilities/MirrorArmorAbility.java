@@ -68,28 +68,28 @@ public class MirrorArmorAbility extends MirrorShieldAbility {
 				b.blit(HShaders.mirrorField);
 				Blending.normal.apply();
 				pingPongBuffer.end();
-			}, e -> {
-				Draw.mixcol(Tmp.c1.set(e.team.color).lerp(Color.white, alpha), 1f);
+			}, u -> {
+				Draw.mixcol(Tmp.c1.set(u.team.color).lerp(Color.white, alpha), 1f);
 				Draw.scl(1.1f);
-				Draw.rect(e.type.shadowRegion, e.x, e.y, e.rotation - 90);
+				Draw.rect(u.type.shadowRegion, u.x, u.y, u.rotation - 90f);
 				Draw.reset();
 			});
 
-			Draws.drawTask(maskId, unit, HShaders.alphaMask, s -> HShaders.alphaMask.texture = pingPongBuffer.getTexture(), e -> {
+			Draws.drawTask(maskId, unit, HShaders.alphaMask, s -> HShaders.alphaMask.texture = pingPongBuffer.getTexture(), u -> {
 				Draw.color(Color.white, Math.max(alpha, Mathf.absin(6, 0.6f)));
 				Draw.scl(1.15f);
-				Draw.rect(e.type.shadowRegion, e.x, e.y, e.rotation - 90);
+				Draw.rect(u.type.shadowRegion, u.x, u.y, u.rotation - 90f);
 				Draw.reset();
 			});
 
 			//Yes, this code doesn't do anything, but it won't work properly without this code
 			//fu*k off arc GL
-			Draws.drawTask(fukId, unit, u -> {}, (Unit u) -> Draw.draw(Draw.z(), () -> {
+			/*Draws.drawTask(fukId, unit, u -> {}, (Unit u) -> Draw.draw(Draw.z(), () -> {
 				pingPongBuffer.resize(2, 2);
 				pingPongBuffer.begin(Color.clear);
 				pingPongBuffer.end();
 				pingPongBuffer.blit(Draw.getShader());
-			}), u -> {});
+			}), u -> {});*/
 		} else {
 			Draw.z(HLayer.mirrorField + 1);
 			Draw.mixcol(Tmp.c1.set(unit.team.color).lerp(Color.white, alpha), 1f);

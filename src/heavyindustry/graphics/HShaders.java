@@ -272,7 +272,7 @@ public final class HShaders {
 
 	public static class MirrorFieldShader extends Shader {
 		public Color waveMix = Color.white;
-		public Vec2 offset = new Vec2(0, 0);
+		public Vec2 offset = new Vec2(0f, 0f);
 		public float stroke = 2;
 		public float gridStroke = 0.8f;
 		public float mixAlpha = 0.4f;

@@ -9,6 +9,12 @@ public class DoubleReference implements Serializable {
 
 	public double element;
 
+	public DoubleReference() {}
+
+	public DoubleReference(double initialElement) {
+		element = initialElement;
+	}
+
 	@Override
 	public String toString() {
 		return String.valueOf(element);
