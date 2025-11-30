@@ -103,15 +103,15 @@ public final class Get {
 		};
 	}
 
-	public static int getByIndex(IntSet intSet, int index) {
-		if (index < 0 || index >= intSet.size) {
+	public static int getByIndex(IntSet ints, int index) {
+		if (index < 0 || index >= ints.size) {
 			return -1;
 		}
 
 		int value = 0;
 		int counter = 0;
 
-		IntSetIterator iter = intSet.iterator();
+		IntSetIterator iter = ints.iterator();
 		while (iter.hasNext) {
 			int item = iter.next();
 			if (counter == index) {
@@ -314,7 +314,7 @@ public final class Get {
 		if (bullet == null || type == null) return null;
 		bullet.type = type;
 		bullet.owner = owner;
-		bullet.shooter = (shooter == null ? owner : shooter);
+		bullet.shooter = shooter == null ? owner : shooter;
 		bullet.team = team;
 		bullet.time = 0f;
 		bullet.originX = x;

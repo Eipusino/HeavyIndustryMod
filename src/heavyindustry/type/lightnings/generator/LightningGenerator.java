@@ -1,7 +1,6 @@
 package heavyindustry.type.lightnings.generator;
 
 import arc.func.Cons;
-import arc.func.Func2;
 import arc.math.Angles;
 import arc.math.Mathf;
 import arc.math.Rand;
@@ -40,7 +39,7 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
 	/** 最大分支强度 */
 	public float maxBranchStrength = 0.8f;
 	/** 分支创建器，传入分支所在的顶点以及分支的强度，需要返回一个闪电生成器，注意，任何生成器对象都可以被传入，请不要new创建生成器 */
-	public Func2<LightningVertex, Float, LightningGenerator> branchMaker;
+	public BranchMaker branchMaker;
 
 	public Cons<Lightning> branchCreated;
 	public Floatf2<LightningVertex, LightningVertex> blockNow;
@@ -170,4 +169,8 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
 
 	/** 返回当前闪电的裁剪大小，此大小应当能够完整绘制闪电 */
 	public abstract float clipSize();
+
+	public interface BranchMaker {
+		LightningGenerator get(LightningVertex vert, float strength);
+	}
 }

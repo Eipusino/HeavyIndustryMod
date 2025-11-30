@@ -1,7 +1,6 @@
 package heavyindustry.ui.chart;
 
 import arc.func.Floatf;
-import arc.func.Func;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Font;
@@ -13,6 +12,7 @@ import arc.struct.Seq;
 import arc.util.Align;
 import arc.util.Nullable;
 import arc.util.pooling.Pools;
+import heavyindustry.func.Intg;
 import heavyindustry.ui.chart.Chart.StatGroup;
 import mindustry.ui.Fonts;
 
@@ -36,7 +36,7 @@ public abstract class Chart<T extends StatGroup> extends Element {
 	public float valueBound;
 	public float valueStep;
 
-	public Func<Integer, String> horizonScaleMapping;
+	public Intg<String> horizonScaleMapping;
 
 	public boolean displayValuesScale = true;
 	public float lerpTime = 1;
@@ -247,7 +247,7 @@ public abstract class Chart<T extends StatGroup> extends Element {
 		public Color color;
 
 		public StatGroup() {
-			this.values = new float[maxValuesCount];
+			values = new float[maxValuesCount];
 			displayValues = new float[maxValuesCount];
 			Arrays.fill(values, Float.NaN);
 			Arrays.fill(displayValues, Float.NaN);
@@ -272,11 +272,10 @@ public abstract class Chart<T extends StatGroup> extends Element {
 			}
 		}
 
-		public void setValues(Iterable<Float> values) {
-			Iterator<Float> itr = values.iterator();
+		public void setValues(float[] newValues) {
 			int i = 0;
-			while (itr.hasNext() && i < this.values.length) {
-				this.values[i] = itr.next();
+			while (i < newValues.length && i < values.length) {
+				values[i] = newValues[i];
 			}
 		}
 
@@ -284,7 +283,7 @@ public abstract class Chart<T extends StatGroup> extends Element {
 			Iterator<T> itr = sources.iterator();
 			int i = 0;
 			while (itr.hasNext() && i < values.length) {
-				this.values[i] = func.get(itr.next());
+				values[i] = func.get(itr.next());
 			}
 		}
 

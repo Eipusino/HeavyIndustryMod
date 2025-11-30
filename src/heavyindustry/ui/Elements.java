@@ -6,7 +6,6 @@ import arc.flabel.FLabel;
 import arc.func.Boolf;
 import arc.func.Boolp;
 import arc.func.Cons;
-import arc.func.Cons2;
 import arc.func.Floatc;
 import arc.func.Floatp;
 import arc.func.Intc;
@@ -207,7 +206,7 @@ public final class Elements {
 		return Vars.spawner.countGroundSpawns();
 	}
 
-	public static Element[] sliderSet(Table t, Cons<String> changed, Prov<String> fieldText, TextFieldFilter filter, TextFieldValidator valid, float min, float max, float step, float def, Cons2<Float, TextField> sliderChanged, String title, String tooltip) {
+	public static Element[] sliderSet(Table t, Cons<String> changed, Prov<String> fieldText, TextFieldFilter filter, TextFieldValidator valid, float min, float max, float step, float def, SliderChanged sliderChanged, String title, String tooltip) {
 		TextField field = textField(String.valueOf(def), changed, fieldText, filter, valid);
 
 		Label tab = t.add(title).right().padRight(6f).get();
@@ -810,5 +809,9 @@ public final class Elements {
 			h = Core.graphics.isPortrait() ? 90f : 80f;
 			w = Core.graphics.isPortrait() ? 300f : 600f;
 		}
+	}
+
+	public interface SliderChanged {
+		void get(float t, TextField n);
 	}
 }

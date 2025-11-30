@@ -33,14 +33,13 @@ public class SporeFarmBlock extends Block {
 	public Liquid liquid = Liquids.water;
 	public Attribute attribute = Attribute.spores;
 
-	protected int timerGrowth;
+	public final int timerGrowth = timers++;
 
 	public SporeFarmBlock(String name) {
 		super(name);
 
 		hasItems = true;
 		update = true;
-		timerGrowth = timers++;
 	}
 
 	@Override

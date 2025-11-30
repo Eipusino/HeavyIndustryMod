@@ -125,8 +125,6 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 			return oldValue;
 		}
 
-		long[] keyTable = this.keyTable;
-
 		// Check for existing keys.
 		int index1 = (int) (key & mask);
 		long key1 = keyTable[index1];

@@ -48,7 +48,7 @@ public class Blur {
 			0.2561736558128f,
 	};
 
-	private static final String vertTemplate =
+	public static final String vertTemplate =
 			"""
 			attribute vec4 a_position;
 			attribute vec2 a_texCoord0;
@@ -69,7 +69,7 @@ public class Blur {
 			}
 			""";
 
-	private static final String fragmentTemplate =
+	public static final String fragmentTemplate =
 			"""
 			uniform lowp sampler2D u_texture0;
 			uniform lowp sampler2D u_texture1;
@@ -97,10 +97,10 @@ public class Blur {
 			}
 			""";
 
-	Shader blurShader;
-	FrameBuffer buffer, pingpong;
+	protected Shader blurShader;
+	protected FrameBuffer buffer, pingpong;
 
-	boolean capturing;
+	protected boolean capturing;
 
 	public int blurScl = 4;
 	public float blurSpace = 2.16f;

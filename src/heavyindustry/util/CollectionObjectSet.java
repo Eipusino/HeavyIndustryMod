@@ -100,14 +100,18 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 		return set;
 	}
 
-	/*public static <T> CollectionObjectSet<T> with(Seq<T> array) {
-		CollectionObjectSet<T> set = new CollectionObjectSet<>(array.items.getClass().getComponentType());
-		set.addAll(array);
+	/**
+	 * @param type Due to the fact that Seq's array type may not necessarily match type T, in order to
+	 *             ensure type safety, type must be specified.
+	 */
+	public static <T> CollectionObjectSet<T> with(Class<?> type, Seq<T> array) {
+		CollectionObjectSet<T> set = new CollectionObjectSet<>(type, array.size);
+		array.each(set::add);
 		return set;
-	}*/
+	}
 
 	public static <T> CollectionObjectSet<T> with(CollectionList<T> list) {
-		CollectionObjectSet<T> set = new CollectionObjectSet<>(list.items.getClass().getComponentType());
+		CollectionObjectSet<T> set = new CollectionObjectSet<>(list.componentType);
 		set.addAll(list);
 		return set;
 	}

@@ -146,7 +146,7 @@ public final class MathRenderer {
 	}
 
 	public static class MathShader extends Shader {
-		private static final String vert = """
+		public static final String vert = """
 					uniform mat4 u_projTrans;
 					
 					attribute vec4 a_position;
@@ -163,7 +163,7 @@ public final class MathRenderer {
 					}
 					""";
 
-		private static final String frag = """
+		public static final String frag = """
 					#define HIGHP
 					
 					uniform sampler2D u_texture;

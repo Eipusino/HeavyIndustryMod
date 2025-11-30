@@ -187,11 +187,11 @@ public final class Unsafer2 {
 	}
 
 	public static Class<?> defineClass(String name, byte[] bytes, ClassLoader loader, ProtectionDomain protectionDomain) {
-		return defineClass(name, bytes, 0, loader, protectionDomain);
+		return defineClass(name, bytes, 0, bytes.length, loader, protectionDomain);
 	}
 
-	public static Class<?> defineClass(String name, byte[] bytes, int offset, ClassLoader loader, ProtectionDomain protectionDomain) {
-		return internalUnsafe.defineClass(name, bytes, offset, bytes.length, loader, protectionDomain);
+	public static Class<?> defineClass(String name, byte[] bytes, int offset, int length, ClassLoader loader, ProtectionDomain protectionDomain) {
+		return internalUnsafe.defineClass(name, bytes, offset, length, loader, protectionDomain);
 	}
 
 	public static long getOffset(Field field) {

@@ -28,7 +28,7 @@ public class ConsumeItemsUses extends ConsumeItems {
 			int i = 0;
 			for (ItemStack stack : items) {
 				c.add(new ReqImage(StatValues.stack(stack.item, Math.round(stack.amount * multiplier.get(build))),
-						() -> (build instanceof UseCounter cbuild && cbuild.getUses() > 0) || build.items.has(stack.item, Math.round(stack.amount * multiplier.get(build))))).padRight(8);
+						() -> (build instanceof UseCounter counter && counter.getUses() > 0) || build.items.has(stack.item, Math.round(stack.amount * multiplier.get(build))))).padRight(8);
 				if (++i % 4 == 0) c.row();
 			}
 		}).left();
@@ -36,11 +36,11 @@ public class ConsumeItemsUses extends ConsumeItems {
 
 	@Override
 	public void trigger(Building build) {
-		if (build instanceof UseCounter cbuild) {
-			if (cbuild.getUses() > 0) {
-				cbuild.removeUses(1);
+		if (build instanceof UseCounter counter) {
+			if (counter.getUses() > 0) {
+				counter.removeUses(1);
 			} else if (build.items.has(items, multiplier.get(build))) {
-				cbuild.addUses(uses);
+				counter.addUses(uses);
 				super.trigger(build);
 			}
 		}
@@ -48,7 +48,7 @@ public class ConsumeItemsUses extends ConsumeItems {
 
 	@Override
 	public float efficiency(Building build) {
-		return build instanceof UseCounter cbuild && cbuild.getUses() > 0 ? 1f : super.efficiency(build);
+		return build instanceof UseCounter counter && counter.getUses() > 0 ? 1f : super.efficiency(build);
 	}
 
 	// this whole mod is so poorly coded holy fuck

@@ -41,7 +41,12 @@ public final class ScriptUtils {
 	/// Don't let anyone instantiate this class.
 	private ScriptUtils() {}
 
-	/// Initializes the Mod JS.
+	/**
+	 * Initializes the Mod JS.
+	 *
+	 * @deprecated Easy to damage other mods.
+	 */
+	@Deprecated
 	public static void init() {
 		try {
 			if (Vars.mods.getScripts().scope instanceof ImporterTopLevel imp) {

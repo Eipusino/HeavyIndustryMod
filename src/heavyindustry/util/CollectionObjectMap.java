@@ -38,6 +38,9 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	public K[] keyTable;
 	public V[] valueTable;
 
+	//public V nullValue;
+	//public boolean hasNullValue;
+
 	public int capacity, stashSize;
 
 	protected float loadFactor;

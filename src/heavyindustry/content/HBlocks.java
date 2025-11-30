@@ -41,6 +41,7 @@ import heavyindustry.graphics.HLayer;
 import heavyindustry.graphics.HPal;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.math.Mathm;
+import heavyindustry.net.HCall;
 import heavyindustry.type.Recipe;
 import heavyindustry.util.Constant;
 import heavyindustry.util.Get;
@@ -6798,7 +6799,7 @@ public final class HBlocks {
 					if (realRadius > 0 && !broken) {
 						Groups.unit.intersect(x - realRadius, y - realRadius, realRadius * 2f, realRadius * 2f, trait -> {
 							if (trait.team != team && Intersector.isInsideHexagon(x, y, realRadius() * 2f, trait.x, trait.y)) {
-								trait.remove();
+								HCall.annihilateUnit(trait.id);
 							}
 						});
 					}

@@ -166,61 +166,6 @@ public final class Strings2 {
 		return Strings.fixed(v, 2) + "[lightgray]" + byteUnit[n];
 	}
 
-	public static boolean canParseLong(String s, long def) {
-		return parseLong(s, def) != def;
-	}
-
-	public static long parseLong(String s) {
-		return parseLong(s, 10, 0);
-	}
-
-	public static long parseLong(String s, long def) {
-		return parseLong(s, 10, def);
-	}
-
-	public static long parseLong(String s, int radix, long def) {
-		return parseLong(s, radix, 0, s.length(), def);
-	}
-
-	public static long parseLong(String s, int radix, int start, int end, long def) {
-		boolean negative = false;
-		int i = start, len = end - start;
-		long limit = Long.MIN_VALUE + 1;
-		if (len <= 0 || s == null) {
-			return def;
-		} else {
-			char firstChar = s.charAt(i);
-			if (firstChar < '0') {
-				if (firstChar == '-') {
-					negative = true;
-					limit = Long.MIN_VALUE;
-				} else if (firstChar != '+') {
-					return def;
-				}
-
-				if (len == 1) return def;
-
-				++i;
-			}
-
-			long result;
-			int digit;
-			for (result = 0; i < end; result -= digit) {
-				digit = Character.digit(s.charAt(i++), radix);
-				if (digit < 0) {
-					return def;
-				}
-
-				result *= radix;
-				if (result < limit + digit) {
-					return def;
-				}
-			}
-
-			return negative ? result : -result;
-		}
-	}
-
 	public static boolean isPureAscii(String str) {
 		if (str == null) return false;
 
@@ -260,18 +205,14 @@ public final class Strings2 {
 		if (asciiCodes == null) return null;
 
 		String[] codes = asciiCodes.split("\\s+");
-		StringBuilder sb = new StringBuilder();
+		StringBuilder builder = new StringBuilder();
 
 		for (String code : codes) {
-			try {
-				int asciiValue = Integer.parseInt(code);
-				if (asciiValue >= 0 && asciiValue <= 127) {
-					sb.append((char) asciiValue);
-				}
-			} catch (NumberFormatException e) {
-				// 忽略无效的数字
+			int asciiValue = Strings.parseInt(code, -1);
+			if (asciiValue >= 0 && asciiValue <= 127) {
+				builder.append((char) asciiValue);
 			}
 		}
-		return sb.toString();
+		return builder.toString();
 	}
 }

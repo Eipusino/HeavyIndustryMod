@@ -1,5 +1,7 @@
 package heavyindustry.ui.markdown.highlighter;
 
+import arc.struct.IntSeq;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,7 +14,7 @@ public class CompoundCapture extends Capture {
 
 	protected final List<List<Capture>> cap = new ArrayList<>();
 	protected final List<int[]> lens = new ArrayList<>();
-	protected final List<Integer> off = new ArrayList<>();
+	protected final IntSeq off = new IntSeq();
 
 	public CompoundCapture(Capture... captures) {
 		this(1, captures);
@@ -75,7 +77,7 @@ public class CompoundCapture extends Capture {
 	@Override
 	public void applyScope(MatcherContext context, Token token, int matchedLen) {
 		int max = context.getTokensCountInContext();
-		for (int i = 0; i < off.size(); i++) {
+		for (int i = 0; i < off.size; i++) {
 			if (token.getIndexInContext(context) + off.get(i) >= max) break;
 			SerialMatcher.applyCapture(cap.get(i), lens.get(i), context,
 					context.getTokenInContext(token.getIndexInContext(context) + off.get(i))

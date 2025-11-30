@@ -1,5 +1,7 @@
 package heavyindustry.ui.markdown.highlighter;
 
+import arc.struct.IntSeq;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +12,7 @@ public class SelectionCapture extends Capture {
 	protected final List<Capture> captures;
 
 	protected final List<Capture> hits = new ArrayList<>();
-	protected final List<Integer> hitLens = new ArrayList<>();
+	protected final IntSeq hitLens = new IntSeq();
 
 	public SelectionCapture(Capture... captures) {
 		this(1, captures);

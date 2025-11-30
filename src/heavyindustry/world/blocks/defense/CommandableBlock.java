@@ -96,9 +96,6 @@ public abstract class CommandableBlock extends Block {
 		return equals(other);
 	}
 
-	@Override
-	protected abstract void initBuilding();
-
 	public abstract class CommandableBuild extends Building implements Ranged {
 		protected final Vec2 targetVec = new Vec2().set(this);
 		protected final Vec2 lastConfirmedTarget = new Vec2();
