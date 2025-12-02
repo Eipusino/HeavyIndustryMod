@@ -4,59 +4,72 @@ import arc.func.Cons;
 import arc.func.Cons2;
 import arc.math.Interp;
 import arc.math.Mathf;
-import arc.struct.Seq;
+import arc.util.Eachable;
 import arc.util.Time;
 import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import heavyindustry.type.lightnings.generator.LightningGenerator;
+import heavyindustry.util.CollectionList;
 
 import java.util.Iterator;
 
 /**
- * 闪电容器，使用一个闪电生成器产生闪电，由容器进行处理和绘制，通常用于一类闪电用同一个容器存储
+ * Lightning container, using a lightning generator to generate lightning, processed and drawn by the
+ * container, usually used for storing a type of lightning in the same container.
  *
  * @author EBwilson
- * @since 2.3
- *
+ * @since 1.0.8
  */
-public class LightningContainer implements Iterable<Lightning> {
+public class LightningContainer implements Iterable<Lightning>, Eachable<Lightning> {
 	/**
-	 * 闪电从产生到完全出现需要的时间，这会平摊给每一段闪电，fps为当前帧率
-	 * 但如果这个值为0,那么闪电会立即出现
+	 * The time required for lightning to occur from generation to complete appearance will be evenly
+	 * distributed among each lightning segment, with fps being the current frame rate.
+	 * <p>But if this value is 0, lightning will appear immediately.
 	 */
 	public float time = 0;
 	/**
-	 * 闪电的扩散速度，小于或等于0时默认使用time提供的路径扩散计算方式，否则使用给出的速度来处理闪电的扩散（单位：/tick）
+	 * When the diffusion speed of lightning is less than or equal to 0, the path diffusion calculation
+	 * method provided by time is used by default. Otherwise, the given speed is used to process the
+	 * diffusion of lightning (unit:/tick).
 	 *
-	 * @deprecated 规范化，此API不再可用
+	 * @deprecated Standardization, this API is no longer available
 	 */
 	@Deprecated
 	public float speed = 0;
-	/** 闪电的存在时间 */
+	/** The existence time of lightning. */
 	public float lifeTime = 30;
-	/** 闪电消逝的过渡时间，若不设置则消失过度时间等于闪电的存在时间 */
+	/**
+	 * The transition time of lightning disappearance, if not set, the disappearance transition time is equal
+	 * to the existence time of lightning.
+	 */
 	public float fadeTime = -1;
-	/** 闪电整体的宽度是否随闪电的持续时间淡出 */
+	/** Does the overall width of lightning fade out with the duration of lightning. */
 	public boolean fade = true;
-	/** 闪电是否随淡出过程从起点开始消失 */
+	/** Does lightning disappear from the starting point during the fading process. */
 	public boolean backFade = false;
-	/** 闪电每一段宽度的随机区间 */
+	/** Random intervals of lightning width for each segment. */
 	public float minWidth = 2.5f, maxWidth = 4.5f;
-	/** 闪电的衰减变换器，传入的数值为闪电的存在时间进度 */
+	/** The attenuation transformer of lightning receives the value of the duration of lightning existence. */
 	public Interp lerp = Interp.pow2Out;
 
-	/** 闪电分支创建时调用的回调函数，一般用于定义闪电的分支子容器属性 */
+	/**
+	 * The callback function called when creating a lightning branch is generally used to define the sub
+	 * container properties of the lightning branch.
+	 */
 	public Cons<Lightning> branchCreated;
 
-	/** 闪电顶点触发器，当一个闪电节点已到达后触发，传入前一个顶点和这一个顶点 */
+	/**
+	 * Lightning vertex trigger, triggered when a lightning node has arrived, passes in the previous vertex
+	 * and this vertex.
+	 */
 	public Cons2<LightningVertex, LightningVertex> trigger;
 	public boolean headClose, endClose;
 
 	protected float clipSize;
 
-	protected final Seq<Lightning> lightnings = new Seq<>(Lightning.class);
+	protected final CollectionList<Lightning> lightnings = new CollectionList<>(Lightning.class);
 
-	/** 使用给出的闪电生成器在容器中创建一道新的闪电 */
+	/** Create a new lightning bolt in the container using the provided lightning generator. */
 	public void create(LightningGenerator generator) {
 		generator.branched(branchCreated);
 		Lightning lightning = Lightning.create(
@@ -80,7 +93,12 @@ public class LightningContainer implements Iterable<Lightning> {
 		return lightnings.iterator();
 	}
 
-	/** 更新一次当前容器中所有子闪电的状态 */
+	@Override
+	public void each(Cons<? super Lightning> cons) {
+		lightnings.each(cons);
+	}
+
+	/** Update the status of all sub lightning in the current container once. */
 	public void update() {
 		Iterator<Lightning> itr = lightnings.iterator();
 		while (itr.hasNext()) {
@@ -100,10 +118,10 @@ public class LightningContainer implements Iterable<Lightning> {
 	}
 
 	/**
-	 * 绘制容器，这会将容器中保存的所有闪电进行绘制
+	 * Draw the container, which will draw all the lightning saved in the container.
 	 *
-	 * @param x 绘制闪电的原点x坐标
-	 * @param y 绘制闪电的原点y坐标
+	 * @param x Draw the origin x-coordinate of lightning
+	 * @param y Draw the origin y-coordinate of lightning
 	 *
 	 */
 	public void draw(float x, float y) {
@@ -116,7 +134,7 @@ public class LightningContainer implements Iterable<Lightning> {
 		return clipSize;
 	}
 
-	/** 闪电分支容器，用于绘制分支闪电，会递归绘制所有的子分支 */
+	/** Lightning branch container, used to draw branch lightning, recursively draws all sub branches. */
 	public static class PoolLightningContainer extends LightningContainer implements Poolable {
 		public static PoolLightningContainer create(float lifeTime, float minWidth, float maxWidth) {
 			PoolLightningContainer result = Pools.obtain(PoolLightningContainer.class, PoolLightningContainer::new);

@@ -27,7 +27,7 @@
 
 # Regarding Mod
 
-**[Platform Reflection](https://github.com/Eipusino/Template), Reflection function implemented on multiple platforms in the module section.**
+**[Platform Reflection](https://github.com/Eipusino/LH), Reflection function implemented on multiple platforms in the module section.**
 
 ---
 
@@ -40,5 +40,3 @@
 **[Saturation Firepower Mod](https://github.com/RA2EXE/Saturation-Firepower), Status: Continuous updates. Extremely difficult!**
 
 **[Deep Space Mod](https://github.com/Icexuegao/DeepSpace), Status: Developing.**
-
-**[Singularity Mod](https://github.com/EB-wilson/Singularity), Status: Developing.**

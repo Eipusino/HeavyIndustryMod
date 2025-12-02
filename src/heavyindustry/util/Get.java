@@ -168,13 +168,11 @@ public final class Get {
 	}
 
 	public static Vec2 vecSetLine(Vec2 vec, Vec2 pos, float rotation, float length) {
-		vec.setLength(length).setAngle(rotation).add(pos);
-		return vec;
+		return vec.setLength(length).setAngle(rotation).add(pos);
 	}
 
 	public static Vec2 vecSetLine(Vec2 vec, float x, float y, float rotation, float length) {
-		vec.setLength(length).setAngle(rotation).add(x, y);
-		return vec;
+		return vec.setLength(length).setAngle(rotation).add(x, y);
 	}
 
 	public static void quadHelper(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {

@@ -4,11 +4,11 @@ import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 
 /**
- * 闪电的顶点容器，保存了一个顶点的必要信息和绘制进度计时器
- * 此类实例大量，应当复用
+ * The lightning vertex container stores necessary information for a vertex and a drawing progress timer.
+ * <p>There are a large number of such instances, which should be reused.
  *
  * @author EBwilson
- * @since 2.3
+ * @since 1.0.8
  */
 public class LightningVertex implements Poolable {
 	public float x, y;

@@ -6,60 +6,60 @@ import mindustry.graphics.Layer;
 
 public class ParticleModel {
 	/**
-	 * 使用该模型创建一个粒子的实例
+	 * Create an instance of a particle using this model.
 	 *
-	 * @param x     粒子创建时的x坐标
-	 * @param y     粒子创建时的y坐标
-	 * @param color 粒子的颜色
-	 * @param sx    粒子初始运动速度的x分量
-	 * @param sy    粒子初始运动速度的y分量
-	 * @param size  粒子的尺寸
+	 * @param x     The x-coordinate at the time of particle creation
+	 * @param y     The y-coordinate at the time of particle creation
+	 * @param color Color of particles
+	 * @param sx    The x-component of the initial velocity of particle motion
+	 * @param sy    The y-component of the initial velocity of particle motion
+	 * @param size  Particle size
 	 */
 	public Particle create(float x, float y, Color color, float sx, float sy, float size) {
 		return create(x, y, color, sx, sy, size, Layer.effect);
 	}
 
 	/**
-	 * 使用该模型创建一个粒子的实例
+	 * Create an instance of a particle using this model.
 	 *
-	 * @param parent 粒子所属的父级粒子
-	 * @param x      粒子创建时的x坐标
-	 * @param y      粒子创建时的y坐标
-	 * @param color  粒子的颜色
-	 * @param sx     粒子初始运动速度的x分量
-	 * @param sy     粒子初始运动速度的y分量
-	 * @param size   粒子的尺寸
+	 * @param parent The parent particle to which the particle belongs
+	 * @param x      The x-coordinate at the time of particle creation
+	 * @param y      The y-coordinate at the time of particle creation
+	 * @param color  Color of particles
+	 * @param sx     The x-component of the initial velocity of particle motion
+	 * @param sy     The y-component of the initial velocity of particle motion
+	 * @param size   Particle size
 	 */
 	public Particle create(Particle parent, float x, float y, Color color, float sx, float sy, float size) {
 		return create(parent, x, y, color, sx, sy, size, Layer.effect);
 	}
 
 	/**
-	 * 使用该模型创建一个粒子的实例
+	 * Create an instance of a particle using this model,
 	 *
-	 * @param x     粒子创建时的x坐标
-	 * @param y     粒子创建时的y坐标
-	 * @param color 粒子的颜色
-	 * @param sx    粒子初始运动速度的x分量
-	 * @param sy    粒子初始运动速度的y分量
-	 * @param size  粒子的尺寸
-	 * @param layer 粒子所在的层，这只在绘制流程中使用
+	 * @param x     The x-coordinate at the time of particle creation
+	 * @param y     The y-coordinate at the time of particle creation
+	 * @param color Color of particles
+	 * @param sx    The x-component of the initial velocity of particle motion
+	 * @param sy    The y-component of the initial velocity of particle motion
+	 * @param size  Particle size
+	 * @param layer The layer where the particles are located is only used in the drawing process
 	 */
 	public Particle create(float x, float y, Color color, float sx, float sy, float size, float layer) {
 		return create(null, x, y, color, sx, sy, size, layer);
 	}
 
 	/**
-	 * 使用该模型创建一个粒子的实例
+	 * Create an instance of a particle using this model.
 	 *
-	 * @param parent 粒子所属的父级粒子
-	 * @param x      粒子创建时的x坐标
-	 * @param y      粒子创建时的y坐标
-	 * @param color  粒子的颜色
-	 * @param sx     粒子初始运动速度的x分量
-	 * @param sy     粒子初始运动速度的y分量
-	 * @param size   粒子的尺寸
-	 * @param layer  粒子所在的层，这只在绘制流程中使用
+	 * @param parent The parent particle to which the particle belongs
+	 * @param x      The x-coordinate at the time of particle creation
+	 * @param y      The y-coordinate at the time of particle creation
+	 * @param color  Color of particles
+	 * @param sx     The x-component of the initial velocity of particle motion
+	 * @param sy     The y-component of the initial velocity of particle motion
+	 * @param size   Particle size
+	 * @param layer  The layer where the particles are located is only used in the drawing process
 	 */
 	public Particle create(Particle parent, float x, float y, Color color, float sx, float sy, float size, float layer) {
 		Particle ent = Pools.obtain(Particle.class, Particle::new);
@@ -80,29 +80,17 @@ public class ParticleModel {
 		return ent;
 	}
 
-	public void draw(Particle p) {
+	public void draw(Particle p) {}
 
-	}
+	public void updateTrail(Particle p, Particle.Cloud c) {}
 
-	public void updateTrail(Particle p, Particle.Cloud c) {
+	public void update(Particle p) {}
 
-	}
+	public void deflect(Particle p) {}
 
-	public void update(Particle p) {
+	public void drawTrail(Particle c) {}
 
-	}
-
-	public void deflect(Particle p) {
-
-	}
-
-	public void drawTrail(Particle c) {
-
-	}
-
-	public void init(Particle particle) {
-
-	}
+	public void init(Particle particle) {}
 
 	public boolean isFinal(Particle p) {
 		return false;
@@ -119,5 +107,4 @@ public class ParticleModel {
 	public boolean isFaded(Particle p, Particle.Cloud cloud) {
 		return false;
 	}
-
 }

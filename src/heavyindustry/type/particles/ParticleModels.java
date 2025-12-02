@@ -1,6 +1,5 @@
 package heavyindustry.type.particles;
 
-import arc.func.Prov;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
@@ -24,9 +23,10 @@ import mindustry.gen.Bullet;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 
-public final class SglParticleModels {
+public final class ParticleModels {
 	public static final String OWNER = "owner";
 	public static final String BULLET = "bullet";
+	public static final String TIMER = "timer";
 
 	public static final Rect rect = new Rect(), hitrect = new Rect();
 
@@ -60,9 +60,8 @@ public final class SglParticleModels {
 	}}, new ShapeParticle(), new DrawDefaultTrailParticle());
 
 	public static ParticleModel heatBulletTrail = new ParticleModel() {
-		static final Particle.Cloud tmp1 = new Particle.Cloud();
-		static final Particle.Cloud tmp2 = new Particle.Cloud();
-		static final String timer = "timer";
+		final Particle.Cloud tmp1 = new Particle.Cloud();
+		final Particle.Cloud tmp2 = new Particle.Cloud();
 
 		@Override
 		public void drawTrail(Particle c) {
@@ -117,7 +116,7 @@ public final class SglParticleModels {
 		public void updateTrail(Particle p, Particle.Cloud c) {
 			c.size -= 0.03f * Time.delta;
 
-			if (p.getVar(BULLET) instanceof Bullet b && b.isAdded() && p.getVar(timer, (Prov<Interval>) Interval::new).get(5) && c.nextCloud != null) {
+			if (p.getVar(BULLET) instanceof Bullet b && b.isAdded() && p.getVar(TIMER, () -> new Interval()).get(5) && c.nextCloud != null) {
 				float dx = c.nextCloud.x - c.x;
 				float dy = c.nextCloud.y - c.y;
 
@@ -158,5 +157,5 @@ public final class SglParticleModels {
 		}
 	};
 
-	private SglParticleModels() {}
+	private ParticleModels() {}
 }

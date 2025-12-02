@@ -3,6 +3,8 @@ package heavyindustry.gen;
 import arc.math.geom.Position;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.util.CollectionObjectMap;
+import heavyindustry.util.ExtraVariable;
 import mindustry.Vars;
 import mindustry.entities.EntityGroup;
 import mindustry.gen.Building;
@@ -14,9 +16,13 @@ import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.Floor;
 
+import java.util.Map;
+
 import static mindustry.Vars.player;
 
-public abstract class BaseEntity implements Drawc {
+public abstract class BaseEntity implements Drawc, ExtraVariable {
+	public Map<String, Object> extraVar = new CollectionObjectMap<>(String.class, Object.class);
+
 	public float x = 0, y = 0, drawSize = 40;
 	public boolean added;
 	public transient int id = EntityGroup.nextId();
@@ -199,5 +205,10 @@ public abstract class BaseEntity implements Drawc {
 	@Override
 	public String toString() {
 		return "CommandEntity{" + "added=" + added + ", id=" + id + ", x=" + x + ", y=" + y + '}';
+	}
+
+	@Override
+	public Map<String, Object> extra() {
+		return extraVar;
 	}
 }

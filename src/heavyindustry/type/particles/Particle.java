@@ -6,35 +6,42 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
 import arc.math.Angles;
 import arc.math.geom.Vec2;
-import arc.struct.ObjectSet;
-import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
+import heavyindustry.util.CollectionList;
 import heavyindustry.util.CollectionObjectMap;
-import heavyindustry.util.comp.ExtraVariablec;
+import heavyindustry.util.CollectionObjectSet;
+import heavyindustry.util.ExtraVariable;
 import mindustry.entities.EntityGroup;
 import mindustry.gen.Decal;
 import mindustry.gen.Groups;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
- * 粒子的实体类，定义了可绘制的，可更新的实体对象
- * 可通过设置速度，位置，以及偏转方法改变粒子的运动轨迹，通常这个粒子具有数量上限，在正常情况下应当是性能安全的
- * 附带可控制拖尾
+ * The entity class of particles defines entity objects that can be drawn and updated.
+ * <br>The trajectory of a particle can be changed by setting its speed, position, and deflection method.
+ * Typically, this particle has an upper limit on its quantity and should be safe in performance under normal
+ * circumstances.
+ * <br>Comes with controllable trailing.
  *
  * @author EBwilson
  */
-public class Particle extends Decal implements ExtraVariablec, Iterable<Particle.Cloud> {
+public class Particle extends Decal implements ExtraVariable, Iterable<Particle.Cloud> {
 	private static int counter = 0;
-	/** 粒子的最大共存数量，总量大于此数目时，创建新的粒子会清除最先产生的粒子 */
+	/**
+	 * The maximum number of coexisting particles, when the total amount is greater than this number,
+	 * creating new particles will clear the first generated particle.
+	 */
 	public static int maxAmount = 1024;
 
-	protected static final ObjectSet<Particle> all = new ObjectSet<>();
-	protected static final Seq<Particle> temp = new Seq<>(Particle.class);
+	protected static final Set<Particle> all = new CollectionObjectSet<>(Particle.class);
+	protected static final List<Particle> temp = new CollectionList<>(Particle.class);
 
 	protected Vec2 startPos = new Vec2();
 	protected float clipSize;
@@ -48,27 +55,27 @@ public class Particle extends Decal implements ExtraVariablec, Iterable<Particle
 
 	public Map<String, Object> extraVar = new CollectionObjectMap<>(String.class, Object.class);
 
-	/** 粒子的速度，矢量 */
+	/** Particle velocity, vector. */
 	public Vec2 speed = new Vec2();
-	/** 粒子当前的尺寸 */
+	/** The current size of the particle. */
 	public float size;
 
 	public float defSpeed;
 	public float defSize;
 
-	/** 粒子模型，决定了该粒子的行为 */
+	/** The particle model determines the behavior of the particle. */
 	public ParticleModel model;
 	public float layer;
 
 	public static int count() {
-		return all.size;
+		return all.size();
 	}
 
 	public float cloudCount() {
 		return cloudCount;
 	}
 
-	public static Seq<Particle> get(Boolf<Particle> filter) {
+	public static List<Particle> get(Boolf<Particle> filter) {
 		temp.clear();
 		for (Particle particle : all) {
 			if (filter.get(particle)) temp.add(particle);
@@ -304,7 +311,6 @@ public class Particle extends Decal implements ExtraVariablec, Iterable<Particle
 			nextCloud = null;
 		}
 
-		@SuppressWarnings("ReturnOfInnerClass")
 		@Override
 		public Iterator<Cloud> iterator() {
 			itr.reset();

@@ -42,7 +42,8 @@ public final class HShaders {
 	public static TractorConeShader tractorCone;
 	public static DimShader dimShader;
 	public static SmallSpaceShader smallSpaceShader;
-	public static Shader distBase, passThrough;
+	public static Shader simpleScreen, distBase, passThrough;
+	public static AlphaAdjust linearAlpha, lerpAlpha;
 	public static TilerShader tiler;
 	public static PlanetTextureShader planetTexture;
 
@@ -90,8 +91,12 @@ public final class HShaders {
 		dimShader = new DimShader();
 		smallSpaceShader = new SmallSpaceShader();
 
+		simpleScreen = new Shader(vert("general"), frag("simple"));
 		distBase = new Shader(vert("general"), frag("dist-base"));
 		passThrough = new Shader(vert("general-highp"), frag("pass-through"));
+
+		linearAlpha = new AlphaAdjust(frag("linear-alpha-adjust"));
+		lerpAlpha = new AlphaAdjust(frag("lerp-alpha-adjust"));
 
 		tiler = new TilerShader();
 
@@ -320,6 +325,19 @@ public final class HShaders {
 			setUniformi("u_mask", 0);
 
 			texture.bind(1);
+		}
+	}
+
+	public static class AlphaAdjust extends Shader {
+		public float coef;
+
+		public AlphaAdjust(Fi fragmentShader) {
+			super(vert("general"), fragmentShader);
+		}
+
+		@Override
+		public void apply() {
+			setUniformf("u_coef", coef);
 		}
 	}
 

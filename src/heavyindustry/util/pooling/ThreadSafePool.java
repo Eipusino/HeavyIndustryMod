@@ -1,4 +1,4 @@
-package heavyindustry.util.pools;
+package heavyindustry.util.pooling;
 
 import arc.struct.Seq;
 import arc.util.pooling.Pool;

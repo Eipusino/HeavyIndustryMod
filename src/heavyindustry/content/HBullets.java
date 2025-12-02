@@ -35,7 +35,7 @@ import heavyindustry.graphics.PositionLightning;
 import heavyindustry.math.HInterps;
 import heavyindustry.type.lightnings.LightningContainer;
 import heavyindustry.type.lightnings.generator.LightningGenerator;
-import heavyindustry.type.particles.SglParticleModels;
+import heavyindustry.type.particles.ParticleModels;
 import heavyindustry.type.particles.models.RandDeflectParticle;
 import heavyindustry.util.Constant;
 import heavyindustry.util.Get;
@@ -1572,7 +1572,7 @@ public final class HBullets {
 
 				if (b.timer(4, 3)) {
 					Angles.randLenVectors(System.nanoTime(), 2, 2.2f,
-							(x, y) -> SglParticleModels.floatParticle.create(b.x, b.y, HPal.matrixNet, x, y, 2.2f).setVar(RandDeflectParticle.STRENGTH, 0.3f)
+							(x, y) -> ParticleModels.floatParticle.create(b.x, b.y, HPal.matrixNet, x, y, 2.2f).setVar(RandDeflectParticle.STRENGTH, 0.3f)
 					);
 				}
 			}

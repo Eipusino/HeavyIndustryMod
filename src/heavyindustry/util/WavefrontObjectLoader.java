@@ -1,3 +1,4 @@
+/*
 package heavyindustry.util;
 
 import arc.assets.AssetDescriptor;
@@ -9,7 +10,7 @@ import arc.files.Fi;
 import arc.struct.Seq;
 import arc.util.Nullable;
 
-/** @since 1.0.7 */
+// @since 1.0.7
 public class WavefrontObjectLoader extends AsynchronousAssetLoader<WavefrontObject, WavefrontObjectLoader.WavefrontObjectParameters> {
 	private WavefrontObject object;
 
@@ -51,3 +52,4 @@ public class WavefrontObjectLoader extends AsynchronousAssetLoader<WavefrontObje
 		}
 	}
 }
+*/

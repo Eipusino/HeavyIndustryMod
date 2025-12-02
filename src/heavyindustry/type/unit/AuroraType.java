@@ -15,7 +15,7 @@ import heavyindustry.content.HFx;
 import heavyindustry.entities.abilities.MirrorArmorAbility;
 import heavyindustry.entities.bullet.LightLaserBulletType;
 import heavyindustry.entities.part.CustomPart;
-import heavyindustry.gen.AirSeaUnit;
+import heavyindustry.gen.AirSeaAmphibiousUnit;
 import heavyindustry.graphics.Draws;
 import heavyindustry.graphics.HPal;
 import heavyindustry.type.lightnings.TrailMoveLightning;
@@ -46,7 +46,7 @@ public class AuroraType extends AirSeaAmphibiousUnitType {
 	public AuroraType(String name) {
 		super(name);
 
-		constructor = AirSeaUnit::new;
+		constructor = AirSeaAmphibiousUnit::new;
 
 		armor = 10;
 		speed = 0.65f;

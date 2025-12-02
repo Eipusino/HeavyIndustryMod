@@ -2,10 +2,11 @@ package heavyindustry.gen;
 
 import arc.func.Prov;
 import heavyindustry.type.unit.UnitType2;
+import heavyindustry.util.ExtraVariable;
 import mindustry.gen.Entityc;
 import mindustry.gen.Unitc;
 
-public interface Unitc2 extends Unitc {
+public interface Unitc2 extends Unitc, ExtraVariable {
 	default UnitType2 checkType() {
 		return (UnitType2) type();
 	}

@@ -198,6 +198,8 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 
 	@Override
 	public boolean containsAll(Collection<?> c) {
+		if (c == null) return false;
+
 		for (Object e : c)
 			if (!contains(e))
 				return false;

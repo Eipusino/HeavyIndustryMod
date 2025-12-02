@@ -25,7 +25,7 @@
 
 # 关于模组
 
-**[平台反射](https://github.com/Eipusino/Template)，模组部分反射功能多平台实现。**
+**[平台反射](https://github.com/Eipusino/LH)，模组部分反射功能多平台实现。**
 
 ---
 
@@ -37,6 +37,4 @@
 
 **[饱和火力](https://github.com/RA2EXE/Saturation-Firepower)，状态：持续更新。难度极高！**
 
-**[深度空间](https://github.com/Icexuegao/DeepSpace)，状态：开发中。**
-
-**[奇点](https://github.com/EB-wilson/Singularity)，状态：开发中。**
+**[深空](https://github.com/Icexuegao/DeepSpace)，状态：开发中。**

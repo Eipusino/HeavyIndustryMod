@@ -5,11 +5,10 @@ import arc.util.Tmp;
 import heavyindustry.type.lightnings.LightningVertex;
 
 /**
- * 矢量闪电生成器，生成由将沿着指定的向量创建一条直线蔓延的闪电
+ * Vector lightning generator, generating lightning that spreads in a straight line along a specified vector.
  *
  * @author EBwilson
- * @since 2.3
- *
+ * @since 1.0.8
  */
 public class VectorLightningGenerator extends LightningGenerator {
 	public Vec2 vector = new Vec2();

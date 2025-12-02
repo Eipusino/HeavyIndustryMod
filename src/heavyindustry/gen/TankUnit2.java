@@ -2,13 +2,18 @@ package heavyindustry.gen;
 
 import heavyindustry.entities.abilities.ICollideBlockerAbility;
 import heavyindustry.type.unit.UnitType2;
+import heavyindustry.util.CollectionObjectMap;
 import mindustry.Vars;
 import mindustry.entities.Damage;
 import mindustry.entities.abilities.Ability;
 import mindustry.gen.Hitboxc;
 import mindustry.gen.TankUnit;
 
+import java.util.Map;
+
 public class TankUnit2 extends TankUnit implements Unitc2 {
+	public Map<String, Object> extraVar = new CollectionObjectMap<>(String.class, Object.class);
+
 	@Override
 	public int classId() {
 		return Entitys.getId(TankUnit2.class);
@@ -31,5 +36,10 @@ public class TankUnit2 extends TankUnit implements Unitc2 {
 	@Override
 	public void damage(float amount) {
 		rawDamage(Damage.applyArmor(amount, armorOverride >= 0 ? armorOverride : armor) / healthMultiplier / Vars.state.rules.unitHealth(team) * checkType().damageMultiplier);
+	}
+
+	@Override
+	public Map<String, Object> extra() {
+		return extraVar;
 	}
 }

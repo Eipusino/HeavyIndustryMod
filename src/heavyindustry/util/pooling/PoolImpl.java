@@ -1,4 +1,4 @@
-package heavyindustry.util.pools;
+package heavyindustry.util.pooling;
 
 import arc.func.Prov;
 import arc.util.pooling.Pool;

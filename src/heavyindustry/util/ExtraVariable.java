@@ -1,4 +1,4 @@
-package heavyindustry.util.comp;
+package heavyindustry.util;
 
 import arc.func.Boolp;
 import arc.func.FloatFloatf;
@@ -14,6 +14,7 @@ import heavyindustry.func.Longp;
 import heavyindustry.func.Longt;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -26,7 +27,7 @@ import java.util.concurrent.atomic.AtomicLong;
  *
  * @apiNote I really hate the encapsulation of raw data types, it is definitely the most disgusting design in Java.
  */
-public interface ExtraVariablec {
+public interface ExtraVariable {
 	/**
 	 * Variable mapping table entry, automatically or manually bound to a mapping object,
 	 * which will serve as a container for storing dynamic variables as objects.
@@ -69,11 +70,10 @@ public interface ExtraVariablec {
 	 */
 	@SuppressWarnings("unchecked")
 	default <T> T getVar(String field, Prov<T> initial) {
-		T t = initial.get();
 		Object o;
 		if ((o = extra().get(field)) == null) {
 			T newValue;
-			if ((newValue = t) != null) {
+			if ((newValue = initial.get()) != null) {
 				extra().put(field, newValue);
 				return newValue;
 			}
@@ -87,12 +87,12 @@ public interface ExtraVariablec {
 	 *
 	 * @param <T>   Get the type of variable
 	 * @param field Variable name
-	 * @throws NoSuchFieldException If the obtained variable does not exist
+	 * @throws NoSuchElementException If the obtained variable does not exist
 	 */
 	@SuppressWarnings("unchecked")
-	default <T> T getVarThr(String field) throws NoSuchFieldException {
+	default <T> T getVarThr(String field) throws NoSuchElementException {
 		if (!extra().containsKey(field))
-			throw new NoSuchFieldException("No such field with name: " + field);
+			throw new NoSuchElementException("No such field with name: " + field);
 
 		return (T) extra().get(field);
 	}
@@ -136,7 +136,7 @@ public interface ExtraVariablec {
 	 * Set boolean type variable value
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a boolean wrapper type or atomized reference
-	 * @see ExtraVariablec#setVar(String, Object)
+	 * @see ExtraVariable#setVar(String, Object)
 	 */
 	default boolean setVar(String field, boolean value) {
 		Object res = getVar(field);
@@ -160,7 +160,7 @@ public interface ExtraVariablec {
 	 * Get boolean variable value.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a boolean wrapper type or atomized reference
-	 * @see ExtraVariablec#getVar(String, Object)
+	 * @see ExtraVariable#getVar(String, Object)
 	 */
 	default boolean getVar(String field, boolean def) {
 		Object res = getVar(field);
@@ -176,7 +176,7 @@ public interface ExtraVariablec {
 	 * Retrieve the boolean variable value and initialize the variable value when it does not exist.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a boolean wrapper type or atomized reference
-	 * @see ExtraVariablec#getVar(String, Prov)
+	 * @see ExtraVariable#getVar(String, Prov)
 	 */
 	default boolean getVar(String field, Boolp initial) {
 		Object res = getVar(field);
@@ -187,6 +187,7 @@ public interface ExtraVariablec {
 		}
 
 		if (res instanceof AtomicBoolean b) return b.get();
+		//else if (res instanceof boolean[] a && a.length > 0) return a[0];
 		else if (res instanceof Boolean n) return n;
 
 		throw new ClassCastException(res + " is not a boolean value or atomic boolean");
@@ -196,7 +197,7 @@ public interface ExtraVariablec {
 	 * Use processing functions to handle boolean variable values and update variable values with return values.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a boolean wrapper type or atomized reference
-	 * @see ExtraVariablec#handleVar(String, Func, Object)
+	 * @see ExtraVariable#handleVar(String, Func, Object)
 	 */
 	default boolean handleVar(String field, BoolBoolf handle, boolean def) {
 		boolean b;
@@ -209,7 +210,7 @@ public interface ExtraVariablec {
 	 * Set the value of an int type variable.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not an int wrapper type or atomized reference
-	 * @see ExtraVariablec#setVar(String, Object)
+	 * @see ExtraVariable#setVar(String, Object)
 	 */
 	default int setVar(String field, int value) {
 		Object res = getVar(field);
@@ -233,13 +234,14 @@ public interface ExtraVariablec {
 	 * Get the value of the int variable.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not an int wrapper type or atomized reference
-	 * @see ExtraVariablec#getVar(String, Object)
+	 * @see ExtraVariable#getVar(String, Object)
 	 */
 	default int getVar(String field, int def) {
 		Object res = getVar(field);
 		if (res == null) return def;
 
 		if (res instanceof AtomicInteger i) return i.get();
+		//else if (res instanceof int[] a && a.length > 0) return a[0];
 		else if (res instanceof Number n) return n.intValue();
 
 		throw new ClassCastException(res + " is not a number or atomic integer");
@@ -249,7 +251,7 @@ public interface ExtraVariablec {
 	 * Retrieve the value of an int variable and initialize the variable value when it does not exist.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not an int wrapper type or atomized reference
-	 * @see ExtraVariablec#getVar(String, Prov)
+	 * @see ExtraVariable#getVar(String, Prov)
 	 */
 	default int getVar(String field, Intp initial) {
 		Object res = getVar(field);
@@ -269,7 +271,7 @@ public interface ExtraVariablec {
 	 * Use processing functions to handle int variable values and update variable values with return values.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not an int wrapper type or atomized reference
-	 * @see ExtraVariablec#handleVar(String, Func, Object)
+	 * @see ExtraVariable#handleVar(String, Func, Object)
 	 */
 	default int handleVar(String field, Intt handle, int def) {
 		int i;
@@ -282,7 +284,7 @@ public interface ExtraVariablec {
 	 * Set the value of a long type variable.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a long wrapper type or atomized reference
-	 * @see ExtraVariablec#setVar(String, Object)
+	 * @see ExtraVariable#setVar(String, Object)
 	 */
 	default long setVar(String field, long value) {
 		Object res = getVar(field);
@@ -306,13 +308,14 @@ public interface ExtraVariablec {
 	 * Get the value of a long variable.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a long wrapper type or atomized reference
-	 * @see ExtraVariablec#getVar(String, Object)
+	 * @see ExtraVariable#getVar(String, Object)
 	 */
 	default long getVar(String field, long def) {
 		Object res = getVar(field);
 		if (res == null) return def;
 
 		if (res instanceof AtomicLong l) return l.get();
+		//else if (res instanceof long[] a && a.length > 0) return a[0];
 		else if (res instanceof Number n) return n.longValue();
 
 		throw new ClassCastException(res + " is not a number or atomic long");
@@ -322,7 +325,7 @@ public interface ExtraVariablec {
 	 * Retrieve the value of a long variable and initialize the variable value when it does not exist.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a long wrapper type or atomized reference
-	 * @see ExtraVariablec#getVar(String, Prov)
+	 * @see ExtraVariable#getVar(String, Prov)
 	 */
 	default long getVar(String field, Longp initial) {
 		Object res = getVar(field);
@@ -342,7 +345,7 @@ public interface ExtraVariablec {
 	 * Use processing functions to handle long variable values and update variable values with return values.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a long wrapper type or atomized reference
-	 * @see ExtraVariablec#handleVar(String, Func, Object)
+	 * @see ExtraVariable#handleVar(String, Func, Object)
 	 */
 	default long handleVar(String field, Longt handle, long def) {
 		long l;
@@ -355,7 +358,7 @@ public interface ExtraVariablec {
 	 * Set float type variable value.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or a single element float array
-	 * @see ExtraVariablec#setVar(String, Object)
+	 * @see ExtraVariable#setVar(String, Object)
 	 */
 	default float setVar(String field, float value) {
 		Object res = getVar(field);
@@ -379,7 +382,7 @@ public interface ExtraVariablec {
 	 * Get float variable value.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or a single element float array
-	 * @see ExtraVariablec#getVar(String, Object)
+	 * @see ExtraVariable#getVar(String, Object)
 	 */
 	default float getVar(String field, float def) {
 		Object res = getVar(field);
@@ -395,7 +398,7 @@ public interface ExtraVariablec {
 	 * Retrieve the float variable value and initialize the variable value when it does not exist.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or a single element float array
-	 * @see ExtraVariablec#getVar(String, Prov)
+	 * @see ExtraVariable#getVar(String, Prov)
 	 */
 	default float getVar(String field, Floatp initial) {
 		Object res = getVar(field);
@@ -415,7 +418,7 @@ public interface ExtraVariablec {
 	 * Use processing functions to handle float variable values and update variable values with return values.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or a single element float array
-	 * @see ExtraVariablec#handleVar(String, Func, Object)
+	 * @see ExtraVariable#handleVar(String, Func, Object)
 	 */
 	default float handleVar(String field, FloatFloatf handle, float def) {
 		float trans;
@@ -428,7 +431,7 @@ public interface ExtraVariablec {
 	 * Set the value of a double type variable.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or a single element double array
-	 * @see ExtraVariablec#setVar(String, Object)
+	 * @see ExtraVariable#setVar(String, Object)
 	 */
 	default double setVar(String field, double value) {
 		Object res = getVar(field);
@@ -452,7 +455,7 @@ public interface ExtraVariablec {
 	 * Get double variable value.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or a single element double array
-	 * @see ExtraVariablec#getVar(String, Object)
+	 * @see ExtraVariable#getVar(String, Object)
 	 */
 	default double getVar(String field, double def) {
 		Object res = getVar(field);
@@ -468,7 +471,7 @@ public interface ExtraVariablec {
 	 * Retrieve the value of a double variable and initialize the variable value when it does not exist.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a double wrapper type or a single element double array
-	 * @see ExtraVariablec#getVar(String, Prov)
+	 * @see ExtraVariable#getVar(String, Prov)
 	 */
 	default double getVar(String field, Doublep initial) {
 		Object res = getVar(field);
@@ -488,7 +491,7 @@ public interface ExtraVariablec {
 	 * Use processing functions to handle double variable values and update variable values with return values.
 	 *
 	 * @throws ClassCastException If the variable already exists and is not a double wrapper type or a single element double array
-	 * @see ExtraVariablec#handleVar(String, Func, Object)
+	 * @see ExtraVariable#handleVar(String, Func, Object)
 	 */
 	default double handleVar(String field, DoubleDoublef handle, double def) {
 		double d;

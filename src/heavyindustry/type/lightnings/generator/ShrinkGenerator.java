@@ -5,11 +5,11 @@ import arc.util.Tmp;
 import heavyindustry.type.lightnings.LightningVertex;
 
 /**
- * 收缩闪电的生成器，这会生成一定范围内向中心蔓延的闪电
+ * Shrink the generator of lightning, which will generate lightning that spreads inward to the center within a
+ * certain range.
  *
  * @author EBwilson
- * @since 2.3
- *
+ * @since 1.0.8
  */
 public class ShrinkGenerator extends LightningGenerator {
 	public float minRange, maxRange;
@@ -61,6 +61,6 @@ public class ShrinkGenerator extends LightningGenerator {
 
 	@Override
 	public float clipSize() {
-		return 0;
+		return 0f;
 	}
 }

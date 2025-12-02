@@ -1,7 +1,7 @@
 package heavyindustry.type.weapons;
 
 import heavyindustry.util.CollectionObjectMap;
-import heavyindustry.util.comp.ExtraVariablec;
+import heavyindustry.util.ExtraVariable;
 import mindustry.entities.units.WeaponMount;
 import mindustry.gen.Unit;
 import mindustry.type.Weapon;
@@ -10,7 +10,7 @@ import java.util.Map;
 
 /**
  * A weapon with an independent variable space that automatically replaces the corresponding
- * {@link WeaponMount} of a unit with {@link DataWeaponMount} that implements the {@link ExtraVariablec}
+ * {@link WeaponMount} of a unit with {@link DataWeaponMount} that implements the {@link ExtraVariable}
  * interface, and provides a series of behaviors for accessing the independent variable area.
  * <p>This is usually very useful for highly customizable weapons.
  */
@@ -77,7 +77,7 @@ public class DataWeapon extends Weapon {
 
 	protected void shoot(Unit unit, DataWeaponMount mount, float shootX, float shootY, float rotation) {}
 
-	public static class DataWeaponMount extends WeaponMount implements ExtraVariablec {
+	public static class DataWeaponMount extends WeaponMount implements ExtraVariable {
 		public Map<String, Object> extraVar = new CollectionObjectMap<>(String.class, Object.class);
 
 		public DataWeaponMount(Weapon weapon) {

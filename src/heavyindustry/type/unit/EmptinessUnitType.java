@@ -33,7 +33,7 @@ import heavyindustry.type.lightnings.LightningContainer;
 import heavyindustry.type.lightnings.TrailMoveLightning;
 import heavyindustry.type.lightnings.generator.RandomGenerator;
 import heavyindustry.type.lightnings.generator.VectorLightningGenerator;
-import heavyindustry.type.particles.SglParticleModels;
+import heavyindustry.type.particles.ParticleModels;
 import heavyindustry.type.weapons.DataWeapon;
 import heavyindustry.ui.HIcon;
 import heavyindustry.world.meta.HStatValues;
@@ -85,7 +85,7 @@ public class EmptinessUnitType extends UnitType2 {
 		targetFlags = BlockFlag.allLogic;
 		drawShields = false;
 		engineSize = 0f;
-		abilities.addAll(new MirrorArmorAbility(){{
+		abilities.addAll(new MirrorArmorAbility() {{
 			strength = 240f;
 			max = 8200f;
 			regen = 3f;
@@ -859,7 +859,7 @@ public class EmptinessUnitType extends UnitType2 {
 					super.createSplashDamage(b, x, y);
 
 					Angles.randLenVectors(System.nanoTime(), Mathf.random(15, 22), 4, 6.5f,
-							(dx, dy) -> SglParticleModels.floatParticle.create(x, y, hitColor, dx, dy, Mathf.random(5.25f, 7f)));
+							(dx, dy) -> ParticleModels.floatParticle.create(x, y, hitColor, dx, dy, Mathf.random(5.25f, 7f)));
 				}
 			};
 			parts.add(new CustomPart() {{

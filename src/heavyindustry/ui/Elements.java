@@ -661,7 +661,6 @@ public final class Elements {
 
 	@SuppressWarnings("unchecked")
 	public static <T extends Element> T hitChild(Group group, float stageX, float stageY, @Nullable Boolf<Element> filter) {
-		//noinspection unchecked
 		return (T) group.getChildren().find(it -> {
 			if (filter != null && !filter.get(it)) {
 				return false;

@@ -2064,12 +2064,13 @@ public final class HFx {
 
 		@Override
 		public LightningContainer createLightning(float x, float y) {
-			if (!(data instanceof Number)) data = 90f;
+			//if (!(data instanceof Number)) data = 90f;
+			float length = data instanceof Number num ? num.floatValue() : 90f;
 			LightningContainer.PoolLightningContainer lightning = LightningContainer.PoolLightningContainer.create(lifetime, 1.4f, 2.5f);
 
 			lightning.lerp = Interp.pow2Out;
 			lightning.time = lifetime / 2;
-			generator.maxLength = random(((float) data) / 2, (float) data);
+			generator.maxLength = random(length / 2, length);
 			lightning.create(generator);
 
 			Time.run(lifetime + 5, () -> Pools.free(lightning));

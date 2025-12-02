@@ -20,7 +20,7 @@ import heavyindustry.entities.bullet.EdgeFragBulletType;
 import heavyindustry.entities.bullet.LightLaserBulletType;
 import heavyindustry.entities.bullet.MultiTrailBulletType;
 import heavyindustry.func.Floatt2;
-import heavyindustry.gen.AirSeaUnit;
+import heavyindustry.gen.AirSeaAmphibiousUnit;
 import heavyindustry.graphics.Draws;
 import heavyindustry.graphics.HPal;
 import heavyindustry.type.lightnings.LightningContainer;
@@ -61,7 +61,7 @@ public class MornstarType extends AirSeaAmphibiousUnitType {
 	public MornstarType(String name) {
 		super(name);
 
-		constructor = AirSeaUnit::new;
+		constructor = AirSeaAmphibiousUnit::new;
 
 		armor = 19;
 		speed = 0.84f;

@@ -5,11 +5,11 @@ import arc.util.Tmp;
 import heavyindustry.type.lightnings.LightningVertex;
 
 /**
- * 随机路径的闪电生成器，给出起点路径总长度生成随机闪电路径
+ * Random path lightning generator, providing the total length of the starting path to generate a random
+ * lightning path.
  *
  * @author EBwilson
- * @since 2.3
- *
+ * @since 1.0.8
  */
 public class RandomGenerator extends LightningGenerator {
 	public float maxLength = 80;

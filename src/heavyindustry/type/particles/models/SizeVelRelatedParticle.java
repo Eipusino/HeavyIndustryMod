@@ -1,6 +1,5 @@
 package heavyindustry.type.particles.models;
 
-import arc.graphics.Color;
 import arc.math.Interp;
 import arc.math.Mathf;
 import heavyindustry.type.particles.Particle;
@@ -14,11 +13,6 @@ public class SizeVelRelatedParticle extends ParticleModel {
 	@Override
 	public boolean isFinal(Particle p) {
 		return p.speed.len() <= finalThreshold;
-	}
-
-	@Override
-	public Color trailColor(Particle p) {
-		return null;
 	}
 
 	@Override

@@ -7,53 +7,58 @@ import arc.math.Angles;
 import arc.math.Interp;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
-import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import heavyindustry.type.lightnings.generator.LightningGenerator;
+import heavyindustry.util.CollectionList;
 import mindustry.graphics.Drawf;
 
 /**
- * 单条闪电的存储容器，保存了闪电的起始时间还有闪电的顶点信息
- * 此类实例大量，应当复用
+ * A storage container for a single lightning bolt, which stores the start time and vertex information of the
+ * lightning bolt.
+ * <p>There are a large number of such instances, which should be reused.
  *
  * @author EBwilson
- * @since 2.3
+ * @since 1.0.8
  */
 public class Lightning implements Poolable {
 	private static final Vec2 last = new Vec2(), self = new Vec2(), next = new Vec2();
 
-	public final Seq<LightningVertex> vertices = new Seq<>(LightningVertex.class);
-	/** 闪电的持续时间 */
+	public final CollectionList<LightningVertex> vertices = new CollectionList<>(LightningVertex.class);
+	/** The duration of lightning. */
 	public float lifeTime;
-	/** 闪电消逝的过渡时间 */
+	/** The transition time of lightning disappearing. */
 	public float fadeTime;
-	/** 闪电是否随淡出过程从起点开始消失 */
+	/** Does lightning disappear from the starting point during the fading process. */
 	public boolean backFade = false;
-	/** 闪电整体的宽度是否随闪电的持续时间淡出 */
+	/** Does the overall width of lightning fade out with the duration of lightning. */
 	public boolean fade = true;
-	/** 闪电被创建时的时间 */
+	/** The time when lightning was created. */
 	public float startTime;
-	/** 这道闪电的剪切尺寸，用于绘制时的画面裁切 */
+	/** The cutting size of this lightning bolt is used for image cropping during drawing. */
 	public float clipSize;
-	/** 闪电的宽度 */
+	/** The width of lightning. */
 	public float width;
 
-	/** 闪电的宽度插值函数 */
+	/** Interpolation function for lightning width. */
 	public Interp lerp = Interp.linear;
-	/** 闪电的每一段的触发器，在任意一段闪电的部分生成完成时会各自调用一次，传入当前顶点和前一个顶点 */
+	/**
+	 * The trigger for each segment of lightning will be called once each segment of lightning is partially
+	 * generated, passing in the current vertex and the previous vertex.
+	 */
 	public Cons2<LightningVertex, LightningVertex> trigger;
 
 	/**
-	 * 闪电的蔓延速度，若不设置将使用{@link Lightning#time}确定闪电完全出现的时间
+	 * If the spread speed of lightning is not set, {@link Lightning#time} will be used to determine the time when lightning
+	 * completely appears.
 	 *
-	 * @deprecated 规范化，此API将不再有效
+	 * @deprecated Standardization, this API will no longer be valid
 	 */
 	@Deprecated
 	public float speed;
-	/** 闪电由产生到完全显现的时间，在{@link Lightning#speed}未设置的情况下有效 */
+	/** The time from the generation of lightning to its full manifestation is valid when {@link Lightning#speed} is not set. */
 	public float time;
 	public float counter, lengthMargin;
 
@@ -104,7 +109,7 @@ public class Lightning implements Poolable {
 	private Lightning() {
 	}
 
-	/** 更新一次闪电状态 */
+	/** Update the lightning status once. */
 	public void update() {
 		if (time == 0 && cursor < vertices.size) {
 			LightningVertex per = null;
@@ -146,10 +151,10 @@ public class Lightning implements Poolable {
 	}
 
 	/**
-	 * 绘制这道闪电
+	 * Draw this lightning bolt.
 	 *
-	 * @param x 绘制闪电的原点x坐标
-	 * @param y 绘制闪电的原点y坐标
+	 * @param x Draw the origin x-coordinate of lightning
+	 * @param y Draw the origin y-coordinate of lightning
 	 *
 	 */
 	@SuppressWarnings("DuplicatedCode")

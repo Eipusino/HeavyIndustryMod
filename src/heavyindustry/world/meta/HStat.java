@@ -23,6 +23,7 @@ public final class HStat {
 	public static final Stat contents = new Stat("hi-contents");
 	public static final Stat healPercent = new Stat("hi-heal-percent", StatCat.general);
 	public static final Stat produceChance = new Stat("hi-produce-chance", StatCat.crafting);
+	//public static final Stat maxStructureSize = new Stat("hi-max-structure-size");
 
 	/// Don't let anyone instantiate this class.
 	private HStat() {}

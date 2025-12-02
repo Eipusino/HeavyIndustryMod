@@ -2,13 +2,18 @@ package heavyindustry.gen;
 
 import heavyindustry.entities.abilities.ICollideBlockerAbility;
 import heavyindustry.type.unit.UnitType2;
+import heavyindustry.util.CollectionObjectMap;
 import mindustry.Vars;
 import mindustry.entities.Damage;
 import mindustry.entities.abilities.Ability;
 import mindustry.gen.Hitboxc;
 import mindustry.gen.UnitWaterMove;
 
+import java.util.Map;
+
 public class UnitWaterMove2 extends UnitWaterMove implements Unitc2 {
+	public Map<String, Object> extraVar = new CollectionObjectMap<>(String.class, Object.class);
+
 	@Override
 	public int classId() {
 		return Entitys.getId(UnitWaterMove2.class);
@@ -31,5 +36,10 @@ public class UnitWaterMove2 extends UnitWaterMove implements Unitc2 {
 	@Override
 	public void damage(float amount) {
 		rawDamage(Damage.applyArmor(amount, armorOverride >= 0 ? armorOverride : armor) / healthMultiplier / Vars.state.rules.unitHealth(team) * checkType().damageMultiplier);
+	}
+
+	@Override
+	public Map<String, Object> extra() {
+		return extraVar;
 	}
 }

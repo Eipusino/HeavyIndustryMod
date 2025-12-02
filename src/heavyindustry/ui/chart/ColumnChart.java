@@ -3,27 +3,22 @@ package heavyindustry.ui.chart;
 import heavyindustry.ui.chart.Chart.StatGroup;
 
 public class ColumnChart extends Chart<StatGroup> {
-	public ColumnChart(int maxValuesCount){
+	public ColumnChart(int maxValuesCount) {
 		super(maxValuesCount);
 	}
 
-	public ColumnChart(int maxValuesCount, int defaultViewLength){
+	public ColumnChart(int maxValuesCount, int defaultViewLength) {
 		super(maxValuesCount, defaultViewLength);
 	}
 
 	@Override
-	public void draw(){
+	public void draw() {
 		super.draw();
-
 	}
 
 	@Override
-	protected void drawValueScale(float valuesWidth){
-
-	}
+	protected void drawValueScale(float valuesWidth) {}
 
 	@Override
-	protected void drawHorizonScale(float horHeight){
-
-	}
+	protected void drawHorizonScale(float horHeight) {}
 }

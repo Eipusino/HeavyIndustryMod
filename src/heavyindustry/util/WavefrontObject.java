@@ -1,3 +1,4 @@
+/*
 package heavyindustry.util;
 
 import arc.Core;
@@ -22,12 +23,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Arrays;
 
-/**
- * Wavefront Object Converter and Renderer for Arc/libGDX
- * The faces should not intersect. (no crashes, its just that the renderer doesn't support it.)
- *
- * @since 1.0.7
- */
+//
+// Wavefront Object Converter and Renderer for Arc/libGDX
+// The faces should not intersect. (no crashes, its just that the renderer doesn't support it.)
+//
+// @since 1.0.7
+//
 public class WavefrontObject {
 	protected static final float zScale = 0.01f;
 	protected static final float defaultScl = 4f;
@@ -478,3 +479,4 @@ public class WavefrontObject {
 		public static final ShadingType[] all = values();
 	}
 }
+*/

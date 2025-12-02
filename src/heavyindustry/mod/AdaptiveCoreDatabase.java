@@ -23,8 +23,10 @@ import static heavyindustry.HVars.MOD_NAME;
  *
  * @author guiY
  */
-public class AdaptiveCoreDatabase {
+public final class AdaptiveCoreDatabase {
 	private static final Json json = new Json();
+
+	private AdaptiveCoreDatabase() {}
 
 	public static void init() {
 		if (ModUtils.isEnabled("adaptivecoredatabase")) return;

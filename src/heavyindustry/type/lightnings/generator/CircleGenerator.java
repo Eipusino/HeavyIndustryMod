@@ -6,20 +6,25 @@ import arc.util.Tmp;
 import heavyindustry.type.lightnings.LightningVertex;
 
 /**
- * 环形闪电的生成器，通过指定的圆心和半径生成闪电顶点
+ * A generator for circular lightning that generates lightning vertices using a specified center and radius.
  *
  * @author EBwilson
- * @since 2.3
- *
+ * @since 1.0.8
  */
 public class CircleGenerator extends LightningGenerator {
-	/** 闪电基于的圆的半径 */
+	/** The radius of the circle on which lightning is based. */
 	public float radius = 16;
-	/** 圆的原始起点角度，这会影响time不为0时生成圆的闪电蔓延起点 */
+	/**
+	 * The original starting angle of the circle will affect the lightning propagation starting point of the
+	 * circle generated when time is not zero/
+	 */
 	public float originAngle;
-	/** 圆的旋转方向，大于0为逆时针，否则为顺时针 */
+	/** The rotation direction of a circle is counterclockwise if it is greater than 0, otherwise it is clockwise. */
 	public int directory = 1;
-	/** 这个圆是否闭合，这会决定闪电的头部和尾部是连接的还是断开的 */
+	/**
+	 * Whether this circle is closed or not will determine whether the head and tail of the lightning are
+	 * connected or disconnected.
+	 */
 	public boolean enclosed = true;
 
 	Vec2 rad = new Vec2();
