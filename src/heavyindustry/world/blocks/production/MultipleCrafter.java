@@ -27,7 +27,7 @@ import mindustry.type.ItemStack;
 import mindustry.type.Liquid;
 import mindustry.type.LiquidStack;
 import mindustry.ui.Bar;
-import mindustry.world.Piece;
+import mindustry.world.Block;
 import mindustry.world.consumers.Consume;
 import mindustry.world.consumers.ConsumeLiquid;
 import mindustry.world.consumers.ConsumeLiquids;
@@ -527,7 +527,7 @@ public class MultipleCrafter extends Piece {
 			}
 		}
 
-		public void apply(Piece block) {
+		public void apply(Block block) {
 			for (Formula f : formulas) {
 				f.apply(block);
 			}
@@ -581,7 +581,7 @@ public class MultipleCrafter extends Piece {
 			return this;
 		}
 
-		public void apply(Piece block) {
+		public void apply(Block block) {
 			if (inputs != null) {
 				for (Consume c : inputs) {
 					if (c instanceof ConsumePower p) {
@@ -614,7 +614,7 @@ public class MultipleCrafter extends Piece {
 			}
 		}
 
-		public void display(Stats stats, Piece block) {
+		public void display(Stats stats, Block block) {
 			stats.timePeriod = craftTime;
 			if (inputs != null) {
 				for (Consume c : inputs) {
