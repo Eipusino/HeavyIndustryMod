@@ -4,7 +4,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.util.Time;
-import heavyindustry.type.particles.Particle;
+import heavyindustry.type.particles.ParticleEffect;
 import heavyindustry.type.particles.ParticleModel;
 import mindustry.graphics.Layer;
 
@@ -18,7 +18,7 @@ public class ShapeParticle extends ParticleModel {
 	public float layer = Layer.effect;
 
 	@Override
-	public void draw(Particle p) {
+	public void draw(ParticleEffect p) {
 		float l = Draw.z();
 		Draw.z(layer);
 

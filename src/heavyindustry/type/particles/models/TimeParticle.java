@@ -2,7 +2,7 @@ package heavyindustry.type.particles.models;
 
 import arc.math.Mathf;
 import arc.util.Time;
-import heavyindustry.type.particles.Particle;
+import heavyindustry.type.particles.ParticleEffect;
 import heavyindustry.type.particles.ParticleModel;
 
 public class TimeParticle extends ParticleModel {
@@ -14,12 +14,12 @@ public class TimeParticle extends ParticleModel {
 	public boolean speedRelated;
 
 	@Override
-	public void init(Particle particle) {
+	public void init(ParticleEffect particle) {
 		particle.setVar(BEGIN, Time.time);
 	}
 
 	@Override
-	public void update(Particle p) {
+	public void update(ParticleEffect p) {
 		float lifeTime = p.getVar(LIFE_TIME, () -> Mathf.random(defLifeMin, defLifeMax));
 		float time = Time.time - p.getVar(BEGIN, 0f);
 
@@ -32,12 +32,12 @@ public class TimeParticle extends ParticleModel {
 	}
 
 	@Override
-	public float currSize(Particle p) {
+	public float currSize(ParticleEffect p) {
 		return p.defSize * p.getVar(PROGRESS, 0f);
 	}
 
 	@Override
-	public boolean isFinal(Particle p) {
+	public boolean isFinal(ParticleEffect p) {
 		return p.getVar(PROGRESS, 0f) <= 0f;
 	}
 }

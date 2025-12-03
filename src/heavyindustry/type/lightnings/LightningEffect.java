@@ -20,10 +20,9 @@ import mindustry.graphics.Drawf;
  * lightning bolt.
  * <p>There are a large number of such instances, which should be reused.
  *
- * @author EBwilson
  * @since 1.0.8
  */
-public class Lightning implements Poolable {
+public class LightningEffect implements Poolable {
 	private static final Vec2 last = new Vec2(), self = new Vec2(), next = new Vec2();
 
 	public final CollectionList<LightningVertex> vertices = new CollectionList<>(LightningVertex.class);
@@ -51,14 +50,14 @@ public class Lightning implements Poolable {
 	public Cons2<LightningVertex, LightningVertex> trigger;
 
 	/**
-	 * If the spread speed of lightning is not set, {@link Lightning#time} will be used to determine the time when lightning
+	 * If the spread speed of lightning is not set, {@link LightningEffect#time} will be used to determine the time when lightning
 	 * completely appears.
 	 *
 	 * @deprecated Standardization, this API will no longer be valid
 	 */
 	@Deprecated
 	public float speed;
-	/** The time from the generation of lightning to its full manifestation is valid when {@link Lightning#speed} is not set. */
+	/** The time from the generation of lightning to its full manifestation is valid when {@link LightningEffect#speed} is not set. */
 	public float time;
 	public float counter, lengthMargin;
 
@@ -70,16 +69,16 @@ public class Lightning implements Poolable {
 
 	boolean enclosed;
 
-	public static Lightning create(LightningGenerator generator, float width, float lifeTime, Interp lerp, float time, Cons2<LightningVertex, LightningVertex> trigger) {
+	public static LightningEffect create(LightningGenerator generator, float width, float lifeTime, Interp lerp, float time, Cons2<LightningVertex, LightningVertex> trigger) {
 		return create(generator, width, lifeTime, lerp, time, 0, trigger);
 	}
 
-	public static Lightning create(LightningGenerator generator, float width, float lifeTime, Interp lerp, float time, float speed, Cons2<LightningVertex, LightningVertex> trigger) {
+	public static LightningEffect create(LightningGenerator generator, float width, float lifeTime, Interp lerp, float time, float speed, Cons2<LightningVertex, LightningVertex> trigger) {
 		return create(generator, width, lifeTime, lifeTime, lerp, time, true, false, trigger);
 	}
 
-	public static Lightning create(LightningGenerator generator, float width, float lifeTime, float fadeTime, Interp lerp, float time, boolean fade, boolean backFade, Cons2<LightningVertex, LightningVertex> trigger) {
-		Lightning result = Pools.obtain(Lightning.class, Lightning::new);
+	public static LightningEffect create(LightningGenerator generator, float width, float lifeTime, float fadeTime, Interp lerp, float time, boolean fade, boolean backFade, Cons2<LightningVertex, LightningVertex> trigger) {
+		LightningEffect result = Pools.obtain(LightningEffect.class, LightningEffect::new);
 		result.width = width;
 		result.time = time;
 		result.startTime = Time.time;
@@ -106,7 +105,7 @@ public class Lightning implements Poolable {
 		return result;
 	}
 
-	private Lightning() {
+	private LightningEffect() {
 	}
 
 	/** Update the lightning status once. */

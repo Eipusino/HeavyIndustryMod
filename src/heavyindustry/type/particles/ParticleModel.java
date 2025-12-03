@@ -13,9 +13,9 @@ public class ParticleModel {
 	 * @param color Color of particles
 	 * @param sx    The x-component of the initial velocity of particle motion
 	 * @param sy    The y-component of the initial velocity of particle motion
-	 * @param size  Particle size
+	 * @param size  ParticleEffect size
 	 */
-	public Particle create(float x, float y, Color color, float sx, float sy, float size) {
+	public ParticleEffect create(float x, float y, Color color, float sx, float sy, float size) {
 		return create(x, y, color, sx, sy, size, Layer.effect);
 	}
 
@@ -28,9 +28,9 @@ public class ParticleModel {
 	 * @param color  Color of particles
 	 * @param sx     The x-component of the initial velocity of particle motion
 	 * @param sy     The y-component of the initial velocity of particle motion
-	 * @param size   Particle size
+	 * @param size   ParticleEffect size
 	 */
-	public Particle create(Particle parent, float x, float y, Color color, float sx, float sy, float size) {
+	public ParticleEffect create(ParticleEffect parent, float x, float y, Color color, float sx, float sy, float size) {
 		return create(parent, x, y, color, sx, sy, size, Layer.effect);
 	}
 
@@ -42,10 +42,10 @@ public class ParticleModel {
 	 * @param color Color of particles
 	 * @param sx    The x-component of the initial velocity of particle motion
 	 * @param sy    The y-component of the initial velocity of particle motion
-	 * @param size  Particle size
+	 * @param size  ParticleEffect size
 	 * @param layer The layer where the particles are located is only used in the drawing process
 	 */
-	public Particle create(float x, float y, Color color, float sx, float sy, float size, float layer) {
+	public ParticleEffect create(float x, float y, Color color, float sx, float sy, float size, float layer) {
 		return create(null, x, y, color, sx, sy, size, layer);
 	}
 
@@ -58,11 +58,11 @@ public class ParticleModel {
 	 * @param color  Color of particles
 	 * @param sx     The x-component of the initial velocity of particle motion
 	 * @param sy     The y-component of the initial velocity of particle motion
-	 * @param size   Particle size
+	 * @param size   ParticleEffect size
 	 * @param layer  The layer where the particles are located is only used in the drawing process
 	 */
-	public Particle create(Particle parent, float x, float y, Color color, float sx, float sy, float size, float layer) {
-		Particle ent = Pools.obtain(Particle.class, Particle::new);
+	public ParticleEffect create(ParticleEffect parent, float x, float y, Color color, float sx, float sy, float size, float layer) {
+		ParticleEffect ent = Pools.obtain(ParticleEffect.class, ParticleEffect::new);
 		ent.parent = parent;
 		ent.x = x;
 		ent.y = y;
@@ -80,31 +80,31 @@ public class ParticleModel {
 		return ent;
 	}
 
-	public void draw(Particle p) {}
+	public void draw(ParticleEffect p) {}
 
-	public void updateTrail(Particle p, Particle.Cloud c) {}
+	public void updateTrail(ParticleEffect p, ParticleEffect.Cloud c) {}
 
-	public void update(Particle p) {}
+	public void update(ParticleEffect p) {}
 
-	public void deflect(Particle p) {}
+	public void deflect(ParticleEffect p) {}
 
-	public void drawTrail(Particle c) {}
+	public void drawTrail(ParticleEffect c) {}
 
-	public void init(Particle particle) {}
+	public void init(ParticleEffect particle) {}
 
-	public boolean isFinal(Particle p) {
+	public boolean isFinal(ParticleEffect p) {
 		return false;
 	}
 
-	public Color trailColor(Particle p) {
+	public Color trailColor(ParticleEffect p) {
 		return null;
 	}
 
-	public float currSize(Particle p) {
+	public float currSize(ParticleEffect p) {
 		return p.defSize;
 	}
 
-	public boolean isFaded(Particle p, Particle.Cloud cloud) {
+	public boolean isFaded(ParticleEffect p, ParticleEffect.Cloud cloud) {
 		return false;
 	}
 }

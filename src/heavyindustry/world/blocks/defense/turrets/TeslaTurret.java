@@ -338,7 +338,7 @@ public class TeslaTurret extends Block {
 								s.apply(status, statusDuration);
 							}
 
-							//Lightning effect
+							//LightningEffect effect
 							TeslaRing ring = rings.random();
 							heats[rings.indexOf(ring)] = 1f;
 							Tmp.v1.trns(rotation * ring.rotationMul, ring.xOffset, ring.yOffset); //ring location

@@ -6,14 +6,17 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.graphics.gl.FrameBuffer;
 import arc.math.Mat;
+import arc.util.Disposable;
 
-public class AfterShadow {
+public class AfterShadow implements Disposable {
 	private final FrameBuffer buffer, pingpong;
 	private final Camera camera;
 	private final TextureRegion region = new TextureRegion();
 	private final Mat last = new Mat();
 
 	private final Color baseColor = new Color(1, 1, 1, 0);
+
+	boolean disposed;
 
 	public boolean linear = true;
 	public float coef = -0.01f;
@@ -65,5 +68,17 @@ public class AfterShadow {
 			region.set(buffer.getTexture());
 			Draw.rect(region, drawX, drawY, camera.width, camera.height);
 		});
+	}
+
+	@Override
+	public void dispose() {
+		buffer.dispose();
+		pingpong.dispose();
+		disposed = true;
+	}
+
+	@Override
+	public boolean isDisposed() {
+		return disposed;
 	}
 }

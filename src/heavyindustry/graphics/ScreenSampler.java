@@ -157,7 +157,9 @@ public final class ScreenSampler {
 		if (currBuffer != null) {
 			currBuffer.getTexture().bind(unit);
 			Draw.blit(shader);
-		}
+		}/* else {
+			throw new IllegalStateException("currently no buffer bound");
+		}*/
 	}
 
 	private static void blitBuffer(FrameBuffer from, FrameBuffer to) {
@@ -190,7 +192,7 @@ public final class ScreenSampler {
 	 * @param clear  Is the frame buffer cleared before transferring.
 	 */
 	public static void getToBuffer(FrameBuffer target, boolean clear) {
-		if (currBuffer == null) return;
+		if (currBuffer == null) return;//throw new IllegalStateException("currently no buffer bound");
 
 		if (clear) target.begin(Color.clear);
 		else target.begin();

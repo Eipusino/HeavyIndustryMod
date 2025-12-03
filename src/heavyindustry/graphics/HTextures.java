@@ -2,6 +2,7 @@ package heavyindustry.graphics;
 
 import arc.Core;
 import arc.func.Cons;
+import arc.graphics.Pixmap;
 import arc.graphics.Texture;
 import arc.graphics.Texture.TextureFilter;
 import arc.graphics.Texture.TextureWrap;
@@ -18,7 +19,7 @@ public final class HTextures {
 	private HTextures() {}
 
 	public static void load() {
-		noise = new Texture(Core.files.internal("sprites/noise.png"));
+		noise = new Texture(new Pixmap(Core.files.internal("sprites/noise.png")));
 		noise.setFilter(TextureFilter.linear);
 		noise.setWrap(TextureWrap.repeat);
 
@@ -33,11 +34,11 @@ public final class HTextures {
 	}
 
 	public static Texture loadTexture(String name) {
-		return new Texture(HVars.internalTree.resolves("other", "textures", name + ".png"));
+		return new Texture(new Pixmap(HVars.internalTree.resolves("other", "textures", name + ".png")));
 	}
 
 	public static Texture loadTexture(String name, TextureFilter filter, TextureWrap wrap) {
-		Texture texture = new Texture(HVars.internalTree.resolves("other", "textures", name + ".png"));
+		Texture texture = new Texture(new Pixmap(HVars.internalTree.resolves("other", "textures", name + ".png")));
 		texture.setFilter(filter);
 		texture.setWrap(wrap);
 
@@ -45,7 +46,7 @@ public final class HTextures {
 	}
 
 	public static Texture loadTexture(String name, Cons<Texture> modifier) {
-		Texture texture = new Texture(HVars.internalTree.resolves("other", "textures", name + ".png"));
+		Texture texture = new Texture(new Pixmap(HVars.internalTree.resolves("other", "textures", name + ".png")));
 		modifier.get(texture);
 
 		return texture;

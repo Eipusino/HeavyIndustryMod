@@ -7,7 +7,6 @@ import arc.util.pooling.Pools;
  * The lightning vertex container stores necessary information for a vertex and a drawing progress timer.
  * <p>There are a large number of such instances, which should be reused.
  *
- * @author EBwilson
  * @since 1.0.8
  */
 public class LightningVertex implements Poolable {
@@ -20,7 +19,7 @@ public class LightningVertex implements Poolable {
 	public boolean valid;
 	public float progress;
 
-	public Lightning branchOther;
+	public LightningEffect branchOther;
 
 	protected void draw(float x, float y) {
 		if (branchOther != null) branchOther.draw(x, y);

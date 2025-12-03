@@ -55,6 +55,7 @@ import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.HVars;
+import heavyindustry.graphics.Blur;
 import heavyindustry.ui.dialogs.GameDataDialog;
 import heavyindustry.ui.dialogs.PowerGraphInfoDialog;
 import mindustry.Vars;
@@ -82,6 +83,8 @@ public final class Elements {
 
 	public static PowerGraphInfoDialog powerInfoDialog;
 	public static GameDataDialog gameDataDialog;
+
+	public static Blur uiBlur;
 
 	static final Vec2 ctrlVec = new Vec2();
 	static final Vec2 point = new Vec2(-1, -1);

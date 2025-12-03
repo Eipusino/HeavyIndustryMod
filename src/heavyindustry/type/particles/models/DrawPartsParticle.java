@@ -3,7 +3,7 @@ package heavyindustry.type.particles.models;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.struct.Seq;
-import heavyindustry.type.particles.Particle;
+import heavyindustry.type.particles.ParticleEffect;
 import heavyindustry.type.particles.ParticleModel;
 import mindustry.entities.part.DrawPart;
 import mindustry.entities.part.ShapePart;
@@ -16,7 +16,7 @@ public class DrawPartsParticle extends ParticleModel {
 	DrawPart.PartParams params = new DrawPart.PartParams();
 
 	@Override
-	public void draw(Particle p) {
+	public void draw(ParticleEffect p) {
 		float z = Draw.z();
 		Draw.z(layer);
 

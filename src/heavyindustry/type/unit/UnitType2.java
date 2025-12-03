@@ -1,17 +1,24 @@
 package heavyindustry.type.unit;
 
 import arc.Core;
+import arc.util.Nullable;
 import arc.util.Strings;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
 import heavyindustry.world.meta.HStat;
 import mindustry.ai.types.MissileAI;
 import mindustry.content.Items;
 import mindustry.gen.Sounds;
+import mindustry.gen.Unit;
 import mindustry.graphics.Pal;
+import mindustry.type.ItemStack;
 import mindustry.type.UnitType;
 import mindustry.type.ammo.ItemAmmoType;
 import mindustry.world.meta.Env;
 
 public class UnitType2 extends UnitType {
+	public @Nullable ItemStack[] requirements;
+
 	public float damageMultiplier = 1f;
 	public float absorption = 0f;
 
@@ -72,4 +79,36 @@ public class UnitType2 extends UnitType {
 		loopSoundVolume = 0.05f;
 		drawMinimap = false;
 	}
+
+	public void requirements(Object... req) {
+		requirements = ItemStack.with(req);
+	}
+
+	@Override
+	public ItemStack[] getRequirements(UnitType[] prevReturn, float[] timeReturn) {
+		if (requirements == null) return super.getRequirements(prevReturn, timeReturn);
+
+		if (totalRequirements != null) return totalRequirements;
+
+		totalRequirements = requirements;
+		buildTime = 0;
+		if (prevReturn != null) prevReturn[0] = null;
+
+		for (ItemStack stack : requirements) {
+			buildTime += stack.item.cost * stack.amount;
+		}
+		if (timeReturn != null) timeReturn[0] = buildTime;
+
+		return requirements;
+	}
+
+	public int version() {
+		return 0;
+	}
+
+	public void init(Unit unit) {}
+
+	public void read(Unit sglUnitEntity, Reads read, int revision) {}
+
+	public void write(Unit sglUnitEntity, Writes write) {}
 }

@@ -11,28 +11,28 @@ public class MultiParticleModel extends ParticleModel {
 	}
 
 	@Override
-	public void draw(Particle p) {
+	public void draw(ParticleEffect p) {
 		for (ParticleModel model : models) {
 			model.draw(p);
 		}
 	}
 
 	@Override
-	public void drawTrail(Particle c) {
+	public void drawTrail(ParticleEffect c) {
 		for (ParticleModel model : models) {
 			model.drawTrail(c);
 		}
 	}
 
 	@Override
-	public void updateTrail(Particle p, Particle.Cloud c) {
+	public void updateTrail(ParticleEffect p, ParticleEffect.Cloud c) {
 		for (ParticleModel model : models) {
 			model.updateTrail(p, c);
 		}
 	}
 
 	@Override
-	public void update(Particle p) {
+	public void update(ParticleEffect p) {
 		for (ParticleModel model : models) {
 			if (model == null) break;
 			model.update(p);
@@ -40,14 +40,14 @@ public class MultiParticleModel extends ParticleModel {
 	}
 
 	@Override
-	public void init(Particle p) {
+	public void init(ParticleEffect p) {
 		for (ParticleModel model : models) {
 			model.init(p);
 		}
 	}
 
 	@Override
-	public Color trailColor(Particle p) {
+	public Color trailColor(ParticleEffect p) {
 		Tmp.c1.set(p.color);
 		for (ParticleModel model : models) {
 			Color c = model.trailColor(p);
@@ -58,14 +58,14 @@ public class MultiParticleModel extends ParticleModel {
 	}
 
 	@Override
-	public void deflect(Particle p) {
+	public void deflect(ParticleEffect p) {
 		for (ParticleModel model : models) {
 			model.deflect(p);
 		}
 	}
 
 	@Override
-	public boolean isFinal(Particle p) {
+	public boolean isFinal(ParticleEffect p) {
 		for (ParticleModel model : models) {
 			if (model.isFinal(p)) return true;
 		}
@@ -73,7 +73,7 @@ public class MultiParticleModel extends ParticleModel {
 	}
 
 	@Override
-	public boolean isFaded(Particle p, Particle.Cloud cloud) {
+	public boolean isFaded(ParticleEffect p, ParticleEffect.Cloud cloud) {
 		for (ParticleModel model : models) {
 			if (model.isFaded(p, cloud)) return true;
 		}
@@ -81,7 +81,7 @@ public class MultiParticleModel extends ParticleModel {
 	}
 
 	@Override
-	public float currSize(Particle p) {
+	public float currSize(ParticleEffect p) {
 		float res = Float.MAX_VALUE;
 
 		for (ParticleModel model : models) {

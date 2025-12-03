@@ -1,5 +1,6 @@
 package heavyindustry.content;
 
+import arc.graphics.Pixmap;
 import arc.graphics.Texture;
 import heavyindustry.HVars;
 
@@ -14,6 +15,6 @@ public final class HPlanets {
 	}
 
 	public static Texture rings(String name) {
-		return new Texture(HVars.internalTree.resolves("sprites", "planets", "rings", name + ".png"));
+		return new Texture(new Pixmap(HVars.internalTree.resolves("sprites", "planets", "rings", name + ".png")));
 	}
 }

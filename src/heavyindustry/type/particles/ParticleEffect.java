@@ -30,9 +30,8 @@ import java.util.Set;
  * circumstances.
  * <br>Comes with controllable trailing.
  *
- * @author EBwilson
  */
-public class Particle extends Decal implements ExtraVariable, Iterable<Particle.Cloud> {
+public class ParticleEffect extends Decal implements ExtraVariable, Iterable<ParticleEffect.Cloud> {
 	private static int counter = 0;
 	/**
 	 * The maximum number of coexisting particles, when the total amount is greater than this number,
@@ -40,8 +39,8 @@ public class Particle extends Decal implements ExtraVariable, Iterable<Particle.
 	 */
 	public static int maxAmount = 1024;
 
-	protected static final Set<Particle> all = new CollectionObjectSet<>(Particle.class);
-	protected static final List<Particle> temp = new CollectionList<>(Particle.class);
+	protected static final Set<ParticleEffect> all = new CollectionObjectSet<>(ParticleEffect.class);
+	protected static final List<ParticleEffect> temp = new CollectionList<>(ParticleEffect.class);
 
 	protected Vec2 startPos = new Vec2();
 	protected float clipSize;
@@ -51,11 +50,11 @@ public class Particle extends Decal implements ExtraVariable, Iterable<Particle.
 
 	public int maxCloudCounts = -1;
 
-	public Particle parent;
+	public ParticleEffect parent;
 
 	public Map<String, Object> extraVar = new CollectionObjectMap<>(String.class, Object.class);
 
-	/** Particle velocity, vector. */
+	/** ParticleEffect velocity, vector. */
 	public Vec2 speed = new Vec2();
 	/** The current size of the particle. */
 	public float size;
@@ -75,9 +74,9 @@ public class Particle extends Decal implements ExtraVariable, Iterable<Particle.
 		return cloudCount;
 	}
 
-	public static List<Particle> get(Boolf<Particle> filter) {
+	public static List<ParticleEffect> get(Boolf<ParticleEffect> filter) {
 		temp.clear();
-		for (Particle particle : all) {
+		for (ParticleEffect particle : all) {
 			if (filter.get(particle)) temp.add(particle);
 		}
 		return temp;

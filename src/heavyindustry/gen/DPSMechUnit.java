@@ -14,7 +14,7 @@ import mindustry.ui.Fonts;
 import static heavyindustry.HVars.boardTimeTotal;
 
 public class DPSMechUnit extends MechUnit2 {
-	public float totalOrigin = 0, totalReal = 0, hits = 0, firstHitTime = 0, lastHitTime = 0, showBoardTime = 0;
+	public float totalOrigin, totalReal, hits, firstHitTime, lastHitTime, showBoardTime;
 
 	@Override
 	public int classId() {

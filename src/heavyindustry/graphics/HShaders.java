@@ -3,6 +3,7 @@ package heavyindustry.graphics;
 import arc.Core;
 import arc.files.Fi;
 import arc.graphics.Color;
+import arc.graphics.Pixmap;
 import arc.graphics.Texture;
 import arc.graphics.Texture.TextureFilter;
 import arc.graphics.Texture.TextureWrap;
@@ -472,7 +473,7 @@ public final class HShaders {
 		@Override
 		public void apply() {
 			if (texture == null) {
-				texture = new Texture(HVars.internalTree.resolves("other", "textures", "small-space.png"));
+				texture = new Texture(new Pixmap(HVars.internalTree.resolves("other", "textures", "small-space.png")));
 				texture.setFilter(TextureFilter.linear);
 				texture.setWrap(TextureWrap.repeat);
 			}

@@ -145,7 +145,7 @@ public final class HPixmaps {
 		return color(region, c -> c == from.rgba(), (x, y) -> to);
 	}
 
-	public static Pixmap pixmapOf(Texture texture, boolean prepare) {
+	public static Pixmap pixmapOf(Texture texture) {
 		if (texture == null) return null;
 
 		TextureData data = texture.getTextureData();
@@ -153,8 +153,6 @@ public final class HPixmaps {
 		if (data instanceof PixmapTextureData) return data.consumePixmap();
 		if (data instanceof FileTextureData) {
 			try {
-				if (prepare && !data.isPrepared()) data.prepare();
-
 				if (pixmapField == null) {
 					pixmapField = FileTextureData.class.getDeclaredField("pixmap");
 					pixmapField.setAccessible(true);

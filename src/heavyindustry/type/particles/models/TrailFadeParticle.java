@@ -2,7 +2,7 @@ package heavyindustry.type.particles.models;
 
 import arc.graphics.Color;
 import arc.math.Mathf;
-import heavyindustry.type.particles.Particle;
+import heavyindustry.type.particles.ParticleEffect;
 import heavyindustry.type.particles.ParticleModel;
 
 public class TrailFadeParticle extends ParticleModel {
@@ -12,7 +12,7 @@ public class TrailFadeParticle extends ParticleModel {
 	public boolean linear = false;
 
 	@Override
-	public void updateTrail(Particle p, Particle.Cloud c) {
+	public void updateTrail(ParticleEffect p, ParticleEffect.Cloud c) {
 		c.size = linear ? Mathf.approachDelta(c.size, 0, trailFade) : Mathf.lerpDelta(c.size, 0, trailFade);
 		if (fadeColor != null) c.color.lerp(fadeColor, colorLerpSpeed);
 	}

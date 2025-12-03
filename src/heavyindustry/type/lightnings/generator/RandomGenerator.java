@@ -8,7 +8,6 @@ import heavyindustry.type.lightnings.LightningVertex;
  * Random path lightning generator, providing the total length of the starting path to generate a random
  * lightning path.
  *
- * @author EBwilson
  * @since 1.0.8
  */
 public class RandomGenerator extends LightningGenerator {

@@ -14,7 +14,6 @@ import heavyindustry.func.Longp;
 import heavyindustry.func.Longt;
 
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -87,12 +86,12 @@ public interface ExtraVariable {
 	 *
 	 * @param <T>   Get the type of variable
 	 * @param field Variable name
-	 * @throws NoSuchElementException If the obtained variable does not exist
+	 * @throws NoSuchVariableException If the obtained variable does not exist
 	 */
 	@SuppressWarnings("unchecked")
-	default <T> T getVarThr(String field) throws NoSuchElementException {
+	default <T> T getVarThr(String field) throws NoSuchVariableException {
 		if (!extra().containsKey(field))
-			throw new NoSuchElementException("No such field with name: " + field);
+			throw new NoSuchVariableException("No such field with name: " + field);
 
 		return (T) extra().get(field);
 	}

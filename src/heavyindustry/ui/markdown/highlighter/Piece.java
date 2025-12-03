@@ -3,18 +3,18 @@ package heavyindustry.ui.markdown.highlighter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Block {
+public class Piece {
 	protected final Scope scope;
 	protected final TokenMatcher ownerMatcher;
 	protected final List<TokenMatcher> matchers;
 
-	public Block(Scope scope, List<TokenMatcher> matchers) {
+	public Piece(Scope scope, List<TokenMatcher> matchers) {
 		this.scope = scope;
 		this.ownerMatcher = null;
 		this.matchers = matchers;
 	}
 
-	public Block(Scope scope, TokenMatcher currMatcher, List<TokenMatcher> matchers) {
+	public Piece(Scope scope, TokenMatcher currMatcher, List<TokenMatcher> matchers) {
 		this.scope = scope;
 		this.ownerMatcher = currMatcher;
 		this.matchers = matchers;

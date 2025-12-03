@@ -7,7 +7,6 @@ import heavyindustry.type.lightnings.LightningVertex;
 /**
  * Vector lightning generator, generating lightning that spreads in a straight line along a specified vector.
  *
- * @author EBwilson
  * @since 1.0.8
  */
 public class VectorLightningGenerator extends LightningGenerator {

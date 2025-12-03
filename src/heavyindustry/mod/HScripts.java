@@ -41,12 +41,7 @@ public final class HScripts {
 	/// Don't let anyone instantiate this class.
 	private HScripts() {}
 
-	/**
-	 * Initializes the Mod JS.
-	 *
-	 * @deprecated Easy to damage other mods.
-	 */
-	@Deprecated
+	/// Initializes the Mod JS.
 	public static void init() {
 		try {
 			if (Vars.mods.getScripts().scope instanceof ImporterTopLevel imp) {

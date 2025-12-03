@@ -7,7 +7,7 @@ import arc.math.Rand;
 import arc.util.pooling.Pool;
 import arc.util.pooling.Pools;
 import heavyindustry.func.Floatf2;
-import heavyindustry.type.lightnings.Lightning;
+import heavyindustry.type.lightnings.LightningEffect;
 import heavyindustry.type.lightnings.LightningVertex;
 
 import java.util.Iterator;
@@ -22,7 +22,6 @@ import java.util.Iterator;
  * <p><strong>Warning:</strong> This method is not thread safe, and it is important to avoid iterating over this object
  * simultaneously at all times.
  *
- * @author EBwilson
  * @since 1.0.8
  */
 public abstract class LightningGenerator implements Iterable<LightningVertex>, Iterator<LightningVertex> {
@@ -49,10 +48,10 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
 	 */
 	public BranchMaker branchMaker;
 
-	public Cons<Lightning> branchCreated;
+	public Cons<LightningEffect> branchCreated;
 	public Floatf2<LightningVertex, LightningVertex> blockNow;
 
-	protected Lightning curr;
+	protected LightningEffect curr;
 
 	protected LightningVertex last;
 	protected boolean isEnding;
@@ -70,11 +69,11 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
 		});
 	}
 
-	public void setCurrentGen(Lightning curr) {
+	public void setCurrentGen(LightningEffect curr) {
 		this.curr = curr;
 	}
 
-	public void branched(Cons<Lightning> branchCreated) {
+	public void branched(Cons<LightningEffect> branchCreated) {
 		this.branchCreated = branchCreated;
 	}
 
@@ -85,7 +84,7 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
 		gen.setOffset(vertex.x, vertex.y);
 		Floatf2<LightningVertex, LightningVertex> old = gen.blockNow;
 		gen.blockNow = (l, v) -> old != null ? old.get(l, v) : blockNow != null ? blockNow.get(l, v) : -1;
-		vertex.branchOther = Lightning.create(
+		vertex.branchOther = LightningEffect.create(
 				gen,
 				curr.width * strength,
 				curr.lifeTime,
@@ -151,7 +150,7 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
 		return !isEnding;
 	}
 
-	/** 在顶点处理之后调用 */
+	/** Called after vertex processing. */
 	public void afterHandle(LightningVertex vertex) {
 		if (last == null) return;
 		vertex.angle = Mathf.angle(vertex.x - last.x, vertex.y - last.y);
@@ -175,10 +174,10 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
 		return false;
 	}
 
-	/** 顶点处理，实现以为顶点分配属性，如坐标等 */
+	/** Vertex processing, which assigns attributes such as coordinates to vertices. */
 	protected abstract void handleVertex(LightningVertex vertex);
 
-	/** 返回当前闪电的裁剪大小，此大小应当能够完整绘制闪电 */
+	/** Return the crop size of the current lightning, which should be able to fully draw the lightning. */
 	public abstract float clipSize();
 
 	public interface BranchMaker {

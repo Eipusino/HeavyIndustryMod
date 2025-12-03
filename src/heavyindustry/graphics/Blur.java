@@ -5,8 +5,9 @@ import arc.graphics.Color;
 import arc.graphics.Gl;
 import arc.graphics.gl.FrameBuffer;
 import arc.graphics.gl.Shader;
+import arc.util.Disposable;
 
-public class Blur {
+public class Blur implements Disposable {
 	public static final float[] default1 = {
 			0.0086973240159f, 0.0359949776755f, 0.1093610049784f,
 			0.2129658870149f, 0.2659615230194f, 0.2129658870149f,
@@ -97,10 +98,10 @@ public class Blur {
 			}
 			""";
 
-	protected Shader blurShader;
+	protected Shader blur;
 	protected FrameBuffer buffer, pingpong;
 
-	protected boolean capturing;
+	protected boolean capturing, disposed;
 
 	public int blurScl = 4;
 	public float blurSpace = 2.16f;
@@ -110,17 +111,17 @@ public class Blur {
 	}
 
 	public Blur(float... convolutions) {
-		blurShader = genShader(convolutions);
+		blur = genShader(convolutions);
 
 		buffer = new FrameBuffer();
 		pingpong = new FrameBuffer();
 
-		blurShader.bind();
-		blurShader.setUniformi("u_texture0", 0);
-		blurShader.setUniformi("u_texture1", 1);
+		blur.bind();
+		blur.setUniformi("u_texture0", 0);
+		blur.setUniformi("u_texture1", 1);
 	}
 
-	private Shader genShader(float... convolutions) {
+	protected Shader genShader(float... convolutions) {
 		if (convolutions.length % 2 != 1)
 			throw new IllegalArgumentException("convolution numbers length must be odd number!");
 
@@ -175,8 +176,8 @@ public class Blur {
 		buffer.resize(width, height);
 		pingpong.resize(width, height);
 
-		blurShader.bind();
-		blurShader.setUniformf("size", width, height);
+		blur.bind();
+		blur.setUniformf("size", width, height);
 	}
 
 	public void capture() {
@@ -197,21 +198,21 @@ public class Blur {
 		Gl.depthMask(false);
 
 		pingpong.begin();
-		blurShader.bind();
-		blurShader.setUniformf("dir", blurSpace, 0f);
-		blurShader.setUniformi("def_alpha", 1);
+		blur.bind();
+		blur.setUniformf("dir", blurSpace, 0f);
+		blur.setUniformi("def_alpha", 1);
 		buffer.getTexture().bind(0);
-		ScreenSampler.blit(blurShader, 1);
+		ScreenSampler.blit(blur, 1);
 		pingpong.end();
 
-		blurShader.bind();
-		blurShader.setUniformf("dir", 0f, blurSpace);
-		blurShader.setUniformf("def_alpha", 0);
+		blur.bind();
+		blur.setUniformf("dir", 0f, blurSpace);
+		blur.setUniformf("def_alpha", 0);
 		pingpong.getTexture().bind(1);
 
 		Gl.enable(Gl.blend);
 		Gl.blendFunc(Gl.srcAlpha, Gl.oneMinusSrcAlpha);
-		buffer.blit(blurShader);
+		buffer.blit(blur);
 	}
 
 	public void directDraw(Runnable draw) {
@@ -219,5 +220,18 @@ public class Blur {
 		capture();
 		draw.run();
 		render();
+	}
+
+	@Override
+	public void dispose() {
+		buffer.dispose();
+		pingpong.dispose();
+		blur.dispose();
+		disposed = true;
+	}
+
+	@Override
+	public boolean isDisposed() {
+		return disposed;
 	}
 }

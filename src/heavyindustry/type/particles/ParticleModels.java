@@ -60,12 +60,12 @@ public final class ParticleModels {
 	}}, new ShapeParticle(), new DrawDefaultTrailParticle());
 
 	public static ParticleModel heatBulletTrail = new ParticleModel() {
-		final Particle.Cloud tmp1 = new Particle.Cloud();
-		final Particle.Cloud tmp2 = new Particle.Cloud();
+		final ParticleEffect.Cloud tmp1 = new ParticleEffect.Cloud();
+		final ParticleEffect.Cloud tmp2 = new ParticleEffect.Cloud();
 
 		@Override
-		public void drawTrail(Particle c) {
-			for (Particle.Cloud cloud : c) {
+		public void drawTrail(ParticleEffect c) {
+			for (ParticleEffect.Cloud cloud : c) {
 				tmp1.color.set(Color.black);
 				tmp1.x = cloud.x;
 				tmp1.y = cloud.y;
@@ -86,7 +86,7 @@ public final class ParticleModels {
 		}
 
 		@Override
-		public void draw(Particle p) {
+		public void draw(ParticleEffect p) {
 			Draw.z(Layer.bullet - 1);
 			Fill.circle(p.x, p.y, p.size);
 			Draw.z(Layer.effect);
@@ -95,12 +95,12 @@ public final class ParticleModels {
 		}
 
 		@Override
-		public float currSize(Particle p) {
+		public float currSize(ParticleEffect p) {
 			return p.getVar(OWNER) instanceof Bullet b && b.isAdded() ? p.defSize : Mathf.approachDelta(p.size, 0, 0.04f);
 		}
 
 		@Override
-		public void update(Particle p) {
+		public void update(ParticleEffect p) {
 			if (p.getVar(OWNER) instanceof Bullet b) {
 				if (b.isAdded()) {
 					p.set(b.x, b.y);
@@ -113,7 +113,7 @@ public final class ParticleModels {
 		}
 
 		@Override
-		public void updateTrail(Particle p, Particle.Cloud c) {
+		public void updateTrail(ParticleEffect p, ParticleEffect.Cloud c) {
 			c.size -= 0.03f * Time.delta;
 
 			if (p.getVar(BULLET) instanceof Bullet b && b.isAdded() && p.getVar(TIMER, () -> new Interval()).get(5) && c.nextCloud != null) {
@@ -142,17 +142,17 @@ public final class ParticleModels {
 		}
 
 		@Override
-		public boolean isFaded(Particle p, Particle.Cloud cloud) {
+		public boolean isFaded(ParticleEffect p, ParticleEffect.Cloud cloud) {
 			return cloud.size <= 0.03f;
 		}
 
 		@Override
-		public Color trailColor(Particle p) {
+		public Color trailColor(ParticleEffect p) {
 			return p.color;
 		}
 
 		@Override
-		public boolean isFinal(Particle p) {
+		public boolean isFinal(ParticleEffect p) {
 			return !(p.getVar(OWNER) instanceof Bullet b && b.isAdded()) && p.size <= 0.04f;
 		}
 	};

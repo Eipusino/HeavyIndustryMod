@@ -21,7 +21,7 @@ import mindustry.graphics.Layer;
 public class MirrorArmorAbility extends MirrorShieldAbility {
 	protected static final int drawId = Draws.nextTaskId();
 	protected static final int maskId = Draws.nextTaskId();
-	protected static final int fukId = Draws.nextTaskId();
+	//protected static final int fukId = Draws.nextTaskId();
 
 	protected static final FrameBuffer drawBuffer = new FrameBuffer();
 	protected static final FrameBuffer pingPongBuffer = new FrameBuffer();

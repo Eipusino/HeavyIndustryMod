@@ -8,7 +8,6 @@ import heavyindustry.type.lightnings.LightningVertex;
  * Shrink the generator of lightning, which will generate lightning that spreads inward to the center within a
  * certain range.
  *
- * @author EBwilson
  * @since 1.0.8
  */
 public class ShrinkGenerator extends LightningGenerator {

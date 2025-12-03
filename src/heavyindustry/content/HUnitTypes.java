@@ -121,6 +121,7 @@ import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
+import mindustry.type.ItemStack;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
 import mindustry.type.ammo.ItemAmmoType;
@@ -169,6 +170,7 @@ public final class HUnitTypes {
 
 		//vanilla-tank
 		vanguard = new UnitType2("vanguard") {{
+			requirements(Items.lead, 25, Items.titanium, 25, Items.silicon, 30);
 			constructor = TankUnit2::new;
 			squareShape = true;
 			omniMovement = false;
@@ -208,6 +210,7 @@ public final class HUnitTypes {
 			}});
 		}};
 		striker = new UnitType2("striker") {{
+			requirements(Items.silicon, 40, Items.graphite, 40);
 			constructor = TankUnit2::new;
 			squareShape = true;
 			omniMovement = false;
@@ -845,6 +848,7 @@ public final class HUnitTypes {
 		}};
 		//vanilla-copter
 		caelifera = new CopterUnitType("caelifera") {{
+			requirements(Items.lead, 35, Items.titanium, 15, Items.silicon, 30);
 			constructor = CopterUnit::new;
 			aiController = CopterAI::new;
 			circleTarget = false;
@@ -893,6 +897,7 @@ public final class HUnitTypes {
 			hideDetails = false;
 		}};
 		schistocerca = new CopterUnitType("schistocerca") {{
+			requirements(Items.silicon, 40, Items.graphite, 40);
 			constructor = CopterUnit::new;
 			aiController = CopterAI::new;
 			circleTarget = false;
@@ -1279,6 +1284,7 @@ public final class HUnitTypes {
 		}};
 		//vanilla-tier6
 		empire = new UnitType2("empire") {{
+			requirements(Items.silicon, 1500, HItems.crystallineCircuit, 300, HItems.uranium, 400, HItems.chromium, 500);
 			constructor = MechUnit2::new;
 			speed = 0.4f;
 			hitSize = 40f;
@@ -2656,6 +2662,7 @@ public final class HUnitTypes {
 		}};
 		//miner-erekir
 		miner = new UnitType2("miner") {{
+			requirements = ItemStack.empty;
 			erekir();
 			constructor = BuildingTetherUnit2::new;
 			defaultCommand = UnitCommand.mineCommand;
@@ -2692,6 +2699,7 @@ public final class HUnitTypes {
 			ammoType = new PowerAmmoType(600f);
 		}};
 		largeMiner = new UnitType2("large-miner") {{
+			requirements = ItemStack.empty;
 			erekir();
 			constructor = BuildingTetherUnit2::new;
 			defaultCommand = UnitCommand.mineCommand;
@@ -2729,6 +2737,7 @@ public final class HUnitTypes {
 			ammoType = new PowerAmmoType(1200f);
 		}};
 		legsMiner = new UnitType2("legs-miner") {{
+			requirements = ItemStack.empty;
 			erekir();
 			controller = u -> new MinerDepotAI();
 			constructor = BuildingTetherLegsUnit2::new;
@@ -2856,6 +2865,7 @@ public final class HUnitTypes {
 			hideDetails = false;
 		}};
 		invincibleShip = new UnitType2("invincible-ship") {{
+			requirements = ItemStack.empty;
 			constructor = InvincibleShipUnit::new;
 			abilities.add(new RepairFieldAbility(11451.4191981f, 60, 8 * 8), new InvincibleForceFieldAbility(60, 114.514191981f, 1145141919.81f, 300));
 			aiController = NullAI::new;
@@ -2918,6 +2928,7 @@ public final class HUnitTypes {
 			bounded = false;
 		}};
 		dpsTesterLand = new UnitType2("dps-tester-land") {{
+			requirements = ItemStack.empty;
 			constructor = DPSMechUnit::new;
 			aiController = NullAI::new;
 			armor = 10f;
@@ -2953,6 +2964,7 @@ public final class HUnitTypes {
 		aurora = new AuroraType("aurora");
 		//elite
 		tiger = new UnitType2("tiger") {{
+			requirements(Items.silicon, 3000, Items.plastanium, 1000, Items.surgeAlloy, 600, Items.phaseFabric, 200, HItems.chromium, 400);
 			constructor = DamageAbsorbMechUnit::new;
 			absorption = 0.2f;
 			damageMultiplier = 0.9f;
@@ -3171,6 +3183,7 @@ public final class HUnitTypes {
 			immunities.addAll(StatusEffects.unmoving, StatusEffects.blasted, StatusEffects.corroded, StatusEffects.sporeSlowed, StatusEffects.disarmed, StatusEffects.electrified);
 		}};
 		thunder = new UnitType2("thunder") {{
+			requirements(Items.silicon, 2500, Items.plastanium, 800, Items.surgeAlloy, 400, Items.phaseFabric, 300, HItems.chromium, 500);
 			tank();
 			drawShields = false;
 			constructor = TankUnit2::new;

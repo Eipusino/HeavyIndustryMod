@@ -14,13 +14,12 @@ import heavyindustry.util.CollectionList;
 import java.util.Iterator;
 
 /**
- * Lightning container, using a lightning generator to generate lightning, processed and drawn by the
+ * LightningEffect container, using a lightning generator to generate lightning, processed and drawn by the
  * container, usually used for storing a type of lightning in the same container.
  *
- * @author EBwilson
  * @since 1.0.8
  */
-public class LightningContainer implements Iterable<Lightning>, Eachable<Lightning> {
+public class LightningContainer implements Iterable<LightningEffect>, Eachable<LightningEffect> {
 	/**
 	 * The time required for lightning to occur from generation to complete appearance will be evenly
 	 * distributed among each lightning segment, with fps being the current frame rate.
@@ -56,10 +55,10 @@ public class LightningContainer implements Iterable<Lightning>, Eachable<Lightni
 	 * The callback function called when creating a lightning branch is generally used to define the sub
 	 * container properties of the lightning branch.
 	 */
-	public Cons<Lightning> branchCreated;
+	public Cons<LightningEffect> branchCreated;
 
 	/**
-	 * Lightning vertex trigger, triggered when a lightning node has arrived, passes in the previous vertex
+	 * LightningEffect vertex trigger, triggered when a lightning node has arrived, passes in the previous vertex
 	 * and this vertex.
 	 */
 	public Cons2<LightningVertex, LightningVertex> trigger;
@@ -67,12 +66,12 @@ public class LightningContainer implements Iterable<Lightning>, Eachable<Lightni
 
 	protected float clipSize;
 
-	protected final CollectionList<Lightning> lightnings = new CollectionList<>(Lightning.class);
+	protected final CollectionList<LightningEffect> lightnings = new CollectionList<>(LightningEffect.class);
 
 	/** Create a new lightning bolt in the container using the provided lightning generator. */
 	public void create(LightningGenerator generator) {
 		generator.branched(branchCreated);
-		Lightning lightning = Lightning.create(
+		LightningEffect lightning = LightningEffect.create(
 				generator,
 				Mathf.random(minWidth, maxWidth),
 				lifeTime,
@@ -89,20 +88,20 @@ public class LightningContainer implements Iterable<Lightning>, Eachable<Lightni
 	}
 
 	@Override
-	public Iterator<Lightning> iterator() {
+	public Iterator<LightningEffect> iterator() {
 		return lightnings.iterator();
 	}
 
 	@Override
-	public void each(Cons<? super Lightning> cons) {
+	public void each(Cons<? super LightningEffect> cons) {
 		lightnings.each(cons);
 	}
 
 	/** Update the status of all sub lightning in the current container once. */
 	public void update() {
-		Iterator<Lightning> itr = lightnings.iterator();
+		Iterator<LightningEffect> itr = lightnings.iterator();
 		while (itr.hasNext()) {
-			Lightning lightning = itr.next();
+			LightningEffect lightning = itr.next();
 			clipSize = Math.max(clipSize, lightning.clipSize);
 
 			float progress = (Time.time - lightning.startTime) / lifeTime;
@@ -125,7 +124,7 @@ public class LightningContainer implements Iterable<Lightning>, Eachable<Lightni
 	 *
 	 */
 	public void draw(float x, float y) {
-		for (Lightning lightning : lightnings) {
+		for (LightningEffect lightning : lightnings) {
 			lightning.draw(x, y);
 		}
 	}
@@ -134,7 +133,7 @@ public class LightningContainer implements Iterable<Lightning>, Eachable<Lightni
 		return clipSize;
 	}
 
-	/** Lightning branch container, used to draw branch lightning, recursively draws all sub branches. */
+	/** LightningEffect branch container, used to draw branch lightning, recursively draws all sub branches. */
 	public static class PoolLightningContainer extends LightningContainer implements Poolable {
 		public static PoolLightningContainer create(float lifeTime, float minWidth, float maxWidth) {
 			PoolLightningContainer result = Pools.obtain(PoolLightningContainer.class, PoolLightningContainer::new);
@@ -156,7 +155,7 @@ public class LightningContainer implements Iterable<Lightning>, Eachable<Lightni
 			branchCreated = null;
 			trigger = null;
 
-			for (Lightning lightning : lightnings) {
+			for (LightningEffect lightning : lightnings) {
 				Pools.free(lightning);
 			}
 			lightnings.clear();

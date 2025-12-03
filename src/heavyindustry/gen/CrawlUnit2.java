@@ -1,5 +1,7 @@
 package heavyindustry.gen;
 
+import arc.util.io.Reads;
+import arc.util.io.Writes;
 import heavyindustry.entities.abilities.ICollideBlockerAbility;
 import heavyindustry.type.unit.UnitType2;
 import heavyindustry.util.CollectionObjectMap;
@@ -31,6 +33,28 @@ public class CrawlUnit2 extends CrawlUnit implements Unitc2 {
 		}
 
 		return super.collides(other);
+	}
+
+	@Override
+	public void add() {
+		super.add();
+
+		checkType().init(this);
+	}
+
+	@Override
+	public void write(Writes write) {
+		super.write(write);
+
+		write.i(checkType().version());
+		checkType().write(this, write);
+	}
+
+	@Override
+	public void read(Reads read) {
+		super.read(read);
+
+		checkType().read(this, read, read.i());
 	}
 
 	@Override

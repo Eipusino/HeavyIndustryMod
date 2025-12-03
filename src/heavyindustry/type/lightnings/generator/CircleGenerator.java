@@ -8,7 +8,6 @@ import heavyindustry.type.lightnings.LightningVertex;
 /**
  * A generator for circular lightning that generates lightning vertices using a specified center and radius.
  *
- * @author EBwilson
  * @since 1.0.8
  */
 public class CircleGenerator extends LightningGenerator {

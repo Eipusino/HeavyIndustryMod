@@ -140,6 +140,7 @@ public class AirSeaAmphibiousUnitType extends UnitType2 {
 	@Override
 	public void update(Unit unit) {
 		super.update(unit);
+
 		if (unit.isFlying()) {
 			unit.reloadMultiplier *= airReloadMulti;
 			if (unit.isShooting) {
