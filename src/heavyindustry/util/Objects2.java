@@ -259,6 +259,12 @@ public final class Objects2 {
 		return obj;
 	}
 
+	/// Used for Kotlin.
+	public static <T> T get(T t) {
+		return t;
+	}
+
+	/// Used for Kotlin.
 	@Nullable
 	public static <T> T getNull() {
 		return null;

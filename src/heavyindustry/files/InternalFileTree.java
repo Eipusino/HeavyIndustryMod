@@ -33,7 +33,7 @@ public class InternalFileTree implements FileHandleResolver {
 		return root.child(name);
 	}
 
-	public Fi resolves(String... splitName) {
+	public Fi children(String... splitName) {
 		Fi out = root;
 		for (String s : splitName) {
 			if (!s.isEmpty())
@@ -44,7 +44,7 @@ public class InternalFileTree implements FileHandleResolver {
 
 	@Override
 	public Fi resolve(String fileName) {
-		return resolves(fileName.split("/"));
+		return children(fileName.split("/"));
 	}
 
 	@Override

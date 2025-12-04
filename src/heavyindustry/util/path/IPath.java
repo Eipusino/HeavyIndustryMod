@@ -1,5 +1,7 @@
 package heavyindustry.util.path;
 
+import arc.util.Eachable;
+
 /**
  * The basic interface of the path storage type should be assigned corresponding functions to the class, and the iterable interface has been extended.
  * The path should traverse all vertices of the path in order from the starting point to the ending point.
@@ -8,7 +10,7 @@ package heavyindustry.util.path;
  * @see GenericPath
  * @since 1.0.5
  */
-public interface IPath<V> extends Iterable<V> {
+public interface IPath<V> extends Iterable<V>, Eachable<V> {
 	/**
 	 * Insert a vertex from the starting point of the path and use it as the starting point.
 	 *

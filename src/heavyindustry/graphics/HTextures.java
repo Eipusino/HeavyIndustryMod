@@ -1,6 +1,7 @@
 package heavyindustry.graphics;
 
 import arc.Core;
+import arc.files.Fi;
 import arc.func.Cons;
 import arc.graphics.Pixmap;
 import arc.graphics.Texture;
@@ -25,29 +26,20 @@ public final class HTextures {
 
 		white = new Texture(HPixmaps.white);
 
-		smooth = loadTexture("smooth-noise", TextureFilter.linear, TextureWrap.repeat);
-		particle = loadTexture("particle-noise", TextureFilter.linear, TextureWrap.repeat);
-		darker = loadTexture("darker-noise", TextureFilter.linear, TextureWrap.repeat);
-		gaussian = loadTexture("gaussian-noise", TextureFilter.linear, TextureWrap.repeat);
-		median = loadTexture("median-noise", TextureFilter.linear, TextureWrap.repeat);
-		armor = loadTexture("armor", TextureFilter.nearest, TextureWrap.repeat);
+		Fi texturesDir = HVars.internalTree.child("other").child("textures");
+
+		smooth = loadTexture(texturesDir.child("smooth-noise.png"), TextureFilter.linear, TextureWrap.repeat);
+		particle = loadTexture(texturesDir.child("particle-noise.png"), TextureFilter.linear, TextureWrap.repeat);
+		darker = loadTexture(texturesDir.child("darker-noise.png"), TextureFilter.linear, TextureWrap.repeat);
+		gaussian = loadTexture(texturesDir.child("gaussian-noise.png"), TextureFilter.linear, TextureWrap.repeat);
+		median = loadTexture(texturesDir.child("median-noise.png"), TextureFilter.linear, TextureWrap.repeat);
+		armor = loadTexture(texturesDir.child("armor.png"), TextureFilter.nearest, TextureWrap.repeat);
 	}
 
-	public static Texture loadTexture(String name) {
-		return new Texture(new Pixmap(HVars.internalTree.resolves("other", "textures", name + ".png")));
-	}
-
-	public static Texture loadTexture(String name, TextureFilter filter, TextureWrap wrap) {
-		Texture texture = new Texture(new Pixmap(HVars.internalTree.resolves("other", "textures", name + ".png")));
+	public static Texture loadTexture(Fi fi, TextureFilter filter, TextureWrap wrap) {
+		Texture texture = new Texture(new Pixmap(fi));
 		texture.setFilter(filter);
 		texture.setWrap(wrap);
-
-		return texture;
-	}
-
-	public static Texture loadTexture(String name, Cons<Texture> modifier) {
-		Texture texture = new Texture(new Pixmap(HVars.internalTree.resolves("other", "textures", name + ".png")));
-		modifier.get(texture);
 
 		return texture;
 	}

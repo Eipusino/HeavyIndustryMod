@@ -99,7 +99,10 @@ public final class ModGetter {
 	}
 
 	public static Seq<ModInfo> getModsWithClass(Class<? extends Mod> mainClass) {
-		return getModsWithFilter((fi, jval) -> jval.getString("main").equals(mainClass.getCanonicalName()));
+		return getModsWithFilter((fi, jval) -> {
+			String main = jval.getString("main");
+			return main != null && main.equals(mainClass.getCanonicalName());
+		});
 	}
 
 	public static ModInfo getModWithName(String name) {

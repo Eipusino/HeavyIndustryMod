@@ -7,6 +7,9 @@ import arc.util.serialization.Jval;
 public class ModInfo {
 	public final String name;
 	public final String version;
+
+	//public final String main;
+
 	public final Fi file;
 
 	public ModInfo(Fi modFile) {
@@ -18,5 +21,6 @@ public class ModInfo {
 		file = modFile;
 		name = info.get("name").asString();
 		version = info.get("version").asString();
+		//main = info.getString("main");
 	}
 }

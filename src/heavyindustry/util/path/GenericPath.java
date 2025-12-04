@@ -1,5 +1,7 @@
 package heavyindustry.util.path;
 
+import arc.func.Cons;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -35,5 +37,11 @@ public class GenericPath<V> implements IPath<V> {
 	@Override
 	public Iterator<V> iterator() {
 		return path.iterator();
+	}
+
+	@Override
+	public void each(Cons<? super V> cons) {
+		Iterator<V> iterator = path.iterator();
+		while (iterator.hasNext()) cons.get(iterator.next());
 	}
 }

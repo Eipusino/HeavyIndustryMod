@@ -1,5 +1,6 @@
 package heavyindustry.graphics;
 
+import arc.files.Fi;
 import arc.func.Intc2;
 import arc.graphics.Color;
 import arc.graphics.Pixmap;
@@ -24,10 +25,14 @@ public final class HPixmaps {
 	private HPixmaps() {}
 
 	public static void load() {
-		white = new Pixmap(HVars.internalTree.resolves("other", "textures", "white.png"));
+		Fi texturesDir = HVars.internalTree.child("other").child("textures");
 
-		bottleTop = new Pixmap(HVars.internalTree.resolves("sprites", "items", "bottle.png"));
-		bottleBottom = new Pixmap(HVars.internalTree.resolves("sprites", "items", "bottle-liquid.png"));
+		white = new Pixmap(texturesDir.child("white.png"));
+
+		Fi itemsDir = HVars.internalTree.child("sprites").child("items");
+
+		bottleTop = new Pixmap(itemsDir.child("bottle.png"));
+		bottleBottom = new Pixmap(itemsDir.child("bottle-liquid.png"));
 	}
 
 	/**

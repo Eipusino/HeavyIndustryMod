@@ -330,6 +330,10 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 			return false;
 		}
 
+		/**
+		 * Returns the element located at the specified position, but does not perform any other
+		 * operations.
+		 */
 		@Override
 		public T set(int index, T element) {
 			return parent.get(index);

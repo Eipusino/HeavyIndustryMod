@@ -124,7 +124,7 @@ public final class HSounds {
 	}
 
 	public static Sound load(String name) {
-		Fi file = HVars.internalTree.resolve("sounds/" + name);
+		Fi file = HVars.internalTree.child("sounds").child(name);
 
 		if (file.exists()) {
 			return new Sound(file);
