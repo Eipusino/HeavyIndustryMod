@@ -29,6 +29,8 @@ import static heavyindustry.HVars.MOD_NAME;
  * @author Eipusino
  */
 public final class HShaders {
+	public static Fi shadersDir = HVars.internalTree.child("shaders");
+
 	public static DepthShader depth;
 	public static DepthAtmosphereShader depthAtmosphere;
 	public static AlphaShader alphaShader;
@@ -61,10 +63,10 @@ public final class HShaders {
 
 		alphaShader = new AlphaShader();
 
-		brine = new SurfaceShader2(vert("general-highp"), frag("brine"));
-		glacium = new SurfaceShader2(vert("general-highp"), frag("glacium"));
-		crystalFluid = new SurfaceShader2(vert("general-highp"), frag("crystal-fluid"));
-		deepCrystalFluid = new DualSurfaceShader(vert("general-highp"), frag("deep-crystal-fluid")) {
+		brine = new SurfaceShader2(shadersDir.child("general-highp.vert"), shadersDir.child("brine.frag"));
+		glacium = new SurfaceShader2(shadersDir.child("general-highp.vert"), shadersDir.child("glacium.frag"));
+		crystalFluid = new SurfaceShader2(shadersDir.child("general-highp.vert"), shadersDir.child("crystal-fluid.frag"));
+		deepCrystalFluid = new DualSurfaceShader(shadersDir.child("general-highp.vert"), shadersDir.child("deep-crystal-fluid.frag")) {
 			@Override
 			public Texture noise() {
 				return HTextures.smooth;
@@ -75,9 +77,9 @@ public final class HShaders {
 				return HTextures.darker;
 			}
 		};
-		boundWater = new SurfaceShader2(vert("general-highp"), frag("bound-water"));
-		pit = new PitShader(vert("general-highp"), frag("pit"), MOD_NAME + "-concrete-blank1", MOD_NAME + "-stone-sheet", MOD_NAME + "-truss");
-		waterPit = new PitShader(vert("general-highp"), frag("water-pit"), MOD_NAME + "-concrete-blank1", MOD_NAME + "-stone-sheet", MOD_NAME + "-truss");
+		boundWater = new SurfaceShader2(shadersDir.child("general-highp.vert"), shadersDir.child("bound-water.frag"));
+		pit = new PitShader(shadersDir.child("general-highp.vert"), shadersDir.child("pit.frag"), MOD_NAME + "-concrete-blank1", MOD_NAME + "-stone-sheet", MOD_NAME + "-truss");
+		waterPit = new PitShader(shadersDir.child("general-highp.vert"), shadersDir.child("water-pit.frag"), MOD_NAME + "-concrete-blank1", MOD_NAME + "-stone-sheet", MOD_NAME + "-truss");
 
 		aberration = new AberrationShader();
 
@@ -92,12 +94,12 @@ public final class HShaders {
 		dimShader = new DimShader();
 		smallSpaceShader = new SmallSpaceShader();
 
-		simpleScreen = new Shader(vert("general"), frag("simple"));
-		distBase = new Shader(vert("general"), frag("dist-base"));
-		passThrough = new Shader(vert("general-highp"), frag("pass-through"));
+		simpleScreen = new Shader(shadersDir.child("general.vert"), shadersDir.child("simple.frag"));
+		distBase = new Shader(shadersDir.child("general.vert"), shadersDir.child("dist-base.frag"));
+		passThrough = new Shader(shadersDir.child("general-highp.vert"), shadersDir.child("pass-through.frag"));
 
-		linearAlpha = new AlphaAdjust(frag("linear-alpha-adjust"));
-		lerpAlpha = new AlphaAdjust(frag("lerp-alpha-adjust"));
+		linearAlpha = new AlphaAdjust(shadersDir.child("linear-alpha-adjust.frag"));
+		lerpAlpha = new AlphaAdjust(shadersDir.child("lerp-alpha-adjust.frag"));
 
 		tiler = new TilerShader();
 
@@ -122,11 +124,11 @@ public final class HShaders {
 	 * @return The shader file, located inside {@code shaders/}.
 	 */
 	public static Fi frag(String name) {
-		return HVars.internalTree.children("shaders", name + ".frag");
+		return shadersDir.child(name + ".frag");
 	}
 
 	public static Fi vert(String name) {
-		return HVars.internalTree.children("shaders", name + ".vert");
+		return shadersDir.child(name + ".vert");
 	}
 
 	/** Specialized mesh shader to capture fragment depths. */
@@ -135,7 +137,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #depth}. */
 		DepthShader() {
-			super(vert("depth"), frag("depth"));
+			super(shadersDir.child("depth.vert"), shadersDir.child("depth.frag"));
 		}
 
 		@Override
@@ -157,7 +159,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #depthAtmosphere}. */
 		DepthAtmosphereShader() {
-			super(vert("depth-atmosphere"), frag("depth-atmosphere"));
+			super(shadersDir.child("depth-atmosphere.vert"), shadersDir.child("depth-atmosphere.frag"));
 		}
 
 		@Override
@@ -190,7 +192,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #planetTexture}. */
 		PlanetTextureShader() {
-			super(vert("circle-mesh"), frag("circle-mesh"));
+			super(shadersDir.child("circle-mesh.vert"), shadersDir.child("circle-mesh.frag"));
 		}
 
 		@Override
@@ -218,7 +220,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #tiler}. */
 		TilerShader() {
-			super(vert("general-highp"), frag("tiler"));
+			super(shadersDir.child("general-highp.vert"), shadersDir.child("tiler.frag"));
 		}
 
 		@Override
@@ -239,7 +241,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #alphaShader}. */
 		AlphaShader() {
-			super(vert("general-highp"), frag("post-alpha"));
+			super(shadersDir.child("general-highp.vert"), shadersDir.child("post-alpha.frag"));
 		}
 
 		@Override
@@ -258,7 +260,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #wave}. */
 		WaveShader() {
-			super(vert("general-highp"), frag("wave"));
+			super(shadersDir.child("general-highp.vert"), shadersDir.child("wave.frag"));
 		}
 
 		@Override
@@ -290,7 +292,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #mirrorField}. */
 		MirrorFieldShader() {
-			super(vert("general-highp"), frag("mirror-field"));
+			super(shadersDir.child("general-highp.vert"), shadersDir.child("mirror-field.frag"));
 		}
 
 		@Override
@@ -317,7 +319,7 @@ public final class HShaders {
 
 		/** The only instance of this class: {@link #alphaMask}. */
 		MaskShader() {
-			super(vert("general"), frag("alpha-mask"));
+			super(shadersDir.child("general.vert"), shadersDir.child("alpha-mask.frag"));
 		}
 
 		@Override
@@ -333,7 +335,7 @@ public final class HShaders {
 		public float coef;
 
 		public AlphaAdjust(Fi fragmentShader) {
-			super(vert("general"), fragmentShader);
+			super(shadersDir.child("general.vert"), fragmentShader);
 		}
 
 		@Override
@@ -344,7 +346,7 @@ public final class HShaders {
 
 	public static final class AberrationShader extends Shader {
 		AberrationShader() {
-			super(vert("general"), frag("aberration"));
+			super(shadersDir.child("general.vert"), shadersDir.child("aberration.frag"));
 		}
 
 		@Override
@@ -365,7 +367,7 @@ public final class HShaders {
 		public TextureRegion region;
 
 		MaterializeShader() {
-			super(vert("materialize"), frag("materialize"));
+			super(shadersDir.child("materialize.vert"), shadersDir.child("materialize.frag"));
 		}
 
 		@Override
@@ -388,7 +390,7 @@ public final class HShaders {
 		public TextureRegion region;
 
 		VerticalBuildShader() {
-			super(vert("vertical-build"), frag("vertical-build"));
+			super(shadersDir.child("vertical-build.vert"), shadersDir.child("vertical-build.frag"));
 		}
 
 		@Override
@@ -408,7 +410,7 @@ public final class HShaders {
 		public float time;
 
 		BlockBuildCenterShader() {
-			super(vert("block-build-center"), frag("block-build-center"));
+			super(shadersDir.child("block-build-center.vert"), shadersDir.child("block-build-center.frag"));
 		}
 
 		@Override
@@ -426,7 +428,7 @@ public final class HShaders {
 		public float time, spacing, thickness;
 
 		TractorConeShader() {
-			super(vert("general-highp"), frag("tractor-cone"));
+			super(shadersDir.child("general-highp.vert"), shadersDir.child("tractor-cone.frag"));
 		}
 
 		@Override
@@ -454,7 +456,7 @@ public final class HShaders {
 		public float alpha;
 
 		DimShader() {
-			super(vert("general"), frag("dim"));
+			super(shadersDir.child("general.vert"), shadersDir.child("dim.frag"));
 		}
 
 		@Override
@@ -467,13 +469,13 @@ public final class HShaders {
 		Texture texture;
 
 		SmallSpaceShader() {
-			super(vert("general-highp"), frag("small-space"));
+			super(shadersDir.child("general-highp.vert"), shadersDir.child("small-space.frag"));
 		}
 
 		@Override
 		public void apply() {
 			if (texture == null) {
-				texture = new Texture(new Pixmap(HVars.internalTree.children("other", "textures", "small-space.png")));
+				texture = new Texture(new Pixmap(HTextures.texturesDir.child("small-space.png")));
 				texture.setFilter(TextureFilter.linear);
 				texture.setWrap(TextureWrap.repeat);
 			}

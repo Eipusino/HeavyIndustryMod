@@ -25,9 +25,7 @@ public final class HPixmaps {
 	private HPixmaps() {}
 
 	public static void load() {
-		Fi texturesDir = HVars.internalTree.child("other").child("textures");
-
-		white = new Pixmap(texturesDir.child("white.png"));
+		white = new Pixmap(HTextures.texturesDir.child("white.png"));
 
 		Fi itemsDir = HVars.internalTree.child("sprites").child("items");
 
@@ -173,7 +171,7 @@ public final class HPixmaps {
 	}
 
 	public interface ColorBool {
-		boolean get(int c);
+		boolean get(int color);
 	}
 
 	public interface Int2Color {

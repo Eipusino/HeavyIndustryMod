@@ -46,11 +46,11 @@ public final class InputOutput {
 	}
 
 	public static String getMD5(Fi file) {
-		//MessageDigest md;
+		MessageDigest md;
 		InputStream input = null;
 		byte[] buffer = new byte[8192];
 		try {
-			MessageDigest md = MessageDigest.getInstance("MD5");
+			md = MessageDigest.getInstance("MD5");
 			input = new FileInputStream(file.file());
 			int data;
 			while ((data = input.read(buffer)) != -1) {

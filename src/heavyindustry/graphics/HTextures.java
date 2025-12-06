@@ -2,7 +2,6 @@ package heavyindustry.graphics;
 
 import arc.Core;
 import arc.files.Fi;
-import arc.func.Cons;
 import arc.graphics.Pixmap;
 import arc.graphics.Texture;
 import arc.graphics.Texture.TextureFilter;
@@ -10,6 +9,8 @@ import arc.graphics.Texture.TextureWrap;
 import heavyindustry.HVars;
 
 public final class HTextures {
+	public static Fi texturesDir = HVars.internalTree.child("other").child("textures");
+
 	/// Blank image placeholder, used in Kotlin to prevent {@code lateinit var}.
 	public static Texture white;
 
@@ -20,13 +21,9 @@ public final class HTextures {
 	private HTextures() {}
 
 	public static void load() {
-		noise = new Texture(new Pixmap(Core.files.internal("sprites/noise.png")));
-		noise.setFilter(TextureFilter.linear);
-		noise.setWrap(TextureWrap.repeat);
+		noise = loadTexture(Core.files.internal("sprites/noise.png"), TextureFilter.linear, TextureWrap.repeat);
 
 		white = new Texture(HPixmaps.white);
-
-		Fi texturesDir = HVars.internalTree.child("other").child("textures");
 
 		smooth = loadTexture(texturesDir.child("smooth-noise.png"), TextureFilter.linear, TextureWrap.repeat);
 		particle = loadTexture(texturesDir.child("particle-noise.png"), TextureFilter.linear, TextureWrap.repeat);

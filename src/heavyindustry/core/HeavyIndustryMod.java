@@ -41,7 +41,7 @@ import heavyindustry.content.HTechTree;
 import heavyindustry.content.HUnitCommands;
 import heavyindustry.content.HUnitTypes;
 import heavyindustry.content.HWeathers;
-import heavyindustry.files.FileUtils;
+import heavyindustry.files.Files2;
 import heavyindustry.game.HTeam;
 import heavyindustry.gen.Entitys;
 import heavyindustry.graphics.HCacheLayer;
@@ -311,7 +311,7 @@ public final class HeavyIndustryMod extends Mod {
 		try {
 			Fi toFile = Vars.dataDirectory.child("tmp/heavy-industry/" + fileName + ".jar");
 
-			FileUtils.delete(toFile);
+			Files2.delete(toFile);
 
 			sourceFile.copyTo(toFile);
 			ClassLoader loader = Vars.platform.loadJar(toFile, mainLoader);

@@ -2,8 +2,8 @@ package heavyindustry.files;
 
 import arc.files.Fi;
 
-public final class FileUtils {
-	private FileUtils() {}
+public final class Files2 {
+	private Files2() {}
 
 	/**
 	 * Move the specified named subdirectories and their contents to the new subdirectories.
