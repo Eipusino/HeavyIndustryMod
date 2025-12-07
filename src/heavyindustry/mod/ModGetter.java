@@ -12,7 +12,7 @@ import arc.util.serialization.Jval;
 import mindustry.mod.Mod;
 
 public final class ModGetter {
-	static final String[] metaFiles = {"mod.json", "mod.hjson", "plugin.json", "plugin.hjson"};
+	public static final String[] metaFiles = {"mod.json", "mod.hjson", "plugin.json", "plugin.hjson"};
 
 	/** Mod folder location. */
 	public static final Fi modDirectory = Core.settings.getDataDirectory().child("mods");

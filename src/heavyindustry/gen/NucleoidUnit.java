@@ -26,8 +26,8 @@ import mindustry.type.UnitType;
 import static mindustry.Vars.headless;
 
 public class NucleoidUnit extends Unit2 implements Nucleoidc {
-	public float recentDamage = 0f;
-	public float reinforcementsReload = 0f;
+	public float recentDamage;
+	public float reinforcementsReload;
 
 	@Override
 	public int classId() {

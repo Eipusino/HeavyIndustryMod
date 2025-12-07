@@ -21,6 +21,8 @@ import java.util.Map;
 public final class HMusics {
 	static final Map<String, Music[]> musicSets = new CollectionObjectMap<>(String.class, Music[].class);
 
+	public static Fi musicsDir;// = HVars.internalTree.child("musics");
+
 	/// Don't let anyone instantiate this class.
 	private HMusics() {}
 
@@ -35,7 +37,7 @@ public final class HMusics {
 	}
 
 	public static Music load(String name) throws Exception {
-		Fi file = HVars.internalTree.child("musics").child(name);
+		Fi file = musicsDir.child(name);
 
 		if (file.exists()) return new Music(file);
 

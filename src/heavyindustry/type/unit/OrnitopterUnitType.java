@@ -44,7 +44,6 @@ public class OrnitopterUnitType extends UnitType2 {
 				float bladeScl = Draw.scl * blade.bladeSizeScl;
 				float shadeScl = Draw.scl * blade.shadeSizeScl;
 
-
 				if (blade.bladeRegion.found()) {
 					Draw.z(z + blade.layerOffset);
 					Draw.alpha(blade.blurRegion.found() ? 1 - (copter.bladeMoveSpeedScl() / 0.8f) : 1);
@@ -113,6 +112,7 @@ public class OrnitopterUnitType extends UnitType2 {
 	@Override
 	public void load() {
 		super.load();
+
 		for (Blade b : blades) {
 			b.load();
 		}

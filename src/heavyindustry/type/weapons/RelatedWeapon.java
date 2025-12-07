@@ -23,7 +23,7 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
 public class RelatedWeapon extends DataWeapon {
-	public static final RelatedAlt isFlying = new DefaultAlt(Core.bundle.get("infos.wenUnitIsFlying"), Unit::isFlying);
+	public static final RelatedAlt isFlying = new DefaultAlt(Core.bundle.get("infos.wen-unit-is-flying"), Unit::isFlying);
 	public static final RelatedAlt none = new DefaultAlt("", u -> false);
 
 	public ShootPattern alternativeShoot;

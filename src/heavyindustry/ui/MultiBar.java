@@ -14,11 +14,10 @@ import arc.scene.style.Drawable;
 import arc.struct.Seq;
 import arc.util.pooling.Pools;
 import heavyindustry.math.Mathm;
+import heavyindustry.util.Constant;
 import mindustry.gen.Tex;
 import mindustry.ui.Bar;
 import mindustry.ui.Fonts;
-
-import static heavyindustry.util.Constant.RUNNABLE_NOTHING;
 
 public class MultiBar extends Bar {
 	static final Rect scissor = new Rect();
@@ -108,7 +107,7 @@ public class MultiBar extends Bar {
 		public Color blinkColor = new Color();
 		public Floatp fraction;
 
-		Runnable runnable = RUNNABLE_NOTHING;
+		Runnable runnable = Constant.RUNNABLE_NOTHING;
 		float x, y, width, height, offset;
 
 		public BarPart(Color col, Floatp floatp) {

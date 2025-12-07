@@ -20,7 +20,7 @@
 
 + **Mod Version: 1.0.7-beta**
 + **Mod Type: Java**
-+ **Mindustry Version: 152.2**
++ **Mindustry Version: 152.3**
 + **Compatible Platform: Android, Desktop, macOS, Linux。.**
 
 ---

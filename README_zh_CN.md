@@ -18,7 +18,7 @@
 
 + **模组版本号: 1.0.7-beta**
 + **模组类型: Java**
-+ **Mindustry版本号: 151.1**
++ **Mindustry版本号: 151.3**
 + **兼容平台: Android, Desktop, macOS, Linux。**
 
 ---

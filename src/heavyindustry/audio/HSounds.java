@@ -10,6 +10,8 @@ import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.gen.Sounds;
 
 public final class HSounds {
+	public static Fi soundsDir = HVars.internalTree.child("sounds");
+
 	public static Sound ct1 = new Sound();
 	public static Sound dbz1 = new Sound();
 	public static Sound dd1 = new Sound();
@@ -124,7 +126,7 @@ public final class HSounds {
 	}
 
 	public static Sound load(String name) {
-		Fi file = HVars.internalTree.child("sounds").child(name);
+		Fi file = soundsDir.child(name);
 
 		if (file.exists()) {
 			return new Sound(file);

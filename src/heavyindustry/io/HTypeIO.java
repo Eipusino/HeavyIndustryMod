@@ -1,11 +1,9 @@
 package heavyindustry.io;
 
 import arc.math.geom.Point2;
-import arc.struct.Seq;
 import arc.util.Nullable;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.input.InputAggregator.TapResult;
 import heavyindustry.util.Objects2;
 import mindustry.Vars;
 import mindustry.content.TechTree.TechNode;
@@ -50,19 +48,6 @@ public final class HTypeIO {
 		return out;
 	}
 
-	public static void writeStrings(Writes write, Seq<String> array) {
-		write.i(array.size);
-		array.each(write::str);
-	}
-
-	public static Seq<String> readStrings(Reads read) {
-		int size = read.i();
-		Seq<String> out = new Seq<>(true, size, String.class);
-
-		for (int i = 0; i < size; i++) out.add(read.str());
-		return out;
-	}
-
 	public static void writeTechNode(Writes write, TechNode map) {
 		write.i(map.content.getContentType().ordinal());
 		write.s(map.content.id);
@@ -100,14 +85,6 @@ public final class HTypeIO {
 
 		for (int i = 0; i < size; i++) out[i] = prov.get(read.b());
 		return out;
-	}
-
-	public static void writeTaps(Writes write, Seq<TapResult> array) {
-		writeEnums(write, array.toArray(TapResult.class));
-	}
-
-	public static Seq<TapResult> readTaps(Reads read) {
-		return Seq.with(readEnums(read, ordinal -> TapResult.all[ordinal], TapResult.class));
 	}
 
 	public static void writeObject(Writes write, Serializable object) {

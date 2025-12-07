@@ -11,7 +11,6 @@ import heavyindustry.graphics.g2d.CutBatch;
 import heavyindustry.graphics.g2d.DevastationBatch;
 import heavyindustry.graphics.g2d.FragmentationBatch;
 import heavyindustry.graphics.g2d.VaporizeBatch;
-import heavyindustry.input.InputAggregator;
 import heavyindustry.mod.ModGetter;
 import heavyindustry.util.PlatformImpl;
 import mindustry.content.TechTree.TechNode;
@@ -53,8 +52,6 @@ public final class HVars {
 
 	/// jar internal navigation.
 	public static final InternalFileTree internalTree;
-
-	public static InputAggregator inputAggregator;
 
 	public static FragmentationBatch fragBatch;
 	public static CutBatch cutBatch;

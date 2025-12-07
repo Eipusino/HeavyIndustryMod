@@ -56,7 +56,6 @@ import heavyindustry.graphics.g2d.DevastationBatch;
 import heavyindustry.graphics.g2d.FragmentationBatch;
 import heavyindustry.graphics.g2d.RangeExtractor;
 import heavyindustry.graphics.g2d.VaporizeBatch;
-import heavyindustry.input.InputAggregator;
 import heavyindustry.mod.AdaptiveCoreDatabase;
 import heavyindustry.mod.HScripts;
 import heavyindustry.mod.ModUtils;
@@ -176,8 +175,6 @@ public final class HeavyIndustryMod extends Mod {
 					HVars.cutBatch = new CutBatch();
 					HVars.vaporBatch = new VaporizeBatch();
 					HVars.devasBatch = new DevastationBatch();
-
-					HVars.inputAggregator = new InputAggregator();
 				});
 			}
 		});

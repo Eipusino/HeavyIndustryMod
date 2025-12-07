@@ -1,6 +1,7 @@
 package heavyindustry.graphics;
 
 import arc.Core;
+import arc.files.Fi;
 import arc.graphics.Texture;
 import arc.graphics.g2d.TextureAtlas;
 import arc.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -8,11 +9,14 @@ import arc.struct.ObjectMap;
 import arc.struct.ObjectSet;
 import arc.struct.Seq;
 import arc.util.Log;
+import heavyindustry.HVars;
 import heavyindustry.util.Objects2;
 
 import java.lang.reflect.Field;
 
 public final class HRegions {
+	public static Fi spritesDir = HVars.internalTree.child("sprites");
+
 	public static AtlasRegion white;
 
 	public static ObjectSet<Texture> textures;

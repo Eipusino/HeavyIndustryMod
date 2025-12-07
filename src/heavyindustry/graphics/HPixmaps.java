@@ -12,7 +12,6 @@ import arc.graphics.gl.FileTextureData;
 import arc.graphics.gl.PixmapTextureData;
 import arc.math.Mathf;
 import arc.util.Log;
-import heavyindustry.HVars;
 
 import java.lang.reflect.Field;
 
@@ -27,7 +26,7 @@ public final class HPixmaps {
 	public static void load() {
 		white = new Pixmap(HTextures.texturesDir.child("white.png"));
 
-		Fi itemsDir = HVars.internalTree.child("sprites").child("items");
+		Fi itemsDir = HRegions.spritesDir.child("items");
 
 		bottleTop = new Pixmap(itemsDir.child("bottle.png"));
 		bottleBottom = new Pixmap(itemsDir.child("bottle-liquid.png"));
