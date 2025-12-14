@@ -7,6 +7,10 @@ import arc.util.Tmp;
 public class FillStripDrawable extends BaseStripDrawable {
 	public Color color, innerColor;
 
+	public FillStripDrawable(Color col) {
+		this(col, col);
+	}
+
 	public FillStripDrawable(Color col, Color innCol) {
 		color = col;
 		innerColor = innCol;

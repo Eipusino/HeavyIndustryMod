@@ -29,10 +29,10 @@ import static mindustry.content.UnitTypes.*;
 public final class HTechTree {
 	public static TechNode context = null;
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HTechTree() {}
 
-	/// Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}.
+	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
 		if (HVars.isPlugin) return;
 

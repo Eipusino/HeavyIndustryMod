@@ -1,12 +1,13 @@
 package heavyindustry.gen;
 
 import arc.math.geom.Vec2;
-import heavyindustry.util.CollectionList;
 import heavyindustry.util.ObjectFloatMap2;
 import mindustry.gen.Entityc;
 import mindustry.gen.Healthc;
 import mindustry.gen.Teamc;
 import mindustry.graphics.Trail;
+
+import java.util.List;
 
 public interface Pesterc extends Unitc2 {
 	Healthc findOwner(Entityc ent);
@@ -49,7 +50,7 @@ public interface Pesterc extends Unitc2 {
 
 	ObjectFloatMap2<Healthc> hatred();
 
-	CollectionList<Healthc> nextTargets();
+	List<Healthc> nextTargets();
 
 	Trail[] trails();
 
@@ -85,7 +86,7 @@ public interface Pesterc extends Unitc2 {
 
 	void hatred(ObjectFloatMap2<Healthc> value);
 
-	void nextTargets(CollectionList<Healthc> value);
+	void nextTargets(List<Healthc> value);
 
 	void trails(Trail[] value);
 }

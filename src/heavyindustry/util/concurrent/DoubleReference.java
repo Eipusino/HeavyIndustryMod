@@ -27,6 +27,6 @@ public class DoubleReference implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects2.hashCodeLong(Double.doubleToLongBits(element));
+		return Objects2.longToHash(Double.doubleToLongBits(element));
 	}
 }

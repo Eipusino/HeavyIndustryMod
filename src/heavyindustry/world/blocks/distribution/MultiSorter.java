@@ -6,7 +6,6 @@ import arc.graphics.g2d.TextureRegion;
 import arc.scene.style.TextureRegionDrawable;
 import arc.scene.ui.layout.Table;
 import arc.util.Eachable;
-import arc.util.Nullable;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import mindustry.entities.units.BuildPlan;
@@ -17,6 +16,7 @@ import mindustry.ui.Styles;
 import mindustry.world.Block;
 import mindustry.world.blocks.ItemSelection;
 import mindustry.world.meta.BlockGroup;
+import org.jetbrains.annotations.Nullable;
 
 import static mindustry.Vars.content;
 

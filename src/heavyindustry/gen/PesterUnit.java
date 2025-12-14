@@ -45,6 +45,8 @@ import mindustry.graphics.Trail;
 import mindustry.type.UnitType;
 import mindustry.world.meta.BlockGroup;
 
+import java.util.List;
+
 public class PesterUnit extends Unit2 implements Pesterc {
 	public static final ObjectIntMap2<Healthc> checked = new ObjectIntMap2<>(Healthc.class);
 
@@ -72,7 +74,7 @@ public class PesterUnit extends Unit2 implements Pesterc {
 	public transient float salvoReloadTarget = 0f;
 
 	public ObjectFloatMap2<Healthc> hatred = new ObjectFloatMap2<>(Healthc.class);
-	public CollectionList<Healthc> nextTargets = new CollectionList<>(Healthc.class);
+	public List<Healthc> nextTargets = new CollectionList<>(Healthc.class);
 
 	protected Trail[] trails = {};
 
@@ -226,7 +228,7 @@ public class PesterUnit extends Unit2 implements Pesterc {
 				}
 			}
 
-			if (nextTargets.any()) {
+			if (!nextTargets.isEmpty()) {
 				salvoReload += Time.delta * (1 + Mathf.num(isBoss) * reloadMultiplier);
 
 				if (salvoReload > put.salvoReload) {
@@ -254,7 +256,8 @@ public class PesterUnit extends Unit2 implements Pesterc {
 		float ex = Tmp.v1.x, ey = Tmp.v1.y;
 
 		int itr = 0;
-		for (Healthc hel : nextTargets) {
+		for (int i = 0; i < nextTargets.size(); i++) {
+			Healthc hel = nextTargets.get(i);
 			if (!hel.isValid()) continue;
 
 			tmpBuilding = null;
@@ -557,7 +560,7 @@ public class PesterUnit extends Unit2 implements Pesterc {
 	}
 
 	@Override
-	public CollectionList<Healthc> nextTargets() {
+	public List<Healthc> nextTargets() {
 		return nextTargets;
 	}
 
@@ -647,7 +650,7 @@ public class PesterUnit extends Unit2 implements Pesterc {
 	}
 
 	@Override
-	public void nextTargets(CollectionList<Healthc> value) {
+	public void nextTargets(List<Healthc> value) {
 		nextTargets = value;
 	}
 

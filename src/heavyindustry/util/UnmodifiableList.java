@@ -4,6 +4,7 @@ import arc.func.Cons;
 import arc.struct.Seq;
 import arc.util.Eachable;
 import heavyindustry.math.Mathm;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.AbstractList;
 import java.util.Arrays;
@@ -31,19 +32,19 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 	 * @see #with(E[])
 	 * @see #cpy(E[])
 	 */
-	public UnmodifiableList(E[] array) {
+	protected UnmodifiableList(E[] array) {
 		items = array;
 		size = array.length;
 	}
 
 	/** Directly use the given array. */
 	@SafeVarargs
-	public static <T> UnmodifiableList<T> with(T... array) {
+	public static <T> @Unmodifiable UnmodifiableList<T> with(T... array) {
 		return new UnmodifiableList<>(array);
 	}
 
 	/** Clone an array instead of directly applying the original one. */
-	public static <T> UnmodifiableList<T> cpy(T[] array) {
+	public static <T> @Unmodifiable UnmodifiableList<T> cpy(T[] array) {
 		return new UnmodifiableList<>(Arrays.copyOf(array, array.length));
 	}
 

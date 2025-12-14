@@ -2,6 +2,8 @@ package heavyindustry.util.concurrent.holder;
 
 import heavyindustry.util.Objects2;
 
+import java.util.Objects;
+
 public class ObjectBoolHolder<K> implements Cloneable {
 	public K key;
 	public boolean value;
@@ -22,12 +24,12 @@ public class ObjectBoolHolder<K> implements Cloneable {
 
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof ObjectBoolHolder<?> that && value == that.value && Objects2.equals(key, that.key);
+		return o instanceof ObjectBoolHolder<?> that && value == that.value && Objects.equals(key, that.key);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects2.hashCode(key) ^ Objects2.hashCodeBool(value);
+		return Objects.hashCode(key) ^ Objects2.boolToHash(value);
 	}
 
 	@Override

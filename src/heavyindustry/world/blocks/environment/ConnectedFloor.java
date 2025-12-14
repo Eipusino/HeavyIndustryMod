@@ -82,9 +82,4 @@ public class ConnectedFloor extends Floor {
 	public TextureRegion[] icons() {
 		return new TextureRegion[]{region};
 	}
-
-	@Override
-	public Floor asFloor() {
-		return this;
-	}
 }

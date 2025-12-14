@@ -16,7 +16,7 @@ public class ModInfo {
 		if (modFile instanceof ZipFi)
 			throw new IllegalArgumentException("given file is a zip file object, please use file object");
 		Fi modMeta;
-		modMeta = ModGetter.checkModFormat(modFile);
+		modMeta = ModGetter.getModFormat(modFile);
 		Jval info = Jval.read(modMeta.reader());
 		file = modFile;
 		name = info.get("name").asString();

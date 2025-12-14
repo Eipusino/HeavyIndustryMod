@@ -3,6 +3,7 @@ package heavyindustry.util.concurrent.holder;
 import heavyindustry.util.Objects2;
 
 import java.util.Map.Entry;
+import java.util.Objects;
 
 /** @since 1.0.7 */
 public class AtomicObjectHolder<K, V> implements Entry<K, V>, Cloneable {
@@ -40,12 +41,12 @@ public class AtomicObjectHolder<K, V> implements Entry<K, V>, Cloneable {
 
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof AtomicObjectHolder<?, ?> that && Objects2.equals(key, that.key) && Objects2.equals(value, that.value);
+		return o instanceof AtomicObjectHolder<?, ?> that && Objects.equals(key, that.key) && Objects.equals(value, that.value);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects2.hashCode(key) ^ Objects2.hashCode(value);
+		return Objects.hashCode(key) ^ Objects.hashCode(value);
 	}
 
 	@Override

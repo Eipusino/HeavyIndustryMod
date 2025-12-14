@@ -14,7 +14,6 @@ import arc.scene.ui.Image;
 import arc.scene.ui.layout.Stack;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
-import arc.util.Nullable;
 import arc.util.Scaling;
 import arc.util.Strings;
 import arc.util.Tmp;
@@ -208,7 +207,7 @@ public class JumpGate extends Block {
 		public float spawnWarmup;
 		public int recipeIndex;
 		public int spawnCount = 1;
-		public @Nullable Vec2 command = new Vec2(Float.NaN, Float.NaN);
+		public Vec2 command = new Vec2(Float.NaN, Float.NaN);
 
 		public ItemModule tmpItem = new ItemModule();
 		public Seq<Tile> tiles = new Seq<>(Tile.class);

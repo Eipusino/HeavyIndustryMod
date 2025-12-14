@@ -6,7 +6,7 @@ import arc.graphics.Gl;
 import arc.graphics.Pixmap.Format;
 import arc.graphics.Texture.TextureFilter;
 import arc.graphics.gl.FrameBufferCubemap;
-import arc.util.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A cubemap framebuffer that requests depth (and stencil) textures instead of renderbuffers, letting users sample from
@@ -56,13 +56,11 @@ public class DepthFrameBufferCubemap extends FrameBufferCubemap {
 		for (CubemapSide side : sides) Gl.framebufferTexture2D(Gl.framebuffer, attachment, side.glEnum, glHandle, 0);
 	}
 
-	@Nullable
-	public Cubemap getDepthTexture() {
+	public @Nullable Cubemap getDepthTexture() {
 		return hasDepth ? textureAttachments.get(1) : null;
 	}
 
-	@Nullable
-	public Cubemap getStencilTexture() {
+	public @Nullable Cubemap getStencilTexture() {
 		return hasStencil ? textureAttachments.get(hasDepth ? 2 : 1) : null;
 	}
 

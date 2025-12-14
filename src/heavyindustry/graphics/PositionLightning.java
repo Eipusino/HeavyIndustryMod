@@ -56,33 +56,33 @@ public final class PositionLightning {
 		hittable = false;
 	}};
 
-	/// Spawns Nothing at the hit point.
+	/** Spawns Nothing at the hit point. */
 	public static final Cons<Position> none = p -> {};
-	/// Lighting Effect Lifetime.
+	/** Lighting Effect Lifetime. */
 	public static final float lifetime = 20f;
-	/// Lighting Effect Default Width, apply it manually.
+	/** Lighting Effect Default Width, apply it manually. */
 	public static final float WIDTH = 2.5f;
-	/// Lighting Effect X-Rand.
+	/** Lighting Effect X-Rand. */
 	public static final float RANGE_RAND = 5f;
-	/// Lighting Effect Length Between Nodes.
+	/** Lighting Effect Length Between Nodes. */
 	public static final float ROT_DST = tilesize * 0.6f;
-	/// Used for range spawn, make the lightning more random and has smoother spacing.
+	/** Used for range spawn, make the lightning more random and has smoother spacing. */
 	public static float trueHitChance = 1;
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private PositionLightning() {}
 
-	/// [0, 1]
+	/** [0, 1] */
 	public static void setHitChance(float f) {
 		trueHitChance = f;
 	}
 
-	/// Must Hit
+	/** Must Hit */
 	public static void setHitChanceDef() {
 		trueHitChance = 1;
 	}
 
-	/// Lightningf's randX. Modify it if needed.
+	/** Lightningf's randX. Modify it if needed. */
 	static float getBoltRandomRange() {
 		return Mathf.random(1f, 7f);
 	}

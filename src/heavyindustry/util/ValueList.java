@@ -1,5 +1,7 @@
 package heavyindustry.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Iterator;
 
 public class ValueList extends ValueMap implements Iterable<ValueMap> {
@@ -43,7 +45,7 @@ public class ValueList extends ValueMap implements Iterable<ValueMap> {
 	}
 
 	@Override
-	public Iterator<ValueMap> iterator() {
+	public @NotNull Iterator<ValueMap> iterator() {
 		return list.iterator();
 	}
 
@@ -52,7 +54,7 @@ public class ValueList extends ValueMap implements Iterable<ValueMap> {
 	}
 
 	@Override
-	public ValueList copy() {
+	public @NotNull ValueList copy() {
 		try {
 			ValueList out = (ValueList) super.clone();
 			out.map = map.copy();

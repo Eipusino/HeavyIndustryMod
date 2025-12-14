@@ -1,8 +1,7 @@
 package heavyindustry.util.concurrent.holder;
 
-import heavyindustry.util.Objects2;
-
 import java.util.Map.Entry;
+import java.util.Objects;
 
 /**
  * An immutable container for a key and a value, suitable for use
@@ -92,12 +91,12 @@ public class ObjectHolder<K, V> implements Entry<K, V>, Cloneable {
 	 */
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof Entry<?, ?> that && Objects2.equals(key, that.getKey()) && Objects2.equals(value, that.getValue());
+		return o instanceof Entry<?, ?> that && Objects.equals(key, that.getKey()) && Objects.equals(value, that.getValue());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects2.hashCode(key) ^ Objects2.hashCode(value);
+		return Objects.hashCode(key) ^ Objects.hashCode(value);
 	}
 
 	/**

@@ -25,7 +25,6 @@ import arc.struct.IntSeq;
 import arc.struct.IntSet;
 import arc.struct.Seq;
 import arc.util.Log;
-import arc.util.Nullable;
 import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.pooling.Pool;
@@ -35,6 +34,7 @@ import heavyindustry.content.HFx;
 import heavyindustry.entities.HEntity.LineHitHandler;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.BoolGrid;
+import heavyindustry.util.CollectionList;
 import heavyindustry.util.ValueMap;
 import mindustry.Vars;
 import mindustry.ai.types.MissileAI;
@@ -57,15 +57,16 @@ import mindustry.gen.Teamc;
 import mindustry.gen.Unit;
 import mindustry.type.StatusEffect;
 import mindustry.world.Tile;
+import org.jetbrains.annotations.Nullable;
 
 public final class HDamage {
-	public static final Seq<Unit> list = new Seq<>(Unit.class);
+	public static final CollectionList<Unit> list = new CollectionList<>(Unit.class);
 
 	static final UnitDamageEvent bulletDamageEvent = new UnitDamageEvent();
 	static final Rect rect = new Rect(), rectAlt = new Rect(), hitrect = new Rect();
 	static final Vec2 vec = new Vec2(), vec2 = new Vec2(), vec3 = new Vec2(), seg1 = new Vec2(), seg2 = new Vec2();
-	static final Seq<Building> builds = new Seq<>(Building.class);
-	static final Seq<Unit> units = new Seq<>(Unit.class);
+	static final CollectionList<Building> builds = new CollectionList<>(Building.class);
+	static final CollectionList<Unit> units = new CollectionList<>(Unit.class);
 	static final IntSet collidedBlocks = new IntSet();
 	static final IntFloatMap damages = new IntFloatMap();
 	static final Seq<Collided> collided = new Seq<>(Collided.class);
@@ -73,7 +74,7 @@ public final class HDamage {
 	static final FloatSeq distances = new FloatSeq();
 	static final BoolGrid collideLineCollided = new BoolGrid();
 	static final IntSeq lineCast = new IntSeq(), lineCastNext = new IntSeq();
-	static final Seq<Hit> hitEffects = new Seq<>(Hit.class);
+	static final CollectionList<Hit> hitEffects = new CollectionList<>(Hit.class);
 
 	static Tile furthest;
 	static Building tmpBuild;
@@ -84,16 +85,16 @@ public final class HDamage {
 	static float cdist;
 	static int idx;
 	static boolean hit, hit2;
-	static final Seq<Hit> hseq = new Seq<>(Hit.class);
+	static final CollectionList<Hit> hseq = new CollectionList<>(Hit.class);
 	static final BasicPool<Hit> hPool = new BasicPool<>(Hit::new);
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HDamage() {}
 
 	public static void chain(Position origin, @Nullable Position targetPos, Team team, Unit current, IntSeq collided, Sound hitSound, Effect hitEffect, float power, float initialPower, float width, float distanceDamageFalloff, float pierceDamageFactor, int branches, float segmentLength, float arc, Color color) {
 		current.damage(power);
 		hitSound.at(current.x, current.y, Mathf.random(0.8f, 1.1f));
-		//Scales down width based on percent of power left
+		// Scales down width based on percent of power left
 		float w = width * power / (initialPower);
 
 		HFx.chainLightning.at(current.x, current.y, 0, color, new HFx.VisualLightningHolder() {
@@ -146,7 +147,8 @@ public final class HDamage {
 				if (dst > effectiveRange) break;
 				list.add(unit);
 			}
-			if (list.size == 0) return;
+			if (list.isEmpty()) return;
+
 			float numberMultiplier = 1.0f / list.size;
 
 			for (Unit u : list) {

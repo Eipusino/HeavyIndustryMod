@@ -9,6 +9,7 @@ import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.concurrent.holder.LongHolder;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -640,7 +641,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 	}
 
 	@Override
-	public Iterator<LongHolder<V>> iterator() {
+	public @NotNull Iterator<LongHolder<V>> iterator() {
 		return entries();
 	}
 
@@ -813,7 +814,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		}
 
 		@Override
-		public Iterator<LongHolder<V>> iterator() {
+		public @NotNull Iterator<LongHolder<V>> iterator() {
 			return this;
 		}
 	}
@@ -840,7 +841,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		}
 
 		@Override
-		public Iterator<V> iterator() {
+		public @NotNull Iterator<V> iterator() {
 			return this;
 		}
 

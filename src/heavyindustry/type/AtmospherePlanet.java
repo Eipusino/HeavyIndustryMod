@@ -9,7 +9,6 @@ import arc.graphics.g3d.Camera3D;
 import arc.graphics.gl.FrameBuffer;
 import arc.math.geom.Mat3D;
 import arc.math.geom.Vec3;
-import arc.util.Nullable;
 import arc.util.Tmp;
 import heavyindustry.graphics.HShaders;
 import mindustry.Vars;
@@ -19,6 +18,7 @@ import mindustry.graphics.g3d.HexMesher;
 import mindustry.graphics.g3d.MeshBuilder;
 import mindustry.graphics.g3d.PlanetParams;
 import mindustry.type.Planet;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Just a regular planet, but with a fixed atmosphere shader at the little cost of performance.

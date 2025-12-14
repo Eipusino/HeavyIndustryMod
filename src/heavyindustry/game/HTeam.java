@@ -4,6 +4,7 @@ import arc.graphics.Color;
 import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.gen.Unit;
+import org.jetbrains.annotations.ApiStatus.ScheduledForRemoval;
 
 public final class HTeam {
 	public static final Team none;
@@ -12,7 +13,7 @@ public final class HTeam {
 		none = Team.get(255);
 	}
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HTeam() {}
 
 	public static void load() {
@@ -20,6 +21,7 @@ public final class HTeam {
 	}
 
 	@Deprecated
+	@ScheduledForRemoval
 	public static void team(Building build, Team team) {
 		build.team = team;
 	}

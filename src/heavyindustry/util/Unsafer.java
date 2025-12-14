@@ -40,10 +40,10 @@ import static heavyindustry.util.Objects2.requireNonNullInstance;
  * @since 1.0.7
  */
 public final class Unsafer {
-	/// Initialize in libs/Impl.jar in the mod resource package.
+	/** Initialize in libs/Impl.jar in the mod resource package. */
 	public static Unsafe unsafe;
 
-	/// Do not call.
+	/** Do not call. */
 	private Unsafer() {}
 
 	public static <T> T getObject(Class<?> type, String name, Object object) {

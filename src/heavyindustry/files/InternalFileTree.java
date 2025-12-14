@@ -4,7 +4,9 @@ import arc.assets.loaders.FileHandleResolver;
 import arc.files.Fi;
 import arc.files.ZipFi;
 import arc.util.OS;
-import heavyindustry.util.Objects2;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * Use for jar internal navigation.
@@ -18,10 +20,10 @@ public class InternalFileTree implements FileHandleResolver {
 	public final Fi file;
 
 	/** @param owner navigation anchor */
-	public InternalFileTree(Class<?> owner) {
+	public InternalFileTree(@NotNull Class<?> owner) {
 		anchorClass = owner;
 
-		String classPath = Objects2.requireNonNull(anchorClass.getResource(""), "Unable to retrieve class resource.").getFile().replaceAll("%20", " ");
+		String classPath = Objects.requireNonNull(anchorClass.getResource(""), "Unable to retrieve class resource.").getFile().replaceAll("%20", " ");
 		classPath = classPath.substring(classPath.indexOf(":") + 2);
 		String jarPath = (OS.isLinux ? "/" : "") + classPath.substring(0, classPath.indexOf("!"));
 

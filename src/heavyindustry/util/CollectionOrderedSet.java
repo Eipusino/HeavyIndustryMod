@@ -1,5 +1,7 @@
 package heavyindustry.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.NoSuchElementException;
 
 /**
@@ -17,25 +19,25 @@ public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
 
 	public CollectionOrderedSet(Class<?> type) {
 		super(type);
-		setSet(type, 16);
+		setList(type, 16);
 	}
 
 	public CollectionOrderedSet(Class<?> type, int initialCapacity) {
 		super(type, initialCapacity);
-		setSet(type, initialCapacity);
+		setList(type, initialCapacity);
 	}
 
 	public CollectionOrderedSet(Class<?> type, int initialCapacity, float loadFactor) {
 		super(type, initialCapacity, loadFactor);
-		setSet(type, initialCapacity);
+		setList(type, initialCapacity);
 	}
 
 	public CollectionOrderedSet(CollectionObjectSet<? extends E> set) {
 		super(set);
-		setSet(set.keyComponentType, set.capacity);
+		setList(set.keyComponentType, set.capacity);
 	}
 
-	protected void setSet(Class<?> keyType, int capacity) {
+	protected void setList(Class<?> keyType, int capacity) {
 		orderedItems = new CollectionList<>(true, capacity, keyType);
 	}
 
@@ -92,7 +94,7 @@ public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
 	}
 
 	@Override
-	public Iter iterator() {
+	public @NotNull Iter iterator() {
 		if (iterator1 == null) iterator1 = new OrderedIter();
 
 		if (iterator1.done) {

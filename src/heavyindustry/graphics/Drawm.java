@@ -23,7 +23,7 @@ import mindustry.world.Block;
 public final class Drawm {
 	private static final Vec2 vec1 = new Vec2(), vec2 = new Vec2(), vec3 = new Vec2(), vec4 = new Vec2();
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private Drawm() {}
 
 	/** Draws an ellipse. */

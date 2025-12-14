@@ -4,6 +4,7 @@ import arc.func.Floatc2;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
 import mindustry.world.Tile;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -57,7 +58,7 @@ public final class DirEdges {
 	 * @param size	  The size of the block.
 	 * @param direction Direction, integer, top left and bottom right order are 0 1 2 3, modulo.
 	 */
-	public static Point2[] get(int size, int direction) {
+	public static @NotNull Point2 @NotNull [] get(int size, int direction) {
 		if (size < 0 || size > maxBlockSize)
 			throw new IllegalArgumentException("Block size must be between 0 and " + maxBlockSize);
 
@@ -70,7 +71,7 @@ public final class DirEdges {
 	 * @param size	  The size of the block.
 	 * @param direction Direction, integer, take 0 on the right, add 1 clockwise in sequence, take the corner position.
 	 */
-	public static Point2[] get8(int size, int direction) {
+	public static @NotNull Point2 @NotNull [] get8(int size, int direction) {
 		if (size < 0 || size > maxBlockSize)
 			throw new IllegalArgumentException("Block size must be between 0 and " + maxBlockSize);
 

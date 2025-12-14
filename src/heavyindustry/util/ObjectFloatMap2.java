@@ -27,7 +27,7 @@ import static heavyindustry.util.Constant.PRIME3;
  * @author Nathan Sweet
  * @author Eipusino
  */
-public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eachable<ObjectFloatHolder<K>> {
+public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eachable<ObjectFloatHolder<K>>, Cloneable {
 	public int size;
 
 	public final Class<?> keyComponentType;

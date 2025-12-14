@@ -1,12 +1,12 @@
 package heavyindustry.gen;
 
-import arc.util.Nullable;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import mindustry.gen.Building;
 import mindustry.gen.BuildingTetherc;
 import mindustry.gen.Call;
 import mindustry.io.TypeIO;
+import org.jetbrains.annotations.Nullable;
 
 public class BuildingTetherUnit2 extends Unit2 implements BuildingTetherc {
 	public @Nullable Building building;
@@ -26,7 +26,7 @@ public class BuildingTetherUnit2 extends Unit2 implements BuildingTetherc {
 	}
 
 	@Override
-	public Building building() {
+	public @Nullable Building building() {
 		return building;
 	}
 

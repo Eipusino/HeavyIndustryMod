@@ -17,14 +17,17 @@ import arc.func.Cons;
 import arc.func.ConsT;
 import arc.func.Prov;
 import arc.util.Log;
-import arc.util.Nullable;
 import arc.util.OS;
 import heavyindustry.HVars;
 import heavyindustry.func.ProvT;
 import heavyindustry.func.RunT;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Objects;
 
 /**
  * A utility assembly for objects.
@@ -35,63 +38,20 @@ import java.lang.reflect.Modifier;
 public final class Objects2 {
 	private Objects2() {}
 
-	public static boolean equals(Object a, Object b) {
-		return a == b || a != null && a.equals(b);
-	}
-
+	@Contract(value = "null, null -> false; null, !null -> true", pure = true)
 	public static boolean unequals(Object a, Object b) {
 		return a == null ? b != null : !a.equals(b);
-	}
-
-	public static int hashCode(Object obj) {
-		return obj == null ? 0 : obj.hashCode();
 	}
 
 	// To prevent JS from being unable to match methods, it is necessary to distinguish them.
 
 	// 'Boolean.hashCode(boolean)' may not be compatible with Android.
-	public static int hashCodeBool(boolean value) {
+	public static int boolToHash(boolean value) {
 		return value ? 1231 : 1237;
 	}
 
-	public static int hashCodeLong(long value) {
+	public static int longToHash(long value) {
 		return (int) (value ^ (value >>> 32));
-	}
-
-	public static int hashCodes(Object... values) {
-		if (values == null) return 0;
-
-		int result = 1;
-
-		for (Object element : values) {
-			result = 31 * result + hashCode(element);
-		}
-
-		return result;
-	}
-
-	public static int hashCodeBools(boolean... values) {
-		if (values == null) return 0;
-
-		int result = 1;
-
-		for (boolean element : values) {
-			result = 31 * result + hashCodeBool(element);
-		}
-
-		return result;
-	}
-
-	public static int hashCodeLongs(long... values) {
-		if (values == null) return 0;
-
-		int result = 1;
-
-		for (long element : values) {
-			result = 31 * result + hashCodeLong(element);
-		}
-
-		return result;
 	}
 
 	public static int asInt(Object obj, int def) {
@@ -103,113 +63,19 @@ public final class Objects2 {
 	}
 
 	/** Used to optimize code conciseness in specific situations. */
-	public static <T> T requireInstance(Class<?> type, T obj) {
+	@Contract(value = "_, _ -> param2", pure = true)
+	public static <T> T requireInstance(@NotNull Class<?> type, T obj) {
 		if (obj == null || type.isInstance(obj))
 			return obj;
 		throw new IllegalArgumentException("obj cannot be casted to " + type.getName());
 	}
 
 	/** Used to optimize code conciseness in specific situations. */
-	public static <T> T requireNonNullInstance(Class<?> type, T obj) {
+	@Contract(value = "_, null -> fail; _, _ -> param2", pure = true)
+	public static <T> @NotNull T requireNonNullInstance(@NotNull Class<?> type, T obj) {
 		if (type.isInstance(obj))
 			return obj;
 		throw new IllegalArgumentException("obj is not an instance of " + type.getName());
-	}
-
-	/**
-	 * Checks that the specified object reference is not {@code null}. This
-	 * method is designed primarily for doing parameter validation in methods
-	 * and constructors, as demonstrated below:
-	 * <blockquote><pre>
-	 * public Foo(Bar bar) {
-	 *     this.bar = Objects2.requireNonNull(bar);
-	 * }
-	 * </pre></blockquote>
-	 *
-	 * @param obj the object reference to check for nullity
-	 * @param <T> the type of the reference
-	 * @return {@code obj} if not {@code null}
-	 * @throws NullPointerException if {@code obj} is {@code null}
-	 */
-	public static <T> T requireNonNull(T obj) {
-		if (obj == null)
-			throw new NullPointerException();
-		return obj;
-	}
-
-	/**
-	 * Checks that the specified object reference is not {@code null} and
-	 * throws a customized {@link NullPointerException} if it is. This method
-	 * is designed primarily for doing parameter validation in methods and
-	 * constructors with multiple parameters, as demonstrated below:
-	 * <blockquote><pre>
-	 * public Foo(Bar bar, Baz baz) {
-	 *     this.bar = Objects2.requireNonNull(bar, "bar must not be null");
-	 *     this.baz = Objects2.requireNonNull(baz, "baz must not be null");
-	 * }
-	 * </pre></blockquote>
-	 *
-	 * @param obj     the object reference to check for nullity
-	 * @param message detail message to be used in the event that a {@code
-	 *                NullPointerException} is thrown
-	 * @param <T>     the type of the reference
-	 * @return {@code obj} if not {@code null}
-	 * @throws NullPointerException if {@code obj} is {@code null}
-	 */
-	public static <T> T requireNonNull(T obj, String message) {
-		if (obj == null)
-			throw new NullPointerException(message);
-		return obj;
-	}
-
-	/**
-	 * Returns {@code true} if the provided reference is {@code null} otherwise
-	 * returns {@code false}.
-	 *
-	 * @param obj a reference to be checked against {@code null}
-	 * @return {@code true} if the provided reference is {@code null} otherwise
-	 * {@code false}
-	 * @apiNote This method exists to be used as a
-	 * {@link arc.func.Boolf}, {@code filter(Objects2::isNull)}
-	 * @see arc.func.Boolf
-	 * @since 1.0.8
-	 */
-	public static boolean isNull(Object obj) {
-		return obj == null;
-	}
-
-	/**
-	 * Returns {@code true} if the provided reference is non-{@code null}
-	 * otherwise returns {@code false}.
-	 *
-	 * @param obj a reference to be checked against {@code null}
-	 * @return {@code true} if the provided reference is non-{@code null}
-	 * otherwise {@code false}
-	 * @apiNote This method exists to be used as a
-	 * {@link arc.func.Boolf}, {@code filter(Objects2::nonNull)}
-	 * @see arc.func.Boolf
-	 * @since 1.0.8
-	 */
-	public static boolean nonNull(Object obj) {
-		return obj != null;
-	}
-
-	/**
-	 * Returns the first argument if it is non-{@code null} and
-	 * otherwise returns the non-{@code null} second argument.
-	 *
-	 * @param obj        an object
-	 * @param defaultObj a non-{@code null} object to return if the first argument
-	 *                   is {@code null}
-	 * @param <T>        the type of the reference
-	 * @return the first argument if it is non-{@code null} and
-	 * otherwise the second argument if it is non-{@code null}
-	 * @throws NullPointerException if both {@code obj} is null and
-	 *                              {@code defaultObj} is {@code null}
-	 * @since 1.0.8
-	 */
-	public static <T> T requireNonNullElse(T obj, T defaultObj) {
-		return (obj != null) ? obj : requireNonNull(defaultObj, "defaultObj");
 	}
 
 	/**
@@ -227,16 +93,17 @@ public final class Objects2 {
 	 *                              the {@code supplier.get()} value is {@code null}
 	 * @since 1.0.8
 	 */
-	public static <T> T requireNonNullElseGet(T obj, Prov<? extends T> supplier) {
+	@Contract(value = "!null, _ -> param1; null, _ -> !null", pure = true)
+	public static <T> @NotNull T requireNonNullElseGet(@Nullable T obj, Prov<? extends T> supplier) {
 		return (obj != null) ? obj
-				: requireNonNull(requireNonNull(supplier, "supplier").get(), "supplier.get()");
+				: Objects.requireNonNull(Objects.requireNonNull(supplier, "supplier").get(), "supplier.get()");
 	}
 
 	/**
 	 * Checks that the specified object reference is not {@code null} and
 	 * throws a customized {@link NullPointerException} if it is.
 	 *
-	 * <p>Unlike the method {@link #requireNonNull(Object, String)},
+	 * <p>Unlike the method {@link Objects#requireNonNull(Object, String)},
 	 * this method allows creation of the message to be deferred until
 	 * after the null check is made. While this may confer a
 	 * performance advantage in the non-null case, when deciding to
@@ -252,24 +119,21 @@ public final class Objects2 {
 	 * @throws NullPointerException if {@code obj} is {@code null}
 	 * @since 1.0.8
 	 */
-	public static <T> T requireNonNull(T obj, Prov<String> messageSupplier) {
+	@Contract(value = "null, _ -> fail; _, _ -> param1")
+	public static <T> @NotNull T requireNonNull(T obj, Prov<String> messageSupplier) {
 		if (obj == null)
 			throw new NullPointerException(messageSupplier == null ?
 					null : messageSupplier.get());
 		return obj;
 	}
 
-	/// Used for Kotlin.
+	/** Used for Kotlin. */
+	@Contract(value = "_ -> param1", pure = true)
 	public static <T> T get(T t) {
 		return t;
 	}
 
-	/// Used for Kotlin.
-	@Nullable
-	public static <T> T getNull() {
-		return null;
-	}
-
+	@Contract(value = "_, _ -> param1")
 	public static <T> T apply(T obj, Cons<T> cons) {
 		cons.get(obj);
 		return obj;
@@ -347,11 +211,12 @@ public final class Objects2 {
 	 * <br>Such is the way of Java...
 	 */
 	@SuppressWarnings("unchecked")
+	@Contract(value = "_ -> fail")
 	public static <T, E extends Throwable> T thrower(Throwable err) throws E {
 		throw (E) err;
 	}
 
-	public static String toString(Object object) {
+	public static String toString(@Nullable Object object) {
 		return toString(object, true);
 	}
 
@@ -364,7 +229,7 @@ public final class Objects2 {
 	 *
 	 * @param last Should the fields of the super class be retrieved.
 	 */
-	public static String toString(Object object, boolean last) {
+	public static String toString(@Nullable Object object, boolean last) {
 		if (object == null) return "null";
 
 		Class<?> type = object.getClass();

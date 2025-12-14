@@ -1,12 +1,12 @@
 package heavyindustry.world.blocks.defense;
 
-import arc.util.Nullable;
 import mindustry.content.UnitTypes;
 import mindustry.gen.BlockUnitc;
 import mindustry.gen.Bullet;
 import mindustry.gen.Unit;
 import mindustry.world.blocks.ControlBlock;
 import mindustry.world.blocks.defense.Wall;
+import org.jetbrains.annotations.Nullable;
 
 public class IndestructibleWall extends Wall {
 	public IndestructibleWall(String name) {

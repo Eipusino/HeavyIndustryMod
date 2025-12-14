@@ -57,7 +57,8 @@ public abstract class CommandableBlock extends Block {
 	public float reloadTime = 60;
 	public float configureChargeTime = 60;
 
-	protected @NoPatch int commandPos = -1;
+	@NoPatch
+	protected int commandPos = -1;
 
 	public CommandableBlock(String name) {
 		super(name);

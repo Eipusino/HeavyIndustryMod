@@ -1,6 +1,8 @@
 package heavyindustry.files;
 
 import arc.files.Fi;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 public final class Files2 {
 	private Files2() {}
@@ -15,7 +17,8 @@ public final class Files2 {
 	 * @return Return a new subdirectories object, regardless of whether the move operation is successful
 	 *         or not
 	 */
-	public static Fi child(Fi parent, String newName, String... oldNames) {
+	@Contract(pure = true)
+	public static @NotNull Fi child(Fi parent, String newName, String... oldNames) {
 		// Create or retrieve new subdirectories
 		Fi child = parent.child(newName);
 

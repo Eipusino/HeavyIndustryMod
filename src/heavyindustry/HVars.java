@@ -1,6 +1,8 @@
 package heavyindustry;
 
+import arc.files.Fi;
 import arc.struct.Seq;
+import arc.util.Log;
 import arc.util.serialization.Jval;
 import heavyindustry.annotations.Annotations.ListClasses;
 import heavyindustry.annotations.Annotations.ListPackages;
@@ -22,35 +24,35 @@ import mindustry.type.Sector;
  * @since 1.0.6
  */
 public final class HVars {
-	/// Commonly used static read-only String. Do not change unless you know what you're doing.
+	/** Commonly used static read-only String. Do not change unless you know what you're doing. */
 	public static final String MOD_NAME = "heavy-industry";
 	public static final String MOD_PREFIX = MOD_NAME + '-';
-	/// The author of this mod.
+	/** The author of this mod. */
 	public static final String AUTHOR = "Eipusino";
-	/// The GitHub address of this mod.
+	/** The GitHub address of this mod. */
 	public static final String LINK_GIT_HUB = "https://github.com/Eipusino/HeavyIndustryMod";
 
-	/// Lists all the mod's classes by their canonical names. Generated at compile-time.
+	/** Lists all the mod's classes by their canonical names. Generated at compile-time. */
 	public static final @ListClasses String[] classes = {};
-	/// Lists all the mod's packages by their canonical names. Generated at compile-time.
+	/** Lists all the mod's packages by their canonical names. Generated at compile-time. */
 	public static final @ListPackages String[] packages = {};
 
 	public static PlatformImpl platformImpl;
 
-	/// Is {@code sun.misc.Unsafe} class available.
+	/** Is {@code sun.misc.Unsafe} class available. */
 	public static boolean hasUnsafe = false;
-	/// Is {@code jdk.internal.misc.Unsafe} class available.
+	/** Is {@code jdk.internal.misc.Unsafe} class available. */
 	public static boolean hasJDKUnsafe = false;
-	/// Is {@code java.lang.invoke.MethodHandles.Lookup.IMPL_LOOKUP} instance available.
+	/** Is {@code java.lang.invoke.MethodHandles.Lookup.IMPL_LOOKUP} instance available. */
 	public static boolean hasImplLookup = false;
 
-	/// Link {@code mod.json} of this mod.
+	/** Link {@code mod.json} of this mod. */
 	public static Jval info;
 
-	/// Whether the mod is running in hidden mode.
+	/** Whether the mod is running in hidden mode. */
 	public static boolean isPlugin;
 
-	/// jar internal navigation.
+	/** jar internal navigation. */
 	public static final InternalFileTree internalTree;
 
 	public static FragmentationBatch fragBatch;
@@ -69,13 +71,16 @@ public final class HVars {
 	static {
 		internalTree = new InternalFileTree(HeavyIndustryMod.class);
 
-		ModGetter.checkModFormat(internalTree.root, file -> {
+		try {
+			Fi file = ModGetter.getModFormat(internalTree.root);
 			info = Jval.read(file.reader());
 			isPlugin = info.getBool("hidden", false);
-		});
+		} catch (Exception e) {
+			Log.err(e);
+		}
 	}
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HVars() {}
 
 	/**

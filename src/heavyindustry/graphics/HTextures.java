@@ -11,13 +11,13 @@ import heavyindustry.HVars;
 public final class HTextures {
 	public static Fi texturesDir = HVars.internalTree.child("other").child("textures");
 
-	/// Blank image placeholder, used in Kotlin to prevent {@code lateinit var}.
+	/** Blank image placeholder, used in Kotlin to prevent {@code lateinit var}. */
 	public static Texture white;
 
 	public static Texture noise;
 	public static Texture smooth, particle, darker, gaussian, median, armor;
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HTextures() {}
 
 	public static void load() {

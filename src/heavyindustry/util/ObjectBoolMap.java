@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 import static heavyindustry.util.Constant.PRIME2;
 import static heavyindustry.util.Constant.PRIME3;
 
-public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable<ObjectBoolHolder<K>> {
+public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable<ObjectBoolHolder<K>>, Cloneable {
 	public int size;
 
 	public final Class<?> keyComponentType;
@@ -500,7 +500,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 				h += key.hashCode() * 31;
 
 				boolean value = valueTable[i];
-				h += Objects2.hashCodeBool(value);
+				h += Objects2.boolToHash(value);
 			}
 		}
 		return h;

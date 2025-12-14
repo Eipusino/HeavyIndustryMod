@@ -49,15 +49,14 @@ import arc.struct.OrderedMap;
 import arc.struct.Seq;
 import arc.util.Align;
 import arc.util.Log;
-import arc.util.Nullable;
 import arc.util.Scaling;
 import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.HVars;
-import heavyindustry.graphics.Blur;
 import heavyindustry.ui.dialogs.GameDataDialog;
 import heavyindustry.ui.dialogs.PowerGraphInfoDialog;
+import heavyindustry.util.Constant;
 import mindustry.Vars;
 import mindustry.core.UI;
 import mindustry.core.World;
@@ -75,6 +74,9 @@ import mindustry.world.meta.StatCat;
 import mindustry.world.meta.StatValue;
 import mindustry.world.meta.Stats;
 import mindustry.world.modules.ItemModule;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 
@@ -83,8 +85,6 @@ public final class Elements {
 
 	public static PowerGraphInfoDialog powerInfoDialog;
 	public static GameDataDialog gameDataDialog;
-
-	public static Blur uiBlur;
 
 	static final Vec2 ctrlVec = new Vec2();
 	static final Vec2 point = new Vec2(-1, -1);
@@ -95,10 +95,10 @@ public final class Elements {
 
 	static Field clickListenerField;
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private Elements() {}
 
-	public static String judge(boolean value) {
+	public static @NotNull String judge(boolean value) {
 		return value ? "[heal]" + Core.bundle.get("yes") + "[]" : "[#ff7b69]" + Core.bundle.get("no") + "[]";
 	}
 
@@ -108,8 +108,9 @@ public final class Elements {
 		gameDataDialog = new GameDataDialog();
 	}
 
-	/// Based on {@link UI#formatAmount(long)} but for floats.
-	public static String formatAmount(float num) {
+	/** Based on {@link UI#formatAmount(long)} but for floats. */
+	@Contract(pure = true)
+	public static @NotNull String formatAmount(float num) {
 		if (Float.isNaN(num)) return "NaN";
 		if (num == Float.MAX_VALUE) return "Infinite";
 		if (num == Float.MIN_VALUE) return "-Infinite";
@@ -127,8 +128,9 @@ public final class Elements {
 		}
 	}
 
-	/// Similar to {@link UI#formatAmount(long)} but for floats.
-	public static String round(float num) {
+	/** Similar to {@link UI#formatAmount(long)} but for floats. */
+	@Contract(pure = true)
+	public static @NotNull String round(float num) {
 		if (Float.isNaN(num)) return "NaN";
 		if (num == Float.MAX_VALUE) return "Infinite";
 		if (num == Float.MIN_VALUE) return "-Infinite";
@@ -145,11 +147,11 @@ public final class Elements {
 	}
 
 	public static void number(Table main, String text, Floatc cons, Floatp prov) {
-		number(main, text, false, cons, prov, () -> true, 0, Float.MAX_VALUE);
+		number(main, text, false, cons, prov, Constant.BOOLP_TRUE, 0, Float.MAX_VALUE);
 	}
 
 	public static void number(Table main, String text, Floatc cons, Floatp prov, float min, float max) {
-		number(main, text, false, cons, prov, () -> true, min, max);
+		number(main, text, false, cons, prov, Constant.BOOLP_TRUE, min, max);
 	}
 
 	public static void number(Table main, String text, boolean integer, Floatc cons, Floatp prov, Boolp condition) {
@@ -161,7 +163,7 @@ public final class Elements {
 	}
 
 	public static void number(Table main, String text, Intc cons, Intp prov, int min, int max) {
-		number(main, text, cons, prov, () -> true, min, max);
+		number(main, text, cons, prov, Constant.BOOLP_TRUE, min, max);
 	}
 
 	public static void number(Table main, String text, boolean integer, Floatc cons, Floatp prov, Boolp condition, float min, float max) {
@@ -189,7 +191,8 @@ public final class Elements {
 		}).padTop(0).row();
 	}
 
-	public static ImageButton selfStyleImageButton(Drawable imageUp, ImageButtonStyle is, Runnable listener) {
+	@Contract(value = "_, _, _ -> new")
+	public static @NotNull ImageButton selfStyleImageButton(Drawable imageUp, ImageButtonStyle is, @Nullable Runnable listener) {
 		ImageButton button = new ImageButton(new ImageButtonStyle(null, null, null, imageUp, null, null));
 		ImageButtonStyle style = new ImageButtonStyle(is);
 		style.imageUp = imageUp;
@@ -209,12 +212,13 @@ public final class Elements {
 		return Vars.spawner.countGroundSpawns();
 	}
 
-	public static Element[] sliderSet(Table t, Cons<String> changed, Prov<String> fieldText, TextFieldFilter filter, TextFieldValidator valid, float min, float max, float step, float def, SliderChanged sliderChanged, String title, String tooltip) {
+	@Contract(value = "_, _, _, _, _, _, _, _, _, _, _, _ -> new")
+	public static @NotNull Element @NotNull [] sliderSet(Table table, Cons<String> changed, Prov<String> fieldText, TextFieldFilter filter, TextFieldValidator valid, float min, float max, float step, float def, SliderChanged sliderChanged, String title, @Nullable String tooltip) {
 		TextField field = textField(String.valueOf(def), changed, fieldText, filter, valid);
 
-		Label tab = t.add(title).right().padRight(6f).get();
-		Slider sl = t.slider(min, max, step, def, s -> sliderChanged.get(s, field)).right().width(HVars.sliderWidth).get();
-		TextField f = t.add(field).left().padLeft(6f).width(HVars.fieldWidth).get();
+		Label tab = table.add(title).right().padRight(6f).get();
+		Slider sl = table.slider(min, max, step, def, s -> sliderChanged.get(s, field)).right().width(HVars.sliderWidth).get();
+		TextField f = table.add(field).left().padLeft(6f).width(HVars.fieldWidth).get();
 
 		if (tooltip != null) {
 			Tooltip tip = baseTooltip(tt -> tt.background(Tex.button).add(tooltip));
@@ -226,7 +230,8 @@ public final class Elements {
 		return new Element[]{sl, f};
 	}
 
-	public static TextField textField(String text, Cons<String> changed, Prov<String> setText, TextFieldFilter filter, TextFieldValidator valid) {
+	@Contract(value = "_, _, _, _, _ -> new")
+	public static @NotNull TextField textField(String text, Cons<String> changed, @Nullable Prov<String> setText, TextFieldFilter filter, TextFieldValidator valid) {
 		TextField field = new TextField(text);
 		if (filter != null) field.setFilter(filter);
 		if (valid != null) field.setValidator(valid);
@@ -244,8 +249,8 @@ public final class Elements {
 		return field;
 	}
 
-	public static Cell<ImageButton> imageButton(Table t, Drawable icon, ImageButtonStyle style, float isize, Runnable listener, Prov<CharSequence> label, String tooltip) {
-		Cell<ImageButton> bCell = t.button(icon, style, isize, listener);
+	public static @NotNull Cell<ImageButton> imageButton(Table table, Drawable icon, ImageButtonStyle style, float isize, Runnable listener, @Nullable Prov<CharSequence> label, @Nullable String tooltip) {
+		Cell<ImageButton> bCell = table.button(icon, style, isize, listener);
 		ImageButton b = bCell.get();
 		if (label != null) {
 			Cell<Label> lab = b.label(label).padLeft(6f).expandX().name("label");
@@ -277,7 +282,7 @@ public final class Elements {
 		return stack;
 	}
 
-	public static void divider(Table t, String label, Color color, int colSpan) {
+	public static void divider(Table t, @Nullable String label, Color color, int colSpan) {
 		if (label != null) {
 			t.add(label).growX().color(color).colspan(colSpan).left();
 			t.row();
@@ -286,39 +291,42 @@ public final class Elements {
 		t.row();
 	}
 
-	public static void divider(Table t, String label, Color color) {
+	public static void divider(Table t, @Nullable String label, Color color) {
 		divider(t, label, color, 1);
 	}
 
-	/// Adds a boxed tooltip, similar to in the Database.
+	/** Adds a boxed tooltip, similar to in the Database. */
 	public static void boxTooltip(Element e, Prov<CharSequence> text) {
 		e.addListener(baseTooltip(t -> t.background(Tex.button).label(text)));
 	}
 
-	/// Adds a boxed tooltip, similar to in the Database.
+	/** Adds a boxed tooltip, similar to in the Database. */
 	public static void boxTooltip(Element e, String text) {
 		e.addListener(baseTooltip(t -> t.background(Tex.button).add(text)));
 	}
 
-	/// Adds a flat tooltip, similar to setting descriptions.
+	/** Adds a flat tooltip, similar to setting descriptions. */
 	public static void flatTooltip(Element e, Prov<CharSequence> text) {
 		e.addListener(baseTooltip(t -> t.background(Styles.black8).margin(4f).label(text)));
 	}
 
-	/// Adds a flat tooltip, similar to setting descriptions.
+	/** Adds a flat tooltip, similar to setting descriptions. */
 	public static void flatTooltip(Element e, String text) {
 		e.addListener(baseTooltip(t -> t.background(Styles.black8).margin(4f).add(text)));
 	}
 
-	/// Creates a tooltip. Snaps to corner of parent element.
+	/** Creates a tooltip. Snaps to corner of parent element. */
+	@Contract(value = "_ -> new", pure = true)
 	public static Tooltip baseTooltip(Cons<Table> content) {
 		return new BaseTooltip(content);
 	}
 
+	@Contract(value = " -> new", pure = true)
 	public static FLabel infinity() {
 		return new FLabel("{wave}{rainbow}" + Core.bundle.get("hi-infinity"));
 	}
 
+	@Contract(value = " -> new", pure = true)
 	public static FLabel everything() {
 		return new FLabel("{wave}{rainbow}" + Core.bundle.get("hi-everything"));
 	}
@@ -328,6 +336,7 @@ public final class Elements {
 		return e != null && !e.fillParent;
 	}
 
+	@Contract(value = "_, _ -> new", pure = true)
 	public static Stack itemImage(TextureRegion region, int amount) {
 		Stack stack = new Stack();
 
@@ -433,6 +442,7 @@ public final class Elements {
 		return point.x >= 0 && point.y >= 0 && point.x <= Vars.world.width() * Vars.tilesize && point.y <= Vars.world.height() * Vars.tilesize;
 	}
 
+	@Contract(pure = true)
 	public static int getLineNum(String string) {
 		String dex = string.replaceAll("\r", "\n");
 		return dex.split("\n").length;
@@ -618,7 +628,7 @@ public final class Elements {
 		parent.add(new LinkTable(link)).size(LinkTable.w + OFFSET * 2f, LinkTable.h).padTop(OFFSET / 2f).row();
 	}
 
-	/// Adds '\n' if text not within maxWidth.
+	/** Adds '\n' if text not within maxWidth. */
 	public static String wrapText(String originalString, Font font, float maxWidth) {
 		GlyphLayout obtain = GlyphLayout.obtain();
 
@@ -647,8 +657,7 @@ public final class Elements {
 		return builder.toString();
 	}
 
-	@Nullable
-	public static Element hovered(Boolf<Element> validator) {
+	public static @Nullable Element hovered(Boolf<Element> validator) {
 		Element e = Core.scene.hit(Core.input.mouseX(), Core.input.mouseY(), true);
 		if (e != null) {
 			while (e != null && !validator.get(e)) {

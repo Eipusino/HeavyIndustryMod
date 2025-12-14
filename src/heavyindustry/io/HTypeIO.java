@@ -1,7 +1,6 @@
 package heavyindustry.io;
 
 import arc.math.geom.Point2;
-import arc.util.Nullable;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.util.Objects2;
@@ -11,6 +10,7 @@ import mindustry.ctype.ContentType;
 import mindustry.ctype.UnlockableContent;
 import mindustry.gen.Itemsc;
 import mindustry.io.TypeIO;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -21,7 +21,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 
 public final class HTypeIO {
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HTypeIO() {}
 
 	public static void writePoint2(Writes write, Point2 p) {
@@ -98,8 +98,7 @@ public final class HTypeIO {
 		}
 	}
 
-	@Nullable
-	public static <T extends Serializable> T readObject(Reads read, Class<T> type) {
+	public static <T extends Serializable> @Nullable T readObject(Reads read, Class<T> type) {
 		return readObject(read, type, null);
 	}
 

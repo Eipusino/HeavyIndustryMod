@@ -9,6 +9,7 @@ import heavyindustry.util.ObjectIntMap2;
 import mindustry.gen.EntityMapping;
 import mindustry.gen.Entityc;
 import mindustry.type.UnitType;
+import org.jetbrains.annotations.ApiStatus.Obsolete;
 
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public final class Entitys {
 
 	private static boolean registered = false;
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private Entitys() {}
 
 	public static Prov<? extends Entityc> get(Class<? extends Entityc> type) {
@@ -35,7 +36,7 @@ public final class Entitys {
 		return needIdMap.get(name);
 	}
 
-	@Deprecated
+	@Obsolete(since = "1.0.8")
 	public static <T extends Entityc> void register(String name, Class<T> type, Prov<T> prov) {
 		needIdMap.put(name, prov);
 		classIdMap.put(type, EntityMapping.register(name, prov));

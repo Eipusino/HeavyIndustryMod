@@ -53,7 +53,7 @@ public final class HSounds {
 	public static Sound expExotic = new Sound();
 	public static Sound expOrganic = new Sound();
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HSounds() {}
 
 	public static void load() {

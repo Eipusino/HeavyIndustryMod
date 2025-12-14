@@ -18,7 +18,6 @@ import arc.math.Mathf;
 import arc.math.geom.Rect;
 import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
-import arc.util.Nullable;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.func.Floatc3;
@@ -26,6 +25,7 @@ import heavyindustry.math.Mathm;
 import mindustry.game.EventType.Trigger;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
@@ -77,7 +77,7 @@ public final class Draws {
 		});
 	}
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private Draws() {}
 
 	public static int nextTaskId() {

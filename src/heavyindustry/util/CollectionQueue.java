@@ -3,7 +3,7 @@ package heavyindustry.util;
 import arc.func.Boolf;
 import arc.func.Cons;
 import arc.util.Eachable;
-import arc.util.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
 import java.util.AbstractQueue;

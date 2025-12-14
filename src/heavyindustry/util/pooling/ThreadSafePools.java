@@ -1,9 +1,10 @@
 package heavyindustry.util.pooling;
 
 import arc.func.Prov;
-import arc.struct.Seq;
 import arc.util.pooling.Pool;
 import heavyindustry.util.CollectionObjectMap;
+
+import java.util.List;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public final class ThreadSafePools {
@@ -11,7 +12,7 @@ public final class ThreadSafePools {
 	private static final Object poolCreateLock = new Object();
 	private static final Object poolSetLock = new Object();
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private ThreadSafePools() {}
 
 	/**
@@ -62,7 +63,6 @@ public final class ThreadSafePools {
 	 * Frees an object from the {@link #get(Class, Prov) pool}.
 	 */
 	public static synchronized void free(Object object) {
-		if (object == null) throw new IllegalArgumentException("Object cannot be null.");
 		Pool pool = typePools.get(object.getClass());
 		if (pool == null) return; // Ignore freeing an object that was never retained.
 		pool.free(object);
@@ -72,7 +72,7 @@ public final class ThreadSafePools {
 	 * Frees the specified objects from the {@link #get(Class, Prov) pool}. Null objects within the array are silently ignored. Objects
 	 * don't need to be from the same pool.
 	 */
-	public static void freeAll(Seq objects) {
+	public static void freeAll(List objects) {
 		freeAll(objects, false);
 	}
 
@@ -81,10 +81,9 @@ public final class ThreadSafePools {
 	 *
 	 * @param samePool If true, objects don't need to be from the same pool but the pool must be looked up for each object.
 	 */
-	public static void freeAll(Seq objects, boolean samePool) {
-		if (objects == null) throw new IllegalArgumentException("Objects cannot be null.");
+	public static void freeAll(List objects, boolean samePool) {
 		Pool pool = null;
-		for (int i = 0, n = objects.size; i < n; i++) {
+		for (int i = 0, n = objects.size(); i < n; i++) {
 			Object object = objects.get(i);
 			if (object == null) continue;
 			if (pool == null) {

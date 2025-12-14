@@ -72,7 +72,7 @@ public final class HUnitSorts {
 		}
 	}
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HUnitSorts() {}
 
 	public static Unit[] closetEnemies(int targets, Teamc team, float range) {

@@ -15,9 +15,10 @@ import arc.struct.Seq;
 import arc.struct.Sort;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
-import arc.util.Nullable;
 import arc.util.Structs;
 import heavyindustry.math.Mathm;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
 import java.util.AbstractList;
@@ -52,17 +53,17 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	protected Iter iterator1, iterator2, lastIterator1, lastIterator2;
 
 	/** Creates an ordered array with a capacity of 16. */
-	public CollectionList(Class<?> type) {
+	public CollectionList(@NotNull Class<?> type) {
 		this(true, 16, type);
 	}
 
 	/** Creates an ordered array with the specified capacity. */
-	public CollectionList(int capacity, Class<?> type) {
+	public CollectionList(int capacity, @NotNull Class<?> type) {
 		this(true, capacity, type);
 	}
 
 	/** Creates an ordered/unordered array with the specified capacity. */
-	public CollectionList(boolean ordered, Class<?> type) {
+	public CollectionList(boolean ordered, @NotNull Class<?> type) {
 		this(ordered, 16, type);
 	}
 
@@ -74,7 +75,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	 * @param capacity Any elements added beyond this will cause the backing array to be grown.
 	 */
 	@SuppressWarnings("unchecked")
-	public CollectionList(boolean ordered, int capacity, Class<?> type) {
+	public CollectionList(boolean ordered, int capacity, @NotNull Class<?> type) {
 		this.ordered = ordered;
 		componentType = type;
 		items = (E[]) Array.newInstance(type, capacity);
@@ -114,7 +115,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> CollectionList<T> withArrays(Class<?> arrayType, Object... arrays) {
+	public static <T> CollectionList<T> withArrays(@NotNull Class<?> arrayType, Object... arrays) {
 		CollectionList<T> result = new CollectionList<>(arrayType);
 		for (Object a : arrays) {
 			if (a instanceof CollectionList<?>) {
@@ -132,7 +133,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		return new CollectionList<>(array);
 	}
 
-	public static <T> CollectionList<T> with(Class<?> arrayType, Iterable<T> array) {
+	public static <T> CollectionList<T> with(@NotNull Class<?> arrayType, Iterable<T> array) {
 		CollectionList<T> out = new CollectionList<>(arrayType);
 		for (T thing : array) {
 			out.add(thing);
@@ -384,8 +385,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		return result;
 	}
 
-	@Nullable
-	public E find(Boolf<E> predicate) {
+	public @Nullable E find(Boolf<E> predicate) {
 		for (int i = 0; i < size; i++) {
 			if (predicate.get(items[i])) {
 				return items[i];
@@ -506,8 +506,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		addAll(array);
 	}
 
-	@Nullable
-	public E getFrac(float index) {
+	public @Nullable E getFrac(float index) {
 		if (isEmpty()) return null;
 		return get(Mathm.clamp((int) (index * size), 0, size - 1));
 	}
@@ -914,8 +913,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	/** Returns the first item, or null if this Seq is empty. */
-	@Nullable
-	public E firstOpt() {
+	public @Nullable E firstOpt() {
 		if (size == 0) return null;
 		return items[0];
 	}
@@ -1164,13 +1162,13 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	 * Otherwise use {@link #toArray()} to specify the array type.
 	 */
 	@Override
-	public E[] toArray() {
+	public E @NotNull [] toArray() {
 		return Arrays.copyOfRange(items, 0, size);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T[] toArray(T[] a) {
+	public <T> T @NotNull [] toArray(T[] a) {
 		if (a.length < size)
 			// Make a new array of a's runtime type, but my contents:
 			return (T[]) Arrays.copyOf(items, size, a.getClass());

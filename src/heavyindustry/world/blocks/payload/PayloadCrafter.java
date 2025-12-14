@@ -24,9 +24,11 @@ import mindustry.world.blocks.units.UnitAssembler;
 import mindustry.world.meta.StatValue;
 
 public class PayloadCrafter extends AdaptiveCrafter {
-	public @NoPatch CollectionObjectSet<UnlockableContent> payloadFilter = new CollectionObjectSet<>(UnlockableContent.class);
+	@NoPatch
+	public CollectionObjectSet<UnlockableContent> payloadFilter = new CollectionObjectSet<>(UnlockableContent.class);
 
-	public @NoPatch CollectionList<UnlockableContent> payloadOutput = new CollectionList<>(UnlockableContent.class);
+	@NoPatch
+	public CollectionList<UnlockableContent> payloadOutput = new CollectionList<>(UnlockableContent.class);
 
 	public int payloadCapacity = 10;
 

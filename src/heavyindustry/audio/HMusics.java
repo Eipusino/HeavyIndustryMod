@@ -5,7 +5,6 @@ import arc.audio.Music;
 import arc.files.Fi;
 import arc.struct.Seq;
 import arc.util.Log;
-import heavyindustry.HVars;
 import heavyindustry.util.CollectionObjectMap;
 import mindustry.Vars;
 import mindustry.game.EventType.ClientLoadEvent;
@@ -23,7 +22,7 @@ public final class HMusics {
 
 	public static Fi musicsDir;// = HVars.internalTree.child("musics");
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HMusics() {}
 
 	public static void load() {

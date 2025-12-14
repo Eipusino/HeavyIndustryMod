@@ -5,9 +5,9 @@ import arc.func.Boolf;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
 import arc.struct.PQueue;
-import arc.struct.Seq;
 import arc.util.Structs;
 import arc.util.Time;
+import mindustry.Vars;
 import mindustry.content.Liquids;
 import mindustry.entities.Units;
 import mindustry.game.EventType.Trigger;
@@ -20,9 +20,8 @@ import mindustry.world.blocks.payloads.BuildPayload;
 import mindustry.world.blocks.payloads.PayloadBlock;
 import mindustry.world.blocks.payloads.PayloadConveyor;
 import mindustry.world.blocks.storage.CoreBlock;
-
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 public final class BlockMovement {
 	//ported from Facdustrio
@@ -32,6 +31,8 @@ public final class BlockMovement {
 	//like starting points for locations based on the direction you want? hard to explain. You wouldnt need it
 	// directly anyway.
 	public static Point2[][] origins = new Point2[16][];
+
+	static final CollectionList<Building> toRemove = new CollectionList<>(Building.class);
 
 	private BlockMovement() {}
 
@@ -63,6 +64,7 @@ public final class BlockMovement {
 		Events.on(WorldLoadEvent.class, event -> onMapLoad());
 	}
 
+	@Contract(value = "_, _, _ -> new", pure = true)
 	public static Point2 getNearbyPosition(Block block, int direction, int index) {
 		Point2 tangent = dirs[(direction + 1) % 4];
 		Point2 o = origins[block.size - 1][direction];
@@ -79,7 +81,8 @@ public final class BlockMovement {
 	}
 
 	//returns whether a block is allowed to be on this tile, disregarding existing pushable buildings and team circles
-	static boolean tileAvalibleTo(Tile tile, Block block) {
+	@Contract(value = "null, _ -> false")
+	static boolean tileAvalibleTo(@Nullable Tile tile, Block block) {
 		if (tile == null) {
 			return false;
 		}
@@ -88,12 +91,10 @@ public final class BlockMovement {
 			return pushable(tile.build);
 		}
 
-		if (tile.solid() || !tile.floor().placeableOn || (block.requiresWater && tile.floor().liquidDrop != Liquids.water) || (tile.floor().isDeep() && !block.floating && !block.requiresWater && !block.placeableLiquid)
-
-		) {
+		if (tile.solid() || !tile.floor().placeableOn || (block.requiresWater && tile.floor().liquidDrop != Liquids.water) || (tile.floor().isDeep() && !block.floating && !block.requiresWater && !block.placeableLiquid)) {
 			return false;
 		}
-		return (!block.solid && !block.solidifes) || !Units.anyEntities(tile.x * tilesize + block.offset - block.size * tilesize / 2.0f, tile.y * tilesize + block.offset - block.size * tilesize / 2.0f, block.size * tilesize, block.size * tilesize);
+		return (!block.solid && !block.solidifes) || !Units.anyEntities(tile.x * Vars.tilesize + block.offset - block.size * Vars.tilesize / 2.0f, tile.y * Vars.tilesize + block.offset - block.size * Vars.tilesize / 2.0f, block.size * Vars.tilesize, block.size * Vars.tilesize);
 	}
 
 	//returns whether a tile can be pushed in this direction, disregarding buildings.
@@ -143,11 +144,11 @@ public final class BlockMovement {
 		//scan forward tiles for blockage
 		if (!Build.validPlace(build.block, build.team, bx + dirs[direction].x, by + dirs[direction].y, build.rotation,
 				false)) {
-			world.tile(bx, by).setBlock(build.block, build.team, build.rotation, () -> build);
+			Vars.world.tile(bx, by).setBlock(build.block, build.team, build.rotation, () -> build);
 			return false;
 		}
 
-		world.tile(bx + dirs[direction].x, by + dirs[direction].y).setBlock(build.block, build.team,
+		Vars.world.tile(bx + dirs[direction].x, by + dirs[direction].y).setBlock(build.block, build.team,
 				build.rotation, () -> build);
 		return true;
 	}
@@ -157,7 +158,7 @@ public final class BlockMovement {
 		return (origins[build.block.size - 1][direction].x + build.tile.x) * dirs[direction].x + (origins[build.block.size - 1][direction].y + build.tile.y) * dirs[direction].y;
 	}
 
-	/// gets all buildings connected to each other in the push direction sorted
+	/** gets all buildings connected to each other in the push direction sorted */
 	//if group cannot be pushed because its too large or an unpushable block exists it returns null.
 	/*
 		params:
@@ -172,18 +173,18 @@ public final class BlockMovement {
 	// .block.name)})
 	//this.global.facdustrio.functions.getAllContacted(Vars.world.tile(197,212).build,0,99,null).each(b=>{print(b
 	// .x/8+","+b.y/8)})
-	public static Seq<Building> getAllContacted(Building root, int direction, int max, Boolf<Building> bool) {
+	public static @Nullable CollectionList<Building> getAllContacted(Building root, int direction, int max, Boolf<Building> bool) {
 		PQueue<Building> queue = new PQueue<>(10, (a, b) ->
 				// require ordering to be projection of the block's leading edge along  push direction.
 				Math.round(project(a, direction) - project(b, direction))
 		);
 
 		queue.add(root);
-		Seq<Building> contacts = null;
+		CollectionList<Building> contacts = null;
 		while (!queue.empty() && (contacts == null || contacts.size <= max)) {
 			Building next = queue.poll();
 			if (contacts == null) {
-				contacts = Seq.with(next);
+				contacts = CollectionList.with(next);
 			} else {
 				contacts.add(next);
 			}
@@ -191,10 +192,12 @@ public final class BlockMovement {
 			Point2 tangent = dirs[(direction + 1) % 4];
 			Point2 o = origins[next.block.size - 1][direction];
 
-			outer:
+			//outer:
 			for (int i = 0; i < next.block.size; i++) { // iterate over forward edge.
 				Tile t = next.tile.nearby(o.x + tangent.x * i + dirs[direction].x,
 						o.y + tangent.y * i + dirs[direction].y);
+				if (t == null) continue;
+
 				Building b = t.build;
 
 				if (b == null || Structs.indexOf(queue.queue, b) >= 0 || contacts.contains(b)) continue;
@@ -229,7 +232,7 @@ public final class BlockMovement {
 	*/
 	//usage: BlockMovement.pushBlock(Vars.world.tile(203,208).build,0,99,1)
 	public static boolean pushBlock(Building build, int direction, int maxBlocks, float speed, Boolf<Building> bool) {
-		Seq<Building> pushing = getAllContacted(build, direction, maxBlocks, bool);
+		CollectionList<Building> pushing = getAllContacted(build, direction, maxBlocks, bool);
 		if (pushing == null) {
 			return false;
 		}
@@ -252,7 +255,7 @@ public final class BlockMovement {
 	// returns 2 if successful, 0 if not, and 1 if the forward tile is a payload acceptor and was unsuccesful... so
 	// you can spam attempts to push.
 	public static int pushOut(Building build, int x, int y, int direction, float speed, int max, Boolf<Building> bool, boolean waitPayload) {
-		Tile tile = world.tile(x, y);
+		Tile tile = Vars.world.tile(x, y);
 		if (tile.build == null) {
 			if (!tileAvalibleTo(tile, build.block)) {
 				return 0;
@@ -308,16 +311,16 @@ public final class BlockMovement {
 
 		public void update() {
 			if (timer == 0) {
-				build.x -= dir.x * tilesize;
-				build.y -= dir.y * tilesize;
+				build.x -= dir.x * Vars.tilesize;
+				build.y -= dir.y * Vars.tilesize;
 				ox = build.x;
 				oy = build.y;
 			}
 			timer += Time.delta;
 			float progress = Math.min(1, timer / delay);
 
-			build.x = ox + dir.x * tilesize * progress;
-			build.y = oy + dir.y * tilesize * progress;
+			build.x = ox + dir.x * Vars.tilesize * progress;
+			build.y = oy + dir.y * Vars.tilesize * progress;
 		}
 
 		public boolean isDead() {
@@ -330,8 +333,6 @@ public final class BlockMovement {
 		currentlyPushing.put(build, bmu);
 		bmu.update();
 	}
-
-	private static final Seq<Building> toRemove = new Seq<>(Building.class);
 
 	public static void onUpdate() {
 		currentlyPushing.each((b, animate) -> {

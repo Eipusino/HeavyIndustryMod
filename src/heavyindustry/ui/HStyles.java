@@ -2,7 +2,6 @@ package heavyindustry.ui;
 
 import arc.Core;
 import arc.graphics.Color;
-import arc.scene.style.Drawable;
 import arc.scene.ui.Button.ButtonStyle;
 import arc.scene.ui.ImageButton.ImageButtonStyle;
 import arc.scene.ui.TextButton.TextButtonStyle;
@@ -11,14 +10,7 @@ import heavyindustry.ui.HoldImageButton.HoldImageButtonStyle;
 import mindustry.gen.Tex;
 import mindustry.ui.Styles;
 
-import static heavyindustry.ui.HIcon.drawable;
-
 public final class HStyles {
-	public static Drawable buttonLeft, buttonLeftDown, buttonLeftOver;
-	public static Drawable buttonCenter, buttonCenterDown, buttonCenterOver, buttonCenterDisabled;
-	public static Drawable buttonRight, buttonRightOver, buttonRightDown;
-	public static Drawable paneBottom;
-
 	public static TextFieldStyle scriptArea;
 	public static ButtonStyle right;
 	public static TextButtonStyle round, toggleCentert;
@@ -38,22 +30,10 @@ public final class HStyles {
 	public static HoldImageButtonStyle tuHoldImageStyle;
 	public static HoldImageButtonStyle teamChanger;
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HStyles() {}
 
 	public static void load() {
-		//drawable
-		buttonLeft = drawable("button-left");
-		buttonLeftDown = drawable("button-left-down");
-		buttonLeftOver = drawable("button-left-over");
-		buttonCenter = drawable("button-center");
-		buttonCenterDown = drawable("button-center-down");
-		buttonCenterOver = drawable("button-center-over");
-		buttonCenterDisabled = drawable("button-center-disabled");
-		buttonRight = drawable("button-right");
-		buttonRightDown = drawable("button-right-down");
-		buttonRightOver = drawable("button-right-over");
-		paneBottom = drawable("pane-bottom");
 		//style
 		modImageStyle = new ImageButtonStyle(Styles.logici) {{
 			down = Styles.flatDown;
@@ -79,19 +59,19 @@ public final class HStyles {
 			cursor = Tex.cursor;
 		}};
 		right = new ButtonStyle(Styles.defaultb) {{
-			up = buttonRight;
-			down = buttonRightDown;
-			over = buttonRightOver;
+			up = HTex.buttonRight;
+			down = HTex.buttonRightDown;
+			over = HTex.buttonRightOver;
 		}};
 		round = new TextButtonStyle(Styles.defaultt) {{
 			checked = up;
 		}};
 		toggleCentert = new TextButtonStyle(Styles.defaultt) {{
-			up = buttonCenter;
-			down = buttonCenterDown;
-			over = buttonCenterOver;
-			checked = buttonCenterOver;
-			disabled = buttonCenterDisabled;
+			up = HTex.buttonCenter;
+			down = HTex.buttonCenterDown;
+			over = HTex.buttonCenterOver;
+			checked = HTex.buttonCenterOver;
+			disabled = HTex.buttonCenterDisabled;
 		}};
 		tuImageStyle = new ImageButtonStyle(Styles.logici) {{
 			down = Styles.flatDown;
@@ -103,25 +83,25 @@ public final class HStyles {
 			checked = Tex.buttonOver;
 		}};
 		lefti = new ImageButtonStyle(Styles.defaulti) {{
-			up = buttonLeft;
-			down = buttonLeftDown;
-			over = buttonLeftOver;
+			up = HTex.buttonLeft;
+			down = HTex.buttonLeftDown;
+			over = HTex.buttonLeftOver;
 		}};
 		toggleLefti = new ImageButtonStyle(lefti) {{
-			checked = buttonLeftOver;
+			checked = HTex.buttonLeftOver;
 		}};
 		righti = new ImageButtonStyle(Styles.defaulti) {{
-			up = buttonRight;
-			down = buttonRightDown;
-			over = buttonRightOver;
+			up = HTex.buttonRight;
+			down = HTex.buttonRightDown;
+			over = HTex.buttonRightOver;
 		}};
 		toggleRighti = new ImageButtonStyle(righti) {{
-			checked = buttonRightOver;
+			checked = HTex.buttonRightOver;
 		}};
 		centeri = new ImageButtonStyle(Styles.defaulti) {{
-			up = buttonCenter;
-			down = buttonCenterDown;
-			over = buttonCenterOver;
+			up = HTex.buttonCenter;
+			down = HTex.buttonCenterDown;
+			over = HTex.buttonCenterOver;
 		}};
 		tuHoldImageStyle = new HoldImageButtonStyle(tuImageStyle);
 		teamChanger = new HoldImageButtonStyle(Styles.clearNoneTogglei) {{

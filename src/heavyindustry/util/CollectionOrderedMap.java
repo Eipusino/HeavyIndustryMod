@@ -2,6 +2,7 @@ package heavyindustry.util;
 
 import arc.util.ArcRuntimeException;
 import heavyindustry.util.concurrent.holder.ObjectHolder;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.NoSuchElementException;
 
@@ -14,26 +15,26 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 
 	public CollectionOrderedMap(Class<?> keyType, Class<?> valueType) {
 		super(keyType, valueType, 16, 0.75f);
-		setMap(keyType, 16);
+		setList(keyType, 16);
 	}
 
 	public CollectionOrderedMap(Class<?> keyType, Class<?> valueType, int capacity) {
 		super(keyType, valueType, capacity, 0.75f);
-		setMap(keyType, capacity);
+		setList(keyType, capacity);
 	}
 
 	public CollectionOrderedMap(Class<?> keyType, Class<?> valueType, int capacity, float loadFactor) {
 		super(keyType, valueType, capacity, loadFactor);
-		setMap(keyType, capacity);
+		setList(keyType, capacity);
 	}
 
 	public CollectionOrderedMap(CollectionOrderedMap<? extends K, ? extends V> map) {
 		super(map);
-		setMap(map.keyComponentType, 16);
+		setList(map.keyComponentType, 16);
 		putAll(map);
 	}
 
-	protected void setMap(Class<?> keyType, int capacity) {
+	protected void setList(Class<?> keyType, int capacity) {
 		orderedKeys = new CollectionList<>(true, capacity, keyType);
 	}
 
@@ -70,7 +71,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 	}
 
 	@Override
-	public Entries iterator() {
+	public @NotNull Entries iterator() {
 		if (entries1 == null) {
 			entries1 = new OrderedMapEntries();
 			entries2 = new OrderedMapEntries();
@@ -93,7 +94,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 	 * time this method is called. Use the {@link OrderedMapKeys} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public Keys keySet() {
+	public @NotNull Keys keySet() {
 		if (keys1 == null) {
 			keys1 = new OrderedMapKeys();
 			keys2 = new OrderedMapKeys();
@@ -111,7 +112,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 	}
 
 	@Override
-	public Values values() {
+	public @NotNull Values values() {
 		if (values1 == null) {
 			values1 = new OrderedMapValues();
 			values2 = new OrderedMapValues();

@@ -27,6 +27,6 @@ public class BoolReference implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects2.hashCodeBool(element);
+		return Objects2.boolToHash(element);
 	}
 }

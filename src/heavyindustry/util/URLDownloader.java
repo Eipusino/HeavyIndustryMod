@@ -10,6 +10,7 @@ import arc.graphics.Texture.TextureFilter;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Http;
 import arc.util.Log;
+import org.jetbrains.annotations.Contract;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -17,7 +18,7 @@ import java.io.OutputStream;
 public final class URLDownloader {
 	private static final CollectionOrderedMap<String, String> urlReplacers = new CollectionOrderedMap<>(String.class, String.class);
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private URLDownloader() {}
 
 	public static void setMirror(String source, String to) {
@@ -50,6 +51,7 @@ public final class URLDownloader {
 		get[0].run();
 	}
 
+	@Contract(value = "_, _ -> new")
 	public static float[] downloadToStream(String url, OutputStream stream) {
 		float[] progress = new float[1];
 		retryDown(url, res -> {
@@ -72,6 +74,7 @@ public final class URLDownloader {
 		return downloadToStream(url, file.write());
 	}
 
+	@Contract(value = "_, _ -> new", pure = true)
 	public static TextureRegion downloadImg(String url, TextureRegion errDef) {
 		TextureRegion result = new TextureRegion(errDef);
 

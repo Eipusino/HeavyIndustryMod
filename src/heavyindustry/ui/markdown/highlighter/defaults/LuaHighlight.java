@@ -15,7 +15,7 @@ public final class LuaHighlight extends Highlight {
 	private LuaHighlight() {}
 
 	static Capture modifiersCapture() {
-		return regex(1, Integer.MAX_VALUE, LuaScope.KEYWORD_CONTROL, "local");
+		return regex(1, Integer.MAX_VALUE, LuaScope.KEYWORD_CONTROL, Pattern.compile("local"));
 	}
 
 	static Capture variableCapture(int depth) {
@@ -24,7 +24,7 @@ public final class LuaHighlight extends Highlight {
 						modifiersCapture(),
 						makeJoin(
 								compound(
-										regex(LuaScope.LOCAL_VARS, "\\w+"),
+										regex(LuaScope.LOCAL_VARS, Pattern.compile("\\w+")),
 										compound(
 												token(Default.OPERATOR, "="),
 												lazy(() -> expressionCapture(0))
@@ -37,7 +37,7 @@ public final class LuaHighlight extends Highlight {
 						makeJoin(
 								compound(
 										//TODD depth
-										regex(depth > 0 ? LuaScope.TABLE_VARS : LuaScope.LOCAL_VARS, "^(?!end$|in$|do$|function$|if$|then$|for$)\\w+"),
+										regex(depth > 0 ? LuaScope.TABLE_VARS : LuaScope.LOCAL_VARS, Pattern.compile("^(?!end$|in$|do$|function$|if$|then$|for$)\\w+")),
 										token(Default.OPERATOR, "="),
 										lazy(() -> expressionCapture(depth))
 								),
@@ -51,7 +51,7 @@ public final class LuaHighlight extends Highlight {
 		return compound(
 				token(LuaScope.KEYWORD_BODY, "function"),
 				makeJoin(
-						regex(Default.FUNCTION, "\\w+"),
+						regex(Default.FUNCTION, Pattern.compile("\\w+")),
 						forks(
 								token(Default.SEPARATOR, ":"),
 								token(Default.SEPARATOR, ".")
@@ -60,8 +60,8 @@ public final class LuaHighlight extends Highlight {
 				token(Default.SEPARATOR, "("),
 				makeJoin(
 						forks(
-								regex(Default.ARGUMENT, "\\w+"),
-								regex(Default.ARGUMENT, "\\.+")
+								regex(Default.ARGUMENT, Pattern.compile("\\w+")),
+								regex(Default.ARGUMENT, Pattern.compile("\\.+"))
 						),
 						token(Default.SEPARATOR, ",")
 				).setOptional(true),
@@ -110,7 +110,7 @@ public final class LuaHighlight extends Highlight {
 				compound(
 						token(LuaScope.KEYWORD_BODY, "for"),
 						makeJoin(
-								regex(Default.ARGUMENT, "\\w+"),
+								regex(Default.ARGUMENT, Pattern.compile("\\w+")),
 								token(Default.SEPARATOR, ",")
 						),
 						token(LuaScope.KEYWORD_CONTROL, "in"),
@@ -160,8 +160,8 @@ public final class LuaHighlight extends Highlight {
 								token(Default.SEPARATOR, "("),
 								makeJoin(
 										forks(
-												regex(Default.ARGUMENT, "\\w+"),
-												regex(Default.ARGUMENT, "\\.+")
+												regex(Default.ARGUMENT, Pattern.compile("\\w+")),
+												regex(Default.ARGUMENT, Pattern.compile("\\.+"))
 										),
 										token(Default.SEPARATOR, ",")
 								).setOptional(true),
@@ -173,9 +173,9 @@ public final class LuaHighlight extends Highlight {
 						//INVOKE
 						compound(
 								forks(
-										regex(LuaScope.KEYWORD_FUNCTION, "import"),
-										regex(Default.FUNCTION_INVOKE, "require"),
-										regex(Default.FUNCTION_INVOKE, "^(?!end$|do$|in$|function$|then$|if$|for$)\\w+")
+										regex(LuaScope.KEYWORD_FUNCTION, Pattern.compile("import")),
+										regex(Default.FUNCTION_INVOKE, Pattern.compile("require")),
+										regex(Default.FUNCTION_INVOKE, Pattern.compile("^(?!end$|do$|in$|function$|then$|if$|for$)\\w+"))
 								),
 								forks(
 										compound(
@@ -194,7 +194,7 @@ public final class LuaHighlight extends Highlight {
 						),
 						//READ ARRAY
 						compound(
-								regex(Default.VARIABLE, "^(?!end$|in$|do$|function$|if$|then$|for$)\\w+"),
+								regex(Default.VARIABLE, Pattern.compile("^(?!end$|in$|do$|function$|if$|then$|for$)\\w+")),
 								compound(1, Integer.MAX_VALUE,
 										token("["),
 										lazy(() -> expressionCapture(0)),
@@ -202,11 +202,11 @@ public final class LuaHighlight extends Highlight {
 								)
 						),
 						compound(
-								regex(Default.OPERATOR, "[!+\\-~]"),
+								regex(Default.OPERATOR, Pattern.compile("[!+\\-~]")),
 								lazy(() -> expressionCapture(0))
 						),
 						//REF
-						regex(Default.VARIABLE, "^(?!end$|in$|do$|function$|if$|then$|for$)\\w+")
+						regex(Default.VARIABLE, Pattern.compile("^(?!end$|in$|do$|function$|if$|then$|for$)\\w+"))
 				)
 		);
 	}
@@ -220,7 +220,7 @@ public final class LuaHighlight extends Highlight {
 				),
 				new SelectionCapture(0, Integer.MAX_VALUE,
 						lazy(LuaHighlight::bracketStringCapture),
-						regex(Default.STRING, "[^]]+")
+						regex(Default.STRING, Pattern.compile("[^]]+"))
 				),
 				compound(
 						token(Default.STRING, "]"),
@@ -238,9 +238,9 @@ public final class LuaHighlight extends Highlight {
 						new SelectionCapture(0, Integer.MAX_VALUE,
 								regex(
 										Default.CONTROL,
-										"(\\\\[0-7]{3})|(\\\\u[0-9a-fA-F]{4})|(\\\\[0abtnvfre\\\\\"'])"
+										Pattern.compile("(\\\\[0-7]{3})|(\\\\u[0-9a-fA-F]{4})|(\\\\[0abtnvfre\\\\\"'])")
 								),
-								regex(Default.STRING, "[^\"]+")
+								regex(Default.STRING, Pattern.compile("[^\"]+"))
 						),
 						token(Default.STRING, "\"")
 				),
@@ -250,19 +250,19 @@ public final class LuaHighlight extends Highlight {
 						new SelectionCapture(
 								regex(
 										Default.CONTROL,
-										"(\\\\[0-7]{3})|(\\\\u[0-9a-fA-F]{4})|(\\\\[0abtnvfre\\\\\"'])"
+										Pattern.compile("(\\\\[0-7]{3})|(\\\\u[0-9a-fA-F]{4})|(\\\\[0abtnvfre\\\\\"'])")
 								),
-								regex(Default.STRING, "[^']")
+								regex(Default.STRING, Pattern.compile("[^']"))
 						),
 						token(Default.STRING, "'")
 				),
 				//DOUBLE BRACKETS
 				bracketStringCapture(),
 				//NUMBER
-				regex(Default.NUMBER, "[\\d_]*(\\.[\\d_]+)?[fFdDlL]?"),
+				regex(Default.NUMBER, Pattern.compile("[\\d_]*(\\.[\\d_]+)?[fFdDlL]?")),
 				//TODD
 				//BOOLEAN
-				regex(LuaScope.KEYWORD_VAR1, "true|false"),
+				regex(LuaScope.KEYWORD_VAR1, Pattern.compile("true|false")),
 				//NULL
 				token(LuaScope.KEYWORD_VAR2, "nil")
 		);
@@ -314,9 +314,9 @@ public final class LuaHighlight extends Highlight {
 		return makeJoin(
 				compound(
 						metaExpCapture(depth),
-						regex(Default.OPERATOR, "\\+\\+|--").setOptional(true)
+						regex(Default.OPERATOR, Pattern.compile("\\+\\+|--")).setOptional(true)
 				),
-				regex(Default.OPERATOR, "(->|!=|==|<=|>=|&&|\\|\\||\\+=|-=|\\*=|/=|%=|&=|\\|=|\\^=|<<=|>>=|>>>=)|[=.+\\-*/%&|<>^]")
+				regex(Default.OPERATOR, Pattern.compile("(->|!=|==|<=|>=|&&|\\|\\||\\+=|-=|\\*=|/=|%=|&=|\\|=|\\^=|<<=|>>=|>>>=)|[=.+\\-*/%&|<>^]"))
 		);
 	}
 
@@ -327,10 +327,10 @@ public final class LuaHighlight extends Highlight {
 		res.rawTokenMatcher = Pattern.compile("(--\\[\\[(.|\\n)*?]]|--.*)");
 		res.symbolMatcher = Pattern.compile(
 				"(->|!=|==|<=|>=|&&|\\|\\||\\+\\+|--|\\+=|-=|\\*=|/=|%=|&=|\\|=|\\^=|<<=|>>=|>>>=)" +
-						"|(\\\\[0-7]{3})" +
-						"|(\\\\u[0-9a-fA-F]{4})" +
-						"|(\\\\[0abtnvfre\\\\\"'])" +
-						"|[\\\\.+\\-*/%&|!<>~^=,;:(){}\"'\\[\\]]"
+				"|(\\\\[0-7]{3})" +
+				"|(\\\\u[0-9a-fA-F]{4})" +
+				"|(\\\\[0abtnvfre\\\\\"'])" +
+				"|[\\\\.+\\-*/%&|!<>~^=,;:(){}\"'\\[\\]]"
 		);
 
 		res

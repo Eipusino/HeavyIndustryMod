@@ -9,6 +9,9 @@ import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.concurrent.holder.ObjectHolder;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
 import java.util.AbstractSet;
@@ -53,7 +56,8 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	protected Keys keys1, keys2;
 
 	@SuppressWarnings("unchecked")
-	public static <K, V> CollectionObjectMap<K, V> of(Class<?> keyType, Class<?> valueType, Object... values) {
+	@Contract(value = "_, _, _ -> new")
+	public static <K, V> CollectionObjectMap<K, V> of(@NotNull Class<?> keyType, @NotNull Class<?> valueType, Object... values) {
 		CollectionObjectMap<K, V> map = new CollectionObjectMap<>(keyType, valueType);
 
 		for (int i = 0; i < values.length / 2; i++) {
@@ -64,7 +68,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	}
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
-	public CollectionObjectMap(Class<?> keyType, Class<?> valueType) {
+	public CollectionObjectMap(@NotNull Class<?> keyType, @NotNull Class<?> valueType) {
 		this(keyType, valueType, 51, 0.8f);
 	}
 
@@ -73,7 +77,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	 *
 	 * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
 	 */
-	public CollectionObjectMap(Class<?> keyType, Class<?> valueType, int initialCapacity) {
+	public CollectionObjectMap(@NotNull Class<?> keyType, @NotNull Class<?> valueType, int initialCapacity) {
 		this(keyType, valueType, initialCapacity, 0.8f);
 	}
 
@@ -84,7 +88,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	 * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
 	 */
 	@SuppressWarnings("unchecked")
-	public CollectionObjectMap(Class<?> keyType, Class<?> valueType, int initialCapacity, float loadFactor) {
+	public CollectionObjectMap(@NotNull Class<?> keyType, @NotNull Class<?> valueType, int initialCapacity, float loadFactor) {
 		if (initialCapacity < 0) throw new IllegalArgumentException("initialCapacity must be >= 0: " + initialCapacity);
 		initialCapacity = Mathf.nextPowerOfTwo((int) Math.ceil(initialCapacity / loadFactor));
 		if (initialCapacity > 0x40000000)
@@ -131,7 +135,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	}
 
 	@SuppressWarnings("unchecked")
-	public CollectionObjectMap<K, V> copy() {
+	public @NotNull CollectionObjectMap<K, V> copy() {
 		try {
 			CollectionObjectMap<K, V> out = (CollectionObjectMap<K, V>) super.clone();
 			out.keyTable = Arrays.copyOf(keyTable, keyTable.length);
@@ -146,7 +150,8 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 
 	/** Returns the old value associated with the specified key, or null. */
 	@Override
-	public V put(K key, V value) {
+	@Contract(value = "null, _ -> null")
+	public V put(@Nullable K key, V value) {
 		if (key == null) return null;
 
 		// Check for existing keys.
@@ -210,14 +215,11 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		return null;
 	}
 
-	public V put(Entry<? extends K, ? extends V> entry) {
-		return put(entry.getKey(), entry.getValue());
-	}
+	@Contract(value = "null -> null")
+	public V put(@Nullable Entry<? extends K, ? extends V> entry) {
+		if (entry == null) return null;
 
-	public void putAll(CollectionObjectMap<? extends K, ? extends V> map) {
-		ensureCapacity(map.size);
-		for (ObjectHolder<? extends K, ? extends V> entry : map)
-			put(entry.key, entry.value);
+		return put(entry.getKey(), entry.getValue());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -227,14 +229,15 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		}
 	}
 
-	/// Put all the keys of this other map into this map, and return this map for chaining.
+	/** Put all the keys of this other map into this map, and return this map for chaining. */
+	@Contract(value = "_ -> this")
 	public CollectionObjectMap<K, V> merge(CollectionObjectMap<? extends K, ? extends V> map) {
 		putAll(map);
 		return this;
 	}
 
-	/// Skips checks for existing keys.
-	protected void putResize(K key, V value) {
+	/** Skips checks for existing keys. */
+	protected void putResize(@NotNull K key, V value) {
 		// Check for empty buckets.
 		int hashCode = key.hashCode();
 		int index1 = hashCode & mask;
@@ -367,9 +370,10 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		return val;
 	}
 
-	/// Returns the value for the specified key, or null if the key is not in the map.
+	/** Returns the value for the specified key, or null if the key is not in the map. */
 	@Override
-	public V get(Object key) {
+	@Contract(value = "null -> null", pure = true)
+	public V get(@Nullable Object key) {
 		if (key == null) return null;
 
 		int hashCode = key.hashCode();
@@ -384,8 +388,9 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		return valueTable[index];
 	}
 
-	/// Returns the value for the specified key, or the default value if the key is not in the map.
-	public V get(K key, V defaultValue) {
+	/** Returns the value for the specified key, or the default value if the key is not in the map. */
+	@Contract(value = "null, _ -> param2", pure = true)
+	public V get(@Nullable K key, V defaultValue) {
 		if (key == null) return defaultValue;
 
 		int hashCode = key.hashCode();
@@ -400,15 +405,16 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		return valueTable[index];
 	}
 
-	protected V getStash(Object key, V defaultValue) {
+	protected V getStash(@NotNull Object key, V defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return valueTable[i];
 		return defaultValue;
 	}
 
-	/// Returns the value associated with the key, or null.
+	/** Returns the value associated with the key, or null. */
 	@Override
-	public V remove(Object key) {
+	@Contract(value = "null -> null")
+	public V remove(@Nullable Object key) {
 		if (key == null) return null;
 
 		int hashCode = key.hashCode();
@@ -443,9 +449,10 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	}
 
 	@Override
-	public void putAll(Map<? extends K, ? extends V> m) {
-		for (ObjectHolder<K, V> set : iterator()) {
-			put(set.getKey(), set.getValue());
+	public void putAll(@NotNull Map<? extends K, ? extends V> m) {
+		ensureCapacity(m.size());
+		for (ObjectHolder<K, V> holder : iterator()) {
+			put(holder.getKey(), holder.getValue());
 		}
 	}
 
@@ -534,7 +541,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	 * @param identity If true, uses == to compare the specified value with values in the map. If false, uses
 	 *                 {@link #equals(Object)}.
 	 */
-	public boolean containsValue(Object value, boolean identity) {
+	public boolean containsValue(@Nullable Object value, boolean identity) {
 		if (value == null) {
 			for (int i = capacity + stashSize; i-- > 0; )
 				if (keyTable[i] != null && valueTable[i] == null) return true;
@@ -549,6 +556,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	}
 
 	@Override
+	@Contract(value = "null -> false", pure = true)
 	public boolean containsKey(Object key) {
 		if (key == null) return false;
 
@@ -565,7 +573,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	}
 
 	@Override
-	public boolean containsValue(Object value) {
+	public boolean containsValue(@Nullable Object value) {
 		return containsValue(value, false);
 	}
 
@@ -720,11 +728,11 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public Entries iterator() {
+	public @NotNull Entries iterator() {
 		return entries();
 	}
 
-	public Entries entries() {
+	public @NotNull Entries entries() {
 		if (entries1 == null) {
 			entries1 = new Entries();
 			entries2 = new Entries();
@@ -746,7 +754,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	 * time this method is called. Use the {@link Values} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public Values values() {
+	public @NotNull Values values() {
 		if (values1 == null) {
 			values1 = new Values();
 			values2 = new Values();
@@ -764,7 +772,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	}
 
 	@Override
-	public Set<Entry<K, V>> entrySet() {
+	public @NotNull Set<Entry<K, V>> entrySet() {
 		return new EntrySet();
 	}
 
@@ -773,7 +781,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 	 * time this method is called. Use the {@link Keys} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public Keys keySet() {
+	public @NotNull Keys keySet() {
 		if (keys1 == null) {
 			keys1 = new Keys();
 			keys2 = new Keys();
@@ -805,7 +813,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		}
 
 		@Override
-		public Iterator<Entry<K, V>> iterator() {
+		public @NotNull Iterator<Entry<K, V>> iterator() {
 			itr.entries = CollectionObjectMap.this.iterator();
 			return itr;
 		}
@@ -930,7 +938,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		}
 
 		@Override
-		public Entries iterator() {
+		public @NotNull Entries iterator() {
 			return this;
 		}
 	}
@@ -968,18 +976,19 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		}
 
 		@Override
-		public Values iterator() {
+		@Contract(value = " -> this", pure = true)
+		public @NotNull Values iterator() {
 			return this;
 		}
 
 		@Override
-		public V[] toArray() {
+		public V @NotNull [] toArray() {
 			return Arrays.copyOf(valueTable, size);
 		}
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public <T> T[] toArray(T[] a) {
+		public <T> T @NotNull [] toArray(T[] a) {
 			if (a.length < size)
 				// Make a new array of a's runtime type, but my contents:
 				return (T[]) Arrays.copyOf(valueTable, size, a.getClass());
@@ -995,7 +1004,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		}
 
 		@Override
-		public boolean addAll(Collection<? extends V> c) {
+		public boolean addAll(@NotNull Collection<? extends V> c) {
 			return false;
 		}
 
@@ -1028,7 +1037,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		}
 
 		@Override
-		public boolean removeAll(Collection<?> c) {
+		public boolean removeAll(@NotNull Collection<?> c) {
 			boolean modified = false;
 			while (hasNext()) {
 				if (c.contains(next())) {
@@ -1040,7 +1049,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		}
 
 		@Override
-		public boolean retainAll(Collection<?> c) {
+		public boolean retainAll(@NotNull Collection<?> c) {
 			boolean modified = false;
 			while (hasNext()) {
 				if (!c.contains(next())) {
@@ -1124,17 +1133,17 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		}
 
 		@Override
-		public Keys iterator() {
+		public @NotNull Keys iterator() {
 			return this;
 		}
 
 		@Override
-		public K[] toArray() {
+		public K @NotNull [] toArray() {
 			return toSeq().toArray();
 		}
 
 		@Override
-		public <T> T[] toArray(T[] a) {
+		public <T> T @NotNull [] toArray(T[] a) {
 			return toSeq().toArray(a.getClass().getComponentType());
 		}
 
@@ -1157,12 +1166,12 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		}
 
 		@Override
-		public boolean addAll(Collection<? extends K> c) {
+		public boolean addAll(@NotNull Collection<? extends K> c) {
 			return false;
 		}
 
 		@Override
-		public boolean retainAll(Collection<?> c) {
+		public boolean retainAll(@NotNull Collection<?> c) {
 			boolean modified = false;
 			Iterator<K> it = iterator();
 			while (it.hasNext()) {
@@ -1175,7 +1184,7 @@ public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, 
 		}
 
 		@Override
-		public boolean removeAll(Collection<?> c) {
+		public boolean removeAll(@NotNull Collection<?> c) {
 			boolean modified = false;
 
 			if (size() > c.size()) {

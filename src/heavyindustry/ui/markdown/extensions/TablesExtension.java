@@ -38,7 +38,7 @@ public class TablesExtension implements Parser.ParserExtension, MDLayoutRenderer
 		rendererBuilder.nodeRendererFactory(TableRenderer::new);
 	}
 
-	private static class TableRenderer extends LayoutNodeRenderer {
+	static class TableRenderer extends LayoutNodeRenderer {
 		private static final Set<Class<? extends Node>> typeSet = new HashSet<>(Arrays.asList(
 				TableBlock.class,
 				TableHead.class,

@@ -1,5 +1,6 @@
 package heavyindustry.util;
 
+import arc.util.Log;
 import arc.util.OS;
 
 public final class MagicInstaller {
@@ -13,9 +14,17 @@ public final class MagicInstaller {
 
 	public static Class<?> installMagic() {
 		if (!installedMagic && !OS.isAndroid) {
-			magicClass = Unsafer2.defineClass(null, data, null);
-			installedMagic = true;
+			try {
+				//In some VMs, this class does not exist, such as graalvm
+				Log.info("Use " + Class.forName("jdk.internal.reflect.MagicAccessorImpl"));
+
+				magicClass = Unsafer2.defineClass(null, data, null);
+				installedMagic = true;
+			} catch (Exception e) {
+				Log.err(e);
+			}
 		}
+
 		return magicClass;
 	}
 }

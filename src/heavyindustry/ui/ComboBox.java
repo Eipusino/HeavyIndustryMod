@@ -18,11 +18,11 @@ import arc.scene.ui.layout.Cell;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.util.Align;
-import arc.util.Nullable;
 import arc.util.Tmp;
 import heavyindustry.ui.Listeners.ClickOnOtherListener;
 import heavyindustry.util.CollectionList;
 import heavyindustry.util.concurrent.ObjectReference;
+import org.jetbrains.annotations.Nullable;
 
 public class ComboBox extends Table {
 	private final Table mySelectionTable;
@@ -202,8 +202,7 @@ public class ComboBox extends Table {
 
 	}
 
-	@Nullable
-	public ComboBoxItem getItem(int index) {
+	public @Nullable ComboBoxItem getItem(int index) {
 		return index == -1 ? null : items.get(index);
 	}
 

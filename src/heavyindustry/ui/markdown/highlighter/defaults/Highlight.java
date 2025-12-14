@@ -14,6 +14,7 @@ import heavyindustry.ui.markdown.highlighter.SelectionCapture;
 import heavyindustry.ui.markdown.highlighter.SerialMatcher;
 import heavyindustry.ui.markdown.highlighter.TokenCapture;
 import heavyindustry.ui.markdown.highlighter.TokenMatcher;
+import org.intellij.lang.annotations.RegExp;
 
 import java.util.Arrays;
 import java.util.List;
@@ -119,40 +120,60 @@ public abstract class Highlight {
 		return new LinesCapture(scope);
 	}
 
-	protected static RegexCapture regex(String regex) {
+	protected static RegexCapture regex(@RegExp String regex) {
 		return new RegexCapture(Pattern.compile(regex));
+	}
+
+	protected static RegexCapture regex(Pattern pattern) {
+		return new RegexCapture(pattern);
 	}
 
 	protected static TokenCapture token(String... tokens) {
 		return new TokenCapture(tokens);
 	}
 
-	protected static RegexCapture regex(Scope scope, String regex) {
+	protected static RegexCapture regex(Scope scope, @RegExp String regex) {
 		return new RegexCapture(scope, Pattern.compile(regex));
+	}
+
+	protected static RegexCapture regex(Scope scope, Pattern pattern) {
+		return new RegexCapture(scope, pattern);
 	}
 
 	protected static TokenCapture token(Scope scope, String... tokens) {
 		return new TokenCapture(scope, tokens);
 	}
 
-	protected static RegexCapture regex(int maths, String regex) {
+	protected static RegexCapture regex(int maths, @RegExp String regex) {
 		return new RegexCapture(maths, Pattern.compile(regex));
+	}
+
+	protected static RegexCapture regex(int maths, Pattern pattern) {
+		return new RegexCapture(maths, pattern);
 	}
 
 	protected static TokenCapture token(int matches, String... tokens) {
 		return new TokenCapture(matches, tokens);
 	}
 
-	protected static RegexCapture regex(int matches, Scope scope, String regex) {
+	protected static RegexCapture regex(int matches, Scope scope, @RegExp String regex) {
 		return new RegexCapture(matches, scope, Pattern.compile(regex));
+	}
+
+	protected static RegexCapture regex(int matches, Scope scope, Pattern pattern) {
+		return new RegexCapture(matches, scope, pattern);
 	}
 
 	protected static TokenCapture token(int matches, Scope scope, String... tokens) {
 		return new TokenCapture(matches, scope, tokens);
 	}
 
-	protected static RegexCapture regex(int minMatches, int maxMatches, Scope scope, String regex) {
+	protected static RegexCapture regex(int minMatches, int maxMatches, Scope scope, @RegExp String regex) {
 		return new RegexCapture(minMatches, maxMatches, scope, Pattern.compile(regex));
+	}
+
+	protected static RegexCapture regex(int minMatches, int maxMatches, Scope scope, Pattern pattern) {
+		return new RegexCapture(minMatches, maxMatches, scope, pattern);
 	}
 
 	protected static TokenCapture token(int minMatches, int maxMatches, Scope scope, String... tokens) {

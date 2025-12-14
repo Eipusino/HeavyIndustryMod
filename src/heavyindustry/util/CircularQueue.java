@@ -1,5 +1,7 @@
 package heavyindustry.util;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.lang.reflect.Array;
 
 public class CircularQueue<T> {
@@ -11,7 +13,7 @@ public class CircularQueue<T> {
 	protected final int capacity;
 
 	@SuppressWarnings("unchecked")
-	public CircularQueue(int cap, Class<?> type) {
+	public CircularQueue(int cap, @NotNull Class<?> type) {
 		componentType = type;
 		capacity = cap;
 		queue = (T[]) Array.newInstance(type, cap);

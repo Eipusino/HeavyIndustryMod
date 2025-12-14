@@ -16,7 +16,7 @@ public final class DefaultBackground {
 	});
 	static final Lazy<Drawable> black6 = Lazy.of(() -> new TextureRegionDrawable(Core.atlas.white()).tint(0, 0, 0, 0.6f));
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private DefaultBackground() {}
 
 	public static Drawable white() {

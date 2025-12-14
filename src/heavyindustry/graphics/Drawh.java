@@ -8,7 +8,7 @@ import arc.graphics.g2d.Lines;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
-import heavyindustry.util.concurrent.holder.ObjectHolder;
+import heavyindustry.util.concurrent.Pair;
 
 import static heavyindustry.graphics.Drawn.v1;
 import static heavyindustry.graphics.Drawn.v2;
@@ -26,7 +26,7 @@ public final class Drawh {
 	static float[] circleVertices36;
 	static float[] circleVertices60;
 
-	static ObjectHolder<float[], float[]>[] verts;
+	static Pair<float[], float[]>[] verts;
 
 	static {
 		circleOffset24 = prepareCircleOffset(24);
@@ -37,7 +37,7 @@ public final class Drawh {
 		circleVertices36 = prepareCircleVertices(36);
 		circleVertices60 = prepareCircleVertices(60);
 
-		verts = arrayOf(new ObjectHolder<>(circleOffset24, circleVertices24), new ObjectHolder<>(circleOffset36, circleVertices36), new ObjectHolder<>(circleOffset60, circleVertices60));
+		verts = arrayOf(new Pair<>(circleOffset24, circleVertices24), new Pair<>(circleOffset36, circleVertices36), new Pair<>(circleOffset60, circleVertices60));
 	}
 
 	private Drawh() {}
@@ -90,10 +90,10 @@ public final class Drawh {
 	public static void fillCircle(float x, float y, float radius, int level) {
 		float color = Draw.getColorPacked();
 
-		ObjectHolder<float[], float[]> vert = verts[level & 3];
+		Pair<float[], float[]> vert = verts[level & 3];
 
-		float[] offset = vert.key;
-		float[] vertices = vert.value;
+		float[] offset = vert.left;
+		float[] vertices = vert.right;
 		int sides = offset.length / 4;
 
 		for (int i = 0; i < sides; i++) {
@@ -135,10 +135,10 @@ public final class Drawh {
 		float c1 = innerColor.toFloatBits();
 		float c2 = color.toFloatBits();
 
-		ObjectHolder<float[], float[]> vert = verts[level & 3];
+		Pair<float[], float[]> vert = verts[level & 3];
 
-		float[] offset = vert.key;
-		float[] vertices = vert.value;
+		float[] offset = vert.left;
+		float[] vertices = vert.right;
 
 		int sides = offset.length / 4;
 
@@ -185,10 +185,10 @@ public final class Drawh {
 		float stroke = Lines.getStroke();
 		float color = Draw.getColorPacked();
 
-		ObjectHolder<float[], float[]> vert = verts[level & 3];
+		Pair<float[], float[]> vert = verts[level & 3];
 
-		float[] offset = vert.key;
-		float[] vertices = vert.value;
+		float[] offset = vert.left;
+		float[] vertices = vert.right;
 
 		int sides = offset.length / 4;
 

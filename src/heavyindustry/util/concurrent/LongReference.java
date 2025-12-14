@@ -27,6 +27,6 @@ public class LongReference implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects2.hashCodeLong(element);
+		return Objects2.longToHash(element);
 	}
 }

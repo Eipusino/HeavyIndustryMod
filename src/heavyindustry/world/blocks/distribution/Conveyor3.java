@@ -5,13 +5,14 @@ import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
 import arc.util.Eachable;
-import arc.util.Nullable;
 import arc.util.Tmp;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.Edges;
 import mindustry.world.Tile;
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.TestOnly;
 
 import java.util.Arrays;
 
@@ -21,10 +22,10 @@ import java.util.Arrays;
  * <br>Why are Anuke still using 14 (Android 4)?
  * <br>Why does R8 change the default methods in the interface that have not been rewritten to final?
  *
+ * @apiNote <strong>Do not use it, any use of this class on the Android platform will cause a {@code LinkageError}.</strong>
  * @since 1.0.8
- * @deprecated Do not use it, any use of this class on the Android platform will cause a {@code LinkageError}.
  */
-@Deprecated
+@TestOnly
 public class Conveyor3 extends Conveyor2 {
 	protected static final int[] blendresult = new int[5];
 	protected static final BuildPlan[] directionals = new BuildPlan[4];
@@ -56,9 +57,8 @@ public class Conveyor3 extends Conveyor2 {
 		return region;
 	}
 
-	@Nullable
 	@Override
-	public int[] getTiling(BuildPlan req, Eachable<BuildPlan> list) {
+	public int @Nullable [] getTiling(BuildPlan req, Eachable<BuildPlan> list) {
 		if (req.tile() == null) return null;
 
 		Arrays.fill(directionals, null);
@@ -142,7 +142,7 @@ public class Conveyor3 extends Conveyor2 {
 	}
 
 	@Override
-	public boolean blends(Tile tile, int rotation, @Nullable BuildPlan[] directional, int direction, boolean checkWorld) {
+	public boolean blends(Tile tile, int rotation, BuildPlan @Nullable [] directional, int direction, boolean checkWorld) {
 		int realDir = Mathf.mod(rotation - direction, 4);
 		if (directional != null && directional[realDir] != null) {
 			BuildPlan req = directional[realDir];

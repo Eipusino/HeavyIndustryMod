@@ -6,7 +6,7 @@ import arc.graphics.Pixmap.Format;
 import arc.graphics.Texture;
 import arc.graphics.Texture.TextureFilter;
 import arc.graphics.gl.FrameBuffer;
-import arc.util.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A framebuffer that requests depth (and stencil) textures instead of renderbuffers, letting users sample from them.
@@ -43,13 +43,11 @@ public class DepthFrameBuffer extends FrameBuffer {
 		create(format, width, height, hasDepth, hasStencil);
 	}
 
-	@Nullable
-	public Texture getDepthTexture() {
+	public @Nullable Texture getDepthTexture() {
 		return hasDepth ? textureAttachments.get(1) : null;
 	}
 
-	@Nullable
-	public Texture getStencilTexture() {
+	public @Nullable Texture getStencilTexture() {
 		return hasStencil ? textureAttachments.get(hasDepth ? 2 : 1) : null;
 	}
 

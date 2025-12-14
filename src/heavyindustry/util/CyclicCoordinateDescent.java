@@ -1,7 +1,6 @@
 package heavyindustry.util;
 
 import arc.math.Mathf;
-import arc.struct.Seq;
 import arc.util.Time;
 import heavyindustry.math.Mathm;
 
@@ -13,7 +12,7 @@ import heavyindustry.math.Mathm;
  * Ported in java
  */
 public final class CyclicCoordinateDescent {
-	static final Seq<WorldBone> worldBones = new Seq<>(WorldBone.class);
+	static final CollectionList<WorldBone> worldBones = new CollectionList<>(WorldBone.class);
 	static final float epsilon = 0.0001f;
 
 	private CyclicCoordinateDescent() {}

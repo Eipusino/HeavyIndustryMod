@@ -94,7 +94,7 @@ public final class HPal {
 	public static final Color darkRed = new Color(0.5f, 0f, 0f);
 	public static final Color melt = new Color(0xffa20aff);
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HPal() {}
 
 	public static void init() {

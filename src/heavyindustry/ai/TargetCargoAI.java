@@ -1,12 +1,13 @@
 package heavyindustry.ai;
 
-import arc.util.Nullable;
+import arc.struct.Seq;
 import heavyindustry.util.CollectionObjectSet;
 import mindustry.Vars;
 import mindustry.ai.types.CargoAI;
 import mindustry.gen.Building;
 import mindustry.gen.Call;
 import mindustry.world.meta.BlockFlag;
+import org.jetbrains.annotations.Nullable;
 
 // cargo AI that doesn't require the unit to be tethered
 public class TargetCargoAI extends CargoAI {
@@ -25,7 +26,9 @@ public class TargetCargoAI extends CargoAI {
 
 			if (loadTarget == null && retarget()) {
 				// this actually sucks
-				for (Building build : Vars.indexer.getFlagged(unit.team, BlockFlag.extinguisher)) {
+				Seq<Building> builds = Vars.indexer.getFlagged(unit.team, BlockFlag.extinguisher);
+				for (int i = 0; i < builds.size; i++) {
+					Building build = builds.get(i);
 					if (!pendingLoaders.contains(build)) {
 						findAnyTarget(build);
 						if (unloadTarget != null) {

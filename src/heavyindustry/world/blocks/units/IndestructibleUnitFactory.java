@@ -91,9 +91,7 @@ public class IndestructibleUnitFactory extends UnitFactory {
 			for (Team t : Get.baseTeams) {
 				ImageButton button = cont.button(Tex.whiteui, Styles.clearTogglei, 24f, Constant.RUNNABLE_NOTHING).group(group).get();
 				button.changed(() -> targetTeam = button.isChecked() ? t : null);
-				if (Tex.whiteui instanceof TextureRegionDrawable w) {
-					button.getStyle().imageUp = w.tint(t.color.r, t.color.g, t.color.b, t.color.a);
-				}
+				button.getStyle().imageUp = ((TextureRegionDrawable) Tex.whiteui).tint(t.color.r, t.color.g, t.color.b, t.color.a);
 				button.update(() -> button.setChecked(targetTeam == t));
 
 				if (i++ % 4 == 3) {

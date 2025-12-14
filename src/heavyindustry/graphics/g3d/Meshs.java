@@ -5,7 +5,7 @@ import arc.graphics.VertexAttribute;
 import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
 
-final class MeshUtils {
+final class Meshs {
 	static final Vec3
 			v1 = new Vec3(),
 			v2 = new Vec3(),
@@ -15,8 +15,8 @@ final class MeshUtils {
 	static final float[] floats = new float[8]; //3 + 3 + 2
 	static Mesh mesh;
 
-	/// Don't let anyone instantiate this class.
-	private MeshUtils() {}
+	/** Don't let anyone instantiate this class. */
+	private Meshs() {}
 
 	static void begin(int count) {
 		mesh = new Mesh(true, count, 0,

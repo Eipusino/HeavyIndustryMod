@@ -1,7 +1,6 @@
 package heavyindustry.world.blocks.power;
 
 import arc.Core;
-import arc.util.Nullable;
 import arc.util.Strings;
 import mindustry.graphics.Pal;
 import mindustry.type.ItemStack;
@@ -10,13 +9,14 @@ import mindustry.ui.Bar;
 import mindustry.world.blocks.power.ConsumeGenerator;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatValues;
+import org.jetbrains.annotations.Nullable;
 
 public class AdvancedConsumeGenerator extends ConsumeGenerator {
 	// make them able to output multiple items and liquids
 	public @Nullable ItemStack outputItem;
-	public @Nullable ItemStack[] outputItems;
+	public ItemStack @Nullable [] outputItems;
 	public @Nullable LiquidStack outputLiquid;
-	public @Nullable LiquidStack[] outputLiquids;
+	public LiquidStack @Nullable [] outputLiquids;
 	public int[] liquidOutputDirections = new int[]{-1};
 
 	// is production bar will be displayed

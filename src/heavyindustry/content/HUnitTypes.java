@@ -161,10 +161,10 @@ public final class HUnitTypes {
 	//elite
 	public static UnitType2 tiger, thunder;
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HUnitTypes() {}
 
-	/// Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}.
+	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
 		if (HVars.isPlugin) return;
 

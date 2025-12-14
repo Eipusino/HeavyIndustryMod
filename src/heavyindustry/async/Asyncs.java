@@ -1,4 +1,4 @@
-package heavyindustry.util;
+package heavyindustry.async;
 
 import arc.Core;
 import arc.func.Prov;
@@ -14,8 +14,8 @@ import java.util.concurrent.locks.ReadWriteLock;
  *
  * @since 1.0.7
  */
-public final class Async {
-	private Async() {}
+public final class Asyncs {
+	private Asyncs() {}
 
 	public static <T> T get(Future<T> future) {
 		try {

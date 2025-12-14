@@ -31,7 +31,7 @@ public class InsExtension implements Parser.ParserExtension, MDLayoutRenderer.Dr
 		rendererBuilder.nodeRendererFactory(LayoutInsNodeRenderer::new);
 	}
 
-	private static class LayoutInsNodeRenderer extends LayoutNodeRenderer {
+	static class LayoutInsNodeRenderer extends LayoutNodeRenderer {
 		protected LayoutInsNodeRenderer(DrawRendererContext element) {
 			super(element);
 		}

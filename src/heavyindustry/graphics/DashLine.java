@@ -17,7 +17,7 @@ public final class DashLine {
 	private static final Pool<PointList> pointListPool = Pools.get(PointList.class, PointList::new);
 	private static final FloatSeq floats = new FloatSeq(20);
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private DashLine() {}
 
 	public static void dashPoly(float... cords) {

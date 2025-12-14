@@ -1,10 +1,6 @@
 package heavyindustry.ui;
 
 import arc.Core;
-import arc.graphics.g2d.NinePatch;
-import arc.graphics.g2d.TextureAtlas.AtlasRegion;
-import arc.scene.style.Drawable;
-import arc.scene.style.ScaledNinePatchDrawable;
 import arc.scene.style.TextureRegionDrawable;
 
 import static heavyindustry.HVars.MOD_PREFIX;
@@ -13,7 +9,7 @@ public final class HIcon {
 	public static TextureRegionDrawable keplerIcon, aboutIcon, artistIcon, configureIcon, contributeIcon, databaseIcon, debuggingIcon, defaultShowIcon, fullSwordIcon, gasesIcon;
 	public static TextureRegionDrawable holdIcon, matrixIcon, nuclearIcon, programIcon, publicInfoIcon, reactionIcon, showInfosIcon, showRangeIcon, musicsIcon;
 	public static TextureRegionDrawable soundsIcon, sounds2Icon, startIcon, telegramIcon, timeIcon, translateIcon, unShowInfosIcon;
-	public static TextureRegionDrawable javaIcon, javaScriptIcon, networkErrorIcon;
+	public static TextureRegionDrawable javaIcon, javaScriptIcon, networkErrorIcon, slotsBackIcon;
 	//small
 	public static TextureRegionDrawable resetIconSmall, timeIconSmall;
 	//animdustry
@@ -22,7 +18,7 @@ public final class HIcon {
 	//other
 	public static TextureRegionDrawable matrixArrow;
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HIcon() {}
 
 	public static void load() {
@@ -55,6 +51,7 @@ public final class HIcon {
 		javaIcon = texture("java-icon");
 		javaScriptIcon = texture("java-script-icon");
 		networkErrorIcon = texture("network-error-icon");
+		slotsBackIcon = texture("slots-back-icon");
 		//small
 		resetIconSmall = texture("reset-icon-small");
 		timeIconSmall = texture("time-icon-small");
@@ -79,20 +76,6 @@ public final class HIcon {
 		boulderChanHit = texture("boulder-chan-hit");
 		//other
 		matrixArrow = texture("matrix-arrow");
-	}
-
-	public static Drawable drawable(String name) {
-		AtlasRegion region = Core.atlas.find(MOD_PREFIX + name);
-
-		if (region.splits != null) {
-			int[] splits = region.splits;
-			NinePatch patch = new NinePatch(region, splits[0], splits[1], splits[2], splits[3]);
-			int[] pads = region.pads;
-			if (pads != null) patch.setPadding(pads[0], pads[1], pads[2], pads[3]);
-			return new ScaledNinePatchDrawable(patch);
-		} else {
-			return new TextureRegionDrawable(region);
-		}
 	}
 
 	public static TextureRegionDrawable texture(String name) {

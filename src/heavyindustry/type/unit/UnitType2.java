@@ -1,7 +1,6 @@
 package heavyindustry.type.unit;
 
 import arc.Core;
-import arc.util.Nullable;
 import arc.util.Strings;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
@@ -15,9 +14,10 @@ import mindustry.type.ItemStack;
 import mindustry.type.UnitType;
 import mindustry.type.ammo.ItemAmmoType;
 import mindustry.world.meta.Env;
+import org.jetbrains.annotations.Nullable;
 
 public class UnitType2 extends UnitType {
-	public @Nullable ItemStack[] requirements;
+	public ItemStack @Nullable [] requirements;
 
 	public float damageMultiplier = 1f;
 	public float absorption = 0f;

@@ -11,7 +11,11 @@ public class EdgeLineStripDrawable extends FillStripDrawable {
 	public Color lineColor;
 
 	public EdgeLineStripDrawable(float str, Color lineCol) {
-		this(str, lineCol, Color.clear, Color.clear);
+		this(str, lineCol, Color.clear);
+	}
+
+	public EdgeLineStripDrawable(float str, Color lineCol, Color col) {
+		this(str, lineCol, col, col);
 	}
 
 	public EdgeLineStripDrawable(float str, Color lineCol, Color col, Color innCol) {

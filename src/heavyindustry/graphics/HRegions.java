@@ -10,9 +10,9 @@ import arc.struct.ObjectSet;
 import arc.struct.Seq;
 import arc.util.Log;
 import heavyindustry.HVars;
-import heavyindustry.util.Objects2;
 
 import java.lang.reflect.Field;
+import java.util.Objects;
 
 public final class HRegions {
 	public static Fi spritesDir = HVars.internalTree.child("sprites");
@@ -40,7 +40,7 @@ public final class HRegions {
 			regionsField.setAccessible(true);
 			regionmapField.setAccessible(true);
 
-			Objects2.requireNonNull(Core.atlas, "Core.atlas has not been initialized.");
+			Objects.requireNonNull(Core.atlas, "Core.atlas has not been initialized.");
 
 			textures = (ObjectSet<Texture>) texturesField.get(Core.atlas);
 			regions = (Seq<AtlasRegion>) regionsField.get(Core.atlas);

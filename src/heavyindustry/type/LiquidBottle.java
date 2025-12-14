@@ -13,16 +13,16 @@ import mindustry.type.Liquid;
 public class LiquidBottle extends Item {
 	public Liquid liquid;
 
-	public LiquidBottle(String name, Liquid liq) {
-		super(name, liq.color);
+	public LiquidBottle(String name, Liquid liquid1) {
+		super(name, liquid1.color);
 
-		liquid = liq;
+		liquid = liquid1;
 
-		explosiveness = liq.explosiveness * 0.8f;
-		flammability = liq.flammability * 0.7f;
+		explosiveness = liquid.explosiveness * 0.8f;
+		flammability = liquid.flammability * 0.7f;
 		radioactivity = 0;
 
-		alwaysUnlocked = liq.alwaysUnlocked;
+		alwaysUnlocked = liquid.alwaysUnlocked;
 		generateIcons = true;
 	}
 

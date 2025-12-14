@@ -5,7 +5,6 @@ import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
 import arc.util.Eachable;
-import arc.util.Nullable;
 import arc.util.Tmp;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -15,6 +14,7 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.Autotiler;
 import mindustry.world.blocks.distribution.ChainedBuilding;
 import mindustry.world.blocks.heat.HeatConductor;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
@@ -49,9 +49,8 @@ public class HeatPipe extends HeatConductor implements Autotiler {
 		return region;
 	}
 
-	@Nullable
 	@Override
-	public int[] getTiling(BuildPlan req, Eachable<BuildPlan> list) {
+	public int @Nullable [] getTiling(BuildPlan req, Eachable<BuildPlan> list) {
 		if (req.tile() == null) return null;
 
 		Arrays.fill(directionals, null);

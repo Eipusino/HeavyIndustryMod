@@ -16,10 +16,11 @@ package heavyindustry.util;
 import arc.func.Boolf;
 import arc.func.Prov;
 import arc.util.Log;
-import arc.util.Nullable;
 import arc.util.OS;
 import heavyindustry.HVars;
 import mindustry.Vars;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.Constructor;
@@ -57,9 +58,10 @@ public final class Reflects {
 
 	static final CollectionObjectMap<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private Reflects() {}
 
+	@Contract(pure = true)
 	public static Class<?> box(Class<?> type) {
 		if (type == void.class) return Void.class;
 		else if (type == boolean.class) return Boolean.class;
@@ -73,6 +75,7 @@ public final class Reflects {
 		else return type;
 	}
 
+	@Contract(pure = true)
 	public static Class<?> unbox(Class<?> type) {
 		if (type == Void.class) return void.class;
 		else if (type == Boolean.class) return boolean.class;
@@ -86,6 +89,7 @@ public final class Reflects {
 		else return type;
 	}
 
+	@Contract(value = "_ -> new", pure = true)
 	public static String def(Class<?> type) {
 		// boolean
 		if (type == boolean.class || type == Boolean.class) return "false";
@@ -102,6 +106,7 @@ public final class Reflects {
 		return "null";
 	}
 
+	@Contract(pure = true)
 	public static Object as(Class<?> type) {
 		if (type == boolean.class || type == Boolean.class) return false;
 		else if (type == byte.class || type == Byte.class) return (byte) 0;
@@ -119,6 +124,7 @@ public final class Reflects {
 	}
 
 	/** Reflectively instantiates a type without throwing exceptions. */
+	@Contract(pure = true)
 	public static <T> T make(Constructor<T> cons, Object[] args) {
 		try {
 			return cons.newInstance(args);
@@ -132,6 +138,7 @@ public final class Reflects {
 	 *
 	 * @throws RuntimeException Any exception that occurs in reflection.
 	 */
+	@Contract(pure = true)
 	public static <T> T make(Class<T> type, Class<?>[] parameterTypes, Object[] args) {
 		try {
 			Constructor<T> cons = type.getDeclaredConstructor(parameterTypes);
@@ -151,6 +158,7 @@ public final class Reflects {
 	 *
 	 * @throws RuntimeException Any exception that occurs in reflection.
 	 */
+	@Contract(pure = true)
 	public static <T> Prov<T> supply(Class<T> type, Object[] args, Class<?>[] parameterTypes) {
 		try {
 			Constructor<T> cons = type.getDeclaredConstructor(parameterTypes);
@@ -181,8 +189,8 @@ public final class Reflects {
 		}
 	}
 
-	@Nullable
-	public static Field findField(Class<?> type, String name) {
+	@Contract(pure = true)
+	public static @Nullable Field findField(Class<?> type, String name) {
 		while (type != null) {
 			Field[] fields = type.getDeclaredFields();
 			for (Field field : fields) {
@@ -200,8 +208,8 @@ public final class Reflects {
 	 *
 	 * @return The field, or {@code null} if not found.
 	 */
-	@Nullable
-	public static Field findField(Class<?> type, Boolf<Field> name) {
+	@Contract(pure = true)
+	public static @Nullable Field findField(Class<?> type, Boolf<Field> name) {
 		while (type != null) {
 			Field[] fields = type.getDeclaredFields();
 			for (Field field : fields) {
@@ -219,8 +227,8 @@ public final class Reflects {
 	 *
 	 * @return The method, or {@code null} if not found.
 	 */
-	@Nullable
-	public static Method findMethod(Class<?> type, String name, Class<?>... args) {
+	@Contract(pure = true)
+	public static @Nullable Method findMethod(Class<?> type, String name, Class<?>... args) {
 		while (type != null) {
 			Method[] methods = type.getDeclaredMethods();
 			for (Method method : methods) {
@@ -239,8 +247,8 @@ public final class Reflects {
 	 * @return The constructor, or {@code null} if not found.
 	 */
 	@SuppressWarnings("unchecked")
-	@Nullable
-	public static <T> Constructor<T> findConstructor(Class<?> type, Class<?>... args) {
+	@Contract(pure = true)
+	public static <T> @Nullable Constructor<T> findConstructor(Class<?> type, Class<?>... args) {
 		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
 			Constructor<?>[] constructors = type.getDeclaredConstructors();
 			for (Constructor<?> constructor : constructors) {
@@ -251,6 +259,7 @@ public final class Reflects {
 		return null;
 	}
 
+	@Contract(value = "null, _ -> false", pure = true)
 	public static boolean isInstanceButNotSubclass(Object obj, Class<?> type) {
 		if (type.isInstance(obj)) {
 			try {
@@ -266,6 +275,7 @@ public final class Reflects {
 		return false;
 	}
 
+	@Contract(value = "_ -> new", pure = true)
 	public static CollectionObjectSet<Class<?>> getClassSubclassHierarchy(Class<?> type) {
 		Class<?> c = type.getSuperclass();
 		CollectionObjectSet<Class<?>> hierarchy = new CollectionObjectSet<>(Class.class);
@@ -290,6 +300,7 @@ public final class Reflects {
 	 * @param target Target Object
 	 * @param filler Excluded field names
 	 */
+	@Contract(value = "_, _, _ -> param2")
 	public static <T> T copyProperties(Object source, T target, @Nullable String[] filler) {
 		if (source == null || target == null) return target;
 
@@ -350,6 +361,6 @@ public final class Reflects {
 	}
 
 	public static boolean isAssignable(Field sourceType, Field targetType) {
-		return sourceType != null && targetType != null && sourceType.getType().isAssignableFrom(targetType.getType());
+		return sourceType != null && targetType != null && targetType.getType().isAssignableFrom(sourceType.getType());
 	}
 }

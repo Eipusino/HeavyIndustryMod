@@ -2,6 +2,7 @@ package heavyindustry.world;
 
 import arc.Core;
 import arc.Events;
+import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Strings;
 import arc.util.Structs;
@@ -9,7 +10,7 @@ import heavyindustry.entities.HEntity;
 import heavyindustry.game.TeamPayloadData;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.util.CollectionList;
-import heavyindustry.util.concurrent.holder.ObjectHolder;
+import heavyindustry.util.concurrent.Pair;
 import heavyindustry.world.blocks.defense.CommandableBlock;
 import mindustry.Vars;
 import mindustry.game.EventType.ResetEvent;
@@ -24,7 +25,7 @@ public final class Worlds {
 
 	public static TeamPayloadData teamPayloadData = new TeamPayloadData();
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private Worlds() {}
 
 	public static void load() {
@@ -47,29 +48,32 @@ public final class Worlds {
 	public static void exportBlockData() {
 		StringBuilder data = new StringBuilder();
 
-		CollectionList<ObjectHolder<String, Block>> blocks = new CollectionList<>(ObjectHolder.class);
+		CollectionList<Pair<String, Block>> blocks = new CollectionList<>(Pair.class);
 
-		for (Block block : Vars.content.blocks()) {
-			blocks.add(new ObjectHolder<>(block.name, block));
+		Seq<Block> seq = Vars.content.blocks();
+		for (int i = 0; i < seq.size; i++) {
+			Block block = seq.get(i);
+			blocks.add(new Pair<>(block.name, block));
 		}
 
 		for (var entry : SaveFileReader.fallback) {
 			Block block = Vars.content.block(entry.value);
 			if (block != null) {
-				blocks.add(new ObjectHolder<>(entry.key, block));
+				blocks.add(new Pair<>(entry.key, block));
 			}
 		}
 
-		blocks.sort(Structs.comparingInt(holder -> holder.value.id));
-		blocks.each(holder -> {
-			String name = holder.key;
-			Block block = holder.value;
+		blocks.sort(Structs.comparingInt(pair -> pair.right.id));
+		blocks.each(pair -> {
+			String name = pair.left;
+			Block block = pair.right;
 
-			data.append(name).append(' ')
-					.append(block.synthetic() ? '1' : '0').append(' ')
-					.append(block.solid ? '1' : '0').append(' ')
-					.append(block.size).append(' ')
-					.append(block.mapColor.rgba() >>> 8).append('\n');
+			data
+					.append(name).append(' ')//name
+					.append(block.synthetic() ? '1' : '0').append(' ')//synthetic
+					.append(block.solid ? '1' : '0').append(' ')//solid
+					.append(block.size).append(' ')//size
+					.append(block.mapColor.rgba() >>> 8).append('\n');//mapColor
 		});
 
 		Vars.platform.showFileChooser(false, Core.bundle.get("hi-export-data"), "dat", file -> {

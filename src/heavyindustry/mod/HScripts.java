@@ -38,10 +38,10 @@ import java.net.URLClassLoader;
  * @since 1.0.6
  */
 public final class HScripts {
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HScripts() {}
 
-	/// Initializes the Mod JS.
+	/** Initializes the Mod JS. */
 	public static void init() {
 		try {
 			if (Vars.mods.getScripts().scope instanceof ImporterTopLevel imp) {
@@ -131,17 +131,9 @@ public final class HScripts {
 		};
 	}
 
-	/// see {@code SimpleClass.__javaObject__.getSimpleName()}
+	// SimpleClass.__javaObject__.getSimpleName()
 	public static <T> Class<T> c(Class<T> c) {
 		return c;
-	}
-
-	public static NativeJavaClass nativeClass(Class<?> c) {
-		return new NativeJavaClass(Vars.mods.getScripts().scope, c);
-	}
-
-	public static NativeJavaClass getClass(String name) throws ClassNotFoundException {
-		return new NativeJavaClass(Vars.mods.getScripts().scope, Class.forName(name, true, Vars.mods.mainLoader()));
 	}
 
 	public static NativeJavaClass loadClass(Fi file, String name) throws ClassNotFoundException, IOException {

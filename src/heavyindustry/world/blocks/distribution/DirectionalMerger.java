@@ -1,9 +1,9 @@
 package heavyindustry.world.blocks.distribution;
 
-import arc.util.Nullable;
 import mindustry.gen.Building;
 import mindustry.type.Item;
 import mindustry.world.Edges;
+import org.jetbrains.annotations.Nullable;
 
 public class DirectionalMerger extends DirectionalRouter {
 	public DirectionalMerger(String name) {
@@ -16,8 +16,7 @@ public class DirectionalMerger extends DirectionalRouter {
 	}
 
 	public class RailDirectionalMergerBuild extends RailDirectionalRouterBuild {
-		@Nullable
-		public Building target() {
+		public @Nullable Building target() {
 			if (front() == null) return null;
 			if (front().team == team && front().acceptItem(this, current)) {
 				return front();

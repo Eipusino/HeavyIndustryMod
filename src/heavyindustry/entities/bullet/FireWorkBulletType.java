@@ -5,7 +5,6 @@ import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.math.Angles;
 import arc.math.Mathf;
-import arc.util.Nullable;
 import heavyindustry.graphics.HPal;
 import heavyindustry.util.Get;
 import mindustry.content.Fx;
@@ -18,6 +17,7 @@ import mindustry.gen.Sounds;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
+import org.jetbrains.annotations.Nullable;
 
 import static heavyindustry.HVars.MOD_NAME;
 
@@ -124,13 +124,17 @@ public class FireWorkBulletType extends BulletType {
 			if (colorful && childColorful) {
 				Color c = colors[(int) Mathf.random(0, colors.length - 0.01f)];
 				fire.create(b, b.team, b.x, b.y, Mathf.random(360), -1, 1, 1, c);
-			} else fire.create(b, b.team, b.x, b.y, Mathf.random(360), -1, 1, 1, color);
+			} else {
+				fire.create(b, b.team, b.x, b.y, Mathf.random(360), -1, 1, 1, color);
+			}
 		}
 		if (textFire != null) {
 			if (colorful) {
 				Color c = colors[Mathf.random(0, colors.length)];
 				textFire.create(b, b.team, b.x, b.y, 0, -1, 1, 1, c);
-			} else textFire.create(b, b.team, b.x, b.y, 0, -1, 1, 1, color);
+			} else {
+				textFire.create(b, b.team, b.x, b.y, 0, -1, 1, 1, color);
+			}
 		}
 	}
 

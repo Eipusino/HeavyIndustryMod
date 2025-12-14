@@ -1,6 +1,7 @@
 package heavyindustry.ui.dialogs;
 
 import arc.Core;
+import arc.struct.Seq;
 import heavyindustry.HVars;
 import mindustry.Vars;
 import mindustry.gen.Icon;
@@ -20,7 +21,9 @@ public class GameDataDialog extends BaseDialog {
 		addCloseButton();
 
 		cont.table(Tex.button, cat -> {
-			for (Planet planet : Vars.content.planets()) {
+			Seq<Planet> planets = Vars.content.planets();
+			for (int i = 0; i < planets.size; i++) {
+				Planet planet = planets.get(i);
 				if (planet != null && planet.accessible && planet.techTree != null && planet.sectors.any()) {
 					cat.button(
 							Core.bundle.get("settings.clearresearch") + ": " + planet.localizedName, Icon.trash, Styles.flatt, Vars.iconMed,

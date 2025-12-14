@@ -3,7 +3,6 @@ package heavyindustry.world.blocks.production;
 import arc.graphics.g2d.Draw;
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
-import arc.util.Nullable;
 import heavyindustry.content.HFx;
 import mindustry.entities.Effect;
 import mindustry.gen.Building;
@@ -15,6 +14,7 @@ import mindustry.world.blocks.liquid.Conduit.ConduitBuild;
 import mindustry.world.blocks.production.Separator;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatValues;
+import org.jetbrains.annotations.Nullable;
 
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
@@ -23,7 +23,7 @@ public class Centrifuge extends Separator {
 	/** Written to outputLiquids as a single-element array if outputLiquids is null. */
 	public @Nullable LiquidStack outputLiquid;
 	/** Overwrites outputLiquid if not null. */
-	public @Nullable LiquidStack[] outputLiquids;
+	public LiquidStack @Nullable [] outputLiquids;
 	/** Liquid output directions, specified in the same order as outputLiquids. Use -1 to dump in every direction. Rotations are relative to block. */
 	public int[] liquidOutputDirections = {-1};
 

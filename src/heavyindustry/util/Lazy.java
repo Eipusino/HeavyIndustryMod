@@ -1,6 +1,9 @@
 package heavyindustry.util;
 
 import arc.func.Prov;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class Lazy<T> {
 	public final boolean allowSet;
@@ -8,7 +11,7 @@ public class Lazy<T> {
 	protected T value;
 	protected volatile Prov<T> prov;
 
-	public Lazy(Prov<T> init) {
+	public Lazy(@NotNull Prov<T> init) {
 		this(init, true);
 	}
 
@@ -16,12 +19,12 @@ public class Lazy<T> {
 	 * @param init initialization function
 	 * @param mod Whether the value can be modified
 	 */
-	public Lazy(Prov<T> init, boolean mod) {
-		prov = Objects2.requireNonNull(init, "The prov cannot be null.");
+	public Lazy(@NotNull Prov<T> init, boolean mod) {
+		prov = init;//if (init == null) throw new NullPointerException("The prov cannot be null.");
 		allowSet = mod;
 	}
 
-	public static <T> Lazy<T> of(Prov<T> prov) {
+	public static <T> Lazy<T> of(@NotNull Prov<T> prov) {
 		return new Lazy<>(prov);
 	}
 
@@ -45,7 +48,7 @@ public class Lazy<T> {
 
 	@Override
 	public boolean equals(Object o) {
-		return o == this || o instanceof Lazy<?> lazy && Objects2.equals(value, lazy.value);
+		return o == this || o instanceof Lazy<?> lazy && Objects.equals(value, lazy.value);
 	}
 
 	@Override

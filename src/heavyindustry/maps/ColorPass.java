@@ -2,8 +2,8 @@ package heavyindustry.maps;
 
 import arc.graphics.Color;
 import arc.math.geom.Vec3;
-import arc.util.Nullable;
 import arc.util.noise.Simplex;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class ColorPass {
 	public abstract @Nullable Color color(Vec3 pos, float height);
@@ -28,7 +28,7 @@ public abstract class ColorPass {
 		}
 
 		@Override
-		public Color color(Vec3 po, float he) {
+		public @Nullable Color color(Vec3 po, float he) {
 			if (po.dst(pos) < radius) return out;
 			return null;
 		}
@@ -58,7 +58,7 @@ public abstract class ColorPass {
 		public Color out = Color.white;
 
 		@Override
-		public Color color(Vec3 pos, float height) {
+		public @Nullable Color color(Vec3 pos, float height) {
 			float noise = Simplex.noise3d(seed, octaves, persistence, scale, pos.x + offset.x, pos.y + offset.y, pos.z + offset.z) * magnitude;
 			if (min <= noise && noise <= max) return out;
 			return null;
@@ -75,7 +75,7 @@ public abstract class ColorPass {
 		public Color out = Color.white;
 
 		@Override
-		public Color color(Vec3 pos, float height) {
+		public @Nullable Color color(Vec3 pos, float height) {
 			if (min <= height && height <= max) return out;
 			return null;
 		}

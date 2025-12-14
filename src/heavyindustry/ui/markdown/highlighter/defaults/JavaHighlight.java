@@ -12,12 +12,12 @@ public final class JavaHighlight extends Highlight {
 	private JavaHighlight() {}
 
 	static Capture modifiersCapture() {
-		return regex(0, Integer.MAX_VALUE, Default.KEYWORD, "public|private|protected|static|final|abstract|synchronized|volatile|transient|native|strictfp|default|sealed|non-sealed");
+		return regex(0, Integer.MAX_VALUE, Default.KEYWORD, Pattern.compile("public|private|protected|static|final|abstract|synchronized|volatile|transient|native|strictfp|default|sealed|non-sealed"));
 	}
 
 	static Capture annotationCapture() {
 		return compound(0, Integer.MAX_VALUE,
-				regex(JavaScope.ANNOTATION, "@\\w+"),
+				regex(JavaScope.ANNOTATION, Pattern.compile("@\\w+")),
 				compound(
 						token("("),
 						makeJoin(
@@ -33,7 +33,7 @@ public final class JavaHighlight extends Highlight {
 		return makeJoin(
 				compound(
 						annotationCapture().setOptional(true),
-						regex(Default.TYPE, "((?!class)\\w)+"),
+						regex(Default.TYPE, Pattern.compile("((?!class)\\w)+")),
 						compound(
 								token("<"),
 								makeJoin(
@@ -54,7 +54,7 @@ public final class JavaHighlight extends Highlight {
 	static Capture typeCaptureNonArray() {
 		return makeJoin(
 				compound(
-						regex(Default.TYPE, "((?!class)\\w)+"),
+						regex(Default.TYPE, Pattern.compile("((?!class)\\w)+")),
 						compound(
 								token("<"),
 								makeJoin(
@@ -72,7 +72,7 @@ public final class JavaHighlight extends Highlight {
 		return compound(
 				token("<"),
 				compound(0, Integer.MAX_VALUE,
-						regex(JavaScope.TYPE_ARG, "\\w+"),
+						regex(JavaScope.TYPE_ARG, Pattern.compile("\\w+")),
 						compound(
 								token(Default.KEYWORD, "extends", "super"),
 								typeCapture()
@@ -99,7 +99,7 @@ public final class JavaHighlight extends Highlight {
 				token("{"),
 				makeJoin(
 						lazy(JavaHighlight::expressionCapture),
-						regex(Default.SEPARATOR, ",")
+						regex(Default.SEPARATOR, Pattern.compile(","))
 				),
 				token("}")
 		);
@@ -113,9 +113,9 @@ public final class JavaHighlight extends Highlight {
 						new SelectionCapture(0, Integer.MAX_VALUE,
 								regex(
 										Default.CONTROL,
-										"(\\\\[0-7]{3})|(\\\\u[0-9a-fA-F]{4})|(\\\\[0abtnvfre\\\\\"'])"
+										Pattern.compile("(\\\\[0-7]{3})|(\\\\u[0-9a-fA-F]{4})|(\\\\[0abtnvfre\\\\\"'])")
 								),
-								regex(Default.STRING, "[^\"]+")
+								regex(Default.STRING, Pattern.compile("[^\"]+"))
 						),
 						token(Default.STRING, "\"")
 				),
@@ -125,29 +125,29 @@ public final class JavaHighlight extends Highlight {
 						new SelectionCapture(
 								regex(
 										Default.CONTROL,
-										"(\\\\[0-7]{3})|(\\\\u[0-9a-fA-F]{4})|(\\\\[0abtnvfre\\\\\"'])"
+										Pattern.compile("(\\\\[0-7]{3})|(\\\\u[0-9a-fA-F]{4})|(\\\\[0abtnvfre\\\\\"'])")
 								),
-								regex(Default.STRING, "[^']")
+								regex(Default.STRING, Pattern.compile("[^']"))
 						),
 						token(Default.STRING, "'")
 				),
 				//NUMBER
 				/*forks(
 						compound(
-								regex(NUMBER, "[\\d_]+"),
+								regex(NUMBER, Pattern.compile("[\\d_]+")),
 								forks(
 										compound(
 												token(NUMBER, "."),
-												regex(NUMBER, "[\\d_]+([eE][+-]?[\\d_]+)?[fFdD]?")
+												regex(NUMBER, Pattern.compile("[\\d_]+([eE][+-]?[\\d_]+)?[fFdD]?"))
 										),
-										regex(NUMBER, "[eE][+-]?[\\d_]+[fFdD]?")
+										regex(NUMBER, Pattern.compile("[eE][+-]?[\\d_]+[fFdD]?"))
 								)
 						),
-						regex(NUMBER, "[\\d_]+[lL]?")
+						regex(NUMBER, Pattern.compile("[\\d_]+[lL]?"))
 				),*/
-				regex(Default.NUMBER, "[\\d_]+(\\.[\\d_]+)?([eE][\\d_]+)?[fFdDlL]?"),
+				regex(Default.NUMBER, Pattern.compile("[\\d_]+(\\.[\\d_]+)?([eE][\\d_]+)?[fFdDlL]?")),
 				//BOOLEAN
-				regex(Default.KEYWORD, "true|false"),
+				regex(Default.KEYWORD, Pattern.compile("true|false")),
 				//NULL
 				token(Default.KEYWORD, "null")
 		);
@@ -175,7 +175,7 @@ public final class JavaHighlight extends Highlight {
 										makeJoin(
 												new SelectionCapture(
 														constantLiteralCapture(),
-														regex(Default.VARIABLE, "\\w+")
+														regex(Default.VARIABLE, Pattern.compile("\\w+"))
 												),
 												token(Default.SEPARATOR, ",")
 										),
@@ -191,12 +191,12 @@ public final class JavaHighlight extends Highlight {
 										compound(
 												token("("),
 												makeJoin(
-														regex(Default.ARGUMENT, "\\w+"),
+														regex(Default.ARGUMENT, Pattern.compile("\\w+")),
 														token(Default.SEPARATOR, ",")
 												).setOptional(true),
 												token(")")
 										),
-										regex(Default.ARGUMENT, "\\w+")
+										regex(Default.ARGUMENT, Pattern.compile("\\w+"))
 								),
 								token("->"),
 								statementBlockCapture()
@@ -204,8 +204,8 @@ public final class JavaHighlight extends Highlight {
 						//INVOKE
 						compound(
 								new SelectionCapture(
-										regex(Default.KEYWORD, "this|super"),
-										regex(Default.FUNCTION_INVOKE, "\\w+")
+										regex(Default.KEYWORD, Pattern.compile("this|super")),
+										regex(Default.FUNCTION_INVOKE, Pattern.compile("\\w+"))
 								),
 								compound(
 										token("("),
@@ -258,7 +258,7 @@ public final class JavaHighlight extends Highlight {
 						),
 						//READ ARRAY
 						compound(
-								regex(Default.VARIABLE, "\\w+"),
+								regex(Default.VARIABLE, Pattern.compile("\\w+")),
 								compound(1, Integer.MAX_VALUE,
 										token("["),
 										lazy(JavaHighlight::expressionCapture),
@@ -271,7 +271,7 @@ public final class JavaHighlight extends Highlight {
 								token(2, ":"),
 								new SelectionCapture(
 										token(Default.KEYWORD, "new"),
-										regex(Default.FUNCTION_INVOKE, "\\w+")
+										regex(Default.FUNCTION_INVOKE, Pattern.compile("\\w+"))
 								)
 						),
 						//CLASS REF
@@ -282,20 +282,20 @@ public final class JavaHighlight extends Highlight {
 						),
 						//SINGLE OPERATOR
 						compound(
-								regex(Default.OPERATOR, "[!+\\-~]"),
+								regex(Default.OPERATOR, Pattern.compile("[!+\\-~]")),
 								lazy(JavaHighlight::expressionCapture)
 						),
 						constantLiteralCapture(),
 						//THIS_SUPER
-						regex(Default.KEYWORD, "this|super"),
+						regex(Default.KEYWORD, Pattern.compile("this|super")),
 						//REF
-						regex(Default.VARIABLE, "\\w+")
+						regex(Default.VARIABLE, Pattern.compile("\\w+"))
 				),
 				//INSTANCEOF
 				compound(
 						token(Default.KEYWORD, "instanceof"),
 						typeCapture(),
-						regex(Default.VARIABLE, "\\w+").setOptional(true)
+						regex(Default.VARIABLE, Pattern.compile("\\w+")).setOptional(true)
 				).setOptional(true)
 		);
 	}
@@ -304,9 +304,9 @@ public final class JavaHighlight extends Highlight {
 		return makeJoin(
 				compound(
 						metaExpCapture(),
-						regex(Default.OPERATOR, "\\+\\+|--").setOptional(true)
+						regex(Default.OPERATOR, Pattern.compile("\\+\\+|--")).setOptional(true)
 				),
-				regex(Default.OPERATOR, "(->|!=|==|<=|>=|&&|\\|\\||\\+=|-=|\\*=|/=|%=|&=|\\|=|\\^=|<<=|>>=|>>>=)|[=.+\\-*/%&|<>^]")
+				regex(Default.OPERATOR, Pattern.compile("(->|!=|==|<=|>=|&&|\\|\\||\\+=|-=|\\*=|/=|%=|&=|\\|=|\\^=|<<=|>>=|>>>=)|[=.+\\-*/%&|<>^]"))
 		);
 	}
 
@@ -336,7 +336,7 @@ public final class JavaHighlight extends Highlight {
 								makeJoin(
 										new SelectionCapture(
 												constantLiteralCapture(),
-												regex(Default.VARIABLE, "\\w+")
+												regex(Default.VARIABLE, Pattern.compile("\\w+"))
 										),
 										token(Default.SEPARATOR, ",")
 								),
@@ -349,7 +349,7 @@ public final class JavaHighlight extends Highlight {
 				//WHILE
 				compound(
 						compound(
-								regex("\\w+"),
+								regex(Pattern.compile("\\w+")),
 								token(":")
 						).setOptional(true),
 						token(Default.KEYWORD, "while"),
@@ -361,7 +361,7 @@ public final class JavaHighlight extends Highlight {
 				//DO_WHILE
 				compound(
 						compound(
-								regex("\\w+"),
+								regex(Pattern.compile("\\w+")),
 								token(":")
 						).setOptional(true),
 						token(Default.KEYWORD, "do"),
@@ -374,7 +374,7 @@ public final class JavaHighlight extends Highlight {
 				//FOR
 				compound(
 						compound(
-								regex("\\w+"),
+								regex(Pattern.compile("\\w+")),
 								token(":")
 						).setOptional(true),
 						token(Default.KEYWORD, "for"),
@@ -383,7 +383,7 @@ public final class JavaHighlight extends Highlight {
 								typeCapture(),
 								makeJoin(
 										compound(
-												regex(Default.VARIABLE, "\\w+"),
+												regex(Default.VARIABLE, Pattern.compile("\\w+")),
 												compound(
 														token(Default.OPERATOR, "="),
 														expressionCapture()
@@ -405,13 +405,13 @@ public final class JavaHighlight extends Highlight {
 				//FOR_EACH
 				compound(
 						compound(
-								regex("\\w+"),
+								regex(Pattern.compile("\\w+")),
 								token(":")
 						).setOptional(true),
 						token(Default.KEYWORD, "for"),
 						token("("),
 						typeCapture(),
-						regex(Default.VARIABLE, "\\w+"),
+						regex(Default.VARIABLE, Pattern.compile("\\w+")),
 						token(":"),
 						expressionCapture(),
 						token(")"),
@@ -440,7 +440,7 @@ public final class JavaHighlight extends Highlight {
 						typeCapture(),
 						makeJoin(
 								compound(
-										regex(Default.VARIABLE, "\\w+"),
+										regex(Default.VARIABLE, Pattern.compile("\\w+")),
 										compound(
 												token(Default.OPERATOR, "="),
 												expressionCapture()
@@ -453,7 +453,7 @@ public final class JavaHighlight extends Highlight {
 				//BREAK-CONTINUE
 				compound(
 						token(Default.KEYWORD, "break", "continue"),
-						regex("\\w+").setOptional(true)
+						regex(Pattern.compile("\\w+")).setOptional(true)
 				),
 				//RETURN-YIELD
 				compound(
@@ -470,7 +470,7 @@ public final class JavaHighlight extends Highlight {
 				//CODE_BLOCK
 				compound(
 						compound(
-								regex("\\w+"),
+								regex(Pattern.compile("\\w+")),
 								token(":")
 						).setOptional(true),
 						token("{"),
@@ -494,11 +494,11 @@ public final class JavaHighlight extends Highlight {
 		res.rawTokenMatcher = Pattern.compile("//.*|/\\*(\\s|.)*?\\*/");
 		res.symbolMatcher = Pattern.compile(
 				"(->|!=|==|<=|>=|&&|\\|\\||\\+\\+|--|\\+=|-=|\\*=|/=|%=|&=|\\|=|\\^=|<<=|>>=|>>>=)" +
-						"|([\\d_]+(\\.[\\d_]+)?([eE][\\d_]+)?[fFdDlL]?)" +
-						"|(\\\\[0-7]{3})" +
-						"|(\\\\u[0-9a-fA-F]{4})" +
-						"|(\\\\[0abtnvfre\\\\\"'])" +
-						"|[\\\\.+\\-*/%&|!<>~^=,;:(){}\"'\\[\\]]"
+				"|([\\d_]+(\\.[\\d_]+)?([eE][\\d_]+)?[fFdDlL]?)" +
+				"|(\\\\[0-7]{3})" +
+				"|(\\\\u[0-9a-fA-F]{4})" +
+				"|(\\\\[0abtnvfre\\\\\"'])" +
+				"|[\\\\.+\\-*/%&|!<>~^=,;:(){}\"'\\[\\]]"
 		);
 
 		res
@@ -511,7 +511,7 @@ public final class JavaHighlight extends Highlight {
 						block(JavaScope.DOCS,
 								of(token("/"), token(2, "*")),
 								of(token("*"), token(JavaScope.DOCS, "/"))
-						).addChildPattern("mark", serial(regex(JavaScope.DOC_MARK, "@\\w+")))
+						).addChildPattern("mark", serial(regex(JavaScope.DOC_MARK, Pattern.compile("@\\w+"))))
 				)
 				.addRawContextPattern("block_comment", block(Default.COMMENT,
 						of(token(Default.COMMENT, "/"), token(Default.COMMENT, "*")),
@@ -562,7 +562,7 @@ public final class JavaHighlight extends Highlight {
 										modifiersCapture(),
 										token(Default.KEYWORD, "class", "interface", "enum"),
 										compound(
-												regex(Default.TYPE, "\\w+"),
+												regex(Default.TYPE, Pattern.compile("\\w+")),
 												typeArgCapture().setOptional(true)
 										),
 										compound(
@@ -579,7 +579,7 @@ public final class JavaHighlight extends Highlight {
 						).addChildPattern("constructor", serial(
 								annotationCapture(),
 								modifiersCapture(),
-								regex(JavaScope.CONSTRUCTOR, "\\w+"),
+								regex(JavaScope.CONSTRUCTOR, Pattern.compile("\\w+")),
 								compound(
 										token("("),
 										makeJoin(
@@ -587,7 +587,7 @@ public final class JavaHighlight extends Highlight {
 														annotationCapture(),
 														token(Default.KEYWORD, "final").setOptional(true),
 														typeCapture(),
-														regex(Default.ARGUMENT, "\\w+")
+														regex(Default.ARGUMENT, Pattern.compile("\\w+"))
 												),
 												token(Default.SEPARATOR, ",")
 										).setOptional(true),
@@ -597,7 +597,7 @@ public final class JavaHighlight extends Highlight {
 												annotationCapture(),
 												typeCapture(),
 												token(3, Default.ARGUMENT, "."),
-												regex(Default.ARGUMENT, "\\w+")
+												regex(Default.ARGUMENT, Pattern.compile("\\w+"))
 										).setOptional(true),
 										token(")")
 								),
@@ -610,23 +610,23 @@ public final class JavaHighlight extends Highlight {
 				)
 				.addPattern("annotation_arguments",
 						block(JavaScope.ANNOTATION,
-								of(regex("@\\w+"), token("(")),
+								of(regex(Pattern.compile("@\\w+")), token("(")),
 								of(token(")"))
 						).addChildPattern("arg", serial(
-								regex(Default.ARGUMENT, "\\w+"),
+								regex(Default.ARGUMENT, Pattern.compile("\\w+")),
 								token(Default.OPERATOR, "="),
 								expressionCapture()
 						)).addChildPattern("value", reference(res))
 				)
 				.addPattern("annotation", serial(
-						regex(JavaScope.ANNOTATION, "@\\w+")
+						regex(JavaScope.ANNOTATION, Pattern.compile("@\\w+"))
 				))
 				.addPattern("function", serial(
 						annotationCapture(),
 						modifiersCapture(),
 						typeArgCapture().setOptional(true),
 						typeCapture(),
-						regex(Default.FUNCTION, "\\w+"),
+						regex(Default.FUNCTION, Pattern.compile("\\w+")),
 						compound(
 								token("("),
 								makeJoin(
@@ -634,7 +634,7 @@ public final class JavaHighlight extends Highlight {
 												annotationCapture(),
 												token(Default.KEYWORD, "final").setOptional(true),
 												typeCapture(),
-												regex(Default.ARGUMENT, "\\w+")
+												regex(Default.ARGUMENT, Pattern.compile("\\w+"))
 										),
 										token(Default.SEPARATOR, ",")
 								).setOptional(true),
@@ -644,7 +644,7 @@ public final class JavaHighlight extends Highlight {
 										annotationCapture(),
 										typeCapture(),
 										token(3, Default.ARGUMENT, "."),
-										regex(Default.ARGUMENT, "\\w+")
+										regex(Default.ARGUMENT, Pattern.compile("\\w+"))
 								).setOptional(true),
 								token(")")
 						),
@@ -667,7 +667,7 @@ public final class JavaHighlight extends Highlight {
 						typeCapture(),
 						makeJoin(
 								compound(
-										regex(JavaScope.FIELD, "\\w+"),
+										regex(JavaScope.FIELD, Pattern.compile("\\w+")),
 										compound(
 												token(Default.OPERATOR, "="),
 												expressionCapture()

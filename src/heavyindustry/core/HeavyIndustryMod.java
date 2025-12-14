@@ -21,7 +21,6 @@ import arc.func.ConsT;
 import arc.math.Mathf;
 import arc.util.Align;
 import arc.util.Log;
-import arc.util.Nullable;
 import arc.util.OS;
 import arc.util.Strings;
 import arc.util.Time;
@@ -57,13 +56,14 @@ import heavyindustry.graphics.g2d.FragmentationBatch;
 import heavyindustry.graphics.g2d.RangeExtractor;
 import heavyindustry.graphics.g2d.VaporizeBatch;
 import heavyindustry.mod.AdaptiveCoreDatabase;
+import heavyindustry.mod.HMods;
 import heavyindustry.mod.HScripts;
-import heavyindustry.mod.ModUtils;
 import heavyindustry.net.HCall;
 import heavyindustry.ui.Elements;
 import heavyindustry.ui.HFonts;
 import heavyindustry.ui.HIcon;
 import heavyindustry.ui.HStyles;
+import heavyindustry.ui.HTex;
 import heavyindustry.util.CollectionList;
 import heavyindustry.util.IconLoader;
 import heavyindustry.util.PlatformImpl;
@@ -79,6 +79,7 @@ import mindustry.mod.ModClassLoader;
 import mindustry.ui.dialogs.BaseDialog;
 import mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable;
 import mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable.Setting;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -171,6 +172,8 @@ public final class HeavyIndustryMod extends Mod {
 					MathRenderer.load();
 					RangeExtractor.load();
 
+					HTex.init();
+
 					HVars.fragBatch = new FragmentationBatch();
 					HVars.cutBatch = new CutBatch();
 					HVars.vaporBatch = new VaporizeBatch();
@@ -241,6 +244,7 @@ public final class HeavyIndustryMod extends Mod {
 		if (!Vars.headless) {
 			HIcon.load();
 
+			HTex.load();
 			HStyles.load();
 			Elements.load();
 
@@ -275,9 +279,9 @@ public final class HeavyIndustryMod extends Mod {
 				});
 			}
 
-			if (!Vars.headless && !ModUtils.isEnabled("extra-utilities") && !ModUtils.isX() && Core.settings.getBool("hi-floating-text")) {
+			if (!Vars.headless && !HMods.isEnabled("extra-utilities") && !HMods.isX() && Core.settings.getBool("hi-floating-text")) {
 				String massage = Core.bundle.get("hi-random-massage");
-				String[] massages = massage.split("&");
+				String[] massages = massage.split("@");
 
 				floatingText = new FloatingText(massages[Mathf.random(massages.length - 1)]);
 				floatingText.build(Vars.ui.menuGroup);

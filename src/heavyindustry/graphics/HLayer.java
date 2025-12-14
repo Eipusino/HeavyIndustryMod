@@ -13,6 +13,6 @@ public final class HLayer {
 	public static final float skyBloom = 145;
 	public static final float mirrorField = 135f;
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HLayer() {}
 }

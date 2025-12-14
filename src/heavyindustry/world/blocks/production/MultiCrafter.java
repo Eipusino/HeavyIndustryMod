@@ -16,7 +16,6 @@ import arc.scene.ui.layout.Table;
 import arc.struct.EnumSet;
 import arc.struct.Seq;
 import arc.util.Eachable;
-import arc.util.Nullable;
 import arc.util.Structs;
 import arc.util.Time;
 import arc.util.io.Reads;
@@ -56,6 +55,7 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 import mindustry.world.meta.StatValues;
 import mindustry.world.meta.Stats;
+import org.jetbrains.annotations.Nullable;
 
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;

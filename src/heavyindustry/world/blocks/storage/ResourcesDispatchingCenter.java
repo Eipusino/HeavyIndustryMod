@@ -20,6 +20,7 @@ import arc.util.Strings;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.util.CollectionList;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.core.UI;
@@ -34,6 +35,8 @@ import mindustry.graphics.Pal;
 import mindustry.type.Item;
 import mindustry.ui.Bar;
 import mindustry.world.blocks.storage.StorageBlock;
+
+import java.util.List;
 
 /**
  * Resource distribution center, directly delivering resources to target buildings.
@@ -58,7 +61,7 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 	public TextureRegion bottomRegion;
 	public TextureRegion rotatorRegion;
 
-	public Seq<ItemHave> tmpWhatHave = new Seq<>(true, 32, ItemHave.class);
+	public List<ItemHave> tmpWhatHave = new CollectionList<>(true, 32, ItemHave.class);
 
 	public ResourcesDispatchingCenter(String name) {
 		super(name);
@@ -144,11 +147,6 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 				() -> Pal.items,
 				() -> ((float) tile.items.total()) / (tile.block.itemCapacity * Vars.content.items().count(UnlockableContent::unlockedNow))
 		));
-	}
-
-	@Override
-	public boolean outputsItems() {
-		return false;
 	}
 
 	@Override
@@ -302,9 +300,9 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 		 * @param whatIHave Existing resources
 		 * @return Is the sending successful
 		 */
-		public boolean sendItems(Building target, Seq<ItemHave> whatIHave) {
+		public boolean sendItems(Building target, List<ItemHave> whatIHave) {
 			boolean s = false;
-			for (int i = whatIHave.size - 1; i >= 0; i--) {
+			for (int i = whatIHave.size() - 1; i >= 0; i--) {
 				ItemHave have = whatIHave.get(i);
 				Item item = have.item;
 				int count = have.count;
@@ -326,11 +324,13 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 		public void updateTile() {
 			super.updateTile();
 			tmpWhatHave.clear();
-			boolean valid = efficiency > 0.4F;
+			boolean valid = efficiency > 0.4f;
 			if (timer.get(1, frameDelay)) {
 				itemSent = false;
 				if (valid) {
-					for (Item item : Vars.content.items()) {
+					Seq<Item> seq = Vars.content.items();
+					for (int i = 0; i < seq.size; i++) {
+						Item item = seq.get(i);
 						int count = items.get(item);
 						if (count > 0) {
 							tmpWhatHave.add(new ItemHave(item, count));
@@ -427,7 +427,7 @@ public class ResourcesDispatchingCenter extends StorageBlock {
 					l.update((() -> {
 						l.clearChildren();
 						l.left();
-						Seq<Item> seq = new Seq<>(Item.class);
+						List<Item> seq = new CollectionList<>(Item.class);
 						items.each((item, amount) -> {
 							map.put(item.id, amount);
 							seq.add(item);

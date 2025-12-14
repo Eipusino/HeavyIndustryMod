@@ -15,7 +15,7 @@ import mindustry.world.blocks.UnitTetherBlock;
  * @since 1.0.8
  */
 public final class HCall {
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HCall() {}
 
 	public static void init() {

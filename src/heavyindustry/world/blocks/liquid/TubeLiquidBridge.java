@@ -20,13 +20,16 @@ import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.world.Tile;
 import mindustry.world.blocks.liquid.LiquidBlock;
+import org.jetbrains.annotations.ApiStatus.Obsolete;
 
 import static mindustry.Vars.tilesize;
 
 /**
  * A bridge with the same connection method as the power node.
  * <p>Make its connecting strap have a liquid display similar to that of a container.
+ * <p>Obsolete: This block is not done very well.
  */
+@Obsolete(since = "1.0.8")
 public class TubeLiquidBridge extends TubeItemBridge {
 	public float liquidPadding = 1f;
 

@@ -54,19 +54,22 @@ public class MultiBar extends Bar {
 	@Override
 	public void reset(float value) {
 		float valueSize = value / barParts.size;
-		for (BarPart part : barParts) {
+		for (int i = 0; i < barParts.size; i++) {
+			BarPart part = barParts.get(i);
 			part.value = part.lastValue = part.blink = valueSize;
 		}
 	}
 
 	public void updateParts() {
-		for (BarPart part : barParts) {
+		for (int i = 0; i < barParts.size; i++) {
+			BarPart part = barParts.get(i);
 			part.update();
 		}
 	}
 
 	public void drawParts() {
-		for (BarPart part : barParts) {
+		for (int i = 0; i < barParts.size; i++) {
+			BarPart part = barParts.get(i);
 			part.draw(x, y, width, height, barParts);
 			x = part.offset;
 		}

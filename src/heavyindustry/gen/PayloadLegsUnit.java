@@ -4,7 +4,6 @@ import arc.Events;
 import arc.math.Mathf;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
-import arc.util.Nullable;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
@@ -25,6 +24,7 @@ import mindustry.world.blocks.payloads.BuildPayload;
 import mindustry.world.blocks.payloads.Payload;
 import mindustry.world.blocks.payloads.UnitPayload;
 import mindustry.world.blocks.power.PowerGraph;
+import org.jetbrains.annotations.Nullable;
 
 public class PayloadLegsUnit extends LegsUnit2 implements Payloadc {
 	protected Seq<Payload> payloads = new Seq<>(Payload.class);
@@ -44,7 +44,8 @@ public class PayloadLegsUnit extends LegsUnit2 implements Payloadc {
 		}
 
 		//update power graph first, resolve everything
-		for (Payload pay : payloads) {
+		for (int i = 0; i < payloads.size; i++) {
+			Payload pay = payloads.get(i);
 			if (pay instanceof BuildPayload pb && pb.build.power != null) {
 				if (payloadPower == null) payloadPower = new PowerGraph(false);
 
@@ -58,7 +59,8 @@ public class PayloadLegsUnit extends LegsUnit2 implements Payloadc {
 			payloadPower.update();
 		}
 
-		for (Payload pay : payloads) {
+		for (int i = 0; i < payloads.size; i++) {
+			Payload pay = payloads.get(i);
 			pay.set(x, y, rotation);
 			pay.update(this, null);
 		}
@@ -67,7 +69,8 @@ public class PayloadLegsUnit extends LegsUnit2 implements Payloadc {
 	@Override
 	public void destroy() {
 		if (Vars.state.rules.unitPayloadsExplode) {
-			for (Payload pay : payloads) {
+			for (int i = 0; i < payloads.size; i++) {
+				Payload pay = payloads.get(i);
 				pay.destroyed();
 			}
 		}
@@ -238,7 +241,8 @@ public class PayloadLegsUnit extends LegsUnit2 implements Payloadc {
 			pad = (width - (itemSize) * items) / items;
 		}
 
-		for (Payload p : payloads) {
+		for (int i = 0; i < payloads.size; i++) {
+			Payload p = payloads.get(i);
 			table.image(p.icon()).size(itemSize).padRight(pad);
 		}
 	}

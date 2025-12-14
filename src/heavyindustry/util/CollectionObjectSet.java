@@ -5,8 +5,10 @@ import arc.func.Cons;
 import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.Eachable;
-import arc.util.Nullable;
 import heavyindustry.math.Mathm;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -152,7 +154,8 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	 * and returns false.
 	 */
 	@Override
-	public boolean add(E key) {
+	@Contract(value = "null -> false")
+	public boolean add(@Nullable E key) {
 		if (key == null) return false;
 
 		// Check for existing keys.
@@ -197,7 +200,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> c) {
+	public boolean containsAll(@Nullable Collection<?> c) {
 		if (c == null) return false;
 
 		for (Object e : c)
@@ -207,7 +210,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends E> c) {
+	public boolean addAll(@Nullable Collection<? extends E> c) {
 		if (c == null) return false;
 
 		boolean modified = false;
@@ -218,7 +221,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	}
 
 	@Override
-	public boolean retainAll(Collection<?> c) {
+	public boolean retainAll(@Nullable Collection<?> c) {
 		if (c == null || isEmpty()) return false;
 
 		boolean modified = false;
@@ -234,7 +237,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	}
 
 	@Override
-	public boolean removeAll(Collection<?> c) {
+	public boolean removeAll(@Nullable Collection<?> c) {
 		if (c == null || isEmpty()) return false;
 
 		boolean modified = false;
@@ -494,8 +497,10 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	}
 
 	@Override
-	public boolean contains(Object key) {
-		if (size == 0) return false;
+	@Contract(value = "null -> false")
+	public boolean contains(@Nullable Object key) {
+		if (key == null || size == 0) return false;
+
 		int hashCode = key.hashCode();
 		int index = hashCode & mask;
 		if (!key.equals(keyTable[index])) {
@@ -509,7 +514,10 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	}
 
 	/** @return May be null. */
-	public E get(E key) {
+	@Contract(value = "null -> null")
+	public E get(@Nullable E key) {
+		if (key == null) return null;
+
 		int hashCode = key.hashCode();
 		int index = hashCode & mask;
 		E found = keyTable[index];
@@ -630,7 +638,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	 * time this method is called. Use the {@link Iter} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public Iter iterator() {
+	public @NotNull Iter iterator() {
 		if (iterator1 == null) iterator1 = new Iter();
 
 		if (iterator1.done) {
@@ -649,13 +657,13 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 	}
 
 	@Override
-	public E[] toArray() {
+	public E @NotNull [] toArray() {
 		return Arrays.copyOf(keyTable, size);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T[] toArray(T[] a) {
+	public <T> T @NotNull [] toArray(T[] a) {
 		if (a.length < size)
 			return (T[]) Arrays.copyOf(keyTable, size, a.getClass());
 		System.arraycopy(keyTable, 0, a, 0, size);
@@ -724,7 +732,7 @@ public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
 		}
 
 		@Override
-		public Iter iterator() {
+		public @NotNull Iter iterator() {
 			return this;
 		}
 

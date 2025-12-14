@@ -10,13 +10,13 @@ public final class HLines {
 	private static final FloatSeq floats = new FloatSeq(20);
 	private static final Vec2 tmp1 = new Vec2();
 	private static final float[] rectPoints = {
-			0, 0,
-			1, 0,
-			1, 1,
-			0, 0
+			0f, 0f,
+			1f, 0f,
+			1f, 1f,
+			0f, 0f
 	};
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HLines() {}
 
 	public static void arc(float x, float y, float radius, float finion) {
@@ -89,14 +89,14 @@ public final class HLines {
 	public static void swirl(float x, float y, float radius, float finion, float angle) {
 		int sides = 50;
 		int max = (int) (sides * (finion + 0.001f));
-		tmp1.set(0, 0);
+		tmp1.set(0f, 0f);
 
 		for (int i = 0; i < max; i++) {
-			tmp1.set(radius, 0).setAngle(360f / sides * i + angle);
+			tmp1.set(radius, 0f).setAngle(360f / sides * i + angle);
 			float x1 = tmp1.x;
 			float y1 = tmp1.y;
 
-			tmp1.set(radius, 0).setAngle(360f / sides * (i + 1) + angle);
+			tmp1.set(radius, 0f).setAngle(360f / sides * (i + 1) + angle);
 
 			Lines.line(x1 + x, y1 + y, tmp1.x + x, tmp1.y + y);
 		}

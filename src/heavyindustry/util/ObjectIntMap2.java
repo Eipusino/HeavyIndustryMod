@@ -27,7 +27,7 @@ import static heavyindustry.util.Constant.PRIME3;
  * @author Nathan Sweet
  * @author Eipusino
  */
-public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<ObjectIntHolder<K>> {
+public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<ObjectIntHolder<K>>, Cloneable {
 	public int size;
 
 	public final Class<?> keyComponentType;

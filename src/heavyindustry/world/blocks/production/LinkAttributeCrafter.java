@@ -6,7 +6,6 @@ import arc.graphics.g2d.Fill;
 import arc.math.geom.Point2;
 import arc.struct.IntSeq;
 import arc.struct.Seq;
-import arc.util.Nullable;
 import heavyindustry.world.blocks.MultiBlock;
 import heavyindustry.world.blocks.MultiBuild;
 import mindustry.Vars;
@@ -23,6 +22,7 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.production.AttributeCrafter;
 import mindustry.world.meta.Attribute;
 import mindustry.world.meta.Stat;
+import org.jetbrains.annotations.Nullable;
 
 //and also the code are duplicated, its silly but for qol mod reason i have to extend AttributeCrafter instead of MultiBlockCrafter
 public class LinkAttributeCrafter extends AttributeCrafter implements MultiBlock {
@@ -211,9 +211,10 @@ public class LinkAttributeCrafter extends AttributeCrafter implements MultiBlock
 				Building source = pair[1];
 
 				if (todump == null) {
-					for (int ii = 0; ii < Vars.content.items().size; ii++) {
+					Seq<Item> seq = Vars.content.items();
+					for (int ii = 0; ii < seq.size; ii++) {
 						if (!items.has(ii)) continue;
-						Item item = Vars.content.items().get(ii);
+						Item item = seq.get(ii);
 						if (target.acceptItem(source, item) && canDump(target, item)) {
 							target.handleItem(source, item);
 							items.remove(item, 1);

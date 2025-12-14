@@ -3,26 +3,30 @@ package heavyindustry.mod;
 import mindustry.Vars;
 import mindustry.ctype.Content;
 import mindustry.mod.Mods.LoadedMod;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 import static heavyindustry.HVars.MOD_NAME;
 
-public final class ModUtils {
+public final class HMods {
 	/** If needed, please call {@link #loaded()} for the LoadedMod of this mod. */
 	static LoadedMod loaded;
 
-	/// Don't let anyone instantiate this class.
-	private ModUtils() {}
+	/** Don't let anyone instantiate this class. */
+	private HMods() {}
 
+	@Contract("null -> false")
 	public static boolean isHeavyIndustry(Content content) {
 		return content != null && isHeavyIndustry(content.minfo.mod);
 	}
 
+	@Contract("null -> false")
 	public static boolean isHeavyIndustry(LoadedMod mod) {
 		return mod != null && mod == loaded();
 	}
 
 	/** Safely obtain the {@code LoadedMod} for this mod. */
-	public static LoadedMod loaded() {
+	public static @Nullable LoadedMod loaded() {
 		if (loaded == null) loaded = Vars.mods.getMod(MOD_NAME);
 		return loaded;
 	}

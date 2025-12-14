@@ -29,7 +29,7 @@ public class CurtainExtension implements Parser.ParserExtension, MDLayoutRendere
 		rendererBuilder.nodeRendererFactory(CurtainRenderer::new);
 	}
 
-	private static class CurtainRenderer extends LayoutNodeRenderer {
+	static class CurtainRenderer extends LayoutNodeRenderer {
 		public CurtainRenderer(DrawRendererContext context) {
 			super(context);
 		}

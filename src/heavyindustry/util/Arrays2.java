@@ -28,6 +28,8 @@ import arc.util.Eachable;
 import heavyindustry.func.BoolBoolf;
 import heavyindustry.func.ByteBytef;
 import heavyindustry.util.concurrent.holder.ObjectHolder;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -47,34 +49,42 @@ public final class Arrays2 {
 	 * }</pre>
 	 */
 	@SafeVarargs
+	@Contract(value = "_ -> param1", pure = true)
 	public static <T> T[] arrayOf(T... elements) {
 		return elements;
 	}
 
+	@Contract(value = "_ -> param1", pure = true)
 	public static boolean[] boolOf(boolean... bools) {
 		return bools;
 	}
 
+	@Contract(value = "_ -> param1", pure = true)
 	public static byte[] byteOf(byte... bytes) {
 		return bytes;
 	}
 
+	@Contract(value = "_ -> param1", pure = true)
 	public static short[] shortOf(short... shorts) {
 		return shorts;
 	}
 
+	@Contract(value = "_ -> param1", pure = true)
 	public static int[] intOf(int... ints) {
 		return ints;
 	}
 
+	@Contract(value = "_ -> param1", pure = true)
 	public static long[] longOf(long... longs) {
 		return longs;
 	}
 
+	@Contract(value = "_ -> param1", pure = true)
 	public static float[] floatOf(float... floats) {
 		return floats;
 	}
 
+	@Contract(value = "_ -> param1", pure = true)
 	public static double[] doubleOf(double... doubles) {
 		return doubles;
 	}
@@ -92,6 +102,7 @@ public final class Arrays2 {
 	 * not contain the element
 	 * @throws NullPointerException If {@code array} is null.
 	 */
+	@Contract(pure = true)
 	public static <T> int indexOf(T[] array, Object element, boolean identity) {
 		if (identity || element == null) {
 			for (int i = 0; i < array.length; i++) {
@@ -542,7 +553,7 @@ public final class Arrays2 {
 			idx = fastMax(items, comp, size);
 		} else {
 			// quickselect a better choice for cases of k between min and max
-			idx = selects(items, comp, kthLowest, size);
+			idx = selectIndex1(items, comp, kthLowest, size);
 		}
 		return idx;
 	}
@@ -571,8 +582,8 @@ public final class Arrays2 {
 		return highestIdx;
 	}
 
-	public static <T> int selects(T[] items, Comparator<T> comp, int kthLowest, int size) {
-		return selectIndex(items, comp, 0, size - 1, kthLowest);
+	public static <T> int selectIndex1(T[] items, Comparator<T> comp, int kthLowest, int size) {
+		return selectIndex2(items, comp, 0, size - 1, kthLowest);
 	}
 
 	static <T> int partition(T[] array, Comparator<? super T> comp, int left, int right, int pivot) {
@@ -589,7 +600,7 @@ public final class Arrays2 {
 		return storage;
 	}
 
-	static <T> int selectIndex(T[] array, Comparator<? super T> comp, int left, int right, int kthLowest) {
+	static <T> int selectIndex2(T[] array, Comparator<? super T> comp, int left, int right, int kthLowest) {
 		if (left == right) return left;
 		int pivotIndex = medianOfThreePivot(array, comp, left, right);
 		int pivotNewIndex = partition(array, comp, left, right, pivotIndex);
@@ -598,9 +609,9 @@ public final class Arrays2 {
 		if (pivotDist == kthLowest) {
 			result = pivotNewIndex;
 		} else if (kthLowest < pivotDist) {
-			result = selectIndex(array, comp, left, pivotNewIndex - 1, kthLowest);
+			result = selectIndex2(array, comp, left, pivotNewIndex - 1, kthLowest);
 		} else {
-			result = selectIndex(array, comp, pivotNewIndex + 1, right, kthLowest - pivotDist);
+			result = selectIndex2(array, comp, pivotNewIndex + 1, right, kthLowest - pivotDist);
 		}
 		return result;
 	}
@@ -845,18 +856,6 @@ public final class Arrays2 {
 		}
 	}
 
-	public static int hashCodes(Object[] values) {
-		if (values == null) return 0;
-
-		int result = 1;
-
-		for (Object element : values) {
-			result = 31 * result + Objects2.hashCode(element);
-		}
-
-		return result;
-	}
-
 	public static <T> boolean any(T[] array, Boolf<T> pred) {
 		for (T e : array) if (pred.get(e)) return true;
 		return false;
@@ -951,7 +950,7 @@ public final class Arrays2 {
 		}
 
 		@Override
-		public Single<T> iterator() {
+		public @NotNull Single<T> iterator() {
 			return this;
 		}
 
@@ -993,7 +992,7 @@ public final class Arrays2 {
 		}
 
 		@Override
-		public Iter<T> iterator() {
+		public @NotNull Iter<T> iterator() {
 			return this;
 		}
 
@@ -1022,7 +1021,7 @@ public final class Arrays2 {
 		}
 
 		@Override
-		public Chain<T> iterator() {
+		public @NotNull Chain<T> iterator() {
 			return this;
 		}
 

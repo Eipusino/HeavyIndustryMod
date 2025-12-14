@@ -2,11 +2,13 @@ package heavyindustry.world.blocks.defense.turrets;
 
 import arc.func.Boolf;
 import arc.math.Mathf;
+import arc.struct.Seq;
 import arc.util.Strings;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.entities.bullet.HealConeBulletType;
 import heavyindustry.ui.ItemDisplay;
+import mindustry.Vars;
 import mindustry.entities.Units;
 import mindustry.gen.Healthc;
 import mindustry.type.Item;
@@ -16,8 +18,6 @@ import mindustry.world.blocks.defense.turrets.ContinuousTurret;
 import mindustry.world.consumers.ConsumeItems;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
-
-import static mindustry.Vars.content;
 
 public class MendTurret extends ContinuousTurret {
 	public float amountBoost = 0.5f;
@@ -46,7 +46,9 @@ public class MendTurret extends ContinuousTurret {
 					table.row();
 					Boolf<Item> cs = this::consumesItem;
 					table.table(c -> {
-						for (Item item : content.items()) {
+						Seq<Item> items = Vars.content.items();
+						for (int i = 0; i < items.size; i++) {
+							Item item = items.get(i);
 							if (!cs.get(item)) continue;
 
 							c.table(Styles.grayPanel, b -> {

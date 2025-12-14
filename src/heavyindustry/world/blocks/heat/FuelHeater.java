@@ -1,7 +1,6 @@
 package heavyindustry.world.blocks.heat;
 
 import arc.math.Mathf;
-import arc.util.Nullable;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import mindustry.graphics.Pal;
@@ -15,6 +14,7 @@ import mindustry.world.draw.DrawHeatOutput;
 import mindustry.world.draw.DrawMulti;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
+import org.jetbrains.annotations.Nullable;
 
 public class FuelHeater extends GenericCrafter {
 	public float heatOutput = 5f, warmupRate = 0.15f;

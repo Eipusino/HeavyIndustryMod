@@ -1,6 +1,6 @@
 package heavyindustry.ui.markdown.highlighter;
 
-import heavyindustry.util.Objects2;
+import java.util.Objects;
 
 public interface Scope {
 	void apply(Token token, ScopeHandler handler);
@@ -69,12 +69,12 @@ public interface Scope {
 
 		@Override
 		public boolean equals(Object obj) {
-			return this == obj || obj instanceof RainbowSeparator separator && separator.depth == depth && Objects2.equals(separator.type, type);
+			return this == obj || obj instanceof RainbowSeparator separator && separator.depth == depth && Objects.equals(separator.type, type);
 		}
 
 		@Override
 		public int hashCode() {
-			return depth ^ Objects2.hashCode(type);
+			return depth ^ Objects.hashCode(type);
 		}
 
 		@Override

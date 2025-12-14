@@ -98,7 +98,7 @@ public class MarkdownStyles {
 					}
 			};
 
-			highlighter = new Highlighter().addLanguage(StandardLanguages.JAVA).addLanguage(StandardLanguages.LUA);
+			highlighter = new Highlighter().addLanguage(StandardLanguages.javaHighlight).addLanguage(StandardLanguages.luaHighlight);
 			codeColorProvider = new ColorProvider();
 			codeColorProvider.defaultColor = Color.lightGray;
 			codeColorProvider.createMap("java")

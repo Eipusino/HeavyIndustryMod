@@ -17,7 +17,7 @@ import java.security.NoSuchAlgorithmException;
  * require me to write a class for it.
  */
 public final class InputOutput {
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private InputOutput() {}
 
 	public static void ioErr(RunT<Throwable> run, String message) throws IOException {

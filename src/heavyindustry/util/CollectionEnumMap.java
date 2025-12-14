@@ -4,6 +4,7 @@ import arc.func.Cons;
 import arc.struct.Seq;
 import arc.util.Eachable;
 import heavyindustry.util.concurrent.holder.ObjectHolder;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;
 import java.util.AbstractMap;
@@ -36,7 +37,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 	protected Keys keys1, keys2;
 
 	@SuppressWarnings("unchecked")
-	public CollectionEnumMap(Class<K> keyType, Class<?> valueType) {
+	public CollectionEnumMap(@NotNull Class<K> keyType, @NotNull Class<?> valueType) {
 		keyComponentType = keyType;
 		valueComponentType = valueType;
 
@@ -146,7 +147,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 	}
 
 	@Override
-	public EntrySet entrySet() {
+	public @NotNull EntrySet entrySet() {
 		return new EntrySet();
 	}
 
@@ -239,7 +240,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 	}
 
 	@Override
-	public Entries iterator() {
+	public @NotNull Entries iterator() {
 		if (entries1 == null) {
 			entries1 = new Entries();
 			entries2 = new Entries();
@@ -257,7 +258,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 	}
 
 	@Override
-	public Keys keySet() {
+	public @NotNull Keys keySet() {
 		if (keys1 == null) {
 			keys1 = new Keys();
 			keys2 = new Keys();
@@ -275,7 +276,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 	}
 
 	@Override
-	public Values values() {
+	public @NotNull Values values() {
 		if (values1 == null) {
 			values1 = new Values();
 			values2 = new Values();
@@ -329,7 +330,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		protected ObjectHolder<K, V> entry = new ObjectHolder<>();
 
 		@Override
-		public Iterator<ObjectHolder<K, V>> iterator() {
+		public @NotNull Iterator<ObjectHolder<K, V>> iterator() {
 			return this;
 		}
 
@@ -361,12 +362,12 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		}
 
 		@Override
-		public K[] toArray() {
+		public K @NotNull [] toArray() {
 			return Arrays.copyOf(keyTable, keyTable.length);
 		}
 
 		@Override
-		public <T> T[] toArray(T[] a) {
+		public <T> T @NotNull [] toArray(T[] a) {
 			return toSeq().toArray(a.getClass().getComponentType());
 		}
 
@@ -392,17 +393,17 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		}
 
 		@Override
-		public boolean addAll(Collection<? extends K> c) {
+		public boolean addAll(@NotNull Collection<? extends K> c) {
 			return false;
 		}
 
 		@Override
-		public boolean retainAll(Collection<?> c) {
+		public boolean retainAll(@NotNull Collection<?> c) {
 			return false;
 		}
 
 		@Override
-		public boolean removeAll(Collection<?> c) {
+		public boolean removeAll(@NotNull Collection<?> c) {
 			return false;
 		}
 
@@ -412,7 +413,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		}
 
 		@Override
-		public Iterator<K> iterator() {
+		public @NotNull Iterator<K> iterator() {
 			return this;
 		}
 
@@ -453,12 +454,12 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		}
 
 		@Override
-		public V[] toArray() {
+		public V @NotNull [] toArray() {
 			return toSeq().toArray(valueComponentType);
 		}
 
 		@Override
-		public <T> T[] toArray(T[] a) {
+		public <T> T @NotNull [] toArray(T[] a) {
 			return toSeq().toArray(a.getClass().getComponentType());
 		}
 
@@ -473,12 +474,12 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		}
 
 		@Override
-		public boolean containsAll(Collection<?> c) {
+		public boolean containsAll(@NotNull Collection<?> c) {
 			return false;
 		}
 
 		@Override
-		public boolean addAll(Collection<? extends V> c) {
+		public boolean addAll(@NotNull Collection<? extends V> c) {
 			return false;
 		}
 
@@ -492,7 +493,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		}
 
 		@Override
-		public boolean retainAll(Collection<?> c) {
+		public boolean retainAll(@NotNull Collection<?> c) {
 			return false;
 		}
 
@@ -514,7 +515,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		}
 
 		@Override
-		public Iterator<V> iterator() {
+		public @NotNull Iterator<V> iterator() {
 			return this;
 		}
 
@@ -541,7 +542,7 @@ public class CollectionEnumMap<K extends Enum<K>, V> extends AbstractMap<K, V> i
 		}
 
 		@Override
-		public Iterator<Entry<K, V>> iterator() {
+		public @NotNull Iterator<Entry<K, V>> iterator() {
 			itr.entries = CollectionEnumMap.this.iterator();
 			return itr;
 		}

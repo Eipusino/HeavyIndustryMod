@@ -568,7 +568,7 @@ public final class HBlocks {
 
 	private static boolean loadedInternal;
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HBlocks() {}
 
 	public static void loadInternal() {
@@ -595,7 +595,7 @@ public final class HBlocks {
 		}
 	}
 
-	/// Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}.
+	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
 		if (HVars.isPlugin) return;//Do not load content in plugin mode.
 

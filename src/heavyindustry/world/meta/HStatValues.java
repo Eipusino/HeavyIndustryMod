@@ -20,6 +20,7 @@ import arc.util.Strings;
 import heavyindustry.ui.Elements;
 import heavyindustry.ui.ItemDisplay;
 import heavyindustry.world.blocks.production.FuelCrafter;
+import mindustry.Vars;
 import mindustry.content.StatusEffects;
 import mindustry.ctype.UnlockableContent;
 import mindustry.entities.bullet.BulletType;
@@ -40,15 +41,11 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 import mindustry.world.meta.StatValue;
 import mindustry.world.meta.StatValues;
-
-import static mindustry.Vars.content;
-import static mindustry.Vars.indexer;
-import static mindustry.Vars.state;
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.ui;
+import org.jetbrains.annotations.ApiStatus.Obsolete;
+import org.jetbrains.annotations.ApiStatus.ScheduledForRemoval;
 
 public final class HStatValues {
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HStatValues() {}
 
 	public static <T extends UnlockableContent> StatValue ammo(ObjectMap<T, BulletType[]> map, boolean all) {
@@ -107,12 +104,12 @@ public final class HStatValues {
 
 						if (type.rangeChange != 0 && !compact) {
 							bt.row();
-							bt.add(Core.bundle.format("bullet.range", (type.rangeChange > 0 ? "+" : "-") + Strings.autoFixed(type.rangeChange / tilesize, 1)));
+							bt.add(Core.bundle.format("bullet.range", (type.rangeChange > 0 ? "+" : "-") + Strings.autoFixed(type.rangeChange / Vars.tilesize, 1)));
 						}
 
 						if (type.splashDamage > 0) {
 							bt.row();
-							bt.add(Core.bundle.format("bullet.splashdamage", (int) type.splashDamage, Strings.fixed(type.splashDamageRadius / tilesize, 1)));
+							bt.add(Core.bundle.format("bullet.splashdamage", (int) type.splashDamage, Strings.fixed(type.splashDamageRadius / Vars.tilesize, 1)));
 						}
 
 						if (!compact && !Mathf.equal(type.ammoMultiplier, 1f) && type.displayAmmoMultiplier && (!(t instanceof Turret turret) || turret.displayAmmoMultiplier)) {
@@ -228,7 +225,7 @@ public final class HStatValues {
 
 		/*if (bullet instanceof EmpBulletType emp) {
 			table.row();
-			table.add(Core.bundle.format("bullet.empDamage", emp.empDamage, emp.empRange > 0 ? "[lightgray]~ [accent]" + emp.empRange / tilesize + "[lightgray]" + StatUnit.blocks.localized() : ""));
+			table.add(Core.bundle.format("bullet.empDamage", emp.empDamage, emp.empRange > 0 ? "[lightgray]~ [accent]" + emp.empRange / Vars.tilesize + "[lightgray]" + StatUnit.blocks.localized() : ""));
 		}
 
 		if (bullet instanceof HeatBulletType heat) {
@@ -247,12 +244,12 @@ public final class HStatValues {
 
 		if (bullet.rangeChange != 0) {
 			table.row();
-			table.add(Core.bundle.format("bullet.range", (bullet.rangeChange > 0 ? "+" : "-") + Strings.autoFixed(bullet.rangeChange / tilesize, 1)));
+			table.add(Core.bundle.format("bullet.range", (bullet.rangeChange > 0 ? "+" : "-") + Strings.autoFixed(bullet.rangeChange / Vars.tilesize, 1)));
 		}
 
 		if (bullet.splashDamage > 0) {
 			table.row();
-			table.add(Core.bundle.format("bullet.splashdamage", (int) bullet.splashDamage, Strings.fixed(bullet.splashDamageRadius / tilesize, 1)));
+			table.add(Core.bundle.format("bullet.splashdamage", (int) bullet.splashDamage, Strings.fixed(bullet.splashDamageRadius / Vars.tilesize, 1)));
 		}
 
 		if (bullet.knockback > 0) {
@@ -344,7 +341,9 @@ public final class HStatValues {
 		return table -> {
 			table.row();
 			table.table(c -> {
-				for (Liquid liquid : content.liquids()) {
+				Seq<Liquid> liquids = Vars.content.liquids();
+				for (int i = 0; i < liquids.size; i++) {
+					Liquid liquid = liquids.get(i);
 					if (!filter.get(liquid)) continue;
 
 					c.image(liquid.uiIcon).size(3 * 8).scaling(Scaling.fit).padRight(4).right().top();
@@ -421,7 +420,9 @@ public final class HStatValues {
 		return table -> {
 			table.row();
 			table.table(c -> {
-				for (Item item : content.items()) {
+				Seq<Item> seq = Vars.content.items();
+				for (int i = 0; i < seq.size; i++) {
+					Item item = seq.get(i);
 					if (!filter.get(item)) continue;
 
 					c.table(Styles.grayPanel, b -> {
@@ -440,8 +441,8 @@ public final class HStatValues {
 								for (StatusEffect s : status) {
 									if (s == StatusEffects.none) continue;
 									bt.row();
-									bt.add(Elements.selfStyleImageButton(new TextureRegionDrawable(s.uiIcon), Styles.emptyi, () -> ui.content.show(s))).padTop(2f).padBottom(6f).size(42);
-									//bt.button(new TextureRegionDrawable(s.uiIcon), () -> ui.content.show(s)).padTop(2f).padBottom(6f).size(50);
+									bt.add(Elements.selfStyleImageButton(new TextureRegionDrawable(s.uiIcon), Styles.emptyi, () -> Vars.ui.content.show(s))).padTop(2f).padBottom(6f).size(42);
+									//bt.button(new TextureRegionDrawable(s.uiIcon), () -> Vars.ui.content.show(s)).padTop(2f).padBottom(6f).size(50);
 									bt.add(s.localizedName).padLeft(5);
 								}
 								if (replace) {
@@ -451,7 +452,7 @@ public final class HStatValues {
 							}
 							bt.row();
 							if (rangeBoost != 0)
-								bt.add("[lightgray]+[stat]" + Strings.autoFixed(rangeBoost / tilesize, 2) + "[lightgray] " + StatUnit.blocks.localized()).row();
+								bt.add("[lightgray]+[stat]" + Strings.autoFixed(rangeBoost / Vars.tilesize, 2) + "[lightgray] " + StatUnit.blocks.localized()).row();
 						}).right().grow().pad(10f).padRight(15f);
 					}).growX().pad(5).padBottom(-5).row();
 				}
@@ -518,9 +519,9 @@ public final class HStatValues {
 
 							at.add("@stat.hi-fuel.affinity");
 
-							if (state.isGame()) {
-								Seq<Floor> blocks = content.blocks()
-										.select(block -> block instanceof Floor f && indexer.isBlockPresent(block) && f.attributes.get(crafter.attribute) != 0 && !(f.isLiquid && !crafter.floating))
+							if (Vars.state.isGame()) {
+								Seq<Floor> blocks = Vars.content.blocks()
+										.select(block -> block instanceof Floor f && Vars.indexer.isBlockPresent(block) && f.attributes.get(crafter.attribute) != 0 && !(f.isLiquid && !crafter.floating))
 										.<Floor>as().with(s -> s.sort(f -> f.attributes.get(crafter.attribute)));
 
 								if (blocks.any()) {
@@ -543,7 +544,7 @@ public final class HStatValues {
 
 						//rebuild when map changes.
 						at.update(() -> {
-							Map current = state.isGame() ? state.map : null;
+							Map current = Vars.state.isGame() ? Vars.state.map : null;
 
 							if (current != lastMap[0]) {
 								rebuild[0].run();
@@ -587,7 +588,9 @@ public final class HStatValues {
 			table.row();
 			table.table(c -> {
 				int i = 0;
-				for (Block block : content.blocks()) {
+				Seq<Block> blocks = Vars.content.blocks();
+				for (int n = 0; n < blocks.size; i++) {
+					Block block = blocks.get(n);
 					if (!filter.get(block)) continue;
 
 					c.table(Styles.grayPanel, b -> {
@@ -696,12 +699,12 @@ public final class HStatValues {
 
 		if (type.rangeChange != 0 && !compact) {
 			bt.row();
-			bt.add(Core.bundle.format("bullet.range", ammoStat(type.rangeChange / tilesize)));
+			bt.add(Core.bundle.format("bullet.range", ammoStat(type.rangeChange / Vars.tilesize)));
 		}
 
 		if (type.splashDamage > 0) {
 			bt.row();
-			bt.add(Core.bundle.format("bullet.splashdamage", (int) type.splashDamage, Strings.fixed(type.splashDamageRadius / tilesize, 1)));
+			bt.add(Core.bundle.format("bullet.splashdamage", (int) type.splashDamage, Strings.fixed(type.splashDamageRadius / Vars.tilesize, 1)));
 		}
 
 		if (!compact && !Mathf.equal(type.ammoMultiplier, 1f) && type.displayAmmoMultiplier && (!(t instanceof Turret turret) || turret.displayAmmoMultiplier)) {
@@ -761,7 +764,7 @@ public final class HStatValues {
 
 		if (type.suppressionRange > 0) {
 			bt.row();
-			bt.add(Core.bundle.format("bullet.suppression", Strings.autoFixed(type.suppressionDuration / 60f, 2), Strings.fixed(type.suppressionRange / tilesize, 1)));
+			bt.add(Core.bundle.format("bullet.suppression", Strings.autoFixed(type.suppressionDuration / 60f, 2), Strings.fixed(type.suppressionRange / Vars.tilesize, 1)));
 		}
 
 		if (type.status != StatusEffects.none) {
@@ -785,7 +788,9 @@ public final class HStatValues {
 		return table -> {
 			table.row();
 			table.table(c -> {
-				for (Liquid liquid : content.liquids()) {
+				Seq<Liquid> liquids = Vars.content.liquids();
+				for (int i = 0; i < liquids.size; i++) {
+					Liquid liquid = liquids.get(i);
 					if (!filter.get(liquid)) continue;
 
 					c.table(Styles.grayPanel, b -> {
@@ -860,7 +865,7 @@ public final class HStatValues {
 	}
 
 	//for AmmoListValue
-	@Deprecated
+	@Obsolete(since = "1.0.8")
 	public static Cell<Label> sep(Table table, String text) {
 		table.row();
 		return table.add(text);
@@ -868,6 +873,7 @@ public final class HStatValues {
 
 	//for AmmoListValue
 	@Deprecated
+	@ScheduledForRemoval
 	public static TextureRegion icon(UnlockableContent content) {
 		return content.uiIcon;
 	}
@@ -878,6 +884,6 @@ public final class HStatValues {
 	}
 
 	public static Cell<TextButton> infoButton(Table table, UnlockableContent content, float size) {
-		return table.button("?", Styles.flatBordert, () -> ui.content.show(content)).size(size).left().name("contentinfo");
+		return table.button("?", Styles.flatBordert, () -> Vars.ui.content.show(content)).size(size).left().name("contentinfo");
 	}
 }

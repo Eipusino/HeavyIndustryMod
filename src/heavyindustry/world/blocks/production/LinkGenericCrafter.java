@@ -189,9 +189,10 @@ public class LinkGenericCrafter extends GenericCrafter implements MultiBlock {
 				Building source = pair[1];
 
 				if (todump == null) {
-					for (int ii = 0; ii < Vars.content.items().size; ii++) {
+					Seq<Item> seq = Vars.content.items();
+					for (int ii = 0; ii < seq.size; ii++) {
 						if (!items.has(ii)) continue;
-						Item item = Vars.content.items().get(ii);
+						Item item = seq.get(ii);
 						if (target.acceptItem(source, item) && canDump(target, item)) {
 							target.handleItem(source, item);
 							items.remove(item, 1);

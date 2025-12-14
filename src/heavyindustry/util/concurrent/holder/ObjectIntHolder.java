@@ -1,6 +1,6 @@
 package heavyindustry.util.concurrent.holder;
 
-import heavyindustry.util.Objects2;
+import java.util.Objects;
 
 public class ObjectIntHolder<K> implements Cloneable {
 	public K key;
@@ -22,12 +22,12 @@ public class ObjectIntHolder<K> implements Cloneable {
 
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof ObjectIntHolder<?> that && Objects2.equals(key, that.key) && value == that.value;
+		return o instanceof ObjectIntHolder<?> that && Objects.equals(key, that.key) && value == that.value;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects2.hashCode(key) ^ value;
+		return Objects.hashCode(key) ^ value;
 	}
 
 	@Override

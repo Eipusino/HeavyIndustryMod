@@ -9,14 +9,14 @@ import arc.math.Mat;
 import arc.util.Disposable;
 
 public class AfterShadow implements Disposable {
-	private final FrameBuffer buffer, pingpong;
-	private final Camera camera;
-	private final TextureRegion region = new TextureRegion();
-	private final Mat last = new Mat();
+	protected final FrameBuffer buffer, pingpong;
+	protected final Camera camera;
+	protected final TextureRegion region = new TextureRegion();
+	protected final Mat last = new Mat();
 
-	private final Color baseColor = new Color(1, 1, 1, 0);
+	protected final Color baseColor = new Color(1, 1, 1, 0);
 
-	boolean disposed;
+	protected boolean disposed;
 
 	public boolean linear = true;
 	public float coef = -0.01f;

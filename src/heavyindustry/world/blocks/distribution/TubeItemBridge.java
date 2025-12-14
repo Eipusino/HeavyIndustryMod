@@ -16,6 +16,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.util.CollectionList;
 import heavyindustry.util.ObjectBoolOrderedMap;
 import heavyindustry.util.concurrent.holder.ObjectBoolHolder;
 import mindustry.core.Renderer;
@@ -33,23 +34,29 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.ItemBridge;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
+import org.jetbrains.annotations.ApiStatus.Obsolete;
+
+import java.util.List;
 
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
 
 /**
  * A bridge with the same connection method as the power node.
+ * <p>Obsolete: This block is not done very well.
  */
+@Obsolete(since = "1.0.8")
 public class TubeItemBridge extends ItemBridge {
 	//public final int timerAccept = timers++;
 
-	public Prov<Seq<Block>> connectBlocksGetter = () -> new Seq<>(Block.class);
+	public Prov<List<Block>> connectBlocksGetter = () -> new CollectionList<>(Block.class);
 	public byte maxConnections = 3;
 	public int bufferCapacity;
 
-	protected @NoPatch Seq<Block> connectibleBlocks = new Seq<>(Block.class);
+	@NoPatch
+	protected List<Block> connectibleBlocks = new CollectionList<>(Block.class);
 
-	public Boolf<Building> connectFilter = building -> connectibleBlocks.contains(building.block);
+	public Boolf<Building> connectFilter = build -> connectibleBlocks.contains(build.block);
 
 	public TubeItemBridge(String name) {
 		super(name);
@@ -62,15 +69,11 @@ public class TubeItemBridge extends ItemBridge {
 		configClear((TubeItemBridgeBuild tile) -> tile.link = -1);
 	}
 
-	public TubeItemBridgeBuild cast(Building build) {
-		return (TubeItemBridgeBuild) build;
-	}
-
 	@Override
 	public void init() {
 		super.init();
-		Seq<Block> blocks = connectBlocksGetter.get();
-		if (blocks == null) blocks = new Seq<>(Block.class);
+		List<Block> blocks = connectBlocksGetter.get();
+		if (blocks == null) blocks = new CollectionList<>(Block.class);
 		blocks.add(this);
 		connectibleBlocks = blocks;
 		maxConnections++;
@@ -86,10 +89,10 @@ public class TubeItemBridge extends ItemBridge {
 	@Override
 	public void setBars() {
 		super.setBars();
-		addBar("connections", tile -> new Bar(() ->
-				Core.bundle.format("bar.powerlines", cast(tile).realConnections(), maxConnections - 1),
+		addBar("connections", (TubeItemBridgeBuild tile) -> new Bar(() ->
+				Core.bundle.format("bar.powerlines", tile.realConnections(), maxConnections - 1),
 				() -> Pal.items,
-				() -> (float) cast(tile).realConnections() / (float) (maxConnections - 1)
+				() -> tile.realConnections() / (float) (maxConnections - 1)
 		));
 	}
 

@@ -69,8 +69,10 @@ public class AdaptiveCrafter extends Block {
 
 	public CollectionList<Recipe> recipes = new CollectionList<>(Recipe.class);
 
-	public @NoPatch CollectionList<Item> itemOutput = new CollectionList<>(Item.class);
-	public @NoPatch CollectionList<Liquid> liquidOutput = new CollectionList<>(Liquid.class);
+	@NoPatch
+	public CollectionList<Item> itemOutput = new CollectionList<>(Item.class);
+	@NoPatch
+	public CollectionList<Liquid> liquidOutput = new CollectionList<>(Liquid.class);
 
 	public float powerProduction = 0f;
 

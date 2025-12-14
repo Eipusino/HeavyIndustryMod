@@ -4,11 +4,11 @@ import heavyindustry.ui.markdown.highlighter.defaults.JavaHighlight;
 import heavyindustry.ui.markdown.highlighter.defaults.LuaHighlight;
 
 public final class StandardLanguages {
-	public static PatternsHighlight JAVA, LUA;
+	public static PatternsHighlight javaHighlight, luaHighlight;
 
 	static {
-		JAVA = JavaHighlight.create();
-		LUA = LuaHighlight.create();
+		javaHighlight = JavaHighlight.create();
+		luaHighlight = LuaHighlight.create();
 	}
 
 	private StandardLanguages() {}

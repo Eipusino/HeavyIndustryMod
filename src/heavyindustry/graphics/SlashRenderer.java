@@ -103,7 +103,7 @@ public final class SlashRenderer {
 		}
 	}
 
-	private static class SlashShader extends Shader {
+	static class SlashShader extends Shader {
 		public float[] slashes;
 
 		SlashShader() {
@@ -120,7 +120,7 @@ public final class SlashRenderer {
 		}
 	}
 
-	private static class SlashData {
+	static class SlashData {
 		public float x, y, angle, offset;
 		public float length, width, color;
 

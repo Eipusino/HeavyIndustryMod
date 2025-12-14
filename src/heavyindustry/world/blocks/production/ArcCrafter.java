@@ -7,7 +7,6 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
-import arc.util.Nullable;
 import arc.util.Structs;
 import arc.util.Time;
 import arc.util.Tmp;
@@ -29,6 +28,7 @@ import mindustry.world.consumers.ConsumeItemDynamic;
 import mindustry.world.consumers.ConsumeItems;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatValues;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
@@ -193,7 +193,7 @@ public class ArcCrafter extends AttributeCrafter {
 				}
 			});
 			setFlameColor(Tmp.c4);
-			if (tmpFloor != null || boostItem != null) {
+			if (boostItem != null) {
 				Draw.mixcol(Tmp.c4, Mathf.absin(11f, 0.6f * warmup2));
 				Draw.colorl(0.9f);
 				TextureRegion reg = tmpFloor == null ? boostItem.item.fullIcon : tmpFloor.fullIcon;

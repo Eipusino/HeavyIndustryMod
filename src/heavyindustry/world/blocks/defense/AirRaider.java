@@ -26,8 +26,10 @@ public class AirRaider extends CommandableAttackerBlock {
 	public float inaccuracy = 3f;
 	public float cooldownSpeed = 0.075f;
 
-	protected @NoPatch int totalShots = 0;
-	protected @NoPatch Vec2 tr = new Vec2();
+	@NoPatch
+	protected int totalShots = 0;
+	@NoPatch
+	protected Vec2 tr = new Vec2();
 
 	public AirRaider(String name) {
 		super(name);

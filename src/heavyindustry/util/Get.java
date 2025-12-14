@@ -31,7 +31,6 @@ import arc.struct.IntSeq;
 import arc.struct.IntSet;
 import arc.struct.IntSet.IntSetIterator;
 import arc.struct.Seq;
-import arc.util.Nullable;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.graphics.HPal;
@@ -66,6 +65,7 @@ import mindustry.world.draw.DrawMulti;
 import mindustry.world.draw.DrawRegion;
 import mindustry.world.meta.StatUnit;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Input-output utilities, providing very specific functions that aren't really commonly used, but often
@@ -89,7 +89,7 @@ public final class Get {
 
 	static final IntSeq amounts = new IntSeq();
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private Get() {}
 
 	@Contract(pure = true)

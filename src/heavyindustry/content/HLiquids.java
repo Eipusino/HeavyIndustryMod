@@ -25,10 +25,10 @@ public final class HLiquids {
 	public static Liquid gas, lightOil, nitratedOil, blastReagent;
 	public static MultiCellLiquid crystalFluid;
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HLiquids() {}
 
-	/// Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}.
+	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
 	public static void load() {
 		if (HVars.isPlugin) return;
 

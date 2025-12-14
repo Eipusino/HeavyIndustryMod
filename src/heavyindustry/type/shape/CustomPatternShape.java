@@ -18,7 +18,7 @@ public class CustomPatternShape implements Shape {
 	public CustomPatternShape(String maskName) {
 		this.maskName = maskName;
 		blocks = new BitWordList(1, BitWordList.WordLength.two);
-		blocks.set(0, (byte) 1);
+		blocks.set(0, 1);
 	}
 
 	@Override
@@ -44,15 +44,9 @@ public class CustomPatternShape implements Shape {
 			// 255 = black, part of shape
 			// other = transparent, not part of shape
 			switch (color) {
-				case 2815:
-					blocks.set(index, (byte) 3);
-					break;
-				case 255:
-					blocks.set(index, (byte) 2);
-					break;
-				default:
-					blocks.set(index, (byte) 1);
-					break;
+				case 2815 -> blocks.set(index, 3);
+				case 255 -> blocks.set(index, 2);
+				default -> blocks.set(index, 1);
 			}
 		});
 		built = true;

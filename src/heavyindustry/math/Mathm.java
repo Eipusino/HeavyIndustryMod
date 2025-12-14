@@ -41,7 +41,7 @@ public final class Mathm {
 		aSinTable[index(0.5f)] = Mathf.pi + Mathf.halfPi + radFull;
 	}
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private Mathm() {}
 
 	public static float dx(float px, float r, float angle) {

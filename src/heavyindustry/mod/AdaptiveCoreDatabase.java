@@ -29,11 +29,13 @@ public final class AdaptiveCoreDatabase {
 	private AdaptiveCoreDatabase() {}
 
 	public static void init() {
-		if (ModUtils.isEnabled("adaptivecoredatabase")) return;
+		if (HMods.isEnabled("adaptivecoredatabase")) return;
 
 		boolean load = false;
 
-		for (LoadedMod mod : Vars.mods.list()) {
+		Seq<LoadedMod> mods = Vars.mods.list();
+		for (int n = 0; n < mods.size; n++) {
+			LoadedMod mod = mods.get(n);
 			try {
 				if (mod == null || mod.meta == null || mod.name.equals(MOD_NAME) || !mod.enabled()) continue;
 
@@ -46,6 +48,8 @@ public final class AdaptiveCoreDatabase {
 				Log.info("mod " + name + " load adc.json...");
 				Meta meta = json.fromJson(Meta.class, Jval.read(metaFile.readString()).toString(Jval.Jformat.plain));
 				for (Root root : meta.root) {
+					if (root == null) continue;
+
 					if (root.planet == null) {
 						Log.err("where is you planet?");
 						continue;
@@ -123,7 +127,9 @@ public final class AdaptiveCoreDatabase {
 
 			Seq<Planet> expSun = Vars.content.planets().copy().removeAll(p -> p == Planets.sun);
 
-			for (Block block : Vars.content.blocks()) {
+			Seq<Block> blocks = Vars.content.blocks();
+			for (int i = 0; i < blocks.size; i++) {
+				Block block = blocks.get(i);
 				if (block.requirements.length == 0) {
 					block.shownPlanets.addAll(expSun);
 				} else {

@@ -2,6 +2,8 @@ package heavyindustry.util.concurrent.holder;
 
 import heavyindustry.util.Objects2;
 
+import java.util.Objects;
+
 public class LongHolder<V> implements Cloneable {
 	public long key;
 	public V value;
@@ -22,12 +24,12 @@ public class LongHolder<V> implements Cloneable {
 
 	@Override
 	public boolean equals(Object o) {
-		return o instanceof LongHolder<?> that && key == that.key && Objects2.equals(value, that.value);
+		return o instanceof LongHolder<?> that && key == that.key && Objects.equals(value, that.value);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects2.hashCodeLong(key) ^ Objects2.hashCode(value);
+		return Objects2.longToHash(key) ^ Objects.hashCode(value);
 	}
 
 	@Override

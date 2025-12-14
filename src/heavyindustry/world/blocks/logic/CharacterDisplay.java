@@ -15,6 +15,7 @@ import arc.util.Strings;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import mindustry.Vars;
 import mindustry.ctype.UnlockableContent;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -26,9 +27,6 @@ import mindustry.ui.Styles;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.environment.CharacterOverlay;
-
-import static mindustry.Vars.control;
-import static mindustry.Vars.ui;
 
 public class CharacterDisplay extends Block {
 	public TextureRegion maskRegion;
@@ -48,19 +46,17 @@ public class CharacterDisplay extends Block {
 		selectionRows = selectionColumns = 8;
 
 		config(Integer.class, (CharacterDisplayBuild build, Integer color) -> build.displayColor = color);
-		config(Integer[].class, (CharacterDisplayBuild build, Integer[] character) -> {
-			try {
+		config(int[].class, (CharacterDisplayBuild build, int[] character) -> {
+			if (character.length >= 2) {
 				build.displayColor = character[0];
 				build.displayCharacter = character[1];
-			} catch (Exception e) {
-				Log.err(e);
 			}
 		});
 		config(String.class, (CharacterDisplayBuild build, String packed) -> {
-			String[] split = packed.split("@");
 			try {
-				build.displayColor = Strings.parseInt(split[0]);
-				build.displayCharacter = Strings.parseInt(split[1]);
+				String[] split = packed.split("@");
+				build.displayColor = Strings.parseInt(split[0], 0);
+				build.displayCharacter = Strings.parseInt(split[1], 0);
 			} catch (Exception e) {
 				Log.err(e);
 			}
@@ -73,16 +69,14 @@ public class CharacterDisplay extends Block {
 
 	@Override
 	public void placeEnded(Tile tile, Unit builder, int rotation, Object config) {
-		if (tile.build != null) {
-			if (queueText.isEmpty()) return;
-			if (config instanceof String conf) {
-				try {
-					String[] split = conf.split("@");
-					split[1] = String.valueOf(CharacterOverlay.charToData(queueText.charAt(0)));
-					tile.build.configure(split[0] + "@" + split[1]);
-				} catch (Exception e) {
-					Log.err(e);
-				}
+		if (tile.build != null && !queueText.isEmpty()) {
+			if (config instanceof int[] conf && conf.length >= 2) {
+				conf[1] = CharacterOverlay.charToData(queueText.charAt(0));
+				tile.build.configure(new int[]{conf[0], conf[1]});
+			} else if (config instanceof String conf) {
+				String[] split = conf.split("@");
+				split[1] = String.valueOf(CharacterOverlay.charToData(queueText.charAt(0)));
+				tile.build.configure(split[0] + "@" + split[1]);
 			}
 			queueText = queueText.substring(1);
 		}
@@ -125,7 +119,7 @@ public class CharacterDisplay extends Block {
 				TextField text = new TextField(queueText);
 				text.update(() -> queueText = text.getText());
 				input.add(text).growX();
-				input.button(Icon.pick, Styles.clearNonei, () -> ui.picker.show(Tmp.c1.set(displayColor), c -> configure(c.rgba() + "@" + displayCharacter)));
+				input.button(Icon.pick, Styles.clearNonei, () -> Vars.ui.picker.show(Tmp.c1.set(displayColor), c -> configure(new int[]{c.rgba(), displayCharacter})));
 			}).growX().row();
 
 			Table cont = new Table().top();
@@ -135,12 +129,12 @@ public class CharacterDisplay extends Block {
 			int i = 0;
 
 			for (int region = 0; region < letterRegions.length; region++) {
-				int finalRegion = region;
+				int r = region;
 				TextureRegion character = letterRegions[region];
-				ImageButton button = cont.button(Tex.whiteui, Styles.clearNoneTogglei, (character.width + character.height) / 2f, () -> control.input.config.hideConfig()).group(group).get();
-				button.changed(() -> configure(displayColor + "@" + (button.isChecked() ? finalRegion : -1)));
+				ImageButton button = cont.button(Tex.whiteui, Styles.clearNoneTogglei, (character.width + character.height) / 2f, () -> Vars.control.input.config.hideConfig()).group(group).get();
+				button.changed(() -> configure(new int[]{displayColor, button.isChecked() ? r : -1}));
 				button.getStyle().imageUp = new TextureRegionDrawable(character);
-				button.update(() -> button.setChecked(displayCharacter == finalRegion));
+				button.update(() -> button.setChecked(displayCharacter == r));
 
 				if (i++ % 8 == 7) cont.row();
 			}
@@ -153,7 +147,7 @@ public class CharacterDisplay extends Block {
 
 		@Override
 		public Object config() {
-			return displayColor + "@" + displayCharacter;
+			return new int[]{displayColor, displayCharacter};
 		}
 
 		@Override

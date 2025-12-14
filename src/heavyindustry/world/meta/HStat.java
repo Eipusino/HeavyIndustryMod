@@ -25,6 +25,6 @@ public final class HStat {
 	public static final Stat produceChance = new Stat("hi-produce-chance", StatCat.crafting);
 	//public static final Stat maxStructureSize = new Stat("hi-max-structure-size");
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HStat() {}
 }

@@ -33,7 +33,7 @@ public final class HInterps {
 
 	public static final MultiInterp fastFastSlow = new MultiInterp(Interp.pow2In, Interp.pow2);
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HInterps() {}
 
 	static class UpThenFastDown extends AbstractInterp {

@@ -1,7 +1,7 @@
 package heavyindustry.entities.pattern;
 
-import arc.util.Nullable;
 import mindustry.entities.pattern.ShootPattern;
+import org.jetbrains.annotations.Nullable;
 
 public class ShootBursts extends ShootPattern {
 	public int shotsPerBurst = 1;

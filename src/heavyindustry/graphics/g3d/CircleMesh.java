@@ -24,7 +24,7 @@ public class CircleMesh extends PlanetMesh {
 		this.planet = planet;
 		this.texture = texture;
 
-		MeshUtils.begin(sides * 6 * (3 + 3 + 2) * 2);
+		Meshs.begin(sides * 6 * (3 + 3 + 2) * 2);
 
 		Tmp.v33.setZero();
 
@@ -56,15 +56,15 @@ public class CircleMesh extends PlanetMesh {
 
 			for (int j : order) {
 				MeshPoint point = meshPoints[j];
-				MeshUtils.vert(point.position, axis, point.textureCords);
+				Meshs.vert(point.position, axis, point.textureCords);
 			}
 			for (int j = order.length - 1; j >= 0; j--) {
 				MeshPoint point = meshPoints[order[j]];
-				MeshUtils.vert(point.position, inv, point.textureCords);
+				Meshs.vert(point.position, inv, point.textureCords);
 			}
 		}
 
-		mesh = MeshUtils.end();
+		mesh = Meshs.end();
 	}
 
 	private static Shader shader() {

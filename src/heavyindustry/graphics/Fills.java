@@ -10,7 +10,7 @@ public final class Fills {
 	private static final FloatSeq floats = new FloatSeq(20);
 	private static final DonutEllipseDraw donutEllipseDraw = new DonutEllipseDraw();
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private Fills() {}
 
 	//region ellipse

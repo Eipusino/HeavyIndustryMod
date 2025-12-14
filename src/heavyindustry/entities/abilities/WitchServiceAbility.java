@@ -7,6 +7,7 @@ import heavyindustry.content.HFx;
 import heavyindustry.content.HStatusEffects;
 import heavyindustry.graphics.HPal;
 import heavyindustry.util.ObjectFloatMap2;
+import mindustry.Vars;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Effect;
 import mindustry.entities.Units;
@@ -14,8 +15,6 @@ import mindustry.entities.abilities.Ability;
 import mindustry.gen.Unit;
 import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
-
-import static mindustry.Vars.tilesize;
 
 public class WitchServiceAbility extends Ability {
 	protected static Rect tmpRect = new Rect();
@@ -49,7 +48,7 @@ public class WitchServiceAbility extends Ability {
 	}
 
 	protected Rect getRect(Unit unit, Rect rect) {
-		float w = width * tilesize, h = height * tilesize;
+		float w = width * Vars.tilesize, h = height * Vars.tilesize;
 		rect.setCentered(unit.x, unit.y, w, h);
 
 		return rect;

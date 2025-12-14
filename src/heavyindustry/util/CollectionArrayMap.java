@@ -6,6 +6,7 @@ import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import heavyindustry.util.concurrent.holder.ObjectHolder;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;
 import java.util.AbstractCollection;
@@ -41,12 +42,12 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 	protected Keys keysIter1, keysIter2;
 
 	/** Creates an ordered map with a capacity of 16. */
-	public CollectionArrayMap(Class<?> keyType, Class<?> valueType) {
+	public CollectionArrayMap(Class<?> keyType, @NotNull Class<?> valueType) {
 		this(true, 16, keyType, valueType);
 	}
 
 	/** Creates an ordered map with the specified capacity. */
-	public CollectionArrayMap(int capacity, Class<?> keyType, Class<?> valueType) {
+	public CollectionArrayMap(int capacity, Class<?> keyType, @NotNull Class<?> valueType) {
 		this(true, capacity, keyType, valueType);
 	}
 
@@ -58,7 +59,7 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 	 * @param capacity Any elements added beyond this will cause the backing arrays to be grown.
 	 */
 	@SuppressWarnings("unchecked")
-	public CollectionArrayMap(boolean ordered, int capacity, Class<?> keyType, Class<?> valueType) {
+	public CollectionArrayMap(boolean ordered, int capacity, @NotNull Class<?> keyType, @NotNull Class<?> valueType) {
 		this.ordered = ordered;
 
 		keyComponentType = keyType;
@@ -383,7 +384,7 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 	}
 
 	@Override
-	public Set<K> keySet() {
+	public @NotNull Set<K> keySet() {
 		return keys();
 	}
 
@@ -506,7 +507,7 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 	}
 
 	@Override
-	public Iterator<ObjectHolder<K, V>> iterator() {
+	public @NotNull Iterator<ObjectHolder<K, V>> iterator() {
 		return entries();
 	}
 
@@ -514,7 +515,7 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 	 * Returns an iterator for the entries in the map. Remove is supported. Note that the same iterator instance is returned each
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	public Entries entries() {
+	public @NotNull Entries entries() {
 		if (entries1 == null) {
 			entries1 = new Entries();
 			entries2 = new Entries();
@@ -536,7 +537,7 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public Values values() {
+	public @NotNull Values values() {
 		if (valuesIter1 == null) {
 			valuesIter1 = new Values();
 			valuesIter2 = new Values();
@@ -554,7 +555,7 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 	}
 
 	@Override
-	public Set<Entry<K, V>> entrySet() {
+	public @NotNull Set<Entry<K, V>> entrySet() {
 		return new MapEntrySet();
 	}
 
@@ -562,7 +563,7 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 	 * Returns an iterator for the keys in the map. Remove is supported. Note that the same iterator instance is returned each
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
-	public Keys keys() {
+	public @NotNull Keys keys() {
 		if (keysIter1 == null) {
 			keysIter1 = new Keys();
 			keysIter2 = new Keys();
@@ -594,7 +595,7 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 		}
 
 		@Override
-		public Iterator<Entry<K, V>> iterator() {
+		public @NotNull Iterator<Entry<K, V>> iterator() {
 			itr.entries = entries();
 			return itr;
 		}
@@ -663,7 +664,7 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 		}
 
 		@Override
-		public Iterator<ObjectHolder<K, V>> iterator() {
+		public @NotNull Iterator<ObjectHolder<K, V>> iterator() {
 			return this;
 		}
 
@@ -699,7 +700,7 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 		}
 
 		@Override
-		public Iterator<V> iterator() {
+		public @NotNull Iterator<V> iterator() {
 			return this;
 		}
 
@@ -755,7 +756,7 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 		}
 
 		@Override
-		public Iterator<K> iterator() {
+		public @NotNull Iterator<K> iterator() {
 			return this;
 		}
 

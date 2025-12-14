@@ -15,7 +15,7 @@ public final class DrawText {
 	public static Font defaultFont;
 	private static Seq<Font> fontList;
 
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private DrawText() {}
 
 	/** {@link DrawText#defaultFont} must be set. */

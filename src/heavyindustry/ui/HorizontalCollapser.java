@@ -8,7 +8,7 @@ import arc.scene.event.Touchable;
 import arc.scene.ui.layout.Table;
 import arc.scene.ui.layout.WidgetGroup;
 import arc.util.ArcRuntimeException;
-import arc.util.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class HorizontalCollapser extends WidgetGroup {
 	protected Table table;

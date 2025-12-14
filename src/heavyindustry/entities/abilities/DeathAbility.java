@@ -1,10 +1,10 @@
 package heavyindustry.entities.abilities;
 
-import arc.util.Nullable;
 import mindustry.entities.abilities.Ability;
 import mindustry.gen.Building;
 import mindustry.gen.Groups;
 import mindustry.gen.Unit;
+import org.jetbrains.annotations.Nullable;
 
 public class DeathAbility extends Ability {
 	protected @Nullable Unit ownerUnit;

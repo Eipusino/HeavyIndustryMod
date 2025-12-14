@@ -20,7 +20,6 @@ import arc.struct.IntIntMap;
 import arc.struct.IntSet;
 import arc.struct.Seq;
 import arc.util.Log;
-import arc.util.Nullable;
 import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.pooling.Pool.Poolable;
@@ -54,6 +53,8 @@ import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
 import mindustry.world.Tile;
 import mindustry.world.blocks.defense.turrets.Turret.TurretBuild;
+import org.jetbrains.annotations.ApiStatus.Obsolete;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -84,8 +85,8 @@ public final class HEntity {
 	static Boolf<Tile> formatNavy = t -> t.floor().isLiquid && !t.cblock().solid && !t.floor().solid && !t.overlay().solid && !t.block().solidifes;
 	static Boolf<Tile> formatGround = t -> !t.floor().isDeep() && !t.cblock().solid && !t.floor().solid && !t.overlay().solid && !t.block().solidifes;
 
-	/// 0 for flying, 1 for navy, 2 for ground.
-	static @Deprecated Boolf<Tile>[] formats = arrayOf(formatFlying, formatNavy, formatGround);
+	/** 0 for flying, 1 for navy, 2 for ground. */
+	static @Obsolete(since = "1.0.8") Boolf<Tile>[] formats = arrayOf(formatFlying, formatNavy, formatGround);
 
 	static final CollectionObjectMap<Class<? extends Entityc>, Field> addedFieldMap = new CollectionObjectMap<>(Class.class, Field.class);
 	static final CollectionObjectMap<Class<? extends Building>, Field> soundFieldMap = new CollectionObjectMap<>(Class.class, Field.class);
@@ -351,8 +352,7 @@ public final class HEntity {
 	}
 
 	/** code taken from BadWrong_ on the gamemaker subreddit */
-	@Nullable
-	public static Vec2 intersectCircle(float x1, float y1, float x2, float y2, float cx, float cy, float cr) {
+	public static @Nullable Vec2 intersectCircle(float x1, float y1, float x2, float y2, float cx, float cy, float cr) {
 		if (!Intersector.nearestSegmentPoint(x1, y1, x2, y2, cx, cy, v4).within(cx, cy, cr)) return null;
 
 		cx = x1 - cx;
@@ -627,8 +627,8 @@ public final class HEntity {
 		return seq;
 	}
 
-	/** @deprecated Please use {@link #getObjects(QuadTree, Class)} */
-	@Deprecated
+	/** Please use {@link #getObjects(QuadTree, Class)} */
+	@Obsolete(since = "1.0.8")
 	public static <T extends QuadTreeObject> Seq<T> getObjects(QuadTree<T> tree) {
 		Seq<T> seq = new Seq<>();
 

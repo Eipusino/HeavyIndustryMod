@@ -4,7 +4,6 @@ import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Geometry;
-import arc.util.Nullable;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
@@ -16,6 +15,7 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Router;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
+import org.jetbrains.annotations.Nullable;
 
 import static mindustry.Vars.itemSize;
 import static mindustry.Vars.tilesize;
@@ -81,12 +81,12 @@ public class CoveredRouter extends Router {
 						target.handleItem(this, lastItem);
 						items.remove(lastItem, 1);
 						lastItem = null;
-						progress = 0;
+						progress = 0f;
 						current = null;
 					}
 				}
 			} else {
-				progress = 0;
+				progress = 0f;
 			}
 		}
 

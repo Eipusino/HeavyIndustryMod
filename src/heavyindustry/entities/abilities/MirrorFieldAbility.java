@@ -13,7 +13,6 @@ import arc.math.Mathf;
 import arc.math.geom.Intersector;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
-import arc.util.Nullable;
 import arc.util.Time;
 import heavyindustry.graphics.HLayer;
 import heavyindustry.math.Mathm;
@@ -21,6 +20,7 @@ import mindustry.gen.Bullet;
 import mindustry.gen.Groups;
 import mindustry.gen.Unit;
 import mindustry.type.UnitType;
+import org.jetbrains.annotations.Nullable;
 
 public class MirrorFieldAbility extends MirrorShieldAbility {
 	public boolean rotation;

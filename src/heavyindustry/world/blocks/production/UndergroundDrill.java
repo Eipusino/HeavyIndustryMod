@@ -6,10 +6,12 @@ import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.math.Mathf;
 import arc.struct.ObjectFloatMap;
+import arc.struct.Seq;
 import arc.util.Scaling;
 import arc.util.Strings;
 import heavyindustry.world.blocks.environment.UndergroundOreBlock;
 import heavyindustry.world.blocks.storage.DetectorCoreBlock;
+import mindustry.Vars;
 import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
@@ -23,14 +25,6 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 import mindustry.world.meta.StatValue;
 
-import static mindustry.Vars.content;
-import static mindustry.Vars.iconSmall;
-import static mindustry.Vars.indexer;
-import static mindustry.Vars.player;
-import static mindustry.Vars.state;
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
-
 public class UndergroundDrill extends Drill {
 	public UndergroundDrill(String name) {
 		super(name);
@@ -43,7 +37,9 @@ public class UndergroundDrill extends Drill {
 			t.row();
 			t.table(c -> {
 				int i = 0;
-				for (Block block : content.blocks()) {
+				Seq<Block> seq = Vars.content.blocks();
+				for (int n = 0; n < seq.size; n++) {
+					Block block = seq.get(n);
 					if (!(block instanceof UndergroundOreBlock uo) || !filter.get(block)) continue;
 
 					c.table(Styles.grayPanel, b -> {
@@ -82,8 +78,8 @@ public class UndergroundDrill extends Drill {
 
 	@Override
 	public void drawPlace(int x, int y, int rotation, boolean valid) {
-		Tile tile = world.tile(x, y);
-		Ranged detector = nearestDetector(player.team(), x * 8, y * 8);
+		Tile tile = Vars.world.tile(x, y);
+		Ranged detector = nearestDetector(Vars.player.team(), x * 8, y * 8);
 		if (tile == null) return;
 
 		if (detector == null) {
@@ -95,7 +91,7 @@ public class UndergroundDrill extends Drill {
 
 		if (returnItem != null) {
 			float width = drawPlaceText(Core.bundle.formatFloat("bar.drillspeed", 60f / getDrillTime(returnItem) * returnCount, 2), x, y, valid);
-			float dx = x * tilesize + offset - width / 2f - 4f, dy = y * tilesize + offset + size * tilesize / 2f + 5, s = iconSmall / 4f;
+			float dx = x * Vars.tilesize + offset - width / 2f - 4f, dy = y * Vars.tilesize + offset + size * Vars.tilesize / 2f + 5, s = Vars.iconSmall / 4f;
 			Draw.mixcol(Color.darkGray, 1f);
 			Draw.rect(returnItem.fullIcon, dx, dy - 1, s, s);
 			Draw.reset();
@@ -114,7 +110,7 @@ public class UndergroundDrill extends Drill {
 		super.setStats();
 		stats.remove(Stat.drillTier);
 		stats.add(Stat.drillTier, drillAble(drillTime, hardnessDrillMultiplier, size * size, drillMultipliers, b -> b instanceof UndergroundOreBlock &&
-				getUnderDrop(b) != null && getUnderDrop(b).hardness <= tier && getUnderDrop(b) != blockedItem && (indexer.isBlockPresent(b) || state.isMenu())));
+				getUnderDrop(b) != null && getUnderDrop(b).hardness <= tier && getUnderDrop(b) != blockedItem && (Vars.indexer.isBlockPresent(b) || Vars.state.isMenu())));
 	}
 
 	@Override
@@ -169,7 +165,7 @@ public class UndergroundDrill extends Drill {
 	}
 
 	protected Ranged nearestDetector(Team team, float wx, float wy) {
-		return (Ranged) indexer.findTile(team, wx, wy, 999f, b -> (b.block instanceof OreDetector || b.block instanceof DetectorCoreBlock)
+		return (Ranged) Vars.indexer.findTile(team, wx, wy, 999f, b -> (b.block instanceof OreDetector || b.block instanceof DetectorCoreBlock)
 				&& Mathf.within(wx, wy, b.x, b.y, ((Ranged) b).range()));
 	}
 

@@ -26,21 +26,21 @@ import mindustry.graphics.Trail;
 import static heavyindustry.HVars.MOD_NAME;
 
 public final class HTrails {
-	/// Don't let anyone instantiate this class.
+	/** Don't let anyone instantiate this class. */
 	private HTrails() {}
 
 	public static TexturedTrail singlePhantasmal(String name, int length, TrailAttrib... attributes) {
-		return new TexturedTrail(length, name, attributes) {{
-			blend = Blending.additive;
-			fadeInterp = Interp.pow2In;
-			sideFadeInterp = Interp.pow3In;
-			mixInterp = Interp.pow10In;
-			gradientInterp = Interp.pow2Out;
-			fadeColor = new Color(0.3f, 0.5f, 1f);
-			shrink = 0f;
-			fadeAlpha = 1f;
-			mixAlpha = 1f;
-		}};
+		TexturedTrail trail = new TexturedTrail(length, name, attributes);
+		trail.blend = Blending.additive;
+		trail.fadeInterp = Interp.pow2In;
+		trail.sideFadeInterp = Interp.pow3In;
+		trail.mixInterp = Interp.pow10In;
+		trail.gradientInterp = Interp.pow2Out;
+		trail.fadeColor = new Color(0.3f, 0.5f, 1f);
+		trail.shrink = 0f;
+		trail.fadeAlpha = 1f;
+		trail.mixAlpha = 1f;
+		return trail;
 	}
 
 	/** Taken from Project Unity and modified a bit. */

@@ -45,7 +45,7 @@ public class BitWordList {
 	 * @param index the index of the bit to set
 	 * @throws ArrayIndexOutOfBoundsException if index < 0
 	 */
-	public void set(int index, byte number) {
+	public void set(int index, int number) {
 		final int wordIndex = index * wordLen >>> 6;
 
 		index = (index * wordLen) & 63;
@@ -113,7 +113,7 @@ public class BitWordList {
 		final int word = nonZeroLength() >>> 6;
 		int hash = 0;
 		for (int i = 0; word >= i; i++) {
-			hash = 127 * hash + Objects2.hashCodeLong(bits[i]);
+			hash = 127 * hash + Objects2.longToHash(bits[i]);
 		}
 		return hash;
 	}
@@ -153,8 +153,8 @@ public class BitWordList {
 
 		public static final WordLength[] all = values();
 
-		WordLength(int i) {
-			value = (byte) i;
+		WordLength(int val) {
+			value = (byte) val;
 		}
 	}
 }

@@ -4,11 +4,11 @@ import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
-import arc.util.Nullable;
 import arc.util.Time;
 import heavyindustry.math.Mathm;
 import mindustry.entities.part.DrawPart;
 import mindustry.graphics.Drawf;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Draws a region with a construct animation, is meant to be used only on units.
