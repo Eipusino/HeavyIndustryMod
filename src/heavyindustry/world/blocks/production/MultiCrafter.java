@@ -93,7 +93,7 @@ public class MultiCrafter extends Block {
 		solid = true;
 		hasItems = true;
 		consumesPower = false;
-		ambientSound = Sounds.machine;
+		ambientSound = Sounds.loopMachine;
 		sync = true;
 		ambientSoundVolume = 0.03f;
 		flags = EnumSet.of(BlockFlag.factory);

@@ -41,7 +41,7 @@ public class MechPad extends Block {
 	public float buildTime = 60 * 5;
 	public ItemStack[] mechReqs;
 	public int[] capacities = {};
-	public Sound spawnSound = Sounds.respawn;
+	public Sound spawnSound = Sounds.none;
 	public TextureRegion glowRegion;
 
 	public MechPad(String name) {
@@ -49,7 +49,7 @@ public class MechPad extends Block {
 		update = true;
 		solid = false;
 		hasPower = true;
-		ambientSound = Sounds.extractLoop;
+		ambientSound = Sounds.loopExtract;
 		ambientSoundVolume = 0.8f;
 	}
 

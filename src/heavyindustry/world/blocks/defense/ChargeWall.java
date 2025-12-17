@@ -22,7 +22,6 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.logic.Ranged;
-import mindustry.type.Category;
 import mindustry.ui.Bar;
 import mindustry.world.blocks.defense.Wall;
 import mindustry.world.meta.BlockGroup;
@@ -97,8 +96,6 @@ public class ChargeWall extends Wall {
 		super(name);
 
 		update = true;
-
-		category = Category.defense;
 
 		solid = true;
 		destructible = true;

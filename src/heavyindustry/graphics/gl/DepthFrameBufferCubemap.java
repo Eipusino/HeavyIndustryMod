@@ -67,10 +67,12 @@ public class DepthFrameBufferCubemap extends FrameBufferCubemap {
 	@Override
 	public void bindSide(CubemapSide side) {
 		Gl.framebufferTexture2D(Gl.framebuffer, Gl.colorAttachment0, side.glEnum, getTexture().getTextureObjectHandle(), 0);
-		if (hasDepth)
-			Gl.framebufferTexture2D(Gl.framebuffer, Gl.depthAttachment, side.glEnum, getDepthTexture().getTextureObjectHandle(), 0);
-		if (hasStencil)
-			Gl.framebufferTexture2D(Gl.framebuffer, Gl.stencilAttachment, side.glEnum, getStencilTexture().getTextureObjectHandle(), 0);
+
+		Cubemap depthTexture = getDepthTexture(), stencilTexture = getStencilTexture();
+		if (depthTexture != null)
+			Gl.framebufferTexture2D(Gl.framebuffer, Gl.depthAttachment, side.glEnum, depthTexture.getTextureObjectHandle(), 0);
+		if (stencilTexture != null)
+			Gl.framebufferTexture2D(Gl.framebuffer, Gl.stencilAttachment, side.glEnum, stencilTexture.getTextureObjectHandle(), 0);
 	}
 
 	public void resize(int width, int height) {

@@ -12,6 +12,7 @@ import mindustry.gen.Sounds;
 public final class HSounds {
 	public static Fi soundsDir = HVars.internalTree.child("sounds");
 
+	// TODO The naming convention for these sounds should follow vanilla.
 	public static Sound ct1 = new Sound();
 	public static Sound dbz1 = new Sound();
 	public static Sound dd1 = new Sound();
@@ -134,6 +135,6 @@ public final class HSounds {
 
 		Log.warn("The path @ does not exist!", file.name());
 
-		return Sounds.back;
+		return Sounds.none;
 	}
 }

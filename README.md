@@ -18,9 +18,9 @@
 
 **The current mod is in the development stage, and most APIs are extremely unstable and may change at any time in future updates. It is not recommended to use it as a dependency for now.**
 
-+ **Mod Version: 1.0.7-beta**
++ **Mod Version: 1.0.9-beta**
 + **Mod Type: Java**
-+ **Mindustry Version: 152.3**
++ **Mindustry Version: 154**
 + **Compatible Platform: Android, Desktop, macOS, Linux。.**
 
 ---

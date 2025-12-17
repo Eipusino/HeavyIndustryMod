@@ -168,7 +168,7 @@ public class EmptinessUnitType extends UnitType2 {
 				linearWarmup = false;
 				minWarmup = 0.9f;
 
-				shootSound = Sounds.lasershoot;
+				shootSound = Sounds.shootLaser;
 
 				bullet = new BulletType() {{
 					damage = 320;
@@ -483,7 +483,7 @@ public class EmptinessUnitType extends UnitType2 {
 			trailEffect = new MultiEffect(HFx.trailLineLong, Fx.colorSparkBig);
 			trailChance = 1;
 			trailRotation = true;
-			hitSound = Sounds.spark;
+			hitSound = Sounds.shootArc;
 			hitEffect = Fx.circleColorSpark;
 			hitColor = HPal.matrixNet;
 			shootEffect = Fx.circleColorSpark;
@@ -534,7 +534,7 @@ public class EmptinessUnitType extends UnitType2 {
 			recoil = 6;
 			shake = 4;
 			reload = 30;
-			shootSound = Sounds.spark;
+			shootSound = Sounds.shootArc;
 			bullet = turretBullet;
 		}}, new Weapon(this.name + "-turret") {{
 			x = 22f;
@@ -548,7 +548,7 @@ public class EmptinessUnitType extends UnitType2 {
 			shake = 4;
 
 			reload = 30;
-			shootSound = Sounds.spark;
+			shootSound = Sounds.shootArc;
 
 			bullet = turretBullet;
 		}}, new Weapon(this.name + "-cannon") {{
@@ -559,7 +559,7 @@ public class EmptinessUnitType extends UnitType2 {
 			rotateSpeed = 3.5f;
 			recoilTime = 60;
 			recoil = 6;
-			shootSound = Sounds.plasmaboom;
+			shootSound = Sounds.explosionQuad;
 			shake = 5;
 			reload = 60;
 			bullet = new MultiTrailBulletType() {{
@@ -571,7 +571,7 @@ public class EmptinessUnitType extends UnitType2 {
 				hitEffect = new MultiEffect(HFx.diamondSparkLarge, HFx.spreadSparkLarge);
 				despawnEffect = HFx.explodeImpWaveSmall;
 				hitShake = 6;
-				hitSound = Sounds.spark;
+				hitSound = Sounds.shootArc;
 				speed = 10;
 				lifetime = 60;
 				trailEffect = new MultiEffect(Fx.colorSparkBig, HFx.movingCrystalFrag, HFx.polyParticle);
@@ -613,7 +613,7 @@ public class EmptinessUnitType extends UnitType2 {
 			mirror = false;
 			recoil = 0;
 			targetSwitchInterval = 80;
-			shootSound = Sounds.laserblast;
+			shootSound = Sounds.shootCorvus;
 			reload = 750;
 			cooldownTime = 30;
 			minWarmup = 0.95f;
@@ -636,7 +636,7 @@ public class EmptinessUnitType extends UnitType2 {
 				float damageInterval = 5;
 				float laserShake = 5, damageShake = 12;
 				Effect laserEffect = Fx.none;
-				Sound laserSound = Sounds.laserbig;
+				Sound laserSound = Sounds.shootMeltdown;
 				boolean blackZone = true;
 
 				VectorLightningGenerator gen = new VectorLightningGenerator();

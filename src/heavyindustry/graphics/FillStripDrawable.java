@@ -3,6 +3,7 @@ package heavyindustry.graphics;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.util.Tmp;
+import org.jetbrains.annotations.Contract;
 
 public class FillStripDrawable extends BaseStripDrawable {
 	public Color color, innerColor;
@@ -21,6 +22,7 @@ public class FillStripDrawable extends BaseStripDrawable {
 		Drawh.circleStrip(originX, originY, distance, distance + stripWidth, angleDelta, angle, Tmp.c1.set(innerColor).mul(Draw.getColor()), Tmp.c2.set(color).mul(Draw.getColor()), 72);
 	}
 
+	@Contract(value = "_, _ -> new", pure = true)
 	public FillStripDrawable tint(Color color, Color innerColor) {
 		return new FillStripDrawable(color, innerColor);
 	}

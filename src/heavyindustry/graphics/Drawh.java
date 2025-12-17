@@ -9,6 +9,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import heavyindustry.util.concurrent.Pair;
+import org.jetbrains.annotations.Contract;
 
 import static heavyindustry.graphics.Drawn.v1;
 import static heavyindustry.graphics.Drawn.v2;
@@ -42,6 +43,7 @@ public final class Drawh {
 
 	private Drawh() {}
 
+	@Contract(value = "_ -> new", pure = true)
 	static float[] prepareCircleOffset(int sides) {
 		float[] vertices = new float[sides * 4];
 		float step = 360f / sides;
@@ -57,6 +59,7 @@ public final class Drawh {
 		return vertices;
 	}
 
+	@Contract(value = "_ -> new", pure = true)
 	static float[] prepareCircleVertices(int sides) {
 		float[] vertices = new float[sides * 24];
 		TextureRegion region = Core.atlas.white();

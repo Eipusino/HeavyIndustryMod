@@ -280,7 +280,7 @@ public class MornstarType extends AirSeaAmphibiousUnitType {
 
 				despawnHit = true;
 
-				shootSound = Sounds.bolt;
+				shootSound = Sounds.shootLocus;
 
 				hitColor = trailColor = HPal.matrixNet;
 				hitEffect = new MultiEffect(
@@ -359,7 +359,7 @@ public class MornstarType extends AirSeaAmphibiousUnitType {
 				public void init(Bullet b) {
 					super.init(b);
 
-					Sounds.laserblast.at(b.x, b.y, 1.25f);
+					Sounds.shootCorvus.at(b.x, b.y, 1.25f);
 
 					if (b.owner instanceof Unit u) {
 						b.rotation(b.angleTo(u.aimX, u.aimY));
@@ -564,7 +564,7 @@ public class MornstarType extends AirSeaAmphibiousUnitType {
 				@Override
 				public void despawned(Bullet b) {
 					super.despawned(b);
-					Sounds.malignShoot.at(b, 2);
+					Sounds.shootMalign.at(b, 2);
 				}
 
 				@Override

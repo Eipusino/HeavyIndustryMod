@@ -15,6 +15,7 @@ import mindustry.Vars;
 import mindustry.game.EventType.Trigger;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pixelator;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 
@@ -162,7 +163,7 @@ public final class ScreenSampler {
 		}*/
 	}
 
-	private static void blitBuffer(FrameBuffer from, FrameBuffer to) {
+	static void blitBuffer(FrameBuffer from, @Nullable FrameBuffer to) {
 		if (Core.gl30 == null) {
 			from.blit(HShaders.distBase);
 
@@ -192,7 +193,7 @@ public final class ScreenSampler {
 	 * @param clear  Is the frame buffer cleared before transferring.
 	 */
 	public static void getToBuffer(FrameBuffer target, boolean clear) {
-		if (currBuffer == null) return;//throw new IllegalStateException("currently no buffer bound");
+		if (currBuffer == null) throw new IllegalStateException("currently no buffer bound");
 
 		if (clear) target.begin(Color.clear);
 		else target.begin();

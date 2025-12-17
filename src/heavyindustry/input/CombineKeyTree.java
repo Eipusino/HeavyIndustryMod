@@ -8,7 +8,7 @@ import heavyindustry.util.CollectionObjectMap;
 import heavyindustry.util.concurrent.holder.ObjectHolder;
 
 public class CombineKeyTree<R> {
-	public final Class<R> recType;
+	public final Class<?> recType;
 
 	CollectionObjectMap<CombinedKeys, R> tempMap;
 
@@ -23,7 +23,7 @@ public class CombineKeyTree<R> {
 
 	R rec = null;
 
-	public CombineKeyTree(Class<R> type) {
+	public CombineKeyTree(Class<?> type) {
 		recType = type;
 
 		tempMap = new CollectionObjectMap<>(CombinedKeys.class, recType);
@@ -215,8 +215,8 @@ public class CombineKeyTree<R> {
 
 	@Override
 	public String toString() {
-		StringBuilder stringBuilder = new StringBuilder();
-		forEach((keys, rec) -> stringBuilder.append(keys).append(" -> ").append(rec).append(",\n"));
-		return stringBuilder.toString();
+		StringBuilder builder = new StringBuilder();
+		forEach((keys, rec) -> builder.append(keys).append(" -> ").append(rec).append(",\n"));
+		return builder.toString();
 	}
 }

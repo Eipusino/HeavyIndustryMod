@@ -22,6 +22,7 @@ import heavyindustry.util.Arrays2;
 import mindustry.gen.Rotc;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Trail;
+import org.jetbrains.annotations.Contract;
 
 import static heavyindustry.HVars.MOD_NAME;
 
@@ -29,6 +30,7 @@ public final class HTrails {
 	/** Don't let anyone instantiate this class. */
 	private HTrails() {}
 
+	@Contract(value = "_, _, _ -> new", pure = true)
 	public static TexturedTrail singlePhantasmal(String name, int length, TrailAttrib... attributes) {
 		TexturedTrail trail = new TexturedTrail(length, name, attributes);
 		trail.blend = Blending.additive;

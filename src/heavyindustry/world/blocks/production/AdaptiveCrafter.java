@@ -81,8 +81,8 @@ public class AdaptiveCrafter extends Block {
 
 		update = true;
 		solid = true;
-		ambientSound = Sounds.machine;
 		sync = true;
+		ambientSound = Sounds.loopMachine;
 		ambientSoundVolume = 0.03f;
 		flags = EnumSet.of(BlockFlag.factory);
 		drawArrow = false;

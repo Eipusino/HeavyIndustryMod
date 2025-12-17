@@ -1624,7 +1624,7 @@ public final class HBlocks {
 			requirements(Category.production, ItemStack.with(Items.copper, 5, Items.lead, 5));
 			health = 50;
 			buildCostMultiplier = 0.01f;
-			breakSound = Sounds.splash;
+			breakSound = Sounds.stepWater;
 			hideDetails = false;
 		}};
 		//drill-erekir
@@ -2126,7 +2126,7 @@ public final class HBlocks {
 			generateEffect = Fx.steam;
 			effectChance = 0.01f;
 			drawer = new DrawMulti(new DrawDefault(), new DrawWarmupRegion());
-			ambientSound = Sounds.steam;
+			ambientSound = Sounds.loopSteam;
 			ambientSoundVolume = 0.02f;
 		}};
 		coalPyrolyzer = new ConsumeGenerator("coal-pyrolyzer") {{
@@ -2151,7 +2151,7 @@ public final class HBlocks {
 				rotateSpeed = -1.25f;
 				spinSprite = true;
 			}}, new DrawRegion("-top"), new DrawLiquidRegion(Liquids.water), new DrawLiquidRegion(HLiquids.gas));
-			ambientSound = Sounds.steam;
+			ambientSound = Sounds.loopSteam;
 			ambientSoundVolume = 0.04f;
 		}};
 		largeThermalGenerator = new ThermalGenerator("large-thermal-generator") {{
@@ -2167,7 +2167,7 @@ public final class HBlocks {
 				scale = 10;
 			}});
 			floating = true;
-			ambientSound = Sounds.hum;
+			ambientSound = Sounds.loopHum;
 			ambientSoundVolume = 0.06f;
 		}};
 		radiationGenerator = new OverlayGenerator("radiation-generator") {{
@@ -2269,7 +2269,7 @@ public final class HBlocks {
 					});
 				});
 			});
-			ambientSound = Sounds.hum;
+			ambientSound = Sounds.loopHum;
 			ambientSoundVolume = 0.24f;
 			consumeItem(HItems.uranium);
 			consumeLiquid(Liquids.cryofluid, heating / coolantPower).update(false);
@@ -2287,7 +2287,7 @@ public final class HBlocks {
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawPlasma() {{
 				plasma1 = plasma2 = Pal.techBlue;
 			}}, new DrawDefault());
-			ambientSound = Sounds.pulse;
+			ambientSound = Sounds.loopPulse;
 			ambientSoundVolume = 0.1f;
 			consumePower(65f);
 			consumeItem(Items.phaseFabric, 1);
@@ -2369,7 +2369,7 @@ public final class HBlocks {
 			size = 3;
 			hasPower = hasItems = true;
 			drawer = new DrawMulti(new DrawDefault(), new DrawFlame(new Color(0xffc099ff)));
-			ambientSound = Sounds.smelter;
+			ambientSound = Sounds.loopSmelter;
 			ambientSoundVolume = 0.14f;
 			consumeItems(ItemStack.with(Items.lead, 3, Items.sand, 3));
 			consumePower(1.8f);
@@ -2392,7 +2392,7 @@ public final class HBlocks {
 				);
 			}).layer(Layer.blockOver + 1);
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawRegion("-rotate", 3f, true), /*new DrawFrames(), new DrawArcSmelt(), */new DrawDefault());
-			ambientSound = Sounds.grinding;
+			ambientSound = Sounds.loopGrind;
 			ambientSoundVolume = 0.12f;
 			consumePower(1.5f);
 			consumeItem(Items.scrap, 2);
@@ -2562,7 +2562,7 @@ public final class HBlocks {
 				glowScale = 3.14f;
 				color = new Color(0xeb564bff);
 			}});
-			ambientSound = Sounds.smelter;
+			ambientSound = Sounds.loopSmelter;
 			ambientSoundVolume = 0.21f;
 			consumeItems(ItemStack.with(Items.coal, 5, Items.sand, 8, Items.blastCompound, 1));
 			consumePower(4f);
@@ -3037,7 +3037,7 @@ public final class HBlocks {
 			displayEfficiency = false;
 			generateEffect = Fx.turbinegenerate;
 			effectChance = 0.04f;
-			ambientSound = Sounds.hum;
+			ambientSound = Sounds.loopHum;
 			ambientSoundVolume = 0.06f;
 			drawer = new DrawMulti(new DrawDefault(), new DrawHeatOutput());
 			squareSprite = false;
@@ -3089,7 +3089,7 @@ public final class HBlocks {
 			rotateDraw = false;
 			heatOutput = 25f;
 			regionRotated1 = 1;
-			ambientSound = Sounds.hum;
+			ambientSound = Sounds.loopHum;
 			consumePower(550f / 60f);
 			buildType = HeatProducerBuild::new;
 		}};
@@ -3107,7 +3107,7 @@ public final class HBlocks {
 			consumePower(1.5f);
 			rotateDraw = false;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidRegion(Liquids.ozone), new DrawDefault(), new DrawHeatOutput());
-			ambientSound = Sounds.extractLoop;
+			ambientSound = Sounds.loopExtract;
 			ambientSoundVolume = 0.3f;
 			regionRotated1 = 2;
 			craftTime = 60f * 2f;
@@ -3128,7 +3128,7 @@ public final class HBlocks {
 			heatRequirement = 15;
 			craftTime = 180;
 			outputItem = new ItemStack(Items.surgeAlloy, 3);
-			ambientSound = Sounds.smelter;
+			ambientSound = Sounds.loopSmelter;
 			ambientSoundVolume = 1.8f;
 			craftEffect = new RadialEffect(Fx.surgeCruciSmoke, 4, 90, 5);
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawCircles() {{
@@ -3153,7 +3153,7 @@ public final class HBlocks {
 			heatRequirement = 20;
 			craftTime = 135;
 			outputItem = new ItemStack(Items.carbide, 3);
-			ambientSound = Sounds.smelter;
+			ambientSound = Sounds.loopSmelter;
 			ambientSoundVolume = 1.8f;
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawCrucibleFlame(), new DrawDefault(), new DrawHeatInput());
 			consumeItems(ItemStack.with(Items.graphite, 8, Items.tungsten, 5));
@@ -3272,7 +3272,7 @@ public final class HBlocks {
 				lightningLengthRand = 16;
 				splashDamageRadius = 120f;
 				hitShake = despawnShake = 20f;
-				hitSound = despawnSound = Sounds.explosionbig;
+				hitSound = despawnSound = Sounds.explosionReactor2;
 				hitEffect = despawnEffect = new MultiEffect(HFx.crossBlast(hitColor, splashDamageRadius * 1.25f), HFx.blast(hitColor, splashDamageRadius * 1.5f));
 			}};
 			reloadTime = 300f;
@@ -3699,7 +3699,7 @@ public final class HBlocks {
 			targetGround = true;
 			health = 1300;
 			size = 2;
-			shootSound = Sounds.laser;
+			shootSound = Sounds.shootLancer;
 			shake = 2f;
 			inaccuracy = 0f;
 			recoil = 2f;
@@ -3759,7 +3759,7 @@ public final class HBlocks {
 			requirements(Category.turret, ItemStack.with(Items.copper, 85, Items.titanium, 60, Items.silicon, 70));
 			health = 900;
 			size = 2;
-			shootSound = Sounds.shootBig;
+			shootSound = Sounds.shootSalvo;
 			shake = 0.05f;
 			inaccuracy = 2f;
 			recoil = 2f;
@@ -4009,7 +4009,7 @@ public final class HBlocks {
 			coolant = consumeCoolant(0.001f);
 			coolant.optional = true;
 			liquidCapacity = 60f;
-			shootSound = Sounds.shootBig;
+			shootSound = Sounds.shootSalvo;
 			ammoUseEffect = Fx.casing3;
 			targetGround = true;
 			targetAir = true;
@@ -4155,7 +4155,7 @@ public final class HBlocks {
 			}};
 			rotateSpeed = 8f;
 			inaccuracy = 0f;
-			shootSound = Sounds.missile;
+			shootSound = Sounds.shootMissile;
 			buildType = ItemTurretBuild::new;
 		}};
 		largeRocketLauncher = new ItemTurret("large-rocket-launcher") {{
@@ -4265,7 +4265,7 @@ public final class HBlocks {
 			shootWarmupSpeed = 0.04f;
 			warmupMaintainTime = 45;
 			minWarmup = 0.8f;
-			shootSound = Sounds.missileSmall;
+			shootSound = Sounds.shootMissileSmall;
 			drawer = new DrawTurret() {{
 				parts.add(new RegionPart("-side") {{
 					mirror = true;
@@ -4493,7 +4493,7 @@ public final class HBlocks {
 				knockback = 10f;
 				hitSize = 50f;
 				shrinkY = 0;
-				hitSound = Sounds.explosionbig;
+				hitSound = Sounds.explosionReactor2;
 				hitSoundVolume = 2f;
 				speed = 6f;
 				lifetime = 135f;
@@ -4628,7 +4628,7 @@ public final class HBlocks {
 				homingPower = 0.12f;
 				homingRange = 160f;
 				lifetime = 88f;
-				hitSound = Sounds.shotgun;
+				hitSound = Sounds.shootFuse;
 				hitSoundVolume = 0.2f;
 				width = 15f;
 				height = 53f;
@@ -4690,7 +4690,7 @@ public final class HBlocks {
 			health = 1200;
 			size = 2;
 			reload = 60f;
-			shootSound = Sounds.artillery;
+			shootSound = Sounds.shootRipple;
 			shake = 1.7f;
 			coolant = consumeCoolant(0.2f);
 			coolant.optional = true;
@@ -4845,7 +4845,7 @@ public final class HBlocks {
 			shootCone = 50f;
 			targetAir = false;
 			ammoUseEffect = Fx.none;
-			shootSound = Sounds.flame;
+			shootSound = Sounds.shootFlame;
 			coolantMultiplier = 1.5f;
 			coolant = consumeCoolant(0.1f);
 			buildType = ItemTurretBuild::new;
@@ -4882,8 +4882,8 @@ public final class HBlocks {
 			});
 			smokeEffect = Fx.none;
 			heatColor = Pal.lancerLaser;
-			shootSound = Sounds.laserblast;
-			chargeSound = Sounds.lasercharge;
+			shootSound = Sounds.shootCorvus;
+			chargeSound = Sounds.chargeCorvus;
 			shootType = new LaserBulletType(1550f) {{
 				ammoMultiplier = 1;
 				drawSize = length * 2f;
@@ -5108,7 +5108,7 @@ public final class HBlocks {
 			rotateSpeed = 2.5f;
 			recoil = 5f;
 			cooldownTime = 300f;
-			shootSound = Sounds.artillery;
+			shootSound = Sounds.shootRipple;
 			coolant = consumeCoolant(0.2f);
 			buildType = ItemTurretBuild::new;
 		}};
@@ -5245,7 +5245,7 @@ public final class HBlocks {
 			range = 208f;
 			recoilTime = 30f;
 			recoil = 3f;
-			shootSound = Sounds.shotgun;
+			shootSound = Sounds.shootFuse;
 			targetGround = true;
 			targetAir = true;
 			inaccuracy = 2f;
@@ -5312,7 +5312,7 @@ public final class HBlocks {
 			maxSpeed = 27f;
 			scaledHealth = 150;
 			shootCone = 35f;
-			shootSound = Sounds.shootBig;
+			shootSound = Sounds.shootSalvo;
 			targetAir = targetGround = true;
 			recoil = 3f;
 			recoilTime = 90f;
@@ -5345,7 +5345,7 @@ public final class HBlocks {
 				spread = 7f;
 			}};
 			shootCone = 24f;
-			shootSound = Sounds.spark;
+			shootSound = Sounds.shootArc;
 			shootType = new PositionLightningBulletType(150f) {{
 				lightningColor = hitColor = Pal.techBlue;
 				maxRange = rangeOverride = 250f;
@@ -5556,7 +5556,7 @@ public final class HBlocks {
 			}};
 			shootSound = Sounds.none;
 			loopSoundVolume = 1f;
-			loopSound = Sounds.laserbeam;
+			loopSound = Sounds.beamLustre;
 			shootWarmupSpeed = 0.08f;
 			shootCone = 360f;
 			aimChangeSpeed = 1.75f;
@@ -5671,7 +5671,7 @@ public final class HBlocks {
 				shots = 2;
 				shotDelay = 5f;
 			}};
-			shootSound = Sounds.shootBig;
+			shootSound = Sounds.shootScepter;
 			shootCone = 24f;
 			recoil = 3f;
 			rotateSpeed = 4.5f;
@@ -5699,7 +5699,7 @@ public final class HBlocks {
 				trailColor = lightColor = lightningColor = hitColor = backColor = Pal.techBlue;
 				trailLength = 45;
 				loopSoundVolume = 0.1f;
-				hitSound = Sounds.explosionbig;
+				hitSound = Sounds.explosionReactor2;
 				suppressionRange = 600f;
 				suppressionDuration = 600f;
 				status = HStatusEffects.ultFireBurn;
@@ -6026,7 +6026,7 @@ public final class HBlocks {
 			range = 780f;
 			trackingRange = range * 1.4f;
 			inaccuracy = 0f;
-			shootSound = Sounds.laserbig;
+			shootSound = Sounds.shootMeltdown;
 			buildType = PowerTurretBuild::new;
 		}};
 		executor = new PowerTurret("executor") {{
@@ -6147,7 +6147,7 @@ public final class HBlocks {
 			});
 			recoil = 18f;
 			shake = 80f;
-			shootSound = Sounds.laserblast;
+			shootSound = Sounds.shootCorvus;
 			shootCone = 5f;
 			maxAmmo = 80;
 			consumePower(800f);
@@ -6479,7 +6479,7 @@ public final class HBlocks {
 				trailChance = 1f;
 				trailInterval = 8f;
 				trailEffect = HFx.polyCloud(Pal.slagOrange, 30f, 8f, 18f, 4);//trail
-				hitSound = Sounds.shotgun;
+				hitSound = Sounds.shootFuse;
 				hitShake = 3f;
 				hitEffect = HFx.hitSparkLarge;//hit
 				shootEffect = HFx.square(Pal.slagOrange, 45f, 5, 38, 4);//shoot
@@ -6519,7 +6519,7 @@ public final class HBlocks {
 				trailChance = 0f;
 				trailInterval = 0.2f;
 				trailEffect = HFx.polyCloud(Pal.slagOrange, 30f, 8f, 18f, 4);//trail
-				hitSound = Sounds.shotgun;
+				hitSound = Sounds.shootFuse;
 				hitShake = 5f;
 				hitEffect = HFx.hitSparkLarge;//hit
 				despawnEffect = Fx.none;
@@ -6880,7 +6880,7 @@ public final class HBlocks {
 			rotateSpeed = 20f;
 			targetInterval = 0f;
 			shootCone = 80f;
-			shootSound = Sounds.shootBig;
+			shootSound = Sounds.shootSalvo;
 			shootType = new BasicBulletType(6f, 114514f) {{
 				pierce = true;
 				pierceCap = 6;
@@ -7017,7 +7017,7 @@ public final class HBlocks {
 			rotateSpeed = 22f;
 			targetInterval = 0f;
 			shootCone = 2f;
-			shootSound = Sounds.shootBig;
+			shootSound = Sounds.shootSalvo;
 			shootType = new BasicBulletType(24f, 1145141f) {{
 				splashDamage = damage;
 				hitSize = 6f;
@@ -7067,7 +7067,7 @@ public final class HBlocks {
 			rotateSpeed = 22f;
 			targetInterval = 0f;
 			shootCone = 2f;
-			shootSound = Sounds.shootBig;
+			shootSound = Sounds.shootSalvo;
 			shootType = new PointBulletType() {{
 				damage = 114514f;
 				speed = 0.0001f;

@@ -2077,7 +2077,9 @@ public final class HFx {
 			return lightning;
 		}
 	};
-	public final static Effect spreadLightning = new LightningEffect() {
+	public final static Effect spreadLightning = new LightningEffect() {{
+			lifetime = 45;
+	}
 		final RandomGenerator branch = new RandomGenerator() {{
 			maxDeflect = 50;
 		}};
@@ -2092,9 +2094,7 @@ public final class HFx {
 				return branch;
 			};
 		}};
-	{
-		lifetime = 45;
-	}
+
 		@Override
 		public void render(EffectContainer e) {
 			if (e.data == null) return;
@@ -2108,6 +2108,7 @@ public final class HFx {
 			con.draw(e.x, e.y);
 		}
 
+		@Override
 		public LightningContainer createLightning(float x, float y) {
 			LightningContainer.PoolLightningContainer lightning = LightningContainer.PoolLightningContainer.create(lifetime, 1.5f, 2.6f);
 
@@ -4261,34 +4262,42 @@ public final class HFx {
 	public static abstract class LightningEffect extends Effect {
 		protected Object data;
 
+		@Override
 		public void at(Position pos) {
 			create(pos.getX(), pos.getY(), 0, Color.white, createLightning(pos.getX(), pos.getY()));
 		}
 
+		@Override
 		public void at(Position pos, boolean parentize) {
 			create(pos.getX(), pos.getY(), 0, Color.white, createLightning(pos.getX(), pos.getY()));
 		}
 
+		@Override
 		public void at(Position pos, float rotation) {
 			create(pos.getX(), pos.getY(), rotation, Color.white, createLightning(pos.getX(), pos.getY()));
 		}
 
+		@Override
 		public void at(float x, float y) {
 			create(x, y, 0, Color.white, createLightning(x, y));
 		}
 
+		@Override
 		public void at(float x, float y, float rotation) {
 			create(x, y, rotation, Color.white, createLightning(x, y));
 		}
 
+		@Override
 		public void at(float x, float y, float rotation, Color color) {
 			create(x, y, rotation, color, createLightning(x, y));
 		}
 
+		@Override
 		public void at(float x, float y, Color color) {
 			create(x, y, 0, color, createLightning(x, y));
 		}
 
+		@Override
 		public void at(float x, float y, float rotation, Color color, Object data) {
 			this.data = data;
 			create(x, y, rotation, color, createLightning(x, y));

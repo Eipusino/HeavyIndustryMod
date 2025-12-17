@@ -24,7 +24,7 @@ public class ShieldBreakerBulletType extends BasicBulletType {
 			if (b.absorbed && b.data instanceof Color color) {
 				HFx.shuttle.at(b.x, b.y, Mathf.random(360f), color, b.damage / tilesize / 2f);
 				Effect.shake(b.damage / 100, b.damage / 100, b);
-				Sounds.plasmaboom.at(b);
+				Sounds.explosionQuad.at(b);
 			}
 		}
 	};

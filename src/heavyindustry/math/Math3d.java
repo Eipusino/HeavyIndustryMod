@@ -9,6 +9,7 @@ import arc.math.geom.Vec3;
 import arc.util.Time;
 import arc.util.Tmp;
 import mindustry.gen.Hitboxc;
+import org.jetbrains.annotations.Contract;
 
 import static mindustry.Vars.renderer;
 import static mindustry.Vars.tilesize;
@@ -37,6 +38,7 @@ public final class Math3d {
 				.rotate(Vec3.Y, pitch).rotate(Vec3.Z, -yaw);
 	}
 
+	@Contract(pure = true)
 	public static int linePointCounts(float x1, float y1, float z1, float x2, float y2, float z2) {
 		return (int) (dst(x1, y1, z1, x2, y2, z2) / tilesize / tilesize);
 	}
@@ -148,6 +150,7 @@ public final class Math3d {
 	}
 
 	//See my notebook for half the calculation. Oh wait, you don't have access to it because I physically hold it.
+	@Contract(pure = true)
 	public static float homingPitch(float x1, float y1, float z1, float x2, float y2, float v2, float a, float g) {
 		float dst = Mathf.dst(x1, y1, x2, y2);
 
@@ -163,10 +166,12 @@ public final class Math3d {
 		return (float) (-Math.asin((C - 0.5f * A) / ((Mathf.sign(p3) * Mathf.sqrt(0.25f * A * A + p3 * p3)))) / 2 - Math.atan(0.5f * A / p3)) / 2f;
 	}
 
+	@Contract(pure = true)
 	public static float dst(float x, float y, float z) {
 		return Mathf.sqrt(x * x + y * y + z * z);
 	}
 
+	@Contract(pure = true)
 	public static float dst(float x1, float y1, float z1, float x2, float y2, float z2) {
 		float xd = x2 - x1;
 		float yd = y2 - y1;
@@ -186,22 +191,27 @@ public final class Math3d {
 		return Angles.angle(x2, y2, Tmp.v2.x, Tmp.v2.y);
 	}
 
+	@Contract(pure = true)
 	public static float xOffset(float x, float height) {
 		return (x - Core.camera.position.x) * hMul(height);
 	}
 
+	@Contract(pure = true)
 	public static float yOffset(float y, float height) {
 		return (y - Core.camera.position.y) * hMul(height);
 	}
 
+	@Contract(pure = true)
 	public static float hMul(float height) {
 		return height(height) * renderer.getDisplayScale();
 	}
 
+	@Contract(pure = true)
 	public static float height(float height) {
 		return height * horiToVerti;
 	}
 
+	@Contract(pure = true)
 	public static float layerOffset(float x, float y) {
 		float max = Math.max(Core.camera.width, Core.camera.height);
 		return -Mathf.dst(x, y, Core.camera.position.x, Core.camera.position.y) / max / 1000f;

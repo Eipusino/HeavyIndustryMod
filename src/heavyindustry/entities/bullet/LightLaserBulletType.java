@@ -59,7 +59,7 @@ public class LightLaserBulletType extends LightningBulletType2 {
 
 	@Override
 	public void init(Bullet b, LightningContainer c) {
-		Sounds.spark.at(b.x, b.y, 1.2f);
+		Sounds.shootArc.at(b.x, b.y, 1.2f);
 
 		c.lifeTime = lifetime;
 		c.time = lightningTime;

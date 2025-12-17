@@ -5,6 +5,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.math.Mathf;
 import arc.util.Tmp;
+import org.jetbrains.annotations.Contract;
 
 public class EdgeLineStripDrawable extends FillStripDrawable {
 	public float stroke;
@@ -48,11 +49,13 @@ public class EdgeLineStripDrawable extends FillStripDrawable {
 		}
 	}
 
+	@Contract(value = "_, _, _, _ -> new", pure = true)
 	public EdgeLineStripDrawable tint(float str, Color lineCol, Color color, Color innerColor) {
 		return new EdgeLineStripDrawable(str, lineCol, color, innerColor);
 	}
 
 	@Override
+	@Contract(value = "_, _ -> new", pure = true)
 	public EdgeLineStripDrawable tint(Color color, Color innerColor) {
 		return new EdgeLineStripDrawable(stroke, lineColor, color, innerColor);
 	}

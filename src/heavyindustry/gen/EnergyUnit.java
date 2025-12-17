@@ -153,8 +153,8 @@ public class EnergyUnit extends Unit2 implements Energyc {
 		super.update();
 		if (type instanceof EnergyUnitType eType) {
 			if (!Vars.headless && lastPos.dst(this) > eType.effectTriggerLen) {
-				Sounds.plasmaboom.at(this);
-				Sounds.plasmaboom.at(lastPos);
+				Sounds.explosionQuad.at(this);
+				Sounds.explosionQuad.at(lastPos);
 
 				eType.teleport.at(x, y, hitSize / 2, team.color);
 				eType.teleport.at(lastPos.x, lastPos.y, hitSize / 2, team.color);

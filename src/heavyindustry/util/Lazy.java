@@ -1,6 +1,7 @@
 package heavyindustry.util;
 
 import arc.func.Prov;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -24,10 +25,12 @@ public class Lazy<T> {
 		allowSet = mod;
 	}
 
+	@Contract(value = "_ -> new", pure = true)
 	public static <T> Lazy<T> of(@NotNull Prov<T> prov) {
 		return new Lazy<>(prov);
 	}
 
+	@Contract(pure = true)
 	public T get() {
 		if (prov != null) {
 			synchronized (this) {
@@ -48,19 +51,19 @@ public class Lazy<T> {
 
 	@Override
 	public boolean equals(Object o) {
-		return o == this || o instanceof Lazy<?> lazy && Objects.equals(value, lazy.value);
+		return o == this || o instanceof Lazy<?> lazy && Objects.equals(get(), lazy.get());
 	}
 
 	@Override
 	public int hashCode() {
-		return value == null ? 0 : value.hashCode();
+		return get() == null ? 0 : value.hashCode();
 	}
 
 	@Override
 	public String toString() {
 		return "Lazy{" +
-				"value=" + value +
-				", modifiable=" + allowSet +
+				"value=" + get() +
+				", allowSet=" + allowSet +
 				'}';
 	}
 }

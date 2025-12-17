@@ -76,7 +76,7 @@ public class LightenGenerator extends NuclearReactor {
 				lightningDamage = 30;
 				lightning = 5;
 				lightningLength = 12;
-				hitSound = Sounds.release;
+				hitSound = Sounds.shootNavanax;
 				ammoMultiplier = 1;
 				hitEffect = new Effect(60, e -> {
 					Draw.color(effectColor);
@@ -183,7 +183,7 @@ public class LightenGenerator extends NuclearReactor {
 		public void updateTile() {
 			if (items.total() == block.itemCapacity && !working) {
 				effect.at(x, y, 0, range);
-				Sounds.lasercharge2.at(x, y, 1.5f);
+				Sounds.chargeVela.at(x, y, 1.5f);
 				Units.nearby(null, x, y, range * 2, unit -> unit.impulse(Tmp.v3.set(unit).sub(x, y).nor().scl(-pullPower)));
 				working = true;
 			}

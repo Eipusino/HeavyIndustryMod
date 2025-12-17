@@ -172,7 +172,7 @@ public class HyperGenerator extends ImpactReactor {
 					if (!headless) {
 						float range = size * tilesize / 1.5f;
 						HFx.hyperExplode.at(b.x + Mathf.range(range), b.y + Mathf.range(range), effectColor);
-						Sounds.explosionbig.at(b);
+						Sounds.explosionReactor2.at(b);
 					}
 					blast.create(b, Team.derelict, b.x, b.y, Mathf.random(360), blast.damage * baseExplosiveness, Mathf.random(minVelScl, maxVelScl), Mathf.random(minTimeScl, maxTimeScl), new Object());
 				}
@@ -255,22 +255,22 @@ public class HyperGenerator extends ImpactReactor {
 			for (i = 0; i < 30; i++) {
 				Time.run(Mathf.random(80f), () -> {
 					explodeSub.get(this);
-					Sounds.bang.at(this);
-					Sounds.explosionbig.at(this);
+					Sounds.shootArtillerySmall.at(this);
+					Sounds.explosionReactor2.at(this);
 				});
 			}
 
 			for (i = 0; i < 10; i++) {
 				Time.run(i * (3 + Mathf.random(2f)), () -> {
 					explodeSub.get(this);
-					Sounds.explosionbig.at(this);
+					Sounds.explosionReactor2.at(this);
 					PositionLightning.createRandomRange(Team.derelict, this, lightningRange * 3f, effectColor, true, lightningDamage, lightningLen + Mathf.random(lightningLenRand), PositionLightning.WIDTH, subNum + Mathf.random(subNumRand), updateLightning + Mathf.random(updateLightningRand), point -> {
 						HFx.lightningHitLarge.at(point.getX(), point.getY(), effectColor);
 					});
 				});
 			}
 
-			Sounds.explosionbig.at(this);
+			Sounds.explosionReactor2.at(this);
 			Effect.shake(6f, 16f, x, y);
 
 			for (i = 0; i < 7; ++i) {

@@ -34,11 +34,11 @@ public final class MathRenderer {
 
 	private MathRenderer() {}
 
-	private static TextureRegion getBlank() {
+	static TextureRegion getBlank() {
 		if (blank == null) {
-			Pixmap pix = new Pixmap(128, 128);
-			pix.fill(Color.white);
-			blank = new TextureRegion(new Texture(pix));
+			Pixmap pixmap = new Pixmap(128, 128);
+			pixmap.fill(Color.white);
+			blank = new TextureRegion(new Texture(pixmap));
 		}
 
 		return blank;
@@ -225,7 +225,7 @@ public final class MathRenderer {
 					.replace("%hScl%", Float.toString(heightScl * 2f));
 		}
 
-		private static String genArgList(String... argsCount) {
+		static String genArgList(String... argsCount) {
 			StringBuilder res = new StringBuilder();
 			for (int i = 0; i < argsCount.length; i++) {
 				res.append("uniform ")

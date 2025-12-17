@@ -50,17 +50,17 @@ public final class HTex {
 
 	public static void load() {
 		//drawable
-		buttonLeft = drawable("button-left");
-		buttonLeftDown = drawable("button-left-down");
-		buttonLeftOver = drawable("button-left-over");
-		buttonCenter = drawable("button-center");
-		buttonCenterDown = drawable("button-center-down");
-		buttonCenterOver = drawable("button-center-over");
-		buttonCenterDisabled = drawable("button-center-disabled");
-		buttonRight = drawable("button-right");
-		buttonRightDown = drawable("button-right-down");
-		buttonRightOver = drawable("button-right-over");
-		paneBottom = drawable("pane-bottom");
+		buttonLeft = getDrawable("button-left");
+		buttonLeftDown = getDrawable("button-left-down");
+		buttonLeftOver = getDrawable("button-left-over");
+		buttonCenter = getDrawable("button-center");
+		buttonCenterDown = getDrawable("button-center-down");
+		buttonCenterOver = getDrawable("button-center-over");
+		buttonCenterDisabled = getDrawable("button-center-disabled");
+		buttonRight = getDrawable("button-right");
+		buttonRightDown = getDrawable("button-right-down");
+		buttonRightOver = getDrawable("button-right-over");
+		paneBottom = getDrawable("pane-bottom");
 
 		whiteStrip = new FillStripDrawable(Color.white);
 		whiteEdge = new EdgeLineStripDrawable(Scl.scl(3f), Color.white);
@@ -132,8 +132,12 @@ public final class HTex {
 		uiBlur = new Blur(Blur.default2);
 	}
 
+	public static Drawable getDrawable(String name) {
+		return drawable(MOD_PREFIX + name);
+	}
+
 	public static Drawable drawable(String name) {
-		AtlasRegion region = Core.atlas.find(MOD_PREFIX + name);
+		AtlasRegion region = Core.atlas.find(name);
 
 		if (region.splits != null) {
 			int[] splits = region.splits;

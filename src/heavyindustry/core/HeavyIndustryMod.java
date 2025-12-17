@@ -295,7 +295,7 @@ public final class HeavyIndustryMod extends Mod {
 		return loadLibrary(fileName, mainClassName, showError, c -> {});
 	}
 
-	public static @Nullable Class<?> loadLibrary(String fileName, String mainClassName, boolean showError, ConsT<Class<?>, Throwable> callback) {
+	public static @Nullable Class<?> loadLibrary(String fileName, String mainClassName, boolean showError, @Nullable ConsT<Class<?>, Throwable> callback) {
 		ClassLoader mainLoader = Vars.mods.mainLoader();
 
 		Fi sourceFile = HVars.internalTree.child("libs").child(fileName + ".jar");

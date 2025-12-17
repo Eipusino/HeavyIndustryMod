@@ -143,12 +143,12 @@ public final class Draws {
 			buffer = taskBuffer[taskId] = new FrameBuffer();
 		}
 		FrameBuffer b = buffer;
-		drawTask(taskId, target, shader, e -> {
+		drawTask(taskId, target, shader, s -> {
 			b.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
 			b.begin(Color.clear);
-		}, e -> {
+		}, s -> {
 			b.end();
-			b.blit(e);
+			b.blit(s);
 		}, draw);
 	}
 
@@ -720,7 +720,7 @@ public final class Draws {
 		if (drawing) Lines.endLine();
 	}
 
-	public static void drawLaser(float originX, float originY, float otherX, float otherY, TextureRegion linkRegion, TextureRegion capRegion, float stoke) {
+	public static void drawLaser(float originX, float originY, float otherX, float otherY, TextureRegion linkRegion, @Nullable TextureRegion capRegion, float stoke) {
 		float rot = Mathf.angle(otherX - originX, otherY - originY);
 
 		if (capRegion != null) Draw.rect(capRegion, otherX, otherY, rot);

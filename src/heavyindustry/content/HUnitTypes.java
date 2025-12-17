@@ -237,7 +237,7 @@ public final class HUnitTypes {
 				mirror = false;
 				inaccuracy = 0f;
 				ejectEffect = Fx.casing2;
-				shootSound = Sounds.artillery;
+				shootSound = Sounds.shootRipple;
 				alternate = false;
 				bullet = new MissileBulletType(11f, 108f, MOD_NAME + "-rocket") {{
 					hitSize = 40;
@@ -322,7 +322,7 @@ public final class HUnitTypes {
 				}};
 				xRand = 4f;
 				inaccuracy = 6f;
-				shootSound = Sounds.missile;
+				shootSound = Sounds.shootMissile;
 				shootStatus = StatusEffects.slow;
 				shootStatusDuration = reload + 1f;
 				velocityRnd = 0.1f;
@@ -457,7 +457,7 @@ public final class HUnitTypes {
 				mirror = false;
 				recoil = 4f;
 				inaccuracy = 0f;
-				shootSound = Sounds.laser;
+				shootSound = Sounds.shootLancer;
 				shake = 3f;
 				alternate = false;
 				bullet = new RailBulletType() {{
@@ -467,7 +467,7 @@ public final class HUnitTypes {
 					buildingDamageMultiplier = 1.5f;
 					speed = 20f;
 					lifetime = 15f;
-					hitSound = Sounds.lasercharge2;
+					hitSound = Sounds.chargeVela;
 					smokeEffect = Fx.bigShockwave;
 					shootEffect = new ParticleEffect() {{
 						particles = 1;
@@ -512,7 +512,7 @@ public final class HUnitTypes {
 						splashDamageRadius = 66.4f;
 						splashDamage = 136f;
 						hitShake = 1f;
-						hitSound = Sounds.plasmaboom;
+						hitSound = Sounds.explosionQuad;
 						hitColor = HPal.energyYellow;
 						hitEffect = new MultiEffect(new ParticleEffect() {{
 							particles = 4;
@@ -566,7 +566,7 @@ public final class HUnitTypes {
 							splashDamageRadius = 10f;
 							splashDamage = 25f;
 							hitShake = 1f;
-							hitSound = Sounds.laser;
+							hitSound = Sounds.shootLancer;
 							hitColor = HPal.energyYellow;
 							hitEffect = new ParticleEffect() {{
 								particles = 1;
@@ -615,7 +615,7 @@ public final class HUnitTypes {
 				recoil = 5f;
 				mirror = false;
 				inaccuracy = 0f;
-				shootSound = Sounds.mediumCannon;
+				shootSound = Sounds.shootTank;
 				shake = 8f;
 				bullet = new BasicBulletType(31f, 250f) {{
 					splashDamage = 135f;
@@ -673,7 +673,7 @@ public final class HUnitTypes {
 					smokeEffect = Fx.smokeCloud;
 					width = 16f;
 					height = 28f;
-					hitSound = Sounds.plasmaboom;
+					hitSound = Sounds.explosionQuad;
 					fragLifeMin = 0.1f;
 					fragBullets = 3;
 					fragRandomSpread = 60f;
@@ -698,7 +698,7 @@ public final class HUnitTypes {
 							strokeTo = 0f;
 							colorFrom = colorTo = HPal.energyYellow;
 						}});
-						hitSound = Sounds.laser;
+						hitSound = Sounds.shootLancer;
 						collides = false;
 						damage = 250f;
 						splashDamageRadius = 40f;
@@ -756,7 +756,7 @@ public final class HUnitTypes {
 				recoil = 6f;
 				mirror = false;
 				inaccuracy = 0.5f;
-				shootSound = Sounds.largeCannon;
+				shootSound = Sounds.shootConquer;
 				shake = 8f;
 				bullet = new BasicBulletType(24f, 500f, "missile-large") {{
 					splashDamage = 285f;
@@ -811,7 +811,7 @@ public final class HUnitTypes {
 						strokeTo = 0;
 						colorFrom = colorTo = HPal.energyYellow;
 					}});
-					hitSound = Sounds.plasmaboom;
+					hitSound = Sounds.explosionQuad;
 					shootEffect = new MultiEffect(new ParticleEffect() {{
 						particles = 6;
 						line = true;
@@ -868,7 +868,7 @@ public final class HUnitTypes {
 				x = 5.25f;
 				y = 6.5f;
 				shootY = 1.5f;
-				shootSound = Sounds.pew;
+				shootSound = Sounds.shoot;
 				ejectEffect = Fx.casing1;
 				bullet = new BasicBulletType(5f, 7f) {{
 					lifetime = 30f;
@@ -880,7 +880,7 @@ public final class HUnitTypes {
 				x = 4.5f;
 				y = 0.5f;
 				shootY = 2.25f;
-				shootSound = Sounds.shootSnap;
+				shootSound = Sounds.shootScatter;
 				ejectEffect = Fx.casing2;
 				bullet = new MissileBulletType(3f, 1f) {{
 					speed = 3f;
@@ -919,7 +919,7 @@ public final class HUnitTypes {
 				y = 11f;
 				shootX = -0.75f;
 				shootY = 3f;
-				shootSound = Sounds.pew;
+				shootSound = Sounds.shoot;
 				ejectEffect = Fx.casing1;
 				reload = 8f;
 				bullet = new BasicBulletType(4f, 5f) {{
@@ -932,7 +932,7 @@ public final class HUnitTypes {
 				y = 8.75f;
 				shootX = -0.75f;
 				shootY = 3f;
-				shootSound = Sounds.shootSnap;
+				shootSound = Sounds.shootScatter;
 				ejectEffect = Fx.casing1;
 				reload = 12f;
 				bullet = new BasicBulletType(4f, 8f) {{
@@ -947,7 +947,7 @@ public final class HUnitTypes {
 				y = 5.75f;
 				shootX = -0.5f;
 				shootY = 2f;
-				shootSound = Sounds.shootSnap;
+				shootSound = Sounds.shootScatter;
 				ejectEffect = Fx.casing1;
 				reload = 30f;
 				bullet = new BasicBulletType(3.2f, 16, "bullet") {{
@@ -1001,7 +1001,7 @@ public final class HUnitTypes {
 				shootX = -1f;
 				shootY = 2.75f;
 				reload = 15;
-				shootSound = Sounds.shootBig;
+				shootSound = Sounds.shootSalvo;
 				bullet = new BasicBulletType(6f, 60f) {{
 					lifetime = 30f;
 					width = 16f;
@@ -1015,7 +1015,7 @@ public final class HUnitTypes {
 				shootY = 5.25f;
 				reload = 30f;
 				shoot.shots = 3;
-				shootSound = Sounds.spark;
+				shootSound = Sounds.shootArc;
 				bullet = new LightningBulletType() {{
 					damage = 15f;
 					lightningLength = 12;
@@ -1065,7 +1065,7 @@ public final class HUnitTypes {
 				shootX = -1f;
 				shootY = 7.25f;
 				reload = 12f;
-				shootSound = Sounds.shootBig;
+				shootSound = Sounds.shootSalvo;
 				bullet = new BasicBulletType(6f, 60f) {{
 					lifetime = 30f;
 					width = 16f;
@@ -1082,7 +1082,7 @@ public final class HUnitTypes {
 				reload = 20f;
 				shoot.shots = 4;
 				shoot.shotDelay = 2f;
-				shootSound = Sounds.shootSnap;
+				shootSound = Sounds.shootScatter;
 				bullet = new BasicBulletType(4f, 29, "bullet") {{
 					width = 10f;
 					height = 13f;
@@ -1096,7 +1096,7 @@ public final class HUnitTypes {
 				y = 15.5f;
 				shootY = 4.5f;
 				reload = 60f;
-				shootSound = Sounds.laser;
+				shootSound = Sounds.shootLancer;
 				bullet = new LaserBulletType(240f) {{
 					sideAngle = 45f;
 					length = 200f;
@@ -1138,7 +1138,7 @@ public final class HUnitTypes {
 				x = 14f;
 				y = 27f;
 				shootY = 5.5f;
-				shootSound = Sounds.shootBig;
+				shootSound = Sounds.shootScepter;
 				ejectEffect = Fx.casing3Double;
 				reload = 10f;
 				bullet = new BasicBulletType(7f, 80f) {{
@@ -1152,7 +1152,7 @@ public final class HUnitTypes {
 				x = 17f;
 				y = 14f;
 				shootY = 5.75f;
-				shootSound = Sounds.shootSnap;
+				shootSound = Sounds.shootScatter;
 				ejectEffect = Fx.casing2;
 				shoot = new ShootSpread(2, 2f);
 				reload = 20f;
@@ -1175,7 +1175,7 @@ public final class HUnitTypes {
 				x = 8f;
 				y = 3f;
 				shootY = 6.75f;
-				shootSound = Sounds.shotgun;
+				shootSound = Sounds.shootFuse;
 				ejectEffect = Fx.none;
 				shoot = new ShootSpread(3, 15f);
 				reload = 45f;
@@ -1233,7 +1233,7 @@ public final class HUnitTypes {
 				y = dy;
 				recoil = 2.5f;
 				shootY = 10f;
-				shootSound = Sounds.shootBig;
+				shootSound = Sounds.shootScepter;
 				shoot.shots = 3;
 				shoot.shotDelay = 3f;
 				reload = rel;
@@ -1322,7 +1322,7 @@ public final class HUnitTypes {
 				angleCone = 20f;
 				angleOffset = -15f;
 				shootCone = 20f;
-				shootSound = Sounds.flame;
+				shootSound = Sounds.shootFlame;
 				cooldownTime = 180f;
 				bullet = new ParticleFlameBulletType(6.6f, 105f) {{
 					lifetime = 42f;
@@ -1350,7 +1350,7 @@ public final class HUnitTypes {
 				angleCone = 60f;
 				reload = 60f;
 				shootCone = 30f;
-				shootSound = Sounds.missile;
+				shootSound = Sounds.shootMissile;
 				bullet = new MissileBulletType(5.5f, 22f) {{
 					lifetime = 40f;
 					drag = -0.005f;
@@ -1423,11 +1423,11 @@ public final class HUnitTypes {
 				y = 0f;
 				shootY = 23.75f;
 				reload = 170f;
-				shootSound = Sounds.beam;
+				shootSound = Sounds.beamPlasma;
 				shoot.firstShotDelay = 59f;
 				continuous = true;
 				cooldownTime = 200f;
-				chargeSound = Sounds.lasercharge2;
+				chargeSound = Sounds.chargeVela;
 				recoil = 0f;
 				bullet = new ContinuousLaserBulletType(110f) {{
 					length = 340f;
@@ -1486,7 +1486,7 @@ public final class HUnitTypes {
 				rotationLimit = 20f;
 				alternate = false;
 				shoot.shots = 2;
-				shootSound = Sounds.lasercharge2;
+				shootSound = Sounds.chargeVela;
 				bullet = new ArrowBulletType(7f, 25f) {{
 					lifetime = 60f;
 					pierce = true;
@@ -1557,7 +1557,7 @@ public final class HUnitTypes {
 				inaccuracy = 25f;
 				xRand = 2.25f; //TODO use something else instead? -Anuke
 				shoot.shots = 2;
-				shootSound = Sounds.missile;
+				shootSound = Sounds.shootMissile;
 				bullet = new MissileBulletType(3.7f, 15f) {{
 					width = 10f;
 					height = 12f;
@@ -1592,13 +1592,13 @@ public final class HUnitTypes {
 				alternate = false;
 				rotateSpeed = 1.5f;
 				recoil = 5f;
-				shootSound = Sounds.laserbeam;
+				shootSound = Sounds.beamLustre;
 				bullet = HBullets.continuousSapLaser;
 			}}, new Weapon(name + "-railgun") {{
 				x = 14.5f;
 				y = -10f;
 				shootY = 20.5f - 4f;
-				shootSound = Sounds.artillery;
+				shootSound = Sounds.shootRipple;
 				rotate = true;
 				alternate = true;
 				rotateSpeed = 0.9f;
@@ -1667,7 +1667,7 @@ public final class HUnitTypes {
 				rotateSpeed = 5f;
 				reload = 120f;
 				recoil = 4f;
-				shootSound = Sounds.beam;
+				shootSound = Sounds.beamPlasma;
 				continuous = true;
 				cooldownTime = 120f;
 				shadow = 20f;
@@ -1702,7 +1702,7 @@ public final class HUnitTypes {
 				y = -18f;
 				rotateSpeed = 2f;
 				reload = 9f;
-				shootSound = Sounds.shootBig;
+				shootSound = Sounds.shootSalvo;
 				shadow = 7f;
 				rotate = true;
 				recoil = 0.5f;
@@ -1723,7 +1723,7 @@ public final class HUnitTypes {
 				ejectEffect = Fx.casing1;
 				rotateSpeed = 2f;
 				shake = 1f;
-				shootSound = Sounds.shootBig;
+				shootSound = Sounds.shootSalvo;
 				rotate = true;
 				shadow = 7f;
 				shootY = 12f;
@@ -1840,7 +1840,7 @@ public final class HUnitTypes {
 				inaccuracy = 5f;
 				shootCone = 15f;
 				rotate = true;
-				shootSound = Sounds.artillery;
+				shootSound = Sounds.shootRipple;
 				reload = 25f;
 				bullet = new BasicBulletType(8f, 80, "bullet") {{
 					hitSize = 5;
@@ -1866,7 +1866,7 @@ public final class HUnitTypes {
 				shoot.shots = 12;
 				shoot.shotDelay = 3f;
 				inaccuracy = 5f;
-				shootSound = Sounds.missile;
+				shootSound = Sounds.shootMissile;
 				bullet = new GuidedMissileBulletType(3f, 20f) {{
 					homingPower = 0.09f;
 					width = 8f;
@@ -1897,7 +1897,7 @@ public final class HUnitTypes {
 				inaccuracy = 15f;
 				reload = 7f;
 				xRand = 2.25f; //TODO use something else instead? -Anuke
-				shootSound = Sounds.missile;
+				shootSound = Sounds.shootMissile;
 				angleCone = 135f;
 				bullet = HBullets.basicMissile;
 			}});
@@ -1942,7 +1942,7 @@ public final class HUnitTypes {
 				rotateSpeed = 0.7f;
 				shadow = 46f;
 				reload = 60f * 2.5f;
-				shootSound = Sounds.railgun;
+				shootSound = Sounds.shootOmura;
 				bullet = new RailBulletType() {{
 					length = 800f;
 					lifetime = 10f;
@@ -2000,7 +2000,7 @@ public final class HUnitTypes {
 				shootY = 7f;
 				recoil = 4f;
 				cooldownTime = reload - 10f;
-				shootSound = Sounds.laser;
+				shootSound = Sounds.shootLancer;
 				bullet = new EmpBulletType() {{
 					float rad = 100f;
 					scaleLife = true;
@@ -2031,7 +2031,7 @@ public final class HUnitTypes {
 					hitShake = 4f;
 					trailRotation = true;
 					status = StatusEffects.electrified;
-					hitSound = Sounds.plasmaboom;
+					hitSound = Sounds.explosionQuad;
 					clipSize = 250f;
 					trailEffect = new Effect(16f, e -> {
 						Draw.color(Pal.heal);
@@ -2081,7 +2081,7 @@ public final class HUnitTypes {
 				}};
 				reload = 72;
 				inaccuracy = 0;
-				shootSound = Sounds.missileSmall;
+				shootSound = Sounds.shootMissileSmall;
 				bullet = new CtrlMissileBulletType("missile-large") {{
 					width = 6f;
 					height = 10f;
@@ -2193,7 +2193,7 @@ public final class HUnitTypes {
 				rotate = true;
 				layerOffset = 0.1f;
 				rotateSpeed = 0.9f;
-				shootSound = Sounds.release;
+				shootSound = Sounds.shootNavanax;
 				reload = 180f;
 				recoil = 5.5f;
 				shake = 5;
@@ -2242,7 +2242,7 @@ public final class HUnitTypes {
 					color = Pal.redLight;
 				}});
 				bullet = new BasicBulletType(10f, 360f) {{
-					hitSound = despawnSound = Sounds.explosionbig;
+					hitSound = despawnSound = Sounds.explosionReactor2;
 					splashDamage = 860f;
 					splashDamageRadius = 12f * 8;
 					buildingDamageMultiplier = 0.8f;
@@ -2293,7 +2293,7 @@ public final class HUnitTypes {
 					rotate = true;
 					rotateSpeed = 2f;
 					shootCone = 2;
-					shootSound = Sounds.dullExplosion;
+					shootSound = Sounds.explosionDull;
 					bullet = new BasicBulletType(9f, 90f) {{
 						sprite = "missile-large";
 						width = 8f;
@@ -2381,7 +2381,7 @@ public final class HUnitTypes {
 			alwaysShootWhenMoving = true;
 			itemCapacity = 340;
 			weapons.add(new Weapon("collaris-weapon") {{
-				shootSound = Sounds.pulseBlast;
+				shootSound = Sounds.shootCollaris;
 				mirror = true;
 				rotationLimit = 30f;
 				rotateSpeed = 0.4f;
@@ -2431,7 +2431,7 @@ public final class HUnitTypes {
 					homingPower = 0.01f;
 					homingRange = 300f;
 					homingDelay = 5f;
-					hitSound = Sounds.plasmaboom;
+					hitSound = Sounds.explosionQuad;
 					despawnShake = hitShake = 5f;
 					pierce = pierceArmor = true;
 					pierceCap = 2;
@@ -2484,7 +2484,7 @@ public final class HUnitTypes {
 					}};
 				}};
 			}}, new Weapon(name + "-weapon-small") {{
-				shootSound = Sounds.malignShoot;
+				shootSound = Sounds.shootMalign;
 				mirror = true;
 				rotate = true;
 				rotateSpeed = 3;
@@ -2517,7 +2517,7 @@ public final class HUnitTypes {
 					trailWidth = 2.8f;
 					trailLength = 20;
 					trailChance = 0.1f;
-					despawnSound = Sounds.dullExplosion;
+					despawnSound = Sounds.explosionDull;
 					despawnEffect = Fx.none;
 					hitEffect = new ExplosionEffect() {{
 						lifetime = 20f;
@@ -2540,7 +2540,7 @@ public final class HUnitTypes {
 				targetSwitchInterval = 12f;
 				recoil = 0.5f;
 				bullet = new BulletType() {{
-					shootSound = Sounds.lasershoot;
+					shootSound = Sounds.shootLaser;
 					shootEffect = Fx.sparkShoot;
 					hitEffect = Fx.pointHit;
 					maxRange = 200f;
@@ -2586,7 +2586,7 @@ public final class HUnitTypes {
 				}});
 			}
 			weapons.add(new Weapon("disrupt-weapon") {{
-				shootSound = Sounds.missileLarge;
+				shootSound = Sounds.shootMissileLarge;
 				x = 19.5f;
 				y = -2.5f;
 				mirror = true;
@@ -2783,7 +2783,7 @@ public final class HUnitTypes {
 				rotate = true;
 				rotateSpeed = 35f;
 				reload = 35f;
-				shootSound = Sounds.laser;
+				shootSound = Sounds.shootLancer;
 				bullet = new LaserBulletType(45f) {{
 					sideAngle = 30f;
 					sideWidth = 1f;
@@ -3064,7 +3064,7 @@ public final class HUnitTypes {
 						UltFire.createChance(b, splashDamageRadius, 0.4f);
 					}
 				};
-				shootSound = Sounds.artillery;
+				shootSound = Sounds.shootRipple;
 			}
 				@Override
 				public void addStats(UnitType u, Table t) {
@@ -3132,7 +3132,7 @@ public final class HUnitTypes {
 					trailChance = 0.6f;
 					trailEffect = HFx.trailToGray;
 					hitShake = 3f;
-					hitSound = Sounds.plasmaboom;
+					hitSound = Sounds.explosionQuad;
 				}};
 			}});
 			Floatt2<Weapon> cannon = (dx, dy) -> new PointDefenseWeapon(name + "-cannon-small") {{
@@ -3255,7 +3255,7 @@ public final class HUnitTypes {
 					hitShake = 8f;
 					trailRotation = true;
 					keepVelocity = true;
-					hitSound = Sounds.plasmaboom;
+					hitSound = Sounds.explosionQuad;
 					trailEffect = new Effect(10f, e -> {
 						Draw.color(trailColor, Color.white, e.fout() * 0.66f);
 						for (int s : Mathf.signs) {

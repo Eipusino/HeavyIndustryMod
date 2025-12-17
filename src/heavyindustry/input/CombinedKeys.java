@@ -11,7 +11,6 @@ public class CombinedKeys implements Serializable {
 	private static final long serialVersionUID = -5318302851540855921l;
 
 	boolean isCtrl, isAlt, isShift;
-
 	KeyCode key;
 
 	public CombinedKeys(KeyCode... keys) {

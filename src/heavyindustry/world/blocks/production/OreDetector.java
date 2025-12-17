@@ -244,7 +244,7 @@ public class OreDetector extends Block {
 					b -> b instanceof UndergroundDrill.UndergroundDrillBuild && b.enabled && b.potentialEfficiency > 0,
 					b -> {
 						Fx.circleColorSpark.at(b.x, b.y, Pal.orangeSpark);
-						Sounds.spark.at(b);
+						Sounds.shootArc.at(b);
 					});
 		}
 

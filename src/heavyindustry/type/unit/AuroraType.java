@@ -90,7 +90,7 @@ public class AuroraType extends AirSeaAmphibiousUnitType {
 
 		weapons.addAll(new Weapon(this.name + "-lightcone") {{
 			shake = 5f;
-			shootSound = Sounds.pulseBlast;
+			shootSound = Sounds.shootCollaris;
 			x = 29;
 			y = -30;
 			shootY = 8;
@@ -284,10 +284,9 @@ public class AuroraType extends AirSeaAmphibiousUnitType {
 					Damage.damage(b.team, b.x, b.y, hitSize, damage * Time.delta);
 				}
 			};
-		}
-		}, new Weapon(this.name + "-turret") {{
+		}}, new Weapon(this.name + "-turret") {{
 			shake = 4f;
-			shootSound = Sounds.laser;
+			shootSound = Sounds.shootLaser;
 			x = 22;
 			y = 20;
 			shootY = 6;
@@ -328,7 +327,7 @@ public class AuroraType extends AirSeaAmphibiousUnitType {
 			rotateSpeed = 0;
 			shootCone = 0.5f;
 			rotate = true;
-			shootSound = Sounds.laserblast;
+			shootSound = Sounds.shootCorvus;
 			ejectEffect = HFx.railShootRecoil;
 			recoilTime = 30;
 			shake = 4;
@@ -421,7 +420,7 @@ public class AuroraType extends AirSeaAmphibiousUnitType {
 				hitColor = HPal.matrixNet;
 				shootEffect = HFx.explodeImpWave;
 				chargeEffect = HFx.auroraCoreCharging;
-				chargeSound = Sounds.lasercharge;
+				chargeSound = Sounds.chargeCorvus;
 				fragBullets = 2;
 				fragSpread = 10;
 				fragOnHit = true;

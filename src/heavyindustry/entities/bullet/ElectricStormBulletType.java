@@ -28,7 +28,7 @@ import static mindustry.Vars.state;
 public class ElectricStormBulletType extends BulletType {
 	public Color color;
 	public int maxTarget;
-	public Sound sound = Sounds.spark;
+	public Sound sound = Sounds.shootArc;
 
 	public ElectricStormBulletType(float dmg, Color col, int maxTar) {
 		damage = dmg;
@@ -37,7 +37,7 @@ public class ElectricStormBulletType extends BulletType {
 		maxTarget = maxTar;
 		keepVelocity = absorbable = hittable = collides = collidesAir = collidesGround = false;
 		despawnEffect = hitEffect = Fx.none;
-		despawnSound = Sounds.explosionbig;
+		despawnSound = Sounds.explosionReactor2;
 		speed = 0;
 	}
 

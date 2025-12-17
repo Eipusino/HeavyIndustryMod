@@ -121,7 +121,7 @@ public class KaguyaUnitType extends UnitType2 {
 			shadow = 4;
 			rotate = true;
 			layerOffset = 0.1f;
-			shootSound = Sounds.laser;
+			shootSound = Sounds.shootLaser;
 			shake = 3;
 			bullet = new LaserBulletType(165f) {{
 				lifetime = 20;
@@ -152,7 +152,7 @@ public class KaguyaUnitType extends UnitType2 {
 			rotateSpeed = 10;
 			shake = 1.5f;
 			layerOffset = 0.1f;
-			shootSound = Sounds.shockBlast;
+			shootSound = Sounds.explosionObviate;
 			shoot.shots = 3;
 			shoot.shotDelay = 10;
 			bullet = new MultiTrailBulletType() {{
@@ -171,7 +171,7 @@ public class KaguyaUnitType extends UnitType2 {
 				trailLength = 36;
 				trailWidth = 4;
 				hitShake = 4;
-				hitSound = Sounds.dullExplosion;
+				hitSound = Sounds.explosionDull;
 				hitSoundVolume = 3.5f;
 				trailEffect = HFx.trailParticle;
 				trailChance = 0.5f;

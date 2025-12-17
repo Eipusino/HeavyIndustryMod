@@ -33,8 +33,8 @@ public final class HTextures {
 		armor = loadTexture(texturesDir.child("armor.png"), TextureFilter.nearest, TextureWrap.repeat);
 	}
 
-	public static Texture loadTexture(Fi fi, TextureFilter filter, TextureWrap wrap) {
-		Texture texture = new Texture(new Pixmap(fi));
+	public static Texture loadTexture(Fi file, TextureFilter filter, TextureWrap wrap) {
+		Texture texture = new Texture(new Pixmap(file));
 		texture.setFilter(filter);
 		texture.setWrap(wrap);
 

@@ -40,8 +40,8 @@ public class EndLauncherWeapon extends Weapon {
 		minWarmup = 0.99f;
 		reload = 60f * 2.5f;
 
-		//shootSound = Sounds.missileSmall;
-		shootSound = Sounds.missile;
+		//shootSound = Sounds.shootMissileSmall;
+		shootSound = Sounds.shootMissile;
 		mountType = EndLauncherMount::new;
 
 		bullet = new EndMissileBulletType();

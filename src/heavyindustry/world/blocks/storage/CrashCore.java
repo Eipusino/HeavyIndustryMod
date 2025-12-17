@@ -22,7 +22,7 @@ import mindustry.world.blocks.storage.CoreBlock;
 public class CrashCore extends CoreBlock {
 	public float crashHealth = -1f;
 
-	public Sound explosionSound = Sounds.titanExplosion;
+	public Sound explosionSound = Sounds.explosionTitan;
 	public float explosionSoundPitchMin = 0.9f, explosionSoundPitchMax = 1.1f;
 	public float explosionSoundVolume = 1f;
 

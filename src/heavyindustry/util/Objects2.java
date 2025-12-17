@@ -29,6 +29,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Objects;
 
+import static heavyindustry.util.Unsafer.unsafe;
+
 /**
  * A utility assembly for objects.
  *
@@ -36,6 +38,14 @@ import java.util.Objects;
  * @since 1.0.8
  */
 public final class Objects2 {
+	public static final long PRIME1 = 0x9e3779b185ebca87l;
+	public static final long PRIME2 = 0xc2b2ae3d27d4eb4fl;
+
+	public static final long FNV_OFFSET_BASIS = 0xcbf29ce484222325l;
+	public static final long FNV_PRIME = 0x100000001b3l;
+
+	static final byte[] bytes = new byte[8];
+
 	private Objects2() {}
 
 	@Contract(value = "null, null -> false; null, !null -> true", pure = true)
@@ -46,25 +56,96 @@ public final class Objects2 {
 	// To prevent JS from being unable to match methods, it is necessary to distinguish them.
 
 	// 'Boolean.hashCode(boolean)' may not be compatible with Android.
+	@Contract(pure = true)
 	public static int boolToHash(boolean value) {
 		return value ? 1231 : 1237;
 	}
 
+	@Contract(pure = true)
 	public static int longToHash(long value) {
 		return (int) (value ^ (value >>> 32));
 	}
 
+	@Contract(pure = true)
+	public static int longToHash3(long value) {
+		long hash = PRIME1 + value * PRIME2;
+		hash ^= hash >>> 33;
+		hash *= PRIME2;
+		hash ^= hash >>> 29;
+		hash *= PRIME1;
+		hash ^= hash >>> 32;
+		return (int) hash;
+	}
+
+	@Contract(pure = true)
+	public static int murmurHash(long value) {
+		int hash = longToHash(value);
+		hash ^= hash >>> 16;
+		hash *= 0x85ebca6b;
+		hash ^= hash >>> 13;
+		hash *= 0xc2b2ae35;
+		hash ^= hash >>> 16;
+		return hash;
+	}
+
+	@Contract(pure = true)
+	public static int murmurHash64(long value) {
+		value ^= value >>> 33;
+		value *= 0xff51afd7ed558ccdl;
+		value ^= value >>> 33;
+		value *= 0xc4ceb9fe1a85ec53l;
+		value ^= value >>> 33;
+		return (int) value;
+	}
+
+	@Contract(pure = true)
+	public static int fnv1aHash(long value) {
+		long hash = FNV_OFFSET_BASIS;
+
+		for (int i = 0; i < 8; i++) {
+			hash ^= (value & 0xff);
+			hash &= FNV_PRIME;
+			value >>>= 8;
+		}
+
+		return longToHash(hash);
+	}
+
+	@Contract(pure = true)
+	public static int fastHash(long value) {
+		long offset = unsafe.arrayBaseOffset(byte[].class);
+
+		unsafe.putLong(bytes, offset, value);
+
+		int hash = unsafe.getInt(bytes, offset);
+		hash *= unsafe.getInt(bytes, offset + 4);
+		hash ^= hash >>> 16;
+		hash *= 0x85ebca6b;
+		hash ^= hash >>> 13;
+		hash *= 0xc2b2ae35;
+		hash ^= hash >>> 16;
+		return hash;
+	}
+
+	@Contract(pure = true)
+	public static int doubleToHash(double value) {
+		long bits = Double.doubleToLongBits(value);
+		return (int) (bits ^ (bits >>> 32));
+	}
+
+	@Contract(pure = true)
 	public static int asInt(Object obj, int def) {
 		return obj instanceof Number num ? num.intValue() : def;
 	}
 
+	@Contract(pure = true)
 	public static float asFloat(Object obj, float def) {
 		return obj instanceof Number num ? num.floatValue() : def;
 	}
 
 	/** Used to optimize code conciseness in specific situations. */
 	@Contract(value = "_, _ -> param2", pure = true)
-	public static <T> T requireInstance(@NotNull Class<?> type, T obj) {
+	public static <T> T requireInstance(@NotNull Class<?> type, @Nullable T obj) {
 		if (obj == null || type.isInstance(obj))
 			return obj;
 		throw new IllegalArgumentException("obj cannot be casted to " + type.getName());
@@ -72,7 +153,7 @@ public final class Objects2 {
 
 	/** Used to optimize code conciseness in specific situations. */
 	@Contract(value = "_, null -> fail; _, _ -> param2", pure = true)
-	public static <T> @NotNull T requireNonNullInstance(@NotNull Class<?> type, T obj) {
+	public static <T> @NotNull T requireNonNullInstance(@NotNull Class<?> type, @Nullable T obj) {
 		if (type.isInstance(obj))
 			return obj;
 		throw new IllegalArgumentException("obj is not an instance of " + type.getName());
@@ -186,6 +267,7 @@ public final class Objects2 {
 	 * <p>You must ensure that {@code obj} can be safely cast to {@link T}.
 	 */
 	@SuppressWarnings("unchecked")
+	@Contract(value = "_ -> param1")
 	public static <T> T as(Object obj) {
 		return (T) obj;
 	}
@@ -195,6 +277,7 @@ public final class Objects2 {
 	 * <p>If {@code obj} cannot be cast to {@link T}, return {@code def}.
 	 */
 	@SuppressWarnings("unchecked")
+	@Contract(value = "null, _, _ -> null", pure = true)
 	public static <T> T as(Object obj, Class<T> type, T def) {
 		if (obj != null && !type.isInstance(obj))
 			return def;
@@ -229,7 +312,8 @@ public final class Objects2 {
 	 *
 	 * @param last Should the fields of the super class be retrieved.
 	 */
-	public static String toString(@Nullable Object object, boolean last) {
+	@Contract(pure = true)
+	public static @NotNull String toString(@Nullable Object object, boolean last) {
 		if (object == null) return "null";
 
 		Class<?> type = object.getClass();
@@ -323,7 +407,8 @@ public final class Objects2 {
 	 * @return JVM type descriptor string
 	 * @throws NullPointerException If {@code type} is null.
 	 */
-	public static String toDescriptor(Class<?> type) {
+	@Contract(value = "null -> fail", pure = true)
+	public static @NotNull String toDescriptor(Class<?> type) {
 		if (type == null) throw new NullPointerException("param 'type' is null");
 
 		if (type.isArray()) return '[' + toDescriptor(type.getComponentType());

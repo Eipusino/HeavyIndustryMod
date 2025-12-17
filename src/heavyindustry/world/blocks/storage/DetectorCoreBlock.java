@@ -16,10 +16,8 @@ import arc.util.io.Writes;
 import heavyindustry.world.blocks.environment.UndergroundOreBlock;
 import mindustry.content.Blocks;
 import mindustry.game.Team;
-import mindustry.gen.Call;
 import mindustry.gen.Icon;
 import mindustry.gen.Player;
-import mindustry.gen.Sounds;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
@@ -100,7 +98,6 @@ public class DetectorCoreBlock extends CoreBlock {
 				Time.run(timer, () -> {
 					if (player.dead()) {
 						super.requestSpawn(player);
-						Call.soundAt(Sounds.respawn, x, y, 1, 1);
 					}
 					requested = false;
 				});

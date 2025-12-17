@@ -103,6 +103,7 @@ public final class Get {
 		};
 	}
 
+	@Contract(pure = true)
 	public static int getByIndex(IntSet ints, int index) {
 		if (index < 0 || index >= ints.size) {
 			return -1;
@@ -158,7 +159,8 @@ public final class Get {
 	}
 
 	/** {@link Tile#relativeTo(int, int)} does not account for building rotation. */
-	public static int relativeDirection(Building from, Building to) {
+	@Contract(pure = true)
+	public static int relativeDirection(@Nullable Building from, @Nullable Building to) {
 		if (from == null || to == null) return -1;
 		if (from.x == to.x && from.y > to.y) return (7 - from.rotation) % 4;
 		if (from.x == to.x && from.y < to.y) return (5 - from.rotation) % 4;
@@ -167,10 +169,12 @@ public final class Get {
 		return -1;
 	}
 
+	@Contract(value = "_, _, _, _-> param1")
 	public static Vec2 vecSetLine(Vec2 vec, Vec2 pos, float rotation, float length) {
 		return vec.setLength(length).setAngle(rotation).add(pos);
 	}
 
+	@Contract(value = "_, _, _, _, _ -> param1")
 	public static Vec2 vecSetLine(Vec2 vec, float x, float y, float rotation, float length) {
 		return vec.setLength(length).setAngle(rotation).add(x, y);
 	}
@@ -260,11 +264,13 @@ public final class Get {
 		return base(0f);
 	}
 
+	@Contract(value = "_ -> new", pure = true)
 	public static DrawBlock base(float rotatorSpeed) {
 		return new DrawMulti(new DrawRegion("-rotator", rotatorSpeed, rotatorSpeed > 0f), new DrawDefault(), new DrawRegion("-top"));
 	}
 
 	/** Research costs for anything that isn't a block or unit */
+	@Contract(pure = true)
 	public static ItemStack[] researchRequirements(ItemStack[] requirements, float mul) {
 		ItemStack[] out = new ItemStack[requirements.length];
 		for (int i = 0; i < out.length; i++) {
@@ -277,6 +283,7 @@ public final class Get {
 	}
 
 	/** Adds ItemStack arrays together. Combines duplicate items into one stack. */
+	@Contract(value = "_ -> new")
 	public static ItemStack[] addItemStacks(Seq<ItemStack[]> stacks) {
 		itemStacks.clear();
 		items.clear();
@@ -308,8 +315,9 @@ public final class Get {
 	}
 
 	//use for cst bullet
+	@Contract(value = "_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ -> param1")
 	public static Bullet anyOtherCreate(Bullet bullet, BulletType type, Entityc shooter, Entityc owner, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY, @Nullable Teamc target) {
-		if (bullet == null || type == null) return null;
+		if (bullet == null || type == null) return bullet;
 		bullet.type = type;
 		bullet.owner = owner;
 		bullet.shooter = shooter == null ? owner : shooter;
@@ -421,6 +429,7 @@ public final class Get {
 	 * @param x  Request the x-coordinate of the point with y-coordinate
 	 * @return Corresponding y-coordinate
 	 */
+	@Contract(pure = true)
 	public float lineY(float x1, float y1, float x2, float y2, float x) {
 		// Calculate slope
 		float slope = (y2 - y1) / (x2 - x1);
@@ -468,7 +477,8 @@ public final class Get {
 		return before;
 	}
 
-	public static Color getColor(Color defaultColor, Team team) {
+	@Contract(value = "!null, _ -> param1", pure = true)
+	public static Color getColor(@Nullable Color defaultColor, Team team) {
 		return defaultColor == null ? team.color : defaultColor;
 	}
 
@@ -478,10 +488,12 @@ public final class Get {
 		}
 	}
 
+	@Contract(pure = true)
 	public static float regSize(UnitType type) {
 		return type.hitSize / Vars.tilesize / Vars.tilesize / 3.25f;
 	}
 
+	@Contract(pure = true)
 	public static boolean equals(Block floor, int rx, int ry) {
 		return rx < Vars.world.width() - 1 && ry < Vars.world.height() - 1
 				&& Vars.world.tile(rx + 1, ry).floor() == floor
@@ -495,10 +507,12 @@ public final class Get {
 		return rand;
 	}
 
+	@Contract(pure = true)
 	public static boolean friendly(Liquid liquid) {
 		return liquid.effect != StatusEffects.none && liquid.effect.damage <= 0.1f && (liquid.effect.damage < -0.01f || liquid.effect.healthMultiplier > 1.01f || liquid.effect.damageMultiplier > 1.01f);
 	}
 
+	@Contract(pure = true)
 	public static float biasSlope(float fin, float bias) {
 		return fin < bias ? (fin / bias) : 1f - (fin - bias) / (1f - bias);
 	}
@@ -508,10 +522,12 @@ public final class Get {
 		return Tmp.v1.setToRandomDirection().setLength(r);
 	}
 
+	@Contract(pure = true)
 	public static String statUnitName(StatUnit stat) {
 		return stat.icon == null ? stat.localized() : stat.icon + " " + stat.localized();
 	}
 
+	@Contract(pure = true)
 	public static float bulletDamage(BulletType b, float lifetime) {
 		if (b.spawnUnit != null) { // Missile unit damage
 			if (b.spawnUnit.weapons.isEmpty()) return 0f;
@@ -548,6 +564,7 @@ public final class Get {
 			y = dy;
 		}
 
+		@Contract(value = "_, _ -> this")
 		public Pos set(float dx, float dy) {
 			x = dx;
 			y = dy;

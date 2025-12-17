@@ -59,7 +59,7 @@ public final class HWeathers {
 			minAlpha = 0.75f;
 			maxAlpha = 0.9f;
 			attrs.set(Attribute.light, -0.35f);
-			sound = Sounds.windhowl;
+			sound = Sounds.windHowl;
 			soundVol = 0.25f;
 			soundVolOscMag = 1.5f;
 			soundVolOscScl = 1100f;

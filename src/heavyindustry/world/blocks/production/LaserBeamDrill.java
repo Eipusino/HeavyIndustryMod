@@ -52,7 +52,7 @@ public class LaserBeamDrill extends Drill {
 		solid = true;
 		hasItems = true;
 		drawMineItem = false;
-		ambientSound = Sounds.minebeam;
+		ambientSound = Sounds.loopMineBeam;
 		ambientSoundVolume = 0.18f;
 		drillEffect = Fx.none;
 		updateEffectChance = 0.2f;

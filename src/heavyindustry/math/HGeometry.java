@@ -2,6 +2,7 @@ package heavyindustry.math;
 
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
+import org.jetbrains.annotations.Contract;
 
 public final class HGeometry {
 	private HGeometry() {}
@@ -18,6 +19,7 @@ public final class HGeometry {
 	 * @param radius half side size
 	 * @return distance from square center to edge by angle
 	 */
+	@Contract(pure = true)
 	public static float sqrtDstByAngle(float radius, float angle) {
 		return radius / Math.max(Mathf.sinDeg(angle % 90), Mathf.cosDeg(angle % 90));
 	}

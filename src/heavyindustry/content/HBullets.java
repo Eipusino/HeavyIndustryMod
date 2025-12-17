@@ -208,7 +208,7 @@ public final class HBullets {
 			despawnEffect = HFx.circleOut(145f, splashDamageRadius + 15f, 3f);
 			shootEffect = WrapperEffect.wrap(HFx.missileShoot, hitColor);//NHFx.blast(hitColor, 45f);
 			smokeEffect = HFx.instShoot(hitColor, frontColor);
-			despawnSound = hitSound = Sounds.largeExplosion;
+			despawnSound = hitSound = Sounds.explosionReactorNeoplasm;
 			fragBullets = 22;
 			fragBullet = new BasicBulletType(2f, 300f, MOD_NAME + "-circle-bolt") {{
 				width = height = 10f;
@@ -225,7 +225,7 @@ public final class HBullets {
 				lightningDamage = 30f;
 				hitSoundVolume /= 2.2f;
 				despawnShake = hitShake = 4f;
-				despawnSound = hitSound = Sounds.dullExplosion;
+				despawnSound = hitSound = Sounds.explosionDull;
 				trailWidth = 5f;
 				trailLength = 35;
 				trailInterp = Interp.slope;
@@ -245,7 +245,7 @@ public final class HBullets {
 			statusDuration = 300f;
 			accelerateBegin = 0.15f;
 			accelerateEnd = 0.95f;
-			despawnSound = hitSound = Sounds.titanExplosion;
+			despawnSound = hitSound = Sounds.explosionTitan;
 			velocityBegin = 8f;
 			velocityIncrease = -7.5f;
 			collides = false;
@@ -383,7 +383,7 @@ public final class HBullets {
 			accelerateBegin = 0.1f;
 			accelerateEnd = 0.85f;
 			statusDuration = 30f;
-			despawnSound = hitSound = Sounds.dullExplosion;
+			despawnSound = hitSound = Sounds.explosionDull;
 			hitSoundVolume /= 4f;
 			velocityBegin = 8f;
 			velocityIncrease = -5f;
@@ -422,7 +422,7 @@ public final class HBullets {
 			lightningLengthRand = 16;
 			splashDamageRadius = 60f;
 			hitShake = despawnShake = 20f;
-			hitSound = despawnSound = Sounds.explosionbig;
+			hitSound = despawnSound = Sounds.explosionReactor2;
 			hitEffect = despawnEffect = new MultiEffect(HFx.square45_8_45, HFx.hitSparkHuge, HFx.crossBlast_45);
 		}
 			@Override
@@ -592,7 +592,7 @@ public final class HBullets {
 			homingPower = 0.01f;
 			homingRange = 300f;
 			homingDelay = 5f;
-			hitSound = Sounds.plasmaboom;
+			hitSound = Sounds.explosionQuad;
 			despawnShake = hitShake = 18f;
 			statusDuration = 1200f;
 			pierce = pierceArmor = pierceBuilding = true;
@@ -806,7 +806,7 @@ public final class HBullets {
 			effectLingtning = 0;
 			maxHit = 6;
 			hitShake = despawnShake = 5f;
-			hitSound = despawnSound = Sounds.plasmaboom;
+			hitSound = despawnSound = Sounds.explosionQuad;
 			size = 7.2f;
 			trailWidth = 3f;
 			trailLength = 16;
@@ -998,7 +998,7 @@ public final class HBullets {
 		}
 			public void init(Bullet b) {
 				super.init(b);
-				Sounds.laserblast.at(b);
+				Sounds.shootCorvus.at(b);
 			}
 
 			public void hit(Bullet b, float x, float y) {
@@ -1095,7 +1095,7 @@ public final class HBullets {
 			trailChance = 0.6f;
 			trailEffect = HFx.trailToGray;
 			hitShake = 3f;
-			hitSound = Sounds.plasmaboom;
+			hitSound = Sounds.explosionQuad;
 		}};
 		hyperBlastLinker = new LightningLinkerBulletType(5f, 220f) {{
 			effectLightningChance = 0.15f;
@@ -1108,7 +1108,7 @@ public final class HBullets {
 			linkRange = 280f;
 			maxHit = 8;
 			drag = 0.085f;
-			hitSound = Sounds.explosionbig;
+			hitSound = Sounds.explosionReactor2;
 			splashDamageRadius = 120f;
 			splashDamage = lightningDamage = damage / 4f;
 			lifetime = 50f;
@@ -1144,7 +1144,7 @@ public final class HBullets {
 			lightningLength = 8;
 			smokeEffect = Fx.shootBigSmoke2;
 			hitShake = 8f;
-			hitSound = Sounds.plasmaboom;
+			hitSound = Sounds.explosionQuad;
 			status = StatusEffects.shocked;
 		}};
 		arc9000 = new LightningLinkerBulletType(2.75f, 200) {{
@@ -1168,7 +1168,7 @@ public final class HBullets {
 			fragBullets = 14;
 			intervalBullets = 2;
 			intervalBullet = fragBullet = arc9000frag;
-			hitSound = Sounds.explosionbig;
+			hitSound = Sounds.explosionReactor2;
 			splashDamageRadius = 120f;
 			splashDamage = 1000;
 			lightningDamage = 375f;
@@ -1230,8 +1230,8 @@ public final class HBullets {
 			accelerateBegin = 0.1f;
 			accelInterp = Interp.pow2;
 			trailInterp = Interp.pow10Out;
-			despawnSound = Sounds.plasmaboom;
-			hitSound = Sounds.explosionbig;
+			despawnSound = Sounds.explosionQuad;
+			hitSound = Sounds.explosionReactor2;
 			hitShake = 60;
 			despawnShake = 100;
 			lightning = 12;
@@ -1387,7 +1387,7 @@ public final class HBullets {
 			linkRange = 280f;
 			maxHit = 12;
 			drag = 0.0065f;
-			hitSound = Sounds.explosionbig;
+			hitSound = Sounds.explosionReactor2;
 			splashDamageRadius = 60f;
 			splashDamage = lightningDamage = damage / 3f;
 			lifetime = 130f;
@@ -1479,7 +1479,7 @@ public final class HBullets {
 					for (int i = 0; i < 2; i++) {
 						if (Mathf.chanceDelta(0.2 * Mathf.curve(b.fin(), 0, 0.8f))) {
 							for (int j : Mathf.signs) {
-								Sounds.spark.at(b.x, b.y, 1f, 0.3f);
+								Sounds.shootArc.at(b.x, b.y, 1f, 0.3f);
 								Vec2 v = Tmp.v6.rnd(rad / 2 + Mathf.random(rad * 2) * (1 + Mathf.curve(b.fin(), 0, 0.9f)) / 1.5f).add(b);
 								(j > 0 ? HFx.chainLightningFade : HFx.chainLightningFadeReversed).at(v.x, v.y, 12f, hitColor, b);
 							}

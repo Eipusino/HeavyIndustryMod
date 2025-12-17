@@ -6,7 +6,7 @@ import arc.util.Time;
 import heavyindustry.math.Mathm;
 
 public class PassiveSoundLoop {
-	protected static final float fadeSpeed = 0.075f;
+	public static final float fadeSpeed = 0.075f;
 
 	public final Sound sound;
 

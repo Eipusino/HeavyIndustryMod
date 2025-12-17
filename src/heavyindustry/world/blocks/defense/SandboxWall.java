@@ -51,7 +51,7 @@ public class SandboxWall extends Block {
 
 	public float resetTime = 120f;
 	public Color lightningColor = Pal.surge;
-	public Sound lightningSound = Sounds.spark;
+	public Sound lightningSound = Sounds.shootArc;
 	public boolean flashHit = true;
 	public Color flashColor = Color.white;
 	public Sound deflectSound = Sounds.none;

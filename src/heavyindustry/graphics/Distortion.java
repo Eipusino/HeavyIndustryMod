@@ -7,6 +7,7 @@ import arc.graphics.g2d.Lines;
 import arc.graphics.gl.FrameBuffer;
 import arc.graphics.gl.Shader;
 import arc.util.Disposable;
+import org.jetbrains.annotations.Contract;
 
 import static heavyindustry.graphics.Drawn.c1;
 import static heavyindustry.graphics.Drawn.v1;
@@ -17,14 +18,14 @@ import static heavyindustry.graphics.Drawn.v5;
 import static heavyindustry.graphics.Drawn.v6;
 
 public class Distortion implements Disposable {
-	static final FrameBuffer tmpBuffer = new FrameBuffer();
+	protected static final FrameBuffer tmpBuffer = new FrameBuffer();
 
-	Shader distortion;
-	FrameBuffer buffer;
-	boolean capturing, disposed;
+	protected Shader distortion;
+	protected FrameBuffer buffer;
+	protected boolean capturing, disposed;
 
 	public Distortion() {
-		distortion = new Shader(HShaders.shadersDir.child("general.vert"), HShaders.shadersDir.child("distortion.frag"));
+		distortion = getShader();
 
 		buffer = new FrameBuffer();
 
@@ -63,6 +64,11 @@ public class Distortion implements Disposable {
 
 			Fill.quad(x + v1.x, y + v1.y, cf1, x + v2.x, y + v2.y, cf2, x + v4.x, y + v4.y, cf4, x + v3.x, y + v3.y, cf3);
 		}
+	}
+
+	@Contract(value = " -> new", pure = true)
+	protected Shader getShader() {
+		return new Shader(HShaders.shadersDir.child("general.vert"), HShaders.shadersDir.child("distortion.frag"));
 	}
 
 	public void init() {

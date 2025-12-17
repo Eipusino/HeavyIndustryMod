@@ -20,7 +20,7 @@ public class HealConeWeapon extends BoostWeapon {
 
 	public HealConeWeapon(String name) {
 		super(name);
-		shootSound = Sounds.pulse;
+		shootSound = Sounds.loopPulse;
 		cooldownTime = 180;
 		shoot.firstShotDelay = 60;
 		continuous = true;

@@ -5,12 +5,6 @@ public abstract class BaseClipDrawable implements ClipDrawable {
 	public float leftWidth, rightWidth, topHeight, bottomHeight, minWidth, minHeight;
 
 	@Override
-	public void draw(float x, float y, float width, float height) {}
-
-	@Override
-	public void draw(float x, float y, float originX, float originY, float width, float height, float scaleX, float scaleY, float rotation) {}
-
-	@Override
 	public float getLeftWidth() {
 		return leftWidth;
 	}

@@ -24,7 +24,7 @@ public class PositionLightningBulletType extends BulletType {
 		super(0.0001f, damage);
 		scaleLife = true;
 		hitShake = 2f;
-		hitSound = Sounds.spark;
+		hitSound = Sounds.shootArc;
 		absorbable = keepVelocity = false;
 		instantDisappear = true;
 		collides = false;

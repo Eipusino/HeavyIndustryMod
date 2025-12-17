@@ -61,7 +61,7 @@ public class FireWorkBulletType extends BulletType {
 			sparkStroke = 2f;
 		}};
 		shootEffect = smokeEffect = Fx.none;
-		despawnSound = hitSound = Sounds.bang;
+		despawnSound = hitSound = Sounds.shootArtillerySmall;
 		lifetime = 65;
 		ammoMultiplier = 1;
 		status = StatusEffects.blasted;

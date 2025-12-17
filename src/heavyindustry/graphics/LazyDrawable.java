@@ -4,15 +4,15 @@ import arc.func.Prov;
 import arc.scene.style.Drawable;
 
 public class LazyDrawable implements Drawable {
-	private Prov<Drawable> prov;
+	Prov<Drawable> prov;
 
-	private Drawable drawable;
+	Drawable drawable;
 
 	public LazyDrawable(Prov<Drawable> lazy) {
 		prov = lazy;
 	}
 
-	private void check() {
+	void check() {
 		if (drawable == null) drawable = prov.get();
 	}
 

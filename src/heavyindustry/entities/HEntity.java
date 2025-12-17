@@ -54,6 +54,7 @@ import mindustry.type.UnitType;
 import mindustry.world.Tile;
 import mindustry.world.blocks.defense.turrets.Turret.TurretBuild;
 import org.jetbrains.annotations.ApiStatus.Obsolete;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
@@ -464,7 +465,7 @@ public final class HEntity {
 		return true;
 	}
 
-	public static boolean spawnUnit(Team team, float x, float y, float angle, float spawnRange, float spawnReloadTime, float spawnDelay, UnitType type, int spawnNum, Cons<Spawner> modifier) {
+	public static boolean spawnUnit(Team team, float x, float y, float angle, float spawnRange, float spawnReloadTime, float spawnDelay, @Nullable UnitType type, int spawnNum, Cons<Spawner> modifier) {
 		if (type == null) return false;
 		Seq<Vec2> vectorSeq = new Seq<>(Vec2.class);
 
@@ -717,6 +718,7 @@ public final class HEntity {
 		return false;
 	}
 
+	@Contract(pure = true)
 	public static boolean containsExclude(int id) {
 		return exclude.contains(id);
 	}

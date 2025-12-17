@@ -12,6 +12,9 @@ import arc.graphics.gl.FileTextureData;
 import arc.graphics.gl.PixmapTextureData;
 import arc.math.Mathf;
 import arc.util.Log;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 
@@ -40,7 +43,8 @@ public final class HPixmaps {
 	 * @param rotate Rotation angle coefficient, the actual rotation angle is 90 * rotate.
 	 * @return A rotated pixmap copy.
 	 */
-	public static Pixmap rotatePixmap90(Pixmap target, int rotate) {
+	@Contract(value = "_, _ -> new")
+	public static @NotNull Pixmap rotatePixmap90(Pixmap target, int rotate) {
 		Pixmap res = new Pixmap(target.width, target.height);
 
 		for (int i = 0; i < target.width; i++) {
@@ -58,7 +62,8 @@ public final class HPixmaps {
 		return res;
 	}
 
-	public static Pixmap gaussianBlur(Pixmap in, int blurWidth, int blurHeight, float deviation) {
+	@Contract(value = "_, _, _, _ -> new")
+	public static @NotNull Pixmap gaussianBlur(Pixmap in, int blurWidth, int blurHeight, float deviation) {
 		float[] blur = new float[(2 * blurWidth + 1) * (2 * blurHeight + 1)];
 		float s = 2f * deviation * deviation, nor = 0f;
 
@@ -106,7 +111,8 @@ public final class HPixmaps {
 		dst.draw(src, dst.width / 2 - src.width / 2, dst.height / 2 - src.height / 2, true);
 	}
 
-	public static Pixmap copyScaled(Pixmap src, int w, int h) {
+	@Contract(value = "_, _, _ -> new")
+	public static @NotNull Pixmap copyScaled(Pixmap src, int w, int h) {
 		Pixmap out = new Pixmap(w, h);
 
 		Color a = new Color(), b = new Color(), c = new Color(), d = new Color();
@@ -134,6 +140,7 @@ public final class HPixmaps {
 		}
 	}
 
+	@Contract(value = "_, _, _ -> param1")
 	public static PixmapRegion color(PixmapRegion region, ColorBool cond, Int2Color to) {
 		region.pixmap.each((x, y) -> {
 			if (x >= region.x && x < region.x + region.width && y >= region.y && y < region.y + region.height && cond.get(region.pixmap.get(x, y))) {
@@ -147,7 +154,8 @@ public final class HPixmaps {
 		return color(region, c -> c == from.rgba(), (x, y) -> to);
 	}
 
-	public static Pixmap pixmapOf(Texture texture) {
+	@Contract(value = "null -> null")
+	public static @Nullable Pixmap pixmapOf(@Nullable Texture texture) {
 		if (texture == null) return null;
 
 		TextureData data = texture.getTextureData();

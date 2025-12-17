@@ -60,7 +60,7 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 	public Interp mergeInterp = Interp.pow2In, sizeInterp = a -> 1f - Interp.pow2In.apply(a);
 	public Effect mergeEffect = Fx.producesmoke, loadEffect = Fx.producesmoke,
 			craftEffect = HFx.payloadManufacture, failEffect = HFx.payloadManufactureFail;
-	public Sound craftSound = Sounds.place;
+	public Sound craftSound = Sounds.unset;
 
 	public TextureRegion stackRegion, stackBottomRegion1, stackBottomRegion2;
 
@@ -70,7 +70,7 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 		acceptsPayload = true;
 		outputsPayload = true;
 
-		ambientSound = Sounds.conveyor;
+		ambientSound = Sounds.loopConveyor;
 	}
 
 	@Override

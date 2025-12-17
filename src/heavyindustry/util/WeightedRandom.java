@@ -2,15 +2,15 @@ package heavyindustry.util;
 
 import arc.math.Mathf;
 import arc.struct.FloatSeq;
-import arc.struct.Seq;
+import org.jetbrains.annotations.Contract;
 
 public class WeightedRandom<T> {
 	protected float lastValue = 0f;
-	protected Seq<T> items;
+	protected CollectionList<T> items;
 	protected FloatSeq weights = new FloatSeq();
 
-	public WeightedRandom(Class<T> componentType) {
-		items = new Seq<>(componentType);
+	public WeightedRandom(Class<?> componentType) {
+		items = new CollectionList<>(componentType);
 	}
 
 	public void add(T t, float weight) {
@@ -20,6 +20,7 @@ public class WeightedRandom<T> {
 		lastValue += weight;
 	}
 
+	@Contract(pure = true)
 	public T get() {
 		float rnd = Mathf.rand.nextFloat() * lastValue;
 		int size = items.size;

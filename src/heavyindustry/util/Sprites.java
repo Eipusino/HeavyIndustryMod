@@ -7,6 +7,7 @@ import arc.math.Mathf;
 import arc.math.geom.Point2;
 import arc.struct.IntIntMap;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * The utility set for split sprite.
@@ -244,7 +245,7 @@ public final class Sprites {
 	}
 
 	@Contract(value = "_, _, _, _ -> new", pure = true)
-	public static TextureRegion[] splitArray(TextureRegion region, int size, int pad, int[] indexMap) {
+	public static TextureRegion [] splitArray(TextureRegion region, int size, int pad, int @Nullable [] indexMap) {
 		int x = region.getX();
 		int y = region.getY();
 		int width = region.width;

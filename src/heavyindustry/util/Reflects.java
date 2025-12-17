@@ -20,6 +20,7 @@ import arc.util.OS;
 import heavyindustry.HVars;
 import mindustry.Vars;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.invoke.MethodHandles.Lookup;
@@ -209,11 +210,11 @@ public final class Reflects {
 	 * @return The field, or {@code null} if not found.
 	 */
 	@Contract(pure = true)
-	public static @Nullable Field findField(Class<?> type, Boolf<Field> name) {
+	public static @Nullable Field findField(Class<?> type, Boolf<Field> filler) {
 		while (type != null) {
 			Field[] fields = type.getDeclaredFields();
 			for (Field field : fields) {
-				if (name.get(field)) return field;
+				if (filler.get(field)) return field;
 			}
 
 			type = type.getSuperclass();
@@ -276,7 +277,7 @@ public final class Reflects {
 	}
 
 	@Contract(value = "_ -> new", pure = true)
-	public static CollectionObjectSet<Class<?>> getClassSubclassHierarchy(Class<?> type) {
+	public static @NotNull CollectionObjectSet<Class<?>> getClassSubclassHierarchy(Class<?> type) {
 		Class<?> c = type.getSuperclass();
 		CollectionObjectSet<Class<?>> hierarchy = new CollectionObjectSet<>(Class.class);
 		while (c != null) {
@@ -360,7 +361,8 @@ public final class Reflects {
 		return target;
 	}
 
-	public static boolean isAssignable(Field sourceType, Field targetType) {
+	@Contract(pure = true)
+	public static boolean isAssignable(@Nullable Field sourceType, @Nullable Field targetType) {
 		return sourceType != null && targetType != null && targetType.getType().isAssignableFrom(sourceType.getType());
 	}
 }

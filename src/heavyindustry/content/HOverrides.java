@@ -8,7 +8,6 @@ import mindustry.content.Blocks;
 import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.content.Liquids;
-import mindustry.content.Planets;
 import mindustry.content.StatusEffects;
 import mindustry.content.UnitTypes;
 import mindustry.entities.bullet.BasicBulletType;
@@ -394,7 +393,8 @@ public final class HOverrides {
 				waveStroke = 4f;
 				waveRad = 40f;
 			}};
-			despawnSound = Sounds.dullExplosion;
+			despawnSound = Sounds.explosionAfflict;
+			shootSound = Sounds.shootAfflict;
 			fragBullet = intervalBullet = new BasicBulletType(3f, 35) {{
 				width = 9f;
 				hitSize = 5f;
@@ -476,6 +476,5 @@ public final class HOverrides {
 		Items.serpuloItems.addAll(HItems.stone, HItems.agglomerateSalt, HItems.rareEarth, HItems.galliumNitride, HItems.crystallineCircuit, HItems.gold, HItems.chromium, HItems.uranium, HItems.heavyAlloy, HItems.crystal);
 		Items.erekirItems.addAll(HItems.stone, HItems.uranium, HItems.chromium, HItems.crystal);
 		//planets
-		Planets.serpulo.allowSectorInvasion = false;
 	}
 }

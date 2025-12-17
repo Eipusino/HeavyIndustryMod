@@ -5,9 +5,10 @@ import arc.audio.Sound;
 
 /** @since 1.0.7 */
 public class PitchedSoundLoop {
-	private final Sound sound;
-	private int id = -1;
-	private float baseVolume;
+	public final Sound sound;
+
+	protected int id = -1;
+	protected float baseVolume;
 
 	public PitchedSoundLoop(Sound sound, float baseVolume) {
 		this.sound = sound;
@@ -37,6 +38,10 @@ public class PitchedSoundLoop {
 			id = -1;
 			baseVolume = -1f;
 		}
+	}
+
+	public int id() {
+		return id;
 	}
 
 	@Override

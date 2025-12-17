@@ -33,7 +33,7 @@ public class LightningFieldAbility extends Ability {
 	public float damage = 1f, reload = 100f, range = 60f;
 	public Effect hitEffect = Fx.hitLaserBlast, damageEffect = Fx.chainLightning;
 	public StatusEffect status = StatusEffects.electrified;
-	public Sound shootSound = Sounds.spark;
+	public Sound shootSound = Sounds.shootArc;
 	public float statusDuration = 60f * 6f;
 	public float x, y;
 	public boolean targetGround = true, targetAir = true, hitBuildings = true, hitUnits = true;

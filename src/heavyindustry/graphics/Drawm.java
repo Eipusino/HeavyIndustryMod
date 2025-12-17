@@ -19,6 +19,7 @@ import mindustry.graphics.MultiPacker;
 import mindustry.graphics.MultiPacker.PageType;
 import mindustry.graphics.Pal;
 import mindustry.world.Block;
+import org.jetbrains.annotations.Contract;
 
 public final class Drawm {
 	private static final Vec2 vec1 = new Vec2(), vec2 = new Vec2(), vec3 = new Vec2(), vec4 = new Vec2();
@@ -93,6 +94,7 @@ public final class Drawm {
 	}
 
 	/** Loads the custom team regions. */
+	@Contract(value = "_ -> new", pure = true)
 	public static TextureRegion[] loadCustomTeamRegion(String name) {
 		TextureRegion[] ret = new TextureRegion[Team.all.length];
 		TextureRegion def = Core.atlas.find(name + "-team");

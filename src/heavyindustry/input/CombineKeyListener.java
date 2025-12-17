@@ -8,20 +8,20 @@ import heavyindustry.util.CollectionList;
 import heavyindustry.util.CollectionObjectMap;
 
 public class CombineKeyListener<R> extends InputListener {
-	public final Class<R> recType;
+	public final Class<?> recType;
 
 	public CombineKeyTree<R> keysTree;
 	public boolean fuzzed;
 
 	CollectionList<KeyCode> keysDown = new CollectionList<>(KeyCode.class);
 
-	public CombineKeyListener(Class<R> type, CombineKeyTree<R> tree, boolean fuzz) {
+	public CombineKeyListener(Class<?> type, CombineKeyTree<R> tree, boolean fuzz) {
 		recType = type;
 		keysTree = tree;
 		fuzzed = fuzz;
 	}
 
-	public CombineKeyListener(Class<R> type, CombineKeyTree<R> tree) {
+	public CombineKeyListener(Class<?> type, CombineKeyTree<R> tree) {
 		this(type, tree, false);
 	}
 
