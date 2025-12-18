@@ -76,10 +76,10 @@ public final class Worlds {
 					.append(block.mapColor.rgba() >>> 8).append('\n');//mapColor
 		});
 
-		Vars.platform.showFileChooser(false, Core.bundle.get("hi-export-data"), "dat", file -> {
+		Vars.platform.showFileChooser(false, Core.bundle.get("text.export-data"), "dat", file -> {
 			try {
 				file.writeBytes(data.toString().getBytes(Strings.utf8), false);
-				Core.app.post(() -> Vars.ui.showInfo(Core.bundle.format("hi-export-data-format", file.name())));
+				Core.app.post(() -> Vars.ui.showInfo(Core.bundle.format("text.export-data-format", file.name())));
 			} catch (Throwable e) {
 				Log.err(e);
 

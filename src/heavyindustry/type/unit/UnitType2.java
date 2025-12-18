@@ -30,7 +30,7 @@ public class UnitType2 extends UnitType {
 	public void setStats() {
 		super.setStats();
 		if (damageMultiplier < 1f) {
-			stats.add(HStat.damageReduction, Core.bundle.format("hi-sin", Strings.autoFixed((1f - damageMultiplier) * 100, 2)));
+			stats.add(HStat.damageReduction, Core.bundle.format("text.sin", Strings.autoFixed((1f - damageMultiplier) * 100, 2)));
 		}
 	}
 

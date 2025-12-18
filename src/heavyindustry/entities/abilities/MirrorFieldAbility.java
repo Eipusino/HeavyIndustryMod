@@ -136,7 +136,7 @@ public class MirrorFieldAbility extends MirrorShieldAbility {
 
 			Draw.color(unit.team.color, Color.white, Mathm.clamp(alpha));
 
-			if (Core.settings.getBool("hi-animated-shields")) {
+			if (Core.settings.getBool("animated-shields")) {
 				Draw.z(HLayer.mirrorField + 0.001f * alpha);
 				Fill.poly(drawX, drawY, sides, radius * scl, rotation + angle + moveOffsetRot);
 			} else {

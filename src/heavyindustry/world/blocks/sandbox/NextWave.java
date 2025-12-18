@@ -14,8 +14,8 @@ import mindustry.world.Block;
 
 public class NextWave extends Block {
 	public Cons2<Building, Table> buildConfig = (build, table) -> {
-		table.button(Icon.upOpen, Styles.cleari, () -> build.configure(1)).size(50f).tooltip(Core.bundle.get("hi-next-wave-1"));
-		table.button(Icon.warningSmall, Styles.cleari, () -> build.configure(10)).size(50f).tooltip(Core.bundle.get("hi-next-wave-10"));
+		table.button(Icon.upOpen, Styles.cleari, () -> build.configure(1)).size(50f).tooltip(Core.bundle.get("text.next-wave-1"));
+		table.button(Icon.warningSmall, Styles.cleari, () -> build.configure(10)).size(50f).tooltip(Core.bundle.get("text.next-wave-10"));
 	};
 
 	public NextWave(String name) {

@@ -100,7 +100,7 @@ public class UnitMinerPoint extends Block {
 	public void drawPlace(int x, int y, int rotation, boolean valid) {
 		super.drawPlace(x, y, rotation, valid);
 		if (Vars.world.tile(x, y) != null && !canPlaceOn(Vars.world.tile(x, y), Vars.player.team(), rotation)) {
-			drawPlaceText(Core.bundle.get((Vars.player.team().core() != null && Vars.player.team().core().items.has(requirements, Vars.state.rules.buildCostMultiplier)) || Vars.state.rules.infiniteResources ? "bar.hi-close" : "bar.noresources"), x, y, valid);
+			drawPlaceText(Core.bundle.get((Vars.player.team().core() != null && Vars.player.team().core().items.has(requirements, Vars.state.rules.buildCostMultiplier)) || Vars.state.rules.infiniteResources ? "bar.close" : "bar.noresources"), x, y, valid);
 		}
 		x *= Vars.tilesize;
 		y *= Vars.tilesize;

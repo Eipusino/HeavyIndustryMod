@@ -37,12 +37,12 @@ public class SpeedupTurret extends PowerTurret {
 	public void setBars() {
 		super.setBars();
 		addBar("liquid", (SpeedupTurretBuild tile) -> new Bar(
-				() -> Core.bundle.get("bar.hi-speed-up"),
+				() -> Core.bundle.get("bar.speed-up"),
 				() -> Pal.techBlue,
 				() -> tile.speedupScl / maxSpeedupScl));
 
 		addBar("overheat", (SpeedupTurretBuild tile) -> new Bar(
-				() -> Core.bundle.get("bar.hi-overheat"),
+				() -> Core.bundle.get("bar.overheat"),
 				() -> tile.requireCompleteCooling ? Pal.redderDust : Pal.powerLight,
 				() -> tile.overheat / overheatTime));
 	}

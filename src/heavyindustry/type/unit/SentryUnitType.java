@@ -187,7 +187,7 @@ public class SentryUnitType extends UnitType2 {
 				bars.row();
 
 				bars.add(new Bar(
-						() -> Core.bundle.format("bar.hi-lifetime", Strings.autoFixed(sentry.fout() * 100f, 2)),
+						() -> Core.bundle.format("bar.lifetime", Strings.autoFixed(sentry.fout() * 100f, 2)),
 						() -> Pal.accent,
 						sentry::fout
 				));

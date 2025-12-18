@@ -76,7 +76,7 @@ public class PlaceableCore extends CoreBlock {
 			table.table(t -> {
 				ImageButton ib = t.button(Icon.add, Styles.flati, () -> configure(Boolean.TRUE)).fillX().height(32f).disabled(b -> toPlace == null).get();
 				ib.getStyle().disabled = ib.getStyle().over;
-				ib.add("@hi-placeable-core-place").padLeft(16f);
+				ib.add("@text.placeable-core-place").padLeft(16f);
 				t.row();
 				ItemSelection.buildTable(block, t, content.blocks().select(b -> b instanceof CoreBlock && !(b instanceof PlaceableCore)), () -> toPlace, this::configure, false, selectionRows, selectionColumns);
 			});

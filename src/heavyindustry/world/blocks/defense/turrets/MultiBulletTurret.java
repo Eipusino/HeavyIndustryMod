@@ -67,7 +67,7 @@ public class MultiBulletTurret extends Turret {
 		stats.add(Stat.ammo, HStatValues.ammo(ammoTypes, all));
 		if (all) {
 			stats.remove(Stat.reload);
-			stats.add(Stat.reload, Core.bundle.format("stat.hi-shoot-time", Strings.autoFixed(reload / 60f, 2)));
+			stats.add(Stat.reload, Core.bundle.format("stat.shoot-time", Strings.autoFixed(reload / 60f, 2)));
 		}
 	}
 

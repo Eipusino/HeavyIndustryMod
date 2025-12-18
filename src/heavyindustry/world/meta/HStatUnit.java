@@ -3,8 +3,8 @@ package heavyindustry.world.meta;
 import mindustry.world.meta.StatUnit;
 
 public final class HStatUnit {
-	public static StatUnit upTo = new StatUnit("hi-up-to");
-	public static StatUnit threshold = new StatUnit("hi-threshold");
+	public static final StatUnit upTo = new StatUnit("up-to");
+	public static final StatUnit threshold = new StatUnit("threshold");
 
 	private HStatUnit() {}
 }

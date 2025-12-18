@@ -43,6 +43,8 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 import org.jetbrains.annotations.Nullable;
 
+import static heavyindustry.HVars.MOD_NAME;
+
 public class StaticNode extends Block {
 	protected static BuildPlan otherReq;
 	protected static int returnInt = 0;
@@ -127,7 +129,7 @@ public class StaticNode extends Block {
 		stats.add(Stat.powerConnections, maxNodes, StatUnit.none);
 
 		stats.remove(Stat.powerUse);
-		stats.add(Stat.powerUse, Core.bundle.format("stat.hi-static-power", powerPerLink * 60f));
+		stats.add(Stat.powerUse, Core.bundle.format("stat.static-power", powerPerLink * 60f));
 
 		stats.add(Stat.targetsAir, hitAir);
 		stats.add(Stat.targetsGround, hitGround);
@@ -158,8 +160,8 @@ public class StaticNode extends Block {
 	public void load() {
 		super.load();
 
-		laser = Core.atlas.find(name + "-laser", "hi-static-laser");
-		laserEnd = Core.atlas.find(name + "-laser-end", "hi-static-laser-end");
+		laser = Core.atlas.find(name + "-laser", MOD_NAME + "-static-laser");
+		laserEnd = Core.atlas.find(name + "-laser-end", MOD_NAME + "-static-laser-end");
 	}
 
 	@Override

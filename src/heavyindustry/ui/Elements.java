@@ -323,12 +323,12 @@ public final class Elements {
 
 	@Contract(value = " -> new", pure = true)
 	public static FLabel infinity() {
-		return new FLabel("{wave}{rainbow}" + Core.bundle.get("hi-infinity"));
+		return new FLabel("{wave}{rainbow}" + Core.bundle.get("text.infinity"));
 	}
 
 	@Contract(value = " -> new", pure = true)
 	public static FLabel everything() {
-		return new FLabel("{wave}{rainbow}" + Core.bundle.get("hi-everything"));
+		return new FLabel("{wave}{rainbow}" + Core.bundle.get("text.everything"));
 	}
 
 	public static boolean hasMouse() {
@@ -372,7 +372,7 @@ public final class Elements {
 		coll.setDuration(0.1f);
 		t.row();
 		t.table(st -> {
-			st.add(Core.bundle.get("hi-click-to-show")).center();
+			st.add(Core.bundle.get("text.click-to-show")).center();
 			st.row();
 			st.button(Icon.downOpen, Styles.emptyi, () -> coll.toggle(true)).update(i -> i.getStyle().imageUp = (!coll.isCollapsed() ? Icon.upOpen : Icon.downOpen)).pad(5).size(8).center();
 		}).left();

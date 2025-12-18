@@ -6,7 +6,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+/**
+ * Used to delay the initialization of fields, values are only initialized when they are obtained for the first
+ * time.
+ *
+ * @since 1.0.8
+ */
 public class Lazy<T> {
+	/** Indicate whether the value can be reset again. default to true. */
 	public final boolean allowSet;
 
 	protected T value;
@@ -50,13 +57,14 @@ public class Lazy<T> {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		return o == this || o instanceof Lazy<?> lazy && Objects.equals(get(), lazy.get());
+	public boolean equals(Object obj) {
+		return obj == this || obj instanceof Lazy<?> lazy && Objects.equals(get(), lazy.get());
 	}
 
 	@Override
 	public int hashCode() {
-		return get() == null ? 0 : value.hashCode();
+		Object obj = get();
+		return obj == null ? 0 : obj.hashCode();
 	}
 
 	@Override

@@ -148,7 +148,7 @@ public class BatteryAbility extends Ability {
 
 	@Override
 	public void displayBars(Unit unit, Table bars) {
-		bars.add(new Bar(Core.bundle.format("bar.hi-unit-battery"), Pal.power, () -> amount / capacity)).row();
+		bars.add(new Bar(Core.bundle.format("bar.unit-battery"), Pal.power, () -> amount / capacity)).row();
 	}
 
 	@Override

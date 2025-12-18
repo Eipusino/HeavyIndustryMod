@@ -193,7 +193,7 @@ public abstract class CommandableAttackerBlock extends CommandableBlock {
 
 			if (canCommand(targetVec)) builds.add(this);
 			if (builds.any())
-				Drawn.overlayText(Core.bundle.format("hi-participants", builds.size), targetVec.x, targetVec.y, tilesize * 2f, Pal.accent, true);
+				Drawn.overlayText(Core.bundle.format("text.participants", builds.size), targetVec.x, targetVec.y, tilesize * 2f, Pal.accent, true);
 		}
 
 		@Override

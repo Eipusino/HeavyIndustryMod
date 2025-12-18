@@ -73,7 +73,7 @@ public class CoreStorageBlock extends StorageBlock {
 		if (state.rules.infiniteResources) return;
 
 		if (world.tile(x, y) != null && !canPlaceOn(world.tile(x, y), player.team(), rotation)) {
-			drawPlaceText(Core.bundle.get((player.team().core() != null && player.team().core().items.has(requirements, state.rules.buildCostMultiplier)) || state.rules.infiniteResources ? "bar.hi-close" : "bar.noresources"), x, y, valid);
+			drawPlaceText(Core.bundle.get((player.team().core() != null && player.team().core().items.has(requirements, state.rules.buildCostMultiplier)) || state.rules.infiniteResources ? "bar.close" : "bar.noresources"), x, y, valid);
 		}
 		x *= tilesize;
 		y *= tilesize;

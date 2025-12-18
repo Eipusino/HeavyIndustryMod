@@ -83,7 +83,7 @@ public class UnitBoost extends Block {
 		stats.add(new Stat("rangeboost", StatCat.crafting), (int) (maxRangeBoost * 100f), StatUnit.percent);
 		if (status.length > 0) stats.add(Stat.abilities, t -> {
 			t.row();
-			t.add(Core.bundle.get("hi-stat-value-show-status")).left();
+			t.add(Core.bundle.get("text.stat-value-show-status")).left();
 			t.row();
 			t.table(Styles.grayPanel, inner -> {
 				inner.left().defaults().left();

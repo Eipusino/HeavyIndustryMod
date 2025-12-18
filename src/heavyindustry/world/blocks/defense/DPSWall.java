@@ -80,9 +80,9 @@ public class DPSWall extends Wall {
 
 				Draw.z(Layer.weather + 1);
 				color.a = Math.min(showBoardTime / boardTimeTotal * 3, 1);
-				font.draw(Core.bundle.format("hi-dps-info-hits", hits), dx, (dy -= gap), color, fontSize, false, Align.left);
-				font.draw(Core.bundle.format("hi-dps-info-damage", Mathf.round(damage)), dx, (dy -= gap), color, fontSize, false, Align.left);
-				font.draw(Core.bundle.format("hi-dps-info-dps", Mathf.round(dps)), dx, dy - gap, color, fontSize, false, Align.left);
+				font.draw(Core.bundle.format("text.dps-info-hits", hits), dx, (dy -= gap), color, fontSize, false, Align.left);
+				font.draw(Core.bundle.format("text.dps-info-damage", Mathf.round(damage)), dx, (dy -= gap), color, fontSize, false, Align.left);
+				font.draw(Core.bundle.format("text.dps-info-dps", Mathf.round(dps)), dx, dy - gap, color, fontSize, false, Align.left);
 
 				Draw.reset();
 			}

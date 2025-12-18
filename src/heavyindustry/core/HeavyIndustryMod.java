@@ -134,12 +134,12 @@ public final class HeavyIndustryMod extends Mod {
 		HClassMap.load();
 
 		Events.on(ClientLoadEvent.class, event -> {
-			if (Vars.headless || HVars.isPlugin || Core.settings.getBool("hi-closed-dialog")) return;
+			if (Vars.headless || HVars.isPlugin || Core.settings.getBool("closed-dialog")) return;
 
-			FLabel label = new FLabel(Core.bundle.get("hi-author") + AUTHOR);
-			BaseDialog dialog = new BaseDialog(Core.bundle.get("hi-name")) {{
+			FLabel label = new FLabel(Core.bundle.get("text.author") + AUTHOR);
+			BaseDialog dialog = new BaseDialog(Core.bundle.get("text.name")) {{
 				buttons.button(Core.bundle.get("close"), this::hide).size(210f, 64f);
-				buttons.button(Core.bundle.get("hi-link-github"), () -> {
+				buttons.button(Core.bundle.get("text.link-github"), () -> {
 					if (!Core.app.openURI(LINK_GIT_HUB)) {
 						Vars.ui.showErrorMessage("@linkfail");
 						Core.app.setClipboardText(LINK_GIT_HUB);
@@ -147,12 +147,12 @@ public final class HeavyIndustryMod extends Mod {
 				}).size(210f, 64f);
 				cont.pane(t -> {
 					t.image(Core.atlas.find(MOD_NAME + "-cover")).left().size(600f, 403f).pad(3f).row();
-					t.add(Core.bundle.get("hi-version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
+					t.add(Core.bundle.get("text.version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 					t.add(label).left().row();
-					t.add(Core.bundle.get("hi-type")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
+					t.add(Core.bundle.get("text.type")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 					t.add(Strings2.generateRandomString(10, 20)).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 					t.add(Strings2.generateRandomString(100, 200)).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
-					t.add(Core.bundle.get("hi-other-contributor")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
+					t.add(Core.bundle.get("text.other-contributor")).left().growX().wrap().width(550f).maxWidth(600f).pad(4f).labelAlign(Align.left).row();
 				}).grow().center().maxWidth(600f);
 			}};
 			dialog.show();
@@ -256,20 +256,20 @@ public final class HeavyIndustryMod extends Mod {
 		if (Vars.ui != null) {
 			if (Vars.ui.settings != null) {
 				//add heavy-industry settings
-				Vars.ui.settings.addCategory(Core.bundle.format("hi-settings"), HIcon.reactionIcon, table -> {
-					table.checkPref("hi-closed-dialog", false);
-					table.checkPref("hi-floating-text", true);
-					table.checkPref("hi-animated-shields", true);
-					table.checkPref("hi-tesla-range", true);
-					table.sliderPref("hi-vaporize-batch", 300, 0, 1000, 1, s -> Strings.autoFixed(s, 2));
-					table.pref(new Setting(Core.bundle.get("hi-game-data")) {
+				Vars.ui.settings.addCategory(Core.bundle.format("text.settings"), HIcon.reactionIcon, table -> {
+					table.checkPref("closed-dialog", false);
+					table.checkPref("floating-text", true);
+					table.checkPref("animated-shields", true);
+					table.checkPref("tesla-range", true);
+					table.sliderPref("vaporize-batch", 300, 0, 1000, 1, s -> Strings.autoFixed(s, 2));
+					table.pref(new Setting(Core.bundle.get("text.game-data")) {
 						@Override
 						public void add(SettingsTable table) {
 							table.button(name, Elements.gameDataDialog::show).margin(14).width(200f).pad(6);
 							table.row();
 						}
 					});
-					table.pref(new Setting(Core.bundle.get("hi-export-data")) {
+					table.pref(new Setting(Core.bundle.get("text.export-data")) {
 						@Override
 						public void add(SettingsTable table) {
 							table.button(name, Worlds::exportBlockData).margin(14).width(200f).pad(6);
@@ -279,8 +279,8 @@ public final class HeavyIndustryMod extends Mod {
 				});
 			}
 
-			if (!Vars.headless && !HMods.isEnabled("extra-utilities") && !HMods.isX() && Core.settings.getBool("hi-floating-text")) {
-				String massage = Core.bundle.get("hi-random-massage");
+			if (!Vars.headless && !HMods.isEnabled("extra-utilities") && !HMods.isX() && Core.settings.getBool("floating-text")) {
+				String massage = Core.bundle.get("text.random-massage");
 				String[] massages = massage.split("@");
 
 				floatingText = new FloatingText(massages[Mathf.random(massages.length - 1)]);

@@ -170,21 +170,21 @@ public class TurretController extends Block {
 				t.table(mode -> {
 					ButtonGroup<TextButton> group = new ButtonGroup<>();
 
-					mode.button("@hi-turret-controller-on", Styles.flatTogglet, () -> {
+					mode.button("@turret-controller-on", Styles.flatTogglet, () -> {
 								controlState = ControlState.on;
 								configure(1);
 							}).group(group).wrapLabel(false).grow()
 							.update(tb -> tb.setChecked(controlState == ControlState.on))
 							.get().margin(0f, 6f, 0f, 6f);
 					mode.row();
-					mode.button("@hi-turret-controller-off", Styles.flatTogglet, () -> {
+					mode.button("@turret-controller-off", Styles.flatTogglet, () -> {
 								controlState = ControlState.off;
 								configure(0);
 							}).group(group).wrapLabel(false).grow()
 							.update(tb -> tb.setChecked(controlState == ControlState.off))
 							.get().margin(0f, 6f, 0f, 6f);
 					mode.row();
-					mode.button("@hi-turret-controller-disable", Styles.flatTogglet, () -> {
+					mode.button("@turret-controller-disable", Styles.flatTogglet, () -> {
 								controlState = ControlState.disable;
 								configure(2);
 							}).group(group).wrapLabel(false).grow()
@@ -194,13 +194,13 @@ public class TurretController extends Block {
 
 				//Target
 				t.table(tar -> { //TODO target using a click. Command mode probably.
-					tar.add("@hi-turret-controller-angle").right();
+					tar.add("@turret-controller-angle").right();
 					angField = tar.field(String.valueOf(targetSetting.x), TextFieldFilter.floatsOnly, s -> {
 						targetSetting.x = Strings.parseFloat(s);
 						configure(targetSetting);
 					}).get();
 					tar.row();
-					tar.add("@hi-turret-controller-distance").right();
+					tar.add("@turret-controller-distance").right();
 					dstField = tar.field(String.valueOf(targetSetting.y), TextFieldFilter.floatsOnly, s -> {
 						targetSetting.y = Strings.parseFloat(s);
 						configure(targetSetting);

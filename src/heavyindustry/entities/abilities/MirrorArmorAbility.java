@@ -50,7 +50,7 @@ public class MirrorArmorAbility extends MirrorShieldAbility {
 
 		float z = Draw.z();
 
-		if (Core.settings.getBool("hi-animated-shields")) {
+		if (Core.settings.getBool("animated-shields")) {
 			Draw.z(Layer.shields - 2f);
 			Draws.drawToBuffer(drawId, drawBuffer, unit, b -> {
 				HShaders.mirrorField.waveMix = Tmp.c1.set(HPal.matrixNet);

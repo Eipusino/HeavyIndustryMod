@@ -34,7 +34,7 @@ public final class Perspective {
 	static {
 		if (!headless) {
 			Events.run(Trigger.preDraw, () -> {
-				int newFov = Core.settings.getInt("pm-fov", 60);
+				int newFov = Core.settings.getInt("fov", 60);
 
 				//Recalculate viewport size on scale or fov change
 				if (renderer.getDisplayScale() != lastScale || newFov != fov) {

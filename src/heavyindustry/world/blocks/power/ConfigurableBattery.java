@@ -81,7 +81,7 @@ public class ConfigurableBattery extends Battery {
 				}).width(120).valid(text -> Strings.canParseFloat(text) && Strings.parseFloat(text) > 0).get().setFilter(TextFieldFilter.floatsOnly);
 				t.add(Get.statUnitName(StatUnit.powerUnits)).left();
 				t.button(Icon.save, () -> configure(powerCapacitySetting)).padLeft(6);
-				t.button(Icon.trash, () -> configure(Boolean.FALSE)).tooltip("@hi-storage.delete-contents");
+				t.button(Icon.trash, () -> configure(Boolean.FALSE)).tooltip("@storage.delete-contents");
 			});
 		}
 

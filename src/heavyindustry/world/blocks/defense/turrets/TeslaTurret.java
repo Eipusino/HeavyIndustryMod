@@ -266,7 +266,7 @@ public class TeslaTurret extends Block {
 				}
 			}
 
-			if (Core.settings.getBool("hi-tesla-range") && curStroke > 0.001f) {
+			if (Core.settings.getBool("tesla-range") && curStroke > 0.001f) {
 				Draw.z(Layer.bullet - 0.001f);
 				Lines.stroke((0.7f + Mathf.absin(blinkScl, 0.7f)) * curStroke, lightningColor);
 				for (int i = 0; i < sections; i++) {

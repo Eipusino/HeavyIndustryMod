@@ -93,15 +93,15 @@ public class DPSMechUnit extends MechUnit2 {
 			Draw.z(Layer.weather + 1);
 			color.a = Math.min(showBoardTime / boardTimeTotal * 3, 1);
 
-			font.draw(Core.bundle.format("hi-dps-info-armor", armor), dx, (dy -= gap), color, fontSize, false, Align.left);
-			font.draw(Core.bundle.format("hi-dps-info-hitsize", hitSize), dx, (dy -= gap), color, fontSize, false, Align.left);
-			font.draw(Core.bundle.format("hi-dps-info-hits", hits), dx, (dy -= gap), color, fontSize, false, Align.left);
-			font.draw(Core.bundle.format("hi-dps-info-duration-frame", Mathf.round(gameDuration)), dx, (dy -= gap), color, fontSize, false, Align.left);
-			font.draw(Core.bundle.format("hi-dps-info-duration-real", Mathf.round(realDuration)), dx, (dy -= gap), color, fontSize, false, Align.left);
-			font.draw(Core.bundle.format("hi-dps-info-origin-damage", Mathf.round(originDamage)), dx, (dy -= gap), color, fontSize, false, Align.left);
-			font.draw(Core.bundle.format("hi-dps-info-real-damage", Mathf.round(realDamage)), dx, (dy -= gap), color, fontSize, false, Align.left);
-			font.draw(Core.bundle.format("hi-dps-info-dps-origin", Mathf.round(originDps)), dx, (dy -= gap), color, fontSize, false, Align.left);
-			font.draw(Core.bundle.format("hi-dps-info-dps-real", Mathf.round(realDps)), dx, dy - gap, color, fontSize, false, Align.left);
+			font.draw(Core.bundle.format("text.dps-info-armor", armor), dx, (dy -= gap), color, fontSize, false, Align.left);
+			font.draw(Core.bundle.format("text.dps-info-hitsize", hitSize), dx, (dy -= gap), color, fontSize, false, Align.left);
+			font.draw(Core.bundle.format("text.dps-info-hits", hits), dx, (dy -= gap), color, fontSize, false, Align.left);
+			font.draw(Core.bundle.format("text.dps-info-duration-frame", Mathf.round(gameDuration)), dx, (dy -= gap), color, fontSize, false, Align.left);
+			font.draw(Core.bundle.format("text.dps-info-duration-real", Mathf.round(realDuration)), dx, (dy -= gap), color, fontSize, false, Align.left);
+			font.draw(Core.bundle.format("text.dps-info-origin-damage", Mathf.round(originDamage)), dx, (dy -= gap), color, fontSize, false, Align.left);
+			font.draw(Core.bundle.format("text.dps-info-real-damage", Mathf.round(realDamage)), dx, (dy -= gap), color, fontSize, false, Align.left);
+			font.draw(Core.bundle.format("text.dps-info-dps-origin", Mathf.round(originDps)), dx, (dy -= gap), color, fontSize, false, Align.left);
+			font.draw(Core.bundle.format("text.dps-info-dps-real", Mathf.round(realDps)), dx, dy - gap, color, fontSize, false, Align.left);
 			Draw.reset();
 		}
 	}

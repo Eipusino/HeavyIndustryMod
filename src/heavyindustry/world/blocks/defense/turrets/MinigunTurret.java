@@ -104,7 +104,7 @@ public class MinigunTurret extends ItemTurret {
 	@Override
 	public void setBars() {
 		super.setBars();
-		addBar("hi-minigun-speed", (MinigunTurretBuild tile) -> new Bar(() -> Core.bundle.format("bar.hi-minigun-speed", Strings.autoFixed(tile.speedf() * 100f, 2)), tile::barColor, tile::speedf));
+		addBar("minigun-speed", (MinigunTurretBuild tile) -> new Bar(() -> Core.bundle.format("bar.minigun-speed", Strings.autoFixed(tile.speedf() * 100f, 2)), tile::barColor, tile::speedf));
 	}
 
 	public class MinigunTurretBuild extends ItemTurretBuild {

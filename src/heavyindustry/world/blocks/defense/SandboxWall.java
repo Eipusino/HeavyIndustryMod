@@ -111,7 +111,7 @@ public class SandboxWall extends Block {
 		super.setBars();
 		removeBar("health");
 
-		addBar("hi-dps", (SandboxWallBuild tile) -> new Bar(
+		addBar("dps", (SandboxWallBuild tile) -> new Bar(
 				() -> tile.displayDPS(false),
 				() -> Pal.ammo,
 				() -> 1f - (tile.reset / resetTime)
@@ -425,7 +425,7 @@ public class SandboxWall extends Block {
 				t.table(i -> {
 					i.defaults().left();
 					i.image(Icon.power.getRegion()).size(32f).scaling(Scaling.fit);
-					i.add("@hi-sandbox-wall.mode-lightning").padLeft(8f);
+					i.add("@sandbox-wall.mode-lightning").padLeft(8f);
 				});
 				t.row();
 				t.table(b -> {
@@ -434,11 +434,11 @@ public class SandboxWall extends Block {
 					b.row();
 					b.table(f -> {
 						f.defaults().left();
-						addTextField(f, addColon("hi-sandbox-wall.lightning.chance"), String.valueOf(data.lightningChance), TextFieldFilter.floatsOnly, 4);
+						addTextField(f, addColon("sandbox-wall.lightning.chance"), String.valueOf(data.lightningChance), TextFieldFilter.floatsOnly, 4);
 						f.row();
-						addTextField(f, addColon("hi-sandbox-wall.lightning.damage"), String.valueOf(data.lightningDamage), TextFieldFilter.floatsOnly, 5);
+						addTextField(f, addColon("sandbox-wall.lightning.damage"), String.valueOf(data.lightningDamage), TextFieldFilter.floatsOnly, 5);
 						f.row();
-						addTextField(f, addColon("hi-sandbox-wall.lightning.length"), String.valueOf(data.lightningLength), TextFieldFilter.digitsOnly, 6);
+						addTextField(f, addColon("sandbox-wall.lightning.length"), String.valueOf(data.lightningLength), TextFieldFilter.digitsOnly, 6);
 						f.row();
 					});
 				}).padLeft(32f);
@@ -447,7 +447,7 @@ public class SandboxWall extends Block {
 				t.table(i -> {
 					i.defaults().left();
 					i.image(Icon.rotate.getRegion()).size(32f).scaling(Scaling.fit);
-					i.add("@hi-sandbox-wall.mode-deflection").padLeft(8f);
+					i.add("@sandbox-wall.mode-deflection").padLeft(8f);
 				});
 				t.row();
 				t.table(b -> {
@@ -456,7 +456,7 @@ public class SandboxWall extends Block {
 					b.row();
 					b.table(f -> {
 						f.defaults().left();
-						addTextField(f, addColon("hi-sandbox-wall.deflection.chance"), String.valueOf(data.deflectChance), TextFieldFilter.floatsOnly, 7);
+						addTextField(f, addColon("sandbox-wall.deflection.chance"), String.valueOf(data.deflectChance), TextFieldFilter.floatsOnly, 7);
 					});
 				}).padLeft(32f);
 				t.row();
@@ -464,7 +464,7 @@ public class SandboxWall extends Block {
 				t.table(i -> {
 					i.defaults().left();
 					i.image(Icon.eyeOff.getRegion()).size(32f).scaling(Scaling.fit);
-					i.add("@hi-sandbox-wall.mode-insulation").padLeft(8f);
+					i.add("@sandbox-wall.mode-insulation").padLeft(8f);
 				});
 				t.row();
 				t.table(b -> {
@@ -476,7 +476,7 @@ public class SandboxWall extends Block {
 				t.table(i -> {
 					i.defaults().left();
 					i.image(Icon.modePvp.getRegion()).size(32f).scaling(Scaling.fit);
-					i.add("@hi-sandbox-wall.mode-dpstesting").padLeft(8f);
+					i.add("@sandbox-wall.mode-dpstesting").padLeft(8f);
 				});
 				t.row();
 				t.table(b -> {

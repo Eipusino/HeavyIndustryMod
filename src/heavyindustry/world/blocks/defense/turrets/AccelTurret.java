@@ -24,7 +24,7 @@ public class AccelTurret extends ItemTurret {
 	public void setBars() {
 		super.setBars();
 		addBar("speed-up", (AccelTurretBuild tile) -> new Bar(
-				() -> Core.bundle.format("bar.hi-speed-up", Strings.autoFixed((tile.speedUp) * 100, 0)),
+				() -> Core.bundle.format("bar.speed-up", Strings.autoFixed((tile.speedUp) * 100, 0)),
 				() -> Pal.powerBar,
 				() -> tile.speedUp / maxAccel
 		));

@@ -118,9 +118,9 @@ public class ConfigurableContainer extends StorageBlock {
 					int cap = storageCapacity;
 					configure(0); //Delete contents
 					configure(cap); //Restore original capacity
-				}).tooltip("@hi-storage.delete-contents");
+				}).tooltip("@storage.delete-contents");
 				t.row();
-				CheckBox box = new CheckBox("@hi-storage.incinerate-overflow");
+				CheckBox box = new CheckBox("@storage.incinerate-overflow");
 				box.changed(() -> configure(!incinerate));
 				box.setChecked(incinerate);
 				box.update(() -> box.setChecked(incinerate));

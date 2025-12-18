@@ -499,13 +499,13 @@ public final class HStatValues {
 				ft.clearChildren();
 				ft.left().defaults().padRight(3).left();
 
-				ft.add(Core.bundle.format("stat.hi-fuel.input", crafter.fuelPerItem));
+				ft.add(Core.bundle.format("stat.fuel.input", crafter.fuelPerItem));
 
 				ft.row();
-				ft.add(Core.bundle.format("stat.hi-fuel.use", crafter.fuelPerCraft));
+				ft.add(Core.bundle.format("stat.fuel.use", crafter.fuelPerCraft));
 
 				ft.row();
-				ft.add(Core.bundle.format("stat.hi-fuel.capacity", crafter.fuelCapacity));
+				ft.add(Core.bundle.format("stat.fuel.capacity", crafter.fuelCapacity));
 
 				if (crafter.attribute != null) {
 					ft.row();
@@ -517,7 +517,7 @@ public final class HStatValues {
 							at.clearChildren();
 							at.left();
 
-							at.add("@stat.hi-fuel.affinity");
+							at.add("@stat.fuel.affinity");
 
 							if (Vars.state.isGame()) {
 								Seq<Floor> blocks = Vars.content.blocks()
@@ -561,11 +561,11 @@ public final class HStatValues {
 		return table -> table.table(ht -> {
 			ht.left().defaults().padRight(3).left();
 
-			ht.add(Core.bundle.format("stat.hi-flare-health", health));
+			ht.add(Core.bundle.format("stat.flare-health", health));
 			ht.row();
-			ht.add(Core.bundle.format("stat.hi-flare-attraction", attraction));
+			ht.add(Core.bundle.format("stat.flare-attraction", attraction));
 			ht.row();
-			ht.add(Core.bundle.format("stat.hi-flare-lifetime", (int) (duration / 60f)));
+			ht.add(Core.bundle.format("stat.flare-lifetime", (int) (duration / 60f)));
 		}).padTop(-9f).left().get().background(Tex.underline);
 	}
 
@@ -808,7 +808,7 @@ public final class HStatValues {
 							float result = standardReload / (reload / reloadRate);
 							if (!noReloadBoost)
 								bt.add(Core.bundle.format("bullet.reload", Strings.autoFixed(result * 100, 2))).pad(5).right().row();
-							bt.add(Core.bundle.format("stat.hi-speed-up-turret-coolant", Strings.autoFixed((liquid.heatCapacity + 1) * 100, 2), Strings.autoFixed((1 / (liquid.heatCapacity + 1)) * 100, 0))).pad(5);
+							bt.add(Core.bundle.format("stat.speed-up-turret-coolant", Strings.autoFixed((liquid.heatCapacity + 1) * 100, 2), Strings.autoFixed((1 / (liquid.heatCapacity + 1)) * 100, 0))).pad(5);
 						}).right().grow().pad(10f).padRight(15f);
 					}).growX().pad(5).row();
 				}

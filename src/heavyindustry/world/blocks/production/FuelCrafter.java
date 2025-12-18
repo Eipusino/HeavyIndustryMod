@@ -32,7 +32,7 @@ public class FuelCrafter extends GenericCrafter {
 	@Override
 	public void drawPlace(int x, int y, int rotation, boolean valid) {
 		int amount = Math.max(fuelPerCraft - Mathf.round(sumAttribute(attribute, x, y) * fuelUseReduction), 0);
-		drawPlaceText(Core.bundle.format("bar.hi-fuel-use", amount > 0 ? amount : Core.bundle.get("bar.hi-fuel-unneeded")), x, y, valid);
+		drawPlaceText(Core.bundle.format("bar.fuel-use", amount > 0 ? amount : Core.bundle.get("bar.fuel-unneeded")), x, y, valid);
 	}
 
 	@Override
@@ -49,8 +49,8 @@ public class FuelCrafter extends GenericCrafter {
 	@Override
 	public void setBars() {
 		super.setBars();
-		addBar("hi-fuel", (FuelCrafterBuild tile) -> new Bar(
-				() -> Core.bundle.format("bar.hi-fuel", tile.fuelNeeded() > 0 ? tile.fuel : Core.bundle.get("bar.hi-fuel-unneeded"), tile.fuelNeeded() > 0 ? ("/" + tile.fuelNeeded()) : ""),
+		addBar("fuel", (FuelCrafterBuild tile) -> new Bar(
+				() -> Core.bundle.format("bar.fuel", tile.fuelNeeded() > 0 ? tile.fuel : Core.bundle.get("bar.fuel-unneeded"), tile.fuelNeeded() > 0 ? ("/" + tile.fuelNeeded()) : ""),
 				() -> fuelItem.color,
 				() -> tile.fuelNeeded() > 0 ? (float) (tile.fuel / fuelCapacity) : 1f
 		));

@@ -55,7 +55,7 @@ public final class Objects2 {
 
 	// To prevent JS from being unable to match methods, it is necessary to distinguish them.
 
-	// 'Boolean.hashCode(boolean)' may not be compatible with Android.
+	// 'Boolean.hashCode(boolean)' may not be compatible with Android (API level 14).
 	@Contract(pure = true)
 	public static int boolToHash(boolean value) {
 		return value ? 1231 : 1237;
@@ -407,10 +407,8 @@ public final class Objects2 {
 	 * @return JVM type descriptor string
 	 * @throws NullPointerException If {@code type} is null.
 	 */
-	@Contract(value = "null -> fail", pure = true)
-	public static @NotNull String toDescriptor(Class<?> type) {
-		if (type == null) throw new NullPointerException("param 'type' is null");
-
+	@Contract(pure = true)
+	public static @NotNull String toDescriptor(@NotNull Class<?> type) {
 		if (type.isArray()) return '[' + toDescriptor(type.getComponentType());
 
 		if (type.isPrimitive()) {

@@ -37,28 +37,28 @@ public class PowerGraphInfoDialog extends BaseDialog {
 	protected PowerInfoType currType = PowerInfoType.producer;
 
 	public PowerGraphInfoDialog() {
-		super("@hi-power-info-title");
+		super("@text.power-info-title");
 
 		init();
 	}
 
 	protected void init() {
 		cont.table(modes -> {
-			modes.button("@hi-power-info-producer", Styles.togglet, () -> {
+			modes.button("@text.power-info-producer", Styles.togglet, () -> {
 				currType = PowerInfoType.producer;
 				refresh();
 			}).growX().update(b -> {
 				b.setText(selectionTitle(PowerInfoType.producer));
 				b.setChecked(currType == PowerInfoType.producer);
 			});
-			modes.button("@hi-power-info-consumer", Styles.togglet, () -> {
+			modes.button("@text.power-info-consumer", Styles.togglet, () -> {
 				currType = PowerInfoType.consumer;
 				refresh();
 			}).growX().update(b -> {
 				b.setText(selectionTitle(PowerInfoType.consumer));
 				b.setChecked(currType == PowerInfoType.consumer);
 			});
-			modes.button("@hi-power-info-battery", Styles.togglet, () -> {
+			modes.button("@text.power-info-battery", Styles.togglet, () -> {
 				currType = PowerInfoType.battery;
 				refresh();
 			}).growX().update(b -> {
@@ -100,12 +100,9 @@ public class PowerGraphInfoDialog extends BaseDialog {
 		if (graph == null) return "";
 
 		return switch (type) {
-			case producer ->
-					Core.bundle.get("hi-power-info-producer") + " - " + Core.bundle.format("hi-power-info-persec", "[#98ffa9]+" + formatAmount(graph.getLastScaledPowerIn() * 60));
-			case consumer ->
-					Core.bundle.get("hi-power-info-consumer") + " - " + Core.bundle.format("hi-power-info-persec", "[#e55454]-" + formatAmount(graph.getLastScaledPowerOut() * 60));
-			case battery ->
-					Core.bundle.get("hi-power-info-battery") + " - [#fbad67]" + formatAmount(graph.getLastPowerStored()) + "[gray]/[]" + formatAmount(graph.getLastCapacity());
+			case producer -> Core.bundle.get("text.power-info-producer") + " - " + Core.bundle.format("text.power-info-persec", "[#98ffa9]+" + formatAmount(graph.getLastScaledPowerIn() * 60));
+			case consumer -> Core.bundle.get("text.power-info-consumer") + " - " + Core.bundle.format("text.power-info-persec", "[#e55454]-" + formatAmount(graph.getLastScaledPowerOut() * 60));
+			case battery -> Core.bundle.get("text.power-info-battery") + " - [#fbad67]" + formatAmount(graph.getLastPowerStored()) + "[gray]/[]" + formatAmount(graph.getLastCapacity());
 		};
 	}
 

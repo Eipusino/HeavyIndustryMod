@@ -152,7 +152,7 @@ public final class PatternManager {
 					if (t != null) Vars.renderer.blocks.floor.recacheTile(t);
 				});
 
-				if (!dirtyTiles.isEmpty()) {
+				if (dirtyTiles.any()) {
 					Core.app.post(PatternManager::processDirtyTiles);
 				}
 			});

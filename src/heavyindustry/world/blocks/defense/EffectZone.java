@@ -146,7 +146,7 @@ public class EffectZone extends Block {
 			super.draw();
 
 			float scl = Mathf.absin(Time.time, 50f / Mathf.PI2, 0.125f);
-			float opacity = Core.settings.getInt("pm-zone-opacity", 100) / 100f;
+			float opacity = Core.settings.getInt("zone-opacity", 100) / 100f;
 
 			Draw.color(baseColor);
 			Draw.alpha(heat * scl * 0.5f);

@@ -65,12 +65,12 @@ public class PowerInfoGroup extends Table {
 		return switch (type) {
 			case producer -> {
 				float produced = building.getPowerProduction() * building.timeScale(); //Assume people don't override delta()
-				yield Core.bundle.format("hi-power-info-persec", "[#98ffa9]+" + formatAmount(produced * 60));
+				yield Core.bundle.format("text.power-info-persec", "[#98ffa9]+" + formatAmount(produced * 60));
 			}
 			case consumer -> {
 				ConsumePower consumePower = building.block.consPower;
 				float consumed = consumePower.requestedPower(building) * building.timeScale();
-				yield Core.bundle.format("hi-power-info-persec", "[#e55454]-" + formatAmount(consumed * 60));
+				yield Core.bundle.format("text.power-info-persec", "[#e55454]-" + formatAmount(consumed * 60));
 			}
 			case battery -> {
 				ConsumePower consumePower = building.block.consPower;

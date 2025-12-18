@@ -99,7 +99,7 @@ public class EndNukeBulletType extends BasicBulletType {
 			if (bl.health <= 0f) bl.kill();
 		}, arr);
 
-		lastMax = Vars.headless ? -1 : Core.settings.getInt("hi-vaporize-batch", 100);
+		lastMax = Vars.headless ? -1 : Core.settings.getInt("vaporize-batch", 100);
 
 		HEntity.scanEnemies(b.team, b.x, b.y, 480f, true, true, t -> {
 			if (t instanceof Unit unit && unit.hittable()) {

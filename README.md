@@ -20,7 +20,7 @@
 
 + **Mod Version: 1.0.9-beta**
 + **Mod Type: Java**
-+ **Mindustry Version: 154**
++ **Minimum  Mindustry Version Requirement: 154.2**
 + **Compatible Platform: Android, Desktop, macOS, Linux。.**
 
 ---
