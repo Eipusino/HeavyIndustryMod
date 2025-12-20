@@ -120,6 +120,19 @@ public final class Reflects {
 		else return null;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Contract(pure = true)
+	public static <T> T get(Class<?> type, String name, Object object, Prov<T> def) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return (T) field.get(object);
+		} catch (Exception e) {
+			Log.err(e);
+			return def.get();
+		}
+	}
+
 	public static <T> T make(Class<T> type) {
 		return make(type, Arrays2.arrayOf(), Arrays2.arrayOf());
 	}

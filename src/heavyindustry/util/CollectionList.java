@@ -506,7 +506,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		addAll(array);
 	}
 
-	public @Nullable E getFrac(float index) {
+	public E getFrac(float index) {
 		if (isEmpty()) return null;
 		return get(Mathm.clamp((int) (index * size), 0, size - 1));
 	}
@@ -913,7 +913,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	/** Returns the first item, or null if this Seq is empty. */
-	public @Nullable E firstOpt() {
+	public E firstOpt() {
 		if (size == 0) return null;
 		return items[0];
 	}

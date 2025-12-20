@@ -3,9 +3,9 @@ package heavyindustry.world.blocks.units;
 import arc.Events;
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
-import arc.struct.Seq;
 import arc.util.io.Reads;
 import heavyindustry.math.Mathm;
+import heavyindustry.util.CollectionList;
 import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.game.EventType.ResetEvent;
@@ -17,10 +17,12 @@ import mindustry.graphics.Pal;
 import mindustry.type.Item;
 import mindustry.world.Block;
 
+import java.util.List;
+
 import static mindustry.Vars.tilesize;
 
 public class Collector extends Block {
-	public Seq<Building> existing = new Seq<>(Building.class);
+	public List<Building> existing = new CollectionList<>(Building.class);
 	public float range = 120f;
 
 	public Collector(String name) {

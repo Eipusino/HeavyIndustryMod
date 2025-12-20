@@ -201,21 +201,15 @@ public final class Objects2 {
 	 * @since 1.0.8
 	 */
 	@Contract(value = "null, _ -> fail; _, _ -> param1")
-	public static <T> @NotNull T requireNonNull(T obj, Prov<String> messageSupplier) {
+	public static <T> @NotNull T requireNonNull(@Nullable T obj, Prov<String> messageSupplier) {
 		if (obj == null)
 			throw new NullPointerException(messageSupplier == null ?
 					null : messageSupplier.get());
 		return obj;
 	}
 
-	/** Used for Kotlin. */
-	@Contract(value = "_ -> param1", pure = true)
-	public static <T> T get(T t) {
-		return t;
-	}
-
 	@Contract(value = "_, _ -> param1")
-	public static <T> T apply(T obj, Cons<T> cons) {
+	public static <T> T apply(T obj, Cons<? super T> cons) {
 		cons.get(obj);
 		return obj;
 	}
@@ -230,7 +224,7 @@ public final class Objects2 {
 	}
 
 	/** Used to optimize code conciseness in specific situations. */
-	public static <T> void get(ConsT<T, Throwable> cons, T obj) {
+	public static <T> void get(ConsT<? super T, Throwable> cons, T obj) {
 		try {
 			cons.get(obj);
 		} catch (Throwable e) {
@@ -239,7 +233,7 @@ public final class Objects2 {
 	}
 
 	/** Used to optimize code conciseness in specific situations. */
-	public static <T> T get(ProvT<T, Throwable> prov, T def) {
+	public static <T> T get(ProvT<? extends T, Throwable> prov, T def) {
 		try {
 			return prov.get();
 		} catch (Throwable e) {
@@ -250,7 +244,7 @@ public final class Objects2 {
 	}
 
 	/** Used to optimize code conciseness in specific situations. */
-	public static <T> T get(ProvT<T, Throwable> prov, ConsT<T, Throwable> cons, T def) {
+	public static <T> T get(ProvT<? extends T, Throwable> prov, ConsT<? super T, Throwable> cons, T def) {
 		try {
 			T t = prov.get();
 			cons.get(t);

@@ -10,12 +10,10 @@ import arc.scene.style.Drawable;
 import arc.struct.ObjectMap;
 import arc.struct.ObjectSet;
 import arc.struct.Seq;
-import arc.util.Log;
 import heavyindustry.HVars;
+import heavyindustry.util.Reflects;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-
-import java.lang.reflect.Field;
 
 public final class HRegions {
 	public static Fi spritesDir = HVars.internalTree.child("sprites");
@@ -35,20 +33,13 @@ public final class HRegions {
 		white = create(HTextures.white, "white");
 	}
 
-	@SuppressWarnings("unchecked")
 	public static void addAll() {
 		textures = Core.atlas.getTextures();
 		regions = Core.atlas.getRegions();
 		regionmap = Core.atlas.getRegionMap();
 		pixmaps = Core.atlas.getPixmaps();
 
-		try {
-			Field field = TextureAtlas.class.getDeclaredField("drawables");
-			field.setAccessible(true);
-			drawables = (ObjectMap<String, Drawable>) field.get(Core.atlas);
-		} catch (Exception e) {
-			Log.err(e);
-		}
+		drawables = Reflects.get(TextureAtlas.class, "drawables", Core.atlas, ObjectMap::new);
 
 		textures.add(HTextures.white);
 		regions.add(white);

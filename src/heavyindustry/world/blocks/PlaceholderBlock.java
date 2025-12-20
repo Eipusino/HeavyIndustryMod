@@ -31,6 +31,7 @@ public class PlaceholderBlock extends Block {
 		details = Core.bundle.getOrNull(getContentType() + ".heavy-industry-placeholder-block.details");
 	}
 
+	@Override
 	public boolean canBreak(Tile tile) {
 		return false;
 	}
