@@ -8,10 +8,9 @@ import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.util.Time;
+import mindustry.Vars;
 import mindustry.graphics.Layer;
 import mindustry.world.blocks.power.NuclearReactor;
-
-import static mindustry.Vars.tilesize;
 
 public class GlowNuclearReactor extends NuclearReactor {
 	public Blending blending = Blending.additive;
@@ -47,7 +46,7 @@ public class GlowNuclearReactor extends NuclearReactor {
 			Draw.rect(bottomRegion, x, y);
 
 			Draw.color(coolColor, hotColor, heat);
-			Fill.rect(x, y, size * tilesize, size * tilesize);
+			Fill.rect(x, y, size * Vars.tilesize, size * Vars.tilesize);
 
 			Draw.color(liquids.current().color);
 			Draw.alpha(liquids.currentAmount() / liquidCapacity);

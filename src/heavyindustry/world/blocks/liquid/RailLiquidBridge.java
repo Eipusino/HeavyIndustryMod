@@ -6,15 +6,13 @@ import arc.math.Angles;
 import arc.math.Mathf;
 import arc.util.Tmp;
 import heavyindustry.world.blocks.distribution.RailItemBridge;
+import mindustry.Vars;
 import mindustry.core.Renderer;
 import mindustry.gen.Building;
 import mindustry.graphics.Layer;
 import mindustry.world.Tile;
 import mindustry.world.meta.BlockGroup;
 import mindustry.world.meta.Env;
-
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
 
 public class RailLiquidBridge extends RailItemBridge {
 	public RailLiquidBridge(String name) {
@@ -54,20 +52,20 @@ public class RailLiquidBridge extends RailItemBridge {
 
 			Draw.z(Layer.power);
 
-			Tile other = world.tile(link);
+			Tile other = Vars.world.tile(link);
 			if (!linkValid(tile, other)) return;
 			if (Mathf.zero(Renderer.bridgeOpacity)) return;
 
 			Lines.stroke(bridgeWidth);
 			Lines.line(bridgeRegion, x, y, other.worldx(), other.worldy(), false);
 
-			float dst = Mathf.dst(x, y, other.worldx(), other.worldy()) - tilesize / 4f;
+			float dst = Mathf.dst(x, y, other.worldx(), other.worldy()) - Vars.tilesize / 4f;
 			float ang = Angles.angle(x, y, other.worldx(), other.worldy());
-			int seg = Mathf.round(dst / tilesize);
+			int seg = Mathf.round(dst / Vars.tilesize);
 
 			if (seg == 0) return;
 			for (int i = 0; i < seg; i++) {
-				Tmp.v1.trns(ang, (dst / seg) * i + tilesize / 8f).add(this);
+				Tmp.v1.trns(ang, (dst / seg) * i + Vars.tilesize / 8f).add(this);
 				Draw.alpha(Mathf.absin(i - time / arrowTimeScl, arrowPeriod, 1f) * warmup * Renderer.bridgeOpacity);
 				Draw.rect(arrowRegion, Tmp.v1.x, Tmp.v1.y, ang);
 			}

@@ -1,8 +1,8 @@
 package heavyindustry.ui.markdown.highlighter;
 
 import arc.struct.IntSeq;
+import heavyindustry.util.CollectionList;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,8 +12,8 @@ public class CompoundCapture extends Capture {
 	protected final List<Capture> captures;
 	protected Capture endCapture;
 
-	protected final List<List<Capture>> cap = new ArrayList<>();
-	protected final List<int[]> lens = new ArrayList<>();
+	protected final List<List<Capture>> cap = new CollectionList<>(List.class);
+	protected final List<int[]> lens = new CollectionList<>(int[].class);
 	protected final IntSeq off = new IntSeq();
 
 	public CompoundCapture(Capture... captures) {
@@ -52,7 +52,7 @@ public class CompoundCapture extends Capture {
 
 			Token curr = context.getTokenInContext(token.getIndexInContext(context) + off);
 
-			List<Capture> capt = new ArrayList<>();
+			List<Capture> capt = new CollectionList<>(Capture.class);
 			for (Capture c : captures) capt.add(c.create());
 			cap.add(capt);
 

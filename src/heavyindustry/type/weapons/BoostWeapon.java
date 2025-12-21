@@ -5,6 +5,7 @@ import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.util.Time;
 import arc.util.Tmp;
+import mindustry.Vars;
 import mindustry.audio.SoundLoop;
 import mindustry.entities.Predict;
 import mindustry.entities.Sized;
@@ -12,9 +13,6 @@ import mindustry.entities.units.WeaponMount;
 import mindustry.gen.Sounds;
 import mindustry.gen.Unit;
 import mindustry.type.Weapon;
-
-import static mindustry.Vars.headless;
-import static mindustry.Vars.state;
 
 public class BoostWeapon extends Weapon {
 	public BoostWeapon(String name) {
@@ -117,7 +115,7 @@ public class BoostWeapon extends Weapon {
 				mount.reload = reload;
 				mount.recoil = 1f;
 				unit.vel.add(Tmp.v1.trns(unit.rotation + 180f, mount.bullet.type.recoil * Time.delta));
-				if (shootSound != Sounds.none && !headless) {
+				if (shootSound != Sounds.none && !Vars.headless) {
 					if (mount.sound == null) mount.sound = new SoundLoop(shootSound, 1f);
 					mount.sound.update(bulletX, bulletY, true);
 				}
@@ -148,7 +146,7 @@ public class BoostWeapon extends Weapon {
 		//shoot if applicable
 		if (mount.shoot && //must be shooting
 				can && //must be able to shoot
-				(!useAmmo || unit.ammo > 0 || !state.rules.unitAmmo || unit.team.rules().infiniteAmmo) && //check ammo
+				(!useAmmo || unit.ammo > 0 || !Vars.state.rules.unitAmmo || unit.team.rules().infiniteAmmo) && //check ammo
 				(!alternate || wasFlipped == flipSprite) &&
 				mount.warmup >= minWarmup && //must be warmed up
 				unit.vel.len() >= minShootVelocity && //check velocity requirements

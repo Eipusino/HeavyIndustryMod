@@ -1,11 +1,10 @@
 package heavyindustry.ui.markdown.highlighter;
 
 import arc.func.Cons;
+import heavyindustry.util.CollectionList;
+import heavyindustry.util.CollectionObjectMap;
+import heavyindustry.util.CollectionObjectSet;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,8 +13,8 @@ import java.util.regex.Pattern;
 
 public class PatternsHighlight implements LanguageHighlight<MatcherContext>, NameIndexer<TokenMatcher> {
 	protected final String language;
-	protected final Map<String, TokenMatcher> matchers = new LinkedHashMap<>();
-	protected final Map<String, TokenMatcher> rawContextMatchers = new LinkedHashMap<>();
+	protected final Map<String, TokenMatcher> matchers = new CollectionObjectMap<>(String.class, TokenMatcher.class);
+	protected final Map<String, TokenMatcher> rawContextMatchers = new CollectionObjectMap<>(String.class, TokenMatcher.class);
 
 	public Pattern tokensSplit;
 	public Pattern rawTokenMatcher;
@@ -39,8 +38,8 @@ public class PatternsHighlight implements LanguageHighlight<MatcherContext>, Nam
 
 	@Override
 	public List<TokenMatcher> indexes(String... names) {
-		List<TokenMatcher> list = new ArrayList<>();
-		Set<String> set = new HashSet<>(Arrays.asList(names));
+		List<TokenMatcher> list = new CollectionList<>(TokenMatcher.class);
+		Set<String> set = CollectionObjectSet.with(names);
 		for (Map.Entry<String, TokenMatcher> entry : matchers.entrySet()) {
 			if (set.contains(entry.getKey())) list.add(entry.getValue());
 		}
@@ -49,7 +48,9 @@ public class PatternsHighlight implements LanguageHighlight<MatcherContext>, Nam
 
 	@Override
 	public List<TokenMatcher> allIndexed() {
-		return new ArrayList<>(matchers.values());
+		List<TokenMatcher> list = new CollectionList<>(TokenMatcher.class);
+		list.addAll(matchers.values());
+		return list;
 	}
 
 	@Override
@@ -62,14 +63,14 @@ public class PatternsHighlight implements LanguageHighlight<MatcherContext>, Nam
 		MatcherContext res = new MatcherContext();
 
 		res.inRawContext = false;
-		List<TokenMatcher> list = new ArrayList<>();
+		List<TokenMatcher> list = new CollectionList<>(TokenMatcher.class);
 		for (TokenMatcher tokenMatcher : matchers.values()) {
 			list.add(tokenMatcher.create());
 		}
 		res.pushPiece(new Piece(null, list));
 
 		res.inRawContext = true;
-		List<TokenMatcher> raw = new ArrayList<>();
+		List<TokenMatcher> raw = new CollectionList<>(TokenMatcher.class);
 		for (TokenMatcher tokenMatcher : rawContextMatchers.values()) {
 			raw.add(tokenMatcher.create());
 		}

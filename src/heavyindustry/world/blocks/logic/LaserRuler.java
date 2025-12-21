@@ -12,6 +12,7 @@ import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.graphics.DrawText;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.core.World;
 import mindustry.entities.Effect;
@@ -25,10 +26,6 @@ import mindustry.logic.Ranged;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 
-import static mindustry.Vars.control;
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
-
 public class LaserRuler extends Block {
 	protected static final Seq<Runnable> drawRunners = new Seq<>(Runnable.class);
 	protected static Tile lastTaped;
@@ -37,7 +34,7 @@ public class LaserRuler extends Block {
 		Events.on(TapEvent.class, event -> {
 			lastTaped = event.tile;
 
-			Building selectedTile = control.input.config.getSelected();
+			Building selectedTile = Vars.control.input.config.getSelected();
 			if (selectedTile instanceof LaserRulerBuild build) {
 				if (build.tile == lastTaped) {
 					build.configure(null);
@@ -89,18 +86,18 @@ public class LaserRuler extends Block {
 			Tile target = targetTile();
 			xtiles.clear();
 			World.raycast(tile.x, tile.y, target.x, tile.y, (x, y) -> {
-				xtiles.add(world.tile(x, y));
+				xtiles.add(Vars.world.tile(x, y));
 				return false;
 			});
 			ytiles.clear();
 			World.raycast(target.x, tile.y, target.x, target.y, (x, y) -> {
-				ytiles.add(world.tile(x, y));
+				ytiles.add(Vars.world.tile(x, y));
 				return false;
 			});
 		}
 
 		protected void drawSelectedTile(Tile tile, Color color) {
-			Drawf.select(tile.worldx(), tile.worldy(), tilesize / 2f, color);
+			Drawf.select(tile.worldx(), tile.worldy(), Vars.tilesize / 2f, color);
 		}
 
 		protected void drawLinePart(Tile cur, Tile next, Color color) {
@@ -156,7 +153,7 @@ public class LaserRuler extends Block {
 			drawRunners.clear();
 			Draw.draw(Layer.flyingUnit + 4, () -> {
 				Tile targetTile = targetTile();
-				Tmp.v1.trns(tile.angleTo(targetTile), size * tilesize);
+				Tmp.v1.trns(tile.angleTo(targetTile), size * Vars.tilesize);
 				DrawText.drawText(x + Tmp.v1.x, y + Tmp.v1.y, Pal.heal, String.valueOf(dstTileToTarget()));
 				drawTiles(xtiles);
 				drawTiles(ytiles);
@@ -184,7 +181,7 @@ public class LaserRuler extends Block {
 		}
 
 		protected Tile targetTile() {
-			return validTarget(target) ? world.tile(target) : null;
+			return validTarget(target) ? Vars.world.tile(target) : null;
 		}
 
 		@Override
@@ -199,17 +196,17 @@ public class LaserRuler extends Block {
 
 		protected int dstTileToTarget() {
 			if (!validTarget(target)) return -1;
-			return (int) (dstToTarget() / tilesize);
+			return (int) (dstToTarget() / Vars.tilesize);
 		}
 
 		protected boolean validTarget(int pos) {
-			if (pos == -1 || world.tile(pos) == null) return false;
-			return world.tile(pos).x == tile.x || world.tile(pos).y == tile.y || laserRuler;
+			if (pos == -1 || Vars.world.tile(pos) == null) return false;
+			return Vars.world.tile(pos).x == tile.x || Vars.world.tile(pos).y == tile.y || laserRuler;
 		}
 
 		protected float dstToTarget() {
 			if (!validTarget(target)) return -1;
-			Tile t = world.tile(target);
+			Tile t = Vars.world.tile(target);
 			return Mathf.dst(t.worldx(), t.worldy(), tile.worldx(), tile.worldy()) - 8f;
 		}
 
@@ -219,9 +216,9 @@ public class LaserRuler extends Block {
 				rebuildTiles();
 				deselect();
 			} else {
-				Fx.unitCapKill.at(world.tile(tar));
+				Fx.unitCapKill.at(Vars.world.tile(tar));
 			}
-			selectTile.at(world.tile(tar));
+			selectTile.at(Vars.world.tile(tar));
 		}
 
 		@Override

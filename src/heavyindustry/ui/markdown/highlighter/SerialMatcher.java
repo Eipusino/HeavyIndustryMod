@@ -1,6 +1,7 @@
 package heavyindustry.ui.markdown.highlighter;
 
-import java.util.ArrayList;
+import heavyindustry.util.CollectionList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class SerialMatcher implements TokenMatcher {
 
 	public static SerialMatcher create(Capture... captures) {
 		SerialMatcher res = new SerialMatcher();
-		res.captures = new ArrayList<>(Arrays.asList(captures));
+		res.captures = CollectionList.with(captures);
 		res.priority = 0;
 		res.lens = new int[captures.length];
 
@@ -23,7 +24,7 @@ public class SerialMatcher implements TokenMatcher {
 
 	public static SerialMatcher create(int priority, Capture... captures) {
 		SerialMatcher res = new SerialMatcher();
-		res.captures = new ArrayList<>(Arrays.asList(captures));
+		res.captures = CollectionList.with(captures);
 		res.priority = priority;
 		res.lens = new int[captures.length];
 

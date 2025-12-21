@@ -1,6 +1,7 @@
 package heavyindustry.ui.markdown.highlighter;
 
-import java.util.ArrayList;
+import heavyindustry.util.CollectionList;
+
 import java.util.List;
 
 public class Piece {
@@ -25,7 +26,7 @@ public class Piece {
 	}
 
 	public List<TokenMatcher> matchers() {
-		List<TokenMatcher> list = new ArrayList<>();
+		List<TokenMatcher> list = new CollectionList<>(TokenMatcher.class);
 		for (TokenMatcher matcher : matchers) {
 			if (matcher instanceof TokenMatcher.MatcherGroup ref) {
 				list.addAll(ref.asMatchers());

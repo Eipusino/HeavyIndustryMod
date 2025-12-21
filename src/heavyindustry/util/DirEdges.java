@@ -3,23 +3,22 @@ package heavyindustry.util;
 import arc.func.Floatc2;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
+import mindustry.Vars;
 import mindustry.world.Tile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
-import static mindustry.Vars.maxBlockSize;
-
 /** Tool set used for directional edge coordinate traversal. */
 public final class DirEdges {
-	private static final Point2[][][] edges = new Point2[maxBlockSize + 1][4][0];
-	private static final Point2[][][] angle = new Point2[maxBlockSize + 1][4][1];
+	private static final Point2[][][] edges = new Point2[Vars.maxBlockSize + 1][4][0];
+	private static final Point2[][][] angle = new Point2[Vars.maxBlockSize + 1][4][1];
 
 	static {
 		edges[0] = new Point2[4][0];
 		angle[0] = new Point2[4][0];
 
-		for (int i = 1; i < maxBlockSize; i++) {
+		for (int i = 1; i < Vars.maxBlockSize; i++) {
 			int off = (i + 1) % 2;
 			int rad = i / 2;
 			int minOff = -rad + off;
@@ -59,8 +58,8 @@ public final class DirEdges {
 	 * @param direction Direction, integer, top left and bottom right order are 0 1 2 3, modulo.
 	 */
 	public static @NotNull Point2 @NotNull [] get(int size, int direction) {
-		if (size < 0 || size > maxBlockSize)
-			throw new IllegalArgumentException("Block size must be between 0 and " + maxBlockSize);
+		if (size < 0 || size > Vars.maxBlockSize)
+			throw new IllegalArgumentException("Block size must be between 0 and " + Vars.maxBlockSize);
 
 		return edges[size][Mathf.mod(direction, 4)];
 	}
@@ -72,8 +71,8 @@ public final class DirEdges {
 	 * @param direction Direction, integer, take 0 on the right, add 1 clockwise in sequence, take the corner position.
 	 */
 	public static @NotNull Point2 @NotNull [] get8(int size, int direction) {
-		if (size < 0 || size > maxBlockSize)
-			throw new IllegalArgumentException("Block size must be between 0 and " + maxBlockSize);
+		if (size < 0 || size > Vars.maxBlockSize)
+			throw new IllegalArgumentException("Block size must be between 0 and " + Vars.maxBlockSize);
 
 		int dir = Mathf.mod(direction, 8);
 		return dir % 2 == 0 ? edges[size][dir / 2] : angle[size][dir / 2];

@@ -1,12 +1,13 @@
 package heavyindustry.ui.markdown.highlighter;
 
-import java.util.ArrayList;
+import heavyindustry.util.CollectionList;
+
 import java.util.Collections;
 import java.util.List;
 
 public abstract class TokensContext {
-	protected final List<Token> tokens = new ArrayList<>();
-	protected final List<Token> rawTokens = new ArrayList<>();
+	protected final List<Token> tokens = new CollectionList<>(Token.class);
+	protected final List<Token> rawTokens = new CollectionList<>(Token.class);
 
 	public boolean inRawContext;
 

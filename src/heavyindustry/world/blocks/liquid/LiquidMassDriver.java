@@ -19,6 +19,7 @@ import heavyindustry.entities.bullet.LiquidMassDriverBolt;
 import heavyindustry.graphics.Outliner;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.CollectionOrderedSet;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.content.Liquids;
 import mindustry.entities.Effect;
@@ -38,10 +39,6 @@ import mindustry.world.meta.BlockGroup;
 import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
-
-import static mindustry.Vars.control;
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
 
 public class LiquidMassDriver extends Block {
 	public TextureRegion prefRegion, baseRegion, bottomRegion, liquidRegion, topRegion;
@@ -122,7 +119,7 @@ public class LiquidMassDriver extends Block {
 	public void setStats() {
 		super.setStats();
 
-		stats.add(Stat.shootRange, range / tilesize, StatUnit.blocks);
+		stats.add(Stat.shootRange, range / Vars.tilesize, StatUnit.blocks);
 		stats.add(Stat.reload, 60f / reload, StatUnit.perSecond);
 	}
 
@@ -130,19 +127,19 @@ public class LiquidMassDriver extends Block {
 	public void drawPlace(int x, int y, int rotation, boolean valid) {
 		super.drawPlace(x, y, rotation, valid);
 
-		Drawf.dashCircle(x * tilesize, y * tilesize, range, Pal.accent);
+		Drawf.dashCircle(x * Vars.tilesize, y * Vars.tilesize, range, Pal.accent);
 
 		//check if a mass driver is selected while placing this driver
-		if (!control.input.config.isShown()) return;
-		Building selected = control.input.config.getSelected();
-		if (selected == null || selected.block != this || !selected.within(x * tilesize, y * tilesize, range)) return;
+		if (!Vars.control.input.config.isShown()) return;
+		Building selected = Vars.control.input.config.getSelected();
+		if (selected == null || selected.block != this || !selected.within(x * Vars.tilesize, y * Vars.tilesize, range)) return;
 
 		//if so, draw a dotted line towards it while it is in range
 		float sin = Mathf.absin(Time.time, 6f, 1f);
-		Tmp.v1.set(x * tilesize + offset, y * tilesize + offset).sub(selected.x, selected.y).limit((size / 2f + 1) * tilesize + sin + 0.5f);
-		float x2 = x * tilesize - Tmp.v1.x, y2 = y * tilesize - Tmp.v1.y,
+		Tmp.v1.set(x * Vars.tilesize + offset, y * Vars.tilesize + offset).sub(selected.x, selected.y).limit((size / 2f + 1) * Vars.tilesize + sin + 0.5f);
+		float x2 = x * Vars.tilesize - Tmp.v1.x, y2 = y * Vars.tilesize - Tmp.v1.y,
 				x1 = selected.x + Tmp.v1.x, y1 = selected.y + Tmp.v1.y;
-		int segs = (int) (selected.dst(x * tilesize, y * tilesize) / tilesize);
+		int segs = (int) (selected.dst(x * Vars.tilesize, y * Vars.tilesize) / Vars.tilesize);
 
 		Lines.stroke(4f, Pal.gray);
 		Lines.dashLine(x1, y1, x2, y2, segs);
@@ -196,7 +193,7 @@ public class LiquidMassDriver extends Block {
 
 		@Override
 		public void updateTile() {
-			Building lin = world.build(link);
+			Building lin = Vars.world.build(link);
 			boolean hasLink = linkValid();
 
 			if (hasLink) {
@@ -318,17 +315,17 @@ public class LiquidMassDriver extends Block {
 
 			Draw.color(Pal.accent);
 			Lines.stroke(1f);
-			Drawf.circles(x, y, (tile.block().size / 2f + 1) * tilesize + sin - 2f, Pal.accent);
+			Drawf.circles(x, y, (tile.block().size / 2f + 1) * Vars.tilesize + sin - 2f, Pal.accent);
 
 			for (Building shooter : waitingShooters) {
-				Drawf.circles(shooter.x, shooter.y, (tile.block().size / 2f + 1) * tilesize + sin - 2f, Pal.place);
-				Drawf.arrow(shooter.x, shooter.y, x, y, size * tilesize + sin, 4f + sin, Pal.place);
+				Drawf.circles(shooter.x, shooter.y, (tile.block().size / 2f + 1) * Vars.tilesize + sin - 2f, Pal.place);
+				Drawf.arrow(shooter.x, shooter.y, x, y, size * Vars.tilesize + sin, 4f + sin, Pal.place);
 			}
 
 			if (linkValid()) {
-				Building target = world.build(link);
-				Drawf.circles(target.x, target.y, (target.block.size / 2f + 1) * tilesize + sin - 2f, Pal.place);
-				Drawf.arrow(x, y, target.x, target.y, size * tilesize + sin, 4f + sin);
+				Building target = Vars.world.build(link);
+				Drawf.circles(target.x, target.y, (target.block.size / 2f + 1) * Vars.tilesize + sin - 2f, Pal.place);
+				Drawf.arrow(x, y, target.x, target.y, size * Vars.tilesize + sin, 4f + sin);
 			}
 
 			Drawf.dashCircle(x, y, range, Pal.accent);
@@ -408,7 +405,7 @@ public class LiquidMassDriver extends Block {
 
 		protected boolean linkValid() {
 			if (link == -1) return false;
-			Building linked = world.build(link);
+			Building linked = Vars.world.build(link);
 			if (linked instanceof LiquidMassDriverBuild other) {
 				return other.block == block && other.team == team && within(other, range);
 			}

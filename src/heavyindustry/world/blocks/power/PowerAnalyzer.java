@@ -11,6 +11,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.util.Eachable;
 import heavyindustry.ui.Elements;
+import mindustry.Vars;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
@@ -20,9 +21,6 @@ import mindustry.world.blocks.power.PowerNode;
 import mindustry.world.meta.BlockStatus;
 
 import static heavyindustry.HVars.MOD_NAME;
-import static mindustry.Vars.player;
-import static mindustry.Vars.renderer;
-import static mindustry.Vars.tilesize;
 
 public class PowerAnalyzer extends PowerBlock {
 	public float displayLength = 8f;
@@ -97,7 +95,7 @@ public class PowerAnalyzer extends PowerBlock {
 
 			Draw.rect(topRegion, x, y);
 
-			if (renderer.drawStatus) {
+			if (Vars.renderer.drawStatus) {
 				drawStatus();
 			}
 		}
@@ -167,7 +165,7 @@ public class PowerAnalyzer extends PowerBlock {
 
 		@Override
 		public void drawSelect() {
-			Drawf.select(x, y, size * tilesize / 2f + 2f, Pal.power);
+			Drawf.select(x, y, size * Vars.tilesize / 2f + 2f, Pal.power);
 		}
 
 		@Override
@@ -183,7 +181,7 @@ public class PowerAnalyzer extends PowerBlock {
 
 		@Override
 		public Cursor getCursor() {
-			return interactable(player.team()) ? SystemCursor.hand : SystemCursor.arrow;
+			return interactable(Vars.player.team()) ? SystemCursor.hand : SystemCursor.arrow;
 		}
 
 		@Override

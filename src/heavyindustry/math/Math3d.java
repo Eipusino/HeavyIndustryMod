@@ -8,11 +8,9 @@ import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
 import arc.util.Time;
 import arc.util.Tmp;
+import mindustry.Vars;
 import mindustry.gen.Hitboxc;
 import org.jetbrains.annotations.Contract;
-
-import static mindustry.Vars.renderer;
-import static mindustry.Vars.tilesize;
 
 /** @since 1.0.5 */
 public final class Math3d {
@@ -40,7 +38,7 @@ public final class Math3d {
 
 	@Contract(pure = true)
 	public static int linePointCounts(float x1, float y1, float z1, float x2, float y2, float z2) {
-		return (int) (dst(x1, y1, z1, x2, y2, z2) / tilesize / tilesize);
+		return (int) (dst(x1, y1, z1, x2, y2, z2) / Vars.tilesize / Vars.tilesize);
 	}
 
 	public static float[] linePoints(float x1, float y1, float z1, float x2, float y2, float z2, int pointCount) {
@@ -203,7 +201,7 @@ public final class Math3d {
 
 	@Contract(pure = true)
 	public static float hMul(float height) {
-		return height(height) * renderer.getDisplayScale();
+		return height(height) * Vars.renderer.getDisplayScale();
 	}
 
 	@Contract(pure = true)

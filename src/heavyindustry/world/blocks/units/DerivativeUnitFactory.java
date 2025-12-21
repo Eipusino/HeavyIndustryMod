@@ -15,6 +15,7 @@ import arc.util.Tmp;
 import heavyindustry.content.HFx;
 import heavyindustry.content.HFx.EdesspEntry;
 import heavyindustry.math.Mathm;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.game.EventType.UnitCreateEvent;
@@ -30,10 +31,6 @@ import mindustry.world.blocks.units.UnitFactory;
 import mindustry.world.meta.BlockFlag;
 
 import static heavyindustry.HVars.MOD_NAME;
-import static mindustry.Vars.control;
-import static mindustry.Vars.indexer;
-import static mindustry.Vars.state;
-import static mindustry.Vars.tilesize;
 
 public class DerivativeUnitFactory extends UnitFactory {
 	public int areaSize = 14;
@@ -54,13 +51,13 @@ public class DerivativeUnitFactory extends UnitFactory {
 	public void init() {
 		super.init();
 		for (UnitPlan plan : plans) {
-			areaSize = Math.max((int) plan.unit.hitSize / tilesize, areaSize);
+			areaSize = Math.max((int) plan.unit.hitSize / Vars.tilesize, areaSize);
 		}
 	}
 
 	public Rect getRect(Rect rect, float x, float y, int rotation) {
-		rect.setCentered(x, y, areaSize * tilesize);
-		float len = tilesize * (areaSize + size) / 2f;
+		rect.setCentered(x, y, areaSize * Vars.tilesize);
+		float len = Vars.tilesize * (areaSize + size) / 2f;
 
 		rect.x += Geometry.d4x(rotation) * len;
 		rect.y += Geometry.d4y(rotation) * len;
@@ -72,8 +69,8 @@ public class DerivativeUnitFactory extends UnitFactory {
 	public void drawPlace(int x, int y, int rotation, boolean valid) {
 		super.drawPlace(x, y, rotation, valid);
 
-		x *= tilesize;
-		y *= tilesize;
+		x *= Vars.tilesize;
+		y *= Vars.tilesize;
 		x += offset;
 		y += offset;
 
@@ -86,7 +83,7 @@ public class DerivativeUnitFactory extends UnitFactory {
 	public boolean canPlaceOn(Tile tile, Team team, int rotation) {
 		//same as UnitAssembler
 		Rect rect = getRect(Tmp.r1, tile.worldx() + offset, tile.worldy() + offset, rotation).grow(0.1f);
-		return !indexer.getFlagged(team, BlockFlag.factory).contains(b -> b instanceof DerivativeUnitFactoryBuild && getRect(Tmp.r2, b.x, b.y, b.rotation).overlaps(rect));
+		return !Vars.indexer.getFlagged(team, BlockFlag.factory).contains(b -> b instanceof DerivativeUnitFactoryBuild && getRect(Tmp.r2, b.x, b.y, b.rotation).overlaps(rect));
 	}
 
 	@Override
@@ -103,7 +100,7 @@ public class DerivativeUnitFactory extends UnitFactory {
 		public Vec2 offset = new Vec2(), end = new Vec2();
 
 		public Vec2 getUnitSpawn() {
-			float len = tilesize * (areaSize + size) / 2f;
+			float len = Vars.tilesize * (areaSize + size) / 2f;
 			float unitX = x + Geometry.d4x(rotation) * len, unitY = y + Geometry.d4y(rotation) * len;
 			v2.set(unitX, unitY);
 			return v2;
@@ -120,8 +117,8 @@ public class DerivativeUnitFactory extends UnitFactory {
 			}
 
 			if (efficiency > 0 && currentPlan != -1) {
-				time += edelta() * speedScl * state.rules.unitBuildSpeed(team);
-				progress += edelta() * state.rules.unitBuildSpeed(team);
+				time += edelta() * speedScl * Vars.state.rules.unitBuildSpeed(team);
+				progress += edelta() * Vars.state.rules.unitBuildSpeed(team);
 				speedScl = Mathf.lerpDelta(speedScl, 1f, 0.05f);
 			} else {
 				speedScl = Mathf.lerpDelta(speedScl, 0f, 0.05f);
@@ -191,21 +188,21 @@ public class DerivativeUnitFactory extends UnitFactory {
 							end.add(x, y);
 							Lines.line(x, y, end.x, end.y);
 							aboveEffect.at(end.x, end.y, 2, Pal.accent);
-							if (!state.isPaused() && Mathf.chance(0.01f)) {
+							if (!Vars.state.isPaused() && Mathf.chance(0.01f)) {
 								Fx.hitLancer.at(end);
 								Sounds.shootArc.at(end.x, end.y, 0.5f, 0.3f);
 							}
 						}
 						Draw.color(team.color);
 						Lines.arc(v.x, v.y, plan.unit.hitSize * 1.2f, 1 - progress / plan.time, rotation * 90);
-						control.sound.loop(ambientSound, this, ambientSoundVolume * speedScl * efficiency);
+						Vars.control.sound.loop(ambientSound, this, ambientSoundVolume * speedScl * efficiency);
 						for (int i = 0; i < 2; i++) {
 							float rot = rotation * 90 - 90 + 180 * i;
 							float ax = v.x + Angles.trnsx(rot, plan.unit.hitSize * 1.1f);
 							float ay = v.y + Angles.trnsy(rot, plan.unit.hitSize * 1.1f);
 							for (int a = 0; a < 3; a++) {
 								float sin = Math.max(0, Mathf.sin(time + a * 60f, 55f, 1f)) * speedScl;
-								Draw.rect(Core.atlas.find(MOD_NAME + "-aim-shoot"), ax + Angles.trnsx(rot + 180, -4) * (tilesize / 2f + a * 2.8f), ay + Angles.trnsy(rot + 180, -4) * (tilesize / 2f + a * 2.8f), 45f * sin, 45f * sin, rot + 90);
+								Draw.rect(Core.atlas.find(MOD_NAME + "-aim-shoot"), ax + Angles.trnsx(rot + 180, -4) * (Vars.tilesize / 2f + a * 2.8f), ay + Angles.trnsy(rot + 180, -4) * (Vars.tilesize / 2f + a * 2.8f), 45f * sin, 45f * sin, rot + 90);
 							}
 						}
 					}

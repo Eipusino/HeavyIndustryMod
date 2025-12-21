@@ -1,11 +1,11 @@
 package heavyindustry.ui.markdown;
 
+import heavyindustry.util.CollectionList;
 import org.commonmark.Extension;
 import org.commonmark.internal.renderer.NodeRendererMap;
 import org.commonmark.node.Node;
 import org.commonmark.renderer.NodeRenderer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MDLayoutRenderer {
@@ -13,7 +13,7 @@ public class MDLayoutRenderer {
 	protected RendererContext context;
 
 	protected MDLayoutRenderer(Builder builder) {
-		nodeRendererFactories = new ArrayList<>(builder.nodeRendererFactories.size() + 1);
+		nodeRendererFactories = new CollectionList<>(builder.nodeRendererFactories.size() + 1, DrawRendererFactory.class);
 		nodeRendererFactories.addAll(builder.nodeRendererFactories);
 
 		nodeRendererFactories.add(BaseDrawRenderer::new);
@@ -35,7 +35,7 @@ public class MDLayoutRenderer {
 	}
 
 	public static class Builder {
-		protected final List<DrawRendererFactory> nodeRendererFactories = new ArrayList<>();
+		protected final List<DrawRendererFactory> nodeRendererFactories = new CollectionList<>(DrawRendererFactory.class);
 
 		public MDLayoutRenderer build() {
 			return new MDLayoutRenderer(this);

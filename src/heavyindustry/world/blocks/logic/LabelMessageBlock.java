@@ -24,9 +24,6 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.logic.MessageBlock;
 import mindustry.world.meta.BuildVisibility;
 
-import static mindustry.Vars.mobile;
-import static mindustry.Vars.tilesize;
-
 public class LabelMessageBlock extends MessageBlock {
 	public LabelMessageBlock(String name) {
 		super(name);
@@ -88,7 +85,7 @@ public class LabelMessageBlock extends MessageBlock {
 			}
 
 			table.button(Icon.pencil, Styles.cleari, () -> {
-				if (mobile) {
+				if (Vars.mobile) {
 					Core.input.getTextInput(new Input.TextInput() {{
 						text = message;
 						multiline = true;
@@ -158,7 +155,7 @@ public class LabelMessageBlock extends MessageBlock {
 				String mess = message.toString();
 				label.text = mess.startsWith("@") ? Core.bundle.get(mess.replaceFirst("@", "")) : mess;
 				Tmp.p1.set(Point2.unpack(targetPos));
-				label.set(Tmp.p1.x * tilesize, Tmp.p1.y * tilesize);
+				label.set(Tmp.p1.x * Vars.tilesize, Tmp.p1.y * Vars.tilesize);
 				label.add();
 			}
 		}
@@ -181,7 +178,7 @@ public class LabelMessageBlock extends MessageBlock {
 
 			if (targetPos != -1) {
 				Tmp.p1.set(Point2.unpack(targetPos));
-				Drawf.square(Tmp.p1.x * tilesize, Tmp.p1.y * tilesize, 6, team.color);
+				Drawf.square(Tmp.p1.x * Vars.tilesize, Tmp.p1.y * Vars.tilesize, 6, team.color);
 			}
 		}
 

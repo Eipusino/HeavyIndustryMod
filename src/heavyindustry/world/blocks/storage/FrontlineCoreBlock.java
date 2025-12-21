@@ -3,15 +3,12 @@ package heavyindustry.world.blocks.storage;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
+import mindustry.Vars;
 import mindustry.game.Team;
 import mindustry.graphics.Layer;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.storage.CoreBlock;
-
-import static mindustry.Vars.headless;
-import static mindustry.Vars.state;
-import static mindustry.Vars.ui;
 
 public class FrontlineCoreBlock extends CoreBlock {
 	public int max = 3;
@@ -26,7 +23,7 @@ public class FrontlineCoreBlock extends CoreBlock {
 
 	@Override
 	public boolean canBreak(Tile tile) {
-		return state.teams.cores(tile.team()).size > 1;
+		return Vars.state.teams.cores(tile.team()).size > 1;
 	}
 
 	@Override
@@ -36,7 +33,7 @@ public class FrontlineCoreBlock extends CoreBlock {
 
 	@Override
 	public boolean canPlaceOn(Tile tile, Team team, int rotation) {
-		return state.teams.cores(team).size < max;
+		return Vars.state.teams.cores(team).size < max;
 	}
 
 	@Override
@@ -54,10 +51,10 @@ public class FrontlineCoreBlock extends CoreBlock {
 		public void updateTile() {
 			super.updateTile();
 			if (maxKill) {
-				if (state.teams.cores(team).size > max + 3) kill = true;
+				if (Vars.state.teams.cores(team).size > max + 3) kill = true;
 				if (kill) {
-					if (!headless) {
-						ui.showLabel(showLabel, 0.015f, x, y);
+					if (!Vars.headless) {
+						Vars.ui.showLabel(showLabel, 0.015f, x, y);
 					}
 					time--;
 					if (time == 0) {
@@ -74,7 +71,7 @@ public class FrontlineCoreBlock extends CoreBlock {
 			if (maxKill) {
 				Draw.z(Layer.effect);
 				Lines.stroke(2f, showColor);
-				Draw.alpha(kill ? 1 : state.teams.cores(team).size > max + 2 ? 1 : 0);
+				Draw.alpha(kill ? 1 : Vars.state.teams.cores(team).size > max + 2 ? 1 : 0);
 				Lines.arc(x, y, 16f, time * (6 / num) / 360, 90f);
 			}
 		}

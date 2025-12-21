@@ -55,7 +55,6 @@ import mindustry.type.UnitType;
 import mindustry.world.Block;
 import mindustry.world.blocks.payloads.Payload;
 
-import static arc.math.Mathf.random;
 import static heavyindustry.HVars.MOD_NAME;
 
 /**
@@ -2041,7 +2040,7 @@ public final class HFx {
 		final RandomGenerator generator = new RandomGenerator() {{
 			branchChance = 0.15f;
 			branchMaker = (vert, str) -> {
-				branch.originAngle = vert.angle + random(-90, 90);
+				branch.originAngle = vert.angle + Mathf.random(-90, 90);
 
 				branch.maxLength = 60 * str;
 
@@ -2070,7 +2069,7 @@ public final class HFx {
 
 			lightning.lerp = Interp.pow2Out;
 			lightning.time = lifetime / 2;
-			generator.maxLength = random(length / 2, length);
+			generator.maxLength = Mathf.random(length / 2, length);
 			lightning.create(generator);
 
 			Time.run(lifetime + 5, () -> Pools.free(lightning));
@@ -2088,7 +2087,7 @@ public final class HFx {
 			maxDeflect = 60;
 			branchChance = 0.15f;
 			branchMaker = (vert, str) -> {
-				branch.originAngle = vert.angle + random(-90, 90);
+				branch.originAngle = vert.angle + Mathf.random(-90, 90);
 				branch.maxLength = 60 * str;
 
 				return branch;
@@ -2114,9 +2113,9 @@ public final class HFx {
 
 			lightning.lerp = Interp.pow2Out;
 			lightning.time = lifetime / 2;
-			int amount = random(4, 6);
+			int amount = Mathf.random(4, 6);
 			for (int i = 0; i < amount; i++) {
-				generator.maxLength = random(50, 75);
+				generator.maxLength = Mathf.random(50, 75);
 				lightning.create(generator);
 			}
 

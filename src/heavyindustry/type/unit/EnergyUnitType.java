@@ -15,6 +15,7 @@ import arc.util.Tmp;
 import heavyindustry.content.HFx;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.math.Mathm;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.gen.Mechc;
@@ -25,7 +26,6 @@ import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 
 import static heavyindustry.HVars.MOD_NAME;
-import static mindustry.Vars.tilesize;
 
 public class EnergyUnitType extends AncientUnitType {
 	public float outerEyeScl = 0.25f;
@@ -70,10 +70,10 @@ public class EnergyUnitType extends AncientUnitType {
 					float dst = Mathf.dst(e.x, e.y, vec.x, vec.y);
 					Rand rand = HFx.rand3;
 					rand.setSeed(e.id);
-					Tmp.v1.set(vec).sub(e.x, e.y).nor().scl(tilesize * 3f);
+					Tmp.v1.set(vec).sub(e.x, e.y).nor().scl(Vars.tilesize * 3f);
 					Lines.stroke(Mathf.curve(e.fout(), 0, 0.3f) * 1.75f);
 					Draw.color(e.color, Color.white, e.fout() * 0.75f);
-					for (int i = 1; i < dst / tilesize / 3f; i++) {
+					for (int i = 1; i < dst / Vars.tilesize / 3f; i++) {
 						for (int j = 0; j < (int) e.rotation / 3; j++) {
 							Tmp.v4.trns(angle, rand.random(e.rotation / 4, e.rotation / 2), rand.range(e.rotation));
 							Tmp.v3.set(Tmp.v2.set(Tmp.v1)).scl(i).add(Tmp.v2.scl(rand.range(0.5f))).add(Tmp.v4).add(e.x, e.y);
@@ -89,10 +89,10 @@ public class EnergyUnitType extends AncientUnitType {
 					float dst = Mathf.dst(e.x, e.y, vec.x, vec.y);
 					Rand rand = HFx.rand3;
 					rand.setSeed(e.id);
-					Tmp.v1.set(vec).sub(e.x, e.y).nor().scl(tilesize * 3f);
+					Tmp.v1.set(vec).sub(e.x, e.y).nor().scl(Vars.tilesize * 3f);
 					Lines.stroke(Mathf.curve(e.fout(), 0, 0.3f) * 1.75f);
 					Draw.color(e.color, Color.white, e.fout() * 0.75f);
-					for (int i = 1; i < dst / tilesize / 3f; i++) {
+					for (int i = 1; i < dst / Vars.tilesize / 3f; i++) {
 						for (int j = 0; j < (int) e.rotation / 3; j++) {
 							Tmp.v4.trns(angle, rand.random(e.rotation / 4, e.rotation / 2), rand.range(e.rotation));
 							Tmp.v3.set(Tmp.v2.set(Tmp.v1)).scl(i).add(Tmp.v2.scl(rand.range(0.5f))).add(Tmp.v4).add(e.x, e.y);

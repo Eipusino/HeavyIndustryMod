@@ -1,10 +1,11 @@
 package heavyindustry.ui.markdown.highlighter;
 
-import java.util.HashMap;
+import heavyindustry.util.CollectionObjectMap;
+
 import java.util.Map;
 
 public class Highlighter {
-	protected final Map<String, LanguageHighlight<?>> languages = new HashMap<>();
+	protected final Map<String, LanguageHighlight<?>> languages = new CollectionObjectMap<>(String.class, LanguageHighlight.class);
 
 	public Highlighter addLanguage(LanguageHighlight<?> highlight) {
 		languages.put(highlight.language().toLowerCase(), highlight);

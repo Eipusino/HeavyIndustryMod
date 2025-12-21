@@ -5,13 +5,12 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
 import heavyindustry.util.Sprites;
+import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
 import mindustry.type.Liquid;
 import mindustry.world.Edges;
 import mindustry.world.blocks.production.Pump;
-
-import static mindustry.Vars.world;
 
 public class ConnectedPump extends Pump {
 	public TextureRegion[] splits;
@@ -45,7 +44,7 @@ public class ConnectedPump extends Pump {
 				drawIndex = 0;
 				for (int i = 0; i < Sprites.orthogonalPos.length; i++) {
 					Point2 p = Sprites.orthogonalPos[i];
-					if (isValidPump(world.build(tileX() + p.x, tileY() + p.y))) {
+					if (isValidPump(Vars.world.build(tileX() + p.x, tileY() + p.y))) {
 						drawIndex += 1 << i;
 					}
 				}
@@ -54,7 +53,7 @@ public class ConnectedPump extends Pump {
 
 				for (int i = 0; i < edges.length; i++) {
 					Point2 p = edges[i];
-					Building b = world.build(tileX() + p.x, tileY() + p.y);
+					Building b = Vars.world.build(tileX() + p.x, tileY() + p.y);
 					drawLink[i] = isValidPump(b);
 				}
 

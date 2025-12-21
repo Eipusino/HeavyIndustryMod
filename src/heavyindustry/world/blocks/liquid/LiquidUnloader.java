@@ -8,6 +8,7 @@ import arc.scene.ui.layout.Table;
 import arc.util.Eachable;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import mindustry.Vars;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.type.Liquid;
@@ -17,8 +18,6 @@ import mindustry.world.blocks.liquid.LiquidBlock.LiquidBuild;
 import mindustry.world.meta.BlockGroup;
 import mindustry.world.meta.Env;
 import org.jetbrains.annotations.Nullable;
-
-import static mindustry.Vars.content;
 
 public class LiquidUnloader extends Block {
 	public TextureRegion centerRegion;
@@ -114,7 +113,7 @@ public class LiquidUnloader extends Block {
 
 		@Override
 		public void buildConfiguration(Table table) {
-			ItemSelection.buildTable(block, table, content.liquids(), () -> sortLiquid, this::configure);
+			ItemSelection.buildTable(block, table, Vars.content.liquids(), () -> sortLiquid, this::configure);
 		}
 
 		@Override
@@ -137,7 +136,7 @@ public class LiquidUnloader extends Block {
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
 			int id = revision == 1 ? read.s() : read.b();
-			sortLiquid = id == -1 ? null : content.liquid(id);
+			sortLiquid = id == -1 ? null : Vars.content.liquid(id);
 		}
 	}
 }

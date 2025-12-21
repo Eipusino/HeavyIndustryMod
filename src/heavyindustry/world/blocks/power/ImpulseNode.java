@@ -6,6 +6,7 @@ import arc.math.Angles;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.struct.Seq;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.core.Renderer;
 import mindustry.entities.Effect;
@@ -13,9 +14,6 @@ import mindustry.gen.Building;
 import mindustry.graphics.Layer;
 import mindustry.world.Tile;
 import mindustry.world.blocks.power.PowerNode;
-
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
 
 public class ImpulseNode extends PowerNode {
 	public int effectTimer = timers++;
@@ -41,7 +39,7 @@ public class ImpulseNode extends PowerNode {
 			setupColor(power.graph.getSatisfaction());
 
 			for (int i = 0; i < power.links.size; i++) {
-				Building link = world.build(power.links.get(i));
+				Building link = Vars.world.build(power.links.get(i));
 
 				if (!linkValid(this, link)) continue;
 
@@ -52,13 +50,13 @@ public class ImpulseNode extends PowerNode {
 
 				if (timer.get(effectTimer, effectTime) && power.graph.getSatisfaction() > 0) {
 					for (int l = 0; l < power.links.size; l++) {
-						Tile otherTile = world.tile(power.links.get(l));
+						Tile otherTile = Vars.world.tile(power.links.get(l));
 						if (otherTile != null) {
 							Building other = otherTile.build;
 							if (other != null) {
 								float angle1 = Angles.angle(x, y, other.x, other.y),
 										vx = Mathf.cosDeg(angle1), vy = Mathf.sinDeg(angle1),
-										len1 = size * tilesize / 2f - 1.5f, len2 = other.block.size * tilesize / 2f - 1.5f;
+										len1 = size * Vars.tilesize / 2f - 1.5f, len2 = other.block.size * Vars.tilesize / 2f - 1.5f;
 
 								lightning(x + vx * len1, y + vy * len1,
 										other.x - vx * len2, other.y - vy * len2,

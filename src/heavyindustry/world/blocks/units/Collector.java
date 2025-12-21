@@ -6,6 +6,7 @@ import arc.math.geom.Geometry;
 import arc.util.io.Reads;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.CollectionList;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.content.Items;
 import mindustry.game.EventType.ResetEvent;
@@ -18,8 +19,6 @@ import mindustry.type.Item;
 import mindustry.world.Block;
 
 import java.util.List;
-
-import static mindustry.Vars.tilesize;
 
 public class Collector extends Block {
 	public List<Building> existing = new CollectionList<>(Building.class);
@@ -52,7 +51,7 @@ public class Collector extends Block {
 
 	@Override
 	public void drawPlace(int x, int y, int rotation, boolean valid) {
-		Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, range, Pal.placing);
+		Drawf.dashCircle(x * Vars.tilesize + offset, y * Vars.tilesize + offset, range, Pal.placing);
 	}
 
 	@Override

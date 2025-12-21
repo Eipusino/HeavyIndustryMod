@@ -6,11 +6,10 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Point2;
 import heavyindustry.util.DirEdges;
+import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
-
-import static mindustry.Vars.tilesize;
 
 public class DrawEdgeLinkBits extends DrawBlock {
 	public static final byte[] empty = new byte[]{0, 0, 0, 0};
@@ -55,7 +54,7 @@ public class DrawEdgeLinkBits extends DrawBlock {
 					case 2 -> dx = 1;
 					case 3 -> dy = 1;
 				}
-				Draw.rect(linker, (build.tileX() + arr[i].x + dx) * tilesize, (build.tileY() + arr[i].y + dy) * tilesize, 90 * dir);
+				Draw.rect(linker, (build.tileX() + arr[i].x + dx) * Vars.tilesize, (build.tileY() + arr[i].y + dy) * Vars.tilesize, 90 * dir);
 			}
 		}
 

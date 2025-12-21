@@ -16,11 +16,11 @@ import heavyindustry.ui.markdown.extensions.InsExtension;
 import heavyindustry.ui.markdown.extensions.StrikethroughExtension;
 import heavyindustry.ui.markdown.extensions.TablesExtension;
 import heavyindustry.ui.markdown.highlighter.Highlighter;
+import heavyindustry.util.CollectionList;
 import org.commonmark.Extension;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -33,12 +33,12 @@ public class Markdown extends WidgetGroup {
 			"data:image/jpeg;base64,"
 	};
 
-	protected static final List<Extension> defaultExtensions = new ArrayList<>(Arrays.asList(
+	protected static final List<Extension> defaultExtensions = CollectionList.with(
 			TablesExtension.create(),
 			InsExtension.create(),
 			StrikethroughExtension.create(),
 			CurtainExtension.create()
-	));
+	);
 
 	protected final Seq<DrawObj> drawObjs = new Seq<>(DrawObj.class);
 
@@ -73,7 +73,8 @@ public class Markdown extends WidgetGroup {
 	public Markdown(List<Extension> extensions, String md, MarkdownStyle style) {
 		checkExtensions(extensions);
 
-		this.extensions = new ArrayList<>(extensions);
+		this.extensions = new CollectionList<>(extensions.size(), Extension.class);
+		this.extensions.addAll(extensions);
 		parser = Parser.builder().extensions(extensions).extensions(defaultExtensions).build();
 		renderer = MDLayoutRenderer.builder().extensions(extensions).extensions(defaultExtensions).build();
 		rendererContext = renderer.createContext(this);
@@ -90,7 +91,8 @@ public class Markdown extends WidgetGroup {
 	 * @hidden
 	 */
 	public Markdown(Markdown parent, Node node) {
-		extensions = new ArrayList<>(parent.extensions);
+		extensions = new CollectionList<>(parent.extensions.size(), Extension.class);
+		extensions.addAll(parent.extensions);
 		parser = null;
 		renderer = MDLayoutRenderer.builder().extensions(parent.extensions).extensions(defaultExtensions).build();
 		rendererContext = renderer.createContext(this);

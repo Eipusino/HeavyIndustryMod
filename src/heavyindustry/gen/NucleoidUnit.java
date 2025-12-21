@@ -23,8 +23,6 @@ import mindustry.entities.units.WeaponMount;
 import mindustry.graphics.Layer;
 import mindustry.type.UnitType;
 
-import static mindustry.Vars.headless;
-
 public class NucleoidUnit extends Unit2 implements Nucleoidc {
 	public float recentDamage;
 	public float reinforcementsReload;
@@ -150,7 +148,7 @@ public class NucleoidUnit extends Unit2 implements Nucleoidc {
 	public void destroy() {
 		if (!isAdded() || !type.killable) return;
 
-		if (!headless) {
+		if (!Vars.headless) {
 			type.deathSound.at(this);
 		}
 
@@ -162,7 +160,7 @@ public class NucleoidUnit extends Unit2 implements Nucleoidc {
 			}
 		}
 
-		if (!headless) {
+		if (!Vars.headless) {
 			Effect.shake(hitSize / 10f, hitSize / 8f, x, y);
 			HFx.circleOut.at(x, y, hitSize, team.color);
 			HFx.jumpTrailOut.at(x, y, rotation, team.color, type);

@@ -12,6 +12,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.math.Mathm;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.Units;
@@ -32,12 +33,11 @@ import mindustry.world.meta.StatValues;
 import org.jetbrains.annotations.Nullable;
 
 import static heavyindustry.HVars.MOD_NAME;
-import static mindustry.Vars.tilesize;
 
 public class LightenGenerator extends NuclearReactor {
 	public float range = 36;
 
-	public float enemyRange = 15f * tilesize;
+	public float enemyRange = 15f * Vars.tilesize;
 
 	public float pullPower = 22 * 60;
 
@@ -158,7 +158,7 @@ public class LightenGenerator extends NuclearReactor {
 	@Override
 	public void drawPlace(int x, int y, int rotation, boolean valid) {
 		super.drawPlace(x, y, rotation, valid);
-		Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, enemyRange, Pal.accent);
+		Drawf.dashCircle(x * Vars.tilesize + offset, y * Vars.tilesize + offset, enemyRange, Pal.accent);
 	}
 
 	@Override
@@ -220,8 +220,8 @@ public class LightenGenerator extends NuclearReactor {
 			if (heat > smokeThreshold) {
 				float smoke = 1.0f + (heat - smokeThreshold) / (1f - smokeThreshold); //ranges from 1.0 to 2.0
 				if (Mathf.chance(smoke / 20.0 * delta())) {
-					Fx.reactorsmoke.at(x + Mathf.range(size * tilesize / 2f),
-							y + Mathf.range(size * tilesize / 2f));
+					Fx.reactorsmoke.at(x + Mathf.range(size * Vars.tilesize / 2f),
+							y + Mathf.range(size * Vars.tilesize / 2f));
 				}
 			}
 

@@ -21,12 +21,12 @@ import mindustry.world.Tile;
 import org.jetbrains.annotations.Nullable;
 
 public final class PatternManager {
-	private static final CollectionObjectMap<Tile, PatternAnchor> anchorMap = new CollectionObjectMap<>(Tile.class, PatternAnchor.class);
-	private static final IntMap2<CollectionObjectMap<Block, Tile>> tileToAnchorMap = new IntMap2<>(CollectionObjectMap.class);
+	static final CollectionObjectMap<Tile, PatternAnchor> anchorMap = new CollectionObjectMap<>(Tile.class, PatternAnchor.class);
+	static final IntMap2<CollectionObjectMap<Block, Tile>> tileToAnchorMap = new IntMap2<>(CollectionObjectMap.class);
 
-	private static final CollectionList<Tile> dirtyTiles = new CollectionList<>(Tile.class);
-	private static QuadTree<PatternAnchor> anchorTree;
-	private static @Nullable Thread runningThread;
+	static final CollectionList<Tile> dirtyTiles = new CollectionList<>(Tile.class);
+	static QuadTree<PatternAnchor> anchorTree;
+	static @Nullable Thread runningThread;
 
 	private PatternManager() {}
 
@@ -61,7 +61,7 @@ public final class PatternManager {
 		Core.app.post(PatternManager::processDirtyTiles);
 	}
 
-	private static void processDirtyTiles() {
+	static void processDirtyTiles() {
 		if (anchorTree == null) {
 			init();
 		}
@@ -159,7 +159,7 @@ public final class PatternManager {
 		});
 	}
 
-	private static void resolve(IntSet toResolve, IntMap2<CollectionObjectSet<Block>> resolved, Cons<PatternAnchor> onPatternFound) {
+	static void resolve(IntSet toResolve, IntMap2<CollectionObjectSet<Block>> resolved, Cons<PatternAnchor> onPatternFound) {
 		if (toResolve.isEmpty()) return;
 
 		IntMap2<CollectionObjectSet<Block>> processedAnchors = new IntMap2<>(CollectionObjectSet.class);
@@ -205,7 +205,7 @@ public final class PatternManager {
 		});
 	}
 
-	private static void resolveTilesAsync(IntSet toResolve, CollectionList<PatternAnchor> anchorsToAdd) {
+	static void resolveTilesAsync(IntSet toResolve, CollectionList<PatternAnchor> anchorsToAdd) {
 		IntMap2<CollectionObjectSet<Block>> resolved = new IntMap2<>(CollectionObjectSet.class);
 		resolve(toResolve, resolved, anchor -> {
 			anchorsToAdd.add(anchor);
@@ -225,11 +225,11 @@ public final class PatternManager {
 		});
 	}
 
-	private static void resolveTiles(IntSet toResolve, IntMap2<CollectionObjectSet<Block>> resolved) {
+	static void resolveTiles(IntSet toResolve, IntMap2<CollectionObjectSet<Block>> resolved) {
 		resolve(toResolve, resolved, anchor -> addAnchor(anchor.patterned, anchor.tile, resolved));
 	}
 
-	private static IntSet findContiguousTiles(Tile startTile, Patterned patterned, IntMap2<CollectionObjectSet<Block>> visited) {
+	static IntSet findContiguousTiles(Tile startTile, Patterned patterned, IntMap2<CollectionObjectSet<Block>> visited) {
 		if (!(patterned instanceof Block pBlock)) return new IntSet();
 
 		if (isVisited(visited, startTile.pos(), pBlock)) return new IntSet();
@@ -279,12 +279,12 @@ public final class PatternManager {
 		return contiguous;
 	}
 
-	private static boolean isVisited(IntMap2<CollectionObjectSet<Block>> visited, int pos, Block pBlock) {
+	static boolean isVisited(IntMap2<CollectionObjectSet<Block>> visited, int pos, Block pBlock) {
 		CollectionObjectSet<Block> set = visited.get(pos);
 		return set != null && set.contains(pBlock);
 	}
 
-	private static void visit(IntMap2<CollectionObjectSet<Block>> visited, int x, int y, Block pBlock) {
+	static void visit(IntMap2<CollectionObjectSet<Block>> visited, int x, int y, Block pBlock) {
 		int pos = Point2.pack(x, y);
 		CollectionObjectSet<Block> set = visited.get(pos);
 		if (set == null) {
@@ -294,7 +294,7 @@ public final class PatternManager {
 		set.add(pBlock);
 	}
 
-	private static void addAnchor(Patterned p, Tile anchor, IntMap2<CollectionObjectSet<Block>> localClaimed) {
+	static void addAnchor(Patterned p, Tile anchor, IntMap2<CollectionObjectSet<Block>> localClaimed) {
 		if (!(p instanceof Block pBlock)) return;
 
 		PatternAnchor pa = new PatternAnchor(anchor, p);
@@ -324,7 +324,7 @@ public final class PatternManager {
 		});
 	}
 
-	private static boolean isPatternComplete(Patterned patterned, Tile anchor, IntMap2<CollectionObjectSet<Block>> localClaimed) {
+	static boolean isPatternComplete(Patterned patterned, Tile anchor, IntMap2<CollectionObjectSet<Block>> localClaimed) {
 		if (!(patterned instanceof Block pBlock)) return false;
 
 		for (int x = 0; x < patterned.getShape().width(); x++) {

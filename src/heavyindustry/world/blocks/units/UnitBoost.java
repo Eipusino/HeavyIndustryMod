@@ -20,6 +20,7 @@ import heavyindustry.ui.Elements;
 import heavyindustry.util.CollectionList;
 import heavyindustry.util.Get.Pos;
 import heavyindustry.world.meta.HStatValues;
+import mindustry.Vars;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Units;
 import mindustry.gen.Building;
@@ -36,11 +37,6 @@ import mindustry.world.draw.DrawBlock;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatCat;
 import mindustry.world.meta.StatUnit;
-
-import static mindustry.Vars.player;
-import static mindustry.Vars.state;
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.ui;
 
 public class UnitBoost extends Block {
 	public StatusEffect[] status;
@@ -90,8 +86,8 @@ public class UnitBoost extends Block {
 				for (StatusEffect s : status) {
 					if (s == StatusEffects.none) continue;
 					inner.row();
-					inner.add(Elements.selfStyleImageButton(new TextureRegionDrawable(s.uiIcon), Styles.emptyi, () -> ui.content.show(s))).padTop(4f).padBottom(6f).size(42);
-					//inner.button(new TextureRegionDrawable(s.uiIcon), () -> ui.content.show(s)).padTop(4f).padBottom(6f).size(50);
+					inner.add(Elements.selfStyleImageButton(new TextureRegionDrawable(s.uiIcon), Styles.emptyi, () -> Vars.ui.content.show(s))).padTop(4f).padBottom(6f).size(42);
+					//inner.button(new TextureRegionDrawable(s.uiIcon), () -> Vars.ui.content.show(s)).padTop(4f).padBottom(6f).size(50);
 					inner.add(s.localizedName).padLeft(5);
 				}
 			}).left().growX().margin(6).pad(5).padBottom(-5).row();
@@ -107,12 +103,12 @@ public class UnitBoost extends Block {
 	public void drawPlace(int x, int y, int rotation, boolean valid) {
 		super.drawPlace(x, y, rotation, valid);
 
-		x *= tilesize;
-		y *= tilesize;
+		x *= Vars.tilesize;
+		y *= Vars.tilesize;
 		x += offset;
 		y += offset;
 
-		Drawf.dashSquare(player.team().color, x, y, range * tilesize);
+		Drawf.dashSquare(Vars.player.team().color, x, y, range * Vars.tilesize);
 	}
 
 	@Override
@@ -161,7 +157,7 @@ public class UnitBoost extends Block {
 
 			if (efficiency < 0.01f) return;
 			can = false;
-			Units.nearby(Tmp.r1.setCentered(x, y, realRange * tilesize), u -> {
+			Units.nearby(Tmp.r1.setCentered(x, y, realRange * Vars.tilesize), u -> {
 				if (u.team == team) {
 					boolean phase = phaseHeat > 0.5f;
 					if (phase) {
@@ -195,7 +191,7 @@ public class UnitBoost extends Block {
 				if (onlyDrawer) return;
 			}
 
-			if (!state.isPaused()) {
+			if (!Vars.state.isPaused()) {
 				if (show && efficiency > 0.01f) {
 					ps = Mathf.lerpDelta(ps, 1, 0.04f);
 					rotation += edelta();
@@ -217,7 +213,7 @@ public class UnitBoost extends Block {
 			Draw.z(Layer.blockUnder);
 
 			Lines.stroke(1.4f * ps);
-			float rd = size * tilesize * ps;
+			float rd = size * Vars.tilesize * ps;
 
 			pos.clear();
 			for (int i = 0; i < 3; i++) {
@@ -261,8 +257,8 @@ public class UnitBoost extends Block {
 			Lines.stroke(2.4f, team.color);
 			pos.clear();
 			for (Point2 q : Geometry.d8edge) {
-				float lx = x + realRange / 2 * tilesize * q.x;
-				float ly = y + realRange / 2 * tilesize * q.y;
+				float lx = x + realRange / 2 * Vars.tilesize * q.x;
+				float ly = y + realRange / 2 * Vars.tilesize * q.y;
 				float[] p = {lx, ly};
 				pos.add(p);
 			}

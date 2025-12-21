@@ -14,6 +14,7 @@ import arc.util.Eachable;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import mindustry.Vars;
 import mindustry.core.Renderer;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -30,9 +31,6 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
 import static heavyindustry.HVars.MOD_NAME;
-import static mindustry.Vars.state;
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
 
 public class HeatDriver extends Block {
 	public TextureRegion turretPart, turretLine, rPart, rLine, effect, arrow, preview;
@@ -63,13 +61,13 @@ public class HeatDriver extends Block {
 	@Override
 	public void setStats() {
 		super.setStats();
-		stats.add(Stat.shootRange, (float) range / tilesize, StatUnit.blocks);
+		stats.add(Stat.shootRange, (float) range / Vars.tilesize, StatUnit.blocks);
 	}
 
 	@Override
 	public void drawPlace(int x, int y, int rotation, boolean valid) {
 		super.drawPlace(x, y, rotation, valid);
-		Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, range, Pal.accent);
+		Drawf.dashCircle(x * Vars.tilesize + offset, y * Vars.tilesize + offset, range, Pal.accent);
 	}
 
 	@Override
@@ -165,7 +163,7 @@ public class HeatDriver extends Block {
 			}
 
 			if (linkValid()) {
-				Building other = world.build(link);
+				Building other = Vars.world.build(link);
 				if (!Angles.near(rotation, angleTo(other), 2f)) return;
 				Draw.color();
 				float dist = dst(other) / arrowSpacing - size;
@@ -173,7 +171,7 @@ public class HeatDriver extends Block {
 
 				for (int a = 0; a < arrows; a++) {
 					Draw.alpha(Mathf.absin(a - Time.time / arrowTimeScl, arrowPeriod, 1f) * progress * Renderer.bridgeOpacity * p);
-					Draw.rect(arrow, x + Angles.trnsx(rotation + 180f, -arrowSpacing) * (tilesize / 2f + a * arrowSpacing + arrowOffset), y + Angles.trnsy(rotation + 180f, -arrowSpacing) * (tilesize / 2f + a * arrowSpacing + arrowOffset), 25f, 25f, rotation);
+					Draw.rect(arrow, x + Angles.trnsx(rotation + 180f, -arrowSpacing) * (Vars.tilesize / 2f + a * arrowSpacing + arrowOffset), y + Angles.trnsy(rotation + 180f, -arrowSpacing) * (Vars.tilesize / 2f + a * arrowSpacing + arrowOffset), 25f, 25f, rotation);
 				}
 			}
 		}
@@ -184,7 +182,7 @@ public class HeatDriver extends Block {
 
 			checkOwner();
 
-			Building linked = world.build(link);
+			Building linked = Vars.world.build(link);
 			boolean hasLink = linkValid();
 
 			if (hasLink) {
@@ -227,9 +225,9 @@ public class HeatDriver extends Block {
 		}
 
 		public void updateHeat() {
-			if (lastHeatUpdate == state.updateId) return;
+			if (lastHeatUpdate == Vars.state.updateId) return;
 
-			lastHeatUpdate = state.updateId;
+			lastHeatUpdate = Vars.state.updateId;
 			heat = calculateHeat(sideHeat, cameFrom);
 		}
 
@@ -264,17 +262,17 @@ public class HeatDriver extends Block {
 
 			Draw.color(Pal.accent);
 			Lines.stroke(1f);
-			Drawf.circles(x, y, (tile.block().size / 2f + 1) * tilesize + sin - 2f, Pal.accent);
+			Drawf.circles(x, y, (tile.block().size / 2f + 1) * Vars.tilesize + sin - 2f, Pal.accent);
 
 			owners.each(owner -> {
-				Drawf.circles(owner.x, owner.y, (tile.block().size / 2f + 1) * tilesize + sin - 2f, Pal.place);
-				Drawf.arrow(owner.x, owner.y, x, y, size * tilesize + sin, 4f + sin, Pal.place);
+				Drawf.circles(owner.x, owner.y, (tile.block().size / 2f + 1) * Vars.tilesize + sin - 2f, Pal.place);
+				Drawf.arrow(owner.x, owner.y, x, y, size * Vars.tilesize + sin, 4f + sin, Pal.place);
 			});
 
 			if (linkValid()) {
-				Building target = world.build(link);
-				Drawf.circles(target.x, target.y, (target.block.size / 2f + 1) * tilesize + sin - 2f, Pal.place);
-				Drawf.arrow(x, y, target.x, target.y, size * tilesize + sin, 4f + sin);
+				Building target = Vars.world.build(link);
+				Drawf.circles(target.x, target.y, (target.block.size / 2f + 1) * Vars.tilesize + sin - 2f, Pal.place);
+				Drawf.arrow(x, y, target.x, target.y, size * Vars.tilesize + sin, 4f + sin);
 			}
 
 			Drawf.dashCircle(x, y, range, Pal.accent);
@@ -302,7 +300,7 @@ public class HeatDriver extends Block {
 		public void checkOwner() {
 			for (int i = 0; i < owners.size; i++) {
 				int pos = owners.get(i).pos();
-				Building build = world.build(pos);
+				Building build = Vars.world.build(pos);
 				if (build instanceof HeatDriverBuild owner) {
 					if (owner.block != block || owner.link != this.pos()) owners.remove(i);
 				} else {
@@ -324,7 +322,7 @@ public class HeatDriver extends Block {
 
 		public boolean linkValid() {
 			if (link == -1) return false;
-			Building other = world.build(link);
+			Building other = Vars.world.build(link);
 			if (other == null) {
 				link = -1;
 				return false;

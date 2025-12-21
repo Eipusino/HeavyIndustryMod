@@ -14,13 +14,13 @@ import arc.scene.ui.ImageButton;
 import arc.scene.ui.ScrollPane;
 import arc.scene.ui.layout.Table;
 import arc.struct.EnumSet;
-import arc.struct.Seq;
 import arc.util.Eachable;
 import arc.util.Structs;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.ui.Elements;
+import heavyindustry.util.CollectionList;
 import heavyindustry.util.CollectionOrderedMap;
 import heavyindustry.util.ObjectBoolMap;
 import heavyindustry.world.consumers.ConsumeItem;
@@ -72,7 +72,7 @@ public class MultiCrafter extends Block {
 	public int[] liquidOutputDirections = {-1};
 
 	/** PayloadRecipe {@link CraftPlan}. */
-	public Seq<CraftPlan> craftPlans = new Seq<>(CraftPlan.class);
+	public CollectionList<CraftPlan> craftPlans = new CollectionList<>(CraftPlan.class);
 	/** If {@link MultiCrafter#useBlockDrawer} is false, use the drawer in the recipe for the block. */
 	public DrawBlock drawer = new DrawDefault();
 	/** Do you want to use the {@link MultiCrafter#drawer} inside the block itself. */
@@ -114,7 +114,9 @@ public class MultiCrafter extends Block {
 
 	@Override
 	public void init() {
-		for (CraftPlan plan : craftPlans) {
+		for (int i = 0; i < craftPlans.size; i++) {
+			CraftPlan plan = craftPlans.get(i);
+
 			plan.owner = this;
 			plan.init();
 			if (plan.outputLiquids.length > 0) {
@@ -167,7 +169,9 @@ public class MultiCrafter extends Block {
 		stats.add(Stat.output, table -> {
 			table.row();
 
-			for (CraftPlan plan : craftPlans) {
+			for (int i = 0; i < craftPlans.size; i++) {
+				CraftPlan plan = craftPlans.get(i);
+
 				table.table(Styles.grayPanel, info -> {
 					info.left().defaults().left();
 					Stats stat = new Stats();
@@ -198,7 +202,9 @@ public class MultiCrafter extends Block {
 		if (useBlockDrawer) {
 			drawer.load(this);
 		} else {
-			for (CraftPlan plan : craftPlans) {
+			for (int i = 0; i < craftPlans.size; i++) {
+				CraftPlan plan = craftPlans.get(i);
+
 				plan.drawer.load(this);
 			}
 		}
@@ -616,7 +622,9 @@ public class MultiCrafter extends Block {
 				}
 
 				cont.clearChildren();
-				for (CraftPlan plan : craftPlans) {
+				for (int i = 0; i < craftPlans.size; i++) {
+					CraftPlan plan = craftPlans.get(i);
+
 					ImageButton button = new ImageButton();
 					button.table(info -> {
 						info.left();
@@ -754,15 +762,15 @@ public class MultiCrafter extends Block {
 		public MultiCrafter owner = null;
 
 		/** List for building-up consumption before init(). */
-		protected Seq<Consume> consumeBuilder = new Seq<>(Consume.class);
+		public CollectionList<Consume> consumeBuilder = new CollectionList<>(Consume.class);
 		/** Map of bars by name. */
-		protected CollectionOrderedMap<String, Func<Building, Bar>> barMap = new CollectionOrderedMap<>(String.class, Func.class);
+		public CollectionOrderedMap<String, Func<Building, Bar>> barMap = new CollectionOrderedMap<>(String.class, Func.class);
 
 		public void init() {
-			consumers = consumeBuilder.toArray(Consume.class);
-			optionalConsumers = consumeBuilder.select(consume -> consume.optional && !consume.ignore()).toArray(Consume.class);
-			nonOptionalConsumers = consumeBuilder.select(consume -> !consume.optional && !consume.ignore()).toArray(Consume.class);
-			updateConsumers = consumeBuilder.select(consume -> consume.update && !consume.ignore()).toArray(Consume.class);
+			consumers = consumeBuilder.toArray();
+			optionalConsumers = consumeBuilder.select(consume -> consume.optional && !consume.ignore()).toArray();
+			nonOptionalConsumers = consumeBuilder.select(consume -> !consume.optional && !consume.ignore()).toArray();
+			updateConsumers = consumeBuilder.select(consume -> consume.update && !consume.ignore()).toArray();
 			hasConsumers = consumers.length > 0;
 
 			if (owner.autoAddBar) {

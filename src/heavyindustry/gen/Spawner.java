@@ -48,8 +48,6 @@ import mindustry.ui.Fonts;
 import java.nio.FloatBuffer;
 
 import static heavyindustry.HVars.MOD_NAME;
-import static mindustry.Vars.headless;
-import static mindustry.Vars.tilesize;
 
 public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 	public final Trail[] trails = {new Trail(30), new Trail(50), new Trail(70)};
@@ -141,7 +139,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 			time += Time.delta;
 			surviveTime = 0;
 
-			if (!headless) {
+			if (!Vars.headless) {
 				trailProgress += Time.delta * (0.45f + fin(Interp.pow3In) * 2f);
 
 				for (int i = 0; i < trails.length; i++) {
@@ -176,12 +174,12 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 				for (int j = 0; j < 3; j++) {
 					Time.run(j * 8, () -> Fx.spawn.at(toSpawn));
 				}
-				HFx.spawnGround.at(toSpawn.x, toSpawn.y, type.hitSize / tilesize * 3, team.color);
+				HFx.spawnGround.at(toSpawn.x, toSpawn.y, type.hitSize / Vars.tilesize * 3, team.color);
 				HFx.circle.at(toSpawn.x, toSpawn.y, type.hitSize * 4, team.color);
 			});
 		}
 
-		if (!headless) {
+		if (!Vars.headless) {
 			for (Trail trail : trails) {
 				Fx.trailFade.at(x, y, trailWidth, team.color, trail.copy());
 			}
@@ -231,7 +229,7 @@ public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
 
 		for (int i = -4; i <= 4; i++) {
 			if (i == 0) continue;
-			Tmp.v1.trns(rotation, i * tilesize * 2);
+			Tmp.v1.trns(rotation, i * Vars.tilesize * 2);
 			float f = (100 - (Time.time - 12.5f * i) % 100) / 100;
 			Draw.rect(arrowRegion, x + Tmp.v1.x, y + Tmp.v1.y, arrowRegion.width * (regSize / 2f + Draw.scl) * f, arrowRegion.height * (regSize / 2f + Draw.scl) * f, rotation() - 90);
 		}

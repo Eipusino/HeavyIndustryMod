@@ -2,12 +2,11 @@ package heavyindustry.world.blocks.power;
 
 import arc.math.Mathf;
 import arc.struct.EnumSet;
+import mindustry.Vars;
 import mindustry.world.blocks.power.PowerGenerator;
 import mindustry.world.meta.Attribute;
 import mindustry.world.meta.Env;
 import mindustry.world.meta.StatUnit;
-
-import static mindustry.Vars.state;
 
 public class LunarGenerator extends PowerGenerator {
 	public LunarGenerator(String name) {
@@ -35,7 +34,7 @@ public class LunarGenerator extends PowerGenerator {
 		public void updateTile() {
 			productionEfficiency = enabled ? Mathf.maxZero(
 					Attribute.light.env() +
-							(state.rules.lighting ? 1f + state.rules.ambientLight.a : 1f)
+							(Vars.state.rules.lighting ? 1f + Vars.state.rules.ambientLight.a : 1f)
 			) : 0f;
 		}
 	}

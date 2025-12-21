@@ -27,9 +27,6 @@ import mindustry.world.Block;
 import mindustry.world.blocks.ItemSelection;
 import mindustry.world.meta.BuildVisibility;
 
-import static mindustry.Vars.content;
-import static mindustry.Vars.tilesize;
-
 public class UnitIniter extends Block {
 	protected static final String divKey = "@@@";
 
@@ -60,7 +57,7 @@ public class UnitIniter extends Block {
 			if (s.length < 3) return;
 			build.angle = Strings.parseFloat(s[1], 0f);
 			build.delay = Strings.parseFloat(s[2], 30f);
-			build.toSpawnType = content.getByName(ContentType.unit, s[0]);
+			build.toSpawnType = Vars.content.getByName(ContentType.unit, s[0]);
 		});
 		configClear((UnitIniterBuild tile) -> {
 			tile.toSpawnType = UnitTypes.alpha;
@@ -105,11 +102,11 @@ public class UnitIniter extends Block {
 		public void buildConfiguration(Table table) {
 			table.slider(5, 20, 1, 0, f -> delay = f * 60f).growX().row();
 			table.slider(0, 360, 45, 0, f -> angle = f).growX().row();
-			ItemSelection.buildTable(table, content.units().select(b -> !b.isHidden()), this::type, this::configure);
+			ItemSelection.buildTable(table, Vars.content.units().select(b -> !b.isHidden()), this::type, this::configure);
 		}
 
 		public UnitType type() {
-			return content.getByName(ContentType.unit, getKey().split(divKey)[0]);
+			return Vars.content.getByName(ContentType.unit, getKey().split(divKey)[0]);
 		}
 
 		public String getKey() {
@@ -126,7 +123,7 @@ public class UnitIniter extends Block {
 			super.control(type, p1, p2, p3, p4);
 
 			if (type == LAccess.shootp && p1 instanceof String s1) {
-				toSpawnType = content.unit(s1);
+				toSpawnType = Vars.content.unit(s1);
 				angle = (float) p2;
 				delay = 30;
 			}
@@ -149,13 +146,13 @@ public class UnitIniter extends Block {
 		public void draw() {
 			if (Vars.state.isEditor()) {
 				super.draw();
-				Tmp.v1.trns(angle, tilesize * size * 1.5f);
-				Drawf.arrow(x, y, x + Tmp.v1.x, y + Tmp.v1.y, size * tilesize, tilesize / 2f);
+				Tmp.v1.trns(angle, Vars.tilesize * size * 1.5f);
+				Drawf.arrow(x, y, x + Tmp.v1.x, y + Tmp.v1.y, size * Vars.tilesize, Vars.tilesize / 2f);
 				if (toSpawnType == null) return;
 
-				Drawf.light(x, y, tilesize * size * 3f, team.color, 0.8f);
+				Drawf.light(x, y, Vars.tilesize * size * 3f, team.color, 0.8f);
 				Draw.z(Layer.overlayUI);
-				Draw.rect(toSpawnType.fullIcon, x, y, size * tilesize, size * tilesize);
+				Draw.rect(toSpawnType.fullIcon, x, y, size * Vars.tilesize, size * Vars.tilesize);
 				Drawn.overlayText(delay / 60 + "s", x - Tmp.v1.x, y - Tmp.v1.y, -4f, Pal.accent, true);
 			}
 		}

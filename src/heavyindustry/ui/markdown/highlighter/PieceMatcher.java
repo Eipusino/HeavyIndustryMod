@@ -1,9 +1,9 @@
 package heavyindustry.ui.markdown.highlighter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
+import heavyindustry.util.CollectionList;
+import heavyindustry.util.CollectionObjectMap;
+import heavyindustry.util.CollectionObjectSet;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,7 +13,7 @@ public class PieceMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
 	protected int priority = 0;
 	protected List<Capture> beginCaptures;
 	protected List<Capture> endCaptures;
-	protected final Map<String, TokenMatcher> children = new LinkedHashMap<>();
+	protected final Map<String, TokenMatcher> children = new CollectionObjectMap<>(String.class, TokenMatcher.class);
 
 	protected int[] beginLens;
 	protected int[] endLens;
@@ -59,7 +59,8 @@ public class PieceMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
 	public void apply(MatcherContext context, Token token) {
 		SerialMatcher.applyCapture(scope, beginCaptures, beginLens, context, token);
 
-		List<TokenMatcher> matchers = new ArrayList<>(children.values());
+		List<TokenMatcher> matchers = new CollectionList<>(TokenMatcher.class);
+		matchers.addAll(children.values());
 		matchers.add(new InnerBlockMatcher());
 		context.pushPiece(new Piece(scope, this, matchers));
 	}
@@ -81,8 +82,8 @@ public class PieceMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
 	@SuppressWarnings("DuplicatedCode")
 	@Override
 	public List<TokenMatcher> indexes(String... names) {
-		List<TokenMatcher> list = new ArrayList<>();
-		Set<String> set = new HashSet<>(Arrays.asList(names));
+		List<TokenMatcher> list = new CollectionList<>(TokenMatcher.class);
+		Set<String> set = CollectionObjectSet.with(names);
 		for (Map.Entry<String, TokenMatcher> entry : children.entrySet()) {
 			if (set.contains(entry.getKey())) list.add(entry.getValue());
 		}
@@ -91,7 +92,9 @@ public class PieceMatcher implements TokenMatcher, NameIndexer<TokenMatcher> {
 
 	@Override
 	public List<TokenMatcher> allIndexed() {
-		return new ArrayList<>(children.values());
+		List<TokenMatcher> list = new CollectionList<>(TokenMatcher.class);
+		list.addAll(children.values());
+		return list;
 	}
 
 	protected class InnerBlockMatcher implements TokenMatcher {

@@ -8,6 +8,7 @@ import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.util.Sprites;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -20,9 +21,6 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.DirectionLiquidBridge;
 import mindustry.world.blocks.liquid.Conduit;
 import mindustry.world.blocks.liquid.LiquidJunction;
-
-import static mindustry.Vars.player;
-import static mindustry.Vars.renderer;
 
 public class Conduit2 extends Conduit {
 	public TextureRegion[] topMaskRegions;
@@ -88,7 +86,7 @@ public class Conduit2 extends Conduit {
 			int frame = liquids.current().getAnimationFrame();
 			int gas = liquids.current().gas ? 1 : 0;
 			float ox = 0f, oy = 0f;
-			TextureRegion liquidr = renderer.fluidFrames[gas][frame];
+			TextureRegion liquidr = Vars.renderer.fluidFrames[gas][frame];
 
 			//the drawing state machine sure was a great design choice with no downsides or hidden behavior!!!
 			float xscl = Draw.xscl, yscl = Draw.yscl;
@@ -111,7 +109,7 @@ public class Conduit2 extends Conduit {
 
 		@Override
 		public Graphics.Cursor getCursor() {
-			return interactable(player.team()) ? Graphics.Cursor.SystemCursor.hand : Graphics.Cursor.SystemCursor.arrow;
+			return interactable(Vars.player.team()) ? Graphics.Cursor.SystemCursor.hand : Graphics.Cursor.SystemCursor.arrow;
 		}
 
 		@Override

@@ -7,6 +7,7 @@ import arc.scene.ui.ImageButton;
 import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import heavyindustry.util.Get;
+import mindustry.Vars;
 import mindustry.ctype.UnlockableContent;
 import mindustry.game.Team;
 import mindustry.gen.Tex;
@@ -17,10 +18,6 @@ import mindustry.world.Block;
 import mindustry.world.blocks.ItemSelection;
 import mindustry.world.blocks.payloads.PayloadSource;
 import mindustry.world.blocks.storage.CoreBlock;
-
-import static mindustry.Vars.content;
-import static mindustry.Vars.player;
-import static mindustry.Vars.state;
 
 public class PayloadSource2 extends PayloadSource {
 	public PayloadSource2(String name) {
@@ -66,7 +63,7 @@ public class PayloadSource2 extends PayloadSource {
 
 	@Override
 	public boolean canProduce(Block b) {
-		return b.isVisible() && !(b instanceof CoreBlock) && !state.rules.isBanned(b) && b.environmentBuildable();
+		return b.isVisible() && !(b instanceof CoreBlock) && !Vars.state.rules.isBanned(b) && b.environmentBuildable();
 	}
 
 	@Override
@@ -91,7 +88,7 @@ public class PayloadSource2 extends PayloadSource {
 				}).group(g).get();
 				button.changed(() -> {
 					if (button.isChecked()) {
-						if (player.team() == team) {
+						if (Vars.player.team() == team) {
 							configure(bt.id);
 						} else deselect();
 					}
@@ -101,8 +98,8 @@ public class PayloadSource2 extends PayloadSource {
 			table.add(cont).maxHeight(Scl.scl(55 * 2)).left();
 			table.row();
 			ItemSelection.buildTable(block, table,
-					content.blocks().select(PayloadSource2.this::canProduce).<UnlockableContent>as()
-							.add(content.units().select(PayloadSource2.this::canProduce).as()),
+					Vars.content.blocks().select(PayloadSource2.this::canProduce).<UnlockableContent>as()
+							.add(Vars.content.units().select(PayloadSource2.this::canProduce).as()),
 					this::getContent, this::configure, false, selectionRows, selectionColumns);
 		}
 
@@ -117,7 +114,7 @@ public class PayloadSource2 extends PayloadSource {
 
 		@Override
 		public void configure(Object value) {
-			if (player.team() == team) super.configure(value);
+			if (Vars.player.team() == team) super.configure(value);
 			else deselect();
 		}
 

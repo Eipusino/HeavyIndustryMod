@@ -18,8 +18,6 @@ import mindustry.world.blocks.environment.Floor;
 
 import java.util.Map;
 
-import static mindustry.Vars.player;
-
 public abstract class BaseEntity implements Drawc, ExtraVariable {
 	public Map<String, Object> extraVar = new CollectionObjectMap<>(String.class, Object.class);
 
@@ -56,7 +54,7 @@ public abstract class BaseEntity implements Drawc, ExtraVariable {
 
 	@Override
 	public boolean isLocal() {
-		return this instanceof Unitc unit && unit.controller() == player;
+		return this instanceof Unitc unit && unit.controller() == Vars.player;
 	}
 
 	@Override

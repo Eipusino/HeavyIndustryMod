@@ -1,8 +1,8 @@
 package heavyindustry.ui.markdown.highlighter;
 
 import arc.struct.IntSeq;
+import heavyindustry.util.CollectionList;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,7 +11,7 @@ public class SelectionCapture extends Capture {
 	protected final int maxMatch;
 	protected final List<Capture> captures;
 
-	protected final List<Capture> hits = new ArrayList<>();
+	protected final List<Capture> hits = new CollectionList<>(Capture.class);
 	protected final IntSeq hitLens = new IntSeq();
 
 	public SelectionCapture(Capture... captures) {

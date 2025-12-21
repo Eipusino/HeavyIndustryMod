@@ -10,6 +10,7 @@ import arc.struct.Seq;
 import arc.util.Interval;
 import arc.util.Strings;
 import heavyindustry.world.meta.HStatValues;
+import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
 import mindustry.core.World;
@@ -25,9 +26,6 @@ import mindustry.world.meta.BlockFlag;
 import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
-
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
 
 public class SpaceGenerator extends PowerGenerator {
 	public int space = 3;
@@ -94,10 +92,10 @@ public class SpaceGenerator extends PowerGenerator {
 	@Override
 	public void drawPlace(int x, int y, int rotation, boolean valid) {
 		super.drawPlace(x, y, rotation, valid);
-		x *= tilesize;
-		y *= tilesize;
+		x *= Vars.tilesize;
+		y *= Vars.tilesize;
 
-		Drawf.dashSquare(valid ? Pal.accent : Pal.remove, x, y, (space + (size % 2) / 2f) * tilesize * 2);
+		Drawf.dashSquare(valid ? Pal.accent : Pal.remove, x, y, (space + (size % 2) / 2f) * Vars.tilesize * 2);
 	}
 
 	@Override
@@ -163,7 +161,7 @@ public class SpaceGenerator extends PowerGenerator {
 			int tx = World.toTile(x), ty = World.toTile(y);
 			for (int x = -tr; x <= tr - (size % 2 == 0 ? 1 : 0); x++) {
 				for (int y = -tr; y <= tr - (size % 2 == 0 ? 1 : 0); y++) {
-					Tile other = world.tile(x + tx, y + ty);
+					Tile other = Vars.world.tile(x + tx, y + ty);
 					if (other != null) {
 						tiles.addUnique(other);
 						if ((blockedOnlySolid && other.block().solid) || (!blockedOnlySolid && other.block() != Blocks.air))
@@ -181,7 +179,7 @@ public class SpaceGenerator extends PowerGenerator {
 		public void drawSelect() {
 			super.drawSelect();
 
-			Drawf.dashSquare(Pal.accent, x, y, (space + (size % 2) / 2f) * tilesize * 2);
+			Drawf.dashSquare(Pal.accent, x, y, (space + (size % 2) / 2f) * Vars.tilesize * 2);
 
 			Draw.color(invalidColor);
 			Draw.z(Layer.plans + 0.1f);
@@ -190,7 +188,7 @@ public class SpaceGenerator extends PowerGenerator {
 			for (int i = 0; i < solids.size; i++) {
 				Tile t = solids.get(i);
 				if (t != null) {
-					Fill.square(t.worldx(), t.worldy(), tilesize / 2f);
+					Fill.square(t.worldx(), t.worldy(), Vars.tilesize / 2f);
 				}
 			}
 
@@ -203,7 +201,7 @@ public class SpaceGenerator extends PowerGenerator {
 					} else Draw.color(validColor);
 					Draw.z(Layer.plans + 0.1f);
 					Draw.alpha(0.4f);
-					Fill.square(t.worldx(), t.worldy(), tilesize / 2f);
+					Fill.square(t.worldx(), t.worldy(), Vars.tilesize / 2f);
 				}
 			}
 			Draw.reset();

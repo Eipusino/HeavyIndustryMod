@@ -5,15 +5,14 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.math.Interp;
 import heavyindustry.content.HBullets;
+import mindustry.Vars;
 import mindustry.content.Bullets;
 import mindustry.entities.Effect;
 import mindustry.entities.bullet.BulletType;
 
-import static mindustry.Vars.tilesize;
-
 public class PesterUnitType extends AncientUnitType {
-	public float bossWeaponRange = 80f * tilesize;
-	public float reflectRange = 120f * tilesize;
+	public float bossWeaponRange = 80f * Vars.tilesize;
+	public float reflectRange = 120f * Vars.tilesize;
 
 	public float checkReload = 12f;
 	public float checkBossReload = 60f;

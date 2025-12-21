@@ -11,6 +11,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.util.Constant;
 import heavyindustry.util.Get;
+import mindustry.Vars;
 import mindustry.content.Items;
 import mindustry.ctype.ContentType;
 import mindustry.game.Team;
@@ -21,8 +22,6 @@ import mindustry.type.UnitType;
 import mindustry.ui.Styles;
 import mindustry.world.Tile;
 import mindustry.world.blocks.units.UnitFactory;
-
-import static mindustry.Vars.content;
 
 public class IndestructibleUnitFactory extends UnitFactory {
 	public ItemStack[] consItems = {};
@@ -56,7 +55,7 @@ public class IndestructibleUnitFactory extends UnitFactory {
 
 	@Override
 	public void init() {
-		plans = content.<UnitType>getBy(ContentType.unit)
+		plans = Vars.content.<UnitType>getBy(ContentType.unit)
 				.map(unit -> new UnitPlan(unit, 1f, consItems))
 				.retainAll(plan -> plan.unit.isHidden());
 

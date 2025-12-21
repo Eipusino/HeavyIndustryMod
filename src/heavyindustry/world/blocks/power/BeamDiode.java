@@ -9,6 +9,7 @@ import arc.math.geom.Geometry;
 import arc.math.geom.Point2;
 import arc.util.Eachable;
 import heavyindustry.math.Mathm;
+import mindustry.Vars;
 import mindustry.core.Renderer;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -26,10 +27,6 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
 import java.util.Arrays;
-
-import static mindustry.Vars.player;
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
 
 /**
  * Combining the characteristics of laser nodes and diodes.
@@ -81,7 +78,7 @@ public class BeamDiode extends Block {
 	public void init() {
 		super.init();
 
-		updateClipRadius((range + 1) * tilesize);
+		updateClipRadius((range + 1) * Vars.tilesize);
 	}
 
 	@Override
@@ -107,23 +104,23 @@ public class BeamDiode extends Block {
 			int dx = dir.x, dy = dir.y;
 			int offset = size / 2;
 			for (int j = 1 + offset; j <= range + offset; j++) {
-				Building other = world.build(x + j * dir.x, y + j * dir.y);
+				Building other = Vars.world.build(x + j * dir.x, y + j * dir.y);
 
 				if (other != null && other.isInsulated()) {
 					break;
 				}
 
-				if (other != null && other.block.hasPower && other.team == player.team() && !(other.block instanceof PowerNode)) {
+				if (other != null && other.block.hasPower && other.team == Vars.player.team() && !(other.block instanceof PowerNode)) {
 					maxLen = j;
 					dest = other;
 					break;
 				}
 			}
 
-			Drawf.dashLine(Pal.placing, x * tilesize + dx * (tilesize * size / 2f + 2), y * tilesize + dy * (tilesize * size / 2f + 2), x * tilesize + dx * (maxLen) * tilesize, y * tilesize + dy * (maxLen) * tilesize);
+			Drawf.dashLine(Pal.placing, x * Vars.tilesize + dx * (Vars.tilesize * size / 2f + 2), y * Vars.tilesize + dy * (Vars.tilesize * size / 2f + 2), x * Vars.tilesize + dx * (maxLen) * Vars.tilesize, y * Vars.tilesize + dy * (maxLen) * Vars.tilesize);
 
 			if (dest != null) {
-				Drawf.square(dest.x, dest.y, dest.block.size * tilesize / 2f + 2.5f, 0f);
+				Drawf.square(dest.x, dest.y, dest.block.size * Vars.tilesize / 2f + 2.5f, 0f);
 			}
 		}
 	}
@@ -150,8 +147,8 @@ public class BeamDiode extends Block {
 
 		@Override
 		public void updateTile() {
-			if (lastChange != world.tileChanges) {
-				lastChange = world.tileChanges;
+			if (lastChange != Vars.world.tileChanges) {
+				lastChange = Vars.world.tileChanges;
 				updateDirections();
 			}
 
@@ -198,7 +195,7 @@ public class BeamDiode extends Block {
 
 					if (dst > 1 + size / 2) {
 						Point2 point = Geometry.d4[Mathf.mod(rotation + 2 * i, 4)];
-						float poff = tilesize / 2f;
+						float poff = Vars.tilesize / 2f;
 						Draw.color(laserColor1, laserColor2, (1f - links[i].power.graph.getSatisfaction()) * 0.86f + Mathf.absin(3f, 0.1f));
 						Drawf.laser(laser, laserEnds[1 - i], laserEnds[i], x + poff * size * point.x, y + poff * size * point.y, dests[i].worldx() - poff * point.x, dests[i].worldy() - poff * point.y, w);
 					}
@@ -222,7 +219,7 @@ public class BeamDiode extends Block {
 				int offset = size / 2;
 
 				for (int j = 1 + offset; j <= range + offset; j++) {
-					Building other = world.build(tile.x + j * dir.x, tile.y + j * dir.y);
+					Building other = Vars.world.build(tile.x + j * dir.x, tile.y + j * dir.y);
 
 					if (other != null && other.isInsulated()) {
 						break;
@@ -230,7 +227,7 @@ public class BeamDiode extends Block {
 
 					if (other != null && other.block.hasPower && other.team == team) {
 						links[i] = other;
-						dests[i] = world.tile(tile.x + j * dir.x, tile.y + j * dir.y);
+						dests[i] = Vars.world.tile(tile.x + j * dir.x, tile.y + j * dir.y);
 						break;
 					}
 				}

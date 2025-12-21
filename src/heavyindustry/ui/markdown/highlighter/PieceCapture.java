@@ -1,6 +1,7 @@
 package heavyindustry.ui.markdown.highlighter;
 
-import java.util.ArrayList;
+import heavyindustry.util.CollectionList;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -8,7 +9,7 @@ public class PieceCapture extends Capture {
 	protected final Capture beginCapture;
 	protected final Capture endCapture;
 
-	protected final List<TokenMatcher> children = new ArrayList<>();
+	protected final List<TokenMatcher> children = new CollectionList<>(TokenMatcher.class);
 	protected List<TokenMatcher> list;
 
 	public PieceCapture(Capture beginCapture, Capture endCapture) {
@@ -24,7 +25,7 @@ public class PieceCapture extends Capture {
 	@Override
 	public int match(MatcherContext context, Token token) throws TokenMatcher.MatchFailed {
 		if (list == null) {
-			list = new ArrayList<>();
+			list = new CollectionList<>(TokenMatcher.class);
 			for (TokenMatcher child : children) {
 				list.add(child.create());
 			}

@@ -4,6 +4,7 @@ import arc.graphics.g2d.Draw;
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
 import heavyindustry.content.HFx;
+import mindustry.Vars;
 import mindustry.entities.Effect;
 import mindustry.gen.Building;
 import mindustry.type.Item;
@@ -15,9 +16,6 @@ import mindustry.world.blocks.production.Separator;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatValues;
 import org.jetbrains.annotations.Nullable;
-
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
 
 public class Centrifuge extends Separator {
 	/** Written to outputLiquids as a single-element array if outputLiquids is null. */
@@ -66,7 +64,7 @@ public class Centrifuge extends Separator {
 	public boolean rotatedOutput(int fromX, int fromY, Tile destination) {
 		if (!(destination.build instanceof ConduitBuild)) return false;
 
-		Building crafter = world.build(fromX, fromY);
+		Building crafter = Vars.world.build(fromX, fromY);
 		if (crafter == null) return false;
 		int relative = Mathf.mod(crafter.relativeTo(destination) - crafter.rotation, 4);
 		for (int dir : liquidOutputDirections) {
@@ -101,8 +99,8 @@ public class Centrifuge extends Separator {
 				if (dir != -1) {
 					Draw.rect(
 							outputLiquids[i].liquid.fullIcon,
-							x + Geometry.d4x(dir + rotation) * (size * tilesize / 2f + 4),
-							y + Geometry.d4y(dir + rotation) * (size * tilesize / 2f + 4),
+							x + Geometry.d4x(dir + rotation) * (size * Vars.tilesize / 2f + 4),
+							y + Geometry.d4y(dir + rotation) * (size * Vars.tilesize / 2f + 4),
 							8f, 8f
 					);
 				}

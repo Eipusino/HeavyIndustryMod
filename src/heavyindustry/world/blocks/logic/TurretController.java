@@ -16,6 +16,7 @@ import arc.util.Strings;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import mindustry.Vars;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
@@ -26,8 +27,6 @@ import mindustry.ui.Styles;
 import mindustry.world.Block;
 import mindustry.world.blocks.defense.turrets.Turret.TurretBuild;
 import mindustry.world.meta.Env;
-
-import static mindustry.Vars.tilesize;
 
 public class TurretController extends Block {
 	protected static Vec2 tmpVec = new Vec2();
@@ -120,7 +119,7 @@ public class TurretController extends Block {
 		@Override
 		public Vec2 getCommandPosition() {
 			if (front() instanceof TurretBuild b && b.team == team) {
-				tmpVec.trns(targetSetting.x, targetSetting.y * tilesize).add(b);
+				tmpVec.trns(targetSetting.x, targetSetting.y * Vars.tilesize).add(b);
 				return tmpVec;
 			} else {
 				return null;
@@ -130,7 +129,7 @@ public class TurretController extends Block {
 		@Override
 		public void onCommand(Vec2 target) {
 			if (front() instanceof TurretBuild b && b.team == team) {
-				targetSetting.set(b.angleTo(target), b.dst(target) / tilesize);
+				targetSetting.set(b.angleTo(target), b.dst(target) / Vars.tilesize);
 				if (angField != null) {
 					angField.setText(String.valueOf(targetSetting.x));
 					dstField.setText(String.valueOf(targetSetting.y));
@@ -149,7 +148,7 @@ public class TurretController extends Block {
 			if (front instanceof TurretBuild b && b.team == team) {
 				if (controlState == ControlState.on) {
 					b.control(LAccess.enabled, 1, 0, 0, 0);
-					Tmp.v1.trns(targetSetting.x, targetSetting.y * tilesize).add(b).scl(1f / tilesize);
+					Tmp.v1.trns(targetSetting.x, targetSetting.y * Vars.tilesize).add(b).scl(1f / Vars.tilesize);
 					b.control(LAccess.shoot, Tmp.v1.x, Tmp.v1.y, 1, 0);
 				} else if (controlState == ControlState.disable && !b.isControlled()) {
 					b.control(LAccess.enabled, 0, 0, 0, 0);
@@ -225,7 +224,7 @@ public class TurretController extends Block {
 			Building front = front();
 			if (front instanceof TurretBuild b && b.team == team) {
 				Lines.stroke(1, team.color);
-				Tmp.v1.trns(targetSetting.x, targetSetting.y * tilesize).add(b);
+				Tmp.v1.trns(targetSetting.x, targetSetting.y * Vars.tilesize).add(b);
 				Lines.line(b.x, b.y, Tmp.v1.x, Tmp.v1.y);
 				Drawf.target(Tmp.v1.x, Tmp.v1.y, 4, team.color);
 			}

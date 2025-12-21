@@ -12,6 +12,7 @@ import arc.util.io.Writes;
 import heavyindustry.graphics.Drawm;
 import heavyindustry.math.Mathm;
 import heavyindustry.type.weather.EffectWeather;
+import mindustry.Vars;
 import mindustry.entities.units.BuildPlan;
 import mindustry.game.Team;
 import mindustry.gen.Groups;
@@ -23,9 +24,6 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.power.PowerGenerator;
 import mindustry.world.meta.Env;
 import mindustry.world.meta.StatUnit;
-
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
 
 public class WindGenerator extends PowerGenerator {
 	public int spacing = 9;
@@ -50,7 +48,7 @@ public class WindGenerator extends PowerGenerator {
 	@Override
 	public void drawOverlay(float x, float y, int rotation) {
 		if (spacing < 1) return;
-		float size = (spacing * 2 + this.size / 2f) * tilesize;
+		float size = (spacing * 2 + this.size / 2f) * Vars.tilesize;
 		x -= size / 2f;
 		y -= size / 2f;
 		Drawm.dashPoly(size / 8f, Pal.accent,
@@ -66,7 +64,7 @@ public class WindGenerator extends PowerGenerator {
 		int off = 1 - size % 2;
 		for (int x = tile.x - spacing + off; x <= tile.x + spacing; x++) {
 			for (int y = tile.y - spacing + off; y <= tile.y + spacing; y++) {
-				Tile t = world.tile(x, y);
+				Tile t = Vars.world.tile(x, y);
 				if (t != null && t.block() instanceof WindGenerator s && (s == this || s.intersectsSpacing(t.build.tile, tile)))
 					return false;
 			}
@@ -83,7 +81,7 @@ public class WindGenerator extends PowerGenerator {
 		if (spacing < 1 || tile == null) return;
 		for (int x = tile.x - spacing + off; x <= tile.x + spacing; x++) {
 			for (int y = tile.y - spacing + off; y <= tile.y + spacing; y++) {
-				Tile t = world.tile(x, y);
+				Tile t = Vars.world.tile(x, y);
 				if (t != null && t.block() instanceof WindGenerator s && (s == this || s.intersectsSpacing(t.build.tile, tile))) {
 					Drawf.selected(t.build, Pal.remove);
 				}

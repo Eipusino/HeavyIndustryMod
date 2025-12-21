@@ -5,11 +5,10 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.util.Time;
+import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawPlasma;
-
-import static mindustry.Vars.tilesize;
 
 public class DrawExpandPlasma extends DrawPlasma {
 	public float rotationSpeed = 1f;
@@ -24,8 +23,8 @@ public class DrawExpandPlasma extends DrawPlasma {
 	public void draw(Building entity) {
 		Draw.blend(Blending.additive);
 		for (int i = 0; i < regions.length; i++) {
-			float r = entity.block.size * tilesize * (2f / 3f) + ((Time.time % cycle) / cycle) * expandSpeed * entity.block.size * tilesize * (2f / 3);
-			float rd = entity.block.size * tilesize * (2f / 3f) + ((Time.time * 1.65f % cycle) / cycle) * expandSpeed * entity.block.size * tilesize * (2f / 3);
+			float r = entity.block.size * Vars.tilesize * (2f / 3f) + ((Time.time % cycle) / cycle) * expandSpeed * entity.block.size * Vars.tilesize * (2f / 3);
+			float rd = entity.block.size * Vars.tilesize * (2f / 3f) + ((Time.time * 1.65f % cycle) / cycle) * expandSpeed * entity.block.size * Vars.tilesize * (2f / 3);
 
 			Draw.color(plasma1, plasma2, (float) i / regions.length);
 			Draw.alpha((0.3f + Mathf.absin(Time.time, 2f + i * 2f, 0.3f + i * 0.05f)) * entity.warmup());

@@ -6,11 +6,10 @@ import arc.struct.Seq;
 import arc.util.Eachable;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import mindustry.Vars;
 import mindustry.type.Item;
 
 import java.util.Iterator;
-
-import static mindustry.Vars.content;
 
 public class MultiItemData implements Iterable<Item>, Eachable<Item> {
 	protected final Seq<Item> items = new Seq<>(Item.class);
@@ -50,11 +49,11 @@ public class MultiItemData implements Iterable<Item>, Eachable<Item> {
 	}
 
 	public boolean isToggled(String name) {
-		return isToggled(content.item(name));
+		return isToggled(Vars.content.item(name));
 	}
 
 	public boolean isToggled(int id) {
-		return isToggled(content.item(id));
+		return isToggled(Vars.content.item(id));
 	}
 
 	public void toggle(Item item) {
@@ -68,11 +67,11 @@ public class MultiItemData implements Iterable<Item>, Eachable<Item> {
 	}
 
 	public void toggle(String name) {
-		toggle(content.item(name));
+		toggle(Vars.content.item(name));
 	}
 
 	public void toggle(int id) {
-		toggle(content.item(id));
+		toggle(Vars.content.item(id));
 	}
 
 	public void clear() {

@@ -11,24 +11,19 @@ import arc.util.Eachable;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import mindustry.Vars;
 import mindustry.entities.TargetPriority;
 import mindustry.entities.units.BuildPlan;
-import mindustry.game.Gamemode;
-import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.type.Liquid;
 import mindustry.world.Block;
-import mindustry.world.Tile;
 import mindustry.world.blocks.ItemSelection;
 import mindustry.world.meta.BlockGroup;
 import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
-
-import static mindustry.Vars.content;
-import static mindustry.Vars.state;
 
 public class LiquidDirectionalUnloader2 extends Block {
 	public TextureRegion[] topRegions = new TextureRegion[4];
@@ -56,13 +51,6 @@ public class LiquidDirectionalUnloader2 extends Block {
 
 		config(Liquid.class, (LiquidDirectionalUnloaderBuild2 tile, Liquid Liquid) -> tile.unloadLiquid = Liquid);
 		configClear((LiquidDirectionalUnloaderBuild2 tile) -> tile.unloadLiquid = null);
-	}
-
-	@Override
-	public boolean canPlaceOn(Tile tile, Team team, int rotation) {
-		if (state.rules.mode() == Gamemode.sandbox) return true;
-
-		return true;
 	}
 
 	@Override
@@ -142,7 +130,7 @@ public class LiquidDirectionalUnloader2 extends Block {
 
 		@Override
 		public void buildConfiguration(Table table) {
-			ItemSelection.buildTable(block, table, content.liquids(), () -> unloadLiquid, this::configure);
+			ItemSelection.buildTable(block, table, Vars.content.liquids(), () -> unloadLiquid, this::configure);
 		}
 
 		@Override
@@ -161,7 +149,7 @@ public class LiquidDirectionalUnloader2 extends Block {
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
 			int id = read.s();
-			unloadLiquid = id == -1 ? null : content.liquids().get(id);
+			unloadLiquid = id == -1 ? null : Vars.content.liquids().get(id);
 			offset = read.s();
 		}
 

@@ -30,11 +30,13 @@ public class HeatMultiCrafter extends MultiCrafter {
 
 	@Override
 	public void init() {
-		for (CraftPlan craftPlan : craftPlans) {
-			if (craftPlan.heatOutput > 0f) {
+		for (int i = 0; i < craftPlans.size; i++) {
+			CraftPlan plan = craftPlans.get(i);
+
+			if (plan.heatOutput > 0f) {
 				outputHeat = true;
 			}
-			if (craftPlan.heatRequirement > 0f) {
+			if (plan.heatRequirement > 0f) {
 				consumeHeat = true;
 			}
 		}

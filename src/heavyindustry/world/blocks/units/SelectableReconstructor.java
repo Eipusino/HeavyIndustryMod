@@ -6,6 +6,7 @@ import arc.math.Mathf;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
 import arc.util.Scaling;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.game.EventType.UnitCreateEvent;
@@ -25,8 +26,6 @@ import mindustry.world.blocks.units.UnitFactory.UnitPlan;
 import mindustry.world.consumers.ConsumeItemDynamic;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
-
-import static mindustry.Vars.state;
 
 public class SelectableReconstructor extends Reconstructor {
 	public Seq<DynamicUnitPlan> plans = new Seq<>(DynamicUnitPlan.class);
@@ -113,7 +112,7 @@ public class SelectableReconstructor extends Reconstructor {
 			if (currentPlan == -1) return 0;
 			for (ItemStack cur : plans.get(currentPlan).requirements) {
 				if (cur.item == item) {
-					return Mathf.round(cur.amount * state.rules.unitCost(team));
+					return Mathf.round(cur.amount * Vars.state.rules.unitCost(team));
 				}
 			}
 			return 0;
@@ -150,7 +149,7 @@ public class SelectableReconstructor extends Reconstructor {
 				} else if (moveInPayload()) {
 					if (efficiency > 0f) {
 						valid = true;
-						progress += edelta() * state.rules.unitBuildSpeed(team);
+						progress += edelta() * Vars.state.rules.unitBuildSpeed(team);
 					}
 
 					if (progress >= plan.time) {
@@ -175,7 +174,7 @@ public class SelectableReconstructor extends Reconstructor {
 			}
 
 			speedScl = Mathf.lerpDelta(speedScl, Mathf.num(valid), 0.05f);
-			time += edelta() * speedScl * state.rules.unitBuildSpeed(team);
+			time += edelta() * speedScl * Vars.state.rules.unitBuildSpeed(team);
 		}
 
 		@Override

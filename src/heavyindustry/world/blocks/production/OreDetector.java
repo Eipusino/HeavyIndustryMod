@@ -15,6 +15,7 @@ import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.world.blocks.environment.UndergroundOreBlock;
+import mindustry.content.Blocks;
 import mindustry.content.Fx;
 import mindustry.gen.Building;
 import mindustry.gen.Icon;
@@ -39,7 +40,6 @@ import static mindustry.Vars.indexer;
 import static mindustry.Vars.player;
 import static mindustry.Vars.tilesize;
 import static mindustry.Vars.world;
-import static mindustry.content.Blocks.air;
 
 public class OreDetector extends Block {
 	/** Ore detector radius, in world units. */
@@ -221,7 +221,7 @@ public class OreDetector extends Block {
 			});
 
 			for (Tile ore : detectedOres) {
-				if (ore.block() != air || !(ore.overlay() instanceof UndergroundOreBlock u) || tier < u.depth) continue;
+				if (ore.block() != Blocks.air || !(ore.overlay() instanceof UndergroundOreBlock u) || tier < u.depth) continue;
 
 				u.shouldDrawBase = true;
 				u.drawBase(ore);
