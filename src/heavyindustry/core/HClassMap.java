@@ -302,6 +302,7 @@ import heavyindustry.world.consumers.ConsumeBufferedPowerDynamic;
 import heavyindustry.world.consumers.ConsumeItem;
 import heavyindustry.world.consumers.ConsumeItemsUses;
 import heavyindustry.world.consumers.ConsumeLiquidDynamic;
+import heavyindustry.world.consumers.ConsumePowerDynamic2;
 import heavyindustry.world.consumers.ConsumeRecipe;
 import heavyindustry.world.draw.DrawAnim;
 import heavyindustry.world.draw.DrawAntiSpliceBlock;
@@ -841,6 +842,7 @@ final class HClassMap {
 		classes.put("CaptureBuild", CaptureBlock.CaptureBuild.class);
 		//consume
 		classes.put("ConsumeBufferedPowerDynamic", ConsumeBufferedPowerDynamic.class);
+		classes.put("ConsumePowerDynamic2", ConsumePowerDynamic2.class);
 		classes.put("ConsumeItem", ConsumeItem.class);
 		classes.put("ConsumeItemsUses", ConsumeItemsUses.class);
 		classes.put("ConsumeLiquidDynamic", ConsumeLiquidDynamic.class);

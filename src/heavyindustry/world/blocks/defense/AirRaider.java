@@ -57,11 +57,11 @@ public class AirRaider extends CommandableAttackerBlock {
 		public void shoot(Vec2 target) {
 			super.shoot(target);
 
-			shoot.shoot(totalShots, (xOffset, yOffset, angle, delay, mover) -> {
+			shoot.shoot(totalShots, (x, y, angle, delay, mover) -> {
 				if (delay > 0f) {
-					Time.run(delay, () -> bullet(xOffset, yOffset, angle, mover));
+					Time.run(delay, () -> bullet(x, y, angle, mover));
 				} else {
-					bullet(xOffset, yOffset, angle, mover);
+					bullet(x, y, angle, mover);
 				}
 				totalShots++;
 			});

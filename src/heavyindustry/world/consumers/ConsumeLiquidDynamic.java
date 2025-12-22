@@ -10,11 +10,11 @@ import mindustry.world.Block;
 import mindustry.world.consumers.Consume;
 
 public class ConsumeLiquidDynamic extends Consume {
-	public final Func<Building, LiquidStack> liquid;
+	public final Func<Building, LiquidStack> liquids;
 
 	@SuppressWarnings("unchecked")
-	public <T extends Building> ConsumeLiquidDynamic(Func<T, LiquidStack> liquids) {
-		liquid = (Func<Building, LiquidStack>) liquids;
+	public <T extends Building> ConsumeLiquidDynamic(Func<T, LiquidStack> func) {
+		liquids = (Func<Building, LiquidStack>) func;
 	}
 
 	@Override
@@ -24,13 +24,13 @@ public class ConsumeLiquidDynamic extends Consume {
 
 	@Override
 	public void build(Building build, Table table) {
-		LiquidStack[] current = {liquid.get(build)};
+		LiquidStack[] current = {liquids.get(build)};
 
 		table.table(cont -> {
 			table.update(() -> {
-				if (current[0] != liquid.get(build)) {
+				if (current[0] != liquids.get(build)) {
 					rebuild(build, cont);
-					current[0] = liquid.get(build);
+					current[0] = liquids.get(build);
 				}
 			});
 
@@ -41,7 +41,7 @@ public class ConsumeLiquidDynamic extends Consume {
 	private void rebuild(Building build, Table table) {
 		table.clear();
 
-		LiquidStack stack = liquid.get(build);
+		LiquidStack stack = liquids.get(build);
 		table.add(new ReqImage(stack.liquid.uiIcon,
 				() -> build.liquids != null && build.liquids.get(stack.liquid) > 0)).size(Vars.iconMed).padRight(8);
 	}
@@ -50,7 +50,7 @@ public class ConsumeLiquidDynamic extends Consume {
 	public void update(Building build) {
 		float mult = multiplier.get(build);
 
-		LiquidStack stack = liquid.get(build);
+		LiquidStack stack = liquids.get(build);
 		build.liquids.remove(stack.liquid, stack.amount * build.edelta() * mult);
 	}
 
@@ -60,7 +60,7 @@ public class ConsumeLiquidDynamic extends Consume {
 		if (ed <= 0.00000001f) return 0f;
 		float min = 1f;
 
-		LiquidStack stack = liquid.get(build);
+		LiquidStack stack = liquids.get(build);
 		min = Math.min(build.liquids.get(stack.liquid) / (stack.amount * ed * multiplier.get(build)), min);
 
 		return min;

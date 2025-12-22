@@ -5,14 +5,15 @@ import arc.math.geom.Point2;
 import arc.math.geom.Vec2;
 import arc.scene.ui.layout.Table;
 import arc.struct.ObjectMap;
-import arc.struct.Seq;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.audio.HSounds;
 import heavyindustry.content.HFx;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.ui.Elements;
+import heavyindustry.util.CollectionList;
 import heavyindustry.world.Worlds;
+import mindustry.Vars;
 import mindustry.content.Bullets;
 import mindustry.core.UI;
 import mindustry.core.World;
@@ -33,10 +34,6 @@ import mindustry.world.meta.StatUnit;
 import mindustry.world.meta.StatValues;
 
 import static heavyindustry.ui.Elements.LEN;
-import static mindustry.Vars.control;
-import static mindustry.Vars.headless;
-import static mindustry.Vars.player;
-import static mindustry.Vars.tilesize;
 
 /**
  * Basic Commandable Attacker Block.
@@ -63,13 +60,13 @@ public abstract class CommandableAttackerBlock extends CommandableBlock {
 	@Override
 	public void drawPlace(int x, int y, int rotation, boolean valid) {
 		super.drawPlace(x, y, rotation, valid);
-		Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, range, Pal.accent);
+		Drawf.dashCircle(x * Vars.tilesize + offset, y * Vars.tilesize + offset, range, Pal.accent);
 	}
 
 	@Override
 	public void setStats() {
 		super.setStats();
-		stats.add(Stat.range, range / tilesize, StatUnit.blocks);
+		stats.add(Stat.range, range / Vars.tilesize, StatUnit.blocks);
 		stats.add(Stat.damage, StatValues.ammo(ObjectMap.of(this, bullet)));
 	}
 
@@ -174,33 +171,40 @@ public abstract class CommandableAttackerBlock extends CommandableBlock {
 
 			Drawf.dashCircle(x, y, range, team.color);
 
-			Seq<CommandableBuild> builds = new Seq<>(CommandableBuild.class);
-			for (CommandableBuild build : Worlds.commandableBuilds) {
+			if (!drawsTmp.isEmpty()) drawsTmp.clear();
+
+			CollectionList<CommandableBuild> commandableBuilds = Worlds.commandableBuilds;
+			for (int i = 0; i < commandableBuilds.size(); i++) {
+				CommandableBuild build = commandableBuilds.get(i);
 				if (build != this && build != null && build.team == team && sameGroup(build.block) && build.canCommand(targetVec)) {
-					builds.add(build);
+					drawsTmp.add(build);
 					Drawn.posSquareLink(Pal.gray, 3, 4, false, build.x, build.y, targetVec.x, targetVec.y);
 				}
 			}
 
-			for (CommandableBuild build : builds) {
+			for (int i = 0; i < drawsTmp.size(); i++) {
+				CommandableBuild build = drawsTmp.get(i);
 				Drawn.posSquareLink(Pal.heal, 1, 2, false, build.x, build.y, targetVec.x, targetVec.y);
 			}
 
-			if (builds.any()) {
+			if (drawsTmp.any()) {
 				Drawn.posSquareLink(Pal.accent, 1, 2, true, x, y, targetVec.x, targetVec.y);
 				Drawn.drawConnected(targetVec.x, targetVec.y, 10f, Pal.accent);
 			}
 
-			if (canCommand(targetVec)) builds.add(this);
-			if (builds.any())
-				Drawn.overlayText(Core.bundle.format("text.participants", builds.size), targetVec.x, targetVec.y, tilesize * 2f, Pal.accent, true);
+			if (canCommand(targetVec)) drawsTmp.add(this);
+			if (drawsTmp.any())
+				Drawn.overlayText(Core.bundle.format("text.participants", drawsTmp.size()), targetVec.x, targetVec.y, Vars.tilesize * 2f, Pal.accent, true);
 		}
 
 		@Override
 		public void commandAll(Vec2 pos) {
 			participantsTmp.clear();
 
-			for (CommandableBuild build : Worlds.commandableBuilds) {
+			CollectionList<CommandableBuild> commandableBuilds = Worlds.commandableBuilds;
+			for (int i = 0; i < commandableBuilds.size; i++) {
+				CommandableBuild build = commandableBuilds.items[i];
+
 				if (build.team == team && sameGroup(build.block) && build.canCommand(pos)) {
 					build.command(pos);
 					participantsTmp.add(build);
@@ -208,8 +212,8 @@ public abstract class CommandableAttackerBlock extends CommandableBlock {
 				}
 			}
 
-			if (!headless && participantsTmp.any()) {
-				if (team != player.team())
+			if (!Vars.headless && participantsTmp.any()) {
+				if (team != Vars.player.team())
 					Elements.showToast(Icon.warning, "[#ff7b69]Caution: []Attack " + (int) (pos.x / 8) + ", " + (int) (pos.y / 8), HSounds.alert2);
 				HFx.attackWarningRange.at(pos.x, pos.y, 80, team.color);
 			}
@@ -222,7 +226,7 @@ public abstract class CommandableAttackerBlock extends CommandableBlock {
 
 		@Override
 		public void buildConfiguration(Table table) {
-			control.input.selectedBlock();
+			Vars.control.input.selectedBlock();
 
 			table.table(Tex.paneSolid, t -> {
 				t.button(Icon.modeAttack, Styles.cleari, () -> {

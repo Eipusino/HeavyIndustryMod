@@ -8,12 +8,12 @@ import arc.math.Angles;
 import arc.math.Mathf;
 import arc.math.Rand;
 import arc.math.geom.Geometry;
-import arc.struct.Seq;
 import arc.util.Eachable;
 import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
+import heavyindustry.util.CollectionList;
 import mindustry.Vars;
 import mindustry.entities.Units;
 import mindustry.entities.units.BuildPlan;
@@ -38,7 +38,7 @@ public class FanBlock extends Block {
 	public float particleLayer = Layer.power;
 	public Color particleColor = Color.white;
 
-	public Seq<FanProcessingType> processingTypes = new Seq<>(FanProcessingType.class);
+	public CollectionList<FanProcessingType> processingTypes = new CollectionList<>(FanProcessingType.class);
 
 	public DrawBlock drawer;
 
@@ -80,11 +80,13 @@ public class FanBlock extends Block {
 	public class FanBuild extends Building {
 		public float warmup;
 		public float totalProgress;
-		public Seq<FanFlowData> flowData = new Seq<>(FanFlowData.class);
+		public CollectionList<FanFlowData> flowData = new CollectionList<>(FanFlowData.class);
 
 		@Override
 		public void updateTile() {
-			for (FanFlowData data : flowData) {
+			for (int i = 0; i < flowData.size; i++) {
+				FanFlowData data = flowData.items[i];
+
 				Pools.free(data);
 			}
 			flowData.clear();
@@ -105,7 +107,8 @@ public class FanBlock extends Block {
 						// check if the block is a processing requirement
 						if (build.efficiency > 0f) {
 							boolean found = false;
-							for (FanProcessingType type : processingTypes) {
+							for (int j = 0; j < processingTypes.size(); i++) {
+								FanProcessingType type = processingTypes.items[j];
 								if (type == currentType) continue;
 
 								if (build.block == type.requirement) {
@@ -180,7 +183,9 @@ public class FanBlock extends Block {
 					float offset = rand.range(particleOffset);
 
 					Draw.color(particleColor);
-					for (FanFlowData data : flowData) {
+					for (int j = 0; j < flowData.size; j++) {
+						FanFlowData data = flowData.items[j];
+
 						if (len > data.start) {
 							Draw.color(data.type.color);
 						}

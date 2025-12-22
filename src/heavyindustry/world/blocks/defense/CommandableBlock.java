@@ -11,7 +11,9 @@ import arc.util.Eachable;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.util.CollectionList;
 import heavyindustry.world.Worlds;
+import mindustry.Vars;
 import mindustry.content.UnitTypes;
 import mindustry.entities.EntityGroup;
 import mindustry.entities.units.BuildPlan;
@@ -34,11 +36,6 @@ import mindustry.world.blocks.storage.CoreBlock.CoreBuild;
 import mindustry.world.draw.DrawBlock;
 import mindustry.world.draw.DrawDefault;
 
-import static mindustry.Vars.fogControl;
-import static mindustry.Vars.player;
-import static mindustry.Vars.state;
-import static mindustry.Vars.world;
-
 /**
  * Basic Commandable Block.
  * <p>This is an abstract class, you should not use it directly.
@@ -48,7 +45,8 @@ import static mindustry.Vars.world;
  * @since 1.0.4
  */
 public abstract class CommandableBlock extends Block {
-	protected static final Seq<CommandableBuild> participantsTmp = new Seq<>(CommandableBuild.class);
+	public static final CollectionList<CommandableBuild> participantsTmp = new CollectionList<>(CommandableBuild.class);
+	public static final CollectionList<CommandableBuild> drawsTmp = new CollectionList<>(CommandableBuild.class);
 
 	public DrawBlock drawer = new DrawDefault();
 	public float warmupSpeed = 0.02f;
@@ -144,7 +142,7 @@ public abstract class CommandableBlock extends Block {
 		}
 
 		public Vec2 target() {
-			Tile tile = world.tile(target);
+			Tile tile = Vars.world.tile(target);
 			return tile == null ?  targetVec.set(this) : targetVec.set(tile);
 		}
 
@@ -273,7 +271,7 @@ public abstract class CommandableBlock extends Block {
 
 		@Override
 		public boolean isLocal() {
-			return this instanceof Unitc u && u.controller() == player;
+			return this instanceof Unitc u && u.controller() == Vars.player;
 		}
 
 		@Override
@@ -451,7 +449,7 @@ public abstract class CommandableBlock extends Block {
 
 		@Override
 		public boolean inFogTo(Team viewer) {
-			return team != viewer && !fogControl.isVisible(viewer, x, y);
+			return team != viewer && !Vars.fogControl.isVisible(viewer, x, y);
 		}
 
 		@Override
@@ -471,7 +469,7 @@ public abstract class CommandableBlock extends Block {
 
 		@Override
 		public CoreBuild closestEnemyCore() {
-			return state.teams.closestEnemyCore(x, y, team);
+			return Vars.state.teams.closestEnemyCore(x, y, team);
 		}
 
 		@Override

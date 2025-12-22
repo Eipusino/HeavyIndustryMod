@@ -267,12 +267,12 @@ public class MultiBulletTurret extends Turret {
 				type[0].chargeEffect.at(bulletX, bulletY, rotation);
 			}
 
-			shoot.shoot(totalShots, (xOffset, yOffset, angle, delay, mover) -> {
+			shoot.shoot(totalShots, (x, y, angle, delay, mover) -> {
 				queuedBullets++;
 				if (delay > 0f) {
-					Time.run(delay, () -> bullets(type, xOffset, yOffset, angle, mover));
+					Time.run(delay, () -> bullets(type, x, y, angle, mover));
 				} else {
-					bullets(type, xOffset, yOffset, angle, mover);
+					bullets(type, x, y, angle, mover);
 				}
 				totalShots++;
 			});

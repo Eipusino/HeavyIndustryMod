@@ -17,6 +17,7 @@ import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import arc.util.Structs;
 import heavyindustry.math.Mathm;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -181,7 +182,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	public float sumf(Floatf<E> summer) {
-		float sum = 0;
+		float sum = 0f;
 		for (int i = 0; i < size; i++) {
 			sum += summer.get(items[i]);
 		}
@@ -677,7 +678,9 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> c) {
+	public boolean containsAll(@Nullable Collection<?> c) {
+		if (c == null) return false;
+
 		for (Object e : c)
 			if (!contains(e))
 				return false;
@@ -685,7 +688,9 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	@Override
-	public boolean addAll(Collection<? extends E> c) {
+	public boolean addAll(@Nullable Collection<? extends E> c) {
+		if (c == null) return false;
+
 		boolean modified = false;
 		for (E e : c) {
 			add(e);
@@ -696,6 +701,8 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 
 	@Override
 	public boolean addAll(int index, Collection<? extends E> c) {
+		if (c == null) return false;
+
 		boolean modified = false;
 		for (E e : c) {
 			add(index++, e);
@@ -705,7 +712,9 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	@Override
-	public boolean removeAll(Collection<?> c) {
+	public boolean removeAll(@Nullable Collection<?> c) {
+		if (c == null) return false;
+
 		boolean modified = false;
 		Iterator<E> it = iterator();
 		while (it.hasNext()) {
@@ -718,7 +727,9 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	@Override
-	public boolean retainAll(Collection<?> c) {
+	public boolean retainAll(@Nullable Collection<?> c) {
+		if (c == null) return false;
+
 		boolean modified = false;
 		Iterator<E> it = iterator();
 		while (it.hasNext()) {
@@ -752,7 +763,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
 	 * @return true if value was found and removed, false otherwise
 	 */
-	public boolean remove(Object o, boolean identity) {
+	public boolean remove(@Nullable Object o, boolean identity) {
 		if (identity || o == null) {
 			for (int i = 0, n = size; i < n; i++) {
 				if (items[i] == o) {
@@ -823,6 +834,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	/** @return this object */
+	@Contract(value = "_ -> this")
 	public CollectionList<E> removeAll(Boolf<E> pred) {
 		Iterator<E> iter = iterator();
 		while (iter.hasNext()) {
@@ -848,7 +860,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		int startSize = localSize;
 		if (identity) {
 			for (int i = 0, n = array.size; i < n; i++) {
-				E item = array.get(i);
+				E item = array.items[i];
 				for (int ii = 0; ii < localSize; ii++) {
 					if (item == items[ii]) {
 						remove(ii);
@@ -859,7 +871,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 			}
 		} else {
 			for (int i = 0, n = array.size; i < n; i++) {
-				E item = array.get(i);
+				E item = array.items[i];
 				for (int ii = 0; ii < localSize; ii++) {
 					if (item.equals(items[ii])) {
 						remove(ii);
@@ -991,6 +1003,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	 * Sorts this array. The array elements must implement {@link Comparable}. This method is not thread safe (uses
 	 * {@link Sort#instance()}).
 	 */
+	@Contract(value = " -> this")
 	public CollectionList<E> sort() {
 		Sort.instance().sort(items, 0, size);
 		return this;
@@ -1002,16 +1015,19 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		Sort.instance().sort(items, comparator, 0, size);
 	}
 
+	@Contract(value = "_ -> this")
 	public CollectionList<E> sort(Floatf<? super E> comparator) {
 		Sort.instance().sort(items, Structs.comparingFloat(comparator), 0, size);
 		return this;
 	}
 
+	@Contract(value = "_ -> this")
 	public <U extends Comparable<? super U>> CollectionList<E> sortComparing(Func<? super E, ? extends U> keyExtractor) {
 		sort(Structs.comparing(keyExtractor));
 		return this;
 	}
 
+	@Contract(value = "_, _ -> this")
 	public CollectionList<E> selectFrom(CollectionList<E> base, Boolf<E> predicate) {
 		clear();
 		for (E e : base.items) {
@@ -1031,11 +1047,13 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	@SuppressWarnings("unchecked")
+	@Contract(value = " -> this")
 	public <R> CollectionList<R> as() {
 		return (CollectionList<R>) this;
 	}
 
 	/** Allocates a new array with all elements that match the predicate. */
+	@Contract(value = "_ -> new")
 	public CollectionList<E> select(Boolf<E> predicate) {
 		CollectionList<E> arr = new CollectionList<>(componentType);
 		for (int i = 0; i < size; i++) {
@@ -1047,6 +1065,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	/** Removes everything that does not match this predicate. */
+	@Contract(value = "_ -> this")
 	public CollectionList<E> retainAll(Boolf<E> predicate) {
 		return removeAll(e -> !predicate.get(e));
 	}
@@ -1092,6 +1111,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		return Arrays2.selectIndex(items, comparator, kthLowest, size);
 	}
 
+	@Contract(value = " -> this")
 	public CollectionList<E> reverse() {
 		for (int i = 0, lastIndex = size - 1, n = size / 2; i < n; i++) {
 			int ii = lastIndex - i;
@@ -1103,6 +1123,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		return this;
 	}
 
+	@Contract(value = " -> this")
 	public CollectionList<E> shuffle() {
 		for (int i = size - 1; i >= 0; i--) {
 			int j = Mathf.random(i);
@@ -1244,7 +1265,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	 * Note that calling 'break' while iterating will permanently clog this iterator, falling back to an implementation that allocates new ones.
 	 */
 	@Override
-	public Iterator<E> iterator() {
+	public @NotNull Iterator<E> iterator() {
 		if (iterator1 == null) iterator1 = new Iter();
 
 		if (iterator1.done) {
@@ -1265,12 +1286,12 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	@Override
-	public ListIterator<E> listIterator() {
+	public @NotNull ListIterator<E> listIterator() {
 		return listIterator(0);
 	}
 
 	@Override
-	public ListIterator<E> listIterator(final int index) {
+	public @NotNull ListIterator<E> listIterator(final int index) {
 		if (index > size || index < 0)
 			throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
 

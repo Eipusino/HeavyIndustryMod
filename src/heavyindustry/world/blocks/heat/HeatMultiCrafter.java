@@ -6,6 +6,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.world.blocks.production.MultiCrafter;
 import mindustry.graphics.Pal;
+import mindustry.mod.NoPatch;
 import mindustry.ui.Bar;
 import mindustry.world.blocks.heat.HeatBlock;
 import mindustry.world.blocks.heat.HeatConsumer;
@@ -17,7 +18,8 @@ import mindustry.world.blocks.heat.HeatConsumer;
  * @author Eipusino
  */
 public class HeatMultiCrafter extends MultiCrafter {
-	protected boolean consumeHeat, outputHeat;
+	@NoPatch
+	public boolean consumeHeat, outputHeat;
 
 	public HeatMultiCrafter(String name) {
 		super(name);

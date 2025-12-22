@@ -54,12 +54,12 @@ public class ShootMatchTurret extends ItemTurret {
 				type.chargeEffect.at(bulletX, bulletY, rotation);
 			}
 
-			shoot.shoot(barrelCounter, (xOffset, yOffset, angle, delay, mover) -> {
+			shoot.shoot(barrelCounter, (x, y, angle, delay, mover) -> {
 				queuedBullets++;
 				if (delay > 0f) {
-					Time.run(delay, () -> bullet(type, xOffset, yOffset, angle, mover));
+					Time.run(delay, () -> bullet(type, x, y, angle, mover));
 				} else {
-					bullet(type, xOffset, yOffset, angle, mover);
+					bullet(type, x, y, angle, mover);
 				}
 			}, () -> barrelCounter++);
 

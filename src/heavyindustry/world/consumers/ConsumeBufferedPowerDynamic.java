@@ -6,12 +6,12 @@ import mindustry.world.consumers.ConsumePower;
 import mindustry.world.meta.Stats;
 
 public class ConsumeBufferedPowerDynamic extends ConsumePower {
-	private final Floatf<Building> dynamicCapacity;
+	public final Floatf<Building> dynamicCapacity;
 
 	@SuppressWarnings("unchecked")
-	public <T extends Building> ConsumeBufferedPowerDynamic(Floatf<T> capacity) {
+	public <T extends Building> ConsumeBufferedPowerDynamic(Floatf<T> func) {
 		super(0, 1, true);
-		dynamicCapacity = (Floatf<Building>) capacity;
+		dynamicCapacity = (Floatf<Building>) func;
 
 		update = true;
 	}

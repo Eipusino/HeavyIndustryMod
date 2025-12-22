@@ -100,12 +100,12 @@ public class RelatedWeapon extends DataWeapon {
 			bullet.chargeEffect.at(shootX, shootY, rotation, bullet.keepVelocity || parentizeEffects ? unit : null);
 		}
 
-		shoot.shoot(mount.totalShots, (xOffset, yOffset, angle, delay, mover) -> {
+		shoot.shoot(mount.totalShots, (x, y, angle, delay, mover) -> {
 			mount.totalShots++;
 			if (delay > 0f) {
-				Time.run(delay, () -> bullet(unit, mount, xOffset, yOffset, angle, mover));
+				Time.run(delay, () -> bullet(unit, mount, x, y, angle, mover));
 			} else {
-				bullet(unit, mount, xOffset, yOffset, angle, mover);
+				bullet(unit, mount, x, y, angle, mover);
 			}
 		});
 

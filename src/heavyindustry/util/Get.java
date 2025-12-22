@@ -67,6 +67,8 @@ import mindustry.world.meta.StatUnit;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
+
 /**
  * Input-output utilities, providing very specific functions that aren't really commonly used, but often
  * enough to require me to write a class for it.
@@ -84,8 +86,8 @@ public final class Get {
 
 	public static final Team[] baseTeams = {Team.derelict, Team.sharded, Team.crux, Team.green, Team.malis, Team.blue};
 
-	static final Seq<ItemStack> itemStacks = new Seq<>(ItemStack.class);
-	static final Seq<Item> items = new Seq<>(Item.class);
+	static final CollectionList<ItemStack> itemStacks = new CollectionList<>(ItemStack.class);
+	static final CollectionList<Item> items = new CollectionList<>(Item.class);
 
 	static final IntSeq amounts = new IntSeq();
 
@@ -288,11 +290,7 @@ public final class Get {
 		itemStacks.clear();
 		items.clear();
 		amounts.clear();
-		stacks.each(s -> {
-			for (ItemStack stack : s) {
-				itemStacks.add(stack);
-			}
-		});
+		stacks.each(itemStacks::addAll);
 		itemStacks.sort(s -> s.item.id);
 		itemStacks.each(s -> {
 			if (!items.contains(s.item)) {

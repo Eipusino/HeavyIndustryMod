@@ -16,6 +16,7 @@ import arc.util.Tmp;
 import arc.util.pooling.Pools;
 import heavyindustry.audio.HSounds;
 import heavyindustry.content.HFx;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.game.Team;
@@ -25,8 +26,6 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.graphics.Trail;
-
-import static mindustry.Vars.tilesize;
 
 public class BombLauncher extends CommandableAttackerBlock {
 	public TextureRegion bombRegion;
@@ -49,7 +48,7 @@ public class BombLauncher extends CommandableAttackerBlock {
 	public void init() {
 		super.init();
 		if (bullet.shootEffect == HFx.boolSelector)
-			bullet.shootEffect = HFx.square(baseColor, 50f, 6, size * tilesize * 2f, size);
+			bullet.shootEffect = HFx.square(baseColor, 50f, 6, size * Vars.tilesize * 2f, size);
 	}
 
 	@Override
@@ -204,7 +203,7 @@ public class BombLauncher extends CommandableAttackerBlock {
 			if (parent) {
 				BombEntity next = Pools.obtain(BombEntity.class, BombEntity::new);
 				next.init(team, lifetime / 1.5f, target, target.x, target.y, false);
-				Time.run(target.dst(this) / tilesize * bombVelPerTile, next::add);
+				Time.run(target.dst(this) / Vars.tilesize * bombVelPerTile, next::add);
 			} else hit();
 
 			Groups.draw.remove(this);

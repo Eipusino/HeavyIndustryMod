@@ -24,6 +24,7 @@ import heavyindustry.util.CollectionList;
 import heavyindustry.util.CollectionOrderedMap;
 import heavyindustry.util.ObjectBoolMap;
 import heavyindustry.world.consumers.ConsumeItem;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.core.UI;
 import mindustry.ctype.UnlockableContent;
@@ -56,9 +57,6 @@ import mindustry.world.meta.StatUnit;
 import mindustry.world.meta.StatValues;
 import mindustry.world.meta.Stats;
 import org.jetbrains.annotations.Nullable;
-
-import static mindustry.Vars.tilesize;
-import static mindustry.Vars.world;
 
 /**
  * MultiCrafter. You can freely choose to change the production formula.
@@ -227,7 +225,7 @@ public class MultiCrafter extends Block {
 	public boolean rotatedOutput(int fromX, int fromY, Tile destination) {
 		if (!(destination.build instanceof ConduitBuild)) return false;
 
-		Building crafter = world.build(fromX, fromY);
+		Building crafter = Vars.world.build(fromX, fromY);
 		if (crafter == null) return false;
 		int relative = Mathf.mod(crafter.relativeTo(destination) - crafter.rotation, 4);
 		for (int dir : liquidOutputDirections) {
@@ -480,8 +478,8 @@ public class MultiCrafter extends Block {
 					if (dir != -1) {
 						Draw.rect(
 								craftPlan.outputLiquids[i].liquid.fullIcon,
-								x + Geometry.d4x(dir + rotation) * (size * tilesize / 2f + 4),
-								y + Geometry.d4y(dir + rotation) * (size * tilesize / 2f + 4),
+								x + Geometry.d4x(dir + rotation) * (size * Vars.tilesize / 2f + 4),
+								y + Geometry.d4y(dir + rotation) * (size * Vars.tilesize / 2f + 4),
 								8f, 8f
 						);
 					}
