@@ -171,9 +171,9 @@ public class MirrorFieldAbility extends MirrorShieldAbility {
 	}
 
 	public static class ShapeMove {
-		private static final Vec2 tmp = new Vec2();
+		protected static final Vec2 tmp = new Vec2();
 
-		private final Vec2 vec2 = new Vec2();
+		protected final Vec2 vec2 = new Vec2();
 
 		public float x, y, angle;
 		public float moveX, moveY, moveRot;

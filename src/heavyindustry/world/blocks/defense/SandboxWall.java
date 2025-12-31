@@ -81,9 +81,7 @@ public class SandboxWall extends Block {
 				tile.hit = 0f;
 			}
 		});
-		config(IntFloatHolder.class, (SandboxWallBuild tile, IntFloatHolder data) -> {
-			tile.data.configure(data.key, data.value);
-		});
+		config(IntFloatHolder.class, (SandboxWallBuild tile, IntFloatHolder data) -> tile.data.configure(data.key, data.value));
 
 		configClear(SandboxWallBuild::resetModes);
 	}

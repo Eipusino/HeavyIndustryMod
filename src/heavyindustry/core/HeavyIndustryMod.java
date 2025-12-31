@@ -100,16 +100,9 @@ public final class HeavyIndustryMod extends Mod {
 	public static Mod instance;
 
 	public static @Nullable ClassLoader lastLoader;
-
 	public static @Nullable FloatingText floatingText;
 
-	static final List<Throwable> errors = new CollectionList<>(Throwable.class);
-
-	/**
-	 * If true, all APIs within the mod will be imported into {@code Vars.mods.getScripts().scope} for testing
-	 * some APIs on the console.
-	 */
-	static boolean test = true;
+	public static final List<Throwable> errors = new CollectionList<>(Throwable.class);
 
 	static {
 		loadLibrary();
@@ -195,7 +188,7 @@ public final class HeavyIndustryMod extends Mod {
 		});
 
 		// To prevent damage to other mod, it can only be enabled during testing
-		if (test && !OS.isIos) {
+		if (!OS.isIos) {
 			Core.app.post(HScripts::init);
 		}
 
@@ -345,9 +338,9 @@ public final class HeavyIndustryMod extends Mod {
 	static void loadLibrary() {
 		if (OS.isIos) return;
 
-		String main = OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl";
+		String className = OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl";
 
-		loadLibrary("Impl", main, true, clazz -> {
+		loadLibrary("Impl", className, true, clazz -> {
 			Object instance = clazz.getConstructor().newInstance();
 
 			if (instance instanceof PlatformImpl impl) {

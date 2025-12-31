@@ -59,17 +59,20 @@ public abstract class Chart<T extends StatGroup> extends Element {
 		this.viewLength = defaultViewLength;
 	}
 
-	public void setHorizontal(String horizontal) {
+	public void setHorizontal(@Nullable String horizontal) {
 		this.horizontal = horizontal;
 	}
 
-	public void setVertical(String vertical) {
+	public void setVertical(@Nullable String vertical) {
 		this.vertical = vertical;
 	}
 
 	public void updateValueBound() {
-		for (T datum : data) {
+		for (int i = 0; i < data.size; i++) {
+			T datum = data.get(i);
+
 			if (!datum.show) continue;
+
 			for (float value : datum.values) {
 				maxValue = Float.isNaN(value) ? maxValue : Math.max(maxValue, value);
 				minValue = Float.isNaN(value) ? minValue : Math.min(minValue, value);
@@ -99,7 +102,8 @@ public abstract class Chart<T extends StatGroup> extends Element {
 	public void act(float delta) {
 		super.act(delta);
 		lerpTime = Mathf.clamp(lerpTime);
-		for (T group : data) {
+		for (int i = 0; i < data.size; i++) {
+			T group = data.get(i);
 			group.update();
 		}
 	}
@@ -278,8 +282,8 @@ public abstract class Chart<T extends StatGroup> extends Element {
 			}
 		}
 
-		public <T> void setValues(Iterable<T> sources, Floatf<T> func) {
-			Iterator<T> itr = sources.iterator();
+		public <V> void setValues(Iterable<V> sources, Floatf<V> func) {
+			Iterator<V> itr = sources.iterator();
 			int i = 0;
 			while (itr.hasNext() && i < values.length) {
 				values[i] = func.get(itr.next());

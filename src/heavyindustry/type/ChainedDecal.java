@@ -12,7 +12,7 @@ import arc.math.geom.Vec2;
 import mindustry.gen.Unit;
 
 public class ChainedDecal {
-	private static final Vec2 v1 = new Vec2();
+	static final Vec2 v1 = new Vec2();
 
 	public float baseX, baseY, endX, endY;
 	public float baseOffset;

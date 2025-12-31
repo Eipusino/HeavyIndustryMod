@@ -1,8 +1,10 @@
 package heavyindustry.util.concurrent.holder;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
-public class CharHolder<V> implements Cloneable {
+public class CharHolder<V> implements Cloneable, Comparable<CharHolder<?>> {
 	public char key;
 	public V value;
 
@@ -42,5 +44,10 @@ public class CharHolder<V> implements Cloneable {
 		} catch (CloneNotSupportedException awful) {
 			return new CharHolder<>(key, value);
 		}
+	}
+
+	@Override
+	public int compareTo(@NotNull CharHolder<?> o) {
+		return Character.compare(key, o.key);
 	}
 }

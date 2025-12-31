@@ -3,16 +3,15 @@ package heavyindustry.util;
 import arc.func.Floatc2;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
+import arc.struct.Sort;
 import mindustry.Vars;
 import mindustry.world.Tile;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-
 /** Tool set used for directional edge coordinate traversal. */
 public final class DirEdges {
-	private static final Point2[][][] edges = new Point2[Vars.maxBlockSize + 1][4][0];
-	private static final Point2[][][] angle = new Point2[Vars.maxBlockSize + 1][4][1];
+	static final Point2[][][] edges = new Point2[Vars.maxBlockSize + 1][4][0];
+	static final Point2[][][] angle = new Point2[Vars.maxBlockSize + 1][4][1];
 
 	static {
 		edges[0] = new Point2[4][0];
@@ -43,7 +42,7 @@ public final class DirEdges {
 					case 3 -> angle[i][j][0] = new Point2(rad + 1, -rad - 1 + off);
 				}
 
-				Arrays.sort(edges[i][j], (a, b) -> Float.compare(Mathf.angle(a.x, a.y), Mathf.angle(b.x, b.y)));
+				Sort.instance().sort(edges[i][j], (a, b) -> Float.compare(Mathf.angle(a.x, a.y), Mathf.angle(b.x, b.y)));
 			}
 		}
 	}
@@ -54,7 +53,7 @@ public final class DirEdges {
 	/**
 	 * Obtain all coordinate arrays of the edges of a block of a certain size in one direction.
 	 *
-	 * @param size	  The size of the block.
+	 * @param size      The size of the block.
 	 * @param direction Direction, integer, top left and bottom right order are 0 1 2 3, modulo.
 	 */
 	public static @NotNull Point2 @NotNull [] get(int size, int direction) {
@@ -67,7 +66,7 @@ public final class DirEdges {
 	/**
 	 * Obtain all coordinate arrays of a block of a certain size on one side of a direction including the corner edges.
 	 *
-	 * @param size	  The size of the block.
+	 * @param size      The size of the block.
 	 * @param direction Direction, integer, take 0 on the right, add 1 clockwise in sequence, take the corner position.
 	 */
 	public static @NotNull Point2 @NotNull [] get8(int size, int direction) {
@@ -81,17 +80,16 @@ public final class DirEdges {
 	/**
 	 * Traverse the edge coordinates on one side using callbacks.
 	 *
-	 * @param tile	  The central floor must have blocks in the correct state on this floor.
+	 * @param tile      The central floor must have blocks in the correct state on this floor.
 	 * @param direction Traverse in the lateral direction.
-	 * @param angles	Do you need to select four corners?
+	 * @param angles    Do you need to select four corners?
 	 * @param posCons   Callback function for edge coordinates.
 	 */
 	public static void eachDirPos(Tile tile, int direction, boolean angles, Floatc2 posCons) {
-		tile = tile.build.tile;
-		Point2[] arr = angles ? get8(tile.block().size, direction) : get(tile.block().size, direction);
+		Point2[] points = angles ? get8(tile.block().size, direction) : get(tile.block().size, direction);
 
-		for (Point2 p : arr) {
-			posCons.get(tile.x + p.x, tile.y + p.y);
+		for (Point2 point : points) {
+			posCons.get(tile.x + point.x, tile.y + point.y);
 		}
 	}
 }

@@ -8,8 +8,10 @@ import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.concurrent.holder.ObjectIntHolder;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -97,6 +99,18 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 		size = map.size;
 	}
 
+	@SuppressWarnings("unchecked")
+	public ObjectIntMap2<K> copy() {
+		try {
+			ObjectIntMap2<K> out = (ObjectIntMap2<K>) super.clone();
+			out.keyTable = Arrays.copyOf(keyTable, keyTable.length);
+			out.valueTable = Arrays.copyOf(valueTable, valueTable.length);
+			return out;
+		} catch (CloneNotSupportedException e) {
+			return new ObjectIntMap2<>(this);
+		}
+	}
+
 	@Override
 	public void each(Cons<? super ObjectIntHolder<K>> cons) {
 		for (ObjectIntHolder<K> entry : entries()) {
@@ -104,7 +118,7 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 		}
 	}
 
-	public void put(K key, int value) {
+	public void put(@Nullable K key, int value) {
 		if (key == null) return;
 
 		// Check for existing keys.

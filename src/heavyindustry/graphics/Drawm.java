@@ -22,7 +22,7 @@ import mindustry.world.Block;
 import org.jetbrains.annotations.Contract;
 
 public final class Drawm {
-	private static final Vec2 vec1 = new Vec2(), vec2 = new Vec2(), vec3 = new Vec2(), vec4 = new Vec2();
+	static final Vec2 vec1 = new Vec2(), vec2 = new Vec2(), vec3 = new Vec2(), vec4 = new Vec2();
 
 	/** Don't let anyone instantiate this class. */
 	private Drawm() {}
@@ -152,7 +152,7 @@ public final class Drawm {
 		Draw.rect(region, x, y, w * Mathf.cos(roll), h, rotation);
 	}
 
-	private static void prepareRollColor(float roll, Color lightColor, Color darkColor, float a) {
+	static void prepareRollColor(float roll, Color lightColor, Color darkColor, float a) {
 		if (Mathf.zero(roll)) return;
 		float f = Mathf.sin(roll) * 0.7f;
 		if (roll > Mathf.pi / 2f || roll < -Mathf.pi / 2f) {

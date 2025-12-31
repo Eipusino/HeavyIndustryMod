@@ -78,7 +78,6 @@ public class ObjectHolder<K, V> implements Entry<K, V>, Cloneable {
 		try {
 			return (ObjectHolder<K, V>) super.clone();
 		} catch (CloneNotSupportedException awful) {
-			//this shouldn't happen, since we are Cloneable
 			return new ObjectHolder<>(key, value);
 		}
 	}

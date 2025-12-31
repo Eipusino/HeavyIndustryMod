@@ -6,12 +6,10 @@ import arc.util.Structs;
 import heavyindustry.entities.effect.VapourizeEffect.VapourizeEffectState;
 import heavyindustry.util.CollectionObjectMap;
 import heavyindustry.util.ObjectIntMap2;
+import mindustry.ctype.Content;
 import mindustry.gen.EntityMapping;
 import mindustry.gen.Entityc;
-import mindustry.type.UnitType;
 import org.jetbrains.annotations.ApiStatus.Obsolete;
-
-import java.util.Map;
 
 /**
  * Each Entity class requires an independent {@link Entityc#classId()} in order to be saved properly in the map.
@@ -20,8 +18,8 @@ import java.util.Map;
  * @since 1.0.6
  */
 public final class Entitys {
-	private static final ObjectIntMap2<Class<? extends Entityc>> classIdMap = new ObjectIntMap2<>(Class.class);
-	private static final Map<String, Prov<? extends Entityc>> needIdMap = new CollectionObjectMap<>(String.class, Prov.class);
+	static final ObjectIntMap2<Class<? extends Entityc>> classIdMap = new ObjectIntMap2<>(Class.class);
+	static final CollectionObjectMap<String, Prov<? extends Entityc>> needIdMap = new CollectionObjectMap<>(String.class, Prov.class);
 
 	private static boolean registered = false;
 
@@ -49,7 +47,7 @@ public final class Entitys {
 		classIdMap.put(type, EntityMapping.register(name, prov));
 	}
 
-	public static <T extends UnitType, E extends Entityc> T content(String name, Class<E> type, Func<String, ? extends T> create) {
+	public static <T extends Content> T content(String name, Class<? extends Entityc> type, Func<String, ? extends T> create) {
 		T content = create.get(name);
 
 		String suffix = content.minfo.mod == null ? "" : content.minfo.mod.name + "-";

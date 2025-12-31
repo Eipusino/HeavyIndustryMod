@@ -12,7 +12,7 @@ import java.util.LinkedList;
  * @since 1.0.5
  */
 public class GenericPath<V> implements IPath<V> {
-	private final LinkedList<V> path = new LinkedList<>();
+	final LinkedList<V> path = new LinkedList<>();
 
 	@Override
 	public void addFirst(V next) {

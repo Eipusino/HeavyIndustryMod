@@ -8,7 +8,6 @@ import arc.math.Angles;
 import arc.math.Mathf;
 import arc.math.Rand;
 import arc.math.geom.Vec2;
-import arc.struct.Seq;
 import arc.util.Interval;
 import arc.util.Time;
 import arc.util.Tmp;
@@ -26,6 +25,7 @@ import heavyindustry.graphics.HPal;
 import heavyindustry.type.lightnings.LightningContainer;
 import heavyindustry.type.lightnings.TrailMoveLightning;
 import heavyindustry.type.weapons.RelatedWeapon;
+import heavyindustry.util.CollectionList;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Damage;
@@ -50,6 +50,7 @@ import mindustry.type.Weapon;
 import mindustry.world.meta.BlockFlag;
 
 import java.util.Iterator;
+import java.util.List;
 
 import static heavyindustry.HVars.MOD_NAME;
 import static heavyindustry.content.HUnitTypes.EPHEMERAS;
@@ -620,19 +621,21 @@ public class MornstarType extends AirSeaAmphibiousUnitType {
 			@Override
 			public void init(Unit unit, DataWeaponMount mount) {
 				super.init(unit, mount);
-				mount.setVar(EPHEMERAS, new Seq<>(Ephemera.class));
+				mount.setVar(EPHEMERAS, new CollectionList<>(Ephemera.class));
 				mount.setVar(TIMER, new Interval(3));
 			}
 
 			@Override
 			protected void shoot(Unit unit, WeaponMount mount, float shootX, float shootY, float rotation) {
-				DataWeaponMount m = (DataWeaponMount) mount;
-				Seq<Ephemera> seq = m.getVar(EPHEMERAS);
-				for (Ephemera ephemera : seq) {
-					if (ephemera.alpha > 0.9f) {
-						ephemera.shoot(unit, useAlternative.alt(unit) ? alternativeBullet : bullet);
-						ephemera.removed = true;
-						break;
+				if (mount instanceof DataWeaponMount m) {
+					List<Ephemera> list = m.getVar(EPHEMERAS);
+
+					for (Ephemera ephemera : list) {
+						if (ephemera.alpha > 0.9f) {
+							ephemera.shoot(unit, useAlternative.alt(unit) ? alternativeBullet : bullet);
+							ephemera.removed = true;
+							break;
+						}
 					}
 				}
 			}
@@ -653,7 +656,9 @@ public class MornstarType extends AirSeaAmphibiousUnitType {
 					Draws.drawDiamond(x, y, 20 + 14 * mount.warmup, 2 + 3 * mount.warmup, Time.time * 1.2f);
 					Draws.drawDiamond(x, y, 26 + 14 * mount.warmup, 3 + 4 * mount.warmup, -Time.time * 1.2f);
 
-					for (Ephemera ephemera : mount.<Seq<Ephemera>>getVar(EPHEMERAS)) {
+					List<Ephemera> list = mount.getVar(EPHEMERAS);
+
+					for (Ephemera ephemera : list) {
 						Draw.color(HPal.matrixNet);
 
 						if (!ephemera.removed) {
@@ -683,9 +688,10 @@ public class MornstarType extends AirSeaAmphibiousUnitType {
 				Tmp.v1.set(mount.weapon.x, mount.weapon.y).rotate(unit.rotation - 90);
 				float mx = unit.x + Tmp.v1.x;
 				float my = unit.y + Tmp.v1.y;
-				Seq<Ephemera> seq = mount.getVar(EPHEMERAS);
 
-				if (seq.size < 4) {
+				CollectionList<Ephemera> list = mount.getVar(EPHEMERAS);
+
+				if (list.size < 4) {
 					if (mount.<Interval>getVar(TIMER).get(0, 240)) {
 						mount.totalShots++;
 
@@ -697,15 +703,15 @@ public class MornstarType extends AirSeaAmphibiousUnitType {
 						ephemera.bestDst = Mathf.random(18, 36);
 						ephemera.vel.rnd(Mathf.random(0.6f, 2));
 
-						seq.add(ephemera);
+						list.add(ephemera);
 					}
 				}
 
-				if (seq.isEmpty()) {
+				if (list.isEmpty()) {
 					mount.reload = mount.weapon.reload;
 				}
 
-				for (Iterator<Ephemera> iterator = seq.iterator(); iterator.hasNext(); ) {
+				for (Iterator<Ephemera> iterator = list.iterator(); iterator.hasNext(); ) {
 					Ephemera ephemera = iterator.next();
 					ephemera.alpha = Mathf.lerpDelta(ephemera.alpha, ephemera.removed ? 0 : 1, 0.015f);
 					ephemera.trail.update(ephemera.x, ephemera.y);

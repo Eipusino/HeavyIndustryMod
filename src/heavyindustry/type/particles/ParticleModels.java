@@ -104,7 +104,9 @@ public final class ParticleModels {
 			if (p.getVar(OWNER) instanceof Bullet b) {
 				if (b.isAdded()) {
 					p.set(b.x, b.y);
-				} else p.setVar(OWNER, null);
+				} else {
+					p.setVar(OWNER, null);
+				}
 			}
 
 			if (p.getVar(BULLET) instanceof Bullet b && b.isAdded()) {

@@ -13,9 +13,9 @@ import arc.util.Tmp;
 public final class Fill3d {
 	public static final Vec2 vec = new Vec2();
 
-	private static final Color tmpCol = new Color();
-	private static final Vec3 axis = new Vec3();
-	private static final Vec3 rim = new Vec3();
+	static final Color tmpCol = new Color();
+	static final Vec3 axis = new Vec3();
+	static final Vec3 rim = new Vec3();
 
 	private Fill3d() {}
 

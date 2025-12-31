@@ -173,7 +173,7 @@ public class LiquidDirectionalUnloader2 extends Block {
 			Draw.reset();
 		}
 
-		private void drawIO() {
+		protected void drawIO() {
 			Building front = front(), back = back();
 
 			if (unloadLiquid != null && front != null && back != null && front.acceptLiquid(this, unloadLiquid)) {

@@ -1,5 +1,5 @@
 package heavyindustry.func;
 
-public interface Longt {
+public interface LongLongf {
 	long get(long value);
 }

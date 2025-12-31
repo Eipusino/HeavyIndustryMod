@@ -23,7 +23,7 @@ public class InternalFileTree implements FileHandleResolver {
 	public InternalFileTree(@NotNull Class<?> owner) {
 		anchorClass = owner;
 
-		String classPath = Objects.requireNonNull(anchorClass.getResource(""), "Unable to retrieve class resource.").getFile().replaceAll("%20", " ");
+		String classPath = Objects.requireNonNull(anchorClass.getResource(""), () -> "Unable to retrieve class resource: " + owner.getName()).getFile().replaceAll("%20", " ");
 		classPath = classPath.substring(classPath.indexOf(":") + 2);
 		String jarPath = (OS.isLinux ? "/" : "") + classPath.substring(0, classPath.indexOf("!"));
 

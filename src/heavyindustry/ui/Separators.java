@@ -20,7 +20,7 @@ public final class Separators {
 		return table.image(separatorDrawable(), color).growX().height(3f);
 	}
 
-	private static Drawable separatorDrawable() {
+	static Drawable separatorDrawable() {
 		return separatorDrawable == null ? DefaultBackground.white() : separatorDrawable;
 	}
 }

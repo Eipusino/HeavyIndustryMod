@@ -1,6 +1,5 @@
 package heavyindustry.util;
 
-
 import arc.func.Cons;
 import arc.math.Mathf;
 import arc.struct.LongSeq;

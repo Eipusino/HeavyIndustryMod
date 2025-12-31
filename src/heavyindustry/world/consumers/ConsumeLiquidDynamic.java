@@ -38,7 +38,7 @@ public class ConsumeLiquidDynamic extends Consume {
 		});
 	}
 
-	private void rebuild(Building build, Table table) {
+	protected void rebuild(Building build, Table table) {
 		table.clear();
 
 		LiquidStack stack = liquids.get(build);

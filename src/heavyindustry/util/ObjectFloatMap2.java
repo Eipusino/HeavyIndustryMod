@@ -10,6 +10,7 @@ import heavyindustry.math.Mathm;
 import heavyindustry.util.concurrent.holder.ObjectFloatHolder;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -95,6 +96,18 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 		System.arraycopy(map.keyTable, 0, keyTable, 0, map.keyTable.length);
 		System.arraycopy(map.valueTable, 0, valueTable, 0, map.valueTable.length);
 		size = map.size;
+	}
+
+	@SuppressWarnings("unchecked")
+	public ObjectFloatMap2<K> copy() {
+		try {
+			ObjectFloatMap2<K> out = (ObjectFloatMap2<K>) super.clone();
+			out.keyTable = Arrays.copyOf(keyTable, keyTable.length);
+			out.valueTable = Arrays.copyOf(valueTable, valueTable.length);
+			return out;
+		} catch (CloneNotSupportedException e) {
+			return new ObjectFloatMap2<>(this);
+		}
 	}
 
 	@Override

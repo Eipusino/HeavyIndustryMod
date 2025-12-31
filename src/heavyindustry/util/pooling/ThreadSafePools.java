@@ -8,9 +8,9 @@ import java.util.List;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public final class ThreadSafePools {
-	private static final CollectionObjectMap<Class<?>, ThreadSafePool> typePools = new CollectionObjectMap<>(Class.class, ThreadSafePool.class);
-	private static final Object poolCreateLock = new Object();
-	private static final Object poolSetLock = new Object();
+	static final CollectionObjectMap<Class<?>, ThreadSafePool> typePools = new CollectionObjectMap<>(Class.class, ThreadSafePool.class);
+	static final Object poolCreateLock = new Object();
+	static final Object poolSetLock = new Object();
 
 	/** Don't let anyone instantiate this class. */
 	private ThreadSafePools() {}

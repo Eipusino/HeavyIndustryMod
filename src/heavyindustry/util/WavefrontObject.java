@@ -51,14 +51,14 @@ public class WavefrontObject {
 	protected int indexerA;
 	protected float indexerZ;
 
-	private final Seq<Vertex> drawnVertices = new Seq<>(Vertex.class);
-	private final Seq<Vec3> drawnNormals = new Seq<>(Vec3.class);
-	private AtlasRegion texture = null;
-	private boolean hasMaterial = false;
-	private boolean hasNormal = false;
-	private boolean hasTexture = false;
-	//private boolean hasMaterialTex = false;
-	private boolean odd = false;
+	final Seq<Vertex> drawnVertices = new Seq<>(Vertex.class);
+	final Seq<Vec3> drawnNormals = new Seq<>(Vec3.class);
+	AtlasRegion texture = null;
+	boolean hasMaterial = false;
+	boolean hasNormal = false;
+	boolean hasTexture = false;
+	//boolean hasMaterialTex = false;
+	boolean odd = false;
 
 	public void load(Fi file, @Nullable Fi material) {
 		if (material != null) {
@@ -260,7 +260,7 @@ public class WavefrontObject {
 		Log.info(drawnVertices.size + " : " + faces.size);
 	}
 
-	private boolean canLoadTex() {
+	boolean canLoadTex() {
 		return !Vars.headless && Core.atlas != null && hasTexture;
 	}
 

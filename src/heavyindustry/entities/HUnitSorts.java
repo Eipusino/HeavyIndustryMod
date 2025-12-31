@@ -17,12 +17,12 @@ public final class HUnitSorts {
 	public static final Sortf slowest = (u, x, y) -> u.speed() + Mathf.dst2(u.x, u.y, x, y) / 6400f;
 	public static final Sortf fastest = (u, x, y) -> -u.speed() + Mathf.dst2(u.x, u.y, x, y) / 6400f;
 
-	private static final float[][] costs = new float[16][];
-	private static final float[][] cpriority = new float[16][];
-	private static final Unit[][] result = new Unit[16][];
-	private static final Unit[] empty = new Unit[0];
+	static final float[][] costs = new float[16][];
+	static final float[][] cpriority = new float[16][];
+	static final Unit[][] result = new Unit[16][];
+	static final Unit[] empty = new Unit[0];
 
-	private static float dcr;
+	static float dcr;
 
 	public static final Sortf regionalHPMaximumUnit = (u, x, y) -> {
 		dcr = 0;
@@ -52,7 +52,7 @@ public final class HUnitSorts {
 		return dcr;
 	};
 
-	private static float temp;
+	static float temp;
 
 	public static Sortf denser = (e, x, y) -> {
 		temp = e.maxHealth;
@@ -62,7 +62,7 @@ public final class HUnitSorts {
 
 		return -temp;
 	};
-	private static int count;
+	static int count;
 
 	static {
 		for (int i = 0; i < 16; i++) {

@@ -1,10 +1,13 @@
 package heavyindustry.util.concurrent;
 
+import arc.util.Strings;
 import heavyindustry.util.Objects2;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public class DoubleReference implements Serializable {
+public class DoubleReference extends Number implements Serializable, Comparable<DoubleReference> {
 	private static final long serialVersionUID = 3872914250117543122l;
 
 	public double element;
@@ -13,6 +16,16 @@ public class DoubleReference implements Serializable {
 
 	public DoubleReference(double initialElement) {
 		element = initialElement;
+	}
+
+	@Contract(value = "_ -> new", pure = true)
+	public static DoubleReference valueOf(double value) {
+		return new DoubleReference(value);
+	}
+
+	@Contract(value = "_ -> new", pure = true)
+	public static DoubleReference valueOf(String value) {
+		return new DoubleReference(Strings.parseDouble(value, 0d));
 	}
 
 	@Override
@@ -28,5 +41,30 @@ public class DoubleReference implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects2.longToHash(Double.doubleToLongBits(element));
+	}
+
+	@Override
+	public int compareTo(@NotNull DoubleReference o) {
+		return Double.compare(element, o.element);
+	}
+
+	@Override
+	public int intValue() {
+		return (int) element;
+	}
+
+	@Override
+	public long longValue() {
+		return (long) element;
+	}
+
+	@Override
+	public float floatValue() {
+		return (float) element;
+	}
+
+	@Override
+	public double doubleValue() {
+		return element;
 	}
 }

@@ -111,7 +111,7 @@ public class RailDirectionalUnloader extends DirectionalUnloader {
 			Draw.reset();
 		}
 
-		private void drawIO() {
+		protected void drawIO() {
 			Building front = front(), back = back();
 
 			if (unloadItem != null && front != null && front.items != null && back != null && back.items != null && back.items.has(unloadItem.id)) {

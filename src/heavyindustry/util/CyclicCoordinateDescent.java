@@ -12,8 +12,9 @@ import heavyindustry.math.Mathm;
  * Ported in java
  */
 public final class CyclicCoordinateDescent {
+	public static final float epsilon = 0.0001f;
+
 	static final CollectionList<WorldBone> worldBones = new CollectionList<>(WorldBone.class);
-	static final float epsilon = 0.0001f;
 
 	private CyclicCoordinateDescent() {}
 

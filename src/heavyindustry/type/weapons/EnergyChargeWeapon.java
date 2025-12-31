@@ -22,7 +22,8 @@ public class EnergyChargeWeapon extends Weapon {
 	/** Uses reload as charge. */
 	public Cons2<Unit, WeaponMount> chargeCondition;
 	public boolean drawTop = true, startUncharged = true, drawRegion = true;
-	private int sequenceNum;
+
+	int sequenceNum;
 
 	public EnergyChargeWeapon() {
 		this("");

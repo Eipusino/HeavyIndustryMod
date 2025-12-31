@@ -242,7 +242,7 @@ public class PayloadRail extends PayloadBlock {
 			}
 		}
 
-		private void drawInput(Tile other) {
+		protected void drawInput(Tile other) {
 			boolean linked = other.pos() == link;
 
 			Tmp.v2.trns(tile.angleTo(other), 2f);

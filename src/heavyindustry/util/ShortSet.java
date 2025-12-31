@@ -6,6 +6,7 @@ import arc.util.ArcRuntimeException;
 import heavyindustry.func.Shortc;
 import heavyindustry.math.Mathm;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 import static heavyindustry.util.Constant.EMPTY;
@@ -14,7 +15,7 @@ import static heavyindustry.util.Constant.INDEX_ZERO;
 import static heavyindustry.util.Constant.PRIME2;
 import static heavyindustry.util.Constant.PRIME3;
 
-public class ShortSet {
+public class ShortSet implements Cloneable {
 	public int size;
 
 	protected short[] keyTable;
@@ -74,6 +75,16 @@ public class ShortSet {
 		System.arraycopy(set.keyTable, 0, keyTable, 0, set.keyTable.length);
 		size = set.size;
 		hasZeroValue = set.hasZeroValue;
+	}
+
+	public ShortSet copy() {
+		try {
+			ShortSet out = (ShortSet) super.clone();
+			out.keyTable = Arrays.copyOf(keyTable, keyTable.length);
+			return out;
+		} catch (CloneNotSupportedException e) {
+			return new ShortSet(this);
+		}
 	}
 
 	public static ShortSet with(short... array) {

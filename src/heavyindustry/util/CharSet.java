@@ -5,6 +5,7 @@ import arc.util.ArcRuntimeException;
 import heavyindustry.func.Charc;
 import heavyindustry.math.Mathm;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 import static heavyindustry.util.Constant.EMPTY;
@@ -88,9 +89,7 @@ public class CharSet implements Cloneable {
 	public CharSet copy() {
 		try {
 			CharSet out = (CharSet) super.clone();
-
-			out.keyTable = new char[size];
-			System.arraycopy(keyTable, 0, out.keyTable, 0, size);
+			out.keyTable = Arrays.copyOf(keyTable, keyTable.length);
 			return out;
 		} catch (CloneNotSupportedException e) {
 			return new CharSet(this);

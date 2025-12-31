@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
  * @see FloatSeq
  * @see Vec2
  */
-public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2>, Cloneable {
+public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 	protected final FloatSeq coordinates;
 
 	protected final Vec2 tmp = new Vec2();

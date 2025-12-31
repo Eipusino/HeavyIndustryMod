@@ -19,7 +19,7 @@ import mindustry.type.Liquid;
  * @author Eipusino
  */
 public final class HLiquids {
-	private static final int crystalFluidId = Draws.nextTaskId();
+	static final int crystalFluidId = Draws.nextTaskId();
 
 	public static Liquid brine;
 	public static Liquid gas, lightOil, nitratedOil, blastReagent;

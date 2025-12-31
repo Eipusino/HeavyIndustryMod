@@ -22,7 +22,7 @@ import mindustry.graphics.Pal;
 import mindustry.world.Tile;
 
 public class ChainLightningBulletType extends BulletType {
-	private static int charges;
+	static int charges;
 
 	public float width, segmentLength, arc, jumpDamageFactor, distanceDamageFalloff, targetRange;
 

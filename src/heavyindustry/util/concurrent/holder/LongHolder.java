@@ -1,10 +1,11 @@
 package heavyindustry.util.concurrent.holder;
 
 import heavyindustry.util.Objects2;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class LongHolder<V> implements Cloneable {
+public class LongHolder<V> implements Cloneable, Comparable<LongHolder<?>> {
 	public long key;
 	public V value;
 
@@ -44,5 +45,10 @@ public class LongHolder<V> implements Cloneable {
 		} catch (CloneNotSupportedException awful) {
 			return new LongHolder<>(key, value);
 		}
+	}
+
+	@Override
+	public int compareTo(@NotNull LongHolder<?> o) {
+		return Long.compare(key, o.key);
 	}
 }

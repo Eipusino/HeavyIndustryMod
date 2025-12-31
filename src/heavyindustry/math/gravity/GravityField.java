@@ -16,12 +16,12 @@ import heavyindustry.util.CollectionObjectSet;
 public class GravityField {
 	public static final float GRAV_CONST = 0.667259f;
 
-	private static final Vec2 tmp = new Vec2();
+	static final Vec2 tmp = new Vec2();
 
 	public final GravitySystem system;
 
-	private final CollectionObjectSet<GravityField> otherFields = new CollectionObjectSet<>(GravityField.class);
-	private final CollectionObjectMap<GravityField, Vec2> bufferAccelerations = new CollectionObjectMap<>(GravityField.class, Vec2.class);
+	final CollectionObjectSet<GravityField> otherFields = new CollectionObjectSet<>(GravityField.class);
+	final CollectionObjectMap<GravityField, Vec2> bufferAccelerations = new CollectionObjectMap<>(GravityField.class, Vec2.class);
 
 	public GravityField(GravitySystem sys) {
 		system = sys;

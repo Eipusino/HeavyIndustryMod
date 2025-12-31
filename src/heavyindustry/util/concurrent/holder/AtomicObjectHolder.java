@@ -1,7 +1,5 @@
 package heavyindustry.util.concurrent.holder;
 
-import heavyindustry.util.Objects2;
-
 import java.util.Map.Entry;
 import java.util.Objects;
 
@@ -34,7 +32,6 @@ public class AtomicObjectHolder<K, V> implements Entry<K, V>, Cloneable {
 		try {
 			return (AtomicObjectHolder<K, V>) super.clone();
 		} catch (CloneNotSupportedException awful) {
-			//this shouldn't happen, since we are Cloneable
 			return new AtomicObjectHolder<>(key, value);
 		}
 	}

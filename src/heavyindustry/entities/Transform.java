@@ -4,13 +4,14 @@ import arc.math.geom.Mat3D;
 import arc.math.geom.Quat;
 import arc.math.geom.Vec3;
 import heavyindustry.util.CollectionList;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 public interface Transform {
 	List<Transform> tmpStack = new CollectionList<>(Transform.class);
 
-	Transform parent();
+	@Nullable Transform parent();
 
 	Mat3D parentTrans();//tempTrans, new arc.math.geom.Mat3D()
 

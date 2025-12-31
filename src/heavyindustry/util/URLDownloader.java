@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public final class URLDownloader {
-	private static final CollectionOrderedMap<String, String> urlReplacers = new CollectionOrderedMap<>(String.class, String.class);
+	static final CollectionOrderedMap<String, String> urlReplacers = new CollectionOrderedMap<>(String.class, String.class);
 
 	/** Don't let anyone instantiate this class. */
 	private URLDownloader() {}

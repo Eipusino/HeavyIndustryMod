@@ -10,6 +10,7 @@ import heavyindustry.math.Mathm;
 import heavyindustry.util.concurrent.holder.ObjectBoolHolder;
 
 import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -84,6 +85,18 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		System.arraycopy(map.keyTable, 0, keyTable, 0, map.keyTable.length);
 		System.arraycopy(map.valueTable, 0, valueTable, 0, map.valueTable.length);
 		size = map.size;
+	}
+
+	@SuppressWarnings("unchecked")
+	public ObjectBoolMap<K> copy() {
+		try {
+			ObjectBoolMap<K> out = (ObjectBoolMap<K>) super.clone();
+			out.keyTable = Arrays.copyOf(keyTable, keyTable.length);
+			out.valueTable = Arrays.copyOf(valueTable, valueTable.length);
+			return out;
+		} catch (CloneNotSupportedException e) {
+			return new ObjectBoolMap<>(this);
+		}
 	}
 
 	@Override

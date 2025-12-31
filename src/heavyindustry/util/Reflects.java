@@ -36,7 +36,7 @@ import java.util.Arrays;
  * <p>You should never frequently perform repetitive operations on the same Field/Method/Constructor for
  * performance reasons.
  * <pre>{@code
- *     private static Field theField;
+ *     static Field theField;
  *
  *     public static Object getValue(Object obj) {
  *         try {
@@ -56,6 +56,9 @@ import java.util.Arrays;
  */
 public final class Reflects {
 	public static Lookup lookup;
+
+	static Field klassField, monitorField;
+	static Method cloneMethod;
 
 	static final CollectionObjectMap<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
 
@@ -377,5 +380,48 @@ public final class Reflects {
 	@Contract(pure = true)
 	public static boolean isAssignable(@Nullable Field sourceType, @Nullable Field targetType) {
 		return sourceType != null && targetType != null && targetType.getType().isAssignableFrom(sourceType.getType());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Contract(pure = true)
+	public static <T> T clone(T object) {
+		try {
+			if (cloneMethod == null) {
+				// On Android, it should be possible to bypass the Cloneable interface restrictions and directly clone.
+				cloneMethod = Object.class.getDeclaredMethod(OS.isAndroid ? "internalClone" : "clone");
+				cloneMethod.setAccessible(true);
+			}
+			return (T) cloneMethod.invoke(object);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public static void setClass(@Nullable Object object, Class<?> cls) {
+		if (object == null || !OS.isAndroid) return;
+
+		try {
+			if (klassField == null) {
+				klassField = Object.class.getDeclaredField("shadow$_klass_");
+				klassField.setAccessible(true);
+			}
+			klassField.set(object, cls);
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			Log.err(e);
+		}
+	}
+
+	public static void setHash(@Nullable Object object, int hash) {
+		if (object == null || !OS.isAndroid) return;
+
+		try {
+			if (monitorField == null) {
+				monitorField = Object.class.getDeclaredField("shadow$_monitor_");
+				monitorField.setAccessible(true);
+			}
+			monitorField.set(object, hash);
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			Log.err(e);
+		}
 	}
 }

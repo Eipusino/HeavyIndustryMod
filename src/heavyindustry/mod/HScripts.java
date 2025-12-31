@@ -131,11 +131,6 @@ public final class HScripts {
 		};
 	}
 
-	// SimpleClass.__javaObject__.getSimpleName()
-	public static <T> Class<T> c(Class<T> c) {
-		return c;
-	}
-
 	public static NativeJavaClass loadClass(Fi file, String name) throws ClassNotFoundException, IOException {
 		try (URLClassLoader urlLoader = new URLClassLoader(new URL[]{file.file().toURI().toURL()})) {
 			return new NativeJavaClass(Vars.mods.getScripts().scope, urlLoader.loadClass(name));

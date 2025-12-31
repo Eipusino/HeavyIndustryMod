@@ -8,6 +8,7 @@ import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.concurrent.holder.CharHolder;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -678,7 +679,7 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 	}
 
 	@Override
-	public Iterator<CharHolder<V>> iterator() {
+	public @NotNull Iterator<CharHolder<V>> iterator() {
 		return entries();
 	}
 
@@ -819,7 +820,7 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 		}
 
 		@Override
-		public Iterator<CharHolder<V>> iterator() {
+		public @NotNull Iterator<CharHolder<V>> iterator() {
 			return this;
 		}
 
@@ -851,7 +852,7 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 		}
 
 		@Override
-		public Iterator<V> iterator() {
+		public @NotNull Iterator<V> iterator() {
 			return this;
 		}
 

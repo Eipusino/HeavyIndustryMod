@@ -29,9 +29,9 @@ import mindustry.graphics.Layer;
 import mindustry.type.UnitType;
 
 public final class VapourizeEffect {
-	private static final Seq<BuildQueue> vapourizeQueue = new Seq<>(true, 512, BuildQueue.class);
-	private static final IntMap2<BuildQueue> buildQMap = new IntMap2<>(BuildQueue.class);
-	private static final IntMap2<VapourizeEffectState> vapourizeMap = new IntMap2<>(VapourizeEffectState.class);
+	static final Seq<BuildQueue> vapourizeQueue = new Seq<>(true, 512, BuildQueue.class);
+	static final IntMap2<BuildQueue> buildQMap = new IntMap2<>(BuildQueue.class);
+	static final IntMap2<VapourizeEffectState> vapourizeMap = new IntMap2<>(VapourizeEffectState.class);
 
 	static {
 		Events.on(WorldLoadEvent.class, event -> {

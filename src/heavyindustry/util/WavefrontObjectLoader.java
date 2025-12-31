@@ -12,7 +12,7 @@ import arc.util.Nullable;
 
 // @since 1.0.7
 public class WavefrontObjectLoader extends AsynchronousAssetLoader<WavefrontObject, WavefrontObjectLoader.WavefrontObjectParameters> {
-	private WavefrontObject object;
+	WavefrontObject object;
 
 	public WavefrontObjectLoader(FileHandleResolver resolver) {
 		super(resolver);

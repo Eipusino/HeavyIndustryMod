@@ -1,8 +1,11 @@
 package heavyindustry.util.concurrent;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
-public class CharReference implements Serializable {
+public class CharReference implements Serializable, Comparable<CharReference> {
 	private static final long serialVersionUID = -6890675570138946042l;
 
 	public char element;
@@ -11,6 +14,11 @@ public class CharReference implements Serializable {
 
 	public CharReference(char initialElement) {
 		element = initialElement;
+	}
+
+	@Contract(value = "_ -> new", pure = true)
+	public static CharReference valueOf(char value) {
+		return new CharReference(value);
 	}
 
 	@Override
@@ -26,5 +34,10 @@ public class CharReference implements Serializable {
 	@Override
 	public int hashCode() {
 		return element;
+	}
+
+	@Override
+	public int compareTo(@NotNull CharReference o) {
+		return Character.compare(element, o.element);
 	}
 }

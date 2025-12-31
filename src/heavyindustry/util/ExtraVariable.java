@@ -4,19 +4,24 @@ import arc.func.Boolp;
 import arc.func.FloatFloatf;
 import arc.func.Floatp;
 import arc.func.Func;
+import arc.func.IntIntf;
 import arc.func.Intp;
 import arc.func.Prov;
 import heavyindustry.func.BoolBoolf;
+import heavyindustry.func.CharCharf;
+import heavyindustry.func.Charp;
 import heavyindustry.func.DoubleDoublef;
 import heavyindustry.func.Doublep;
-import heavyindustry.func.Intt;
 import heavyindustry.func.Longp;
-import heavyindustry.func.Longt;
+import heavyindustry.func.LongLongf;
+import heavyindustry.util.concurrent.BoolReference;
+import heavyindustry.util.concurrent.CharReference;
+import heavyindustry.util.concurrent.DoubleReference;
+import heavyindustry.util.concurrent.FloatReference;
+import heavyindustry.util.concurrent.IntReference;
+import heavyindustry.util.concurrent.LongReference;
 
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * The appended variable interface is used to provide dynamic append variables for types,
@@ -134,68 +139,70 @@ public interface ExtraVariable {
 	/**
 	 * Set boolean type variable value
 	 *
-	 * @throws ClassCastException If the variable already exists and is not a boolean wrapper type or atomized reference
+	 * @throws ClassCastException If the variable already exists and is not a boolean wrapper type or boolean reference
 	 * @see ExtraVariable#setVar(String, Object)
 	 */
 	default boolean setVar(String field, boolean value) {
 		Object res = getVar(field);
 
-		if (res instanceof AtomicBoolean b) {
-			boolean r = b.get();
-			b.set(value);
+		if (res instanceof BoolReference b) {
+			boolean r = b.element;
+			b.element = value;
 			return r;
 		} else if (res instanceof Boolean n) {
-			extra().put(field, new AtomicBoolean(value));
+			extra().put(field, new BoolReference(value));
 			return n;
 		} else if (res == null) {
-			extra().put(field, new AtomicBoolean(value));
+			extra().put(field, new BoolReference(value));
 			return false;
 		}
 
-		throw new ClassCastException(res + " is not a boolean value or atomic boolean");
+		throw new ClassCastException(res + " is not a boolean value or boolean reference");
 	}
 
 	/**
 	 * Get boolean variable value.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not a boolean wrapper type or atomized reference
+	 * @throws ClassCastException If the variable already exists and is not a boolean wrapper type or
+	 *                            boolean reference
 	 * @see ExtraVariable#getVar(String, Object)
 	 */
 	default boolean getVar(String field, boolean def) {
 		Object res = getVar(field);
 		if (res == null) return def;
 
-		if (res instanceof AtomicBoolean i) return i.get();
-		else if (res instanceof Boolean n) return n;
+		if (res instanceof BoolReference b) return b.element;
+		else if (res instanceof Boolean b) return b;
 
-		throw new ClassCastException(res + " is not a boolean value or atomic boolean");
+		throw new ClassCastException(res + " is not a boolean value or boolean reference");
 	}
 
 	/**
 	 * Retrieve the boolean variable value and initialize the variable value when it does not exist.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not a boolean wrapper type or atomized reference
+	 * @throws ClassCastException If the variable already exists and is not a boolean wrapper type or
+	 *                            boolean reference
 	 * @see ExtraVariable#getVar(String, Prov)
 	 */
 	default boolean getVar(String field, Boolp initial) {
 		Object res = getVar(field);
 		if (res == null) {
 			boolean b = initial.get();
-			extra().put(field, new AtomicBoolean(b));
+			extra().put(field, new BoolReference(b));
 			return b;
 		}
 
-		if (res instanceof AtomicBoolean b) return b.get();
-		//else if (res instanceof boolean[] a && a.length > 0) return a[0];
-		else if (res instanceof Boolean n) return n;
+		if (res instanceof BoolReference b) return b.element;
+		else if (res instanceof Boolean b) return b;
 
-		throw new ClassCastException(res + " is not a boolean value or atomic boolean");
+		throw new ClassCastException(res + " is not a boolean value or boolean reference");
 	}
 
 	/**
 	 * Use processing functions to handle boolean variable values and update variable values with return values.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not a boolean wrapper type or atomized reference
+	 * @throws ClassCastException If the variable already exists and is not a boolean wrapper type or
+	 *                            boolean reference
 	 * @see ExtraVariable#handleVar(String, Func, Object)
 	 */
 	default boolean handleVar(String field, BoolBoolf handle, boolean def) {
@@ -206,73 +213,154 @@ public interface ExtraVariable {
 	}
 
 	/**
+	 * Set character type variable value
+	 *
+	 * @throws ClassCastException If the variable already exists and is not a character wrapper type
+	 *                            or character reference
+	 * @see ExtraVariable#setVar(String, Object)
+	 */
+	default char setVar(String field, char value) {
+		Object res = getVar(field);
+
+		if (res instanceof CharReference c) {
+			char r = c.element;
+			c.element = value;
+			return r;
+		} else if (res instanceof Character c) {
+			extra().put(field, new CharReference(value));
+			return c;
+		} else if (res == null) {
+			extra().put(field, new CharReference(value));
+			return '\u0000';
+		}
+
+		throw new ClassCastException(res + " is not a character value or character reference");
+	}
+
+	/**
+	 * Get character variable value.
+	 *
+	 * @throws ClassCastException If the variable already exists and is not a character wrapper type
+	 *                            or char reference
+	 * @see ExtraVariable#getVar(String, Object)
+	 */
+	default char getVar(String field, char def) {
+		Object res = getVar(field);
+		if (res == null) return def;
+
+		if (res instanceof CharReference b) return b.element;
+		else if (res instanceof Character c) return c;
+
+		throw new ClassCastException(res + " is not a character value or character reference");
+	}
+
+	/**
+	 * Retrieve the value of an character variable and initialize the variable value when it does not exist.
+	 *
+	 * @throws ClassCastException If the variable already exists and is not an character wrapper type
+	 *                            or character reference
+	 * @see ExtraVariable#getVar(String, Prov)
+	 */
+	default char getVar(String field, Charp initial) {
+		Object res = getVar(field);
+		if (res == null) {
+			char c = initial.get();
+			extra().put(field, new CharReference(c));
+			return c;
+		}
+
+		if (res instanceof CharReference c) return c.element;
+		else if (res instanceof Character c) return c;
+
+		throw new ClassCastException(res + " is not a character or character reference");
+	}
+
+	/**
+	 * Use processing functions to handle character variable values and update variable values with return
+	 * values.
+	 *
+	 * @throws ClassCastException If the variable already exists and is not an character wrapper type
+	 *                            or character reference
+	 * @see ExtraVariable#handleVar(String, Func, Object)
+	 */
+	default int handleVar(String field, CharCharf handle, char def) {
+		int i;
+		setVar(field, i = handle.get(getVar(field, def)));
+
+		return i;
+	}
+
+	/**
 	 * Set the value of an int type variable.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not an int wrapper type or atomized reference
+	 * @throws ClassCastException If the variable already exists and is not an int wrapper type or int
+	 *                            reference
 	 * @see ExtraVariable#setVar(String, Object)
 	 */
 	default int setVar(String field, int value) {
 		Object res = getVar(field);
 
-		if (res instanceof AtomicInteger i) {
-			int r = i.get();
-			i.set(value);
+		if (res instanceof IntReference i) {
+			int r = i.element;
+			i.element = value;
 			return r;
 		} else if (res instanceof Number n) {
-			extra().put(field, new AtomicInteger(value));
+			extra().put(field, new IntReference(value));
 			return n.intValue();
 		} else if (res == null) {
-			extra().put(field, new AtomicInteger(value));
+			extra().put(field, new IntReference(value));
 			return 0;
 		}
 
-		throw new ClassCastException(res + " is not a number or atomic integer");
+		throw new ClassCastException(res + " is not a number or integer reference");
 	}
 
 	/**
 	 * Get the value of the int variable.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not an int wrapper type or atomized reference
+	 * @throws ClassCastException If the variable already exists and is not an int wrapper type or int
+	 *                            reference
 	 * @see ExtraVariable#getVar(String, Object)
 	 */
 	default int getVar(String field, int def) {
 		Object res = getVar(field);
 		if (res == null) return def;
 
-		if (res instanceof AtomicInteger i) return i.get();
-		//else if (res instanceof int[] a && a.length > 0) return a[0];
+		if (res instanceof IntReference i) return i.element;
 		else if (res instanceof Number n) return n.intValue();
 
-		throw new ClassCastException(res + " is not a number or atomic integer");
+		throw new ClassCastException(res + " is not a number or integer reference");
 	}
 
 	/**
 	 * Retrieve the value of an int variable and initialize the variable value when it does not exist.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not an int wrapper type or atomized reference
+	 * @throws ClassCastException If the variable already exists and is not an int wrapper type or int
+	 *                            reference
 	 * @see ExtraVariable#getVar(String, Prov)
 	 */
 	default int getVar(String field, Intp initial) {
 		Object res = getVar(field);
 		if (res == null) {
-			int b = initial.get();
-			extra().put(field, new AtomicInteger(b));
-			return b;
+			int i = initial.get();
+			extra().put(field, new IntReference(i));
+			return i;
 		}
 
-		if (res instanceof AtomicInteger i) return i.get();
+		if (res instanceof IntReference i) return i.element;
 		else if (res instanceof Number n) return n.intValue();
 
-		throw new ClassCastException(res + " is not a number or atomic integer");
+		throw new ClassCastException(res + " is not a number or integer reference");
 	}
 
 	/**
 	 * Use processing functions to handle int variable values and update variable values with return values.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not an int wrapper type or atomized reference
+	 * @throws ClassCastException If the variable already exists and is not an int wrapper type or int
+	 *                            reference
 	 * @see ExtraVariable#handleVar(String, Func, Object)
 	 */
-	default int handleVar(String field, Intt handle, int def) {
+	default int handleVar(String field, IntIntf handle, int def) {
 		int i;
 		setVar(field, i = handle.get(getVar(field, def)));
 
@@ -282,71 +370,70 @@ public interface ExtraVariable {
 	/**
 	 * Set the value of a long type variable.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not a long wrapper type or atomized reference
+	 * @throws ClassCastException If the variable already exists and is not a long wrapper type or long reference
 	 * @see ExtraVariable#setVar(String, Object)
 	 */
 	default long setVar(String field, long value) {
 		Object res = getVar(field);
 
-		if (res instanceof AtomicLong l) {
-			long r = l.get();
-			l.set(value);
+		if (res instanceof LongReference l) {
+			long r = l.element;
+			l.element = value;
 			return r;
 		} else if (res instanceof Number n) {
-			extra().put(field, new AtomicLong(value));
+			extra().put(field, new LongReference(value));
 			return n.longValue();
 		} else if (res == null) {
-			extra().put(field, new AtomicLong(value));
+			extra().put(field, new LongReference(value));
 			return 0;
 		}
 
-		throw new ClassCastException(res + " is not a number or atomic long");
+		throw new ClassCastException(res + " is not a number or long reference");
 	}
 
 	/**
 	 * Get the value of a long variable.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not a long wrapper type or atomized reference
+	 * @throws ClassCastException If the variable already exists and is not a long wrapper type or long reference
 	 * @see ExtraVariable#getVar(String, Object)
 	 */
 	default long getVar(String field, long def) {
 		Object res = getVar(field);
 		if (res == null) return def;
 
-		if (res instanceof AtomicLong l) return l.get();
-		//else if (res instanceof long[] a && a.length > 0) return a[0];
+		if (res instanceof LongReference l) return l.element;
 		else if (res instanceof Number n) return n.longValue();
 
-		throw new ClassCastException(res + " is not a number or atomic long");
+		throw new ClassCastException(res + " is not a number or long reference");
 	}
 
 	/**
 	 * Retrieve the value of a long variable and initialize the variable value when it does not exist.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not a long wrapper type or atomized reference
+	 * @throws ClassCastException If the variable already exists and is not a long wrapper type or long reference
 	 * @see ExtraVariable#getVar(String, Prov)
 	 */
 	default long getVar(String field, Longp initial) {
 		Object res = getVar(field);
 		if (res == null) {
 			long l = initial.get();
-			extra().put(field, new AtomicLong(l));
+			extra().put(field, new LongReference(l));
 			return l;
 		}
 
-		if (res instanceof AtomicLong l) return l.get();
+		if (res instanceof LongReference l) return l.element;
 		else if (res instanceof Number n) return n.longValue();
 
-		throw new ClassCastException(res + " is not a number or atomic long");
+		throw new ClassCastException(res + " is not a number or float reference");
 	}
 
 	/**
 	 * Use processing functions to handle long variable values and update variable values with return values.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not a long wrapper type or atomized reference
+	 * @throws ClassCastException If the variable already exists and is not a long wrapper type or long reference
 	 * @see ExtraVariable#handleVar(String, Func, Object)
 	 */
-	default long handleVar(String field, Longt handle, long def) {
+	default long handleVar(String field, LongLongf handle, long def) {
 		long l;
 		setVar(field, l = handle.get(getVar(field, def)));
 
@@ -356,67 +443,67 @@ public interface ExtraVariable {
 	/**
 	 * Set float type variable value.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or a single element float array
+	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or float reference
 	 * @see ExtraVariable#setVar(String, Object)
 	 */
 	default float setVar(String field, float value) {
 		Object res = getVar(field);
 
-		if (res instanceof float[] a && a.length > 0) {
-			float r = a[0];
-			a[0] = value;
+		if (res instanceof FloatReference f) {
+			float r = f.element;
+			f.element = value;
 			return r;
 		} else if (res instanceof Number n) {
-			extra().put(field, new float[]{value});
+			extra().put(field, new FloatReference(value));
 			return n.floatValue();
 		} else if (res == null) {
-			extra().put(field, new float[]{value});
+			extra().put(field, new FloatReference(value));
 			return 0f;
 		}
 
-		throw new ClassCastException(res + " is not a number or single float reference array");
+		throw new ClassCastException(res + " is not a number or float reference");
 	}
 
 	/**
 	 * Get float variable value.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or a single element float array
+	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or float reference
 	 * @see ExtraVariable#getVar(String, Object)
 	 */
 	default float getVar(String field, float def) {
 		Object res = getVar(field);
 		if (res == null) return def;
 
-		if (res instanceof float[] f && f.length > 0) return f[0];
+		if (res instanceof FloatReference f) return f.element;
 		else if (res instanceof Number n) return n.floatValue();
 
-		throw new ClassCastException(res + " is not a number or single float reference array");
+		throw new ClassCastException(res + " is not a number or float reference");
 	}
 
 	/**
 	 * Retrieve the float variable value and initialize the variable value when it does not exist.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or a single element float array
+	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or float reference
 	 * @see ExtraVariable#getVar(String, Prov)
 	 */
 	default float getVar(String field, Floatp initial) {
 		Object res = getVar(field);
 		if (res == null) {
 			float f = initial.get();
-			extra().put(field, new float[]{f});
+			extra().put(field, new FloatReference(f));
 			return f;
 		}
 
-		if (res instanceof float[] l && l.length > 0) return l[0];
+		if (res instanceof FloatReference f) return f.element;
 		else if (res instanceof Number n) return n.longValue();
 
-		throw new ClassCastException(res + " is not a number or single float reference array");
+		throw new ClassCastException(res + " is not a number or float reference");
 	}
 
 	/**
 	 * Use processing functions to handle float variable values and update variable values with return values.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or a single element float array
+	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or float reference
 	 * @see ExtraVariable#handleVar(String, Func, Object)
 	 */
 	default float handleVar(String field, FloatFloatf handle, float def) {
@@ -429,67 +516,67 @@ public interface ExtraVariable {
 	/**
 	 * Set the value of a double type variable.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or a single element double array
+	 * @throws ClassCastException If the variable already exists and is not a double wrapper type or double reference
 	 * @see ExtraVariable#setVar(String, Object)
 	 */
 	default double setVar(String field, double value) {
 		Object res = getVar(field);
 
-		if (res instanceof double[] a && a.length > 0) {
-			double r = a[0];
-			a[0] = value;
+		if (res instanceof DoubleReference d) {
+			double r = d.element;
+			d.element = value;
 			return r;
 		} else if (res instanceof Number n) {
-			extra().put(field, new double[]{value});
+			extra().put(field, new DoubleReference(value));
 			return n.doubleValue();
 		} else if (res == null) {
-			extra().put(field, new double[]{value});
+			extra().put(field, new DoubleReference(value));
 			return 0;
 		}
 
-		throw new ClassCastException(res + " is not a number or single double reference array");
+		throw new ClassCastException(res + " is not a number or double reference");
 	}
 
 	/**
 	 * Get double variable value.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not a float wrapper type or a single element double array
+	 * @throws ClassCastException If the variable already exists and is not a double wrapper type or double reference
 	 * @see ExtraVariable#getVar(String, Object)
 	 */
 	default double getVar(String field, double def) {
 		Object res = getVar(field);
 		if (res == null) return def;
 
-		if (res instanceof double[] f && f.length > 0) return f[0];
+		if (res instanceof DoubleReference d) return d.element;
 		else if (res instanceof Number n) return n.doubleValue();
 
-		throw new ClassCastException(res + " is not a number or single double reference array");
+		throw new ClassCastException(res + " is not a number or double reference");
 	}
 
 	/**
 	 * Retrieve the value of a double variable and initialize the variable value when it does not exist.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not a double wrapper type or a single element double array
+	 * @throws ClassCastException If the variable already exists and is not a double wrapper type or double reference
 	 * @see ExtraVariable#getVar(String, Prov)
 	 */
 	default double getVar(String field, Doublep initial) {
 		Object res = getVar(field);
 		if (res == null) {
 			double d = initial.get();
-			extra().put(field, new double[]{d});
+			extra().put(field, new DoubleReference(d));
 			return d;
 		}
 
-		if (res instanceof double[] d && d.length > 0) return d[0];
+		if (res instanceof DoubleReference d) return d.element;
 		else if (res instanceof Number n) return n.doubleValue();
 
-		throw new ClassCastException(res + " is not a number or single double reference array");
+		throw new ClassCastException(res + " is not a number or double reference");
 	}
 
 	/**
 	 * Use processing functions to handle double variable values and update variable values with return values.
 	 *
-	 * @throws ClassCastException If the variable already exists and is not a double wrapper type or a single element double array
+	 * @throws ClassCastException If the variable already exists and is not a double wrapper type or double reference
 	 * @see ExtraVariable#handleVar(String, Func, Object)
 	 */
 	default double handleVar(String field, DoubleDoublef handle, double def) {

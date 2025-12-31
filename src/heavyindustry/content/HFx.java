@@ -71,7 +71,7 @@ public final class HFx {
 
 	public static final IntMap2<Effect> same = new IntMap2<>(Effect.class);
 
-	private static float percent = 0;
+	static float percent = 0;
 
 	public static final Effect trailParticleEffect = new Effect(8f, e -> {
 		float life = Interp.pow2Out.apply(1f - e.fin());

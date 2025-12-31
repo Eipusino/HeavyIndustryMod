@@ -13,12 +13,12 @@ import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
 import arc.struct.FloatSeq;
-import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import heavyindustry.util.Arrays2;
+import heavyindustry.util.CollectionList;
 import mindustry.gen.Rotc;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Trail;
@@ -151,12 +151,12 @@ public final class HTrails {
 	public static class DriftTrail {
 		public int length;
 
-		private final Seq<DriftTrailData> points;
-		private float lastX = -1, lastY = -1, lastAngle = -1, lastW = 0f, counter = 0f;
+		protected final CollectionList<DriftTrailData> points;
+		protected float lastX = -1, lastY = -1, lastAngle = -1, lastW = 0f, counter = 0f;
 
 		public DriftTrail(int len) {
 			length = len;
-			points = new Seq<>(true, len, DriftTrailData.class);
+			points = new CollectionList<>(true, len, DriftTrailData.class);
 		}
 
 		public DriftTrail copy() {
@@ -302,7 +302,7 @@ public final class HTrails {
 	}
 
 	public static class ZTrail extends Trail {
-		protected float lastZ = 0f;
+		public float lastZ = 0f;
 
 		public ZTrail(int length) {
 			super(length);

@@ -67,8 +67,6 @@ import mindustry.world.meta.StatUnit;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-
 /**
  * Input-output utilities, providing very specific functions that aren't really commonly used, but often
  * enough to require me to write a class for it.
@@ -314,7 +312,7 @@ public final class Get {
 
 	//use for cst bullet
 	@Contract(value = "_, _, _, _, _, _, _, _, _, _, _, _, _, _, _, _ -> param1")
-	public static Bullet anyOtherCreate(Bullet bullet, BulletType type, Entityc shooter, Entityc owner, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY, @Nullable Teamc target) {
+	public static Bullet anyOtherCreate(@Nullable Bullet bullet, @Nullable BulletType type, Entityc shooter, Entityc owner, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data, Mover mover, float aimX, float aimY, @Nullable Teamc target) {
 		if (bullet == null || type == null) return bullet;
 		bullet.type = type;
 		bullet.owner = owner;
@@ -348,7 +346,7 @@ public final class Get {
 		return bullet;
 	}
 
-	public static void liquid(IntMap2<Cons<Liquid>> cons, String name, Color color, float exp, float fla, float htc, float vis, float temp) {
+	public static void liquid(@Nullable IntMap2<Cons<Liquid>> cons, String name, Color color, float exp, float fla, float htc, float vis, float temp) {
 		for (int i = 1; i < 10; i++) {
 			int j = i;
 			Liquid liquid = new Liquid(name + j, color) {{
@@ -368,7 +366,7 @@ public final class Get {
 		liquid(null, name, color, exp, fla, htc, vis, temp);
 	}
 
-	public static void item(IntMap2<Cons<Item>> cons, String name, Color color, float exp, float fla, float cos, float radio, float chg, float health) {
+	public static void item(@Nullable IntMap2<Cons<Item>> cons, String name, Color color, float exp, float fla, float cos, float radio, float chg, float health) {
 		for (int i = 1; i < 10; i++) {
 			int j = i;
 			Item item = new Item(name + j, color) {{
@@ -447,7 +445,7 @@ public final class Get {
 		Draw.color();
 	}
 
-	public static void extinguish(Team team, float x, float y, float range, float intensity) {
+	public static void extinguish(@Nullable Team team, float x, float y, float range, float intensity) {
 		Vars.indexer.eachBlock(team, x, y, range, Constant.BOOLF_BUILDING_TRUE, b -> Fires.extinguish(b.tile, intensity));
 	}
 
@@ -455,7 +453,7 @@ public final class Get {
 		Vars.indexer.eachBlock(teamc.team(), teamc.x(), teamc.y(), range, Constant.BOOLF_BUILDING_TRUE, b -> Fires.extinguish(b.tile, intensity));
 	}
 
-	public static Unit teleportUnitNet(Unit before, float x, float y, float angle, Player player) {
+	public static Unit teleportUnitNet(Unit before, float x, float y, float angle, @Nullable Player player) {
 		if (Vars.net.active() || Vars.headless) {
 			if (player != null) {
 				player.set(x, y);
@@ -506,8 +504,8 @@ public final class Get {
 	}
 
 	@Contract(pure = true)
-	public static boolean friendly(Liquid liquid) {
-		return liquid.effect != StatusEffects.none && liquid.effect.damage <= 0.1f && (liquid.effect.damage < -0.01f || liquid.effect.healthMultiplier > 1.01f || liquid.effect.damageMultiplier > 1.01f);
+	public static boolean friendly(@Nullable Liquid liquid) {
+		return liquid != null && liquid.effect != StatusEffects.none && liquid.effect.damage <= 0.1f && (liquid.effect.damage < -0.01f || liquid.effect.healthMultiplier > 1.01f || liquid.effect.damageMultiplier > 1.01f);
 	}
 
 	@Contract(pure = true)
@@ -516,8 +514,8 @@ public final class Get {
 	}
 
 	public static Vec2 randomPoint(float radius) {
-		float r = radius * Mathf.sqrt(Mathf.random());
-		return Tmp.v1.setToRandomDirection().setLength(r);
+		float random = radius * Mathf.sqrt(Mathf.random());
+		return Tmp.v1.setToRandomDirection().setLength(random);
 	}
 
 	@Contract(pure = true)
@@ -526,26 +524,28 @@ public final class Get {
 	}
 
 	@Contract(pure = true)
-	public static float bulletDamage(BulletType b, float lifetime) {
-		if (b.spawnUnit != null) { // Missile unit damage
-			if (b.spawnUnit.weapons.isEmpty()) return 0f;
-			Weapon uW = b.spawnUnit.weapons.first();
-			return bulletDamage(uW.bullet, uW.bullet.lifetime) * uW.shoot.shots;
+	public static float bulletDamage(@Nullable BulletType type, float lifetime) {
+		if (type == null) return 0f;
+
+		if (type.spawnUnit != null) { // Missile unit damage
+			if (type.spawnUnit.weapons.isEmpty()) return 0f;
+			Weapon weapon = type.spawnUnit.weapons.first();
+			return bulletDamage(weapon.bullet, weapon.bullet.lifetime) * weapon.shoot.shots;
 		} else {
-			float damage = b.damage + b.splashDamage; // Base Damage
-			damage += b.lightningDamage * b.lightning * b.lightningLength; // Lightning Damage
+			float damage = type.damage + type.splashDamage; // Base Damage
+			damage += type.lightningDamage * type.lightning * type.lightningLength; // Lightning Damage
 
-			if (b.fragBullet != null) { // Frag Bullet Damage
-				damage += bulletDamage(b.fragBullet, b.fragBullet.lifetime) * b.fragBullets;
+			if (type.fragBullet != null) { // Frag Bullet Damage
+				damage += bulletDamage(type.fragBullet, type.fragBullet.lifetime) * type.fragBullets;
 			}
 
-			if (b.intervalBullet != null) { //Interval Bullet Damage
-				int amount = (int) (lifetime / b.bulletInterval * b.intervalBullets);
-				damage += bulletDamage(b.intervalBullet, b.intervalBullet.lifetime) * amount;
+			if (type.intervalBullet != null) { //Interval Bullet Damage
+				int amount = (int) (lifetime / type.bulletInterval * type.intervalBullets);
+				damage += bulletDamage(type.intervalBullet, type.intervalBullet.lifetime) * amount;
 			}
 
-			if (b instanceof ContinuousBulletType cbt) { //Continuous Damage
-				return damage * lifetime / cbt.damageInterval;
+			if (type instanceof ContinuousBulletType continuous) { //Continuous Damage
+				return damage * lifetime / continuous.damageInterval;
 			} else {
 				return damage;
 			}

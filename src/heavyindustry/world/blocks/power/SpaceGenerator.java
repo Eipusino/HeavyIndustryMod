@@ -153,7 +153,7 @@ public class SpaceGenerator extends PowerGenerator {
 			return productionEfficiency * powerProduction * sum;
 		}
 
-		private int tileEmp() {
+		protected int tileEmp() {
 			solids.clear();
 
 			int tr = space;

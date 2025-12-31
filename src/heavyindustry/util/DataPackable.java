@@ -17,7 +17,7 @@ import java.io.DataOutputStream;
  * <pre>{@code
  * //Declare a packable type
  * public class GltfData implements DataPackable {
- *     private static final long typeID = 1587541965784324577l;
+ *     static final long typeID = 1587541965784324577l;
  *
  *     static {
  *         DataPackable.assignType(typeID, args -> new GltfData());

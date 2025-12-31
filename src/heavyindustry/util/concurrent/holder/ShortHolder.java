@@ -1,8 +1,10 @@
 package heavyindustry.util.concurrent.holder;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Objects;
 
-public class ShortHolder<V> implements Cloneable {
+public class ShortHolder<V> implements Cloneable, Comparable<ShortHolder<?>> {
 	public short key;
 	public V value;
 
@@ -42,5 +44,10 @@ public class ShortHolder<V> implements Cloneable {
 		} catch (CloneNotSupportedException awful) {
 			return new ShortHolder<>(key, value);
 		}
+	}
+
+	@Override
+	public int compareTo(@NotNull ShortHolder<?> o) {
+		return Short.compare(key, o.key);
 	}
 }
