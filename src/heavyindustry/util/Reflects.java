@@ -14,6 +14,8 @@
 package heavyindustry.util;
 
 import arc.func.Boolf;
+import arc.func.Boolp;
+import arc.func.Intp;
 import arc.func.Prov;
 import arc.util.Log;
 import arc.util.OS;
@@ -133,6 +135,50 @@ public final class Reflects {
 		} catch (Exception e) {
 			Log.err(e);
 			return def.get();
+		}
+	}
+
+	@Contract(pure = true)
+	public static boolean getBoolean(Class<?> type, String name, Object object, Boolp def) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return field.getBoolean(object);
+		} catch (Exception e) {
+			Log.err(e);
+			return def.get();
+		}
+	}
+
+	@Contract(pure = true)
+	public static int getInt(Class<?> type, String name, Object object, Intp def) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			return field.getInt(object);
+		} catch (Exception e) {
+			Log.err(e);
+			return def.get();
+		}
+	}
+
+	public static void set(Class<?> type, String name, Object object, Object value) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			field.set(object, value);
+		} catch (Exception e) {
+			Log.err(e);
+		}
+	}
+
+	public static void setInt(Class<?> type, String name, Object object, int value) {
+		try {
+			Field field = type.getDeclaredField(name);
+			field.setAccessible(true);
+			field.setInt(object, value);
+		} catch (Exception e) {
+			Log.err(e);
 		}
 	}
 
@@ -398,30 +444,14 @@ public final class Reflects {
 	}
 
 	public static void setClass(@Nullable Object object, Class<?> cls) {
-		if (object == null || !OS.isAndroid) return;
-
-		try {
-			if (klassField == null) {
-				klassField = Object.class.getDeclaredField("shadow$_klass_");
-				klassField.setAccessible(true);
-			}
-			klassField.set(object, cls);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			Log.err(e);
+		if (object != null && OS.isAndroid) {
+			set(Object.class, "shadow$_klass_", object, cls);
 		}
 	}
 
 	public static void setHash(@Nullable Object object, int hash) {
-		if (object == null || !OS.isAndroid) return;
-
-		try {
-			if (monitorField == null) {
-				monitorField = Object.class.getDeclaredField("shadow$_monitor_");
-				monitorField.setAccessible(true);
-			}
-			monitorField.set(object, hash);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			Log.err(e);
+		if (object != null && OS.isAndroid) {
+			setInt(Object.class, "shadow$_monitor_", object, hash);
 		}
 	}
 }
