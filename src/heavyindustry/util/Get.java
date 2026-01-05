@@ -31,6 +31,7 @@ import arc.struct.IntSeq;
 import arc.struct.IntSet;
 import arc.struct.IntSet.IntSetIterator;
 import arc.struct.Seq;
+import arc.util.Log;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.graphics.HPal;
@@ -59,6 +60,7 @@ import mindustry.type.Weapon;
 import mindustry.world.Block;
 import mindustry.world.Tile;
 import mindustry.world.blocks.defense.turrets.ItemTurret;
+import mindustry.world.consumers.Consume;
 import mindustry.world.draw.DrawBlock;
 import mindustry.world.draw.DrawDefault;
 import mindustry.world.draw.DrawMulti;
@@ -66,6 +68,8 @@ import mindustry.world.draw.DrawRegion;
 import mindustry.world.meta.StatUnit;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
+
+import java.lang.reflect.Field;
 
 /**
  * Input-output utilities, providing very specific functions that aren't really commonly used, but often
@@ -89,6 +93,8 @@ public final class Get {
 
 	static final IntSeq amounts = new IntSeq();
 
+	static Field consumeBuilderField;
+
 	/** Don't let anyone instantiate this class. */
 	private Get() {}
 
@@ -104,15 +110,15 @@ public final class Get {
 	}
 
 	@Contract(pure = true)
-	public static int getByIndex(IntSet ints, int index) {
-		if (index < 0 || index >= ints.size) {
+	public static int getByIndex(IntSet set, int index) {
+		if (index < 0 || index >= set.size) {
 			return -1;
 		}
 
 		int value = 0;
 		int counter = 0;
 
-		IntSetIterator iter = ints.iterator();
+		IntSetIterator iter = set.iterator();
 		while (iter.hasNext) {
 			int item = iter.next();
 			if (counter == index) {
@@ -549,6 +555,22 @@ public final class Get {
 			} else {
 				return damage;
 			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static Seq<Consume> consumeBuilder(@Nullable Block block) {
+		try {
+			if (consumeBuilderField == null) {
+				consumeBuilderField = Block.class.getDeclaredField("consumeBuilder");
+				consumeBuilderField.setAccessible(true);
+			}
+
+			return block == null ? new Seq<>() : (Seq<Consume>) consumeBuilderField.get(block);
+		} catch (Exception e) {
+			Log.err(e);
+
+			return new Seq<>();
 		}
 	}
 

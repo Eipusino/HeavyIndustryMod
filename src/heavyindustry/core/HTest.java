@@ -12,7 +12,7 @@ public class HTest implements Cloneable, ExtraVariable {
 
 	public HTest() {}
 
-	public static void load() {
+	public static void test() {
 		// ele.
 	}
 

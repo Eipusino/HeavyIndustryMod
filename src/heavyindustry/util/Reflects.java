@@ -22,9 +22,11 @@ import arc.util.OS;
 import heavyindustry.HVars;
 import mindustry.Vars;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -32,6 +34,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Reflection utilities, mainly for wrapping reflective operations to eradicate checked exceptions.
@@ -95,8 +98,8 @@ public final class Reflects {
 		else return type;
 	}
 
-	@Contract(value = "_ -> new", pure = true)
-	public static String def(Class<?> type) {
+	@Contract(pure = true)
+	public static String defs(Class<?> type) {
 		// boolean
 		if (type == boolean.class || type == Boolean.class) return "false";
 		// integer
@@ -113,7 +116,7 @@ public final class Reflects {
 	}
 
 	@Contract(pure = true)
-	public static Object as(Class<?> type) {
+	public static Object def(Class<?> type) {
 		if (type == boolean.class || type == Boolean.class) return false;
 		else if (type == byte.class || type == Byte.class) return (byte) 0;
 		else if (type == short.class || type == Short.class) return (short) 0;
@@ -127,7 +130,7 @@ public final class Reflects {
 
 	@SuppressWarnings("unchecked")
 	@Contract(pure = true)
-	public static <T> T get(Class<?> type, String name, Object object, Prov<T> def) {
+	public static <T> T get(Class<?> type, @NonNls String name, Object object, Prov<T> def) {
 		try {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
@@ -139,7 +142,7 @@ public final class Reflects {
 	}
 
 	@Contract(pure = true)
-	public static boolean getBoolean(Class<?> type, String name, Object object, Boolp def) {
+	public static boolean getBoolean(Class<?> type, @NonNls String name, Object object, Boolp def) {
 		try {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
@@ -151,7 +154,7 @@ public final class Reflects {
 	}
 
 	@Contract(pure = true)
-	public static int getInt(Class<?> type, String name, Object object, Intp def) {
+	public static int getInt(Class<?> type, @NonNls String name, Object object, Intp def) {
 		try {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
@@ -162,7 +165,7 @@ public final class Reflects {
 		}
 	}
 
-	public static void set(Class<?> type, String name, Object object, Object value) {
+	public static void set(Class<?> type, @NonNls String name, Object object, Object value) {
 		try {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
@@ -172,7 +175,7 @@ public final class Reflects {
 		}
 	}
 
-	public static void setInt(Class<?> type, String name, Object object, int value) {
+	public static void setInt(Class<?> type, @NonNls String name, Object object, int value) {
 		try {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
@@ -244,7 +247,7 @@ public final class Reflects {
 	 * @return The class, or {@code null} if not found.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> Class<T> findClass(String name) {
+	public static <T> Class<T> findClass(@NonNls String name) {
 		try {
 			return (Class<T>) Class.forName(name, true, Vars.mods.mainLoader());
 		} catch (ClassNotFoundException e) {
@@ -253,7 +256,7 @@ public final class Reflects {
 	}
 
 	@Contract(pure = true)
-	public static @Nullable Field findField(Class<?> type, String name) {
+	public static @Nullable Field findField(Class<?> type, @NonNls String name) {
 		while (type != null) {
 			Field[] fields = type.getDeclaredFields();
 			for (Field field : fields) {
@@ -291,7 +294,7 @@ public final class Reflects {
 	 * @return The method, or {@code null} if not found.
 	 */
 	@Contract(pure = true)
-	public static @Nullable Method findMethod(Class<?> type, String name, Class<?>... args) {
+	public static @Nullable Method findMethod(Class<?> type, @NonNls String name, Class<?>... args) {
 		while (type != null) {
 			Method[] methods = type.getDeclaredMethods();
 			for (Method method : methods) {
@@ -352,10 +355,6 @@ public final class Reflects {
 		return hierarchy;
 	}
 
-	public static <T> T copyProperties(Object source, T target) {
-		return copyProperties(source, target, Arrays2.arrayOf("id"));
-	}
-
 	/**
 	 * Copy the properties of an object field to another object.
 	 *
@@ -364,7 +363,7 @@ public final class Reflects {
 	 * @param filler Excluded field names
 	 */
 	@Contract(value = "_, _, _ -> param2")
-	public static <T> T copyProperties(Object source, T target, @Nullable String[] filler) {
+	public static <T> T copyProperties(Object source, T target, String @Nullable ... filler) {
 		if (source == null || target == null) return target;
 
 		targetFieldMap.clear();
@@ -443,12 +442,36 @@ public final class Reflects {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	public static <T> T invokeArgs(Object method, Prov<T> def, Object... arguments) {
+		try {
+			return (T) ((MethodHandle) method).invokeWithArguments(arguments);
+		} catch (Throwable e) {
+			Log.err(e);
+
+			return def.get();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T invokeList(Object method, Prov<T> def, List<?> arguments) {
+		try {
+			return (T) ((MethodHandle) method).invokeWithArguments(arguments);
+		} catch (Throwable e) {
+			Log.err(e);
+
+			return def.get();
+		}
+	}
+
+	// Android only
 	public static void setClass(@Nullable Object object, Class<?> cls) {
 		if (object != null && OS.isAndroid) {
 			set(Object.class, "shadow$_klass_", object, cls);
 		}
 	}
 
+	// Android only
 	public static void setHash(@Nullable Object object, int hash) {
 		if (object != null && OS.isAndroid) {
 			setInt(Object.class, "shadow$_monitor_", object, hash);
