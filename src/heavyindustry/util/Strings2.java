@@ -1,5 +1,6 @@
 package heavyindustry.util;
 
+import arc.Core;
 import arc.math.Mathf;
 import arc.util.Strings;
 import org.jetbrains.annotations.Contract;
@@ -81,7 +82,7 @@ public final class Strings2 {
 	/** Randomly generate a string of length within the specified range. */
 	@Contract(pure = true)
 	public static @NotNull String generateRandomString(int min, int max) {
-		if (min < 0 || max < min || max > 1000000) return "";
+		if (min < 0 || max < min || max > 1000000) return Core.bundle.format("text.generate-random-string-2", min, max);
 
 		int length = min + Mathf.random(max - min + 1);
 		return generateRandomString(length);
@@ -109,7 +110,7 @@ public final class Strings2 {
 	 * @param number The number to be converted
 	 * @param retain Reserved decimal places
 	 */
-	public static String toByteFixNonUnit(double number, int retain) {
+	public static @NotNull String toByteFixNonUnit(double number, int retain) {
 		boolean isNegative = false;
 		if (number < 0) {
 			number = -number;

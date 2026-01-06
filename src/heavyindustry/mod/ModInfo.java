@@ -2,25 +2,40 @@ package heavyindustry.mod;
 
 import arc.files.Fi;
 import arc.files.ZipFi;
+import arc.util.ArcRuntimeException;
 import arc.util.serialization.Jval;
+import org.jetbrains.annotations.Nullable;
 
 public class ModInfo {
 	public final String name;
 	public final String version;
 
-	//public final String main;
+	//public final float minGameVersion;
+
+	public final Fi meta;
+	public final Jval info;
+
+	public final @Nullable String main;
 
 	public final Fi file;
 
-	public ModInfo(Fi modFile) {
+	public ModInfo(Fi modFile) throws ArcRuntimeException {
 		if (modFile instanceof ZipFi)
-			throw new IllegalArgumentException("given file is a zip file object, please use file object");
-		Fi modMeta;
-		modMeta = ModGetter.getModFormat(modFile);
-		Jval info = Jval.read(modMeta.reader());
+			throw new ArcRuntimeException("given file is a zip file object, please use file object");
+
+		meta = ModGetter.getModFormat(modFile);
+		info = Jval.read(meta.reader());
 		file = modFile;
 		name = info.get("name").asString();
 		version = info.get("version").asString();
-		//main = info.getString("main");
+		main = info.getString("main", null);
+	}
+
+	@Override
+	public String toString() {
+		return "ModInfo{" +
+				"name=" + name +
+				", version=" + version +
+				'}';
 	}
 }

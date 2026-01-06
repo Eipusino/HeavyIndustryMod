@@ -11,11 +11,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
+import java.util.AbstractSet;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 import static heavyindustry.util.Constant.PRIME2;
 import static heavyindustry.util.Constant.PRIME3;
@@ -30,7 +30,7 @@ import static heavyindustry.util.Constant.PRIME3;
  *
  * @author Nathan Sweet
  */
-public class CollectionObjectSet<E> implements Eachable<E>, Set<E>, Cloneable {
+public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E>, Cloneable {
 	public int size;
 
 	public final Class<?> keyComponentType;

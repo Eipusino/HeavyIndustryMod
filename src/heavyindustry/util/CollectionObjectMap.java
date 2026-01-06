@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
+import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Arrays;
 import java.util.Collection;
@@ -32,7 +33,7 @@ import static heavyindustry.util.Constant.PRIME3;
  *
  * @author Eipusino
  */
-public class CollectionObjectMap<K, V> implements Iterable<ObjectHolder<K, V>>, Map<K, V>, Eachable<ObjectHolder<K, V>>, Cloneable {
+public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iterable<ObjectHolder<K, V>>, Eachable<ObjectHolder<K, V>>, Cloneable {
 	public int size;
 
 	public final Class<?> keyComponentType;

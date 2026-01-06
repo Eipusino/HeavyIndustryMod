@@ -72,7 +72,7 @@ public final class ThreadSafePools {
 	 * Frees the specified objects from the {@link #get(Class, Prov) pool}. Null objects within the array are silently ignored. Objects
 	 * don't need to be from the same pool.
 	 */
-	public static void freeAll(List objects) {
+	public static void freeAll(List<?> objects) {
 		freeAll(objects, false);
 	}
 
@@ -81,7 +81,7 @@ public final class ThreadSafePools {
 	 *
 	 * @param samePool If true, objects don't need to be from the same pool but the pool must be looked up for each object.
 	 */
-	public static void freeAll(List objects, boolean samePool) {
+	public static void freeAll(List<?> objects, boolean samePool) {
 		Pool pool = null;
 		for (int i = 0, n = objects.size(); i < n; i++) {
 			Object object = objects.get(i);

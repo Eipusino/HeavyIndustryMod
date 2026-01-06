@@ -60,9 +60,8 @@ import java.io.DataOutputStream;
  * d2.read(dataArr);//Instantiate first, then read properties from the array.
  * }</pre>
  */
-@SuppressWarnings({"unchecked", "rawtypes"})
 public interface DataPackable {
-	LongMap2<Func> objectProvMap = new LongMap2<>(Func.class);
+	LongMap2<Func<? extends Object[], ?>> objectProvMap = new LongMap2<>(Func.class);
 
 	/**
 	 * Register a constructor of a wrapper type that takes an array of objects
@@ -71,7 +70,7 @@ public interface DataPackable {
 	 * @param typeID      Construct an ID for this type
 	 * @param constructor Method for creating raw objects when performing data parsing using this ID
 	 */
-	static void assignType(long typeID, Func<Object[], Object> constructor) {
+	static void assignType(long typeID, Func<? extends Object[], ?> constructor) {
 		if (objectProvMap.put(typeID, constructor) != null)
 			throw new SerializationException("Conflicting id, type id: " + typeID + "was assigned");
 	}
@@ -81,6 +80,7 @@ public interface DataPackable {
 	 * Note that the passed constructor parameters do not have type checking,
 	 * and it is generally not recommended to use and register constructors that contain parameters.
 	 */
+	@SuppressWarnings("unchecked")
 	static <T extends DataPackable> T readObject(byte[] bytes, Object... param) {
 		long id = new Reads(new DataInputStream(new ByteArrayInputStream(bytes))).l();
 		Func<Object[], T> objProv = (Func<Object[], T>) objectProvMap.get(id);
