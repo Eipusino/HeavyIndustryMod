@@ -8,6 +8,7 @@ import mindustry.net.NetConnection;
 import mindustry.type.Item;
 import mindustry.world.Tile;
 import mindustry.world.blocks.UnitTetherBlock;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 /**
  * Handles various modded client-server synchronizations.
@@ -18,6 +19,7 @@ public final class HCall {
 	/** Don't let anyone instantiate this class. */
 	private HCall() {}
 
+	@Internal
 	public static void init() {
 		Net.registerPacket(DroneSpawnedCallPacket::new);
 		Net.registerPacket(ReleaseShieldWallBuildSyncPacket::new);

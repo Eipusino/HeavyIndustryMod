@@ -27,7 +27,7 @@ public class ModInfo {
 		info = Jval.read(meta.reader());
 		file = modFile;
 		name = info.get("name").asString();
-		version = info.get("version").asString();
+		version = info.getString("version", "");
 		main = info.getString("main", null);
 	}
 

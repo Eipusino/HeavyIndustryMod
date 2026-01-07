@@ -3,6 +3,7 @@ package heavyindustry.content;
 import heavyindustry.HVars;
 import mindustry.content.Planets;
 import mindustry.type.SectorPreset;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 /**
  * Defines the {@linkplain SectorPreset maps} this mod offers.
@@ -19,6 +20,7 @@ public final class HSectorPresets {
 	private HSectorPresets() {}
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
+	@Internal
 	public static void load() {
 		if (HVars.isPlugin) return;
 

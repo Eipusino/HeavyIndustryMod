@@ -19,6 +19,7 @@ import arc.util.Log;
 import heavyindustry.HVars;
 import heavyindustry.util.Reflects;
 import mindustry.Vars;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import rhino.Context;
 import rhino.Function;
 import rhino.ImporterTopLevel;
@@ -42,11 +43,10 @@ public final class HScripts {
 	private HScripts() {}
 
 	/** Initializes the Mod JS. */
+	@Internal
 	public static void init() {
 		try {
-			if (Vars.mods.getScripts().scope instanceof ImporterTopLevel imp) {
-				importPackages(imp, HVars.packages);
-			}
+			importPackages((ImporterTopLevel) Vars.mods.getScripts().scope, HVars.packages);
 		} catch (Throwable e) {
 			Log.err(e);
 		}
@@ -122,7 +122,7 @@ public final class HScripts {
 		Class<?> type = Reflects.box(returnType);
 		return args -> {
 			Object res = func.call(context, scope, scope, args);
-			if (type == Void.class) return null;
+			if (type == Void.class || res == null) return null;
 
 			if (res instanceof Wrapper w) res = w.unwrap();
 			if (!type.isAssignableFrom(res.getClass()))

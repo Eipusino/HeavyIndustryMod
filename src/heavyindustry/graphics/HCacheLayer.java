@@ -2,6 +2,7 @@ package heavyindustry.graphics;
 
 import mindustry.graphics.CacheLayer;
 import mindustry.graphics.CacheLayer.ShaderLayer;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 /**
  * Defines the {@linkplain CacheLayer cache layer}s this mod offers.
@@ -15,6 +16,7 @@ public final class HCacheLayer {
 	private HCacheLayer() {}
 
 	/** Loads the cache layers. */
+	@Internal
 	public static void load() {
 		brine = new ShaderLayer(HShaders.brine);
 		glacium = new ShaderLayer(HShaders.glacium);

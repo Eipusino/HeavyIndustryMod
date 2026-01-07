@@ -8,6 +8,7 @@ import heavyindustry.HVars;
 import mindustry.Vars;
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.gen.Sounds;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 public final class HSounds {
 	public static Fi soundsDir = HVars.internalTree.child("sounds");
@@ -57,6 +58,7 @@ public final class HSounds {
 	/** Don't let anyone instantiate this class. */
 	private HSounds() {}
 
+	@Internal
 	public static void load() {
 		try {
 			ct1 = load("ct1.ogg");

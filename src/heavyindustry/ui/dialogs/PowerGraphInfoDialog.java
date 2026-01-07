@@ -1,6 +1,7 @@
 package heavyindustry.ui.dialogs;
 
 import arc.Core;
+import arc.func.Prov;
 import arc.scene.ui.layout.Table;
 import arc.struct.IntSeq;
 import arc.struct.IntSet;
@@ -18,6 +19,8 @@ import static heavyindustry.ui.Elements.formatAmount;
 
 public class PowerGraphInfoDialog extends BaseDialog {
 	protected final float updateInterval = 60; //Update every second
+
+	protected static final Prov<Seq<Building>> prov = () -> new Seq<>(Building.class);
 
 	protected final IntSet opened = new IntSet();
 	protected final IntMap2<Seq<Building>> producers = new IntMap2<>(Seq.class);
@@ -142,9 +145,9 @@ public class PowerGraphInfoDialog extends BaseDialog {
 
 		clearData();
 
-		graph.producers.each(p -> producers.get(p.block.id, () -> new Seq<>(Building.class)).add(p));
-		graph.consumers.each(p -> consumers.get(p.block.id, () -> new Seq<>(Building.class)).add(p));
-		graph.batteries.each(p -> batteries.get(p.block.id, () -> new Seq<>(Building.class)).add(p));
+		graph.producers.each(p -> producers.get(p.block.id, prov).add(p));
+		graph.consumers.each(p -> consumers.get(p.block.id, prov).add(p));
+		graph.batteries.each(p -> batteries.get(p.block.id, prov).add(p));
 
 		refresh();
 	}

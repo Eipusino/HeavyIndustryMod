@@ -7,6 +7,7 @@ import heavyindustry.HVars;
 import mindustry.Vars;
 import mindustry.game.Schematic;
 import mindustry.game.Schematics;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -16,6 +17,7 @@ public final class HLoadouts {
 
 	private HLoadouts() {}
 
+	@Internal
 	public static void load() {
 		if (Vars.headless || HVars.isPlugin) return;
 

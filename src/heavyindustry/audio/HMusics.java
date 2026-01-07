@@ -9,6 +9,7 @@ import heavyindustry.util.CollectionObjectMap;
 import mindustry.Vars;
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.gen.Musics;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.Map;
 
@@ -25,6 +26,7 @@ public final class HMusics {
 	/** Don't let anyone instantiate this class. */
 	private HMusics() {}
 
+	@Internal
 	public static void load() {
 		try {
 			// no

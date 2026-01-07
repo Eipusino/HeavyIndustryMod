@@ -20,6 +20,7 @@ import heavyindustry.HVars;
 import heavyindustry.type.AtmospherePlanet;
 import mindustry.Vars;
 import mindustry.type.Planet;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static heavyindustry.HVars.MOD_NAME;
 
@@ -54,6 +55,7 @@ public final class HShaders {
 	private HShaders() {}
 
 	/** Loads the shaders. */
+	@Internal
 	public static void load() {
 		String prevVert = Shader.prependVertexCode, prevFrag = Shader.prependFragmentCode;
 		Shader.prependVertexCode = Shader.prependFragmentCode = "";
@@ -109,6 +111,7 @@ public final class HShaders {
 		Shader.prependFragmentCode = prevFrag;
 	}
 
+	@Internal
 	public static void dispose() {
 		brine.dispose();
 		crystalFluid.dispose();

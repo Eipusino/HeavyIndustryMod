@@ -12,6 +12,7 @@ import mindustry.content.Liquids;
 import mindustry.content.StatusEffects;
 import mindustry.gen.Puddle;
 import mindustry.type.Liquid;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 /**
  * Defines the {@linkplain Liquid liquid} this mod offers.
@@ -29,6 +30,7 @@ public final class HLiquids {
 	private HLiquids() {}
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
+	@Internal
 	public static void load() {
 		if (HVars.isPlugin) return;
 

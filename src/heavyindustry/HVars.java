@@ -1,9 +1,7 @@
 package heavyindustry;
 
-import arc.files.Fi;
 import arc.struct.Seq;
 import arc.util.Log;
-import arc.util.serialization.Jval;
 import heavyindustry.annotations.Annotations.ListClasses;
 import heavyindustry.annotations.Annotations.ListPackages;
 import heavyindustry.core.HeavyIndustryListener;
@@ -13,7 +11,7 @@ import heavyindustry.graphics.g2d.CutBatch;
 import heavyindustry.graphics.g2d.DevastationBatch;
 import heavyindustry.graphics.g2d.FragmentationBatch;
 import heavyindustry.graphics.g2d.VaporizeBatch;
-import heavyindustry.mod.ModGetter;
+import heavyindustry.mod.ModInfo;
 import heavyindustry.util.PlatformImpl;
 import mindustry.content.TechTree.TechNode;
 import mindustry.type.Sector;
@@ -33,9 +31,11 @@ public final class HVars {
 	public static final String LINK_GIT_HUB = "https://github.com/Eipusino/HeavyIndustryMod";
 
 	/** Lists all the mod's classes by their canonical names. Generated at compile-time. */
-	public static final @ListClasses String[] classes = {};
+	@ListClasses
+	public static final String[] classes = {};
 	/** Lists all the mod's packages by their canonical names. Generated at compile-time. */
-	public static final @ListPackages String[] packages = {};
+	@ListPackages
+	public static final String[] packages = {};
 
 	public static PlatformImpl platformImpl;
 
@@ -46,8 +46,7 @@ public final class HVars {
 	/** Is {@code java.lang.invoke.MethodHandles.Lookup.IMPL_LOOKUP} instance available. */
 	public static boolean hasImplLookup = false;
 
-	/** Link {@code mod.json} of this mod. */
-	public static Jval info;
+	public static ModInfo modInfo;
 
 	/** Whether the mod is running in hidden mode. */
 	public static boolean isPlugin;
@@ -72,9 +71,8 @@ public final class HVars {
 		internalTree = new InternalFileTree(HeavyIndustryMod.class);
 
 		try {
-			Fi file = ModGetter.getModFormat(internalTree.root);
-			info = Jval.read(file.reader());
-			isPlugin = info.getBool("hidden", false);
+			modInfo = new ModInfo(internalTree.file);
+			isPlugin = modInfo.info.getBool("hidden", false);
 		} catch (Exception e) {
 			Log.err(e);
 		}

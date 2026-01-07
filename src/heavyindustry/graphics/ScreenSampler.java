@@ -15,6 +15,7 @@ import mindustry.Vars;
 import mindustry.game.EventType.Trigger;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pixelator;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
@@ -56,6 +57,7 @@ public final class ScreenSampler {
 	 * Load Events for ScreenSampler.
 	 * If you try to load it a second time, nothing will happen.
 	 */
+	@Internal
 	public static void setup() {
 		if (activity) return;
 

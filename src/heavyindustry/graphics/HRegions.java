@@ -12,6 +12,7 @@ import arc.struct.ObjectSet;
 import arc.struct.Seq;
 import heavyindustry.HVars;
 import heavyindustry.util.Reflects;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,10 +30,12 @@ public final class HRegions {
 
 	private HRegions() {}
 
+	@Internal
 	public static void load() {
 		white = create(HTextures.white, "white");
 	}
 
+	@Internal
 	public static void addAll() {
 		textures = Core.atlas.getTextures();
 		regions = Core.atlas.getRegions();

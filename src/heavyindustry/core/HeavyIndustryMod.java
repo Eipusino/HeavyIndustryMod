@@ -340,12 +340,6 @@ public final class HeavyIndustryMod extends Mod {
 
 		String className = OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl";
 
-		loadLibrary("Impl", className, true, clazz -> {
-			Object instance = clazz.getConstructor().newInstance();
-
-			if (instance instanceof PlatformImpl impl) {
-				HVars.platformImpl = impl;
-			}
-		});
+		loadLibrary("Impl", className, true, clazz -> HVars.platformImpl = (PlatformImpl) clazz.getConstructor().newInstance());
 	}
 }

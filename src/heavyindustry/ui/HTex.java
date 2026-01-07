@@ -17,6 +17,7 @@ import heavyindustry.graphics.StripDrawable;
 import mindustry.game.EventType.Trigger;
 import mindustry.graphics.Pal;
 import mindustry.ui.Styles;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static heavyindustry.HVars.MOD_PREFIX;
 
@@ -48,6 +49,7 @@ public final class HTex {
 
 	private HTex() {}
 
+	@Internal
 	public static void load() {
 		//drawable
 		buttonLeft = getDrawable("button-left");

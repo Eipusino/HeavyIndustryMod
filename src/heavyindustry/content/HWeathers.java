@@ -13,6 +13,7 @@ import mindustry.graphics.Layer;
 import mindustry.type.Weather;
 import mindustry.type.weather.ParticleWeather;
 import mindustry.world.meta.Attribute;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static heavyindustry.HVars.MOD_NAME;
 
@@ -30,6 +31,7 @@ public final class HWeathers {
 	private HWeathers() {}
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
+	@Internal
 	public static void load() {
 		if (HVars.isPlugin) return;
 

@@ -277,6 +277,7 @@ import mindustry.world.meta.BlockGroup;
 import mindustry.world.meta.BuildVisibility;
 import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static heavyindustry.HVars.MOD_NAME;
 
@@ -596,6 +597,7 @@ public final class HBlocks {
 	}
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
+	@Internal
 	public static void load() {
 		if (HVars.isPlugin) return;//Do not load content in plugin mode.
 

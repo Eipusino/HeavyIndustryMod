@@ -42,12 +42,12 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 	protected Keys keysIter1, keysIter2;
 
 	/** Creates an ordered map with a capacity of 16. */
-	public CollectionArrayMap(Class<?> keyType, @NotNull Class<?> valueType) {
+	public CollectionArrayMap(@NotNull Class<?> keyType, @NotNull Class<?> valueType) {
 		this(true, 16, keyType, valueType);
 	}
 
 	/** Creates an ordered map with the specified capacity. */
-	public CollectionArrayMap(int capacity, Class<?> keyType, @NotNull Class<?> valueType) {
+	public CollectionArrayMap(int capacity, @NotNull Class<?> keyType, @NotNull Class<?> valueType) {
 		this(true, capacity, keyType, valueType);
 	}
 
@@ -79,6 +79,11 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 		size = array.size;
 		System.arraycopy(array.keys, 0, keys, 0, size);
 		System.arraycopy(array.values, 0, values, 0, size);
+	}
+
+	public CollectionArrayMap(Map<? extends K, ? extends V> map, @NotNull Class<?> keyType, @NotNull Class<?> valueType) {
+		this(map.size(), keyType, valueType);
+		putAll(map);
 	}
 
 	@SuppressWarnings("unchecked")

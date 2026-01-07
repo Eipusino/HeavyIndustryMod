@@ -23,28 +23,28 @@ public class PowerInfoGroup extends Table {
 	protected void init(Seq<Building> buildings, PowerInfoType type, boolean isOpen, InfoToggled toggled) {
 		top();
 
-		Table collT = new Table();
+		Table collTab = new Table();
 		int col = 0;
 		int maxCol = Vars.mobile ? 3 : 5;
-		collT.image().growX().pad(5f).padLeft(10).padRight(10).height(3).color(Color.darkGray).colspan(maxCol);
-		collT.row();
+		collTab.image().growX().pad(5f).padLeft(10).padRight(10).height(3).color(Color.darkGray).colspan(maxCol);
+		collTab.row();
 		for (int i = 0; i < buildings.size; i++) {
 			Building b = buildings.get(i);
-			collT.label(() -> "[lightgray](" + b.tileX() + ", " + b.tileY() + "): " + getData(b, type)).pad(6f).uniformX().left();
+			collTab.label(() -> "[lightgray](" + b.tileX() + ", " + b.tileY() + "): " + getData(b, type)).pad(6f).uniformX().left();
 
 			col++;
 			if (col == maxCol) {
-				collT.row();
+				collTab.row();
 				col = 0;
 			}
 		}
 		if (col > 0) {
 			for (int i = col; i < maxCol; i++) {
-				collT.add().uniformX();
+				collTab.add().uniformX();
 			}
 		}
 
-		Collapser coll = new Collapser(collT, !isOpen);
+		Collapser coll = new Collapser(collTab, !isOpen);
 
 		Block block = buildings.first().block;
 		ImageButton b = button(Icon.downOpen, () -> {
@@ -61,20 +61,20 @@ public class PowerInfoGroup extends Table {
 		b.add(coll).growX().top();
 	}
 
-	protected String getData(Building building, PowerInfoType type) {
+	protected String getData(Building build, PowerInfoType type) {
 		return switch (type) {
 			case producer -> {
-				float produced = building.getPowerProduction() * building.timeScale(); //Assume people don't override delta()
+				float produced = build.getPowerProduction() * build.timeScale(); //Assume people don't override delta()
 				yield Core.bundle.format("text.power-info-persec", "[#98ffa9]+" + formatAmount(produced * 60));
 			}
 			case consumer -> {
-				ConsumePower consumePower = building.block.consPower;
-				float consumed = consumePower.requestedPower(building) * building.timeScale();
+				ConsumePower consumePower = build.block.consPower;
+				float consumed = consumePower.requestedPower(build) * build.timeScale();
 				yield Core.bundle.format("text.power-info-persec", "[#e55454]-" + formatAmount(consumed * 60));
 			}
 			case battery -> {
-				ConsumePower consumePower = building.block.consPower;
-				float stored = building.power.status * consumePower.capacity;
+				ConsumePower consumePower = build.block.consPower;
+				float stored = build.power.status * consumePower.capacity;
 				yield "[#fbad67]" + formatAmount(stored) + "[gray]/[]" + formatAmount(consumePower.capacity);
 			}
 		};

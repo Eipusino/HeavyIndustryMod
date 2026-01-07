@@ -121,6 +121,11 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		size = map.size;
 	}
 
+	public CollectionObjectMap(Map<? extends K, ? extends V> map, @NotNull Class<?> keyType, @NotNull Class<?> valueType) {
+		this(keyType, valueType, map.size());
+		putAll(map);
+	}
+
 	/** Iterates through key/value pairs. */
 	public void each(Cons2<? super K, ? super V> cons) {
 		for (ObjectHolder<K, V> entry : iterator()) {

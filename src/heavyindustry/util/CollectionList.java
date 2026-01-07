@@ -115,6 +115,11 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		System.arraycopy(array, start, items, 0, size);
 	}
 
+	public CollectionList(Collection<? extends E> collection, @NotNull Class<?> type) {
+		this(collection.size(), type);
+		addAll(collection);
+	}
+
 	@SuppressWarnings("unchecked")
 	public static <T> CollectionList<T> withArrays(@NotNull Class<?> arrayType, Object... arrays) {
 		CollectionList<T> result = new CollectionList<>(arrayType);
@@ -700,7 +705,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	@Override
-	public boolean addAll(int index, Collection<? extends E> c) {
+	public boolean addAll(int index, @Nullable Collection<? extends E> c) {
 		if (c == null) return false;
 
 		boolean modified = false;

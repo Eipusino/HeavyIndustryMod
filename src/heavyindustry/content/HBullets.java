@@ -69,6 +69,7 @@ import mindustry.gen.Unit;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static heavyindustry.HVars.MOD_NAME;
 
@@ -93,6 +94,7 @@ public final class HBullets {
 	private HBullets() {}
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
+	@Internal
 	public static void load() {
 		basicMissile = new MissileBulletType(4.2f, 15f) {{
 			homingPower = 0.12f;

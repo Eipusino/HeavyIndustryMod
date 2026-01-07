@@ -23,6 +23,7 @@ import mindustry.graphics.Pal;
 import mindustry.type.StatusEffect;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 /**
  * Sets up content {@link StatusEffect status effects}. Loaded after every other content is instantiated.
@@ -37,6 +38,7 @@ public final class HStatusEffects {
 	private HStatusEffects() {}
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
+	@Internal
 	public static void load() {
 		if (HVars.isPlugin) return;
 

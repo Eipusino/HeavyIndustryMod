@@ -17,6 +17,7 @@ import mindustry.game.EventType.ResetEvent;
 import mindustry.io.SaveFileReader;
 import mindustry.io.SaveVersion;
 import mindustry.world.Block;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static heavyindustry.HVars.MOD_NAME;
 
@@ -28,6 +29,7 @@ public final class Worlds {
 	/** Don't let anyone instantiate this class. */
 	private Worlds() {}
 
+	@Internal
 	public static void load() {
 		Events.on(ResetEvent.class, event -> {
 			commandableBuilds.clear();

@@ -4,6 +4,7 @@ import arc.graphics.Color;
 import heavyindustry.HVars;
 import heavyindustry.graphics.HPal;
 import mindustry.type.Item;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 /**
  * Defines the {@linkplain Item item} this mod offers.
@@ -20,6 +21,7 @@ public final class HItems {
 	private HItems() {}
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
+	@Internal
 	public static void load() {
 		if (HVars.isPlugin) return;
 

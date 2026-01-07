@@ -74,6 +74,7 @@ import mindustry.world.meta.StatCat;
 import mindustry.world.meta.StatValue;
 import mindustry.world.meta.Stats;
 import mindustry.world.modules.ItemModule;
+import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -102,6 +103,7 @@ public final class Elements {
 		return value ? "[heal]" + Core.bundle.get("yes") + "[]" : "[#ff7b69]" + Core.bundle.get("no") + "[]";
 	}
 
+	@Internal
 	public static void load() {
 		powerInfoDialog = new PowerGraphInfoDialog();
 

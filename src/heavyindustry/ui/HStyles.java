@@ -9,6 +9,7 @@ import arc.scene.ui.TextField.TextFieldStyle;
 import heavyindustry.ui.HoldImageButton.HoldImageButtonStyle;
 import mindustry.gen.Tex;
 import mindustry.ui.Styles;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 public final class HStyles {
 	public static TextFieldStyle scriptArea;
@@ -33,6 +34,7 @@ public final class HStyles {
 	/** Don't let anyone instantiate this class. */
 	private HStyles() {}
 
+	@Internal
 	public static void load() {
 		//style
 		modImageStyle = new ImageButtonStyle(Styles.logici) {{

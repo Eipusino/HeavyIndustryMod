@@ -2,6 +2,7 @@ package heavyindustry.ui;
 
 import arc.Core;
 import arc.scene.style.TextureRegionDrawable;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static heavyindustry.HVars.MOD_PREFIX;
 
@@ -21,6 +22,7 @@ public final class HIcon {
 	/** Don't let anyone instantiate this class. */
 	private HIcon() {}
 
+	@Internal
 	public static void load() {
 		keplerIcon = texture("kepler-icon");
 		aboutIcon = texture("about-icon");

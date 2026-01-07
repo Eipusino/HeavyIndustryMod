@@ -95,6 +95,11 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E
 		size = set.size;
 	}
 
+	public CollectionObjectSet(Collection<? extends E> collection, Class<?> type) {
+		this(type, collection.size());
+		addAll(collection);
+	}
+
 	@SafeVarargs
 	public static <T> CollectionObjectSet<T> with(T... array) {
 		CollectionObjectSet<T> set = new CollectionObjectSet<>(array.getClass().getComponentType());

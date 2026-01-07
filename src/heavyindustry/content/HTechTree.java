@@ -15,6 +15,7 @@ import mindustry.game.Objectives.Produce;
 import mindustry.game.Objectives.Research;
 import mindustry.game.Objectives.SectorComplete;
 import mindustry.type.ItemStack;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static heavyindustry.content.HBlocks.*;
 import static heavyindustry.content.HUnitTypes.*;
@@ -33,6 +34,7 @@ public final class HTechTree {
 	private HTechTree() {}
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
+	@Internal
 	public static void load() {
 		if (HVars.isPlugin) return;
 

@@ -5,10 +5,9 @@ import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Lines;
 import arc.util.Align;
-import heavyindustry.ui.chart.LineChart.LineChartStat;
 import mindustry.ui.Fonts;
 
-public class LineChart extends Chart<LineChartStat> {
+public class LineChart extends Chart<LineChart.LineChartStat> {
 	public float lineStroke = 5;
 
 	public boolean displayScale = true;

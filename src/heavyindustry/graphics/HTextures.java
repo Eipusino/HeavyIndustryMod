@@ -7,6 +7,7 @@ import arc.graphics.Texture;
 import arc.graphics.Texture.TextureFilter;
 import arc.graphics.Texture.TextureWrap;
 import heavyindustry.HVars;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 public final class HTextures {
 	public static Fi texturesDir = HVars.internalTree.child("other").child("textures");
@@ -20,6 +21,7 @@ public final class HTextures {
 	/** Don't let anyone instantiate this class. */
 	private HTextures() {}
 
+	@Internal
 	public static void load() {
 		noise = loadTexture(Core.files.internal("sprites/noise.png"), TextureFilter.linear, TextureWrap.repeat);
 

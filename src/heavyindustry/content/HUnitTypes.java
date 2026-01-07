@@ -130,6 +130,7 @@ import mindustry.type.weapons.PointDefenseWeapon;
 import mindustry.type.weapons.RepairBeamWeapon;
 import mindustry.world.meta.BlockFlag;
 import mindustry.world.meta.Env;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static heavyindustry.HVars.MOD_NAME;
 
@@ -165,6 +166,7 @@ public final class HUnitTypes {
 	private HUnitTypes() {}
 
 	/** Instantiates all contents. Called in the main thread in {@code HeavyIndustryMod.loadContent()}. */
+	@Internal
 	public static void load() {
 		if (HVars.isPlugin) return;
 
@@ -3371,6 +3373,7 @@ public final class HUnitTypes {
 		}};
 	}
 
+	@Internal
 	public static void init() {
 		empire.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> !empire.immunities.contains(s) && (s.reloadMultiplier >= 1 && !s.disarm)));
 		poseidon.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> s.reloadMultiplier >= 1 && !s.disarm));
