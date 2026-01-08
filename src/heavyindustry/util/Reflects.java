@@ -22,7 +22,6 @@ import arc.util.OS;
 import heavyindustry.HVars;
 import mindustry.Vars;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -128,9 +127,12 @@ public final class Reflects {
 		else return null;
 	}
 
+	// Suitable for obtaining one field at a time.
+	// If frequent reflection operations are required on the same field,
+	// cache the field instead of blindly using this method.
 	@SuppressWarnings("unchecked")
 	@Contract(pure = true)
-	public static <T> T get(Class<?> type, @NonNls String name, Object object, Prov<T> def) {
+	public static <T> T get(Class<?> type, String name, Object object, Prov<T> def) {
 		try {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
@@ -142,7 +144,7 @@ public final class Reflects {
 	}
 
 	@Contract(pure = true)
-	public static boolean getBoolean(Class<?> type, @NonNls String name, Object object, Boolp def) {
+	public static boolean getBoolean(Class<?> type, String name, Object object, Boolp def) {
 		try {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
@@ -154,7 +156,7 @@ public final class Reflects {
 	}
 
 	@Contract(pure = true)
-	public static int getInt(Class<?> type, @NonNls String name, Object object, Intp def) {
+	public static int getInt(Class<?> type, String name, Object object, Intp def) {
 		try {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
@@ -165,7 +167,7 @@ public final class Reflects {
 		}
 	}
 
-	public static void set(Class<?> type, @NonNls String name, Object object, Object value) {
+	public static void set(Class<?> type, String name, Object object, Object value) {
 		try {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
@@ -175,7 +177,7 @@ public final class Reflects {
 		}
 	}
 
-	public static void setInt(Class<?> type, @NonNls String name, Object object, int value) {
+	public static void setInt(Class<?> type, String name, Object object, int value) {
 		try {
 			Field field = type.getDeclaredField(name);
 			field.setAccessible(true);
@@ -247,16 +249,16 @@ public final class Reflects {
 	 * @return The class, or {@code null} if not found.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> Class<T> findClass(@NonNls String name) {
+	public static <T> Class<T> findClass(@Nullable String name) {
 		try {
-			return (Class<T>) Class.forName(name, true, Vars.mods.mainLoader());
+			return name == null ? null : (Class<T>) Class.forName(name, true, Vars.mods.mainLoader());
 		} catch (ClassNotFoundException e) {
 			return null;
 		}
 	}
 
 	@Contract(pure = true)
-	public static @Nullable Field findField(Class<?> type, @NonNls String name) {
+	public static @Nullable Field findField(Class<?> type, String name) {
 		while (type != null) {
 			Field[] fields = type.getDeclaredFields();
 			for (Field field : fields) {
@@ -294,7 +296,7 @@ public final class Reflects {
 	 * @return The method, or {@code null} if not found.
 	 */
 	@Contract(pure = true)
-	public static @Nullable Method findMethod(Class<?> type, @NonNls String name, Class<?>... args) {
+	public static @Nullable Method findMethod(Class<?> type, String name, Class<?>... args) {
 		while (type != null) {
 			Method[] methods = type.getDeclaredMethods();
 			for (Method method : methods) {

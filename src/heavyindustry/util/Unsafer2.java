@@ -27,7 +27,7 @@ public final class Unsafer2 {
 
 	private Unsafer2() {}
 
-	public static <T> T getObject(Class<?> type, String name, Object object) {
+	public static <T> T getObject(Class<?> type, String name, Object object) throws IllegalArgumentException {
 		try {
 			return getObject(type.getDeclaredField(name), object);
 		} catch (NoSuchFieldException e) {
@@ -45,7 +45,7 @@ public final class Unsafer2 {
 	 *                                                                   instance of {@code field.getDeclaringClass()} or {@code null}.</ul>
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T getObject(Field field, Object object) {
+	public static <T> T getObject(Field field, Object object) throws IllegalArgumentException {
 		if (field.getType().isPrimitive()) throw new IllegalArgumentException("Method 'getObject' does not support field of primitive types");
 
 		int modifiers = field.getModifiers();
@@ -60,7 +60,7 @@ public final class Unsafer2 {
 				internalUnsafe.getReference(isStatic ? type : requireNonNullInstance(type, object), offset));
 	}
 
-	public static void setObject(Class<?> type, String name, Object object, Object value) {
+	public static void setObject(Class<?> type, String name, Object object, Object value) throws IllegalArgumentException {
 		try {
 			setObject(type.getDeclaredField(name), object, value);
 		} catch (NoSuchFieldException e) {
@@ -77,7 +77,7 @@ public final class Unsafer2 {
 	 *                                  <li>If the field is not {@code static} and the {@code object} is not an
 	 *                                                                   instance of {@code field.getDeclaringClass()} or {@code null}.</ul>
 	 */
-	public static void setObject(Field field, Object object, Object value) {
+	public static void setObject(Field field, Object object, Object value) throws IllegalArgumentException {
 		if (field.getType().isPrimitive()) throw new IllegalArgumentException("Method 'getObject' does not support field of primitive types");
 
 		int modifiers = field.getModifiers();

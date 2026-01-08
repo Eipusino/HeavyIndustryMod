@@ -46,7 +46,7 @@ public final class Unsafer {
 	/** Do not call. */
 	private Unsafer() {}
 
-	public static <T> T getObject(Class<?> type, String name, Object object) {
+	public static <T> T getObject(Class<?> type, String name, Object object) throws IllegalArgumentException {
 		try {
 			return getObject(type.getDeclaredField(name), object);
 		} catch (NoSuchFieldException e) {
@@ -64,7 +64,7 @@ public final class Unsafer {
 	 *                                                                   instance of {@code field.getDeclaringClass()} or {@code null}.</ul>
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T getObject(Field field, Object object) {
+	public static <T> T getObject(Field field, Object object) throws IllegalArgumentException {
 		if (field.getType().isPrimitive()) throw new IllegalArgumentException("Method 'getObject' does not support field of primitive types");
 
 		int modifiers = field.getModifiers();
@@ -79,7 +79,7 @@ public final class Unsafer {
 				unsafe.getObject(isStatic ? type : requireNonNullInstance(type, object), offset));
 	}
 
-	public static boolean getBool(Class<?> type, String name, Object object) {
+	public static boolean getBool(Class<?> type, String name, Object object) throws IllegalArgumentException {
 		try {
 			return getBool(type.getDeclaredField(name), object);
 		} catch (NoSuchFieldException e) {
@@ -96,7 +96,7 @@ public final class Unsafer {
 	 *                                  <li>If the field is not {@code static} and the {@code object} is not an
 	 *                                  instance of {@code field.getDeclaringClass()} or {@code null}.</ul>
 	 */
-	public static boolean getBool(Field field, Object object) {
+	public static boolean getBool(Field field, Object object) throws IllegalArgumentException {
 		if (field.getType() != boolean.class) throw new IllegalArgumentException("Method 'getBool' does not support field other than boolean types");
 
 		int modifiers = field.getModifiers();
@@ -110,7 +110,7 @@ public final class Unsafer {
 				unsafe.getBoolean(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
-	public static byte getByte(Class<?> type, String name, Object object) {
+	public static byte getByte(Class<?> type, String name, Object object) throws IllegalArgumentException {
 		try {
 			return getByte(type.getDeclaredField(name), object);
 		} catch (NoSuchFieldException e) {
@@ -118,7 +118,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static byte getByte(Field field, Object object) {
+	public static byte getByte(Field field, Object object) throws IllegalArgumentException {
 		if (field.getType() != byte.class) throw new IllegalArgumentException("Method 'getByte' does not support field other than byte types");
 
 		int modifiers = field.getModifiers();
@@ -132,7 +132,7 @@ public final class Unsafer {
 				unsafe.getByte(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
-	public static short getShort(Class<?> type, String name, Object object) {
+	public static short getShort(Class<?> type, String name, Object object) throws IllegalArgumentException {
 		try {
 			return getShort(type.getDeclaredField(name), object);
 		} catch (NoSuchFieldException e) {
@@ -140,7 +140,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static short getShort(Field field, Object object) {
+	public static short getShort(Field field, Object object) throws IllegalArgumentException {
 		if (field.getType() != short.class) throw new IllegalArgumentException("Method 'getShort' does not support field other than short types");
 
 		int modifiers = field.getModifiers();
@@ -154,7 +154,7 @@ public final class Unsafer {
 				unsafe.getShort(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
-	public static int getInt(Class<?> type, String name, Object object) {
+	public static int getInt(Class<?> type, String name, Object object) throws IllegalArgumentException {
 		try {
 			return getInt(type.getDeclaredField(name), object);
 		} catch (NoSuchFieldException e) {
@@ -162,7 +162,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static int getInt(Field field, Object object) {
+	public static int getInt(Field field, Object object) throws IllegalArgumentException {
 		if (field.getType() != int.class) throw new IllegalArgumentException("Method 'getInt' does not support field other than int types");
 
 		int modifiers = field.getModifiers();
@@ -176,7 +176,7 @@ public final class Unsafer {
 				unsafe.getInt(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
-	public static long getLong(Class<?> type, String name, Object object) {
+	public static long getLong(Class<?> type, String name, Object object) throws IllegalArgumentException {
 		try {
 			return getLong(type.getDeclaredField(name), object);
 		} catch (NoSuchFieldException e) {
@@ -184,7 +184,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static long getLong(Field field, Object object) {
+	public static long getLong(Field field, Object object) throws IllegalArgumentException {
 		if (field.getType() != long.class) throw new IllegalArgumentException("Method 'getLong' does not support field other than long types");
 
 		int modifiers = field.getModifiers();
@@ -198,7 +198,7 @@ public final class Unsafer {
 				unsafe.getLong(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
-	public static float getFloat(Class<?> type, String name, Object object) {
+	public static float getFloat(Class<?> type, String name, Object object) throws IllegalArgumentException {
 		try {
 			return getFloat(type.getDeclaredField(name), object);
 		} catch (NoSuchFieldException e) {
@@ -206,7 +206,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static float getFloat(Field field, Object object) {
+	public static float getFloat(Field field, Object object) throws IllegalArgumentException {
 		if (field.getType() != float.class) throw new IllegalArgumentException("Method 'getFloat' does not support field other than float types");
 
 		int modifiers = field.getModifiers();
@@ -220,7 +220,7 @@ public final class Unsafer {
 				unsafe.getFloat(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
-	public static double getDouble(Class<?> type, String name, Object object) {
+	public static double getDouble(Class<?> type, String name, Object object) throws IllegalArgumentException {
 		try {
 			return getDouble(type.getDeclaredField(name), object);
 		} catch (NoSuchFieldException e) {
@@ -228,7 +228,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static double getDouble(Field field, Object object) {
+	public static double getDouble(Field field, Object object) throws IllegalArgumentException {
 		if (field.getType() != double.class) throw new IllegalArgumentException("Method 'getDouble' does not support field other than double types");
 
 		int modifiers = field.getModifiers();
@@ -242,7 +242,7 @@ public final class Unsafer {
 				unsafe.getDouble(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
-	public static char getChar(Class<?> type, String name, Object object) {
+	public static char getChar(Class<?> type, String name, Object object) throws IllegalArgumentException {
 		try {
 			return getChar(type.getDeclaredField(name), object);
 		} catch (NoSuchFieldException e) {
@@ -250,7 +250,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static char getChar(Field field, Object object) {
+	public static char getChar(Field field, Object object) throws IllegalArgumentException {
 		if (field.getType() != char.class) throw new IllegalArgumentException("Method 'getChar' does not support field other than char types");
 
 		int modifiers = field.getModifiers();
@@ -264,7 +264,7 @@ public final class Unsafer {
 				unsafe.getChar(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
-	public static void setObject(Class<?> type, String name, Object object, Object value) {
+	public static void setObject(Class<?> type, String name, Object object, Object value) throws IllegalArgumentException {
 		try {
 			setObject(type.getDeclaredField(name), object, value);
 		} catch (NoSuchFieldException e) {
@@ -280,7 +280,7 @@ public final class Unsafer {
 	 * @throws ClassCastException If the field is not {@code static} and the {@code object} is not an
 	 *                                  instance of {@code field.getDeclaringClass()} or {@code null}.
 	 */
-	public static void setObject(Field field, Object object, Object value) {
+	public static void setObject(Field field, Object object, Object value) throws IllegalArgumentException {
 		if (field.getType().isPrimitive()) throw new IllegalArgumentException("Method 'getObject' does not support field of primitive types");
 
 		int modifiers = field.getModifiers();
@@ -297,7 +297,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setBool(Class<?> type, String name, Object object, boolean value) {
+	public static void setBool(Class<?> type, String name, Object object, boolean value) throws IllegalArgumentException {
 		try {
 			setBool(type.getDeclaredField(name), object, value);
 		} catch (NoSuchFieldException e) {
@@ -305,7 +305,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setBool(Field field, Object object, boolean value) {
+	public static void setBool(Field field, Object object, boolean value) throws IllegalArgumentException {
 		if (field.getType() != boolean.class) throw new IllegalArgumentException("Method 'setBool' does not support field other than boolean types");
 
 		int modifiers = field.getModifiers();
@@ -321,7 +321,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setByte(Class<?> type, String name, Object object, byte value) {
+	public static void setByte(Class<?> type, String name, Object object, byte value) throws IllegalArgumentException {
 		try {
 			setByte(type.getDeclaredField(name), object, value);
 		} catch (NoSuchFieldException e) {
@@ -329,7 +329,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setByte(Field field, Object object, byte value) {
+	public static void setByte(Field field, Object object, byte value) throws IllegalArgumentException {
 		if (field.getType() != byte.class) throw new IllegalArgumentException("Method 'setByte' does not support field other than byte types");
 
 		int modifiers = field.getModifiers();
@@ -345,7 +345,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setShort(Class<?> type, String name, Object object, short value) {
+	public static void setShort(Class<?> type, String name, Object object, short value) throws IllegalArgumentException {
 		try {
 			setShort(type.getDeclaredField(name), object, value);
 		} catch (NoSuchFieldException e) {
@@ -353,7 +353,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setShort(Field field, Object object, short value) {
+	public static void setShort(Field field, Object object, short value) throws IllegalArgumentException {
 		if (field.getType() != short.class) throw new IllegalArgumentException("Method 'setShort' does not support field other than short types");
 
 		int modifiers = field.getModifiers();
@@ -369,7 +369,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setInt(Class<?> type, String name, Object object, int value) {
+	public static void setInt(Class<?> type, String name, Object object, int value) throws IllegalArgumentException {
 		try {
 			setInt(type.getDeclaredField(name), object, value);
 		} catch (NoSuchFieldException e) {
@@ -377,7 +377,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setInt(Field field, Object object, int value) {
+	public static void setInt(Field field, Object object, int value) throws IllegalArgumentException {
 		if (field.getType() != int.class) throw new IllegalArgumentException("Method 'setInt' does not support field other than int types");
 
 		int modifiers = field.getModifiers();
@@ -393,7 +393,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setLong(Class<?> type, String name, Object object, long value) {
+	public static void setLong(Class<?> type, String name, Object object, long value) throws IllegalArgumentException {
 		try {
 			setLong(type.getDeclaredField(name), object, value);
 		} catch (NoSuchFieldException e) {
@@ -401,7 +401,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setLong(Field field, Object object, long value) {
+	public static void setLong(Field field, Object object, long value) throws IllegalArgumentException {
 		if (field.getType() != long.class) throw new IllegalArgumentException("Method 'setLong' does not support field other than long types");
 
 		int modifiers = field.getModifiers();
@@ -417,7 +417,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setFloat(Class<?> type, String name, Object object, float value) {
+	public static void setFloat(Class<?> type, String name, Object object, float value) throws IllegalArgumentException {
 		try {
 			setFloat(type.getDeclaredField(name), object, value);
 		} catch (NoSuchFieldException e) {
@@ -425,7 +425,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setFloat(Field field, Object object, float value) {
+	public static void setFloat(Field field, Object object, float value) throws IllegalArgumentException {
 		if (field.getType() != float.class) throw new IllegalArgumentException("Method 'setFloat' does not support field other than float types");
 
 		int modifiers = field.getModifiers();
@@ -441,7 +441,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setDouble(Class<?> type, String name, Object object, double value) {
+	public static void setDouble(Class<?> type, String name, Object object, double value) throws IllegalArgumentException {
 		try {
 			setDouble(type.getDeclaredField(name), object, value);
 		} catch (NoSuchFieldException e) {
@@ -449,7 +449,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setDouble(Field field, Object object, double value) {
+	public static void setDouble(Field field, Object object, double value) throws IllegalArgumentException {
 		if (field.getType() != double.class) throw new IllegalArgumentException("Method 'setDouble' does not support field other than double types");
 
 		int modifiers = field.getModifiers();
@@ -465,7 +465,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setChar(Class<?> type, String name, Object object, char value) {
+	public static void setChar(Class<?> type, String name, Object object, char value) throws IllegalArgumentException {
 		try {
 			setChar(type.getDeclaredField(name), object, value);
 		} catch (NoSuchFieldException e) {
@@ -473,7 +473,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setChar(Field field, Object object, char value) {
+	public static void setChar(Field field, Object object, char value) throws IllegalArgumentException {
 		if (field.getType() != char.class) throw new IllegalArgumentException("Method 'setChar' does not support field other than char types");
 
 		int modifiers = field.getModifiers();

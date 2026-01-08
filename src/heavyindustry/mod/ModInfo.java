@@ -4,6 +4,8 @@ import arc.files.Fi;
 import arc.files.ZipFi;
 import arc.util.ArcRuntimeException;
 import arc.util.serialization.Jval;
+import heavyindustry.util.Reflects;
+import mindustry.mod.Mod;
 import org.jetbrains.annotations.Nullable;
 
 public class ModInfo {
@@ -15,7 +17,7 @@ public class ModInfo {
 	public final Fi meta;
 	public final Jval info;
 
-	public final @Nullable String main;
+	public final @Nullable Class<? extends Mod> main;
 
 	public final Fi file;
 
@@ -28,7 +30,8 @@ public class ModInfo {
 		file = modFile;
 		name = info.get("name").asString();
 		version = info.getString("version", "");
-		main = info.getString("main", null);
+
+		main = Reflects.findClass(info.getString("main", null));
 	}
 
 	@Override
