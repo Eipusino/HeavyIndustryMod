@@ -15,8 +15,8 @@ import mindustry.type.Weapon;
 import static heavyindustry.HVars.MOD_PREFIX;
 
 public final class HeavyIndustryListener implements ApplicationListener {
-	static float[] bulletDps, unitDps;
-	static boolean[] powerful;
+	float[] bulletDps, unitDps;
+	boolean[] powerful;
 
 	HeavyIndustryListener() {
 		if (Vars.platform instanceof ApplicationCore core) {
@@ -55,22 +55,22 @@ public final class HeavyIndustryListener implements ApplicationListener {
 		return MOD_PREFIX + "listener";
 	}
 
-	public static float getUnitDps(UnitType unit) {
+	public float getUnitDps(UnitType unit) {
 		if (unit.id >= unitDps.length) return 0f;
 		return unitDps[unit.id];
 	}
 
-	public static float getBulletDps(BulletType bullet) {
+	public float getBulletDps(BulletType bullet) {
 		if (bullet.id >= bulletDps.length) return 0f;
 		return bulletDps[bullet.id];
 	}
 
-	public static boolean getPowerful(UnitType unit) {
+	public boolean getPowerful(UnitType unit) {
 		if (unit.id >= powerful.length) return false;
 		return powerful[unit.id];
 	}
 
-	static void updateInit() {
+	void updateInit() {
 		Seq<BulletType> bullets = Vars.content.bullets();
 		Seq<UnitType> units = Vars.content.units();
 
@@ -88,7 +88,7 @@ public final class HeavyIndustryListener implements ApplicationListener {
 		}
 	}
 
-	static float updateUnit(UnitType unit) {
+	float updateUnit(UnitType unit) {
 		if (unitDps[unit.id] == 0f) {
 			unitDps[unit.id] = 0.000001f;
 			float damage = 0f;
@@ -107,7 +107,7 @@ public final class HeavyIndustryListener implements ApplicationListener {
 		return unitDps[unit.id];
 	}
 
-	static float updateBullet(BulletType type) {
+	float updateBullet(BulletType type) {
 		if (bulletDps[type.id] == 0f) {
 			//recursion
 			bulletDps[type.id] = type.damage;
@@ -132,7 +132,7 @@ public final class HeavyIndustryListener implements ApplicationListener {
 		return bulletDps[type.id];
 	}
 
-	static void updatePowerful(UnitType type) {
+	void updatePowerful(UnitType type) {
 		switch (type.name) {
 			case "extra-utilities-regency", "new-horizon-guardian", "new-horizon-pester", "new-horizon-nucleoid" -> powerful[type.id] = true;
 			default -> powerful[type.id] = false;

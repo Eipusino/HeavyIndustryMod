@@ -8,13 +8,13 @@ import java.util.Map;
 
 @TestOnly
 public class HTest implements Cloneable, ExtraVariable {
+	public static final HTest instance = new HTest();
+
 	public Map<String, Object> extraVar = new CollectionObjectMap<>(String.class, Object.class);
 
 	public HTest() {}
 
-	public static void test() {
-		// ele.
-	}
+	public void test() throws Throwable {}
 
 	public HTest copy() {
 		try {

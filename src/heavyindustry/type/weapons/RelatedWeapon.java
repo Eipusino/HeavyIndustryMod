@@ -154,7 +154,7 @@ public class RelatedWeapon extends DataWeapon {
 		String getInfo();
 	}
 
-	static class DefaultAlt implements RelatedAlt {
+	public static class DefaultAlt implements RelatedAlt {
 		public String info;
 		public Boolf<Unit> boolf;
 

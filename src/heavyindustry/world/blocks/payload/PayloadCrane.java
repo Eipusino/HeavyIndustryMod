@@ -325,6 +325,11 @@ public class PayloadCrane extends Block {
 		}
 
 		@Override
+		public boolean isControlled() {
+			return unit().isPlayer();
+		}
+
+		@Override
 		public boolean shouldAutoTarget() {
 			return false;
 		}

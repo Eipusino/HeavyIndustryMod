@@ -22,6 +22,7 @@ import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.content.HFx;
+import heavyindustry.math.IInterp;
 import heavyindustry.math.Mathm;
 import heavyindustry.ui.CraftGridImage;
 import heavyindustry.util.IntMap2;
@@ -57,7 +58,7 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 	public Seq<PayloadManufacturingRecipe> recipes = new Seq<>(PayloadManufacturingRecipe.class);
 	public float craftTime = 60f;
 	public float ingredientRadius = 4f * Vars.tilesize;
-	public Interp mergeInterp = Interp.pow2In, sizeInterp = a -> 1f - Interp.pow2In.apply(a);
+	public Interp mergeInterp = Interp.pow2In, sizeInterp = (IInterp) a -> 1f - Interp.pow2In.apply(a);
 	public Effect mergeEffect = Fx.producesmoke, loadEffect = Fx.producesmoke,
 			craftEffect = HFx.payloadManufacture, failEffect = HFx.payloadManufactureFail;
 	public Sound craftSound = Sounds.unset;

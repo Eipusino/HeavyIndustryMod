@@ -25,7 +25,6 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -33,7 +32,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Reflection utilities, mainly for wrapping reflective operations to eradicate checked exceptions.
@@ -260,7 +258,7 @@ public final class Reflects {
 	@Contract(pure = true)
 	public static @Nullable Field findField(Class<?> type, String name) {
 		while (type != null) {
-			Field[] fields = type.getDeclaredFields();
+			Field[] fields = HVars.platformImpl.getFields(type);
 			for (Field field : fields) {
 				if (field.getName().equals(name)) return field;
 			}
@@ -279,7 +277,7 @@ public final class Reflects {
 	@Contract(pure = true)
 	public static @Nullable Field findField(Class<?> type, Boolf<Field> filler) {
 		while (type != null) {
-			Field[] fields = type.getDeclaredFields();
+			Field[] fields = HVars.platformImpl.getFields(type);
 			for (Field field : fields) {
 				if (filler.get(field)) return field;
 			}
@@ -298,7 +296,7 @@ public final class Reflects {
 	@Contract(pure = true)
 	public static @Nullable Method findMethod(Class<?> type, String name, Class<?>... args) {
 		while (type != null) {
-			Method[] methods = type.getDeclaredMethods();
+			Method[] methods = HVars.platformImpl.getMethods(type);
 			for (Method method : methods) {
 				if (method.getName().equals(name) && Arrays.equals(method.getParameterTypes(), args)) return method;
 			}
@@ -318,7 +316,7 @@ public final class Reflects {
 	@Contract(pure = true)
 	public static <T> @Nullable Constructor<T> findConstructor(Class<?> type, Class<?>... args) {
 		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
-			Constructor<?>[] constructors = type.getDeclaredConstructors();
+			Constructor<?>[] constructors = HVars.platformImpl.getConstructors(type);
 			for (Constructor<?> constructor : constructors) {
 				if (Arrays.equals(constructor.getParameterTypes(), args)) return (Constructor<T>) constructor;
 			}
@@ -372,7 +370,7 @@ public final class Reflects {
 
 		Class<?> targetClass = target.getClass();
 		while (targetClass != null) {
-			for (Field field : targetClass.getDeclaredFields()) {
+			for (Field field : HVars.platformImpl.getFields(targetClass)) {
 				if (Modifier.isFinal(field.getModifiers())) continue;
 
 				targetFieldMap.put(field.getName(), field);
@@ -395,7 +393,7 @@ public final class Reflects {
 
 		Class<?> sourceClass = source.getClass();
 		while (sourceClass != null) {
-			for (Field sourceField : sourceClass.getDeclaredFields()) {
+			for (Field sourceField : HVars.platformImpl.getFields(sourceClass)) {
 				if (Modifier.isFinal(sourceField.getModifiers())) continue;
 
 				Field targetField = targetFieldMap.get(sourceField.getName());
@@ -403,7 +401,7 @@ public final class Reflects {
 				if (!isAssignable(sourceField, targetField)) continue;
 
 				try {
-					if (!OS.isAndroid && HVars.hasUnsafe) {
+					if (!OS.isAndroid) {
 						Object value = Unsafer.get(sourceField, source);
 						Unsafer.set(targetField, target, value);
 					} else {
@@ -441,28 +439,6 @@ public final class Reflects {
 			return (T) cloneMethod.invoke(object);
 		} catch (Exception e) {
 			return null;
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T> T invokeArgs(Object method, Prov<T> def, Object... arguments) {
-		try {
-			return (T) ((MethodHandle) method).invokeWithArguments(arguments);
-		} catch (Throwable e) {
-			Log.err(e);
-
-			return def.get();
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <T> T invokeList(Object method, Prov<T> def, List<?> arguments) {
-		try {
-			return (T) ((MethodHandle) method).invokeWithArguments(arguments);
-		} catch (Throwable e) {
-			Log.err(e);
-
-			return def.get();
 		}
 	}
 

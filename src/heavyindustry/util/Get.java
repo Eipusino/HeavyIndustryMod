@@ -600,5 +600,49 @@ public final class Get {
 		public float getY() {
 			return y;
 		}
+
+		@Override
+		public float angleTo(Position other) {
+			return Angles.angle(getX(), getY(), other.getX(), other.getY());
+		}
+
+		@Override
+		public float angleTo(float x, float y) {
+			return Angles.angle(getX(), getY(), x, y);
+		}
+
+		@Override
+		public float dst2(Position other) {
+			return dst2(other.getX(), other.getY());
+		}
+
+		@Override
+		public float dst(Position other) {
+			return dst(other.getX(), other.getY());
+		}
+
+		@Override
+		public float dst(float x, float y) {
+			final float xd = getX() - x;
+			final float yd = getY() - y;
+			return Mathf.sqrt(xd * xd + yd * yd);
+		}
+
+		@Override
+		public float dst2(float x, float y) {
+			final float xd = getX() - x;
+			final float yd = getY() - y;
+			return (xd * xd + yd * yd);
+		}
+
+		@Override
+		public boolean within(Position other, float dst) {
+			return within(other.getX(), other.getY(), dst);
+		}
+
+		@Override
+		public boolean within(float x, float y, float dst) {
+			return Mathf.dst2(getX(), getY(), x, y) < dst * dst;
+		}
 	}
 }

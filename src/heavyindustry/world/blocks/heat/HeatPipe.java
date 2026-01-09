@@ -183,8 +183,9 @@ public class HeatPipe extends HeatConductor implements Autotiler {
 	}
 
 	@Override
-	public boolean blends(Tile tile, int i, int i1, int i2, int i3, Block block) {
-		return false;
+	public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock) {
+		return (otherblock.outputsItems() || (lookingAt(tile, rotation, otherx, othery, otherblock) && otherblock.hasItems))
+				&& lookingAtEither(tile, rotation, otherx, othery, otherrot, otherblock);
 	}
 
 	@Override

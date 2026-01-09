@@ -6,16 +6,25 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public interface PlatformImpl {
-	void setOverride(AccessibleObject override);
+	default void setOverride(AccessibleObject object) {
+		object.setAccessible(true);
+	}
 
-	void setPublic(Class<?> type);
+	default void setPublic(Class<?> type) {}
 
 	/** @return The caller class of the current method. */
 	Class<?> callerClass();
 
-	Field[] getFields(Class<?> cls);
+	default Field[] getFields(Class<?> type) {
+		return type.getDeclaredFields();
+	}
 
-	Method[] getMethods(Class<?> cls);
+	default Method[] getMethods(Class<?> type) {
+		return type.getDeclaredMethods();
+	}
 
-	Constructor<?>[] getConstructors(Class<?> cls);
+	@SuppressWarnings("unchecked")
+	default <T> Constructor<T>[] getConstructors(Class<T> type) {
+		return (Constructor<T>[]) type.getDeclaredConstructors();
+	}
 }

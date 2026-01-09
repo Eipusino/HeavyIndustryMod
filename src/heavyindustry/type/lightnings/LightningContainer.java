@@ -8,6 +8,7 @@ import arc.util.Eachable;
 import arc.util.Time;
 import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
+import heavyindustry.math.IInterp;
 import heavyindustry.type.lightnings.generator.LightningGenerator;
 import heavyindustry.util.CollectionList;
 
@@ -151,7 +152,7 @@ public class LightningContainer implements Iterable<LightningEffect>, Eachable<L
 			clipSize = 0;
 			maxWidth = 0;
 			minWidth = 0;
-			lerp = f -> 1 - f;
+			lerp = (IInterp) a -> 1f - a;
 			branchCreated = null;
 			trigger = null;
 

@@ -9,6 +9,7 @@ import arc.scene.ui.TextField;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
 import heavyindustry.math.Mathm;
+import heavyindustry.util.Constant;
 import mindustry.Vars;
 import mindustry.ctype.UnlockableContent;
 import mindustry.gen.Icon;
@@ -53,8 +54,7 @@ public final class MultiItemSelection {
 			for (T item : list) {
 				if (!item.unlockedNow() || item.isHidden()) continue;
 
-				ImageButton button = cont.button(Tex.whiteui, Styles.clearNoneTogglei, Mathm.clamp(item.selectionSize, 0f, 40f), () -> {
-				}).tooltip(item.localizedName).get();
+				ImageButton button = cont.button(Tex.whiteui, Styles.clearNoneTogglei, Mathm.clamp(item.selectionSize, 0f, 40f), Constant.RUNNABLE_NOTHING).tooltip(item.localizedName).get();
 				button.changed(() -> toggle.get(item));
 				button.getStyle().imageUp = new TextureRegionDrawable(item.uiIcon);
 				button.update(() -> button.setChecked(holder.get(item)));

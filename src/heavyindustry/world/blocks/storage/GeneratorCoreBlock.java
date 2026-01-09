@@ -4,6 +4,7 @@ import arc.Core;
 import arc.func.Func;
 import arc.util.Strings;
 import heavyindustry.math.Mathm;
+import heavyindustry.util.Constant;
 import mindustry.core.UI;
 import mindustry.gen.Building;
 import mindustry.graphics.Pal;
@@ -25,7 +26,7 @@ public class GeneratorCoreBlock extends CoreBlock {
 	public void setBars() {
 		super.setBars();
 		addBar("poweroutput", (GeneratorCoreBuild tile) ->
-				new Bar(() -> Core.bundle.format("bar.poweroutput", Strings.fixed(powerProduction * 60 + 0.0001f, 1)), () -> Pal.powerBar, () -> 1f));
+				new Bar(() -> Core.bundle.format("bar.poweroutput", Strings.fixed(powerProduction * 60 + 0.0001f, 1)), () -> Pal.powerBar, Constant.FLOATP_ONE_FLT));
 		addBar("power", makePowerBalance());
 	}
 

@@ -15,12 +15,14 @@ import arc.math.Mathf;
 import arc.scene.ui.layout.Table;
 import arc.util.Tmp;
 import arc.util.pooling.Pools;
+import heavyindustry.math.IInterp;
 import heavyindustry.math.Mathm;
+import heavyindustry.util.Constant;
 import mindustry.graphics.Pal;
 import mindustry.ui.Fonts;
 
 public class DelaySlideTable extends Table {
-	public static final Interp parabola4Reversed = x -> -4 * (x - 0.5f) * (x - 0.5f) + 1;
+	public static final Interp parabola4Reversed = (IInterp) a -> -4 * (a - 0.5f) * (a - 0.5f) + 1;
 	public static final Color back = Color.black.cpy().lerp(Color.darkGray, 0.35f).a(0.5f);
 
 	public boolean blinkable = false;
@@ -38,8 +40,8 @@ public class DelaySlideTable extends Table {
 	public Prov<Color> colorStable = () -> Color.lightGray;
 	public Prov<Color> colorReal = () -> Pal.accent;
 	public Prov<CharSequence> info = () -> "null";
-	public Floatp valueGetter = () -> 0;
-	public Floatp maxValue = () -> 1;
+	public Floatp valueGetter = Constant.FLOATP_ZERO_FLT;
+	public Floatp maxValue = Constant.FLOATP_ONE_FLT;
 	public Floatf<DelaySlideTable> fontScale = b -> 1;
 	public Boolf<DelaySlideTable> stable = b -> b.equalizedTime >= b.stableThreshold;
 

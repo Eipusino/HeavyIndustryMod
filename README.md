@@ -20,8 +20,18 @@
 
 + **Mod Version: 1.0.9-beta**
 + **Mod Type: Java**
-+ **Minimum  Mindustry Version Requirement: 154.2**
-+ **Compatible Platform: Android, Desktop, macOS, Linux。.**
+
+---
+
+## Runtime Environment
+
+**Before playing this mod, please ensure that your device environment meets the requirements for the mod's operating environment.**
+**Otherwise, the module cannot function properly.**
+
++ **Minimum  Mindustry Version Requirement: 154.0**
++ **{Desktop, Linux, and MAC OS} Minimum Java version requirement: 17**
++ **{Android} Minimum Android version requirement: 9 (API Level 28)**
++ **Not compatible with IOS**
 
 ---
 

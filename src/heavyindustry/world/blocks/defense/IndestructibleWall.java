@@ -50,7 +50,17 @@ public class IndestructibleWall extends Wall {
 		}
 
 		@Override
+		public boolean isControlled() {
+			return unit().isPlayer();
+		}
+
+		@Override
 		public boolean canControl() {
+			return true;
+		}
+
+		@Override
+		public boolean shouldAutoTarget() {
 			return true;
 		}
 	}

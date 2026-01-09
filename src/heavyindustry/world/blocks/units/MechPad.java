@@ -191,7 +191,7 @@ public class MechPad extends Block {
 			if (progress >= buildTime && isControlled()) {
 				progress %= 1f;
 
-				Player player = unit.getPlayer();
+				Player player = unit().getPlayer();
 
 				Fx.spawn.at(player);
 				spawnSound.at(player);
@@ -251,6 +251,21 @@ public class MechPad extends Block {
 			} else if (potentialEfficiency > 0) {
 				Drawf.additive(glowRegion, Pal.accent, /*warmup * */(1f - 0.5f + Mathf.absin(Time.time, 8f, 0.5f)), x, y, 0f, Layer.blockAdditive);
 			}
+		}
+
+		@Override
+		public boolean isControlled() {
+			return unit().isPlayer();
+		}
+
+		@Override
+		public boolean canControl() {
+			return true;
+		}
+
+		@Override
+		public boolean shouldAutoTarget() {
+			return true;
 		}
 	}
 }

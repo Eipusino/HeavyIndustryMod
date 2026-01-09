@@ -48,8 +48,10 @@ import heavyindustry.graphics.HPixmaps;
 import heavyindustry.graphics.HRegions;
 import heavyindustry.graphics.HShaders;
 import heavyindustry.graphics.HTextures;
+import heavyindustry.graphics.FastSizedGraphics;
 import heavyindustry.graphics.MathRenderer;
 import heavyindustry.graphics.ScreenSampler;
+import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.graphics.g2d.CutBatch;
 import heavyindustry.graphics.g2d.DevastationBatch;
 import heavyindustry.graphics.g2d.FragmentationBatch;
@@ -167,6 +169,8 @@ public final class HeavyIndustryMod extends Mod {
 
 					HTex.init();
 
+					HVars.sizedGraphics = OS.isAndroid || OS.isIos ? new SizedGraphics() : new FastSizedGraphics();
+
 					HVars.fragBatch = new FragmentationBatch();
 					HVars.cutBatch = new CutBatch();
 					HVars.vaporBatch = new VaporizeBatch();
@@ -195,6 +199,12 @@ public final class HeavyIndustryMod extends Mod {
 		ScreenSampler.resetMark();
 
 		HVars.listener = new HeavyIndustryListener();
+
+		try {
+			HTest.instance.test();
+		} catch (Throwable e) {
+			Log.err(e);
+		}
 	}
 
 	@Override
@@ -228,7 +238,7 @@ public final class HeavyIndustryMod extends Mod {
 
 	@Override
 	public void init() {
-		HeavyIndustryListener.updateInit();
+		HVars.listener.updateInit();
 
 		if (!HVars.isPlugin) {
 			HUnitTypes.init();

@@ -15,7 +15,7 @@ import arc.util.pooling.Pools;
 import heavyindustry.gen.BaseEntity;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.HPal;
-import heavyindustry.math.AbstractInterp;
+import heavyindustry.math.IInterp;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.Get;
 import mindustry.gen.Groups;
@@ -209,7 +209,7 @@ public class BloodSplatter extends BaseEntity implements Poolable {
 		return false;
 	}
 
-	public static class DynamicPowOut extends AbstractInterp {
+	public static class DynamicPowOut implements IInterp {
 		public float power = 1f;
 
 		@Override

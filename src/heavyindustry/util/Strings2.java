@@ -28,22 +28,28 @@ public final class Strings2 {
 
 	private Strings2() {}
 
+	/**
+	 * The {@code char} version of {@code String.repeat(int)}.
+	 *
+	 * @throws NegativeArraySizeException if the {@code count} is negative.
+	 */
 	@Contract(pure = true)
 	public static @NotNull String repeat(char key, int count) {
-		if (count <= 0) return "";
-
 		char[] data = new char[count];
 		Arrays.fill(data, key);
 
 		return String.valueOf(data);
 	}
 
-	/** @see String#repeat(int) */
+	/**
+	 * On Android, the {@code String.repeat(int)} method cannot be used.
+	 *
+	 * @throws NegativeArraySizeException if the {@code count} is negative.
+	 * @see String#repeat(int)
+	 */
 	@Contract(value = "null, _ -> null; !null, _ -> !null", pure = true)
 	public static String repeat(@Nullable String key, int count) {
 		if (key == null) return null;
-		if (count <= 0 || key.isEmpty()) return "";
-		if (count == 1) return key;
 
 		StringBuilder builder = new StringBuilder(key.length() * count);
 		for (int i = 0; i < count; i++) {
@@ -91,7 +97,7 @@ public final class Strings2 {
 	/**
 	 * Randomly generate a string of specified length.
 	 *
-	 * @throws NegativeArraySizeException If the length is negative.
+	 * @throws NegativeArraySizeException If the {@code length} is negative.
 	 */
 	@Contract(pure = true)
 	public static @NotNull String generateRandomString(int length) {

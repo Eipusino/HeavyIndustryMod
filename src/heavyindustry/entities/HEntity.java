@@ -734,10 +734,6 @@ public final class HEntity {
 	public static void unitAnnihilate(int uid) {
 		Unit unit = Groups.unit.getByID(uid);
 
-		if (Vars.netClient != null) {
-			Vars.netClient.addRemovedEntity(uid);
-		}
-
 		if (unit != null) {
 			annihilate(unit, false);
 		}

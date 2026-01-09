@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
  * @author GlFolker
  */
 public class SizedGraphics extends Graphics {
-	protected static Method setCursorMethod, setSystemCursorMethod;
+	private static Method setCursorMethod, setSystemCursorMethod;
 
 	protected int overrideWidth, overrideHeight;
 	protected Graphics delegate;
@@ -283,7 +283,7 @@ public class SizedGraphics extends Graphics {
 	}
 
 	@Override
-	protected void setSystemCursor(Cursor.SystemCursor systemCursor) {
+	protected void setSystemCursor(SystemCursor systemCursor) {
 		try {
 			if (setSystemCursorMethod == null) {
 				setSystemCursorMethod = Graphics.class.getDeclaredMethod("setSystemCursor", SystemCursor.class);

@@ -7,6 +7,7 @@ import heavyindustry.annotations.Annotations.ListPackages;
 import heavyindustry.core.HeavyIndustryListener;
 import heavyindustry.core.HeavyIndustryMod;
 import heavyindustry.files.InternalFileTree;
+import heavyindustry.graphics.SizedGraphics;
 import heavyindustry.graphics.g2d.CutBatch;
 import heavyindustry.graphics.g2d.DevastationBatch;
 import heavyindustry.graphics.g2d.FragmentationBatch;
@@ -39,13 +40,6 @@ public final class HVars {
 
 	public static PlatformImpl platformImpl;
 
-	/** Is {@code sun.misc.Unsafe} class available. */
-	public static boolean hasUnsafe = false;
-	/** Is {@code jdk.internal.misc.Unsafe} class available. */
-	public static boolean hasJDKUnsafe = false;
-	/** Is {@code java.lang.invoke.MethodHandles.Lookup.IMPL_LOOKUP} instance available. */
-	public static boolean hasImplLookup = false;
-
 	public static ModInfo modInfo;
 
 	/** Whether the mod is running in hidden mode. */
@@ -53,6 +47,8 @@ public final class HVars {
 
 	/** jar internal navigation. */
 	public static final InternalFileTree internalTree;
+
+	public static SizedGraphics sizedGraphics;
 
 	public static FragmentationBatch fragBatch;
 	public static CutBatch cutBatch;

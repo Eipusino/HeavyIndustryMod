@@ -6,13 +6,12 @@ import arc.graphics.g2d.Fill;
 import arc.graphics.gl.FrameBuffer;
 import arc.graphics.gl.Shader;
 import arc.math.Mathf;
-import arc.struct.Seq;
 import arc.util.Tmp;
-
-import static mindustry.Vars.renderer;
+import heavyindustry.util.CollectionList;
+import mindustry.Vars;
 
 public final class SlashRenderer {
-	private static final Seq<SlashData> slashes = new Seq<>(SlashData.class);
+	private static final CollectionList<SlashData> slashes = new CollectionList<>(SlashData.class);
 	private static int maxCount = 4;
 	private static SlashShader slashShader;
 	private static int slashIndex = 0;
@@ -74,10 +73,10 @@ public final class SlashRenderer {
 			slashShader.slashes = slashArray;
 			buffer.blit(slashShader);
 
-			if (renderer.bloom != null) {
-				renderer.bloom.capture();
+			if (Vars.renderer.bloom != null) {
+				Vars.renderer.bloom.capture();
 				drawSlashes();
-				renderer.bloom.render();
+				Vars.renderer.bloom.render();
 			} else {
 				drawSlashes();
 			}

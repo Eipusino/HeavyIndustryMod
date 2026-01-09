@@ -16,6 +16,7 @@ import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.math.Mathm;
+import heavyindustry.util.Constant;
 import mindustry.entities.units.BuildPlan;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Pal;
@@ -58,7 +59,7 @@ public class ConfigurableOverdriveProjector extends OverdriveProjector {
 	@Override
 	public void setBars() {
 		super.setBars();
-		addBar("boost", (ConfigurableOverdriveBuild tile) -> new Bar(() -> Core.bundle.format("bar.boost", Mathf.round(tile.boost)), () -> Pal.accent, () -> 1));
+		addBar("boost", (ConfigurableOverdriveBuild tile) -> new Bar(() -> Core.bundle.format("bar.boost", Mathf.round(tile.boost)), () -> Pal.accent, Constant.FLOATP_ONE_FLT));
 	}
 
 	@Override

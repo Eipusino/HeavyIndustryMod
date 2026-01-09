@@ -23,14 +23,19 @@ import org.jetbrains.annotations.ApiStatus.Internal;
 import rhino.Context;
 import rhino.Function;
 import rhino.ImporterTopLevel;
+import rhino.JavaAdapter;
+import rhino.NativeArray;
 import rhino.NativeJavaClass;
 import rhino.NativeJavaPackage;
 import rhino.Scriptable;
 import rhino.Wrapper;
 
 import java.io.IOException;
+import java.lang.invoke.MethodHandle;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Utility class for transition between Java and JS scripts, as well as providing a custom top level scope for the sake of
@@ -135,5 +140,18 @@ public final class HScripts {
 		try (URLClassLoader urlLoader = new URLClassLoader(new URL[]{file.file().toURI().toURL()})) {
 			return new NativeJavaClass(Vars.mods.getScripts().scope, urlLoader.loadClass(name));
 		}
+	}
+
+	public static Object invokeForHandle(MethodHandle handle, Object[] arr) throws Throwable {
+		return handle.invokeWithArguments(convertArgs(arr, handle.type().parameterArray()));
+	}
+
+	public static Object[] convertArgs(NativeArray arr, Class<?>[] types) {
+		return convertArgs(arr.toArray(), types);
+	}
+
+	public static Object[] convertArgs(Object[] arr, Class<?>[] types) {
+		Iterator<Class<?>> iterator = Arrays.stream(types).iterator();
+		return Arrays.stream(arr).map(a -> JavaAdapter.convertResult(a, iterator.next())).toArray();
 	}
 }

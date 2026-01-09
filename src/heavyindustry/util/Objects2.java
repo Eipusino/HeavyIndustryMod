@@ -316,7 +316,7 @@ public final class Objects2 {
 		builder.append(type.getSimpleName()).append('[');
 		int i = 0;
 		while (type != null) {
-			for (Field field : type.getDeclaredFields()) {
+			for (Field field : HVars.platformImpl.getFields(type)) {
 				if (Modifier.isStatic(field.getModifiers())) {
 					continue;
 				}
@@ -331,7 +331,7 @@ public final class Objects2 {
 					Object value;
 
 					// On the Android platform, the reflection performance is not low, so there is no need to use Unsafe.
-					if (!OS.isAndroid && HVars.hasUnsafe) {
+					if (!OS.isAndroid) {
 						value = Unsafer.get(field, object);
 					} else {
 						field.setAccessible(true);

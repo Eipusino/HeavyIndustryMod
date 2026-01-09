@@ -68,7 +68,7 @@ task jarAndroid {
 		def d8 = isWindows ? "d8.bat" : "d8"
 
 		//dex and desugar files - this requires d8 in your PATH
-		"$d8 $dependencies --min-api 14 --output ${project.name}Android.jar ${project.name}Desktop.jar"
+		"$d8 $dependencies --min-api 28 --output ${project.name}Android.jar ${project.name}Desktop.jar"
 				.execute(null, new File("$buildDir/libs")).waitForProcessOutput(System.out, System.err)
 	}
 }
