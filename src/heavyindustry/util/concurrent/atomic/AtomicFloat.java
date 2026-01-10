@@ -22,8 +22,8 @@ public class AtomicFloat extends Number implements Serializable {
 		try {
 			Lookup lookup = MethodHandles.lookup();
 			handle = lookup.findVarHandle(AtomicFloat.class, "value", float.class);
-		} catch (ReflectiveOperationException e) {
-			throw new ExceptionInInitializerError(e);
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -53,11 +53,6 @@ public class AtomicFloat extends Number implements Serializable {
 
 	public final boolean compareAndSet(float expectedValue, float newValue) {
 		return handle.compareAndSet(this, expectedValue, newValue);
-	}
-
-	@Deprecated(since = "9")
-	public final boolean weakCompareAndSet(float expectedValue, float newValue) {
-		return handle.weakCompareAndSetPlain(this, expectedValue, newValue);
 	}
 
 	public final boolean weakCompareAndSetPlain(float expectedValue, float newValue) {

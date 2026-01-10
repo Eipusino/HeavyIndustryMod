@@ -21,14 +21,18 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Field;
 
 public final class ScreenSampler {
-	static final Field lastBoundFramebufferField, bufferField;
+	//private static long lastBoundFramebufferFieldOffset, bufferFieldOffset;
+	private static Field lastBoundFramebufferField, bufferField;
 
-	static FrameBuffer worldBuffer, uiBuffer, currBuffer;
-	static final Lazy<FrameBuffer> pixelatorBuffer;
+	private static FrameBuffer worldBuffer, uiBuffer, currBuffer;
+	private static Lazy<FrameBuffer> pixelatorBuffer;
 
 	private static boolean activity = false;
 
-	static {
+	private ScreenSampler() {}
+
+	@Internal
+	public static void init() {
 		try {
 			lastBoundFramebufferField = GLFrameBuffer.class.getDeclaredField("lastBoundFramebuffer");
 			lastBoundFramebufferField.setAccessible(true);
@@ -43,11 +47,9 @@ public final class ScreenSampler {
 				}
 			}, false);
 		} catch (NoSuchFieldException e) {
-			throw new RuntimeException(e);
+			throw new RuntimeException(e);// should not happen.
 		}
 	}
-
-	private ScreenSampler() {}
 
 	public static void resetMark() {
 		Core.settings.remove("sampler.setup");
@@ -87,9 +89,9 @@ public final class ScreenSampler {
 				String className = jval.getString("className");
 				String worldBufferName = jval.getString("worldBuffer");
 				String uiBufferName = jval.getString("uiBuffer");
-				Class<?> clazz = Class.forName(className);
-				Field worldBufferField = clazz.getDeclaredField(worldBufferName);
-				Field uiBufferField = clazz.getDeclaredField(uiBufferName);
+				Class<?> type = Class.forName(className);
+				Field worldBufferField = type.getDeclaredField(worldBufferName);
+				Field uiBufferField = type.getDeclaredField(uiBufferName);
 
 				worldBufferField.setAccessible(true);
 				uiBufferField.setAccessible(true);
@@ -101,7 +103,7 @@ public final class ScreenSampler {
 				Events.run(Trigger.uiDrawBegin, () -> currBuffer = uiBuffer);
 				Events.run(Trigger.uiDrawEnd, () -> currBuffer = null);
 			} catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
-				throw new RuntimeException(e);
+				throw new RuntimeException("Failed to setup buffers from reflection", e);
 			}
 		}
 
@@ -157,34 +159,37 @@ public final class ScreenSampler {
 	 * @param unit Texture units bound to screen sampling textures
 	 */
 	public static void blit(Shader shader, int unit) {
-		if (currBuffer != null) {
-			currBuffer.getTexture().bind(unit);
-			Draw.blit(shader);
-		}/* else {
+		if (currBuffer == null) {
 			throw new IllegalStateException("currently no buffer bound");
-		}*/
-	}
-
-	static void blitBuffer(FrameBuffer from, @Nullable FrameBuffer to) {
-		if (Core.gl30 == null) {
-			from.blit(HShaders.distBase);
-
-			return;
 		}
 
-		try {
-			GLFrameBuffer<?> target = to == null ? (GLFrameBuffer<?>) lastBoundFramebufferField.get(from) : to;
-			Gl.bindFramebuffer(GL30.GL_READ_FRAMEBUFFER, from.getFramebufferHandle());
-			Gl.bindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, target == null ? 0 : target.getFramebufferHandle());
-			Core.gl30.glBlitFramebuffer(
-					0, 0,
-					from.getWidth(), from.getHeight(),
-					0, 0,
-					target == null ? Core.graphics.getWidth() : target.getWidth(),
-					target == null ? Core.graphics.getHeight() : target.getHeight(),
-					Gl.colorBufferBit, Gl.nearest);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
+		currBuffer.getTexture().bind(unit);
+		Draw.blit(shader);
+	}
+
+	/** Overload method, use default texture unit {@code 0}. */
+	public static void blit(Shader shader) {
+		blit(shader, 0);
+	}
+
+	private static void blitBuffer(FrameBuffer from, @Nullable FrameBuffer to) {
+		if (Core.gl30 == null) {
+			from.blit(HShaders.distBase);
+		} else {
+			try {
+				GLFrameBuffer<?> target = to != null ? to : (GLFrameBuffer<?>) lastBoundFramebufferField.get(from);
+				Gl.bindFramebuffer(GL30.GL_READ_FRAMEBUFFER, from.getFramebufferHandle());
+				Gl.bindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, target != null ? target.getFramebufferHandle() : 0);
+				Core.gl30.glBlitFramebuffer(
+						0, 0, from.getWidth(), from.getHeight(),
+						0, 0,
+						target != null ? target.getWidth() : Core.graphics.getWidth(),
+						target != null ? target.getHeight() : Core.graphics.getHeight(),
+						Gl.colorBufferBit, Gl.nearest
+				);
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException("Failed to access lastBoundFramebuffer field", e);
+			}
 		}
 	}
 

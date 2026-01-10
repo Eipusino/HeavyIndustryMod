@@ -6,10 +6,8 @@ import arc.math.geom.Vec3;
 import heavyindustry.util.CollectionList;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 public interface Transform {
-	List<Transform> tmpStack = new CollectionList<>(Transform.class);
+	CollectionList<Transform> tmpStack = new CollectionList<>(Transform.class);
 
 	@Nullable Transform parent();
 
@@ -30,8 +28,8 @@ public interface Transform {
 				curr = curr.parent();
 			}
 
-			for (int i = tmpStack.size() - 1; i >= 0; i--) {
-				Transform obj = tmpStack.get(i);
+			for (int i = tmpStack.size - 1; i >= 0; i--) {
+				Transform obj = tmpStack.items[i];
 				Transform par = obj.parent();
 				if (par == null) obj.parentTrans().idt();
 				else {

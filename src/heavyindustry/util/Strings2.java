@@ -31,10 +31,12 @@ public final class Strings2 {
 	/**
 	 * The {@code char} version of {@code String.repeat(int)}.
 	 *
-	 * @throws NegativeArraySizeException if the {@code count} is negative.
+	 * @throws IllegalArgumentException if the {@code count} is negative.
 	 */
 	@Contract(pure = true)
 	public static @NotNull String repeat(char key, int count) {
+		if (count < 0) throw new IllegalArgumentException("count is negative: " + count);
+
 		char[] data = new char[count];
 		Arrays.fill(data, key);
 
@@ -42,10 +44,9 @@ public final class Strings2 {
 	}
 
 	/**
-	 * On Android, the {@code String.repeat(int)} method cannot be used.
+	 * {@code String.repeat(int)}.
 	 *
-	 * @throws NegativeArraySizeException if the {@code count} is negative.
-	 * @see String#repeat(int)
+	 * @throws IllegalArgumentException if the {@code count} is negative.
 	 */
 	@Contract(value = "null, _ -> null; !null, _ -> !null", pure = true)
 	public static String repeat(@Nullable String key, int count) {
@@ -56,6 +57,7 @@ public final class Strings2 {
 			builder.append(key);
 		}
 		return builder.toString();
+		//return key.repeat(count);
 	}
 
 	/** Determine whether the string is composed entirely of numbers. */
@@ -73,9 +75,9 @@ public final class Strings2 {
 
 		if (numeric == null) numeric = Pattern.compile("[0-9]*");
 
-		int index = key.indexOf(".");
+		int index = key.indexOf('.');
 		if (index > 0) {//Determine if there is a decimal point
-			if (index == key.lastIndexOf(".") && key.split("\\.").length == 2) { //Determine if there is only one decimal point
+			if (index == key.lastIndexOf('.') && key.split("\\.").length == 2) { //Determine if there is only one decimal point
 				return numeric.matcher(key.replace(".", "")).matches();
 			} else {
 				return false;

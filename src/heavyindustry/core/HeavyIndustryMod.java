@@ -200,11 +200,11 @@ public final class HeavyIndustryMod extends Mod {
 
 		HVars.listener = new HeavyIndustryListener();
 
-		try {
+		/*try {
 			HTest.instance.test();
 		} catch (Throwable e) {
 			Log.err(e);
-		}
+		}*/
 	}
 
 	@Override
@@ -251,6 +251,7 @@ public final class HeavyIndustryMod extends Mod {
 			HStyles.load();
 			Elements.load();
 
+			ScreenSampler.init();
 			ScreenSampler.setup();
 		}
 

@@ -5,7 +5,6 @@ import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.gen.Unit;
 import org.jetbrains.annotations.ApiStatus.Internal;
-import org.jetbrains.annotations.ApiStatus.ScheduledForRemoval;
 
 public final class HTeam {
 	public static final Team none;
@@ -22,8 +21,7 @@ public final class HTeam {
 		team(none.id, "none", Color.clear);
 	}
 
-	@Deprecated
-	@ScheduledForRemoval
+	@Deprecated/*(since = "1.0.8", forRemoval = true)*/
 	public static void team(Building build, Team team) {
 		build.team = team;
 	}

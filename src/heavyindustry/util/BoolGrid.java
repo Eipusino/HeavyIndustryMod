@@ -10,7 +10,7 @@ public class BoolGrid {
 
 	public BoolGrid() {}
 
-	@Deprecated
+	@Deprecated/*(since = "1.0.8", forRemoval = true)*/
 	public void updateSize(int newWidth, int newHeight) {
 		resize(newWidth, newHeight);
 	}

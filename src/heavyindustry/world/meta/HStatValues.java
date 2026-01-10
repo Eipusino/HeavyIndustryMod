@@ -17,6 +17,7 @@ import arc.struct.ObjectMap;
 import arc.struct.Seq;
 import arc.util.Scaling;
 import arc.util.Strings;
+import heavyindustry.graphics.HRegions;
 import heavyindustry.ui.Elements;
 import heavyindustry.ui.ItemDisplay;
 import heavyindustry.world.blocks.production.FuelCrafter;
@@ -42,7 +43,7 @@ import mindustry.world.meta.StatUnit;
 import mindustry.world.meta.StatValue;
 import mindustry.world.meta.StatValues;
 import org.jetbrains.annotations.ApiStatus.Obsolete;
-import org.jetbrains.annotations.ApiStatus.ScheduledForRemoval;
+import org.jetbrains.annotations.Nullable;
 
 public final class HStatValues {
 	/** Don't let anyone instantiate this class. */
@@ -864,21 +865,17 @@ public final class HStatValues {
 		};
 	}
 
-	//for AmmoListValue
 	@Obsolete(since = "1.0.8")
 	public static Cell<Label> sep(Table table, String text) {
 		table.row();
 		return table.add(text);
 	}
 
-	//for AmmoListValue
-	@Deprecated
-	@ScheduledForRemoval
-	public static TextureRegion icon(UnlockableContent content) {
-		return content.uiIcon;
+	@Obsolete(since = "1.0.8")
+	public static TextureRegion icon(@Nullable UnlockableContent content) {
+		return content == null ? HRegions.white : content.uiIcon;
 	}
 
-	//for AmmoListValue
 	public static String ammoStat(float value) {
 		return (value > 0 ? "[stat]+" : "[negstat]") + Strings.autoFixed(value, 1);
 	}

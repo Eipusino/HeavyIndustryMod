@@ -22,8 +22,8 @@ public class AtomicDouble extends Number implements Serializable {
 		try {
 			Lookup lookup = MethodHandles.lookup();
 			handle = lookup.findVarHandle(AtomicDouble.class, "value", double.class);
-		} catch (ReflectiveOperationException e) {
-			throw new ExceptionInInitializerError(e);
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -53,11 +53,6 @@ public class AtomicDouble extends Number implements Serializable {
 
 	public final boolean compareAndSet(double expectedValue, double newValue) {
 		return handle.compareAndSet(this, expectedValue, newValue);
-	}
-
-	@Deprecated(since = "9")
-	public final boolean weakCompareAndSet(double expectedValue, double newValue) {
-		return handle.weakCompareAndSetPlain(this, expectedValue, newValue);
 	}
 
 	public final boolean weakCompareAndSetPlain(double expectedValue, double newValue) {

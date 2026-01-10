@@ -41,8 +41,8 @@ public final class Worlds {
 		});
 	}
 
-	/** @deprecated Not needed for now. */
-	@Deprecated
+	/** Not needed for now. */
+	@Internal
 	public static void init() {
 		SaveVersion.addCustomChunk(MOD_NAME + "-team-payload-data", teamPayloadData);
 	}
