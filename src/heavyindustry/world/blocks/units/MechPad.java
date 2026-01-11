@@ -8,7 +8,6 @@ import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.Lines;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
-import arc.util.ArcRuntimeException;
 import arc.util.Scaling;
 import arc.util.Strings;
 import arc.util.Time;

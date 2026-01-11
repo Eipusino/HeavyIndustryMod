@@ -2,17 +2,19 @@ package heavyindustry.entities.part;
 
 import arc.graphics.g2d.Draw;
 import arc.math.geom.Vec2;
-import arc.struct.Seq;
 import heavyindustry.math.Mathm;
+import heavyindustry.util.CollectionList;
 import mindustry.entities.part.DrawPart;
+
+import java.util.List;
 
 public class CustomPart extends DrawPart {
 	protected final Vec2 vec = new Vec2();
 	protected final Vec2 vec2 = new Vec2();
 
 	public Drawer draw = (x, y, rotation, progress) -> {};
-	public Seq<PartMove> moves = new Seq<>(PartMove.class);
-	public PartProgress progress = p -> 1;
+	public List<PartMove> moves = new CollectionList<>(PartMove.class);
+	public PartProgress progress = HPartProgress.one;
 
 	public float layer = -1;
 	public float x, y, drawRadius, rotation;
@@ -25,7 +27,10 @@ public class CustomPart extends DrawPart {
 		float z = Draw.z();
 
 		float dx = 0, dy = 0, dr = 0;
-		for (PartMove move : moves) {
+
+		for (int i = 0; i < moves.size(); i++) {
+			PartMove move = moves.get(i);
+
 			dx += move.x * move.progress.get(params);
 			dy += move.y * move.progress.get(params);
 			dr += move.rot * move.progress.get(params);
@@ -49,10 +54,6 @@ public class CustomPart extends DrawPart {
 			draw.draw(params.x + drawX, params.y + drawY, params.rotation - rot, prog);
 		}
 		Draw.z(z);
-	}
-
-	@Override
-	public void load(String name) {
 	}
 
 	public interface Drawer {

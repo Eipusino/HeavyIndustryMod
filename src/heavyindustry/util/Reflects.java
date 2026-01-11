@@ -345,7 +345,7 @@ public final class Reflects {
 	public static @NotNull CollectionObjectSet<Class<?>> getClassSubclassHierarchy(Class<?> type) {
 		Class<?> c = type.getSuperclass();
 		CollectionObjectSet<Class<?>> hierarchy = new CollectionObjectSet<>(Class.class);
-		while (c != null) {
+		while (c != Object.class) {
 			hierarchy.add(c);
 			Class<?>[] interfaces = c.getInterfaces();
 			hierarchy.addAll(interfaces);
@@ -369,7 +369,7 @@ public final class Reflects {
 		targetFieldMap.clear();
 
 		Class<?> targetClass = target.getClass();
-		while (targetClass != null) {
+		while (targetClass != Object.class) {
 			for (Field field : HVars.platformImpl.getFields(targetClass)) {
 				if (Modifier.isFinal(field.getModifiers())) continue;
 
@@ -383,12 +383,6 @@ public final class Reflects {
 			for (String name : filler) {
 				targetFieldMap.remove(name);
 			}
-		}
-
-		// These fields cannot be copied
-		if (OS.isAndroid) {
-			targetFieldMap.remove("shadow$_klass_");
-			targetFieldMap.remove("shadow$_monitor_");
 		}
 
 		Class<?> sourceClass = source.getClass();
@@ -450,7 +444,7 @@ public final class Reflects {
 	}
 
 	// Android only
-	public static void setHash(@Nullable Object object, int hash) {
+	public static void setMonitor(@Nullable Object object, int hash) {
 		if (object != null && OS.isAndroid) {
 			setInt(Object.class, "shadow$_monitor_", object, hash);
 		}

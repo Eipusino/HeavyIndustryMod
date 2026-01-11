@@ -12,6 +12,7 @@ import arc.util.Strings;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.entities.pattern.IBulletHandler;
 import heavyindustry.math.Mathm;
 import heavyindustry.world.meta.HStatValues;
 import mindustry.Vars;
@@ -267,7 +268,7 @@ public class MultiBulletTurret extends Turret {
 				type[0].chargeEffect.at(bulletX, bulletY, rotation);
 			}
 
-			shoot.shoot(totalShots, (x, y, angle, delay, mover) -> {
+			shoot.shoot(totalShots, (IBulletHandler) (x, y, angle, delay, mover) -> {
 				queuedBullets++;
 				if (delay > 0f) {
 					Time.run(delay, () -> bullets(type, x, y, angle, mover));

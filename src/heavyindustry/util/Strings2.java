@@ -154,7 +154,38 @@ public final class Strings2 {
 			isNegative = true;
 		}
 
-		int index = 0;
+		// 查找合适的单位基值
+		double base = 1d;
+		for (int i = 0; i < byteUnit.length; i++) {
+			if (base * 1024 > number) {
+				break;
+			}
+			base *= 1024;
+		}
+
+		String str = Double.toString(number / base);
+		int dotIndex = str.indexOf('.');
+
+		String integerPart = str.substring(0, dotIndex);
+		String fractionalPart = str.substring(dotIndex + 1);
+
+		int realRetain = Math.min(retain, fractionalPart.length());
+
+		StringBuilder builder = new StringBuilder();
+		if (isNegative) {
+			builder.append('-');
+		}
+		builder.append(integerPart);
+		if (retain != 0) {
+			builder.append('.');
+			builder.append(fractionalPart, 0, realRetain);
+			for (int i = 0; i < Math.max(0, retain - realRetain); i++) {
+				builder.append('0');
+			}
+		}
+		return builder.toString();
+
+		/*int index = 0;
 		double base = 1;
 		for (int i = 0; i < byteUnit.length; i++) {
 			if (base * 1024 > number) {
@@ -169,7 +200,7 @@ public final class Strings2 {
 
 		String end = repeat('0', Math.max(0, retain - realRetain));
 
-		return (isNegative ? "-" : "") + arr[0] + (retain == 0 ? "" : "." + arr[1].substring(0, realRetain) + end + byteUnit[index]);
+		return (isNegative ? "-" : "") + arr[0] + (retain == 0 ? "" : "." + arr[1].substring(0, realRetain) + end + byteUnit[index]);*/
 	}
 
 	public static @NotNull String toStoreSize(float num) {

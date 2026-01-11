@@ -4,7 +4,6 @@ import jdk.internal.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.security.ProtectionDomain;
 
 import static heavyindustry.util.Objects2.requireInstance;
 import static heavyindustry.util.Objects2.requireNonNullInstance;
@@ -46,7 +45,7 @@ public final class Unsafer2 {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getObject(Field field, Object object) throws IllegalArgumentException {
-		if (field.getType().isPrimitive()) throw new IllegalArgumentException("Method 'getObject' does not support field of primitive types");
+		if (field.getType().isPrimitive()) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -58,6 +57,126 @@ public final class Unsafer2 {
 		return (T) (Modifier.isVolatile(modifiers) ?
 				internalUnsafe.getReferenceVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
 				internalUnsafe.getReference(isStatic ? type : requireNonNullInstance(type, object), offset));
+	}
+
+	public static boolean getBool(Field field, Object object) throws IllegalArgumentException {
+		if (field.getType() != boolean.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+
+		long offset = isStatic ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		return Modifier.isVolatile(modifiers) ?
+				internalUnsafe.getBooleanVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				internalUnsafe.getBoolean(isStatic ? type : requireNonNullInstance(type, object), offset);
+	}
+
+	public static char getChar(Field field, Object object) throws IllegalArgumentException {
+		if (field.getType() != char.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+
+		long offset = isStatic ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		return Modifier.isVolatile(modifiers) ?
+				internalUnsafe.getCharVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				internalUnsafe.getChar(isStatic ? type : requireNonNullInstance(type, object), offset);
+	}
+
+	public static byte getByte(Field field, Object object) throws IllegalArgumentException {
+		if (field.getType() != byte.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+
+		long offset = isStatic ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		return Modifier.isVolatile(modifiers) ?
+				internalUnsafe.getByteVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				internalUnsafe.getByte(isStatic ? type : requireNonNullInstance(type, object), offset);
+	}
+
+	public static short getShort(Field field, Object object) throws IllegalArgumentException {
+		if (field.getType() != short.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+
+		long offset = isStatic ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		return Modifier.isVolatile(modifiers) ?
+				internalUnsafe.getShortVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				internalUnsafe.getShort(isStatic ? type : requireNonNullInstance(type, object), offset);
+	}
+
+	public static int getInt(Field field, Object object) throws IllegalArgumentException {
+		if (field.getType() != int.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+
+		long offset = isStatic ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		return Modifier.isVolatile(modifiers) ?
+				internalUnsafe.getIntVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				internalUnsafe.getInt(isStatic ? type : requireNonNullInstance(type, object), offset);
+	}
+
+	public static long getLong(Field field, Object object) throws IllegalArgumentException {
+		if (field.getType() != long.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+
+		long offset = isStatic ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		return Modifier.isVolatile(modifiers) ?
+				internalUnsafe.getLongVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				internalUnsafe.getLong(isStatic ? type : requireNonNullInstance(type, object), offset);
+	}
+
+	public static float getFloat(Field field, Object object) throws IllegalArgumentException {
+		if (field.getType() != float.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+
+		long offset = isStatic ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		return Modifier.isVolatile(modifiers) ?
+				internalUnsafe.getFloatVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				internalUnsafe.getFloat(isStatic ? type : requireNonNullInstance(type, object), offset);
+	}
+
+	public static double getDouble(Field field, Object object) throws IllegalArgumentException {
+		if (field.getType() != double.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+
+		long offset = isStatic ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		return Modifier.isVolatile(modifiers) ?
+				internalUnsafe.getDoubleVolatile(isStatic ? type : requireNonNullInstance(type, object), offset) :
+				internalUnsafe.getDouble(isStatic ? type : requireNonNullInstance(type, object), offset);
 	}
 
 	public static void setObject(Class<?> type, String name, Object object, Object value) throws IllegalArgumentException {
@@ -78,7 +197,7 @@ public final class Unsafer2 {
 	 *                                                                   instance of {@code field.getDeclaringClass()} or {@code null}.</ul>
 	 */
 	public static void setObject(Field field, Object object, Object value) throws IllegalArgumentException {
-		if (field.getType().isPrimitive()) throw new IllegalArgumentException("Method 'getObject' does not support field of primitive types");
+		if (field.getType().isPrimitive()) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
@@ -91,6 +210,142 @@ public final class Unsafer2 {
 			internalUnsafe.putReferenceVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, requireInstance(field.getType(), value));
 		} else {
 			internalUnsafe.putReference(isStatic ? type : requireNonNullInstance(type, object), offset, requireInstance(field.getType(), value));
+		}
+	}
+
+	public static void setBool(Field field, Object object, boolean value) throws IllegalArgumentException {
+		if (field.getType() != boolean.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+
+		long offset = isStatic ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		if (Modifier.isVolatile(modifiers)) {
+			internalUnsafe.putBooleanVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
+		} else {
+			internalUnsafe.putBoolean(isStatic ? type : requireNonNullInstance(type, object), offset, value);
+		}
+	}
+
+	public static void setChar(Field field, Object object, char value) throws IllegalArgumentException {
+		if (field.getType() != char.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+
+		long offset = isStatic ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		if (Modifier.isVolatile(modifiers)) {
+			internalUnsafe.putCharVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
+		} else {
+			internalUnsafe.putChar(isStatic ? type : requireNonNullInstance(type, object), offset, value);
+		}
+	}
+
+	public static void setByte(Field field, Object object, byte value) throws IllegalArgumentException {
+		if (field.getType() != byte.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+
+		long offset = isStatic ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		if (Modifier.isVolatile(modifiers)) {
+			internalUnsafe.putByteVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
+		} else {
+			internalUnsafe.putByte(isStatic ? type : requireNonNullInstance(type, object), offset, value);
+		}
+	}
+
+	public static void setShort(Field field, Object object, short value) throws IllegalArgumentException {
+		if (field.getType() != byte.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+
+		long offset = isStatic ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		if (Modifier.isVolatile(modifiers)) {
+			internalUnsafe.putShortVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
+		} else {
+			internalUnsafe.putShort(isStatic ? type : requireNonNullInstance(type, object), offset, value);
+		}
+	}
+
+	public static void setInt(Field field, Object object, int value) throws IllegalArgumentException {
+		if (field.getType() != int.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+
+		long offset = isStatic ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		if (Modifier.isVolatile(modifiers)) {
+			internalUnsafe.putIntVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
+		} else {
+			internalUnsafe.putInt(isStatic ? type : requireNonNullInstance(type, object), offset, value);
+		}
+	}
+
+	public static void setLong(Field field, Object object, long value) throws IllegalArgumentException {
+		if (field.getType() != long.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+
+		long offset = isStatic ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		if (Modifier.isVolatile(modifiers)) {
+			internalUnsafe.putLongVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
+		} else {
+			internalUnsafe.putLong(isStatic ? type : requireNonNullInstance(type, object), offset, value);
+		}
+	}
+
+	public static void setFloat(Field field, Object object, float value) throws IllegalArgumentException {
+		if (field.getType() != float.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+
+		long offset = isStatic ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		if (Modifier.isVolatile(modifiers)) {
+			internalUnsafe.putFloatVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
+		} else {
+			internalUnsafe.putFloat(isStatic ? type : requireNonNullInstance(type, object), offset, value);
+		}
+	}
+
+	public static void setDouble(Field field, Object object, double value) throws IllegalArgumentException {
+		if (field.getType() != double.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
+
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+
+		long offset = isStatic ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
+
+		Class<?> type = field.getDeclaringClass();
+
+		if (Modifier.isVolatile(modifiers)) {
+			internalUnsafe.putDoubleVolatile(isStatic ? type : requireNonNullInstance(type, object), offset, value);
+		} else {
+			internalUnsafe.putDouble(isStatic ? type : requireNonNullInstance(type, object), offset, value);
 		}
 	}
 
@@ -180,18 +435,6 @@ public final class Unsafer2 {
 				internalUnsafe.putReference(o, offset, requireInstance(field.getType(), value));
 			}
 		}
-	}
-
-	public static Class<?> defineClass(String name, byte[] bytes, ClassLoader loader) {
-		return defineClass(name, bytes, loader, null);
-	}
-
-	public static Class<?> defineClass(String name, byte[] bytes, ClassLoader loader, ProtectionDomain protectionDomain) {
-		return defineClass(name, bytes, 0, bytes.length, loader, protectionDomain);
-	}
-
-	public static Class<?> defineClass(String name, byte[] bytes, int offset, int length, ClassLoader loader, ProtectionDomain protectionDomain) {
-		return internalUnsafe.defineClass(name, bytes, offset, length, loader, protectionDomain);
 	}
 
 	public static long getOffset(Field field) {

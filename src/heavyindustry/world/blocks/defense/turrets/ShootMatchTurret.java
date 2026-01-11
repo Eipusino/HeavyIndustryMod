@@ -3,6 +3,7 @@ package heavyindustry.world.blocks.defense.turrets;
 import arc.math.Angles;
 import arc.math.Mathf;
 import arc.util.Time;
+import heavyindustry.entities.pattern.IBulletHandler;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.CollectionObjectMap;
 import heavyindustry.util.IntMap2;
@@ -54,7 +55,7 @@ public class ShootMatchTurret extends ItemTurret {
 				type.chargeEffect.at(bulletX, bulletY, rotation);
 			}
 
-			shoot.shoot(barrelCounter, (x, y, angle, delay, mover) -> {
+			shoot.shoot(barrelCounter, (IBulletHandler) (x, y, angle, delay, mover) -> {
 				queuedBullets++;
 				if (delay > 0f) {
 					Time.run(delay, () -> bullet(type, x, y, angle, mover));

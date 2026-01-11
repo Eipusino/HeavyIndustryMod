@@ -10,6 +10,7 @@ import arc.scene.ui.layout.Table;
 import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.entities.pattern.IBulletHandler;
 import heavyindustry.world.meta.HStatValues;
 import mindustry.entities.Effect;
 import mindustry.entities.Mover;
@@ -100,7 +101,7 @@ public class RelatedWeapon extends DataWeapon {
 			bullet.chargeEffect.at(shootX, shootY, rotation, bullet.keepVelocity || parentizeEffects ? unit : null);
 		}
 
-		shoot.shoot(mount.totalShots, (x, y, angle, delay, mover) -> {
+		shoot.shoot(mount.totalShots, (IBulletHandler) (x, y, angle, delay, mover) -> {
 			mount.totalShots++;
 			if (delay > 0f) {
 				Time.run(delay, () -> bullet(unit, mount, x, y, angle, mover));

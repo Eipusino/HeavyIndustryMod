@@ -35,6 +35,7 @@ import arc.util.Log;
 import arc.util.Time;
 import arc.util.Tmp;
 import heavyindustry.graphics.HPal;
+import heavyindustry.math.IPos;
 import mindustry.Vars;
 import mindustry.content.StatusEffects;
 import mindustry.core.UI;
@@ -574,7 +575,7 @@ public final class Get {
 		}
 	}
 
-	public static class Pos implements Position {
+	public static class Pos implements IPos {
 		public float x, y;
 
 		public Pos() {}
@@ -599,50 +600,6 @@ public final class Get {
 		@Override
 		public float getY() {
 			return y;
-		}
-
-		@Override
-		public float angleTo(Position other) {
-			return Angles.angle(getX(), getY(), other.getX(), other.getY());
-		}
-
-		@Override
-		public float angleTo(float x, float y) {
-			return Angles.angle(getX(), getY(), x, y);
-		}
-
-		@Override
-		public float dst2(Position other) {
-			return dst2(other.getX(), other.getY());
-		}
-
-		@Override
-		public float dst(Position other) {
-			return dst(other.getX(), other.getY());
-		}
-
-		@Override
-		public float dst(float x, float y) {
-			final float xd = getX() - x;
-			final float yd = getY() - y;
-			return Mathf.sqrt(xd * xd + yd * yd);
-		}
-
-		@Override
-		public float dst2(float x, float y) {
-			final float xd = getX() - x;
-			final float yd = getY() - y;
-			return (xd * xd + yd * yd);
-		}
-
-		@Override
-		public boolean within(Position other, float dst) {
-			return within(other.getX(), other.getY(), dst);
-		}
-
-		@Override
-		public boolean within(float x, float y, float dst) {
-			return Mathf.dst2(getX(), getY(), x, y) < dst * dst;
 		}
 	}
 }

@@ -20,42 +20,42 @@ public interface IPartProgress extends PartProgress {
 
 	@Override
 	default PartProgress inv() {
-		return p -> 1f - get(p);
+		return (IPartProgress) p -> 1f - get(p);
 	}
 
 	@Override
 	default PartProgress slope() {
-		return p -> Mathf.slope(get(p));
+		return (IPartProgress) p -> Mathf.slope(get(p));
 	}
 
 	@Override
 	default PartProgress clamp() {
-		return p -> Mathf.clamp(get(p));
+		return (IPartProgress) p -> Mathf.clamp(get(p));
 	}
 
 	@Override
 	default PartProgress add(float amount) {
-		return p -> get(p) + amount;
+		return (IPartProgress) p -> get(p) + amount;
 	}
 
 	@Override
 	default PartProgress add(PartProgress other) {
-		return p -> get(p) + other.get(p);
+		return (IPartProgress) p -> get(p) + other.get(p);
 	}
 
 	@Override
 	default PartProgress delay(float amount) {
-		return p -> (get(p) - amount) / (1f - amount);
+		return (IPartProgress) p -> (get(p) - amount) / (1f - amount);
 	}
 
 	@Override
 	default PartProgress curve(float offset, float duration) {
-		return p -> (get(p) - offset) / duration;
+		return (IPartProgress) p -> (get(p) - offset) / duration;
 	}
 
 	@Override
 	default PartProgress sustain(float offset, float grow, float sustain) {
-		return p -> {
+		return (IPartProgress) p -> {
 			float val = get(p) - offset;
 			return Math.min(Math.max(val, 0f) / grow, (grow + sustain + grow - val) / grow);
 		};
@@ -63,66 +63,66 @@ public interface IPartProgress extends PartProgress {
 
 	@Override
 	default PartProgress shorten(float amount) {
-		return p -> get(p) / (1f - amount);
+		return (IPartProgress) p -> get(p) / (1f - amount);
 	}
 
 	@Override
 	default PartProgress compress(float start, float end) {
-		return p -> Mathf.curve(get(p), start, end);
+		return (IPartProgress) p -> Mathf.curve(get(p), start, end);
 	}
 
 	@Override
 	default PartProgress blend(PartProgress other, float amount) {
-		return p -> Mathf.lerp(get(p), other.get(p), amount);
+		return (IPartProgress) p -> Mathf.lerp(get(p), other.get(p), amount);
 	}
 
 	@Override
 	default PartProgress mul(PartProgress other) {
-		return p -> get(p) * other.get(p);
+		return (IPartProgress) p -> get(p) * other.get(p);
 	}
 
 	@Override
 	default PartProgress mul(float amount) {
-		return p -> get(p) * amount;
+		return (IPartProgress) p -> get(p) * amount;
 	}
 
 	@Override
 	default PartProgress min(PartProgress other) {
-		return p -> Math.min(get(p), other.get(p));
+		return (IPartProgress) p -> Math.min(get(p), other.get(p));
 	}
 
 	@Override
 	default PartProgress sin(float offset, float scl, float mag) {
-		return p -> get(p) + Mathf.sin(Time.time + offset, scl, mag);
+		return (IPartProgress) p -> get(p) + Mathf.sin(Time.time + offset, scl, mag);
 	}
 
 	@Override
 	default PartProgress sin(float scl, float mag) {
-		return p -> get(p) + Mathf.sin(scl, mag);
+		return (IPartProgress) p -> get(p) + Mathf.sin(scl, mag);
 	}
 
 	@Override
 	default PartProgress absin(float scl, float mag) {
-		return p -> get(p) + Mathf.absin(scl, mag);
+		return (IPartProgress) p -> get(p) + Mathf.absin(scl, mag);
 	}
 
 	@Override
 	default PartProgress mod(float amount) {
-		return p -> Mathf.mod(get(p), amount);
+		return (IPartProgress) p -> Mathf.mod(get(p), amount);
 	}
 
 	@Override
 	default PartProgress loop(float time) {
-		return p -> Mathf.mod(get(p) / time, 1);
+		return (IPartProgress) p -> Mathf.mod(get(p) / time, 1);
 	}
 
 	@Override
 	default PartProgress apply(PartProgress other, PartFunc func) {
-		return p -> func.get(get(p), other.get(p));
+		return (IPartProgress) p -> func.get(get(p), other.get(p));
 	}
 
 	@Override
 	default PartProgress curve(Interp interp) {
-		return p -> interp.apply(get(p));
+		return (IPartProgress) p -> interp.apply(get(p));
 	}
 }

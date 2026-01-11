@@ -6,6 +6,7 @@ import arc.math.Mathf;
 import arc.math.geom.Vec2;
 import arc.util.Time;
 import arc.util.Tmp;
+import heavyindustry.entities.pattern.IBulletHandler;
 import heavyindustry.math.Mathm;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
@@ -57,7 +58,7 @@ public class AirRaider extends CommandableAttackerBlock {
 		public void shoot(Vec2 target) {
 			super.shoot(target);
 
-			shoot.shoot(totalShots, (x, y, angle, delay, mover) -> {
+			shoot.shoot(totalShots, (IBulletHandler) (x, y, angle, delay, mover) -> {
 				if (delay > 0f) {
 					Time.run(delay, () -> bullet(x, y, angle, mover));
 				} else {
