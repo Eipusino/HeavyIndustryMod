@@ -64,6 +64,7 @@ public final class Listeners {
 			return super.touchDown(event, x, y, pointer, button);
 		}
 
+		@FunctionalInterface
 		public interface HitChecker {
 			boolean hit(Element element);
 		}

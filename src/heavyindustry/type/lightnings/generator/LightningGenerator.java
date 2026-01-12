@@ -180,6 +180,7 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
 	/** Return the crop size of the current lightning, which should be able to fully draw the lightning. */
 	public abstract float clipSize();
 
+	@FunctionalInterface
 	public interface BranchMaker {
 		LightningGenerator get(LightningVertex vert, float strength);
 	}

@@ -20,7 +20,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.HShaders;
-import heavyindustry.util.Get.Pos;
+import heavyindustry.math.IPos;
 import mindustry.core.Renderer;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -459,16 +459,28 @@ public class PayloadRail extends PayloadBlock {
 		}
 	}
 
-	public class RailPayload extends Pos {
+	public class RailPayload implements IPos {
+		public float x, y;
 		public Payload payload;
 		public float dir;
 
 		public RailPayload(Payload payload, float x, float y) {
-			super(x, y);
+			this.x = x;
+			this.y = y;
 			this.payload = payload;
 		}
 
 		public RailPayload() {}
+
+		@Override
+		public float getX() {
+			return x;
+		}
+
+		@Override
+		public float getY() {
+			return y;
+		}
 
 		public void update(Position target) {
 			if (target == null) return;

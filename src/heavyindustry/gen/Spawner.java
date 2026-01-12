@@ -16,6 +16,7 @@ import arc.util.io.Writes;
 import heavyindustry.audio.HSounds;
 import heavyindustry.content.HFx;
 import heavyindustry.graphics.Drawn;
+import heavyindustry.math.IScaled;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.Get;
 import mindustry.Vars;
@@ -49,7 +50,7 @@ import java.nio.FloatBuffer;
 
 import static heavyindustry.HVars.MOD_NAME;
 
-public class Spawner extends BaseEntity implements Syncc, Timedc, Rotc {
+public class Spawner extends BaseEntity implements Syncc, Timedc, IScaled, Rotc {
 	public final Trail[] trails = {new Trail(30), new Trail(50), new Trail(70)};
 
 	public Team team = Team.derelict;

@@ -20,6 +20,7 @@ import arc.math.geom.Vec2;
 import arc.math.geom.Vec3;
 import arc.util.Time;
 import arc.util.Tmp;
+import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
 import heavyindustry.entities.UnitPointEntry;
 import heavyindustry.entities.abilities.MirrorFieldAbility;
@@ -4216,6 +4217,7 @@ public final class HFx {
 		}).layer(Layer.blockOver);
 	}
 
+	@FunctionalInterface
 	public interface EffectParam {
 		void draw(long id, float x, float y, float rot, float fin);
 	}
@@ -4233,11 +4235,10 @@ public final class HFx {
 	}
 
 	/** @see #edessp(float) */
-	public static class EdesspEntry {
+	public static class EdesspEntry implements Poolable {
 		public TextureRegion region;
 		public float range;
-		public float rot;
-		public float rRot;
+		public float rot, rRot;
 
 		public EdesspEntry() {}
 
@@ -4255,6 +4256,12 @@ public final class HFx {
 			rRot = rrt;
 
 			return this;
+		}
+
+		@Override
+		public void reset() {
+			region = null;
+			range = rot = rRot = 0f;
 		}
 	}
 

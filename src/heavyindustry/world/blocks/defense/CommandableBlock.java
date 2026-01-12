@@ -11,6 +11,8 @@ import arc.util.Eachable;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.math.IPos;
+import heavyindustry.math.IScaled;
 import heavyindustry.util.CollectionList;
 import heavyindustry.world.Worlds;
 import mindustry.Vars;
@@ -229,7 +231,7 @@ public abstract class CommandableBlock extends Block {
 		}
 	}
 
-	public static class CommandEntity implements Drawc, Timedc, Teamc {
+	public static class CommandEntity implements Drawc, Timedc, IPos, IScaled, Teamc {
 		public Cons<Teamc> act;
 
 		public boolean added;

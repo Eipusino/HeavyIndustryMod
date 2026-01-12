@@ -861,10 +861,12 @@ public final class HEntity {
 		}
 	}
 
+	@FunctionalInterface
 	public interface LineHitHandler<T> {
 		void get(T t, float x, float y);
 	}
 
+	@FunctionalInterface
 	public interface QuadTreeHandler {
 		boolean get(Rect rect, boolean tree);
 	}

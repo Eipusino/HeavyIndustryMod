@@ -120,6 +120,7 @@ public class FloatCircularQueue {
 		return queue[tail];
 	}
 
+	@FunctionalInterface
 	public interface QueueIterator {
 		void get(int i, float f);
 	}

@@ -2,6 +2,7 @@ package heavyindustry.math;
 
 import arc.math.Interp;
 
+@FunctionalInterface
 public interface IInterp extends Interp {
 	@Override
 	default float apply(float start, float end, float a) {

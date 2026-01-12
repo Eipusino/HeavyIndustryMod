@@ -113,6 +113,7 @@ public final class HTypeIO {
 		}
 	}
 
+	@FunctionalInterface
 	public interface FromOrdinal<T extends Enum<T>> {
 		T get(int ordinal);
 	}

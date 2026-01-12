@@ -10,6 +10,9 @@ import arc.graphics.Texture.TextureFilter;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Http;
 import arc.util.Log;
+import heavyindustry.util.concurrent.FloatReference;
+import heavyindustry.util.concurrent.IntReference;
+import heavyindustry.util.concurrent.ObjectReference;
 import org.jetbrains.annotations.Contract;
 
 import java.io.InputStream;
@@ -34,8 +37,8 @@ public final class URLDownloader {
 	}
 
 	public static void retryDown(String url, ConsT<Http.HttpResponse, Exception> resultHandler, int maxRetry, Cons<Throwable> errHandler) {
-		int[] counter = {0};
-		Runnable[] get = new Runnable[1];
+		IntReference counter = new IntReference();
+		ObjectReference<Runnable> get = new ObjectReference<>();
 
 		for (var entry : urlReplacers) {
 			if (url.startsWith(entry.key)) {
@@ -44,16 +47,16 @@ public final class URLDownloader {
 		}
 
 		String realUrl = url;
-		get[0] = () -> Http.get(realUrl, resultHandler, e -> {
-			if (counter[0]++ <= maxRetry) get[0].run();
+		get.element = () -> Http.get(realUrl, resultHandler, e -> {
+			if (counter.element++ <= maxRetry) get.element.run();
 			else errHandler.get(e);
 		});
-		get[0].run();
+		get.element.run();
 	}
 
 	@Contract(value = "_, _ -> new")
-	public static float[] downloadToStream(String url, OutputStream stream) {
-		float[] progress = new float[1];
+	public static FloatReference downloadToStream(String url, OutputStream stream) {
+		FloatReference progress = new FloatReference();
 		retryDown(url, res -> {
 			try (stream) {
 				InputStream in = res.getResultAsStream();
@@ -63,14 +66,14 @@ public final class URLDownloader {
 				for (int b = in.read(); b != -1; b = in.read()) {
 					curr++;
 					stream.write(b);
-					progress[0] = (float) curr / total;
+					progress.element = (float) curr / total;
 				}
 			}
 		}, 5, Log::err);
 		return progress;
 	}
 
-	public static float[] downloadToFile(String url, Fi file) {
+	public static FloatReference downloadToFile(String url, Fi file) {
 		return downloadToStream(url, file.write());
 	}
 

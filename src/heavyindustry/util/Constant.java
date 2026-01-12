@@ -14,6 +14,8 @@ import mindustry.gen.Unit;
 
 /** Provide some commonly used lambda functions with simple structures. */
 public final class Constant {
+	public static final String[] EMPTY_STRING = {};
+
 	public static final Runnable RUNNABLE_NOTHING = () -> {};
 	public static final Floatp FLOATP_ZERO_FLT = () -> 0f;
 	public static final Floatp FLOATP_ONE_FLT = () -> 1f;
@@ -40,4 +42,8 @@ public final class Constant {
 	public static final int INDEX_ZERO = -1;
 
 	private Constant() {}
+
+	/*public static <T> Boolf<T> boolf(boolean value) {
+		return t -> value;
+	}*/
 }

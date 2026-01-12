@@ -7,6 +7,7 @@ import mindustry.entities.part.DrawPart.PartFunc;
 import mindustry.entities.part.DrawPart.PartParams;
 import mindustry.entities.part.DrawPart.PartProgress;
 
+@FunctionalInterface
 public interface IPartProgress extends PartProgress {
 	@Override
 	default float getClamp(PartParams p) {

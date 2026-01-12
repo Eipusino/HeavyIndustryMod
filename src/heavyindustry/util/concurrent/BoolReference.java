@@ -1,12 +1,13 @@
 package heavyindustry.util.concurrent;
 
+import arc.util.pooling.Pool.Poolable;
 import heavyindustry.util.Objects2;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public class BoolReference implements Serializable, Comparable<BoolReference> {
+public class BoolReference implements Serializable, Comparable<BoolReference>, Poolable {
 	private static final long serialVersionUID = -7120385114040352042l;
 
 	public boolean element;
@@ -45,5 +46,10 @@ public class BoolReference implements Serializable, Comparable<BoolReference> {
 	@Override
 	public int compareTo(@NotNull BoolReference o) {
 		return Boolean.compare(element, o.element);
+	}
+
+	@Override
+	public void reset() {
+		element = false;
 	}
 }

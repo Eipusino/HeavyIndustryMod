@@ -80,6 +80,7 @@ public class PowerInfoGroup extends Table {
 		};
 	}
 
+	@FunctionalInterface
 	public interface InfoToggled {
 		void get(int id, boolean collapsed);
 	}

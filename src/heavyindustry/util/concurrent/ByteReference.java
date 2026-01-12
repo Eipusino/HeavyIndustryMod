@@ -1,11 +1,12 @@
 package heavyindustry.util.concurrent;
 
+import arc.util.pooling.Pool.Poolable;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public class ByteReference extends Number implements Serializable, Comparable<ByteReference> {
+public class ByteReference extends Number implements Serializable, Comparable<ByteReference>, Poolable {
 	private static final long serialVersionUID = -5505364929950384247l;
 
 	public byte element;
@@ -48,6 +49,11 @@ public class ByteReference extends Number implements Serializable, Comparable<By
 	@Override
 	public int hashCode() {
 		return element;
+	}
+
+	@Override
+	public void reset() {
+		element = 0;
 	}
 
 	@Override

@@ -56,6 +56,7 @@ public class CustomPart extends DrawPart {
 		Draw.z(z);
 	}
 
+	@FunctionalInterface
 	public interface Drawer {
 		void draw(float x, float y, float rotation, float progress);
 	}

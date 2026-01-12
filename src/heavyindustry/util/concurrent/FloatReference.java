@@ -1,12 +1,13 @@
 package heavyindustry.util.concurrent;
 
 import arc.util.Strings;
+import arc.util.pooling.Pool.Poolable;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public class FloatReference extends Number implements Serializable, Comparable<FloatReference> {
+public class FloatReference extends Number implements Serializable, Comparable<FloatReference>, Poolable {
 	private static final long serialVersionUID = 2272494129790516325l;
 
 	public float element;
@@ -45,6 +46,11 @@ public class FloatReference extends Number implements Serializable, Comparable<F
 	@Override
 	public int compareTo(@NotNull FloatReference o) {
 		return Float.compare(element, o.element);
+	}
+
+	@Override
+	public void reset() {
+		element = 0f;
 	}
 
 	@Override

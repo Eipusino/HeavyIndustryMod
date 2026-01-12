@@ -141,7 +141,7 @@ public final class HeavyIndustryMod extends Mod {
 					}
 				}).size(210f, 64f);
 				cont.pane(t -> {
-					t.image(Core.atlas.find(MOD_NAME + "-cover")).left().size(600f, 403f).pad(3f).row();
+					t.image(Core.atlas.find(MOD_NAME + "-cover")).left().size(600f, 413f).pad(3f).row();
 					t.add(Core.bundle.get("text.version")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
 					t.add(label).left().row();
 					t.add(Core.bundle.get("text.type")).left().growX().wrap().pad(4f).labelAlign(Align.left).row();
@@ -199,12 +199,6 @@ public final class HeavyIndustryMod extends Mod {
 		ScreenSampler.resetMark();
 
 		HVars.listener = new HeavyIndustryListener();
-
-		/*try {
-			HTest.instance.test();
-		} catch (Throwable e) {
-			Log.err(e);
-		}*/
 	}
 
 	@Override
@@ -295,11 +289,11 @@ public final class HeavyIndustryMod extends Mod {
 		AdaptiveCoreDatabase.init();
 	}
 
-	public static @Nullable Class<?> loadLibrary(String fileName, String mainClassName, boolean showError) {
+	private static @Nullable Class<?> loadLibrary(String fileName, String mainClassName, boolean showError) {
 		return loadLibrary(fileName, mainClassName, showError, c -> {});
 	}
 
-	public static @Nullable Class<?> loadLibrary(String fileName, String mainClassName, boolean showError, @Nullable ConsT<Class<?>, Throwable> callback) {
+	private static @Nullable Class<?> loadLibrary(String fileName, String mainClassName, boolean showError, @Nullable ConsT<Class<?>, Throwable> callback) {
 		ClassLoader mainLoader = Vars.mods.mainLoader();
 
 		Fi sourceFile = HVars.internalTree.child("libs").child(fileName + ".jar");
@@ -346,7 +340,7 @@ public final class HeavyIndustryMod extends Mod {
 		if (t != null) errors.add(t);
 	}
 
-	static void loadLibrary() {
+	private static void loadLibrary() {
 		if (OS.isIos) return;
 
 		String className = OS.isAndroid ? "heavyindustry.android.AndroidImpl" : "heavyindustry.desktop.DesktopImpl";

@@ -1,11 +1,12 @@
 package heavyindustry.util.concurrent;
 
+import arc.util.pooling.Pool.Poolable;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public class CharReference implements Serializable, Comparable<CharReference> {
+public class CharReference implements Serializable, Comparable<CharReference>, Poolable {
 	private static final long serialVersionUID = -6890675570138946042l;
 
 	public char element;
@@ -39,5 +40,10 @@ public class CharReference implements Serializable, Comparable<CharReference> {
 	@Override
 	public int compareTo(@NotNull CharReference o) {
 		return Character.compare(element, o.element);
+	}
+
+	@Override
+	public void reset() {
+		element = 0;
 	}
 }

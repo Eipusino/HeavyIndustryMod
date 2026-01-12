@@ -1,8 +1,10 @@
 package heavyindustry.util.concurrent;
 
+import arc.util.pooling.Pool.Poolable;
+
 import java.util.Objects;
 
-public class Pair<L, R> {
+public class Pair<L, R> implements Poolable {
 	private static final Pair<Object, Object> empty = new Pair<>(null, null);
 
 	public L left;
@@ -43,5 +45,11 @@ public class Pair<L, R> {
 	@Override
 	public String toString() {
 		return "(" + left + ", " + right + ")";
+	}
+
+	@Override
+	public void reset() {
+		left = null;
+		right = null;
 	}
 }

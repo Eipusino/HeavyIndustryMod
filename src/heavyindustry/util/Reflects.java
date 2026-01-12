@@ -25,13 +25,17 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles.Lookup;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Reflection utilities, mainly for wrapping reflective operations to eradicate checked exceptions.
@@ -59,8 +63,8 @@ import java.util.Arrays;
 public final class Reflects {
 	public static Lookup lookup;
 
-	static Field klassField, monitorField;
 	static Method cloneMethod;
+	static MethodHandle cloneMethod0;
 
 	static final CollectionObjectMap<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
 
@@ -342,7 +346,7 @@ public final class Reflects {
 	}
 
 	@Contract(value = "_ -> new", pure = true)
-	public static @NotNull CollectionObjectSet<Class<?>> getClassSubclassHierarchy(Class<?> type) {
+	public static @NotNull Set<Class<?>> getClassSubclassHierarchy(Class<?> type) {
 		Class<?> c = type.getSuperclass();
 		CollectionObjectSet<Class<?>> hierarchy = new CollectionObjectSet<>(Class.class);
 		while (c != Object.class) {
@@ -355,6 +359,11 @@ public final class Reflects {
 		return hierarchy;
 	}
 
+	@Contract(value = "_, _, _ -> param2")
+	public static <T> T copyProperties(Object source, T target, List<String> filler) {
+		return copyProperties(source, target, filler.toArray(Constant.EMPTY_STRING));
+	}
+
 	/**
 	 * Copy the properties of an object field to another object.
 	 *
@@ -363,7 +372,7 @@ public final class Reflects {
 	 * @param filler Excluded field names
 	 */
 	@Contract(value = "_, _, _ -> param2")
-	public static <T> T copyProperties(Object source, T target, String @Nullable ... filler) {
+	public static <T> T copyProperties(Object source, T target, String... filler) {
 		if (source == null || target == null) return target;
 
 		targetFieldMap.clear();
@@ -379,10 +388,8 @@ public final class Reflects {
 			targetClass = targetClass.getSuperclass();
 		}
 
-		if (filler != null) {
-			for (String name : filler) {
-				targetFieldMap.remove(name);
-			}
+		for (String name : filler) {
+			targetFieldMap.remove(name);
 		}
 
 		Class<?> sourceClass = source.getClass();
@@ -395,7 +402,7 @@ public final class Reflects {
 				if (!isAssignable(sourceField, targetField)) continue;
 
 				try {
-					if (!OS.isAndroid) {
+					if (OS.isAndroid) {
 						Object value = Unsafer.get(sourceField, source);
 						Unsafer.set(targetField, target, value);
 					} else {
@@ -432,21 +439,23 @@ public final class Reflects {
 			}
 			return (T) cloneMethod.invoke(object);
 		} catch (Exception e) {
+			// If the platform is not Android and the object's class does not implement the Cloneable interface.
 			return null;
 		}
 	}
 
-	// Android only
-	public static void setClass(@Nullable Object object, Class<?> cls) {
-		if (object != null && OS.isAndroid) {
-			set(Object.class, "shadow$_klass_", object, cls);
-		}
-	}
-
-	// Android only
-	public static void setMonitor(@Nullable Object object, int hash) {
-		if (object != null && OS.isAndroid) {
-			setInt(Object.class, "shadow$_monitor_", object, hash);
+	@SuppressWarnings("unchecked")
+	@Contract(pure = true)
+	public static <T> T clone0(T object) {
+		try {
+			if (cloneMethod0 == null) {
+				cloneMethod0 = lookup.findVirtual(Object.class, OS.isAndroid ? "internalClone" : "clone", MethodType.methodType(Object.class));
+			}
+			// T will be erased as an Object.
+			return (T) cloneMethod0.invokeExact(object);
+		} catch (Throwable e) {
+			// If the platform is not Android and the object's class does not implement the Cloneable interface.
+			return null;
 		}
 	}
 }

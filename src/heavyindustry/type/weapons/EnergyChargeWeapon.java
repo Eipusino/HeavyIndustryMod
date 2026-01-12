@@ -175,6 +175,7 @@ public class EnergyChargeWeapon extends Weapon {
 		}
 	}
 
+	@FunctionalInterface
 	public interface DrawChargeCons {
 		void get(Unit unit, WeaponMount mount, float charge);
 	}

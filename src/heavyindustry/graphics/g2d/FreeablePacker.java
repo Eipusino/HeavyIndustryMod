@@ -7,8 +7,6 @@ import mindustry.graphics.MultiPacker.PageType;
  * temporary/pipeline-control sprites need not be in the final atlas to optimize used space.
  * @since 1.0.7
  */
-public interface FreeablePacker {
-	void delete(String name);
-
+public interface FreeablePacker extends Freeable {
 	void delete(PageType type, String name);
 }

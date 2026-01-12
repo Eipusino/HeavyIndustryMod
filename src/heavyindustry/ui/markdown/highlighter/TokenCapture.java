@@ -2,6 +2,7 @@ package heavyindustry.ui.markdown.highlighter;
 
 import heavyindustry.ui.markdown.highlighter.TokenMatcher.MatchFailed;
 import heavyindustry.util.CollectionObjectSet;
+import heavyindustry.util.Constant;
 
 import java.util.Set;
 
@@ -64,7 +65,7 @@ public class TokenCapture extends Capture {
 
 	@Override
 	public TokenCapture create() {
-		TokenCapture capture = new TokenCapture(minMatch, maxMatch, scope, tokens.toArray(new String[0]));
+		TokenCapture capture = new TokenCapture(minMatch, maxMatch, scope, tokens.toArray(Constant.EMPTY_STRING));
 		capture.setMatchOnly(matchOnly).setOptional(optional);
 		return capture;
 	}

@@ -1,11 +1,12 @@
 package heavyindustry.util.concurrent;
 
+import arc.util.pooling.Pool.Poolable;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public class ShortReference extends Number implements Serializable, Comparable<ShortReference> {
+public class ShortReference extends Number implements Serializable, Comparable<ShortReference>, Poolable {
 	private static final long serialVersionUID = -6456250884875681558l;
 
 	public short element;
@@ -48,6 +49,11 @@ public class ShortReference extends Number implements Serializable, Comparable<S
 	@Override
 	public int compareTo(@NotNull ShortReference o) {
 		return Short.compare(element, o.element);
+	}
+
+	@Override
+	public void reset() {
+		element = 0;
 	}
 
 	@Override

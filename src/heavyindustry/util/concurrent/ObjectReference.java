@@ -1,9 +1,11 @@
 package heavyindustry.util.concurrent;
 
+import arc.util.pooling.Pool.Poolable;
+
 import java.io.Serializable;
 import java.util.Objects;
 
-public class ObjectReference<T> implements Serializable {
+public class ObjectReference<T> implements Serializable, Poolable {
 	private static final long serialVersionUID = -9054478421223311650l;
 
 	public T element;
@@ -27,5 +29,10 @@ public class ObjectReference<T> implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hashCode(element);
+	}
+
+	@Override
+	public void reset() {
+		element = null;
 	}
 }

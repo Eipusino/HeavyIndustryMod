@@ -1,4 +1,9 @@
 //This js is main used to check if the user downloaded the wrong version of mod, usually uncomplicated source.
+
+/*exports.getClass = function (name) {
+    return Packages.java.lang.Class.forName(name, true, Vars.mods.mainLoader())
+}*/
+
 Events.on(ClientLoadEvent, cons(ignored => {
 	var loadFailed = false;
 

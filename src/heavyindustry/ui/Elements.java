@@ -824,6 +824,7 @@ public final class Elements {
 		}
 	}
 
+	@FunctionalInterface
 	public interface SliderChanged {
 		void get(float t, TextField n);
 	}

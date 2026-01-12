@@ -34,6 +34,7 @@ import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Time;
 import arc.util.Tmp;
+import arc.util.pooling.Pool.Poolable;
 import heavyindustry.graphics.HPal;
 import heavyindustry.math.IPos;
 import mindustry.Vars;
@@ -575,7 +576,7 @@ public final class Get {
 		}
 	}
 
-	public static class Pos implements IPos {
+	public static class Pos implements IPos, Poolable {
 		public float x, y;
 
 		public Pos() {}
@@ -600,6 +601,12 @@ public final class Get {
 		@Override
 		public float getY() {
 			return y;
+		}
+
+		@Override
+		public void reset() {
+			x = 0f;
+			y = 0f;
 		}
 	}
 }

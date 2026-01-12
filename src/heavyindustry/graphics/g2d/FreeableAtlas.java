@@ -7,8 +7,6 @@ import arc.graphics.g2d.TextureRegion;
  * temporary/pipeline-control sprites need not be in the final atlas to optimize used space.
  * @since 1.0.7
  */
-public interface FreeableAtlas {
-	void delete(String name);
-
+public interface FreeableAtlas extends Freeable {
 	void delete(TextureRegion region);
 }
