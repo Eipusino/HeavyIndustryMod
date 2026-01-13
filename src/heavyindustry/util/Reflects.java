@@ -42,15 +42,15 @@ import java.util.Set;
  * <p>You should never frequently perform repetitive operations on the same Field/Method/Constructor for
  * performance reasons.
  * <pre>{@code
- *     static Field theField;
+ *     private static Field theField;
  *
- *     public static Object getValue(Object obj) {
+ *     public static MyType getVal(Object obj) {
  *         try {
  *             if (theField == null) {
- *                 theField = MyClass.class.getDeclaredField("myField");
+ *                 theField = MyClass.class.getDeclaredField("myVar");
  *                 theField.setAccessible(true);
  *             }
- *             return theField.get(obj);
+ *             return (MyType) theField.get(obj);
  *         } catch (NoSuchFieldException | IllegalAccessException e) {
  *             throw new RuntimeException(e);
  *         }
@@ -438,9 +438,9 @@ public final class Reflects {
 				cloneMethod.setAccessible(true);
 			}
 			return (T) cloneMethod.invoke(object);
-		} catch (Exception e) {
+		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
 			// If the platform is not Android and the object's class does not implement the Cloneable interface.
-			return null;
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -455,7 +455,7 @@ public final class Reflects {
 			return (T) cloneMethod0.invokeExact(object);
 		} catch (Throwable e) {
 			// If the platform is not Android and the object's class does not implement the Cloneable interface.
-			return null;
+			throw new RuntimeException(e);
 		}
 	}
 }

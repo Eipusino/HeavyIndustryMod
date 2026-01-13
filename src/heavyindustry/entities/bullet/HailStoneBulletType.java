@@ -16,9 +16,10 @@ public class HailStoneBulletType extends FallingBulletType {
 	public TextureRegion[] variantsRegion;
 	public int variants;
 
-	public HailStoneBulletType(String sprite, int va) {
+	public HailStoneBulletType(String sprite, int variants) {
 		super(sprite);
-		variants = va;
+		this.variants = variants;
+
 		lightRadius = 0;
 		layer = Layer.flyingUnit;
 	}

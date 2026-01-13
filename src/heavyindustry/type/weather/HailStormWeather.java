@@ -90,9 +90,9 @@ public class HailStormWeather extends SpawnerWeather {
 		public BulletType bullet;
 		public float change;
 
-		public BulletStack(BulletType bul, float cha) {
-			bullet = bul;
-			change = cha;
+		public BulletStack(BulletType bullet, float change) {
+			this.bullet = bullet;
+			this.change = change;
 		}
 	}
 }

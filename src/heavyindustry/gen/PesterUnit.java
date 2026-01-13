@@ -256,8 +256,7 @@ public class PesterUnit extends Unit2 implements Pesterc {
 		float ex = Tmp.v1.x, ey = Tmp.v1.y;
 
 		int itr = 0;
-		for (int i = 0; i < nextTargets.size(); i++) {
-			Healthc hel = nextTargets.get(i);
+		for (Healthc hel : nextTargets) {
 			if (!hel.isValid()) continue;
 
 			tmpBuilding = null;

@@ -2,5 +2,5 @@ package heavyindustry.func;
 
 @FunctionalInterface
 public interface Charc {
-	void get(char i);
+	void get(char param);
 }

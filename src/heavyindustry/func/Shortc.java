@@ -2,5 +2,5 @@ package heavyindustry.func;
 
 @FunctionalInterface
 public interface Shortc {
-	void get(short param);
+	void get(short params);
 }

@@ -790,8 +790,7 @@ public final class HStatValues {
 			table.row();
 			table.table(c -> {
 				Seq<Liquid> liquids = Vars.content.liquids();
-				for (int i = 0; i < liquids.size; i++) {
-					Liquid liquid = liquids.get(i);
+				for (Liquid liquid : liquids) {
 					if (!filter.get(liquid)) continue;
 
 					c.table(Styles.grayPanel, b -> {

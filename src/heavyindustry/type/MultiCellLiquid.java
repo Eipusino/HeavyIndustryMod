@@ -36,8 +36,7 @@ public class MultiCellLiquid extends CellLiquid {
 		for (Point2 point : Geometry.d4c) {
 			Tile tile = puddle.tile.nearby(point);
 			if (tile != null && tile.build != null && tile.build.liquids != null) {
-				for (int i = 0; i < spreadTargets.size(); i++) {
-					Liquid liquid = spreadTargets.get(i);
+				for (Liquid liquid : spreadTargets) {
 					if (tile.build.liquids.get(liquid) > 0.0001f) {
 						float amount = Math.min(tile.build.liquids.get(liquid), maxSpread * Time.delta * scaling);
 						tile.build.liquids.remove(liquid, amount * removeScaling);
@@ -49,8 +48,7 @@ public class MultiCellLiquid extends CellLiquid {
 
 		//damage thing it is on
 		if (spreadDamage > 0 && puddle.tile.build != null && puddle.tile.build.liquids != null) {
-			for (int i = 0; i < spreadTargets.size(); i++) {
-				Liquid liquid = spreadTargets.get(i);
+			for (Liquid liquid : spreadTargets) {
 				if (puddle.tile.build.liquids.get(liquid) > 0.0001f) {
 					//spread in 4 adjacent directions around thing it is on
 					float amountSpread = Math.min(puddle.tile.build.liquids.get(liquid) * spreadConversion, maxSpread * Time.delta) / 2f;

@@ -18,6 +18,7 @@ import arc.util.Strings;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import arc.util.pooling.Pool.Poolable;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.math.Mathm;
 import heavyindustry.ui.Elements;
@@ -140,7 +141,7 @@ public class SandboxWall extends Block {
 		if (buildType == null) buildType = SandboxWallBuild::new;
 	}
 
-	public static class SandboxWallData {
+	public static class SandboxWallData implements Poolable {
 		public boolean lightning, deflecting, insulated, dpsTesting;
 		public float lightningChance = 0.05f, lightningDamage = 20f;
 		public int lightningLength = 17;
@@ -166,6 +167,7 @@ public class SandboxWall extends Block {
 			}
 		}
 
+		@Override
 		public void reset() {
 			lightning = deflecting = insulated = dpsTesting = false;
 		}

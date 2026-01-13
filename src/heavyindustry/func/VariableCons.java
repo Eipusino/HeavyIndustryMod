@@ -3,5 +3,5 @@ package heavyindustry.func;
 @FunctionalInterface
 public interface VariableCons<T> {
 	@SuppressWarnings("unchecked")
-	void apply(T... args);
+	void apply(T... params);
 }

@@ -2,5 +2,5 @@ package heavyindustry.func;
 
 @FunctionalInterface
 public interface BoolBoolf {
-	boolean get(boolean value);
+	boolean get(boolean param);
 }

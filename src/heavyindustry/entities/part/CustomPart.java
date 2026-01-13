@@ -28,9 +28,7 @@ public class CustomPart extends DrawPart {
 
 		float dx = 0, dy = 0, dr = 0;
 
-		for (int i = 0; i < moves.size(); i++) {
-			PartMove move = moves.get(i);
-
+		for (PartMove move : moves) {
 			dx += move.x * move.progress.get(params);
 			dy += move.y * move.progress.get(params);
 			dr += move.rot * move.progress.get(params);

@@ -174,16 +174,14 @@ public abstract class CommandableAttackerBlock extends CommandableBlock {
 			if (!drawsTmp.isEmpty()) drawsTmp.clear();
 
 			CollectionList<CommandableBuild> commandableBuilds = Worlds.commandableBuilds;
-			for (int i = 0; i < commandableBuilds.size(); i++) {
-				CommandableBuild build = commandableBuilds.get(i);
+			for (CommandableBuild build : commandableBuilds) {
 				if (build != this && build != null && build.team == team && sameGroup(build.block) && build.canCommand(targetVec)) {
 					drawsTmp.add(build);
 					Drawn.posSquareLink(Pal.gray, 3, 4, false, build.x, build.y, targetVec.x, targetVec.y);
 				}
 			}
 
-			for (int i = 0; i < drawsTmp.size(); i++) {
-				CommandableBuild build = drawsTmp.get(i);
+			for (CommandableBuild build : drawsTmp) {
 				Drawn.posSquareLink(Pal.heal, 1, 2, false, build.x, build.y, targetVec.x, targetVec.y);
 			}
 

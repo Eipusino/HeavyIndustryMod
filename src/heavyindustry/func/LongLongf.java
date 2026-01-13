@@ -2,5 +2,5 @@ package heavyindustry.func;
 
 @FunctionalInterface
 public interface LongLongf {
-	long get(long value);
+	long get(long param);
 }

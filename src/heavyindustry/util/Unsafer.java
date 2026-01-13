@@ -15,10 +15,12 @@ package heavyindustry.util;
 
 import arc.util.OS;
 import heavyindustry.android.field.FieldUtils;
+import org.jetbrains.annotations.Nullable;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Objects;
 
 import static heavyindustry.util.Objects2.requireInstance;
 import static heavyindustry.util.Objects2.requireNonNullInstance;
@@ -578,8 +580,23 @@ public final class Unsafer {
 	}
 
 	/**
-	 * Get the field offset.
+	 * Allocates an instance but does not run any constructor. Initializes the class if it has not yet been.
+	 * <p>May cause strange bugs or even <strong>JVM crashes</strong>, use with caution.
+	 *
+	 * @throws NullPointerException If type is null
+	 * @throws RuntimeException If there is an exception thrown from {@code unsafe.allocateInstance()}
+	 * @since 1.0.9
 	 */
+	@SuppressWarnings("unchecked")
+	public static <T> T allocateInstance(@Nullable Class<T> type) {
+		try {
+			return (T) unsafe.allocateInstance(Objects.requireNonNull(type));
+		} catch (InstantiationException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/** Get the field offset. */
 	public static long getOffset(Field field) {
 		// If it is an Android platform, simply call the getOffset method of the field.
 		return OS.isAndroid ? FieldUtils.getFieldOffset(field) : Modifier.isStatic(field.getModifiers()) ?

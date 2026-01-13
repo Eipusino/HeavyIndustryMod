@@ -47,8 +47,7 @@ public class MendTurret extends ContinuousTurret {
 					Boolf<Item> cs = this::consumesItem;
 					table.table(c -> {
 						Seq<Item> items = Vars.content.items();
-						for (int i = 0; i < items.size; i++) {
-							Item item = items.get(i);
+						for (Item item : items) {
 							if (!cs.get(item)) continue;
 
 							c.table(Styles.grayPanel, b -> {

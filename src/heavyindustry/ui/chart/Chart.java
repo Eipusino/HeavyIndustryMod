@@ -102,8 +102,7 @@ public abstract class Chart<T extends StatGroup> extends Element {
 	public void act(float delta) {
 		super.act(delta);
 		lerpTime = Mathf.clamp(lerpTime);
-		for (int i = 0; i < data.size; i++) {
-			T group = data.get(i);
+		for (T group : data) {
 			group.update();
 		}
 	}

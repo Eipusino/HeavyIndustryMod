@@ -1,18 +1,12 @@
 package heavyindustry.core;
 
-import arc.util.Log;
-import arc.util.OS;
-import heavyindustry.android.field.FieldUtils;
 import heavyindustry.util.CollectionObjectMap;
 import heavyindustry.util.ExtraVariable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.TestOnly;
 
 import java.lang.annotation.Annotation;
-import java.lang.invoke.MethodHandles.Lookup;
 import java.util.Map;
-
-import static heavyindustry.util.Unsafer.unsafe;
 
 @TestOnly
 public class HTest implements Cloneable, ExtraVariable, Comparable<HTest>, Annotation {
