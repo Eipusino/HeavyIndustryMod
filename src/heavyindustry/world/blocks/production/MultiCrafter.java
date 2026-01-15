@@ -23,6 +23,7 @@ import heavyindustry.ui.Elements;
 import heavyindustry.util.CollectionList;
 import heavyindustry.util.CollectionOrderedMap;
 import heavyindustry.util.ObjectBoolMap;
+import heavyindustry.util.ref.ObjectReference;
 import heavyindustry.world.consumers.ConsumeItem;
 import mindustry.Vars;
 import mindustry.content.Fx;
@@ -66,6 +67,8 @@ import org.jetbrains.annotations.Nullable;
  * @since 1.0.6
  */
 public class MultiCrafter extends Block {
+	protected static CraftPlan tmpCraftPlan;
+
 	/** Liquid output directions, specified in the same order as outputLiquids. Use -1 to dump in every direction. Rotations are relative to block. */
 	public int[] liquidOutputDirections = {-1};
 
@@ -492,11 +495,11 @@ public class MultiCrafter extends Block {
 			super.displayBars(table);
 			if (craftPlan == null) return;
 
-			CraftPlan[] lastCraftPlan = {craftPlan};
+			ObjectReference<CraftPlan> lastCraftPlan = new ObjectReference<>(craftPlan);
 			table.update(() -> {
-				if (lastCraftPlan[0] != craftPlan) {
+				if (lastCraftPlan.element != craftPlan) {
 					rebuildBar(table);
-					lastCraftPlan[0] = craftPlan;
+					lastCraftPlan.element = craftPlan;
 				}
 			});
 			rebuildBar(table);

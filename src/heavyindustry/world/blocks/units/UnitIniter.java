@@ -3,7 +3,6 @@ package heavyindustry.world.blocks.units;
 import arc.Core;
 import arc.graphics.g2d.Draw;
 import arc.scene.ui.layout.Table;
-import arc.util.Strings;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
@@ -28,8 +27,6 @@ import mindustry.world.blocks.ItemSelection;
 import mindustry.world.meta.BuildVisibility;
 
 public class UnitIniter extends Block {
-	protected static final String divKey = "@@@";
-
 	public float spawnRange = 4;
 
 	public UnitIniter(String name) {
@@ -52,12 +49,10 @@ public class UnitIniter extends Block {
 		buildVisibility = BuildVisibility.sandboxOnly;
 
 		config(UnitType.class, (UnitIniterBuild build, UnitType unit) -> build.toSpawnType = unit);
-		config(String.class, (UnitIniterBuild build, String unit) -> {
-			String[] s = unit.split(divKey);
-			if (s.length < 3) return;
-			build.angle = Strings.parseFloat(s[1], 0f);
-			build.delay = Strings.parseFloat(s[2], 30f);
-			build.toSpawnType = Vars.content.getByName(ContentType.unit, s[0]);
+		config(UnitIniterData.class, (UnitIniterBuild build, UnitIniterData data) -> {
+			build.angle = data.angle;
+			build.delay = data.delay;
+			build.toSpawnType = Vars.content.getByName(ContentType.unit, data.name);
 		});
 		configClear((UnitIniterBuild tile) -> {
 			tile.toSpawnType = UnitTypes.alpha;
@@ -92,6 +87,8 @@ public class UnitIniter extends Block {
 		public float delay = 6 * 60;
 		public transient boolean addUnit = false;
 
+		public UnitIniterData data = new UnitIniterData();
+
 		@Override
 		public void onDestroyed() {}
 
@@ -106,11 +103,11 @@ public class UnitIniter extends Block {
 		}
 
 		public UnitType type() {
-			return Vars.content.getByName(ContentType.unit, getKey().split(divKey)[0]);
+			return Vars.content.getByName(ContentType.unit, data.name);
 		}
 
-		public String getKey() {
-			return toSpawnType.name + divKey + angle + divKey + delay;
+		public UnitIniterData getKey() {
+			return data.set(name, angle, delay);
 		}
 
 		@Override
@@ -178,6 +175,18 @@ public class UnitIniter extends Block {
 				kill();
 				addUnit = true;
 			}
+		}
+	}
+
+	public static class UnitIniterData {
+		public String name;
+		public float angle, delay;
+
+		public UnitIniterData set(String n, float a, float d) {
+			name = n;
+			angle = a;
+			delay = d;
+			return this;
 		}
 	}
 }

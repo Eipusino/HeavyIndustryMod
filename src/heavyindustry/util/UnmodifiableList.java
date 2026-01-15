@@ -4,6 +4,7 @@ import arc.func.Cons;
 import arc.struct.Seq;
 import arc.util.Eachable;
 import heavyindustry.math.Mathm;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.AbstractList;
@@ -85,7 +86,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 
 	/** @return Does not support any change operations, always returns false. */
 	@Override
-	public boolean addAll(Collection<? extends E> c) {
+	public boolean addAll(@NotNull Collection<? extends E> c) {
 		return false;
 	}
 
@@ -110,7 +111,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 
 	/** @return Does not support any change operations, always returns false. */
 	@Override
-	public boolean removeAll(Collection<?> c) {
+	public boolean removeAll(@NotNull Collection<?> c) {
 		return false;
 	}
 
@@ -120,7 +121,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 
 	/** @return Does not support any change operations, always returns false. */
 	@Override
-	public boolean retainAll(Collection<?> c) {
+	public boolean retainAll(@NotNull Collection<?> c) {
 		return false;
 	}
 
@@ -179,7 +180,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 
 	/** A copy of this list element. */
 	@Override
-	public E[] toArray() {
+	public E @NotNull [] toArray() {
 		return Arrays.copyOf(items, items.length);
 	}
 
@@ -194,12 +195,12 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 	}
 
 	@Override
-	public List<E> subList(int fromIndex, int toIndex) {
+	public @NotNull List<E> subList(int fromIndex, int toIndex) {
 		return new SubList<>(this, fromIndex, toIndex);
 	}
 
 	@Override
-	public Iterator<E> iterator() {
+	public @NotNull Iterator<E> iterator() {
 		if (iterator1 == null) iterator1 = new Iter();
 
 		if (iterator1.done) {
@@ -220,7 +221,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 	}
 
 	@Override
-	public ListIterator<E> listIterator(int index) {
+	public @NotNull ListIterator<E> listIterator(int index) {
 		if (listIterator1 == null) listIterator1 = new ListIter(index);
 
 		if (listIterator1.done) {
@@ -327,7 +328,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 		}
 
 		@Override
-		public boolean addAll(Collection<? extends T> c) {
+		public boolean addAll(@NotNull Collection<? extends T> c) {
 			return false;
 		}
 
@@ -351,7 +352,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 		}
 
 		@Override
-		public boolean removeAll(Collection<?> c) {
+		public boolean removeAll(@NotNull Collection<?> c) {
 			return false;
 		}
 
@@ -359,7 +360,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 		protected void removeRange(int fromIndex, int toIndex) {}
 
 		@Override
-		public boolean retainAll(Collection<?> c) {
+		public boolean retainAll(@NotNull Collection<?> c) {
 			return false;
 		}
 
@@ -398,7 +399,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 		}
 
 		@Override
-		public List<T> subList(int fromIndex, int toIndex) {
+		public @NotNull List<T> subList(int fromIndex, int toIndex) {
 			int absoluteFromIndex = offset + fromIndex;
 			int absoluteToIndex = offset + toIndex;
 

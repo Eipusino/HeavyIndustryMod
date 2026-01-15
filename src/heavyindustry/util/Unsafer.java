@@ -15,12 +15,13 @@ package heavyindustry.util;
 
 import arc.util.OS;
 import heavyindustry.android.field.FieldUtils;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Objects;
 
 import static heavyindustry.util.Objects2.requireInstance;
 import static heavyindustry.util.Objects2.requireNonNullInstance;
@@ -38,12 +39,21 @@ import static heavyindustry.util.Objects2.requireNonNullInstance;
  * functions provided by this class.</strong>
  *
  * @author Eipusino
- * @see Unsafer2
  * @since 1.0.7
  */
 public final class Unsafer {
 	/** Initialize in libs/Impl.jar in the mod resource package. */
 	public static Unsafe unsafe;
+
+	/*static {
+		try {
+			Field field = Unsafe.class.getDeclaredField("theUnsafe");
+			field.setAccessible(true);
+			unsafe = (Unsafe) field.get(null);
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}*/
 
 	/** Do not call. */
 	private Unsafer() {}
@@ -66,7 +76,7 @@ public final class Unsafer {
 	 *                                                                   instance of {@code field.getDeclaringClass()} or {@code null}.</ul>
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T getObject(Field field, Object object) throws IllegalArgumentException {
+	public static <T> T getObject(@NotNull Field field, Object object) throws IllegalArgumentException {
 		if (field.getType().isPrimitive()) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -98,7 +108,7 @@ public final class Unsafer {
 	 *                                  <li>If the field is not {@code static} and the {@code object} is not an
 	 *                                  instance of {@code field.getDeclaringClass()} or {@code null}.</ul>
 	 */
-	public static boolean getBool(Field field, Object object) throws IllegalArgumentException {
+	public static boolean getBool(@NotNull Field field, Object object) throws IllegalArgumentException {
 		if (field.getType() != boolean.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -120,7 +130,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static byte getByte(Field field, Object object) throws IllegalArgumentException {
+	public static byte getByte(@NotNull Field field, Object object) throws IllegalArgumentException {
 		if (field.getType() != byte.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -142,7 +152,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static short getShort(Field field, Object object) throws IllegalArgumentException {
+	public static short getShort(@NotNull Field field, Object object) throws IllegalArgumentException {
 		if (field.getType() != short.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -164,7 +174,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static int getInt(Field field, Object object) throws IllegalArgumentException {
+	public static int getInt(@NotNull Field field, Object object) throws IllegalArgumentException {
 		if (field.getType() != int.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -186,7 +196,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static long getLong(Field field, Object object) throws IllegalArgumentException {
+	public static long getLong(@NotNull Field field, Object object) throws IllegalArgumentException {
 		if (field.getType() != long.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -208,7 +218,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static float getFloat(Field field, Object object) throws IllegalArgumentException {
+	public static float getFloat(@NotNull Field field, Object object) throws IllegalArgumentException {
 		if (field.getType() != float.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -230,7 +240,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static double getDouble(Field field, Object object) throws IllegalArgumentException {
+	public static double getDouble(@NotNull Field field, Object object) throws IllegalArgumentException {
 		if (field.getType() != double.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -252,7 +262,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static char getChar(Field field, Object object) throws IllegalArgumentException {
+	public static char getChar(@NotNull Field field, Object object) throws IllegalArgumentException {
 		if (field.getType() != char.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -282,7 +292,7 @@ public final class Unsafer {
 	 * @throws ClassCastException If the field is not {@code static} and the {@code object} is not an
 	 *                                  instance of {@code field.getDeclaringClass()} or {@code null}.
 	 */
-	public static void setObject(Field field, Object object, Object value) throws IllegalArgumentException {
+	public static void setObject(@NotNull Field field, Object object, Object value) throws IllegalArgumentException {
 		if (field.getType().isPrimitive()) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -307,7 +317,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setBool(Field field, Object object, boolean value) throws IllegalArgumentException {
+	public static void setBool(@NotNull Field field, Object object, boolean value) throws IllegalArgumentException {
 		if (field.getType() != boolean.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -331,7 +341,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setByte(Field field, Object object, byte value) throws IllegalArgumentException {
+	public static void setByte(@NotNull Field field, Object object, byte value) throws IllegalArgumentException {
 		if (field.getType() != byte.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -355,7 +365,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setShort(Field field, Object object, short value) throws IllegalArgumentException {
+	public static void setShort(@NotNull Field field, Object object, short value) throws IllegalArgumentException {
 		if (field.getType() != short.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -379,7 +389,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setInt(Field field, Object object, int value) throws IllegalArgumentException {
+	public static void setInt(@NotNull Field field, Object object, int value) throws IllegalArgumentException {
 		if (field.getType() != int.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -403,7 +413,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setLong(Field field, Object object, long value) throws IllegalArgumentException {
+	public static void setLong(@NotNull Field field, Object object, long value) throws IllegalArgumentException {
 		if (field.getType() != long.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -427,7 +437,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setFloat(Field field, Object object, float value) throws IllegalArgumentException {
+	public static void setFloat(@NotNull Field field, Object object, float value) throws IllegalArgumentException {
 		if (field.getType() != float.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -451,7 +461,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setDouble(Field field, Object object, double value) throws IllegalArgumentException {
+	public static void setDouble(@NotNull Field field, Object object, double value) throws IllegalArgumentException {
 		if (field.getType() != double.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -475,7 +485,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void setChar(Field field, Object object, char value) throws IllegalArgumentException {
+	public static void setChar(@NotNull Field field, Object object, char value) throws IllegalArgumentException {
 		if (field.getType() != char.class) throw new IllegalArgumentException("illegal field type: " + field.getType());
 
 		int modifiers = field.getModifiers();
@@ -499,7 +509,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static Object get(Field field, Object object) {
+	public static Object get(@NotNull Field field, Object object) {
 		long offset = getOffset(field);
 		Class<?> type = field.getType(), base = field.getDeclaringClass();
 		Object o = Modifier.isStatic(field.getModifiers()) ? base : requireNonNullInstance(base, object);
@@ -543,7 +553,7 @@ public final class Unsafer {
 		}
 	}
 
-	public static void set(Field field, Object object, Object value) {
+	public static void set(@NotNull Field field, Object object, Object value) {
 		long offset = getOffset(field);
 		Class<?> type = field.getType(), base = field.getDeclaringClass();
 		Object o = Modifier.isStatic(field.getModifiers()) ? base : requireNonNullInstance(base, object);
@@ -584,20 +594,27 @@ public final class Unsafer {
 	 * <p>May cause strange bugs or even <strong>JVM crashes</strong>, use with caution.
 	 *
 	 * @throws NullPointerException If type is null
-	 * @throws RuntimeException If there is an exception thrown from {@code unsafe.allocateInstance()}
+	 * @throws RuntimeException If the {@code unsafe.allocateInstance()} method throws an {@code InstantiationException}
+	 * @throws IllegalArgumentException If the type is {@link Class} or primitive type.
 	 * @since 1.0.9
 	 */
 	@SuppressWarnings("unchecked")
+	@Contract(value = "_ -> new", pure = true)
 	public static <T> T allocateInstance(@Nullable Class<T> type) {
+		// The native part of allocateInstance does not have a null check, giving a null value can cause the JVM to crash.
+		if (type == null) throw new NullPointerException("type is null");
+		// The String class can cause strange bugs, So return an empty string directly.
+		if (type == String.class) return (T) "";
+
 		try {
-			return (T) unsafe.allocateInstance(Objects.requireNonNull(type));
+			return (T) unsafe.allocateInstance(type);
 		} catch (InstantiationException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	/** Get the field offset. */
-	public static long getOffset(Field field) {
+	public static long getOffset(@NotNull Field field) {
 		// If it is an Android platform, simply call the getOffset method of the field.
 		return OS.isAndroid ? FieldUtils.getFieldOffset(field) : Modifier.isStatic(field.getModifiers()) ?
 				unsafe.staticFieldOffset(field) : unsafe.objectFieldOffset(field);
@@ -608,7 +625,7 @@ public final class Unsafer {
 	 *
 	 * @throws IllegalArgumentException If the field is not an object field but a static field
 	 */
-	public static long objectOffset(Field field) {
+	public static long objectOffset(@NotNull Field field) {
 		return OS.isAndroid ? FieldUtils.getFieldOffset(field) : unsafe.objectFieldOffset(field);
 	}
 
@@ -617,7 +634,7 @@ public final class Unsafer {
 	 *
 	 * @throws IllegalArgumentException If the field is not a static field but an object field
 	 */
-	public static long staticOffset(Field field) {
+	public static long staticOffset(@NotNull Field field) {
 		return OS.isAndroid ? FieldUtils.getFieldOffset(field) : unsafe.staticFieldOffset(field);
 	}
 }

@@ -1,12 +1,11 @@
-package heavyindustry.util.concurrent;
+package heavyindustry.util.ref;
 
 import arc.util.pooling.Pool.Poolable;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public class ByteReference extends Number implements Serializable, Comparable<ByteReference>, Poolable {
+public class ByteReference extends Number implements Serializable, Poolable {
 	private static final long serialVersionUID = -5505364929950384247l;
 
 	public byte element;
@@ -23,7 +22,7 @@ public class ByteReference extends Number implements Serializable, Comparable<By
 	}
 
 	@Contract(value = "_ -> new", pure = true)
-	public static ByteReference valueOf(@NotNull String value) {
+	public static ByteReference valueOf(String value) {
 		try {
 			return new ByteReference(Byte.parseByte(value));
 		} catch (NumberFormatException e) {
@@ -34,21 +33,6 @@ public class ByteReference extends Number implements Serializable, Comparable<By
 	@Override
 	public String toString() {
 		return String.valueOf(element);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return obj == this || obj instanceof ByteReference ref && ref.element == element;
-	}
-
-	@Override
-	public int compareTo(@NotNull ByteReference o) {
-		return Byte.compare(element, o.element);
-	}
-
-	@Override
-	public int hashCode() {
-		return element;
 	}
 
 	@Override

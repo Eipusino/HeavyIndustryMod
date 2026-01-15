@@ -5,7 +5,7 @@ import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
-import heavyindustry.util.concurrent.holder.ObjectHolder;
+import heavyindustry.util.ref.ObjectHolder;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;

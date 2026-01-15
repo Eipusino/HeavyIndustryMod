@@ -15,16 +15,16 @@ import java.util.TreeSet;
  * <p>The insertion complexity is usually o (logn), but if the values compared by the comparator are concentrated on this set may degrade to o (n).
  * When traversing this set, the elements obtained are ordered.
  */
-public class TreeSeq<T> implements Iterable<T> {
-	protected final LinkedList<T> tmp = new LinkedList<>();
+public class TreeSeq<E> implements Iterable<E> {
+	protected final LinkedList<E> tmp = new LinkedList<>();
 
-	protected Comparator<T> comparator;
+	protected Comparator<E> comparator;
 
 	protected int size;
 
-	protected TreeSet<LinkedList<T>> set;
+	protected TreeSet<LinkedList<E>> set;
 
-	public TreeSeq(Comparator<T> comp) {
+	public TreeSeq(Comparator<E> comp) {
 		comparator = comp;
 		set = new TreeSet<>((a, b) -> comp.compare(a.getFirst(), b.getFirst()));
 	}
@@ -33,28 +33,28 @@ public class TreeSeq<T> implements Iterable<T> {
 		set = new TreeSet<>();
 	}
 
-	public void add(T item) {
+	public void add(E item) {
 		tmp.clear();
 		tmp.addFirst(item);
-		LinkedList<T> t = set.ceiling(tmp);
-		if (t == null || set.floor(tmp) != t) {
-			t = new LinkedList<>();
-			t.addFirst(item);
-			set.add(t);
+		LinkedList<E> e = set.ceiling(tmp);
+		if (e == null || set.floor(tmp) != e) {
+			e = new LinkedList<>();
+			e.addFirst(item);
+			set.add(e);
 		} else {
-			t.addFirst(item);
+			e.addFirst(item);
 		}
 		size++;
 	}
 
-	public boolean remove(T item) {
+	public boolean remove(E item) {
 		tmp.clear();
 		tmp.addFirst(item);
 
-		LinkedList<T> t = set.ceiling(tmp);
-		if (t != null && set.floor(tmp) == t) {
-			if (t.size() == 1 && t.getFirst().equals(item)) set.remove(t);
-			t.remove(item);
+		LinkedList<E> e = set.ceiling(tmp);
+		if (e != null && set.floor(tmp) == e) {
+			if (e.size() == 1 && e.getFirst().equals(item)) set.remove(e);
+			e.remove(item);
 			size--;
 			return true;
 		}
@@ -65,10 +65,10 @@ public class TreeSeq<T> implements Iterable<T> {
 		return size;
 	}
 
-	public boolean removeIf(Boolf<T> boolf) {
+	public boolean removeIf(Boolf<E> boolf) {
 		boolean test = false;
 		TreeItr itr = iterator();
-		T item;
+		E item;
 		while (itr.hasNext()) {
 			item = itr.next();
 			if (boolf.get(item)) {
@@ -90,10 +90,10 @@ public class TreeSeq<T> implements Iterable<T> {
 		return set.isEmpty();
 	}
 
-	public T[] toArray(T[] arr) {
-		T[] list = Arrays.copyOf(arr, size);
+	public E[] toArray(E[] arr) {
+		E[] list = Arrays.copyOf(arr, size);
 		int index = 0;
-		for (T item : this) {
+		for (E item : this) {
 			list[index++] = item;
 		}
 		return list;
@@ -107,16 +107,16 @@ public class TreeSeq<T> implements Iterable<T> {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder("{");
-		for (LinkedList<T> list : set) {
+		for (LinkedList<E> list : set) {
 			builder.append(list).append(", ");
 		}
 		return builder.substring(0, builder.length() - 2) + "}";
 	}
 
-	public class TreeItr implements Iterator<T> {
-		protected Iterator<LinkedList<T>> itr = set.iterator();
-		protected Iterator<T> listItr;
-		protected LinkedList<T> curr;
+	public class TreeItr implements Iterator<E> {
+		protected Iterator<LinkedList<E>> itr = set.iterator();
+		protected Iterator<E> listItr;
+		protected LinkedList<E> curr;
 
 		@Override
 		public boolean hasNext() {
@@ -124,7 +124,7 @@ public class TreeSeq<T> implements Iterable<T> {
 		}
 
 		@Override
-		public T next() {
+		public E next() {
 			return listItr.next();
 		}
 

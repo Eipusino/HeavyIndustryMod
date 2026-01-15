@@ -4,10 +4,8 @@ import arc.Events;
 import heavyindustry.util.CollectionObjectMap;
 import mindustry.game.EventType.Trigger;
 
-import java.util.Map;
-
 public final class UpdatePool {
-	private static final Map<String, Runnable> updateTasks = new CollectionObjectMap<>(String.class, Runnable.class);
+	private static final CollectionObjectMap<String, Runnable> updateTasks = new CollectionObjectMap<>(String.class, Runnable.class);
 
 	static {
 		Events.run(Trigger.update, UpdatePool::update);

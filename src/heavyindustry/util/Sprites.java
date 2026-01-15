@@ -70,8 +70,10 @@ public final class Sprites {
 	public static final IntIntMap index4r12map = new IntIntMap();
 
 	static {
-		int[] indices = new int[index4x12raw.length];
-		for (int i = 0; i < index4x12raw.length; i++) {
+		int length = index4x12raw.length;
+
+		int[] indices = new int[length];
+		for (int i = 0; i < length; i++) {
 			indices[i] = i;
 		}
 
@@ -91,7 +93,7 @@ public final class Sprites {
 			index4x12[indices[i]] = i;
 		}
 
-		for (int i = 0; i < index4x12raw.length; i++) {
+		for (int i = 0; i < length; i++) {
 			index4r12map.put(index4x12raw[i], index4x12[i]);
 		}
 	}
@@ -133,13 +135,13 @@ public final class Sprites {
 	 */
 	@Contract(value = "_, _, _ -> new", pure = true)
 	public static TextureRegion[] splitLayer(String name, int size, int layer) {
-		TextureRegion textures = Core.atlas.find(name);
+		TextureRegion region = Core.atlas.find(name);
 		int margin = 0;
-		int countX = textures.width / size;
+		int countX = region.width / size;
 		TextureRegion[] tiles = new TextureRegion[countX];
 
 		for (int i = 0; i < countX; i++) {
-			tiles[i] = new TextureRegion(textures, i * (margin + size), layer * (margin + size), size, size);
+			tiles[i] = new TextureRegion(region, i * (margin + size), layer * (margin + size), size, size);
 		}
 		return tiles;
 	}
@@ -178,34 +180,34 @@ public final class Sprites {
 	/**
 	 * Gets multiple regions inside a {@link TextureRegion}.
 	 *
-	 * @param reg    region to be split
+	 * @param region    region to be split
 	 * @param size   split size, pixels per grid
 	 * @param width  The amount of regions horizontally.
 	 * @param height The amount of regions vertically.
 	 */
 	@Contract(value = "_, _, _, _ -> new", pure = true)
-	public static TextureRegion[] split(TextureRegion reg, int size, int width, int height) {
+	public static TextureRegion[] split(TextureRegion region, int size, int width, int height) {
 		int textureSize = width * height;
 		TextureRegion[] regions = new TextureRegion[textureSize];
 
-		float tileWidth = (reg.u2 - reg.u) / width;
-		float tileHeight = (reg.v2 - reg.v) / height;
+		float tileWidth = (region.u2 - region.u) / width;
+		float tileHeight = (region.v2 - region.v) / height;
 
 		for (int i = 0; i < textureSize; i++) {
 			float tileX = ((float) (i % width)) / width;
 			float tileY = ((float) (i / width)) / height;
-			TextureRegion region = new TextureRegion(reg);
+			TextureRegion out = new TextureRegion(region);
 
 			//start coordinate
-			region.u = Mathf.map(tileX, 0f, 1f, region.u, region.u2) + tileWidth * 0.02f;
-			region.v = Mathf.map(tileY, 0f, 1f, region.v, region.v2) + tileHeight * 0.02f;
+			out.u = Mathf.map(tileX, 0f, 1f, out.u, out.u2) + tileWidth * 0.02f;
+			out.v = Mathf.map(tileY, 0f, 1f, out.v, out.v2) + tileHeight * 0.02f;
 			//end coordinate
-			region.u2 = region.u + tileWidth * 0.96f;
-			region.v2 = region.v + tileHeight * 0.96f;
+			out.u2 = out.u + tileWidth * 0.96f;
+			out.v2 = out.v + tileHeight * 0.96f;
 
-			region.width = region.height = size;
+			out.width = out.height = size;
 
-			regions[i] = region;
+			regions[i] = out;
 		}
 		return regions;
 	}

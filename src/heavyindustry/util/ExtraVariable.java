@@ -14,12 +14,12 @@ import heavyindustry.func.DoubleDoublef;
 import heavyindustry.func.Doublep;
 import heavyindustry.func.Longp;
 import heavyindustry.func.LongLongf;
-import heavyindustry.util.concurrent.BoolReference;
-import heavyindustry.util.concurrent.CharReference;
-import heavyindustry.util.concurrent.DoubleReference;
-import heavyindustry.util.concurrent.FloatReference;
-import heavyindustry.util.concurrent.IntReference;
-import heavyindustry.util.concurrent.LongReference;
+import heavyindustry.util.ref.BoolReference;
+import heavyindustry.util.ref.CharReference;
+import heavyindustry.util.ref.DoubleReference;
+import heavyindustry.util.ref.FloatReference;
+import heavyindustry.util.ref.IntReference;
+import heavyindustry.util.ref.LongReference;
 
 import java.util.Map;
 

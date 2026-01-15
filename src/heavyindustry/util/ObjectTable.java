@@ -1,11 +1,14 @@
 package heavyindustry.util;
 
+import arc.func.Cons;
 import arc.func.Prov;
-import heavyindustry.util.concurrent.holder.ObjectHolder;
+import arc.util.Eachable;
+import heavyindustry.util.ref.ObjectHolder;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 
-public class ObjectTable<K, V> implements Iterable<ObjectHolder<K, V>> {
+public class ObjectTable<K, V> implements Iterable<ObjectHolder<K, V>>, Eachable<ObjectHolder<K, V>> {
 	public final Class<?> keyComponentType;
 	public final Class<?> valueComponentType;
 
@@ -85,8 +88,13 @@ public class ObjectTable<K, V> implements Iterable<ObjectHolder<K, V>> {
 	}
 
 	@Override
-	public Iterator<ObjectHolder<K, V>> iterator() {
-		return new TableIterator<>(map12);
+	public @NotNull Iterator<ObjectHolder<K, V>> iterator() {
+		return map12.iterator();
+	}
+
+	@Override
+	public void each(Cons<? super ObjectHolder<K, V>> cons) {
+		map12.each(cons);
 	}
 
 	@Override
@@ -99,29 +107,5 @@ public class ObjectTable<K, V> implements Iterable<ObjectHolder<K, V>> {
 	public void clear() {
 		map12.clear();
 		map21.clear();
-	}
-
-	public static class TableIterator<K, V> implements Iterator<ObjectHolder<K, V>> {
-		protected final CollectionObjectMap<K, V>.Entries iterator;
-
-		public TableIterator(CollectionObjectMap<K, V> map) {
-			iterator = map.iterator();
-		}
-
-		@Override
-		public boolean hasNext() {
-			return iterator.hasNext;
-		}
-
-		@Override
-		public ObjectHolder<K, V> next() {
-			ObjectHolder<K, V> next = iterator.next();
-			return new ObjectHolder<>(next.key, next.value);
-		}
-
-		@Override
-		public void remove() {
-			iterator.remove();
-		}
 	}
 }

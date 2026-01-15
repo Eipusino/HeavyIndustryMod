@@ -2,6 +2,7 @@ package heavyindustry.input;
 
 import arc.Input;
 import arc.input.KeyCode;
+import arc.util.ArcRuntimeException;
 import arc.util.Structs;
 import heavyindustry.util.Objects2;
 
@@ -20,7 +21,7 @@ public class CombinedKeys implements Serializable {
 
 		key = Structs.find(keys, c -> !isCtrl(c) && !isAlt(c) && !isShift(c));
 
-		if (key == null) throw new NullPointerException("No key specified");
+		if (key == null) throw new ArcRuntimeException("No key specified");
 	}
 
 	public boolean isDown(Input input) {

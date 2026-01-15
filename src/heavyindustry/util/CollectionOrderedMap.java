@@ -1,7 +1,7 @@
 package heavyindustry.util;
 
 import arc.util.ArcRuntimeException;
-import heavyindustry.util.concurrent.holder.ObjectHolder;
+import heavyindustry.util.ref.ObjectHolder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.NoSuchElementException;

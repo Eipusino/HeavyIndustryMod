@@ -1,12 +1,11 @@
-package heavyindustry.util.concurrent;
+package heavyindustry.util.ref;
 
 import arc.util.pooling.Pool.Poolable;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public class ShortReference extends Number implements Serializable, Comparable<ShortReference>, Poolable {
+public class ShortReference extends Number implements Serializable, Poolable {
 	private static final long serialVersionUID = -6456250884875681558l;
 
 	public short element;
@@ -23,7 +22,7 @@ public class ShortReference extends Number implements Serializable, Comparable<S
 	}
 
 	@Contract(value = "_ -> new", pure = true)
-	public static ShortReference valueOf(@NotNull String value) {
+	public static ShortReference valueOf(String value) {
 		try {
 			return new ShortReference(Short.parseShort(value));
 		} catch (NumberFormatException e) {
@@ -34,21 +33,6 @@ public class ShortReference extends Number implements Serializable, Comparable<S
 	@Override
 	public String toString() {
 		return String.valueOf(element);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return obj == this || obj instanceof ShortReference ref && ref.element == element;
-	}
-
-	@Override
-	public int hashCode() {
-		return element;
-	}
-
-	@Override
-	public int compareTo(@NotNull ShortReference o) {
-		return Short.compare(element, o.element);
 	}
 
 	@Override

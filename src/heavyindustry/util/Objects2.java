@@ -48,13 +48,6 @@ public final class Objects2 {
 
 	private Objects2() {}
 
-	@Contract(value = "null, null -> false; null, !null -> true", pure = true)
-	public static boolean unequals(Object a, Object b) {
-		return a == null ? b != null : !a.equals(b);
-	}
-
-	// To prevent JS from being unable to match methods, it is necessary to distinguish them.
-
 	// 'Boolean.hashCode(boolean)' may not be compatible with Android (API level 14).
 	@Contract(pure = true)
 	public static int boolToHash(boolean value) {
@@ -133,11 +126,13 @@ public final class Objects2 {
 		return (int) (bits ^ (bits >>> 32));
 	}
 
+	/** Safely convert Object to int. */
 	@Contract(pure = true)
 	public static int asInt(Object obj, int def) {
 		return obj instanceof Number num ? num.intValue() : def;
 	}
 
+	/** Safely convert Object to float. */
 	@Contract(pure = true)
 	public static float asFloat(Object obj, float def) {
 		return obj instanceof Number num ? num.floatValue() : def;

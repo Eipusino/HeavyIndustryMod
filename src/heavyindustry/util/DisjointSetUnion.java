@@ -1,16 +1,16 @@
 package heavyindustry.util;
 
 public class DisjointSetUnion {
-	public final int size;
+	public int size;
 
-	protected final int[] father;
-	protected final int[] sizes;
+	public int[] father;
+	public int[] sizes;
 
-	public DisjointSetUnion(int v) {
-		size = v;
-		father = new int[v];
-		sizes = new int[v];
-		for (int i = 0; i < v; ++i) {
+	public DisjointSetUnion(int sz) {
+		size = sz;
+		father = new int[sz];
+		sizes = new int[sz];
+		for (int i = 0; i < sz; ++i) {
 			father[i] = i;
 			sizes[i] = 1;
 		}

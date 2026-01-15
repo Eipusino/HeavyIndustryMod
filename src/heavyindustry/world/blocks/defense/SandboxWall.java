@@ -22,7 +22,7 @@ import arc.util.pooling.Pool.Poolable;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.math.Mathm;
 import heavyindustry.ui.Elements;
-import heavyindustry.util.concurrent.holder.IntFloatHolder;
+import heavyindustry.util.ref.IntFloatHolder;
 import mindustry.entities.Damage;
 import mindustry.entities.Lightning;
 import mindustry.entities.TargetPriority;

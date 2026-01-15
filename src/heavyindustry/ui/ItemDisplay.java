@@ -3,7 +3,6 @@ package heavyindustry.ui;
 import arc.scene.ui.layout.Table;
 import arc.util.Strings;
 import mindustry.type.Item;
-import mindustry.type.ItemStack;
 import mindustry.ui.Styles;
 import mindustry.world.meta.StatUnit;
 
@@ -19,7 +18,7 @@ public class ItemDisplay extends Table {
 	}
 
 	public ItemDisplay(Item it, int am, boolean sh) {
-		add(Elements.itemImage(new ItemStack(it, am)));
+		add(Elements.itemImage(it.uiIcon, am));
 		if (sh) add(it.localizedName).padLeft(4 + am > 99 ? 4 : 0);
 
 		item = it;

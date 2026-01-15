@@ -40,7 +40,7 @@ public class Conduit2 extends Conduit {
 
 	@Override
 	public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock) {
-		if (tile.build instanceof ConduitBuild2 && ((ConduitBuild2) tile.build).armored)
+		if (tile.build instanceof ConduitBuild2 conduit && conduit.armored)
 			return (otherblock.outputsLiquid && blendsArmored(tile, rotation, otherx, othery, otherrot, otherblock)) ||
 					(lookingAt(tile, rotation, otherx, othery, otherblock) && otherblock.hasLiquids) || otherblock instanceof LiquidJunction;
 		return super.blends(tile, rotation, otherx, othery, otherrot, otherblock);

@@ -1,4 +1,4 @@
-package heavyindustry.util.concurrent.holder;
+package heavyindustry.util.ref;
 
 import heavyindustry.util.Objects2;
 import org.jetbrains.annotations.NotNull;

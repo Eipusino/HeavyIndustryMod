@@ -1,4 +1,4 @@
-package heavyindustry.util.concurrent.atomic;
+package heavyindustry.util.concurrent;
 
 import arc.func.FloatFloatf;
 import heavyindustry.func.FloatFloatf2;

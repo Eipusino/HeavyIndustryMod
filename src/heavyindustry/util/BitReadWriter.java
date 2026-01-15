@@ -6,9 +6,9 @@ package heavyindustry.util;
  * @since 1.0.6
  */
 public class BitReadWriter {
-	int pointer = 0;
-	byte[] raw;
-	byte current, next;
+	protected int pointer = 0;
+	protected byte[] raw;
+	protected byte current, next;
 
 	public BitReadWriter(byte[] raw) {
 		this.raw = raw;
@@ -45,14 +45,14 @@ public class BitReadWriter {
 		return (char) (readByte());
 	}
 
-	void expand() {
+	protected void expand() {
 		byte[] newRaw = new byte[raw.length * 2];
 		System.arraycopy(raw, 0, newRaw, 0, raw.length);
 		raw = newRaw;
 
 	}
 
-	void expandToPointer() {
+	protected void expandToPointer() {
 		if (pointer + 8 < raw.length * 8) {
 			return;
 		}
@@ -101,7 +101,6 @@ public class BitReadWriter {
 
 	//jit will inline this probably
 
-
 	/**
 	 * Shifts the pointer by 1
 	 */
@@ -125,7 +124,7 @@ public class BitReadWriter {
 		pointer += 8;
 	}
 
-	int byteOf(int point) {
+	protected int byteOf(int point) {
 		return point >> 3;
 	}
 }

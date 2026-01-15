@@ -1,6 +1,8 @@
 package heavyindustry.util;
 
 import jdk.internal.misc.Unsafe;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -17,12 +19,21 @@ import static heavyindustry.util.Objects2.requireNonNullInstance;
  * are very clear about what you are doing at this moment, it is not recommended to use the {@link #internalUnsafe} field directly.
  *
  * @author Eipusino
- * @see Unsafer
  * @since 1.0.8
  */
 public final class Unsafer2 {
 	/** Initialize in libs/Impl.jar in the mod resource package. */
 	public static Unsafe internalUnsafe;
+
+	/*static {
+		try {
+			Field field = Unsafe.class.getDeclaredField("theUnsafe");
+			field.setAccessible(true);
+			internalUnsafe = (Unsafe) field.get(null);
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}*/
 
 	private Unsafer2() {}
 
@@ -434,6 +445,30 @@ public final class Unsafer2 {
 			} else {
 				internalUnsafe.putReference(o, offset, requireInstance(field.getType(), value));
 			}
+		}
+	}
+
+	/**
+	 * Allocates an instance but does not run any constructor. Initializes the class if it has not yet been.
+	 * <p>May cause strange bugs or even <strong>JVM crashes</strong>, use with caution.
+	 *
+	 * @throws NullPointerException If type is null
+	 * @throws RuntimeException If the {@code unsafe.allocateInstance()} method throws an {@code InstantiationException}
+	 * @throws IllegalArgumentException If the type is {@link Class} or primitive type.
+	 * @since 1.0.9
+	 */
+	@SuppressWarnings("unchecked")
+	@Contract(value = "_ -> new", pure = true)
+	public static <T> T allocateInstance(@Nullable Class<T> type) {
+		// The native part of allocateInstance does not have a null check, giving a null value can cause the JVM to crash.
+		if (type == null) throw new NullPointerException("type is null");
+		// The String class can cause strange bugs, So return an empty string directly.
+		if (type == String.class) return (T) "";
+
+		try {
+			return (T) internalUnsafe.allocateInstance(type);
+		} catch (InstantiationException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

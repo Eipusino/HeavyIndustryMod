@@ -18,6 +18,7 @@ import heavyindustry.math.Mathm;
 import heavyindustry.type.Recipe;
 import heavyindustry.util.CollectionList;
 import heavyindustry.world.consumers.ConsumeRecipe;
+import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.core.UI;
 import mindustry.ctype.UnlockableContent;
@@ -47,8 +48,6 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 import mindustry.world.meta.StatValue;
 import mindustry.world.meta.StatValues;
-
-import static mindustry.Vars.world;
 
 public class AdaptiveCrafter extends Block {
 	/** Liquid output directions, specified in the same order as outputLiquids. Use -1 to dump in every direction. Rotations are relative to block. */
@@ -185,16 +184,16 @@ public class AdaptiveCrafter extends Block {
 
 	@Override
 	public boolean rotatedOutput(int fromX, int fromY, Tile destination) {
-		if (!(destination.build instanceof ConduitBuild)) return false;
-
-		Building crafter = world.build(fromX, fromY);
-		if (crafter == null) return false;
-		int relative = Mathf.mod(crafter.relativeTo(destination) - crafter.rotation, 4);
-		for (int dir : liquidOutputDirections) {
-			if (dir == -1 || dir == relative) return false;
+		if (destination.build instanceof ConduitBuild) {
+			Building crafter = Vars.world.build(fromX, fromY);
+			if (crafter == null) return false;
+			int relative = Mathf.mod(crafter.relativeTo(destination) - crafter.rotation, 4);
+			for (int dir : liquidOutputDirections) {
+				if (dir == -1 || dir == relative) return false;
+			}
+			return true;
 		}
-
-		return true;
+		return false;
 	}
 
 	@Override

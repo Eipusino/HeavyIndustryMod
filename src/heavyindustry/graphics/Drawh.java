@@ -8,7 +8,7 @@ import arc.graphics.g2d.Lines;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
-import heavyindustry.util.concurrent.Pair;
+import heavyindustry.util.ref.Pair;
 import org.jetbrains.annotations.Contract;
 
 import static heavyindustry.graphics.Drawn.v1;

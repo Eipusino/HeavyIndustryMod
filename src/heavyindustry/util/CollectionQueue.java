@@ -3,6 +3,7 @@ package heavyindustry.util;
 import arc.func.Boolf;
 import arc.func.Cons;
 import arc.util.Eachable;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
@@ -415,17 +416,16 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 	 * time this method is called. Use the constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public QueueIterator iterator() {
-		if (iterator1 == null) {
-			iterator1 = new QueueIterator();
-			iterator2 = new QueueIterator();
-		}
+	public @NotNull QueueIterator iterator() {
+		if (iterator1 == null) iterator1 = new QueueIterator();
 
 		if (iterator1.done) {
 			iterator1.index = 0;
 			iterator1.done = false;
 			return iterator1;
 		}
+
+		if (iterator2 == null) iterator2 = new QueueIterator();
 
 		if (iterator2.done) {
 			iterator2.index = 0;
@@ -438,7 +438,7 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public E[] toArray() {
+	public E @NotNull [] toArray() {
 		E[] out = (E[]) Array.newInstance(componentType, size);
 		for (int i = 0; i < size; i++) {
 			out[i] = get(i);
@@ -448,7 +448,7 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T[] toArray(T[] a) {
+	public <T> T @NotNull [] toArray(T[] a) {
 		final int size;
 		if ((size = size()) > a.length)
 			return toArray((Class<T[]>) a.getClass());
@@ -573,7 +573,7 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 		}
 
 		@Override
-		public Iterator<E> iterator() {
+		public @NotNull Iterator<E> iterator() {
 			return this;
 		}
 	}

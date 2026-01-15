@@ -1,13 +1,11 @@
-package heavyindustry.util.concurrent;
+package heavyindustry.util.ref;
 
 import arc.util.pooling.Pool.Poolable;
-import heavyindustry.util.Objects2;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 
-public class BoolReference implements Serializable, Comparable<BoolReference>, Poolable {
+public class BoolReference implements Serializable, Poolable {
 	private static final long serialVersionUID = -7120385114040352042l;
 
 	public boolean element;
@@ -31,21 +29,6 @@ public class BoolReference implements Serializable, Comparable<BoolReference>, P
 	@Override
 	public String toString() {
 		return String.valueOf(element);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return obj == this || obj instanceof BoolReference ref && ref.element == element;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects2.boolToHash(element);
-	}
-
-	@Override
-	public int compareTo(@NotNull BoolReference o) {
-		return Boolean.compare(element, o.element);
 	}
 
 	@Override

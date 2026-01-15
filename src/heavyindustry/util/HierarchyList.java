@@ -2,34 +2,50 @@ package heavyindustry.util;
 
 import arc.func.Cons;
 import arc.util.Eachable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
+import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class HierarchyArray<T> implements Iterable<T>, Eachable<T> {
+public class HierarchyList<T> extends AbstractList<T> implements Eachable<T>, Cloneable {
 	public final Class<?> componentType;
 
-	public final T[] array;
-	public final float[] scores;
+	public T[] array;
+	public float[] scores;
 
 	public int size = 0;
 
-	protected HierarchyIterator iterator1, iterator2;
+	protected @Nullable HierarchyIterator iterator1, iterator2;
 
-	public HierarchyArray(Class<?> arrayType) {
+	public HierarchyList(Class<?> arrayType) {
 		this(16, arrayType);
 	}
 
 	@SuppressWarnings("unchecked")
-	public HierarchyArray(int size, Class<?> arrayType) {
+	public HierarchyList(int size, Class<?> arrayType) {
 		componentType = arrayType;
 
 		array = (T[]) Array.newInstance(arrayType, size);
 		scores = new float[size];
 	}
 
+	@SuppressWarnings("unchecked")
+	public HierarchyList<T> copy() {
+		try {
+			HierarchyList<T> arr = (HierarchyList<T>) super.clone();
+			arr.array = Arrays.copyOf(array, size);
+			arr.scores = Arrays.copyOf(scores, size);
+			return arr;
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
 	public T get(int idx) {
 		if (idx >= size) return null;
 		return array[idx];
@@ -59,18 +75,23 @@ public class HierarchyArray<T> implements Iterable<T>, Eachable<T> {
 		}
 	}
 
-	public void remove(T item) {
+	@Override
+	public boolean remove(Object item) {
 		for (int i = 0; i < size; i++) {
 			T c = array[i];
 			if (c == item) {
 				remove(i);
-				break;
+				return true;
 			}
 		}
+		return false;
 	}
 
-	public void remove(int idx) {
-		for (int i = idx; i < size - 1; i++) {
+	@Override
+	public T remove(int index) {
+		T last = array[index];
+
+		for (int i = index; i < size - 1; i++) {
 			T n = array[i + 1];
 			float scr = scores[i + 1];
 			array[i] = n;
@@ -81,8 +102,11 @@ public class HierarchyArray<T> implements Iterable<T>, Eachable<T> {
 		array[size - 1] = null;
 		scores[size - 1] = 0f;
 		size--;
+
+		return last;
 	}
 
+	@Override
 	public void clear() {
 		Arrays.fill(array, null);
 		Arrays.fill(scores, 0f);
@@ -97,7 +121,7 @@ public class HierarchyArray<T> implements Iterable<T>, Eachable<T> {
 	}
 
 	@Override
-	public HierarchyIterator iterator() {
+	public @NotNull HierarchyIterator iterator() {
 		if (iterator1 == null) iterator1 = new HierarchyIterator();
 
 		if (iterator1.done) {
@@ -115,6 +139,11 @@ public class HierarchyArray<T> implements Iterable<T>, Eachable<T> {
 		}
 
 		return new HierarchyIterator();
+	}
+
+	@Override
+	public int size() {
+		return size;
 	}
 
 	public class HierarchyIterator implements Iterator<T> {
@@ -136,7 +165,7 @@ public class HierarchyArray<T> implements Iterable<T>, Eachable<T> {
 		@Override
 		public void remove() {
 			index--;
-			HierarchyArray.this.remove(index);
+			HierarchyList.this.remove(index);
 		}
 	}
 }

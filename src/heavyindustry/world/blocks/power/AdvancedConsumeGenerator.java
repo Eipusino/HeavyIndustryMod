@@ -48,7 +48,7 @@ public class AdvancedConsumeGenerator extends ConsumeGenerator {
 			}
 		}
 		if (progressBar) {
-			addBar("hj-bar.progress", (AdvancedConsumeGeneratorBuild tile) -> new Bar(
+			addBar("progress", (AdvancedConsumeGeneratorBuild tile) -> new Bar(
 					() -> Core.bundle.format("bar.production-progress", Strings.fixed(tile.totalProgress() / itemDuration * 100, 1)),
 					() -> Pal.accent,
 					() -> tile.totalProgress() / itemDuration)

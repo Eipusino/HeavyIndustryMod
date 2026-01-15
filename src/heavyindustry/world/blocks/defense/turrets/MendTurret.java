@@ -40,7 +40,9 @@ public class MendTurret extends ContinuousTurret {
 			stats.add(Stat.repairSpeed, hc.percentHeal ? hc.healPercent : hc.healAmount, hc.percentHeal ? StatUnit.percent : StatUnit.perSecond);
 			stats.add(Stat.repairSpeed, t -> t.add(Strings.autoFixed(hc.findAngle, 1) + "°"));
 
-			if (findConsumer(c -> c instanceof ConsumeItems) instanceof ConsumeItems cons) {
+			ConsumeItems consumeItems = findConsumer(c -> c instanceof ConsumeItems);
+
+			if (consumeItems != null) {
 				stats.remove(Stat.booster);
 				stats.add(Stat.booster, table -> {
 					table.row();
@@ -51,13 +53,13 @@ public class MendTurret extends ContinuousTurret {
 							if (!cs.get(item)) continue;
 
 							c.table(Styles.grayPanel, b -> {
-								for (ItemStack stack : cons.items) {
+								for (ItemStack stack : consumeItems.items) {
 									if (stats.timePeriod < 0) {
 										b.add(new ItemDisplay(stack.item, stack.amount, true)).pad(20f).left();
 									} else {
 										b.add(new ItemDisplay(stack.item, stack.amount, stats.timePeriod, true)).pad(20f).left();
 									}
-									if (cons.items.length > 1) b.row();
+									if (consumeItems.items.length > 1) b.row();
 								}
 
 								b.table(bt -> {

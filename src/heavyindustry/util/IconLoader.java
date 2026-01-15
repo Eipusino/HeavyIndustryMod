@@ -10,6 +10,7 @@ import arc.util.Log;
 import arc.util.Scaling;
 import arc.util.Strings;
 import mindustry.ui.Fonts;
+import org.jetbrains.annotations.Contract;
 
 import java.io.Reader;
 import java.util.Properties;
@@ -63,6 +64,7 @@ public final class IconLoader {
 		}
 	}
 
+	@Contract(value = "_, _, _, _ -> new", pure = true)
 	static Glyph constructGlyph(int id, TextureRegion region, Vec2 size, int fontSize) {
 		Glyph glyph = new Glyph();
 		glyph.id = id;

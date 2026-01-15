@@ -1,4 +1,4 @@
-package heavyindustry.util.concurrent.atomic;
+package heavyindustry.util.concurrent;
 
 import heavyindustry.func.DoubleDoublef;
 import heavyindustry.func.DoubleDoublef2;

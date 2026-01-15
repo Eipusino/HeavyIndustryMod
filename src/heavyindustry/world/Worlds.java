@@ -10,7 +10,7 @@ import heavyindustry.entities.HEntity;
 import heavyindustry.game.TeamPayloadData;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.util.CollectionList;
-import heavyindustry.util.concurrent.Pair;
+import heavyindustry.util.ref.Pair;
 import heavyindustry.world.blocks.defense.CommandableBlock;
 import mindustry.Vars;
 import mindustry.game.EventType.ResetEvent;

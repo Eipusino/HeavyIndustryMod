@@ -93,9 +93,11 @@ public class UnitBoost extends Block {
 			}).left().growX().margin(6).pad(5).padBottom(-5).row();
 		});
 
-		if (findConsumer(c -> c instanceof ConsumeItems) instanceof ConsumeItems cons) {
+		ConsumeItems consumeItems = findConsumer(c -> c instanceof ConsumeItems);
+
+		if (consumeItems != null) {
 			stats.remove(Stat.booster);
-			stats.add(Stat.booster, HStatValues.itemRangeBoosters("{0}" + StatUnit.timesSpeed.localized(), stats.timePeriod, boostStatus, boostRange * 8, cons.items, boostReplace, this::consumesItem));
+			stats.add(Stat.booster, HStatValues.itemRangeBoosters("{0}" + StatUnit.timesSpeed.localized(), stats.timePeriod, boostStatus, boostRange * 8, consumeItems.items, boostReplace, this::consumesItem));
 		}
 	}
 

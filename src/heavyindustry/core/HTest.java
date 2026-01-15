@@ -1,5 +1,6 @@
 package heavyindustry.core;
 
+import arc.util.Log;
 import heavyindustry.util.CollectionObjectMap;
 import heavyindustry.util.ExtraVariable;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +22,13 @@ public class HTest implements Cloneable, ExtraVariable, Comparable<HTest>, Annot
 		id = count++;
 	}
 
-	public static void test() {}
+	public static void test() {
+		try {
+
+		} catch (Throwable e) {
+			Log.err(e);
+		}
+	}
 
 	public HTest copy() {
 		try {

@@ -4,24 +4,24 @@ import arc.math.Mathf;
 import arc.struct.FloatSeq;
 import org.jetbrains.annotations.Contract;
 
-public class WeightedRandom<T> {
+public class WeightedRandom<E> {
 	protected float lastValue = 0f;
-	protected CollectionList<T> items;
+	protected CollectionList<E> items;
 	protected FloatSeq weights = new FloatSeq();
 
 	public WeightedRandom(Class<?> componentType) {
 		items = new CollectionList<>(componentType);
 	}
 
-	public void add(T t, float weight) {
+	public void add(E value, float weight) {
 		if (weight <= 0f) return;
-		items.add(t);
+		items.add(value);
 		weights.add(lastValue + weight);
 		lastValue += weight;
 	}
 
 	@Contract(pure = true)
-	public T get() {
+	public E get() {
 		float rnd = Mathf.rand.nextFloat() * lastValue;
 		int size = items.size;
 		for (int i = 0; i < size; i++) {

@@ -29,6 +29,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 /**
  * A resizable, ordered or unordered array of objects. If unordered, this class avoids a memory copy when removing elements (the
@@ -1229,7 +1230,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		for (int i = 0; i < n; i++) {
 			Object o1 = items1[i];
 			Object o2 = items2[i];
-			if (Objects2.unequals(o1, o2)) return false;
+			if (!Objects.equals(o1, o2)) return false;
 		}
 		return true;
 	}

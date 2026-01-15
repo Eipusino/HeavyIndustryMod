@@ -77,7 +77,7 @@ public class OreDetector extends Block {
 		//loopSound = HSounds.radar;
 		flags = EnumSet.of(BlockFlag.unitCargoUnloadPoint);
 
-		config(Boolean.class, (r, b) -> ((OreDetectorBuild) r).showOres = b);
+		config(Boolean.class, (OreDetectorBuild r, Boolean b) -> r.showOres = b);
 	}
 
 	@Override

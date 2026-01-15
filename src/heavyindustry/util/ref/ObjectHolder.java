@@ -1,4 +1,4 @@
-package heavyindustry.util.concurrent.holder;
+package heavyindustry.util.ref;
 
 import java.util.Map.Entry;
 import java.util.Objects;

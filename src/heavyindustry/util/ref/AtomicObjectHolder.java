@@ -1,9 +1,8 @@
-package heavyindustry.util.concurrent.holder;
+package heavyindustry.util.ref;
 
 import arc.util.pooling.Pool.Poolable;
 
 import java.util.Map.Entry;
-import java.util.Objects;
 
 /** @since 1.0.7 */
 public class AtomicObjectHolder<K, V> implements Entry<K, V>, Cloneable, Poolable {
@@ -37,16 +36,6 @@ public class AtomicObjectHolder<K, V> implements Entry<K, V>, Cloneable, Poolabl
 		} catch (CloneNotSupportedException awful) {
 			return new AtomicObjectHolder<>(key, value);
 		}
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		return o instanceof AtomicObjectHolder<?, ?> that && Objects.equals(key, that.key) && Objects.equals(value, that.value);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hashCode(key) ^ Objects.hashCode(value);
 	}
 
 	@Override
