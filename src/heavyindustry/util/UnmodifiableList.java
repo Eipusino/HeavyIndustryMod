@@ -26,8 +26,8 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 
 	final int size;
 
-	Iter iterator1, iterator2;
-	ListIter listIterator1;
+	transient Iter iterator1, iterator2;
+	transient ListIter listIterator1;
 
 	/**
 	 * @see #with(E[])

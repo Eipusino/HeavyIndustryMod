@@ -52,7 +52,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	public int size;
 	public boolean ordered;
 
-	protected Iter iterator1, iterator2, lastIterator1, lastIterator2;
+	protected transient Iter iterator1, iterator2, lastIterator1, lastIterator2;
 
 	/** Creates an ordered array with a capacity of 16. */
 	public CollectionList(@NotNull Class<?> type) {
@@ -178,10 +178,15 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	@SuppressWarnings("unchecked")
 	public CollectionList<E> copy() {
 		try {
-			CollectionList<E> list = (CollectionList<E>) super.clone();
-			list.size = size;
-			list.items = Arrays.copyOf(items, items.length);
-			return list;
+			CollectionList<E> out = (CollectionList<E>) super.clone();
+			out.size = size;
+			out.items = Arrays.copyOf(items, items.length);
+
+			// These fields must be reset.
+			out.iterator1 = out.iterator2 = null;
+			out.lastIterator1 = out.lastIterator2 = null;
+
+			return out;
 		} catch (CloneNotSupportedException e) {
 			return new CollectionList<>(this);
 		}

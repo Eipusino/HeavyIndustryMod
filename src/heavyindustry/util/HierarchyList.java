@@ -19,7 +19,7 @@ public class HierarchyList<T> extends AbstractList<T> implements Eachable<T>, Cl
 
 	public int size = 0;
 
-	protected @Nullable HierarchyIterator iterator1, iterator2;
+	protected transient @Nullable HierarchyIterator iterator1, iterator2;
 
 	public HierarchyList(Class<?> arrayType) {
 		this(16, arrayType);
@@ -36,10 +36,13 @@ public class HierarchyList<T> extends AbstractList<T> implements Eachable<T>, Cl
 	@SuppressWarnings("unchecked")
 	public HierarchyList<T> copy() {
 		try {
-			HierarchyList<T> arr = (HierarchyList<T>) super.clone();
-			arr.array = Arrays.copyOf(array, size);
-			arr.scores = Arrays.copyOf(scores, size);
-			return arr;
+			HierarchyList<T> out = (HierarchyList<T>) super.clone();
+			out.array = Arrays.copyOf(array, size);
+			out.scores = Arrays.copyOf(scores, size);
+
+			out.iterator1 = out.iterator2 = null;
+
+			return out;
 		} catch (CloneNotSupportedException e) {
 			throw new RuntimeException(e);
 		}

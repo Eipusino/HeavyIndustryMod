@@ -34,7 +34,7 @@ public class MarkdownStyles {
 	}
 
 	/** @deprecated Please use {@link #makeDefault(Font)}. */
-	@Deprecated/*(since = "1.0.8", forRemoval = true)*/
+	@Deprecated
 	public static Markdown.MarkdownStyle defaultMD(Font mono) {
 		return makeDefault(mono);
 	}

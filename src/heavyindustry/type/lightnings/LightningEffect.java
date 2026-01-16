@@ -55,7 +55,7 @@ public class LightningEffect implements Poolable {
 	 *
 	 * @deprecated Standardization, this API will no longer be valid
 	 */
-	@Deprecated/*(since = "1.0.8")*/
+	@Deprecated
 	public float speed;
 	/** The time from the generation of lightning to its full manifestation is valid when {@link LightningEffect#speed} is not set. */
 	public float time;

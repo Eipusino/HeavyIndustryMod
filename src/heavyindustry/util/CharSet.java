@@ -36,7 +36,7 @@ public class CharSet implements Cloneable {
 	protected int stashCapacity;
 	protected int pushIterations;
 
-	protected CharSetIterator iterator1, iterator2;
+	protected transient CharSetIterator iterator1, iterator2;
 
 	/** Creates a new set with an initial capacity of 51 and a load factor of 0.8. */
 	public CharSet() {
@@ -90,6 +90,9 @@ public class CharSet implements Cloneable {
 		try {
 			CharSet out = (CharSet) super.clone();
 			out.keyTable = Arrays.copyOf(keyTable, keyTable.length);
+
+			out.iterator1 = out.iterator2 = null;
+
 			return out;
 		} catch (CloneNotSupportedException e) {
 			return new CharSet(this);

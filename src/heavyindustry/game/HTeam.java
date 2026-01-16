@@ -21,7 +21,7 @@ public final class HTeam {
 		team(none.id, "none", Color.clear);
 	}
 
-	@Deprecated/*(since = "1.0.8", forRemoval = true)*/
+	@Deprecated
 	public static void team(Building build, Team team) {
 		build.team = team;
 	}

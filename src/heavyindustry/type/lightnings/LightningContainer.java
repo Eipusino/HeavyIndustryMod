@@ -34,7 +34,7 @@ public class LightningContainer implements Iterable<LightningEffect>, Eachable<L
 	 *
 	 * @deprecated Standardization, this API is no longer available
 	 */
-	@Deprecated/*(since = "1.0.8")*/
+	@Deprecated
 	public float speed = 0;
 	/** The existence time of lightning. */
 	public float lifeTime = 30;

@@ -36,6 +36,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 
 public final class Arrays2 {
 	private Arrays2() {}
@@ -317,6 +318,19 @@ public final class Arrays2 {
 		float[] out = array.clone();
 		for (int i = 0, len = out.length; i < len; i++) out[i] = copy.get(out[i]);
 		return out;
+	}
+
+	/**
+	 * Use custom filtering criteria to search for array elements, and if not found, throw a
+	 * {@link NoSuchElementException}.
+	 *
+	 * @since 1.0.9
+	 */
+	public static <T> T findOrThrow(T[] array, Boolf<T> value) throws NoSuchElementException {
+		for (T t : array) {
+			if (value.get(t)) return t;
+		}
+		throw new NoSuchElementException();
 	}
 
 	/**

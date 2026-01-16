@@ -61,7 +61,7 @@ public class Markdown extends WidgetGroup {
 		Markdown.defaultExtensions.addAll(Arrays.asList(extensions));
 	}
 
-	@Deprecated/*(since = "1.0.8", forRemoval = true)*/
+	@Deprecated
 	public Markdown(String md, Font mono) {
 		this(md, MarkdownStyles.makeDefault(mono));
 	}

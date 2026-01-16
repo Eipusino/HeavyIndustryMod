@@ -38,7 +38,7 @@ public class TractorBeamUnit extends PayloadUnit2 {
 	public float beamRange = 8f * 8f;
 
 	@Override
-	public TractorBeamUnitType checkType() {
+	public TractorBeamUnitType asType() {
 		return (TractorBeamUnitType) type;
 	}
 
@@ -247,7 +247,7 @@ public class TractorBeamUnit extends PayloadUnit2 {
 			team.data().updateCount(type, -1);
 		}
 
-		beamRange = checkType().tractorBeamRange;
+		beamRange = this.asType().tractorBeamRange;
 	}
 
 	@Override

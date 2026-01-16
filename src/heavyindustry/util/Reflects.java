@@ -24,9 +24,11 @@ import mindustry.Vars;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.UnknownNullability;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles.Lookup;
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -62,7 +64,7 @@ import java.util.Set;
 public final class Reflects {
 	public static Lookup lookup;
 
-	static Field modifiersField;
+	static Field overrideField;
 	static Method cloneMethod;
 
 	static final CollectionObjectMap<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
@@ -74,13 +76,13 @@ public final class Reflects {
 	public static Class<?> box(Class<?> type) {
 		if (type == void.class) return Void.class;
 		else if (type == boolean.class) return Boolean.class;
-		else if (type == byte.class) return Byte.class;
-		else if (type == char.class) return Character.class;
-		else if (type == short.class) return Short.class;
 		else if (type == int.class) return Integer.class;
 		else if (type == float.class) return Float.class;
 		else if (type == long.class) return Long.class;
 		else if (type == double.class) return Double.class;
+		else if (type == short.class) return Short.class;
+		else if (type == byte.class) return Byte.class;
+		else if (type == char.class) return Character.class;
 		else return type;
 	}
 
@@ -88,13 +90,13 @@ public final class Reflects {
 	public static Class<?> unbox(Class<?> type) {
 		if (type == Void.class) return void.class;
 		else if (type == Boolean.class) return boolean.class;
-		else if (type == Byte.class) return byte.class;
-		else if (type == Character.class) return char.class;
-		else if (type == Short.class) return short.class;
 		else if (type == Integer.class) return int.class;
 		else if (type == Float.class) return float.class;
 		else if (type == Long.class) return long.class;
 		else if (type == Double.class) return double.class;
+		else if (type == Short.class) return short.class;
+		else if (type == Byte.class) return byte.class;
+		else if (type == Character.class) return char.class;
 		else return type;
 	}
 
@@ -131,6 +133,7 @@ public final class Reflects {
 	// Suitable for obtaining one field at a time.
 	// If frequent reflection operations are required on the same field,
 	// cache the field instead of blindly using this method.
+	/** @since 1.0.8 */
 	@SuppressWarnings("unchecked")
 	@Contract(pure = true)
 	public static <T> T get(Class<?> type, String name, Object object, Prov<T> def) {
@@ -144,6 +147,7 @@ public final class Reflects {
 		}
 	}
 
+	/** @since 1.0.8 */
 	@Contract(pure = true)
 	public static boolean getBoolean(Class<?> type, String name, Object object, Boolp def) {
 		try {
@@ -156,6 +160,7 @@ public final class Reflects {
 		}
 	}
 
+	/** @since 1.0.8 */
 	@Contract(pure = true)
 	public static int getInt(Class<?> type, String name, Object object, Intp def) {
 		try {
@@ -168,6 +173,7 @@ public final class Reflects {
 		}
 	}
 
+	/** @since 1.0.8 */
 	public static void set(Class<?> type, String name, Object object, Object value) {
 		try {
 			Field field = type.getDeclaredField(name);
@@ -178,6 +184,7 @@ public final class Reflects {
 		}
 	}
 
+	/** @since 1.0.8 */
 	public static void setInt(Class<?> type, String name, Object object, int value) {
 		try {
 			Field field = type.getDeclaredField(name);
@@ -250,7 +257,7 @@ public final class Reflects {
 	 * @return The class, or {@code null} if not found.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> Class<T> findClass(@Nullable String name) {
+	public static <T> @Nullable Class<T> findClass(@Nullable String name) {
 		try {
 			return name == null ? null : (Class<T>) Class.forName(name, true, Vars.mods.mainLoader());
 		} catch (ClassNotFoundException e) {
@@ -258,6 +265,7 @@ public final class Reflects {
 		}
 	}
 
+	/** @since 1.0.8 */
 	@Contract(pure = true)
 	public static @Nullable Field findField(Class<?> type, String name) {
 		while (type != null) {
@@ -276,6 +284,7 @@ public final class Reflects {
 	 * A utility function to find a field without throwing exceptions.
 	 *
 	 * @return The field, or {@code null} if not found.
+	 * @since 1.0.8
 	 */
 	@Contract(pure = true)
 	public static @Nullable Field findField(Class<?> type, Boolf<Field> filler) {
@@ -295,6 +304,7 @@ public final class Reflects {
 	 * A utility function to find a method without throwing exceptions.
 	 *
 	 * @return The method, or {@code null} if not found.
+	 * @since 1.0.8
 	 */
 	@Contract(pure = true)
 	public static @Nullable Method findMethod(Class<?> type, String name, Class<?>... args) {
@@ -314,15 +324,13 @@ public final class Reflects {
 	 * A utility function to find a constructor without throwing exceptions.
 	 *
 	 * @return The constructor, or {@code null} if not found.
+	 * @since 1.0.8
 	 */
-	@SuppressWarnings("unchecked")
 	@Contract(pure = true)
-	public static <T> @Nullable Constructor<T> findConstructor(Class<?> type, Class<?>... args) {
-		for (type = type.isAnonymousClass() ? type.getSuperclass() : type; type != null; type = type.getSuperclass()) {
-			Constructor<?>[] constructors = HVars.platformImpl.getConstructors(type);
-			for (Constructor<?> constructor : constructors) {
-				if (Arrays.equals(constructor.getParameterTypes(), args)) return (Constructor<T>) constructor;
-			}
+	public static <T> @Nullable Constructor<T> findConstructor(Class<T> type, Class<?>... args) {
+		Constructor<T>[] constructors = HVars.platformImpl.getConstructors(type);
+		for (Constructor<T> constructor : constructors) {
+			if (Arrays.equals(constructor.getParameterTypes(), args)) return constructor;
 		}
 
 		return null;
@@ -358,6 +366,7 @@ public final class Reflects {
 		return hierarchy;
 	}
 
+	/** @since 1.0.8 */
 	@Contract(value = "_, _, _ -> param2")
 	public static <T> T copyProperties(Object source, T target, List<String> filler) {
 		return copyProperties(source, target, filler.toArray(Constant.EMPTY_STRING));
@@ -369,6 +378,7 @@ public final class Reflects {
 	 * @param source Source Object
 	 * @param target Target Object
 	 * @param filler Excluded field names
+	 * @since 1.0.8
 	 */
 	@Contract(value = "_, _, _ -> param2")
 	public static <T> T copyProperties(Object source, T target, String... filler) {
@@ -401,7 +411,7 @@ public final class Reflects {
 				if (!isAssignable(sourceField, targetField)) continue;
 
 				try {
-					if (OS.isAndroid) {
+					if (!OS.isAndroid) {
 						Object value = Unsafer.get(sourceField, source);
 						Unsafer.set(targetField, target, value);
 					} else {
@@ -428,44 +438,90 @@ public final class Reflects {
 	}
 
 	/**
+	 * Compare two parameter types and check if they can be assigned to another parameter, without
+	 * considering the primitive type and its corresponding wrapper class.
+	 *
+	 * @param sourceTypes Source parameter type
+	 * @param targetTypes Parameter type to be assigned
+	 * @throws NullPointerException If the parameter array is {@code null} and the elements in the array are
+	 *                              {@code null}, This is normal and should not happen
+	 * @since 1.0.9
+	 */
+	@Contract(pure = true)
+	public static boolean isAssignable(Class<?>[] sourceTypes, Class<?>[] targetTypes) {
+		if (sourceTypes.length != targetTypes.length) return false;
+
+		for (int i = 0; i < sourceTypes.length; i++) {
+			if (sourceTypes[i] != targetTypes[i] && !targetTypes[i].isAssignableFrom(sourceTypes[i])) return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * This method is compatible with primitive types and their corresponding wrapper classes, but the
+	 * performance overhead may be slightly higher.
+	 *
+	 * @param sourceTypes Source parameter type
+	 * @param targetTypes Parameter type to be assigned
+	 * @since 1.0.9
+	 */
+	@Contract(pure = true)
+	public static boolean isAssignableWithBoxing(Class<?>[] sourceTypes, Class<?>[] targetTypes) {
+		if (sourceTypes.length != targetTypes.length) return false;
+
+		for (int i = 0; i < sourceTypes.length; i++) {
+			if (!isAssignableWithBoxing(sourceTypes[i], targetTypes[i])) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Contract(pure = true)
+	public static boolean isAssignableWithBoxing(Class<?> sourceType, Class<?> targetType) {
+		return targetType.isAssignableFrom(sourceType) ||
+				targetType.isPrimitive() && box(targetType).isAssignableFrom(sourceType) ||
+				sourceType.isPrimitive() && targetType.isAssignableFrom(box(sourceType));
+	}
+
+	/**
+	 * Directly set the override of Accessible Object to true. It can bypass module security.
+	 * <p>This method has a direct destructive effect on Java encapsulation security and is not recommended
+	 * for non-essential use.
+	 *
+	 * @since 1.0.9
+	 */
+	public static void setAccessible(@NotNull AccessibleObject object) {
+		try {
+			if (overrideField == null) {
+				overrideField = AccessibleObject.class.getDeclaredField("override");
+				overrideField.setAccessible(true);
+			}
+			overrideField.setBoolean(object, true);
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			Log.err(e);
+		}
+	}
+
+	/**
 	 * Attempt to directly call the clone method of Object.
-	 * <p>If the class does not implement the {@code Cloneable} interface, it will throw
-	 * {@code CloneNotSupportedException}. But on the Android platform, this restriction can be bypassed.
 	 *
 	 * @since 1.0.9
 	 */
 	@SuppressWarnings("unchecked")
 	@Contract(pure = true)
-	public static <T> T clone(T object) {
+	public static <T> @UnknownNullability T clone(@NotNull T object) {
 		try {
 			if (cloneMethod == null) {
-				// On Android, it should be possible to bypass the Cloneable interface restrictions and directly clone.
+				// On Android, the internalClone() method can be used to bypass the Cloneable interface check.
 				cloneMethod = Object.class.getDeclaredMethod(OS.isAndroid ? "internalClone" : "clone");
 				cloneMethod.setAccessible(true);
 			}
-			return (T) cloneMethod.invoke(object);
+			return OS.isAndroid || object instanceof Cloneable ? (T) cloneMethod.invoke(object) : null;
 		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	/**
-	 * Remove the {@code final} attribute of the field.
-	 * <p><strong>If Anuke's code wasn't that bad, we would never have used such extreme reflection.</strong>
-	 *
-	 * @since 1.0.9
-	 */
-	public static void setModifiers(Field field) {
-		if (Modifier.isFinal(field.getModifiers())) {
-			try {
-				if (modifiersField == null) {
-					modifiersField = Field.class.getDeclaredField(OS.isAndroid ? "accessFlags" : "modifiers");
-					modifiersField.setAccessible(true);
-				}
-				modifiersField.setInt(field, modifiersField.getInt(field) & (~Modifier.FINAL));
-			} catch (NoSuchFieldException | IllegalAccessException e) {
-				Log.err(e);
-			}
+			Log.err(e);
+			return null;
 		}
 	}
 

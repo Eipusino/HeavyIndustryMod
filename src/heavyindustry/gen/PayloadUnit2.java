@@ -22,7 +22,7 @@ public class PayloadUnit2 extends PayloadUnit implements Unitc2 {
 	}
 
 	@Override
-	public UnitType2 checkType() {
+	public UnitType2 asType() {
 		return (UnitType2) type;
 	}
 
@@ -39,27 +39,27 @@ public class PayloadUnit2 extends PayloadUnit implements Unitc2 {
 	public void add() {
 		super.add();
 
-		checkType().init(this);
+		asType().init(this);
 	}
 
 	@Override
 	public void write(Writes write) {
 		super.write(write);
 
-		write.i(checkType().version());
-		checkType().write(this, write);
+		write.i(asType().version());
+		asType().write(this, write);
 	}
 
 	@Override
 	public void read(Reads read) {
 		super.read(read);
 
-		checkType().read(this, read, read.i());
+		asType().read(this, read, read.i());
 	}
 
 	@Override
 	public void damage(float amount) {
-		rawDamage(Damage.applyArmor(amount, armorOverride >= 0 ? armorOverride : armor) / healthMultiplier / Vars.state.rules.unitHealth(team) * checkType().damageMultiplier);
+		rawDamage(Damage.applyArmor(amount, armorOverride >= 0 ? armorOverride : armor) / healthMultiplier / Vars.state.rules.unitHealth(team) * asType().damageMultiplier);
 	}
 
 	@Override

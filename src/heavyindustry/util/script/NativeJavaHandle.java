@@ -1,4 +1,4 @@
-package heavyindustry.mod;
+package heavyindustry.util.script;
 
 import rhino.BaseFunction;
 import rhino.Context;

@@ -32,7 +32,7 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 	 */
 	protected int tail = 0;
 
-	protected @Nullable QueueIterator iterator1, iterator2;
+	protected transient @Nullable QueueIterator iterator1, iterator2;
 
 	/** Creates a new Queue which can hold 16 values without needing to resize backing array. */
 	public CollectionQueue(Class<?> type) {

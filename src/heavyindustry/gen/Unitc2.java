@@ -7,7 +7,7 @@ import mindustry.gen.Entityc;
 import mindustry.gen.Unitc;
 
 public interface Unitc2 extends Unitc, ExtraVariable {
-	default UnitType2 checkType() {
+	default UnitType2 asType() {
 		return (UnitType2) type();
 	}
 

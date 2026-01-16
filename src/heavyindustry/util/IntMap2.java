@@ -46,9 +46,9 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 	protected int stashCapacity;
 	protected int pushIterations;
 
-	protected Entries entries1, entries2;
-	protected Values values1, values2;
-	protected Keys keys1, keys2;
+	protected transient Entries entries1, entries2;
+	protected transient Values values1, values2;
+	protected transient Keys keys1, keys2;
 
 	@SuppressWarnings("unchecked")
 	public static <V> IntMap2<V> of(Class<V> keyType, Object... values) {
@@ -56,7 +56,7 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 
 		for (int i = 0; i < values.length / 2; i++) {
 			Object key = values[i * 2];
-			int keyInt = (key instanceof Character character ? character.charValue() : (int) key);
+			int keyInt = (key instanceof Character character ? character : (int) key);
 			map.put(keyInt, (V) values[i * 2 + 1]);
 		}
 
@@ -66,10 +66,15 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 	@SuppressWarnings("unchecked")
 	public IntMap2<V> copy() {
 		try {
-			IntMap2<V> map = (IntMap2<V>) super.clone();
-			map.keyTable = Arrays.copyOf(keyTable, keyTable.length);
-			map.valueTable = Arrays.copyOf(valueTable, valueTable.length);
-			return map;
+			IntMap2<V> out = (IntMap2<V>) super.clone();
+			out.keyTable = Arrays.copyOf(keyTable, keyTable.length);
+			out.valueTable = Arrays.copyOf(valueTable, valueTable.length);
+
+			out.entries1 = out.entries2 = null;
+			out.values1 = out.values2 = null;
+			out.keys1 = out.keys2 = null;
+
+			return out;
 		} catch (CloneNotSupportedException e) {
 			return new IntMap2<>(this);
 		}

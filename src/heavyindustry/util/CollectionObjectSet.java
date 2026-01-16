@@ -43,7 +43,7 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E
 	protected int stashCapacity;
 	protected int pushIterations;
 
-	protected @Nullable Iter iterator1, iterator2;
+	protected transient @Nullable Iter iterator1, iterator2;
 
 	/** Creates a new set with an initial capacity of 51 and a load factor of 0.8. */
 	public CollectionObjectSet(Class<?> type) {
@@ -135,16 +135,15 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E
 	@SuppressWarnings("unchecked")
 	public CollectionObjectSet<E> copy() {
 		try {
-			CollectionObjectSet<E> set = (CollectionObjectSet<E>) super.clone();
-			set.keyTable = Arrays.copyOf(keyTable, keyTable.length);
-			return set;
+			CollectionObjectSet<E> out = (CollectionObjectSet<E>) super.clone();
+			out.keyTable = Arrays.copyOf(keyTable, keyTable.length);
+
+			out.iterator1 = out.iterator2 = null;
+
+			return out;
 		} catch (CloneNotSupportedException e) {
 			return new CollectionObjectSet<>(this);
 		}
-	}
-
-	public Seq<E> toSeq() {
-		return iterator().toSeq();
 	}
 
 	@Override
@@ -202,63 +201,6 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E
 
 		push(key, index1, key1, index2, key2, index3, key3);
 		return true;
-	}
-
-	@Override
-	public boolean containsAll(@Nullable Collection<?> c) {
-		if (c == null) return false;
-
-		for (Object e : c)
-			if (!contains(e))
-				return false;
-		return true;
-	}
-
-	@Override
-	public boolean addAll(@Nullable Collection<? extends E> c) {
-		if (c == null) return false;
-
-		boolean modified = false;
-		for (E e : c)
-			if (add(e))
-				modified = true;
-		return modified;
-	}
-
-	@Override
-	public boolean retainAll(@Nullable Collection<?> c) {
-		if (c == null || isEmpty()) return false;
-
-		boolean modified = false;
-
-		Iterator<E> it = iterator();
-		while (it.hasNext()) {
-			if (!c.contains(it.next())) {
-				it.remove();
-				modified = true;
-			}
-		}
-		return modified;
-	}
-
-	@Override
-	public boolean removeAll(@Nullable Collection<?> c) {
-		if (c == null || isEmpty()) return false;
-
-		boolean modified = false;
-
-		if (size() > c.size()) {
-			for (Object e : c)
-				modified |= remove(e);
-		} else {
-			for (Iterator<?> i = iterator(); i.hasNext(); ) {
-				if (c.contains(i.next())) {
-					i.remove();
-					modified = true;
-				}
-			}
-		}
-		return modified;
 	}
 
 	public void addAll(CollectionList<? extends E> array) {

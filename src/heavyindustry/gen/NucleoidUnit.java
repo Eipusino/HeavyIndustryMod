@@ -36,26 +36,26 @@ public class NucleoidUnit extends Unit2 implements Nucleoidc {
 	public void setType(UnitType type) {
 		super.setType(type);
 
-		NucleoidUnitType nu = checkType();
+		NucleoidUnitType nu = this.asType();
 		recentDamage = nu.maxDamagedPerSec;
 		reinforcementsReload = nu.reinforcementsSpacing;
 	}
 
 	@Override
-	public NucleoidUnitType checkType() {
+	public NucleoidUnitType asType() {
 		return (NucleoidUnitType) type;
 	}
 
 	@Override
 	public float mass() {
-		return checkType().mass;
+		return this.asType().mass;
 	}
 
 	@Override
 	public void update() {
 		super.update();
 
-		NucleoidUnitType nu = checkType();
+		NucleoidUnitType nu = this.asType();
 		recentDamage += nu.recentDamageResume * Time.delta;
 		if (recentDamage >= nu.maxDamagedPerSec) {
 			recentDamage = nu.maxDamagedPerSec;
@@ -74,7 +74,7 @@ public class NucleoidUnit extends Unit2 implements Nucleoidc {
 	public void draw() {
 		super.draw();
 
-		NucleoidUnitType nu = checkType();
+		NucleoidUnitType nu = this.asType();
 		if (!nu.drawArrow) return;
 
 		float z = Draw.z();
@@ -103,13 +103,13 @@ public class NucleoidUnit extends Unit2 implements Nucleoidc {
 
 	@Override
 	public void damage(float amount) {
-		rawDamage(Damage.applyArmor(amount, armorOverride >= 0 ? armorOverride : armor) / healthMultiplier / Vars.state.rules.unitHealth(team) * checkType().damageMultiplier);
+		rawDamage(Damage.applyArmor(amount, armorOverride >= 0 ? armorOverride : armor) / healthMultiplier / Vars.state.rules.unitHealth(team) * this.asType().damageMultiplier);
 	}
 
 	@Override
 	public void damagePierce(float amount, boolean withEffect) {
 		float pre = hitTime;
-		rawDamage(amount / healthMultiplier / Vars.state.rules.unitHealth(team) * checkType().damageMultiplier);
+		rawDamage(amount / healthMultiplier / Vars.state.rules.unitHealth(team) * this.asType().damageMultiplier);
 		if (!withEffect) {
 			hitTime = pre;
 		}
@@ -122,7 +122,7 @@ public class NucleoidUnit extends Unit2 implements Nucleoidc {
 			shieldAlpha = 1f;
 		}
 
-		amount = Math.min(amount, checkType().maxOnceDamage);
+		amount = Math.min(amount, this.asType().maxOnceDamage);
 
 		float shieldDamage = Math.min(Math.max(shield, 0f), amount);
 		shield -= shieldDamage;

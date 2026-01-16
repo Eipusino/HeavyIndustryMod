@@ -42,9 +42,9 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 	protected int stashCapacity;
 	protected int pushIterations;
 
-	protected Entries entries1, entries2;
-	protected Values values1, values2;
-	protected Keys keys1, keys2;
+	protected transient Entries entries1, entries2;
+	protected transient Values values1, values2;
+	protected transient Keys keys1, keys2;
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
 	public ObjectFloatMap2(Class<?> keyType) {
@@ -104,6 +104,11 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 			ObjectFloatMap2<K> out = (ObjectFloatMap2<K>) super.clone();
 			out.keyTable = Arrays.copyOf(keyTable, keyTable.length);
 			out.valueTable = Arrays.copyOf(valueTable, valueTable.length);
+
+			out.entries1 = out.entries2 = null;
+			out.values1 = out.values2 = null;
+			out.keys1 = out.keys2 = null;
+
 			return out;
 		} catch (CloneNotSupportedException e) {
 			return new ObjectFloatMap2<>(this);

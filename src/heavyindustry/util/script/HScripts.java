@@ -11,7 +11,7 @@
 	You should have received a copy of the GNU General Public License
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-package heavyindustry.mod;
+package heavyindustry.util.script;
 
 import arc.files.Fi;
 import arc.func.Func;
@@ -19,7 +19,9 @@ import arc.util.Log;
 import heavyindustry.HVars;
 import heavyindustry.util.Reflects;
 import mindustry.Vars;
+import mindustry.mod.Scripts;
 import org.jetbrains.annotations.ApiStatus.Internal;
+import org.jetbrains.annotations.Contract;
 import rhino.Context;
 import rhino.Function;
 import rhino.ImporterTopLevel;
@@ -37,6 +39,8 @@ import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import static arc.Core.files;
+
 /**
  * Utility class for transition between Java and JS scripts, as well as providing a custom top level scope for the sake of
  * cross-mod compatibility. Use the custom scope for programmatically compiling Rhino functions.
@@ -44,6 +48,10 @@ import java.util.Iterator;
  * @since 1.0.6
  */
 public final class HScripts {
+	public static Scripts scripts;
+	public static ImporterTopLevel scope;
+	public static Context context;
+
 	/** Don't let anyone instantiate this class. */
 	private HScripts() {}
 
@@ -51,10 +59,34 @@ public final class HScripts {
 	@Internal
 	public static void init() {
 		try {
-			importPackages((ImporterTopLevel) Vars.mods.getScripts().scope, HVars.packages);
+			scripts = Vars.mods.getScripts();
+			scope = (ImporterTopLevel) scripts.scope;
+			context = scripts.context;
+
+			importPackages(scope, HVars.packages);
+
+			/*context.evaluateString(scope, """
+					function apply(map, object) {
+						for (let key in object) {
+							map.put(key, object[key]);
+						}
+					}
+
+					function getClass(name) {
+						return Packages.java.lang.Class.forName(name, true, Vars.mods.mainLoader())
+					}
+					""", "apply.js", 1);*/
 		} catch (Throwable e) {
 			Log.err(e);
 		}
+	}
+
+	@Contract(value = " -> new", pure = true)
+	public static ImporterTopLevel newScope() {
+		Context context = Vars.mods.getScripts().context;
+		ImporterTopLevel scope = new ImporterTopLevel(context);
+		context.evaluateString(scope, files.internal("scripts/global.js").readString(), "global.js", 1);
+		return scope;
 	}
 
 	/**
@@ -123,6 +155,7 @@ public final class HScripts {
 	}
 
 	@SuppressWarnings("unchecked")
+	@Contract(pure = true)
 	public static <T> Func<Object[], T> requireType(Function func, Context context, Scriptable scope, Class<T> returnType) {
 		Class<?> type = Reflects.box(returnType);
 		return args -> {
@@ -146,10 +179,12 @@ public final class HScripts {
 		return handle.invokeWithArguments(convertArgs(arr, handle.type().parameterArray()));
 	}
 
+	@Contract(pure = true)
 	public static Object[] convertArgs(NativeArray arr, Class<?>[] types) {
 		return convertArgs(arr.toArray(), types);
 	}
 
+	@Contract(pure = true)
 	public static Object[] convertArgs(Object[] arr, Class<?>[] types) {
 		Iterator<Class<?>> iterator = Arrays.stream(types).iterator();
 		return Arrays.stream(arr).map(a -> JavaAdapter.convertResult(a, iterator.next())).toArray();

@@ -25,16 +25,11 @@ public class Lazy<T> {
 
 	/**
 	 * @param init initialization function
-	 * @param mod Whether the value can be modified
+	 * @param set Whether the value allow to be set
 	 */
-	public Lazy(@NotNull Prov<T> init, boolean mod) {
+	public Lazy(@NotNull Prov<T> init, boolean set) {
 		prov = init;//if (init == null) throw new NullPointerException("The prov cannot be null.");
-		allowSet = mod;
-	}
-
-	@Contract(value = "_ -> new", pure = true)
-	public static <T> Lazy<T> of(@NotNull Prov<T> prov) {
-		return new Lazy<>(prov);
+		allowSet = set;
 	}
 
 	@Contract(pure = true)

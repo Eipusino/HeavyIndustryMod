@@ -52,4 +52,10 @@ public class HTest implements Cloneable, ExtraVariable, Comparable<HTest>, Annot
 	public Class<? extends Annotation> annotationType() {
 		return HTest.class;
 	}
+
+	public enum HTestEnum {
+		m;
+
+		HTestEnum() {}
+	}
 }

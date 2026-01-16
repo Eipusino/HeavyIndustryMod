@@ -37,9 +37,9 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 	protected int stashCapacity;
 	protected int pushIterations;
 
-	protected Entries entries1, entries2;
-	protected Values values1, values2;
-	protected Keys keys1, keys2;
+	protected transient Entries entries1, entries2;
+	protected transient Values values1, values2;
+	protected transient Keys keys1, keys2;
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
 	public LongMap2(Class<?> keyType) {
@@ -98,10 +98,15 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 	@SuppressWarnings("unchecked")
 	public LongMap2<V> copy() {
 		try {
-			LongMap2<V> map = (LongMap2<V>) super.clone();
-			map.keyTable = Arrays.copyOf(keyTable, keyTable.length);
-			map.valueTable = Arrays.copyOf(valueTable, valueTable.length);
-			return map;
+			LongMap2<V> out = (LongMap2<V>) super.clone();
+			out.keyTable = Arrays.copyOf(keyTable, keyTable.length);
+			out.valueTable = Arrays.copyOf(valueTable, valueTable.length);
+
+			out.entries1 = out.entries2 = null;
+			out.values1 = out.values2 = null;
+			out.keys1 = out.keys2 = null;
+
+			return out;
 		} catch (CloneNotSupportedException e) {
 			return new LongMap2<>(this);
 		}

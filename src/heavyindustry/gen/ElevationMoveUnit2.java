@@ -20,7 +20,7 @@ public class ElevationMoveUnit2 extends ElevationMoveUnit implements Unitc2 {
 	}
 
 	@Override
-	public UnitType2 checkType() {
+	public UnitType2 asType() {
 		return (UnitType2) type;
 	}
 
@@ -35,7 +35,7 @@ public class ElevationMoveUnit2 extends ElevationMoveUnit implements Unitc2 {
 
 	@Override
 	public void damage(float amount) {
-		rawDamage(Damage.applyArmor(amount, armorOverride >= 0 ? armorOverride : armor) / healthMultiplier / Vars.state.rules.unitHealth(team) * checkType().damageMultiplier);
+		rawDamage(Damage.applyArmor(amount, armorOverride >= 0 ? armorOverride : armor) / healthMultiplier / Vars.state.rules.unitHealth(team) * asType().damageMultiplier);
 	}
 
 	@Override

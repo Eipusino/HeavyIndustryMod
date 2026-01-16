@@ -1,12 +1,12 @@
 package heavyindustry.util.ref;
 
-import arc.util.pooling.Pool.Poolable;
+import java.util.Objects;
 
-public class Pair<L, R> implements Poolable {
-	private static final Pair<Object, Object> empty = new Pair<>(null, null);
+public class Pair<L, R> {
+	static final Pair<Object, Object> empty = new Pair<>(null, null);
 
-	public L left;
-	public R right;
+	public final L left;
+	public final R right;
 
 	public Pair(L l, R r) {
 		left = l;
@@ -31,13 +31,17 @@ public class Pair<L, R> implements Poolable {
 	}
 
 	@Override
-	public String toString() {
-		return "(" + left + ", " + right + ")";
+	public boolean equals(Object object) {
+		return object instanceof Pair<?, ?> pair && Objects.equals(left, pair.left) && Objects.equals(right, pair.right);
 	}
 
 	@Override
-	public void reset() {
-		left = null;
-		right = null;
+	public int hashCode() {
+		return Objects.hash(left, right);
+	}
+
+	@Override
+	public String toString() {
+		return "(" + left + ", " + right + ")";
 	}
 }

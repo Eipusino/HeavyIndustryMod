@@ -2,6 +2,7 @@ package heavyindustry.util;
 
 import arc.util.OS;
 import heavyindustry.HVars;
+import org.jetbrains.annotations.Contract;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.reflect.Array;
@@ -9,7 +10,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.util.Arrays;
 
 /**
  * The enumeration processor provides some operation methods for enum, which can create enumeration
@@ -27,11 +28,9 @@ import java.lang.reflect.Modifier;
  * @since 1.0.9
  */
 public final class Enums {
-	static final CollectionObjectMap<Class<? extends Enum<?>>, Field> valuesFields = new CollectionObjectMap<>(Class.class, Field.class);
+	static final CollectionObjectMap<Class<? extends Enum<?>>, Object> valuesFields = new CollectionObjectMap<>(Class.class, Object.class);
 	static final CollectionObjectMap<Class<? extends Enum<?>>, Method> valuesMethods = new CollectionObjectMap<>(Class.class, Method.class);
-	static final CollectionObjectMap<Class<? extends Enum<?>>, Object> enumConstructors = new CollectionObjectMap<>(Class.class, Object.class);
-
-	public static final Class<?>[] defParamTypes = {String.class, int.class};
+	static final CollectionObjectMap<Class<? extends Enum<?>>, Object[]> enumConstructors = new CollectionObjectMap<>(Class.class, Object[].class);
 
 	private Enums() {}
 
@@ -46,35 +45,48 @@ public final class Enums {
 	 * @return An enumeration instance with a specified name and ordinal number
 	 */
 	@SuppressWarnings("unchecked")
+	@Contract(value = "_, _, _, _, _ -> new", pure = true)
 	public static <T extends Enum<T>> T newEnumInstance(Class<T> type, String name, int ordinal, Class<?>[] paramType, Object... param) {
+		if (paramType == null || param.length != paramType.length)
+			throw new IllegalArgumentException("paramType: " + Arrays.toString(paramType) + " param: " + Arrays.toString(param));
+
+		Class<?>[] asParamTypes = new Class[paramType.length + 2];
+
+		asParamTypes[0] = String.class;
+		asParamTypes[1] = int.class;
+
+		System.arraycopy(paramType, 0, asParamTypes, 2, paramType.length);
+
+		Object[] params = new Object[param.length + 2];
+
+		params[0] = name;
+		params[1] = ordinal;
+
+		System.arraycopy(param, 0, params, 2, param.length);
+
 		try {
-			Object[] params = new Object[param.length + 2];
-
-			params[0] = name;
-			params[1] = ordinal;
-
-			System.arraycopy(param, 0, params, 2, param.length);
-
 			if (!OS.isAndroid) {
-				return (T) Reflects.invokeStatic((MethodHandle) enumConstructors.get(type, () -> {
+				return (T) Reflects.invokeStatic(Arrays2.findOrThrow((MethodHandle[]) enumConstructors.get(type, () -> {
 					try {
-						Constructor<?> constructor = type.getDeclaredConstructor(paramType);
-						constructor.setAccessible(true);
-						return Reflects.lookup.unreflectConstructor(constructor);
-					} catch (IllegalAccessException | NoSuchMethodException e) {
+						Constructor<T>[] constructors = HVars.platformImpl.getConstructors(type);
+						MethodHandle[] handles = new MethodHandle[constructors.length];
+						for (int i = 0; i < constructors.length; i++) {
+							Constructor<T> constructor = constructors[i];
+							handles[i] = Reflects.lookup.unreflectConstructor(constructor);
+						}
+						return handles;
+					} catch (IllegalAccessException e) {
 						throw new RuntimeException(e);
 					}
-				}), params);
+				}), h -> Reflects.isAssignable(asParamTypes, h.type().parameterArray())), params);
 			} else {
-				return (T) ((Constructor<?>) enumConstructors.get(type, () -> {
-					try {
-						Constructor<?> constructor = type.getDeclaredConstructor(paramType);
+				return (T) Arrays2.findOrThrow((Constructor<?>[]) enumConstructors.get(type, () -> {
+					Constructor<?>[] constructors = type.getDeclaredConstructors();
+					for (Constructor<?> constructor : constructors) {
 						constructor.setAccessible(true);
-						return constructor;
-					} catch (NoSuchMethodException e) {
-						throw new RuntimeException(e);
 					}
-				})).newInstance(params);
+					return constructors;
+				}), c -> Reflects.isAssignable(asParamTypes, c.getParameterTypes())).newInstance(params);
 			}
 		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);
@@ -134,18 +146,6 @@ public final class Enums {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T extends Enum<T>> void rearrange(Class<T> type, T instance, int ordinal) {
-		Field valuesField = valuesFields.get(type, () -> {
-			Field[] fields = HVars.platformImpl.getFields(type);
-			for (Field field : fields) {
-				if (field.getName().contains("$VALUES")) {
-					Reflects.setModifiers(field);
-					field.setAccessible(true);
-					return field;
-				}
-			}
-			throw new RuntimeException("$VALUES field not found");
-		});
-
 		try {
 			Method method = valuesMethods.get(type, () -> {
 				try {
@@ -165,13 +165,35 @@ public final class Enums {
 
 			values.add(ordinal, instance);
 
-			if (Modifier.isFinal(valuesField.getModifiers())) {
-				Unsafer.setObject(valuesField, null, values.toArray((T[]) Array.newInstance(type, 0)));
+			T[] value = values.toArray((T[]) Array.newInstance(type, 0));
+
+			if (!OS.isAndroid) {
+				((MethodHandle) valuesFields.get(type, () -> {
+					try {
+						Field valuesField = findValuesField(type);
+						return Reflects.lookup.findStaticSetter(type, valuesField.getName(), value.getClass());
+					} catch (NoSuchFieldException | IllegalAccessException e) {
+						throw new RuntimeException(e);
+					}
+				})).invoke((Object) value);
 			} else {
-				valuesField.set(null, values.toArray((T[]) Array.newInstance(type, 0)));
+				Field valuesField = (Field) valuesFields.get(type, () -> findValuesField(type));
+				//valuesField.set(null, value);
+				Unsafer.set(valuesField, null, value);
 			}
-		} catch (IllegalAccessException | InvocationTargetException e) {
+		} catch (Throwable e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	static Field findValuesField(Class<? extends Enum<?>> type) {
+		Field[] fields = HVars.platformImpl.getFields(type);
+		for (Field field : fields) {
+			if (field.getName().contains("$VALUES")) {
+				field.setAccessible(true);
+				return field;
+			}
+		}
+		throw new RuntimeException("$VALUES field not found");
 	}
 }

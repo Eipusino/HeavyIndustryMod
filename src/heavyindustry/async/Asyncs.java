@@ -10,7 +10,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 
 /**
- * Provides multithreading utilities, primarily synchronizations from threads to the main thread for OpenGL purposes.
+ * Provides multithreading utilities, primarily synchronizations from threads to the main thread for OpenGL
+ * purposes.
  *
  * @since 1.0.7
  */

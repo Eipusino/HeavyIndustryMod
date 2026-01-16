@@ -52,9 +52,9 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	protected int stashCapacity;
 	protected int pushIterations;
 
-	protected Entries entries1, entries2;
-	protected Values values1, values2;
-	protected Keys keys1, keys2;
+	protected transient Entries entries1, entries2;
+	protected transient Values values1, values2;
+	protected transient Keys keys1, keys2;
 
 	@SuppressWarnings("unchecked")
 	@Contract(value = "_, _, _ -> new")
@@ -146,6 +146,11 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 			CollectionObjectMap<K, V> out = (CollectionObjectMap<K, V>) super.clone();
 			out.keyTable = Arrays.copyOf(keyTable, keyTable.length);
 			out.valueTable = Arrays.copyOf(valueTable, valueTable.length);
+
+			out.entries1 = out.entries2 = null;
+			out.values1 = out.values2 = null;
+			out.keys1 = out.keys2 = null;
+
 			return out;
 		} catch (CloneNotSupportedException e) {
 			CollectionObjectMap<K, V> out = new CollectionObjectMap<>(keyComponentType, valueComponentType);
@@ -369,11 +374,11 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	 * returning the value.
 	 */
 	public V get(K key, Prov<V> supplier) {
-		V val = get(key);
-		if (val == null) {
-			put(key, val = supplier.get());
+		V value = get(key);
+		if (value == null) {
+			put(key, value = supplier.get());
 		}
-		return val;
+		return value;
 	}
 
 	/** Returns the value for the specified key, or null if the key is not in the map. */

@@ -37,9 +37,9 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 	protected int stashCapacity;
 	protected int pushIterations;
 
-	protected Entries entries1, entries2;
-	protected Values values1, values2;
-	protected Keys keys1, keys2;
+	protected transient Entries entries1, entries2;
+	protected transient Values values1, values2;
+	protected transient Keys keys1, keys2;
 
 	@SuppressWarnings("unchecked")
 	public static <V> ShortMap<V> of(Class<V> keyType, Object... values) {
@@ -57,10 +57,15 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 	@SuppressWarnings("unchecked")
 	public ShortMap<V> copy() {
 		try {
-			ShortMap<V> map = (ShortMap<V>) super.clone();
-			map.keyTable = Arrays.copyOf(keyTable, keyTable.length);
-			map.valueTable = Arrays.copyOf(valueTable, valueTable.length);
-			return map;
+			ShortMap<V> out = (ShortMap<V>) super.clone();
+			out.keyTable = Arrays.copyOf(keyTable, keyTable.length);
+			out.valueTable = Arrays.copyOf(valueTable, valueTable.length);
+
+			out.entries1 = out.entries2 = null;
+			out.values1 = out.values2 = null;
+			out.keys1 = out.keys2 = null;
+
+			return out;
 		} catch (CloneNotSupportedException e) {
 			return new ShortMap<>(this);
 		}

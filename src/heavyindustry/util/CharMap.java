@@ -47,9 +47,9 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 	protected int stashCapacity;
 	protected int pushIterations;
 
-	protected Entries entries1, entries2;
-	protected Values values1, values2;
-	protected Keys keys1, keys2;
+	protected transient Entries entries1, entries2;
+	protected transient Values values1, values2;
+	protected transient Keys keys1, keys2;
 
 	@SuppressWarnings("unchecked")
 	public static <V> CharMap<V> of(Class<V> valueType, Object... values) {
@@ -121,10 +121,15 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 	@SuppressWarnings("unchecked")
 	public CharMap<V> copy() {
 		try {
-			CharMap<V> map = (CharMap<V>) super.clone();
-			map.keyTable = Arrays.copyOf(keyTable, keyTable.length);
-			map.valueTable = Arrays.copyOf(valueTable, valueTable.length);
-			return map;
+			CharMap<V> out = (CharMap<V>) super.clone();
+			out.keyTable = Arrays.copyOf(keyTable, keyTable.length);
+			out.valueTable = Arrays.copyOf(valueTable, valueTable.length);
+
+			out.entries1 = out.entries2 = null;
+			out.values1 = out.values2 = null;
+			out.keys1 = out.keys2 = null;
+
+			return out;
 		} catch (CloneNotSupportedException e) {
 			return new CharMap<>(this);
 		}

@@ -26,7 +26,7 @@ public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 
 	protected final Vec2 tmp = new Vec2();
 
-	protected Iter iterator1, iterator2;
+	protected transient Iter iterator1, iterator2;
 
 	public Vec2Seq() {
 		coordinates = new FloatSeq(true, 8);

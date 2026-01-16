@@ -27,7 +27,7 @@ public class ShortSet implements Cloneable {
 	protected int stashCapacity;
 	protected int pushIterations;
 
-	protected ShortSetIterator iterator1, iterator2;
+	protected transient ShortSetIterator iterator1, iterator2;
 
 	/** Creates a new set with an initial capacity of 51 and a load factor of 0.8. */
 	public ShortSet() {
@@ -81,6 +81,9 @@ public class ShortSet implements Cloneable {
 		try {
 			ShortSet out = (ShortSet) super.clone();
 			out.keyTable = Arrays.copyOf(keyTable, keyTable.length);
+
+			out.iterator1 = out.iterator2 = null;
+
 			return out;
 		} catch (CloneNotSupportedException e) {
 			return new ShortSet(this);

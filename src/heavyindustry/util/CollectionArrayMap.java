@@ -22,7 +22,7 @@ import java.util.Set;
  * An ordered or unordered map of objects. This implementation uses arrays to store the keys and values, which means
  * {@link #getKey(Object, boolean) gets} do a comparison for each key in the map. This is slower than a typical hash map
  * implementation, but may be acceptable for small maps and has the benefits that keys and values can be accessed by index, which
- * makes iteration fast. Like {@link Seq}, if ordered is false, this class avoids a memory copy when removing elements (the last
+ * makes iteration fast. Like {@link CollectionList}, if ordered is false, this class avoids a memory copy when removing elements (the last
  * element is moved to the removed element's position).
  *
  * @author Nathan Sweet
@@ -37,9 +37,9 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 	public int size;
 	public boolean ordered;
 
-	protected Entries entries1, entries2;
-	protected Values valuesIter1, valuesIter2;
-	protected Keys keysIter1, keysIter2;
+	protected transient Entries entries1, entries2;
+	protected transient Values valuesIter1, valuesIter2;
+	protected transient Keys keysIter1, keysIter2;
 
 	/** Creates an ordered map with a capacity of 16. */
 	public CollectionArrayMap(@NotNull Class<?> keyType, @NotNull Class<?> valueType) {
@@ -89,11 +89,16 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 	@SuppressWarnings("unchecked")
 	public CollectionArrayMap<K, V> copy() {
 		try {
-			CollectionArrayMap<K, V> map = (CollectionArrayMap<K, V>) super.clone();
-			map.size = size;
-			map.keys = Arrays.copyOf(keys, keys.length);
-			map.values = Arrays.copyOf(values, values.length);
-			return map;
+			CollectionArrayMap<K, V> out = (CollectionArrayMap<K, V>) super.clone();
+			out.size = size;
+			out.keys = Arrays.copyOf(keys, keys.length);
+			out.values = Arrays.copyOf(values, values.length);
+
+			out.entries1 = out.entries2 = null;
+			out.valuesIter1 = out.valuesIter2 = null;
+			out.keysIter1 = out.keysIter2 = null;
+
+			return out;
 		} catch (CloneNotSupportedException e) {
 			return new CollectionArrayMap<>(this);
 		}
@@ -183,7 +188,7 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 	 *
 	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
 	 */
-	public K getKey(V value, boolean identity) {
+	public K getKey(Object value, boolean identity) {
 		int i = size - 1;
 		if (identity || value == null) {
 			for (; i >= 0; i--)
@@ -255,6 +260,14 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 
 	@Override
 	public boolean containsValue(Object value) {
+		int i = size - 1;
+		if (value == null) {
+			while (i >= 0)
+				if (values[i--] == null) return true;
+		} else {
+			while (i >= 0)
+				if (value.equals(values[i--])) return true;
+		}
 		return false;
 	}
 
