@@ -8,7 +8,7 @@ import arc.graphics.g2d.Lines;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
-import heavyindustry.util.ref.Pair;
+import kotlin.Pair;
 import org.jetbrains.annotations.Contract;
 
 import static heavyindustry.graphics.Drawn.v1;
@@ -95,8 +95,8 @@ public final class Drawh {
 
 		Pair<float[], float[]> vert = verts[level & 3];
 
-		float[] offset = vert.left;
-		float[] vertices = vert.right;
+		float[] offset = vert.getFirst();
+		float[] vertices = vert.getSecond();
 		int sides = offset.length / 4;
 
 		for (int i = 0; i < sides; i++) {
@@ -140,8 +140,8 @@ public final class Drawh {
 
 		Pair<float[], float[]> vert = verts[level & 3];
 
-		float[] offset = vert.left;
-		float[] vertices = vert.right;
+		float[] offset = vert.getFirst();
+		float[] vertices = vert.getSecond();
 
 		int sides = offset.length / 4;
 
@@ -190,8 +190,8 @@ public final class Drawh {
 
 		Pair<float[], float[]> vert = verts[level & 3];
 
-		float[] offset = vert.left;
-		float[] vertices = vert.right;
+		float[] offset = vert.getFirst();
+		float[] vertices = vert.getSecond();
 
 		int sides = offset.length / 4;
 

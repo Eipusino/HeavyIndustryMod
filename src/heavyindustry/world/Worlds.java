@@ -10,8 +10,8 @@ import heavyindustry.entities.HEntity;
 import heavyindustry.game.TeamPayloadData;
 import heavyindustry.graphics.PositionLightning;
 import heavyindustry.util.CollectionList;
-import heavyindustry.util.ref.Pair;
 import heavyindustry.world.blocks.defense.CommandableBlock;
+import kotlin.Pair;
 import mindustry.Vars;
 import mindustry.game.EventType.ResetEvent;
 import mindustry.io.SaveFileReader;
@@ -65,10 +65,10 @@ public final class Worlds {
 			}
 		}
 
-		blocks.sort(Structs.comparingInt(pair -> pair.right.id));
+		blocks.sort(Structs.comparingInt(pair -> pair.getSecond().id));
 		blocks.each(pair -> {
-			String name = pair.left;
-			Block block = pair.right;
+			String name = pair.getFirst();
+			Block block = pair.getSecond();
 
 			data
 					.append(name).append(' ')//name

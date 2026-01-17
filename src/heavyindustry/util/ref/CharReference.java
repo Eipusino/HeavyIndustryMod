@@ -1,7 +1,6 @@
 package heavyindustry.util.ref;
 
 import arc.util.pooling.Pool.Poolable;
-import org.jetbrains.annotations.Contract;
 
 import java.io.Serializable;
 
@@ -14,11 +13,6 @@ public class CharReference implements Serializable, Poolable {
 
 	public CharReference(char initialElement) {
 		element = initialElement;
-	}
-
-	@Contract(value = "_ -> new", pure = true)
-	public static CharReference valueOf(char value) {
-		return new CharReference(value);
 	}
 
 	@Override

@@ -257,7 +257,7 @@ public final class Objects2 {
 	 */
 	@SuppressWarnings("unchecked")
 	@Contract(value = "_ -> param1")
-	public static <T> T as(Object obj) {
+	public static <T> T cast(Object obj) {
 		return (T) obj;
 	}
 
@@ -267,7 +267,7 @@ public final class Objects2 {
 	 */
 	@SuppressWarnings("unchecked")
 	@Contract(value = "null, _, _ -> null", pure = true)
-	public static <T> T as(Object obj, Class<T> type, T def) {
+	public static <T> T cast(Object obj, Class<T> type, T def) {
 		if (obj != null && !type.isInstance(obj))
 			return def;
 		return (T) obj;
@@ -383,13 +383,13 @@ public final class Objects2 {
 	 * Convert Class object to JVM type descriptor.
 	 * <p>Example:
 	 * <ul>
-	 *     <li>boolean -> Z
-	 *     <li>int -> I
-	 *     <li>long -> J
-	 *     <li>float[] -> [F
-	 *     <li>java.lang.Object -> Ljava/lang/Object;
-	 *     <li>java.lang.invoke.MethodHandles.Lookup -> Ljava/lang/invoke/MethodHandles$Lookup;
-	 *     <li>mindustry.world.Tile[][] -> [[Lmindustry/world/Tile;
+	 *     <li>boolean -> {@code Z}
+	 *     <li>int -> {@code I}
+	 *     <li>long -> {@code J}
+	 *     <li>float[] -> {@code [F}
+	 *     <li>java.lang.Object -> {@code Ljava/lang/Object;}
+	 *     <li>java.lang.invoke.MethodHandles.Lookup -> {@code Ljava/lang/invoke/MethodHandles$Lookup;}
+	 *     <li>mindustry.world.Tile[][] -> {@code [[Lmindustry/world/Tile;}
 	 * </ul>
 	 *
 	 * @param type The Class object to be converted
@@ -397,22 +397,53 @@ public final class Objects2 {
 	 * @throws NullPointerException If {@code type} is null.
 	 */
 	@Contract(pure = true)
-	public static @NotNull String toDescriptor(@NotNull Class<?> type) {
-		if (type.isArray()) return '[' + toDescriptor(type.getComponentType());
+	public static @NotNull String descriptor(Class<?> type) {
+		if (type == null) throw new NullPointerException("type is null");
 
-		if (type.isPrimitive()) {
-			if (type == void.class) return "V";
-			else if (type == boolean.class) return "Z";
-			else if (type == byte.class) return "B";
-			else if (type == short.class) return "S";
-			else if (type == int.class) return "I";
-			else if (type == long.class) return "J";
-			else if (type == float.class) return "F";
-			else if (type == double.class) return "D";
-			else if (type == char.class) return "C";
-			else throw new IllegalArgumentException("unknown type of " + type);// should not happen
+		int depth = 0;
+		Class<?> current = type;
+		while (current.isArray()) {
+			depth++;
+			current = current.getComponentType();
 		}
 
-		return 'L' + type.getName().replace('.', '/') + ';';
+		String baseDesc;
+		if (current.isPrimitive()) {
+			baseDesc = getPrimitiveDescriptor(current);
+		} else {
+			baseDesc = 'L' + current.getName().replace('.', '/') + ';';
+		}
+
+		if (depth == 0) {
+			return baseDesc;
+		}
+
+		return buildArrayDescriptor(depth, baseDesc);
+	}
+
+	static String getPrimitiveDescriptor(Class<?> type) {
+		if (type == void.class) return "V";
+		else if (type == boolean.class) return "Z";
+		else if (type == byte.class) return "B";
+		else if (type == short.class) return "S";
+		else if (type == int.class) return "I";
+		else if (type == long.class) return "J";
+		else if (type == float.class) return "F";
+		else if (type == double.class) return "D";
+		else if (type == char.class) return "C";
+		else throw new IllegalArgumentException("unknown type of " + type);
+	}
+
+	static String buildArrayDescriptor(int depth, String baseDesc) {
+		int totalLength = depth + baseDesc.length();
+		char[] result = new char[totalLength];
+
+		for (int i = 0; i < depth; i++) {
+			result[i] = '[';
+		}
+
+		baseDesc.getChars(0, baseDesc.length(), result, depth);
+
+		return String.valueOf(result);
 	}
 }

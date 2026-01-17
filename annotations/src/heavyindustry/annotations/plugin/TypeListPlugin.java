@@ -20,17 +20,16 @@ import com.sun.tools.javac.tree.JCTree.JCExpression;
 import com.sun.tools.javac.tree.JCTree.JCNewArray;
 import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.List;
-import heavyindustry.annotations.Annotations.ListClasses;
 import heavyindustry.annotations.Annotations.ListPackages;
 
 /**
  * Gathers all declared non-anonymous classes and packages and appends them to fields with {@code new String[]{}}
- * initializer and annotated with {@link ListClasses} or {@link ListPackages}
+ * initializer and annotated with {@link ListPackages}
  */
 public class TypeListPlugin implements Plugin {
-	protected Seq<JCNewArray> classes = new Seq<>(JCNewArray.class), packages = new Seq<>(JCNewArray.class);
-	protected Seq<String> classDefines = new Seq<>(String.class), packageDefines = new Seq<>(String.class);
-	protected ObjectMap<JCNewArray, List<JCExpression>> classArgs = new ObjectMap<>(), packArgs = new ObjectMap<>();
+	protected Seq<JCNewArray> /*classes = new Seq<>(JCNewArray.class),*/ packages = new Seq<>(JCNewArray.class);
+	protected Seq<String> /*classDefines = new Seq<>(String.class),*/ packageDefines = new Seq<>(String.class);
+	protected ObjectMap<JCNewArray, List<JCExpression>> /*classArgs = new ObjectMap<>(),*/ packArgs = new ObjectMap<>();
 
 	@Override
 	public void init(JavacTask task, String... args) {
@@ -44,9 +43,9 @@ public class TypeListPlugin implements Plugin {
 						public Void visitVariable(VariableTree node, Void unused) {
 							ExpressionTree init = node.getInitializer();
 							if (init instanceof JCNewArray newArray) {
-								if (node.getModifiers().getAnnotations().stream().anyMatch(a -> a.getAnnotationType().toString().equals(ListClasses.class.getSimpleName()))) {
+								/*if (node.getModifiers().getAnnotations().stream().anyMatch(a -> a.getAnnotationType().toString().equals(ListClasses.class.getSimpleName()))) {
 									classes.add(newArray);
-								} else if (node.getModifiers().getAnnotations().stream().anyMatch(a -> a.getAnnotationType().toString().equals(ListPackages.class.getSimpleName()))) {
+								} else */if (node.getModifiers().getAnnotations().stream().anyMatch(a -> a.getAnnotationType().toString().equals(ListPackages.class.getSimpleName()))) {
 									packages.add(newArray);
 								}
 							}
@@ -60,27 +59,27 @@ public class TypeListPlugin implements Plugin {
 						public Void visitClass(ClassTree node, Void unused) {
 							ClassSymbol sym = ((JCClassDecl) node).sym;
 							if (sym != null && !sym.isAnonymous()) {
-								StringBuilder builder = new StringBuilder(sym.getSimpleName().toString());
+								//StringBuilder builder = new StringBuilder(sym.getSimpleName().toString());
 
 								Symbol current = sym;
 								while (!(current instanceof PackageSymbol)) {
 									current = current.getEnclosingElement();
 
-									if (current instanceof PackageSymbol) {
+									/*if (current instanceof PackageSymbol) {
 										builder.insert(0, current.getQualifiedName().toString() + ".");
 									} else {
 										builder.insert(0, current.getSimpleName().toString() + "$");
-									}
+									}*/
 								}
 
-								String cname = builder.toString();
-								if (!classDefines.contains(cname)) {
-									classDefines.add(cname);
-								}
+								/*String className = builder.toString();
+								if (!classDefines.contains(className)) {
+									classDefines.add(className);
+								}*/
 
-								String pname = current.getQualifiedName().toString();
-								if (!packageDefines.contains(pname)) {
-									packageDefines.add(pname);
+								String packageName = current.getQualifiedName().toString();
+								if (!packageDefines.contains(packageName)) {
+									packageDefines.add(packageName);
 								}
 							}
 
@@ -93,7 +92,7 @@ public class TypeListPlugin implements Plugin {
 			@Override
 			public void started(TaskEvent event) {
 				if (event.getKind() == Kind.ANALYZE) {
-					classes.each(e -> e.elems = classArgs.get(e, () -> List.from(Seq.with(e.elems).addAll(classDefines.map(maker::Literal)))));
+					//classes.each(e -> e.elems = classArgs.get(e, () -> List.from(Seq.with(e.elems).addAll(classDefines.map(maker::Literal)))));
 					packages.each(e -> e.elems = packArgs.get(e, () -> List.from(Seq.with(e.elems).addAll(packageDefines.map(maker::Literal)))));
 				}
 			}

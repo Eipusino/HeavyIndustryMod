@@ -1,8 +1,6 @@
 package heavyindustry.util.ref;
 
-import arc.util.Strings;
 import arc.util.pooling.Pool.Poolable;
-import org.jetbrains.annotations.Contract;
 
 import java.io.Serializable;
 
@@ -15,16 +13,6 @@ public class LongReference extends Number implements Serializable, Poolable {
 
 	public LongReference(long initialElement) {
 		element = initialElement;
-	}
-
-	@Contract(value = "_ -> new", pure = true)
-	public static LongReference valueOf(long value) {
-		return new LongReference(value);
-	}
-
-	@Contract(value = "_ -> new", pure = true)
-	public static LongReference valueOf(String value) {
-		return new LongReference(Strings.parseLong(value, 0l));
 	}
 
 	@Override

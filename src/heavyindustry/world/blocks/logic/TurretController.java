@@ -97,6 +97,7 @@ public class TurretController extends Block {
 		disable(new Color(0xff4545ff));
 
 		public static final ControlState[] all = values();
+
 		public final Color modeColor;
 
 		ControlState(Color mode) {

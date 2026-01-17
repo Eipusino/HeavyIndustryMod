@@ -34,6 +34,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.nio.Buffer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -64,7 +65,7 @@ import java.util.Set;
 public final class Reflects {
 	public static Lookup lookup;
 
-	static Field overrideField;
+	static Field overrideField, addressField;
 	static Method cloneMethod;
 
 	static final CollectionObjectMap<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
@@ -201,7 +202,7 @@ public final class Reflects {
 
 	/** Reflectively instantiates a type without throwing exceptions. */
 	@Contract(pure = true)
-	public static <T> T make(Constructor<T> cons, Object[] args) {
+	public static <T> T make(Constructor<T> cons, Object... args) {
 		try {
 			return cons.newInstance(args);
 		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
@@ -215,7 +216,7 @@ public final class Reflects {
 	 * @throws RuntimeException Any exception that occurs in reflection.
 	 */
 	@Contract(pure = true)
-	public static <T> T make(Class<T> type, Class<?>[] parameterTypes, Object[] args) {
+	public static <T> T make(Class<T> type, Class<?>[] parameterTypes, Object... args) {
 		try {
 			Constructor<T> cons = type.getDeclaredConstructor(parameterTypes);
 			cons.setAccessible(true);
@@ -223,10 +224,6 @@ public final class Reflects {
 		} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public static <T> Prov<T> supply(Class<T> type) {
-		return supply(type, Arrays2.arrayOf(), Arrays2.arrayOf());
 	}
 
 	/**
@@ -501,6 +498,18 @@ public final class Reflects {
 			overrideField.setBoolean(object, true);
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			Log.err(e);
+		}
+	}
+
+	public static int getAddress(Buffer buffer) {
+		try {
+			if (addressField == null) {
+				addressField = Buffer.class.getDeclaredField("address");
+				addressField.setAccessible(true);
+			}
+			return addressField.getInt(buffer);
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

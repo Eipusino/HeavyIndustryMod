@@ -14,6 +14,7 @@ import mindustry.world.Block;
 import mindustry.world.blocks.ItemSelection;
 import mindustry.world.meta.BlockGroup;
 import mindustry.world.meta.Env;
+import org.jetbrains.annotations.Nullable;
 
 import static mindustry.Vars.content;
 
@@ -55,20 +56,16 @@ public class LiquidDirectionalUnloader extends Block {
 		addBar("back", (LiquidDirectionalUnloaderBuild tile) -> new Bar(
 				() -> Core.bundle.get("bar.input"),
 				() -> tile.sortLiquid == null ? Color.black : tile.sortLiquid.color,
-				() -> {
-					if (tile.sortLiquid != null && tile.back() != null && tile.back().block != null && tile.back().block.hasLiquids && tile.back().block.liquidCapacity > 0) {
-						return (tile.back().liquids.get(tile.sortLiquid) / tile.back().block.liquidCapacity);
-					} else return 0;
-				}
+				() -> tile.sortLiquid != null && tile.back() != null && tile.back().block != null && tile.back().block.hasLiquids && tile.back().block.liquidCapacity > 0 ?
+						tile.back().liquids.get(tile.sortLiquid) / tile.back().block.liquidCapacity
+						: 0f
 		));
 		addBar("front", (LiquidDirectionalUnloaderBuild tile) -> new Bar(
 				() -> Core.bundle.get("bar.output"),
 				() -> tile.sortLiquid == null ? Color.black : tile.sortLiquid.color,
-				() -> {
-					if (tile.sortLiquid != null && tile.front() != null && tile.front().block != null && tile.front().block.hasLiquids && tile.front().block.liquidCapacity > 0) {
-						return (tile.front().liquids.get(tile.sortLiquid) / tile.front().block.liquidCapacity);
-					} else return 0;
-				}
+				() -> tile.sortLiquid != null && tile.front() != null && tile.front().block != null && tile.front().block.hasLiquids && tile.front().block.liquidCapacity > 0 ?
+						tile.front().liquids.get(tile.sortLiquid) / tile.front().block.liquidCapacity
+						: 0f
 		));
 	}
 
@@ -91,7 +88,7 @@ public class LiquidDirectionalUnloader extends Block {
 	}
 
 	public class LiquidDirectionalUnloaderBuild extends Building {
-		public Liquid sortLiquid = null;
+		public @Nullable Liquid sortLiquid = null;
 
 		@Override
 		public void updateTile() {

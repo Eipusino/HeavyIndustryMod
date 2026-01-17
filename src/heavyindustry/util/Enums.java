@@ -28,9 +28,25 @@ import java.util.Arrays;
  * @since 1.0.9
  */
 public final class Enums {
-	static final CollectionObjectMap<Class<? extends Enum<?>>, Object> valuesFields = new CollectionObjectMap<>(Class.class, Object.class);
-	static final CollectionObjectMap<Class<? extends Enum<?>>, Method> valuesMethods = new CollectionObjectMap<>(Class.class, Method.class);
-	static final CollectionObjectMap<Class<? extends Enum<?>>, Object[]> enumConstructors = new CollectionObjectMap<>(Class.class, Object[].class);
+	static CollectionObjectMap<Class<? extends Enum<?>>, Field> valuesFields;
+	static CollectionObjectMap<Class<? extends Enum<?>>, MethodHandle> valuesFieldSetters;
+
+	static CollectionObjectMap<Class<? extends Enum<?>>, Method> valuesMethods;
+
+	static CollectionObjectMap<Class<? extends Enum<?>>, Constructor<?>[]> constructs;
+	static CollectionObjectMap<Class<? extends Enum<?>>, MethodHandle[]> constructHandles;
+
+	static {
+		valuesMethods = new CollectionObjectMap<>(Class.class, Method.class);
+
+		if (!OS.isAndroid) {
+			constructHandles = new CollectionObjectMap<>(Class.class, MethodHandle[].class);
+			valuesFieldSetters = new CollectionObjectMap<>(Class.class, MethodHandle.class);
+		} else {
+			constructs = new CollectionObjectMap<>(Class.class, Constructor[].class);
+			valuesFields = new CollectionObjectMap<>(Class.class, Field.class);
+		}
+	}
 
 	private Enums() {}
 
@@ -48,14 +64,14 @@ public final class Enums {
 	@Contract(value = "_, _, _, _, _ -> new", pure = true)
 	public static <T extends Enum<T>> T newEnumInstance(Class<T> type, String name, int ordinal, Class<?>[] paramType, Object... param) {
 		if (paramType == null || param.length != paramType.length)
-			throw new IllegalArgumentException("paramType: " + Arrays.toString(paramType) + " param: " + Arrays.toString(param));
+			throw new IllegalArgumentException("paramType: " + Arrays.toString(paramType) + ", param: " + Arrays.toString(param));
 
-		Class<?>[] asParamTypes = new Class[paramType.length + 2];
+		Class<?>[] asType = new Class[paramType.length + 2];
 
-		asParamTypes[0] = String.class;
-		asParamTypes[1] = int.class;
+		asType[0] = String.class;
+		asType[1] = int.class;
 
-		System.arraycopy(paramType, 0, asParamTypes, 2, paramType.length);
+		System.arraycopy(paramType, 0, asType, 2, paramType.length);
 
 		Object[] params = new Object[param.length + 2];
 
@@ -66,7 +82,7 @@ public final class Enums {
 
 		try {
 			if (!OS.isAndroid) {
-				return (T) Reflects.invokeStatic(Arrays2.findOrThrow((MethodHandle[]) enumConstructors.get(type, () -> {
+				return (T) Reflects.invokeStatic(Arrays2.findOrThrow(constructHandles.get(type, () -> {
 					try {
 						Constructor<T>[] constructors = HVars.platformImpl.getConstructors(type);
 						MethodHandle[] handles = new MethodHandle[constructors.length];
@@ -78,15 +94,15 @@ public final class Enums {
 					} catch (IllegalAccessException e) {
 						throw new RuntimeException(e);
 					}
-				}), h -> Reflects.isAssignable(asParamTypes, h.type().parameterArray())), params);
+				}), h -> Reflects.isAssignable(asType, h.type().parameterArray())), params);
 			} else {
-				return (T) Arrays2.findOrThrow((Constructor<?>[]) enumConstructors.get(type, () -> {
+				return (T) Arrays2.findOrThrow(constructs.get(type, () -> {
 					Constructor<?>[] constructors = type.getDeclaredConstructors();
 					for (Constructor<?> constructor : constructors) {
 						constructor.setAccessible(true);
 					}
 					return constructors;
-				}), c -> Reflects.isAssignable(asParamTypes, c.getParameterTypes())).newInstance(params);
+				}), c -> Reflects.isAssignable(asType, c.getParameterTypes())).newInstance(params);
 			}
 		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);
@@ -168,16 +184,16 @@ public final class Enums {
 			T[] value = values.toArray((T[]) Array.newInstance(type, 0));
 
 			if (!OS.isAndroid) {
-				((MethodHandle) valuesFields.get(type, () -> {
+				valuesFieldSetters.get(type, () -> {
 					try {
 						Field valuesField = findValuesField(type);
 						return Reflects.lookup.findStaticSetter(type, valuesField.getName(), value.getClass());
 					} catch (NoSuchFieldException | IllegalAccessException e) {
 						throw new RuntimeException(e);
 					}
-				})).invoke((Object) value);
+				}).invoke((Object) value);
 			} else {
-				Field valuesField = (Field) valuesFields.get(type, () -> findValuesField(type));
+				Field valuesField = valuesFields.get(type, () -> findValuesField(type));
 				//valuesField.set(null, value);
 				Unsafer.set(valuesField, null, value);
 			}

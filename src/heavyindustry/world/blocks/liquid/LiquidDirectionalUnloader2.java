@@ -24,6 +24,7 @@ import mindustry.world.meta.BlockGroup;
 import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
+import org.jetbrains.annotations.Nullable;
 
 public class LiquidDirectionalUnloader2 extends Block {
 	public TextureRegion[] topRegions = new TextureRegion[4];
@@ -99,7 +100,7 @@ public class LiquidDirectionalUnloader2 extends Block {
 
 	public class LiquidDirectionalUnloaderBuild2 extends Building {
 		public float unloadTimer = 0f;
-		public Liquid unloadLiquid = null;
+		public @Nullable Liquid unloadLiquid = null;
 		public int offset = 0;
 
 		@Override

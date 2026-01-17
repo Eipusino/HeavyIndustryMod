@@ -2,7 +2,6 @@ package heavyindustry;
 
 import arc.struct.Seq;
 import arc.util.Log;
-import heavyindustry.annotations.Annotations.ListClasses;
 import heavyindustry.annotations.Annotations.ListPackages;
 import heavyindustry.core.HeavyIndustryListener;
 import heavyindustry.core.HeavyIndustryMod;
@@ -31,9 +30,6 @@ public final class HVars {
 	/** The GitHub address of this mod. */
 	public static final String LINK_GIT_HUB = "https://github.com/Eipusino/HeavyIndustryMod";
 
-	/** Lists all the mod's classes by their canonical names. Generated at compile-time. */
-	@ListClasses
-	public static final String[] classes = {};
 	/** Lists all the mod's packages by their canonical names. Generated at compile-time. */
 	@ListPackages
 	public static final String[] packages = {};

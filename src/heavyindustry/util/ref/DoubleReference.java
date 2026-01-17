@@ -1,8 +1,6 @@
 package heavyindustry.util.ref;
 
-import arc.util.Strings;
 import arc.util.pooling.Pool.Poolable;
-import org.jetbrains.annotations.Contract;
 
 import java.io.Serializable;
 
@@ -15,16 +13,6 @@ public class DoubleReference extends Number implements Serializable, Poolable {
 
 	public DoubleReference(double initialElement) {
 		element = initialElement;
-	}
-
-	@Contract(value = "_ -> new", pure = true)
-	public static DoubleReference valueOf(double value) {
-		return new DoubleReference(value);
-	}
-
-	@Contract(value = "_ -> new", pure = true)
-	public static DoubleReference valueOf(String value) {
-		return new DoubleReference(Strings.parseDouble(value, 0d));
 	}
 
 	@Override

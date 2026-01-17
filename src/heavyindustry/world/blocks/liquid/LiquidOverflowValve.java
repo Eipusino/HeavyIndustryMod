@@ -14,6 +14,7 @@ public class LiquidOverflowValve extends LiquidBlock {
 	public LiquidOverflowValve(String name) {
 		super(name);
 
+		floating = true;
 		canOverdrive = false;
 		instantTransfer = true;
 		liquidCapacity *= 1000f;
@@ -47,7 +48,7 @@ public class LiquidOverflowValve extends LiquidBlock {
 			Draw.rect(region, x, y);
 		}
 
-		@Override
+		/*@Override
 		public boolean acceptLiquid(Building source, Liquid liquid) {
 			Building to = getTileTarget(source, liquid);
 
@@ -61,7 +62,7 @@ public class LiquidOverflowValve extends LiquidBlock {
 			if (target != null) target.handleLiquid(this, liquid, amount);
 		}
 
-		public Building getTileTarget(Building source, Liquid liquid) {
+		public @Nullable Building getTileTarget(Building source, Liquid liquid) {
 			if (!enabled) return null;
 
 			int from = relativeToEdge(source.tile);
@@ -92,6 +93,39 @@ public class LiquidOverflowValve extends LiquidBlock {
 			}
 
 			return to instanceof LiquidOverfloatValveBuild valve ? valve.getLiquidDestination(this, liquid) : to;
+		}*/
+
+		@Override
+		public Building getLiquidDestination(Building source, Liquid liquid) {
+			if (!enabled) return this;
+
+			int from = relativeToEdge(source.tile);
+			if (from == -1) return this;
+
+			Building to = nearby((from + 2) % 4);
+
+			boolean canForward = to != null && to.acceptLiquid(this, liquid) && to.liquids.get(liquid) < to.block.liquidCapacity;
+
+			if (!canForward || invert) {
+				Building a = nearby(Mathf.mod(from - 1, 4));
+				Building b = nearby(Mathf.mod(from + 1, 4));
+				boolean ac = a != null && a.acceptLiquid(this, liquid) && !(a.block instanceof LiquidOverflowValve) && a.liquids.get(liquid) < a.block.liquidCapacity;
+				boolean bc = b != null && b.acceptLiquid(this, liquid) && !(b.block instanceof LiquidOverflowValve) && b.liquids.get(liquid) < b.block.liquidCapacity;
+
+				if (!ac && !bc) {
+					return invert && canForward ? to : this;
+				}
+
+				if (ac && !bc) {
+					to = a;
+				} else if (!ac) {
+					to = b;
+				} else {
+					to = (rotation & (1 << from)) == 0 ? a : b;
+				}
+			}
+
+			return to.getLiquidDestination(this, liquid);
 		}
 	}
 }

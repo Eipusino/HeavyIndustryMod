@@ -1,18 +1,14 @@
 package heavyindustry.core;
 
-import arc.util.Log;
 import heavyindustry.util.CollectionObjectMap;
 import heavyindustry.util.ExtraVariable;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.TestOnly;
 
-import java.lang.annotation.Annotation;
 import java.util.Map;
 
+/** Classes for testing purposes only, do not use. */
 @TestOnly
-public class HTest implements Cloneable, ExtraVariable, Comparable<HTest>, Annotation {
-	public static final HTest instance = new HTest();
-
+public class HTest implements Cloneable, ExtraVariable {
 	private static short count;
 
 	public Map<String, Object> extraVar = new CollectionObjectMap<>(String.class, Object.class);
@@ -22,12 +18,8 @@ public class HTest implements Cloneable, ExtraVariable, Comparable<HTest>, Annot
 		id = count++;
 	}
 
-	public static void test() {
-		try {
-
-		} catch (Throwable e) {
-			Log.err(e);
-		}
+	public static void test() throws Throwable {
+		HTestKt.testKt();
 	}
 
 	public HTest copy() {
@@ -39,23 +31,7 @@ public class HTest implements Cloneable, ExtraVariable, Comparable<HTest>, Annot
 	}
 
 	@Override
-	public int compareTo(@NotNull HTest t) {
-		return Short.compare(id, t.id);
-	}
-
-	@Override
 	public Map<String, Object> extra() {
 		return extraVar;
-	}
-
-	@Override
-	public Class<? extends Annotation> annotationType() {
-		return HTest.class;
-	}
-
-	public enum HTestEnum {
-		m;
-
-		HTestEnum() {}
 	}
 }

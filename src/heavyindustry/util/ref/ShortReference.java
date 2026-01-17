@@ -1,7 +1,6 @@
 package heavyindustry.util.ref;
 
 import arc.util.pooling.Pool.Poolable;
-import org.jetbrains.annotations.Contract;
 
 import java.io.Serializable;
 
@@ -14,20 +13,6 @@ public class ShortReference extends Number implements Serializable, Poolable {
 
 	public ShortReference(short initialElement) {
 		element = initialElement;
-	}
-
-	@Contract(value = "_ -> new", pure = true)
-	public static ShortReference valueOf(short value) {
-		return new ShortReference(value);
-	}
-
-	@Contract(value = "_ -> new", pure = true)
-	public static ShortReference valueOf(String value) {
-		try {
-			return new ShortReference(Short.parseShort(value));
-		} catch (NumberFormatException e) {
-			return new ShortReference();
-		}
 	}
 
 	@Override

@@ -1,8 +1,6 @@
 package heavyindustry.util.ref;
 
-import arc.util.Strings;
 import arc.util.pooling.Pool.Poolable;
-import org.jetbrains.annotations.Contract;
 
 import java.io.Serializable;
 
@@ -15,16 +13,6 @@ public class IntReference extends Number implements Serializable, Poolable {
 
 	public IntReference(int initialElement) {
 		element = initialElement;
-	}
-
-	@Contract(value = "_ -> new", pure = true)
-	public static IntReference valueOf(int value) {
-		return new IntReference(value);
-	}
-
-	@Contract(value = "_ -> new", pure = true)
-	public static IntReference valueOf(String value) {
-		return new IntReference(Strings.parseInt(value, 0));
 	}
 
 	@Override

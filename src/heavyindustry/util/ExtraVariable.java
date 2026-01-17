@@ -171,7 +171,7 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 		if (res == null) return def;
 
-		if (res instanceof BoolReference b) return b.element;
+		if (res instanceof BoolReference r) return r.element;
 		else if (res instanceof Boolean b) return b;
 
 		throw new ClassCastException(res + " is not a boolean value or boolean reference");
@@ -192,7 +192,7 @@ public interface ExtraVariable {
 			return b;
 		}
 
-		if (res instanceof BoolReference b) return b.element;
+		if (res instanceof BoolReference r) return r.element;
 		else if (res instanceof Boolean b) return b;
 
 		throw new ClassCastException(res + " is not a boolean value or boolean reference");
@@ -231,7 +231,7 @@ public interface ExtraVariable {
 			return c;
 		} else if (res == null) {
 			extra().put(field, new CharReference(value));
-			return '\u0000';
+			return 0;
 		}
 
 		throw new ClassCastException(res + " is not a character value or character reference");
@@ -248,7 +248,7 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 		if (res == null) return def;
 
-		if (res instanceof CharReference b) return b.element;
+		if (res instanceof CharReference r) return r.element;
 		else if (res instanceof Character c) return c;
 
 		throw new ClassCastException(res + " is not a character value or character reference");

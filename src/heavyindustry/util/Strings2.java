@@ -154,7 +154,6 @@ public final class Strings2 {
 			isNegative = true;
 		}
 
-		// 查找合适的单位基值
 		double base = 1d;
 		for (int i = 0; i < byteUnit.length; i++) {
 			if (base * 1024 > number) {

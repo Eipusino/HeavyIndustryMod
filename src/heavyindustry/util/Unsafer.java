@@ -613,6 +613,14 @@ public final class Unsafer {
 		}
 	}
 
+	public static long sizeOf(Object object) {
+		return unsafe.getAddress(normalize(unsafe.getInt(object, 4l)) + 12l);
+	}
+
+	static long normalize(int value) {
+		return value >= 0 ? value : (~0l >>> 32) & value;
+	}
+
 	/** Get the field offset. */
 	public static long getOffset(@NotNull Field field) {
 		// If it is an Android platform, simply call the getOffset method of the field.

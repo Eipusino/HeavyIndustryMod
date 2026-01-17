@@ -1,7 +1,6 @@
-package heavyindustry.func;
+package heavyindustry.func
 
 @FunctionalInterface
-public interface VariableCons<T> {
-	@SuppressWarnings("unchecked")
-	void apply(T... params);
+interface VariableCons<P> {
+	fun get(vararg params: P)
 }

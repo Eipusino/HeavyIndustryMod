@@ -71,6 +71,7 @@ import heavyindustry.util.PlatformImpl;
 import heavyindustry.util.Strings2;
 import heavyindustry.util.script.HScripts;
 import heavyindustry.world.Worlds;
+import kotlin.KotlinVersion;
 import mindustry.Vars;
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.game.EventType.DisposeEvent;
@@ -125,6 +126,7 @@ public final class HeavyIndustryMod extends Mod {
 		}
 
 		Log.info("Loaded HeavyIndustry Mod constructor.");
+		Log.infoTag("Kotlin", Strings.format("Kotlin Version: @", KotlinVersion.CURRENT));
 
 		HClassMap.load();
 
