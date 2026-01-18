@@ -46,7 +46,7 @@ public final class Arrays2 {
 	 * Returns an array containing the specified elements.
 	 * <p>Can be used to create arrays with generic types, avoiding {@code @SuppressWarnings("unchecked")}.
 	 * <p>Example: <pre>{@code
-	 *     public Seq<Object>[] seqs = arrayOf(new Seq<>(), new Seq<>());
+	 *     public Seq<Class<?>>[] sequences = arrayOf(new Seq<>(), Seq.with(Block.class, UnitType.class));
 	 * }</pre>
 	 */
 	@SafeVarargs

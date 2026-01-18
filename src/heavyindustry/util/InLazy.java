@@ -1,6 +1,7 @@
 package heavyindustry.util;
 
 import arc.func.Prov;
+import kotlin.Lazy;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,14 +13,14 @@ import java.util.Objects;
  *
  * @since 1.0.8
  */
-public class Lazy<T> {
+public class InLazy<T> implements Lazy<T> {
 	/** Indicate whether the value can be reset again. default to true. */
 	public final boolean allowSet;
 
 	protected T value;
 	protected volatile Prov<T> prov;
 
-	public Lazy(@NotNull Prov<T> init) {
+	public InLazy(@NotNull Prov<T> init) {
 		this(init, true);
 	}
 
@@ -27,7 +28,7 @@ public class Lazy<T> {
 	 * @param init initialization function
 	 * @param set Whether the value allow to be set
 	 */
-	public Lazy(@NotNull Prov<T> init, boolean set) {
+	public InLazy(@NotNull Prov<T> init, boolean set) {
 		prov = init;//if (init == null) throw new NullPointerException("The prov cannot be null.");
 		allowSet = set;
 	}
@@ -53,7 +54,7 @@ public class Lazy<T> {
 
 	@Override
 	public boolean equals(Object obj) {
-		return obj == this || obj instanceof Lazy<?> lazy && Objects.equals(get(), lazy.get());
+		return obj == this || obj instanceof InLazy<?> lazy && Objects.equals(get(), lazy.get());
 	}
 
 	@Override
@@ -64,9 +65,19 @@ public class Lazy<T> {
 
 	@Override
 	public String toString() {
-		return "Lazy{" +
+		return "InLazy{" +
 				"value=" + get() +
 				", allowSet=" + allowSet +
 				'}';
+	}
+
+	@Override
+	public T getValue() {
+		return get();
+	}
+
+	@Override
+	public boolean isInitialized() {
+		return prov == null;
 	}
 }

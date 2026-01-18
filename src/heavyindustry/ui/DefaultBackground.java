@@ -5,16 +5,16 @@ import arc.graphics.Color;
 import arc.graphics.Pixmap;
 import arc.scene.style.Drawable;
 import arc.scene.style.TextureRegionDrawable;
-import heavyindustry.util.Lazy;
+import heavyindustry.util.InLazy;
 
 public final class DefaultBackground {
-	static final Lazy<Drawable> white = new Lazy<>(() -> {
+	static final InLazy<Drawable> white = new InLazy<>(() -> {
 		Pixmap pixmap = new Pixmap(1, 1);
 		pixmap.set(0, 0, Color.whiteRgba);
 
 		return new TextureRegionDrawable(Core.atlas.white());
 	});
-	static final Lazy<Drawable> black6 = new Lazy<>(() -> new TextureRegionDrawable(Core.atlas.white()).tint(0, 0, 0, 0.6f));
+	static final InLazy<Drawable> black6 = new InLazy<>(() -> new TextureRegionDrawable(Core.atlas.white()).tint(0, 0, 0, 0.6f));
 
 	/** Don't let anyone instantiate this class. */
 	private DefaultBackground() {}

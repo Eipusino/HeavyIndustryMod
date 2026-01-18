@@ -1,7 +1,5 @@
 package heavyindustry.util
 
-import kotlin.text.StringBuilder
-
 object StringsKt {
 	@JvmStatic
 	fun repeat(seq: CharSequence, n: Int): String {

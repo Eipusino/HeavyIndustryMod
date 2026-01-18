@@ -10,7 +10,7 @@ import arc.graphics.gl.FrameBuffer;
 import arc.graphics.gl.GLFrameBuffer;
 import arc.graphics.gl.Shader;
 import arc.util.serialization.Jval;
-import heavyindustry.util.Lazy;
+import heavyindustry.util.InLazy;
 import mindustry.Vars;
 import mindustry.game.EventType.Trigger;
 import mindustry.graphics.Layer;
@@ -25,7 +25,7 @@ public final class ScreenSampler {
 	private static Field lastBoundFramebufferField, bufferField;
 
 	private static FrameBuffer worldBuffer, uiBuffer, currBuffer;
-	private static Lazy<FrameBuffer> pixelatorBuffer;
+	private static InLazy<FrameBuffer> pixelatorBuffer;
 
 	private static boolean activity = false;
 
@@ -39,7 +39,7 @@ public final class ScreenSampler {
 			bufferField = Pixelator.class.getDeclaredField("buffer");
 			bufferField.setAccessible(true);
 
-			pixelatorBuffer = new Lazy<>(() -> {
+			pixelatorBuffer = new InLazy<>(() -> {
 				try {
 					return (FrameBuffer) bufferField.get(Vars.renderer.pixelator);
 				} catch (IllegalAccessException e) {

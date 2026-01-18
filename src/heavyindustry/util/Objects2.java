@@ -251,6 +251,16 @@ public final class Objects2 {
 		}
 	}
 
+	@Contract(value = "_ -> param1", pure = true)
+	public static <T> T initializer(T obj) {
+		return obj;
+	}
+
+	@Contract(pure = true)
+	public static <T> T initializerNullable() {
+		return null;
+	}
+
 	/**
 	 * Used to optimize code conciseness in specific situations.
 	 * <p>You must ensure that {@code obj} can be safely cast to {@link T}.
@@ -271,21 +281,6 @@ public final class Objects2 {
 		if (obj != null && !type.isInstance(obj))
 			return def;
 		return (T) obj;
-	}
-
-	/**
-	 * Deceiving the compiler does not require throwing checked exceptions when throws or try cache are
-	 * included.
-	 * <p>This deduces the generic type to be `RuntimeException`, which is actually not assignable from `IOException`.
-	 * <br>However, type erasure will erase all static casts anyway.
-	 * <br>The result is, the code fools the compiler into thinking it's throwing `RuntimeException` and not have its
-	 * method signature explicitly throw `IOException`, even though it actually does.
-	 * <br>Such is the way of Java...
-	 */
-	@SuppressWarnings("unchecked")
-	@Contract(value = "_ -> fail")
-	public static <T, E extends Throwable> T thrower(Throwable err) throws E {
-		throw (E) err;
 	}
 
 	public static String toString(@Nullable Object object) {

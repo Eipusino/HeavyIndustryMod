@@ -1,8 +1,8 @@
 package heavyindustry.game;
 
 import arc.util.Log;
-import arc.util.io.Reads;
-import arc.util.io.Writes;
+import heavyindustry.io.HReads;
+import heavyindustry.io.HWrites;
 import heavyindustry.util.CollectionObjectMap;
 import mindustry.Vars;
 import mindustry.ctype.UnlockableContent;
@@ -59,7 +59,7 @@ public class TeamPayloadData implements CustomChunk {
 
 	@Override
 	public void write(DataOutput stream) throws IOException {
-		try (Writes write = new Writes(stream)) {
+		try (HWrites write = new HWrites(stream)) {
 			write.b(teamPayloadData.size);
 			teamPayloadData.each((team, payloads) -> {
 				write.b(team.id);
@@ -71,7 +71,7 @@ public class TeamPayloadData implements CustomChunk {
 	@Override
 	public void read(DataInput stream) throws IOException {
 		teamPayloadData.clear();
-		try (Reads read = new Reads(stream)) {
+		try (HReads read = new HReads(stream)) {
 			int size = read.b();
 			for (int i = 0; i < size; i++) {
 				Team team = Team.get(read.b());

@@ -4,6 +4,8 @@ import arc.func.Func;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import arc.util.serialization.SerializationException;
+import heavyindustry.io.HReads;
+import heavyindustry.io.HWrites;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -82,7 +84,7 @@ public interface DataPackable {
 	 */
 	@SuppressWarnings("unchecked")
 	static <T extends DataPackable> T readObject(byte[] bytes, Object... param) {
-		long id = new Reads(new DataInputStream(new ByteArrayInputStream(bytes))).l();
+		long id = new HReads(new DataInputStream(new ByteArrayInputStream(bytes))).l();
 		Func<Object[], T> objProv = (Func<Object[], T>) objectProvMap.get(id);
 		if (objProv == null)
 			throw new SerializationException("type id: " + id + " was not assigned");
@@ -96,7 +98,7 @@ public interface DataPackable {
 	 * The type identifier ID of this object, for a class,
 	 * the method of its instance must return the same ID at any time.
 	 */
-	long typeID();
+	long typeId();
 
 	/**
 	 * The method of packaging this instance to write object information should be implemented by
@@ -117,8 +119,8 @@ public interface DataPackable {
 	/** Wrap the object as a byte array and send it out. */
 	default byte[] pack() {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		Writes write = new Writes(new DataOutputStream(outputStream));
-		write.l(typeID());
+		HWrites write = new HWrites(new DataOutputStream(outputStream));
+		write.l(typeId());
 		write(write);
 
 		return outputStream.toByteArray();
@@ -132,8 +134,8 @@ public interface DataPackable {
 	 */
 	default void read(byte[] bytes) {
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
-		Reads read = new Reads(new DataInputStream(inputStream));
-		if (read.l() != typeID())
+		HReads read = new HReads(new DataInputStream(inputStream));
+		if (read.l() != typeId())
 			throw new SerializationException("type id was unequal marked type id");
 		read(read);
 	}

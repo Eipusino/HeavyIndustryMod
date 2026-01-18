@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 
 public interface PlatformImpl {
 	default void setOverride(AccessibleObject object) {
-		object.setAccessible(true);
+		Reflects.setAccessible(object);
 	}
 
 	default void setPublic(Class<?> type) {}

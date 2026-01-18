@@ -14,6 +14,8 @@ import mindustry.gen.Unit;
 
 /** Provide some commonly used lambda functions with simple structures. */
 public final class Constant {
+	public static final Object[] EMPTY_OBJECT = {};
+	public static final Class<?>[] EMPTY_CLASS = {};
 	public static final String[] EMPTY_STRING = {};
 
 	public static final Runnable RUNNABLE_NOTHING = () -> {};

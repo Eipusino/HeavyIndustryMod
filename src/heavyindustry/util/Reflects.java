@@ -196,13 +196,17 @@ public final class Reflects {
 		}
 	}
 
+	public static Class<?>[] typeOf(Class<?>... types) {
+		return types;
+	}
+
 	public static <T> T make(Class<T> type) {
-		return make(type, Arrays2.arrayOf(), Arrays2.arrayOf());
+		return make(type, Constant.EMPTY_CLASS, Constant.EMPTY_OBJECT);
 	}
 
 	/** Reflectively instantiates a type without throwing exceptions. */
 	@Contract(pure = true)
-	public static <T> T make(Constructor<T> cons, Object... args) {
+	public static <T> T make(Constructor<T> cons, Object[] args) {
 		try {
 			return cons.newInstance(args);
 		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
@@ -232,7 +236,7 @@ public final class Reflects {
 	 * @throws RuntimeException Any exception that occurs in reflection.
 	 */
 	@Contract(pure = true)
-	public static <T> Prov<T> supply(Class<T> type, Object[] args, Class<?>[] parameterTypes) {
+	public static <T> Prov<T> supply(Class<T> type, Class<?>[] parameterTypes, Object... args) {
 		try {
 			Constructor<T> cons = type.getDeclaredConstructor(parameterTypes);
 			return () -> {
@@ -364,6 +368,12 @@ public final class Reflects {
 	}
 
 	/** @since 1.0.8 */
+	@Contract(value = "_, _ -> param2")
+	public static <T> T copyProperties(Object source, T target) {
+		return copyProperties(source, target, Constant.EMPTY_STRING);
+	}
+
+	/** @since 1.0.8 */
 	@Contract(value = "_, _, _ -> param2")
 	public static <T> T copyProperties(Object source, T target, List<String> filler) {
 		return copyProperties(source, target, filler.toArray(Constant.EMPTY_STRING));
@@ -378,7 +388,7 @@ public final class Reflects {
 	 * @since 1.0.8
 	 */
 	@Contract(value = "_, _, _ -> param2")
-	public static <T> T copyProperties(Object source, T target, String... filler) {
+	public static <T> T copyProperties(Object source, T target, String[] filler) {
 		if (source == null || target == null) return target;
 
 		targetFieldMap.clear();

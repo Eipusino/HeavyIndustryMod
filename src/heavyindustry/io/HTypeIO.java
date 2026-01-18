@@ -106,7 +106,7 @@ public final class HTypeIO {
 		int length = read.i();
 		byte[] bytes = read.b(length);
 		try (ByteArrayInputStream bin = new ByteArrayInputStream(bytes); ObjectInputStream in = new ObjectInputStream(bin)) {
-			Object object = in.readObject();Class.forName("kotlin.String");
+			Object object = in.readObject();
 			return Objects2.cast(object, type, def);
 		} catch (IOException | ClassNotFoundException e) {
 			throw new RuntimeException(e);
