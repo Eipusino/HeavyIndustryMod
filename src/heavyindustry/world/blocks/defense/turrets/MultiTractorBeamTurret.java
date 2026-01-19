@@ -95,7 +95,7 @@ public class MultiTractorBeamTurret extends TractorBeamTurret {
 
 			if (target != null && target.within(this, range + target.hitSize / 2f) && target.team() != team && target.checkTarget(targetAir, targetGround) && efficiency > 0.02f) {
 				Units.nearbyEnemies(team, Tmp.r1.setSize((range + target.hitSize / 2f) * 2).setCenter(x, y), unit -> {
-					if (targets.size < maxAttract && !targets.keySet().toSeq().contains(unit) && Angles.within(rotation, angleTo(unit), shootCone)) {
+					if (targets.size < maxAttract && !targets.containsKey(unit) && Angles.within(rotation, angleTo(unit), shootCone)) {
 						targets.put(unit, new Vec3(unit.x, unit.y, 0f));
 					}
 				});
