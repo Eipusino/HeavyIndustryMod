@@ -11,7 +11,6 @@ import arc.math.Mathf;
 import arc.math.Rand;
 import arc.struct.FloatSeq;
 import arc.struct.IntSeq;
-import arc.struct.Seq;
 import arc.struct.Sort;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
@@ -251,14 +250,6 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	/** Returns a new array with the mapped values. */
 	public <R> CollectionList<R> map(Func<E, R> mapper) {
 		CollectionList<R> arr = new CollectionList<>(size, componentType);
-		for (int i = 0; i < size; i++) {
-			arr.add(mapper.get(items[i]));
-		}
-		return arr;
-	}
-
-	public <R> Seq<R> mapSeq(Func<E, R> mapper) {
-		Seq<R> arr = new Seq<>(true, size, componentType);
 		for (int i = 0; i < size; i++) {
 			arr.add(mapper.get(items[i]));
 		}
@@ -688,70 +679,6 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		return remove(o, false);
 	}
 
-	@Override
-	public boolean containsAll(@Nullable Collection<?> c) {
-		if (c == null) return false;
-
-		for (Object e : c)
-			if (!contains(e))
-				return false;
-		return true;
-	}
-
-	@Override
-	public boolean addAll(@Nullable Collection<? extends E> c) {
-		if (c == null) return false;
-
-		boolean modified = false;
-		for (E e : c) {
-			add(e);
-			modified = true;
-		}
-		return modified;
-	}
-
-	@Override
-	public boolean addAll(int index, @Nullable Collection<? extends E> c) {
-		if (c == null) return false;
-
-		boolean modified = false;
-		for (E e : c) {
-			add(index++, e);
-			modified = true;
-		}
-		return modified;
-	}
-
-	@Override
-	public boolean removeAll(@Nullable Collection<?> c) {
-		if (c == null) return false;
-
-		boolean modified = false;
-		Iterator<E> it = iterator();
-		while (it.hasNext()) {
-			if (c.contains(it.next())) {
-				it.remove();
-				modified = true;
-			}
-		}
-		return modified;
-	}
-
-	@Override
-	public boolean retainAll(@Nullable Collection<?> c) {
-		if (c == null) return false;
-
-		boolean modified = false;
-		Iterator<E> it = iterator();
-		while (it.hasNext()) {
-			if (!c.contains(it.next())) {
-				it.remove();
-				modified = true;
-			}
-		}
-		return modified;
-	}
-
 	/**
 	 * Removes a single value by predicate.
 	 *
@@ -961,6 +888,12 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		for (int i = 0, n = size; i < n; i++)
 			items[i] = null;
 		size = 0;
+	}
+
+	public void clear(int offset) {
+		for (int i = offset, n = size; i < n; i++)
+			items[i] = null;
+		size = offset;
 	}
 
 	/**
@@ -1195,15 +1128,23 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	 */
 	@Override
 	public E @NotNull [] toArray() {
-		return Arrays.copyOfRange(items, 0, size);
+		return toArray(componentType);
 	}
 
 	@SuppressWarnings("unchecked")
+	public <T> T @NotNull [] toArray(Class<?> type) {
+		T[] result = (T[]) Array.newInstance(type, size);
+		System.arraycopy(items, 0, result, 0, size);
+		return result;
+	}
+
 	@Override
 	public <T> T @NotNull [] toArray(T[] a) {
-		if (a.length < size)
+		if (a.length < size) {
 			// Make a new array of a's runtime type, but my contents:
-			return (T[]) Arrays.copyOf(items, size, a.getClass());
+			return toArray(a.getClass());
+		}
+
 		System.arraycopy(items, 0, a, 0, size);
 		if (a.length > size)
 			a[size] = null;
@@ -1323,13 +1264,6 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		}
 
 		return new Iter(index);
-	}
-
-	public Seq<E> toSeq() {
-		Seq<E> seq = new Seq<>(true, size, componentType);
-		seq.size = size;
-		System.arraycopy(items, 0, seq.items, 0, size);
-		return seq;
 	}
 
 	public class Iter implements ListIterator<E> {

@@ -140,7 +140,7 @@ public class EndNukeBulletType extends BasicBulletType {
 						lastUnit++;
 					}
 				}
-			} else if (t instanceof Building build && build.block.privileged) {
+			} else if (t instanceof Building build && !build.block.privileged) {
 				float damageScl = HEntity.inRayCastCircle(bx, by, arr, build);
 				if (damageScl > 0) {
 					build.health -= (build.maxHealth / 10f + splashDamage) * damageScl;

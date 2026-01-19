@@ -4,7 +4,6 @@ import arc.func.Cons;
 import arc.func.Cons2;
 import arc.func.Prov;
 import arc.math.Mathf;
-import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import heavyindustry.math.Mathm;
@@ -882,7 +881,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		}
 	}
 
-	protected abstract class MapIterator<I> implements Iterable<I>, Iterator<I> {
+	protected abstract class MapIterator<I> extends AbstractSet<I> implements Iterable<I>, Iterator<I> {
 		public boolean hasNext;
 
 		public int nextIndex, currentIndex;
@@ -923,6 +922,56 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 			currentIndex = -1;
 			size--;
 		}
+
+		@Override
+		public int size() {
+			return size;
+		}
+
+		@Override
+		public boolean isEmpty() {
+			return CollectionObjectMap.this.isEmpty();
+		}
+
+		@Override
+		public boolean remove(Object o) {
+			return CollectionObjectMap.this.remove(o) != null;
+		}
+
+		@Override
+		public boolean add(I i) {
+			return false;
+		}
+
+		@Override
+		public boolean addAll(@NotNull Collection<? extends I> c) {
+			return false;
+		}
+
+		@Override
+		public I @NotNull [] toArray() {
+			return toList().toArray();
+		}
+
+		@Override
+		public <T> T @NotNull [] toArray(T[] a) {
+			return toList().toArray(a.getClass().getComponentType());
+		}
+
+		@Override
+		public void clear() {
+			CollectionObjectMap.this.clear();
+		}
+
+		/** Returns a new array containing the remaining keys. */
+		public abstract CollectionList<I> toList();
+
+		/** Adds the remaining keys to the array. */
+		public CollectionList<I> toList(CollectionList<I> array) {
+			while (hasNext)
+				array.add(next());
+			return array;
+		}
 	}
 
 	public class Entries extends MapIterator<ObjectHolder<K, V>> {
@@ -952,6 +1001,11 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		public @NotNull Entries iterator() {
 			return this;
 		}
+
+		@Override
+		public CollectionList<ObjectHolder<K, V>> toList() {
+			return toList(new CollectionList<>(true, size, ObjectHolder.class));
+		}
 	}
 
 	public class Values extends MapIterator<V> implements Collection<V> {
@@ -972,16 +1026,6 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		}
 
 		@Override
-		public int size() {
-			return size;
-		}
-
-		@Override
-		public boolean isEmpty() {
-			return CollectionObjectMap.this.isEmpty();
-		}
-
-		@Override
 		public boolean contains(Object o) {
 			return containsValue(o);
 		}
@@ -993,111 +1037,8 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		}
 
 		@Override
-		public V @NotNull [] toArray() {
-			return Arrays.copyOf(valueTable, size);
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public <T> T @NotNull [] toArray(T[] a) {
-			if (a.length < size)
-				// Make a new array of a's runtime type, but my contents:
-				return (T[]) Arrays.copyOf(valueTable, size, a.getClass());
-			System.arraycopy(valueTable, 0, a, 0, size);
-			if (a.length > size)
-				a[size] = null;
-			return a;
-		}
-
-		@Override
-		public boolean add(V v) {
-			return false;
-		}
-
-		@Override
-		public boolean addAll(@NotNull Collection<? extends V> c) {
-			return false;
-		}
-
-		@Override
-		public boolean remove(Object o) {
-			if (o == null) {
-				while (hasNext()) {
-					if (next() == null) {
-						remove();
-						return true;
-					}
-				}
-			} else {
-				while (hasNext()) {
-					if (o.equals(next())) {
-						remove();
-						return true;
-					}
-				}
-			}
-			return false;
-		}
-
-		@Override
-		public boolean containsAll(Collection<?> c) {
-			for (Object e : c)
-				if (!contains(e))
-					return false;
-			return true;
-		}
-
-		@Override
-		public boolean removeAll(@NotNull Collection<?> c) {
-			boolean modified = false;
-			while (hasNext()) {
-				if (c.contains(next())) {
-					remove();
-					modified = true;
-				}
-			}
-			return modified;
-		}
-
-		@Override
-		public boolean retainAll(@NotNull Collection<?> c) {
-			boolean modified = false;
-			while (hasNext()) {
-				if (!c.contains(next())) {
-					remove();
-					modified = true;
-				}
-			}
-			return modified;
-		}
-
-		@Override
-		public void clear() {
-			CollectionObjectMap.this.clear();
-		}
-
-		/** Returns a new array containing the remaining values. */
 		public CollectionList<V> toList() {
 			return toList(new CollectionList<>(true, size, valueComponentType));
-		}
-
-		/** Adds the remaining values to the specified array. */
-		public CollectionList<V> toList(CollectionList<V> array) {
-			while (hasNext)
-				array.add(next());
-			return array;
-		}
-
-		/** Returns a new array containing the remaining values. */
-		public Seq<V> toSeq() {
-			return toSeq(new Seq<>(true, size, valueComponentType));
-		}
-
-		/** Adds the remaining values to the specified array. */
-		public Seq<V> toSeq(Seq<V> array) {
-			while (hasNext)
-				array.add(next());
-			return array;
 		}
 	}
 
@@ -1129,16 +1070,6 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		}
 
 		@Override
-		public int size() {
-			return size;
-		}
-
-		@Override
-		public boolean isEmpty() {
-			return CollectionObjectMap.this.isEmpty();
-		}
-
-		@Override
 		public boolean contains(Object o) {
 			return containsKey(o);
 		}
@@ -1149,96 +1080,8 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		}
 
 		@Override
-		public K @NotNull [] toArray() {
-			return toSeq().toArray();
-		}
-
-		@Override
-		public <T> T @NotNull [] toArray(T[] a) {
-			return toSeq().toArray(a.getClass().getComponentType());
-		}
-
-		@Override
-		public boolean add(K k) {
-			return false;
-		}
-
-		@Override
-		public boolean remove(Object o) {
-			return CollectionObjectMap.this.remove(o) != null;
-		}
-
-		@Override
-		public boolean containsAll(Collection<?> c) {
-			for (Object e : c)
-				if (!contains(e))
-					return false;
-			return true;
-		}
-
-		@Override
-		public boolean addAll(@NotNull Collection<? extends K> c) {
-			return false;
-		}
-
-		@Override
-		public boolean retainAll(@NotNull Collection<?> c) {
-			boolean modified = false;
-			Iterator<K> it = iterator();
-			while (it.hasNext()) {
-				if (!c.contains(it.next())) {
-					it.remove();
-					modified = true;
-				}
-			}
-			return modified;
-		}
-
-		@Override
-		public boolean removeAll(@NotNull Collection<?> c) {
-			boolean modified = false;
-
-			if (size() > c.size()) {
-				for (Object e : c)
-					modified |= remove(e);
-			} else {
-				for (Iterator<?> i = iterator(); i.hasNext(); ) {
-					if (c.contains(i.next())) {
-						i.remove();
-						modified = true;
-					}
-				}
-			}
-			return modified;
-		}
-
-		@Override
-		public void clear() {
-			CollectionObjectMap.this.clear();
-		}
-
-		/** Returns a new array containing the remaining keys. */
 		public CollectionList<K> toList() {
 			return toList(new CollectionList<>(true, size, keyComponentType));
-		}
-
-		/** Adds the remaining keys to the array. */
-		public CollectionList<K> toList(CollectionList<K> array) {
-			while (hasNext)
-				array.add(next());
-			return array;
-		}
-
-		/** Returns a new array containing the remaining keys. */
-		public Seq<K> toSeq() {
-			return toSeq(new Seq<>(true, size, keyComponentType));
-		}
-
-		/** Adds the remaining keys to the array. */
-		public Seq<K> toSeq(Seq<K> array) {
-			while (hasNext)
-				array.add(next());
-			return array;
 		}
 	}
 }

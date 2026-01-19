@@ -1,6 +1,7 @@
 package heavyindustry.util;
 
 import arc.util.OS;
+import arc.util.Strings;
 import heavyindustry.HVars;
 import org.jetbrains.annotations.Contract;
 
@@ -28,23 +29,26 @@ import java.util.Arrays;
  * @since 1.0.9
  */
 public final class Enums {
-	static CollectionObjectMap<Class<? extends Enum<?>>, Field> valuesFields;
-	static CollectionObjectMap<Class<? extends Enum<?>>, MethodHandle> valuesFieldSetters;
+	static CollectionObjectMap<Class<? extends Enum<?>>, Field> valuesFieldMap;
+	static CollectionObjectMap<Class<? extends Enum<?>>, MethodHandle> valuesFieldMap2;
 
-	static CollectionObjectMap<Class<? extends Enum<?>>, Method> valuesMethods;
+	static CollectionObjectMap<Class<? extends Enum<?>>, Method> valuesMethodMap;
 
-	static CollectionObjectMap<Class<? extends Enum<?>>, Constructor<?>[]> constructs;
-	static CollectionObjectMap<Class<? extends Enum<?>>, MethodHandle[]> constructHandles;
+	static CollectionObjectMap<Class<? extends Enum<?>>, Constructor<?>[]> constructMap;
+	static CollectionObjectMap<Class<? extends Enum<?>>, MethodHandle[]> constructMap2;
+
+	static final Class<?>[] defaultEnumParamType = {String.class, int.class};
+	static final CollectionList<Class<?>> tmpParamType = new CollectionList<>(defaultEnumParamType);
 
 	static {
-		valuesMethods = new CollectionObjectMap<>(Class.class, Method.class);
+		valuesMethodMap = new CollectionObjectMap<>(Class.class, Method.class);
 
 		if (!OS.isAndroid) {
-			constructHandles = new CollectionObjectMap<>(Class.class, MethodHandle[].class);
-			valuesFieldSetters = new CollectionObjectMap<>(Class.class, MethodHandle.class);
+			constructMap2 = new CollectionObjectMap<>(Class.class, MethodHandle[].class);
+			valuesFieldMap2 = new CollectionObjectMap<>(Class.class, MethodHandle.class);
 		} else {
-			constructs = new CollectionObjectMap<>(Class.class, Constructor[].class);
-			valuesFields = new CollectionObjectMap<>(Class.class, Field.class);
+			constructMap = new CollectionObjectMap<>(Class.class, Constructor[].class);
+			valuesFieldMap = new CollectionObjectMap<>(Class.class, Field.class);
 		}
 	}
 
@@ -63,15 +67,16 @@ public final class Enums {
 	@SuppressWarnings("unchecked")
 	@Contract(value = "_, _, _, _, _ -> new", pure = true)
 	public static <T extends Enum<T>> T newEnumInstance(Class<T> type, String name, int ordinal, Class<?>[] paramType, Object... param) {
-		if (paramType == null || param.length != paramType.length)
-			throw new IllegalArgumentException("paramType: " + Arrays.toString(paramType) + ", param: " + Arrays.toString(param));
+		Class<?>[] asType;
 
-		Class<?>[] asType = new Class[paramType.length + 2];
+		if (paramType != null && paramType.length > 0) {
+			tmpParamType.clear(2);
+			tmpParamType.addAll(paramType);
 
-		asType[0] = String.class;
-		asType[1] = int.class;
-
-		System.arraycopy(paramType, 0, asType, 2, paramType.length);
+			asType = tmpParamType.toArray(Class.class);
+		} else {
+			asType = defaultEnumParamType;
+		}
 
 		Object[] params = new Object[param.length + 2];
 
@@ -80,33 +85,43 @@ public final class Enums {
 
 		System.arraycopy(param, 0, params, 2, param.length);
 
-		try {
-			if (!OS.isAndroid) {
-				return (T) Reflects.invokeStatic(Arrays2.findOrThrow(constructHandles.get(type, () -> {
+		if (!OS.isAndroid) {
+			MethodHandle[] constructs = constructMap2.get(type, () -> {
+				try {
+					Constructor<T>[] constructors = HVars.platformImpl.getConstructors(type);
+					MethodHandle[] handles = new MethodHandle[constructors.length];
+					for (int i = 0; i < constructors.length; i++) {
+						Constructor<T> constructor = constructors[i];
+						handles[i] = Reflects.lookup.unreflectConstructor(constructor);
+					}
+					return handles;
+				} catch (IllegalAccessException e) {
+					throw new RuntimeException(e);
+				}
+			});
+			for (MethodHandle construct : constructs) {
+				if (Reflects.isAssignable(asType, construct.type().parameterArray())) return (T) Reflects.invokeStatic(construct, params);
+			}
+		} else {
+			Constructor<?>[] constructs = constructMap.get(type, () -> {
+				Constructor<?>[] constructors = type.getDeclaredConstructors();
+				for (Constructor<?> constructor : constructors) {
+					constructor.setAccessible(true);
+				}
+				return constructors;
+			});
+			for (Constructor<?> construct : constructs) {
+				if (Reflects.isAssignable(asType, construct.getParameterTypes())) {
 					try {
-						Constructor<T>[] constructors = HVars.platformImpl.getConstructors(type);
-						MethodHandle[] handles = new MethodHandle[constructors.length];
-						for (int i = 0; i < constructors.length; i++) {
-							Constructor<T> constructor = constructors[i];
-							handles[i] = Reflects.lookup.unreflectConstructor(constructor);
-						}
-						return handles;
-					} catch (IllegalAccessException e) {
+						return (T) construct.newInstance(params);
+					} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
 						throw new RuntimeException(e);
 					}
-				}), h -> Reflects.isAssignable(asType, h.type().parameterArray())), params);
-			} else {
-				return (T) Arrays2.findOrThrow(constructs.get(type, () -> {
-					Constructor<?>[] constructors = type.getDeclaredConstructors();
-					for (Constructor<?> constructor : constructors) {
-						constructor.setAccessible(true);
-					}
-					return constructors;
-				}), c -> Reflects.isAssignable(asType, c.getParameterTypes())).newInstance(params);
+				}
 			}
-		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e);
 		}
+
+		throw new RuntimeException(Strings.format("No method found: @", Arrays.toString(asType)));
 	}
 
 	/**
@@ -116,7 +131,7 @@ public final class Enums {
 	 * @param param    Additional constructor parameter list
 	 */
 	public static <T extends Enum<T>> T addEnumItemTail(Class<T> type, String addition, Class<?>[] paramType, Object... param) {
-		Method method = valuesMethods.get(type, () -> {
+		Method method = valuesMethodMap.get(type, () -> {
 			try {
 				return type.getMethod("values");
 			} catch (NoSuchMethodException e) {
@@ -163,7 +178,7 @@ public final class Enums {
 	@SuppressWarnings("unchecked")
 	public static <T extends Enum<T>> void rearrange(Class<T> type, T instance, int ordinal) {
 		try {
-			Method method = valuesMethods.get(type, () -> {
+			Method method = valuesMethodMap.get(type, () -> {
 				try {
 					return type.getMethod("values");
 				} catch (NoSuchMethodException e) {
@@ -184,7 +199,7 @@ public final class Enums {
 			T[] value = values.toArray((T[]) Array.newInstance(type, 0));
 
 			if (!OS.isAndroid) {
-				valuesFieldSetters.get(type, () -> {
+				valuesFieldMap2.get(type, () -> {
 					try {
 						Field valuesField = findValuesField(type);
 						return Reflects.lookup.findStaticSetter(type, valuesField.getName(), value.getClass());
@@ -193,8 +208,7 @@ public final class Enums {
 					}
 				}).invoke((Object) value);
 			} else {
-				Field valuesField = valuesFields.get(type, () -> findValuesField(type));
-				//valuesField.set(null, value);
+				Field valuesField = valuesFieldMap.get(type, () -> findValuesField(type));
 				Unsafer.set(valuesField, null, value);
 			}
 		} catch (Throwable e) {

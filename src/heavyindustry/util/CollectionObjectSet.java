@@ -3,7 +3,6 @@ package heavyindustry.util;
 import arc.func.Boolf;
 import arc.func.Cons;
 import arc.math.Mathf;
-import arc.struct.Seq;
 import arc.util.Eachable;
 import heavyindustry.math.Mathm;
 import org.jetbrains.annotations.Contract;
@@ -104,16 +103,6 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E
 	public static <T> CollectionObjectSet<T> with(T... array) {
 		CollectionObjectSet<T> set = new CollectionObjectSet<>(array.getClass().getComponentType());
 		set.addAll(array);
-		return set;
-	}
-
-	/**
-	 * @param type Due to the fact that Seq's array type may not necessarily match type T, in order to
-	 *             ensure type safety, type must be specified.
-	 */
-	public static <T> CollectionObjectSet<T> with(Class<?> type, Seq<T> array) {
-		CollectionObjectSet<T> set = new CollectionObjectSet<>(type, array.size);
-		array.each(set::add);
 		return set;
 	}
 
@@ -603,22 +592,6 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E
 		return new Iter();
 	}
 
-	@Override
-	public E @NotNull [] toArray() {
-		return Arrays.copyOf(keyTable, size);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T> T @NotNull [] toArray(T[] a) {
-		if (a.length < size)
-			return (T[]) Arrays.copyOf(keyTable, size, a.getClass());
-		System.arraycopy(keyTable, 0, a, 0, size);
-		if (a.length > size)
-			a[size] = null;
-		return a;
-	}
-
 	public class Iter implements Iterable<E>, Iterator<E> {
 		public boolean hasNext;
 
@@ -693,18 +666,6 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E
 		/** Returns a new array containing the remaining values. */
 		public CollectionList<E> toList() {
 			return toList(new CollectionList<>(true, size, keyComponentType));
-		}
-
-		/** Adds the remaining values to the array. */
-		public Seq<E> toSeq(Seq<E> array) {
-			while (hasNext)
-				array.add(next());
-			return array;
-		}
-
-		/** Returns a new array containing the remaining values. */
-		public Seq<E> toSeq() {
-			return toSeq(new Seq<>(true, size, keyComponentType));
 		}
 	}
 }

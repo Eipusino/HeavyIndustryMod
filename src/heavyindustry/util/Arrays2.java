@@ -36,7 +36,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map.Entry;
-import java.util.NoSuchElementException;
 
 public final class Arrays2 {
 	private Arrays2() {}
@@ -321,19 +320,6 @@ public final class Arrays2 {
 	}
 
 	/**
-	 * Use custom filtering criteria to search for array elements, and if not found, throw a
-	 * {@link NoSuchElementException}.
-	 *
-	 * @since 1.0.9
-	 */
-	public static <T> T findOrThrow(T[] array, Boolf<T> value) throws NoSuchElementException {
-		for (T t : array) {
-			if (value.get(t)) return t;
-		}
-		throw new NoSuchElementException();
-	}
-
-	/**
 	 * Insert an element at the first position of the array. Low performance.
 	 *
 	 * @param originalArray the source array.
@@ -538,9 +524,9 @@ public final class Arrays2 {
 	 * @since 1.0.7
 	 */
 	@SuppressWarnings("unchecked")
-	public static <K, V> Entry<K, V> copyOf(Entry<? extends K, ? extends V> e) {
+	public static <K, V> ObjectHolder<K, V> copyOf(Entry<? extends K, ? extends V> e) {
 		if (e instanceof ObjectHolder<? extends K, ? extends V>) {
-			return (Entry<K, V>) e;
+			return (ObjectHolder<K, V>) e;
 		} else {
 			return new ObjectHolder<>(e.getKey(), e.getValue());
 		}

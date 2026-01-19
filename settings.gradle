@@ -1,3 +1,3 @@
 include ':annotations'
 
-rootProject.name = 'HeavyIndustryMod'
+rootProject.name = 'heavyindustry'

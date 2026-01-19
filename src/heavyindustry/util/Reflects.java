@@ -409,7 +409,7 @@ public final class Reflects {
 		}
 
 		Class<?> sourceClass = source.getClass();
-		while (sourceClass != null) {
+		while (sourceClass != Object.class) {
 			for (Field sourceField : HVars.platformImpl.getFields(sourceClass)) {
 				if (Modifier.isFinal(sourceField.getModifiers())) continue;
 

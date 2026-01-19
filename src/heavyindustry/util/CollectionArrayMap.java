@@ -2,14 +2,12 @@ package heavyindustry.util;
 
 import arc.func.Cons;
 import arc.math.Mathf;
-import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import heavyindustry.util.ref.ObjectHolder;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;
-import java.util.AbstractCollection;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Arrays;
@@ -670,8 +668,7 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 		}
 	}
 
-	public class Entries implements Iterable<ObjectHolder<K, V>>, Iterator<ObjectHolder<K, V>> {
-		protected ObjectHolder<K, V> entry = new ObjectHolder<>();
+	protected abstract class MapIterator<I> extends AbstractSet<I> implements Iterator<I> {
 		protected int index;
 		protected boolean valid = true;
 
@@ -680,6 +677,24 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			return index < size;
 		}
+
+		@Override
+		public @NotNull Iterator<I> iterator() {
+			return this;
+		}
+
+		@Override
+		public int size() {
+			return size;
+		}
+
+		public abstract CollectionList<I> toList();
+
+		public abstract CollectionList<I> toList(CollectionList<I> list);
+	}
+
+	public class Entries extends MapIterator<ObjectHolder<K, V>> {
+		protected ObjectHolder<K, V> entry = new ObjectHolder<>();
 
 		@Override
 		public @NotNull Iterator<ObjectHolder<K, V>> iterator() {
@@ -705,9 +720,22 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 		public void reset() {
 			index = 0;
 		}
+
+		@Override
+		public CollectionList<ObjectHolder<K, V>> toList() {
+			return toList(new CollectionList<>(true, size - index, ObjectHolder.class));
+		}
+
+		@Override
+		public CollectionList<ObjectHolder<K, V>> toList(CollectionList<ObjectHolder<K, V>> list) {
+			while (hasNext()) {
+				list.add(Arrays2.copyOf(next()));
+			}
+			return list;
+		}
 	}
 
-	public class Values extends AbstractCollection<V> implements Iterator<V> {
+	public class Values extends MapIterator<V> {
 		protected int index;
 		protected boolean valid = true;
 
@@ -715,16 +743,6 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 		public boolean hasNext() {
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			return index < size;
-		}
-
-		@Override
-		public @NotNull Iterator<V> iterator() {
-			return this;
-		}
-
-		@Override
-		public int size() {
-			return size;
 		}
 
 		@Override
@@ -744,45 +762,19 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 			index = 0;
 		}
 
+		@Override
 		public CollectionList<V> toList() {
 			return new CollectionList<>(true, values, index, size - index);
 		}
 
-		public CollectionList<V> toList(CollectionList<V> array) {
-			array.addAll(values, index, size - index);
-			return array;
-		}
-
-		public Seq<V> toSeq() {
-			return new Seq<>(true, values, index, size - index);
-		}
-
-		public Seq<V> toSeq(Seq<V> array) {
-			array.addAll(values, index, size - index);
-			return array;
+		@Override
+		public CollectionList<V> toList(CollectionList<V> list) {
+			list.addAll(values, index, size - index);
+			return list;
 		}
 	}
 
-	public class Keys extends AbstractSet<K> implements Iterable<K>, Iterator<K> {
-		protected int index;
-		protected boolean valid = true;
-
-		@Override
-		public boolean hasNext() {
-			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			return index < size;
-		}
-
-		@Override
-		public @NotNull Iterator<K> iterator() {
-			return this;
-		}
-
-		@Override
-		public int size() {
-			return size;
-		}
-
+	public class Keys extends MapIterator<K> {
 		@Override
 		public K next() {
 			if (index >= size) throw new NoSuchElementException(String.valueOf(index));
@@ -805,22 +797,15 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 			index = 0;
 		}
 
+		@Override
 		public CollectionList<K> toList() {
 			return new CollectionList<>(true, keys, index, size - index);
 		}
 
-		public CollectionList<K> toList(CollectionList<K> array) {
-			array.addAll(keys, index, size - index);
-			return array;
-		}
-
-		public Seq<K> toSeq() {
-			return new Seq<>(true, keys, index, size - index);
-		}
-
-		public Seq<K> toSeq(Seq<K> array) {
-			array.addAll(keys, index, size - index);
-			return array;
+		@Override
+		public CollectionList<K> toList(CollectionList<K> list) {
+			list.addAll(keys, index, size - index);
+			return list;
 		}
 	}
 }
