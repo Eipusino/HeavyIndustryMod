@@ -1,11 +1,8 @@
 package heavyindustry.async;
 
-import arc.Core;
 import arc.func.Prov;
 
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 
@@ -18,51 +15,22 @@ import java.util.concurrent.locks.ReadWriteLock;
 public final class Asyncs {
 	private Asyncs() {}
 
+	/** Please use {@link AsyncsKt#get(Future)} */
+	@Deprecated
 	public static <T> T get(Future<T> future) {
-		try {
-			return future.get();
-		} catch (InterruptedException | ExecutionException e) {
-			throw new RuntimeException(e);
-		}
+		return AsyncsKt.get(future);
 	}
 
+	/** Please use {@link AsyncsKt#postWait(Runnable)} */
+	@Deprecated
 	public static void postWait(Runnable runSync) {
-		Semaphore flag = new Semaphore(0);
-		Core.app.post(() -> {
-			try {
-				runSync.run();
-			} finally {
-				flag.release();
-			}
-		});
-
-		try {
-			flag.acquire();
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
+		AsyncsKt.postWait(runSync);
 	}
 
-	@SuppressWarnings("unchecked")
+	/** Please use {@link AsyncsKt#postWait(Prov)} */
+	@Deprecated
 	public static <T> T postWait(Prov<T> runSync) {
-		Semaphore flag = new Semaphore(0);
-
-		Object[] out = new Object[1];
-		Core.app.post(() -> {
-			try {
-				out[0] = runSync.get();
-			} finally {
-				flag.release();
-			}
-		});
-
-		try {
-			flag.acquire();
-		} catch (InterruptedException e) {
-			throw new RuntimeException(e);
-		}
-
-		return (T) out[0];
+		return AsyncsKt.postWait(runSync);
 	}
 
 	public static <T> T lock(Lock lock, Prov<T> prov) {

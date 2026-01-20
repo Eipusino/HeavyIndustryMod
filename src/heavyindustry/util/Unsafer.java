@@ -17,7 +17,6 @@ import arc.util.OS;
 import heavyindustry.android.field.FieldUtils;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
@@ -599,8 +598,8 @@ public final class Unsafer {
 	 * @since 1.0.9
 	 */
 	@SuppressWarnings("unchecked")
-	@Contract(value = "_ -> new", pure = true)
-	public static <T> T allocateInstance(@Nullable Class<T> type) {
+	@Contract(value = "null -> fail; _ -> new", pure = true)
+	public static <T> T allocateInstance(Class<? extends T> type) {
 		// The native part of allocateInstance does not have a null check, giving a null value can cause the JVM to crash.
 		if (type == null) throw new NullPointerException("type is null");
 		// The String class can cause strange bugs, So return an empty string directly.

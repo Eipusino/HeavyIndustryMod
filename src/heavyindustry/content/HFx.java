@@ -2618,7 +2618,6 @@ public final class HFx {
 	public static final Effect bigLaserHit = new Effect(30f, e -> {
 		Draw.color(Color.white, HPal.primary, Color.gray, Interp.pow2Out.apply(e.fin()));
 
-		//float size = e.data instanceof Float ? ((float)e.data) / 2f : 50f;
 		float size = (e.data instanceof Number num ? num.floatValue() : (e.data instanceof Sized s ? s.hitSize() : 50f)) * 1.25f;
 
 		Rand rand = Get.rand(e.id);

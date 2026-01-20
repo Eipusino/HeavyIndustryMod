@@ -24,7 +24,7 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 
 public class RelatedWeapon extends DataWeapon {
-	public static final RelatedAlt isFlying = new DefaultAlt(Core.bundle.get("infos.wen-unit-is-flying"), Unit::isFlying);
+	public static final RelatedAlt isFlying = new DefaultAlt(Core.bundle.get("info.wen-unit-is-flying"), Unit::isFlying);
 	public static final RelatedAlt none = new DefaultAlt("", u -> false);
 
 	public ShootPattern alternativeShoot;
@@ -125,8 +125,8 @@ public class RelatedWeapon extends DataWeapon {
 				weaponRotation = unit.rotation - 90 + (rotate ? mount.rotation : baseRotation),
 				mountX = unit.x + Angles.trnsx(unit.rotation - 90, x, y),
 				mountY = unit.y + Angles.trnsy(unit.rotation - 90, x, y),
-				bulletX = mountX + Angles.trnsx(weaponRotation, this.shootX + xOffset + xSpread, this.shootY + yOffset),
-				bulletY = mountY + Angles.trnsy(weaponRotation, this.shootX + xOffset + xSpread, this.shootY + yOffset),
+				bulletX = mountX + Angles.trnsx(weaponRotation, shootX + xOffset + xSpread, shootY + yOffset),
+				bulletY = mountY + Angles.trnsy(weaponRotation, shootX + xOffset + xSpread, shootY + yOffset),
 				shootAngle = bulletRotation(unit, mount, bulletX, bulletY) + angleOffset,
 				lifeScl = bullet.scaleLife ? Mathf.clamp(Mathf.dst(bulletX, bulletY, mount.aimX, mount.aimY) / bullet.range) : 1f,
 				angle = angleOffset + shootAngle + Mathf.range(inaccuracy + bullet.inaccuracy);
@@ -139,7 +139,7 @@ public class RelatedWeapon extends DataWeapon {
 			shootSound.at(bulletX, bulletY, Mathf.random(soundPitchMin, soundPitchMax));
 		}
 
-		ejectEffect.at(mountX, mountY, angle * Mathf.sign(this.x));
+		ejectEffect.at(mountX, mountY, angle * Mathf.sign(x));
 		mount.bullet.type.shootEffect.at(bulletX, bulletY, angle, bullet.hitColor, unit);
 		mount.bullet.type.smokeEffect.at(bulletX, bulletY, angle, bullet.hitColor, unit);
 

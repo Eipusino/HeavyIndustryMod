@@ -48,7 +48,7 @@ public final class HItems {
 			cost = -0.75f;
 			hardness = 4;
 		}};
-		crystallineElectronicUnit = new Item("crystalline-electronic-unit") {{
+		crystallineElectronicUnit = new Item("crystalline-electronic-unit", HPal.crystalAmmoDark) {{
 			cost = -1.75f;
 			hardness = 7;
 		}};

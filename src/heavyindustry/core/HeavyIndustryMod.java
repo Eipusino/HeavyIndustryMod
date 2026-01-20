@@ -93,8 +93,6 @@ import static heavyindustry.HVars.MOD_NAME;
 /**
  * Main entry point of the mod. Handles startup things like content loading, entity registering, and utility
  * bindings.
- * <p><strong>Until the issue with Mindustry MultiDex Mod is resolved, I will try to minimize the amount of
- * code in the mod as much as possible, which means it is unlikely to have too many built-in utilities.</strong>
  *
  * @author Eipusino
  * @see HVars
@@ -110,15 +108,13 @@ public final class HeavyIndustryMod extends Mod {
 	static {
 		loadLibrary();
 
+		// This situation usually does not occur...
 		if (HVars.platformImpl == null) {
-			// This situation usually does not occur...
 			HVars.platformImpl = new DefaultImpl();
 		}
 	}
 
 	public HeavyIndustryMod() {
-		if (instance != null) return;
-
 		instance = this;
 
 		if (Core.graphics != null && !Core.graphics.isGL30Available()) {
@@ -336,10 +332,6 @@ public final class HeavyIndustryMod extends Mod {
 		} finally {
 			Log.info("Loaded '@' in @ms", sourceFile.name(), Time.elapsed());
 		}
-	}
-
-	public static void addErr(Throwable t) {
-		if (t != null) errors.add(t);
 	}
 
 	private static void loadLibrary() {

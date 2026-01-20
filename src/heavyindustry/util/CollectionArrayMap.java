@@ -571,7 +571,7 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Itera
 	}
 
 	@Override
-	public @NotNull Set<Entry<K, V>> entrySet() {
+	public @NotNull MapEntrySet entrySet() {
 		return new MapEntrySet();
 	}
 

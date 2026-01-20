@@ -61,7 +61,8 @@ public final class Enums {
 	 *
 	 * @param name    Name of enumeration
 	 * @param ordinal The ordinal number of enumeration
-	 * @param param   Parameters passed to constructor
+	 * @param param   Parameters passed to constructor. if it is an empty array or {@code null}, default
+	 *                parameters will be used
 	 * @return An enumeration instance with a specified name and ordinal number
 	 */
 	@SuppressWarnings("unchecked")
@@ -71,9 +72,9 @@ public final class Enums {
 
 		if (paramType != null && paramType.length > 0) {
 			tmpParamType.clear(2);
-			tmpParamType.addAll(paramType);
+			tmpParamType.add(paramType);
 
-			asType = tmpParamType.toArray(Class.class);
+			asType = tmpParamType.toArray(new Class[paramType.length + 2]);
 		} else {
 			asType = defaultEnumParamType;
 		}
@@ -196,7 +197,7 @@ public final class Enums {
 
 			values.add(ordinal, instance);
 
-			T[] value = values.toArray((T[]) Array.newInstance(type, 0));
+			T[] value = values.toArray((T[]) Array.newInstance(type, values.size()));
 
 			if (!OS.isAndroid) {
 				valuesFieldMap2.get(type, () -> {

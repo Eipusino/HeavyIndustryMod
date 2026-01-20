@@ -782,7 +782,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	}
 
 	@Override
-	public @NotNull Set<Entry<K, V>> entrySet() {
+	public @NotNull EntrySet entrySet() {
 		return new EntrySet();
 	}
 

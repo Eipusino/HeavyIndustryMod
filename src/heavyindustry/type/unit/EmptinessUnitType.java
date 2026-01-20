@@ -283,7 +283,7 @@ public class EmptinessUnitType extends UnitType2 {
 
 				t.table(ft -> {
 					ft.left().defaults().left();
-					ft.add(Core.bundle.format("infos.shots", 2));
+					ft.add(Core.bundle.format("info.shots", 2));
 					ft.button(Icon.downOpen, Styles.emptyi, () -> coll.toggle(false)).update(i -> i.getStyle().imageUp = (!coll.isCollapsed() ? Icon.upOpen : Icon.downOpen)).size(8).padLeft(16f).expandX();
 				});
 				t.row();

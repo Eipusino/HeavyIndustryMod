@@ -95,7 +95,7 @@ public class MultiTractorBeamTurret extends TractorBeamTurret {
 
 			if (target != null && target.within(this, range + target.hitSize / 2f) && target.team() != team && target.checkTarget(targetAir, targetGround) && efficiency > 0.02f) {
 				Units.nearbyEnemies(team, Tmp.r1.setSize((range + target.hitSize / 2f) * 2).setCenter(x, y), unit -> {
-					if (targets.size < maxAttract && !targets.containsKey(unit) && Angles.within(rotation, angleTo(unit), shootCone)) {
+					if (targets.size() < maxAttract && !targets.containsKey(unit) && Angles.within(rotation, angleTo(unit), shootCone)) {
 						targets.put(unit, new Vec3(unit.x, unit.y, 0f));
 					}
 				});
@@ -110,12 +110,13 @@ public class MultiTractorBeamTurret extends TractorBeamTurret {
 			Draw.z(Layer.bullet);
 			//draw laser if applicable
 			for (Unit unit : targets.keySet()) {
-				if (unit == null) continue;
-				float ang = angleTo(targets.get(unit).x, targets.get(unit).y);
+				Vec3 vec = targets.get(unit);
+				if (vec == null) continue;
+				//float ang = angleTo(vec.x, vec.y);
 				Draw.mixcol();
 				Draw.mixcol(laserColor, Mathf.absin(4f, 0.6f));
 				Tmp.v1.trns(rotation, shootLength).add(x, y);
-				Drawf.laser(laser, laserEnd, Tmp.v1.x, Tmp.v1.y, targets.get(unit).x, targets.get(unit).y, targets.get(unit).z * efficiency * laserWidth);
+				Drawf.laser(laser, laserEnd, Tmp.v1.x, Tmp.v1.y, vec.x, vec.y, vec.z * efficiency * laserWidth);
 			}
 		}
 	}

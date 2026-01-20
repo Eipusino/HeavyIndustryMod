@@ -39,8 +39,8 @@ public final class IconLoader {
 
 		for (var entry : iconProperties.entrySet()) {
 			Object key = entry.getKey(), value = entry.getValue();
-			if (key instanceof String codePointStr && value instanceof String getValue) {
-				String[] valueParts = getValue.split("\\|");
+			if (key instanceof String codePointStr && value instanceof String valuePart) {
+				String[] valueParts = valuePart.split("\\|");
 				if (valueParts.length < 2) {
 					continue;
 				}

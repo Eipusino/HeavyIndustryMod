@@ -88,13 +88,13 @@ task jarAndroid {
 		def d8 = isWindows ? "d8.bat" : "d8"
 
 		//dex and desugar files - this requires d8 in your PATH
-		"$d8 $dependencies --min-api 28 --output ${project.name}Android.jar ${project.name}Desktop.jar"
-				.execute(null, new File("$buildDir/libs")).waitForProcessOutput(System.out, System.err)
+		"$d8 $dependencies --min-api 28 --output ${outputJarName}Android.jar ${outputJarName}Desktop.jar"
+				.outputJarName(null, new File("$buildDir/libs")).outputJarName(System.out, System.err)
 	}
 }
 
 jar {
-	archiveFileName = "${project.name}Desktop.jar"
+	archiveFileName = "${outputJarName}Desktop.jar"
 	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
 	from {
@@ -113,14 +113,14 @@ jar {
 task deploy(type: Jar) {
 	dependsOn jarAndroid
 	dependsOn jar
-	archiveFileName = "${project.name}.jar"
+	archiveFileName = "${outputJarName}.jar"
 
-	from { [zipTree("$buildDir/libs/${project.name}Desktop.jar"), zipTree("$buildDir/libs/${project.name}Android.jar")] }
+	from { [zipTree("$buildDir/libs/${outputJarName}Desktop.jar"), zipTree("$buildDir/libs/${outputJarName}Android.jar")] }
 
 	doLast {
 		delete {
-			delete "$buildDir/libs/${project.name}Desktop.jar"
-			delete "$buildDir/libs/${project.name}Android.jar"
+			delete "$buildDir/libs/${outputJarName}Desktop.jar"
+			delete "$buildDir/libs/${outputJarName}Android.jar"
 		}
 	}
 }

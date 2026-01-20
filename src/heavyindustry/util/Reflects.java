@@ -200,13 +200,14 @@ public final class Reflects {
 		return types;
 	}
 
+	/** Default constructor without parameters. */
 	public static <T> T make(Class<T> type) {
 		return make(type, Constant.EMPTY_CLASS, Constant.EMPTY_OBJECT);
 	}
 
 	/** Reflectively instantiates a type without throwing exceptions. */
 	@Contract(pure = true)
-	public static <T> T make(Constructor<T> cons, Object[] args) {
+	public static <T> T make(Constructor<T> cons, Object... args) {
 		try {
 			return cons.newInstance(args);
 		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
@@ -511,7 +512,7 @@ public final class Reflects {
 		}
 	}
 
-	public static int getAddress(Buffer buffer) {
+	public static int getAddress(@NotNull Buffer buffer) {
 		try {
 			if (addressField == null) {
 				addressField = Buffer.class.getDeclaredField("address");
