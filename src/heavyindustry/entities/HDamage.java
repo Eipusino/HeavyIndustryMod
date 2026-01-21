@@ -1012,7 +1012,8 @@ public final class HDamage {
 
 		if (sort != null) {
 			hit = false;
-			hitEffects.sort(he -> sort.get(he.entity)).each(he -> {
+			hitEffects.sort(he -> sort.get(he.entity));
+			hitEffects.each(he -> {
 				if (!stopSort || !hit) {
 					hit = hitHandler.get(he.x, he.y, he.entity, true);
 				}

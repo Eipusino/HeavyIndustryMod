@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+/** @since 1.0.7 */
 public class CharHolder<V> implements Cloneable, Comparable<CharHolder<?>> {
 	public char key;
 	public V value;

@@ -86,17 +86,17 @@ public class EndNukeBulletType extends BasicBulletType {
 		HEntity.rayCastCircle(b.x, b.y, 480f, t -> t.build != null && t.build.team != team && !Mathf.within(b.x, b.y, t.worldx(), t.worldy(), 150f), t -> {
 			float dst = 1f - Mathm.clamp(Mathf.dst(bx, by, t.x * Vars.tilesize, t.y * Vars.tilesize) / 480f);
 			if (Mathf.chance(Mathf.pow(dst, 2f) * 0.75f)) Fires.create(t);
-		}, t -> {
-			float nx = t.x * Vars.tilesize, ny = t.y * Vars.tilesize;
+		}, tile -> {
+			float nx = tile.x * Vars.tilesize, ny = tile.y * Vars.tilesize;
 			float ang = Angles.angle(bx, by, nx, ny);
 
 			HFx.desNukeShockSmoke.at(nx, ny, ang);
-		}, bl -> {
-			//float d = lethal ? 12000f + bl.maxHealth / 20f : bl.health / 1.5f;
-			float d = 21000f + bl.maxHealth / 5f;
+		}, build -> {
+			//float d = lethal ? 12000f + build.maxHealth / 20f : build.health / 1.5f;
+			float d = 21000f + build.maxHealth / 5f;
 
-			bl.health -= d;
-			if (bl.health <= 0f) bl.kill();
+			build.health -= d;
+			if (build.health <= 0f) build.kill();
 		}, arr);
 
 		lastMax = Vars.headless ? -1 : Core.settings.getInt("vaporize-batch", 100);

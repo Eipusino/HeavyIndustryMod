@@ -34,7 +34,7 @@
 
 # 关于模组
 
-**[平台反射](https://github.com/Eipusino/LH)，模组部分反射功能多平台实现。**
+**[平台相关实现](https://github.com/Eipusino/LH)，模组部分反射功能多平台实现（Impl.jar）。**
 
 ---
 

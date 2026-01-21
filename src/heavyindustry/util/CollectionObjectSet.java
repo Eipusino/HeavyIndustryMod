@@ -3,7 +3,6 @@ package heavyindustry.util;
 import arc.func.Boolf;
 import arc.func.Cons;
 import arc.math.Mathf;
-import arc.util.Eachable;
 import heavyindustry.math.Mathm;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import static heavyindustry.util.Constant.PRIME2;
 import static heavyindustry.util.Constant.PRIME3;
@@ -29,10 +29,10 @@ import static heavyindustry.util.Constant.PRIME3;
  *
  * @author Nathan Sweet
  */
-public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E>, Cloneable {
+public class CollectionObjectSet<E> extends AbstractSet<E> implements ISet<E>, Cloneable {
 	public int size;
 
-	public final Class<?> keyComponentType;
+	public final Class<?> componentType;
 
 	public E[] keyTable;
 	public int capacity, stashSize;
@@ -82,13 +82,13 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E
 		stashCapacity = Math.max(3, (int) Math.ceil(Math.log(capacity)) * 2);
 		pushIterations = Mathm.clamp(capacity, 8, (int) Math.sqrt(capacity) / 8);
 
-		keyComponentType = type;
+		componentType = type;
 		keyTable = (E[]) Array.newInstance(type, capacity + stashCapacity);
 	}
 
 	/** Creates a new set identical to the specified set. */
 	public CollectionObjectSet(CollectionObjectSet<? extends E> set) {
-		this(set.keyComponentType, (int) Math.floor(set.capacity * set.loadFactor), set.loadFactor);
+		this(set.componentType, (int) Math.floor(set.capacity * set.loadFactor), set.loadFactor);
 		stashSize = set.stashSize;
 		System.arraycopy(set.keyTable, 0, keyTable, 0, set.keyTable.length);
 		size = set.size;
@@ -114,7 +114,7 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E
 
 	/** Allocates a new set with all elements that match the predicate. */
 	public CollectionObjectSet<E> select(Boolf<E> predicate) {
-		CollectionObjectSet<E> arr = new CollectionObjectSet<>(keyComponentType);
+		CollectionObjectSet<E> arr = new CollectionObjectSet<>(componentType);
 		for (E e : this) {
 			if (predicate.get(e)) arr.add(e);
 		}
@@ -133,6 +133,11 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E
 		} catch (CloneNotSupportedException e) {
 			return new CollectionObjectSet<>(this);
 		}
+	}
+
+	@Override
+	public Class<?> componentType() {
+		return componentType;
 	}
 
 	@Override
@@ -203,27 +208,32 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E
 	}
 
 	@SuppressWarnings("unchecked")
+	@Override
 	public void addAll(E... array) {
 		addAll(array, 0, array.length);
 	}
 
+	@Override
 	public void addAll(E[] array, int offset, int length) {
 		ensureCapacity(length);
 		for (int i = offset, n = i + length; i < n; i++)
 			add(array[i]);
 	}
 
-	public void addAll(CollectionObjectSet<? extends E> set) {
-		ensureCapacity(set.size);
+	@Override
+	public void addAll(Set<? extends E> set) {
+		ensureCapacity(set.size());
 		for (E key : set)
 			add(key);
 	}
 
+	@Override
 	public void removeAll(E[] array, int offset, int length) {
 		for (int i = offset, n = i + length; i < n; i++)
 			remove(array[i]);
 	}
 
+	@Override
 	public void removeAll(E[] array) {
 		for (E e : array) {
 			remove(e);
@@ -394,6 +404,11 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E
 		return size == 0;
 	}
 
+	@Override
+	public boolean any() {
+		return size > 0;
+	}
+
 	/**
 	 * Reduces the size of the backing arrays to be the specified capacity or less. If the capacity is already less, nothing is
 	 * done. If the set contains more items than the specified capacity, the next highest power of two capacity is used instead.
@@ -475,6 +490,7 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E
 		return null;
 	}
 
+	@Override
 	public E first() {
 		for (int i = 0, n = capacity + stashSize; i < n; i++)
 			if (keyTable[i] != null) return keyTable[i];
@@ -505,7 +521,7 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E
 
 		E[] oldKeyTable = keyTable;
 
-		keyTable = (E[]) Array.newInstance(keyComponentType, newSize + stashCapacity);
+		keyTable = (E[]) Array.newInstance(componentType, newSize + stashCapacity);
 
 		int oldSize = size;
 		size = 0;
@@ -665,7 +681,7 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E
 
 		/** Returns a new array containing the remaining values. */
 		public CollectionList<E> toList() {
-			return toList(new CollectionList<>(true, size, keyComponentType));
+			return toList(new CollectionList<>(true, size, componentType));
 		}
 	}
 }

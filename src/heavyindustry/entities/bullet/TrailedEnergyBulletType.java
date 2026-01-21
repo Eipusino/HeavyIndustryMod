@@ -46,8 +46,7 @@ public class TrailedEnergyBulletType extends AccelBulletType {
 
 	@Override
 	public void despawned(Bullet b) {
-		if (!Vars.headless && (b.data instanceof Vec2Seq[])) {
-			Vec2Seq[] pointsArr = (Vec2Seq[]) b.data();
+		if (!Vars.headless && b.data instanceof Vec2Seq[] pointsArr) {
 			for (Vec2Seq points : pointsArr) {
 				points.add(b.x, b.y);
 				if (despawnBlinkTrail || (b.absorbed && hitBlinkTrail)) {
@@ -77,21 +76,21 @@ public class TrailedEnergyBulletType extends AccelBulletType {
 	public void hit(Bullet b) {
 		super.hit(b);
 
-		if (Vars.headless || !(b.data instanceof Vec2Seq[])) return;
-		Vec2Seq[] pointsArr = (Vec2Seq[]) b.data();
-		for (Vec2Seq points : pointsArr) {
-			points.add(b.x, b.y);
-			if (hitBlinkTrail) {
-				PositionLightning.createBoltEffect(hitColor, tracerStroke * 2f, points);
-				Vec2 v = points.firstTmp();
-				HFx.hitEmpColorSpark.at(v.x, v.y, hitColor);
-			} else {
-				points.add(tracerStroke, tracerFadeOffset);
-				HFx.lightningFade.at(b.x, b.y, tracerStrokeOffset, hitColor, points);
+		if (!Vars.headless && b.data instanceof Vec2Seq[] pointsArr) {
+			for (Vec2Seq points : pointsArr) {
+				points.add(b.x, b.y);
+				if (hitBlinkTrail) {
+					PositionLightning.createBoltEffect(hitColor, tracerStroke * 2f, points);
+					Vec2 v = points.firstTmp();
+					HFx.hitEmpColorSpark.at(v.x, v.y, hitColor);
+				} else {
+					points.add(tracerStroke, tracerFadeOffset);
+					HFx.lightningFade.at(b.x, b.y, tracerStrokeOffset, hitColor, points);
+				}
 			}
-		}
 
-		b.data = null;
+			b.data = null;
+		}
 	}
 
 	@Override
@@ -111,8 +110,7 @@ public class TrailedEnergyBulletType extends AccelBulletType {
 	public void drawTrail(Bullet b) {
 		super.drawTrail(b);
 
-		if ((b.data instanceof Vec2Seq[])) {
-			Vec2Seq[] pointsArr = (Vec2Seq[]) b.data();
+		if (b.data instanceof Vec2Seq[] pointsArr) {
 			for (Vec2Seq points : pointsArr) {
 				if (points.size() < 2) return;
 				Draw.color(hitColor);

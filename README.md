@@ -37,7 +37,7 @@
 
 # Regarding Mod
 
-**[Platform Reflection](https://github.com/Eipusino/LH), Reflection function implemented on multiple platforms in the module section.**
+**[Platform Related Implementation](https://github.com/Eipusino/LH), Reflection function implemented on multiple platforms in the module section (Impl.jar).**
 
 ---
 

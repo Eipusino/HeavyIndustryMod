@@ -12,6 +12,7 @@ import arc.util.Http;
 import arc.util.Log;
 import heavyindustry.util.ref.FloatReference;
 import heavyindustry.util.ref.IntReference;
+import heavyindustry.util.ref.ObjectHolder;
 import heavyindustry.util.ref.ObjectReference;
 import org.jetbrains.annotations.Contract;
 
@@ -40,7 +41,7 @@ public final class URLDownloader {
 		IntReference counter = new IntReference();
 		ObjectReference<Runnable> get = new ObjectReference<>();
 
-		for (var entry : urlReplacers) {
+		for (ObjectHolder<String, String> entry : urlReplacers) {
 			if (url.startsWith(entry.key)) {
 				url = url.replaceFirst(entry.key, entry.value);
 			}
@@ -78,7 +79,7 @@ public final class URLDownloader {
 	}
 
 	@Contract(value = "_, _ -> new", pure = true)
-	public static TextureRegion downloadImg(String url, TextureRegion errDef) {
+	public static TextureRegion downloadImage(String url, TextureRegion errDef) {
 		TextureRegion result = new TextureRegion(errDef);
 
 		retryDown(url, res -> {

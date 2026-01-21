@@ -10,6 +10,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.io.HTypeIO;
 import mindustry.entities.TargetPriority;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
@@ -183,11 +184,9 @@ public class PayloadJunction extends Block {
 			}
 		}
 
-		public void moved() {
-		}
+		public void moved() {}
 
-		public void moveFailed() {
-		}
+		public void moveFailed() {}
 
 		@Override
 		public void draw() {
@@ -289,7 +288,7 @@ public class PayloadJunction extends Block {
 
 			for (int i = 0; i < 2; i++) {
 				write.i(from[i]);
-				Payload.write(payloads[i], write);
+				HTypeIO.write(payloads[i], write);
 			}
 		}
 
@@ -299,7 +298,7 @@ public class PayloadJunction extends Block {
 
 			for (int i = 0; i < 2; i++) {
 				from[i] = read.i();
-				payloads[i] = Payload.read(read);
+				payloads[i] = HTypeIO.read(read);
 			}
 		}
 	}

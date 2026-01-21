@@ -4,7 +4,7 @@ import arc.math.Angles;
 import arc.math.Mathf;
 import arc.math.geom.Position;
 
-public interface IPos extends Position {
+public interface IPosition extends Position {
 	@Override
 	default float angleTo(Position other) {
 		return Angles.angle(getX(), getY(), other.getX(), other.getY());

@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+/** @since 1.0.7 */
 public class LongHolder<V> implements Cloneable, Comparable<LongHolder<?>> {
 	public long key;
 	public V value;

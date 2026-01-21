@@ -4,6 +4,7 @@ import arc.util.pooling.Pool.Poolable;
 
 import java.io.Serializable;
 
+/** @since 1.0.8 */
 public class ByteReference extends Number implements Serializable, Poolable {
 	private static final long serialVersionUID = -5505364929950384247l;
 

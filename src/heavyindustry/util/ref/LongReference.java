@@ -4,6 +4,7 @@ import arc.util.pooling.Pool.Poolable;
 
 import java.io.Serializable;
 
+/** @since 1.0.8 */
 public class LongReference extends Number implements Serializable, Poolable {
 	private static final long serialVersionUID = 6421798427509969426l;
 

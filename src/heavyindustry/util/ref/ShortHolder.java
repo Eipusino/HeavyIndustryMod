@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+/** @since 1.0.7 */
 public class ShortHolder<V> implements Cloneable, Comparable<ShortHolder<?>> {
 	public short key;
 	public V value;

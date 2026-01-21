@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import sun.misc.Unsafe;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -604,6 +605,7 @@ public final class Unsafer {
 		if (type == null) throw new NullPointerException("type is null");
 		// The String class can cause strange bugs, So return an empty string directly.
 		if (type == String.class) return (T) "";
+		if (type.isArray()) return (T) Array.newInstance(type.componentType(), 0);
 
 		try {
 			return (T) unsafe.allocateInstance(type);

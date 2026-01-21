@@ -4,6 +4,11 @@ import arc.util.pooling.Pool.Poolable;
 
 import java.io.Serializable;
 
+/**
+ * If atomic operations are required, please use {@link heavyindustry.util.concurrent.AtomicFloat}.
+ *
+ * @since 1.0.8
+ */
 public class FloatReference extends Number implements Serializable, Poolable {
 	private static final long serialVersionUID = 2272494129790516325l;
 

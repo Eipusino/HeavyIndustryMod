@@ -14,6 +14,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import heavyindustry.io.HTypeIO;
 import heavyindustry.math.Mathm;
 import mindustry.Vars;
 import mindustry.content.Fx;
@@ -396,7 +397,7 @@ public class PayloadCrane extends Block {
 			write.f(target.x);
 			write.f(target.y);
 
-			Payload.write(payload, write);
+			HTypeIO.write(payload, write);
 
 			write.i(cranePoints.size);
 			for (int i = 0; i < cranePoints.size; i++) {
@@ -414,7 +415,7 @@ public class PayloadCrane extends Block {
 
 			target.set(read.f(), read.f());
 
-			payload = Payload.read(read);
+			payload = HTypeIO.read(read);
 
 			int pointsSize = read.i();
 			for (int i = 0; i < pointsSize; i++) {

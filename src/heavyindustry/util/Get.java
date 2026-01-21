@@ -36,7 +36,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.pooling.Pool.Poolable;
 import heavyindustry.graphics.HPal;
-import heavyindustry.math.IPos;
+import heavyindustry.math.IPosition;
 import mindustry.Vars;
 import mindustry.content.StatusEffects;
 import mindustry.core.UI;
@@ -576,7 +576,7 @@ public final class Get {
 		}
 	}
 
-	public static class Pos implements IPos, Poolable {
+	public static class Pos implements IPosition, Poolable {
 		public float x, y;
 
 		public Pos() {}

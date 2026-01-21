@@ -7,6 +7,7 @@ import heavyindustry.math.Mathm;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
+import java.lang.reflect.Array;
 import java.util.AbstractList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,7 +22,7 @@ import java.util.NoSuchElementException;
  *
  * @since 1.0.8
  */
-public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> {
+public class UnmodifiableList<E> extends AbstractList<E> implements IList<E> {
 	final E[] items;
 
 	final int size;
@@ -57,6 +58,11 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 	}
 
 	@Override
+	public Class<?> componentType() {
+		return items.getClass().getComponentType();
+	}
+
+	@Override
 	public E get(int index) {
 		if (index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
 		return items[index];
@@ -65,6 +71,16 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 	@Override
 	public int size() {
 		return size;
+	}
+
+	@Override
+	public boolean any() {
+		return size > 0;
+	}
+
+	@Override
+	public E first() {
+		return items[0];
 	}
 
 	/** Returns the element at the specified position in this list, but does not replace the element. */
@@ -92,7 +108,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 
 	/** @return Does not support any change operations, always returns false. */
 	@Override
-	public boolean addAll(int index, Collection<? extends E> c) {
+	public boolean addAll(int index, @NotNull Collection<? extends E> c) {
 		return false;
 	}
 
@@ -132,6 +148,24 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 	/** No modification operations are supported, nothing will happen. */
 	@Override
 	public void clear() {}
+
+	@Override
+	public boolean contains(Object o) {
+		return contains(o, false);
+	}
+
+	@Override
+	public boolean contains(Object o, boolean identity) {
+		int i = size - 1;
+		if (identity || o == null) {
+			while (i >= 0)
+				if (items[i--] == o) return true;
+		} else {
+			while (i >= 0)
+				if (o.equals(items[i--])) return true;
+		}
+		return false;
+	}
 
 	@Override
 	public int indexOf(Object o) {
@@ -182,6 +216,26 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Eachable<E> 
 	@Override
 	public E @NotNull [] toArray() {
 		return Arrays.copyOf(items, items.length);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T @NotNull [] toArray(Class<?> type) {
+		T[] result = (T[]) Array.newInstance(type, size);
+		System.arraycopy(items, 0, result, 0, size);
+		return result;
+	}
+
+	@Override
+	public <T> T @NotNull [] toArray(T[] a) {
+		if (a.length < size) {
+			// Make a new array of a's runtime type, but my contents:
+			return toArray(a.getClass());
+		}
+
+		System.arraycopy(items, 0, a, 0, size);
+		if (a.length > size)
+			a[size] = null;
+		return a;
 	}
 
 	/** Convert this list to a {@code CollectionsList}. */

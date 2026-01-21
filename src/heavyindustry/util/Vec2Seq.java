@@ -52,6 +52,10 @@ public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 		coordinates.size = vec2s.length;
 	}
 
+	public static Vec2Seq with(float... vec2s) {
+		return new Vec2Seq(vec2s);
+	}
+
 	public int size() {
 		return coordinates.size / 2;
 	}
@@ -66,6 +70,12 @@ public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 
 	public boolean any() {
 		return size() > 0;
+	}
+
+	public void add(float[] arr) {
+		for (int i = 0; i < arr.length / 2; i++) {
+			add(arr[i], arr[i + 1]);
+		}
 	}
 
 	public void add(float x, float y) {
@@ -86,7 +96,7 @@ public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 		}
 	}
 
-	public void addAll(float[] arr) {
+	public void addAll(float... arr) {
 		for (int i = 0; i < arr.length / 2; i++) {
 			add(arr[i], arr[i + 1]);
 		}

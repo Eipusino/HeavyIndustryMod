@@ -20,7 +20,8 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import heavyindustry.graphics.Drawn;
 import heavyindustry.graphics.HShaders;
-import heavyindustry.math.IPos;
+import heavyindustry.io.HTypeIO;
+import heavyindustry.math.IPosition;
 import mindustry.core.Renderer;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -459,7 +460,7 @@ public class PayloadRail extends PayloadBlock {
 		}
 	}
 
-	public class RailPayload implements IPos {
+	public class RailPayload implements IPosition {
 		public float x, y;
 		public Payload payload;
 		public float dir;
@@ -544,7 +545,7 @@ public class PayloadRail extends PayloadBlock {
 		public void write(Writes write) {
 			write.f(x);
 			write.f(y);
-			Payload.write(payload, write);
+			HTypeIO.write(payload, write);
 			write.f(payload.x());
 			write.f(payload.y());
 			write.f(payload.rotation());
@@ -553,8 +554,13 @@ public class PayloadRail extends PayloadBlock {
 		public void read(Reads read) {
 			x = read.f();
 			y = read.f();
-			payload = Payload.read(read);
-			payload.set(read.f(), read.f(), read.f());
+			payload = HTypeIO.read(read);
+
+			float x = read.f(), y = read.f(), rotation = read.f();
+
+			if (payload != null) {
+				payload.set(x, y, rotation);
+			}
 		}
 	}
 }

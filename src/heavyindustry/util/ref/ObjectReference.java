@@ -5,6 +5,7 @@ import arc.util.pooling.Pool.Poolable;
 import java.io.Serializable;
 import java.util.Objects;
 
+/** @since 1.0.8 */
 public class ObjectReference<T> implements Serializable, Poolable {
 	private static final long serialVersionUID = -9054478421223311650l;
 

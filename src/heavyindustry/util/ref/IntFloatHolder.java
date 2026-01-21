@@ -2,6 +2,7 @@ package heavyindustry.util.ref;
 
 import org.jetbrains.annotations.NotNull;
 
+/** @since 1.0.7 */
 public class IntFloatHolder implements Cloneable, Comparable<IntFloatHolder> {
 	public int key;
 	public float value;

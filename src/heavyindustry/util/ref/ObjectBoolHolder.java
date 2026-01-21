@@ -4,6 +4,7 @@ import heavyindustry.util.Objects2;
 
 import java.util.Objects;
 
+/** @since 1.0.7 */
 public class ObjectBoolHolder<K> implements Cloneable {
 	public K key;
 	public boolean value;

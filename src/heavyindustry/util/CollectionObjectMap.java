@@ -5,7 +5,6 @@ import arc.func.Cons2;
 import arc.func.Prov;
 import arc.math.Mathf;
 import arc.util.ArcRuntimeException;
-import arc.util.Eachable;
 import heavyindustry.math.Mathm;
 import heavyindustry.util.ref.ObjectHolder;
 import org.jetbrains.annotations.Contract;
@@ -32,7 +31,7 @@ import static heavyindustry.util.Constant.PRIME3;
  *
  * @author Eipusino
  */
-public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iterable<ObjectHolder<K, V>>, Eachable<ObjectHolder<K, V>>, Cloneable {
+public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements IIterable<ObjectHolder<K, V>>, IMap<K, V>, Cloneable {
 	public int size;
 
 	public final Class<?> keyComponentType;
@@ -125,7 +124,18 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		putAll(map);
 	}
 
+	@Override
+	public Class<?> keyComponentType() {
+		return keyComponentType;
+	}
+
+	@Override
+	public Class<?> valueComponentType() {
+		return valueComponentType;
+	}
+
 	/** Iterates through key/value pairs. */
+	@Override
 	public void each(Cons2<? super K, ? super V> cons) {
 		for (ObjectHolder<K, V> entry : iterator()) {
 			cons.get(entry.key, entry.value);
@@ -551,6 +561,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	 * @param identity If true, uses == to compare the specified value with values in the map. If false, uses
 	 *                 {@link #equals(Object)}.
 	 */
+	@Override
 	public boolean containsValue(@Nullable Object value, boolean identity) {
 		if (value == null) {
 			for (int i = capacity + stashSize; i-- > 0; )

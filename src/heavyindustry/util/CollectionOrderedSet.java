@@ -34,7 +34,7 @@ public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
 
 	public CollectionOrderedSet(CollectionObjectSet<? extends E> set) {
 		super(set);
-		setList(set.keyComponentType, set.capacity);
+		setList(set.componentType, set.capacity);
 	}
 
 	protected void setList(Class<?> keyType, int capacity) {

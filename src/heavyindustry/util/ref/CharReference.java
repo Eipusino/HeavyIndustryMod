@@ -4,6 +4,7 @@ import arc.util.pooling.Pool.Poolable;
 
 import java.io.Serializable;
 
+/** @since 1.0.8 */
 public class CharReference implements Serializable, Poolable {
 	private static final long serialVersionUID = -6890675570138946042l;
 

@@ -8,12 +8,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 
-public class ObjectTable<K, V> implements Iterable<ObjectHolder<K, V>>, Eachable<ObjectHolder<K, V>> {
+public class ObjectTable<K, V> implements Iterable<ObjectHolder<K, V>>, Eachable<ObjectHolder<K, V>>, Cloneable {
 	public final Class<?> keyComponentType;
 	public final Class<?> valueComponentType;
 
-	protected final CollectionObjectMap<K, V> map12;
-	protected final CollectionObjectMap<V, K> map21;
+	protected CollectionObjectMap<K, V> map12;
+	protected CollectionObjectMap<V, K> map21;
 
 	public ObjectTable(Class<?> keyType, Class<?> valueType) {
 		keyComponentType = keyType;
@@ -21,6 +21,18 @@ public class ObjectTable<K, V> implements Iterable<ObjectHolder<K, V>>, Eachable
 
 		map12 = new CollectionObjectMap<>(keyComponentType, valueComponentType);
 		map21 = new CollectionObjectMap<>(valueComponentType, keyComponentType);
+	}
+
+	@SuppressWarnings("unchecked")
+	public ObjectTable<K, V> copy() {
+		try {
+			ObjectTable<K, V> out = (ObjectTable<K, V>) super.clone();
+			out.map12 = map12.copy();
+			out.map21 = map21.copy();
+			return out;
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public int size() {

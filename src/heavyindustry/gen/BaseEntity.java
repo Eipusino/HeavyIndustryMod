@@ -3,7 +3,7 @@ package heavyindustry.gen;
 import arc.math.geom.Position;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import heavyindustry.math.IPos;
+import heavyindustry.math.IPosition;
 import heavyindustry.util.CollectionObjectMap;
 import heavyindustry.util.ExtraVariable;
 import mindustry.Vars;
@@ -19,7 +19,7 @@ import mindustry.world.blocks.environment.Floor;
 
 import java.util.Map;
 
-public abstract class BaseEntity implements Drawc, IPos, ExtraVariable {
+public abstract class BaseEntity implements Drawc, IPosition, ExtraVariable {
 	public Map<String, Object> extraVar = new CollectionObjectMap<>(String.class, Object.class);
 
 	public float x = 0, y = 0, drawSize = 40;

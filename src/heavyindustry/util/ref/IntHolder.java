@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+/** @since 1.0.7 */
 public class IntHolder<V> implements Cloneable, Comparable<IntHolder<?>> {
 	public int key;
 	public V value;

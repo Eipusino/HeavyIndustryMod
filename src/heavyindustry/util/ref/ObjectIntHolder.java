@@ -2,6 +2,7 @@ package heavyindustry.util.ref;
 
 import java.util.Objects;
 
+/** @since 1.0.7 */
 public class ObjectIntHolder<K> implements Cloneable {
 	public K key;
 	public int value;
