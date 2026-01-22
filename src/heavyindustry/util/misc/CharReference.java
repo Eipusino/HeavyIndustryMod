@@ -1,4 +1,4 @@
-package heavyindustry.util.ref;
+package heavyindustry.util.misc;
 
 import arc.util.pooling.Pool.Poolable;
 

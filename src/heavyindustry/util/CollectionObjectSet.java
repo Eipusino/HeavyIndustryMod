@@ -466,7 +466,7 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements ISet<E>, C
 
 	/** @return May be null. */
 	@Contract(value = "null -> null")
-	public E get(@Nullable E key) {
+	public E get(@Nullable Object key) {
 		if (key == null) return null;
 
 		int hashCode = key.hashCode();

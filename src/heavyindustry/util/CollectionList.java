@@ -327,7 +327,7 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	}
 
 	@Override
-	public E min(Comparator<E> func) {
+	public E min(Comparator<? super E> func) {
 		E result = null;
 		for (int i = 0; i < size; i++) {
 			E t = items[i];
@@ -339,7 +339,7 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	}
 
 	@Override
-	public E max(Comparator<E> func) {
+	public E max(Comparator<? super E> func) {
 		E result = null;
 		for (int i = 0; i < size; i++) {
 			E t = items[i];
@@ -367,7 +367,7 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	}
 
 	@Override
-	public E min(Boolf<E> filter, Comparator<E> func) {
+	public E min(Boolf<E> filter, Comparator<? super E> func) {
 		E result = null;
 		for (int i = 0; i < size; i++) {
 			E t = items[i];

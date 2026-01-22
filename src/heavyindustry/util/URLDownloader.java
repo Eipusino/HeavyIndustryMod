@@ -10,10 +10,10 @@ import arc.graphics.Texture.TextureFilter;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Http;
 import arc.util.Log;
-import heavyindustry.util.ref.FloatReference;
-import heavyindustry.util.ref.IntReference;
-import heavyindustry.util.ref.ObjectHolder;
-import heavyindustry.util.ref.ObjectReference;
+import heavyindustry.util.misc.FloatReference;
+import heavyindustry.util.misc.IntReference;
+import heavyindustry.util.misc.ObjectHolder;
+import heavyindustry.util.misc.ObjectReference;
 import org.jetbrains.annotations.Contract;
 
 import java.io.InputStream;

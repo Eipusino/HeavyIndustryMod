@@ -36,6 +36,7 @@ import heavyindustry.math.Mathm;
 import heavyindustry.util.BoolGrid;
 import heavyindustry.util.CollectionList;
 import heavyindustry.util.ValueMap;
+import heavyindustry.util.misc.IntReference;
 import mindustry.Vars;
 import mindustry.ai.types.MissileAI;
 import mindustry.core.World;
@@ -95,7 +96,7 @@ public final class HDamage {
 		current.damage(power);
 		hitSound.at(current.x, current.y, Mathf.random(0.8f, 1.1f));
 		// Scales down width based on percent of power left
-		float w = width * power / (initialPower);
+		float powerWidth = width * power / (initialPower);
 
 		HFx.chainLightning.at(current.x, current.y, 0, color, new HFx.VisualLightningHolder() {
 			@Override
@@ -110,7 +111,7 @@ public final class HDamage {
 
 			@Override
 			public float width() {
-				return w;
+				return powerWidth;
 			}
 
 			@Override
@@ -618,26 +619,27 @@ public final class HDamage {
 			}
 		});
 
-		int[] collideCount = {0};
+		IntReference collideCount = new IntReference(0);
+
 		collided.sort(c -> hitter.dst2(c.x, c.y));
 		collided.each(c -> {
-			if (hitter.damage > 0 && (pierceCap <= 0 || collideCount[0] < pierceCap)) {
-				if (c.target instanceof Unit u) {
-					u.collision(hitter, c.x, c.y);
-					hitter.collision(u, c.x, c.y);
-					collideCount[0]++;
-				} else if (c.target instanceof Building tile) {
-					float health = tile.health;
+			if (hitter.damage > 0 && (pierceCap <= 0 || collideCount.element < pierceCap)) {
+				if (c.target instanceof Unit unit) {
+					unit.collision(hitter, c.x, c.y);
+					hitter.collision(unit, c.x, c.y);
+					collideCount.element++;
+				} else if (c.target instanceof Building build) {
+					float health = build.health;
 
-					if (tile.team != team && tile.collide(hitter)) {
-						tile.collision(hitter);
+					if (build.team != team && build.collide(hitter)) {
+						build.collision(hitter);
 						hitter.type.hit(hitter, c.x, c.y);
-						collideCount[0]++;
+						collideCount.element++;
 					}
 
 					//try to heal the tile
-					if (hitter.type.testCollision(hitter, tile)) {
-						hitter.type.hitTile(hitter, tile, c.x, c.y, health, false);
+					if (hitter.type.testCollision(hitter, build)) {
+						hitter.type.hitTile(hitter, build, c.x, c.y, health, false);
 					}
 				}
 			}

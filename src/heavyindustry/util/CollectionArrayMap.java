@@ -4,7 +4,7 @@ import arc.func.Cons;
 import arc.func.Cons2;
 import arc.math.Mathf;
 import arc.util.ArcRuntimeException;
-import heavyindustry.util.ref.ObjectHolder;
+import heavyindustry.util.misc.ObjectHolder;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;

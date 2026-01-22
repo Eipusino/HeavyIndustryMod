@@ -27,7 +27,7 @@ import arc.struct.Seq;
 import arc.util.Eachable;
 import heavyindustry.func.BoolBoolf;
 import heavyindustry.func.ByteBytef;
-import heavyindustry.util.ref.ObjectHolder;
+import heavyindustry.util.misc.ObjectHolder;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -43,9 +43,29 @@ public final class Arrays2 {
 	/**
 	 * Convert vararg to an array.
 	 * Returns an array containing the specified elements.
-	 * <p>Can be used to create arrays with generic types, avoiding {@code @SuppressWarnings("unchecked")}.
-	 * <p>Example: <pre>{@code
-	 *     public Seq<Class<?>>[] sequences = arrayOf(new Seq<>(), Seq.with(Block.class, UnitType.class));
+	 * <p>Even if annotated as {@code SafeVarargs}, this method may still be unsafe in some situations.
+	 * <p>Correct usage: <pre>{@code
+	 * import java.util.List;
+	 *
+	 * import static heavyindustry.util.Arrays2.arrayOf;
+	 *
+	 * public class ClassSeq {
+	 *     // Clearly specify the type as List[], and ClassCastException will not occur.
+	 *     private List<Class<?>>[] classes = arrayOf(List.of(), List.of(Object.class, Object[].class));
+	 * }
+	 * }</pre>
+	 * <p>Incorrect usage: <pre>{@code
+	 * import static heavyindustry.util.Arrays2.arrayOf;
+	 *
+	 * public class ArraySeq<T> {
+	 *     private T[] items;
+	 *     private T item;
+	 *
+	 *     public void set() {
+	 *         // Danger, the actual type is Object[], and there may be ClassCastException in the future!
+	 *         items = arrayOf(item)
+	 *     }
+	 * }
 	 * }</pre>
 	 */
 	@SafeVarargs
@@ -856,11 +876,13 @@ public final class Arrays2 {
 		}
 	}
 
+	@Contract(pure = true)
 	public static <T> boolean any(T[] array, Boolf<T> pred) {
 		for (T e : array) if (pred.get(e)) return true;
 		return false;
 	}
 
+	@Contract(pure = true)
 	public static <T> boolean all(T[] array, Boolf<T> pred) {
 		for (T e : array) if (!pred.get(e)) return false;
 		return true;
@@ -874,19 +896,23 @@ public final class Arrays2 {
 		for (int i = offset, len = i + length; i < len; i++) cons.get(array[i]);
 	}
 
+	@Contract(value = "_ -> new", pure = true)
 	public static <T> Single<T> iter(T item) {
 		return new Single<>(item);
 	}
 
-	@SafeVarargs
+	@SuppressWarnings("unchecked")
+	@Contract(value = "_ -> new", pure = true)
 	public static <T> Iter<T> iter(T... array) {
 		return iter(array, 0, array.length);
 	}
 
+	@Contract(value = "_, _, _ -> new", pure = true)
 	public static <T> Iter<T> iter(T[] array, int offset, int length) {
 		return new Iter<>(array, offset, length);
 	}
 
+	@Contract(value = "_, _ -> new", pure = true)
 	public static <T> Chain<T> chain(Iterator<T> first, Iterator<T> second) {
 		return new Chain<>(first, second);
 	}
@@ -977,7 +1003,7 @@ public final class Arrays2 {
 		protected final int offset, length;
 		protected int index = 0;
 
-		public Iter(T[] arr, int off, int len) {
+		public Iter(T @NotNull [] arr, int off, int len) {
 			array = arr;
 			offset = off;
 			length = len;

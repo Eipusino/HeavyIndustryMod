@@ -9,9 +9,13 @@ public class TimeQueue<T extends TimeQueue.Timed> {
 
 	public TimeQueue() {}
 
-	@SafeVarargs
-	public TimeQueue(T... items) {
+	public TimeQueue(T[] items) {
 		addAll(items);
+	}
+
+	@SafeVarargs
+	public static <T extends Timed> TimeQueue<T> with(T... items) {
+		return new TimeQueue<>(items);
 	}
 
 	public void add(T item) {

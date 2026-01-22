@@ -21,7 +21,7 @@ import arc.util.Align;
 import arc.util.Tmp;
 import heavyindustry.ui.Listeners.ClickOnOtherListener;
 import heavyindustry.util.CollectionList;
-import heavyindustry.util.ref.ObjectReference;
+import heavyindustry.util.misc.ObjectReference;
 import org.jetbrains.annotations.Nullable;
 
 public class ComboBox extends Table {

@@ -103,7 +103,7 @@ public interface IList<E> extends List<E>, ICollection<E>, IIterable<E> {
 		return false;
 	}
 
-	default E min(Comparator<E> func) {
+	default E min(Comparator<? super E> func) {
 		E result = null;
 		for (E t : this) {
 			if (result == null || func.compare(result, t) > 0) {
@@ -113,7 +113,7 @@ public interface IList<E> extends List<E>, ICollection<E>, IIterable<E> {
 		return result;
 	}
 
-	default E max(Comparator<E> func) {
+	default E max(Comparator<? super E> func) {
 		E result = null;
 		for (E t : this) {
 			if (result == null || func.compare(result, t) < 0) {
@@ -137,7 +137,7 @@ public interface IList<E> extends List<E>, ICollection<E>, IIterable<E> {
 		return result;
 	}
 
-	default E min(Boolf<E> filter, Comparator<E> func) {
+	default E min(Boolf<E> filter, Comparator<? super E> func) {
 		E result = null;
 		for (E t : this) {
 			if (filter.get(t) && (result == null || func.compare(result, t) > 0)) {

@@ -1,18 +1,18 @@
-package heavyindustry.util.ref;
+package heavyindustry.util.misc;
 
 import arc.util.pooling.Pool.Poolable;
 
 import java.io.Serializable;
 
 /** @since 1.0.8 */
-public class LongReference extends Number implements Serializable, Poolable {
-	private static final long serialVersionUID = 6421798427509969426l;
+public class ShortReference extends Number implements Serializable, Poolable {
+	private static final long serialVersionUID = -6456250884875681558l;
 
-	public long element;
+	public short element;
 
-	public LongReference() {}
+	public ShortReference() {}
 
-	public LongReference(long initialElement) {
+	public ShortReference(short initialElement) {
 		element = initialElement;
 	}
 
@@ -23,12 +23,22 @@ public class LongReference extends Number implements Serializable, Poolable {
 
 	@Override
 	public void reset() {
-		element = 0l;
+		element = 0;
+	}
+
+	@Override
+	public byte byteValue() {
+		return (byte) element;
+	}
+
+	@Override
+	public short shortValue() {
+		return element;
 	}
 
 	@Override
 	public int intValue() {
-		return (int) element;
+		return element;
 	}
 
 	@Override

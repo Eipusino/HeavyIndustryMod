@@ -2,7 +2,7 @@ package heavyindustry.async
 
 import arc.Core
 import arc.func.Prov
-import heavyindustry.util.ref.ObjectReference
+import heavyindustry.util.misc.ObjectReference
 import java.util.concurrent.Future
 import java.util.concurrent.Semaphore
 

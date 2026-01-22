@@ -3,7 +3,7 @@ package heavyindustry.util;
 import arc.func.Cons;
 import arc.func.Prov;
 import arc.util.Eachable;
-import heavyindustry.util.ref.ObjectHolder;
+import heavyindustry.util.misc.ObjectHolder;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;

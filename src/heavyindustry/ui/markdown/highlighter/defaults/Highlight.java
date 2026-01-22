@@ -1,13 +1,13 @@
 package heavyindustry.ui.markdown.highlighter.defaults;
 
 import arc.func.Prov;
-import heavyindustry.ui.markdown.highlighter.PieceMatcher;
 import heavyindustry.ui.markdown.highlighter.Capture;
 import heavyindustry.ui.markdown.highlighter.CompoundCapture;
 import heavyindustry.ui.markdown.highlighter.LazyCapture;
 import heavyindustry.ui.markdown.highlighter.LinesCapture;
 import heavyindustry.ui.markdown.highlighter.MatcherReference;
 import heavyindustry.ui.markdown.highlighter.NameIndexer;
+import heavyindustry.ui.markdown.highlighter.PieceMatcher;
 import heavyindustry.ui.markdown.highlighter.RegexCapture;
 import heavyindustry.ui.markdown.highlighter.Scope;
 import heavyindustry.ui.markdown.highlighter.SelectionCapture;
@@ -23,7 +23,6 @@ import java.util.regex.Pattern;
 public abstract class Highlight {
 	protected Highlight() {}
 
-	//@SuppressWarnings("unchecked")
 	@SafeVarargs
 	protected static <T> List<T> of(T... elements) {
 		return Arrays.asList(elements);

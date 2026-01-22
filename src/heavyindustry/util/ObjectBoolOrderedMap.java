@@ -1,7 +1,7 @@
 package heavyindustry.util;
 
 import arc.util.ArcRuntimeException;
-import heavyindustry.util.ref.ObjectBoolHolder;
+import heavyindustry.util.misc.ObjectBoolHolder;
 
 import java.util.NoSuchElementException;
 

@@ -23,7 +23,7 @@ import heavyindustry.ui.Elements;
 import heavyindustry.util.CollectionList;
 import heavyindustry.util.CollectionOrderedMap;
 import heavyindustry.util.ObjectBoolMap;
-import heavyindustry.util.ref.ObjectReference;
+import heavyindustry.util.misc.ObjectReference;
 import heavyindustry.world.consumers.ConsumeItem;
 import mindustry.Vars;
 import mindustry.content.Fx;

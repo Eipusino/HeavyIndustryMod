@@ -1,4 +1,4 @@
-package heavyindustry.util.ref;
+package heavyindustry.util.misc;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -6,7 +6,7 @@ import arc.func.Prov;
 import arc.math.Mathf;
 import arc.util.ArcRuntimeException;
 import heavyindustry.math.Mathm;
-import heavyindustry.util.ref.ObjectHolder;
+import heavyindustry.util.misc.ObjectHolder;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
