@@ -1,0 +1,210 @@
+package endfield.world.blocks.distribution;
+
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.geom.Geometry;
+import arc.math.geom.Point2;
+import arc.util.Eachable;
+import arc.util.Time;
+import arc.util.Tmp;
+import endfield.math.Mathm;
+import endfield.util.Get;
+import endfield.util.Sprites;
+import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Building;
+import mindustry.gen.Teamc;
+import mindustry.gen.Unit;
+import mindustry.graphics.BlockRenderer;
+import mindustry.graphics.Layer;
+import mindustry.type.Item;
+import mindustry.world.blocks.distribution.Conveyor;
+
+import static mindustry.Vars.itemSize;
+import static mindustry.Vars.renderer;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
+
+/**
+ * Compared to CoveredConverter, its upper layer texture has been changed to one that can have light and shadow effects.
+ *
+ * @author Eipusino
+ */
+public class TubeConveyor extends Conveyor2 {
+	static final float itemSpace = 0.4f;
+	static final byte[][] tileMap = {
+			{},
+			{0, 2}, {1, 3}, {0, 1},
+			{0, 2}, {0, 2}, {1, 2},
+			{0, 1, 2}, {1, 3}, {0, 3},
+			{1, 3}, {0, 1, 3}, {2, 3},
+			{0, 2, 3}, {1, 2, 3}, {0, 1, 2, 3}
+	};
+
+	public TextureRegion[][] topRegion;
+	public TextureRegion[] capRegion;
+
+	public TubeConveyor(String name) {
+		super(name);
+	}
+
+	@Override
+	public void load() {
+		super.load();
+
+		topRegion = Sprites.splitLayers(name + "-sheet", 32, 2);
+		capRegion = new TextureRegion[]{topRegion[1][0], topRegion[1][1]};
+	}
+
+	@Override
+	public TextureRegion[] icons() {
+		return new TextureRegion[]{fullIcon};
+	}
+
+	@Override
+	public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list) {
+		int[] bits = getTiling(plan, list);
+
+		if (bits == null) return;
+
+		TextureRegion conveyor = regions[0][bits[0]];
+		Draw.rect(conveyor, plan.drawx(), plan.drawy(), conveyor.width * bits[1] * conveyor.scl(), conveyor.height * bits[2] * conveyor.scl(), plan.rotation * 90);
+
+		BuildPlan[] directionals = new BuildPlan[4];
+		list.each(other -> {
+			if (other.breaking || other == plan) return;
+
+			int i = 0;
+			for (Point2 point : Geometry.d4) {
+				int x = plan.x + point.x, y = plan.y + point.y;
+				if (x >= other.x - (other.block.size - 1) / 2 && x <= other.x + (other.block.size / 2) && y >= other.y - (other.block.size - 1) / 2 && y <= other.y + (other.block.size / 2)) {
+					if ((other.block instanceof Conveyor ? (plan.rotation == i || (other.rotation + 2) % 4 == i) : !noSideBlend && ((plan.rotation == i && other.block.acceptsItems) || (plan.rotation != i && other.block.outputsItems())))) {
+						directionals[i] = other;
+					}
+				}
+				i++;
+			}
+		});
+
+		int mask = 0;
+		for (int i = 0; i < directionals.length; i++) {
+			if (directionals[i] != null) {
+				mask += (1 << i);
+			}
+		}
+		mask |= (1 << plan.rotation);
+		Draw.rect(topRegion[0][mask], plan.drawx(), plan.drawy(), 0);
+		for (byte i : tileMap[mask]) {
+			if (directionals[i] == null || (directionals[i].block instanceof Conveyor ? (directionals[i].rotation + 2) % 4 == plan.rotation : ((plan.rotation == i && !directionals[i].block.acceptsItems) || (plan.rotation != i && !directionals[i].block.outputsItems())))) {
+				int id = i == 0 || i == 3 ? 1 : 0;
+				Draw.rect(capRegion[id], plan.drawx(), plan.drawy(), i == 0 || i == 2 ? 0 : -90);
+			}
+		}
+	}
+
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = TubeConveyorBuild::new;
+	}
+
+	public class TubeConveyorBuild extends ConveyorBuild2 {
+		public int tiling = 0;
+
+		public boolean valid(int i) {
+			Building b = nearby(i);
+			return b != null && (b instanceof TubeConveyorBuild ? (b.front() != null && b.front() == this) : b.block.acceptsItems || b.block.outputsItems());
+		}
+
+		public boolean isEnd(int i) {
+			Building b = nearby(i);
+			return (!valid(i) && (b == null ? null : b.block) != block) || (b instanceof ConveyorBuild && ((b.rotation + 2) % 4 == rotation || (b.front() != this && back() == b)));
+		}
+
+		@Override
+		public void draw() {
+			int frame = enabled && clogHeat <= 0.5f ? (int) (((Time.time * speed * 8f * timeScale * efficiency)) % 4) : 0;
+
+			//draw extra conveyors facing this one for non-square tiling purposes
+			Draw.z(Layer.blockUnder);
+			for (int i = 0; i < 4; i++) {
+				if ((blending & (1 << i)) != 0) {
+					int dir = rotation - i;
+					float rot = i == 0 ? rotation * 90 : dir * 90;
+
+					Draw.rect(sliced(regions[frame][0], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * tilesize * 0.75f, y + Geometry.d4y(dir) * tilesize * 0.75f, rot);
+					Draw.rect(sliced(topRegion[0][1], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * tilesize * 0.75f, y + Geometry.d4y(dir) * tilesize * 0.75f, rot);
+				}
+			}
+
+			Draw.z(Layer.block - 0.25f);
+
+			Draw.rect(regions[frame][blendbits], x, y, tilesize * blendsclx, tilesize * blendscly, rotation * 90);
+
+			Draw.z(Layer.block - 0.2f);
+			float layer = Layer.block - 0.2f, width = world.unitWidth(), height = world.unitHeight(), scaling = 0.01f;
+
+			for (int i = 0; i < len; i++) {
+				Item item = ids[i];
+				Tmp.v1.trns(rotation * 90, tilesize, 0);
+				Tmp.v2.trns(rotation * 90, -tilesize / 2f, xs[i] * tilesize / 2f);
+
+				float ix = (x + Tmp.v1.x * ys[i] + Tmp.v2.x), iy = (y + Tmp.v1.y * ys[i] + Tmp.v2.y);
+
+				//keep draw position deterministic.
+				Draw.z(layer + (ix / width + iy / height) * scaling);
+				Draw.rect(item.fullIcon, ix, iy, itemSize, itemSize);
+			}
+
+			Draw.z(Layer.block - 0.15f);
+			Draw.rect(topRegion[0][tiling], x, y, 0);
+			byte[] placementId = tileMap[tiling];
+			for (byte i : placementId) {
+				if (isEnd(i)) {
+					int id = i == 0 || i == 3 ? 1 : 0;
+					Draw.rect(capRegion[id], x, y, i == 0 || i == 2 ? 0 : -90);
+				}
+			}
+		}
+
+		@Override
+		public int acceptStack(Item item, int amount, Teamc source) {
+			if (isEnd(Get.reverse(rotation)) && items.total() >= 2) return 0;
+			if (isEnd(Get.reverse(rotation)) && isEnd(rotation) && items.total() >= 1) return 0;
+			return Math.min((int) (minitem / itemSpace), amount);
+		}
+
+		@Override
+		public void drawCracks() {
+			Draw.z(Layer.block);
+
+			if (drawCracks && damaged() && size <= BlockRenderer.maxCrackSize) {
+				int id = pos();
+				TextureRegion region = renderer.blocks.cracks[size - 1][Mathm.clamp((int) ((1f - healthf()) * BlockRenderer.crackRegions), 0, BlockRenderer.crackRegions - 1)];
+				Draw.colorl(0.2f, 0.1f + (1f - healthf()) * 0.6f);
+				Draw.rect(region, x, y, (id % 4) * 90);
+				Draw.color();
+			}
+		}
+
+		@Override
+		public void unitOn(Unit unit) {
+			//There is a cover, can't slide on this thing.
+		}
+
+		@Override
+		public void onProximityUpdate() {
+			super.onProximityUpdate();
+
+			tiling = 0;
+
+			for (int i = 0; i < 4; i++) {
+				Building other = nearby(i);
+
+				if (other == null) continue;
+				if (other.block instanceof Conveyor ? (rotation == i || (other.rotation + 2) % 4 == i) : !noSideBlend && ((rotation == i && other.block.acceptsItems) || (rotation != i && other.block.outputsItems()))) {
+					tiling |= (1 << i);
+				}
+			}
+			tiling |= 1 << rotation;
+		}
+	}
+}

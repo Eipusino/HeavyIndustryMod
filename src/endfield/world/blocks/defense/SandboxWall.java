@@ -1,0 +1,600 @@
+package endfield.world.blocks.defense;
+
+import arc.Core;
+import arc.Events;
+import arc.audio.Sound;
+import arc.graphics.Blending;
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.scene.ui.CheckBox;
+import arc.scene.ui.TextField.TextFieldFilter;
+import arc.scene.ui.layout.Table;
+import arc.util.Eachable;
+import arc.util.Scaling;
+import arc.util.Strings;
+import arc.util.Time;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import arc.util.pooling.Pool.Poolable;
+import endfield.graphics.Drawn;
+import endfield.math.Mathm;
+import endfield.ui.Elements;
+import endfield.util.misc.IntFloatHolder;
+import mindustry.entities.Damage;
+import mindustry.entities.Lightning;
+import mindustry.entities.TargetPriority;
+import mindustry.entities.units.BuildPlan;
+import mindustry.gen.Building;
+import mindustry.gen.Bullet;
+import mindustry.gen.Icon;
+import mindustry.gen.Iconc;
+import mindustry.gen.Sounds;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.io.TypeIO;
+import mindustry.ui.Bar;
+import mindustry.ui.Styles;
+import mindustry.world.Block;
+import mindustry.world.meta.BlockGroup;
+import mindustry.world.meta.Env;
+import mindustry.world.meta.Stat;
+
+import static mindustry.Vars.state;
+import static mindustry.Vars.tilesize;
+
+public class SandboxWall extends Block {
+	protected static final IntFloatHolder configVec = new IntFloatHolder();
+
+	public final int dpsUpdateTime = timers++;
+
+	public float resetTime = 120f;
+	public Color lightningColor = Pal.surge;
+	public Sound lightningSound = Sounds.shootArc;
+	public boolean flashHit = true;
+	public Color flashColor = Color.white;
+	public Sound deflectSound = Sounds.none;
+	public TextureRegion lightningRegion, deflectRegion, insulatingRegion, armorRegion;
+
+	public SandboxWall(String name) {
+		super(name);
+
+		solid = true;
+		destructible = true;
+		placeableLiquid = true;
+		group = BlockGroup.walls;
+		canOverdrive = false;
+		drawDisabled = false;
+		priority = TargetPriority.wall;
+
+		//it's a wall of course it's supported everywhere
+		envEnabled = Env.any;
+
+		schematicPriority = 10;
+		configurable = saveConfig = update = noUpdateDisabled = true;
+
+		config(SandboxWallRetry.class, (SandboxWallBuild tile, SandboxWallRetry data) -> tile.data.readRetry(data));
+		config(Integer.class, (SandboxWallBuild tile, Integer tog) -> {
+			tile.toggle(tog);
+			if (tog == 1 && tile.deflection()) {
+				tile.hit = 0f;
+			}
+		});
+		config(IntFloatHolder.class, (SandboxWallBuild tile, IntFloatHolder data) -> tile.data.configure(data.key, data.value));
+
+		configClear(SandboxWallBuild::resetModes);
+	}
+
+	@Override
+	public void load() {
+		super.load();
+
+		lightningRegion = Core.atlas.find(name + "-lightning");
+		deflectRegion = Core.atlas.find(name + "-deflection");
+		insulatingRegion = Core.atlas.find(name + "-insulating");
+		armorRegion = Core.atlas.find(name + "-armor");
+	}
+
+	@Override
+	public void setStats() {
+		super.setStats();
+		stats.remove(Stat.health);
+
+		stats.add(Stat.health, t -> t.add(Elements.infinity()));
+	}
+
+	@Override
+	public void setBars() {
+		super.setBars();
+		removeBar("health");
+
+		addBar("dps", (SandboxWallBuild tile) -> new Bar(
+				() -> tile.displayDPS(false),
+				() -> Pal.ammo,
+				() -> 1f - (tile.reset / resetTime)
+		));
+	}
+
+	@Override
+	public void drawPlanConfig(BuildPlan req, Eachable<BuildPlan> list) {
+		if (req.config instanceof SandboxWallRetry modes) {
+			//draw floating items to represent active mode
+			if (modes.lightning) {
+				Draw.rect(lightningRegion, req.drawx(), req.drawy());
+			}
+			if (modes.deflecting) {
+				Draw.rect(deflectRegion, req.drawx(), req.drawy());
+			}
+			if (modes.insulated) {
+				Draw.rect(insulatingRegion, req.drawx(), req.drawy());
+			}
+			if (modes.dpsTesting && modes.armor > 0) {
+				Draw.rect(armorRegion, req.drawx(), req.drawy());
+			}
+		}
+	}
+
+	@Override
+	protected void initBuilding() {
+		if (buildType == null) buildType = SandboxWallBuild::new;
+	}
+
+	public static class SandboxWallData implements Poolable {
+		public boolean lightning, deflecting, insulated, dpsTesting;
+		public float lightningChance = 0.05f, lightningDamage = 20f;
+		public int lightningLength = 17;
+		public float deflectChance = 10f;
+		public float armor;
+
+		public boolean activeMode(int mode) {
+			return switch (mode) {
+				case 0 -> lightning;
+				case 1 -> deflecting;
+				case 2 -> insulated;
+				case 3 -> dpsTesting;
+				default -> false;
+			};
+		}
+
+		public void toggle(int mode) {
+			switch (mode) {
+				case 0 -> lightning = !lightning;
+				case 1 -> deflecting = !deflecting;
+				case 2 -> insulated = !insulated;
+				case 3 -> dpsTesting = !dpsTesting;
+			}
+		}
+
+		@Override
+		public void reset() {
+			lightning = deflecting = insulated = dpsTesting = false;
+		}
+
+		public int[] toIntArray() {
+			return new int[]{
+					Mathf.num(lightning), Mathf.num(deflecting), Mathf.num(insulated), Mathf.num(dpsTesting),
+					Float.floatToIntBits(lightningChance), Float.floatToIntBits(lightningDamage), lightningLength,
+					Float.floatToIntBits(deflectChance),
+					Float.floatToIntBits(armor)
+			};
+		}
+
+		public SandboxWallRetry toRetry() {
+			SandboxWallRetry retry = new SandboxWallRetry();
+
+			retry.lightning = lightning;
+			retry.deflecting = deflecting;
+			retry.insulated = insulated;
+			retry.dpsTesting = dpsTesting;
+
+			retry.lightningChance = lightningChance;
+			retry.lightningDamage = lightningDamage;
+			retry.lightningLength = lightningLength;
+
+			retry.deflectChance = deflectChance;
+
+			retry.armor = armor;
+
+			return retry;
+		}
+
+		public void readRetry(SandboxWallRetry retry) {
+			lightning = retry.lightning;
+			deflecting = retry.deflecting;
+			insulated = retry.insulated;
+			dpsTesting = retry.dpsTesting;
+
+			lightningChance = retry.lightningChance;
+			lightningDamage = retry.lightningDamage;
+			lightningLength = retry.lightningLength;
+
+			deflectChance = retry.deflectChance;
+
+			armor = retry.armor;
+		}
+
+		public void configure(int value, float data) {
+			switch (value) {
+				case 4 -> lightningChance = data;
+				case 5 -> lightningDamage = data;
+				case 6 -> lightningLength = (int) data;
+
+				case 7 -> deflectChance = data;
+
+				case 8 -> armor = data;
+			}
+		}
+
+		public void write(Writes write) {
+			write.bool(lightning);
+			write.bool(deflecting);
+			write.bool(insulated);
+			write.bool(dpsTesting);
+
+			write.f(lightningChance);
+			write.f(lightningDamage);
+			write.i(lightningLength);
+
+			write.f(deflectChance);
+
+			write.f(armor);
+		}
+
+		public void read(Reads read) {
+			lightning = read.bool();
+			deflecting = read.bool();
+			insulated = read.bool();
+			dpsTesting = read.bool();
+
+			lightningChance = read.f();
+			lightningDamage = read.f();
+			lightningLength = read.i();
+
+			deflectChance = read.f();
+
+			armor = read.f();
+		}
+	}
+
+	public static class SandboxWallRetry {
+		public boolean lightning, deflecting, insulated, dpsTesting;
+
+		public float lightningChance, lightningDamage;
+		public int lightningLength;
+
+		public float deflectChance;
+
+		public float armor;
+	}
+
+	public class SandboxWallBuild extends Building {
+		public float hit;
+		public float total, reset = resetTime, time, dps;
+		public SandboxWallData data = new SandboxWallData();
+
+		@Override
+		public void updateTile() {
+			super.updateTile();
+
+			if (dpsTesting()) {
+				time += Time.delta;
+				reset += Time.delta;
+
+				if (timer(dpsUpdateTime, 20)) dps = total / time * 60f;
+
+				if (reset >= resetTime) {
+					total = 0f;
+					time = 0f;
+					dps = 0f;
+				}
+			}
+		}
+
+		@Override
+		public void draw() {
+			if (variants == 0) {
+				Draw.rect(region, x, y);
+			}
+
+			//draw flashing white overlay if enabled
+			if (flashHit && deflection() && hit >= 0.0001f) {
+				Draw.color(flashColor);
+				Draw.alpha(hit * 0.5f);
+				Draw.blend(Blending.additive);
+				Fill.rect(x, y, tilesize * size, tilesize * size);
+				Draw.blend();
+				Draw.reset();
+
+				hit = Mathm.clamp(hit - Time.delta / 10f);
+			}
+
+			if (lightning()) {
+				Draw.rect(lightningRegion, x, y);
+			}
+			if (deflection()) {
+				Draw.rect(deflectRegion, x, y);
+			}
+			if (insulating()) {
+				Draw.rect(insulatingRegion, x, y);
+			}
+			if (dpsTesting()) {
+				if (armored()) {
+					Draw.rect(armorRegion, x, y);
+				}
+
+				Draw.z(Layer.overlayUI);
+				String text = displayDPS(true);
+				Drawn.text(x, y, false, size * tilesize, team.color, text);
+			}
+		}
+
+		public String displayDPS(boolean round) {
+			if (!dpsTesting()) {
+				return "[lightgray]" + Iconc.cancel;
+			} else if (time > 0) {
+				float damage = state.rules.blockHealth(team);
+				return (Mathf.zero(damage) ? "Infinity" : (round ? (dps > 0 ? Mathf.round(dps) : "---") : Strings.autoFixed(total / time * 60f, 2))) + " DPS";
+			} else {
+				return "--- DPS";
+			}
+		}
+
+		@Override
+		public boolean collision(Bullet bullet) {
+			float damage = bullet.damage() * bullet.type().buildingDamageMultiplier;
+			if (!bullet.type.pierceArmor) {
+				damage = Damage.applyArmor(damage, data.armor);
+			}
+
+			damage(bullet.team, damage);
+			Events.fire(bulletDamageEvent.set(this, bullet));
+
+			hit = 1f;
+
+			//create lightning if necessary
+			if (lightning() && Mathf.chance(data.lightningChance)) {
+				Lightning.create(team, lightningColor, data.lightningDamage, x, y, bullet.rotation() + 180f, data.lightningLength);
+				lightningSound.at(tile, Mathf.random(0.9f, 1.1f));
+			}
+
+			//deflect bullets if necessary
+			if (deflection()) {
+				//slow bullets are not deflected
+				if (bullet.vel().len() <= 0.1f || !bullet.type.reflectable) return true;
+
+				//bullet reflection chance depends on bullet damage
+				if (!Mathf.chance(data.deflectChance / bullet.damage())) return true;
+
+				//make sound
+				deflectSound.at(tile, Mathf.random(0.9f, 1.1f));
+
+				//translate bullet back to where it was upon collision
+				bullet.trns(-bullet.vel.x, -bullet.vel.y);
+
+				float penX = Math.abs(x - bullet.x), penY = Math.abs(y - bullet.y);
+
+				if (penX > penY) {
+					bullet.vel.x *= -1;
+				} else {
+					bullet.vel.y *= -1;
+				}
+
+				bullet.owner(this);
+				bullet.team(team);
+				bullet.time(bullet.time() + 1f);
+
+				//disable bullet collision by returning false
+				return false;
+			}
+
+			return true;
+		}
+
+		@Override
+		public boolean absorbLasers() {
+			return insulating();
+		}
+
+		@Override
+		public boolean isInsulated() {
+			return insulating();
+		}
+
+		@Override
+		public void damage(float damage) {
+			float dm = state.rules.blockHealth(team);
+			lastDamageTime = Time.time;
+
+			if (!dpsTesting()) return;
+
+			reset = 0f;
+			total += Mathf.zero(dm) ? 1 : damage / dm;
+		}
+
+		@Override
+		public void kill() {
+			//haha no
+		}
+
+		@Override
+		public void buildConfiguration(Table table) {
+			table.table(Styles.black6, t -> {
+				t.defaults().left();
+				t.table(i -> {
+					i.defaults().left();
+					i.image(Icon.power.getRegion()).size(32f).scaling(Scaling.fit);
+					i.add("@sandbox-wall.mode-lightning").padLeft(8f);
+				});
+				t.row();
+				t.table(b -> {
+					b.defaults().left();
+					addToggleButton(b, 0);
+					b.row();
+					b.table(f -> {
+						f.defaults().left();
+						addTextField(f, addColon("sandbox-wall.lightning.chance"), String.valueOf(data.lightningChance), TextFieldFilter.floatsOnly, 4);
+						f.row();
+						addTextField(f, addColon("sandbox-wall.lightning.damage"), String.valueOf(data.lightningDamage), TextFieldFilter.floatsOnly, 5);
+						f.row();
+						addTextField(f, addColon("sandbox-wall.lightning.length"), String.valueOf(data.lightningLength), TextFieldFilter.digitsOnly, 6);
+						f.row();
+					});
+				}).padLeft(32f);
+				t.row();
+
+				t.table(i -> {
+					i.defaults().left();
+					i.image(Icon.rotate.getRegion()).size(32f).scaling(Scaling.fit);
+					i.add("@sandbox-wall.mode-deflection").padLeft(8f);
+				});
+				t.row();
+				t.table(b -> {
+					b.defaults().left();
+					addToggleButton(b, 1);
+					b.row();
+					b.table(f -> {
+						f.defaults().left();
+						addTextField(f, addColon("sandbox-wall.deflection.chance"), String.valueOf(data.deflectChance), TextFieldFilter.floatsOnly, 7);
+					});
+				}).padLeft(32f);
+				t.row();
+
+				t.table(i -> {
+					i.defaults().left();
+					i.image(Icon.eyeOff.getRegion()).size(32f).scaling(Scaling.fit);
+					i.add("@sandbox-wall.mode-insulation").padLeft(8f);
+				});
+				t.row();
+				t.table(b -> {
+					b.defaults().left();
+					addToggleButton(b, 2);
+				}).padLeft(32f);
+				t.row();
+
+				t.table(i -> {
+					i.defaults().left();
+					i.image(Icon.modePvp.getRegion()).size(32f).scaling(Scaling.fit);
+					i.add("@sandbox-wall.mode-dpstesting").padLeft(8f);
+				});
+				t.row();
+				t.table(b -> {
+					b.defaults().left();
+					addToggleButton(b, 3);
+					b.row();
+					b.table(f -> {
+						f.defaults().left();
+						addTextField(f, addColon("stat.armor"), String.valueOf(data.armor), TextFieldFilter.floatsOnly, 8);
+					});
+				}).padLeft(32f);
+			}).top().grow().margin(8f);
+		}
+
+		public void addToggleButton(Table t, int mode) {
+			CheckBox box = new CheckBox("@mod.enable");
+			box.changed(() -> configure(mode));
+			box.setChecked(data.activeMode(mode));
+			box.update(() -> box.setChecked(data.activeMode(mode)));
+			box.left();
+			t.add(box);
+		}
+
+		public void addTextField(Table t, String title, String text, TextFieldFilter filter, int mode) {
+			t.add(title);
+			t.field(text, filter, s -> configure(configVec.set(mode, Strings.parseFloat(s)))).width(200f).padLeft(8f);
+		}
+
+		public String addColon(String entry) {
+			return Core.bundle.get(entry) + ":";
+		}
+
+		@Override
+		public boolean onConfigureBuildTapped(Building other) {
+			if (this == other) {
+				deselect();
+				resetModes();
+				return false;
+			}
+
+			return true;
+		}
+
+		@Override
+		public Object config() {
+			return data.toRetry();
+		}
+
+		public void toggle(int i) {
+			data.toggle(i);
+
+			//Reset DPS testing
+			if (i == 3 && dpsTesting()) {
+				total = 0f;
+				time = 0f;
+				dps = 0f;
+				reset = resetTime;
+			}
+		}
+
+		public boolean lightning() {
+			return data.lightning && data.lightningChance > 0f;
+		}
+
+		public boolean deflection() {
+			return data.deflecting && data.deflectChance > 0f;
+		}
+
+		public boolean insulating() {
+			return data.insulated;
+		}
+
+		public boolean dpsTesting() {
+			return data.dpsTesting;
+		}
+
+		public boolean armored() {
+			return data.dpsTesting && data.armor > 0f;
+		}
+
+		public void resetModes() {
+			data.reset();
+		}
+
+		@Override
+		public void write(Writes write) {
+			super.write(write);
+
+			data.write(write);
+		}
+
+		@Override
+		public void read(Reads read, byte revision) {
+			super.read(read, revision);
+
+			if (revision >= 4) {
+				data.read(read);
+				return;
+			}
+
+			//Discard old data
+			if (revision == 3) {
+				TypeIO.readInts(read);
+				return;
+			}
+
+			byte[] oldModes = new byte[4];
+			if (revision == 1) {
+				read.b(oldModes, 0, 3);
+			}
+			if (revision == 2) {
+				read.b(oldModes);
+			}
+		}
+
+		@Override
+		public byte version() {
+			return 4;
+		}
+	}
+}

@@ -1,0 +1,187 @@
+package endfield.entities.bullet;
+
+import arc.Core;
+import arc.math.Angles;
+import arc.math.Mathf;
+import arc.math.geom.Vec2;
+import arc.util.Tmp;
+import endfield.Vars2;
+import endfield.audio.Sounds2;
+import endfield.content.Fx2;
+import endfield.entities.Entitys2;
+import endfield.graphics.Pal2;
+import endfield.math.Mathm;
+import mindustry.Vars;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
+import mindustry.entities.Fires;
+import mindustry.entities.bullet.BasicBulletType;
+import mindustry.game.Team;
+import mindustry.gen.Building;
+import mindustry.gen.Bullet;
+import mindustry.gen.Healthc;
+import mindustry.gen.Unit;
+import mindustry.graphics.Layer;
+
+import static endfield.Vars2.MOD_NAME;
+
+public class EndNukeBulletType extends BasicBulletType {
+	public static int lastMax, lastUnit, lastBuilding;
+
+	public EndNukeBulletType() {
+		this(17f, 1000f, MOD_NAME + "-large-missile");
+	}
+
+	public EndNukeBulletType(float speed, float damage, String bulletSprite) {
+		super(speed, damage, bulletSprite);
+
+		splashDamage = 10000f;
+
+		backColor = trailColor = hitColor = Pal2.red;
+		frontColor = Pal2.red.cpy().mul(2f);
+
+		shrinkY = 0f;
+		width = 15f;
+		height = 34f;
+
+		trailLength = 5;
+		trailWidth = 5f;
+
+		lifetime = 180f;
+
+		pierce = true;
+		pierceArmor = true;
+
+		despawnHit = true;
+		collidesTiles = false;
+		scaleLife = true;
+
+		shieldDamageMultiplier += 1.75f;
+
+		reflectable = false;
+		hittable = false;
+		absorbable = false;
+
+		hitEffect = Fx.none;
+		despawnEffect = Fx.none;
+
+		shootEffect = Fx2.desNukeShoot;
+		smokeEffect = Fx.none;
+	}
+
+	@Override
+	public void hit(Bullet b, float x, float y) {
+		super.hit(b, x, y);
+
+		float bx = b.x, by = b.y;
+		Team team = b.team;
+
+		int sid1 = Sounds2.desNukeHit.at(bx, by, 1f, 2f);
+		Core.audio.protect(sid1, true);
+		float fall = Mathf.pow(Mathm.clamp(1f - Sounds2.desNukeHit.calcFalloff(bx, by) * 1.1f), 1.5f);
+		int sid2 = Sounds2.desNukeHitFar.play(fall * 2f, 1f, Sounds2.desNukeHit.calcPan(bx, by));
+		Core.audio.protect(sid2, true);
+
+		float[] arr = new float[360 * 3];
+		Entitys2.rayCastCircle(b.x, b.y, 480f, t -> t.build != null && t.build.team != team && !Mathf.within(b.x, b.y, t.worldx(), t.worldy(), 150f), t -> {
+			float dst = 1f - Mathm.clamp(Mathf.dst(bx, by, t.x * Vars.tilesize, t.y * Vars.tilesize) / 480f);
+			if (Mathf.chance(Mathf.pow(dst, 2f) * 0.75f)) Fires.create(t);
+		}, tile -> {
+			float nx = tile.x * Vars.tilesize, ny = tile.y * Vars.tilesize;
+			float ang = Angles.angle(bx, by, nx, ny);
+
+			Fx2.desNukeShockSmoke.at(nx, ny, ang);
+		}, build -> {
+			//float d = lethal ? 12000f + build.maxHealth / 20f : build.health / 1.5f;
+			float d = 21000f + build.maxHealth / 5f;
+
+			build.health -= d;
+			if (build.health <= 0f) build.kill();
+		}, arr);
+
+		lastMax = Vars.headless ? -1 : Core.settings.getInt("vaporize-batch", 100);
+
+		Entitys2.scanEnemies(b.team, b.x, b.y, 480f, true, true, t -> {
+			if (t instanceof Unit unit && unit.hittable()) {
+				//float damageScl = 1f;
+				//if (unit.isGrounded()) damageScl = Entitys2.inRayCastCircle(bx, by, arr, unit);
+				float damageScl = Entitys2.inRayCastCircle(bx, by, arr, unit);
+
+				if (damageScl > 0f) {
+					Tmp.v2.trns(Angles.angle(bx, by, unit.x, unit.y), (16f + 5f / unit.mass()) * damageScl);
+					unit.vel.add(Tmp.v2);
+
+					unit.health -= (unit.maxHealth / 10f + splashDamage) * damageScl;
+
+					if (lastUnit < lastMax && unit.health <= 0f) {
+						Vars2.vaporBatch.discon = null;
+						Vars2.vaporBatch.switchBatch(unit::draw, null, (d, w) -> {
+							float with = Entitys2.inRayCastCircle(bx, by, arr, d);
+							if (with > 0.5f) {
+								d.disintegrating = true;
+								float dx = d.x - bx, dy = d.y - by;
+								float len = Mathf.sqrt(dx * dx + dy * dy);
+								float force = (6f / (1f + len / 90f) + (len / 480f) * 1.01f);
+
+								Vec2 v = Tmp.v1.set(dx, dy).nor().setLength(force * Mathf.random(0.9f, 1f));
+
+								d.lifetime = Mathf.random(60f, 90f) * Mathf.lerp(1f, 0.5f, Mathm.clamp(len / 480f));
+								d.drag = -0.015f;
+
+								d.vx = v.x;
+								d.vy = v.y;
+								d.vr = Mathf.range((force / 3f) * 5f);
+								d.zOverride = Layer.flyingUnit;
+							}
+						});
+
+						Fx2.desNukeVaporize.at(unit.x, unit.y, unit.angleTo(bx, by) + 180f, unit.hitSize / 2f);
+
+						lastUnit++;
+					}
+				}
+			} else if (t instanceof Building build && !build.block.privileged) {
+				float damageScl = Entitys2.inRayCastCircle(bx, by, arr, build);
+				if (damageScl > 0) {
+					build.health -= (build.maxHealth / 10f + splashDamage) * damageScl;
+					if (build.health <= 0f) {
+						if (lastBuilding < lastMax && t.within(bx, by, 150f + build.hitSize() / 2f)) {
+							Vars2.vaporBatch.discon = null;
+							Vars2.vaporBatch.switchBatch(build::draw, null, (d, w) -> {
+								d.disintegrating = true;
+								float dx = d.x - bx, dy = d.y - by;
+								float len = Mathf.sqrt(dx * dx + dy * dy);
+								//float force = Math.max(10f / (1f + len / 50f), (len / 150f) * 3f);
+								float force = (3f / (1f + len / 50f) + (len / 150f) * 0.9f);
+								//float force = (len / 150f) * 15f;
+
+								Vec2 v = Tmp.v1.set(dx, dy).nor().setLength(force * Mathf.random(0.9f, 1f));
+
+								d.lifetime = Mathf.random(60f, 90f) * Mathf.lerp(1f, 0.5f, Mathm.clamp(len / 150f));
+								d.drag = -0.03f;
+
+								d.vx = v.x;
+								d.vy = v.y;
+								d.vr = Mathf.range((force / 3f) * 5f);
+								d.zOverride = Layer.turret + 1f;
+							});
+							Fx2.desNukeVaporize.at(build.x, build.y, build.angleTo(bx, by) + 180f, build.hitSize() / 2f);
+
+							lastBuilding++;
+						}
+
+						build.kill();
+					}
+				}
+			} else if (t instanceof Healthc h) {
+				h.health(h.health() - (h.maxHealth() / 10f + splashDamage));
+			}
+		});
+
+		Effect.shake(60f, 120f, b.x, b.y);
+		Fx2.desNukeShockwave.at(b.x, b.y, 480f);
+		Fx2.desNuke.at(b.x, b.y, 479f, arr);
+
+		lastBuilding = lastUnit = 0;
+	}
+}

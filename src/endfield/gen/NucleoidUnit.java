@@ -1,0 +1,228 @@
+package endfield.gen;
+
+import arc.graphics.Color;
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Lines;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Interp;
+import arc.math.Mathf;
+import arc.util.Time;
+import arc.util.Tmp;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
+import endfield.audio.Sounds2;
+import endfield.content.Fx2;
+import endfield.graphics.Drawn;
+import endfield.type.unit.NucleoidUnitType;
+import mindustry.Vars;
+import mindustry.content.Fx;
+import mindustry.entities.Damage;
+import mindustry.entities.Effect;
+import mindustry.entities.abilities.Ability;
+import mindustry.entities.units.WeaponMount;
+import mindustry.graphics.Layer;
+import mindustry.type.UnitType;
+
+public class NucleoidUnit extends Unit2 implements Nucleoidc {
+	public float recentDamage;
+	public float reinforcementsReload;
+
+	@Override
+	public int classId() {
+		return Entitys.getId(NucleoidUnit.class);
+	}
+
+	@Override
+	public void setType(UnitType type) {
+		super.setType(type);
+
+		NucleoidUnitType nu = this.asType();
+		recentDamage = nu.maxDamagedPerSec;
+		reinforcementsReload = nu.reinforcementsSpacing;
+	}
+
+	@Override
+	public NucleoidUnitType asType() {
+		return (NucleoidUnitType) type;
+	}
+
+	@Override
+	public float mass() {
+		return this.asType().mass;
+	}
+
+	@Override
+	public void update() {
+		super.update();
+
+		NucleoidUnitType nu = this.asType();
+		recentDamage += nu.recentDamageResume * Time.delta;
+		if (recentDamage >= nu.maxDamagedPerSec) {
+			recentDamage = nu.maxDamagedPerSec;
+		}
+
+		reinforcementsReload += Time.delta;
+		if (healthf() < 0.3f && reinforcementsReload >= nu.reinforcementsSpacing) {
+			reinforcementsReload = 0;
+			for (int i : Mathf.signs) {
+				Tmp.v1.trns(rotation + 60 * i, -hitSize * 1.85f).add(x, y);
+			}
+		}
+	}
+
+	@Override
+	public void draw() {
+		super.draw();
+
+		NucleoidUnitType nu = this.asType();
+		if (!nu.drawArrow) return;
+
+		float z = Draw.z();
+		Draw.z(Layer.bullet);
+
+		Tmp.c1.set(team.color).lerp(Color.white, Mathf.absin(4f, 0.15f));
+		Draw.color(Tmp.c1);
+		Lines.stroke(3f);
+		Drawn.circlePercent(x, y, hitSize * 1.15f, reinforcementsReload / nu.reinforcementsSpacing, 0);
+
+		float scl = Interp.pow3Out.apply(Mathf.curve(reinforcementsReload / nu.reinforcementsSpacing, 0.96f, 1f));
+		TextureRegion arrowRegion = nu.arrowRegion;
+
+		for (int l : Mathf.signs) {
+			float angle = 90 + 90 * l;
+			for (int i = 0; i < 4; i++) {
+				Tmp.v1.trns(angle, i * 50 + hitSize * 1.32f);
+				float f = (100 - (Time.time + 25 * i) % 100) / 100;
+
+				Draw.rect(arrowRegion, x + Tmp.v1.x, y + Tmp.v1.y, arrowRegion.width * f * scl, arrowRegion.height * f * scl, angle + 90);
+			}
+		}
+
+		Draw.z(z);
+	}
+
+	@Override
+	public void damage(float amount) {
+		rawDamage(Damage.applyArmor(amount, armorOverride >= 0 ? armorOverride : armor) / healthMultiplier / Vars.state.rules.unitHealth(team) * this.asType().damageMultiplier);
+	}
+
+	@Override
+	public void damagePierce(float amount, boolean withEffect) {
+		float pre = hitTime;
+		rawDamage(amount / healthMultiplier / Vars.state.rules.unitHealth(team) * this.asType().damageMultiplier);
+		if (!withEffect) {
+			hitTime = pre;
+		}
+	}
+
+	@Override
+	public void rawDamage(float amount) {
+		boolean hadShields = shield > 0.0001f;
+		if (hadShields) {
+			shieldAlpha = 1f;
+		}
+
+		amount = Math.min(amount, this.asType().maxOnceDamage);
+
+		float shieldDamage = Math.min(Math.max(shield, 0f), amount);
+		shield -= shieldDamage;
+		hitTime = 1f;
+
+		amount -= shieldDamage;
+		amount = Math.min(recentDamage / healthMultiplier, amount);
+		recentDamage -= amount * 1.5f * healthMultiplier;
+
+		if (amount > 0f && type.killable) {
+			health -= amount;
+			if (health <= 0f && !dead) {
+				kill();
+			}
+
+			if (hadShields && shield <= 0.0001f) {
+				Fx.unitShieldBreak.at(x, y, 0f, team.color, this);
+			}
+		}
+	}
+
+	@Override
+	public void destroy() {
+		if (!isAdded() || !type.killable) return;
+
+		if (!Vars.headless) {
+			type.deathSound.at(this);
+		}
+
+		for (WeaponMount mount : mounts) {
+			if (mount.weapon.shootOnDeath && (!mount.weapon.bullet.killShooter || mount.totalShots <= 0)) {
+				mount.reload = 0;
+				mount.shoot = true;
+				mount.weapon.update(this, mount);
+			}
+		}
+
+		if (!Vars.headless) {
+			Effect.shake(hitSize / 10f, hitSize / 8f, x, y);
+			Fx2.circleOut.at(x, y, hitSize, team.color);
+			Fx2.jumpTrailOut.at(x, y, rotation, team.color, type);
+			Sounds2.jumpIn.at(x, y, 1, 3);
+		}
+
+		for (Ability a : abilities) {
+			a.death(this);
+		}
+
+		type.killed(this);
+		remove();
+	}
+
+	@Override
+	public void read(Reads read) {
+		reinforcementsReload = read.f();
+
+		super.read(read);
+	}
+
+	@Override
+	public void write(Writes write) {
+		write.f(reinforcementsReload);
+
+		super.write(write);
+	}
+
+	@Override
+	public void readSync(Reads read) {
+		float reload = read.f();
+		if (!isLocal()) {
+			reinforcementsReload = reload;
+		}
+
+		super.readSync(read);
+	}
+
+	@Override
+	public void writeSync(Writes write) {
+		write.f(reinforcementsReload);
+
+		super.writeSync(write);
+	}
+
+	@Override
+	public float recentDamage() {
+		return recentDamage;
+	}
+
+	@Override
+	public float reinforcementsReload() {
+		return reinforcementsReload;
+	}
+
+	@Override
+	public void recentDamage(float value) {
+		recentDamage = value;
+	}
+
+	@Override
+	public void reinforcementsReload(float value) {
+		reinforcementsReload = value;
+	}
+}
