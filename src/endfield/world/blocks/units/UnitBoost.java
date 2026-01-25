@@ -19,7 +19,7 @@ import arc.util.pooling.Pools;
 import endfield.ui.Elements;
 import endfield.util.CollectionList;
 import endfield.util.Get.Pos;
-import endfield.world.meta.EStatValues;
+import endfield.world.meta.StatValues2;
 import mindustry.Vars;
 import mindustry.content.StatusEffects;
 import mindustry.entities.Units;
@@ -97,7 +97,7 @@ public class UnitBoost extends Block {
 
 		if (consumeItems != null) {
 			stats.remove(Stat.booster);
-			stats.add(Stat.booster, EStatValues.itemRangeBoosters("{0}" + StatUnit.timesSpeed.localized(), stats.timePeriod, boostStatus, boostRange * 8, consumeItems.items, boostReplace, this::consumesItem));
+			stats.add(Stat.booster, StatValues2.itemRangeBoosters("{0}" + StatUnit.timesSpeed.localized(), stats.timePeriod, boostStatus, boostRange * 8, consumeItems.items, boostReplace, this::consumesItem));
 		}
 	}
 

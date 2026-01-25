@@ -58,7 +58,7 @@ import endfield.graphics.g2d.FragmentationBatch;
 import endfield.graphics.g2d.RangeExtractor;
 import endfield.graphics.g2d.VaporizeBatch;
 import endfield.mod.AdaptiveCoreDatabase;
-import endfield.mod.EndFieldMods;
+import endfield.mod.Mods2;
 import endfield.net.Call2;
 import endfield.ui.Elements;
 import endfield.ui.Fonts2;
@@ -274,7 +274,7 @@ public final class EndFieldMod extends Mod {
 				});
 			}
 
-			if (!Vars.headless && !EndFieldMods.isEnabled("extra-utilities") && !EndFieldMods.isX() && Core.settings.getBool("floating-text")) {
+			if (!Vars.headless && !Mods2.isEnabled("extra-utilities") && !Mods2.isX() && Core.settings.getBool("floating-text")) {
 				String massage = Core.bundle.get("text.random-massage");
 				String[] massages = massage.split("@");
 

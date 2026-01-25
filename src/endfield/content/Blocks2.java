@@ -128,8 +128,8 @@ import endfield.world.draw.DrawPowerLight;
 import endfield.world.draw.DrawPrinter;
 import endfield.world.draw.DrawRotator;
 import endfield.world.draw.DrawScanLine;
-import endfield.world.meta.EAttribute;
-import endfield.world.meta.EBuildVisibility;
+import endfield.world.meta.Attributes2;
+import endfield.world.meta.BuildVisibility2;
 import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
@@ -730,7 +730,7 @@ public final class Blocks2 {
 		}};
 		arkyciteSand = new Floor("arkycite-sand", 3) {{
 			itemDrop = Items.sand;
-			attributes.set(EAttribute.arkycite, 1);
+			attributes.set(Attributes2.arkycite, 1);
 			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
@@ -852,13 +852,13 @@ public final class Blocks2 {
 		}};
 		softRareEarth = new Floor("soft-rare-earth", 3) {{
 			itemDrop = Items2.rareEarth;
-			attributes.set(EAttribute.radioactivity, 0.1f);
+			attributes.set(Attributes2.radioactivity, 0.1f);
 			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		patternRareEarth = new Floor("pattern-rare-earth", 4) {{
 			itemDrop = Items2.rareEarth;
-			attributes.set(EAttribute.radioactivity, 0.1f);
+			attributes.set(Attributes2.radioactivity, 0.1f);
 			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
@@ -1068,7 +1068,7 @@ public final class Blocks2 {
 			oreDefault = true;
 			oreThreshold = 0.89f;
 			oreScale = 33;
-			attributes.set(EAttribute.radioactivity, 2f);
+			attributes.set(Attributes2.radioactivity, 2f);
 			buildType = Constant.PROV_BUILDING;
 		}};
 		oreChromium = new OreBlock("ore-chromium", Items2.chromium) {{
@@ -2177,7 +2177,7 @@ public final class Blocks2 {
 			size = 2;
 			health = 400;
 			buildCostMultiplier = 0.9f;
-			attribute = EAttribute.radioactivity;
+			attribute = Attributes2.radioactivity;
 			envEnabled = Env.any;
 			powerProduction = 2f;
 			generateEffect = Fx.generatespark;
@@ -3247,7 +3247,7 @@ public final class Blocks2 {
 			buildType = ShockMineBuild::new;
 		}};
 		detonator = new Explosive("detonator") {{
-			requirements(Category.effect, EBuildVisibility.singlePlayer, ItemStack.with(Items.lead, 30, Items.graphite, 20, Items.thorium, 10, Items.blastCompound, 10));
+			requirements(Category.effect, BuildVisibility2.singlePlayer, ItemStack.with(Items.lead, 30, Items.graphite, 20, Items.thorium, 10, Items.blastCompound, 10));
 			health = 160;
 			size = 3;
 			squareSprite = false;

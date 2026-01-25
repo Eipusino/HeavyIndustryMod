@@ -20,7 +20,7 @@ import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import endfield.entities.Damage2;
-import endfield.world.meta.EStatValues;
+import endfield.world.meta.StatValues2;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.content.StatusEffects;
@@ -134,7 +134,7 @@ public class StaticNode extends Block {
 		stats.add(Stat.targetsAir, hitAir);
 		stats.add(Stat.targetsGround, hitGround);
 
-		stats.add(Stat.ammo, EStatValues.staticDamage(damage, reload, status));
+		stats.add(Stat.ammo, StatValues2.staticDamage(damage, reload, status));
 	}
 
 	@Override

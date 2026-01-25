@@ -2,7 +2,7 @@ package endfield.world.blocks.production;
 
 import arc.math.Mathf;
 import arc.util.Time;
-import endfield.world.meta.EStat;
+import endfield.world.meta.Stats2;
 import mindustry.type.LiquidStack;
 import mindustry.world.blocks.production.GenericCrafter;
 
@@ -16,7 +16,7 @@ public class ColiderCrafter extends GenericCrafter {
 
 	@Override
 	public void setStats() {
-		stats.add(EStat.produceChance, produceChance * 100f + "%");
+		stats.add(Stats2.produceChance, produceChance * 100f + "%");
 
 		super.setStats();
 	}

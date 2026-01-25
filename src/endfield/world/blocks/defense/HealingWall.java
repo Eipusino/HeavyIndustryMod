@@ -1,7 +1,7 @@
 package endfield.world.blocks.defense;
 
 import arc.util.Time;
-import endfield.world.meta.EStat;
+import endfield.world.meta.Stats2;
 import mindustry.world.blocks.defense.Wall;
 
 public class HealingWall extends Wall {
@@ -18,7 +18,7 @@ public class HealingWall extends Wall {
 	public void setStats() {
 		super.setStats();
 
-		stats.add(EStat.healPercent, healPercent);
+		stats.add(Stats2.healPercent, healPercent);
 	}
 
 	@Override

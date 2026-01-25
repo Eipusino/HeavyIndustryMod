@@ -26,7 +26,7 @@ import endfield.math.IInterp;
 import endfield.math.Mathm;
 import endfield.ui.CraftGridImage;
 import endfield.util.IntMap2;
-import endfield.world.meta.EStat;
+import endfield.world.meta.Stats2;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.ctype.UnlockableContent;
@@ -113,7 +113,7 @@ public class PayloadManufacturingGrid extends PayloadBlock {
 	@Override
 	public void setStats() {
 		super.setStats();
-		stats.add(EStat.recipes, table -> {
+		stats.add(Stats2.recipes, table -> {
 			table.row();
 
 			for (PayloadManufacturingRecipe recipe : recipes) {

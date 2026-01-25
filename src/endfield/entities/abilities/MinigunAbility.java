@@ -3,7 +3,7 @@ package endfield.entities.abilities;
 import arc.scene.ui.layout.Table;
 import arc.util.Strings;
 import endfield.content.Fx2;
-import endfield.world.meta.EStatUnit;
+import endfield.world.meta.StatUnits2;
 import mindustry.content.StatusEffects;
 import mindustry.entities.abilities.Ability;
 import mindustry.gen.Unit;
@@ -16,7 +16,7 @@ public class MinigunAbility extends Ability {
 	public float heat, dr;
 
 	public void addStats(Table t) {
-		t.add("[lightgray]" + Stat.reloadMultiplier.localized() + ": [white]" + EStatUnit.upTo.localized() + " " + Strings.autoFixed(heatReloadMultiplier * 1.5f, 2));
+		t.add("[lightgray]" + Stat.reloadMultiplier.localized() + ": [white]" + StatUnits2.upTo.localized() + " " + Strings.autoFixed(heatReloadMultiplier * 1.5f, 2));
 		t.row();
 		t.add("[lightgray]" + Stat.damage.localized() + ": [white]" + Strings.autoFixed(heatDamage / (50 / 60f), 2) + " " + StatUnit.perSecond.localized());
 		t.row();

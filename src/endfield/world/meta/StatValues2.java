@@ -45,9 +45,9 @@ import mindustry.world.meta.StatValues;
 import org.jetbrains.annotations.ApiStatus.Obsolete;
 import org.jetbrains.annotations.Nullable;
 
-public final class EStatValues {
+public final class StatValues2 {
 	/** Don't let anyone instantiate this class. */
-	private EStatValues() {}
+	private StatValues2() {}
 
 	public static <T extends UnlockableContent> StatValue ammo(ObjectMap<T, BulletType[]> map, boolean all) {
 		return ammo(map, 0, false, all);

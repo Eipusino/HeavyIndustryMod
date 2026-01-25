@@ -17,7 +17,7 @@ import arc.util.Tmp;
 import endfield.ai.SentryAI;
 import endfield.gen.Sentryc;
 import endfield.math.Mathm;
-import endfield.world.meta.EStat;
+import endfield.world.meta.Stats2;
 import mindustry.ai.types.LogicAI;
 import mindustry.content.Blocks;
 import mindustry.entities.abilities.Ability;
@@ -164,7 +164,7 @@ public class SentryUnitType extends UnitType2 {
 	public void setStats() {
 		super.setStats();
 
-		stats.add(EStat.sentryLifetime, (int) (lifetime / 60f), StatUnit.seconds);
+		stats.add(Stats2.sentryLifetime, (int) (lifetime / 60f), StatUnit.seconds);
 
 		stats.remove(Stat.speed);
 		stats.remove(Stat.itemCapacity);

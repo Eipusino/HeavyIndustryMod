@@ -9,7 +9,7 @@ import arc.struct.EnumSet;
 import arc.struct.Seq;
 import arc.util.Interval;
 import arc.util.Strings;
-import endfield.world.meta.EStatValues;
+import endfield.world.meta.StatValues2;
 import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
@@ -67,12 +67,12 @@ public class SpaceGenerator extends PowerGenerator {
 		stats.remove(generationType);
 		stats.add(generationType, powerProduction * 60f, StatUnit.powerSecond);
 		if (haveBasicPowerOutput)
-			stats.add(Stat.tiles, EStatValues.colorString(validColor, Core.bundle.get("stat.valid")));
-		stats.add(Stat.tiles, EStatValues.colorString(invalidColor, Core.bundle.get("stat.invalid")));
+			stats.add(Stat.tiles, StatValues2.colorString(validColor, Core.bundle.get("stat.valid")));
+		stats.add(Stat.tiles, StatValues2.colorString(invalidColor, Core.bundle.get("stat.invalid")));
 		if (attribute != null) {
-			stats.add(Stat.tiles, EStatValues.colorString(attributeColor, Core.bundle.get("stat.attribute")));
+			stats.add(Stat.tiles, StatValues2.colorString(attributeColor, Core.bundle.get("stat.attribute")));
 			if (negativeAttributeColor != attributeColor)
-				stats.add(Stat.tiles, EStatValues.colorString(negativeAttributeColor, Core.bundle.get("stat.negative-attribute")));
+				stats.add(Stat.tiles, StatValues2.colorString(negativeAttributeColor, Core.bundle.get("stat.negative-attribute")));
 			stats.add(haveBasicPowerOutput ? Stat.affinities : Stat.tiles, attribute, true, efficiencyScale, !display);
 		}
 		stats.add(Stat.range, edgeSpace, StatUnit.blocks);

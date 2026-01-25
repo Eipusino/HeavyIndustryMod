@@ -9,7 +9,7 @@ import arc.struct.Seq;
 import endfield.content.Fx2;
 import endfield.math.Mathm;
 import endfield.util.Sprites;
-import endfield.world.meta.EStat;
+import endfield.world.meta.Stats2;
 import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.gen.Bullet;
@@ -36,7 +36,7 @@ public class ShapedWall extends ConnectedWall {
 	@Override
 	public void setStats() {
 		super.setStats();
-		stats.add(EStat.damageReduction, damageReduction * 100, StatUnit.percent);
+		stats.add(Stats2.damageReduction, damageReduction * 100, StatUnit.percent);
 	}
 
 	@Override

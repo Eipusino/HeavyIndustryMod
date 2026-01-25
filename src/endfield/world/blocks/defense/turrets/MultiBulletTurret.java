@@ -14,7 +14,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import endfield.entities.pattern.IBulletHandler;
 import endfield.math.Mathm;
-import endfield.world.meta.EStatValues;
+import endfield.world.meta.StatValues2;
 import mindustry.Vars;
 import mindustry.content.Bullets;
 import mindustry.content.Items;
@@ -63,7 +63,7 @@ public class MultiBulletTurret extends Turret {
 		super.setStats();
 
 		stats.remove(Stat.itemCapacity);
-		stats.add(Stat.ammo, EStatValues.ammo(ammoTypes, all));
+		stats.add(Stat.ammo, StatValues2.ammo(ammoTypes, all));
 		if (all) {
 			stats.remove(Stat.reload);
 			stats.add(Stat.reload, Core.bundle.format("stat.shoot-time", Strings.autoFixed(reload / 60f, 2)));

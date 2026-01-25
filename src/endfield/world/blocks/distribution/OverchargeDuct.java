@@ -8,7 +8,7 @@ import arc.math.geom.Geometry;
 import arc.util.Tmp;
 import endfield.math.Mathm;
 import endfield.util.Sprites;
-import endfield.world.meta.EStat;
+import endfield.world.meta.Stats2;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.world.blocks.distribution.Duct;
@@ -41,8 +41,8 @@ public class OverchargeDuct extends Duct {
 	public void setStats() {
 		super.setStats();
 
-		//stats.add(EStat.itemsMovedBase, 60f / speed, StatUnit.itemsSecond);
-		stats.add(EStat.itemsMovedBoost, 60f / (speed / (1f + (baseEfficiency * 2f))), StatUnit.itemsSecond);
+		//stats.add(Stats2.itemsMovedBase, 60f / speed, StatUnit.itemsSecond);
+		stats.add(Stats2.itemsMovedBoost, 60f / (speed / (1f + (baseEfficiency * 2f))), StatUnit.itemsSecond);
 	}
 
 	@Override

@@ -4,8 +4,8 @@ import arc.Core;
 import arc.math.Mathf;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import endfield.world.meta.EStat;
-import endfield.world.meta.EStatValues;
+import endfield.world.meta.Stats2;
+import endfield.world.meta.StatValues2;
 import mindustry.content.Items;
 import mindustry.gen.Building;
 import mindustry.type.Item;
@@ -60,7 +60,7 @@ public class FuelCrafter extends GenericCrafter {
 	public void setStats() {
 		super.setStats();
 
-		stats.add(EStat.fuel, EStatValues.fuel(this));
+		stats.add(Stats2.fuel, StatValues2.fuel(this));
 	}
 
 	@Override

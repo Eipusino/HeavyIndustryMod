@@ -26,7 +26,7 @@ import endfield.graphics.MathRenderer;
 import endfield.graphics.Pal2;
 import endfield.math.Mathm;
 import endfield.type.weapons.DataWeapon;
-import endfield.world.meta.EStatValues;
+import endfield.world.meta.StatValues2;
 import mindustry.content.Fx;
 import mindustry.entities.Units;
 import mindustry.entities.bullet.BulletType;
@@ -407,7 +407,7 @@ public class KaguyaUnitType extends UnitType2 {
 
 				Table ic = new Table();
 
-				EStatValues.ammo3(ic, subBull);
+				StatValues2.ammo3(ic, subBull);
 
 				Collapser coll = new Collapser(ic, true);
 				coll.setDuration(0.1f);

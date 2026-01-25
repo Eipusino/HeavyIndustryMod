@@ -8,7 +8,7 @@ import arc.util.Strings;
 import arc.util.Time;
 import endfield.content.Fx2;
 import endfield.math.Mathm;
-import endfield.world.meta.EStat;
+import endfield.world.meta.Stats2;
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.entities.abilities.Ability;
@@ -56,9 +56,9 @@ public abstract class MirrorShieldAbility extends Ability implements ICollideBlo
 		t.row();
 		t.add("[lightgray]" + Stat.armor.localized() + ": [white]" + Math.round(shieldArmor));
 		t.row();
-		t.add("[lightgray]" + EStat.fieldStrength.localized() + ": [white]" + Math.round(strength));
+		t.add("[lightgray]" + Stats2.fieldStrength.localized() + ": [white]" + Math.round(strength));
 		t.row();
-		t.add("[lightgray]" + EStat.albedo.localized() + ": [white]" + (Mathf.equal(minAlbedo, maxAlbedo) ?
+		t.add("[lightgray]" + Stats2.albedo.localized() + ": [white]" + (Mathf.equal(minAlbedo, maxAlbedo) ?
 				Mathf.round(minAlbedo * 100) + "%" :
 				Mathf.round(minAlbedo * 100) + "% - " + Mathf.round(maxAlbedo * 100) + "%"));
 		t.row();

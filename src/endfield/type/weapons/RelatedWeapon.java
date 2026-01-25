@@ -11,7 +11,7 @@ import arc.util.Strings;
 import arc.util.Time;
 import arc.util.Tmp;
 import endfield.entities.pattern.IBulletHandler;
-import endfield.world.meta.EStatValues;
+import endfield.world.meta.StatValues2;
 import mindustry.entities.Effect;
 import mindustry.entities.Mover;
 import mindustry.entities.bullet.BulletType;
@@ -77,7 +77,7 @@ public class RelatedWeapon extends DataWeapon {
 					ta.add("[lightgray]" + Stat.reload.localized() + ": " + (mirror ? "2x " : "") + "[white]" + Strings.autoFixed(60f / reload * (alternativeShoot == null ? shoot.shots : alternativeShoot.shots), 2) + " " + StatUnit.perSecond.localized());
 				}
 				if (!overrideAlt) {
-					EStatValues.ammo3(ta, alternativeBullet);
+					StatValues2.ammo3(ta, alternativeBullet);
 				}
 				/*if (customAltDisplay != null) {
 					customDisplay.get(alternativeBullet, ta);

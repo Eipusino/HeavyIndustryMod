@@ -19,7 +19,7 @@ import arc.util.io.Writes;
 import endfield.entities.Damage2;
 import endfield.graphics.Outliner;
 import endfield.graphics.PositionLightning;
-import endfield.world.meta.EStatValues;
+import endfield.world.meta.StatValues2;
 import mindustry.content.Fx;
 import mindustry.entities.Damage;
 import mindustry.entities.Effect;
@@ -104,7 +104,7 @@ public class TeslaTurret extends Block {
 
 		stats.add(Stat.shootRange, range / tilesize, StatUnit.blocks);
 		stats.add(Stat.reload, 60f / reload, StatUnit.perSecond);
-		stats.add(Stat.ammo, EStatValues.teslaZapping(damage, maxTargets, status));
+		stats.add(Stat.ammo, StatValues2.teslaZapping(damage, maxTargets, status));
 
 		if (coolant != null) {
 			stats.add(Stat.booster, StatValues.boosters(reload, coolant.amount, coolantMultiplier, true, l -> l.coolant && consumesLiquid(l)));

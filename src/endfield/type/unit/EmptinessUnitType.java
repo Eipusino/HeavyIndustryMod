@@ -36,7 +36,7 @@ import endfield.type.lightnings.generator.VectorLightningGenerator;
 import endfield.type.particles.ParticleModels;
 import endfield.type.weapons.DataWeapon;
 import endfield.ui.Icon2;
-import endfield.world.meta.EStatValues;
+import endfield.world.meta.StatValues2;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Damage;
@@ -277,7 +277,7 @@ public class EmptinessUnitType extends UnitType2 {
 				super.addStats(u, t);
 
 				Table ic = new Table();
-				EStatValues.ammo3(ic, subBullet);
+				StatValues2.ammo3(ic, subBullet);
 				Collapser coll = new Collapser(ic, true);
 				coll.setDuration(0.1f);
 

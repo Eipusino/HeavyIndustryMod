@@ -3,7 +3,7 @@ package endfield.content;
 import arc.graphics.Color;
 import endfield.Vars2;
 import endfield.graphics.Pal2;
-import endfield.world.meta.EAttribute;
+import endfield.world.meta.Attributes2;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
 import mindustry.content.Items;
@@ -85,11 +85,11 @@ public final class Overrides {
 		Blocks.deepTaintedWater.asFloor().liquidMultiplier = 1.5f;
 		Blocks.oxidationChamber.canOverdrive = Blocks.neoplasiaReactor.canOverdrive = true;
 		Blocks.slag.attributes.set(Attribute.heat, 1f);
-		Blocks.oreThorium.attributes.set(EAttribute.radioactivity, 1f);
+		Blocks.oreThorium.attributes.set(Attributes2.radioactivity, 1f);
 		//blocks-environment-erekir
 		Blocks.yellowStonePlates.attributes.set(Attribute.water, -1f);
-		Blocks.beryllicStone.attributes.set(EAttribute.arkycite, 0.7f);
-		Blocks.arkyicStone.attributes.set(EAttribute.arkycite, 1f);
+		Blocks.beryllicStone.attributes.set(Attributes2.arkycite, 0.7f);
+		Blocks.arkyicStone.attributes.set(Attributes2.arkycite, 1f);
 		//blocks-wall
 		Blocks.copperWall.armor = Blocks.copperWallLarge.armor = 1f;
 		Blocks.titaniumWall.armor = Blocks.titaniumWallLarge.armor = Blocks.plastaniumWall.armor = Blocks.plastaniumWallLarge.armor = 2f;

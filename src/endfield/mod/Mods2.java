@@ -8,20 +8,20 @@ import org.jetbrains.annotations.Nullable;
 
 import static endfield.Vars2.MOD_NAME;
 
-public final class EndFieldMods {
+public final class Mods2 {
 	/** If needed, please call {@link #loaded()} for the LoadedMod of this mod. */
 	static LoadedMod loaded;
 
 	/** Don't let anyone instantiate this class. */
-	private EndFieldMods() {}
+	private Mods2() {}
 
 	@Contract("null -> false")
-	public static boolean isEndField(Content content) {
+	public static boolean isEndField(@Nullable Content content) {
 		return content != null && isEndField(content.minfo.mod);
 	}
 
 	@Contract("null -> false")
-	public static boolean isEndField(LoadedMod mod) {
+	public static boolean isEndField(@Nullable LoadedMod mod) {
 		return mod != null && mod == loaded();
 	}
 

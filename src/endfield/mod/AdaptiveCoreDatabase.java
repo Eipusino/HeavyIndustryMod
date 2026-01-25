@@ -31,13 +31,12 @@ public final class AdaptiveCoreDatabase {
 
 	@Internal
 	public static void init() {
-		if (EndFieldMods.isEnabled("adaptivecoredatabase")) return;
+		if (Mods2.isEnabled("adaptivecoredatabase")) return;
 
 		boolean load = false;
 
 		Seq<LoadedMod> mods = Vars.mods.list();
-		for (int n = 0; n < mods.size; n++) {
-			LoadedMod mod = mods.get(n);
+		for (LoadedMod mod : mods) {
 			try {
 				if (mod == null || mod.meta == null || mod.name.equals(MOD_NAME) || !mod.enabled()) continue;
 

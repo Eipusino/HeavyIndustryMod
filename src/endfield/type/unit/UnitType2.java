@@ -4,7 +4,7 @@ import arc.Core;
 import arc.util.Strings;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import endfield.world.meta.EStat;
+import endfield.world.meta.Stats2;
 import mindustry.ai.types.MissileAI;
 import mindustry.content.Items;
 import mindustry.gen.Sounds;
@@ -30,7 +30,7 @@ public class UnitType2 extends UnitType {
 	public void setStats() {
 		super.setStats();
 		if (damageMultiplier < 1f) {
-			stats.add(EStat.damageReduction, Core.bundle.format("text.sin", Strings.autoFixed((1f - damageMultiplier) * 100, 2)));
+			stats.add(Stats2.damageReduction, Core.bundle.format("text.sin", Strings.autoFixed((1f - damageMultiplier) * 100, 2)));
 		}
 	}
 

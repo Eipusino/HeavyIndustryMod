@@ -3,7 +3,7 @@ package endfield.world.meta;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatCat;
 
-public final class EStat {
+public final class Stats2 {
 	public static final Stat minSpeed = new Stat("min-speed");
 	public static final Stat maxSpeed = new Stat("max-speed");
 	public static final Stat sentryLifetime = new Stat("sentry-lifetime");
@@ -26,5 +26,5 @@ public final class EStat {
 	//public static final Stat maxStructureSize = new Stat("max-structure-size");
 
 	/** Don't let anyone instantiate this class. */
-	private EStat() {}
+	private Stats2() {}
 }
