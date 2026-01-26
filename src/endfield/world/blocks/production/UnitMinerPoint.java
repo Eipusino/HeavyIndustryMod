@@ -9,7 +9,6 @@ import arc.math.Mathf;
 import arc.math.geom.Rect;
 import arc.struct.EnumSet;
 import arc.struct.IntSeq;
-import arc.struct.Seq;
 import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
@@ -17,6 +16,7 @@ import arc.util.io.Writes;
 import endfield.ai.MinerPointAI;
 import endfield.content.UnitTypes2;
 import endfield.net.Call2;
+import endfield.util.CollectionList;
 import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
@@ -44,6 +44,8 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatValues;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * In fact, it continues the characteristics of Anuke's planet, but there may still be some bugs.
  * @author guiY
@@ -53,7 +55,7 @@ public class UnitMinerPoint extends Block {
 	public @Nullable Item blockedItem;
 
 	/** Special exemption items that this miner can't mine. */
-	public Seq<Item> blockedItems = new Seq<>(Item.class);
+	public List<Item> blockedItems = new CollectionList<>(Item.class);
 
 	public int range = 12;
 	public int tier = 2;
@@ -152,9 +154,9 @@ public class UnitMinerPoint extends Block {
 	public void setBars() {
 		super.setBars();
 		addBar("units", (UnitMinerPointBuild tile) -> new Bar(
-				() -> Core.bundle.format("bar.unitcap", Fonts.getUnicodeStr(minerUnit.name), tile.units.size, dronesCreated),
+				() -> Core.bundle.format("bar.unitcap", Fonts.getUnicodeStr(minerUnit.name), tile.units.size(), dronesCreated),
 				() -> Pal.power,
-				() -> (float) tile.units.size / dronesCreated));
+				() -> (float) tile.units.size() / dronesCreated));
 	}
 
 	@Override
@@ -173,8 +175,8 @@ public class UnitMinerPoint extends Block {
 		public int sort = -1;
 		public int lastSort = -1;
 
-		public Seq<Tile> tiles = new Seq<>(Tile.class);
-		public Seq<Unit> units = new Seq<>(Unit.class);
+		public List<Tile> tiles = new CollectionList<>(Tile.class);
+		public List<Unit> units = new CollectionList<>(Unit.class);
 
 		public float droneWarmup, powerWarmup;
 		public float warmup, readyness;
@@ -217,18 +219,20 @@ public class UnitMinerPoint extends Block {
 
 			//read newly synced drones on client end
 			//same as UnitAssembler
-			if (units.size < dronesCreated) {
+			if (units.size() < dronesCreated) {
 				for (int i = 0; i < whenSyncedUnits.size; i++) {
 					int id = whenSyncedUnits.items[i];
 
 					Unit unit = Groups.unit.getByID(id);
-					if (unit != null) {
-						units.addUnique(unit);
+					if (unit != null && !units.contains(unit)) {
+						units.add(unit);
 					}
 				}
 			}
 
-			units.removeAll(u -> !u.isAdded() || u.dead || !(u.controller() instanceof MinerPointAI));
+			for (Unit u : units) {
+				if (!u.isAdded() || u.dead || !(u.controller() instanceof MinerPointAI)) units.remove(u);
+			}
 
 			if (!allowUpdate()) {
 				droneProgress = 0f;
@@ -238,12 +242,12 @@ public class UnitMinerPoint extends Block {
 
 			float powerStatus = power == null ? 1f : power.status;
 			powerWarmup = Mathf.lerpDelta(powerStatus, powerStatus > 0.0001f ? 1f : 0f, 0.1f);
-			droneWarmup = Mathf.lerpDelta(droneWarmup, units.size < dronesCreated ? powerStatus : 0f, 0.1f);
+			droneWarmup = Mathf.lerpDelta(droneWarmup, units.size() < dronesCreated ? powerStatus : 0f, 0.1f);
 			totalDroneProgress += droneWarmup * edelta();
 			warmup = Mathf.approachDelta(warmup, efficiency, 1f / 60f);
-			readyness = Mathf.approachDelta(readyness, units.size == dronesCreated ? 1f : 0f, 1f / 60f);
+			readyness = Mathf.approachDelta(readyness, units.size() == dronesCreated ? 1f : 0f, 1f / 60f);
 
-			if (units.size < dronesCreated && (droneProgress += edelta() * Vars.state.rules.unitBuildSpeed(team) * powerStatus / droneConstructTime) >= 1f) {
+			if (units.size() < dronesCreated && (droneProgress += edelta() * Vars.state.rules.unitBuildSpeed(team) * powerStatus / droneConstructTime) >= 1f) {
 				if (!Vars.net.client()) {
 					Unit unit = minerUnit.create(team);
 					if (unit instanceof BuildingTetherc bt) {
@@ -257,12 +261,10 @@ public class UnitMinerPoint extends Block {
 				}
 			}
 
-			if (units.size >= dronesCreated) {
+			if (units.size() >= dronesCreated) {
 				droneProgress = 0f;
 			}
-			for (int i = 0; i < units.size; i++) {
-				Unit unit = units.get(i);
-
+			for (Unit unit : units) {
 				if (unit.controller() instanceof MinerPointAI ai) {
 					ai.ore = alwaysCons ? efficiency > 0.4 ? sortTile : null : sortTile;
 				}
@@ -286,7 +288,7 @@ public class UnitMinerPoint extends Block {
 		public void draw() {
 			//same as UnitCargoLoader
 			Draw.rect(block.region, x, y);
-			if (units.size < dronesCreated) {
+			if (units.size() < dronesCreated) {
 				Draw.draw(Layer.blockOver, () -> Drawf.construct(this, minerUnit.fullIcon, 0f, droneProgress, warmup, totalDroneProgress));
 			} else {
 				Draw.z(Layer.bullet - 0.01f);
@@ -304,15 +306,15 @@ public class UnitMinerPoint extends Block {
 
 			Drawf.dashSquare(Pal.accent, x, y, range * Vars.tilesize * 2);
 
-			if (tiles.isEmpty() && !placeInAir) {
-				findOre();
-				if (tiles.isEmpty()) {
-					placeInAir = true;
-					return;
+			if (tiles.isEmpty()) {
+				if (!placeInAir) {
+					findOre();
+					if (tiles.isEmpty()) {
+						placeInAir = true;
+						return;
+					}
 				}
-			}
-
-			if (tiles.any()) {
+			} else {
 				float z = Draw.z();
 				Draw.z(Layer.blockUnder - 2.5f);
 				float sin = Mathf.absin(Time.time, 6, 0.8f);
@@ -402,7 +404,7 @@ public class UnitMinerPoint extends Block {
 
 		@Override
 		public boolean shouldConsume() {
-			return alwaysCons || units.size < dronesCreated;
+			return alwaysCons || units.size() < dronesCreated;
 		}
 
 		@Override
@@ -420,7 +422,7 @@ public class UnitMinerPoint extends Block {
 			super.write(write);
 			write.f(droneWarmup);
 			write.f(droneProgress);
-			write.b(units.size);
+			write.b(units.size());
 			for (Unit unit : units) {
 				write.i(unit.id);
 			}

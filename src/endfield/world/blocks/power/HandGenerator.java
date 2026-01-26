@@ -1,5 +1,6 @@
 package endfield.world.blocks.power;
 
+import arc.math.Mathf;
 import arc.scene.ui.layout.Table;
 import mindustry.gen.Icon;
 import mindustry.ui.Styles;
@@ -22,7 +23,9 @@ public class HandGenerator extends PowerGenerator {
 	public class HandGeneratorBuild extends GeneratorBuild {
 		@Override
 		public void update() {
-			if (productionEfficiency > 0) productionEfficiency -= 0.5f;
+			super.update();
+			//if (productionEfficiency > 0) productionEfficiency -= 0.5f;
+			productionEfficiency = Mathf.lerpDelta(productionEfficiency, 0f, 0.05f);
 		}
 
 		@Override

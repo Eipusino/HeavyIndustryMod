@@ -78,6 +78,7 @@ public class LaserRuler extends Block {
 		@Override
 		public void update() {
 			super.update();
+
 			if (!validTarget(target)) return;
 			rebuildTiles();
 		}

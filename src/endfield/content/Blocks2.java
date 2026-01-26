@@ -384,6 +384,8 @@ public final class Blocks2 {
 	public static MultiRouter chromiumRouter;
 	public static RailItemBridge chromiumItemBridge;
 	public static NodeBridge phaseItemNode;
+	public static Unloader machineryUnloader;
+	public static Unloader2 rapidUnloader;
 	public static DirectionalUnloader2 rapidDirectionalUnloader;
 	//distribution-erekir
 	public static DuctJunction ductJunction;
@@ -476,8 +478,6 @@ public final class Blocks2 {
 	//storage
 	public static StorageBlock cargo;
 	public static StorageBlock bin;
-	public static Unloader machineryUnloader;
-	public static Unloader2 rapidUnloader;
 	public static CoreStorageBlock coreStorage;
 	public static CrashCore coreShatter;
 	//storage-erekir
@@ -1816,6 +1816,18 @@ public final class Blocks2 {
 			envEnabled |= Env.space;
 			transportTime = 1f;
 			consumePower(0.5f);
+		}};
+		machineryUnloader = new Unloader("machinery-unloader") {{
+			requirements(Category.distribution, ItemStack.with(Items.copper, 15, Items.lead, 10));
+			health = 40;
+			speed = 60f / 4.2f;
+			group = BlockGroup.transportation;
+			buildType = UnloaderBuild::new;
+		}};
+		rapidUnloader = new Unloader2("rapid-unloader") {{
+			requirements(Category.distribution, ItemStack.with(Items.silicon, 35, Items.plastanium, 15, Items2.crystallineCircuit, 10, Items2.chromium, 15));
+			speed = 1f;
+			group = BlockGroup.transportation;
 		}};
 		rapidDirectionalUnloader = new DirectionalUnloader2("rapid-directional-unloader") {{
 			requirements(Category.distribution, ItemStack.with(Items.silicon, 40, Items.plastanium, 25, Items2.chromium, 15, Items.phaseFabric, 5));
@@ -3331,18 +3343,6 @@ public final class Blocks2 {
 				return teamRegion.found() ? new TextureRegion[]{region, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
 			}
 		};
-		machineryUnloader = new Unloader("machinery-unloader") {{
-			requirements(Category.effect, ItemStack.with(Items.copper, 15, Items.lead, 10));
-			health = 40;
-			speed = 60f / 4.2f;
-			group = BlockGroup.transportation;
-			buildType = UnloaderBuild::new;
-		}};
-		rapidUnloader = new Unloader2("rapid-unloader") {{
-			requirements(Category.effect, ItemStack.with(Items.silicon, 35, Items.plastanium, 15, Items2.crystallineCircuit, 10, Items2.chromium, 15));
-			speed = 1f;
-			group = BlockGroup.transportation;
-		}};
 		coreStorage = new CoreStorageBlock("core-storage") {{
 			requirements(Category.effect, ItemStack.with(Items.lead, 600, Items.titanium, 400, Items.silicon, 800, Items.thorium, 400, Items.plastanium, 300));
 			size = 3;

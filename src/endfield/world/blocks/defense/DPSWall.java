@@ -8,9 +8,14 @@ import arc.math.Mathf;
 import arc.util.Align;
 import arc.util.Time;
 import mindustry.Vars;
+import mindustry.content.UnitTypes;
+import mindustry.gen.BlockUnitc;
+import mindustry.gen.Unit;
 import mindustry.graphics.Layer;
 import mindustry.ui.Fonts;
+import mindustry.world.blocks.ControlBlock;
 import mindustry.world.blocks.defense.Wall;
+import org.jetbrains.annotations.Nullable;
 
 import static endfield.Vars2.boardTimeTotal;
 
@@ -18,6 +23,7 @@ public class DPSWall extends Wall {
 	public DPSWall(String name) {
 		super(name);
 
+		placeableLiquid = true;
 		update = true;
 	}
 
@@ -26,8 +32,10 @@ public class DPSWall extends Wall {
 		if (buildType == null) buildType = DPSWallBuild::new;
 	}
 
-	public class DPSWallBuild extends WallBuild {
+	public class DPSWallBuild extends WallBuild implements ControlBlock {
 		public float totalDamage = 0f, hits = 0f, firstHitTime = 0f, lastHitTime = 0f, showBoardTime = 0f;
+
+		public @Nullable BlockUnitc unit;
 
 		@Override
 		public void health(float health) {
@@ -86,6 +94,15 @@ public class DPSWall extends Wall {
 
 				Draw.reset();
 			}
+		}
+
+		@Override
+		public Unit unit() {
+			if (unit == null) {
+				unit = (BlockUnitc) UnitTypes.block.create(team);
+				unit.tile(this);
+			}
+			return (Unit) unit;
 		}
 	}
 }
