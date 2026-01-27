@@ -367,7 +367,7 @@ public final class Unsafer2 {
 	}
 
 	public static Object get(Field field, Object object) {
-		long offset = getOffset(field);
+		long offset = offset(field);
 		Class<?> type = field.getType(), base = field.getDeclaringClass();
 		Object o = Modifier.isStatic(field.getModifiers()) ? base : requireNonNullInstance(base, object);
 
@@ -411,7 +411,7 @@ public final class Unsafer2 {
 	}
 
 	public static void set(Field field, Object object, Object value) {
-		long offset = getOffset(field);
+		long offset = offset(field);
 		Class<?> type = field.getType(), base = field.getDeclaringClass();
 		Object o = Modifier.isStatic(field.getModifiers()) ? base : requireNonNullInstance(base, object);
 
@@ -446,7 +446,7 @@ public final class Unsafer2 {
 		}
 	}
 
-	public static long getOffset(Field field) {
+	public static long offset(Field field) {
 		return Modifier.isStatic(field.getModifiers()) ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
 	}
 }

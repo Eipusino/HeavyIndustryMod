@@ -3,9 +3,11 @@ package endfield.util;
 import arc.func.Boolc;
 import arc.func.Boolf;
 import arc.func.Boolp;
+import arc.func.Cons;
 import arc.func.Floatc;
 import arc.func.Floatc2;
 import arc.func.Floatp;
+import arc.func.Func;
 import arc.func.Prov;
 import endfield.func.Doublep;
 import mindustry.gen.Building;
@@ -25,9 +27,9 @@ public final class Constant {
 	public static final Boolc BOOLC_NOTHING = b -> {};
 	public static final Boolp BOOLP_TRUE = () -> true;
 	public static final Boolp BOOLP_FALSE = () -> false;
-	public static final Boolf<Building> BOOLF_BUILDING_TRUE = b -> true;
-	public static final Boolf<Unit> BOOLF_UNIT_TRUE = u -> true;
-	public static final Boolf<Healthc> BOOLF_HEALTHC_FALSE = h -> false;
+	public static final Boolf<Building> BOOLF_BUILDING_TRUE = boolf(true);
+	public static final Boolf<Unit> BOOLF_UNIT_TRUE = boolf(true);
+	public static final Boolf<Healthc> BOOLF_HEALTHC_FALSE = boolf(false);
 	public static final Floatc FLOATC_NOTHING = a -> {};
 	public static final Floatc2 FLOATC2_NOTHING = (a, b) -> {};
 	public static final Prov<Building> PROV_BUILDING = Building::create;
@@ -45,7 +47,19 @@ public final class Constant {
 
 	private Constant() {}
 
-	/*public static <T> Boolf<T> boolf(boolean value) {
+	public static <T> Prov<T> prov(T value) {
+		return () -> value;
+	}
+
+	public static <T> Cons<T> cons() {
+		return t -> {};
+	}
+
+	public static <T> Boolf<T> boolf(boolean value) {
 		return t -> value;
-	}*/
+	}
+
+	public static <P, R> Func<P, R> func(R value) {
+		return p -> value;
+	}
 }

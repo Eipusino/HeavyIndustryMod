@@ -9,6 +9,7 @@ import arc.util.pooling.Pools;
 import endfield.func.Floatf2;
 import endfield.type.lightnings.LightningEffect;
 import endfield.type.lightnings.LightningVertex;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 
@@ -48,8 +49,8 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
 	 */
 	public BranchMaker branchMaker;
 
-	public Cons<LightningEffect> branchCreated;
-	public Floatf2<LightningVertex, LightningVertex> blockNow;
+	public Cons<? super LightningEffect> branchCreated;
+	public Floatf2<? super LightningVertex, ? super LightningVertex> blockNow;
 
 	protected LightningEffect curr;
 
@@ -73,7 +74,7 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
 		this.curr = curr;
 	}
 
-	public void branched(Cons<LightningEffect> branchCreated) {
+	public void branched(Cons<? super LightningEffect> branchCreated) {
 		this.branchCreated = branchCreated;
 	}
 
@@ -82,7 +83,7 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
 		float strength = Mathf.clamp(Mathf.random(minBranchStrength, maxBranchStrength));
 		LightningGenerator gen = branchMaker.get(vertex, strength);
 		gen.setOffset(vertex.x, vertex.y);
-		Floatf2<LightningVertex, LightningVertex> old = gen.blockNow;
+		Floatf2<? super LightningVertex, ? super LightningVertex> old = gen.blockNow;
 		gen.blockNow = (l, v) -> old != null ? old.get(l, v) : blockNow != null ? blockNow.get(l, v) : -1;
 		vertex.branchOther = LightningEffect.create(
 				gen,
@@ -108,7 +109,7 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
 	 * vertices one by one. This method is not thread safe.
 	 */
 	@Override
-	public synchronized Iterator<LightningVertex> iterator() {
+	public synchronized @NotNull Iterator<LightningVertex> iterator() {
 		reset();
 		return this;
 	}

@@ -17,6 +17,7 @@ import endfield.content.Fx2;
 import endfield.entities.bullet.EffectBulletType;
 import endfield.graphics.Drawn;
 import endfield.graphics.PositionLightning;
+import endfield.util.Constant;
 import mindustry.Vars;
 import mindustry.entities.Damage;
 import mindustry.entities.Effect;
@@ -49,8 +50,8 @@ public class HyperGenerator extends ImpactReactor {
 
 	public float statusDuration = 15 * 60;
 
-	public Cons<HyperGeneratorBuild> explodeAction = entity -> {};
-	public Cons<Position> explodeSub = entity -> {};
+	public Cons<? super HyperGeneratorBuild> explodeAction = Constant.cons();
+	public Cons<? super Position> explodeSub = Constant.cons();
 
 	public float maxVelScl = 1.25f, minVelScl = 0.75f;
 	public float maxTimeScl = 1.25f, minTimeScl = 0.75f;

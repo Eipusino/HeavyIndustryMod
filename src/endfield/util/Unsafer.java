@@ -15,11 +15,9 @@ package endfield.util;
 
 import arc.util.OS;
 import endfield.android.field.AndroidField;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import sun.misc.Unsafe;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -510,7 +508,7 @@ public final class Unsafer {
 	}
 
 	public static Object get(@NotNull Field field, Object object) {
-		long offset = getOffset(field);
+		long offset = offset(field);
 		Class<?> type = field.getType(), base = field.getDeclaringClass();
 		Object o = Modifier.isStatic(field.getModifiers()) ? base : requireNonNullInstance(base, object);
 
@@ -554,7 +552,7 @@ public final class Unsafer {
 	}
 
 	public static void set(@NotNull Field field, Object object, Object value) {
-		long offset = getOffset(field);
+		long offset = offset(field);
 		Class<?> type = field.getType(), base = field.getDeclaringClass();
 		Object o = Modifier.isStatic(field.getModifiers()) ? base : requireNonNullInstance(base, object);
 
@@ -589,41 +587,16 @@ public final class Unsafer {
 		}
 	}
 
-	/**
-	 * Allocates an instance but does not run any constructor. Initializes the class if it has not yet been.
-	 * <p>May cause strange bugs or even <strong>JVM crashes</strong>, use with caution.
-	 *
-	 * @throws NullPointerException If type is null
-	 * @throws RuntimeException If the {@code unsafe.allocateInstance()} method throws an {@code InstantiationException}
-	 * @throws IllegalArgumentException If the type is {@link Class} or primitive type.
-	 * @since 1.0.9
-	 */
-	@SuppressWarnings("unchecked")
-	@Contract(value = "null -> fail; _ -> new", pure = true)
-	public static <T> T allocateInstance(Class<? extends T> type) {
-		// The native part of allocateInstance does not have a null check, giving a null value can cause the JVM to crash.
-		if (type == null) throw new NullPointerException("type is null");
-		// The String class can cause strange bugs, So return an empty string directly.
-		if (type == String.class) return (T) "";
-		if (type.isArray()) return (T) Array.newInstance(type.componentType(), 0);
-
-		try {
-			return (T) unsafe.allocateInstance(type);
-		} catch (InstantiationException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	public static long sizeOf(Object object) {
+	/*public static long sizeOf(Object object) {
 		return unsafe.getAddress(normalize(unsafe.getInt(object, 4l)) + 12l);
 	}
 
 	static long normalize(int value) {
 		return value >= 0 ? value : (~0l >>> 32) & value;
-	}
+	}*/
 
 	/** Get the field offset. */
-	public static long getOffset(@NotNull Field field) {
+	public static long offset(@NotNull Field field) {
 		// If it is an Android platform, simply call the getOffset method of the field.
 		return OS.isAndroid ? AndroidField.fieldOffset(field) : Modifier.isStatic(field.getModifiers()) ?
 				unsafe.staticFieldOffset(field) : unsafe.objectFieldOffset(field);

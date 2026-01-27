@@ -15,24 +15,6 @@ import java.util.concurrent.locks.ReadWriteLock;
 public final class Asyncs {
 	private Asyncs() {}
 
-	/** Please use {@link AsyncsKt#get(Future)} */
-	@Deprecated
-	public static <T> T get(Future<T> future) {
-		return AsyncsKt.get(future);
-	}
-
-	/** Please use {@link AsyncsKt#postWait(Runnable)} */
-	@Deprecated
-	public static void postWait(Runnable runSync) {
-		AsyncsKt.postWait(runSync);
-	}
-
-	/** Please use {@link AsyncsKt#postWait(Prov)} */
-	@Deprecated
-	public static <T> T postWait(Prov<T> runSync) {
-		return AsyncsKt.postWait(runSync);
-	}
-
 	public static <T> T lock(Lock lock, Prov<T> prov) {
 		lock.lock();
 		T out = prov.get();
