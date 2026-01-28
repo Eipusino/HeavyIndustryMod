@@ -56,13 +56,13 @@ public class LightningContainer implements Iterable<LightningEffect>, Eachable<L
 	 * The callback function called when creating a lightning branch is generally used to define the sub
 	 * container properties of the lightning branch.
 	 */
-	public Cons<? super LightningEffect> branchCreated;
+	public Cons<LightningEffect> branchCreated;
 
 	/**
 	 * LightningEffect vertex trigger, triggered when a lightning node has arrived, passes in the previous vertex
 	 * and this vertex.
 	 */
-	public Cons2<? super LightningVertex, ? super LightningVertex> trigger;
+	public Cons2<LightningVertex, LightningVertex> trigger;
 	public boolean headClose, endClose;
 
 	protected float clipSize;

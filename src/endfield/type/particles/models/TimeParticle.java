@@ -5,7 +5,7 @@ import arc.util.Time;
 import endfield.type.particles.ParticleEffect;
 import endfield.type.particles.ParticleModel;
 
-public class TimeParticle extends ParticleModel {
+public class TimeParticle implements ParticleModel {
 	public static final String BEGIN = "begin";
 	public static final String LIFE_TIME = "lifeTime";
 	public static final String PROGRESS = "progress";

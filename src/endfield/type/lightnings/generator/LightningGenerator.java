@@ -49,8 +49,8 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
 	 */
 	public BranchMaker branchMaker;
 
-	public Cons<? super LightningEffect> branchCreated;
-	public Floatf2<? super LightningVertex, ? super LightningVertex> blockNow;
+	public Cons<LightningEffect> branchCreated;
+	public Floatf2<LightningVertex, LightningVertex> blockNow;
 
 	protected LightningEffect curr;
 
@@ -74,7 +74,7 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
 		this.curr = curr;
 	}
 
-	public void branched(Cons<? super LightningEffect> branchCreated) {
+	public void branched(Cons<LightningEffect> branchCreated) {
 		this.branchCreated = branchCreated;
 	}
 
@@ -83,7 +83,7 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
 		float strength = Mathf.clamp(Mathf.random(minBranchStrength, maxBranchStrength));
 		LightningGenerator gen = branchMaker.get(vertex, strength);
 		gen.setOffset(vertex.x, vertex.y);
-		Floatf2<? super LightningVertex, ? super LightningVertex> old = gen.blockNow;
+		Floatf2<LightningVertex, LightningVertex> old = gen.blockNow;
 		gen.blockNow = (l, v) -> old != null ? old.get(l, v) : blockNow != null ? blockNow.get(l, v) : -1;
 		vertex.branchOther = LightningEffect.create(
 				gen,

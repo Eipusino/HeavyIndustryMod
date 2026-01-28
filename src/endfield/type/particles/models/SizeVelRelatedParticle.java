@@ -5,7 +5,7 @@ import arc.math.Mathf;
 import endfield.type.particles.ParticleEffect;
 import endfield.type.particles.ParticleModel;
 
-public class SizeVelRelatedParticle extends ParticleModel {
+public class SizeVelRelatedParticle implements ParticleModel {
 	public float finalThreshold = 0.25f;
 	public float fadeThreshold = 0.03f;
 	public Interp sizeInterp = Interp.linear;

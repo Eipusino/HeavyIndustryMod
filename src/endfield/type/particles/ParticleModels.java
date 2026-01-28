@@ -50,7 +50,7 @@ public final class ParticleModels {
 		public void draw(Bullet b) {}
 	};
 
-	public static ParticleModel floatParticle = new MultiParticleModel(new SizeVelRelatedParticle(), new RandDeflectParticle() {{
+	public static ParticleModel floatParticle = MultiParticleModel.of(new SizeVelRelatedParticle(), new RandDeflectParticle() {{
 		deflectAngle = 90;
 		strength = 0.2f;
 	}}, new TrailFadeParticle() {{
@@ -60,8 +60,8 @@ public final class ParticleModels {
 	}}, new ShapeParticle(), new DrawDefaultTrailParticle());
 
 	public static ParticleModel heatBulletTrail = new ParticleModel() {
-		final ParticleEffect.Cloud tmp1 = new ParticleEffect.Cloud();
-		final ParticleEffect.Cloud tmp2 = new ParticleEffect.Cloud();
+		public final ParticleEffect.Cloud tmp1 = new ParticleEffect.Cloud();
+		public final ParticleEffect.Cloud tmp2 = new ParticleEffect.Cloud();
 
 		@Override
 		public void drawTrail(ParticleEffect c) {

@@ -3,11 +3,15 @@ package endfield.type.particles;
 import arc.graphics.Color;
 import arc.util.Tmp;
 
-public class MultiParticleModel extends ParticleModel {
+public class MultiParticleModel implements ParticleModel {
 	public ParticleModel[] models;
 
-	public MultiParticleModel(ParticleModel... models) {
+	public MultiParticleModel(ParticleModel[] models) {
 		this.models = models;
+	}
+
+	public static MultiParticleModel of(ParticleModel... models) {
+		return new MultiParticleModel(models);
 	}
 
 	@Override

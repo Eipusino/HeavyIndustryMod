@@ -17,11 +17,11 @@ import endfield.util.ExtraVariable;
 import mindustry.entities.EntityGroup;
 import mindustry.gen.Decal;
 import mindustry.gen.Groups;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * The entity class of particles defines entity objects that can be drawn and updated.
@@ -29,18 +29,17 @@ import java.util.Set;
  * Typically, this particle has an upper limit on its quantity and should be safe in performance under normal
  * circumstances.
  * <br>Comes with controllable trailing.
- *
  */
 public class ParticleEffect extends Decal implements ExtraVariable, Iterable<ParticleEffect.Cloud> {
-	private static int counter = 0;
+	protected static int counter = 0;
 	/**
 	 * The maximum number of coexisting particles, when the total amount is greater than this number,
 	 * creating new particles will clear the first generated particle.
 	 */
 	public static int maxAmount = 1024;
 
-	protected static final Set<ParticleEffect> all = new CollectionObjectSet<>(ParticleEffect.class);
-	protected static final List<ParticleEffect> temp = new CollectionList<>(ParticleEffect.class);
+	protected static final CollectionObjectSet<ParticleEffect> all = new CollectionObjectSet<>(ParticleEffect.class);
+	protected static final CollectionList<ParticleEffect> temp = new CollectionList<>(ParticleEffect.class);
 
 	protected Vec2 startPos = new Vec2();
 	protected float clipSize;
@@ -247,7 +246,7 @@ public class ParticleEffect extends Decal implements ExtraVariable, Iterable<Par
 	}
 
 	@Override
-	public Iterator<Cloud> iterator() {
+	public @NotNull Iterator<Cloud> iterator() {
 		return currentCloud.iterator();
 	}
 
@@ -311,7 +310,7 @@ public class ParticleEffect extends Decal implements ExtraVariable, Iterable<Par
 		}
 
 		@Override
-		public Iterator<Cloud> iterator() {
+		public @NotNull Iterator<Cloud> iterator() {
 			itr.reset();
 			return itr;
 		}

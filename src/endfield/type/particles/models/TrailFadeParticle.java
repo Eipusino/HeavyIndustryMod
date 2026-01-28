@@ -5,7 +5,7 @@ import arc.math.Mathf;
 import endfield.type.particles.ParticleEffect;
 import endfield.type.particles.ParticleModel;
 
-public class TrailFadeParticle extends ParticleModel {
+public class TrailFadeParticle implements ParticleModel {
 	public float trailFade = 0.075f;
 	public Color fadeColor;
 	public float colorLerpSpeed = 0.03f;

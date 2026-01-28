@@ -8,7 +8,7 @@ import endfield.type.particles.ParticleEffect;
 import endfield.type.particles.ParticleModel;
 import mindustry.graphics.Layer;
 
-public class ShapeParticle extends ParticleModel {
+public class ShapeParticle implements ParticleModel {
 	public boolean circle = true;
 	public int polySides = 4;
 	public boolean outline;

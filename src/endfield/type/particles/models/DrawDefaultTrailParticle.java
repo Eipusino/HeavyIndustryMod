@@ -3,7 +3,7 @@ package endfield.type.particles.models;
 import endfield.type.particles.ParticleEffect;
 import endfield.type.particles.ParticleModel;
 
-public class DrawDefaultTrailParticle extends ParticleModel {
+public class DrawDefaultTrailParticle implements ParticleModel {
 	@Override
 	public void drawTrail(ParticleEffect particle) {
 		float n = 0;

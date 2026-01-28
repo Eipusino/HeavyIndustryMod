@@ -9,7 +9,7 @@ import arc.util.Tmp;
 import endfield.type.particles.ParticleEffect;
 import endfield.type.particles.ParticleModel;
 
-public class TargetMoveParticle extends ParticleModel {
+public class TargetMoveParticle implements ParticleModel {
 	public Floatf<ParticleEffect> deflection = e -> 0.2f;
 	public Func<ParticleEffect, Vec2> dest;
 

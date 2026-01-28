@@ -9,8 +9,6 @@ import mindustry.world.blocks.liquid.LiquidBlock;
 import mindustry.world.meta.Stat;
 
 public class LiquidOverflowValve extends LiquidBlock {
-	protected static final float threshold = 0.99f;
-
 	public boolean invert = false;
 
 	public LiquidOverflowValve(String name) {
@@ -106,13 +104,13 @@ public class LiquidOverflowValve extends LiquidBlock {
 
 			Building to = nearby((from + 2) % 4);
 
-			boolean canForward = to != null && to.acceptLiquid(this, liquid) && to.liquids.get(liquid) < to.block.liquidCapacity * threshold;
+			boolean canForward = to != null && to.acceptLiquid(this, liquid) && to.liquids.get(liquid) < to.block.liquidCapacity;
 
 			if (!canForward || invert) {
 				Building a = nearby(Mathf.mod(from - 1, 4));
 				Building b = nearby(Mathf.mod(from + 1, 4));
-				boolean ac = a != null && a.acceptLiquid(this, liquid) && !(a.block instanceof LiquidOverflowValve) && a.liquids.get(liquid) < a.block.liquidCapacity * threshold;
-				boolean bc = b != null && b.acceptLiquid(this, liquid) && !(b.block instanceof LiquidOverflowValve) && b.liquids.get(liquid) < b.block.liquidCapacity * threshold;
+				boolean ac = a != null && a.acceptLiquid(this, liquid) && !(a.block instanceof LiquidOverflowValve) && a.liquids.get(liquid) < a.block.liquidCapacity;
+				boolean bc = b != null && b.acceptLiquid(this, liquid) && !(b.block instanceof LiquidOverflowValve) && b.liquids.get(liquid) < b.block.liquidCapacity;
 
 				if (!ac && !bc) {
 					return invert && canForward ? to : this;

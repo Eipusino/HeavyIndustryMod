@@ -47,7 +47,7 @@ public class LightningEffect implements Poolable {
 	 * The trigger for each segment of lightning will be called once each segment of lightning is partially
 	 * generated, passing in the current vertex and the previous vertex.
 	 */
-	public Cons2<? super LightningVertex, ? super LightningVertex> trigger;
+	public Cons2<LightningVertex, LightningVertex> trigger;
 
 	/**
 	 * If the spread speed of lightning is not set, {@link LightningEffect#time} will be used to determine the time when lightning
@@ -69,15 +69,15 @@ public class LightningEffect implements Poolable {
 
 	boolean enclosed;
 
-	public static LightningEffect create(LightningGenerator generator, float width, float lifeTime, Interp lerp, float time, Cons2<? super LightningVertex, ? super LightningVertex> trigger) {
+	public static LightningEffect create(LightningGenerator generator, float width, float lifeTime, Interp lerp, float time, Cons2<LightningVertex, LightningVertex> trigger) {
 		return create(generator, width, lifeTime, lerp, time, 0, trigger);
 	}
 
-	public static LightningEffect create(LightningGenerator generator, float width, float lifeTime, Interp lerp, float time, float speed, Cons2<? super LightningVertex, ? super LightningVertex> trigger) {
+	public static LightningEffect create(LightningGenerator generator, float width, float lifeTime, Interp lerp, float time, float speed, Cons2<LightningVertex, LightningVertex> trigger) {
 		return create(generator, width, lifeTime, lifeTime, lerp, time, true, false, trigger);
 	}
 
-	public static LightningEffect create(LightningGenerator generator, float width, float lifeTime, float fadeTime, Interp lerp, float time, boolean fade, boolean backFade, Cons2<? super LightningVertex, ? super LightningVertex> trigger) {
+	public static LightningEffect create(LightningGenerator generator, float width, float lifeTime, float fadeTime, Interp lerp, float time, boolean fade, boolean backFade, Cons2<LightningVertex, LightningVertex> trigger) {
 		LightningEffect result = Pools.obtain(LightningEffect.class, LightningEffect::new);
 		result.width = width;
 		result.time = time;

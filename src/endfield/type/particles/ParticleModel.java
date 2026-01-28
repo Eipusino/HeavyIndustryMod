@@ -4,7 +4,7 @@ import arc.graphics.Color;
 import arc.util.pooling.Pools;
 import mindustry.graphics.Layer;
 
-public class ParticleModel {
+public interface ParticleModel {
 	/**
 	 * Create an instance of a particle using this model.
 	 *
@@ -15,7 +15,7 @@ public class ParticleModel {
 	 * @param sy    The y-component of the initial velocity of particle motion
 	 * @param size  ParticleEffect size
 	 */
-	public ParticleEffect create(float x, float y, Color color, float sx, float sy, float size) {
+	default ParticleEffect create(float x, float y, Color color, float sx, float sy, float size) {
 		return create(x, y, color, sx, sy, size, Layer.effect);
 	}
 
@@ -30,7 +30,7 @@ public class ParticleModel {
 	 * @param sy     The y-component of the initial velocity of particle motion
 	 * @param size   ParticleEffect size
 	 */
-	public ParticleEffect create(ParticleEffect parent, float x, float y, Color color, float sx, float sy, float size) {
+	default ParticleEffect create(ParticleEffect parent, float x, float y, Color color, float sx, float sy, float size) {
 		return create(parent, x, y, color, sx, sy, size, Layer.effect);
 	}
 
@@ -45,7 +45,7 @@ public class ParticleModel {
 	 * @param size  ParticleEffect size
 	 * @param layer The layer where the particles are located is only used in the drawing process
 	 */
-	public ParticleEffect create(float x, float y, Color color, float sx, float sy, float size, float layer) {
+	default ParticleEffect create(float x, float y, Color color, float sx, float sy, float size, float layer) {
 		return create(null, x, y, color, sx, sy, size, layer);
 	}
 
@@ -61,7 +61,7 @@ public class ParticleModel {
 	 * @param size   ParticleEffect size
 	 * @param layer  The layer where the particles are located is only used in the drawing process
 	 */
-	public ParticleEffect create(ParticleEffect parent, float x, float y, Color color, float sx, float sy, float size, float layer) {
+	default ParticleEffect create(ParticleEffect parent, float x, float y, Color color, float sx, float sy, float size, float layer) {
 		ParticleEffect ent = Pools.obtain(ParticleEffect.class, ParticleEffect::new);
 		ent.parent = parent;
 		ent.x = x;
@@ -80,31 +80,31 @@ public class ParticleModel {
 		return ent;
 	}
 
-	public void draw(ParticleEffect p) {}
+	default void draw(ParticleEffect p) {}
 
-	public void updateTrail(ParticleEffect p, ParticleEffect.Cloud c) {}
+	default void updateTrail(ParticleEffect p, ParticleEffect.Cloud c) {}
 
-	public void update(ParticleEffect p) {}
+	default void update(ParticleEffect p) {}
 
-	public void deflect(ParticleEffect p) {}
+	default void deflect(ParticleEffect p) {}
 
-	public void drawTrail(ParticleEffect c) {}
+	default void drawTrail(ParticleEffect c) {}
 
-	public void init(ParticleEffect particle) {}
+	default void init(ParticleEffect particle) {}
 
-	public boolean isFinal(ParticleEffect p) {
+	default boolean isFinal(ParticleEffect p) {
 		return false;
 	}
 
-	public Color trailColor(ParticleEffect p) {
+	default Color trailColor(ParticleEffect p) {
 		return null;
 	}
 
-	public float currSize(ParticleEffect p) {
+	default float currSize(ParticleEffect p) {
 		return p.defSize;
 	}
 
-	public boolean isFaded(ParticleEffect p, ParticleEffect.Cloud cloud) {
+	default boolean isFaded(ParticleEffect p, ParticleEffect.Cloud cloud) {
 		return false;
 	}
 }

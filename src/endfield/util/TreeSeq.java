@@ -18,13 +18,13 @@ import java.util.TreeSet;
 public class TreeSeq<E> implements Iterable<E> {
 	protected final LinkedList<E> tmp = new LinkedList<>();
 
-	protected Comparator<E> comparator;
+	protected Comparator<? super E> comparator;
 
 	protected int size;
 
 	protected TreeSet<LinkedList<E>> set;
 
-	public TreeSeq(Comparator<E> comp) {
+	public TreeSeq(Comparator<? super E> comp) {
 		comparator = comp;
 		set = new TreeSet<>((a, b) -> comp.compare(a.getFirst(), b.getFirst()));
 	}
