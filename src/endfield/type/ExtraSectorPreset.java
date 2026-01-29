@@ -14,7 +14,7 @@ public class ExtraSectorPreset extends SectorPreset {
 
 	static {
 		Events.run(Trigger.update, () -> {
-			if (Vars.state.getSector() != null) scripts.get(Vars.state.getSector(), Constant.RUNNABLE_NOTHING).run();
+			if (Vars.state.getSector() != null) scripts.getDefault(Vars.state.getSector(), Constant.RUNNABLE_NOTHING).run();
 		});
 	}
 

@@ -30,7 +30,7 @@ public class CollectionStringMap extends CollectionObjectMap<String, String> {
 	}
 
 	public boolean getBool(String name) {
-		return get(name, "").equals("true");
+		return getDefault(name, "").equals("true");
 	}
 
 	public int getInt(String name) {

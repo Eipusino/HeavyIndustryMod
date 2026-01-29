@@ -59,8 +59,8 @@ public interface ExtraVariable {
 	 */
 	@SuppressWarnings("unchecked")
 	default <T> T getVar(String field, T def) {
-		Object o;
-		return (((o = extra().get(field)) != null) || extra().containsKey(field)) ? (T) o : def;
+		Object o = extra().get(field);
+		return o != null || extra().containsKey(field) ? (T) o : def;
 	}
 
 	/**
@@ -74,8 +74,8 @@ public interface ExtraVariable {
 	 */
 	@SuppressWarnings("unchecked")
 	default <T> T getVar(String field, Prov<T> initial) {
-		Object o;
-		if ((o = extra().get(field)) == null) {
+		Object o = extra().get(field);
+		if (o == null) {
 			T newValue;
 			if ((newValue = initial.get()) != null) {
 				extra().put(field, newValue);

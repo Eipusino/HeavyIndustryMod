@@ -523,11 +523,13 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	}
 
 	/** Sets this array's contents to the specified array. */
+	@Override
 	public void set(E[] array) {
 		clear();
 		addAll(array);
 	}
 
+	@Override
 	public E getFrac(float index) {
 		if (isEmpty()) return null;
 		return get(Mathm.clamp((int) (index * size), 0, size - 1));
@@ -1111,7 +1113,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	 * Reduces the size of the array to the specified size. If the array is already smaller than the specified size, no action is
 	 * taken.
 	 */
-	@Override
 	public void truncate(int newSize) {
 		if (newSize < 0) throw new IllegalArgumentException("newSize must be >= 0: " + newSize);
 		if (size <= newSize) return;

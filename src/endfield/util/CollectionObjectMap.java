@@ -2,6 +2,7 @@ package endfield.util;
 
 import arc.func.Cons;
 import arc.func.Cons2;
+import arc.func.Func;
 import arc.func.Prov;
 import arc.math.Mathf;
 import arc.util.ArcRuntimeException;
@@ -381,10 +382,18 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements IIte
 	 * Tries to get the value. If it does not exist, it creates a new instance using the supplier and places it,
 	 * returning the value.
 	 */
-	public V get(K key, Prov<V> supplier) {
+	public V getDefault2(K key, Prov<V> supplier) {
 		V value = get(key);
 		if (value == null) {
 			put(key, value = supplier.get());
+		}
+		return value;
+	}
+
+	public V getDefault3(K key, Func<K, V> function) {
+		V value = get(key);
+		if (value == null) {
+			put(key, value = function.get(key));
 		}
 		return value;
 	}
@@ -409,7 +418,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements IIte
 
 	/** Returns the value for the specified key, or the default value if the key is not in the map. */
 	@Contract(value = "null, _ -> param2", pure = true)
-	public V get(@Nullable K key, V defaultValue) {
+	public V getDefault(@Nullable K key, V defaultValue) {
 		if (key == null) return defaultValue;
 
 		int hashCode = key.hashCode();

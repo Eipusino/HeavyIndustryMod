@@ -547,6 +547,7 @@ public final class Reflects {
 
 	/**
 	 * Call {@code MethodHandle.invoke(Object...)} using a parameter array.
+	 * <p>The constructor also uses this method.
 	 *
 	 * @since 1.0.9
 	 */

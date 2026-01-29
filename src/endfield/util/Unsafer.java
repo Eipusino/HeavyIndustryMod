@@ -13,14 +13,13 @@
 */
 package endfield.util;
 
-import arc.util.OS;
-import endfield.android.field.AndroidField;
 import org.jetbrains.annotations.NotNull;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import static endfield.Vars2.platformImpl;
 import static endfield.util.Objects2.requireInstance;
 import static endfield.util.Objects2.requireNonNullInstance;
 
@@ -32,9 +31,6 @@ import static endfield.util.Objects2.requireNonNullInstance;
  * provided by the class, which perform some security check packaging on the methods inside the {@link Unsafe}
  * to avoid causing strange bugs or even <strong>JVM crashes</strong>. Unless you are very clear about what you are doing
  * at this moment, it is not recommended to use the {@link #unsafe} field directly.
- * <p><strong>Never use {@link AndroidField#fieldOffset(Field)} on non Android platforms, as this will directly
- * trigger {@link NoSuchMethodError}. If you want to obtain the offset of a field, please use the relevant
- * functions provided by this class.</strong>
  *
  * @author Eipusino
  * @since 1.0.7
@@ -80,7 +76,7 @@ public final class Unsafer {
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -111,7 +107,7 @@ public final class Unsafer {
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -133,7 +129,7 @@ public final class Unsafer {
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -155,7 +151,7 @@ public final class Unsafer {
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -177,7 +173,7 @@ public final class Unsafer {
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -199,7 +195,7 @@ public final class Unsafer {
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -221,7 +217,7 @@ public final class Unsafer {
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -243,7 +239,7 @@ public final class Unsafer {
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -265,7 +261,7 @@ public final class Unsafer {
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -296,7 +292,7 @@ public final class Unsafer {
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
 
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -320,7 +316,7 @@ public final class Unsafer {
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -344,7 +340,7 @@ public final class Unsafer {
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -368,7 +364,7 @@ public final class Unsafer {
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -392,7 +388,7 @@ public final class Unsafer {
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -416,7 +412,7 @@ public final class Unsafer {
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -440,7 +436,7 @@ public final class Unsafer {
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -464,7 +460,7 @@ public final class Unsafer {
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -488,7 +484,7 @@ public final class Unsafer {
 
 		int modifiers = field.getModifiers();
 		boolean isStatic = Modifier.isStatic(modifiers);
-		long offset = isStatic ? staticOffset(field) : objectOffset(field);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 
 		Class<?> type = field.getDeclaringClass();
 
@@ -508,11 +504,13 @@ public final class Unsafer {
 	}
 
 	public static Object get(@NotNull Field field, Object object) {
-		long offset = offset(field);
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 		Class<?> type = field.getType(), base = field.getDeclaringClass();
-		Object o = Modifier.isStatic(field.getModifiers()) ? base : requireNonNullInstance(base, object);
+		Object o = isStatic ? base : requireNonNullInstance(base, object);
 
-		if (Modifier.isVolatile(field.getModifiers())) {
+		if (Modifier.isVolatile(modifiers)) {
 			if (type.isPrimitive()) {
 				if (type == int.class) return unsafe.getIntVolatile(o, offset);
 				else if (type == float.class) return unsafe.getFloatVolatile(o, offset);
@@ -552,11 +550,13 @@ public final class Unsafer {
 	}
 
 	public static void set(@NotNull Field field, Object object, Object value) {
-		long offset = offset(field);
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 		Class<?> type = field.getType(), base = field.getDeclaringClass();
-		Object o = Modifier.isStatic(field.getModifiers()) ? base : requireNonNullInstance(base, object);
+		Object o = isStatic ? base : requireNonNullInstance(base, object);
 
-		if (Modifier.isVolatile(field.getModifiers())) {
+		if (Modifier.isVolatile(modifiers)) {
 			if (type.isPrimitive()) {
 				if (type == int.class) unsafe.putIntVolatile(o, offset, (int) value);
 				else if (type == float.class) unsafe.putFloatVolatile(o, offset, (float) value);
@@ -585,38 +585,5 @@ public final class Unsafer {
 				unsafe.putObject(o, offset, requireInstance(field.getType(), value));
 			}
 		}
-	}
-
-	/*public static long sizeOf(Object object) {
-		return unsafe.getAddress(normalize(unsafe.getInt(object, 4l)) + 12l);
-	}
-
-	static long normalize(int value) {
-		return value >= 0 ? value : (~0l >>> 32) & value;
-	}*/
-
-	/** Get the field offset. */
-	public static long offset(@NotNull Field field) {
-		// If it is an Android platform, simply call the getOffset method of the field.
-		return OS.isAndroid ? AndroidField.fieldOffset(field) : Modifier.isStatic(field.getModifiers()) ?
-				unsafe.staticFieldOffset(field) : unsafe.objectFieldOffset(field);
-	}
-
-	/**
-	 * Get the offset of the object field.
-	 *
-	 * @throws IllegalArgumentException If the field is not an object field but a static field
-	 */
-	public static long objectOffset(@NotNull Field field) {
-		return OS.isAndroid ? AndroidField.fieldOffset(field) : unsafe.objectFieldOffset(field);
-	}
-
-	/**
-	 * Get the offset of a static field.
-	 *
-	 * @throws IllegalArgumentException If the field is not a static field but an object field
-	 */
-	public static long staticOffset(@NotNull Field field) {
-		return OS.isAndroid ? AndroidField.fieldOffset(field) : unsafe.staticFieldOffset(field);
 	}
 }

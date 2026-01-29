@@ -13,13 +13,16 @@ import arc.struct.FloatSeq;
 import arc.struct.IntSeq;
 import arc.util.ArcRuntimeException;
 import arc.util.Structs;
+import endfield.math.Mathm;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 public interface IList<E> extends List<E>, ICollection<E>, IIterable<E> {
 	default float sumf(Floatf<E> summer) {
@@ -191,20 +194,43 @@ public interface IList<E> extends List<E>, ICollection<E>, IIterable<E> {
 	}
 
 	default boolean add(E value1, E value2) {
-		return false;
+		add(value1);
+		add(value2);
+		return true;
 	}
 
 	default boolean add(E value1, E value2, E value3) {
-		return false;
+		add(value1);
+		add(value2);
+		add(value3);
+		return true;
 	}
 
 	default boolean add(E value1, E value2, E value3, E value4) {
-		return false;
+		add(value1);
+		add(value2);
+		add(value3);
+		add(value4);
+		return true;
 	}
 
-	default void add(E[] array) {}
+	default void add(E[] array) {
+		for (E e : array) {
+			add(e);
+		}
+	}
 
-	default void set(E[] array) {}
+	default void set(E[] array) {
+		clear();
+		for (E e : array) {
+			add(e);
+		}
+	}
+
+	default E getFrac(float index) {
+		if (isEmpty()) return null;
+		return get(Mathm.clamp((int) (index * size()), 0, size() - 1));
+	}
 
 	default E get(int index, E def) {
 		if (index >= size() || index <= 0) return def;
@@ -213,7 +239,13 @@ public interface IList<E> extends List<E>, ICollection<E>, IIterable<E> {
 
 	default void insert(int index, E element) {}
 
-	default void swap(int first, int second) {}
+	default void swap(int first, int second) {
+		if (first >= size()) throw new IndexOutOfBoundsException("first can't be >= size: " + first + " >= " + size());
+		if (second >= size()) throw new IndexOutOfBoundsException("second can't be >= size: " + second + " >= " + size());
+		E firstValue = get(first);
+		set(first, get(second));
+		set(second, firstValue);
+	}
 
 	default boolean replace(E from, E to) {
 		return false;
@@ -260,15 +292,53 @@ public interface IList<E> extends List<E>, ICollection<E>, IIterable<E> {
 	}
 
 	default boolean remove(Boolf<E> value) {
+		for (int i = 0; i < size(); i++) {
+			if (value.get(get(i))) {
+				remove(i);
+				return true;
+			}
+		}
 		return false;
 	}
 
 	default boolean remove(@Nullable Object o, boolean identity) {
+		if (identity || o == null) {
+			for (int i = 0, n = size(); i < n; i++) {
+				if (get(i) == o) {
+					remove(i);
+					return true;
+				}
+			}
+		} else {
+			for (int i = 0, n = size(); i < n; i++) {
+				if (o.equals(get(i))) {
+					remove(i);
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
 	default boolean removeAll(@Nullable Object o, boolean identity) {
-		return false;
+		boolean modified = false;
+
+		if (identity || o == null) {
+			for (int i = 0, n = size(); i < n; i++) {
+				if (get(i) == o) {
+					remove(i);
+					modified = true;
+				}
+			}
+		} else {
+			for (int i = 0, n = size(); i < n; i++) {
+				if (o.equals(get(i))) {
+					remove(i);
+					modified = true;
+				}
+			}
+		}
+		return modified;
 	}
 
 	default void removeAll(Boolf<E> pred) {
@@ -310,9 +380,15 @@ public interface IList<E> extends List<E>, ICollection<E>, IIterable<E> {
 		sort(Structs.comparing(keyExtractor));
 	}
 
-	default void distinct() {}
+	default void distinct() {
+		Set<E> set = new HashSet<>(this);
+		clear();
+		addAll(set);
+	}
 
-	default void retainAll(Boolf<E> predicate) {}
+	default void retainAll(Boolf<E> predicate) {
+		removeAll(e -> !predicate.get(e));
+	}
 
 	default int count(Boolf<E> predicate) {
 		int count = 0;
@@ -340,11 +416,23 @@ public interface IList<E> extends List<E>, ICollection<E>, IIterable<E> {
 		return Arrays2.selectIndex(toArray((E[]) Array.newInstance(componentType(), size())), comparator, kthLowest, size());
 	}
 
-	default void reverse() {}
+	default void reverse() {
+		for (int i = 0, lastIndex = size() - 1, n = size() / 2; i < n; i++) {
+			int ii = lastIndex - i;
+			E temp = get(i);
+			set(i, get(ii));
+			set(ii, temp);
+		}
+	}
 
-	default void shuffle() {}
-
-	default void truncate(int newSize) {}
+	default void shuffle() {
+		for (int i = size() - 1; i >= 0; i--) {
+			int j = Mathf.random(i);
+			E temp = get(i);
+			set(i, get(j));
+			set(j, temp);
+		}
+	}
 
 	default E random(Rand rand) {
 		if (size() == 0) return null;

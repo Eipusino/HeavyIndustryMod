@@ -49,7 +49,7 @@ public abstract class BasePlanetGenerator extends PlanetGenerator {
 		Block res = arr[Mathm.clamp(Mathf.floor(temp * arr.length), 0, arr[0].length - 1)][Mathm.clamp(Mathf.floor(height * arr[0].length), 0, arr[0].length - 1)];
 
 		if (tar > 0.5) {
-			return tars.get(res, res);
+			return tars.getDefault(res, res);
 		} else {
 			return res;
 		}

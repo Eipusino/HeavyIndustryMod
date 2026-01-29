@@ -287,7 +287,7 @@ public final class EndFieldMod extends Mod {
 	}
 
 	private static @Nullable Class<?> loadLibrary(String fileName, String mainClassName, boolean showError) {
-		return loadLibrary(fileName, mainClassName, showError, c -> {});
+		return loadLibrary(fileName, mainClassName, showError, null);
 	}
 
 	private static @Nullable Class<?> loadLibrary(String fileName, String mainClassName, boolean showError, @Nullable ConsT<Class<?>, Throwable> callback) {

@@ -43,6 +43,18 @@ public interface PlatformImpl {
 		return (Constructor<T>[]) type.getDeclaredConstructors();
 	}
 
+	default long offset(Field field) {
+		throw new UnsupportedOperationException("Not supporting obtaining field offset");
+	}
+
+	default long staticOffset(Field field) {
+		throw new UnsupportedOperationException("Not supporting obtaining field offset");
+	}
+
+	default long objectOffset(Field field) {
+		throw new UnsupportedOperationException("Not supporting obtaining field offset");
+	}
+
 	default void setOverride(AccessibleObject object) {
 		Reflects.setAccessible(object);
 	}

@@ -1,5 +1,6 @@
 package endfield.util;
 
+import arc.func.Func;
 import arc.util.OS;
 import arc.util.Strings;
 import endfield.Vars2;
@@ -39,6 +40,17 @@ public final class Enums {
 
 	static final Class<?>[] defaultEnumParamType = {String.class, int.class};
 	static final CollectionList<Class<?>> tmpParamType = new CollectionList<>(defaultEnumParamType);
+
+	static final Func<Class<? extends Enum<?>>, Field> findValuesField = type -> {
+		Field[] fields = Vars2.platformImpl.getFields(type);
+		for (Field field : fields) {
+			if (field.getName().contains("$VALUES")) {
+				field.setAccessible(true);
+				return field;
+			}
+		}
+		throw new RuntimeException(Strings.format("@.$VALUES field not found", type.getCanonicalName()));
+	};
 
 	static {
 		valuesMethodMap = new CollectionObjectMap<>(Class.class, Method.class);
@@ -87,7 +99,7 @@ public final class Enums {
 		System.arraycopy(param, 0, params, 2, param.length);
 
 		if (!OS.isAndroid) {
-			MethodHandle[] constructs = constructMap2.get(type, () -> {
+			MethodHandle[] constructs = constructMap2.getDefault2(type, () -> {
 				try {
 					Constructor<T>[] constructors = Vars2.platformImpl.getConstructors(type);
 					MethodHandle[] handles = new MethodHandle[constructors.length];
@@ -104,7 +116,7 @@ public final class Enums {
 				if (Reflects.isAssignable(asType, construct.type().parameterArray())) return (T) Reflects.invokeStatic(construct, params);
 			}
 		} else {
-			Constructor<?>[] constructs = constructMap.get(type, () -> {
+			Constructor<?>[] constructs = constructMap.getDefault2(type, () -> {
 				Constructor<?>[] constructors = type.getDeclaredConstructors();
 				for (Constructor<?> constructor : constructors) {
 					constructor.setAccessible(true);
@@ -132,7 +144,7 @@ public final class Enums {
 	 * @param param    Additional constructor parameter list
 	 */
 	public static <T extends Enum<T>> T addEnumItemTail(Class<T> type, String addition, Class<?>[] paramType, Object... param) {
-		Method method = valuesMethodMap.get(type, () -> {
+		Method method = valuesMethodMap.getDefault2(type, () -> {
 			try {
 				return type.getMethod("values");
 			} catch (NoSuchMethodException e) {
@@ -178,7 +190,7 @@ public final class Enums {
 	@SuppressWarnings("unchecked")
 	public static <T extends Enum<T>> void rearrange(Class<T> type, T instance, int ordinal) {
 		try {
-			Method method = valuesMethodMap.get(type, () -> {
+			Method method = valuesMethodMap.getDefault2(type, () -> {
 				try {
 					return type.getMethod("values");
 				} catch (NoSuchMethodException e) {
@@ -199,31 +211,20 @@ public final class Enums {
 			T[] value = values.toArray((T[]) Array.newInstance(type, values.size()));
 
 			if (!OS.isAndroid) {
-				valuesFieldMap2.get(type, () -> {
+				valuesFieldMap2.getDefault2(type, () -> {
 					try {
-						Field valuesField = findValuesField(type);
+						Field valuesField = findValuesField.get(type);
 						return Reflects.lookup.findStaticSetter(type, valuesField.getName(), value.getClass());
 					} catch (NoSuchFieldException | IllegalAccessException e) {
 						throw new RuntimeException(e);
 					}
 				}).invoke((Object) value);
 			} else {
-				Field valuesField = valuesFieldMap.get(type, () -> findValuesField(type));
+				Field valuesField = valuesFieldMap.getDefault3(type, findValuesField);
 				Unsafer.set(valuesField, null, value);
 			}
 		} catch (Throwable e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	static Field findValuesField(Class<? extends Enum<?>> type) {
-		Field[] fields = Vars2.platformImpl.getFields(type);
-		for (Field field : fields) {
-			if (field.getName().contains("$VALUES")) {
-				field.setAccessible(true);
-				return field;
-			}
-		}
-		throw new RuntimeException(Strings.format("@.$VALUES field not found", type.getCanonicalName()));
 	}
 }

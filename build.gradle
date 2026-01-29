@@ -67,8 +67,6 @@ dependencies {
 	implementation "org.commonmark:commonmark-ext-gfm-strikethrough:$commonmarkVersion"
 	implementation "org.commonmark:commonmark-ext-ins:$commonmarkVersion"
 
-	implementation files("libs/field-utils.jar")
-
 	annotationProcessor project(":annotations")
 }
 

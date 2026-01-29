@@ -130,7 +130,7 @@ public class Cobweb extends TractorBeamTurret {
 			webs.removeAll(u -> !target.within(u, webRange));
 			webs.sort(u -> u.dst(target));
 
-			if (webs.size > 0) {
+			if (webs.any()) {
 				for (Unit u : webs) {
 					if (u != null && target != null) {
 						if (damage > 0) {

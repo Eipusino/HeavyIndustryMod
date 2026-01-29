@@ -100,7 +100,7 @@ public class GravityField {
 				force = GRAV_CONST * sys.mass() * system.mass() / (distance * distance);
 				delta = 60 / Time.delta;
 				bufferAccelerations.put(field, speedDelta.setLength(force / system.mass() / delta));
-				field.bufferAccelerations.get(this, Vec2::new).set(speedDelta).setLength(force / sys.mass() / delta).scl(-1);
+				field.bufferAccelerations.getDefault2(this, Vec2::new).set(speedDelta).setLength(force / sys.mass() / delta).scl(-1);
 			}
 			tmp.add(speedDelta);
 		}

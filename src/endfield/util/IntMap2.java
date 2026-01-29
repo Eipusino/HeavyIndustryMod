@@ -9,6 +9,7 @@ import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import endfield.math.Mathm;
 import endfield.util.misc.IntHolder;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;
@@ -682,7 +683,7 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 	}
 
 	@Override
-	public Iterator<IntHolder<V>> iterator() {
+	public @NotNull Iterator<IntHolder<V>> iterator() {
 		return entries();
 	}
 
@@ -824,7 +825,7 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 		}
 
 		@Override
-		public Iterator<IntHolder<V>> iterator() {
+		public @NotNull Iterator<IntHolder<V>> iterator() {
 			return this;
 		}
 
@@ -855,7 +856,7 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 		}
 
 		@Override
-		public Iterator<V> iterator() {
+		public @NotNull Iterator<V> iterator() {
 			return this;
 		}
 
