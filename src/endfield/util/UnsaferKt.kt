@@ -22,7 +22,7 @@ object UnsaferKt {
 		checkNotNull(type)
 		// The String class can cause strange bugs, So return an empty string directly.
 		if (type === String::class.java) return "" as T
-		if (type.isArray()) return Array.newInstance(type.getComponentType(), 0) as T
+		if (type.isArray()) return Array.newInstance(type.getComponentType()!!, 0) as T
 
 		return unsafe.allocateInstance(type) as T
 	}

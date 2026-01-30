@@ -113,7 +113,11 @@ task deploy(type: Jar) {
 	dependsOn jar
 	archiveFileName = "${outputJarName}.jar"
 
-	from { [zipTree("$buildDir/libs/${outputJarName}Desktop.jar"), zipTree("$buildDir/libs/${outputJarName}Android.jar")] }
+	from { [
+			zipTree("$buildDir/libs/${outputJarName}Desktop.jar"),
+	        zipTree("$buildDir/libs/${outputJarName}Android.jar"),
+			zipTree("libs/impl.zip")
+	] }
 
 	doLast {
 		delete {

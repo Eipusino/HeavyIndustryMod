@@ -5,6 +5,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import static endfield.util.Unsafer.unsafe;
+
 public interface PlatformImpl {
 	default Field getField(Class<?> type, String name) {
 		try {
@@ -72,5 +74,13 @@ public interface PlatformImpl {
 	 */
 	default Class<?> defineClass(String name, byte[] bytes, ClassLoader loader) throws ClassFormatError {
 		return null;
+	}
+
+	default void copyMemory(long srcAddress, long dstAddress, long bytes) {
+		unsafe.copyMemory(srcAddress, dstAddress, bytes);
+	}
+
+	default void copyMemory(Object srcBase, long srcOffset, Object destBase, long destOffset, long bytes) {
+		throw new UnsupportedOperationException("Not supporting copying memory");
 	}
 }

@@ -5,6 +5,7 @@ import jdk.internal.misc.Unsafe;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
+import static endfield.Vars2.platformImpl;
 import static endfield.util.Objects2.requireInstance;
 import static endfield.util.Objects2.requireNonNullInstance;
 
@@ -22,16 +23,6 @@ import static endfield.util.Objects2.requireNonNullInstance;
 public final class Unsafer2 {
 	/** Initialize in libs/Impl.jar in the mod resource package. */
 	public static Unsafe internalUnsafe;
-
-	/*static {
-		try {
-			Field field = Unsafe.class.getDeclaredField("theUnsafe");
-			field.setAccessible(true);
-			internalUnsafe = (Unsafe) field.get(null);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}*/
 
 	private Unsafer2() {}
 
@@ -367,11 +358,13 @@ public final class Unsafer2 {
 	}
 
 	public static Object get(Field field, Object object) {
-		long offset = offset(field);
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 		Class<?> type = field.getType(), base = field.getDeclaringClass();
-		Object o = Modifier.isStatic(field.getModifiers()) ? base : requireNonNullInstance(base, object);
+		Object o = isStatic ? base : requireNonNullInstance(base, object);
 
-		if (Modifier.isVolatile(field.getModifiers())) {
+		if (Modifier.isVolatile(modifiers)) {
 			if (type.isPrimitive()) {
 				if (type == int.class) return internalUnsafe.getIntVolatile(o, offset);
 				else if (type == float.class) return internalUnsafe.getFloatVolatile(o, offset);
@@ -411,11 +404,13 @@ public final class Unsafer2 {
 	}
 
 	public static void set(Field field, Object object, Object value) {
-		long offset = offset(field);
+		int modifiers = field.getModifiers();
+		boolean isStatic = Modifier.isStatic(modifiers);
+		long offset = isStatic ? platformImpl.staticOffset(field) : platformImpl.objectOffset(field);
 		Class<?> type = field.getType(), base = field.getDeclaringClass();
-		Object o = Modifier.isStatic(field.getModifiers()) ? base : requireNonNullInstance(base, object);
+		Object o = isStatic ? base : requireNonNullInstance(base, object);
 
-		if (Modifier.isVolatile(field.getModifiers())) {
+		if (Modifier.isVolatile(modifiers)) {
 			if (type.isPrimitive()) {
 				if (type == int.class) internalUnsafe.putIntVolatile(o, offset, (int) value);
 				else if (type == float.class) internalUnsafe.putFloatVolatile(o, offset, (float) value);
@@ -446,7 +441,13 @@ public final class Unsafer2 {
 		}
 	}
 
-	public static long offset(Field field) {
-		return Modifier.isStatic(field.getModifiers()) ? internalUnsafe.staticFieldOffset(field) : internalUnsafe.objectFieldOffset(field);
+	public static void init() throws NoSuchFieldException, IllegalAccessException {
+		Field field = Unsafe.class.getDeclaredField("theUnsafe");
+		field.setAccessible(true);
+		internalUnsafe = (Unsafe) field.get(null);
+	}
+
+	public static void initc() {
+		internalUnsafe = Unsafe.getUnsafe();
 	}
 }

@@ -15,15 +15,12 @@ package endfield.core;
 
 import arc.Core;
 import arc.Events;
-import arc.files.Fi;
 import arc.flabel.FLabel;
-import arc.func.ConsT;
 import arc.math.Mathf;
 import arc.util.Align;
 import arc.util.Log;
 import arc.util.OS;
 import arc.util.Strings;
-import arc.util.Time;
 import endfield.Vars2;
 import endfield.audio.Musics2;
 import endfield.audio.Sounds2;
@@ -40,7 +37,6 @@ import endfield.content.TechTrees;
 import endfield.content.UnitCommands2;
 import endfield.content.UnitTypes2;
 import endfield.content.Weathers2;
-import endfield.files.Files2;
 import endfield.game.Team2;
 import endfield.gen.Entitys;
 import endfield.graphics.CacheLayer2;
@@ -65,7 +61,6 @@ import endfield.ui.Fonts2;
 import endfield.ui.Icon2;
 import endfield.ui.Styles2;
 import endfield.ui.Tex2;
-import endfield.util.CollectionList;
 import endfield.util.IconLoader;
 import endfield.util.PlatformImpl;
 import endfield.util.Strings2;
@@ -78,17 +73,15 @@ import mindustry.game.EventType.DisposeEvent;
 import mindustry.game.EventType.FileTreeInitEvent;
 import mindustry.game.EventType.MusicRegisterEvent;
 import mindustry.mod.Mod;
-import mindustry.mod.ModClassLoader;
 import mindustry.ui.dialogs.BaseDialog;
 import mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable;
 import mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable.Setting;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-
 import static endfield.Vars2.AUTHOR;
 import static endfield.Vars2.LINK_GIT_HUB;
 import static endfield.Vars2.MOD_NAME;
+import static endfield.Vars2.platformImpl;
 
 /**
  * Main entry point of the mod. Handles startup things like content loading, entity registering, and utility
@@ -100,24 +93,24 @@ import static endfield.Vars2.MOD_NAME;
 public final class EndFieldMod extends Mod {
 	public static Mod instance;
 
-	public static @Nullable ClassLoader lastLoader;
 	public static @Nullable FloatingText floatingText;
 
-	public static final List<Throwable> errors = new CollectionList<>(Throwable.class);
-
 	static {
-		loadLibrary();
+		try {
+			Class<?> impl = OS.isAndroid ?
+					Class.forName("endfield.android.AndroidImpl") :
+					Class.forName("endfield.desktop.DesktopImpl");
+			platformImpl = (PlatformImpl) impl.getConstructor().newInstance();
+		} catch (Throwable e) {
+			Log.err(e);
 
-		// This situation usually does not occur...
-		if (Vars2.platformImpl == null) {
-			Vars2.platformImpl = new DefaultImpl();
+			platformImpl = new DefaultImpl();
 		}
 	}
 
 	public EndFieldMod() {
 		instance = this;
 
-		Log.info("Loaded ENDFIELD Mod constructor.");
 		Log.infoTag("Kotlin", "Kotlin Version: " + KotlinVersion.CURRENT);
 
 		ClassMap2.load();
@@ -284,60 +277,5 @@ public final class EndFieldMod extends Mod {
 		}
 
 		AdaptiveCoreDatabase.init();
-	}
-
-	private static @Nullable Class<?> loadLibrary(String fileName, String mainClassName, boolean showError) {
-		return loadLibrary(fileName, mainClassName, showError, null);
-	}
-
-	private static @Nullable Class<?> loadLibrary(String fileName, String mainClassName, boolean showError, @Nullable ConsT<Class<?>, Throwable> callback) {
-		ClassLoader mainLoader = Vars.mods.mainLoader();
-
-		Fi sourceFile = Vars2.internalTree.child("libs").child(fileName + ".jar");
-		if (!sourceFile.exists()) {
-			Log.warn("File: '@' not exists", "libs/" + fileName + ".jar");
-
-			return null;
-		}
-
-		Log.info("Loading @.jar", fileName);
-
-		Time.mark();
-
-		try {
-			Fi toFile = Vars.dataDirectory.child("tmp/endfield/" + fileName + ".jar");
-
-			Files2.delete(toFile);
-
-			sourceFile.copyTo(toFile);
-			ClassLoader loader = Vars.platform.loadJar(toFile, mainLoader);
-
-			if (mainLoader instanceof ModClassLoader mod) mod.addChild(loader);
-
-			Class<?> clazz = Class.forName(mainClassName, true, loader);
-			lastLoader = loader;
-
-			if (callback != null) callback.get(clazz);
-
-			return clazz;
-		} catch (Throwable e) {
-			if (showError) {
-				errors.add(e);
-
-				Log.err(Strings.format("Unexpected exception when loading '@'", sourceFile), e);
-			}
-
-			return null;
-		} finally {
-			Log.info("Loaded '@' in @ms", sourceFile.name(), Time.elapsed());
-		}
-	}
-
-	private static void loadLibrary() {
-		if (OS.isIos) return;
-
-		String className = OS.isAndroid ? "endfield.android.AndroidImpl" : "endfield.desktop.DesktopImpl";
-
-		loadLibrary("Impl", className, true, clazz -> Vars2.platformImpl = (PlatformImpl) clazz.getConstructor().newInstance());
 	}
 }

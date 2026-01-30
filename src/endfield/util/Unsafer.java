@@ -39,16 +39,6 @@ public final class Unsafer {
 	/** Initialize in libs/Impl.jar in the mod resource package. */
 	public static Unsafe unsafe;
 
-	/*static {
-		try {
-			Field field = Unsafe.class.getDeclaredField("theUnsafe");
-			field.setAccessible(true);
-			unsafe = (Unsafe) field.get(null);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}*/
-
 	/** Do not call. */
 	private Unsafer() {}
 
@@ -585,5 +575,11 @@ public final class Unsafer {
 				unsafe.putObject(o, offset, requireInstance(field.getType(), value));
 			}
 		}
+	}
+
+	public static void init() throws NoSuchFieldException, IllegalAccessException {
+		Field field = Unsafe.class.getDeclaredField("theUnsafe");
+		field.setAccessible(true);
+		unsafe = (Unsafe) field.get(null);
 	}
 }
