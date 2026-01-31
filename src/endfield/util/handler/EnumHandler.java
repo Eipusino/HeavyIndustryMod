@@ -141,7 +141,7 @@ public class EnumHandler<T extends Enum<?>> {
 
 			values.add(ordinal, instance);
 
-			fieldHandler.setValue(null, valuesField.getName(), values.toArray((T[]) Array.newInstance(clazz, 0)));
+			fieldHandler.set(null, valuesField.getName(), values.toArray((T[]) Array.newInstance(clazz, 0)));
 		} catch (SecurityException | IllegalArgumentException | IllegalAccessException |
 		         InvocationTargetException e) {
 			throw new RuntimeException(e);

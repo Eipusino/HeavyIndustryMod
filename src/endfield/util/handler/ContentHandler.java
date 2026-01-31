@@ -26,8 +26,8 @@ public final class ContentHandler {
 	private ContentHandler() {}
 
 	private static void updateContainer() {
-		contentMap = handle.getValue(Vars.content, "contentMap");
-		contentNameMap = handle.getValue(Vars.content, "contentNameMap");
+		contentMap = handle.get(Vars.content, "contentMap");
+		contentNameMap = handle.get(Vars.content, "contentNameMap");
 	}
 
 	public static void removeContent(Content content) {
@@ -64,7 +64,7 @@ public final class ContentHandler {
 		String oldName = oldContent.name;
 		String newName = newContent.name;
 
-		contHandler.setValue(newContent, "name", oldName);
+		contHandler.set(newContent, "name", oldName);
 
 		if (oldContent.getContentType() != newContent.getContentType())
 			throw new RuntimeException("The old content cannot override by new content, because the content type are different");
@@ -73,7 +73,7 @@ public final class ContentHandler {
 			unlContent.localizedName = Core.bundle.get(type + "." + oldName + ".name", oldName);
 			unlContent.description = Core.bundle.getOrNull(type + "." + oldName + ".description");
 			unlContent.details = Core.bundle.getOrNull(type + "." + oldName + ".details");
-			FieldHandler.setValueDefault(unlContent, "unlocked", Core.settings != null && Core.settings.getBool(oldName + "-unlocked", false));
+			FieldHandler.setBooleanDefault(unlContent, "unlocked", Core.settings != null && Core.settings.getBool(oldName + "-unlocked", false));
 		}
 
 		if (contentNameMap != null) {

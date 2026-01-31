@@ -25,136 +25,136 @@ public class FieldHandler<T> {
 	 * Construct a processor object using default rules and cache it, and use this default processor to
 	 * perform {@code setValue} operations.
 	 *
-	 * @see FieldHandler#setValue(Object, String, Object)
+	 * @see FieldHandler#set(Object, String, Object)
 	 */
-	public static void setValueDefault(Object obj, String key, Object value) {
-		cachedHandler(obj.getClass()).setValue(obj, key, value);
+	public static void setDefault(Object obj, String key, Object value) {
+		cachedHandler(obj.getClass()).set(obj, key, value);
 	}
 
 	/**
 	 * Construct a processor object using default rules and cache it, using this default processor to perform
 	 * static {@code getValue} operations.
 	 *
-	 * @see FieldHandler#setValue(Object, String, Object)
+	 * @see FieldHandler#set(Object, String, Object)
 	 */
-	public static void setValueDefault(Class<?> clazz, String key, Object value) {
-		cachedHandler(clazz).setValue(null, key, value);
+	public static void setDefault(Class<?> clazz, String key, Object value) {
+		cachedHandler(clazz).set(null, key, value);
 	}
 
 	/**
 	 * Construct a processor object using default rules and cache it, and use this default processor to
 	 * perform the {@code getValue} operation.
 	 *
-	 * @see FieldHandler#getValue(Object, String)
+	 * @see FieldHandler#get(Object, String)
 	 */
-	public static <T> T getValueDefault(Object obj, String key) {
-		return (T) cachedHandler(obj.getClass()).getValue(obj, key);
+	public static <T> T getDefault(Object obj, String key) {
+		return (T) cachedHandler(obj.getClass()).get(obj, key);
 	}
 
 	/**
 	 * Construct a processor object using default rules and cache it, and use this default processor to
 	 * perform static {@code getValue} operations.
 	 *
-	 * @see FieldHandler#getValue(Object, String)
+	 * @see FieldHandler#get(Object, String)
 	 */
-	public static <T> T getValueDefault(Class<?> clazz, String key) {
-		return (T) cachedHandler(clazz).getValue(null, key);
+	public static <T> T getDefault(Class<?> clazz, String key) {
+		return (T) cachedHandler(clazz).get(null, key);
 	}
 
-	public static void setValueDefault(Object obj, String key, byte value) {
-		cachedHandler(obj.getClass()).setValue(obj, key, value);
+	public static void setByteDefault(Object obj, String key, byte value) {
+		cachedHandler(obj.getClass()).setByte(obj, key, value);
 	}
 
-	public static void setValueDefault(Class<?> clazz, String key, byte value) {
-		cachedHandler(clazz).setValue(null, key, value);
+	public static void setByteDefault(Class<?> clazz, String key, byte value) {
+		cachedHandler(clazz).setByte(null, key, value);
 	}
 
 	public static byte getByteDefault(Object obj, String key) {
-		return cachedHandler(obj.getClass()).getByteValue(obj, key);
+		return cachedHandler(obj.getClass()).getByte(obj, key);
 	}
 
 	public static byte getByteDefault(Class<?> clazz, String key) {
-		return cachedHandler(clazz).getByteValue(null, key);
+		return cachedHandler(clazz).getByte(null, key);
 	}
 
-	public static void setValueDefault(Object obj, String key, short value) {
-		cachedHandler(obj.getClass()).setValue(obj, key, value);
+	public static void setShortDefault(Object obj, String key, short value) {
+		cachedHandler(obj.getClass()).setShort(obj, key, value);
 	}
 
-	public static void setValueDefault(Class<?> clazz, String key, short value) {
-		cachedHandler(clazz).setValue(null, key, value);
+	public static void setShortDefault(Class<?> clazz, String key, short value) {
+		cachedHandler(clazz).setShort(null, key, value);
 	}
 
 	public static short getShortDefault(Object obj, String key) {
-		return cachedHandler(obj.getClass()).getShortValue(obj, key);
+		return cachedHandler(obj.getClass()).getShort(obj, key);
 	}
 
 	public static short getShortDefault(Class<?> clazz, String key) {
-		return cachedHandler(clazz).getShortValue(null, key);
+		return cachedHandler(clazz).getShort(null, key);
 	}
 
-	public static void setValueDefault(Object obj, String key, int value) {
-		cachedHandler(obj.getClass()).setValue(obj, key, value);
+	public static void setIntDefault(Object obj, String key, int value) {
+		cachedHandler(obj.getClass()).setInt(obj, key, value);
 	}
 
-	public static void setValueDefault(Class<?> clazz, String key, int value) {
-		cachedHandler(clazz).setValue(null, key, value);
+	public static void setIntDefault(Class<?> clazz, String key, int value) {
+		cachedHandler(clazz).setInt(null, key, value);
 	}
 
 	public static int getIntDefault(Object obj, String key) {
-		return cachedHandler(obj.getClass()).getIntValue(obj, key);
+		return cachedHandler(obj.getClass()).getInt(obj, key);
 	}
 
 	public static int getIntDefault(Class<?> clazz, String key) {
-		return cachedHandler(clazz).getIntValue(null, key);
+		return cachedHandler(clazz).getInt(null, key);
 	}
 
-	public static void setValueDefault(Object obj, String key, float value) {
-		cachedHandler(obj.getClass()).setValue(obj, key, value);
+	public static void setFloatDefault(Object obj, String key, float value) {
+		cachedHandler(obj.getClass()).setFloat(obj, key, value);
 	}
 
-	public static void setValueDefault(Class<?> clazz, String key, float value) {
-		cachedHandler(clazz).setValue(null, key, value);
+	public static void setFloatDefault(Class<?> clazz, String key, float value) {
+		cachedHandler(clazz).setFloat(null, key, value);
 	}
 
 	public static float getFloatDefault(Object obj, String key) {
-		return cachedHandler(obj.getClass()).getFloatValue(obj, key);
+		return cachedHandler(obj.getClass()).getFloat(obj, key);
 	}
 
 	public static float getFloatDefault(Class<?> clazz, String key) {
-		return cachedHandler(clazz).getFloatValue(null, key);
+		return cachedHandler(clazz).getFloat(null, key);
 	}
 
-	public static void setValueDefault(Object obj, String key, double value) {
-		cachedHandler(obj.getClass()).setValue(obj, key, value);
+	public static void setDoubleDefault(Object obj, String key, double value) {
+		cachedHandler(obj.getClass()).setDouble(obj, key, value);
 	}
 
-	public static void setValueDefault(Class<?> clazz, String key, double value) {
-		cachedHandler(clazz).setValue(null, key, value);
+	public static void setDoubleDefault(Class<?> clazz, String key, double value) {
+		cachedHandler(clazz).setDouble(null, key, value);
 	}
 
 	public static double getDoubleDefault(Object obj, String key) {
-		return cachedHandler(obj.getClass()).getDoubleValue(obj, key);
+		return cachedHandler(obj.getClass()).getDouble(obj, key);
 	}
 
 	public static double getDoubleDefault(Class<?> clazz, String key) {
-		return cachedHandler(clazz).getDoubleValue(null, key);
+		return cachedHandler(clazz).getDouble(null, key);
 	}
 
-	public static void setValueDefault(Object obj, String key, boolean value) {
-		cachedHandler(obj.getClass()).setValue(obj, key, value);
+	public static void setBooleanDefault(Object obj, String key, boolean value) {
+		cachedHandler(obj.getClass()).setBoolean(obj, key, value);
 	}
 
-	public static void setValueDefault(Class<?> clazz, String key, boolean value) {
-		cachedHandler(clazz).setValue(null, key, value);
+	public static void setBooleanDefault(Class<?> clazz, String key, boolean value) {
+		cachedHandler(clazz).setBoolean(null, key, value);
 	}
 
 	public static boolean getBooleanDefault(Object obj, String key) {
-		return cachedHandler(obj.getClass()).getBooleanValue(obj, key);
+		return cachedHandler(obj.getClass()).getBoolean(obj, key);
 	}
 
 	public static boolean getBooleanDefault(Class<?> clazz, String key) {
-		return cachedHandler(clazz).getBooleanValue(null, key);
+		return cachedHandler(clazz).getBoolean(null, key);
 	}
 
 	private static FieldHandler cachedHandler(Class<?> clazz) {
@@ -180,7 +180,7 @@ public class FieldHandler<T> {
 	 * @param value  The value to be written
 	 * @throws NullPointerException If the target object passed in is null and the field is not static
 	 */
-	public void setValue(T object, String key, Object value) {
+	public void set(T object, String key, Object value) {
 		if (object == null) fieldAccessHelper.setStatic(clazz, key, value);
 		else fieldAccessHelper.set(object, key, value);
 	}
@@ -196,86 +196,95 @@ public class FieldHandler<T> {
 	 * @return The value of the field, if it exists
 	 * @throws NullPointerException If the target object passed in is null and the field is not static
 	 */
-	public <R> R getValue(T object, String key) {
+	public <R> R get(T object, String key) {
 		return object == null ? fieldAccessHelper.getStatic(clazz, key) : fieldAccessHelper.get(object, key);
 	}
 
-	public void setValue(T object, String key, byte value) {
+	public void setObject(T object, String key, Object value) {
+		if (object == null) fieldAccessHelper.setObjectStatic(clazz, key, value);
+		else fieldAccessHelper.setObject(object, key, value);
+	}
+
+	public <R> R getObject(T object, String key) {
+		return object == null ? fieldAccessHelper.getObjectStatic(clazz, key) : fieldAccessHelper.getObject(object, key);
+	}
+
+	public void setByte(T object, String key, byte value) {
 		if (object == null) fieldAccessHelper.setByteStatic(clazz, key, value);
 		else fieldAccessHelper.setByte(object, key, value);
 	}
 
-	public byte getByteValue(T object, String key) {
+	public byte getByte(T object, String key) {
 		if (object == null) return fieldAccessHelper.getByteStatic(clazz, key);
 		else return fieldAccessHelper.getByte(object, key);
 	}
 
-	public void setValue(T object, String key, short value) {
+	public void setShort(T object, String key, short value) {
 		if (object == null) fieldAccessHelper.setShortStatic(clazz, key, value);
 		else fieldAccessHelper.setShort(object, key, value);
 	}
 
-	public short getShortValue(T object, String key) {
+	public short getShort(T object, String key) {
 		if (object == null) return fieldAccessHelper.getShortStatic(clazz, key);
 		else return fieldAccessHelper.getShort(object, key);
 	}
 
-	public void setValue(T object, String key, int value) {
+	public void setInt(T object, String key, int value) {
 		if (object == null) fieldAccessHelper.setIntStatic(clazz, key, value);
 		else fieldAccessHelper.setInt(object, key, value);
 	}
 
-	public int getIntValue(T object, String key) {
+	public int getInt(T object, String key) {
 		if (object == null) return fieldAccessHelper.getIntStatic(clazz, key);
 		else return fieldAccessHelper.getInt(object, key);
 	}
 
-	public void setValue(T object, String key, long value) {
+	public void setLong(T object, String key, long value) {
 		if (object == null) fieldAccessHelper.setLongStatic(clazz, key, value);
 		else fieldAccessHelper.setLong(object, key, value);
 	}
 
-	public long getLongValue(T object, String key) {
+	public long getLong(T object, String key) {
 		if (object == null) return fieldAccessHelper.getLongStatic(clazz, key);
 		else return fieldAccessHelper.getLong(object, key);
 	}
 
-	public void setValue(T object, String key, float value) {
+	public void setFloat(T object, String key, float value) {
 		if (object == null) fieldAccessHelper.setFloatStatic(clazz, key, value);
 		else fieldAccessHelper.setFloat(object, key, value);
 	}
 
-	public float getFloatValue(T object, String key) {
+	public float getFloat(T object, String key) {
 		if (object == null) return fieldAccessHelper.getFloatStatic(clazz, key);
 		else return fieldAccessHelper.getFloat(object, key);
 	}
 
-	public void setValue(T object, String key, double value) {
+	public void setDouble(T object, String key, double value) {
 		if (object == null) fieldAccessHelper.setDoubleStatic(clazz, key, value);
 		else fieldAccessHelper.setDouble(object, key, value);
 	}
 
-	public double getDoubleValue(T object, String key) {
+	public double getDouble(T object, String key) {
 		if (object == null) return fieldAccessHelper.getDoubleStatic(clazz, key);
 		else return fieldAccessHelper.getDouble(object, key);
 	}
 
-	public void setValue(T object, String key, char value) {
+	public void setChar(T object, String key, char value) {
 		if (object == null) fieldAccessHelper.setCharStatic(clazz, key, value);
 		else fieldAccessHelper.setChar(object, key, value);
 	}
 
-	public char getCharValue(T object, String key) {
+	public char getChar(T object, String key) {
 		if (object == null) return fieldAccessHelper.getCharStatic(clazz, key);
 		else return fieldAccessHelper.getChar(object, key);
 	}
 
-	public void setValue(T object, String key, boolean value) {
+	public void setBoolean(T object, String key, boolean value) {
 		if (object == null) fieldAccessHelper.setBooleanStatic(clazz, key, value);
 		else fieldAccessHelper.setBoolean(object, key, value);
 	}
 
-	public boolean getBooleanValue(T object, String key) {
+	public boolean getBoolean(T object, String key) {
 		if (object == null) return fieldAccessHelper.getBooleanStatic(clazz, key);
 		else return fieldAccessHelper.getBoolean(object, key);
 	}

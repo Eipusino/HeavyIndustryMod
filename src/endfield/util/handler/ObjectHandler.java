@@ -64,7 +64,7 @@ public final class ObjectHandler {
 	public static <S, T extends S> void copyFieldAsWhite(S source, T target, String... whiteList) {
 		for (String s : whiteList) {
 			try {
-				FieldHandler.setValueDefault(target, s, FieldHandler.getValueDefault(source, s));
+				FieldHandler.setDefault(target, s, FieldHandler.getDefault(source, s));
 			} catch (Throwable e) {
 				exceptionHandler.get(e);
 			}
