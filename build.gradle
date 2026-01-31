@@ -58,14 +58,12 @@ dependencies {
 	implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 	implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 
-	implementation "org.ow2.asm:asm:$asmVersion"
-	implementation "org.ow2.asm:asm-tree:$asmVersion"
-	implementation "org.ow2.asm:asm-commons:$asmVersion"
-
 	implementation "org.commonmark:commonmark:$commonmarkVersion"
 	implementation "org.commonmark:commonmark-ext-gfm-tables:$commonmarkVersion"
 	implementation "org.commonmark:commonmark-ext-gfm-strikethrough:$commonmarkVersion"
 	implementation "org.commonmark:commonmark-ext-ins:$commonmarkVersion"
+
+	implementation files("libs/JavaDynamilizer.jar")
 
 	annotationProcessor project(":annotations")
 }
@@ -113,11 +111,11 @@ task deploy(type: Jar) {
 	dependsOn jar
 	archiveFileName = "${outputJarName}.jar"
 
-	from { [
-			zipTree("$buildDir/libs/${outputJarName}Desktop.jar"),
-	        zipTree("$buildDir/libs/${outputJarName}Android.jar"),
-			zipTree("libs/impl.zip")
-	] }
+	from { [zipTree("$buildDir/libs/${outputJarName}Desktop.jar"), zipTree("$buildDir/libs/${outputJarName}Android.jar")] }
+
+	from("assets-raw/") {
+		include "**"
+	}
 
 	doLast {
 		delete {

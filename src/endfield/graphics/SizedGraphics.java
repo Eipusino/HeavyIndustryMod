@@ -9,8 +9,7 @@ import arc.graphics.GL30;
 import arc.graphics.Pixmap;
 import arc.graphics.gl.GLVersion;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import static endfield.Vars2.methodInvokeHelper;
 
 /**
  * A {@link Graphics} mock-module used to logically pretend that the window's screen resolution is something else. This
@@ -23,8 +22,6 @@ import java.lang.reflect.Method;
  * @author GlFolker
  */
 public class SizedGraphics extends Graphics {
-	private static Method setCursorMethod, setSystemCursorMethod;
-
 	protected int overrideWidth, overrideHeight;
 	protected Graphics delegate;
 
@@ -271,28 +268,12 @@ public class SizedGraphics extends Graphics {
 
 	@Override
 	protected void setCursor(Cursor cursor) {
-		try {
-			if (setCursorMethod == null) {
-				setCursorMethod = Graphics.class.getDeclaredMethod("setCursor", Cursor.class);
-				setCursorMethod.setAccessible(true);
-			}
-			setCursorMethod.invoke(delegate, cursor);
-		} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
+		methodInvokeHelper.invoke(delegate, "setCursor", cursor);
 	}
 
 	@Override
 	protected void setSystemCursor(SystemCursor systemCursor) {
-		try {
-			if (setSystemCursorMethod == null) {
-				setSystemCursorMethod = Graphics.class.getDeclaredMethod("setSystemCursor", SystemCursor.class);
-				setSystemCursorMethod.setAccessible(true);
-			}
-			setSystemCursorMethod.invoke(delegate, systemCursor);
-		} catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
+		methodInvokeHelper.invoke(delegate, "setSystemCursor", systemCursor);
 	}
 
 	@Override

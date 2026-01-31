@@ -40,13 +40,11 @@ import endfield.content.Weathers2;
 import endfield.game.Team2;
 import endfield.gen.Entitys;
 import endfield.graphics.CacheLayer2;
-import endfield.graphics.FastSizedGraphics;
 import endfield.graphics.MathRenderer;
 import endfield.graphics.Pixmaps2;
 import endfield.graphics.Regions2;
 import endfield.graphics.ScreenSampler;
 import endfield.graphics.Shaders2;
-import endfield.graphics.SizedGraphics;
 import endfield.graphics.Textures2;
 import endfield.graphics.g2d.CutBatch;
 import endfield.graphics.g2d.DevastationBatch;
@@ -103,8 +101,6 @@ public final class EndFieldMod extends Mod {
 			platformImpl = (PlatformImpl) impl.getConstructor().newInstance();
 		} catch (Throwable e) {
 			Log.err(e);
-
-			platformImpl = new DefaultImpl();
 		}
 	}
 
@@ -155,9 +151,6 @@ public final class EndFieldMod extends Mod {
 					RangeExtractor.load();
 
 					Tex2.init();
-
-					// If the platform allows, prioritize using high-performance MethodHandle
-					Vars2.sizedGraphics = OS.isAndroid || OS.isIos ? new SizedGraphics() : new FastSizedGraphics();
 
 					Vars2.fragBatch = new FragmentationBatch();
 					Vars2.cutBatch = new CutBatch();

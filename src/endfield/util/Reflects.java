@@ -19,55 +19,30 @@ import arc.func.Intp;
 import arc.func.Prov;
 import arc.util.Log;
 import arc.util.OS;
-import endfield.Vars2;
 import mindustry.Vars;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.UnknownNullability;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles.Lookup;
-import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.nio.Buffer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import static endfield.Vars2.classHelper;
+import static endfield.Vars2.fieldAccessHelper;
+
 /**
  * Reflection utilities, mainly for wrapping reflective operations to eradicate checked exceptions.
- * <p>You should never frequently perform repetitive operations on the same Field/Method/Constructor for
- * performance reasons.
- * <pre>{@code
- *     private static Field theField;
- *
- *     public static MyType getVal(Object obj) {
- *         try {
- *             if (theField == null) {
- *                 theField = MyClass.class.getDeclaredField("myVar");
- *                 theField.setAccessible(true);
- *             }
- *             return (MyType) theField.get(obj);
- *         } catch (NoSuchFieldException | IllegalAccessException e) {
- *             throw new RuntimeException(e);
- *         }
- *     }
- * }</pre>
  *
  * @author Eipusino
  * @since 1.0.6
  */
 public final class Reflects {
-	public static Lookup lookup;
-
-	static Field overrideField, addressField;
-	static Method cloneMethod;
-
 	static final CollectionObjectMap<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
 
 	/** Don't let anyone instantiate this class. */
@@ -271,7 +246,7 @@ public final class Reflects {
 	@Contract(pure = true)
 	public static @Nullable Field findField(Class<?> type, String name) {
 		while (type != null) {
-			Field[] fields = Vars2.platformImpl.getFields(type);
+			Field[] fields = classHelper.getFields(type);
 			for (Field field : fields) {
 				if (field.getName().equals(name)) return field;
 			}
@@ -291,7 +266,7 @@ public final class Reflects {
 	@Contract(pure = true)
 	public static @Nullable Field findField(Class<?> type, Boolf<Field> filler) {
 		while (type != null) {
-			Field[] fields = Vars2.platformImpl.getFields(type);
+			Field[] fields = classHelper.getFields(type);
 			for (Field field : fields) {
 				if (filler.get(field)) return field;
 			}
@@ -311,7 +286,7 @@ public final class Reflects {
 	@Contract(pure = true)
 	public static @Nullable Method findMethod(Class<?> type, String name, Class<?>... args) {
 		while (type != null) {
-			Method[] methods = Vars2.platformImpl.getMethods(type);
+			Method[] methods = classHelper.getMethods(type);
 			for (Method method : methods) {
 				if (method.getName().equals(name) && Arrays.equals(method.getParameterTypes(), args)) return method;
 			}
@@ -330,7 +305,7 @@ public final class Reflects {
 	 */
 	@Contract(pure = true)
 	public static <T> @Nullable Constructor<T> findConstructor(Class<T> type, Class<?>... args) {
-		Constructor<T>[] constructors = Vars2.platformImpl.getConstructors(type);
+		Constructor<T>[] constructors = classHelper.getConstructors(type);
 		for (Constructor<T> constructor : constructors) {
 			if (Arrays.equals(constructor.getParameterTypes(), args)) return constructor;
 		}
@@ -396,7 +371,7 @@ public final class Reflects {
 
 		Class<?> targetClass = target.getClass();
 		while (targetClass != Object.class) {
-			for (Field field : Vars2.platformImpl.getFields(targetClass)) {
+			for (Field field : classHelper.getFields(targetClass)) {
 				if (Modifier.isFinal(field.getModifiers())) continue;
 
 				targetFieldMap.put(field.getName(), field);
@@ -411,7 +386,7 @@ public final class Reflects {
 
 		Class<?> sourceClass = source.getClass();
 		while (sourceClass != Object.class) {
-			for (Field sourceField : Vars2.platformImpl.getFields(sourceClass)) {
+			for (Field sourceField : classHelper.getFields(sourceClass)) {
 				if (Modifier.isFinal(sourceField.getModifiers())) continue;
 
 				Field targetField = targetFieldMap.get(sourceField.getName());
@@ -420,8 +395,8 @@ public final class Reflects {
 
 				try {
 					if (!OS.isAndroid) {
-						Object value = Unsafer.get(sourceField, source);
-						Unsafer.set(targetField, target, value);
+						Object value = fieldAccessHelper.get(source, sourceField.getName());
+						fieldAccessHelper.set(target, targetField.getName(), value);
 					} else {
 						sourceField.setAccessible(true);
 						targetField.setAccessible(true);
@@ -491,280 +466,5 @@ public final class Reflects {
 		return targetType.isAssignableFrom(sourceType) ||
 				targetType.isPrimitive() && box(targetType).isAssignableFrom(sourceType) ||
 				sourceType.isPrimitive() && targetType.isAssignableFrom(box(sourceType));
-	}
-
-	/**
-	 * Directly set the override of Accessible Object to true. It can bypass module security.
-	 * <p>This method has a direct destructive effect on Java encapsulation security and is not recommended
-	 * for non-essential use.
-	 *
-	 * @since 1.0.9
-	 */
-	public static void setAccessible(@NotNull AccessibleObject object) {
-		try {
-			if (overrideField == null) {
-				overrideField = AccessibleObject.class.getDeclaredField("override");
-				overrideField.setAccessible(true);
-			}
-			overrideField.setBoolean(object, true);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			Log.err(e);
-		}
-	}
-
-	public static int getAddress(@NotNull Buffer buffer) {
-		try {
-			if (addressField == null) {
-				addressField = Buffer.class.getDeclaredField("address");
-				addressField.setAccessible(true);
-			}
-			return addressField.getInt(buffer);
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	/**
-	 * Attempt to directly call the clone method of Object.
-	 *
-	 * @since 1.0.9
-	 */
-	@SuppressWarnings("unchecked")
-	@Contract(pure = true)
-	public static <T> @UnknownNullability T clone(@NotNull T object) {
-		try {
-			if (cloneMethod == null) {
-				// On Android, the internalClone() method can be used to bypass the Cloneable interface check.
-				cloneMethod = Object.class.getDeclaredMethod(OS.isAndroid ? "internalClone" : "clone");
-				cloneMethod.setAccessible(true);
-			}
-			return OS.isAndroid || object instanceof Cloneable ? (T) cloneMethod.invoke(object) : null;
-		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-			Log.err(e);
-			return null;
-		}
-	}
-
-	/**
-	 * Call {@code MethodHandle.invoke(Object...)} using a parameter array.
-	 * <p>The constructor also uses this method.
-	 *
-	 * @since 1.0.9
-	 */
-	public static Object invokeStatic(MethodHandle handle, Object... args) {
-		try {
-			return switch (args.length) {
-				case 0 -> handle.invoke();
-				case 1 -> handle.invoke(args[0]);
-				case 2 -> handle.invoke(args[0], args[1]);
-				case 3 -> handle.invoke(args[0], args[1], args[2]);
-				case 4 -> handle.invoke(args[0], args[1], args[2], args[3]);
-				case 5 -> handle.invoke(args[0], args[1], args[2], args[3], args[4]);
-				case 6 -> handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5]);
-				case 7 -> handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
-				case 8 -> handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
-				case 9 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
-				case 10 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9]);
-				case 11 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10]);
-				case 12 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11]);
-				case 13 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12]);
-				case 14 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13]);
-				case 15 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14]);
-				case 16 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15]);
-				case 17 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16]);
-				case 18 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17]);
-				case 19 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18]);
-				case 20 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19]);
-				case 21 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20]);
-				case 22 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21]);
-				case 23 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22]);
-				case 24 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23]);
-				case 25 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23], args[24]);
-				case 26 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23], args[24], args[25]);
-				case 27 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23], args[24], args[25], args[26]);
-				case 28 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23], args[24], args[25], args[26], args[27]);
-				case 29 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23], args[24], args[25], args[26], args[27], args[28]);
-				case 30 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23], args[24], args[25], args[26], args[27], args[28],
-								args[29]);
-				case 31 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23], args[24], args[25], args[26], args[27], args[28],
-								args[29], args[30]);
-				case 32 ->
-						handle.invoke(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23], args[24], args[25], args[26], args[27], args[28],
-								args[29], args[30], args[31]);
-				default -> handle.invokeWithArguments(args);
-			};
-		} catch (Throwable e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	/**
-	 * Call {@code MethodHandle.invoke(Object...)} using a parameter array.
-	 *
-	 * @since 1.0.9
-	 */
-	public static Object invokeVirtual(@NotNull Object object, MethodHandle handle, Object... args) {
-		try {
-			return switch (args.length) {
-				case 0 -> handle.invoke(object);
-				case 1 -> handle.invoke(object, args[0]);
-				case 2 -> handle.invoke(object, args[0], args[1]);
-				case 3 -> handle.invoke(object, args[0], args[1], args[2]);
-				case 4 -> handle.invoke(object, args[0], args[1], args[2], args[3]);
-				case 5 -> handle.invoke(object, args[0], args[1], args[2], args[3], args[4]);
-				case 6 -> handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5]);
-				case 7 -> handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
-				case 8 -> handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
-				case 9 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
-				case 10 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9]);
-				case 11 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10]);
-				case 12 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11]);
-				case 13 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12]);
-				case 14 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13]);
-				case 15 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14]);
-				case 16 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15]);
-				case 17 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16]);
-				case 18 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17]);
-				case 19 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18]);
-				case 20 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19]);
-				case 21 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20]);
-				case 22 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21]);
-				case 23 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22]);
-				case 24 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23]);
-				case 25 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23], args[24]);
-				case 26 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23], args[24], args[25]);
-				case 27 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23], args[24], args[25], args[26]);
-				case 28 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23], args[24], args[25], args[26], args[27]);
-				case 29 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23], args[24], args[25], args[26], args[27], args[28]);
-				case 30 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23], args[24], args[25], args[26], args[27], args[28],
-								args[29]);
-				case 31 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23], args[24], args[25], args[26], args[27], args[28],
-								args[29], args[30]);
-				case 32 ->
-						handle.invoke(object, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8],
-								args[9], args[10], args[11], args[12], args[13], args[14], args[15], args[16], args[17], args[18],
-								args[19], args[20], args[21], args[22], args[23], args[24], args[25], args[26], args[27], args[28],
-								args[29], args[30], args[31]);
-				default -> handle.invokeWithArguments(args);
-			};
-		} catch (Throwable e) {
-			throw new RuntimeException(e);
-		}
 	}
 }

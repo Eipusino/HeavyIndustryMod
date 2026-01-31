@@ -109,11 +109,14 @@ public class ProcessorCooler extends Block {
 			int count = 0;
 
 			int b = realBoost();
-			if (b >= 2) for (Building p : proximity) {
-				if (count >= maxProcessors) break;
-				if (p instanceof LogicBuild) {
-					for (int i = 0; i < b - 1; i++) p.updateTile();
-					count++;
+			if (b >= 2) {
+				for (int i = 0; i < proximity.size; i++) {
+					Building p = proximity.get(i);
+					if (count >= maxProcessors) break;
+					if (p instanceof LogicBuild) {
+						for (int j = 0; j < b - 1; j++) p.updateTile();
+						count++;
+					}
 				}
 			}
 			usedLinks = count;

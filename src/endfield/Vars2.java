@@ -12,6 +12,10 @@ import endfield.graphics.g2d.DevastationBatch;
 import endfield.graphics.g2d.FragmentationBatch;
 import endfield.graphics.g2d.VaporizeBatch;
 import endfield.mod.ModInfo;
+import endfield.util.AccessibleHelper;
+import endfield.util.ClassHelper;
+import endfield.util.FieldAccessHelper;
+import endfield.util.MethodInvokeHelper;
 import endfield.util.PlatformImpl;
 import mindustry.content.TechTree.TechNode;
 import mindustry.type.Sector;
@@ -43,6 +47,11 @@ public final class Vars2 {
 
 	/** jar internal navigation. */
 	public static final InternalFileTree internalTree;
+
+	public static AccessibleHelper accessibleHelper;
+	public static ClassHelper classHelper;
+	public static FieldAccessHelper fieldAccessHelper;
+	public static MethodInvokeHelper methodInvokeHelper;
 
 	public static SizedGraphics sizedGraphics;
 

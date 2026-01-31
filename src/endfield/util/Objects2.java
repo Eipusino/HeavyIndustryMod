@@ -17,7 +17,6 @@ import arc.func.Cons;
 import arc.func.ConsT;
 import arc.func.Prov;
 import arc.util.Log;
-import arc.util.OS;
 import endfield.Vars2;
 import endfield.func.ProvT;
 import endfield.func.RunT;
@@ -29,7 +28,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Objects;
 
-import static endfield.util.Unsafer.unsafe;
+import static endfield.Vars2.fieldAccessHelper;
 
 /**
  * A utility assembly for objects.
@@ -104,7 +103,7 @@ public final class Objects2 {
 		return longToHash(hash);
 	}
 
-	@Contract(pure = true)
+	/*@Contract(pure = true)
 	public static int fastHash(long value) {
 		long offset = unsafe.arrayBaseOffset(byte[].class);
 
@@ -118,7 +117,7 @@ public final class Objects2 {
 		hash *= 0xc2b2ae35;
 		hash ^= hash >>> 16;
 		return hash;
-	}
+	}*/
 
 	@Contract(pure = true)
 	public static int doubleToHash(double value) {
@@ -306,7 +305,7 @@ public final class Objects2 {
 		builder.append(type.getSimpleName()).append('[');
 		int i = 0;
 		while (type != null) {
-			for (Field field : Vars2.platformImpl.getFields(type)) {
+			for (Field field : Vars2.classHelper.getFields(type)) {
 				if (Modifier.isStatic(field.getModifiers())) {
 					continue;
 				}
@@ -318,15 +317,9 @@ public final class Objects2 {
 				builder.append(field.getName()).append('=');
 
 				try {
-					Object value;
+					Object value = fieldAccessHelper.get(object, field.getName());;
 
 					// On the Android platform, the reflection performance is not low, so there is no need to use Unsafe.
-					if (!OS.isAndroid) {
-						value = Unsafer.get(field, object);
-					} else {
-						field.setAccessible(true);
-						value = field.get(object);
-					}
 
 					if (value == null) {
 						builder.append("null");

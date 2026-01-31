@@ -1133,7 +1133,8 @@ public final class Damage2 {
 			}
 		}
 		hseq.sort(a -> a.entity.dst2(x1, y1));
-		for (Hit hit : hseq) {
+		for (int i = 0; i < hseq.size; i++) {
+			Hit hit = hseq.get(i);
 			Healthc t = hit.entity;
 
 			cons.get(t, hit.x, hit.y);
