@@ -6,14 +6,14 @@ import static endfield.Vars2.fieldAccessHelper;
 
 /**
  * A collection of static methods for field operations, including read, write, and other operations. All
- * exceptions thrown by references are caught and encapsulated in {@link RuntimeException}, without the need
- * for manual try or throw.
+ * checked exceptions thrown by references are caught and encapsulated in {@link RuntimeException}, without the
+ * need for manual try or throw.
  *
- * @since 1.0.8
+ * @since 1.0.9
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class FieldHandler<T> {
-	private static final WeakHashMap<Class, FieldHandler> defaultHandlers = new WeakHashMap<>();
+	static final WeakHashMap<Class, FieldHandler> defaultHandlers = new WeakHashMap<>();
 
 	private final Class<T> clazz;
 
@@ -59,6 +59,22 @@ public class FieldHandler<T> {
 	 */
 	public static <T> T getDefault(Class<?> clazz, String key) {
 		return (T) cachedHandler(clazz).get(null, key);
+	}
+
+	public static void setObjectDefault(Object obj, String key, Object value) {
+		cachedHandler(obj.getClass()).setObject(obj, key, value);
+	}
+
+	public static void setObjectDefault(Class<?> clazz, String key, Object value) {
+		cachedHandler(clazz).setObject(null, key, value);
+	}
+
+	public static <T> T getObjectDefault(Object obj, String key) {
+		return (T) cachedHandler(obj.getClass()).getObject(obj, key);
+	}
+
+	public static <T> T getObjectDefault(Class<?> clazz, String key) {
+		return (T) cachedHandler(clazz).getObject(null, key);
 	}
 
 	public static void setByteDefault(Object obj, String key, byte value) {
@@ -157,7 +173,7 @@ public class FieldHandler<T> {
 		return cachedHandler(clazz).getBoolean(null, key);
 	}
 
-	private static FieldHandler cachedHandler(Class<?> clazz) {
+	static FieldHandler cachedHandler(Class<?> clazz) {
 		return defaultHandlers.computeIfAbsent(clazz, e -> new FieldHandler(clazz));
 	}
 

@@ -94,7 +94,7 @@ public abstract class DrawRendererContext {
 
 	/** Retrieve image cache, if the image does not exist, call {@code o} to generate it. */
 	public TextureRegion imageCache(Image image, Prov<TextureRegion> o) {
-		return imgCache.getDefault2(image, o);
+		return imgCache.get(image, o);
 	}
 
 	/** Initialize rendering context. */

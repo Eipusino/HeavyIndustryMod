@@ -2,6 +2,7 @@ package endfield.util.handler;
 
 import arc.func.Cons;
 import endfield.util.CollectionObjectSet;
+import endfield.util.Constant;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -9,7 +10,11 @@ import java.util.Set;
 
 import static endfield.Vars2.classHelper;
 
-/** A set of practical tools for copying field properties of an object to another. */
+/**
+ * A set of practical tools for copying field properties of an object to another.
+ *
+ * @since 1.0.9
+ */
 public final class ObjectHandler {
 	public static Cons<Throwable> exceptionHandler = e -> {};
 
@@ -24,7 +29,7 @@ public final class ObjectHandler {
 	 * @throws IllegalArgumentException If the target object is not assigned from the source class
 	 */
 	public static <S, T extends S> void copyField(S source, T target) {
-		copyFieldAsBlack(source, target);
+		copyFieldAsBlack(source, target, Constant.EMPTY_STRING);
 	}
 
 	/**

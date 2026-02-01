@@ -24,7 +24,7 @@ import static endfield.Vars2.classHelper;
  * <p>But this array is a copy, if you have added items to the enumeration, it is best to reassign that array
  * as the changed values().</strong>
  *
- * @since 1.0.8
+ * @since 1.0.9
  */
 @SuppressWarnings("unchecked")
 public class EnumHandler<T extends Enum<?>> {
@@ -58,18 +58,14 @@ public class EnumHandler<T extends Enum<?>> {
 	 * @return An enumeration instance with a specified name and ordinal number
 	 */
 	public T newEnumInstance(String name, int ordinal, Object... param) {
-		try {
-			Object[] params = new Object[param.length + 2];
+		Object[] params = new Object[param.length + 2];
 
-			params[0] = name;
-			params[1] = ordinal;
+		params[0] = name;
+		params[1] = ordinal;
 
-			System.arraycopy(param, 0, params, 2, param.length);
+		System.arraycopy(param, 0, params, 2, param.length);
 
-			return methodHandler.newInstance(params);
-		} catch (Throwable e) {
-			throw new RuntimeException(e);
-		}
+		return methodHandler.newInstance(params);
 	}
 
 	/**
@@ -81,10 +77,8 @@ public class EnumHandler<T extends Enum<?>> {
 	public T addEnumItemTail(String addition, Object... param) {
 		try {
 			Method method = classHelper.getMethod(clazz, "values");
-			method.setAccessible(true);
 			return addEnumItem(addition, ((Object[]) method.invoke(null)).length, param);
-		} catch (SecurityException | InvocationTargetException | IllegalArgumentException |
-		         IllegalAccessException e) {
+		} catch (InvocationTargetException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -118,17 +112,8 @@ public class EnumHandler<T extends Enum<?>> {
 	 * item is greater than the total number of elements
 	 */
 	public void rearrange(T instance, int ordinal) {
-		Field valuesField = null;
-		Field[] fields = classHelper.getFields(clazz);
-		for (Field field : fields) {
-			if (field.getName().contains("$VALUES")) {
-				valuesField = field;
-				break;
-			}
-		}
-
 		try {
-			assert valuesField != null;
+			Field field = findValuesField();
 			Method method = classHelper.getMethod(clazz, "values");
 			T[] arr = (T[]) method.invoke(null);
 			List<T> values = CollectionList.with(arr);
@@ -141,10 +126,20 @@ public class EnumHandler<T extends Enum<?>> {
 
 			values.add(ordinal, instance);
 
-			fieldHandler.set(null, valuesField.getName(), values.toArray((T[]) Array.newInstance(clazz, 0)));
-		} catch (SecurityException | IllegalArgumentException | IllegalAccessException |
-		         InvocationTargetException e) {
+			fieldHandler.set(null, field.getName(), values.toArray((T[]) Array.newInstance(clazz, 0)));
+		} catch (IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	Field findValuesField() throws NoSuchFieldException {
+		Field[] fields = classHelper.getFields(clazz);
+		for (Field field : fields) {
+			if (field.getName().contains("$VALUES")) {
+				return field;
+			}
+		}
+
+		throw new NoSuchFieldException("No $VALUES field found in " + clazz);
 	}
 }

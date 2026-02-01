@@ -14,7 +14,7 @@ import mindustry.ctype.UnlockableContent;
 /**
  * Static toolset for manipulating content.
  *
- * @since 1.0.8
+ * @since 1.0.9
  */
 public final class ContentHandler {
 	private static final FieldHandler<ContentLoader> handle = new FieldHandler<>(ContentLoader.class);

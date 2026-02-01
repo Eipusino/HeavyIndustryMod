@@ -7,7 +7,7 @@ import static endfield.Vars2.methodInvokeHelper;
 /**
  * A utility set for method invocation, including invocation, instantiation, etc.
  *
- * @since 1.0.8
+ * @since 1.0.9
  */
 @SuppressWarnings("unchecked")
 public class MethodHandler<T> {
