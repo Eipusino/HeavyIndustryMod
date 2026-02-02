@@ -13,6 +13,7 @@ import arc.struct.FloatSeq;
 import arc.struct.IntSeq;
 import arc.struct.Sort;
 import arc.util.ArcRuntimeException;
+import arc.util.Eachable;
 import arc.util.Structs;
 import endfield.math.Mathm;
 import org.jetbrains.annotations.Contract;
@@ -35,7 +36,7 @@ import java.util.Objects;
  * @author Nathan Sweet
  * @author Eipusino
  */
-public class CollectionList<E> extends AbstractList<E> implements IList<E>, Cloneable {
+public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, Cloneable {
 	/** Debugging variable to count total number of iterators allocated. */
 	public static int iteratorsAllocated = 0;
 
@@ -156,11 +157,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return out;
 	}
 
-	@Override
-	public Class<?> componentType() {
-		return componentType;
-	}
-
 	public <K, V> CollectionObjectMap<K, V> asMap(Func<E, K> keygen, Func<E, V> valgen, Class<?> keyType, Class<?> valueType) {
 		CollectionObjectMap<K, V> map = new CollectionObjectMap<>(keyType, valueType);
 		for (int i = 0; i < size; i++) {
@@ -193,7 +189,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		}
 	}
 
-	@Override
 	public float sumf(Floatf<E> summer) {
 		float sum = 0f;
 		for (int i = 0; i < size; i++) {
@@ -202,7 +197,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return sum;
 	}
 
-	@Override
 	public int sum(Intf<E> summer) {
 		int sum = 0;
 		for (int i = 0; i < size; i++) {
@@ -212,7 +206,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public <T extends E> void each(Boolf<? super E> predicate, Cons<T> consumer) {
 		for (int i = 0; i < size; i++) {
 			if (predicate.get(items[i])) consumer.get((T) items[i]);
@@ -227,7 +220,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	}
 
 	/** Replaces values without creating a new array. */
-	@Override
 	public void replace(Func<E, E> mapper) {
 		for (int i = 0; i < size; i++) {
 			items[i] = mapper.get(items[i]);
@@ -263,7 +255,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	}
 
 	/** @return a new int array with the mapped values. */
-	@Override
 	public IntSeq mapInt(Intf<E> mapper) {
 		IntSeq arr = new IntSeq(size);
 		for (int i = 0; i < size; i++) {
@@ -273,7 +264,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	}
 
 	/** @return a new int array with the mapped values. */
-	@Override
 	public IntSeq mapInt(Intf<E> mapper, Boolf<E> retain) {
 		IntSeq arr = new IntSeq(size);
 		for (int i = 0; i < size; i++) {
@@ -286,7 +276,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	}
 
 	/** @return a new float array with the mapped values. */
-	@Override
 	public FloatSeq mapFloat(Floatf<E> mapper) {
 		FloatSeq arr = new FloatSeq(size);
 		for (int i = 0; i < size; i++) {
@@ -295,7 +284,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return arr;
 	}
 
-	@Override
 	public <R> R reduce(R initial, Func2<E, R, R> reducer) {
 		R result = initial;
 		for (int i = 0; i < size; i++) {
@@ -304,7 +292,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return result;
 	}
 
-	@Override
 	public boolean allMatch(Boolf<E> predicate) {
 		for (int i = 0; i < size; i++) {
 			if (!predicate.get(items[i])) {
@@ -314,7 +301,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return true;
 	}
 
-	@Override
 	public boolean contains(Boolf<E> predicate) {
 		for (int i = 0; i < size; i++) {
 			if (predicate.get(items[i])) {
@@ -324,7 +310,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return false;
 	}
 
-	@Override
 	public E min(Comparator<? super E> func) {
 		E result = null;
 		for (int i = 0; i < size; i++) {
@@ -336,7 +321,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return result;
 	}
 
-	@Override
 	public E max(Comparator<? super E> func) {
 		E result = null;
 		for (int i = 0; i < size; i++) {
@@ -348,7 +332,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return result;
 	}
 
-	@Override
 	public E min(Boolf<E> filter, Floatf<E> func) {
 		E result = null;
 		float min = Float.MAX_VALUE;
@@ -364,7 +347,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return result;
 	}
 
-	@Override
 	public E min(Boolf<E> filter, Comparator<? super E> func) {
 		E result = null;
 		for (int i = 0; i < size; i++) {
@@ -376,7 +358,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return result;
 	}
 
-	@Override
 	public E min(Floatf<E> func) {
 		E result = null;
 		float min = Float.MAX_VALUE;
@@ -391,7 +372,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return result;
 	}
 
-	@Override
 	public E max(Floatf<E> func) {
 		E result = null;
 		float max = Float.NEGATIVE_INFINITY;
@@ -406,7 +386,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return result;
 	}
 
-	@Override
 	public @Nullable E find(Boolf<E> predicate) {
 		for (int i = 0; i < size; i++) {
 			if (predicate.get(items[i])) {
@@ -426,7 +405,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	 *
 	 * @return whether this value was added successfully.
 	 */
-	@Override
 	public boolean addUnique(E value) {
 		if (!contains(value)) {
 			add(value);
@@ -442,7 +420,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return true;
 	}
 
-	@Override
 	public boolean add(E value1, E value2) {
 		if (size + 1 >= items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
 		items[size] = value1;
@@ -451,7 +428,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return true;
 	}
 
-	@Override
 	public boolean add(E value1, E value2, E value3) {
 		if (size + 2 >= items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
 		items[size] = value1;
@@ -476,7 +452,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		addAll(array.items, 0, array.size);
 	}
 
-	@Override
 	public void add(E[] array) {
 		addAll(array, 0, array.length);
 	}
@@ -492,12 +467,10 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public void addAll(E... array) {
 		addAll(array, 0, array.length);
 	}
 
-	@Override
 	public void addAll(E[] array, int start, int count) {
 		int sizeNeeded = size + count;
 		if (sizeNeeded > items.length) items = resize(Math.max(8, (int) (sizeNeeded * 1.75f)));
@@ -505,7 +478,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		size += count;
 	}
 
-	@Override
 	public void addAll(Iterable<? extends E> items) {
 		if (items instanceof CollectionList<? extends E> list) {
 			addAll(list);
@@ -523,13 +495,11 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	}
 
 	/** Sets this array's contents to the specified array. */
-	@Override
 	public void set(E[] array) {
 		clear();
 		addAll(array);
 	}
 
-	@Override
 	public E getFrac(float index) {
 		if (isEmpty()) return null;
 		return get(Mathm.clamp((int) (index * size), 0, size - 1));
@@ -541,7 +511,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return items[index];
 	}
 
-	@Override
 	public E get(int index, E def) {
 		if (index >= size || index <= 0) return def;
 		return items[index];
@@ -560,7 +529,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		insert(index, element);
 	}
 
-	@Override
 	public void insert(int index, E element) {
 		if (index > size) throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
 		if (size == items.length) items = resize(Math.max(8, (int) (size * 1.75f)));
@@ -572,7 +540,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		items[index] = element;
 	}
 
-	@Override
 	public void swap(int first, int second) {
 		if (first >= size) throw new IndexOutOfBoundsException("first can't be >= size: " + first + " >= " + size);
 		if (second >= size) throw new IndexOutOfBoundsException("second can't be >= size: " + second + " >= " + size);
@@ -587,7 +554,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	 * @return whether anything was replaced.
 	 *
 	 */
-	@Override
 	public boolean replace(E from, E to) {
 		int idx = indexOf(from);
 		if (idx != -1) {
@@ -626,7 +592,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
 	 * @return true if array contains value, false if it doesn't
 	 */
-	@Override
 	public boolean contains(Object o, boolean identity) {
 		int i = size - 1;
 		if (identity || o == null) {
@@ -663,7 +628,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
 	 * @return An index of first occurrence of value in array or -1 if no such value exists
 	 */
-	@Override
 	public int indexOf(Object o, boolean identity) {
 		if (identity || o == null) {
 			for (int i = 0, n = size; i < n; i++)
@@ -675,7 +639,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return -1;
 	}
 
-	@Override
 	public int indexOf(Boolf<E> value) {
 		for (int i = 0, n = size; i < n; i++)
 			if (value.get(items[i])) return i;
@@ -690,7 +653,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
 	 * @return An index of last occurrence of value in array or -1 if no such value exists
 	 */
-	@Override
 	public int lastIndexOf(Object o, boolean identity) {
 		if (identity || o == null) {
 			for (int i = size - 1; i >= 0; i--)
@@ -713,7 +675,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	 *
 	 * @return whether the item was found and removed.
 	 */
-	@Override
 	public boolean remove(Boolf<E> value) {
 		for (int i = 0; i < size; i++) {
 			if (value.get(items[i])) {
@@ -731,7 +692,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
 	 * @return true if value was found and removed, false otherwise
 	 */
-	@Override
 	public boolean remove(@Nullable Object o, boolean identity) {
 		if (identity || o == null) {
 			for (int i = 0, n = size; i < n; i++) {
@@ -751,7 +711,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return false;
 	}
 
-	@Override
 	public boolean removeAll(@Nullable Object o, boolean identity) {
 		boolean modified = false;
 
@@ -803,7 +762,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		size -= count;
 	}
 
-	@Override
 	public void removeAll(Boolf<E> pred) {
 		Iterator<E> iter = iterator();
 		while (iter.hasNext()) {
@@ -871,33 +829,28 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	}
 
 	/** Returns the last item. */
-	@Override
 	public E peek() {
 		if (size == 0) throw new IllegalStateException("Array is empty.");
 		return items[size - 1];
 	}
 
 	/** Returns the first item. */
-	@Override
 	public E first() {
 		if (size == 0) throw new IllegalStateException("Array is empty.");
 		return items[0];
 	}
 
-	@Override
 	public E peek(Prov<E> constructor) {
 		if (size == 0) return constructor.get();
 		return items[size - 1];
 	}
 
-	@Override
 	public E first(Prov<E> constructor) {
 		if (size == 0) return constructor.get();
 		return items[0];
 	}
 
 	/** Returns the first item, or null if this Seq is empty. */
-	@Override
 	public E firstOpt() {
 		if (size == 0) return null;
 		return items[0];
@@ -914,7 +867,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return size == 0;
 	}
 
-	@Override
 	public boolean any() {
 		return size > 0;
 	}
@@ -983,7 +935,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	 * Sorts this array. The array elements must implement {@link Comparable}. This method is not thread safe (uses
 	 * {@link Sort#instance()}).
 	 */
-	@Override
 	public void sort() {
 		Sort.instance().sort(items, 0, size);
 	}
@@ -994,12 +945,10 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		Sort.instance().sort(items, comparator, 0, size);
 	}
 
-	@Override
 	public void sort(Floatf<? super E> comparator) {
 		Sort.instance().sort(items, Structs.comparingFloat(comparator), 0, size);
 	}
 
-	@Override
 	public <U extends Comparable<? super U>> void sortComparing(Func<? super E, ? extends U> keyExtractor) {
 		sort(Structs.comparing(keyExtractor));
 	}
@@ -1014,7 +963,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	}
 
 	/** Note that this allocates a new set. Mutates. */
-	@Override
 	public void distinct() {
 		CollectionObjectSet<E> set = asSet();
 		clear();
@@ -1040,12 +988,10 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	}
 
 	/** Removes everything that does not match this predicate. */
-	@Override
 	public void retainAll(Boolf<E> predicate) {
 		removeAll(e -> !predicate.get(e));
 	}
 
-	@Override
 	public int count(Boolf<E> predicate) {
 		int count = 0;
 		for (int i = 0; i < size; i++) {
@@ -1066,7 +1012,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	 * @return the value of the Nth lowest ranked object.
 	 * @see arc.util.Select
 	 */
-	@Override
 	public E selectRanked(Comparator<? super E> comparator, int kthLowest) {
 		if (kthLowest < 1) {
 			throw new ArcRuntimeException("nth_lowest must be greater than 0, 1 = first, 2 = second...");
@@ -1081,7 +1026,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	 * @return the index of the Nth lowest ranked object.
 	 * @see CollectionList#selectRanked(java.util.Comparator, int)
 	 */
-	@Override
 	public int selectRankedIndex(Comparator<? super E> comparator, int kthLowest) {
 		if (kthLowest < 1) {
 			throw new ArcRuntimeException("nth_lowest must be greater than 0, 1 = first, 2 = second...");
@@ -1089,7 +1033,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		return Arrays2.selectIndex(items, comparator, kthLowest, size);
 	}
 
-	@Override
 	public void reverse() {
 		for (int i = 0, lastIndex = size - 1, n = size / 2; i < n; i++) {
 			int ii = lastIndex - i;
@@ -1099,7 +1042,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		}
 	}
 
-	@Override
 	public void shuffle() {
 		for (int i = size - 1; i >= 0; i--) {
 			int j = Mathf.random(i);
@@ -1121,14 +1063,12 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 		size = newSize;
 	}
 
-	@Override
 	public E random(Rand rand) {
 		if (size == 0) return null;
 		return items[rand.random(0, size - 1)];
 	}
 
 	/** Returns a random item from the array, or null if the array is empty. */
-	@Override
 	public E random() {
 		return random(Mathf.rand);
 	}
@@ -1137,7 +1077,6 @@ public class CollectionList<E> extends AbstractList<E> implements IList<E>, Clon
 	 * Returns a random item from the array, excluding the specified element. If the array is empty, returns null.
 	 * If this array only has one element, returns that element.
 	 */
-	@Override
 	public E random(E exclude) {
 		if (exclude == null) return random();
 		if (size == 0) return null;

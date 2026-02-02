@@ -58,12 +58,7 @@ dependencies {
 	implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 	implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 
-	implementation "org.commonmark:commonmark:$commonmarkVersion"
-	implementation "org.commonmark:commonmark-ext-gfm-tables:$commonmarkVersion"
-	implementation "org.commonmark:commonmark-ext-gfm-strikethrough:$commonmarkVersion"
-	implementation "org.commonmark:commonmark-ext-ins:$commonmarkVersion"
-
-	implementation files("libs/JavaDynamilizer.jar")
+	implementation files("libs/JavaDynamilizer.jar", "libs/Commonmark.jar")
 
 	annotationProcessor project(":annotations")
 }

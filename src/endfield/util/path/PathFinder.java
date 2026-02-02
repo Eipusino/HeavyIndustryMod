@@ -1,7 +1,7 @@
 package endfield.util.path;
 
-import endfield.util.path.PathFindFunc.PathAcceptor;
-import endfield.util.path.PathFindFunc.VerticesAcceptor;
+import arc.func.Cons;
+import arc.func.Cons2;
 
 /**
  * The base class, subclass, or interface of the basic path searcher requires the use of one or several algorithms to implement the path search method.
@@ -50,7 +50,7 @@ public interface PathFinder<V> {
 	 * @param origin	   The origin of the search, starting from this point to search the entire graph
 	 * @param pathConsumer The data callback function for path search will pass each generated path and its endpoint as parameters to this callback function
 	 */
-	void findPath(V origin, PathAcceptor<V> pathConsumer);
+	void findPath(V origin, Cons2<V, IPath<V>> pathConsumer);
 
 	/**
 	 * Traverse all vertices in the graph from the given original position and receive each vertex from the callback function.
@@ -59,5 +59,5 @@ public interface PathFinder<V> {
 	 * @param origin	   Starting point of traversal
 	 * @param vertConsumer The callback function for vertices, from which each vertex receives a callback
 	 */
-	void eachVertices(V origin, VerticesAcceptor<V> vertConsumer);
+	void eachVertices(V origin, Cons<V> vertConsumer);
 }

@@ -31,7 +31,7 @@ public class LongHolder<V> implements Cloneable, Comparable<LongHolder<?>> {
 
 	@Override
 	public int hashCode() {
-		return Objects2.longToHash(key) ^ Objects.hashCode(value);
+		return Long.hashCode(key) ^ Objects.hashCode(value);
 	}
 
 	@Override

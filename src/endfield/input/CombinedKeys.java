@@ -61,9 +61,9 @@ public class CombinedKeys implements Serializable {
 	@Override
 	public int hashCode() {
 		int res = key.hashCode();
-		res = res * 31 + Objects2.boolToHash(isShift);
-		res = res * 31 + Objects2.boolToHash(isAlt);
-		res = res * 31 + Objects2.boolToHash(isCtrl);
+		res = res * 31 + Boolean.hashCode(isShift);
+		res = res * 31 + Boolean.hashCode(isAlt);
+		res = res * 31 + Boolean.hashCode(isCtrl);
 		return res;
 	}
 

@@ -52,14 +52,14 @@ public final class AdaptiveCoreDatabase {
 					if (root == null) continue;
 
 					if (root.planet == null) {
-						Log.err("where is you planet?");
+						Log.warn("where is you planet?");
 						continue;
 					}
 					Planet planetVanilla = Vars.content.planet(root.planet);
 					Planet planetMod = Vars.content.planet(name + '-' + root.planet);
 					Planet planet = planetVanilla != null ? planetVanilla : planetMod;
 					if (planet == null) {
-						Log.err("can not find planet '" + name + '-' + root.planet + "' or '" + root.planet + '\'');
+						Log.warn("can not find planet '" + name + '-' + root.planet + "' or '" + root.planet + '\'');
 						continue;
 					}
 					if (root.items != null) {
@@ -69,7 +69,7 @@ public final class AdaptiveCoreDatabase {
 							Item itemMod = Vars.content.item(name + '-' + s);
 							Item item = itemVanilla != null ? itemVanilla : itemMod;
 							if (item == null) {
-								Log.err("can not find item '" + name + '-' + s + "' or '" + s + '\'');
+								Log.warn("can not find item '" + name + '-' + s + "' or '" + s + '\'');
 								continue;
 							}
 							i++;
@@ -88,7 +88,7 @@ public final class AdaptiveCoreDatabase {
 							Liquid liquidMod = Vars.content.liquid(name + '-' + s);
 							Liquid liquid = liquidVanilla != null ? liquidVanilla : liquidMod;
 							if (liquid == null) {
-								Log.err("can not find liquid '" + name + '-' + s + "' or '" + s + '\'');
+								Log.warn("can not find liquid '" + name + '-' + s + "' or '" + s + '\'');
 								continue;
 							}
 							i++;

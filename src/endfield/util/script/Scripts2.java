@@ -16,6 +16,7 @@ package endfield.util.script;
 import arc.files.Fi;
 import arc.func.Func;
 import arc.util.Log;
+import dynamilize.FunctionType;
 import endfield.Vars2;
 import endfield.util.Reflects;
 import mindustry.Vars;
@@ -73,8 +74,15 @@ public final class Scripts2 {
 					}
 
 					function getClass(name) {
-						return Packages.java.lang.Class.forName(name, true, Vars.mods.mainLoader())
+						return Packages.java.lang.Class.forName(name, true, Vars.mods.mainLoader());
 					}
+
+					function jbyte(value) { return Packages.java.lang.Byte.valueOf(value); }
+					function jshort(value) { return Packages.java.lang.Short.valueOf(value); }
+					function jint(value) { return Packages.java.lang.Integer.valueOf(value); }
+					function jlong(value) { return Packages.java.lang.Long.valueOf(value); }
+					function jfloat(value) { return Packages.java.lang.Float.valueOf(value); }
+					function jdouble(value) { return Packages.java.lang.Double.valueOf(value); }
 					""", "apply.js", 1);*/
 		} catch (Throwable e) {
 			Log.err(e);
@@ -157,26 +165,52 @@ public final class Scripts2 {
 	@SuppressWarnings("unchecked")
 	@Contract(pure = true)
 	public static <T> Func<Object[], T> requireType(Function func, Context context, Scriptable scope, Class<T> returnType) {
-		Class<?> type = Reflects.box(returnType);
+		Class<?> type = FunctionType.wrapper(returnType);
 		return args -> {
 			Object res = func.call(context, scope, scope, args);
 			if (type == Void.class || res == null) return null;
 
 			if (res instanceof Wrapper w) res = w.unwrap();
-			if (!type.isAssignableFrom(res.getClass()))
-				throw new IllegalArgumentException("Incompatible return type: Expected '" + returnType + "', but got '" + res.getClass() + "'!");
+			if (!type.isInstance(res))
+				throw new ClassCastException("Incompatible return type: Expected '" + returnType + "', but got '" + res.getClass() + "'!");
 			return (T) res;
 		};
 	}
 
-	public static NativeJavaClass loadClass(Fi file, String name) throws ClassNotFoundException, IOException {
+	public static NativeJavaClass loadClass(Fi file, String name) {
 		try (URLClassLoader urlLoader = new URLClassLoader(new URL[]{file.file().toURI().toURL()})) {
 			return new NativeJavaClass(Vars.mods.getScripts().scope, urlLoader.loadClass(name));
+		} catch (ClassNotFoundException | IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
-	public static Object invokeForHandle(MethodHandle handle, Object[] arr) throws Throwable {
-		return handle.invokeWithArguments(convertArgs(arr, handle.type().parameterArray()));
+	/*public static byte jbyte(byte value) {
+		return value;
+	}
+
+	public static short jshort(short value) {
+		return value;
+	}
+
+	public static int jint(int value) {
+		return value;
+	}
+
+	public static long jlong(long value) {
+		return value;
+	}
+
+	public static float jfloat(float value) {
+		return value;
+	}
+
+	public static double jdouble(double value) {
+		return value;
+	}*/
+
+	public static Object invokeForHandle(MethodHandle handle, Object[] arr) {
+		return Reflects.invokeStatic(handle, convertArgs(arr, handle.type().parameterArray()));
 	}
 
 	@Contract(pure = true)

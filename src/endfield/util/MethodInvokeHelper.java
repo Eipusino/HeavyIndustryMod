@@ -1,9 +1,15 @@
 package endfield.util;
 
 public interface MethodInvokeHelper {
-	<T> T invoke(Object owner, String method, Object... args);
+	<T> T invoke(Object object, String name, Object... args);
 
-	<T> T invokeStatic(Class<?> clazz, String method, Object... args);
+	<T> T invokeStatic(Class<?> clazz, String name, Object... args);
 
 	<T> T newInstance(Class<T> type, Object... args);
+
+	<T> T invoke(Object object, String name, Class<?>[] parameterTypes, Object... args);
+
+	<T> T invokeStatic(Class<?> clazz, String name, Class<?>[] parameterTypes, Object... args);
+
+	<T> T newInstance(Class<T> type, Class<?>[] parameterTypes, Object... args);
 }

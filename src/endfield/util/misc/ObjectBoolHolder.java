@@ -30,7 +30,7 @@ public class ObjectBoolHolder<K> implements Cloneable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(key) ^ Objects2.boolToHash(value);
+		return Objects.hashCode(key) ^ Boolean.hashCode(value);
 	}
 
 	@Override

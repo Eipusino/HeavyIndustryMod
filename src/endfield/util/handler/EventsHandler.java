@@ -16,9 +16,8 @@ import static endfield.Vars2.classHelper;
  * @since 1.0.9
  */
 public final class EventsHandler {
-	private static final Seq<Cons<?>> consumers = new Seq<>(Cons.class);
-
-	private static final ObjectMap<Object, Seq<Cons<?>>> events = FieldHandler.getObjectDefault(Events.class, "events");
+	static final Seq<Cons<?>> consumers = new Seq<>(true, 0, Cons.class);
+	static final ObjectMap<Object, Seq<Cons<?>>> events = FieldHandler.getObjectDefault(Events.class, "events");
 
 	private EventsHandler() {}
 

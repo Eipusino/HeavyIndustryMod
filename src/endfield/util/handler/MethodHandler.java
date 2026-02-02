@@ -114,4 +114,16 @@ public class MethodHandler<T> {
 	public T newInstance(Object... args) {
 		return methodInvokeHelper.newInstance(clazz, args);
 	}
+
+	public <R> R invoke(T object, String name, Class<?>[] parameterTypes, Object... args) {
+		return methodInvokeHelper.invoke(object, name, parameterTypes, args);
+	}
+
+	public <R> R invokeStatic(String name, Class<?>[] parameterTypes, Object... args) {
+		return methodInvokeHelper.invokeStatic(clazz, name, parameterTypes, args);
+	}
+
+	public T newInstance(Class<?>[] parameterTypes, Object... args) {
+		return methodInvokeHelper.newInstance(clazz, parameterTypes, args);
+	}
 }

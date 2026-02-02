@@ -517,7 +517,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 				h += key.hashCode() * 31;
 
 				boolean value = valueTable[i];
-				h += Objects2.boolToHash(value);
+				h += Boolean.hashCode(value);
 			}
 		}
 		return h;

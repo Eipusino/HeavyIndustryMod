@@ -7,6 +7,7 @@ import arc.math.geom.Position;
 import arc.math.geom.Vec2;
 import arc.struct.FloatSeq;
 import arc.struct.Seq;
+import arc.util.Eachable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
@@ -20,7 +21,7 @@ import java.util.NoSuchElementException;
  * @see FloatSeq
  * @see Vec2
  */
-public class Vec2Seq implements IIterable<Vec2> {
+public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 	protected final FloatSeq coordinates;
 
 	protected final Vec2 tmp = new Vec2();

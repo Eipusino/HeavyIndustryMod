@@ -28,7 +28,7 @@ public class ModInfo {
 		meta = ModGetter.getModFormat(modFile);
 		info = Jval.read(meta.reader());
 		file = modFile;
-		name = info.get("name").asString();
+		name = info.getString("name", "");
 		version = info.getString("version", "");
 
 		main = Reflects.findClass(info.getString("main", null));

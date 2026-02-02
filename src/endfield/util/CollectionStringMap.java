@@ -30,30 +30,38 @@ public class CollectionStringMap extends CollectionObjectMap<String, String> {
 	}
 
 	public boolean getBool(String name) {
-		return get(name, "").equals("true");
+		return Boolean.parseBoolean(get(name, "false"));
 	}
 
 	public int getInt(String name) {
 		return getInt(name, 0);
 	}
 
+	public long getLong(String name) {
+		return getLong(name, 0l);
+	}
+
 	public float getFloat(String name) {
 		return getFloat(name, 0f);
 	}
 
-	public long getLong(String name) {
-		return getLong(name, 0l);
+	public double getDouble(String name) {
+		return getDouble(name, 0d);
 	}
 
 	public int getInt(String name, int def) {
 		return containsKey(name) ? Strings.parseInt(get(name), def) : def;
 	}
 
+	public long getLong(String name, long def) {
+		return containsKey(name) ? Strings.parseLong(get(name), def) : def;
+	}
+
 	public float getFloat(String name, float def) {
 		return containsKey(name) ? Strings.parseFloat(get(name), def) : def;
 	}
 
-	public long getLong(String name, long def) {
-		return containsKey(name) ? Strings.parseLong(get(name), def) : def;
+	public double getDouble(String name, double def) {
+		return containsKey(name) ? Strings.parseDouble(get(name), def) : def;
 	}
 }

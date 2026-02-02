@@ -4,6 +4,7 @@ import arc.func.Cons;
 import arc.func.Cons2;
 import arc.math.Mathf;
 import arc.util.ArcRuntimeException;
+import arc.util.Eachable;
 import endfield.util.misc.ObjectHolder;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,7 +26,7 @@ import java.util.Set;
  * @author Nathan Sweet
  * @author Eipusino
  */
-public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements IIterable<ObjectHolder<K, V>>, IMap<K, V>, Cloneable {
+public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements Iterable<ObjectHolder<K, V>>, Eachable<ObjectHolder<K, V>>, Cloneable {
 	public final Class<?> keyComponentType;
 	public final Class<?> valueComponentType;
 
@@ -101,17 +102,6 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements IIter
 		}
 	}
 
-	@Override
-	public Class<?> keyComponentType() {
-		return keyComponentType;
-	}
-
-	@Override
-	public Class<?> valueComponentType() {
-		return valueComponentType;
-	}
-
-	@Override
 	public void each(Cons2<? super K, ? super V> cons) {
 		for (ObjectHolder<K, V> entry : entries()) {
 			cons.get(entry.getKey(), entry.getValue());
@@ -286,7 +276,6 @@ public class CollectionArrayMap<K, V> extends AbstractMap<K, V> implements IIter
 	}
 
 	/** @param identity If true, == comparison will be used. If false, .equals() comparison will be used. */
-	@Override
 	public boolean containsValue(V value, boolean identity) {
 		int i = size - 1;
 		if (identity || value == null) {

@@ -1,5 +1,8 @@
 package endfield.util.path;
 
+import arc.func.Cons;
+import arc.func.Cons2;
+
 /**
  * The preliminary implementation of pathfinding based on breadth first search requires the provision of necessary container entry points to implement this interface.
  * <p>This search<strong> has no weight value</strong>, and the generated path should be the equal shortest path. Generally, the path found in a graph without weights must be the optimal solution or one of the optimal solutions.
@@ -70,10 +73,10 @@ public interface BFSPathFinder<V> extends PathFinder<V> {
 	/**
 	 * A standard BFS pathfinding implementation typically finds the shortest or one of the shortest paths in an unweighted graph.
 	 *
-	 * @see #findPath(Object, PathFindFunc.PathAcceptor)
+	 * @see #findPath(Object, Cons2)
 	 */
 	@Override
-	default void findPath(V origin, PathFindFunc.PathAcceptor<V> pathConsumer) {
+	default void findPath(V origin, Cons2<V, IPath<V>> pathConsumer) {
 		reset();
 		queueAdd(origin);
 		relateToPointer(origin, null);
@@ -96,7 +99,7 @@ public interface BFSPathFinder<V> extends PathFinder<V> {
 					path.addFirst(tracePointer.self);
 				}
 
-				pathConsumer.accept(next, path);
+				pathConsumer.get(next, path);
 			}
 		}
 	}
@@ -104,10 +107,10 @@ public interface BFSPathFinder<V> extends PathFinder<V> {
 	/**
 	 * Implementation of graph traversal based on BFS, with traversal order spreading outward from the given starting point until every vertex is traversed.
 	 *
-	 * @see PathFinder#eachVertices(Object, PathFindFunc.VerticesAcceptor)
+	 * @see PathFinder#eachVertices(Object, Cons)
 	 */
 	@Override
-	default void eachVertices(V origin, PathFindFunc.VerticesAcceptor<V> vertConsumer) {
+	default void eachVertices(V origin, Cons<V> vertConsumer) {
 		reset();
 		queueAdd(origin);
 		relateToPointer(origin, null);
@@ -119,7 +122,7 @@ public interface BFSPathFinder<V> extends PathFinder<V> {
 					queueAdd(vert);
 				}
 			}
-			vertConsumer.accept(v);
+			vertConsumer.get(v);
 		}
 	}
 

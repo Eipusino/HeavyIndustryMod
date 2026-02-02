@@ -27,10 +27,6 @@ public class NativeJavaHandle extends BaseFunction {
 
 	@Override
 	public Object call(Context context, Scriptable scope, Scriptable scriptable, Object[] args) {
-		try {
-			return context.getWrapFactory().wrap(context, scope, Scripts2.invokeForHandle(handle, args), handle.type().returnType());
-		} catch (Throwable e) {
-			throw new RuntimeException(e);
-		}
+		return context.getWrapFactory().wrap(context, scope, Scripts2.invokeForHandle(handle, args), handle.type().returnType());
 	}
 }

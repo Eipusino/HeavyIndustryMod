@@ -9,6 +9,9 @@ import mindustry.type.Item;
 import mindustry.world.Tile;
 import mindustry.world.blocks.UnitTetherBlock;
 import org.jetbrains.annotations.ApiStatus.Internal;
+import org.jetbrains.annotations.NotNull;
+
+import java.net.URL;
 
 /**
  * Handles various modded client-server synchronizations.
@@ -25,6 +28,13 @@ public final class Call2 {
 		Net.registerPacket(ReleaseShieldWallBuildSyncPacket::new);
 		Net.registerPacket(RemoveStackPacket::new);
 		Net.registerPacket(UnitAnnihilateCallPacket::new);
+	}
+
+	public static @NotNull URL getResourceNotNull(Class<?> clazz, String name) {
+		URL res = clazz.getResource(name);
+		if (res == null) throw new IllegalStateException("Unable to retrieve class resource: " + name + " from " + clazz);
+
+		return res;
 	}
 
 	public static void releaseShieldWallBuildSync(Tile tile, float damage) {

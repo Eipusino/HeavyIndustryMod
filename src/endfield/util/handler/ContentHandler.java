@@ -26,8 +26,8 @@ public final class ContentHandler {
 	private ContentHandler() {}
 
 	private static void updateContainer() {
-		contentMap = handle.get(Vars.content, "contentMap");
-		contentNameMap = handle.get(Vars.content, "contentNameMap");
+		contentMap = handle.getObject(Vars.content, "contentMap");
+		contentNameMap = handle.getObject(Vars.content, "contentNameMap");
 	}
 
 	public static void removeContent(Content content) {
@@ -57,7 +57,7 @@ public final class ContentHandler {
 	 * @throws RuntimeException When {@code oldContent} and {@code newContent} have different types
 	 * (ContentType), throw them
 	 */
-	public static void overrideContent(MappableContent oldContent, MappableContent newContent) {
+	public static void overrideMapContent(MappableContent oldContent, MappableContent newContent) {
 		updateContainer();
 		ContentType type = oldContent.getContentType();
 
@@ -81,7 +81,7 @@ public final class ContentHandler {
 			contentNameMap[type.ordinal()].remove(newName);
 		}
 
-		overrideContent(oldContent, (Content) newContent);
+		overrideContent(oldContent, newContent);
 	}
 
 	/**

@@ -3,6 +3,7 @@ package endfield.util;
 import arc.func.Boolf;
 import arc.func.Cons;
 import arc.math.Mathf;
+import arc.util.Eachable;
 import endfield.math.Mathm;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -28,7 +29,7 @@ import static endfield.util.Constant.PRIME3;
  *
  * @author Nathan Sweet
  */
-public class CollectionObjectSet<E> extends AbstractSet<E> implements ISet<E>, Cloneable {
+public class CollectionObjectSet<E> extends AbstractSet<E> implements Iterable<E>, Eachable<E>, Cloneable {
 	public int size;
 
 	public final Class<?> componentType;
@@ -135,11 +136,6 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements ISet<E>, C
 	}
 
 	@Override
-	public Class<?> componentType() {
-		return componentType;
-	}
-
-	@Override
 	public void each(Cons<? super E> cons) {
 		for (E e : this) {
 			cons.get(e);
@@ -207,32 +203,27 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements ISet<E>, C
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public void addAll(E... array) {
 		addAll(array, 0, array.length);
 	}
 
-	@Override
 	public void addAll(E[] array, int offset, int length) {
 		ensureCapacity(length);
 		for (int i = offset, n = i + length; i < n; i++)
 			add(array[i]);
 	}
 
-	@Override
 	public void addAll(Set<? extends E> set) {
 		ensureCapacity(set.size());
 		for (E key : set)
 			add(key);
 	}
 
-	@Override
 	public void removeAll(E[] array, int offset, int length) {
 		for (int i = offset, n = i + length; i < n; i++)
 			remove(array[i]);
 	}
 
-	@Override
 	public void removeAll(E[] array) {
 		for (E e : array) {
 			remove(e);
@@ -403,7 +394,6 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements ISet<E>, C
 		return size == 0;
 	}
 
-	@Override
 	public boolean any() {
 		return size > 0;
 	}
@@ -489,7 +479,6 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements ISet<E>, C
 		return null;
 	}
 
-	@Override
 	public E first() {
 		for (int i = 0, n = capacity + stashSize; i < n; i++)
 			if (keyTable[i] != null) return keyTable[i];

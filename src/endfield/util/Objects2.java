@@ -37,121 +37,7 @@ import static endfield.Vars2.fieldAccessHelper;
  * @since 1.0.8
  */
 public final class Objects2 {
-	public static final long PRIME1 = 0x9e3779b185ebca87l;
-	public static final long PRIME2 = 0xc2b2ae3d27d4eb4fl;
-
-	public static final long FNV_OFFSET_BASIS = 0xcbf29ce484222325l;
-	public static final long FNV_PRIME = 0x100000001b3l;
-
-	static final byte[] bytes = new byte[8];
-
 	private Objects2() {}
-
-	// 'Boolean.hashCode(boolean)' may not be compatible with Android (API level 14).
-	@Contract(pure = true)
-	public static int boolToHash(boolean value) {
-		return value ? 1231 : 1237;
-	}
-
-	@Contract(pure = true)
-	public static int longToHash(long value) {
-		return (int) (value ^ (value >>> 32));
-	}
-
-	@Contract(pure = true)
-	public static int longToHash3(long value) {
-		long hash = PRIME1 + value * PRIME2;
-		hash ^= hash >>> 33;
-		hash *= PRIME2;
-		hash ^= hash >>> 29;
-		hash *= PRIME1;
-		hash ^= hash >>> 32;
-		return (int) hash;
-	}
-
-	@Contract(pure = true)
-	public static int murmurHash(long value) {
-		int hash = longToHash(value);
-		hash ^= hash >>> 16;
-		hash *= 0x85ebca6b;
-		hash ^= hash >>> 13;
-		hash *= 0xc2b2ae35;
-		hash ^= hash >>> 16;
-		return hash;
-	}
-
-	@Contract(pure = true)
-	public static int murmurHash64(long value) {
-		value ^= value >>> 33;
-		value *= 0xff51afd7ed558ccdl;
-		value ^= value >>> 33;
-		value *= 0xc4ceb9fe1a85ec53l;
-		value ^= value >>> 33;
-		return (int) value;
-	}
-
-	@Contract(pure = true)
-	public static int fnv1aHash(long value) {
-		long hash = FNV_OFFSET_BASIS;
-
-		for (int i = 0; i < 8; i++) {
-			hash ^= (value & 0xff);
-			hash &= FNV_PRIME;
-			value >>>= 8;
-		}
-
-		return longToHash(hash);
-	}
-
-	/*@Contract(pure = true)
-	public static int fastHash(long value) {
-		long offset = unsafe.arrayBaseOffset(byte[].class);
-
-		unsafe.putLong(bytes, offset, value);
-
-		int hash = unsafe.getInt(bytes, offset);
-		hash *= unsafe.getInt(bytes, offset + 4);
-		hash ^= hash >>> 16;
-		hash *= 0x85ebca6b;
-		hash ^= hash >>> 13;
-		hash *= 0xc2b2ae35;
-		hash ^= hash >>> 16;
-		return hash;
-	}*/
-
-	@Contract(pure = true)
-	public static int doubleToHash(double value) {
-		long bits = Double.doubleToLongBits(value);
-		return (int) (bits ^ (bits >>> 32));
-	}
-
-	/** Safely convert Object to int. */
-	@Contract(pure = true)
-	public static int asInt(Object obj, int def) {
-		return obj instanceof Number num ? num.intValue() : def;
-	}
-
-	/** Safely convert Object to float. */
-	@Contract(pure = true)
-	public static float asFloat(Object obj, float def) {
-		return obj instanceof Number num ? num.floatValue() : def;
-	}
-
-	/** Used to optimize code conciseness in specific situations. */
-	@Contract(value = "_, _ -> param2", pure = true)
-	public static <T> T requireInstance(@NotNull Class<?> type, @Nullable T obj) {
-		if (obj == null || type.isInstance(obj))
-			return obj;
-		throw new IllegalArgumentException("obj cannot be casted to " + type.getName());
-	}
-
-	/** Used to optimize code conciseness in specific situations. */
-	@Contract(value = "_, null -> fail; _, _ -> param2", pure = true)
-	public static <T> @NotNull T requireNonNullInstance(@NotNull Class<?> type, @Nullable T obj) {
-		if (type.isInstance(obj))
-			return obj;
-		throw new IllegalArgumentException("obj is not an instance of " + type.getName());
-	}
 
 	/**
 	 * Returns the first argument if it is non-{@code null} and otherwise
@@ -306,9 +192,7 @@ public final class Objects2 {
 		int i = 0;
 		while (type != null) {
 			for (Field field : Vars2.classHelper.getFields(type)) {
-				if (Modifier.isStatic(field.getModifiers())) {
-					continue;
-				}
+				if ((field.getModifiers() & Modifier.STATIC) != 0) continue;
 
 				if (i++ > 0) {
 					builder.append(", ");
@@ -317,7 +201,7 @@ public final class Objects2 {
 				builder.append(field.getName()).append('=');
 
 				try {
-					Object value = fieldAccessHelper.get(object, field.getName());;
+					Object value = fieldAccessHelper.get(object, field.getName());
 
 					// On the Android platform, the reflection performance is not low, so there is no need to use Unsafe.
 

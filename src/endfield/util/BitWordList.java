@@ -113,7 +113,7 @@ public class BitWordList {
 		final int word = nonZeroLength() >>> 6;
 		int hash = 0;
 		for (int i = 0; word >= i; i++) {
-			hash = 127 * hash + Objects2.longToHash(bits[i]);
+			hash = 127 * hash + Long.hashCode(bits[i]);
 		}
 		return hash;
 	}

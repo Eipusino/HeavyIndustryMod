@@ -1,16 +1,12 @@
 package endfield.util;
 
 import arc.func.Cons;
-import arc.struct.Seq;
 import arc.util.Eachable;
 import endfield.math.Mathm;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Unmodifiable;
 
 import java.lang.reflect.Array;
 import java.util.AbstractList;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -21,7 +17,7 @@ import java.util.NoSuchElementException;
  *
  * @since 1.0.8
  */
-public class UnmodifiableList<E> extends AbstractList<E> implements IList<E> {
+public class UnmodifiableList<E> extends AbstractList<E> implements Iterable<E>, Eachable<E> {
 	final E[] items;
 
 	final int size;
@@ -29,24 +25,9 @@ public class UnmodifiableList<E> extends AbstractList<E> implements IList<E> {
 	transient Iter iterator1, iterator2;
 	transient ListIter listIterator1;
 
-	/**
-	 * @see #with(E[])
-	 * @see #cpy(E[])
-	 */
-	protected UnmodifiableList(E[] array) {
+	public UnmodifiableList(E[] array) {
 		items = array;
 		size = array.length;
-	}
-
-	/** Directly use the given array. */
-	@SafeVarargs
-	public static <T> @Unmodifiable UnmodifiableList<T> with(T... array) {
-		return new UnmodifiableList<>(array);
-	}
-
-	/** Clone an array instead of directly applying the original one. */
-	public static <T> @Unmodifiable UnmodifiableList<T> cpy(T[] array) {
-		return new UnmodifiableList<>(array.clone());
 	}
 
 	@Override
@@ -54,11 +35,6 @@ public class UnmodifiableList<E> extends AbstractList<E> implements IList<E> {
 		for (int i = 0; i < size; i++) {
 			cons.get(items[i]);
 		}
-	}
-
-	@Override
-	public Class<?> componentType() {
-		return items.getClass().getComponentType();
 	}
 
 	@Override
@@ -72,12 +48,10 @@ public class UnmodifiableList<E> extends AbstractList<E> implements IList<E> {
 		return size;
 	}
 
-	@Override
 	public boolean any() {
 		return size > 0;
 	}
 
-	@Override
 	public E first() {
 		return items[0];
 	}
@@ -89,28 +63,6 @@ public class UnmodifiableList<E> extends AbstractList<E> implements IList<E> {
 		return items[index];
 	}
 
-	/** @return Does not support any change operations, always returns false. */
-	@Override
-	public boolean add(E e) {
-		return false;
-	}
-
-	/** No modification operations are supported, nothing will happen. */
-	@Override
-	public void add(int index, E element) {}
-
-	/** @return Does not support any change operations, always returns false. */
-	@Override
-	public boolean addAll(@NotNull Collection<? extends E> c) {
-		return false;
-	}
-
-	/** @return Does not support any change operations, always returns false. */
-	@Override
-	public boolean addAll(int index, @NotNull Collection<? extends E> c) {
-		return false;
-	}
-
 	/** Returns the element at the specified position in this list, but does not delete the element. */
 	@Override
 	public E remove(int index) {
@@ -118,42 +70,11 @@ public class UnmodifiableList<E> extends AbstractList<E> implements IList<E> {
 		return items[index];
 	}
 
-	/** @return Does not support any change operations, always returns false. */
-	@Override
-	public boolean remove(Object o) {
-		return false;
-	}
-
-	/** @return Does not support any change operations, always returns false. */
-	@Override
-	public boolean removeAll(@NotNull Collection<?> c) {
-		return false;
-	}
-
-	/** No modification operations are supported, nothing will happen. */
-	@Override
-	protected void removeRange(int fromIndex, int toIndex) {}
-
-	/** @return Does not support any change operations, always returns false. */
-	@Override
-	public boolean retainAll(@NotNull Collection<?> c) {
-		return false;
-	}
-
-	/** No modification operations are supported, nothing will happen. */
-	@Override
-	public void sort(Comparator<? super E> c) {}
-
-	/** No modification operations are supported, nothing will happen. */
-	@Override
-	public void clear() {}
-
 	@Override
 	public boolean contains(Object o) {
 		return contains(o, false);
 	}
 
-	@Override
 	public boolean contains(Object o, boolean identity) {
 		int i = size - 1;
 		if (identity || o == null) {
@@ -242,11 +163,6 @@ public class UnmodifiableList<E> extends AbstractList<E> implements IList<E> {
 		return CollectionList.with(items);
 	}
 
-	/** Convert this list to a {@code Seq}. */
-	public Seq<E> toSeq() {
-		return Seq.with(items);
-	}
-
 	@Override
 	public @NotNull List<E> subList(int fromIndex, int toIndex) {
 		return new SubList<>(this, fromIndex, toIndex);
@@ -331,13 +247,19 @@ public class UnmodifiableList<E> extends AbstractList<E> implements IList<E> {
 		}
 
 		@Override
-		public void remove() {}
+		public void remove() {
+			throw new UnsupportedOperationException("remove");
+		}
 
 		@Override
-		public void set(E e) {}
+		public void set(E e) {
+			throw new UnsupportedOperationException("set");
+		}
 
 		@Override
-		public void add(E e) {}
+		public void add(E e) {
+			throw new UnsupportedOperationException("add");
+		}
 	}
 
 	/** Sublist class, It also does not support any modification operations. */
@@ -365,56 +287,6 @@ public class UnmodifiableList<E> extends AbstractList<E> implements IList<E> {
 		@Override
 		public void each(Cons<? super T> cons) {
 			parent.each(cons);
-		}
-
-		@Override
-		public boolean add(T t) {
-			return false;
-		}
-
-		@Override
-		public void add(int index, T element) {}
-
-		@Override
-		public boolean addAll(int index, Collection<? extends T> c) {
-			return false;
-		}
-
-		@Override
-		public boolean addAll(@NotNull Collection<? extends T> c) {
-			return false;
-		}
-
-		/**
-		 * Returns the element located at the specified position, but does not perform any other
-		 * operations.
-		 */
-		@Override
-		public T set(int index, T element) {
-			return parent.get(index);
-		}
-
-		@Override
-		public boolean remove(Object o) {
-			return false;
-		}
-
-		@Override
-		public T remove(int index) {
-			return parent.remove(index);
-		}
-
-		@Override
-		public boolean removeAll(@NotNull Collection<?> c) {
-			return false;
-		}
-
-		@Override
-		protected void removeRange(int fromIndex, int toIndex) {}
-
-		@Override
-		public boolean retainAll(@NotNull Collection<?> c) {
-			return false;
 		}
 
 		@Override

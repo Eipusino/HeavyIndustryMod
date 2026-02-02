@@ -42,7 +42,11 @@ public interface ClassHelper {
 		return (Constructor<T>[]) clazz.getDeclaredConstructors();
 	}
 
-	default void setPublic(Class<?> clazz) {}
+	default void setPublic(Class<?> clazz) {
+		//no action
+	}
+
+	<T> T allocateInstance(Class<? extends T> clazz);
 
 	Class<?> defineClass(String name, byte[] bytes, ClassLoader loader);
 }
