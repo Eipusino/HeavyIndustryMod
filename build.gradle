@@ -12,7 +12,7 @@ buildscript {
 }
 
 plugins {
-	id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
+	id "org.jetbrains.kotlin.jvm" version "$kotlinVersion"
 	id "java"
 }
 
@@ -106,10 +106,8 @@ task deploy(type: Jar) {
 	dependsOn jar
 	archiveFileName = "${outputJarName}.jar"
 
-	from { [zipTree("$buildDir/libs/${outputJarName}Desktop.jar"), zipTree("$buildDir/libs/${outputJarName}Android.jar")] }
-
-	from("assets-raw/") {
-		include "**"
+	from {
+		[zipTree("$buildDir/libs/${outputJarName}Desktop.jar"), zipTree("$buildDir/libs/${outputJarName}Android.jar"), zipTree("assets-raw/Impl.jar")]
 	}
 
 	doLast {

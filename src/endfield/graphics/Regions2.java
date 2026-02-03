@@ -5,13 +5,10 @@ import arc.files.Fi;
 import arc.graphics.Pixmap;
 import arc.graphics.Texture;
 import arc.graphics.g2d.TextureAtlas.AtlasRegion;
-import arc.scene.style.Drawable;
 import arc.struct.ObjectMap;
 import arc.struct.ObjectSet;
 import arc.struct.Seq;
-import arc.util.Log;
 import endfield.Vars2;
-import endfield.util.handler.FieldHandler;
 import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +21,6 @@ public final class Regions2 {
 	// form arc.Core.atlas
 	public static ObjectSet<Texture> textures;
 	public static Seq<AtlasRegion> regions;
-	public static ObjectMap<String, Drawable> drawables;
 	public static ObjectMap<String, AtlasRegion> regionmap;
 	public static ObjectMap<Texture, Pixmap> pixmaps;
 
@@ -41,14 +37,6 @@ public final class Regions2 {
 		regions = Core.atlas.getRegions();
 		regionmap = Core.atlas.getRegionMap();
 		pixmaps = Core.atlas.getPixmaps();
-
-		try {
-			drawables = FieldHandler.getObjectDefault(Core.atlas, "drawables");
-		} catch (Exception e) {
-			Log.err(e);
-
-			drawables = new ObjectMap<>();
-		}
 
 		textures.add(Textures2.white);
 		regions.add(white);
