@@ -1,5 +1,7 @@
 package endfield.world.meta;
 
+import arc.struct.Seq;
+import endfield.util.handler.FieldHandler;
 import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatCat;
 
@@ -27,4 +29,18 @@ public final class Stats2 {
 
 	/** Don't let anyone instantiate this class. */
 	private Stats2() {}
+
+	public static Stat insert(String name, int index, StatCat cat) {
+		Seq<Stat> all = Stat.all;
+		Stat res = new Stat(name, cat);
+
+		all.remove(res);
+		all.insert(index, res);
+
+		for (int i = 0; i < all.size; i++) {
+			FieldHandler.setIntDefault(all.get(i), "id", i);
+		}
+
+		return res;
+	}
 }

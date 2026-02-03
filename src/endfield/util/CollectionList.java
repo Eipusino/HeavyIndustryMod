@@ -1114,7 +1114,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	public <T> T @NotNull [] toArray(T[] a) {
 		if (a.length < size) {
 			// Make a new array of a's runtime type, but my contents:
-			return toArray(a.getClass());
+			return toArray(a.getClass().getComponentType());
 		}
 
 		System.arraycopy(items, 0, a, 0, size);

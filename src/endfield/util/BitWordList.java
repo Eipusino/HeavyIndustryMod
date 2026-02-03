@@ -5,7 +5,7 @@ public class BitWordList {
 
 	protected final byte wordLen;
 	protected final short wordMask;
-	protected long[] bits = {0};
+	protected long[] bits = {0l};
 
 	/**
 	 * Creates a bit set whose initial size is large enough to explicitly represent bits with indices in the range 0 through
@@ -55,9 +55,9 @@ public class BitWordList {
 		bits[wordIndex] |= (long) number << index;
 	}
 
-	protected void checkCapacity(int len) {
-		if (len >= bits.length) {
-			long[] newBits = new long[len + 1];
+	protected void checkCapacity(int length) {
+		if (length >= bits.length) {
+			long[] newBits = new long[length + 1];
 			System.arraycopy(bits, 0, newBits, 0, bits.length);
 			bits = newBits;
 		}
@@ -65,10 +65,9 @@ public class BitWordList {
 
 	/** Clears the entire bitset */
 	public void clear() {
-		long[] bits = this.bits;
 		int length = bits.length;
 		for (int i = 0; i < length; i++) {
-			bits[i] = 0L;
+			bits[i] = 0l;
 		}
 	}
 
@@ -84,7 +83,6 @@ public class BitWordList {
 	 * @return the logical size of this bitset
 	 */
 	public int nonZeroLength() {
-		long[] bits = this.bits;
 		for (int word = bits.length - 1; word >= 0; --word) {
 			long bitsAtWord = bits[word];
 			if (bitsAtWord != 0) {
@@ -101,7 +99,7 @@ public class BitWordList {
 	/** @return true if this bitset contains no bits that are set to true */
 	public boolean isEmpty() {
 		for (long bit : bits) {
-			if (bit != 0L) {
+			if (bit != 0l) {
 				return false;
 			}
 		}

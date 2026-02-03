@@ -126,7 +126,7 @@ public class EnumHandler<T extends Enum<?>> {
 
 			values.add(ordinal, instance);
 
-			fieldHandler.set(null, field.getName(), values.toArray((T[]) Array.newInstance(clazz, 0)));
+			fieldHandler.setObject(null, field.getName(), values.toArray((T[]) Array.newInstance(clazz, 0)));
 		} catch (IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
 			throw new RuntimeException(e);
 		}

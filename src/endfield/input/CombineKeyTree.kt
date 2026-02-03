@@ -1,222 +1,161 @@
-package endfield.input;
+package endfield.input
 
-import arc.Input;
-import arc.func.Cons;
-import arc.func.Cons2;
-import arc.input.KeyCode;
-import endfield.util.CollectionObjectMap;
-import endfield.util.misc.ObjectHolder;
+import arc.Input
+import arc.func.Cons
+import arc.input.KeyCode
 
-public class CombineKeyTree<R> {
-	public final Class<?> recType;
+class CombineKeyTree<T> {
+	private val tempMap = mutableMapOf<CombinedKeys, T>()
 
-	CollectionObjectMap<CombinedKeys, R> tempMap;
+	private val normalBindings = mutableMapOf<CombinedKeys, T>()
+	private val ctrlBindings = mutableMapOf<CombinedKeys, T>()
+	private val altBindings = mutableMapOf<CombinedKeys, T>()
+	private val shiftBindings = mutableMapOf<CombinedKeys, T>()
+	private val altCtrlBindings = mutableMapOf<CombinedKeys, T>()
+	private val ctrlShiftBindings = mutableMapOf<CombinedKeys, T>()
+	private val altShiftBindings = mutableMapOf<CombinedKeys, T>()
+	private val altCtrlShiftBindings = mutableMapOf<CombinedKeys, T>()
 
-	CollectionObjectMap<CombinedKeys, R> normalBindings;
-	CollectionObjectMap<CombinedKeys, R> ctrlBindings;
-	CollectionObjectMap<CombinedKeys, R> altBindings;
-	CollectionObjectMap<CombinedKeys, R> shiftBindings;
-	CollectionObjectMap<CombinedKeys, R> altCtrlBindings;
-	CollectionObjectMap<CombinedKeys, R> ctrlShiftBindings;
-	CollectionObjectMap<CombinedKeys, R> altShiftBindings;
-	CollectionObjectMap<CombinedKeys, R> altCtrlShiftBindings;
-
-	R rec = null;
-
-	public CombineKeyTree(Class<?> type) {
-		recType = type;
-
-		tempMap = new CollectionObjectMap<>(CombinedKeys.class, recType);
-		normalBindings = new CollectionObjectMap<>(CombinedKeys.class, recType);
-		ctrlBindings = new CollectionObjectMap<>(CombinedKeys.class, recType);
-		altBindings = new CollectionObjectMap<>(CombinedKeys.class, recType);
-		shiftBindings = new CollectionObjectMap<>(CombinedKeys.class, recType);
-		altCtrlBindings = new CollectionObjectMap<>(CombinedKeys.class, recType);
-		ctrlShiftBindings = new CollectionObjectMap<>(CombinedKeys.class, recType);
-		altShiftBindings = new CollectionObjectMap<>(CombinedKeys.class, recType);
-		altCtrlShiftBindings = new CollectionObjectMap<>(CombinedKeys.class, recType);
-	}
-
-	public void putKeyBinding(CombinedKeys binding, R rec) {
+	fun putKeyBinding(binding: CombinedKeys, rec: T) {
 		if (binding.isShift) {
-			if (binding.isAlt && binding.isCtrl) altCtrlShiftBindings.put(binding, rec);
-			else if (binding.isAlt) altShiftBindings.put(binding, rec);
-			else if (binding.isCtrl) ctrlShiftBindings.put(binding, rec);
-			else shiftBindings.put(binding, rec);
+			if (binding.isAlt && binding.isCtrl) altCtrlShiftBindings[binding] = rec
+			else if (binding.isAlt) altShiftBindings[binding] = rec
+			else if (binding.isCtrl) ctrlShiftBindings[binding] = rec
+			else shiftBindings[binding] = rec
 		} else {
-			if (binding.isAlt && binding.isCtrl) altCtrlBindings.put(binding, rec);
-			else if (binding.isAlt) altBindings.put(binding, rec);
-			else if (binding.isCtrl) ctrlBindings.put(binding, rec);
-			else normalBindings.put(binding, rec);
+			if (binding.isAlt && binding.isCtrl) altCtrlBindings[binding] = rec
+			else if (binding.isAlt) altBindings[binding] = rec
+			else if (binding.isCtrl) ctrlBindings[binding] = rec
+			else normalBindings[binding] = rec
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public void putKeyBinds(ObjectHolder<CombinedKeys, R>... bindings) {
-		for (ObjectHolder<CombinedKeys, R> binding : bindings) {
-			putKeyBinding(binding.key, binding.value);
-		}
+	fun putKeyBinds(vararg bindings: Pair<CombinedKeys, T>) = bindings.forEach { putKeyBinding(it.first, it.second) }
+
+	fun clear() {
+		normalBindings.clear()
+		altBindings.clear()
+		ctrlBindings.clear()
+		shiftBindings.clear()
+		altShiftBindings.clear()
+		ctrlShiftBindings.clear()
+		altCtrlBindings.clear()
+		altCtrlShiftBindings.clear()
 	}
 
-	public void clear() {
-		normalBindings.clear();
-		altBindings.clear();
-		ctrlBindings.clear();
-		shiftBindings.clear();
-		altShiftBindings.clear();
-		ctrlShiftBindings.clear();
-		altCtrlBindings.clear();
-		altCtrlShiftBindings.clear();
+	fun forEach(block: (CombinedKeys, T) -> Unit) {
+		normalBindings.forEach(block)
+		ctrlBindings.forEach(block)
+		altBindings.forEach(block)
+		altCtrlBindings.forEach(block)
+		ctrlShiftBindings.forEach(block)
+		altShiftBindings.forEach(block)
+		altCtrlShiftBindings.forEach(block)
 	}
 
-	public void forEach(Cons2<CombinedKeys, R> block) {
-		normalBindings.each(block);
-		ctrlBindings.each(block);
-		altBindings.each(block);
-		altCtrlBindings.each(block);
-		ctrlShiftBindings.each(block);
-		altShiftBindings.each(block);
-		altCtrlShiftBindings.each(block);
+	fun containsKeyCode(key: KeyCode?): Boolean {
+		if (key == null) return false
+
+		if (key.isCtrl())
+			return ctrlBindings.isNotEmpty() || ctrlShiftBindings.isNotEmpty() || altCtrlBindings.isNotEmpty() || altCtrlShiftBindings.isNotEmpty()
+		if (key.isAlt())
+			return altBindings.isNotEmpty() || altShiftBindings.isNotEmpty() || altCtrlBindings.isNotEmpty() || altCtrlShiftBindings.isNotEmpty()
+		if (key.isShift())
+			return shiftBindings.isNotEmpty() || ctrlShiftBindings.isNotEmpty() || altShiftBindings.isNotEmpty() || altCtrlShiftBindings.isNotEmpty()
+
+		return normalBindings.any { it.key.key == key }
+				|| ctrlBindings.any { it.key.key == key }
+				|| altBindings.any { it.key.key == key }
+				|| shiftBindings.any { it.key.key == key }
+				|| altCtrlBindings.any { it.key.key == key }
+				|| ctrlShiftBindings.any { it.key.key == key }
+				|| altShiftBindings.any { it.key.key == key }
+				|| altCtrlShiftBindings.any { it.key.key == key }
 	}
 
-	public boolean containsKeyCode(KeyCode key) {
-		if (key == null) return false;
+	fun getTargetBindings(input: Input, fuzzyMatch: Boolean = false) = getTargetBindings(
+		input.ctrl(),
+		input.alt(),
+		input.shift(),
+		fuzzyMatch
+	)
 
-		if (CombinedKeys.isCtrl(key))
-			return !ctrlBindings.isEmpty() || !ctrlShiftBindings.isEmpty() || !altCtrlBindings.isEmpty() || !altCtrlShiftBindings.isEmpty();
-		if (CombinedKeys.isAlt(key))
-			return !altBindings.isEmpty() || !altShiftBindings.isEmpty() || !altCtrlBindings.isEmpty() || !altCtrlShiftBindings.isEmpty();
-		if (CombinedKeys.isShift(key))
-			return !shiftBindings.isEmpty() || !ctrlShiftBindings.isEmpty() || !altShiftBindings.isEmpty() || !altCtrlShiftBindings.isEmpty();
+	fun getTargetBindings(input: CombinedKeys, fuzzyMatch: Boolean = false) = getTargetBindings(
+		input.isCtrl,
+		input.isAlt,
+		input.isShift,
+		fuzzyMatch
+	)
 
-		return any(normalBindings, key)
-				|| any(ctrlBindings, key)
-				|| any(altBindings, key)
-				|| any(shiftBindings, key)
-				|| any(altCtrlBindings, key)
-				|| any(ctrlShiftBindings, key)
-				|| any(altShiftBindings, key)
-				|| any(altCtrlShiftBindings, key);
-	}
-
-	public boolean any(CollectionObjectMap<CombinedKeys, R> map, KeyCode key) {
-		for (var entry : map) {
-			if (entry.key.key == key) return true;
-		}
-		return false;
-	}
-
-	public CollectionObjectMap<CombinedKeys, R> getTargetBindings(Input input) {
-		return getTargetBindings(input, false);
-	}
-
-	public CollectionObjectMap<CombinedKeys, R> getTargetBindings(Input input, boolean fuzzyMatch) {
-		return getTargetBindings(input.ctrl(), input.alt(), input.shift(), fuzzyMatch);
-	}
-
-	public CollectionObjectMap<CombinedKeys, R> getTargetBindings(CombinedKeys input) {
-		return getTargetBindings(input, false);
-	}
-
-	public CollectionObjectMap<CombinedKeys, R> getTargetBindings(CombinedKeys input, boolean fuzzyMatch) {
-		return getTargetBindings(input.isCtrl, input.isAlt, input.isShift, fuzzyMatch);
-	}
-
-	public CollectionObjectMap<CombinedKeys, R> getTargetBindings(boolean ctrlDown, boolean altDown, boolean shiftDown) {
-		return getTargetBindings(ctrlDown, altDown, shiftDown, false);
-	}
-
-	public CollectionObjectMap<CombinedKeys, R> getTargetBindings(boolean ctrlDown, boolean altDown, boolean shiftDown, boolean fuzzyMatch) {
-		tempMap.clear();
+	fun getTargetBindings(
+		ctrlDown: Boolean,
+		altDown: Boolean,
+		shiftDown: Boolean,
+		fuzzyMatch: Boolean = false
+	): Map<CombinedKeys, T> {
+		tempMap.clear()
 		if (fuzzyMatch) {
-			tempMap.putAll(normalBindings);
+			tempMap.putAll(normalBindings)
 			if (ctrlDown) {
-				tempMap.putAll(ctrlBindings);
+				tempMap.putAll(ctrlBindings)
 				if (altDown) {
-					tempMap.putAll(altCtrlBindings);
-					if (shiftDown) tempMap.putAll(altCtrlShiftBindings);
-				} else if (shiftDown) tempMap.putAll(ctrlShiftBindings);
+					tempMap.putAll(altCtrlBindings)
+					if (shiftDown) tempMap.putAll(altCtrlShiftBindings)
+				} else if (shiftDown) tempMap.putAll(ctrlShiftBindings)
 			} else {
 				if (altDown) {
-					tempMap.putAll(altBindings);
-					if (shiftDown) tempMap.putAll(altShiftBindings);
-				} else if (shiftDown) tempMap.putAll(shiftBindings);
+					tempMap.putAll(altBindings)
+					if (shiftDown) tempMap.putAll(altShiftBindings)
+				} else if (shiftDown) tempMap.putAll(shiftBindings)
 			}
-			return tempMap;
+			return tempMap
 		} else {
-			return shiftDown ? altDown ? ctrlDown ? altCtrlShiftBindings : altShiftBindings : ctrlDown ? ctrlShiftBindings : shiftBindings : altDown ? ctrlDown ? altCtrlBindings : altBindings : ctrlDown ? ctrlBindings : normalBindings;
+			return if (shiftDown) {
+				if (altDown) if (ctrlDown) altCtrlShiftBindings else altShiftBindings
+				else if (ctrlDown) ctrlShiftBindings else shiftBindings
+			} else {
+				if (altDown) if (ctrlDown) altCtrlBindings else altBindings
+				else if (ctrlDown) ctrlBindings else normalBindings
+			}
 		}
 	}
 
-	public void eachTargetBindings(Input input, Cons2<CombinedKeys, R> cons) {
-		eachTargetBindings(input, false, cons);
+	inline fun eachTargetBindings(input: Input, fuzzyMatch: Boolean = false, cons: (CombinedKeys, T) -> Unit) {
+		for ((k, r) in getTargetBindings(input, fuzzyMatch)) cons(k, r)
 	}
 
-	public void eachTargetBindings(Input input, boolean fuzzyMatch, Cons2<CombinedKeys, R> cons) {
-		for (var entry : getTargetBindings(input, fuzzyMatch)) cons.get(entry.key, entry.value);
+	fun eachDown(input: Input, fuzzyMatch: Boolean = false, cons: Cons<T>) {
+		eachTargetBindings(input, fuzzyMatch) { k, r -> if (input.keyDown(k.key)) cons.get(r) }
 	}
 
-	public void eachDown(Input input, Cons<R> cons) {
-		eachDown(input, false, cons);
+	fun eachRelease(input: Input, fuzzyMatch: Boolean = false, cons: Cons<T>) {
+		eachTargetBindings(input, fuzzyMatch) { k, r -> if (input.keyRelease(k.key)) cons.get(r) }
 	}
 
-	public void eachDown(Input input, boolean fuzzyMatch, Cons<R> cons) {
-		eachTargetBindings(input, fuzzyMatch, (k, r) -> {
-			if (input.keyDown(k.key)) cons.get(r);
-		});
+	fun eachTap(input: Input, fuzzyMatch: Boolean = false, cons: Cons<T>) {
+		eachTargetBindings(input, fuzzyMatch) { k, r -> if (input.keyTap(k.key)) cons.get(r) }
 	}
 
-	public void eachRelease(Input input, Cons<R> cons) {
-		eachRelease(input, false, cons);
+	fun checkDown(input: Input): T? {
+		eachTargetBindings(input) { k, r -> if (input.keyDown(k.key)) return r }
+		return null
 	}
 
-	public void eachRelease(Input input, boolean fuzzyMatch, Cons<R> cons) {
-		eachTargetBindings(input, fuzzyMatch, (k, r) -> {
-			if (input.keyRelease(k.key)) cons.get(r);
-		});
+	fun checkRelease(input: Input): T? {
+		eachTargetBindings(input) { k, r -> if (input.keyRelease(k.key)) return r }
+		return null
 	}
 
-	public void eachTap(Input input, Cons<R> cons) {
-		eachTap(input, false, cons);
+	fun checkTap(input: Input): T? {
+		eachTargetBindings(input) { k, r -> if (input.keyTap(k.key)) return r }
+		return null
 	}
 
-	public void eachTap(Input input, boolean fuzzyMatch, Cons<R> cons) {
-		eachTargetBindings(input, fuzzyMatch, (k, r) -> {
-			if (input.keyTap(k.key)) cons.get(r);
-		});
-	}
-
-	public R checkDown(Input input) {
-		rec = null;
-
-		eachTargetBindings(input, (k, r) -> {
-			if (input.keyDown(k.key)) rec = r;
-		});
-		return rec;
-	}
-
-	public R checkRelease(Input input) {
-		rec = null;
-
-		eachTargetBindings(input, (k, r) -> {
-			if (input.keyRelease(k.key)) rec = r;
-		});
-		return rec;
-	}
-
-	public R checkTap(Input input) {
-		rec = null;
-
-		eachTargetBindings(input, (k, r) -> {
-			if (input.keyTap(k.key)) rec = r;
-		});
-		return rec;
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		forEach((keys, rec) -> builder.append(keys).append(" -> ").append(rec).append(",\n"));
-		return builder.toString();
+	override fun toString(): String {
+		val stringBuilder = StringBuilder()
+		forEach { keys, rec ->
+			stringBuilder.append("$keys -> $rec,\n")
+		}
+		return stringBuilder.toString()
 	}
 }

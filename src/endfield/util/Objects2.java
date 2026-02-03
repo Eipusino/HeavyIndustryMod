@@ -20,6 +20,7 @@ import arc.util.Log;
 import endfield.Vars2;
 import endfield.func.ProvT;
 import endfield.func.RunT;
+import endfield.util.handler.FieldHandler;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,8 +28,6 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Objects;
-
-import static endfield.Vars2.fieldAccessHelper;
 
 /**
  * A utility assembly for objects.
@@ -194,26 +193,19 @@ public final class Objects2 {
 			for (Field field : Vars2.classHelper.getFields(type)) {
 				if ((field.getModifiers() & Modifier.STATIC) != 0) continue;
 
-				if (i++ > 0) {
-					builder.append(", ");
-				}
+				if (i++ > 0) builder.append(", ");
 
 				builder.append(field.getName()).append('=');
 
 				try {
-					Object value = fieldAccessHelper.get(object, field.getName());
-
-					// On the Android platform, the reflection performance is not low, so there is no need to use Unsafe.
+					Object value = FieldHandler.getDefault(object, field.getName());
 
 					if (value == null) {
 						builder.append("null");
-
 						continue;
 					}
 
-					Class<?> valueType = value.getClass();
-
-					if (valueType.isArray()) {
+					if (value.getClass().isArray()) {
 						// I think using instanceof would be better.
 						if (value instanceof float[] array) {
 							Arrays2.appendFloat(builder, array);

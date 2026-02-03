@@ -174,7 +174,7 @@ public class FieldHandler<T> {
 	}
 
 	static FieldHandler cachedHandler(Class<?> clazz) {
-		return defaultHandlers.computeIfAbsent(clazz, e -> new FieldHandler(clazz));
+		return defaultHandlers.computeIfAbsent(clazz, FieldHandler::new);
 	}
 
 	public static void decache(Class<?> clazz) {

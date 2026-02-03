@@ -25,7 +25,7 @@ public class MethodHandler<T> {
 	 * @see MethodHandler#invoke(Object, String, Object...)
 	 */
 	public static <O, R> R invokeDefault(O object, String name, Object... args) {
-		return ((MethodHandler<O>) defaultMap.computeIfAbsent(object.getClass(), e -> new MethodHandler<>(object.getClass()))).invoke(object, name, args);
+		return ((MethodHandler<O>) defaultMap.computeIfAbsent(object.getClass(), MethodHandler::new)).invoke(object, name, args);
 	}
 
 	/**
@@ -35,7 +35,7 @@ public class MethodHandler<T> {
 	 * @see MethodHandler#invokeStatic(String, Object...)
 	 */
 	public static <U, R> R invokeDefault(Class<U> clazz, String name, Object... args) {
-		return defaultMap.computeIfAbsent(clazz, e -> new MethodHandler<>(clazz)).invokeStatic(name, args);
+		return defaultMap.computeIfAbsent(clazz, MethodHandler::new).invokeStatic(name, args);
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class MethodHandler<T> {
 	 * @see MethodHandler#newInstance(Object...)
 	 */
 	public static <U> U newInstanceDefault(Class<U> clazz, Object... args) {
-		return (U) defaultMap.computeIfAbsent(clazz, e -> new MethodHandler<>(clazz)).newInstance(args);
+		return (U) defaultMap.computeIfAbsent(clazz, MethodHandler::new).newInstance(args);
 	}
 
 	/**

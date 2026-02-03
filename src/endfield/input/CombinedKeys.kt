@@ -1,96 +1,103 @@
-package endfield.input;
+package endfield.input
 
-import arc.Input;
-import arc.input.KeyCode;
-import arc.util.ArcRuntimeException;
-import arc.util.Structs;
-import endfield.util.Objects2;
+import arc.Input
+import arc.input.KeyCode
+import java.io.Serializable
 
-import java.io.Serializable;
+/**
+ * A tagged object that records standard combination keys in a specific format.
+ *
+ * A combination key consists of a primary key and control keys, where the control key is`Ctrl`.
+ */
+class CombinedKeys(vararg keys: KeyCode) : Serializable {
+	val isCtrl: Boolean
+	val isAlt: Boolean
+	val isShift: Boolean
+	val key: KeyCode
 
-public class CombinedKeys implements Serializable {
-	private static final long serialVersionUID = -5318302851540855921l;
-
-	boolean isCtrl, isAlt, isShift;
-	KeyCode key;
-
-	public CombinedKeys(KeyCode... keys) {
-		isCtrl = Structs.contains(keys, CombinedKeys::isCtrl);
-		isAlt = Structs.contains(keys, CombinedKeys::isAlt);
-		isShift = Structs.contains(keys, CombinedKeys::isShift);
-
-		key = Structs.find(keys, c -> !isCtrl(c) && !isAlt(c) && !isShift(c));
-
-		if (key == null) throw new ArcRuntimeException("No key specified");
+	init {
+		val ctrl = keys.filter { it.isCtrl() }
+		val alt = keys.filter { it.isAlt() }
+		val shift = keys.filter { it.isShift() }
+		val normal = keys.filter { !ctrl.contains(it) && !alt.contains(it) && !shift.contains(it) }
+		isCtrl = ctrl.isNotEmpty()
+		isAlt = alt.isNotEmpty()
+		isShift = shift.isNotEmpty()
+		key = normal.lastOrNull() ?: throw IllegalArgumentException("No key specified")
 	}
 
-	public boolean isDown(Input input) {
-		if ((isCtrl && !input.ctrl()) || (!isCtrl && input.alt())) return false;
-		if ((isAlt && !input.alt()) || (!isAlt && input.alt())) return false;
-		if ((isShift && !input.shift()) || (!isShift && input.shift())) return false;
-		return input.keyDown(key);
+	fun isDown(input: Input): Boolean {
+		if ((isCtrl && !input.ctrl()) || (!isCtrl && input.alt())) return false
+		if ((isAlt && !input.alt()) || (!isAlt && input.alt())) return false
+		if ((isShift && !input.shift()) || (!isShift && input.shift())) return false
+		return input.keyDown(key)
 	}
 
-	public boolean isReleased(Input input) {
-		if ((isCtrl && !input.ctrl()) || (!isCtrl && input.alt())) return false;
-		if ((isAlt && !input.alt()) || (!isAlt && input.alt())) return false;
-		if ((isShift && !input.shift()) || (!isShift && input.shift())) return false;
-		return input.keyRelease(key);
+	fun isReleased(input: Input): Boolean {
+		if ((isCtrl && !input.ctrl()) || (!isCtrl && input.alt())) return false
+		if ((isAlt && !input.alt()) || (!isAlt && input.alt())) return false
+		if ((isShift && !input.shift()) || (!isShift && input.shift())) return false
+		return input.keyRelease(key)
 	}
 
-	public boolean isTap(Input input) {
-		if ((isCtrl && !input.ctrl()) || (!isCtrl && input.alt())) return false;
-		if ((isAlt && !input.alt()) || (!isAlt && input.alt())) return false;
-		if ((isShift && !input.shift()) || (!isShift && input.shift())) return false;
-		return input.keyTap(key);
+	fun isTap(input: Input): Boolean {
+		if ((isCtrl && !input.ctrl()) || (!isCtrl && input.alt())) return false
+		if ((isAlt && !input.alt()) || (!isAlt && input.alt())) return false
+		if ((isShift && !input.shift()) || (!isShift && input.shift())) return false
+		return input.keyTap(key)
 	}
 
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
+	override fun toString(): String {
+		val builder = StringBuilder()
 
-		if (isCtrl) builder.append("Ctrl").append(" + ");
-		if (isAlt) builder.append("Alt").append(" + ");
-		if (isShift) builder.append("Shift").append(" + ");
+		if (isCtrl) builder.append("Ctrl").append(" + ")
+		if (isAlt) builder.append("Alt").append(" + ")
+		if (isShift) builder.append("Shift").append(" + ")
 
-		builder.append(key.value);
+		builder.append(key.value)
 
-		return builder.toString();
+		return builder.toString()
 	}
 
-	@Override
-	public int hashCode() {
-		int res = key.hashCode();
-		res = res * 31 + Boolean.hashCode(isShift);
-		res = res * 31 + Boolean.hashCode(isAlt);
-		res = res * 31 + Boolean.hashCode(isCtrl);
-		return res;
+	override fun hashCode(): Int {
+		var res = key.hashCode()
+		res = res * 31 + isShift.hashCode()
+		res = res * 31 + isAlt.hashCode()
+		res = res * 31 + isCtrl.hashCode()
+		return res
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		return o == this || o instanceof CombinedKeys keys
-				&& keys.key == key
-				&& keys.isCtrl == isCtrl
-				&& keys.isAlt == isAlt
-				&& keys.isShift == isShift;
+	override fun equals(other: Any?): Boolean {
+		return other is CombinedKeys
+				&& other.key == key
+				&& other.isCtrl == isCtrl
+				&& other.isAlt == isAlt
+				&& other.isShift == isShift
 	}
 
-	public static boolean isControllerKey(KeyCode key) {
-		return key == KeyCode.controlLeft || key == KeyCode.controlRight
-				|| key == KeyCode.altLeft || key == KeyCode.altRight
-				|| key == KeyCode.shiftLeft || key == KeyCode.shiftRight;
-	}
+	companion object {
+		@JvmStatic
+		fun toString(res: Iterable<KeyCode>): String {
+			val builder = StringBuilder()
 
-	public static boolean isCtrl(KeyCode key) {
-		return key == KeyCode.controlLeft || key == KeyCode.controlRight;
-	}
+			if (res.contains(KeyCode.controlLeft) || res.contains(KeyCode.controlRight)) builder.append("Ctrl")
+				.append(" + ")
+			if (res.contains(KeyCode.altLeft) || res.contains(KeyCode.altRight)) builder.append("Alt").append(" + ")
+			if (res.contains(KeyCode.shiftLeft) || res.contains(KeyCode.shiftRight)) builder.append("Shift")
+				.append(" + ")
 
-	public static boolean isAlt(KeyCode key) {
-		return key == KeyCode.altLeft || key == KeyCode.altRight;
-	}
+			builder.append(res.lastOrNull { !it.isControllerKey() }?.value ?: "")
 
-	public static boolean isShift(KeyCode key) {
-		return key == KeyCode.shiftLeft || key == KeyCode.shiftRight;
+			return builder.toString()
+		}
 	}
 }
+
+fun KeyCode.isControllerKey() = this == KeyCode.controlLeft || this == KeyCode.controlRight
+		|| this == KeyCode.altLeft || this == KeyCode.altRight
+		|| this == KeyCode.shiftLeft || this == KeyCode.shiftRight
+
+fun KeyCode.isCtrl() = this == KeyCode.controlLeft || this == KeyCode.controlRight
+fun KeyCode.isAlt() = this == KeyCode.altLeft || this == KeyCode.altRight
+fun KeyCode.isShift() = this == KeyCode.shiftLeft || this == KeyCode.shiftRight
+

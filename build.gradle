@@ -27,8 +27,8 @@ repositories {
 }
 
 java {
-	targetCompatibility = JavaVersion.VERSION_17
-	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_16
+	sourceCompatibility = JavaVersion.VERSION_16
 }
 
 ext {
@@ -46,21 +46,18 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 tasks.withType(KotlinCompile).configureEach {
-	compilerOptions.jvmTarget.set(JvmTarget.JVM_17)
+	compilerOptions.jvmTarget.set(JvmTarget.JVM_16)
 }
 
 dependencies {
 	compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
 	compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
-	compileOnly project(":annotations")
 
 	implementation "org.jetbrains:annotations:26.0.2"
 	implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 	implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 
 	implementation files("libs/JavaDynamilizer.jar", "libs/Commonmark.jar")
-
-	annotationProcessor project(":annotations")
 }
 
 task jarAndroid {

@@ -113,7 +113,6 @@ public class BitReadWriter {
 		pointer++;
 	}
 
-
 	/**
 	 * Shifts the pointer by 8
 	 */

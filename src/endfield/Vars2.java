@@ -2,7 +2,6 @@ package endfield;
 
 import arc.struct.Seq;
 import arc.util.Log;
-import endfield.annotations.Annotations.ListPackages;
 import endfield.core.EndFieldListener;
 import endfield.core.EndFieldMod;
 import endfield.files.InternalFileTree;
@@ -33,10 +32,6 @@ public final class Vars2 {
 	public static final String AUTHOR = "Eipusino";
 	/** The GitHub address of this mod. */
 	public static final String LINK_GIT_HUB = "https://github.com/Eipusino/HeavyIndustryMod";
-
-	/** Lists all the mod's packages by their canonical names. Generated at compile-time. */
-	@ListPackages
-	public static final String[] packages = {};
 
 	public static PlatformImpl platformImpl;
 

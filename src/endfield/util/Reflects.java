@@ -18,6 +18,7 @@ import arc.func.Prov;
 import arc.util.Log;
 import arc.util.OS;
 import dynamilize.FunctionType;
+import endfield.util.handler.FieldHandler;
 import mindustry.Vars;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +36,6 @@ import java.util.List;
 import java.util.Set;
 
 import static endfield.Vars2.classHelper;
-import static endfield.Vars2.fieldAccessHelper;
 
 /**
  * Reflection utilities, mainly for wrapping reflective operations to eradicate checked exceptions.
@@ -270,8 +270,8 @@ public final class Reflects {
 
 				try {
 					if (!OS.isAndroid) {
-						Object value = fieldAccessHelper.get(source, sourceField.getName());
-						fieldAccessHelper.set(target, targetField.getName(), value);
+						Object value = FieldHandler.getDefault(source, sourceField.getName());
+						FieldHandler.setDefault(target, targetField.getName(), value);
 					} else {
 						sourceField.setAccessible(true);
 						targetField.setAccessible(true);

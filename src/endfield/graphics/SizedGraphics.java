@@ -8,8 +8,7 @@ import arc.graphics.GL20;
 import arc.graphics.GL30;
 import arc.graphics.Pixmap;
 import arc.graphics.gl.GLVersion;
-
-import static endfield.Vars2.methodInvokeHelper;
+import endfield.util.handler.MethodHandler;
 
 /**
  * A {@link Graphics} mock-module used to logically pretend that the window's screen resolution is something else. This
@@ -22,6 +21,8 @@ import static endfield.Vars2.methodInvokeHelper;
  * @author GlFolker
  */
 public class SizedGraphics extends Graphics {
+	static final MethodHandler<Graphics> handler = new MethodHandler<>(Graphics.class);
+
 	protected int overrideWidth, overrideHeight;
 	protected Graphics delegate;
 
@@ -268,12 +269,12 @@ public class SizedGraphics extends Graphics {
 
 	@Override
 	protected void setCursor(Cursor cursor) {
-		methodInvokeHelper.invoke(delegate, "setCursor", cursor);
+		handler.invoke(delegate, "setCursor", cursor);
 	}
 
 	@Override
 	protected void setSystemCursor(SystemCursor systemCursor) {
-		methodInvokeHelper.invoke(delegate, "setSystemCursor", systemCursor);
+		handler.invoke(delegate, "setSystemCursor", systemCursor);
 	}
 
 	@Override
