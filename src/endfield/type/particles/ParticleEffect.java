@@ -17,7 +17,6 @@ import endfield.util.ExtraVariable;
 import mindustry.entities.EntityGroup;
 import mindustry.gen.Decal;
 import mindustry.gen.Groups;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 import java.util.List;
@@ -246,7 +245,7 @@ public class ParticleEffect extends Decal implements ExtraVariable, Iterable<Par
 	}
 
 	@Override
-	public @NotNull Iterator<Cloud> iterator() {
+	public Iterator<Cloud> iterator() {
 		return currentCloud.iterator();
 	}
 
@@ -310,7 +309,7 @@ public class ParticleEffect extends Decal implements ExtraVariable, Iterable<Par
 		}
 
 		@Override
-		public @NotNull Iterator<Cloud> iterator() {
+		public Iterator<Cloud> iterator() {
 			itr.reset();
 			return itr;
 		}

@@ -2,7 +2,6 @@ package endfield.ui;
 
 import arc.Core;
 import arc.scene.style.TextureRegionDrawable;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static endfield.Vars2.MOD_PREFIX;
 
@@ -22,7 +21,6 @@ public final class Icon2 {
 	/** Don't let anyone instantiate this class. */
 	private Icon2() {}
 
-	@Internal
 	public static void load() {
 		keplerIcon = texture("kepler-icon");
 		aboutIcon = texture("about-icon");

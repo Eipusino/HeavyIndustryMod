@@ -8,7 +8,6 @@ import endfield.Vars2;
 import mindustry.Vars;
 import mindustry.game.EventType.ClientLoadEvent;
 import mindustry.gen.Sounds;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 public final class Sounds2 {
 	public static Fi soundsDir = Vars2.internalTree.child("sounds");
@@ -58,7 +57,6 @@ public final class Sounds2 {
 	/** Don't let anyone instantiate this class. */
 	private Sounds2() {}
 
-	@Internal
 	public static void load() {
 		try {
 			ct1 = load("ct1.ogg");

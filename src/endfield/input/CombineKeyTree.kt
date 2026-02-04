@@ -5,16 +5,25 @@ import arc.func.Cons
 import arc.input.KeyCode
 
 class CombineKeyTree<T> {
-	private val tempMap = mutableMapOf<CombinedKeys, T>()
+	@JvmField
+	internal val tempMap = mutableMapOf<CombinedKeys, T>()
 
-	private val normalBindings = mutableMapOf<CombinedKeys, T>()
-	private val ctrlBindings = mutableMapOf<CombinedKeys, T>()
-	private val altBindings = mutableMapOf<CombinedKeys, T>()
-	private val shiftBindings = mutableMapOf<CombinedKeys, T>()
-	private val altCtrlBindings = mutableMapOf<CombinedKeys, T>()
-	private val ctrlShiftBindings = mutableMapOf<CombinedKeys, T>()
-	private val altShiftBindings = mutableMapOf<CombinedKeys, T>()
-	private val altCtrlShiftBindings = mutableMapOf<CombinedKeys, T>()
+	@JvmField
+	internal val normalBindings = mutableMapOf<CombinedKeys, T>()
+	@JvmField
+	internal val ctrlBindings = mutableMapOf<CombinedKeys, T>()
+	@JvmField
+	internal val altBindings = mutableMapOf<CombinedKeys, T>()
+	@JvmField
+	internal val shiftBindings = mutableMapOf<CombinedKeys, T>()
+	@JvmField
+	internal val altCtrlBindings = mutableMapOf<CombinedKeys, T>()
+	@JvmField
+	internal val ctrlShiftBindings = mutableMapOf<CombinedKeys, T>()
+	@JvmField
+	internal val altShiftBindings = mutableMapOf<CombinedKeys, T>()
+	@JvmField
+	internal val altCtrlShiftBindings = mutableMapOf<CombinedKeys, T>()
 
 	fun putKeyBinding(binding: CombinedKeys, rec: T) {
 		if (binding.isShift) {

@@ -7,8 +7,7 @@ import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import endfield.math.Mathm;
-import endfield.util.misc.CharHolder;
-import org.jetbrains.annotations.NotNull;
+import endfield.util.holder.CharHolder;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;
@@ -683,7 +682,7 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 	}
 
 	@Override
-	public @NotNull Iterator<CharHolder<V>> iterator() {
+	public Iterator<CharHolder<V>> iterator() {
 		return entries();
 	}
 
@@ -824,7 +823,7 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 		}
 
 		@Override
-		public @NotNull Iterator<CharHolder<V>> iterator() {
+		public Iterator<CharHolder<V>> iterator() {
 			return this;
 		}
 
@@ -856,7 +855,7 @@ public class CharMap<V> implements Iterable<CharHolder<V>>, Eachable<CharHolder<
 		}
 
 		@Override
-		public @NotNull Iterator<V> iterator() {
+		public Iterator<V> iterator() {
 			return this;
 		}
 

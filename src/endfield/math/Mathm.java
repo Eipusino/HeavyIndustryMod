@@ -16,7 +16,6 @@ import arc.math.geom.Vec3;
 import arc.util.Time;
 import endfield.func.Floatc3;
 import mindustry.gen.Posc;
-import org.jetbrains.annotations.Contract;
 
 /** @since 1.0.4 */
 public final class Mathm {
@@ -45,24 +44,20 @@ public final class Mathm {
 	/** Don't let anyone instantiate this class. */
 	private Mathm() {}
 
-	@Contract(pure = true)
 	public static float dx(float px, float r, float angle) {
 		return px + r * (float) Math.cos(angle * Math.PI / 180);
 	}
 
-	@Contract(pure = true)
 	public static float dy(float py, float r, float angle) {
 		return py + r * (float) Math.sin(angle * Math.PI / 180);
 	}
 
-	@Contract(pure = true)
 	public static float posX(float x, float length, float angle) {
 		float a = (float) ((Math.PI * angle) / 180);
 		float cos = (float) Math.cos(a);
 		return x + length * cos;
 	}
 
-	@Contract(pure = true)
 	public static float posY(float y, float length, float angle) {
 		float a = (float) ((Math.PI * angle) / 180);
 		float sin = (float) Math.sin(a);
@@ -70,27 +65,22 @@ public final class Mathm {
 	}
 
 	/** @return whether x,y is inside the square with radius d centered at cx, cy. */
-	@Contract(pure = true)
 	public static boolean isInSquare(float cx, float cy, float d, float x, float y) {
 		return x > cx - d && x < cx + d && y > cy - d && y < cy + d;
 	}
 
-	@Contract(pure = true)
 	public static float cornerDst(float r) {
 		return cornerDst(r, r);
 	}
 
-	@Contract(pure = true)
 	public static float cornerDst(float w, float h) {
 		return (float) Math.sqrt(w * h * 2f);
 	}
 
-	@Contract(pure = true)
 	public static float cbrt(float x) {
 		return (float) Math.cbrt(x);
 	}
 
-	@Contract(pure = true)
 	public static Vec2 quad(float a, float b, float c) {
 		Vec2 sol = null;
 		if (Math.abs(a) < 1e-6) {
@@ -111,7 +101,6 @@ public final class Mathm {
 	}
 
 	/** @return Smallest positive nonzero solution of a quadratic. */
-	@Contract(pure = true)
 	public static float quadPos(float a, float b, float c) {
 		Vec2 ts = quad(a, b, c);
 		if (ts != null) {
@@ -124,8 +113,6 @@ public final class Mathm {
 		}
 		return 0f;
 	}
-
-	@Contract(pure = true)
 	public static float solve(float a, float b, float c) {
 		if (a == 0) {
 			return -c / b;
@@ -136,7 +123,6 @@ public final class Mathm {
 	}
 
 	/** <a href="https://math.stackexchange.com/questions/785/is-there-a-general-formula-for-solving-quartic-degree-4-equations">...</a> */
-	@Contract(value = "_, _, _, _, _ -> new", pure = true)
 	public static float[] quartic(float a, float b, float c, float d, float e) {
 		float p1 = 2 * c * c * c - 9 * b * c * d + 27 * a * d * d + 27 * b * b * e - 72 * a * c * e;
 		float p2 = c * c - 3 * b * d + 12 * a * e;
@@ -162,7 +148,6 @@ public final class Mathm {
 		return v;
 	}
 
-	@Contract(pure = true)
 	public static float circleStarPoint(float theta) {
 		theta = Mathf.mod(theta, 90f);
 		theta *= Mathf.degRad;
@@ -171,7 +156,6 @@ public final class Mathm {
 	}
 
 	/** Pulled out of {@link Angles#moveToward(float, float, float)}. */
-	@Contract(pure = true)
 	public static int angleMoveDirection(float from, float to) {
 		from = Mathf.mod(from, 360f);
 		to = Mathf.mod(to, 360f);
@@ -184,7 +168,6 @@ public final class Mathm {
 	}
 
 	/** Lerp from one angle to another. */
-	@Contract(pure = true)
 	public static float lerpAngle(float from, float to, float progress) {
 		return Angles.moveToward(from, to, progress * Angles.angleDist(from, to));
 	}
@@ -198,7 +181,6 @@ public final class Mathm {
 	 * @param x2    The x-coordinate of another point
 	 * @return The solved y-coordinate
 	 */
-	@Contract(pure = true)
 	public float angleY(float x1, float y1, float angle, float x2) {
 		// Handle special cases with angles of 90 degrees or 270 degrees
 		if (angle == 90 || angle == 270) {
@@ -229,22 +211,18 @@ public final class Mathm {
 		return bezOut;
 	}
 
-	@Contract(pure = true)
 	public static int index(float sin) {
 		return (int) ((sin + 1) * sinToIndex) & aSinMask;
 	}
 
-	@Contract(pure = true)
 	public static float cosToSin(float x) {
 		return x - (x * x * x) / 6 + (x * x * x * x * x) / 120; //Taylor
 	}
 
-	@Contract(pure = true)
 	public static float acosRad(float cos) {
 		return aSinTable[index((float) Math.sqrt(1 - cos * cos))];
 	}
 
-	@Contract(pure = true)
 	public static float asinDeg(float sin) {
 		return aSinTable[index(sin)] * Mathf.radiansToDegrees;
 	}
@@ -289,7 +267,6 @@ public final class Mathm {
 		return gradientRotate(rad, fine, 1f / sides, 4);
 	}
 
-	@Contract(pure = true)
 	public static float gradientRotate(float rad, float fine, float off, int sides) {
 		return rad - off * Mathf.sin(rad * sides + fine) + fine / sides;
 	}
@@ -306,25 +283,21 @@ public final class Mathm {
 		return gradientRotate(deg * Mathf.degRad, fine * Mathf.degRad, off, sides) * Mathf.radDeg;
 	}
 
-	@Contract(pure = true)
 	public static float innerAngle(float a, float b) {
 		a %= 360;
 		b %= 360;
 		return b - a > 180 ? b - a - 360 : b - a < -180 ? b - a + 360 : b - a;
 	}
 
-	@Contract(pure = true)
 	public static boolean confine(float d, float min, float max) {
 		return d < min || d > max;
 	}
 
-	@Contract(pure = true)
 	public static boolean confine(double d, double min, double max) {
 		return d < min || d > max;
 	}
 
 	/** An asymptotic function that approximates from a specified starting point to a target point. */
-	@Contract(pure = true)
 	public static float lerp(float origin, float dest, float rate, float x) {
 		float a = 1 - rate;
 		float b = rate * dest;
@@ -335,7 +308,6 @@ public final class Mathm {
 	}
 
 	/** An asymptotic function that approximates from a specified starting point to a target point. */
-	@Contract(pure = true)
 	public static double lerp(double origin, double dest, double rate, double x) {
 		double a = 1 - rate;
 		double b = rate * dest;
@@ -346,7 +318,6 @@ public final class Mathm {
 	}
 
 	/** The function corresponding to an S-shaped curve. */
-	@Contract(pure = true)
 	public static float sCurve(float left, float right, float dx, float dy, float rate, float x) {
 		float diff = right - left;
 		float xValue = dx * rate;
@@ -355,7 +326,6 @@ public final class Mathm {
 	}
 
 	/** The function corresponding to an S-shaped curve. */
-	@Contract(pure = true)
 	public static double sCurve(double left, double right, double dx, double dy, double rate, double x) {
 		double diff = right - left;
 		double xValue = dx * rate;
@@ -367,7 +337,6 @@ public final class Mathm {
 	 * Increase and decrease the curve,reaching the highest point at the most suitable value,and decreasing on both sides.
 	 * The parameters can control the left and right attenuation rates separately.
 	 */
-	@Contract(pure = true)
 	public static float lerpIncrease(float lerpLeft, float lerpRight, float max, float optimal, float x) {
 		if (x < 0) return 0f;
 		return x >= 0 && x < optimal ? -max * Mathf.pow(1 - x / optimal, lerpLeft) + max : -max * Mathf.pow(1 - optimal / x, lerpRight) + max;
@@ -377,13 +346,11 @@ public final class Mathm {
 	 * Increase and decrease the curve,reaching the highest point at the most suitable value,and decreasing on both sides.
 	 * The parameters can control the left and right attenuation rates separately.
 	 */
-	@Contract(pure = true)
 	public static double lerpIncrease(double lerpLeft, double lerpRight, double max, double optimal, double x) {
 		if (x < 0) return 0;
 		return x >= 0 && x < optimal ? -max * Math.pow(1 - x / optimal, lerpLeft) + max : -max * Math.pow(1 - optimal / x, lerpRight) + max;
 	}
 
-	@Contract(pure = true)
 	public static float hyperbolicLimit(float t) {
 		return 1f - 1f / (t + 1);
 	}
@@ -401,7 +368,6 @@ public final class Mathm {
 		}
 	}
 
-	@Contract(value = "_, _ -> param1", pure = true)
 	public static Vec2 addLength(Vec2 vec, float add) {
 		float len = vec.len();
 		vec.x += add * (vec.x / len);
@@ -409,18 +375,15 @@ public final class Mathm {
 		return vec;
 	}
 
-	@Contract(pure = true)
 	public static float round(double value) {
 		float scale = 0.00000001f;
 		return ((float) Math.ceil(value / scale)) * scale;
 	}
 
-	@Contract(pure = true)
 	public static float atan(float tan) {
 		return round(radiansToDegrees * Math.atan(tan));
 	}
 
-	@Contract(pure = true)
 	public static float bound(float in, float from, float to, float start, float end, Interp interpolation) {
 		if (in < from || in > to) {
 			return 0f;
@@ -430,7 +393,6 @@ public final class Mathm {
 		}
 	}
 
-	@Contract(pure = true)
 	public static float curve(float in, float from, float to, float start, float end, Interp interpolation) {
 		if (in < from) {
 			return start;
@@ -443,13 +405,11 @@ public final class Mathm {
 	}
 
 	/** A parabolic curve with the opening facing downwards */
-	@Contract(pure = true)
 	public static float parabola(float x) {
 		return (-Mathf.sqr(x) + x) * 4f;
 	}
 
 	/** Scale X magnification can also be seen as where the function returns to 0 */
-	@Contract(pure = true)
 	public static float parabola(float x, float scale) {
 		if (x > scale) return 0f;
 		x = x * scale;
@@ -463,7 +423,6 @@ public final class Mathm {
 	 * @param to   The output 3x3 matrix.
 	 * @return The output 3x3 matrix, for chaining operations.
 	 */
-	@Contract(value = "_, _ -> param2")
 	public static Mat copyMatrix(Mat3D from, Mat to) {
 		float[] in = from.val, out = to.val;
 		System.arraycopy(in, Mat3D.M00, out, Mat.M00, 3);
@@ -497,7 +456,6 @@ public final class Mathm {
 		return out.set(b).sub(a).crs(c.x - a.x, c.y - a.y, c.z - a.z).nor();
 	}
 
-	@Contract(pure = true)
 	public static float angleDistSigned(float a, float b) {
 		a = (a + 360f) % 360f;
 		b = (b + 360f) % 360f;
@@ -508,7 +466,6 @@ public final class Mathm {
 		return (d > 180f ? 360f - d : d) * sign;
 	}
 
-	@Contract(pure = true)
 	public static float angleDistSigned(float a, float b, float start) {
 		float dst = angleDistSigned(a, b);
 		if (Math.abs(dst) > start) {
@@ -518,20 +475,17 @@ public final class Mathm {
 		return 0f;
 	}
 
-	@Contract(pure = true)
 	public static float angleDist(float a, float b) {
 		float d = Math.abs(a - b) % 360f;
 		return (d > 180f ? 360f - d : d);
 	}
 
-	@Contract(pure = true)
 	public static void shotgun(int points, float spacing, float offset, Floatc cons) {
 		for (int i = 0; i < points; i++) {
 			cons.get(i * spacing - (points - 1) * spacing / 2f + offset);
 		}
 	}
 
-	@Contract(pure = true)
 	public static float clampedAngle(float angle, float relative, float limit) {
 		if (limit >= 180f) return angle;
 		if (limit <= 0f) return relative;
@@ -543,97 +497,78 @@ public final class Mathm {
 		return angle;
 	}
 
-	@Contract(pure = true)
 	public static float dst(Posc a, Posc b) {
 		return Mathf.dst(a.x(), a.y(), b.x(), b.y());
 	}
 
-	@Contract(pure = true)
 	public static float dst(Point2 a, Point2 b) {
 		return Mathf.dst(a.x, a.y, b.x, b.y);
 	}
 
-	@Contract(pure = true)
 	public static float dst(Vec2 a, Vec2 b) {
 		return Mathf.dst(a.x, a.y, b.x, b.y);
 	}
 
-	@Contract(pure = true)
 	public static float absin(float rad) {
 		return absin(rad, 1f, 1f);
 	}
 
-	@Contract(pure = true)
 	public static float absin(float rad, float scl, float mag) {
 		return (Mathf.sin(rad / scl) + 1f) / 2f * mag;
 	}
 
-	@Contract(pure = true)
 	public static byte clamp(byte value, byte min, byte max) {
 		return value > max ? max : value < min ? min : value;
 	}
 
-	@Contract(pure = true)
 	public static byte max(byte a, byte b) {
 		return (a >= b) ? a : b;
 	}
 
-	@Contract(pure = true)
 	public static byte min(byte a, byte b) {
 		return (a <= b) ? a : b;
 	}
 
-	@Contract(pure = true)
 	public static short clamp(short value, short min, short max) {
 		return value > max ? max : value < min ? min : value;
 	}
 
-	@Contract(pure = true)
 	public static short max(short a, short b) {
 		return (a >= b) ? a : b;
 	}
 
-	@Contract(pure = true)
 	public static short min(short a, short b) {
 		return (a <= b) ? a : b;
 	}
 
-	@Contract(pure = true)
 	public static char max(char a, char b) {
 		return (a >= b) ? a : b;
 	}
 
-	@Contract(pure = true)
 	public static char min(char a, char b) {
 		return (a <= b) ? a : b;
 	}
 
-	@Contract(pure = true)
 	public static int clamp(int value, int min, int max) {
 		return value > max ? max : value < min ? min : value;
 	}
 
-	@Contract(pure = true)
 	public static long clamp(long value, long min, long max) {
 		return value > max ? max : value < min ? min : value;
 	}
 
-	@Contract(pure = true)
 	public static float clamp(float value, float min, float max) {
 		return value > max ? max : value < min ? min : value;
 	}
 
-	@Contract(pure = true)
 	public static float clamp(float value) {
 		return clamp(value, 0f, 1f);
 	}
 
-	@Contract(pure = true)
 	public static double clamp(double value, double min, double max) {
 		return value > max ? max : value < min ? min : value;
 	}
 
-	@Contract(pure = true)
 	public static char clamp(char value, char min, char max) {
 		return value > max ? max : value < min ? min : value;
 	}
@@ -642,12 +577,10 @@ public final class Mathm {
 		return Mathf.rand.nextFloat() < d * Time.delta;
 	}
 
-	@Contract(pure = true)
 	public static boolean isNaNInfinite(float value) {
 		return Float.isNaN(value) || Float.isInfinite(value) || value >= Float.MAX_VALUE;
 	}
 
-	@Contract(pure = true)
 	public static boolean isNaNInfinities(float... values) {
 		for (float value : values) {
 			if (Float.isNaN(value) || Float.isInfinite(value) || value >= Float.MAX_VALUE) return true;

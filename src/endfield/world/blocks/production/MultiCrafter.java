@@ -19,11 +19,11 @@ import arc.util.Structs;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import dynamilize.Variable.ObjectReference;
 import endfield.ui.Elements;
 import endfield.util.CollectionList;
 import endfield.util.CollectionOrderedMap;
 import endfield.util.ObjectBoolMap;
-import endfield.util.misc.ObjectReference;
 import endfield.world.consumers.ConsumeItem;
 import mindustry.Vars;
 import mindustry.content.Fx;
@@ -497,9 +497,9 @@ public class MultiCrafter extends Block {
 
 			ObjectReference<CraftPlan> lastCraftPlan = new ObjectReference<>(craftPlan);
 			table.update(() -> {
-				if (lastCraftPlan.element != craftPlan) {
+				if (lastCraftPlan.value != craftPlan) {
 					rebuildBar(table);
-					lastCraftPlan.element = craftPlan;
+					lastCraftPlan.value = craftPlan;
 				}
 			});
 			rebuildBar(table);
@@ -768,10 +768,10 @@ public class MultiCrafter extends Block {
 		public CollectionOrderedMap<String, Func<Building, Bar>> barMap = new CollectionOrderedMap<>(String.class, Func.class);
 
 		public void init() {
-			consumers = consumeBuilder.toArray();
-			optionalConsumers = consumeBuilder.select(consume -> consume.optional && !consume.ignore()).toArray();
-			nonOptionalConsumers = consumeBuilder.select(consume -> !consume.optional && !consume.ignore()).toArray();
-			updateConsumers = consumeBuilder.select(consume -> consume.update && !consume.ignore()).toArray();
+			consumers = consumeBuilder.toArray(Consume.class);
+			optionalConsumers = consumeBuilder.select(consume -> consume.optional && !consume.ignore()).toArray(Consume.class);
+			nonOptionalConsumers = consumeBuilder.select(consume -> !consume.optional && !consume.ignore()).toArray(Consume.class);
+			updateConsumers = consumeBuilder.select(consume -> consume.update && !consume.ignore()).toArray(Consume.class);
 			hasConsumers = consumers.length > 0;
 
 			if (owner.autoAddBar) {

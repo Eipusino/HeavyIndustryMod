@@ -6,7 +6,6 @@ import arc.graphics.Gl;
 import arc.graphics.gl.FrameBuffer;
 import arc.graphics.gl.Shader;
 import arc.util.Disposable;
-import org.jetbrains.annotations.Contract;
 
 public class Blur implements Disposable {
 	public static final float[] default1 = {
@@ -122,7 +121,6 @@ public class Blur implements Disposable {
 		blur.setUniformi("u_texture1", 1);
 	}
 
-	@Contract(value = "_ -> new", pure = true)
 	protected Shader genShader(float... convolutions) {
 		if (convolutions.length % 2 != 1)
 			throw new IllegalArgumentException("convolution numbers length must be odd number!");

@@ -19,8 +19,6 @@ import dynamilize.FunctionType;
 import endfield.Vars2;
 import endfield.util.Reflects;
 import mindustry.Vars;
-import org.jetbrains.annotations.ApiStatus.Internal;
-import org.jetbrains.annotations.Contract;
 import rhino.Context;
 import rhino.Function;
 import rhino.JavaAdapter;
@@ -43,7 +41,6 @@ public final class Scripts2 {
 	private Scripts2() {}
 
 	/** Initializes the Mod JS. */
-	@Internal
 	public static void init() {
 		try {
 			Vars.mods.getScripts().context.evaluateReader(
@@ -66,7 +63,6 @@ public final class Scripts2 {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Contract(pure = true)
 	public static <T> Func<Object[], T> requireType(Function func, Context context, Scriptable scope, Class<T> returnType) {
 		Class<?> type = FunctionType.wrapper(returnType);
 		return args -> {
@@ -81,15 +77,17 @@ public final class Scripts2 {
 	}
 
 	public static Object invokeForHandle(MethodHandle handle, Object[] arr) {
-		return Reflects.invokeStatic(handle, convertArgs(arr, handle.type().parameterArray()));
+		try {
+			return Reflects.invokeStatic(handle, convertArgs(arr, handle.type().parameterArray()));
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
 	}
 
-	@Contract(pure = true)
 	public static Object[] convertArgs(NativeArray arr, Class<?>[] types) {
 		return convertArgs(arr.toArray(), types);
 	}
 
-	@Contract(pure = true)
 	public static Object[] convertArgs(Object[] arr, Class<?>[] types) {
 		Iterator<Class<?>> iterator = Arrays.stream(types).iterator();
 		return Arrays.stream(arr).map(a -> JavaAdapter.convertResult(a, iterator.next())).toArray();

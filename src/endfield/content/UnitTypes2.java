@@ -130,7 +130,6 @@ import mindustry.type.weapons.PointDefenseWeapon;
 import mindustry.type.weapons.RepairBeamWeapon;
 import mindustry.world.meta.BlockFlag;
 import mindustry.world.meta.Env;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static endfield.Vars2.MOD_NAME;
 
@@ -166,7 +165,6 @@ public final class UnitTypes2 {
 	private UnitTypes2() {}
 
 	/** Instantiates all contents. Called in the main thread in {@code EndFieldMod.loadContent()}. */
-	@Internal
 	public static void load() {
 		if (Vars2.isPlugin) return;
 
@@ -3373,7 +3371,6 @@ public final class UnitTypes2 {
 		}};
 	}
 
-	@Internal
 	public static void init() {
 		empire.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> !empire.immunities.contains(s) && (s.reloadMultiplier >= 1 && !s.disarm)));
 		poseidon.immunities.addAll(Vars.content.statusEffects().copy().removeAll(s -> s.reloadMultiplier >= 1 && !s.disarm));

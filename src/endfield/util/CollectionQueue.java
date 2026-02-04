@@ -3,7 +3,6 @@ package endfield.util;
 import arc.func.Boolf;
 import arc.func.Cons;
 import arc.util.Eachable;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
@@ -416,7 +415,7 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 	 * time this method is called. Use the constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public @NotNull QueueIterator iterator() {
+	public QueueIterator iterator() {
 		if (iterator1 == null) iterator1 = new QueueIterator();
 
 		if (iterator1.done) {
@@ -436,10 +435,9 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 		return new QueueIterator();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public E @NotNull [] toArray() {
-		E[] out = (E[]) Array.newInstance(componentType, size);
+	public Object[] toArray() {
+		Object[] out = new Object[size];
 		for (int i = 0; i < size; i++) {
 			out[i] = get(i);
 		}
@@ -448,7 +446,7 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T @NotNull [] toArray(T[] a) {
+	public <T> T[] toArray(T[] a) {
 		final int size;
 		if ((size = size()) > a.length)
 			return toArray((Class<T[]>) a.getClass());
@@ -573,7 +571,7 @@ public class CollectionQueue<E> extends AbstractQueue<E> implements Eachable<E> 
 		}
 
 		@Override
-		public @NotNull Iterator<E> iterator() {
+		public Iterator<E> iterator() {
 			return this;
 		}
 	}

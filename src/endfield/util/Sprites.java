@@ -6,7 +6,6 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Point2;
 import arc.struct.IntIntMap;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -111,7 +110,6 @@ public final class Sprites {
 	 * @apiNote The element returned by this method cannot be used in situations where it will be
 	 * forcibly cast to {@link AtlasRegion}.
 	 */
-	@Contract(value = "_, _, _ -> new", pure = true)
 	public static TextureRegion[][] splitLayers(String name, int size, int layerCount) {
 		TextureRegion[][] layers = new TextureRegion[layerCount][];
 
@@ -133,7 +131,6 @@ public final class Sprites {
 	 * @apiNote The element returned by this method cannot be used in situations where it will be
 	 * forcibly cast to {@link AtlasRegion}.
 	 */
-	@Contract(value = "_, _, _ -> new", pure = true)
 	public static TextureRegion[] splitLayer(String name, int size, int layer) {
 		TextureRegion region = Core.atlas.find(name);
 		int margin = 0;
@@ -146,12 +143,10 @@ public final class Sprites {
 		return tiles;
 	}
 
-	@Contract(value = "_, _ -> new", pure = true)
 	public static TextureRegion[][] split(String name, int size) {
 		return split(Core.atlas.find(name), size);
 	}
 
-	@Contract(value = "_, _ -> new", pure = true)
 	public static TextureRegion[][] split(TextureRegion region, int size) {
 		int x = region.getX();
 		int y = region.getY();
@@ -185,7 +180,6 @@ public final class Sprites {
 	 * @param width  The amount of regions horizontally.
 	 * @param height The amount of regions vertically.
 	 */
-	@Contract(value = "_, _, _, _ -> new", pure = true)
 	public static TextureRegion[] split(TextureRegion region, int size, int width, int height) {
 		int textureSize = width * height;
 		TextureRegion[] regions = new TextureRegion[textureSize];
@@ -212,7 +206,6 @@ public final class Sprites {
 		return regions;
 	}
 
-	@Contract(value = "_, _, _ -> new", pure = true)
 	public static TextureRegion[][] splitTiles(TextureRegion region, int size, int pad) {
 		int x = region.getX();
 		int y = region.getY();
@@ -246,7 +239,6 @@ public final class Sprites {
 		return splitArray(region, size, pad, null);
 	}
 
-	@Contract(value = "_, _, _, _ -> new", pure = true)
 	public static TextureRegion [] splitArray(TextureRegion region, int size, int pad, int @Nullable [] indexMap) {
 		int x = region.getX();
 		int y = region.getY();

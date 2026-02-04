@@ -20,7 +20,6 @@ import endfield.Vars2;
 import endfield.type.AtmospherePlanet;
 import mindustry.Vars;
 import mindustry.type.Planet;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static endfield.Vars2.MOD_NAME;
 
@@ -55,7 +54,6 @@ public final class Shaders2 {
 	private Shaders2() {}
 
 	/** Loads the shaders. */
-	@Internal
 	public static void load() {
 		String prevVert = Shader.prependVertexCode, prevFrag = Shader.prependFragmentCode;
 		Shader.prependVertexCode = Shader.prependFragmentCode = "";
@@ -111,7 +109,6 @@ public final class Shaders2 {
 		Shader.prependFragmentCode = prevFrag;
 	}
 
-	@Internal
 	public static void dispose() {
 		brine.dispose();
 		crystalFluid.dispose();

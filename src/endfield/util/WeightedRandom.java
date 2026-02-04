@@ -2,7 +2,6 @@ package endfield.util;
 
 import arc.math.Mathf;
 import arc.struct.FloatSeq;
-import org.jetbrains.annotations.Contract;
 
 public class WeightedRandom<E> {
 	protected float lastValue = 0f;
@@ -20,7 +19,6 @@ public class WeightedRandom<E> {
 		lastValue += weight;
 	}
 
-	@Contract(pure = true)
 	public E get() {
 		float rnd = Mathf.rand.nextFloat() * lastValue;
 		int size = items.size;

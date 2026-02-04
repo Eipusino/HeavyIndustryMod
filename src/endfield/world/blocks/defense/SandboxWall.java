@@ -22,7 +22,7 @@ import arc.util.pooling.Pool.Poolable;
 import endfield.graphics.Drawn;
 import endfield.math.Mathm;
 import endfield.ui.Elements;
-import endfield.util.misc.IntFloatHolder;
+import endfield.util.holder.IntFloatHolder;
 import mindustry.entities.Damage;
 import mindustry.entities.Lightning;
 import mindustry.entities.TargetPriority;

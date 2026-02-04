@@ -7,7 +7,6 @@ import arc.graphics.g2d.Lines;
 import arc.graphics.gl.FrameBuffer;
 import arc.graphics.gl.Shader;
 import arc.util.Disposable;
-import org.jetbrains.annotations.Contract;
 
 import static endfield.graphics.Drawn.c1;
 import static endfield.graphics.Drawn.v1;
@@ -66,7 +65,6 @@ public class Distortion implements Disposable {
 		}
 	}
 
-	@Contract(value = " -> new", pure = true)
 	protected Shader getShader() {
 		return new Shader(Shaders2.shadersDir.child("general.vert"), Shaders2.shadersDir.child("distortion.frag"));
 	}

@@ -13,7 +13,6 @@ import mindustry.graphics.Layer;
 import mindustry.type.Weather;
 import mindustry.type.weather.ParticleWeather;
 import mindustry.world.meta.Attribute;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static endfield.Vars2.MOD_NAME;
 
@@ -31,7 +30,6 @@ public final class Weathers2 {
 	private Weathers2() {}
 
 	/** Instantiates all contents. Called in the main thread in {@code EndFieldMod.loadContent()}. */
-	@Internal
 	public static void load() {
 		if (Vars2.isPlugin) return;
 

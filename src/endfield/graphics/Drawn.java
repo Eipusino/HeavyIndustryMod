@@ -41,6 +41,7 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Pal;
 import mindustry.graphics.Shaders;
 import mindustry.ui.Fonts;
+import org.jetbrains.annotations.Nullable;
 
 import static endfield.Vars2.MOD_NAME;
 
@@ -327,7 +328,7 @@ public final class Drawn {
 		(in ? Fx2.chainLightningFadeReversed : Fx2.chainLightningFade).at(x, y, lightningPieceLength, color, v6.cpy());
 	}
 
-	public static void teleportUnitNet(Unit before, float x, float y, float angle, Player player) {
+	public static void teleportUnitNet(Unit before, float x, float y, float angle, @Nullable Player player) {
 		if (Vars.net.active() || Vars.headless) {
 			if (player != null) {
 				player.set(x, y);

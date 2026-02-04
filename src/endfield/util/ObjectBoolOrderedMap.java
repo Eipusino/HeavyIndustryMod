@@ -1,7 +1,7 @@
 package endfield.util;
 
 import arc.util.ArcRuntimeException;
-import endfield.util.misc.ObjectBoolHolder;
+import endfield.util.holder.ObjectBoolHolder;
 
 import java.util.NoSuchElementException;
 

@@ -22,7 +22,6 @@ import endfield.util.CollectionList;
 import mindustry.gen.Rotc;
 import mindustry.graphics.Drawf;
 import mindustry.graphics.Trail;
-import org.jetbrains.annotations.Contract;
 
 import static endfield.Vars2.MOD_NAME;
 
@@ -30,7 +29,6 @@ public final class Trails {
 	/** Don't let anyone instantiate this class. */
 	private Trails() {}
 
-	@Contract(value = "_, _, _ -> new", pure = true)
 	public static TexturedTrail singlePhantasmal(String name, int length, TrailAttrib... attributes) {
 		TexturedTrail trail = new TexturedTrail(length, name, attributes);
 		trail.blend = Blending.additive;

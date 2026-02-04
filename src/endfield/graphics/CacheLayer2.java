@@ -2,7 +2,6 @@ package endfield.graphics;
 
 import mindustry.graphics.CacheLayer;
 import mindustry.graphics.CacheLayer.ShaderLayer;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 /**
  * Defines the {@linkplain CacheLayer cache layer}s this mod offers.
@@ -16,7 +15,6 @@ public final class CacheLayer2 {
 	private CacheLayer2() {}
 
 	/** Loads the cache layers. */
-	@Internal
 	public static void load() {
 		brine = new ShaderLayer(Shaders2.brine);
 		glacium = new ShaderLayer(Shaders2.glacium);

@@ -30,13 +30,13 @@ import arc.util.Tmp;
 import arc.util.pooling.Pool;
 import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
+import dynamilize.Variable.IntReference;
 import endfield.content.Fx2;
 import endfield.entities.Entitys2.LineHitHandler;
 import endfield.math.Mathm;
 import endfield.util.BoolGrid;
 import endfield.util.CollectionList;
 import endfield.util.ValueMap;
-import endfield.util.misc.IntReference;
 import mindustry.Vars;
 import mindustry.ai.types.MissileAI;
 import mindustry.core.World;
@@ -405,12 +405,12 @@ public final class Damage2 {
 		IntReference collideCount = new IntReference();
 		collided.sort(c -> hitter.dst2(c.x, c.y));
 		for (Collided c : collided) {
-			if (hitter.damage > 0 && (pierceCap <= 0 || collideCount.element < pierceCap)) {
+			if (hitter.damage > 0 && (pierceCap <= 0 || collideCount.value < pierceCap)) {
 				if (c.target instanceof Unit u) {
 					effect.at(c.x, c.y);
 					u.collision(hitter, c.x, c.y);
 					hitter.collision(u, c.x, c.y);
-					collideCount.element++;
+					collideCount.value++;
 				}
 			}
 		}
@@ -623,18 +623,18 @@ public final class Damage2 {
 
 		collided.sort(c -> hitter.dst2(c.x, c.y));
 		for (Collided c : collided) {
-			if (hitter.damage > 0 && (pierceCap <= 0 || collideCount.element < pierceCap)) {
+			if (hitter.damage > 0 && (pierceCap <= 0 || collideCount.value < pierceCap)) {
 				if (c.target instanceof Unit unit) {
 					unit.collision(hitter, c.x, c.y);
 					hitter.collision(unit, c.x, c.y);
-					collideCount.element++;
+					collideCount.value++;
 				} else if (c.target instanceof Building build) {
 					float health = build.health;
 
 					if (build.team != team && build.collide(hitter)) {
 						build.collision(hitter);
 						hitter.type.hit(hitter, c.x, c.y);
-						collideCount.element++;
+						collideCount.value++;
 					}
 
 					//try to heal the tile

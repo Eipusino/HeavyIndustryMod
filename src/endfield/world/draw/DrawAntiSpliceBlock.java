@@ -7,9 +7,9 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Point2;
 import arc.util.Eachable;
+import dynamilize.Variable.ObjectReference;
 import endfield.util.DirEdges;
 import endfield.util.Sprites;
-import endfield.util.misc.ObjectReference;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
@@ -101,21 +101,21 @@ public class DrawAntiSpliceBlock extends DrawBlock {
 				ObjectReference<BuildPlan> target = new ObjectReference<>();
 
 				list.each(pl -> {
-					if (target.element != null) return;
+					if (target.value != null) return;
 					if (pl.x == x && pl.y == y) {
-						target.element = pl;
+						target.value = pl;
 					}
 				});
 
-				if (target.element == null) continue t;
+				if (target.value == null) continue t;
 
 				if (other == null) {
-					if (planSplicer.get(plan, target.element)) {
-						other = target.element.block;
+					if (planSplicer.get(plan, target.value)) {
+						other = target.value.block;
 					} else {
 						continue t;
 					}
-				} else if (other != planBlock || !planSplicer.get(plan, target.element)) {
+				} else if (other != planBlock || !planSplicer.get(plan, target.value)) {
 					continue t;
 				}
 			}

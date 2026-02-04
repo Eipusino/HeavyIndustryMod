@@ -9,9 +9,6 @@ import arc.struct.ObjectMap;
 import arc.struct.ObjectSet;
 import arc.struct.Seq;
 import endfield.Vars2;
-import org.jetbrains.annotations.ApiStatus.Internal;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 public final class Regions2 {
 	public static Fi spritesDir = Vars2.internalTree.child("sprites");
@@ -26,12 +23,10 @@ public final class Regions2 {
 
 	private Regions2() {}
 
-	@Internal
 	public static void load() {
 		white = create(Textures2.white, "white");
 	}
 
-	@Internal
 	public static void addAll() {
 		textures = Core.atlas.getTextures();
 		regions = Core.atlas.getRegions();
@@ -43,8 +38,7 @@ public final class Regions2 {
 		regionmap.put(white.name, white);
 	}
 
-	@Contract(value = "_, _ -> new", pure = true)
-	public static @NotNull AtlasRegion create(Texture texture, String name) {
+	public static AtlasRegion create(Texture texture, String name) {
 		AtlasRegion region = new AtlasRegion();
 		region.texture = texture;
 		region.name = name;

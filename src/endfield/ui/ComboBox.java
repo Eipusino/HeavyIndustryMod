@@ -19,9 +19,9 @@ import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.util.Align;
 import arc.util.Tmp;
+import dynamilize.Variable.ObjectReference;
 import endfield.ui.Listeners.ClickOnOtherListener;
 import endfield.util.CollectionList;
-import endfield.util.misc.ObjectReference;
 import org.jetbrains.annotations.Nullable;
 
 public class ComboBox extends Table {
@@ -164,12 +164,12 @@ public class ComboBox extends Table {
 				});
 				ObjectReference<LabelStyle> labelStyle = new ObjectReference<>();
 				Cell<Label> label = it.label(() -> {
-					if (labelStyle.element != null) {
-						labelStyle.element.font = items.get(j).style.font;
+					if (labelStyle.value != null) {
+						labelStyle.value.font = items.get(j).style.font;
 					}
 					return items.get(j).text;
 				});
-				label.get().setStyle(labelStyle.element = new LabelStyle(label.get().getStyle()) {{
+				label.get().setStyle(labelStyle.value = new LabelStyle(label.get().getStyle()) {{
 					font = items.get(j).style.font;
 				}});
 				label.left().grow().labelAlign(Align.left, Align.left);

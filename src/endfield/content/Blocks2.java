@@ -277,7 +277,6 @@ import mindustry.world.meta.BlockGroup;
 import mindustry.world.meta.BuildVisibility;
 import mindustry.world.meta.Env;
 import mindustry.world.meta.Stat;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static endfield.Vars2.MOD_NAME;
 
@@ -597,7 +596,6 @@ public final class Blocks2 {
 	}
 
 	/** Instantiates all contents. Called in the main thread in {@code EndFieldMod.loadContent()}. */
-	@Internal
 	public static void load() {
 		if (Vars2.isPlugin) return;//Do not load content in plugin mode.
 

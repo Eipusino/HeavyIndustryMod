@@ -8,7 +8,6 @@ import arc.math.geom.Vec2;
 import arc.struct.FloatSeq;
 import arc.struct.Seq;
 import arc.util.Eachable;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -231,7 +230,7 @@ public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 	 * @return an Iterator.
 	 */
 	@Override
-	public @NotNull Iterator<Vec2> iterator() {
+	public Iterator<Vec2> iterator() {
 		if (iterator1 == null) iterator1 = new Iter();
 
 		if (iterator1.done) {

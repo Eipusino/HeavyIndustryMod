@@ -2,7 +2,6 @@ package endfield.math;
 
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
-import org.jetbrains.annotations.Contract;
 
 public final class Geometry2 {
 	private Geometry2() {}
@@ -19,7 +18,6 @@ public final class Geometry2 {
 	 * @param radius half side size
 	 * @return distance from square center to edge by angle
 	 */
-	@Contract(pure = true)
 	public static float sqrtDstByAngle(float radius, float angle) {
 		return radius / Math.max(Mathf.sinDeg(angle % 90), Mathf.cosDeg(angle % 90));
 	}

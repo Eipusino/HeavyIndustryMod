@@ -13,7 +13,6 @@ import mindustry.type.Liquid;
 import mindustry.type.Planet;
 import mindustry.type.UnitType;
 import mindustry.world.Block;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.util.Arrays;
 
@@ -29,7 +28,6 @@ public final class AdaptiveCoreDatabase {
 
 	private AdaptiveCoreDatabase() {}
 
-	@Internal
 	public static void init() {
 		if (Mods2.isEnabled("adaptivecoredatabase")) return;
 

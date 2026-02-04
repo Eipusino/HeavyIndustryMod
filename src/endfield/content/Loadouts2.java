@@ -7,7 +7,6 @@ import endfield.Vars2;
 import mindustry.Vars;
 import mindustry.game.Schematic;
 import mindustry.game.Schematics;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -17,7 +16,6 @@ public final class Loadouts2 {
 
 	private Loadouts2() {}
 
-	@Internal
 	public static void load() {
 		if (Vars.headless || Vars2.isPlugin) return;
 

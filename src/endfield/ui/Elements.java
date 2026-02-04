@@ -74,9 +74,6 @@ import mindustry.world.meta.StatCat;
 import mindustry.world.meta.StatValue;
 import mindustry.world.meta.Stats;
 import mindustry.world.modules.ItemModule;
-import org.jetbrains.annotations.ApiStatus.Internal;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
@@ -99,11 +96,10 @@ public final class Elements {
 	/** Don't let anyone instantiate this class. */
 	private Elements() {}
 
-	public static @NotNull String judge(boolean value) {
+	public static String judge(boolean value) {
 		return value ? "[heal]" + Core.bundle.get("yes") + "[]" : "[#ff7b69]" + Core.bundle.get("no") + "[]";
 	}
 
-	@Internal
 	public static void load() {
 		powerInfoDialog = new PowerGraphInfoDialog();
 
@@ -111,8 +107,7 @@ public final class Elements {
 	}
 
 	/** Based on {@link UI#formatAmount(long)} but for floats. */
-	@Contract(pure = true)
-	public static @NotNull String formatAmount(float num) {
+	public static String formatAmount(float num) {
 		if (Float.isNaN(num)) return "NaN";
 		if (num == Float.MAX_VALUE) return "Infinite";
 		if (num == Float.MIN_VALUE) return "-Infinite";
@@ -131,8 +126,7 @@ public final class Elements {
 	}
 
 	/** Similar to {@link UI#formatAmount(long)} but for floats. */
-	@Contract(pure = true)
-	public static @NotNull String round(float num) {
+	public static String round(float num) {
 		if (Float.isNaN(num)) return "NaN";
 		if (num == Float.MAX_VALUE) return "Infinite";
 		if (num == Float.MIN_VALUE) return "-Infinite";
@@ -193,8 +187,7 @@ public final class Elements {
 		}).padTop(0).row();
 	}
 
-	@Contract(value = "_, _, _ -> new")
-	public static @NotNull ImageButton selfStyleImageButton(Drawable imageUp, ImageButtonStyle is, @Nullable Runnable listener) {
+	public static ImageButton selfStyleImageButton(Drawable imageUp, ImageButtonStyle is, @Nullable Runnable listener) {
 		ImageButton button = new ImageButton(new ImageButtonStyle(null, null, null, imageUp, null, null));
 		ImageButtonStyle style = new ImageButtonStyle(is);
 		style.imageUp = imageUp;
@@ -214,8 +207,7 @@ public final class Elements {
 		return Vars.spawner.countGroundSpawns();
 	}
 
-	@Contract(value = "_, _, _, _, _, _, _, _, _, _, _, _ -> new")
-	public static @NotNull Element @NotNull [] sliderSet(Table table, Cons<String> changed, Prov<String> fieldText, TextFieldFilter filter, TextFieldValidator valid, float min, float max, float step, float def, SliderChanged sliderChanged, String title, @Nullable String tooltip) {
+	public static Element[] sliderSet(Table table, Cons<String> changed, Prov<String> fieldText, TextFieldFilter filter, TextFieldValidator valid, float min, float max, float step, float def, SliderChanged sliderChanged, String title, @Nullable String tooltip) {
 		TextField field = textField(String.valueOf(def), changed, fieldText, filter, valid);
 
 		Label tab = table.add(title).right().padRight(6f).get();
@@ -232,8 +224,7 @@ public final class Elements {
 		return new Element[]{sl, f};
 	}
 
-	@Contract(value = "_, _, _, _, _ -> new")
-	public static @NotNull TextField textField(String text, Cons<String> changed, @Nullable Prov<String> setText, TextFieldFilter filter, TextFieldValidator valid) {
+	public static TextField textField(String text, Cons<String> changed, @Nullable Prov<String> setText, TextFieldFilter filter, TextFieldValidator valid) {
 		TextField field = new TextField(text);
 		if (filter != null) field.setFilter(filter);
 		if (valid != null) field.setValidator(valid);
@@ -251,7 +242,7 @@ public final class Elements {
 		return field;
 	}
 
-	public static @NotNull Cell<ImageButton> imageButton(Table table, Drawable icon, ImageButtonStyle style, float isize, Runnable listener, @Nullable Prov<CharSequence> label, @Nullable String tooltip) {
+	public static Cell<ImageButton> imageButton(Table table, Drawable icon, ImageButtonStyle style, float isize, Runnable listener, @Nullable Prov<CharSequence> label, @Nullable String tooltip) {
 		Cell<ImageButton> bCell = table.button(icon, style, isize, listener);
 		ImageButton b = bCell.get();
 		if (label != null) {
@@ -318,17 +309,14 @@ public final class Elements {
 	}
 
 	/** Creates a tooltip. Snaps to corner of parent element. */
-	@Contract(value = "_ -> new", pure = true)
 	public static Tooltip baseTooltip(Cons<Table> content) {
 		return new BaseTooltip(content);
 	}
 
-	@Contract(value = " -> new", pure = true)
 	public static FLabel infinity() {
 		return new FLabel("{wave}{rainbow}" + Core.bundle.get("text.infinity"));
 	}
 
-	@Contract(value = " -> new", pure = true)
 	public static FLabel everything() {
 		return new FLabel("{wave}{rainbow}" + Core.bundle.get("text.everything"));
 	}
@@ -338,7 +326,6 @@ public final class Elements {
 		return e != null && !e.fillParent;
 	}
 
-	@Contract(value = "_, _ -> new", pure = true)
 	public static Stack itemImage(TextureRegion region, int amount) {
 		Stack stack = new Stack();
 
@@ -444,7 +431,6 @@ public final class Elements {
 		return point.x >= 0 && point.y >= 0 && point.x <= Vars.world.width() * Vars.tilesize && point.y <= Vars.world.height() * Vars.tilesize;
 	}
 
-	@Contract(pure = true)
 	public static int getLineNum(String string) {
 		String dex = string.replaceAll("\r", "\n");
 		return dex.split("\n").length;

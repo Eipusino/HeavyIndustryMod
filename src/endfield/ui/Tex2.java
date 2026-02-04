@@ -17,7 +17,6 @@ import endfield.graphics.StripDrawable;
 import mindustry.game.EventType.Trigger;
 import mindustry.graphics.Pal;
 import mindustry.ui.Styles;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static endfield.Vars2.MOD_PREFIX;
 
@@ -49,7 +48,6 @@ public final class Tex2 {
 
 	private Tex2() {}
 
-	@Internal
 	public static void load() {
 		//drawable
 		buttonLeft = getDrawable("button-left");

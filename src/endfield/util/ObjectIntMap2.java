@@ -7,8 +7,7 @@ import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import endfield.math.Mathm;
-import endfield.util.misc.ObjectIntHolder;
-import org.jetbrains.annotations.Nullable;
+import endfield.util.holder.ObjectIntHolder;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;
@@ -122,7 +121,7 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 		}
 	}
 
-	public void put(@Nullable K key, int value) {
+	public void put(K key, int value) {
 		if (key == null) return;
 
 		// Check for existing keys.

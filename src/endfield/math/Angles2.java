@@ -5,7 +5,6 @@ import arc.math.Mathf;
 import arc.math.geom.Point2;
 import arc.math.geom.Vec2;
 import mindustry.gen.Posc;
-import org.jetbrains.annotations.Contract;
 
 import static endfield.math.Mathm.p1;
 import static endfield.math.Mathm.p2;
@@ -20,22 +19,18 @@ public final class Angles2 {
 	/** Don't let anyone instantiate this class. */
 	private Angles2() {}
 
-	@Contract(pure = true)
 	public static float angle(Posc start, Posc end) {
 		return Angles.angle(start.x(), start.y(), end.x(), end.y());
 	}
 
-	@Contract(pure = true)
 	public static float angle(Point2 start, Point2 end) {
 		return Angles.angle(start.x, start.y, end.x, end.y);
 	}
 
-	@Contract(pure = true)
 	public static float angle(Vec2 start, Vec2 end) {
 		return Angles.angle(start.x, start.y, end.x, end.y);
 	}
 
-	@Contract(pure = true)
 	public static float angleBisector(float a, float b) {
 		a = Mathf.mod(a, 360f);
 		b = Mathf.mod(b, 360f);
@@ -45,7 +40,6 @@ public final class Angles2 {
 		return (delta > 180 ? (a + b) / 2f + 180 : (a + b) / 2f) % 360;
 	}
 
-	@Contract(pure = true)
 	public static float angelDistance(float start, float end) {
 		start = Mathf.mod(start, 360f);
 		end = Mathf.mod(end, 360f);
@@ -62,7 +56,6 @@ public final class Angles2 {
 		return p3.set(p1).lerp(p2, progress).angle();
 	}
 
-	@Contract(pure = true)
 	public static float moveLerpToward(float angle, float to, float speed) {
 		if (Math.abs(Angles.angleDist(angle, to)) < speed || angle == to) {
 			return to;

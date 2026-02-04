@@ -8,7 +8,6 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import mindustry.Vars;
 import mindustry.type.Item;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 
@@ -101,7 +100,7 @@ public class MultiItemData implements Iterable<Item>, Eachable<Item> {
 	}
 
 	@Override
-	public @NotNull Iterator<Item> iterator() {
+	public Iterator<Item> iterator() {
 		return items.iterator();
 	}
 }

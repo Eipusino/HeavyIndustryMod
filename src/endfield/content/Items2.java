@@ -4,7 +4,6 @@ import arc.graphics.Color;
 import endfield.Vars2;
 import endfield.graphics.Pal2;
 import mindustry.type.Item;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 /**
  * Defines the {@linkplain Item item} this mod offers.
@@ -21,7 +20,6 @@ public final class Items2 {
 	private Items2() {}
 
 	/** Instantiates all contents. Called in the main thread in {@code EndFieldMod.loadContent()}. */
-	@Internal
 	public static void load() {
 		if (Vars2.isPlugin) return;
 

@@ -3,9 +3,6 @@ package endfield.util;
 import arc.Core;
 import arc.math.Mathf;
 import arc.util.Strings;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -33,8 +30,7 @@ public final class Strings2 {
 	 *
 	 * @throws IllegalArgumentException if the {@code count} is negative.
 	 */
-	@Contract(pure = true)
-	public static @NotNull String repeat(char key, int count) {
+	public static String repeat(char key, int count) {
 		if (count < 0) throw new IllegalArgumentException("count is negative: " + count);
 
 		char[] data = new char[count];
@@ -48,8 +44,7 @@ public final class Strings2 {
 	 *
 	 * @throws IllegalArgumentException if the {@code count} is negative.
 	 */
-	@Contract(value = "null, _ -> null; !null, _ -> !null", pure = true)
-	public static String repeat(@Nullable String key, int count) {
+	public static String repeat(String key, int count) {
 		if (key == null) return null;
 
 		StringBuilder builder = new StringBuilder(key.length() * count);
@@ -61,16 +56,14 @@ public final class Strings2 {
 	}
 
 	/** Determine whether the string is composed entirely of numbers. */
-	@Contract(value = "null -> false", pure = true)
-	public static boolean isNumeric4(@Nullable String key) {
+	public static boolean isNumeric4(String key) {
 		if (numeric4 == null) numeric4 = Pattern.compile("\\d+");
 
 		return key != null && numeric4.matcher(key).matches();
 	}
 
 	/** Determine whether the string is composed of {@code Number} and {@code . }. */
-	@Contract(value = "null -> false", pure = true)
-	public static boolean isNumeric(@Nullable String key) {
+	public static boolean isNumeric(String key) {
 		if (key == null) return false;
 
 		if (numeric == null) numeric = Pattern.compile("[0-9]*");
@@ -88,8 +81,7 @@ public final class Strings2 {
 	}
 
 	/** Randomly generate a string of length within the specified range. */
-	@Contract(pure = true)
-	public static @NotNull String generateRandomString(int min, int max) {
+	public static String generateRandomString(int min, int max) {
 		if (min < 0 || max < min || max > 1000000) return Core.bundle.format("text.generate-random-string-2", min, max);
 
 		int length = min + Mathf.random(max - min + 1);
@@ -101,8 +93,7 @@ public final class Strings2 {
 	 *
 	 * @throws NegativeArraySizeException If the {@code length} is negative.
 	 */
-	@Contract(pure = true)
-	public static @NotNull String generateRandomString(int length) {
+	public static String generateRandomString(int length) {
 		char[] chars = new char[length];
 		int range = printableChars.length - 1;
 
@@ -118,7 +109,7 @@ public final class Strings2 {
 	 * @param number The number to be converted
 	 * @param retain Reserved decimal places
 	 */
-	public static @NotNull String toByteFixNonUnit(double number, int retain) {
+	public static String toByteFixNonUnit(double number, int retain) {
 		boolean isNegative = false;
 		if (number < 0) {
 			number = -number;
@@ -147,7 +138,7 @@ public final class Strings2 {
 	 * @param number The number to be converted
 	 * @param retain Reserved decimal places
 	 */
-	public static @NotNull String toByteFix(double number, int retain) {
+	public static String toByteFix(double number, int retain) {
 		boolean isNegative = false;
 		if (number < 0) {
 			number = -number;
@@ -202,7 +193,7 @@ public final class Strings2 {
 		return (isNegative ? "-" : "") + arr[0] + (retain == 0 ? "" : "." + arr[1].substring(0, realRetain) + end + byteUnit[index]);*/
 	}
 
-	public static @NotNull String toStoreSize(float num) {
+	public static String toStoreSize(float num) {
 		float v = num;
 		int n = 0;
 

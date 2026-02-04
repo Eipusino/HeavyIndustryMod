@@ -7,10 +7,13 @@ import arc.scene.event.InputListener
 import arc.struct.Seq
 
 open class CombineKeyListener<T>(
+	@JvmField
 	val keysTree: CombineKeyTree<T>,
+	@JvmField
 	val fuzzed: Boolean = false
 ) : InputListener() {
-	private val keysDown = Seq<KeyCode>(KeyCode::class.java)
+	@JvmField
+	protected val keysDown = Seq<KeyCode>(KeyCode::class.java)
 
 	override fun keyDown(event: InputEvent?, keycode: KeyCode?): Boolean {
 		if (!keysTree.containsKeyCode(keycode)) return false

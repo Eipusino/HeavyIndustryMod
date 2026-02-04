@@ -10,28 +10,28 @@ import arc.graphics.gl.FrameBuffer;
 import arc.graphics.gl.GLFrameBuffer;
 import arc.graphics.gl.Shader;
 import arc.util.serialization.Jval;
-import endfield.util.InLazy;
+import kotlin.Lazy;
+import kotlin.LazyKt;
 import mindustry.Vars;
 import mindustry.game.EventType.Trigger;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pixelator;
-import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 
 public final class ScreenSampler {
-	//private static long lastBoundFramebufferFieldOffset, bufferFieldOffset;
-	private static Field lastBoundFramebufferField, bufferField;
+	private static Field lastBoundFramebufferField;
+	private static Field bufferField;
 
 	private static FrameBuffer worldBuffer, uiBuffer, currBuffer;
-	private static InLazy<FrameBuffer> pixelatorBuffer;
+
+	private static Lazy<FrameBuffer> pixelatorBuffer;
 
 	private static boolean activity = false;
 
 	private ScreenSampler() {}
 
-	@Internal
 	public static void init() {
 		try {
 			lastBoundFramebufferField = GLFrameBuffer.class.getDeclaredField("lastBoundFramebuffer");
@@ -39,13 +39,13 @@ public final class ScreenSampler {
 			bufferField = Pixelator.class.getDeclaredField("buffer");
 			bufferField.setAccessible(true);
 
-			pixelatorBuffer = new InLazy<>(() -> {
+			pixelatorBuffer = LazyKt.lazy(() -> {
 				try {
 					return (FrameBuffer) bufferField.get(Vars.renderer.pixelator);
 				} catch (IllegalAccessException e) {
 					throw new RuntimeException(e);
 				}
-			}, false);
+			});
 		} catch (NoSuchFieldException e) {
 			throw new RuntimeException(e);// should not happen.
 		}
@@ -59,7 +59,6 @@ public final class ScreenSampler {
 	 * Load Events for ScreenSampler.
 	 * If you try to load it a second time, nothing will happen.
 	 */
-	@Internal
 	public static void setup() {
 		if (activity) return;
 
@@ -117,7 +116,7 @@ public final class ScreenSampler {
 
 	private static void beginWorld() {
 		if (Vars.renderer.pixelate) {
-			currBuffer = pixelatorBuffer.get();
+			currBuffer = pixelatorBuffer.getValue();
 		} else {
 			currBuffer = worldBuffer;
 
@@ -144,7 +143,7 @@ public final class ScreenSampler {
 		uiBuffer.begin(Color.clear);
 
 		if (!Vars.renderer.pixelate) blitBuffer(worldBuffer, uiBuffer);
-		else blitBuffer(pixelatorBuffer.get(), uiBuffer);
+		else blitBuffer(pixelatorBuffer.getValue(), uiBuffer);
 	}
 
 	private static void endUI() {

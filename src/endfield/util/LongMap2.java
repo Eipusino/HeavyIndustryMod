@@ -7,8 +7,7 @@ import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import endfield.math.Mathm;
-import endfield.util.misc.LongHolder;
-import org.jetbrains.annotations.NotNull;
+import endfield.util.holder.LongHolder;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;
@@ -644,7 +643,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 	}
 
 	@Override
-	public @NotNull Iterator<LongHolder<V>> iterator() {
+	public Iterator<LongHolder<V>> iterator() {
 		return entries();
 	}
 
@@ -817,7 +816,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		}
 
 		@Override
-		public @NotNull Iterator<LongHolder<V>> iterator() {
+		public Iterator<LongHolder<V>> iterator() {
 			return this;
 		}
 	}
@@ -844,7 +843,7 @@ public class LongMap2<V> implements Iterable<LongHolder<V>>, Eachable<LongHolder
 		}
 
 		@Override
-		public @NotNull Iterator<V> iterator() {
+		public Iterator<V> iterator() {
 			return this;
 		}
 

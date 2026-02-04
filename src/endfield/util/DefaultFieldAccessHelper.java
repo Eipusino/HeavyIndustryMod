@@ -10,21 +10,17 @@ public class DefaultFieldAccessHelper implements FieldAccessHelper {
 		Field field = fieldMap.get(clazz, empty).get(name);
 		if (field != null) return field;
 
-		try {
-			if (isStatic) {
-				return getField(clazz, name);
-			} else {
-				Class<?> curr = clazz;
-				while (curr != Object.class) {
-					try {
-						return getField(curr, name);
-					} catch (NoSuchFieldException ignored) {}
+		if (isStatic) {
+			return getField(clazz, name);
+		} else {
+			Class<?> curr = clazz;
+			while (curr != Object.class) {
+				try {
+					return getField(curr, name);
+				} catch (NoSuchFieldException ignored) {}
 
-					curr = curr.getSuperclass();
-				}
+				curr = curr.getSuperclass();
 			}
-		} catch (Throwable e) {
-			throw new RuntimeException(e);
 		}
 
 		throw new NoSuchFieldException("field " + name + " was not found in class: " + clazz);

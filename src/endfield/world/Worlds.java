@@ -17,7 +17,6 @@ import mindustry.game.EventType.ResetEvent;
 import mindustry.io.SaveFileReader;
 import mindustry.io.SaveVersion;
 import mindustry.world.Block;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static endfield.Vars2.MOD_NAME;
 
@@ -29,7 +28,6 @@ public final class Worlds {
 	/** Don't let anyone instantiate this class. */
 	private Worlds() {}
 
-	@Internal
 	public static void load() {
 		Events.on(ResetEvent.class, event -> {
 			commandableBuilds.clear();
@@ -42,12 +40,10 @@ public final class Worlds {
 	}
 
 	/** Not needed for now. */
-	@Internal
 	public static void init() {
 		SaveVersion.addCustomChunk(MOD_NAME + "-team-payload-data", teamPayloadData);
 	}
 
-	@Internal
 	public static void addAll() {
 		SaveFileReader.fallback.putAll(
 				"heavy-industry-link-block-1", "endfield-link-block-1",

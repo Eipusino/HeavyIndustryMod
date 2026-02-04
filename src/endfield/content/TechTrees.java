@@ -15,7 +15,6 @@ import mindustry.game.Objectives.Produce;
 import mindustry.game.Objectives.Research;
 import mindustry.game.Objectives.SectorComplete;
 import mindustry.type.ItemStack;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 import static endfield.content.Blocks2.*;
 import static endfield.content.UnitTypes2.*;
@@ -34,7 +33,6 @@ public final class TechTrees {
 	private TechTrees() {}
 
 	/** Instantiates all contents. Called in the main thread in {@code EndFieldMod.loadContent()}. */
-	@Internal
 	public static void load() {
 		if (Vars2.isPlugin) return;
 

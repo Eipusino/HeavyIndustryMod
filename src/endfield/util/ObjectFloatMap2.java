@@ -7,7 +7,7 @@ import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import endfield.math.Mathm;
-import endfield.util.misc.ObjectFloatHolder;
+import endfield.util.holder.ObjectFloatHolder;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;

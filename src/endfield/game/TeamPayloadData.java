@@ -5,7 +5,7 @@ import arc.util.Log;
 import endfield.io.ReadsKt;
 import endfield.io.WritesKt;
 import endfield.util.CollectionObjectMap;
-import endfield.util.misc.ObjectHolder;
+import endfield.util.holder.ObjectHolder;
 import mindustry.Vars;
 import mindustry.ctype.Content;
 import mindustry.ctype.UnlockableContent;

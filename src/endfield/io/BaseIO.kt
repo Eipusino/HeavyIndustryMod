@@ -4,7 +4,6 @@ import arc.files.Fi
 import arc.util.Log
 import endfield.func.ProvT
 import endfield.func.RunT
-import endfield.util.InLazy
 import mindustry.Vars
 import java.io.Closeable
 import java.io.FileInputStream
@@ -18,7 +17,7 @@ import java.security.MessageDigest
  */
 object BaseIO {
 	@JvmField
-	val messageDigest = InLazy { MessageDigest.getInstance("MD5") }
+	val messageDigest = lazy { MessageDigest.getInstance("MD5") }
 
 	@JvmStatic
 	fun ioRunUnchecked(run: RunT<IOException>) {

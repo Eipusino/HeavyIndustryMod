@@ -2,7 +2,6 @@ package endfield.util;
 
 import arc.math.Mathf;
 import arc.util.Strings;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 
@@ -327,7 +326,7 @@ public class CharSeq implements CharSequence, Appendable, Cloneable {
 	}
 
 	@Override
-	public @NotNull CharSeq subSequence(int start, int end) {
+	public CharSeq subSequence(int start, int end) {
 		if (start < 0 || start > end || end > size)
 			throw new IndexOutOfBoundsException(Strings.format("start @, end @, size @", start, end, size));
 		if (start == end) return new CharSeq(0);
@@ -499,7 +498,7 @@ public class CharSeq implements CharSequence, Appendable, Cloneable {
 	}
 
 	@Override
-	public @NotNull String toString() {
+	public String toString() {
 		// We need to implement the requirements of the CharSequence interface.
 		return String.valueOf(Arrays.copyOfRange(items, 0, size));
 	}

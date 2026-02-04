@@ -2,7 +2,6 @@ package endfield.util;
 
 import arc.func.Cons;
 import arc.util.Eachable;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
@@ -124,7 +123,7 @@ public class HierarchyList<T> extends AbstractList<T> implements Eachable<T>, Cl
 	}
 
 	@Override
-	public @NotNull HierarchyIterator iterator() {
+	public HierarchyIterator iterator() {
 		if (iterator1 == null) iterator1 = new HierarchyIterator();
 
 		if (iterator1.done) {

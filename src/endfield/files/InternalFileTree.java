@@ -4,10 +4,6 @@ import arc.assets.loaders.FileHandleResolver;
 import arc.files.Fi;
 import arc.files.ZipFi;
 import arc.util.OS;
-import endfield.net.Call2;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 /**
  * Use for jar internal navigation.
@@ -21,10 +17,10 @@ public class InternalFileTree implements FileHandleResolver {
 	public final Fi file;
 
 	/** @param owner navigation anchor */
-	public InternalFileTree(@NotNull Class<?> owner) {
+	public InternalFileTree(Class<?> owner) {
 		anchorClass = owner;
 
-		String classPath = Call2.getResourceNotNull(anchorClass, "").getFile().replaceAll("%20", " ");
+		String classPath = anchorClass.getResource("").getFile().replaceAll("%20", " ");
 		classPath = classPath.substring(classPath.indexOf(":") + 2);
 		String jarPath = (OS.isLinux ? "/" : "") + classPath.substring(0, classPath.indexOf("!"));
 

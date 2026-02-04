@@ -3,8 +3,7 @@ package endfield.util;
 import arc.func.Cons;
 import arc.func.Prov;
 import arc.util.Eachable;
-import endfield.util.misc.ObjectHolder;
-import org.jetbrains.annotations.NotNull;
+import endfield.util.holder.ObjectHolder;
 
 import java.util.Iterator;
 
@@ -100,7 +99,7 @@ public class ObjectTable<K, V> implements Iterable<ObjectHolder<K, V>>, Eachable
 	}
 
 	@Override
-	public @NotNull Iterator<ObjectHolder<K, V>> iterator() {
+	public Iterator<ObjectHolder<K, V>> iterator() {
 		return map12.iterator();
 	}
 

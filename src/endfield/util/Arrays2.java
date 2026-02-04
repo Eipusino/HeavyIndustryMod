@@ -27,9 +27,7 @@ import arc.struct.Seq;
 import arc.util.Eachable;
 import endfield.func.BoolBoolf;
 import endfield.func.ByteBytef;
-import endfield.util.misc.ObjectHolder;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
+import endfield.util.holder.ObjectHolder;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -69,42 +67,34 @@ public final class Arrays2 {
 	 * }</pre>
 	 */
 	@SafeVarargs
-	@Contract(value = "_ -> param1", pure = true)
 	public static <T> T[] arrayOf(T... elements) {
 		return elements;
 	}
 
-	@Contract(value = "_ -> param1", pure = true)
 	public static boolean[] boolOf(boolean... bools) {
 		return bools;
 	}
 
-	@Contract(value = "_ -> param1", pure = true)
 	public static byte[] byteOf(byte... bytes) {
 		return bytes;
 	}
 
-	@Contract(value = "_ -> param1", pure = true)
 	public static short[] shortOf(short... shorts) {
 		return shorts;
 	}
 
-	@Contract(value = "_ -> param1", pure = true)
 	public static int[] intOf(int... ints) {
 		return ints;
 	}
 
-	@Contract(value = "_ -> param1", pure = true)
 	public static long[] longOf(long... longs) {
 		return longs;
 	}
 
-	@Contract(value = "_ -> param1", pure = true)
 	public static float[] floatOf(float... floats) {
 		return floats;
 	}
 
-	@Contract(value = "_ -> param1", pure = true)
 	public static double[] doubleOf(double... doubles) {
 		return doubles;
 	}
@@ -122,7 +112,6 @@ public final class Arrays2 {
 	 * not contain the element
 	 * @throws NullPointerException If {@code array} is null.
 	 */
-	@Contract(pure = true)
 	public static <T> int indexOf(T[] array, Object element, boolean identity) {
 		if (identity || element == null) {
 			for (int i = 0; i < array.length; i++) {
@@ -876,13 +865,11 @@ public final class Arrays2 {
 		}
 	}
 
-	@Contract(pure = true)
 	public static <T> boolean any(T[] array, Boolf<T> pred) {
 		for (T e : array) if (pred.get(e)) return true;
 		return false;
 	}
 
-	@Contract(pure = true)
 	public static <T> boolean all(T[] array, Boolf<T> pred) {
 		for (T e : array) if (!pred.get(e)) return false;
 		return true;
@@ -896,23 +883,19 @@ public final class Arrays2 {
 		for (int i = offset, len = i + length; i < len; i++) cons.get(array[i]);
 	}
 
-	@Contract(value = "_ -> new", pure = true)
 	public static <T> Single<T> iter(T item) {
 		return new Single<>(item);
 	}
 
 	@SuppressWarnings("unchecked")
-	@Contract(value = "_ -> new", pure = true)
 	public static <T> Iter<T> iter(T... array) {
 		return iter(array, 0, array.length);
 	}
 
-	@Contract(value = "_, _, _ -> new", pure = true)
 	public static <T> Iter<T> iter(T[] array, int offset, int length) {
 		return new Iter<>(array, offset, length);
 	}
 
-	@Contract(value = "_, _ -> new", pure = true)
 	public static <T> Chain<T> chain(Iterator<T> first, Iterator<T> second) {
 		return new Chain<>(first, second);
 	}
@@ -976,7 +959,7 @@ public final class Arrays2 {
 		}
 
 		@Override
-		public @NotNull Single<T> iterator() {
+		public Single<T> iterator() {
 			return this;
 		}
 
@@ -1003,7 +986,7 @@ public final class Arrays2 {
 		protected final int offset, length;
 		protected int index = 0;
 
-		public Iter(T @NotNull [] arr, int off, int len) {
+		public Iter(T[] arr, int off, int len) {
 			array = arr;
 			offset = off;
 			length = len;
@@ -1018,7 +1001,7 @@ public final class Arrays2 {
 		}
 
 		@Override
-		public @NotNull Iter<T> iterator() {
+		public Iter<T> iterator() {
 			return this;
 		}
 
@@ -1047,7 +1030,7 @@ public final class Arrays2 {
 		}
 
 		@Override
-		public @NotNull Chain<T> iterator() {
+		public Chain<T> iterator() {
 			return this;
 		}
 

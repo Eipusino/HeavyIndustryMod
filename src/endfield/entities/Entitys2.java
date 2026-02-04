@@ -54,7 +54,6 @@ import mindustry.type.UnitType;
 import mindustry.world.Tile;
 import mindustry.world.blocks.defense.turrets.Turret.TurretBuild;
 import org.jetbrains.annotations.ApiStatus.Obsolete;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
@@ -718,7 +717,6 @@ public final class Entitys2 {
 		return false;
 	}
 
-	@Contract(pure = true)
 	public static boolean containsExclude(int id) {
 		return exclude.contains(id);
 	}

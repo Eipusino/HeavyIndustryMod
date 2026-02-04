@@ -1,6 +1,4 @@
-package endfield.util.misc;
-
-import endfield.util.Objects2;
+package endfield.util.holder;
 
 import java.util.Objects;
 

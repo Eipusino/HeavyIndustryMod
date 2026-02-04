@@ -10,9 +10,13 @@ import java.io.Serializable
  * A combination key consists of a primary key and control keys, where the control key is`Ctrl`.
  */
 class CombinedKeys(vararg keys: KeyCode) : Serializable {
+	@JvmField
 	val isCtrl: Boolean
+	@JvmField
 	val isAlt: Boolean
+	@JvmField
 	val isShift: Boolean
+	@JvmField
 	val key: KeyCode
 
 	init {
@@ -27,24 +31,22 @@ class CombinedKeys(vararg keys: KeyCode) : Serializable {
 	}
 
 	fun isDown(input: Input): Boolean {
-		if ((isCtrl && !input.ctrl()) || (!isCtrl && input.alt())) return false
-		if ((isAlt && !input.alt()) || (!isAlt && input.alt())) return false
-		if ((isShift && !input.shift()) || (!isShift && input.shift())) return false
-		return input.keyDown(key)
+		return filter(input) && input.keyDown(key)
 	}
 
 	fun isReleased(input: Input): Boolean {
-		if ((isCtrl && !input.ctrl()) || (!isCtrl && input.alt())) return false
-		if ((isAlt && !input.alt()) || (!isAlt && input.alt())) return false
-		if ((isShift && !input.shift()) || (!isShift && input.shift())) return false
-		return input.keyRelease(key)
+		return filter(input) && input.keyRelease(key)
 	}
 
 	fun isTap(input: Input): Boolean {
+		return filter(input) && input.keyTap(key)
+	}
+
+	internal fun filter(input: Input): Boolean {
 		if ((isCtrl && !input.ctrl()) || (!isCtrl && input.alt())) return false
 		if ((isAlt && !input.alt()) || (!isAlt && input.alt())) return false
 		if ((isShift && !input.shift()) || (!isShift && input.shift())) return false
-		return input.keyTap(key)
+		return true
 	}
 
 	override fun toString(): String {
@@ -74,23 +76,20 @@ class CombinedKeys(vararg keys: KeyCode) : Serializable {
 				&& other.isAlt == isAlt
 				&& other.isShift == isShift
 	}
+}
 
-	companion object {
-		@JvmStatic
-		fun toString(res: Iterable<KeyCode>): String {
-			val builder = StringBuilder()
+fun toString(res: Iterable<KeyCode>): String {
+	val builder = StringBuilder()
 
-			if (res.contains(KeyCode.controlLeft) || res.contains(KeyCode.controlRight)) builder.append("Ctrl")
-				.append(" + ")
-			if (res.contains(KeyCode.altLeft) || res.contains(KeyCode.altRight)) builder.append("Alt").append(" + ")
-			if (res.contains(KeyCode.shiftLeft) || res.contains(KeyCode.shiftRight)) builder.append("Shift")
-				.append(" + ")
+	if (res.contains(KeyCode.controlLeft) || res.contains(KeyCode.controlRight)) builder.append("Ctrl")
+		.append(" + ")
+	if (res.contains(KeyCode.altLeft) || res.contains(KeyCode.altRight)) builder.append("Alt").append(" + ")
+	if (res.contains(KeyCode.shiftLeft) || res.contains(KeyCode.shiftRight)) builder.append("Shift")
+		.append(" + ")
 
-			builder.append(res.lastOrNull { !it.isControllerKey() }?.value ?: "")
+	builder.append(res.lastOrNull { !it.isControllerKey() }?.value ?: "")
 
-			return builder.toString()
-		}
-	}
+	return builder.toString()
 }
 
 fun KeyCode.isControllerKey() = this == KeyCode.controlLeft || this == KeyCode.controlRight

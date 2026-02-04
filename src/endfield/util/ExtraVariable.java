@@ -7,6 +7,12 @@ import arc.func.Func;
 import arc.func.IntIntf;
 import arc.func.Intp;
 import arc.func.Prov;
+import dynamilize.Variable.BooleanReference;
+import dynamilize.Variable.CharReference;
+import dynamilize.Variable.DoubleReference;
+import dynamilize.Variable.FloatReference;
+import dynamilize.Variable.IntReference;
+import dynamilize.Variable.LongReference;
 import endfield.func.BoolBoolf;
 import endfield.func.CharCharf;
 import endfield.func.Charp;
@@ -14,12 +20,6 @@ import endfield.func.DoubleDoublef;
 import endfield.func.Doublep;
 import endfield.func.LongLongf;
 import endfield.func.Longp;
-import endfield.util.misc.BoolReference;
-import endfield.util.misc.CharReference;
-import endfield.util.misc.DoubleReference;
-import endfield.util.misc.FloatReference;
-import endfield.util.misc.IntReference;
-import endfield.util.misc.LongReference;
 
 import java.util.Map;
 
@@ -145,15 +145,15 @@ public interface ExtraVariable {
 	default boolean setVar(String field, boolean value) {
 		Object res = getVar(field);
 
-		if (res instanceof BoolReference b) {
-			boolean r = b.element;
-			b.element = value;
+		if (res instanceof BooleanReference b) {
+			boolean r = b.value;
+			b.value = value;
 			return r;
 		} else if (res instanceof Boolean n) {
-			extra().put(field, new BoolReference(value));
+			extra().put(field, new BooleanReference(value));
 			return n;
 		} else if (res == null) {
-			extra().put(field, new BoolReference(value));
+			extra().put(field, new BooleanReference(value));
 			return false;
 		}
 
@@ -171,7 +171,7 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 		if (res == null) return def;
 
-		if (res instanceof BoolReference r) return r.element;
+		if (res instanceof BooleanReference r) return r.value;
 		else if (res instanceof Boolean b) return b;
 
 		throw new ClassCastException(res + " is not a boolean value or boolean reference");
@@ -188,11 +188,11 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 		if (res == null) {
 			boolean b = initial.get();
-			extra().put(field, new BoolReference(b));
+			extra().put(field, new BooleanReference(b));
 			return b;
 		}
 
-		if (res instanceof BoolReference r) return r.element;
+		if (res instanceof BooleanReference r) return r.value;
 		else if (res instanceof Boolean b) return b;
 
 		throw new ClassCastException(res + " is not a boolean value or boolean reference");
@@ -223,8 +223,8 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 
 		if (res instanceof CharReference c) {
-			char r = c.element;
-			c.element = value;
+			char r = c.value;
+			c.value = value;
 			return r;
 		} else if (res instanceof Character c) {
 			extra().put(field, new CharReference(value));
@@ -248,7 +248,7 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 		if (res == null) return def;
 
-		if (res instanceof CharReference r) return r.element;
+		if (res instanceof CharReference r) return r.value;
 		else if (res instanceof Character c) return c;
 
 		throw new ClassCastException(res + " is not a character value or character reference");
@@ -269,7 +269,7 @@ public interface ExtraVariable {
 			return c;
 		}
 
-		if (res instanceof CharReference c) return c.element;
+		if (res instanceof CharReference c) return c.value;
 		else if (res instanceof Character c) return c;
 
 		throw new ClassCastException(res + " is not a character or character reference");
@@ -283,8 +283,8 @@ public interface ExtraVariable {
 	 *                            or character reference
 	 * @see ExtraVariable#handleVar(String, Func, Object)
 	 */
-	default int handleVar(String field, CharCharf handle, char def) {
-		int i;
+	default char handleVar(String field, CharCharf handle, char def) {
+		char i;
 		setVar(field, i = handle.get(getVar(field, def)));
 
 		return i;
@@ -301,8 +301,8 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 
 		if (res instanceof IntReference i) {
-			int r = i.element;
-			i.element = value;
+			int r = i.value;
+			i.value = value;
 			return r;
 		} else if (res instanceof Number n) {
 			extra().put(field, new IntReference(value));
@@ -326,7 +326,7 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 		if (res == null) return def;
 
-		if (res instanceof IntReference i) return i.element;
+		if (res instanceof IntReference i) return i.value;
 		else if (res instanceof Number n) return n.intValue();
 
 		throw new ClassCastException(res + " is not a number or integer reference");
@@ -347,7 +347,7 @@ public interface ExtraVariable {
 			return i;
 		}
 
-		if (res instanceof IntReference i) return i.element;
+		if (res instanceof IntReference i) return i.value;
 		else if (res instanceof Number n) return n.intValue();
 
 		throw new ClassCastException(res + " is not a number or integer reference");
@@ -377,8 +377,8 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 
 		if (res instanceof LongReference l) {
-			long r = l.element;
-			l.element = value;
+			long r = l.value;
+			l.value = value;
 			return r;
 		} else if (res instanceof Number n) {
 			extra().put(field, new LongReference(value));
@@ -401,7 +401,7 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 		if (res == null) return def;
 
-		if (res instanceof LongReference l) return l.element;
+		if (res instanceof LongReference l) return l.value;
 		else if (res instanceof Number n) return n.longValue();
 
 		throw new ClassCastException(res + " is not a number or long reference");
@@ -421,7 +421,7 @@ public interface ExtraVariable {
 			return l;
 		}
 
-		if (res instanceof LongReference l) return l.element;
+		if (res instanceof LongReference l) return l.value;
 		else if (res instanceof Number n) return n.longValue();
 
 		throw new ClassCastException(res + " is not a number or float reference");
@@ -450,8 +450,8 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 
 		if (res instanceof FloatReference f) {
-			float r = f.element;
-			f.element = value;
+			float r = f.value;
+			f.value = value;
 			return r;
 		} else if (res instanceof Number n) {
 			extra().put(field, new FloatReference(value));
@@ -474,7 +474,7 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 		if (res == null) return def;
 
-		if (res instanceof FloatReference f) return f.element;
+		if (res instanceof FloatReference f) return f.value;
 		else if (res instanceof Number n) return n.floatValue();
 
 		throw new ClassCastException(res + " is not a number or float reference");
@@ -494,7 +494,7 @@ public interface ExtraVariable {
 			return f;
 		}
 
-		if (res instanceof FloatReference f) return f.element;
+		if (res instanceof FloatReference f) return f.value;
 		else if (res instanceof Number n) return n.longValue();
 
 		throw new ClassCastException(res + " is not a number or float reference");
@@ -523,8 +523,8 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 
 		if (res instanceof DoubleReference d) {
-			double r = d.element;
-			d.element = value;
+			double r = d.value;
+			d.value = value;
 			return r;
 		} else if (res instanceof Number n) {
 			extra().put(field, new DoubleReference(value));
@@ -547,7 +547,7 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 		if (res == null) return def;
 
-		if (res instanceof DoubleReference d) return d.element;
+		if (res instanceof DoubleReference d) return d.value;
 		else if (res instanceof Number n) return n.doubleValue();
 
 		throw new ClassCastException(res + " is not a number or double reference");
@@ -567,7 +567,7 @@ public interface ExtraVariable {
 			return d;
 		}
 
-		if (res instanceof DoubleReference d) return d.element;
+		if (res instanceof DoubleReference d) return d.value;
 		else if (res instanceof Number n) return n.doubleValue();
 
 		throw new ClassCastException(res + " is not a number or double reference");

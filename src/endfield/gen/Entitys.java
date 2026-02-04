@@ -9,7 +9,6 @@ import endfield.util.ObjectIntMap2;
 import mindustry.ctype.Content;
 import mindustry.gen.EntityMapping;
 import mindustry.gen.Entityc;
-import org.jetbrains.annotations.ApiStatus.Internal;
 import org.jetbrains.annotations.ApiStatus.Obsolete;
 
 /**
@@ -64,7 +63,6 @@ public final class Entitys {
 		return classIdMap.get(type, -1);
 	}
 
-	@Internal
 	public static void load() {
 		if (registered) return;
 

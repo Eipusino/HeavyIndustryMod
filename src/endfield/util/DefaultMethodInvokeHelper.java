@@ -2,7 +2,7 @@ package endfield.util;
 
 import arc.func.Prov;
 import dynamilize.FunctionType;
-import endfield.util.misc.ObjectHolder;
+import endfield.util.holder.ObjectHolder;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -85,8 +85,7 @@ public class DefaultMethodInvokeHelper implements MethodInvokeHelper {
 		try {
 			res = clazz.getConstructor(argsType.getTypes());
 			res.setAccessible(true);
-		} catch (NoSuchMethodException ignored) {
-		}
+		} catch (NoSuchMethodException ignored) {}
 
 		if (res != null) return res;
 

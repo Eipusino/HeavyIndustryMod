@@ -7,10 +7,7 @@ import arc.math.Mathf;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import endfield.math.Mathm;
-import endfield.util.misc.ObjectHolder;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import endfield.util.holder.ObjectHolder;
 
 import java.lang.reflect.Array;
 import java.util.AbstractMap;
@@ -55,8 +52,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	protected transient Keys keys1, keys2;
 
 	@SuppressWarnings("unchecked")
-	@Contract(value = "_, _, _ -> new")
-	public static <K, V> CollectionObjectMap<K, V> of(@NotNull Class<?> keyType, @NotNull Class<?> valueType, Object... values) {
+	public static <K, V> CollectionObjectMap<K, V> of(Class<?> keyType, Class<?> valueType, Object... values) {
 		CollectionObjectMap<K, V> map = new CollectionObjectMap<>(keyType, valueType);
 
 		for (int i = 0; i < values.length / 2; i++) {
@@ -67,7 +63,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	}
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
-	public CollectionObjectMap(@NotNull Class<?> keyType, @NotNull Class<?> valueType) {
+	public CollectionObjectMap(Class<?> keyType, Class<?> valueType) {
 		this(keyType, valueType, 51, 0.8f);
 	}
 
@@ -76,7 +72,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	 *
 	 * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
 	 */
-	public CollectionObjectMap(@NotNull Class<?> keyType, @NotNull Class<?> valueType, int initialCapacity) {
+	public CollectionObjectMap(Class<?> keyType, Class<?> valueType, int initialCapacity) {
 		this(keyType, valueType, initialCapacity, 0.8f);
 	}
 
@@ -87,7 +83,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	 * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
 	 */
 	@SuppressWarnings("unchecked")
-	public CollectionObjectMap(@NotNull Class<?> keyType, @NotNull Class<?> valueType, int initialCapacity, float loadFactor) {
+	public CollectionObjectMap(Class<?> keyType, Class<?> valueType, int initialCapacity, float loadFactor) {
 		if (initialCapacity < 0) throw new IllegalArgumentException("initialCapacity must be >= 0: " + initialCapacity);
 		initialCapacity = Mathf.nextPowerOfTwo((int) Math.ceil(initialCapacity / loadFactor));
 		if (initialCapacity > 0x40000000)
@@ -119,7 +115,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		size = map.size;
 	}
 
-	public CollectionObjectMap(Map<? extends K, ? extends V> map, @NotNull Class<?> keyType, @NotNull Class<?> valueType) {
+	public CollectionObjectMap(Map<? extends K, ? extends V> map, Class<?> keyType, Class<?> valueType) {
 		this(keyType, valueType, map.size());
 		putAll(map);
 	}
@@ -139,7 +135,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	}
 
 	@SuppressWarnings("unchecked")
-	public @NotNull CollectionObjectMap<K, V> copy() {
+	public CollectionObjectMap<K, V> copy() {
 		try {
 			CollectionObjectMap<K, V> out = (CollectionObjectMap<K, V>) super.clone();
 			out.keyTable = keyTable.clone();
@@ -159,8 +155,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 
 	/** Returns the old value associated with the specified key, or null. */
 	@Override
-	@Contract(value = "null, _ -> null")
-	public V put(@Nullable K key, V value) {
+	public V put(K key, V value) {
 		if (key == null) return null;
 
 		// Check for existing keys.
@@ -224,8 +219,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		return null;
 	}
 
-	@Contract(value = "null -> null")
-	public V put(@Nullable Entry<? extends K, ? extends V> entry) {
+	public V put(Entry<? extends K, ? extends V> entry) {
 		if (entry == null) return null;
 
 		return put(entry.getKey(), entry.getValue());
@@ -239,14 +233,13 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	}
 
 	/** Put all the keys of this other map into this map, and return this map for chaining. */
-	@Contract(value = "_ -> this")
 	public CollectionObjectMap<K, V> merge(CollectionObjectMap<? extends K, ? extends V> map) {
 		putAll(map);
 		return this;
 	}
 
 	/** Skips checks for existing keys. */
-	protected void putResize(@NotNull K key, V value) {
+	protected void putResize(K key, V value) {
 		// Check for empty buckets.
 		int hashCode = key.hashCode();
 		int index1 = hashCode & mask;
@@ -381,8 +374,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 
 	/** Returns the value for the specified key, or null if the key is not in the map. */
 	@Override
-	@Contract(value = "null -> null", pure = true)
-	public V get(@Nullable Object key) {
+	public V get(Object key) {
 		if (key == null) return null;
 
 		int hashCode = key.hashCode();
@@ -398,8 +390,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	}
 
 	/** Returns the value for the specified key, or the default value if the key is not in the map. */
-	@Contract(value = "null, _ -> param2", pure = true)
-	public V get(@Nullable K key, V defaultValue) {
+	public V get(K key, V defaultValue) {
 		if (key == null) return defaultValue;
 
 		int hashCode = key.hashCode();
@@ -414,7 +405,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		return valueTable[index];
 	}
 
-	protected V getStash(@NotNull Object key, V defaultValue) {
+	protected V getStash(Object key, V defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
 			if (key.equals(keyTable[i])) return valueTable[i];
 		return defaultValue;
@@ -422,8 +413,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 
 	/** Returns the value associated with the key, or null. */
 	@Override
-	@Contract(value = "null -> null")
-	public V remove(@Nullable Object key) {
+	public V remove(Object key) {
 		if (key == null) return null;
 
 		int hashCode = key.hashCode();
@@ -458,7 +448,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	}
 
 	@Override
-	public void putAll(@NotNull Map<? extends K, ? extends V> m) {
+	public void putAll(Map<? extends K, ? extends V> m) {
 		ensureCapacity(m.size());
 		for (ObjectHolder<K, V> holder : iterator()) {
 			put(holder.getKey(), holder.getValue());
@@ -550,7 +540,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	 * @param identity If true, uses == to compare the specified value with values in the map. If false, uses
 	 *                 {@link #equals(Object)}.
 	 */
-	public boolean containsValue(@Nullable Object value, boolean identity) {
+	public boolean containsValue(Object value, boolean identity) {
 		if (value == null) {
 			for (int i = capacity + stashSize; i-- > 0; )
 				if (keyTable[i] != null && valueTable[i] == null) return true;
@@ -565,7 +555,6 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	}
 
 	@Override
-	@Contract(value = "null -> false", pure = true)
 	public boolean containsKey(Object key) {
 		if (key == null) return false;
 
@@ -582,7 +571,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	}
 
 	@Override
-	public boolean containsValue(@Nullable Object value) {
+	public boolean containsValue(Object value) {
 		return containsValue(value, false);
 	}
 
@@ -737,11 +726,11 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	 * time this method is called. Use the {@link Entries} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public @NotNull Entries iterator() {
+	public Entries iterator() {
 		return entries();
 	}
 
-	public @NotNull Entries entries() {
+	public Entries entries() {
 		if (entries1 == null) {
 			entries1 = new Entries();
 			entries2 = new Entries();
@@ -763,7 +752,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	 * time this method is called. Use the {@link Values} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public @NotNull Values values() {
+	public Values values() {
 		if (values1 == null) {
 			values1 = new Values();
 			values2 = new Values();
@@ -781,7 +770,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	}
 
 	@Override
-	public @NotNull EntrySet entrySet() {
+	public EntrySet entrySet() {
 		return new EntrySet();
 	}
 
@@ -790,7 +779,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	 * time this method is called. Use the {@link Keys} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public @NotNull Keys keySet() {
+	public Keys keySet() {
 		if (keys1 == null) {
 			keys1 = new Keys();
 			keys2 = new Keys();
@@ -822,7 +811,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		}
 
 		@Override
-		public @NotNull Iterator<Entry<K, V>> iterator() {
+		public Iterator<Entry<K, V>> iterator() {
 			itr.entries = CollectionObjectMap.this.iterator();
 			return itr;
 		}
@@ -943,18 +932,18 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		}
 
 		@Override
-		public boolean addAll(@NotNull Collection<? extends I> c) {
+		public boolean addAll(Collection<? extends I> c) {
 			return false;
 		}
 
 		@Override
-		public I @NotNull [] toArray() {
+		public Object[] toArray() {
 			return toList().toArray();
 		}
 
 		@Override
-		public <T> T @NotNull [] toArray(T[] a) {
-			return toList().toArray(a.getClass().getComponentType());
+		public <T> T[] toArray(T[] a) {
+			return toList().toArray(a);
 		}
 
 		@Override
@@ -997,7 +986,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		}
 
 		@Override
-		public @NotNull Entries iterator() {
+		public Entries iterator() {
 			return this;
 		}
 
@@ -1030,8 +1019,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		}
 
 		@Override
-		@Contract(value = " -> this", pure = true)
-		public @NotNull Values iterator() {
+		public Values iterator() {
 			return this;
 		}
 
@@ -1074,7 +1062,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		}
 
 		@Override
-		public @NotNull Keys iterator() {
+		public Keys iterator() {
 			return this;
 		}
 

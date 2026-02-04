@@ -1,4 +1,4 @@
-package endfield.util.misc;
+package endfield.util.holder;
 
 import java.util.Objects;
 

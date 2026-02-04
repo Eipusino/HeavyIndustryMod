@@ -5,8 +5,6 @@ import arc.func.Cons;
 import arc.math.Mathf;
 import arc.util.Eachable;
 import endfield.math.Mathm;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
@@ -147,8 +145,7 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Iterable<E
 	 * and returns false.
 	 */
 	@Override
-	@Contract(value = "null -> false")
-	public boolean add(@Nullable E key) {
+	public boolean add(E key) {
 		if (key == null) return false;
 
 		// Check for existing keys.
@@ -437,8 +434,7 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Iterable<E
 	}
 
 	@Override
-	@Contract(value = "null -> false")
-	public boolean contains(@Nullable Object key) {
+	public boolean contains(Object key) {
 		if (key == null || size == 0) return false;
 
 		int hashCode = key.hashCode();
@@ -454,8 +450,7 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Iterable<E
 	}
 
 	/** @return May be null. */
-	@Contract(value = "null -> null")
-	public E get(@Nullable Object key) {
+	public E get(Object key) {
 		if (key == null) return null;
 
 		int hashCode = key.hashCode();
@@ -578,7 +573,7 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Iterable<E
 	 * time this method is called. Use the {@link Iter} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public @NotNull Iter iterator() {
+	public Iter iterator() {
 		if (iterator1 == null) iterator1 = new Iter();
 
 		if (iterator1.done) {
@@ -656,7 +651,7 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Iterable<E
 		}
 
 		@Override
-		public @NotNull Iter iterator() {
+		public Iter iterator() {
 			return this;
 		}
 

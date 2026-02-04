@@ -18,7 +18,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import endfield.util.CollectionList;
 import endfield.util.ObjectBoolOrderedMap;
-import endfield.util.misc.ObjectBoolHolder;
+import endfield.util.holder.ObjectBoolHolder;
 import mindustry.core.Renderer;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;

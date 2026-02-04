@@ -1,6 +1,4 @@
-package endfield.util.misc;
-
-import org.jetbrains.annotations.NotNull;
+package endfield.util.holder;
 
 import java.util.Objects;
 
@@ -48,7 +46,7 @@ public class CharHolder<V> implements Cloneable, Comparable<CharHolder<?>> {
 	}
 
 	@Override
-	public int compareTo(@NotNull CharHolder<?> o) {
+	public int compareTo(CharHolder<?> o) {
 		return Character.compare(key, o.key);
 	}
 }

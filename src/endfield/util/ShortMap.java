@@ -8,7 +8,7 @@ import arc.struct.ShortSeq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import endfield.math.Mathm;
-import endfield.util.misc.ShortHolder;
+import endfield.util.holder.ShortHolder;
 
 import java.lang.reflect.Array;
 import java.util.Iterator;

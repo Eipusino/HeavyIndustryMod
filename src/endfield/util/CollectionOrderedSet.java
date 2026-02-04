@@ -1,7 +1,5 @@
 package endfield.util;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.NoSuchElementException;
 
 /**
@@ -94,7 +92,7 @@ public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
 	}
 
 	@Override
-	public @NotNull Iter iterator() {
+	public Iter iterator() {
 		if (iterator1 == null) iterator1 = new OrderedIter();
 
 		if (iterator1.done) {

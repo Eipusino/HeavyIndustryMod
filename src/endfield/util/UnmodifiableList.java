@@ -3,10 +3,10 @@ package endfield.util;
 import arc.func.Cons;
 import arc.util.Eachable;
 import endfield.math.Mathm;
-import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Array;
 import java.util.AbstractList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -134,19 +134,19 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Iterable<E>,
 
 	/** A copy of this list element. */
 	@Override
-	public E @NotNull [] toArray() {
-		return items.clone();
+	public Object[] toArray() {
+		return Arrays.copyOf(items, size, Object[].class);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T @NotNull [] toArray(Class<?> type) {
+	public <T> T[] toArray(Class<?> type) {
 		T[] result = (T[]) Array.newInstance(type, size);
 		System.arraycopy(items, 0, result, 0, size);
 		return result;
 	}
 
 	@Override
-	public <T> T @NotNull [] toArray(T[] a) {
+	public <T> T[] toArray(T[] a) {
 		if (a.length < size) {
 			// Make a new array of a's runtime type, but my contents:
 			return toArray(a.getClass().getComponentType());
@@ -164,12 +164,12 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Iterable<E>,
 	}
 
 	@Override
-	public @NotNull List<E> subList(int fromIndex, int toIndex) {
+	public List<E> subList(int fromIndex, int toIndex) {
 		return new SubList<>(this, fromIndex, toIndex);
 	}
 
 	@Override
-	public @NotNull Iterator<E> iterator() {
+	public Iterator<E> iterator() {
 		if (iterator1 == null) iterator1 = new Iter();
 
 		if (iterator1.done) {
@@ -190,7 +190,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Iterable<E>,
 	}
 
 	@Override
-	public @NotNull ListIterator<E> listIterator(int index) {
+	public ListIterator<E> listIterator(int index) {
 		if (listIterator1 == null) listIterator1 = new ListIter(index);
 
 		if (listIterator1.done) {
@@ -324,7 +324,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Iterable<E>,
 		}
 
 		@Override
-		public @NotNull List<T> subList(int fromIndex, int toIndex) {
+		public List<T> subList(int fromIndex, int toIndex) {
 			int absoluteFromIndex = offset + fromIndex;
 			int absoluteToIndex = offset + toIndex;
 

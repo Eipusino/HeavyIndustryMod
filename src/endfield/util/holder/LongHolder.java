@@ -1,7 +1,4 @@
-package endfield.util.misc;
-
-import endfield.util.Objects2;
-import org.jetbrains.annotations.NotNull;
+package endfield.util.holder;
 
 import java.util.Objects;
 
@@ -49,7 +46,7 @@ public class LongHolder<V> implements Cloneable, Comparable<LongHolder<?>> {
 	}
 
 	@Override
-	public int compareTo(@NotNull LongHolder<?> o) {
+	public int compareTo(LongHolder<?> o) {
 		return Long.compare(key, o.key);
 	}
 }

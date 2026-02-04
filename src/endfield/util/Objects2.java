@@ -21,9 +21,6 @@ import endfield.Vars2;
 import endfield.func.ProvT;
 import endfield.func.RunT;
 import endfield.util.handler.FieldHandler;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -53,8 +50,7 @@ public final class Objects2 {
 	 *                              the {@code supplier.get()} value is {@code null}
 	 * @since 1.0.8
 	 */
-	@Contract(value = "!null, _ -> param1; null, _ -> !null", pure = true)
-	public static <T> @NotNull T requireNonNullElseGet(@Nullable T obj, Prov<? extends T> supplier) {
+	public static <T> T requireNonNullElseGet(T obj, Prov<? extends T> supplier) {
 		return (obj != null) ? obj
 				: Objects.requireNonNull(Objects.requireNonNull(supplier, "supplier").get(), "supplier.get()");
 	}
@@ -79,15 +75,13 @@ public final class Objects2 {
 	 * @throws NullPointerException if {@code obj} is {@code null}
 	 * @since 1.0.8
 	 */
-	@Contract(value = "null, _ -> fail; _, _ -> param1")
-	public static <T> @NotNull T requireNonNull(@Nullable T obj, Prov<String> messageSupplier) {
+	public static <T> T requireNonNull(T obj, Prov<String> messageSupplier) {
 		if (obj == null)
 			throw new NullPointerException(messageSupplier == null ?
 					null : messageSupplier.get());
 		return obj;
 	}
 
-	@Contract(value = "_, _ -> param1")
 	public static <T> T apply(T obj, Cons<? super T> cons) {
 		cons.get(obj);
 		return obj;
@@ -135,22 +129,11 @@ public final class Objects2 {
 		}
 	}
 
-	@Contract(value = "_ -> param1", pure = true)
-	public static <T> T initializer(T obj) {
-		return obj;
-	}
-
-	@Contract(pure = true)
-	public static <T> T initializerNullable() {
-		return null;
-	}
-
 	/**
 	 * Used to optimize code conciseness in specific situations.
 	 * <p>You must ensure that {@code obj} can be safely cast to {@link T}.
 	 */
 	@SuppressWarnings("unchecked")
-	@Contract(value = "_ -> param1")
 	public static <T> T cast(Object obj) {
 		return (T) obj;
 	}
@@ -160,14 +143,13 @@ public final class Objects2 {
 	 * <p>If {@code obj} cannot be cast to {@link T}, return {@code def}.
 	 */
 	@SuppressWarnings("unchecked")
-	@Contract(value = "null, _, _ -> null", pure = true)
 	public static <T> T cast(Object obj, Class<T> type, T def) {
 		if (obj != null && !type.isInstance(obj))
 			return def;
 		return (T) obj;
 	}
 
-	public static String toString(@Nullable Object object) {
+	public static String toString(Object object) {
 		return toString(object, true);
 	}
 
@@ -180,8 +162,7 @@ public final class Objects2 {
 	 *
 	 * @param last Should the fields of the super class be retrieved.
 	 */
-	@Contract(pure = true)
-	public static @NotNull String toString(@Nullable Object object, boolean last) {
+	public static String toString(Object object, boolean last) {
 		if (object == null) return "null";
 
 		Class<?> type = object.getClass();
@@ -260,8 +241,7 @@ public final class Objects2 {
 	 * @return JVM type descriptor string
 	 * @throws NullPointerException If {@code type} is null.
 	 */
-	@Contract(pure = true)
-	public static @NotNull String descriptor(Class<?> type) {
+	public static String descriptor(Class<?> type) {
 		if (type == null) throw new NullPointerException("type is null");
 
 		int depth = 0;

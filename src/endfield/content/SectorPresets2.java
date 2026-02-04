@@ -3,7 +3,6 @@ package endfield.content;
 import endfield.Vars2;
 import mindustry.content.Planets;
 import mindustry.type.SectorPreset;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 /**
  * Defines the {@linkplain SectorPreset maps} this mod offers.
@@ -20,7 +19,6 @@ public final class SectorPresets2 {
 	private SectorPresets2() {}
 
 	/** Instantiates all contents. Called in the main thread in {@code EndFieldMod.loadContent()}. */
-	@Internal
 	public static void load() {
 		if (Vars2.isPlugin) return;
 

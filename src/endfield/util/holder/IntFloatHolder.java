@@ -1,6 +1,4 @@
-package endfield.util.misc;
-
-import org.jetbrains.annotations.NotNull;
+package endfield.util.holder;
 
 /** @since 1.0.7 */
 public class IntFloatHolder implements Cloneable, Comparable<IntFloatHolder> {
@@ -45,7 +43,7 @@ public class IntFloatHolder implements Cloneable, Comparable<IntFloatHolder> {
 	}
 
 	@Override
-	public int compareTo(@NotNull IntFloatHolder o) {
+	public int compareTo(IntFloatHolder o) {
 		return Integer.compare(key, o.key);
 	}
 }

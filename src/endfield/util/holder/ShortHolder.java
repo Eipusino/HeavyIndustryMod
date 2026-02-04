@@ -1,6 +1,4 @@
-package endfield.util.misc;
-
-import org.jetbrains.annotations.NotNull;
+package endfield.util.holder;
 
 import java.util.Objects;
 
@@ -48,7 +46,7 @@ public class ShortHolder<V> implements Cloneable, Comparable<ShortHolder<?>> {
 	}
 
 	@Override
-	public int compareTo(@NotNull ShortHolder<?> o) {
+	public int compareTo(ShortHolder<?> o) {
 		return Short.compare(key, o.key);
 	}
 }

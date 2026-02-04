@@ -16,8 +16,6 @@ import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import arc.util.Structs;
 import endfield.math.Mathm;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
@@ -28,6 +26,8 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 /**
  * A resizable, ordered or unordered array of objects. If unordered, this class avoids a memory copy when removing elements (the
@@ -53,17 +53,17 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	protected transient Iter iterator1, iterator2, lastIterator1, lastIterator2;
 
 	/** Creates an ordered array with a capacity of 16. */
-	public CollectionList(@NotNull Class<?> type) {
+	public CollectionList(Class<?> type) {
 		this(true, 16, type);
 	}
 
 	/** Creates an ordered array with the specified capacity. */
-	public CollectionList(int capacity, @NotNull Class<?> type) {
+	public CollectionList(int capacity, Class<?> type) {
 		this(true, capacity, type);
 	}
 
 	/** Creates an ordered/unordered array with the specified capacity. */
-	public CollectionList(boolean ordered, @NotNull Class<?> type) {
+	public CollectionList(boolean ordered, Class<?> type) {
 		this(ordered, 16, type);
 	}
 
@@ -75,7 +75,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	 * @param capacity Any elements added beyond this will cause the backing array to be grown.
 	 */
 	@SuppressWarnings("unchecked")
-	public CollectionList(boolean ordered, int capacity, @NotNull Class<?> type) {
+	public CollectionList(boolean ordered, int capacity, Class<?> type) {
 		this.ordered = ordered;
 		componentType = type;
 		items = (E[]) Array.newInstance(type, capacity);
@@ -114,13 +114,13 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		System.arraycopy(array, start, items, 0, size);
 	}
 
-	public CollectionList(Collection<? extends E> collection, @NotNull Class<?> type) {
+	public CollectionList(Collection<? extends E> collection, Class<?> type) {
 		this(collection.size(), type);
 		addAll(collection);
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> CollectionList<T> withArrays(@NotNull Class<?> arrayType, Object... arrays) {
+	public static <T> CollectionList<T> withArrays(Class<?> arrayType, Object... arrays) {
 		CollectionList<T> result = new CollectionList<>(arrayType);
 		for (Object a : arrays) {
 			if (a instanceof CollectionList<?>) {
@@ -138,7 +138,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		return new CollectionList<>(array);
 	}
 
-	public static <T> CollectionList<T> with(@NotNull Class<?> arrayType, Iterable<T> array) {
+	public static <T> CollectionList<T> with(Class<?> arrayType, Iterable<T> array) {
 		CollectionList<T> out = new CollectionList<>(arrayType);
 		for (T thing : array) {
 			out.add(thing);
@@ -205,10 +205,9 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		return sum;
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T extends E> void each(Boolf<? super E> predicate, Cons<T> consumer) {
+	public void each(Boolf<? super E> predicate, Cons<? super E> consumer) {
 		for (int i = 0; i < size; i++) {
-			if (predicate.get(items[i])) consumer.get((T) items[i]);
+			if (predicate.get(items[i])) consumer.get(items[i]);
 		}
 	}
 
@@ -216,6 +215,13 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	public void each(Cons<? super E> consumer) {
 		for (int i = 0; i < size; i++) {
 			consumer.get(items[i]);
+		}
+	}
+
+	@Override
+	public void forEach(Consumer<? super E> action) {
+		for (int i = 0; i < size; i++) {
+			action.accept(items[i]);
 		}
 	}
 
@@ -692,7 +698,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	 * @param identity If true, == comparison will be used. If false, .equals() comparison will be used.
 	 * @return true if value was found and removed, false otherwise
 	 */
-	public boolean remove(@Nullable Object o, boolean identity) {
+	public boolean remove(Object o, boolean identity) {
 		if (identity || o == null) {
 			for (int i = 0, n = size; i < n; i++) {
 				if (items[i] == o) {
@@ -711,7 +717,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		return false;
 	}
 
-	public boolean removeAll(@Nullable Object o, boolean identity) {
+	public boolean removeAll(Object o, boolean identity) {
 		boolean modified = false;
 
 		if (identity || o == null) {
@@ -769,45 +775,6 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 				iter.remove();
 			}
 		}
-	}
-
-	public boolean removeAll(CollectionList<? extends E> array) {
-		return removeAll(array, false);
-	}
-
-	/**
-	 * Removes from this array all of elements contained in the specified array.
-	 *
-	 * @param identity True to use ==, false to use .equals().
-	 * @return true if this array was modified.
-	 */
-	public boolean removeAll(CollectionList<? extends E> array, boolean identity) {
-		int localSize = size;
-		int startSize = localSize;
-		if (identity) {
-			for (int i = 0, n = array.size; i < n; i++) {
-				E item = array.items[i];
-				for (int ii = 0; ii < localSize; ii++) {
-					if (item == items[ii]) {
-						remove(ii);
-						localSize--;
-						break;
-					}
-				}
-			}
-		} else {
-			for (int i = 0, n = array.size; i < n; i++) {
-				E item = array.items[i];
-				for (int ii = 0; ii < localSize; ii++) {
-					if (item.equals(items[ii])) {
-						remove(ii);
-						localSize--;
-						break;
-					}
-				}
-			}
-		}
-		return localSize != startSize;
 	}
 
 	/**
@@ -970,13 +937,11 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	@SuppressWarnings("unchecked")
-	@Contract(value = " -> this")
 	public <R> CollectionList<R> as() {
 		return (CollectionList<R>) this;
 	}
 
 	/** Allocates a new array with all elements that match the predicate. */
-	@Contract(value = "_ -> new")
 	public CollectionList<E> select(Boolf<E> predicate) {
 		CollectionList<E> arr = new CollectionList<>(componentType);
 		for (int i = 0; i < size; i++) {
@@ -990,6 +955,13 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	/** Removes everything that does not match this predicate. */
 	public void retainAll(Boolf<E> predicate) {
 		removeAll(e -> !predicate.get(e));
+	}
+
+	@Override
+	public void replaceAll(UnaryOperator<E> operator) {
+		for (int i = 0; i < size; i++) {
+			items[i] = operator.apply(items[i]);
+		}
 	}
 
 	public int count(Boolf<E> predicate) {
@@ -1099,19 +1071,19 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	 * Otherwise use {@link #toArray()} to specify the array type.
 	 */
 	@Override
-	public E @NotNull [] toArray() {
-		return toArray(componentType);
+	public Object[] toArray() {
+		return toArray(Object.class);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T @NotNull [] toArray(Class<?> type) {
+	public <T> T[] toArray(Class<?> type) {
 		T[] result = (T[]) Array.newInstance(type, size);
 		System.arraycopy(items, 0, result, 0, size);
 		return result;
 	}
 
 	@Override
-	public <T> T @NotNull [] toArray(T[] a) {
+	public <T> T[] toArray(T[] a) {
 		if (a.length < size) {
 			// Make a new array of a's runtime type, but my contents:
 			return toArray(a.getClass().getComponentType());
@@ -1189,7 +1161,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	 * Note that calling 'break' while iterating will permanently clog this iterator, falling back to an implementation that allocates new ones.
 	 */
 	@Override
-	public @NotNull Iterator<E> iterator() {
+	public Iterator<E> iterator() {
 		if (iterator1 == null) iterator1 = new Iter();
 
 		if (iterator1.done) {
@@ -1210,12 +1182,12 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	}
 
 	@Override
-	public @NotNull ListIterator<E> listIterator() {
+	public ListIterator<E> listIterator() {
 		return listIterator(0);
 	}
 
 	@Override
-	public @NotNull ListIterator<E> listIterator(final int index) {
+	public ListIterator<E> listIterator(final int index) {
 		if (index > size || index < 0)
 			throw new IndexOutOfBoundsException("index can't be > size: " + index + " > " + size);
 

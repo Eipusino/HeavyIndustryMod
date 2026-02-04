@@ -9,7 +9,6 @@ import arc.util.pooling.Pools;
 import endfield.func.Floatf2;
 import endfield.type.lightnings.LightningEffect;
 import endfield.type.lightnings.LightningVertex;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Iterator;
 
@@ -109,7 +108,7 @@ public abstract class LightningGenerator implements Iterable<LightningVertex>, I
 	 * vertices one by one. This method is not thread safe.
 	 */
 	@Override
-	public synchronized @NotNull Iterator<LightningVertex> iterator() {
+	public synchronized Iterator<LightningVertex> iterator() {
 		reset();
 		return this;
 	}

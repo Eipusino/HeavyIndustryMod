@@ -56,7 +56,6 @@ import mindustry.world.consumers.ConsumeItems;
 import mindustry.world.consumers.ConsumeLiquid;
 import mindustry.world.meta.Attribute;
 import mindustry.world.meta.BuildVisibility;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 /**
  * Covering the original content.
@@ -73,7 +72,6 @@ public final class Overrides {
 	 * Instantiates all contents. Called in the main thread in {@code EndFieldMod.loadContent()}.
 	 * <p>Remember not to execute it a second time, I did not take any precautionary measures.
 	 */
-	@Internal
 	public static void load() {
 		if (Vars2.isPlugin) return;
 

@@ -7,7 +7,6 @@ import arc.graphics.Texture;
 import arc.graphics.Texture.TextureFilter;
 import arc.graphics.Texture.TextureWrap;
 import endfield.Vars2;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 public final class Textures2 {
 	public static Fi texturesDir = Vars2.internalTree.child("other").child("textures");
@@ -21,7 +20,6 @@ public final class Textures2 {
 	/** Don't let anyone instantiate this class. */
 	private Textures2() {}
 
-	@Internal
 	public static void load() {
 		noise = loadTexture(Core.files.internal("sprites/noise.png"), TextureFilter.linear, TextureWrap.repeat);
 

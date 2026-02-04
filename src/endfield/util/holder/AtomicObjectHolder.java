@@ -1,4 +1,4 @@
-package endfield.util.misc;
+package endfield.util.holder;
 
 import arc.util.pooling.Pool.Poolable;
 

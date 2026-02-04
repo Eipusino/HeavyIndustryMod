@@ -4,7 +4,6 @@ import arc.graphics.Color;
 import mindustry.game.Team;
 import mindustry.gen.Building;
 import mindustry.gen.Unit;
-import org.jetbrains.annotations.ApiStatus.Internal;
 
 public final class Team2 {
 	public static final Team none;
@@ -16,7 +15,6 @@ public final class Team2 {
 	/** Don't let anyone instantiate this class. */
 	private Team2() {}
 
-	@Internal
 	public static void load() {
 		team(none.id, "none", Color.clear);
 	}

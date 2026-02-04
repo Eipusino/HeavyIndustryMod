@@ -7,7 +7,7 @@ import arc.math.geom.Point2;
 import arc.struct.PQueue;
 import arc.util.Structs;
 import arc.util.Time;
-import endfield.util.misc.ObjectHolder;
+import endfield.util.holder.ObjectHolder;
 import mindustry.Vars;
 import mindustry.content.Liquids;
 import mindustry.entities.Units;
@@ -21,7 +21,6 @@ import mindustry.world.blocks.payloads.BuildPayload;
 import mindustry.world.blocks.payloads.PayloadBlock;
 import mindustry.world.blocks.payloads.PayloadConveyor;
 import mindustry.world.blocks.storage.CoreBlock;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
 public final class BlockMovement {
@@ -65,7 +64,6 @@ public final class BlockMovement {
 		Events.on(WorldLoadEvent.class, event -> onMapLoad());
 	}
 
-	@Contract(value = "_, _, _ -> new", pure = true)
 	public static Point2 getNearbyPosition(Block block, int direction, int index) {
 		Point2 tangent = dirs[(direction + 1) % 4];
 		Point2 o = origins[block.size - 1][direction];
@@ -82,7 +80,6 @@ public final class BlockMovement {
 	}
 
 	//returns whether a block is allowed to be on this tile, disregarding existing pushable buildings and team circles
-	@Contract(value = "null, _ -> false")
 	static boolean tileAvalibleTo(@Nullable Tile tile, Block block) {
 		if (tile == null) {
 			return false;

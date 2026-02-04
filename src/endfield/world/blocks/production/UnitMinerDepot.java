@@ -17,7 +17,7 @@ import arc.util.io.Writes;
 import endfield.content.UnitTypes2;
 import endfield.graphics.Drawe;
 import endfield.util.CollectionObjectMap;
-import endfield.util.misc.ObjectHolder;
+import endfield.util.holder.ObjectHolder;
 import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;

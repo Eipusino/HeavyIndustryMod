@@ -2,7 +2,7 @@ package endfield.async
 
 import arc.Core
 import arc.func.Prov
-import endfield.util.misc.ObjectReference
+import dynamilize.Variable.ObjectReference
 import java.util.concurrent.Future
 import java.util.concurrent.Semaphore
 
@@ -36,7 +36,7 @@ object AsyncsKt {
 		val out = ObjectReference<T>()
 		Core.app.post {
 			try {
-				out.element = runSync.get()
+				out.value = runSync.get()
 			} finally {
 				flag.release()
 			}
@@ -44,6 +44,6 @@ object AsyncsKt {
 
 		flag.acquire()
 
-		return out.element
+		return out.value
 	}
 }

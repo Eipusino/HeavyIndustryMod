@@ -2,11 +2,9 @@ package endfield.util.handler;
 
 import endfield.util.CollectionList;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.List;
 
 import static endfield.Vars2.classHelper;
 
@@ -116,7 +114,7 @@ public class EnumHandler<T extends Enum<?>> {
 			Field field = findValuesField();
 			Method method = classHelper.getMethod(clazz, "values");
 			T[] arr = (T[]) method.invoke(null);
-			List<T> values = CollectionList.with(arr);
+			CollectionList<T> values = CollectionList.with(arr);
 			if (values.contains(instance) && ordinal >= values.size())
 				throw new IndexOutOfBoundsException("rearrange a exist item, ordinal should be less than amount of all items, (ordinal: " + ordinal + ", amount: " + values.size() + ")");
 			else if (ordinal > values.size())
@@ -126,7 +124,7 @@ public class EnumHandler<T extends Enum<?>> {
 
 			values.add(ordinal, instance);
 
-			fieldHandler.setObject(null, field.getName(), values.toArray((T[]) Array.newInstance(clazz, 0)));
+			fieldHandler.setObject(null, field.getName(), values.toArray(clazz));
 		} catch (IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
 			throw new RuntimeException(e);
 		}

@@ -10,11 +10,10 @@ import arc.graphics.Texture.TextureFilter;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Http;
 import arc.util.Log;
-import endfield.util.misc.FloatReference;
-import endfield.util.misc.IntReference;
-import endfield.util.misc.ObjectHolder;
-import endfield.util.misc.ObjectReference;
-import org.jetbrains.annotations.Contract;
+import dynamilize.Variable.FloatReference;
+import dynamilize.Variable.IntReference;
+import dynamilize.Variable.ObjectReference;
+import endfield.util.holder.ObjectHolder;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -48,14 +47,13 @@ public final class URLDownloader {
 		}
 
 		String realUrl = url;
-		get.element = () -> Http.get(realUrl, resultHandler, e -> {
-			if (counter.element++ <= maxRetry) get.element.run();
+		get.value = () -> Http.get(realUrl, resultHandler, e -> {
+			if (counter.value++ <= maxRetry) get.value.run();
 			else errHandler.get(e);
 		});
-		get.element.run();
+		get.value.run();
 	}
 
-	@Contract(value = "_, _ -> new")
 	public static FloatReference downloadToStream(String url, OutputStream stream) {
 		FloatReference progress = new FloatReference();
 		retryDown(url, res -> {
@@ -67,7 +65,7 @@ public final class URLDownloader {
 				for (int b = in.read(); b != -1; b = in.read()) {
 					curr++;
 					stream.write(b);
-					progress.element = (float) curr / total;
+					progress.value = (float) curr / total;
 				}
 			}
 		}, 5, Log::err);
@@ -78,7 +76,6 @@ public final class URLDownloader {
 		return downloadToStream(url, file.write());
 	}
 
-	@Contract(value = "_, _ -> new", pure = true)
 	public static TextureRegion downloadImage(String url, TextureRegion errDef) {
 		TextureRegion result = new TextureRegion(errDef);
 

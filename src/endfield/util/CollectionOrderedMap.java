@@ -1,8 +1,7 @@
 package endfield.util;
 
 import arc.util.ArcRuntimeException;
-import endfield.util.misc.ObjectHolder;
-import org.jetbrains.annotations.NotNull;
+import endfield.util.holder.ObjectHolder;
 
 import java.util.NoSuchElementException;
 
@@ -71,7 +70,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 	}
 
 	@Override
-	public @NotNull Entries iterator() {
+	public Entries iterator() {
 		if (entries1 == null) {
 			entries1 = new OrderedMapEntries();
 			entries2 = new OrderedMapEntries();
@@ -94,7 +93,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 	 * time this method is called. Use the {@link OrderedMapKeys} constructor for nested or multithreaded iteration.
 	 */
 	@Override
-	public @NotNull Keys keySet() {
+	public Keys keySet() {
 		if (keys1 == null) {
 			keys1 = new OrderedMapKeys();
 			keys2 = new OrderedMapKeys();
@@ -112,7 +111,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 	}
 
 	@Override
-	public @NotNull Values values() {
+	public Values values() {
 		if (values1 == null) {
 			values1 = new OrderedMapValues();
 			values2 = new OrderedMapValues();

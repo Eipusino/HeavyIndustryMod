@@ -177,6 +177,7 @@ public final class EndFieldMod extends Mod {
 			Core.app.post(Scripts2::init);
 		}
 
+		ScreenSampler.init();
 		ScreenSampler.resetMark();
 
 		Vars2.listener = new EndFieldListener();
@@ -228,7 +229,6 @@ public final class EndFieldMod extends Mod {
 			Styles2.load();
 			Elements.load();
 
-			ScreenSampler.init();
 			ScreenSampler.setup();
 		}
 

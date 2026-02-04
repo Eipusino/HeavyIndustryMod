@@ -1,4 +1,4 @@
-package endfield.util.misc;
+package endfield.util.holder;
 
 import java.util.Map.Entry;
 import java.util.Objects;
