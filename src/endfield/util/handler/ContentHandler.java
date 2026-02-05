@@ -17,15 +17,15 @@ import mindustry.ctype.UnlockableContent;
  * @since 1.0.9
  */
 public final class ContentHandler {
-	private static final FieldHandler<ContentLoader> handle = new FieldHandler<>(ContentLoader.class);
-	private static final FieldHandler<MappableContent> contHandler = new FieldHandler<>(MappableContent.class);
+	static final FieldHandler<ContentLoader> handle = new FieldHandler<>(ContentLoader.class);
+	static final FieldHandler<MappableContent> contHandler = new FieldHandler<>(MappableContent.class);
 
-	private static Seq<Content>[] contentMap;
-	private static ObjectMap<String, MappableContent>[] contentNameMap;
+	static Seq<Content>[] contentMap;
+	static ObjectMap<String, MappableContent>[] contentNameMap;
 
 	private ContentHandler() {}
 
-	private static void updateContainer() {
+	static void updateContainer() {
 		contentMap = handle.getObject(Vars.content, "contentMap");
 		contentNameMap = handle.getObject(Vars.content, "contentNameMap");
 	}

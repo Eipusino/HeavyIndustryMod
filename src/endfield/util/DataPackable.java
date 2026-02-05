@@ -4,8 +4,6 @@ import arc.func.Func;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
 import arc.util.serialization.SerializationException;
-import endfield.io.ReadsKt;
-import endfield.io.WritesKt;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -84,7 +82,7 @@ public interface DataPackable {
 	 */
 	@SuppressWarnings("unchecked")
 	static <T extends DataPackable> T readObject(byte[] bytes, Object... param) {
-		long id = new ReadsKt(new DataInputStream(new ByteArrayInputStream(bytes))).l();
+		long id = new Reads(new DataInputStream(new ByteArrayInputStream(bytes))).l();
 		Func<Object[], T> objProv = (Func<Object[], T>) objectProvMap.get(id);
 		if (objProv == null)
 			throw new SerializationException("type id: " + id + " was not assigned");
@@ -119,7 +117,7 @@ public interface DataPackable {
 	/** Wrap the object as a byte array and send it out. */
 	default byte[] pack() {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-		WritesKt write = new WritesKt(new DataOutputStream(outputStream));
+		Writes write = new Writes(new DataOutputStream(outputStream));
 		write.l(typeId());
 		write(write);
 
@@ -134,7 +132,7 @@ public interface DataPackable {
 	 */
 	default void read(byte[] bytes) {
 		ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
-		ReadsKt read = new ReadsKt(new DataInputStream(inputStream));
+		Reads read = new Reads(new DataInputStream(inputStream));
 		if (read.l() != typeId())
 			throw new SerializationException("type id was unequal marked type id");
 		read(read);

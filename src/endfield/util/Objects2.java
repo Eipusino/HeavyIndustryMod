@@ -88,7 +88,7 @@ public final class Objects2 {
 	}
 
 	/** Used to optimize code conciseness in specific situations. */
-	public static void run(RunT<Throwable> cons) {
+	public static void run(RunT<? extends Throwable> cons) {
 		try {
 			cons.run();
 		} catch (Throwable e) {
@@ -97,7 +97,7 @@ public final class Objects2 {
 	}
 
 	/** Used to optimize code conciseness in specific situations. */
-	public static <T> void get(ConsT<? super T, Throwable> cons, T obj) {
+	public static <T> void get(ConsT<? super T, ? extends Throwable> cons, T obj) {
 		try {
 			cons.get(obj);
 		} catch (Throwable e) {
@@ -106,7 +106,7 @@ public final class Objects2 {
 	}
 
 	/** Used to optimize code conciseness in specific situations. */
-	public static <T> T get(ProvT<? extends T, Throwable> prov, T def) {
+	public static <T> T get(ProvT<? extends T, ? extends Throwable> prov, T def) {
 		try {
 			return prov.get();
 		} catch (Throwable e) {
@@ -117,7 +117,7 @@ public final class Objects2 {
 	}
 
 	/** Used to optimize code conciseness in specific situations. */
-	public static <T> T get(ProvT<? extends T, Throwable> prov, ConsT<? super T, Throwable> cons, T def) {
+	public static <T> T get(ProvT<? extends T, ? extends Throwable> prov, ConsT<? super T, ? extends Throwable> cons, T def) {
 		try {
 			T t = prov.get();
 			cons.get(t);
@@ -253,7 +253,16 @@ public final class Objects2 {
 
 		String baseDesc;
 		if (current.isPrimitive()) {
-			baseDesc = getPrimitiveDescriptor(current);
+			if (current == void.class) baseDesc = "V";
+			else if (current == boolean.class) baseDesc = "Z";
+			else if (current == byte.class) baseDesc = "B";
+			else if (current == short.class) baseDesc = "S";
+			else if (current == int.class) baseDesc = "I";
+			else if (current == long.class) baseDesc = "J";
+			else if (current == float.class) baseDesc = "F";
+			else if (current == double.class) baseDesc = "D";
+			else if (current == char.class) baseDesc = "C";
+			else throw new IllegalArgumentException("unknown type of " + type);
 		} else {
 			baseDesc = 'L' + current.getName().replace('.', '/') + ';';
 		}
@@ -263,19 +272,6 @@ public final class Objects2 {
 		}
 
 		return buildArrayDescriptor(depth, baseDesc);
-	}
-
-	static String getPrimitiveDescriptor(Class<?> type) {
-		if (type == void.class) return "V";
-		else if (type == boolean.class) return "Z";
-		else if (type == byte.class) return "B";
-		else if (type == short.class) return "S";
-		else if (type == int.class) return "I";
-		else if (type == long.class) return "J";
-		else if (type == float.class) return "F";
-		else if (type == double.class) return "D";
-		else if (type == char.class) return "C";
-		else throw new IllegalArgumentException("unknown type of " + type);
 	}
 
 	static String buildArrayDescriptor(int depth, String baseDesc) {

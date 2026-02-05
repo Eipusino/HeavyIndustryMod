@@ -26,9 +26,9 @@ import static endfield.Vars2.classHelper;
  */
 @SuppressWarnings("unchecked")
 public class EnumHandler<T extends Enum<?>> {
-	private final FieldHandler<T> fieldHandler;
-	private final MethodHandler<T> methodHandler;
-	private final Class<T> clazz;
+	final FieldHandler<T> fieldHandler;
+	final MethodHandler<T> methodHandler;
+	final Class<T> clazz;
 
 	/**
 	 * Construct an enumeration processor without a constructor implementation using the target

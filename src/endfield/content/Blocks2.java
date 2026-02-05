@@ -572,7 +572,7 @@ public final class Blocks2 {
 	private Blocks2() {}
 
 	public static void loadInternal() {
-		if (loadedInternal) return;
+		if (Vars2.isPlugin || loadedInternal) return;
 
 		loadedInternal = true;
 

@@ -80,13 +80,13 @@ public final class URLDownloader {
 		TextureRegion result = new TextureRegion(errDef);
 
 		retryDown(url, res -> {
-			Pixmap pix = new Pixmap(res.getResult());
+			Pixmap pixmap = new Pixmap(res.getResult());
 			Core.app.post(() -> {
 				try {
-					Texture tex = new Texture(pix);
-					tex.setFilter(TextureFilter.linear);
-					result.set(tex);
-					pix.dispose();
+					Texture texture = new Texture(pixmap);
+					texture.setFilter(TextureFilter.linear);
+					result.set(texture);
+					pixmap.dispose();
 				} catch (Exception e) {
 					Log.err(e);
 				}

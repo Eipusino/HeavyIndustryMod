@@ -1066,10 +1066,7 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		return items[index];
 	}
 
-	/**
-	 * Returns the items as an array. Note the array is typed, so the {@link #CollectionList(Class)} constructor must have been used.
-	 * Otherwise use {@link #toArray()} to specify the array type.
-	 */
+	/** Returns the items as an array of {@code Object[]} type. */
 	@Override
 	public Object[] toArray() {
 		return toArray(Object.class);
@@ -1111,15 +1108,15 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	public boolean equals(Object o) {
 		if (o == this) return true;
 		if (!ordered) return false;
-		if (!(o instanceof CollectionList<?> array)) return false;
-		if (!array.ordered) return false;
+		if (!(o instanceof CollectionList<?> other)) return false;
+		if (!other.ordered) return false;
 		int n = size;
-		if (n != array.size) return false;
-		Object[] items1 = items;
-		Object[] items2 = array.items;
+		if (n != other.size) return false;
+		Object[] array = items;
+		Object[] otherArray = other.items;
 		for (int i = 0; i < n; i++) {
-			Object o1 = items1[i];
-			Object o2 = items2[i];
+			Object o1 = array[i];
+			Object o2 = otherArray[i];
 			if (!Objects.equals(o1, o2)) return false;
 		}
 		return true;

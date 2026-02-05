@@ -1,6 +1,7 @@
 package endfield.util.handler;
 
 import java.util.HashMap;
+import java.util.function.Function;
 
 import static endfield.Vars2.methodInvokeHelper;
 
@@ -11,7 +12,8 @@ import static endfield.Vars2.methodInvokeHelper;
  */
 @SuppressWarnings("unchecked")
 public class MethodHandler<T> {
-	protected static final HashMap<Class<?>, MethodHandler<?>> defaultMap = new HashMap<>();
+	static final Function<Class<?>, MethodHandler<?>> function = MethodHandler::new;
+	static final HashMap<Class<?>, MethodHandler<?>> defaultMap = new HashMap<>();
 
 	protected final Class<T> clazz;
 
@@ -25,7 +27,7 @@ public class MethodHandler<T> {
 	 * @see MethodHandler#invoke(Object, String, Object...)
 	 */
 	public static <O, R> R invokeDefault(O object, String name, Object... args) {
-		return ((MethodHandler<O>) defaultMap.computeIfAbsent(object.getClass(), MethodHandler::new)).invoke(object, name, args);
+		return ((MethodHandler<O>) defaultMap.computeIfAbsent(object.getClass(), function)).invoke(object, name, args);
 	}
 
 	/**
@@ -35,7 +37,7 @@ public class MethodHandler<T> {
 	 * @see MethodHandler#invokeStatic(String, Object...)
 	 */
 	public static <U, R> R invokeDefault(Class<U> clazz, String name, Object... args) {
-		return defaultMap.computeIfAbsent(clazz, MethodHandler::new).invokeStatic(name, args);
+		return defaultMap.computeIfAbsent(clazz, function).invokeStatic(name, args);
 	}
 
 	/**
@@ -64,7 +66,7 @@ public class MethodHandler<T> {
 	 * @see MethodHandler#newInstance(Object...)
 	 */
 	public static <U> U newInstanceDefault(Class<U> clazz, Object... args) {
-		return (U) defaultMap.computeIfAbsent(clazz, MethodHandler::new).newInstance(args);
+		return (U) defaultMap.computeIfAbsent(clazz, function).newInstance(args);
 	}
 
 	/**
@@ -115,15 +117,27 @@ public class MethodHandler<T> {
 		return methodInvokeHelper.newInstance(clazz, args);
 	}
 
-	public <R> R invoke(T object, String name, Class<?>[] parameterTypes, Object... args) {
+	/**
+	 * Specify strict parameter calling methods. If there are strange issues with using the {@link #invoke(Object, String, Object[])}
+	 * method, you can use the method.
+	 */
+	public <R> R invokeWithAsType(T object, String name, Class<?>[] parameterTypes, Object... args) {
 		return methodInvokeHelper.invoke(object, name, parameterTypes, args);
 	}
 
-	public <R> R invokeStatic(String name, Class<?>[] parameterTypes, Object... args) {
+	/**
+	 * Specify strict parameter calling methods. If there are strange issues with using the {@link #invokeStatic(String, Object[])}
+	 * method, you can use the method.
+	 */
+	public <R> R invokeStaticWithAsType(String name, Class<?>[] parameterTypes, Object... args) {
 		return methodInvokeHelper.invokeStatic(clazz, name, parameterTypes, args);
 	}
 
-	public T newInstance(Class<?>[] parameterTypes, Object... args) {
+	/**
+	 * Specify strict parameter calling methods. If there are strange issues with using the {@link #newInstance(Object...)}
+	 * method, you can use the method.
+	 */
+	public T newInstanceWithAsType(Class<?>[] parameterTypes, Object... args) {
 		return methodInvokeHelper.newInstance(clazz, parameterTypes, args);
 	}
 }

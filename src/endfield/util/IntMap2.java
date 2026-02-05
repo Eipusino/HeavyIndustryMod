@@ -34,11 +34,11 @@ public class IntMap2<V> implements Iterable<IntHolder<V>>, Eachable<IntHolder<V>
 
 	public int size;
 
-	public int[] keyTable;
-	public V[] valueTable;
-	public int capacity, stashSize;
-	public V zeroValue;
-	public boolean hasZeroValue;
+	protected int[] keyTable;
+	protected V[] valueTable;
+	protected int capacity, stashSize;
+	protected V zeroValue;
+	protected boolean hasZeroValue;
 
 	protected float loadFactor;
 	protected int hashShift, mask, threshold;

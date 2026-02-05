@@ -32,9 +32,9 @@ public class ObjectFloatMap2<K> implements Iterable<ObjectFloatHolder<K>>, Eacha
 
 	public final Class<?> keyComponentType;
 
-	public K[] keyTable;
-	public float[] valueTable;
-	public int capacity, stashSize;
+	protected K[] keyTable;
+	protected float[] valueTable;
+	protected int capacity, stashSize;
 
 	protected float loadFactor;
 	protected int hashShift, mask, threshold;

@@ -18,7 +18,6 @@ import mindustry.graphics.g3d.HexMesher;
 import mindustry.graphics.g3d.MeshBuilder;
 import mindustry.graphics.g3d.PlanetParams;
 import mindustry.type.Planet;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Just a regular planet, but with a fixed atmosphere shader at the little cost of performance.
@@ -26,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
  * @since 1.0.6
  */
 public class AtmospherePlanet extends Planet {
-	public @Nullable FrameBuffer buffer;
+	public FrameBuffer buffer;
 
 	public AtmospherePlanet(String name, Planet parent, float radius) {
 		super(name, parent, radius);

@@ -2,8 +2,8 @@ package endfield.game;
 
 import arc.struct.Seq;
 import arc.util.Log;
-import endfield.io.ReadsKt;
-import endfield.io.WritesKt;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
 import endfield.util.CollectionObjectMap;
 import endfield.util.holder.ObjectHolder;
 import mindustry.Vars;
@@ -67,7 +67,7 @@ public class TeamPayloadData implements CustomChunk {
 
 	@Override
 	public void write(DataOutput stream) throws IOException {
-		try (WritesKt write = new WritesKt(stream)) {
+		try (Writes write = new Writes(stream)) {
 			write.b(teamPayloadData.size);
 
 			for (ObjectHolder<Team, PayloadSeq> entry : teamPayloadData.iterator()) {
@@ -83,7 +83,7 @@ public class TeamPayloadData implements CustomChunk {
 	@Override
 	public void read(DataInput stream) throws IOException {
 		teamPayloadData.clear();
-		try (ReadsKt read = new ReadsKt(stream)) {
+		try (Reads read = new Reads(stream)) {
 			int size = read.b();
 			for (int i = 0; i < size; i++) {
 				Team team = Team.get(read.b());

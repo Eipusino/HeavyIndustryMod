@@ -776,7 +776,7 @@ public class MultiCrafter extends Block {
 
 			if (owner.autoAddBar) {
 				if (!liquidFilter.isEmpty()) {
-					for (Liquid liquid : liquidFilter.keys().toSeq()) {
+					for (Liquid liquid : liquidFilter.keys()) {
 						addLiquidBar(liquid);
 					}
 				}
@@ -786,13 +786,12 @@ public class MultiCrafter extends Block {
 			}
 		}
 
-		public void setApply(UnlockableContent content) {
-			if (content instanceof Item item) {
-				itemFilter.put(item, true);
-			}
-			if (content instanceof Liquid liquid) {
-				liquidFilter.put(liquid, true);
-			}
+		public void setApply(Item item) {
+			itemFilter.put(item, true);
+		}
+
+		public void setApply(Liquid liquid) {
+			liquidFilter.put(liquid, true);
 		}
 
 		public Iterable<Func<Building, Bar>> listBars() {
@@ -804,10 +803,10 @@ public class MultiCrafter extends Block {
 		}
 
 		public void addLiquidBar(Liquid liquid) {
-			addBar("liquid-" + liquid.name, build -> !liquid.unlockedNow() ? null : new Bar(
+			addBar("liquid-" + liquid.name, tile -> !liquid.unlockedNow() ? null : new Bar(
 					() -> liquid.localizedName,
 					liquid::barColor,
-					() -> build.liquids.get(liquid) / owner.liquidCapacity
+					() -> tile.liquids.get(liquid) / owner.liquidCapacity
 			));
 		}
 

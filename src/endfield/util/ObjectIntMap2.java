@@ -32,9 +32,9 @@ public class ObjectIntMap2<K> implements Iterable<ObjectIntHolder<K>>, Eachable<
 
 	public final Class<?> keyComponentType;
 
-	public K[] keyTable;
-	public int[] valueTable;
-	public int capacity, stashSize;
+	protected K[] keyTable;
+	protected int[] valueTable;
+	protected int capacity, stashSize;
 
 	protected float loadFactor;
 	protected int hashShift, mask, threshold;

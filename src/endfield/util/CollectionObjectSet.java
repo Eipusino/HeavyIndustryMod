@@ -32,8 +32,8 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Iterable<E
 
 	public final Class<?> componentType;
 
-	public E[] keyTable;
-	public int capacity, stashSize;
+	protected E[] keyTable;
+	protected int capacity, stashSize;
 
 	protected float loadFactor;
 	protected int hashShift, mask, threshold;
@@ -546,11 +546,7 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Iterable<E
 
 	@Override
 	public String toString() {
-		return '{' + toString(", ") + '}';
-	}
-
-	public String toString(String separator) {
-		if (size == 0) return "";
+		if (size == 0) return "[]";
 		StringBuilder buffer = new StringBuilder(32);
 		int i = keyTable.length;
 		while (i-- > 0) {
@@ -562,7 +558,7 @@ public class CollectionObjectSet<E> extends AbstractSet<E> implements Iterable<E
 		while (i-- > 0) {
 			E key = keyTable[i];
 			if (key == null) continue;
-			buffer.append(separator);
+			buffer.append(", ");
 			buffer.append(key);
 		}
 		return buffer.toString();

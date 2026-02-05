@@ -3,7 +3,6 @@ package endfield.util;
 import arc.func.Cons;
 import arc.math.Mathf;
 import arc.struct.BoolSeq;
-import arc.struct.Seq;
 import arc.util.ArcRuntimeException;
 import arc.util.Eachable;
 import endfield.math.Mathm;
@@ -21,9 +20,9 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 
 	public final Class<?> keyComponentType;
 
-	public K[] keyTable;
-	public boolean[] valueTable;
-	public int capacity, stashSize;
+	protected K[] keyTable;
+	protected boolean[] valueTable;
+	protected int capacity, stashSize;
 
 	protected float loadFactor;
 	protected int hashShift, mask, threshold;
@@ -678,17 +677,6 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 	public class Entries extends MapIterator implements Iterable<ObjectBoolHolder<K>>, Iterator<ObjectBoolHolder<K>> {
 		protected ObjectBoolHolder<K> entry = new ObjectBoolHolder<>();
 
-		public Seq<ObjectBoolHolder<K>> toSeq() {
-			Seq<ObjectBoolHolder<K>> seq = new Seq<>(keyComponentType);
-			for (ObjectBoolHolder<K> entry : this) {
-				ObjectBoolHolder<K> e = new ObjectBoolHolder<>();
-				e.key = entry.key;
-				e.value = entry.value;
-				seq.add(e);
-			}
-			return seq;
-		}
-
 		public CollectionList<ObjectBoolHolder<K>> toList() {
 			CollectionList<ObjectBoolHolder<K>> out = new CollectionList<>(keyComponentType);
 			for (ObjectBoolHolder<K> entry : this) {
@@ -778,19 +766,6 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		@Override
 		public Keys iterator() {
 			return this;
-		}
-
-		public Seq<K> toSeq() {
-			Seq<K> seq = new Seq<>(true, size, keyComponentType);
-			while (hasNext)
-				seq.add(next());
-			return seq;
-		}
-
-		public Seq<K> toSeq(Seq<K> seq) {
-			while (hasNext)
-				seq.add(next());
-			return seq;
 		}
 
 		/** Returns a new array containing the remaining keys. */

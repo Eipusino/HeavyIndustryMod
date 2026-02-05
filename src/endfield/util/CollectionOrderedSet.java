@@ -112,22 +112,17 @@ public class CollectionOrderedSet<E> extends CollectionObjectSet<E> {
 
 	@Override
 	public String toString() {
-		if (size == 0) return "{}";
+		if (size == 0) return "[]";
 		E[] es = orderedItems.items;
 		StringBuilder buffer = new StringBuilder(32);
-		buffer.append('{');
+		buffer.append('[');
 		buffer.append(es[0]);
 		for (int i = 1; i < size; i++) {
 			buffer.append(", ");
 			buffer.append(es[i]);
 		}
-		buffer.append('}');
+		buffer.append(']');
 		return buffer.toString();
-	}
-
-	@Override
-	public String toString(String separator) {
-		return orderedItems.toString(separator);
 	}
 
 	public class OrderedIter extends Iter {

@@ -34,13 +34,10 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 	public final Class<?> keyComponentType;
 	public final Class<?> valueComponentType;
 
-	public K[] keyTable;
-	public V[] valueTable;
+	protected K[] keyTable;
+	protected V[] valueTable;
 
-	//public V nullValue;
-	//public boolean hasNullValue;
-
-	public int capacity, stashSize;
+	protected int capacity, stashSize;
 
 	protected float loadFactor;
 	protected int hashShift, mask, threshold;
@@ -687,19 +684,11 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		return true;
 	}
 
-	public String toString(String separator) {
-		return toString(separator, false);
-	}
-
 	@Override
 	public String toString() {
-		return toString(", ", true);
-	}
-
-	public String toString(String separator, boolean braces) {
-		if (size == 0) return braces ? "{}" : "";
+		if (size == 0) return "{}";
 		StringBuilder buffer = new StringBuilder(32);
-		if (braces) buffer.append('{');
+		buffer.append('{');
 		int i = keyTable.length;
 		while (i-- > 0) {
 			K key = keyTable[i];
@@ -712,12 +701,12 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		while (i-- > 0) {
 			K key = keyTable[i];
 			if (key == null) continue;
-			buffer.append(separator);
+			buffer.append(", ");
 			buffer.append(key);
 			buffer.append('=');
 			buffer.append(valueTable[i]);
 		}
-		if (braces) buffer.append('}');
+		buffer.append('}');
 		return buffer.toString();
 	}
 

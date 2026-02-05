@@ -25,11 +25,11 @@ public class ShortMap<V> implements Iterable<ShortHolder<V>>, Eachable<ShortHold
 
 	public int size;
 
-	public short[] keyTable;
-	public V[] valueTable;
-	public int capacity, stashSize;
-	public V zeroValue;
-	public boolean hasZeroValue;
+	protected short[] keyTable;
+	protected V[] valueTable;
+	protected int capacity, stashSize;
+	protected V zeroValue;
+	protected boolean hasZeroValue;
 
 	protected float loadFactor;
 	protected int hashShift, mask, threshold;

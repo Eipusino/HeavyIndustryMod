@@ -26,13 +26,11 @@ public class JarList {
 
 	static final Fi listFile = jarFileCache.child("mod-generated-jars.lis");
 
-	static final JarList instance = new JarList();
+	static final HashMap<String, InfoEntry> list = new HashMap<>();
 
-	final HashMap<String, InfoEntry> list = new HashMap<>();
+	static boolean selfUpdate, recached;
 
-	boolean selfUpdate, recached;
-
-	private JarList() {
+	public static void init() {
 		jarFileCache.mkdirs();
 		if (!listFile.exists()) return;
 		BufferedReader reader = new BufferedReader(listFile.reader());
@@ -52,28 +50,22 @@ public class JarList {
 		}
 	}
 
-	public static JarList inst() {
-		return instance;
-	}
-
-	static String getMd5(Fi file) {
+	public static String getMd5(Fi file) {
 		MessageDigest md;
 		byte[] buffer = new byte[8192];
-		try {
+		try (InputStream input = new FileInputStream(file.file())) {
 			md = MessageDigest.getInstance("MD5");
-			InputStream input = new FileInputStream(file.file());
 			int data;
 			while ((data = input.read(buffer)) != -1) {
 				md.update(buffer, 0, data);
 			}
-			input.close();
 			return new BigInteger(1, md.digest()).toString(16);
 		} catch (IOException | NoSuchAlgorithmException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public void update(ModInfo mod) {
+	public static void update(ModInfo mod) {
 		InfoEntry entry = list.get(mod.name);
 		if (entry == null)
 			throw new RuntimeException("unknown mod " + mod.name);
@@ -81,15 +73,15 @@ public class JarList {
 		entry.md5 = getMd5(mod.file);
 	}
 
-	public boolean matched(ModInfo mod) {
-		String md5Code = getMd5(mod.file);
+	public static boolean matched(ModInfo mod) {
+		String md5code = getMd5(mod.file);
 		InfoEntry entry = list.get(mod.name);
 		if (entry == null) return false;
 		if (!mod.version.equals(entry.version)) return false;
-		return md5Code.equals(entry.getMd5());
+		return md5code.equals(entry.getMd5());
 	}
 
-	public Fi loadCacheFile(ModInfo mod) {
+	public static Fi loadCacheFile(ModInfo mod) {
 		if (!selfUpdate && mod.name.equals(MOD_NAME)) {
 			if (matched(mod)) {
 				for (Fi fi : Vars.modDirectory.list()) {
@@ -141,7 +133,7 @@ public class JarList {
 		return entry.file;
 	}
 
-	public void deleteCacheFile(ModInfo mod) {
+	public static void deleteCacheFile(ModInfo mod) {
 		InfoEntry entry = list.get(mod.name);
 		if (entry == null) return;
 		entry.file.delete();
@@ -149,7 +141,7 @@ public class JarList {
 		writeToList();
 	}
 
-	void writeToList() {
+	static void writeToList() {
 		try (BufferedWriter writer = new BufferedWriter(listFile.writer(false))) {
 			for (InfoEntry entry : list.values()) {
 				writer.write(entry.toString());
@@ -171,9 +163,8 @@ public class JarList {
 			StringBuilder keyBuffer = new StringBuilder();
 			StringBuilder valueBuffer = new StringBuilder();
 
-			BufferedReader reader = new BufferedReader(new StringReader(str));
 			int character;
-			try {
+			try (BufferedReader reader = new BufferedReader(new StringReader(str))) {
 				String c;
 				String key;
 				String value;
@@ -204,7 +195,6 @@ public class JarList {
 						} else keyBuffer.append(c);
 					}
 				}
-				reader.close();
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}

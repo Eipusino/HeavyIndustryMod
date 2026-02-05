@@ -130,9 +130,9 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 
 	@Override
 	public String toString() {
-		if (size == 0) return "{}";
+		if (size == 0) return "[]";
 		StringBuilder buffer = new StringBuilder(32);
-		buffer.append('{');
+		buffer.append('[');
 		for (int i = 0, n = orderedKeys.size; i < n; i++) {
 			K key = orderedKeys.get(i);
 			if (i > 0) buffer.append(", ");
@@ -140,7 +140,7 @@ public class CollectionOrderedMap<K, V> extends CollectionObjectMap<K, V> {
 			buffer.append('=');
 			buffer.append(get(key));
 		}
-		buffer.append('}');
+		buffer.append(']');
 		return buffer.toString();
 	}
 

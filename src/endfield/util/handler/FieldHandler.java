@@ -1,6 +1,7 @@
 package endfield.util.handler;
 
 import java.util.WeakHashMap;
+import java.util.function.Function;
 
 import static endfield.Vars2.fieldAccessHelper;
 
@@ -13,6 +14,7 @@ import static endfield.Vars2.fieldAccessHelper;
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class FieldHandler<T> {
+	static final Function<Class, FieldHandler> function = FieldHandler::new;
 	static final WeakHashMap<Class, FieldHandler> defaultHandlers = new WeakHashMap<>();
 
 	private final Class<T> clazz;
@@ -174,7 +176,7 @@ public class FieldHandler<T> {
 	}
 
 	static FieldHandler cachedHandler(Class<?> clazz) {
-		return defaultHandlers.computeIfAbsent(clazz, FieldHandler::new);
+		return defaultHandlers.computeIfAbsent(clazz, function);
 	}
 
 	public static void decache(Class<?> clazz) {

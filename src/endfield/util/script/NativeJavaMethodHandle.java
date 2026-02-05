@@ -6,12 +6,13 @@ import rhino.Scriptable;
 
 import java.lang.invoke.MethodHandle;
 
-public class NativeJavaHandle extends BaseFunction {
+/** @see rhino.NativeJavaMethod */
+public class NativeJavaMethodHandle extends BaseFunction {
 	protected final MethodHandle handle;
 
-	public NativeJavaHandle(Scriptable scope, MethodHandle handle) {
+	public NativeJavaMethodHandle(Scriptable scope, MethodHandle method) {
 		super(scope, null);
-		this.handle = handle;
+		handle = method;
 	}
 
 	@Override
