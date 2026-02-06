@@ -24,22 +24,18 @@ public final class EventsHandler {
 	public static Cons<?>[] getListener(Object event, Class<?> declaringClass, Boolf2<Cons<?>, Field[]> filter) {
 		return events.get(event, consumers).retainAll(e -> {
 			Class<?> c = e.getClass();
-			if (c.getName().substring(0, c.getName().indexOf("Lambda")).equals(declaringClass.getName())
-					|| c.getName().substring(0, c.getName().indexOf("ExternalSyntheticLambda")).equals(declaringClass.getName())) {
-				return filter.get(e, classHelper.getFields(e.getClass()));
-			}
-			return false;
+			return (c.getName().substring(0, c.getName().indexOf("Lambda")).equals(declaringClass.getName())
+					|| c.getName().substring(0, c.getName().indexOf("ExternalSyntheticLambda")).equals(declaringClass.getName()))
+					&& filter.get(e, classHelper.getFields(e.getClass()));
 		}).toArray(Cons.class);
 	}
 
 	public static void removeListener(Object event, Class<?> declaringClass, Boolf2<Cons<?>, Field[]> filter) {
 		events.get(event, consumers).remove(e -> {
 			Class<?> c = e.getClass();
-			if (c.getName().substring(0, c.getName().indexOf("Lambda")).equals(declaringClass.getName())
-					|| c.getName().substring(0, c.getName().indexOf("ExternalSyntheticLambda")).equals(declaringClass.getName())) {
-				return filter.get(e, classHelper.getFields(e.getClass()));
-			}
-			return false;
+			return (c.getName().substring(0, c.getName().indexOf("Lambda")).equals(declaringClass.getName())
+					|| c.getName().substring(0, c.getName().indexOf("ExternalSyntheticLambda")).equals(declaringClass.getName()))
+				&& filter.get(e, classHelper.getFields(e.getClass()));
 		});
 	}
 }

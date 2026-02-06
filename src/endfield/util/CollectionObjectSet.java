@@ -27,7 +27,7 @@ import static endfield.util.Constant.PRIME3;
  *
  * @author Nathan Sweet
  */
-public class CollectionObjectSet<E> extends AbstractSet<E> implements Iterable<E>, Eachable<E>, Cloneable {
+public class CollectionObjectSet<E> extends AbstractSet<E> implements Eachable<E>, Cloneable {
 	public int size;
 
 	public final Class<?> componentType;

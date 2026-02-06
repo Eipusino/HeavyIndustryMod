@@ -14,11 +14,11 @@ import endfield.entities.effect.Devastation;
 import mindustry.graphics.Layer;
 
 public class DevastationBatch extends BaseBatch {
-	public Cons<? super Devastation> cons;
+	public Cons<Devastation> cons;
 	public float baseZ = Layer.block;
 
 	//public void switchBatch(Runnable drawer, SpriteHandler handler, VaporizeHandler cons)
-	public void switchBatch(Runnable drawer, Cons<? super Devastation> cons) {
+	public void switchBatch(Runnable drawer, Cons<Devastation> cons) {
 		this.cons = cons;
 
 		Batch last = Core.batch;

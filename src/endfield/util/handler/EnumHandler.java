@@ -25,7 +25,7 @@ import static endfield.Vars2.classHelper;
  * @since 1.0.9
  */
 @SuppressWarnings("unchecked")
-public class EnumHandler<T extends Enum<?>> {
+public class EnumHandler<T extends Enum<T>> {
 	final FieldHandler<T> fieldHandler;
 	final MethodHandler<T> methodHandler;
 	final Class<T> clazz;
@@ -125,7 +125,7 @@ public class EnumHandler<T extends Enum<?>> {
 			values.add(ordinal, instance);
 
 			fieldHandler.setObject(null, field.getName(), values.toArray(clazz));
-		} catch (IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
+		} catch (NoSuchFieldException | IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);
 		}
 	}

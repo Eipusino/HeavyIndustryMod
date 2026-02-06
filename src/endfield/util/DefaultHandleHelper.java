@@ -21,12 +21,12 @@ public class DefaultHandleHelper implements JavaHandleHelper {
 	}
 
 	@Override
-	public IVariable genJavaVariableRef(Field field) {
-		return new JavaFieldRef(field);
+	public IVariable getJavaVariableReference(Field field) {
+		return new JavaFieldReference(field);
 	}
 
 	@Override
-	public IFunctionEntry genJavaMethodRef(Method method) {
-		return new JavaMethodRef(method);
+	public IFunctionEntry getJavaMethodReference(Method method) {
+		return new JavaMethodReference(method);
 	}
 }

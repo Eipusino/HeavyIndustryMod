@@ -7,11 +7,11 @@ import java.lang.reflect.Field;
 
 import static endfield.Vars2.fieldAccessHelper;
 
-public class JavaFieldRef implements IVariable {
+public class JavaFieldReference implements IVariable {
 	final String name;
 	final Class<?> owner;
 
-	public JavaFieldRef(Field field) {
+	public JavaFieldReference(Field field) {
 		name = field.getName();
 		owner = field.getDeclaringClass();
 	}

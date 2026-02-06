@@ -328,7 +328,7 @@ public class CharSeq implements CharSequence, Appendable, Cloneable {
 	@Override
 	public CharSeq subSequence(int start, int end) {
 		if (start < 0 || start > end || end > size)
-			throw new IndexOutOfBoundsException(Strings.format("start @, end @, size @", start, end, size));
+			throw new StringIndexOutOfBoundsException(Strings.format("start @, end @, size @", start, end, size));
 		if (start == end) return new CharSeq(0);
 
 		CharSeq out = new CharSeq( end - start);

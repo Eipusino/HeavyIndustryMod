@@ -38,11 +38,11 @@ public final class ObjectHandler {
 	 *
 	 * @param source    Source object of attribute
 	 * @param target    Copy the attribute to the target object
-	 * @param blackList Field blacklist
+	 * @param blacks    Field blacklist
 	 */
-	public static <S, T extends S> void copyFieldAsBlack(S source, T target, String... blackList) {
+	public static <S, T extends S> void copyFieldAsBlack(S source, T target, String... blacks) {
 		Class<?> curr = source.getClass();
-		Set<String> black = CollectionObjectSet.with(blackList);
+		Set<String> black = CollectionObjectSet.with(blacks);
 		Set<String> fields = new CollectionObjectSet<>(String.class);
 
 		while (curr != Object.class) {
@@ -64,12 +64,12 @@ public final class ObjectHandler {
 	 *
 	 * @param source    Source object of attribute
 	 * @param target    Copy the attribute to the target object
-	 * @param whiteList Field whitelist
+	 * @param whites    Field whitelist
 	 */
-	public static <S, T extends S> void copyFieldAsWhite(S source, T target, String... whiteList) {
-		for (String s : whiteList) {
+	public static <S, T extends S> void copyFieldAsWhite(S source, T target, String... whites) {
+		for (String white : whites) {
 			try {
-				FieldHandler.setDefault(target, s, FieldHandler.getDefault(source, s));
+				FieldHandler.setDefault(target, white, FieldHandler.getDefault(source, white));
 			} catch (Throwable e) {
 				exceptionHandler.get(e);
 			}

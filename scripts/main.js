@@ -10,7 +10,7 @@ Events.on(ClientLoadEvent, cons(ignored => {
 	if (mod != null && loadFailed) {
 		Log.err("Load Mod <ENDFIELD> Failed::Mod ClassLoader Missing");
 
-		let dialog = new BaseDialog("Missing ClassLoader");
+		let dialog = BaseDialog("Missing ClassLoader");
 		dialog.addCloseButton();
 		dialog.cont.pane(cons(table => {
 			table.center();

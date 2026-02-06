@@ -7,12 +7,12 @@ import endfield.util.handler.MethodHandler;
 
 import java.lang.reflect.Method;
 
-public class JavaMethodRef implements IFunctionEntry {
+public class JavaMethodReference implements IFunctionEntry {
 	final String name;
 	final Function<?, ?> defineFunction;
 	final FunctionType type;
 
-	public JavaMethodRef(Method method) {
+	public JavaMethodReference(Method method) {
 		name = method.getName();
 		type = FunctionType.inst(method);
 

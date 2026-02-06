@@ -59,7 +59,6 @@ import endfield.ui.Fonts2;
 import endfield.ui.Icon2;
 import endfield.ui.Styles2;
 import endfield.ui.Tex2;
-import endfield.util.IconLoader;
 import endfield.util.PlatformImpl;
 import endfield.util.Strings2;
 import endfield.util.script.Scripts2;
@@ -74,7 +73,6 @@ import mindustry.mod.Mod;
 import mindustry.ui.dialogs.BaseDialog;
 import mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable;
 import mindustry.ui.dialogs.SettingsMenuDialog.SettingsTable.Setting;
-import org.jetbrains.annotations.Nullable;
 
 import static endfield.Vars2.AUTHOR;
 import static endfield.Vars2.LINK_GIT_HUB;
@@ -91,7 +89,7 @@ import static endfield.Vars2.platformImpl;
 public final class EndFieldMod extends Mod {
 	public static Mod instance;
 
-	public static @Nullable FloatingText floatingText;
+	public static FloatingText floatingText;
 
 	static {
 		try {
@@ -231,8 +229,6 @@ public final class EndFieldMod extends Mod {
 
 			ScreenSampler.setup();
 		}
-
-		IconLoader.loadIcons(Vars2.internalTree.children("other", "icons.properties"));
 
 		if (Vars.ui != null) {
 			if (Vars.ui.settings != null) {

@@ -19,10 +19,10 @@ public class AtomicDoubleArray implements Serializable {
 	}
 
 	public AtomicDoubleArray(double[] arr) {
-		array = arr.clone();
+		array = arr;
 	}
 
-	public int length() {
+	public final int length() {
 		return array.length;
 	}
 
@@ -75,7 +75,7 @@ public class AtomicDoubleArray implements Serializable {
 	}
 
 	public final double getAndUpdate(int i, DoubleDoublef updateFunction) {
-		double prev = get(i), next = 0f;
+		double prev = get(i), next = 0d;
 		for (boolean haveNext = false; ; ) {
 			if (!haveNext)
 				next = updateFunction.get(prev);
@@ -86,7 +86,7 @@ public class AtomicDoubleArray implements Serializable {
 	}
 
 	public final double updateAndGet(int i, DoubleDoublef updateFunction) {
-		double prev = get(i), next = 0f;
+		double prev = get(i), next = 0d;
 		for (boolean haveNext = false; ; ) {
 			if (!haveNext)
 				next = updateFunction.get(prev);
@@ -97,7 +97,7 @@ public class AtomicDoubleArray implements Serializable {
 	}
 
 	public final double getAndAccumulate(int i, double x, DoubleDoublef2 accumulatorFunction) {
-		double prev = get(i), next = 0f;
+		double prev = get(i), next = 0d;
 		for (boolean haveNext = false; ; ) {
 			if (!haveNext)
 				next = accumulatorFunction.get(prev, x);
@@ -108,7 +108,7 @@ public class AtomicDoubleArray implements Serializable {
 	}
 
 	public final double accumulateAndGet(int i, double x, DoubleDoublef2 accumulatorFunction) {
-		double prev = get(i), next = 0f;
+		double prev = get(i), next = 0d;
 		for (boolean haveNext = false; ; ) {
 			if (!haveNext)
 				next = accumulatorFunction.get(prev, x);

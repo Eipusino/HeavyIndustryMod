@@ -43,11 +43,11 @@ public final class ScreenSampler {
 				try {
 					return (FrameBuffer) bufferField.get(Vars.renderer.pixelator);
 				} catch (IllegalAccessException e) {
-					throw new RuntimeException(e);
+					throw new RuntimeException("Unable to get Vars.renderer.pixelator.buffer", e);
 				}
 			});
 		} catch (NoSuchFieldException e) {
-			throw new RuntimeException(e);// should not happen.
+			throw new RuntimeException("Initialization field exception", e);// should not happen.
 		}
 	}
 

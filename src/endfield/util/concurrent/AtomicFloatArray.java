@@ -19,10 +19,10 @@ public class AtomicFloatArray implements Serializable {
 	}
 
 	public AtomicFloatArray(float[] arr) {
-		array = arr.clone();
+		array = arr;
 	}
 
-	public int length() {
+	public final int length() {
 		return array.length;
 	}
 

@@ -1,6 +1,7 @@
 package endfield.content;
 
 import arc.graphics.Color;
+import arc.struct.ObjectFloatMap;
 import endfield.Vars2;
 import endfield.graphics.Pal2;
 import endfield.world.meta.Attributes2;
@@ -22,6 +23,7 @@ import mindustry.entities.effect.WaveEffect;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
+import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.type.PayloadStack;
@@ -119,43 +121,51 @@ public final class Overrides {
 		Blocks.impactDrill.liquidCapacity *= 2f;
 		Blocks.eruptionDrill.liquidCapacity *= 2f;
 		if (Blocks.impactDrill instanceof BurstDrill drill) {
-			drill.drillMultipliers.put(Items.sand, 3.5f);
-			drill.drillMultipliers.put(Items.scrap, 3.5f);
-			drill.drillMultipliers.put(Items.copper, 3f);
-			drill.drillMultipliers.put(Items.lead, 3f);
-			drill.drillMultipliers.put(Items2.stone, 3f);
-			drill.drillMultipliers.put(Items2.rareEarth, 3f);
-			drill.drillMultipliers.put(Items.coal, 2.5f);
-			drill.drillMultipliers.put(Items.titanium, 2f);
-			drill.drillMultipliers.put(Items2.uranium, 0.5f);
-			drill.drillMultipliers.put(Items2.chromium, 0.5f);
+			ObjectFloatMap<Item> map = drill.drillMultipliers;
+
+			map.put(Items.sand, 3.5f);
+			map.put(Items.scrap, 3.5f);
+			map.put(Items.copper, 3f);
+			map.put(Items.lead, 3f);
+			map.put(Items2.stone, 3f);
+			map.put(Items2.rareEarth, 3f);
+			map.put(Items.coal, 2.5f);
+			map.put(Items.titanium, 2f);
+			map.put(Items2.uranium, 0.5f);
+			map.put(Items2.chromium, 0.5f);
 		}
 		if (Blocks.eruptionDrill instanceof BurstDrill drill) {
-			drill.drillMultipliers.put(Items.sand, 3.5f);
-			drill.drillMultipliers.put(Items.scrap, 3.5f);
-			drill.drillMultipliers.put(Items.copper, 3f);
-			drill.drillMultipliers.put(Items.lead, 3f);
-			drill.drillMultipliers.put(Items2.stone, 3f);
-			drill.drillMultipliers.put(Items2.rareEarth, 3f);
-			drill.drillMultipliers.put(Items.coal, 2.5f);
-			drill.drillMultipliers.put(Items.titanium, 2f);
-			drill.drillMultipliers.put(Items2.uranium, 0.5f);
-			drill.drillMultipliers.put(Items2.chromium, 0.5f);
+			ObjectFloatMap<Item> map = drill.drillMultipliers;
+
+			map.put(Items.sand, 3.5f);
+			map.put(Items.scrap, 3.5f);
+			map.put(Items.copper, 3f);
+			map.put(Items.lead, 3f);
+			map.put(Items2.stone, 3f);
+			map.put(Items2.rareEarth, 3f);
+			map.put(Items.coal, 2.5f);
+			map.put(Items.titanium, 2f);
+			map.put(Items2.uranium, 0.5f);
+			map.put(Items2.chromium, 0.5f);
 		}
 		if (Blocks.largePlasmaBore instanceof BeamDrill drill) {
-			drill.drillMultipliers.put(Items.pyratite, 1.5f);
-			drill.drillMultipliers.put(Items.beryllium, 1.5f);
-			drill.drillMultipliers.put(Items.graphite, 1.5f);
+			ObjectFloatMap<Item> map = drill.drillMultipliers;
+
+			map.put(Items.pyratite, 1.5f);
+			map.put(Items.beryllium, 1.5f);
+			map.put(Items.graphite, 1.5f);
 		}
 		//blocks-power
 		if (Blocks.surgeTower instanceof PowerNode node) node.maxNodes = 3;
 		if (Blocks.differentialGenerator instanceof ConsumeGenerator generator) generator.powerProduction = 28f;
 		if (Blocks.thoriumReactor instanceof NuclearReactor reactor) reactor.powerProduction = 18f;
 		if (Blocks.rtgGenerator instanceof ConsumeGenerator generator) {
-			//generator.itemDurationMultipliers.put(Items2.rareEarth, 5f);
-			//generator.itemDurationMultipliers.put(Items2.crystal, 35f);
-			generator.itemDurationMultipliers.put(Items2.uranium, 2f);
-			//generator.itemDurationMultipliers.put(Items2.heavyAlloy, 115f);
+			ObjectFloatMap<Item> map = generator.itemDurationMultipliers;
+
+			//map.put(Items2.rareEarth, 5f);
+			//map.put(Items2.crystal, 35f);
+			map.put(Items2.uranium, 2f);
+			//map.put(Items2.heavyAlloy, 115f);
 		}
 		Blocks.impactReactor.liquidCapacity = 80f;
 		Blocks.neoplasiaReactor.canOverdrive = true;

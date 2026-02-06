@@ -102,8 +102,8 @@ public class Vec2Seq implements Iterable<Vec2>, Eachable<Vec2> {
 	}
 
 	public void addAll(Iterable<Vec2> vecs) {
-		for (Vec2 v : vecs) {
-			add(v);
+		for (Vec2 vec : vecs) {
+			add(vec);
 		}
 	}
 
