@@ -67,6 +67,10 @@ public class AtomicBoolean2 implements Serializable {
 		return (boolean) handle.getOpaque(this);
 	}
 
+	public final void setOpaque(boolean newValue) {
+		handle.setOpaque(this, newValue);
+	}
+
 	public final boolean getAcquire() {
 		return (boolean) handle.getAcquire(this);
 	}

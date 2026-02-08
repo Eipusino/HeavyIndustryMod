@@ -39,11 +39,11 @@ public final class ContentHandler {
 			}
 		}
 
-		if (content instanceof MappableContent) {
+		if (content instanceof MappableContent mapContent) {
 			if (content.getContentType().ordinal() < contentNameMap.length) {
 				ObjectMap<String, MappableContent> map = contentNameMap[content.getContentType().ordinal()];
 				if (map != null) {
-					map.remove(((MappableContent) content).name);
+					map.remove(mapContent.name);
 				}
 			}
 		}

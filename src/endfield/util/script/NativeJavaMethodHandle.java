@@ -5,14 +5,29 @@ import rhino.Context;
 import rhino.Scriptable;
 
 import java.lang.invoke.MethodHandle;
+import java.lang.reflect.Method;
+
+import static endfield.Vars2.platformImpl;
 
 /** @see rhino.NativeJavaMethod */
 public class NativeJavaMethodHandle extends BaseFunction {
 	protected final MethodHandle handle;
 
+	public NativeJavaMethodHandle(Scriptable scope, Method method) throws IllegalAccessException {
+		this(scope, platformImpl.lookup(method.getDeclaringClass()).unreflect(method));
+	}
+
 	public NativeJavaMethodHandle(Scriptable scope, MethodHandle method) {
 		super(scope, null);
 		handle = method;
+	}
+
+	public static NativeJavaMethodHandle unreflect(Scriptable scope, Method method) {
+		try {
+			return new NativeJavaMethodHandle(scope, method);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override

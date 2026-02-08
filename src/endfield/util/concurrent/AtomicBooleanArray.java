@@ -1,8 +1,5 @@
 package endfield.util.concurrent;
 
-import endfield.func.BoolBoolf;
-import endfield.func.BoolBoolf2;
-
 import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;
@@ -59,50 +56,6 @@ public class AtomicBooleanArray implements Serializable {
 			if (i == iMax)
 				return b.append(']').toString();
 			b.append(',').append(' ');
-		}
-	}
-
-	public final boolean getAndUpdate(int i, BoolBoolf updateFunction) {
-		boolean prev = get(i), next = false;
-		for (boolean haveNext = false; ; ) {
-			if (!haveNext)
-				next = updateFunction.get(prev);
-			if (weakCompareAndSetVolatile(i, prev, next))
-				return prev;
-			haveNext = (prev == (prev = get(i)));
-		}
-	}
-
-	public final boolean updateAndGet(int i, BoolBoolf updateFunction) {
-		boolean prev = get(i), next = false;
-		for (boolean haveNext = false; ; ) {
-			if (!haveNext)
-				next = updateFunction.get(prev);
-			if (weakCompareAndSetVolatile(i, prev, next))
-				return next;
-			haveNext = (prev == (prev = get(i)));
-		}
-	}
-
-	public final boolean getAndAccumulate(int i, boolean x, BoolBoolf2 accumulatorFunction) {
-		boolean prev = get(i), next = false;
-		for (boolean haveNext = false; ; ) {
-			if (!haveNext)
-				next = accumulatorFunction.get(prev, x);
-			if (weakCompareAndSetVolatile(i, prev, next))
-				return prev;
-			haveNext = (prev == (prev = get(i)));
-		}
-	}
-
-	public final boolean accumulateAndGet(int i, boolean x, BoolBoolf2 accumulatorFunction) {
-		boolean prev = get(i), next = false;
-		for (boolean haveNext = false; ; ) {
-			if (!haveNext)
-				next = accumulatorFunction.get(prev, x);
-			if (weakCompareAndSetVolatile(i, prev, next))
-				return next;
-			haveNext = (prev == (prev = get(i)));
 		}
 	}
 

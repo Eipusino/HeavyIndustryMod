@@ -84,7 +84,8 @@ if (OS.isAndroid) {
 	importPackage(endfield.desktop);
 }
 
-function apply() {
+function extendMod() {
+	// To inherit the mod class, applicationClassLoader needs to be set to Vars.mod.mainLoad() in the context
 	let cx = Packages.rhino.Context.getContext();
 	let lastLoader = cx.getApplicationClassLoader();
 	cx.setApplicationClassLoader(Vars.mods.mainLoader());
@@ -106,13 +107,13 @@ function apply() {
 }
 
 function getClass(name) {
-	return Packages.java.lang.Class.forName(name, true, Vars.mods.mainLoader());
+	return java.lang.Class.forName(name, true, Vars.mods.mainLoader());
 }
 
-const jbyte = (value) => Packages.java.lang.Byte(value);
-const jshort = (value) => Packages.java.lang.Short(value);
-const jint = (value) => Packages.java.lang.Integer(value);
-const jlong = (value) => Packages.java.lang.Long(value);
-const jfloat = (value) => Packages.java.lang.Float(value);
-const jdouble = (value) => Packages.java.lang.Double(value);
-const jchar = (value) => Packages.java.lang.Character(value);
+const jbyte = (value) => java.lang.Byte.valueOf(value);
+const jshort = (value) => java.lang.Short.valueOf(value);
+const jint = (value) => java.lang.Integer.valueOf(value);
+const jlong = (value) => java.lang.Long.valueOf(value);
+const jfloat = (value) => java.lang.Float.valueOf(value);
+const jdouble = (value) => java.lang.Double.valueOf(value);
+const jchar = (value) => java.lang.Character.valueOf(value);

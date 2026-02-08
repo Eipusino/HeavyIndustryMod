@@ -1,28 +1,38 @@
 package endfield.util;
 
-import arc.func.Cons;
 import arc.math.Mathf;
 import arc.struct.BoolSeq;
+import arc.struct.IntSeq;
 import arc.util.ArcRuntimeException;
-import arc.util.Eachable;
-import endfield.math.Mathm;
-import endfield.util.holder.ObjectBoolHolder;
+import endfield.util.holder.IntBoolHolder;
 
-import java.lang.reflect.Array;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import static endfield.util.Constant.EMPTY;
+import static endfield.util.Constant.INDEX_ILLEGAL;
+import static endfield.util.Constant.INDEX_ZERO;
 import static endfield.util.Constant.PRIME2;
 import static endfield.util.Constant.PRIME3;
 
-public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable<ObjectBoolHolder<K>>, Cloneable {
+/**
+ * An unordered map where the keys are ints and values are booleans. This implementation is a cuckoo hash map using 3 hashes, random
+ * walking, and a small stash for problematic keys. Null keys are not allowed. No allocation is done except when growing the table
+ * size. <br>
+ * <br>
+ * This map performs very fast get, containsKey, and remove (typically O(1), worst case O(log(n))). Put may be a bit slower,
+ * depending on hash collisions. Load factors greater than 0.91 greatly increase the chances the map will have to rehash to the
+ * next higher POT size.
+ * @author Nathan Sweet
+ */
+public class IntBoolMap implements Iterable<IntBoolHolder>, Cloneable {
 	public int size;
 
-	public final Class<?> keyComponentType;
-
-	protected K[] keyTable;
+	protected int[] keyTable;
 	protected boolean[] valueTable;
 	protected int capacity, stashSize;
+	protected boolean zeroValue;
+	protected boolean hasZeroValue;
 
 	protected float loadFactor;
 	protected int hashShift, mask, threshold;
@@ -34,8 +44,8 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 	protected transient Keys keys1, keys2;
 
 	/** Creates a new map with an initial capacity of 51 and a load factor of 0.8. */
-	public ObjectBoolMap(Class<?> keyType) {
-		this(keyType, 51, 0.8f);
+	public IntBoolMap() {
+		this(51, 0.8f);
 	}
 
 	/**
@@ -43,8 +53,8 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 	 *
 	 * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
 	 */
-	public ObjectBoolMap(Class<?> keyType, int initialCapacity) {
-		this(keyType, initialCapacity, 0.8f);
+	public IntBoolMap(int initialCapacity) {
+		this(initialCapacity, 0.8f);
 	}
 
 	/**
@@ -53,8 +63,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 	 *
 	 * @param initialCapacity If not a power of two, it is increased to the next nearest power of two.
 	 */
-	@SuppressWarnings("unchecked")
-	public ObjectBoolMap(Class<?> keyType, int initialCapacity, float loadFactor) {
+	public IntBoolMap(int initialCapacity, float loadFactor) {
 		if (initialCapacity < 0) throw new IllegalArgumentException("initialCapacity must be >= 0: " + initialCapacity);
 		initialCapacity = Mathf.nextPowerOfTwo((int) Math.ceil(initialCapacity / loadFactor));
 		if (initialCapacity > 1 << 30)
@@ -68,27 +77,34 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		mask = capacity - 1;
 		hashShift = 31 - Integer.numberOfTrailingZeros(capacity);
 		stashCapacity = Math.max(3, (int) Math.ceil(Math.log(capacity)) * 2);
-		pushIterations = Mathm.clamp(capacity, 8, (int) Math.sqrt(capacity) / 8);
+		pushIterations = Math.max(Math.min(capacity, 8), (int) Math.sqrt(capacity) / 8);
 
-		keyComponentType = keyType;
-
-		keyTable = (K[]) Array.newInstance(keyType, capacity + stashCapacity);
+		keyTable = new int[capacity + stashCapacity];
 		valueTable = new boolean[keyTable.length];
 	}
 
 	/** Creates a new map identical to the specified map. */
-	public ObjectBoolMap(ObjectBoolMap<? extends K> map) {
-		this(map.keyComponentType, (int) Math.floor(map.capacity * map.loadFactor), map.loadFactor);
+	public IntBoolMap(IntBoolMap map) {
+		this((int) Math.floor(map.capacity * map.loadFactor), map.loadFactor);
 		stashSize = map.stashSize;
 		System.arraycopy(map.keyTable, 0, keyTable, 0, map.keyTable.length);
 		System.arraycopy(map.valueTable, 0, valueTable, 0, map.valueTable.length);
 		size = map.size;
+		zeroValue = map.zeroValue;
+		hasZeroValue = map.hasZeroValue;
 	}
 
-	@SuppressWarnings("unchecked")
-	public ObjectBoolMap<K> copy() {
+	public static IntBoolMap of(Object... values) {
+		IntBoolMap map = new IntBoolMap();
+		for (int i = 0; i < values.length; i += 2) {
+			map.put((int) values[i], (boolean) values[i + 1]);
+		}
+		return map;
+	}
+
+	public IntBoolMap copy() {
 		try {
-			ObjectBoolMap<K> out = (ObjectBoolMap<K>) super.clone();
+			IntBoolMap out = (IntBoolMap) super.clone();
 			out.keyTable = keyTable.clone();
 			out.valueTable = valueTable.clone();
 
@@ -98,67 +114,66 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 
 			return out;
 		} catch (CloneNotSupportedException e) {
-			return new ObjectBoolMap<>(this);
+			return new IntBoolMap(this);
 		}
 	}
 
-	@Override
-	public void each(Cons<? super ObjectBoolHolder<K>> cons) {
-		for (ObjectBoolHolder<K> entry : entries()) {
-			cons.get(entry);
+	public void put(int key, boolean value) {
+		if (key == 0) {
+			zeroValue = value;
+			if (!hasZeroValue) {
+				hasZeroValue = true;
+				size++;
+			}
+			return;
 		}
-	}
-
-	public void put(K key, boolean value) {
-		if (key == null) return;
 
 		// Check for existing keys.
-		int hashCode = key.hashCode();
-		int index1 = hashCode & mask;
-		K key1 = keyTable[index1];
-		if (key.equals(key1)) {
+		int index1 = key & mask;
+		int key1 = keyTable[index1];
+		if (key == key1) {
 			valueTable[index1] = value;
 			return;
 		}
 
-		int index2 = hash2(hashCode);
-		K key2 = keyTable[index2];
-		if (key.equals(key2)) {
+		int index2 = hash2(key);
+		int key2 = keyTable[index2];
+		if (key == key2) {
 			valueTable[index2] = value;
 			return;
 		}
 
-		int index3 = hash3(hashCode);
-		K key3 = keyTable[index3];
-		if (key.equals(key3)) {
+		int index3 = hash3(key);
+		int key3 = keyTable[index3];
+		if (key == key3) {
 			valueTable[index3] = value;
 			return;
 		}
 
 		// Update key in the stash.
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
-			if (key.equals(keyTable[i])) {
+			if (key == keyTable[i]) {
 				valueTable[i] = value;
 				return;
 			}
 		}
 
 		// Check for empty buckets.
-		if (key1 == null) {
+		if (key1 == EMPTY) {
 			keyTable[index1] = key;
 			valueTable[index1] = value;
 			if (size++ >= threshold) resize(capacity << 1);
 			return;
 		}
 
-		if (key2 == null) {
+		if (key2 == EMPTY) {
 			keyTable[index2] = key;
 			valueTable[index2] = value;
 			if (size++ >= threshold) resize(capacity << 1);
 			return;
 		}
 
-		if (key3 == null) {
+		if (key3 == EMPTY) {
 			keyTable[index3] = key;
 			valueTable[index3] = value;
 			if (size++ >= threshold) resize(capacity << 1);
@@ -168,45 +183,41 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		push(key, value, index1, key1, index2, key2, index3, key3);
 	}
 
-	public void putAll(ObjectBoolMap<? extends K> map) {
-		for (ObjectBoolHolder<? extends K> entry : map.entries())
+	public void putAll(IntBoolMap map) {
+		for (IntBoolHolder entry : map.entries())
 			put(entry.key, entry.value);
 	}
 
-	@SuppressWarnings("unchecked")
-	public void putAll(Object... values) {
-		for (int i = 0; i < values.length / 2; i++) {
-			put((K) values[i * 2], (boolean) values[i * 2 + 1]);
-		}
-	}
-
 	/** Skips checks for existing keys. */
-	protected void putResize(K key, boolean value) {
-		if (key == null) return;
+	protected void putResize(int key, boolean value) {
+		if (key == 0) {
+			zeroValue = value;
+			hasZeroValue = true;
+			return;
+		}
 
 		// Check for empty buckets.
-		int hashCode = key.hashCode();
-		int index1 = hashCode & mask;
-		K key1 = keyTable[index1];
-		if (key1 == null) {
+		int index1 = key & mask;
+		int key1 = keyTable[index1];
+		if (key1 == EMPTY) {
 			keyTable[index1] = key;
 			valueTable[index1] = value;
 			if (size++ >= threshold) resize(capacity << 1);
 			return;
 		}
 
-		int index2 = hash2(hashCode);
-		K key2 = keyTable[index2];
-		if (key2 == null) {
+		int index2 = hash2(key);
+		int key2 = keyTable[index2];
+		if (key2 == EMPTY) {
 			keyTable[index2] = key;
 			valueTable[index2] = value;
 			if (size++ >= threshold) resize(capacity << 1);
 			return;
 		}
 
-		int index3 = hash3(hashCode);
-		K key3 = keyTable[index3];
-		if (key3 == null) {
+		int index3 = hash3(key);
+		int key3 = keyTable[index3];
+		if (key3 == EMPTY) {
 			keyTable[index3] = key;
 			valueTable[index3] = value;
 			if (size++ >= threshold) resize(capacity << 1);
@@ -216,9 +227,9 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		push(key, value, index1, key1, index2, key2, index3, key3);
 	}
 
-	protected void push(K insertKey, boolean insertValue, int index1, K key1, int index2, K key2, int index3, K key3) {
+	protected void push(int insertKey, boolean insertValue, int index1, int key1, int index2, int key2, int index3, int key3) {
 		// Push keys until an empty bucket is found.
-		K evictedKey;
+		int evictedKey;
 		boolean evictedValue;
 		int i = 0;
 		do {
@@ -245,28 +256,27 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 			}
 
 			// If the evicted key hashes to an empty bucket, put it there and stop.
-			int hashCode = evictedKey.hashCode();
-			index1 = hashCode & mask;
+			index1 = evictedKey & mask;
 			key1 = keyTable[index1];
-			if (key1 == null) {
+			if (key1 == EMPTY) {
 				keyTable[index1] = evictedKey;
 				valueTable[index1] = evictedValue;
 				if (size++ >= threshold) resize(capacity << 1);
 				return;
 			}
 
-			index2 = hash2(hashCode);
+			index2 = hash2(evictedKey);
 			key2 = keyTable[index2];
-			if (key2 == null) {
+			if (key2 == EMPTY) {
 				keyTable[index2] = evictedKey;
 				valueTable[index2] = evictedValue;
 				if (size++ >= threshold) resize(capacity << 1);
 				return;
 			}
 
-			index3 = hash3(hashCode);
+			index3 = hash3(evictedKey);
 			key3 = keyTable[index3];
-			if (key3 == null) {
+			if (key3 == EMPTY) {
 				keyTable[index3] = evictedKey;
 				valueTable[index3] = evictedValue;
 				if (size++ >= threshold) resize(capacity << 1);
@@ -282,7 +292,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		putStash(evictedKey, evictedValue);
 	}
 
-	protected void putStash(K key, boolean value) {
+	protected void putStash(int key, boolean value) {
 		if (stashSize == stashCapacity) {
 			// Too many pushes occurred and the stash is full, increase the table size.
 			resize(capacity << 1);
@@ -297,59 +307,135 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		size++;
 	}
 
-	public boolean get(Object key) {
+	public boolean get(int key) {
 		return get(key, false);
 	}
 
 	/** @param defaultValue Returned if the key was not associated with a value. */
-	public boolean get(Object key, boolean defaultValue) {
-		if (key == null) return defaultValue;
-
-		int hashCode = key.hashCode();
-		int index = hashCode & mask;
-		if (!key.equals(keyTable[index])) {
-			index = hash2(hashCode);
-			if (!key.equals(keyTable[index])) {
-				index = hash3(hashCode);
-				if (!key.equals(keyTable[index])) return getStash(key, defaultValue);
+	public boolean get(int key, boolean defaultValue) {
+		if (key == 0) {
+			if (!hasZeroValue) return defaultValue;
+			return zeroValue;
+		}
+		int index = key & mask;
+		if (keyTable[index] != key) {
+			index = hash2(key);
+			if (keyTable[index] != key) {
+				index = hash3(key);
+				if (keyTable[index] != key) return getStash(key, defaultValue);
 			}
 		}
 		return valueTable[index];
 	}
 
-	protected boolean getStash(Object key, boolean defaultValue) {
+	/**
+	 * Only inserts into the map if value is not present.
+	 *
+	 * @param key   The key.
+	 * @param value The value.
+	 * @return The associated value if key is present in the map, else {@code value}.
+	 *
+	 */
+	public boolean getOrPut(final int key, final boolean value) {
+		if (key == 0) {
+			if (!hasZeroValue) {
+				zeroValue = value;
+				hasZeroValue = true;
+				size++;
+			}
+			return zeroValue;
+		}
+
+		// Check for existing keys.
+		int index1 = key & mask;
+		int key1 = keyTable[index1];
+		if (key == key1) {
+			return valueTable[index1];
+		}
+
+		int index2 = hash2(key);
+		int key2 = keyTable[index2];
+		if (key == key2) {
+			return valueTable[index2];
+		}
+
+		int index3 = hash3(key);
+		int key3 = keyTable[index3];
+		if (key == key3) {
+			return valueTable[index3];
+		}
+
+		// Update key in the stash.
+		for (int i = capacity, n = i + stashSize; i < n; i++) {
+			if (key == keyTable[i]) {
+				return valueTable[i];
+			}
+		}
+
+		// Check for empty buckets.
+		if (key1 == EMPTY) {
+			keyTable[index1] = key;
+			valueTable[index1] = value;
+			if (size++ >= threshold) resize(capacity << 1);
+			return value;
+		}
+
+		if (key2 == EMPTY) {
+			keyTable[index2] = key;
+			valueTable[index2] = value;
+			if (size++ >= threshold) resize(capacity << 1);
+			return value;
+		}
+
+		if (key3 == EMPTY) {
+			keyTable[index3] = key;
+			valueTable[index3] = value;
+			if (size++ >= threshold) resize(capacity << 1);
+			return value;
+		}
+
+		push(key, value, index1, key1, index2, key2, index3, key3);
+		return value;
+	}
+
+	protected boolean getStash(int key, boolean defaultValue) {
+		int[] keyTable = this.keyTable;
 		for (int i = capacity, n = i + stashSize; i < n; i++)
-			if (key.equals(keyTable[i])) return valueTable[i];
+			if (key == keyTable[i]) return valueTable[i];
 		return defaultValue;
 	}
 
-	/** @return 0 as default value. */
-	public boolean remove(K key) {
+	public boolean remove(int key) {
 		return remove(key, false);
 	}
 
-	/** @return the value that was removed, or defaultValue. */
-	public boolean remove(K key, boolean defaultValue) {
-		int hashCode = key.hashCode();
-		int index = hashCode & mask;
-		if (key.equals(keyTable[index])) {
-			keyTable[index] = null;
+	public boolean remove(int key, boolean defaultValue) {
+		if (key == 0) {
+			if (!hasZeroValue) return defaultValue;
+			hasZeroValue = false;
+			size--;
+			return zeroValue;
+		}
+
+		int index = key & mask;
+		if (key == keyTable[index]) {
+			keyTable[index] = EMPTY;
 			boolean oldValue = valueTable[index];
 			size--;
 			return oldValue;
 		}
 
-		index = hash2(hashCode);
-		if (key.equals(keyTable[index])) {
-			keyTable[index] = null;
+		index = hash2(key);
+		if (key == keyTable[index]) {
+			keyTable[index] = EMPTY;
 			boolean oldValue = valueTable[index];
 			size--;
 			return oldValue;
 		}
 
-		index = hash3(hashCode);
-		if (key.equals(keyTable[index])) {
-			keyTable[index] = null;
+		index = hash3(key);
+		if (key == keyTable[index]) {
+			keyTable[index] = EMPTY;
 			boolean oldValue = valueTable[index];
 			size--;
 			return oldValue;
@@ -358,9 +444,9 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		return removeStash(key, defaultValue);
 	}
 
-	protected boolean removeStash(K key, boolean defaultValue) {
+	boolean removeStash(int key, boolean defaultValue) {
 		for (int i = capacity, n = i + stashSize; i < n; i++) {
-			if (key.equals(keyTable[i])) {
+			if (key == keyTable[i]) {
 				boolean oldValue = valueTable[i];
 				removeStashIndex(i);
 				size--;
@@ -370,14 +456,13 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		return defaultValue;
 	}
 
-	protected void removeStashIndex(int index) {
+	void removeStashIndex(int index) {
 		// If the removed location was not last, move the last tuple to the removed location.
 		stashSize--;
 		int lastIndex = capacity + stashSize;
 		if (index < lastIndex) {
 			keyTable[index] = keyTable[lastIndex];
 			valueTable[index] = valueTable[lastIndex];
-			keyTable[lastIndex] = null;
 		}
 	}
 
@@ -404,6 +489,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 			clear();
 			return;
 		}
+		hasZeroValue = false;
 		size = 0;
 		resize(maximumCapacity);
 	}
@@ -411,9 +497,10 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 	public void clear() {
 		if (size == 0) return;
 		for (int i = capacity + stashSize; i-- > 0; )
-			keyTable[i] = null;
+			keyTable[i] = EMPTY;
 		size = 0;
 		stashSize = 0;
+		hasZeroValue = false;
 	}
 
 	/**
@@ -421,30 +508,28 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 	 * an expensive operation.
 	 */
 	public boolean containsValue(boolean value) {
+		if (hasZeroValue && zeroValue == value) return true;
 		for (int i = capacity + stashSize; i-- > 0; )
-			if (keyTable[i] != null && valueTable[i] == value) return true;
+			if (keyTable[i] != 0 && valueTable[i] == value) return true;
 		return false;
-
 	}
 
-	public boolean containsKey(Object key) {
-		if (key == null) return false;
-
-		int hashCode = key.hashCode();
-		int index = hashCode & mask;
-		if (!key.equals(keyTable[index])) {
-			index = hash2(hashCode);
-			if (!key.equals(keyTable[index])) {
-				index = hash3(hashCode);
-				if (!key.equals(keyTable[index])) return containsKeyStash(key);
+	public boolean containsKey(int key) {
+		if (key == 0) return hasZeroValue;
+		int index = key & mask;
+		if (keyTable[index] != key) {
+			index = hash2(key);
+			if (keyTable[index] != key) {
+				index = hash3(key);
+				if (keyTable[index] != key) return containsKeyStash(key);
 			}
 		}
 		return true;
 	}
 
-	protected boolean containsKeyStash(Object key) {
+	protected boolean containsKeyStash(int key) {
 		for (int i = capacity, n = i + stashSize; i < n; i++)
-			if (key.equals(keyTable[i])) return true;
+			if (key == keyTable[i]) return true;
 		return false;
 	}
 
@@ -452,10 +537,11 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 	 * Returns the key for the specified value, or null if it is not in the map. Note this traverses the entire map and compares
 	 * every value, which may be an expensive operation.
 	 */
-	public K findKey(boolean value) {
+	public int findKey(boolean value, int notFound) {
+		if (hasZeroValue && zeroValue == value) return 0;
 		for (int i = capacity + stashSize; i-- > 0; )
-			if (keyTable[i] != null && valueTable[i] == value) return keyTable[i];
-		return null;
+			if (keyTable[i] != 0 && valueTable[i] == value) return keyTable[i];
+		return notFound;
 	}
 
 	/**
@@ -469,7 +555,6 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		if (sizeNeeded >= threshold) resize(Mathf.nextPowerOfTwo((int) Math.ceil(sizeNeeded / loadFactor)));
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void resize(int newSize) {
 		int oldEndIndex = capacity + stashSize;
 
@@ -478,21 +563,21 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		mask = newSize - 1;
 		hashShift = 31 - Integer.numberOfTrailingZeros(newSize);
 		stashCapacity = Math.max(3, (int) Math.ceil(Math.log(newSize)) * 2);
-		pushIterations = Mathm.clamp(newSize, 8, (int) Math.sqrt(newSize) / 8);
+		pushIterations = Math.max(Math.min(newSize, 8), (int) Math.sqrt(newSize) / 8);
 
-		K[] oldKeyTable = keyTable;
+		int[] oldKeyTable = keyTable;
 		boolean[] oldValueTable = valueTable;
 
-		keyTable = (K[]) Array.newInstance(keyComponentType, newSize + stashCapacity);
+		keyTable = new int[newSize + stashCapacity];
 		valueTable = new boolean[newSize + stashCapacity];
 
 		int oldSize = size;
-		size = 0;
+		size = hasZeroValue ? 1 : 0;
 		stashSize = 0;
 		if (oldSize > 0) {
 			for (int i = 0; i < oldEndIndex; i++) {
-				K key = oldKeyTable[i];
-				if (key != null) putResize(key, oldValueTable[i]);
+				int key = oldKeyTable[i];
+				if (key != EMPTY) putResize(key, oldValueTable[i]);
 			}
 		}
 	}
@@ -510,10 +595,13 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 	@Override
 	public int hashCode() {
 		int h = 0;
+		if (hasZeroValue) {
+			h += Boolean.hashCode(zeroValue);
+		}
 		for (int i = 0, n = capacity + stashSize; i < n; i++) {
-			K key = keyTable[i];
-			if (key != null) {
-				h += key.hashCode() * 31;
+			int key = keyTable[i];
+			if (key != EMPTY) {
+				h += key * 31;
 
 				boolean value = valueTable[i];
 				h += Boolean.hashCode(value);
@@ -523,16 +611,19 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (o == this) return true;
-		if (!(o instanceof ObjectBoolMap<?> map) || map.keyComponentType != keyComponentType) return false;
-
-		if (map.size != size) return false;
+	public boolean equals(Object obj) {
+		if (obj == this) return true;
+		if (!(obj instanceof IntBoolMap other)) return false;
+		if (other.size != size) return false;
+		if (other.hasZeroValue != hasZeroValue) return false;
+		if (hasZeroValue && other.zeroValue != zeroValue) {
+			return false;
+		}
 		for (int i = 0, n = capacity + stashSize; i < n; i++) {
-			K key = keyTable[i];
-			if (key != null) {
-				boolean otherValue = map.get(key, false);
-				if (!map.containsKey(key)) return false;
+			int key = keyTable[i];
+			if (key != EMPTY) {
+				boolean otherValue = other.get(key, false);
+				if (!other.containsKey(key)) return false;
 				boolean value = valueTable[i];
 				if (otherValue != value) return false;
 			}
@@ -546,17 +637,22 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		StringBuilder buffer = new StringBuilder(32);
 		buffer.append('{');
 		int i = keyTable.length;
-		while (i-- > 0) {
-			K key = keyTable[i];
-			if (key == null) continue;
-			buffer.append(key);
-			buffer.append('=');
-			buffer.append(valueTable[i]);
-			break;
+		if (hasZeroValue) {
+			buffer.append("0=");
+			buffer.append(zeroValue);
+		} else {
+			while (i-- > 0) {
+				int key = keyTable[i];
+				if (key == EMPTY) continue;
+				buffer.append(key);
+				buffer.append('=');
+				buffer.append(valueTable[i]);
+				break;
+			}
 		}
 		while (i-- > 0) {
-			K key = keyTable[i];
-			if (key == null) continue;
+			int key = keyTable[i];
+			if (key == EMPTY) continue;
 			buffer.append(", ");
 			buffer.append(key);
 			buffer.append('=');
@@ -567,7 +663,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 	}
 
 	@Override
-	public Entries iterator() {
+	public Iterator<IntBoolHolder> iterator() {
 		return entries();
 	}
 
@@ -634,7 +730,7 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		return keys2;
 	}
 
-	protected class MapIterator {
+	public class MapIterator {
 		public boolean hasNext;
 
 		protected int nextIndex, currentIndex;
@@ -645,15 +741,18 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		}
 
 		public void reset() {
-			currentIndex = -1;
-			nextIndex = -1;
-			findNextIndex();
+			currentIndex = INDEX_ILLEGAL;
+			nextIndex = INDEX_ZERO;
+			if (hasZeroValue)
+				hasNext = true;
+			else
+				findNextIndex();
 		}
 
 		protected void findNextIndex() {
 			hasNext = false;
 			for (int n = capacity + stashSize; ++nextIndex < n; ) {
-				if (keyTable[nextIndex] != null) {
+				if (keyTable[nextIndex] != EMPTY) {
 					hasNext = true;
 					break;
 				}
@@ -661,40 +760,38 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		}
 
 		public void remove() {
-			if (currentIndex < 0) throw new IllegalStateException("next must be called before remove.");
-			if (currentIndex >= capacity) {
+			if (currentIndex == INDEX_ZERO && hasZeroValue) {
+				hasZeroValue = false;
+			} else if (currentIndex < 0) {
+				throw new IllegalStateException("next must be called before remove.");
+			} else if (currentIndex >= capacity) {
 				removeStashIndex(currentIndex);
 				nextIndex = currentIndex - 1;
 				findNextIndex();
 			} else {
-				keyTable[currentIndex] = null;
+				keyTable[currentIndex] = EMPTY;
 			}
-			currentIndex = -1;
+			currentIndex = INDEX_ILLEGAL;
 			size--;
 		}
 	}
 
-	public class Entries extends MapIterator implements Iterable<ObjectBoolHolder<K>>, Iterator<ObjectBoolHolder<K>> {
-		protected ObjectBoolHolder<K> entry = new ObjectBoolHolder<>();
+	public class Entries extends MapIterator implements Iterable<IntBoolHolder>, Iterator<IntBoolHolder> {
+		protected IntBoolHolder entry = new IntBoolHolder();
 
-		public CollectionList<ObjectBoolHolder<K>> toList() {
-			CollectionList<ObjectBoolHolder<K>> out = new CollectionList<>(keyComponentType);
-			for (ObjectBoolHolder<K> entry : this) {
-				ObjectBoolHolder<K> e = new ObjectBoolHolder<>();
-				e.key = entry.key;
-				e.value = entry.value;
-				out.add(e);
-			}
-			return out;
-		}
+		public Entries() {}
 
 		/** Note the same entry instance is returned each time this method is called. */
-		@Override
-		public ObjectBoolHolder<K> next() {
+		public IntBoolHolder next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			entry.key = keyTable[nextIndex];
-			entry.value = valueTable[nextIndex];
+			if (nextIndex == INDEX_ZERO) {
+				entry.key = 0;
+				entry.value = zeroValue;
+			} else {
+				entry.key = keyTable[nextIndex];
+				entry.value = valueTable[nextIndex];
+			}
 			currentIndex = nextIndex;
 			findNextIndex();
 			return entry;
@@ -707,12 +804,14 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		}
 
 		@Override
-		public Entries iterator() {
+		public Iterator<IntBoolHolder> iterator() {
 			return this;
 		}
 	}
 
 	public class Values extends MapIterator {
+		public Values() {}
+
 		public boolean hasNext() {
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			return hasNext;
@@ -721,7 +820,11 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 		public boolean next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			boolean value = valueTable[nextIndex];
+			boolean value;
+			if (nextIndex == INDEX_ZERO)
+				value = zeroValue;
+			else
+				value = valueTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return value;
@@ -734,50 +837,28 @@ public class ObjectBoolMap<K> implements Iterable<ObjectBoolHolder<K>>, Eachable
 				array.add(next());
 			return array;
 		}
-
-		public boolean[] toArray() {
-			boolean[] array = new boolean[ObjectBoolMap.this.size];
-			int i = 0;
-			while (hasNext) {
-				array[i] = next();
-				i++;
-			}
-			return array;
-		}
 	}
 
-	public class Keys extends MapIterator implements Iterable<K>, Iterator<K> {
-		@Override
+	public class Keys extends MapIterator {
+		public Keys() {}
+
 		public boolean hasNext() {
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
 			return hasNext;
 		}
 
-		@Override
-		public K next() {
+		public int next() {
 			if (!hasNext) throw new NoSuchElementException();
 			if (!valid) throw new ArcRuntimeException("#iterator() cannot be used nested.");
-			K key = keyTable[nextIndex];
+			int key = nextIndex == INDEX_ZERO ? 0 : keyTable[nextIndex];
 			currentIndex = nextIndex;
 			findNextIndex();
 			return key;
 		}
 
-		@Override
-		public Keys iterator() {
-			return this;
-		}
-
 		/** Returns a new array containing the remaining keys. */
-		public CollectionList<K> toList() {
-			CollectionList<K> array = new CollectionList<>(true, size, keyComponentType);
-			while (hasNext)
-				array.add(next());
-			return array;
-		}
-
-		/** Adds the remaining keys to the array. */
-		public CollectionList<K> toList(CollectionList<K> array) {
+		public IntSeq toSeq() {
+			IntSeq array = new IntSeq(true, size);
 			while (hasNext)
 				array.add(next());
 			return array;
