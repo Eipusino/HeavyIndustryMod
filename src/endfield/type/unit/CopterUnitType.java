@@ -6,9 +6,7 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
 import arc.math.Mathf;
 import arc.struct.Seq;
-import arc.util.Log;
 import endfield.gen.Copterc;
-import endfield.util.Reflects;
 import mindustry.gen.Unit;
 import mindustry.graphics.MultiPacker;
 import mindustry.graphics.MultiPacker.PageType;
@@ -159,10 +157,8 @@ public class CopterUnitType extends UnitType2 {
 		public Rotor copy() {
 			try {
 				return (Rotor) super.clone();
-			} catch (CloneNotSupportedException suck) {
-				Log.err("very good language design", suck);
-
-				return Reflects.copyProperties(this, new Rotor(name));
+			} catch (CloneNotSupportedException e) {
+				throw new RuntimeException("java sucks", e);
 			}
 		}
 	}

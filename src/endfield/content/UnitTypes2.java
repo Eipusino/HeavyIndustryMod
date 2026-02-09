@@ -58,11 +58,7 @@ import endfield.gen.Unit2;
 import endfield.gen.UnitWaterMove2;
 import endfield.graphics.Drawn;
 import endfield.graphics.Pal2;
-import endfield.type.unit.AuroraType;
 import endfield.type.unit.CopterUnitType;
-import endfield.type.unit.EmptinessUnitType;
-import endfield.type.unit.KaguyaUnitType;
-import endfield.type.unit.MornstarType;
 import endfield.type.unit.UnitType2;
 import endfield.type.weapons.AcceleratingWeapon;
 import endfield.type.weapons.BoostWeapon;
@@ -157,7 +153,6 @@ public final class UnitTypes2 {
 	public static UnitType2 miner, largeMiner, legsMiner;
 	//other
 	public static UnitType2 vulture, invincibleShip, dpsTesterLand;
-	public static UnitType2 prism, manifold, kaguya, emptiness, mornstar, aurora, unstableEnergyBody;
 	//elite
 	public static UnitType2 tiger, thunder;
 
@@ -2958,10 +2953,6 @@ public final class UnitTypes2 {
 			ammoCapacity = 114514;
 			ammoType = new PowerAmmoType(114.514f);
 		}};
-		kaguya = new KaguyaUnitType("kaguya");
-		emptiness = new EmptinessUnitType("emptiness");
-		mornstar = new MornstarType("mornstar");
-		aurora = new AuroraType("aurora");
 		//elite
 		tiger = new UnitType2("tiger") {{
 			requirements(Items.silicon, 3000, Items.plastanium, 1000, Items.surgeAlloy, 600, Items.phaseFabric, 200, Items2.chromium, 400);

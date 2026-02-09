@@ -7,11 +7,9 @@ import arc.graphics.g2d.TextureRegion;
 import arc.math.Angles;
 import arc.math.Mathf;
 import arc.struct.Seq;
-import arc.util.Log;
 import endfield.gen.Ornitopterc;
 import endfield.graphics.Outliner;
 import endfield.math.Mathm;
-import endfield.util.Reflects;
 import mindustry.gen.Unit;
 import mindustry.graphics.Layer;
 import mindustry.graphics.MultiPacker;
@@ -153,9 +151,7 @@ public class OrnitopterUnitType extends UnitType2 {
 			try {
 				return (Blade) super.clone();
 			} catch (CloneNotSupportedException e) {
-				Log.err("java sucks", e);
-
-				return Reflects.copyProperties(this, new Blade(spriteName));
+				throw new RuntimeException("java sucks", e);
 			}
 		}
 	}

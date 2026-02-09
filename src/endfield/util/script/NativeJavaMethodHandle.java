@@ -13,6 +13,10 @@ import static endfield.Vars2.platformImpl;
 public class NativeJavaMethodHandle extends BaseFunction {
 	protected final MethodHandle handle;
 
+	public NativeJavaMethodHandle(Scriptable scope, Class<?> declaringClass, String name, Class<?>... parameterTypes) throws NoSuchMethodException, IllegalAccessException {
+		this(scope, declaringClass.getDeclaredMethod(name, parameterTypes));
+	}
+
 	public NativeJavaMethodHandle(Scriptable scope, Method method) throws IllegalAccessException {
 		this(scope, platformImpl.lookup(method.getDeclaringClass()).unreflect(method));
 	}
@@ -20,14 +24,6 @@ public class NativeJavaMethodHandle extends BaseFunction {
 	public NativeJavaMethodHandle(Scriptable scope, MethodHandle method) {
 		super(scope, null);
 		handle = method;
-	}
-
-	public static NativeJavaMethodHandle unreflect(Scriptable scope, Method method) {
-		try {
-			return new NativeJavaMethodHandle(scope, method);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
 	}
 
 	@Override

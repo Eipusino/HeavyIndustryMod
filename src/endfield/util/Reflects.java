@@ -15,10 +15,7 @@ package endfield.util;
 
 import arc.func.Boolf;
 import arc.func.Prov;
-import arc.util.Log;
-import arc.util.OS;
 import dynamilize.FunctionType;
-import endfield.util.handler.FieldHandler;
 import mindustry.Vars;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
@@ -28,9 +25,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 import static endfield.Vars2.classHelper;
@@ -205,75 +200,6 @@ public final class Reflects {
 			c = c.getSuperclass();
 		}
 		return hierarchy;
-	}
-
-	/** @since 1.0.8 */
-	public static <S, T extends S> T copyProperties(S source, T target) {
-		return copyProperties(source, target, Constant.EMPTY_STRING);
-	}
-
-	/** @since 1.0.8 */
-	public static <S, T extends S> T copyProperties(S source, T target, List<String> filler) {
-		return copyProperties(source, target, filler.toArray(Constant.EMPTY_STRING));
-	}
-
-	/**
-	 * Copy the properties of an object field to another object.
-	 *
-	 * @param source Source Object
-	 * @param target Target Object
-	 * @param filler Excluded field names
-	 * @since 1.0.8
-	 */
-	public static <S, T extends S> T copyProperties(S source, T target, String[] filler) {
-		if (source == null || target == null) return target;
-
-		targetFieldMap.clear();
-
-		Class<?> targetClass = target.getClass();
-		while (targetClass != Object.class) {
-			for (Field field : classHelper.getFields(targetClass)) {
-				if ((field.getModifiers() & (Modifier.FINAL | Modifier.STATIC)) != 0) continue;
-
-				targetFieldMap.put(field.getName(), field);
-			}
-
-			targetClass = targetClass.getSuperclass();
-		}
-
-		for (String name : filler) {
-			targetFieldMap.remove(name);
-		}
-
-		Class<?> sourceClass = source.getClass();
-		while (sourceClass != Object.class) {
-			for (Field sourceField : classHelper.getFields(sourceClass)) {
-				if ((sourceField.getModifiers() & (Modifier.FINAL | Modifier.STATIC)) != 0) continue;
-
-				Field targetField = targetFieldMap.get(sourceField.getName());
-
-				if (!isAssignable(sourceField, targetField)) continue;
-
-				try {
-					if (!OS.isAndroid) {
-						Object value = FieldHandler.getDefault(source, sourceField.getName());
-						FieldHandler.setDefault(target, targetField.getName(), value);
-					} else {
-						sourceField.setAccessible(true);
-						targetField.setAccessible(true);
-
-						Object value = sourceField.get(source);
-						targetField.set(target, value);
-					}
-				} catch (Exception e) {
-					Log.err(e);
-				}
-			}
-
-			sourceClass = sourceClass.getSuperclass();
-		}
-
-		return target;
 	}
 
 	public static boolean isAssignable(Field sourceType, Field targetType) {

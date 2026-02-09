@@ -9,7 +9,7 @@
 	"repo": "Eipusino/HeavyIndustryMod",
 	"java": true,
 	"hidden": false,
-	"minGameVersion": 154.0,
+	"minGameVersion": 155.0,
 	"dependencies": [],
 	"hideBrowser": true
 }
