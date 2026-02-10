@@ -51,7 +51,7 @@ tasks.withType(KotlinCompile).configureEach {
 
 dependencies {
 	compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
-	compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"\
+	compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
 
 	implementation "org.jetbrains:annotations:26.0.2"
 	implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
