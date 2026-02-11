@@ -38,7 +38,6 @@ import endfield.content.UnitCommands2;
 import endfield.content.UnitTypes2;
 import endfield.content.Weathers2;
 import endfield.game.Team2;
-import endfield.gen.Entitys;
 import endfield.graphics.CacheLayer2;
 import endfield.graphics.MathRenderer;
 import endfield.graphics.Pixmaps2;
@@ -183,33 +182,36 @@ public final class EndFieldMod extends Mod {
 
 	@Override
 	public void loadContent() {
-		Regions2.addAll();
-
-		Call2.init();
-
 		if (Vars2.isPlugin) return;
 
-		Worlds.addAll();
+		try {
+			Regions2.addAll();
 
-		Entitys.load();
-		Worlds.load();
+			Call2.init();
 
-		UnitCommands2.loadAll();
+			Worlds.addAll();
 
-		Team2.load();
-		Bullets2.load();
-		Items2.load();
-		StatusEffects2.load();
-		Liquids2.load();
-		UnitTypes2.load();
-		Blocks2.loadInternal();
-		Blocks2.load();
-		Weathers2.load();
-		Overrides.load();
-		Planets2.load();
-		SectorPresets2.load();
-		TechTrees.load();
-		Loadouts2.load();
+			Worlds.load();
+
+			UnitCommands2.loadAll();
+
+			Team2.load();
+			Bullets2.load();
+			Items2.load();
+			StatusEffects2.load();
+			Liquids2.load();
+			UnitTypes2.load();
+			Blocks2.loadInternal();
+			Blocks2.load();
+			Weathers2.load();
+			Overrides.load();
+			Planets2.load();
+			SectorPresets2.load();
+			TechTrees.load();
+			Loadouts2.load();
+		} catch (Exception e) {
+			Log.err("Loading content exception", e);
+		}
 	}
 
 	@Override
@@ -217,7 +219,11 @@ public final class EndFieldMod extends Mod {
 		Vars2.listener.updateInit();
 
 		if (!Vars2.isPlugin) {
-			UnitTypes2.init();
+			try {
+				UnitTypes2.init();
+			} catch (Exception e) {
+				Log.err("Initialization content exception", e);
+			}
 		}
 
 		if (!Vars.headless) {

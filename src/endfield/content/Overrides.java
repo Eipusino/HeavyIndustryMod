@@ -12,15 +12,12 @@ import mindustry.content.Liquids;
 import mindustry.content.StatusEffects;
 import mindustry.content.UnitTypes;
 import mindustry.entities.bullet.BasicBulletType;
+import mindustry.entities.bullet.BulletType;
 import mindustry.entities.bullet.ContinuousFlameBulletType;
 import mindustry.entities.bullet.ContinuousLaserBulletType;
 import mindustry.entities.bullet.LiquidBulletType;
 import mindustry.entities.bullet.RailBulletType;
 import mindustry.entities.bullet.ShrapnelBulletType;
-import mindustry.entities.effect.ExplosionEffect;
-import mindustry.entities.effect.MultiEffect;
-import mindustry.entities.effect.WaveEffect;
-import mindustry.gen.Sounds;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.type.Item;
@@ -226,6 +223,10 @@ public final class Overrides {
 				frontColor = Pal2.uraniumAmmoFront;
 			}});
 		}
+		if (Blocks.scorch instanceof ItemTurret turret) {
+			BulletType type = turret.ammoTypes.get(Items.pyratite);
+			if (type != null) type.damage = 60;
+		}
 		if (Blocks.wave instanceof LiquidTurret turret) {
 			turret.ammoTypes.put(Liquids2.nitratedOil, new LiquidBulletType(Liquids2.nitratedOil) {{
 				drag = 0.01f;
@@ -287,19 +288,11 @@ public final class Overrides {
 		}
 		if (Blocks.foreshadow instanceof ItemTurret turret) {
 			turret.ammoTypes.clear();
-			turret.ammoTypes.put(Items.surgeAlloy, new RailBulletType() {{
-				shootEffect = Fx.railShoot;
-				length = 600f;
-				pointEffectSpace = 60f;
-				pierceEffect = Fx.railHit;
-				pointEffect = Fx.railTrail;
-				hitEffect = Fx.massiveExplosion;
-				ammoMultiplier = 1f;
-				smokeEffect = Fx.smokeCloud;
-				damage = 1450f;
-				pierceDamageFactor = 0.5f;
-				buildingDamageMultiplier = 0.3f;
-			}});
+			if (turret.ammoTypes.get(Items.surgeAlloy) instanceof RailBulletType type) {
+				type.damage = 1450f;
+				type.pierceDamageFactor = 0.5f;
+				type.buildingDamageMultiplier = 0.3f;
+			}
 		}
 		if (Blocks.spectre instanceof ItemTurret turret) {
 			turret.range = 280f;
@@ -318,27 +311,17 @@ public final class Overrides {
 			}});
 		}
 		if (Blocks.meltdown instanceof LaserTurret turret) {
-			turret.range = 235f;
-			turret.shootType = new ContinuousLaserBulletType(96f) {{
-				length = 240f;
-				hitEffect = Fx.hitMeltdown;
-				hitColor = Pal.meltdownHit;
-				status = StatusEffects.melting;
-				drawSize = 420f;
-				timescaleDamage = true;
-				incendChance = 0.4f;
-				incendSpread = 5f;
-				incendAmount = 1;
-				ammoMultiplier = 1f;
-			}};
+			turret.range = 225f;
+			if (turret.shootType instanceof ContinuousLaserBulletType type) {
+				type.damage = 84f;
+				type.length = 230f;
+			}
 		}
 		//blocks-turret-erekir
 		Blocks.breach.armor = 2f;
 		Blocks.diffuse.armor = 3f;
 		Blocks.sublimate.armor = 4f;
 		if (Blocks.sublimate instanceof ContinuousLiquidTurret turret) {
-			turret.range = 130f;
-			turret.ammoTypes.clear();
 			turret.ammoTypes.put(Liquids2.gas, new ContinuousFlameBulletType() {{
 				damage = 90f;
 				rangeChange = 30f;
@@ -350,91 +333,14 @@ public final class Overrides {
 				lightColor = flareColor = new Color(0xfbd367ff);
 				hitColor = new Color(0xffd367ff);
 			}});
-			turret.ammoTypes.put(Liquids.hydrogen, new ContinuousFlameBulletType() {{
-				damage = 60f;
-				length = 130f;
-				knockback = 1f;
-				pierceCap = 2;
-				buildingDamageMultiplier = 0.3f;
-				colors = new Color[]{new Color(0x92abff7f), new Color(0x92abffa2), new Color(0x92abffd3), new Color(0x92abffff), new Color(0xd4e0ffff)};
-				lightColor = hitColor = flareColor = new Color(0x92abffff);
-			}});
-			turret.ammoTypes.put(Liquids.cyanogen, new ContinuousFlameBulletType() {{
-				damage = 130f;
-				rangeChange = 70f;
-				length = 200f;
-				knockback = 2f;
-				pierceCap = 3;
-				buildingDamageMultiplier = 0.3f;
-				colors = new Color[]{new Color(0x465ab888), new Color(0x66a6d2a0), new Color(0x89e8b6b0), new Color(0xcafcbeff), Color.white};
-				lightColor = hitColor = flareColor = new Color(0x89e8b6ff);
-			}});
 		}
 		Blocks.titan.armor = 13f;
 		Blocks.titan.researchCost = ItemStack.with(Items.thorium, 4000, Items.silicon, 3000, Items.tungsten, 2500);
 		Blocks.disperse.armor = 9f;
 		Blocks.afflict.armor = 16f;
-		if (Blocks.afflict instanceof PowerTurret turret) turret.shootType = new BasicBulletType(5f, 180f, "large-orb") {{
-			shootEffect = new MultiEffect(Fx.shootTitan, new WaveEffect() {{
-				colorTo = Pal.surge;
-				sizeTo = 26f;
-				lifetime = 14f;
-				strokeFrom = 4f;
-			}});
-			smokeEffect = Fx.shootSmokeTitan;
-			hitColor = Pal.surge;
-			trailEffect = Fx.missileTrail;
-			trailInterval = 3f;
-			trailParam = 4f;
-			pierceCap = 2;
-			fragOnHit = false;
-			lifetime = 80f;
-			width = height = 16f;
-			backColor = Pal.surge;
-			frontColor = Color.white;
-			shrinkX = shrinkY = 0f;
-			trailColor = Pal.surge;
-			trailLength = 12;
-			trailWidth = 2.2f;
-			despawnEffect = hitEffect = new ExplosionEffect() {{
-				waveColor = Pal.surge;
-				smokeColor = Color.gray;
-				sparkColor = Pal.sap;
-				waveStroke = 4f;
-				waveRad = 40f;
-			}};
-			despawnSound = Sounds.explosionAfflict;
-			shootSound = Sounds.shootAfflict;
-			fragBullet = intervalBullet = new BasicBulletType(3f, 35) {{
-				width = 9f;
-				hitSize = 5f;
-				height = 15f;
-				pierce = true;
-				lifetime = 35f;
-				pierceBuilding = true;
-				hitColor = backColor = trailColor = Pal.surge;
-				frontColor = Color.white;
-				trailWidth = 2.1f;
-				trailLength = 5;
-				hitEffect = despawnEffect = new WaveEffect() {{
-					colorFrom = colorTo = Pal.surge;
-					sizeTo = 4f;
-					strokeFrom = 4f;
-					lifetime = 10f;
-				}};
-				buildingDamageMultiplier = 0.3f;
-				homingPower = 0.2f;
-			}};
-			bulletInterval = 3f;
-			intervalRandomSpread = 20f;
-			intervalBullets = 2;
-			intervalAngle = 180f;
-			intervalSpread = 300f;
-			fragBullets = 20;
-			fragVelocityMin = 0.5f;
-			fragVelocityMax = 1.5f;
-			fragLifeMin = 0.5f;
-		}};
+		if (Blocks.afflict instanceof PowerTurret turret) {
+			turret.shootType.fragBullet.pierce = true;
+		}
 		Blocks.lustre.armor = 15f;
 		Blocks.scathe.armor = 15f;
 		Blocks.smite.armor = 21f;

@@ -1,11 +1,16 @@
 package endfield.util;
 
+import sun.nio.ch.DirectBuffer;
+
 import java.lang.invoke.MethodHandles.Lookup;
+import java.nio.Buffer;
 
 public interface PlatformImpl {
 	Lookup lookup(Class<?> clazz);
 
-	void copyMemory(long srcAddr, long dstAddr, long bytes);
+	void putBuffer(Buffer src, int srcOffset, Buffer dst, int dstOffset, int numBytes);
 
-	void copyMemory(Object srcBase, long srcOffset, Object destBase, long destOffset, long bytes);
+	default long addressOf(Buffer buffer) {
+		return ((DirectBuffer) buffer).address();
+	}
 }

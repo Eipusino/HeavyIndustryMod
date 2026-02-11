@@ -189,8 +189,8 @@ public final class Reflects {
 		return false;
 	}
 
-	public static Set<Class<?>> getClassSubclassHierarchy(Class<?> type) {
-		Class<?> c = type.getSuperclass();
+	public static Set<Class<?>> getClassSubclassHierarchy(Class<?> clazz) {
+		Class<?> c = clazz.getSuperclass();
 		CollectionObjectSet<Class<?>> hierarchy = new CollectionObjectSet<>(Class.class);
 		while (c != Object.class) {
 			hierarchy.add(c);

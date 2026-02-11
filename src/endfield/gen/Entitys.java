@@ -21,8 +21,6 @@ public final class Entitys {
 	static final ObjectIntMap2<Class<? extends Entityc>> classIdMap = new ObjectIntMap2<>(Class.class);
 	static final CollectionObjectMap<String, Prov<? extends Entityc>> needIdMap = new CollectionObjectMap<>(String.class, Prov.class);
 
-	private static boolean registered = false;
-
 	/** Don't let anyone instantiate this class. */
 	private Entitys() {}
 
@@ -63,11 +61,7 @@ public final class Entitys {
 		return classIdMap.get(type, -1);
 	}
 
-	public static void load() {
-		if (registered) return;
-
-		registered = true;
-
+	static {
 		register(Unit2.class, Unit2::new);
 		register(MechUnit2.class, MechUnit2::new);
 		register(LegsUnit2.class, LegsUnit2::new);

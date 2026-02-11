@@ -11,7 +11,9 @@ import arc.graphics.g2d.PixmapRegion;
 import arc.graphics.gl.FileTextureData;
 import arc.graphics.gl.PixmapTextureData;
 import arc.math.Mathf;
-import arc.util.Log;
+import endfield.func.IntBoolf;
+import endfield.func.Intf2;
+import endfield.util.handler.FieldHandler;
 
 import java.lang.reflect.Field;
 
@@ -138,7 +140,7 @@ public final class Pixmaps2 {
 		}
 	}
 
-	public static PixmapRegion color(PixmapRegion region, ColorBool cond, Int2Color to) {
+	public static PixmapRegion color(PixmapRegion region, IntBoolf cond, Intf2<Color> to) {
 		for (int y = 0; y < region.pixmap.height; y++) {
 			for (int x = 0; x < region.pixmap.width; x++) {
 				if (x >= region.x && x < region.x + region.width && y >= region.y && y < region.y + region.height && cond.get(region.pixmap.get(x, y))) {
@@ -159,27 +161,8 @@ public final class Pixmaps2 {
 		TextureData data = texture.getTextureData();
 
 		if (data instanceof PixmapTextureData) return data.consumePixmap();
-		if (data instanceof FileTextureData) {
-			try {
-				if (pixmapField == null) {
-					pixmapField = FileTextureData.class.getDeclaredField("pixmap");
-					pixmapField.setAccessible(true);
-				}
-
-				return (Pixmap) pixmapField.get(data);
-			} catch (Exception e) {
-				Log.err(e);// This shouldn't have happened.
-			}
-		}
+		if (data instanceof FileTextureData) return FieldHandler.getDefault(data, "pixmap");
 
 		return null;
-	}
-
-	public interface ColorBool {
-		boolean get(int color);
-	}
-
-	public interface Int2Color {
-		Color get(int x, int y);
 	}
 }
