@@ -47,3 +47,5 @@
 **[饱和火力](https://github.com/RA2EXE/Saturation-Firepower)，状态：持续更新。难度极高！**
 
 **[深空](https://github.com/Icexuegao/DeepSpace)，状态：开发中。**
+
+**[战锤](https://github.com/laomoze/warhammer)，状态：开发中。**

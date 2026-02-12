@@ -50,3 +50,5 @@
 **[Saturation Firepower Mod](https://github.com/RA2EXE/Saturation-Firepower), Status: Continuous updates. Extremely difficult!**
 
 **[Deep Space Mod](https://github.com/Icexuegao/DeepSpace), Status: Developing.**
+
+**[WarHammer](https://github.com/laomoze/warhammer), Status: Developing.**
