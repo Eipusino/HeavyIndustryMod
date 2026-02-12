@@ -3,7 +3,11 @@ package endfield.util;
 import java.lang.reflect.AccessibleObject;
 
 public interface AccessibleHelper {
-	void makeAccessible(AccessibleObject object);
+	default void makeAccessible(AccessibleObject object) {
+		object.setAccessible(true);
+	}
 
-	void makeClassAccessible(Class<?> clazz);
+	default void makeClassAccessible(Class<?> clazz) {
+		//no action
+	}
 }

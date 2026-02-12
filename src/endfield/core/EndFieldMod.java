@@ -189,8 +189,7 @@ public final class EndFieldMod extends Mod {
 
 			Call2.init();
 
-			Worlds.addAll();
-
+			Worlds.loadAll();
 			Worlds.load();
 
 			UnitCommands2.loadAll();
@@ -209,7 +208,7 @@ public final class EndFieldMod extends Mod {
 			SectorPresets2.load();
 			TechTrees.load();
 			Loadouts2.load();
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			Log.err("Loading content exception", e);
 		}
 	}
@@ -221,7 +220,7 @@ public final class EndFieldMod extends Mod {
 		if (!Vars2.isPlugin) {
 			try {
 				UnitTypes2.init();
-			} catch (Exception e) {
+			} catch (Throwable e) {
 				Log.err("Initialization content exception", e);
 			}
 		}

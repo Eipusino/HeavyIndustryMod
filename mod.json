@@ -1,15 +1,14 @@
 {
-	"displayName": "ENDFIELD",
+	"displayName": "INDUSTRY",
 	"name": "endfield",
 	"author": "Eipusino",
-	"subtitle": "ENDFIELD Java Mod",
+	"subtitle": "INDUSTRY JSON/JS Mod",
 	"main": "endfield.core.EndFieldMod",
-	"description": "Content expansion mod based on vanilla. It can also be used as a hidden mod that does not load content and only serves as a pre development library, providing various tools and methods, and offering the Kotlin library.\n\n基于原版的内容拓展mod。 也可以作为隐藏mod不加载内容仅作为开发前置库，提供多种工具和方法，并且提供了kotlin库。以及对json和js便利的api支持。\n\n该模组可能会对部分包含js的模组导致冲突。",
+	"description": "Attention: The English content is machine translated!\n\nContent expansion mod based on vanilla. It can also be used as a hidden mod that does not load content and only serves as a pre development library, providing various tools and methods, and offering the Kotlin library.\n\n基于原版的内容拓展mod。 也可以作为隐藏mod不加载内容仅作为开发前置库，提供多种工具和方法，并且提供了kotlin库。以及对json和js便利的api支持。\n\n该模组可能会对部分包含js的模组导致冲突。",
 	"version": "1.0.9-build-beta",
 	"repo": "Eipusino/HeavyIndustryMod",
 	"java": true,
 	"hidden": false,
 	"minGameVersion": 155.0,
-	"dependencies": [],
-	"hideBrowser": true
+	"dependencies": []
 }

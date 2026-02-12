@@ -2991,10 +2991,8 @@ public final class UnitTypes2 {
 					moveY = -8f;
 					progress = PartProgress.recoil;
 				}});
-				shoot = new ShootPattern() {{
-					shots = 3;
-					shotDelay = 3.5f;
-				}};
+				shoot.shots = 3;
+				shoot.shotDelay = 3.5f;
 				velocityRnd = 0.075f;
 				inaccuracy = 6f;
 				ejectEffect = Fx.none;
@@ -3087,10 +3085,8 @@ public final class UnitTypes2 {
 				x = 26f;
 				y = -12.5f;
 				reload = 60f;
-				shoot = new ShootPattern() {{
-					shots = 3;
-					shotDelay = 8f;
-				}};
+				shoot.shots = 3;
+				shoot.shotDelay = 8f;
 				shake = 3f;
 				shootX = 2;
 				xRand = 5;

@@ -50,7 +50,7 @@ public final class Worlds {
 		SaveVersion.addCustomChunk(MOD_NAME + "-team-payload-data", teamPayloadData);
 	}
 
-	public static void addAll() {
+	public static void loadAll() {
 		// These properties should not be included in the code
 		Fi file = Vars2.internalTree.child("other").child("fallback.properties");
 
@@ -70,9 +70,9 @@ public final class Worlds {
 	}
 
 	public static void exportBlockData() {
-		StringBuilder data = new StringBuilder();
+		final StringBuilder data = new StringBuilder();
 
-		CollectionList<Pair<String, Block>> blocks = new CollectionList<>(Pair.class);
+		final CollectionList<Pair<String, Block>> blocks = new CollectionList<>(Pair.class);
 
 		Seq<Block> seq = Vars.content.blocks();
 		for (Block block : seq) {
