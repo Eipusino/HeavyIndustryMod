@@ -51,4 +51,4 @@
 
 **[Deep Space Mod](https://github.com/Icexuegao/DeepSpace), Status: Developing.**
 
-**[WarHammer](https://github.com/laomoze/warhammer), Status: Developing.**
+**[War Hammer Mod](https://github.com/laomoze/warhammer), Status: Developing.**

@@ -37,8 +37,6 @@ import static endfield.Vars2.classHelper;
  * @since 1.0.6
  */
 public final class Reflects {
-	static final CollectionObjectMap<String, Field> targetFieldMap = new CollectionObjectMap<>(String.class, Field.class);
-
 	/** Don't let anyone instantiate this class. */
 	private Reflects() {}
 

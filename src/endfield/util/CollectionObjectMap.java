@@ -858,7 +858,7 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		}
 	}
 
-	protected abstract class MapIterator<I> extends AbstractSet<I> implements Iterable<I>, Iterator<I> {
+	protected abstract class MapIterator<E> extends AbstractSet<E> implements Iterator<E> {
 		public boolean hasNext;
 
 		public int nextIndex, currentIndex;
@@ -916,12 +916,12 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		}
 
 		@Override
-		public boolean add(I i) {
+		public boolean add(E e) {
 			return false;
 		}
 
 		@Override
-		public boolean addAll(Collection<? extends I> c) {
+		public boolean addAll(Collection<? extends E> c) {
 			return false;
 		}
 
@@ -941,10 +941,10 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		}
 
 		/** Returns a new array containing the remaining keys. */
-		public abstract CollectionList<I> toList();
+		public abstract CollectionList<E> toList();
 
 		/** Adds the remaining keys to the array. */
-		public CollectionList<I> toList(CollectionList<I> array) {
+		public CollectionList<E> toList(CollectionList<E> array) {
 			while (hasNext)
 				array.add(next());
 			return array;

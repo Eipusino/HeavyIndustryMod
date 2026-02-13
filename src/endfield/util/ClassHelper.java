@@ -59,10 +59,6 @@ public interface ClassHelper {
 		return (Constructor<T>[]) clazz.getDeclaredConstructors();
 	}
 
-	default void setPublic(Class<?> clazz) {
-		//no action
-	}
-
 	/**
 	 * Create an instance object of a class directly by bypassing the constructor, where all field values
 	 * within the object are in an uninitialized state. Cannot support primitive classes, abstract classes, and

@@ -32,6 +32,7 @@ java {
 }
 
 ext {
+	mainBuildDir = layout.buildDirectory.get().asFile
 	//windows sucks
 	isWindows = System.getProperty("os.name").toLowerCase().contains("windows")
 	sdkRoot = System.getenv("ANDROID_HOME") ?: System.getenv("ANDROID_SDK_ROOT")
@@ -78,7 +79,7 @@ task jarAndroid {
 
 		//dex and desugar files - this requires d8 in your PATH
 		"$d8 $dependencies --min-api 28 --output ${outputJarName}Android.jar ${outputJarName}Desktop.jar"
-				.execute(null, new File("$buildDir/libs")).waitForProcessOutput(System.out, System.err)
+				.execute(null, new File("$mainBuildDir/libs")).waitForProcessOutput(System.out, System.err)
 	}
 }
 
@@ -105,13 +106,13 @@ task deploy(type: Jar) {
 	archiveFileName = "${outputJarName}.jar"
 
 	from {
-		[zipTree("$buildDir/libs/${outputJarName}Desktop.jar"), zipTree("$buildDir/libs/${outputJarName}Android.jar"), zipTree("assets-raw/Impl.jar")]
+		[zipTree("$mainBuildDir/libs/${outputJarName}Desktop.jar"), zipTree("$mainBuildDir/libs/${outputJarName}Android.jar"), zipTree("assets-raw/Impl.jar")]
 	}
 
 	doLast {
 		delete {
-			delete "$buildDir/libs/${outputJarName}Desktop.jar"
-			delete "$buildDir/libs/${outputJarName}Android.jar"
+			delete "$mainBuildDir/libs/${outputJarName}Desktop.jar"
+			delete "$mainBuildDir/libs/${outputJarName}Android.jar"
 		}
 	}
 }

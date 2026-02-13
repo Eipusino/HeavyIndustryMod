@@ -10,8 +10,6 @@ import arc.graphics.gl.FrameBuffer;
 import arc.graphics.gl.GLFrameBuffer;
 import arc.graphics.gl.Shader;
 import arc.util.serialization.Jval;
-import kotlin.Lazy;
-import kotlin.LazyKt;
 import mindustry.Vars;
 import mindustry.game.EventType.Trigger;
 import mindustry.graphics.Layer;
@@ -26,7 +24,7 @@ public final class ScreenSampler {
 
 	private static FrameBuffer worldBuffer, uiBuffer, currBuffer;
 
-	private static Lazy<FrameBuffer> pixelatorBuffer;
+	private static FrameBuffer pixelatorBuffer;
 
 	private static boolean activity = false;
 
@@ -38,16 +36,19 @@ public final class ScreenSampler {
 			lastBoundFramebufferField.setAccessible(true);
 			bufferField = Pixelator.class.getDeclaredField("buffer");
 			bufferField.setAccessible(true);
-
-			pixelatorBuffer = LazyKt.lazy(() -> {
-				try {
-					return (FrameBuffer) bufferField.get(Vars.renderer.pixelator);
-				} catch (IllegalAccessException e) {
-					throw new RuntimeException("Unable to get Vars.renderer.pixelator.buffer", e);
-				}
-			});
 		} catch (NoSuchFieldException e) {
 			throw new RuntimeException("Initialization field exception", e);// should not happen.
+		}
+	}
+
+	private static void ensurePixelatorBufferInitialized() {
+		if (pixelatorBuffer == null) {
+			try {
+				Pixelator pixelator = Vars.renderer.pixelator;
+				pixelatorBuffer = (FrameBuffer) bufferField.get(pixelator);
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException("Failed to access pixelator buffer", e);
+			}
 		}
 	}
 
@@ -116,7 +117,9 @@ public final class ScreenSampler {
 
 	private static void beginWorld() {
 		if (Vars.renderer.pixelate) {
-			currBuffer = pixelatorBuffer.getValue();
+			ensurePixelatorBufferInitialized();
+
+			currBuffer = pixelatorBuffer;
 		} else {
 			currBuffer = worldBuffer;
 
@@ -142,8 +145,10 @@ public final class ScreenSampler {
 		uiBuffer.resize(Core.graphics.getWidth(), Core.graphics.getHeight());
 		uiBuffer.begin(Color.clear);
 
-		if (!Vars.renderer.pixelate) blitBuffer(worldBuffer, uiBuffer);
-		else blitBuffer(pixelatorBuffer.getValue(), uiBuffer);
+		ensurePixelatorBufferInitialized();
+
+		if (Vars.renderer.pixelate) blitBuffer(pixelatorBuffer, uiBuffer);
+		else blitBuffer(worldBuffer, uiBuffer);
 	}
 
 	private static void endUI() {
@@ -175,20 +180,24 @@ public final class ScreenSampler {
 		if (Core.gl30 == null) {
 			from.blit(Shaders2.distBase);
 		} else {
-			try {
-				GLFrameBuffer<?> target = to != null ? to : (GLFrameBuffer<?>) lastBoundFramebufferField.get(from);
-				Gl.bindFramebuffer(GL30.GL_READ_FRAMEBUFFER, from.getFramebufferHandle());
-				Gl.bindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, target != null ? target.getFramebufferHandle() : 0);
-				Core.gl30.glBlitFramebuffer(
-						0, 0, from.getWidth(), from.getHeight(),
-						0, 0,
-						target != null ? target.getWidth() : Core.graphics.getWidth(),
-						target != null ? target.getHeight() : Core.graphics.getHeight(),
-						Gl.colorBufferBit, Gl.nearest
-				);
-			} catch (IllegalAccessException e) {
-				throw new RuntimeException("Failed to access lastBoundFramebuffer field", e);
-			}
+			GLFrameBuffer<?> target = to != null ? to : getLastBoundFramebuffer(from);
+			Gl.bindFramebuffer(GL30.GL_READ_FRAMEBUFFER, from.getFramebufferHandle());
+			Gl.bindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, target != null ? target.getFramebufferHandle() : 0);
+			Core.gl30.glBlitFramebuffer(
+					0, 0, from.getWidth(), from.getHeight(),
+					0, 0,
+					target != null ? target.getWidth() : Core.graphics.getWidth(),
+					target != null ? target.getHeight() : Core.graphics.getHeight(),
+					Gl.colorBufferBit, Gl.nearest
+			);
+		}
+	}
+
+	private static GLFrameBuffer<?> getLastBoundFramebuffer(GLFrameBuffer<?> buffer) {
+		try {
+			return (GLFrameBuffer<?>) lastBoundFramebufferField.get(buffer);
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException("Failed to access lastBoundFramebuffer field", e);
 		}
 	}
 
@@ -204,20 +213,8 @@ public final class ScreenSampler {
 		if (clear) target.begin(Color.clear);
 		else target.begin();
 
-		if (Core.gl30 == null) {
-			currBuffer.blit(Shaders2.distBase);
+		blitBuffer(currBuffer, target);
 
-			return;
-		}
-
-		Gl.bindFramebuffer(GL30.GL_READ_FRAMEBUFFER, currBuffer.getFramebufferHandle());
-		Gl.bindFramebuffer(GL30.GL_DRAW_FRAMEBUFFER, target.getFramebufferHandle());
-		Core.gl30.glBlitFramebuffer(
-				0, 0,
-				currBuffer.getWidth(), currBuffer.getHeight(),
-				0, 0,
-				target.getWidth(), target.getHeight(),
-				Gl.colorBufferBit, Gl.nearest);
 		target.end();
 	}
 }
