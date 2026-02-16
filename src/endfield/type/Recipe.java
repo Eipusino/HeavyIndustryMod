@@ -22,17 +22,17 @@ public class Recipe {
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Recipe{").append("inputItem=");
-		Arrays2.append(builder, inputItem);
+		Arrays2.toString(builder, inputItem);
 		builder.append(", inputLiquid=");
-		Arrays2.append(builder, inputLiquid);
+		Arrays2.toString(builder, inputLiquid);
 		builder.append(", inputPayload=");
-		Arrays2.append(builder, inputPayload);
+		Arrays2.toString(builder, inputPayload);
 		builder.append(", outputItem=");
-		Arrays2.append(builder, outputItem);
+		Arrays2.toString(builder, outputItem);
 		builder.append(", outputLiquid=");
-		Arrays2.append(builder, outputLiquid);
+		Arrays2.toString(builder, outputLiquid);
 		builder.append(", outputPayload=");
-		Arrays2.append(builder, outputPayload);
+		Arrays2.toString(builder, outputPayload);
 
 		return builder.append(", craftTime=").append(craftTime).append('}').toString();
 	}

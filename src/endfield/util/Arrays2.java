@@ -34,6 +34,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public final class Arrays2 {
 	private Arrays2() {}
@@ -659,212 +660,6 @@ public final class Arrays2 {
 		array[right] = tmp;
 	}
 
-	/**
-	 * Used to avoid performance overhead caused by creating an instance of {@link StringBuilder}.
-	 *
-	 * @throws NullPointerException If {@code builder} is null.
-	 * @see Arrays#toString(Object[])
-	 */
-	public static void append(StringBuilder builder, Object[] array) {
-		if (array == null) {
-			builder.append("null");
-			return;
-		}
-
-		int max = array.length - 1;
-		if (max == -1) {
-			builder.append("[]");
-			return;
-		}
-
-		builder.append('[');
-		for (int i = 0; i < array.length; i++) {
-			builder.append(array[i]);
-			if (i == max) {
-				builder.append(']');
-				break;
-			}
-			builder.append(", ");
-		}
-	}
-
-	public static void appendBool(StringBuilder builder, boolean[] array) {
-		if (array == null) {
-			builder.append("null");
-			return;
-		}
-		int max = array.length - 1;
-		if (max == -1) {
-			builder.append("[]");
-			return;
-		}
-
-		builder.append('[');
-		for (int i = 0; i < array.length; i++) {
-			builder.append(array[i]);
-			if (i == max) {
-				builder.append(']');
-				break;
-			}
-			builder.append(", ");
-		}
-	}
-
-	public static void appendByte(StringBuilder builder, byte[] array) {
-		if (array == null) {
-			builder.append("null");
-			return;
-		}
-		int max = array.length - 1;
-		if (max == -1) {
-			builder.append("[]");
-			return;
-		}
-
-		builder.append('[');
-		for (int i = 0; i < array.length; i++) {
-			builder.append(array[i]);
-			if (i == max) {
-				builder.append(']');
-				break;
-			}
-			builder.append(", ");
-		}
-	}
-
-	public static void appendShort(StringBuilder builder, short[] array) {
-		if (array == null) {
-			builder.append("null");
-			return;
-		}
-		int max = array.length - 1;
-		if (max == -1) {
-			builder.append("[]");
-			return;
-		}
-
-		builder.append('[');
-		for (int i = 0; i < array.length; i++) {
-			builder.append(array[i]);
-			if (i == max) {
-				builder.append(']');
-				break;
-			}
-			builder.append(", ");
-		}
-	}
-
-	public static void appendInt(StringBuilder builder, int[] array) {
-		if (array == null) {
-			builder.append("null");
-			return;
-		}
-		int max = array.length - 1;
-		if (max == -1) {
-			builder.append("[]");
-			return;
-		}
-
-		builder.append('[');
-		for (int i = 0; i < array.length; i++) {
-			builder.append(array[i]);
-			if (i == max) {
-				builder.append(']');
-				break;
-			}
-			builder.append(", ");
-		}
-	}
-
-	public static void appendLong(StringBuilder builder, long[] array) {
-		if (array == null) {
-			builder.append("null");
-			return;
-		}
-		int max = array.length - 1;
-		if (max == -1) {
-			builder.append("[]");
-			return;
-		}
-
-		builder.append('[');
-		for (int i = 0; i < array.length; i++) {
-			builder.append(array[i]);
-			if (i == max) {
-				builder.append(']');
-				break;
-			}
-			builder.append(", ");
-		}
-	}
-
-	public static void appendChar(StringBuilder builder, char[] array) {
-		if (array == null) {
-			builder.append("null");
-			return;
-		}
-		int max = array.length - 1;
-		if (max == -1) {
-			builder.append("[]");
-			return;
-		}
-
-		builder.append('[');
-
-		for (int i = 0; i < array.length; i++) {
-			builder.append(array[i]);
-			if (i == max) {
-				builder.append(']');
-				break;
-			}
-			builder.append(", ");
-		}
-	}
-
-	public static void appendFloat(StringBuilder builder, float[] array) {
-		if (array == null) {
-			builder.append("null");
-			return;
-		}
-		int max = array.length - 1;
-		if (max == -1) {
-			builder.append("[]");
-			return;
-		}
-
-		builder.append('[');
-		for (int i = 0; i < array.length; i++) {
-			builder.append(array[i]);
-			if (i == max) {
-				builder.append(']');
-				break;
-			}
-			builder.append(", ");
-		}
-	}
-
-	public static void appendDouble(StringBuilder builder, double[] array) {
-		if (array == null) {
-			builder.append("null");
-			return;
-		}
-		int max = array.length - 1;
-		if (max == -1) {
-			builder.append("[]");
-			return;
-		}
-
-		builder.append('[');
-		for (int i = 0; i < array.length; i++) {
-			builder.append(array[i]);
-			if (i == max) {
-				builder.append(']');
-				break;
-			}
-			builder.append(", ");
-		}
-	}
-
 	public static <T> boolean any(T[] array, Boolf<T> pred) {
 		for (T e : array) if (pred.get(e)) return true;
 		return false;
@@ -948,6 +743,268 @@ public final class Arrays2 {
 			if (!equals.get(first[i], second[i])) return false;
 		}
 		return true;
+	}
+
+	/**
+	 * Used to avoid performance overhead caused by creating an instance of {@link StringBuilder}.
+	 *
+	 * @throws NullPointerException If {@code buf} is null.
+	 * @see Arrays#toString(Object[])
+	 */
+	public static void toString(StringBuilder buf, Object[] arr) {
+		if (arr == null) {
+			buf.append("null");
+			return;
+		}
+
+		int max = arr.length - 1;
+		if (max == -1) {
+			buf.append("[]");
+			return;
+		}
+
+		buf.append('[');
+		for (int i = 0; i < arr.length; i++) {
+			buf.append(arr[i]);
+			if (i == max) {
+				buf.append(']');
+				break;
+			}
+			buf.append(", ");
+		}
+	}
+
+	public static void booleanToString(StringBuilder buf, boolean[] arr) {
+		if (arr == null) {
+			buf.append("null");
+			return;
+		}
+		int max = arr.length - 1;
+		if (max == -1) {
+			buf.append("[]");
+			return;
+		}
+
+		buf.append('[');
+		for (int i = 0; i < arr.length; i++) {
+			buf.append(arr[i]);
+			if (i == max) {
+				buf.append(']');
+				break;
+			}
+			buf.append(", ");
+		}
+	}
+
+	public static void byteToString(StringBuilder buf, byte[] arr) {
+		if (arr == null) {
+			buf.append("null");
+			return;
+		}
+		int max = arr.length - 1;
+		if (max == -1) {
+			buf.append("[]");
+			return;
+		}
+
+		buf.append('[');
+		for (int i = 0; i < arr.length; i++) {
+			buf.append(arr[i]);
+			if (i == max) {
+				buf.append(']');
+				break;
+			}
+			buf.append(", ");
+		}
+	}
+
+	public static void shortToString(StringBuilder buf, short[] arr) {
+		if (arr == null) {
+			buf.append("null");
+			return;
+		}
+		int max = arr.length - 1;
+		if (max == -1) {
+			buf.append("[]");
+			return;
+		}
+
+		buf.append('[');
+		for (int i = 0; i < arr.length; i++) {
+			buf.append(arr[i]);
+			if (i == max) {
+				buf.append(']');
+				break;
+			}
+			buf.append(", ");
+		}
+	}
+
+	public static void intToString(StringBuilder buf, int[] arr) {
+		if (arr == null) {
+			buf.append("null");
+			return;
+		}
+		int max = arr.length - 1;
+		if (max == -1) {
+			buf.append("[]");
+			return;
+		}
+
+		buf.append('[');
+		for (int i = 0; i < arr.length; i++) {
+			buf.append(arr[i]);
+			if (i == max) {
+				buf.append(']');
+				break;
+			}
+			buf.append(", ");
+		}
+	}
+
+	public static void longToString(StringBuilder buf, long[] arr) {
+		if (arr == null) {
+			buf.append("null");
+			return;
+		}
+		int max = arr.length - 1;
+		if (max == -1) {
+			buf.append("[]");
+			return;
+		}
+
+		buf.append('[');
+		for (int i = 0; i < arr.length; i++) {
+			buf.append(arr[i]);
+			if (i == max) {
+				buf.append(']');
+				break;
+			}
+			buf.append(", ");
+		}
+	}
+
+	public static void charToString(StringBuilder buf, char[] arr) {
+		if (arr == null) {
+			buf.append("null");
+			return;
+		}
+		int max = arr.length - 1;
+		if (max == -1) {
+			buf.append("[]");
+			return;
+		}
+
+		buf.append('[');
+
+		for (int i = 0; i < arr.length; i++) {
+			buf.append(arr[i]);
+			if (i == max) {
+				buf.append(']');
+				break;
+			}
+			buf.append(", ");
+		}
+	}
+
+	public static void floatToString(StringBuilder buf, float[] arr) {
+		if (arr == null) {
+			buf.append("null");
+			return;
+		}
+		int max = arr.length - 1;
+		if (max == -1) {
+			buf.append("[]");
+			return;
+		}
+
+		buf.append('[');
+		for (int i = 0; i < arr.length; i++) {
+			buf.append(arr[i]);
+			if (i == max) {
+				buf.append(']');
+				break;
+			}
+			buf.append(", ");
+		}
+	}
+
+	public static void doubleToString(StringBuilder buf, double[] arr) {
+		if (arr == null) {
+			buf.append("null");
+			return;
+		}
+		int max = arr.length - 1;
+		if (max == -1) {
+			buf.append("[]");
+			return;
+		}
+
+		buf.append('[');
+		for (int i = 0; i < arr.length; i++) {
+			buf.append(arr[i]);
+			if (i == max) {
+				buf.append(']');
+				break;
+			}
+			buf.append(", ");
+		}
+	}
+
+	public static void deepToString(Object[] arr, StringBuilder buf, Set<Object[]> dejaVu) {
+		if (arr == null) {
+			buf.append("null");
+			return;
+		}
+		int max = arr.length - 1;
+		if (max == -1) {
+			buf.append("[]");
+			return;
+		}
+
+		dejaVu.add(arr);
+		buf.append('[');
+		for (int i = 0; ; i++) {
+			Object element = arr[i];
+			if (element == null) {
+				buf.append("null");
+			} else {
+				if (element.getClass().isArray()) {
+					if (element instanceof byte[] bytes) {
+						byteToString(buf, bytes);
+					} else if (element instanceof short[] shorts) {
+						shortToString(buf, shorts);
+					} else if (element instanceof int[] ints) {
+						intToString(buf, ints);
+					} else if (element instanceof long[] longs) {
+						longToString(buf, longs);
+					} else if (element instanceof char[] chars) {
+						charToString(buf, chars);
+					} else if (element instanceof float[] floats) {
+						floatToString(buf, floats);
+					} else if (element instanceof double[] doubles) {
+						doubleToString(buf, doubles);
+					} else if (element instanceof boolean[] booleans) {
+						booleanToString(buf, booleans);
+					} else if (element instanceof Object[] objects) { // element is an array of object references
+						if (dejaVu.contains(element)) {
+							buf.append("[...]");
+						} else {
+							deepToString(objects, buf, dejaVu);
+						}
+					} else {
+						buf.append("???");
+					}
+				} else {  // element is non-null and not an array
+					buf.append(element);
+				}
+			}
+			if (i == max)
+				break;
+			buf.append(", ");
+		}
+		buf.append(']');
+		dejaVu.remove(arr);
 	}
 
 	public static class Single<T> implements Iterable<T>, Iterator<T>, Eachable<T> {

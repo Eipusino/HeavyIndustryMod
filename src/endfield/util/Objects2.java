@@ -33,6 +33,8 @@ import java.util.Objects;
  * @since 1.0.8
  */
 public final class Objects2 {
+	static final CollectionObjectSet<Object[]> arraySet = new CollectionObjectSet<>(Object[].class);
+
 	private Objects2() {}
 
 	/**
@@ -160,68 +162,68 @@ public final class Objects2 {
 	 * <p>If there is an exception in obtaining the value of a certain field, it will result in:
 	 * <p>{@code "SimpleClassName[unknown=???]"}.
 	 *
-	 * @param last Should the fields of the super class be retrieved.
+	 * @param parent Should the fields of the super class be retrieved.
 	 */
-	public static String toString(Object object, boolean last) {
+	public static String toString(Object object, boolean parent) {
 		if (object == null) return "null";
 
 		Class<?> type = object.getClass();
 
-		StringBuilder builder = new StringBuilder();
-		builder.append(type.getSimpleName()).append('[');
+		StringBuilder buf = new StringBuilder();
+		buf.append(type.getSimpleName()).append('[');
 		int i = 0;
 		while (type != null) {
 			for (Field field : Vars2.classHelper.getFields(type)) {
 				if ((field.getModifiers() & Modifier.STATIC) != 0) continue;
 
-				if (i++ > 0) builder.append(", ");
+				if (i++ > 0) buf.append(", ");
 
-				builder.append(field.getName()).append('=');
+				buf.append(field.getName()).append('=');
 
 				try {
 					Object value = FieldHandler.getDefault(object, field.getName());
 
 					if (value == null) {
-						builder.append("null");
+						buf.append("null");
 						continue;
 					}
 
 					if (value.getClass().isArray()) {
 						// I think using instanceof would be better.
-						if (value instanceof float[] array) {
-							Arrays2.appendFloat(builder, array);
-						} else if (value instanceof int[] array) {
-							Arrays2.appendInt(builder, array);
-						} else if (value instanceof boolean[] array) {
-							Arrays2.appendBool(builder, array);
-						} else if (value instanceof byte[] array) {
-							Arrays2.appendByte(builder, array);
-						} else if (value instanceof char[] array) {
-							Arrays2.appendChar(builder, array);
-						} else if (value instanceof double[] array) {
-							Arrays2.appendDouble(builder, array);
-						} else if (value instanceof long[] array) {
-							Arrays2.appendLong(builder, array);
-						} else if (value instanceof short[] array) {
-							Arrays2.appendShort(builder, array);
-						} else if (value instanceof Object[] array) {
-							Arrays2.append(builder, array);
+						if (value instanceof float[] floats) {
+							Arrays2.floatToString(buf, floats);
+						} else if (value instanceof int[] ints) {
+							Arrays2.intToString(buf, ints);
+						} else if (value instanceof boolean[] booleans) {
+							Arrays2.booleanToString(buf, booleans);
+						} else if (value instanceof byte[] bytes) {
+							Arrays2.byteToString(buf, bytes);
+						} else if (value instanceof char[] chars) {
+							Arrays2.charToString(buf, chars);
+						} else if (value instanceof double[] doubles) {
+							Arrays2.doubleToString(buf, doubles);
+						} else if (value instanceof long[] longs) {
+							Arrays2.longToString(buf, longs);
+						} else if (value instanceof short[] shorts) {
+							Arrays2.shortToString(buf, shorts);
+						} else if (value instanceof Object[] objects) {
+							Arrays2.deepToString(objects, buf, arraySet);
 						} else {
 							// It shouldn't have happened...
-							builder.append("???");
+							buf.append("???");
 						}
 					} else {
-						builder.append(value);
+						buf.append(value);
 					}
 				} catch (Exception e) {
-					builder.append("???");
+					buf.append("???");
 				}
 			}
 
-			type = last ? type.getSuperclass() : null;
+			type = parent ? type.getSuperclass() : null;
 		}
 
-		return builder.append(']').toString();
+		return buf.append(']').toString();
 	}
 
 	/**
