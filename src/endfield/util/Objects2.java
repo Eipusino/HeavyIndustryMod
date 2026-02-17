@@ -146,33 +146,37 @@ public final class Objects2 {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T cast(Object obj, Class<T> type, T def) {
-		if (obj != null && !type.isInstance(obj))
-			return def;
-		return (T) obj;
+		if (obj == null || type.isInstance(obj))
+			return (T) obj;
+		return def;
 	}
 
 	public static String toString(Object object) {
-		return toString(object, true);
+		return toString(object, true, true);
 	}
 
 	/**
 	 * Returns a string reporting the value of each declared field, via reflection.
 	 * <p>Static fields are automatically skipped. Produces output like:
-	 * <p>{@code "SimpleClassName[integer=1234, string=hello, character=c, intArray=[1, 2, 3], object=java.lang.Object@1234abcd, none=null]"}.
+	 * <p>{@code "SimpleClassName{integer=1234, string=hello, character=c, intArray=[1, 2, 3], object=java.lang.Object@1234abcd, none=null}"}.
 	 * <p>If there is an exception in obtaining the value of a certain field, it will result in:
-	 * <p>{@code "SimpleClassName[unknown=???]"}.
+	 * <p>{@code "SimpleClassName{unknown=???}"}.
 	 *
 	 * @param parent Should the fields of the super class be retrieved.
+	 * @param deep   If true, convert the array contents to a String. Otherwise, directly convert the array
+	 *               object to a String.
 	 */
-	public static String toString(Object object, boolean parent) {
+	public static String toString(Object object, final boolean parent, final boolean deep) {
 		if (object == null) return "null";
 
 		Class<?> type = object.getClass();
 
+		if (type.isArray()) return toString(object, type);
+
 		StringBuilder buf = new StringBuilder();
-		buf.append(type.getSimpleName()).append('[');
+		buf.append(type.getSimpleName()).append('{');
 		int i = 0;
-		while (type != null) {
+		while (type != Object.class) {
 			for (Field field : Vars2.classHelper.getFields(type)) {
 				if ((field.getModifiers() & Modifier.STATIC) != 0) continue;
 
@@ -185,10 +189,7 @@ public final class Objects2 {
 
 					if (value == null) {
 						buf.append("null");
-						continue;
-					}
-
-					if (value.getClass().isArray()) {
+					} else if (deep && value.getClass().isArray()) {
 						// I think using instanceof would be better.
 						if (value instanceof float[] floats) {
 							Arrays2.floatToString(buf, floats);
@@ -220,10 +221,44 @@ public final class Objects2 {
 				}
 			}
 
-			type = parent ? type.getSuperclass() : null;
+			if (!parent) continue;
+
+			type = type.getSuperclass();
 		}
 
-		return buf.append(']').toString();
+		return buf.append('}').toString();
+	}
+
+	static String toString(Object object, Class<?> componentType/*, final boolean deep*/) {
+		String name = componentType.getSimpleName();
+		/*StringBuilder buf = new StringBuilder();
+		buf.append(name).append("{length=");*/
+
+		if (object instanceof float[] floats) {
+			return name + "{length=" + floats.length + '}';
+		} else if (object instanceof int[] ints) {
+			return name + "{length=" + ints.length + '}';
+		} else if (object instanceof boolean[] booleans) {
+			return name + "{length=" + booleans.length + '}';
+		} else if (object instanceof byte[] bytes) {
+			return name + "{length=" + bytes.length + '}';
+		} else if (object instanceof char[] chars) {
+			return name + "{length=" + chars.length + '}';
+		} else if (object instanceof double[] doubles) {
+			return name + "{length=" + doubles.length + '}';
+		} else if (object instanceof long[] longs) {
+			return name + "{length=" + longs.length + '}';
+		} else if (object instanceof short[] shorts) {
+			return name + "{length=" + shorts.length + '}';
+		} else if (object instanceof Object[] objects) {
+			return name + "{length=" + objects.length + '}';
+			/*buf.append(objects.length).append("elements=");
+			if (deep) Arrays2.deepToString(objects, buf, arraySet);
+			else Arrays2.toString(buf, objects);*/
+		} else {
+			return name + "{???}";
+		}
+		//return buf.append('}').toString();
 	}
 
 	/**

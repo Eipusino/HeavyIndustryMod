@@ -50,8 +50,8 @@ public class HyperGenerator extends ImpactReactor {
 
 	public float statusDuration = 15 * 60;
 
-	public Cons<? super HyperGeneratorBuild> explodeAction = Constant.cons();
-	public Cons<? super Position> explodeSub = Constant.cons();
+	public Cons<HyperGeneratorBuild> explodeAction = Constant.cons();
+	public Cons<Position> explodeSub = Constant.cons();
 
 	public float maxVelScl = 1.25f, minVelScl = 0.75f;
 	public float maxTimeScl = 1.25f, minTimeScl = 0.75f;

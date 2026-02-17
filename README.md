@@ -1,8 +1,8 @@
-# INDUSTRY
+# E-INDUSTRY
 
 ---
 
-![Logo](assets/sprites-override/effects/error.png)
+![Logo](assets/icon.png)
 
 **Under development.**
 
@@ -37,7 +37,7 @@
 
 # Regarding Mod
 
-**[Platform Related Implementation](https://github.com/Eipusino/LH), Reflection function implemented on multiple platforms in the module section (Impl.jar).**
+**[Platform Related Implementation](https://github.com/Eipusino/LH), Mod platform related implementation (Impl.jar).**
 
 ---
 

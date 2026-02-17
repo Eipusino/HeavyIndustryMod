@@ -2,6 +2,7 @@ package endfield.util;
 
 import arc.func.Boolc;
 import arc.func.Boolf;
+import arc.func.Boolf2;
 import arc.func.Boolp;
 import arc.func.Cons;
 import arc.func.Floatc;
@@ -57,6 +58,10 @@ public final class Constant {
 
 	public static <T> Boolf<T> boolf(boolean value) {
 		return t -> value;
+	}
+
+	public static <A, B> Boolf2<A, B> boolf2(boolean value) {
+		return (a, b) -> value;
 	}
 
 	public static <P, R> Func<P, R> func(R value) {

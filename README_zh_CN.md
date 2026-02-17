@@ -1,8 +1,8 @@
-# INDUSTRY
+# E-INDUSTRY
 
 ---
 
-![Logo](assets/sprites-override/effects/error.png)
+![Logo](assets/icon.png)
 
 **正在开发中。**
 
@@ -34,7 +34,7 @@
 
 # 关于模组
 
-**[平台相关实现](https://github.com/Eipusino/LH)，模组部分反射功能多平台实现（Impl.jar）。**
+**[平台相关实现](https://github.com/Eipusino/LH)，模组平台相关实现（Impl.jar）。**
 
 ---
 
