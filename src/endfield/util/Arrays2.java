@@ -951,6 +951,22 @@ public final class Arrays2 {
 		}
 	}
 
+	/**
+	 * This method does not have thread safety compared to {@link Arrays#deepToString(Object[])},
+	 * <br>but it can save unnecessary memory allocation.
+	 */
+	public static String deepToString(Object[] a) {
+		if (a == null)
+			return "null";
+
+		int bufLen = 20 * a.length;
+		if (bufLen < 0)
+			return "???";
+		StringBuilder buf = new StringBuilder(bufLen);
+		deepToString(a, buf, Objects2.arraySet);
+		return buf.toString();
+	}
+
 	public static void deepToString(Object[] arr, StringBuilder buf, Set<Object[]> dejaVu) {
 		if (arr == null) {
 			buf.append("null");

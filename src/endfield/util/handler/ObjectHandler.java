@@ -43,19 +43,11 @@ public final class ObjectHandler {
 	public static <S, T extends S> void copyFieldAsBlack(S source, T target, String... blacks) {
 		Class<?> curr = source.getClass();
 		Set<String> black = CollectionObjectSet.with(blacks);
-		Set<String> fields = new CollectionObjectSet<>(String.class);
+		Set<Field> fields = getFields(curr);
 
-		while (curr != Object.class) {
-			for (Field field : classHelper.getFields(curr)) {
-				if (Modifier.isStatic(field.getModifiers())) continue;
-
-				fields.add(field.getName());
-			}
-
-			curr = curr.getSuperclass();
+		for (Field field : fields.stream().filter(e -> !black.contains(e.getName())).toArray(Field[]::new)) {
+			FieldHandler.set(target, field, FieldHandler.get(source, field, true), true);
 		}
-
-		copyFieldAsWhite(source, target, fields.stream().filter(e -> !black.contains(e)).toArray(String[]::new));
 	}
 
 	/**
@@ -67,12 +59,27 @@ public final class ObjectHandler {
 	 * @param whites    Field whitelist
 	 */
 	public static <S, T extends S> void copyFieldAsWhite(S source, T target, String... whites) {
-		for (String white : whites) {
-			try {
-				FieldHandler.setDefault(target, white, FieldHandler.getDefault(source, white));
-			} catch (Throwable e) {
-				exceptionHandler.get(e);
-			}
+		Class<?> curr = source.getClass();
+		Set<String> black = CollectionObjectSet.with(whites);
+		Set<Field> fields = getFields(curr);
+
+		for (Field field : fields.stream().filter(e -> black.contains(e.getName())).toArray(Field[]::new)) {
+			FieldHandler.set(target, field, FieldHandler.get(source, field, true), true);
 		}
+	}
+
+	public static Set<Field> getFields(Class<?> curr) {
+		Set<Field> fields = new CollectionObjectSet<>(Field.class);
+
+		while (curr != Object.class) {
+			for (Field field : classHelper.getFields(curr)) {
+				if ((field.getModifiers() & Modifier.STATIC) != 0) continue;
+
+				fields.add(field);
+			}
+
+			curr = curr.getSuperclass();
+		}
+		return fields;
 	}
 }

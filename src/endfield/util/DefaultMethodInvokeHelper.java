@@ -146,7 +146,7 @@ public class DefaultMethodInvokeHelper implements MethodInvokeHelper {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T invoke(Object object, String name, Class<?>[] parameterTypes, Object... args) {
+	public <T> T invokeWithAsType(Object object, String name, Class<?>[] parameterTypes, Object... args) {
 		FunctionType type = FunctionType.inst(parameterTypes);
 		try {
 			return (T) getMethod(object.getClass(), name, type).invoke(object, args);
@@ -159,7 +159,7 @@ public class DefaultMethodInvokeHelper implements MethodInvokeHelper {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T invokeStatic(Class<?> clazz, String name, Class<?>[] parameterTypes, Object... args) {
+	public <T> T invokeStaticWithAsType(Class<?> clazz, String name, Class<?>[] parameterTypes, Object... args) {
 		FunctionType type = FunctionType.inst(parameterTypes);
 		try {
 			return (T) getMethod(clazz, name, type).invoke(null, args);
@@ -171,7 +171,7 @@ public class DefaultMethodInvokeHelper implements MethodInvokeHelper {
 	}
 
 	@Override
-	public <T> T newInstance(Class<T> type, Class<?>[] parameterTypes, Object... args) {
+	public <T> T newInstanceWithAsType(Class<T> type, Class<?>[] parameterTypes, Object... args) {
 		FunctionType funcType = FunctionType.inst(parameterTypes);
 		try {
 			return getConstructor(type, funcType).newInstance(args);

@@ -22,6 +22,7 @@ import endfield.func.ProvT;
 import endfield.func.RunT;
 import endfield.util.handler.FieldHandler;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Objects;
@@ -170,11 +171,12 @@ public final class Objects2 {
 		if (object == null) return "null";
 
 		Class<?> type = object.getClass();
+		String name = type.getSimpleName();
 
-		if (type.isArray()) return toString(object, type);
+		if (type.isArray()) return name + "{length=" + Array.getLength(object) + '}';
 
 		StringBuilder buf = new StringBuilder();
-		buf.append(type.getSimpleName()).append('{');
+		buf.append(name).append('{');
 		int i = 0;
 		while (type != Object.class) {
 			for (Field field : Vars2.classHelper.getFields(type)) {
@@ -185,7 +187,7 @@ public final class Objects2 {
 				buf.append(field.getName()).append('=');
 
 				try {
-					Object value = FieldHandler.getDefault(object, field.getName());
+					Object value = FieldHandler.get(object, field, true);
 
 					if (value == null) {
 						buf.append("null");
@@ -229,37 +231,19 @@ public final class Objects2 {
 		return buf.append('}').toString();
 	}
 
-	static String toString(Object object, Class<?> componentType/*, final boolean deep*/) {
-		String name = componentType.getSimpleName();
-		/*StringBuilder buf = new StringBuilder();
-		buf.append(name).append("{length=");*/
-
+	/*static String toString(Object object, Class<?> componentType, final boolean deep) {
 		if (object instanceof float[] floats) {
-			return name + "{length=" + floats.length + '}';
 		} else if (object instanceof int[] ints) {
-			return name + "{length=" + ints.length + '}';
 		} else if (object instanceof boolean[] booleans) {
-			return name + "{length=" + booleans.length + '}';
 		} else if (object instanceof byte[] bytes) {
-			return name + "{length=" + bytes.length + '}';
 		} else if (object instanceof char[] chars) {
-			return name + "{length=" + chars.length + '}';
 		} else if (object instanceof double[] doubles) {
-			return name + "{length=" + doubles.length + '}';
 		} else if (object instanceof long[] longs) {
-			return name + "{length=" + longs.length + '}';
 		} else if (object instanceof short[] shorts) {
-			return name + "{length=" + shorts.length + '}';
 		} else if (object instanceof Object[] objects) {
-			return name + "{length=" + objects.length + '}';
-			/*buf.append(objects.length).append("elements=");
-			if (deep) Arrays2.deepToString(objects, buf, arraySet);
-			else Arrays2.toString(buf, objects);*/
 		} else {
-			return name + "{???}";
 		}
-		//return buf.append('}').toString();
-	}
+	}*/
 
 	/**
 	 * Convert Class object to JVM type descriptor.

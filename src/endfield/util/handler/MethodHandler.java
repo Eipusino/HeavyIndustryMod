@@ -122,7 +122,7 @@ public class MethodHandler<T> {
 	 * method, you can use the method.
 	 */
 	public <R> R invokeWithAsType(T object, String name, Class<?>[] parameterTypes, Object... args) {
-		return methodInvokeHelper.invoke(object, name, parameterTypes, args);
+		return methodInvokeHelper.invokeWithAsType(object, name, parameterTypes, args);
 	}
 
 	/**
@@ -130,7 +130,7 @@ public class MethodHandler<T> {
 	 * method, you can use the method.
 	 */
 	public <R> R invokeStaticWithAsType(String name, Class<?>[] parameterTypes, Object... args) {
-		return methodInvokeHelper.invokeStatic(clazz, name, parameterTypes, args);
+		return methodInvokeHelper.invokeStaticWithAsType(clazz, name, parameterTypes, args);
 	}
 
 	/**
@@ -138,6 +138,6 @@ public class MethodHandler<T> {
 	 * method, you can use the method.
 	 */
 	public T newInstanceWithAsType(Class<?>[] parameterTypes, Object... args) {
-		return methodInvokeHelper.newInstance(clazz, parameterTypes, args);
+		return methodInvokeHelper.newInstanceWithAsType(clazz, parameterTypes, args);
 	}
 }

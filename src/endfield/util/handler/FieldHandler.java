@@ -1,5 +1,6 @@
 package endfield.util.handler;
 
+import java.lang.reflect.Field;
 import java.util.WeakHashMap;
 import java.util.function.Function;
 
@@ -186,6 +187,15 @@ public class FieldHandler<T> {
 	/** Clear all currently cached processors. */
 	public static void clearDefault() {
 		defaultHandlers.clear();
+	}
+
+	public static void set(Object object, Field field, Object value, boolean access) {
+		if (object == null) fieldAccessHelper.setStatic(field, value, access);
+		else fieldAccessHelper.set(object, field, value, access);
+	}
+
+	public static <T> T get(Object object, Field field, boolean access) {
+		return object == null ? fieldAccessHelper.getStatic(field, access) : fieldAccessHelper.get(object, field, access);
 	}
 
 	/**
