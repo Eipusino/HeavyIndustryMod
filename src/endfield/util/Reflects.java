@@ -173,20 +173,20 @@ public final class Reflects {
 	}
 
 	public static String methodToString(Class<?> type, String name, Class<?>... argTypes) {
-		StringBuilder builder = new StringBuilder();
-		builder.append(type.getName()).append('.').append(name);
+		StringBuilder buf = new StringBuilder();
+		buf.append(type.getName()).append('.').append(name);
 
-		if (argTypes == null || argTypes.length == 0) return builder.append("()").toString();
+		if (argTypes == null || argTypes.length == 0) return buf.append("()").toString();
 
 		int max = argTypes.length - 1;
 
-		builder.append('(');
+		buf.append('(');
 		int i = 0;
 		while (true) {
 			i++;
-			builder.append(argTypes[i].getName());
-			if (i == max) return builder.append(')').toString();
-			builder.append(',');
+			buf.append(argTypes[i].getName());
+			if (i == max) return buf.append(')').toString();
+			buf.append(',');
 		}
 		// The approach of Java. But I don't like using Stream here.
 		/*return type.getName() + '.' + name +

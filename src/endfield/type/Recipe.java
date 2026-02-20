@@ -20,20 +20,19 @@ public class Recipe {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("Recipe{").append("inputItem=");
-		Arrays2.toString(builder, inputItem);
-		builder.append(", inputLiquid=");
-		Arrays2.toString(builder, inputLiquid);
-		builder.append(", inputPayload=");
-		Arrays2.toString(builder, inputPayload);
-		builder.append(", outputItem=");
-		Arrays2.toString(builder, outputItem);
-		builder.append(", outputLiquid=");
-		Arrays2.toString(builder, outputLiquid);
-		builder.append(", outputPayload=");
-		Arrays2.toString(builder, outputPayload);
-
-		return builder.append(", craftTime=").append(craftTime).append('}').toString();
+		StringBuilder buf = new StringBuilder();
+		buf.append("Recipe{").append("inputItem=");
+		Arrays2.objectToString(buf, inputItem);
+		buf.append(", inputLiquid=");
+		Arrays2.objectToString(buf, inputLiquid);
+		buf.append(", inputPayload=");
+		Arrays2.objectToString(buf, inputPayload);
+		buf.append(", outputItem=");
+		Arrays2.objectToString(buf, outputItem);
+		buf.append(", outputLiquid=");
+		Arrays2.objectToString(buf, outputLiquid);
+		buf.append(", outputPayload=");
+		Arrays2.objectToString(buf, outputPayload);
+		return buf.append(", craftTime=").append(craftTime).append('}').toString();
 	}
 }

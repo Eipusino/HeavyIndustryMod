@@ -41,9 +41,8 @@ public final class ObjectHandler {
 	 * @param blacks    Field blacklist
 	 */
 	public static <S, T extends S> void copyFieldAsBlack(S source, T target, String... blacks) {
-		Class<?> curr = source.getClass();
 		Set<String> black = CollectionObjectSet.with(blacks);
-		Set<Field> fields = getFields(curr);
+		Set<Field> fields = getFields(source);
 
 		for (Field field : fields.stream().filter(e -> !black.contains(e.getName())).toArray(Field[]::new)) {
 			FieldHandler.set(target, field, FieldHandler.get(source, field, true), true);
@@ -59,16 +58,16 @@ public final class ObjectHandler {
 	 * @param whites    Field whitelist
 	 */
 	public static <S, T extends S> void copyFieldAsWhite(S source, T target, String... whites) {
-		Class<?> curr = source.getClass();
 		Set<String> black = CollectionObjectSet.with(whites);
-		Set<Field> fields = getFields(curr);
+		Set<Field> fields = getFields(source);
 
 		for (Field field : fields.stream().filter(e -> black.contains(e.getName())).toArray(Field[]::new)) {
 			FieldHandler.set(target, field, FieldHandler.get(source, field, true), true);
 		}
 	}
 
-	public static Set<Field> getFields(Class<?> curr) {
+	public static Set<Field> getFields(Object object) {
+		Class<?> curr = object.getClass();
 		Set<Field> fields = new CollectionObjectSet<>(Field.class);
 
 		while (curr != Object.class) {

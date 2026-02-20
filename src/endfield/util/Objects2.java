@@ -54,8 +54,7 @@ public final class Objects2 {
 	 * @since 1.0.8
 	 */
 	public static <T> T requireNonNullElseGet(T obj, Prov<? extends T> supplier) {
-		return (obj != null) ? obj
-				: Objects.requireNonNull(Objects.requireNonNull(supplier, "supplier").get(), "supplier.get()");
+		return obj != null ? obj : Objects.requireNonNull(Objects.requireNonNull(supplier, "supplier").get(), "supplier.get()");
 	}
 
 	/**
@@ -91,9 +90,9 @@ public final class Objects2 {
 	}
 
 	/** Used to optimize code conciseness in specific situations. */
-	public static void run(RunT<? extends Throwable> cons) {
+	public static void run(RunT<? extends Throwable> run) {
 		try {
-			cons.run();
+			run.run();
 		} catch (Throwable e) {
 			Log.err(e);
 		}

@@ -626,23 +626,23 @@ public final class Elements {
 			return originalString;
 		}
 		String[] words = originalString.split(" ");
-		StringBuilder builder = new StringBuilder();
+		StringBuilder texts = new StringBuilder();
 		int wordIndex = 0;
 		while (wordIndex < words.length) {
-			builder.append(words[wordIndex]);
+			texts.append(words[wordIndex]);
 			if (wordIndex + 1 == words.length) {
 				break;
 			}
-			obtain.setText(font, builder + " " + words[wordIndex + 1]);
+			obtain.setText(font, texts + " " + words[wordIndex + 1]);
 			if (obtain.width <= maxWidth) {
-				builder.append(" ");
+				texts.append(" ");
 			} else {
-				builder.append("\n");
+				texts.append("\n");
 			}
 			wordIndex++;
 		}
 		obtain.free();
-		return builder.toString();
+		return texts.toString();
 	}
 
 	public static @Nullable Element hovered(Boolf<Element> validator) {

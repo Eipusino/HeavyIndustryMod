@@ -751,7 +751,7 @@ public final class Arrays2 {
 	 * @throws NullPointerException If {@code buf} is null.
 	 * @see Arrays#toString(Object[])
 	 */
-	public static void toString(StringBuilder buf, Object[] arr) {
+	public static void objectToString(StringBuilder buf, Object[] arr) {
 		if (arr == null) {
 			buf.append("null");
 			return;
