@@ -131,26 +131,6 @@ public final class Objects2 {
 		}
 	}
 
-	/**
-	 * Used to optimize code conciseness in specific situations.
-	 * <p>You must ensure that {@code obj} can be safely cast to {@link T}.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> T cast(Object obj) {
-		return (T) obj;
-	}
-
-	/**
-	 * Used to optimize code conciseness in specific situations.
-	 * <p>If {@code obj} cannot be cast to {@link T}, return {@code def}.
-	 */
-	@SuppressWarnings("unchecked")
-	public static <T> T cast(Object obj, Class<T> type, T def) {
-		if (obj == null || type.isInstance(obj))
-			return (T) obj;
-		return def;
-	}
-
 	public static String toString(Object object) {
 		return toString(object, true, true);
 	}

@@ -1,5 +1,6 @@
 package endfield.util;
 
+import mindustry.Vars;
 import sun.nio.ch.DirectBuffer;
 
 import java.lang.invoke.MethodHandles.Lookup;
@@ -14,6 +15,16 @@ public interface PlatformImpl {
 	 * exception will be thrown.
 	 */
 	<T> T clone(T object);
+
+	default Class<?> getCallerClass() {
+		Thread thread = Thread.currentThread();
+		StackTraceElement[] trace = thread.getStackTrace();
+		try {
+			return Class.forName(trace[3].getClassName(), false, Vars.mods.mainLoader());
+		} catch (ClassNotFoundException e) {
+			return null;
+		}
+	}
 
 	void putBuffer(Buffer src, int srcOffset, Buffer dst, int dstOffset, int numBytes);
 

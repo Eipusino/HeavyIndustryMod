@@ -60,8 +60,8 @@ public final class Constant {
 		return t -> value;
 	}
 
-	public static <A, B> Boolf2<A, B> boolf2(boolean value) {
-		return (a, b) -> value;
+	public static <P1, P2> Boolf2<P1, P2> boolf2(boolean value) {
+		return (p1, p2) -> value;
 	}
 
 	public static <P, R> Func<P, R> func(R value) {

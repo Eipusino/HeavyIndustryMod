@@ -68,10 +68,6 @@ public final class Reflects {
 		else return null;
 	}
 
-	public static Class<?>[] typeOf(Class<?>... types) {
-		return types;
-	}
-
 	/**
 	 * Reflectively instantiates a type without throwing exceptions.
 	 *
