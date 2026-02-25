@@ -34,16 +34,28 @@ public class OrnitopterUnit extends Unit2 implements Ornitopterc {
 		setBlades(type);
 	}
 
+	@Override
+	public OrnitopterUnitType asType() {
+		return (OrnitopterUnitType) type;
+	}
+
+	@Override
+	public OrnitopterUnitType asType(UnitType type) {
+		return (OrnitopterUnitType) type;
+	}
+
+	@Override
 	public void setBlades(UnitType type) {
-		if (type instanceof OrnitopterUnitType oType) {
-			blades = new BladeMount[oType.blades.size];
-			for (int i = 0; i < blades.length; i++) {
-				Blade bladeType = oType.blades.get(i);
-				blades[i] = new BladeMount(bladeType);
-			}
+		OrnitopterUnitType oType = asType(type);
+
+		blades = new BladeMount[oType.blades.size];
+		for (int i = 0; i < blades.length; i++) {
+			Blade bladeType = oType.blades.get(i);
+			blades[i] = new BladeMount(bladeType);
 		}
 	}
 
+	@Override
 	public float driftAngle() {
 		return driftAngle;
 	}
@@ -51,45 +63,47 @@ public class OrnitopterUnit extends Unit2 implements Ornitopterc {
 	@Override
 	public void update() {
 		super.update();
+
 		drawSeed++;
-		if (type instanceof OrnitopterUnitType oType) {
-			float rX = x + Angles.trnsx(rotation - 90, oType.fallSmokeX, oType.fallSmokeY);
-			float rY = y + Angles.trnsy(rotation - 90, oType.fallSmokeX, oType.fallSmokeY);
 
-			// When dying
-			if (dead || health() <= 0) {
-				if (Mathf.chanceDelta(oType.fallSmokeChance)) {
-					Fx.fallSmoke.at(rX, rY);
-					Fx.burning.at(rX, rY);
-				}
+		OrnitopterUnitType oType = asType(type);
 
-				// Compute random drift angle if not already set
-				if (!hasDriftAngle) {
-					float speed = Math.max(Math.abs(vel().x), Math.abs(vel().y));
-					float maxAngle = Math.min(180f, speed * oType.fallDriftScl); // Maximum drift angle based on speed
-					driftAngle = (Angles.angle(x, y, x + vel().x, y + vel().y) + Mathf.range(maxAngle)) % 360f;
-					hasDriftAngle = true;
-				}
+		float rX = x + Angles.trnsx(rotation - 90, oType.fallSmokeX, oType.fallSmokeY);
+		float rY = y + Angles.trnsy(rotation - 90, oType.fallSmokeX, oType.fallSmokeY);
 
-				// Drift in random direction
-				float driftSpeed = Math.max(0f, vel().len() - type().drag) * oType.accel;
-				float driftX = driftSpeed * Mathf.cosDeg(driftAngle);
-				float driftY = driftSpeed * Mathf.sinDeg(driftAngle);
-				move(driftX, driftY);
-
-				rotation = Mathf.lerpDelta(rotation, driftAngle, 0.01f);
-
-				bladeMoveSpeedScl = Mathf.lerpDelta(bladeMoveSpeedScl, 0f, oType.bladeDeathMoveSlowdown);
-			} else {
-				hasDriftAngle = false; // Reset the drift angle flag
-				bladeMoveSpeedScl = Mathf.lerpDelta(bladeMoveSpeedScl, 1f, oType.bladeDeathMoveSlowdown);
+		// When dying
+		if (dead || health() <= 0) {
+			if (Mathf.chanceDelta(oType.fallSmokeChance)) {
+				Fx.fallSmoke.at(rX, rY);
+				Fx.burning.at(rX, rY);
 			}
 
-			for (BladeMount blade : blades) {
-				blade.bladeRotation += ((blade.blade.bladeMaxMoveAngle * bladeMoveSpeedScl) + blade.blade.bladeMinMoveAngle) * Time.delta;
+			// Compute random drift angle if not already set
+			if (!hasDriftAngle) {
+				float speed = Math.max(Math.abs(vel().x), Math.abs(vel().y));
+				float maxAngle = Math.min(180f, speed * oType.fallDriftScl); // Maximum drift angle based on speed
+				driftAngle = (Angles.angle(x, y, x + vel().x, y + vel().y) + Mathf.range(maxAngle)) % 360f;
+				hasDriftAngle = true;
 			}
-			oType.fallSpeed = 0.01f;
+
+			// Drift in random direction
+			float driftSpeed = Math.max(0f, vel().len() - type().drag) * oType.accel;
+			float driftX = driftSpeed * Mathf.cosDeg(driftAngle);
+			float driftY = driftSpeed * Mathf.sinDeg(driftAngle);
+			move(driftX, driftY);
+
+			rotation = Mathf.lerpDelta(rotation, driftAngle, 0.01f);
+
+			bladeMoveSpeedScl = Mathf.lerpDelta(bladeMoveSpeedScl, 0f, oType.bladeDeathMoveSlowdown);
+		} else {
+			hasDriftAngle = false; // Reset the drift angle flag
+			bladeMoveSpeedScl = Mathf.lerpDelta(bladeMoveSpeedScl, 1f, oType.bladeDeathMoveSlowdown);
 		}
+
+		for (BladeMount blade : blades) {
+			blade.bladeRotation += ((blade.blade.bladeMaxMoveAngle * bladeMoveSpeedScl) + blade.blade.bladeMinMoveAngle) * Time.delta;
+		}
+		oType.fallSpeed = 0.01f;
 	}
 
 	@Override
