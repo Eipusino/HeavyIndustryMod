@@ -29,17 +29,17 @@ public interface MultiBlock {
 		return Blocks2.placeholderBlock[index];
 	}
 
-	Seq<Point2> linkBlockPos();
+	Seq<Point2> linkPos();
 
-	IntSeq linkBlockSize();
+	IntSeq linkSize();
 
 	Block mirrorBlock();
 
 	boolean isMirror();
 
-	default Point2 calculateRotatedPosition(Point2 pos, int blockSize, int linkSize, int rotation) {
+	default Point2 calculateRotatedPosition(Point2 pos, int blockSize, int otherSize, int rotation) {
 		int shift = (blockSize + 1) % 2;
-		int offset = (linkSize + 1) % 2;
+		int offset = (otherSize + 1) % 2;
 		int px = pos.x, py = pos.y;
 
 		return switch (rotation) {
@@ -52,15 +52,15 @@ public interface MultiBlock {
 
 	default void addLink(int... values) {
 		for (int i = 0; i < values.length; i += 3) {
-			linkBlockPos().add(new Point2(values[i], values[i + 1]));
-			linkBlockSize().add(values[i + 2]);
+			linkPos().add(new Point2(values[i], values[i + 1]));
+			linkSize().add(values[i + 2]);
 		}
 	}
 
 	default boolean checkLink(Tile tile, Team team, int size, int rotation) {
-		for (int i = 0; i < linkBlockPos().size; i++) {
-			Point2 p = linkBlockPos().get(i);
-			int s = linkBlockSize().get(i);
+		for (int i = 0; i < linkPos().size; i++) {
+			Point2 p = linkPos().get(i);
+			int s = linkSize().get(i);
 			Point2 rotated = calculateRotatedPosition(p, size, s, rotation);
 			if (!Build.validPlace(linkBlock(s - 1), team, tile.x + rotated.x, tile.y + rotated.y, 0, false)) {
 				return false;
@@ -72,24 +72,22 @@ public interface MultiBlock {
 	default void createPlaceholder(Tile tile, int size) {
 		if (Vars.state.rules.infiniteResources || tile == null || tile.build == null) return;
 
-		for (int i = 0; i < linkBlockPos().size; i++) {
-			Point2 p = linkBlockPos().get(i);
-			int s = linkBlockSize().get(i);
+		for (int i = 0; i < linkPos().size; i++) {
+			Point2 p = linkPos().get(i);
+			int s = linkSize().get(i);
 			Point2 rotated = calculateRotatedPosition(p, size, s, tile.build.rotation);
 			Tile t = Vars.world.tile(tile.x + rotated.x, tile.y + rotated.y);
 			t.setBlock(placeholderBlock(s - 1), tile.team(), 0);
 
-			if (t.build instanceof PlaceholderBlock.PlaceholderBuild b) {
-				b.updateLink(tile);
-			}
+			((PlaceholderBlock.PlaceholderBuild) t.build).updateLink(tile);
 		}
 	}
 
 	default Seq<Building> setLinkBuild(Building building, Block block, Tile tile, Team team, int size, int rotation) {
 		Seq<Building> out = new Seq<>(Building.class);
-		for (int i = 0; i < linkBlockPos().size; i++) {
-			Point2 p = linkBlockPos().get(i);
-			int s = linkBlockSize().get(i);
+		for (int i = 0; i < linkPos().size; i++) {
+			Point2 p = linkPos().get(i);
+			int s = linkSize().get(i);
 			Point2 rotated = calculateRotatedPosition(p, size, s, rotation);
 			Tile t = Vars.world.tile(tile.x + rotated.x, tile.y + rotated.y);
 
@@ -98,16 +96,26 @@ public interface MultiBlock {
 			} else {
 				t.setBlock(linkBlockLiquid(s - 1), team, 0);
 			}
-			if (t.build instanceof LinkBlock.LinkBuild b) {
-				b.updateLink(building);
-				out.add(b);
-			}
+			((LinkBlock.LinkBuild) t.build).updateLink(building);
+			out.add(t.build);
+		}
+		return out;
+	}
+
+	default Seq<Tile> getLinkTiles(Tile tile, int size, int rotation) {
+		Seq<Tile> out = new Seq<>();
+		for (int i = 0; i < linkPos().size; i++) {
+			Point2 p = linkPos().get(i);
+			int s = linkSize().get(i);
+			Point2 rotated = calculateRotatedPosition(p, size, s, rotation);
+			Tile t = Vars.world.tile(tile.x + rotated.x, tile.y + rotated.y);
+			out.add(t);
 		}
 		return out;
 	}
 
 	default Seq<Tile> linkTiles(int x, int y, int size, int rotation) {
-		Seq<Tile> tiles = new Seq<>(Tile.class);
+		Seq<Tile> tiles = new Seq<>();
 		Point2 lb = leftBottomPos(size);
 		for (int tx = 0; tx < size; tx++) {
 			for (int ty = 0; ty < size; ty++) {
@@ -116,9 +124,9 @@ public interface MultiBlock {
 			}
 		}
 
-		for (int i = 0; i < linkBlockPos().size; i++) {
-			Point2 p = linkBlockPos().get(i);
-			int s = linkBlockSize().get(i);
+		for (int i = 0; i < linkPos().size; i++) {
+			Point2 p = linkPos().get(i);
+			int s = linkSize().get(i);
 			Point2 rotated = calculateRotatedPosition(p, size, s, rotation);
 			Point2 lb2 = leftBottomPos(s).add(rotated);
 
@@ -136,9 +144,9 @@ public interface MultiBlock {
 	default Point2 teamOverlayPos(int size, int rotation) {
 		Point2 out = leftBottomPos(size);
 
-		for (int i = 0; i < linkBlockPos().size; i++) {
-			Point2 p = linkBlockPos().get(i);
-			int s = linkBlockSize().get(i);
+		for (int i = 0; i < linkPos().size; i++) {
+			Point2 p = linkPos().get(i);
+			int s = linkSize().get(i);
 			Point2 rotated = calculateRotatedPosition(p, size, s, rotation);
 			Point2 lb = leftBottomPos(s).add(rotated);
 
@@ -150,9 +158,9 @@ public interface MultiBlock {
 	default Point2 statusOverlayPos(int size, int rotation) {
 		Point2 out = rightBottomPos(size);
 
-		for (int i = 0; i < linkBlockPos().size; i++) {
-			Point2 p = linkBlockPos().get(i);
-			int s = linkBlockSize().get(i);
+		for (int i = 0; i < linkPos().size; i++) {
+			Point2 p = linkPos().get(i);
+			int s = linkSize().get(i);
 			Point2 rotated = calculateRotatedPosition(p, size, s, rotation);
 			Point2 rb = rightBottomPos(s).add(rotated);
 
@@ -177,9 +185,9 @@ public interface MultiBlock {
 
 		Point2 out = new Point2(size, size);
 
-		for (int i = 0; i < linkBlockPos().size; i++) {
-			Point2 p = linkBlockPos().get(i);
-			int s = linkBlockSize().get(i);
+		for (int i = 0; i < linkPos().size; i++) {
+			Point2 p = linkPos().get(i);
+			int s = linkSize().get(i);
 			Point2 rotated = calculateRotatedPosition(p, size, s, rotation);
 
 			left = Math.min(left, rotated.x);
@@ -190,5 +198,17 @@ public interface MultiBlock {
 
 		out.set(right - left + 1, top - bot + 1);
 		return out;
+	}
+
+	static void calculateRotatedOffsetPosition(Point2 out, int px, int py, int blockSize, int otherSize, int rotation) {
+		int shift = (blockSize + 1) % 2;
+		int offset = (otherSize + 1) % 2;
+
+		switch (rotation) {
+			case 1 -> out.set(-py + shift - offset, px);
+			case 2 -> out.set(-px + shift - offset, -py + shift - offset);
+			case 3 -> out.set(py, -px + shift - offset);
+			default -> out.set(px, py); // default rotation 0
+		}
 	}
 }

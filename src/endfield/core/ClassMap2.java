@@ -264,6 +264,7 @@ import endfield.world.blocks.production.LinkAttributeCrafter;
 import endfield.world.blocks.production.LinkGenericCrafter;
 import endfield.world.blocks.production.MultiCrafter;
 import endfield.world.blocks.production.MultiDrill;
+import endfield.world.blocks.production.OreCollector;
 import endfield.world.blocks.production.OreDetector;
 import endfield.world.blocks.production.SporeFarmBlock;
 import endfield.world.blocks.production.UndergroundDrill;
@@ -792,6 +793,8 @@ final class ClassMap2 {
 		classes.put("UndergroundDrillBuild", UndergroundDrill.UndergroundDrillBuild.class);
 		classes.put("MultiDrill", MultiDrill.class);
 		classes.put("MultiDrillBuild", MultiDrill.MultiDrillBuild.class);
+		classes.put("OreCollector", OreCollector.class);
+		classes.put("OreCollectorBuild", OreCollector.OreCollectorBuild.class);
 		classes.put("UnitMinerPoint", UnitMinerPoint.class);
 		classes.put("UnitMinerPointBuild", UnitMinerPoint.UnitMinerPointBuild.class);
 		classes.put("UnitMinerDepot", UnitMinerDepot.class);

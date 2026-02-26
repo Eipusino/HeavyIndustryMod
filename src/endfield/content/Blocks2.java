@@ -105,6 +105,7 @@ import endfield.world.blocks.power.SmartPowerNode;
 import endfield.world.blocks.production.AdaptiveCrafter;
 import endfield.world.blocks.production.Centrifuge;
 import endfield.world.blocks.production.LaserBeamDrill;
+import endfield.world.blocks.production.OreCollector;
 import endfield.world.blocks.production.SporeFarmBlock;
 import endfield.world.blocks.production.UnitMinerDepot;
 import endfield.world.blocks.production.UnitMinerPoint;
@@ -353,6 +354,7 @@ public final class Blocks2 {
 	public static SolidPump largeWaterExtractor;
 	public static LiquidExtractor slagExtractor;
 	public static Fracker oilRig;
+	public static OreCollector scanCollector;
 	public static BurstDrill blastWell;
 	public static Drill ionDrill, cuttingDrill;
 	public static LaserBeamDrill beamDrill;
@@ -1512,6 +1514,14 @@ public final class Blocks2 {
 			consumeLiquid(Liquids.water, 0.3f);
 			buildType = FrackerBuild::new;
 			buildCostMultiplier = 0.8f;
+		}};
+		scanCollector = new OreCollector("scan-collector") {{
+			requirements(Category.production, ItemStack.with(Items.silicon, 120, Items.graphite, 100, Items.thorium, 80));
+			size = 3;
+			addLink(0, 2, 2, 0, -3, 2);
+			itemCapacity = 50;
+			consumePower(2.5f);
+			consumeLiquid(Liquids.water, 5f / 60f).boost();
 		}};
 		blastWell = new BurstDrill("blast-ore-well") {{
 			requirements(Category.production, ItemStack.with(Items.lead, 80, Items.graphite, 180, Items.thorium, 110, Items.plastanium, 80, Items.surgeAlloy, 60));

@@ -17,6 +17,7 @@ import endfield.ai.MinerPointAI;
 import endfield.content.UnitTypes2;
 import endfield.net.Call2;
 import endfield.util.CollectionList;
+import endfield.util.CollectionObjectSet;
 import mindustry.Vars;
 import mindustry.content.Blocks;
 import mindustry.content.Fx;
@@ -45,6 +46,7 @@ import mindustry.world.meta.StatValues;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * In fact, it continues the characteristics of Anuke's planet, but there may still be some bugs.
@@ -55,7 +57,7 @@ public class UnitMinerPoint extends Block {
 	public @Nullable Item blockedItem;
 
 	/** Special exemption items that this miner can't mine. */
-	public List<Item> blockedItems = new CollectionList<>(Item.class);
+	public Set<Item> blockedItems = new CollectionObjectSet<>(Item.class);
 
 	public int range = 12;
 	public int tier = 2;

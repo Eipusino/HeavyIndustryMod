@@ -111,12 +111,12 @@ public class LinkGenericCrafter extends GenericCrafter implements MultiBlock {
 	}
 
 	@Override
-	public Seq<Point2> linkBlockPos() {
+	public Seq<Point2> linkPos() {
 		return linkPos;
 	}
 
 	@Override
-	public IntSeq linkBlockSize() {
+	public IntSeq linkSize() {
 		return linkSize;
 	}
 
