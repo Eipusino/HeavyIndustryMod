@@ -89,8 +89,8 @@ public class JumpGate extends Block {
 		config(Float.class, JumpGateBuild::changeSpawnCount);
 		configClear((JumpGateBuild e) -> e.recipeIndex = -1);
 
-		consumeBuilder.add(new ConsumeRecipe(JumpGateBuild::recipe));
-		for (Consume c : consumeBuilder) c.multiplier = b -> b instanceof JumpGateBuild gate ? gate.costMultiplier() : 1f;
+		consume(new ConsumeRecipe(JumpGateBuild::recipe));
+		for (Consume c : consumeBuilder) c.multiplier = b -> ((JumpGateBuild) b).costMultiplier();
 	}
 
 	public void addUnitRecipe(UnitType unitType, float craftTime, Recipe recipe) {
@@ -194,11 +194,6 @@ public class JumpGate extends Block {
 					t.pack();
 				})
 		);
-	}
-
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = JumpGateBuild::new;
 	}
 
 	public class JumpGateBuild extends Building {
@@ -381,10 +376,8 @@ public class JumpGate extends Block {
 											req.add(getReqStack(stack.item, () -> Strings.format("@/@", UI.formatAmount((long) stack.amount * spawnCount), UI.formatAmount(items.get(stack.item))),
 													() -> items.has(stack.item, stack.amount * spawnCount))).pad(5);
 										}
-										req.row();
-										int k = 0;
 										for (PayloadStack stack : unitRecipe.recipe.inputPayload) {
-											if (++k % 4 == 0) req.row();
+											if (++j % 2 == 0) req.row();
 											req.add(getReqStack(stack.item, () -> Strings.format("@/@", UI.formatAmount((long) stack.amount * spawnCount), UI.formatAmount(getPayloads().get(stack.item))),
 													() -> getPayloads().get(stack.item) >= stack.amount * spawnCount)).pad(5);
 										}
@@ -448,11 +441,6 @@ public class JumpGate extends Block {
 		}
 
 		@Override
-		public byte version() {
-			return 1;
-		}
-
-		@Override
 		public void write(Writes write) {
 			super.write(write);
 
@@ -466,12 +454,10 @@ public class JumpGate extends Block {
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
 
-			if (revision == 1) {
-				speedMultiplier = read.f();
-				progress = read.f();
-				recipeIndex = read.i();
-				command = TypeIO.readVec2(read);
-			}
+			speedMultiplier = read.f();
+			progress = read.f();
+			recipeIndex = read.i();
+			command = TypeIO.readVec2(read);
 		}
 	}
 }

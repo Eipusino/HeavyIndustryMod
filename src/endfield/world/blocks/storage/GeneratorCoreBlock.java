@@ -30,11 +30,6 @@ public class GeneratorCoreBlock extends CoreBlock {
 		addBar("power", makePowerBalance());
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = GeneratorCoreBuild::new;
-	}
-
 	public static Func<Building, Bar> makePowerBalance() {
 		return tile -> new Bar(
 				() -> Core.bundle.format("bar.powerbalance",

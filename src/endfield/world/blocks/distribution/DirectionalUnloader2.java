@@ -12,11 +12,6 @@ public class DirectionalUnloader2 extends DirectionalUnloader {
 		super(name);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = DirectionalUnloaderBuild2::new;
-	}
-
 	public class DirectionalUnloaderBuild2 extends DirectionalUnloaderBuild {
 		public float counter;
 

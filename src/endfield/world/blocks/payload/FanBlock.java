@@ -72,11 +72,6 @@ public class FanBlock extends Block {
 		return drawer.finalIcons(this);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = FanBuild::new;
-	}
-
 	public class FanBuild extends Building {
 		public float warmup;
 		public float totalProgress;

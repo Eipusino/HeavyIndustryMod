@@ -59,11 +59,6 @@ public class AdjustableBeamNode extends BeamNode {
 		}
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = AdjustableBeamNodeBuild::new;
-	}
-
 	public class AdjustableBeamNodeBuild extends BeamNodeBuild {
 		public Building[] links = new Building[beamDirections.length];
 		public Tile[] dests = new Tile[beamDirections.length];

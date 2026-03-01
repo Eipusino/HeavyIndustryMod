@@ -58,11 +58,6 @@ public class MultiTractorBeamTurret extends TractorBeamTurret {
 		laserEnd = Core.atlas.find("parallax-laser-end");
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = MultiTractorBeamBuild::new;
-	}
-
 	public class MultiTractorBeamBuild extends TractorBeamBuild {
 		/**
 		 * {@link CollectionObjectMap} {@code targets} Uses a {@link Vec3} to contain:

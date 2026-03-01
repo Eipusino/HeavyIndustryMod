@@ -47,11 +47,6 @@ public class AdvancedHeaterGenerator extends AdvancedConsumeGenerator {
 		addBar("heat", (AdvancedHeaterGeneratorBuild tile) -> new Bar("bar.heat", Pal.lightOrange, () -> tile.heat / heatOutput));
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = AdvancedHeaterGeneratorBuild::new;
-	}
-
 	public class AdvancedHeaterGeneratorBuild extends AdvancedConsumeGeneratorBuild implements HeatBlock {
 		public float heat;
 

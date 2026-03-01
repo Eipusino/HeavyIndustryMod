@@ -99,11 +99,6 @@ public class SelectableReconstructor extends Reconstructor {
 		}
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = SelectableReconstructorBuild::new;
-	}
-
 	public class SelectableReconstructorBuild extends ReconstructorBuild {
 		public int currentPlan = -1;
 

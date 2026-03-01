@@ -103,6 +103,7 @@ import endfield.world.blocks.power.PowerAnalyzer;
 import endfield.world.blocks.power.SmartBeamNode;
 import endfield.world.blocks.power.SmartPowerNode;
 import endfield.world.blocks.production.AdaptiveCrafter;
+import endfield.world.blocks.production.BeamDrill2;
 import endfield.world.blocks.production.Centrifuge;
 import endfield.world.blocks.production.LaserBeamDrill;
 import endfield.world.blocks.production.OreCollector;
@@ -224,7 +225,6 @@ import mindustry.world.blocks.power.LightBlock;
 import mindustry.world.blocks.power.PowerNode;
 import mindustry.world.blocks.power.ThermalGenerator;
 import mindustry.world.blocks.production.AttributeCrafter;
-import mindustry.world.blocks.production.BeamDrill;
 import mindustry.world.blocks.production.BurstDrill;
 import mindustry.world.blocks.production.Drill;
 import mindustry.world.blocks.production.Fracker;
@@ -360,7 +360,7 @@ public final class Blocks2 {
 	public static LaserBeamDrill beamDrill;
 	public static SporeFarmBlock sporeFarm;
 	//drill-erekir
-	public static BeamDrill heavyPlasmaBore;
+	public static BeamDrill2 heavyPlasmaBore;
 	public static UnitMinerPoint unitMinerPoint, unitMinerCenter;
 	public static UnitMinerDepot unitMinerDepot;
 	//distribution
@@ -592,87 +592,61 @@ public final class Blocks2 {
 		if (Vars2.isPlugin) return;//Do not load content in plugin mode.
 
 		//environment
-		cliff = new DepthCliff("cliff") {{
-			buildType = Constant.PROV_BUILDING;
-		}};
-		cliffHelper = new DepthCliffHelper("cliff-helper") {{
-			buildType = Constant.PROV_BUILDING;
-		}};
+		cliff = new DepthCliff("cliff");
+		cliffHelper = new DepthCliffHelper("cliff-helper");
 		coreZoneCenter = new Floor("core-zone-center", 0) {{
 			blendGroup = Blocks.coreZone;
 			allowCorePlacement = true;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		coreZoneDot = new Floor("core-zone-dot", 0) {{
 			blendGroup = Blocks.coreZone;
 			allowCorePlacement = true;
-			buildType = Constant.PROV_BUILDING;
 		}};
-		darkPanel7 = new Floor("dark-panel-7", 0) {{
-			buildType = Constant.PROV_BUILDING;
-		}};
-		darkPanel8 = new Floor("dark-panel-8", 0) {{
-			buildType = Constant.PROV_BUILDING;
-		}};
-		darkPanel9 = new Floor("dark-panel-9", 0) {{
-			buildType = Constant.PROV_BUILDING;
-		}};
-		darkPanel10 = new Floor("dark-panel-10", 0) {{
-			buildType = Constant.PROV_BUILDING;
-		}};
-		darkPanel11 = new Floor("dark-panel-11", 0) {{
-			buildType = Constant.PROV_BUILDING;
-		}};
-		darkPanelDamaged = new Floor("dark-panel-damaged", 3) {{
-			buildType = Constant.PROV_BUILDING;
-		}};
+		darkPanel7 = new Floor("dark-panel-7", 0);
+		darkPanel8 = new Floor("dark-panel-8", 0);
+		darkPanel9 = new Floor("dark-panel-9", 0);
+		darkPanel10 = new Floor("dark-panel-10", 0);
+		darkPanel11 = new Floor("dark-panel-11", 0);
+		darkPanelDamaged = new Floor("dark-panel-damaged", 3);
 		metalTiles15 = new ConnectedFloor("metal-tiles-15") {{
 			autotile = true;
 			drawEdgeOut = false;
 			drawEdgeIn = false;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		metalTiles16 = new ConnectedFloor("metal-tiles-16") {{
 			autotile = true;
 			drawEdgeOut = false;
 			drawEdgeIn = false;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		metalTiles17 = new ConnectedFloor("metal-tiles-17") {{
 			autotile = true;
 			drawEdgeOut = false;
 			drawEdgeIn = false;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		metalTiles18 = new ConnectedFloor("metal-tiles-18") {{
 			autotile = true;
 			drawEdgeOut = false;
 			drawEdgeIn = false;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		asphalt = new Floor("asphalt", 0) {{
 			drawEdgeOut = false;
 			drawEdgeIn = false;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		asphaltTiles = new ConnectedFloor("asphalt-tiles") {{
 			autotile = true;
 			drawEdgeOut = false;
 			drawEdgeIn = false;
 			blendGroup = asphalt;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		shaleVent = new SteamVent("shale-vent") {{
 			variants = 3;
 			parent = blendGroup = Blocks.shale;
 			attributes.set(Attribute.steam, 1f);
-			buildType = Constant.PROV_BUILDING;
 		}};
 		basaltSpikes = new Floor("basalt-spikes", 4) {{
 			itemDrop = Items2.stone;
 			playerUnmineable = true;
 			attributes.set(Attribute.water, -0.3f);
-			buildType = Constant.PROV_BUILDING;
 		}};
 		basaltPlates = new Floor("basalt-plates") {{
 			tilingVariants = 2;
@@ -680,108 +654,82 @@ public final class Blocks2 {
 			itemDrop = Items2.stone;
 			playerUnmineable = true;
 			attributes.set(Attribute.water, -0.3f);
-			buildType = Constant.PROV_BUILDING;
 		}};
 		basaltRock = new TallBlock("basalt-rock") {{
 			clipSize = 120f;
 			variants = 2;
 			attributes.set(Attribute.sand, 0.7f);
-			buildType = Constant.PROV_BUILDING;
 		}};
 		basaltWall = new StaticWall("basalt-wall") {{
 			variants = 3;
 			attributes.set(Attribute.sand, 0.7f);
 			basaltSpikes.wall = Blocks.basalt.asFloor().wall = Blocks.hotrock.asFloor().wall = Blocks.magmarock.asFloor().wall = this;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		basaltGraphiticWall = new StaticWall("basalt-graphitic-wall") {{
 			itemDrop = Items.graphite;
 			variants = 3;
 			attributes.set(Attribute.sand, 0.7f);
-			buildType = Constant.PROV_BUILDING;
 		}};
 		basaltPyratiticWall = new StaticWall("basalt-pyratitic-wall") {{
 			itemDrop = Items.pyratite;
 			variants = 3;
 			attributes.set(Attribute.sand, 0.7f);
-			buildType = Constant.PROV_BUILDING;
 		}};
 		snowySand = new Floor("snowy-sand", 3) {{
 			itemDrop = Items.sand;
 			attributes.set(Attribute.water, 0.2f);
 			attributes.set(Attribute.oil, 0.5f);
-			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		snowySandWall = new StaticWall("snowy-sand-wall") {{
 			variants = 2;
 			attributes.set(Attribute.sand, 2f);
-			buildType = Constant.PROV_BUILDING;
 		}};
 		arkyciteSand = new Floor("arkycite-sand", 3) {{
 			itemDrop = Items.sand;
 			attributes.set(Attributes2.arkycite, 1);
-			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		arkyciteSandWall = new StaticWall("arkycite-sand-wall") {{
 			variants = 2;
 			attributes.set(Attribute.sand, 2f);
-			buildType = Constant.PROV_BUILDING;
 		}};
 		arkyciteSandBoulder = new Prop("arkycite-sand-boulder") {{
 			variants = 2;
 			arkyciteSand.decoration = this;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		darksandBoulder = new Prop("darksand-boulder") {{
 			variants = 2;
 			Blocks.darksand.asFloor().decoration = this;
-			buildType = Constant.PROV_BUILDING;
 		}};
-		concreteBlank = new Floor("concrete-blank", 3) {{
-			buildType = Constant.PROV_BUILDING;
-		}};
-		concreteFill = new Floor("concrete-fill", 0) {{
-			buildType = Constant.PROV_BUILDING;
-		}};
-		concreteNumber = new Floor("concrete-number", 10) {{
-			buildType = Constant.PROV_BUILDING;
-		}};
-		concreteStripe = new Floor("concrete-stripe", 3) {{
-			buildType = Constant.PROV_BUILDING;
-		}};
-		concrete = new Floor("concrete", 3) {{
-			buildType = Constant.PROV_BUILDING;
-		}};
+		concreteBlank = new Floor("concrete-blank", 3);
+		concreteFill = new Floor("concrete-fill", 0);
+		concreteNumber = new Floor("concrete-number", 10);
+		concreteStripe = new Floor("concrete-stripe", 3);
+		concrete = new Floor("concrete", 3);
 		stoneFullTiles = new Floor("stone-full-tiles", 3) {{
 			itemDrop = Items2.stone;
 			playerUnmineable = true;
-			buildType = Constant.PROV_BUILDING;
 			wall = Blocks.stoneWall;
 		}};
 		stoneFull = new Floor("stone-full", 3) {{
 			itemDrop = Items2.stone;
 			playerUnmineable = true;
-			buildType = Constant.PROV_BUILDING;
 			wall = Blocks.stoneWall;
 		}};
 		stoneHalf = new Floor("stone-half", 3) {{
 			itemDrop = Items2.stone;
 			playerUnmineable = true;
-			buildType = Constant.PROV_BUILDING;
 			wall = Blocks.stoneWall;
 		}};
 		stoneTiles = new Floor("stone-tiles", 3) {{
 			itemDrop = Items2.stone;
 			playerUnmineable = true;
-			buildType = Constant.PROV_BUILDING;
 			wall = Blocks.stoneWall;
 		}};
 		concreteWall = new ConnectedStaticWall("concrete-wall") {{
 			autotile = true;
 			variants = 0;
-			buildType = Constant.PROV_BUILDING;
 			concreteBlank.wall = concreteFill.wall = concreteNumber.wall = concreteStripe.wall = concrete.wall = this;
 		}};
 		pit = new Floor("pit", 0) {{
@@ -789,7 +737,6 @@ public final class Blocks2 {
 			placeableOn = false;
 			canShadow = false;
 			solid = true;
-			buildType = Constant.PROV_BUILDING;
 		}
 			@Override
 			public TextureRegion[] icons() {
@@ -805,7 +752,6 @@ public final class Blocks2 {
 			status = StatusEffects.wet;
 			statusDuration = 120f;
 			liquidDrop = Liquids.water;
-			buildType = Constant.PROV_BUILDING;
 		}
 			@Override
 			public TextureRegion[] icons() {
@@ -815,48 +761,40 @@ public final class Blocks2 {
 		gravel = new Floor("gravel", 5) {{
 			itemDrop = Items2.stone;
 			playerUnmineable = true;
-			buildType = Constant.PROV_BUILDING;
 			wall = Blocks.stoneWall;
 		}};
 		deepSlate = new Floor("deep-slate", 8) {{
 			itemDrop = Items2.stone;
 			playerUnmineable = true;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		deepSlateBrick = new Floor("deep-slate-brick", 8) {{
 			itemDrop = Items2.stone;
 			playerUnmineable = true;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		deepSlateWall = new StaticWall("deep-slate-wall") {{
 			variants = 4;
 			attributes.set(Attribute.sand, 0.7f);
-			buildType = Constant.PROV_BUILDING;
 			deepSlate.wall = this;
 		}};
 		deepSlateBrickWall = new StaticWall("deep-slate-brick-wall") {{
 			variants = 5;
 			attributes.set(Attribute.sand, 0.7f);
-			buildType = Constant.PROV_BUILDING;
 			deepSlateBrick.wall = this;
 		}};
 		softRareEarth = new Floor("soft-rare-earth", 3) {{
 			itemDrop = Items2.rareEarth;
 			attributes.set(Attributes2.radioactivity, 0.1f);
-			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		patternRareEarth = new Floor("pattern-rare-earth", 4) {{
 			itemDrop = Items2.rareEarth;
 			attributes.set(Attributes2.radioactivity, 0.1f);
-			buildType = Constant.PROV_BUILDING;
 			playerUnmineable = true;
 		}};
 		softRareEarthWall = new StaticWall("soft-rare-earth-wall") {{
 			variants = 2;
 			itemDrop = Items2.rareEarth;
 			softRareEarth.wall = patternRareEarth.wall = this;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		brine = new Floor("pooled-brine", 0) {{
 			drownTime = 200f;
@@ -867,7 +805,6 @@ public final class Blocks2 {
 			isLiquid = true;
 			cacheLayer = CacheLayer2.brine;
 			albedo = 1f;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		crystalFluid = new Floor("pooled-crystal-fluid", 0) {{
 			status = StatusEffects2.regenerating;
@@ -881,7 +818,6 @@ public final class Blocks2 {
 			emitLight = true;
 			lightRadius = 20f;
 			lightColor = Color.green.cpy().a(0.19f);
-			buildType = Constant.PROV_BUILDING;
 		}};
 		deepCrystalFluid = new Floor("pooled-deep-crystal-fluid", 0) {{
 			status = StatusEffects2.regenerating;
@@ -894,7 +830,6 @@ public final class Blocks2 {
 			emitLight = true;
 			lightRadius = 30f;
 			lightColor = Color.green.cpy().a(0.19f);
-			buildType = Constant.PROV_BUILDING;
 		}};
 		metalFloorWater = new Floor("metal-floor-water", 0) {{
 			speedMultiplier = 0.6f;
@@ -903,7 +838,6 @@ public final class Blocks2 {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		metalFloorWater2 = new Floor("metal-floor-water-2", 0) {{
 			speedMultiplier = 0.6f;
@@ -912,7 +846,6 @@ public final class Blocks2 {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		metalFloorWater3 = new Floor("metal-floor-water-3", 0) {{
 			speedMultiplier = 0.6f;
@@ -921,7 +854,6 @@ public final class Blocks2 {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		metalFloorWater4 = new Floor("metal-floor-water-4", 0) {{
 			speedMultiplier = 0.6f;
@@ -930,7 +862,6 @@ public final class Blocks2 {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		metalFloorWater5 = new Floor("metal-floor-water-5", 0) {{
 			speedMultiplier = 0.6f;
@@ -939,7 +870,6 @@ public final class Blocks2 {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		metalFloorDamagedWater = new Floor("metal-floor-damaged-water", 3) {{
 			speedMultiplier = 0.6f;
@@ -948,7 +878,6 @@ public final class Blocks2 {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		stoneWater = new Floor("stone-water", 3) {{
 			speedMultiplier = 0.6f;
@@ -957,7 +886,6 @@ public final class Blocks2 {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		shaleWater = new Floor("shale-water", 3) {{
 			speedMultiplier = 0.6f;
@@ -966,7 +894,6 @@ public final class Blocks2 {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		basaltWater = new Floor("basalt-water", 3) {{
 			speedMultiplier = 0.6f;
@@ -975,7 +902,6 @@ public final class Blocks2 {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		mudWater = new Floor("mud-water", 0) {{
 			speedMultiplier = 0.5f;
@@ -984,74 +910,55 @@ public final class Blocks2 {
 			cacheLayer = CacheLayer.water;
 			albedo = 0.9f;
 			supportsOverlay = true;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		corruptedMoss = new Floor("corrupted-moss", 3) {{
 			speedMultiplier = 0.9f;
 			attributes.set(Attribute.water, 0.1f);
-			buildType = Constant.PROV_BUILDING;
 		}};
 		corruptedSporeMoss = new Floor("corrupted-spore-moss", 3) {{
 			speedMultiplier = 0.85f;
 			attributes.set(Attribute.water, 0.1f);
-			buildType = Constant.PROV_BUILDING;
 		}};
 		corruptedSporeRocks = new StaticWall("corrupted-spore-rocks") {{
 			variants = 2;
 			corruptedSporeMoss.asFloor().wall = this;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		corruptedSporePine = new StaticWall("corrupted-spore-pine") {{
 			variants = 2;
-			buildType = Constant.PROV_BUILDING;
 		}};
-		corruptedSporeFern = new TreeBlock("corrupted-spore-fern") {{
-			buildType = Constant.PROV_BUILDING;
-		}};
-		corruptedSporePlant = new TreeBlock("corrupted-spore-plant") {{
-			buildType = Constant.PROV_BUILDING;
-		}};
-		corruptedSporeTree = new TreeBlock("corrupted-spore-tree") {{
-			buildType = Constant.PROV_BUILDING;
-		}};
+		corruptedSporeFern = new TreeBlock("corrupted-spore-fern");
+		corruptedSporePlant = new TreeBlock("corrupted-spore-plant");
+		corruptedSporeTree = new TreeBlock("corrupted-spore-tree");
 		mycelium = new Floor("mycelium", 3) {{
 			speedMultiplier = 0.9f;
 			attributes.set(Attribute.water, 0.1f);
-			buildType = Constant.PROV_BUILDING;
 		}};
 		myceliumSpore = new Floor("mycelium-spore", 3) {{
 			speedMultiplier = 0.9f;
 			attributes.set(Attribute.water, 0.1f);
-			buildType = Constant.PROV_BUILDING;
 		}};
 		myceliumShrubs = new StaticWall("mycelium-shrubs") {{
 			variants = 2;
 			mycelium.wall = myceliumSpore.wall = this;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		myceliumPine = new StaticWall("mycelium-pine") {{
 			variants = 2;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		crystals = new TallBlock("crystals") {{
 			variants = 3;
 			clipSize = 128f;
 			itemDrop = Items2.crystal;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		crystalsBoulder = new TallBlock("crystals-boulder") {{
 			variants = 3;
 			clipSize = 96f;
 			itemDrop = Items2.crystal;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		oreSilicon = new OreBlock("ore-silicon", Items.silicon) {{
 			variants = 3;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		oreCrystal = new OreBlock("ore-crystal", Items2.crystal) {{
 			variants = 3;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		oreUranium = new OreBlock("ore-uranium", Items2.uranium) {{
 			variants = 3;
@@ -1059,14 +966,12 @@ public final class Blocks2 {
 			oreThreshold = 0.89f;
 			oreScale = 33;
 			attributes.set(Attributes2.radioactivity, 2f);
-			buildType = Constant.PROV_BUILDING;
 		}};
 		oreChromium = new OreBlock("ore-chromium", Items2.chromium) {{
 			variants = 3;
 			oreDefault = true;
 			oreThreshold = 0.9f;
 			oreScale = 32;
-			buildType = Constant.PROV_BUILDING;
 		}};
 		//wall
 		copperWallHuge = new Wall("copper-wall-huge") {{
@@ -1074,56 +979,48 @@ public final class Blocks2 {
 			size = 3;
 			health = 2880;
 			armor = 1f;
-			buildType = WallBuild::new;
 		}};
 		copperWallGigantic = new Wall("copper-wall-gigantic") {{
 			requirements(Category.defense, ItemStack.mult(Blocks.copperWall.requirements, 16));
 			size = 4;
 			health = 5120;
 			armor = 1f;
-			buildType = WallBuild::new;
 		}};
 		armoredWall = new Wall("armored-wall") {{
 			requirements(Category.defense, ItemStack.with(Items.copper, 5, Items.lead, 3, Items.graphite, 2));
 			size = 1;
 			health = 360;
 			armor = 5f;
-			buildType = WallBuild::new;
 		}};
 		armoredWallLarge = new Wall("armored-wall-large") {{
 			requirements(Category.defense, ItemStack.mult(armoredWall.requirements, 4));
 			size = 2;
 			health = 1440;
 			armor = 5f;
-			buildType = WallBuild::new;
 		}};
 		armoredWallHuge = new Wall("armored-wall-huge") {{
 			requirements(Category.defense, ItemStack.mult(armoredWall.requirements, 9));
 			size = 3;
 			health = 3240;
 			armor = 5f;
-			buildType = WallBuild::new;
 		}};
 		armoredWallGigantic = new Wall("armored-wall-gigantic") {{
 			requirements(Category.defense, ItemStack.mult(armoredWall.requirements, 16));
 			size = 4;
 			health = 5760;
 			armor = 5f;
-			buildType = WallBuild::new;
 		}};
 		titaniumWallHuge = new Wall("titanium-wall-huge") {{
 			requirements(Category.defense, ItemStack.mult(Blocks.titaniumWall.requirements, 9));
 			size = 3;
 			health = 3960;
 			armor = 2f;
-			buildType = WallBuild::new;
 		}};
 		titaniumWallGigantic = new Wall("titanium-wall-gigantic") {{
 			requirements(Category.defense, ItemStack.mult(Blocks.titaniumWall.requirements, 16));
 			size = 4;
 			health = 7040;
 			armor = 2f;
-			buildType = WallBuild::new;
 		}};
 		doorHuge = new Door("door-huge") {{
 			requirements(Category.defense, ItemStack.mult(Blocks.door.requirements, 9));
@@ -1132,7 +1029,6 @@ public final class Blocks2 {
 			armor = 2f;
 			openfx = Fx.dooropen;
 			closefx = Fx.doorclose;
-			buildType = DoorBuild::new;
 		}};
 		doorGigantic = new Door("door-gigantic") {{
 			requirements(Category.defense, ItemStack.mult(Blocks.door.requirements, 16));
@@ -1141,7 +1037,6 @@ public final class Blocks2 {
 			armor = 2f;
 			openfx = Fx.dooropen;
 			closefx = Fx.doorclose;
-			buildType = DoorBuild::new;
 		}};
 		plastaniumWallHuge = new Wall("plastanium-wall-huge") {{
 			requirements(Category.defense, ItemStack.mult(Blocks.plastaniumWall.requirements, 9));
@@ -1151,7 +1046,6 @@ public final class Blocks2 {
 			insulated = true;
 			absorbLasers = true;
 			schematicPriority = 10;
-			buildType = WallBuild::new;
 		}};
 		plastaniumWallGigantic = new Wall("plastanium-wall-gigantic") {{
 			requirements(Category.defense, ItemStack.mult(Blocks.plastaniumWall.requirements, 16));
@@ -1161,21 +1055,18 @@ public final class Blocks2 {
 			insulated = true;
 			absorbLasers = true;
 			schematicPriority = 10;
-			buildType = WallBuild::new;
 		}};
 		thoriumWallHuge = new Wall("thorium-wall-huge") {{
 			requirements(Category.defense, ItemStack.mult(Blocks.thoriumWall.requirements, 9));
 			size = 3;
 			health = 7200;
 			armor = 8f;
-			buildType = WallBuild::new;
 		}};
 		thoriumWallGigantic = new Wall("thorium-wall-gigantic") {{
 			requirements(Category.defense, ItemStack.mult(Blocks.thoriumWall.requirements, 16));
 			size = 4;
 			health = 12800;
 			armor = 8f;
-			buildType = WallBuild::new;
 		}};
 		phaseWallHuge = new Wall("phase-wall-huge") {{
 			requirements(Category.defense, ItemStack.mult(Blocks.phaseWall.requirements, 9));
@@ -1184,7 +1075,6 @@ public final class Blocks2 {
 			armor = 3f;
 			chanceDeflect = 10f;
 			flashHit = true;
-			buildType = WallBuild::new;
 		}};
 		phaseWallGigantic = new Wall("phase-wall-gigantic") {{
 			requirements(Category.defense, ItemStack.mult(Blocks.phaseWall.requirements, 16));
@@ -1193,7 +1083,6 @@ public final class Blocks2 {
 			armor = 3f;
 			chanceDeflect = 10f;
 			flashHit = true;
-			buildType = WallBuild::new;
 		}};
 		surgeWallHuge = new Wall("surge-wall-huge") {{
 			requirements(Category.defense, ItemStack.mult(Blocks.surgeWall.requirements, 9));
@@ -1202,7 +1091,6 @@ public final class Blocks2 {
 			armor = 12f;
 			lightningChance = 0.1f;
 			lightningDamage = 25f;
-			buildType = WallBuild::new;
 		}};
 		surgeWallGigantic = new Wall("surge-wall-gigantic") {{
 			requirements(Category.defense, ItemStack.mult(Blocks.surgeWall.requirements, 16));
@@ -1211,7 +1099,6 @@ public final class Blocks2 {
 			armor = 12f;
 			lightningChance = 0.1f;
 			lightningDamage = 25f;
-			buildType = WallBuild::new;
 		}};
 		uraniumWall = new Wall("uranium-wall") {{
 			requirements(Category.defense, ItemStack.with(Items2.uranium, 6));
@@ -1220,7 +1107,6 @@ public final class Blocks2 {
 			armor = 26f;
 			absorbLasers = true;
 			crushDamageMultiplier = 0.7f;
-			buildType = WallBuild::new;
 		}};
 		uraniumWallLarge = new Wall("uranium-wall-large") {{
 			requirements(Category.defense, ItemStack.mult(uraniumWall.requirements, 4));
@@ -1229,7 +1115,6 @@ public final class Blocks2 {
 			armor = 26f;
 			absorbLasers = true;
 			crushDamageMultiplier = 0.7f;
-			buildType = WallBuild::new;
 		}};
 		chromiumWall = new Wall("chromium-wall") {{
 			requirements(Category.defense, ItemStack.with(Items2.chromium, 6));
@@ -1238,7 +1123,6 @@ public final class Blocks2 {
 			armor = 40f;
 			absorbLasers = true;
 			crushDamageMultiplier = 0.5f;
-			buildType = WallBuild::new;
 		}};
 		chromiumWallLarge = new Wall("chromium-wall-large") {{
 			requirements(Category.defense, ItemStack.mult(chromiumWall.requirements, 4));
@@ -1247,7 +1131,6 @@ public final class Blocks2 {
 			armor = 40f;
 			absorbLasers = true;
 			crushDamageMultiplier = 0.5f;
-			buildType = WallBuild::new;
 		}};
 		chromiumDoor = new AutoDoor("chromium-door") {{
 			requirements(Category.defense, ItemStack.with(Items2.chromium, 6, Items.silicon, 4));
@@ -1256,7 +1139,6 @@ public final class Blocks2 {
 			armor = 40f;
 			absorbLasers = true;
 			crushDamageMultiplier = 0.5f;
-			buildType = AutoDoorBuild::new;
 		}};
 		chromiumDoorLarge = new AutoDoor("chromium-door-large") {{
 			requirements(Category.defense, ItemStack.mult(chromiumDoor.requirements, 4));
@@ -1265,7 +1147,6 @@ public final class Blocks2 {
 			armor = 40f;
 			absorbLasers = true;
 			crushDamageMultiplier = 0.5f;
-			buildType = AutoDoorBuild::new;
 		}};
 		heavyAlloyWall = new Wall("heavy-alloy-wall") {{
 			requirements(Category.defense, ItemStack.with(Items2.heavyAlloy, 6, Items.metaglass, 3, Items.plastanium, 4));
@@ -1274,7 +1155,6 @@ public final class Blocks2 {
 			armor = 72f;
 			absorbLasers = insulated = true;
 			crushDamageMultiplier = 0.25f;
-			buildType = WallBuild::new;
 			hideDetails = false;
 		}};
 		heavyAlloyWallLarge = new Wall("heavy-alloy-wall-large") {{
@@ -1284,7 +1164,6 @@ public final class Blocks2 {
 			armor = 72f;
 			absorbLasers = insulated = true;
 			crushDamageMultiplier = 0.25f;
-			buildType = WallBuild::new;
 			hideDetails = false;
 		}};
 		chargeWall = new ChargeWall("charge-wall") {{
@@ -1319,7 +1198,6 @@ public final class Blocks2 {
 			variants = 3;
 			health = 450;
 			rotate = true;
-			buildType = WallBuild::new;
 		}};
 		//wall-erekir
 		berylliumWallHuge = new Wall("beryllium-wall-huge") {{
@@ -1328,7 +1206,6 @@ public final class Blocks2 {
 			armor = 2f;
 			buildCostMultiplier = 3f;
 			size = 3;
-			buildType = WallBuild::new;
 			hideDetails = false;
 		}};
 		berylliumWallGigantic = new Wall("beryllium-wall-gigantic") {{
@@ -1337,7 +1214,6 @@ public final class Blocks2 {
 			armor = 2f;
 			buildCostMultiplier = 2f;
 			size = 4;
-			buildType = WallBuild::new;
 			hideDetails = false;
 		}};
 		tungstenWallHuge = new Wall("tungsten-wall-huge") {{
@@ -1346,7 +1222,6 @@ public final class Blocks2 {
 			armor = 14f;
 			buildCostMultiplier = 3f;
 			size = 3;
-			buildType = WallBuild::new;
 			hideDetails = false;
 		}};
 		tungstenWallGigantic = new Wall("tungsten-wall-gigantic") {{
@@ -1355,7 +1230,6 @@ public final class Blocks2 {
 			armor = 14f;
 			buildCostMultiplier = 2f;
 			size = 4;
-			buildType = WallBuild::new;
 			hideDetails = false;
 		}};
 		blastDoorLarge = new AutoDoor("blast-door-large") {{
@@ -1363,7 +1237,6 @@ public final class Blocks2 {
 			health = 6300;
 			armor = 14f;
 			size = 3;
-			buildType = WallBuild::new;
 			hideDetails = false;
 		}};
 		blastDoorHuge = new AutoDoor("blast-door-huge") {{
@@ -1371,7 +1244,6 @@ public final class Blocks2 {
 			health = 11200;
 			armor = 14f;
 			size = 4;
-			buildType = WallBuild::new;
 			hideDetails = false;
 		}};
 		reinforcedSurgeWallHuge = new Wall("reinforced-surge-wall-huge") {{
@@ -1382,7 +1254,6 @@ public final class Blocks2 {
 			armor = 20f;
 			size = 3;
 			researchCost = ItemStack.with(Items.surgeAlloy, 120, Items.tungsten, 600);
-			buildType = WallBuild::new;
 			hideDetails = false;
 		}};
 		reinforcedSurgeWallGigantic = new Wall("reinforced-surge-wall-gigantic") {{
@@ -1393,7 +1264,6 @@ public final class Blocks2 {
 			armor = 20f;
 			size = 4;
 			researchCost = ItemStack.with(Items.surgeAlloy, 240, Items.tungsten, 1200);
-			buildType = WallBuild::new;
 			hideDetails = false;
 		}};
 		carbideWallHuge = new Wall("carbide-wall-huge") {{
@@ -1401,7 +1271,6 @@ public final class Blocks2 {
 			health = 9720;
 			armor = 16f;
 			size = 3;
-			buildType = WallBuild::new;
 			hideDetails = false;
 		}};
 		carbideWallGigantic = new Wall("carbide-wall-gigantic") {{
@@ -1409,7 +1278,6 @@ public final class Blocks2 {
 			health = 17280;
 			armor = 16f;
 			size = 4;
-			buildType = WallBuild::new;
 			hideDetails = false;
 		}};
 		shieldedWallLarge = new ShieldWall("shielded-wall-large") {{
@@ -1426,7 +1294,6 @@ public final class Blocks2 {
 			breakCooldown = 60f * 15f;
 			regenSpeed = 2f;
 			consumePower(4f / 60f);
-			buildType = ShieldWallBuild::new;
 			hideDetails = false;
 		}};
 		shieldedWallHuge = new ShieldWall("shielded-wall-huge") {{
@@ -1443,7 +1310,6 @@ public final class Blocks2 {
 			breakCooldown = 60f * 15f;
 			regenSpeed = 2f;
 			consumePower(6f / 60f);
-			buildType = ShieldWallBuild::new;
 			hideDetails = false;
 		}};
 		aparajito = new AparajitoWall("aparajito") {{
@@ -1469,7 +1335,6 @@ public final class Blocks2 {
 			drillTime = 340f;
 			tier = 4;
 			consumeLiquid(Liquids.water, 0.06f).optional(true, true);
-			buildType = DrillBuild::new;
 		}};
 		largeWaterExtractor = new SolidPump("large-water-extractor") {{
 			requirements(Category.production, ItemStack.with(Items.lead, 60, Items.titanium, 80, Items.thorium, 110, Items.graphite, 80, Items.metaglass, 80));
@@ -1482,7 +1347,6 @@ public final class Blocks2 {
 			attribute = Attribute.water;
 			envRequired |= Env.groundWater;
 			consumePower(5.5f);
-			buildType = SolidPumpBuild::new;
 		}};
 		slagExtractor = new LiquidExtractor("slag-extractor") {{
 			requirements(Category.production, ItemStack.with(Items.graphite, 60, Items.titanium, 35, Items.metaglass, 80, Items.silicon, 80, Items.thorium, 45));
@@ -1512,15 +1376,15 @@ public final class Blocks2 {
 			consumePower(8f);
 			consumeItem(Items.sand);
 			consumeLiquid(Liquids.water, 0.3f);
-			buildType = FrackerBuild::new;
 			buildCostMultiplier = 0.8f;
 		}};
 		scanCollector = new OreCollector("scan-collector") {{
-			requirements(Category.production, ItemStack.with(Items.silicon, 120, Items.graphite, 100, Items.thorium, 80));
+			requirements(Category.production, ItemStack.with(Items.lead, 100, Items.graphite, 110, Items.silicon, 120, Items.plastanium, 80));
 			size = 3;
+			hasPower = true;
 			addLink(0, 2, 2, 0, -3, 2);
-			itemCapacity = 50;
-			consumePower(2.5f);
+			itemCapacity = 200;
+			consumePower(15f);
 			consumeLiquid(Liquids.water, 5f / 60f).boost();
 		}};
 		blastWell = new BurstDrill("blast-ore-well") {{
@@ -1548,7 +1412,6 @@ public final class Blocks2 {
 				rotation = 1.5f;
 			}}, Fx.mineImpactWave.wrap(Pal.blastAmmoBack, 45f));
 			consumeLiquid(Liquids2.blastReagent, 0.1f);
-			buildType = BurstDrillBuild::new;
 			hideDetails = false;
 		}};
 		ionDrill = new Drill("ion-drill") {{
@@ -1570,7 +1433,6 @@ public final class Blocks2 {
 			hardnessDrillMultiplier = 40f;
 			consumePower(3f);
 			consumeLiquid(Liquids.water, 0.1f).optional(true, true);
-			buildType = DrillBuild::new;
 			hideDetails = false;
 		}};
 		cuttingDrill = new Drill("cutting-drill") {{
@@ -1601,7 +1463,6 @@ public final class Blocks2 {
 			hardnessDrillMultiplier = 5f;
 			consumePower(11f);
 			consumeLiquid(Liquids2.lightOil, 0.15f).optional(true, true);
-			buildType = DrillBuild::new;
 			hideDetails = false;
 		}};
 		beamDrill = new LaserBeamDrill("beam-drill") {{
@@ -1628,7 +1489,7 @@ public final class Blocks2 {
 			hideDetails = false;
 		}};
 		//drill-erekir
-		heavyPlasmaBore = new BeamDrill("heavy-plasma-bore") {{
+		heavyPlasmaBore = new BeamDrill2("heavy-plasma-bore") {{
 			requirements(Category.production, ItemStack.with(Items.silicon, 300, Items.oxide, 150, Items.beryllium, 350, Items.tungsten, 250, Items.carbide, 100));
 			itemCapacity = 30;
 			liquidCapacity = 20f;
@@ -1644,7 +1505,6 @@ public final class Blocks2 {
 			consumePower(390f / 60f);
 			consumeLiquid(Liquids.hydrogen, 1.5f / 60f);
 			consumeLiquid(Liquids.nitrogen, 7.5f / 60f).optional(true, true);
-			buildType = BeamDrillBuild::new;
 		}};
 		unitMinerPoint = new UnitMinerPoint("unit-miner-point") {{
 			requirements(Category.production, BuildVisibility.sandboxOnly, ItemStack.with(Items.beryllium, 220, Items.graphite, 220, Items.silicon, 200, Items.tungsten, 180));
@@ -1699,7 +1559,6 @@ public final class Blocks2 {
 			requirements(Category.distribution, ItemStack.with(Items.plastanium, 5, Items.silicon, 5, Items.graphite, 5));
 			health = 90;
 			speed = 8f;
-			buildType = StackRouterBuild::new;
 		}};
 		plastaniumBridge = new StackBridge("plastanium-bridge") {{
 			requirements(Category.distribution, ItemStack.with(Items.lead, 15, Items.silicon, 12, Items.titanium, 15, Items.plastanium, 10));
@@ -1752,7 +1611,6 @@ public final class Blocks2 {
 			speed = 0.125f;
 			itemCapacity = 20;
 			outputRouter = false;
-			buildType = StackConveyorBuild::new;
 		}};
 		chromiumStackRouter = new StackRouter("chromium-stack-router") {{
 			requirements(Category.distribution, ItemStack.with(Items.graphite, 4, Items.silicon, 5, Items.plastanium, 3, Items2.chromium, 1));
@@ -1761,7 +1619,6 @@ public final class Blocks2 {
 			speed = 0.125f;
 			itemCapacity = 20;
 			buildCostMultiplier = 0.8f;
-			buildType = StackRouterBuild::new;
 		}};
 		chromiumStackBridge = new RailStackBridge("chromium-stack-bridge") {{
 			requirements(Category.distribution, ItemStack.with(Items.lead, 15, Items.silicon, 12, Items.plastanium, 10, Items2.chromium, 10));
@@ -1820,7 +1677,6 @@ public final class Blocks2 {
 			health = 40;
 			speed = 60f / 4.2f;
 			group = BlockGroup.transportation;
-			buildType = UnloaderBuild::new;
 		}};
 		rapidUnloader = new Unloader2("rapid-unloader") {{
 			requirements(Category.distribution, ItemStack.with(Items.silicon, 35, Items.plastanium, 15, Items2.crystallineCircuit, 10, Items2.chromium, 15));
@@ -1839,7 +1695,6 @@ public final class Blocks2 {
 			requirements(Category.distribution, ItemStack.with(Items.beryllium, 5));
 			health = 90;
 			speed = 4f;
-			buildType = DuctJunctionBuild::new;
 		}};
 		ductDistributor = new CoveredRouter("duct-distributor") {{
 			requirements(Category.distribution, ItemStack.with(Items.beryllium, 20));
@@ -1859,7 +1714,6 @@ public final class Blocks2 {
 			range = 6;
 			speed = 4;
 			buildCostMultiplier = 2;
-			buildType = DuctBridgeBuild::new;
 		}};
 		rapidDuctUnloader = new DirectionalUnloader2("rapid-duct-unloader") {{
 			requirements(Category.distribution, ItemStack.with(Items.graphite, 25, Items.silicon, 30, Items.tungsten, 20, Items.oxide, 15));
@@ -1964,7 +1818,6 @@ public final class Blocks2 {
 			armor = 8f;
 			liquidCapacity = 1200f;
 			underBullets = true;
-			buildType = LiquidRouterBuild::new;
 			buildCostMultiplier = 0.8f;
 		}};
 		chromiumArmorLiquidTank = new LiquidRouter("chromium-armor-liquid-tank") {{
@@ -1974,7 +1827,6 @@ public final class Blocks2 {
 			armor = 8f;
 			liquidCapacity = 3200f;
 			underBullets = true;
-			buildType = LiquidRouterBuild::new;
 			buildCostMultiplier = 0.8f;
 		}};
 		liquidMassDriver = new LiquidMassDriver("liquid-mass-driver") {{
@@ -2074,7 +1926,6 @@ public final class Blocks2 {
 			pumpAmount = 15f / 60f;
 			liquidCapacity = 150f;
 			size = 1;
-			buildType = PumpBuild::new;
 			squareSprite = false;
 		}};
 		largeReinforcedPump = new Pump("large-reinforced-pump") {{
@@ -2083,7 +1934,6 @@ public final class Blocks2 {
 			pumpAmount = 240f / 60f / 9f;
 			liquidCapacity = 360f;
 			size = 3;
-			buildType = PumpBuild::new;
 			squareSprite = false;
 		}};
 		//power
@@ -2092,7 +1942,6 @@ public final class Blocks2 {
 			size = 3;
 			maxNodes = 25;
 			laserRange = 28f;
-			buildType = PowerNodeBuild::new;
 		}};
 		smartPowerNode = new SmartPowerNode("smart-power-node") {{ //Copy stats from normal power node
 			requirements(Category.power, ItemStack.with(Items.copper, 2, Items.lead, 5, Items.silicon, 1));
@@ -2221,7 +2070,6 @@ public final class Blocks2 {
 			}), 4, 90, 8f);
 			effectChance = 0.2f;
 			consume(new ConsumeLiquidFlammable(0.4f, 0.2f));
-			buildType = ConsumeGeneratorBuild::new;
 			squareSprite = false;
 		}};
 		uraniumReactor = new GlowNuclearReactor("uranium-reactor") {{
@@ -2311,7 +2159,6 @@ public final class Blocks2 {
 			size = 5;
 			health = 1600;
 			consumePowerBuffered(750000f);
-			buildType = BatteryBuild::new;
 		}};
 		armoredCoatedBattery = new Battery("armored-coated-battery") {{
 			requirements(Category.power, ItemStack.with(Items2.crystal, 70, Items.silicon, 180, Items.plastanium, 120, Items2.chromium, 100, Items.phaseFabric, 50));
@@ -2323,7 +2170,6 @@ public final class Blocks2 {
 				fullLightColor = new Color(0xffd197ff);
 			}}, new DrawRegion("-top"));
 			consumePowerBuffered(425000f);
-			buildType = BatteryBuild::new;
 		}};
 		//power-erekir
 		smartBeamNode = new SmartBeamNode("smart-beam-node") {{ //Copy stats from normal beam node
@@ -2385,7 +2231,6 @@ public final class Blocks2 {
 			ambientSoundVolume = 0.14f;
 			consumeItems(ItemStack.with(Items.lead, 3, Items.sand, 3));
 			consumePower(1.8f);
-			buildType = GenericCrafterBuild::new;
 		}};
 		largePulverizer = new GenericCrafter("large-pulverizer") {{
 			requirements(Category.crafting, ItemStack.with(Items.copper, 25, Items.lead, 25, Items.graphite, 15, Items.thorium, 10));
@@ -2408,7 +2253,6 @@ public final class Blocks2 {
 			ambientSoundVolume = 0.12f;
 			consumePower(1.5f);
 			consumeItem(Items.scrap, 2);
-			buildType = GenericCrafterBuild::new;
 			hideDetails = false;
 		}};
 		largeMelter = new GenericCrafter("large-melter") {{
@@ -2422,7 +2266,6 @@ public final class Blocks2 {
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.slag), new DrawDefault());
 			consumePower(1.5f);
 			consumeItem(Items.scrap, 2);
-			buildType = GenericCrafterBuild::new;
 			hideDetails = false;
 		}};
 		largeCryofluidMixer = new GenericCrafter("large-cryofluid-mixer") {{
@@ -2442,7 +2285,6 @@ public final class Blocks2 {
 			consumePower(2f);
 			consumeItem(Items.titanium);
 			consumeLiquid(Liquids.water, 36f / 60f);
-			buildType = GenericCrafterBuild::new;
 			hideDetails = false;
 		}};
 		largePyratiteMixer = new GenericCrafter("large-pyratite-mixer") {{
@@ -2453,7 +2295,6 @@ public final class Blocks2 {
 			itemCapacity = 20;
 			consumePower(0.5f);
 			consumeItems(ItemStack.with(Items.coal, 3, Items.lead, 4, Items.sand, 5));
-			buildType = GenericCrafterBuild::new;
 			hideDetails = false;
 		}};
 		largeBlastMixer = new GenericCrafter("large-blast-mixer") {{
@@ -2464,7 +2305,6 @@ public final class Blocks2 {
 			envEnabled |= Env.space;
 			consumeItems(ItemStack.with(Items.pyratite, 3, Items.sporePod, 3));
 			consumePower(1f);
-			buildType = GenericCrafterBuild::new;
 			hideDetails = false;
 		}};
 		largeCultivator = new AttributeCrafter("large-cultivator") {{
@@ -2485,7 +2325,6 @@ public final class Blocks2 {
 			maxBoost = 3f;
 			consumePower(3f);
 			consumeLiquid(Liquids.water, 36f / 60f);
-			buildType = AttributeCrafterBuild::new;
 		}};
 		stoneCrusher = new GenericCrafter("stone-crusher") {{
 			requirements(Category.crafting, ItemStack.with(Items.copper, 40, Items.graphite, 60, Items.silicon, 25));
@@ -2500,7 +2339,6 @@ public final class Blocks2 {
 			});
 			consumeItem(Items2.stone, 2);
 			consumePower(1.2f);
-			buildType = GenericCrafterBuild::new;
 		}};
 		fractionator = new GenericCrafter("fractionator") {{
 			requirements(Category.crafting, ItemStack.with(Items.graphite, 250, Items.silicon, 200, Items.thorium, 200, Items.plastanium, 150, Items.surgeAlloy, 180));
@@ -2523,7 +2361,6 @@ public final class Blocks2 {
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.oil), new DrawDefault(), new DrawLiquidsOutputs());
 			consumeLiquid(Liquids.oil, 2.4f);
 			consumePower(15f);
-			buildType = GenericCrafterBuild::new;
 			hideDetails = false;
 		}};
 		largePlastaniumCompressor = new GenericCrafter("large-plastanium-compressor") {{
@@ -2543,7 +2380,6 @@ public final class Blocks2 {
 			consumeLiquid(Liquids.oil, 0.5f);
 			consumeItem(Items.titanium, 5);
 			consumePower(7f);
-			buildType = GenericCrafterBuild::new;
 		}};
 		largeSurgeSmelter = new GenericCrafter("large-surge-smelter") {{
 			requirements(Category.crafting, ItemStack.with(Items.lead, 180, Items.silicon, 100, Items.metaglass, 60, Items.thorium, 150, Items.surgeAlloy, 30));
@@ -2555,7 +2391,6 @@ public final class Blocks2 {
 			drawer = new DrawMulti(new DrawDefault(), new DrawPowerLight(new Color(0xf3e979ff)), new DrawFlame(new Color(0xffef99ff)));
 			consumePower(6);
 			consumeItems(ItemStack.with(Items.copper, 5, Items.lead, 6, Items.titanium, 5, Items.silicon, 4));
-			buildType = GenericCrafterBuild::new;
 		}};
 		blastSiliconSmelter = new GenericCrafter("blast-silicon-smelter") {{
 			requirements(Category.crafting, ItemStack.with(Items.graphite, 90, Items.thorium, 70, Items.silicon, 80, Items.plastanium, 50, Items.surgeAlloy, 30));
@@ -2578,7 +2413,6 @@ public final class Blocks2 {
 			ambientSoundVolume = 0.21f;
 			consumeItems(ItemStack.with(Items.coal, 5, Items.sand, 8, Items.blastCompound, 1));
 			consumePower(4f);
-			buildType = GenericCrafterBuild::new;
 			hideDetails = false;
 		}};
 		crystallineCircuitConstructor = new GenericCrafter("crystalline-circuit-constructor") {{
@@ -2591,7 +2425,6 @@ public final class Blocks2 {
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawDefault());
 			consumePower(2.5f);
 			consumeItems(ItemStack.with(Items.titanium, 2, Items.silicon, 3, Items2.crystal, 1));
-			buildType = GenericCrafterBuild::new;
 		}};
 		crystallineCircuitPrinter = new AdaptiveCrafter("crystalline-circuit-printer") {{
 			requirements(Category.crafting, ItemStack.with(Items.titanium, 600, Items.silicon, 400, Items.plastanium, 350, Items.surgeAlloy, 250, Items2.chromium, 200, Items2.crystallineCircuit, 150, Items2.crystal, 150));
@@ -2693,7 +2526,6 @@ public final class Blocks2 {
 			consumePower(3f);
 			consumeItem(Items2.crystal, 1);
 			consumeLiquid(Liquids.water, 18f / 60f);
-			buildType = GenericCrafterBuild::new;
 			hideDetails = false;
 		}};
 		largePhaseWeaver = new GenericCrafter("large-phase-weaver") {{
@@ -2718,7 +2550,6 @@ public final class Blocks2 {
 			clipSize = size * Vars.tilesize * 2f;
 			consumePower(7f);
 			consumeItems(ItemStack.with(Items.sand, 15, Items.thorium, 5));
-			buildType = GenericCrafterBuild::new;
 		}};
 		phaseFusionInstrument = new GenericCrafter("phase-fusion-instrument") {{
 			requirements(Category.crafting, ItemStack.with(Items.silicon, 100, Items.plastanium, 80, Items.phaseFabric, 60, Items2.chromium, 80, Items2.crystallineCircuit, 40));
@@ -2772,7 +2603,6 @@ public final class Blocks2 {
 			});
 			consumePower(9f);
 			consumeItems(ItemStack.with(Items2.uranium, 3, Items2.rareEarth, 8));
-			buildType = GenericCrafterBuild::new;
 		}};
 		clarifier = new GenericCrafter("clarifier") {{
 			requirements(Category.crafting, ItemStack.with(Items.copper, 60, Items.graphite, 35, Items.metaglass, 30));
@@ -2803,7 +2633,6 @@ public final class Blocks2 {
 			}}*/);
 			consumeLiquid(Liquids2.brine, 0.4f);
 			consumePower(1.5f);
-			buildType = GenericCrafterBuild::new;
 			squareSprite = false;
 		}};
 		corkscrewCompressor = new AdaptiveCrafter("corkscrew-compressor") {{
@@ -2858,7 +2687,6 @@ public final class Blocks2 {
 				alpha = 0.4f;
 				color = Pal.spore;
 			}});
-			buildType = AttributeCrafterBuild::new;
 		}};
 		atmosphericCooler = new GenericCrafter("atmospheric-cooler") {{
 			requirements(Category.crafting, ItemStack.with(Items.lead, 120, Items.metaglass, 80, Items.plastanium, 40, Items.surgeAlloy, 30));
@@ -2874,7 +2702,6 @@ public final class Blocks2 {
 			}}, new DrawLiquidRegion(Liquids.nitrogen), new DrawRegion("-rotator") {{
 				rotateSpeed = -1f;
 			}}, new DrawDefault());
-			buildType = GenericCrafterBuild::new;
 		}};
 		crystalSynthesizer = new GenericCrafter("crystal-synthesizer") {{
 			requirements(Category.crafting, ItemStack.with(Items.graphite, 80, Items.silicon, 100, Items.titanium, 80, Items.thorium, 20));
@@ -2889,7 +2716,6 @@ public final class Blocks2 {
 			consumePower(1.75f);
 			consumeItems(ItemStack.with(Items2.stone, 1));
 			consumeLiquid(Liquids.nitrogen, 0.15f);
-			buildType = GenericCrafterBuild::new;
 		}};
 		uraniumSynthesizer = new GenericCrafter("uranium-synthesizer") {{
 			requirements(Category.crafting, ItemStack.with(Items.graphite, 50, Items.silicon, 40, Items.plastanium, 30, Items.phaseFabric, 15, Items2.crystal, 10));
@@ -2904,7 +2730,6 @@ public final class Blocks2 {
 			}});
 			consumePower(5f);
 			consumeItems(ItemStack.with(Items.graphite, 1, Items.thorium, 1));
-			buildType = GenericCrafterBuild::new;
 		}};
 		chromiumSynthesizer = new GenericCrafter("chromium-synthesizer") {{
 			requirements(Category.crafting, ItemStack.with(Items.metaglass, 30, Items.silicon, 40, Items.plastanium, 50, Items.phaseFabric, 25, Items2.crystal, 15));
@@ -2925,7 +2750,6 @@ public final class Blocks2 {
 			consumePower(7.5f);
 			consumeLiquid(Liquids.slag, 12f / 60f);
 			consumeItem(Items.titanium, 8);
-			buildType = GenericCrafterBuild::new;
 		}};
 		heavyAlloySmelter = new GenericCrafter("heavy-alloy-smelter") {{
 			requirements(Category.crafting, ItemStack.with(Items.lead, 150, Items.silicon, 80, Items2.crystallineCircuit, 12, Items.thorium, 120, Items2.chromium, 30, Items.phaseFabric, 20));
@@ -2937,7 +2761,6 @@ public final class Blocks2 {
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawDefault(), new DrawFlame());
 			consumePower(11f);
 			consumeItems(ItemStack.with(Items2.uranium, 1, Items2.chromium, 1));
-			buildType = GenericCrafterBuild::new;
 			hideDetails = false;
 		}};
 		metalAnalyzer = new Separator("metal-analyzer") {{
@@ -2956,7 +2779,6 @@ public final class Blocks2 {
 			consumePower(3.5f);
 			consumeItem(Items2.rareEarth, 1);
 			consumeLiquid(Liquids.water, 6f / 60f);
-			buildType = SeparatorBuild::new;
 		}};
 		nitrificationReactor = new GenericCrafter("nitrification-reactor") {{
 			requirements(Category.crafting, ItemStack.with(Items.lead, 80, Items.metaglass, 50, Items.silicon, 20, Items.plastanium, 30, Items.thorium, 25));
@@ -2972,7 +2794,6 @@ public final class Blocks2 {
 			consumePower(5f);
 			consumeLiquid(Liquids2.lightOil, 12f / 60f);
 			consumeItem(Items.sporePod, 1);
-			buildType = GenericCrafterBuild::new;
 		}};
 		nitratedOilPrecipitator = new Separator("nitrated-oil-precipitator") {{
 			requirements(Category.crafting, ItemStack.with(Items.copper, 120, Items.graphite, 100, Items.plastanium, 40, Items.surgeAlloy, 60));
@@ -2988,7 +2809,6 @@ public final class Blocks2 {
 			ambientSoundVolume = 0.24f;
 			consumePower(4f);
 			consumeLiquid(Liquids2.nitratedOil, 36f / 60f);
-			buildType = SeparatorBuild::new;
 		}};
 		blastReagentMixer = new GenericCrafter("blast-reagent-mixer") {{
 			size = 4;
@@ -3007,7 +2827,6 @@ public final class Blocks2 {
 				rotation = 45f;
 				spinSprite = true;
 			}}, new DrawDefault());
-			buildType = GenericCrafterBuild::new;
 		}};
 		centrifuge = new Centrifuge("slag-centrifuge") {{
 			requirements(Category.crafting, ItemStack.with(Items.lead, 80, Items.silicon, 120, Items.metaglass, 80, Items.plastanium, 40, Items.surgeAlloy, 30));
@@ -3034,7 +2853,6 @@ public final class Blocks2 {
 			outputItem = new ItemStack(Items2.galliumNitride, 1);
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.gallium), new DrawLiquidTile(Liquids.nitrogen), new DrawHeat(), new DrawDefault());
 			consumeLiquids(LiquidStack.with(Liquids.nitrogen, 0.15f, Liquids.gallium, 0.05f));
-			buildType = GenericCrafterBuild::new;
 		}};
 		//production-erekir
 		ventHeater = new ThermalHeater("vent-heater") {{
@@ -3088,7 +2906,6 @@ public final class Blocks2 {
 				particleSize = 2.68f;
 				rotateScl = 1.7f;
 			}}, new DrawDefault());
-			buildType = GenericCrafterBuild::new;
 			squareSprite = false;
 		}};
 		largeElectricHeater = new HeatProducer("large-electric-heater") {{
@@ -3103,7 +2920,6 @@ public final class Blocks2 {
 			regionRotated1 = 1;
 			ambientSound = Sounds.loopHum;
 			consumePower(550f / 60f);
-			buildType = HeatProducerBuild::new;
 		}};
 		largeOxidationChamber = new HeatProducer("large-oxidation-chamber") {{
 			requirements(Category.crafting, ItemStack.with(Items.tungsten, 180, Items.graphite, 220, Items.silicon, 220, Items.beryllium, 320, Items.oxide, 120, Items.carbide, 70));
@@ -3127,7 +2943,6 @@ public final class Blocks2 {
 			liquidCapacity = 50f;
 			heatOutput = 35f;
 			canOverdrive = true;
-			buildType = HeatProducerBuild::new;
 		}};
 		largeSurgeCrucible = new HeatCrafter("large-surge-crucible") {{
 			requirements(Category.crafting, ItemStack.with(Items.graphite, 220, Items.silicon, 200, Items.tungsten, 240, Items.oxide, 120, Items.surgeAlloy, 80));
@@ -3154,7 +2969,6 @@ public final class Blocks2 {
 			consumeItem(Items.silicon, 8);
 			consumeLiquid(Liquids.slag, 80f / 60f);
 			consumePower(1f);
-			buildType = HeatCrafterBuild::new;
 		}};
 		largeCarbideCrucible = new HeatCrafter("large-carbide-crucible") {{
 			requirements(Category.crafting, ItemStack.with(Items.thorium, 300, Items.tungsten, 400, Items.oxide, 100, Items.carbide, 60));
@@ -3170,7 +2984,6 @@ public final class Blocks2 {
 			drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawCrucibleFlame(), new DrawDefault(), new DrawHeatInput());
 			consumeItems(ItemStack.with(Items.graphite, 8, Items.tungsten, 5));
 			consumePower(1f);
-			buildType = HeatCrafterBuild::new;
 		}};
 		//defense
 		lighthouse = new LightBlock("lighthouse") {{
@@ -3179,7 +2992,6 @@ public final class Blocks2 {
 			brightness = 1f;
 			radius = 220f;
 			consumePower(0.15f);
-			buildType = LightBuild::new;
 			buildCostMultiplier = 0.8f;
 		}};
 		mendDome = new MendProjector("mend-dome") {{
@@ -3193,7 +3005,6 @@ public final class Blocks2 {
 			scaledHealth = 240;
 			consumePower(2.5f);
 			consumeItem(Items.phaseFabric, 1).optional(true, true);
-			buildType = MendBuild::new;
 		}};
 		sectorStructureMender = new RegenProjector("sector-structure-mender") {{
 			requirements(Category.effect, ItemStack.with(Items.lead, 600, Items.titanium, 400, Items.silicon, 350, Items.plastanium, 250, Items.surgeAlloy, 220, Items2.crystallineCircuit, 150));
@@ -3220,7 +3031,6 @@ public final class Blocks2 {
 			}});
 			consumePower(20f);
 			consumeItem(Items2.crystallineCircuit, 10).optional(true, true);
-			buildType = RegenProjectorBuild::new;
 		}};
 		largeShieldGenerator = new ForceProjector("large-shield-generator") {{
 			requirements(Category.effect, ItemStack.with(Items.silicon, 120, Items.lead, 250, Items.graphite, 180, Items.plastanium, 150, Items.phaseFabric, 40, Items2.chromium, 60));
@@ -3235,7 +3045,6 @@ public final class Blocks2 {
 			phaseRadiusBoost = 100f;
 			phaseShieldBoost = 15000f;
 			consumePower(15f);
-			buildType = ForceBuild::new;
 			hideDetails = false;
 		}
 			@Override
@@ -3254,7 +3063,6 @@ public final class Blocks2 {
 			length = 12;
 			tendrils = 6;
 			lightningColor = Pal.surge;
-			buildType = ShockMineBuild::new;
 		}};
 		detonator = new Explosive("detonator") {{
 			requirements(Category.effect, BuildVisibility2.singlePlayer, ItemStack.with(Items.lead, 30, Items.graphite, 20, Items.thorium, 10, Items.blastCompound, 10));
@@ -3299,7 +3107,6 @@ public final class Blocks2 {
 			outlineColor = new Color(0x4a4b53ff);
 			fogRadius = 86;
 			consumePower(1.2f);
-			buildType = RadarBuild::new;
 		}};
 		reinforcedOverdriveProjector = new RectOverdriveProjector("reinforced-overdrive-projector") {{
 			requirements(Category.effect, ItemStack.with(Items.silicon, 100, Items.oxide, 80, Items.phaseFabric, 20, Items.surgeAlloy, 60, Items.tungsten, 90, Items.carbide, 25));
@@ -3322,7 +3129,6 @@ public final class Blocks2 {
 			size = 1;
 			itemCapacity = 60;
 			scaledHealth = 55;
-			buildType = StorageBuild::new;
 		}
 			@Override
 			protected TextureRegion[] icons() {
@@ -3334,7 +3140,6 @@ public final class Blocks2 {
 			size = 4;
 			itemCapacity = 3000;
 			scaledHealth = 55;
-			buildType = StorageBuild::new;
 		}
 			@Override
 			protected TextureRegion[] icons() {
@@ -3402,7 +3207,6 @@ public final class Blocks2 {
 			glowScl = 12f;
 			consumePower(18f);
 			consumeLiquid(Liquids2.crystalFluid, 0.6f);
-			buildType = RepairTowerBuild::new;
 		}};
 		titanReconstructor = new Reconstructor("titan-reconstructor") {{
 			requirements(Category.units, ItemStack.with(Items.lead, 4000, Items.silicon, 3000, Items.plastanium, 1500, Items.surgeAlloy, 1200, Items.phaseFabric, 300, Items2.uranium, 600, Items2.chromium, 800));
@@ -3424,7 +3228,6 @@ public final class Blocks2 {
 			consumePower(35f);
 			consumeLiquid(Liquids.cryofluid, 4f);
 			consumeItems(ItemStack.with(Items.silicon, 1500, Items2.crystallineCircuit, 300, Items2.uranium, 400, Items2.chromium, 500));
-			buildType = ReconstructorBuild::new;
 		}};
 		//unit-erekir
 		largeUnitRepairTower = new RepairTower("large-unit-repair-tower") {{
@@ -3437,7 +3240,6 @@ public final class Blocks2 {
 			healAmount = 10;
 			consumePower(3);
 			consumeLiquid(Liquids.ozone, 8f / 60f);
-			buildType = RepairTowerBuild::new;
 		}};
 		seniorAssemblerModule = new UnitAssemblerModule("senior-assembler-module") {{
 			requirements(Category.units, ItemStack.with(Items.thorium, 800, Items.phaseFabric, 600, Items.surgeAlloy, 400, Items.oxide, 300, Items.carbide, 400));
@@ -3446,7 +3248,6 @@ public final class Blocks2 {
 			regionSuffix = "-dark";
 			researchCostMultiplier = 0.75f;
 			consumePower(5.5f);
-			buildType = UnitAssemblerModuleBuild::new;
 		}};
 		//logic
 		matrixProcessor = new LogicBlock("matrix-processor") {{
@@ -3457,7 +3258,6 @@ public final class Blocks2 {
 			range = 8 * 62;
 			size = 4;
 			squareSprite = false;
-			buildType = LogicBuild::new;
 		}};
 		hugeLogicDisplay = new LogicDisplay("huge-logic-display") {{
 			requirements(Category.logic, ItemStack.with(Items.lead, 300, Items.silicon, 250, Items.metaglass, 200, Items.phaseFabric, 150));
@@ -3540,7 +3340,6 @@ public final class Blocks2 {
 			reload = 6f;
 			envEnabled |= Env.space;
 			consumePower(12f);
-			buildType = PointDefenseBuild::new;
 		}};
 		cobweb = new Cobweb("cobweb") {{
 			requirements(Category.turret, ItemStack.with(Items.silicon, 200, Items.graphite, 200, Items.surgeAlloy, 50, Items.phaseFabric, 50));
@@ -3691,7 +3490,6 @@ public final class Blocks2 {
 			reload = 5f;
 			rotateSpeed = 13f;
 			range = 200f;
-			buildType = PowerTurretBuild::new;
 		}};
 		electricArrow = new PowerTurret("electric-arrow") {{
 			requirements(Category.turret, ItemStack.with(Items.lead, 90, Items.titanium, 45, Items.silicon, 130));
@@ -3753,7 +3551,6 @@ public final class Blocks2 {
 			reload = 35f;
 			rotateSpeed = 6f;
 			range = 200f;
-			buildType = PowerTurretBuild::new;
 		}};
 		stabber = new ItemTurret("stabber") {{
 			requirements(Category.turret, ItemStack.with(Items.copper, 85, Items.titanium, 60, Items.silicon, 70));
@@ -3796,7 +3593,6 @@ public final class Blocks2 {
 			reload = 20f;
 			rotateSpeed = 7f;
 			range = 200f;
-			buildType = ItemTurretBuild::new;
 		}};
 		autocannonB6 = new ItemTurret("autocannon-b6") {{
 			requirements(Category.turret, ItemStack.with(Items.copper, 130, Items.graphite, 60, Items.titanium, 70));
@@ -3894,7 +3690,6 @@ public final class Blocks2 {
 				height = 9f;
 				ammoMultiplier = 4f;
 			}});
-			buildType = ItemTurretBuild::new;
 		}};
 		autocannonF2 = new ItemTurret("autocannon-f2") {{
 			requirements(Category.turret, ItemStack.with(Items.copper, 200, Items.graphite, 75, Items.titanium, 80));
@@ -3988,7 +3783,6 @@ public final class Blocks2 {
 				height = 9f;
 				ammoMultiplier = 4f;
 			}});
-			buildType = ItemTurretBuild::new;
 		}};
 		shellshock = new ItemTurret("shellshock") {{
 			requirements(Category.turret, ItemStack.with(Items.titanium, 210, Items.graphite, 125, Items.thorium, 125, Items.metaglass, 20));
@@ -4098,7 +3892,6 @@ public final class Blocks2 {
 				frontColor = Color.white;
 				backColor = Pal2.chromiumAmmoBack;
 			}});
-			buildType = ItemTurretBuild::new;
 		}};
 		rocketLauncher = new ItemTurret("rocket-launcher") {{
 			requirements(Category.turret, ItemStack.with(Items.copper, 60, Items.lead, 40, Items.graphite, 30));
@@ -4156,7 +3949,6 @@ public final class Blocks2 {
 			rotateSpeed = 8f;
 			inaccuracy = 0f;
 			shootSound = Sounds.shootMissile;
-			buildType = ItemTurretBuild::new;
 		}};
 		largeRocketLauncher = new ItemTurret("large-rocket-launcher") {{
 			requirements(Category.turret, ItemStack.with(Items.graphite, 360, Items.titanium, 220, Items.thorium, 100, Items.silicon, 110, Items.plastanium, 70));
@@ -4297,7 +4089,6 @@ public final class Blocks2 {
 			consumeAmmoOnce = false;
 			maxAmmo = 24;
 			ammoPerShot = 3;
-			buildType = ItemTurretBuild::new;
 		}};
 		rocketSilo = new ItemTurret("rocket-silo") {{
 			requirements(Category.turret, ItemStack.with(Items.lead, 300, Items.graphite, 150, Items.titanium, 120, Items.silicon, 120, Items.plastanium, 50));
@@ -4445,7 +4236,6 @@ public final class Blocks2 {
 			canOverdrive = false;
 			shootSound = Sounds2.dd1;
 			consumePowerCond(6f, TurretBuild::isActive);
-			buildType = ItemTurretBuild::new;
 		}};
 		caelum = new ItemTurret("caelum") {{
 			requirements(Category.turret, ItemStack.with(Items.copper, 560, Items.graphite, 500, Items.silicon, 400, Items.titanium, 400, Items.plastanium, 170));
@@ -4683,7 +4473,6 @@ public final class Blocks2 {
 					}});
 				}};
 			}});
-			buildType = ItemTurretBuild::new;
 		}};
 		mammoth = new ItemTurret("mammoth") {{
 			requirements(Category.turret, ItemStack.with(Items.copper, 95, Items.graphite, 55, Items.titanium, 65));
@@ -4781,7 +4570,6 @@ public final class Blocks2 {
 				hitEffect = Fx.blastExplosion;
 				despawnEffect = Fx.flakExplosionBig;
 			}});
-			buildType = ItemTurretBuild::new;
 		}};
 		dragonBreath = new ItemTurret("dragon-breath") {{
 			requirements(Category.turret, ItemStack.with(Items.graphite, 40, Items.silicon, 25, Items.titanium, 60, Items.plastanium, 30));
@@ -4848,7 +4636,6 @@ public final class Blocks2 {
 			shootSound = Sounds.shootFlame;
 			coolantMultiplier = 1.5f;
 			coolant = consumeCoolant(0.1f);
-			buildType = ItemTurretBuild::new;
 		}};
 		breakthrough = new PowerTurret("breakthrough") {{
 			requirements(Category.turret, ItemStack.with(Items.silicon, 320, Items.titanium, 180, Items.thorium, 150, Items.plastanium, 100, Items.phaseFabric, 30));
@@ -4920,7 +4707,6 @@ public final class Blocks2 {
 			consumePower(7.2f);
 			coolant = consumeCoolant(0.6f);
 			coolantMultiplier /= 1.22f;
-			buildType = PowerTurretBuild::new;
 			hideDetails = false;
 		}};
 		cloudBreaker = new ItemTurret("cloud-breaker") {{
@@ -5110,7 +4896,6 @@ public final class Blocks2 {
 			cooldownTime = 300f;
 			shootSound = Sounds.shootRipple;
 			coolant = consumeCoolant(0.2f);
-			buildType = ItemTurretBuild::new;
 		}};
 		turbulence = new LiquidTurret("turbulence") {{
 			requirements(Category.turret, ItemStack.with(Items.titanium, 100, Items.thorium, 80, Items.metaglass, 70, Items.plastanium, 80, Items.surgeAlloy, 60));
@@ -5257,7 +5042,6 @@ public final class Blocks2 {
 			rotateSpeed = 9f;
 			liquidCapacity = 10f;
 			buildCostMultiplier = 0.8f;
-			buildType = LiquidTurretBuild::new;
 		}};
 		minigun = new MinigunTurret("minigun") {{
 			requirements(Category.turret, ItemStack.with(Items.copper, 350, Items.graphite, 300, Items.titanium, 150, Items.plastanium, 175, Items.surgeAlloy, 120));
@@ -5575,7 +5359,6 @@ public final class Blocks2 {
 			buildCostMultiplier = 0.8f;
 			consumePower(26f);
 			consumeLiquid(Liquids2.crystalFluid, 12f / 60f);
-			buildType = ContinuousTurretBuild::new;
 		}};
 		evilSpirits = new ItemTurret("evil-spirits") {{
 			requirements(Category.turret, ItemStack.with(Items.copper, 600, Items.graphite, 500, Items.plastanium, 250, Items2.uranium, 220, Items.surgeAlloy, 280));
@@ -5678,7 +5461,6 @@ public final class Blocks2 {
 			coolant = consumeCoolant(1.5f);
 			liquidCapacity = 120f;
 			hideDetails = false;
-			buildType = ItemTurretBuild::new;
 		}};
 		nukeLauncherPlatform = new ItemTurret("nuke-launcher-platform") {{
 			requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.with(Items.silicon, 1500, Items.plastanium, 3000, Items.surgeAlloy, 3000, Items2.crystal, 1200, Items2.uranium, 2000, Items2.heavyAlloy, 2000));
@@ -5817,7 +5599,6 @@ public final class Blocks2 {
 			coolant = consume(new ConsumeLiquid(Liquids.water, 0.5f));
 			buildCostMultiplier = 0.8f;
 			squareSprite = false;
-			buildType = ItemTurretBuild::new;
 		}};
 		rift = new ItemTurret("rift") {{
 			requirements(Category.turret, ItemStack.with(Items.graphite, 920, Items.silicon, 500, Items.surgeAlloy, 800, Items.tungsten, 1200, Items.carbide, 480));
@@ -6079,7 +5860,6 @@ public final class Blocks2 {
 				shootEffect = Fx2.square(Pal.slagOrange, 45f, 5, 38, 4);//shoot
 				smokeEffect = Fx.shootBigSmoke;//smoke
 			}});
-			buildType = ItemTurretBuild::new;
 			squareSprite = false;
 		}};
 		//campaign
@@ -6113,20 +5893,17 @@ public final class Blocks2 {
 			armor = 10f;
 			itemsPerSecond = 1000;
 			hideDetails = false;
-			buildType = ItemSourceBuild::new;
 		}};
 		reinforcedLiquidSource = new LiquidSource("reinforced-liquid-source") {{
 			requirements(Category.liquid, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 1000;
 			armor = 10f;
-			buildType = LiquidSourceBuild::new;
 		}};
 		reinforcedPowerSource = new PowerSource("reinforced-power-source") {{
 			requirements(Category.power, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 1000;
 			armor = 10f;
 			powerProduction = 10000000f / 60f;
-			buildType = PowerSourceBuild::new;
 		}};
 		reinforcedPayloadSource = new PayloadSource2("reinforced-payload-source") {{
 			requirements(Category.units, BuildVisibility.sandboxOnly, ItemStack.empty);
@@ -6162,7 +5939,6 @@ public final class Blocks2 {
 			updateEffect = Fx.none;
 			rotateSpeed = 8;
 			hardnessDrillMultiplier = 0.01f;
-			buildType = DrillBuild::new;
 		}};
 		omniNode = new NodeBridge("omni-node") {{
 			requirements(Category.distribution, BuildVisibility.sandboxOnly, ItemStack.empty);

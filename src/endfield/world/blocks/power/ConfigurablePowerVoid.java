@@ -30,11 +30,6 @@ public class ConfigurablePowerVoid extends PowerBlock {
 		config(Float.class, (ConfigurablePowerVoidBuild tile, Float amount) -> tile.powerConsumption = amount);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = ConfigurablePowerVoidBuild::new;
-	}
-
 	public class ConfigurablePowerVoidBuild extends Building {
 		public float powerConsumption = initialPowerConsumption;
 

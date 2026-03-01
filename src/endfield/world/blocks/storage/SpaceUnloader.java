@@ -216,11 +216,6 @@ public class SpaceUnloader extends StorageBlock {
 		return linkValidTarget(the, build);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = SpaceUnloaderBuild::new;
-	}
-
 	public class SpaceUnloaderBuild extends StorageBuild {
 		public Interval timer = new Interval(6);
 		public IntSeq links = new IntSeq();

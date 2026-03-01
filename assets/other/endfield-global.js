@@ -51,7 +51,7 @@ importPackage(endfield.ui.markdown.highlighter.defaults);
 importPackage(endfield.util);
 importPackage(endfield.util.concurrent);
 importPackage(endfield.util.handler);
-importPackage(endfield.util.misc);
+importPackage(endfield.util.holder);
 importPackage(endfield.util.path);
 importPackage(endfield.util.pooling);
 importPackage(endfield.util.script);
@@ -77,12 +77,12 @@ importPackage(endfield.world.draw);
 importPackage(endfield.world.meta);
 importPackage(endfield.world.patterns);
 
-if (OS.isAndroid) {
+/*if (OS.isAndroid) {
 	importPackage(endfield.android);
 	importPackage(endfield.android.util.field);
 } else if (!OS.isIos) {
 	importPackage(endfield.desktop);
-}
+}*/
 
 function extendMod() {
 	// To inherit the mod class, applicationClassLoader needs to be set to Vars.mod.mainLoad() in the context
@@ -106,14 +106,38 @@ function extendMod() {
 	return result;
 }
 
+// __javaObject__
+
 function getClass(name) {
 	return java.lang.Class.forName(name, true, Vars.mods.mainLoader());
 }
 
-const jbyte = (value) => java.lang.Byte.valueOf(value);
-const jshort = (value) => java.lang.Short.valueOf(value);
-const jint = (value) => java.lang.Integer.valueOf(value);
-const jlong = (value) => java.lang.Long.valueOf(value);
-const jfloat = (value) => java.lang.Float.valueOf(value);
-const jdouble = (value) => java.lang.Double.valueOf(value);
-const jchar = (value) => java.lang.Character.valueOf(value);
+// ------------- to java number -------------
+
+function toByte(value) {
+	return java.lang.Byte.valueOf(value);
+}
+
+function toShort(value) {
+	return java.lang.Short.valueOf(value);
+}
+
+function toInt(value) {
+	return java.lang.Integer.valueOf(value);
+}
+
+function toLong(value) {
+	return java.lang.Long.valueOf(value);
+}
+
+function toFloat(value) {
+	return java.lang.Float.valueOf(value);
+}
+
+function toDouble(value) {
+	return java.lang.Double.valueOf(value);
+}
+
+function toChar(value) {
+	return java.lang.Character.valueOf(value);
+}

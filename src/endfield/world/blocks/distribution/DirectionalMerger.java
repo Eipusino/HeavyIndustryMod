@@ -10,11 +10,6 @@ public class DirectionalMerger extends DirectionalRouter {
 		super(name);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = RailDirectionalMergerBuild::new;
-	}
-
 	public class RailDirectionalMergerBuild extends RailDirectionalRouterBuild {
 		public @Nullable Building target() {
 			if (front() == null) return null;

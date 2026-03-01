@@ -12,11 +12,6 @@ public class RailStackBridge extends RailItemBridge {
 		super(name);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = RailStackBridgeBuild::new;
-	}
-
 	public class RailStackBridgeBuild extends RailItemBridgeBuild {
 		public Item lastItem;
 		public int amount = 0;

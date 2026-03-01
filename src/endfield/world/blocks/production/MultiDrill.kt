@@ -1,7 +1,6 @@
 package endfield.world.blocks.production
 
 import arc.Core
-import arc.func.Prov
 import arc.graphics.Blending
 import arc.graphics.Color
 import arc.graphics.g2d.Draw
@@ -10,6 +9,8 @@ import arc.graphics.g2d.TextureRegion
 import arc.math.Mathf
 import arc.math.geom.Point2
 import arc.util.Time
+import arc.util.io.Reads
+import arc.util.io.Writes
 import endfield.util.ObjectFloatMap2
 import endfield.util.ObjectIntMap2
 import mindustry.Vars
@@ -19,6 +20,7 @@ import mindustry.game.Team
 import mindustry.gen.Building
 import mindustry.gen.Sounds
 import mindustry.graphics.Pal
+import mindustry.mod.NoPatch
 import mindustry.type.Item
 import mindustry.world.Block
 import mindustry.world.Edges
@@ -29,6 +31,7 @@ import mindustry.world.meta.StatUnit
 
 open class MultiDrill(name: String) : Block(name) {
 	@JvmField
+	@NoPatch
 	val oreCount = ObjectIntMap2<Item>(Item::class.java)
 
 	@JvmField
@@ -69,6 +72,7 @@ open class MultiDrill(name: String) : Block(name) {
 
 	override fun load() {
 		super.load()
+
 		rimRegion = Core.atlas.find("$name-rim")
 		rotatorRegion = Core.atlas.find("$name-rotator")
 		topRegion = Core.atlas.find("$name-top")
@@ -78,7 +82,7 @@ open class MultiDrill(name: String) : Block(name) {
 		return arrayOf(region, rotatorRegion, topRegion)
 	}
 
-	override fun canPlaceOn(tile: Tile?, team: Team?, rotation: Int): Boolean {
+	override fun canPlaceOn(tile: Tile?, team: Team, rotation: Int): Boolean {
 		if (tile != null) {
 			for (other in tile.getLinkedTilesAs(this, tempTiles)) {
 				if (canMine(other)) {
@@ -146,10 +150,6 @@ open class MultiDrill(name: String) : Block(name) {
 		super.setStats()
 		stats.add(Stat.drillSpeed, 60f / drillTime * size * size, StatUnit.itemsSecond)
 		stats.add(Stat.boostEffect, liquidBoostIntensity * liquidBoostIntensity, StatUnit.timesSpeed)
-	}
-
-	override fun initBuilding() {
-		if (buildType == null) buildType = Prov { MultiDrillBuild() }
 	}
 
 	open inner class MultiDrillBuild : Building() {
@@ -248,6 +248,20 @@ open class MultiDrill(name: String) : Block(name) {
 			Draw.rect(rotatorRegion, x, y, timeDrilled * rotateSpeed)
 
 			Draw.rect(topRegion, x, y)
+		}
+
+		override fun write(write: Writes) {
+			super.write(write)
+
+			write.f(warmup)
+			write.f(timeDrilled)
+		}
+
+		override fun read(read: Reads, revision: Byte) {
+			super.read(read, revision)
+
+			warmup = read.f()
+			timeDrilled = read.f()
 		}
 	}
 }

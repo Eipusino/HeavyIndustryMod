@@ -29,7 +29,6 @@ import mindustry.gen.Icon;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Pal;
 import mindustry.logic.LAccess;
-import mindustry.mod.NoPatch;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.type.Liquid;
@@ -48,6 +47,8 @@ import mindustry.world.meta.Stat;
 import mindustry.world.meta.StatUnit;
 import mindustry.world.meta.StatValue;
 import mindustry.world.meta.StatValues;
+
+import java.util.List;
 
 public class AdaptiveCrafter extends Block {
 	/** Liquid output directions, specified in the same order as outputLiquids. Use -1 to dump in every direction. Rotations are relative to block. */
@@ -68,10 +69,8 @@ public class AdaptiveCrafter extends Block {
 
 	public CollectionList<Recipe> recipes = new CollectionList<>(Recipe.class);
 
-	@NoPatch
-	public CollectionList<Item> itemOutput = new CollectionList<>(Item.class);
-	@NoPatch
-	public CollectionList<Liquid> liquidOutput = new CollectionList<>(Liquid.class);
+	public List<Item> itemOutput = new CollectionList<>(Item.class);
+	public List<Liquid> liquidOutput = new CollectionList<>(Liquid.class);
 
 	public float powerProduction = 0f;
 
@@ -244,11 +243,6 @@ public class AdaptiveCrafter extends Block {
 		};
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = AdaptiveCrafterBuild::new;
-	}
-
 	public class AdaptiveCrafterBuild extends Building {
 		public float progress;
 		public float totalProgress;
@@ -369,8 +363,7 @@ public class AdaptiveCrafter extends Block {
 		}
 
 		public void dumpOutputs() {
-			boolean timer = timer(timerDump, dumpTime / timeScale);
-			if (timer) {
+			if (timer(timerDump, dumpTime / timeScale)) {
 				for (Item output : itemOutput) dump(output);
 			}
 			for (Liquid output : liquidOutput) dumpLiquid(output, 2f, -1);
@@ -414,18 +407,31 @@ public class AdaptiveCrafter extends Block {
 
 		@Override
 		public float getProgressIncrease(float baseTime) {
-			float scl = 0f;
+			float scaling = 1f, max = 1f;
 
 			Recipe recipe = getRecipe();
+			if (recipe != null) {
+				scaling = recipe.craftTime / craftTime;
+			}
 
-			if (recipe != null) scl = recipe.craftTime / craftTime;
+			if (ignoreLiquidFullness) {
+				return super.getProgressIncrease(baseTime) / scaling;
+			}
 
-			return super.getProgressIncrease(baseTime) / scl;
+			if (recipe != null && recipe.outputLiquid.length > 0) {
+				max = 0f;
+				for (LiquidStack stack : recipe.outputLiquid) {
+					float value = (liquidCapacity - liquids.get(stack.liquid)) / (stack.amount * edelta());
+					scaling = Math.min(scaling, value);
+					max = Math.max(max, value);
+				}
+			}
+
+			return super.getProgressIncrease(baseTime) * (dumpExtraLiquid ? Math.min(max, 1f) : scaling);
 		}
 
 		public void craft() {
 			Recipe recipe = getRecipe();
-
 			if (recipe == null) return;
 
 			consume();

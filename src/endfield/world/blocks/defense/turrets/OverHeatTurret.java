@@ -29,11 +29,6 @@ public class OverHeatTurret extends ItemTurret {
 		));
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = OverHeatTurretBuild::new;
-	}
-
 	public class OverHeatTurretBuild extends ItemTurretBuild {
 		public float overHeat = 0;
 

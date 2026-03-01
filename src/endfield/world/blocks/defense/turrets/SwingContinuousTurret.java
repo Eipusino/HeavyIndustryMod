@@ -112,12 +112,7 @@ public class SwingContinuousTurret extends ContinuousTurret {
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
 
-			if (revision >= 4) realRotateSpeed = read.f();
-		}
-
-		@Override
-		public byte version() {
-			return 4;
+			realRotateSpeed = read.f();
 		}
 	}
 

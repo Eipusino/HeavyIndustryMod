@@ -93,11 +93,6 @@ public class LiquidDirectionalUnloader2 extends Block {
 		return new TextureRegion[]{region};
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = LiquidDirectionalUnloaderBuild2::new;
-	}
-
 	public class LiquidDirectionalUnloaderBuild2 extends Building {
 		public float unloadTimer = 0f;
 		public @Nullable Liquid unloadLiquid = null;

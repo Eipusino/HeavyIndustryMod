@@ -12,7 +12,6 @@ import mindustry.content.Fx;
 import mindustry.ctype.UnlockableContent;
 import mindustry.gen.Building;
 import mindustry.gen.Icon;
-import mindustry.mod.NoPatch;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.type.Liquid;
@@ -25,12 +24,13 @@ import mindustry.world.blocks.payloads.Payload;
 import mindustry.world.blocks.units.UnitAssembler;
 import mindustry.world.meta.StatValue;
 
-public class PayloadCrafter extends AdaptiveCrafter {
-	@NoPatch
-	public CollectionObjectSet<UnlockableContent> payloadFilter = new CollectionObjectSet<>(UnlockableContent.class);
+import java.util.List;
+import java.util.Set;
 
-	@NoPatch
-	public CollectionList<UnlockableContent> payloadOutput = new CollectionList<>(UnlockableContent.class);
+public class PayloadCrafter extends AdaptiveCrafter {
+	public Set<UnlockableContent> payloadFilter = new CollectionObjectSet<>(UnlockableContent.class);
+
+	public List<UnlockableContent> payloadOutput = new CollectionList<>(UnlockableContent.class);
 
 	public int payloadCapacity = 10;
 
@@ -56,7 +56,7 @@ public class PayloadCrafter extends AdaptiveCrafter {
 		return table -> {
 			table.row();
 			table.table(cont -> {
-				for (int i = 0; i < recipes.size; i++) {
+				for (int i = 0; i < recipes.size(); i++) {
 					Recipe recipe = recipes.get(i);
 					int j = i;
 					cont.table(t -> {
@@ -83,11 +83,6 @@ public class PayloadCrafter extends AdaptiveCrafter {
 		};
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = PayloadCrafterBuild::new;
-	}
-
 	public class PayloadCrafterBuild extends AdaptiveCrafterBuild {
 		public PayloadSeq payloads = new PayloadSeq();
 
@@ -112,7 +107,7 @@ public class PayloadCrafter extends AdaptiveCrafter {
 
 		@Override
 		public void updateRecipe() {
-			for (int i = recipes.size - 1; i >= 0; i--) {
+			for (int i = recipes.size() - 1; i >= 0; i--) {
 				boolean valid = true;
 
 				Recipe recipe = recipes.get(i);
@@ -163,8 +158,7 @@ public class PayloadCrafter extends AdaptiveCrafter {
 
 		@Override
 		public void dumpOutputs() {
-			boolean timer = timer(timerDump, dumpTime / timeScale);
-			if (timer) {
+			if (timer(timerDump, dumpTime / timeScale)) {
 				for (Item item : itemOutput) dump(item);
 				for (UnlockableContent output : payloadOutput) {
 					BuildPayload payload = new BuildPayload((Block) output, team);
@@ -173,42 +167,6 @@ public class PayloadCrafter extends AdaptiveCrafter {
 				}
 			}
 			for (Liquid output : liquidOutput) dumpLiquid(output, 2f, -1);
-		}
-
-		@Override
-		public boolean shouldConsume() {
-			Recipe recipe = getRecipe();
-
-			if (recipe == null) return false;
-
-			for (ItemStack output : recipe.outputItem) {
-				if (items.get(output.item) + output.amount > itemCapacity) {
-					return powerProduction > 0;
-				}
-			}
-			for (PayloadStack output : recipe.outputPayload) {
-				if (getPayloads().get(output.item) + output.amount > payloadCapacity) {
-					return powerProduction > 0;
-				}
-			}
-			if (!ignoreLiquidFullness) {
-				if (recipe.outputLiquid.length == 0) return true;
-
-				boolean allFull = true;
-				for (LiquidStack output : recipe.outputLiquid) {
-					if (liquids.get(output.liquid) >= liquidCapacity - 0.001f) {
-						if (!dumpExtraLiquid) {
-							return false;
-						}
-					} else {
-						allFull = false;
-					}
-				}
-				if (allFull) {
-					return false;
-				}
-			}
-			return enabled;
 		}
 
 		@Override
@@ -244,11 +202,6 @@ public class PayloadCrafter extends AdaptiveCrafter {
 		}
 
 		@Override
-		public byte version() {
-			return 1;
-		}
-
-		@Override
 		public void write(Writes write) {
 			super.write(write);
 
@@ -259,9 +212,7 @@ public class PayloadCrafter extends AdaptiveCrafter {
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
 
-			if (revision == 1) {
-				payloads.read(read);
-			}
+			payloads.read(read);
 		}
 	}
 }

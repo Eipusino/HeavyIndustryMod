@@ -31,11 +31,6 @@ public class BatteryWall extends PowerDistributor {
 		update = true;
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = BatteryWallBuild::new;
-	}
-
 	public class BatteryWallBuild extends Building {
 		@Override
 		public void updateTile() {

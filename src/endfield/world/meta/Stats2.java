@@ -19,6 +19,7 @@ public final class Stats2 {
 	public static final Stat minerBoosModifier = new Stat("miner-boost-modifier", StatCat.function);
 	public static final Stat itemConvertList = new Stat("item-convert-list", StatCat.function);
 	public static final Stat maxBoostPercent = new Stat("max-boost-percent", StatCat.function);
+	public static final Stat maxModules = new Stat("max-modules", StatCat.function);
 	public static final Stat damageReduction = new Stat("damage-reduction", StatCat.general);
 	public static final Stat fieldStrength = new Stat("field-strength", StatCat.function);
 	public static final Stat albedo = new Stat("albedo", StatCat.function);

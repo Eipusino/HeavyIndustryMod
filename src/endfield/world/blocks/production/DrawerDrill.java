@@ -31,11 +31,6 @@ public class DrawerDrill extends Drill {
 		drawer.drawPlan(this, plan, list);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = DrawerDrillBuild::new;
-	}
-
 	public class DrawerDrillBuild extends DrillBuild {
 		@Override
 		public void draw() {

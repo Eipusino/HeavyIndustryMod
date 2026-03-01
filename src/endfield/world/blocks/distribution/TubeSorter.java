@@ -16,7 +16,6 @@ import mindustry.gen.Building;
 import mindustry.gen.Unit;
 import mindustry.type.Item;
 import mindustry.world.Block;
-import mindustry.world.DirectionalItemBuffer;
 import mindustry.world.meta.BlockGroup;
 
 import static mindustry.Vars.headless;
@@ -47,11 +46,6 @@ public class TubeSorter extends Block {
 	@Override
 	public boolean outputsItems() {
 		return true;
-	}
-
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = TubeSorterBuild::new;
 	}
 
 	public class TubeSorterBuild extends Building {
@@ -142,11 +136,6 @@ public class TubeSorter extends Block {
 		}
 
 		@Override
-		public byte version() {
-			return 2;
-		}
-
-		@Override
 		public void write(Writes write) {
 			super.write(write);
 			data.write(write);
@@ -156,10 +145,6 @@ public class TubeSorter extends Block {
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
 			data.read(read);
-
-			if (revision == 1) {
-				new DirectionalItemBuffer(20).read(read);
-			}
 		}
 	}
 }

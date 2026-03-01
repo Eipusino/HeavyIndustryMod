@@ -21,11 +21,6 @@ public class HealingWall extends Wall {
 		stats.add(Stats2.healPercent, healPercent);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = HealingWallBuild::new;
-	}
-
 	public class HealingWallBuild extends WallBuild {
 		public float charge = 0;
 		boolean canHeal = true;

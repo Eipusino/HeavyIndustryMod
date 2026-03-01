@@ -35,11 +35,6 @@ public class GlowNuclearReactor extends NuclearReactor {
 		return new TextureRegion[]{bottomRegion, region};
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = GlowNuclearReactorBuild::new;
-	}
-
 	public class GlowNuclearReactorBuild extends NuclearReactorBuild {
 		@Override
 		public void draw() {

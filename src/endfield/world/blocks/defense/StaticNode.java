@@ -347,11 +347,6 @@ public class StaticNode extends Block {
 		return false;
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = StaticNodeBuild::new;
-	}
-
 	public class StaticNodeBuild extends Building {
 		public IntSeq links = new IntSeq();
 		public boolean active;
@@ -506,18 +501,11 @@ public class StaticNode extends Block {
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
 
-			if (revision >= 1) {
-				links.clear();
-				short amount = read.s();
-				for (int i = 0; i < amount; i++) {
-					links.add(read.i());
-				}
+			links.clear();
+			short amount = read.s();
+			for (int i = 0; i < amount; i++) {
+				links.add(read.i());
 			}
-		}
-
-		@Override
-		public byte version() {
-			return 1;
 		}
 	}
 }

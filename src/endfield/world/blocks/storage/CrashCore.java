@@ -83,11 +83,6 @@ public class CrashCore extends CoreBlock {
 		});
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = CrashCoreBuild::new;
-	}
-
 	public class CrashCoreBuild extends CoreBuild {
 		boolean landed = true;
 

@@ -134,11 +134,6 @@ public class ChargeWall extends Wall {
 		lightRegion = Core.atlas.find(name + "-light");
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = ChargeWallBuild::new;
-	}
-
 	public class ChargeWallBuild extends WallBuild implements Ranged {
 		public float energy;
 		public float healReload;

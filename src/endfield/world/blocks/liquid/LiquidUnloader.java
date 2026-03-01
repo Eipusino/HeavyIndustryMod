@@ -60,11 +60,6 @@ public class LiquidUnloader extends Block {
 		drawPlanConfigCenter(plan, plan.config, name + "-center", true);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = LiquidUnloaderBuild::new;
-	}
-
 	public class LiquidUnloaderBuild extends Building {
 		public @Nullable Liquid sortLiquid = null;
 		public @Nullable Liquid lastSort = null;
@@ -122,11 +117,6 @@ public class LiquidUnloader extends Block {
 		}
 
 		@Override
-		public byte version() {
-			return 1;
-		}
-
-		@Override
 		public void write(Writes write) {
 			super.write(write);
 			write.s(sortLiquid == null ? -1 : sortLiquid.id);
@@ -135,7 +125,7 @@ public class LiquidUnloader extends Block {
 		@Override
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
-			int id = revision == 1 ? read.s() : read.b();
+			short id = read.s();
 			sortLiquid = id == -1 ? null : Vars.content.liquid(id);
 		}
 	}

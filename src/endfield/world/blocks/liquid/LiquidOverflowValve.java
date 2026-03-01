@@ -37,11 +37,6 @@ public class LiquidOverflowValve extends LiquidBlock {
 		return new TextureRegion[]{region};
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = LiquidOverfloatValveBuild::new;
-	}
-
 	public class LiquidOverfloatValveBuild extends Building {
 		@Override
 		public void draw() {

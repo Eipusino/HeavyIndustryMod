@@ -35,11 +35,6 @@ public class PayloadBurner extends PayloadBlock {
 		return new TextureRegion[]{region, inRegion, topRegion};
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = PayloadBurnerBuild::new;
-	}
-
 	public class PayloadBurnerBuild extends PayloadBlockBuild<BuildPayload> {
 		public float warmup;
 		public float burnTime;

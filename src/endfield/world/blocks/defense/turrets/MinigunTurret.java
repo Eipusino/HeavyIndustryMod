@@ -188,18 +188,8 @@ public class MinigunTurret extends ItemTurret {
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
 
-			if (revision >= 2) {
-				spinSpeed = read.f();
-
-				if (revision >= 3) {
-					spin = read.f();
-				}
-			}
-		}
-
-		@Override
-		public byte version() {
-			return 3;
+			spinSpeed = read.f();
+			spin = read.f();
 		}
 	}
 }

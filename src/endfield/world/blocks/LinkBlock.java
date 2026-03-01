@@ -111,16 +111,11 @@ public class LinkBlock extends Block {
 		fullIcon = uiIcon = Core.atlas.find("status-blasted");
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = LinkBuild::new;
-	}
-
 	public class LinkBuild extends Building {
 		public Building linkBuild;
 
 		public void updateLink(Building link) {
-			if (link instanceof MultiBuild) {
+			if (link instanceof IMultiBuild) {
 				linkBuild = link;
 				items = link.items;
 				liquids = link.liquids;
@@ -266,7 +261,7 @@ public class LinkBlock extends Block {
 
 		@Override
 		public void onProximityUpdate() {
-			if (linkBuild instanceof MultiBuild build) build.updateLinkProximity();
+			if (linkBuild instanceof IMultiBuild build) build.updateLinkProximity();
 			super.onProximityUpdate();
 		}
 

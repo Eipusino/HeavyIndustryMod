@@ -34,7 +34,6 @@ import mindustry.gen.Iconc;
 import mindustry.gen.Sounds;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
-import mindustry.io.TypeIO;
 import mindustry.ui.Bar;
 import mindustry.ui.Styles;
 import mindustry.world.Block;
@@ -134,11 +133,6 @@ public class SandboxWall extends Block {
 				Draw.rect(armorRegion, req.drawx(), req.drawy());
 			}
 		}
-	}
-
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = SandboxWallBuild::new;
 	}
 
 	public static class SandboxWallData implements Poolable {
@@ -572,29 +566,7 @@ public class SandboxWall extends Block {
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
 
-			if (revision >= 4) {
-				data.read(read);
-				return;
-			}
-
-			//Discard old data
-			if (revision == 3) {
-				TypeIO.readInts(read);
-				return;
-			}
-
-			byte[] oldModes = new byte[4];
-			if (revision == 1) {
-				read.b(oldModes, 0, 3);
-			}
-			if (revision == 2) {
-				read.b(oldModes);
-			}
-		}
-
-		@Override
-		public byte version() {
-			return 4;
+			data.read(read);
 		}
 	}
 }

@@ -72,6 +72,11 @@ public final class Arrays2 {
 		return elements;
 	}
 
+	@SafeVarargs
+	public static <T> T[] copyOf(Class<? extends T[]> type, T... elements) {
+		return Arrays.copyOf(elements, elements.length, type);
+	}
+
 	public static boolean[] boolOf(boolean... bools) {
 		return bools;
 	}

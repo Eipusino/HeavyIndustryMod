@@ -15,7 +15,6 @@ import mindustry.gen.Building;
 import mindustry.gen.Unit;
 import mindustry.type.Item;
 import mindustry.world.Block;
-import mindustry.world.DirectionalItemBuffer;
 import mindustry.world.Tile;
 import mindustry.world.blocks.ItemSelection;
 import mindustry.world.meta.BlockGroup;
@@ -68,11 +67,6 @@ public class SorterRevamp extends Block {
 	@Override
 	protected TextureRegion[] icons() {
 		return new TextureRegion[]{source, region};
-	}
-
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = SorterRevampBuild::new;
 	}
 
 	public class SorterRevampBuild extends Building {
@@ -148,11 +142,6 @@ public class SorterRevamp extends Block {
 		}
 
 		@Override
-		public byte version() {
-			return 2;
-		}
-
-		@Override
 		public void write(Writes write) {
 			super.write(write);
 
@@ -164,9 +153,6 @@ public class SorterRevamp extends Block {
 			super.read(read, revision);
 
 			sortItem = Vars.content.item(read.s());
-			if (revision == 1) {
-				new DirectionalItemBuffer(20).read(read);
-			}
 		}
 	}
 }

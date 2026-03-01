@@ -94,11 +94,11 @@ public final class Worlds {
 			Block block = pair.getSecond();
 
 			data
-					.append(name).append(' ')//name
-					.append(block.synthetic() ? '1' : '0').append(' ')//synthetic
-					.append(block.solid ? '1' : '0').append(' ')//solid
-					.append(block.size).append(' ')//size
-					.append(block.mapColor.rgba() >>> 8).append('\n');//mapColor
+					.append(name).append(' ')
+					.append(block.synthetic() ? '1' : '0').append(' ')
+					.append(block.solid ? '1' : '0').append(' ')
+					.append(block.size).append(' ')
+					.append(block.mapColor.rgba() >>> 8).append('\n');
 		}
 
 		Vars.platform.showFileChooser(false, Core.bundle.get("text.export-data"), "dat", file -> {

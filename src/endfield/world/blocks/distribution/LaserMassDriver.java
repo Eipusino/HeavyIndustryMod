@@ -50,11 +50,6 @@ public class LaserMassDriver extends MassDriver {
 		}};
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = LaserMassDriverBuilding::new;
-	}
-
 	public class LaserMassDriverBuilding extends MassDriverBuild {
 		public int timer;
 		public float prv, alpha;

@@ -10,9 +10,7 @@ import mindustry.ctype.ContentType;
 import mindustry.ctype.UnlockableContent;
 import mindustry.game.Team;
 import mindustry.gen.EntityMapping;
-import mindustry.gen.Itemsc;
 import mindustry.gen.Unit;
-import mindustry.io.TypeIO;
 import mindustry.world.Block;
 import mindustry.world.blocks.payloads.BuildPayload;
 import mindustry.world.blocks.payloads.Payload;
@@ -58,22 +56,6 @@ public final class TypeIO2 {
 		return Vars.content.<UnlockableContent>getByID(ContentType.all[read.i()], read.s()).techNode;
 	}
 
-	public static void writeItemConsumers(Writes writes, Itemsc[] itemscs) {
-		writes.i(itemscs.length);
-		for (Itemsc itemsc : itemscs) {
-			TypeIO.writeEntity(writes, itemsc);
-		}
-	}
-
-	public static Itemsc[] readItemConsumers(Reads read) {
-		int amount = read.i();
-		Itemsc[] itemscs = new Itemsc[amount];
-		for (int i = 0; i < itemscs.length; i++) {
-			itemscs[i] = TypeIO.readEntity(read);
-		}
-		return itemscs;
-	}
-
 	public static <T extends Enum<T>> void writeEnums(Writes write, T[] array) {
 		write.i(array.length);
 		for (T t : array) write.b(t.ordinal());
@@ -103,22 +85,26 @@ public final class TypeIO2 {
 		if (!exists) return null;
 
 		byte type = read.b();
-		if (type == Payload.payloadBlock) {
-			Block block = Vars.content.block(read.s());
-			BuildPayload payload = new BuildPayload(block, Team.derelict);
-			byte version = read.b();
-			payload.build.readAll(read, version);
-			payload.build.tile = Vars.emptyTile;
-			return (T) payload;
-		} else if (type == Payload.payloadUnit) {
-			byte id = read.b();
-			Prov<?> map = EntityMapping.map(id);
-			if (map == null) throw new RuntimeException("No type with ID " + id + " found.");
-			Unit unit = (Unit) map.get();
-			unit.read(read);
-			return (T) new UnitPayload(unit);
-		}
-		throw new IllegalArgumentException("Unknown payload type: " + type);
+
+		return switch (type) {
+			case Payload.payloadBlock -> {
+				Block block = Vars.content.block(read.s());
+				BuildPayload payload = new BuildPayload(block, Team.derelict);
+				byte version = read.b();
+				payload.build.readAll(read, version);
+				payload.build.tile = Vars.emptyTile;
+				yield (T) payload;
+			}
+			case Payload.payloadUnit -> {
+				byte id = read.b();
+				Prov<?> map = EntityMapping.map(id);
+				if (map == null) throw new RuntimeException("No type with ID " + id + " found.");
+				Unit unit = (Unit) map.get();
+				unit.read(read);
+				yield (T) new UnitPayload(unit);
+			}
+			default -> throw new IllegalArgumentException("Unknown payload type: " + type);
+		};
 	}
 
 	@FunctionalInterface

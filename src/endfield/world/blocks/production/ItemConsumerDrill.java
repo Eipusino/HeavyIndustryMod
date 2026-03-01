@@ -12,11 +12,6 @@ public class ItemConsumerDrill extends DrawerDrill {
 		super(name);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = ItemConsumerDrillBuild::new;
-	}
-
 	public class ItemConsumerDrillBuild extends DrawerDrillBuild implements UseCounter {
 		public int uses;
 

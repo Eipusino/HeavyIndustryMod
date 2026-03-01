@@ -20,7 +20,7 @@ public class InternalFileTree implements FileHandleResolver {
 	public InternalFileTree(Class<?> owner) {
 		anchorClass = owner;
 
-		String classPath = anchorClass.getResource("").getFile().replaceAll("%20", " ");
+		String classPath = anchorClass.getResource("").getFile().replace("%20", " ");
 		classPath = classPath.substring(classPath.indexOf(":") + 2);
 		String jarPath = (OS.isLinux ? "/" : "") + classPath.substring(0, classPath.indexOf("!"));
 

@@ -15,11 +15,6 @@ public class HandGenerator extends PowerGenerator {
 		configurable = true;
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = HandGeneratorBuild::new;
-	}
-
 	public class HandGeneratorBuild extends GeneratorBuild {
 		@Override
 		public void update() {

@@ -57,11 +57,6 @@ public class ReleaseShieldWall extends Wall {
 		((ReleaseShieldWallBuild) tile.build).setDamage(damage);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = ReleaseShieldWallBuild::new;
-	}
-
 	public class ReleaseShieldWallBuild extends WallBuild {
 		public float totalDamage = 0;
 		public float clientDamage = 0;

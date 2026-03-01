@@ -6,7 +6,6 @@ import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.math.Mathf;
 import arc.struct.ObjectFloatMap;
-import arc.struct.Seq;
 import arc.util.Scaling;
 import arc.util.Strings;
 import endfield.world.blocks.environment.UndergroundOreBlock;
@@ -32,14 +31,12 @@ public class UndergroundDrill extends Drill {
 		drawMineItem = false;
 	}
 
-	protected static StatValue drillAble(float drillTime, float drillMultiplier, float size, ObjectFloatMap<Item> multipliers, Boolf<Block> filter) {
+	public static StatValue drillable(float drillTime, float drillMultiplier, float size, ObjectFloatMap<Item> multipliers, Boolf<Block> filter) {
 		return t -> {
 			t.row();
 			t.table(c -> {
 				int i = 0;
-				Seq<Block> seq = Vars.content.blocks();
-				for (int n = 0; n < seq.size; n++) {
-					Block block = seq.get(n);
+				for (Block block : Vars.content.blocks()) {
 					if (!(block instanceof UndergroundOreBlock uo) || !filter.get(block)) continue;
 
 					c.table(Styles.grayPanel, b -> {
@@ -109,7 +106,7 @@ public class UndergroundDrill extends Drill {
 	public void setStats() {
 		super.setStats();
 		stats.remove(Stat.drillTier);
-		stats.add(Stat.drillTier, drillAble(drillTime, hardnessDrillMultiplier, size * size, drillMultipliers, b -> b instanceof UndergroundOreBlock &&
+		stats.add(Stat.drillTier, drillable(drillTime, hardnessDrillMultiplier, size * size, drillMultipliers, b -> b instanceof UndergroundOreBlock &&
 				getUnderDrop(b) != null && getUnderDrop(b).hardness <= tier && getUnderDrop(b) != blockedItem && (Vars.indexer.isBlockPresent(b) || Vars.state.isMenu())));
 	}
 
@@ -167,11 +164,6 @@ public class UndergroundDrill extends Drill {
 	protected Ranged nearestDetector(Team team, float wx, float wy) {
 		return (Ranged) Vars.indexer.findTile(team, wx, wy, 999f, b -> (b.block instanceof OreDetector || b.block instanceof DetectorCoreBlock)
 				&& Mathf.within(wx, wy, b.x, b.y, ((Ranged) b).range()));
-	}
-
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = UndergroundDrillBuild::new;
 	}
 
 	public class UndergroundDrillBuild extends DrillBuild {

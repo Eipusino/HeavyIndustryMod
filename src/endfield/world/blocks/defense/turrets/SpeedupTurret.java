@@ -55,11 +55,6 @@ public class SpeedupTurret extends PowerTurret {
 		stats.add(Stat.heatCapacity, overheatTime / Time.toSeconds, StatUnit.seconds);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = SpeedupTurretBuild::new;
-	}
-
 	public class SpeedupTurretBuild extends PowerTurretBuild {
 		public float speedupScl = 0f;
 		public float slowDownReload = 0f;
@@ -150,11 +145,6 @@ public class SpeedupTurret extends PowerTurret {
 		}
 
 		@Override
-		public byte version() {
-			return 2;
-		}
-
-		@Override
 		public void write(Writes write) {
 			super.write(write);
 
@@ -168,12 +158,10 @@ public class SpeedupTurret extends PowerTurret {
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
 
-			if (revision == 2) {
-				overheat = read.f();
-				slowDownReload = read.f();
-				speedupScl = read.f();
-				requireCompleteCooling = read.bool();
-			}
+			overheat = read.f();
+			slowDownReload = read.f();
+			speedupScl = read.f();
+			requireCompleteCooling = read.bool();
 		}
 	}
 }

@@ -28,11 +28,6 @@ public class ConfigurablePowerSource extends PowerBlock {
 		config(Float.class, (ConfigurablePowerSourceBuild tile, Float amount) -> tile.powerProduction = amount);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = ConfigurablePowerSourceBuild::new;
-	}
-
 	public class ConfigurablePowerSourceBuild extends Building {
 		public float powerProduction = initialPowerProduction;
 

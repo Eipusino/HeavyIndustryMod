@@ -51,11 +51,6 @@ public class SortLiquidRouter extends LiquidRouter {
 		return false;
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = SortLiquidRouterBuild::new;
-	}
-
 	public class SortLiquidRouterBuild extends LiquidRouterBuild {
 		public Liquid sortLiquid = null;
 
@@ -92,11 +87,6 @@ public class SortLiquidRouter extends LiquidRouter {
 		}
 
 		@Override
-		public byte version() {
-			return 1;
-		}
-
-		@Override
 		public void write(Writes write) {
 			super.write(write);
 			write.s(sortLiquid == null ? -1 : sortLiquid.id);
@@ -105,7 +95,7 @@ public class SortLiquidRouter extends LiquidRouter {
 		@Override
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
-			int id = revision == 1 ? read.s() : read.b();
+			short id = read.s();
 			sortLiquid = id == -1 ? null : content.liquid(id);
 		}
 	}

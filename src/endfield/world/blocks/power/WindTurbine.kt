@@ -1,7 +1,6 @@
 package endfield.world.blocks.power
 
 import arc.Core
-import arc.func.Prov
 import arc.graphics.g2d.Draw
 import arc.graphics.g2d.Lines
 import arc.graphics.g2d.TextureRegion
@@ -41,10 +40,6 @@ open class WindTurbine(name: String) : PowerGenerator(name) {
 
 	override fun icons(): Array<TextureRegion> {
 		return arrayOf(region, fanRegion, topRegion)
-	}
-
-	override fun initBuilding() {
-		if (buildType == null) buildType = Prov { WindTurbineBuild() }
 	}
 
 	open inner class WindTurbineBuild : GeneratorBuild() {

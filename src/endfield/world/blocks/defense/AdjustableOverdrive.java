@@ -50,11 +50,6 @@ public class AdjustableOverdrive extends Block {
 		Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, range, Pal.accent);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = AdjustableOverdriveBuild::new;
-	}
-
 	public class AdjustableOverdriveBuild extends Building {
 		public float heat, phaseHeat;
 

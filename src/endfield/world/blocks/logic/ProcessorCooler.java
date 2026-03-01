@@ -84,11 +84,6 @@ public class ProcessorCooler extends Block {
 		addBar("links", (ProcessorCoolerBuild tile) -> new Bar(() -> Core.bundle.format("bar.coolprocs", tile.usedLinks, maxProcessors), () -> Pal.ammo, () -> tile.heat));
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = ProcessorCoolerBuild::new;
-	}
-
 	public class ProcessorCoolerBuild extends Building {
 		public float heat = 0;
 		public int usedLinks = 0;

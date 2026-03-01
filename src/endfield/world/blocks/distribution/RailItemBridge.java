@@ -102,11 +102,6 @@ public class RailItemBridge extends ItemBridge {
 		stats.add(Stat.range, range, StatUnit.blocks);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = RailItemBridgeBuild::new;
-	}
-
 	public class RailItemBridgeBuild extends ItemBridgeBuild {
 		@Override
 		public void drawConfigure() {

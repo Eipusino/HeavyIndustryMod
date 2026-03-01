@@ -43,11 +43,6 @@ public class ThermalHeater extends ThermalGenerator {
 		return false;
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = ThermalHeaterBuild::new;
-	}
-
 	public class ThermalHeaterBuild extends ThermalGeneratorBuild implements HeatBlock {
 		public float heat;
 

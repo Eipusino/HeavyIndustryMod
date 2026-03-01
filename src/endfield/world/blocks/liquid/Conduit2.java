@@ -61,11 +61,6 @@ public class Conduit2 extends Conduit {
 		Draw.scl();
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = ConduitBuild2::new;
-	}
-
 	public class ConduitBuild2 extends ConduitBuild {
 		public boolean armored = false;
 

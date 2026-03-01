@@ -395,15 +395,8 @@ public class TeslaTurret extends Block {
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
 
-			if (revision >= 2) {
-				reloadCounter = read.f();
-				nearby = read.bool();
-			}
-		}
-
-		@Override
-		public byte version() {
-			return 2;
+			reloadCounter = read.f();
+			nearby = read.bool();
 		}
 	}
 }

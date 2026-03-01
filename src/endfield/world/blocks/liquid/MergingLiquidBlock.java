@@ -27,11 +27,6 @@ public class MergingLiquidBlock extends LiquidBlock {
 		return new TextureRegion[]{bottomRegion, region};
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = MergingLiquidBuild::new;
-	}
-
 	public class MergingLiquidBuild extends LiquidBuild {
 		public List<MergingLiquidBuild> chained = new CollectionList<>(MergingLiquidBuild.class);
 		public float totalCapacity;

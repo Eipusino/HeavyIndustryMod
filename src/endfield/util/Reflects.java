@@ -21,6 +21,8 @@ import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.UnknownNullability;
 
 import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -37,6 +39,8 @@ import static endfield.Vars2.classHelper;
  * @since 1.0.6
  */
 public final class Reflects {
+	public static Lookup publicLookup = MethodHandles.publicLookup();
+
 	/** Don't let anyone instantiate this class. */
 	private Reflects() {}
 

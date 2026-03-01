@@ -38,11 +38,6 @@ public class SolarHeaterGenerator extends SolarGenerator {
 		addBar("heat", (SolarHeaterGeneratorBuild tile) -> new Bar("bar.heat", Pal.lightOrange, () -> Math.min(tile.heat / heatOutput, 1f)));
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = SolarHeaterGeneratorBuild::new;
-	}
-
 	public class SolarHeaterGeneratorBuild extends SolarGeneratorBuild implements HeatBlock {
 		public float heat;
 

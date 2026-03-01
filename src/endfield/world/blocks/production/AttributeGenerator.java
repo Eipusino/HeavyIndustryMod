@@ -47,11 +47,6 @@ public class AttributeGenerator extends AttributeCrafter {
 		));
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = AttributeGeneratorBuild::new;
-	}
-
 	public class AttributeGeneratorBuild extends AttributeCrafterBuild {
 		@Override
 		public float getPowerProduction() {

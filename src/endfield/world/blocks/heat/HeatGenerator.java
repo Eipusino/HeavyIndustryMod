@@ -47,11 +47,6 @@ public class HeatGenerator extends PowerGenerator {
 		stats.add(Stat.input, maxHeat, StatUnit.heatUnits);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = HeatGeneratorBuild::new;
-	}
-
 	public class HeatGeneratorBuild extends GeneratorBuild implements HeatConsumer {
 		public float[] sideHeat = new float[4];
 		public float heat;

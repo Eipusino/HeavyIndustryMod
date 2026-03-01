@@ -166,11 +166,6 @@ public class UnitMinerPoint extends Block {
 		return true;
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = UnitMinerPointBuild::new;
-	}
-
 	public class UnitMinerPointBuild extends Building implements UnitTetherBlock {
 		public @Nullable Tile sortTile = null;
 

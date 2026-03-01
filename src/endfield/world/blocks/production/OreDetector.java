@@ -104,11 +104,6 @@ public class OreDetector extends Block {
 		return drawer.icons(this);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = OreDetectorBuild::new;
-	}
-
 	public class OreDetectorBuild extends Building implements Ranged {
 		public boolean showOres = true;
 		public float startTime;

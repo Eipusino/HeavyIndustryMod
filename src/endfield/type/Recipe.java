@@ -5,7 +5,7 @@ import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import mindustry.type.PayloadStack;
 
-public class Recipe {
+public class Recipe implements Cloneable {
 	public static final Recipe empty = new Recipe();
 
 	public ItemStack[] inputItem = {};
@@ -34,5 +34,13 @@ public class Recipe {
 		buf.append(", outputPayload=");
 		Arrays2.objectToString(buf, outputPayload);
 		return buf.append(", craftTime=").append(craftTime).append('}').toString();
+	}
+
+	public Recipe copy() {
+		try {
+			return (Recipe) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

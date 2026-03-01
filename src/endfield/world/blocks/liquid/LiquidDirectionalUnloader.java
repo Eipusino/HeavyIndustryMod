@@ -82,11 +82,6 @@ public class LiquidDirectionalUnloader extends Block {
 		return new TextureRegion[]{region, topRegion, arrowRegion};
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = LiquidDirectionalUnloaderBuild::new;
-	}
-
 	public class LiquidDirectionalUnloaderBuild extends Building {
 		public @Nullable Liquid sortLiquid = null;
 
@@ -128,11 +123,6 @@ public class LiquidDirectionalUnloader extends Block {
 		}
 
 		@Override
-		public byte version() {
-			return 1;
-		}
-
-		@Override
 		public void write(Writes write) {
 			super.write(write);
 			write.s(sortLiquid == null ? -1 : sortLiquid.id);
@@ -141,7 +131,7 @@ public class LiquidDirectionalUnloader extends Block {
 		@Override
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
-			int id = revision == 1 ? read.s() : read.b();
+			short id = read.s();
 			sortLiquid = id == -1 ? null : content.liquid(id);
 		}
 	}

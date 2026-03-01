@@ -68,11 +68,6 @@ public class ConfigurableHeatSource extends Block {
 		drawer.getRegionsToOutline(this, out);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = ConfigurableHeatSourceBuild::new;
-	}
-
 	public class ConfigurableHeatSourceBuild extends Building implements HeatBlock {
 		public float heat = 20;
 

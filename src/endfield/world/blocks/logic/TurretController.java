@@ -86,11 +86,6 @@ public class TurretController extends Block {
 		Draw.rect(region, x, y, region.width / 4f, flip * region.height / 4f, rotation * 90f);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = TurretControllerBuild::new;
-	}
-
 	public enum ControlState {
 		off(Pal.darkerGray),
 		on(Pal.heal),

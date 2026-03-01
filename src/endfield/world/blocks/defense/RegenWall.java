@@ -52,11 +52,6 @@ public class RegenWall extends Wall {
 		envEnabled = Env.any;
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = RegenWallBuild::new;
-	}
-
 	public class RegenWallBuild extends WallBuild {
 		public Seq<Building> targets = new Seq<>(Building.class);
 		public int lastChange = -2;

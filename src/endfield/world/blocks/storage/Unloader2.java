@@ -18,11 +18,6 @@ public class Unloader2 extends Unloader {
 		return new TextureRegion[]{region};
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = UnloaderBuild2::new;
-	}
-
 	public class UnloaderBuild2 extends UnloaderBuild {
 		public float counter;
 

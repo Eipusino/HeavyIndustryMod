@@ -20,6 +20,7 @@ public final class Call2 {
 
 	public static void init() {
 		Net.registerPacket(DroneSpawnedCallPacket::new);
+		Net.registerPacket(LongInfoMessageCallPacket::new);
 		Net.registerPacket(ReleaseShieldWallBuildSyncPacket::new);
 		Net.registerPacket(RemoveStackPacket::new);
 		Net.registerPacket(UnitAnnihilateCallPacket::new);

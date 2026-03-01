@@ -25,11 +25,6 @@ public class LiquidExtractor extends SolidPump {
 		return new TextureRegion[]{region};
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = LiquidExtractorBuild::new;
-	}
-
 	public class LiquidExtractorBuild extends SolidPumpBuild {
 		@Override
 		public void draw() {

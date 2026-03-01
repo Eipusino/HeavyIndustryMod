@@ -12,7 +12,6 @@ import arc.scene.ui.TextButton;
 import arc.scene.ui.layout.Cell;
 import arc.scene.ui.layout.Collapser;
 import arc.scene.ui.layout.Table;
-import arc.struct.ObjectFloatMap;
 import arc.struct.ObjectMap;
 import arc.struct.Seq;
 import arc.util.Scaling;
@@ -35,7 +34,6 @@ import mindustry.type.StatusEffect;
 import mindustry.type.UnitType;
 import mindustry.type.Weapon;
 import mindustry.ui.Styles;
-import mindustry.world.Block;
 import mindustry.world.blocks.defense.turrets.Turret;
 import mindustry.world.blocks.environment.Floor;
 import mindustry.world.meta.Stat;
@@ -582,34 +580,6 @@ public final class StatValues2 {
 				t.row();
 			}
 		}).padTop(-9).left().get().background(Tex.underline);
-	}
-
-	public static StatValue drillAblesStack(float drillTime, int outputAmount, ObjectFloatMap<Item> multipliers, Boolf<Block> filter) {
-		return table -> {
-			table.row();
-			table.table(c -> {
-				int i = 0;
-				Seq<Block> blocks = Vars.content.blocks();
-				for (int n = 0; n < blocks.size; i++) {
-					Block block = blocks.get(n);
-					if (!filter.get(block)) continue;
-
-					c.table(Styles.grayPanel, b -> {
-						b.image(block.uiIcon).size(40).pad(10f).left().scaling(Scaling.fit);
-						b.table(info -> {
-							info.left();
-							info.add(block.localizedName).left().row();
-							info.add(block.itemDrop.emoji()).left();
-						}).grow();
-						if (multipliers != null) {
-							b.add(Strings.autoFixed(drillTime, 2) + StatUnit.perSecond.localized())
-									.right().pad(10f).padRight(15f).color(Color.lightGray);
-						}
-					}).growX().pad(5);
-					if (++i % 2 == 0) c.row();
-				}
-			}).growX().colspan(table.getColumns());
-		};
 	}
 
 	public static <T extends UnlockableContent> StatValue ammo(ObjectMap<T, BulletType> map, int indent, boolean showUnit) {

@@ -28,11 +28,6 @@ public class NextWave extends Block {
 		configurable = true;
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = NextWaveBuild::new;
-	}
-
 	public class NextWaveBuild extends Building {
 		@Override
 		public void buildConfiguration(Table table) {

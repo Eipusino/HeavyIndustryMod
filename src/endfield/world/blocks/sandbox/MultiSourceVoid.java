@@ -23,11 +23,6 @@ public class MultiSourceVoid extends MultiSource {
 				(size == other.size || (size >= other.size && ((subclass != null && subclass == other.subclass) || group.anyReplace)));
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = MultiSourceVoidBuild::new;
-	}
-
 	public class MultiSourceVoidBuild extends MultiSourceBuild {
 		@Override
 		public boolean acceptItem(Building source, Item item) {

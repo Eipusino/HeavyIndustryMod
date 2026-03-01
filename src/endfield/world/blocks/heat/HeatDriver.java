@@ -99,11 +99,6 @@ public class HeatDriver extends Block {
 		return new TextureRegion[]{preview};
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = HeatDriverBuild::new;
-	}
-
 	public class HeatDriverBuild extends Building implements HeatBlock, HeatConsumer, RotBlock {
 		public float rotation = 90f;
 		public float progress = 0f;

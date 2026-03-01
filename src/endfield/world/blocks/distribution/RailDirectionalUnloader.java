@@ -53,11 +53,6 @@ public class RailDirectionalUnloader extends DirectionalUnloader {
 		stats.add(Stat.speed, 15, StatUnit.itemsSecond);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = RailDirectionalUnloaderBuild::new;
-	}
-
 	public class RailDirectionalUnloaderBuild extends DirectionalUnloaderBuild {
 		@Override
 		public void updateTile() {

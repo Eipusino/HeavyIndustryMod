@@ -70,8 +70,8 @@ public class MultiCellLiquid extends CellLiquid {
 			if (tile != null) {
 				Puddle other = Puddles.get(tile);
 				if (other != null && spreadTargets.contains(other.liquid)) {
-					//TODO looks somewhat buggy when outputs are occurring
 					float amount = Math.min(other.amount, Math.max(maxSpread * Time.delta * scaling, other.amount * 0.25f * scaling));
+
 					other.amount -= amount;
 					puddle.amount += amount;
 

@@ -60,11 +60,6 @@ public class LaserRuler extends Block {
 		configClear((LaserRulerBuild build) -> build.target = -1);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = LaserRulerBuild::new;
-	}
-
 	public class LaserRulerBuild extends Building implements Ranged {
 		public final Seq<Tile> xtiles = new Seq<>(Tile.class);
 		public final Seq<Tile> ytiles = new Seq<>(Tile.class);
@@ -225,19 +220,14 @@ public class LaserRuler extends Block {
 		@Override
 		public void write(Writes write) {
 			super.write(write);
-			write.i(target);
-		}
 
-		@Override
-		public byte version() {
-			return 1;
+			write.i(target);
 		}
 
 		@Override
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
 
-			if (revision == 0) return;
 			target = read.i();
 		}
 	}

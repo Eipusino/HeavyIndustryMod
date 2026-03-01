@@ -25,11 +25,6 @@ public class ColiderCrafter extends GenericCrafter {
 		return Mathf.chance(produceChance);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = ColiderCrafterBuild::new;
-	}
-
 	public class ColiderCrafterBuild extends GenericCrafterBuild {
 		@Override
 		public void updateTile() {

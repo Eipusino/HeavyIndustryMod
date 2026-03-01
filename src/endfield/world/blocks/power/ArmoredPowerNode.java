@@ -11,11 +11,6 @@ public class ArmoredPowerNode extends PowerNode {
 		super(name);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = ArmoredPowerNodeBuild::new;
-	}
-
 	public class ArmoredPowerNodeBuild extends PowerNodeBuild {
 		@Override
 		public void updateTile() {

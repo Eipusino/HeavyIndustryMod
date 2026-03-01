@@ -53,11 +53,6 @@ public class AugerSoildPump extends SolidPump {
 		return false;
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = AugerSoildPumpBuild::new;
-	}
-
 	public class AugerSoildPumpBuild extends SolidPumpBuild {
 		public float rot;
 

@@ -49,11 +49,6 @@ public class CoveredRouter extends Router {
 		return new TextureRegion[]{region, topRegion};
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = CoveredRouterBuild::new;
-	}
-
 	public class CoveredRouterBuild extends RouterBuild {
 		public float progress;
 		public @Nullable Item current;
@@ -123,11 +118,6 @@ public class CoveredRouter extends Router {
 		}
 
 		@Override
-		public byte version() {
-			return 1;
-		}
-
-		@Override
 		public void write(Writes write) {
 			super.write(write);
 
@@ -138,9 +128,7 @@ public class CoveredRouter extends Router {
 		public void read(Reads read, byte revision) {
 			super.read(read, revision);
 
-			if (revision >= 1) {
-				recDir = read.b();
-			}
+			recDir = read.b();
 			current = items.first();
 		}
 	}

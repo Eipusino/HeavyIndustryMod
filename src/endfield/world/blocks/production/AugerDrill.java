@@ -53,11 +53,6 @@ public class AugerDrill extends Drill {
 		return false;
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = AugerDrillBuild::new;
-	}
-
 	public class AugerDrillBuild extends DrillBuild {
 		public float rot;
 

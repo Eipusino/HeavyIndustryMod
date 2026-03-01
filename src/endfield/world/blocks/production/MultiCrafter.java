@@ -9,6 +9,7 @@ import arc.graphics.g2d.Fill;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Geometry;
+import arc.math.geom.Point2;
 import arc.scene.style.TextureRegionDrawable;
 import arc.scene.ui.ImageButton;
 import arc.scene.ui.ScrollPane;
@@ -28,7 +29,6 @@ import endfield.world.consumers.ConsumeItem;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.core.UI;
-import mindustry.ctype.UnlockableContent;
 import mindustry.entities.Effect;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
@@ -59,6 +59,8 @@ import mindustry.world.meta.StatValues;
 import mindustry.world.meta.Stats;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 /**
  * MultiCrafter. You can freely choose to change the production formula.
  *
@@ -67,13 +69,13 @@ import org.jetbrains.annotations.Nullable;
  * @since 1.0.6
  */
 public class MultiCrafter extends Block {
-	protected static CraftPlan tmpCraftPlan;
+	//protected static CraftPlan tmpCraftPlan;
 
 	/** Liquid output directions, specified in the same order as outputLiquids. Use -1 to dump in every direction. Rotations are relative to block. */
 	public int[] liquidOutputDirections = {-1};
 
 	/** PayloadRecipe {@link CraftPlan}. */
-	public CollectionList<CraftPlan> craftPlans = new CollectionList<>(CraftPlan.class);
+	public List<CraftPlan> craftPlans = new CollectionList<>(CraftPlan.class);
 	/** If {@link MultiCrafter#useBlockDrawer} is false, use the drawer in the recipe for the block. */
 	public DrawBlock drawer = new DrawDefault();
 	/** Do you want to use the {@link MultiCrafter#drawer} inside the block itself. */
@@ -103,21 +105,20 @@ public class MultiCrafter extends Block {
 		configurable = true;
 		saveConfig = true;
 
-		config(int[].class, (MultiCrafterBuild tile, int[] in) -> {
-			if (in.length != 2) return;
+		config(Point2.class, (MultiCrafterBuild tile, Point2 in) -> {
+			tile.rotation = in.x;
 
-			tile.rotation = in[0];
-
-			if (craftPlans.isEmpty() || in[1] == -1) tile.craftPlan = null;
-			tile.craftPlan = craftPlans.get(in[1]);
+			if (craftPlans.isEmpty() || in.y == -1) {
+				tile.craftPlan = null;
+			} else {
+				tile.craftPlan = craftPlans.get(in.y);
+			}
 		});
 	}
 
 	@Override
 	public void init() {
-		for (int i = 0; i < craftPlans.size; i++) {
-			CraftPlan plan = craftPlans.get(i);
-
+		for (CraftPlan plan : craftPlans) {
 			plan.owner = this;
 			plan.init();
 			if (plan.outputLiquids.length > 0) {
@@ -140,7 +141,7 @@ public class MultiCrafter extends Block {
 
 		super.init();
 
-		hasConsumers = craftPlans.any();
+		hasConsumers = !craftPlans.isEmpty();
 	}
 
 	@Override
@@ -170,9 +171,7 @@ public class MultiCrafter extends Block {
 		stats.add(Stat.output, table -> {
 			table.row();
 
-			for (int i = 0; i < craftPlans.size; i++) {
-				CraftPlan plan = craftPlans.get(i);
-
+			for (CraftPlan plan : craftPlans) {
 				table.table(Styles.grayPanel, info -> {
 					info.left().defaults().left();
 					Stats stat = new Stats();
@@ -203,9 +202,7 @@ public class MultiCrafter extends Block {
 		if (useBlockDrawer) {
 			drawer.load(this);
 		} else {
-			for (int i = 0; i < craftPlans.size; i++) {
-				CraftPlan plan = craftPlans.get(i);
-
+			for (CraftPlan plan : craftPlans) {
 				plan.drawer.load(this);
 			}
 		}
@@ -216,10 +213,10 @@ public class MultiCrafter extends Block {
 		if (useBlockDrawer) {
 			drawer.drawPlan(this, plan, list);
 		} else {
-			if (craftPlans.any()) {
-				craftPlans.get(0).drawer.drawPlan(this, plan, list);
-			} else {
+			if (craftPlans.isEmpty()) {
 				super.drawPlanRegion(plan, list);
+			} else {
+				craftPlans.get(0).drawer.drawPlan(this, plan, list);
 			}
 		}
 	}
@@ -240,24 +237,25 @@ public class MultiCrafter extends Block {
 
 	@Override
 	protected TextureRegion[] icons() {
-		return useBlockDrawer ? drawer.icons(this) : craftPlans.any() ? craftPlans.get(0).drawer.icons(this) : super.icons();
-	}
-
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = MultiCrafterBuild::new;
+		return useBlockDrawer ? drawer.icons(this) : craftPlans.isEmpty() ? super.icons() : craftPlans.get(0).drawer.icons(this);
 	}
 
 	public class MultiCrafterBuild extends Building {
-		public CraftPlan craftPlan = craftPlans.any() ? craftPlans.get(0) : null;
+		public @Nullable CraftPlan craftPlan;
 		public float progress;
 		public float totalProgress;
 		public float warmup;
 
-		public int[] configs = {0, 0};
+		public Point2 configs = new Point2();
 		public int lastRotation = -1;
 
 		public TextureRegionDrawable[] rotationIcon = {Icon.right, Icon.up, Icon.left, Icon.down};
+
+		@Override
+		public void created() {
+			super.created();
+			craftPlan = craftPlans.isEmpty() ? null : craftPlans.get(0);
+		}
 
 		@Override
 		public void draw() {
@@ -294,7 +292,6 @@ public class MultiCrafter extends Block {
 			if (consumePower == null) return 0f;
 
 			return consumePower.usage;
-
 		}
 
 		@Override
@@ -462,6 +459,8 @@ public class MultiCrafter extends Block {
 		protected void rebuild(Table table) {
 			table.clear();
 
+			if (craftPlan == null) return;
+
 			for (Consume cons : craftPlan.consumers) {
 				if (!cons.optional || !cons.booster) {
 					cons.build(this, table);
@@ -613,7 +612,7 @@ public class MultiCrafter extends Block {
 						int j = i;
 						button.table(img -> img.image(rotationIcon[j]).color(Color.white).size(40).pad(10f));
 						button.changed(() -> {
-							configs[0] = j;
+							configs.x = j;
 							configure(configs);
 						});
 						button.update(() -> button.setChecked(rotation == j));
@@ -623,9 +622,8 @@ public class MultiCrafter extends Block {
 				}
 
 				cont.clearChildren();
-				for (int i = 0; i < craftPlans.size; i++) {
-					CraftPlan plan = craftPlans.get(i);
 
+				for (CraftPlan plan : craftPlans) {
 					ImageButton button = new ImageButton();
 					button.table(info -> {
 						info.left();
@@ -651,7 +649,7 @@ public class MultiCrafter extends Block {
 					}).grow().left().pad(5);
 					button.setStyle(Styles.clearNoneTogglei);
 					button.changed(() -> {
-						configs[1] = craftPlans.indexOf(plan);
+						configs.y = craftPlans.indexOf(plan);
 						configure(configs);
 					});
 					button.update(() -> button.setChecked(craftPlan == plan));
@@ -702,7 +700,7 @@ public class MultiCrafter extends Block {
 			write.f(progress);
 			write.f(warmup);
 			write.i(lastRotation);
-			write.i(craftPlan == null || !craftPlans.contains(craftPlan) ? -1 : craftPlans.indexOf(craftPlan));
+			write.i(craftPlans.indexOf(craftPlan));
 		}
 
 		@Override
@@ -713,12 +711,12 @@ public class MultiCrafter extends Block {
 			lastRotation = read.i();
 			int i = read.i();
 			craftPlan = i == -1 ? null : craftPlans.get(i);
-			configs[0] = rotation;
-			configs[1] = i;
+			configs.x = rotation;
+			configs.y = i;
 		}
 	}
 
-	public static class CraftPlan {
+	public static class CraftPlan implements Cloneable {
 		/** Array of consumers used by this block. Only populated after init(). */
 		public Consume[] consumers = {}, optionalConsumers = {}, nonOptionalConsumers = {}, updateConsumers = {};
 		/** The single power consumer, if applicable. */
@@ -879,6 +877,14 @@ public class MultiCrafter extends Block {
 				consPower = cons;
 			}
 			consumeBuilder.add(consume);
+		}
+
+		public CraftPlan copy() {
+			try {
+				return (CraftPlan) super.clone();
+			} catch (CloneNotSupportedException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 }

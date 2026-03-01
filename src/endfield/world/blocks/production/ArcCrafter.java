@@ -119,11 +119,6 @@ public class ArcCrafter extends AttributeCrafter {
 		return new TextureRegion[]{region, topRegion};
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = ArcCrafterBuild::new;
-	}
-
 	public class ArcCrafterBuild extends AttributeCrafterBuild {
 		public boolean nextFlash;
 

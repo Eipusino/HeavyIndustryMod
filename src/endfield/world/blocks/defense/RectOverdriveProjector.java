@@ -30,11 +30,6 @@ public class RectOverdriveProjector extends OverdriveProjector {
 		Vars.indexer.eachBlock(Vars.player.team(), Tmp.r1.setCentered(x, y, range), b -> b.block.canOverdrive, selected);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = RectOverdriveBuild::new;
-	}
-
 	public class RectOverdriveBuild extends OverdriveBuild {
 		@Override
 		public void drawSelect() {

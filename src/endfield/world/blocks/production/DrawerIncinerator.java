@@ -29,11 +29,6 @@ public class DrawerIncinerator extends Incinerator {
 		drawer.drawPlan(this, plan, list);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = DrawerIncineratorBuild::new;
-	}
-
 	public class DrawerIncineratorBuild extends IncineratorBuild {
 		@Override
 		public void draw() {

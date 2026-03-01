@@ -1,367 +1,392 @@
 package endfield.world.blocks.production;
 
+import arc.Core;
 import arc.graphics.g2d.Draw;
-import arc.graphics.g2d.Fill;
-import arc.math.geom.Point2;
-import arc.struct.IntSeq;
+import arc.graphics.g2d.TextureRegion;
+import arc.math.Mathf;
+import arc.struct.EnumSet;
 import arc.struct.Seq;
+import arc.util.Eachable;
+import arc.util.Nullable;
+import arc.util.Time;
+import arc.util.Tmp;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
 import endfield.world.blocks.MultiBlock;
-import endfield.world.blocks.MultiBuild;
-import mindustry.Vars;
+import endfield.world.blocks.LinkBlock;
+import endfield.world.blocks.IMultiBlock;
+import mindustry.content.Fx;
+import mindustry.entities.Effect;
 import mindustry.entities.units.BuildPlan;
-import mindustry.game.Team;
 import mindustry.gen.Building;
-import mindustry.graphics.Layer;
-import mindustry.graphics.Pal;
-import mindustry.input.Placement;
+import mindustry.gen.Sounds;
+import mindustry.logic.LAccess;
 import mindustry.type.Item;
+import mindustry.type.ItemStack;
 import mindustry.type.Liquid;
-import mindustry.world.Block;
-import mindustry.world.Tile;
-import mindustry.world.blocks.production.GenericCrafter;
+import mindustry.type.LiquidStack;
+import mindustry.world.draw.DrawBlock;
+import mindustry.world.draw.DrawDefault;
+import mindustry.world.meta.BlockFlag;
 import mindustry.world.meta.Stat;
+import mindustry.world.meta.StatUnit;
+import mindustry.world.meta.StatValues;
 
-public class LinkGenericCrafter extends GenericCrafter implements MultiBlock {
-	//link positions
-	public int[] linkValues = {};
-	public Seq<Point2> linkPos = new Seq<>(Point2.class);
-	public IntSeq linkSize = new IntSeq();
+import static mindustry.Vars.content;
+import static mindustry.Vars.tilesize;
+import static mindustry.Vars.world;
 
-	public boolean canMirror = false;
-	public int[] rotations = {0, 1, 2, 3, 0, 1, 2, 3};
+public class LinkGenericCrafter extends MultiBlock {
+	public @Nullable ItemStack outputItem;
+	public @Nullable ItemStack[] outputItems;
+	public @Nullable LiquidStack outputLiquid;
+	public @Nullable LiquidStack[] outputLiquids;
+
+	public boolean dumpExtraLiquid = true;
+	public boolean ignoreLiquidFullness = false;
+
+	public Seq<int[]> outputItemDirection = new Seq<>(int[].class);
+	public Seq<int[]> outputLiquidDirection = new Seq<>(int[].class);
+
+	public float craftTime = 80;
+	public Effect craftEffect = Fx.none;
+	public Effect updateEffect = Fx.none;
+	public float updateEffectChance = 0.04f;
+	public float updateEffectSpread = 4f;
+	public float warmupSpeed = 0.019f;
+
+	public DrawBlock drawer = new DrawDefault();
 
 	public LinkGenericCrafter(String name) {
 		super(name);
 
+		update = true;
+		solid = true;
 		hasItems = true;
-		hasLiquids = true;
+		sync = true;
 
-		rotate = true;
-		rotateDraw = true;
-		quickRotate = false;
-		allowDiagonal = false;
+		ambientSound = Sounds.loopMachine;
+		ambientSoundVolume = 0.03f;
+
+		flags = EnumSet.of(BlockFlag.factory);
 	}
 
-	@Override
-	public boolean isMirror() {
-		return name.endsWith("-mirror");
+	public void addOutputItemDirection(int xOffset, int yOffset, Item item) {
+		outputItemDirection.add(new int[]{xOffset, yOffset, item.id});
 	}
 
-	@Override
-	public Block mirrorBlock() {
-		return Vars.content.block(isMirror() ? name.replace("-mirror", "") : name + "-mirror");
-	}
-
-	@Override
-	public void init() {
-		super.init();
-		addLink(linkValues);
-
-		//always set those, these are not supposed to be changed
-		rotateDraw = true;
-		quickRotate = false;
-		allowDiagonal = false;
-
-		//always required due to Tile#getFlammability, in this case anuke sucks for this
-		hasItems = true;
-		hasLiquids = true;
-
-		//current no support and i dont want things being disaster
-		//outputLiquids = null;
-
-		if (isMirror()) {
-			alwaysUnlocked = true;
-		}
+	public void addOutputLiquidDirection(int xOffset, int yOffset, Liquid liquid) {
+		outputLiquidDirection.add(new int[]{xOffset, yOffset, liquid.id});
 	}
 
 	@Override
 	public void setStats() {
+		stats.timePeriod = craftTime;
 		super.setStats();
+
+		if ((hasItems && itemCapacity > 0) || outputItems != null)
+			stats.add(Stat.productionTime, craftTime / 60f, StatUnit.seconds);
+		if (outputItems != null) stats.add(Stat.output, StatValues.items(craftTime, outputItems));
+		if (outputLiquids != null) stats.add(Stat.output, StatValues.liquids(1f, outputLiquids));
+
 		stats.remove(Stat.size);
 		stats.add(Stat.size, "@x@", getMaxSize(size, 0).x, getMaxSize(size, 0).y);
 	}
 
 	@Override
-	public boolean canPlaceOn(Tile tile, Team team, int rotation) {
-		return super.canPlaceOn(tile, team, rotation) && checkLink(tile, team, size, rotation);
-	}
-
-	@Override
-	public void placeBegan(Tile tile, Block previous) {
-		createPlaceholder(tile, size);
-	}
-
-	@Override
-	public void changePlacementPath(Seq<Point2> points, int rotation) {
-		Placement.calculateNodes(points, this, rotation, (point, other) -> {
-			if (rotation % 2 == 0) {
-				return Math.abs(point.x - other.x) <= getMaxSize(size, rotation).x;
-			} else {
-				return Math.abs(point.y - other.y) <= getMaxSize(size, rotation).y;
-			}
-		});
-	}
-
-	@Override
 	public void setBars() {
 		super.setBars();
-		if (outputLiquid == null && (outputLiquids == null || outputLiquids.length == 0)) {
+
+		//set up liquid bars for liquid outputs
+		if (outputLiquids != null && outputLiquids.length > 0) {
+			//no need for dynamic liquid bar
 			removeBar("liquid");
-		}
-	}
 
-	@Override
-	public Seq<Point2> linkPos() {
-		return linkPos;
-	}
-
-	@Override
-	public IntSeq linkSize() {
-		return linkSize;
-	}
-
-	@Override
-	public void flipRotation(BuildPlan req, boolean x) {
-		if (canMirror) {
-			if (mirrorBlock() != null) {
-				if (x) {
-					if (req.rotation == 1) req.rotation = 3;
-					if (req.rotation == 3) req.rotation = 1;
-				} else {
-					if (req.rotation == 0) req.rotation = 2;
-					if (req.rotation == 2) req.rotation = 0;
-				}
-				req.block = mirrorBlock();
-			} else {
-				req.rotation = rotations[req.rotation + (x ? 0 : 4)];
+			//then display output buffer
+			for (LiquidStack stack : outputLiquids) {
+				addLiquidBar(stack.liquid);
 			}
-		} else {
-			super.flipRotation(req, x);
 		}
 	}
 
 	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = LinkGenericCrafterBuild::new;
+	public void load() {
+		super.load();
+		drawer.load(this);
 	}
 
-	public class LinkGenericCrafterBuild extends GenericCrafterBuild implements MultiBuild {
-		public boolean linkCreated = false, linkValid = true;
-		public Seq<Building> linkEntities;
-		//ordered seq, target-source pair
-		public Seq<Building[]> linkProximityMap;
-		public int dumpIndex = 0;
-		public Tile teamPos, statusPos;
+	@Override
+	public void loadIcon() {
+		super.loadIcon();
+		uiIcon = Core.atlas.find(name + "-icon", name);
+	}
 
-		@Override
-		public void created() {
-			super.created();
-			linkProximityMap = new Seq<>(Building[].class);
+	@Override
+	public void init() {
+		if (outputItems == null && outputItem != null) outputItems = new ItemStack[]{outputItem};
+		if (outputLiquids == null && outputLiquid != null) outputLiquids = new LiquidStack[]{outputLiquid};
+		if (outputLiquid == null && outputLiquids != null && outputLiquids.length > 0) outputLiquid = outputLiquids[0];
+
+		outputsLiquid = outputLiquids != null;
+
+		if (outputItems != null) hasItems = true;
+		if (outputLiquids != null) hasLiquids = true;
+
+		super.init();
+	}
+
+	@Override
+	public void drawOverlay(float x, float y, int rotation) {
+		super.drawOverlay(x, y, rotation);
+		for (int[] packed : outputItemDirection) {
+			IMultiBlock.calculateRotatedOffsetPosition(Tmp.p1, packed[0], packed[1], size, 1, rotation);
+			Item item = content.item(packed[2]);
+			Draw.rect(item.fullIcon,
+					x - (size + 1) % 2f * 4f + Tmp.p1.x * tilesize,
+					y - (size + 1) % 2f * 4f + Tmp.p1.y * tilesize,
+					6f, 6f
+			);
 		}
 
-		@Override
-		public void updateTile() {
-			if (isPayload()) return;
-
-			if (!linkCreated) {
-				linkEntities = setLinkBuild(this, block, tile, team, size, rotation);
-				linkCreated = true;
-				updateLinkProximity();
-			}
-
-			if (!linkValid) {
-				for (Building b : linkEntities) b.kill();
-				kill();
-			}
-
-			super.updateTile();
+		for (int[] packed : outputLiquidDirection) {
+			IMultiBlock.calculateRotatedOffsetPosition(Tmp.p1, packed[0], packed[1], size, 1, rotation);
+			Liquid liquid = content.liquid(packed[2]);
+			Draw.rect(liquid.fullIcon,
+					x - (size + 1) % 2f * 4f + Tmp.p1.x * tilesize,
+					y - (size + 1) % 2f * 4f + Tmp.p1.y * tilesize,
+					8f, 8f
+			);
 		}
+	}
 
-		@Override
-		public boolean dump(Item todump) {
-			if (!hasItems || items.total() == 0 || linkProximityMap.size == 0 || (todump != null && !items.has(todump)))
-				return false;
-			int dump = dumpIndex;
-			for (int i = 0; i < linkProximityMap.size; i++) {
-				int idx = (i + dump) % linkProximityMap.size;
-				Building[] pair = linkProximityMap.get(idx);
-				Building target = pair[0];
-				Building source = pair[1];
+	@Override
+	public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list) {
+		drawer.drawPlan(this, plan, list);
+	}
 
-				if (todump == null) {
-					Seq<Item> seq = Vars.content.items();
-					for (int ii = 0; ii < seq.size; ii++) {
-						if (!items.has(ii)) continue;
-						Item item = seq.get(ii);
-						if (target.acceptItem(source, item) && canDump(target, item)) {
-							target.handleItem(source, item);
-							items.remove(item, 1);
-							incrementDumpIndex(linkProximityMap.size);
-							return true;
-						}
-					}
-				} else {
-					if (target.acceptItem(source, todump) && canDump(target, todump)) {
-						target.handleItem(source, todump);
-						items.remove(todump, 1);
-						incrementDumpIndex(linkProximityMap.size);
+	@Override
+	public TextureRegion[] icons() {
+		return drawer.finalIcons(this);
+	}
+
+	@Override
+	public boolean outputsItems() {
+		return outputItems != null;
+	}
+
+	@Override
+	public void getRegionsToOutline(Seq<TextureRegion> out) {
+		drawer.getRegionsToOutline(this, out);
+	}
+
+	public class LinkGenericCrafterBuild extends MultiBuild {
+		public float progress;
+		public float totalProgress;
+		public float warmup;
+
+		public boolean isValidOutputItemBuilding(Building other, Item item) {
+			if (outputItemDirection.isEmpty()) return true;
+			for (int[] packed : outputItemDirection) {
+				if (item.id == packed[2]) {
+					IMultiBlock.calculateRotatedOffsetPosition(Tmp.p1, packed[0], packed[1], block.size, 1, rotation);
+					Building b = world.build(Tmp.p1.x + tileX(), Tmp.p1.y + tileY());
+					if (b == other || b instanceof LinkBlock.LinkBuild lb && lb.linkBuild == other) {
 						return true;
 					}
 				}
-				incrementDumpIndex(linkProximityMap.size);
+			}
+			return false;
+		}
+
+		public boolean isValidLiquidOutputBuilding(Building other, Liquid liquid) {
+			if (outputLiquidDirection.isEmpty()) return true;
+			for (int[] packed : outputLiquidDirection) {
+				if (liquid.id == packed[2]) {
+					IMultiBlock.calculateRotatedOffsetPosition(Tmp.p1, packed[0], packed[1], block.size, 1, rotation);
+					Building b = world.build(Tmp.p1.x, Tmp.p1.y);
+					if (b == other || b instanceof LinkBlock.LinkBuild lb && lb.linkBuild == other) {
+						return true;
+					}
+				}
 			}
 			return false;
 		}
 
 		@Override
-		public void dumpLiquid(Liquid liquid, float scaling, int outputDir) {
-			int dump = cdump;
-			if (liquids.get(liquid) <= 0.0001f) return;
-			if (!Vars.net.client() && Vars.state.isCampaign() && team == Vars.state.rules.defaultTeam) liquid.unlock();
-			for (int i = 0; i < linkProximityMap.size; i++) {
-				incrementDumpIndex(linkProximityMap.size);
-				int idx = (i + dump) % linkProximityMap.size;
-				Building[] pair = linkProximityMap.get(idx);
-				Building target = pair[0];
-				//Building source = pair[1];
-				if (outputDir != -1 && (outputDir + rotation) % 4 != relativeTo(target)) continue;
-				target = target.getLiquidDestination(this, liquid);
-				if (target != null && target.block.hasLiquids && canDumpLiquid(target, liquid) && target.liquids != null) {
-					float ofract = target.liquids.get(liquid) / target.block.liquidCapacity;
-					float fract = liquids.get(liquid) / liquidCapacity;
-					if (ofract < fract)
-						transferLiquid(target, (fract - ofract) * liquidCapacity / scaling, liquid);
-				}
-			}
+		public boolean canDump(Building to, Item item) {
+			return super.canDump(to, item) && isValidOutputItemBuilding(to, item);
 		}
 
 		@Override
-		public void offload(Item item) {
-			produced(item, 1);
-			int dump = dumpIndex;
-			for (int i = 0; i < linkProximityMap.size; i++) {
-				incrementDumpIndex(linkProximityMap.size);
-				int idx = (i + dump) % linkProximityMap.size;
-				Building[] pair = linkProximityMap.get(idx);
-				Building target = pair[0];
-				Building source = pair[1];
-				if (target.acceptItem(source, item) && canDump(target, item)) {
-					target.handleItem(source, item);
-					return;
-				}
-			}
-			handleItem(this, item);
+		public boolean canDumpLiquid(Building to, Liquid liquid) {
+			return super.canDumpLiquid(to, liquid) && isValidLiquidOutputBuilding(to, liquid);
 		}
 
 		@Override
-		public int dumpIndex() {
-			return dumpIndex;
+		public void draw() {
+			drawer.draw(this);
 		}
 
 		@Override
-		public void dumpIndex(int value) {
-			dumpIndex = value;
+		public void drawLight() {
+			super.drawLight();
+			drawer.drawLight(this);
 		}
 
 		@Override
-		public void incrementDumpIndex(int prox) {
-			dumpIndex = ((dumpIndex + 1) % prox);
-		}
-
-		@Override
-		public void updateLinkProximity() {
-			if (linkEntities() != null) {
-				linkProximityMap().clear();
-				//add link entity's proximity
-				for (Building link : linkEntities()) {
-					for (Building linkProx : link.proximity) {
-						if (linkProx != this && !linkEntities().contains(linkProx)) {
-							if (checkValidPair(linkProx, link)) {
-								linkProximityMap().add(new Building[]{linkProx, link});
-							}
-						}
-					}
-				}
-
-				//add self entity's proximity
-				for (Building prox : proximity) {
-					if (!linkEntities().contains(prox)) {
-						if (checkValidPair(prox, this)) {
-							linkProximityMap().add(new Building[]{prox, this});
-						}
-					}
-				}
-			}
-		}
-
-		@Override
-		public boolean checkValidPair(Building target, Building source) {
-			for (Building[] pair : linkProximityMap) {
-				Building pairTarget = pair[0];
-				Building pairSource = pair[1];
-
-				if (target == pairTarget) {
-					if (target.relativeTo(pairSource) == target.relativeTo(source)) {
+		public boolean shouldConsume() {
+			if (outputItems != null) {
+				for (var output : outputItems) {
+					if (items.get(output.item) + output.amount > itemCapacity) {
 						return false;
 					}
 				}
 			}
-			return true;
+			if (outputLiquids != null && !ignoreLiquidFullness) {
+				boolean allFull = true;
+				for (var output : outputLiquids) {
+					if (liquids.get(output.liquid) >= liquidCapacity - 0.001f) {
+						if (!dumpExtraLiquid) {
+							return false;
+						}
+					} else {
+						//if there's still space left, it's not full for all liquids
+						allFull = false;
+					}
+				}
+
+				//if there is no space left for any liquid, it can't reproduce
+				if (allFull) {
+					return false;
+				}
+			}
+
+			return enabled;
 		}
 
 		@Override
-		public Seq<Building> linkEntities() {
-			return linkEntities;
+		public void updateTile() {
+			super.updateTile();
+			if (efficiency > 0) {
+				progress += getProgressIncrease(craftTime);
+				warmup = Mathf.approachDelta(warmup, warmupTarget(), warmupSpeed);
+				if (outputLiquids != null) {
+					float inc = getProgressIncrease(1f);
+					for (var output : outputLiquids) {
+						handleLiquid(this, output.liquid, Math.min(output.amount * inc, liquidCapacity - liquids.get(output.liquid)));
+					}
+				}
+				if (wasVisible && Mathf.chanceDelta(updateEffectChance)) {
+					updateEffect.at(x + Mathf.range(size * updateEffectSpread), y + Mathf.range(size * updateEffectSpread));
+				}
+			} else warmup = Mathf.approachDelta(warmup, 0f, warmupSpeed);
+			totalProgress += warmup * Time.delta;
+			if (progress >= 1f) craft();
+			dumpOutputs();
 		}
 
 		@Override
-		public Seq<Building[]> linkProximityMap() {
-			return linkProximityMap;
+		public float getProgressIncrease(float baseTime) {
+			if (ignoreLiquidFullness) {
+				return super.getProgressIncrease(baseTime);
+			}
+
+			//limit progress increase by maximum amount of liquid it can produce
+			float scaling = 1f, max = 1f;
+			if (outputLiquids != null) {
+				max = 0f;
+				for (LiquidStack s : outputLiquids) {
+					float value = (liquidCapacity - liquids.get(s.liquid)) / (s.amount * edelta());
+					scaling = Math.min(scaling, value);
+					max = Math.max(max, value);
+				}
+			}
+
+			//when dumping excess take the maximum value instead of the minimum.
+			return super.getProgressIncrease(baseTime) * (dumpExtraLiquid ? Math.min(max, 1f) : scaling);
+		}
+
+		public float warmupTarget() {
+			return 1f;
 		}
 
 		@Override
-		public void onProximityUpdate() {
-			super.onProximityUpdate();
-			updateLinkProximity();
+		public float warmup() {
+			return warmup;
 		}
 
 		@Override
-		public void onRemoved() {
-			createPlaceholder(tile, size);
+		public float totalProgress() {
+			return totalProgress;
 		}
 
-		@Override
-		public boolean canPickup() {
-			return false;
+		public void craft() {
+			consume();
+
+			if (outputItems != null) {
+				for (var output : outputItems) {
+					for (int i = 0; i < output.amount; i++) {
+						offload(output.item);
+					}
+				}
+			}
+
+			if (wasVisible) {
+				craftEffect.at(x, y);
+			}
+			progress %= 1f;
 		}
 
-		@Override
-		public void drawSelect() {
-			super.drawSelect();
-		}
+		public void dumpOutputs() {
+			boolean timer = timer(timerDump, dumpTime / timeScale);
+			if (outputItems != null && timer) {
+				for (ItemStack output : outputItems) {
+					dump(output.item);
+				}
+			}
 
-		@Override
-		public void drawTeam() {
-			teamPos = Vars.world.tile(tileX() + teamOverlayPos(size, rotation).x, tileY() + teamOverlayPos(size, rotation).y);
-			if (teamPos != null) {
-				Draw.color(team.color);
-				Draw.rect("block-border", teamPos.worldx(), teamPos.worldy());
-				Draw.color();
+			if (outputLiquids != null) {
+				for (LiquidStack liquid : outputLiquids) {
+					dumpLiquid(liquid.liquid, 2f);
+				}
 			}
 		}
 
 		@Override
-		public void drawStatus() {
-			statusPos = Vars.world.tile(tileX() + statusOverlayPos(size, rotation).x, tileY() + statusOverlayPos(size, rotation).y);
-			if (enableDrawStatus && consumers.length > 0) {
-				float multiplier = size > 1 ? 1 : 0.64F;
-				Draw.z(Layer.power + 1);
-				Draw.color(Pal.gray);
-				Fill.square(statusPos.worldx(), statusPos.worldy(), 2.5F * multiplier, 45);
-				Draw.color(status().color);
-				Fill.square(statusPos.worldx(), statusPos.worldy(), 1.5F * multiplier, 45);
-				Draw.color();
-			}
+		public double sense(LAccess sensor) {
+			if (sensor == LAccess.progress) return progress();
+			//attempt to prevent wild total liquid fluctuation, at least for crafters
+			if (sensor == LAccess.totalLiquids && outputLiquid != null) return liquids.get(outputLiquid.liquid);
+			return super.sense(sensor);
+		}
+
+		@Override
+		public float progress() {
+			return Mathf.clamp(progress);
+		}
+
+		@Override
+		public int getMaximumAccepted(Item item) {
+			return itemCapacity;
+		}
+
+		@Override
+		public boolean shouldAmbientSound() {
+			return efficiency > 0;
+		}
+
+		@Override
+		public void write(Writes write) {
+			super.write(write);
+			write.f(progress);
+			write.f(warmup);
+		}
+
+		@Override
+		public void read(Reads read, byte revision) {
+			super.read(read, revision);
+			progress = read.f();
+			warmup = read.f();
 		}
 	}
 }

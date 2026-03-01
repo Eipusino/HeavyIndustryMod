@@ -78,11 +78,6 @@ public class PlaceholderBlock extends Block {
 		fullIcon = uiIcon = Core.atlas.find("status-blasted");
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = PlaceholderBuild::new;
-	}
-
 	public class PlaceholderBuild extends Building {
 		//check for next tick
 		public boolean checkTile = false;

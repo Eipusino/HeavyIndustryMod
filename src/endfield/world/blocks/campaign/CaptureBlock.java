@@ -46,11 +46,6 @@ public class CaptureBlock extends Block {
 		drawer.drawPlan(this, plan, list);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = CaptureBuild::new;
-	}
-
 	public class CaptureBuild extends Building {
 		protected final Seq<Player> players = new Seq<>(Player.class);
 		protected final Color teamColor = team().color.cpy();

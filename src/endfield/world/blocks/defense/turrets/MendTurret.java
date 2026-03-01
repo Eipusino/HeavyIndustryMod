@@ -83,11 +83,6 @@ public class MendTurret extends ContinuousTurret {
 		}
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = MendTurretBuild::new;
-	}
-
 	public class MendTurretBuild extends ContinuousTurretBuild {
 		public float timerCons = 0;
 		public float boostWarmup = 0;

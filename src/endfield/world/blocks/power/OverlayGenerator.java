@@ -28,9 +28,4 @@ public class OverlayGenerator extends ThermalGenerator {
 	public boolean canPlaceOn(Tile tile, Team team, int rotation) {
 		return tile.getLinkedTilesAs(this, tempTiles).sumf(other -> other.floor().attributes.get(attribute) + other.overlay().attributes.get(attribute)) > minEfficiency;
 	}
-
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = ThermalGeneratorBuild::new;
-	}
 }

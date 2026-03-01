@@ -85,11 +85,6 @@ public class PowerTower extends BeamNode {
 		stats.add(Stat.range, linkRange, StatUnit.blocks);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = PowerTowerBuild::new;
-	}
-
 	public class PowerTowerBuild extends BeamNodeBuild {
 		public List<Building> targets = new CollectionList<>(Building.class);
 		public List<Building> newTargets = new CollectionList<>(Building.class);

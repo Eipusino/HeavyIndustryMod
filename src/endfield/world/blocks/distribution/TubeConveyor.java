@@ -101,11 +101,6 @@ public class TubeConveyor extends Conveyor2 {
 		}
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = TubeConveyorBuild::new;
-	}
-
 	public class TubeConveyorBuild extends ConveyorBuild2 {
 		public int tiling = 0;
 

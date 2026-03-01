@@ -432,7 +432,7 @@ public final class Elements {
 	}
 
 	public static int getLineNum(String string) {
-		String dex = string.replaceAll("\r", "\n");
+		String dex = string.replace("\r", "\n");
 		return dex.split("\n").length;
 	}
 

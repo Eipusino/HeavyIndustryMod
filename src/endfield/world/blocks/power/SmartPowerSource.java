@@ -18,11 +18,6 @@ public class SmartPowerSource extends PowerBlock {
 		canOverdrive = false;
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = SmartPowerSourceBuild::new;
-	}
-
 	public class SmartPowerSourceBuild extends Building {
 		@Override
 		public float getPowerProduction() {

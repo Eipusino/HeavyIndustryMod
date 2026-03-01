@@ -26,11 +26,6 @@ public class ConnectedPump extends Pump {
 		splits = Sprites.split(name + "-autotile", 32, 4, 4);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = ConnectedPumpBuild::new;
-	}
-
 	public class ConnectedPumpBuild extends PumpBuild {
 		public boolean[] drawLink = new boolean[8];
 		public int[] drawIdx = new int[4];

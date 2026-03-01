@@ -30,11 +30,6 @@ public class AccelTurret extends ItemTurret {
 		));
 	}
 
-	@Override
-	public void initBuilding() {
-		if (buildType == null) buildType = AccelTurretBuild::new;
-	}
-
 	public class AccelTurretBuild extends ItemTurretBuild {
 		public float speedUp = 0;
 

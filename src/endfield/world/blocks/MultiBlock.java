@@ -1,214 +1,403 @@
 package endfield.world.blocks;
 
+import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.Fill;
 import arc.math.geom.Point2;
+import arc.math.geom.Vec2;
 import arc.struct.IntSeq;
 import arc.struct.Seq;
-import endfield.content.Blocks2;
 import mindustry.Vars;
+import mindustry.content.Fx;
+import mindustry.entities.units.BuildPlan;
 import mindustry.game.Team;
 import mindustry.gen.Building;
+import mindustry.graphics.Layer;
+import mindustry.graphics.Pal;
+import mindustry.input.Placement;
+import mindustry.mod.NoPatch;
+import mindustry.type.Item;
+import mindustry.type.Liquid;
 import mindustry.world.Block;
-import mindustry.world.Build;
 import mindustry.world.Tile;
+import mindustry.world.blocks.payloads.Payload;
+import mindustry.world.blocks.payloads.PayloadConveyor;
+import mindustry.world.blocks.units.UnitAssembler;
+import mindustry.world.meta.Stat;
 
-/**
- * I guess some method here are terrible and should use sizeOffset
- *
- * @author LaoHuaJi
- */
-public interface MultiBlock {
-	default Block linkBlock(int index) {
-		return Blocks2.linkBlock[index];
+public class MultiBlock extends Block implements IMultiBlock {
+	@NoPatch
+	public Seq<Point2> linkPos = new Seq<>(Point2.class);
+	@NoPatch
+	public IntSeq linkSize = new IntSeq();
+	public boolean canMirror = true;
+	@NoPatch
+	public int[] rotations = {0, 1, 2, 3, 0, 1, 2, 3};
+
+	public final int checkTimer = timers++;
+
+	public MultiBlock(String name) {
+		super(name);
 	}
 
-	default Block linkBlockLiquid(int index) {
-		return Blocks2.linkBlockLiquid[index];
+	public void enableRotate() {
+		rotate = true;
+		rotateDraw = true;
+		drawArrow = false;
+		quickRotate = false;
+		allowDiagonal = false;
 	}
 
-	default Block placeholderBlock(int index) {
-		return Blocks2.placeholderBlock[index];
+	@Override
+	public void setStats() {
+		super.setStats();
+		stats.remove(Stat.size);
+		stats.add(Stat.size, "@x@", getMaxSize(size, 0).x, getMaxSize(size, 0).y);
 	}
 
-	Seq<Point2> linkPos();
+	@Override
+	public void init() {
+		super.init();
 
-	IntSeq linkSize();
-
-	Block mirrorBlock();
-
-	boolean isMirror();
-
-	default Point2 calculateRotatedPosition(Point2 pos, int blockSize, int otherSize, int rotation) {
-		int shift = (blockSize + 1) % 2;
-		int offset = (otherSize + 1) % 2;
-		int px = pos.x, py = pos.y;
-
-		return switch (rotation) {
-			case 1 -> new Point2(-py + shift - offset, px);
-			case 2 -> new Point2(-px + shift - offset, -py + shift - offset);
-			case 3 -> new Point2(py, -px + shift - offset);
-			default -> new Point2(px, py); // default rotation 0
-		};
-	}
-
-	default void addLink(int... values) {
-		for (int i = 0; i < values.length; i += 3) {
-			linkPos().add(new Point2(values[i], values[i + 1]));
-			linkSize().add(values[i + 2]);
+		if (scaledHealth > 0) {
+			int count = getTileCount();
+			health = (int) (scaledHealth * count);
+			if (armor == 0) armor = count;
 		}
 	}
 
-	default boolean checkLink(Tile tile, Team team, int size, int rotation) {
-		for (int i = 0; i < linkPos().size; i++) {
-			Point2 p = linkPos().get(i);
-			int s = linkSize().get(i);
-			Point2 rotated = calculateRotatedPosition(p, size, s, rotation);
-			if (!Build.validPlace(linkBlock(s - 1), team, tile.x + rotated.x, tile.y + rotated.y, 0, false)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	default void createPlaceholder(Tile tile, int size) {
-		if (Vars.state.rules.infiniteResources || tile == null || tile.build == null) return;
-
-		for (int i = 0; i < linkPos().size; i++) {
-			Point2 p = linkPos().get(i);
-			int s = linkSize().get(i);
-			Point2 rotated = calculateRotatedPosition(p, size, s, tile.build.rotation);
-			Tile t = Vars.world.tile(tile.x + rotated.x, tile.y + rotated.y);
-			t.setBlock(placeholderBlock(s - 1), tile.team(), 0);
-
-			((PlaceholderBlock.PlaceholderBuild) t.build).updateLink(tile);
-		}
-	}
-
-	default Seq<Building> setLinkBuild(Building building, Block block, Tile tile, Team team, int size, int rotation) {
-		Seq<Building> out = new Seq<>(Building.class);
-		for (int i = 0; i < linkPos().size; i++) {
-			Point2 p = linkPos().get(i);
-			int s = linkSize().get(i);
-			Point2 rotated = calculateRotatedPosition(p, size, s, rotation);
-			Tile t = Vars.world.tile(tile.x + rotated.x, tile.y + rotated.y);
-
-			if (!block.outputsLiquid) {
-				t.setBlock(linkBlock(s - 1), team, 0);
-			} else {
-				t.setBlock(linkBlockLiquid(s - 1), team, 0);
-			}
-			((LinkBlock.LinkBuild) t.build).updateLink(building);
-			out.add(t.build);
+	@Override
+	public int getTileCount() {
+		int out = 0;
+		out += size * size;
+		for (int i = 0; i < linkSize().size; i++) {
+			out += linkSize().get(i) * linkSize().get(i);
 		}
 		return out;
 	}
 
-	default Seq<Tile> getLinkTiles(Tile tile, int size, int rotation) {
-		Seq<Tile> out = new Seq<>();
-		for (int i = 0; i < linkPos().size; i++) {
-			Point2 p = linkPos().get(i);
-			int s = linkSize().get(i);
-			Point2 rotated = calculateRotatedPosition(p, size, s, rotation);
-			Tile t = Vars.world.tile(tile.x + rotated.x, tile.y + rotated.y);
-			out.add(t);
-		}
-		return out;
+	@Override
+	public Seq<Point2> linkPos() {
+		return linkPos;
 	}
 
-	default Seq<Tile> linkTiles(int x, int y, int size, int rotation) {
-		Seq<Tile> tiles = new Seq<>();
-		Point2 lb = leftBottomPos(size);
-		for (int tx = 0; tx < size; tx++) {
-			for (int ty = 0; ty < size; ty++) {
-				Tile other = Vars.world.tile(x + tx + lb.x, y + ty + lb.y);
-				if (other != null) tiles.add(other);
+	@Override
+	public IntSeq linkSize() {
+		return linkSize;
+	}
+
+	@Override
+	public Block mirrorBlock() {
+		return this;
+	}
+
+	@Override
+	public boolean isMirror() {
+		return false;
+	}
+
+	@Override
+	public boolean canPlaceOn(Tile tile, Team team, int rotation) {
+		return super.canPlaceOn(tile, team, rotation) && checkLink(tile, team, size, rotation);
+	}
+
+	@Override
+	public void placeBegan(Tile tile, Block previous) {
+		createPlaceholder(tile, size);
+	}
+
+	@Override
+	public void changePlacementPath(Seq<Point2> points, int rotation) {
+		Placement.calculateNodes(points, this, rotation, (point, other) -> {
+			if (rotation % 2 == 0) return Math.abs(point.x - other.x) == getMaxSize(size, rotation).x;
+			else return Math.abs(point.y - other.y) == getMaxSize(size, rotation).y;
+		});
+	}
+
+	@Override
+	public void flipRotation(BuildPlan req, boolean x) {
+		if (canMirror) {
+			if (mirrorBlock() != null) {
+				req.rotation = rotations[req.rotation + (x ? 0 : 4)];
+			}
+		} else {
+			super.flipRotation(req, x);
+		}
+	}
+
+	@Override
+	public int size() {
+		return size;
+	}
+
+	public class MultiBuild extends Building implements IMultiBuild {
+		public boolean linkCreated = false;
+		public Seq<Building> linkEntities;
+		public Seq<Building[]> linkProximityMap;
+		public Tile teamPos, statusPos;
+		public int dumpIndex = 0;
+
+		@Override
+		public void created() {
+			super.created();
+			linkProximityMap = new Seq<>(Building[].class);
+
+			if (instantBuild || (!Vars.state.rules.editor && Vars.state.rules.instantBuild && Vars.state.rules.infiniteResources)) {
+				linkEntities = setLinkBuild(this, block, tile, team, size, rotation);
+				linkCreated = true;
+				updateLinkProximity();
 			}
 		}
 
-		for (int i = 0; i < linkPos().size; i++) {
-			Point2 p = linkPos().get(i);
-			int s = linkSize().get(i);
-			Point2 rotated = calculateRotatedPosition(p, size, s, rotation);
-			Point2 lb2 = leftBottomPos(s).add(rotated);
+		@Override
+		public void updateTile() {
+			updateLinkBlock();
+			super.updateTile();
+		}
 
-			for (int tx = 0; tx < s; tx++) {
-				for (int ty = 0; ty < s; ty++) {
-					Tile other = Vars.world.tile(x + tx + lb2.x, y + ty + lb2.y);
-					if (other != null) tiles.add(other);
+		public void updateLinkBlock() {
+			if (isPayload()) return;
+			if (!linkCreated) {
+				linkEntities = setLinkBuild(this, block, tile, team, size, rotation);
+				linkCreated = true;
+				updateLinkProximity();
+			}
+			//period check to avoid invalid link entity, todo need improvement
+			if (timer(checkTimer, 60f)) {
+				boolean linkValid = true;
+				for (Tile t : getLinkTiles(tile, size, rotation)) {
+					if (!(t.build instanceof LinkBlock.LinkBuild link && link.linkBuild == this && link.isValid())) {
+						linkValid = false;
+						break;
+					}
+				}
+				if (!linkValid) {
+					linkEntities.each(Building::kill);
+					kill();
 				}
 			}
 		}
 
-		return tiles;
-	}
+		@Override
+		public void updateLinkProximity() {
+			if (linkEntities != null) {
+				linkProximityMap.clear();
+				//add link entity's proximity
+				for (Building link : linkEntities) {
+					for (Building linkProx : link.proximity) {
+						if (linkProx != this && !linkEntities.contains(linkProx)) {
+							if (checkValidPair(linkProx, link)) {
+								linkProximityMap.add(new Building[]{linkProx, link});
+							}
+						}
+					}
+				}
 
-	default Point2 teamOverlayPos(int size, int rotation) {
-		Point2 out = leftBottomPos(size);
-
-		for (int i = 0; i < linkPos().size; i++) {
-			Point2 p = linkPos().get(i);
-			int s = linkSize().get(i);
-			Point2 rotated = calculateRotatedPosition(p, size, s, rotation);
-			Point2 lb = leftBottomPos(s).add(rotated);
-
-			if ((lb.x + lb.y) < (out.x + out.y)) out.set(lb.x, lb.y);
-		}
-		return out;
-	}
-
-	default Point2 statusOverlayPos(int size, int rotation) {
-		Point2 out = rightBottomPos(size);
-
-		for (int i = 0; i < linkPos().size; i++) {
-			Point2 p = linkPos().get(i);
-			int s = linkSize().get(i);
-			Point2 rotated = calculateRotatedPosition(p, size, s, rotation);
-			Point2 rb = rightBottomPos(s).add(rotated);
-
-			if ((rb.x - rb.y) > (out.x - out.y)) out.set(rb.x, rb.y);
-		}
-		return out;
-	}
-
-	default Point2 leftBottomPos(int size) {
-		int shift = (size + 1) % 2;
-		return new Point2(-size / 2 + shift, -size / 2 + shift);
-	}
-
-	default Point2 rightBottomPos(int size) {
-		int shift = (size + 1) % 2;
-		return new Point2(size / 2, -size / 2 + shift);
-	}
-
-	default Point2 getMaxSize(int size, int rotation) {
-		int shift = (size + 1) % 2;
-		int left = -size / 2 + shift, bot = -size / 2 + shift, right = size / 2, top = size / 2;
-
-		Point2 out = new Point2(size, size);
-
-		for (int i = 0; i < linkPos().size; i++) {
-			Point2 p = linkPos().get(i);
-			int s = linkSize().get(i);
-			Point2 rotated = calculateRotatedPosition(p, size, s, rotation);
-
-			left = Math.min(left, rotated.x);
-			right = Math.max(right, rotated.x);
-			bot = Math.min(bot, rotated.y);
-			top = Math.max(top, rotated.y);
+				//add self entity's proximity
+				for (Building prox : proximity) {
+					if (!linkEntities.contains(prox)) {
+						if (checkValidPair(prox, this)) {
+							linkProximityMap.add(new Building[]{prox, this});
+						}
+					}
+				}
+			}
 		}
 
-		out.set(right - left + 1, top - bot + 1);
-		return out;
-	}
+		@Override
+		public boolean checkValidPair(Building target, Building source) {
+			for (Building[] pair : linkProximityMap) {
+				Building pairTarget = pair[0];
+				Building pairSource = pair[1];
 
-	static void calculateRotatedOffsetPosition(Point2 out, int px, int py, int blockSize, int otherSize, int rotation) {
-		int shift = (blockSize + 1) % 2;
-		int offset = (otherSize + 1) % 2;
+				if (target == pairTarget) {
+					if (target.relativeTo(pairSource) == target.relativeTo(source)) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
 
-		switch (rotation) {
-			case 1 -> out.set(-py + shift - offset, px);
-			case 2 -> out.set(-px + shift - offset, -py + shift - offset);
-			case 3 -> out.set(py, -px + shift - offset);
-			default -> out.set(px, py); // default rotation 0
+		@Override
+		public void onProximityUpdate() {
+			super.onProximityUpdate();
+			updateLinkProximity();
+		}
+
+		@Override
+		public void onRemoved() {
+			createPlaceholder(tile, size);
+		}
+
+		@Override
+		public Seq<Building> linkEntities() {
+			return linkEntities;
+		}
+
+		@Override
+		public Seq<Building[]> linkProximityMap() {
+			return linkProximityMap;
+		}
+
+		@Override
+		public int dumpIndex() {
+			return dumpIndex;
+		}
+
+		@Override
+		public void dumpIndex(int value) {
+			dumpIndex = value;
+		}
+
+		public void incrementDumpIndex(int prox) {
+			dumpIndex = ((dumpIndex + 1) % prox);
+		}
+
+		@Override
+		public boolean dump(Item todump) {
+			if (!hasItems || items.total() == 0 || linkProximityMap.size == 0 || (todump != null && !items.has(todump)))
+				return false;
+			int dump = dumpIndex;
+			for (int i = 0; i < linkProximityMap.size; i++) {
+				int idx = (i + dump) % linkProximityMap.size;
+				Building[] pair = linkProximityMap.get(idx);
+				Building target = pair[0];
+				Building source = pair[1];
+
+				if (todump == null) {
+					for (int ii = 0; ii < Vars.content.items().size; ii++) {
+						if (!items.has(ii)) continue;
+						Item item = Vars.content.items().get(ii);
+						if (target.acceptItem(source, item) && canDump(target, item)) {
+							target.handleItem(source, item);
+							items.remove(item, 1);
+							incrementDumpIndex(linkProximityMap.size);
+							return true;
+						}
+					}
+				} else {
+					if (target.acceptItem(source, todump) && canDump(target, todump)) {
+						target.handleItem(source, todump);
+						items.remove(todump, 1);
+						incrementDumpIndex(linkProximityMap.size);
+						return true;
+					}
+				}
+				incrementDumpIndex(linkProximityMap.size);
+			}
+			return false;
+		}
+
+		@Override
+		public void dumpLiquid(Liquid liquid, float scaling, int outputDir) {
+			int dump = cdump;
+			if (liquids.get(liquid) <= 0.0001f) return;
+			if (!Vars.net.client() && Vars.state.isCampaign() && team == Vars.state.rules.defaultTeam) liquid.unlock();
+			for (int i = 0; i < linkProximityMap.size; i++) {
+				incrementDumpIndex(linkProximityMap.size);
+				int idx = (i + dump) % linkProximityMap.size;
+				Building[] pair = linkProximityMap.get(idx);
+				Building target = pair[0];
+				Building source = pair[1];
+				if (outputDir != -1 && (outputDir + rotation) % 4 != relativeTo(target)) continue;
+				target = target.getLiquidDestination(source, liquid);
+				if (target != null && target.block.hasLiquids && canDumpLiquid(target, liquid) && target.liquids != null) {
+					float ofract = target.liquids.get(liquid) / target.block.liquidCapacity;
+					float fract = liquids.get(liquid) / liquidCapacity;
+					if (ofract < fract)
+						transferLiquid(target, (fract - ofract) * liquidCapacity / scaling, liquid);
+				}
+			}
+		}
+
+		@Override
+		public boolean dumpPayload(Payload todump) {
+			int dump = dumpIndex;
+			for (int i = 0; i < linkProximityMap.size; ++i) {
+				int idx = (i + dump) % linkProximityMap.size;
+				Building[] pair = linkProximityMap.get(idx);
+				Building target = pair[0];
+				Building source = pair[1];
+				if (todump != null && getPayloads().get(todump.content()) > 0 && target.acceptPayload(source, todump)) {
+					target.handlePayload(this, todump);
+					getPayloads().remove(todump.content(), 1);
+					if (target instanceof PayloadConveyor.PayloadConveyorBuild) {
+						Fx.payloadDeposit.at(x, y, angleTo(target), new UnitAssembler.YeetData(new Vec2(target.x, target.y), todump.content()));
+					}
+					incrementDumpIndex(linkProximityMap.size);
+					return true;
+				}
+				incrementDumpIndex(linkProximityMap.size);
+			}
+			return false;
+		}
+
+		@Override
+		public void offload(Item item) {
+			produced(item, 1);
+			int dump = dumpIndex;
+			for (int i = 0; i < linkProximityMap.size; i++) {
+				incrementDumpIndex(linkProximityMap.size);
+				int idx = (i + dump) % linkProximityMap.size;
+				Building[] pair = linkProximityMap.get(idx);
+				Building target = pair[0];
+				Building source = pair[1];
+				if (target.acceptItem(source, item) && canDump(target, item)) {
+					target.handleItem(source, item);
+					return;
+				}
+			}
+			handleItem(this, item);
+		}
+
+		@Override
+		public boolean canPickup() {
+			return false;
+		}
+
+		@Override
+		public void drawTeam() {
+			teamPos = Vars.world.tile(tileX() + teamOverlayPos(size, rotation).x, tileY() + teamOverlayPos(size, rotation).y);
+			if (teamPos != null) {
+				Draw.z(Layer.blockOver);
+				Draw.color(team.color);
+				Draw.rect("block-border", teamPos.worldx(), teamPos.worldy());
+				Draw.color();
+			}
+		}
+
+		@Override
+		public void drawStatus() {
+			statusPos = Vars.world.tile(tileX() + statusOverlayPos(size, rotation).x, tileY() + statusOverlayPos(size, rotation).y);
+			if (enableDrawStatus && consumers.length > 0) {
+				float multiplier = size > 1 ? 1 : 0.64f;
+				Draw.z(Layer.power + 1);
+				Draw.color(Pal.gray);
+				Fill.square(statusPos.worldx(), statusPos.worldy(), 2.5f * multiplier, 45);
+				Draw.color(status().color);
+				Fill.square(statusPos.worldx(), statusPos.worldy(), 1.5f * multiplier, 45);
+				Draw.color();
+			}
+		}
+
+		@Override
+		public Block block() {
+			return block;
+		}
+
+		@Override
+		public Tile tile() {
+			return tile;
+		}
+
+		@Override
+		public float efficiency() {
+			return efficiency;
+		}
+
+		@Override
+		public Seq<Building> proximity() {
+			return proximity;
 		}
 	}
 }

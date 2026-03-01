@@ -22,11 +22,6 @@ public class CoreUnloader extends Unloader {
 		configClear((CoreUnloaderBuild tile) -> tile.sortItem = null);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = CoreUnloaderBuild::new;
-	}
-
 	public class CoreUnloaderBuild extends UnloaderBuild {
 		public boolean output = true;
 		public int fire = 0;

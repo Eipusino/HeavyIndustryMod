@@ -21,11 +21,6 @@ public class ConsumeVariableReactor extends VariableReactor {
 		stats.add(Stat.productionTime, itemDuration / 60, StatUnit.seconds);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = ConsumeVariableReactorBuild::new;
-	}
-
 	public class ConsumeVariableReactorBuild extends VariableReactorBuild {
 		public float consumeItemTimer;
 

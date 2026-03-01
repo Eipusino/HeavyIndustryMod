@@ -86,11 +86,6 @@ public class AdvancedConsumeGenerator extends ConsumeGenerator {
 		return outputItems != null;
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = AdvancedConsumeGeneratorBuild::new;
-	}
-
 	public class AdvancedConsumeGeneratorBuild extends ConsumeGeneratorBuild {
 		@Override
 		public void updateTile() {

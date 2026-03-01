@@ -102,11 +102,6 @@ public class MultiBulletTurret extends Turret {
 		super.init();
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = MultiBulletTurretBuild::new;
-	}
-
 	public class MultiBulletTurretBuild extends TurretBuild {
 		public Seq<ItemEntry> ammo = new Seq<>(ItemEntry.class);
 		public int bid = 0;
@@ -327,11 +322,6 @@ public class MultiBulletTurret extends Turret {
 		}
 
 		@Override
-		public byte version() {
-			return 2;
-		}
-
-		@Override
 		public void write(Writes write) {
 			super.write(write);
 			write.b(ammo.size);
@@ -348,12 +338,12 @@ public class MultiBulletTurret extends Turret {
 			totalAmmo = 0;
 			int amount = read.ub();
 			for (int i = 0; i < amount; i++) {
-				Item item = Vars.content.item(revision < 2 ? read.ub() : read.s());
-				short a = read.s();
+				Item item = Vars.content.item(read.s());
+				short amo = read.s();
 
 				if (item != null && ammoTypes.containsKey(item)) {
-					totalAmmo += a;
-					ammo.add(new ItemEntry(item, a));
+					totalAmmo += amo;
+					ammo.add(new ItemEntry(item, amo));
 				}
 			}
 		}

@@ -23,11 +23,6 @@ public class MultiTurretCoreBlock extends CoreBlock {
 		super(name);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = MultiTurretCoreBuild::new;
-	}
-
 	public class MultiTurretCoreBuild extends CoreBuild implements Ranged {
 		public BuildPayload[] payloads;
 

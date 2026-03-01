@@ -24,11 +24,6 @@ public class ConnectedWall extends Wall {
 		autotileRegions = Sprites.split(name + "-autotile", 32, 12, 4);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = ConnectedWallBuild::new;
-	}
-
 	public class ConnectedWallBuild extends WallBuild {
 		public int drawIndex = 0;
 

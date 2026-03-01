@@ -612,7 +612,14 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 
 	@Override
 	public int indexOf(Object o) {
-		return indexOf(o, false);
+		if (o == null) {
+			for (int i = 0, n = size; i < n; i++)
+				if (items[i] == null) return i;
+		} else {
+			for (int i = 0, n = size; i < n; i++)
+				if (o.equals(items[i])) return i;
+		}
+		return -1;
 	}
 
 	@Override

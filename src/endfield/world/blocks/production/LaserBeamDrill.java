@@ -36,7 +36,7 @@ public class LaserBeamDrill extends Drill {
 	public TextureRegion laserEnd;
 
 	public Color laserColor = new Color(0xf58349ff);
-	public Color arcColor = new Color(0xf2d585ff);
+	//public Color arcColor = new Color(0xf2d585ff);
 
 	public float laserAlpha = 0.75f;
 	public float laserAlphaSine = 0.2f;
@@ -71,11 +71,6 @@ public class LaserBeamDrill extends Drill {
 	@Override
 	public TextureRegion[] icons() {
 		return teamRegion.found() ? new TextureRegion[]{baseRegion, topRegion, teamRegions[Team.sharded.id]} : new TextureRegion[]{region};
-	}
-
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = LaserBeamDrillBuild::new;
 	}
 
 	public class LaserBeamDrillBuild extends DrillBuild {

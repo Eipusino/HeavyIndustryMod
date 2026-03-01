@@ -53,11 +53,6 @@ public class PlaceableCore extends CoreBlock {
 		return true;
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = PlaceableCoreBuild::new;
-	}
-
 	public class PlaceableCoreBuild extends CoreBuild {
 		public Block toPlace;
 

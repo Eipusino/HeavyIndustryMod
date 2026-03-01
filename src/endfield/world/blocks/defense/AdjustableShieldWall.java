@@ -52,11 +52,6 @@ public class AdjustableShieldWall extends Wall {
 		stats.add(Stat.shieldHealth, shieldHealth);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = AdjustableShieldWallBuild::new;
-	}
-
 	public class AdjustableShieldWallBuild extends WallBuild {
 		public boolean enabled = true;
 		public float shield;

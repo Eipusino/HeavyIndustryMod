@@ -106,11 +106,6 @@ public class RailConveyor extends Conveyor2 {
 		};
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = RailConveyorBuild::new;
-	}
-
 	public class RailConveyorBuild extends ConveyorBuild2 {
 		public int drawIndex = 0;
 		public boolean armored = false;

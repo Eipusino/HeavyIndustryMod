@@ -26,7 +26,6 @@ import mindustry.graphics.Drawf;
 import mindustry.graphics.Layer;
 import mindustry.graphics.Pal;
 import mindustry.input.Placement;
-import mindustry.mod.NoPatch;
 import mindustry.ui.Bar;
 import mindustry.world.Block;
 import mindustry.world.ItemBuffer;
@@ -53,7 +52,6 @@ public class TubeItemBridge extends ItemBridge {
 	public byte maxConnections = 3;
 	public int bufferCapacity;
 
-	@NoPatch
 	protected List<Block> connectibleBlocks = new CollectionList<>(Block.class);
 
 	public Boolf<Building> connectFilter = build -> connectibleBlocks.contains(build.block);
@@ -232,11 +230,6 @@ public class TubeItemBridge extends ItemBridge {
 
 	public void changePlacementPath(Seq<Point2> points, int rotation) {
 		Placement.calculateNodes(points, this, rotation, this::positionsValid);
-	}
-
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = TubeItemBridgeBuild::new;
 	}
 
 	public class TubeItemBridgeBuild extends ItemBridgeBuild {

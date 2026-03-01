@@ -66,11 +66,6 @@ public class PayloadSource2 extends PayloadSource {
 		return b.isVisible() && !(b instanceof CoreBlock) && !Vars.state.rules.isBanned(b) && b.environmentBuildable();
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = PayloadSourceBuild2::new;
-	}
-
 	public class PayloadSourceBuild2 extends PayloadSourceBuild {
 		@Override
 		public void updateTile() {

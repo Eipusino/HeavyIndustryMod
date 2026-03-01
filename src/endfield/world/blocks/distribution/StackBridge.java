@@ -17,11 +17,6 @@ public class StackBridge extends ItemBridge {
 		super(name);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = StackBridgeBuild::new;
-	}
-
 	public class StackBridgeBuild extends ItemBridgeBuild {
 		public Item lastItem;
 		public int amount = 0;

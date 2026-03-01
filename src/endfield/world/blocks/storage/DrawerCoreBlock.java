@@ -26,11 +26,6 @@ public class DrawerCoreBlock extends CoreBlock {
 		return drawer.finalIcons(this);
 	}
 
-	@Override
-	protected void initBuilding() {
-		if (buildType == null) buildType = DrawerCoreBuild::new;
-	}
-
 	public class DrawerCoreBuild extends CoreBuild {
 		@Override
 		public void draw() {
