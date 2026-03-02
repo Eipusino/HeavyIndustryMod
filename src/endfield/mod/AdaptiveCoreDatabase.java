@@ -36,7 +36,7 @@ public final class AdaptiveCoreDatabase {
 		Seq<LoadedMod> mods = Vars.mods.list();
 		for (LoadedMod mod : mods) {
 			try {
-				if (mod == null || mod.meta == null || mod.name.equals(MOD_NAME) || !mod.enabled()) continue;
+				if (mod == null || mod.meta == null || mod.meta.hidden || mod.name.equals(MOD_NAME) || !mod.enabled()) continue;
 
 				String name = mod.meta.name;
 				Fi metaFile = mod.root.child("adc.json");

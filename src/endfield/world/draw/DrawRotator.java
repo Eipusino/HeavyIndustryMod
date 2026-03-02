@@ -54,7 +54,8 @@ public class DrawRotator extends DrawBlock {
 	public void draw(Building build) {
 		if (usesSpinDraw)
 			Drawf.spinSprite(rotator, build.x + x, build.y + y, build.totalProgress() * rotateSpeed + primaryRotation);
-		else Draw.rect(rotator, build.x + x, build.y + y, build.totalProgress() * rotateSpeed + primaryRotation);
+		else
+			Draw.rect(rotator, build.x + x, build.y + y, build.totalProgress() * rotateSpeed + primaryRotation);
 	}
 
 	@Override

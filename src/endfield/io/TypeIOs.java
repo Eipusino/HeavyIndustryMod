@@ -19,9 +19,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Array;
 
-public final class TypeIO2 {
+public final class TypeIOs {
 	/** Don't let anyone instantiate this class. */
-	private TypeIO2() {}
+	private TypeIOs() {}
 
 	public static void writePoint2(Writes write, Point2 p) {
 		write.i(p.x);

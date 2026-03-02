@@ -10,7 +10,7 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import endfield.io.TypeIO2;
+import endfield.io.TypeIOs;
 import mindustry.entities.TargetPriority;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
@@ -283,7 +283,7 @@ public class PayloadJunction extends Block {
 
 			for (int i = 0; i < 2; i++) {
 				write.i(from[i]);
-				TypeIO2.write(payloads[i], write);
+				TypeIOs.write(payloads[i], write);
 			}
 		}
 
@@ -293,7 +293,7 @@ public class PayloadJunction extends Block {
 
 			for (int i = 0; i < 2; i++) {
 				from[i] = read.i();
-				payloads[i] = TypeIO2.read(read);
+				payloads[i] = TypeIOs.read(read);
 			}
 		}
 	}

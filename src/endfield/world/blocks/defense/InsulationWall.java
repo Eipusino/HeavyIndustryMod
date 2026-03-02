@@ -96,9 +96,9 @@ public class InsulationWall extends Wall {
 
 		@Override
 		public void tapped() {
-			if (!timer(timerToggle, 60f)) return;
-
-			configure(!open);
+			if (timer(timerToggle, 60f)) {
+				configure(!open);
+			}
 		}
 
 		@Override

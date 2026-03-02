@@ -12,6 +12,7 @@ import arc.util.Scaling;
 import arc.util.Strings;
 import arc.util.Time;
 import endfield.ui.ItemDisplay;
+import endfield.world.blocks.IControlBlock;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.content.UnitTypes;
@@ -31,7 +32,6 @@ import mindustry.ui.Bar;
 import mindustry.ui.Styles;
 import mindustry.world.Block;
 import mindustry.world.Tile;
-import mindustry.world.blocks.ControlBlock;
 import mindustry.world.consumers.Consume;
 import mindustry.world.meta.Stat;
 import org.jetbrains.annotations.Nullable;
@@ -157,7 +157,7 @@ public class MechPad extends Block {
 		super.init();
 	}
 
-	public class MechPadBuild extends Building implements ControlBlock {
+	public class MechPadBuild extends Building implements IControlBlock {
 		public float progress, time, speedScl;
 		public @Nullable BlockUnitc unit;
 
@@ -251,21 +251,6 @@ public class MechPad extends Block {
 			} else if (potentialEfficiency > 0) {
 				Drawf.additive(glowRegion, Pal.accent, /*warmup * */(1f - 0.5f + Mathf.absin(Time.time, 8f, 0.5f)), x, y, 0f, Layer.blockAdditive);
 			}
-		}
-
-		@Override
-		public boolean isControlled() {
-			return unit().isPlayer();
-		}
-
-		@Override
-		public boolean canControl() {
-			return true;
-		}
-
-		@Override
-		public boolean shouldAutoTarget() {
-			return true;
 		}
 	}
 }

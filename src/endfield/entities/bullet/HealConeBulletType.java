@@ -5,7 +5,7 @@ import arc.graphics.g2d.Fill;
 import arc.math.Angles;
 import arc.math.Interp;
 import arc.util.Time;
-import endfield.world.blocks.defense.turrets.MendTurret.MendTurretBuild;
+import endfield.world.blocks.defense.turrets.MendTurret;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.entities.Units;
@@ -60,8 +60,8 @@ public class HealConeBulletType extends BulletType {
 		float in = b.time < b.lifetime - 10 ? Math.min(1, b.time / 10) : (b.lifetime - b.time) / 10;
 		in = Interp.fastSlow.apply(in);
 
-		float amountMt = b.owner instanceof MendTurretBuild mt ? mt.amountMti() : 1;
-		float angleMt = (b.owner instanceof MendTurretBuild mt ? mt.angleMti() : 1) * in;
+		float amountMt = b.owner instanceof MendTurret.MendTurretBuild mt ? mt.amountMti() : 1;
+		float angleMt = (b.owner instanceof MendTurret.MendTurretBuild mt ? mt.angleMti() : 1) * in;
 		Units.nearby(b.team, b.x, b.y, findRange * in, unit -> {
 			if (unit.damaged() && Angles.within(b.rotation(), b.angleTo(unit), (findAngle * angleMt) / 2) && unit != b.owner) {
 				if (percentHeal)

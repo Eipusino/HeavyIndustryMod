@@ -20,11 +20,14 @@ public class RunningLight extends DrawBlock {
 
 	public RunningLight(int siz) {
 		size = siz;
-		regions = new TextureRegion[siz];
 	}
+
+	public RunningLight() {}
 
 	@Override
 	public void load(Block block) {
+		regions = new TextureRegion[size];
+
 		for (int i = 0; i < size; i++) {
 			int ci = size - 1 - i;
 			regions[i] = !contrary ? Core.atlas.find(block.name + "-glow-" + i) : Core.atlas.find(block.name + "-glow-" + ci);
@@ -37,9 +40,10 @@ public class RunningLight extends DrawBlock {
 			float sin = Mathf.absin(Time.time + i * (60f / size), 6, 1);
 			float a = sin * build.warmup();
 			Draw.color(color.cpy().a(a));
-			if (build instanceof TurretBuild)
-				Draw.rect(regions[i], build.x + ((TurretBuild) build).recoilOffset.x, build.y + ((TurretBuild) build).recoilOffset.y, build.drawrot());
-			else Draw.rect(regions[i], build.x, build.y, build.drawrot());
+			if (build instanceof TurretBuild turret)
+				Draw.rect(regions[i], build.x + turret.recoilOffset.x, build.y + turret.recoilOffset.y, build.drawrot());
+			else
+				Draw.rect(regions[i], build.x, build.y, build.drawrot());
 		}
 		Draw.reset();
 	}

@@ -7,13 +7,13 @@ import arc.graphics.g2d.Font;
 import arc.math.Mathf;
 import arc.util.Align;
 import arc.util.Time;
+import endfield.world.blocks.IControlBlock;
 import mindustry.Vars;
 import mindustry.content.UnitTypes;
 import mindustry.gen.BlockUnitc;
 import mindustry.gen.Unit;
 import mindustry.graphics.Layer;
 import mindustry.ui.Fonts;
-import mindustry.world.blocks.ControlBlock;
 import mindustry.world.blocks.defense.Wall;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,7 +27,7 @@ public class DPSWall extends Wall {
 		update = true;
 	}
 
-	public class DPSWallBuild extends WallBuild implements ControlBlock {
+	public class DPSWallBuild extends WallBuild implements IControlBlock {
 		public float totalDamage = 0f, hits = 0f, firstHitTime = 0f, lastHitTime = 0f, showBoardTime = 0f;
 
 		public @Nullable BlockUnitc unit;

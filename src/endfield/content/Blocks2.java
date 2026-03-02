@@ -113,6 +113,7 @@ import endfield.world.blocks.production.UnitMinerPoint;
 import endfield.world.blocks.sandbox.AdaptiveSource;
 import endfield.world.blocks.sandbox.NextWave;
 import endfield.world.blocks.sandbox.RandomSource;
+import endfield.world.blocks.sandbox.TestBlock;
 import endfield.world.blocks.storage.CoreStorageBlock;
 import endfield.world.blocks.storage.CrashCore;
 import endfield.world.blocks.storage.Unloader2;
@@ -551,6 +552,7 @@ public final class Blocks2 {
 	public static DPSWall dpsWall, dpsWallLarge, dpsWallHuge, dpsWallGigantic;
 	public static PlatformTurret mustDieTurret, oneShotTurret, pointTurret;
 	public static NextWave nextWave;
+	public static TestBlock testBlock;
 
 	//internal
 	public static final int maxsize = 4;
@@ -6489,6 +6491,11 @@ public final class Blocks2 {
 		nextWave = new NextWave("next-wave") {{
 			requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.empty);
 			size = 2;
+			health = 1000;
+			armor = 10f;
+		}};
+		testBlock = new TestBlock("test-block-1") {{
+			requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.empty);
 			health = 1000;
 			armor = 10f;
 		}};

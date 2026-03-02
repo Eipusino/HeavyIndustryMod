@@ -1,12 +1,7 @@
 package endfield.world.blocks.defense;
 
-import mindustry.content.UnitTypes;
-import mindustry.gen.BlockUnitc;
 import mindustry.gen.Bullet;
-import mindustry.gen.Unit;
-import mindustry.world.blocks.ControlBlock;
 import mindustry.world.blocks.defense.Wall;
-import org.jetbrains.annotations.Nullable;
 
 public class IndestructibleWall extends Wall {
 	public IndestructibleWall(String name) {
@@ -18,9 +13,7 @@ public class IndestructibleWall extends Wall {
 		chanceDeflect = 1f;
 	}
 
-	public class IndestructibleWallBuild extends WallBuild implements ControlBlock {
-		public @Nullable BlockUnitc unit;
-
+	public class IndestructibleWallBuild extends WallBuild {
 		@Override
 		public void damage(float damage) {}
 
@@ -32,30 +25,6 @@ public class IndestructibleWall extends Wall {
 		@Override
 		public boolean collision(Bullet bullet) {
 			super.collision(bullet);
-			return true;
-		}
-
-		@Override
-		public Unit unit() {
-			if (unit == null) {
-				unit = (BlockUnitc) UnitTypes.block.create(team);
-				unit.tile(this);
-			}
-			return (Unit) unit;
-		}
-
-		@Override
-		public boolean isControlled() {
-			return unit().isPlayer();
-		}
-
-		@Override
-		public boolean canControl() {
-			return true;
-		}
-
-		@Override
-		public boolean shouldAutoTarget() {
 			return true;
 		}
 	}

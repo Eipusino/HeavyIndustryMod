@@ -14,8 +14,9 @@ import arc.util.Time;
 import arc.util.Tmp;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import endfield.io.TypeIO2;
+import endfield.io.TypeIOs;
 import endfield.math.Mathm;
+import endfield.world.blocks.IControlBlock;
 import mindustry.Vars;
 import mindustry.content.Fx;
 import mindustry.content.UnitTypes;
@@ -30,7 +31,6 @@ import mindustry.graphics.Pal;
 import mindustry.world.Block;
 import mindustry.world.Build;
 import mindustry.world.Tile;
-import mindustry.world.blocks.ControlBlock;
 import mindustry.world.blocks.payloads.BuildPayload;
 import mindustry.world.blocks.payloads.Payload;
 import mindustry.world.meta.BuildVisibility;
@@ -168,7 +168,7 @@ public class PayloadCrane extends Block {
 		}
 	}
 
-	public class PayloadCraneBuild extends Building implements ControlBlock {
+	public class PayloadCraneBuild extends Building implements IControlBlock {
 		public BlockUnitc unit;
 		public float craneRotation = 90f, extension;
 		public Vec2 target = new Vec2();
@@ -392,7 +392,7 @@ public class PayloadCrane extends Block {
 			write.f(target.x);
 			write.f(target.y);
 
-			TypeIO2.write(payload, write);
+			TypeIOs.write(payload, write);
 
 			write.i(cranePoints.size);
 			for (int i = 0; i < cranePoints.size; i++) {
@@ -410,7 +410,7 @@ public class PayloadCrane extends Block {
 
 			target.set(read.f(), read.f());
 
-			payload = TypeIO2.read(read);
+			payload = TypeIOs.read(read);
 
 			int pointsSize = read.i();
 			for (int i = 0; i < pointsSize; i++) {
