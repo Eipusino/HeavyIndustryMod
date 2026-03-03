@@ -3,11 +3,9 @@ package endfield.world.blocks.sandbox;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
 import arc.util.Log;
-import arc.util.Structs;
 import endfield.util.Reflects;
 import endfield.world.blocks.IBlock;
 import endfield.world.blocks.IBuilding;
-import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.Tile;
@@ -25,6 +23,7 @@ public class TestBlock extends Block implements IBlock {
 		envEnabled = Env.any;
 
 		solid = true;
+		destructible = true;
 		targetable = false;
 	}
 
@@ -42,22 +41,20 @@ public class TestBlock extends Block implements IBlock {
 
 			while (buildType == null && Block.class.isAssignableFrom(current)) {
 				//first class that is subclass of Building
-				Class<?> type = Structs.find(current.getDeclaredClasses(), t -> Building.class.isAssignableFrom(t) && !t.isInterface());
-				if (type != null) {
-					//these are inner classes, so they have an implicit parameter generated
-					buildCons = Reflects.publicLookup.findConstructor(type, MethodType.methodType(void.class, type.getDeclaringClass()));
+				Class<?>[] types = current.getDeclaredClasses();
+				for (Class<?> type : types) {
+					if (Building.class.isAssignableFrom(type) && !type.isInterface()) {
+						//these are inner classes, so they have an implicit parameter generated
+						buildCons = Reflects.publicLookup.findConstructor(type, MethodType.methodType(void.class, type.getDeclaringClass()));
 
-					buildType = () -> {
-						try {
-							return (Building) buildCons.invoke(this);
-						} catch (Throwable e) {
-							Log.err(e);
-
-							Vars.ui.showException(e);
-
-							return new TestBuild();
-						}
-					};
+						buildType = () -> {
+							try {
+								return (Building) buildCons.invoke(this);
+							} catch (Throwable e) {
+								return new TestBuild();
+							}
+						};
+					}
 				}
 
 				//scan through every superclass looking for it

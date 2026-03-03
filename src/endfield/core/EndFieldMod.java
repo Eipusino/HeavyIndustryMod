@@ -189,7 +189,7 @@ public final class EndFieldMod extends Mod {
 
 			Call2.init();
 
-			Worlds.loadAll();
+			//Worlds.loadAll();
 			Worlds.load();
 
 			UnitCommands2.loadAll();

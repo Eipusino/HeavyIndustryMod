@@ -55,7 +55,7 @@ public final class Worlds {
 		// These properties should not be included in the code
 		Fi file = Vars2.internalTree.child("other").child("fallback.properties");
 
-		Properties properties = new Properties(343);
+		Properties properties = new Properties(8);
 		try (Reader reader = file.reader(512)) {
 			properties.load(reader);
 		} catch (IOException e) {
