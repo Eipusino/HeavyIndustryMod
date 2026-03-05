@@ -83,306 +83,272 @@ public interface FieldAccessHelper {
 
 	<T> T getStatic(Class<?> clazz, String name);
 
-	default void setByte(Object object, Field field, byte value, boolean access) {
+	default void setByte(Object object, Field field, byte value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.setByte(object, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setByteStatic(Field field, byte value, boolean access) {
+	default void setByteStatic(Field field, byte value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.setByte(null, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default byte getByte(Object object, Field field, boolean access) {
+	default byte getByte(Object object, Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return field.getByte(object);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default byte getByteStatic(Field field, boolean access) {
+	default byte getByteStatic(Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return field.getByte(null);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setShort(Object object, Field field, short value, boolean access) {
+	default void setShort(Object object, Field field, short value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.setShort(object, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setShortStatic(Field field, short value, boolean access) {
+	default void setShortStatic(Field field, short value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.setShort(null, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default short getShort(Object object, Field field, boolean access) {
+	default short getShort(Object object, Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return field.getShort(object);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default short getShortStatic(Field field, boolean access) {
+	default short getShortStatic(Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return field.getShort(null);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setInt(Object object, Field field, int value, boolean access) {
+	default void setInt(Object object, Field field, int value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.setInt(object, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setIntStatic(Field field, int value, boolean access) {
+	default void setIntStatic(Field field, int value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.setInt(null, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default int getInt(Object object, Field field, boolean access) {
+	default int getInt(Object object, Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return field.getInt(object);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default int getIntStatic(Field field, boolean access) {
+	default int getIntStatic(Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return field.getInt(null);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setLong(Object object, Field field, long value, boolean access) {
+	default void setLong(Object object, Field field, long value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.setLong(object, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setLongStatic(Field field, long value, boolean access) {
+	default void setLongStatic(Field field, long value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.setLong(null, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default long getLong(Object object, Field field, boolean access) {
+	default long getLong(Object object, Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return field.getLong(object);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default long getLongStatic(Field field, boolean access) {
+	default long getLongStatic(Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return field.getLong(null);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setFloat(Object object, Field field, float value, boolean access) {
+	default void setFloat(Object object, Field field, float value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.setFloat(object, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setFloatStatic(Field field, float value, boolean access) {
+	default void setFloatStatic(Field field, float value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.setFloat(null, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default float getFloat(Object object, Field field, boolean access) {
+	default float getFloat(Object object, Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return field.getFloat(object);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default float getFloatStatic(Field field, boolean access) {
+	default float getFloatStatic(Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return field.getFloat(null);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setDouble(Object object, Field field, double value, boolean access) {
+	default void setDouble(Object object, Field field, double value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.setDouble(object, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setDoubleStatic(Field field, double value, boolean access) {
+	default void setDoubleStatic(Field field, double value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.setDouble(null, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default double getDouble(Object object, Field field, boolean access) {
+	default double getDouble(Object object, Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return field.getDouble(object);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default double getDoubleStatic(Field field, boolean access) {
+	default double getDoubleStatic(Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return field.getDouble(null);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setChar(Object object, Field field, char value, boolean access) {
+	default void setChar(Object object, Field field, char value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.setChar(object, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setCharStatic(Field field, char value, boolean access) {
+	default void setCharStatic(Field field, char value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.setChar(null, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default char getChar(Object object, Field field, boolean access) {
+	default char getChar(Object object, Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return field.getChar(object);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default char getCharStatic(Field field, boolean access) {
+	default char getCharStatic(Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return field.getChar(null);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setBoolean(Object object, Field field, boolean value, boolean access) {
+	default void setBoolean(Object object, Field field, boolean value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.setBoolean(object, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setBooleanStatic(Field field, boolean value, boolean access) {
+	default void setBooleanStatic(Field field, boolean value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.setBoolean(null, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default boolean getBoolean(Object object, Field field, boolean access) {
+	default boolean getBoolean(Object object, Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return field.getBoolean(object);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default boolean getBooleanStatic(Field field, boolean access) {
+	default boolean getBooleanStatic(Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return field.getBoolean(null);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setObject(Object object, Field field, Object value, boolean access) {
+	default void setObject(Object object, Field field, Object value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.set(object, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setObjectStatic(Field field, Object value, boolean access) {
+	default void setObjectStatic(Field field, Object value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.set(null, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
@@ -390,9 +356,8 @@ public interface FieldAccessHelper {
 	}
 
 	@SuppressWarnings("unchecked")
-	default <T> T getObject(Object object, Field field, boolean access) {
+	default <T> T getObject(Object object, Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return (T) field.get(object);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
@@ -400,27 +365,24 @@ public interface FieldAccessHelper {
 	}
 
 	@SuppressWarnings("unchecked")
-	default <T> T getObjectStatic(Field field, boolean access) {
+	default <T> T getObjectStatic(Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return (T) field.get(null);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void set(Object object, Field field, Object value, boolean access) {
+	default void set(Object object, Field field, Object value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.set(object, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default void setStatic(Field field, Object value, boolean access) {
+	default void setStatic(Field field, Object value) {
 		try {
-			if (access) field.setAccessible(true);
 			field.set(null, value);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
@@ -428,9 +390,8 @@ public interface FieldAccessHelper {
 	}
 
 	@SuppressWarnings("unchecked")
-	default <T> T get(Object object, Field field, boolean access) {
+	default <T> T get(Object object, Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return (T) field.get(object);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);
@@ -438,9 +399,8 @@ public interface FieldAccessHelper {
 	}
 
 	@SuppressWarnings("unchecked")
-	default <T> T getStatic(Field field, boolean access) {
+	default <T> T getStatic(Field field) {
 		try {
-			if (access) field.setAccessible(true);
 			return (T) field.get(null);
 		} catch (IllegalAccessException e) {
 			throw new RuntimeException(e);

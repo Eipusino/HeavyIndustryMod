@@ -16,8 +16,8 @@ public class DrawPowerLight extends DrawBlock {
 		lightColor = Color.white;
 	}
 
-	public DrawPowerLight(Color lig) {
-		lightColor = lig;
+	public DrawPowerLight(Color color) {
+		lightColor = color;
 	}
 
 	@Override

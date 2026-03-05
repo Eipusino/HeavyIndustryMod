@@ -26,9 +26,11 @@ import static endfield.Vars2.classHelper;
  */
 @SuppressWarnings("unchecked")
 public class EnumHandler<T extends Enum<T>> {
-	final FieldHandler<T> fieldHandler;
+	//final FieldHandler<T> fieldHandler;
 	final MethodHandler<T> methodHandler;
 	final Class<T> clazz;
+
+	Field valuesField, ordinalField;
 
 	/**
 	 * Construct an enumeration processor without a constructor implementation using the target
@@ -40,7 +42,7 @@ public class EnumHandler<T extends Enum<T>> {
 	 */
 	public EnumHandler(Class<T> c) {
 		clazz = c;
-		fieldHandler = new FieldHandler<>(c);
+		//fieldHandler = new FieldHandler<>(c);
 		methodHandler = new MethodHandler<>(c);
 	}
 
@@ -111,7 +113,8 @@ public class EnumHandler<T extends Enum<T>> {
 	 */
 	public void rearrange(T instance, int ordinal) {
 		try {
-			Field field = findValuesField();
+			requireValues();
+
 			Method method = classHelper.getMethod(clazz, "values");
 			T[] arr = (T[]) method.invoke(null);
 			CollectionList<T> values = CollectionList.with(arr);
@@ -124,9 +127,42 @@ public class EnumHandler<T extends Enum<T>> {
 
 			values.add(ordinal, instance);
 
-			fieldHandler.setObject(null, field.getName(), values.toArray(clazz));
+			FieldHandler.set(null, valuesField, values.toArray(clazz));
 		} catch (NoSuchFieldException | IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	public void swap(T from, T to) {
+		try {
+			requireValues();
+			requireOrdinal();
+
+			int fromOrdinal = from.ordinal(), toOrdinal = to.ordinal();
+
+			ordinalField.setInt(from, toOrdinal);
+			ordinalField.setInt(to, fromOrdinal);
+
+			T[] values = FieldHandler.get(null, valuesField);
+
+			values[fromOrdinal] = to;
+			values[toOrdinal] = from;
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private void requireValues() throws NoSuchFieldException {
+		if (valuesField == null) {
+			valuesField = findValuesField();
+			valuesField.setAccessible(true);
+		}
+	}
+
+	private void requireOrdinal() throws NoSuchFieldException {
+		if (ordinalField == null) {
+			ordinalField = Enum.class.getDeclaredField("ordinal");
+			ordinalField.setAccessible(true);
 		}
 	}
 

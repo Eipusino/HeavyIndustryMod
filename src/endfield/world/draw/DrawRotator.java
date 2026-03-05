@@ -19,33 +19,33 @@ public class DrawRotator extends DrawBlock {
 	public float primaryRotation = 0;
 	public boolean usesSpinDraw = false;
 
-	public DrawRotator(boolean use) {
-		usesSpinDraw = use;
+	public DrawRotator(boolean usesSpinDraw) {
+		this.usesSpinDraw = usesSpinDraw;
 	}
 
-	public DrawRotator(float rot, boolean use) {
-		rotateSpeed = rot;
-		usesSpinDraw = use;
+	public DrawRotator(float rotateSpeed, boolean usesSpinDraw) {
+		this.rotateSpeed = rotateSpeed;
+		this.usesSpinDraw = usesSpinDraw;
 	}
 
-	public DrawRotator(float rot, String suf) {
-		suffix = suf;
-		rotateSpeed = rot;
+	public DrawRotator(float suffix, String rotateSpeed) {
+		this.suffix = rotateSpeed;
+		this.rotateSpeed = suffix;
 	}
 
-	public DrawRotator(float rot, float pri, String suf) {
-		suffix = suf;
-		rotateSpeed = rot;
-		primaryRotation = pri;
+	public DrawRotator(float rotateSpeed, float primaryRotation, String suffix) {
+		this.suffix = suffix;
+		this.rotateSpeed = rotateSpeed;
+		this.primaryRotation = primaryRotation;
 	}
 
-	public DrawRotator(float rot) {
-		rotateSpeed = rot;
+	public DrawRotator(float rotateSpeed) {
+		this.rotateSpeed = rotateSpeed;
 	}
 
-	public DrawRotator(float rot, float pri) {
-		rotateSpeed = rot;
-		primaryRotation = pri;
+	public DrawRotator(float rotateSpeed, float primaryRotation) {
+		this.rotateSpeed = rotateSpeed;
+		this.primaryRotation = primaryRotation;
 	}
 
 	public DrawRotator() {}

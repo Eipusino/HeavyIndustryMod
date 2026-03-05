@@ -2,7 +2,6 @@ package endfield.async;
 
 import arc.func.Prov;
 
-import java.util.concurrent.Future;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 

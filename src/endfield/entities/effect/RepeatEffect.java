@@ -8,6 +8,8 @@ public class RepeatEffect extends Effect {
 	public float interval;
 	public int times;
 
+	public RepeatEffect() {}
+
 	public RepeatEffect(Effect effect, float interval, int times) {
 		this.effect = effect;
 		this.interval = interval;

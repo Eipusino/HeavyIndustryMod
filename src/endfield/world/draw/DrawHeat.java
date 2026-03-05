@@ -22,9 +22,9 @@ public class DrawHeat extends DrawBlock {
 
 	public DrawHeat() {}
 
-	public DrawHeat(int rotOff, boolean glow) {
-		rotOffset = rotOff;
-		drawGlow = glow;
+	public DrawHeat(int rotOffset, boolean drawGlow) {
+		this.rotOffset = rotOffset;
+		this.drawGlow = drawGlow;
 	}
 
 	@Override

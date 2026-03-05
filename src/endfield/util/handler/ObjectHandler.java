@@ -45,7 +45,8 @@ public final class ObjectHandler {
 		Set<Field> fields = getFields(source);
 
 		for (Field field : fields.stream().filter(e -> !black.contains(e.getName())).toArray(Field[]::new)) {
-			FieldHandler.set(target, field, FieldHandler.get(source, field, true), true);
+			field.setAccessible(true);
+			FieldHandler.set(target, field, FieldHandler.get(source, field));
 		}
 	}
 
@@ -62,7 +63,8 @@ public final class ObjectHandler {
 		Set<Field> fields = getFields(source);
 
 		for (Field field : fields.stream().filter(e -> black.contains(e.getName())).toArray(Field[]::new)) {
-			FieldHandler.set(target, field, FieldHandler.get(source, field, true), true);
+			field.setAccessible(true);
+			FieldHandler.set(target, field, FieldHandler.get(source, field));
 		}
 	}
 

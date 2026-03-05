@@ -16,6 +16,8 @@ import mindustry.world.blocks.defense.turrets.BaseTurret.BaseTurretBuild;
 import static mindustry.Vars.headless;
 
 public class ParentEffect extends Effect {
+	public ParentEffect() {}
+
 	public ParentEffect(float life, Cons<EffectContainer> renderer) {
 		super(life, renderer);
 	}

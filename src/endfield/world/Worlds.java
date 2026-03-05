@@ -6,7 +6,6 @@ import arc.files.Fi;
 import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Strings;
-import arc.util.Structs;
 import endfield.Vars2;
 import endfield.entities.Entitys2;
 import endfield.game.TeamPayloadData;
@@ -87,7 +86,7 @@ public final class Worlds {
 			}
 		}
 
-		blocks.sort(Structs.comparingInt(pair -> pair.getSecond().id));
+		blocks.sort((c1, c2) -> Integer.compare(c1.getSecond().id, c2.getSecond().id));
 
 		for (Pair<String, Block> pair : blocks) {
 			String name = pair.getFirst();

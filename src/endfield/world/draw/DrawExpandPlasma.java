@@ -15,10 +15,6 @@ public class DrawExpandPlasma extends DrawPlasma {
 	public float cycle = 15;
 	public float expandSpeed = 0.8f;
 
-	public DrawExpandPlasma() {
-		suffix = "-plasma-";
-	}
-
 	@Override
 	public void draw(Building entity) {
 		Draw.blend(Blending.additive);

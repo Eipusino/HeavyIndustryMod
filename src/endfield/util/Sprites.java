@@ -239,7 +239,7 @@ public final class Sprites {
 		return splitArray(region, size, pad, null);
 	}
 
-	public static TextureRegion [] splitArray(TextureRegion region, int size, int pad, int @Nullable [] indexMap) {
+	public static TextureRegion[] splitArray(TextureRegion region, int size, int pad, int @Nullable [] indexMap) {
 		int x = region.getX();
 		int y = region.getY();
 		int width = region.width;

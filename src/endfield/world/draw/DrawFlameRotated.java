@@ -27,8 +27,7 @@ public class DrawFlameRotated extends DrawFlame {
 		super(flameColor);
 	}
 
-	public DrawFlameRotated() {
-	}
+	public DrawFlameRotated() {}
 
 	@Override
 	public void load(Block block) {

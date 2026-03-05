@@ -21,7 +21,7 @@ import arc.util.io.Reads;
 import arc.util.io.Writes;
 import endfield.graphics.Drawn;
 import endfield.graphics.Shaders2;
-import endfield.io.TypeIOs;
+import endfield.io.ExpendTypeIO;
 import endfield.math.IPosition;
 import mindustry.core.Renderer;
 import mindustry.entities.units.BuildPlan;
@@ -543,7 +543,7 @@ public class PayloadRail extends PayloadBlock {
 		public void write(Writes write) {
 			write.f(x);
 			write.f(y);
-			TypeIOs.write(payload, write);
+			ExpendTypeIO.write(payload, write);
 			write.f(payload.x());
 			write.f(payload.y());
 			write.f(payload.rotation());
@@ -552,7 +552,7 @@ public class PayloadRail extends PayloadBlock {
 		public void read(Reads read) {
 			x = read.f();
 			y = read.f();
-			payload = TypeIOs.read(read);
+			payload = ExpendTypeIO.read(read);
 
 			float x = read.f(), y = read.f(), rotation = read.f();
 

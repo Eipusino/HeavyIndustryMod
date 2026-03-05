@@ -166,7 +166,9 @@ public final class Objects2 {
 				buf.append(field.getName()).append('=');
 
 				try {
-					Object value = FieldHandler.get(object, field, true);
+					Vars2.accessibleHelper.makeAccessible(field);
+
+					Object value = FieldHandler.get(object, field);
 
 					if (value == null) {
 						buf.append("null");

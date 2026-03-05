@@ -18,8 +18,8 @@ public class RunningLight extends DrawBlock {
 	public Color color = Pal.accent;
 	public boolean contrary = true;
 
-	public RunningLight(int siz) {
-		size = siz;
+	public RunningLight(int size) {
+		this.size = size;
 	}
 
 	public RunningLight() {}

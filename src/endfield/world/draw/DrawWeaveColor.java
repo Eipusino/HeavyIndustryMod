@@ -19,8 +19,8 @@ public class DrawWeaveColor extends DrawBlock {
 		this(Color.white);
 	}
 
-	public DrawWeaveColor(Color col) {
-		color = col;
+	public DrawWeaveColor(Color color) {
+		this.color = color;
 	}
 
 	@Override

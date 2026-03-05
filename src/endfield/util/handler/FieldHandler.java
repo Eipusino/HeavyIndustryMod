@@ -189,13 +189,13 @@ public class FieldHandler<T> {
 		defaultHandlers.clear();
 	}
 
-	public static void set(Object object, Field field, Object value, boolean access) {
-		if (object == null) fieldAccessHelper.setStatic(field, value, access);
-		else fieldAccessHelper.set(object, field, value, access);
+	public static void set(Object object, Field field, Object value) {
+		if (object == null) fieldAccessHelper.setStatic(field, value);
+		else fieldAccessHelper.set(object, field, value);
 	}
 
-	public static <T> T get(Object object, Field field, boolean access) {
-		return object == null ? fieldAccessHelper.getStatic(field, access) : fieldAccessHelper.get(object, field, access);
+	public static <T> T get(Object object, Field field) {
+		return object == null ? fieldAccessHelper.getStatic(field) : fieldAccessHelper.get(object, field);
 	}
 
 	/**

@@ -17,8 +17,8 @@ public class DrawZSet extends DrawBlock {
 		this(Layer.block);
 	}
 
-	public DrawZSet(float l) {
-		layer = l;
+	public DrawZSet(float layer) {
+		this.layer = layer;
 	}
 
 	@Override
