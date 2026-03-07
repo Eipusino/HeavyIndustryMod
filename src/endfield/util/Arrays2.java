@@ -37,6 +37,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 public final class Arrays2 {
+	static final CollectionObjectSet<Object[]> arraySet = new CollectionObjectSet<>(Object[].class);
+
 	private Arrays2() {}
 
 	/**
@@ -968,7 +970,7 @@ public final class Arrays2 {
 		if (bufLen < 0)
 			return "???";
 		StringBuilder buf = new StringBuilder(bufLen);
-		deepToString(a, buf, Objects2.arraySet);
+		deepToString(a, buf, arraySet);
 		return buf.toString();
 	}
 

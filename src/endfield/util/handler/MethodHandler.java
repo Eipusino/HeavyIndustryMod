@@ -1,5 +1,7 @@
 package endfield.util.handler;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.function.Function;
 
@@ -77,6 +79,18 @@ public class MethodHandler<T> {
 	 */
 	public static <U> U newInstanceTemp(Class<U> clazz, Object... args) {
 		return new MethodHandler<>(clazz).newInstance(args);
+	}
+
+	public static <T> T invoke(Object object, Method method, boolean access, Object... args) {
+		return methodInvokeHelper.invoke(method, object, access, args);
+	}
+
+	public static <T> T invokeStatic(Method method, boolean access, Object... args) {
+		return methodInvokeHelper.invokeStatic(method, access, args);
+	}
+
+	public static <T> T newInstance(Constructor<T> constructor, boolean access, Object... args) {
+		return methodInvokeHelper.newInstance(constructor, access, args);
 	}
 
 	/**

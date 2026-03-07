@@ -127,7 +127,7 @@ public class EnumHandler<T extends Enum<T>> {
 
 			values.add(ordinal, instance);
 
-			FieldHandler.set(null, valuesField, values.toArray(clazz));
+			FieldHandler.set(null, valuesField, values.toArray(clazz), false);
 		} catch (NoSuchFieldException | IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);
 		}
@@ -143,7 +143,7 @@ public class EnumHandler<T extends Enum<T>> {
 			ordinalField.setInt(from, toOrdinal);
 			ordinalField.setInt(to, fromOrdinal);
 
-			T[] values = FieldHandler.get(null, valuesField);
+			T[] values = FieldHandler.get(null, valuesField, false);
 
 			values[fromOrdinal] = to;
 			values[toOrdinal] = from;

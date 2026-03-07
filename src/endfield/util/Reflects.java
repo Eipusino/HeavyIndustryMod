@@ -23,13 +23,16 @@ import org.jetbrains.annotations.UnknownNullability;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
+import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Set;
 
+import static endfield.Vars2.accessibleHelper;
 import static endfield.Vars2.classHelper;
 
 /**
@@ -39,7 +42,7 @@ import static endfield.Vars2.classHelper;
  * @since 1.0.6
  */
 public final class Reflects {
-	public static Lookup publicLookup = MethodHandles.publicLookup();
+	public static final Lookup publicLookup = MethodHandles.publicLookup();
 
 	/** Don't let anyone instantiate this class. */
 	private Reflects() {}
@@ -60,16 +63,20 @@ public final class Reflects {
 		return "null";
 	}
 
-	public static Object def(Class<?> type) {
-		if (type == boolean.class || type == Boolean.class) return false;
-		else if (type == byte.class || type == Byte.class) return (byte) 0;
-		else if (type == short.class || type == Short.class) return (short) 0;
-		else if (type == int.class || type == Integer.class) return 0;
-		else if (type == long.class || type == Long.class) return 0l;
-		else if (type == char.class || type == Character.class) return '\u0000';
-		else if (type == float.class || type == Float.class) return 0f;
-		else if (type == double.class || type == Double.class) return 0d;
-		else return null;
+	@SuppressWarnings("unchecked")
+	public static <T> T def(Class<T> type) {
+		Object value;
+		if (type == boolean.class || type == Boolean.class) value = false;
+		else if (type == byte.class || type == Byte.class) value = (byte) 0;
+		else if (type == short.class || type == Short.class) value = (short) 0;
+		else if (type == int.class || type == Integer.class) value = 0;
+		else if (type == long.class || type == Long.class) value = 0l;
+		else if (type == char.class || type == Character.class) value = '\u0000';
+		else if (type == float.class || type == Float.class) value = 0f;
+		else if (type == double.class || type == Double.class) value = 0d;
+		else value = null;
+
+		return (T) value;
 	}
 
 	/**
@@ -272,6 +279,23 @@ public final class Reflects {
 		return targetType.isAssignableFrom(sourceType) ||
 				targetType.isPrimitive() && FunctionType.wrapper(targetType).isAssignableFrom(sourceType) ||
 				sourceType.isPrimitive() && targetType.isAssignableFrom(FunctionType.wrapper(sourceType));
+	}
+
+	/**
+	 * @return Has it been successfully set as accessible
+	 * @since 1.0.9
+	 */
+	public static <T extends AccessibleObject & Member> boolean setAccessible(T object) {
+		Class<?> dec = object.getDeclaringClass();
+		if (dec == Class.class || dec == Field.class || dec == Method.class || dec == Constructor.class) return false;
+
+		try {
+			accessibleHelper.makeAccessible(object);
+		} catch (Exception e) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -486,12 +510,12 @@ public final class Reflects {
 							args[19], args[20], args[21], args[22], args[23], args[24], args[25], args[26], args[27], args[28],
 							args[29], args[30], args[31]);
 			default -> {
-				Object[] methodArgs = new Object[args.length + 1];
-				methodArgs[0] = object;
+				Object[] parameterArgs = new Object[args.length + 1];
+				parameterArgs[0] = object;
 
-				System.arraycopy(args, 0, methodArgs, 1, args.length);
+				System.arraycopy(args, 0, parameterArgs, 1, args.length);
 
-				yield handle.invokeWithArguments(methodArgs);
+				yield handle.invokeWithArguments(parameterArgs);
 			}
 		};
 	}

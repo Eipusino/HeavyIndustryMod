@@ -34,8 +34,6 @@ import java.util.Objects;
  * @since 1.0.8
  */
 public final class Objects2 {
-	static final CollectionObjectSet<Object[]> arraySet = new CollectionObjectSet<>(Object[].class);
-
 	private Objects2() {}
 
 	/**
@@ -166,9 +164,7 @@ public final class Objects2 {
 				buf.append(field.getName()).append('=');
 
 				try {
-					Vars2.accessibleHelper.makeAccessible(field);
-
-					Object value = FieldHandler.get(object, field);
+					Object value = FieldHandler.get(object, field, true);
 
 					if (value == null) {
 						buf.append("null");
@@ -191,7 +187,7 @@ public final class Objects2 {
 						} else if (value instanceof short[] shorts) {
 							Arrays2.shortToString(buf, shorts);
 						} else if (value instanceof Object[] objects) {
-							Arrays2.deepToString(objects, buf, arraySet);
+							Arrays2.deepToString(objects, buf, Arrays2.arraySet);
 						} else {
 							// It shouldn't have happened...
 							buf.append("???");
@@ -269,22 +265,26 @@ public final class Objects2 {
 			baseDesc = 'L' + current.getName().replace('.', '/') + ';';
 		}
 
-		if (depth == 0) {
-			return baseDesc;
-		}
-
-		return buildArrayDescriptor(depth, baseDesc);
+		return switch (depth) {
+			case 0 -> baseDesc;
+			case 1 -> baseDesc + "[";
+			case 2 -> baseDesc + "[[";
+			case 3 -> baseDesc + "[[[";
+			case 4 -> baseDesc + "[[[[";
+			case 5 -> baseDesc + "[[[[[";
+			default -> buildArrayDescriptor(depth, baseDesc);
+		};
 	}
 
 	static String buildArrayDescriptor(int depth, String baseDesc) {
-		int totalLength = depth + baseDesc.length();
+		int length = baseDesc.length(), totalLength = depth + length;
 		char[] result = new char[totalLength];
 
 		for (int i = 0; i < depth; i++) {
 			result[i] = '[';
 		}
 
-		baseDesc.getChars(0, baseDesc.length(), result, depth);
+		baseDesc.getChars(0, length, result, depth);
 
 		return String.valueOf(result);
 	}

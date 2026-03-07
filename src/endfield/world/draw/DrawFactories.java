@@ -6,17 +6,16 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.math.geom.Vec2;
-import arc.struct.Seq;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawDefault;
 
 public class DrawFactories extends DrawDefault {
 	public TextureRegion rotator, rotator2, bottom, liquid, pressor, top;
-	public Color liquidColor;
+	public Color liquidColor = Color.white;
 	public float drawRotator;
 	public float drawRotator2;
-	public float[] pressorSet = new float[]{1f};
+	public float[] pressorSet = {};
 	public boolean drawTop;
 
 	@Override
@@ -57,9 +56,6 @@ public class DrawFactories extends DrawDefault {
 
 	@Override
 	public TextureRegion[] icons(Block block) {
-		Seq<TextureRegion> seq = new Seq<>(TextureRegion.class);
-		seq.add(bottom);
-		seq.add(block.region);
-		return seq.shrink();
+		return new TextureRegion[]{bottom, block.region};
 	}
 }

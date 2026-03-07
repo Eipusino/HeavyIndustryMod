@@ -18,8 +18,9 @@ public interface MethodInvokeHelper {
 	<T> T newInstanceWithAsType(Class<T> type, Class<?>[] parameterTypes, Object... args);
 
 	@SuppressWarnings("unchecked")
-	default <T> T invoke(Method method, Object object, Object... args) {
+	default <T> T invoke(Method method, Object object, boolean access, Object... args) {
 		try {
+			if (access) method.setAccessible(true);
 			return (T) method.invoke(object, args);
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);
@@ -27,16 +28,18 @@ public interface MethodInvokeHelper {
 	}
 
 	@SuppressWarnings("unchecked")
-	default <T> T invokeStatic(Method method, Object... args) {
+	default <T> T invokeStatic(Method method, boolean access, Object... args) {
 		try {
+			if (access) method.setAccessible(true);
 			return (T) method.invoke(null, args);
 		} catch (IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	default <T> T newInstance(Constructor<T> constructor, Object... args) {
+	default <T> T newInstance(Constructor<T> constructor, boolean access, Object... args) {
 		try {
+			if (access) constructor.setAccessible(true);
 			return constructor.newInstance(args);
 		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);

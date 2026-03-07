@@ -15,18 +15,17 @@ import arc.math.geom.Intersector;
 import arc.math.geom.Rect;
 import endfield.entities.effect.Disintegration;
 import endfield.entities.effect.Disintegration.DisintegrationEntity;
-import endfield.func.ObjectBoolCons;
 import endfield.gen.RenderGroupEntity;
 import endfield.gen.RenderGroupEntity.DrawnRegion;
 
 public class VaporizeBatch extends BaseBatch {
 	protected final static Rect rect = new Rect();
 
-	public ObjectBoolCons<DisintegrationEntity> vaporize;
+	public VaporizeHandler vaporize;
 	public SpriteHandler sprite;
 	public Cons<? super Disintegration> discon;
 
-	public void switchBatch(Runnable drawer, SpriteHandler spriteCons, ObjectBoolCons<DisintegrationEntity> vaporizeCons) {
+	public void switchBatch(Runnable drawer, SpriteHandler spriteCons, VaporizeHandler vaporizeCons) {
 		Batch last = Core.batch;
 		GL20 lgl = Core.gl;
 		Core.batch = this;
@@ -46,7 +45,7 @@ public class VaporizeBatch extends BaseBatch {
 		sprite = null;
 	}
 
-	public void switchBatch(float x1, float y1, float x2, float y2, float width, Runnable drawer, ObjectBoolCons<DisintegrationEntity> vaporizeCons) {
+	public void switchBatch(float x1, float y1, float x2, float y2, float width, Runnable drawer, VaporizeHandler vaporizeCons) {
 		Batch last = Core.batch;
 		GL20 lgl = Core.gl;
 		Core.batch = this;
@@ -187,6 +186,12 @@ public class VaporizeBatch extends BaseBatch {
 	@Override
 	protected void setShader(Shader shader, boolean apply) {}
 
+	@FunctionalInterface
+	public interface VaporizeHandler {
+		void get(DisintegrationEntity d, boolean within);
+	}
+
+	@FunctionalInterface
 	public interface SpriteHandler {
 		boolean get(float x, float y, float width, float height, float rotation);
 	}
