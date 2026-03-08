@@ -46,12 +46,14 @@ public class DrawFactories extends DrawDefault {
 
 	@Override
 	public void load(Block block) {
-		rotator = Core.atlas.find(block.name + "-rotator");
-		rotator2 = Core.atlas.find(block.name + "-rotator2");
-		bottom = Core.atlas.find(block.name + "-bottom");
-		liquid = Core.atlas.find(block.name + "-liquid");
-		pressor = Core.atlas.find(block.name + "-pressor");
-		top = Core.atlas.find(block.name + "-top");
+		String name = block.name;
+
+		rotator = Core.atlas.find(name + "-rotator");
+		rotator2 = Core.atlas.find(name + "-rotator2");
+		bottom = Core.atlas.find(name + "-bottom");
+		liquid = Core.atlas.find(name + "-liquid");
+		pressor = Core.atlas.find(name + "-pressor");
+		top = Core.atlas.find(name + "-top");
 	}
 
 	@Override

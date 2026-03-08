@@ -2,7 +2,7 @@ package endfield.async
 
 import arc.Core
 import arc.func.Prov
-import dynamilize.Variable.ObjectReference
+import com.github.eipusino.reference.ObjectReference
 import java.util.concurrent.Future
 import java.util.concurrent.Semaphore
 

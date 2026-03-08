@@ -20,36 +20,33 @@ import java.util.NoSuchElementException;
 public class UnmodifiableList<E> extends AbstractList<E> implements Iterable<E>, Eachable<E> {
 	final E[] items;
 
-	final int size;
-
 	transient Iter iterator1, iterator2;
 	transient ListIter listIterator1;
 
 	public UnmodifiableList(E[] array) {
 		items = array;
-		size = array.length;
 	}
 
 	@Override
 	public void each(Cons<? super E> cons) {
-		for (int i = 0; i < size; i++) {
-			cons.get(items[i]);
+		for (E item : items) {
+			cons.get(item);
 		}
 	}
 
 	@Override
 	public E get(int index) {
-		if (index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+		if (index >= items.length) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + items.length);
 		return items[index];
 	}
 
 	@Override
 	public int size() {
-		return size;
+		return items.length;
 	}
 
 	public boolean any() {
-		return size > 0;
+		return items.length > 0;
 	}
 
 	public E first() {
@@ -59,14 +56,14 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Iterable<E>,
 	/** Returns the element at the specified position in this list, but does not replace the element. */
 	@Override
 	public E set(int index, E element) {
-		if (index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+		if (index >= items.length) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + items.length);
 		return items[index];
 	}
 
 	/** Returns the element at the specified position in this list, but does not delete the element. */
 	@Override
 	public E remove(int index) {
-		if (index >= size) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + size);
+		if (index >= items.length) throw new IndexOutOfBoundsException("index can't be >= size: " + index + " >= " + items.length);
 		return items[index];
 	}
 
@@ -76,7 +73,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Iterable<E>,
 	}
 
 	public boolean contains(Object o, boolean identity) {
-		int i = size - 1;
+		int i = items.length - 1;
 		if (identity || o == null) {
 			while (i >= 0)
 				if (items[i--] == o) return true;
@@ -101,8 +98,7 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Iterable<E>,
 	@Override
 	public int hashCode() {
 		int hashCode = 1;
-		for (int i = 0; i < size; i++) {
-			E item = items[i];
+		for (E item : items) {
 			hashCode = 31 * hashCode + (item == null ? 0 : item.hashCode());
 		}
 		return hashCode;
@@ -120,11 +116,11 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Iterable<E>,
 	 */
 	@Override
 	public String toString() {
-		if (size == 0) return "[]";
+		if (items.length == 0) return "[]";
 		StringBuilder buffer = new StringBuilder(32);
 		buffer.append('[');
 		buffer.append(items[0]);
-		for (int i = 1; i < size; i++) {
+		for (int i = 1; i < items.length; i++) {
 			buffer.append(", ");
 			buffer.append(items[i]);
 		}
@@ -135,26 +131,26 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Iterable<E>,
 	/** A copy of this list element. */
 	@Override
 	public Object[] toArray() {
-		return Arrays.copyOf(items, size, Object[].class);
+		return Arrays.copyOf(items, items.length, Object[].class);
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T> T[] toArray(Class<?> type) {
-		T[] result = (T[]) Array.newInstance(type, size);
-		System.arraycopy(items, 0, result, 0, size);
+		T[] result = (T[]) Array.newInstance(type, items.length);
+		System.arraycopy(items, 0, result, 0, items.length);
 		return result;
 	}
 
 	@Override
 	public <T> T[] toArray(T[] a) {
-		if (a.length < size) {
+		if (a.length < items.length) {
 			// Make a new array of a's runtime type, but my contents:
 			return toArray(a.getClass().getComponentType());
 		}
 
-		System.arraycopy(items, 0, a, 0, size);
-		if (a.length > size)
-			a[size] = null;
+		System.arraycopy(items, 0, a, 0, items.length);
+		if (a.length > items.length)
+			a[items.length] = null;
 		return a;
 	}
 
@@ -210,20 +206,20 @@ public class UnmodifiableList<E> extends AbstractList<E> implements Iterable<E>,
 
 		@Override
 		public boolean hasNext() {
-			if (cursor >= size) done = true;
-			return cursor < size;
+			if (cursor >= items.length) done = true;
+			return cursor < items.length;
 		}
 
 		@Override
 		public E next() {
-			if (cursor >= size) throw new NoSuchElementException(String.valueOf(cursor));
+			if (cursor >= items.length) throw new NoSuchElementException(String.valueOf(cursor));
 			return items[cursor++];
 		}
 	}
 
 	public class ListIter extends Iter implements ListIterator<E> {
 		public ListIter(int index) {
-			cursor = Mathm.clamp(index, 0, size);
+			cursor = Mathm.clamp(index, 0, items.length);
 		}
 
 		@Override

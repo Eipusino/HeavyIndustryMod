@@ -8,15 +8,19 @@ import endfield.util.handler.MethodHandler;
 import java.lang.reflect.Method;
 
 public class JavaMethodReference implements IFunctionEntry {
+	final Method method;
 	final String name;
 	final Function<?, ?> defineFunction;
 	final FunctionType type;
 
 	public JavaMethodReference(Method method) {
-		name = method.getName();
-		type = FunctionType.inst(method);
+		this.method = method;
+		this.name = method.getName();
+		this.type = FunctionType.inst(method);
 
-		defineFunction = (self, args) -> MethodHandler.invokeDefault(self.objSelf(), method.getName(), args);
+		Reflects.setAccessible(method);
+
+		this.defineFunction = (self, args) -> MethodHandler.invoke(self.objSelf(), method, false, args);
 	}
 
 	@Override
@@ -26,7 +30,7 @@ public class JavaMethodReference implements IFunctionEntry {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <S, R> Function<S, R> getFunction() {
+	public <S, R> Function<S, R> getFunc() {
 		return (Function<S, R>) defineFunction;
 	}
 

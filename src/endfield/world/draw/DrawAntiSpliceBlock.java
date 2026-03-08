@@ -7,7 +7,7 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Point2;
 import arc.util.Eachable;
-import dynamilize.Variable.ObjectReference;
+import com.github.eipusino.reference.ObjectReference;
 import endfield.util.DirEdges;
 import endfield.util.Sprites;
 import mindustry.entities.units.BuildPlan;

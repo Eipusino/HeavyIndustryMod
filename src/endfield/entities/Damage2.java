@@ -30,7 +30,7 @@ import arc.util.Tmp;
 import arc.util.pooling.Pool;
 import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
-import dynamilize.Variable.IntReference;
+import com.github.eipusino.reference.IntReference;
 import endfield.content.Fx2;
 import endfield.entities.Entitys2.LineHitHandler;
 import endfield.math.Mathm;

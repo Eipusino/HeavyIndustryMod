@@ -20,7 +20,7 @@ import arc.util.Structs;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import dynamilize.Variable.ObjectReference;
+import com.github.eipusino.reference.ObjectReference;
 import endfield.ui.Elements;
 import endfield.util.CollectionList;
 import endfield.util.CollectionOrderedMap;

@@ -26,7 +26,7 @@ public class MethodHandler<T> {
 	/**
 	 * Create a method handler using default guidelines and cache it for method invocation operations.
 	 *
-	 * @see MethodHandler#invoke(Object, String, Object...)
+	 * @see #invoke(Object, String, Object...)
 	 */
 	public static <O, R> R invokeDefault(O object, String name, Object... args) {
 		return ((MethodHandler<O>) defaultMap.computeIfAbsent(object.getClass(), function)).invoke(object, name, args);
@@ -36,7 +36,7 @@ public class MethodHandler<T> {
 	 * Create a method handler using default guidelines and cache it for static method invocation
 	 * operations.
 	 *
-	 * @see MethodHandler#invokeStatic(String, Object...)
+	 * @see #invokeStatic(String, Object...)
 	 */
 	public static <U, R> R invokeDefault(Class<U> clazz, String name, Object... args) {
 		return defaultMap.computeIfAbsent(clazz, function).invokeStatic(name, args);
@@ -46,7 +46,7 @@ public class MethodHandler<T> {
 	 * Create a method handler using default guidelines to perform method call operations, but do not
 	 * cache the handler.
 	 *
-	 * @see MethodHandler#invoke(Object, String, Object...)
+	 * @see #invoke(Object, String, Object...)
 	 */
 	public static <O, R> R invokeTemp(O object, String name, Object... args) {
 		return ((MethodHandler<O>) new MethodHandler<>(object.getClass())).invoke(object, name, args);
@@ -56,7 +56,7 @@ public class MethodHandler<T> {
 	 * Create a method handler using default guidelines for static method calls, but do not cache the
 	 * handler.
 	 *
-	 * @see MethodHandler#invokeStatic(String, Object...)
+	 * @see #invokeStatic(String, Object...)
 	 */
 	public static <U, R> R invokeTemp(Class<U> clazz, String name, Object... args) {
 		return new MethodHandler<>(clazz).invokeStatic(name, args);
@@ -65,7 +65,7 @@ public class MethodHandler<T> {
 	/**
 	 * Create a method handler using default guidelines and cache it for constructor calls.
 	 *
-	 * @see MethodHandler#newInstance(Object...)
+	 * @see #newInstance(Object...)
 	 */
 	public static <U> U newInstanceDefault(Class<U> clazz, Object... args) {
 		return (U) defaultMap.computeIfAbsent(clazz, function).newInstance(args);
@@ -75,20 +75,35 @@ public class MethodHandler<T> {
 	 * Create a method handler using default guidelines to call the constructor, but do not cache the
 	 * handler.
 	 *
-	 * @see MethodHandler#newInstance(Object...)
+	 * @see #newInstance(Object...)
 	 */
 	public static <U> U newInstanceTemp(Class<U> clazz, Object... args) {
 		return new MethodHandler<>(clazz).newInstance(args);
 	}
 
+	/**
+	 * Directly call the method without throwing an exception.
+	 *
+	 * @param access Is it set as accessible
+	 */
 	public static <T> T invoke(Object object, Method method, boolean access, Object... args) {
 		return methodInvokeHelper.invoke(method, object, access, args);
 	}
 
+	/**
+	 * Directly call the method without throwing an exception.
+	 *
+	 * @param access Is it set as accessible
+	 */
 	public static <T> T invokeStatic(Method method, boolean access, Object... args) {
 		return methodInvokeHelper.invokeStatic(method, access, args);
 	}
 
+	/**
+	 * Directly call the constructor without throwing an exception.
+	 *
+	 * @param access Is it set as accessible
+	 */
 	public static <T> T newInstance(Constructor<T> constructor, boolean access, Object... args) {
 		return methodInvokeHelper.newInstance(constructor, access, args);
 	}

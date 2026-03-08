@@ -10,9 +10,9 @@ import arc.graphics.Texture.TextureFilter;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Http;
 import arc.util.Log;
-import dynamilize.Variable.FloatReference;
-import dynamilize.Variable.IntReference;
-import dynamilize.Variable.ObjectReference;
+import com.github.eipusino.reference.FloatReference;
+import com.github.eipusino.reference.IntReference;
+import com.github.eipusino.reference.ObjectReference;
 import endfield.util.holder.ObjectHolder;
 
 import java.io.InputStream;

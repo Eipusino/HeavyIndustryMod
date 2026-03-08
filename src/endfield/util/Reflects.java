@@ -285,15 +285,14 @@ public final class Reflects {
 	 * @return Has it been successfully set as accessible
 	 * @since 1.0.9
 	 */
+	@SuppressWarnings("deprecation")
 	public static <T extends AccessibleObject & Member> boolean setAccessible(T object) {
+		if (object.isAccessible()) return true;
+
 		Class<?> dec = object.getDeclaringClass();
 		if (dec == Class.class || dec == Field.class || dec == Method.class || dec == Constructor.class) return false;
 
-		try {
-			accessibleHelper.makeAccessible(object);
-		} catch (Exception e) {
-			return false;
-		}
+		accessibleHelper.makeAccessible(object);
 
 		return true;
 	}

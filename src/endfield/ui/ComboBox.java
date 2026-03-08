@@ -19,7 +19,7 @@ import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.util.Align;
 import arc.util.Tmp;
-import dynamilize.Variable.ObjectReference;
+import com.github.eipusino.reference.ObjectReference;
 import endfield.ui.Listeners.ClickOnOtherListener;
 import endfield.util.CollectionList;
 import org.jetbrains.annotations.Nullable;
