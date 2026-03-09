@@ -5,7 +5,7 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.VarHandle;
 
-public class AtomicBoolean2 implements Serializable {
+public class AtomicBoolean implements Serializable {
 	private static final long serialVersionUID = 4654671469794556979l;
 	private static final VarHandle handle;
 
@@ -14,17 +14,17 @@ public class AtomicBoolean2 implements Serializable {
 	static {
 		try {
 			Lookup lookup = MethodHandles.lookup();
-			handle = lookup.findVarHandle(AtomicBoolean2.class, "value", boolean.class);
+			handle = lookup.findVarHandle(AtomicBoolean.class, "value", boolean.class);
 		} catch (NoSuchFieldException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public AtomicBoolean2(boolean initialValue) {
+	public AtomicBoolean(boolean initialValue) {
 		value = initialValue;
 	}
 
-	public AtomicBoolean2() {}
+	public AtomicBoolean() {}
 
 	public final boolean get() {
 		return value;
@@ -52,7 +52,7 @@ public class AtomicBoolean2 implements Serializable {
 
 	@Override
 	public String toString() {
-		return Boolean.toString(get());
+		return String.valueOf(get());
 	}
 
 	public final boolean getPlain() {

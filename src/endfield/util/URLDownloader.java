@@ -10,13 +10,13 @@ import arc.graphics.Texture.TextureFilter;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Http;
 import arc.util.Log;
-import com.github.eipusino.reference.FloatReference;
-import com.github.eipusino.reference.IntReference;
-import com.github.eipusino.reference.ObjectReference;
+import endfield.util.concurrent.AtomicFloat;
 import endfield.util.holder.ObjectHolder;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 public final class URLDownloader {
 	static final CollectionOrderedMap<String, String> urlReplacers = new CollectionOrderedMap<>(String.class, String.class);
@@ -37,8 +37,8 @@ public final class URLDownloader {
 	}
 
 	public static void retryDown(String url, ConsT<Http.HttpResponse, Exception> resultHandler, int maxRetry, Cons<Throwable> errHandler) {
-		IntReference counter = new IntReference();
-		ObjectReference<Runnable> get = new ObjectReference<>();
+		AtomicInteger counter = new AtomicInteger();
+		AtomicReference<Runnable> get = new AtomicReference<>();
 
 		for (ObjectHolder<String, String> entry : urlReplacers) {
 			if (url.startsWith(entry.key)) {
@@ -47,15 +47,15 @@ public final class URLDownloader {
 		}
 
 		String realUrl = url;
-		get.value = () -> Http.get(realUrl, resultHandler, e -> {
-			if (counter.value++ <= maxRetry) get.value.run();
+		get.set(() -> Http.get(realUrl, resultHandler, e -> {
+			if (counter.getAndIncrement() <= maxRetry) get.get().run();
 			else errHandler.get(e);
-		});
-		get.value.run();
+		}));
+		get.get().run();
 	}
 
-	public static FloatReference downloadToStream(String url, OutputStream stream) {
-		FloatReference progress = new FloatReference();
+	public static AtomicFloat downloadToStream(String url, OutputStream stream) {
+		AtomicFloat progress = new AtomicFloat();
 		retryDown(url, res -> {
 			try (stream) {
 				InputStream in = res.getResultAsStream();
@@ -65,14 +65,14 @@ public final class URLDownloader {
 				for (int b = in.read(); b != -1; b = in.read()) {
 					curr++;
 					stream.write(b);
-					progress.value = (float) curr / total;
+					progress.set((float) curr / total);
 				}
 			}
 		}, 5, Log::err);
 		return progress;
 	}
 
-	public static FloatReference downloadToFile(String url, Fi file) {
+	public static AtomicFloat downloadToFile(String url, Fi file) {
 		return downloadToStream(url, file.write());
 	}
 

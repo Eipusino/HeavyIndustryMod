@@ -20,7 +20,6 @@ import arc.util.Structs;
 import arc.util.Time;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
-import com.github.eipusino.reference.ObjectReference;
 import endfield.ui.Elements;
 import endfield.util.CollectionList;
 import endfield.util.CollectionOrderedMap;
@@ -60,6 +59,7 @@ import mindustry.world.meta.Stats;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * MultiCrafter. You can freely choose to change the production formula.
@@ -494,11 +494,11 @@ public class MultiCrafter extends Block {
 			super.displayBars(table);
 			if (craftPlan == null) return;
 
-			ObjectReference<CraftPlan> lastCraftPlan = new ObjectReference<>(craftPlan);
+			AtomicReference<CraftPlan> lastCraftPlan = new AtomicReference<>(craftPlan);
 			table.update(() -> {
-				if (lastCraftPlan.value != craftPlan) {
+				if (lastCraftPlan.get() != craftPlan) {
 					rebuildBar(table);
-					lastCraftPlan.value = craftPlan;
+					lastCraftPlan.set(craftPlan);
 				}
 			});
 			rebuildBar(table);

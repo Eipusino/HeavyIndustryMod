@@ -26,11 +26,14 @@ import static endfield.Vars2.classHelper;
  */
 @SuppressWarnings("unchecked")
 public class EnumHandler<T extends Enum<T>> {
+	static Field ordinalField;
+
 	//final FieldHandler<T> fieldHandler;
 	final MethodHandler<T> methodHandler;
-	final Class<T> clazz;
 
-	Field valuesField, ordinalField;
+	public final Class<T> clazz;
+
+	Field valuesField;
 
 	/**
 	 * Construct an enumeration processor without a constructor implementation using the target
@@ -136,6 +139,7 @@ public class EnumHandler<T extends Enum<T>> {
 	public void swap(T from, T to) {
 		try {
 			requireValues();
+
 			requireOrdinal();
 
 			int fromOrdinal = from.ordinal(), toOrdinal = to.ordinal();
@@ -152,20 +156,6 @@ public class EnumHandler<T extends Enum<T>> {
 		}
 	}
 
-	private void requireValues() throws NoSuchFieldException {
-		if (valuesField == null) {
-			valuesField = findValuesField();
-			valuesField.setAccessible(true);
-		}
-	}
-
-	private void requireOrdinal() throws NoSuchFieldException {
-		if (ordinalField == null) {
-			ordinalField = Enum.class.getDeclaredField("ordinal");
-			ordinalField.setAccessible(true);
-		}
-	}
-
 	Field findValuesField() throws NoSuchFieldException {
 		Field[] fields = classHelper.getFields(clazz);
 		for (Field field : fields) {
@@ -175,5 +165,19 @@ public class EnumHandler<T extends Enum<T>> {
 		}
 
 		throw new NoSuchFieldException("No $VALUES field found in " + clazz);
+	}
+
+	void requireValues() throws NoSuchFieldException {
+		if (valuesField == null) {
+			valuesField = findValuesField();
+			valuesField.setAccessible(true);
+		}
+	}
+
+	static void requireOrdinal() throws NoSuchFieldException {
+		if (ordinalField == null) {
+			ordinalField = Enum.class.getDeclaredField("ordinal");
+			ordinalField.setAccessible(true);
+		}
 	}
 }

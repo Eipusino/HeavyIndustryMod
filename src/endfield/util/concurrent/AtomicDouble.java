@@ -129,7 +129,7 @@ public class AtomicDouble extends Number implements Serializable {
 
 	@Override
 	public String toString() {
-		return Double.toString(get());
+		return String.valueOf(get());
 	}
 
 	@Override

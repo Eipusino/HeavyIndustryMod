@@ -23,6 +23,12 @@ public class AtomicChar implements Serializable {
 		}
 	}
 
+	public AtomicChar() {}
+
+	public AtomicChar(char initialValue) {
+		value = initialValue;
+	}
+
 	public final char get() {
 		return value;
 	}
@@ -93,7 +99,7 @@ public class AtomicChar implements Serializable {
 
 	@Override
 	public String toString() {
-		return Character.toString(get());
+		return String.valueOf(get());
 	}
 
 	public final char getPlain() {

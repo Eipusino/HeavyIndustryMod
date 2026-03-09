@@ -17,7 +17,7 @@ public class MethodHandler<T> {
 	static final Function<Class<?>, MethodHandler<?>> function = MethodHandler::new;
 	static final HashMap<Class<?>, MethodHandler<?>> defaultMap = new HashMap<>();
 
-	protected final Class<T> clazz;
+	public final Class<T> clazz;
 
 	public MethodHandler(Class<T> c) {
 		clazz = c;

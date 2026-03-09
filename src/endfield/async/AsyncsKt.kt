@@ -2,9 +2,9 @@ package endfield.async
 
 import arc.Core
 import arc.func.Prov
-import com.github.eipusino.reference.ObjectReference
 import java.util.concurrent.Future
 import java.util.concurrent.Semaphore
+import java.util.concurrent.atomic.AtomicReference
 
 /**
  * @since 1.0.9
@@ -33,10 +33,10 @@ object AsyncsKt {
 	@JvmStatic
 	fun <T> postWait(runSync: Prov<T>): T {
 		val flag = Semaphore(0)
-		val out = ObjectReference<T>()
+		val out = AtomicReference<T>()
 		Core.app.post {
 			try {
-				out.value = runSync.get()
+				out.set(runSync.get())
 			} finally {
 				flag.release()
 			}
@@ -44,6 +44,6 @@ object AsyncsKt {
 
 		flag.acquire()
 
-		return out.value
+		return out.get()
 	}
 }

@@ -30,7 +30,6 @@ import arc.util.Tmp;
 import arc.util.pooling.Pool;
 import arc.util.pooling.Pool.Poolable;
 import arc.util.pooling.Pools;
-import com.github.eipusino.reference.IntReference;
 import endfield.content.Fx2;
 import endfield.entities.Entitys2.LineHitHandler;
 import endfield.math.Mathm;
@@ -59,6 +58,8 @@ import mindustry.gen.Unit;
 import mindustry.type.StatusEffect;
 import mindustry.world.Tile;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public final class Damage2 {
 	public static final CollectionList<Unit> list = new CollectionList<>(Unit.class);
@@ -402,15 +403,15 @@ public final class Damage2 {
 			}
 		});
 
-		IntReference collideCount = new IntReference();
+		AtomicInteger collideCount = new AtomicInteger();
 		collided.sort(c -> hitter.dst2(c.x, c.y));
 		for (Collided c : collided) {
-			if (hitter.damage > 0 && (pierceCap <= 0 || collideCount.value < pierceCap)) {
+			if (hitter.damage > 0 && (pierceCap <= 0 || collideCount.get() < pierceCap)) {
 				if (c.target instanceof Unit u) {
 					effect.at(c.x, c.y);
 					u.collision(hitter, c.x, c.y);
 					hitter.collision(u, c.x, c.y);
-					collideCount.value++;
+					collideCount.getAndIncrement();
 				}
 			}
 		}
@@ -619,22 +620,22 @@ public final class Damage2 {
 			}
 		});
 
-		IntReference collideCount = new IntReference(0);
+		AtomicInteger collideCount = new AtomicInteger(0);
 
 		collided.sort(c -> hitter.dst2(c.x, c.y));
 		for (Collided c : collided) {
-			if (hitter.damage > 0 && (pierceCap <= 0 || collideCount.value < pierceCap)) {
+			if (hitter.damage > 0 && (pierceCap <= 0 || collideCount.get() < pierceCap)) {
 				if (c.target instanceof Unit unit) {
 					unit.collision(hitter, c.x, c.y);
 					hitter.collision(unit, c.x, c.y);
-					collideCount.value++;
+					collideCount.getAndIncrement();
 				} else if (c.target instanceof Building build) {
 					float health = build.health;
 
 					if (build.team != team && build.collide(hitter)) {
 						build.collision(hitter);
 						hitter.type.hit(hitter, c.x, c.y);
-						collideCount.value++;
+						collideCount.getAndIncrement();
 					}
 
 					//try to heal the tile

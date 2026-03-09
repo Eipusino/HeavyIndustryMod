@@ -129,7 +129,7 @@ public class AtomicFloat extends Number implements Serializable {
 
 	@Override
 	public String toString() {
-		return Float.toString(get());
+		return String.valueOf(get());
 	}
 
 	@Override

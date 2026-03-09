@@ -19,10 +19,11 @@ import arc.scene.ui.layout.Scl;
 import arc.scene.ui.layout.Table;
 import arc.util.Align;
 import arc.util.Tmp;
-import com.github.eipusino.reference.ObjectReference;
 import endfield.ui.Listeners.ClickOnOtherListener;
 import endfield.util.CollectionList;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ComboBox extends Table {
 	private final Table mySelectionTable;
@@ -162,16 +163,17 @@ public class ComboBox extends Table {
 
 				it.imageDraw(() -> items.get(j).style.image).self(cell -> {
 				});
-				ObjectReference<LabelStyle> labelStyle = new ObjectReference<>();
+				AtomicReference<LabelStyle> labelStyle = new AtomicReference<>();
 				Cell<Label> label = it.label(() -> {
-					if (labelStyle.value != null) {
-						labelStyle.value.font = items.get(j).style.font;
+					if (labelStyle.get() != null) {
+						labelStyle.get().font = items.get(j).style.font;
 					}
 					return items.get(j).text;
 				});
-				label.get().setStyle(labelStyle.value = new LabelStyle(label.get().getStyle()) {{
+				labelStyle.set(new LabelStyle(label.get().getStyle()) {{
 					font = items.get(j).style.font;
 				}});
+				label.get().setStyle(labelStyle.get());
 				label.left().grow().labelAlign(Align.left, Align.left);
 			}, () -> {
 				if (items.get(j).canSelect) {

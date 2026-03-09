@@ -18,7 +18,7 @@ public class FieldHandler<T> {
 	static final Function<Class, FieldHandler> function = FieldHandler::new;
 	static final WeakHashMap<Class, FieldHandler> defaultHandlers = new WeakHashMap<>();
 
-	private final Class<T> clazz;
+	public final Class<T> clazz;
 
 	public FieldHandler(Class<T> c) {
 		clazz = c;

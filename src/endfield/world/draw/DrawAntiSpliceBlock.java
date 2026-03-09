@@ -7,13 +7,14 @@ import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
 import arc.math.geom.Point2;
 import arc.util.Eachable;
-import com.github.eipusino.reference.ObjectReference;
 import endfield.util.DirEdges;
 import endfield.util.Sprites;
 import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class DrawAntiSpliceBlock extends DrawBlock {
 	protected static final String[] splices = {"right", "right-top", "top", "left-top", "left", "left-bot", "bot", "right-bot"};
@@ -98,24 +99,24 @@ public class DrawAntiSpliceBlock extends DrawBlock {
 			for (Point2 p : DirEdges.get8(plan.block.size, i)) {
 				int x = plan.x + p.x;
 				int y = plan.y + p.y;
-				ObjectReference<BuildPlan> target = new ObjectReference<>();
+				AtomicReference<BuildPlan> target = new AtomicReference<>();
 
 				list.each(pl -> {
-					if (target.value != null) return;
+					if (target.get() != null) return;
 					if (pl.x == x && pl.y == y) {
-						target.value = pl;
+						target.set(pl);
 					}
 				});
 
-				if (target.value == null) continue t;
+				if (target.get() == null) continue t;
 
 				if (other == null) {
-					if (planSplicer.get(plan, target.value)) {
-						other = target.value.block;
+					if (planSplicer.get(plan, target.get())) {
+						other = target.get().block;
 					} else {
 						continue t;
 					}
-				} else if (other != planBlock || !planSplicer.get(plan, target.value)) {
+				} else if (other != planBlock || !planSplicer.get(plan, target.get())) {
 					continue t;
 				}
 			}
