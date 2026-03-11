@@ -18,8 +18,8 @@ public class AtomicDoubleArray implements Serializable {
 		array = new double[length];
 	}
 
-	public AtomicDoubleArray(double[] arr) {
-		array = arr;
+	public AtomicDoubleArray(double[] array) {
+		this.array = array.clone();
 	}
 
 	public final int length() {

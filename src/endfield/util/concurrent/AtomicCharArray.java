@@ -19,8 +19,8 @@ public class AtomicCharArray implements CharSequence, Serializable {
 		array = new char[length];
 	}
 
-	public AtomicCharArray(char[] arr) {
-		array = arr;
+	public AtomicCharArray(char[] array) {
+		this.array = array.clone();
 	}
 
 	@Override
@@ -69,6 +69,10 @@ public class AtomicCharArray implements CharSequence, Serializable {
 
 	public final boolean weakCompareAndSetPlain(int i, char expectedValue, char newValue) {
 		return handle.weakCompareAndSetPlain(array, i, expectedValue, newValue);
+	}
+
+	public final char getAndAdd(int i, char delta) {
+		return (char) handle.getAndAdd(array, i, delta);
 	}
 
 	public final char getAndUpdate(int i, CharCharf updateFunction) {

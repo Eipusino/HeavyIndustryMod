@@ -53,6 +53,10 @@ public class AtomicChar implements Serializable {
 		return handle.weakCompareAndSetPlain(this, expectedValue, newValue);
 	}
 
+	public final char getAndAdd(char delta) {
+		return (char) handle.getAndAdd(this, delta);
+	}
+
 	public final char getAndUpdate(CharCharf updateFunction) {
 		char prev = get(), next = 0;
 		for (boolean haveNext = false; ; ) {

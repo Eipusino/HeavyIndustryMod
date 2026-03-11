@@ -146,9 +146,7 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 
 		if (res instanceof AtomicBoolean b) {
-			boolean r = b.get();
-			b.set(value);
-			return r;
+			return b.getAndSet(value);
 		} else if (res instanceof Boolean n) {
 			extra().put(field, new AtomicBoolean(value));
 			return n;
@@ -223,9 +221,7 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 
 		if (res instanceof AtomicChar c) {
-			char r = c.get();
-			c.set(value);
-			return r;
+			return c.getAndSet(value);
 		} else if (res instanceof Character c) {
 			extra().put(field, new AtomicChar(value));
 			return c;
@@ -301,9 +297,7 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 
 		if (res instanceof AtomicInteger i) {
-			int r = i.get();
-			i.set(value);
-			return r;
+			return i.getAndSet(value);
 		} else if (res instanceof Number n) {
 			extra().put(field, new AtomicInteger(value));
 			return n.intValue();
@@ -378,9 +372,7 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 
 		if (res instanceof AtomicLong l) {
-			long r = l.get();
-			l.set(value);
-			return r;
+			return l.getAndSet(value);
 		} else if (res instanceof Number n) {
 			extra().put(field, new AtomicLong(value));
 			return n.longValue();
@@ -456,9 +448,7 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 
 		if (res instanceof AtomicFloat f) {
-			float r = f.get();
-			f.set(value);
-			return r;
+			return f.getAndSet(value);
 		} else if (res instanceof Number n) {
 			extra().put(field, new AtomicFloat(value));
 			return n.floatValue();
@@ -534,9 +524,7 @@ public interface ExtraVariable {
 		Object res = getVar(field);
 
 		if (res instanceof AtomicDouble d) {
-			double r = d.get();
-			d.set(value);
-			return r;
+			return d.getAndSet(value);
 		} else if (res instanceof Number n) {
 			extra().put(field, new AtomicDouble(value));
 			return n.doubleValue();

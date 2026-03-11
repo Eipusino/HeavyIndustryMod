@@ -1,12 +1,11 @@
 package endfield.util.handler;
 
 import endfield.util.CollectionList;
+import endfield.util.Reflects;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import static endfield.Vars2.classHelper;
 
 /**
  * The enumeration processor provides some operation methods for enum, which can create enumeration
@@ -26,14 +25,25 @@ import static endfield.Vars2.classHelper;
  */
 @SuppressWarnings("unchecked")
 public class EnumHandler<T extends Enum<T>> {
-	static Field ordinalField;
+	static final Field ordinalField;
 
-	//final FieldHandler<T> fieldHandler;
+	final FieldHandler<T> fieldHandler;
 	final MethodHandler<T> methodHandler;
+
+	final Field valuesField;
+	final Method valuesMethod;
 
 	public final Class<T> clazz;
 
-	Field valuesField;
+	static {
+		try {
+			ordinalField = Enum.class.getDeclaredField("ordinal");
+
+			Reflects.setAccessible(ordinalField);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	/**
 	 * Construct an enumeration processor without a constructor implementation using the target
@@ -45,8 +55,18 @@ public class EnumHandler<T extends Enum<T>> {
 	 */
 	public EnumHandler(Class<T> c) {
 		clazz = c;
-		//fieldHandler = new FieldHandler<>(c);
+		fieldHandler = new FieldHandler<>(c);
 		methodHandler = new MethodHandler<>(c);
+
+		try {
+			valuesField = clazz.getDeclaredField("$VALUES");
+			valuesMethod = clazz.getMethod("values");
+
+			Reflects.setAccessible(valuesField);
+			Reflects.setAccessible(valuesMethod);
+		} catch (NoSuchFieldException | NoSuchMethodException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -79,8 +99,8 @@ public class EnumHandler<T extends Enum<T>> {
 	 */
 	public T addEnumItemTail(String addition, Object... param) {
 		try {
-			Method method = classHelper.getMethod(clazz, "values");
-			return addEnumItem(addition, ((Object[]) method.invoke(null)).length, param);
+			int ordinal = ((Object[]) valuesMethod.invoke(null)).length;
+			return addEnumItem(addition, ordinal, param);
 		} catch (InvocationTargetException | IllegalAccessException e) {
 			throw new RuntimeException(e);
 		}
@@ -116,10 +136,7 @@ public class EnumHandler<T extends Enum<T>> {
 	 */
 	public void rearrange(T instance, int ordinal) {
 		try {
-			requireValues();
-
-			Method method = classHelper.getMethod(clazz, "values");
-			T[] arr = (T[]) method.invoke(null);
+			T[] arr = (T[]) valuesMethod.invoke(null);
 			CollectionList<T> values = CollectionList.with(arr);
 			if (values.contains(instance) && ordinal >= values.size())
 				throw new IndexOutOfBoundsException("rearrange a exist item, ordinal should be less than amount of all items, (ordinal: " + ordinal + ", amount: " + values.size() + ")");
@@ -131,53 +148,20 @@ public class EnumHandler<T extends Enum<T>> {
 			values.add(ordinal, instance);
 
 			FieldHandler.set(null, valuesField, values.toArray(clazz), false);
-		} catch (NoSuchFieldException | IllegalAccessException | InvocationTargetException e) {
+		} catch (IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	public void swap(T from, T to) {
-		try {
-			requireValues();
+		int fromOrdinal = from.ordinal(), toOrdinal = to.ordinal();
 
-			requireOrdinal();
+		FieldHandler.setInt(from, ordinalField, toOrdinal, false);
+		FieldHandler.setInt(to, ordinalField, fromOrdinal, false);
 
-			int fromOrdinal = from.ordinal(), toOrdinal = to.ordinal();
+		T[] values = FieldHandler.get(null, valuesField, false);
 
-			ordinalField.setInt(from, toOrdinal);
-			ordinalField.setInt(to, fromOrdinal);
-
-			T[] values = FieldHandler.get(null, valuesField, false);
-
-			values[fromOrdinal] = to;
-			values[toOrdinal] = from;
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	Field findValuesField() throws NoSuchFieldException {
-		Field[] fields = classHelper.getFields(clazz);
-		for (Field field : fields) {
-			if (field.getName().contains("$VALUES")) {
-				return field;
-			}
-		}
-
-		throw new NoSuchFieldException("No $VALUES field found in " + clazz);
-	}
-
-	void requireValues() throws NoSuchFieldException {
-		if (valuesField == null) {
-			valuesField = findValuesField();
-			valuesField.setAccessible(true);
-		}
-	}
-
-	static void requireOrdinal() throws NoSuchFieldException {
-		if (ordinalField == null) {
-			ordinalField = Enum.class.getDeclaredField("ordinal");
-			ordinalField.setAccessible(true);
-		}
+		values[fromOrdinal] = to;
+		values[toOrdinal] = from;
 	}
 }

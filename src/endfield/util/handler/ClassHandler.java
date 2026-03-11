@@ -20,6 +20,18 @@ public interface ClassHandler {
 
 	void finishGenerate();
 
+	static Field findField(Class<?> clazz, String name) {
+		return classHelper.findField(clazz, name);
+	}
+
+	static Method findMethod(Class<?> clazz, String name, Class<?>... parameterTypes) {
+		return classHelper.findMethod(clazz, name, parameterTypes);
+	}
+
+	static <T> Constructor<T> findConstructor(Class<T> clazz, Class<?>... parameterTypes) {
+		return classHelper.findConstructor(clazz, parameterTypes);
+	}
+
 	static Field getField(Class<?> clazz, String name) {
 		return classHelper.getField(clazz, name);
 	}

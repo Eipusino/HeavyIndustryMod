@@ -15,8 +15,8 @@ public class AtomicBooleanArray implements Serializable {
 		array = new boolean[length];
 	}
 
-	public AtomicBooleanArray(boolean[] arr) {
-		array = arr;
+	public AtomicBooleanArray(boolean[] array) {
+		this.array = array.clone();
 	}
 
 	public final int length() {

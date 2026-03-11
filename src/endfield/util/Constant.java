@@ -15,11 +15,18 @@ import mindustry.gen.Building;
 import mindustry.gen.Healthc;
 import mindustry.gen.Unit;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 /** Provide some commonly used lambda functions with simple structures. */
 public final class Constant {
 	public static final Object[] EMPTY_OBJECT = {};
 	public static final Class<?>[] EMPTY_CLASS = {};
 	public static final String[] EMPTY_STRING = {};
+	public static final Field[] EMPTY_FIELD = {};
+	public static final Method[] EMPTY_METHOD = {};
+	public static final Constructor<?>[] EMPTY_CONSTRUCTOR = {};
 
 	public static final Runnable RUNNABLE_NOTHING = () -> {};
 	public static final Floatp FLOATP_ZERO_FLT = () -> 0f;

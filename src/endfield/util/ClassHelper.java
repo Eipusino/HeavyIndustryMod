@@ -10,7 +10,7 @@ public interface ClassHelper {
 	 *
 	 * @see Class#getDeclaredField(String)
 	 */
-	default Field getField(Class<?> clazz, String name) {
+	default Field findField(Class<?> clazz, String name) {
 		try {
 			return clazz.getDeclaredField(name);
 		} catch (NoSuchFieldException e) {
@@ -24,7 +24,7 @@ public interface ClassHelper {
 	 *
 	 * @see Class#getDeclaredMethod(String, Class[])
 	 */
-	default Method getMethod(Class<?> clazz, String name, Class<?>... parameterTypes) {
+	default Method findMethod(Class<?> clazz, String name, Class<?>... parameterTypes) {
 		try {
 			return clazz.getDeclaredMethod(name, parameterTypes);
 		} catch (NoSuchMethodException e) {
@@ -38,11 +38,53 @@ public interface ClassHelper {
 	 *
 	 * @see Class#getDeclaredConstructor(Class[])
 	 */
-	default <T> Constructor<T> getConstructor(Class<T> clazz, Class<?>... parameterTypes) {
+	default <T> Constructor<T> findConstructor(Class<T> clazz, Class<?>... parameterTypes) {
 		try {
 			return clazz.getDeclaredConstructor(parameterTypes);
 		} catch (NoSuchMethodException e) {
 			return null;
+		}
+	}
+
+	/**
+	 * Return to search for fields in the class by name, including private ones. If it cannot be found, a
+	 * {@code RuntimeException} will be thrown.
+	 *
+	 * @see Class#getDeclaredField(String)
+	 */
+	default Field getField(Class<?> clazz, String name) {
+		try {
+			return clazz.getDeclaredField(name);
+		} catch (NoSuchFieldException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * Return to search for methods in the class based on name and parameter type, including private
+	 * ones. If it cannot be found, a {@code RuntimeException} will be thrown.
+	 *
+	 * @see Class#getDeclaredMethod(String, Class[])
+	 */
+	default Method getMethod(Class<?> clazz, String name, Class<?>... parameterTypes) {
+		try {
+			return clazz.getDeclaredMethod(name, parameterTypes);
+		} catch (NoSuchMethodException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * Return the constructor function in the class based on the parameter type, including private ones. If
+	 * it cannot be found, a {@code RuntimeException} will be thrown.
+	 *
+	 * @see Class#getDeclaredConstructor(Class[])
+	 */
+	default <T> Constructor<T> getConstructor(Class<T> clazz, Class<?>... parameterTypes) {
+		try {
+			return clazz.getDeclaredConstructor(parameterTypes);
+		} catch (NoSuchMethodException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

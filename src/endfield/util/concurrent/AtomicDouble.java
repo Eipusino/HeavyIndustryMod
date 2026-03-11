@@ -3,7 +3,6 @@ package endfield.util.concurrent;
 import endfield.func.DoubleDoublef;
 import endfield.func.DoubleDoublef2;
 
-import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.VarHandle;
@@ -13,7 +12,7 @@ import java.lang.invoke.VarHandle;
  *
  * @since 1.0.9
  */
-public class AtomicDouble extends Number implements Serializable {
+public class AtomicDouble extends Number {
 	private static final long serialVersionUID = 7663420361921571242l;
 
 	private static final VarHandle handle;

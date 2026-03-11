@@ -189,6 +189,12 @@ public class FieldHandler<T> {
 		defaultHandlers.clear();
 	}
 
+	/**
+	 * Set the value of the field. Fields with inline values during compilation are invalid.
+	 *
+	 * @param object the object whose field should be modified, If the field is static, please set it to null
+	 * @param access Whether to make the field accessible
+	 */
 	public static void set(Object object, Field field, Object value, boolean access) {
 		if (object == null) fieldAccessHelper.setStatic(field, value, access);
 		else fieldAccessHelper.set(object, field, value, access);
@@ -196,6 +202,17 @@ public class FieldHandler<T> {
 
 	public static <T> T get(Object object, Field field, boolean access) {
 		return object == null ? fieldAccessHelper.getStatic(field, access) : fieldAccessHelper.get(object, field, access);
+	}
+
+	/**
+	 * Set the value of the int field. Fields with inline values during compilation are invalid.
+	 *
+	 * @param field the object whose field should be modified, If the field is static, please set it to null
+	 * @param access Whether to make the field accessible
+	 */
+	public static void setInt(Object object, Field field, int value, boolean access) {
+		if (object == null) fieldAccessHelper.setIntStatic(field, value, access);
+		else fieldAccessHelper.setInt(object, field, value, access);
 	}
 
 	/**

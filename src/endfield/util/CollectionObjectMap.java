@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.function.Function;
 
 import static endfield.util.Constant.PRIME2;
 import static endfield.util.Constant.PRIME3;
@@ -365,6 +366,15 @@ public class CollectionObjectMap<K, V> extends AbstractMap<K, V> implements Iter
 		V value = get(key);
 		if (value == null) {
 			put(key, value = supplier.get());
+		}
+		return value;
+	}
+
+	@Override
+	public V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
+		V value = get(key);
+		if (value == null) {
+			put(key, value = mappingFunction.apply(key));
 		}
 		return value;
 	}

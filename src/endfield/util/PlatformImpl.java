@@ -7,12 +7,13 @@ import java.lang.invoke.MethodHandles.Lookup;
 import java.nio.Buffer;
 
 public interface PlatformImpl {
-	/** @return Retrieve a {@code lookup} that can access all members within a given {@code class}. */
+	/**
+	 * @return Retrieve a {@code lookup} that can access all members within a given {@code class}.
+	 */
 	Lookup lookup(Class<?> clazz);
 
 	/**
-	 * Reflect to call the clone method of Object. If the object does not implement {@link Cloneable}, an
-	 * exception will be thrown.
+	 * Reflect to call the clone method of Object.
 	 */
 	<T> T clone(T object);
 
@@ -26,9 +27,15 @@ public interface PlatformImpl {
 		}
 	}
 
-	void putBuffer(Buffer src, int srcOffset, Buffer dst, int dstOffset, int numBytes);
+	void put(Object src, int srcOffset, Object dst, int dstOffset, int numBytes);
 
+	/**
+	 * @return The memory address of DirectBuffer
+	 * @throws IllegalArgumentException If {@code src} or {@code dst} is not a DirectBuffer
+	 */
 	default long addressOf(Buffer buffer) {
+		if (!buffer.isDirect()) throw new IllegalArgumentException("Only applicable to DirectBuffer");
+
 		return ((DirectBuffer) buffer).address();
 	}
 }

@@ -18,8 +18,8 @@ public class AtomicFloatArray implements Serializable {
 		array = new float[length];
 	}
 
-	public AtomicFloatArray(float[] arr) {
-		array = arr;
+	public AtomicFloatArray(float[] array) {
+		this.array = array.clone();
 	}
 
 	public final int length() {

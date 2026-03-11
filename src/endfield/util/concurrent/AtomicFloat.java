@@ -3,7 +3,6 @@ package endfield.util.concurrent;
 import arc.func.FloatFloatf;
 import endfield.func.FloatFloatf2;
 
-import java.io.Serializable;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.invoke.VarHandle;
@@ -13,7 +12,7 @@ import java.lang.invoke.VarHandle;
  *
  * @since 1.0.9
  */
-public class AtomicFloat extends Number implements Serializable {
+public class AtomicFloat extends Number {
 	private static final long serialVersionUID = -4167511778980629918l;
 
 	private static final VarHandle handle;

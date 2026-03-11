@@ -117,7 +117,7 @@ public final class Reflects {
 	/** @since 1.0.8 */
 	public static @Nullable Field findField(Class<?> type, String name) {
 		while (type != null) {
-			Field field = classHelper.getField(type, name);
+			Field field = classHelper.findField(type, name);
 
 			if (field != null) return field;
 
@@ -154,7 +154,7 @@ public final class Reflects {
 	 */
 	public static @Nullable Method findMethod(Class<?> type, String name, Class<?>... parameterTypes) {
 		while (type != null) {
-			Method method = classHelper.getMethod(type, name, parameterTypes);
+			Method method = classHelper.findMethod(type, name, parameterTypes);
 
 			if (method != null) return method;
 
@@ -177,6 +177,19 @@ public final class Reflects {
 		}
 
 		return null;
+	}
+
+	public static Field getField(Class<?> type, Boolf<Field> filler) {
+		while (type != null) {
+			Field[] fields = classHelper.getFields(type);
+			for (Field field : fields) {
+				if (filler.get(field)) return field;
+			}
+
+			type = type.getSuperclass();
+		}
+
+		throw new RuntimeException("Field not found");
 	}
 
 	public static String methodToString(Class<?> type, String name, Class<?>... argTypes) {
