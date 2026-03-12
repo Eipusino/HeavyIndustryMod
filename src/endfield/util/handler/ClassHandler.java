@@ -1,5 +1,6 @@
 package endfield.util.handler;
 
+import arc.func.Boolf;
 import dynamilize.DynamicMaker;
 import dynamilize.classmaker.AbstractClassGenerator;
 
@@ -54,6 +55,30 @@ public interface ClassHandler {
 
 	static <T> Constructor<T>[] getConstructors(Class<T> clazz) {
 		return classHelper.getConstructors(clazz);
+	}
+
+	static Field findField(Class<?> clazz, Boolf<Field> filler) {
+		return classHelper.findField(clazz, filler);
+	}
+
+	static Method findMethod(Class<?> clazz, Boolf<Method> filler) {
+		return classHelper.findMethod(clazz, filler);
+	}
+
+	static <T> Constructor<T> findConstructor(Class<T> clazz, Boolf<Constructor<T>> filler) {
+		return classHelper.findConstructor(clazz, filler);
+	}
+
+	static Field getField(Class<?> clazz, Boolf<Field> filler) {
+		return classHelper.getField(clazz, filler);
+	}
+
+	static Method getMethod(Class<?> clazz, Boolf<Method> filler) {
+		return classHelper.getMethod(clazz, filler);
+	}
+
+	static <T> Constructor<T> getConstructor(Class<T> clazz, Boolf<Constructor<T>> filler) {
+		return classHelper.getConstructor(clazz, filler);
 	}
 
 	static <T> T allocateInstance(Class<? extends T> clazz) {

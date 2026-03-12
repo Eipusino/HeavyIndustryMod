@@ -29,7 +29,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.Set;
 
 import static endfield.Vars2.accessibleHelper;
@@ -114,17 +113,11 @@ public final class Reflects {
 		}
 	}
 
-	/** @since 1.0.8 */
+	/**
+	 * @since 1.0.8
+	 */
 	public static @Nullable Field findField(Class<?> type, String name) {
-		while (type != null) {
-			Field field = classHelper.findField(type, name);
-
-			if (field != null) return field;
-
-			type = type.getSuperclass();
-		}
-
-		return null;
+		return classHelper.findField(type, name);
 	}
 
 	/**
@@ -134,16 +127,7 @@ public final class Reflects {
 	 * @since 1.0.8
 	 */
 	public static @Nullable Field findField(Class<?> type, Boolf<Field> filler) {
-		while (type != null) {
-			Field[] fields = classHelper.getFields(type);
-			for (Field field : fields) {
-				if (filler.get(field)) return field;
-			}
-
-			type = type.getSuperclass();
-		}
-
-		return null;
+		return classHelper.findField(type, filler);
 	}
 
 	/**
@@ -153,15 +137,7 @@ public final class Reflects {
 	 * @since 1.0.8
 	 */
 	public static @Nullable Method findMethod(Class<?> type, String name, Class<?>... parameterTypes) {
-		while (type != null) {
-			Method method = classHelper.findMethod(type, name, parameterTypes);
-
-			if (method != null) return method;
-
-			type = type.getSuperclass();
-		}
-
-		return null;
+		return classHelper.findMethod(type, name, parameterTypes);
 	}
 
 	/**
@@ -171,25 +147,7 @@ public final class Reflects {
 	 * @since 1.0.8
 	 */
 	public static <T> @Nullable Constructor<T> findConstructor(Class<T> type, Class<?>... args) {
-		Constructor<T>[] constructors = classHelper.getConstructors(type);
-		for (Constructor<T> constructor : constructors) {
-			if (Arrays.equals(constructor.getParameterTypes(), args)) return constructor;
-		}
-
-		return null;
-	}
-
-	public static Field getField(Class<?> type, Boolf<Field> filler) {
-		while (type != null) {
-			Field[] fields = classHelper.getFields(type);
-			for (Field field : fields) {
-				if (filler.get(field)) return field;
-			}
-
-			type = type.getSuperclass();
-		}
-
-		throw new RuntimeException("Field not found");
+		return classHelper.findConstructor(type, args);
 	}
 
 	public static String methodToString(Class<?> type, String name, Class<?>... argTypes) {

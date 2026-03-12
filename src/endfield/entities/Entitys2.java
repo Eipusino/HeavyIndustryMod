@@ -30,6 +30,8 @@ import endfield.math.Mathm;
 import endfield.util.CollectionList;
 import endfield.util.CollectionObjectMap;
 import endfield.util.Reflects;
+import endfield.util.handler.ClassHandler;
+import endfield.util.handler.FieldHandler;
 import mindustry.Vars;
 import mindustry.audio.SoundLoop;
 import mindustry.core.World;
@@ -58,6 +60,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.function.Function;
 
 import static endfield.entities.Damage2.tmpBuild;
 import static endfield.util.Arrays2.arrayOf;
@@ -90,6 +93,10 @@ public final class Entitys2 {
 
 	static final CollectionObjectMap<Class<? extends Entityc>, Field> addedFieldMap = new CollectionObjectMap<>(Class.class, Field.class);
 	static final CollectionObjectMap<Class<? extends Building>, Field> soundFieldMap = new CollectionObjectMap<>(Class.class, Field.class);
+
+	static final Boolf<Field> boolf1 = f -> f.getType() == SoundLoop.class;
+	static final Function<Class<? extends Entityc>, Field> func1 = c -> ClassHandler.findField(c, "added");
+	static final Function<Class<? extends Building>, Field> func2 = c -> ClassHandler.findField(c, boolf1);
 
 	private Entitys2() {}
 
@@ -834,26 +841,26 @@ public final class Entitys2 {
 	}
 
 	public static void setAdded(Entityc entity, boolean value) {
-		Field field = addedFieldMap.get(entity.getClass(), () -> Reflects.findField(entity.getClass(), "added"));
+		Field field = addedFieldMap.computeIfAbsent(entity.getClass(), func1);
 
 		if (field != null) {
 			try {
-				field.setAccessible(true);
-				field.setBoolean(entity, value);
-			} catch (Exception e) {
+				Reflects.setAccessible(field);
+				FieldHandler.setBoolean(entity, field, value, false);
+			} catch (Throwable e) {
 				Log.err(e);
 			}
 		}
 	}
 
 	public static void findSound(Building build, Cons<SoundLoop> cons) {
-		Field field = soundFieldMap.get(build.getClass(), () -> Reflects.findField(build.getClass(), f -> f.getType() == SoundLoop.class));
+		Field field = soundFieldMap.computeIfAbsent(build.getClass(), func2);
 
 		if (field != null) {
 			try {
-				field.setAccessible(true);
-				cons.get((SoundLoop) field.get(build));
-			} catch (Exception e) {
+				Reflects.setAccessible(field);
+				cons.get(FieldHandler.get(build, field, false));
+			} catch (Throwable e) {
 				Log.err(e);
 			}
 		}

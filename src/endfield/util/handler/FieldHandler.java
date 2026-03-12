@@ -204,6 +204,11 @@ public class FieldHandler<T> {
 		return object == null ? fieldAccessHelper.getStatic(field, access) : fieldAccessHelper.get(object, field, access);
 	}
 
+	public static void setBoolean(Object object, Field field, boolean value, boolean access) {
+		if (object == null) fieldAccessHelper.setBooleanStatic(field, value, access);
+		else fieldAccessHelper.setBoolean(object, field, value, access);
+	}
+
 	/**
 	 * Set the value of the int field. Fields with inline values during compilation are invalid.
 	 *

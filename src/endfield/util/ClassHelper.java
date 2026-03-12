@@ -1,5 +1,7 @@
 package endfield.util;
 
+import arc.func.Boolf;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -99,6 +101,56 @@ public interface ClassHelper {
 	@SuppressWarnings("unchecked")
 	default <T> Constructor<T>[] getConstructors(Class<T> clazz) {
 		return (Constructor<T>[]) clazz.getDeclaredConstructors();
+	}
+
+	default Field findField(Class<?> clazz, Boolf<Field> filler) {
+		Field[] fields = clazz.getDeclaredFields();
+		for (Field field : fields) {
+			if (filler.get(field)) return field;
+		}
+		return null;
+	}
+
+	default Method findMethod(Class<?> clazz, Boolf<Method> filler) {
+		Method[] methods = clazz.getDeclaredMethods();
+		for (Method method : methods) {
+			if (filler.get(method)) return method;
+		}
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	default <T> Constructor<T> findConstructor(Class<T> clazz, Boolf<Constructor<T>> filler) {
+		Constructor<T>[] constructors = (Constructor<T>[]) clazz.getDeclaredConstructors();
+		for (Constructor<T> constructor : constructors) {
+			if (filler.get(constructor)) return constructor;
+		}
+		return null;
+	}
+
+	default Field getField(Class<?> clazz, Boolf<Field> filler) {
+		Field[] fields = clazz.getDeclaredFields();
+		for (Field field : fields) {
+			if (filler.get(field)) return field;
+		}
+		throw new RuntimeException("Field not found");
+	}
+
+	default Method getMethod(Class<?> clazz, Boolf<Method> filler) {
+		Method[] methods = clazz.getDeclaredMethods();
+		for (Method method : methods) {
+			if (filler.get(method)) return method;
+		}
+		throw new RuntimeException("Method not found");
+	}
+
+	@SuppressWarnings("unchecked")
+	default <T> Constructor<T> getConstructor(Class<T> clazz, Boolf<Constructor<T>> filler) {
+		Constructor<T>[] constructors = (Constructor<T>[]) clazz.getDeclaredConstructors();
+		for (Constructor<T> constructor : constructors) {
+			if (filler.get(constructor)) return constructor;
+		}
+		throw new RuntimeException("Constructor not found");
 	}
 
 	/**
