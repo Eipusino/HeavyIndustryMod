@@ -1,7 +1,10 @@
 package endfield;
 
+import arc.files.Fi;
 import arc.struct.Seq;
 import arc.util.Log;
+import arc.util.OS;
+import arc.util.serialization.Jval;
 import endfield.core.EndFieldListener;
 import endfield.core.EndFieldMod;
 import endfield.files.InternalFileTree;
@@ -13,11 +16,17 @@ import endfield.graphics.g2d.VaporizeBatch;
 import endfield.mod.ModInfo;
 import endfield.util.AccessibleHelper;
 import endfield.util.ClassHelper;
+import endfield.util.CollectionObjectSet;
 import endfield.util.FieldAccessHelper;
 import endfield.util.MethodInvokeHelper;
 import endfield.util.PlatformImpl;
+import endfield.util.Reflects;
 import mindustry.content.TechTree.TechNode;
 import mindustry.type.Sector;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.Collection;
 
 /**
  * I didn't want my Mod main class to look too messy, so I created this class.
@@ -32,6 +41,9 @@ public final class Vars2 {
 	public static final String AUTHOR = "Eipusino";
 	/** The GitHub address of this mod. */
 	public static final String LINK_GIT_HUB = "https://github.com/Eipusino/HeavyIndustryMod";
+
+	public static final CollectionObjectSet<String> packages = new CollectionObjectSet<>(String.class);
+	public static final CollectionObjectSet<Class<?>> classes = new CollectionObjectSet<>(Class.class);
 
 	public static PlatformImpl platformImpl;
 
@@ -99,6 +111,38 @@ public final class Vars2 {
 		root.content.clearUnlock();
 		for (TechNode node : root.children) {
 			resetTree(node);
+		}
+	}
+
+	public static void init() {
+		Fi other = internalTree.child("other");
+
+		try (Reader reader = other.child("classes-core.json").reader();
+		     Reader platform = other.child(OS.isAndroid ? "classes-android.json" : "classes-desktop.json").reader()) {
+			Jval meta = Jval.read(reader), meta2 = Jval.read(platform);
+
+			getPackages(meta, packages);
+			getPackages(meta2, packages);
+
+			getClasses(meta, classes);
+			getClasses(meta2, classes);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void getPackages(Jval meta, Collection<String> packages) {
+		for (Jval value : meta.get("packages").asArray()) {
+			packages.add(value.asString());
+		}
+	}
+
+	public static void getClasses(Jval meta, Collection<Class<?>> classes) {
+		for (Jval value : meta.get("classes").asArray()) {
+			String name = value.asString();
+			Class<?> type = Reflects.findClass(name);
+			if (type == null) Log.warn("Class '@' not found.", name);
+			else classes.add(type);
 		}
 	}
 }

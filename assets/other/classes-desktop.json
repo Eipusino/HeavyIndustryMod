@@ -1,0 +1,18 @@
+{
+	"packages": [
+		"endfield.desktop"
+	],
+	"classes": [
+		"endfield.desktop.Demodulator",
+		"endfield.desktop.DesktopAccessibleHelper",
+		"endfield.desktop.DesktopClassHelper",
+		"endfield.desktop.DesktopImpl$1",
+		"endfield.desktop.DesktopImpl$2",
+		"endfield.desktop.DesktopImpl",
+		"endfield.desktop.DesktopMethodInvokeHelper",
+		"endfield.desktop.DirectMethodInvokeHelper",
+		"endfield.desktop.MethodHandleFieldAccessHelper",
+		"endfield.desktop.UnsafeFieldAccessHelper",
+		"endfield.desktop.Unsafer"
+	]
+}

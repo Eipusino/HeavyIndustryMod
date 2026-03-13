@@ -33,7 +33,7 @@ public class Markdown extends WidgetGroup {
 			"data:image/jpeg;base64,"
 	};
 
-	protected static final List<Extension> defaultExtensions = CollectionList.with(
+	protected static final List<Extension> defaultExtensions = CollectionList.within(
 			TablesExtension.create(),
 			InsExtension.create(),
 			StrikethroughExtension.create(),

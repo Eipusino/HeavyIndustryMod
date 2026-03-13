@@ -38,6 +38,11 @@ import static endfield.Vars2.classHelper;
  * Reflection utilities, mainly for wrapping reflective operations to eradicate checked exceptions.
  *
  * @author Eipusino
+ * @see endfield.util.handler.ClassHandler
+ * @see endfield.util.handler.FieldHandler
+ * @see endfield.util.handler.MethodHandler
+ * @see endfield.util.handler.ObjectHandler
+ * @see endfield.util.handler.EnumHandler
  * @since 1.0.6
  */
 public final class Reflects {
@@ -107,7 +112,7 @@ public final class Reflects {
 	@SuppressWarnings("unchecked")
 	public static <T> @UnknownNullability Class<T> findClass(String name) {
 		try {
-			return name == null ? null : (Class<T>) Class.forName(name, true, Vars.mods.mainLoader());
+			return name == null ? null : (Class<T>) Class.forName(name, false, Vars.mods.mainLoader());
 		} catch (ClassNotFoundException e) {
 			return null;
 		}

@@ -249,6 +249,20 @@ public final class Objects2 {
 			current = current.getComponentType();
 		}
 
+		String baseDesc = buildBaseDesc(type, current);
+
+		return switch (depth) {
+			case 0 -> baseDesc;
+			case 1 -> baseDesc + "[";
+			case 2 -> baseDesc + "[[";
+			case 3 -> baseDesc + "[[[";
+			case 4 -> baseDesc + "[[[[";
+			case 5 -> baseDesc + "[[[[[";
+			default -> buildArrayDescriptor(depth, baseDesc);
+		};
+	}
+
+	static String buildBaseDesc(Class<?> type, Class<?> current) {
 		String baseDesc;
 		if (current.isPrimitive()) {
 			if (current == void.class) baseDesc = "V";
@@ -264,16 +278,7 @@ public final class Objects2 {
 		} else {
 			baseDesc = 'L' + current.getName().replace('.', '/') + ';';
 		}
-
-		return switch (depth) {
-			case 0 -> baseDesc;
-			case 1 -> baseDesc + "[";
-			case 2 -> baseDesc + "[[";
-			case 3 -> baseDesc + "[[[";
-			case 4 -> baseDesc + "[[[[";
-			case 5 -> baseDesc + "[[[[[";
-			default -> buildArrayDescriptor(depth, baseDesc);
-		};
+		return baseDesc;
 	}
 
 	static String buildArrayDescriptor(int depth, String baseDesc) {

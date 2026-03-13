@@ -1,13 +1,18 @@
+import arc.util.serialization.Jval
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
 	repositories {
 		mavenCentral()
+		maven { url "https://raw.githubusercontent.com/Zelaux/MindustryRepo/master/repository" }
+		maven { url "https://www.jitpack.io" }
 	}
 
 	dependencies {
 		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+
+		classpath "com.github.Anuken.Arc:arc-core:$mindustryVersion"
 	}
 }
 
@@ -62,7 +67,46 @@ dependencies {
 	implementation files("libs/JavaDynamilizer.jar", "libs/Commonmark.jar")
 }
 
-task jarAndroid {
+tasks.register("list") {
+	inputs.files tasks.compileJava, configurations.runtimeClasspath
+
+	def output = file("$temporaryDir/classes-core.json")
+	outputs.file output
+
+	doFirst {
+		def packages = Jval.newArray()
+		def classes = Jval.newArray()
+
+		def proc = { def proc, String path, File dir ->
+			for (def child : dir.listFiles()) {
+				if (child.directory) {
+					def name = child.name
+					if (!path.startsWith("endfield") && name != "endfield") continue
+
+					def visited = path.empty ? name : "$path.$name"
+
+					packages.add(visited)
+					proc(proc, visited, child)
+				} else {
+					def dot = child.name.lastIndexOf(".")
+					if (dot == -1) continue
+
+					def name = child.name.substring(0, dot)
+					def ext = child.name.substring(dot + 1)
+
+					if (ext == "class") classes.add("$path.$name")
+				}
+			}
+		}
+
+		sourceSets.main.runtimeClasspath.forEach { proc(proc, "", it) }
+
+		def compacted = Jval.newObject().put("packages", packages).put("classes", classes)
+		output.withWriter { compacted.writeTo(it, Jval.Jformat.formatted) }
+	}
+}
+
+tasks.register("jarAndroid") {
 	dependsOn "jar"
 
 	doLast {
@@ -100,7 +144,7 @@ jar {
 	}
 }
 
-task deploy(type: Jar) {
+tasks.register("deploy", Jar) {
 	dependsOn jarAndroid
 	dependsOn jar
 	archiveFileName = "${outputJarName}.jar"

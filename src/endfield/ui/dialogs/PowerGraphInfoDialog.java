@@ -18,9 +18,9 @@ import mindustry.world.blocks.power.PowerGraph;
 import static endfield.ui.Elements.formatAmount;
 
 public class PowerGraphInfoDialog extends BaseDialog {
-	protected final float updateInterval = 60; //Update every second
+	public final float updateInterval = 60; //Update every second
 
-	protected static final Prov<Seq<Building>> prov = () -> new Seq<>(Building.class);
+	public static final Prov<Seq<Building>> prov = () -> new Seq<>(Building.class);
 
 	protected final IntSet opened = new IntSet();
 	protected final IntMap2<Seq<Building>> producers = new IntMap2<>(Seq.class);

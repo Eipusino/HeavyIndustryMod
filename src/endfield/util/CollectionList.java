@@ -114,6 +114,14 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 		System.arraycopy(array, start, items, 0, size);
 	}
 
+	public CollectionList(boolean ordered, E[] array) {
+		componentType = array.getClass().getComponentType();
+		size = array.length;
+		items = array;
+
+		this.ordered = ordered;
+	}
+
 	public CollectionList(Collection<? extends E> collection, Class<?> type) {
 		this(collection.size(), type);
 		addAll(collection);
@@ -136,6 +144,11 @@ public class CollectionList<E> extends AbstractList<E> implements Eachable<E>, C
 	@SafeVarargs
 	public static <T> CollectionList<T> with(T... array) {
 		return new CollectionList<>(array);
+	}
+
+	@SafeVarargs
+	public static <T> CollectionList<T> within(T... array) {
+		return new CollectionList<>(true, array);
 	}
 
 	public static <T> CollectionList<T> with(Class<?> arrayType, Iterable<T> array) {

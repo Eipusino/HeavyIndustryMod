@@ -1,0 +1,17 @@
+{
+	"packages": [
+		"endfield.android",
+		"endfield.android.field.util"
+	],
+	"classes": [
+		"endfield.android.AndroidAccessibleHelper",
+		"endfield.android.AndroidClassHelper",
+		"endfield.android.AndroidImpl",
+		"endfield.android.AndroidMethodInvokeHelper",
+		"endfield.android.BasicFieldAccessHelper",
+		"endfield.android.HiddenApi",
+		"endfield.android.UnsafeFieldAccessHelper",
+		"endfield.android.Unsafer",
+		"endfield.android.field.util.AndroidField"
+	]
+}

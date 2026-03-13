@@ -356,14 +356,13 @@ import endfield.world.draw.MultiDrawBlock;
 import endfield.world.draw.MultiDrawFlame;
 import endfield.world.draw.RunningLight;
 
-import static mindustry.mod.ClassMap.classes;
-
 /** Generated class. Maps simple class names to concrete classes. For use in JSON attached mods. */
 final class ClassMap2 {
 	/** Don't let anyone instantiate this class. */
 	private ClassMap2() {}
 
 	static void load() {
+		arc.struct.ObjectMap<String, Class<?>> classes = mindustry.mod.ClassMap.classes;
 		//ai
 		classes.put("NullAI", NullAI.class);
 		classes.put("CopterAI", CopterAI.class);

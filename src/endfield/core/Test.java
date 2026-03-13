@@ -1,5 +1,6 @@
 package endfield.core;
 
+import arc.util.Log;
 import endfield.util.CollectionObjectMap;
 import endfield.util.ExtraVariable;
 import org.jetbrains.annotations.TestOnly;
@@ -13,6 +14,10 @@ public class Test implements Cloneable, ExtraVariable {
 
 	public Map<String, Object> extraVar = new CollectionObjectMap<>(String.class, Object.class);
 	public short id;
+
+	static {
+		Log.infoTag("Test", "class endfield.core.Test loading.");
+	}
 
 	public Test() {
 		id = count++;
