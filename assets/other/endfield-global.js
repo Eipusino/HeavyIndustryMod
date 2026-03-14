@@ -77,12 +77,12 @@ importPackage(endfield.world.draw);
 importPackage(endfield.world.meta);
 importPackage(endfield.world.patterns);
 
-if (OS.isAndroid) {
+/*if (OS.isAndroid) {
 	importPackage(endfield.android);
 	importPackage(endfield.android.util.field);
 } else if (!OS.isIos) {
 	importPackage(endfield.desktop);
-}
+}*/
 
 function extendMod() {
 	// To inherit the mod class, applicationClassLoader needs to be set to Vars.mod.mainLoad() in the context

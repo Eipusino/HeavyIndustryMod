@@ -40,7 +40,7 @@ public class ObjectIntHolder<K> implements Cloneable {
 	public ObjectIntHolder<K> copy() {
 		try {
 			return (ObjectIntHolder<K>) super.clone();
-		} catch (CloneNotSupportedException awful) {
+		} catch (CloneNotSupportedException e) {
 			return new ObjectIntHolder<>(key, value);
 		}
 	}

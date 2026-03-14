@@ -72,7 +72,7 @@ public class HailStoneBulletType extends FallingBulletType {
 	}
 
 	@Override
-	public void hit(Bullet b, float x, float y) {
+	public void hit(Bullet b, float x, float y, boolean createFrags) {
 		if (!b.absorbed) hitEffect.at(x, y, b.rotation(), hitColor);
 		if (!b.absorbed) hitSound.at(x, y, hitSoundPitch, hitSoundVolume);
 

@@ -83,6 +83,10 @@ public final class Reflects {
 		return (T) value;
 	}
 
+	public static <T> Class<T> getPrimitiveType(String name) {
+		return classHelper.getPrimitiveClass(name);
+	}
+
 	/**
 	 * Reflectively instantiates a type without throwing exceptions.
 	 *

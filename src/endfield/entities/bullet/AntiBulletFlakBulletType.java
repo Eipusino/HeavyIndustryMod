@@ -23,8 +23,8 @@ public class AntiBulletFlakBulletType extends FlakBulletType {
 	}
 
 	@Override
-	public void hit(Bullet b, float x, float y) {
-		super.hit(b, x, y);
+	public void hit(Bullet b, float x, float y, boolean createFrags) {
+		super.hit(b, x, y, createFrags);
 		Rect r1 = Tmp.r1.setSize(bulletRadius * 2f).setCenter(b.x, b.y);
 		Groups.bullet.intersect(r1.x, r1.y, r1.width, r1.height, bl -> {
 			if (b.team != bl.team && bl.type.hittable && b.within(bl, bulletRadius)) {

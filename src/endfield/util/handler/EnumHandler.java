@@ -1,11 +1,12 @@
 package endfield.util.handler;
 
+import arc.func.Boolf;
 import endfield.util.CollectionList;
 import endfield.util.Reflects;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+
+import static endfield.Vars2.classHelper;
 
 /**
  * The enumeration processor provides some operation methods for enum, which can create enumeration
@@ -23,7 +24,6 @@ import java.lang.reflect.Method;
  *
  * @since 1.0.9
  */
-@SuppressWarnings("unchecked")
 public class EnumHandler<T extends Enum<T>> {
 	static final Field ordinalField;
 
@@ -31,18 +31,13 @@ public class EnumHandler<T extends Enum<T>> {
 	final MethodHandler<T> methodHandler;
 
 	final Field valuesField;
-	final Method valuesMethod;
 
 	public final Class<T> clazz;
 
 	static {
-		try {
-			ordinalField = Enum.class.getDeclaredField("ordinal");
+		ordinalField = classHelper.getField(Enum.class, "ordinal");
 
-			Reflects.setAccessible(ordinalField);
-		} catch (NoSuchFieldException e) {
-			throw new RuntimeException(e);
-		}
+		Reflects.setAccessible(ordinalField);
 	}
 
 	/**
@@ -58,15 +53,9 @@ public class EnumHandler<T extends Enum<T>> {
 		fieldHandler = new FieldHandler<>(c);
 		methodHandler = new MethodHandler<>(c);
 
-		try {
-			valuesField = clazz.getDeclaredField("$VALUES");
-			valuesMethod = clazz.getMethod("values");
+		valuesField = classHelper.getField(clazz, field -> field.getName().contains("$VALUES"));
 
-			Reflects.setAccessible(valuesField);
-			Reflects.setAccessible(valuesMethod);
-		} catch (NoSuchFieldException | NoSuchMethodException e) {
-			throw new RuntimeException(e);
-		}
+		Reflects.setAccessible(valuesField);
 	}
 
 	/**
@@ -98,12 +87,8 @@ public class EnumHandler<T extends Enum<T>> {
 	 * @param param    Additional constructor parameter list
 	 */
 	public T addEnumItemTail(String addition, Object... param) {
-		try {
-			int ordinal = ((Object[]) valuesMethod.invoke(null)).length;
-			return addEnumItem(addition, ordinal, param);
-		} catch (InvocationTargetException | IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
+		int ordinal = FieldHandler.<Object[]>get(null, valuesField, false).length;
+		return addEnumItem(addition, ordinal, param);
 	}
 
 	/**
@@ -135,22 +120,18 @@ public class EnumHandler<T extends Enum<T>> {
 	 * item is greater than the total number of elements
 	 */
 	public void rearrange(T instance, int ordinal) {
-		try {
-			T[] arr = (T[]) valuesMethod.invoke(null);
-			CollectionList<T> values = CollectionList.with(arr);
-			if (values.contains(instance) && ordinal >= values.size())
-				throw new IndexOutOfBoundsException("rearrange a exist item, ordinal should be less than amount of all items, (ordinal: " + ordinal + ", amount: " + values.size() + ")");
-			else if (ordinal > values.size())
-				throw new IndexOutOfBoundsException("add a new item, ordinal should be equal or less than amount of all items, (ordinal: " + ordinal + ", amount: " + values.size() + ")");
+		T[] arr = FieldHandler.get(null, valuesField, false);
+		CollectionList<T> values = CollectionList.with(arr);
+		if (values.contains(instance) && ordinal >= values.size())
+			throw new IndexOutOfBoundsException("rearrange a exist item, ordinal should be less than amount of all items, (ordinal: " + ordinal + ", amount: " + values.size() + ")");
+		else if (ordinal > values.size())
+			throw new IndexOutOfBoundsException("add a new item, ordinal should be equal or less than amount of all items, (ordinal: " + ordinal + ", amount: " + values.size() + ")");
 
-			values.remove(instance);
+		values.remove(instance);
 
-			values.add(ordinal, instance);
+		values.add(ordinal, instance);
 
-			FieldHandler.set(null, valuesField, values.toArray(clazz), false);
-		} catch (IllegalAccessException | InvocationTargetException e) {
-			throw new RuntimeException(e);
-		}
+		FieldHandler.set(null, valuesField, values.toArray(clazz), false);
 	}
 
 	public void swap(T from, T to) {

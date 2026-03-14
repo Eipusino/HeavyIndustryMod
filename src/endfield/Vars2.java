@@ -3,7 +3,6 @@ package endfield;
 import arc.files.Fi;
 import arc.struct.Seq;
 import arc.util.Log;
-import arc.util.OS;
 import arc.util.serialization.Jval;
 import endfield.core.EndFieldListener;
 import endfield.core.EndFieldMod;
@@ -117,15 +116,15 @@ public final class Vars2 {
 	public static void init() {
 		Fi other = internalTree.child("other");
 
-		try (Reader reader = other.child("classes-core.json").reader();
-		     Reader platform = other.child(OS.isAndroid ? "classes-android.json" : "classes-desktop.json").reader()) {
-			Jval meta = Jval.read(reader), meta2 = Jval.read(platform);
+		try (Reader reader = other.child("classes-core.json").reader()/*;
+		     Reader platform = other.child(OS.isAndroid ? "classes-android.json" : "classes-desktop.json").reader()*/) {
+			Jval meta = Jval.read(reader)/*, meta2 = Jval.read(platform)*/;
 
 			getPackages(meta, packages);
-			getPackages(meta2, packages);
+			//getPackages(meta2, packages);
 
 			getClasses(meta, classes);
-			getClasses(meta2, classes);
+			//getClasses(meta2, classes);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

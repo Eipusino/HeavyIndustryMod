@@ -40,7 +40,7 @@ public class LongHolder<V> implements Cloneable, Comparable<LongHolder<?>> {
 	public LongHolder<V> copy() {
 		try {
 			return (LongHolder<V>) super.clone();
-		} catch (CloneNotSupportedException awful) {
+		} catch (CloneNotSupportedException e) {
 			return new LongHolder<>(key, value);
 		}
 	}

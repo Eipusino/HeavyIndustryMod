@@ -33,7 +33,7 @@ public class AtomicObjectHolder<K, V> implements Entry<K, V>, Cloneable, Poolabl
 	public AtomicObjectHolder<K, V> copy() {
 		try {
 			return (AtomicObjectHolder<K, V>) super.clone();
-		} catch (CloneNotSupportedException awful) {
+		} catch (CloneNotSupportedException e) {
 			return new AtomicObjectHolder<>(key, value);
 		}
 	}

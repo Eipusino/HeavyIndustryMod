@@ -76,7 +76,7 @@ public final class ObjectHandler {
 
 		while (curr != Object.class) {
 			for (Field field : classHelper.getFields(curr)) {
-				if ((field.getModifiers() & Modifier.STATIC) != 0 && filler != null && !filler.get(field)) continue;
+				if ((field.getModifiers() & Modifier.STATIC) != 0 || filler != null && !filler.get(field)) continue;
 
 				fields.add(field);
 			}

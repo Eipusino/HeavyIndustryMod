@@ -102,14 +102,10 @@ public class MultiBulletType extends BulletType {
 	}
 
 	@Override
-	public void hit(Bullet b, float x, float y) {
-
-	}
+	public void hit(Bullet b, float x, float y, boolean createFrags) {}
 
 	@Override
-	public void drawLight(Bullet b) {
-
-	}
+	public void drawLight(Bullet b) {}
 
 	@Override
 	public Bullet create(Entityc owner, Team team, float x, float y, float angle, float damage, float velocityScl, float lifetimeScl, Object data) {

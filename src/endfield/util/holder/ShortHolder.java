@@ -40,7 +40,7 @@ public class ShortHolder<V> implements Cloneable, Comparable<ShortHolder<?>> {
 	public ShortHolder<V> copy() {
 		try {
 			return (ShortHolder<V>) super.clone();
-		} catch (CloneNotSupportedException awful) {
+		} catch (CloneNotSupportedException e) {
 			return new ShortHolder<>(key, value);
 		}
 	}

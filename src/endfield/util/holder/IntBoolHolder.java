@@ -36,7 +36,7 @@ public class IntBoolHolder implements Cloneable, Comparable<IntBoolHolder> {
 	public IntBoolHolder copy() {
 		try {
 			return (IntBoolHolder) super.clone();
-		} catch (CloneNotSupportedException awful) {
+		} catch (CloneNotSupportedException e) {
 			return new IntBoolHolder(key, value);
 		}
 	}

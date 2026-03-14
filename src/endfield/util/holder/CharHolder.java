@@ -40,7 +40,7 @@ public class CharHolder<V> implements Cloneable, Comparable<CharHolder<?>> {
 	public CharHolder<V> copy() {
 		try {
 			return (CharHolder<V>) super.clone();
-		} catch (CloneNotSupportedException awful) {
+		} catch (CloneNotSupportedException e) {
 			return new CharHolder<>(key, value);
 		}
 	}

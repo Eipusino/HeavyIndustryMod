@@ -37,7 +37,7 @@ public class IntFloatHolder implements Cloneable, Comparable<IntFloatHolder> {
 	public IntFloatHolder copy() {
 		try {
 			return (IntFloatHolder) super.clone();
-		} catch (CloneNotSupportedException awful) {
+		} catch (CloneNotSupportedException e) {
 			return new IntFloatHolder(key, value);
 		}
 	}

@@ -444,7 +444,7 @@ public final class Bullets2 {
 			}
 
 			@Override
-			public void hit(Bullet b, float x, float y) {
+			public void hit(Bullet b, float x, float y, boolean createFrags) {
 				hitEffect.at(x, y, b.rotation(), lightColor);
 				hitSound.at(x, y, hitSoundPitch, hitSoundVolume);
 
@@ -642,8 +642,8 @@ public final class Bullets2 {
 			});
 		}
 			@Override
-			public void hit(Bullet b) {
-				super.hit(b);
+			public void hit(Bullet b, float x, float y, boolean createFrags) {
+				super.hit(b, x, y, createFrags);
 				UltFire.createChance(b, 12, 0.0075f);
 			}
 		};
@@ -732,7 +732,7 @@ public final class Bullets2 {
 			}
 
 			@Override
-			public void hit(Bullet b, float x, float y) {
+			public void hit(Bullet b, float x, float y, boolean createFrags) {
 				b.hit = true;
 				hitEffect.at(x, y, b.rotation(), b.team.color);
 				hitSound.at(x, y, hitSoundPitch, hitSoundVolume);
@@ -961,7 +961,7 @@ public final class Bullets2 {
 			}
 
 			@Override
-			public void hit(Bullet b, float x, float y) {
+			public void hit(Bullet b, float x, float y, boolean createFrags) {
 				hitEffect.at(x, y, b.rotation(), b.team.color);
 				hitSound.at(x, y, hitSoundPitch, hitSoundVolume);
 
@@ -1001,8 +1001,8 @@ public final class Bullets2 {
 				Sounds.shootCorvus.at(b);
 			}
 
-			public void hit(Bullet b, float x, float y) {
-				super.hit(b, x, y);
+			public void hit(Bullet b, float x, float y, boolean createFrags) {
+				super.hit(b, x, y, createFrags);
 				if (b.owner instanceof Unit from) {
 					if (from.dead || !from.isAdded() || from.healthf() > 0.99f) return;
 

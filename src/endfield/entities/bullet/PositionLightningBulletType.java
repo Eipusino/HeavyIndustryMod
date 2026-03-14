@@ -79,10 +79,7 @@ public class PositionLightningBulletType extends BulletType {
 	}
 
 	@Override
-	public void hit(Bullet b) {}
-
-	@Override
-	public void hit(Bullet b, float x, float y) {}
+	public void hit(Bullet b, float x, float y, boolean createFrags) {}
 
 	@Override
 	public void draw(Bullet b) {}

@@ -3048,8 +3048,8 @@ public final class UnitTypes2 {
 					}
 
 					@Override
-					public void hit(Bullet b, float x, float y) {
-						super.hit(b, x, y);
+					public void hit(Bullet b, float x, float y, boolean createFrags) {
+						super.hit(b, x, y, createFrags);
 						UltFire.createChance(b, splashDamageRadius, 0.4f);
 					}
 				};

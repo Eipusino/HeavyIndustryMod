@@ -7,6 +7,22 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public interface ClassHelper {
+	@SuppressWarnings("unchecked")
+	default <T> Class<T> getPrimitiveClass(String name) {
+		return (Class<T>) switch (name) {
+			case "boolean" -> boolean.class;
+			case "byte" -> byte.class;
+			case "short" -> short.class;
+			case "int" -> int.class;
+			case "long" -> long.class;
+			case "float" -> float.class;
+			case "double" -> double.class;
+			case "char" -> char.class;
+			case "void" -> void.class;
+			default -> throw new IllegalArgumentException("unknown type of " + name);
+		};
+	}
+
 	/**
 	 * Return to search for fields in the class by name, including private ones. If not found, return {@code null}.
 	 *

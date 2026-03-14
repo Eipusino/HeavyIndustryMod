@@ -142,7 +142,7 @@ public class CritBulletType extends BasicBulletType {
 	}
 
 	@Override
-	public void hit(Bullet b, float x, float y) {
+	public void hit(Bullet b, float x, float y, boolean createFrags) {
 		b.hit = true;
 		if (b.fdata != 1f || despawnHitEffects) {
 			hitEffect.at(x, y, b.rotation(), hitColor);

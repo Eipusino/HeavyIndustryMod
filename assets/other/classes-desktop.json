@@ -6,6 +6,7 @@
 		"endfield.desktop.Demodulator",
 		"endfield.desktop.DesktopAccessibleHelper",
 		"endfield.desktop.DesktopClassHelper",
+		"endfield.desktop.DesktopConstant",
 		"endfield.desktop.DesktopImpl$1",
 		"endfield.desktop.DesktopImpl$2",
 		"endfield.desktop.DesktopImpl",

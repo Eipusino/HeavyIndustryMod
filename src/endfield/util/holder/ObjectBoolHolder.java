@@ -40,7 +40,7 @@ public class ObjectBoolHolder<K> implements Cloneable {
 	public ObjectBoolHolder<K> copy() {
 		try {
 			return (ObjectBoolHolder<K>) super.clone();
-		} catch (CloneNotSupportedException awful) {
+		} catch (CloneNotSupportedException e) {
 			return new ObjectBoolHolder<>(key, value);
 		}
 	}

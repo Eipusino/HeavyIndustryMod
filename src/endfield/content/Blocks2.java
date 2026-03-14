@@ -2954,8 +2954,9 @@ public final class Blocks2 {
 			hasLiquids = true;
 			itemCapacity = 30;
 			liquidCapacity = 600;
-			heatRequirement = 15;
-			craftTime = 180;
+			heatRequirement = 80;
+			maxEfficiency = 1f;
+			craftTime = 45;
 			outputItem = new ItemStack(Items.surgeAlloy, 3);
 			ambientSound = Sounds.loopSmelter;
 			ambientSoundVolume = 1.8f;
@@ -2978,8 +2979,9 @@ public final class Blocks2 {
 			health = 2950;
 			armor = 10f;
 			itemCapacity = 50;
-			heatRequirement = 20;
-			craftTime = 135;
+			heatRequirement = 80;
+			maxEfficiency = 1f;
+			craftTime = 35;
 			outputItem = new ItemStack(Items.carbide, 3);
 			ambientSound = Sounds.loopSmelter;
 			ambientSoundVolume = 1.8f;
@@ -4603,7 +4605,7 @@ public final class Blocks2 {
 				});
 
 				@Override
-				public void hit(Bullet b) {
+				public void hit(Bullet b, float x, float y, boolean createFrags) {
 					if (absorbable && b.absorbed) return;
 					Units.nearbyEnemies(b.team, b.x, b.y, flameLength, unit -> {
 						if (Angles.within(b.rotation(), b.angleTo(unit), flameCone) && unit.checkTarget(collidesAir, collidesGround) && unit.hittable()) {
@@ -5284,7 +5286,7 @@ public final class Blocks2 {
 				}
 
 				@Override
-				public void hit(Bullet b, float x, float y) {
+				public void hit(Bullet b, float x, float y, boolean createFrags) {
 					if (Mathf.chance(0.4)) hitEffect.at(x, y, b.rotation(), getColor(b));
 					hitSound.at(x, y, hitSoundPitch, hitSoundVolume);
 

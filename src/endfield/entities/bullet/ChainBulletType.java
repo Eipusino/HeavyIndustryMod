@@ -92,10 +92,7 @@ public class ChainBulletType extends BulletType {
 	}
 
 	@Override
-	public void hit(Bullet b, float x, float y) {}
-
-	@Override
-	public void hit(Bullet b) {}
+	public void hit(Bullet b, float x, float y, boolean createFrags) {}
 
 	@Override
 	public void despawned(Bullet b) {}

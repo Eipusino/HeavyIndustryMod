@@ -66,8 +66,8 @@ public class TrailFadeBulletType extends AccelBulletType {
 	}
 
 	@Override
-	public void hit(Bullet b) {
-		super.hit(b);
+	public void hit(Bullet b, float x, float y, boolean createFrags) {
+		super.hit(b, x, y, createFrags);
 
 		if (headless || !(b.data instanceof Vec2Seq[])) return;
 		Vec2Seq[] pointsArr = (Vec2Seq[]) b.data();

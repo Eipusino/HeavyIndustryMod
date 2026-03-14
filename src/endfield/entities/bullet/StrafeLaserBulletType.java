@@ -189,7 +189,7 @@ public class StrafeLaserBulletType extends BulletType {
 	}
 
 	@Override
-	public void hit(Bullet b, float x, float y) {
+	public void hit(Bullet b, float x, float y, boolean createFrags) {
 		hitEffect.at(x, y, b.rotation() + getRotation(b), getColor(b));
 	}
 }

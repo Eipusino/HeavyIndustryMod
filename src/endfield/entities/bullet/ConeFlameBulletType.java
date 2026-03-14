@@ -46,7 +46,7 @@ public class ConeFlameBulletType extends BulletType {
 	}
 
 	@Override
-	public void hit(Bullet b) {
+	public void hit(Bullet b, float x, float y, boolean createFrags) {
 		if (absorbable && b.absorbed) return;
 		Units.nearbyEnemies(b.team, b.x, b.y, flameLength, unit -> {
 			if (Angles.within(b.rotation(), b.angleTo(unit), flameCone) && unit.checkTarget(collidesAir, collidesGround) && unit.hittable()) {

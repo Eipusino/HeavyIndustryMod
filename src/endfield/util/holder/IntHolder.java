@@ -40,7 +40,7 @@ public class IntHolder<V> implements Cloneable, Comparable<IntHolder<?>> {
 	public IntHolder<V> copy() {
 		try {
 			return (IntHolder<V>) super.clone();
-		} catch (CloneNotSupportedException awful) {
+		} catch (CloneNotSupportedException e) {
 			return new IntHolder<>(key, value);
 		}
 	}

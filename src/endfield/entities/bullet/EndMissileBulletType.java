@@ -91,8 +91,8 @@ public class EndMissileBulletType extends BasicBulletType {
 	}
 
 	@Override
-	public void hit(Bullet b, float x, float y) {
-		super.hit(b, x, y);
+	public void hit(Bullet b, float x, float y, boolean createFrags) {
+		super.hit(b, x, y, createFrags);
 
 		Fx2.desMissileHit.at(x, y, b.rotation());
 

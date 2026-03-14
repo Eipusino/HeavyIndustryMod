@@ -73,8 +73,8 @@ public class TrailedEnergyBulletType extends AccelBulletType {
 	}
 
 	@Override
-	public void hit(Bullet b) {
-		super.hit(b);
+	public void hit(Bullet b, float x, float y, boolean createFrags) {
+		super.hit(b, x, y, createFrags);
 
 		if (!Vars.headless && b.data instanceof Vec2Seq[] pointsArr) {
 			for (Vec2Seq points : pointsArr) {

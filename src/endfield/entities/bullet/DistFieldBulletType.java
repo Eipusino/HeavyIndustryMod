@@ -57,7 +57,7 @@ public class DistFieldBulletType extends BulletType {
 	}
 
 	@Override
-	public void hit(Bullet b, float x, float y) {
+	public void hit(Bullet b, float x, float y, boolean createFrags) {
 		//Do nothing
 	}
 
